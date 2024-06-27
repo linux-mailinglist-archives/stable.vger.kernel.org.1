@@ -1,162 +1,210 @@
-Return-Path: <stable+bounces-55994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A38591B044
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 22:22:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6EF991B037
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 22:17:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C540B21D09
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 20:22:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AB1D2821C3
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 20:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B2C19AD58;
-	Thu, 27 Jun 2024 20:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A8B7406F;
+	Thu, 27 Jun 2024 20:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="vutFzSs0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GAAtSPj6"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608561BF58;
-	Thu, 27 Jun 2024 20:22:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5A933FD;
+	Thu, 27 Jun 2024 20:17:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719519728; cv=none; b=ARil3Hwdq1AD/RAPRyZhvG7psgPaXEmC2g2v6AY/gfw/NPXKVM16qNsAsqlwbFrgtwsMbunQPlVL2ZdyZyHVH17aShHC7kdDDCigqCr4veT8rxmSuEF2lbKnSlY7jXLmbbBkoDcLMBk9uJDv0whY8x37CXmIRSMlTP2A3sOxGc8=
+	t=1719519461; cv=none; b=OHIBlrBchw5QAeQGISlZAN601eEqmBm9pKvIcx0RufkPfClAeAZrDP5pNmrJIo9M2BKkpniXIk+C0cB/6o7FND/P0L4Yy5kMxIMBDZFiF0vH+nHstwE5dVlsUhmrzKskt1Uyk1M3LFb3GjorSThJ4gedZOYXS4+vQ39upU3XsqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719519728; c=relaxed/simple;
-	bh=p4B2mvCmXom56o80wmZXmDeDj3JxYTCL1AMb/2233RI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gH6Lgn7Jm5aboEMXuCJueMlG7/2owQWUqL6QmOF8pRC6XO9IzE91Xc6pT8YE7teVbSH9WtK9o3OwnNDbXKm12wthcboyX0/j2zIWhppicUVsnfeRF6rxNby7GY2Z3QprpEQk6iX7wW6rUhdVixaM/+MLVAQu0GlpvzauWCZiaD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=vutFzSs0; arc=none smtp.client-ip=212.227.126.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1719519718; x=1720124518; i=christian@heusel.eu;
-	bh=p4B2mvCmXom56o80wmZXmDeDj3JxYTCL1AMb/2233RI=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=vutFzSs0uuckA2ptTgHpD6pdKIG/nix+4EkgkLavOGPDrG9IcpLO0HWbJbZ+U/Pk
-	 6jvAq7LdrFPrKl6nkZE5/vmEzUTP4z8uLViUyOOqzdIFCITJwY1t6WsGfuSs5bupM
-	 gmhULxLmgN6/N3FIfP2Qo8KMt2JDsGJfbTT05KI8Jg5/E955JWMQwO5nMxHGYunnm
-	 kWWWZR5K/VLnIzZLlFpM62MFe/AfSzXPlfuuYQ/CCubi9MX8m/R7pV5QsVGaUawAx
-	 u7VICuxWmXZZ+ubLkzSTQJOrHVRLX88pKnnpgbGrSQZmBcYZF60P0jcJLVFtDlwV2
-	 Sn8GUxMNZlK9EpXOoQ==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([80.140.196.45]) by mrelayeu.kundenserver.de
- (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MDN3O-1sDcPh1Ve2-002D5U; Thu, 27 Jun 2024 22:16:15 +0200
-Date: Thu, 27 Jun 2024 22:16:14 +0200
-From: Christian Heusel <christian@heusel.eu>
-To: Andrew Paniakin <apanyaki@amazon.com>
-Cc: pc@cjr.nz, stfrench@microsoft.com, sashal@kernel.org, pc@manguebit.com, 
-	regressions@lists.linux.dev, stable@vger.kernel.org, linux-cifs@vger.kernel.org, 
-	abuehaze@amazon.com, simbarb@amazon.com, benh@amazon.com, gregkh@linuxfoundation.org
-Subject: Re: [REGRESSION][BISECTED][STABLE] Commit 60e3318e3e900 in
- stable/linux-6.1.y breaks cifs client failover to another server in DFS
- namespace
-Message-ID: <a58625e7-8245-4963-b589-ad69621cb48a@heusel.eu>
-References: <ZnMkNzmitQdP9OIC@3c06303d853a.ant.amazon.com>
- <Znmz-Pzi4UrZxlR0@3c06303d853a.ant.amazon.com>
- <210b1da5-6b22-4dd9-a25f-8b24ba4723d4@heusel.eu>
- <ZnyRlEUqgZ_m_pu-@3c06303d853a>
+	s=arc-20240116; t=1719519461; c=relaxed/simple;
+	bh=FChDSKktOd/AYanIA7EevJUZD2WcFV4/Er++/7flXhQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YSXusQFJxudx3Dvl4oweWVfSwvFyKllv9Qlujj4gSMliDrOLv6eOFUX10agPOLlnPw1DktlNjTQ8iYHCLToUkkZ4y60Nm3H/iWqxvZxAancK4S4IQuAr2kBKV3WqIju2IJ1IiUpMkwzZYWUk+MgFYwnp0fonOycPTcvxecU3h6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GAAtSPj6; arc=none smtp.client-ip=209.85.222.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-80f6521eeddso1907639241.0;
+        Thu, 27 Jun 2024 13:17:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719519458; x=1720124258; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SfWTtRmgo1E8I0TtuekVypKcxx4UC0A4xdyehBHx0NE=;
+        b=GAAtSPj67kHLnW/X6kO0l7H1MJB9dBYL+2uIeub3S7tmQaZgEyqU+CHEnBoF4s6Dmr
+         H8qRmK++yXFtcBf4L/FWGoibASdlUqsA2F8HnZ0oXfq1M9sf703+uDqAXUmyA6P0HuhB
+         J0fZTsGLfS0QkgNiX4dbVAji7outloLXgnR5azLkFn644el+L9ziKXm3UKTTvys7qr6p
+         25n124vgCGXMQwZmDmpwb7otzvBcxmM9Bj4vvqfaPirBOIJVzGT50iunWvN9R46suU4j
+         HhN2Y76gQQOHm5+/E4lrS/57JUm46NWhFcE3OKb7zy48AqzLrWrnzPz1VQGd/5qRF0lp
+         udcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719519458; x=1720124258;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SfWTtRmgo1E8I0TtuekVypKcxx4UC0A4xdyehBHx0NE=;
+        b=ffZVDjHqICPAMqrzZKEXmtFBUonSwcavMlsLZUp1YzdPZ9wSWUJfBcKNXMy9ok/1jg
+         H0aj3Iukw3G676tCK+RgAL8uydy9wF2a2QTg9X3sy5zo6ysZ01vVz5OC7nZyEo2ur9Ax
+         NIQb+R7wxTEJnYgnG7HfgnNJtWKvsgcxYcBv/IHp3WvpV46CQY8AmgJ+E6iGAvG/0+Gv
+         97ZD6QXfqsPYtdSQtpxduTC20JZE49uV7LB17Vt5aYkRDUG8n994jupYdT8zuGLXVmOC
+         QXsel+EOW5gHqTCt+jIFyU9vJ/9dAx2JMWnAH+I/R+px7TYilsg+5PcfOKhFgkz8ESBp
+         9Tyg==
+X-Forwarded-Encrypted: i=1; AJvYcCW/41FEZVUmmC9wxZFSzpwcY3j4FH2vdzF/PSADULu9/dc2MeB+Z150915sYebanWAgSfr0clvZ67pLmtpWwghMXIzMSu5WRT0ursrB6MyhSQbcuUrKfoRvYlZXX0ryNcjNnbjmKYUqwOam6SN23OZ+47NHRBzMjiNz6EIjvR26zGbOVQ==
+X-Gm-Message-State: AOJu0YyuDFFuyxAy5RjAUFbngYhz2vU+Mu0uFTzoxbKdAj0FPBFHz+hJ
+	3n+ngbajbB9Zf2jcJDZCWB1hjUqcVsfWsDA7lOQk+7WOw1jKP/f3oM1R4A==
+X-Google-Smtp-Source: AGHT+IHR0tAYDBylwArb4Spu8TCeyDyzv0vW6zgLAt6R2VTvPr0551huRj1vxUJvSv/B9E8w/0zdIw==
+X-Received: by 2002:a05:6122:4592:b0:4d4:21cc:5f4f with SMTP id 71dfb90a1353d-4ef6a73950emr12317938e0c.11.1719519457919;
+        Thu, 27 Jun 2024 13:17:37 -0700 (PDT)
+Received: from localhost (fwdproxy-nao-115.fbsv.net. [2a03:2880:23ff:73::face:b00c])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b59e609b9asm1691706d6.106.2024.06.27.13.17.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Jun 2024 13:17:37 -0700 (PDT)
+From: Nhat Pham <nphamcs@gmail.com>
+To: akpm@linux-foundation.org
+Cc: hannes@cmpxchg.org,
+	kernel-team@meta.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	willy@infradead.org,
+	david@redhat.com,
+	ryan.roberts@arm.com,
+	ying.huang@intel.com,
+	viro@zeniv.linux.org.uk,
+	kasong@tencent.com,
+	yosryahmed@google.com,
+	shakeel.butt@linux.dev,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH] cachestat: do not flush stats in recency check
+Date: Thu, 27 Jun 2024 13:17:37 -0700
+Message-ID: <20240627201737.3506959-1-nphamcs@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <000000000000f71227061bdf97e0@google.com>
+References: <000000000000f71227061bdf97e0@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="de5zva3l6z7p62ol"
-Content-Disposition: inline
-In-Reply-To: <ZnyRlEUqgZ_m_pu-@3c06303d853a>
-X-Provags-ID: V03:K1:9r+PViboj2vPSE0B9c+ZMxqrx/3az471oruk93qBuqqK8h9dSbX
- KaqIjeBXa6avgQ52aN5m4n/Vwe1Bhm/5XTydnNYFkbjHz/zzjUTUoFlM/t9vOpI2Y9Gp8jP
- bFh1AZYnZwpIC94WthAKHbkt1knsJcAQT0uJFEc+PbL+Or8/CW58RPm81q+VbAK7hCkzFBG
- ByLZcRAOj/CVcGPNLptJg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:pfvix2MrJ4k=;s9Pjk1JVm1YDNW19GA2JXW6LjaE
- SkHG6QygYn7BE9frZjTSlK3k/iwmdYllXwrrdhgsAaPdsRBBo6qyfsf5QuIhXg3inaWZPVbN2
- B1q9u/I/M0g5T5LXJhGLsL1H9vVbxODbNcsYnYiwLNXUM89zfgyW+46lUHjpVzRWoEDQ+ketN
- txKsfVd3nSSw3owo3dtSEWT89TC/0aMrDjfwS0LEtDlsx1vq5EUKS68twFs6NqgqGbZn+aShV
- jbX/keg5lhUCYf7hoiMTVSvi5SyQ570z/1dAJTTXTiZIBjAjcJqLKO/9ZvQxssDuwGQKCn5C/
- ewNNuAF2tslZwpJWWefcFaxfNClzyB/8zP1JT5fnuHhl4zbxY+7yxzPEB5+ltwwIaNPWUkv1W
- aXiNT4lTci1nVwrMUedEylDT4/mF3D31pFparA3S7fivGCk2pBs+cD5WDL6rOUont15paXwrT
- YrjE7jfZwmJdFM6b/g77xHXld//IvODclhCfNc/ndcsIhgaFo+hY89KEtLjIn/LDE/NMQvNR7
- wpol48HFZt7oS0rfixTqDtl4+vyaI5B5rpJ5XDCQ1+J11XMFWoKc46+arbYIhBnehakIjQrzl
- vbilixss4sm5Izv4bDwNJS7vl7TPMK6QCPZxWPyMs21Ma/JSfOwAfF1YI85ZUYLpAoClGN9Po
- 8XTChGtwgccNAUqPulzDa4YfA2w6sGE9joqWWFJ0SAUelj99YXH++7ZUJA2RTsnJkf3RcJsiR
- 2R8VGwN3ymcSPuYhX6DOj2qFZEoJTY4rs1lp+pk23t4egOZ+ObCkeA=
+Content-Transfer-Encoding: 8bit
 
+syzbot detects that cachestat() is flushing stats, which can sleep, in
+its RCU read section (see [1]). This is done in the
+workingset_test_recent() step (which checks if the folio's eviction is
+recent).
 
---de5zva3l6z7p62ol
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Move the stat flushing step to before the RCU read section of cachestat,
+and skip stat flushing during the recency check.
 
-On 24/06/26 03:09PM, Andrew Paniakin wrote:
-> On 25/06/2024, Christian Heusel wrote:
-> > On 24/06/24 10:59AM, Andrew Paniakin wrote:
-> > > On 19/06/2024, Andrew Paniakin wrote:
-> > > > Commit 60e3318e3e900 ("cifs: use fs_context for automounts") was
-> > > > released in v6.1.54 and broke the failover when one of the servers
-> > > > inside DFS becomes unavailable.
-> > >
-> > > Friendly reminder, did anyone had a chance to look into this report?
-> > >=20
-> >=20
-> > If I understand the report correctly the regression is specific for the
-> > current 6.1.y stable series, so also not much the CIFS devs themselves
-> > can do. Maybe the stable team missed the report with the plethora of
-> > mail that they get.. I'll change the subject to make this more prominent
-> > for them.
-> >=20
-> > I think a good next step would be to bisect to the commit that fixed the
-> > relevant issue somewhere between v6.1.54..v6.2-rc1 so the stable team
-> > knows what needs backporting .. You can do that somewhat like so[0]:
-> >=20
->=20
-> Bisection showed that 7ad54b98fc1f ("cifs: use origin fullpath for
-> automounts") is a first good commit. Applying it on top of 6.1.94 fixed
-> the reported problem. It also passed Amazon Linux kernel regression
-> tests when applied on top of our latest kernel 6.1. Since the code in
-> 6.1.92 is a bit different I updated the original patch:
->=20
+[1]: https://lore.kernel.org/cgroups/000000000000f71227061bdf97e0@google.com/
 
-Hey Andrew,
+Reported-by: syzbot+b7f13b2d0cc156edf61a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/cgroups/000000000000f71227061bdf97e0@google.com/
+Debugged-by: Johannes Weiner <hannes@cmpxchg.org>
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+Fixes: b00684722262 ("mm: workingset: move the stats flush into workingset_test_recent()")
+Cc: stable@vger.kernel.org # v6.8+
+---
+ include/linux/swap.h |  3 ++-
+ mm/filemap.c         |  5 ++++-
+ mm/workingset.c      | 14 +++++++++++---
+ 3 files changed, 17 insertions(+), 5 deletions(-)
 
-good job on the bisection!
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index bd450023b9a4..e685e93ba354 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -354,7 +354,8 @@ static inline swp_entry_t page_swap_entry(struct page *page)
+ }
+ 
+ /* linux/mm/workingset.c */
+-bool workingset_test_recent(void *shadow, bool file, bool *workingset);
++bool workingset_test_recent(void *shadow, bool file, bool *workingset,
++				bool flush);
+ void workingset_age_nonresident(struct lruvec *lruvec, unsigned long nr_pages);
+ void *workingset_eviction(struct folio *folio, struct mem_cgroup *target_memcg);
+ void workingset_refault(struct folio *folio, void *shadow);
+diff --git a/mm/filemap.c b/mm/filemap.c
+index fedefb10d947..298485d4b992 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -4248,6 +4248,9 @@ static void filemap_cachestat(struct address_space *mapping,
+ 	XA_STATE(xas, &mapping->i_pages, first_index);
+ 	struct folio *folio;
+ 
++	/* Flush stats (and potentially sleep) outside the RCU read section. */
++	mem_cgroup_flush_stats_ratelimited(NULL);
++
+ 	rcu_read_lock();
+ 	xas_for_each(&xas, folio, last_index) {
+ 		int order;
+@@ -4311,7 +4314,7 @@ static void filemap_cachestat(struct address_space *mapping,
+ 					goto resched;
+ 			}
+ #endif
+-			if (workingset_test_recent(shadow, true, &workingset))
++			if (workingset_test_recent(shadow, true, &workingset, false))
+ 				cs->nr_recently_evicted += nr_pages;
+ 
+ 			goto resched;
+diff --git a/mm/workingset.c b/mm/workingset.c
+index c22adb93622a..a2b28e356e68 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -412,10 +412,12 @@ void *workingset_eviction(struct folio *folio, struct mem_cgroup *target_memcg)
+  * @file: whether the corresponding folio is from the file lru.
+  * @workingset: where the workingset value unpacked from shadow should
+  * be stored.
++ * @flush: whether to flush cgroup rstat.
+  *
+  * Return: true if the shadow is for a recently evicted folio; false otherwise.
+  */
+-bool workingset_test_recent(void *shadow, bool file, bool *workingset)
++bool workingset_test_recent(void *shadow, bool file, bool *workingset,
++				bool flush)
+ {
+ 	struct mem_cgroup *eviction_memcg;
+ 	struct lruvec *eviction_lruvec;
+@@ -467,10 +469,16 @@ bool workingset_test_recent(void *shadow, bool file, bool *workingset)
+ 
+ 	/*
+ 	 * Flush stats (and potentially sleep) outside the RCU read section.
++	 *
++	 * Note that workingset_test_recent() itself might be called in RCU read
++	 * section (for e.g, in cachestat) - these callers need to skip flushing
++	 * stats (via the flush argument).
++	 *
+ 	 * XXX: With per-memcg flushing and thresholding, is ratelimiting
+ 	 * still needed here?
+ 	 */
+-	mem_cgroup_flush_stats_ratelimited(eviction_memcg);
++	if (flush)
++		mem_cgroup_flush_stats_ratelimited(eviction_memcg);
+ 
+ 	eviction_lruvec = mem_cgroup_lruvec(eviction_memcg, pgdat);
+ 	refault = atomic_long_read(&eviction_lruvec->nonresident_age);
+@@ -558,7 +566,7 @@ void workingset_refault(struct folio *folio, void *shadow)
+ 
+ 	mod_lruvec_state(lruvec, WORKINGSET_REFAULT_BASE + file, nr);
+ 
+-	if (!workingset_test_recent(shadow, file, &workingset))
++	if (!workingset_test_recent(shadow, file, &workingset, true))
+ 		return;
+ 
+ 	folio_set_active(folio);
 
-I think it might make sense to send the backported version of the patch
-for inclusion to the stable tree directly (see "Option 3" [here][0]).
+base-commit: a5c6fededf806aba1ff9b0f01278f7d089da5725
+-- 
+2.43.0
 
-Cheers,
-Chris
-
-[0]: https://www.kernel.org/doc/html/next/process/stable-kernel-rules.html#=
-option-3
-
---de5zva3l6z7p62ol
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmZ9yI4ACgkQwEfU8yi1
-JYVOqg//X8BaMDQBGCFjvGiTh5/ydTOB2mV8UpIHdv/2AeT0wfZN2Bde+z6xRePz
-1yMgaxPN9prXmdoES0aykiuRZqFInYPkgJI5NTkLx6q73m5Egf/S88MWv64LYFlP
-to6ByDMfiai/Fy5YeXpy4KufTyLDGGaFbBaGujNfuaeZwzRTcpFeIVWyo3rd7pgS
-pjLlopGblHL8hbwifdYsNv5g6iFlSZcsWC7lpzfILywcXZW5CYx8pm0oAus2lKAi
-aLMsRiUDXq+uPHvAgedjGBh78zU4bH6fmT0Z955nLlEpuICH9BbjQG57LaYSyH93
-jrJCkahO9OFfI3vVs0tOCioan7J1F21UTSoD8Ll3Cn4UZ3c5lUbDmBU6qm/rEwR2
-Dg3d1DkXEi0ywlQZ7he48+GqRsgBnWoyF6czhtxRkIgl6iQUwZWaQdBhches3vEr
-w3z/TVh2PIkXgl9U7+yprAwbaiBKz2Wz/6mi1YuvFd54QvfVKSKu1U3+kgK3ZyYI
-3v73y8iAV2uZrTPRTqB7ZVRj1fiSWslsEQ6MPO7cyv1K2XkX85SS4e2pzKWlDC1h
-zwnlJVE+HtMU/xPPopRLxsnGFvA7Ymawyn5cac6HytMZSE0XyQ/jw8SUhMKB4Fhs
-mjqlgWunP9pvhRKgOuKkeDD7rysWtCjbSkF5C+j2fmpysNd3pd8=
-=pFOg
------END PGP SIGNATURE-----
-
---de5zva3l6z7p62ol--
 
