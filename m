@@ -1,138 +1,82 @@
-Return-Path: <stable+bounces-55964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1861591A86B
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 15:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C5191A8A8
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 16:08:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8B8728754A
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 13:57:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C14F286CE9
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 14:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 848E519538A;
-	Thu, 27 Jun 2024 13:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673D119581D;
+	Thu, 27 Jun 2024 14:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="AZc2ybgD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qNgSCYAB"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795EE194C7C;
-	Thu, 27 Jun 2024 13:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2566F195811;
+	Thu, 27 Jun 2024 14:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719496616; cv=none; b=Qy4j1R4LveBesLsROOWjjTrYVyYq0K7oFWWSAg4YryF/gRqe4MylbtV9gZY2fuksAmDPKd3D9GWQ9JvDZ6QPvYn9ouykcu14WrYxu9IE8Yu5Hpb/oDn+PWD0MD9cJbMLblKvzBOQpwofM/Fs+diYz+2vxog8c2FZNLaLrzaW3ug=
+	t=1719497286; cv=none; b=oQtnUkLHjyxNxse5B9jJ8rdxq+UMt9fhQ+Z7l0n5edUNAoCqoebLqUOyQNCiApEx/zG8ulxPmoHZGozxHoiiRBTqdZvmUl5qL4t+UbUkYCuMlDiC+UyYZEZ8o85ESrbxeKrL8WidDj/sTqHGr5wOatohVmfL3KcahGvEsQykPLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719496616; c=relaxed/simple;
-	bh=CZmEcAnf9jtjaxGakn6h3QaBimf8B8jbkcBZVrAXoWU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dafoqJreYK25v479KmkTVMEhpGryHpSOFzstqWA7ONtHADFXsMyrX3oNDGwMM7pUDYgjMgeeJjNEOSSQOfT6voBB8qR3tHohNKZRkMz+czPlH2Old65RWn/gEJ6uVdP6UVkWkbujUycU3dY3UlDeSJJ6D6AMNCmpG53SnMxJ8tI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=AZc2ybgD; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=vMYtbU0m3UnYFrztkY1kdGT1q/qpGgwwrS0seV4fbgU=; b=AZc2ybgDm0EsRmt6h1PV5U+chc
-	orZ5i9zeHk6uIHaGsClV63FsYkRTfyHRNy36+FjXNcSKp/swocNMyE/j9GJjm0y4/JjuPhUUlE652
-	LoXpiMupZknaYgJ9swPzINw6AamHSzR5AnRSFLenlfRhYkOMnJ2ApWErtdZLhuEzNbV0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1sMpcB-001ASG-0V; Thu, 27 Jun 2024 15:56:43 +0200
-Date: Thu, 27 Jun 2024 15:56:42 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	stable@vger.kernel.org, kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
-	netdev@vger.kernel.org, Lukasz Majewski <lukma@denx.de>
-Subject: Re: [PATCH net v1 1/1] net: phy: micrel: ksz8081: disable broadcast
- only if PHY address is not 0
-Message-ID: <0720eddf-f023-47b4-9eed-93e0b326220e@lunn.ch>
-References: <20240627053353.1416261-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1719497286; c=relaxed/simple;
+	bh=tOGAjh8fOWBrBKO+gKQpEbeiFrPZiME/ff0aGa99Pak=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=e2Ald6FtiZENThbtun/hh53DPtlL4qrl6sAcbcIhxa2LrlWYWMgsfmX3uGbBrQQAZq3Tv51GSXAFjW7MsvHqaODntVNERZf7SdAWczhI3PGMEJApm0cuOK2q1dUX5IoYX39DnF1lJkw+G3INV1y4heEiADqDLALpfCLK+QPKmH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qNgSCYAB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D03EC32789;
+	Thu, 27 Jun 2024 14:08:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719497285;
+	bh=tOGAjh8fOWBrBKO+gKQpEbeiFrPZiME/ff0aGa99Pak=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=qNgSCYABdrETrv9VmirOi7dRe8S+APD37F6qvNKMG4LZHuenFa8LU9/Uz0JP/ZBKO
+	 ly+MFzQU03LLPIlruQl0lYg51SP3fiTXazGOOb/GBTBkdLcJd9H8izNnu1D7iJ5Tf8
+	 bzrnN5crAmIysc/rVrQh4jahpcxEjVgfEOIR3JNCF/PfAyFykWvI867moj61d3C4ml
+	 voxf4C5OhVv8NDobiFbi/XgJviWCq5VwQkZDDJOey2LO57CsH0Y1L+XSEnLh+iCHqF
+	 M2BomlNgrn6UvJnCoDSJwnXoOR9LnWN/Mviyht5QeyQeX+o4WkFVBzH8BtCMkd/NxN
+	 ydAZLH33AfkAA==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Celeste Liu <coelacanthushex@gmail.com>,
+ linux-riscv@lists.infradead.org, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@rivosinc.com>, "Dmitry
+ V . Levin" <ldv@strace.io>
+Cc: linux-kernel@vger.kernel.org, Guo Ren <guoren@kernel.org>, Palmer
+ Dabbelt <palmer@rivosinc.com>, Emil Renner Berthing
+ <emil.renner.berthing@canonical.com>, Felix Yan
+ <felixonmars@archlinux.org>, Ruizhe Pan <c141028@gmail.com>, Celeste Liu
+ <CoelacanthusHex@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] riscv: entry: always initialize regs->a0 to -ENOSYS
+In-Reply-To: <20240627103205.27914-2-CoelacanthusHex@gmail.com>
+References: <20240627103205.27914-2-CoelacanthusHex@gmail.com>
+Date: Thu, 27 Jun 2024 16:08:02 +0200
+Message-ID: <87o77mpjgd.fsf@all.your.base.are.belong.to.us>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240627053353.1416261-1-o.rempel@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 27, 2024 at 07:33:53AM +0200, Oleksij Rempel wrote:
-> Do not disable broadcast if we are using address 0 (broadcast) to
-> communicate with this device. Otherwise we will use proper driver but no
-> communication will be possible and no link changes will be detected.
-> There are two scenarios where we can run in to this situation:
-> - PHY is bootstrapped for address 0
+Celeste Liu <coelacanthushex@gmail.com> writes:
 
-What do you mean by bootstrapped to address 0? The strapping pins set
-it to some other address, but the bootloader wrote to registers and
-moved it to address 0? 
-
-> - no PHY address is known and linux is scanning the MDIO bus, so first
->   respond and attached device will be on address 0.
-
-So in this case, the PHY is really at address X, where X != 0. It
-responds to all read requests, so the scanning finds it at all
-addresses. It also stomps over other devices on the bus when scanning
-for them, or probing them.
-
-I'm not sure the current code is correct. But it is also going to be
-messy to not break backwards compatibility for DT blobs say the device
-is at address 0, when in fact it is not.
-
-Is it possible to read the devices actual address from registers?
-
-I'm wondering if probe should do something like:
-
-int actual_address = phydev_read(phydev, 0x42);
-
-if (actual_address == 0) {
-	if (type->has_broadcast_disable) {
-		phydev_dbg(phydev, "Disabling broadcast\n");
-		kszphy_broadcast_disable(phydev);
-	}
-
-} else {
-	if (actual_address != 0 &&
-	 phydev->mdio.addr != actual_address &&
-	 phydev->mdio.addr != 0) {
-		if (type->has_broadcast_disable) {
-			phydev_dbg(phydev, "Disabling broadcast\n");
-			kszphy_broadcast_disable(phydev);
-		}
-        return -ENODEV;
-	}
-}
-
-So if the devices really has an address is zero, turn off
-broadcast. That will stop it stomping over other devices, but the
-damage is probably already done in terms of scanning.
-
-If the devices is really at some address other than 0, and we are
-probing at a different address, and that address is not 0, turn off
-broadcast and say the device does not exist. I think we need to
-special case 0 because there are going to be some DT descriptions
-which say the device is at 0, when in fact it is not. We might want to
-add a phydev_warn() about this, to try to get the DT fixed.
-
-> The fixes tag points to the latest refactoring, not to the initial point
-> where kszphy_broadcast_disable() was introduced.
-> 
-> Fixes: 79e498a9c7da0 ("net: phy: micrel: Restore led_mode and clk_sel on resume")
+> Otherwise when the tracer changes syscall number to -1, the kernel fails
+> to initialize a0 with -ENOSYS and subsequently fails to return the error
+> code of the failed syscall to userspace. For example, it will break
+> strace syscall tampering.
+>
+> Fixes: 52449c17bdd1 ("riscv: entry: set a0 =3D -ENOSYS only when syscall =
+!=3D -1")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
 
-Do you have a board which is going wrong because of this? Do you plan
-to submit patches for earlier stable releases?
-
-	Andrew
+Reported-by: "Dmitry V. Levin" <ldv@strace.io>
+Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@rivosinc.com>
 
