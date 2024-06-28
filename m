@@ -1,247 +1,120 @@
-Return-Path: <stable+bounces-56087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31C3791C584
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 20:14:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 733E491C5A6
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 20:26:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A183B25823
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 18:14:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 299AB286C47
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 18:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1029F1CE081;
-	Fri, 28 Jun 2024 18:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB6A1CD5B1;
+	Fri, 28 Jun 2024 18:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="BzsOj1SX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j1WY5Ykx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0735D1CD5CE
-	for <stable@vger.kernel.org>; Fri, 28 Jun 2024 18:13:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763841CCCD7;
+	Fri, 28 Jun 2024 18:25:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719598418; cv=none; b=mEKu5zTp0Oy+YLsU5gLE5UtiztlFD44b2w53tPb1dmIA2Y0NuALKcXnZ5gR7mX0SirI5Ft0cDmX4MXRiLsZuNcGMZEi6IarkdoNGXggrM1yTnl0ZKBMJhALpUsG5ZW0ehCJF01LmqQY9EJlGQ17AIDGZdWycGl5xY55IzOoQu+c=
+	t=1719599145; cv=none; b=jtN7jMEi9HFWf2gv7QcAGw0NA31tgki55FCXmHz3YSfk8klYOR9IEdEr6akKQWqctBRX76pSxItNRn02H8i6tGFIwt7ozM3PXNATl6VLfLHN0y1aCNW/CGZNze3fnGin/iXhv3VJ/NeXi8yj8+JuCzilrSR5n2S+mmTq32j1tJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719598418; c=relaxed/simple;
-	bh=691ttXO8Qm8DyPrbmX/Zjdch9kxC2gGxgdJYABuBfUo=;
+	s=arc-20240116; t=1719599145; c=relaxed/simple;
+	bh=fw7LUEm0VJhFKEe6LsJ1RGteKkItUj3kp0zZxdlvHws=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZIUjp6N3YOq6509Zd8nUjHFDUG7bWGpXd0R2hO62ZftsF5ZZ9zlEnmxCxLaR63EhWjKAsnAd41Ev+ZCMHBTYihRYyi8S+MPoZB0DIesQ4guRjbeYPbeAQM91acXjfSfq0E6cd/qcaBtVN2lHe5g9wEmGmBBLJL8MM2FeB0qxLZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=BzsOj1SX; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2ec5e3799feso1105051fa.3
-        for <stable@vger.kernel.org>; Fri, 28 Jun 2024 11:13:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1719598415; x=1720203215; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=huxmsGyg+iUWrBMicDmaxHSG7pbm8X2WK1OQEgwi0+I=;
-        b=BzsOj1SXUCglm6THEbsxJcesTTja6pweREhdVs1I5SR73YijTn8VJ5TJrVBarDZcTo
-         AIcTsulcmqYvwQPm1aCalkhTq8TocAAKvJoS2nhb4pW+5OYSVQmmi55e4OisPPeY4Ikc
-         RnMOVgaiLudR3x5UM9mouhhqEoM3N0pogR6y0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719598415; x=1720203215;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=huxmsGyg+iUWrBMicDmaxHSG7pbm8X2WK1OQEgwi0+I=;
-        b=oN1AVLak8tKjsu/PdZtB2RCzRj5Ezy6fX6lWoo16FnO4BXevlEwuY4zCyiT5LfO8bj
-         KJQvNszJ/etQMDcxtMcHeyzXgUF/+7Cajp2CNV8GFzSfKRVGZ1sJ3+nsJB+wuAoq1WNW
-         i8zQXhGGCEsqzjj75X+zXAIwGIdRgtk5GTI5GLZOUTKsv3K7qu80WuyyCyatae39h8YW
-         CgyIQiwGIua7FwuKksPJMWFAP/llSqDZ05Rv5k7YNXo+LsCgcxJxu/uLuDVgA0Xn1Fog
-         bEYArcRw4ayM32K0c1Ad5mCqsWnp7T3QbjzusJfZ/dhL2mEOEQyTYdkmflUfJ4rbfxzl
-         VE4g==
-X-Forwarded-Encrypted: i=1; AJvYcCW+TzSHCyilFxllej4MVc47UFZf3vSRMPAaOBb4J0/4YL14Yks70oFlhmXzjEERZ8phDckdILNeHcsy5/FSecbsLst4nQ1Z
-X-Gm-Message-State: AOJu0YxQ+Wxge3Dqkpe0MFLozLu7eZG1SKAJEVH/13cW5cHnuRe6DUdK
-	AfOEFrPOIT4Cq3QF2RIPKX+ejf9nR6wgcnWN6rE6V089zoDBDCs+t9UYUczTs+c=
-X-Google-Smtp-Source: AGHT+IE5lOHbq58vJ8cWAIxbIekJmFwVNdX2XgbfvBOtIf4Qv7xRVWjSmCHxNA5l5enxjRzWddwS1g==
-X-Received: by 2002:a05:651c:1986:b0:2ec:5365:34d3 with SMTP id 38308e7fff4ca-2ec560e8d60mr148913521fa.1.1719598415010;
-        Fri, 28 Jun 2024 11:13:35 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4256b0c15f8sm44777175e9.47.2024.06.28.11.13.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Jun 2024 11:13:34 -0700 (PDT)
-Date: Fri, 28 Jun 2024 20:13:32 +0200
-From: Daniel Vetter <daniel@ffwll.ch>
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	intel-xe@lists.freedesktop.org,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Daniel Vetter <daniel@ffwll.ch>, dri-devel@lists.freedesktop.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=R9bGXazBpTKy8PfP4nQEF7BSCAW0N9KSTVBkIwhPsGEyREXd6yUBwOP3uy0LxQ27uG7GohkIsGjMw2Qn53ekqOQeRKCNXOIVGMgeUej8gAXA29XME1DhzB8Kr757qBSoEj4kBWn/mSIjlZlL/C9hshhWRyaVfkgvhpTFtd+jyV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j1WY5Ykx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF43C116B1;
+	Fri, 28 Jun 2024 18:25:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719599145;
+	bh=fw7LUEm0VJhFKEe6LsJ1RGteKkItUj3kp0zZxdlvHws=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=j1WY5Ykx4PkJyvKwLeBLi+IuVCeO24HXBeWIG2Ii3uKYd6PbiUhasTGJTU/5noUd1
+	 RlKI8POHXo/rUwo9pLAj2mEQSJXbPbH2XeZz2iQR0fdTTk3Wnm88CXPuh1Prpn+4EC
+	 ZjIerqowc0yMwcR4pmFlajIjLWZAoce0IDMqT4zoQ1dSy+rwpV6rL7txfym5f3cZzs
+	 nBqCH9JJNVeX5Ef0s3yBTH6mCvoEGHDWUDuy38SE4eyCVFEnn2jh7yIx0+VA3GQeoa
+	 I48FwdadTMHv+6nuK1n9lj3b2n8bgvUnvU6RuTHYwNVd+cX+k9xVRniq1tq9Hql+UV
+	 Rm95PyQf5kpPw==
+Date: Fri, 28 Jun 2024 20:25:40 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Hannes Reinecke <hare@suse.de>
+Cc: Igor Pylypiv <ipylypiv@google.com>, Damien Le Moal <dlemoal@kernel.org>,
+	Tejun Heo <tj@kernel.org>, linux-ide@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Akshat Jain <akshatzen@google.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] drm/ttm: Always take the bo delayed cleanup path for
- imported bos
-Message-ID: <Zn79TNg1WfERV7gj@phenom.ffwll.local>
-References: <20240628153848.4989-1-thomas.hellstrom@linux.intel.com>
- <Zn7cBbi/iZ1cxWPb@DUT025-TGLU.fm.intel.com>
+Subject: Re: [PATCH v3 1/6] ata: libata-scsi: Fix offsets for the fixed
+ format sense data
+Message-ID: <Zn8AJHdybqdQwsZs@ryzen.lan>
+References: <20240626230411.3471543-1-ipylypiv@google.com>
+ <20240626230411.3471543-2-ipylypiv@google.com>
+ <Zn1WUhmLglM4iais@ryzen.lan>
+ <0fbf1756-5b97-44fc-9802-d481190d2bd8@suse.de>
+ <Zn7bghgsMR062xbb@ryzen.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Zn7cBbi/iZ1cxWPb@DUT025-TGLU.fm.intel.com>
-X-Operating-System: Linux phenom 6.8.9-amd64 
+In-Reply-To: <Zn7bghgsMR062xbb@ryzen.lan>
 
-On Fri, Jun 28, 2024 at 03:51:33PM +0000, Matthew Brost wrote:
-> On Fri, Jun 28, 2024 at 05:38:48PM +0200, Thomas Hellström wrote:
-> > Bos can be put with multiple unrelated dma-resv locks held. But
-> > imported bos attempt to grab the bo dma-resv during dma-buf detach
-> > that typically happens during cleanup. That leads to lockde splats
-> > similar to the below and a potential ABBA deadlock.
-> > 
-> > Fix this by always taking the delayed workqueue cleanup path for
-> > imported bos.
-> > 
-> > Requesting stable fixes from when the Xe driver was introduced,
-> > since its usage of drm_exec and wide vm dma_resvs appear to be
-> > the first reliable trigger of this.
-> > 
-> > [22982.116427] ============================================
-> > [22982.116428] WARNING: possible recursive locking detected
-> > [22982.116429] 6.10.0-rc2+ #10 Tainted: G     U  W
-> > [22982.116430] --------------------------------------------
-> > [22982.116430] glxgears:sh0/5785 is trying to acquire lock:
-> > [22982.116431] ffff8c2bafa539a8 (reservation_ww_class_mutex){+.+.}-{3:3}, at: dma_buf_detach+0x3b/0xf0
-> > [22982.116438]
-> >                but task is already holding lock:
-> > [22982.116438] ffff8c2d9aba6da8 (reservation_ww_class_mutex){+.+.}-{3:3}, at: drm_exec_lock_obj+0x49/0x2b0 [drm_exec]
-> > [22982.116442]
-> >                other info that might help us debug this:
-> > [22982.116442]  Possible unsafe locking scenario:
-> > 
-> > [22982.116443]        CPU0
-> > [22982.116444]        ----
-> > [22982.116444]   lock(reservation_ww_class_mutex);
-> > [22982.116445]   lock(reservation_ww_class_mutex);
-> > [22982.116447]
-> >                 *** DEADLOCK ***
-> > 
-> > [22982.116447]  May be due to missing lock nesting notation
-> > 
-> > [22982.116448] 5 locks held by glxgears:sh0/5785:
-> > [22982.116449]  #0: ffff8c2d9aba58c8 (&xef->vm.lock){+.+.}-{3:3}, at: xe_file_close+0xde/0x1c0 [xe]
-> > [22982.116507]  #1: ffff8c2e28cc8480 (&vm->lock){++++}-{3:3}, at: xe_vm_close_and_put+0x161/0x9b0 [xe]
-> > [22982.116578]  #2: ffff8c2e31982970 (&val->lock){.+.+}-{3:3}, at: xe_validation_ctx_init+0x6d/0x70 [xe]
-> > [22982.116647]  #3: ffffacdc469478a8 (reservation_ww_class_acquire){+.+.}-{0:0}, at: xe_vma_destroy_unlocked+0x7f/0xe0 [xe]
-> > [22982.116716]  #4: ffff8c2d9aba6da8 (reservation_ww_class_mutex){+.+.}-{3:3}, at: drm_exec_lock_obj+0x49/0x2b0 [drm_exec]
-> > [22982.116719]
-> >                stack backtrace:
-> > [22982.116720] CPU: 8 PID: 5785 Comm: glxgears:sh0 Tainted: G     U  W          6.10.0-rc2+ #10
-> > [22982.116721] Hardware name: ASUS System Product Name/PRIME B560M-A AC, BIOS 2001 02/01/2023
-> > [22982.116723] Call Trace:
-> > [22982.116724]  <TASK>
-> > [22982.116725]  dump_stack_lvl+0x77/0xb0
-> > [22982.116727]  __lock_acquire+0x1232/0x2160
-> > [22982.116730]  lock_acquire+0xcb/0x2d0
-> > [22982.116732]  ? dma_buf_detach+0x3b/0xf0
-> > [22982.116734]  ? __lock_acquire+0x417/0x2160
-> > [22982.116736]  __ww_mutex_lock.constprop.0+0xd0/0x13b0
-> > [22982.116738]  ? dma_buf_detach+0x3b/0xf0
-> > [22982.116741]  ? dma_buf_detach+0x3b/0xf0
-> > [22982.116743]  ? ww_mutex_lock+0x2b/0x90
-> > [22982.116745]  ww_mutex_lock+0x2b/0x90
-> > [22982.116747]  dma_buf_detach+0x3b/0xf0
-> > [22982.116749]  drm_prime_gem_destroy+0x2f/0x40 [drm]
-> > [22982.116775]  xe_ttm_bo_destroy+0x32/0x220 [xe]
-> > [22982.116818]  ? __mutex_unlock_slowpath+0x3a/0x290
-> > [22982.116821]  drm_exec_unlock_all+0xa1/0xd0 [drm_exec]
-> > [22982.116823]  drm_exec_fini+0x12/0xb0 [drm_exec]
-> > [22982.116824]  xe_validation_ctx_fini+0x15/0x40 [xe]
-> > [22982.116892]  xe_vma_destroy_unlocked+0xb1/0xe0 [xe]
-> > [22982.116959]  xe_vm_close_and_put+0x41a/0x9b0 [xe]
-> > [22982.117025]  ? xa_find+0xe3/0x1e0
-> > [22982.117028]  xe_file_close+0x10a/0x1c0 [xe]
-> > [22982.117074]  drm_file_free+0x22a/0x280 [drm]
-> > [22982.117099]  drm_release_noglobal+0x22/0x70 [drm]
-> > [22982.117119]  __fput+0xf1/0x2d0
-> > [22982.117122]  task_work_run+0x59/0x90
-> > [22982.117125]  do_exit+0x330/0xb40
-> > [22982.117127]  do_group_exit+0x36/0xa0
-> > [22982.117129]  get_signal+0xbd2/0xbe0
-> > [22982.117131]  arch_do_signal_or_restart+0x3e/0x240
-> > [22982.117134]  syscall_exit_to_user_mode+0x1e7/0x290
-> > [22982.117137]  do_syscall_64+0xa1/0x180
-> > [22982.117139]  ? lock_acquire+0xcb/0x2d0
-> > [22982.117140]  ? __set_task_comm+0x28/0x1e0
-> > [22982.117141]  ? find_held_lock+0x2b/0x80
-> > [22982.117144]  ? __set_task_comm+0xe1/0x1e0
-> > [22982.117145]  ? lock_release+0xca/0x290
-> > [22982.117147]  ? __do_sys_prctl+0x245/0xab0
-> > [22982.117149]  ? lockdep_hardirqs_on_prepare+0xde/0x190
-> > [22982.117150]  ? syscall_exit_to_user_mode+0xb0/0x290
-> > [22982.117152]  ? do_syscall_64+0xa1/0x180
-> > [22982.117154]  ? __lock_acquire+0x417/0x2160
-> > [22982.117155]  ? reacquire_held_locks+0xd1/0x1f0
-> > [22982.117156]  ? do_user_addr_fault+0x30c/0x790
-> > [22982.117158]  ? lock_acquire+0xcb/0x2d0
-> > [22982.117160]  ? find_held_lock+0x2b/0x80
-> > [22982.117162]  ? do_user_addr_fault+0x357/0x790
-> > [22982.117163]  ? lock_release+0xca/0x290
-> > [22982.117164]  ? do_user_addr_fault+0x361/0x790
-> > [22982.117166]  ? trace_hardirqs_off+0x4b/0xc0
-> > [22982.117168]  ? clear_bhb_loop+0x45/0xa0
-> > [22982.117170]  ? clear_bhb_loop+0x45/0xa0
-> > [22982.117172]  ? clear_bhb_loop+0x45/0xa0
-> > [22982.117174]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> > [22982.117176] RIP: 0033:0x7f943d267169
-> > [22982.117192] Code: Unable to access opcode bytes at 0x7f943d26713f.
-> > [22982.117193] RSP: 002b:00007f9430bffc80 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
-> > [22982.117195] RAX: fffffffffffffe00 RBX: 0000000000000000 RCX: 00007f943d267169
-> > [22982.117196] RDX: 0000000000000000 RSI: 0000000000000189 RDI: 00005622f89579d0
-> > [22982.117197] RBP: 00007f9430bffcb0 R08: 0000000000000000 R09: 00000000ffffffff
-> > [22982.117198] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-> > [22982.117199] R13: 0000000000000000 R14: 0000000000000000 R15: 00005622f89579d0
-> > [22982.117202]  </TASK>
-> > 
-> > Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-> > Cc: Christian König <christian.koenig@amd.com>
-> > Cc: Daniel Vetter <daniel@ffwll.ch>
-> > Cc: dri-devel@lists.freedesktop.org
-> > Cc: intel-xe@lists.freedesktop.org
-> > Cc: <stable@vger.kernel.org> # v6.8+
+On Fri, Jun 28, 2024 at 05:49:22PM +0200, Niklas Cassel wrote:
+> On Fri, Jun 28, 2024 at 08:47:03AM +0200, Hannes Reinecke wrote:
+> > On 6/27/24 14:08, Niklas Cassel wrote:
 > 
-> Patch and explaination makes sense to me.
+> In SAT-6 there is no mention of compliance with ANSI INCITS 431-2007 should
+> ignore D_SENSE bit and unconditionally return sense data in descriptor format.
 > 
-> Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-
-I guess for stable this is good since minimal, but after Thomas explaine
-what he meant with dma_buf_detach_unlocked I think that total sense as a
-follow-up patch maybe.
-
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-
-Cheers, Sima
+> Anyway, considering that:
+> 1) I'm not sure how a SAT would expose that it is compliant with ANSI INCITS
+>    431-2007.
+> 2) This text has been removed from SAT-6.
+> 3) We currently honour the D_SENSE bit when creating the sense buffer with the
+>    SK/ASC/ASCQ that we get from the device.
 > 
-> > Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> > ---
-> >  drivers/gpu/drm/ttm/ttm_bo.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/drivers/gpu/drm/ttm/ttm_bo.c b/drivers/gpu/drm/ttm/ttm_bo.c
-> > index 6396dece0db1..2427be8bc97f 100644
-> > --- a/drivers/gpu/drm/ttm/ttm_bo.c
-> > +++ b/drivers/gpu/drm/ttm/ttm_bo.c
-> > @@ -346,6 +346,7 @@ static void ttm_bo_release(struct kref *kref)
-> >  		if (!dma_resv_test_signaled(bo->base.resv,
-> >  					    DMA_RESV_USAGE_BOOKKEEP) ||
-> >  		    (want_init_on_free() && (bo->ttm != NULL)) ||
-> > +		    bo->type == ttm_bo_type_sg ||
-> >  		    !dma_resv_trylock(bo->base.resv)) {
-> >  			/* The BO is not idle, resurrect it for delayed destroy */
-> >  			ttm_bo_flush_all_fences(bo);
-> > -- 
-> > 2.44.0
-> > 
+> I think that it makes sense to honour the D_SENSE bit also when generating
+> sense data for successful ATA PASS-THROUGH commands (from ATA registers).
 
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Igor, I think you should add a new patch in your series that does:
+
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index d5874d4b9253..5b211551ac10 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -949,11 +949,8 @@ static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
+                                   &sense_key, &asc, &ascq);
+                ata_scsi_set_sense(qc->dev, cmd, sense_key, asc, ascq);
+        } else {
+-               /*
+-                * ATA PASS-THROUGH INFORMATION AVAILABLE
+-                * Always in descriptor format sense.
+-                */
+-               scsi_build_sense(cmd, 1, RECOVERED_ERROR, 0, 0x1D);
++               /* ATA PASS-THROUGH INFORMATION AVAILABLE */
++               ata_scsi_set_sense(qc->dev, cmd, RECOVERED_ERROR, 0, 0x1D);
+        }
+ }
+
+
+Feel free to copy my arguments above.
+
+I also checked VPD page 89h (ATA Information VPD page), and there are
+no bits there either to claim certain SAT version compliance.
+
+And since this text is not in SAT-6, I can only imagine that they decided
+that is was not a good idea to not always honor D_SENSE...
+
+(It does seem simpler to just always honor it...)
+
+
+Kind regards,
+Niklas
 
