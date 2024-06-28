@@ -1,210 +1,135 @@
-Return-Path: <stable+bounces-56025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D9291B32B
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 02:07:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DDAB91B42B
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 02:41:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E04D1F25AC3
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 00:07:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBCF31F2120C
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 00:41:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A1E1C20;
-	Fri, 28 Jun 2024 00:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26AF613FF9;
+	Fri, 28 Jun 2024 00:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="KfU+4pX6"
+	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="m9IzlACb";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="g63nJDkr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh2-smtp.messagingengine.com (fhigh2-smtp.messagingengine.com [103.168.172.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6325C2914;
-	Fri, 28 Jun 2024 00:06:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F44EBA2F;
+	Fri, 28 Jun 2024 00:36:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719533208; cv=none; b=nb+3JhrkGHOfu2XVij4Tp/KS6od6pG7tYTOftfGxYW8qnyXJhME/P8WIVCTenF2AxYJR8oYjmAd7gWUEyQY3o8fnz/aWGzK3Nu+xbkd+7Ct8nltsMimXVCEUZ7rR9iP/SY/fdlK61fNQJN7hP3BZ6z5YVUO4H/ypAIh4E4pcnro=
+	t=1719535009; cv=none; b=Vg0Pn4il1DBEb2WAf4PMOf4CdforOFRUuQNShPCi4JshzpeDMAQyPoX1ihq+a1VAnqOPqSI44eEpJB52NH4nDxgncinq95Kl4qUS2/VZ7K43Voj2ba3NoR6kZUTLTjCyIlINnNV86Z+TUDUu9/Fk8+oqjsTCbVpn0Uhtvz4ru5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719533208; c=relaxed/simple;
-	bh=LMfHhIcNTwpEyk9uR35YEULg+LzudmhAz6k/7zAq230=;
-	h=Date:To:From:Subject:Message-Id; b=DGTMlDwbsAP0WpCPB9TKKjhd7zVKog9ZKI3caVH4RT2wAdGO8GkZ725SeLieSUUFOhrWw0XsRn7qACjLnlPJUmfL5OJfGUhIElYQnnR6EgTm3ntLMJK3DCNMbR7xGGrYcaIEvoKaSfMLmcoTXfGUE1T+9brOX2ohFt+0ee8N/ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=KfU+4pX6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF6CC2BBFC;
-	Fri, 28 Jun 2024 00:06:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1719533208;
-	bh=LMfHhIcNTwpEyk9uR35YEULg+LzudmhAz6k/7zAq230=;
-	h=Date:To:From:Subject:From;
-	b=KfU+4pX6YJAxgaFJ3i85HTVqETKkOFLN7rYP0x5BeyhDWlRt5/xyTNqxe3MaPIjd8
-	 MqenbWuIAqI7lRx+TczOqvHovS1rYVhIlWGT4fo0LNrnTL5XET6hZ2NnjYVpAUzs4Z
-	 ue83HvimCWYXBPszbIbsFzUd1orK71g0LoK2/Ljc=
-Date: Thu, 27 Jun 2024 17:06:47 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,jack@suse.cz,hdanton@sina.com,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] nilfs2-fix-incorrect-inode-allocation-from-reserved-inodes.patch removed from -mm tree
-Message-Id: <20240628000647.DEF6CC2BBFC@smtp.kernel.org>
+	s=arc-20240116; t=1719535009; c=relaxed/simple;
+	bh=6FeNaEk983gv0oi71Hy3QUiWUXGuEt4Dg/zsaW6TMc4=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=tQpAIrfgBt9oWrQlftePojiAdVDhX1FtmpsyYXgSs296X6sOkfY+iHftmlsrAjqcAndewP8JjEicb7/Z0XgvdDEHU9mKMb0rN6RfKcJU1xZ85h7XS24zGFi8P3tysxTD3f/R77GiZOHUbokS5d+U5EPn8Za3g/ogUbe41Np5k7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=m9IzlACb; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=g63nJDkr; arc=none smtp.client-ip=103.168.172.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id 8430411401FB;
+	Thu, 27 Jun 2024 20:36:47 -0400 (EDT)
+Received: from imap44 ([10.202.2.94])
+  by compute3.internal (MEProxy); Thu, 27 Jun 2024 20:36:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1719535007;
+	 x=1719621407; bh=2bdVP6Gr0JVygxXiDLax6rFzl2pR37Qmj84xd4P8Oho=; b=
+	m9IzlACbMuuDyuSTbqV97luVEVuZHTIDifiTH/N3EGKGY0+mCi5y3HPWaCwopyH+
+	kU9AdMlxsoZkPYOHG80mMREV0eTNRpzsrlZMAibPtOkb/oezPvfd5d17Nwbnx/YC
+	2QJLHdAa64Cb8xQfvZPDYxdTCJdB8ezfG78K/Ki74HFL5SKHPxHZVAKTGnGdVDbF
+	cbzy+84wNG3V4E2kOMSYVOEn1VBiel6mBpbbnJSqgT9j8YXALh2zR6/h3RmSM7D4
+	pkX7Zb7xkHPaQUY8SOeeK47Jaig1Dvi8KPmiyppvBxPlboLz/qgxKElM1Rvk2LBv
+	f0VP5Paq9TQwXMm8m8/1cA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1719535007; x=
+	1719621407; bh=2bdVP6Gr0JVygxXiDLax6rFzl2pR37Qmj84xd4P8Oho=; b=g
+	63nJDkroaqPLD8/WPXAlKnNNyHV3TYWY6raPGS+bMX7Gav65IW9nXRRNCUudT8Do
+	i6pqlJ2EHPkt/FVWWPet/ee1REk5d7A/w5BrTTdTesp3KI1epwocWRrRVmnuJ6WI
+	JJ1U+bNK9RYZkOEnDGbsMvwqotZjHwO/wZKMXCKEt0UxKcxDTeSvLv6NjCJReKWi
+	jZw9rOpWpqTmNKPrd9e+0h2EatdhTaROdOTqM+PHrXCdHH1lPYk/+y0yLf/7D4Bj
+	N4o87p34ONhjrlS2gVGt3j/gySlWC8Zp/l/88j+2tRjeb8jXFuicTvdrNm4/1chH
+	jAP0zaolSYpxRHIXXRLwA==
+X-ME-Sender: <xms:nwV-ZliEB-HO-NZz2O5PqNQ_7PvgoM_dJYCuyjpsi3JEEVuOF5HWgw>
+    <xme:nwV-ZqCFMCrZTukMS4xRbQRUeetBU46rXQzJI6mIEN70QK4Fw5t-8at19WYJNPAZM
+    aMImF9s8P93oEeDzDQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrtdehgdefkecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedflfhi
+    rgiguhhnucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
+    eqnecuggftrfgrthhtvghrnhepudefgeeftedugeehffdtheefgfevffelfefghefhjeeu
+    geevtefhudduvdeihefgnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehmrg
+    hilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
+X-ME-Proxy: <xmx:nwV-ZlH9lnXen6FcR7s1ODOqw9mQ_keF4fUlXgvSUwgFt6klCBs4iw>
+    <xmx:nwV-ZqQNcMJXV4FZ9E_ILHIMd25DJFR2h6NR0v0ZOikspPlMRToShw>
+    <xmx:nwV-Zizran0BpMamS7kOHoq66-XDBCL_GItsTYdn9Sbvz7X2Ai4fKA>
+    <xmx:nwV-Zg5GRuvFc6qVRCKatiHjgoyNbMBzgJ71eUCY3afsCQN6q1-BbA>
+    <xmx:nwV-Zsu7cilUp1bwcWw4rSPa_XEw3Jyr1_DfIzklmmQfMjRUtX5O4vBw>
+Feedback-ID: ifd894703:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 4004D36A0074; Thu, 27 Jun 2024 20:36:47 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-538-g1508afaa2-fm-20240616.001-g1508afaa
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Message-Id: <bf198418-ecb4-4880-8eed-f0af77d18e1a@app.fastmail.com>
+In-Reply-To: <alpine.DEB.2.21.2406272046020.43454@angie.orcam.me.uk>
+References: <20240616-mips-mt-fixes-v1-0-83913e0e60fc@flygoat.com>
+ <20240616-mips-mt-fixes-v1-3-83913e0e60fc@flygoat.com>
+ <Zn0qG5tsMBYcSWW+@alpha.franken.de>
+ <394042b6-37ef-4011-b799-454036d8bc34@app.fastmail.com>
+ <alpine.DEB.2.21.2406272046020.43454@angie.orcam.me.uk>
+Date: Fri, 28 Jun 2024 01:36:12 +0100
+From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
+To: "Maciej W. Rozycki" <macro@orcam.me.uk>
+Cc: "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ linux-kernel@vger.kernel.org,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH fixes 3/4] MIPS: cps-vec: Replace MT instructions with macros
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
 
-The quilt patch titled
-     Subject: nilfs2: fix incorrect inode allocation from reserved inodes
-has been removed from the -mm tree.  Its filename was
-     nilfs2-fix-incorrect-inode-allocation-from-reserved-inodes.patch
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+=E5=9C=A82024=E5=B9=B46=E6=9C=8827=E6=97=A5=E5=85=AD=E6=9C=88 =E4=B8=8B=E5=
+=8D=888:51=EF=BC=8CMaciej W. Rozycki=E5=86=99=E9=81=93=EF=BC=9A
+> On Thu, 27 Jun 2024, Jiaxun Yang wrote:
+>
+>> > how about simply enforcing the need for a correct toolchain instead
+>> > of making the code ugly ?
+>>=20
+>> Unfortunately, MT for microMIPS which I'm trying to bring up is only =
+in
+>> binutils master, it's not in any binutils release yet.
+>
+>  It's not yet in binutils master either.  Has there been any actual ch=
+ip=20
+> taped out with this instruction subset supported?
 
-------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: fix incorrect inode allocation from reserved inodes
-Date: Sun, 23 Jun 2024 14:11:35 +0900
+interAptiv derivative (with MIPS R5 and microMIPS) from CIP which is not=
+ GA yet.
 
-If the bitmap block that manages the inode allocation status is corrupted,
-nilfs_ifile_create_inode() may allocate a new inode from the reserved
-inode area where it should not be allocated.
+Thanks
+>
+>   Maciej
 
-Previous fix commit d325dc6eb763 ("nilfs2: fix use-after-free bug of
-struct nilfs_root"), fixed the problem that reserved inodes with inode
-numbers less than NILFS_USER_INO (=11) were incorrectly reallocated due to
-bitmap corruption, but since the start number of non-reserved inodes is
-read from the super block and may change, in which case inode allocation
-may occur from the extended reserved inode area.
-
-If that happens, access to that inode will cause an IO error, causing the
-file system to degrade to an error state.
-
-Fix this potential issue by adding a wraparound option to the common
-metadata object allocation routine and by modifying
-nilfs_ifile_create_inode() to disable the option so that it only allocates
-inodes with inode numbers greater than or equal to the inode number read
-in "nilfs->ns_first_ino", regardless of the bitmap status of reserved
-inodes.
-
-Link: https://lkml.kernel.org/r/20240623051135.4180-4-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/nilfs2/alloc.c |   19 +++++++++++++++----
- fs/nilfs2/alloc.h |    4 ++--
- fs/nilfs2/dat.c   |    2 +-
- fs/nilfs2/ifile.c |    7 ++-----
- 4 files changed, 20 insertions(+), 12 deletions(-)
-
---- a/fs/nilfs2/alloc.c~nilfs2-fix-incorrect-inode-allocation-from-reserved-inodes
-+++ a/fs/nilfs2/alloc.c
-@@ -377,11 +377,12 @@ void *nilfs_palloc_block_get_entry(const
-  * @target: offset number of an entry in the group (start point)
-  * @bsize: size in bits
-  * @lock: spin lock protecting @bitmap
-+ * @wrap: whether to wrap around
-  */
- static int nilfs_palloc_find_available_slot(unsigned char *bitmap,
- 					    unsigned long target,
- 					    unsigned int bsize,
--					    spinlock_t *lock)
-+					    spinlock_t *lock, bool wrap)
- {
- 	int pos, end = bsize;
- 
-@@ -397,6 +398,8 @@ static int nilfs_palloc_find_available_s
- 
- 		end = target;
- 	}
-+	if (!wrap)
-+		return -ENOSPC;
- 
- 	/* wrap around */
- 	for (pos = 0; pos < end; pos++) {
-@@ -495,9 +498,10 @@ int nilfs_palloc_count_max_entries(struc
-  * nilfs_palloc_prepare_alloc_entry - prepare to allocate a persistent object
-  * @inode: inode of metadata file using this allocator
-  * @req: nilfs_palloc_req structure exchanged for the allocation
-+ * @wrap: whether to wrap around
-  */
- int nilfs_palloc_prepare_alloc_entry(struct inode *inode,
--				     struct nilfs_palloc_req *req)
-+				     struct nilfs_palloc_req *req, bool wrap)
- {
- 	struct buffer_head *desc_bh, *bitmap_bh;
- 	struct nilfs_palloc_group_desc *desc;
-@@ -516,7 +520,7 @@ int nilfs_palloc_prepare_alloc_entry(str
- 	entries_per_group = nilfs_palloc_entries_per_group(inode);
- 
- 	for (i = 0; i < ngroups; i += n) {
--		if (group >= ngroups) {
-+		if (group >= ngroups && wrap) {
- 			/* wrap around */
- 			group = 0;
- 			maxgroup = nilfs_palloc_group(inode, req->pr_entry_nr,
-@@ -550,7 +554,14 @@ int nilfs_palloc_prepare_alloc_entry(str
- 			bitmap_kaddr = kmap_local_page(bitmap_bh->b_page);
- 			bitmap = bitmap_kaddr + bh_offset(bitmap_bh);
- 			pos = nilfs_palloc_find_available_slot(
--				bitmap, group_offset, entries_per_group, lock);
-+				bitmap, group_offset, entries_per_group, lock,
-+				wrap);
-+			/*
-+			 * Since the search for a free slot in the second and
-+			 * subsequent bitmap blocks always starts from the
-+			 * beginning, the wrap flag only has an effect on the
-+			 * first search.
-+			 */
- 			kunmap_local(bitmap_kaddr);
- 			if (pos >= 0)
- 				goto found;
---- a/fs/nilfs2/alloc.h~nilfs2-fix-incorrect-inode-allocation-from-reserved-inodes
-+++ a/fs/nilfs2/alloc.h
-@@ -50,8 +50,8 @@ struct nilfs_palloc_req {
- 	struct buffer_head *pr_entry_bh;
- };
- 
--int nilfs_palloc_prepare_alloc_entry(struct inode *,
--				     struct nilfs_palloc_req *);
-+int nilfs_palloc_prepare_alloc_entry(struct inode *inode,
-+				     struct nilfs_palloc_req *req, bool wrap);
- void nilfs_palloc_commit_alloc_entry(struct inode *,
- 				     struct nilfs_palloc_req *);
- void nilfs_palloc_abort_alloc_entry(struct inode *, struct nilfs_palloc_req *);
---- a/fs/nilfs2/dat.c~nilfs2-fix-incorrect-inode-allocation-from-reserved-inodes
-+++ a/fs/nilfs2/dat.c
-@@ -75,7 +75,7 @@ int nilfs_dat_prepare_alloc(struct inode
- {
- 	int ret;
- 
--	ret = nilfs_palloc_prepare_alloc_entry(dat, req);
-+	ret = nilfs_palloc_prepare_alloc_entry(dat, req, true);
- 	if (ret < 0)
- 		return ret;
- 
---- a/fs/nilfs2/ifile.c~nilfs2-fix-incorrect-inode-allocation-from-reserved-inodes
-+++ a/fs/nilfs2/ifile.c
-@@ -56,13 +56,10 @@ int nilfs_ifile_create_inode(struct inod
- 	struct nilfs_palloc_req req;
- 	int ret;
- 
--	req.pr_entry_nr = 0;  /*
--			       * 0 says find free inode from beginning
--			       * of a group. dull code!!
--			       */
-+	req.pr_entry_nr = NILFS_FIRST_INO(ifile->i_sb);
- 	req.pr_entry_bh = NULL;
- 
--	ret = nilfs_palloc_prepare_alloc_entry(ifile, &req);
-+	ret = nilfs_palloc_prepare_alloc_entry(ifile, &req, false);
- 	if (!ret) {
- 		ret = nilfs_palloc_get_entry_block(ifile, req.pr_entry_nr, 1,
- 						   &req.pr_entry_bh);
-_
-
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
-
-
+--=20
+- Jiaxun
 
