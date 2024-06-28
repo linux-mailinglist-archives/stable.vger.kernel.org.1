@@ -1,181 +1,176 @@
-Return-Path: <stable+bounces-56049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 415AA91B65D
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 07:44:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF62F91B61C
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 07:29:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0B7028598C
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 05:44:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6101E1F23F4D
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 05:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7DE78C71;
-	Fri, 28 Jun 2024 05:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC23837165;
+	Fri, 28 Jun 2024 05:29:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kwdpu6n8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.priv.miraclelinux.com (202x210x215x66.ap202.ftth.ucom.ne.jp [202.210.215.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2FC5381A;
-	Fri, 28 Jun 2024 05:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.210.215.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5032D36B11;
+	Fri, 28 Jun 2024 05:29:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719553276; cv=none; b=FzcJpfPUtS3FM5DBZZqwBpvxe/himiQj41/pw6pcvyOT/E50RmfHyZxo16SWawc9KyyqsF+u2r4xlX9VaBkzvLCtZBWeRhj0o0r8aGRr2DbWYvbCJQSwvo/Yk3fYT7FsNPAN2z1poUeif5+ykmvrKqc0KvK9t5a0EVhf5kNySBc=
+	t=1719552574; cv=none; b=GfNfIFZ1695A9uF+TMrmhouHXlqR6uuMwom3+W/8hxynRA3vO1Jc/+lgA+BHQbMwFRSPKYt+R5oUG9BDa7rVAxqLfJ6kPdGfdCg+zh6maKmu+QXRA9MPskxnj5jmMGwxJjNbSDIFAf/wX6fd6B3X2UuuFd/5jLN7cqvA6tnKkM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719553276; c=relaxed/simple;
-	bh=nE/ahYicu+soLj105oY080IJ/4x7ZIh8LDeXBhJqLrE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=mDyXJtHWvh0GVX/R/DPS9R3uyvcgaHHAGW4FvjQN6Y1GUq/rSZrW2jF5N9FZZmPdZz+nVjA/dxQ53+KEvesfIELXPstE+4gnOpk6cyw8K5ZZXvT/Bjc3LyDGShJvtFiEyA2m7gsJ0r7xOPazwsQcw6zE50vFcuSTULe6jwGHODw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=miraclelinux.com; spf=pass smtp.mailfrom=miraclelinux.com; arc=none smtp.client-ip=202.210.215.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=miraclelinux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraclelinux.com
-Received: from cip-lava-a.miraclelinux.com (cip-lava-a.miraclelinux.com [10.2.1.116])
-	by smtp.priv.miraclelinux.com (Postfix) with ESMTP id 42DA61400F0;
-	Fri, 28 Jun 2024 14:41:13 +0900 (JST)
-From: Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
-To: netdev@vger.kernel.org
-Cc: stable@vger.kernel.org,
+	s=arc-20240116; t=1719552574; c=relaxed/simple;
+	bh=ks1F6Sn9pTxTI0BwOCBA0EESvxRrUUHI3vfdcNjpIUw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TOrjZwJQELbdlNiDAKFj05T1a2Stdqe6Ij0Fptc3zFQD8ZESsUUpFAJmBMP18F0QA3/hHnhpp5Io0SYqt8KlV1IzM8gG+4CzFVvGmJsMVDa3wwC2i8C/5UWL44d9C6ktoSF5A6+YalAvUJWgLUvvnUbVat+KgxH3Pri7uunf++U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kwdpu6n8; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2c7af3116aaso56096a91.2;
+        Thu, 27 Jun 2024 22:29:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719552572; x=1720157372; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PJ/M56ThtwrsFD5Lfw9SbGejoYETZHoSJEMo2+pp2ms=;
+        b=kwdpu6n8pNn9eyb+lBJKj44mYs5+fAc4M3IRux4ckG5ZGhHbCLMln9GxjW/V9Mdt6H
+         EYTtcjXGwCp2DXcQTftMIM20Nl8+zjOJEuSYePhPNBK8GU3TYQU+4qzQt5vrvoiCxvEk
+         qcbeageydIWL2hpkGPlHQuXZMondcrNUTJMsiJoUGL28wpgvUfYKNCLk8CaGG751yLnV
+         Z8dv+pjvSJ8kiAfQWfQoops2dtTXBqLmjd9z5RArzTLNKw9g6ntvMaGeA0cPaQwudACj
+         ln+/xqr42P/amow7KThd6eWB2XVAh4ta95l5lqTZM5w/3LMVLUzJBYM1YdFFNd9eV2hw
+         4qHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719552572; x=1720157372;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PJ/M56ThtwrsFD5Lfw9SbGejoYETZHoSJEMo2+pp2ms=;
+        b=CGc3q46fNmzYXzX0ujBC3obDay9B5H3WltfmT9GW0Gc9RUI8ENZ41IJbkWKL3ppkUg
+         JiehWops1buy+JKWsH9Rmg2Fl8P8+VFxp01/Hq90Ab0nXu38qDyb5M/sLmlUkEae/6c/
+         7qJSGdfcnqPdQ9a0zYWNHIIqQNryJNdZst4Cn32M2GIu4Dd1EY8/FRNvI6DjRnnDKQJt
+         ba6hgBjINDY+wJYByYBb3mA2X/l10SkUD/dyW7GmmMq2kpN59GozmXMd2fyv7fDDH2NE
+         b9WDU5LkQ7sQadIi7/428npytwlhs/Qr/yZzcSlCg6N0hB3x7hjh+VvARazVnkW91xTL
+         Spwg==
+X-Forwarded-Encrypted: i=1; AJvYcCVzfFUJ9G7XD3djr+ZiEARnbN+1dSQ1w/vRRIqZyph5Yx+2qj2B/sRKRw/QZLGI+E/lNTLWl1jDfn+tHjBqvFMOmtZJXkI5BJB8haiCkRWksQnGlYoCHu6J318M5uTg2edBsHZj
+X-Gm-Message-State: AOJu0YwyCEntHdUVHFx4e8MaBQuRBPxWhzRmGdiZmbnbm+L4FjLYck86
+	fL01xDw6o++cdmdRUrDrBAQDWhD4Qyvijr7968kqx+SHrb+SnRx3KP23bS15
+X-Google-Smtp-Source: AGHT+IHLv5sQ9sNkcIC/nJeiyanw64nDmI2PGR16Y8htj0wpAT+P7CbV8FfgwKGWVS9OAZ3ykXJVGA==
+X-Received: by 2002:a17:90a:db94:b0:2c2:d11b:14dd with SMTP id 98e67ed59e1d1-2c8452e0fdbmr15923350a91.0.1719552572391;
+        Thu, 27 Jun 2024 22:29:32 -0700 (PDT)
+Received: from localhost.localdomain (122-117-151-175.hinet-ip.hinet.net. [122.117.151.175])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c91c7ddb23sm735599a91.0.2024.06.27.22.29.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Jun 2024 22:29:31 -0700 (PDT)
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
+To: mathias.nyman@intel.com,
+	gregkh@linuxfoundation.org
+Cc: linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	hiraku.toyooka@miraclelinux.com,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
-Subject: [PATCH 4.19 3/3] tcp: Fix data races around icsk->icsk_af_ops.
-Date: Mon, 17 Apr 2023 16:54:28 +0000
-Message-Id: <20230417165428.26284-4-kazunori.kobayashi@miraclelinux.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230417165428.26284-1-kazunori.kobayashi@miraclelinux.com>
-References: <20230417165428.26284-1-kazunori.kobayashi@miraclelinux.com>
+	ki.chiang65@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH v3] xhci: Don't issue Reset Device command to Etron xHCI host
+Date: Fri, 28 Jun 2024 13:29:14 +0800
+Message-Id: <20240628052914.5215-1-ki.chiang65@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+Sometimes the hub driver does not recognize the USB device connected
+to the external USB2.0 hub when the system resumes from S4.
 
-commit f49cd2f4d6170d27a2c61f1fecb03d8a70c91f57 upstream.
+After the SetPortFeature(PORT_RESET) request is completed, the hub
+driver calls the HCD reset_device callback, which will issue a Reset
+Device command and free all structures associated with endpoints
+that were disabled.
 
-setsockopt(IPV6_ADDRFORM) and tcp_v6_connect() change icsk->icsk_af_ops
-under lock_sock(), but tcp_(get|set)sockopt() read it locklessly.  To
-avoid load/store tearing, we need to add READ_ONCE() and WRITE_ONCE()
-for the reads and writes.
+This happens when the xHCI driver issue a Reset Device command to
+inform the Etron xHCI host that the USB device associated with a
+device slot has been reset. Seems that the Etron xHCI host can not
+perform this command correctly, affecting the USB device.
 
-Thanks to Eric Dumazet for providing the syzbot report:
+To work around this, the xHCI driver should obtain a new device slot
+with reference to commit 651aaf36a7d7 ("usb: xhci: Handle USB transaction
+error on address command"), which is another way to inform the Etron
+xHCI host that the USB device has been reset.
 
-BUG: KCSAN: data-race in tcp_setsockopt / tcp_v6_connect
+Both EJ168 and EJ188 have the same problem, applying this patch then
+the problem is gone.
 
-write to 0xffff88813c624518 of 8 bytes by task 23936 on cpu 0:
-tcp_v6_connect+0x5b3/0xce0 net/ipv6/tcp_ipv6.c:240
-__inet_stream_connect+0x159/0x6d0 net/ipv4/af_inet.c:660
-inet_stream_connect+0x44/0x70 net/ipv4/af_inet.c:724
-__sys_connect_file net/socket.c:1976 [inline]
-__sys_connect+0x197/0x1b0 net/socket.c:1993
-__do_sys_connect net/socket.c:2003 [inline]
-__se_sys_connect net/socket.c:2000 [inline]
-__x64_sys_connect+0x3d/0x50 net/socket.c:2000
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x2b/0x70 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-read to 0xffff88813c624518 of 8 bytes by task 23937 on cpu 1:
-tcp_setsockopt+0x147/0x1c80 net/ipv4/tcp.c:3789
-sock_common_setsockopt+0x5d/0x70 net/core/sock.c:3585
-__sys_setsockopt+0x212/0x2b0 net/socket.c:2252
-__do_sys_setsockopt net/socket.c:2263 [inline]
-__se_sys_setsockopt net/socket.c:2260 [inline]
-__x64_sys_setsockopt+0x62/0x70 net/socket.c:2260
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x2b/0x70 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-value changed: 0xffffffff8539af68 -> 0xffffffff8539aff8
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 23937 Comm: syz-executor.5 Not tainted
-6.0.0-rc4-syzkaller-00331-g4ed9c1e971b1-dirty #0
-
-Hardware name: Google Google Compute Engine/Google Compute Engine,
-BIOS Google 08/26/2022
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Reported-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
 ---
- net/ipv4/tcp.c           | 10 ++++++----
- net/ipv6/ipv6_sockglue.c |  3 ++-
- net/ipv6/tcp_ipv6.c      |  6 ++++--
- 3 files changed, 12 insertions(+), 7 deletions(-)
+Changes in v3:
+- Modify commit message
+- Modify comment
+- Fix coding style, add a #define PCI_VENDOR_ID_ETRON
+- Code refactor, call xhci_disable_slot() + xhci_free_virt_device() helper
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index e3475f833f8fe..c863be23ac4db 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3126,8 +3126,9 @@ int tcp_setsockopt(struct sock *sk, int level, int optname, char __user *optval,
- 	const struct inet_connection_sock *icsk = inet_csk(sk);
- 
- 	if (level != SOL_TCP)
--		return icsk->icsk_af_ops->setsockopt(sk, level, optname,
--						     optval, optlen);
-+		/* Paired with WRITE_ONCE() in do_ipv6_setsockopt() and tcp_v6_connect() */
-+		return READ_ONCE(icsk->icsk_af_ops)->setsockopt(sk, level, optname,
-+								optval, optlen);
- 	return do_tcp_setsockopt(sk, level, optname, optval, optlen);
+Changes in v2:
+- Change commit log
+- Add a comment for the workaround
+- Revert "global xhci_free_dev()"
+- Remove XHCI_ETRON_HOST quirk bit
+
+ drivers/usb/host/xhci.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index 37eb37b0affa..abaef0adacf1 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -3682,6 +3682,10 @@ void xhci_free_device_endpoint_resources(struct xhci_hcd *xhci,
+ 				xhci->num_active_eps);
  }
- EXPORT_SYMBOL(tcp_setsockopt);
-@@ -3649,8 +3650,9 @@ int tcp_getsockopt(struct sock *sk, int level, int optname, char __user *optval,
- 	struct inet_connection_sock *icsk = inet_csk(sk);
  
- 	if (level != SOL_TCP)
--		return icsk->icsk_af_ops->getsockopt(sk, level, optname,
--						     optval, optlen);
-+		/* Paired with WRITE_ONCE() in do_ipv6_setsockopt() and tcp_v6_connect() */
-+		return READ_ONCE(icsk->icsk_af_ops)->getsockopt(sk, level, optname,
-+								optval, optlen);
- 	return do_tcp_getsockopt(sk, level, optname, optval, optlen);
- }
- EXPORT_SYMBOL(tcp_getsockopt);
-diff --git a/net/ipv6/ipv6_sockglue.c b/net/ipv6/ipv6_sockglue.c
-index 625cece87c122..caa7b59c819ee 100644
---- a/net/ipv6/ipv6_sockglue.c
-+++ b/net/ipv6/ipv6_sockglue.c
-@@ -226,7 +226,8 @@ static int do_ipv6_setsockopt(struct sock *sk, int level, int optname,
- 				local_bh_enable();
- 				/* Paired with READ_ONCE(sk->sk_prot) in inet6_stream_ops */
- 				WRITE_ONCE(sk->sk_prot, &tcp_prot);
--				icsk->icsk_af_ops = &ipv4_specific;
-+				/* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
-+				WRITE_ONCE(icsk->icsk_af_ops, &ipv4_specific);
- 				sk->sk_socket->ops = &inet_stream_ops;
- 				sk->sk_family = PF_INET;
- 				tcp_sync_mss(sk, icsk->icsk_pmtu_cookie);
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index 033cf81f34837..78eaaf59c15e2 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -229,7 +229,8 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr *uaddr,
- 		sin.sin_port = usin->sin6_port;
- 		sin.sin_addr.s_addr = usin->sin6_addr.s6_addr32[3];
++#define PCI_VENDOR_ID_ETRON		0x1b6f
++
++static void xhci_free_dev(struct usb_hcd *hcd, struct usb_device *udev);
++
+ /*
+  * This submits a Reset Device Command, which will set the device state to 0,
+  * set the device address to 0, and disable all the endpoints except the default
+@@ -3711,6 +3715,7 @@ static int xhci_discover_or_reset_device(struct usb_hcd *hcd,
+ 	struct xhci_command *reset_device_cmd;
+ 	struct xhci_slot_ctx *slot_ctx;
+ 	int old_active_eps = 0;
++	struct device *dev = hcd->self.controller;
  
--		icsk->icsk_af_ops = &ipv6_mapped;
-+		/* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
-+		WRITE_ONCE(icsk->icsk_af_ops, &ipv6_mapped);
- 		sk->sk_backlog_rcv = tcp_v4_do_rcv;
- #ifdef CONFIG_TCP_MD5SIG
- 		tp->af_specific = &tcp_sock_ipv6_mapped_specific;
-@@ -239,7 +240,8 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr *uaddr,
+ 	ret = xhci_check_args(hcd, udev, NULL, 0, false, __func__);
+ 	if (ret <= 0)
+@@ -3752,6 +3757,23 @@ static int xhci_discover_or_reset_device(struct usb_hcd *hcd,
+ 						SLOT_STATE_DISABLED)
+ 		return 0;
  
- 		if (err) {
- 			icsk->icsk_ext_hdr_len = exthdrlen;
--			icsk->icsk_af_ops = &ipv6_specific;
-+			/* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
-+			WRITE_ONCE(icsk->icsk_af_ops, &ipv6_specific);
- 			sk->sk_backlog_rcv = tcp_v6_do_rcv;
- #ifdef CONFIG_TCP_MD5SIG
- 			tp->af_specific = &tcp_sock_ipv6_specific;
++	if (dev_is_pci(dev) && to_pci_dev(dev)->vendor == PCI_VENDOR_ID_ETRON) {
++		/*
++		 * Obtaining a new device slot to inform the xHCI host that
++		 * the USB device has been reset.
++		 */
++		ret = xhci_disable_slot(xhci, udev->slot_id);
++		xhci_free_virt_device(xhci, udev->slot_id);
++		if (!ret) {
++			ret = xhci_alloc_dev(hcd, udev);
++			if (ret == 1)
++				ret = 0;
++			else
++				ret = -EINVAL;
++		}
++		return ret;
++	}
++
+ 	trace_xhci_discover_or_reset_device(slot_ctx);
+ 
+ 	xhci_dbg(xhci, "Resetting device with slot ID %u\n", slot_id);
 -- 
-2.39.2
+2.25.1
 
 
