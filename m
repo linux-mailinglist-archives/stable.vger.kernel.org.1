@@ -1,115 +1,98 @@
-Return-Path: <stable+bounces-56098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0184191C687
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 21:26:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9751D91C68B
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 21:26:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE960282E05
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 19:26:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42C871F24FAD
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 19:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B90D86F2E8;
-	Fri, 28 Jun 2024 19:25:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="oLIeblI8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50F976F31D;
+	Fri, 28 Jun 2024 19:26:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C196F1B94F;
-	Fri, 28 Jun 2024 19:25:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2D46F30A;
+	Fri, 28 Jun 2024 19:26:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719602759; cv=none; b=RXMoDZTyf51R26cr4OCHZSTBfTWbGhcrhh+7HJy+AxYdISrXRNpLLAhHz54wkQfL78kUDxN111Qzjg3XPRjkKRJRW4078Gps8AyoNPlGsuX2G8U/sTiSVyd/f9EVLSH7dplhZKfYyvZZ2ZuIzjfE51jW33kGPLRu8zKwkT85TYk=
+	t=1719602794; cv=none; b=fSaLiPvikOG6iXKxhZKNE7+6TkrsSYqaT1eqfJuNL9vhzqI2UYQ+SzPIvTNT6zsCOYm9qyFf52QH38ZP6Gg9DGtgBI2wGR2vGfqoQdCZlYVHYMJd5RXwFnP4LSi04iQfTJYGB6NpFLrtNx5fHUFYpTOlWR6kWz/91zNpXyTfJsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719602759; c=relaxed/simple;
-	bh=ldQrrjqyWDTT6DvaUs37IaURxkD/yqnnKpMMKKsIF3Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o/uOPiCf+/D74ji/3VM8nvkXziXu1YUxgPebeQd2weYVo0WPvfyrjXGF9PtkPuBUh9skKYLZUHc1A1sR66By9dnUGFM9a/645zRVqc6WEcjSbC/cYg1X61aYoYr/Qr0MaH9HRmWaDmP7mdEjigkhNDjF6vvjI2KeO4VHzcKAehc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=oLIeblI8; arc=none smtp.client-ip=199.89.1.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4W9lln0crgz6Cp2tZ;
-	Fri, 28 Jun 2024 19:25:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1719602750; x=1722194751; bh=Bi6EQ3Ahn62bMbJcMwKWnjyA
-	I/cv78xLQF73J9lMcKs=; b=oLIeblI8LWMm/b79FMZiPYT2QwnUNcNQzRbM26tz
-	FrWTD7lPjPU+2J07vVC+5lxXrSEorfbh3kC5kgNsC2XhPrh948P89MLaeaCskgzN
-	Ny3paoHyzQznKfY8PsL16ajPd5RXOU2xT4pCvB57yBFhpzI+yDO9l8EZ+3r0JKGK
-	03cDuOtqqEVSccZZEwm9KmPCzvpm3cNkfSBjj8RwRezpoBH6ndWX18sifez2KrCD
-	pO6J2Vw35GCO+jv6yHVwDxWNvctguK5hZomwXByqajNWvIyFFu9zCZRDsD9ewqQp
-	iHEi0A6gAv7h5cXs171dPOux+SSek25NPOAsNj+20FZnsw==
-X-Virus-Scanned: by MailRoute
-Received: from 008.lax.mailroute.net ([127.0.0.1])
- by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id LbY2I7nK4yfI; Fri, 28 Jun 2024 19:25:50 +0000 (UTC)
-Received: from [192.168.50.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4W9llW6zpzz6Cnk90;
-	Fri, 28 Jun 2024 19:25:43 +0000 (UTC)
-Message-ID: <d6598130-0ca9-4908-9ccb-4836027ad75e@acm.org>
-Date: Fri, 28 Jun 2024 12:25:41 -0700
+	s=arc-20240116; t=1719602794; c=relaxed/simple;
+	bh=eqO7Ki95NF/BQYKdUKvbuFsOVwpI1DEUVyudC1vvO4c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ClCAuSAbhqH1Fo9q2cCEZbJ6dkVyXZmNCRSXgHGmuItflgEN6MDp9Y0+SEjVni4RjOQv1Pk9ofvqMnoH3eCxpw2hIP/dUGreliQjZCBkeot3pMadYEQyXaKZKr3X/FnK1s4UYxOIIkMuomczI/z3bBphZGVLGTxxMp3HKgInBjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=ucw.cz; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id AA2E11C0098; Fri, 28 Jun 2024 21:26:29 +0200 (CEST)
+Date: Fri, 28 Jun 2024 21:26:15 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.1 000/131] 6.1.96-rc1 review
+Message-ID: <Zn7mPrqkeztjS30d@duo.ucw.cz>
+References: <20240625085525.931079317@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] ufs: core: fix ufshcd_clear_cmd racing issue
-To: peter.wang@mediatek.com, linux-scsi@vger.kernel.org,
- martin.petersen@oracle.com, avri.altman@wdc.com, alim.akhtar@samsung.com,
- jejb@linux.ibm.com
-Cc: wsd_upstream@mediatek.com, linux-mediatek@lists.infradead.org,
- chun-hung.wu@mediatek.com, alice.chao@mediatek.com, cc.chou@mediatek.com,
- chaotian.jing@mediatek.com, jiajie.hao@mediatek.com, powen.kao@mediatek.com,
- qilin.tan@mediatek.com, lin.gui@mediatek.com, tun-yu.yu@mediatek.com,
- eddie.huang@mediatek.com, naomi.chu@mediatek.com, chu.stanley@gmail.com,
- stable@vger.kernel.org
-References: <20240628070030.30929-1-peter.wang@mediatek.com>
- <20240628070030.30929-2-peter.wang@mediatek.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20240628070030.30929-2-peter.wang@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="XR9LtlHv+hRnaETr"
+Content-Disposition: inline
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
 
-On 6/28/24 12:00 AM, peter.wang@mediatek.com wrote:
-> From: Peter Wang <peter.wang@mediatek.com>
-> 
-> When ufshcd_clear_cmd racing with complete ISR,
-> the completed tag of request's mq_hctx pointer will set NULL by ISR.
-> And ufshcd_clear_cmd call ufshcd_mcq_req_to_hwq will get NULL pointer KE.
-> Return success when request is completed by ISR beacuse sq dosen't
-> need cleanup.
-> 
-> The racing flow is:
-> 
-> Thread A
-> ufshcd_err_handler					step 1
-> 	ufshcd_try_to_abort_task
-> 		ufshcd_cmd_inflight(true)		step 3
-> 		ufshcd_clear_cmd
-> 			...
-> 			ufshcd_mcq_req_to_hwq
-> 			blk_mq_unique_tag
-> 				rq->mq_hctx->queue_num	step 5
-> 
-> Thread B
-> ufs_mtk_mcq_intr(cq complete ISR)			step 2
-> 	scsi_done
-> 		...
-> 		__blk_mq_free_request
-> 			rq->mq_hctx = NULL;		step 4
 
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+--XR9LtlHv+hRnaETr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi!
+
+> This is the start of the stable review cycle for the 6.1.96 release.
+> There are 131 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
+> Responses should be made by Thu, 27 Jun 2024 08:54:55 +0000.
+> Anything received after that time might be too late.
+
+CIP testing did not find any problems here:
+
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.1.y
+
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
+
+Best regards,
+                                                                Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--XR9LtlHv+hRnaETr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZn8OVwAKCRAw5/Bqldv6
+8lcyAKCXlB7kNp2gH8Qz4A1lFKvDnLSW8wCfS+OEU3BLDs6TJgvzoy25imcGqXg=
+=bGHm
+-----END PGP SIGNATURE-----
+
+--XR9LtlHv+hRnaETr--
 
