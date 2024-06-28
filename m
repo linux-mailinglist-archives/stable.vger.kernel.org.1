@@ -1,155 +1,247 @@
-Return-Path: <stable+bounces-56086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B4991C57D
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 20:12:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C3791C584
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 20:14:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7E4E1F25643
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 18:12:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A183B25823
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 18:14:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 497C81C8FA8;
-	Fri, 28 Jun 2024 18:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1029F1CE081;
+	Fri, 28 Jun 2024 18:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="TKZFXSHK"
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="BzsOj1SX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00BEA4B5CD;
-	Fri, 28 Jun 2024 18:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0735D1CD5CE
+	for <stable@vger.kernel.org>; Fri, 28 Jun 2024 18:13:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719598262; cv=none; b=Joiqb2iB7aVTw6yYpmJcEGSKGSlgkuMHZ8GPUZ9fqZ+HPSvAzOPUqXAN7mcKGyXZgG2K06GcYagKXpMqFDHMWhGcUKsAwrCVGZT8L8dGTxGpSn+5k497Osxq0wKowr/liAUiQi7TC++2L+kfaLbkQGHUkEqvI+YJQmduir2aNHY=
+	t=1719598418; cv=none; b=mEKu5zTp0Oy+YLsU5gLE5UtiztlFD44b2w53tPb1dmIA2Y0NuALKcXnZ5gR7mX0SirI5Ft0cDmX4MXRiLsZuNcGMZEi6IarkdoNGXggrM1yTnl0ZKBMJhALpUsG5ZW0ehCJF01LmqQY9EJlGQ17AIDGZdWycGl5xY55IzOoQu+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719598262; c=relaxed/simple;
-	bh=AnGDBPZueGU6jsk1sE8rTkWcwZ8SYFORW43srEW6Zgg=;
-	h=Date:To:From:Subject:Message-Id; b=pzFSW9HrGjYJuSW+vR76wzFjbew8dQRXDtgIV//PPusxhZKcKU8wXXe3XfWtDxo/pldq9CO1kSQQBb+gR1eVLCyxauMBGXwHZkWS9LtmNSLTIe1YD39DzVqQtdy66PGJkD5PljykGpYX6v0NVv2Dhrv0yUOFviXHLPN6YloiGAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=TKZFXSHK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BE7C116B1;
-	Fri, 28 Jun 2024 18:11:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1719598261;
-	bh=AnGDBPZueGU6jsk1sE8rTkWcwZ8SYFORW43srEW6Zgg=;
-	h=Date:To:From:Subject:From;
-	b=TKZFXSHKYzlHZHxN9Yd0jffmW3fyK1Qs3cUS8HYlJuY8AAh7ETMKFbwvZXEWI8+/X
-	 TcuwTRgu3PQ/e69y2r2JdEqdwwr8G1lgbAgE/kbBoaHfF5U5/ogq9n4yQW/UcC5aq6
-	 i8Z/5jhqr4NqyDHZ2q3hKPJ8i0um+wfHRfa0Mk7U=
-Date: Fri, 28 Jun 2024 11:11:00 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + nilfs2-fix-kernel-bug-on-rename-operation-of-broken-directory.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240628181101.81BE7C116B1@smtp.kernel.org>
+	s=arc-20240116; t=1719598418; c=relaxed/simple;
+	bh=691ttXO8Qm8DyPrbmX/Zjdch9kxC2gGxgdJYABuBfUo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZIUjp6N3YOq6509Zd8nUjHFDUG7bWGpXd0R2hO62ZftsF5ZZ9zlEnmxCxLaR63EhWjKAsnAd41Ev+ZCMHBTYihRYyi8S+MPoZB0DIesQ4guRjbeYPbeAQM91acXjfSfq0E6cd/qcaBtVN2lHe5g9wEmGmBBLJL8MM2FeB0qxLZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=BzsOj1SX; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2ec5e3799feso1105051fa.3
+        for <stable@vger.kernel.org>; Fri, 28 Jun 2024 11:13:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1719598415; x=1720203215; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=huxmsGyg+iUWrBMicDmaxHSG7pbm8X2WK1OQEgwi0+I=;
+        b=BzsOj1SXUCglm6THEbsxJcesTTja6pweREhdVs1I5SR73YijTn8VJ5TJrVBarDZcTo
+         AIcTsulcmqYvwQPm1aCalkhTq8TocAAKvJoS2nhb4pW+5OYSVQmmi55e4OisPPeY4Ikc
+         RnMOVgaiLudR3x5UM9mouhhqEoM3N0pogR6y0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719598415; x=1720203215;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=huxmsGyg+iUWrBMicDmaxHSG7pbm8X2WK1OQEgwi0+I=;
+        b=oN1AVLak8tKjsu/PdZtB2RCzRj5Ezy6fX6lWoo16FnO4BXevlEwuY4zCyiT5LfO8bj
+         KJQvNszJ/etQMDcxtMcHeyzXgUF/+7Cajp2CNV8GFzSfKRVGZ1sJ3+nsJB+wuAoq1WNW
+         i8zQXhGGCEsqzjj75X+zXAIwGIdRgtk5GTI5GLZOUTKsv3K7qu80WuyyCyatae39h8YW
+         CgyIQiwGIua7FwuKksPJMWFAP/llSqDZ05Rv5k7YNXo+LsCgcxJxu/uLuDVgA0Xn1Fog
+         bEYArcRw4ayM32K0c1Ad5mCqsWnp7T3QbjzusJfZ/dhL2mEOEQyTYdkmflUfJ4rbfxzl
+         VE4g==
+X-Forwarded-Encrypted: i=1; AJvYcCW+TzSHCyilFxllej4MVc47UFZf3vSRMPAaOBb4J0/4YL14Yks70oFlhmXzjEERZ8phDckdILNeHcsy5/FSecbsLst4nQ1Z
+X-Gm-Message-State: AOJu0YxQ+Wxge3Dqkpe0MFLozLu7eZG1SKAJEVH/13cW5cHnuRe6DUdK
+	AfOEFrPOIT4Cq3QF2RIPKX+ejf9nR6wgcnWN6rE6V089zoDBDCs+t9UYUczTs+c=
+X-Google-Smtp-Source: AGHT+IE5lOHbq58vJ8cWAIxbIekJmFwVNdX2XgbfvBOtIf4Qv7xRVWjSmCHxNA5l5enxjRzWddwS1g==
+X-Received: by 2002:a05:651c:1986:b0:2ec:5365:34d3 with SMTP id 38308e7fff4ca-2ec560e8d60mr148913521fa.1.1719598415010;
+        Fri, 28 Jun 2024 11:13:35 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4256b0c15f8sm44777175e9.47.2024.06.28.11.13.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Jun 2024 11:13:34 -0700 (PDT)
+Date: Fri, 28 Jun 2024 20:13:32 +0200
+From: Daniel Vetter <daniel@ffwll.ch>
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	intel-xe@lists.freedesktop.org,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Daniel Vetter <daniel@ffwll.ch>, dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] drm/ttm: Always take the bo delayed cleanup path for
+ imported bos
+Message-ID: <Zn79TNg1WfERV7gj@phenom.ffwll.local>
+References: <20240628153848.4989-1-thomas.hellstrom@linux.intel.com>
+ <Zn7cBbi/iZ1cxWPb@DUT025-TGLU.fm.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zn7cBbi/iZ1cxWPb@DUT025-TGLU.fm.intel.com>
+X-Operating-System: Linux phenom 6.8.9-amd64 
 
+On Fri, Jun 28, 2024 at 03:51:33PM +0000, Matthew Brost wrote:
+> On Fri, Jun 28, 2024 at 05:38:48PM +0200, Thomas Hellström wrote:
+> > Bos can be put with multiple unrelated dma-resv locks held. But
+> > imported bos attempt to grab the bo dma-resv during dma-buf detach
+> > that typically happens during cleanup. That leads to lockde splats
+> > similar to the below and a potential ABBA deadlock.
+> > 
+> > Fix this by always taking the delayed workqueue cleanup path for
+> > imported bos.
+> > 
+> > Requesting stable fixes from when the Xe driver was introduced,
+> > since its usage of drm_exec and wide vm dma_resvs appear to be
+> > the first reliable trigger of this.
+> > 
+> > [22982.116427] ============================================
+> > [22982.116428] WARNING: possible recursive locking detected
+> > [22982.116429] 6.10.0-rc2+ #10 Tainted: G     U  W
+> > [22982.116430] --------------------------------------------
+> > [22982.116430] glxgears:sh0/5785 is trying to acquire lock:
+> > [22982.116431] ffff8c2bafa539a8 (reservation_ww_class_mutex){+.+.}-{3:3}, at: dma_buf_detach+0x3b/0xf0
+> > [22982.116438]
+> >                but task is already holding lock:
+> > [22982.116438] ffff8c2d9aba6da8 (reservation_ww_class_mutex){+.+.}-{3:3}, at: drm_exec_lock_obj+0x49/0x2b0 [drm_exec]
+> > [22982.116442]
+> >                other info that might help us debug this:
+> > [22982.116442]  Possible unsafe locking scenario:
+> > 
+> > [22982.116443]        CPU0
+> > [22982.116444]        ----
+> > [22982.116444]   lock(reservation_ww_class_mutex);
+> > [22982.116445]   lock(reservation_ww_class_mutex);
+> > [22982.116447]
+> >                 *** DEADLOCK ***
+> > 
+> > [22982.116447]  May be due to missing lock nesting notation
+> > 
+> > [22982.116448] 5 locks held by glxgears:sh0/5785:
+> > [22982.116449]  #0: ffff8c2d9aba58c8 (&xef->vm.lock){+.+.}-{3:3}, at: xe_file_close+0xde/0x1c0 [xe]
+> > [22982.116507]  #1: ffff8c2e28cc8480 (&vm->lock){++++}-{3:3}, at: xe_vm_close_and_put+0x161/0x9b0 [xe]
+> > [22982.116578]  #2: ffff8c2e31982970 (&val->lock){.+.+}-{3:3}, at: xe_validation_ctx_init+0x6d/0x70 [xe]
+> > [22982.116647]  #3: ffffacdc469478a8 (reservation_ww_class_acquire){+.+.}-{0:0}, at: xe_vma_destroy_unlocked+0x7f/0xe0 [xe]
+> > [22982.116716]  #4: ffff8c2d9aba6da8 (reservation_ww_class_mutex){+.+.}-{3:3}, at: drm_exec_lock_obj+0x49/0x2b0 [drm_exec]
+> > [22982.116719]
+> >                stack backtrace:
+> > [22982.116720] CPU: 8 PID: 5785 Comm: glxgears:sh0 Tainted: G     U  W          6.10.0-rc2+ #10
+> > [22982.116721] Hardware name: ASUS System Product Name/PRIME B560M-A AC, BIOS 2001 02/01/2023
+> > [22982.116723] Call Trace:
+> > [22982.116724]  <TASK>
+> > [22982.116725]  dump_stack_lvl+0x77/0xb0
+> > [22982.116727]  __lock_acquire+0x1232/0x2160
+> > [22982.116730]  lock_acquire+0xcb/0x2d0
+> > [22982.116732]  ? dma_buf_detach+0x3b/0xf0
+> > [22982.116734]  ? __lock_acquire+0x417/0x2160
+> > [22982.116736]  __ww_mutex_lock.constprop.0+0xd0/0x13b0
+> > [22982.116738]  ? dma_buf_detach+0x3b/0xf0
+> > [22982.116741]  ? dma_buf_detach+0x3b/0xf0
+> > [22982.116743]  ? ww_mutex_lock+0x2b/0x90
+> > [22982.116745]  ww_mutex_lock+0x2b/0x90
+> > [22982.116747]  dma_buf_detach+0x3b/0xf0
+> > [22982.116749]  drm_prime_gem_destroy+0x2f/0x40 [drm]
+> > [22982.116775]  xe_ttm_bo_destroy+0x32/0x220 [xe]
+> > [22982.116818]  ? __mutex_unlock_slowpath+0x3a/0x290
+> > [22982.116821]  drm_exec_unlock_all+0xa1/0xd0 [drm_exec]
+> > [22982.116823]  drm_exec_fini+0x12/0xb0 [drm_exec]
+> > [22982.116824]  xe_validation_ctx_fini+0x15/0x40 [xe]
+> > [22982.116892]  xe_vma_destroy_unlocked+0xb1/0xe0 [xe]
+> > [22982.116959]  xe_vm_close_and_put+0x41a/0x9b0 [xe]
+> > [22982.117025]  ? xa_find+0xe3/0x1e0
+> > [22982.117028]  xe_file_close+0x10a/0x1c0 [xe]
+> > [22982.117074]  drm_file_free+0x22a/0x280 [drm]
+> > [22982.117099]  drm_release_noglobal+0x22/0x70 [drm]
+> > [22982.117119]  __fput+0xf1/0x2d0
+> > [22982.117122]  task_work_run+0x59/0x90
+> > [22982.117125]  do_exit+0x330/0xb40
+> > [22982.117127]  do_group_exit+0x36/0xa0
+> > [22982.117129]  get_signal+0xbd2/0xbe0
+> > [22982.117131]  arch_do_signal_or_restart+0x3e/0x240
+> > [22982.117134]  syscall_exit_to_user_mode+0x1e7/0x290
+> > [22982.117137]  do_syscall_64+0xa1/0x180
+> > [22982.117139]  ? lock_acquire+0xcb/0x2d0
+> > [22982.117140]  ? __set_task_comm+0x28/0x1e0
+> > [22982.117141]  ? find_held_lock+0x2b/0x80
+> > [22982.117144]  ? __set_task_comm+0xe1/0x1e0
+> > [22982.117145]  ? lock_release+0xca/0x290
+> > [22982.117147]  ? __do_sys_prctl+0x245/0xab0
+> > [22982.117149]  ? lockdep_hardirqs_on_prepare+0xde/0x190
+> > [22982.117150]  ? syscall_exit_to_user_mode+0xb0/0x290
+> > [22982.117152]  ? do_syscall_64+0xa1/0x180
+> > [22982.117154]  ? __lock_acquire+0x417/0x2160
+> > [22982.117155]  ? reacquire_held_locks+0xd1/0x1f0
+> > [22982.117156]  ? do_user_addr_fault+0x30c/0x790
+> > [22982.117158]  ? lock_acquire+0xcb/0x2d0
+> > [22982.117160]  ? find_held_lock+0x2b/0x80
+> > [22982.117162]  ? do_user_addr_fault+0x357/0x790
+> > [22982.117163]  ? lock_release+0xca/0x290
+> > [22982.117164]  ? do_user_addr_fault+0x361/0x790
+> > [22982.117166]  ? trace_hardirqs_off+0x4b/0xc0
+> > [22982.117168]  ? clear_bhb_loop+0x45/0xa0
+> > [22982.117170]  ? clear_bhb_loop+0x45/0xa0
+> > [22982.117172]  ? clear_bhb_loop+0x45/0xa0
+> > [22982.117174]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> > [22982.117176] RIP: 0033:0x7f943d267169
+> > [22982.117192] Code: Unable to access opcode bytes at 0x7f943d26713f.
+> > [22982.117193] RSP: 002b:00007f9430bffc80 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
+> > [22982.117195] RAX: fffffffffffffe00 RBX: 0000000000000000 RCX: 00007f943d267169
+> > [22982.117196] RDX: 0000000000000000 RSI: 0000000000000189 RDI: 00005622f89579d0
+> > [22982.117197] RBP: 00007f9430bffcb0 R08: 0000000000000000 R09: 00000000ffffffff
+> > [22982.117198] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> > [22982.117199] R13: 0000000000000000 R14: 0000000000000000 R15: 00005622f89579d0
+> > [22982.117202]  </TASK>
+> > 
+> > Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+> > Cc: Christian König <christian.koenig@amd.com>
+> > Cc: Daniel Vetter <daniel@ffwll.ch>
+> > Cc: dri-devel@lists.freedesktop.org
+> > Cc: intel-xe@lists.freedesktop.org
+> > Cc: <stable@vger.kernel.org> # v6.8+
+> 
+> Patch and explaination makes sense to me.
+> 
+> Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 
-The patch titled
-     Subject: nilfs2: fix kernel bug on rename operation of broken directory
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     nilfs2-fix-kernel-bug-on-rename-operation-of-broken-directory.patch
+I guess for stable this is good since minimal, but after Thomas explaine
+what he meant with dma_buf_detach_unlocked I think that total sense as a
+follow-up patch maybe.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nilfs2-fix-kernel-bug-on-rename-operation-of-broken-directory.patch
+Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Cheers, Sima
+> 
+> > Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> > ---
+> >  drivers/gpu/drm/ttm/ttm_bo.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/drivers/gpu/drm/ttm/ttm_bo.c b/drivers/gpu/drm/ttm/ttm_bo.c
+> > index 6396dece0db1..2427be8bc97f 100644
+> > --- a/drivers/gpu/drm/ttm/ttm_bo.c
+> > +++ b/drivers/gpu/drm/ttm/ttm_bo.c
+> > @@ -346,6 +346,7 @@ static void ttm_bo_release(struct kref *kref)
+> >  		if (!dma_resv_test_signaled(bo->base.resv,
+> >  					    DMA_RESV_USAGE_BOOKKEEP) ||
+> >  		    (want_init_on_free() && (bo->ttm != NULL)) ||
+> > +		    bo->type == ttm_bo_type_sg ||
+> >  		    !dma_resv_trylock(bo->base.resv)) {
+> >  			/* The BO is not idle, resurrect it for delayed destroy */
+> >  			ttm_bo_flush_all_fences(bo);
+> > -- 
+> > 2.44.0
+> > 
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: fix kernel bug on rename operation of broken directory
-Date: Sat, 29 Jun 2024 01:51:07 +0900
-
-Syzbot reported that in rename directory operation on broken directory on
-nilfs2, __block_write_begin_int() called to prepare block write may fail
-BUG_ON check for access exceeding the folio/page size.
-
-This is because nilfs_dotdot(), which gets parent directory reference
-entry ("..") of the directory to be moved or renamed, does not check
-consistency enough, and may return location exceeding folio/page size for
-broken directories.
-
-Fix this issue by checking required directory entries ("." and "..") in
-the first chunk of the directory in nilfs_dotdot().
-
-Link: https://lkml.kernel.org/r/20240628165107.9006-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+d3abed1ad3d367fa2627@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d3abed1ad3d367fa2627
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/nilfs2/dir.c |   32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
-
---- a/fs/nilfs2/dir.c~nilfs2-fix-kernel-bug-on-rename-operation-of-broken-directory
-+++ a/fs/nilfs2/dir.c
-@@ -383,11 +383,39 @@ found:
- 
- struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct folio **foliop)
- {
--	struct nilfs_dir_entry *de = nilfs_get_folio(dir, 0, foliop);
-+	struct folio *folio;
-+	struct nilfs_dir_entry *de, *next_de;
-+	size_t limit;
-+	char *msg;
- 
-+	de = nilfs_get_folio(dir, 0, &folio);
- 	if (IS_ERR(de))
- 		return NULL;
--	return nilfs_next_entry(de);
-+
-+	limit = nilfs_last_byte(dir, 0);  /* is a multiple of chunk size */
-+	if (unlikely(!limit || le64_to_cpu(de->inode) != dir->i_ino ||
-+		     !nilfs_match(1, ".", de))) {
-+		msg = "missing '.'";
-+		goto fail;
-+	}
-+
-+	next_de = nilfs_next_entry(de);
-+	/*
-+	 * If "next_de" has not reached the end of the chunk, there is
-+	 * at least one more record.  Check whether it matches "..".
-+	 */
-+	if (unlikely((char *)next_de == (char *)de + nilfs_chunk_size(dir) ||
-+		     !nilfs_match(2, "..", next_de))) {
-+		msg = "missing '..'";
-+		goto fail;
-+	}
-+	*foliop = folio;
-+	return next_de;
-+
-+fail:
-+	nilfs_error(dir->i_sb, "directory #%lu %s", dir->i_ino, msg);
-+	folio_release_kmap(folio, de);
-+	return NULL;
- }
- 
- ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
-_
-
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
-
-nilfs2-fix-kernel-bug-on-rename-operation-of-broken-directory.patch
-
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
 
