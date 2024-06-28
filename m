@@ -1,107 +1,96 @@
-Return-Path: <stable+bounces-56100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20D691C68D
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 21:27:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D0B291C68F
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 21:27:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61E84B22E9D
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 19:26:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9007F1C21375
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 19:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3570774BF8;
-	Fri, 28 Jun 2024 19:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB7274055;
+	Fri, 28 Jun 2024 19:27:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="CSw6V+Fn"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0115B74E0A;
-	Fri, 28 Jun 2024 19:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC1554662;
+	Fri, 28 Jun 2024 19:27:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719602804; cv=none; b=d5MRApc0mPVe5nRxxZPfP/r2O7pBKQi3qU7HaSpKm9WXYvDcd9qrPhkRYocYucQw/tVvegN46GKyMbMA0LEKT0N2j1bjpxIN3NqXv0XDAt7WwxbfpJSB/nXKfdSVyN73ECNZrA1RMq4TUX21Pd8J1hUwmKKwdOXu0z/oErG49Rw=
+	t=1719602829; cv=none; b=YCvzaN8xHdn0k56YMwRL1Zz+zmfK9ssbQ2jjrJ2dOFHpn/P09v5dQw/2cD1TS54EssfF6P4cbrqGYtTdEBgO5vmxtq9cesr1Ua+QX4+cAbLEkzEfTED2VunHc6Pcr2yar1gwXDrEWPQBQh+Uqx9/tRdF3xbaNVqJb5Cg9d3SDYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719602804; c=relaxed/simple;
-	bh=Y0QvLg6bXlP/3+Lp7CNqG4UnW2xON9omx8EiHg8pqg4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d8U1wSDUUyIcEQPIdmXzEwrDdhlfrZlGoDl9iaIZ2NTxvCE4ts/2oWrfZ5+LSwMeXZqTaFsTXmzDKy3LoBEDke5BVqlGd0fp0gX2DDLmHC9F9IfpX7AMAWw4jxdepWROL1voH8c/H5a3GVFaHAfz1h3Stp4JiWmbxzmvyFpB7f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=ucw.cz; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 308601C009B; Fri, 28 Jun 2024 21:26:40 +0200 (CEST)
-Date: Fri, 28 Jun 2024 21:26:27 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.9 000/250] 6.9.7-rc1 review
-Message-ID: <Zn7nDgMdq+qyGX7J@duo.ucw.cz>
-References: <20240625085548.033507125@linuxfoundation.org>
+	s=arc-20240116; t=1719602829; c=relaxed/simple;
+	bh=485Fk9bkb6KlofxU+R4jbvQ87vsY7/owh8sq1O1xVG0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kokKzE9MRxzfLXiE/zHanneGZFVwaFXDXYknT/vkmy7e5sH8KqeCw/3Sv2D4V3obKLsNWLbG6mJP9ftYBzX79BEy4bXZBt4oXf3+DcJj0ZwPdeb7P7u9UT7OfAMPyf0aFF7WI2qmKKaQKnESnfoVs7xezGQZmgnHOz/osch0IQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=CSw6V+Fn; arc=none smtp.client-ip=199.89.1.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 009.lax.mailroute.net (Postfix) with ESMTP id 4W9ln13zVjzlnNry;
+	Fri, 28 Jun 2024 19:27:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1719602816; x=1722194817; bh=485Fk9bkb6KlofxU+R4jbvQ8
+	7vsY7/owh8sq1O1xVG0=; b=CSw6V+FnF1T9nPtu9cz4hErzJc5YB86TJltQ3YOL
+	QepTaCdpERfk51mQKuWpzkI0Yhn3mGlTQIZITvY7vvyWhIue38OmdBJZVKEGbatz
+	k5sUxj4AEaOB15PNMRmWx+aRoPqUOq4f3qa0o/l/CSRkU8Oz2ZqNwYzpiotZKE4+
+	TDFjXaEFGcSZOrtgJ74fShgu9+50xxxVkRQMyysIqSJnN/Ah3y8wYosi7uoEaFuf
+	PgbKKYBsKtzC/V/bgYh6xRp8d0Sx2uhNKoMbbLz8u5zEu/MawqFWQb3oq6ndI+KH
+	6A61toxxEz/VrIek/4KPGykWsm2fge2q90ZeNJoxBowGRA==
+X-Virus-Scanned: by MailRoute
+Received: from 009.lax.mailroute.net ([127.0.0.1])
+ by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id qVxaLc59fd0F; Fri, 28 Jun 2024 19:26:56 +0000 (UTC)
+Received: from [192.168.50.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4W9lmp29p4zlnQjf;
+	Fri, 28 Jun 2024 19:26:49 +0000 (UTC)
+Message-ID: <292a598b-6cc8-48b5-bf1f-17a27ba8c57a@acm.org>
+Date: Fri, 28 Jun 2024 12:26:47 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="j4z3n0NlBc9JNXrS"
-Content-Disposition: inline
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] ufs: core: fix ufshcd_abort_one racing issue
+To: peter.wang@mediatek.com, linux-scsi@vger.kernel.org,
+ martin.petersen@oracle.com, avri.altman@wdc.com, alim.akhtar@samsung.com,
+ jejb@linux.ibm.com
+Cc: wsd_upstream@mediatek.com, linux-mediatek@lists.infradead.org,
+ chun-hung.wu@mediatek.com, alice.chao@mediatek.com, cc.chou@mediatek.com,
+ chaotian.jing@mediatek.com, jiajie.hao@mediatek.com, powen.kao@mediatek.com,
+ qilin.tan@mediatek.com, lin.gui@mediatek.com, tun-yu.yu@mediatek.com,
+ eddie.huang@mediatek.com, naomi.chu@mediatek.com, chu.stanley@gmail.com,
+ stable@vger.kernel.org
+References: <20240628070030.30929-1-peter.wang@mediatek.com>
+ <20240628070030.30929-3-peter.wang@mediatek.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20240628070030.30929-3-peter.wang@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 6/28/24 12:00 AM, peter.wang@mediatek.com wrote:
+> When ufshcd_abort_one racing with complete ISR,
+> the completed tag of request's mq_hctx pointer will set NULL by ISR.
+> Same as previous patch race condition.
+> Return success when request is completed by ISR beacuse ufshcd_abort_one
+> dose't need do anything.
 
---j4z3n0NlBc9JNXrS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+dose't -> doesn't. Anyway:
 
-Hi!
-
-> This is the start of the stable review cycle for the 6.9.7 release.
-> There are 250 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-CIP testing did not find any problems on 6.9.7:
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.9.y
-
-6.6, 5.4 pass our testing, too:
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.6.y
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-5.4.y
-
-I expect 5.15 will be ok, too.
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-5.15.y
-
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
-
-Best regards,
-                                                                Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---j4z3n0NlBc9JNXrS
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZn8OYwAKCRAw5/Bqldv6
-8gcLAJwOy6wMbFn4D2uR7pexUd4YeHv2xACfaZEW1WJ3TJIhliojRswQutAc6vU=
-=d3U7
------END PGP SIGNATURE-----
-
---j4z3n0NlBc9JNXrS--
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 
