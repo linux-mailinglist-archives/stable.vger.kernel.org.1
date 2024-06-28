@@ -1,128 +1,117 @@
-Return-Path: <stable+bounces-56089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D626991C5A9
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 20:27:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B68391C5FB
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 20:43:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1255C1C22EB7
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 18:27:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 176E41F215D7
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 18:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FCD81CD5A0;
-	Fri, 28 Jun 2024 18:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C9B1CD5BE;
+	Fri, 28 Jun 2024 18:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GI30o1qA"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="gOE6ZzD8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD082DDC0;
-	Fri, 28 Jun 2024 18:27:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA23925634;
+	Fri, 28 Jun 2024 18:43:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719599251; cv=none; b=X8bSIZzq31sj1NeAn85Oy0XfnTtgsqwVqS10+fZjmXUXnQX4PmUej0zk6GH0/81IaET9FjtvERiwNHFHq0OUJh0yKSiVbYGZy0l6iKqde89DyOupsqKghLPiTCo/7D2m4Mjr352dQjN2t/osxnuSQI53zCXQ9B+1xs8TX/llDgc=
+	t=1719600208; cv=none; b=mqE6Dj4fLUp6KaqNbnVuZyHdseyfELW9gr21dO7ijJpO+6oxjTl7+q0Aszj6qcgqcKtW2TI1wk0tblBO2Ha/opyMB4/p26PN+xctYhB0OzRMSAHaMMvK1vvXGZ/W1nqJ+ZHmqcnvBXAxTWh+dljN7FMTUvf154s72hHhh/4VEGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719599251; c=relaxed/simple;
-	bh=EoIMkdip0Jqkq5yLw0PSMZmQ3Q58+ZzMoc5HAn1XXLs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BbIm2Wuia+lgFy94Ka1j/jB02c2vN1ehdcXvPOcM/8JgPSh9r15z/BAl+wA5dbfy4FN3QDJ608N0AOE+sYnuxFpsoYTEZqgRM80BK8NTJXilSxTrgotCfBWlOt81e/UXqfs011nCu6ADQb1+3wK+flnn9nLJFd2QpsRoLoi0BCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GI30o1qA; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2ec58040f39so8868281fa.2;
-        Fri, 28 Jun 2024 11:27:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719599248; x=1720204048; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dgGUkmn1jPeeQuMXMcfk1hTstH8mcemeot+l8YFexZY=;
-        b=GI30o1qAMbHkJLUO5EW5BTAZ3xJa6KaguK7UJ9zEidYrgO0EI9hEUclEwctgjRPRoB
-         Hdzq81WTikfhnJU05GBLg5TOYFBGZqgCyhrsYaQv5pqRQDYQQkF4ykpeZsSqK39bhMVl
-         E/B8UeF6PNTyy/00+v06quOEQM/YbrfraevBf1meIdfJWIajrpe47sbFdc55ZU+5IvZm
-         q2EVKkdKAVXSCo22gMZuyhZUp48ySdhCFu4prp1RWKEdlJuq7rFLXGZiLj+Tvs9lcYmJ
-         ediAf3qorZ/eX1xHBzA0qYeE39YyC14kNhYZL8VYx4+bLjScO5kzyWyd1ojLej3crKlS
-         z0wQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719599248; x=1720204048;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dgGUkmn1jPeeQuMXMcfk1hTstH8mcemeot+l8YFexZY=;
-        b=XZm20R3yE+g3jDkUXza+GwxmMezLCK6WEjPH3uYEVgr1lrkcODl2GixLxyztpHSF4u
-         KngAqIA/C1qyQdEGyZ6hNLI72ICQ0n1S/K4mZts1/zM+/tzbOl1TaXwMhXkYpsGt/epm
-         s4NK60Q5qf6VJyhlIvqeul9Dsx8zvdL7+L89IyqIHrfvk/4sXAc/hfNBUqC7P6cO8VS8
-         JnIHofcsDD5Ju7rG3Y0tQPIB8lil37ucKfX4Hhki5JyDyFoB0LYdhJ/vCRC+hZvHj+F0
-         N1YSui13+zkaPFXRvgHpXb2aizSuPHdJc6r/mUpL3cW2OkeSa7ABET5yaCYSpStFP8kN
-         JAIA==
-X-Forwarded-Encrypted: i=1; AJvYcCW7T4Fg/8a+yJOu7pUigMLsXj63v2W47fAXOHjiS8dHjMyaCYJlTcUxRuMD7E0kBtyrHIF2IT1lszb0ESc81YAqarFl/THD7zekCROMPs/pqmFVpDoNDIKclLTPBErQDwFCrqIZ
-X-Gm-Message-State: AOJu0YzTkkUAyIb/wcNWJCvPeB3ZjozvcF0ooIayzkH9+++y83Bsnd8M
-	kKrvyES6K6Rm6tPTeQXAv853An5TEACyNk9gexyWd+bwpW8BkJ561mstPKgtSLND0nCMNI8PJoR
-	+0ccDr25M3n0HVkfMy50ykwUYTZwWkQ==
-X-Google-Smtp-Source: AGHT+IHS2YMlbAwnhePYHqSgke0BKfxRk6YNzoY3zHWvbGGz8ba49/3S2DgaqWbp8u3oQrZOZoMWNMsUfdQVPv11hRU=
-X-Received: by 2002:a2e:87d3:0:b0:2ec:500c:b2e0 with SMTP id
- 38308e7fff4ca-2ec593e0cc0mr112746701fa.22.1719599247749; Fri, 28 Jun 2024
- 11:27:27 -0700 (PDT)
+	s=arc-20240116; t=1719600208; c=relaxed/simple;
+	bh=KJMUkM1jYGKiAPCeNxgdd6t4iQyHYgr8dmZgt67P+VI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uOda0EvdkLhOtcOFTqa4OCnCuOdeXflvtASHuDTaeljSMQIull+mn+Rp01hcs8ZmUVOqeovUduK/ACloJrt00a2bZEshaCos5jJvHR4tQxR1bjkOnZ+wmZfNerrtWhej9YVE82UDxqGTC0FKgSa8SW094T4pDPgqd+HA7wFKob4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=gOE6ZzD8; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1719600173; x=1720204973; i=markus.elfring@web.de;
+	bh=8kLvuMEKGAQyx6cCtZ+QA/+5maKkTMNiGRPBdMABdqU=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=gOE6ZzD8J+wqX9HjXsnxngvxbfKfQDJSMN1B5vqGqN8glDHH5e613E8jTqeSpqyI
+	 zhAjOn78zJCZlKCBIortA+tT29V46BeqHZ167JJ4CcCb+kr+kEpKPnCHhSZWw/WHJ
+	 W6Eg/GMjch8C5yUbAk7J5pZlyUMOR8GuAxU4lRfVMk5+K4C0rbW9QaDoHoypf/UDU
+	 elRxkfnKZCbYvHI9z6ZgKKgjSAEdgeEeFBPdAgFkP+DmnJML4R4+xlHgM8oY2W/9B
+	 kbeFKt59ND/RGhE9B4d/r7KmR9AuM/ZnmTRNJqD3mGBzeBMmY2WlJSt48uF4AoWsp
+	 hwt05fS7wFgy3zUluw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.91.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N2BHw-1sSSnL1o0k-00wyOJ; Fri, 28
+ Jun 2024 20:42:53 +0200
+Message-ID: <a91bbb5f-8980-420b-b465-97691203347e@web.de>
+Date: Fri, 28 Jun 2024 20:42:50 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240627221413.671680-1-yang@os.amperecomputing.com> <Zn5ZmPQCdvHTCwAn@infradead.org>
-In-Reply-To: <Zn5ZmPQCdvHTCwAn@infradead.org>
-From: Yang Shi <shy828301@gmail.com>
-Date: Fri, 28 Jun 2024 11:27:15 -0700
-Message-ID: <CAHbLzkodRFsBWvZ8zZZVeFTNzrwV0PNpT2XmUwFxL1KygPmd4Q@mail.gmail.com>
-Subject: Re: [v2 PATCH] mm: gup: do not call try_grab_folio() in slow path
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Yang Shi <yang@os.amperecomputing.com>, peterx@redhat.com, yangge1116@126.com, 
-	david@redhat.com, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [v3] drm/nouveau: fix null pointer dereference in
+ nouveau_connector_get_modes
+To: Lyude Paul <lyude@redhat.com>, Ma Ke <make24@iscas.ac.cn>,
+ nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ Daniel Vetter <daniel@ffwll.ch>, Danilo Krummrich <dakr@redhat.com>,
+ Dave Airlie <airlied@redhat.com>, Karol Herbst <kherbst@redhat.com>
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ David Airlie <airlied@gmail.com>,
+ Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ Julia Lawall <julia.lawall@inria.fr>
+References: <20240627074204.3023776-1-make24@iscas.ac.cn>
+ <d0bef439-5e1d-4ce0-9a24-da74ddc29755@web.de>
+ <790dbe8aee621b58ec0ef8d029106cb1c1830a31.camel@redhat.com>
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <790dbe8aee621b58ec0ef8d029106cb1c1830a31.camel@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:PIL72wbX7r9QZ/mWZLwKF7K8YC1+hNv2EH5ZjPvIhLoaNH3QPtb
+ L0VAS7M7j07sfJZ/F2MWvpWAIYJTVzjB2x9tAU2pio8nGAcnftuaTTEErc0GHDci0TO1ChN
+ w3ov5KWvo/DVz3Bi36FPjwsBvfxfbTcMYBVx2h52SSNf2UIj9lDszwyw/AxB2i0YQzaZdQm
+ fRKP3/stIlvW1CE7tGTiw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:pweuqzOFyZE=;Tgc+8iwH3HQUokQiNbFoAlSoTjM
+ TPqxWWxXB9kukXsacDcZZQRwO6QLIf63UpfXR9PhK3NVUkI8UUpl42ABm+AfcX1qi8D7jeKNK
+ hVR6ESGiYP6oL9MlAy4IeRCLQ5Fjuk/44pO5mmjNy3GqhRz/hJybqXd/eEnAMwRENsJ8swmTb
+ AudSqXJtUManOQZD/eCqQEHy6Fv8od0Q8MPoBW9FENgahpZLAsxTM01TNIrZ9JTmW96Xe5JGt
+ 1W5KsbX7HAOZO278O+qjq9CIVo+p7tqiVoBPiYyCbNg0geKnu10yHJFZQM5m/Z5Z73ulekfhH
+ qyEz4iYi15gxBAEy0Rr+g2e8DsmaXiU8SHDy7scZB0w4j0kdAXO5lD1n6Z6zX2U9Gku8hKWSQ
+ LtglatLo2GJb6fZhOXNfx5aFtFYzGREe00oEEWeE2T8m5gAGlstVbPbQRD5dTAarCLaQrTL6c
+ Q0oMHEzovXXnkEuoj5a8j6qnSu1Qn6RQRa/DLARNk0wn/37Fi2mxBp/zsYImhCQf+2xxcRTT+
+ ohVvx2vb4JV0PiHdIOeIJmW7+YsZbRsmhqAxg/K3OqE62TVXGWreLuKIpA5V4GYWKYpwJVEsg
+ RlsAGIzNM0BT84HQwDf+ArLo34CL5TOkxRzXg0d+Zbrbpwou18p5OpDDXe145/Tz1qDfmWPd5
+ bUnLLOGt9RtDtHOInG1sZKrrLYrRV5xKkyTGXsJVNC3ZsmSjPgQAEJ6AHxGfWmo0pV3zx/hct
+ 60bQ3TPjeKghL8yKkL4FO1TrCMiE7Jf80xr7Jtrw62Uif5PqvysTUnRyDRk0bC0BrRZDelI1L
+ EoJ0Q8uvOPxCha6jnUR0jjS/CH7OFCe1KHPrCaUrOJ9JY=
 
-On Thu, Jun 27, 2024 at 11:35=E2=80=AFPM Christoph Hellwig <hch@infradead.o=
-rg> wrote:
->
-> > +int __must_check try_grab_folio(struct folio *folio, int refs, unsigne=
-d int flags)
->
-> Overly long line (same for the external declaration)
->
-> > +     struct page *page =3D &folio->page;
->
-> Page is only used for is_pci_p2pdma_page and is_zero_page, and for
-> the latter a is_zero_folio already exist.  Maybe remove the local
-> variable, use is_zero_folio and just open code the dereference in the
-> is_pci_p2pdma_page call?
+> (...I doubt I'll get a response from Markus,
 
-Thanks, Christoph. Good point, I think we can use is_zero_folio and
-open coeded it in is_pci_p2pdma_page.
+Why?
 
-And all the format problems will be solved in v3.
 
->
-> > +             ret =3D gup_hugepte(vma, ptep, sz, addr, end, flags, page=
-s, nr, fast);
->
-> Overly lone line.
->
-> > +             folio_ref_add(folio,
-> > +                             refs * (GUP_PIN_COUNTING_BIAS - 1));
->
-> Nit: this easily fits onto a single line.
->
-> >                       if (gup_hugepd(NULL, __hugepd(pmd_val(pmd)), addr=
-,
-> > -                                    PMD_SHIFT, next, flags, pages, nr)=
- !=3D 1)
-> > +                                    PMD_SHIFT, next, flags, pages, nr,=
- true) !=3D 1)
->
-> Overly long lin (same in the similar calls below)
->
->
+>                                              but I certainly want to
+> make sure they are a bot
+
+Can I ever adjust your views into more desirable directions
+(as it occasionally happened with other contributors)?
+
+
+>                          and not an actual person before removing them
+
+I hope still that affected development discussions can become
+more constructive again.
+
+Regards,
+Markus
 
