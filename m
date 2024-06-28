@@ -1,156 +1,123 @@
-Return-Path: <stable+bounces-56084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D60391C530
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 19:49:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7334D91C56C
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 20:08:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCE88288702
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 17:49:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5821B24E13
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 18:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB891C0DF0;
-	Fri, 28 Jun 2024 17:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CDF46441;
+	Fri, 28 Jun 2024 18:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S3iqH3LN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qtc1yFUg"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B0425634
-	for <stable@vger.kernel.org>; Fri, 28 Jun 2024 17:49:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829F21B94F
+	for <stable@vger.kernel.org>; Fri, 28 Jun 2024 18:07:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719596956; cv=none; b=R9Me8IN930MNpUq5gn1ES5aCIZsc7FFMbhZesgKJpEoUN8J2cusUcCpxrgobsrr9c+ooVThQewyaldMd1yH+BDoAAwXFJE3co3zkCT+drgjT5kWtUdy2w3iGZ0sfHIKTaOzNyNuRBnGDHuVeTOhqRTJw6s1J/13UXv6e6y1WyBU=
+	t=1719598075; cv=none; b=uApdistDaVsQ/9TpUFmuq3EuRsabnVI3PePL/QbZQUGp4Wozeg/D1f4Y5xGLRCFLR1Vc27Gj66l6gx28nHySw8TYq1Ok8cmQhOPrxJSW5FDkPlCZdVVd1KN5QYe+BfT4gzonINYYHEzJy9AbzOsEFV/X70NQY8Wlg35kTwiY0Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719596956; c=relaxed/simple;
-	bh=TAd485aghXUIWa3RvWf2lTA7jc9MG6PA9b0qtG0r2DY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rt9+E5DgehpQQf/RcZdu5HtM0+fSKJLQXhXIV2asCDd+aIuiutrU8aZT0QTyTVctJFM6qwUh32iFZEQH5spjqa607HEIrs+Xt1oXB34J1Uo6NPDm4WVSm7nxk1UK6C5oiQoXjJVrVTK/hseAtpnmcJhIhfbIJnmU7cZuvxHUsUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S3iqH3LN; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1719596954;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TAd485aghXUIWa3RvWf2lTA7jc9MG6PA9b0qtG0r2DY=;
-	b=S3iqH3LNAvUoNUWHov2Wptrhks49cUWK8R52LSCa6n1Pc1II1Ns/+zOUNngEfoxtEs8/xz
-	yKZKfqCYJw5ne/wpAiw74zMZd6uBrvgoeEWeCbmCR694IwAJFhOULeQtUEbUOp7d8imF59
-	EEkH2z7c0yyueC1UlfMlX681dX7djho=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-120-W3phm9VVOPq0NcGKo0c5Zw-1; Fri, 28 Jun 2024 13:49:12 -0400
-X-MC-Unique: W3phm9VVOPq0NcGKo0c5Zw-1
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-6b5176fa67eso11065846d6.2
-        for <stable@vger.kernel.org>; Fri, 28 Jun 2024 10:49:12 -0700 (PDT)
+	s=arc-20240116; t=1719598075; c=relaxed/simple;
+	bh=KyfcMeNeqKElnODem4wkulYLOb2bJUgjz0mqiXMtMBI=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=L0sBehSn23cfOk5nijSXExNqSKjGtKfw7sXtSQp7IOdXcOm2YeOi2OYi0yMbVdAcUm7ajUpHH9KE9eaO5Wgjz82HKewjHhYi5Muw6K5UyZ0NNGA+10V2PbUDu1VAQg+W6Mcq3Gm9YQbPBOLTpYSsQdGyyx9IvR0q9lgGCp8YHlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qtc1yFUg; arc=none smtp.client-ip=209.85.166.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-376012bcc33so3998685ab.2
+        for <stable@vger.kernel.org>; Fri, 28 Jun 2024 11:07:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719598073; x=1720202873; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:content-language:to:subject:from
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ULZ1Tsj9d03NTFx3zSTqx/lnRuDyqw7SgKAhFNR/Yp0=;
+        b=Qtc1yFUgzGbisu1mrCQQPsG4wRizSiKbE0tmr5cm85UQMizBFO9i3OBZcpzpi5XThO
+         VcwDDkrXy2jFTSSqzGMYeejW77bl8KrPtNlSkAomkNOiSdG40bpP7djmuFI2x630qdeQ
+         iw2WyL0+vl06CEIXKygs98RZzDaFB9GSMPupD6EQuNPILzcmEjow/pjSo4CAVoTycXnc
+         O/ygjprpx/xb4UaieP2KnCVrSJeVSFLoYhggePdVQc3nxBoUg+uNOcuYCb4V6Lm3q7gg
+         08jh2nnzD1OWAzkj81MZJ6fqfOGMUyEOy5cPDMjZDYHuFgQgACjwtBqD+Lp5G2Fw+Zfd
+         jolQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719596952; x=1720201752;
-        h=mime-version:user-agent:content-transfer-encoding:organization
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TAd485aghXUIWa3RvWf2lTA7jc9MG6PA9b0qtG0r2DY=;
-        b=jSHH7l8LdiunF8W6xPj61sGzKlbuhBwCGcPN1BBwhbKTEt0oAeJ7VEnbH5xco9QBhU
-         PA5jCgGq7nkGGLgJUWnUttuDivwcCPoPdCA/4hJFCYQ4TlGiUYHFselMCZLYOLaeoL1Z
-         HEIpWDAZdyl6NmwXFdY4vMYDbpYm2Ho+Os91C1/CEXA2g51ugnAJmXqsdR8tuzNkp12/
-         y9LbZfnm+3ks52vtX0GvUbw5MnQLQMhscj2x1DLPru6vyVb69aGqQSKVnqWQuIRg3gDA
-         LyOAxjTWQjjpTuH07UvRRlqEZMYIXT+N6IckbrFl2fKKfAbFutEFi9M/JrZbnOsQhmau
-         LONg==
-X-Gm-Message-State: AOJu0YzTSpiHxtXlJhyDwrr9pCx8ajV64TJLaTtn0NPp2urA9ApiUSVE
-	hskMGDBmOo8B3M+YOk8afDqA3KBWdqUpFYLLepdmuz5iZAI2E/9lcHaN2nQk5LD6sek+cQE5jGJ
-	OIlbcTJx4YFPgGjha3M5uKIhOMK9phOJkXJ1n59Gd4TXCVXUNi5bI+w==
-X-Received: by 2002:ad4:4082:0:b0:6b0:76f1:8639 with SMTP id 6a1803df08f44-6b540aaa739mr160298546d6.42.1719596952150;
-        Fri, 28 Jun 2024 10:49:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFD6uWQmG4g/igtbloLZSfV+o6cXp2Ckk4uZLpiMQfw5WzwRbofwx6QnvQrMRlxIyNBmHOHyQ==
-X-Received: by 2002:ad4:4082:0:b0:6b0:76f1:8639 with SMTP id 6a1803df08f44-6b540aaa739mr160298396d6.42.1719596951873;
-        Fri, 28 Jun 2024 10:49:11 -0700 (PDT)
-Received: from chopper.lyude.net ([2600:4040:5c4c:a000::789])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b59e627242sm9625366d6.130.2024.06.28.10.49.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Jun 2024 10:49:11 -0700 (PDT)
-Message-ID: <790dbe8aee621b58ec0ef8d029106cb1c1830a31.camel@redhat.com>
-Subject: Re: [PATCH v3] drm/nouveau: fix null pointer dereference in
- nouveau_connector_get_modes
-From: Lyude Paul <lyude@redhat.com>
-To: Markus Elfring <Markus.Elfring@web.de>, Ma Ke <make24@iscas.ac.cn>, 
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, Ben Skeggs
-	 <bskeggs@redhat.com>, Daniel Vetter <daniel@ffwll.ch>, Danilo Krummrich
-	 <dakr@redhat.com>, Dave Airlie <airlied@redhat.com>, Karol Herbst
-	 <kherbst@redhat.com>
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, David
- Airlie <airlied@gmail.com>
-Date: Fri, 28 Jun 2024 13:49:10 -0400
-In-Reply-To: <d0bef439-5e1d-4ce0-9a24-da74ddc29755@web.de>
-References: <20240627074204.3023776-1-make24@iscas.ac.cn>
-	 <d0bef439-5e1d-4ce0-9a24-da74ddc29755@web.de>
-Organization: Red Hat Inc.
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
+        d=1e100.net; s=20230601; t=1719598073; x=1720202873;
+        h=content-transfer-encoding:cc:content-language:to:subject:from
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ULZ1Tsj9d03NTFx3zSTqx/lnRuDyqw7SgKAhFNR/Yp0=;
+        b=Uo9fooHMLX0OSA4tVj/S1jFtZHa2Fpd9rf8pt6EkrLqNQ8eAU3SfyVgIsVeHnjjbmm
+         0ph8qgN3D1Z04gEb/9veRsVF9W3kUZh4Z0uouC+lm39vzqN0/Nedf07t2BwWjzOCtnAI
+         k4yW4mBM4fqebxPR4krDuet6kbwO95S7liUO6TWb+F2lbyYza+eKifEqOBIh+QfRE/6U
+         Cp3Lpy07WGb2khmWv1PtkGJLM/BZ1NO4FGOItKnZZwJtlQ7hABhBgf22pBBJhap2Nyuk
+         ucSNc4VyiMsexzXVDQ+DWacxHjkyjyCBxZ1bGZ1Dr1xWqaIYkew2WGHQ7qycBf2if3nq
+         Wrkw==
+X-Forwarded-Encrypted: i=1; AJvYcCX8aLsESGhMLMuY0LPWa21qItfZUUZTFuJpxVc9GH8Xsy3jqOxm4yhET9I8OLEoKYV2P3W1QSz71HUae/Tb69R6g0J62YW1
+X-Gm-Message-State: AOJu0YzbrZBIkPjDJxP+8PuFEItOD8mqljyGhjBSuGaO5TB2GGrE8nBQ
+	kss+OSiD3HYdfhFsGMLy91OchwbBqVgs4DigxNM5Arg3V/0/LT5I+U3E2tkc
+X-Google-Smtp-Source: AGHT+IGFcPS9puQ9ja7KDI0Yt6cju0TLyfpQNBIJMcTpRTRK9xAtmExiqfGX+nVSzEVhpjkslBEtGQ==
+X-Received: by 2002:a92:c241:0:b0:375:9d6d:12fc with SMTP id e9e14a558f8ab-3763f641476mr203100865ab.19.1719598073592;
+        Fri, 28 Jun 2024 11:07:53 -0700 (PDT)
+Received: from [172.26.252.3] (c-75-71-174-102.hsd1.co.comcast.net. [75.71.174.102])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-37ad29827d6sm5307495ab.32.2024.06.28.11.07.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 28 Jun 2024 11:07:53 -0700 (PDT)
+Message-ID: <54398cb8-92e0-4ed2-8691-38f6d48efc9a@gmail.com>
+Date: Fri, 28 Jun 2024 12:07:52 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Clayton Casciato <majortomtosourcecontrol@gmail.com>
+Subject: [PATCH 6.1.96] gfs2: Fix slab-use-after-free in gfs2_qd_dealloc
+To: rpeterso@redhat.com, agruenba@redhat.com
+Content-Language: en-US
+Cc: cluster-devel@redhat.com, stable@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Ma Ke - I assume you already know but you can just ignore this message
-from Markus as it is just spam. Sorry about the trouble!
+[ Upstream commit bdcb8aa434c6d36b5c215d02a9ef07551be25a37 ]
 
-Markus, you've already been asked by Greg so I will ask a bit more
-sternly in case there is actually a person on the other end: you've
-already been asked to stop by Greg and are being ignored by multiple
-kernel maintainers. If I keep seeing messages like this from you I will
-assume you are a bot and I will block your email from both DRI related
-mailing lists (nouveau and dri-devel) accordingly. You've done this 3
-times now.
+In gfs2_put_super(), whether withdrawn or not, the quota should
+be cleaned up by gfs2_quota_cleanup().
 
-(...I doubt I'll get a response from Markus, but I certainly want to
-make sure they are a bot and not an actual person before removing them
-:)
+Otherwise, struct gfs2_sbd will be freed before gfs2_qd_dealloc (rcu
+callback) has run for all gfs2_quota_data objects, resulting in
+use-after-free.
 
-On Thu, 2024-06-27 at 11:02 +0200, Markus Elfring wrote:
-> > In nouveau_connector_get_modes(), the return value of
-> > drm_mode_duplicate()
-> > is assigned to mode, which will lead to a possible NULL pointer
-> > dereference on failure of drm_mode_duplicate(). Add a check to
-> > avoid npd.
->=20
-> A) Can a wording approach (like the following) be a better change
-> description?
->=20
-> =C2=A0=C2=A0 A null pointer is stored in the local variable =E2=80=9Cmode=
-=E2=80=9D after a call
-> =C2=A0=C2=A0 of the function =E2=80=9Cdrm_mode_duplicate=E2=80=9D failed.=
- This pointer was
-> passed to
-> =C2=A0=C2=A0 a subsequent call of the function =E2=80=9Cdrm_mode_probed_a=
-dd=E2=80=9D where an
-> undesirable
-> =C2=A0=C2=A0 dereference will be performed then.
-> =C2=A0=C2=A0 Thus add a corresponding return value check.
->=20
->=20
-> B) How do you think about to append parentheses to the function name
-> =C2=A0=C2=A0 in the summary phrase?
->=20
->=20
-> C) How do you think about to put similar results from static source
-> code
-> =C2=A0=C2=A0 analyses into corresponding patch series?
->=20
->=20
-> Regards,
-> Markus
->=20
+Also, gfs2_destroy_threads() and gfs2_quota_cleanup() is already called
+by gfs2_make_fs_ro(), so in gfs2_put_super(), after calling
+gfs2_make_fs_ro(), there is no need to call them again.
 
---=20
-Cheers,
- Lyude Paul (she/her)
- Software Engineer at Red Hat
+The origin of a cherry-pick conflict is the (relevant) code block added in
+commit f66af88e3321 ("gfs2: Stop using gfs2_make_fs_ro for withdraw")
 
+There are no references to gfs2_withdrawn() nor gfs2_destroy_threads() in
+gfs2_put_super(), so we can simply call gfs2_quota_cleanup() in a new else
+block as bdcb8aa434c6 achieves.
+
+Else braces were used for consistency with the if block.
+
+Sponsor: 21SoftWare LLC
+Signed-off-by: Clayton Casciato <majortomtosourcecontrol@gmail.com>
+---
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 302d1e43d701..6107cd680176 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -591,6 +591,8 @@ static void gfs2_put_super(struct super_block *sb)
+ 
+ 	if (!sb_rdonly(sb)) {
+ 		gfs2_make_fs_ro(sdp);
++	} else {
++		gfs2_quota_cleanup(sdp);
+ 	}
+ 	WARN_ON(gfs2_withdrawing(sdp));
 
