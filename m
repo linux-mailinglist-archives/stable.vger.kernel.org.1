@@ -1,129 +1,136 @@
-Return-Path: <stable+bounces-56062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D1F891BD3C
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 13:18:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF7C91BD92
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 13:37:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84E711C21608
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 11:18:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B7CCB2240D
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 11:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA21155A56;
-	Fri, 28 Jun 2024 11:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D58715747C;
+	Fri, 28 Jun 2024 11:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IdPk/6ij"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uGXZQM/G"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DD51865A;
-	Fri, 28 Jun 2024 11:18:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EA71459EF
+	for <stable@vger.kernel.org>; Fri, 28 Jun 2024 11:37:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719573496; cv=none; b=oAOeFWs2t6DsSKL+K9q9qvVa6CthPJPhZ1oh30EROgHG1h1SMxaRHx/hXTPrWTqu6Udvn3ZTCj5cn9JLOJ9nXlakwxcohR3gjvxNgR61G2qxA4K2onO5YCjsRrQqjTJuqACfEbCaz1RP6/hFJspleCEHzc7Q+aJiVqtH2gHXmPU=
+	t=1719574633; cv=none; b=om8ApfgswGipYN2yYvk6IeqWLTzTuozzHkttoksWWfic3R/QLL7wXPfqVaXYjHyD4YXhLJFa03szGzBVjXzKt9Tazkb3ZE1NaVRcv2r85/e8GPC8XvMv5nys9pQFekVrdjrlLnJqrV9mpj0+D/Q+72+XgW9ktDYTgAySJzTRL+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719573496; c=relaxed/simple;
-	bh=lj3alnjoF6IS2vUlkaWQ49CLsjb6nBsT1IQIE4C6OPo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s/GkTXUGDRu35rsBpRPCeRcivN4HvLa8sjmh+7sEi2x+icvS2yVBcUtA1+5FbyafkkYQLl/62cayvKKWiCG2YIlLVUqegaRJ3qcYaxrwx67bZWgvBDBY+5Yc+UY5t/OZkWbMkh+N7AGGg/XZWBbYecb9zzqK8MtW9COYiepQBmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IdPk/6ij; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-42138eadf64so4327465e9.3;
-        Fri, 28 Jun 2024 04:18:14 -0700 (PDT)
+	s=arc-20240116; t=1719574633; c=relaxed/simple;
+	bh=uvNcnB9Ff5fU7B8IHkw9VTflTK0qbmhPT0ocf1uno4w=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=FZjOnqXbJXi+e/giXFfyjxAXEgg8awBARVLm7viVeCuEEP2X8nzkTYSnKtzIxWQydUzvZJ1Ded4QLojYPGyx4VL/tNyyRbgXu9HJ/v7zTehc8ZN2M+JvJYRSc2PNzqkQZNhSQ2EgDKjbo0XRS5ppfxrvPDOLzDvJaiFvumSfW9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uGXZQM/G; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-366de090da9so291707f8f.1
+        for <stable@vger.kernel.org>; Fri, 28 Jun 2024 04:37:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719573493; x=1720178293; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xfb8qh56GtYXoD9jZvOPRH85DxPa0JeSyiOdHUBDC38=;
-        b=IdPk/6ij5a9AcZuZJvAhoetFu2wX0EWUdvTOO8jGsQYfD+p+MyOu/9LPf5uGWZM1d0
-         uh8rUymlALqy05rVx6usyWfOYlB6LGi8x8hcg2OC70EvD2UlVUEwRM0imAcqotMs9Xi5
-         BGcUmCW17TSnryZVu0s3vOJSbQOOa3iSseHhQNPwFUkCLhNS+f/TZXBez0TtrsFyMaGv
-         BmCktTgyjXSxCdFDdvqwM4dGFTzJ1jdfmTEqizs8qbyM+0+WTnvZtDdkwvNDsXfkiZCo
-         HIjsG68IMTT8vHYYDvu76nj/D4qocJcu3BJtDJ9iIr9vd6EyUSaB9LIEhEOJXiDcErJZ
-         0SwA==
+        d=linaro.org; s=google; t=1719574629; x=1720179429; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fWlN3/sFgEOPWB0LU/uquV7p1t4WmyyxNaTnRP7KUZk=;
+        b=uGXZQM/GNMpB0QNCXupzlcoEpXeBFV+KjoB/K1BQH1VZf1dy7v0mBDfXHOYFQZ3N5+
+         MIt5NK0jHlVS5etJm9bKHacOHSj1U7mM0WZ02BrCh11MGjMU/5S2SO+JdLrXDYMQuKeG
+         hTZxpQAxD6cJttAWZv7Z9MHjZQjngJN4VNhJ8me/nTAYG5bb5kScmxLFXpmb35rbQdrn
+         KLXsKjyIYsf/69qGCi/O5ADgydI0sbcNQjwroYlYPtMdcBhe6EDi4D5tJMpUJPq11H0f
+         vKu6a607ivC2hkv7WkcnJxqQO8fCVun7Dvh5ROwWHeMTgrvqRXiFUO8VHkfxk7+4sWsI
+         weMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719573493; x=1720178293;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Xfb8qh56GtYXoD9jZvOPRH85DxPa0JeSyiOdHUBDC38=;
-        b=JoCpPTo4eEnQpavJP7x2GsRCxAgoDIc4kvHF7m04Yn48/pWV8qIGp06kTbfuOKXuEx
-         1Evb4VTpXGVnrceJU9l+EAuLqFL4H+1X6snfWCV3RmNLcUgOspxub7wutDaIozT2W0md
-         cOdMAfwAY8Q3oaLZtgFhJVuuCUm7D6Lw29EFyW9iReWZSpWLL087WPLYSVms4q7q07Bp
-         HqqDq9WQimsRok39wAO6CZeyuAhHmaaDZUtN+Ftc5IW5oYJy+BlaoI8PQAmjwD0U64Rn
-         DzBtPFfM3aisSSbUP525vIl3TvWAKZ++fdyYRWRK22VS5AM/Htn7Zu4g5MKOhRNAzc2y
-         1HTg==
-X-Forwarded-Encrypted: i=1; AJvYcCWuAdQbyOeNzcyyPgKZc1Daj62+fo4cgTf5qh7jzywW04RWDrHOvzNKoAbI6fgFbYWnJz9w+Zjn5E1swCWzqtIc8+Y00gPNCm285gwNl93J8PdqLbDIizK1xq3wwr1hlZZQMzYYF6FLLvu/jLe+4dUsBY0gD1bCCTTNf8R7Yg3moXxAJw1yRIZMp6oaeTF9x9xVoQpTHCapQk6PaQ==
-X-Gm-Message-State: AOJu0YyQUjJN2k27HVbj1werxpo3g09KiZNLNAxmoppAfGou6Br1RQ9N
-	k61GPJLT8tpNjx3SU0wCFsmh/KlJr3wbdmNjILIFWdBm+1WqwETu
-X-Google-Smtp-Source: AGHT+IEgaXUd+94Izm1S8dyRGK9F05m7nglJMAYA5JVpVKSGCoyzmAAlgx33pqSiP1IHukiCb84uNQ==
-X-Received: by 2002:a05:600c:2d84:b0:425:622e:32f4 with SMTP id 5b1f17b1804b1-425622e3408mr45368885e9.26.1719573492849;
-        Fri, 28 Jun 2024 04:18:12 -0700 (PDT)
-Received: from localhost.localdomain (93-34-90-105.ip49.fastwebnet.it. [93.34.90.105])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3675a1055b9sm1979495f8f.95.2024.06.28.04.18.11
+        d=1e100.net; s=20230601; t=1719574629; x=1720179429;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fWlN3/sFgEOPWB0LU/uquV7p1t4WmyyxNaTnRP7KUZk=;
+        b=DjCiU18svojgNCxvDgjGeh0QbF+Zwb35tG7ZeEM0HVOa3JfLW21pjJRtonEtqvFLr/
+         MGbpmRCAdeuTlPV1WgY8Q06odx0SGNiQWJR8dZX6pj85TLyzJITGbWTxZ+LytMTpW+Ra
+         VqnR00XeV994kncY77zfFexOLWDPKgoBoibnm9YLw0I7rCpTnoRBql3iek4HC2BW8VHV
+         V7XLM/WX7mDSwzh3tZ6BUQ7975hNT2FGJcs7rFB6LS7ofWQMXF4qoX+CttPPArY38dmF
+         s9rQCIK1MVwqd0F4zyynPA6x4++X9eEMuJdn94KYYvXhey8rTdjEUdqgQb2+vxkC3o46
+         B1Hw==
+X-Forwarded-Encrypted: i=1; AJvYcCXWaOyRodSWWCT81wTtzmPbQl2Tn97I/7mFlJQU9LBWAe/8wXFZKNmVPSsoiHWS750pT6HN3Ckfu6i87lUoHQ8c8QOvTxHr
+X-Gm-Message-State: AOJu0YwQv7QyWuuUtq/fvHB98kudKl5JQ+54tnmJBXkUvULKWxdVip23
+	MWW9Q0WJRt635O8mEq6ZynyMOkwYVptgyCB1BT7Fl356h7ARzsvr6IARAEIkMM8qZoycZ0GwCeJ
+	Y1kE=
+X-Google-Smtp-Source: AGHT+IGbATUTf1CtcHvGJ7zBXcjjbG4tWLMniVEGLtMqHk8/pkxS70uyMYSeCOTwFKQbfklLYPgaDw==
+X-Received: by 2002:a5d:5f90:0:b0:35f:fb4:fc7d with SMTP id ffacd0b85a97d-366fb8dd6e1mr11284914f8f.31.1719574629347;
+        Fri, 28 Jun 2024 04:37:09 -0700 (PDT)
+Received: from srini-hackbase.lan ([5.133.47.210])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3675a0fba5asm2048937f8f.71.2024.06.28.04.37.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Jun 2024 04:18:12 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	Frank Wunderlich <frank-w@public-files.de>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 1/2] arm64: dts: mediatek: mt7622: readd syscon to pciesys node
-Date: Fri, 28 Jun 2024 12:55:40 +0200
-Message-ID: <20240628105542.5456-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.45.1
+        Fri, 28 Jun 2024 04:37:08 -0700 (PDT)
+From: srinivas.kandagatla@linaro.org
+To: gregkh@linuxfoundation.org
+Cc: linux-kernel@vger.kernel.org,
+	Joy Chakraborty <joychakr@google.com>,
+	stable@vger.kernel.org,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 1/4] nvmem: rmem: Fix return value of rmem_read()
+Date: Fri, 28 Jun 2024 12:37:01 +0100
+Message-Id: <20240628113704.13742-2-srinivas.kandagatla@linaro.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240628113704.13742-1-srinivas.kandagatla@linaro.org>
+References: <20240628113704.13742-1-srinivas.kandagatla@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1327; i=srinivas.kandagatla@linaro.org; h=from:subject; bh=MOaOKfQhsx5kjf33gADJlKQaVbEXqSwm5ga7NXsrcWs=; b=owEBbQGS/pANAwAKAXqh/VnHNFU3AcsmYgBmfqBTzBgjUHYeEwlbWQDFMaAtBSjcDX/w00E9j 12gnIvUht6JATMEAAEKAB0WIQQi509axvzi9vce3Y16of1ZxzRVNwUCZn6gUwAKCRB6of1ZxzRV N/gYB/46iK1hmFmIdZgewv89dONRCWZR4eRMehgOKAJlPj57exgk/E4yc9cvrTG6jDCJkIOHuwz hfEOrDUORB9Nmmpnwz4/HIp39cRobD+XhsBB3c0uhNyySz3tsxeQgGNuWsideaHK8ZrqDR5Yqcx +9JrenzXH5okKcaR3WPCi5o7b+aZ34qC9st4r6goEcts6k6d/U5g/RMMdRvHKLPTzDNeqIsXshG 00ryA7qvviVS+aUj/0LmOf0VxbATBzXx6nWFTsbABKaLH3X9W+gns0BXGVxXYyJeBYes2NvlIX5 Y3zQ2sylHnztZ25Ooy1LMunh0DL9BQ7+IrdI16GgrQCcCZQ1
+X-Developer-Key: i=srinivas.kandagatla@linaro.org; a=openpgp; fpr=ED6472765AB36EC43B3EF97AD77E3FC0562560D6
 Content-Transfer-Encoding: 8bit
 
-Sata node reference the pciesys with the property mediatek,phy-node
-and that is used as a syscon to access the pciesys regs.
+From: Joy Chakraborty <joychakr@google.com>
 
-Readd the syscon compatible to pciesys node to restore correct
-functionality of the SATA interface.
+reg_read() callback registered with nvmem core expects 0 on success and
+a negative value on error but rmem_read() returns the number of bytes
+read which is treated as an error at the nvmem core.
 
-Fixes: 3ba5a6159434 ("arm64: dts: mediatek: mt7622: fix clock controllers")
-Reported-by: Frank Wunderlich <frank-w@public-files.de>
-Co-developed-by: Frank Wunderlich <frank-w@public-files.de>
-Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+This does not break when rmem is accessed using sysfs via
+bin_attr_nvmem_read()/write() but causes an error when accessed from
+places like nvmem_access_with_keepouts(), etc.
+
+Change to return 0 on success and error in case
+memory_read_from_buffer() returns an error or -EIO if bytes read do not
+match what was requested.
+
+Fixes: 5a3fa75a4d9c ("nvmem: Add driver to expose reserved memory as nvmem")
 Cc: stable@vger.kernel.org
+Signed-off-by: Joy Chakraborty <joychakr@google.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7622.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvmem/rmem.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-index 917fa39a74f8..bb0ec1edbe5b 100644
---- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-@@ -790,7 +790,7 @@ u2port1: usb-phy@1a0c5000 {
- 	};
+diff --git a/drivers/nvmem/rmem.c b/drivers/nvmem/rmem.c
+index 752d0bf4445e..7f907c5a445e 100644
+--- a/drivers/nvmem/rmem.c
++++ b/drivers/nvmem/rmem.c
+@@ -46,7 +46,10 @@ static int rmem_read(void *context, unsigned int offset,
  
- 	pciesys: clock-controller@1a100800 {
--		compatible = "mediatek,mt7622-pciesys";
-+		compatible = "mediatek,mt7622-pciesys", "syscon";
- 		reg = <0 0x1a100800 0 0x1000>;
- 		#clock-cells = <1>;
- 		#reset-cells = <1>;
+ 	memunmap(addr);
+ 
+-	return count;
++	if (count < 0)
++		return count;
++
++	return count == bytes ? 0 : -EIO;
+ }
+ 
+ static int rmem_probe(struct platform_device *pdev)
 -- 
-2.45.1
+2.25.1
 
 
