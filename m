@@ -1,152 +1,129 @@
-Return-Path: <stable+bounces-56061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA84591BC26
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 12:04:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D1F891BD3C
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 13:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6977C1F22970
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 10:04:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84E711C21608
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 11:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D53C15442F;
-	Fri, 28 Jun 2024 10:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA21155A56;
+	Fri, 28 Jun 2024 11:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AJsz0jr0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IdPk/6ij"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713091509B6;
-	Fri, 28 Jun 2024 10:04:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DD51865A;
+	Fri, 28 Jun 2024 11:18:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719569089; cv=none; b=bl9RGBqLpHNFuJYcMneoqdc3/8pZScyJuXUdFwKpw+3yAlITiPpfhpZlp2066IaYuy4KKXL9hrjk4uzTYLSDya+5YGEvNpgfW5dkIge2rtZWegBoZBB+Ct46D6WB+kxeiAeAoOZrZdyayNWGWc6jKAP2e6vxRMNnmVWmGDWLB0o=
+	t=1719573496; cv=none; b=oAOeFWs2t6DsSKL+K9q9qvVa6CthPJPhZ1oh30EROgHG1h1SMxaRHx/hXTPrWTqu6Udvn3ZTCj5cn9JLOJ9nXlakwxcohR3gjvxNgR61G2qxA4K2onO5YCjsRrQqjTJuqACfEbCaz1RP6/hFJspleCEHzc7Q+aJiVqtH2gHXmPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719569089; c=relaxed/simple;
-	bh=27RE7aMAeMSuXKrXKtMiDDZRYnA99jnOQEs5p75D+vQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fJm2xzgbk3zN1HI9kJJghnPUTDeDDm2yMDPJ2FHwWy4XTZQNsOXym1sym1vTkLe/Lsc6otB6J5MtP6p33VFVEsBpBy9PyHVUJG1BLTjkFALXKraZgS8coj6Scsid/PeCSZb3NZ1aehXV/v2oKVTeUdvtK9EQ4Ye6DwwvZff1q2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AJsz0jr0; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719569088; x=1751105088;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=27RE7aMAeMSuXKrXKtMiDDZRYnA99jnOQEs5p75D+vQ=;
-  b=AJsz0jr0bpFxl+QCT2gblBayhRwEtv9RfyrDYyAHNir2HgMApjaz0hdQ
-   XuuDdkmTETWva4wM1ajfm0lrB3+mx6fiheP0V4nDprHXVH3JnmW3Pgds7
-   XPgLjH4DHtGafvTe0fapYRzznf50/7pJ4uAyBgHi4J5z9d8tkw7pihLgq
-   euODGkDVf3f/HefV8Uv30mdHpY4si8sM8rgpsmSchhREg1j8vLeoqI8oa
-   iTmD/XD6P+1V+FuprYUTJQ0ZbCFVT531FPjkrAA7AN+vdU8kfsu2qMV+i
-   JpwPmA12al1DnsWSRsVS0DgV5ypF6Q51ntvVWGP1PyFpPqYpHldu2uiWi
-   w==;
-X-CSE-ConnectionGUID: jxq2vWX0S36zn5L9Ql1KsA==
-X-CSE-MsgGUID: gAbxT1ZsTACYYnFroCVe7w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11116"; a="34282929"
-X-IronPort-AV: E=Sophos;i="6.09,168,1716274800"; 
-   d="scan'208";a="34282929"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2024 03:04:47 -0700
-X-CSE-ConnectionGUID: Kil1170XTI+k0keiXikvKA==
-X-CSE-MsgGUID: /CtWA+6ATAqABZBcEzIDUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,168,1716274800"; 
-   d="scan'208";a="75890944"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa001.fm.intel.com with ESMTP; 28 Jun 2024 03:04:39 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 91FCB1C7; Fri, 28 Jun 2024 13:04:38 +0300 (EEST)
-Date: Fri, 28 Jun 2024 13:04:38 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Dexuan Cui <decui@microsoft.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev, ak@linux.intel.com, 
-	arnd@arndb.de, bp@alien8.de, brijesh.singh@amd.com, dan.j.williams@intel.com, 
-	dave.hansen@intel.com, dave.hansen@linux.intel.com, haiyangz@microsoft.com, 
-	hpa@zytor.com, jane.chu@oracle.com, kys@microsoft.com, luto@kernel.org, 
-	mingo@redhat.com, peterz@infradead.org, rostedt@goodmis.org, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, seanjc@google.com, tglx@linutronix.de, tony.luck@intel.com, 
-	wei.liu@kernel.org, Jason@zx2c4.com, nik.borisov@suse.com, mhklinux@outlook.com, 
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org, Tianyu.Lan@microsoft.com, 
-	rick.p.edgecombe@intel.com, andavis@redhat.com, mheslin@redhat.com, vkuznets@redhat.com, 
-	xiaoyao.li@intel.com, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/tdx: Support vmalloc() for tdx_enc_status_changed()
-Message-ID: <kjt2m2aqnhmwqgn3ox6bkqtn5qurxawgnx3xyh42pu5sp3mwyj@qwyjttwubfck>
-References: <20240521021238.1803-1-decui@microsoft.com>
+	s=arc-20240116; t=1719573496; c=relaxed/simple;
+	bh=lj3alnjoF6IS2vUlkaWQ49CLsjb6nBsT1IQIE4C6OPo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s/GkTXUGDRu35rsBpRPCeRcivN4HvLa8sjmh+7sEi2x+icvS2yVBcUtA1+5FbyafkkYQLl/62cayvKKWiCG2YIlLVUqegaRJ3qcYaxrwx67bZWgvBDBY+5Yc+UY5t/OZkWbMkh+N7AGGg/XZWBbYecb9zzqK8MtW9COYiepQBmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IdPk/6ij; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-42138eadf64so4327465e9.3;
+        Fri, 28 Jun 2024 04:18:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719573493; x=1720178293; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xfb8qh56GtYXoD9jZvOPRH85DxPa0JeSyiOdHUBDC38=;
+        b=IdPk/6ij5a9AcZuZJvAhoetFu2wX0EWUdvTOO8jGsQYfD+p+MyOu/9LPf5uGWZM1d0
+         uh8rUymlALqy05rVx6usyWfOYlB6LGi8x8hcg2OC70EvD2UlVUEwRM0imAcqotMs9Xi5
+         BGcUmCW17TSnryZVu0s3vOJSbQOOa3iSseHhQNPwFUkCLhNS+f/TZXBez0TtrsFyMaGv
+         BmCktTgyjXSxCdFDdvqwM4dGFTzJ1jdfmTEqizs8qbyM+0+WTnvZtDdkwvNDsXfkiZCo
+         HIjsG68IMTT8vHYYDvu76nj/D4qocJcu3BJtDJ9iIr9vd6EyUSaB9LIEhEOJXiDcErJZ
+         0SwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719573493; x=1720178293;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Xfb8qh56GtYXoD9jZvOPRH85DxPa0JeSyiOdHUBDC38=;
+        b=JoCpPTo4eEnQpavJP7x2GsRCxAgoDIc4kvHF7m04Yn48/pWV8qIGp06kTbfuOKXuEx
+         1Evb4VTpXGVnrceJU9l+EAuLqFL4H+1X6snfWCV3RmNLcUgOspxub7wutDaIozT2W0md
+         cOdMAfwAY8Q3oaLZtgFhJVuuCUm7D6Lw29EFyW9iReWZSpWLL087WPLYSVms4q7q07Bp
+         HqqDq9WQimsRok39wAO6CZeyuAhHmaaDZUtN+Ftc5IW5oYJy+BlaoI8PQAmjwD0U64Rn
+         DzBtPFfM3aisSSbUP525vIl3TvWAKZ++fdyYRWRK22VS5AM/Htn7Zu4g5MKOhRNAzc2y
+         1HTg==
+X-Forwarded-Encrypted: i=1; AJvYcCWuAdQbyOeNzcyyPgKZc1Daj62+fo4cgTf5qh7jzywW04RWDrHOvzNKoAbI6fgFbYWnJz9w+Zjn5E1swCWzqtIc8+Y00gPNCm285gwNl93J8PdqLbDIizK1xq3wwr1hlZZQMzYYF6FLLvu/jLe+4dUsBY0gD1bCCTTNf8R7Yg3moXxAJw1yRIZMp6oaeTF9x9xVoQpTHCapQk6PaQ==
+X-Gm-Message-State: AOJu0YyQUjJN2k27HVbj1werxpo3g09KiZNLNAxmoppAfGou6Br1RQ9N
+	k61GPJLT8tpNjx3SU0wCFsmh/KlJr3wbdmNjILIFWdBm+1WqwETu
+X-Google-Smtp-Source: AGHT+IEgaXUd+94Izm1S8dyRGK9F05m7nglJMAYA5JVpVKSGCoyzmAAlgx33pqSiP1IHukiCb84uNQ==
+X-Received: by 2002:a05:600c:2d84:b0:425:622e:32f4 with SMTP id 5b1f17b1804b1-425622e3408mr45368885e9.26.1719573492849;
+        Fri, 28 Jun 2024 04:18:12 -0700 (PDT)
+Received: from localhost.localdomain (93-34-90-105.ip49.fastwebnet.it. [93.34.90.105])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3675a1055b9sm1979495f8f.95.2024.06.28.04.18.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Jun 2024 04:18:12 -0700 (PDT)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Cc: Christian Marangi <ansuelsmth@gmail.com>,
+	Frank Wunderlich <frank-w@public-files.de>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] arm64: dts: mediatek: mt7622: readd syscon to pciesys node
+Date: Fri, 28 Jun 2024 12:55:40 +0200
+Message-ID: <20240628105542.5456-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240521021238.1803-1-decui@microsoft.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 20, 2024 at 07:12:38PM -0700, Dexuan Cui wrote:
-> @@ -785,15 +799,22 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
->   */
->  static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
->  {
-> -	phys_addr_t start = __pa(vaddr);
-> -	phys_addr_t end   = __pa(vaddr + numpages * PAGE_SIZE);
-> +	unsigned long start = vaddr;
-> +	unsigned long end = start + numpages * PAGE_SIZE;
-> +	unsigned long step = end - start;
-> +	unsigned long addr;
->  
-> -	if (!tdx_map_gpa(start, end, enc))
-> -		return false;
-> +	/* Step through page-by-page for vmalloc() mappings */
-> +	if (is_vmalloc_addr((void *)vaddr))
-> +		step = PAGE_SIZE;
->  
-> -	/* shared->private conversion requires memory to be accepted before use */
-> -	if (enc)
-> -		return tdx_accept_memory(start, end);
-> +	for (addr = start; addr < end; addr += step) {
-> +		phys_addr_t start_pa = slow_virt_to_phys((void *)addr);
-> +		phys_addr_t end_pa   = start_pa + step;
-> +
-> +		if (!tdx_enc_status_changed_phys(start_pa, end_pa, enc))
-> +			return false;
-> +	}
->  
->  	return true;
->  }
+Sata node reference the pciesys with the property mediatek,phy-node
+and that is used as a syscon to access the pciesys regs.
 
-This patch collied with kexec changes. tdx_kexec_finish() calls
-tdx_enc_status_changed() after clearing pte, so slow_virt_to_phys()
-crashes on in.
+Readd the syscon compatible to pciesys node to restore correct
+functionality of the SATA interface.
 
-Daxuan, could you check if the fixup below works for you on vmalloc
-addresses?
+Fixes: 3ba5a6159434 ("arm64: dts: mediatek: mt7622: fix clock controllers")
+Reported-by: Frank Wunderlich <frank-w@public-files.de>
+Co-developed-by: Frank Wunderlich <frank-w@public-files.de>
+Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Cc: stable@vger.kernel.org
+---
+ arch/arm64/boot/dts/mediatek/mt7622.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index ef8ec2425998..5e455c883bcc 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -813,8 +813,15 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
- 		step = PAGE_SIZE;
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+index 917fa39a74f8..bb0ec1edbe5b 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+@@ -790,7 +790,7 @@ u2port1: usb-phy@1a0c5000 {
+ 	};
  
- 	for (addr = start; addr < end; addr += step) {
--		phys_addr_t start_pa = slow_virt_to_phys((void *)addr);
--		phys_addr_t end_pa   = start_pa + step;
-+		phys_addr_t start_pa;
-+		phys_addr_t end_pa;
-+
-+		if (virt_addr_valid(addr))
-+			start_pa = __pa(addr);
-+		else
-+			start_pa = slow_virt_to_phys((void *)addr);
-+
-+		end_pa = start_pa + step;
- 
- 		if (!tdx_enc_status_changed_phys(start_pa, end_pa, enc))
- 			return false;
+ 	pciesys: clock-controller@1a100800 {
+-		compatible = "mediatek,mt7622-pciesys";
++		compatible = "mediatek,mt7622-pciesys", "syscon";
+ 		reg = <0 0x1a100800 0 0x1000>;
+ 		#clock-cells = <1>;
+ 		#reset-cells = <1>;
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.45.1
+
 
