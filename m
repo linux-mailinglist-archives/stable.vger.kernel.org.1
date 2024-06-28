@@ -1,78 +1,127 @@
-Return-Path: <stable+bounces-56081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C43C691C423
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 18:51:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C5E391C465
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 19:06:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B13A1F21EC4
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 16:51:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 198EB28148C
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 17:06:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A241C8FB5;
-	Fri, 28 Jun 2024 16:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67C021C9ECF;
+	Fri, 28 Jun 2024 17:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wy6bUkCH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RcH/SngH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37E0D2E5;
-	Fri, 28 Jun 2024 16:50:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E199A1CD15;
+	Fri, 28 Jun 2024 17:06:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719593459; cv=none; b=Lvu8BPagR0T5oEeiq4xozEApHG4IFVow5l6s1zq//Zrx/SyOUCyQPPILvgIb6Cia/dFxiDH+2JY1RCLvGj+6igPHlIPpl/7fGvJZBHkD91xd7CECeR2hz7wBKukx8itluFS5ttrwUhXsFBZ1c4HMc0BOmvylyKG5PuH3uRwJkp4=
+	t=1719594374; cv=none; b=bkBgLuituBg3Wu3GXgs26a8w+BPhTdnWgzahmfZlt6XFKhVGvQtsZsUbmXIWacZeRKD4Aqn7IaQcYxp/pwI9B1zoBPNmiEGn6RDk4zFGw03bye3nEEJ6svcOPOga0FhYyc/Lil8+JRpfwTlK+5GUrtEkZur5w9VPdNkhe7LipUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719593459; c=relaxed/simple;
-	bh=FTp9dSh5FyTOEWzLM6PjdK2pJf3hHq6mZMfRAEMZD4o=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=HMuDp/Q2dLIbn8UZV6XTkL/OUg06r6gov1N1tAZ5tMVZsnKHHZUjl8/Okl668Bqwn/TYqYN29gDczQsJwRAcwV+DzeT+88QqaH8NZg03jS8CPJOkdzwaOb2PS33os6UhjG4iF7aFgOAsZT8d8m/xc4avidIVtl3HBaENALJwzVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wy6bUkCH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B0BC116B1;
-	Fri, 28 Jun 2024 16:50:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719593459;
-	bh=FTp9dSh5FyTOEWzLM6PjdK2pJf3hHq6mZMfRAEMZD4o=;
-	h=Date:From:To:Cc:Subject:From;
-	b=Wy6bUkCHqHDayjMwzz9r2SjJRm1cIdLflmac3xgFcgipSClkD3dOSjTjajAA87IHT
-	 qSjuL2Bm7wNKovfGJFVkpSr0IBX95ST1qQYdDhhahJ4mNDkH3kevex1PyPd1N67H69
-	 Rrcyly9JdISRPhrTXybELz+ubHE4qejdRcEbKd7+xHWQouUv0Wnc88OlT7EoQ/MFUn
-	 psROJGbZsJsxESZGkwsbk1dmGoMGRL958amE2XJ5Fgzp2SJqsbMGuOdXI3n2/8Kr8E
-	 O8Pp8MkcVuz17dloqpPz+LkOheBI3EbLBwjeN1b9NNNWvILd6203+MXBN1nCU6w2HZ
-	 aVzPvzfjIriCA==
-Date: Fri, 28 Jun 2024 18:50:55 +0200
-From: Helge Deller <deller@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: linux-parisc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-Subject: [STABLE] Please add two upstream patches into stable series
-Message-ID: <Zn7p77GGtqnYatBR@p100>
+	s=arc-20240116; t=1719594374; c=relaxed/simple;
+	bh=Cljtgd/Isf+l3B0F4sdoVRtTN7f2sCDFmMMfEfMfYJE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=A+/fJqsGXUqYjeKF2UPZ01uwqfjUKxNfYe1oRg65Jaa/0JBoc4YZuCFBO+mBIiRyjY/OfsVukkAP1oRLJqe0TL2c6Hg5ArZoQIHV0QiVvdac3HBHQAWtYJPEKj9YdPub8O+nIOh196P9p0yfNtdA33BO5vKFpsa5jp8tkt4SIY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RcH/SngH; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-6c386a3ac43so131282a12.0;
+        Fri, 28 Jun 2024 10:06:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719594372; x=1720199172; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1gIvSZMXVhoGcZvS7xN6Z8l1Ej0EBODeUmgZswcD1Zo=;
+        b=RcH/SngHr4bwCNz9ZLOJPgQ05hc5DXqBHSi/BxLur4QqOlYn1QOwcFymRmJOg+xJ9u
+         o3bqKzs8Q2dQetfO4svKN65cQ56B/+2WIjma+Gm7PZJTI6nXy0w2sHM+DWozFT2NJtR3
+         S5VM00m522xxwfoU2Agn8+QcuQlwsRyvBZmKcGpnxSTOar3hnDUojEc4khZuHhzcNHhT
+         7fgWB/J0b7Xs3dSxgeSbM1CUVsICvG2llJbHDydJXxyjwLxRG6qFSBZsDdM6ahSeASE3
+         Vif4wp4li7SzrOWnmV8uVcLSnT0i6dUOIenGO0gCQ3dxwJqHdY9deQxSjKaKuU7p3CTL
+         cgxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719594372; x=1720199172;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1gIvSZMXVhoGcZvS7xN6Z8l1Ej0EBODeUmgZswcD1Zo=;
+        b=l8lAcQxzVRS/+W239MUNEGnp7wOcPUgXxcHO8vPoWRQ9NVjfJZ4sNkj6GUKhzJhp84
+         Wfwza+vOVxsrTZU7Q9WvIUNsCqAsbPHSJVPFvpa/y4E+8N628HiFggJ2P1QR1wThCnAI
+         odjRL7620562tWyjKietkICBz440jt4Li5BA9uxG3dwMDV1hawEbw+6z5mw3QmGv4JBu
+         MPoWiBkR9qvzv4CvWko/Yis6GYYerm81R4D28/DqqfhnQ6RUCP0VuIPdd91oJK6dDA/a
+         nuQxI2PS6GA4vGVlTZtH/rgkjykEDNkx/c95LEQlmmEsQFk7MLg626dC/d1fz1KgqxMW
+         ePBA==
+X-Forwarded-Encrypted: i=1; AJvYcCVpnciFhJ72QVAzxhzx6h1BKzP/WGCDSdrH8lLazyBneJTlksRm2Cc4JtAOaLAtAe72vvCrFw0shnG5+6QdJGKjVRZfGKRB
+X-Gm-Message-State: AOJu0YzGXRcXPZvoHL+QjVT8N59tNCXGrqgFx0JGnZUK3H7g5/E69H2L
+	JRGqpTD2GRYxiXUKoFjlnU5dgS5yugK1B6Lzj7b/VgJWs8LuQPkMLgB6wA==
+X-Google-Smtp-Source: AGHT+IGHw5BYsgW0Inrz0ttKbYVGPKT9eE46X1A1MfpGT80g/5Fhiz8+hURvFuC0dSof0ndxOA9HiQ==
+X-Received: by 2002:a05:6a21:33aa:b0:1be:c3fc:1ccf with SMTP id adf61e73a8af0-1bec3fc1f10mr8465436637.2.1719594371967;
+        Fri, 28 Jun 2024 10:06:11 -0700 (PDT)
+Received: from dhcp-10-231-55-133.dhcp.broadcom.net ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-72c6afb8ef1sm1524623a12.40.2024.06.28.10.06.11
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 28 Jun 2024 10:06:11 -0700 (PDT)
+From: Justin Tee <justintee8345@gmail.com>
+To: linux-scsi@vger.kernel.org
+Cc: jsmart2021@gmail.com,
+	justin.tee@broadcom.com,
+	Justin Tee <justintee8345@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 2/8] lpfc: Allow DEVICE_RECOVERY mode after RSCN receipt if in PRLI_ISSUE state
+Date: Fri, 28 Jun 2024 10:20:05 -0700
+Message-Id: <20240628172011.25921-3-justintee8345@gmail.com>
+X-Mailer: git-send-email 2.38.0
+In-Reply-To: <20240628172011.25921-1-justintee8345@gmail.com>
+References: <20240628172011.25921-1-justintee8345@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Hi Greg & Sasha,
-the following two upstream commits missed the "stable" tag, so
-could you please add them manually to stable series?
+Certain vendor specific targets initially register with the fabric as an
+initiator function first and then re-register as a target function
+afterwards.
 
-a) commit 403f17a330732a666ae793f3b15bc75bb5540524
-Author: Arnd Bergmann <arnd@arndb.de>
-Date:   Fri Jun 7 13:40:45 2024 +0200
-    parisc: use generic sys_fanotify_mark implementation
--> please include into kernel v5.11+
+The timing of the target function re-registration can cause a race
+condition such that the driver is stuck assuming the remote port as an
+initiator function and never discovers the target's hosted LUNs.
 
-b) commit 20a50787349fadf66ac5c48f62e58d753878d2bb
-Author: Arnd Bergmann <arnd@arndb.de>
-Date:   Wed Jun 19 14:27:55 2024 +0200
-    parisc: use correct compat recv/recvfrom syscalls
--> please include into kernel v5.4+
+Expand the nlp_state qualifier to also include NLP_STE_PRLI_ISSUE because
+the state means that PRLI was issued but we have not quite reached
+MAPPED_NODE state yet.  If we received an RSCN in the PRLI_ISSUE state,
+then we should restart discovery again by going into DEVICE_RECOVERY.
 
-Thanks!
-Helge
+Fixes: dded1dc31aa4 ("scsi: lpfc: Modify when a node should be put in device recovery mode during RSCN")
+Cc: <stable@vger.kernel.org> # v6.6+
+
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+---
+ drivers/scsi/lpfc/lpfc_hbadisc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+index 153770bdc56a..13b08c85440f 100644
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -5725,7 +5725,7 @@ lpfc_setup_disc_node(struct lpfc_vport *vport, uint32_t did)
+ 				return ndlp;
+ 
+ 			if (ndlp->nlp_state > NLP_STE_UNUSED_NODE &&
+-			    ndlp->nlp_state < NLP_STE_PRLI_ISSUE) {
++			    ndlp->nlp_state <= NLP_STE_PRLI_ISSUE) {
+ 				lpfc_disc_state_machine(vport, ndlp, NULL,
+ 							NLP_EVT_DEVICE_RECOVERY);
+ 			}
+-- 
+2.38.0
+
 
