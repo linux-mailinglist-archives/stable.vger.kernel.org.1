@@ -1,150 +1,176 @@
-Return-Path: <stable+bounces-56092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3215491C615
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 20:50:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0621091C622
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 20:55:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 645811C22656
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 18:50:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 375DF1C2167F
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 18:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C2A2E633;
-	Fri, 28 Jun 2024 18:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDAE45381B;
+	Fri, 28 Jun 2024 18:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZgA3vrk1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Le76Qd8d"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF254D8BE
-	for <stable@vger.kernel.org>; Fri, 28 Jun 2024 18:50:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AED27725
+	for <stable@vger.kernel.org>; Fri, 28 Jun 2024 18:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719600620; cv=none; b=YW9YkM7hS7SeJuW26mZWGGB1Ehss4sZ6iJ9DNKCZK3SJMvsauVoGenDhcyo2ZxtazntaVoQ0VtGRR3SfRqhjmnOMKfh5paRQkaiYInoEjExU9RSpcJv+ScfVqtYPRFwdFiOazLzfYH+h5bEqD8rUZHZNHJrTyTaHL1hX5+epwAw=
+	t=1719600923; cv=none; b=S1Hm/u381HrYSyEkphiVRywa/3DM/72uRT2GyC695aDG0WDBQh4TtQ0CXMeDAqrZ3coM2MI30ozfTeOGrEXJ6T4MoK68a0gn1rYmnC1Nj+V+99UtWpN9uvS9ayzMqUFzbtdavGsEAF4bTtDLmBRcvfpbVJXHNEbsQhuN6Mshmlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719600620; c=relaxed/simple;
-	bh=O9Im7C0b3C4adLpd6iBlek+WA4C2wJk0bna3KFnoeYU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YHtbaLsTbUOjDk79xgFuII42nRj5qNapPlAxAA6kJWZ7QiS7zZ4CfqU48YRYRRG7WoJf7vDqaRweSqHx4a/bRctK12ifNG7zMT3I21Z90voomkz+ZCh3BGxMMFxnPg4UEgi/z2BiJrHh/Nyg9GbIstfVqMtqVe9aGtKFDW5bBYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZgA3vrk1; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1719600617;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O9Im7C0b3C4adLpd6iBlek+WA4C2wJk0bna3KFnoeYU=;
-	b=ZgA3vrk13SNV8ehvmUbDzTXwTyQ2jbOnW9meYnRlN7oJwoMsgzQK/Z9HRjtgt8kWc1jbBs
-	PQhDf8jGbQOHWPgQtTGPynhGFNFAHu6nPrgyxr5S8rBe4JUsbxxa7sVWW1mWQAnUACzjFd
-	6wQPwTnHhNmT4Li62DUaaYXgKYXwgjc=
-Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
- [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-310-bp42BaXQPI-Qv8fKW7iIWw-1; Fri, 28 Jun 2024 14:50:16 -0400
-X-MC-Unique: bp42BaXQPI-Qv8fKW7iIWw-1
-Received: by mail-vs1-f70.google.com with SMTP id ada2fe7eead31-48f58259433so392462137.0
-        for <stable@vger.kernel.org>; Fri, 28 Jun 2024 11:50:16 -0700 (PDT)
+	s=arc-20240116; t=1719600923; c=relaxed/simple;
+	bh=VGnqPJ8wxBUmzeYRoezSLG01KIOdBTaj3d4KEl5C6q4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RUzAapq1KLAUHCfBevFsw/tX2PpUZEnwE0iN9nttxRu/yEnQJhvdT4HM2hM6AWp2KuRDxa+KUlWbaQVN9sQOim9WsN6HpXR/ZSl2xcbgR/8zOVfMK5ij1QtrxCoOc4+j78aCNAqu0MyYvq6bvnIQH2Jrj6TISay7xbudD1Ucuiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Le76Qd8d; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-57d044aa5beso1278584a12.2
+        for <stable@vger.kernel.org>; Fri, 28 Jun 2024 11:55:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719600920; x=1720205720; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QLIc478CrM8WRyLsKp7HKGbFT+nWGbRboxpgjYNwu6s=;
+        b=Le76Qd8dgaODvQFRveEhKk7CsMZn416e2mJeo68WKIz900EyVfCTsUnDeeRvxGo11A
+         bm67lQjNyN8mT44svysHSq5F59l4Xv2fgTUbXMUF4mULaGD6Ye3PCJiGwO6g0EmutzFL
+         gBweEDJl0LpRONXZAVgjsFJLpBBZg7SZ5ALFB4qbF7KCMBeA3UfXlJMdUGMglIfMpj3e
+         O6TarJxdVf7k5HwdnCftPIWyx8JORa1Yj3TDE5q6RL2Y9xP6xsA3Gb9HqLBvafuWKrJk
+         hYJUuKnyef8+OEHNHYjp98pRqbKHn+PRkGNF7k8PiqSTK401j8ImwffawdTtYHKi8Dt8
+         GQ+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719600616; x=1720205416;
-        h=mime-version:user-agent:content-transfer-encoding:organization
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=O9Im7C0b3C4adLpd6iBlek+WA4C2wJk0bna3KFnoeYU=;
-        b=KzaxOwxuLdxRV0kMmHHTv9c+tRgr+jEm1qGvfWs9ops5M+kkhOrUeNrMz3Ge4la66c
-         iyfSMo3/xf6We2+FCe1pW1k77SCoZOA6PIA5n8qXyAeGghkyX4pIRsc0w1U4+Tzej+Us
-         aKzgW9bjMb+wKZM2xHUpYwZ0PP0UBq059k6Ia07xweC3jMahhjLJuWETZeABDx5AD9pS
-         9242GslpOLlxqOwquhP/et2tSbuHi8ui09/jyNZUFAlUt56sBYoJJ7s+d3ZO0nfuZU9J
-         ZnSe1f70UL2ovNfwDcmAkrriaNstbiK3xzYrgYkU0w1/UE9Os4VPEvJFyptMpyjrO3sF
-         guVA==
-X-Gm-Message-State: AOJu0YwIV6bShiB3+iFKK7mvRMIuk0sH0GL4uLhP4vRzEknpxPY8MNeS
-	vWFIDGR3NROzzzQCXBsYSTICYpOph3cRSDpo4tMKIBbOBMzDPjdYvXq6i1rAqNfH3QjwR/17jgq
-	gg8SL+5XT9psRbw8gxoBN8ixESvLM0WfF8sZsf3Lyw+WULRISh8cHYw==
-X-Received: by 2002:a67:ff12:0:b0:48b:a44b:c935 with SMTP id ada2fe7eead31-48f4f136bc9mr16622143137.33.1719600615818;
-        Fri, 28 Jun 2024 11:50:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IElvRmmINNGnNs7Wpa+F7s40QSKueqKBDp+NCHe0hsGIwjIG9K8A2Un/dqoNkhQbEKVTVc0/g==
-X-Received: by 2002:a67:ff12:0:b0:48b:a44b:c935 with SMTP id ada2fe7eead31-48f4f136bc9mr16622116137.33.1719600615434;
-        Fri, 28 Jun 2024 11:50:15 -0700 (PDT)
-Received: from chopper.lyude.net ([2600:4040:5c4c:a000::789])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-79d69308142sm96504585a.117.2024.06.28.11.50.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Jun 2024 11:50:15 -0700 (PDT)
-Message-ID: <eab9d109981bae8a443649bc4a2c1a08870590c7.camel@redhat.com>
-Subject: Re: [v3] drm/nouveau: fix null pointer dereference in
- nouveau_connector_get_modes
-From: Lyude Paul <lyude@redhat.com>
-To: Markus Elfring <Markus.Elfring@web.de>, nouveau@lists.freedesktop.org, 
- dri-devel@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>, Danilo
- Krummrich <dakr@redhat.com>, Dave Airlie <airlied@redhat.com>, Karol Herbst
- <kherbst@redhat.com>
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, David
- Airlie <airlied@gmail.com>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- Julia Lawall <julia.lawall@inria.fr>
-Date: Fri, 28 Jun 2024 14:50:13 -0400
-In-Reply-To: <a91bbb5f-8980-420b-b465-97691203347e@web.de>
-References: <20240627074204.3023776-1-make24@iscas.ac.cn>
-	 <d0bef439-5e1d-4ce0-9a24-da74ddc29755@web.de>
-	 <790dbe8aee621b58ec0ef8d029106cb1c1830a31.camel@redhat.com>
-	 <a91bbb5f-8980-420b-b465-97691203347e@web.de>
-Organization: Red Hat Inc.
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
+        d=1e100.net; s=20230601; t=1719600920; x=1720205720;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QLIc478CrM8WRyLsKp7HKGbFT+nWGbRboxpgjYNwu6s=;
+        b=pbi/k4YDcjWwtZUjR52FFcIyyTDVk90PB0Qv/hC+QC2Bz9ZOrbk7pZHJowUw0ucK0Q
+         KW5gmfGcIEsMMtzQpRJrJxL3+xeOCPPJPG9cqOhu3GMisea/R0xRHQ/uNBP7WRVAgsI5
+         orRbfZ+scjSQPIy/CvhPxwLDp1rRH9qkgrdg7+2G8vtijbDX38LKj90aHSFWGf016K4y
+         SNb4zL0GQr75TUNThTj7UcUNRthVb3RtoGYnpSw6gwRyQRTmoElmvjWsd4vPPsDWQ76N
+         S1CSqiYcz//e7kJVcIscHRyc4wS6PHrQhLqmTWVPR5wmqkOwDgJypPv3LXGG2E3tijrE
+         rznA==
+X-Forwarded-Encrypted: i=1; AJvYcCUdrfOWmyNJyhVgdBY6GoMl5IzUn3J/Zc2rmLenSjO8FrDuZh8VYnL21ZCXU88R4Up7+C42SfyV5eKQbj52C7QUEsPEURh/
+X-Gm-Message-State: AOJu0YzyYuHUIUGOQnSJPRqYlnZNDJWsrjrbjMf2cKNXedMp9HkvL3qs
+	YEtk1WX7dexG82PquWD8KsurHk3IbDuhNVSsYvrVdQdozUT+0RWzDFNM6zQXgU1qPAH25yzYj4I
+	awoCNN4GPP9kfH4Iso/Hn3uL+SeU=
+X-Google-Smtp-Source: AGHT+IHeGM3d7YvzcLQJxAxEGdEg5stxZMe7tyJA5kiIIVgTMzM2ylMjwUFy3aKkTXzmqtMIOpkybbDc3e5mBxpP3kM=
+X-Received: by 2002:a17:906:7955:b0:a72:98a0:7159 with SMTP id
+ a640c23a62f3a-a7298a072damr462138866b.68.1719600920041; Fri, 28 Jun 2024
+ 11:55:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20240625081818.15696-1-tzimmermann@suse.de>
+In-Reply-To: <20240625081818.15696-1-tzimmermann@suse.de>
+From: =?UTF-8?B?TWFyZWsgT2zFocOhaw==?= <maraeo@gmail.com>
+Date: Fri, 28 Jun 2024 14:54:42 -0400
+Message-ID: <CAAxE2A68QveD4nNa_OyQQHYSdbvArck6oWnV7YsmWC89B8x=yA@mail.gmail.com>
+Subject: Re: [PATCH] firmware: sysfb: Fix reference count of sysfb parent device
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: javierm@redhat.com, dri-devel@lists.freedesktop.org, 
+	Helge Deller <deller@gmx.de>, Jani Nikula <jani.nikula@intel.com>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Sui Jingfeng <suijingfeng@loongson.cn>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2024-06-28 at 20:42 +0200, Markus Elfring wrote:
-> > (...I doubt I'll get a response from Markus,
->=20
-> Why?
+Hi Thomas,
 
-Because the responses you have been given read like a bot, and numerous
-actual contributors and kernel maintainers like myself and Greg have
-asked you to stop leaving messages like this and you continue sending
-them. I promise you, maintainers are more then capable of being able to
-tell a contributor when they need to improve the summary they've
-provided in a git commit.
+FYI, this doesn't fix the issue of lightdm not being able to start for me.
 
->=20
->=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 but I certainly want
-> > to
-> > make sure they are a bot
->=20
-> Can I ever adjust your views into more desirable directions
-> (as it occasionally happened with other contributors)?
+Marek
 
-No, because you're not contributing anything of value to the discussion
-- you are just confusing new contributors despite having been told
-explicitly to stop.
 
->=20
->=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- and not an actual person before removing
-> > them
->=20
-> I hope still that affected development discussions can become
-> more constructive again.
->=20
-> Regards,
-> Markus
->=20
+Marek
 
---=20
-Cheers,
- Lyude Paul (she/her)
- Software Engineer at Red Hat
-
+On Tue, Jun 25, 2024 at 4:18=E2=80=AFAM Thomas Zimmermann <tzimmermann@suse=
+.de> wrote:
+>
+> Retrieving the system framebuffer's parent device in sysfb_init()
+> increments the parent device's reference count. Hence release the
+> reference before leaving the init function.
+>
+> Adding the sysfb platform device acquires and additional reference
+> for the parent. This keeps the parent device around while the system
+> framebuffer is in use.
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: 9eac534db001 ("firmware/sysfb: Set firmware-framebuffer parent dev=
+ice")
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Javier Martinez Canillas <javierm@redhat.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Jani Nikula <jani.nikula@intel.com>
+> Cc: Dan Carpenter <dan.carpenter@linaro.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Sui Jingfeng <suijingfeng@loongson.cn>
+> Cc: <stable@vger.kernel.org> # v6.9+
+> ---
+>  drivers/firmware/sysfb.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/firmware/sysfb.c b/drivers/firmware/sysfb.c
+> index 880ffcb50088..dd274563deeb 100644
+> --- a/drivers/firmware/sysfb.c
+> +++ b/drivers/firmware/sysfb.c
+> @@ -101,8 +101,10 @@ static __init struct device *sysfb_parent_dev(const =
+struct screen_info *si)
+>         if (IS_ERR(pdev)) {
+>                 return ERR_CAST(pdev);
+>         } else if (pdev) {
+> -               if (!sysfb_pci_dev_is_enabled(pdev))
+> +               if (!sysfb_pci_dev_is_enabled(pdev)) {
+> +                       pci_dev_put(pdev);
+>                         return ERR_PTR(-ENODEV);
+> +               }
+>                 return &pdev->dev;
+>         }
+>
+> @@ -137,7 +139,7 @@ static __init int sysfb_init(void)
+>         if (compatible) {
+>                 pd =3D sysfb_create_simplefb(si, &mode, parent);
+>                 if (!IS_ERR(pd))
+> -                       goto unlock_mutex;
+> +                       goto put_device;
+>         }
+>
+>         /* if the FB is incompatible, create a legacy framebuffer device =
+*/
+> @@ -155,7 +157,7 @@ static __init int sysfb_init(void)
+>         pd =3D platform_device_alloc(name, 0);
+>         if (!pd) {
+>                 ret =3D -ENOMEM;
+> -               goto unlock_mutex;
+> +               goto put_device;
+>         }
+>
+>         pd->dev.parent =3D parent;
+> @@ -170,9 +172,12 @@ static __init int sysfb_init(void)
+>         if (ret)
+>                 goto err;
+>
+> -       goto unlock_mutex;
+> +
+> +       goto put_device;
+>  err:
+>         platform_device_put(pd);
+> +put_device:
+> +       put_device(parent);
+>  unlock_mutex:
+>         mutex_unlock(&disable_lock);
+>         return ret;
+> --
+> 2.45.2
+>
 
