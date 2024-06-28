@@ -1,176 +1,359 @@
-Return-Path: <stable+bounces-56034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF62F91B61C
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 07:29:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97EDC91B6E7
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 08:18:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6101E1F23F4D
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 05:29:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F1152832BC
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 06:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC23837165;
-	Fri, 28 Jun 2024 05:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 005413FB88;
+	Fri, 28 Jun 2024 06:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kwdpu6n8"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="l/1fCQjB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5032D36B11;
-	Fri, 28 Jun 2024 05:29:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80B32C19E;
+	Fri, 28 Jun 2024 06:18:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719552574; cv=none; b=GfNfIFZ1695A9uF+TMrmhouHXlqR6uuMwom3+W/8hxynRA3vO1Jc/+lgA+BHQbMwFRSPKYt+R5oUG9BDa7rVAxqLfJ6kPdGfdCg+zh6maKmu+QXRA9MPskxnj5jmMGwxJjNbSDIFAf/wX6fd6B3X2UuuFd/5jLN7cqvA6tnKkM4=
+	t=1719555521; cv=none; b=Qy7SNlu1wocE8tCJHyCVrWrqtKrERExrY/ytTiyOdPL9NTlJNSlG85btEXCr0vF6EbnoXaKXDarP5c44N6xXboTfqOFO1Aa1o6wSw7pn3szE1LJ53NpvFDEro+YUKwdFjjT4+OiOl+ntSg1ZQF7G+T7k6pcQK/IZGT7BUKEJ3ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719552574; c=relaxed/simple;
-	bh=ks1F6Sn9pTxTI0BwOCBA0EESvxRrUUHI3vfdcNjpIUw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TOrjZwJQELbdlNiDAKFj05T1a2Stdqe6Ij0Fptc3zFQD8ZESsUUpFAJmBMP18F0QA3/hHnhpp5Io0SYqt8KlV1IzM8gG+4CzFVvGmJsMVDa3wwC2i8C/5UWL44d9C6ktoSF5A6+YalAvUJWgLUvvnUbVat+KgxH3Pri7uunf++U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kwdpu6n8; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2c7af3116aaso56096a91.2;
-        Thu, 27 Jun 2024 22:29:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719552572; x=1720157372; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PJ/M56ThtwrsFD5Lfw9SbGejoYETZHoSJEMo2+pp2ms=;
-        b=kwdpu6n8pNn9eyb+lBJKj44mYs5+fAc4M3IRux4ckG5ZGhHbCLMln9GxjW/V9Mdt6H
-         EYTtcjXGwCp2DXcQTftMIM20Nl8+zjOJEuSYePhPNBK8GU3TYQU+4qzQt5vrvoiCxvEk
-         qcbeageydIWL2hpkGPlHQuXZMondcrNUTJMsiJoUGL28wpgvUfYKNCLk8CaGG751yLnV
-         Z8dv+pjvSJ8kiAfQWfQoops2dtTXBqLmjd9z5RArzTLNKw9g6ntvMaGeA0cPaQwudACj
-         ln+/xqr42P/amow7KThd6eWB2XVAh4ta95l5lqTZM5w/3LMVLUzJBYM1YdFFNd9eV2hw
-         4qHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719552572; x=1720157372;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PJ/M56ThtwrsFD5Lfw9SbGejoYETZHoSJEMo2+pp2ms=;
-        b=CGc3q46fNmzYXzX0ujBC3obDay9B5H3WltfmT9GW0Gc9RUI8ENZ41IJbkWKL3ppkUg
-         JiehWops1buy+JKWsH9Rmg2Fl8P8+VFxp01/Hq90Ab0nXu38qDyb5M/sLmlUkEae/6c/
-         7qJSGdfcnqPdQ9a0zYWNHIIqQNryJNdZst4Cn32M2GIu4Dd1EY8/FRNvI6DjRnnDKQJt
-         ba6hgBjINDY+wJYByYBb3mA2X/l10SkUD/dyW7GmmMq2kpN59GozmXMd2fyv7fDDH2NE
-         b9WDU5LkQ7sQadIi7/428npytwlhs/Qr/yZzcSlCg6N0hB3x7hjh+VvARazVnkW91xTL
-         Spwg==
-X-Forwarded-Encrypted: i=1; AJvYcCVzfFUJ9G7XD3djr+ZiEARnbN+1dSQ1w/vRRIqZyph5Yx+2qj2B/sRKRw/QZLGI+E/lNTLWl1jDfn+tHjBqvFMOmtZJXkI5BJB8haiCkRWksQnGlYoCHu6J318M5uTg2edBsHZj
-X-Gm-Message-State: AOJu0YwyCEntHdUVHFx4e8MaBQuRBPxWhzRmGdiZmbnbm+L4FjLYck86
-	fL01xDw6o++cdmdRUrDrBAQDWhD4Qyvijr7968kqx+SHrb+SnRx3KP23bS15
-X-Google-Smtp-Source: AGHT+IHLv5sQ9sNkcIC/nJeiyanw64nDmI2PGR16Y8htj0wpAT+P7CbV8FfgwKGWVS9OAZ3ykXJVGA==
-X-Received: by 2002:a17:90a:db94:b0:2c2:d11b:14dd with SMTP id 98e67ed59e1d1-2c8452e0fdbmr15923350a91.0.1719552572391;
-        Thu, 27 Jun 2024 22:29:32 -0700 (PDT)
-Received: from localhost.localdomain (122-117-151-175.hinet-ip.hinet.net. [122.117.151.175])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c91c7ddb23sm735599a91.0.2024.06.27.22.29.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Jun 2024 22:29:31 -0700 (PDT)
-From: Kuangyi Chiang <ki.chiang65@gmail.com>
-To: mathias.nyman@intel.com,
-	gregkh@linuxfoundation.org
-Cc: linux-usb@vger.kernel.org,
+	s=arc-20240116; t=1719555521; c=relaxed/simple;
+	bh=g9o4gZxj3+uAXKj+N7d2Bx0rQyfNTRzoYdZjoVUWowI=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=GPaxBhr8rG62j4V3qCfGgWXddMY/MQCuOi4rbgMBtDCWnnimnwp+tGEzL3xoWoGodgiL6VbUmRFnZ9Th8Y/BeckoX8MT6StVD15h/GrJYmxKgvgODRoAypu/S4o+jKPEeTdpVAvERtRFOd9cGsfsHC8bV7aKVe2fUQ1fMAMgr+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=l/1fCQjB; arc=none smtp.client-ip=220.197.31.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:Subject:Date:Message-Id; bh=SlRELd3UcZ/MfdqfmG
+	nleJEin+O8nKTwTDSEoHe12n8=; b=l/1fCQjB3mD/Z3bwG9Js+pkXzFVipt2nC0
+	ER3ZRgGrXAGSfo3w+K7edDaSCYhuTWIc/HfTuMqKRNYtuDFFCWQ8SY8f0jkb9uVL
+	6vqwyYdQ00uRiK0P1u4HXqyBZaAG1bcVjzRGUHtevvnIN7Y1qt6VowQK3hun1pF9
+	hSXp2fzic=
+Received: from hg-OptiPlex-7040.hygon.cn (unknown [118.242.3.34])
+	by gzga-smtp-mta-g1-0 (Coremail) with SMTP id _____wDn703ZUX5mXGHJAA--.29875S2;
+	Fri, 28 Jun 2024 14:02:03 +0800 (CST)
+From: yangge1116@126.com
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	ki.chiang65@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH v3] xhci: Don't issue Reset Device command to Etron xHCI host
-Date: Fri, 28 Jun 2024 13:29:14 +0800
-Message-Id: <20240628052914.5215-1-ki.chiang65@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	stable@vger.kernel.org,
+	21cnbao@gmail.com,
+	peterx@redhat.com,
+	yang@os.amperecomputing.com,
+	baolin.wang@linux.alibaba.com,
+	liuzixing@hygon.cn,
+	yangge <yangge1116@126.com>
+Subject: [PATCH V2] mm/gup: Fix longterm pin on slow gup regression
+Date: Fri, 28 Jun 2024 14:01:58 +0800
+Message-Id: <1719554518-11006-1-git-send-email-yangge1116@126.com>
+X-Mailer: git-send-email 2.7.4
+X-CM-TRANSID:_____wDn703ZUX5mXGHJAA--.29875S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3tF4rKr1rAryDAF1xuw4rXwb_yoWDKw4rpF
+	4xG3Z0y3y3Jry2kFZ7Ars8Zr4ay3s7Ka18CFWxC34rZ3W3tryYgF1fX34rJwn5Jrykuayx
+	Aayayr1DuanrXw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jjlk3UUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOhwMG2VExE332wACs3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Sometimes the hub driver does not recognize the USB device connected
-to the external USB2.0 hub when the system resumes from S4.
+From: yangge <yangge1116@126.com>
 
-After the SetPortFeature(PORT_RESET) request is completed, the hub
-driver calls the HCD reset_device callback, which will issue a Reset
-Device command and free all structures associated with endpoints
-that were disabled.
+If a large number of CMA memory are configured in system (for
+example, the CMA memory accounts for 50% of the system memory),
+starting a SEV virtual machine will fail. During starting the SEV
+virtual machine, it will call pin_user_pages_fast(..., FOLL_LONGTERM,
+...) to pin memory. Normally if a page is present and in CMA area,
+pin_user_pages_fast() will first call __get_user_pages_locked() to
+pin the page in CMA area, and then call
+check_and_migrate_movable_pages() to migrate the page from CMA area
+to non-CMA area. But the current code calling __get_user_pages_locked()
+will fail, because it call try_grab_folio() to pin page in gup slow
+path.
 
-This happens when the xHCI driver issue a Reset Device command to
-inform the Etron xHCI host that the USB device associated with a
-device slot has been reset. Seems that the Etron xHCI host can not
-perform this command correctly, affecting the USB device.
+The commit 57edfcfd3419 ("mm/gup: accelerate thp gup even for "pages
+!= NULL"") uses try_grab_folio() in gup slow path, which seems to be
+problematic because try_grap_folio() will check if the page can be
+longterm pinned. This check may fail and cause __get_user_pages_lock()
+to fail. However, these checks are not required in gup slow path,
+seems we can use try_grab_page() instead of try_grab_folio(). In
+addition, in the current code, try_grab_page() can only add 1 to the
+page's refcount. We extend this function so that the page's refcount
+can be increased according to the parameters passed in.
 
-To work around this, the xHCI driver should obtain a new device slot
-with reference to commit 651aaf36a7d7 ("usb: xhci: Handle USB transaction
-error on address command"), which is another way to inform the Etron
-xHCI host that the USB device has been reset.
+The following log reveals it:
 
-Both EJ168 and EJ188 have the same problem, applying this patch then
-the problem is gone.
+[  464.325306] WARNING: CPU: 13 PID: 6734 at mm/gup.c:1313 __get_user_pages+0x423/0x520
+[  464.325464] CPU: 13 PID: 6734 Comm: qemu-kvm Kdump: loaded Not tainted 6.6.33+ #6
+[  464.325477] RIP: 0010:__get_user_pages+0x423/0x520
+[  464.325515] Call Trace:
+[  464.325520]  <TASK>
+[  464.325523]  ? __get_user_pages+0x423/0x520
+[  464.325528]  ? __warn+0x81/0x130
+[  464.325536]  ? __get_user_pages+0x423/0x520
+[  464.325541]  ? report_bug+0x171/0x1a0
+[  464.325549]  ? handle_bug+0x3c/0x70
+[  464.325554]  ? exc_invalid_op+0x17/0x70
+[  464.325558]  ? asm_exc_invalid_op+0x1a/0x20
+[  464.325567]  ? __get_user_pages+0x423/0x520
+[  464.325575]  __gup_longterm_locked+0x212/0x7a0
+[  464.325583]  internal_get_user_pages_fast+0xfb/0x190
+[  464.325590]  pin_user_pages_fast+0x47/0x60
+[  464.325598]  sev_pin_memory+0xca/0x170 [kvm_amd]
+[  464.325616]  sev_mem_enc_register_region+0x81/0x130 [kvm_amd]
 
+In another thread [1], hugepd also has a similar problem, so include
+relevant handling codes.
+
+[1] https://lore.kernel.org/all/20240604234858.948986-2-yang@os.amperecomputing.com/
+
+Fixes: 57edfcfd3419 ("mm/gup: accelerate thp gup even for "pages != NULL"")
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+Signed-off-by: yangge <yangge1116@126.com>
 ---
-Changes in v3:
-- Modify commit message
-- Modify comment
-- Fix coding style, add a #define PCI_VENDOR_ID_ETRON
-- Code refactor, call xhci_disable_slot() + xhci_free_virt_device() helper
+ mm/gup.c         | 55 +++++++++++++++++++++++++++++--------------------------
+ mm/huge_memory.c |  2 +-
+ mm/internal.h    |  2 +-
+ 3 files changed, 31 insertions(+), 28 deletions(-)
 
-Changes in v2:
-- Change commit log
-- Add a comment for the workaround
-- Revert "global xhci_free_dev()"
-- Remove XHCI_ETRON_HOST quirk bit
+V2:
+  1, Using unlikely instead of WARN_ON_ONCE
+  2, Reworked the code and commit log to include hugepd path handling from Yang
 
- drivers/usb/host/xhci.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
-
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 37eb37b0affa..abaef0adacf1 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -3682,6 +3682,10 @@ void xhci_free_device_endpoint_resources(struct xhci_hcd *xhci,
- 				xhci->num_active_eps);
- }
+diff --git a/mm/gup.c b/mm/gup.c
+index 6ff9f95..070cf58 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -222,7 +222,7 @@ static void gup_put_folio(struct folio *folio, int refs, unsigned int flags)
+  *   -ENOMEM		FOLL_GET or FOLL_PIN was set, but the page could not
+  *			be grabbed.
+  */
+-int __must_check try_grab_page(struct page *page, unsigned int flags)
++int __must_check try_grab_page(struct page *page, int refs, unsigned int flags)
+ {
+ 	struct folio *folio = page_folio(page);
  
-+#define PCI_VENDOR_ID_ETRON		0x1b6f
-+
-+static void xhci_free_dev(struct usb_hcd *hcd, struct usb_device *udev);
-+
- /*
-  * This submits a Reset Device Command, which will set the device state to 0,
-  * set the device address to 0, and disable all the endpoints except the default
-@@ -3711,6 +3715,7 @@ static int xhci_discover_or_reset_device(struct usb_hcd *hcd,
- 	struct xhci_command *reset_device_cmd;
- 	struct xhci_slot_ctx *slot_ctx;
- 	int old_active_eps = 0;
-+	struct device *dev = hcd->self.controller;
+@@ -233,7 +233,7 @@ int __must_check try_grab_page(struct page *page, unsigned int flags)
+ 		return -EREMOTEIO;
  
- 	ret = xhci_check_args(hcd, udev, NULL, 0, false, __func__);
- 	if (ret <= 0)
-@@ -3752,6 +3757,23 @@ static int xhci_discover_or_reset_device(struct usb_hcd *hcd,
- 						SLOT_STATE_DISABLED)
- 		return 0;
+ 	if (flags & FOLL_GET)
+-		folio_ref_inc(folio);
++		folio_ref_add(folio, refs);
+ 	else if (flags & FOLL_PIN) {
+ 		/*
+ 		 * Don't take a pin on the zero page - it's not going anywhere
+@@ -248,13 +248,13 @@ int __must_check try_grab_page(struct page *page, unsigned int flags)
+ 		 * so that the page really is pinned.
+ 		 */
+ 		if (folio_test_large(folio)) {
+-			folio_ref_add(folio, 1);
+-			atomic_add(1, &folio->_pincount);
++			folio_ref_add(folio, refs);
++			atomic_add(refs, &folio->_pincount);
+ 		} else {
+-			folio_ref_add(folio, GUP_PIN_COUNTING_BIAS);
++			folio_ref_add(folio, refs * GUP_PIN_COUNTING_BIAS);
+ 		}
  
-+	if (dev_is_pci(dev) && to_pci_dev(dev)->vendor == PCI_VENDOR_ID_ETRON) {
-+		/*
-+		 * Obtaining a new device slot to inform the xHCI host that
-+		 * the USB device has been reset.
-+		 */
-+		ret = xhci_disable_slot(xhci, udev->slot_id);
-+		xhci_free_virt_device(xhci, udev->slot_id);
-+		if (!ret) {
-+			ret = xhci_alloc_dev(hcd, udev);
-+			if (ret == 1)
-+				ret = 0;
-+			else
-+				ret = -EINVAL;
-+		}
-+		return ret;
+-		node_stat_mod_folio(folio, NR_FOLL_PIN_ACQUIRED, 1);
++		node_stat_mod_folio(folio, NR_FOLL_PIN_ACQUIRED, refs);
+ 	}
+ 
+ 	return 0;
+@@ -535,7 +535,7 @@ static unsigned long hugepte_addr_end(unsigned long addr, unsigned long end,
+  */
+ static int gup_hugepte(struct vm_area_struct *vma, pte_t *ptep, unsigned long sz,
+ 		       unsigned long addr, unsigned long end, unsigned int flags,
+-		       struct page **pages, int *nr)
++		       struct page **pages, int *nr, bool fast)
+ {
+ 	unsigned long pte_end;
+ 	struct page *page;
+@@ -558,9 +558,14 @@ static int gup_hugepte(struct vm_area_struct *vma, pte_t *ptep, unsigned long sz
+ 	page = pte_page(pte);
+ 	refs = record_subpages(page, sz, addr, end, pages + *nr);
+ 
+-	folio = try_grab_folio(page, refs, flags);
+-	if (!folio)
+-		return 0;
++	if (fast) {
++		if (try_grab_page(page, refs, flags))
++			return 0;
++	else {
++		folio = try_grab_folio(page, refs, flags);
++		if (!folio)
++			return 0;
 +	}
-+
- 	trace_xhci_discover_or_reset_device(slot_ctx);
  
- 	xhci_dbg(xhci, "Resetting device with slot ID %u\n", slot_id);
+ 	if (unlikely(pte_val(pte) != pte_val(ptep_get(ptep)))) {
+ 		gup_put_folio(folio, refs, flags);
+@@ -588,7 +593,7 @@ static int gup_hugepte(struct vm_area_struct *vma, pte_t *ptep, unsigned long sz
+ static int gup_hugepd(struct vm_area_struct *vma, hugepd_t hugepd,
+ 		      unsigned long addr, unsigned int pdshift,
+ 		      unsigned long end, unsigned int flags,
+-		      struct page **pages, int *nr)
++		      struct page **pages, int *nr, bool fast)
+ {
+ 	pte_t *ptep;
+ 	unsigned long sz = 1UL << hugepd_shift(hugepd);
+@@ -598,7 +603,7 @@ static int gup_hugepd(struct vm_area_struct *vma, hugepd_t hugepd,
+ 	ptep = hugepte_offset(hugepd, addr, pdshift);
+ 	do {
+ 		next = hugepte_addr_end(addr, end, sz);
+-		ret = gup_hugepte(vma, ptep, sz, addr, end, flags, pages, nr);
++		ret = gup_hugepte(vma, ptep, sz, addr, end, flags, pages, nr, fast);
+ 		if (ret != 1)
+ 			return ret;
+ 	} while (ptep++, addr = next, addr != end);
+@@ -625,7 +630,7 @@ static struct page *follow_hugepd(struct vm_area_struct *vma, hugepd_t hugepd,
+ 	ptep = hugepte_offset(hugepd, addr, pdshift);
+ 	ptl = huge_pte_lock(h, vma->vm_mm, ptep);
+ 	ret = gup_hugepd(vma, hugepd, addr, pdshift, addr + PAGE_SIZE,
+-			 flags, &page, &nr);
++			 flags, &page, &nr, false);
+ 	spin_unlock(ptl);
+ 
+ 	if (ret == 1) {
+@@ -642,7 +647,7 @@ static struct page *follow_hugepd(struct vm_area_struct *vma, hugepd_t hugepd,
+ static inline int gup_hugepd(struct vm_area_struct *vma, hugepd_t hugepd,
+ 			     unsigned long addr, unsigned int pdshift,
+ 			     unsigned long end, unsigned int flags,
+-			     struct page **pages, int *nr)
++			     struct page **pages, int *nr, bool fast)
+ {
+ 	return 0;
+ }
+@@ -729,7 +734,7 @@ static struct page *follow_huge_pud(struct vm_area_struct *vma,
+ 	    gup_must_unshare(vma, flags, page))
+ 		return ERR_PTR(-EMLINK);
+ 
+-	ret = try_grab_page(page, flags);
++	ret = try_grab_page(page, 1, flags);
+ 	if (ret)
+ 		page = ERR_PTR(ret);
+ 	else
+@@ -806,7 +811,7 @@ static struct page *follow_huge_pmd(struct vm_area_struct *vma,
+ 	VM_BUG_ON_PAGE((flags & FOLL_PIN) && PageAnon(page) &&
+ 			!PageAnonExclusive(page), page);
+ 
+-	ret = try_grab_page(page, flags);
++	ret = try_grab_page(page, 1, flags);
+ 	if (ret)
+ 		return ERR_PTR(ret);
+ 
+@@ -969,7 +974,7 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
+ 		       !PageAnonExclusive(page), page);
+ 
+ 	/* try_grab_page() does nothing unless FOLL_GET or FOLL_PIN is set. */
+-	ret = try_grab_page(page, flags);
++	ret = try_grab_page(page, 1, flags);
+ 	if (unlikely(ret)) {
+ 		page = ERR_PTR(ret);
+ 		goto out;
+@@ -1233,7 +1238,7 @@ static int get_gate_page(struct mm_struct *mm, unsigned long address,
+ 			goto unmap;
+ 		*page = pte_page(entry);
+ 	}
+-	ret = try_grab_page(*page, gup_flags);
++	ret = try_grab_page(*page, 1, gup_flags);
+ 	if (unlikely(ret))
+ 		goto unmap;
+ out:
+@@ -1636,22 +1641,20 @@ static long __get_user_pages(struct mm_struct *mm,
+ 			 * pages.
+ 			 */
+ 			if (page_increm > 1) {
+-				struct folio *folio;
+ 
+ 				/*
+ 				 * Since we already hold refcount on the
+ 				 * large folio, this should never fail.
+ 				 */
+-				folio = try_grab_folio(page, page_increm - 1,
++				ret = try_grab_page(page, page_increm - 1,
+ 						       foll_flags);
+-				if (WARN_ON_ONCE(!folio)) {
++				if (unlikely(ret)) {
+ 					/*
+ 					 * Release the 1st page ref if the
+ 					 * folio is problematic, fail hard.
+ 					 */
+ 					gup_put_folio(page_folio(page), 1,
+ 						      foll_flags);
+-					ret = -EFAULT;
+ 					goto out;
+ 				}
+ 			}
+@@ -3276,7 +3279,7 @@ static int gup_fast_pmd_range(pud_t *pudp, pud_t pud, unsigned long addr,
+ 			 * pmd format and THP pmd format
+ 			 */
+ 			if (gup_hugepd(NULL, __hugepd(pmd_val(pmd)), addr,
+-				       PMD_SHIFT, next, flags, pages, nr) != 1)
++				       PMD_SHIFT, next, flags, pages, nr, true) != 1)
+ 				return 0;
+ 		} else if (!gup_fast_pte_range(pmd, pmdp, addr, next, flags,
+ 					       pages, nr))
+@@ -3306,7 +3309,7 @@ static int gup_fast_pud_range(p4d_t *p4dp, p4d_t p4d, unsigned long addr,
+ 				return 0;
+ 		} else if (unlikely(is_hugepd(__hugepd(pud_val(pud))))) {
+ 			if (gup_hugepd(NULL, __hugepd(pud_val(pud)), addr,
+-				       PUD_SHIFT, next, flags, pages, nr) != 1)
++				       PUD_SHIFT, next, flags, pages, nr, true) != 1)
+ 				return 0;
+ 		} else if (!gup_fast_pmd_range(pudp, pud, addr, next, flags,
+ 					       pages, nr))
+@@ -3333,7 +3336,7 @@ static int gup_fast_p4d_range(pgd_t *pgdp, pgd_t pgd, unsigned long addr,
+ 		BUILD_BUG_ON(p4d_leaf(p4d));
+ 		if (unlikely(is_hugepd(__hugepd(p4d_val(p4d))))) {
+ 			if (gup_hugepd(NULL, __hugepd(p4d_val(p4d)), addr,
+-				       P4D_SHIFT, next, flags, pages, nr) != 1)
++				       P4D_SHIFT, next, flags, pages, nr, true) != 1)
+ 				return 0;
+ 		} else if (!gup_fast_pud_range(p4dp, p4d, addr, next, flags,
+ 					       pages, nr))
+@@ -3362,7 +3365,7 @@ static void gup_fast_pgd_range(unsigned long addr, unsigned long end,
+ 				return;
+ 		} else if (unlikely(is_hugepd(__hugepd(pgd_val(pgd))))) {
+ 			if (gup_hugepd(NULL, __hugepd(pgd_val(pgd)), addr,
+-				       PGDIR_SHIFT, next, flags, pages, nr) != 1)
++				       PGDIR_SHIFT, next, flags, pages, nr, true) != 1)
+ 				return;
+ 		} else if (!gup_fast_p4d_range(pgdp, pgd, addr, next, flags,
+ 					       pages, nr))
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 425374a..18604e4 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1332,7 +1332,7 @@ struct page *follow_devmap_pmd(struct vm_area_struct *vma, unsigned long addr,
+ 	if (!*pgmap)
+ 		return ERR_PTR(-EFAULT);
+ 	page = pfn_to_page(pfn);
+-	ret = try_grab_page(page, flags);
++	ret = try_grab_page(page, 1, flags);
+ 	if (ret)
+ 		page = ERR_PTR(ret);
+ 
+diff --git a/mm/internal.h b/mm/internal.h
+index 2ea9a88..5305bbf 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1227,7 +1227,7 @@ int migrate_device_coherent_page(struct page *page);
+  * mm/gup.c
+  */
+ struct folio *try_grab_folio(struct page *page, int refs, unsigned int flags);
+-int __must_check try_grab_page(struct page *page, unsigned int flags);
++int __must_check try_grab_page(struct page *page, int refs, unsigned int flags);
+ 
+ /*
+  * mm/huge_memory.c
 -- 
-2.25.1
+2.7.4
 
 
