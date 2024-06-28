@@ -1,45 +1,74 @@
-Return-Path: <stable+bounces-56027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DE6E91B49D
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 03:27:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2DC591B4B9
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 03:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEE0C2826AC
-	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 01:27:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9466E1C2181A
+	for <lists+stable@lfdr.de>; Fri, 28 Jun 2024 01:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659C8D27E;
-	Fri, 28 Jun 2024 01:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA34125DE;
+	Fri, 28 Jun 2024 01:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="Rn3fwgiy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O/Sdalh6"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51A83C0B;
-	Fri, 28 Jun 2024 01:27:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.9
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD671097B;
+	Fri, 28 Jun 2024 01:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719538025; cv=none; b=Ki56mVkyhDTOzKru3gbO1jdnxAZkbFFaIpYMYLfgpVJ9exymCJKgwJPGykSbzBvW96hsH8SHd+V8Utj3oaef3Cq6ITJPJoaURizOuPSVbd9WH1cQtkNmEiFZn+xJ7dt7qc42AUr7l26X6irPy6edG/1fT0B6Luj0/MW6V9LNOCk=
+	t=1719539075; cv=none; b=N+bhNM69w3dX+IwLsqjk8KkaPCw9jfx5EBauiqwSZw++gnbEv3a/SAso1UB0TX8hx9ccf4ZmyFNl+2e35mrJMkrnHHCJWauWf5Nn31p0SKz2h5/UITuPIh7yVORFiX+E36XgVn9iVZlg2E59Ll5nSWLP85xk1SibdWKe8NWPEEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719538025; c=relaxed/simple;
-	bh=V38sFmASQfqGcoseLmQq14vgW3z2xQfKhNYM+Pd/RXQ=;
+	s=arc-20240116; t=1719539075; c=relaxed/simple;
+	bh=2PfHdETu/HKLoYvqYe0CcjoLSuBc+PIHnlujDvorBO0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dezlBHKCrL17girD1r011yucgAPGGsMrFjXlYrVaMzLufD3l6uVMYWNpcKv8FqmiE8DYBYwRKhTBskPqaJ8bdA8fRRssmU4Gh4++9KoaSgbCSfxSy7onWEOzl3AGisjC7Il68iAZVqgls8GdvcV7/GeumfKxJn6sf/KKJtWgCGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=Rn3fwgiy; arc=none smtp.client-ip=220.197.31.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
-	Content-Type; bh=tTOy6Kq3aNVWHj/osQBSoy/9+UEn0MO184Z7Lmt65g4=;
-	b=Rn3fwgiy5jx0QWHgKQoup4vLNXxWu8hqTUrCjxxT7XMicWWAgC+NigrX4NebqS
-	gLdQ7j41rHMR0rFgFFfVBPCr0HEspsoX3z/M7Rabp1D+tkZrQg+LgEa8Iux26xfP
-	RgvQYhCAWfejscynWy7EEiidX+yNHv8IvysoS5geF3SP0=
-Received: from [172.21.22.210] (unknown [118.242.3.34])
-	by gzga-smtp-mta-g1-0 (Coremail) with SMTP id _____wDX_9kZEX5m77HCAA--.18751S2;
-	Fri, 28 Jun 2024 09:25:48 +0800 (CST)
-Message-ID: <4850060d-7fc2-4869-a901-38f11058bd40@126.com>
-Date: Fri, 28 Jun 2024 09:25:45 +0800
+	 In-Reply-To:Content-Type; b=b9Ibx9s5CXfcVv9xtuzPT2OSUuu1x+wAUhnOa24Rzk/Od/UtO88eNdghuWVmS2qljpd7tKpdt8AlcnSGbACxSFHw9ShXoBxHxH0KeFRq/aFmj5uym+SjkVAXYjxkcoz2C0hIduB1QPmwtQ+IMNUMNBm5agJEeuMQq0yB+ubY4oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O/Sdalh6; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2c81ce83715so98156a91.3;
+        Thu, 27 Jun 2024 18:44:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719539073; x=1720143873; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=O2PlL+cNrtgBEK7e1pegCFhmRbl6FhS1f6s/BBzg990=;
+        b=O/Sdalh6oaJtIsurgEA/n2GdDF4DAd6wOEPs+SZQMpuQYAgJlVts4vcE7zW052HLWE
+         XDqu4S5JXMr6XRDf/CAHHeix3WC5ZiDJEdZe2jFJJWQDPRkeZNzGgn0Z5zBzITXg14Ii
+         /pe2Pe3YgHlp76Gw8rZkwyu0nfRw/TWuHGGfdZISLbSHobC2VBRY/b6GD0s2CfZMYhcM
+         jzMyeNsRNKVp+bWlgT21JGapgwK4RYMya0brhsrNMFij1KayRUj9VtiCCWORF5gj1k7c
+         QHvnhm0Oohvb62yqtleskUe7tyeg0ySeYk/zU8fc2HxEBwvW+0WbiH7vUVwgKbpKTWQy
+         Mrlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719539073; x=1720143873;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=O2PlL+cNrtgBEK7e1pegCFhmRbl6FhS1f6s/BBzg990=;
+        b=PzAQECwWsMmNfamSvc/QKSkS3Ev1jlgQbhhXCD5HRgfIubdcBqDnOZjhhIKBi3d6if
+         JofyE6KyBrektCHc/L59FN4N04SAXvbMsmWwe8AcWiMgsK9UMeTxO0u2wM3Oaf9a0e2O
+         orqvdajhIkNSXzv+2m2KRRfiPsaNXlIsDCavwlmf/7a6388ZdAMf1MZ1QdW34PxlRgmO
+         0oYq3MnF/c41WyBYfh1dkGtRc4RDoMzK5R695DRDr/5Kj8nuH8Q4MHFjlXjTBxvjhLEH
+         n+9evcU8KfIAse/mLAH4tCNCGVgnyf5RR3GerudRMCMeSEaabaPyKZotyAsxu1oLdMyQ
+         f4dA==
+X-Forwarded-Encrypted: i=1; AJvYcCXSxLqN9lUgSPCTjoVrPDZsF9QtZcqdv2AW1A6VxqlWmai9IorZHW+ZIEwafONl5Nn6rYFrBjTPDh3La8yr3UnWZ8nbDcEAfPHXBXGfUzgeSC5T4kU+EKxSnNu8k4u8TTvEGg==
+X-Gm-Message-State: AOJu0YxEnlh2a/15h2o6ykFxZIIJQm+5SNWHcl8jNgNVjIOEgFXjYl7L
+	VIhch5smDSPXVI688lhHHDfLP3xf74vgBHqqiAlOC/bs6M1bfeDN
+X-Google-Smtp-Source: AGHT+IEtx/CFFSk+X0N5AWryCVBCAja3mFgba28EnBMHXYQs3DSPEosR+Gq2rOqRmv7IPhiaCA1Wcg==
+X-Received: by 2002:a17:90b:4b92:b0:2c7:c788:d34d with SMTP id 98e67ed59e1d1-2c858275b3emr14169645a91.38.1719539072797;
+        Thu, 27 Jun 2024 18:44:32 -0700 (PDT)
+Received: from [0.0.0.0] (97.64.23.41.16clouds.com. [97.64.23.41])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c91d3bc5e7sm451019a91.36.2024.06.27.18.44.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Jun 2024 18:44:32 -0700 (PDT)
+Message-ID: <f4a0879d-0df7-44b0-8fa0-e2917532c1d4@gmail.com>
+Date: Fri, 28 Jun 2024 09:44:25 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -47,97 +76,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [v2 PATCH] mm: gup: do not call try_grab_folio() in slow path
-To: Peter Xu <peterx@redhat.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Yang Shi <yang@os.amperecomputing.com>, david@redhat.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240627221413.671680-1-yang@os.amperecomputing.com>
- <Zn3zjKnKIZjCXGrU@x1n>
- <20240627163242.39b0a716bd950a895c032136@linux-foundation.org>
- <Zn35MMS_kq3p0m7q@x1n>
-From: Ge Yang <yangge1116@126.com>
-In-Reply-To: <Zn35MMS_kq3p0m7q@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v2] ufs: core: fix ufshcd_abort_all racing issue
+To: =?UTF-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= <peter.wang@mediatek.com>,
+ "quic_nguyenb@quicinc.com" <quic_nguyenb@quicinc.com>,
+ "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
+ "avri.altman@wdc.com" <avri.altman@wdc.com>,
+ "bvanassche@acm.org" <bvanassche@acm.org>,
+ "martin.petersen@oracle.com" <martin.petersen@oracle.com>,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>
+Cc: "linux-mediatek@lists.infradead.org"
+ <linux-mediatek@lists.infradead.org>,
+ =?UTF-8?B?SmlhamllIEhhbyAo6YOd5Yqg6IqCKQ==?= <jiajie.hao@mediatek.com>,
+ =?UTF-8?B?Q0MgQ2hvdSAo5ZGo5b+X5p2wKQ==?= <cc.chou@mediatek.com>,
+ =?UTF-8?B?RWRkaWUgSHVhbmcgKOm7g+aZuuWCkSk=?= <eddie.huang@mediatek.com>,
+ =?UTF-8?B?QWxpY2UgQ2hhbyAo6LaZ54+u5Z2HKQ==?= <Alice.Chao@mediatek.com>,
+ wsd_upstream <wsd_upstream@mediatek.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ =?UTF-8?B?TGluIEd1aSAo5qGC5p6XKQ==?= <Lin.Gui@mediatek.com>,
+ =?UTF-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?= <Chun-hung.Wu@mediatek.com>,
+ =?UTF-8?B?VHVuLXl1IFl1ICjmuLjmlabogb8p?= <Tun-yu.Yu@mediatek.com>,
+ "chu.stanley@gmail.com" <chu.stanley@gmail.com>,
+ =?UTF-8?B?Q2hhb3RpYW4gSmluZyAo5LqV5pyd5aSpKQ==?=
+ <Chaotian.Jing@mediatek.com>, =?UTF-8?B?UG93ZW4gS2FvICjpq5jkvK/mlocp?=
+ <Powen.Kao@mediatek.com>, =?UTF-8?B?TmFvbWkgQ2h1ICjmnLHoqaDnlLAp?=
+ <Naomi.Chu@mediatek.com>, =?UTF-8?B?UWlsaW4gVGFuICjosK3pupLpup8p?=
+ <Qilin.Tan@mediatek.com>
+References: <20240624121158.21354-1-peter.wang@mediatek.com>
+ <eec48c95-aa1c-4f07-a1f3-fdc3e124f30e@acm.org>
+ <4c4d10aae216e0b6925445b0317e55a3dd0ce629.camel@mediatek.com>
+ <795a89bb-12eb-4ac8-93df-6ec5173fb679@acm.org>
+ <0e1e0c0a4303f53a50a95aa0672311015ddeaee2.camel@mediatek.com>
+ <58505ca5-5822-47f5-a77d-a517eda0c508@gmail.com>
+ <147f56027997fc37c93d4a6c438da93898fd50f6.camel@mediatek.com>
+Content-Language: en-US
+From: Wenchao Hao <haowenchao22@gmail.com>
+In-Reply-To: <147f56027997fc37c93d4a6c438da93898fd50f6.camel@mediatek.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDX_9kZEX5m77HCAA--.18751S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZFW5CF48Cw13Ar48Gr1UGFg_yoW5GF4xpF
-	y3Ka9xKFWkJr10kws7tws5XFWFyrZ8JryUXws5Gr1xua98ua4xWr48X34FkF98W348Ga10
-	vFW2y3srZa1DZa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jt5rxUUUUU=
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOhwMG2VExE332wABs0
 
-
-
-在 2024/6/28 7:43, Peter Xu 写道:
-> On Thu, Jun 27, 2024 at 04:32:42PM -0700, Andrew Morton wrote:
->> On Thu, 27 Jun 2024 19:19:40 -0400 Peter Xu <peterx@redhat.com> wrote:
+On 2024/6/27 18:58, Peter Wang (王信友) wrote:
+> On Thu, 2024-06-27 at 15:59 +0800, Wenchao Hao wrote:
 >>
->>> Yang,
->>>
->>> On Thu, Jun 27, 2024 at 03:14:13PM -0700, Yang Shi wrote:
->>>> The try_grab_folio() is supposed to be used in fast path and it elevates
->>>> folio refcount by using add ref unless zero.  We are guaranteed to have
->>>> at least one stable reference in slow path, so the simple atomic add
->>>> could be used.  The performance difference should be trivial, but the
->>>> misuse may be confusing and misleading.
->>>
->>> This first paragraph is IMHO misleading itself..
->>>
->>> I think we should mention upfront the important bit, on the user impact.
->>>
->>> Here IMO the user impact should be: Linux may fail longterm pin in some
->>> releavnt paths when applied over CMA reserved blocks.  And if to extend a
->>> bit, that include not only slow-gup but also the new memfd pinning, because
->>> both of them used try_grab_folio() which used to be only for fast-gup.
+>> Hi Peter, 
 >>
->> It's still unclear how users will be affected.  What do the *users*
->> see?  If it's a slight slowdown, do we need to backport this at all?
-> 
-> The user will see the pin fails, for gpu-slow it further triggers the WARN
-> right below that failure (as in the original report):
-> 
->          folio = try_grab_folio(page, page_increm - 1,
->                                  foll_flags);
->          if (WARN_ON_ONCE(!folio)) { <------------------------ here
->                  /*
->                          * Release the 1st page ref if the
->                          * folio is problematic, fail hard.
->                          */
->                  gup_put_folio(page_folio(page), 1,
->                                  foll_flags);
->                  ret = -EFAULT;
->                  goto out;
->          }
-> 
-> For memfd pin and hugepd paths, they should just observe GUP failure on
-> those longterm pins, and it'll be the caller context to decide what user
-> can see, I think.
-> 
+>> What is queue_num's offset of blk_mq_hw_ctx in your machine?
 >>
->>>
->>> The patch itself looks mostly ok to me.
->>>
->>> There's still some "cleanup" part mangled together, e.g., the real meat
->>> should be avoiding the folio_is_longterm_pinnable() check in relevant
->>> paths.  The rest (e.g. switch slow-gup / memfd pin to use folio_ref_add()
->>> not try_get_folio(), and renames) could be good cleanups.
->>>
->>> So a smaller fix might be doable, but again I don't have a strong opinion
->>> here.
+>> gdb vmlinux
 >>
->> The smaller the better for backporting, of course.
+>> (gdb) print /x (int)&((struct blk_mq_hw_ctx *)0)->queue_num
+>> $5 = 0x164
+>>
+>> I read your descriptions and wondered a same race flow as you
+>> described
+>> following. But I found the offset mismatch, if the racing flow is
+>> correct,
+>> then the address accessed in blk_mq_unique_tag() should be 0x164, not
+>> 0x194.
+>> Maybe the offset is different between our machine?
+>>
+>> What's more, if the racing flow is correct, I did not get how your
+>> changes
+>> can address this racing flow.
+>>
+>>
 > 
-> I think a smaller version might be yangge's patch, plus Yang's hugepd
-> "fast" parameter for the hugepd stack, then hugepd can also use
-> try_grab_page().  memfd-pin change can be a separate small patch perhaps
-> squashed.
+> Hi Wenchao Hao,
+> 
+> Yes, our queue_num's offset of blk_mq_hw_ctx is 0x194.
+> Our kernel version is: Linux version 6.1.68
+> I think the offset is different by kernel version.
+> 
+> (gdb) print /x (int)&((struct blk_mq_hw_ctx *)0)->queue_num
+> $1 = 0x194
+> 
+> And yes, it only shorten the race window of step3 and step5.
+> Reduce the probability of step 4 appearing between step 3 and step 5.
+> 
 > 
 
-If needed, I can submit a new version based on Yang's V1 version.
+Hi Peter,
 
-> I'll leave how to move on to Yang.
-> 
-> Thanks,
-> 
+Thanks for your reply, I understand the issue now.
+
+> Thanks.
+> Peter
 
 
