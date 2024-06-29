@@ -1,88 +1,96 @@
-Return-Path: <stable+bounces-56114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41AAB91CB8F
-	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 10:07:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEEDD91CB92
+	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 10:11:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2710B2190C
-	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 08:07:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05DE81C21016
+	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 08:11:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE92381B9;
-	Sat, 29 Jun 2024 08:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E84376F5;
+	Sat, 29 Jun 2024 08:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krT/cYZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8OwwRjD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC1C6FB9;
-	Sat, 29 Jun 2024 08:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372511109
+	for <stable@vger.kernel.org>; Sat, 29 Jun 2024 08:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719648455; cv=none; b=tkl+0xxwi9nG/lgB+5JWa6R2oQ2MG4wHym4h132X1MRPZatYaivgKatLyu6jiNkotPd6ZS5rPRIQhpWoIxhoN6XqrF738ib9Uo9NXikvJtvxZNzmMdcETlVKVBy67XOmHoPbAcBmlP2SeY4dGjGQKQnnQYFwH52zKJP0fWXecjA=
+	t=1719648656; cv=none; b=DySB5YAgGEbn5R2gFAHfYOYXo7CelXq7Y8Bz4Vc6C11nRxLRm5So8eLyZ9REsuUWU0kB6S+Wf/LWCBZfi+dpBuLmxjxCS5hdXFGotHFKbiImfffQM6EIyusI1rbLx/aSLIGHnI9/yn6ea/Y8O6nyINipJcrck0FA8WoHNqhXoWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719648455; c=relaxed/simple;
-	bh=HZyRI4VrAeEz1YY6UlpfHipWqgudDrSenhok5CLTIvE=;
+	s=arc-20240116; t=1719648656; c=relaxed/simple;
+	bh=pmJKqCGfPvaLcZyMLLjmpoZTsxOKWBtVI+HT1VebSSQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JnAu5LJkfFw45OQSrbQnzx5YQzFKUrn92A2oT2hsh+f2zRKfeCSqwCCgHdTuFX55Z1UsMhvfe9FhvMkKQxt/6sr5/roZUYpRHpJOAfIf/bFseHApO6YbQAWO1SV3eX+47yWq1yRMMuRl36pkdeLVP4lHKCAojKB6ov9Uq1VMrRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krT/cYZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36CC8C2BBFC;
-	Sat, 29 Jun 2024 08:07:33 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ram0XZBBmhI3fBPE0G2Nvw10PtCIra4hCOWAfAxYrpSZmeeTrY/TEu6GNQRmZhf0tswYBfPWwQ7fzAsj6yLFqAEJYcHXCGORKI866XB/QBuR3FKPGz4wGLvXJ0MODfjxx0jazHeotY3ACfhF04+j5/nxgXMo1aGxDQI3yW1mMsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8OwwRjD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32710C2BBFC;
+	Sat, 29 Jun 2024 08:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719648455;
-	bh=HZyRI4VrAeEz1YY6UlpfHipWqgudDrSenhok5CLTIvE=;
+	s=korg; t=1719648655;
+	bh=pmJKqCGfPvaLcZyMLLjmpoZTsxOKWBtVI+HT1VebSSQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=krT/cYZy904cb6qHLyG4jWtZ85weqEZ+mlCsMeDVZnTdScLRw4F6/mwUtvIpGmwce
-	 nFPKT7sWgq+mbPkMRchaTDFxER/gI2S72kx1qDq6EGciJ+Y56QLW6TMKtaOWaa2iJA
-	 Z5yQ4u67gsSY8jhrreoPVtptz8jQjM3AjBx2EC2A=
-Date: Sat, 29 Jun 2024 10:07:29 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>
-Cc: Eric Woudstra <ericwouds@gmail.com>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.9 029/250] net: sfp: enhance quirk for Fibrestore 2.5G
- copper SFP module
-Message-ID: <2024062902-retrieval-distort-4718@gregkh>
-References: <20240625085548.033507125@linuxfoundation.org>
- <20240625085549.174362251@linuxfoundation.org>
- <20240628172211.17ccefe9@dellmb>
+	b=t8OwwRjDwuQy58oDr0dZ0aFBINFQe/dVXyRa1K9wAT9aJ4w7BMuPBfNLrog46iH/+
+	 NXncviOA84vlWV5SdlNZdz6p+G+JenZx+Vu6uOtplkS/48K1oLQbhynOTqDrlwAsg8
+	 khGStbSMNf9ScUdpa+bTXpGelwcz+O6wNLEmzHVg=
+Date: Sat, 29 Jun 2024 10:10:51 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Clayton Casciato <majortomtosourcecontrol@gmail.com>
+Cc: rpeterso@redhat.com, agruenba@redhat.com, cluster-devel@redhat.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 6.1.96] gfs2: Fix slab-use-after-free in gfs2_qd_dealloc
+Message-ID: <2024062953-problem-truth-ce3c@gregkh>
+References: <54398cb8-92e0-4ed2-8691-38f6d48efc9a@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240628172211.17ccefe9@dellmb>
+In-Reply-To: <54398cb8-92e0-4ed2-8691-38f6d48efc9a@gmail.com>
 
-On Fri, Jun 28, 2024 at 05:22:11PM +0200, Marek Behún wrote:
-> On Tue, 25 Jun 2024 11:29:47 +0200
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+On Fri, Jun 28, 2024 at 12:07:52PM -0600, Clayton Casciato wrote:
+> [ Upstream commit bdcb8aa434c6d36b5c215d02a9ef07551be25a37 ]
 > 
-> > 6.9-stable review patch.  If anyone has any objections, please let me know.
+> In gfs2_put_super(), whether withdrawn or not, the quota should
+> be cleaned up by gfs2_quota_cleanup().
 > 
-> Sorry I overlooked this, I thought I already replied to this, but in
-> fact I replied to another patch not to be backported:
+> Otherwise, struct gfs2_sbd will be freed before gfs2_qd_dealloc (rcu
+> callback) has run for all gfs2_quota_data objects, resulting in
+> use-after-free.
 > 
->   net: sfp: add quirk for another multigig RollBall transceiver
->   https://lore.kernel.org/stable/20240527165441.2c5516c9@dellmb/
+> Also, gfs2_destroy_threads() and gfs2_quota_cleanup() is already called
+> by gfs2_make_fs_ro(), so in gfs2_put_super(), after calling
+> gfs2_make_fs_ro(), there is no need to call them again.
 > 
-> This patch (net: sfp: enhance quirk for Fibrestore 2.5G copper SFP
-> module) has the same problem: it depends on the same series, so it
-> should not be backported.
+> The origin of a cherry-pick conflict is the (relevant) code block added in
+> commit f66af88e3321 ("gfs2: Stop using gfs2_make_fs_ro for withdraw")
 > 
-> Eric informs me that it was already released as 6.9.7 :-(
+> There are no references to gfs2_withdrawn() nor gfs2_destroy_threads() in
+> gfs2_put_super(), so we can simply call gfs2_quota_cleanup() in a new else
+> block as bdcb8aa434c6 achieves.
 > 
-> What can we do?
+> Else braces were used for consistency with the if block.
+> 
+> Sponsor: 21SoftWare LLC
 
-Revert is the best, want to send it or can you wait until Monday when I
-can do it (am traveling this weekend).
+That's not a valid tag for kernel commits, sorry.
+
+> Signed-off-by: Clayton Casciato <majortomtosourcecontrol@gmail.com>
+
+What happened to the original authorship information, and all of the
+other signed-off-by that were on the original commit?  YOu can not just
+delete them, would you want someone doing that to a patch you
+contributed?
+
+as-is, we can't take this, please fix up.
 
 thanks,
 
