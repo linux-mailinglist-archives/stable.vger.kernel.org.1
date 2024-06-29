@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-56118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E498A91CCBB
-	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 14:42:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17BCA91CCC0
+	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 14:42:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C0D62816EA
-	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 12:42:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C13BC1F21EE2
+	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 12:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDC47D3EC;
-	Sat, 29 Jun 2024 12:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52577D06E;
+	Sat, 29 Jun 2024 12:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WDSScS9B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rBroWHsp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6DD2574B;
-	Sat, 29 Jun 2024 12:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7102574B;
+	Sat, 29 Jun 2024 12:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719664953; cv=none; b=kyrZvNKIldXMqVGawLhQ55I2oESZOH8LNpvytaz2srLkZYy0wblePTln//rJZSeoc3YR1DW5USRSCDFP58YsKY3/Kz8dG1yAYDS+tUpr4RoaJ8/2PRyImW41iaTo3SgKH6wDVT6ykdZdyVNwUGGDy13x3Gr8Ff4dk2yaQ8O3MS8=
+	t=1719664959; cv=none; b=SeQlNyWJfsalCyuxDMJSR502fYx8H97n7RNFX2joyJMgdTxHJEdWtQ12+xAcK35aDTUQ0fpJUUnj1aZYNXKjpVJa0STUE880mKfwG3z1OvOvoYwM1TQheqieV2NLul5Kuw3AIH4SiThkf6AYd1d22GTSilxR9HJAIHBJeuzz/h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719664953; c=relaxed/simple;
-	bh=Ghd/27ioPdGmjCXPDms5m/c98Lu6QS0GgtZMrPyqh2U=;
+	s=arc-20240116; t=1719664959; c=relaxed/simple;
+	bh=f4Qe+uisdyi95QeN2VZXvu3hEOAuQmhtk4sPU4vbjOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JAzH/PtvkFgv9iN+Oey2h10uhkUaLviY2bzSOQrBQzpEfx3OUyHBY7P/Y/hvBlDtstJ79dAKplBUT4hlJZmpa1W1TKYETGlVujFeVJGCUeOiWtIkG5Ac+wNQd8xHvNL50e4zrkcmsV11bkfZCSqeeoLWlj1+hh7tehUoK4nvLNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WDSScS9B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322C0C32789;
-	Sat, 29 Jun 2024 12:42:30 +0000 (UTC)
+	 MIME-Version; b=Wn9PlmE1W/6SN5X5ZO8h0ay08DeiDeJAdyRXFQkoUfU8tRUdiQ9cJagxUjz+4Lcy0pcARPharkBUVRooUbctHZ1k1fTl6JvdI57gHSYpMMmPmCyza1qN2BDq88b2t9hBJ3MY9x0CZmsqKWWW2dqDypT+yaX7C1zhSU98YXbit+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rBroWHsp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983FFC32789;
+	Sat, 29 Jun 2024 12:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719664952;
-	bh=Ghd/27ioPdGmjCXPDms5m/c98Lu6QS0GgtZMrPyqh2U=;
+	s=k20201202; t=1719664959;
+	bh=f4Qe+uisdyi95QeN2VZXvu3hEOAuQmhtk4sPU4vbjOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WDSScS9B4SQTGU7CHPWsbAeOpbWdQSeR7T+Z2/+SnxaV4eOPAMU8I9bogTQsVj+Bp
-	 br22NwiUul28tPJbdJq79KwykkaKdJiZXOYpOyo/shVQgs63icJJBLj6MY78DoCpEO
-	 EezUEy+CJ0gC76IxMC7QYyDW1O3C/4Q97u8nXYEz/3zZTaMkeL/rsXqelum/D02XSY
-	 dSRi6gTn3JtAZgUYYUFk129eHgszsbEZORcVK3QfAdwI+oGb34hz0ChI16GfJsv40p
-	 IbmqlCKhg8iO2L3jPFprFVD2g28D642CIItSW4/nNoak9HNwa3Z5P8Fjucrahxy7If
-	 vvp24KrXrDIPg==
+	b=rBroWHsp9iWHnv0yrZAlAhYYQ9z9TqkRWZVh8x7uppXVYdeAdf31S+yP5xpz5nzYY
+	 bOJDOA7n6cDiU6DsnlKcmVJd1bh2ayQQyC7G2SnZshYwD3yqI0aObuRZCeOaT+QvBX
+	 vemJfiAfmV3uDhn2g76snSeQsfZA23+cSARXyYFeiXiuE3IZrgUtOQ1dJSGVB+KN9W
+	 6YvaKgJODXvOM6pwYjqiAVd2jv1lq4h6WjRGgRxFxWlVmTsWbELy4tBSmZ7MXe/S0X
+	 ROOhEbmOVaTiGAM4Y4isipWdQyJNb4goHRcL/jCw42Sh8c0wOWBig7Sy/9k5FS0yOi
+	 8oVvT2VGLVdBw==
 From: Niklas Cassel <cassel@kernel.org>
 To: Damien Le Moal <dlemoal@kernel.org>,
 	Niklas Cassel <cassel@kernel.org>,
-	Tejun Heo <htejun@gmail.com>,
-	Jeff Garzik <jeff@garzik.org>
+	Tejun Heo <tj@kernel.org>,
+	Colin Ian King <colin.i.king@gmail.com>
 Cc: linux-scsi@vger.kernel.org,
 	John Garry <john.g.garry@oracle.com>,
 	Jason Yan <yanaijie@huawei.com>,
@@ -54,9 +54,9 @@ Cc: linux-scsi@vger.kernel.org,
 	stable@vger.kernel.org,
 	Hannes Reinecke <hare@suse.de>,
 	linux-ide@vger.kernel.org
-Subject: [PATCH 1/4] ata: libata-core: Fix null pointer dereference on error
-Date: Sat, 29 Jun 2024 14:42:11 +0200
-Message-ID: <20240629124210.181537-7-cassel@kernel.org>
+Subject: [PATCH 3/4] ata: libata-core: Fix double free on error
+Date: Sat, 29 Jun 2024 14:42:13 +0200
+Message-ID: <20240629124210.181537-9-cassel@kernel.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240629124210.181537-6-cassel@kernel.org>
 References: <20240629124210.181537-6-cassel@kernel.org>
@@ -66,72 +66,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2474; i=cassel@kernel.org; h=from:subject; bh=Ghd/27ioPdGmjCXPDms5m/c98Lu6QS0GgtZMrPyqh2U=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGNIaGNUv7WD5IHLR78WWv4nPrTjUnszSl7RPF3H7HXAi6 39COPe3jlIWBjEuBlkxRRbfHy77i7vdpxxXvGMDM4eVCWQIAxenAExE5gDDHz65e8r741YsWy/0 /FxjYEemrsoP26/LmfXzF+48pdK3OYThr8DOKfMPXZs6fbNe37GbPrWnHS51Pj3oVyF754KRbJw 8Bw8A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2946; i=cassel@kernel.org; h=from:subject; bh=f4Qe+uisdyi95QeN2VZXvu3hEOAuQmhtk4sPU4vbjOM=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGNIaGDUCp52+Z9jquec0Zxa//YSQ8McSO3YYPl2VIHJVg e+wUurUjlIWBjEuBlkxRRbfHy77i7vdpxxXvGMDM4eVCWQIAxenAExEtZeRYfqFmjMPZuzKaDa3 E5x4WHlHs8CF0qqYfW5fvvZr1drfmMfI0NScOqN0leKF3f8OPA9NL+Yt+BAUf/rFLLMnMtW/rmx X5wEA
 X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
 Content-Transfer-Encoding: 8bit
 
-If the ata_port_alloc() call in ata_host_alloc() fails,
-ata_host_release() will get called.
+If e.g. the ata_port_alloc() call in ata_host_alloc() fails, we will jump
+to the err_out label, which will call devres_release_group().
+devres_release_group() will trigger a call to ata_host_release().
+ata_host_release() calls kfree(host), so executing the kfree(host) in
+ata_host_alloc() will lead to a double free:
 
-However, the code in ata_host_release() tries to free ata_port struct
-members unconditionally, which can lead to the following:
-
-BUG: unable to handle page fault for address: 0000000000003990
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 10 PID: 594 Comm: (udev-worker) Not tainted 6.10.0-rc5 #44
+kernel BUG at mm/slub.c:553!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 11 PID: 599 Comm: (udev-worker) Not tainted 6.10.0-rc5 #47
 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
-RIP: 0010:ata_host_release.cold+0x2f/0x6e [libata]
-Code: e4 4d 63 f4 44 89 e2 48 c7 c6 90 ad 32 c0 48 c7 c7 d0 70 33 c0 49 83 c6 0e 41
-RSP: 0018:ffffc90000ebb968 EFLAGS: 00010246
-RAX: 0000000000000041 RBX: ffff88810fb52e78 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: ffff88813b3218c0 RDI: ffff88813b3218c0
-RBP: ffff88810fb52e40 R08: 0000000000000000 R09: 6c65725f74736f68
-R10: ffffc90000ebb738 R11: 73692033203a746e R12: 0000000000000004
-R13: 0000000000000000 R14: 0000000000000011 R15: 0000000000000006
-FS:  00007f6cc55b9980(0000) GS:ffff88813b300000(0000) knlGS:0000000000000000
+RIP: 0010:kfree+0x2cf/0x2f0
+Code: 5d 41 5e 41 5f 5d e9 80 d6 ff ff 4d 89 f1 41 b8 01 00 00 00 48 89 d9 48 89 da
+RSP: 0018:ffffc90000f377f0 EFLAGS: 00010246
+RAX: ffff888112b1f2c0 RBX: ffff888112b1f2c0 RCX: ffff888112b1f320
+RDX: 000000000000400b RSI: ffffffffc02c9de5 RDI: ffff888112b1f2c0
+RBP: ffffc90000f37830 R08: 0000000000000000 R09: 0000000000000000
+R10: ffffc90000f37610 R11: 617461203a736b6e R12: ffffea00044ac780
+R13: ffff888100046400 R14: ffffffffc02c9de5 R15: 0000000000000006
+FS:  00007f2f1cabe980(0000) GS:ffff88813b380000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000003990 CR3: 00000001122a2000 CR4: 0000000000750ef0
+CR2: 00007f2f1c3acf75 CR3: 0000000111724000 CR4: 0000000000750ef0
 PKRU: 55555554
 Call Trace:
  <TASK>
  ? __die_body.cold+0x19/0x27
- ? page_fault_oops+0x15a/0x2f0
- ? exc_page_fault+0x7e/0x180
- ? asm_exc_page_fault+0x26/0x30
- ? ata_host_release.cold+0x2f/0x6e [libata]
- ? ata_host_release.cold+0x2f/0x6e [libata]
- release_nodes+0x35/0xb0
- devres_release_group+0x113/0x140
- ata_host_alloc+0xed/0x120 [libata]
+ ? die+0x2e/0x50
+ ? do_trap+0xca/0x110
+ ? do_error_trap+0x6a/0x90
+ ? kfree+0x2cf/0x2f0
+ ? exc_invalid_op+0x50/0x70
+ ? kfree+0x2cf/0x2f0
+ ? asm_exc_invalid_op+0x1a/0x20
+ ? ata_host_alloc+0xf5/0x120 [libata]
+ ? ata_host_alloc+0xf5/0x120 [libata]
+ ? kfree+0x2cf/0x2f0
+ ata_host_alloc+0xf5/0x120 [libata]
  ata_host_alloc_pinfo+0x14/0xa0 [libata]
  ahci_init_one+0x6c9/0xd20 [ahci]
 
-Do not access ata_port struct members unconditionally.
+Ensure that we will not call kfree(host) twice, by performing the kfree()
+only if the devres_open_group() call failed.
 
-Fixes: 633273a3ed1c ("libata-pmp: hook PMP support and enable it")
+Fixes: dafd6c496381 ("libata: ensure host is free'd on error exit paths")
 Cc: stable@vger.kernel.org
 Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 Reviewed-by: Hannes Reinecke <hare@suse.de>
 Signed-off-by: Niklas Cassel <cassel@kernel.org>
 ---
- drivers/ata/libata-core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/ata/libata-core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index e1bf8a19b3c8..f47838da75d7 100644
+index 481baa55ebfc..e0455a182af7 100644
 --- a/drivers/ata/libata-core.c
 +++ b/drivers/ata/libata-core.c
-@@ -5518,6 +5518,9 @@ static void ata_host_release(struct kref *kref)
- 	for (i = 0; i < host->n_ports; i++) {
- 		struct ata_port *ap = host->ports[i];
+@@ -5578,8 +5578,10 @@ struct ata_host *ata_host_alloc(struct device *dev, int max_ports)
+ 	if (!host)
+ 		return NULL;
  
-+		if (!ap)
-+			continue;
-+
- 		kfree(ap->pmp_link);
- 		kfree(ap->slave_link);
- 		kfree(ap->ncq_sense_buf);
+-	if (!devres_open_group(dev, NULL, GFP_KERNEL))
+-		goto err_free;
++	if (!devres_open_group(dev, NULL, GFP_KERNEL)) {
++		kfree(host);
++		return NULL;
++	}
+ 
+ 	dr = devres_alloc(ata_devres_release, 0, GFP_KERNEL);
+ 	if (!dr)
+@@ -5611,8 +5613,6 @@ struct ata_host *ata_host_alloc(struct device *dev, int max_ports)
+ 
+  err_out:
+ 	devres_release_group(dev, NULL);
+- err_free:
+-	kfree(host);
+ 	return NULL;
+ }
+ EXPORT_SYMBOL_GPL(ata_host_alloc);
 -- 
 2.45.2
 
