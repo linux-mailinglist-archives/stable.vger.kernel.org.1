@@ -1,154 +1,102 @@
-Return-Path: <stable+bounces-56120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D83891CCC4
-	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 14:42:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85ABD91CDA6
+	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 16:51:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFBE21C210D5
-	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 12:42:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A04A01C20EAE
+	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 14:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470877D3F5;
-	Sat, 29 Jun 2024 12:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1BA548E1;
+	Sat, 29 Jun 2024 14:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T8w3vZIh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J/QVuFOW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33552574B;
-	Sat, 29 Jun 2024 12:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A120821364
+	for <stable@vger.kernel.org>; Sat, 29 Jun 2024 14:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719664963; cv=none; b=YmrVjhshtDMBEwAPN29yvWJjc+flLHRStivM+vb5te5seFtaLEXXK1CWL3rGud+WtXgbyjB+7oevAuGNhWrK0GBRS4jskgqs2fRz9uBdjdmTUp3mBb0W0eMpaCoHaQWHDL8gAO+ppczUQNYOEUZ4O5MkH6/jadkhCpORxkLatxU=
+	t=1719672663; cv=none; b=XAPOhL0n/qP9WAZEvJj5MGEnREOeCwiJCPRs/r85yeKrEKtyGpsdqZJKNLtWQZcSr+o3GpTdHxSYBsH7vkJu+2CdqAGdI73hfG7iaub3HuvCF+M/n604DezLUybmizk0RoO8iTAFT2bOxTGJ1kSynLrwW+c840lmSyS6MBlh1wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719664963; c=relaxed/simple;
-	bh=YE2wYJ2kCjz6uRVo49Ho3nZ45FD637M/W1oPclhVsow=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VbxRLc6cf21JAlvaQ3aSe0QXzsVXAZ75bLjBaexxVlBr7xzZ8FoVDKk5Sve8e+lurGxCp/YZ3yyzytAWbC3kDaaJJ22qqjUbRkHg0lML4ngcrs3kArW39gXDCfAd1jqQ0gr13MbOaZpqhPyN374iGMcZTu6Qr/3Q+pHIfDtGg44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T8w3vZIh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD8B8C4AF09;
-	Sat, 29 Jun 2024 12:42:39 +0000 (UTC)
+	s=arc-20240116; t=1719672663; c=relaxed/simple;
+	bh=7l8H4AiU3JIZBfwrfFOEuA0QFAe9YMBbtTUl0Xos0Lo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VIXwYcXWHY8IQN+7B0HFrj8TAT/yvEuULneIlBecwZolUWBm6jZld4DTGjg9jTQ7muHL0RGMOsBu37kS8eKkhlTjWNqt71Td9D5fuYP18+933WnHMYHOWTLEVZuenBbHMycWR+FEWnPpR+ZRldY+IHKNavF7r4FTBvxDettgHjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J/QVuFOW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174B0C2BD10
+	for <stable@vger.kernel.org>; Sat, 29 Jun 2024 14:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719664962;
-	bh=YE2wYJ2kCjz6uRVo49Ho3nZ45FD637M/W1oPclhVsow=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T8w3vZIhVu84/AEdu/0R2YPl32MebtlulpnoUTsf1nKLxns3JUWjUkxaHWs1uQobJ
-	 N89mEY7Mm06y7NsJIxhA0RMikpI4/+CBAhLi9Xnl1AUZE6OFQrOIoJOiwtui3YTRCB
-	 VhKyRC4JynbB2azhAJpslgYQixJPJ6PzTihhHzuWjLS+f2u33kMnW33bRYkeKij9oh
-	 ZTjR01/kzWMK0Evr6oW8pK+t+d6/MTaGE3az/InsRB3LhI2UQTkZZHd1uePgitSGfV
-	 Arijomt4jRcwujVnk/Y9r4hC/dgXXvLpmkK+FQiz/cm0KanxZCFTxD3hR79FFr5GbC
-	 sSo1qDiuVUJdQ==
-From: Niklas Cassel <cassel@kernel.org>
-To: Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc: linux-scsi@vger.kernel.org,
-	John Garry <john.g.garry@oracle.com>,
-	Jason Yan <yanaijie@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	stable@vger.kernel.org,
-	Hannes Reinecke <hare@suse.de>,
-	linux-ide@vger.kernel.org
-Subject: [PATCH 4/4] ata: ahci: Clean up sysfs file on error
-Date: Sat, 29 Jun 2024 14:42:14 +0200
-Message-ID: <20240629124210.181537-10-cassel@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240629124210.181537-6-cassel@kernel.org>
-References: <20240629124210.181537-6-cassel@kernel.org>
+	s=k20201202; t=1719672663;
+	bh=7l8H4AiU3JIZBfwrfFOEuA0QFAe9YMBbtTUl0Xos0Lo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=J/QVuFOW5SZlQgIhevRh/NEGEpVgc7Jizu31iQ0VReMQ/Fm7F9nXVkhAUWtcR2dlC
+	 2+jOncy9TDf5jJ3jpjWTcCPAmPKzbeWK2xVz2XG1eHij93Q3Vm4yDZpulAvsv6gTK+
+	 gv4uJUpa+ch5BUMFuIJ6/JT9xgGY7J1gs3N7IzFypdQ4slduw0N5g/81pXgx4XOpA2
+	 S6NI6ow5RzDa9gfFu4RwXiio5/WvYRqERuP5M3sgHZki9TxvRcZPssuIEegOzQdiO5
+	 E1Xi7BL6HCln94RGZYgwSNX/kRE/f5sPnzuQeJi7fOrsbz6q1Eu2bGLdRXS8P0T1Pp
+	 ATEu+5A5Nu5KA==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-52cdea1387eso1698610e87.0
+        for <stable@vger.kernel.org>; Sat, 29 Jun 2024 07:51:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWZ15COxHa1kgz4f6w68jMYtegOuoC29BySYyiHcpymJc48MSRIVqHURMPv4PdZXsAdaKEFEoEbKonkGUY/ijvsKTu8pyjV
+X-Gm-Message-State: AOJu0Yw0qyN8Dmu01WQsZEWbaJCTieaohliA+rCRblDZvN0jpDe2bKO3
+	CF+g/LDk+NQNxbkBJVn2k4LAV94g68Dct3aHZh6Hs0M4f0pEhovqVFat2QY9FHsoeY1qwzT7WJV
+	uwEVTpw939okaFa3mvAmQ7nT/8Wc=
+X-Google-Smtp-Source: AGHT+IEAod5QWLhlbab+1KhGSyEAmTTxCdM/MKi57U0uYfcrMNcMdlB/OvTxffGjRiGzJLUGbwHDhemLIp3X7F9bTLw=
+X-Received: by 2002:a05:6512:3e1e:b0:52b:de5b:1b30 with SMTP id
+ 2adb3069b0e04-52e826fbb96mr1091060e87.44.1719672661380; Sat, 29 Jun 2024
+ 07:51:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2648; i=cassel@kernel.org; h=from:subject; bh=YE2wYJ2kCjz6uRVo49Ho3nZ45FD637M/W1oPclhVsow=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGNIaGDUiIxckPH6ezttj94BvWV/kp9Cdb48lvc5PlO+Lm v3vZLdxRykLgxgXg6yYIovvD5f9xd3uU44r3rGBmcPKBDKEgYtTACbStJ/hn8UBW1l/0Yf3JnJ5 /lvLUDFxwbLTud/PamQfZrhdfddE9wUjwya772YeLnuaL8czB2w++sY5bXnJyg+3dn2717FHSOb gB14A
-X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
-Content-Transfer-Encoding: 8bit
+References: <2024062442-bonfire-detonator-1b17@gregkh>
+In-Reply-To: <2024062442-bonfire-detonator-1b17@gregkh>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Sat, 29 Jun 2024 16:50:50 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXF5dosTmitMvCiYCb8Xo=+a23zrUd1F7cyWfpMFba0SXg@mail.gmail.com>
+Message-ID: <CAMj1kXF5dosTmitMvCiYCb8Xo=+a23zrUd1F7cyWfpMFba0SXg@mail.gmail.com>
+Subject: Re: FAILED: patch "[PATCH] efi/x86: Free EFI memory map only when
+ installing a new one." failed to apply to 6.1-stable tree
+To: gregkh@linuxfoundation.org
+Cc: Ashish.Kalra@amd.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-.probe() (ahci_init_one()) calls sysfs_add_file_to_group(), however,
-if probe() fails after this call, we currently never call
-sysfs_remove_file_from_group().
+On Mon, 24 Jun 2024 at 18:41, <gregkh@linuxfoundation.org> wrote:
+>
+>
+> The patch below does not apply to the 6.1-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+>
+> To reproduce the conflict and resubmit, you may use the following commands:
+>
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 75dde792d6f6c2d0af50278bd374bf0c512fe196
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024062442-bonfire-detonator-1b17@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+>
+> Possible dependencies:
+>
+> 75dde792d6f6 ("efi/x86: Free EFI memory map only when installing a new one.")
+> d85e3e349407 ("efi: xen: Set EFI_PARAVIRT for Xen dom0 boot on all architectures")
+> fdc6d38d64a2 ("efi: memmap: Move manipulation routines into x86 arch tree")
+>
 
-(The sysfs_remove_file_from_group() call in .remove() (ahci_remove_one())
-does not help, as .remove() is not called on .probe() error.)
+Please apply these dependencies (in reverse order) as stable
+prerequisites. I build and boot tested the result, and it works as
+expected.
 
-Thus, if probe() fails after the sysfs_add_file_to_group() call, the next
-time we insmod the module we will get:
-
-sysfs: cannot create duplicate filename '/devices/pci0000:00/0000:00:04.0/remapped_nvme'
-CPU: 11 PID: 954 Comm: modprobe Not tainted 6.10.0-rc5 #43
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x5d/0x80
- sysfs_warn_dup.cold+0x17/0x23
- sysfs_add_file_mode_ns+0x11a/0x130
- sysfs_add_file_to_group+0x7e/0xc0
- ahci_init_one+0x31f/0xd40 [ahci]
-
-Fixes: 894fba7f434a ("ata: ahci: Add sysfs attribute to show remapped NVMe device count")
-Cc: stable@vger.kernel.org
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
----
- drivers/ata/ahci.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 5eb38fbbbecd..fc6fd583faf8 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -1975,8 +1975,10 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	n_ports = max(ahci_nr_ports(hpriv->cap), fls(hpriv->port_map));
- 
- 	host = ata_host_alloc_pinfo(&pdev->dev, ppi, n_ports);
--	if (!host)
--		return -ENOMEM;
-+	if (!host) {
-+		rc = -ENOMEM;
-+		goto err_rm_sysfs_file;
-+	}
- 	host->private_data = hpriv;
- 
- 	if (ahci_init_msi(pdev, n_ports, hpriv) < 0) {
-@@ -2031,11 +2033,11 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	/* initialize adapter */
- 	rc = ahci_configure_dma_masks(pdev, hpriv);
- 	if (rc)
--		return rc;
-+		goto err_rm_sysfs_file;
- 
- 	rc = ahci_pci_reset_controller(host);
- 	if (rc)
--		return rc;
-+		goto err_rm_sysfs_file;
- 
- 	ahci_pci_init_controller(host);
- 	ahci_pci_print_info(host);
-@@ -2044,10 +2046,15 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	rc = ahci_host_activate(host, &ahci_sht);
- 	if (rc)
--		return rc;
-+		goto err_rm_sysfs_file;
- 
- 	pm_runtime_put_noidle(&pdev->dev);
- 	return 0;
-+
-+err_rm_sysfs_file:
-+	sysfs_remove_file_from_group(&pdev->dev.kobj,
-+				     &dev_attr_remapped_nvme.attr, NULL);
-+	return rc;
- }
- 
- static void ahci_shutdown_one(struct pci_dev *pdev)
--- 
-2.45.2
-
+Thanks,
+Ard.
 
