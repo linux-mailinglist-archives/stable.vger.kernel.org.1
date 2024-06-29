@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-56131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84FD91CDC7
-	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 17:14:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5907F91CDC6
+	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 17:14:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E25F5B214E5
-	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 15:14:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1579F282D1D
+	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 15:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88FFC82862;
-	Sat, 29 Jun 2024 15:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865148286B;
+	Sat, 29 Jun 2024 15:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CNFNUoaL"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="noHCHDbm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79D78288C
-	for <stable@vger.kernel.org>; Sat, 29 Jun 2024 15:14:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C274682869
+	for <stable@vger.kernel.org>; Sat, 29 Jun 2024 15:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719674056; cv=none; b=uXPjmzs8tWD9i3jQi2iuxKBH63y298bDstcgQ6CdLTI2DNmTL4ptLAV39Pmw4dQe+bu7imWmDxvuFoIqdHLTSE0gEDUBqe+5Q6yVsDlDWymQHOeWQ5OhWF/d/M1Fq4E33rFaJaHsxphFslzbZK6aLSZVqnNt1UZUPcL248EJRP0=
+	t=1719674058; cv=none; b=KrrfeLT5LOFxUhzRR7We3WEIdX8jOjzkWppH/E7paIwMFSfnYEplCavOrHu1q8Sra3I23EJ4K81hx2Ye3b/J++TaU0UNRypE+FhFUuxtfl13ecSc0fzmufGo1UVL8fP7zYtfoOx7V3zGLjTN9XpQIsbvALYCSO4GQLt9nSRXa/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719674056; c=relaxed/simple;
-	bh=XCaqEkyqhrf49VkrqTIXne0Szk/TzuG/ecJG2bD4CmU=;
+	s=arc-20240116; t=1719674058; c=relaxed/simple;
+	bh=R7jVlI2sYj81gYUKvAZP/4TkXuc9ZJF9BYGPreKR/IQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Content-Type; b=LqIC5urLd1fhUPb02MhRD6FRy+wArr2d1rLhVxkSKkapw+xR9+QrmIYjgHAMroGXVRhshfN8cISbUPldZYxwbGdIsVse1pqnfSsNSifQ/igXIV6+xDJUaChlPuglocat4E9WDkpjmxmcrGdfuszDb03/gCqjYurbcThYRWws+vI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CNFNUoaL; arc=none smtp.client-ip=209.85.128.201
+	 To:Content-Type; b=fPX664roiX1TFuZNJaNzKHyfvWfO49MY0wvEVzIDuGXezPXN+GFTnYQDTeqaBy2/a/cP5vGHUQla4Vbor3bXZxfNEBtCDeqo+Maj8yT5ORdZxeAkdlIGb5ATgRzvooPdPGyiNIKXbXduS1+/XutJ9P6N4KO4MVB2uaDCLAVNhAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=noHCHDbm; arc=none smtp.client-ip=209.85.128.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-63a988bdec8so25102887b3.2
-        for <stable@vger.kernel.org>; Sat, 29 Jun 2024 08:14:14 -0700 (PDT)
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6479d38bdfaso32345997b3.0
+        for <stable@vger.kernel.org>; Sat, 29 Jun 2024 08:14:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1719674054; x=1720278854; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1719674056; x=1720278856; darn=vger.kernel.org;
         h=to:from:subject:message-id:references:mime-version:in-reply-to:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=PRZt2tX2o9GEcZGVR8tJFeb1QnVQ4zrsmKhstuIsDTo=;
-        b=CNFNUoaLgS4MbZp8bTACwRaGrXFjmboOjMUJZTiIj87GzF0P7IKez2x2tZX4LCmx32
-         G2MGDpZ0ejI69hHwxRfOhqmCgnSxDWMZM++AknKIqGYUP/ZoGJ/S1syFRfeaTpuub55i
-         fPxMCoxMKKW3IpQRgoOeviIyIYsA2xOjFuCa88tgKXimh8bPkfV0krvHZNh8s5zP0Kg5
-         vvOByWNv1A+oaRNVmPY9rOG6hjUoI+aVycJKGOUOg2my7MpLRdHiyOoAzbbVoDYwNvnC
-         ZulnsD/BMxDEkZtCIcm118Swen1oIQ98gg73+xoon6y94j9boh5/0j8mL0znyYcMtViu
-         BddQ==
+        bh=SR8yJy6YNzmn4nu52ab9V4UMzKI/wjLUv+e4kHA8UGc=;
+        b=noHCHDbmgTbl9/zQrW5s+ckb0LgoDLwg3qp08JQMHo9fNSd9BIDSBfjFFvl5DC5TyK
+         drJvUb5K/v625SGnco9vO+S7UuZKoUIS0LagMYHdCIzSpr/y2FaHXFd8AHdf2Dfs/McM
+         aam3+a5xRbF7AVBew82RrtbiiN/WUElaznS+iPJXHpJoWAhBNmZhT/im2cg0ZuwBFWLa
+         i0kibZHFZ6GVEs6GrUgsqhf1BZTXurcCpc1x8DI6t6xmJcpq970DrQZwWgsMEIcOz3Yr
+         4YIdBBrs0FaxnTzMBmkNQ7FiMsPH74esku1FwsdGnR2m9u7KcqM7XdsfxxeRCkVjIMTL
+         15/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719674054; x=1720278854;
+        d=1e100.net; s=20230601; t=1719674056; x=1720278856;
         h=to:from:subject:message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PRZt2tX2o9GEcZGVR8tJFeb1QnVQ4zrsmKhstuIsDTo=;
-        b=Zn35yJRSIyCzedh+x+ZlrreJK0z4qyzQiAJWQuBxvQWozrHnQktikFt/IV0gDqxXPv
-         9KTtuZg6w8HPFNam0NKAVG3hU69mztGveQRFG7BLHCCM6/MON89Phw2rqNUDNjNOfOAV
-         lbeQREwbyhR6Qf+a7Fg1cAiFk0Z4VfRePvJJVPZqTAM5L8pmgps6+iWFFMM6XOInyNj2
-         UFCk1lAixqSYC1qgPbim1PEtJ4mHnGn7MLwHhgjI0xe1hCEvy/H86zhmYb9GACt2NEQk
-         /sR5XoUVZnyLOILTYHy/X3kBCBvDhJvLZ1MWQIHRVNHizQLaleNWO5LEEap4i7Kg3XLz
-         GxDQ==
-X-Gm-Message-State: AOJu0YwhHNBkDpmxUunxyHA0Gae2L8hKbC4hEbgbF9y82YOdvZz1El6N
-	hJ2K8KqH68fXd6NFZIRHhu2gBkvkMrI0LAEzYNA1y+GkKZZXbrw4HsVSgvPK0EciSYNF+SJBNNr
-	Iv3ygzuqMpAQ/wVQG3ewIjP65d9IIyU8QDieIeyJXjjDNyavWcPKZ0zsqfNKM+fa9d72vsM0IIy
-	porpeUMCRsp2FanBzfp5jl5Q==
-X-Google-Smtp-Source: AGHT+IGhe421QiwSVsSVWbTkqalkEw4s5KL4q5w5sVRX681CZFR/kUyIuwT1CrG3VS1iVcWGaueEEREc
+        bh=SR8yJy6YNzmn4nu52ab9V4UMzKI/wjLUv+e4kHA8UGc=;
+        b=Ci7wGmBJfMwhC/YVeCBbfWDh/uc0CILwtyK817TSKpA6whj6NRF2/2Z4fLCy4UwL9l
+         Hp2q0T0AYMrzomEniDW/pgkfFAmIR4pjf2awe4P28NJ0r9cFo251YnR2HMlRhcyGNiu6
+         /VY3/2bDKD6L2GtMGw+eKlrtrk+cx/T3P47eTWu0D9ifKOHBao8+n5gbPUxaKlzUIYc/
+         QMqq73XaQckWwN9XexzgXqiuV3bisA0jR8UQLgrUAtHP27l0V2+9GfRWM0xHhUW/j1Vn
+         IR9yQNz6DdFkhOVc99WK53w1C2BT02wIlZ46W12KWJ8yoYPL8YXWrEhzEXGJZcuDUV7F
+         C/Hg==
+X-Gm-Message-State: AOJu0Yz1foX19jcysqlEL2MXlsddXkytYbgVQCbcIx/ZSOAvWjLZ5Cmq
+	N+G5MoNTn6qJL1VikVXtuAxaIn0TzSw6ORYmYAl90c3Z9yBCZiXpoLIwCr4pJAdrmfP+NSBcjvv
+	tfSJpb5ekxx7vSZJyLedpmFL0/R4g5pmPkDL2RtS9UtYci/f5Zz/pvV8qAI546t+9eKzrG/iSxj
+	5bImmOuIHcq50x4KFTWRSGow==
+X-Google-Smtp-Source: AGHT+IF3jNEuASlZjJiYt+ki97hgTBT/d+lcA0ckUQiMUsWxRvN+6SY1NtUsjOVWtgZ+5ZN5Rcu3R/so
 X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a05:690c:39a:b0:62a:564d:aed1 with SMTP id
- 00721157ae682-64c777cc22dmr76207b3.8.1719674053632; Sat, 29 Jun 2024 08:14:13
+ (user=ardb job=sendgmr) by 2002:a05:6902:298e:b0:e03:54e2:4ca2 with SMTP id
+ 3f1490d57ef6-e036eb1b316mr3409276.4.1719674055932; Sat, 29 Jun 2024 08:14:15
  -0700 (PDT)
-Date: Sat, 29 Jun 2024 17:14:01 +0200
+Date: Sat, 29 Jun 2024 17:14:02 +0200
 In-Reply-To: <20240629151357.866803-6-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,116 +74,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <2024062455-glazing-flask-cf0c@gregkh> <20240629151357.866803-6-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3292; i=ardb@kernel.org;
- h=from:subject; bh=DAo9E+DXOjgwYU8AZDEk4N+5V6j7weMbtrOg0HUXhKM=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIa1BZZfLqiVMZ6SfTG41Mju47/rzEMer7xY93b9oyrncV
- W839V350FHKwiDGwSArpsgiMPvvu52nJ0rVOs+ShZnDygQyhIGLUwAmErCCkeF20fMmqYCNX1rV
- tr4pq7E5NMvw2ub73mt03+S/fGe5dmE1wx/+wt+W0tPfL03ReC3Jujkk+tuGskOP9I4+iunLVX+ +RI0ZAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4079; i=ardb@kernel.org;
+ h=from:subject; bh=8/1AFZ0RtNic4xi7Lfu9TdbQnyG1DmT3hkAsZj5rzaw=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIa1BZfcCe+tTBlzczFqCWxNa34sdbZn04HDJFOPzB//lT
+ lN4PGtXRykLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZjIjH5GhsbMu/tL/vj8v7Al
+ mt3Da+rBC087XsdUfNn7k+H2triq7skM//RO+J5dezppruaymxkrww48szrttffchyXd06qUn7D n72QAAA==
 X-Mailer: git-send-email 2.45.2.803.g4e1b14247a-goog
-Message-ID: <20240629151357.866803-9-ardb+git@google.com>
-Subject: [PATCH 5.10.y 4/5] efi: xen: Set EFI_PARAVIRT for Xen dom0 boot on
- all architectures
+Message-ID: <20240629151357.866803-10-ardb+git@google.com>
+Subject: [PATCH 5.10.y 5/5] efi/x86: Free EFI memory map only when installing
+ a new one.
 From: Ard Biesheuvel <ardb+git@google.com>
 To: stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Commit d85e3e34940788578eeffd94e8b7e1d28e7278e9 upstream ]
+[ Commit 75dde792d6f6c2d0af50278bd374bf0c512fe196 upstream ]
 
-Currently, the EFI_PARAVIRT flag is only used by Xen dom0 boot on x86,
-even though other architectures also support pseudo-EFI boot, where the
-core kernel is invoked directly and provided with a set of data tables
-that resemble the ones constructed by the EFI stub, which never actually
-runs in that case.
+The logic in __efi_memmap_init() is shared between two different
+execution flows:
+- mapping the EFI memory map early or late into the kernel VA space, so
+  that its entries can be accessed;
+- the x86 specific cloning of the EFI memory map in order to insert new
+  entries that are created as a result of making a memory reservation
+  via a call to efi_mem_reserve().
 
-Let's fix this inconsistency, and always set this flag when booting dom0
-via the EFI boot path. Note that Xen on x86 does not provide the EFI
-memory map in this case, whereas other architectures do, so move the
-associated EFI_PARAVIRT check into the x86 platform code.
+In the former case, the underlying memory containing the kernel's view
+of the EFI memory map (which may be heavily modified by the kernel
+itself on x86) is not modified at all, and the only thing that changes
+is the virtual mapping of this memory, which is different between early
+and late boot.
 
+In the latter case, an entirely new allocation is created that carries a
+new, updated version of the kernel's view of the EFI memory map. When
+installing this new version, the old version will no longer be
+referenced, and if the memory was allocated by the kernel, it will leak
+unless it gets freed.
+
+The logic that implements this freeing currently lives on the code path
+that is shared between these two use cases, but it should only apply to
+the latter. So move it to the correct spot.
+
+While at it, drop the dummy definition for non-x86 architectures, as
+that is no longer needed.
+
+Cc: <stable@vger.kernel.org>
+Fixes: f0ef6523475f ("efi: Fix efi_memmap_alloc() leaks")
+Tested-by: Ashish Kalra <Ashish.Kalra@amd.com>
+Link: https://lore.kernel.org/all/36ad5079-4326-45ed-85f6-928ff76483d3@amd.com
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/platform/efi/efi.c      | 8 +++++---
- arch/x86/platform/efi/memmap.c   | 3 +++
- drivers/firmware/efi/fdtparams.c | 4 ++++
- drivers/firmware/efi/memmap.c    | 3 ---
- 4 files changed, 12 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/efi.h     |  1 -
+ arch/x86/platform/efi/memmap.c | 12 +++++++++++-
+ drivers/firmware/efi/memmap.c  |  9 ---------
+ 3 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index 8a26e705cb06..41229bcbe0d9 100644
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -234,9 +234,11 @@ int __init efi_memblock_x86_reserve_range(void)
- 	data.desc_size		= e->efi_memdesc_size;
- 	data.desc_version	= e->efi_memdesc_version;
+diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+index 01c0410ae97a..7c675832712d 100644
+--- a/arch/x86/include/asm/efi.h
++++ b/arch/x86/include/asm/efi.h
+@@ -386,7 +386,6 @@ extern int __init efi_memmap_alloc(unsigned int num_entries,
+ 				   struct efi_memory_map_data *data);
+ extern void __efi_memmap_free(u64 phys, unsigned long size,
+ 			      unsigned long flags);
+-#define __efi_memmap_free __efi_memmap_free
  
--	rv = efi_memmap_init_early(&data);
--	if (rv)
--		return rv;
-+	if (!efi_enabled(EFI_PARAVIRT)) {
-+		rv = efi_memmap_init_early(&data);
-+		if (rv)
-+			return rv;
-+	}
- 
- 	if (add_efi_memmap || do_efi_soft_reserve())
- 		do_add_efi_memmap();
+ extern int __init efi_memmap_install(struct efi_memory_map_data *data);
+ extern int __init efi_memmap_split_count(efi_memory_desc_t *md,
 diff --git a/arch/x86/platform/efi/memmap.c b/arch/x86/platform/efi/memmap.c
-index 620af26b55c0..241464b6dd03 100644
+index 241464b6dd03..872d310c426e 100644
 --- a/arch/x86/platform/efi/memmap.c
 +++ b/arch/x86/platform/efi/memmap.c
-@@ -94,6 +94,9 @@ int __init efi_memmap_install(struct efi_memory_map_data *data)
+@@ -92,12 +92,22 @@ int __init efi_memmap_alloc(unsigned int num_entries,
+  */
+ int __init efi_memmap_install(struct efi_memory_map_data *data)
  {
++	unsigned long size = efi.memmap.desc_size * efi.memmap.nr_map;
++	unsigned long flags = efi.memmap.flags;
++	u64 phys = efi.memmap.phys_map;
++	int ret;
++
  	efi_memmap_unmap();
  
-+	if (efi_enabled(EFI_PARAVIRT))
-+		return 0;
+ 	if (efi_enabled(EFI_PARAVIRT))
+ 		return 0;
+ 
+-	return __efi_memmap_init(data);
++	ret = __efi_memmap_init(data);
++	if (ret)
++		return ret;
 +
- 	return __efi_memmap_init(data);
++	__efi_memmap_free(phys, size, flags);
++	return 0;
  }
  
-diff --git a/drivers/firmware/efi/fdtparams.c b/drivers/firmware/efi/fdtparams.c
-index e901f8564ca0..0ec83ba58097 100644
---- a/drivers/firmware/efi/fdtparams.c
-+++ b/drivers/firmware/efi/fdtparams.c
-@@ -30,11 +30,13 @@ static __initconst const char name[][22] = {
- 
- static __initconst const struct {
- 	const char	path[17];
-+	u8		paravirt;
- 	const char	params[PARAMCOUNT][26];
- } dt_params[] = {
- 	{
- #ifdef CONFIG_XEN    //  <-------17------>
- 		.path = "/hypervisor/uefi",
-+		.paravirt = 1,
- 		.params = {
- 			[SYSTAB] = "xen,uefi-system-table",
- 			[MMBASE] = "xen,uefi-mmap-start",
-@@ -121,6 +123,8 @@ u64 __init efi_get_fdt_params(struct efi_memory_map_data *mm)
- 			pr_err("Can't find property '%s' in DT!\n", pname);
- 			return 0;
- 		}
-+		if (dt_params[i].paravirt)
-+			set_bit(EFI_PARAVIRT, &efi.flags);
- 		return systab;
- 	}
- notfound:
+ /**
 diff --git a/drivers/firmware/efi/memmap.c b/drivers/firmware/efi/memmap.c
-index e6256c48284e..a1180461a445 100644
+index a1180461a445..77dd20f9df31 100644
 --- a/drivers/firmware/efi/memmap.c
 +++ b/drivers/firmware/efi/memmap.c
-@@ -39,9 +39,6 @@ int __init __efi_memmap_init(struct efi_memory_map_data *data)
- 	struct efi_memory_map map;
- 	phys_addr_t phys_map;
+@@ -15,10 +15,6 @@
+ #include <asm/early_ioremap.h>
+ #include <asm/efi.h>
  
--	if (efi_enabled(EFI_PARAVIRT))
--		return 0;
+-#ifndef __efi_memmap_free
+-#define __efi_memmap_free(phys, size, flags) do { } while (0)
+-#endif
 -
- 	phys_map = data->phys_map;
+ /**
+  * __efi_memmap_init - Common code for mapping the EFI memory map
+  * @data: EFI memory map data
+@@ -51,11 +47,6 @@ int __init __efi_memmap_init(struct efi_memory_map_data *data)
+ 		return -ENOMEM;
+ 	}
  
- 	if (data->flags & EFI_MEMMAP_LATE)
+-	if (efi.memmap.flags & (EFI_MEMMAP_MEMBLOCK | EFI_MEMMAP_SLAB))
+-		__efi_memmap_free(efi.memmap.phys_map,
+-				  efi.memmap.desc_size * efi.memmap.nr_map,
+-				  efi.memmap.flags);
+-
+ 	map.phys_map = data->phys_map;
+ 	map.nr_map = data->size / data->desc_size;
+ 	map.map_end = map.map + data->size;
 -- 
 2.45.2.803.g4e1b14247a-goog
 
