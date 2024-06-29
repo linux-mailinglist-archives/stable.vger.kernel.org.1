@@ -1,175 +1,189 @@
-Return-Path: <stable+bounces-56112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B22E91CACA
-	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 05:10:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B15991CB71
+	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 08:40:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 986031F22D78
-	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 03:10:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B1172834D4
+	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 06:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4327C1CFA0;
-	Sat, 29 Jun 2024 03:10:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zi+zLacS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A591129422;
+	Sat, 29 Jun 2024 06:40:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8A91CF90;
-	Sat, 29 Jun 2024 03:09:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469171FC4;
+	Sat, 29 Jun 2024 06:40:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719630600; cv=none; b=SM+DOd+gmYITGrQo11qq+9P7Xl3izYkMUEmXboX40/fTYKNA0RSNcJtvwZNuHKDeotmhjAi8L7pvEYJDTfHDgX764blFCjG+9/adTZiZsDKigsvWEPd7U24K2JpHlhGTpIsDMXhfsfTWB/P+20P3SwGsDD/uq1vnr+uU6Mhpyig=
+	t=1719643232; cv=none; b=TaqK50mNFg90w1R6fe0/MjchnG8LDQHJ5TKYgSE45OWe+an55lRUq5evTChPBi2LIJN/mGWjs4zsl7D5t6H2cFJ7DTvTGYpoXdH7c8Hok4ljpuckCDbaGaYmJzk9shsALDxN4HIsNpkXRauau0+n1Pi2zgh6yYMCmForLfnpG2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719630600; c=relaxed/simple;
-	bh=f3l1q+6TnZPwqbHcnPQ46pla6sNSv0vzO2Ms+sBmZVY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nDht9S1MHfGbK5zjDWB1jqJwfOnqKp1m5FMtDHdeF0axP2jHGG1YaIl5VLIpE20NGx8dOk1ndwAdSmG2+GMmi34D/z+ksgAlJGxRHZqB90/Dc6D7PyWbM2tuyWsrBqbIwLovCTrHHD5bPzU35mwMbsvLhBvM6Ks0pQ3J86TJZsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zi+zLacS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADABC116B1;
-	Sat, 29 Jun 2024 03:09:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719630599;
-	bh=f3l1q+6TnZPwqbHcnPQ46pla6sNSv0vzO2Ms+sBmZVY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zi+zLacSovRHGT4+Eu6tPTB1T3KOx2Iv4Pxf6M+/VKoPuBplriWdmczVXieIlsAF9
-	 1qyuE1ipCkRu3i5ZgcN540sVJu29JecR4lE+8hVZQUDF2AvoMuFjwgSCIveKTLzkQM
-	 FGPYCyzLDXJKNys9uUoeMP0SQ3UrbFIuONjV+G7783yacjYlYPSf7bqgincdJYs3+u
-	 xQ3BuJ9c5NhM4xxF/ftdHLc98/F5PnjIXBE7x7dX9eWkKKSyoyuwQbFDwiGwWxY5TW
-	 QaObChfThuAA6atbSOqktMdEwJ9WW8pALLrlLORt9jzS6sNev0fvQokH+Z0JIvzLG2
-	 HuW7ZW8HU1iCg==
-Date: Sat, 29 Jun 2024 05:09:54 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Igor Pylypiv <ipylypiv@google.com>
-Cc: Damien Le Moal <dlemoal@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Hannes Reinecke <hare@suse.de>, linux-ide@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/6] ata: libata-scsi: Do not overwrite valid sense
- data when CK_COND=1
-Message-ID: <Zn97AtP4IC7T1NoO@ryzen.lan>
-References: <20240626230411.3471543-1-ipylypiv@google.com>
- <20240626230411.3471543-3-ipylypiv@google.com>
- <Zn1zsaTLE3hYbSsK@ryzen.lan>
- <Zn3ffnqsN4pVZA4m@google.com>
- <Zn8EmT1fefVzgy0F@ryzen.lan>
- <Zn9H17FoDDg9hpUr@google.com>
+	s=arc-20240116; t=1719643232; c=relaxed/simple;
+	bh=Cn09Ef8gCqLXly+Rs3FB1Boi9qEevm3VkSEoUZ3h5tQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OUAZs55Q+p9sOwRjhFsCm5S6Efm9UdN+mKvtk7ikdcDzSFjIGozJp/0C6O55E9BZfH1NP1quHrc68jrCMWYxhFQRCTkOjswa5gySiug5bqFCQr2JpcsIGbsE9dYhYcvIjgw6hC5oqVk4XWjromXUQl74Hm+5gVQgzPWVYrsLcFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=csie.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=csie.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-52cdb0d816bso1317439e87.1;
+        Fri, 28 Jun 2024 23:40:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719643226; x=1720248026;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9VvrX6QrJoZbVIAjkNDDZQYHf2ppstlZCyPEGAhFB7E=;
+        b=X67D/5/1n5jmf0dQKWFSIvtmw3nppCtZlaBY2vgNoK3xDvsRCBbIauwQN7KPRta5u5
+         jW3N34KjqQ+F0AQpPs+aNnd9GTsMfxznVijpAkid1FBKleldOG98kidKCJJ4C+KHKUrr
+         ab7b89K7IhQy8hHF9YPnEu5bM1NRCQOkgJI29FSRtxOBPLYm4CwV2iISYiUHuX/S0lHv
+         fg5xtKBxQi79tQ71sbAHsgR+LfnOrlXp8K+hIhWTQO/wwi5EDKnMDkyH3NkTRIOAj+qV
+         ZRYIUt9tSoc5yQtu+xtSXQXr3MwlbIxbCTuVnb5omoH0W4EJwGDztbmedCEUmfU9H8h+
+         wVWA==
+X-Forwarded-Encrypted: i=1; AJvYcCX1rvHFvbCZCaSrUVuTiFMfM36PqbHB00LzGpSNaln985WgiSZDEALegE8C4t83kD9t32bOvcnqLDTCkmLDfgSQCSHHR19s/9dJa8Y39jp8sQv7gOu9gZNPOb5yCLnPazj/dVp63ogPRTs36K5VDWISmKcDFGbUxqvnyMPz1osF
+X-Gm-Message-State: AOJu0YwagGx5+GbcKgv0SP9pVb7kvVYjs5g1pTlTTc5X9w5c85QDrhN/
+	qVulOIdofeeKca+h9MO4+zqfrEVcijTJCbYMN9KncH+KAaoI2RCKPkkPB5wR
+X-Google-Smtp-Source: AGHT+IFA7ugnhEf1xJP1uidTDJA7jOk1oGHqKAQ620msPV8LOpgs9etJjcusPNCUBD2oPeIAQBJltg==
+X-Received: by 2002:a05:6512:33d2:b0:52c:d5a8:496 with SMTP id 2adb3069b0e04-52e825cb663mr127761e87.22.1719643225834;
+        Fri, 28 Jun 2024 23:40:25 -0700 (PDT)
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com. [209.85.208.175])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52e7ab2780asm505088e87.178.2024.06.28.23.40.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 28 Jun 2024 23:40:25 -0700 (PDT)
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2ee4ab5958dso21076501fa.1;
+        Fri, 28 Jun 2024 23:40:25 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUCw4DN2qw3Eg08nIlIMw6YRheG4FNQu0Lzl3fMtGthCjfHHpft6K67r7dUeS8n+v3f5RruMRPPtgzwdNi4Rkf1CTdcl9PvRCiSewN0bSr81gC4qq8dE5YGgnTzE4N9pF3/0blChg6+a9t/LRXdiD3PKYSlvJ+zk/nBHrE+EE2d
+X-Received: by 2002:a05:651c:21a:b0:2ec:4e05:8d99 with SMTP id
+ 38308e7fff4ca-2ee5e6c5e60mr958211fa.20.1719643225204; Fri, 28 Jun 2024
+ 23:40:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zn9H17FoDDg9hpUr@google.com>
+References: <20240623-sunxi-ng_fix_common_probe-v1-1-7c97e32824a1@oltmanns.dev>
+ <yw1x4j9e62dt.fsf@mansr.com>
+In-Reply-To: <yw1x4j9e62dt.fsf@mansr.com>
+Reply-To: wens@csie.org
+From: Chen-Yu Tsai <wens@csie.org>
+Date: Sat, 29 Jun 2024 14:40:11 +0800
+X-Gmail-Original-Message-ID: <CAGb2v67GbUF7S9hKdNb=az0ZsoEU=fXjKzyQvEd+tSHrWf4eCg@mail.gmail.com>
+Message-ID: <CAGb2v67GbUF7S9hKdNb=az0ZsoEU=fXjKzyQvEd+tSHrWf4eCg@mail.gmail.com>
+Subject: Re: [PATCH] clk: sunxi-ng: common: Don't call hw_to_ccu_common on hw
+ without common
+To: =?UTF-8?B?TcOlbnMgUnVsbGfDpXJk?= <mans@mansr.com>
+Cc: Frank Oltmanns <frank@oltmanns.dev>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Samuel Holland <samuel@sholland.org>, Maxime Ripard <mripard@kernel.org>, linux-clk@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, 
+	"Robert J. Pafford" <pafford.9@buckeyemail.osu.edu>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 28, 2024 at 11:31:35PM +0000, Igor Pylypiv wrote:
-> On Fri, Jun 28, 2024 at 08:44:41PM +0200, Niklas Cassel wrote:
-> > On Thu, Jun 27, 2024 at 09:54:06PM +0000, Igor Pylypiv wrote:
-> > > 
-> > > Thank you, Niklas! I agree that this code is too complicated and should be
-> > > simplified. I don't think we should change the code too much in this patch
-> > > since it is going to be backported to stable releases.
-> > > 
-> > > Would you mind sending a patch for the proposed simplifications following
-> > > this patch series?
-> > > 
-> > 
-> > I would prefer if we changed it as part of this commit to be honest.
-> > 
-> > 
-> > I also re-read the SAT spec, and found that it says that:
-> > """
-> > If the CK_COND bit is set to:
-> > a) one, then the SATL shall return a status of CHECK CONDITION upon ATA command completion,
-> > without interpreting the contents of the STATUS field and returning the ATA fields from the request
-> > completion in the sense data as specified in table 209; and
-> > b) zero, then the SATL shall terminate the command with CHECK CONDITION status only if an error
-> > occurs in processing the command. See clause 11 for a description of ATA error conditions.
-> > """
-> > 
-> > So it seems quite clear that if CK_COND == 1, we should set CHECK CONDITION,
-> > so that answers the question/uncertainty I asked/expressed in earlier emails.
-> > 
-> > 
-> > I think this patch (which should be applied on top of your v3 series),
-> > makes the code way easier to read/understand:
-> > 
-> 
-> Agree, having self-explanatory variable names makes the code much more
-> readable. I'll add the patch in v4.
-> 
-> Do you mind if I set you as the author of the patch with the corresponding
-> Signed-off-by tag?
+On Thu, Jun 27, 2024 at 7:39=E2=80=AFPM M=C3=A5ns Rullg=C3=A5rd <mans@mansr=
+.com> wrote:
+>
+> Frank Oltmanns <frank@oltmanns.dev> writes:
+>
+> > In order to set the rate range of a hw sunxi_ccu_probe calls
+> > hw_to_ccu_common() assuming all entries in desc->ccu_clks are contained
+> > in a ccu_common struct. This assumption is incorrect and, in
+> > consequence, causes invalid pointer de-references.
+> >
+> > Remove the faulty call. Instead, add one more loop that iterates over
+> > the ccu_clks and sets the rate range, if required.
+> >
+> > Fixes: b914ec33b391 ("clk: sunxi-ng: common: Support minimum and maximu=
+m rate")
+> > Reported-by: Robert J. Pafford <pafford.9@buckeyemail.osu.edu>
+> > Closes: https://lore.kernel.org/lkml/DM6PR01MB58047C810DDD5D0AE397CADFF=
+7C22@DM6PR01MB5804.prod.exchangelabs.com/
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
+> > ---
+> > Robert, could you please test if this fixes the issue you reported.
+> >
+> > I'm CC'ing M=C3=A5ns here, because he observed some strange behavior [1=
+] with
+> > the original patch. Is it possible for you to look into if this patch
+> > fixes your issue without the need for the following (seemingly
+> > unrelated) patches:
+> >       cedb7dd193f6 "drm/sun4i: hdmi: Convert encoder to atomic"
+> >       9ca6bc246035 "drm/sun4i: hdmi: Move mode_set into enable"
+>
+> This does indeed fix it.  6.9 is still broken, though, but that's
+> probably for other reasons.
 
-I still think that you are the author.
+Can I take that as a Tested-by?
 
-But if you want, feel free to add me as: Co-developed-by
-(which would also require you to add my Signed-off-by), see:
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#when-to-use-acked-by-cc-and-co-developed-by
-
-
-> 
-> > diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-> > index d5874d4b9253..5b211551ac10 100644
-> > --- a/drivers/ata/libata-scsi.c
-> > +++ b/drivers/ata/libata-scsi.c
-> > @@ -1659,26 +1656,27 @@ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
-> >  {
-> >         struct scsi_cmnd *cmd = qc->scsicmd;
-> >         u8 *cdb = cmd->cmnd;
-> > -       int need_sense = (qc->err_mask != 0) &&
-> > -               !(qc->flags & ATA_QCFLAG_SENSE_VALID);
-> > -       int need_passthru_sense = (qc->err_mask != 0) ||
-> > -               (qc->flags & ATA_QCFLAG_SENSE_VALID);
-> > +       bool have_sense = qc->flags & ATA_QCFLAG_SENSE_VALID;
-> > +       bool is_ata_passthru = cdb[0] == ATA_16 || cdb[0] == ATA_12;
-> > +       bool is_ck_cond_request = cdb[2] & 0x20;
-> > +       bool is_error = qc->err_mask != 0;
-> >  
-> >         /* For ATA pass thru (SAT) commands, generate a sense block if
-> >          * user mandated it or if there's an error.  Note that if we
-> > -        * generate because the user forced us to [CK_COND =1], a check
-> > +        * generate because the user forced us to [CK_COND=1], a check
-> >          * condition is generated and the ATA register values are returned
-> >          * whether the command completed successfully or not. If there
-> > -        * was no error, we use the following sense data:
-> > +        * was no error, and CK_COND=1, we use the following sense data:
-> >          * sk = RECOVERED ERROR
-> >          * asc,ascq = ATA PASS-THROUGH INFORMATION AVAILABLE
-> >          */
-> > -       if (((cdb[0] == ATA_16) || (cdb[0] == ATA_12)) &&
-> > -           ((cdb[2] & 0x20) || need_passthru_sense)) {
-> > -               if (!(qc->flags & ATA_QCFLAG_SENSE_VALID))
-> > +       if (is_ata_passthru && (is_ck_cond_request || is_error || have_sense)) {
-> > +               if (!have_sense)
-> >                         ata_gen_passthru_sense(qc);
-> >                 ata_scsi_set_passthru_sense_fields(qc);
-> > -       } else if (need_sense) {
-> > +               if (is_ck_cond_request)
-> > +                       set_status_byte(qc->scsicmd, SAM_STAT_CHECK_CONDITION);
-> 
-> SAM_STAT_CHECK_CONDITION will be set by ata_gen_passthru_sense(). Perhaps we
-> can move the SAM_STAT_CHECK_CONDITION setting into else if?
-
-I think it is fine that:
-if (is_ck_cond_request)
-	set_status_byte(qc->scsicmd, SAM_STAT_CHECK_CONDITION);
-
-might set SAM_STAT_CHECK_CONDITION even if it is already set.
-
-Personally, I think that my suggestion is slightly clearer when it comes
-to highlight the behavior of CK_COND. (CK_COND will set CHECK_CONDITION,
-regardless if successful command or error command, and regardless if
-we already had sense or not.)
-
-And considering that we finally make this hard to read code slightly more
-readable than it was to start off with, I would prefer my alternative.
-
-
-Kind regards,
-Niklas
+> > Thanks,
+> >   Frank
+> >
+> > [1]: https://lore.kernel.org/lkml/yw1xo78z8ez0.fsf@mansr.com/
+> > ---
+> >  drivers/clk/sunxi-ng/ccu_common.c | 18 ++++++++++++------
+> >  1 file changed, 12 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/drivers/clk/sunxi-ng/ccu_common.c b/drivers/clk/sunxi-ng/c=
+cu_common.c
+> > index ac0091b4ce24..be375ce0149c 100644
+> > --- a/drivers/clk/sunxi-ng/ccu_common.c
+> > +++ b/drivers/clk/sunxi-ng/ccu_common.c
+> > @@ -132,7 +132,6 @@ static int sunxi_ccu_probe(struct sunxi_ccu *ccu, s=
+truct device *dev,
+> >
+> >       for (i =3D 0; i < desc->hw_clks->num ; i++) {
+> >               struct clk_hw *hw =3D desc->hw_clks->hws[i];
+> > -             struct ccu_common *common =3D hw_to_ccu_common(hw);
+> >               const char *name;
+> >
+> >               if (!hw)
+> > @@ -147,14 +146,21 @@ static int sunxi_ccu_probe(struct sunxi_ccu *ccu,=
+ struct device *dev,
+> >                       pr_err("Couldn't register clock %d - %s\n", i, na=
+me);
+> >                       goto err_clk_unreg;
+> >               }
+> > +     }
+> > +
+> > +     for (i =3D 0; i < desc->num_ccu_clks; i++) {
+> > +             struct ccu_common *cclk =3D desc->ccu_clks[i];
+> > +
+> > +             if (!cclk)
+> > +                     continue;
+> >
+> > -             if (common->max_rate)
+> > -                     clk_hw_set_rate_range(hw, common->min_rate,
+> > -                                           common->max_rate);
+> > +             if (cclk->max_rate)
+> > +                     clk_hw_set_rate_range(&cclk->hw, cclk->min_rate,
+> > +                                           cclk->max_rate);
+> >               else
+> > -                     WARN(common->min_rate,
+> > +                     WARN(cclk->min_rate,
+> >                            "No max_rate, ignoring min_rate of clock %d =
+- %s\n",
+> > -                          i, name);
+> > +                          i, clk_hw_get_name(&cclk->hw));
+> >       }
+> >
+> >       ret =3D of_clk_add_hw_provider(node, of_clk_hw_onecell_get,
+> >
+> > ---
+> > base-commit: 2607133196c35f31892ee199ce7ffa717bea4ad1
+> > change-id: 20240622-sunxi-ng_fix_common_probe-5677c3e487fc
+> >
+> > Best regards,
+> > --
+> >
+> > Frank Oltmanns <frank@oltmanns.dev>
+> >
+>
+> --
+> M=C3=A5ns Rullg=C3=A5rd
 
