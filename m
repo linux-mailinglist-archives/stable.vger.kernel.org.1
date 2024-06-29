@@ -1,251 +1,323 @@
-Return-Path: <stable+bounces-56110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3AB491CA70
-	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 04:01:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4051091CAAC
+	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 04:31:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E61931C21D2A
-	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 02:01:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6FCE1F22D30
+	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 02:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293186AAD;
-	Sat, 29 Jun 2024 02:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61CE3182DF;
+	Sat, 29 Jun 2024 02:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aspeedtech.com header.i=@aspeedtech.com header.b="nY9PyB+N"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="voQ57eBL"
 X-Original-To: stable@vger.kernel.org
-Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01on2099.outbound.protection.outlook.com [40.107.215.99])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1C2B64C;
-	Sat, 29 Jun 2024 02:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.215.99
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719626505; cv=fail; b=Dd0P+HJ9IVfUnqHIY6pC32E7phTU6MLCrW2qXRPBd53J6JEQPYqme7s0l13oUSTlleoBLBKxEyfzFw+LTYMx8RkGGOnEUyf0VzJ1nEWTn2uNNUgw3xvJZ0dnZSWkQ2nghI3uFTTg8Cg/154U/E8bzOneKSSMURxKbLSym2B9BUg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719626505; c=relaxed/simple;
-	bh=W1nH/kpTo8C6wjKghKNe0Hd077TBAHwNs79JPqSLR5Y=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=hmeXUv4dXdsIJQsg/sIiwqP6onXMg7DjhtVL3sai0w7Ez3xnFYhGFLkoXiyvFPLh7eAN0k3kz/nZmlSKdyFY6BQNHUisOhzHFg6wSavItH+iOiLMPs70Oc2EnV93IRVs6euW1BaZvPBiHEGOxLdbbCAhtHDPfzBqjDNzwVOAj+0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com; spf=pass smtp.mailfrom=aspeedtech.com; dkim=pass (2048-bit key) header.d=aspeedtech.com header.i=@aspeedtech.com header.b=nY9PyB+N; arc=fail smtp.client-ip=40.107.215.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ThJUu+vHjvqMrXFQgYv7UEhvXmCMimW/hwX8IcVX9PuPs5wXBmWT3Sa+EMIksI3ZyKJIBcYJ/VDRw/d94k/98riWws9AvAo2OkJICSx9H3JFy8NERFoOJNw8zHO1PLP4eZY7RSxzuk0olZHWiL0MoB/3fV6FpUAoVrmRz1aUgmex1hEjGGcsjRGPNMRdERQMV91To5vt1iS3P2WIzuCvf9cjC8PtrYcLbQP+mDdXsHPZIS7Qo9z55y3qv2Lbt6ENnwpTUYoJb49E3Tgy6IoSi0fPKHMsdt1iy/6dTpPfvmKSXuNEyi0DMx0WC+wxdB5VeJRiA0RSJp0Mm9cMavSZOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q/3mAOVIVpOenaQ2K3sUPNfODz7TyxyiMc6kYjfnKZY=;
- b=GL4HaL4bGOE8buL544pbdFNv0VaSFCaafeDxOX3SfEpMIRmP1bT7FwpNottRl94zkJzhoXGMM/xZmpu7YeYAk3MhzRVaJL5n97OShrmLFAFk+iPz1dfD3G/dwNHWrKZ6ZwR/fC6RqRWXly+pJ+TVKnIFGc1O2MdKPZ0QyYCjZQTf+etgyROIPK5VYdkJ0CMhpvFT9nFopPDcS4J2f4ul6Tq1WyJG36fG/znKeZiF+uY40M/nH1O66NDL88bqxbR+KUaS7aJ2dJNAXFOaPYv0FNokSTYql7pyXE5Yb1aJXRmV1TD74TA8aEK3VrxRk6nruMlh1Sce0LPHxliUzgXbLw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=aspeedtech.com; dmarc=pass action=none
- header.from=aspeedtech.com; dkim=pass header.d=aspeedtech.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aspeedtech.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=q/3mAOVIVpOenaQ2K3sUPNfODz7TyxyiMc6kYjfnKZY=;
- b=nY9PyB+NwsqoQuDV+JKpTNNeROXBgH+jPC2G//vjs+IAKXus3ufKXyv3c24zAj9o4lXd6V7XoCnCh/q+Q6OjtvTeuUxVAPOzNovckwH8ou/aTunwusnif5ornQII7GjSqeBgcCKEqyZa29iRGdP5YrhU7rOTdgPT5Y8Lw5DsFfJVp+KnVVzUJxOWuHqPQXB0jydRS1vqXrtew5X2f3Xd+ZEgdVwy69LZ2hY7DgjYo+WigFtcSrN7QT2THk7SARqR53Jx/EjsGtZrVtA5eMU1pBiT+ePnP8I6hpGWrhlUPsQk1kd7Wh4xW1V4UhAQEi0t50haHdYmwf4/Dae0kBqhYg==
-Received: from TYZPR06MB6191.apcprd06.prod.outlook.com (2603:1096:400:33d::12)
- by TY0PR06MB5707.apcprd06.prod.outlook.com (2603:1096:400:271::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.35; Sat, 29 Jun
- 2024 02:01:33 +0000
-Received: from TYZPR06MB6191.apcprd06.prod.outlook.com
- ([fe80::cc07:35e3:9143:c8e2]) by TYZPR06MB6191.apcprd06.prod.outlook.com
- ([fe80::cc07:35e3:9143:c8e2%5]) with mapi id 15.20.7719.022; Sat, 29 Jun 2024
- 02:01:33 +0000
-From: Tommy Huang <tommy_huang@aspeedtech.com>
-To: Andi Shyti <andi.shyti@kernel.org>
-CC: "brendan.higgins@linux.dev" <brendan.higgins@linux.dev>,
-	"benh@kernel.crashing.org" <benh@kernel.crashing.org>, "joel@jms.id.au"
-	<joel@jms.id.au>, "andrew@codeconstruct.com.au"
-	<andrew@codeconstruct.com.au>, "wsa@kernel.org" <wsa@kernel.org>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"openbmc@lists.ozlabs.org" <openbmc@lists.ozlabs.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-aspeed@lists.ozlabs.org"
-	<linux-aspeed@lists.ozlabs.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, BMC-SW <BMC-SW@aspeedtech.com>
-Subject: RE: [PATCH v2] i2c: aspeed: Update the stop sw state when the bus
- recovery occurs
-Thread-Topic: [PATCH v2] i2c: aspeed: Update the stop sw state when the bus
- recovery occurs
-Thread-Index: AQHauV2Dp84bGIE9yEKITA1l5lLjSbHb2cWAgAJDIJA=
-Date: Sat, 29 Jun 2024 02:01:33 +0000
-Message-ID:
- <TYZPR06MB619173FE3D74760214A03636E1D12@TYZPR06MB6191.apcprd06.prod.outlook.com>
-References: <20240608043653.4086647-1-tommy_huang@aspeedtech.com>
- <pbsrfzbd237k5inof3wy6qabdmolmweozkn5kq7jlvstj2nkvo@nzp2sbrxpn44>
-In-Reply-To: <pbsrfzbd237k5inof3wy6qabdmolmweozkn5kq7jlvstj2nkvo@nzp2sbrxpn44>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=aspeedtech.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TYZPR06MB6191:EE_|TY0PR06MB5707:EE_
-x-ms-office365-filtering-correlation-id: bb19b080-df33-41d8-ffea-08dc97df6666
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?G35dNyWKjUxukSCZITXwLsA2G5rrfdHBCZv08ySfFg8QeuT74lZAZvOi+Qtf?=
- =?us-ascii?Q?bfYVPdxvwOy1UUCVtgLs/6VSo/20J2067Susdn53B0vTi5Y+NPlWRwFkvenI?=
- =?us-ascii?Q?b5b8u+U85OMpaFwuHheQ74EJ3SNi7lDXUdHgsgRGYU1OMOOHDhknj242TwVZ?=
- =?us-ascii?Q?T24ogcbkMQX3myfWYBrTWysAu45w0SyUvsEa0L9NqP1OamLaTc2J8htgqQsG?=
- =?us-ascii?Q?Tvom3BX/U9u+OXBt23Xcun44QB3rOjq0flY6LW4OGYenT6QjjyJPgOQiGEXh?=
- =?us-ascii?Q?LI056c6zwZoGPLsowE7KuWgDV4VITI3p+rZDhAQeBL8eHnVnAlgmnbKJdjkg?=
- =?us-ascii?Q?qZ5dNdYBUn72xjUYRmxXJbFz/uBfmsIyCptJdDS6Ns9rTzRv8wiur6Cjw8j9?=
- =?us-ascii?Q?gL/UBM2Kx0wrbpGsxznbxGiqerS9fKV7czyXkNd6C4kThaaVoadupPuVoeV+?=
- =?us-ascii?Q?eKakHq/BdYHZzKQE1IFKEoa/cKHC7VMoWXIfL4dA2UWfBRvP5s6jqca0Mq6S?=
- =?us-ascii?Q?A/isgqvhPoK4QQzS7ojU8t2QPEKqG2LCalmzbL1DGUvEjtCD+KfJUv7nftBS?=
- =?us-ascii?Q?5tOT/ffpHwas8QNCJJUk1BjovgMO+ymu4QoeBpQYAEpUHVP317wNR+nVLBYz?=
- =?us-ascii?Q?bPfP2dz1yB0cyhAJKWtKCWHG73uYFjW2sk0dS6chKGV/YZGuclDuAN8ju7ep?=
- =?us-ascii?Q?vjL5n3YZl89nF7baYmfbkLgMroxD3w/nFYdyIlFZ5Hu4R7MXjR5XCOJzbP9c?=
- =?us-ascii?Q?YHjfU8IqrxSggqE4Smc89wQwIbYYWqwCLoEGg3J/KM6LcxmmIUxHjAGckJHZ?=
- =?us-ascii?Q?jVlFHOaRvBkVjrZEsJzS1veCXMVkCk8RJSUIGIBobzedd3fy+SINAE95Qqwb?=
- =?us-ascii?Q?5NK6CR+0jkOGQNMx6ntFfzXZQ0KgiMKgl5ZOHokA+ffXGNUj2M3NsZ/iYyGC?=
- =?us-ascii?Q?ENnwCMujNdCWoUUtenmFR8TfI+80p44WMbMu8gN3FLxurbc/6YkzGBNFsU1q?=
- =?us-ascii?Q?OZpLOaMYSQLNuDHk3kdWpw+WtgjkmFpv46nOdcHT2UHctYldclSMhgwQuJwd?=
- =?us-ascii?Q?mmKGwvTUzzM6RUEXnhzIlMAQMIYPDinsh0j88cgzhC2yg/UsXr0KeJM7w8Me?=
- =?us-ascii?Q?K7OF9LVlPYOaQ4zrdQdS3fewkGDIC0GDTCbQXjv4gqlS5SGKu2v02KkxcKBA?=
- =?us-ascii?Q?hfp9EojyY+2ug+p/NIoA3ii3mNn3cvQYb2+Z/4PDVvJpEyEHsqcgHWwyGS7r?=
- =?us-ascii?Q?9W0iHCjHYBfn32VfHcK5YDOw+O9/4GcCFTcxIicrUflH/5DqZbvpM74DvhUv?=
- =?us-ascii?Q?0euAA8fk3E/BAg/v4zOQovWlRzb42FtxVUx+FKHJBZNG/ID9dN21AvqDhtgf?=
- =?us-ascii?Q?a+Z11uU=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYZPR06MB6191.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?ZqtbmtRo2HPsQYmw/ibxZb+QYVxsmBI9oFrqStnDBUMFcQbPdLVU+PKqTEEI?=
- =?us-ascii?Q?FV4Fwa7QgbD4jBwiYMBe8vIlOZpLK43bggTe3kglIpqjoHTtb+tTbOSaPNA3?=
- =?us-ascii?Q?xfNPFVpzTwWqkAOTZhI2gRh7aaEkyMNZDriVmsn5KOmBUc2l0/yE3Fx1hloc?=
- =?us-ascii?Q?QZ9L0mXUrUClVNU17iX5+Lvyobyb1AhgZveShx+ge+cT6p4sBKReRnvYQp5A?=
- =?us-ascii?Q?Yiiz66RfUTi/FQW3bsD4E7YFD/UMVXxufekxZwFN4IGOMuQLuMANlzIoFpUq?=
- =?us-ascii?Q?4VUvPZgy/B+vnCF0YNR8jPheXy9RXma23ehV93eRHTStYH0t/CUbsBqKWKbG?=
- =?us-ascii?Q?nyc6tbyF8MMuzANSTFuMTydsYry2CU623TJUfUoF5bMkMEiKIktM1iSibAM0?=
- =?us-ascii?Q?ZWDEh2jF1TwP21DzyldkuE37lX1Uv13zT+nhes5Dcqfif/oxpiWcwsmhcf3J?=
- =?us-ascii?Q?/Lc5kkL1QsdAupeaPWEvGsn9qS+ChfizxT1bmZ4JELciI9fYqmGG4FtRF3WR?=
- =?us-ascii?Q?mxdGPoRRxG4ab0dPfcpNnHGtPtng2sJhvarMfBV4Hg0YSlBk0Ju8ko7Fe8mV?=
- =?us-ascii?Q?xRRFDpscZJ03/5BaMLE6u+BDXAeuy0g/i6RtybhpWsDG1YKkbE0VuP/vCmSg?=
- =?us-ascii?Q?gEgusnUADeWUT4M6OvrsGKojIIB4Jon863bliP6qU6a4TrEUwMjrdd2kh6N/?=
- =?us-ascii?Q?NONDRT/GKpJJuxGW4HtnwiUxfErhxCfOUdiCTgVWIfMN8HfOcPReL//Ewm4M?=
- =?us-ascii?Q?Cj7sMi9iK1+HoQDM29tA1NyArJXKO0plDjtw8l0g/4HNrlsUgI4pnBA/G4Mn?=
- =?us-ascii?Q?gw8z/PoimoGGLsOlyBrnqhmGT8xmWSYtSNZdRqWnPZFAMkYVEc+9kwl0Xtgr?=
- =?us-ascii?Q?7bPl1OjgLJeiSwo9xXpLaQ2X+Fghu59weQWwMdjWwH0pm5FnLS6dGGXOHs6w?=
- =?us-ascii?Q?6iBorP6lvNSyrHrhWFnNplgqLVy6N/OdEaKXnXWRZZbV1DPJzTHTNr53EUv8?=
- =?us-ascii?Q?RDU1GGCH+815OQ0I7PZEjHxf3NbwVgvhxYQCHfPlmF05vzbAyf5MYhZWOgQr?=
- =?us-ascii?Q?ytw2GXWI4/xlNZssKg5mGxwc7g2minskd8rsx11Ex+KrD4BbnaCR8vstFaOZ?=
- =?us-ascii?Q?9iPnCjdUifnDRKnDuRFgPeaXF2jkxGoYP/HBPgO8MF/DemdUdzTO3hD4uMvJ?=
- =?us-ascii?Q?2Kw5+ZoLvSiFd0Yke4IRgIIkMFbsPZtfdPNYN/iS+pxsUibKHSGcVH4REYte?=
- =?us-ascii?Q?RSsxL8Ob5t0vBd7Jx/zJJDOYds7n65LCWah2srzyom2QKe8EjgBiHjCIFUVN?=
- =?us-ascii?Q?B6kAnnuOklgDTXKeVaUgF0o58lYBdoIcASqmeA+D+zd7CQAzymT+zT61PMhz?=
- =?us-ascii?Q?75P2iDbGGo+D+Aq1lEbGueqSBbiBJkAX6CHZk4LXepfOFlw3XpPX4kCCQfW1?=
- =?us-ascii?Q?RXsv8EtpizMITmGOIEgWf7ejGsYp3NO+Ys3aZjPOTAnR7qm74wTL5Yi+n0xk?=
- =?us-ascii?Q?4+Cju8x03njznCgmQecgiM1fPIXS2i4UWOq5s27HgS207YQbS7PKi3Fa5PAJ?=
- =?us-ascii?Q?ZPJs5FlPeHfGnUEg/gMhQTJqpADcpfXQG8xDtvSj?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DB615E81;
+	Sat, 29 Jun 2024 02:31:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719628290; cv=none; b=Ig3hxdGc02/ghDTw49JRO/ZRHSBAQXGg4QtfCMtwUHelobTToTF47pVKD+5oXjRTaV/PuUe2K+OgXkDpRreJw1/otekWW8M1ZnYLVWhS48paVNpJ7HmL1F25/923eHCChhMOabXjkmYWVFN3ShDxCjz3Q/hyAgHE1X3LGR0Nux4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719628290; c=relaxed/simple;
+	bh=Ay27uM8/i/paCs83qAXDsMovugyUymPJp/JrgM29f8c=;
+	h=Date:To:From:Subject:Message-Id; b=E7BpzQL1ZkUc6mnfnkGCEfdu+KbgBIAR18M+flkhZg6b2VJ7MgEzOkR80DiplF+MEVrAhNxA/UYReTaHCies9hqDraT24qE95hXbibiP5P9kj6sGlRlJYuIJtZo9zRA0bOtXWPUsGCYfzkJtbeVHmQQIUlj5oU8UY8DjM0M29AA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=voQ57eBL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95D6C116B1;
+	Sat, 29 Jun 2024 02:31:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1719628290;
+	bh=Ay27uM8/i/paCs83qAXDsMovugyUymPJp/JrgM29f8c=;
+	h=Date:To:From:Subject:From;
+	b=voQ57eBLqeIZD7jqhnqCNqtnMUz2WM43Eind15deBV+JqPrtuFAD1HWOZLQs85A3B
+	 MS44zsv7VEd8Fz3nNz8deWqrEBqjeS3ksR8jZyIQ2v3LDul/otI4p76MgCaMLGvkrH
+	 TvkfmtHiMvjtKSSRvnIzDYQRyeXY6fQ4eRPGYrkU=
+Date: Fri, 28 Jun 2024 19:31:29 -0700
+To: mm-commits@vger.kernel.org,syzbot+40905bca570ae6784745@syzkaller.appspotmail.com,stable@vger.kernel.org,nsaenzju@redhat.com,axelrasmussen@google.com,penguin-kernel@I-love.SAKURA.ne.jp,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-stable] mm-mmap_lock-replace-get_memcg_path_buf-with-on-stack-buffer.patch removed from -mm tree
+Message-Id: <20240629023129.E95D6C116B1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-OriginatorOrg: aspeedtech.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TYZPR06MB6191.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bb19b080-df33-41d8-ffea-08dc97df6666
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jun 2024 02:01:33.1122
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43d4aa98-e35b-4575-8939-080e90d5a249
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: h/CQLKGMyUwtOV1KZtM9ThmsGwXZXbIrpwzRJAkA+TLiwY9AI3cmKehnSEQOl8AKMG4TBGhbao0tZJiPJ8iPjnDbV90ezupX/fpMEl8wcy0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY0PR06MB5707
 
-Hi Andi,
 
-	I have sent back the mail on 6/11.
-	But I don't receive your feedback, I post it again in this mail.
+The quilt patch titled
+     Subject: mm: mmap_lock: replace get_memcg_path_buf() with on-stack buffer
+has been removed from the -mm tree.  Its filename was
+     mm-mmap_lock-replace-get_memcg_path_buf-with-on-stack-buffer.patch
 
-"	There is a problem to move aspeed_i2c_do_stop() on top.
-	This function is like with aspeed_i2c_reset function needs the aspeed_i2c_=
-bus structure definition."
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-	BR,
+------------------------------------------------------
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Subject: mm: mmap_lock: replace get_memcg_path_buf() with on-stack buffer
+Date: Fri, 21 Jun 2024 10:08:41 +0900
 
-	By Tommy
+Commit 2b5067a8143e ("mm: mmap_lock: add tracepoints around lock
+acquisition") introduced TRACE_MMAP_LOCK_EVENT() macro using
+preempt_disable() in order to let get_mm_memcg_path() return a percpu
+buffer exclusively used by normal, softirq, irq and NMI contexts
+respectively.
 
-> -----Original Message-----
-> From: Andi Shyti <andi.shyti@kernel.org>
-> Sent: Thursday, June 27, 2024 11:26 PM
-> To: Tommy Huang <tommy_huang@aspeedtech.com>
-> Cc: brendan.higgins@linux.dev; benh@kernel.crashing.org; joel@jms.id.au;
-> andrew@codeconstruct.com.au; wsa@kernel.org; linux-i2c@vger.kernel.org;
-> openbmc@lists.ozlabs.org; linux-arm-kernel@lists.infradead.org;
-> linux-aspeed@lists.ozlabs.org; linux-kernel@vger.kernel.org;
-> stable@vger.kernel.org; BMC-SW <BMC-SW@aspeedtech.com>
-> Subject: Re: [PATCH v2] i2c: aspeed: Update the stop sw state when the bu=
-s
-> recovery occurs
->=20
-> Hi Tommy,
->=20
-> any update on this patch?
->=20
-> Andi
->=20
-> On Sat, Jun 08, 2024 at 12:36:53PM GMT, Tommy Huang wrote:
-> > When the i2c bus recovery occurs, driver will send i2c stop command in
-> > the scl low condition. In this case the sw state will still keep
-> > original situation. Under multi-master usage, i2c bus recovery will be
-> > called when i2c transfer timeout occurs. Update the stop command
-> > calling with aspeed_i2c_do_stop function to update master_state.
-> >
-> > Fixes: f327c686d3ba ("i2c: aspeed: added driver for Aspeed I2C")
-> >
-> > Cc: <stable@vger.kernel.org> # v4.13+
-> > Signed-off-by: Tommy Huang <tommy_huang@aspeedtech.com>
-> > ---
-> >  drivers/i2c/busses/i2c-aspeed.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/i2c/busses/i2c-aspeed.c
-> > b/drivers/i2c/busses/i2c-aspeed.c index ce8c4846b7fa..be64e419adf0
-> > 100644
-> > --- a/drivers/i2c/busses/i2c-aspeed.c
-> > +++ b/drivers/i2c/busses/i2c-aspeed.c
-> > @@ -25,6 +25,8 @@
-> >  #include <linux/reset.h>
-> >  #include <linux/slab.h>
-> >
-> > +static void aspeed_i2c_do_stop(struct aspeed_i2c_bus *bus);
-> > +
-> >  /* I2C Register */
-> >  #define ASPEED_I2C_FUN_CTRL_REG				0x00
-> >  #define ASPEED_I2C_AC_TIMING_REG1			0x04
-> > @@ -187,7 +189,7 @@ static int aspeed_i2c_recover_bus(struct
-> aspeed_i2c_bus *bus)
-> >  			command);
-> >
-> >  		reinit_completion(&bus->cmd_complete);
-> > -		writel(ASPEED_I2CD_M_STOP_CMD, bus->base +
-> ASPEED_I2C_CMD_REG);
-> > +		aspeed_i2c_do_stop(bus);
-> >  		spin_unlock_irqrestore(&bus->lock, flags);
-> >
-> >  		time_left =3D wait_for_completion_timeout(
-> > --
-> > 2.25.1
-> >
-> >
-> > _______________________________________________
-> > linux-arm-kernel mailing list
-> > linux-arm-kernel@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+Commit 832b50725373 ("mm: mmap_lock: use local locks instead of disabling
+preemption") replaced preempt_disable() with local_lock(&memcg_paths.lock)
+based on an argument that preempt_disable() has to be avoided because
+get_mm_memcg_path() might sleep if PREEMPT_RT=y.
+
+But syzbot started reporting
+
+  inconsistent {HARDIRQ-ON-W} -> {IN-HARDIRQ-W} usage.
+
+and
+
+  inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
+
+messages, for local_lock() does not disable IRQ.
+
+We could replace local_lock() with local_lock_irqsave() in order to
+suppress these messages.  But this patch instead replaces percpu buffers
+with on-stack buffer, for the size of each buffer returned by
+get_memcg_path_buf() is only 256 bytes which is tolerable for allocating
+from current thread's kernel stack memory.
+
+Link: https://lkml.kernel.org/r/ef22d289-eadb-4ed9-863b-fbc922b33d8d@I-love.SAKURA.ne.jp
+Reported-by: syzbot <syzbot+40905bca570ae6784745@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=40905bca570ae6784745
+Fixes: 832b50725373 ("mm: mmap_lock: use local locks instead of disabling preemption")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Nicolas Saenz Julienne <nsaenzju@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/mmap_lock.c |  175 +++++------------------------------------------
+ 1 file changed, 20 insertions(+), 155 deletions(-)
+
+--- a/mm/mmap_lock.c~mm-mmap_lock-replace-get_memcg_path_buf-with-on-stack-buffer
++++ a/mm/mmap_lock.c
+@@ -19,14 +19,7 @@ EXPORT_TRACEPOINT_SYMBOL(mmap_lock_relea
+ 
+ #ifdef CONFIG_MEMCG
+ 
+-/*
+- * Our various events all share the same buffer (because we don't want or need
+- * to allocate a set of buffers *per event type*), so we need to protect against
+- * concurrent _reg() and _unreg() calls, and count how many _reg() calls have
+- * been made.
+- */
+-static DEFINE_MUTEX(reg_lock);
+-static int reg_refcount; /* Protected by reg_lock. */
++static atomic_t reg_refcount;
+ 
+ /*
+  * Size of the buffer for memcg path names. Ignoring stack trace support,
+@@ -34,136 +27,22 @@ static int reg_refcount; /* Protected by
+  */
+ #define MEMCG_PATH_BUF_SIZE MAX_FILTER_STR_VAL
+ 
+-/*
+- * How many contexts our trace events might be called in: normal, softirq, irq,
+- * and NMI.
+- */
+-#define CONTEXT_COUNT 4
+-
+-struct memcg_path {
+-	local_lock_t lock;
+-	char __rcu *buf;
+-	local_t buf_idx;
+-};
+-static DEFINE_PER_CPU(struct memcg_path, memcg_paths) = {
+-	.lock = INIT_LOCAL_LOCK(lock),
+-	.buf_idx = LOCAL_INIT(0),
+-};
+-
+-static char **tmp_bufs;
+-
+-/* Called with reg_lock held. */
+-static void free_memcg_path_bufs(void)
+-{
+-	struct memcg_path *memcg_path;
+-	int cpu;
+-	char **old = tmp_bufs;
+-
+-	for_each_possible_cpu(cpu) {
+-		memcg_path = per_cpu_ptr(&memcg_paths, cpu);
+-		*(old++) = rcu_dereference_protected(memcg_path->buf,
+-			lockdep_is_held(&reg_lock));
+-		rcu_assign_pointer(memcg_path->buf, NULL);
+-	}
+-
+-	/* Wait for inflight memcg_path_buf users to finish. */
+-	synchronize_rcu();
+-
+-	old = tmp_bufs;
+-	for_each_possible_cpu(cpu) {
+-		kfree(*(old++));
+-	}
+-
+-	kfree(tmp_bufs);
+-	tmp_bufs = NULL;
+-}
+-
+ int trace_mmap_lock_reg(void)
+ {
+-	int cpu;
+-	char *new;
+-
+-	mutex_lock(&reg_lock);
+-
+-	/* If the refcount is going 0->1, proceed with allocating buffers. */
+-	if (reg_refcount++)
+-		goto out;
+-
+-	tmp_bufs = kmalloc_array(num_possible_cpus(), sizeof(*tmp_bufs),
+-				 GFP_KERNEL);
+-	if (tmp_bufs == NULL)
+-		goto out_fail;
+-
+-	for_each_possible_cpu(cpu) {
+-		new = kmalloc(MEMCG_PATH_BUF_SIZE * CONTEXT_COUNT, GFP_KERNEL);
+-		if (new == NULL)
+-			goto out_fail_free;
+-		rcu_assign_pointer(per_cpu_ptr(&memcg_paths, cpu)->buf, new);
+-		/* Don't need to wait for inflights, they'd have gotten NULL. */
+-	}
+-
+-out:
+-	mutex_unlock(&reg_lock);
++	atomic_inc(&reg_refcount);
+ 	return 0;
+-
+-out_fail_free:
+-	free_memcg_path_bufs();
+-out_fail:
+-	/* Since we failed, undo the earlier ref increment. */
+-	--reg_refcount;
+-
+-	mutex_unlock(&reg_lock);
+-	return -ENOMEM;
+ }
+ 
+ void trace_mmap_lock_unreg(void)
+ {
+-	mutex_lock(&reg_lock);
+-
+-	/* If the refcount is going 1->0, proceed with freeing buffers. */
+-	if (--reg_refcount)
+-		goto out;
+-
+-	free_memcg_path_bufs();
+-
+-out:
+-	mutex_unlock(&reg_lock);
+-}
+-
+-static inline char *get_memcg_path_buf(void)
+-{
+-	struct memcg_path *memcg_path = this_cpu_ptr(&memcg_paths);
+-	char *buf;
+-	int idx;
+-
+-	rcu_read_lock();
+-	buf = rcu_dereference(memcg_path->buf);
+-	if (buf == NULL) {
+-		rcu_read_unlock();
+-		return NULL;
+-	}
+-	idx = local_add_return(MEMCG_PATH_BUF_SIZE, &memcg_path->buf_idx) -
+-	      MEMCG_PATH_BUF_SIZE;
+-	return &buf[idx];
++	atomic_dec(&reg_refcount);
+ }
+ 
+-static inline void put_memcg_path_buf(void)
+-{
+-	local_sub(MEMCG_PATH_BUF_SIZE, &this_cpu_ptr(&memcg_paths)->buf_idx);
+-	rcu_read_unlock();
+-}
+-
+-#define TRACE_MMAP_LOCK_EVENT(type, mm, ...)                                   \
+-	do {                                                                   \
+-		const char *memcg_path;                                        \
+-		local_lock(&memcg_paths.lock);                                 \
+-		memcg_path = get_mm_memcg_path(mm);                            \
+-		trace_mmap_lock_##type(mm,                                     \
+-				       memcg_path != NULL ? memcg_path : "",   \
+-				       ##__VA_ARGS__);                         \
+-		if (likely(memcg_path != NULL))                                \
+-			put_memcg_path_buf();                                  \
+-		local_unlock(&memcg_paths.lock);                               \
++#define TRACE_MMAP_LOCK_EVENT(type, mm, ...)                    \
++	do {                                                    \
++		char buf[MEMCG_PATH_BUF_SIZE];                  \
++		get_mm_memcg_path(mm, buf, sizeof(buf));        \
++		trace_mmap_lock_##type(mm, buf, ##__VA_ARGS__); \
+ 	} while (0)
+ 
+ #else /* !CONFIG_MEMCG */
+@@ -185,37 +64,23 @@ void trace_mmap_lock_unreg(void)
+ #ifdef CONFIG_TRACING
+ #ifdef CONFIG_MEMCG
+ /*
+- * Write the given mm_struct's memcg path to a percpu buffer, and return a
+- * pointer to it. If the path cannot be determined, or no buffer was available
+- * (because the trace event is being unregistered), NULL is returned.
+- *
+- * Note: buffers are allocated per-cpu to avoid locking, so preemption must be
+- * disabled by the caller before calling us, and re-enabled only after the
+- * caller is done with the pointer.
+- *
+- * The caller must call put_memcg_path_buf() once the buffer is no longer
+- * needed. This must be done while preemption is still disabled.
++ * Write the given mm_struct's memcg path to a buffer. If the path cannot be
++ * determined or the trace event is being unregistered, empty string is written.
+  */
+-static const char *get_mm_memcg_path(struct mm_struct *mm)
++static void get_mm_memcg_path(struct mm_struct *mm, char *buf, size_t buflen)
+ {
+-	char *buf = NULL;
+-	struct mem_cgroup *memcg = get_mem_cgroup_from_mm(mm);
++	struct mem_cgroup *memcg;
+ 
++	buf[0] = '\0';
++	/* No need to get path if no trace event is registered. */
++	if (!atomic_read(&reg_refcount))
++		return;
++	memcg = get_mem_cgroup_from_mm(mm);
+ 	if (memcg == NULL)
+-		goto out;
+-	if (unlikely(memcg->css.cgroup == NULL))
+-		goto out_put;
+-
+-	buf = get_memcg_path_buf();
+-	if (buf == NULL)
+-		goto out_put;
+-
+-	cgroup_path(memcg->css.cgroup, buf, MEMCG_PATH_BUF_SIZE);
+-
+-out_put:
++		return;
++	if (memcg->css.cgroup)
++		cgroup_path(memcg->css.cgroup, buf, buflen);
+ 	css_put(&memcg->css);
+-out:
+-	return buf;
+ }
+ 
+ #endif /* CONFIG_MEMCG */
+_
+
+Patches currently in -mm which might be from penguin-kernel@I-love.SAKURA.ne.jp are
+
+
 
