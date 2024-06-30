@@ -1,103 +1,88 @@
-Return-Path: <stable+bounces-56136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B4B091CF6A
-	for <lists+stable@lfdr.de>; Sun, 30 Jun 2024 00:12:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B60C91D0EB
+	for <lists+stable@lfdr.de>; Sun, 30 Jun 2024 11:50:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 253B92823CE
-	for <lists+stable@lfdr.de>; Sat, 29 Jun 2024 22:12:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6BCA1C209F5
+	for <lists+stable@lfdr.de>; Sun, 30 Jun 2024 09:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C18139D12;
-	Sat, 29 Jun 2024 22:11:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pitRxgJ/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4012B12D209;
+	Sun, 30 Jun 2024 09:50:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF072594
-	for <stable@vger.kernel.org>; Sat, 29 Jun 2024 22:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C8B12D1E0
+	for <stable@vger.kernel.org>; Sun, 30 Jun 2024 09:50:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719699117; cv=none; b=uYbqXzQcLqxyxsacjAlu4jLYb4WSr8gYuaLYRD4qEvR0trCqSWvQ75SbbDy5Y+Vtm2utOVoHU62D1oUplqJdeROYlD0t30R/ckUypSdY+QzgjiW9r7+Ga1E9RDQx3WN6XzvYPUBC2tPqu6Sqna05W2xLsY4cwLOs94WMpY2IX50=
+	t=1719741035; cv=none; b=Y/PjDwiKHwrUyNG+Asg7sEYvKQfeYvVvNUQTcZHSb9pQTGhw/ixijXCoGuJ0EeoM8sxouS1OPrG1gJurTyex95tII6GazdC8WiFqDVnwcHJkhvMOLbrtu3ErRZD2Dr0GfLnhHRLRTpN9ebqEdpqACa+L0oQuNzbzaS+8nG6ePIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719699117; c=relaxed/simple;
-	bh=leTSP2ByMgYtC4zckZLG546hQnmkCrmaDJpQbOa+5VM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=o3NNCUtsZiJBA1w3pHTLyoWWUBGl+cIkUGfYsD1WfKW4UQxzLqYtRYNOi5HDKD1Qqlv4zRbAjLN8dBot+4c4QNv7tBBrztvB6gqFgUB86vvQdK5eF/DQcHR68PtPvlfc/nKlSrEwCfNW2KcfVrvEHgfSXqNydwNF4t5qf3apMYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pitRxgJ/; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Envelope-To: gregkh@linuxfoundation.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1719699112;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=8p5kc8FSVinf0g6S8HeTZW4faZAzxbiRlyHgr3fxypw=;
-	b=pitRxgJ/BUa7ru/4YAGw4jhpE6uQXm+xoJaunXsCQPd2JIZtbSIsXOWaRzc8VbzQiMq8NX
-	xjfrEgaEsWD1X/B3YXZoseoxIdIlqOtPNpe67QNiGtXJI9zNawrVeVToyfwGYNfEqUBYvU
-	5iWpjTG22lzoBxRLlnyWiVxfC7wdpmc=
-X-Envelope-To: stable@vger.kernel.org
-Date: Sat, 29 Jun 2024 18:11:48 -0400
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org
-Subject: [GIT PULL] bcachefs fixes for 6.9.y
-Message-ID: <psi6r5zzddyfqixjk2yj2wymtfriasu2qqal7aszzwkypfn4tk@gicez33v2iv2>
+	s=arc-20240116; t=1719741035; c=relaxed/simple;
+	bh=bK1nQ7oQCWQFkB4OP3h6Jg1GwHreKh+GYLywUbn6HeE=;
+	h=From:Date:Subject:To:Cc:Message-Id; b=ByG/ppo4o8thuzcipGlEjcdtvVK93uYWhsy+RSH2m42UBbXCPUk3dmcN3vRE3mMvzYWwKmVopFiYWrwlGeXAjSIBnGB0lZGoV46CwrCbvt1byWqvaOM2BkGGTq0wwMSjI4BJSqbjDNoDAuDBbZwUnyXW+UQuMVkRPRbRvFmbf1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
+Received: from hverkuil by linuxtv.org with local (Exim 4.96)
+	(envelope-from <hverkuil@linuxtv.org>)
+	id 1sNqlz-0007gO-1D;
+	Sun, 30 Jun 2024 09:23:03 +0000
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Date: Sun, 30 Jun 2024 09:22:44 +0000
+Subject: [git:media_stage/master] media: venus: fix use after free in vdec_close
+To: linuxtv-commits@linuxtv.org
+Cc: Dikshita Agarwal <quic_dikshita@quicinc.com>, Stanimir Varbanov <stanimir.k.varbanov@gmail.com>, stable@vger.kernel.org, Vikash Garodia <quic_vgarodia@quicinc.com>
+Mail-followup-to: linux-media@vger.kernel.org
+Forward-to: linux-media@vger.kernel.org
+Reply-to: linux-media@vger.kernel.org
+Message-Id: <E1sNqlz-0007gO-1D@linuxtv.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Migadu-Flow: FLOW_OUT
 
-Hi Greg, couple bcachefs fixes; this gets the downgrade path working so
-6.9 works with the latest tools release.
+This is an automatic generated email to let you know that the following patch were queued:
 
-CI testing... https://evilpiepirate.org/~testdashboard/ci?branch=bcachefs-for-v69
+Subject: media: venus: fix use after free in vdec_close
+Author:  Dikshita Agarwal <quic_dikshita@quicinc.com>
+Date:    Thu May 9 10:44:29 2024 +0530
 
-The following changes since commit 12c740d50d4e74e6b97d879363b85437dc895dde:
+There appears to be a possible use after free with vdec_close().
+The firmware will add buffer release work to the work queue through
+HFI callbacks as a normal part of decoding. Randomly closing the
+decoder device from userspace during normal decoding can incur
+a read after free for inst.
 
-  Linux 6.9.7 (2024-06-27 13:52:32 +0200)
+Fix it by cancelling the work in vdec_close.
 
-are available in the Git repository at:
+Cc: stable@vger.kernel.org
+Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-  https://evilpiepirate.org/git/bcachefs.git tags/bcachefs-2024-06-20-stable-v6.9
+ drivers/media/platform/qcom/venus/vdec.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-for you to fetch changes up to 3d86d0704d4d03f76e5098ddf16152ee53f000f8:
+---
 
-  bcachefs: btree_gc can now handle unknown btrees (2024-06-29 16:57:24 -0400)
-
-----------------------------------------------------------------
-bcachefs fixes for 6.9 stable
-
-Downgrade path fixes; this fixes downgrade recovery passes not running
-when downgrading from on disk format version 1.9; this results in
-missing allocation information and writes immediately hanging due to the
-allocator thinking there are no free buckets.
-
-----------------------------------------------------------------
-Kent Overstreet (5):
-      bcachefs: Fix sb_field_downgrade validation
-      bcachefs: Fix sb-downgrade validation
-      bcachefs: Fix bch2_sb_downgrade_update()
-      bcachefs: Fix setting of downgrade recovery passes/errors
-      bcachefs: btree_gc can now handle unknown btrees
-
- fs/bcachefs/bcachefs.h       | 44 +---------------------------------------
- fs/bcachefs/btree_gc.c       | 15 +++++++-------
- fs/bcachefs/btree_gc.h       | 48 ++++++++++++++++++++------------------------
- fs/bcachefs/btree_gc_types.h | 29 ++++++++++++++++++++++++++
- fs/bcachefs/ec.c             |  2 +-
- fs/bcachefs/sb-downgrade.c   | 17 +++++++++++++---
- fs/bcachefs/super-io.c       | 12 +++--------
- 7 files changed, 77 insertions(+), 90 deletions(-)
- create mode 100644 fs/bcachefs/btree_gc_types.h
+diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
+index 0d2ab95bec0f..d12089370d91 100644
+--- a/drivers/media/platform/qcom/venus/vdec.c
++++ b/drivers/media/platform/qcom/venus/vdec.c
+@@ -1747,6 +1747,7 @@ static int vdec_close(struct file *file)
+ 
+ 	vdec_pm_get(inst);
+ 
++	cancel_work_sync(&inst->delayed_process_work);
+ 	v4l2_m2m_ctx_release(inst->m2m_ctx);
+ 	v4l2_m2m_release(inst->m2m_dev);
+ 	vdec_ctrl_deinit(inst);
 
