@@ -1,87 +1,118 @@
-Return-Path: <stable+bounces-56140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 811CB91D1AE
-	for <lists+stable@lfdr.de>; Sun, 30 Jun 2024 14:56:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7588A91D250
+	for <lists+stable@lfdr.de>; Sun, 30 Jun 2024 17:26:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B315B2118C
-	for <lists+stable@lfdr.de>; Sun, 30 Jun 2024 12:56:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EC631C208DD
+	for <lists+stable@lfdr.de>; Sun, 30 Jun 2024 15:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15BC013C819;
-	Sun, 30 Jun 2024 12:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512631534FB;
+	Sun, 30 Jun 2024 15:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="JDAZiGDw"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="GcCbrExb"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+Received: from out203-205-251-82.mail.qq.com (out203-205-251-82.mail.qq.com [203.205.251.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD0513C3E6
-	for <stable@vger.kernel.org>; Sun, 30 Jun 2024 12:56:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0ABC152536;
+	Sun, 30 Jun 2024 15:26:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.251.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719752179; cv=none; b=iWnzNTuL2dpn9PlKCY6u1FN9hF8WRKuqsyiRU8HW4SMejJLqnKF4BMHIaHcxVush5X/Wh6QyY1TqcNHizCTn3pj2ICGWUMpaaVPoocWPQRVmI0KNE+Q3765Y7gdrtUnjxtRjm1fL30HhgikHj/qjCmRA08XMN3Kj0wKZd8Bw0mA=
+	t=1719761213; cv=none; b=AkyAUnF5gEHr/vmfLeBUM7ahlwpGpudqAfVznRUTVu88EeAEgClJeUjmzlYCzSSts419Q62M20Ib9jQMdEkzO0xNtPu0yfZrMBVbQL0utL2hbIfTzc4Rh8J7TML8k3ce9fwYa7CJtykp7zkKLWWxIZVhhmFXJX+17GoFR1cYNfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719752179; c=relaxed/simple;
-	bh=0fGGM/cnm8TLoI2UtGNDqB1b2u27qgt1I6bMTAbwuZ4=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=umgm4yAq2oVl23Wg0jHc4kqi9sqh/vXtDsW+HdSgfEqiU4lAjDP7ugM9dRzYIvSAKELpUp7XzSitEU8Rxh+SsHGI5BDPny6q4OmM/nXWK1lfwE5CLjzZfDM1hTjvaEQzXYYSWbZxLfF7PnKDRkTobIZju70TtlehJLu4nzqeanU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=JDAZiGDw; arc=none smtp.client-ip=115.124.30.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1719752168; h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type;
-	bh=0fGGM/cnm8TLoI2UtGNDqB1b2u27qgt1I6bMTAbwuZ4=;
-	b=JDAZiGDwGS+wjr7mBT25qzMWcPQ18HFaGoPAvlZAcF/W2ZPKxqt9A8v7ig2CrrbQ5XSGSmxqk645vUx8aTz97wIi7sf2gT9Pv5qOEk4WrspLoAGYMcjABPMZIXVoxUIGM2RFV4cC9DqhA8nnMdmidlI5zH4P59uziIy9qH7wGT4=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037067111;MF=guwen@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0W9Vcche_1719752157;
-Received: from 30.236.42.42(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0W9Vcche_1719752157)
-          by smtp.aliyun-inc.com;
-          Sun, 30 Jun 2024 20:56:08 +0800
-Message-ID: <d11bc7e6-a2c7-445a-8561-3599eafb07b0@linux.alibaba.com>
-Date: Sun, 30 Jun 2024 20:55:56 +0800
+	s=arc-20240116; t=1719761213; c=relaxed/simple;
+	bh=vO1NLBQxNQfA2xpyrK/rc/jpoKmQGGIJOtTb9QALIFo=;
+	h=Message-ID:Date:From:To:cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=snNyBgLwRcl6akSt+s14gCM0n9f9va5/HUwQ0jJh5QFR9FyOcw+4Wd/Avt10m4iAXEhodddY9vqPQyf4xI1oj3C6Uii5zI2OHUgCuEqH47UhmtDexRemBtaqvaaGVEOJMfkVQKXwhzjWucZOjOnpdNQS9guFpi1dGsFhwz7JyCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=GcCbrExb; arc=none smtp.client-ip=203.205.251.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1719760902; bh=lZ3i5L1HLdTTCLMU39/mrQkhmO03fgVVzrbXx5lN1sk=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References;
+	b=GcCbrExbiyLxe/FpoK0j8Rp0VI9RbN79etRgW/XlBCRpSjDiFL9SRdoWiqGQfE4u7
+	 f++YZ0HU0nC5gXnNmn/WbaPTuTT55Gv/k1CGIaUx0mWSzHu131als7CsrbI/OZssm+
+	 +tmxIHVUoFgHqeBcJ4mEMesczdT9dIfkvojfsgTk=
+Received: from LAPTOP-PMPPB61H ([36.129.28.219])
+	by newxmesmtplogicsvrsza29-0.qq.com (NewEsmtp) with SMTP
+	id 210974CF; Sun, 30 Jun 2024 23:08:16 +0800
+X-QQ-mid: xmsmtpt1719760096te8gy3gs2
+Message-ID: <tencent_6866D69439F77A09338872DC0398A84CB908@qq.com>
+X-QQ-XMAILINFO: N2bAIxLK0elnc+9Xe7d2ddVQ9KxnEcqKNXLiYmjhiz5xuush6I9PgckgkgBUKT
+	 tw3JK3gjPwyFA4jP9L00VIh1g+z5JHTzPi5lJcBD60NOsuSz9iy/wzc7QyoY80uvRsOtQAvSQXKm
+	 o3xmxXWZWcmJXkdAYNHjaoApocQe8zXFmEvA0gEJi7b0la7aVpKvk2TOgh2hFv1hCuGtIUlWPqhq
+	 59IhAo5e4+RoLzujf3IdYAICX5JlEDDzOrcr47MhBMzcuS3/ZOTQsPmIm1ltNPmg6FmPAVdYklvt
+	 JhEHUqGEcXXf4I65JS2A+08tEOoUIIe5+yfRir0818kJTEel2R3OQIvFiDPFL2igZY2CKHMX8aw2
+	 qqlMAEp2MsEYh5tkFFzg76XnDqJxngCW7aj1o7Yk/VBUw7fdilhG24mDROEkQAvqgJX6kCIf/CA4
+	 esea8wg/EZZI7dr+lcaduRd7eto3BrLzDHPOvV8+a2Eowlu0E1ci+TdSkjTHoNoH0c2R9/BwP/yo
+	 OpQ7plDI/Zsb++Au5SaV0f4YPTLRCaJG6BNe/kGVSskq1AxTeFR4zqgVC8VtDU1Ecltcgo+ckYQb
+	 f4pfs8Aak5Vp70ARkteKdrvfCBHDBl95ctSiDyroarJ5pwuXsfvW26xsILCsBRHH7PpNc/ySx1Oa
+	 +ttpX3X2HxOIqDE2nTUV+bTrwD8/OGMQgD7Do3jAXVXdowD3WYExSdJ0YAQ9R8eo4KpYUaACNGv0
+	 3VvKyL6jdfedDoor17Vqe/LupGWElQ+jlSwajbwjONkY31OggxIpQf5T3n/SDaqNiz5MCbYsdhGH
+	 HhbFPiox4p516EryjFJzOdA49VaP8QIJsHKUQP4QE5ktn9l2O0MN1xY6j9uj0bDUjLfpcwuqy7hf
+	 d4Q7TdanBXQyOx9YPjoDsvR5sFdOSsWMepNyIjOl4HNjVTgvGxIEIELpBWXftC7B2JvMzB0OOVfh
+	 1RfwGCmgWfy45v+IPuEhNnMB5X1/TixOvPcoYCla6wi6JpSDN/Ok3nPa8B/ZVi9ptAGRIFC3k=
+X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
+Date: Sun, 30 Jun 2024 23:08:17 +0800
+From: Zhou congjie <zcjie0802@qq.com>
+To: Zijun Hu <quic_zijuhu@quicinc.com>, gregkh@linuxfoundation.org, 
+    rafael@kernel.org, akpm@linux-foundation.org, dmitry.torokhov@gmail.com
+cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] kobject_uevent: Fix OOB access within
+ zap_modalias_env()
+In-Reply-To: <1716524403-5415-1-git-send-email-quic_zijuhu@quicinc.com>
+X-OQ-MSGID: <77765b34-80c6-6371-06b5-50be2a72e5de@qq.com>
+References: <1716524403-5415-1-git-send-email-quic_zijuhu@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Wen Gu <guwen@linux.alibaba.com>
-Subject: Please backport d8616ee2affc ("bpf, sockmap: Fix sk->sk_forward_alloc
- warn_on in sk_stream_kill_queues") to linux-5.10.y
-To: stable@vger.kernel.org
-Cc: alikernel-developer@linux.alibaba.com, Wen Gu <guwen@linux.alibaba.com>,
- Dust Li <dust.li@linux.alibaba.com>, "D. Wythe" <alibuda@linux.alibaba.com>,
- mqaio@linux.alibaba.com
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 
-Hi stable team,
+On Fri, 24 May 2024, Zijun Hu wrote:
 
-Could you please backport [1] to linux-5.10.y?
+> Subject: [PATCH] kobject_uevent: Fix OOB access within zap_modalias_env()
+> zap_modalias_env() wrongly calculates size of memory block
+> to move, so maybe cause OOB memory access issue, fixed by
+> correcting size to memmove.
+> 
+> Fixes: 9b3fa47d4a76 ("kobject: fix suppressing modalias in uevents delivered over netlink")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+> ---
+>  lib/kobject_uevent.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/lib/kobject_uevent.c b/lib/kobject_uevent.c
+> index 03b427e2707e..f153b4f9d4d9 100644
+> --- a/lib/kobject_uevent.c
+> +++ b/lib/kobject_uevent.c
+> @@ -434,7 +434,7 @@ static void zap_modalias_env(struct kobj_uevent_env *env)
+>  
+>  		if (i != env->envp_idx - 1) {
+>  			memmove(env->envp[i], env->envp[i + 1],
+> -				env->buflen - len);
+> +				env->buf + env->buflen - env->envp[i + 1]);
+>  
+>  			for (j = i; j < env->envp_idx - 1; j++)
+>  				env->envp[j] = env->envp[j + 1] - len;
+> 
 
-I noticed a regression caused by [2], which was merged to linux-5.10.y since v5.10.80.
+I notice it too.
 
-After sock_map_unhash() helper was removed in [2], sock elems added to the bpf sock map
-via sock_hash_update_common() cannot be removed if they are in the icsk_accept_queue
-of the listener sock. Since they have not been accept()ed, they cannot be removed via
-sock_map_close()->sock_map_remove_links() either.
+In the debug, I find that length of "env->buflen - len" is definitely 
+larger than  "env->buf + env->buflen - env->envp[i+1". So memmove() just 
+copy some extra '\0', and the problem will not happen when the length of 
+env variables is much smaller than 2048. That is why the problem is 
+difficult to be observed.
 
-It can be reproduced in network test with short-lived connections. If the server is
-stopped during the test, there is a probability that some sock elems will remain in
-the bpf sock map.
+But when the length of env variables is close to 2048 or even more than 
+2048, the memmove will access the memory not belong to env->buf[2048]. 
 
-And with [1], the sock_map_destroy() helper is introduced to invoke sock_map_remove_links()
-when inet_csk_listen_stop()->inet_child_forget()->inet_csk_destroy_sock(), to remove the
-sock elems from the bpf sock map in such situation.
-
-[1] d8616ee2affc ("bpf, sockmap: Fix sk->sk_forward_alloc warn_on in sk_stream_kill_queues")
-(link: https://lore.kernel.org/all/20220524075311.649153-1-wangyufen@huawei.com/)
-[2] 8b5c98a67c1b ("bpf, sockmap: Remove unhash handler for BPF sockmap usage")
-(link: https://lore.kernel.org/all/20211103204736.248403-3-john.fastabend@gmail.com/)
-
-Thanks!
-Wen Gu
 
