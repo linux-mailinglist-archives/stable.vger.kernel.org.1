@@ -1,64 +1,64 @@
-Return-Path: <stable+bounces-56188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39EFB91D562
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 02:23:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A1BA91D565
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 02:23:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CAEF1C20A9A
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 00:23:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AD52B210DA
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 00:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6151E15A863;
-	Mon,  1 Jul 2024 00:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B680C15AAD6;
+	Mon,  1 Jul 2024 00:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UKzvkNFQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nMqMt0Y7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1654415AAD6;
-	Mon,  1 Jul 2024 00:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724A863D5;
+	Mon,  1 Jul 2024 00:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719792906; cv=none; b=jshG3l1rKyuCpTzST4VNJUG+6G5lMkdNvBH6atDvzb53hHwVmx7YfudO+qjRGrU7Bj0vjuCqIuJryOVQY5AEMf0lIu2aXR2+e4XTyP5WPKGOVHMZ/z2uwc+nwnhbEXRZMJZSkAbp3w9PQ6j11Fo7B7vTuHRKV5CvBV6vIjhF5EY=
+	t=1719792909; cv=none; b=U+YX6+qR0CE2oILQK3NtBTVv1t+lmNVPxGjsJXLMB/iEdRUrW/LP3a11LEkG21+Q9lV17DRcr78V8bIaIPXrf7H2O34tTKMS9aLS5Jq2bzvFD1l7aZMOyJkO9BximTPvyBfCm9YiEDeGYZ4L7yuiGJjnD8u+HiXnsUfJp714N6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719792906; c=relaxed/simple;
-	bh=tub/KFrI5WMPRKPPQQcJOvZ8W01m9UyyKhvkoQY+7jc=;
+	s=arc-20240116; t=1719792909; c=relaxed/simple;
+	bh=LUGLkVx+EB9gNUaqkvSz3PKyYxAOJvfQZIJVdEGv9PE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zmh8+28QGwGWbmqffC00okaMUQrTjs7CqyM6J4PKvI4jbz7zr7qhJEe/rb1hKluUocTVaLgb1nkUUMXO5a0t/jPU8+85YF8RF5JNp015+nZGsj0xzUTC9urSixtVce3rFr8DqhhySchIHcn9MMDLZ+6b8Exn9mTWxl1dOheI4aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UKzvkNFQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A225C32786;
-	Mon,  1 Jul 2024 00:15:03 +0000 (UTC)
+	 MIME-Version; b=RMB1nCqRkFiKPNtSs/KWDsgk71sSIci/7ykYkh1AvUabvlDt066/zFV24o522Hzi/PQE8eKsxZV5H7FQBif1Dk6ylhqRuuHPZT4T7WvEEz6gCNVEyG9qq+DJifZV9rV6ap0qtMb9TqPAsZqew+RXajFsK9pqMs4hjaxNKFAkeUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nMqMt0Y7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCCEC2BD10;
+	Mon,  1 Jul 2024 00:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719792905;
-	bh=tub/KFrI5WMPRKPPQQcJOvZ8W01m9UyyKhvkoQY+7jc=;
+	s=k20201202; t=1719792909;
+	bh=LUGLkVx+EB9gNUaqkvSz3PKyYxAOJvfQZIJVdEGv9PE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UKzvkNFQ/KkoSc1BZnfXx97riSmMMgnnRmGcseOaR3ysmZkiNd0ijTPXX5v1dhaPk
-	 VUpVbpbrPBsLg1bWyTqJy6Znf+bniPBHUBxhIGhoR/wl27h0YQFYKb6dm/pURtwczr
-	 aoYhujUoR2AserNkCVaMqz31/kbspcxh/QbQIgZ3paqFlclVTeeWEdqNb5oa8pKkno
-	 KpptWSUoLfix0vPgZ8dc+kOoG8VMo5aD0eucszoJ5VitU4Wh1Y0+MXIYaadARrAaXx
-	 jvWZgXrUBhyOcY/eK5IDbbDL4uAPO3qU2E+lq5+L+ZacJjGyr6FHtpNw2FzuxV2nAs
-	 2CySyCif3xFNA==
+	b=nMqMt0Y7D2VkJN/9JfkrvJq9XBcjugNs8sSeFXvEKldg+q19WB12oeJ2DyF+xtA3u
+	 EABi6OCuK1f4AbFF2cY2+Bm4mqArK1A6zZ4QI8sO0vyyX4E75wYfsFjfZlEIxmeY1C
+	 imiSMmO/6nmnwAVHtUAft8sPW4E1ib3vzcnVmOeiiFS96h52YeiokcE4rHKxPTIHwD
+	 OQnW6qKCrUpSR6w8DnvCPQZMOZv4lun5RrHts9a7xmL0mkAu3Yi0Uky9rT5G2fAfQJ
+	 DOsiS05jJSlnZ49iszvUMkxoMNI8RjVviGiLuzCA8xVW2yvgTPFY8ndcbc0hUPPvEF
+	 9qHZWYpmsYtcA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	sbinding@opensource.cirrus.com,
-	luke@ljones.dev,
-	shenghao-ding@ti.com,
-	simont@opensource.cirrus.com,
-	foss@athaariq.my.id,
-	rf@opensource.cirrus.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 3/4] ALSA: hda/realtek: Add more codec ID to no shutup pins list
-Date: Sun, 30 Jun 2024 20:14:51 -0400
-Message-ID: <20240701001457.2921445-3-sashal@kernel.org>
+	geert@linux-m68k.org,
+	peterz@infradead.org,
+	tglx@linutronix.de,
+	kees@kernel.org,
+	sohil.mehta@intel.com,
+	casey@schaufler-ca.com,
+	palmer@sifive.com,
+	mszeredi@redhat.com,
+	linux-mips@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 4/4] mips: fix compat_sys_lseek syscall
+Date: Sun, 30 Jun 2024 20:14:52 -0400
+Message-ID: <20240701001457.2921445-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240701001457.2921445-1-sashal@kernel.org>
 References: <20240701001457.2921445-1-sashal@kernel.org>
@@ -73,39 +73,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.220
 Content-Transfer-Encoding: 8bit
 
-From: Kailang Yang <kailang@realtek.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 70794b9563fe011988bcf6a081af9777e63e8d37 ]
+[ Upstream commit 0d5679a0aae2d8cda72169452c32e5cb88a7ab33 ]
 
-If it enter to runtime D3 state, it didn't shutup Headset MIC pin.
+This is almost compatible, but passing a negative offset should result
+in a EINVAL error, but on mips o32 compat mode would seek to a large
+32-bit byte offset.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/r/8d86f61e7d6f4a03b311e4eb4e5caaef@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Use compat_sys_lseek() to correctly sign-extend the argument.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/kernel/syscalls/syscall_o32.tbl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 4af8094938059..7b02eb574dcb4 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -578,10 +578,14 @@ static void alc_shutup_pins(struct hda_codec *codec)
- 	switch (codec->core.vendor_id) {
- 	case 0x10ec0236:
- 	case 0x10ec0256:
-+	case 0x10ec0257:
- 	case 0x19e58326:
- 	case 0x10ec0283:
-+	case 0x10ec0285:
- 	case 0x10ec0286:
-+	case 0x10ec0287:
- 	case 0x10ec0288:
-+	case 0x10ec0295:
- 	case 0x10ec0298:
- 		alc_headset_mic_no_shutup(codec);
- 		break;
+diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
+index 29f5f28cf5cea..99e63597c7a66 100644
+--- a/arch/mips/kernel/syscalls/syscall_o32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
+@@ -27,7 +27,7 @@
+ 17	o32	break				sys_ni_syscall
+ # 18 was sys_stat
+ 18	o32	unused18			sys_ni_syscall
+-19	o32	lseek				sys_lseek
++19	o32	lseek				sys_lseek			compat_sys_lseek
+ 20	o32	getpid				sys_getpid
+ 21	o32	mount				sys_mount
+ 22	o32	umount				sys_oldumount
 -- 
 2.43.0
 
