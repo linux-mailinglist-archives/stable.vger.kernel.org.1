@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-56169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E9091D529
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 02:18:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BE7391D52C
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 02:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FA471F23CDE
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 00:18:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC5411F23E41
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 00:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C9E12EBD3;
-	Mon,  1 Jul 2024 00:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261FE37169;
+	Mon,  1 Jul 2024 00:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IeCiHT00"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oHScMyPP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800F023776;
-	Mon,  1 Jul 2024 00:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2049131E4B;
+	Mon,  1 Jul 2024 00:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719792839; cv=none; b=BCms/5kwTNL/Zb4iYF8RITg3e8fTQy+nbZTiE/ofFaKGg0XP0GGSrXaO1/MraJLJer+ewRa9kF20wrQH5f0V8iUvDbfRWpKJ+Bbs1g4tmXdvK6ltKro63w21ynrJ8Y+RXaJdDHceiT+jf30ebbc9EZFBQMar5j0Yg84u3A270g8=
+	t=1719792840; cv=none; b=Ojyi7d9gRmCQ8mjYRgPUbtcSaEWWIn00YywlSyofxr6X3FuxNe4kAb6KvFyV6/Jq5Zb2qeJW81YBCJKrhQN5r2K+j6l24wfrSx8ytVgoxAAanKtKh7vGeBJaqMxl6eSiwRIwzeO7AID05hQU9CQgackGHyeBOrwxVwEkR3GpDH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719792839; c=relaxed/simple;
-	bh=mmHQr5aJoUncG6r9taP5gXzJX/VPjXNXlw/6mRr0XUg=;
+	s=arc-20240116; t=1719792840; c=relaxed/simple;
+	bh=PQF8Aej0yai2vLCMDITBf9kCcjI8/z8VbTXYxx6y9is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bjXN0osL2FJxUWl0IX22PyZYInFFJlV6jb+YgJgS0aiTOWPdjZaBXMkqU4YcnOnwoMh0Ix1XDmuCcQTIbzIycCA/xbKGUdQSkO9vIVUbphikjJrYAvYsJBVdjsHj/RZzli017yOqp0SLB7RstUsXzhR3VdRongMnz+tGdcITwpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IeCiHT00; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCB1C2BD10;
-	Mon,  1 Jul 2024 00:13:57 +0000 (UTC)
+	 MIME-Version; b=A9nZUVoL5h06qUDZBgwke1JIsXDUKwMircX7ivuvm+hN3BbIwqGtkxNmYHf8U91fwGpYDL/V/Qk5ESrky29Go2oXrQGPbqmoZf9i5RgSIZSE1x6Hu1Xo8OZSgN20SsYCBVdR2nFTe6PcNuYThBMTpYp49DJI6DAAX3xCcBEMGKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oHScMyPP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CF7C4AF0A;
+	Mon,  1 Jul 2024 00:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719792839;
-	bh=mmHQr5aJoUncG6r9taP5gXzJX/VPjXNXlw/6mRr0XUg=;
+	s=k20201202; t=1719792840;
+	bh=PQF8Aej0yai2vLCMDITBf9kCcjI8/z8VbTXYxx6y9is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IeCiHT00U0SZ7XzGVi6/6kzYOPrnqaQcxbk+FavN6mLGxjOs8TnAvgSa0G+naknFE
-	 2UmsgSpwPh8r2Hi6ZykEpOdyWlSr1VXB9IT4a4E4K6qOfa+JYjAPIyZUlVoE1JeJpt
-	 W5uqzM0sLXpx+DFvqmKg39Rsg+sua3Oo777UyW6OWEDz3DVqq1/SjJ8RsEmExz54IX
-	 xb+EpNhtuxdhPdQJg8e0OwdYSG1LYy5sSMuC0/1CbntlJDggikLgOJXXzcXsysmLcY
-	 mst0CQA5O074Gmyh9IAZQYN3rB7U70XMulFKs7RKHZhIO6OboZ+TabhjksfBskYJBW
-	 sl8b4bRli940Q==
+	b=oHScMyPPMrVv0/Su9BqkQh87SJ19uKnkY8UFOoSmi5/STclgd4cfoLhSNDkIZbixL
+	 WrtZG0/zYwsZnAg2d1A7Ki1dPgI1zFcJPQW8rO7iI8zuhRcNy03eUFmzIlio5UTuZi
+	 rfFIhW5rSMsIrisS9Lz/0OQB5b35sIWWi62rdyDTdJnSiJb2qp5liTP1wvhyeI2d37
+	 mSeplOMPvRgldyqv9fSRM28hgN5vFBBx9GZSDNkKz9w5oEjVw07NOaKSK2uwYuxsjl
+	 y0hcIOS/OiBmOLw/TFDVvck89bsXdO8v5cJC55hY7RDmvGlR+z9Gq1Qh9yL5beuodR
+	 HV7SmOF+no4jA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Patrice Chotard <patrice.chotard@foss.st.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	sbinding@opensource.cirrus.com,
-	luke@ljones.dev,
-	shenghao-ding@ti.com,
-	simont@opensource.cirrus.com,
-	foss@athaariq.my.id,
-	rf@opensource.cirrus.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 06/12] ALSA: hda/realtek: Add more codec ID to no shutup pins list
-Date: Sun, 30 Jun 2024 20:13:25 -0400
-Message-ID: <20240701001342.2920907-6-sashal@kernel.org>
+	linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 07/12] spi: Fix OCTAL mode support
+Date: Sun, 30 Jun 2024 20:13:26 -0400
+Message-ID: <20240701001342.2920907-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240701001342.2920907-1-sashal@kernel.org>
 References: <20240701001342.2920907-1-sashal@kernel.org>
@@ -73,39 +65,66 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.36
 Content-Transfer-Encoding: 8bit
 
-From: Kailang Yang <kailang@realtek.com>
+From: Patrice Chotard <patrice.chotard@foss.st.com>
 
-[ Upstream commit 70794b9563fe011988bcf6a081af9777e63e8d37 ]
+[ Upstream commit d6a711a898672dd873aab3844f754a3ca40723a5 ]
 
-If it enter to runtime D3 state, it didn't shutup Headset MIC pin.
+Add OCTAL mode support.
+Issue detected using "--octal" spidev_test's option.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/r/8d86f61e7d6f4a03b311e4eb4e5caaef@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
+Link: https://msgid.link/r/20240618132951.2743935-4-patrice.chotard@foss.st.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi.c       | 6 ++++--
+ include/linux/spi/spi.h | 5 +++--
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 97df0b01b211c..882ac9dba97c0 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -585,10 +585,14 @@ static void alc_shutup_pins(struct hda_codec *codec)
- 	switch (codec->core.vendor_id) {
- 	case 0x10ec0236:
- 	case 0x10ec0256:
-+	case 0x10ec0257:
- 	case 0x19e58326:
- 	case 0x10ec0283:
-+	case 0x10ec0285:
- 	case 0x10ec0286:
-+	case 0x10ec0287:
- 	case 0x10ec0288:
-+	case 0x10ec0295:
- 	case 0x10ec0298:
- 		alc_headset_mic_no_shutup(codec);
- 		break;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index da15c3f388d1f..5c57c7378ee70 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -4000,7 +4000,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+ 				return -EINVAL;
+ 			if (xfer->tx_nbits != SPI_NBITS_SINGLE &&
+ 				xfer->tx_nbits != SPI_NBITS_DUAL &&
+-				xfer->tx_nbits != SPI_NBITS_QUAD)
++				xfer->tx_nbits != SPI_NBITS_QUAD &&
++				xfer->tx_nbits != SPI_NBITS_OCTAL)
+ 				return -EINVAL;
+ 			if ((xfer->tx_nbits == SPI_NBITS_DUAL) &&
+ 				!(spi->mode & (SPI_TX_DUAL | SPI_TX_QUAD)))
+@@ -4015,7 +4016,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+ 				return -EINVAL;
+ 			if (xfer->rx_nbits != SPI_NBITS_SINGLE &&
+ 				xfer->rx_nbits != SPI_NBITS_DUAL &&
+-				xfer->rx_nbits != SPI_NBITS_QUAD)
++				xfer->rx_nbits != SPI_NBITS_QUAD &&
++				xfer->rx_nbits != SPI_NBITS_OCTAL)
+ 				return -EINVAL;
+ 			if ((xfer->rx_nbits == SPI_NBITS_DUAL) &&
+ 				!(spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD)))
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 8cc7a99927f95..e5baf43bcfbb6 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -1049,12 +1049,13 @@ struct spi_transfer {
+ 	unsigned	dummy_data:1;
+ 	unsigned	cs_off:1;
+ 	unsigned	cs_change:1;
+-	unsigned	tx_nbits:3;
+-	unsigned	rx_nbits:3;
++	unsigned	tx_nbits:4;
++	unsigned	rx_nbits:4;
+ 	unsigned	timestamped:1;
+ #define	SPI_NBITS_SINGLE	0x01 /* 1-bit transfer */
+ #define	SPI_NBITS_DUAL		0x02 /* 2-bit transfer */
+ #define	SPI_NBITS_QUAD		0x04 /* 4-bit transfer */
++#define	SPI_NBITS_OCTAL	0x08 /* 8-bit transfer */
+ 	u8		bits_per_word;
+ 	struct spi_delay	delay;
+ 	struct spi_delay	cs_change_delay;
 -- 
 2.43.0
 
