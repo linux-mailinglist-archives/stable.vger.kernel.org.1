@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-56155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CF8D91D501
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 02:14:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E480291D504
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 02:15:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 370AD2813D6
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 00:14:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A14F1F218D3
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 00:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB2B58AC4;
-	Mon,  1 Jul 2024 00:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 789827710E;
+	Mon,  1 Jul 2024 00:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uUpja1lM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hTAEwsav"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A73742AB1;
-	Mon,  1 Jul 2024 00:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFC06FBF;
+	Mon,  1 Jul 2024 00:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719792760; cv=none; b=BXAu0AX2nLykQ2rPRglECIRnRvdPr7iQuTactyHiW6yOcMiCgilsgsSmipID2Z37I5oL+NlEbNfCjosUykXc9uKJKn4NzbinXNY/OVHDKfnBGPzbyVvEt01M+DH3PjtIjFA6VRr7k9y1c504bmepEkR4ckEz9wybiRQCtfcBmzA=
+	t=1719792762; cv=none; b=KTKYnv9COQCL4e6SPVlIwzcQoU+wYzakZZJLwG5T06Vl+ZcexTEKr1wW5kRDhDfUQlqsKOfeBQrFfoHEPmVay6JGmrHRXe4groVpRl+n5zBwZGCA8OIQdC7DscSYYfq2BVWQka7M48vdnDctil7wiMZZ4Yl0tzUbQuObO8JfvBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719792760; c=relaxed/simple;
-	bh=MfFFfT3IEudwtXCJK122nhjdOoxHe90ND2jrAw6n1y4=;
+	s=arc-20240116; t=1719792762; c=relaxed/simple;
+	bh=p3EN7FK246yZq7ZJYoFjN4WYgTILLsYkYVjtqauABbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAwDoccEXq4UYCOJ3uqA4T7Z8A8Jnvtckl+nnvNIRasW940pvWPxVc9r3NaviwACStfsbWov/riMWj0UPkyzfzJ1v5LJyj9/U3WBVlLOkX7hnLES14rArPeHWbWhCV23sJqAWOY5fg5pmP9EnV1Xpa7f72z5GxqFEwj1Xn25kl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uUpja1lM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DF2C4AF0B;
-	Mon,  1 Jul 2024 00:12:38 +0000 (UTC)
+	 MIME-Version; b=YZOVfTDGtV9DDlUZpanENOGHtrVEFdqq7R7VWsZ2MafoScgu9n46Yh2a9ioUI74CMpwHa3ZTeO67L5ATAe/YGBTXgjQC9UqbKM1uVAtLik17xUdtL9YHAXwRySZvyqw8LVIHe62K5EXhBBSi/E3PbimZvfimeDAr7R54cS7Pzsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hTAEwsav; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CCA5C4AF0A;
+	Mon,  1 Jul 2024 00:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719792759;
-	bh=MfFFfT3IEudwtXCJK122nhjdOoxHe90ND2jrAw6n1y4=;
+	s=k20201202; t=1719792762;
+	bh=p3EN7FK246yZq7ZJYoFjN4WYgTILLsYkYVjtqauABbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uUpja1lMDOSAjG9KI98E0qlY7hgtckU27YT36CZax3F/kBvClpWxASUYjA7PgcyGS
-	 UC4/Pp3RnfGZWmdsJnMMWMM4Q27UEzlSGwkWP6iose+kLxP33YYcUTsgS9+JyTHkEi
-	 FaRNSK55SdsdOsMrCFiq6OgiZ0rXxqpvN9SrR0J5JxjjPFP4BYwkZSisGPfO2BUuZ1
-	 G++2MC4E14QV72SsEhnKEZ4BprG3gZ7UmcuatrCH0nStvGUvRzk0Gdj/iGUH6t2VBQ
-	 SukLTMjHX0KnEt/hOEmSuQkuUosjqn59F7b6sJyiZftp94cdJMuBYiB/C88lhTpd9D
-	 4id4TuzjNn+HQ==
+	b=hTAEwsavgG/gsCVGAjZbwTPxClHrSJETOO3/dBPro1RAYB++T8fFZZnpI13OjF4Jt
+	 HQYojLCCl06WPmUqDKZe20gumFNES/rHs9QaoE1iOBF9mq6J72vDdfOTvgks1EACT0
+	 XMHPRP2zhQbGpp77kvsbEmAYtw4zMD7FsixzAJk/ZTBIUytA19rNhumdQJSg/C0tmb
+	 WzBua/Q6uQyWv7QW7eLbjF6WKIKl6RMzl+eWjZX8rhcps3UIItNV9nmCYQT0yD4PY1
+	 Gjx/8w7BkK4PSGF4BwWd8wNTmA0pYK5xtObUIC8Igx65JV+MKbsGQpT1zW5liDKs4C
+	 uZdtDBa8Dcy9w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Paul McKenney <paulmck@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Yury Norov <yury.norov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.9 12/20] cpumask: limit FORCE_NR_CPUS to just the UP case
-Date: Sun, 30 Jun 2024 20:11:17 -0400
-Message-ID: <20240701001209.2920293-12-sashal@kernel.org>
+Cc: Adrian Moreno <amorenoz@redhat.com>,
+	Aaron Conole <aconole@redhat.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	pshelar@ovn.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	netdev@vger.kernel.org,
+	dev@openvswitch.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 13/20] selftests: openvswitch: Set value to nla flags.
+Date: Sun, 30 Jun 2024 20:11:18 -0400
+Message-ID: <20240701001209.2920293-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240701001209.2920293-1-sashal@kernel.org>
 References: <20240701001209.2920293-1-sashal@kernel.org>
@@ -71,63 +73,69 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.7
 Content-Transfer-Encoding: 8bit
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Adrian Moreno <amorenoz@redhat.com>
 
-[ Upstream commit 5d272dd1b3430bb31fa30042490fa081512424e4 ]
+[ Upstream commit a8763466669d21b570b26160d0a5e0a2ee529d22 ]
 
-Hardcoding the number of CPUs at compile time does improve code
-generation, but if you get it wrong the result will be confusion.
+Netlink flags, although they don't have payload at the netlink level,
+are represented as having "True" as value in pyroute2.
 
-We already limited this earlier to only "experts" (see commit
-fe5759d5bfda "cpumask: limit visibility of FORCE_NR_CPUS"), but with
-distro kernel configs often having EXPERT enabled, that turns out to not
-be much of a limit.
+Without it, trying to add a flow with a flag-type action (e.g: pop_vlan)
+fails with the following traceback:
 
-To quote the philosophers at Disney: "Everyone can be an expert. And
-when everyone's an expert, no one will be".
+Traceback (most recent call last):
+  File "[...]/ovs-dpctl.py", line 2498, in <module>
+    sys.exit(main(sys.argv))
+             ^^^^^^^^^^^^^^
+  File "[...]/ovs-dpctl.py", line 2487, in main
+    ovsflow.add_flow(rep["dpifindex"], flow)
+  File "[...]/ovs-dpctl.py", line 2136, in add_flow
+    reply = self.nlm_request(
+            ^^^^^^^^^^^^^^^^^
+  File "[...]/pyroute2/netlink/nlsocket.py", line 822, in nlm_request
+    return tuple(self._genlm_request(*argv, **kwarg))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[...]/pyroute2/netlink/generic/__init__.py", line 126, in
+nlm_request
+    return tuple(super().nlm_request(*argv, **kwarg))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[...]/pyroute2/netlink/nlsocket.py", line 1124, in nlm_request
+    self.put(msg, msg_type, msg_flags, msg_seq=msg_seq)
+  File "[...]/pyroute2/netlink/nlsocket.py", line 389, in put
+    self.sendto_gate(msg, addr)
+  File "[...]/pyroute2/netlink/nlsocket.py", line 1056, in sendto_gate
+    msg.encode()
+  File "[...]/pyroute2/netlink/__init__.py", line 1245, in encode
+    offset = self.encode_nlas(offset)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[...]/pyroute2/netlink/__init__.py", line 1560, in encode_nlas
+    nla_instance.setvalue(cell[1])
+  File "[...]/pyroute2/netlink/__init__.py", line 1265, in setvalue
+    nlv.setvalue(nla_tuple[1])
+                 ~~~~~~~~~^^^
+IndexError: list index out of range
 
-There's a runtime warning if you then set nr_cpus to anything but the
-forced number, but apparently that can be ignored too [1] and by then
-it's pretty much too late anyway.
-
-If we had some real way to limit this to "embedded only", maybe it would
-be worth it, but let's see if anybody even notices that the option is
-gone.  We need to simplify kernel configuration anyway.
-
-Link: https://lore.kernel.org/all/20240618105036.208a8860@rorschach.local.home/ [1]
-Reported-by: Steven Rostedt <rostedt@goodmis.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Paul McKenney <paulmck@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Adrian Moreno <amorenoz@redhat.com>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/Kconfig | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ tools/testing/selftests/net/openvswitch/ovs-dpctl.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 4557bb8a52565..c98e11c7330ec 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -539,13 +539,7 @@ config CPUMASK_OFFSTACK
- 	  stack overflow.
+diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+index 5e0e539a323d5..8b120718768ec 100644
+--- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
++++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+@@ -531,7 +531,7 @@ class ovsactions(nla):
+             for flat_act in parse_flat_map:
+                 if parse_starts_block(actstr, flat_act[0], False):
+                     actstr = actstr[len(flat_act[0]):]
+-                    self["attrs"].append([flat_act[1]])
++                    self["attrs"].append([flat_act[1], True])
+                     actstr = actstr[strspn(actstr, ", ") :]
+                     parsed = True
  
- config FORCE_NR_CPUS
--       bool "Set number of CPUs at compile time"
--       depends on SMP && EXPERT && !COMPILE_TEST
--       help
--         Say Yes if you have NR_CPUS set to an actual number of possible
--         CPUs in your system, not to a default value. This forces the core
--         code to rely on compile-time value and optimize kernel routines
--         better.
-+	def_bool !SMP
- 
- config CPU_RMAP
- 	bool
 -- 
 2.43.0
 
