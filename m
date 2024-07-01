@@ -1,116 +1,123 @@
-Return-Path: <stable+bounces-56197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADDDB91D69B
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 05:32:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6073F91D758
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 07:17:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C7F528176E
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 03:32:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1FD4B208A7
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 05:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0B917BDA;
-	Mon,  1 Jul 2024 03:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F022A8D0;
+	Mon,  1 Jul 2024 05:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="axlvBROo"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="okf6C8m2";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JPTXfSJH"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from fout5-smtp.messagingengine.com (fout5-smtp.messagingengine.com [103.168.172.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D938C1362
-	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 03:32:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A1B43ABC;
+	Mon,  1 Jul 2024 05:17:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719804738; cv=none; b=H/sYbiRzloyE2eD86eOs6xyTPJcP8/vDdEzZWxcXZSHZX9024mVs3mu5sw/myE5D5af572TZB2b6koKnB5r+NVzDP0oV7MFg+dQY9WMYoasATJHpPfsXl0D+QNrSL9XgzX7GGqge7iUg2ncaQwoKtePcVnW48A2jD3JA88cpSAw=
+	t=1719811048; cv=none; b=hhWXPqI3l6waCPnthgorZwwSkydhoI/51yFK+R5WAcvRnagtnrpKGNWFZhA6OHVPJtwC050YNtJtmQqPtrlZPUpqAHAVoeVIi8Bx8FNyiHydOmOoxiYWvxJSbPvSdfzNDMwhZ+GlyBjzDGRf0qO4tlZpcXe9sjGiOYdOdEYkyHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719804738; c=relaxed/simple;
-	bh=qQQjGDoJ0myh77aPdjP+sWJgsk2E2ZsVb0POwmgofvI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Wq5uAqjUqDuIEdLIt9k4gMDFP5IwR3JqaZRTFnI87usR4/M34ZWRucUXAXIMejLkgx93xuJVo3TgwmnwslGJ4mUdF9QD8gMdT7mtGiLm9JzZV5GRTOiZKDqs28LMsbBa52IUzzVL4uIEaGsjf/0IEAu6jldvdgNzM0Cf223k370=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=axlvBROo; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1719804735;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=lrXIw9w05RWnWwbiO9aOe5v3MpC5DP8zU3Bul/SygzI=;
-	b=axlvBROocrdlpoCxr7V6I2hxInN/atzBo5SkvEuZOb2QX9GITrAxNy7p9+xBjDjQxaLf5a
-	YmCeI+M5Ms9ZIvg7dua4WB2htmV0D+BNzHRpii+DJCNgFwPmr1Z8cAApose1syaDtrxcbg
-	B7UmTVMWdbCJFnVSn6pOFE6BcvAn1wY=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-601-dgew17BePSaVyxa7FmGRsg-1; Sun,
- 30 Jun 2024 23:32:10 -0400
-X-MC-Unique: dgew17BePSaVyxa7FmGRsg-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 189DB19560A2;
-	Mon,  1 Jul 2024 03:32:09 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.72.112.165])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C4EBA19560AA;
-	Mon,  1 Jul 2024 03:32:03 +0000 (UTC)
-From: Jason Wang <jasowang@redhat.com>
-To: mst@redhat.com,
-	jasowang@redhat.com,
-	eperezma@redhat.com
-Cc: kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] vhost-vdpa: switch to use vmf_insert_pfn() in the fault handler
-Date: Mon,  1 Jul 2024 11:31:59 +0800
-Message-ID: <20240701033159.18133-1-jasowang@redhat.com>
+	s=arc-20240116; t=1719811048; c=relaxed/simple;
+	bh=1NCPZuvQK11pWLY83VjIg0A+aLb8avWCrU1p0qACbiQ=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=JzFoXkh5ajJ08LBhVec4XluDBoctE5l7xKEYkOmwaRKStjKz8TdrmkWnuj9KomveiuhnIlnW7SfzV9416CZSNVLVawG6puvaOI0p2cvDuq+L5b9RU6Hcg54uRDXdYv+Rf8jrJ+mrSSBmrL1jPKL9X3T+LVroV/h0uPyb0GtW3c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=okf6C8m2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JPTXfSJH; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 810BA138021C;
+	Mon,  1 Jul 2024 01:17:24 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Mon, 01 Jul 2024 01:17:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1719811044; x=1719897444; bh=uO1R0mZ5vI
+	07kOGzrcM42BVjY+yx0Z5jKChVT17u9q0=; b=okf6C8m2HPPFVmDDl/0YORhXRv
+	UFAxS1JCHgjyMKBQMlQ9+fk6b/AKr+B7XxnPIMNEgnRBd3wg5mTQhaRRgnza9edc
+	N4anHamcsvcrqJysCW2vlVHT65EIXvKs5OVTOmSK775f5aHXLHHiozMOzrnI1I+6
+	zR+QX9oc7ctCToGFOSVic7hfsqnEY3yct+qe4PM21KdJUXfeW9nYcIQ93vBgrjKX
+	YBqFqIHFTvXa9oOzjLmq0ZjNRxt/1dIaWuLjfZbx6bGXtXIbxm4xPqkmhuglwthc
+	8XZNsQf24FlC9fMpGdwOHtLT4qJIaoGeaGKbyz+2AQAjKd7TdIkhI2ps53yg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1719811044; x=1719897444; bh=uO1R0mZ5vI07kOGzrcM42BVjY+yx
+	0Z5jKChVT17u9q0=; b=JPTXfSJHJ+MPlPv+AnVkJN64nebmJXBb55j9Gg10lxoh
+	u/EWAmPQ7sTXj1fty15K7V6bfi8vORaWLuUkHQ7IAmkMnHdkG/zwMZh4FANW7TS2
+	JnBth6qjzOUIM2PuIZQz9DwPP0OowxRC1JrFwgZLEmcgG+gab6/Z29SNYo45mcfC
+	Qm0rpQIbUdk97CeEBk8T5WfVa0UFutgmhIn4hDZeIpHRYD+dOsJGRJ6AgvwYb3oD
+	31kQwt5Ad7hEGUrG2uVZ1dSR7nBNZnsMr214WRjOaSKOZZqQ+Vv2IKC4NDEG4Zu8
+	xg6eFZjZZ5//8ik43fNEQ+bkbfGamIDoh0CTM6vbSw==
+X-ME-Sender: <xms:5DuCZqPkI8E4OiFNmjln9-m8EYMCd_6IwHl_iWUc-sItmy3v_7SHIA>
+    <xme:5DuCZo_n7ONMjki-9RNM32RAOGG3OVyi_ddGJgWFysfKivOXwtxDqxI5yq9GKB8PZ
+    jQ2-26g0PWBD7v4ihs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddvgdelvdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeevhfffledtgeehfeffhfdtgedvheejtdfgkeeuvefgudffteettdekkeeufeeh
+    udenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:5DuCZhRqHVVNNyBKsX0olGyvd9-kqb5qAjViHF5Sydr38TkBB95ANQ>
+    <xmx:5DuCZquOJxLcsQjJ7tVtiF4-d6oqwARGK4yvYZ-wyLG970f43O4rIg>
+    <xmx:5DuCZicl7VDk75mCrld24HDhlv2GoXLEy-IgjXGlGmC6cmcJQZbUWA>
+    <xmx:5DuCZu13NBf3WiujbXSTUQvIlqqQj3iMvU6QXl4q7hbCdeVdds27JA>
+    <xmx:5DuCZi4OKQJRDchhX5KW8W-2s97WfyovsMFo4hSn8QXZkCQy-Ld9S7YQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 280D1B6008D; Mon,  1 Jul 2024 01:17:24 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-538-g1508afaa2-fm-20240616.001-g1508afaa
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Message-Id: <ebe6268b-3ea9-4490-8b12-09c200bb2e4a@app.fastmail.com>
+In-Reply-To: <20240701001033.2919894-1-sashal@kernel.org>
+References: <20240701001033.2919894-1-sashal@kernel.org>
+Date: Mon, 01 Jul 2024 07:16:26 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org
+Cc: "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Helge Deller" <deller@gmx.de>
+Subject: Re: Patch "parisc: use generic sys_fanotify_mark implementation" has been
+ added to the 6.1-stable tree
+Content-Type: text/plain
 
-remap_pfn_page() should not be called in the fault handler as it may
-change the vma->flags which may trigger lockdep warning since the vma
-write lock is not held. Actually there's no need to modify the
-vma->flags as it has been set in the mmap(). So this patch switches to
-use vmf_insert_pfn() instead.
+On Mon, Jul 1, 2024, at 02:10, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+>
+>     parisc: use generic sys_fanotify_mark implementation
+>
+> to the 6.1-stable tree which can be found at:
+>     
+> http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>
+> The filename of the patch is:
+>      parisc-use-generic-sys_fanotify_mark-implementation.patch
+> and it can be found in the queue-6.1 subdirectory.
+>
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
-Tested-by: Dragos Tatulea <dtatulea@nvidia.com>
-Fixes: ddd89d0a059d ("vhost_vdpa: support doorbell mapping via mmap")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jason Wang <jasowang@redhat.com>
----
- drivers/vhost/vdpa.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+This patch caused a build time regression, the fix is still on
+the way into mainline, I plan to send a pull request today:
 
-diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index 63a53680a85c..6b9c12acf438 100644
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -1483,13 +1483,7 @@ static vm_fault_t vhost_vdpa_fault(struct vm_fault *vmf)
- 
- 	notify = ops->get_vq_notification(vdpa, index);
- 
--	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
--	if (remap_pfn_range(vma, vmf->address & PAGE_MASK,
--			    PFN_DOWN(notify.addr), PAGE_SIZE,
--			    vma->vm_page_prot))
--		return VM_FAULT_SIGBUS;
--
--	return VM_FAULT_NOPAGE;
-+	return vmf_insert_pfn(vma, vmf->address & PAGE_MASK, PFN_DOWN(notify.addr));
- }
- 
- static const struct vm_operations_struct vhost_vdpa_vm_ops = {
--- 
-2.31.1
+https://git.kernel.org/pub/scm/linux/kernel/git/arnd/asm-generic.git/commit/?h=asm-generic
 
+     Arnd
 
