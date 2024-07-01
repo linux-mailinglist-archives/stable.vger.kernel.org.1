@@ -1,224 +1,230 @@
-Return-Path: <stable+bounces-56207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7FE291DD34
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 12:57:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A4EF91DD3E
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 12:58:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AA472814B2
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 10:57:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50C232827CC
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 10:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E9C12EBD3;
-	Mon,  1 Jul 2024 10:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1703B13AA35;
+	Mon,  1 Jul 2024 10:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="MrY4sz/o"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="XX+iFEfz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
+Received: from smtp-fw-52005.amazon.com (smtp-fw-52005.amazon.com [52.119.213.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3072912C489
-	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 10:56:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926C3149DF0
+	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 10:57:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719831421; cv=none; b=AaPB5rz7HzaVr7p9kc3gPr8Un3sfjkCyQdYz7Q2dR6u3mSmhi3o3upqZy9D7Bb/+Tq6KzFoAuLY2ZJWoW2vWWQWDAHdHJAGJannf6CoEYEdfkzrBBoVAZmA2EDGlqOqcXIqSM8XHep5mXDrMnfh4dKsqz8e8xrJK5wZx6KJ0Nq4=
+	t=1719831452; cv=none; b=iKAA2uUj8QhwFAmtK0bIT/ATMlySTe0i9wHhRvGYbFzsEF7JAJSuVDKmmzs00Z8xcezSKQcxeMuthRCn8OB2/ZRzbSJXzozjdNaEoRQGxo0sJvHj5cRjJ01lx+nOLzX0zfBc2QmIE0LNUC031QwjFCqrTeeI+UHB16E7mlQUeYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719831421; c=relaxed/simple;
-	bh=5RjWotme8SzxFaOxzxHqw3zUpOs0RCbBIBDoaOEcBcc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=VFw4OIslMdlpxlxySgSJkTwPlMjDBmoIxKCdmEnqvFqZrkqBb1U9V9fQS0ydptDSLavFfF2FUsfo6004pDohLa/Ydp1n5OSNSvv20zmxZw/Kp6DL9TvBVbyfzuaRa3Kn8CMqm59PB2IJ2kC3/v/+hUAme8T2Sdcqx2B1HRcfuLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=MrY4sz/o; arc=none smtp.client-ip=52.119.213.150
+	s=arc-20240116; t=1719831452; c=relaxed/simple;
+	bh=GIgdgBWuHBLkgKrVYI4ZQr7ez7kdSvfDHGv9CUjpbic=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=q9kgweWOwcj+uWSHVxd3YgeZso3hZ9H6s5yOJK+ZNXoiaXrf3EzsEih6yQNdcmhK+SV90ZiwJM5l++k/IRzm4qyx4u9hSw4LpOFAoIfFRxvAACmyJTm7RBOWa5lXVe/ICC6NQwxClQIFWYiXT+FfJCeVbHrerlug/JTEPFQtANA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=XX+iFEfz; arc=none smtp.client-ip=52.119.213.156
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1719831421; x=1751367421;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=5RjWotme8SzxFaOxzxHqw3zUpOs0RCbBIBDoaOEcBcc=;
-  b=MrY4sz/opcqOoi0Xo8o/Zf9Ap/Qb1Ve1NWYzDGXHHENkVocV8uA4RxfP
-   cpCUfhvhtRAfg2+XefDy1S3iZXTRx3IAgZVFBsCRGppqz5LRZUVKPx7mw
-   2fu0NTE2tG+inZY8J7LkWetZcizkVPBRiDVM462NG+asQpX3mkiTpymIV
-   Y=;
+  t=1719831450; x=1751367450;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=xyW/DPnWBae6s10i5tFz77aFvMc3DMdENlJP17zypVo=;
+  b=XX+iFEfz2lijMpFiCV53Dc89zkkU4h0AXAjMRyeRVDHgEVjUNVVNpjVN
+   0XifijXYXXyAGEasUWWaJKvbdZ3d4UcJOUD7j+NfEHs8j9CXy1VSVXd6D
+   xMG4bj0dvwu1w+TKX5nv+ZAE+7FErMuq0GmJEFVaevXK7GytNjDNxJSmz
+   I=;
 X-IronPort-AV: E=Sophos;i="6.09,176,1716249600"; 
-   d="scan'208";a="642796701"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2024 10:56:59 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [10.0.17.79:61210]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.29.5:2525] with esmtp (Farcaster)
- id 9c04a1ff-8bc0-490f-ab3a-80ae01c0ddac; Mon, 1 Jul 2024 10:56:57 +0000 (UTC)
-X-Farcaster-Flow-ID: 9c04a1ff-8bc0-490f-ab3a-80ae01c0ddac
-Received: from EX19D002EUC001.ant.amazon.com (10.252.51.219) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.50) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 1 Jul 2024 10:56:57 +0000
+   d="scan'208";a="664102206"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-52005.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2024 10:57:28 +0000
+Received: from EX19MTAEUC002.ant.amazon.com [10.0.17.79:22154]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.46.91:2525] with esmtp (Farcaster)
+ id a4678b7e-90d4-4c92-b781-ea72a257f857; Mon, 1 Jul 2024 10:57:26 +0000 (UTC)
+X-Farcaster-Flow-ID: a4678b7e-90d4-4c92-b781-ea72a257f857
 Received: from EX19D014EUC004.ant.amazon.com (10.252.51.182) by
- EX19D002EUC001.ant.amazon.com (10.252.51.219) with Microsoft SMTP Server
+ EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 1 Jul 2024 10:56:57 +0000
-Received: from EX19D014EUC004.ant.amazon.com ([fe80::76dd:4020:4ff2:1e41]) by
- EX19D014EUC004.ant.amazon.com ([fe80::76dd:4020:4ff2:1e41%3]) with mapi id
- 15.02.1258.034; Mon, 1 Jul 2024 10:56:57 +0000
-From: "Gowans, James" <jgowans@amazon.com>
-To: "maz@kernel.org" <maz@kernel.org>, "gregkh@linuxfoundation.org"
-	<gregkh@linuxfoundation.org>, "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"chenxiang66@hisilicon.com" <chenxiang66@hisilicon.com>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>, "Sironi, Filippo"
+ Mon, 1 Jul 2024 10:57:26 +0000
+Received: from u5d18b891348c5b.ant.amazon.com (10.146.13.114) by
+ EX19D014EUC004.ant.amazon.com (10.252.51.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Mon, 1 Jul 2024 10:57:22 +0000
+From: James Gowans <jgowans@amazon.com>
+To: <stable@vger.kernel.org>
+CC: <gregkh@linuxfoundation.org>, <chenxiang66@hisilicon.com>,
+	<maz@kernel.org>, <oliver.upton@linux.dev>, <yuzenghui@huawei.com>,
 	<sironi@amazon.de>
-Subject: Re: FAILED: patch "[PATCH] KVM: arm64: vgic-v4: Make the doorbell
- request robust w.r.t" failed to apply to 5.10-stable tree
-Thread-Topic: FAILED: patch "[PATCH] KVM: arm64: vgic-v4: Make the doorbell
- request robust w.r.t" failed to apply to 5.10-stable tree
-Thread-Index: AQHay6P06MTg6nSjeUGO38ghiD8tMLHhsx6A
-Date: Mon, 1 Jul 2024 10:56:57 +0000
-Message-ID: <62f253b96773478773a6cc79977663a687e0f8eb.camel@amazon.com>
-References: <2023072324-aviation-delirious-b27d@gregkh>
+Subject: [PATCH 5.10.y] KVM: arm64: vgic-v4: Make the doorbell request robust w.r.t preemption
+Date: Mon, 1 Jul 2024 12:57:07 +0200
+Message-ID: <20240701105707.28631-1-jgowans@amazon.com>
+X-Mailer: git-send-email 2.34.1
 In-Reply-To: <2023072324-aviation-delirious-b27d@gregkh>
-Accept-Language: en-ZA, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <340DA963621DEC4396CF7367F9775311@amazon.com>
-Content-Transfer-Encoding: base64
+References: <2023072324-aviation-delirious-b27d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D041UWA004.ant.amazon.com (10.13.139.9) To
+ EX19D014EUC004.ant.amazon.com (10.252.51.182)
 
-T24gU3VuLCAyMDIzLTA3LTIzIGF0IDIyOjQxICswMjAwLCBncmVna2hAbGludXhmb3VuZGF0aW9u
-Lm9yZyB3cm90ZToNCj4gVGhlIHBhdGNoIGJlbG93IGRvZXMgbm90IGFwcGx5IHRvIHRoZSA1LjEw
-LXN0YWJsZSB0cmVlLg0KPiBJZiBzb21lb25lIHdhbnRzIGl0IGFwcGxpZWQgdGhlcmUsIG9yIHRv
-IGFueSBvdGhlciBzdGFibGUgb3IgbG9uZ3Rlcm0NCj4gdHJlZSwgdGhlbiBwbGVhc2UgZW1haWwg
-dGhlIGJhY2twb3J0LCBpbmNsdWRpbmcgdGhlIG9yaWdpbmFsIGdpdCBjb21taXQNCj4gaWQgdG8g
-PHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmc+Lg0KDQpCbGFzdCBmcm9tIHRoZSBwYXN0LCBidXQgd2Un
-dmUgcmVjZW50bHkgYmVlbiBiaXR0ZW4gYnkgdGhpcyBidWcgd2hlbg0KcnVubmluZyBhIHY1LjEw
-IGtlcm5lbC4gSSdtIGdvaW5nIHRvIGJhY2stcG9ydCBpdCB0byB2NS4xMCBhbmQgdjUuMTUsDQpy
-ZXNvbHZlIHRoZSBjb25mbGljdHMgYW5kIHBvc3QgaXQuDQoNCk1hcmMsIHBsZWFzZSB3aWxsIHlv
-dSB0YWtlIGEgbG9vayBhbmQgc2VlIGlmIHlvdSdyZSBoYXBweSB3aXRoIHRoZQ0KYmFja3BvcnQ/
-IFRoZSBtYWluIGNoYW5nZSBpcyBnb2luZyBiYWNrIHRvIHRoZSBvbGQgc3R5bGUgb2YgdkNQVSBm
-bGFnDQptYW5pcHVsYXRpb24uDQoNCkpHDQoNCj4gDQo+IFRvIHJlcHJvZHVjZSB0aGUgY29uZmxp
-Y3QgYW5kIHJlc3VibWl0LCB5b3UgbWF5IHVzZSB0aGUgZm9sbG93aW5nIGNvbW1hbmRzOg0KPiAN
-Cj4gZ2l0IGZldGNoIGh0dHBzOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwv
-Z2l0L3N0YWJsZS9saW51eC5naXQvIGxpbnV4LTUuMTAueQ0KPiBnaXQgY2hlY2tvdXQgRkVUQ0hf
-SEVBRA0KPiBnaXQgY2hlcnJ5LXBpY2sgLXggYjMyMWMzMWM5YjdiMzA5ZGNkZTVlODg1NGI3NDFj
-OGU2YTlhMDVmMA0KPiAjIDxyZXNvbHZlIGNvbmZsaWN0cywgYnVpbGQsIHRlc3QsIGV0Yy4+DQo+
-IGdpdCBjb21taXQgLXMNCj4gZ2l0IHNlbmQtZW1haWwgLS10byAnPHN0YWJsZUB2Z2VyLmtlcm5l
-bC5vcmc+JyAtLWluLXJlcGx5LXRvICcyMDIzMDcyMzI0LWF2aWF0aW9uLWRlbGlyaW91cy1iMjdk
-QGdyZWdraCcgLS1zdWJqZWN0LXByZWZpeCAnUEFUQ0ggNS4xMC55JyBIRUFEXi4uDQo+IA0KPiBQ
-b3NzaWJsZSBkZXBlbmRlbmNpZXM6DQo+IA0KPiBiMzIxYzMxYzliN2IgKCJLVk06IGFybTY0OiB2
-Z2ljLXY0OiBNYWtlIHRoZSBkb29yYmVsbCByZXF1ZXN0IHJvYnVzdCB3LnIudCBwcmVlbXB0aW9u
-IikNCj4gMGMyZjlhY2Y2YWU3ICgiS1ZNOiBhcm02NDogUE1VOiBEb24ndCBvdmVyd3JpdGUgUE1V
-U0VSRU5SIHdpdGggdmNwdSBsb2FkZWQiKQ0KPiA4NjgxZjcxNzU5MDEgKCJLVk06IGFybTY0OiBQ
-TVU6IFJlc3RvcmUgdGhlIGhvc3QncyBQTVVTRVJFTlJfRUwwIikNCj4gMDA5ZDZkYzg3YTU2ICgi
-QVJNOiBwZXJmOiBBbGxvdyB0aGUgdXNlIG9mIHRoZSBQTVV2MyBkcml2ZXIgb24gMzJiaXQgQVJN
-IikNCj4gNzExNDMyNzcwZjc4ICgicGVyZjogcG11djM6IEFic3RyYWN0IFBNVSB2ZXJzaW9uIGNo
-ZWNrcyIpDQo+IGRmMjlkZGY0ZjA0YiAoImFybTY0OiBwZXJmOiBBYnN0cmFjdCBzeXN0ZW0gcmVn
-aXN0ZXIgYWNjZXNzZXMgYXdheSIpDQo+IDc3NTVjZWM2M2FkZSAoImFybTY0OiBwZXJmOiBNb3Zl
-IFBNVXYzIGRyaXZlciB0byBkcml2ZXJzL3BlcmYiKQ0KPiBjYzkxYjk0ODE2MDUgKCJhcm02NC9w
-ZXJmOiBSZXBsYWNlIFBNVSB2ZXJzaW9uIG51bWJlciAnMCcgd2l0aCBJRF9BQTY0REZSMF9FTDFf
-UE1VVmVyX05JIikNCj4gNDE1MWJiNjM2YWNmICgiS1ZNOiBhcm02NDogRml4IFNNUFJJX0VMMS9U
-UElEUjJfRUwwIHRyYXBwaW5nIG9uIFZIRSIpDQo+IGJiMGNjYTI0MGExNiAoIk1lcmdlIGJyYW5j
-aCBrdm0tYXJtNjQvc2luZ2xlLXN0ZXAtYXN5bmMtZXhjZXB0aW9uIGludG8ga3ZtYXJtLW1hc3Rl
-ci9uZXh0IikNCj4gDQo+IHRoYW5rcywNCj4gDQo+IGdyZWcgay1oDQo+IA0KPiAtLS0tLS0tLS0t
-LS0tLS0tLS0gb3JpZ2luYWwgY29tbWl0IGluIExpbnVzJ3MgdHJlZSAtLS0tLS0tLS0tLS0tLS0t
-LS0NCj4gDQo+ID4gRnJvbSBiMzIxYzMxYzliN2IzMDlkY2RlNWU4ODU0Yjc0MWM4ZTZhOWEwNWYw
-IE1vbiBTZXAgMTcgMDA6MDA6MDAgMjAwMQ0KPiBGcm9tOiBNYXJjIFp5bmdpZXIgPG1hekBrZXJu
-ZWwub3JnPg0KPiBEYXRlOiBUaHUsIDEzIEp1bCAyMDIzIDA4OjA2OjU3ICswMTAwDQo+IFN1Ympl
-Y3Q6IFtQQVRDSF0gS1ZNOiBhcm02NDogdmdpYy12NDogTWFrZSB0aGUgZG9vcmJlbGwgcmVxdWVz
-dCByb2J1c3Qgdy5yLnQNCj4gIHByZWVtcHRpb24NCj4gDQo+IFhpYW5nIHJlcG9ydHMgdGhhdCBW
-TXMgb2NjYXNpb25hbGx5IGZhaWwgdG8gYm9vdCBvbiBHSUN2NC4xIHN5c3RlbXMgd2hlbg0KPiBy
-dW5uaW5nIGEgcHJlZW1wdGlibGUga2VybmVsLCBhcyBpdCBpcyBwb3NzaWJsZSB0aGF0IGEgdkNQ
-VSBpcyBibG9ja2VkDQo+IHdpdGhvdXQgcmVxdWVzdGluZyBhIGRvb3JiZWxsIGludGVycnVwdC4N
-Cj4gDQo+IFRoZSBpc3N1ZSBpcyB0aGF0IGFueSBwcmVlbXB0aW9uIHRoYXQgb2NjdXJzIGJldHdl
-ZW4gdmdpY192NF9wdXQoKSBhbmQNCj4gc2NoZWR1bGUoKSBvbiB0aGUgYmxvY2sgcGF0aCB3aWxs
-IG1hcmsgdGhlIHZQRSBhcyBub25yZXNpZGVudCBhbmQgKm5vdCoNCj4gcmVxdWVzdCBhIGRvb3Ji
-ZWxsIGlycS4gVGhpcyBvY2N1cnMgYmVjYXVzZSB3aGVuIHRoZSB2Y3B1IHRocmVhZCBpcw0KPiBy
-ZXN1bWVkIG9uIGl0cyB3YXkgdG8gYmxvY2ssIHZjcHVfbG9hZCgpIHdpbGwgbWFrZSB0aGUgdlBF
-IHJlc2lkZW50DQo+IGFnYWluLiBPbmNlIHRoZSB2Y3B1IGFjdHVhbGx5IGJsb2Nrcywgd2UgZG9u
-J3QgcmVxdWVzdCBhIGRvb3JiZWxsDQo+IGFueW1vcmUsIGFuZCB0aGUgdmNwdSB3b24ndCBiZSB3
-b2tlbiB1cCBvbiBpbnRlcnJ1cHQgZGVsaXZlcnkuDQo+IA0KPiBGaXggaXQgYnkgdHJhY2tpbmcg
-dGhhdCB3ZSdyZSBlbnRlcmluZyBXRkksIGFuZCBrZXkgdGhlIGRvb3JiZWxsDQo+IHJlcXVlc3Qg
-b24gdGhhdCBmbGFnLiBUaGlzIGFsbG93cyB1cyBub3QgdG8gbWFrZSB0aGUgdlBFIHJlc2lkZW50
-DQo+IHdoZW4gZ29pbmcgdGhyb3VnaCBhIHByZWVtcHQvc2NoZWR1bGUgY3ljbGUsIG1lYW5pbmcg
-d2UgZG9uJ3QgbG9zZQ0KPiBhbnkgc3RhdGUuDQo+IA0KPiBDYzogc3RhYmxlQHZnZXIua2VybmVs
-Lm9yZw0KPiBGaXhlczogOGUwMWQ5YTM5NmU2ICgiS1ZNOiBhcm02NDogdmdpYy12NDogTW92ZSB0
-aGUgR0lDdjQgcmVzaWRlbmN5IGZsb3cgdG8gYmUgZHJpdmVuIGJ5IHZjcHVfbG9hZC9wdXQiKQ0K
-PiBSZXBvcnRlZC1ieTogWGlhbmcgQ2hlbiA8Y2hlbnhpYW5nNjZAaGlzaWxpY29uLmNvbT4NCj4g
-U3VnZ2VzdGVkLWJ5OiBaZW5naHVpIFl1IDx5dXplbmdodWlAaHVhd2VpLmNvbT4NCj4gVGVzdGVk
-LWJ5OiBYaWFuZyBDaGVuIDxjaGVueGlhbmc2NkBoaXNpbGljb24uY29tPg0KPiBDby1kZXZlbG9w
-ZWQtYnk6IE9saXZlciBVcHRvbiA8b2xpdmVyLnVwdG9uQGxpbnV4LmRldj4NCj4gU2lnbmVkLW9m
-Zi1ieTogTWFyYyBaeW5naWVyIDxtYXpAa2VybmVsLm9yZz4NCj4gQWNrZWQtYnk6IFplbmdodWkg
-WXUgPHl1emVuZ2h1aUBodWF3ZWkuY29tPg0KPiBMaW5rOiBodHRwczovL2xvcmUua2VybmVsLm9y
-Zy9yLzIwMjMwNzEzMDcwNjU3LjM4NzMyNDQtMS1tYXpAa2VybmVsLm9yZw0KPiBTaWduZWQtb2Zm
-LWJ5OiBPbGl2ZXIgVXB0b24gPG9saXZlci51cHRvbkBsaW51eC5kZXY+DQo+IA0KPiBkaWZmIC0t
-Z2l0IGEvYXJjaC9hcm02NC9pbmNsdWRlL2FzbS9rdm1faG9zdC5oIGIvYXJjaC9hcm02NC9pbmNs
-dWRlL2FzbS9rdm1faG9zdC5oDQo+IGluZGV4IDhiNjA5Njc1Mzc0MC4uZDNkZDA1YmJmZTIzIDEw
-MDY0NA0KPiAtLS0gYS9hcmNoL2FybTY0L2luY2x1ZGUvYXNtL2t2bV9ob3N0LmgNCj4gKysrIGIv
-YXJjaC9hcm02NC9pbmNsdWRlL2FzbS9rdm1faG9zdC5oDQo+IEBAIC03MjcsNiArNzI3LDggQEAg
-c3RydWN0IGt2bV92Y3B1X2FyY2ggew0KPiAgI2RlZmluZSBEQkdfU1NfQUNUSVZFX1BFTkRJTkcJ
-X192Y3B1X3NpbmdsZV9mbGFnKHNmbGFncywgQklUKDUpKQ0KPiAgLyogUE1VU0VSRU5SIGZvciB0
-aGUgZ3Vlc3QgRUwwIGlzIG9uIHBoeXNpY2FsIENQVSAqLw0KPiAgI2RlZmluZSBQTVVTRVJFTlJf
-T05fQ1BVCV9fdmNwdV9zaW5nbGVfZmxhZyhzZmxhZ3MsIEJJVCg2KSkNCj4gKy8qIFdGSSBpbnN0
-cnVjdGlvbiB0cmFwcGVkICovDQo+ICsjZGVmaW5lIElOX1dGSQkJCV9fdmNwdV9zaW5nbGVfZmxh
-ZyhzZmxhZ3MsIEJJVCg3KSkNCj4gIA0KPiAgDQo+ICAvKiBQb2ludGVyIHRvIHRoZSB2Y3B1J3Mg
-U1ZFIEZGUiBmb3Igc3ZlX3tzYXZlLGxvYWR9X3N0YXRlKCkgKi8NCj4gZGlmZiAtLWdpdCBhL2Fy
-Y2gvYXJtNjQva3ZtL2FybS5jIGIvYXJjaC9hcm02NC9rdm0vYXJtLmMNCj4gaW5kZXggYTQwMmVh
-NTUxMWYzLi43MmRjNTNhNzVkMWMgMTAwNjQ0DQo+IC0tLSBhL2FyY2gvYXJtNjQva3ZtL2FybS5j
-DQo+ICsrKyBiL2FyY2gvYXJtNjQva3ZtL2FybS5jDQo+IEBAIC03MTgsMTMgKzcxOCwxNSBAQCB2
-b2lkIGt2bV92Y3B1X3dmaShzdHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUpDQo+ICAJICovDQo+ICAJcHJl
-ZW1wdF9kaXNhYmxlKCk7DQo+ICAJa3ZtX3ZnaWNfdm1jcl9zeW5jKHZjcHUpOw0KPiAtCXZnaWNf
-djRfcHV0KHZjcHUsIHRydWUpOw0KPiArCXZjcHVfc2V0X2ZsYWcodmNwdSwgSU5fV0ZJKTsNCj4g
-Kwl2Z2ljX3Y0X3B1dCh2Y3B1KTsNCj4gIAlwcmVlbXB0X2VuYWJsZSgpOw0KPiAgDQo+ICAJa3Zt
-X3ZjcHVfaGFsdCh2Y3B1KTsNCj4gIAl2Y3B1X2NsZWFyX2ZsYWcodmNwdSwgSU5fV0ZJVCk7DQo+
-ICANCj4gIAlwcmVlbXB0X2Rpc2FibGUoKTsNCj4gKwl2Y3B1X2NsZWFyX2ZsYWcodmNwdSwgSU5f
-V0ZJKTsNCj4gIAl2Z2ljX3Y0X2xvYWQodmNwdSk7DQo+ICAJcHJlZW1wdF9lbmFibGUoKTsNCj4g
-IH0NCj4gQEAgLTc5Miw3ICs3OTQsNyBAQCBzdGF0aWMgaW50IGNoZWNrX3ZjcHVfcmVxdWVzdHMo
-c3RydWN0IGt2bV92Y3B1ICp2Y3B1KQ0KPiAgCQlpZiAoa3ZtX2NoZWNrX3JlcXVlc3QoS1ZNX1JF
-UV9SRUxPQURfR0lDdjQsIHZjcHUpKSB7DQo+ICAJCQkvKiBUaGUgZGlzdHJpYnV0b3IgZW5hYmxl
-IGJpdHMgd2VyZSBjaGFuZ2VkICovDQo+ICAJCQlwcmVlbXB0X2Rpc2FibGUoKTsNCj4gLQkJCXZn
-aWNfdjRfcHV0KHZjcHUsIGZhbHNlKTsNCj4gKwkJCXZnaWNfdjRfcHV0KHZjcHUpOw0KPiAgCQkJ
-dmdpY192NF9sb2FkKHZjcHUpOw0KPiAgCQkJcHJlZW1wdF9lbmFibGUoKTsNCj4gIAkJfQ0KPiBk
-aWZmIC0tZ2l0IGEvYXJjaC9hcm02NC9rdm0vdmdpYy92Z2ljLXYzLmMgYi9hcmNoL2FybTY0L2t2
-bS92Z2ljL3ZnaWMtdjMuYw0KPiBpbmRleCBjM2I4ZTEzMmQ1OTkuLjNkZmM4Yjg0ZTAzZSAxMDA2
-NDQNCj4gLS0tIGEvYXJjaC9hcm02NC9rdm0vdmdpYy92Z2ljLXYzLmMNCj4gKysrIGIvYXJjaC9h
-cm02NC9rdm0vdmdpYy92Z2ljLXYzLmMNCj4gQEAgLTc0OSw3ICs3NDksNyBAQCB2b2lkIHZnaWNf
-djNfcHV0KHN0cnVjdCBrdm1fdmNwdSAqdmNwdSkNCj4gIHsNCj4gIAlzdHJ1Y3QgdmdpY192M19j
-cHVfaWYgKmNwdV9pZiA9ICZ2Y3B1LT5hcmNoLnZnaWNfY3B1LnZnaWNfdjM7DQo+ICANCj4gLQlX
-QVJOX09OKHZnaWNfdjRfcHV0KHZjcHUsIGZhbHNlKSk7DQo+ICsJV0FSTl9PTih2Z2ljX3Y0X3B1
-dCh2Y3B1KSk7DQo+ICANCj4gIAl2Z2ljX3YzX3ZtY3Jfc3luYyh2Y3B1KTsNCj4gIA0KPiBkaWZm
-IC0tZ2l0IGEvYXJjaC9hcm02NC9rdm0vdmdpYy92Z2ljLXY0LmMgYi9hcmNoL2FybTY0L2t2bS92
-Z2ljL3ZnaWMtdjQuYw0KPiBpbmRleCBjMWMyOGZlNjgwYmEuLjMzOWE1NTE5NGIyYyAxMDA2NDQN
-Cj4gLS0tIGEvYXJjaC9hcm02NC9rdm0vdmdpYy92Z2ljLXY0LmMNCj4gKysrIGIvYXJjaC9hcm02
-NC9rdm0vdmdpYy92Z2ljLXY0LmMNCj4gQEAgLTMzNiwxNCArMzM2LDE0IEBAIHZvaWQgdmdpY192
-NF90ZWFyZG93bihzdHJ1Y3Qga3ZtICprdm0pDQo+ICAJaXRzX3ZtLT52cGVzID0gTlVMTDsNCj4g
-IH0NCj4gIA0KPiAtaW50IHZnaWNfdjRfcHV0KHN0cnVjdCBrdm1fdmNwdSAqdmNwdSwgYm9vbCBu
-ZWVkX2RiKQ0KPiAraW50IHZnaWNfdjRfcHV0KHN0cnVjdCBrdm1fdmNwdSAqdmNwdSkNCj4gIHsN
-Cj4gIAlzdHJ1Y3QgaXRzX3ZwZSAqdnBlID0gJnZjcHUtPmFyY2gudmdpY19jcHUudmdpY192My5p
-dHNfdnBlOw0KPiAgDQo+ICAJaWYgKCF2Z2ljX3N1cHBvcnRzX2RpcmVjdF9tc2lzKHZjcHUtPmt2
-bSkgfHwgIXZwZS0+cmVzaWRlbnQpDQo+ICAJCXJldHVybiAwOw0KPiAgDQo+IC0JcmV0dXJuIGl0
-c19tYWtlX3ZwZV9ub25fcmVzaWRlbnQodnBlLCBuZWVkX2RiKTsNCj4gKwlyZXR1cm4gaXRzX21h
-a2VfdnBlX25vbl9yZXNpZGVudCh2cGUsICEhdmNwdV9nZXRfZmxhZyh2Y3B1LCBJTl9XRkkpKTsN
-Cj4gIH0NCj4gIA0KPiAgaW50IHZnaWNfdjRfbG9hZChzdHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUpDQo+
-IEBAIC0zNTQsNiArMzU0LDkgQEAgaW50IHZnaWNfdjRfbG9hZChzdHJ1Y3Qga3ZtX3ZjcHUgKnZj
-cHUpDQo+ICAJaWYgKCF2Z2ljX3N1cHBvcnRzX2RpcmVjdF9tc2lzKHZjcHUtPmt2bSkgfHwgdnBl
-LT5yZXNpZGVudCkNCj4gIAkJcmV0dXJuIDA7DQo+ICANCj4gKwlpZiAodmNwdV9nZXRfZmxhZyh2
-Y3B1LCBJTl9XRkkpKQ0KPiArCQlyZXR1cm4gMDsNCj4gKw0KPiAgCS8qDQo+ICAJICogQmVmb3Jl
-IG1ha2luZyB0aGUgVlBFIHJlc2lkZW50LCBtYWtlIHN1cmUgdGhlIHJlZGlzdHJpYnV0b3INCj4g
-IAkgKiBjb3JyZXNwb25kaW5nIHRvIG91ciBjdXJyZW50IENQVSBleHBlY3RzIHVzIGhlcmUuIFNl
-ZSB0aGUNCj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUva3ZtL2FybV92Z2ljLmggYi9pbmNsdWRlL2t2
-bS9hcm1fdmdpYy5oDQo+IGluZGV4IDQwMmI1NDU5NTlhZi4uNWIyN2Y5NGQ0ZmFkIDEwMDY0NA0K
-PiAtLS0gYS9pbmNsdWRlL2t2bS9hcm1fdmdpYy5oDQo+ICsrKyBiL2luY2x1ZGUva3ZtL2FybV92
-Z2ljLmgNCj4gQEAgLTQzMSw3ICs0MzEsNyBAQCBpbnQga3ZtX3ZnaWNfdjRfdW5zZXRfZm9yd2Fy
-ZGluZyhzdHJ1Y3Qga3ZtICprdm0sIGludCBpcnEsDQo+ICANCj4gIGludCB2Z2ljX3Y0X2xvYWQo
-c3RydWN0IGt2bV92Y3B1ICp2Y3B1KTsNCj4gIHZvaWQgdmdpY192NF9jb21taXQoc3RydWN0IGt2
-bV92Y3B1ICp2Y3B1KTsNCj4gLWludCB2Z2ljX3Y0X3B1dChzdHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUs
-IGJvb2wgbmVlZF9kYik7DQo+ICtpbnQgdmdpY192NF9wdXQoc3RydWN0IGt2bV92Y3B1ICp2Y3B1
-KTsNCj4gIA0KPiAgLyogQ1BVIEhQIGNhbGxiYWNrcyAqLw0KPiAgdm9pZCBrdm1fdmdpY19jcHVf
-dXAodm9pZCk7DQo+IA0KDQo=
+From: Marc Zyngier <maz@kernel.org>
+
+Xiang reports that VMs occasionally fail to boot on GICv4.1 systems when
+running a preemptible kernel, as it is possible that a vCPU is blocked
+without requesting a doorbell interrupt.
+
+The issue is that any preemption that occurs between vgic_v4_put() and
+schedule() on the block path will mark the vPE as nonresident and *not*
+request a doorbell irq. This occurs because when the vcpu thread is
+resumed on its way to block, vcpu_load() will make the vPE resident
+again. Once the vcpu actually blocks, we don't request a doorbell
+anymore, and the vcpu won't be woken up on interrupt delivery.
+
+Fix it by tracking that we're entering WFI, and key the doorbell
+request on that flag. This allows us not to make the vPE resident
+when going through a preempt/schedule cycle, meaning we don't lose
+any state.
+
+Cc: stable@vger.kernel.org
+Fixes: 8e01d9a396e6 ("KVM: arm64: vgic-v4: Move the GICv4 residency flow to be driven by vcpu_load/put")
+Reported-by: Xiang Chen <chenxiang66@hisilicon.com>
+Suggested-by: Zenghui Yu <yuzenghui@huawei.com>
+Tested-by: Xiang Chen <chenxiang66@hisilicon.com>
+Co-developed-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Acked-by: Zenghui Yu <yuzenghui@huawei.com>
+Link: https://lore.kernel.org/r/20230713070657.3873244-1-maz@kernel.org
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+
+(cherry picked from commit b321c31c9b7b309dcde5e8854b741c8e6a9a05f0)
+
+[modified to wrangle the vCPU flags directly instead of going through
+the flag helper macros as they have not yet been introduced. Also doing
+the flag wranging in the kvm_arch_vcpu_{un}blocking() hooks as the
+introduction of kvm_vcpu_wfi has not yet happened. See:
+6109c5a6ab7f ("KVM: arm64: Move vGIC v4 handling for WFI out arch callback hook")]
+
+Signed-off-by: James Gowans <jgowans@amazon.com>
+---
+ arch/arm64/include/asm/kvm_host.h | 1 +
+ arch/arm64/kvm/arm.c              | 6 ++++--
+ arch/arm64/kvm/vgic/vgic-v3.c     | 2 +-
+ arch/arm64/kvm/vgic/vgic-v4.c     | 8 ++++++--
+ include/kvm/arm_vgic.h            | 2 +-
+ 5 files changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+index 912b83e784bb..48ee1fe3aca4 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -410,6 +410,7 @@ struct kvm_vcpu_arch {
+ #define KVM_ARM64_GUEST_HAS_SVE		(1 << 5) /* SVE exposed to guest */
+ #define KVM_ARM64_VCPU_SVE_FINALIZED	(1 << 6) /* SVE config completed */
+ #define KVM_ARM64_GUEST_HAS_PTRAUTH	(1 << 7) /* PTRAUTH exposed to guest */
++#define KVM_ARM64_VCPU_IN_WFI		(1 << 8) /* WFI instruction trapped */
+ 
+ #define vcpu_has_sve(vcpu) (system_supports_sve() && \
+ 			    ((vcpu)->arch.flags & KVM_ARM64_GUEST_HAS_SVE))
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 4d63fcd7574b..afe8be2fef88 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -332,13 +332,15 @@ void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu)
+ 	 */
+ 	preempt_disable();
+ 	kvm_vgic_vmcr_sync(vcpu);
+-	vgic_v4_put(vcpu, true);
++	vcpu->arch.flags |= KVM_ARM64_VCPU_IN_WFI;
++	vgic_v4_put(vcpu);
+ 	preempt_enable();
+ }
+ 
+ void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu)
+ {
+ 	preempt_disable();
++	vcpu->arch.flags &= ~KVM_ARM64_VCPU_IN_WFI;
+ 	vgic_v4_load(vcpu);
+ 	preempt_enable();
+ }
+@@ -649,7 +651,7 @@ static void check_vcpu_requests(struct kvm_vcpu *vcpu)
+ 		if (kvm_check_request(KVM_REQ_RELOAD_GICv4, vcpu)) {
+ 			/* The distributor enable bits were changed */
+ 			preempt_disable();
+-			vgic_v4_put(vcpu, false);
++			vgic_v4_put(vcpu);
+ 			vgic_v4_load(vcpu);
+ 			preempt_enable();
+ 		}
+diff --git a/arch/arm64/kvm/vgic/vgic-v3.c b/arch/arm64/kvm/vgic/vgic-v3.c
+index 9cdf39a94a63..29c12bf9601a 100644
+--- a/arch/arm64/kvm/vgic/vgic-v3.c
++++ b/arch/arm64/kvm/vgic/vgic-v3.c
+@@ -682,7 +682,7 @@ void vgic_v3_put(struct kvm_vcpu *vcpu)
+ {
+ 	struct vgic_v3_cpu_if *cpu_if = &vcpu->arch.vgic_cpu.vgic_v3;
+ 
+-	WARN_ON(vgic_v4_put(vcpu, false));
++	WARN_ON(vgic_v4_put(vcpu));
+ 
+ 	vgic_v3_vmcr_sync(vcpu);
+ 
+diff --git a/arch/arm64/kvm/vgic/vgic-v4.c b/arch/arm64/kvm/vgic/vgic-v4.c
+index b5fa73c9fd35..cdfaaeabbb7d 100644
+--- a/arch/arm64/kvm/vgic/vgic-v4.c
++++ b/arch/arm64/kvm/vgic/vgic-v4.c
+@@ -310,14 +310,15 @@ void vgic_v4_teardown(struct kvm *kvm)
+ 	its_vm->vpes = NULL;
+ }
+ 
+-int vgic_v4_put(struct kvm_vcpu *vcpu, bool need_db)
++int vgic_v4_put(struct kvm_vcpu *vcpu)
+ {
+ 	struct its_vpe *vpe = &vcpu->arch.vgic_cpu.vgic_v3.its_vpe;
+ 
+ 	if (!vgic_supports_direct_msis(vcpu->kvm) || !vpe->resident)
+ 		return 0;
+ 
+-	return its_make_vpe_non_resident(vpe, need_db);
++	return its_make_vpe_non_resident(vpe,
++			vcpu->arch.flags & KVM_ARM64_VCPU_IN_WFI);
+ }
+ 
+ int vgic_v4_load(struct kvm_vcpu *vcpu)
+@@ -328,6 +329,9 @@ int vgic_v4_load(struct kvm_vcpu *vcpu)
+ 	if (!vgic_supports_direct_msis(vcpu->kvm) || vpe->resident)
+ 		return 0;
+ 
++	if (vcpu->arch.flags & KVM_ARM64_VCPU_IN_WFI)
++		return 0;
++
+ 	/*
+ 	 * Before making the VPE resident, make sure the redistributor
+ 	 * corresponding to our current CPU expects us here. See the
+diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
+index a8d8fdcd3723..92348c085c0c 100644
+--- a/include/kvm/arm_vgic.h
++++ b/include/kvm/arm_vgic.h
+@@ -402,6 +402,6 @@ int kvm_vgic_v4_unset_forwarding(struct kvm *kvm, int irq,
+ 				 struct kvm_kernel_irq_routing_entry *irq_entry);
+ 
+ int vgic_v4_load(struct kvm_vcpu *vcpu);
+-int vgic_v4_put(struct kvm_vcpu *vcpu, bool need_db);
++int vgic_v4_put(struct kvm_vcpu *vcpu);
+ 
+ #endif /* __KVM_ARM_VGIC_H */
+-- 
+2.34.1
+
 
