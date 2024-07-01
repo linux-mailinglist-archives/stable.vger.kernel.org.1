@@ -1,171 +1,103 @@
-Return-Path: <stable+bounces-56286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AC6791EA7A
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 23:50:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B2491EA81
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 23:53:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1C241F21972
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 21:50:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 976621C21004
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 21:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692C3171086;
-	Mon,  1 Jul 2024 21:50:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m7vJ0n75"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62593171666;
+	Mon,  1 Jul 2024 21:53:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [213.95.27.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FDA2C1BA
-	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 21:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D4416E893;
+	Mon,  1 Jul 2024 21:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.27.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719870608; cv=none; b=tQ3NO+pPzVU1RfZPKgOWGp3pKuIYp/6UM1nqYG2dGfLGwosE2Dt8zohbGLObF73d8Iuk+S4MNvaB/WSPCzSpKbMh8EdRyK+SByhPU4qc5m+UY4M7T858n408kOM8Hj2gXtZ0UHF9hAdeY1r4agh16HPnxKgpyhG3p9NMqrPXh5A=
+	t=1719870791; cv=none; b=dlVGNUWkjUa+ZW8+eyNnBCGjUNJ0yLVDQKmDImUJ9Hkgdhq/riD4YkyfTcC3BGmGBSUodcxl+PU900RS/qpOx9ToTAdRSrMcLXVYrgkxieSg2n72K0gd+JegqZn0uSiM6y9ke3t7taEmCNUq1U7SbHfiTbqpizyEzLoYa1DoTuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719870608; c=relaxed/simple;
-	bh=TDFU4FMZy8VE1IpwttJ9Gmt6R/KpXDqV6tsrQ3ipjPs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qlScDM0ouc8SIqj54s8LQZoyIO1mbpBSIvZzMe17eyDkGhpNtcviUYY7QbJdh2603tgUo6lDOPkYeEgIdgGuseMp1i++GVDDtueAHel7ZiQ0eCA3VMB5sc9J9zkeQnAxgMq+BSzWYsS07OP4Yrp8MqLTGwMmCfqRlo1JQus91/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m7vJ0n75; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB66C116B1;
-	Mon,  1 Jul 2024 21:50:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719870607;
-	bh=TDFU4FMZy8VE1IpwttJ9Gmt6R/KpXDqV6tsrQ3ipjPs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=m7vJ0n75wI9P3dEIGBi+YgnHkJxhlKnZbk7yiQrWaYen4e9xKY3iVv0DeYkPV/Tdz
-	 +HmoDngZRxq7Mn0q5reew+BIfSAjfPfP4PiI8HQ/c2+t2241PY9Vqga6VB8ajlrqo8
-	 YDlaf80Pngd4nE+S+QEW3kUZsQXHmHXeArXUypN/C0GJVhO6wBAVXyUuNHfC9+58YO
-	 A2VVBP5Vva15+VoXaqAa2eTdXyd1KHq5OLmkJQbOPfjvEpC9CrMSxYZLlEkDZKDHAH
-	 EYoyzxgve5OXFy/hcugf6Q+O2yG9KqiQOuCulUas2ESXlFsTzDyDEnCb/MP74v7hSK
-	 ReilFPisDrQeA==
-Message-ID: <64b91917-f2bc-48a2-9382-e4045c91dad9@kernel.org>
-Date: Tue, 2 Jul 2024 06:50:05 +0900
+	s=arc-20240116; t=1719870791; c=relaxed/simple;
+	bh=0xRG/K2ne/2zW/PFU8qmwsk5KYrEt26kg1GOOqiu+i4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SCezQ3BDv+d2s5p8Gc6riexKcTprP8gEO4wWEiq5cAqsvNPk/PenL420aP/yOb4v4Qjhit4sqOh1Ra5GFEu6bnA0AiFSAFLP35bswc5JCOKn25YVntbFRrdUWTZArucOcC5weTtYKaNWM356usUhp0vid3kC06DTqyExImmDUE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=gnumonks.org; arc=none smtp.client-ip=213.95.27.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnumonks.org
+Received: from [31.221.216.127] (port=3132 helo=gnumonks.org)
+	by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <pablo@gnumonks.org>)
+	id 1sOOxL-00HQyz-AU; Mon, 01 Jul 2024 23:53:05 +0200
+Date: Mon, 1 Jul 2024 23:52:57 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Ben Hutchings <ben@decadent.org.uk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org, patches@lists.linux.dev,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Thorsten Alteholz <squeeze-lts@alteholz.de>, jeremy@azazel.net
+Subject: Re: [PATCH 4.19 164/213] netfilter: nft_set_rbtree: Switch to node
+ list walk for overlap detection
+Message-ID: <ZoMlOF3HVq3UP0aa@calendula>
+References: <20240613113227.969123070@linuxfoundation.org>
+ <20240613113234.312205246@linuxfoundation.org>
+ <861740945d6a21d549d82249475b6b5a573bc9ed.camel@decadent.org.uk>
+ <ZoMkPqf8AOpROvRd@calendula>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] ata: libata-core: Fix null pointer
- dereference on error" failed to apply to 6.9-stable tree
-To: gregkh@linuxfoundation.org, cassel@kernel.org, hare@suse.de,
- john.g.garry@oracle.com
-Cc: stable@vger.kernel.org
-References: <2024070105-falsify-surrender-babc@gregkh>
-From: Damien Le Moal <dlemoal@kernel.org>
-Content-Language: en-US
-Organization: Western Digital Research
-In-Reply-To: <2024070105-falsify-surrender-babc@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZoMkPqf8AOpROvRd@calendula>
+X-Spam-Score: -1.9 (-)
 
-On 7/1/24 23:31, gregkh@linuxfoundation.org wrote:
+On Mon, Jul 01, 2024 at 11:48:51PM +0200, Pablo Neira Ayuso wrote:
+> On Mon, Jul 01, 2024 at 10:51:17PM +0200, Ben Hutchings wrote:
+> > On Thu, 2024-06-13 at 13:33 +0200, Greg Kroah-Hartman wrote:
+> > > 4.19-stable review patch.  If anyone has any objections, please let me know.
+> > > 
+> > > ------------------
+> > > 
+> > > From: Pablo Neira Ayuso <pablo@netfilter.org>
+> > > 
+> > > commit c9e6978e2725a7d4b6cd23b2facd3f11422c0643 upstream.
+> > [...]
+> > 
+> > This turns out to cause a regression for nftables user-space versions
+> > older than v0.9.3, specifically before:
+> > 
+> > commit a4ec053812610400b7a9e6c060d8b7589dedd5b1
+> > Author: Pablo Neira Ayuso <pablo@netfilter.org>
+> > Date:   Wed Oct 9 11:54:32 2019 +0200
+> >  
+> >     segtree: always close interval in non-anonymous sets
 > 
-> The patch below does not apply to the 6.9-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+> This is really fixing up userspace as the commit describes, otherwise
+> incremental updates are not possible on a set/map.
 > 
-> To reproduce the conflict and resubmit, you may use the following commands:
+> > Should nft_set_rbtree detect and fix-up the bad set messages that
+> > nftables user-space used to send?
 > 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.9.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 5d92c7c566dc76d96e0e19e481d926bbe6631c1e
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070105-falsify-surrender-babc@gregkh' --subject-prefix 'PATCH 6.9.y' HEAD^..
+> Problem is that a non-anonymous set really needs close intervals,
+> otherwise incremental updates on it are not possible.
 > 
-> Possible dependencies:
+> It should be possible to backport a fix for such nftables version.
 > 
-> 5d92c7c566dc ("ata: libata-core: Fix null pointer dereference on error")
+> I can see Debian 10 (Buster, oldoldstable) is using 0.9.0 but it was
+> discontinued in june 2022? But who is using such an old userspace version?
 
-Greg,
+Oh, I misread, it is still supported in oldoldstable in Debian.
 
-I am confused... This patch applies cleanly to linux-6.9.y. The procedure above
-also works just fine. And the "Possible dependencies" on itself does not make
-sense. Bot problem ?
+Then, userspace really needs this fix, because incremental updates on
+a set are not really possible.
 
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> ------------------ original commit in Linus's tree ------------------
-> 
-> From 5d92c7c566dc76d96e0e19e481d926bbe6631c1e Mon Sep 17 00:00:00 2001
-> From: Niklas Cassel <cassel@kernel.org>
-> Date: Sat, 29 Jun 2024 14:42:11 +0200
-> Subject: [PATCH] ata: libata-core: Fix null pointer dereference on error
-> 
-> If the ata_port_alloc() call in ata_host_alloc() fails,
-> ata_host_release() will get called.
-> 
-> However, the code in ata_host_release() tries to free ata_port struct
-> members unconditionally, which can lead to the following:
-> 
-> BUG: unable to handle page fault for address: 0000000000003990
-> PGD 0 P4D 0
-> Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-> CPU: 10 PID: 594 Comm: (udev-worker) Not tainted 6.10.0-rc5 #44
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
-> RIP: 0010:ata_host_release.cold+0x2f/0x6e [libata]
-> Code: e4 4d 63 f4 44 89 e2 48 c7 c6 90 ad 32 c0 48 c7 c7 d0 70 33 c0 49 83 c6 0e 41
-> RSP: 0018:ffffc90000ebb968 EFLAGS: 00010246
-> RAX: 0000000000000041 RBX: ffff88810fb52e78 RCX: 0000000000000000
-> RDX: 0000000000000000 RSI: ffff88813b3218c0 RDI: ffff88813b3218c0
-> RBP: ffff88810fb52e40 R08: 0000000000000000 R09: 6c65725f74736f68
-> R10: ffffc90000ebb738 R11: 73692033203a746e R12: 0000000000000004
-> R13: 0000000000000000 R14: 0000000000000011 R15: 0000000000000006
-> FS:  00007f6cc55b9980(0000) GS:ffff88813b300000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000000000003990 CR3: 00000001122a2000 CR4: 0000000000750ef0
-> PKRU: 55555554
-> Call Trace:
->  <TASK>
->  ? __die_body.cold+0x19/0x27
->  ? page_fault_oops+0x15a/0x2f0
->  ? exc_page_fault+0x7e/0x180
->  ? asm_exc_page_fault+0x26/0x30
->  ? ata_host_release.cold+0x2f/0x6e [libata]
->  ? ata_host_release.cold+0x2f/0x6e [libata]
->  release_nodes+0x35/0xb0
->  devres_release_group+0x113/0x140
->  ata_host_alloc+0xed/0x120 [libata]
->  ata_host_alloc_pinfo+0x14/0xa0 [libata]
->  ahci_init_one+0x6c9/0xd20 [ahci]
-> 
-> Do not access ata_port struct members unconditionally.
-> 
-> Fixes: 633273a3ed1c ("libata-pmp: hook PMP support and enable it")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-> Reviewed-by: Hannes Reinecke <hare@suse.de>
-> Reviewed-by: John Garry <john.g.garry@oracle.com>
-> Link: https://lore.kernel.org/r/20240629124210.181537-7-cassel@kernel.org
-> Signed-off-by: Niklas Cassel <cassel@kernel.org>
-> 
-> diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-> index efb5195da60c..bdccf4ea251a 100644
-> --- a/drivers/ata/libata-core.c
-> +++ b/drivers/ata/libata-core.c
-> @@ -5517,6 +5517,9 @@ static void ata_host_release(struct kref *kref)
->  	for (i = 0; i < host->n_ports; i++) {
->  		struct ata_port *ap = host->ports[i];
->  
-> +		if (!ap)
-> +			continue;
-> +
->  		kfree(ap->pmp_link);
->  		kfree(ap->slave_link);
->  		kfree(ap->ncq_sense_buf);
-> 
-
--- 
-Damien Le Moal
-Western Digital Research
-
+I can take a look and send a backport of this for nftables 0.9.0.
 
