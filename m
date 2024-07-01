@@ -1,92 +1,118 @@
-Return-Path: <stable+bounces-56246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E1D391E25E
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 16:26:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B87A191E275
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 16:30:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D458C1F2676B
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 14:26:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 585DFB27CB5
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 14:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1111662E6;
-	Mon,  1 Jul 2024 14:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E92D167DBD;
+	Mon,  1 Jul 2024 14:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="OGuAEcFE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aF/wdcyy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDDD53D3BC;
-	Mon,  1 Jul 2024 14:26:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD988167DB5
+	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 14:30:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719843975; cv=none; b=L/EzaYf75hE1ub+V1ptg7Ho3WhEHJIQkAMp59jJpMyEsun3NbONoyPAT+6wYDPmJT7T6or48WbMHQvudQoRUj4WLvhMK6Y9XIBvpSPHn6wbTSm/PwDZ2REhuM7IyQavW9tpgjng+ki3Z6w5ADKnMBy6ZDgUWV4yjGqPtDqy0zbE=
+	t=1719844232; cv=none; b=fN3ZIL3e+z/Rwus4vGafr4QCNV03D/RS44d4D1TVECj0JXc5TQ43WzxLaI3CbsENGviGNjSyTneuyFB9ahSt99dVjVEZTT+VWXA6aS6gkbeBeQf4bqvph0KxTcmpx38UBBA08GvTUv58TfzHD23JOdKL74t589w8kNm2qZVKFHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719843975; c=relaxed/simple;
-	bh=tyXUokv7xNpsIGSP5ELpRgNWICH7u18dUF/zNyymBmI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CdSNGO7qGuAPZTeqUpADbFLlgjR1KieDZrJitiRKOwDpyOG8ZWF2cILB6jAlECKQHVfvjPeSx6QViL1e2/FiQ5wOXezgWzCwPce7WX42U0JvG6a6xV0+XPFZZU+QWHU2D5krdAylaoxyaKeAu185h4U+5bu4WWt2p+e4yL2IV80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=OGuAEcFE; arc=none smtp.client-ip=1.95.21.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=dEno6mHhFR5G5j7SXntEr/1pWDtwK/8nwORwa7dpaH0=;
-	b=OGuAEcFE6XaT95TB6J5r9c+FrJnA68Ii+Guzble791M+e0Pa2/5cHuhus/rNwb
-	BP5kMVNDNdCO7JFJOrgp7QigMfOZrhnfG8IkBKpbAyckwVsImjrJ3bTVzOAtdL8y
-	5BOvg5WgTbd3BPf197hD8PmPhaiYBo5G6nHRLWF5cw5MA=
-Received: from dragon (unknown [114.218.218.47])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgD3vwxavIJmPmcCAA--.6190S3;
-	Mon, 01 Jul 2024 22:25:32 +0800 (CST)
-Date: Mon, 1 Jul 2024 22:25:30 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 0/9] arm64: dts: imx8qm: add subsystem lvds and mipi
-Message-ID: <ZoK8WsnqxfIo6tAp@dragon>
-References: <20240614-imx8qm-dts-usb-v3-0-8ecc30678e1c@nxp.com>
- <Zn0R2/lcgcSG03CM@dragon>
+	s=arc-20240116; t=1719844232; c=relaxed/simple;
+	bh=RqMJUD5ZfWj9j4oLiAUfhj0PYDJ1p9RYOtol7+dWPRA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=E4NZJMn9WZA58DAsNocRxxb4TY2f9CMHQCH/aCKc2meDBDfTL7Jn3jjTbUvL89jfOxh7r5JoWgWyxeSG4bdXxpdeg/eIoBUJsoH61c3YriolLvoX+I5Ox6spmS4cRv1tHmZdFrieBL7CtFOzxgp3rKcQKuEoSMtwbROnHpM5ghc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aF/wdcyy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F039AC116B1;
+	Mon,  1 Jul 2024 14:30:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1719844230;
+	bh=RqMJUD5ZfWj9j4oLiAUfhj0PYDJ1p9RYOtol7+dWPRA=;
+	h=Subject:To:Cc:From:Date:From;
+	b=aF/wdcyyQ4ORto4udmS0gFlvpfuAlXbFD+TXrs15ywBj0J0LwHu/GkeUynw55RD9P
+	 EYCnuDE2BidDSjLoxpKb2UR21CIw5c6FQMmPfxiC++8vTm54d6Dl4UqT+tkllJgcIy
+	 dOMZE7hBBHm2oUZsMuhKWBSQmHHYDlPm05QG1eSw=
+Subject: FAILED: patch "[PATCH] cpu: Fix broken cmdline "nosmp" and "maxcpus=0"" failed to apply to 6.6-stable tree
+To: chenhuacai@kernel.org,chenhuacai@loongson.cn,tglx@linutronix.de
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 01 Jul 2024 16:28:54 +0200
+Message-ID: <2024070154-legged-throwaway-bd6a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zn0R2/lcgcSG03CM@dragon>
-X-CM-TRANSID:M88vCgD3vwxavIJmPmcCAA--.6190S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrur4DWFykKr4fKF4DuryxGrg_yoW3GFb_uw
-	4aqF1kCw1UJw4fG3sYy3ZF9rWUKr92yr98Wry7Ww1qqr17Z3W0yF9Yqr4ruryktFWSvF4D
-	JF4Yqw4xJr45GjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0zT5JUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCRwPZWZv-dtTeAAAs7
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jun 27, 2024 at 03:16:43PM +0800, Shawn Guo wrote:
-> On Fri, Jun 14, 2024 at 11:06:24AM -0400, Frank Li wrote:
-> > Frank Li (9):
-> >       arm64: dts: imx8: add basic lvds0 and lvds1 subsystem
-> >       arm64: dts: imx8qm: add lvds subsystem
-> >       arm64: dts: imx8: add basic mipi subsystem
-> >       arm64: dts: imx8qm: add mipi subsystem
-> >       arm64: dts: imx8qm-mek: add cm4 remote-proc and related memory region
-> >       arm64: dts: imx8qm-mek: add pwm and i2c in lvds subsystem
-> >       arm64: dts: imx8qm-mek: add i2c in mipi[0,1] subsystem
-> >       arm64: dts: imx8qm-mek: fix gpio number for reg_usdhc2_vmmc
-> >       arm64: dts: imx8qm-mek: add usb 3.0 and related type C nodes
-> 
-> Applied all, thanks!
 
-Dropped the series due to the warnings reported by kernel test robot.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Shawn
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 6ef8eb5125722c241fd60d7b0c872d5c2e5dd4ca
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070154-legged-throwaway-bd6a@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+6ef8eb512572 ("cpu: Fix broken cmdline "nosmp" and "maxcpus=0"")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 6ef8eb5125722c241fd60d7b0c872d5c2e5dd4ca Mon Sep 17 00:00:00 2001
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Tue, 18 Jun 2024 16:13:36 +0800
+Subject: [PATCH] cpu: Fix broken cmdline "nosmp" and "maxcpus=0"
+
+After the rework of "Parallel CPU bringup", the cmdline "nosmp" and
+"maxcpus=0" parameters are not working anymore. These parameters set
+setup_max_cpus to zero and that's handed to bringup_nonboot_cpus().
+
+The code there does a decrement before checking for zero, which brings it
+into the negative space and brings up all CPUs.
+
+Add a zero check at the beginning of the function to prevent this.
+
+[ tglx: Massaged change log ]
+
+Fixes: 18415f33e2ac4ab382 ("cpu/hotplug: Allow "parallel" bringup up to CPUHP_BP_KICK_AP_STATE")
+Fixes: 06c6796e0304234da6 ("cpu/hotplug: Fix off by one in cpuhp_bringup_mask()")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240618081336.3996825-1-chenhuacai@loongson.cn
+
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 74cfdb66a9bd..3d2bf1d50a0c 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -1859,6 +1859,9 @@ static inline bool cpuhp_bringup_cpus_parallel(unsigned int ncpus) { return fals
+ 
+ void __init bringup_nonboot_cpus(unsigned int max_cpus)
+ {
++	if (!max_cpus)
++		return;
++
+ 	/* Try parallel bringup optimization if enabled */
+ 	if (cpuhp_bringup_cpus_parallel(max_cpus))
+ 		return;
 
 
