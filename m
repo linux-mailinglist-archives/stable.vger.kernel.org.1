@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-56241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED6191E24C
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 16:23:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6941A91E24E
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 16:24:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41D011F261F1
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 14:23:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 118451F2623A
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 14:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C3C161314;
-	Mon,  1 Jul 2024 14:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35FA160887;
+	Mon,  1 Jul 2024 14:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dD74boSd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DahGDYOG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44598C1D
-	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 14:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952698C1D
+	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 14:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719843800; cv=none; b=fHCE+6XKNyJHj8djpzbJWKcDf9EITY5v2nLex8t8x0LqXJEK/Y+Og/03gZdVcm3ixzoCW420c7W7YUkI5ss38yTpCFpdG9rVoNObv+U8tbZHaI5HQaVonfVTk7qTEG0JqZHsFQD1KLqtHgXG+dUPO2DIXt6umSCL/ERex9ddfxc=
+	t=1719843834; cv=none; b=i9VQJISFcrIegoxRPv0F/2hl04HIMbzkPjoMN45HgVxwDFI3f8loSqrUUMIoKewZb4X2JmPBRIckY6lAGtJmw5FMiBkvtmi9PmhAwBJnf1ORMiQgCniLftiphNkXyj/W9sjhPy8wVbVuJIzTFKmu+XQCHfejLjExCmqnHe3blSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719843800; c=relaxed/simple;
-	bh=J2UM06+dhQetqQwiOOzNRseBC6Nw+BUD9kvW9JULx0I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iOXI0QIOTN3mmwwvu/KqhRq5nHw2qlTLp6ubgQ4TSwlZbTz44RzhRQ7xJt3LGc9dgxFZyRiu+0DtP/jyYo2fpxP8nynU7TWBUQCF3fFEOpmKNqZLE7AHQqyDafwD8pUk1DrRiJom95lLMe/IzD4YmrhC+bAK5gklLIscBxQwxb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dD74boSd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F130C116B1;
-	Mon,  1 Jul 2024 14:23:19 +0000 (UTC)
+	s=arc-20240116; t=1719843834; c=relaxed/simple;
+	bh=IuEcfs2OyCfo8MvY+Z3cFxtW1wNep4N04amlF1dh8dA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sDjbwDaDzhUujNyR0IQWdvbOM1ZLN7xfluPv5b8Xn2KkfviSB93am7hQO5FAJAqjw4cwy6mBKExcqI2wj+j9WpR/UAXYYUO22QsN0JkHra1l/FDe6MRkryma2+1LRnU4pa2ncI8GIkvAbVElZToMurOUTFGM9aIB0JMgvYCG0t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DahGDYOG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC888C116B1;
+	Mon,  1 Jul 2024 14:23:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719843800;
-	bh=J2UM06+dhQetqQwiOOzNRseBC6Nw+BUD9kvW9JULx0I=;
+	s=korg; t=1719843834;
+	bh=IuEcfs2OyCfo8MvY+Z3cFxtW1wNep4N04amlF1dh8dA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=dD74boSdBai+CztjOMWrUZOy3Cf7kLiK2VtGSfv5Ls7oL9qyySvofIotmkl+BbZ21
-	 5H4KxCjGpxrFuovomHx/DrSZ0wcbrpPFBOYiyid7glSKCLVyu8tqt+9fXKLs0fx8m9
-	 rchVqWVWnqTNQ+nWbbslMump5tj4kg9gHA5SSVjc=
-Subject: FAILED: patch "[PATCH] irqchip/loongson-eiointc: Use early_cpu_to_node() instead of" failed to apply to 6.1-stable tree
-To: chenhuacai@kernel.org,chenhuacai@loongson.cn,tglx@linutronix.de
+	b=DahGDYOGHfKzJf9K8vT6cuFGxGNk9CGCu8/2PNkiltvsOYb5TkFNX+QoI3sBACBDT
+	 D7FJNRRcMayoMVAMWAEcWKcpkRgWWHjb/WIS8Bg2QiGiTgz/+XhMpR3tjlx5WCCoOy
+	 SpJrsoa6tuodJaLAyEeYKlCSvI3gMeVb7jOajfPk=
+Subject: FAILED: patch "[PATCH] cpu/hotplug: Fix dynstate assignment in" failed to apply to 5.4-stable tree
+To: ytcoode@gmail.com,tglx@linutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Jul 2024 16:23:17 +0200
-Message-ID: <2024070117-entire-chaperone-b7a4@gregkh>
+Date: Mon, 01 Jul 2024 16:23:42 +0200
+Message-ID: <2024070142-litigator-karate-1087@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,26 +53,29 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2d64eaeeeda5659d52da1af79d237269ba3c2d2c
+git cherry-pick -x 932d8476399f622aa0767a4a0a9e78e5341dc0e1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070117-entire-chaperone-b7a4@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070142-litigator-karate-1087@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-2d64eaeeeda5 ("irqchip/loongson-eiointc: Use early_cpu_to_node() instead of cpu_to_node()")
-64cc451e45e1 ("irqchip/loongson-eiointc: Fix incorrect use of acpi_get_vec_parent")
-3d12938dbc04 ("irqchip/loongarch: Adjust acpi_cascade_irqdomain_init() and sub-routines")
-a90335c2dfb4 ("irqchip/loongson-eiointc: Add suspend/resume support")
+932d8476399f ("cpu/hotplug: Fix dynstate assignment in __cpuhp_setup_state_cpuslocked()")
+11bc021d1fba ("cpu/hotplug: Eliminate all kernel-doc warnings")
+33c3736ec888 ("cpu/hotplug: Hide cpu_up/down()")
+b99a26593b51 ("cpu/hotplug: Move bringup of secondary CPUs out of smp_init()")
+d720f9860439 ("cpu/hotplug: Provide bringup_hibernate_cpu()")
+0441a5597c5d ("cpu/hotplug: Create a new function to shutdown nonboot cpus")
+93ef1429e556 ("cpu/hotplug: Add new {add,remove}_cpu() functions")
 
 thanks,
 
@@ -80,70 +83,61 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2d64eaeeeda5659d52da1af79d237269ba3c2d2c Mon Sep 17 00:00:00 2001
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sun, 23 Jun 2024 11:41:13 +0800
-Subject: [PATCH] irqchip/loongson-eiointc: Use early_cpu_to_node() instead of
- cpu_to_node()
+From 932d8476399f622aa0767a4a0a9e78e5341dc0e1 Mon Sep 17 00:00:00 2001
+From: Yuntao Wang <ytcoode@gmail.com>
+Date: Wed, 15 May 2024 21:45:54 +0800
+Subject: [PATCH] cpu/hotplug: Fix dynstate assignment in
+ __cpuhp_setup_state_cpuslocked()
 
-Multi-bridge machines required that all eiointc controllers in the system
-are initialized, otherwise the system does not boot.
+Commit 4205e4786d0b ("cpu/hotplug: Provide dynamic range for prepare
+stage") added a dynamic range for the prepare states, but did not handle
+the assignment of the dynstate variable in __cpuhp_setup_state_cpuslocked().
 
-The initialization happens on the boot CPU during early boot and relies on
-cpu_to_node() for identifying the individual nodes.
+This causes the corresponding startup callback not to be invoked when
+calling __cpuhp_setup_state_cpuslocked() with the CPUHP_BP_PREPARE_DYN
+parameter, even though it should be.
 
-That works when the number of possible CPUs is large enough, but with a
-command line limit, e.g. "nr_cpus=$N" for kdump, but fails when the CPUs
-of the secondary nodes are not covered.
+Currently, the users of __cpuhp_setup_state_cpuslocked(), for one reason or
+another, have not triggered this bug.
 
-During early ACPI enumeration all CPU to node mappings are recorded up to
-CONFIG_NR_CPUS. These are accessible via early_cpu_to_node() even in the
-case that "nr_cpus=N" truncates the number of possible CPUs and only
-provides the possible CPUs via cpu_to_node() translation.
-
-Change the node lookup in the driver to use early_cpu_to_node() so that
-even with a limitation on the number of possible CPUs all eointc instances
-are initialized.
-
-This can't obviously cure the case where CONFIG_NR_CPUS is too small.
-
-[ tglx: Massaged changelog ]
-
-Fixes: 64cc451e45e1 ("irqchip/loongson-eiointc: Fix incorrect use of acpi_get_vec_parent")
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 4205e4786d0b ("cpu/hotplug: Provide dynamic range for prepare stage")
+Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240623034113.1808727-1-chenhuacai@loongson.cn
+Link: https://lore.kernel.org/r/20240515134554.427071-1-ytcoode@gmail.com
 
-diff --git a/drivers/irqchip/irq-loongson-eiointc.c b/drivers/irqchip/irq-loongson-eiointc.c
-index c7ddebf312ad..b1f2080be2be 100644
---- a/drivers/irqchip/irq-loongson-eiointc.c
-+++ b/drivers/irqchip/irq-loongson-eiointc.c
-@@ -15,6 +15,7 @@
- #include <linux/irqchip/chained_irq.h>
- #include <linux/kernel.h>
- #include <linux/syscore_ops.h>
-+#include <asm/numa.h>
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 563877d6c28b..74cfdb66a9bd 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -2446,7 +2446,7 @@ EXPORT_SYMBOL_GPL(__cpuhp_state_add_instance);
+  * The caller needs to hold cpus read locked while calling this function.
+  * Return:
+  *   On success:
+- *      Positive state number if @state is CPUHP_AP_ONLINE_DYN;
++ *      Positive state number if @state is CPUHP_AP_ONLINE_DYN or CPUHP_BP_PREPARE_DYN;
+  *      0 for all other states
+  *   On failure: proper (negative) error code
+  */
+@@ -2469,7 +2469,7 @@ int __cpuhp_setup_state_cpuslocked(enum cpuhp_state state,
+ 	ret = cpuhp_store_callbacks(state, name, startup, teardown,
+ 				    multi_instance);
  
- #define EIOINTC_REG_NODEMAP	0x14a0
- #define EIOINTC_REG_IPMAP	0x14c0
-@@ -339,7 +340,7 @@ static int __init pch_msi_parse_madt(union acpi_subtable_headers *header,
- 	int node;
- 
- 	if (cpu_has_flatmode)
--		node = cpu_to_node(eiointc_priv[nr_pics - 1]->node * CORES_PER_EIO_NODE);
-+		node = early_cpu_to_node(eiointc_priv[nr_pics - 1]->node * CORES_PER_EIO_NODE);
- 	else
- 		node = eiointc_priv[nr_pics - 1]->node;
- 
-@@ -431,7 +432,7 @@ int __init eiointc_acpi_init(struct irq_domain *parent,
- 		goto out_free_handle;
- 
- 	if (cpu_has_flatmode)
--		node = cpu_to_node(acpi_eiointc->node * CORES_PER_EIO_NODE);
-+		node = early_cpu_to_node(acpi_eiointc->node * CORES_PER_EIO_NODE);
- 	else
- 		node = acpi_eiointc->node;
- 	acpi_set_vec_parent(node, priv->eiointc_domain, pch_group);
+-	dynstate = state == CPUHP_AP_ONLINE_DYN;
++	dynstate = state == CPUHP_AP_ONLINE_DYN || state == CPUHP_BP_PREPARE_DYN;
+ 	if (ret > 0 && dynstate) {
+ 		state = ret;
+ 		ret = 0;
+@@ -2500,8 +2500,8 @@ int __cpuhp_setup_state_cpuslocked(enum cpuhp_state state,
+ out:
+ 	mutex_unlock(&cpuhp_state_mutex);
+ 	/*
+-	 * If the requested state is CPUHP_AP_ONLINE_DYN, return the
+-	 * dynamically allocated state in case of success.
++	 * If the requested state is CPUHP_AP_ONLINE_DYN or CPUHP_BP_PREPARE_DYN,
++	 * return the dynamically allocated state in case of success.
+ 	 */
+ 	if (!ret && dynstate)
+ 		return state;
 
 
