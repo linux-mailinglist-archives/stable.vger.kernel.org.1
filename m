@@ -1,187 +1,148 @@
-Return-Path: <stable+bounces-56282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC29091EA5A
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 23:30:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C250491EA5B
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 23:31:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77B43281FE5
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 21:30:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BDE31F254C4
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 21:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 934534AEE0;
-	Mon,  1 Jul 2024 21:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A6C16D327;
+	Mon,  1 Jul 2024 21:30:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HFjg96fv"
 X-Original-To: stable@vger.kernel.org
-Received: from lobo.ruivo.org (lobo.ruivo.org [173.14.175.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4DE168D0
-	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 21:30:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.14.175.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5E5168D0
+	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 21:30:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719869455; cv=none; b=Uh7k00RXpQnX3OoWzf/NGCbu+fEn7qJ0HdQrisTo3cboLhwGdYWDIVh9m4BkiNEJSVca+Ih7IlZBV9aR3faTqvw1qx811eCKO5I3zQOXGl/Itj9EIa60PbdkNtogMSW10HgpPA8j5dbpYs5ffIUMzeQkDhz8Ss6P4NTeEgfEefM=
+	t=1719869457; cv=none; b=H7Z8HKOIIvuxNEc/BAGW5Wg+1vBhzA5bF/VjaIs69avOEU4Jzbb8hulm2HZOE9kABPlzREXkHGXVeU38qyXf1e38o+ItPvBPgRWg6vRXwaIeOK53r3kBvjpyo5m8eduWQcudQZDXVYwObZFxwvVougPohkc012to6Bhifw5UBb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719869455; c=relaxed/simple;
-	bh=9am9wAvncg0WRlJ2SaVkTN+MzMkpRF/6a3zvkSfw73U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gM8538p6Jb2ST5ob3w6twDtyTfppzR8RuMkR0wgWpJg29BNBdiZ+nuSV54e/V7XHXQqjS9PCjjXAjX5qQUyg8vDvvGsT/weGSQC3QWZzBrVGTgcIbHRZsgslbEycjnIE9MVbTqhvMOumWEksa4M6rjeS2lnrUg/elYkChb1Hw/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ruivo.org; spf=pass smtp.mailfrom=ruivo.org; arc=none smtp.client-ip=173.14.175.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ruivo.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ruivo.org
-Received: by lobo.ruivo.org (Postfix, from userid 1011)
-	id 97C2753425; Mon,  1 Jul 2024 17:23:46 -0400 (EDT)
-X-Spam-Level: 
-Received: from jake.ruivo.org (bob.qemu.ruivo [192.168.72.19])
-	by lobo.ruivo.org (Postfix) with ESMTPSA id 35EA8528DF;
-	Mon,  1 Jul 2024 17:23:43 -0400 (EDT)
-Received: by jake.ruivo.org (Postfix, from userid 1000)
-	id 2341F12014C; Mon, 01 Jul 2024 17:23:43 -0400 (EDT)
-Date: Mon, 1 Jul 2024 17:23:43 -0400
-From: Aristeu Rozanski <aris@ruivo.org>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vishal Moola <vishal.moola@gmail.com>,
-	Aristeu Rozanski <aris@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>, stable@vger.kernel.org
-Subject: [PATCH v2] hugetlb: force allocating surplus hugepages on mempolicy
- allowed nodes
-Message-ID: <20240701212343.GG844599@cathedrallabs.org>
-References: <20240621190050.mhxwb65zn37doegp@redhat.com>
- <20240621175609.9658bb023d6271125c685af8@linux-foundation.org>
- <20240625155438.98bfbac706b05d7ccc9b74a3@linux-foundation.org>
- <20240701191207.GB43545@cathedrallabs.org>
- <6683024a.050a0220.45e6c.7312@mx.google.com>
+	s=arc-20240116; t=1719869457; c=relaxed/simple;
+	bh=AgoDV3aHTCVvfNqTFIeFZARwfO+gDnBvj44sFGQiKv8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FwxHzcXvnd4EFzlESXYSP0tbbRYlNPo7xh+jHoqdmj1mz5afEGckgQKzKT6IYG0P5b/pJfHVoF4A1du/iEa3yRIuvmO/QQJM2R+n+G1KTsTVaxo5v3jpm3qjZbonRr7ucOW/V+Ba4sAoMoeoxdWsQqDLob0whIqFEVy48PTya1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HFjg96fv; arc=none smtp.client-ip=209.85.166.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-7f3d37d6bfdso103166139f.1
+        for <stable@vger.kernel.org>; Mon, 01 Jul 2024 14:30:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719869455; x=1720474255; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6VGCGfoVTxQdhqBa8mQPvhZG0jc6M2s5q2tjWGfDOSs=;
+        b=HFjg96fvXvMfopr4VxyHg9Fusp/uVtwABPAlNrWxPOX+ejmFm6UdoUC741xlfzdKIC
+         wdfx6XOSHyayLBJmstFmA1kzrsWDGEmDt/1c5+G+hiYHc0WNacfA9N6OxfsIeoag9+Dw
+         tANOZ7VrDnTiW6NxvhHVVUJ2eYdlSC9OpOuYHROcUAZfNWYPXdiGNK1+g4lE/iBZUz6f
+         8iXru9nIJReqsfEyx03AWXa4g+KscWOXugBaIf33mITOACI3h2XrrBLkvf7dYw0qq52+
+         NX02Z9D8k996kR2Q9rol3GGrnNTFcUIW6AtzkYYyhltCpBm+OowujjCNmcwni+QDgVEL
+         SBlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719869455; x=1720474255;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6VGCGfoVTxQdhqBa8mQPvhZG0jc6M2s5q2tjWGfDOSs=;
+        b=EfI4N3g9vtoElV2tTL0qenrG6RnX4iKJAo/kdCrw/0FOcJOxBhPGjM+DMcpRpjX9GA
+         NqFD6jdr5p4kAIf90iydD3WNx/BsOAuZpVlCR71umF2CQ3Ek3eqBjuov1RMF/yFPCdRe
+         7Vv9D47CEWft3SmKv4qaV5pUSKmMjC52XWmnOvVmuL1c5CpZPloHhBnW7QIlti8HpVOI
+         68JHPwOW3WEE84qEKNGsxtxYkCYmQMJqMSPslDlMjm25WrWopctMN2WGRlsjYLrPaXgE
+         DSRcO15Cm/qCkMH+7RvS7ZLn2yhFiM2l0Hlk+yThDg+7MqWBTASKG6YHQmsoxRrLjh6o
+         iByA==
+X-Forwarded-Encrypted: i=1; AJvYcCWFlC3/4V2dH/MDU06TjKW4mgFeFXh+EjEbf+CubrBJ/Xg1cqZRerqfv9kWkpxN2wWo2tOjLSQe+Gs8uRwUUvrukvqdIK0u
+X-Gm-Message-State: AOJu0YxlCNauf8O1FJqIRk3GJthi1VeoM8vz83UtHffaLj0652hwiZOq
+	NUdNsntIX7cmvDRRrjLENxhw7IpCDsnZAfr6UjyQYSnx1+7JFphg
+X-Google-Smtp-Source: AGHT+IGRg1fqfBs65UKZcm8fWoezsuVZNEQ2NzZyoO4b6Qoupd62q6AvZ1jn0K5DGninDpJhfx4gDA==
+X-Received: by 2002:a5e:940c:0:b0:7f3:b211:973d with SMTP id ca18e2360f4ac-7f62ee9d5f5mr336935739f.7.1719869455431;
+        Mon, 01 Jul 2024 14:30:55 -0700 (PDT)
+Received: from [172.26.252.3] (c-75-71-174-102.hsd1.co.comcast.net. [75.71.174.102])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4bb73bb37f3sm2441373173.25.2024.07.01.14.30.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Jul 2024 14:30:55 -0700 (PDT)
+Message-ID: <1c68b9b2-24b9-4bbb-852f-cbc5c267443b@gmail.com>
+Date: Mon, 1 Jul 2024 15:30:54 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6683024a.050a0220.45e6c.7312@mx.google.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1.96] gfs2: Fix slab-use-after-free in gfs2_qd_dealloc
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: rpeterso@redhat.com, agruenba@redhat.com, stable@vger.kernel.org,
+ gfs2@lists.linux.dev
+References: <54398cb8-92e0-4ed2-8691-38f6d48efc9a@gmail.com>
+ <2024062953-problem-truth-ce3c@gregkh>
+Content-Language: en-US
+From: Clayton Casciato <majortomtosourcecontrol@gmail.com>
+In-Reply-To: <2024062953-problem-truth-ce3c@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-When trying to allocate a hugepage with none reserved ones free, it may
-be allowed in case a number of overcommit hugepages was configured (using
-/proc/sys/vm/nr_overcommit_hugepages) and that number wasn't reached. This
-allows for a behavior of having extra hugepages allocated dynamically, if
-there're resources for it. Some sysadmins even prefer not reserving any
-hugepages and setting a big number of overcommit hugepages.
+On 6/29/24 2:10 AM, Greg KH wrote:
+> On Fri, Jun 28, 2024 at 12:07:52PM -0600, Clayton Casciato wrote:
+>> [ Upstream commit bdcb8aa434c6d36b5c215d02a9ef07551be25a37 ]
+>>
+>> In gfs2_put_super(), whether withdrawn or not, the quota should
+>> be cleaned up by gfs2_quota_cleanup().
+>>
+>> Otherwise, struct gfs2_sbd will be freed before gfs2_qd_dealloc (rcu
+>> callback) has run for all gfs2_quota_data objects, resulting in
+>> use-after-free.
+>>
+>> Also, gfs2_destroy_threads() and gfs2_quota_cleanup() is already called
+>> by gfs2_make_fs_ro(), so in gfs2_put_super(), after calling
+>> gfs2_make_fs_ro(), there is no need to call them again.
+>>
+>> The origin of a cherry-pick conflict is the (relevant) code block added in
+>> commit f66af88e3321 ("gfs2: Stop using gfs2_make_fs_ro for withdraw")
+>>
+>> There are no references to gfs2_withdrawn() nor gfs2_destroy_threads() in
+>> gfs2_put_super(), so we can simply call gfs2_quota_cleanup() in a new else
+>> block as bdcb8aa434c6 achieves.
+>>
+>> Else braces were used for consistency with the if block.
+>>
+>> Sponsor: 21SoftWare LLC
+> 
+> That's not a valid tag for kernel commits, sorry.
+> 
 
-But while attempting to allocate overcommit hugepages in a multi node
-system (either NUMA or mempolicy/cpuset) said allocations might randomly
-fail even when there're resources available for the allocation.
+The documentation mentions "some people also put extra tags at the end.
+They’ll just be ignored for now [...]"
 
-This happens due allowed_mems_nr() only accounting for the number of free hugepages
-in the nodes the current process belongs to and the surplus hugepage allocation is
-done so it can be allocated in any node. In case one or more of the requested
-surplus hugepages are allocated in a different node, the whole allocation will fail
-due allowed_mems_nr() returning a lower value.
+I don't imagine this would be appropriate on a line *after* the sign-off?
 
-So allocate surplus hugepages in one of the nodes the current process belongs to.
+>> Signed-off-by: Clayton Casciato <majortomtosourcecontrol@gmail.com>
+> 
+> What happened to the original authorship information, and all of the
+> other signed-off-by that were on the original commit?  YOu can not just
+> delete them, would you want someone doing that to a patch you
+> contributed?
+> 
 
-Easy way to reproduce this issue is to use a 2+ NUMA nodes system:
+I didn't understand this and was concerned along the lines of "it is very
+impolite to change one submitter’s code and make him endorse your bugs"
 
-	# echo 0 >/proc/sys/vm/nr_hugepages
-	# echo 1 >/proc/sys/vm/nr_overcommit_hugepages
-	# numactl -m0 ./tools/testing/selftests/mm/map_hugetlb 2
+> as-is, we can't take this, please fix up.
 
-Repeating the execution of map_hugetlb test application will eventually fail
-when the hugepage ends up allocated in a different node.
+I've submitted v2
 
-v2: - attempt to make the description more clear
-    - prevent unitialized usage of folio in case current process isn't part of any
-      nodes with memory
+> 
+> thanks,
+> 
+> greg k-h
 
-Cc: Vishal Moola <vishal.moola@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Aristeu Rozanski <aris@redhat.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Aristeu Rozanski <aris@ruivo.org>
+Thank you for the feedback!
 
----
- mm/hugetlb.c |   47 ++++++++++++++++++++++++++++-------------------
- 1 file changed, 28 insertions(+), 19 deletions(-)
-
---- upstream.orig/mm/hugetlb.c	2024-06-20 13:42:25.699568114 -0400
-+++ upstream/mm/hugetlb.c	2024-07-01 16:48:53.693298053 -0400
-@@ -2618,6 +2618,23 @@ struct folio *alloc_hugetlb_folio_nodema
- 	return alloc_migrate_hugetlb_folio(h, gfp_mask, preferred_nid, nmask);
- }
- 
-+static nodemask_t *policy_mbind_nodemask(gfp_t gfp)
-+{
-+#ifdef CONFIG_NUMA
-+	struct mempolicy *mpol = get_task_policy(current);
-+
-+	/*
-+	 * Only enforce MPOL_BIND policy which overlaps with cpuset policy
-+	 * (from policy_nodemask) specifically for hugetlb case
-+	 */
-+	if (mpol->mode == MPOL_BIND &&
-+		(apply_policy_zone(mpol, gfp_zone(gfp)) &&
-+		 cpuset_nodemask_valid_mems_allowed(&mpol->nodes)))
-+		return &mpol->nodes;
-+#endif
-+	return NULL;
-+}
-+
- /*
-  * Increase the hugetlb pool such that it can accommodate a reservation
-  * of size 'delta'.
-@@ -2631,6 +2648,8 @@ static int gather_surplus_pages(struct h
- 	long i;
- 	long needed, allocated;
- 	bool alloc_ok = true;
-+	int node;
-+	nodemask_t *mbind_nodemask = policy_mbind_nodemask(htlb_alloc_mask(h));
- 
- 	lockdep_assert_held(&hugetlb_lock);
- 	needed = (h->resv_huge_pages + delta) - h->free_huge_pages;
-@@ -2645,8 +2664,15 @@ allocated = 0;
- retry:
- 	spin_unlock_irq(&hugetlb_lock);
- 	for (i = 0; i < needed; i++) {
--		folio = alloc_surplus_hugetlb_folio(h, htlb_alloc_mask(h),
--				NUMA_NO_NODE, NULL);
-+		folio = NULL;
-+		for_each_node_mask(node, cpuset_current_mems_allowed) {
-+			if (!mbind_nodemask || node_isset(node, *mbind_nodemask)) {
-+				folio = alloc_surplus_hugetlb_folio(h, htlb_alloc_mask(h),
-+						node, NULL);
-+				if (folio)
-+					break;
-+			}
-+		}
- 		if (!folio) {
- 			alloc_ok = false;
- 			break;
-@@ -4876,23 +4902,6 @@ default_hstate_max_huge_pages = 0;
- }
- __setup("default_hugepagesz=", default_hugepagesz_setup);
- 
--static nodemask_t *policy_mbind_nodemask(gfp_t gfp)
--{
--#ifdef CONFIG_NUMA
--	struct mempolicy *mpol = get_task_policy(current);
--
--	/*
--	 * Only enforce MPOL_BIND policy which overlaps with cpuset policy
--	 * (from policy_nodemask) specifically for hugetlb case
--	 */
--	if (mpol->mode == MPOL_BIND &&
--		(apply_policy_zone(mpol, gfp_zone(gfp)) &&
--		 cpuset_nodemask_valid_mems_allowed(&mpol->nodes)))
--		return &mpol->nodes;
--#endif
--	return NULL;
--}
--
- static unsigned int allowed_mems_nr(struct hstate *h)
- {
- 	int node;
+Clayton Casciato
 
