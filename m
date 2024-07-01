@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-56237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8211491E1C9
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 16:02:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6316691E1CA
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 16:02:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B7541F21EFB
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9340D1C233B7
 	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 14:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFCC9153BE2;
-	Mon,  1 Jul 2024 14:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B40015ECED;
+	Mon,  1 Jul 2024 14:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="077mAUGH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="svJUG/iT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9AE82D9A
-	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 14:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A9415ECC6
+	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 14:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719842547; cv=none; b=PDAfsKgBTyKxRqk1cQJTso9OTKozXbWvzdAksMStIBNMJss65MbGiqt0TnbJcyq3a0asE4igLuTLVPIdAiUzGpPAdjHDOmCsvoHbW8/TsOR1yFp+CmWcrxTEuA1IoprpSchBmpvbinO+0wef+V7vYx6M1Iu7Y4gwTlcjNOjAaIw=
+	t=1719842550; cv=none; b=PADmqHQyVHQN/3GVRK+UpkOCsmg9/+1nBKLoZxeCRY1agqBrqW9swVxtjcotYg7ISSc6B9IeP6/K9XO1MFYBIm8qOd5otwJ8CdTPGLZllruq1cuLMcwUZvh2WCeT05OVrcUNzBYdA5UGVHaq9WdpyXdF3oXmTk4L9BVOvOJMGdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719842547; c=relaxed/simple;
-	bh=Gwqn01waNtoVhEjsqANBF8A5jbDCBVCQs4KiWDHyCHE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XM2M2NOpl9wPqKd5i024BWJC5NSO517gn6/FU8FHDcVgVIDzJ4XSUsCrg9uyZUTbOXLEYdajbRpXxJMr4QGLFhE7o/5nCFhJTAuUfQIgcRy3IcjMqe9pcZHR1TUXE0v5nRT1IQRckIo3CFgDNHl9BkgdY1U881/erYu76pvlcic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=077mAUGH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D18C116B1;
-	Mon,  1 Jul 2024 14:02:26 +0000 (UTC)
+	s=arc-20240116; t=1719842550; c=relaxed/simple;
+	bh=si4OtEtGt06IVyH0ZtsI6QD+C8u2Ed+FZkWjOzBhH0w=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=drcVCReKzRuULFvyGbKgdupWWO5zpGm5e2tgnJ1iNDHD2Z8JK5JE4DtchASWjL5Bss9VHHbWQ2/OsUx8ozf0VMNG3GwVU/9qpXBZFn7y1dcrKxfHLToDNnGLxVYG11zZouhqn8gyWkefCJ5/JEvyvGGsT4XXcgbSiGBPl94LJxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=svJUG/iT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D6DC116B1;
+	Mon,  1 Jul 2024 14:02:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719842546;
-	bh=Gwqn01waNtoVhEjsqANBF8A5jbDCBVCQs4KiWDHyCHE=;
+	s=korg; t=1719842550;
+	bh=si4OtEtGt06IVyH0ZtsI6QD+C8u2Ed+FZkWjOzBhH0w=;
 	h=Subject:To:Cc:From:Date:From;
-	b=077mAUGHd4UyaOBnp8rlDctxlNOezAPE1nLAgFmBjdoMIuevKSuJDgm8SUH3WKGsN
-	 doF+z1w1+GSzkavGsKsoqUU/EWVnbV2LWYU7b/jZCA6jtBRPRRXxy0dJ257PILZ5IL
-	 iHnoMBmrwPKtVyk1XvUdf3Y3PJFB1zwuX2+RecSE=
-Subject: FAILED: patch "[PATCH] usb: dwc3: core: Workaround for CSR read timeout" failed to apply to 5.15-stable tree
+	b=svJUG/iTZbChIlyjxyiHCvzU2OEJsUHlpXyhiub2C1RFJx1w38F+2GJQxPj++H8ky
+	 /oXXslA9RSTq1QjSVZveOJQYxBjGrzPMOxx75MPWSEcjW6SzP/gfY+tdAXjgAcSvmc
+	 6TVX01cnl+0xum3X6Y5IhLW8wnIjHOaAo6cT4ocs=
+Subject: FAILED: patch "[PATCH] usb: dwc3: core: Workaround for CSR read timeout" failed to apply to 5.10-stable tree
 To: joswang@lenovo.com,Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Jul 2024 16:02:15 +0200
-Message-ID: <2024070115-doorman-veto-f085@gregkh>
+Date: Mon, 01 Jul 2024 16:02:16 +0200
+Message-ID: <2024070116-finalize-precise-1679@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x fc1d1a712b517bbcb383b1f1f7ef478e7d0579f2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070115-doorman-veto-f085@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070116-finalize-precise-1679@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 fc1d1a712b51 ("usb: dwc3: core: Workaround for CSR read timeout")
 f56d0d29b018 ("USB: dwc3: drop dead hibernation code")
 3497b9a5c8c3 ("usb: dwc3: add power down scale setting")
+0c0a20f6da04 ("usb: dwc3: Simplify with dev_err_probe()")
 
 thanks,
 
