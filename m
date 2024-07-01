@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-56199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA28191D79D
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 07:46:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3415B91D812
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 08:25:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 159501C22213
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 05:46:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5FE81F214D0
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 06:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2548B17BD9;
-	Mon,  1 Jul 2024 05:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705E543AD2;
+	Mon,  1 Jul 2024 06:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="AXI39UAU"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="nnnIcND5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
+Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C74A23A0
-	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 05:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.121
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD2E36126
+	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 06:25:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719812789; cv=none; b=QOiI+68PNZ21uT/MeVP9ZINTD3pnCsGG9Q+QwDnNQNzlm8T0XIs7Q5eB1Yfug8mVXuXIXwYFssjtPoBWT8bVyt0pQjC8rjzVcJv9td9LESOV8/KasYy7q89ysI/7xlt8Fjggo/9UFgaF26pt/Se92N5uWn+vbhLOr/buSWU1zn0=
+	t=1719815109; cv=none; b=mx27Z7Gx8bPbvNtAiCEL6paWEmU3pnBEInzK6ViUieP62qKhQstRSbOOKOugfprVynNNlO/Taewlb7s2V9cbmt6F5c+9zmqD3MgpLuMX9rpytrMU4/FAw0Q2qh408z0TKclKGq1pJ7KiNDOUenAdHweiZWqOmBdR56f3J5Iue7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719812789; c=relaxed/simple;
-	bh=Y5gUTAYYE7D6bIFahmuhUVQrQOQQCKJVeHO/25tDj9M=;
+	s=arc-20240116; t=1719815109; c=relaxed/simple;
+	bh=qQ1oDu/HyXSwWoljZ9mELVEKsc2uOOL270z4IXtxTe4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=onM4QogYzDNabJHfr0ej7gUSUGqitE+LldZZlbeIKWLx7bpuhA25F7YcZWjatzq5/hPV7IufA9mDlS5RlF8ofUD4aVbuAJAH5P93O38RaeRPyg0MtKgODnXolJYXYy27EzeohMdS+qpbj221EIVPDJFRRnt6dx9yQIkLvXwQhRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=AXI39UAU; arc=none smtp.client-ip=185.125.188.121
+	 MIME-Version; b=GnuI3fr9K+CEY1pHsxDOsgpnOkBeRheaghJq6J1mLCcWzDJtI7us3z7pHreJAO90m7UkhawP+g2HJyctVqmGBMgN8PVT76IFRoyyQNh5ElaeSV+HAH7PPXCAMYgbBryhA7B2ZopRGl5c9pAWoguJfGV3O4t5Lj6hrx8a42NlHEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=nnnIcND5; arc=none smtp.client-ip=185.125.188.120
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Received: from localhost.localdomain (unknown [10.101.197.103])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id ABC593F216;
-	Mon,  1 Jul 2024 05:46:17 +0000 (UTC)
+	by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 3B7873F328;
+	Mon,  1 Jul 2024 06:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1719812779;
-	bh=P3dE/iZsUyagRUEXuQdzyVha7Xs9GuwrqaT1+fQXsEk=;
+	s=20210705; t=1719814499;
+	bh=F5WXNYQh9orxVIo4BObH4SSThEcqE1kduuP9j2LZOAk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
 	 MIME-Version;
-	b=AXI39UAUCTF/MY2BK67Lvv2+Y/mBqJuL/5brPxPtyxBT5McxQmbPxoyW1JhRhZGrO
-	 LfJ/WzeqKm741arhh3bxdq4gQbwvHci9DztSY9X+8l6w3RXL+TCY55AmRLxAQZAYIr
-	 IKxbBHFSbD/eVO2YGTmoI/RwVcD5h/aOdFTrU6FQk+SZJMHsymIc8eZtzfiPVJ4hUn
-	 rQkr/b/R3vnAI+YsYXxrIC3ypdJyHYa9vxSn0iedxk3Wh0OEJG1B0D6VyNvRTDD4Ka
-	 ZqLYY76FPK1YCA9OZm9X+x6on7NBahPEN4fCLuPU+aUAsx5n3ZCSqw3uhYKQtjmOTa
-	 CIeLhFrQTnuWQ==
+	b=nnnIcND5LRcxfgotAZ1rk/H2GYBomJjNyKsdFSh6mdCvwA5JrY3tvZs33ZcOpBzDu
+	 ygpolnL3Xu6OeRbx6mDH4LBynOlrHqAG6ko4PCJta+UuDzioZ1Wkj4ierOQ350kRrh
+	 jzCfsgRjfZuoCf5/Ddp+Zq/YmkLaDdAPyDkTIeMgndIBnqJSpREAJj7MKfxdqUqrNz
+	 bCpqeGGc+80RfUZWl60gdONqANF/LBw23IuEMF9pVfYPrTBUxywrlzaue6mF0Iuxpe
+	 mZv3X0RqiM8ZM0xSk6hqLeKnwtW35eAoviNDSWULr7caPCli/ZkxcJqjPv701bJhQ/
+	 6j8EpdYtf361g==
 From: Dirk Su <dirk.su@canonical.com>
-To: 
-Cc: dirk.su@canonical.com,
-	stable@vger.kernel.org,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 1/1] ALSA: hda/realtek: fix mute/micmute LEDs don't work for EliteBook 645/665 G11.
-Date: Mon,  1 Jul 2024 13:45:18 +0800
-Message-Id: <20240701054518.32567-2-dirk.su@canonical.com>
+To: dirk.su@canonical.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH 1/1][SRU][Noble] ALSA: hda/realtek: fix mute/micmute LEDs don't work for EliteBook 645/665 G11
+Date: Mon,  1 Jul 2024 14:14:52 +0800
+Message-Id: <20240701061452.34515-2-dirk.su@canonical.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240701054518.32567-1-dirk.su@canonical.com>
-References: <20240701054518.32567-1-dirk.su@canonical.com>
+In-Reply-To: <20240701061452.34515-1-dirk.su@canonical.com>
+References: <20240701061452.34515-1-dirk.su@canonical.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,6 +64,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+
+BugLink: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2071296
 
 HP EliteBook 645/665 G11 needs ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk to
 make mic-mute/audio-mute working.
