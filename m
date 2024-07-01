@@ -1,66 +1,63 @@
-Return-Path: <stable+bounces-56160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F5891D50F
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 02:16:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C6E591D512
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 02:16:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDC13281422
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 00:16:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36E3F1F227A6
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 00:16:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64AA61C33;
-	Mon,  1 Jul 2024 00:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099561755B;
+	Mon,  1 Jul 2024 00:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zqj5S3hy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ix5tjOwK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AD415CB;
-	Mon,  1 Jul 2024 00:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B627C15CB;
+	Mon,  1 Jul 2024 00:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719792803; cv=none; b=FqA3xgVV/u5pXNQ8qReb4SWJr8Ase0jY8i/hSsLGEYCL3p7YK7itianRLjICtrCuvHWmgRjZ4oYbtCvmOCHY9EKYiehenYPy5qEHLyIqJTBxY63SU6YXShg9R+lmwqNeITniVoafkHR30IHvLH4DqPMKh+/GiqoD+qo5CcXChnI=
+	t=1719792806; cv=none; b=n3CpjaHDv27TXucxD+9BJRHaygHeyrN9o1p+TrLqGLKh3Tika//Ym6exZWPL4udCSUaHnXPiRZf+V3jkBGEPBRhPuIM3W3+9A3dd/3PNgN7sb2Zlnt7+9tk/hj2/7uxAwYKGwen+ixU4HELy21zCFRNrh3SSMA0h3EH7Ag4j9Kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719792803; c=relaxed/simple;
-	bh=IAq7xDNMP1R0gk9ekXQMviFD/fkhMz8+rN6FL9poJzM=;
+	s=arc-20240116; t=1719792806; c=relaxed/simple;
+	bh=bCto09bGLe73+ADn1wV3krqSPU+Vncmk56lCkZV91co=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=axg7jaqvTWewpuk3JUbHlu08ISTkga9R9ToZ+Q9bcdNB4rHd7iJt5F7nmfEXfpqlAQSWEw/fQaJeQwE9eysGVPbcxJMaoLTRmNLwIu8T/MIswHVZbPLWIUYvtp5YBMfrD70eTO9wQvtEy6HEZu/PNmlIcc5TGtr8y4FwD5jH0O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zqj5S3hy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33298C32786;
-	Mon,  1 Jul 2024 00:13:21 +0000 (UTC)
+	 MIME-Version; b=SP9zkfEuhCRKLrJPtfRF31Lg96UIyLkGXqNhsrwXbXq/OqaTPPgg2Sy/NRjrjNhp4uMCnJxLOc5HqZa4b5StLsiYc/ntODE8N7qR97DU4upcfdQ/ChkdbNc2vv+dx20dXxGG6R9iFsd2b/HBvsZq34sIxRGWrr6QtUxUw1PGZUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ix5tjOwK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C261BC2BD10;
+	Mon,  1 Jul 2024 00:13:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719792803;
-	bh=IAq7xDNMP1R0gk9ekXQMviFD/fkhMz8+rN6FL9poJzM=;
+	s=k20201202; t=1719792806;
+	bh=bCto09bGLe73+ADn1wV3krqSPU+Vncmk56lCkZV91co=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zqj5S3hyarBQQd5/Ui+knstpoK7ySNcFc48tnSvCgS+6NJOpatwZ24yB2MhURR4OP
-	 PHCdIMulKk05Tglrb52KzJKAP4z2aHQBl4Iu02H+trnmmQ1mLCqyIal2zgn+P8Z0oN
-	 jMbDXB5cI66KxPVC90/K0PT+LQVVkF+Zt2zWqsVvbuxOjjA/NGzoqr6/jteJ8EaF1H
-	 /xvL5Msqv5p/rsk9NISLOx+jkyvktOd9pPwhEwTxYxYMoDVDVZYkFL2UiI3aqtqwNl
-	 YSvVxARVonjnTtqPnIywgX9tnAxUeuP+kT/u0kU5XlpvTDLaHcotlBMDJezNew0pIu
-	 PcOmlTDMUGgKA==
+	b=Ix5tjOwKVhkKVlY7tt9eVvNqljshG1q+LlJjJZ6KhNwHYuyvrr4tdDzsD9PcMHwLq
+	 1k/ZTkDt0Fb8UFLAkOlHJutuj/DhhbQyIUfCuQJErJtL8SIy5aJGh0DWwJs/LkjTho
+	 M62jeh3vb0unc2bI41IFUC3yDorfkOuWzEDBUqOxM9XvmgU++ywOKbsoyFl9UCf6O6
+	 afoAYhll9NwjDgnW1jPnPwnkoKFeQWvRFZtkCKJkeoyjQ65wO3P5HN6MriXLAJM/oe
+	 ohvgK6wCd+ii0Ux4iXRPCywWBd2uWS4Z6ZxyN4BCL5YTxNjaOOA7sWiRIqCmXud/UJ
+	 m7lnuEAw+DOag==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Likun Gao <Likun.Gao@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Simon Trimmer <simont@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	Hawking.Zhang@amd.com,
-	lijo.lazar@amd.com,
-	asad.kamal@amd.com,
-	kevinyang.wang@amd.com,
-	candice.li@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.9 17/20] drm/amdgpu: init TA fw for psp v14
-Date: Sun, 30 Jun 2024 20:11:22 -0400
-Message-ID: <20240701001209.2920293-17-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	rf@opensource.cirrus.com,
+	broonie@kernel.org,
+	lukas.bulwahn@gmail.com,
+	sbinding@opensource.cirrus.com,
+	shenghao-ding@ti.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 18/20] ALSA: hda: cs35l56: Select SERIAL_MULTI_INSTANTIATE
+Date: Sun, 30 Jun 2024 20:11:23 -0400
+Message-ID: <20240701001209.2920293-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240701001209.2920293-1-sashal@kernel.org>
 References: <20240701001209.2920293-1-sashal@kernel.org>
@@ -75,44 +72,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.7
 Content-Transfer-Encoding: 8bit
 
-From: Likun Gao <Likun.Gao@amd.com>
+From: Simon Trimmer <simont@opensource.cirrus.com>
 
-[ Upstream commit ed5a4484f074aa2bfb1dad99ff3628ea8da4acdc ]
+[ Upstream commit 9b1effff19cdf2230d3ecb07ff4038a0da32e9cc ]
 
-Add support to init TA firmware for psp v14.
+The ACPI IDs used in the CS35L56 HDA drivers are all handled by the
+serial multi-instantiate driver which starts multiple Linux device
+instances from a single ACPI Device() node.
 
-Signed-off-by: Likun Gao <Likun.Gao@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+As serial multi-instantiate is not an optional part of the system add it
+as a dependency in Kconfig so that it is not overlooked.
+
+Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+Link: https://lore.kernel.org/20240619161602.117452-1-simont@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/psp_v14_0.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/pci/hda/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/psp_v14_0.c b/drivers/gpu/drm/amd/amdgpu/psp_v14_0.c
-index 78a95f8f370be..238abd98072ad 100644
---- a/drivers/gpu/drm/amd/amdgpu/psp_v14_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/psp_v14_0.c
-@@ -32,7 +32,9 @@
- #include "mp/mp_14_0_2_sh_mask.h"
- 
- MODULE_FIRMWARE("amdgpu/psp_14_0_2_sos.bin");
-+MODULE_FIRMWARE("amdgpu/psp_14_0_2_ta.bin");
- MODULE_FIRMWARE("amdgpu/psp_14_0_3_sos.bin");
-+MODULE_FIRMWARE("amdgpu/psp_14_0_3_ta.bin");
- 
- /* For large FW files the time to complete can be very long */
- #define USBC_PD_POLLING_LIMIT_S 240
-@@ -64,6 +66,9 @@ static int psp_v14_0_init_microcode(struct psp_context *psp)
- 	case IP_VERSION(14, 0, 2):
- 	case IP_VERSION(14, 0, 3):
- 		err = psp_init_sos_microcode(psp, ucode_prefix);
-+		if (err)
-+			return err;
-+		err = psp_init_ta_microcode(psp, ucode_prefix);
- 		if (err)
- 			return err;
- 		break;
+diff --git a/sound/pci/hda/Kconfig b/sound/pci/hda/Kconfig
+index f806636242ee9..9f560a8186802 100644
+--- a/sound/pci/hda/Kconfig
++++ b/sound/pci/hda/Kconfig
+@@ -160,6 +160,7 @@ config SND_HDA_SCODEC_CS35L56_I2C
+ 	depends on ACPI || COMPILE_TEST
+ 	depends on SND_SOC
+ 	select FW_CS_DSP
++	select SERIAL_MULTI_INSTANTIATE
+ 	select SND_HDA_GENERIC
+ 	select SND_SOC_CS35L56_SHARED
+ 	select SND_HDA_SCODEC_CS35L56
+@@ -176,6 +177,7 @@ config SND_HDA_SCODEC_CS35L56_SPI
+ 	depends on ACPI || COMPILE_TEST
+ 	depends on SND_SOC
+ 	select FW_CS_DSP
++	select SERIAL_MULTI_INSTANTIATE
+ 	select SND_HDA_GENERIC
+ 	select SND_SOC_CS35L56_SHARED
+ 	select SND_HDA_SCODEC_CS35L56
 -- 
 2.43.0
 
