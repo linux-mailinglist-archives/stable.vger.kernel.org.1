@@ -1,160 +1,190 @@
-Return-Path: <stable+bounces-56269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEFCD91E638
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 19:08:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E276F91E6C1
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 19:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCB9BB2319A
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 17:07:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 654301F2423C
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 17:37:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2AFD16E868;
-	Mon,  1 Jul 2024 17:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3A916EB5E;
+	Mon,  1 Jul 2024 17:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BGmal9au"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GAQem2J7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F2816D31E;
-	Mon,  1 Jul 2024 17:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6208277115;
+	Mon,  1 Jul 2024 17:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719853667; cv=none; b=U4fpBX0yCCTX4wDTcYZYB76R+65vBl6DCuPQbF/unae5619lILcQEaMNd1DGkao6TJ1mtoew3cd2tBzhtNlgVaz5f4ZdvU5ubI/1ZbQqt7DVoLY2jUskx0hu3Pu1ygDd8rE9nvDwAk+AfA9Sz57WeDufMYjgOtZl2JxcA7jO/04=
+	t=1719855414; cv=none; b=XHCdNfoP/z4sKMwgw3dHtMhNGzcS4ofiQKcBEeyr6UdQfaUTclsvIT0VVvjfpsntohP5jWMyE5zMQp6OnQLRcW4NX2rx5PT1zmn4yPkVNLX4xm/TQZEjK6bjRqn44TfV6XvmxUW2AJlQCrXI3p70SpZbCfB0a4g+uTymNiKRrME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719853667; c=relaxed/simple;
-	bh=n9Bt8sgeFilFYG9RUvitPHdBPbjhTJvSbKPS9z9tPgY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zel9nwysVW/YH+VPJwNqpBkWJTdf0vqWEVCCXsStoD1WNQB9yuE8V+75pYMNgKUd9kwlujub10CdVxxI4TC4VsRYVIzMphrwCKBbYROAaZYEmJ5fKpUaYWaaNodd9mozV97xuht1o7R63Roxfpm6M+tFJ8ScW/4+fpEJ3tqWxgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BGmal9au; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7631FC32781;
-	Mon,  1 Jul 2024 17:07:46 +0000 (UTC)
+	s=arc-20240116; t=1719855414; c=relaxed/simple;
+	bh=AJ43U8TxBFG1R0W4PvfAZW+pIgCbJ/wmU+LmsAUrYjU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WH2iT0gGPn6LvVv8rgvk6FBaSaE2fs5T6MDhWLdR/KoxzcPz8NX1r2B1xGNMDf7PtNyH6Pa1nQoRnPvBkkU/7R2IG8zu2erw/K2yMV62tBSpf6nl9L5f9o4Z3DWS4uKjiG1QglybVBUwfwVsSVpCUQDLgDZvTGTHIMtGstcmP10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GAQem2J7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E90DCC4AF12;
+	Mon,  1 Jul 2024 17:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719853666;
-	bh=n9Bt8sgeFilFYG9RUvitPHdBPbjhTJvSbKPS9z9tPgY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=BGmal9auIq47e0v8F4t46Yxb0nOXiVNDLeC0GOBfJ88rMiHZL2k/oCaVMHk4/DlxY
-	 S8teHkxszwP8ycBPweWITsJENRhZHWPpdqK1aav9dHwbj591cJmMVF3xM7rE5vdRhB
-	 g4vPZfK0daYKtIpYswNfmPjOAH8QxkvTnd7jhgkNeqkCX9bPgmguRfdhYJvltQBB2q
-	 1Hbp10fkNegIpMOk92HY0cA1Vc0/8A9vL2OgDx4H8/hLXcOIvYFyEFwn24U5Te3UOt
-	 xPDoGbn+2lZcOLF1XET1yDeGMjsuL10Y/a71pOmUCCnSSIzcYMkXQ3E7MhQh8y1sA7
-	 1MEdovbjJ4VLQ==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org
-Cc: Jarkko Sakkinen <jarkko@kernel.org>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Peter Huewe <peterhuewe@gmx.de>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	keyrings@vger.kernel.org (open list:KEYS-TRUSTED),
-	linux-security-module@vger.kernel.org (open list:SECURITY SUBSYSTEM)
-Subject: [PATCH] tpm: Check non-nullity of chip->auth
-Date: Mon,  1 Jul 2024 17:07:34 +0000
-Message-ID: <20240701170735.109583-1-jarkko@kernel.org>
-X-Mailer: git-send-email 2.45.2
+	s=k20201202; t=1719855413;
+	bh=AJ43U8TxBFG1R0W4PvfAZW+pIgCbJ/wmU+LmsAUrYjU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=GAQem2J7raFxA9lVH1y/ketnYyyQZqQuNgSlgcormbdqA2tFRR6DN/a/dm9X5gmE4
+	 C0tl9VQBQr8ZDrVNlCp9IGe6wnCBdQnJtbnRlVPcbeFOMzQE/djT5Ol/0ThKZ0iviR
+	 QTA1LIEvrrAJqitmAGmvFuTQ2OzGd2+tM8H0K195ySIgZ1C+f8oesPwR74lZsLzAmR
+	 uwB9V+PJuHLxarOivu9iQkb59MHjnE98JlrR814m9MkBiIOizRrhpWg1/KQphZl4oY
+	 g1cDEZA8Leus4rSBd+V8R4IxckGHbR5CLU0/MW+gp8syg1YkVybnyCorrkddk55gLr
+	 O0Mg0T3/IxMHg==
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-5c411d037b3so81915eaf.2;
+        Mon, 01 Jul 2024 10:36:53 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV1Ul/XM1yTV2HwuuOAvoDbYYOM9CngT608aMReZF1JyfEnlk3Y8//1dqAwKwEdEKl1D1GuNkANUExULrL/gEBu7czI0G3oLnalSqAOYGfOtE4rG5DRTH/10zrSaEQdBoWGH5UWUOdhU5XZT6/lGnEk7G9wLUTqe45FQs85UBx7WA==
+X-Gm-Message-State: AOJu0Ywz+OgTOEQwVSfTRT0i3NqVGxjS9cxj7AX1Ow5JJoRV1R9bYJtU
+	lzYif4zRT7pQjgVJorTF7nj72H8RSFCbRkConiA46bX/GqfbgRRmk66vBHupTfXTqQ1bvOcPyxF
+	++d+a9x8tFK/JB+Io4hEvQ0OWQ4o=
+X-Google-Smtp-Source: AGHT+IHwSaJ1hicMo5mBvoWp89o0ASG0KBJLQ81cNcOTGZ3yBfDdae3nh4KtC0AqPvla0OZvfnqwU4SaJJoAWy55Gc8=
+X-Received: by 2002:a4a:c914:0:b0:5ba:ca86:a025 with SMTP id
+ 006d021491bc7-5c438d51dfcmr5664269eaf.0.1719855412448; Mon, 01 Jul 2024
+ 10:36:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <46742c5a-5df4-46d1-bf5f-b74067866fec@amd.com> <20240701161039.80008-1-visitorckw@gmail.com>
+In-Reply-To: <20240701161039.80008-1-visitorckw@gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 1 Jul 2024 19:36:40 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iY=S+WKWvDAAWxLcOwvpOG5Cck1gQv4p+FfW1Nca0Yqw@mail.gmail.com>
+Message-ID: <CAJZ5v0iY=S+WKWvDAAWxLcOwvpOG5Cck1gQv4p+FfW1Nca0Yqw@mail.gmail.com>
+Subject: Re: [PATCH v3] ACPI: processor_idle: Fix invalid comparison with
+ insertion sort for latency
+To: Kuan-Wei Chiu <visitorckw@gmail.com>
+Cc: rafael@kernel.org, lenb@kernel.org, mario.limonciello@amd.com, 
+	akpm@linux-foundation.org, jserv@ccns.ncku.edu.tw, alexdeucher@gmail.com, 
+	belegdol@gmail.com, regressions@leemhuis.info, linux-acpi@vger.kernel.org, 
+	regressions@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-All exported functions lack the check for non-nullity of chip->auth. Add
-the guard for each.
+On Mon, Jul 1, 2024 at 6:10=E2=80=AFPM Kuan-Wei Chiu <visitorckw@gmail.com>=
+ wrote:
+>
+> The acpi_cst_latency_cmp comparison function currently used for sorting
+> C-state latencies does not satisfy transitivity, causing incorrect
+> sorting results. Specifically, if there are two valid acpi_processor_cx
+> elements A and B and one invalid element C, it may occur that A < B,
+> A =3D C, and B =3D C. Sorting algorithms assume that if A < B and A =3D C=
+,
+> then C < B, leading to incorrect ordering.
+>
+> Given the small size of the array (<=3D8), we replace the library sort
+> function with a simple insertion sort that properly ignores invalid
+> elements and sorts valid ones based on latency. This change ensures
+> correct ordering of the C-state latencies.
+>
+> Fixes: 65ea8f2c6e23 ("ACPI: processor idle: Fix up C-state latency if not=
+ ordered")
+> Cc: stable@vger.kernel.org
+> Reported-by: Julian Sikorski <belegdol@gmail.com>
+> Closes: https://lore.kernel.org/lkml/70674dc7-5586-4183-8953-8095567e73df=
+@gmail.com/
+> Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+> ---
+> v2 -> v3:
+> - Remove #include <linux/sort.h>
+> - Cc @stable
+>
+> Note: I only performed a build test and a simple unit test to ensure
+>       the latency of valid elements is correctly sorted in the randomly
+>           generated data.
+>
+>  drivers/acpi/processor_idle.c | 36 ++++++++++++++---------------------
+>  1 file changed, 14 insertions(+), 22 deletions(-)
+>
+> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.=
+c
+> index bd6a7857ce05..17cc81340b4b 100644
+> --- a/drivers/acpi/processor_idle.c
+> +++ b/drivers/acpi/processor_idle.c
+> @@ -16,7 +16,6 @@
+>  #include <linux/acpi.h>
+>  #include <linux/dmi.h>
+>  #include <linux/sched.h>       /* need_resched() */
+> -#include <linux/sort.h>
+>  #include <linux/tick.h>
+>  #include <linux/cpuidle.h>
+>  #include <linux/cpu.h>
+> @@ -386,25 +385,21 @@ static void acpi_processor_power_verify_c3(struct a=
+cpi_processor *pr,
+>         acpi_write_bit_register(ACPI_BITREG_BUS_MASTER_RLD, 1);
+>  }
+>
+> -static int acpi_cst_latency_cmp(const void *a, const void *b)
+> +static void acpi_cst_latency_sort(struct acpi_processor_cx *arr, size_t =
+length)
 
-Link: https://lore.kernel.org/linux-integrity/9f86a167074d9b522311715c567f1c19b88e3ad4.camel@kernel.org/
-Cc: Stefan Berger <stefanb@linux.ibm.com>
-Cc: stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Fixes: 1085b8276bb4 ("tpm: Add the rest of the session HMAC API")
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
- drivers/char/tpm/tpm2-sessions.c | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+s/arr/states/ please.
 
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index 907ac9956a78..d833db20531a 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -377,6 +377,9 @@ void tpm_buf_append_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf,
- 	u32 len;
- 	struct tpm2_auth *auth = chip->auth;
- 
-+	if (!auth)
-+		return;
-+
- 	/*
- 	 * The Architecture Guide requires us to strip trailing zeros
- 	 * before computing the HMAC
-@@ -449,6 +452,9 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
- 	u8 cphash[SHA256_DIGEST_SIZE];
- 	struct sha256_state sctx;
- 
-+	if (!auth)
-+		return;
-+
- 	/* save the command code in BE format */
- 	auth->ordinal = head->ordinal;
- 
-@@ -639,6 +645,9 @@ void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
- 	struct tpm2_auth *auth = chip->auth;
- 	int slot;
- 
-+	if (!auth)
-+		return;
-+
- 	slot = (tpm_buf_length(buf) - TPM_HEADER_SIZE)/4;
- 	if (slot >= AUTH_MAX_NAMES) {
- 		dev_err(&chip->dev, "TPM: too many handles\n");
-@@ -705,6 +714,9 @@ int tpm_buf_check_hmac_response(struct tpm_chip *chip, struct tpm_buf *buf,
- 	u32 cc = be32_to_cpu(auth->ordinal);
- 	int parm_len, len, i, handles;
- 
-+	if (!auth)
-+		return rc;
-+
- 	if (auth->session >= TPM_HEADER_SIZE) {
- 		WARN(1, "tpm session not filled correctly\n");
- 		goto out;
-@@ -824,8 +836,13 @@ EXPORT_SYMBOL(tpm_buf_check_hmac_response);
-  */
- void tpm2_end_auth_session(struct tpm_chip *chip)
- {
--	tpm2_flush_context(chip, chip->auth->handle);
--	memzero_explicit(chip->auth, sizeof(*chip->auth));
-+	struct tpm2_auth *auth = chip->auth;
-+
-+	if (!auth)
-+		return;
-+
-+	tpm2_flush_context(chip, auth->handle);
-+	memzero_explicit(auth, sizeof(*auth));
- }
- EXPORT_SYMBOL(tpm2_end_auth_session);
- 
-@@ -907,6 +924,11 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
- 	int rc;
- 	u32 null_key;
- 
-+	if (!auth) {
-+		pr_warn_once("%s: encryption is not active\n", __func__);
-+		return 0;
-+	}
-+
- 	rc = tpm2_load_null(chip, &null_key);
- 	if (rc)
- 		goto out;
--- 
-2.45.2
+>  {
+> -       const struct acpi_processor_cx *x =3D a, *y =3D b;
+> +       int i, j, k;
+>
+> -       if (!(x->valid && y->valid))
+> -               return 0;
+> -       if (x->latency > y->latency)
+> -               return 1;
+> -       if (x->latency < y->latency)
+> -               return -1;
+> -       return 0;
+> -}
+> -static void acpi_cst_latency_swap(void *a, void *b, int n)
+> -{
+> -       struct acpi_processor_cx *x =3D a, *y =3D b;
+> -
+> -       if (!(x->valid && y->valid))
+> -               return;
+> -       swap(x->latency, y->latency);
+> +       for (i =3D 1; i < length; i++) {
+> +               if (!arr[i].valid)
+> +                       continue;
 
+Please add an empty line here (and analogously below).
+
+> +               for (j =3D i - 1, k =3D i; j >=3D 0; j--) {
+> +                       if (!arr[j].valid)
+> +                               continue;
+> +                       if (arr[j].latency > arr[k].latency)
+> +                               swap(arr[j].latency, arr[k].latency);
+
+And here.
+
+> +                       k =3D j;
+> +               }
+> +       }
+>  }
+>
+>  static int acpi_processor_power_verify(struct acpi_processor *pr)
+> @@ -449,10 +444,7 @@ static int acpi_processor_power_verify(struct acpi_p=
+rocessor *pr)
+>
+>         if (buggy_latency) {
+>                 pr_notice("FW issue: working around C-state latencies out=
+ of order\n");
+> -               sort(&pr->power.states[1], max_cstate,
+> -                    sizeof(struct acpi_processor_cx),
+> -                    acpi_cst_latency_cmp,
+> -                    acpi_cst_latency_swap);
+> +               acpi_cst_latency_sort(&pr->power.states[1], max_cstate);
+>         }
+>
+>         lapic_timer_propagate_broadcast(pr);
+> --
 
