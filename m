@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-56186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2342191D55D
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 02:22:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D374891D55F
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 02:22:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1C50280FFD
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 00:22:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 681A7B20ADD
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 00:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7430A5A0F5;
-	Mon,  1 Jul 2024 00:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE60915A858;
+	Mon,  1 Jul 2024 00:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cnr+JcxP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ardPy4tT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C04A5382;
-	Mon,  1 Jul 2024 00:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9951015A847;
+	Mon,  1 Jul 2024 00:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719792900; cv=none; b=tgqHiqKJOmjWPs03AH/qk4tjTn/rO4exVULgwtTtEyxcFhkRrAwJAFHFiC+qlCdL2AX68vB/ZfbR8NvJFrNeZLqH3+JqCglO8jYnX0IaJ7do4W9YRymn+nnMoMI+WPh7sOmaeuDZXVt/0Zgxvryxfi2JYdXZtqNeXh7tWp0+ltw=
+	t=1719792901; cv=none; b=GpfRXJquCVh1CPeghslHgCCJF8Bnjeq9P3ZMuIhAz3ouipArHTI42qOTj/RvbcLMMynJdssK/15xAZFw8UL0AYHMw7s8fzWlxTXnV1vKx2ZVotnVcdL97O1cMkv3Cyt1NNUL3cFZ5f0xc4iF7+7Vp1WZUV2HWyVArk/WLyHpvOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719792900; c=relaxed/simple;
-	bh=jWkqHQxtzhYZIeTqCuAdjrMMX4M1bB/KaFpYCUtCLE8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fa3DoRJ3+FzpFezuoZWQu1aNp4W4+jmz9tD08qI6IrBZ7qo8JBe637lhs3lTkP8myzlwRDyKSL/ffUfgQiRpAwx6BVWnQfvuygM6JQvZ1IASZHAeCzggor1Zkn8tjxdyfSwyg21+F2P1EEOx+/DC67Qkc/Iy53BSbkvIWuKSNbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cnr+JcxP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84FB6C2BD10;
-	Mon,  1 Jul 2024 00:14:58 +0000 (UTC)
+	s=arc-20240116; t=1719792901; c=relaxed/simple;
+	bh=FghuhVddxfTldsnZJ2YUHW9LvaA7bab7q7wnKQEy0a0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GMKQjI6nF8KyhT2K1wqqX1Ui3F9np3vlmmFQ+cdmPAyO195TAfZB+jDI/K/8Hnw0s0U60ism0kx2EfoYFtti9y5z+CRM2ZTIY4qnAkZreThFpj2unFWlF0KszMOLInKH5Kvgkq7IQ1u4MV1FnjwgOyUuoQCFomeBXoE1tmoSpvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ardPy4tT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92902C4AF0B;
+	Mon,  1 Jul 2024 00:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719792900;
-	bh=jWkqHQxtzhYZIeTqCuAdjrMMX4M1bB/KaFpYCUtCLE8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Cnr+JcxPGcQfEwX4zgB1ZTiDbFRJfWCLlpaFv51511GY/OBxUCr3o6wNe0UsczgyB
-	 LguhOEXzSvqDnLBPX2XjSlj2jeoa+Q5+eLJwcrxCkhm2ZNUUUKvlTGWbQXKsjfWAC4
-	 oAbthoKxfH5YBB1loR+RzgIUPZCpsCbK0JqI/Qxkzx4DKPhmr5hoVh5gEOSH0tVPo8
-	 55BVHUFDfCtnPuJs0RFbItA8BUpAjzMyNO3cbMm+DzkPkbP3/gxho/w2F3iLwEZQuP
-	 HwWFqJoBCBOn8/g+BcBp5zcmULPbLzthIS3e5my7SrJInNCuAK+xtmQJMagKec1uXz
-	 58A6kN0GSgH0Q==
+	s=k20201202; t=1719792901;
+	bh=FghuhVddxfTldsnZJ2YUHW9LvaA7bab7q7wnKQEy0a0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ardPy4tTYsJoccUH+FfoJaQQYCBRmdRq9wiK5LahJtLRK6U5x8MjzBn5+wa8xtwhI
+	 eYjNAHQ6WHWEoKc/B3IuqHNh58pA5ex8neZdf87sBaPMYgAs7sWLhW0JrSgurcWSCU
+	 Xp5cIPFpWXf8ZxheT8455CR4HQVit+xlN/nh8cnM1nWk9DgFdm3Gfdua8UsDFGOE5c
+	 5Nav+nXxMXn7s6JrqjXzxTtwbVWSAylTo3tHU8CutFr3UJCcmFsb+YOs+pEy50KU8f
+	 zz+fQMrgAUUbDbYSQnGmHkTCwVhYhxpI4qi4oO/tizStl5q7LhYq8H0Wpn90i9GFdD
+	 f7VEBdo1ZuSDg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 1/4] wifi: cfg80211: wext: add extra SIOCSIWSCAN data check
-Date: Sun, 30 Jun 2024 20:14:49 -0400
-Message-ID: <20240701001457.2921445-1-sashal@kernel.org>
+	linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 2/4] KVM: PPC: Book3S HV: Prevent UAF in kvm_spapr_tce_attach_iommu_group()
+Date: Sun, 30 Jun 2024 20:14:50 -0400
+Message-ID: <20240701001457.2921445-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240701001457.2921445-1-sashal@kernel.org>
+References: <20240701001457.2921445-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,45 +66,145 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.220
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 6ef09cdc5ba0f93826c09d810c141a8d103a80fc ]
+[ Upstream commit a986fa57fd81a1430e00b3c6cf8a325d6f894a63 ]
 
-In 'cfg80211_wext_siwscan()', add extra check whether number of
-channels passed via 'ioctl(sock, SIOCSIWSCAN, ...)' doesn't exceed
-IW_MAX_FREQUENCIES and reject invalid request with -EINVAL otherwise.
+Al reported a possible use-after-free (UAF) in kvm_spapr_tce_attach_iommu_group().
 
-Reported-by: syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=253cd2d2491df77c93ac
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://msgid.link/20240531032010.451295-1-dmantipov@yandex.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+It looks up `stt` from tablefd, but then continues to use it after doing
+fdput() on the returned fd. After the fdput() the tablefd is free to be
+closed by another thread. The close calls kvm_spapr_tce_release() and
+then release_spapr_tce_table() (via call_rcu()) which frees `stt`.
+
+Although there are calls to rcu_read_lock() in
+kvm_spapr_tce_attach_iommu_group() they are not sufficient to prevent
+the UAF, because `stt` is used outside the locked regions.
+
+With an artifcial delay after the fdput() and a userspace program which
+triggers the race, KASAN detects the UAF:
+
+  BUG: KASAN: slab-use-after-free in kvm_spapr_tce_attach_iommu_group+0x298/0x720 [kvm]
+  Read of size 4 at addr c000200027552c30 by task kvm-vfio/2505
+  CPU: 54 PID: 2505 Comm: kvm-vfio Not tainted 6.10.0-rc3-next-20240612-dirty #1
+  Hardware name: 8335-GTH POWER9 0x4e1202 opal:skiboot-v6.5.3-35-g1851b2a06 PowerNV
+  Call Trace:
+    dump_stack_lvl+0xb4/0x108 (unreliable)
+    print_report+0x2b4/0x6ec
+    kasan_report+0x118/0x2b0
+    __asan_load4+0xb8/0xd0
+    kvm_spapr_tce_attach_iommu_group+0x298/0x720 [kvm]
+    kvm_vfio_set_attr+0x524/0xac0 [kvm]
+    kvm_device_ioctl+0x144/0x240 [kvm]
+    sys_ioctl+0x62c/0x1810
+    system_call_exception+0x190/0x440
+    system_call_vectored_common+0x15c/0x2ec
+  ...
+  Freed by task 0:
+   ...
+   kfree+0xec/0x3e0
+   release_spapr_tce_table+0xd4/0x11c [kvm]
+   rcu_core+0x568/0x16a0
+   handle_softirqs+0x23c/0x920
+   do_softirq_own_stack+0x6c/0x90
+   do_softirq_own_stack+0x58/0x90
+   __irq_exit_rcu+0x218/0x2d0
+   irq_exit+0x30/0x80
+   arch_local_irq_restore+0x128/0x230
+   arch_local_irq_enable+0x1c/0x30
+   cpuidle_enter_state+0x134/0x5cc
+   cpuidle_enter+0x6c/0xb0
+   call_cpuidle+0x7c/0x100
+   do_idle+0x394/0x410
+   cpu_startup_entry+0x60/0x70
+   start_secondary+0x3fc/0x410
+   start_secondary_prolog+0x10/0x14
+
+Fix it by delaying the fdput() until `stt` is no longer in use, which
+is effectively the entire function. To keep the patch minimal add a call
+to fdput() at each of the existing return paths. Future work can convert
+the function to goto or __cleanup style cleanup.
+
+With the fix in place the test case no longer triggers the UAF.
+
+Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+Closes: https://lore.kernel.org/all/20240610024437.GA1464458@ZenIV/
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240614122910.3499489-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/powerpc/kvm/book3s_64_vio.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index a6c289a61d30c..76a27b6d45d28 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -2772,10 +2772,14 @@ int cfg80211_wext_siwscan(struct net_device *dev,
- 	wiphy = &rdev->wiphy;
+diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
+index c640053ab03f2..2686ba59873dd 100644
+--- a/arch/powerpc/kvm/book3s_64_vio.c
++++ b/arch/powerpc/kvm/book3s_64_vio.c
+@@ -117,14 +117,16 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 	}
+ 	rcu_read_unlock();
  
- 	/* Determine number of channels, needed to allocate creq */
--	if (wreq && wreq->num_channels)
-+	if (wreq && wreq->num_channels) {
-+		/* Passed from userspace so should be checked */
-+		if (unlikely(wreq->num_channels > IW_MAX_FREQUENCIES))
-+			return -EINVAL;
- 		n_channels = wreq->num_channels;
--	else
-+	} else {
- 		n_channels = ieee80211_get_num_supported_channels(wiphy);
+-	fdput(f);
+-
+-	if (!found)
++	if (!found) {
++		fdput(f);
+ 		return -EINVAL;
 +	}
  
- 	creq = kzalloc(sizeof(*creq) + sizeof(struct cfg80211_ssid) +
- 		       n_channels * sizeof(void *),
+ 	table_group = iommu_group_get_iommudata(grp);
+-	if (WARN_ON(!table_group))
++	if (WARN_ON(!table_group)) {
++		fdput(f);
+ 		return -EFAULT;
++	}
+ 
+ 	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i) {
+ 		struct iommu_table *tbltmp = table_group->tables[i];
+@@ -145,8 +147,10 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 			break;
+ 		}
+ 	}
+-	if (!tbl)
++	if (!tbl) {
++		fdput(f);
+ 		return -EINVAL;
++	}
+ 
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(stit, &stt->iommu_tables, next) {
+@@ -157,6 +161,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 			/* stit is being destroyed */
+ 			iommu_tce_table_put(tbl);
+ 			rcu_read_unlock();
++			fdput(f);
+ 			return -ENOTTY;
+ 		}
+ 		/*
+@@ -164,6 +169,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 		 * its KVM reference counter and can return.
+ 		 */
+ 		rcu_read_unlock();
++		fdput(f);
+ 		return 0;
+ 	}
+ 	rcu_read_unlock();
+@@ -171,6 +177,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 	stit = kzalloc(sizeof(*stit), GFP_KERNEL);
+ 	if (!stit) {
+ 		iommu_tce_table_put(tbl);
++		fdput(f);
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -179,6 +186,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 
+ 	list_add_rcu(&stit->next, &stt->iommu_tables);
+ 
++	fdput(f);
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
