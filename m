@@ -1,74 +1,72 @@
-Return-Path: <stable+bounces-56196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E31191D5DC
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 03:48:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADDDB91D69B
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 05:32:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A12442816C9
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 01:48:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C7F528176E
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 03:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1136FD3;
-	Mon,  1 Jul 2024 01:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0B917BDA;
+	Mon,  1 Jul 2024 03:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="g3RurggF"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="axlvBROo"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2638BF7;
-	Mon,  1 Jul 2024 01:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D938C1362
+	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 03:32:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719798511; cv=none; b=Z6cINPw3ABmORDcPQ11cz7PdzS2ttJAzv//fuFMpc5OJXkr0ZKKBIL9zw2uec2pEp2AhkY1llK+6v58oh7uvWfP3sQ5TYTngvls7kjRp8k4SR6pPXI3ClSNSOp3+IcJEgWSyZAfIWuTl/wTlhmSTJMA7GXy6UvUrq8aukus9bMk=
+	t=1719804738; cv=none; b=H/sYbiRzloyE2eD86eOs6xyTPJcP8/vDdEzZWxcXZSHZX9024mVs3mu5sw/myE5D5af572TZB2b6koKnB5r+NVzDP0oV7MFg+dQY9WMYoasATJHpPfsXl0D+QNrSL9XgzX7GGqge7iUg2ncaQwoKtePcVnW48A2jD3JA88cpSAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719798511; c=relaxed/simple;
-	bh=LndvduBCTugN+zBgpjFGTFw8L6tV1GxLf4ARV2GO3qI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=X80EnCuPPbwGXD/ibdxvQDTas7yRUc/Nj4DDXqTNh3/9r2hcpyAwO5lBkYJFSbqCVd65w1TkH7jvxT7ARNcC9apwUJyucdk8mrfpIAXM4lBR/6w+BYhosJUfNaY90c5QOT5Ku069Rj6V7WZabUxkBsuP2QArReyuNdHdfb5PGV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=g3RurggF; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45UNeK7L008799;
-	Mon, 1 Jul 2024 01:47:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=WFZ3rpLyvbaEqpM/4Iq05h
-	1u6dg1spWjaj74z8leeGQ=; b=g3RurggF4njQzSpBy00U0kleC4Txb1zGsvbgpJ
-	8Z3yZzkoFQhkdwH3wB/TPbiXeSiaEj0lN190RgNRRCVka9qa+AX0YZ0hId4MutJz
-	EN3gytJyqNQQGe++sxVTmmJiEArr/HCS7Ij3PGveRIakwYIOvP9VYVFc3Xi47DsY
-	aVbnIWaJMxTSWamTUjBhaJSVikyrkzZMgZpWAN5PmGMkhi4jq7ek6eU+NRwwOUF1
-	LiLfsYEKh5K0dnNRnhthJEdF1TxBbwT8QeHoltJ2IRj8NDe42xadLkmR3/IKzEzR
-	vD0vUvnWkEldXkQzGU7GYosUT/IybJu/eED20V18Wgrtk/IA==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4027mnk1a8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jul 2024 01:47:39 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 4611lcHI019116
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 1 Jul 2024 01:47:38 GMT
-Received: from yijiyang-gv.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Sun, 30 Jun 2024 18:47:29 -0700
-From: YijieYang <quic_yijiyang@quicinc.com>
-To: <vkoul@kernel.org>, <alexandre.torgue@foss.st.com>, <joabreu@synopsys.com>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <mcoquelin.stm32@gmail.com>,
-        <bartosz.golaszewski@linaro.org>, <netdev@vger.kernel.org>,
-        <linux-arm-msm@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-CC: <kernel@quicinc.com>, <quic_tengfan@quicinc.com>,
-        <quic_aiquny@quicinc.com>, <quic_jiegan@quicinc.com>,
-        <quic_yijiyang@quicinc.com>, <stable@vger.kernel.org>
-Subject: [PATCH] net: stmmac: dwmac-qcom-ethqos: fix error array size
-Date: Mon, 1 Jul 2024 09:47:20 +0800
-Message-ID: <20240701014720.2547856-1-quic_yijiyang@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1719804738; c=relaxed/simple;
+	bh=qQQjGDoJ0myh77aPdjP+sWJgsk2E2ZsVb0POwmgofvI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Wq5uAqjUqDuIEdLIt9k4gMDFP5IwR3JqaZRTFnI87usR4/M34ZWRucUXAXIMejLkgx93xuJVo3TgwmnwslGJ4mUdF9QD8gMdT7mtGiLm9JzZV5GRTOiZKDqs28LMsbBa52IUzzVL4uIEaGsjf/0IEAu6jldvdgNzM0Cf223k370=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=axlvBROo; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1719804735;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=lrXIw9w05RWnWwbiO9aOe5v3MpC5DP8zU3Bul/SygzI=;
+	b=axlvBROocrdlpoCxr7V6I2hxInN/atzBo5SkvEuZOb2QX9GITrAxNy7p9+xBjDjQxaLf5a
+	YmCeI+M5Ms9ZIvg7dua4WB2htmV0D+BNzHRpii+DJCNgFwPmr1Z8cAApose1syaDtrxcbg
+	B7UmTVMWdbCJFnVSn6pOFE6BcvAn1wY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-601-dgew17BePSaVyxa7FmGRsg-1; Sun,
+ 30 Jun 2024 23:32:10 -0400
+X-MC-Unique: dgew17BePSaVyxa7FmGRsg-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 189DB19560A2;
+	Mon,  1 Jul 2024 03:32:09 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.72.112.165])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C4EBA19560AA;
+	Mon,  1 Jul 2024 03:32:03 +0000 (UTC)
+From: Jason Wang <jasowang@redhat.com>
+To: mst@redhat.com,
+	jasowang@redhat.com,
+	eperezma@redhat.com
+Cc: kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] vhost-vdpa: switch to use vmf_insert_pfn() in the fault handler
+Date: Mon,  1 Jul 2024 11:31:59 +0800
+Message-ID: <20240701033159.18133-1-jasowang@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,50 +74,43 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 2gfIGHlo93uEszPcsCr5YxwpAZcB6C0B
-X-Proofpoint-GUID: 2gfIGHlo93uEszPcsCr5YxwpAZcB6C0B
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-01_01,2024-06-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
- spamscore=0 malwarescore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 phishscore=0 mlxscore=0 suspectscore=0 clxscore=1011
- mlxlogscore=979 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407010010
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-From: Yijie Yang <quic_yijiyang@quicinc.com>
+remap_pfn_page() should not be called in the fault handler as it may
+change the vma->flags which may trigger lockdep warning since the vma
+write lock is not held. Actually there's no need to modify the
+vma->flags as it has been set in the mmap(). So this patch switches to
+use vmf_insert_pfn() instead.
 
-Correct member @num_por with size of right array @emac_v4_0_0_por for
-struct ethqos_emac_driver_data @emac_v4_0_0_data.
-
+Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
+Tested-by: Dragos Tatulea <dtatulea@nvidia.com>
+Fixes: ddd89d0a059d ("vhost_vdpa: support doorbell mapping via mmap")
 Cc: stable@vger.kernel.org
-Fixes: 8c4d92e82d50 ("net: stmmac: dwmac-qcom-ethqos: add support for emac4 on sa8775p platforms")
-Signed-off-by: Yijie Yang <quic_yijiyang@quicinc.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vhost/vdpa.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-index 80eb72bc6311..e8a1701cdb7c 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-@@ -272,7 +272,7 @@ static const struct ethqos_emac_por emac_v4_0_0_por[] = {
+diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+index 63a53680a85c..6b9c12acf438 100644
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -1483,13 +1483,7 @@ static vm_fault_t vhost_vdpa_fault(struct vm_fault *vmf)
  
- static const struct ethqos_emac_driver_data emac_v4_0_0_data = {
- 	.por = emac_v4_0_0_por,
--	.num_por = ARRAY_SIZE(emac_v3_0_0_por),
-+	.num_por = ARRAY_SIZE(emac_v4_0_0_por),
- 	.rgmii_config_loopback_en = false,
- 	.has_emac_ge_3 = true,
- 	.link_clk_name = "phyaux",
-
-base-commit: 0fc4bfab2cd45f9acb86c4f04b5191e114e901ed
+ 	notify = ops->get_vq_notification(vdpa, index);
+ 
+-	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+-	if (remap_pfn_range(vma, vmf->address & PAGE_MASK,
+-			    PFN_DOWN(notify.addr), PAGE_SIZE,
+-			    vma->vm_page_prot))
+-		return VM_FAULT_SIGBUS;
+-
+-	return VM_FAULT_NOPAGE;
++	return vmf_insert_pfn(vma, vmf->address & PAGE_MASK, PFN_DOWN(notify.addr));
+ }
+ 
+ static const struct vm_operations_struct vhost_vdpa_vm_ops = {
 -- 
-2.34.1
+2.31.1
 
 
