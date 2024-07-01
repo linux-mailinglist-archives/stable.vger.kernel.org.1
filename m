@@ -1,229 +1,164 @@
-Return-Path: <stable+bounces-56288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B61991EA83
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 23:53:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51D5D91EAAE
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 00:03:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 064AC1F21B6F
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 21:53:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4DCAB219CF
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 22:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE80171657;
-	Mon,  1 Jul 2024 21:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0muSbS0d"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF6738394;
+	Mon,  1 Jul 2024 22:03:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2041.outbound.protection.outlook.com [40.107.102.41])
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [95.217.213.242])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7607916E893
-	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 21:53:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719870808; cv=fail; b=Xr/+zRt8i3SxxBWbeO3ZVBJVXbFhN4N3Kua21Ofm/R+EL4ZHlhgyyupXdZ35DYhCieENw6UFurc5cUdF6sEnhPJpSfnmv7nyzy8Oo6o4pimMCVjMDZ4olBBYq1F2dicMZ8ze8AWDzwE5eJXoJT4+uLhNFEDtp1BK9dKoPgF6WCw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719870808; c=relaxed/simple;
-	bh=vStGsKUMml28itvN6eBkqr0EFlRpl2SM0C01C/hkSb4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=NTgLhRwbFVfGGMMjCdZzIFmXsdojNO2LZzocy0PgKg0pjZ788T4yX9qkxaovpyO7CWxba85p3kgJ6EBqudtQeNtiQx5dpKGQ3zDU0qndWhBRP9Nf0yfOsRa+FpC8msHWJJrjOJCGdUjDiiXcISTY1bT8ouCevfHFw6FWib4mtg4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0muSbS0d; arc=fail smtp.client-ip=40.107.102.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cURelY11wckTA9QgVu6FDV0Z+EFaF9Quhh0AQma/qyL0zB692DzdhOtSDvqiHCE1eFoH5Tg8ymg+1JepdDoHn+grX1a3cxSYHGHVgLq3yh5KefWwRYd+LjCwrj2iW4ypR+Xo7pTvfkzSf5fyprSFRQqgnEUlrh/gLxVnphY1g0ishEvxtJ1Wj88r7HkotHqvdmw2zQkuIxdwECJ1ZsC3RQDUZ02+lsAUsQlBu86DnVoNQoWU3y5KHw+zZnQOyx9oCzoHv0Wsq9GOj9f53n1cjHW+iXzQidmBUcC/ig+lz435q8QfTRxaAKN90qcaX6X5jZ7Z3KRFFruYVoUw8rr0Mg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0nCsCA+mQ+MEsukiDPB7iFSgFyMwFI5hgP+MzeYtZpU=;
- b=IBnyif4QCK7y/aRPaL2T1KfyaXBqn9qpnnqi7WVf9RZjD2mtefm+pf9qy/5BwIDf7yefIRxFnxfPRu2skJ+kdE7IMBd5Rbdkcft/1ZixJjMq26uyybqllKqMaUUtw76x2tzpeynWVwLDYy0pY7JLzLh4lNeyBmhL/I/ojd87sCHvi48K7ncYBR074mCHmPfGCZ2+27NsHmSOSMRZS/do/u68E+O2LDkjEgOL8hv+uWFozVRv5isNSnAb9kbMFjioqNm8p/QSqKxbU9YiZrq+QUB0P+XdMO7WmLnaHH+l8uN8lWBrqU4MM9IzgoRbNxk+sR+V94PeyinScMv0kGU1cw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0nCsCA+mQ+MEsukiDPB7iFSgFyMwFI5hgP+MzeYtZpU=;
- b=0muSbS0d2SHuyL1dyKfuXYtBjeZBTzsf7np4LM+inf31krrwltchEwVFchuDjVatmbsEh37EwZQKVwWpLTFUJIMqGH3D8qrDAX6/mTvoGFxgpSG+wkDr9D6e5ME/4lHT5I6VKBTmXLULJtgvTdY0QZo8rRjAH6DkNHg1FYGNKoA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by DM4PR12MB5865.namprd12.prod.outlook.com (2603:10b6:8:64::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.32; Mon, 1 Jul
- 2024 21:53:23 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca%6]) with mapi id 15.20.7719.029; Mon, 1 Jul 2024
- 21:53:23 +0000
-Message-ID: <18882bfe-4ca5-495c-ace5-b9bcab796ae5@amd.com>
-Date: Mon, 1 Jul 2024 16:53:20 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: linux-6.6.y: Regression in amd-pstate cpufreq driver since 6.6.34
-To: Lars Wendler <wendler.lars@web.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Linux kernel regressions list <regressions@lists.linux.dev>,
- "Huang, Ray" <Ray.Huang@amd.com>, "Yuan, Perry" <Perry.Yuan@amd.com>,
- "Shenoy, Gautham Ranjal" <gautham.shenoy@amd.com>,
- "Du, Xiaojian" <Xiaojian.Du@amd.com>, "Meng, Li (Jassmine)"
- <Li.Meng@amd.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20240701112944.14de816f@chagall.paradoxon.rec>
- <SJ2PR12MB8690E3E2477CA9F558849835ECD32@SJ2PR12MB8690.namprd12.prod.outlook.com>
- <7f1aaa11-2c08-4f33-b531-331e50bd578e@amd.com>
- <20240701174539.4d479d56@chagall.paradoxon.rec>
- <fd892ad7-7bf9-4135-ba59-6b70e593df4e@amd.com>
- <20240701181349.5e8e76b8@chagall.paradoxon.rec>
-Content-Language: en-US
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <20240701181349.5e8e76b8@chagall.paradoxon.rec>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN4PR0501CA0062.namprd05.prod.outlook.com
- (2603:10b6:803:41::39) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7AC718EAF;
+	Mon,  1 Jul 2024 22:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.217.213.242
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719871390; cv=none; b=buy9CN2oGkH67KWx1qA5k00tHaAfxbv2/DK/rcrxzL7Jx5yqvCHYhqsWLn3fzWPmcOEijwOhAayRJbHpgcaK9heVTahphumlOUYhJf5jkrhn299rROXDNBGj+fngo3SR6XGna8N7+VsmVmul4g1ogaYNIFyh6v3htmPwPqznqFk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719871390; c=relaxed/simple;
+	bh=Y5o/L97g+ZYOG1CiQ7fBwcAl6AYqmFjKcl4L+CIA6oQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=UUeAhrTusXZ1n9DEAQqKrryVHpb00TycAAbHNzfd+rI9ei/KGwOvkk8wyrzJizsJlvrGrOaj+ZYAPy7zXVRbSWiP85trr1CgmR9vf0LVlpBXD2Hr9/c8fglFFUKB55f/oI2pZZmqJ6jE8QX73h+P0hlUtChxt5cxAwWCkFhBn0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=95.217.213.242
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from 213.219.156.63.adsl.dyn.edpnet.net ([213.219.156.63] helo=deadeye)
+	by maynard with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1sOP71-0000b0-Hn; Tue, 02 Jul 2024 00:03:03 +0200
+Received: from ben by deadeye with local (Exim 4.97)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1sOP70-00000002Nka-3GYb;
+	Tue, 02 Jul 2024 00:03:02 +0200
+Message-ID: <8ede281c9348a21efc806739782f622bf27f8e7b.camel@decadent.org.uk>
+Subject: Re: [PATCH 4.19 164/213] netfilter: nft_set_rbtree: Switch to node
+ list walk for overlap detection
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+  netfilter-devel@vger.kernel.org, patches@lists.linux.dev, Stefano Brivio
+ <sbrivio@redhat.com>, Thorsten Alteholz <squeeze-lts@alteholz.de>, 
+ jeremy@azazel.net
+Date: Tue, 02 Jul 2024 00:02:52 +0200
+In-Reply-To: <ZoMlOF3HVq3UP0aa@calendula>
+References: <20240613113227.969123070@linuxfoundation.org>
+	 <20240613113234.312205246@linuxfoundation.org>
+	 <861740945d6a21d549d82249475b6b5a573bc9ed.camel@decadent.org.uk>
+	 <ZoMkPqf8AOpROvRd@calendula> <ZoMlOF3HVq3UP0aa@calendula>
+Autocrypt: addr=ben@decadent.org.uk; prefer-encrypt=mutual;
+ keydata=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
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-knXT3Og6EkDmvDngi0YR"
+User-Agent: Evolution 3.50.3-1+b1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|DM4PR12MB5865:EE_
-X-MS-Office365-Filtering-Correlation-Id: be25b1a1-bbc7-4cba-d9d0-08dc9a183a83
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?T1Jyb2ozeXoyUmFnRUVZZ042MjJWYSthVG9Lb1RnWSs1WTRXa1BBVnhqVm85?=
- =?utf-8?B?V0hEb3UxanRFaFNkTjRBWXBVMUZ2YWNxZ3Nrc1RQM244c281U0FQZmYzcEh1?=
- =?utf-8?B?Z1Q2Zkhya2pDS1lMcmZDR1VwM09xbmVoR2F3bURNRDJuSytUdHorUGxza0J2?=
- =?utf-8?B?Tmo0aGdqaitkZHloOWs1eUFrTU16bGI3ZnZGZTY5dUFiKzN1aXIxNHJqdXRW?=
- =?utf-8?B?VWlrNDQvZE1RQklNUXZZbi9zOFFSLzVOV00zVGNTc3pVTENTT0hWb3c2ZFF3?=
- =?utf-8?B?ZC9lMjFXZzRrWWc4eEZ1NitnNTBPdDJNNWFkeDdGZjVuektrQndWdUNFMmdk?=
- =?utf-8?B?cDlqV1czbUhnbWxBYjY0bEszYkpaYU5KL1p1bnBKREtPSDIvUjBWaUZCanhx?=
- =?utf-8?B?RnJ4L24rdWpSZkk0em9FYmVEalh4OCszNTB3RFBBRGo3dzMveHBBM1FKS2lC?=
- =?utf-8?B?NUlMVmNZUzVrSFZGTE41WTdNWVRkRmZaVHRxK2lHblQ0RWN6YXRENWRqK2Ro?=
- =?utf-8?B?ajk1M3JWM0ppOGhBTjIzN01uTVkwaDFybFlKTXpaZjB0cDF3dVBTdDlOS0FQ?=
- =?utf-8?B?VnNSYXhjcVEvLzhwdTBOTDI2NnQvTE9JazNOaGdOczJFMXJkUlVXV2x0Tnhq?=
- =?utf-8?B?ZmgzVDRwSnd0UHlJbUJaQVF2V2k1MXlncTNZZmM0NTZQOGxXWmVlbk94dUlj?=
- =?utf-8?B?Kzd1alhITzJRUWZ4ajQ2UHVtR09PalhMY3MzTDZ2NHdIRTF4LzVlK2kwd0xE?=
- =?utf-8?B?RXFkVWpzL1FwQnkwWHhzTGJjVTJoY0x5dWdscHR5T3RwUUh0L3dKeGNuSlRG?=
- =?utf-8?B?N0VoZUQ3cEIrRkp1TkRKOFhBbEhzQmJqZllyYmJpTVo4MXNCN2kyNEk0RVND?=
- =?utf-8?B?VVdUMTFsWUtuN3JIenZLZ2JDQit4UlV3UUFGckVVRVVSNTFTaCtqcWRyRWpK?=
- =?utf-8?B?M3hTY2REVGtXb3BXUElCTWxuVk1ydERhNFg2ZUh6Y1lwdy9tTFgvK1c0ck9j?=
- =?utf-8?B?amJjQUtrek9DNUhpbUNTTHo2SmpUSUZleWV1M09jMGJkTDhlR2FsSC9samZj?=
- =?utf-8?B?TmFaYXRYRDBxdXprN2JDUGk5MFlkZ0cwcXNsalpTMHVEMzR3YmhrNEdlSDJx?=
- =?utf-8?B?akxPVmlYSGZhbm5SWmNTNXovTSthUG1DVS9HeFFGNVVCaW95TW8zME55WC9G?=
- =?utf-8?B?SC92L05UYTJDUkFZLzdkTmVnU3ozWUNQR21Ga0V5ankzTEJDV25UVTNROHlv?=
- =?utf-8?B?bnFFMklkYlU5Q1VGUDFpVU4veFdYUEUvbzI2Z2N2Ty8zQU5lT21TOWpqOFlJ?=
- =?utf-8?B?WGprQW9DNTJWMDdmS25OUXZNYTZ1aDNjcVBLMTUzZjhCWXgySmx0bmFZY3VR?=
- =?utf-8?B?REdVYmpNWWtuNG1xRklqZUJQU3hLSlVhNEl3Z0hqR2pzS2xMSE9vdC9velV3?=
- =?utf-8?B?SDZKNWJ1UUhONk8zL3I5MVBlU2VUNUpwRU5uV2JxWXIycVpDMy94cDhmdEtP?=
- =?utf-8?B?bWxaV1pCeXB4Q2NuRGZSbjQ0S0doQTZ3OXNoTy9CUjkrME9iU0tXcVBXYWZo?=
- =?utf-8?B?bGw4MEl1MnNXTkNmT1JzSnNMbVo3U01sQTVwek51YTlqQnhzeDViME5taytx?=
- =?utf-8?B?bTdMOVMvRUk3L3VLaENxUW1TTHJJUUZCVEVwOUJpM3F0azBQN0lMS1BFL0pX?=
- =?utf-8?B?TTVBOEFpTWVlOUtjL2JoY092VkU1cm4zZ3hvRXRpTXhvbEJrRGZzd0lYYU5N?=
- =?utf-8?Q?epBdqqaUFtV72YyyGA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cWRWZVBEZWluZUpVZkpWSnJrd2VZZXl2eG1qdmVLN0dFT2tzUWVpRys5REJW?=
- =?utf-8?B?amhDRnZEN0htVnN2VGZoOFBDaCtsZWg4ZVE5NU9nTjFwNUl3eE9VNFdwTnhJ?=
- =?utf-8?B?Y2JreXNGRDA4bkp4eDFTZ0VYTjhGT2dFS3J2R2QrTlZmY0NvNnk1RkhOMzl4?=
- =?utf-8?B?NDJ5bFhyTzQ2cUh5d2dDSEVGZ2E3Y0E0Mno3eGluaHhZVmhQUFZQOFNPOGJF?=
- =?utf-8?B?NmlpMzFEdlRqNUlhV2M4am5GZUV4OUhCTTJSYWlNRW5LUkE4TFFycEp3c3Jm?=
- =?utf-8?B?L3YrbmpJZnMrUEEvZU9wbHV0cDdQNFFzRXpRSEt0SmVwd2hSUXpueUhGV3M1?=
- =?utf-8?B?K2F3b01GUmQva0xhNCtLQTVWMHd6Q3BiQU1FU2dvTjlQMVZWVmFKQ2JEZlFM?=
- =?utf-8?B?K29icTRhU2cxY3YwYW03VllkbnYrc3hCYjBqRytkMHlCTElwckM5ZTVBUlBE?=
- =?utf-8?B?Q1AzdmFWMFBWT04vb1lMc284NjMrZTFnbEVvaVVkeGN5Z2FHZ1ZaeW8rNTB5?=
- =?utf-8?B?SXNMS0REbitqNGVDR0lRRzhhSTZjMTVXSW5DZXcvUmJMWFZGNnNYcHNEOEEr?=
- =?utf-8?B?SCtGYUF4UVRVMFZnemMvdUJTRU9uNFFhVlZYOVE0TWt6NUt3b2xzVjBmUzF0?=
- =?utf-8?B?cXN0bUlSV0Z0MFVHb2FZZlMxc3YzT0g4aGFxSUJ4RTRZU1d0T3czcDVWSnUy?=
- =?utf-8?B?bWpLcmhsNS9nU2x0TlUwdmJKSE13ZUM2THJFMlMyQ1FTa2RsQVloN00vSkdO?=
- =?utf-8?B?RjJaSDZITStYZmdsM0pJdUJHSEJMdzQzL1NaRVBDdUNWZkNzNm5OODcrV1lM?=
- =?utf-8?B?YU5ZVU5wQnV6Q1lDblpLKzBQMlFMTlN1QnpsWUdKajJsenNGZWxsbWxETHp5?=
- =?utf-8?B?Q3lRZUIycnZZLytJaVVVMHZ3eDR3YnQ2bm13MDcxZXE4bmY2LzFFa3lKcktE?=
- =?utf-8?B?Qzk3MkdzbCtVSHhQTURBWGw0M2FGSEtDdjhuTk94NEsyREs2RThaMUlqMS9i?=
- =?utf-8?B?Qlcwb0cyUkdqV0hKNU5saGsyMk1xR1BLV0l6eVc0SzI5MHZNd0hSajhhc2xI?=
- =?utf-8?B?T1pld2JSdDFBVTNPVG5lMjc1bWc4RysrUlgwUkYyRDZ4Ni82cnI5d2toQWlD?=
- =?utf-8?B?Rml3RjZMN0xyZXBibzQxalFTbDdNZ0c1bm94N3ZzUnJ6SkRXeUFsL0toSStP?=
- =?utf-8?B?blNrYUlvbzZQZDVja3N1NHZvTlhPOWttQzl1S0NpbENwK21lclR3S0xINVlB?=
- =?utf-8?B?R1phRUozaWNFN3d3TjRCeU96WEpYdUNXcS9yRFppcERnSXgvM0MvdHY5eSs4?=
- =?utf-8?B?WE9jQm5ZV0xCa0tSaDRtUXJxTnZIak91RVhxbm5ZcWwrQWpHNEdTOXMrclYz?=
- =?utf-8?B?S2E4TkJNWGs3RTlSb3FVSVA5cjg1SjY1SHRBK2JyUFUwK0VyZjJGdUVobE5X?=
- =?utf-8?B?M1lTd0JHZzJWTzVIWUJpOFNyK2tiOWdvL3Q4eFhvdjVuOE5ES1piNWFyem5l?=
- =?utf-8?B?SkZtVkp1bjgwQ3ZRaWpIMVdWbERmeVVpeEhIem5VUm9iSzk2V0lZNlU2RDFJ?=
- =?utf-8?B?SE5WdEhDQnh6bXVROFE4QndqVExPKy9JOFJmT0w2eHNCWXcrN2cwV2NHd05G?=
- =?utf-8?B?OUpRM3FLbUZJUndaVWlRZm40NGxUTkxvSmZ1cUhPdjkveXBPQiswQ1EvSlVU?=
- =?utf-8?B?MC8rNEJkTVEvN3hiTjBhby9GZHNjTEQyRVNGSWhyTnRkUlJrOXpEVWZ3VlRV?=
- =?utf-8?B?aWxxZHVYYkVaNGN6ZWh0dk5pMHhaQjBUUjIyMnhFRHczYnY0VDJlNDhjOUh5?=
- =?utf-8?B?R2xkR3dPT3pVNW9qWE5USnY1Mm55akUxSnV0RU1sRThTSWRCTGhDdGpOZkJJ?=
- =?utf-8?B?M1dZY3l1UmpPMWJSQTQ0VUJKbGJuYmlnZnhUS2YrdmxZRGRNVUo0TmFGNk5m?=
- =?utf-8?B?dDBxbm5iOHRNaHplSnBvQ2oyQUhYbkV0Y2pYRWc4U2FyVmNENUNrOGljRUVU?=
- =?utf-8?B?TXhtc0RFNVQ3YVRoaC8yd2IxT3I4QkJYL2VYTE55UXRBaHJZd0dZeWswNXE2?=
- =?utf-8?B?NWtVQmgxZTdzMmE2ZXlGYWdCRkJERFpvUEtKYW44cE1HODliNll1UWsvaDd0?=
- =?utf-8?Q?NmgxSkd5mexMuSRopGr1d7+lm?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: be25b1a1-bbc7-4cba-d9d0-08dc9a183a83
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2024 21:53:23.2931
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: z+pCvZHuGOIMdnpOLw7qB2EApKG4UtxHMNKId52z/aFeO7DVasTggPEZ/fKIQwBgxBHq1tnRtLHwQB7Sf+S7sA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5865
-
-On 7/1/2024 11:13, Lars Wendler wrote:
-> Hello Mario,
-> 
-> Am Mon, 1 Jul 2024 10:58:17 -0500
-> schrieb Mario Limonciello <mario.limonciello@amd.com>:
-> 
->>> I've tested both, 6.9.7 and 6.10-rc6 and they both don't have that
->>> issue. I can disable CPU boost with both kernel versions.
->>
->> Thanks for checking those.  That's good to hear it's only an issue in
->> the LTS series.
->>
->> It means we have the option to either drop that patch from LTS kernel
->> series or identify the other commit(s) that helped it.
->>
->> Can you see if adding this commit to 6.6.y helps you?
->>
->> https://git.kernel.org/superm1/c/8164f743326404fbe00a721a12efd86b2a8d74d2
-> 
-> that commit does not fix the regression.
-> 
-
-I think I might have found the issue.
-
-With that commit backported on 6.6.y in amd_pstate_set_boost() the 
-policy max frequency is nominal  *1000 [1].
-
-However amd_get_nominal_freq() already returns nominal *1000 [2].
-
-If you compare on 6.9 get_nominal_freq() doesn't return * 1000 [3].
-
-So the patch only makes sense on 6.9 and later.
-
-We should revert it in 6.6.y.
+X-SA-Exim-Connect-IP: 213.219.156.63
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 
 
+--=-knXT3Og6EkDmvDngi0YR
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Greg,
+On Mon, 2024-07-01 at 23:52 +0200, Pablo Neira Ayuso wrote:
+> On Mon, Jul 01, 2024 at 11:48:51PM +0200, Pablo Neira Ayuso wrote:
+> > On Mon, Jul 01, 2024 at 10:51:17PM +0200, Ben Hutchings wrote:
+> > > On Thu, 2024-06-13 at 13:33 +0200, Greg Kroah-Hartman wrote:
+> > > > 4.19-stable review patch.  If anyone has any objections, please let=
+ me know.
+> > > >=20
+> > > > ------------------
+> > > >=20
+> > > > From: Pablo Neira Ayuso <pablo@netfilter.org>
+> > > >=20
+> > > > commit c9e6978e2725a7d4b6cd23b2facd3f11422c0643 upstream.
+> > > [...]
+> > >=20
+> > > This turns out to cause a regression for nftables user-space versions
+> > > older than v0.9.3, specifically before:
+> > >=20
+> > > commit a4ec053812610400b7a9e6c060d8b7589dedd5b1
+> > > Author: Pablo Neira Ayuso <pablo@netfilter.org>
+> > > Date:   Wed Oct 9 11:54:32 2019 +0200
+> > > =20
+> > >     segtree: always close interval in non-anonymous sets
+> >=20
+> > This is really fixing up userspace as the commit describes, otherwise
+> > incremental updates are not possible on a set/map.
+> >=20
+> > > Should nft_set_rbtree detect and fix-up the bad set messages that
+> > > nftables user-space used to send?
+> >=20
+> > Problem is that a non-anonymous set really needs close intervals,
+> > otherwise incremental updates on it are not possible.
+> >=20
+> > It should be possible to backport a fix for such nftables version.
+> >=20
+> > I can see Debian 10 (Buster, oldoldstable) is using 0.9.0 but it was
+> > discontinued in june 2022? But who is using such an old userspace versi=
+on?
+>=20
+> Oh, I misread, it is still supported in oldoldstable in Debian.
+
+It is out of support in Debian from today.  But Freexian will maintain
+a derivative of it (with selective updates, including a newer kernel
+branch) for some time to come.
+
+> Then, userspace really needs this fix, because incremental updates on
+> a set are not really possible.
+>=20
+> I can take a look and send a backport of this for nftables 0.9.0.
+
+Thank you!  I already tried cherry-picking just that commit, and that
+seemed to fix the issue, but I didn't test anything else and I'm not at
+all familiar with the code.
+
+Ben.
+
+--=20
+Ben Hutchings
+A free society is one where it is safe to be unpopular.
+                                                      - Adlai Stevenson
 
 
-Can you please revert 8f893e52b9e0 ("cpufreq: amd-pstate: Fix the 
-inconsistency in max frequency units") in 6.6.y?
+--=-knXT3Og6EkDmvDngi0YR
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
+-----BEGIN PGP SIGNATURE-----
 
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/drivers/cpufreq/amd-pstate.c?h=linux-6.6.y#n678
-[2] 
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/drivers/cpufreq/amd-pstate.c?h=linux-6.6.y#n637
-[3] 
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/drivers/cpufreq/amd-pstate.c?h=linux-6.9.y#n703
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmaDJ4wACgkQ57/I7JWG
+EQnMsg/+Oxz9/rbFumw73f+u5TiUiP8FS/3iCsTalugzQPVE4RgDOfdWA6swNNzC
+TUDj/u34GFn9s6NiJsbSxqHiK1rSWIwjx9ezGTKMBiWw52Tek4IgM/2U5OjISRoM
+jvq8W8cloqhuGVGHnbg1WtUNJj0/ymn9anpuuqkmodLZY7fHg45vNwQcvehd0B5M
+K56njRbZc2ROTWUgi65+CbYa8aeH3NhvtieM7R0GslrOHYkU/OtVBjP3zXYOAW6f
+1kWa7s9flQnseRbg0lB2R7xghtw+xB1Xu/S4HuLAwmVs0yeBnkPL950XXMSnd6hX
++xHgjCCNslEjLvY42I2jYGY45SxexJctXumGeU7LynG+/bmGAHudG1ClDKpRYVvx
+kJpbMDrVuGsYEkUZZP7NAtCBJuzoHsOh3t6ETK6a65e48KozpUGz1nn9xRr1i0Wi
+5NQA5Cx0sO9/detpNoXcUj6JmAXFTFfa0760CK0lPfoao/gDsEJHPuryuMjat8FT
+QqmMEodg7ifB3WyipUeFGbQslGsg63UlQnIuEuSGyroKCxY+1tK5vXHG70G+kJoO
+/kulYYtbEa1b1qqLI1RS41et3ZvZmypVUsnLi41cYOroGCxPr6EMP9IUTuMHRzz9
+j0K4CNwGWvimNqHCH+eqNtsRNovYnhE15RGdjpuk7CnHa0h1Z1U=
+=CTi/
+-----END PGP SIGNATURE-----
+
+--=-knXT3Og6EkDmvDngi0YR--
 
