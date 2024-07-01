@@ -1,123 +1,98 @@
-Return-Path: <stable+bounces-56198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6073F91D758
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 07:17:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA28191D79D
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 07:46:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1FD4B208A7
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 05:17:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 159501C22213
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 05:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F022A8D0;
-	Mon,  1 Jul 2024 05:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2548B17BD9;
+	Mon,  1 Jul 2024 05:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="okf6C8m2";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JPTXfSJH"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="AXI39UAU"
 X-Original-To: stable@vger.kernel.org
-Received: from fout5-smtp.messagingengine.com (fout5-smtp.messagingengine.com [103.168.172.148])
+Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A1B43ABC;
-	Mon,  1 Jul 2024 05:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C74A23A0
+	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 05:46:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.121
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719811048; cv=none; b=hhWXPqI3l6waCPnthgorZwwSkydhoI/51yFK+R5WAcvRnagtnrpKGNWFZhA6OHVPJtwC050YNtJtmQqPtrlZPUpqAHAVoeVIi8Bx8FNyiHydOmOoxiYWvxJSbPvSdfzNDMwhZ+GlyBjzDGRf0qO4tlZpcXe9sjGiOYdOdEYkyHI=
+	t=1719812789; cv=none; b=QOiI+68PNZ21uT/MeVP9ZINTD3pnCsGG9Q+QwDnNQNzlm8T0XIs7Q5eB1Yfug8mVXuXIXwYFssjtPoBWT8bVyt0pQjC8rjzVcJv9td9LESOV8/KasYy7q89ysI/7xlt8Fjggo/9UFgaF26pt/Se92N5uWn+vbhLOr/buSWU1zn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719811048; c=relaxed/simple;
-	bh=1NCPZuvQK11pWLY83VjIg0A+aLb8avWCrU1p0qACbiQ=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=JzFoXkh5ajJ08LBhVec4XluDBoctE5l7xKEYkOmwaRKStjKz8TdrmkWnuj9KomveiuhnIlnW7SfzV9416CZSNVLVawG6puvaOI0p2cvDuq+L5b9RU6Hcg54uRDXdYv+Rf8jrJ+mrSSBmrL1jPKL9X3T+LVroV/h0uPyb0GtW3c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=okf6C8m2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JPTXfSJH; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfout.nyi.internal (Postfix) with ESMTP id 810BA138021C;
-	Mon,  1 Jul 2024 01:17:24 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Mon, 01 Jul 2024 01:17:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1719811044; x=1719897444; bh=uO1R0mZ5vI
-	07kOGzrcM42BVjY+yx0Z5jKChVT17u9q0=; b=okf6C8m2HPPFVmDDl/0YORhXRv
-	UFAxS1JCHgjyMKBQMlQ9+fk6b/AKr+B7XxnPIMNEgnRBd3wg5mTQhaRRgnza9edc
-	N4anHamcsvcrqJysCW2vlVHT65EIXvKs5OVTOmSK775f5aHXLHHiozMOzrnI1I+6
-	zR+QX9oc7ctCToGFOSVic7hfsqnEY3yct+qe4PM21KdJUXfeW9nYcIQ93vBgrjKX
-	YBqFqIHFTvXa9oOzjLmq0ZjNRxt/1dIaWuLjfZbx6bGXtXIbxm4xPqkmhuglwthc
-	8XZNsQf24FlC9fMpGdwOHtLT4qJIaoGeaGKbyz+2AQAjKd7TdIkhI2ps53yg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1719811044; x=1719897444; bh=uO1R0mZ5vI07kOGzrcM42BVjY+yx
-	0Z5jKChVT17u9q0=; b=JPTXfSJHJ+MPlPv+AnVkJN64nebmJXBb55j9Gg10lxoh
-	u/EWAmPQ7sTXj1fty15K7V6bfi8vORaWLuUkHQ7IAmkMnHdkG/zwMZh4FANW7TS2
-	JnBth6qjzOUIM2PuIZQz9DwPP0OowxRC1JrFwgZLEmcgG+gab6/Z29SNYo45mcfC
-	Qm0rpQIbUdk97CeEBk8T5WfVa0UFutgmhIn4hDZeIpHRYD+dOsJGRJ6AgvwYb3oD
-	31kQwt5Ad7hEGUrG2uVZ1dSR7nBNZnsMr214WRjOaSKOZZqQ+Vv2IKC4NDEG4Zu8
-	xg6eFZjZZ5//8ik43fNEQ+bkbfGamIDoh0CTM6vbSw==
-X-ME-Sender: <xms:5DuCZqPkI8E4OiFNmjln9-m8EYMCd_6IwHl_iWUc-sItmy3v_7SHIA>
-    <xme:5DuCZo_n7ONMjki-9RNM32RAOGG3OVyi_ddGJgWFysfKivOXwtxDqxI5yq9GKB8PZ
-    jQ2-26g0PWBD7v4ihs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddvgdelvdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeevhfffledtgeehfeffhfdtgedvheejtdfgkeeuvefgudffteettdekkeeufeeh
-    udenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:5DuCZhRqHVVNNyBKsX0olGyvd9-kqb5qAjViHF5Sydr38TkBB95ANQ>
-    <xmx:5DuCZquOJxLcsQjJ7tVtiF4-d6oqwARGK4yvYZ-wyLG970f43O4rIg>
-    <xmx:5DuCZicl7VDk75mCrld24HDhlv2GoXLEy-IgjXGlGmC6cmcJQZbUWA>
-    <xmx:5DuCZu13NBf3WiujbXSTUQvIlqqQj3iMvU6QXl4q7hbCdeVdds27JA>
-    <xmx:5DuCZi4OKQJRDchhX5KW8W-2s97WfyovsMFo4hSn8QXZkCQy-Ld9S7YQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 280D1B6008D; Mon,  1 Jul 2024 01:17:24 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-538-g1508afaa2-fm-20240616.001-g1508afaa
+	s=arc-20240116; t=1719812789; c=relaxed/simple;
+	bh=Y5gUTAYYE7D6bIFahmuhUVQrQOQQCKJVeHO/25tDj9M=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=onM4QogYzDNabJHfr0ej7gUSUGqitE+LldZZlbeIKWLx7bpuhA25F7YcZWjatzq5/hPV7IufA9mDlS5RlF8ofUD4aVbuAJAH5P93O38RaeRPyg0MtKgODnXolJYXYy27EzeohMdS+qpbj221EIVPDJFRRnt6dx9yQIkLvXwQhRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=AXI39UAU; arc=none smtp.client-ip=185.125.188.121
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from localhost.localdomain (unknown [10.101.197.103])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id ABC593F216;
+	Mon,  1 Jul 2024 05:46:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1719812779;
+	bh=P3dE/iZsUyagRUEXuQdzyVha7Xs9GuwrqaT1+fQXsEk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version;
+	b=AXI39UAUCTF/MY2BK67Lvv2+Y/mBqJuL/5brPxPtyxBT5McxQmbPxoyW1JhRhZGrO
+	 LfJ/WzeqKm741arhh3bxdq4gQbwvHci9DztSY9X+8l6w3RXL+TCY55AmRLxAQZAYIr
+	 IKxbBHFSbD/eVO2YGTmoI/RwVcD5h/aOdFTrU6FQk+SZJMHsymIc8eZtzfiPVJ4hUn
+	 rQkr/b/R3vnAI+YsYXxrIC3ypdJyHYa9vxSn0iedxk3Wh0OEJG1B0D6VyNvRTDD4Ka
+	 ZqLYY76FPK1YCA9OZm9X+x6on7NBahPEN4fCLuPU+aUAsx5n3ZCSqw3uhYKQtjmOTa
+	 CIeLhFrQTnuWQ==
+From: Dirk Su <dirk.su@canonical.com>
+To: 
+Cc: dirk.su@canonical.com,
+	stable@vger.kernel.org,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 1/1] ALSA: hda/realtek: fix mute/micmute LEDs don't work for EliteBook 645/665 G11.
+Date: Mon,  1 Jul 2024 13:45:18 +0800
+Message-Id: <20240701054518.32567-2-dirk.su@canonical.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240701054518.32567-1-dirk.su@canonical.com>
+References: <20240701054518.32567-1-dirk.su@canonical.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <ebe6268b-3ea9-4490-8b12-09c200bb2e4a@app.fastmail.com>
-In-Reply-To: <20240701001033.2919894-1-sashal@kernel.org>
-References: <20240701001033.2919894-1-sashal@kernel.org>
-Date: Mon, 01 Jul 2024 07:16:26 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: stable@vger.kernel.org, stable-commits@vger.kernel.org
-Cc: "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Helge Deller" <deller@gmx.de>
-Subject: Re: Patch "parisc: use generic sys_fanotify_mark implementation" has been
- added to the 6.1-stable tree
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 1, 2024, at 02:10, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
->
->     parisc: use generic sys_fanotify_mark implementation
->
-> to the 6.1-stable tree which can be found at:
->     
-> http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->
-> The filename of the patch is:
->      parisc-use-generic-sys_fanotify_mark-implementation.patch
-> and it can be found in the queue-6.1 subdirectory.
->
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+HP EliteBook 645/665 G11 needs ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk to
+make mic-mute/audio-mute working.
 
-This patch caused a build time regression, the fix is still on
-the way into mainline, I plan to send a pull request today:
+Signed-off-by: Dirk Su <dirk.su@canonical.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240626021437.77039-1-dirk.su@canonical.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+---
+ sound/pci/hda/patch_realtek.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-https://git.kernel.org/pub/scm/linux/kernel/git/arnd/asm-generic.git/commit/?h=asm-generic
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index af641c628c0d..b92e43fbed6d 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10055,6 +10055,9 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8c7c, "HP ProBook 445 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8c7d, "HP ProBook 465 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8c7e, "HP ProBook 465 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8c7f, "HP EliteBook 645 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8c80, "HP EliteBook 645 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8c81, "HP EliteBook 665 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8c89, "HP ProBook 460 G11", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c8a, "HP EliteBook 630", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c8c, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
+-- 
+2.34.1
 
-     Arnd
 
