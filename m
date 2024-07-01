@@ -1,62 +1,66 @@
-Return-Path: <stable+bounces-56144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FFB391D4D5
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 02:12:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF2491D4D9
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 02:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A6E91F2116A
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 00:12:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E78BA1C20886
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 00:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AEDE10F1;
-	Mon,  1 Jul 2024 00:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DAEF2F36;
+	Mon,  1 Jul 2024 00:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZUUxROcL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nLq1pMLD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D279D2C80;
-	Mon,  1 Jul 2024 00:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB7329AB;
+	Mon,  1 Jul 2024 00:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719792732; cv=none; b=gC8ATZPuVuGZ2hrhRV0Jn/8VTQbB8ZzUI9CPA2+SycmlC6RlTD4GwcRF3Jve9mvHh4JvKgegwKCPiitBgT7Lfcs6bPrKBnsdgWyo0lKToXBRxMoJQGLo8D3XR0yvIVIHxwyq0ccjl3YOKPagGEj6vlzb81lBUsE09w9cKU4VHGM=
+	t=1719792734; cv=none; b=Xs8eNeJ/UP1uF5GLjTYsm+YxWp6q+IXpeonLXsqOnEt+iPdYCYMKmdTIW7U2PqpCkWZQ7OUBoCwWpNtsrQTqCWXliTZyvm4cWiiyTn/+DXAL1xt8uBlM+pdpCxsi3JFEyKMYI56rsqW8zEJvSMK9SLXQctMWo+MtsTt8XHXGbLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719792732; c=relaxed/simple;
-	bh=VSZj8vRMujLB5UOFE2+NyN8F5a9YuB+XhvEijdmZaUA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i6KdShUHWw4BePz3bbOqDg3t5PozRkdStc6Ia1wrEQC8JMHkuIyX4HAjYWLDve37x8auTdIH81FxhJYpMHUnpxeg8ofgR2U/NjO4mEmc4kWZXC0zLmeKnrC8tE8TFaV168EDMF+bu9hstlPzupSzFGt61CqrcdmqZjE4ACtH+cM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZUUxROcL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1D3C2BD10;
-	Mon,  1 Jul 2024 00:12:11 +0000 (UTC)
+	s=arc-20240116; t=1719792734; c=relaxed/simple;
+	bh=R2bT5Xe2ba+Nx+hbAaUxNkqWy6reDs+YMC/nS+m3WLk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=U/lj/fCagb7A5RYmVtCttIBVANjbq4r7L8LfATv5EwU6l8I5NNewXcOdeus4oB39xM3VqBUo6rT/6BxW54m8/QH9UvAnzrfUasR/yzxC35Z0aFuf04Oxsw4pW7TT35kK8DbWHUHCxUylwZ+EOdEshlaGKN94vDEyIlPJEoRRl3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nLq1pMLD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D69C32786;
+	Mon,  1 Jul 2024 00:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719792732;
-	bh=VSZj8vRMujLB5UOFE2+NyN8F5a9YuB+XhvEijdmZaUA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ZUUxROcLlUabgTprCn6rXEdHV8l5OIwL8OsV0kXyeyGsbMiWshwwi9w7HJ7dT0xoN
-	 hxmK+EilVS6/Mca8ltbhu8/7igeCDL/K4+//Q+HUl3Vn1jeAhCMJuMeNv1SB+R04nq
-	 9kAv4Nszxuh//Z+VPcO+1abQrXrYSrsuZyOZ0TVm2qRPD5NjlaMN6Iu5Si8t0lZzwX
-	 fyCPXX7eiRwuozZWHr0EOGwk40DDfKl6FuWxPEnxLAj13c0fG3lEv8DwbZ+S+eW464
-	 o2prpmwTfPA7w/GP8AeyT4FtcMWxi1U2rN5LVExgFA2TtqUFws9BpN6fiala03YfVP
-	 RBeeFdWdnmAuA==
+	s=k20201202; t=1719792734;
+	bh=R2bT5Xe2ba+Nx+hbAaUxNkqWy6reDs+YMC/nS+m3WLk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nLq1pMLDIXi37zmaBysGlzL5oOYif/pP0y7fj4qLjuvut4GOKxCGO+PB99pClOcuM
+	 qo2XBkbO7GgCsDutOPseCuiXp7NDMSoDcGSsFha5nvJQ41xkw2FhsOXkUlvMIOn7UL
+	 Scy4M16rOf2pVE9iDj6YRKbx9k0wun6+Yfm9fl7ykcpllECpki8VcmBgj7ZLFcEyRB
+	 9pXwvS2P0ZmnOigS59miBlUMF4TW0wyFWNzBwuNO393dCiYR2eY71Ag4In/XLGyOuD
+	 sZ54Z15C0tKgfh3R4vIZ2Er/wvXnUcN2c2y8h32O7FuIBHzM2ROiat6xBCSEWC3BUg
+	 z1izZWHnKh+Wg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Simon Trimmer <simont@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	david.rhodes@cirrus.com,
-	rf@opensource.cirrus.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org,
-	patches@opensource.cirrus.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 01/20] ALSA: hda: cs35l56: Fix lifecycle of codec pointer
-Date: Sun, 30 Jun 2024 20:11:06 -0400
-Message-ID: <20240701001209.2920293-1-sashal@kernel.org>
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 02/20] wifi: cfg80211: wext: add extra SIOCSIWSCAN data check
+Date: Sun, 30 Jun 2024 20:11:07 -0400
+Message-ID: <20240701001209.2920293-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240701001209.2920293-1-sashal@kernel.org>
+References: <20240701001209.2920293-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,45 +72,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.7
 Content-Transfer-Encoding: 8bit
 
-From: Simon Trimmer <simont@opensource.cirrus.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit d339131bf02d4ed918415574082caf5e8af6e664 ]
+[ Upstream commit 6ef09cdc5ba0f93826c09d810c141a8d103a80fc ]
 
-The codec should be cleared when the amp driver is unbound and when
-resuming it should be tested to prevent loading firmware into the device
-and ALSA in a partially configured system state.
+In 'cfg80211_wext_siwscan()', add extra check whether number of
+channels passed via 'ioctl(sock, SIOCSIWSCAN, ...)' doesn't exceed
+IW_MAX_FREQUENCIES and reject invalid request with -EINVAL otherwise.
 
-Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20240531112716.25323-1-simont@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reported-by: syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=253cd2d2491df77c93ac
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://msgid.link/20240531032010.451295-1-dmantipov@yandex.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/cs35l56_hda.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/wireless/scan.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
-index 11b0570ff56d4..0923e2589f5f7 100644
---- a/sound/pci/hda/cs35l56_hda.c
-+++ b/sound/pci/hda/cs35l56_hda.c
-@@ -735,6 +735,8 @@ static void cs35l56_hda_unbind(struct device *dev, struct device *master, void *
- 	if (comps[cs35l56->index].dev == dev)
- 		memset(&comps[cs35l56->index], 0, sizeof(*comps));
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index ecea8c08e2701..43eb77b4d2a67 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -3396,10 +3396,14 @@ int cfg80211_wext_siwscan(struct net_device *dev,
+ 	wiphy = &rdev->wiphy;
  
-+	cs35l56->codec = NULL;
-+
- 	dev_dbg(cs35l56->base.dev, "Unbound\n");
- }
+ 	/* Determine number of channels, needed to allocate creq */
+-	if (wreq && wreq->num_channels)
++	if (wreq && wreq->num_channels) {
++		/* Passed from userspace so should be checked */
++		if (unlikely(wreq->num_channels > IW_MAX_FREQUENCIES))
++			return -EINVAL;
+ 		n_channels = wreq->num_channels;
+-	else
++	} else {
+ 		n_channels = ieee80211_get_num_supported_channels(wiphy);
++	}
  
-@@ -840,6 +842,9 @@ static int cs35l56_hda_system_resume(struct device *dev)
- 
- 	cs35l56->suspended = false;
- 
-+	if (!cs35l56->codec)
-+		return 0;
-+
- 	ret = cs35l56_is_fw_reload_needed(&cs35l56->base);
- 	dev_dbg(cs35l56->base.dev, "fw_reload_needed: %d\n", ret);
- 	if (ret > 0) {
+ 	creq = kzalloc(sizeof(*creq) + sizeof(struct cfg80211_ssid) +
+ 		       n_channels * sizeof(void *),
 -- 
 2.43.0
 
