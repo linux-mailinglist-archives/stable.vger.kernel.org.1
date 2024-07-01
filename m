@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-56170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE7391D52C
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 02:18:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2124291D52F
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 02:18:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC5411F23E41
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 00:18:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC1911F240E2
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 00:18:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261FE37169;
-	Mon,  1 Jul 2024 00:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB271494B8;
+	Mon,  1 Jul 2024 00:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oHScMyPP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mmt9DBG7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2049131E4B;
-	Mon,  1 Jul 2024 00:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EA113D886;
+	Mon,  1 Jul 2024 00:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719792840; cv=none; b=Ojyi7d9gRmCQ8mjYRgPUbtcSaEWWIn00YywlSyofxr6X3FuxNe4kAb6KvFyV6/Jq5Zb2qeJW81YBCJKrhQN5r2K+j6l24wfrSx8ytVgoxAAanKtKh7vGeBJaqMxl6eSiwRIwzeO7AID05hQU9CQgackGHyeBOrwxVwEkR3GpDH4=
+	t=1719792842; cv=none; b=kPuNqnD8zxC3XWdASkKajltO4Z57X4Hpe9vYsQi95/a/op4h6URXWTqZvag1FcwOoJ0jeK/PS1T38qXatqMdj/Gb+k2hwLOLlvDWWTK78wf8OM+cKzVwBwLaFMIedaCnr5C/E+CY/HEH2vGaNGHOiIV/1Cgpp4Z0Fu6L8tRG84w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719792840; c=relaxed/simple;
-	bh=PQF8Aej0yai2vLCMDITBf9kCcjI8/z8VbTXYxx6y9is=;
+	s=arc-20240116; t=1719792842; c=relaxed/simple;
+	bh=TOXD3TzfdAshihje47H+53+6tvFBaDEyBMZlyz883kI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A9nZUVoL5h06qUDZBgwke1JIsXDUKwMircX7ivuvm+hN3BbIwqGtkxNmYHf8U91fwGpYDL/V/Qk5ESrky29Go2oXrQGPbqmoZf9i5RgSIZSE1x6Hu1Xo8OZSgN20SsYCBVdR2nFTe6PcNuYThBMTpYp49DJI6DAAX3xCcBEMGKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oHScMyPP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CF7C4AF0A;
-	Mon,  1 Jul 2024 00:13:59 +0000 (UTC)
+	 MIME-Version; b=oxM0VLBa7FkSxRun/c6XYDh2ITmdl65B0f2fjxk91gW8DiHC8gQL0vtJu+YGIwCcKc/KmHJryAT52M8TLl/zopXMZDV46ziDpkRVfslymc1p8eDbUDSudDzP6WF+8kV0WT3Y7zCRDsFRJs2xFSB9EXAal5FwLZ5xqzvR7ojEf/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mmt9DBG7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB492C2BD10;
+	Mon,  1 Jul 2024 00:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719792840;
-	bh=PQF8Aej0yai2vLCMDITBf9kCcjI8/z8VbTXYxx6y9is=;
+	s=k20201202; t=1719792842;
+	bh=TOXD3TzfdAshihje47H+53+6tvFBaDEyBMZlyz883kI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oHScMyPPMrVv0/Su9BqkQh87SJ19uKnkY8UFOoSmi5/STclgd4cfoLhSNDkIZbixL
-	 WrtZG0/zYwsZnAg2d1A7Ki1dPgI1zFcJPQW8rO7iI8zuhRcNy03eUFmzIlio5UTuZi
-	 rfFIhW5rSMsIrisS9Lz/0OQB5b35sIWWi62rdyDTdJnSiJb2qp5liTP1wvhyeI2d37
-	 mSeplOMPvRgldyqv9fSRM28hgN5vFBBx9GZSDNkKz9w5oEjVw07NOaKSK2uwYuxsjl
-	 y0hcIOS/OiBmOLw/TFDVvck89bsXdO8v5cJC55hY7RDmvGlR+z9Gq1Qh9yL5beuodR
-	 HV7SmOF+no4jA==
+	b=mmt9DBG76nb//3J3CZchu1bHBY30kAyW75lR6fnduabWTbX7tFmvylIw0cSRtf27n
+	 PMOzTqe36V6kjinJrfUJbncp4v+nDEjiuPzabqNVRsXhny9CNE/N3ytdPNMTUKCYss
+	 49jonUco+Qa2l4Pv9y3xohWUrlm+J48rEkojEZJN5lSk+Fi2uOHK2NfCrjn47Kgbec
+	 b1UWBE3NvHukWTpwbUsQ7vJfQpzzaWNxhypOQcJTkavOvdpTBw32A4WPYE0o5qi2LM
+	 birLo7poXPDV/4Y9F4yqoj/m2fTmuBuLRwNEdnS+MeOQtkjqGj4rGxNEZzvQRwXKXn
+	 AQbW9dqqL2+NA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Patrice Chotard <patrice.chotard@foss.st.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 07/12] spi: Fix OCTAL mode support
-Date: Sun, 30 Jun 2024 20:13:26 -0400
-Message-ID: <20240701001342.2920907-7-sashal@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Paul McKenney <paulmck@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Yury Norov <yury.norov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 08/12] cpumask: limit FORCE_NR_CPUS to just the UP case
+Date: Sun, 30 Jun 2024 20:13:27 -0400
+Message-ID: <20240701001342.2920907-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240701001342.2920907-1-sashal@kernel.org>
 References: <20240701001342.2920907-1-sashal@kernel.org>
@@ -65,66 +71,63 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.36
 Content-Transfer-Encoding: 8bit
 
-From: Patrice Chotard <patrice.chotard@foss.st.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit d6a711a898672dd873aab3844f754a3ca40723a5 ]
+[ Upstream commit 5d272dd1b3430bb31fa30042490fa081512424e4 ]
 
-Add OCTAL mode support.
-Issue detected using "--octal" spidev_test's option.
+Hardcoding the number of CPUs at compile time does improve code
+generation, but if you get it wrong the result will be confusion.
 
-Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
-Link: https://msgid.link/r/20240618132951.2743935-4-patrice.chotard@foss.st.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+We already limited this earlier to only "experts" (see commit
+fe5759d5bfda "cpumask: limit visibility of FORCE_NR_CPUS"), but with
+distro kernel configs often having EXPERT enabled, that turns out to not
+be much of a limit.
+
+To quote the philosophers at Disney: "Everyone can be an expert. And
+when everyone's an expert, no one will be".
+
+There's a runtime warning if you then set nr_cpus to anything but the
+forced number, but apparently that can be ignored too [1] and by then
+it's pretty much too late anyway.
+
+If we had some real way to limit this to "embedded only", maybe it would
+be worth it, but let's see if anybody even notices that the option is
+gone.  We need to simplify kernel configuration anyway.
+
+Link: https://lore.kernel.org/all/20240618105036.208a8860@rorschach.local.home/ [1]
+Reported-by: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Paul McKenney <paulmck@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Yury Norov <yury.norov@gmail.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi.c       | 6 ++++--
- include/linux/spi/spi.h | 5 +++--
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ lib/Kconfig | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index da15c3f388d1f..5c57c7378ee70 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -4000,7 +4000,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- 				return -EINVAL;
- 			if (xfer->tx_nbits != SPI_NBITS_SINGLE &&
- 				xfer->tx_nbits != SPI_NBITS_DUAL &&
--				xfer->tx_nbits != SPI_NBITS_QUAD)
-+				xfer->tx_nbits != SPI_NBITS_QUAD &&
-+				xfer->tx_nbits != SPI_NBITS_OCTAL)
- 				return -EINVAL;
- 			if ((xfer->tx_nbits == SPI_NBITS_DUAL) &&
- 				!(spi->mode & (SPI_TX_DUAL | SPI_TX_QUAD)))
-@@ -4015,7 +4016,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- 				return -EINVAL;
- 			if (xfer->rx_nbits != SPI_NBITS_SINGLE &&
- 				xfer->rx_nbits != SPI_NBITS_DUAL &&
--				xfer->rx_nbits != SPI_NBITS_QUAD)
-+				xfer->rx_nbits != SPI_NBITS_QUAD &&
-+				xfer->rx_nbits != SPI_NBITS_OCTAL)
- 				return -EINVAL;
- 			if ((xfer->rx_nbits == SPI_NBITS_DUAL) &&
- 				!(spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD)))
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 8cc7a99927f95..e5baf43bcfbb6 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -1049,12 +1049,13 @@ struct spi_transfer {
- 	unsigned	dummy_data:1;
- 	unsigned	cs_off:1;
- 	unsigned	cs_change:1;
--	unsigned	tx_nbits:3;
--	unsigned	rx_nbits:3;
-+	unsigned	tx_nbits:4;
-+	unsigned	rx_nbits:4;
- 	unsigned	timestamped:1;
- #define	SPI_NBITS_SINGLE	0x01 /* 1-bit transfer */
- #define	SPI_NBITS_DUAL		0x02 /* 2-bit transfer */
- #define	SPI_NBITS_QUAD		0x04 /* 4-bit transfer */
-+#define	SPI_NBITS_OCTAL	0x08 /* 8-bit transfer */
- 	u8		bits_per_word;
- 	struct spi_delay	delay;
- 	struct spi_delay	cs_change_delay;
+diff --git a/lib/Kconfig b/lib/Kconfig
+index c686f4adc1246..ee365b7402f19 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -539,13 +539,7 @@ config CPUMASK_OFFSTACK
+ 	  stack overflow.
+ 
+ config FORCE_NR_CPUS
+-       bool "Set number of CPUs at compile time"
+-       depends on SMP && EXPERT && !COMPILE_TEST
+-       help
+-         Say Yes if you have NR_CPUS set to an actual number of possible
+-         CPUs in your system, not to a default value. This forces the core
+-         code to rely on compile-time value and optimize kernel routines
+-         better.
++	def_bool !SMP
+ 
+ config CPU_RMAP
+ 	bool
 -- 
 2.43.0
 
