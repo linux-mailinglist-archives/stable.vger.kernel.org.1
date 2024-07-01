@@ -1,85 +1,95 @@
-Return-Path: <stable+bounces-56212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D9FA91DE4F
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 13:48:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67F0391DFB6
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 14:46:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 447D51C21404
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 11:47:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 994A11C22224
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 12:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA4B143C65;
-	Mon,  1 Jul 2024 11:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EF714D6E4;
+	Mon,  1 Jul 2024 12:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vcERIxBu"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="awQ9+sGH";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="tDkWg40c"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh6-smtp.messagingengine.com (fhigh6-smtp.messagingengine.com [103.168.172.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70E839FD0
-	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 11:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29E2158D99;
+	Mon,  1 Jul 2024 12:45:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719834473; cv=none; b=ZiIRQJ8mK9zZiIsipxJ0lKDRZe9AQHMI1+GxJJNu4uAXYT3cpHHQSsSZUnd63GpGjPn/QBmLuhGUZEbHATQdWj32wOAwePI5AjGXyQx3TLHgwe18ulHrCh7dmtss5KhWK7zhLiftwJU7dJynvcypELDCNOHDAyU8HMQimyMCDCg=
+	t=1719837916; cv=none; b=st31efXTWzxHuQuLA9/sqdZav0sHlqoeIWyzPAyqZFypihBMqcZuvCnkWI8oKV28zxv3HgmxfRvVADFNbMZ+hlNR3gRpr3cZCAPJDxas1ytPrL78tW267Kq9CixIMd0acSr9y6N3F6LjjqFDM0R7aq5OoVizo8S8GZS3/RlsyEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719834473; c=relaxed/simple;
-	bh=jiWVBvlci6pg3oJ+xWBRBIfbjSaD2vYzPxE1uip87Pw=;
+	s=arc-20240116; t=1719837916; c=relaxed/simple;
+	bh=bA6TyIvMqlPuSh7KeZQbRW2bMXFM40Ms2f5PG/F3MvM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JDoWgVKWpUKd79SIsNL4TCkvcx8azcLxzoVyIJ2KwGd4o5ZhArlYZC7ijQ8pg2zWt9laZfYxJ6ccw9nEBIwrrn7usiSQTlsq7xSyZeeAtTZs2ouz0Ekli8lSN0MhIgRaMP9iwavDHv89QJb3SpBsBpRofxkeW6kEGfLI/bGMenY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vcERIxBu; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-71871d5e087so1799921a12.1
-        for <stable@vger.kernel.org>; Mon, 01 Jul 2024 04:47:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719834471; x=1720439271; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vi7uBT1zGBUytAU1JAG3iLk2sulQaLB7Dq+BxdOsfHM=;
-        b=vcERIxBu0xd5g4IpMJl4OnjdSwsr7rK3jJt6Fr/LtUsqHAzLVMhWQnD5tQacKnt0Ns
-         w7hoPcm8HONBQaHUbdW3dWLvpGWDpsOtyHEwWbbPfigMkSrX8+/iI8MacalFJcz8J3rN
-         MlERqwYN8ERrX5OkKjJLOn5RtovDoQG90ahTwkgKa63dJC5VN88ak3bFk2wEqNDYxI0p
-         Phc+y7Ig47C67CaP/YWrBvxpIwa/TNbrVBBX9dNcvAH1YbOZ8CctzKl6IfqX2WGHPv0i
-         EtDndWA9oC6ew2O3zNXzpQRJcXtDEZcgydLwA7hDYqZGv3TdbsjtwHO4uh1Hm64yDaj2
-         MkCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719834471; x=1720439271;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vi7uBT1zGBUytAU1JAG3iLk2sulQaLB7Dq+BxdOsfHM=;
-        b=NIGupKawtO7pDRpnAgKjWQSL6e1qcYQW63v7ui2NNn65391atvSfb/uld90tqfIL5r
-         kuWHGMJSKjBBCspumwB7M+alMr8v0DPh1pyA0Mg2Kkx/Ms94MiatVVWPOiaxSPj/ZtYv
-         Uzz3cdo6oEOyUs7ZCB/yjaD0mvVz+h91Lqp08lqPPm68tCSnAM4WamHsiGu1xkrDylfh
-         OUSTMrpYG5hpBDoo9yNmoDazECpGSaSs9FdSixviIs1BpUkzbeQ/UHLWdc8g2k1okfMD
-         CIqCDH/DR4K73pV/ETwu/Iec9vMxsZUDEYQ38oxUjRuZkcsImE04FVzf8nGg3tqHp6TA
-         mpQw==
-X-Forwarded-Encrypted: i=1; AJvYcCXiHB2/ocNoe6sVF4hYE79/dhGlns15WFAdjFgsNc1O0WDACA0BYU5JRxdHzVHxqul0/Jp2fe0h0W2uoPGQQGqNblqtjYaf
-X-Gm-Message-State: AOJu0Yw/mfgMCTtrQ+cHV1SzhN1BFBbQMaHtmLlKGcisYBEwJNgJKrPh
-	oXfkTnWapUGmU8ZgDJ3EOq5WgxTeKoJ0H+m+fHY6YzrmUNbx07OnxY2kxWwnRTM=
-X-Google-Smtp-Source: AGHT+IGOn8fZU80VMtXzaPnMUv7YL/QK2W3TGTcOrKEGGFell07/QenRkEBPEcSm5E5/EzY3PGFhNA==
-X-Received: by 2002:a05:6a20:4303:b0:1bd:18ee:f145 with SMTP id adf61e73a8af0-1bef60ee5e3mr8481395637.1.1719834471025;
-        Mon, 01 Jul 2024 04:47:51 -0700 (PDT)
-Received: from localhost ([122.172.82.13])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c91ce1c396sm6598209a91.4.2024.07.01.04.47.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jul 2024 04:47:50 -0700 (PDT)
-Date: Mon, 1 Jul 2024 17:17:48 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
-	Stephen Boyd <sboyd@kernel.org>, Nikunj Kela <nkela@quicinc.com>,
-	Prasad Sodagudi <psodagud@quicinc.com>, linux-pm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-tegra@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] OPP: Fix support for required OPPs for multiple PM
- domains
-Message-ID: <20240701114748.hodf6pngk7opx373@vireshk-i7>
-References: <20240618155013.323322-1-ulf.hansson@linaro.org>
- <20240625105425.pkociumt4biv4j36@vireshk-i7>
- <CAPDyKFpLfBjozpcOzKp4jngkYenqSdpmejvCK37XvE1-WbBY2g@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UurcoiDRCr6a9Akab0o+/1G6fgtwc2qi9fq52mnpVuOSMSuPYNNoKU1e1o43TH4GzkDNKvxAralQZRnrr2B+kXnNPJYFhFsJS+dkm1K3c00NPQkytway8QU5vr0FHtjJqgbQQhObZTJv0ajxekmrToKIuktFyMv0J5bSexgZ++0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=awQ9+sGH; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=tDkWg40c; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id CA7F411401F3;
+	Mon,  1 Jul 2024 08:45:13 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Mon, 01 Jul 2024 08:45:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1719837913; x=1719924313; bh=K0/JgeoZft
+	PybuBWwXDcbrzdO4ivXLvgo8jzMxXhG3U=; b=awQ9+sGHNq9ZKB2zdgbXJjCqaf
+	39qZM/7oK0p9UaAYAUeh5E5WAoftFF2nj7/0NdPjFkYmHIQ6QVM2gbjabCuPjjU0
+	W+t7mSfDanZe1Bo4xQYKghP392NpNubTugdW94Tn1hMU9laORVQS5cqYnBZSdF0k
+	Diu4ktTNNriXM2l6jRG3F22+YRSb4AscI1NHioncZNnTNU6elkmvjyfboBUgxJfa
+	5Z83vXuszcfgWm8dI0f8UJ7xdiFB4f5eu2NoMM5+1hI103rWIX2rw/a/e1vVXzny
+	P0QXqItrEHsObJs9AnM5sUPLNOR+ofi7jNMH5GEY0+8nFGQcfjWheHMmbdDg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1719837913; x=1719924313; bh=K0/JgeoZftPybuBWwXDcbrzdO4iv
+	XLvgo8jzMxXhG3U=; b=tDkWg40cLxCVx6r9miKidYzpTdC9H5wM9ep6g+4MxJoO
+	rtmeTaISZ4YhuHRq9pX/2sRJKFHv5qUh8EHqoXCNRMK4563DszW17ejxvkncUjAL
+	X1T/TUOY/Y2hQdSxc49l7RictO6yZzgKhDIChKioMRAi878zKw5smnQCgo8njUnL
+	p2T0FTX0slbzwy0CJHxV/7o2WKAg/xypvmYAivou+KuQhah5YNKMjf4iZRWbAbLP
+	DCW5psZeZsFHDu8buWRtPT9x5v8OPXzoPFG1k/J69Kn6FTa0g9jo5+sRflMyOk0h
+	XZIYcsVKaCDkCc74re1o+vURVDcQGF873HMUg+Pqfw==
+X-ME-Sender: <xms:2KSCZv9Ix8qyOK3Eb8gSYdG-PJyiOXG7BuVyaVY34c2Tm_uxRp4sDQ>
+    <xme:2KSCZrtKeRds8jAMwLss9RVFN2VPxDOIfm3pUXIYHkbfiu-YbZH00Cxeie98_GFKA
+    wSZyHZOiFd2sw>
+X-ME-Received: <xmr:2KSCZtArjf3VzCLriQ9Pwm0vTwRGU4fCj_ykM-nDGxqF9o4Avfa9y0pGGX1RgkdrQSIq76dMjlSJW2J16UcQrgc5zB8ICIdalIn1eg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudefgdehhecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeegheeuhe
+    fgtdeluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhmrghi
+    nhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+X-ME-Proxy: <xmx:2aSCZrfzG9PhNbGXFbjT7IQCVVki4EpEAhG0A_-Cf216QcgMXF2KZQ>
+    <xmx:2aSCZkPz1JoQ8oZu2kPZxPkRkrKnCd5WVIwe4CDwVWnTfDvKF60RmA>
+    <xmx:2aSCZtlh5Bul-SMaqZS5Y5MIEvRkhaGjNhs0MAkoemTvkh8F_Q_sLw>
+    <xmx:2aSCZusw0OS4yX88VIMNzCyZmoQwRooEIdV8hYUzgGrF8ov6ns7kqw>
+    <xmx:2aSCZlioHo1qSog_yKaGHmALTTBowUvnFZIyg4TH8jnkdxr0tVHDq3nC>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 1 Jul 2024 08:45:12 -0400 (EDT)
+Date: Mon, 1 Jul 2024 14:24:35 +0200
+From: Greg KH <greg@kroah.com>
+To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org, ms@dev.tdt.de
+Subject: Re: Patch "MIPS: pci: lantiq: restore reset gpio polarity" has been
+ added to the 6.9-stable tree
+Message-ID: <2024070129-circulate-overplant-a7b7@gregkh>
+References: <20240627185200.2305691-1-sashal@kernel.org>
+ <Zn5easOVbv3VGAMu@alpha.franken.de>
+ <2024062827-ransack-macarena-b201@gregkh>
+ <Zn7W7SPHgZrsZcrn@alpha.franken.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,131 +98,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAPDyKFpLfBjozpcOzKp4jngkYenqSdpmejvCK37XvE1-WbBY2g@mail.gmail.com>
+In-Reply-To: <Zn7W7SPHgZrsZcrn@alpha.franken.de>
 
-On 29-06-24, 11:09, Ulf Hansson wrote:
-> I get your point, but I am not sure I agree with it.
+On Fri, Jun 28, 2024 at 05:29:49PM +0200, Thomas Bogendoerfer wrote:
+> On Fri, Jun 28, 2024 at 04:18:37PM +0200, Greg KH wrote:
+> > On Fri, Jun 28, 2024 at 08:55:38AM +0200, Thomas Bogendoerfer wrote:
+> > > On Thu, Jun 27, 2024 at 02:52:00PM -0400, Sasha Levin wrote:
+> > > > This is a note to let you know that I've just added the patch titled
+> > > > 
+> > > >     MIPS: pci: lantiq: restore reset gpio polarity
+> > > > 
+> > > > to the 6.9-stable tree which can be found at:
+> > > >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > > > 
+> > > > The filename of the patch is:
+> > > >      mips-pci-lantiq-restore-reset-gpio-polarity.patch
+> > > > and it can be found in the queue-6.9 subdirectory.
+> > > > 
+> > > > If you, or anyone else, feels it should not be added to the stable tree,
+> > > > please let <stable@vger.kernel.org> know about it.
+> > > 
+> > > can you drop this patch from _all_ stable patches, it was reverted already
+> > > in the pull-request to Linus. Thank you.
+> > 
+> > What is the git id of the revert?
 > 
-> For the required-opps, the only existing use case is power/perf
-> domains with performance-states, so why make the code more complicated
-> than it needs to be?
+> 6e5aee08bd25 (tag: mips-fixes_6.10_1) Revert "MIPS: pci: lantiq: restore reset gpio polarity"
 
-That is a fair argument generally, i.e. keep things as simple as we
-can, but this is a bit different. We are talking about setting the
-(required) OPP for a device (parent genpd) here and it should follow
-the full path.
+Now queued up, thanks.
 
-Even in case of genpds we may want to configure more properties and
-not just vote, like bandwidth, regulator, clk, etc. And so I would
-really like to set the OPP in a standard way, no matter what.
-
-> No, that's not correct. Let me try to elaborate on my setup, which is
-> very similar to a use case on a Tegra platform.
-
-Thanks, I wasn't thinking about this setup earlier.
-
-> pd_perf0: pd-perf0 {
->     #power-domain-cells = <0>;
->     operating-points-v2 = <&opp_table_pd_perf0>;
-> };
-> 
-> //Note: no opp-table
-> pd_power4: pd-power4 {
->     #power-domain-cells = <0>;
->      power-domains = <&pd_perf0>;
-> };
-> 
-> //Note: no opp-table
-> pd_power5: pd-power5 {
->      #power-domain-cells = <0>;
->      power-domains = <&pd_perf0>;
-> };
-> 
-> //Note: The opp_table_pm_test10 are having required-opps pointing to
-> pd_perf0's opp-table.
-> pm_test10 {
->     ...
->     power-domains = <&pd_power4>, <&pd_power5>;
->     power-domain-names = "perf4", "perf5";
->     operating-points-v2 = <&opp_table_pm_test10>;
-> };
-
-
-> In the use case above, we end up never voting on pd_power5.
- 
-> The DT parsing of the required-opps is already complicated and there
-> seems to be endless new corner-cases showing up. Maybe we can fix this
-> too, but perhaps we should simply take a step back and go for
-> simplifications instead?
-
-I truly believe that keeping a standard way of updating OPPs is the
-right way to go and that will only prevent complicated corner cases
-coming later on.
-
-What about this patch instead ?
-
-diff --git a/drivers/opp/core.c b/drivers/opp/core.c
-index 5f4598246a87..2086292f8355 100644
---- a/drivers/opp/core.c
-+++ b/drivers/opp/core.c
-@@ -1091,7 +1091,8 @@ static int _set_required_opps(struct device *dev, struct opp_table *opp_table,
- 		if (devs[index]) {
- 			required_opp = opp ? opp->required_opps[index] : NULL;
- 
--			ret = dev_pm_opp_set_opp(devs[index], required_opp);
-+			/* Set required OPPs forcefully */
-+			ret = dev_pm_opp_set_opp_forced(devs[index], required_opp, true);
- 			if (ret)
- 				return ret;
- 		}
-@@ -1365,17 +1366,8 @@ int dev_pm_opp_set_rate(struct device *dev, unsigned long target_freq)
- }
- EXPORT_SYMBOL_GPL(dev_pm_opp_set_rate);
- 
--/**
-- * dev_pm_opp_set_opp() - Configure device for OPP
-- * @dev: device for which we do this operation
-- * @opp: OPP to set to
-- *
-- * This configures the device based on the properties of the OPP passed to this
-- * routine.
-- *
-- * Return: 0 on success, a negative error number otherwise.
-- */
--int dev_pm_opp_set_opp(struct device *dev, struct dev_pm_opp *opp)
-+static int dev_pm_opp_set_opp_forced(struct device *dev, struct dev_pm_opp *opp,
-+				     bool forced)
- {
- 	struct opp_table *opp_table;
- 	int ret;
-@@ -1386,11 +1378,25 @@ int dev_pm_opp_set_opp(struct device *dev, struct dev_pm_opp *opp)
- 		return PTR_ERR(opp_table);
- 	}
- 
--	ret = _set_opp(dev, opp_table, opp, NULL, false);
-+	ret = _set_opp(dev, opp_table, opp, NULL, forced);
- 	dev_pm_opp_put_opp_table(opp_table);
- 
- 	return ret;
- }
-+/**
-+ * dev_pm_opp_set_opp() - Configure device for OPP
-+ * @dev: device for which we do this operation
-+ * @opp: OPP to set to
-+ *
-+ * This configures the device based on the properties of the OPP passed to this
-+ * routine.
-+ *
-+ * Return: 0 on success, a negative error number otherwise.
-+ */
-+int dev_pm_opp_set_opp(struct device *dev, struct dev_pm_opp *opp)
-+{
-+	return dev_pm_opp_set_opp_forced(dev, opp, false);
-+}
- EXPORT_SYMBOL_GPL(dev_pm_opp_set_opp);
- 
- /* OPP-dev Helpers */
-
--- 
-viresh
+greg k-h
 
