@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-56229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2435691DFC2
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 14:46:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868D191DFC6
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 14:46:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4A2F1F2344F
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 12:46:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FEF1B21F3F
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 12:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61DB15A48B;
-	Mon,  1 Jul 2024 12:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0DA315A4BC;
+	Mon,  1 Jul 2024 12:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwB25o6p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E48eWa4s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86366159911
-	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 12:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9D9158D88
+	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 12:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719837951; cv=none; b=L5H8pTDqA89mHM1GbPhNhPiuNMKVuiOuokLAVAT0S2TGcov0UR2O58azan79GlSwBL1S5I2Edmv0SrllxXsEyn77vk43dK/w+icyHNbsXhz38vGS1V/D3H+yQ+3ievXTA3C/+DcEtrx7gp7xpQweANaGtotrk/8KrdU6ctN+VXo=
+	t=1719837958; cv=none; b=YA4YGTMIqiuWWIXnlC0W+RTJ3qIl2meZSdoF8uMV77LZifPKPkroRwzbZsr1oFUJPNwWEpXcTd76LH8oP5l51M2l+y8d1WFzL3SisKcWslPb1DJgo/5i5YhXEadx/ZohrvjpWIuxHjPr+eBM6g1qrlKMHIGAQQ588xMwoh3sCBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719837951; c=relaxed/simple;
-	bh=3tBqaWZSpGFco0nwMcPYQhTB+EoMWjDCpEJW59lZqMg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oVgvppV2mvWkaXTFs2I2ukjPglcDPPiqHbF9SSIz7NiSNyYl0cBbFFhS/0Rci4oPxJghoOgP4RjZnnwqXirJoIZFpVH2UMotb9NlyViugmLENW4/cCUUIq8bTS/r6KD6D+uDRSZogrO0x9O/hBZBiHz8NZBg1F3LBMDlo5rCemo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwB25o6p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A9ADC2BD10;
-	Mon,  1 Jul 2024 12:45:50 +0000 (UTC)
+	s=arc-20240116; t=1719837958; c=relaxed/simple;
+	bh=Oil6loovK0KaVSOOj9T2zktHgjny8F1zeIbuCPmLMrM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=n5R0Wepe+Q3lnAPRZFI/pjpAQ5ttJfJP7ie3ScJESZtEX96rwyR0BPSTQDvSNZR6SfjB8mSjS/fpxQJhSOwfOX7TZhbo/1bPmk2QEzdYoZy125xkNo5HkJfdFm29RO+VyMzuAK2fQs9Lm8JVVdaCD+aPzxMJyjiE/HEq9mtUYyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E48eWa4s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A28C2BD10;
+	Mon,  1 Jul 2024 12:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719837951;
-	bh=3tBqaWZSpGFco0nwMcPYQhTB+EoMWjDCpEJW59lZqMg=;
+	s=korg; t=1719837958;
+	bh=Oil6loovK0KaVSOOj9T2zktHgjny8F1zeIbuCPmLMrM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=JwB25o6p0NCR8IY90zI5E2P79PRxU93Bn2hdts+UKeT6JKbr6gsVS1/Sqgc//awmX
-	 cGIjVAZQm1JQi9E0wsSS5+u/e8t+oW6gDMX0Sa+EotfoPoQ6HOzp1ezi0ppSamTN6h
-	 wHMwEdoqCuFzLfwYi7/52IW0KJu9f2gA1ZUA6jz8=
-Subject: FAILED: patch "[PATCH] selftests/mm:fix test_prctl_fork_exec return failure" failed to apply to 4.19-stable tree
-To: shechenglong001@gmail.com,akpm@linux-foundation.org,david@redhat.com,shuah@kernel.org,stable@vger.kernel.org
+	b=E48eWa4s7jBARctJbF1lfjpbMY9z9EWFCL94xfYUboIRrlxlz2+1cnnRuL3JQXG2Y
+	 /qvjyWNz5nwT9xM7ZfR56BYHfXA5Re75cQHKQdBBZS/jM/dDLVXxfKqdJzbRd/7Koj
+	 /olwqJiZRKUkyJNFIHudMNlUAqOJ7NDME6xgpq/M=
+Subject: FAILED: patch "[PATCH] mmc: sdhci-brcmstb: check R1_STATUS for erase/trim/discard" failed to apply to 5.15-stable tree
+To: kamal.dasu@broadcom.com,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Jul 2024 14:29:39 +0200
-Message-ID: <2024070139-dupe-mandate-96fb@gregkh>
+Date: Mon, 01 Jul 2024 14:30:23 +0200
+Message-ID: <2024070123-nephew-swept-da0d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,31 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8b8546d298dc9ce9d5d01a06c822e255d2159ca7
+git cherry-pick -x d77dc388cd61dfdafe30b98025fa827498378199
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070139-dupe-mandate-96fb@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070123-nephew-swept-da0d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-8b8546d298dc ("selftests/mm:fix test_prctl_fork_exec return failure")
-6c47de3be3a0 ("selftest/mm: ksm_functional_tests: extend test case for ksm fork/exec")
-0374af1da077 ("mm/ksm: test case for prctl fork/exec workflow")
-e5013f11c6c9 ("selftest/mm: ksm_functional_tests: Add PROT_NONE test")
-42096aa24b82 ("selftest/mm: ksm_functional_tests: test in mmap_and_merge_range() if anything got merged")
-3d0745e59c84 ("selftest: add a testcase of ksm zero pages")
-1150ea933855 ("selftests/ksm: ksm_functional_tests: add prctl unmerge test")
-07115fcc15b4 ("selftests/mm: add new selftests for KSM")
-3822a7c40997 ("Merge tag 'mm-stable-2023-02-20-13-37' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm")
+d77dc388cd61 ("mmc: sdhci-brcmstb: check R1_STATUS for erase/trim/discard")
+97904a59855c ("mmc: sdhci-brcmstb: Add ability to increase max clock rate for 72116b0")
+6bcc55fe648b ("mmc: sdhci-brcmstb: Enable Clock Gating to save power")
+f3a70f991dd0 ("mmc: sdhci-brcmstb: Re-organize flags")
 
 thanks,
 
@@ -85,88 +80,93 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8b8546d298dc9ce9d5d01a06c822e255d2159ca7 Mon Sep 17 00:00:00 2001
-From: aigourensheng <shechenglong001@gmail.com>
-Date: Mon, 17 Jun 2024 01:29:34 -0400
-Subject: [PATCH] selftests/mm:fix test_prctl_fork_exec return failure
+From d77dc388cd61dfdafe30b98025fa827498378199 Mon Sep 17 00:00:00 2001
+From: Kamal Dasu <kamal.dasu@broadcom.com>
+Date: Mon, 3 Jun 2024 18:08:34 -0400
+Subject: [PATCH] mmc: sdhci-brcmstb: check R1_STATUS for erase/trim/discard
 
-After calling fork() in test_prctl_fork_exec(), the global variable
-ksm_full_scans_fd is initialized to 0 in the child process upon entering
-the main function of ./ksm_functional_tests.
+When erase/trim/discard completion was converted to mmc_poll_for_busy(),
+optional support to poll with the host_ops->card_busy() callback was also
+added.
 
-In the function call chain test_child_ksm() -> __mmap_and_merge_range ->
-ksm_merge-> ksm_get_full_scans, start_scans = ksm_get_full_scans() will
-return an error.  Therefore, the value of ksm_full_scans_fd needs to be
-initialized before calling test_child_ksm in the child process.
+The common sdhci's ->card_busy() turns out not to be working as expected
+for the sdhci-brcmstb variant, as it keeps returning busy beyond the card's
+busy period. In particular, this leads to the below splat for
+mmc_do_erase() when running a discard (BLKSECDISCARD) operation during
+mkfs.f2fs:
 
-Link: https://lkml.kernel.org/r/20240617052934.5834-1-shechenglong001@gmail.com
-Signed-off-by: aigourensheng <shechenglong001@gmail.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+    Info: [/dev/mmcblk1p9] Discarding device
+    [   39.597258] sysrq: Show Blocked State
+    [   39.601183] task:mkfs.f2fs       state:D stack:0     pid:1561  tgid:1561  ppid:1542   flags:0x0000000d
+    [   39.610609] Call trace:
+    [   39.613098]  __switch_to+0xd8/0xf4
+    [   39.616582]  __schedule+0x440/0x4f4
+    [   39.620137]  schedule+0x2c/0x48
+    [   39.623341]  schedule_hrtimeout_range_clock+0xe0/0x114
+    [   39.628562]  schedule_hrtimeout_range+0x10/0x18
+    [   39.633169]  usleep_range_state+0x5c/0x90
+    [   39.637253]  __mmc_poll_for_busy+0xec/0x128
+    [   39.641514]  mmc_poll_for_busy+0x48/0x70
+    [   39.645511]  mmc_do_erase+0x1ec/0x210
+    [   39.649237]  mmc_erase+0x1b4/0x1d4
+    [   39.652701]  mmc_blk_mq_issue_rq+0x35c/0x6ac
+    [   39.657037]  mmc_mq_queue_rq+0x18c/0x214
+    [   39.661022]  blk_mq_dispatch_rq_list+0x3a8/0x528
+    [   39.665722]  __blk_mq_sched_dispatch_requests+0x3a0/0x4ac
+    [   39.671198]  blk_mq_sched_dispatch_requests+0x28/0x5c
+    [   39.676322]  blk_mq_run_hw_queue+0x11c/0x12c
+    [   39.680668]  blk_mq_flush_plug_list+0x200/0x33c
+    [   39.685278]  blk_add_rq_to_plug+0x68/0xd8
+    [   39.689365]  blk_mq_submit_bio+0x3a4/0x458
+    [   39.693539]  __submit_bio+0x1c/0x80
+    [   39.697096]  submit_bio_noacct_nocheck+0x94/0x174
+    [   39.701875]  submit_bio_noacct+0x1b0/0x22c
+    [   39.706042]  submit_bio+0xac/0xe8
+    [   39.709424]  blk_next_bio+0x4c/0x5c
+    [   39.712973]  blkdev_issue_secure_erase+0x118/0x170
+    [   39.717835]  blkdev_common_ioctl+0x374/0x728
+    [   39.722175]  blkdev_ioctl+0x8c/0x2b0
+    [   39.725816]  vfs_ioctl+0x24/0x40
+    [   39.729117]  __arm64_sys_ioctl+0x5c/0x8c
+    [   39.733114]  invoke_syscall+0x68/0xec
+    [   39.736839]  el0_svc_common.constprop.0+0x70/0xd8
+    [   39.741609]  do_el0_svc+0x18/0x20
+    [   39.744981]  el0_svc+0x68/0x94
+    [   39.748107]  el0t_64_sync_handler+0x88/0x124
+    [   39.752455]  el0t_64_sync+0x168/0x16c
 
-diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
-index 37de82da9be7..b61803e36d1c 100644
---- a/tools/testing/selftests/mm/ksm_functional_tests.c
-+++ b/tools/testing/selftests/mm/ksm_functional_tests.c
-@@ -656,24 +656,8 @@ static void test_prot_none(void)
- 	munmap(map, size);
- }
+To fix the problem let's override the host_ops->card_busy() callback by
+setting it to NULL, which forces the mmc core to poll with a CMD13 and
+checking the R1_STATUS in the mmc_busy_cb() function.
+
+Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
+Fixes: 0d84c3e6a5b2 ("mmc: core: Convert to mmc_poll_for_busy() for erase/trim/discard")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240603220834.21989-2-kamal.dasu@broadcom.com
+[Ulf: Clarified the commit message]
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+
+diff --git a/drivers/mmc/host/sdhci-brcmstb.c b/drivers/mmc/host/sdhci-brcmstb.c
+index 9053526fa212..150fb477b7cc 100644
+--- a/drivers/mmc/host/sdhci-brcmstb.c
++++ b/drivers/mmc/host/sdhci-brcmstb.c
+@@ -24,6 +24,7 @@
+ #define BRCMSTB_MATCH_FLAGS_NO_64BIT		BIT(0)
+ #define BRCMSTB_MATCH_FLAGS_BROKEN_TIMEOUT	BIT(1)
+ #define BRCMSTB_MATCH_FLAGS_HAS_CLOCK_GATE	BIT(2)
++#define BRCMSTB_MATCH_FLAGS_USE_CARD_BUSY	BIT(4)
  
--int main(int argc, char **argv)
-+static void init_global_file_handles(void)
- {
--	unsigned int tests = 8;
--	int err;
--
--	if (argc > 1 && !strcmp(argv[1], FORK_EXEC_CHILD_PRG_NAME)) {
--		exit(test_child_ksm());
--	}
--
--#ifdef __NR_userfaultfd
--	tests++;
--#endif
--
--	ksft_print_header();
--	ksft_set_plan(tests);
--
--	pagesize = getpagesize();
--
- 	mem_fd = open("/proc/self/mem", O_RDWR);
- 	if (mem_fd < 0)
- 		ksft_exit_fail_msg("opening /proc/self/mem failed\n");
-@@ -688,8 +672,30 @@ int main(int argc, char **argv)
- 		ksft_exit_skip("open(\"/proc/self/pagemap\") failed\n");
- 	proc_self_ksm_stat_fd = open("/proc/self/ksm_stat", O_RDONLY);
- 	proc_self_ksm_merging_pages_fd = open("/proc/self/ksm_merging_pages",
--					      O_RDONLY);
-+						O_RDONLY);
- 	ksm_use_zero_pages_fd = open("/sys/kernel/mm/ksm/use_zero_pages", O_RDWR);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	unsigned int tests = 8;
-+	int err;
-+
-+	if (argc > 1 && !strcmp(argv[1], FORK_EXEC_CHILD_PRG_NAME)) {
-+		init_global_file_handles();
-+		exit(test_child_ksm());
-+	}
-+
-+#ifdef __NR_userfaultfd
-+	tests++;
-+#endif
-+
-+	ksft_print_header();
-+	ksft_set_plan(tests);
-+
-+	pagesize = getpagesize();
-+
-+	init_global_file_handles();
+ #define BRCMSTB_PRIV_FLAGS_HAS_CQE		BIT(0)
+ #define BRCMSTB_PRIV_FLAGS_GATE_CLOCK		BIT(1)
+@@ -384,6 +385,9 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
+ 	if (match_priv->flags & BRCMSTB_MATCH_FLAGS_BROKEN_TIMEOUT)
+ 		host->quirks |= SDHCI_QUIRK_BROKEN_TIMEOUT_VAL;
  
- 	test_unmerge();
- 	test_unmerge_zero_pages();
++	if (!(match_priv->flags & BRCMSTB_MATCH_FLAGS_USE_CARD_BUSY))
++		host->mmc_host_ops.card_busy = NULL;
++
+ 	/* Change the base clock frequency if the DT property exists */
+ 	if (device_property_read_u32(&pdev->dev, "clock-frequency",
+ 				     &priv->base_freq_hz) != 0)
 
 
