@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-56242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5188591E24D
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 16:23:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2BBA91E24F
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 16:24:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 063201F26200
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 14:23:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 686F01F26278
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 14:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8B9160887;
-	Mon,  1 Jul 2024 14:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A0C161337;
+	Mon,  1 Jul 2024 14:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFVSnvkQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NyJl3qyX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96B58C1D
-	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 14:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8808C1D
+	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 14:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719843825; cv=none; b=uNQJTxi0QpNSYnGQy/bhKqmRcC9cGVbKU8Q3ecssMjSaP8FYd4tSe2Arek5uH+uBoFx/nQzkcKc5icjSg+ZCo1U9KZanWAJtISPvYZjfAkOTJ9BXPJZbFjsq53M3TDw/1i5c6xdIuyLWoukfWHSj2G3ae4oGv+XPawkfB/MjULE=
+	t=1719843837; cv=none; b=Uq7EITLwt09EyozYiaTAOfrXQrG6AOvPv6F+Y88P9eh+6BQ9HNhPsBVjDYSC8f8NvZbICuBQwULrlUkA9kWyRZA7ae7iRvPhPJrAn+CF93lxuM+D8AOqF06iSTzJ30zoe1dRsrc9SoUzFVpfHAhTN/pQ4mpPOidrspZPZizzQ4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719843825; c=relaxed/simple;
-	bh=atsC9T3qnZnZzhkjMOYaimvHMST1yuc3+Pf2Ohbb8zU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HUpE1kI+fih1/UJAGcNIK2R5bhFdjbZ/VDaq3l9Z5Wi32T+Jski+er0RAq56sT9X6ILmoqH0FXLfG7b1MJecn75vwymytnjz8GETZtR3r5q5loQH9qJFuD23EDezyG4HlHy+ZTvF0SxoUj/dssSURhZKNNGxQ2xHjpgcZxzcvAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFVSnvkQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53B0C116B1;
-	Mon,  1 Jul 2024 14:23:44 +0000 (UTC)
+	s=arc-20240116; t=1719843837; c=relaxed/simple;
+	bh=eAqsaq52aZy7QU4CG9Rh1mzQUpPXIuLLS53jU+/mazU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mbHh4iRf/NiAkkJh2TlwZ+nK/H+rxOueESH8eacbne6L8M2ukmeQBzcATZCtDtKth9yLouBZ3jl473FNwbqJ1KV9Wr+jEiyXe8rO0pUz8h9roP6TkXryb8/CzZdoih0jaMEWGVNMbYjwx42OdOo9bqR2G8FQKNyn5UK2E70VAgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NyJl3qyX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F75C116B1;
+	Mon,  1 Jul 2024 14:23:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719843825;
-	bh=atsC9T3qnZnZzhkjMOYaimvHMST1yuc3+Pf2Ohbb8zU=;
+	s=korg; t=1719843837;
+	bh=eAqsaq52aZy7QU4CG9Rh1mzQUpPXIuLLS53jU+/mazU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=uFVSnvkQNH4pDT6MMfY2mgrCU7hZMYKTAq2asHIRCRsKVJjfKwdEqciELu2eHDJM8
-	 2kmZNhuax2TQqnMm5L9FpMoiz0EDL8PorVXaHkCdsTIaJsp1xxbpOeBuOpOvrNt3Fv
-	 EA9MK5W8r3z0aaXQY7zFwtFxhdHd+Zlxg60esBS8=
-Subject: FAILED: patch "[PATCH] cpu/hotplug: Fix dynstate assignment in" failed to apply to 5.10-stable tree
+	b=NyJl3qyXaBXSEiwp1SgxBAToIahCMNV8HnMgujO2oeguRkoaMLqDwI5zziXiI88OQ
+	 xgIdNGmKF+YPYj/t+XzSFbC7iVV2MSMAIfIPysc7KoYN4nfwCvFaihhImYCHyID9xW
+	 taHN0/E1bzDM1/B4MlVCJ4vBmMhes0RSHeNovacQ=
+Subject: FAILED: patch "[PATCH] cpu/hotplug: Fix dynstate assignment in" failed to apply to 4.19-stable tree
 To: ytcoode@gmail.com,tglx@linutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Jul 2024 16:23:42 +0200
-Message-ID: <2024070141-platinum-unpaired-2fe6@gregkh>
+Date: Mon, 01 Jul 2024 16:23:43 +0200
+Message-ID: <2024070143-petunia-runaround-2e19@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,29 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 932d8476399f622aa0767a4a0a9e78e5341dc0e1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070141-platinum-unpaired-2fe6@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070143-petunia-runaround-2e19@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
 932d8476399f ("cpu/hotplug: Fix dynstate assignment in __cpuhp_setup_state_cpuslocked()")
 11bc021d1fba ("cpu/hotplug: Eliminate all kernel-doc warnings")
+33c3736ec888 ("cpu/hotplug: Hide cpu_up/down()")
+b99a26593b51 ("cpu/hotplug: Move bringup of secondary CPUs out of smp_init()")
+d720f9860439 ("cpu/hotplug: Provide bringup_hibernate_cpu()")
+0441a5597c5d ("cpu/hotplug: Create a new function to shutdown nonboot cpus")
+93ef1429e556 ("cpu/hotplug: Add new {add,remove}_cpu() functions")
 
 thanks,
 
