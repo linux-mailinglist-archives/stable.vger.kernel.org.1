@@ -1,305 +1,136 @@
-Return-Path: <stable+bounces-56279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A672491EA1A
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 23:16:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DED2891EA22
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 23:16:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9B9E1C2118B
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 21:16:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 941A51F210AD
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 21:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C9384A3F;
-	Mon,  1 Jul 2024 21:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E69E84A32;
+	Mon,  1 Jul 2024 21:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yso9//ac"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D8iGotT2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC41E2BB05;
-	Mon,  1 Jul 2024 21:15:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D888276EEA
+	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 21:16:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719868553; cv=none; b=q88OgD83qqjmvCpZlYuVbQvX4K/uJAjqbdqo7FqSmI1nzLzmfv8Z6dqguqWtkU3Yn9H3KW5ogHFp8r8VxvfG8A25wcb2E5d61FT3Wrfed1pLYrjuLBzFAJyJgRPSGVkSWlor8lf5L53qhJcPx48Bhv3lTuuBpVU0coub6q+O79w=
+	t=1719868595; cv=none; b=rUCkNvzJiaPCW4OLTqwQ4ie2//+4bAH5OSVPdDh9o10LvZi0YGcU+ZMmem3voPcRZy+nB6Lp5c7Bu3XDpZx/Lo3lToqdPDkPFTpC77gHvfIAXKRhgwL2jP7emz3AywjnNlIwbN4FLbj6j4XoEAKgNwqmcuFb3nQgEcS8aoihduQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719868553; c=relaxed/simple;
-	bh=Wo2ziZrHiwxQRp5NYky+UVW8r6uc3a/mGH6kieet5fo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=djB0G5wkloGgxrB1liMmX3u01AAUWvAUQr40SFOrhaQf+ebTUpWaD4sdN2w05p5+UA2l07nN24HSP3pYJpHL5hjPeQf8sovaTFzWjK5nf/Kbb6XhXceUhjYGV7VUbaUz6vDazuIJnaAcS8SyQHAKkh9paYzm2RY7Wrz0XfCJTIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yso9//ac; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E26C116B1;
-	Mon,  1 Jul 2024 21:15:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719868552;
-	bh=Wo2ziZrHiwxQRp5NYky+UVW8r6uc3a/mGH6kieet5fo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Yso9//acMVkR7YN4aYSEyRKdX9EKHa3lnj5TRPJsg2b4NdR0CnayyicXTMOuEUGhg
-	 ftIpGAl58WMqP5ctFIKOSMixh/s2TczsGF0ZsHzoxlCVsncXd8hV4cB2sY93x1f1TQ
-	 qWarQtafiQP61j0Sy73cbppBvuLavvO0ILEdxcHPslF7yk2JwMk70zfkGI7fKB9bxp
-	 los63zCqKye6JjuphkUdkHlXH/jixUztTCiBEjXsSW1zF+nVwWBClENhgk4PUHA2XP
-	 kzqpadH+rfTjVyPO5TbK1K3pYsmR/+IFY4u+agJrF5NtrU+0mtAWkmQMjjqkK5KIWq
-	 5hq3Di8G0DfUQ==
-Date: Mon, 1 Jul 2024 23:15:47 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Igor Pylypiv <ipylypiv@google.com>
-Cc: Damien Le Moal <dlemoal@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Hannes Reinecke <hare@suse.de>, linux-ide@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4 2/8] ata: libata-scsi: Do not overwrite valid sense
- data when CK_COND=1
-Message-ID: <ZoMcg_iuibiqw0zu@ryzen.lan>
-References: <20240701195758.1045917-1-ipylypiv@google.com>
- <20240701195758.1045917-3-ipylypiv@google.com>
+	s=arc-20240116; t=1719868595; c=relaxed/simple;
+	bh=7nMZ2tCrAtpBSjMrAZ7ZJ8ydZg3/kINamfdDl2KGcPM=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=I01qK7tKVAS/P6kx/9IHnawixeNlMUuDdofJgCWG9/z6ACTKBhocGwV2Dm9mVWZb4S8xuiW3gxJd6BdD3ZeTcHsrg8oGKgF6jd8cv3Qzi4ldq7L7OHXzsJk3FtdR/UnwK4y6lXn02dtqs8QnWS6oVLwMcMSectau2Mf/ZcyK7z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D8iGotT2; arc=none smtp.client-ip=209.85.166.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-36dd6110186so15203535ab.0
+        for <stable@vger.kernel.org>; Mon, 01 Jul 2024 14:16:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719868593; x=1720473393; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mFX7hMxMhb8ZW+qkz5U4LMK6KRkXqQ2yOHaete5Gdn8=;
+        b=D8iGotT2spFGs9qc/32+SfK+fjDgciyDKWmnWAJPxse5lTzEWVtifBVxtYWD0R754a
+         9kSingKAsQSkYjDb8AXVAgo+l0hD2bAk2VTaaWpsUrMblJIKnZyxLvATa2OEOGKwsdGH
+         zkWOOe31hBm7zEuwKNte/6ELZhQVPVEGCnyVpR9lB8zRqkU8nJKLwUfZ0/9z9R7cb+VC
+         WZWR+vx0x/TePmD5tAvw2RcS0aBosxOXUcO1jCLKFwzqqr+/QVc78XKgTgMo2Y77lPp4
+         oQNxl4oOrdaEPa2SLjw9yMM3qpyWHD2S+bfhK9vyDYt8vTFfbjgh906ld9H9iF1QYJtH
+         vFhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719868593; x=1720473393;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=mFX7hMxMhb8ZW+qkz5U4LMK6KRkXqQ2yOHaete5Gdn8=;
+        b=Q6P/YxEiCKpIh7E1y1Z1epFnyt7NNqA3n/Bkrd3vnRgka8/sEOWfAGWRqI8YsGhFdC
+         HrQcFf9QZMZzf+ou+cgSsh86sZTsjVolKzY2y3F0+jXyr3CP/SI1NbDZEgOe6gNS/ypr
+         y2ALfnm/WAtHeIWb5Sp2WgDryRhb5l5zf6kwUuVD3AgKwfI0AZmwnl7d+fZ6u0D8edKG
+         XMYI1rAhaRjfYdp9BFYzY/R8g5vC49dyPT6f457SlyJbSOUSd/eD+pwBhtBXjLHw0DaW
+         3m1nYPvG4ud9y+eYt/sGrm4e5zCX5aUm92Gu4KdHNsyn0e8aLAFf4LN5YJGyGTHrP2Yw
+         p7wQ==
+X-Gm-Message-State: AOJu0YxB7NRTTRyFGAjSODl1Fyzz4G3amFfe4ic386th3S+P1K6/HP3B
+	jdlb3708ViseQhTI+pUt9xmxpWW22GbVWX/nJQW159ozBPqRovwR
+X-Google-Smtp-Source: AGHT+IGIoxEdYNhr7j7xixxldN0KNtT+OAeuPX7bGKBYu5RX66KVvINc1UE60DOZnUsYKXcNfNswZw==
+X-Received: by 2002:a05:6e02:1d8d:b0:375:c443:9883 with SMTP id e9e14a558f8ab-37cd2bedf81mr81683095ab.21.1719868592894;
+        Mon, 01 Jul 2024 14:16:32 -0700 (PDT)
+Received: from [172.26.252.3] (c-75-71-174-102.hsd1.co.comcast.net. [75.71.174.102])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-37ae2586a3csm20319535ab.70.2024.07.01.14.16.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Jul 2024 14:16:32 -0700 (PDT)
+Message-ID: <58396eb8-145c-4f40-8387-efdf45c8b9db@gmail.com>
+Date: Mon, 1 Jul 2024 15:16:31 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240701195758.1045917-3-ipylypiv@google.com>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: rpeterso@redhat.com, agruenba@redhat.com
+Cc: stable@vger.kernel.org, gfs2@lists.linux.dev
+From: Clayton Casciato <majortomtosourcecontrol@gmail.com>
+Subject: [PATCH v2 6.1.y] gfs2: Fix slab-use-after-free in gfs2_qd_dealloc
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jul 01, 2024 at 07:57:52PM +0000, Igor Pylypiv wrote:
-> Current ata_gen_passthru_sense() code performs two actions:
-> 1. Generates sense data based on the ATA 'status' and ATA 'error' fields.
-> 2. Populates "ATA Status Return sense data descriptor" / "Fixed format
->    sense data" with ATA taskfile fields.
-> 
-> The problem is that #1 generates sense data even when a valid sense data
-> is already present (ATA_QCFLAG_SENSE_VALID is set). Factoring out #2 into
-> a separate function allows us to generate sense data only when there is
-> no valid sense data (ATA_QCFLAG_SENSE_VALID is not set).
-> 
-> As a bonus, we can now delete a FIXME comment in atapi_qc_complete()
-> which states that we don't want to translate taskfile registers into
-> sense descriptors for ATAPI.
-> 
-> Cc: stable@vger.kernel.org # 4.19+
-> Reviewed-by: Hannes Reinecke <hare@suse.de>
-> Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-> Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-> ---
->  drivers/ata/libata-scsi.c | 158 +++++++++++++++++++++-----------------
->  1 file changed, 86 insertions(+), 72 deletions(-)
-> 
-> diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-> index a9e44ad4c2de..26b1263f5c7c 100644
-> --- a/drivers/ata/libata-scsi.c
-> +++ b/drivers/ata/libata-scsi.c
-> @@ -230,6 +230,80 @@ void ata_scsi_set_sense_information(struct ata_device *dev,
->  				   SCSI_SENSE_BUFFERSIZE, information);
->  }
->  
-> +/**
-> + *	ata_scsi_set_passthru_sense_fields - Set ATA fields in sense buffer
-> + *	@qc: ATA PASS-THROUGH command.
-> + *
-> + *	Populates "ATA Status Return sense data descriptor" / "Fixed format
-> + *	sense data" with ATA taskfile fields.
-> + *
-> + *	LOCKING:
-> + *	None.
-> + */
-> +static void ata_scsi_set_passthru_sense_fields(struct ata_queued_cmd *qc)
-> +{
-> +	struct scsi_cmnd *cmd = qc->scsicmd;
-> +	struct ata_taskfile *tf = &qc->result_tf;
-> +	unsigned char *sb = cmd->sense_buffer;
-> +
-> +	if ((sb[0] & 0x7f) >= 0x72) {
-> +		unsigned char *desc;
-> +		u8 len;
-> +
-> +		/* descriptor format */
-> +		len = sb[7];
-> +		desc = (char *)scsi_sense_desc_find(sb, len + 8, 9);
-> +		if (!desc) {
-> +			if (SCSI_SENSE_BUFFERSIZE < len + 14)
-> +				return;
-> +			sb[7] = len + 14;
-> +			desc = sb + 8 + len;
-> +		}
-> +		desc[0] = 9;
-> +		desc[1] = 12;
-> +		/*
-> +		 * Copy registers into sense buffer.
-> +		 */
-> +		desc[2] = 0x00;
-> +		desc[3] = tf->error;
-> +		desc[5] = tf->nsect;
-> +		desc[7] = tf->lbal;
-> +		desc[9] = tf->lbam;
-> +		desc[11] = tf->lbah;
-> +		desc[12] = tf->device;
-> +		desc[13] = tf->status;
-> +
-> +		/*
-> +		 * Fill in Extend bit, and the high order bytes
-> +		 * if applicable.
-> +		 */
-> +		if (tf->flags & ATA_TFLAG_LBA48) {
-> +			desc[2] |= 0x01;
-> +			desc[4] = tf->hob_nsect;
-> +			desc[6] = tf->hob_lbal;
-> +			desc[8] = tf->hob_lbam;
-> +			desc[10] = tf->hob_lbah;
-> +		}
-> +	} else {
-> +		/* Fixed sense format */
-> +		sb[0] |= 0x80;
-> +		sb[3] = tf->error;
-> +		sb[4] = tf->status;
-> +		sb[5] = tf->device;
-> +		sb[6] = tf->nsect;
-> +		if (tf->flags & ATA_TFLAG_LBA48)  {
-> +			sb[8] |= 0x80;
-> +			if (tf->hob_nsect)
-> +				sb[8] |= 0x40;
-> +			if (tf->hob_lbal || tf->hob_lbam || tf->hob_lbah)
-> +				sb[8] |= 0x20;
-> +		}
-> +		sb[9] = tf->lbal;
-> +		sb[10] = tf->lbam;
-> +		sb[11] = tf->lbah;
-> +	}
-> +}
-> +
->  static void ata_scsi_set_invalid_field(struct ata_device *dev,
->  				       struct scsi_cmnd *cmd, u16 field, u8 bit)
->  {
-> @@ -837,10 +911,8 @@ static void ata_to_sense_error(unsigned id, u8 drv_stat, u8 drv_err, u8 *sk,
->   *	ata_gen_passthru_sense - Generate check condition sense block.
->   *	@qc: Command that completed.
->   *
-> - *	This function is specific to the ATA descriptor format sense
-> - *	block specified for the ATA pass through commands.  Regardless
-> - *	of whether the command errored or not, return a sense
-> - *	block. Copy all controller registers into the sense
-> + *	This function is specific to the ATA pass through commands.
-> + *	Regardless of whether the command errored or not, return a sense
->   *	block. If there was no error, we get the request from an ATA
->   *	passthrough command, so we use the following sense data:
->   *	sk = RECOVERED ERROR
-> @@ -875,63 +947,6 @@ static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
->  		 */
->  		scsi_build_sense(cmd, 1, RECOVERED_ERROR, 0, 0x1D);
->  	}
-> -
-> -	if ((sb[0] & 0x7f) >= 0x72) {
-> -		unsigned char *desc;
-> -		u8 len;
-> -
-> -		/* descriptor format */
-> -		len = sb[7];
-> -		desc = (char *)scsi_sense_desc_find(sb, len + 8, 9);
-> -		if (!desc) {
-> -			if (SCSI_SENSE_BUFFERSIZE < len + 14)
-> -				return;
-> -			sb[7] = len + 14;
-> -			desc = sb + 8 + len;
-> -		}
-> -		desc[0] = 9;
-> -		desc[1] = 12;
-> -		/*
-> -		 * Copy registers into sense buffer.
-> -		 */
-> -		desc[2] = 0x00;
-> -		desc[3] = tf->error;
-> -		desc[5] = tf->nsect;
-> -		desc[7] = tf->lbal;
-> -		desc[9] = tf->lbam;
-> -		desc[11] = tf->lbah;
-> -		desc[12] = tf->device;
-> -		desc[13] = tf->status;
-> -
-> -		/*
-> -		 * Fill in Extend bit, and the high order bytes
-> -		 * if applicable.
-> -		 */
-> -		if (tf->flags & ATA_TFLAG_LBA48) {
-> -			desc[2] |= 0x01;
-> -			desc[4] = tf->hob_nsect;
-> -			desc[6] = tf->hob_lbal;
-> -			desc[8] = tf->hob_lbam;
-> -			desc[10] = tf->hob_lbah;
-> -		}
-> -	} else {
-> -		/* Fixed sense format */
-> -		sb[0] |= 0x80;
-> -		sb[3] = tf->error;
-> -		sb[4] = tf->status;
-> -		sb[5] = tf->device;
-> -		sb[6] = tf->nsect;
-> -		if (tf->flags & ATA_TFLAG_LBA48)  {
-> -			sb[8] |= 0x80;
-> -			if (tf->hob_nsect)
-> -				sb[8] |= 0x40;
-> -			if (tf->hob_lbal || tf->hob_lbam || tf->hob_lbah)
-> -				sb[8] |= 0x20;
-> -		}
-> -		sb[9] = tf->lbal;
-> -		sb[10] = tf->lbam;
-> -		sb[11] = tf->lbah;
-> -	}
->  }
->  
->  /**
-> @@ -1634,6 +1649,8 @@ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
->  	u8 *cdb = cmd->cmnd;
->  	int need_sense = (qc->err_mask != 0) &&
->  		!(qc->flags & ATA_QCFLAG_SENSE_VALID);
-> +	int need_passthru_sense = (qc->err_mask != 0) ||
-> +		(qc->flags & ATA_QCFLAG_SENSE_VALID);
->  
->  	/* For ATA pass thru (SAT) commands, generate a sense block if
->  	 * user mandated it or if there's an error.  Note that if we
-> @@ -1645,13 +1662,16 @@ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
->  	 * asc,ascq = ATA PASS-THROUGH INFORMATION AVAILABLE
->  	 */
->  	if (((cdb[0] == ATA_16) || (cdb[0] == ATA_12)) &&
-> -	    ((cdb[2] & 0x20) || need_sense))
-> -		ata_gen_passthru_sense(qc);
-> -	else if (need_sense)
-> +	    ((cdb[2] & 0x20) || need_passthru_sense)) {
-> +		if (!(qc->flags & ATA_QCFLAG_SENSE_VALID))
-> +			ata_gen_passthru_sense(qc);
-> +		ata_scsi_set_passthru_sense_fields(qc);
-> +	} else if (need_sense) {
->  		ata_gen_ata_sense(qc);
-> -	else
-> +	} else {
->  		/* Keep the SCSI ML and status byte, clear host byte. */
->  		cmd->result &= 0x0000ffff;
-> +	}
->  
->  	ata_qc_done(qc);
->  }
-> @@ -2590,14 +2610,8 @@ static void atapi_qc_complete(struct ata_queued_cmd *qc)
->  	/* handle completion from EH */
->  	if (unlikely(err_mask || qc->flags & ATA_QCFLAG_SENSE_VALID)) {
->  
-> -		if (!(qc->flags & ATA_QCFLAG_SENSE_VALID)) {
-> -			/* FIXME: not quite right; we don't want the
-> -			 * translation of taskfile registers into a
-> -			 * sense descriptors, since that's only
-> -			 * correct for ATA, not ATAPI
-> -			 */
-> +		if (!(qc->flags & ATA_QCFLAG_SENSE_VALID))
->  			ata_gen_passthru_sense(qc);
-> -		}
->  
->  		/* SCSI EH automatically locks door if sdev->locked is
->  		 * set.  Sometimes door lock request continues to
-> -- 
-> 2.45.2.803.g4e1b14247a-goog
-> 
+[ Upstream commit bdcb8aa434c6d36b5c215d02a9ef07551be25a37 ]
 
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
+In gfs2_put_super(), whether withdrawn or not, the quota should
+be cleaned up by gfs2_quota_cleanup().
 
-However: I really think that this patch should be squashed with patch 8/8.
+Otherwise, struct gfs2_sbd will be freed before gfs2_qd_dealloc (rcu
+callback) has run for all gfs2_quota_data objects, resulting in
+use-after-free.
 
-For more details, see my reply to patch 8/8.
+Also, gfs2_destroy_threads() and gfs2_quota_cleanup() is already called
+by gfs2_make_fs_ro(), so in gfs2_put_super(), after calling
+gfs2_make_fs_ro(), there is no need to call them again.
+
+Backport notes:
+The origin of a cherry-pick conflict is the (relevant) code block added in
+commit f66af88e3321 ("gfs2: Stop using gfs2_make_fs_ro for withdraw")
+
+There are no references to gfs2_withdrawn() nor gfs2_destroy_threads() in
+gfs2_put_super(), so simply call gfs2_quota_cleanup() in a new else block
+as bdcb8aa434c6 achieves.
+
+Use else braces for consistency with the if block.
+
+Reported-by: syzbot+29c47e9e51895928698c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=29c47e9e51895928698c
+Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Clayton Casciato <majortomtosourcecontrol@gmail.com>
+---
+v1 -> v2:
+Remove invalid tag
+Add upstream commit's tags
+Use current mailing list for GFS2
+Use branch fragment instead of Git tag in subject
+Differentiate upstream commit body and backport notes
+Make body more imperative
+
+Sponsor: 21SoftWare LLC
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 302d1e43d701..6107cd680176 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -591,6 +591,8 @@ static void gfs2_put_super(struct super_block *sb)
+ 
+ 	if (!sb_rdonly(sb)) {
+ 		gfs2_make_fs_ro(sdp);
++	} else {
++		gfs2_quota_cleanup(sdp);
+ 	}
+ 	WARN_ON(gfs2_withdrawing(sdp));
+ 
 
