@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-56226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C41A591DFC1
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 14:46:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADBA691DFC0
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 14:46:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60FEEB22D00
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 12:46:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A72A1F2342F
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 12:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F33D159207;
-	Mon,  1 Jul 2024 12:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A631015990E;
+	Mon,  1 Jul 2024 12:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZbqNWxvP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnz+OBlb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3D382D69
-	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 12:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5651598E2
+	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 12:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719837941; cv=none; b=QH5qtTtAoIviovG1R1BvUFQf1EkiOD36POoVYlXSWK1foK+D93gsL94JPUcpg57OfIJg3F8OhocOje0TZj8YMmH4gUeRZKqtpPFmt10Q/JqhDWv1IaBTJU7ciebD2pO7jnnIyL9FCJG1I9Tb5eKDmcwR56rfGO2cMATaghJ8InA=
+	t=1719837945; cv=none; b=iLWSZYHPODPLtrNPNrqI1Q8vJCJT6kdw+/ZzrZYHSuWxF6ArFcVYeKc2J/QKYRIsw6Ae8llt5rvb5BJ1idByFtxItmkqu0JHuP7ouF2Xl+0UydM74n/s2g0kTpeDXWepS3Iz+2JFmXVvpwGf494BbPWe2K66vwgnNvtvuG4RuSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719837941; c=relaxed/simple;
-	bh=SOhiz88b1MODvyR5IJnF8VxK9XbCFbUN5BUYf5TepH8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ckvq1Yirb+FgFHdo9IJe6OosUHYcawyj+ELYYV0STLKJrJHA4p8G2PZRdnGLJefuNY1WzJ3w+A4tqrgE4w2jUCs9vQU7qUCPakjB5orLVPZPim14MJALMch5yeQ4JzRerHAPHjN3Ov1Ct5nVSM4tUpqb8KmOm7LpUETJjpvqjJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZbqNWxvP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B27C116B1;
-	Mon,  1 Jul 2024 12:45:40 +0000 (UTC)
+	s=arc-20240116; t=1719837945; c=relaxed/simple;
+	bh=AE0F15qB3PKtTz9YSfjHy0zx+KbyZ5tvkoVYhzr8y5U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uhaoH+Ql0D9GNIh9qXthzwp82Hw9dc/2v8AL/QnDm2/T59ojDYdCX+p/ytx51tInnlQeHgaUesQBx+f4ucOu3tVg4SvuKIzJl6+WnJ5Vh5kX5bliS+IqdIuDoFiD3JtCm7Gb/x57fjNUmnDiIFNmY/J9etMh+9hl3DrUi5PQtsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnz+OBlb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77879C116B1;
+	Mon,  1 Jul 2024 12:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719837941;
-	bh=SOhiz88b1MODvyR5IJnF8VxK9XbCFbUN5BUYf5TepH8=;
+	s=korg; t=1719837945;
+	bh=AE0F15qB3PKtTz9YSfjHy0zx+KbyZ5tvkoVYhzr8y5U=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ZbqNWxvPFHVqom5avJWlMjX6h0QsjXvqeNbimwxB01P8C7hfvFf38YF6M46WFaLI+
-	 cLvArBtvxIc1fu5ApOLzq+eChTZRRxI+jEJfWm85eTxdgSYB6dlHBEu8y3PCARBtRK
-	 /zc48zVVfPM38xKQFp+YWpDgmgsKbY4fdcEr4khY=
-Subject: FAILED: patch "[PATCH] selftests/mm:fix test_prctl_fork_exec return failure" failed to apply to 6.6-stable tree
+	b=rnz+OBlboqPOsQqaWat4chxS/Evo7vc2WgubWk33Yp3L62E3WOmZ6WREbyyXoOHkD
+	 YA5irVthv7nIk1syVHsQo4Dw26eZvKk5cHc5X9yDhbdatrkLHXmSfRZvogKrmsabi/
+	 bX//Ne4CnQc7dvnkEND942KqZ2garNrEocrGYjsY=
+Subject: FAILED: patch "[PATCH] selftests/mm:fix test_prctl_fork_exec return failure" failed to apply to 5.15-stable tree
 To: shechenglong001@gmail.com,akpm@linux-foundation.org,david@redhat.com,shuah@kernel.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Jul 2024 14:29:36 +0200
-Message-ID: <2024070135-gave-hatchback-24d5@gregkh>
+Date: Mon, 01 Jul 2024 14:29:37 +0200
+Message-ID: <2024070137-bolster-virtual-0e64@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,31 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8b8546d298dc9ce9d5d01a06c822e255d2159ca7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070135-gave-hatchback-24d5@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070137-bolster-virtual-0e64@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 8b8546d298dc ("selftests/mm:fix test_prctl_fork_exec return failure")
 6c47de3be3a0 ("selftest/mm: ksm_functional_tests: extend test case for ksm fork/exec")
 0374af1da077 ("mm/ksm: test case for prctl fork/exec workflow")
+e5013f11c6c9 ("selftest/mm: ksm_functional_tests: Add PROT_NONE test")
+42096aa24b82 ("selftest/mm: ksm_functional_tests: test in mmap_and_merge_range() if anything got merged")
+3d0745e59c84 ("selftest: add a testcase of ksm zero pages")
+1150ea933855 ("selftests/ksm: ksm_functional_tests: add prctl unmerge test")
+07115fcc15b4 ("selftests/mm: add new selftests for KSM")
+3822a7c40997 ("Merge tag 'mm-stable-2023-02-20-13-37' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm")
 
 thanks,
 
