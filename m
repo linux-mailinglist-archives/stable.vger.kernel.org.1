@@ -1,222 +1,154 @@
-Return-Path: <stable+bounces-56216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB6091DFAD
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 14:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45A2891DFB1
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 14:45:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B83B1C220FB
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 12:45:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77D361C22673
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 12:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB418158D77;
-	Mon,  1 Jul 2024 12:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20591158DC1;
+	Mon,  1 Jul 2024 12:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YOdNf6Je"
 X-Original-To: stable@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C409158D70;
-	Mon,  1 Jul 2024 12:43:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5EA1865;
+	Mon,  1 Jul 2024 12:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719837841; cv=none; b=DQlGZz6SOo5hJg0Q9I2t7faK2LGtRMPdIq7QgBXfLIRTzszQqTzFR+gWQDDnRneb6rQnF7ZTm4mfXRPv5hhG4q4FxSqewTkcQT1LrgUrk1kiC66//4jGHlWCuZ8+ZZNtrg85logRygM1XF5mPlG/X/yjyyiAe8uDMpW/milfsm4=
+	t=1719837866; cv=none; b=N4yj7Mp5GgZp6w3F+cIbjmLLZJ3Znh+iKFoG+niQ7hYUdtQj+2gylN3ixZwqNV/i7P0f3M1t6QkT+XvI1oO7/zCpxjZbmw3g6AcJ5FUS/bwxEYuq+7CdDuKdqSF+5Or7pPCoJvDUnQzrDrIp+cSczZLKWmWLKBTFZ4EI4qL/b4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719837841; c=relaxed/simple;
-	bh=gziZ/YmkYT8HtuQpa9Hf7+eLTOnqdaOU3fKyu0JLdLg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FSKNSAD1uQ56wdFm1O/pLnOCSCGwY4e7Y5ASAoecoUPO4r2xZn40AxKS3unpL1F4pc/VEXgDC4sh04IF98pPD9bnmzLjGFGhce3i8G0GdxCk5PXYm2g+59CvYeYEgOzwljiwE8SdmPDOdcbJ5TmIXT9lh/Dl2TjyXKwCJ9QOslw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [141.14.13.50] (g305.RadioFreeInternet.molgen.mpg.de [141.14.13.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 5375661E5FE01;
-	Mon,  1 Jul 2024 14:42:43 +0200 (CEST)
-Message-ID: <e981261e-77be-407b-b601-f7214a4f57dd@molgen.mpg.de>
-Date: Mon, 1 Jul 2024 14:42:42 +0200
+	s=arc-20240116; t=1719837866; c=relaxed/simple;
+	bh=O8BXXu90uaFR1Jb/1zZyV9jZStuqATmFhCnlzHlMlVg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TLqBa0dssM4+hq8gmezyXEnPXJvs6Fbb9Kt3w6+r3CR2lkmPxnEHTiogdo44RnGxZLDTccgSKDMre82FtfGKQJiIJ+XxdUJchDsayPmd5VHeOROy5WP37JT+J4Fpg50Mg4UYaHMo1UCo+z3+1Aohf2SeHPuEOeQx4sIkR5yWvOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YOdNf6Je; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-424acf3226fso23224825e9.1;
+        Mon, 01 Jul 2024 05:44:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719837863; x=1720442663; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=X9oUdv7urUmTInH8QMPbAXnIwXW+SLweFqKTOXeU2hk=;
+        b=YOdNf6JeQ6TMWlOEfp6hONbEsyyrUz5X1JOfsw7gEUohbpyGlKD6SKsl8fmDYPLT1/
+         iJosjALKCnYP4VF+TARc6IeSVupU76SCazgGeTbTyaDIDTXrl76levlut+zXgloxMciS
+         s4IX/D2pnk9ie1hB4PMJxN/T4HBEgR0ytBSYflt6rNZri4Tbbu/ZTUxz0zh6WGbyX3AD
+         7du5ytHsL2jw4zLgdPo/4QOM0Wi6hTVxY8wjMFUYynaRI0rYr87qJ7BuVz9lNEtW26uv
+         hIwFKCqSUTIi6KEAV6bdWNeBFNWNrR5pk5pS38UTNFaPl1qgezCxIvAzjLv1QWKJcD7o
+         nmkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719837863; x=1720442663;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=X9oUdv7urUmTInH8QMPbAXnIwXW+SLweFqKTOXeU2hk=;
+        b=udSmaxXg/IC7UipoNMWizyIihUJrqr39AzGWO/QwKLHDKIP11pq9NwmlMtEerALcY1
+         FVsZhnX9hvO+G3i6tMcHcE5N2LoazHPAkixmv01KsEPQy3zSdtQxO4sp68sC3mSIs4/K
+         4bCuWHhwjgI2zK+Uaf1PbohGqxMkKmA8J0DTUMh14NOl6EmcLNxeRLJuhaELw0DEDfeT
+         tOJRAkaIkY4xg9/SX8U6Nsk3LvbmnpAXtiKuqX+nbW7704Le7Hpo47ea1AYcmbnQP6Kw
+         vYdUm08WmsD6j+PQPQOd7ywnEUjkQA2NJzZ55knweO+P3KhiKWpjRVCRribFdf4HJGMH
+         9Zpw==
+X-Forwarded-Encrypted: i=1; AJvYcCU7acRP2LOSS2/ryI54suebwoS//v6B9yKSCzngC6zlqRACou2coZaUsJm4klAyLoBCD+CqHUtJytXR3BA0UtvUlfTnbgDTKgTIFNLW14jJCl9jo4XNdK8xrW86+Lq1dwYyLSbYIADWTPpvkBDUOni1wsQ0q3xPjGOmkJ0Qnl6584g/3ArqLsyyC1vnnNGF8A28ltkUk84OU8WM
+X-Gm-Message-State: AOJu0Yy55c3BcJHjc6dB3CbLcMDAFxFyrkfALGseTj2MqLU5GKj8GDvR
+	omd7rwrSd03G9K/jU54ynuAOL1oeRgjEzVmbYpmutRpJdKWB/rWo/s0YsVrZ
+X-Google-Smtp-Source: AGHT+IG/m5dh7OIdKUq1Jt30kdZeI3XnThzntipad3x9UGAxTUw1PaxNZ2+WOT85Dz5soydlYmB7ow==
+X-Received: by 2002:a05:600c:4c14:b0:424:f2b9:81f5 with SMTP id 5b1f17b1804b1-4257a028321mr36950435e9.9.1719837862346;
+        Mon, 01 Jul 2024 05:44:22 -0700 (PDT)
+Received: from vitor-nb.. ([2001:8a0:e622:f700:f55c:ea59:1259:5240])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3675a0e16b3sm9921005f8f.61.2024.07.01.05.44.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jul 2024 05:44:21 -0700 (PDT)
+From: Vitor Soares <ivitro@gmail.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Vitor Soares <vitor.soares@toradex.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	ivitro@gmail.com,
+	stable@vger.kernel.org,
+	Lucas Stach <l.stach@pengutronix.de>
+Subject: [PATCH v1] arm64: dts: imx8mp: Fix VPU PGC power-domain parents
+Date: Mon,  1 Jul 2024 13:43:02 +0100
+Message-Id: <20240701124302.16520-1-ivitro@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH iwl-net v1 1/1] igc: Fix packet still tx
- after gate close by reducing i226 MAC retry buffer
-To: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Jesse Brandeburg <jesse.brandeburg@intel.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Vinicius Costa Gomes <vinicius.gomes@intel.com>, netdev@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240701100058.3301229-1-faizal.abdul.rahim@linux.intel.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20240701100058.3301229-1-faizal.abdul.rahim@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Dear Faizal,
+From: Vitor Soares <vitor.soares@toradex.com>
 
+On iMX8M Plus QuadLite (VPU-less SoC), the dependency between VPU power
+domains lead to a deferred probe error during boot:
+[   17.140195] imx-pgc imx-pgc-domain.8: failed to command PGC
+[   17.147183] platform imx-pgc-domain.11: deferred probe pending: (reason unknown)
+[   17.147200] platform imx-pgc-domain.12: deferred probe pending: (reason unknown)
+[   17.147207] platform imx-pgc-domain.13: deferred probe pending: (reason unknown)
 
-Thank you for your patch.
+This is incorrect and should be the VPU blk-ctrl controlling these power
+domains, which is already doing it.
 
-Am 01.07.24 um 12:00 schrieb Faizal Rahim:
-> AVNU testing uncovered that even when the taprio gate is closed,
-> some packets still transmit.
+After removing the `power-domain` property from the VPU PGC nodes, both
+iMX8M Plus w/ and w/out VPU boot correctly. However, it breaks the
+suspend/resume functionality. A fix for this is pending, see Links.
 
-What is AVNU? *some* would fit on the line above.
+Cc: <stable@vger.kernel.org>
+Fixes: df680992dd62 ("arm64: dts: imx8mp: add vpu pgc nodes")
+Link: https://lore.kernel.org/all/fcd6acc268b8642371cf289149b2b1c3e90c7f45.camel@pengutronix.de/
+Link: https://lore.kernel.org/all/20240418155151.355133-1-ivitro@gmail.com/
+Suggested-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+---
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
-> A known i225/6 hardware errata states traffic might overflow the planned
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index b92abb5a5c53..12548336b736 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -882,21 +882,18 @@ pgc_vpumix: power-domain@19 {
+ 
+ 					pgc_vpu_g1: power-domain@20 {
+ 						#power-domain-cells = <0>;
+-						power-domains = <&pgc_vpumix>;
+ 						reg = <IMX8MP_POWER_DOMAIN_VPU_G1>;
+ 						clocks = <&clk IMX8MP_CLK_VPU_G1_ROOT>;
+ 					};
+ 
+ 					pgc_vpu_g2: power-domain@21 {
+ 						#power-domain-cells = <0>;
+-						power-domains = <&pgc_vpumix>;
+ 						reg = <IMX8MP_POWER_DOMAIN_VPU_G2>;
+ 						clocks = <&clk IMX8MP_CLK_VPU_G2_ROOT>;
+ 					};
+ 
+ 					pgc_vpu_vc8000e: power-domain@22 {
+ 						#power-domain-cells = <0>;
+-						power-domains = <&pgc_vpumix>;
+ 						reg = <IMX8MP_POWER_DOMAIN_VPU_VC8000E>;
+ 						clocks = <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
+ 					};
+-- 
+2.34.1
 
-Do you have an idea for that errata? Please document it. (I see you 
-added it at the end. Maybe use [1] notation for referencing it.)
-
-> QBV window. This happens because MAC maintains an internal buffer,
-> primarily for supporting half duplex retries. Therefore, when
-> the gate closes, residual MAC data in the buffer may still transmit.
-> 
-> To mitigate this for i226, reduce the MAC's internal buffer from
-> 192 bytes to 88 bytes by modifying the RETX_CTL register value.
-
-… to the recommended 88 bytes …
-
-> This follows guidelines from:
-> 
-> a) Ethernet Controller I225/I22 Spec Update Rev 2.1 Errata Item 9:
->     TSN: Packet Transmission Might Cross Qbv Window
-> b) I225/6 SW User Manual Rev 1.2.4: Section 8.11.5 Retry Buffer Control
-> 
-> Test Steps:
-> 1. Send taprio cmd to board A
-> tc qdisc replace dev enp1s0 parent root handle 100 taprio \
-> num_tc 4 \
-> map 3 2 1 0 3 3 3 3 3 3 3 3 3 3 3 3 \
-> queues 1@0 1@1 1@2 1@3 \
-> base-time 0 \
-> sched-entry S 0x07 500000 \
-> sched-entry S 0x0f 500000 \
-> flags 0x2 \
-> txtime-delay 0
-> 
-> - Note that for TC3, gate opens for 500us and close for another 500us
-> 
-> 3. Take tcpdump log on Board B
-> 
-> 4. Send udp packets via UDP tai app from Board A to Board B
-> 
-> 5. Analyze tcpdump log via wireshark log on Board B
-> - Observed that the total time from the first to the last packet
-> received during one cycle for TC3 does not exceed 500us
-
-Indent the list item by four spaces? (Also above?)
-
-> 
-> Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
-
-As you Cc’ed stable@vger.kernel.org, add a Fixes: tag?
-
-> ---
->   drivers/net/ethernet/intel/igc/igc_defines.h |  6 ++++
->   drivers/net/ethernet/intel/igc/igc_tsn.c     | 34 ++++++++++++++++++++
->   2 files changed, 40 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/intel/igc/igc_defines.h b/drivers/net/ethernet/intel/igc/igc_defines.h
-> index 5f92b3c7c3d4..511384f3ec5c 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_defines.h
-> +++ b/drivers/net/ethernet/intel/igc/igc_defines.h
-> @@ -404,6 +404,12 @@
->   #define IGC_DTXMXPKTSZ_TSN	0x19 /* 1600 bytes of max TX DMA packet size */
->   #define IGC_DTXMXPKTSZ_DEFAULT	0x98 /* 9728-byte Jumbo frames */
->   
-> +/* Retry Buffer Control */
-> +#define IGC_RETX_CTL			0x041C
-> +#define IGC_RETX_CTL_WATERMARK_MASK	0xF
-> +#define IGC_RETX_CTL_QBVFULLTH_SHIFT	8 /* QBV Retry Buffer Full Threshold */
-> +#define IGC_RETX_CTL_QBVFULLEN	0x1000 /* Enable QBV Retry Buffer Full Threshold */
-> +
->   /* Transmit Scheduling Latency */
->   /* Latency between transmission scheduling (LaunchTime) and the time
->    * the packet is transmitted to the network in nanosecond.
-> diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
-> index 22cefb1eeedf..c97d908cecc5 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_tsn.c
-> +++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
-> @@ -78,6 +78,15 @@ void igc_tsn_adjust_txtime_offset(struct igc_adapter *adapter)
->   	wr32(IGC_GTXOFFSET, txoffset);
->   }
->   
-> +static void igc_tsn_restore_retx_default(struct igc_adapter *adapter)
-> +{
-> +	struct igc_hw *hw = &adapter->hw;
-> +	u32 retxctl;
-> +
-> +	retxctl = rd32(IGC_RETX_CTL) & IGC_RETX_CTL_WATERMARK_MASK;
-> +	wr32(IGC_RETX_CTL, retxctl);
-> +}
-> +
->   /* Returns the TSN specific registers to their default values after
->    * the adapter is reset.
->    */
-> @@ -91,6 +100,9 @@ static int igc_tsn_disable_offload(struct igc_adapter *adapter)
->   	wr32(IGC_TXPBS, I225_TXPBSIZE_DEFAULT);
->   	wr32(IGC_DTXMXPKTSZ, IGC_DTXMXPKTSZ_DEFAULT);
->   
-> +	if (igc_is_device_id_i226(hw))
-> +		igc_tsn_restore_retx_default(adapter);
-> +
->   	tqavctrl = rd32(IGC_TQAVCTRL);
->   	tqavctrl &= ~(IGC_TQAVCTRL_TRANSMIT_MODE_TSN |
->   		      IGC_TQAVCTRL_ENHANCED_QAV | IGC_TQAVCTRL_FUTSCDDIS);
-> @@ -111,6 +123,25 @@ static int igc_tsn_disable_offload(struct igc_adapter *adapter)
->   	return 0;
->   }
->   
-> +/* To partially fix i226 HW errata, reduce MAC internal buffering from 192 Bytes
-> + * to 88 Bytes by setting RETX_CTL register using the recommendation from:
-> + * a) Ethernet Controller I225/I22 Specification Update Rev 2.1
-> + *    Item 9: TSN: Packet Transmission Might Cross the Qbv Window
-> + * b) I225/6 SW User Manual Rev 1.2.4: Section 8.11.5 Retry Buffer Control
-> + */
-> +static void igc_tsn_set_retx_qbvfullth(struct igc_adapter *adapter)
-
-It’d put threshold in the name.
-
-> +{
-> +	struct igc_hw *hw = &adapter->hw;
-> +	u32 retxctl, watermark;
-> +
-> +	retxctl = rd32(IGC_RETX_CTL);
-> +	watermark = retxctl & IGC_RETX_CTL_WATERMARK_MASK;
-> +	/* Set QBVFULLTH value using watermark and set QBVFULLEN */
-> +	retxctl |= (watermark << IGC_RETX_CTL_QBVFULLTH_SHIFT) |
-> +		   IGC_RETX_CTL_QBVFULLEN;
-> +	wr32(IGC_RETX_CTL, retxctl);
-> +}
-> +
->   static int igc_tsn_enable_offload(struct igc_adapter *adapter)
->   {
->   	struct igc_hw *hw = &adapter->hw;
-> @@ -123,6 +154,9 @@ static int igc_tsn_enable_offload(struct igc_adapter *adapter)
->   	wr32(IGC_DTXMXPKTSZ, IGC_DTXMXPKTSZ_TSN);
->   	wr32(IGC_TXPBS, IGC_TXPBSIZE_TSN);
->   
-> +	if (igc_is_device_id_i226(hw))
-> +		igc_tsn_set_retx_qbvfullth(adapter);
-> +
->   	for (i = 0; i < adapter->num_tx_queues; i++) {
->   		struct igc_ring *ring = adapter->tx_ring[i];
->   		u32 txqctl = 0;
-
-
-Kind regards,
-
-Paul
 
