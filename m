@@ -1,73 +1,73 @@
-Return-Path: <stable+bounces-56208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A4EF91DD3E
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 12:58:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2F8B91DDB1
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 13:20:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50C232827CC
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 10:58:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E302B23E6F
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 11:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1703B13AA35;
-	Mon,  1 Jul 2024 10:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FDF42056;
+	Mon,  1 Jul 2024 11:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="XX+iFEfz"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="kKxHSPgI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52005.amazon.com (smtp-fw-52005.amazon.com [52.119.213.156])
+Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926C3149DF0
-	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 10:57:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1713413DDAF
+	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 11:19:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719831452; cv=none; b=iKAA2uUj8QhwFAmtK0bIT/ATMlySTe0i9wHhRvGYbFzsEF7JAJSuVDKmmzs00Z8xcezSKQcxeMuthRCn8OB2/ZRzbSJXzozjdNaEoRQGxo0sJvHj5cRjJ01lx+nOLzX0zfBc2QmIE0LNUC031QwjFCqrTeeI+UHB16E7mlQUeYs=
+	t=1719832799; cv=none; b=DKp+9Y4arHaJzO99KS20oltes/p63GMsF8hptTAPXbe+D8yRJSICbLSmudxrsUOyXdecQ5B8fanZTykjFDkYMswaJxSrTS56Prs95U0PwLxxCIrP2KyZdy9+f7uqkyv+pLnimi10lvEP4u7AwRzsMJD/HfwsfzOdjZwHTKBLpJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719831452; c=relaxed/simple;
-	bh=GIgdgBWuHBLkgKrVYI4ZQr7ez7kdSvfDHGv9CUjpbic=;
+	s=arc-20240116; t=1719832799; c=relaxed/simple;
+	bh=AyTkrgGcMg6/3PbaXxUhBgd2XeWp4mCygHH14FI//KU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q9kgweWOwcj+uWSHVxd3YgeZso3hZ9H6s5yOJK+ZNXoiaXrf3EzsEih6yQNdcmhK+SV90ZiwJM5l++k/IRzm4qyx4u9hSw4LpOFAoIfFRxvAACmyJTm7RBOWa5lXVe/ICC6NQwxClQIFWYiXT+FfJCeVbHrerlug/JTEPFQtANA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=XX+iFEfz; arc=none smtp.client-ip=52.119.213.156
+	 MIME-Version:Content-Type; b=ZpodgANrTV3kiJujU7ShO17NsqxOkMN0xvblDgLDsLmoPOGAc5wob3OlVWVnzLdn6KrDirsB6cFup5yp+lmPG5R056bIDUfGrI6ZueFXHInOdWdbGFRveflIt5qEGDEAUCTcA9+31ptnubFuVQp1pXyKpLZTlJ3Q+f+zT5KgFos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=kKxHSPgI; arc=none smtp.client-ip=52.119.213.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1719831450; x=1751367450;
+  t=1719832798; x=1751368798;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=xyW/DPnWBae6s10i5tFz77aFvMc3DMdENlJP17zypVo=;
-  b=XX+iFEfz2lijMpFiCV53Dc89zkkU4h0AXAjMRyeRVDHgEVjUNVVNpjVN
-   0XifijXYXXyAGEasUWWaJKvbdZ3d4UcJOUD7j+NfEHs8j9CXy1VSVXd6D
-   xMG4bj0dvwu1w+TKX5nv+ZAE+7FErMuq0GmJEFVaevXK7GytNjDNxJSmz
-   I=;
+  bh=jXZUovLf3XXTBCFobz3gG7lgT5lb2kLWgnoI904CK9s=;
+  b=kKxHSPgIv36du3y/mYBx/UfKkBxk4Usf/Imv4863l7Hl+7ujIv8csrVD
+   v0Pq/t7hyngWDxAMEmIYObNdk7x5bF52SmgrRGQkjkpHaloXGEWNtp/F6
+   w1QL8HDpjwhJuX7bm5Ba4O7ZkOJjwhIUTwsH/SSrIUjhGT5yYn19JwS0g
+   c=;
 X-IronPort-AV: E=Sophos;i="6.09,176,1716249600"; 
-   d="scan'208";a="664102206"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52005.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2024 10:57:28 +0000
-Received: from EX19MTAEUC002.ant.amazon.com [10.0.17.79:22154]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.46.91:2525] with esmtp (Farcaster)
- id a4678b7e-90d4-4c92-b781-ea72a257f857; Mon, 1 Jul 2024 10:57:26 +0000 (UTC)
-X-Farcaster-Flow-ID: a4678b7e-90d4-4c92-b781-ea72a257f857
+   d="scan'208";a="215302683"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
+  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2024 11:19:55 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [10.0.43.254:19607]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.35.104:2525] with esmtp (Farcaster)
+ id 56abde86-b913-4812-896b-1c9994934500; Mon, 1 Jul 2024 11:19:53 +0000 (UTC)
+X-Farcaster-Flow-ID: 56abde86-b913-4812-896b-1c9994934500
 Received: from EX19D014EUC004.ant.amazon.com (10.252.51.182) by
- EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
+ EX19MTAEUC001.ant.amazon.com (10.252.51.155) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 1 Jul 2024 10:57:26 +0000
+ Mon, 1 Jul 2024 11:19:50 +0000
 Received: from u5d18b891348c5b.ant.amazon.com (10.146.13.114) by
  EX19D014EUC004.ant.amazon.com (10.252.51.182) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 1 Jul 2024 10:57:22 +0000
+ Mon, 1 Jul 2024 11:19:46 +0000
 From: James Gowans <jgowans@amazon.com>
 To: <stable@vger.kernel.org>
 CC: <gregkh@linuxfoundation.org>, <chenxiang66@hisilicon.com>,
 	<maz@kernel.org>, <oliver.upton@linux.dev>, <yuzenghui@huawei.com>,
 	<sironi@amazon.de>
-Subject: [PATCH 5.10.y] KVM: arm64: vgic-v4: Make the doorbell request robust w.r.t preemption
-Date: Mon, 1 Jul 2024 12:57:07 +0200
-Message-ID: <20240701105707.28631-1-jgowans@amazon.com>
+Subject: [PATCH 5.15.y] KVM: arm64: vgic-v4: Make the doorbell request robust w.r.t preemption
+Date: Mon, 1 Jul 2024 13:19:33 +0200
+Message-ID: <20240701111933.41973-1-jgowans@amazon.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2023072324-aviation-delirious-b27d@gregkh>
-References: <2023072324-aviation-delirious-b27d@gregkh>
+In-Reply-To: <2023072323-trident-unturned-7999@gregkh>
+References: <2023072323-trident-unturned-7999@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,7 +76,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D041UWA004.ant.amazon.com (10.13.139.9) To
+X-ClientProxiedBy: EX19D035UWA002.ant.amazon.com (10.13.139.60) To
  EX19D014EUC004.ant.amazon.com (10.252.51.182)
 
 From: Marc Zyngier <maz@kernel.org>
@@ -126,22 +126,22 @@ Signed-off-by: James Gowans <jgowans@amazon.com>
  5 files changed, 13 insertions(+), 6 deletions(-)
 
 diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index 912b83e784bb..48ee1fe3aca4 100644
+index 1713630bf8f5..91038fa2e5e0 100644
 --- a/arch/arm64/include/asm/kvm_host.h
 +++ b/arch/arm64/include/asm/kvm_host.h
-@@ -410,6 +410,7 @@ struct kvm_vcpu_arch {
- #define KVM_ARM64_GUEST_HAS_SVE		(1 << 5) /* SVE exposed to guest */
- #define KVM_ARM64_VCPU_SVE_FINALIZED	(1 << 6) /* SVE config completed */
- #define KVM_ARM64_GUEST_HAS_PTRAUTH	(1 << 7) /* PTRAUTH exposed to guest */
-+#define KVM_ARM64_VCPU_IN_WFI		(1 << 8) /* WFI instruction trapped */
+@@ -419,6 +419,7 @@ struct kvm_vcpu_arch {
+ #define KVM_ARM64_EXCEPT_MASK		(7 << 9) /* Target EL/MODE */
+ #define KVM_ARM64_DEBUG_STATE_SAVE_SPE	(1 << 12) /* Save SPE context if active  */
+ #define KVM_ARM64_DEBUG_STATE_SAVE_TRBE	(1 << 13) /* Save TRBE context if active  */
++#define KVM_ARM64_VCPU_IN_WFI		(1 << 14) /* WFI instruction trapped */
  
- #define vcpu_has_sve(vcpu) (system_supports_sve() && \
- 			    ((vcpu)->arch.flags & KVM_ARM64_GUEST_HAS_SVE))
+ #define KVM_GUESTDBG_VALID_MASK (KVM_GUESTDBG_ENABLE | \
+ 				 KVM_GUESTDBG_USE_SW_BP | \
 diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 4d63fcd7574b..afe8be2fef88 100644
+index 47d737672aba..9ded5443de48 100644
 --- a/arch/arm64/kvm/arm.c
 +++ b/arch/arm64/kvm/arm.c
-@@ -332,13 +332,15 @@ void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu)
+@@ -379,13 +379,15 @@ void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu)
  	 */
  	preempt_disable();
  	kvm_vgic_vmcr_sync(vcpu);
@@ -158,7 +158,7 @@ index 4d63fcd7574b..afe8be2fef88 100644
  	vgic_v4_load(vcpu);
  	preempt_enable();
  }
-@@ -649,7 +651,7 @@ static void check_vcpu_requests(struct kvm_vcpu *vcpu)
+@@ -696,7 +698,7 @@ static void check_vcpu_requests(struct kvm_vcpu *vcpu)
  		if (kvm_check_request(KVM_REQ_RELOAD_GICv4, vcpu)) {
  			/* The distributor enable bits were changed */
  			preempt_disable();
@@ -168,10 +168,10 @@ index 4d63fcd7574b..afe8be2fef88 100644
  			preempt_enable();
  		}
 diff --git a/arch/arm64/kvm/vgic/vgic-v3.c b/arch/arm64/kvm/vgic/vgic-v3.c
-index 9cdf39a94a63..29c12bf9601a 100644
+index 8eb70451323b..fcd5bb242bcf 100644
 --- a/arch/arm64/kvm/vgic/vgic-v3.c
 +++ b/arch/arm64/kvm/vgic/vgic-v3.c
-@@ -682,7 +682,7 @@ void vgic_v3_put(struct kvm_vcpu *vcpu)
+@@ -715,7 +715,7 @@ void vgic_v3_put(struct kvm_vcpu *vcpu)
  {
  	struct vgic_v3_cpu_if *cpu_if = &vcpu->arch.vgic_cpu.vgic_v3;
  
@@ -181,10 +181,10 @@ index 9cdf39a94a63..29c12bf9601a 100644
  	vgic_v3_vmcr_sync(vcpu);
  
 diff --git a/arch/arm64/kvm/vgic/vgic-v4.c b/arch/arm64/kvm/vgic/vgic-v4.c
-index b5fa73c9fd35..cdfaaeabbb7d 100644
+index f507e3fcffce..2cf4a60b6e1d 100644
 --- a/arch/arm64/kvm/vgic/vgic-v4.c
 +++ b/arch/arm64/kvm/vgic/vgic-v4.c
-@@ -310,14 +310,15 @@ void vgic_v4_teardown(struct kvm *kvm)
+@@ -333,14 +333,15 @@ void vgic_v4_teardown(struct kvm *kvm)
  	its_vm->vpes = NULL;
  }
  
@@ -202,7 +202,7 @@ index b5fa73c9fd35..cdfaaeabbb7d 100644
  }
  
  int vgic_v4_load(struct kvm_vcpu *vcpu)
-@@ -328,6 +329,9 @@ int vgic_v4_load(struct kvm_vcpu *vcpu)
+@@ -351,6 +352,9 @@ int vgic_v4_load(struct kvm_vcpu *vcpu)
  	if (!vgic_supports_direct_msis(vcpu->kvm) || vpe->resident)
  		return 0;
  
@@ -213,13 +213,13 @@ index b5fa73c9fd35..cdfaaeabbb7d 100644
  	 * Before making the VPE resident, make sure the redistributor
  	 * corresponding to our current CPU expects us here. See the
 diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
-index a8d8fdcd3723..92348c085c0c 100644
+index e602d848fc1a..e9caa57cd633 100644
 --- a/include/kvm/arm_vgic.h
 +++ b/include/kvm/arm_vgic.h
-@@ -402,6 +402,6 @@ int kvm_vgic_v4_unset_forwarding(struct kvm *kvm, int irq,
- 				 struct kvm_kernel_irq_routing_entry *irq_entry);
+@@ -423,6 +423,6 @@ int kvm_vgic_v4_unset_forwarding(struct kvm *kvm, int irq,
  
  int vgic_v4_load(struct kvm_vcpu *vcpu);
+ void vgic_v4_commit(struct kvm_vcpu *vcpu);
 -int vgic_v4_put(struct kvm_vcpu *vcpu, bool need_db);
 +int vgic_v4_put(struct kvm_vcpu *vcpu);
  
