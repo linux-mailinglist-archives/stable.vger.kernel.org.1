@@ -1,195 +1,200 @@
-Return-Path: <stable+bounces-56276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D356691E9E9
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 22:56:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EAF391E9FA
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 23:10:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ACAA1F21DC5
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 20:56:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD5D4284324
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 21:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFA817164C;
-	Mon,  1 Jul 2024 20:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51FA6171653;
+	Mon,  1 Jul 2024 21:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tr7LeHmk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EoC29VfQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFF9152179;
-	Mon,  1 Jul 2024 20:56:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0760C170855;
+	Mon,  1 Jul 2024 21:10:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719867409; cv=none; b=n6wbxJf9cGqHhAHwsXm6jFjv1EO6IZuO7JqiXXuGMEZrAtdoYZPeHzIftZHS+5IRu8ttXqe6F9PDn4eCG85ohj77DltB0pmjurbEdvBlsNSQLrgPHjHnObtYHsZi6I4liKYa6JJZNfMThNFzuUgu64BQRWWkfpWuTeFMaoL8z9I=
+	t=1719868203; cv=none; b=cJHH46ZS9H4IRULjqGa3IjG+qF3glA4yYlKTGVVlYyR+93DmLT3rZpbkiD2hvILPtAt0WueO0zXB4nVeKDUuH4ER8TJe6h20Om/wVHuW7+YD4glg1wSeyw0Ssv1bto+mliZrz+miDJvrUOYEkEznivc6jTCpBTq74qEwgdt2XfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719867409; c=relaxed/simple;
-	bh=yivC1wh3WXB0Mkllna8y0JKmSTpJlJbqbl1AdYH3amQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=F0iWLOH4OpKfnvdrTyou03+9eFLXDIl9AbaR2w+2juDq+y7NpHMlKKqCoxF/9DkJXrVZaPegwU4oZKfspuxvHK07Ogfvp2/3djneHrl2G0YmpdsDEbm94OPwMpWccEqM0h07O8lkkHrWvBKzDROI5moqa3K1H2fakDjfYyWfv18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tr7LeHmk; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1f99e2dc8cdso2216875ad.0;
-        Mon, 01 Jul 2024 13:56:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719867407; x=1720472207; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tOUox0A8P7WdAUwxhtPV8qdrltE7pejNVtILSbSQpN4=;
-        b=Tr7LeHmkZ82U7MMBhSOKoNBbF4p/ILq32h2Otp0pQXrbIRUvQZjiNRbTFP+ZR7ZYG8
-         nbal/ZKIiUkNTd3MeParMNjkKCh2iL0NamHB7YSxghIjaGieqHun8DPYhi8gC7XWOhHB
-         3Z/6a9aOCg5BRMA0ejHTX5QEoGNRtaTlzv6X0fD3waxmDQE2R31wAaEImInc5mwXSRUD
-         2zG/dPswYJxGWWcbTGqeufxJvvtKnhPV4YfGw4uAU9oT5DL1iY/R1b16FtqCPyQn+8xK
-         eVcGHO1B8KJcfiPj3JvcobU7dzcp7M8zjsKLv2SfB6BjzJjxkHfkP1Kn2M8pTQI6gfVk
-         6BZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719867407; x=1720472207;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tOUox0A8P7WdAUwxhtPV8qdrltE7pejNVtILSbSQpN4=;
-        b=ebKuRXik2GXU3WTEn4UKY1TTDfei7KVayxxxXEaunDlup1ZOxDNg6w2ZRdx3Jwj4Mg
-         xV9tZ5eLZ/sBzGbIueR0+5iwuIkcIQUY53Qqs8vbp5ga0ubIEAUSQC3sWshzX3CpdwIS
-         cwpVHcsPTnsfCD7R0mpNO7YbGzJskOOxuw39p3PysbXlfE4ex3dxj8JAPZXrpOeTFx0Y
-         dNmzgvnVK4ncR6nZSYKmEYHgAJf+np3EHhkpkAzy26hIPn6aI4f66O617yl6cz2mlg8o
-         sI918DzEjbK58sqyae5HCYdIOsFZi1IBmcm8c/fqjxEUYzRrGROWy0288T86Wdy2/YjY
-         /hSA==
-X-Forwarded-Encrypted: i=1; AJvYcCWISLuNI9QZXVV5THTJIRy7CqJUZzKHz7t6fjGzerUEER8+0VwxeFGfSm8PwRXohw7GodPAs7sjPjo3t8sYgXg/i+MOAUOUCpXa7tImW20kyAywTykh9z74n6b7ejg7iBJs3nzEl+9/XIJDoBw7OQT2SKwL8G6YJQbmAROXCd8fVg==
-X-Gm-Message-State: AOJu0YyBbEidqzZRoISkDjEwzQU87/HfYHZj1MJ5C+bXIPHFd8zvFHFG
-	t3E5l3toG/mZ+4fQck3Igm+V9dtsviIjWsrenWscS166vW0Krzqx
-X-Google-Smtp-Source: AGHT+IFrTruC3H2GBbF3mUj3lqAiD5H9fk9Ju69ci44bdKZ4SKOiR//a/zscmxKXvRePm7RkETeIMg==
-X-Received: by 2002:a05:6a20:7286:b0:1be:d897:797a with SMTP id adf61e73a8af0-1bef626edbdmr9916444637.5.1719867406736;
-        Mon, 01 Jul 2024 13:56:46 -0700 (PDT)
-Received: from visitorckw-System-Product-Name.. ([140.113.216.168])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fac15393d1sm69402285ad.157.2024.07.01.13.56.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jul 2024 13:56:46 -0700 (PDT)
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-To: rafael@kernel.org
-Cc: lenb@kernel.org,
-	mario.limonciello@amd.com,
-	akpm@linux-foundation.org,
-	jserv@ccns.ncku.edu.tw,
-	alexdeucher@gmail.com,
-	belegdol@gmail.com,
-	regressions@leemhuis.info,
-	linux-acpi@vger.kernel.org,
-	regressions@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	s=arc-20240116; t=1719868203; c=relaxed/simple;
+	bh=I+mbDCY+FeTTxdfJIQu5i2MerfDx039k/V9YynnPHVE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BTa1HdXi1dCZx1ULaNAfkzrfKHi448ILoFKw0DWbB1MI0dU/nEQR5ilfyA7xOa5GiyusnIt2D8QZmix1OwH6NvNXqXE4KLG2NQIAyMpkstSYTGww/eKHsQrmQEPQUP7Rl2P7geGj5NdQoFfuo0MbbeXrBxLrEqGe9ZVeBeFlXyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EoC29VfQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99EE0C116B1;
+	Mon,  1 Jul 2024 21:10:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719868202;
+	bh=I+mbDCY+FeTTxdfJIQu5i2MerfDx039k/V9YynnPHVE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EoC29VfQYzncc+fs+pTthq98KlbfZxPV6jYH7Ki0wO9dXJFLTl4WJRnLPfJjwsoAm
+	 7KOFnMjorbahCWYb9zis9aC741vqohwUhzU51rL0bLNWI8qxVdhUMW8X9SgwTM7nc8
+	 rMlIEsKyYQFx2u8KBXlHEwgj3LWIvy6FrFLhaLgb6wJZe82XeXcFoFybVK+ITubbPs
+	 MYNZJmh3qoezvr/RvkjKVWGgxQ0lNVBDVeC4ljRPqenfSsSgR0BI39coMtFLu8LDYf
+	 9aqsnw142+rrynovFm6yXSLC0sW8ZdrW1EAAxKFa5+QF5pHLAvy+uXHyBNh3coFAHh
+	 42JI5dB8LIW3w==
+Date: Mon, 1 Jul 2024 23:09:57 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Igor Pylypiv <ipylypiv@google.com>
+Cc: Damien Le Moal <dlemoal@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Hannes Reinecke <hare@suse.de>, linux-ide@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Akshat Jain <akshatzen@google.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v4] ACPI: processor_idle: Fix invalid comparison with insertion sort for latency
-Date: Tue,  2 Jul 2024 04:56:39 +0800
-Message-Id: <20240701205639.117194-1-visitorckw@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CAJZ5v0iY=S+WKWvDAAWxLcOwvpOG5Cck1gQv4p+FfW1Nca0Yqw@mail.gmail.com>
-References: <CAJZ5v0iY=S+WKWvDAAWxLcOwvpOG5Cck1gQv4p+FfW1Nca0Yqw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/8] ata: libata-scsi: Fix offsets for the fixed
+ format sense data
+Message-ID: <ZoMbJX7VupfIPfBp@ryzen.lan>
+References: <20240701195758.1045917-1-ipylypiv@google.com>
+ <20240701195758.1045917-2-ipylypiv@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240701195758.1045917-2-ipylypiv@google.com>
 
-The acpi_cst_latency_cmp comparison function currently used for sorting
-C-state latencies does not satisfy transitivity, causing incorrect
-sorting results. Specifically, if there are two valid acpi_processor_cx
-elements A and B and one invalid element C, it may occur that A < B,
-A = C, and B = C. Sorting algorithms assume that if A < B and A = C,
-then C < B, leading to incorrect ordering.
+On Mon, Jul 01, 2024 at 07:57:51PM +0000, Igor Pylypiv wrote:
+> Correct the ATA PASS-THROUGH fixed format sense data offsets to conform
+> to SPC-6 and SAT-5 specifications. Additionally, set the VALID bit to
+> indicate that the INFORMATION field contains valid information.
+> 
+> INFORMATION
+> ===========
+> 
+> SAT-5 Table 212 — "Fixed format sense data INFORMATION field for the ATA
+> PASS-THROUGH commands" defines the following format:
+> 
+> +------+------------+
+> | Byte |   Field    |
+> +------+------------+
+> |    0 | ERROR      |
+> |    1 | STATUS     |
+> |    2 | DEVICE     |
+> |    3 | COUNT(7:0) |
+> +------+------------+
+> 
+> SPC-6 Table 48 - "Fixed format sense data" specifies that the INFORMATION
+> field starts at byte 3 in sense buffer resulting in the following offsets
+> for the ATA PASS-THROUGH commands:
+> 
+> +------------+-------------------------+
+> |   Field    |  Offset in sense buffer |
+> +------------+-------------------------+
+> | ERROR      |  3                      |
+> | STATUS     |  4                      |
+> | DEVICE     |  5                      |
+> | COUNT(7:0) |  6                      |
+> +------------+-------------------------+
+> 
+> COMMAND-SPECIFIC INFORMATION
+> ============================
+> 
+> SAT-5 Table 213 - "Fixed format sense data COMMAND-SPECIFIC INFORMATION
+> field for ATA PASS-THROUGH" defines the following format:
+> 
+> +------+-------------------+
+> | Byte |        Field      |
+> +------+-------------------+
+> |    0 | FLAGS | LOG INDEX |
+> |    1 | LBA (7:0)         |
+> |    2 | LBA (15:8)        |
+> |    3 | LBA (23:16)       |
+> +------+-------------------+
+> 
+> SPC-6 Table 48 - "Fixed format sense data" specifies that
+> the COMMAND-SPECIFIC-INFORMATION field starts at byte 8
+> in sense buffer resulting in the following offsets for
+> the ATA PASS-THROUGH commands:
+> 
+> Offsets of these fields in the fixed sense format are as follows:
+> 
+> +-------------------+-------------------------+
+> |       Field       |  Offset in sense buffer |
+> +-------------------+-------------------------+
+> | FLAGS | LOG INDEX |  8                      |
+> | LBA (7:0)         |  9                      |
+> | LBA (15:8)        |  10                     |
+> | LBA (23:16)       |  11                     |
+> +-------------------+-------------------------+
+> 
+> Reported-by: Akshat Jain <akshatzen@google.com>
+> Fixes: 11093cb1ef56 ("libata-scsi: generate correct ATA pass-through sense")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Hannes Reinecke <hare@suse.de>
+> Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
+> ---
+>  drivers/ata/libata-scsi.c | 26 +++++++++++++-------------
+>  1 file changed, 13 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+> index bb4d30d377ae..a9e44ad4c2de 100644
+> --- a/drivers/ata/libata-scsi.c
+> +++ b/drivers/ata/libata-scsi.c
+> @@ -855,7 +855,6 @@ static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
+>  	struct scsi_cmnd *cmd = qc->scsicmd;
+>  	struct ata_taskfile *tf = &qc->result_tf;
+>  	unsigned char *sb = cmd->sense_buffer;
+> -	unsigned char *desc = sb + 8;
+>  	u8 sense_key, asc, ascq;
+>  
+>  	memset(sb, 0, SCSI_SENSE_BUFFERSIZE);
+> @@ -877,7 +876,8 @@ static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
+>  		scsi_build_sense(cmd, 1, RECOVERED_ERROR, 0, 0x1D);
+>  	}
+>  
+> -	if ((cmd->sense_buffer[0] & 0x7f) >= 0x72) {
+> +	if ((sb[0] & 0x7f) >= 0x72) {
+> +		unsigned char *desc;
+>  		u8 len;
+>  
+>  		/* descriptor format */
+> @@ -916,21 +916,21 @@ static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
+>  		}
+>  	} else {
+>  		/* Fixed sense format */
+> -		desc[0] = tf->error;
+> -		desc[1] = tf->status;
+> -		desc[2] = tf->device;
+> -		desc[3] = tf->nsect;
+> -		desc[7] = 0;
+> +		sb[0] |= 0x80;
+> +		sb[3] = tf->error;
+> +		sb[4] = tf->status;
+> +		sb[5] = tf->device;
+> +		sb[6] = tf->nsect;
+>  		if (tf->flags & ATA_TFLAG_LBA48)  {
+> -			desc[8] |= 0x80;
+> +			sb[8] |= 0x80;
+>  			if (tf->hob_nsect)
+> -				desc[8] |= 0x40;
+> +				sb[8] |= 0x40;
+>  			if (tf->hob_lbal || tf->hob_lbam || tf->hob_lbah)
+> -				desc[8] |= 0x20;
+> +				sb[8] |= 0x20;
+>  		}
+> -		desc[9] = tf->lbal;
+> -		desc[10] = tf->lbam;
+> -		desc[11] = tf->lbah;
+> +		sb[9] = tf->lbal;
+> +		sb[10] = tf->lbam;
+> +		sb[11] = tf->lbah;
+>  	}
+>  }
+>  
+> -- 
+> 2.45.2.803.g4e1b14247a-goog
+> 
 
-Given the small size of the array (<=8), we replace the library sort
-function with a simple insertion sort that properly ignores invalid
-elements and sorts valid ones based on latency. This change ensures
-correct ordering of the C-state latencies.
-
-Fixes: 65ea8f2c6e23 ("ACPI: processor idle: Fix up C-state latency if not ordered")
-Cc: stable@vger.kernel.org
-Reported-by: Julian Sikorski <belegdol@gmail.com>
-Closes: https://lore.kernel.org/lkml/70674dc7-5586-4183-8953-8095567e73df@gmail.com/
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
----
-v3 -> v4:
-- Rename the parameter 'arr' to 'states'.
-- Add empty lines to enhance readability.
-
-Note: I only performed a build test and a simple unit test to ensure
-      the latency of valid elements is correctly sorted in the randomly
-      generated data.
-
- drivers/acpi/processor_idle.c | 37 +++++++++++++++--------------------
- 1 file changed, 16 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index bd6a7857ce05..831fa4a12159 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -16,7 +16,6 @@
- #include <linux/acpi.h>
- #include <linux/dmi.h>
- #include <linux/sched.h>       /* need_resched() */
--#include <linux/sort.h>
- #include <linux/tick.h>
- #include <linux/cpuidle.h>
- #include <linux/cpu.h>
-@@ -386,25 +385,24 @@ static void acpi_processor_power_verify_c3(struct acpi_processor *pr,
- 	acpi_write_bit_register(ACPI_BITREG_BUS_MASTER_RLD, 1);
- }
- 
--static int acpi_cst_latency_cmp(const void *a, const void *b)
-+static void acpi_cst_latency_sort(struct acpi_processor_cx *states, size_t length)
- {
--	const struct acpi_processor_cx *x = a, *y = b;
-+	int i, j, k;
- 
--	if (!(x->valid && y->valid))
--		return 0;
--	if (x->latency > y->latency)
--		return 1;
--	if (x->latency < y->latency)
--		return -1;
--	return 0;
--}
--static void acpi_cst_latency_swap(void *a, void *b, int n)
--{
--	struct acpi_processor_cx *x = a, *y = b;
-+	for (i = 1; i < length; i++) {
-+		if (!states[i].valid)
-+			continue;
- 
--	if (!(x->valid && y->valid))
--		return;
--	swap(x->latency, y->latency);
-+		for (j = i - 1, k = i; j >= 0; j--) {
-+			if (!states[j].valid)
-+				continue;
-+
-+			if (states[j].latency > states[k].latency)
-+				swap(states[j].latency, states[k].latency);
-+
-+			k = j;
-+		}
-+	}
- }
- 
- static int acpi_processor_power_verify(struct acpi_processor *pr)
-@@ -449,10 +447,7 @@ static int acpi_processor_power_verify(struct acpi_processor *pr)
- 
- 	if (buggy_latency) {
- 		pr_notice("FW issue: working around C-state latencies out of order\n");
--		sort(&pr->power.states[1], max_cstate,
--		     sizeof(struct acpi_processor_cx),
--		     acpi_cst_latency_cmp,
--		     acpi_cst_latency_swap);
-+		acpi_cst_latency_sort(&pr->power.states[1], max_cstate);
- 	}
- 
- 	lapic_timer_propagate_broadcast(pr);
--- 
-2.34.1
-
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
 
