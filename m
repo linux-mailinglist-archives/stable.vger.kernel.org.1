@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-56222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66C191DFBB
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 14:46:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9EA591DFBC
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 14:46:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A30C31C21C81
-	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 12:46:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD0A21C22159
+	for <lists+stable@lfdr.de>; Mon,  1 Jul 2024 12:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B4B15B136;
-	Mon,  1 Jul 2024 12:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE66015B971;
+	Mon,  1 Jul 2024 12:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ekmq+7+V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="od6PBHsk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B353A1591EA
-	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 12:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF62D15B561
+	for <stable@vger.kernel.org>; Mon,  1 Jul 2024 12:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719837929; cv=none; b=J9UgPUX0WgXOCs0+kt/FeHq6622WLZPabfVQaGLpt9Svn89V2WrgfwXsR6hdFD+ZvpiKTmr3WYOfCATMeoswX61Rtsoxr5dS/An2rIPVGDYSR8aOXXCXIZPrqOarBTAV7VqOn7ID9QISFHBe+7uOWF0gptTrFakqf3ljQpgIwEs=
+	t=1719837932; cv=none; b=l7da+Zil6Enp5MQoiYNoC8PyCz7cj4wYCrUinp1gkXWJn2y37eeYg1+N+v7hpgVApmb9JXJNoU8G5wchYnFovJafEbbXWwKJKZicbwfEhpf8GpQR1+WUopPOcTanpMyQEVw/iHFqt9YjkHwZWne4QnjaE7a1KkCf9KG+xumDDfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719837929; c=relaxed/simple;
-	bh=GOXOdOzJU/Hr3+x1gT6BHG2uJXN2oyn8wC4fVtJZdNQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=b8PLrNmDSl3UusZGZv9rFYAoDI+jw+W9davbeH3Ysyl2xBJA6/DEstuN5vJ0nqOXJQAp5nxzQ4vBTC05iZTGZPd1BSkyZ9uSp5Fj9cUIYDvO/whAMcF1wstu7sEN98T3qxhsLEzOvmhZsD9J9ZkjdU5zTqHmeSqYt8yuYqC9C5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ekmq+7+V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3E5C116B1;
-	Mon,  1 Jul 2024 12:45:28 +0000 (UTC)
+	s=arc-20240116; t=1719837932; c=relaxed/simple;
+	bh=dzq15meA5udoEKFC//Z+5O/cpaVaVRkBBJqKW3rh4jY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SlNIBqvpTiUP4qz027W+dbBcyMuitr9QJEb+QcrtE5ceXOQvt/IrFm5Q9fdpUzwygJ/Rr2o77BVdA7TisjZVreT/b49bw0x/4SmSONE1agt/J4IR8UOIkVMUMEcbqRf8Za2px9ERXAfwsmdRwedlxv90acV7HcMpswm/qT4FpbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=od6PBHsk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB1EC116B1;
+	Mon,  1 Jul 2024 12:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719837929;
-	bh=GOXOdOzJU/Hr3+x1gT6BHG2uJXN2oyn8wC4fVtJZdNQ=;
+	s=korg; t=1719837932;
+	bh=dzq15meA5udoEKFC//Z+5O/cpaVaVRkBBJqKW3rh4jY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Ekmq+7+VYp0ucw3/c01S+OwbPZaA68iF5WMX8BwSMrpPAu7yz3RljJ9lYM34FA5wb
-	 uovjbF/bXq4QiCnxg59Ck8RKdcctL0zBPmT9RM8BxTS5pTCds25bJBxvJTiau0ZBM2
-	 6rHCGqt9gVyUwPoUnAObP6uZMoDXOgQDchBjw7tc=
-Subject: FAILED: patch "[PATCH] mm/page_alloc: Separate THP PCP into movable and non-movable" failed to apply to 6.6-stable tree
+	b=od6PBHskm0oOPr6MVvYewIRvu1BNem5vv0hZeCldcOajx536aZDVuHr75BIPFRh96
+	 hlxcWpDYIIrXYfDzalKvpb3DZ2FgW8VZBfEdE+1p4II91wA8uAmAZWNOn6DFmDDthZ
+	 /+OsRYE0Rmsw9Ooj/bOlcQJ6HFsyh1V0PsNle88Q=
+Subject: FAILED: patch "[PATCH] mm/page_alloc: Separate THP PCP into movable and non-movable" failed to apply to 6.1-stable tree
 To: yangge1116@126.com,21cnbao@gmail.com,akpm@linux-foundation.org,baolin.wang@linux.alibaba.com,mgorman@techsingularity.net,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Jul 2024 14:29:28 +0200
-Message-ID: <2024070127-escapade-brutishly-2851@gregkh>
+Date: Mon, 01 Jul 2024 14:29:29 +0200
+Message-ID: <2024070129-movable-commend-1b2a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x bf14ed81f571f8dba31cd72ab2e50fbcc877cc31
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070127-escapade-brutishly-2851@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070129-movable-commend-1b2a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 bf14ed81f571 ("mm/page_alloc: Separate THP PCP into movable and non-movable categories")
 6303d1c553c8 ("mm: page_alloc: use the correct THP order for THP PCP")
+c1dc69e6ce65 ("mm/page_alloc: remove unneeded variable base")
 
 thanks,
 
