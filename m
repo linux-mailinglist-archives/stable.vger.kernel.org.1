@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-56715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 058029245A8
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:25:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E04789245DD
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:28:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36A461C216F7
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:25:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AA3D2835F0
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:28:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE551BD4E9;
-	Tue,  2 Jul 2024 17:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407CF1BE251;
+	Tue,  2 Jul 2024 17:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQ6bsNUH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUVbQz/T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0D815218A;
-	Tue,  2 Jul 2024 17:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F316F1514DC;
+	Tue,  2 Jul 2024 17:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941116; cv=none; b=Xkc4qGzIPKyAgWWyPdhxshgguRiGf3yP1LAWwiBDiFKmQIs5OVr9ZOUIJ+8M6V8vfdVkxItzxIemXPMDYar8Gj7Kf/nHUtSTdBWom02xEi/iouWJue0r+fgjkWglYw6YOAkvKhiN9QuGxx5w8JaQ/oKto4P0Tfe8xUS5661H0I8=
+	t=1719941280; cv=none; b=JnlGsI02Mv72CI6HcJ8mtbAwVSakSiZVganhe1ZKKWYx8gR3sk1E0B0Unk/LcxGpF/xeXulYd82hDeYn9UpB40CA1fc8w0wG6lm3kXqDCRmuZN1fnTVVaoC9oajHC0bOLKgJtq9gNqq3KbBeUP21If08DEIVDGgs4jYKMMZ8k8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941116; c=relaxed/simple;
-	bh=rFqiatq8ndu47T55IRAZliYr90K2326MkC1Z/khveTA=;
+	s=arc-20240116; t=1719941280; c=relaxed/simple;
+	bh=8+kwuofvz5G1uV2tyb1n4nntbvFqXdfoMcMuwUmTIuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NU2B0nT3fJD2dwv3XyPJepj1CynZrjDBWWgXKDE6j0IwK0I6XSIpFJYKqdutACjN0ii/MlwrzvK87T8Quo2KUxw/FNZkyWPOP1Y65J1HY/bxzrLESSsmObCCTNIBYQ4Mv1UL0ZOWOFfhV6ot1+ojTicZF0zjMeJhzrPwld7psb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQ6bsNUH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77BEC4AF07;
-	Tue,  2 Jul 2024 17:25:15 +0000 (UTC)
+	 MIME-Version; b=ayc0XKAuGQfdcGGS2taoOJmYZuVZEXCPVh8iV+76rpT04xJGNLgfPu2NFHkJFzm4ltaYfueMAeSBfQMaRIT923n94OUvkBvKNGLk8OLGCnDrpAoi7RDrqRXrvPcxZzTSMAo7Vinj7SxgLgSQg9qB+mIzkqBiGGJJCPQyuiA87sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUVbQz/T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C25C116B1;
+	Tue,  2 Jul 2024 17:27:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941116;
-	bh=rFqiatq8ndu47T55IRAZliYr90K2326MkC1Z/khveTA=;
+	s=korg; t=1719941279;
+	bh=8+kwuofvz5G1uV2tyb1n4nntbvFqXdfoMcMuwUmTIuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WQ6bsNUHPYoVoN1c9MxvmX+bKDnLpb/PIewap/0qESnHFg4ooKArxG2PPseK3ALlE
-	 NulFiCfSj1AVkIqYmuoosouiFVB9YPVDnpjyXf1wQhkqmpvsWhcyirH2mlrxrE+YUP
-	 JTtWHp/LYHUSVNXK9G1+x29rVK03cwKf0ZCYbWwg=
+	b=QUVbQz/TeQ3K5P8oB31oZH1jllzZHSLcJUBZzl6XiGbe25sgXO8VfWOyGCUM+iFDz
+	 swPnZEfGApBC8b02HM1xXDcQB3O9u5Mw/TMYHtnSbNGdEcdwDKwQ7Sx8X6pDSt6GIv
+	 F8BvDGaYCT/AhvZkHW7RzbqomXBJby72n3cLezMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 105/163] usb: gadget: printer: SS+ support
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 018/128] ASoC: amd: acp: remove i2s configuration check in acp_i2s_probe()
 Date: Tue,  2 Jul 2024 19:03:39 +0200
-Message-ID: <20240702170237.033682784@linuxfoundation.org>
+Message-ID: <20240702170226.920261596@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-commit fd80731e5e9d1402cb2f85022a6abf9b1982ec5f upstream.
+[ Upstream commit 70fa3900c3ed92158628710e81d274e5cb52f92b ]
 
-We need to treat super speed plus as super speed, not the default,
-which is full speed.
+ACP supports different pin configurations for I2S IO. Checking ACP pin
+configuration value against specific value breaks the functionality for
+other I2S pin configurations. This check is no longer required in i2s dai
+driver probe call as i2s configuration check will be verified during acp
+platform device creation sequence.
+Remove i2s_mode check in acp_i2s_probe() function.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240620093800.28901-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b24484c18b10 ("ASoC: amd: acp: ACP code generic to support newer platforms")
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://msgid.link/r/20240617072844.871468-2-Vijendar.Mukunda@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_printer.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/amd/acp/acp-i2s.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
---- a/drivers/usb/gadget/function/f_printer.c
-+++ b/drivers/usb/gadget/function/f_printer.c
-@@ -213,6 +213,7 @@ static inline struct usb_endpoint_descri
- 					struct usb_endpoint_descriptor *ss)
+diff --git a/sound/soc/amd/acp/acp-i2s.c b/sound/soc/amd/acp/acp-i2s.c
+index ac416572db0d3..3c78207f9ad9d 100644
+--- a/sound/soc/amd/acp/acp-i2s.c
++++ b/sound/soc/amd/acp/acp-i2s.c
+@@ -537,20 +537,12 @@ int asoc_acp_i2s_probe(struct snd_soc_dai *dai)
  {
- 	switch (gadget->speed) {
-+	case USB_SPEED_SUPER_PLUS:
- 	case USB_SPEED_SUPER:
- 		return ss;
- 	case USB_SPEED_HIGH:
+ 	struct device *dev = dai->component->dev;
+ 	struct acp_dev_data *adata = dev_get_drvdata(dev);
+-	struct acp_resource *rsrc = adata->rsrc;
+-	unsigned int val;
+ 
+ 	if (!adata->acp_base) {
+ 		dev_err(dev, "I2S base is NULL\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	val = readl(adata->acp_base + rsrc->i2s_pin_cfg_offset);
+-	if (val != rsrc->i2s_mode) {
+-		dev_err(dev, "I2S Mode not supported val %x\n", val);
+-		return -EINVAL;
+-	}
+-
+ 	return 0;
+ }
+ EXPORT_SYMBOL_NS_GPL(asoc_acp_i2s_probe, SND_SOC_ACP_COMMON);
+-- 
+2.43.0
+
 
 
 
