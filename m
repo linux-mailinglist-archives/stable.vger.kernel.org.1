@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-56560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 737069244F1
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:16:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB7B9245E1
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:28:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F23C0B231F3
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:16:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85B071F22CA9
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94A21BE86D;
-	Tue,  2 Jul 2024 17:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDCD01BE22B;
+	Tue,  2 Jul 2024 17:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4MH4G3k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNIj1cZ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EB181F;
-	Tue,  2 Jul 2024 17:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC7B1514DC;
+	Tue,  2 Jul 2024 17:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940590; cv=none; b=nahv5Svj3B4qYjTctE/7b0tt8RmS3cZueWKB9C4Toe0/hZftggaJU+SxJBzrncYroPvCVfJxRZWBsPvX5YkdFnYyOzM88dx76qtg+xHk+AOdX9KiiLj+TvIggtyEYnhMof4140u50bAX+xNIGW2AW41O2VArLK2QFHdQ4jIvxx8=
+	t=1719941293; cv=none; b=grX3i/eAw7DyS/HmG/HTNg3r/gt6551qxR7yAF7Gk7GUYb2Ks4wJl+ZZ/bqGsyig9hEOuC7A8brY5VkWWNjDEXBMxYWW3vkVDFzaAMy61JbPmQ3u1GL2/5ncFGOqsCTXQrpARzR0fFG/pO/QaqnzmVcPS9kP5ldSz0p++OSjfaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940590; c=relaxed/simple;
-	bh=Nu6I9D/dg3SaPx/mjdwHphyliKXju/f0SXc922JNhlQ=;
+	s=arc-20240116; t=1719941293; c=relaxed/simple;
+	bh=GIJz96Kfd7WmyAHZQPgg4KXCuN+hGQ+LCM8iB2s5kZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jkcsh7wn5hTt+xh0M9UMmyHpB5IU50VdvQmkSdGf7vZMAevVC0vV6u0fC3/L8vrDAZ+a9jmf8jv1pcWZW8KPm7i/8NOM02ESfu8cow0p0AZssO9GjlALpwz+bwMdlRsPGtLnc7+HkTf53LwbMfuBJGPGsro06r8DxzEy4SqlqIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4MH4G3k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3B0C116B1;
-	Tue,  2 Jul 2024 17:16:29 +0000 (UTC)
+	 MIME-Version; b=oz6xaWYYMfbDD9ma3oz/IiymH2w8MTxJo024VWh/5oBrFiK8vAnnrTi/jJ5j8TavlAC2ov+JXwtbP8U4eB0xV2adFvRyLcYDca0+Neu27A4f0qNjmW+3HbAnj2D1xUv672v/frwqwrJLvgq3UMVB2vrJyyCwdrK7Bn9gS1UyZHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNIj1cZ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EC6C116B1;
+	Tue,  2 Jul 2024 17:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940590;
-	bh=Nu6I9D/dg3SaPx/mjdwHphyliKXju/f0SXc922JNhlQ=;
+	s=korg; t=1719941293;
+	bh=GIJz96Kfd7WmyAHZQPgg4KXCuN+hGQ+LCM8iB2s5kZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j4MH4G3kM9G9YwTLPbmhHwrkz9AzkPuK0oswl+A/7lGoJ/Sn88NdQ28Y177hMDtOl
-	 7/fnywX28iqdn1Rw4JOA5AUbgadGnmaTWSB6CA7OCaSqnGkpQXuZFUR/hnq5ddKHTk
-	 kbyb51dA4RzHF+BacPjVKkg93mdhQEu1f1Ql/+V0=
+	b=YNIj1cZ1h8fc3cTZnA3aJYgOiraqEWTwdj7JEfDY//oIj0TOKfmZoJ00NWHrgy0TF
+	 j6i48+UgRFTnMsTAa4zoxTZipd3Oo96iuwfb03WA3KK8K4opLgd4fSBI2CoET8lquA
+	 /CBy3dQfs0e3Z6l28vGlO1f6UrrEhJ9q6VxywNOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.9 183/222] drm/i915/gt: Fix potential UAF by revoke of fence registers
-Date: Tue,  2 Jul 2024 19:03:41 +0200
-Message-ID: <20240702170250.976382109@linuxfoundation.org>
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 021/128] mlxsw: spectrum_buffers: Fix memory corruptions on Spectrum-4 systems
+Date: Tue,  2 Jul 2024 19:03:42 +0200
+Message-ID: <20240702170227.035636486@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +64,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 996c3412a06578e9d779a16b9e79ace18125ab50 upstream.
+[ Upstream commit c28947de2bed40217cf256c5d0d16880054fcf13 ]
 
-CI has been sporadically reporting the following issue triggered by
-igt@i915_selftest@live@hangcheck on ADL-P and similar machines:
+The following two shared buffer operations make use of the Shared Buffer
+Status Register (SBSR):
 
-<6> [414.049203] i915: Running intel_hangcheck_live_selftests/igt_reset_evict_fence
-...
-<6> [414.068804] i915 0000:00:02.0: [drm] GT0: GUC: submission enabled
-<6> [414.068812] i915 0000:00:02.0: [drm] GT0: GUC: SLPC enabled
-<3> [414.070354] Unable to pin Y-tiled fence; err:-4
-<3> [414.071282] i915_vma_revoke_fence:301 GEM_BUG_ON(!i915_active_is_idle(&fence->active))
-...
-<4>[  609.603992] ------------[ cut here ]------------
-<2>[  609.603995] kernel BUG at drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c:301!
-<4>[  609.604003] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-<4>[  609.604006] CPU: 0 PID: 268 Comm: kworker/u64:3 Tainted: G     U  W          6.9.0-CI_DRM_14785-g1ba62f8cea9c+ #1
-<4>[  609.604008] Hardware name: Intel Corporation Alder Lake Client Platform/AlderLake-P DDR4 RVP, BIOS RPLPFWI1.R00.4035.A00.2301200723 01/20/2023
-<4>[  609.604010] Workqueue: i915 __i915_gem_free_work [i915]
-<4>[  609.604149] RIP: 0010:i915_vma_revoke_fence+0x187/0x1f0 [i915]
-...
-<4>[  609.604271] Call Trace:
-<4>[  609.604273]  <TASK>
-...
-<4>[  609.604716]  __i915_vma_evict+0x2e9/0x550 [i915]
-<4>[  609.604852]  __i915_vma_unbind+0x7c/0x160 [i915]
-<4>[  609.604977]  force_unbind+0x24/0xa0 [i915]
-<4>[  609.605098]  i915_vma_destroy+0x2f/0xa0 [i915]
-<4>[  609.605210]  __i915_gem_object_pages_fini+0x51/0x2f0 [i915]
-<4>[  609.605330]  __i915_gem_free_objects.isra.0+0x6a/0xc0 [i915]
-<4>[  609.605440]  process_scheduled_works+0x351/0x690
-...
+ # devlink sb occupancy snapshot pci/0000:01:00.0
+ # devlink sb occupancy clearmax pci/0000:01:00.0
 
-In the past, there were similar failures reported by CI from other IGT
-tests, observed on other platforms.
+The register has two masks of 256 bits to denote on which ingress /
+egress ports the register should operate on. Spectrum-4 has more than
+256 ports, so the register was extended by cited commit with a new
+'port_page' field.
 
-Before commit 63baf4f3d587 ("drm/i915/gt: Only wait for GPU activity
-before unbinding a GGTT fence"), i915_vma_revoke_fence() was waiting for
-idleness of vma->active via fence_update().   That commit introduced
-vma->fence->active in order for the fence_update() to be able to wait
-selectively on that one instead of vma->active since only idleness of
-fence registers was needed.  But then, another commit 0d86ee35097a
-("drm/i915/gt: Make fence revocation unequivocal") replaced the call to
-fence_update() in i915_vma_revoke_fence() with only fence_write(), and
-also added that GEM_BUG_ON(!i915_active_is_idle(&fence->active)) in front.
-No justification was provided on why we might then expect idleness of
-vma->fence->active without first waiting on it.
+However, when filling the register's payload, the driver specifies the
+ports as absolute numbers and not relative to the first port of the port
+page, resulting in memory corruptions [1].
 
-The issue can be potentially caused by a race among revocation of fence
-registers on one side and sequential execution of signal callbacks invoked
-on completion of a request that was using them on the other, still
-processed in parallel to revocation of those fence registers.  Fix it by
-waiting for idleness of vma->fence->active in i915_vma_revoke_fence().
+Fix by specifying the ports relative to the first port of the port page.
 
-Fixes: 0d86ee35097a ("drm/i915/gt: Make fence revocation unequivocal")
-Closes: https://gitlab.freedesktop.org/drm/intel/issues/10021
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: stable@vger.kernel.org # v5.8+
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240603195446.297690-2-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit 24bb052d3dd499c5956abad5f7d8e4fd07da7fb1)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1]
+BUG: KASAN: slab-use-after-free in mlxsw_sp_sb_occ_snapshot+0xb6d/0xbc0
+Read of size 1 at addr ffff8881068cb00f by task devlink/1566
+[...]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xc6/0x120
+ print_report+0xce/0x670
+ kasan_report+0xd7/0x110
+ mlxsw_sp_sb_occ_snapshot+0xb6d/0xbc0
+ mlxsw_devlink_sb_occ_snapshot+0x75/0xb0
+ devlink_nl_sb_occ_snapshot_doit+0x1f9/0x2a0
+ genl_family_rcv_msg_doit+0x20c/0x300
+ genl_rcv_msg+0x567/0x800
+ netlink_rcv_skb+0x170/0x450
+ genl_rcv+0x2d/0x40
+ netlink_unicast+0x547/0x830
+ netlink_sendmsg+0x8d4/0xdb0
+ __sys_sendto+0x49b/0x510
+ __x64_sys_sendto+0xe5/0x1c0
+ do_syscall_64+0xc1/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[...]
+Allocated by task 1:
+ kasan_save_stack+0x33/0x60
+ kasan_save_track+0x14/0x30
+ __kasan_kmalloc+0x8f/0xa0
+ copy_verifier_state+0xbc2/0xfb0
+ do_check_common+0x2c51/0xc7e0
+ bpf_check+0x5107/0x9960
+ bpf_prog_load+0xf0e/0x2690
+ __sys_bpf+0x1a61/0x49d0
+ __x64_sys_bpf+0x7d/0xc0
+ do_syscall_64+0xc1/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 1:
+ kasan_save_stack+0x33/0x60
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3b/0x60
+ poison_slab_object+0x109/0x170
+ __kasan_slab_free+0x14/0x30
+ kfree+0xca/0x2b0
+ free_verifier_state+0xce/0x270
+ do_check_common+0x4828/0xc7e0
+ bpf_check+0x5107/0x9960
+ bpf_prog_load+0xf0e/0x2690
+ __sys_bpf+0x1a61/0x49d0
+ __x64_sys_bpf+0x7d/0xc0
+ do_syscall_64+0xc1/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: f8538aec88b4 ("mlxsw: Add support for more than 256 ports in SBSR register")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c |    1 +
- 1 file changed, 1 insertion(+)
+ .../mellanox/mlxsw/spectrum_buffers.c         | 20 +++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c
-+++ b/drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c
-@@ -298,6 +298,7 @@ void i915_vma_revoke_fence(struct i915_v
- 		return;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_buffers.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_buffers.c
+index c9f1c79f3f9d0..ba090262e27ef 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_buffers.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_buffers.c
+@@ -1607,8 +1607,8 @@ static void mlxsw_sp_sb_sr_occ_query_cb(struct mlxsw_core *mlxsw_core,
+ int mlxsw_sp_sb_occ_snapshot(struct mlxsw_core *mlxsw_core,
+ 			     unsigned int sb_index)
+ {
++	u16 local_port, local_port_1, first_local_port, last_local_port;
+ 	struct mlxsw_sp *mlxsw_sp = mlxsw_core_driver_priv(mlxsw_core);
+-	u16 local_port, local_port_1, last_local_port;
+ 	struct mlxsw_sp_sb_sr_occ_query_cb_ctx cb_ctx;
+ 	u8 masked_count, current_page = 0;
+ 	unsigned long cb_priv = 0;
+@@ -1628,6 +1628,7 @@ int mlxsw_sp_sb_occ_snapshot(struct mlxsw_core *mlxsw_core,
+ 	masked_count = 0;
+ 	mlxsw_reg_sbsr_pack(sbsr_pl, false);
+ 	mlxsw_reg_sbsr_port_page_set(sbsr_pl, current_page);
++	first_local_port = current_page * MLXSW_REG_SBSR_NUM_PORTS_IN_PAGE;
+ 	last_local_port = current_page * MLXSW_REG_SBSR_NUM_PORTS_IN_PAGE +
+ 			  MLXSW_REG_SBSR_NUM_PORTS_IN_PAGE - 1;
  
- 	GEM_BUG_ON(fence->vma != vma);
-+	i915_active_wait(&fence->active);
- 	GEM_BUG_ON(!i915_active_is_idle(&fence->active));
- 	GEM_BUG_ON(atomic_read(&fence->pin_count));
+@@ -1645,9 +1646,12 @@ int mlxsw_sp_sb_occ_snapshot(struct mlxsw_core *mlxsw_core,
+ 		if (local_port != MLXSW_PORT_CPU_PORT) {
+ 			/* Ingress quotas are not supported for the CPU port */
+ 			mlxsw_reg_sbsr_ingress_port_mask_set(sbsr_pl,
+-							     local_port, 1);
++							     local_port - first_local_port,
++							     1);
+ 		}
+-		mlxsw_reg_sbsr_egress_port_mask_set(sbsr_pl, local_port, 1);
++		mlxsw_reg_sbsr_egress_port_mask_set(sbsr_pl,
++						    local_port - first_local_port,
++						    1);
+ 		for (i = 0; i < mlxsw_sp->sb_vals->pool_count; i++) {
+ 			err = mlxsw_sp_sb_pm_occ_query(mlxsw_sp, local_port, i,
+ 						       &bulk_list);
+@@ -1684,7 +1688,7 @@ int mlxsw_sp_sb_occ_max_clear(struct mlxsw_core *mlxsw_core,
+ 			      unsigned int sb_index)
+ {
+ 	struct mlxsw_sp *mlxsw_sp = mlxsw_core_driver_priv(mlxsw_core);
+-	u16 local_port, last_local_port;
++	u16 local_port, first_local_port, last_local_port;
+ 	LIST_HEAD(bulk_list);
+ 	unsigned int masked_count;
+ 	u8 current_page = 0;
+@@ -1702,6 +1706,7 @@ int mlxsw_sp_sb_occ_max_clear(struct mlxsw_core *mlxsw_core,
+ 	masked_count = 0;
+ 	mlxsw_reg_sbsr_pack(sbsr_pl, true);
+ 	mlxsw_reg_sbsr_port_page_set(sbsr_pl, current_page);
++	first_local_port = current_page * MLXSW_REG_SBSR_NUM_PORTS_IN_PAGE;
+ 	last_local_port = current_page * MLXSW_REG_SBSR_NUM_PORTS_IN_PAGE +
+ 			  MLXSW_REG_SBSR_NUM_PORTS_IN_PAGE - 1;
  
+@@ -1719,9 +1724,12 @@ int mlxsw_sp_sb_occ_max_clear(struct mlxsw_core *mlxsw_core,
+ 		if (local_port != MLXSW_PORT_CPU_PORT) {
+ 			/* Ingress quotas are not supported for the CPU port */
+ 			mlxsw_reg_sbsr_ingress_port_mask_set(sbsr_pl,
+-							     local_port, 1);
++							     local_port - first_local_port,
++							     1);
+ 		}
+-		mlxsw_reg_sbsr_egress_port_mask_set(sbsr_pl, local_port, 1);
++		mlxsw_reg_sbsr_egress_port_mask_set(sbsr_pl,
++						    local_port - first_local_port,
++						    1);
+ 		for (i = 0; i < mlxsw_sp->sb_vals->pool_count; i++) {
+ 			err = mlxsw_sp_sb_pm_occ_clear(mlxsw_sp, local_port, i,
+ 						       &bulk_list);
+-- 
+2.43.0
+
 
 
 
