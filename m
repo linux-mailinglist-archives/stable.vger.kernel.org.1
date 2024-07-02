@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-56694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03058924591
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:24:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 793F19245E9
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:28:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3C1E2877CF
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:24:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2D1EB25833
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68FB51BE223;
-	Tue,  2 Jul 2024 17:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295D81BE85B;
+	Tue,  2 Jul 2024 17:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tf/WNaro"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4TMXxVo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263A115218A;
-	Tue,  2 Jul 2024 17:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC921514DC;
+	Tue,  2 Jul 2024 17:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941045; cv=none; b=HyFpd72DiknAvxcgA6SGhk6ZQSRGqFSUada8G/tSv7vKKHO7tyitcV8YtP9UNkIAFguQPMNFIPeoiLHRkW/ryrC3RgMFy6yE+6tUPgxTywNK+pcStAaGGb4Mao1qDFTqV4BgBSN2x6RBzzAqQJ4lfWDRGc477XnDTje9W1B91k8=
+	t=1719941310; cv=none; b=XaY1aOquWi8Ka+1FOzOYHVBVto9l6U+xE7GFVkAHAiZybOgb6Mrk+N5gdt0auyPzc7knC5kcMErGELhJmYV0CFSoCJq7Qnu+rDUYnNajZf0fnlF4Ox4WKyCPbnJroAToqS1BSEWENayzqHRpRqx9Y3BFMsmjDwzBXSzX4o52JQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941045; c=relaxed/simple;
-	bh=uFr+SmR9EAk8/PDCoiJsGVQDg7Gt8de5iSbo2lFW0Oc=;
+	s=arc-20240116; t=1719941310; c=relaxed/simple;
+	bh=vRtGjc6bVLeeKNuYKYgc0ESvwu1DpIK+6DnZsCuDRS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/IS8Ng+KWiCcMc3sQIgVsvs+GMN1cqYLPc85s1s+Dlah2ba0VDrB7Vsy3N5VyhbGUm5NYByDr9IBAN7Bl5slwfSK/goBAgnejWGMf03oolWx0uDTcUlk1BQUhxfqh0qwPMGesdstqDLGjdtMyjj26c8jKijrDcn7Tz4qkYpyRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tf/WNaro; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBF0C116B1;
-	Tue,  2 Jul 2024 17:24:04 +0000 (UTC)
+	 MIME-Version; b=kkrdI5dSOpSyxNhRWTXl3m/js+BoTfpGrcsb0X59M0Fv1xTL2CRIlWhQm0Tcy7f6xxczC1L8hoGBSarvRdlZP6sdrhHQ/qkLKnKaOUMgdJc9VwLSsAxjfa7leb8ywiFd42kTCCOsu6kZ63J9WPVlChZsyGwpruEdP1N5UdJkdPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4TMXxVo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218AEC4AF0A;
+	Tue,  2 Jul 2024 17:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941045;
-	bh=uFr+SmR9EAk8/PDCoiJsGVQDg7Gt8de5iSbo2lFW0Oc=;
+	s=korg; t=1719941310;
+	bh=vRtGjc6bVLeeKNuYKYgc0ESvwu1DpIK+6DnZsCuDRS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tf/WNarocPp2HO4BqSMVFdNVBH+leTaujShqAYHdXJDO2k40U0YKk/RQY9yjY+y2p
-	 IP75KyZepPtrjzCcF05CUFzrFkIdWRy7BCsSXrVjtgPZzOredbKKd3I8mEmSLRyPIn
-	 Mj2ogIP8jVf72ZPFY1DEGCm47hJvvzLXFB4Yp66E=
+	b=g4TMXxVos9ujb19URIK7PoqBP5HLcFXlwvqqfoxVCi1rFPV2bh1FyMCOjCMD4T2uF
+	 S2WYgLdfdPJY4rjXEdSgdPNN3vXOQjxbSNKsG0Fwh5kk5ThO7PQyxWGudfKv3apUZm
+	 jE07mXFK/opJTt+ewMt5i6yADCHEP3GKl7UZlZQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.6 112/163] usb: ucsi: stm32: fix command completion handling
-Date: Tue,  2 Jul 2024 19:03:46 +0200
-Message-ID: <20240702170237.296831064@linuxfoundation.org>
+	Daniil Dulov <d.dulov@aladdin.ru>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 026/128] xdp: Remove WARN() from __xdp_reg_mem_model()
+Date: Tue,  2 Jul 2024 19:03:47 +0200
+Message-ID: <20240702170227.223236132@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-commit 8e1ec117efdfd4b2f59f57bd0ad16b4edf5b963f upstream.
+[ Upstream commit 7e9f79428372c6eab92271390851be34ab26bfb4 ]
 
-Sometimes errors are seen, when doing DR swap, like:
-[   24.672481] ucsi-stm32g0-i2c 0-0035: UCSI_GET_PDOS failed (-5)
-[   24.720188] ucsi-stm32g0-i2c 0-0035: ucsi_handle_connector_change:
- GET_CONNECTOR_STATUS failed (-5)
+syzkaller reports a warning in __xdp_reg_mem_model().
 
-There may be some race, which lead to read CCI, before the command complete
-flag is set, hence returning -EIO. Similar fix has been done also in
-ucsi_acpi [1].
+The warning occurs only if __mem_id_init_hash_table() returns an error. It
+returns the error in two cases:
 
-In case of a spurious or otherwise delayed notification it is
-possible that CCI still reports the previous completion. The
-UCSI spec is aware of this and provides two completion bits in
-CCI, one for normal commands and one for acks. As acks and commands
-alternate the notification handler can determine if the completion
-bit is from the current command.
+  1. memory allocation fails;
+  2. rhashtable_init() fails when some fields of rhashtable_params
+     struct are not initialized properly.
 
-To fix this add the ACK_PENDING bit for ucsi_stm32g0 and only complete
-commands if the completion bit matches.
+The second case cannot happen since there is a static const rhashtable_params
+struct with valid fields. So, warning is only triggered when there is a
+problem with memory allocation.
 
-[1] https://lore.kernel.org/lkml/20240121204123.275441-3-lk@c--e.de/
+Thus, there is no sense in using WARN() to handle this error and it can be
+safely removed.
 
-Fixes: 72849d4fcee7 ("usb: typec: ucsi: stm32g0: add support for stm32g0 controller")
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Link: https://lore.kernel.org/stable/20240612124656.2305603-1-fabrice.gasnier%40foss.st.com
-Cc: stable <stable@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240612124656.2305603-1-fabrice.gasnier@foss.st.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+WARNING: CPU: 0 PID: 5065 at net/core/xdp.c:299 __xdp_reg_mem_model+0x2d9/0x650 net/core/xdp.c:299
+
+CPU: 0 PID: 5065 Comm: syz-executor883 Not tainted 6.8.0-syzkaller-05271-gf99c5f563c17 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+RIP: 0010:__xdp_reg_mem_model+0x2d9/0x650 net/core/xdp.c:299
+
+Call Trace:
+ xdp_reg_mem_model+0x22/0x40 net/core/xdp.c:344
+ xdp_test_run_setup net/bpf/test_run.c:188 [inline]
+ bpf_test_run_xdp_live+0x365/0x1e90 net/bpf/test_run.c:377
+ bpf_prog_test_run_xdp+0x813/0x11b0 net/bpf/test_run.c:1267
+ bpf_prog_test_run+0x33a/0x3b0 kernel/bpf/syscall.c:4240
+ __sys_bpf+0x48d/0x810 kernel/bpf/syscall.c:5649
+ __do_sys_bpf kernel/bpf/syscall.c:5738 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:5736 [inline]
+ __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:5736
+ do_syscall_64+0xfb/0x240
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
+
+Found by Linux Verification Center (linuxtesting.org) with syzkaller.
+
+Fixes: 8d5d88527587 ("xdp: rhashtable with allocator ID to pointer mapping")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Link: https://lore.kernel.org/all/20240617162708.492159-1-d.dulov@aladdin.ru
+Link: https://lore.kernel.org/bpf/20240624080747.36858-1-d.dulov@aladdin.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi_stm32g0.c |   19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ net/core/xdp.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi_stm32g0.c
-+++ b/drivers/usb/typec/ucsi/ucsi_stm32g0.c
-@@ -64,6 +64,7 @@ struct ucsi_stm32g0 {
- 	struct completion complete;
- 	struct device *dev;
- 	unsigned long flags;
-+#define ACK_PENDING	2
- 	const char *fw_name;
- 	struct ucsi *ucsi;
- 	bool suspended;
-@@ -395,9 +396,13 @@ static int ucsi_stm32g0_sync_write(struc
- 				   size_t len)
- {
- 	struct ucsi_stm32g0 *g0 = ucsi_get_drvdata(ucsi);
-+	bool ack = UCSI_COMMAND(*(u64 *)val) == UCSI_ACK_CC_CI;
- 	int ret;
+diff --git a/net/core/xdp.c b/net/core/xdp.c
+index 844c9d99dc0ec..c3f6653b42742 100644
+--- a/net/core/xdp.c
++++ b/net/core/xdp.c
+@@ -292,10 +292,8 @@ static struct xdp_mem_allocator *__xdp_reg_mem_model(struct xdp_mem_info *mem,
+ 		mutex_lock(&mem_id_lock);
+ 		ret = __mem_id_init_hash_table();
+ 		mutex_unlock(&mem_id_lock);
+-		if (ret < 0) {
+-			WARN_ON(1);
++		if (ret < 0)
+ 			return ERR_PTR(ret);
+-		}
+ 	}
  
--	set_bit(COMMAND_PENDING, &g0->flags);
-+	if (ack)
-+		set_bit(ACK_PENDING, &g0->flags);
-+	else
-+		set_bit(COMMAND_PENDING, &g0->flags);
- 
- 	ret = ucsi_stm32g0_async_write(ucsi, offset, val, len);
- 	if (ret)
-@@ -405,9 +410,14 @@ static int ucsi_stm32g0_sync_write(struc
- 
- 	if (!wait_for_completion_timeout(&g0->complete, msecs_to_jiffies(5000)))
- 		ret = -ETIMEDOUT;
-+	else
-+		return 0;
- 
- out_clear_bit:
--	clear_bit(COMMAND_PENDING, &g0->flags);
-+	if (ack)
-+		clear_bit(ACK_PENDING, &g0->flags);
-+	else
-+		clear_bit(COMMAND_PENDING, &g0->flags);
- 
- 	return ret;
- }
-@@ -428,8 +438,9 @@ static irqreturn_t ucsi_stm32g0_irq_hand
- 	if (UCSI_CCI_CONNECTOR(cci))
- 		ucsi_connector_change(g0->ucsi, UCSI_CCI_CONNECTOR(cci));
- 
--	if (test_bit(COMMAND_PENDING, &g0->flags) &&
--	    cci & (UCSI_CCI_ACK_COMPLETE | UCSI_CCI_COMMAND_COMPLETE))
-+	if (cci & UCSI_CCI_ACK_COMPLETE && test_and_clear_bit(ACK_PENDING, &g0->flags))
-+		complete(&g0->complete);
-+	if (cci & UCSI_CCI_COMMAND_COMPLETE && test_and_clear_bit(COMMAND_PENDING, &g0->flags))
- 		complete(&g0->complete);
- 
- 	return IRQ_HANDLED;
+ 	xdp_alloc = kzalloc(sizeof(*xdp_alloc), gfp);
+-- 
+2.43.0
+
 
 
 
