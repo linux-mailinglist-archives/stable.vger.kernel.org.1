@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-56556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3824C9244ED
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:16:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A162792459C
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:24:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69D481C22358
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:16:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CF41289002
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A922178381;
-	Tue,  2 Jul 2024 17:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7318C1BE858;
+	Tue,  2 Jul 2024 17:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7KWRKcZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hgBkF8f5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C5C1BE223;
-	Tue,  2 Jul 2024 17:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EE815218A;
+	Tue,  2 Jul 2024 17:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940577; cv=none; b=G/242fouFeslnilFFOucrzVN/ImAn/cr2EiZvsmkrtHjtm3W8a1BiIdmRy779vzpj03gTZ1KotecS3idtLPbkOGKmqyuYbR7nzG6GT+Rqh/JaaTB4nhYbsqwsKHGdhdrn56opErrFDR/jE89hZyHO1rVJ1zFhS6KE2cWeabxTmY=
+	t=1719941075; cv=none; b=s7lPEHLN5N7Cm7ikZaZNNcj7xJ+rRBmderTELQa+R0zA91JjtadSWYW2LwZi4xb8JFVe1cI7McV/pns8ySEnoslTiKAhaIFkyClqySDj4iiboKmVmvddB7ZasEqF5rwyW/7VlJXkS4nRBy5ukXWkwyOJ9AvdJrYRoyT9NabHx/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940577; c=relaxed/simple;
-	bh=vDb4YLp3s2XujMAhhp56tT1Xv1QBUJtR0n6+mDxLAZ0=;
+	s=arc-20240116; t=1719941075; c=relaxed/simple;
+	bh=F99BS3cEpkrByMkG4SajQFWcQFdd3sIT6QWC0yHR/V4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bYuncoLrqv5RwB7XRIYWPvXS/sWf95u/U4nQORNTVxl8S/s7wNRkJaseyB3K/BlgRL6JoGaF4w0ReeMG/Fgt/yl5PEP5lF/ZvwmCDznC9FVVeeadRKbPknZQI1M+CveIH6cgbnpcTVKr4Kfcy5kGNWJ+4xI6VdVk/R61nPytgog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7KWRKcZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F43C116B1;
-	Tue,  2 Jul 2024 17:16:16 +0000 (UTC)
+	 MIME-Version; b=Zvygs0KvbFVcbcGeNps2XHuJl/9VgKuu+sqeKxcWpLnJgFv5fbfkfl9c77/lVgxYm8c/fkgygE1lVvuDg011TXoImthWBqHFn8CeUIB1KIPU99RPSMYPTBLCRi153UjCBXmC7yiEsBsTd1ARSqUGXEmQFlXGmEsVNYbdHkklLxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hgBkF8f5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953B1C116B1;
+	Tue,  2 Jul 2024 17:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940577;
-	bh=vDb4YLp3s2XujMAhhp56tT1Xv1QBUJtR0n6+mDxLAZ0=;
+	s=korg; t=1719941075;
+	bh=F99BS3cEpkrByMkG4SajQFWcQFdd3sIT6QWC0yHR/V4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P7KWRKcZQVIBYP5VEZv0GNxg5BflNTD2MKgUAEo6+58JIcDGJLZHEX3RErDjI/ehT
-	 MkEjvevu8kTA9SXGFEHso15nQL6hGGPz9I5wsjxvFrF1bnq2/x3wpXeZ2Q8yLlaOIk
-	 pycWmGao2S591GT0XivER2pC9LKUSBqxgTNcGdys=
+	b=hgBkF8f5CFY3jBguJe1kla+N2+j1+XqKTqS3r6LyY+CZuTy0J0hX0qEtNErIP1z7F
+	 uCs37DeHCXq++kx68BzxY2YQbLgnxm8QNARIWlFFsWf98tTA6kyO3JqSGnDp5dKGRF
+	 0aURnoCRiYK+ja7AZwaij+yojNOmxzaKP7cbfeA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Overstreet <kent.overstreet@linux.dev>
-Subject: [PATCH 6.9 197/222] bcachefs: Fix sb-downgrade validation
+	Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 121/163] tty: mcf: MCF54418 has 10 UARTS
 Date: Tue,  2 Jul 2024 19:03:55 +0200
-Message-ID: <20240702170251.515343419@linuxfoundation.org>
+Message-ID: <20240702170237.632547459@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
 
-commit 9242a34b760648b722f4958749ad83ef7d0f7525 upstream.
+commit 7c92a8bd53f24d50c8cf4aba53bb75505b382fed upstream.
 
-Superblock downgrade entries are only two byte aligned, but section
-sizes are 8 byte aligned, which means we have to be careful about
-overrun checks; an entry that crosses the end of the section is allowed
-(and ignored) as long as it has zero errors.
+Most of the colfires have up to 5 UARTs but MCF54418 has up-to 10 !
+Change the maximum value authorized.
 
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+Cc: stable <stable@kernel.org>
+Fixes: 2545cf6e94b4 ("m68knommu: allow 4 coldfire serial ports")
+Link: https://lore.kernel.org/r/20240620-upstream-uart-v1-1-a9d0d95fb19e@yoseli.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/bcachefs/sb-downgrade.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/tty/serial/mcf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/bcachefs/sb-downgrade.c
-+++ b/fs/bcachefs/sb-downgrade.c
-@@ -146,6 +146,14 @@ static int bch2_sb_downgrade_validate(st
- 	for (const struct bch_sb_field_downgrade_entry *i = e->entries;
- 	     (void *) i	< vstruct_end(&e->field);
- 	     i = downgrade_entry_next_c(i)) {
-+		/*
-+		 * Careful: sb_field_downgrade_entry is only 2 byte aligned, but
-+		 * section sizes are 8 byte aligned - an empty entry spanning
-+		 * the end of the section is allowed (and ignored):
-+		 */
-+		if ((void *) &i->errors[0] > vstruct_end(&e->field))
-+			break;
-+
- 		if (BCH_VERSION_MAJOR(le16_to_cpu(i->version)) !=
- 		    BCH_VERSION_MAJOR(le16_to_cpu(sb->version))) {
- 			prt_printf(err, "downgrade entry with mismatched major version (%u != %u)",
+--- a/drivers/tty/serial/mcf.c
++++ b/drivers/tty/serial/mcf.c
+@@ -462,7 +462,7 @@ static const struct uart_ops mcf_uart_op
+ 	.verify_port	= mcf_verify_port,
+ };
+ 
+-static struct mcf_uart mcf_ports[4];
++static struct mcf_uart mcf_ports[10];
+ 
+ #define	MCF_MAXPORTS	ARRAY_SIZE(mcf_ports)
+ 
 
 
 
