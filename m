@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-56811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D9D92460F
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:30:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3824C9244ED
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:16:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 170B81C2100D
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:30:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69D481C22358
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1001BD005;
-	Tue,  2 Jul 2024 17:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A922178381;
+	Tue,  2 Jul 2024 17:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l95mFCS7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7KWRKcZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3881363D;
-	Tue,  2 Jul 2024 17:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C5C1BE223;
+	Tue,  2 Jul 2024 17:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941441; cv=none; b=myeStPvZTZeYBISXz0fIehNV9jUs8mj0+veeeSiTEkQeWsPkJ8hj4a8d2QEJAT/Qj9Zv05MkOPhB75d81njP4bY0hJDpDEZXIDKXJaWgleCcA/khp/ga1seho7CU7/PGVWLc4b6CN6RIlYMiLqkoNxMbH0y5gdNrzPj1s3RhsnE=
+	t=1719940577; cv=none; b=G/242fouFeslnilFFOucrzVN/ImAn/cr2EiZvsmkrtHjtm3W8a1BiIdmRy779vzpj03gTZ1KotecS3idtLPbkOGKmqyuYbR7nzG6GT+Rqh/JaaTB4nhYbsqwsKHGdhdrn56opErrFDR/jE89hZyHO1rVJ1zFhS6KE2cWeabxTmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941441; c=relaxed/simple;
-	bh=R9G9qZPoeBY9s180acyKv72jfej5RRlR+9ppdSZyrrM=;
+	s=arc-20240116; t=1719940577; c=relaxed/simple;
+	bh=vDb4YLp3s2XujMAhhp56tT1Xv1QBUJtR0n6+mDxLAZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ergz7sSATV8IeMCz9IFxriezpLe8058IEQfiIitCJmzvCp+I93nAbm8pELcNFwwaCFiVfSTC/SLo5xXG0V890EFjsNLaVtbhv6vBNEdJjngxT7a+tIucj4WUJbLHzVaJ9VylAKWCLQwfzxTl8jcncFxTiA5YBGvkCrvlr5uC2pQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l95mFCS7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB697C116B1;
-	Tue,  2 Jul 2024 17:30:40 +0000 (UTC)
+	 MIME-Version; b=bYuncoLrqv5RwB7XRIYWPvXS/sWf95u/U4nQORNTVxl8S/s7wNRkJaseyB3K/BlgRL6JoGaF4w0ReeMG/Fgt/yl5PEP5lF/ZvwmCDznC9FVVeeadRKbPknZQI1M+CveIH6cgbnpcTVKr4Kfcy5kGNWJ+4xI6VdVk/R61nPytgog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7KWRKcZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F43C116B1;
+	Tue,  2 Jul 2024 17:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941441;
-	bh=R9G9qZPoeBY9s180acyKv72jfej5RRlR+9ppdSZyrrM=;
+	s=korg; t=1719940577;
+	bh=vDb4YLp3s2XujMAhhp56tT1Xv1QBUJtR0n6+mDxLAZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l95mFCS7W/Zx5IbiWh2vgiVTsSy0nSgubVPx30hyi+hrmQ07Mdo0R8eEbAFHvWgFu
-	 Jb0BgS/hAyMZQ8CtTkGLO28NLknhyuhKsrb9fXnIoK2vOwddakwbxxo/NsW2FqtLW0
-	 fUx+gW1L/zeMly6ymT34xW8nRxBQD+HTQiIXoaqI=
+	b=P7KWRKcZQVIBYP5VEZv0GNxg5BflNTD2MKgUAEo6+58JIcDGJLZHEX3RErDjI/ehT
+	 MkEjvevu8kTA9SXGFEHso15nQL6hGGPz9I5wsjxvFrF1bnq2/x3wpXeZ2Q8yLlaOIk
+	 pycWmGao2S591GT0XivER2pC9LKUSBqxgTNcGdys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Cardwell <ncardwell@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Yuchung Cheng <ycheng@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/128] tcp: fix tcp_rcv_fastopen_synack() to enter TCP_CA_Loss for failed TFO
-Date: Tue,  2 Jul 2024 19:03:54 +0200
-Message-ID: <20240702170227.486676454@linuxfoundation.org>
+	Kent Overstreet <kent.overstreet@linux.dev>
+Subject: [PATCH 6.9 197/222] bcachefs: Fix sb-downgrade validation
+Date: Tue,  2 Jul 2024 19:03:55 +0200
+Message-ID: <20240702170251.515343419@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,172 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Kent Overstreet <kent.overstreet@linux.dev>
 
-[ Upstream commit 5dfe9d273932c647bdc9d664f939af9a5a398cbc ]
+commit 9242a34b760648b722f4958749ad83ef7d0f7525 upstream.
 
-Testing determined that the recent commit 9e046bb111f1 ("tcp: clear
-tp->retrans_stamp in tcp_rcv_fastopen_synack()") has a race, and does
-not always ensure retrans_stamp is 0 after a TFO payload retransmit.
+Superblock downgrade entries are only two byte aligned, but section
+sizes are 8 byte aligned, which means we have to be careful about
+overrun checks; an entry that crosses the end of the section is allowed
+(and ignored) as long as it has zero errors.
 
-If transmit completion for the SYN+data skb happens after the client
-TCP stack receives the SYNACK (which sometimes happens), then
-retrans_stamp can erroneously remain non-zero for the lifetime of the
-connection, causing a premature ETIMEDOUT later.
-
-Testing and tracing showed that the buggy scenario is the following
-somewhat tricky sequence:
-
-+ Client attempts a TFO handshake. tcp_send_syn_data() sends SYN + TFO
-  cookie + data in a single packet in the syn_data skb. It hands the
-  syn_data skb to tcp_transmit_skb(), which makes a clone. Crucially,
-  it then reuses the same original (non-clone) syn_data skb,
-  transforming it by advancing the seq by one byte and removing the
-  FIN bit, and enques the resulting payload-only skb in the
-  sk->tcp_rtx_queue.
-
-+ Client sets retrans_stamp to the start time of the three-way
-  handshake.
-
-+ Cookie mismatches or server has TFO disabled, and server only ACKs
-  SYN.
-
-+ tcp_ack() sees SYN is acked, tcp_clean_rtx_queue() clears
-  retrans_stamp.
-
-+ Since the client SYN was acked but not the payload, the TFO failure
-  code path in tcp_rcv_fastopen_synack() tries to retransmit the
-  payload skb.  However, in some cases the transmit completion for the
-  clone of the syn_data (which had SYN + TFO cookie + data) hasn't
-  happened.  In those cases, skb_still_in_host_queue() returns true
-  for the retransmitted TFO payload, because the clone of the syn_data
-  skb has not had its tx completetion.
-
-+ Because skb_still_in_host_queue() finds skb_fclone_busy() is true,
-  it sets the TSQ_THROTTLED bit and the retransmit does not happen in
-  the tcp_rcv_fastopen_synack() call chain.
-
-+ The tcp_rcv_fastopen_synack() code next implicitly assumes the
-  retransmit process is finished, and sets retrans_stamp to 0 to clear
-  it, but this is later overwritten (see below).
-
-+ Later, upon tx completion, tcp_tsq_write() calls
-  tcp_xmit_retransmit_queue(), which puts the retransmit in flight and
-  sets retrans_stamp to a non-zero value.
-
-+ The client receives an ACK for the retransmitted TFO payload data.
-
-+ Since we're in CA_Open and there are no dupacks/SACKs/DSACKs/ECN to
-  make tcp_ack_is_dubious() true and make us call
-  tcp_fastretrans_alert() and reach a code path that clears
-  retrans_stamp, retrans_stamp stays nonzero.
-
-+ Later, if there is a TLP, RTO, RTO sequence, then the connection
-  will suffer an early ETIMEDOUT due to the erroneously ancient
-  retrans_stamp.
-
-The fix: this commit refactors the code to have
-tcp_rcv_fastopen_synack() retransmit by reusing the relevant parts of
-tcp_simple_retransmit() that enter CA_Loss (without changing cwnd) and
-call tcp_xmit_retransmit_queue(). We have tcp_simple_retransmit() and
-tcp_rcv_fastopen_synack() share code in this way because in both cases
-we get a packet indicating non-congestion loss (MTU reduction or TFO
-failure) and thus in both cases we want to retransmit as many packets
-as cwnd allows, without reducing cwnd. And given that retransmits will
-set retrans_stamp to a non-zero value (and may do so in a later
-calling context due to TSQ), we also want to enter CA_Loss so that we
-track when all retransmitted packets are ACked and clear retrans_stamp
-when that happens (to ensure later recurring RTOs are using the
-correct retrans_stamp and don't declare ETIMEDOUT prematurely).
-
-Fixes: 9e046bb111f1 ("tcp: clear tp->retrans_stamp in tcp_rcv_fastopen_synack()")
-Fixes: a7abf3cd76e1 ("tcp: consider using standard rtx logic in tcp_rcv_fastopen_synack()")
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Yuchung Cheng <ycheng@google.com>
-Link: https://patch.msgid.link/20240624144323.2371403-1-ncardwell.sw@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_input.c | 38 +++++++++++++++++++++++++++-----------
- 1 file changed, 27 insertions(+), 11 deletions(-)
+ fs/bcachefs/sb-downgrade.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 852745a90aa8d..2146299016eda 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -2754,13 +2754,37 @@ static void tcp_mtup_probe_success(struct sock *sk)
- 	NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMTUPSUCCESS);
- }
- 
-+/* Sometimes we deduce that packets have been dropped due to reasons other than
-+ * congestion, like path MTU reductions or failed client TFO attempts. In these
-+ * cases we call this function to retransmit as many packets as cwnd allows,
-+ * without reducing cwnd. Given that retransmits will set retrans_stamp to a
-+ * non-zero value (and may do so in a later calling context due to TSQ), we
-+ * also enter CA_Loss so that we track when all retransmitted packets are ACKed
-+ * and clear retrans_stamp when that happens (to ensure later recurring RTOs
-+ * are using the correct retrans_stamp and don't declare ETIMEDOUT
-+ * prematurely).
-+ */
-+static void tcp_non_congestion_loss_retransmit(struct sock *sk)
-+{
-+	const struct inet_connection_sock *icsk = inet_csk(sk);
-+	struct tcp_sock *tp = tcp_sk(sk);
+--- a/fs/bcachefs/sb-downgrade.c
++++ b/fs/bcachefs/sb-downgrade.c
+@@ -146,6 +146,14 @@ static int bch2_sb_downgrade_validate(st
+ 	for (const struct bch_sb_field_downgrade_entry *i = e->entries;
+ 	     (void *) i	< vstruct_end(&e->field);
+ 	     i = downgrade_entry_next_c(i)) {
++		/*
++		 * Careful: sb_field_downgrade_entry is only 2 byte aligned, but
++		 * section sizes are 8 byte aligned - an empty entry spanning
++		 * the end of the section is allowed (and ignored):
++		 */
++		if ((void *) &i->errors[0] > vstruct_end(&e->field))
++			break;
 +
-+	if (icsk->icsk_ca_state != TCP_CA_Loss) {
-+		tp->high_seq = tp->snd_nxt;
-+		tp->snd_ssthresh = tcp_current_ssthresh(sk);
-+		tp->prior_ssthresh = 0;
-+		tp->undo_marker = 0;
-+		tcp_set_ca_state(sk, TCP_CA_Loss);
-+	}
-+	tcp_xmit_retransmit_queue(sk);
-+}
-+
- /* Do a simple retransmit without using the backoff mechanisms in
-  * tcp_timer. This is used for path mtu discovery.
-  * The socket is already locked here.
-  */
- void tcp_simple_retransmit(struct sock *sk)
- {
--	const struct inet_connection_sock *icsk = inet_csk(sk);
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	struct sk_buff *skb;
- 	int mss;
-@@ -2800,14 +2824,7 @@ void tcp_simple_retransmit(struct sock *sk)
- 	 * in network, but units changed and effective
- 	 * cwnd/ssthresh really reduced now.
- 	 */
--	if (icsk->icsk_ca_state != TCP_CA_Loss) {
--		tp->high_seq = tp->snd_nxt;
--		tp->snd_ssthresh = tcp_current_ssthresh(sk);
--		tp->prior_ssthresh = 0;
--		tp->undo_marker = 0;
--		tcp_set_ca_state(sk, TCP_CA_Loss);
--	}
--	tcp_xmit_retransmit_queue(sk);
-+	tcp_non_congestion_loss_retransmit(sk);
- }
- EXPORT_SYMBOL(tcp_simple_retransmit);
- 
-@@ -6145,8 +6162,7 @@ static bool tcp_rcv_fastopen_synack(struct sock *sk, struct sk_buff *synack,
- 			tp->fastopen_client_fail = TFO_DATA_NOT_ACKED;
- 		skb_rbtree_walk_from(data)
- 			 tcp_mark_skb_lost(sk, data);
--		tcp_xmit_retransmit_queue(sk);
--		tp->retrans_stamp = 0;
-+		tcp_non_congestion_loss_retransmit(sk);
- 		NET_INC_STATS(sock_net(sk),
- 				LINUX_MIB_TCPFASTOPENACTIVEFAIL);
- 		return true;
--- 
-2.43.0
-
+ 		if (BCH_VERSION_MAJOR(le16_to_cpu(i->version)) !=
+ 		    BCH_VERSION_MAJOR(le16_to_cpu(sb->version))) {
+ 			prt_printf(err, "downgrade entry with mismatched major version (%u != %u)",
 
 
 
