@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-56326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044A39237B5
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 10:42:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A91C9237D1
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 10:43:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 373951C22087
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 08:42:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 381B31C220AB
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 08:43:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A9614EC79;
-	Tue,  2 Jul 2024 08:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17AD514EC79;
+	Tue,  2 Jul 2024 08:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VIWrXpgZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d6urIkI3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B7D14EC7F
-	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 08:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB73C14E2FB
+	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 08:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719909743; cv=none; b=fDByoqaWwKcemktZ6mMGGuBkLyRq2ZyWJXeDkd/Om1c+C20lgrRJ1/IeaTgls+moVoIBuEkFT4YQrjdkTGqDDkslbGg/xHoGHmdbmmmp7Q2sAGgrVanLZ+ceJ5MCokWhcFyGkLoHDL0YzaarcgJW98AKTcEFFa6/w16utZTfzeg=
+	t=1719909763; cv=none; b=QXfzdlK7kS7Iob1X7LaPD8jaODyA0GNDsJrwOjksVK/aJKBDcizXVGTaSGqJhfwAL1oBveEDM9sD0i9P3qBNVXA/GOvu1XO8ZmLWigeGmzDsf8XDy8pf+P5VkQcYHQPJXiVPPL6J6rUseRGDe5lkT+Y7uR/xRH5j7BTA3ePwYYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719909743; c=relaxed/simple;
-	bh=pYS5RRyQchQqaVKn6EM2vhE4EHTAVpIWZh+Y7hPYh2Y=;
+	s=arc-20240116; t=1719909763; c=relaxed/simple;
+	bh=WAKIFiSeV41Ht5XwnPCQZdNase3NIfnh2+5eVub4HoU=;
 	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ggu7MxQ8ugc+7VQZvAifJNG7EMR7bU+I3ffTB9UMR8bDtlIS/ro9uP1EOo4sUKymEeByToqoYqyZbZyLs0nd6sd6l3tLzmhIKHdN85aiQxZFsuiqoNwsR3JbOBikVjv8i+MTAVEvFAYUYt/lLN5QCmRfy859UPb52oXuqVADpJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VIWrXpgZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9748C116B1;
-	Tue,  2 Jul 2024 08:42:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dVfiOxHPW9I6t6uvZZPIs15185DYV2L4RcNRFTbHYV36S+x94CoRfE5inUVPQxcvNS63fSH36vCdzZdMgi/NOt86/Q8ZGw8BgAHylPkOEoqhJHgW9awgG2UaIAFDhkrU/iI0GmwVZXPQbd6Y1pa8CFSnkZm+rjpbVqab64TUrUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d6urIkI3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6198BC116B1;
+	Tue,  2 Jul 2024 08:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719909742;
-	bh=pYS5RRyQchQqaVKn6EM2vhE4EHTAVpIWZh+Y7hPYh2Y=;
+	s=k20201202; t=1719909763;
+	bh=WAKIFiSeV41Ht5XwnPCQZdNase3NIfnh2+5eVub4HoU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VIWrXpgZh7LB/3JPCkHmG3Xk1ukNeHu09TIqxDLVu2zJFZor+lCXxykwTE57uCfg7
-	 OjYLFRzRzZ55R/NkRQAnpXIqBDjogTvCEkt6URaLMbwWfJSrDimtVeg3cTdtNYDUXw
-	 ZspCnxvr/oBoaxauohU0SMFm9ddY70tKDw8AC1esB8WVzsQuZDFR5vo6LGQHvRlcVJ
-	 /1+ekyWvzdgFolJWrFw6drnCrAGaoO10Fvn/l8y1O6SxqAMSKOHb+S+hRtOWtGTBB2
-	 lZBj4exRDm6Cmp/gjn6c5l3TKIPF3cpgs6oGNORzn59DYEki8Zz6Xc/75iOjqNWmlo
-	 sIfEJKgGbOjsA==
+	b=d6urIkI3U91Q55RHbgcYR1mF7L7SI074qI283nM41yBAYC7eCqf4r7q9aDVCnPd1a
+	 ILiNBb41nW1FoCLDDsClFegENQlBeE5iNY0E3AGiV3MWd14+rc4Fgclsm8mGPJfYFH
+	 et8iAmI7gGxu1FXsn6oVFZ/t0aQjoIy/kJJ5TXv4TZJBY37bbeP4oKv70VoUkX16fS
+	 cszzwYC7DAIItLZ+T6c0XByKUEfT0nhn7ZKe0xAEr7oIJP24nEZK2Df7ZCKiMYLaE5
+	 /8erlbX6Q7Dis42LkgMeBN8gkk8ZPjtCuGwXuAUyFcnW744aJi5z26NXmFW9WB5zQF
+	 /Lbul1OUi+EJg==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1sOZ5g-0092Vb-Co;
-	Tue, 02 Jul 2024 09:42:20 +0100
-Date: Tue, 02 Jul 2024 09:42:18 +0100
-Message-ID: <865xtoi3rp.wl-maz@kernel.org>
+	id 1sOZ60-0092WK-Sd;
+	Tue, 02 Jul 2024 09:42:41 +0100
+Date: Tue, 02 Jul 2024 09:42:40 +0100
+Message-ID: <864j98i3r3.wl-maz@kernel.org>
 From: Marc Zyngier <maz@kernel.org>
 To: James Gowans <jgowans@amazon.com>
 Cc: <stable@vger.kernel.org>,
@@ -57,10 +57,10 @@ Cc: <stable@vger.kernel.org>,
 	<oliver.upton@linux.dev>,
 	<yuzenghui@huawei.com>,
 	<sironi@amazon.de>
-Subject: Re: [PATCH 5.10.y] KVM: arm64: vgic-v4: Make the doorbell request robust w.r.t preemption
-In-Reply-To: <20240701105707.28631-1-jgowans@amazon.com>
-References: <2023072324-aviation-delirious-b27d@gregkh>
-	<20240701105707.28631-1-jgowans@amazon.com>
+Subject: Re: [PATCH 5.15.y] KVM: arm64: vgic-v4: Make the doorbell request robust w.r.t preemption
+In-Reply-To: <20240701111933.41973-1-jgowans@amazon.com>
+References: <2023072323-trident-unturned-7999@gregkh>
+	<20240701111933.41973-1-jgowans@amazon.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
  (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -76,7 +76,7 @@ X-SA-Exim-Rcpt-To: jgowans@amazon.com, stable@vger.kernel.org, gregkh@linuxfound
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Mon, 01 Jul 2024 11:57:07 +0100,
+On Mon, 01 Jul 2024 12:19:33 +0100,
 James Gowans <jgowans@amazon.com> wrote:
 > 
 > From: Marc Zyngier <maz@kernel.org>
