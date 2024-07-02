@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-56502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCAA99244A9
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:13:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC619244AB
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:13:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8867C1F21ABA
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:13:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 532DF1F2216D
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19AC1BE233;
-	Tue,  2 Jul 2024 17:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81AC1BE232;
+	Tue,  2 Jul 2024 17:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQw3HvN+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNmxUefc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5FE1BC08A;
-	Tue,  2 Jul 2024 17:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6537A1BE22A;
+	Tue,  2 Jul 2024 17:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940397; cv=none; b=bjEWl3dR/MC0QMtLT9ts6G+AtoWQrRwHqgWhdIsrBlblbPEzwJXaQ3gYXlNb5OJ2JGJd4/jCpNO7FNyFEOQdpCISfn1dn6sQi/OesC0f/v5ZCOX5m9GoSZfL70hR/7+BhIvAnTO5jKB4k0nH358O9eF7xQmGpH+eWk5yo1mniEo=
+	t=1719940404; cv=none; b=HRBGa7DkS7K4nY8OSaM8a0H42MS9E1qTTN07w0CLNuNFYNH8eC9EWwjOKkCT+9fHG3R5tS6I95Uga3nkqdw5P6gfO4cH8wTdqjwL/wX3NGlsWMYIUcDr7IzfuoLheY+pBBZyrDCT74oQvxbwrchxrLaqKfD+nKusKwkydBhPI3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940397; c=relaxed/simple;
-	bh=2oIPEgbiUax38o/bB9Wsm3p9u5Mb+XOfRu6klH33w24=;
+	s=arc-20240116; t=1719940404; c=relaxed/simple;
+	bh=0OKdO11sn89e3wjmvSgF/fCvYvZv9Ob7x4SnkK0sEZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lRrKdpEiThH3y978k5LvpG3/5dL5Azhr+jOg7zMDHP2tCXVDcGDPB+QRL0hYLOiRB3juz9vYZhFAWagNZrsZJHu3rWFCYnPogo3UaUGbGeIDcHwSOVBPhM2XWkFqtfnJaiutSjwaFPeMSEj7dCRQwbF47EEhsNHm90irv1CH5eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQw3HvN+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EC0C116B1;
-	Tue,  2 Jul 2024 17:13:16 +0000 (UTC)
+	 MIME-Version; b=VjOG/GTnRn1Kyv/zFBd/bpO+d1lp2sVqtiCg9oWpBcyRG7gQ027gcn0vRvNWPI6M5T8MS+aBV2Gg5in3Dk0T6LHZL1qUhuif1ex2k6IKnXvaji1tiwn72/vgvlSFyriuKWAA6hQ0RvcS2r+2V5PVFZAl6YqECbIRx6Qn2ox09Kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNmxUefc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F59C116B1;
+	Tue,  2 Jul 2024 17:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940397;
-	bh=2oIPEgbiUax38o/bB9Wsm3p9u5Mb+XOfRu6klH33w24=;
+	s=korg; t=1719940404;
+	bh=0OKdO11sn89e3wjmvSgF/fCvYvZv9Ob7x4SnkK0sEZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bQw3HvN+okU2ppuQIruuFcy9iefHRyhOSRxnMJ7K2lTc0K7/5yxJrNsaBcQq2F3b0
-	 +UGLaYakHVCasnsSrCt3sQwb19b4pKcupcogvHQ3NRTod23SfCTULNIg7SLnzR42zW
-	 twkjrfcSnZ6j33J7lKDuvw6tkFUgiyh8PQiQkycY=
+	b=YNmxUefcZoD4kpIVFa4VlDawbVgRHNKVqgMlrAg0tISl7WBHZZGsGQzMWD6zXSpyD
+	 dy2Md9AVrSwyAvjFP5Mholx2g2Y6J520KtOmyYSmrnjAQKR9gtqaj5QfRNVyCOU9YL
+	 HSdwmLsWyetWEpKOiOVI1lQvkNvT4nw0OT/ioyBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.9 142/222] iio: chemical: bme680: Fix sensor data read operation
-Date: Tue,  2 Jul 2024 19:03:00 +0200
-Message-ID: <20240702170249.404033348@linuxfoundation.org>
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.9 143/222] net: usb: ax88179_178a: improve link status logs
+Date: Tue,  2 Jul 2024 19:03:01 +0200
+Message-ID: <20240702170249.444667675@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
 References: <20240702170243.963426416@linuxfoundation.org>
@@ -66,139 +66,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-commit 4241665e6ea063a9c1d734de790121a71db763fc upstream.
+commit 058722ee350c0bdd664e467156feb2bf5d9cc271 upstream.
 
-A read operation is happening as follows:
+Avoid spurious link status logs that may ultimately be wrong; for example,
+if the link is set to down with the cable plugged, then the cable is
+unplugged and after this the link is set to up, the last new log that is
+appearing is incorrectly telling that the link is up.
 
-a) Set sensor to forced mode
-b) Sensor measures values and update data registers and sleeps again
-c) Read data registers
+In order to avoid errors, show link status logs after link_reset
+processing, and in order to avoid spurious as much as possible, only show
+the link loss when some link status change is detected.
 
-In the current implementation the read operation happens immediately
-after the sensor is set to forced mode so the sensor does not have
-the time to update properly the registers. This leads to the following
-2 problems:
-
-1) The first ever value which is read by the register is always wrong
-2) Every read operation, puts the register into forced mode and reads
-the data that were calculated in the previous conversion.
-
-This behaviour was tested in 2 ways:
-
-1) The internal meas_status_0 register was read before and after every
-read operation in order to verify that the data were ready even before
-the register was set to forced mode and also to check that after the
-forced mode was set the new data were not yet ready.
-
-2) Physically changing the temperature and measuring the temperature
-
-This commit adds the waiting time in between the set of the forced mode
-and the read of the data. The function is taken from the Bosch BME68x
-Sensor API [1].
-
-[1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L490
-
-Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Link: https://lore.kernel.org/r/20240606212313.207550-5-vassilisamir@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+cc: stable@vger.kernel.org
+Fixes: e2ca90c276e1 ("ax88179_178a: ASIX AX88179_178A USB 3.0/2.0 to gigabit ethernet adapter driver")
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/chemical/bme680.h      |    2 +
- drivers/iio/chemical/bme680_core.c |   46 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 48 insertions(+)
+ drivers/net/usb/ax88179_178a.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/chemical/bme680.h
-+++ b/drivers/iio/chemical/bme680.h
-@@ -54,7 +54,9 @@
- #define   BME680_NB_CONV_MASK			GENMASK(3, 0)
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -326,7 +326,8 @@ static void ax88179_status(struct usbnet
  
- #define BME680_REG_MEAS_STAT_0			0x1D
-+#define   BME680_NEW_DATA_BIT			BIT(7)
- #define   BME680_GAS_MEAS_BIT			BIT(6)
-+#define   BME680_MEAS_BIT			BIT(5)
- 
- /* Calibration Parameters */
- #define BME680_T2_LSB_REG	0x8A
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -10,6 +10,7 @@
-  */
- #include <linux/acpi.h>
- #include <linux/bitfield.h>
-+#include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/module.h>
- #include <linux/log2.h>
-@@ -532,6 +533,43 @@ static u8 bme680_oversampling_to_reg(u8
- 	return ilog2(val) + 1;
+ 	if (netif_carrier_ok(dev->net) != link) {
+ 		usbnet_link_change(dev, link, 1);
+-		netdev_info(dev->net, "ax88179 - Link status is: %d\n", link);
++		if (!link)
++			netdev_info(dev->net, "ax88179 - Link status is: 0\n");
+ 	}
  }
  
-+/*
-+ * Taken from Bosch BME680 API:
-+ * https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L490
-+ */
-+static int bme680_wait_for_eoc(struct bme680_data *data)
-+{
-+	struct device *dev = regmap_get_device(data->regmap);
-+	unsigned int check;
-+	int ret;
-+	/*
-+	 * (Sum of oversampling ratios * time per oversampling) +
-+	 * TPH measurement + gas measurement + wait transition from forced mode
-+	 * + heater duration
-+	 */
-+	int wait_eoc_us = ((data->oversampling_temp + data->oversampling_press +
-+			   data->oversampling_humid) * 1936) + (477 * 4) +
-+			   (477 * 5) + 1000 + (data->heater_dur * 1000);
-+
-+	usleep_range(wait_eoc_us, wait_eoc_us + 100);
-+
-+	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &check);
-+	if (ret) {
-+		dev_err(dev, "failed to read measurement status register.\n");
-+		return ret;
-+	}
-+	if (check & BME680_MEAS_BIT) {
-+		dev_err(dev, "Device measurement cycle incomplete.\n");
-+		return -EBUSY;
-+	}
-+	if (!(check & BME680_NEW_DATA_BIT)) {
-+		dev_err(dev, "No new data available from the device.\n");
-+		return -ENODATA;
-+	}
-+
-+	return 0;
-+}
-+
- static int bme680_chip_config(struct bme680_data *data)
- {
- 	struct device *dev = regmap_get_device(data->regmap);
-@@ -622,6 +660,10 @@ static int bme680_read_temp(struct bme68
- 	if (ret < 0)
- 		return ret;
+@@ -1540,6 +1541,7 @@ static int ax88179_link_reset(struct usb
+ 			 GMII_PHY_PHYSR, 2, &tmp16);
  
-+	ret = bme680_wait_for_eoc(data);
-+	if (ret)
-+		return ret;
-+
- 	ret = regmap_bulk_read(data->regmap, BME680_REG_TEMP_MSB,
- 			       &tmp, 3);
- 	if (ret < 0) {
-@@ -738,6 +780,10 @@ static int bme680_read_gas(struct bme680
- 	if (ret < 0)
- 		return ret;
+ 	if (!(tmp16 & GMII_PHY_PHYSR_LINK)) {
++		netdev_info(dev->net, "ax88179 - Link status is: 0\n");
+ 		return 0;
+ 	} else if (GMII_PHY_PHYSR_GIGA == (tmp16 & GMII_PHY_PHYSR_SMASK)) {
+ 		mode |= AX_MEDIUM_GIGAMODE | AX_MEDIUM_EN_125MHZ;
+@@ -1577,6 +1579,8 @@ static int ax88179_link_reset(struct usb
  
-+	ret = bme680_wait_for_eoc(data);
-+	if (ret)
-+		return ret;
+ 	netif_carrier_on(dev->net);
+ 
++	netdev_info(dev->net, "ax88179 - Link status is: 1\n");
 +
- 	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &check);
- 	if (check & BME680_GAS_MEAS_BIT) {
- 		dev_err(dev, "gas measurement incomplete\n");
+ 	return 0;
+ }
+ 
 
 
 
