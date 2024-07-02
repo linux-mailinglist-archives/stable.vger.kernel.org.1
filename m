@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-56405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F5E592443E
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:08:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4779E924468
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:10:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4048289702
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:08:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 036D028A344
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54161BE222;
-	Tue,  2 Jul 2024 17:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9F0C1BE229;
+	Tue,  2 Jul 2024 17:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKA2u+7B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBQ7EPF/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743ED1BD51B;
-	Tue,  2 Jul 2024 17:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D2C15218A;
+	Tue,  2 Jul 2024 17:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940076; cv=none; b=LPCWOwSwxY23MwAyCqxdv4q/VKeaC6U3UfnCPra2fV/qVWaJgSvT0zmnRuqUNj8biKUPbt80Z6ESExXqPn2d376vvMHmZ39P0lCb6RWG9m7HzrzFJMbCKCdhx2+STzPOZBbnebFtirRz+msKyJhm7+tw9tQqkPv0Z+cOqJAgAr8=
+	t=1719940214; cv=none; b=Egw3ZQEkR80w9Gg4tb1Q7NTDGA49Emp/9pFcbMVGS67IQux4RDYob763tWzg3rT1hEhT/eqQZ0mqmMBS57WaBxcaT5gDTilBqe9LBPG5dRfTDKFCPssSy6VzUZCKC7pX0go2c2zChSrrf3YrnlWCCsYRpOET9dbZS54nmqlFx7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940076; c=relaxed/simple;
-	bh=hsrr1maGcx5UbpHBr/tRDhSpEC9lCMu0BJk3KFJy9c0=;
+	s=arc-20240116; t=1719940214; c=relaxed/simple;
+	bh=nSMVTIgd9Thr7k3FVRFHkr0ikPJxKLD7IHnspcwI6gQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U7LZnRAovd0F6A/hDup5eHsQ9TCbk4ZVqbJI+EH30GwPVGSRDXdyVhtJNADChdyEeGnf6abe9XmhIfrnHWAMPGf0s6jNHeJ8t2GPuPlip/Epw+uwq8erotII+CX0vueAUOihPsyc0eZJ5MgaqJacaz24gxcbuwrZlWcNETdS7A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKA2u+7B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE22C116B1;
-	Tue,  2 Jul 2024 17:07:55 +0000 (UTC)
+	 MIME-Version; b=eu2mHx+/rOsNBrRRNvzS89YhdfSdMqRswJNEdvKZ16JHKsK/hwzSlrLN9y28ZerCkoMj26TNuO2+jWLcrw4bTaPdd4dWiZw9RxkFdkQqPK4vPg+GSHheRFUfHT3zhMGfaFSBrpTA4UdJ8FbMIYHCzJUAPoE5ZBv5hCUGQ6RH+Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBQ7EPF/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF20FC116B1;
+	Tue,  2 Jul 2024 17:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940076;
-	bh=hsrr1maGcx5UbpHBr/tRDhSpEC9lCMu0BJk3KFJy9c0=;
+	s=korg; t=1719940214;
+	bh=nSMVTIgd9Thr7k3FVRFHkr0ikPJxKLD7IHnspcwI6gQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NKA2u+7ByDdp07jO/BPSXBL6l8HbWxb5JveuZ7fDeuYyZDjJYHYn675tFuuJuCt+0
-	 gjjNzqBeXzWR/1XSS6MRHwV0pwpez/XPdxQZv/se5wbLfS3CIR2vcVmDiIJ2boVYwc
-	 kx9ycemdRzS9Lk86rObGBNinUKVHtTvli3FBTcy0=
+	b=tBQ7EPF/CmPMp69X7RnISj3sxzQiJlnz8Bc4r08tqpM8TJJXWvMNbOds1x1W8gaGK
+	 IAJFqfw1Ap7xUmePh8VPPKKRwaa797YZ8jc4OsjFUaNexgXSppVlDRJ1xRQsS7fc+W
+	 PlwPwkTXz89My9sB7CMElghYYwvi4l2Dx6NiE348=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Dulov <d.dulov@aladdin.ru>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 044/222] xdp: Remove WARN() from __xdp_reg_mem_model()
-Date: Tue,  2 Jul 2024 19:01:22 +0200
-Message-ID: <20240702170245.660743418@linuxfoundation.org>
+Subject: [PATCH 6.9 045/222] ASoC: mediatek: mt8195: Add platform entry for ETDM1_OUT_BE dai link
+Date: Tue,  2 Jul 2024 19:01:23 +0200
+Message-ID: <20240702170245.698460082@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
 References: <20240702170243.963426416@linuxfoundation.org>
@@ -67,74 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 7e9f79428372c6eab92271390851be34ab26bfb4 ]
+[ Upstream commit 282a4482e198e03781c152c88aac8aa382ef9a55 ]
 
-syzkaller reports a warning in __xdp_reg_mem_model().
+Commit e70b8dd26711 ("ASoC: mediatek: mt8195: Remove afe-dai component
+and rework codec link") removed the codec entry for the ETDM1_OUT_BE
+dai link entirely instead of replacing it with COMP_EMPTY(). This worked
+by accident as the remaining COMP_EMPTY() platform entry became the codec
+entry, and the platform entry became completely empty, effectively the
+same as COMP_DUMMY() since snd_soc_fill_dummy_dai() doesn't do anything
+for platform entries.
 
-The warning occurs only if __mem_id_init_hash_table() returns an error. It
-returns the error in two cases:
+This causes a KASAN out-of-bounds warning in mtk_soundcard_common_probe()
+in sound/soc/mediatek/common/mtk-soundcard-driver.c:
 
-  1. memory allocation fails;
-  2. rhashtable_init() fails when some fields of rhashtable_params
-     struct are not initialized properly.
+	for_each_card_prelinks(card, i, dai_link) {
+		if (adsp_node && !strncmp(dai_link->name, "AFE_SOF", strlen("AFE_SOF")))
+			dai_link->platforms->of_node = adsp_node;
+		else if (!dai_link->platforms->name && !dai_link->platforms->of_node)
+			dai_link->platforms->of_node = platform_node;
+	}
 
-The second case cannot happen since there is a static const rhashtable_params
-struct with valid fields. So, warning is only triggered when there is a
-problem with memory allocation.
+where the code expects the platforms array to have space for at least one entry.
 
-Thus, there is no sense in using WARN() to handle this error and it can be
-safely removed.
+Add an COMP_EMPTY() entry so that dai_link->platforms has space.
 
-WARNING: CPU: 0 PID: 5065 at net/core/xdp.c:299 __xdp_reg_mem_model+0x2d9/0x650 net/core/xdp.c:299
-
-CPU: 0 PID: 5065 Comm: syz-executor883 Not tainted 6.8.0-syzkaller-05271-gf99c5f563c17 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
-RIP: 0010:__xdp_reg_mem_model+0x2d9/0x650 net/core/xdp.c:299
-
-Call Trace:
- xdp_reg_mem_model+0x22/0x40 net/core/xdp.c:344
- xdp_test_run_setup net/bpf/test_run.c:188 [inline]
- bpf_test_run_xdp_live+0x365/0x1e90 net/bpf/test_run.c:377
- bpf_prog_test_run_xdp+0x813/0x11b0 net/bpf/test_run.c:1267
- bpf_prog_test_run+0x33a/0x3b0 kernel/bpf/syscall.c:4240
- __sys_bpf+0x48d/0x810 kernel/bpf/syscall.c:5649
- __do_sys_bpf kernel/bpf/syscall.c:5738 [inline]
- __se_sys_bpf kernel/bpf/syscall.c:5736 [inline]
- __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:5736
- do_syscall_64+0xfb/0x240
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-Found by Linux Verification Center (linuxtesting.org) with syzkaller.
-
-Fixes: 8d5d88527587 ("xdp: rhashtable with allocator ID to pointer mapping")
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Link: https://lore.kernel.org/all/20240617162708.492159-1-d.dulov@aladdin.ru
-Link: https://lore.kernel.org/bpf/20240624080747.36858-1-d.dulov@aladdin.ru
+Fixes: e70b8dd26711 ("ASoC: mediatek: mt8195: Remove afe-dai component and rework codec link")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patch.msgid.link/20240624061257.3115467-1-wenst@chromium.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/xdp.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ sound/soc/mediatek/mt8195/mt8195-mt6359.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/core/xdp.c b/net/core/xdp.c
-index 41693154e426f..022c12059cf2f 100644
---- a/net/core/xdp.c
-+++ b/net/core/xdp.c
-@@ -295,10 +295,8 @@ static struct xdp_mem_allocator *__xdp_reg_mem_model(struct xdp_mem_info *mem,
- 		mutex_lock(&mem_id_lock);
- 		ret = __mem_id_init_hash_table();
- 		mutex_unlock(&mem_id_lock);
--		if (ret < 0) {
--			WARN_ON(1);
-+		if (ret < 0)
- 			return ERR_PTR(ret);
--		}
- 	}
+diff --git a/sound/soc/mediatek/mt8195/mt8195-mt6359.c b/sound/soc/mediatek/mt8195/mt8195-mt6359.c
+index 53fd8a897b9d2..c25a526c90d25 100644
+--- a/sound/soc/mediatek/mt8195/mt8195-mt6359.c
++++ b/sound/soc/mediatek/mt8195/mt8195-mt6359.c
+@@ -939,6 +939,7 @@ SND_SOC_DAILINK_DEFS(ETDM2_IN_BE,
  
- 	xdp_alloc = kzalloc(sizeof(*xdp_alloc), gfp);
+ SND_SOC_DAILINK_DEFS(ETDM1_OUT_BE,
+ 		     DAILINK_COMP_ARRAY(COMP_CPU("ETDM1_OUT")),
++		     DAILINK_COMP_ARRAY(COMP_EMPTY()),
+ 		     DAILINK_COMP_ARRAY(COMP_EMPTY()));
+ 
+ SND_SOC_DAILINK_DEFS(ETDM2_OUT_BE,
 -- 
 2.43.0
 
