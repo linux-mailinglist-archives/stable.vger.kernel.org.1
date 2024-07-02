@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-56581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F64924510
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:18:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89CAF9244E7
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:16:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2C8F1F22FE8
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:18:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 347A71F22D1F
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD0481C0DC9;
-	Tue,  2 Jul 2024 17:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2F81BE85D;
+	Tue,  2 Jul 2024 17:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2bRS8Ao"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CyrWkRue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB651C006A;
-	Tue,  2 Jul 2024 17:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E041BE249;
+	Tue,  2 Jul 2024 17:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940658; cv=none; b=GS3rkT6Fe2+VmaR8KPS56UkWBK1ghIJxthCMINQWCAkn51vPGnjXdy4PIH41fjhvldCAxCMlDIWFF9yeV2IoQv98TT/P8eyq8OT8s17CeRqDorKpTBGiC/y2LoKSXUCQaddJOXYSUAN4nT5wez4S5b6IeD/sszDvA3NLLEef8LQ=
+	t=1719940557; cv=none; b=BQ9ZgQ0yGkHAbP0y/unXFoXWAUyVcOOyZHRYgITJG90CSbAIGy6MwgYdRAgGuELNjvJZjU6DrkTHnu+m9iMopWX8ybAxewsjfw8wZBcrJdQEOuyq+21AqGHzcFZU3FLfc8NqCNFTjNxUieHHLQzj4ESksFQeqKb2JlUy9HdW4n4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940658; c=relaxed/simple;
-	bh=gOgq5l+vXErrNiLZA+Hzq7MFwz3PhVb5EVDBHaNRXEE=;
+	s=arc-20240116; t=1719940557; c=relaxed/simple;
+	bh=9wlabYvIucez4QbkhCREE+h1musnbdtCCINC04o3wl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aP2x3e+v58hz6lB+bdi4Q2c5Fa46tz638tHqGc2nsa72F0O4d6BizOGqBglCynujO1Eq5VCp2KruXlNb0F+VAnbuji2qwJ4pijz3muSUlQXeskZdMMHJBN76NZbsLVsas3U2QiC/UuZg5GkEYNKb7RN6nSCWevIplVqLr56D1gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2bRS8Ao; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C185C4AF11;
-	Tue,  2 Jul 2024 17:17:38 +0000 (UTC)
+	 MIME-Version; b=GlAcWhRpgQeeiBM9521gAkgzYpEPrqvSCTFbv1Rwx4jxkQIA3DGtdzVxgHgHM9rC0ghqrr6NCrWEuAsjgERUSyAgC9ec15QtLsctbW0rtj8pnDojy/Yn+Ms5tuiX+yLjGRXfFmShQOqp5oUyP0uHDFxkA8UmWU6ipprlaNV3blE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CyrWkRue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F276AC116B1;
+	Tue,  2 Jul 2024 17:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940658;
-	bh=gOgq5l+vXErrNiLZA+Hzq7MFwz3PhVb5EVDBHaNRXEE=;
+	s=korg; t=1719940557;
+	bh=9wlabYvIucez4QbkhCREE+h1musnbdtCCINC04o3wl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q2bRS8AoB7ahEQTKXKRuIdq0JARNDW0Ihp6hAXR4i5O5+nSeE7BZYQ69cML0ekPLW
-	 PqE7NHwMs7eyf9GGwbmm91XHPNLx8YeyF2uiRPU/TlZ37bda5yn2mqP7cwA8XZggEk
-	 VnIkDiOYONOkhpExl+Wk001bt9TEKmi9qXn7lLVc=
+	b=CyrWkRueMiJxSPPLWgkq5SHwG1LY45Gw3FztubDqpYOf8AUfKtx6CsLMHWn5zjevL
+	 BkVzx5guaklHZiFruCBj1DjHA60bHAmPOcJ1b7PPWWvrClDfpM9VMh4HV6oUcAPR8s
+	 UKhcDM0aY4hKRCNK6/3awnt0d+4/8WElTfpWdDzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Alessandro Maggio <alex.tkd.alex@gmail.com>,
 	Damien Le Moal <dlemoal@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
 	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.9 190/222] ata: ahci: Clean up sysfs file on error
-Date: Tue,  2 Jul 2024 19:03:48 +0200
-Message-ID: <20240702170251.247729919@linuxfoundation.org>
+Subject: [PATCH 6.9 191/222] ata: libata-core: Add ATA_HORKAGE_NOLPM for all Crucial BX SSD1 models
+Date: Tue,  2 Jul 2024 19:03:49 +0200
+Message-ID: <20240702170251.285804789@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
 References: <20240702170243.963426416@linuxfoundation.org>
@@ -68,86 +68,43 @@ Content-Transfer-Encoding: 8bit
 
 From: Niklas Cassel <cassel@kernel.org>
 
-commit eeb25a09c5e0805d92e4ebd12c4b0ad0df1b0295 upstream.
+commit 1066fe825987da007669d7c25306b4dbb50bd7dd upstream.
 
-.probe() (ahci_init_one()) calls sysfs_add_file_to_group(), however,
-if probe() fails after this call, we currently never call
-sysfs_remove_file_from_group().
+We got another report that CT1000BX500SSD1 does not work with LPM.
 
-(The sysfs_remove_file_from_group() call in .remove() (ahci_remove_one())
-does not help, as .remove() is not called on .probe() error.)
+If you look in libata-core.c, we have six different Crucial devices that
+are marked with ATA_HORKAGE_NOLPM. This model would have been the seventh.
+(This quirk is used on Crucial models starting with both CT* and
+Crucial_CT*)
 
-Thus, if probe() fails after the sysfs_add_file_to_group() call, the next
-time we insmod the module we will get:
+It is obvious that this vendor does not have a great history of supporting
+LPM properly, therefore, add the ATA_HORKAGE_NOLPM quirk for all Crucial
+BX SSD1 models.
 
-sysfs: cannot create duplicate filename '/devices/pci0000:00/0000:00:04.0/remapped_nvme'
-CPU: 11 PID: 954 Comm: modprobe Not tainted 6.10.0-rc5 #43
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x5d/0x80
- sysfs_warn_dup.cold+0x17/0x23
- sysfs_add_file_mode_ns+0x11a/0x130
- sysfs_add_file_to_group+0x7e/0xc0
- ahci_init_one+0x31f/0xd40 [ahci]
-
-Fixes: 894fba7f434a ("ata: ahci: Add sysfs attribute to show remapped NVMe device count")
+Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
 Cc: stable@vger.kernel.org
+Reported-by: Alessandro Maggio <alex.tkd.alex@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218832
 Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20240629124210.181537-10-cassel@kernel.org
+Link: https://lore.kernel.org/r/20240627105551.4159447-2-cassel@kernel.org
 Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/ahci.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/ata/libata-core.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -1975,8 +1975,10 @@ static int ahci_init_one(struct pci_dev
- 	n_ports = max(ahci_nr_ports(hpriv->cap), fls(hpriv->port_map));
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -4181,8 +4181,7 @@ static const struct ata_blacklist_entry
+ 	{ "PIONEER BD-RW   BDR-205",	NULL,	ATA_HORKAGE_NOLPM },
  
- 	host = ata_host_alloc_pinfo(&pdev->dev, ppi, n_ports);
--	if (!host)
--		return -ENOMEM;
-+	if (!host) {
-+		rc = -ENOMEM;
-+		goto err_rm_sysfs_file;
-+	}
- 	host->private_data = hpriv;
+ 	/* Crucial devices with broken LPM support */
+-	{ "CT500BX100SSD1",		NULL,	ATA_HORKAGE_NOLPM },
+-	{ "CT240BX500SSD1",		NULL,	ATA_HORKAGE_NOLPM },
++	{ "CT*0BX*00SSD1",		NULL,	ATA_HORKAGE_NOLPM },
  
- 	if (ahci_init_msi(pdev, n_ports, hpriv) < 0) {
-@@ -2031,11 +2033,11 @@ static int ahci_init_one(struct pci_dev
- 	/* initialize adapter */
- 	rc = ahci_configure_dma_masks(pdev, hpriv);
- 	if (rc)
--		return rc;
-+		goto err_rm_sysfs_file;
- 
- 	rc = ahci_pci_reset_controller(host);
- 	if (rc)
--		return rc;
-+		goto err_rm_sysfs_file;
- 
- 	ahci_pci_init_controller(host);
- 	ahci_pci_print_info(host);
-@@ -2044,10 +2046,15 @@ static int ahci_init_one(struct pci_dev
- 
- 	rc = ahci_host_activate(host, &ahci_sht);
- 	if (rc)
--		return rc;
-+		goto err_rm_sysfs_file;
- 
- 	pm_runtime_put_noidle(&pdev->dev);
- 	return 0;
-+
-+err_rm_sysfs_file:
-+	sysfs_remove_file_from_group(&pdev->dev.kobj,
-+				     &dev_attr_remapped_nvme.attr, NULL);
-+	return rc;
- }
- 
- static void ahci_shutdown_one(struct pci_dev *pdev)
+ 	/* 512GB MX100 with MU01 firmware has both queued TRIM and LPM issues */
+ 	{ "Crucial_CT512MX100*",	"MU01",	ATA_HORKAGE_NO_NCQ_TRIM |
 
 
 
