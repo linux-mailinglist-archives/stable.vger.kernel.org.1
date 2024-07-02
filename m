@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-56741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007ED9245C6
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:26:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A520924617
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:31:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68440B21B13
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:26:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36A72B2240B
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A351BE22B;
-	Tue,  2 Jul 2024 17:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 358281BD50C;
+	Tue,  2 Jul 2024 17:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Af7P3uG6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4uumWXJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6843515218A;
-	Tue,  2 Jul 2024 17:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E766A3D978;
+	Tue,  2 Jul 2024 17:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941203; cv=none; b=dOszlwh6IwajKaSgIfPbZInUWPdL9FAuXhJnINW+h9mSihFHVbziBCIdslUMvOGeOre21Srdxmy+dErEWy6SR0G2+4OzXtceteE5zUvuACo6Y7vbPPR4+c31sOcGrzo50aTCmiqk8ZHEaTTYQI3EJpgRamv+vINNjaIiFTVPiOk=
+	t=1719941461; cv=none; b=KcnDbU2jEXkXD/cSc5sR82sRl02+JrZM6yX19n0QnHudQl6kluHbUVdNCdsifZwire7iBzgoMpI3AjgPX/SLlh9lW8ubDnvwCQayjY62XbKgtxneIqkAwqIoGbgzX2yRuIy9uOm1xKM4+DuRwob60S4FmvEoKX/UxKcKyFuBrA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941203; c=relaxed/simple;
-	bh=AGGuJdjdHTLRqRHx7HG1ox4B5OVA7S+2CjL3u41zKl0=;
+	s=arc-20240116; t=1719941461; c=relaxed/simple;
+	bh=L0y4aiSsIyLgIQbKfQoBrXiZEcGoeeYVrK1bamg+EX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u/KMbbG9WpopOZLjqfPJNN96IZCjR8Yqw5+U0ICMuK0TukVMrE41qFaF2jahvKW9Yd4yGr3uKRyRTFWwEjCVhpd9QI+pK6Qu/kzUU29CNlR7/n8hDoigAHay8JlepwY1bNRh51bypEZkAP7TFZK4Y6gck8QIgkT66VdryR8YOP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Af7P3uG6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E12A1C116B1;
-	Tue,  2 Jul 2024 17:26:42 +0000 (UTC)
+	 MIME-Version; b=BchdHN2IHZt1MPXwccNSQbkYT2OpoZoctFvoUWWR3BncHpGmWJ5eSuWM1iLby75XE7emzbGw3nfAkoRaAYAl4cGUzf+yO/yyiB2BZoAZYXQkOaa/pyP3AHa5+V9CtAp8uEaXjW96Ky4L67u+QimW5SlWJ9Q7xA+6Fd2NkTCZles=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4uumWXJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584D8C116B1;
+	Tue,  2 Jul 2024 17:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941203;
-	bh=AGGuJdjdHTLRqRHx7HG1ox4B5OVA7S+2CjL3u41zKl0=;
+	s=korg; t=1719941460;
+	bh=L0y4aiSsIyLgIQbKfQoBrXiZEcGoeeYVrK1bamg+EX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Af7P3uG67K7NbnYxe1ZdRfro85xjJyItkmPaH1+LdPN+1sAIwuKqekz5NBhOP2ILs
-	 dplLDRgjv2SuHPnFWihQ6YB7olfhRl/1V+dnT1bau9/HltwerNFafcepBA0VwlFKFP
-	 Cm4bNRmpGYC2Q9ZanLSluHp5eeB70U8wrjciKseQ=
+	b=y4uumWXJwqLQcs0OF1ECI+n5sOA21/psZAFBIkcnZe5q2NTXl0m4luW2Q+8PYiC5+
+	 niABiIebnZmKG4QdX8zbIB8W8q1ZgJmi3nJ22IxAco75FvfJYD2DE4jx48CPIFmmTl
+	 X6hMazrD8XfWRXUmEZmjmbkArKpNuLUNtJoYD7CE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragan Simic <dsimic@manjaro.org>,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 158/163] arm64: dts: rockchip: make poweroff(8) work on Radxa ROCK 5A
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 071/128] mmc: sdhci: Do not lock spinlock around mmc_gpio_get_ro()
 Date: Tue,  2 Jul 2024 19:04:32 +0200
-Message-ID: <20240702170239.041180989@linuxfoundation.org>
+Message-ID: <20240702170228.918756435@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: FUKAUMI Naoki <naoki@radxa.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit d05f7aff7ac23884ed9103a876325047ff9049aa ]
+commit ab069ce125965a5e282f7b53b86aee76ab32975c upstream.
 
-Designate the RK806 PMIC on the Radxa ROCK 5A as the system power
-controller, so the board shuts down properly on poweroff(8).
+sdhci_check_ro() can call mmc_gpio_get_ro() while holding the sdhci
+host->lock spinlock. That would be a problem if the GPIO access done by
+mmc_gpio_get_ro() needed to sleep.
 
-Fixes: 75fdcbc8f4c1 ("arm64: dts: rockchip: add PMIC to rock-5a")
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
-Link: https://lore.kernel.org/r/20240612033523.37166-1-naoki@radxa.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, host->lock is not needed anyway. The mmc core ensures that host
+operations do not race with each other, and asynchronous callbacks like the
+interrupt handler, software timeouts, completion work etc, cannot affect
+sdhci_check_ro().
+
+So remove the locking.
+
+Fixes: 6d5cd068ee59 ("mmc: sdhci: use WP GPIO in sdhci_check_ro()")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240614080051.4005-3-adrian.hunter@intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/sdhci.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
-index 8347adcbd0030..68763714f7f7b 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
-@@ -390,6 +390,7 @@
- 		pinctrl-0 = <&pmic_pins>, <&rk806_dvs1_null>,
- 			    <&rk806_dvs2_null>, <&rk806_dvs3_null>;
- 		spi-max-frequency = <1000000>;
-+		system-power-controller;
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -2540,11 +2540,8 @@ EXPORT_SYMBOL_GPL(sdhci_get_cd_nogpio);
+ static int sdhci_check_ro(struct sdhci_host *host)
+ {
+ 	bool allow_invert = false;
+-	unsigned long flags;
+ 	int is_readonly;
  
- 		vcc1-supply = <&vcc5v0_sys>;
- 		vcc2-supply = <&vcc5v0_sys>;
--- 
-2.43.0
-
+-	spin_lock_irqsave(&host->lock, flags);
+-
+ 	if (host->flags & SDHCI_DEVICE_DEAD) {
+ 		is_readonly = 0;
+ 	} else if (host->ops->get_ro) {
+@@ -2559,8 +2556,6 @@ static int sdhci_check_ro(struct sdhci_h
+ 		allow_invert = true;
+ 	}
+ 
+-	spin_unlock_irqrestore(&host->lock, flags);
+-
+ 	if (is_readonly >= 0 &&
+ 	    allow_invert &&
+ 	    (host->quirks & SDHCI_QUIRK_INVERTED_WRITE_PROTECT))
 
 
 
