@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-56513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED72E9244B4
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:13:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A787924553
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:21:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A25E1F211CA
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:13:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA3D228A585
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E42D1BE22F;
-	Tue,  2 Jul 2024 17:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13B41BE226;
+	Tue,  2 Jul 2024 17:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQVZAXFQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZjU/+Ij"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F307315B0FE;
-	Tue,  2 Jul 2024 17:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03953D978;
+	Tue,  2 Jul 2024 17:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940435; cv=none; b=mrfMnjXjKV6k85EvIwtUU0NpPSqF37gAAOBIE+Yy2izXqQMn7t37hMmk/ROy68EThMoNlcMdZ0SJwEDGuHgM2Nijarh+AoI/Z8fpfvSNrbHjGDe2VRMqAeYEEVrOJiHiUPdW7+ZKwrsaizXtPn2FdJvxvgtEQ46aIW/Yq1k92Wc=
+	t=1719940850; cv=none; b=eP3aJgRZ0bPfuJVCq2yeI+J8totnUDELHQ5KTMuBaA6eXC8y32HpocwBDad7YU/N/Doj8H+S/Jie2+qoDW2eLbE9mUgoL1iZbXnqKDYMlY11UIkgQHMDn85zs/SMFNuq8eAcBnuzAwO8mcgcbxLRD6/+8UI7Upm37rkVSykZh4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940435; c=relaxed/simple;
-	bh=UyTIzAQQGFI09v1zVYZezqmwSj5RSeSKEF+3BIgJyRE=;
+	s=arc-20240116; t=1719940850; c=relaxed/simple;
+	bh=PFyEynGUMsQrl97R6WzH5wfq9P+Ndw56n0p/xSa/2C8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mXqMDc2IR5Ha9c3NtcOWNuQqyQ+uqrHCskLm5KGY6nUBq6cIFH2XtPChETSvFGTFMFS1ITbHtLWvLUxg4fGmHvksaZqKIitGofBrYmmV5M9OvHMVF7amAx6h3hh6vBodkn5AoS53jp8QI869oZwZ1GhQdGnpRTx507vDzS+//9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQVZAXFQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76655C116B1;
-	Tue,  2 Jul 2024 17:13:54 +0000 (UTC)
+	 MIME-Version; b=RmbUL14ZugaRTfiwxSuXsSU3NilD8EjznTgtCrp38FCpp0xMbov3CQpy+Hso3upiK64r5U7W8Tovk+LZdrfw+NE2mkwQWMjA1SFXhmK2kM4v25MGlDb6KbRse48hc4mlEyV5XXGgGVRJyExY3EiMi3EE7MJ2G2icNv2uVJaelMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZjU/+Ij; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24298C116B1;
+	Tue,  2 Jul 2024 17:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940434;
-	bh=UyTIzAQQGFI09v1zVYZezqmwSj5RSeSKEF+3BIgJyRE=;
+	s=korg; t=1719940850;
+	bh=PFyEynGUMsQrl97R6WzH5wfq9P+Ndw56n0p/xSa/2C8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uQVZAXFQaSzvW4n7H70xnhmquMgdRSMh+yUw5aUHbKY4lw/lCPbAoaaREau35cD1I
-	 atYbB3+fs5uwKgzbuYVzLjaUzoKX5XT5MhI79wExHASxRxzI34T9Oi0TlmvwWH1zCl
-	 aXADVQKyaNPoaPrHyFFqHv0V5UHzGdCJXSP5/6Lw=
+	b=vZjU/+Ij6LyhnPMz4gJ+AbfCizZSpLxK7KS2I6CwbWNYOOgGWB0ed2ix1OeQdDIsj
+	 jSsW5PQ+kzFNfRxZ+rATAVLTvsRRt1xM3zGiuTtWm9yXCDbKnoFSI61vUP49/TS7r7
+	 pkSCWaT/6siH6kBQe0e8lfRw2nN4q3dpgo8HoRPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.9 113/222] Revert "MIPS: pci: lantiq: restore reset gpio polarity"
+	Mirsad Todorovac <mtodorovac69@gmail.com>,
+	kernel test robot <lkp@intel.com>,
+	Jianguo Wu <wujianguo@chinatelecom.cn>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 037/163] netfilter: fix undefined reference to netfilter_lwtunnel_* when CONFIG_SYSCTL=n
 Date: Tue,  2 Jul 2024 19:02:31 +0200
-Message-ID: <20240702170248.288069122@linuxfoundation.org>
+Message-ID: <20240702170234.463938437@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+From: Jianguo Wu <wujianguo@chinatelecom.cn>
 
-commit 6e5aee08bd2517397c9572243a816664f2ead547 upstream.
+[ Upstream commit aef5daa2c49d510436b733827d4f0bab79fcc4a0 ]
 
-This reverts commit 277a0363120276645ae598d8d5fea7265e076ae9.
+if CONFIG_SYSFS is not enabled in config, we get the below compile error,
 
-While fixing old boards with broken DTs, this change will break
-newer ones with correct gpio polarity annotation.
+All errors (new ones prefixed by >>):
 
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+   csky-linux-ld: net/netfilter/core.o: in function `netfilter_init':
+   core.c:(.init.text+0x42): undefined reference to `netfilter_lwtunnel_init'
+>> csky-linux-ld: core.c:(.init.text+0x56): undefined reference to `netfilter_lwtunnel_fini'
+>> csky-linux-ld: core.c:(.init.text+0x70): undefined reference to `netfilter_lwtunnel_init'
+   csky-linux-ld: core.c:(.init.text+0x78): undefined reference to `netfilter_lwtunnel_fini'
+
+Fixes: a2225e0250c5 ("netfilter: move the sysctl nf_hooks_lwtunnel into the netfilter core")
+Reported-by: Mirsad Todorovac <mtodorovac69@gmail.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202406210511.8vbByYj3-lkp@intel.com/
+Closes: https://lore.kernel.org/oe-kbuild-all/202406210520.6HmrUaA2-lkp@intel.com/
+Signed-off-by: Jianguo Wu <wujianguo@chinatelecom.cn>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/pci/pci-lantiq.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/netfilter/nf_hooks_lwtunnel.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/mips/pci/pci-lantiq.c
-+++ b/arch/mips/pci/pci-lantiq.c
-@@ -124,14 +124,14 @@ static int ltq_pci_startup(struct platfo
- 		clk_disable(clk_external);
- 
- 	/* setup reset gpio used by pci */
--	reset_gpio = devm_gpiod_get_optional(&pdev->dev, "reset", GPIOD_ASIS);
-+	reset_gpio = devm_gpiod_get_optional(&pdev->dev, "reset",
-+					     GPIOD_OUT_LOW);
- 	error = PTR_ERR_OR_ZERO(reset_gpio);
- 	if (error) {
- 		dev_err(&pdev->dev, "failed to request gpio: %d\n", error);
- 		return error;
- 	}
- 	gpiod_set_consumer_name(reset_gpio, "pci_reset");
--	gpiod_direction_output(reset_gpio, 1);
- 
- 	/* enable auto-switching between PCI and EBU */
- 	ltq_pci_w32(0xa, PCI_CR_CLK_CTRL);
-@@ -194,10 +194,10 @@ static int ltq_pci_startup(struct platfo
- 
- 	/* toggle reset pin */
- 	if (reset_gpio) {
--		gpiod_set_value_cansleep(reset_gpio, 0);
-+		gpiod_set_value_cansleep(reset_gpio, 1);
- 		wmb();
- 		mdelay(1);
--		gpiod_set_value_cansleep(reset_gpio, 1);
-+		gpiod_set_value_cansleep(reset_gpio, 0);
- 	}
- 	return 0;
+diff --git a/net/netfilter/nf_hooks_lwtunnel.c b/net/netfilter/nf_hooks_lwtunnel.c
+index 7cdb59bb4459f..d8ebebc9775d7 100644
+--- a/net/netfilter/nf_hooks_lwtunnel.c
++++ b/net/netfilter/nf_hooks_lwtunnel.c
+@@ -117,4 +117,7 @@ void netfilter_lwtunnel_fini(void)
+ {
+ 	unregister_pernet_subsys(&nf_lwtunnel_net_ops);
  }
++#else
++int __init netfilter_lwtunnel_init(void) { return 0; }
++void netfilter_lwtunnel_fini(void) {}
+ #endif /* CONFIG_SYSCTL */
+-- 
+2.43.0
+
 
 
 
