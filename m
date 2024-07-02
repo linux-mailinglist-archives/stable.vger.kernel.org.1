@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-56689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F3EE92458D
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:23:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8BA99244DA
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:15:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE8651F20F5D
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:23:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35AA9B248DA
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:15:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D2A1BE222;
-	Tue,  2 Jul 2024 17:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106A71BE24D;
+	Tue,  2 Jul 2024 17:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DK90Lzjt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+UmNuX9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E981315218A;
-	Tue,  2 Jul 2024 17:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C425F1BBBC7;
+	Tue,  2 Jul 2024 17:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941026; cv=none; b=nH+WROoOa+2WYjEVthgEg+1df8GqOEWve3/TOF58akXuB3NdD9JgLP2bEa6uhkLxrwrGl2Vwmw457hwGxvgV9sevk33x08dhW3AjsyRkmLFPBtTjnrWlfco3GSP6fmE1y4MVj44bwURvegqXvQxHgPUGnynQrj1avdLq8qxpfAM=
+	t=1719940533; cv=none; b=f/9BL36tZ5Dr26DY29AbWBuooom8YIG1bhXJPSIyPOtUOBX1N/95vjk6qdIDFrRIrNNzC/fLm6CrgJi3DfR1PbN8m3Q8kAqo8cPLqA/rPLEhV7yJ1pyRD3fLGHtLQNyAs7iJp4aT9wCEUUTGwe0SpNWheCL8D/mlEdaN0zmVcD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941026; c=relaxed/simple;
-	bh=FZmY6GBQSCRcBdEFYlED591hKOgEK+aw72XH6ifq+10=;
+	s=arc-20240116; t=1719940533; c=relaxed/simple;
+	bh=tiCP8hxSPbMm2kNzWud47NYhkmuLdJRh/kRM4zI2G1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tXkFpXuLkB0ejR+CV6+/ivI+ZUrClhb/vIzx5g7Mt4pUIeaDCb/ynsoLiwNkuS3ASAN4d3IQl/HEamwvip1S2xcoAiXnG/KpLuNgGEhWU+c+2oXLoA/TnJtqPCV7TMLC5t4t5IQru9fmMQep9r10hMw05FvdqUrR3MwuFLGq3jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DK90Lzjt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD87C116B1;
-	Tue,  2 Jul 2024 17:23:44 +0000 (UTC)
+	 MIME-Version; b=aHb9WsK3oBTC/FrhTPzWU941s2xiMOF37L01cazEEYzQSXAKo0znjJv7Lc5ngNvPIec8tItZz+QhawdNb48WhMQeuHS2/YM/AAXa3bV+i72YHNGet+2pLvOzXNKM+Fi52fNpo6x7IdTyA1UCMxHrQurqYPWfZpFntWqzr62q+yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+UmNuX9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 343EBC116B1;
+	Tue,  2 Jul 2024 17:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941025;
-	bh=FZmY6GBQSCRcBdEFYlED591hKOgEK+aw72XH6ifq+10=;
+	s=korg; t=1719940533;
+	bh=tiCP8hxSPbMm2kNzWud47NYhkmuLdJRh/kRM4zI2G1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DK90Lzjt2Q0lhmULwhsSphsQXBiFsV0M76iAfLplwCTvN9alVhLjU9grEj46lfxGj
-	 N2/K9tGpxeuIl5ww9n/ab1/X0nebuflm3YbJOpxYPv+oyYmQOSVmvFK+GJHuoJegSY
-	 34VuZxTLWidq39eoJAASpn5cnf5LymaRpMccpGv0=
+	b=s+UmNuX9BYvQRipTLh8o0LGzNnbqRI2RBKwflLwI23jmit/9bt1NXdZVIfjeoSLFo
+	 Enlj2BV0MjvmKztu2M7ps4SpZ/gZIU3ckgn9r7HazlcBSORBO70F3KxqRtgDJf+FUY
+	 rYV+v4qY2j6wkMRkAjDEQrevs6AkToyO5EW3dIEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Chiu <andy.chiu@sifive.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 075/163] riscv: stacktrace: convert arch_stack_walk() to noinstr
+	Ferry Toth <fntoth@gmail.com>
+Subject: [PATCH 6.9 151/222] Revert "usb: gadget: u_ether: Re-attach netif device to mirror detachment"
 Date: Tue,  2 Jul 2024 19:03:09 +0200
-Message-ID: <20240702170235.903655943@linuxfoundation.org>
+Message-ID: <20240702170249.748885067@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Chiu <andy.chiu@sifive.com>
+From: Ferry Toth <ftoth@exalondelft.nl>
 
-[ Upstream commit 23b2188920a25e88d447dd7d819a0b0f62fb4455 ]
+commit 24bf27b92b1c6a322faa88977de2207aa8c26509 upstream.
 
-arch_stack_walk() is called intensively in function_graph when the
-kernel is compiled with CONFIG_TRACE_IRQFLAGS. As a result, the kernel
-logs a lot of arch_stack_walk and its sub-functions into the ftrace
-buffer. However, these functions should not appear on the trace log
-because they are part of the ftrace itself. This patch references what
-arm64 does for the smae function. So it further prevent the re-enter
-kprobe issue, which is also possible on riscv.
+This reverts commit 76c945730cdffb572c7767073cc6515fd3f646b4.
 
-Related-to: commit 0fbcd8abf337 ("arm64: Prohibit instrumentation on arch_stack_walk()")
-Fixes: 680341382da5 ("riscv: add CALLER_ADDRx support")
-Signed-off-by: Andy Chiu <andy.chiu@sifive.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20240613-dev-andyc-dyn-ftrace-v4-v1-1-1a538e12c01e@sifive.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Prerequisite revert for the reverting of the original commit f49449fbc21e.
+
+Fixes: 76c945730cdf ("usb: gadget: u_ether: Re-attach netif device to mirror detachment")
+Fixes: f49449fbc21e ("usb: gadget: u_ether: Replace netif_stop_queue with netif_device_detach")
+Reported-by: Ferry Toth <fntoth@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ferry Toth <fntoth@gmail.com>
+Link: https://lore.kernel.org/r/20240620204832.24518-2-ftoth@exalondelft.nl
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/stacktrace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/function/u_ether.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/riscv/kernel/stacktrace.c b/arch/riscv/kernel/stacktrace.c
-index 528ec7cc9a622..0d3f00eb0baee 100644
---- a/arch/riscv/kernel/stacktrace.c
-+++ b/arch/riscv/kernel/stacktrace.c
-@@ -156,7 +156,7 @@ unsigned long __get_wchan(struct task_struct *task)
- 	return pc;
- }
+--- a/drivers/usb/gadget/function/u_ether.c
++++ b/drivers/usb/gadget/function/u_ether.c
+@@ -1163,8 +1163,6 @@ struct net_device *gether_connect(struct
+ 		if (netif_running(dev->net))
+ 			eth_start(dev, GFP_ATOMIC);
  
--noinline void arch_stack_walk(stack_trace_consume_fn consume_entry, void *cookie,
-+noinline noinstr void arch_stack_walk(stack_trace_consume_fn consume_entry, void *cookie,
- 		     struct task_struct *task, struct pt_regs *regs)
- {
- 	walk_stackframe(task, regs, consume_entry, cookie);
--- 
-2.43.0
-
+-		netif_device_attach(dev->net);
+-
+ 	/* on error, disable any endpoints  */
+ 	} else {
+ 		(void) usb_ep_disable(link->out_ep);
 
 
 
