@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-56819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7044D92461A
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:31:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 141219245C8
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:26:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31FDD2886BC
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:31:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C36BA28A266
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77271BD005;
-	Tue,  2 Jul 2024 17:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222F91BE24E;
+	Tue,  2 Jul 2024 17:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmf4GniU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHpasERc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A521D63D;
-	Tue,  2 Jul 2024 17:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55D71BE22B;
+	Tue,  2 Jul 2024 17:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941467; cv=none; b=b2YrzZWHdhUEb7dqdl9BWWcwj2BjZpYJOTKBKtElePMZ9/yik0AzcTnmOOPAofe1HI+dJqTRW111fX2E7j8fA3rM56+kZr9anViRvolaGCzxV+GaDHZdCRijAJvreSKCpLvZ7yacX0FcfmkT5cecpZdsfFdx6oKmZI2vztDZ5+g=
+	t=1719941209; cv=none; b=GDrKmF5s9OdXS17r83Wn+tVsuogN5lRofH5u3uyfa7vonVJ5fXPyuQEK1z10moYZqHiTg2Cj4W4l9oTz4XJc6GSJ9d+qX+lJj7Vp2+qjpfCXJIsPQl740aGRQTfSnBYhDb6nusbKVM7oJMIOtCBOMljY6030SfuvEu4DKH16U6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941467; c=relaxed/simple;
-	bh=zeKNxq86+JNWjFoITdv86odjRqSUz348vu9H2a9h9HI=;
+	s=arc-20240116; t=1719941209; c=relaxed/simple;
+	bh=z9vV9m+wGXYyWzFwjILmTHYwu6ctHcCJ8XWhBK8AJnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nGeF1XSUZLxLsZyrhTNQt98LL5u26dSmcYu847PXY3XImZvUQfZZUk2mCVPK9ahxcrYwu9a9u43TZH10RePsjD2L22kqX4WEmZ/mdsA65Kxv7nD53gUNvA5bYQ0zKCvfFYfkUVuPX13vVKZ5xQAw9wdoJ+xKEyxUo89OB+Idyq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmf4GniU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7855C116B1;
-	Tue,  2 Jul 2024 17:31:06 +0000 (UTC)
+	 MIME-Version; b=R/u0VYxWyEhk21NpV5/CQ9jmH0Iw0flzNoXFAK3bdvbiMfWCiDgjQRra4HJ9E5G41gt7xDdwny+ImIvZsEm6je5mvHiaC8+hq/zj3m8H1hyCjh4YAwJmibMCLGipuIwbNBCfPTNKNt13cDP2vxAz9xxlc3Y4XhBA7e2PRuxsZwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHpasERc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AEBDC116B1;
+	Tue,  2 Jul 2024 17:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941467;
-	bh=zeKNxq86+JNWjFoITdv86odjRqSUz348vu9H2a9h9HI=;
+	s=korg; t=1719941209;
+	bh=z9vV9m+wGXYyWzFwjILmTHYwu6ctHcCJ8XWhBK8AJnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmf4GniUa68AvYBMu0IToEgzyK9OKiKi3Ke55GLBJxDWG/ya9hyylZEVOJuKmB77Y
-	 LJOzJpGDDT28xhH8AjOpeMgtMpNX4dQbn6vHhMIBlwKGJl2Wj5ca1J26DvAL0x25ED
-	 QR0LqLsp0lgsnQs72PRFi8QgnTmSdSXNCYHgbWpU=
+	b=XHpasERcGH7gkeT+Fu3uwZ1kinIOiSFPJJGzxCXfAQi817VX1MIlViWLbCWtbJwSd
+	 aB3HNiLx1BoPg6FseefapBH1c8EBxT5CcCChS+/82vyYJFFkRybDpMMHraYrupKF5+
+	 ftkISKPCFosMG2sI0S/wtpb9V6hGqTUZIB3lbqvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	David Lechner <dlechner@baylibre.com>,
-	William Breathitt Gray <wbg@kernel.org>,
+	Alex Bee <knaerzche@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/128] counter: ti-eqep: enable clock at probe
+Subject: [PATCH 6.6 160/163] arm64: dts: rockchip: Add sound-dai-cells for RK3368
 Date: Tue,  2 Jul 2024 19:04:34 +0200
-Message-ID: <20240702170228.993104239@linuxfoundation.org>
+Message-ID: <20240702170239.116176918@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Alex Bee <knaerzche@gmail.com>
 
-[ Upstream commit 0cf81c73e4c6a4861128a8f27861176ec312af4e ]
+[ Upstream commit 8d7ec44aa5d1eb94a30319074762a1740440cdc8 ]
 
-The TI eQEP clock is both a functional and interface clock. Since it is
-required for the device to function, we should be enabling it at probe.
+Add the missing #sound-dai-cells for RK3368's I2S and S/PDIF controllers.
 
-Up to now, we've just been lucky that the clock was enabled by something
-else on the system already.
-
-Fixes: f213729f6796 ("counter: new TI eQEP driver")
-Reviewed-by: Judith Mendez <jm@ti.com>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://lore.kernel.org/r/20240621-ti-eqep-enable-clock-v2-1-edd3421b54d4@baylibre.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Fixes: f7d89dfe1e31 ("arm64: dts: rockchip: add i2s nodes support for RK3368 SoCs")
+Fixes: 0328d68ea76d ("arm64: dts: rockchip: add rk3368 spdif node")
+Signed-off-by: Alex Bee <knaerzche@gmail.com>
+Link: https://lore.kernel.org/r/20240623090116.670607-4-knaerzche@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/counter/ti-eqep.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3368.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/counter/ti-eqep.c b/drivers/counter/ti-eqep.c
-index b0f24cf3e891d..4d3de4a35801f 100644
---- a/drivers/counter/ti-eqep.c
-+++ b/drivers/counter/ti-eqep.c
-@@ -6,6 +6,7 @@
-  */
+diff --git a/arch/arm64/boot/dts/rockchip/rk3368.dtsi b/arch/arm64/boot/dts/rockchip/rk3368.dtsi
+index a4c5aaf1f4579..cac58ad951b2e 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3368.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3368.dtsi
+@@ -790,6 +790,7 @@
+ 		dma-names = "tx";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&spdif_tx>;
++		#sound-dai-cells = <0>;
+ 		status = "disabled";
+ 	};
  
- #include <linux/bitops.h>
-+#include <linux/clk.h>
- #include <linux/counter.h>
- #include <linux/kernel.h>
- #include <linux/mod_devicetable.h>
-@@ -376,6 +377,7 @@ static int ti_eqep_probe(struct platform_device *pdev)
- 	struct counter_device *counter;
- 	struct ti_eqep_cnt *priv;
- 	void __iomem *base;
-+	struct clk *clk;
- 	int err;
+@@ -801,6 +802,7 @@
+ 		clocks = <&cru SCLK_I2S_2CH>, <&cru HCLK_I2S_2CH>;
+ 		dmas = <&dmac_bus 6>, <&dmac_bus 7>;
+ 		dma-names = "tx", "rx";
++		#sound-dai-cells = <0>;
+ 		status = "disabled";
+ 	};
  
- 	counter = devm_counter_alloc(dev, sizeof(*priv));
-@@ -415,6 +417,10 @@ static int ti_eqep_probe(struct platform_device *pdev)
- 	pm_runtime_enable(dev);
- 	pm_runtime_get_sync(dev);
+@@ -814,6 +816,7 @@
+ 		dma-names = "tx", "rx";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&i2s_8ch_bus>;
++		#sound-dai-cells = <0>;
+ 		status = "disabled";
+ 	};
  
-+	clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(clk))
-+		return dev_err_probe(dev, PTR_ERR(clk), "failed to enable clock\n");
-+
- 	err = counter_add(counter);
- 	if (err < 0) {
- 		pm_runtime_put_sync(dev);
 -- 
 2.43.0
 
