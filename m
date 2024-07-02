@@ -1,67 +1,56 @@
-Return-Path: <stable+bounces-56845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7647E92463A
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:32:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE409245C3
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:26:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32640282914
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:32:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D223C1C21344
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:26:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BAB11BD51F;
-	Tue,  2 Jul 2024 17:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2727D1BE244;
+	Tue,  2 Jul 2024 17:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqhXJKzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRGa7fu5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCEB1BD00C;
-	Tue,  2 Jul 2024 17:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB5F15218A;
+	Tue,  2 Jul 2024 17:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941552; cv=none; b=PF9Td7B/pF72i9ODY5v78WW/rqQdk1FzERfa/rvjP6j8nq+A6UmQvC5yHdpotNu1zb9iF3gwnxLwbITGpewk32e06v6P5ZgINaAI+ZjSZ+AOYGlJMMPkGv0hpsJ/a08u5AzEFwBGnQ5BpRuUZi/O9oSZsr0JQl9kTM0hOr2UvhE=
+	t=1719941193; cv=none; b=PV9Ga/xu3i9xHQ+bjIurj1z+7G4po2K1j+fUud0WE7FvMzS1JoHMfIQ+i2ZbgHxBeQlnr0QK67EHuxqpjoU4Npw8vjwyeYlHf9motMzQKR3fTxoBQH1yOAbNm8LtCMZasYpxwcDrakdquXCO5e2xJqKCaQ/IMDooT0iuAspcQYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941552; c=relaxed/simple;
-	bh=/cCikUa5jiU8B1EG43VLO8dZfduhI22O8eHMkORZwE8=;
+	s=arc-20240116; t=1719941193; c=relaxed/simple;
+	bh=WnggTFcKMogt6PFoxBGMVdXUUDiWT0qNYPWH0N435Jw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UHArSK3d5c/iIe+GQhGi0+MlhPvPPw3qhtBJ95GNhQ3tyyHxgGV9HXkitKl34P9MAr6euIdhZxmXXYg/NwVg8+W8aVVS18Q7klINozOmVBoS8W+hckUjdkQyVFYs08M7xk8z7YuE+iVoinyKiKGBmRtkgVU+YdajXabMFDLfqrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqhXJKzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351A5C116B1;
-	Tue,  2 Jul 2024 17:32:31 +0000 (UTC)
+	 MIME-Version; b=sD1ZRT0QC0XcT8TM0tDWBygw0E5BA6JCdtGZQlBLuydLl9za8NLUC4OS2WRY7PaK31PhONrmz/6sCjdN40f2+HMeHFdm1w1GYmhuuRBslSKj50rSFkj+nnXkfY3qVKmMcXbxNE9FJlzNnAkQX99TMpkLIQOvdsJtN5Kso3SyE4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRGa7fu5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4926FC4AF0A;
+	Tue,  2 Jul 2024 17:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941551;
-	bh=/cCikUa5jiU8B1EG43VLO8dZfduhI22O8eHMkORZwE8=;
+	s=korg; t=1719941193;
+	bh=WnggTFcKMogt6PFoxBGMVdXUUDiWT0qNYPWH0N435Jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tqhXJKzQOXP/Pnxz4tk5Lry4dMLxwqx9wovghuFItmzgfKy+oev8hdfjQjFn7AC20
-	 oKR/Yo2D7t7/o8H6bzoiU7uH4mdk/zoSirjaLCwyaHj4vFUmUe5uaNZu/M25PHPhvo
-	 VWAk+co3a5E2iVfPHIyf+LySPREHOHmRNuHM7/D4=
+	b=FRGa7fu5e8wqf52hQAopyLjSOm/O7c3MGNdhx60j5OoJ5iR6TozNZ47i4f+8vEMk5
+	 RiU302A2oSVrAry9fsEuXgrgtYWAqjEtd3nZO11tG3XoV3D6V0+TnQeIhvX6k/ZpAC
+	 +3bXPFsoPQWjVotAcs1tIj52eNOtyESXYvElPKOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Barry Song <v-songbaohua@oppo.com>,
-	Martin Wege <martin.l.wege@gmail.com>,
-	NeilBrown <neilb@suse.de>,
-	Anna Schumaker <anna@kernel.org>,
-	Steve French <sfrench@samba.org>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Chuanhua Han <hanchuanhua@oppo.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Chris Li <chrisl@kernel.org>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 067/128] nfs: drop the incorrect assertion in nfs_swap_rw()
-Date: Tue,  2 Jul 2024 19:04:28 +0200
-Message-ID: <20240702170228.769694258@linuxfoundation.org>
+	Jonas Karlman <jonas@kwiboo.se>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 155/163] arm64: dts: rockchip: Rename LED related pinctrl nodes on rk3308-rock-pi-s
+Date: Tue,  2 Jul 2024 19:04:29 +0200
+Message-ID: <20240702170238.928397006@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,57 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-commit 54e7d59841dab977f6cb1183d658b1b82c9f4e94 upstream.
+[ Upstream commit d2a52f678883fe4bc00bca89366b1ba504750abf ]
 
-Since commit 2282679fb20b ("mm: submit multipage write for SWP_FS_OPS
-swap-space"), we can plug multiple pages then unplug them all together.
-That means iov_iter_count(iter) could be way bigger than PAGE_SIZE, it
-actually equals the size of iov_iter_npages(iter, INT_MAX).
+The nodename, <name>-gpio, of referenced pinctrl nodes for the two LEDs
+on the ROCK Pi S cause DT schema validation error:
 
-Note this issue has nothing to do with large folios as we don't support
-THP_SWPOUT to non-block devices.
+  leds: green-led-gpio: {'rockchip,pins': [[0, 6, 0, 90]], 'phandle': [[98]]} is not of type 'array'
+        from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml#
+  leds: heartbeat-led-gpio: {'rockchip,pins': [[0, 5, 0, 90]], 'phandle': [[99]]} is not of type 'array'
+        from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml#
 
-[v-songbaohua@oppo.com: figure out the cause and correct the commit message]
-Link: https://lkml.kernel.org/r/20240618065647.21791-1-21cnbao@gmail.com
-Fixes: 2282679fb20b ("mm: submit multipage write for SWP_FS_OPS swap-space")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Barry Song <v-songbaohua@oppo.com>
-Closes: https://lore.kernel.org/linux-mm/20240617053201.GA16852@lst.de/
-Reviewed-by: Martin Wege <martin.l.wege@gmail.com>
-Cc: NeilBrown <neilb@suse.de>
-Cc: Anna Schumaker <anna@kernel.org>
-Cc: Steve French <sfrench@samba.org>
-Cc: Trond Myklebust <trondmy@kernel.org>
-Cc: Chuanhua Han <hanchuanhua@oppo.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: "Huang, Ying" <ying.huang@intel.com>
-Cc: Jeff Layton <jlayton@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Rename the pinctrl nodes and symbols to pass DT schema validation, also
+extend LED nodes with information about color and function.
+
+Fixes: 2e04c25b1320 ("arm64: dts: rockchip: add ROCK Pi S DTS support")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20240521211029.1236094-7-jonas@kwiboo.se
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/direct.c |    2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/fs/nfs/direct.c
-+++ b/fs/nfs/direct.c
-@@ -131,8 +131,6 @@ int nfs_swap_rw(struct kiocb *iocb, stru
- {
- 	ssize_t ret;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts b/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
+index 40b2f27aa6312..4f6541262ab84 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
+@@ -5,6 +5,8 @@
+  */
  
--	VM_BUG_ON(iov_iter_count(iter) != PAGE_SIZE);
--
- 	if (iov_iter_rw(iter) == READ)
- 		ret = nfs_file_direct_read(iocb, iter, true);
- 	else
+ /dts-v1/;
++
++#include <dt-bindings/leds/common.h>
+ #include "rk3308.dtsi"
+ 
+ / {
+@@ -24,17 +26,21 @@
+ 	leds {
+ 		compatible = "gpio-leds";
+ 		pinctrl-names = "default";
+-		pinctrl-0 = <&green_led_gio>, <&heartbeat_led_gpio>;
++		pinctrl-0 = <&green_led>, <&heartbeat_led>;
+ 
+ 		green-led {
++			color = <LED_COLOR_ID_GREEN>;
+ 			default-state = "on";
++			function = LED_FUNCTION_POWER;
+ 			gpios = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
+ 			label = "rockpis:green:power";
+ 			linux,default-trigger = "default-on";
+ 		};
+ 
+ 		blue-led {
++			color = <LED_COLOR_ID_BLUE>;
+ 			default-state = "on";
++			function = LED_FUNCTION_HEARTBEAT;
+ 			gpios = <&gpio0 RK_PA5 GPIO_ACTIVE_HIGH>;
+ 			label = "rockpis:blue:user";
+ 			linux,default-trigger = "heartbeat";
+@@ -154,11 +160,11 @@
+ 	pinctrl-0 = <&rtc_32k>;
+ 
+ 	leds {
+-		green_led_gio: green-led-gpio {
++		green_led: green-led {
+ 			rockchip,pins = <0 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
+ 		};
+ 
+-		heartbeat_led_gpio: heartbeat-led-gpio {
++		heartbeat_led: heartbeat-led {
+ 			rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
+ 		};
+ 	};
+-- 
+2.43.0
+
 
 
 
