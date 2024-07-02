@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC619244AB
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:13:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E52F1924563
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:21:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 532DF1F2216D
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:13:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 236011C21A83
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81AC1BE232;
-	Tue,  2 Jul 2024 17:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757491B5814;
+	Tue,  2 Jul 2024 17:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNmxUefc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1i4gWuJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6537A1BE22A;
-	Tue,  2 Jul 2024 17:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D3014293;
+	Tue,  2 Jul 2024 17:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940404; cv=none; b=HRBGa7DkS7K4nY8OSaM8a0H42MS9E1qTTN07w0CLNuNFYNH8eC9EWwjOKkCT+9fHG3R5tS6I95Uga3nkqdw5P6gfO4cH8wTdqjwL/wX3NGlsWMYIUcDr7IzfuoLheY+pBBZyrDCT74oQvxbwrchxrLaqKfD+nKusKwkydBhPI3E=
+	t=1719940896; cv=none; b=RkFYqTXgYRWFfEzXh6l7IO71LxdNRWknwM9U2FtSM4SiVMyz3MFaYgrDWtfIsfl0dPCsF8/ZRlqFklmDP8l/DIC8yn7sZHy1Exgjeg/lS4yijJC/b5mdW2FtvYLvEJgTjyZdwrH2oqfakg7NwJx6uX2tKSLic7FkHT+oWfmfzaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940404; c=relaxed/simple;
-	bh=0OKdO11sn89e3wjmvSgF/fCvYvZv9Ob7x4SnkK0sEZA=;
+	s=arc-20240116; t=1719940896; c=relaxed/simple;
+	bh=QObmch+mpMpEo9cmUkBjM1HkVuTuGlv4g/l6gWjKL0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VjOG/GTnRn1Kyv/zFBd/bpO+d1lp2sVqtiCg9oWpBcyRG7gQ027gcn0vRvNWPI6M5T8MS+aBV2Gg5in3Dk0T6LHZL1qUhuif1ex2k6IKnXvaji1tiwn72/vgvlSFyriuKWAA6hQ0RvcS2r+2V5PVFZAl6YqECbIRx6Qn2ox09Kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNmxUefc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F59C116B1;
-	Tue,  2 Jul 2024 17:13:23 +0000 (UTC)
+	 MIME-Version; b=Yvs0iq+Nx07whcyzaaepuRoooN1OguCfkrKVw4N6jtMHNicUiSkAJkZk2VgTBeAL9hJy+Blb1jq9dw3crwQY3Sn2ioUjqhRjx0JJehsP9I5rnAqOeC434vHanqUesSSt9V041NfPA/FFcYT/dFIVDCzvKzQjQN7rc2c4cv/VG0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b1i4gWuJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF3BC116B1;
+	Tue,  2 Jul 2024 17:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940404;
-	bh=0OKdO11sn89e3wjmvSgF/fCvYvZv9Ob7x4SnkK0sEZA=;
+	s=korg; t=1719940896;
+	bh=QObmch+mpMpEo9cmUkBjM1HkVuTuGlv4g/l6gWjKL0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YNmxUefcZoD4kpIVFa4VlDawbVgRHNKVqgMlrAg0tISl7WBHZZGsGQzMWD6zXSpyD
-	 dy2Md9AVrSwyAvjFP5Mholx2g2Y6J520KtOmyYSmrnjAQKR9gtqaj5QfRNVyCOU9YL
-	 HSdwmLsWyetWEpKOiOVI1lQvkNvT4nw0OT/ioyBA=
+	b=b1i4gWuJWJiF3fiNvVR1ygSLdn0FQq7rJhJM/qHAbRmL45vKaD9sZWD/rMv/NxiaD
+	 kgl9pC4C1ZbS7V5rhTqXSvcjHq0quQdVpLSJXezrKGjYsVtZQHONTMsGMdcfJuSacl
+	 OeMA3YBmP10dT8tRoIB6lm5l1LWm8bFk6EpPXKNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.9 143/222] net: usb: ax88179_178a: improve link status logs
+	Andrew Davis <afd@ti.com>,
+	Nishanth Menon <nm@ti.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 067/163] soc: ti: wkup_m3_ipc: Send NULL dummy message instead of pointer message
 Date: Tue,  2 Jul 2024 19:03:01 +0200
-Message-ID: <20240702170249.444667675@linuxfoundation.org>
+Message-ID: <20240702170235.601894084@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Andrew Davis <afd@ti.com>
 
-commit 058722ee350c0bdd664e467156feb2bf5d9cc271 upstream.
+[ Upstream commit ddbf3204f600a4d1f153498f618369fca352ae00 ]
 
-Avoid spurious link status logs that may ultimately be wrong; for example,
-if the link is set to down with the cable plugged, then the cable is
-unplugged and after this the link is set to up, the last new log that is
-appearing is incorrectly telling that the link is up.
+mbox_send_message() sends a u32 bit message, not a pointer to a message.
+We only convert to a pointer type as a generic type. If we want to send
+a dummy message of 0, then simply send 0 (NULL).
 
-In order to avoid errors, show link status logs after link_reset
-processing, and in order to avoid spurious as much as possible, only show
-the link loss when some link status change is detected.
-
-cc: stable@vger.kernel.org
-Fixes: e2ca90c276e1 ("ax88179_178a: ASIX AX88179_178A USB 3.0/2.0 to gigabit ethernet adapter driver")
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20240325165507.30323-1-afd@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ax88179_178a.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/soc/ti/wkup_m3_ipc.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -326,7 +326,8 @@ static void ax88179_status(struct usbnet
+diff --git a/drivers/soc/ti/wkup_m3_ipc.c b/drivers/soc/ti/wkup_m3_ipc.c
+index 3aff106fc11a0..9a22932984232 100644
+--- a/drivers/soc/ti/wkup_m3_ipc.c
++++ b/drivers/soc/ti/wkup_m3_ipc.c
+@@ -16,7 +16,6 @@
+ #include <linux/irq.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/omap-mailbox.h>
+ #include <linux/platform_device.h>
+ #include <linux/remoteproc.h>
+ #include <linux/suspend.h>
+@@ -314,7 +313,6 @@ static irqreturn_t wkup_m3_txev_handler(int irq, void *ipc_data)
+ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
+ {
+ 	struct device *dev = m3_ipc->dev;
+-	mbox_msg_t dummy_msg = 0;
+ 	int ret;
  
- 	if (netif_carrier_ok(dev->net) != link) {
- 		usbnet_link_change(dev, link, 1);
--		netdev_info(dev->net, "ax88179 - Link status is: %d\n", link);
-+		if (!link)
-+			netdev_info(dev->net, "ax88179 - Link status is: 0\n");
+ 	if (!m3_ipc->mbox) {
+@@ -330,7 +328,7 @@ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
+ 	 * the RX callback to avoid multiple interrupts being received
+ 	 * by the CM3.
+ 	 */
+-	ret = mbox_send_message(m3_ipc->mbox, &dummy_msg);
++	ret = mbox_send_message(m3_ipc->mbox, NULL);
+ 	if (ret < 0) {
+ 		dev_err(dev, "%s: mbox_send_message() failed: %d\n",
+ 			__func__, ret);
+@@ -352,7 +350,6 @@ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
+ static int wkup_m3_ping_noirq(struct wkup_m3_ipc *m3_ipc)
+ {
+ 	struct device *dev = m3_ipc->dev;
+-	mbox_msg_t dummy_msg = 0;
+ 	int ret;
+ 
+ 	if (!m3_ipc->mbox) {
+@@ -361,7 +358,7 @@ static int wkup_m3_ping_noirq(struct wkup_m3_ipc *m3_ipc)
+ 		return -EIO;
  	}
- }
  
-@@ -1540,6 +1541,7 @@ static int ax88179_link_reset(struct usb
- 			 GMII_PHY_PHYSR, 2, &tmp16);
- 
- 	if (!(tmp16 & GMII_PHY_PHYSR_LINK)) {
-+		netdev_info(dev->net, "ax88179 - Link status is: 0\n");
- 		return 0;
- 	} else if (GMII_PHY_PHYSR_GIGA == (tmp16 & GMII_PHY_PHYSR_SMASK)) {
- 		mode |= AX_MEDIUM_GIGAMODE | AX_MEDIUM_EN_125MHZ;
-@@ -1577,6 +1579,8 @@ static int ax88179_link_reset(struct usb
- 
- 	netif_carrier_on(dev->net);
- 
-+	netdev_info(dev->net, "ax88179 - Link status is: 1\n");
-+
- 	return 0;
- }
- 
+-	ret = mbox_send_message(m3_ipc->mbox, &dummy_msg);
++	ret = mbox_send_message(m3_ipc->mbox, NULL);
+ 	if (ret < 0) {
+ 		dev_err(dev, "%s: mbox_send_message() failed: %d\n",
+ 			__func__, ret);
+-- 
+2.43.0
+
 
 
 
