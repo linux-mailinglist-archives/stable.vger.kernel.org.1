@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-56480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 133C792448E
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:12:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1713E924524
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:19:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6CC2B24F5C
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:12:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B32D1C20D41
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8371BE22B;
-	Tue,  2 Jul 2024 17:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B941BE858;
+	Tue,  2 Jul 2024 17:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNPBlWAg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="irBIkE2B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06ED15218A;
-	Tue,  2 Jul 2024 17:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A401BE257;
+	Tue,  2 Jul 2024 17:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940324; cv=none; b=fiF9naQge5x3vrK29rSe9kDWyJ2ghyMEd1ny5Qs6wPfNYBahVn1HvFn5OlR4MlUpoWXjB0J/vud0VuPH6z5LY7cEefN564mYgcKRiBrkGbzZU+wpjEDjl42FImnWKaKya5BQEjWOxvafxv4++fKfws4nuBNIlL6XXbjx6SfW7zg=
+	t=1719940699; cv=none; b=H8MNSf4vMsot0G2VCt/yB/rixSupcSzDTLTGGy2Tobo3hjOBc79EogD6P/GLRYzfKNJNJfdht46opD6CZZ+cM9Jxjk3O54XDB9zpxBMXqRkOZaW6DRCkiKJIooBMZVykEoqOVBKiZoktRuflB0QOYmgD/PuoxE3CBOzPLWw5dl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940324; c=relaxed/simple;
-	bh=l6RbndkR2CFvO/vR2LDxdGzw9jnXmVkTRVQ6PKOpR18=;
+	s=arc-20240116; t=1719940699; c=relaxed/simple;
+	bh=HG9843NN4s8eIwd/UPv1IC5b2ei3PZDKr/yAP/E+7F8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E7gUgQN7U8Nl/+/f7gb/idQWrPVyr+NP9CNyVNpM4eUMcQzoSwH3yyiChJ3+8HRqBBPKdGrvuY6TncBnRB2S7hHWFrn9dRwW+BVtyV4I4JZHo+oTsurYVDAXWmLiVzFtpz0cB8ndODd5ajPNjU+otLPTbxlBCWUTOsS73z5zd6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNPBlWAg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6213EC116B1;
-	Tue,  2 Jul 2024 17:12:03 +0000 (UTC)
+	 MIME-Version; b=UBxWpyqff3pOF385yI9XYbZOhnfU0ssoSvNevN+If+/NzAaVR0IRbZXcbChBHMMXqdQRGfJXwVCB4lXlSUK+HpgDwuAQQYT9f1X6Jxyh3aazeAmwt0w/ujbRcu8zfpL7yLIMEIcIXxhtmxU29odazfkvRGPGffrO3/xwdgjbMWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=irBIkE2B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C642BC4AF07;
+	Tue,  2 Jul 2024 17:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940323;
-	bh=l6RbndkR2CFvO/vR2LDxdGzw9jnXmVkTRVQ6PKOpR18=;
+	s=korg; t=1719940699;
+	bh=HG9843NN4s8eIwd/UPv1IC5b2ei3PZDKr/yAP/E+7F8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zNPBlWAgTPz74pxXGL2CVpaQIkiohmVUyCoXp6FAI+ywy7UZ1J7+kBlzN8OwXafyX
-	 9jQngVTD/i8fNwJ2D9od8L+44aPt3z8TDu12EjcmjmhGnksA3VSLUDfNtd/1k9N14K
-	 lqjh9JWY6aPa9ZLcxAkGu18fiCM3+Hp0grVif4nk=
+	b=irBIkE2BCxOxlKlfxQg9bBOnMVgpjoB1NJwoOGcyvff5fu3KoyjLgwY5hK/S40L/U
+	 Nb4zCtrLeIAjj8jLxos7eNkepNmD3E283zWOdmWg+qrpiZPYRKHPgimw/stlg/n+vQ
+	 78hz95qNrqIXgxcNRgpsytbMcbY+1+Yj1td/ejio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Ashutosh Dixit <ashutosh.dixit@intel.com>,
-	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 079/222] drm/xe/xe_devcoredump: Check NULL before assignments
+Subject: [PATCH 6.6 003/163] usb: typec: ucsi: Never send a lone connector change ack
 Date: Tue,  2 Jul 2024 19:01:57 +0200
-Message-ID: <20240702170246.999703496@linuxfoundation.org>
+Message-ID: <20240702170233.181685116@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +61,163 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-[ Upstream commit b15e65349553b1689d15fbdebea874ca5ae2274a ]
+[ Upstream commit de52aca4d9d56c3b2f00b638d457075914b1a227 ]
 
-Assign 'xe_devcoredump_snapshot *' and 'xe_device *' only if
-'coredump' is not NULL.
+Some PPM implementation do not like UCSI_ACK_CONNECTOR_CHANGE
+without UCSI_ACK_COMMAND_COMPLETE. Moreover, doing this is racy
+as it requires sending two UCSI_ACK_CC_CI commands in a row and
+the second one will be started with UCSI_CCI_ACK_COMPLETE already
+set in CCI.
 
-v2
-- Fix commit messages.
+Bundle the UCSI_ACK_CONNECTOR_CHANGE with the UCSI_ACK_COMMAND_COMPLETE
+for the UCSI_GET_CONNECTOR_STATUS command that is sent while
+handling a connector change event.
 
-v3
-- Define variables before code.(Ashutosh/Jose)
-
-v4
-- Drop return check for coredump_to_xe. (Jose/Rodrigo)
-
-v5
-- Modify misleading commit message. (Matt)
-
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: José Roberto de Souza <jose.souza@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240328123739.3633428-1-himal.prasad.ghimiray@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240327224554.1772525-3-lk@c--e.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 8bdf8a42bca4 ("usb: typec: ucsi: Ack also failed Get Error commands")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_devcoredump.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c | 48 +++++++++++++++--------------------
+ 1 file changed, 21 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_devcoredump.c b/drivers/gpu/drm/xe/xe_devcoredump.c
-index 68d3d623a05bf..ccec291b02ccd 100644
---- a/drivers/gpu/drm/xe/xe_devcoredump.c
-+++ b/drivers/gpu/drm/xe/xe_devcoredump.c
-@@ -74,17 +74,19 @@ static ssize_t xe_devcoredump_read(char *buffer, loff_t offset,
- 				   size_t count, void *data, size_t datalen)
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index 7f575b9b3debe..9b0ad06db6dab 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -49,22 +49,16 @@ static int ucsi_read_message_in(struct ucsi *ucsi, void *buf,
+ 	return ucsi->ops->read(ucsi, UCSI_MESSAGE_IN, buf, buf_size);
+ }
+ 
+-static int ucsi_acknowledge_command(struct ucsi *ucsi)
++static int ucsi_acknowledge(struct ucsi *ucsi, bool conn_ack)
  {
- 	struct xe_devcoredump *coredump = data;
--	struct xe_device *xe = coredump_to_xe(coredump);
--	struct xe_devcoredump_snapshot *ss = &coredump->snapshot;
-+	struct xe_device *xe;
-+	struct xe_devcoredump_snapshot *ss;
- 	struct drm_printer p;
- 	struct drm_print_iterator iter;
- 	struct timespec64 ts;
- 	int i;
+ 	u64 ctrl;
  
--	/* Our device is gone already... */
--	if (!data || !coredump_to_xe(coredump))
-+	if (!coredump)
- 		return -ENODEV;
+ 	ctrl = UCSI_ACK_CC_CI;
+ 	ctrl |= UCSI_ACK_COMMAND_COMPLETE;
+-
+-	return ucsi->ops->sync_write(ucsi, UCSI_CONTROL, &ctrl, sizeof(ctrl));
+-}
+-
+-static int ucsi_acknowledge_connector_change(struct ucsi *ucsi)
+-{
+-	u64 ctrl;
+-
+-	ctrl = UCSI_ACK_CC_CI;
+-	ctrl |= UCSI_ACK_CONNECTOR_CHANGE;
++	if (conn_ack) {
++		clear_bit(EVENT_PENDING, &ucsi->flags);
++		ctrl |= UCSI_ACK_CONNECTOR_CHANGE;
++	}
  
-+	xe = coredump_to_xe(coredump);
-+	ss = &coredump->snapshot;
+ 	return ucsi->ops->sync_write(ucsi, UCSI_CONTROL, &ctrl, sizeof(ctrl));
+ }
+@@ -77,7 +71,7 @@ static int ucsi_read_error(struct ucsi *ucsi)
+ 	int ret;
+ 
+ 	/* Acknowledge the command that failed */
+-	ret = ucsi_acknowledge_command(ucsi);
++	ret = ucsi_acknowledge(ucsi, false);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -89,7 +83,7 @@ static int ucsi_read_error(struct ucsi *ucsi)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = ucsi_acknowledge_command(ucsi);
++	ret = ucsi_acknowledge(ucsi, false);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -152,7 +146,7 @@ static int ucsi_exec_command(struct ucsi *ucsi, u64 cmd)
+ 		return -EIO;
+ 
+ 	if (cci & UCSI_CCI_NOT_SUPPORTED) {
+-		if (ucsi_acknowledge_command(ucsi) < 0)
++		if (ucsi_acknowledge(ucsi, false) < 0)
+ 			dev_err(ucsi->dev,
+ 				"ACK of unsupported command failed\n");
+ 		return -EOPNOTSUPP;
+@@ -165,15 +159,15 @@ static int ucsi_exec_command(struct ucsi *ucsi, u64 cmd)
+ 	}
+ 
+ 	if (cmd == UCSI_CANCEL && cci & UCSI_CCI_CANCEL_COMPLETE) {
+-		ret = ucsi_acknowledge_command(ucsi);
++		ret = ucsi_acknowledge(ucsi, false);
+ 		return ret ? ret : -EBUSY;
+ 	}
+ 
+ 	return UCSI_CCI_LENGTH(cci);
+ }
+ 
+-int ucsi_send_command(struct ucsi *ucsi, u64 command,
+-		      void *data, size_t size)
++static int ucsi_send_command_common(struct ucsi *ucsi, u64 command,
++				    void *data, size_t size, bool conn_ack)
+ {
+ 	u8 length;
+ 	int ret;
+@@ -192,7 +186,7 @@ int ucsi_send_command(struct ucsi *ucsi, u64 command,
+ 			goto out;
+ 	}
+ 
+-	ret = ucsi_acknowledge_command(ucsi);
++	ret = ucsi_acknowledge(ucsi, conn_ack);
+ 	if (ret)
+ 		goto out;
+ 
+@@ -201,6 +195,12 @@ int ucsi_send_command(struct ucsi *ucsi, u64 command,
+ 	mutex_unlock(&ucsi->ppm_lock);
+ 	return ret;
+ }
 +
- 	/* Ensure delayed work is captured before continuing */
- 	flush_work(&ss->work);
++int ucsi_send_command(struct ucsi *ucsi, u64 command,
++		      void *data, size_t size)
++{
++	return ucsi_send_command_common(ucsi, command, data, size, false);
++}
+ EXPORT_SYMBOL_GPL(ucsi_send_command);
  
+ /* -------------------------------------------------------------------------- */
+@@ -886,7 +886,9 @@ static void ucsi_handle_connector_change(struct work_struct *work)
+ 	mutex_lock(&con->lock);
+ 
+ 	command = UCSI_GET_CONNECTOR_STATUS | UCSI_CONNECTOR_NUMBER(con->num);
+-	ret = ucsi_send_command(ucsi, command, &con->status, sizeof(con->status));
++
++	ret = ucsi_send_command_common(ucsi, command, &con->status,
++				       sizeof(con->status), true);
+ 	if (ret < 0) {
+ 		dev_err(ucsi->dev, "%s: GET_CONNECTOR_STATUS failed (%d)\n",
+ 			__func__, ret);
+@@ -938,14 +940,6 @@ static void ucsi_handle_connector_change(struct work_struct *work)
+ 	if (con->status.change & UCSI_CONSTAT_CAM_CHANGE)
+ 		ucsi_partner_task(con, ucsi_check_altmodes, 1, 0);
+ 
+-	mutex_lock(&ucsi->ppm_lock);
+-	clear_bit(EVENT_PENDING, &con->ucsi->flags);
+-	ret = ucsi_acknowledge_connector_change(ucsi);
+-	mutex_unlock(&ucsi->ppm_lock);
+-
+-	if (ret)
+-		dev_err(ucsi->dev, "%s: ACK failed (%d)", __func__, ret);
+-
+ out_unlock:
+ 	mutex_unlock(&con->lock);
+ }
 -- 
 2.43.0
 
