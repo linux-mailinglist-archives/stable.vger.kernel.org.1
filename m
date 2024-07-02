@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313199244A3
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:13:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A79492455D
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:21:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAFF21F243E1
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:13:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8A811F20F34
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:21:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F009D1BE232;
-	Tue,  2 Jul 2024 17:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7631BBBD7;
+	Tue,  2 Jul 2024 17:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxRL42eJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ik8/sN+4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03361BE22A;
-	Tue,  2 Jul 2024 17:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D30414293;
+	Tue,  2 Jul 2024 17:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940380; cv=none; b=dQoVrzSr782qWLrBKOJeSB+iaXR/VyTyFOqvXHeBCSEQjZ5wi6YjFsObUC1C++hwAUKu3UQb+bEEyOYTlsm9q5QEKQ/uge6z4Kxt28ooL2EiGxZrKTxqx9MdDrEP41gI6nXmKlw5zM5Fheh9iPUNjc2cWdQHGMTGHcf+ZWx1X/I=
+	t=1719940877; cv=none; b=HVPvNGRtopc3INbHvGh9FnZJ2pXNbI5oWvGn5wfJPOUsZ28C3gUDRU/5b5ONayq0VnN0dw0UcgePhCc91WyO1CGM3Oxa1NJKKkidby5iXsGGAZ1sHIFG9GHFmMmOif5ePGftbCAJkBmiT9I/YGz3hs9m5w7ov9MVEO3XK7zBP14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940380; c=relaxed/simple;
-	bh=APuy7Mnyfbzcnw5aRi+qS/COaEeMueYfdMTYLidV5v8=;
+	s=arc-20240116; t=1719940877; c=relaxed/simple;
+	bh=jh+7bjYddHtnYIHGyMcSY7uW4aQrdAdig1LHOlB/R+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P0sGRMuL7eEXlHamrMSNdo5QE6pIowp2vDvqlw/8EMzpxhgJDbUiLO8HUttjyMwxu2f/Ng/XUUzHTC9lZPo1Zh7ebMIftku7GAmDSA2uhNqFRXSa941FlmYvXBE1WkSL75MGOLaVgHOzmWMMhJXhk99Tu8Do1lAem1kK/1w3mmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxRL42eJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA9CC4AF07;
-	Tue,  2 Jul 2024 17:12:59 +0000 (UTC)
+	 MIME-Version; b=lVxXCiQg4vpBVj20CY8NIOm9zfp0IIJsQZxeiGLrJUKJTibL9X/q+nKK1e5x5FBQ3wP55uBXqS23BPa4R1T85v/rxQ2djJk14neOlXr3QIORqHi8NhncoHbnIZxEXCqKl69WBdutVnSxb60Y88jsE4p/tzcgpage42Y7aGbDNl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ik8/sN+4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85EC9C116B1;
+	Tue,  2 Jul 2024 17:21:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940380;
-	bh=APuy7Mnyfbzcnw5aRi+qS/COaEeMueYfdMTYLidV5v8=;
+	s=korg; t=1719940876;
+	bh=jh+7bjYddHtnYIHGyMcSY7uW4aQrdAdig1LHOlB/R+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yxRL42eJP40TZleClD4HoJrKVHfxHoMEyj/YK0p66TVYpijP3CNkIvfQbZtyu78Mc
-	 uv35jnoGT+PQC203UyU4t5aXipR3ucD0iDnxuCdaA9NMvYsO8/BVhXMHifuMTDZtxk
-	 q9UvsJLeNMh9t4veEtEDVk6LpWBiBr6GLcuqcBtk=
+	b=ik8/sN+4/DlLxrEsvjXmejVIzMdjYHeI+Xo5VjwugVhjlyXk16JKsg8fW65hF1kXs
+	 0hcJRZDPVf1seL0KILmOQdcD7EbE6PfeE6594wPkzAQFmsjJRMnK2gkuG4q/YcvJPA
+	 EsYagY+Y+u1HBnCfvcpuanu0SBHZSJwVPfLKyd3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Yang <hagisf@usp.br>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.9 137/222] iio: adc: ad7266: Fix variable checking bug
-Date: Tue,  2 Jul 2024 19:02:55 +0200
-Message-ID: <20240702170249.209332857@linuxfoundation.org>
+	Dawei Li <dawei.li@shingroup.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 062/163] net/dpaa2: Avoid explicit cpumask var allocation on stack
+Date: Tue,  2 Jul 2024 19:02:56 +0200
+Message-ID: <20240702170235.411519344@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Yang <hagisf@usp.br>
+From: Dawei Li <dawei.li@shingroup.cn>
 
-commit a2b86132955268b2a1703082fbc2d4832fc001b8 upstream.
+[ Upstream commit d33fe1714a44ff540629b149d8fab4ac6967585c ]
 
-The ret variable was not checked after iio_device_release_direct_mode(),
-which could possibly cause errors
+For CONFIG_CPUMASK_OFFSTACK=y kernel, explicit allocation of cpumask
+variable on stack is not recommended since it can cause potential stack
+overflow.
 
-Fixes: c70df20e3159 ("iio: adc: ad7266: claim direct mode during sensor read")
-Signed-off-by: Fernando Yang <hagisf@usp.br>
-Link: https://lore.kernel.org/r/20240603180757.8560-1-hagisf@usp.br
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Instead, kernel code should always use *cpumask_var API(s) to allocate
+cpumask var in config-neutral way, leaving allocation strategy to
+CONFIG_CPUMASK_OFFSTACK.
+
+Use *cpumask_var API(s) to address it.
+
+Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
+Link: https://lore.kernel.org/r/20240331053441.1276826-3-dawei.li@shingroup.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7266.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/iio/adc/ad7266.c
-+++ b/drivers/iio/adc/ad7266.c
-@@ -157,6 +157,8 @@ static int ad7266_read_raw(struct iio_de
- 		ret = ad7266_read_single(st, val, chan->address);
- 		iio_device_release_direct_mode(indio_dev);
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+index 888509cf1f210..40e8818295951 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+@@ -2896,11 +2896,14 @@ static int dpaa2_eth_xdp_xmit(struct net_device *net_dev, int n,
+ static int update_xps(struct dpaa2_eth_priv *priv)
+ {
+ 	struct net_device *net_dev = priv->net_dev;
+-	struct cpumask xps_mask;
+-	struct dpaa2_eth_fq *fq;
+ 	int i, num_queues, netdev_queues;
++	struct dpaa2_eth_fq *fq;
++	cpumask_var_t xps_mask;
+ 	int err = 0;
  
-+		if (ret < 0)
-+			return ret;
- 		*val = (*val >> 2) & 0xfff;
- 		if (chan->scan_type.sign == 's')
- 			*val = sign_extend32(*val,
++	if (!alloc_cpumask_var(&xps_mask, GFP_KERNEL))
++		return -ENOMEM;
++
+ 	num_queues = dpaa2_eth_queue_count(priv);
+ 	netdev_queues = (net_dev->num_tc ? : 1) * num_queues;
+ 
+@@ -2910,16 +2913,17 @@ static int update_xps(struct dpaa2_eth_priv *priv)
+ 	for (i = 0; i < netdev_queues; i++) {
+ 		fq = &priv->fq[i % num_queues];
+ 
+-		cpumask_clear(&xps_mask);
+-		cpumask_set_cpu(fq->target_cpu, &xps_mask);
++		cpumask_clear(xps_mask);
++		cpumask_set_cpu(fq->target_cpu, xps_mask);
+ 
+-		err = netif_set_xps_queue(net_dev, &xps_mask, i);
++		err = netif_set_xps_queue(net_dev, xps_mask, i);
+ 		if (err) {
+ 			netdev_warn_once(net_dev, "Error setting XPS queue\n");
+ 			break;
+ 		}
+ 	}
+ 
++	free_cpumask_var(xps_mask);
+ 	return err;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
