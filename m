@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A54889245E3
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:28:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00BBA9245B3
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:25:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FD2428263F
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:28:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93008B246C9
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:25:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 115401BE22B;
-	Tue,  2 Jul 2024 17:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5421BE222;
+	Tue,  2 Jul 2024 17:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DB1wisNw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qv8lxsdb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C2A1514DC;
-	Tue,  2 Jul 2024 17:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7FD1B583A;
+	Tue,  2 Jul 2024 17:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941301; cv=none; b=FRx1HJ7ehLkuaaM1wHLNqaDXOo71GwbRfWRJeAwyu/7h8kZaUsiEZNaVB3wOfEnAjXxWfTiuGuYrTSekksXj8rKSJyQeT7SIB45e/I43HpFaPefowhuKhHM28vjGlI/KSGp6+XnMtob92yP9lSW5PShno3G45+/2DeLX4uP4tg4=
+	t=1719941143; cv=none; b=ITw/rRv4iRo08EvrRuSUJCGjPvkEvkswCuFEMr0uUKyd98DqafWEwQBa+jUTajmMeNcA03uaf8ah+htyVQrGgbs/7mW4ZHF7Q+l3AAmVOr7LME3p6ZKUR6U9WQASl/zuiFb+H5QCwRS7s4SOvQtEIaMFg/W31JCOJMy863c5KCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941301; c=relaxed/simple;
-	bh=Qua3BFbP8n/KHJ4g1qzPtbWKrqFQQnvcQz1KqwdRjrY=;
+	s=arc-20240116; t=1719941143; c=relaxed/simple;
+	bh=WPbzg34fj1SxgY9EA91Cseqcx4CBwwbcRyrUzoUKLjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ahRCjyH8dsTqJ9JzrJWHVeySyiIb3jpZ+Unm1AGZEpe7weP1WXXbYsg4fXr6lFs1o5mUIs+Pxg7yX8GIYmISOB8UsX01dFMgFbJNgUzuZs9ZsJ0R989gG7D48KWmGwISlfwAOsYn3lfA/jM1uWP5jFU5tso3uWZorAqCxx+A+Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DB1wisNw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB455C116B1;
-	Tue,  2 Jul 2024 17:28:19 +0000 (UTC)
+	 MIME-Version; b=MlGPFRmnNv4iBGK8ijk/5BscIs/PNGvgfhIg7oHWQzfvdvHi6x9HypYTAHyhs/dQrJpkX/DQqVdx+z4jeGo3vLBZ5SVFIfNvR3a7xnoEzwzqonL710tkaqgLSkfSahzugdPL+d9ej56alEZDNx4W9YA2TuhBKws1OFFnkI999fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qv8lxsdb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1686DC116B1;
+	Tue,  2 Jul 2024 17:25:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941300;
-	bh=Qua3BFbP8n/KHJ4g1qzPtbWKrqFQQnvcQz1KqwdRjrY=;
+	s=korg; t=1719941143;
+	bh=WPbzg34fj1SxgY9EA91Cseqcx4CBwwbcRyrUzoUKLjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DB1wisNwFhkToxFV6eCF2FhC03ljvpFcdBZhwcmBmadtKlo6Sy+RUTGIbij80K1V3
-	 PZD0ZxmandOh7etfk4PFkDNP5iZrYLiZDcItCI7O0d0ApqTKzWhSzJ/RC96ARB5euk
-	 R7UAygMdGUOjjbXyOe3a0Vl/Idqcs/0QGab5acWw=
+	b=Qv8lxsdbRtXkH6+9bPwX/QTtJ5nKW/e786hC/aZvUgTU5vkjfHWDBwbJXJGUmpvif
+	 zltGpgPIm+aKJn6jUv0bzkP2yxR8m9KnFqtpw/sPvaGpfdE1wnb/o8BNWvV9ZMadsq
+	 9pHUVifuWoYY/oN2w84UGMs914FvFKmbtGZuUpcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Child <nnac123@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 023/128] ibmvnic: Free any outstanding tx skbs during scrq reset
+	Neal Liu <neal_liu@aspeedtech.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Jeremy Kerr <jk@codeconstruct.com.au>
+Subject: [PATCH 6.6 110/163] usb: gadget: aspeed_udc: fix device address configuration
 Date: Tue,  2 Jul 2024 19:03:44 +0200
-Message-ID: <20240702170227.111131753@linuxfoundation.org>
+Message-ID: <20240702170237.221248338@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: Jeremy Kerr <jk@codeconstruct.com.au>
 
-[ Upstream commit 49bbeb5719c2f56907d3a9623b47c6c15c2c431d ]
+commit dba7567c2fbbf10a4de2471cdb0e16e5572dc007 upstream.
 
-There are 2 types of outstanding tx skb's:
-Type 1: Packets that are sitting in the drivers ind_buff that are
-waiting to be batch sent to the NIC. During a device reset, these are
-freed with a call to ibmvnic_tx_scrq_clean_buffer()
-Type 2: Packets that have been sent to the NIC and are awaiting a TX
-completion IRQ. These are free'd during a reset with a call to
-clean_tx_pools()
+In the aspeed UDC setup, we configure the UDC hardware with the assigned
+USB device address.
 
-During any reset which requires us to free the tx irq, ensure that the
-Type 2 skb references are freed. Since the irq is released, it is
-impossible for the NIC to inform of any completions.
+However, we have an off-by-one in the bitmask, so we're only setting the
+lower 6 bits of the address (USB addresses being 7 bits, and the
+hardware bitmask being bits 0:6).
 
-Furthermore, later in the reset process is a call to init_tx_pools()
-which marks every entry in the tx pool as free (ie not outstanding).
-So if the driver is to make a call to init_tx_pools(), it must first
-be sure that the tx pool is empty of skb references.
+This means that device enumeration fails if the assigned address is
+greater than 64:
 
-This issue was discovered by observing the following in the logs during
-EEH testing:
-	TX free map points to untracked skb (tso_pool 0 idx=4)
-	TX free map points to untracked skb (tso_pool 0 idx=5)
-	TX free map points to untracked skb (tso_pool 1 idx=36)
+[  344.607255] usb 1-1: new high-speed USB device number 63 using ehci-platform
+[  344.808459] usb 1-1: New USB device found, idVendor=cc00, idProduct=cc00, bcdDevice= 6.10
+[  344.817684] usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  344.825671] usb 1-1: Product: Test device
+[  344.831075] usb 1-1: Manufacturer: Test vendor
+[  344.836335] usb 1-1: SerialNumber: 00
+[  349.917181] usb 1-1: USB disconnect, device number 63
+[  352.036775] usb 1-1: new high-speed USB device number 64 using ehci-platform
+[  352.249432] usb 1-1: device descriptor read/all, error -71
+[  352.696740] usb 1-1: new high-speed USB device number 65 using ehci-platform
+[  352.909431] usb 1-1: device descriptor read/all, error -71
 
-Fixes: 65d6470d139a ("ibmvnic: clean pending indirect buffs during reset")
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use the correct mask of 0x7f (rather than 0x3f), and generate this
+through the GENMASK macro, so we have numbers that correspond exactly
+to the hardware register definition.
+
+Fixes: 055276c13205 ("usb: gadget: add Aspeed ast2600 udc driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Neal Liu <neal_liu@aspeedtech.com>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Link: https://lore.kernel.org/r/20240613-aspeed-udc-v2-1-29501ce9cb7a@codeconstruct.com.au
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/usb/gadget/udc/aspeed_udc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 157be4e9be4b7..8f377d0a80fe6 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -3859,6 +3859,12 @@ static void release_sub_crqs(struct ibmvnic_adapter *adapter, bool do_h_free)
- 		adapter->num_active_tx_scrqs = 0;
- 	}
+--- a/drivers/usb/gadget/udc/aspeed_udc.c
++++ b/drivers/usb/gadget/udc/aspeed_udc.c
+@@ -66,8 +66,8 @@
+ #define USB_UPSTREAM_EN			BIT(0)
  
-+	/* Clean any remaining outstanding SKBs
-+	 * we freed the irq so we won't be hearing
-+	 * from them
-+	 */
-+	clean_tx_pools(adapter);
-+
- 	if (adapter->rx_scrq) {
- 		for (i = 0; i < adapter->num_active_rx_scrqs; i++) {
- 			if (!adapter->rx_scrq[i])
--- 
-2.43.0
-
+ /* Main config reg */
+-#define UDC_CFG_SET_ADDR(x)		((x) & 0x3f)
+-#define UDC_CFG_ADDR_MASK		(0x3f)
++#define UDC_CFG_SET_ADDR(x)		((x) & UDC_CFG_ADDR_MASK)
++#define UDC_CFG_ADDR_MASK		GENMASK(6, 0)
+ 
+ /* Interrupt ctrl & status reg */
+ #define UDC_IRQ_EP_POOL_NAK		BIT(17)
 
 
 
