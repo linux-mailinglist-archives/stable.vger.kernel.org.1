@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-56577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A89292450B
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:18:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 449BD9245E4
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:28:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3494F280DA5
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:18:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0125C282B70
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:28:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB8B1BE847;
-	Tue,  2 Jul 2024 17:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDDD1BE846;
+	Tue,  2 Jul 2024 17:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtdOLkOM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuBsD5Xz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696211B583A;
-	Tue,  2 Jul 2024 17:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC9E1BE226;
+	Tue,  2 Jul 2024 17:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940645; cv=none; b=ourUzkcmR2fm8tlQCTkLp4OaVuXmtcfj2tDIU7VbJcx5eWSystS2Haeif1+DFJhX+z4z5JqYvkHhYh75vDSQ246d0llppre//uMCDUBUPJ2PiES9DuazcwIqJRveoFB/DS0nOmHxw2DXwriHkrPpoyMC78FUBdpC7SnmxpFcg/k=
+	t=1719941304; cv=none; b=FuUtxtFYlYJrDWNXn34PnDLUHkitIcKrlfaeMPLt3Nc56+gJAeLAjySTAiz6Qt0NjikFNTK6Iidq7rgLiZA7Tyu6LkUN/qJgHEZUGEt5oSfVCJikpOhIc1E3REoOHaegVgokATT3Wi97/6+HMPZicSx3CvmalyLzUVZe0coDSCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940645; c=relaxed/simple;
-	bh=wgGEhkKLZ0KY4og9DEIarQR4t3QGwuVEANj8o+5Kj5s=;
+	s=arc-20240116; t=1719941304; c=relaxed/simple;
+	bh=Xv14gKyXYXEfsnDKkZN137Ug5V0axGi2e7wDiNtunas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cKWoZ99+GLrd/0uoihMfSGzncnl255hcTwJRqICl8zvMv3YR8hGzwcoeJcR8kXwlcAW5x7EPFHlNgRk2x5eK1mo6VBSskcTI5LV2hurXBUAEgdRBdiZI3SPZyPAENP4NKe4jvIJEQhyn0RAWmNgmCgCXMCnWekrkBp1hTGSWQJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtdOLkOM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A71C116B1;
-	Tue,  2 Jul 2024 17:17:24 +0000 (UTC)
+	 MIME-Version; b=f/irI1fol/g5rf7x+96P5EzYOoaLRmmYZVXqGerIKVuPnVi6qWWLf8ciNBH9VLBoDbwCOFtyTAITUIlCf6XauBekkf3SyJPFQnsvvtNixmZKcpVvDsiNFBmn4G9BrJAqkn5jF4I9Y9aCTU9FCpiNyQXeJwN1aZli4pZshUxV0Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuBsD5Xz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C96FC116B1;
+	Tue,  2 Jul 2024 17:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940645;
-	bh=wgGEhkKLZ0KY4og9DEIarQR4t3QGwuVEANj8o+5Kj5s=;
+	s=korg; t=1719941303;
+	bh=Xv14gKyXYXEfsnDKkZN137Ug5V0axGi2e7wDiNtunas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mtdOLkOMCewE/4voSPM4NSwv75DApMviJWHPCCTgwyU2CFKQ2W/jBU7Mj6oXtN8Ne
-	 Mn6Kwg3Hdo93x0hWuZ4HFUm6VtmvYDyUcI/N2VrXcGMWIah2J6aK0PKwDpuWPygzCG
-	 ZMzaDu0iyteU0YCt9aWPmoSRbjqzzBNxhaLpdfOM=
+	b=tuBsD5Xz05sD/EQGajQmx0OGpxUyVXxmMm7lxcZIF1kiNKV2W7154YnpOnIqGTVk9
+	 YqrI2hr6QueGJvUHupgy82GnH2vsNZI7kAGGUHB6DGkps9GmCykZQlOiOUidZkr7Jz
+	 cGBln55dps9wKDJd1Qegy8T6KrscOX08x9ABCWSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.9 186/222] drm/amdgpu/atomfirmware: fix parsing of vram_info
-Date: Tue,  2 Jul 2024 19:03:44 +0200
-Message-ID: <20240702170251.095611874@linuxfoundation.org>
+	Enguerrand de Ribaucourt <enguerrand.de-ribaucourt@savoirfairelinux.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 024/128] net: phy: micrel: add Microchip KSZ 9477 to the device table
+Date: Tue,  2 Jul 2024 19:03:45 +0200
+Message-ID: <20240702170227.146927909@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Enguerrand de Ribaucourt <enguerrand.de-ribaucourt@savoirfairelinux.com>
 
-commit f6f49dda49db72e7a0b4ca32c77391d5ff5ce232 upstream.
+[ Upstream commit 54a4e5c16382e871c01dd82b47e930fdce30406b ]
 
-v3.x changed the how vram width was encoded.  The previous
-implementation actually worked correctly for most boards.
-Fix the implementation to work correctly everywhere.
+PHY_ID_KSZ9477 was supported but not added to the device table passed to
+MODULE_DEVICE_TABLE.
 
-This fixes the vram width reported in the kernel log on
-some boards.
-
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fc3973a1fa09 ("phy: micrel: add Microchip KSZ 9477 Switch PHY support")
+Signed-off-by: Enguerrand de Ribaucourt <enguerrand.de-ribaucourt@savoirfairelinux.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_atomfirmware.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/micrel.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_atomfirmware.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_atomfirmware.c
-@@ -399,7 +399,7 @@ amdgpu_atomfirmware_get_vram_info(struct
- 					mem_channel_number = vram_info->v30.channel_num;
- 					mem_channel_width = vram_info->v30.channel_width;
- 					if (vram_width)
--						*vram_width = mem_channel_number * (1 << mem_channel_width);
-+						*vram_width = mem_channel_number * 16;
- 					break;
- 				default:
- 					return -EINVAL;
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 98c6d0caf8faf..90f3953cf9066 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -3405,6 +3405,7 @@ static struct mdio_device_id __maybe_unused micrel_tbl[] = {
+ 	{ PHY_ID_KSZ8081, MICREL_PHY_ID_MASK },
+ 	{ PHY_ID_KSZ8873MLL, MICREL_PHY_ID_MASK },
+ 	{ PHY_ID_KSZ886X, MICREL_PHY_ID_MASK },
++	{ PHY_ID_KSZ9477, MICREL_PHY_ID_MASK },
+ 	{ PHY_ID_LAN8814, MICREL_PHY_ID_MASK },
+ 	{ PHY_ID_LAN8804, MICREL_PHY_ID_MASK },
+ 	{ }
+-- 
+2.43.0
+
 
 
 
