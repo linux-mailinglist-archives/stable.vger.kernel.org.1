@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AD719244CA
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:15:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBB8C924585
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:23:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C6351C21F60
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:15:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A32E91F24219
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E51EF1BE232;
-	Tue,  2 Jul 2024 17:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ADB915218A;
+	Tue,  2 Jul 2024 17:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBEXU8Cc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQQTF+iP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A205015B0FE;
-	Tue,  2 Jul 2024 17:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586C31BE242;
+	Tue,  2 Jul 2024 17:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940501; cv=none; b=C67h9tns4UDJtVFQs9XONfMLb5qMDIVDTJ0uVrv79cL3gwPxFjchVeCMIgxVwVS83ZJSNkgPFiEzo1Ns4qIGUO5IKxPoojMK1fV2+On//jJvRCV8HBDthU0OOV40K68ExRs4Rip8jkeyyuBttxmj4DaeaitnYyQCtMemcMoIhBg=
+	t=1719941001; cv=none; b=bBfIVJsIvH43xebU62nrbct+1fn/y9x8acufCMbgxad1tk3esThTqWNBWhGImP1t6JPGoQG9rSD81dnUr45k+PynnFRrk6dS3CpCSHRP+rRtj48gPV2jZ1ldByVFOxqXtE0knBW4E64hYCmv2Cmt29tiagb2gc18NYuOjhi0PDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940501; c=relaxed/simple;
-	bh=3PNfVrGqJN/gaiYW/SsKeQFKMqPpTepQ4u6efltq7ck=;
+	s=arc-20240116; t=1719941001; c=relaxed/simple;
+	bh=7mpMWUbkl1ybZiNmk2NUW2IHbLs0IhIUJTic4p9X5R0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qW9eDHOrei5buOgMrxU6/Lde5Uws3iBsU3LPCf/CoFBrItyxt1f+b/cpTmpiabXnEVD6N1Nf5CKRAyx/h4GM5t4fUNNw+luqJ5JSepisnV8+nnpC7CX+GtlK2Qujaj7UVlL4EAZZr3L0CQ6MBOqzYfrTzSaMkF4fhd90243s3UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBEXU8Cc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F09EC116B1;
-	Tue,  2 Jul 2024 17:15:00 +0000 (UTC)
+	 MIME-Version; b=BwTfP1EEzzaEJquSVcC48i8Odte8MbG/h0mSxDVU6/t+J4sT8h0epqGCQLI7EvjTHF8ycWQ0vJsbhF1L3xshXSIyPkb2kcd0vllWwCuCsuCfRhKheF+/srUJBErKuZlgLZetIzMGy04/XgNuWf9yENOf+PRI9w1zed6M3omshg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQQTF+iP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BECF9C116B1;
+	Tue,  2 Jul 2024 17:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940501;
-	bh=3PNfVrGqJN/gaiYW/SsKeQFKMqPpTepQ4u6efltq7ck=;
+	s=korg; t=1719941001;
+	bh=7mpMWUbkl1ybZiNmk2NUW2IHbLs0IhIUJTic4p9X5R0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eBEXU8CcDmEBY3HSyYknlHQV+zyuo0wiMWX0dJAiiP2DAjzr1nm+kfXPZCdd1G0zF
-	 +fNcXCIQMkTDNOlZwaVPYJy2aJ7GF1ZwmPUkISbFL6aBUed+T4wakHaJ21DmMh2+sh
-	 6rLOjrCZkX8uptF8gi4TCXkogpbMdD4UjcrRjm3c=
+	b=dQQTF+iPgyVxKGmYQbJloGrLbkKhJwT8GRdwMFjBWlN0gCzZaCT0/b7odktcALlni
+	 /kVeiVnzmOFs5lnF5RRL1riX+0s+JUq3cOswH4EX+kskQTuqgQgIZUvWZ0DGYtw7jU
+	 U1Ls0NRzDq74QIm8o47/wjKe6XwJg3u5H3aBVulU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianli Xiong <xiongtianli@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.9 173/222] irqchip/loongson-liointc: Set different ISRs for different cores
-Date: Tue,  2 Jul 2024 19:03:31 +0200
-Message-ID: <20240702170250.589786232@linuxfoundation.org>
+	Fernando Yang <hagisf@usp.br>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 098/163] iio: adc: ad7266: Fix variable checking bug
+Date: Tue,  2 Jul 2024 19:03:32 +0200
+Message-ID: <20240702170236.772583271@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Fernando Yang <hagisf@usp.br>
 
-commit a9c3ee5d0fdb069b54902300df6ac822027f3b0a upstream.
+commit a2b86132955268b2a1703082fbc2d4832fc001b8 upstream.
 
-The liointc hardware provides separate Interrupt Status Registers (ISR) for
-each core. The current code uses always the ISR of core #0, which works
-during boot because by default all interrupts are routed to core #0.
+The ret variable was not checked after iio_device_release_direct_mode(),
+which could possibly cause errors
 
-When the interrupt routing changes in the firmware configuration then this
-causes interrupts to be lost because they are not configured in the
-corresponding core.
-
-Use the core index to access the correct ISR instead of a hardcoded 0.
-
-[ tglx: Massaged changelog ]
-
-Fixes: 0858ed035a85 ("irqchip/loongson-liointc: Add ACPI init support")
-Co-developed-by: Tianli Xiong <xiongtianli@loongson.cn>
-Signed-off-by: Tianli Xiong <xiongtianli@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240622043338.1566945-1-chenhuacai@loongson.cn
+Fixes: c70df20e3159 ("iio: adc: ad7266: claim direct mode during sensor read")
+Signed-off-by: Fernando Yang <hagisf@usp.br>
+Link: https://lore.kernel.org/r/20240603180757.8560-1-hagisf@usp.br
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-loongson-liointc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad7266.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/irqchip/irq-loongson-liointc.c
-+++ b/drivers/irqchip/irq-loongson-liointc.c
-@@ -28,7 +28,7 @@
+--- a/drivers/iio/adc/ad7266.c
++++ b/drivers/iio/adc/ad7266.c
+@@ -157,6 +157,8 @@ static int ad7266_read_raw(struct iio_de
+ 		ret = ad7266_read_single(st, val, chan->address);
+ 		iio_device_release_direct_mode(indio_dev);
  
- #define LIOINTC_INTC_CHIP_START	0x20
- 
--#define LIOINTC_REG_INTC_STATUS	(LIOINTC_INTC_CHIP_START + 0x20)
-+#define LIOINTC_REG_INTC_STATUS(core)	(LIOINTC_INTC_CHIP_START + 0x20 + (core) * 8)
- #define LIOINTC_REG_INTC_EN_STATUS	(LIOINTC_INTC_CHIP_START + 0x04)
- #define LIOINTC_REG_INTC_ENABLE	(LIOINTC_INTC_CHIP_START + 0x08)
- #define LIOINTC_REG_INTC_DISABLE	(LIOINTC_INTC_CHIP_START + 0x0c)
-@@ -217,7 +217,7 @@ static int liointc_init(phys_addr_t addr
- 		goto out_free_priv;
- 
- 	for (i = 0; i < LIOINTC_NUM_CORES; i++)
--		priv->core_isr[i] = base + LIOINTC_REG_INTC_STATUS;
-+		priv->core_isr[i] = base + LIOINTC_REG_INTC_STATUS(i);
- 
- 	for (i = 0; i < LIOINTC_NUM_PARENT; i++)
- 		priv->handler[i].parent_int_map = parent_int_map[i];
++		if (ret < 0)
++			return ret;
+ 		*val = (*val >> 2) & 0xfff;
+ 		if (chan->scan_type.sign == 's')
+ 			*val = sign_extend32(*val,
 
 
 
