@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5178C9245E0
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:28:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 737069244F1
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:16:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF29E1F230E7
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:28:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F23C0B231F3
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF8A1BE251;
-	Tue,  2 Jul 2024 17:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94A21BE86D;
+	Tue,  2 Jul 2024 17:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0aK6i72C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4MH4G3k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C84B1514DC;
-	Tue,  2 Jul 2024 17:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EB181F;
+	Tue,  2 Jul 2024 17:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941290; cv=none; b=YB6oY1jQdvSCS3W+rldlq1Qi0dwb2+jf0Zib/6NfoWdBYefblsdRRuaFcabLDqKA+7Ev+huIcgGBEbIJnIsI+gc/t6gaHl/nsf65aa68yuxt7ncVaWjkEpixAERsfEZRUb1bxmcPxux5DemoUAQ2dfOUZl0AgeNXF+lFbVvD0t4=
+	t=1719940590; cv=none; b=nahv5Svj3B4qYjTctE/7b0tt8RmS3cZueWKB9C4Toe0/hZftggaJU+SxJBzrncYroPvCVfJxRZWBsPvX5YkdFnYyOzM88dx76qtg+xHk+AOdX9KiiLj+TvIggtyEYnhMof4140u50bAX+xNIGW2AW41O2VArLK2QFHdQ4jIvxx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941290; c=relaxed/simple;
-	bh=469W6/9kolHu3e6Jtvt9ImMq21NKP+t+n5rqYZzqJSI=;
+	s=arc-20240116; t=1719940590; c=relaxed/simple;
+	bh=Nu6I9D/dg3SaPx/mjdwHphyliKXju/f0SXc922JNhlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sxpHTdFcbc5B6m+SpwyyQTGbfQVnvDmkJh7NYmJ+TKx5Kvnjf3rBJzRg84wC+SE737kYAEJCVO3Ki7GHE3iVxKI8ALasmXf1Kk8vmC+Zto7NbgXxjlfFjNGlvhwiZEW8ZaH3d+RKy66Zm7t0aiKnNB487H2MVXJ/qXwC7rTxokY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0aK6i72C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A5AC116B1;
-	Tue,  2 Jul 2024 17:28:09 +0000 (UTC)
+	 MIME-Version; b=jkcsh7wn5hTt+xh0M9UMmyHpB5IU50VdvQmkSdGf7vZMAevVC0vV6u0fC3/L8vrDAZ+a9jmf8jv1pcWZW8KPm7i/8NOM02ESfu8cow0p0AZssO9GjlALpwz+bwMdlRsPGtLnc7+HkTf53LwbMfuBJGPGsro06r8DxzEy4SqlqIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4MH4G3k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3B0C116B1;
+	Tue,  2 Jul 2024 17:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941290;
-	bh=469W6/9kolHu3e6Jtvt9ImMq21NKP+t+n5rqYZzqJSI=;
+	s=korg; t=1719940590;
+	bh=Nu6I9D/dg3SaPx/mjdwHphyliKXju/f0SXc922JNhlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0aK6i72CFWDT6e6dOJ5+FtoRDDQ1uKnuq21fcGuoKMjSnjss8N3TIbv/UEsxJh0QM
-	 HpImswTfE00vRThu3decAllJ8gCLGzTnx+SdXH7P2UqaoW6QXiF4tvU5f4sb3CITMZ
-	 FzaKOknWx9p33RlRkE+/jlavG0dDbqSqCMY9KZJA=
+	b=j4MH4G3kM9G9YwTLPbmhHwrkz9AzkPuK0oswl+A/7lGoJ/Sn88NdQ28Y177hMDtOl
+	 7/fnywX28iqdn1Rw4JOA5AUbgadGnmaTWSB6CA7OCaSqnGkpQXuZFUR/hnq5ddKHTk
+	 kbyb51dA4RzHF+BacPjVKkg93mdhQEu1f1Ql/+V0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristram Ha <tristram.ha@microchip.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 020/128] net: dsa: microchip: fix initial port flush problem
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.9 183/222] drm/i915/gt: Fix potential UAF by revoke of fence registers
 Date: Tue,  2 Jul 2024 19:03:41 +0200
-Message-ID: <20240702170226.996925837@linuxfoundation.org>
+Message-ID: <20240702170250.976382109@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristram Ha <tristram.ha@microchip.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-[ Upstream commit ad53f5f54f351e967128edbc431f0f26427172cf ]
+commit 996c3412a06578e9d779a16b9e79ace18125ab50 upstream.
 
-The very first flush in any port will flush all learned addresses in all
-ports.  This can be observed by unplugging the cable from one port while
-additional ports are connected and dumping the fdb entries.
+CI has been sporadically reporting the following issue triggered by
+igt@i915_selftest@live@hangcheck on ADL-P and similar machines:
 
-This problem is caused by the initially wrong value programmed to the
-REG_SW_LUE_CTRL_1 register.  Setting SW_FLUSH_STP_TABLE and
-SW_FLUSH_MSTP_TABLE bits does not have an immediate effect.  It is when
-ksz9477_flush_dyn_mac_table() is called then the SW_FLUSH_STP_TABLE bit
-takes effect and flushes all learned entries.  After that call both bits
-are reset and so the next port flush will not cause such problem again.
+<6> [414.049203] i915: Running intel_hangcheck_live_selftests/igt_reset_evict_fence
+...
+<6> [414.068804] i915 0000:00:02.0: [drm] GT0: GUC: submission enabled
+<6> [414.068812] i915 0000:00:02.0: [drm] GT0: GUC: SLPC enabled
+<3> [414.070354] Unable to pin Y-tiled fence; err:-4
+<3> [414.071282] i915_vma_revoke_fence:301 GEM_BUG_ON(!i915_active_is_idle(&fence->active))
+...
+<4>[  609.603992] ------------[ cut here ]------------
+<2>[  609.603995] kernel BUG at drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c:301!
+<4>[  609.604003] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+<4>[  609.604006] CPU: 0 PID: 268 Comm: kworker/u64:3 Tainted: G     U  W          6.9.0-CI_DRM_14785-g1ba62f8cea9c+ #1
+<4>[  609.604008] Hardware name: Intel Corporation Alder Lake Client Platform/AlderLake-P DDR4 RVP, BIOS RPLPFWI1.R00.4035.A00.2301200723 01/20/2023
+<4>[  609.604010] Workqueue: i915 __i915_gem_free_work [i915]
+<4>[  609.604149] RIP: 0010:i915_vma_revoke_fence+0x187/0x1f0 [i915]
+...
+<4>[  609.604271] Call Trace:
+<4>[  609.604273]  <TASK>
+...
+<4>[  609.604716]  __i915_vma_evict+0x2e9/0x550 [i915]
+<4>[  609.604852]  __i915_vma_unbind+0x7c/0x160 [i915]
+<4>[  609.604977]  force_unbind+0x24/0xa0 [i915]
+<4>[  609.605098]  i915_vma_destroy+0x2f/0xa0 [i915]
+<4>[  609.605210]  __i915_gem_object_pages_fini+0x51/0x2f0 [i915]
+<4>[  609.605330]  __i915_gem_free_objects.isra.0+0x6a/0xc0 [i915]
+<4>[  609.605440]  process_scheduled_works+0x351/0x690
+...
 
-Fixes: b987e98e50ab ("dsa: add DSA switch driver for Microchip KSZ9477")
-Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
-Link: https://patch.msgid.link/1718756202-2731-1-git-send-email-Tristram.Ha@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In the past, there were similar failures reported by CI from other IGT
+tests, observed on other platforms.
+
+Before commit 63baf4f3d587 ("drm/i915/gt: Only wait for GPU activity
+before unbinding a GGTT fence"), i915_vma_revoke_fence() was waiting for
+idleness of vma->active via fence_update().   That commit introduced
+vma->fence->active in order for the fence_update() to be able to wait
+selectively on that one instead of vma->active since only idleness of
+fence registers was needed.  But then, another commit 0d86ee35097a
+("drm/i915/gt: Make fence revocation unequivocal") replaced the call to
+fence_update() in i915_vma_revoke_fence() with only fence_write(), and
+also added that GEM_BUG_ON(!i915_active_is_idle(&fence->active)) in front.
+No justification was provided on why we might then expect idleness of
+vma->fence->active without first waiting on it.
+
+The issue can be potentially caused by a race among revocation of fence
+registers on one side and sequential execution of signal callbacks invoked
+on completion of a request that was using them on the other, still
+processed in parallel to revocation of those fence registers.  Fix it by
+waiting for idleness of vma->fence->active in i915_vma_revoke_fence().
+
+Fixes: 0d86ee35097a ("drm/i915/gt: Make fence revocation unequivocal")
+Closes: https://gitlab.freedesktop.org/drm/intel/issues/10021
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: stable@vger.kernel.org # v5.8+
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240603195446.297690-2-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit 24bb052d3dd499c5956abad5f7d8e4fd07da7fb1)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/microchip/ksz9477.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/dsa/microchip/ksz9477.c b/drivers/net/dsa/microchip/ksz9477.c
-index a736971470534..9181be2d8abb2 100644
---- a/drivers/net/dsa/microchip/ksz9477.c
-+++ b/drivers/net/dsa/microchip/ksz9477.c
-@@ -183,10 +183,8 @@ int ksz9477_reset_switch(struct ksz_device *dev)
- 			   SPI_AUTO_EDGE_DETECTION, 0);
+--- a/drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c
++++ b/drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c
+@@ -298,6 +298,7 @@ void i915_vma_revoke_fence(struct i915_v
+ 		return;
  
- 	/* default configuration */
--	ksz_read8(dev, REG_SW_LUE_CTRL_1, &data8);
--	data8 = SW_AGING_ENABLE | SW_LINK_AUTO_AGING |
--	      SW_SRC_ADDR_FILTER | SW_FLUSH_STP_TABLE | SW_FLUSH_MSTP_TABLE;
--	ksz_write8(dev, REG_SW_LUE_CTRL_1, data8);
-+	ksz_write8(dev, REG_SW_LUE_CTRL_1,
-+		   SW_AGING_ENABLE | SW_LINK_AUTO_AGING | SW_SRC_ADDR_FILTER);
+ 	GEM_BUG_ON(fence->vma != vma);
++	i915_active_wait(&fence->active);
+ 	GEM_BUG_ON(!i915_active_is_idle(&fence->active));
+ 	GEM_BUG_ON(atomic_read(&fence->pin_count));
  
- 	/* disable interrupts */
- 	ksz_write32(dev, REG_SW_INT_MASK__4, SWITCH_INT_MASK);
--- 
-2.43.0
-
 
 
 
