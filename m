@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-56477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6285392448B
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:11:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3CA924546
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:20:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94D301C21DFB
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:11:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19B0F1C22154
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966451BE229;
-	Tue,  2 Jul 2024 17:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1698F1C0054;
+	Tue,  2 Jul 2024 17:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WSd9brr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F+hiE0fn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544B815218A;
-	Tue,  2 Jul 2024 17:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C882E1BE85B;
+	Tue,  2 Jul 2024 17:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940314; cv=none; b=rgGswdk9mL2ioqVD7OeZo/e47E9xSFsVAOzA96aUiHPNIk8XKd617z0H/9T9goFz53lC1KqxvTCrWj8dXN+F4OTWn2kqnAMUwjvhQqB/lLCoWRpMQu/b0VnnVxbxENoZ4PQRWtK8yxZlP6NHcxyfP62hmdLwO+3ZOR4KthkiJFg=
+	t=1719940802; cv=none; b=kmJuA/NeKHhGXipEwFD2O3SwgtZmdP8LcZjka4YADFoQRkawondPgTPELV7s7/JL1jDt/swY/plh/fAryIZ1R6JO33eTi63+7vPrM7OikI8MPBI5LIH2hpmdXC2YX1wro6mL3zG9XRcTK7GqszfWFevgN1qmvpua0hf+mHLDZc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940314; c=relaxed/simple;
-	bh=5t0RyREuQ9zsH0143+R1R8Uh2XxRivtbAL5kACEd9tM=;
+	s=arc-20240116; t=1719940802; c=relaxed/simple;
+	bh=LDB7q//XIH5rJX/g2Vkjnqq3ufOMUBSsTLQbY/WVzfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ix0nJ29F1p/8hG5P3urIiay1swgemfwG0DbwsAnedabLw81CsuKikixjfBymJwgpkrGSqvPyxKTozCOcDbIBCOmG+jUNN56XP5tU5SNBNMwb3hiWccPRSOadUkARuujGaiWsRnXsIVMKKCzqWRYtnHTfyeU3ywV32QCgYzomI5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1WSd9brr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2D4C116B1;
-	Tue,  2 Jul 2024 17:11:53 +0000 (UTC)
+	 MIME-Version; b=c7f16feAncqVKGW/z+76XKka+GsrevPSTBFFjn7F/YIrfIgp/OCpawJj9XTbjc2D1Ab0JeCSqf+zY2lZ83aq8SiF0/xS3xotkfJ5CUaPEL0X3VxL+tN8kfgknms8xl0xRlO31shAqctVw3x2z230eXCOeLXQdxOOHS2J6LI5LDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F+hiE0fn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 370ACC116B1;
+	Tue,  2 Jul 2024 17:20:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940314;
-	bh=5t0RyREuQ9zsH0143+R1R8Uh2XxRivtbAL5kACEd9tM=;
+	s=korg; t=1719940802;
+	bh=LDB7q//XIH5rJX/g2Vkjnqq3ufOMUBSsTLQbY/WVzfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1WSd9brrLDuCQn9Fi1MD5bE6vZUSfPDxxx5p7XiBC6FQceiw6QwDZ8o4EVe3ZP71v
-	 Q6S3A4tFpvnlkgDfMP+rvsL+zwq3kZ0DaW0LbOfYthIjHx/CHeSVT1n1z2AowZdJoq
-	 CEBldcOIa4rpAp/WZydU5xiT+9zHd5O+Im1hkcvY=
+	b=F+hiE0fntjQVsaxvHAXC3b575IUjtDlY9entoZCkmexh3YfG1suQeAETAXuYmYuSu
+	 TXyCBSsxHzVLGomWeiuJVTr+zKzktBOC6ZlG9k876jA+0S9BExrW+UhVNzSIxlIZVL
+	 fcWCjy7VXe7qDNlz1zzf5v2ZgyfinrMqPbXn9YMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Huang-Huang Bao <i@eh5.me>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 086/222] media: dvbdev: Initialize sbuf
+Subject: [PATCH 6.6 010/163] pinctrl: rockchip: use dedicated pinctrl type for RK3328
 Date: Tue,  2 Jul 2024 19:02:04 +0200
-Message-ID: <20240702170247.264321585@linuxfoundation.org>
+Message-ID: <20240702170233.444012552@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Huang-Huang Bao <i@eh5.me>
 
-[ Upstream commit 17d1316de0d7dc1bdc5d6e3ad4efd30a9bf1a381 ]
+[ Upstream commit 01b4b1d1cec48ef4c26616c2fc4600b2c9fec05a ]
 
-Because the size passed to copy_from_user() cannot be known beforehand,
-it needs to be checked during runtime with check_object_size. That makes
-gcc believe that the content of sbuf can be used before init.
+rk3328_pin_ctrl uses type of RK3288 which has a hack in
+rockchip_pinctrl_suspend and rockchip_pinctrl_resume to restore GPIO6-C6
+at assume, the hack is not applicable to RK3328 as GPIO6 is not even
+exist in it. So use a dedicated pinctrl type to skip this hack.
 
-Fix:
-./include/linux/thread_info.h:215:17: warning: ‘sbuf’ may be used uninitialized [-Wmaybe-uninitialized]
-
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 3818e4a7678e ("pinctrl: rockchip: Add rk3328 pinctrl support")
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Huang-Huang Bao <i@eh5.me>
+Link: https://lore.kernel.org/r/20240606125755.53778-4-i@eh5.me
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-core/dvbdev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-rockchip.c | 5 ++++-
+ drivers/pinctrl/pinctrl-rockchip.h | 1 +
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
-index 733d0bc4b4cc3..b43695bc51e75 100644
---- a/drivers/media/dvb-core/dvbdev.c
-+++ b/drivers/media/dvb-core/dvbdev.c
-@@ -956,7 +956,7 @@ int dvb_usercopy(struct file *file,
- 		 int (*func)(struct file *file,
- 			     unsigned int cmd, void *arg))
- {
--	char    sbuf[128];
-+	char    sbuf[128] = {};
- 	void    *mbuf = NULL;
- 	void    *parg = NULL;
- 	int     err  = -EINVAL;
+diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
+index 6072b5d72ee54..974f16f83e59d 100644
+--- a/drivers/pinctrl/pinctrl-rockchip.c
++++ b/drivers/pinctrl/pinctrl-rockchip.c
+@@ -2478,6 +2478,7 @@ static int rockchip_get_pull(struct rockchip_pin_bank *bank, int pin_num)
+ 	case RK3188:
+ 	case RK3288:
+ 	case RK3308:
++	case RK3328:
+ 	case RK3368:
+ 	case RK3399:
+ 	case RK3568:
+@@ -2536,6 +2537,7 @@ static int rockchip_set_pull(struct rockchip_pin_bank *bank,
+ 	case RK3188:
+ 	case RK3288:
+ 	case RK3308:
++	case RK3328:
+ 	case RK3368:
+ 	case RK3399:
+ 	case RK3568:
+@@ -2798,6 +2800,7 @@ static bool rockchip_pinconf_pull_valid(struct rockchip_pin_ctrl *ctrl,
+ 	case RK3188:
+ 	case RK3288:
+ 	case RK3308:
++	case RK3328:
+ 	case RK3368:
+ 	case RK3399:
+ 	case RK3568:
+@@ -3824,7 +3827,7 @@ static struct rockchip_pin_ctrl rk3328_pin_ctrl = {
+ 		.pin_banks		= rk3328_pin_banks,
+ 		.nr_banks		= ARRAY_SIZE(rk3328_pin_banks),
+ 		.label			= "RK3328-GPIO",
+-		.type			= RK3288,
++		.type			= RK3328,
+ 		.grf_mux_offset		= 0x0,
+ 		.iomux_recalced		= rk3328_mux_recalced_data,
+ 		.niomux_recalced	= ARRAY_SIZE(rk3328_mux_recalced_data),
+diff --git a/drivers/pinctrl/pinctrl-rockchip.h b/drivers/pinctrl/pinctrl-rockchip.h
+index 4759f336941ef..849266f8b1913 100644
+--- a/drivers/pinctrl/pinctrl-rockchip.h
++++ b/drivers/pinctrl/pinctrl-rockchip.h
+@@ -193,6 +193,7 @@ enum rockchip_pinctrl_type {
+ 	RK3188,
+ 	RK3288,
+ 	RK3308,
++	RK3328,
+ 	RK3368,
+ 	RK3399,
+ 	RK3568,
 -- 
 2.43.0
 
