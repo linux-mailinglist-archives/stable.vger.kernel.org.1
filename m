@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-56670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B7AB924577
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:22:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A3E09244E3
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:16:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 315811F21318
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:22:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA0191F2176B
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:16:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D891BE222;
-	Tue,  2 Jul 2024 17:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09031BE847;
+	Tue,  2 Jul 2024 17:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhSoyBdP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYGWdj8X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB3415218A;
-	Tue,  2 Jul 2024 17:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDD61BE87F;
+	Tue,  2 Jul 2024 17:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940960; cv=none; b=q9Dp27h/IGLTNiva9ppSKfd/JsHRdWFecaLud7mVx69OGZlD0tWbljZ1sF0pTpFy1E+HvUjQVLtM6TEwrsCdxBuXz+3rbq3geYVvVqvCuILiUYVdpECx6YiG9msz21lb2ZLJVMRhpUt+R0CaYLtIkavuwNg2qZLdpqBAW0iC0L4=
+	t=1719940550; cv=none; b=RoJKvWNVh743m7iXEEwc2u1EKQ0uUf8Vzrqw5yZ/2yAixThUwaKsfu/IyfMncgH3qyVpOWmzFwtSicKqM50bJ+8JW1Jl3Z47So9d5nUJyQIwIhkxOk9giahMA86BoJa6fouZSg1GTiNgqVw7gVx8YPQdJ57zPbUXa3qc4exvNkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940960; c=relaxed/simple;
-	bh=ByEzZoe4JIs4prGvnQk9bxNEgiwutoTJrd9l9VDq7rc=;
+	s=arc-20240116; t=1719940550; c=relaxed/simple;
+	bh=kutwZuHB8in9QtDMolmeCKkeTllxNa9Z76v7XFaR7c4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qxeinGTwwtot9tLpHcspD5VSKmMH+76h0Nm/ht+p/sKuj3jmAuO7NdizHQpFLpDoNtWOetLt8rA2LtsFsUYdW4+Y9BM+DKMqQmdP1zAXofWe+gLU5yYop1HzF+1qDpVI96RbnZbFA29xXia20OylT2DOH1ng7iuTQtwCd/fhNPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhSoyBdP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1800C116B1;
-	Tue,  2 Jul 2024 17:22:39 +0000 (UTC)
+	 MIME-Version; b=D/u0Ypk2nE+GZC7LjxD5v4Xs8eY3rkxwG4FFP0ZFs5VYwkCtzQ5xsWcDtTPGc3jUBNDqn8E6+h//XK2V91iYWJ2jgyqFHxZOxrziIAqYDjS3j/b9+zxO8z9XoAujuf40TvDJYtcLwUBkZvEckBCDuOY52cyEWR0O5vwhboNGFOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYGWdj8X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E27C4AF0C;
+	Tue,  2 Jul 2024 17:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940960;
-	bh=ByEzZoe4JIs4prGvnQk9bxNEgiwutoTJrd9l9VDq7rc=;
+	s=korg; t=1719940550;
+	bh=kutwZuHB8in9QtDMolmeCKkeTllxNa9Z76v7XFaR7c4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RhSoyBdPhYv+IBkyvuKoS54+j/NUh+0cZBsMBKIOzxmCEAmr1Qa47IhtilNrwfMg/
-	 PFJy0kW5tGIVSwp9rMwyOP+grLazNs/QE6De51PYF5TV3eAyQtu6OTkFGdL9rp3yNU
-	 87iuQM8lzhdl9QJCI7PMzDSDSK636W6UAikoe9Ss=
+	b=yYGWdj8X7yUquqLgM+izZCjCjTYanUhalkcgheVKBs4SWWwVu7H8ptmun8SkzMaUr
+	 BjInzBvYMjjGwMOice77jmkaFY41CK0CEF4CZ7MoVYeS6C4qNV6SsBTuir6qW5/AER
+	 TiA0vMC6Kune34n6woK1ggd+O+lAEHj2ftd6F7sE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/163] nvme: fixup comment for nvme RDMA Provider Type
+	stable <stable@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH 6.9 146/222] usb: musb: da8xx: fix a resource leak in probe()
 Date: Tue,  2 Jul 2024 19:03:04 +0200
-Message-ID: <20240702170235.713924191@linuxfoundation.org>
+Message-ID: <20240702170249.558252531@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@suse.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit f80a55fa90fa76d01e3fffaa5d0413e522ab9a00 ]
+commit de644a4a86be04ed8a43ef8267d0f7d021941c5e upstream.
 
-PRTYPE is the provider type, not the QP service type.
+Call usb_phy_generic_unregister() if of_platform_populate() fails.
 
-Fixes: eb793e2c9286 ("nvme.h: add NVMe over Fabrics definitions")
-Signed-off-by: Hannes Reinecke <hare@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d6299b6efbf6 ("usb: musb: Add support of CPPI 4.1 DMA controller to DA8xx")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/69af1b1d-d3f4-492b-bcea-359ca5949f30@moroto.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/nvme.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/musb/da8xx.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/nvme.h b/include/linux/nvme.h
-index 26dd3f859d9d7..b61038de139e5 100644
---- a/include/linux/nvme.h
-+++ b/include/linux/nvme.h
-@@ -90,8 +90,8 @@ enum {
- 	NVMF_RDMA_QPTYPE_DATAGRAM	= 2, /* Reliable Datagram */
- };
+--- a/drivers/usb/musb/da8xx.c
++++ b/drivers/usb/musb/da8xx.c
+@@ -556,7 +556,7 @@ static int da8xx_probe(struct platform_d
+ 	ret = of_platform_populate(pdev->dev.of_node, NULL,
+ 				   da8xx_auxdata_lookup, &pdev->dev);
+ 	if (ret)
+-		return ret;
++		goto err_unregister_phy;
  
--/* RDMA QP Service Type codes for Discovery Log Page entry TSAS
-- * RDMA_QPTYPE field
-+/* RDMA Provider Type codes for Discovery Log Page entry TSAS
-+ * RDMA_PRTYPE field
-  */
- enum {
- 	NVMF_RDMA_PRTYPE_NOT_SPECIFIED	= 1, /* No Provider Specified */
--- 
-2.43.0
-
+ 	pinfo = da8xx_dev_info;
+ 	pinfo.parent = &pdev->dev;
+@@ -571,9 +571,13 @@ static int da8xx_probe(struct platform_d
+ 	ret = PTR_ERR_OR_ZERO(glue->musb);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to register musb device: %d\n", ret);
+-		usb_phy_generic_unregister(glue->usb_phy);
++		goto err_unregister_phy;
+ 	}
+ 
++	return 0;
++
++err_unregister_phy:
++	usb_phy_generic_unregister(glue->usb_phy);
+ 	return ret;
+ }
+ 
 
 
 
