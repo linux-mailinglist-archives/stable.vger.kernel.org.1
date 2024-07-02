@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC9E9244C6
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:14:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94FAE9245EB
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:28:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F9EC1C21DBD
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:14:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C3F21F2173E
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D05A11BE22F;
-	Tue,  2 Jul 2024 17:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7CF1BE847;
+	Tue,  2 Jul 2024 17:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vatJKjCR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDFvAi5b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5E915B0FE;
-	Tue,  2 Jul 2024 17:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5BD1BE22B;
+	Tue,  2 Jul 2024 17:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940488; cv=none; b=hko6mB0RDQhu3zfxh+h0yygZx3jg5yZx9iM0kD1GDF7P7FLNFuTVNkBKtFRry/I3dRhn9Tb4P7Vb/hQ6+W1HeNsJ+Nl6X1fDhxgZDMDVRCVxnQ8Cm3AuYhg8qAJNmDNvEgHjpWvmZTbhjfMoEsXTe1ipNI62DVjZXQ9v8eqAqo0=
+	t=1719941324; cv=none; b=MuFF+KbZP6QBIZ8InUihFYPihW4Z58i4t+mrvA5hgDf1iPleRbT9g780eJrJHHAsYJxf2dJ5edrBD7LOjY3kYYkb/3ZSbBaOp4oXkJkWWrojg9V6BWNyhF7HQTaB5iuYcYA56mSY8i3+UUiXp38iKIMwwpfdx/PWS5qi+bIehIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940488; c=relaxed/simple;
-	bh=3AestHnHKfDKcXFfh/fr9KZIM1V5xpwalSj87YbV8ac=;
+	s=arc-20240116; t=1719941324; c=relaxed/simple;
+	bh=kkCSWqWS7kHa8g8ftIzcA1GCgUTAJLmjyn9pXo37xFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nvhqAxzuU6c67JjjVkJzEYlVjVXeGZIbmzcRdFDIHR4FLdAlUx5f2tfvl4OB5Qj8CAVz66mFLqEMtG1FbB28cGfAvuky669kACav3zJ86nOnosdUXWQCK5wZLz9ElqpdC96S9kIhFowtFs5jnUoaned3oqXlwiCtdt12t7+epac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vatJKjCR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DA3C116B1;
-	Tue,  2 Jul 2024 17:14:47 +0000 (UTC)
+	 MIME-Version; b=qrLXyRLSJraQeqgbH1SNtflrE4lAnuoPc0Ev4ecs0mS0+vfgXY6lgwH9aDRQIdWWF0PEtZedSJeo61IDzlszHJZut21SQRZjwpToUpl2Hkv7ZaGfCbBLcci2CJtcyJyvAs+/PwHU3mRZ1KGj+xssh21sLqFeAsIu/2gXpeNhOuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDFvAi5b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B918BC116B1;
+	Tue,  2 Jul 2024 17:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940488;
-	bh=3AestHnHKfDKcXFfh/fr9KZIM1V5xpwalSj87YbV8ac=;
+	s=korg; t=1719941324;
+	bh=kkCSWqWS7kHa8g8ftIzcA1GCgUTAJLmjyn9pXo37xFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vatJKjCRe17R6GHUMDHhAuxOVpvkZ4bR4XMdGfCO13ISXVhWdp6MulpU7eIVkHqhu
-	 bEUWMXv8yeC8qyATm/I6140lGC7/SKSSIymJfgzpZ1SooFh+MQwTRXMdDu6uWMwh+Q
-	 pvOcALQyHkORIJUyt/OuQxRGHYTodbJ29t4wviLE=
+	b=VDFvAi5bAQ8wpwTyNYfUeplkemkrDhZoMtb1mwxqk7DZaWIchFwta7WV8nYMpWe5j
+	 UVYVFueoTphPw4dChe9ejcnlDURpJi9DXOpln1txNz8L5BrK1YK9C1kObBOcQf9o+j
+	 xFH2lMOOyDPO9hyy/at96i/mPYbXsu3WzAOeKSks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Rainbolt <arainbolt@kfocus.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.9 169/222] cpufreq: intel_pstate: Use HWP to initialize ITMT if CPPC is missing
+	John Keeping <jkeeping@inmusicbrands.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 006/128] Input: ili210x - fix ili251x_read_touch_data() return value
 Date: Tue,  2 Jul 2024 19:03:27 +0200
-Message-ID: <20240702170250.435704317@linuxfoundation.org>
+Message-ID: <20240702170226.476227028@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: John Keeping <jkeeping@inmusicbrands.com>
 
-commit a1ff59784b277795a613beaa5d3dd9c5595c69a7 upstream.
+[ Upstream commit 9f0fad0382124e7e23b3c730fa78818c22c89c0a ]
 
-It is reported that single-thread performance on some hybrid systems
-dropped significantly after commit 7feec7430edd ("ACPI: CPPC: Only probe
-for _CPC if CPPC v2 is acked") which prevented _CPC from being used if
-the support for it had not been confirmed by the platform firmware.
+The caller of this function treats all non-zero values as an error, so
+the return value of i2c_master_recv() cannot be returned directly.
 
-The problem is that if the platform firmware does not confirm CPPC v2
-support, cppc_get_perf_caps() returns an error which prevents the
-intel_pstate driver from enabling ITMT.  Consequently, the scheduler
-does not get any hints on CPU performance differences, so in a hybrid
-system some tasks may run on CPUs with lower capacity even though they
-should be running on high-capacity CPUs.
+This fixes touch reporting when there are more than 6 active touches.
 
-To address this, modify intel_pstate to use the information from
-MSR_HWP_CAPABILITIES to enable ITMT if CPPC is not available (which is
-done already if the highest performance number coming from CPPC is not
-realistic).
-
-Fixes: 7feec7430edd ("ACPI: CPPC: Only probe for _CPC if CPPC v2 is acked")
-Closes: https://lore.kernel.org/linux-acpi/d01b0a1f-bd33-47fe-ab41-43843d8a374f@kfocus.org
-Link: https://lore.kernel.org/linux-acpi/ZnD22b3Br1ng7alf@kf-XE
-Reported-by: Aaron Rainbolt <arainbolt@kfocus.org>
-Tested-by: Aaron Rainbolt <arainbolt@kfocus.org>
-Cc: 5.19+ <stable@vger.kernel.org> # 5.19+
-Link: https://patch.msgid.link/12460110.O9o76ZdvQC@rjwysocki.net
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ef536abd3afd1 ("Input: ili210x - define and use chip operations structure")
+Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
+Link: https://lore.kernel.org/r/20240523085624.2295988-1-jkeeping@inmusicbrands.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/intel_pstate.c |   13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/input/touchscreen/ili210x.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -357,15 +357,14 @@ static void intel_pstate_set_itmt_prio(i
- 	int ret;
+diff --git a/drivers/input/touchscreen/ili210x.c b/drivers/input/touchscreen/ili210x.c
+index e9bd36adbe47d..e3a36cd3656c0 100644
+--- a/drivers/input/touchscreen/ili210x.c
++++ b/drivers/input/touchscreen/ili210x.c
+@@ -261,8 +261,8 @@ static int ili251x_read_touch_data(struct i2c_client *client, u8 *data)
+ 	if (!error && data[0] == 2) {
+ 		error = i2c_master_recv(client, data + ILI251X_DATA_SIZE1,
+ 					ILI251X_DATA_SIZE2);
+-		if (error >= 0 && error != ILI251X_DATA_SIZE2)
+-			error = -EIO;
++		if (error >= 0)
++			error = error == ILI251X_DATA_SIZE2 ? 0 : -EIO;
+ 	}
  
- 	ret = cppc_get_perf_caps(cpu, &cppc_perf);
--	if (ret)
--		return;
--
- 	/*
--	 * On some systems with overclocking enabled, CPPC.highest_perf is hardcoded to 0xff.
--	 * In this case we can't use CPPC.highest_perf to enable ITMT.
--	 * In this case we can look at MSR_HWP_CAPABILITIES bits [8:0] to decide.
-+	 * If CPPC is not available, fall back to MSR_HWP_CAPABILITIES bits [8:0].
-+	 *
-+	 * Also, on some systems with overclocking enabled, CPPC.highest_perf is
-+	 * hardcoded to 0xff, so CPPC.highest_perf cannot be used to enable ITMT.
-+	 * Fall back to MSR_HWP_CAPABILITIES then too.
- 	 */
--	if (cppc_perf.highest_perf == CPPC_MAX_PERF)
-+	if (ret || cppc_perf.highest_perf == CPPC_MAX_PERF)
- 		cppc_perf.highest_perf = HWP_HIGHEST_PERF(READ_ONCE(all_cpu_data[cpu]->hwp_cap_cached));
- 
- 	/*
+ 	return error;
+-- 
+2.43.0
+
 
 
 
