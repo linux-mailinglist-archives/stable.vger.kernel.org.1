@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-56476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7485192448A
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:11:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C2E924545
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:20:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8EE51C21C0E
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:11:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5CF11F2211A
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:20:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1750C1BE22B;
-	Tue,  2 Jul 2024 17:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA6CA1C007D;
+	Tue,  2 Jul 2024 17:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEusRCbh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkfjTFz5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9AE15218A;
-	Tue,  2 Jul 2024 17:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C5C1BE85B;
+	Tue,  2 Jul 2024 17:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940310; cv=none; b=o88Sodkhz8H+qhogygTCa8itCrkayyK7EDDiyMaRm35631u0asL5sgJVgNQvVSGH11b4leM7wW+s5vYiqL/AkqYrzjopiwvsq+yRTfLU7ZqhNMeEmo7m8ix29d3u06eEMXTL5gIyyM3zCuvNctjdJgJmlM8biL/DOCNupH784wM=
+	t=1719940799; cv=none; b=RM6kyY4lawCrE2KKK/Av4VZoT26yfhMt04axJDwZntq0O/dbrIHFh+DVUgKBXsO3oXXheqEH3mmpqU7LWDGNbg6BUycMM5RubqbZzdtsjl7fzgk0gUOg45/T0O4kSnQQjsHrcS85O0YNnwXiswsRHKANTVGC7FbY6u8Mb4/6CFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940310; c=relaxed/simple;
-	bh=KL3rbepGwjwNOZpPG+o+6e/fTpgqlzSu1T01etyklyU=;
+	s=arc-20240116; t=1719940799; c=relaxed/simple;
+	bh=E53R7/xAEmXyMNG8LZwclPqkTPATfj/JZx75mSn77Qo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OyWs1OMU/Ek8e2Nn6ISJbIigxeUez8y+xTkAlxu41viOCF1B/3clx9swOcOk73EnOrg1TnJMxLzrqqtbFHdBUo+8gx35PMcU0w+UrJyP4rFQlYM8TmXimQPorAEpsK64yyvcL5eT74dISkT9V0qd/454cJjGtfYjTX5ydl/8KZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEusRCbh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 466AEC116B1;
-	Tue,  2 Jul 2024 17:11:50 +0000 (UTC)
+	 MIME-Version; b=MC3pPS42RN2zuQbeLp53miMqdNkGsnA7ZI2rVqWfTxm+VZiVoIA0VdacNvqd/sDed7a/Lx2IXRdXOUlwET7OwkGTl0/yoo4vdWbltrBKEQvrsY49kzv0qIBLNCxQVaCcGkpd5ySav51xtqJJ79JetaIhoSkQ1owUotqqlNfZb/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkfjTFz5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0077C116B1;
+	Tue,  2 Jul 2024 17:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940310;
-	bh=KL3rbepGwjwNOZpPG+o+6e/fTpgqlzSu1T01etyklyU=;
+	s=korg; t=1719940799;
+	bh=E53R7/xAEmXyMNG8LZwclPqkTPATfj/JZx75mSn77Qo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mEusRCbhEvuatYs5+JzgWCsUiHB019/FYT4TvtoUDapJDjleuOqWLf7avgz46ScXA
-	 kl2qH58akbprBw4LB+lgTY9uaL8Fd7IgbcNgGYRc62239s1wP8f13pBZy77dQQTseU
-	 Oy+D7IjM9aMljKg45vMLJEXnNZOZSYoscPPU1RHA=
+	b=XkfjTFz5Sv39mYGCgNl0QZxNfz5X1IzSKwLLrgvNd6A6nvgCC45GJQYH5MbnIEM4q
+	 diKu8J8kLVEBd0LOYRjbaKDvHQxZIy0YLmqBQNrQigunhyMaC9TIem0u8EO/gvkDjv
+	 dJqqw06fBP1cz8gRVpxHKqdiFWA+QVgBMqSJ+gvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oswald Buddenhagen <oswald.buddenhagen@gmx.de>,
-	Takashi Iwai <tiwai@suse.de>,
+	Huang-Huang Bao <i@eh5.me>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 085/222] ALSA: emux: improve patch ioctl data validation
+Subject: [PATCH 6.6 009/163] pinctrl: rockchip: fix pinmux bits for RK3328 GPIO3-B pins
 Date: Tue,  2 Jul 2024 19:02:03 +0200
-Message-ID: <20240702170247.226676132@linuxfoundation.org>
+Message-ID: <20240702170233.406057360@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+From: Huang-Huang Bao <i@eh5.me>
 
-[ Upstream commit 89b32ccb12ae67e630c6453d778ec30a592a212f ]
+[ Upstream commit 5ef6914e0bf578357b4c906ffe6b26e7eedb8ccf ]
 
-In load_data(), make the validation of and skipping over the main info
-block match that in load_guspatch().
+The pinmux bits for GPIO3-B1 to GPIO3-B6 pins are not explicitly
+specified in RK3328 TRM, however we can get hint from pad name and its
+correspinding IOMUX setting for pins in interface descriptions. The
+correspinding IOMIX settings for these pins can be found in the same
+row next to occurrences of following pad names in RK3328 TRM.
 
-In load_guspatch(), add checking that the specified patch length matches
-the actually supplied data, like load_data() already did.
+GPIO3-B1:  IO_TSPd5m0_CIFdata5m0_GPIO3B1vccio6
+GPIO3-B2: IO_TSPd6m0_CIFdata6m0_GPIO3B2vccio6
+GPIO3-B3: IO_TSPd7m0_CIFdata7m0_GPIO3B3vccio6
+GPIO3-B4: IO_CARDclkm0_GPIO3B4vccio6
+GPIO3-B5: IO_CARDrstm0_GPIO3B5vccio6
+GPIO3-B6: IO_CARDdetm0_GPIO3B6vccio6
 
-Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
-Message-ID: <20240406064830.1029573-8-oswald.buddenhagen@gmx.de>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Add pinmux data to rk3328_mux_recalced_data as mux register offset for
+these pins does not follow rockchip convention.
+
+Signed-off-by: Huang-Huang Bao <i@eh5.me>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 3818e4a7678e ("pinctrl: rockchip: Add rk3328 pinctrl support")
+Link: https://lore.kernel.org/r/20240606125755.53778-3-i@eh5.me
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/synth/emux/soundfont.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/pinctrl/pinctrl-rockchip.c | 51 ++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
-diff --git a/sound/synth/emux/soundfont.c b/sound/synth/emux/soundfont.c
-index 16f00097cb95a..eed47e4830248 100644
---- a/sound/synth/emux/soundfont.c
-+++ b/sound/synth/emux/soundfont.c
-@@ -701,7 +701,6 @@ load_data(struct snd_sf_list *sflist, const void __user *data, long count)
- 	struct snd_soundfont *sf;
- 	struct soundfont_sample_info sample_info;
- 	struct snd_sf_sample *sp;
--	long off;
+diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
+index c99a290a938af..6072b5d72ee54 100644
+--- a/drivers/pinctrl/pinctrl-rockchip.c
++++ b/drivers/pinctrl/pinctrl-rockchip.c
+@@ -634,17 +634,68 @@ static struct rockchip_mux_recalced_data rk3308_mux_recalced_data[] = {
  
- 	/* patch must be opened */
- 	sf = sflist->currsf;
-@@ -711,12 +710,16 @@ load_data(struct snd_sf_list *sflist, const void __user *data, long count)
- 	if (is_special_type(sf->type))
- 		return -EINVAL;
+ static struct rockchip_mux_recalced_data rk3328_mux_recalced_data[] = {
+ 	{
++		/* gpio2_b7_sel */
+ 		.num = 2,
+ 		.pin = 15,
+ 		.reg = 0x28,
+ 		.bit = 0,
+ 		.mask = 0x7
+ 	}, {
++		/* gpio2_c7_sel */
+ 		.num = 2,
+ 		.pin = 23,
+ 		.reg = 0x30,
+ 		.bit = 14,
+ 		.mask = 0x3
++	}, {
++		/* gpio3_b1_sel */
++		.num = 3,
++		.pin = 9,
++		.reg = 0x44,
++		.bit = 2,
++		.mask = 0x3
++	}, {
++		/* gpio3_b2_sel */
++		.num = 3,
++		.pin = 10,
++		.reg = 0x44,
++		.bit = 4,
++		.mask = 0x3
++	}, {
++		/* gpio3_b3_sel */
++		.num = 3,
++		.pin = 11,
++		.reg = 0x44,
++		.bit = 6,
++		.mask = 0x3
++	}, {
++		/* gpio3_b4_sel */
++		.num = 3,
++		.pin = 12,
++		.reg = 0x44,
++		.bit = 8,
++		.mask = 0x3
++	}, {
++		/* gpio3_b5_sel */
++		.num = 3,
++		.pin = 13,
++		.reg = 0x44,
++		.bit = 10,
++		.mask = 0x3
++	}, {
++		/* gpio3_b6_sel */
++		.num = 3,
++		.pin = 14,
++		.reg = 0x44,
++		.bit = 12,
++		.mask = 0x3
++	}, {
++		/* gpio3_b7_sel */
++		.num = 3,
++		.pin = 15,
++		.reg = 0x44,
++		.bit = 14,
++		.mask = 0x3
+ 	},
+ };
  
-+	if (count < (long)sizeof(sample_info)) {
-+		return -EINVAL;
-+	}
- 	if (copy_from_user(&sample_info, data, sizeof(sample_info)))
- 		return -EFAULT;
-+	data += sizeof(sample_info);
-+	count -= sizeof(sample_info);
- 
--	off = sizeof(sample_info);
--
--	if (sample_info.size != (count-off)/2)
-+	// SoundFont uses S16LE samples.
-+	if (sample_info.size * 2 != count)
- 		return -EINVAL;
- 
- 	/* Check for dup */
-@@ -744,7 +747,7 @@ load_data(struct snd_sf_list *sflist, const void __user *data, long count)
- 		int  rc;
- 		rc = sflist->callback.sample_new
- 			(sflist->callback.private_data, sp, sflist->memhdr,
--			 data + off, count - off);
-+			 data, count);
- 		if (rc < 0) {
- 			sf_sample_delete(sflist, sf, sp);
- 			return rc;
-@@ -957,10 +960,12 @@ load_guspatch(struct snd_sf_list *sflist, const char __user *data,
- 	}
- 	if (copy_from_user(&patch, data, sizeof(patch)))
- 		return -EFAULT;
--	
- 	count -= sizeof(patch);
- 	data += sizeof(patch);
- 
-+	if ((patch.len << (patch.mode & WAVE_16_BITS ? 1 : 0)) != count)
-+		return -EINVAL;
-+
- 	sf = newsf(sflist, SNDRV_SFNT_PAT_TYPE_GUS|SNDRV_SFNT_PAT_SHARED, NULL);
- 	if (sf == NULL)
- 		return -ENOMEM;
 -- 
 2.43.0
 
