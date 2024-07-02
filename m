@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-56610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B77924537
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:20:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 653C392447C
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:11:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B79B628A621
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:20:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96AB01C21B64
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:11:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BAEE1BE226;
-	Tue,  2 Jul 2024 17:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41031BE22C;
+	Tue,  2 Jul 2024 17:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6dyMifK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGitIsSF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACD443152;
-	Tue,  2 Jul 2024 17:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D58615B0FE;
+	Tue,  2 Jul 2024 17:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940758; cv=none; b=EiS+ruZWioensa8hZz4r3deSlFw9eJY41BoB+BEhnvkE/vCc2lYkhDG0J/vfrfkipELSkpaaQnHl/hMR/9jFsRfUnlDmrVjVuH+sEb3QjsZjOPFfjIeETUL+d/mIuTe+6uQuTnxqsubyYRWbZULKGGqUhyId4YakdonSJaviAi4=
+	t=1719940269; cv=none; b=ZDXK38D3G8BQJcznIzN+cbeuwjeCc9QnGefz8CoI9OEj36jWGCu80v1rPGvIgUNxVdZIdqksffmimxyXRA7LQZ23YXSywNWR2Mt1UiIlxva3L6+zngeG8nI6RfnZFaMObMiVetSEkhvmOtUoNP94miG/tyF0huQ8gc6LXlFjFpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940758; c=relaxed/simple;
-	bh=/AU2bADwpRiEWTye3hhy5nCuY3e4+dg9Hc6NcKtHmfA=;
+	s=arc-20240116; t=1719940269; c=relaxed/simple;
+	bh=+FiqPcT1qwdyyRJUNMgQVJ8odC1mVSdtcLWnkO3GSTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c7rwSzRmNMRLOpwhU/GpBft56UHhJPSH/1y8OQBaV7RKsAXbxQ77xd71rM1x94Nahx6+Ie7x5PlBGIebwfkW4I2kpqlzz/zfXS0yhAYr1OYh+7JbM68ycSnpu+B2DMFTHh1oYAeT32CHGtt2WN+anWMWR/kQkNI192G9K63r+58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6dyMifK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01BCC116B1;
-	Tue,  2 Jul 2024 17:19:17 +0000 (UTC)
+	 MIME-Version; b=bFUyMxsPlA2gebzbH5ZcZlLVq71qxuktmzu0XXRfS3YwB+8TQ5/tV3TOKOLDVBD7+PDbwvl5Y3ymZ5QovztypDYcz8W29HokxPJEhpsd4EeGo2RAtoqVpHhtxok7qF6ol7UgH40biNALjg3hoL0t0M7SwiYst/roOtQy2DL7VH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGitIsSF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE515C116B1;
+	Tue,  2 Jul 2024 17:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940758;
-	bh=/AU2bADwpRiEWTye3hhy5nCuY3e4+dg9Hc6NcKtHmfA=;
+	s=korg; t=1719940269;
+	bh=+FiqPcT1qwdyyRJUNMgQVJ8odC1mVSdtcLWnkO3GSTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g6dyMifKIAhm5PUsWofiH1Q9+Nj7T3U4XeG+0y0f6vGvqmu8HgL2A9Eb5zKtxCNYY
-	 KyQtac2eldf0sAQarbMWet1uynREhwKjvBi9Mu0WmsAPc/CZvZytOT44jJ8PtWb5Iu
-	 zR3f/UerB1bl+DAqJ6N7GVU6tLcSkzyndNk2YnYc=
+	b=HGitIsSFMSD9u/JUmXvX3vjMNGtP8HaLSd7mb2VF7VJ/C6xT82T7XHt7R28sKBxgG
+	 T5QMMI9fVA18DBB5U2gcx3GFYiZZNrojb/2h8sKMAjAay/qFsyCQCX9Z89arTs06JA
+	 m/4DoLZ/UJDMD8xJuP67586pCSbg82k/X2aS9ybY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
-	Mark Brown <broonie@kernel.org>,
+	Andy Chiu <andy.chiu@sifive.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/163] ASoC: fsl-asoc-card: set priv->pdev before using it
+Subject: [PATCH 6.9 103/222] riscv: stacktrace: convert arch_stack_walk() to noinstr
 Date: Tue,  2 Jul 2024 19:02:21 +0200
-Message-ID: <20240702170234.087820793@linuxfoundation.org>
+Message-ID: <20240702170247.904866984@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+From: Andy Chiu <andy.chiu@sifive.com>
 
-[ Upstream commit 90f3feb24172185f1832636264943e8b5e289245 ]
+[ Upstream commit 23b2188920a25e88d447dd7d819a0b0f62fb4455 ]
 
-priv->pdev pointer was set after being used in
-fsl_asoc_card_audmux_init().
-Move this assignment at the start of the probe function, so
-sub-functions can correctly use pdev through priv.
+arch_stack_walk() is called intensively in function_graph when the
+kernel is compiled with CONFIG_TRACE_IRQFLAGS. As a result, the kernel
+logs a lot of arch_stack_walk and its sub-functions into the ftrace
+buffer. However, these functions should not appear on the trace log
+because they are part of the ftrace itself. This patch references what
+arm64 does for the smae function. So it further prevent the re-enter
+kprobe issue, which is also possible on riscv.
 
-fsl_asoc_card_audmux_init() dereferences priv->pdev to get access to the
-dev struct, used with dev_err macros.
-As priv is zero-initialised, there would be a NULL pointer dereference.
-Note that if priv->dev is dereferenced before assignment but never used,
-for example if there is no error to be printed, the driver won't crash
-probably due to compiler optimisations.
-
-Fixes: 708b4351f08c ("ASoC: fsl: Add Freescale Generic ASoC Sound Card with ASRC support")
-Signed-off-by: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
-Link: https://patch.msgid.link/20240620132511.4291-2-elinor.montmasson@savoirfairelinux.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Related-to: commit 0fbcd8abf337 ("arm64: Prohibit instrumentation on arch_stack_walk()")
+Fixes: 680341382da5 ("riscv: add CALLER_ADDRx support")
+Signed-off-by: Andy Chiu <andy.chiu@sifive.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240613-dev-andyc-dyn-ftrace-v4-v1-1-1a538e12c01e@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl-asoc-card.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/riscv/kernel/stacktrace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-index 5f181b89838ac..f76252b3f5913 100644
---- a/sound/soc/fsl/fsl-asoc-card.c
-+++ b/sound/soc/fsl/fsl-asoc-card.c
-@@ -559,6 +559,8 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 	if (!priv)
- 		return -ENOMEM;
+diff --git a/arch/riscv/kernel/stacktrace.c b/arch/riscv/kernel/stacktrace.c
+index 528ec7cc9a622..0d3f00eb0baee 100644
+--- a/arch/riscv/kernel/stacktrace.c
++++ b/arch/riscv/kernel/stacktrace.c
+@@ -156,7 +156,7 @@ unsigned long __get_wchan(struct task_struct *task)
+ 	return pc;
+ }
  
-+	priv->pdev = pdev;
-+
- 	cpu_np = of_parse_phandle(np, "audio-cpu", 0);
- 	/* Give a chance to old DT binding */
- 	if (!cpu_np)
-@@ -781,7 +783,6 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 	}
- 
- 	/* Initialize sound card */
--	priv->pdev = pdev;
- 	priv->card.dev = &pdev->dev;
- 	priv->card.owner = THIS_MODULE;
- 	ret = snd_soc_of_parse_card_name(&priv->card, "model");
+-noinline void arch_stack_walk(stack_trace_consume_fn consume_entry, void *cookie,
++noinline noinstr void arch_stack_walk(stack_trace_consume_fn consume_entry, void *cookie,
+ 		     struct task_struct *task, struct pt_regs *regs)
+ {
+ 	walk_stackframe(task, regs, consume_entry, cookie);
 -- 
 2.43.0
 
