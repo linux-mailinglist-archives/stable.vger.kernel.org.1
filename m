@@ -1,42 +1,42 @@
-Return-Path: <stable+bounces-56304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8207491ED85
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 05:43:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6488F91ED90
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 06:00:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CA38B21FE7
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 03:43:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90E1B1C227A9
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 04:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F92101E4;
-	Tue,  2 Jul 2024 03:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CF3101E4;
+	Tue,  2 Jul 2024 04:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="XTQKTnEs"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="U6eyl5Ku"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.8])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E3A849621
-	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 03:43:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.8
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA2D372
+	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 04:00:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719891829; cv=none; b=dGhcnHsWq3RHfxRj3mr4CLRjYp8P0GK+gyT8PjwfLq4PkQmkvvH3kQiVGQv71vH1U5LBiwDmhNTmMkx5DSkRr0lH9QxKioTGH4MF0Z/r5HTVf+Z3A5IOoI9g1pFZirF4aDEzOV9UtmcVvk8b4e58pEa9+Y9zGpshYvZXeJkHed0=
+	t=1719892848; cv=none; b=qt37MFluTydjZSiS6oXsjMSykmE7lIoJnyDvAMzTDmJIkWmZbpdTaboSMVrpxzOZunfaqQ7T0Y7d4F/OtaMpQxnQF5BO0sIR97jPnimrSb1i5eLUvnwJU+CjQwyzTy5fdYeK5TRJihB0ybop1PxCw0ORXcQWc5L8Jqqep+Znirg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719891829; c=relaxed/simple;
-	bh=f3V+bNpeV1f5lEsntAD6kP/OFEO/l/mmAa2zPF9UFaA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=K1uATy1LCXS6w+QLp6H+cXWcKRve5meUsTZ+XJrqMEeht8bEPPjysKK9LwOyES8ut+Jy8nL8NWFJp4TxFI8BgiDi6QPVScWizbbqGfm4727VdrvdXqRzJ8PQe9s6hQkqpSO52r6BwxNneLiQLym4k8mW+9vkMNU925Qu0kWsfRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=XTQKTnEs; arc=none smtp.client-ip=220.197.31.8
+	s=arc-20240116; t=1719892848; c=relaxed/simple;
+	bh=bZt0T2cK/rmJ0tqgfXoo7VJSAXytJmDIL47DaqmRolg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=LsC5C7pa2Xb3YYrUAq5ofES/cO1Idf/lxYFr6VvDiPtx1TUzWOgGY7wlNwEGwsuJPhKEbP3Jvctx3dVPJSe02OHWiT5BTKMUcLCwF0Pm9WpHB/qaS8U92CBPiVU6vRzgret8hZfmXBkoO3XVYGKex5QP+MNs1TirKfs492vSqcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=U6eyl5Ku; arc=none smtp.client-ip=117.135.210.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:Subject:Date:Message-Id; bh=nb2P9AK1gd6rF/+vSd
-	a2YMisDHvhJ9FybRbhZi9FlSI=; b=XTQKTnEs64ieIKLjCYxy2QU0co3df48x9O
-	VF1/vt4ZzPY6IoHTmOQ7mP2iCkPeOzt8uqHCIbRoAwdPHxJGqbNq7U83OvRGOv1G
-	De0FTyRsVXJqLA/4z7Rr6+U8KdpMph3nkkh8a2/wIwEFqnWkZ/jB7bYKudD//hHa
-	xZQ+MqQzY=
+	s=s110527; h=From:Subject:Date:Message-Id; bh=RY36AjDXcAyFVoRr26
+	WPEHCNW7nl/sNLNFyyVSycf1A=; b=U6eyl5Ku0i2PiOUQaI/0ZL1PGq08HcKD5f
+	3EVcZxyxrQ1N041oLGofBSVOmCjN1AYYTYploJb54/1gnL/F8ua1SwTXEMsUGk0T
+	gjdbHybECo+6r1/9MQsld/Sus7jrGfRGT2PYHCYXzb3Hq4Abi2fe6aGTIcWfLSxc
+	pArrWU67c=
 Received: from hg-OptiPlex-7040.hygon.cn (unknown [118.242.3.34])
-	by gzga-smtp-mta-g1-3 (Coremail) with SMTP id _____wCnT44kd4NmwUoOAQ--.6099S2;
-	Tue, 02 Jul 2024 11:42:29 +0800 (CST)
+	by gzga-smtp-mta-g1-5 (Coremail) with SMTP id _____wDnT6FVe4NmEmgHAQ--.8225S2;
+	Tue, 02 Jul 2024 12:00:22 +0800 (CST)
 From: yangge1116@126.com
 To: stable@vger.kernel.org
 Cc: yangge1116@126.com,
@@ -45,18 +45,18 @@ Cc: yangge1116@126.com,
 	baolin.wang@linux.alibaba.com,
 	mgorman@techsingularity.net,
 	liuzixing@hygon.cn
-Subject: [PATCH 6.6.y] mm/page_alloc: Separate THP PCP into movable and non-movable categories
-Date: Tue,  2 Jul 2024 11:42:25 +0800
-Message-Id: <1719891745-2219-1-git-send-email-yangge1116@126.com>
+Subject: [PATCH 6.1.y] mm/page_alloc: Separate THP PCP into movable and non-movable categories
+Date: Tue,  2 Jul 2024 12:00:19 +0800
+Message-Id: <1719892819-2868-1-git-send-email-yangge1116@126.com>
 X-Mailer: git-send-email 2.7.4
-In-Reply-To: <2024070127-escapade-brutishly-2851@gregkh>
-References: <2024070127-escapade-brutishly-2851@gregkh>
-X-CM-TRANSID:_____wCnT44kd4NmwUoOAQ--.6099S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAFWUtF17Xw18JF1UuFWDXFb_yoWruw1rpF
-	WxGr1Sy3yjqry3Aw1xA3Wqkr1rCwnxGFsrWrW09348ZwsxJFyS9as7KF1qvFy8ZrW7AF4U
+In-Reply-To: <2024070129-movable-commend-1b2a@gregkh>
+References: <2024070129-movable-commend-1b2a@gregkh>
+X-CM-TRANSID:_____wDnT6FVe4NmEmgHAQ--.8225S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAFWUtF17Xw18JF1UuFWDXFb_yoWruw4xpF
+	WxGr1ay3yjq343Aw1xA3WqkryrC3ZxGFsrGrW09348ZwsxJFyS9as7KF1qvFy8ZrW5AF4U
 	Xr9rt3s3CF4DZ37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j53ktUUUUU=
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOgoQG2VExKiA8wAAsF
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jYxRDUUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiWRcQG2VLbGyA9QAAse
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -115,14 +115,14 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: yangge <yangge1116@126.com>
 ---
  include/linux/mmzone.h | 9 ++++-----
- mm/page_alloc.c        | 9 +++++++--
- 2 files changed, 11 insertions(+), 7 deletions(-)
+ mm/page_alloc.c        | 8 ++++++--
+ 2 files changed, 10 insertions(+), 7 deletions(-)
 
 diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 1acbc6c..e46fbca 100644
+index 3b9f4d7..93d2003 100644
 --- a/include/linux/mmzone.h
 +++ b/include/linux/mmzone.h
-@@ -664,13 +664,12 @@ enum zone_watermarks {
+@@ -552,13 +552,12 @@ enum zone_watermarks {
  };
  
  /*
@@ -141,15 +141,16 @@ index 1acbc6c..e46fbca 100644
  #define NR_PCP_THP 0
  #endif
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 6b4c30f..e99d322 100644
+index a7537da..1241226 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -519,10 +519,15 @@ static void bad_page(struct page *page, const char *reason)
+@@ -705,12 +705,16 @@ static void bad_page(struct page *page, const char *reason)
  
  static inline unsigned int order_to_pindex(int migratetype, int order)
  {
 +	bool __maybe_unused movable;
-+
+ 	int base = order;
+ 
  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
  	if (order > PAGE_ALLOC_COSTLY_ORDER) {
  		VM_BUG_ON(order != pageblock_order);
@@ -161,7 +162,7 @@ index 6b4c30f..e99d322 100644
  	}
  #else
  	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
-@@ -536,7 +541,7 @@ static inline int pindex_to_order(unsigned int pindex)
+@@ -724,7 +728,7 @@ static inline int pindex_to_order(unsigned int pindex)
  	int order = pindex / MIGRATE_PCPTYPES;
  
  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
