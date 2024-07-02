@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87BF4924540
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:20:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C626C924488
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:11:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3325F1F22B00
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:20:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43030B22C1B
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A9B1BE24E;
-	Tue,  2 Jul 2024 17:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7EF11BE22A;
+	Tue,  2 Jul 2024 17:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/yaxbSk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbWhcbv+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4BB39847;
-	Tue,  2 Jul 2024 17:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867E915218A;
+	Tue,  2 Jul 2024 17:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940789; cv=none; b=oVRERMZZXC3xaynGemrtXV9iFVyJrg3Yqr2vqYT5MhQ5LV8n+oP8e1Ryyj1UWWsPFFLPWU9HctzWTjHV4eBthpza9v6/YssNGohiSiA7DtU6AdJDC2YCsXeSvBegLxBOgyqO7KmWbxVaBdzcakU6NK6FpLz8ITuPFNC1TEF8VaE=
+	t=1719940304; cv=none; b=bOrXp6rx9azMIhiQg6a94c25forrYwkyDdWMcCtikrqe6fe94dd0fVTSoSm3raZZT8uoUZ+5xtfLHzzlsh8yMQO8+YZoJObm/7NoGMIKBcxRBEmMysICSCEIhGYeHC0eDRL02pwSCXA1f5kCKOJyLwJ+fC4i22atND0wG4v1vE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940789; c=relaxed/simple;
-	bh=WmlYWkJjDlgzDfkf/2NfeGkMBea0IDeA4aj1IRS24Q4=;
+	s=arc-20240116; t=1719940304; c=relaxed/simple;
+	bh=9jNi7HsIjNibthAe7YPe9qvt2+66VV1DHuJEqPO3lSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lcSvS8kAe8wePcRyKQ7RPfMxGX7P0bM9c8TD1O0LNQZ1MIkHxtfGJYFTuV7HGargjU5LCiNrZ7Bl2ADO2ikXhmfvPwSeZWEbeLKR2jthD7XTK9+x2sw+RrWvyiOHxsXJj1Crvz1sb/sEPX3N0wAWUbT2x8962HNB9Cx5WbQ1Gaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/yaxbSk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D225DC116B1;
-	Tue,  2 Jul 2024 17:19:48 +0000 (UTC)
+	 MIME-Version; b=gafbOys7pJ27r8znRriSHK42qilzKHlfdNCra3pKzRpErUlZHfjph0W1+My1d1+RgY6WoA1Kb/l/JYVymqjtRQDzIG0JQThS5P0zjWW1BnY/ybpPMQ4UfsB8nP/0DJhwxZn1+H1XNleb7LKxu21wUpbWrn1/o+JsxU8Aoyc6tVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbWhcbv+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3DBC116B1;
+	Tue,  2 Jul 2024 17:11:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940789;
-	bh=WmlYWkJjDlgzDfkf/2NfeGkMBea0IDeA4aj1IRS24Q4=;
+	s=korg; t=1719940304;
+	bh=9jNi7HsIjNibthAe7YPe9qvt2+66VV1DHuJEqPO3lSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z/yaxbSkyzdoN25vxkzX5OBn1uLxNoTUUGBBYGBp2ga6B+//Isoz+f9JR3amu4nag
-	 7y+nznr+XS4MGZJzQ7nQpciZw4eb/ytV4qZWpw7Ple/tOKGJ75n3uQ/lgn9Z/JRWG1
-	 Xe5KV78Hyn1LQFl+Pe5qXP9sN83sgBB2sYXuHZjU=
+	b=QbWhcbv+hUK2HYBGxLbt5Zg3K2mNXGkzRJRgp1QFS8lGhh3QIqKO6SLKWjPhngOkg
+	 +ZWkc7mveaF5KrU///oFNf3aWKeqBCLg9yWqTCrSZKG+YetN+R5IK7FF1u3YU9x4nY
+	 lgcnqDNO3kcZOyGQIYTT6qu+is2DazKhLb44FXpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Keeping <jkeeping@inmusicbrands.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Chia-Yuan Li <leo.li@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 006/163] Input: ili210x - fix ili251x_read_touch_data() return value
-Date: Tue,  2 Jul 2024 19:02:00 +0200
-Message-ID: <20240702170233.293255106@linuxfoundation.org>
+Subject: [PATCH 6.9 083/222] wifi: rtw89: download firmware with five times retry
+Date: Tue,  2 Jul 2024 19:02:01 +0200
+Message-ID: <20240702170247.150572969@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Chia-Yuan Li <leo.li@realtek.com>
 
-[ Upstream commit 9f0fad0382124e7e23b3c730fa78818c22c89c0a ]
+[ Upstream commit a9e1b0ec5bdeedcf062416af4081aa005f8bf1e7 ]
 
-The caller of this function treats all non-zero values as an error, so
-the return value of i2c_master_recv() cannot be returned directly.
+After firmware boots, it reads keys info from efuse and checks secure
+checksum, but suddenly failed to access efuse resulting in probe failure,
+and driver throws messages:
 
-This fixes touch reporting when there are more than 6 active touches.
+  rtw89_8852be 0000:03:00.0: fw security fail
+  rtw89_8852be 0000:03:00.0: download firmware fail
+  rtw89_8852be 0000:03:00.0: [ERR]fwdl 0x1E0 = 0xe2
+  rtw89_8852be 0000:03:00.0: [ERR]fwdl 0x83F0 = 0x210090
 
-Fixes: ef536abd3afd1 ("Input: ili210x - define and use chip operations structure")
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Link: https://lore.kernel.org/r/20240523085624.2295988-1-jkeeping@inmusicbrands.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Retry five times to resolve rare abnormal hardware state.
+
+Signed-off-by: Chia-Yuan Li <leo.li@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://msgid.link/20240329015251.22762-2-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/touchscreen/ili210x.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/fw.c | 27 +++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/input/touchscreen/ili210x.c b/drivers/input/touchscreen/ili210x.c
-index ad6828e4f2e2d..ae7ba0c419f5a 100644
---- a/drivers/input/touchscreen/ili210x.c
-+++ b/drivers/input/touchscreen/ili210x.c
-@@ -261,8 +261,8 @@ static int ili251x_read_touch_data(struct i2c_client *client, u8 *data)
- 	if (!error && data[0] == 2) {
- 		error = i2c_master_recv(client, data + ILI251X_DATA_SIZE1,
- 					ILI251X_DATA_SIZE2);
--		if (error >= 0 && error != ILI251X_DATA_SIZE2)
--			error = -EIO;
-+		if (error >= 0)
-+			error = error == ILI251X_DATA_SIZE2 ? 0 : -EIO;
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 185cd339c0855..6c75ebbb21caa 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -1349,13 +1349,12 @@ static void rtw89_fw_prog_cnt_dump(struct rtw89_dev *rtwdev)
+ static void rtw89_fw_dl_fail_dump(struct rtw89_dev *rtwdev)
+ {
+ 	u32 val32;
+-	u16 val16;
+ 
+ 	val32 = rtw89_read32(rtwdev, R_AX_WCPU_FW_CTRL);
+ 	rtw89_err(rtwdev, "[ERR]fwdl 0x1E0 = 0x%x\n", val32);
+ 
+-	val16 = rtw89_read16(rtwdev, R_AX_BOOT_DBG + 2);
+-	rtw89_err(rtwdev, "[ERR]fwdl 0x83F2 = 0x%x\n", val16);
++	val32 = rtw89_read32(rtwdev, R_AX_BOOT_DBG);
++	rtw89_err(rtwdev, "[ERR]fwdl 0x83F0 = 0x%x\n", val32);
+ 
+ 	rtw89_fw_prog_cnt_dump(rtwdev);
+ }
+@@ -1394,8 +1393,9 @@ static int rtw89_fw_download_suit(struct rtw89_dev *rtwdev,
+ 	return 0;
+ }
+ 
+-int rtw89_fw_download(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
+-		      bool include_bb)
++static
++int __rtw89_fw_download(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
++			bool include_bb)
+ {
+ 	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
+ 	struct rtw89_fw_info *fw_info = &rtwdev->fw;
+@@ -1433,7 +1433,7 @@ int rtw89_fw_download(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
+ 	ret = rtw89_fw_check_rdy(rtwdev, RTW89_FWDL_CHECK_FREERTOS_DONE);
+ 	if (ret) {
+ 		rtw89_warn(rtwdev, "download firmware fail\n");
+-		return ret;
++		goto fwdl_err;
  	}
  
- 	return error;
+ 	return ret;
+@@ -1443,6 +1443,21 @@ int rtw89_fw_download(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
+ 	return ret;
+ }
+ 
++int rtw89_fw_download(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
++		      bool include_bb)
++{
++	int retry;
++	int ret;
++
++	for (retry = 0; retry < 5; retry++) {
++		ret = __rtw89_fw_download(rtwdev, type, include_bb);
++		if (!ret)
++			return 0;
++	}
++
++	return ret;
++}
++
+ int rtw89_wait_firmware_completion(struct rtw89_dev *rtwdev)
+ {
+ 	struct rtw89_fw_info *fw = &rtwdev->fw;
 -- 
 2.43.0
 
