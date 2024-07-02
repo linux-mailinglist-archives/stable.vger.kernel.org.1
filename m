@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-56774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9739245E7
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:28:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8E3F92457B
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:22:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D96131F2197A
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:28:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8440B1F21EBF
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03A91BE863;
-	Tue,  2 Jul 2024 17:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF64016B394;
+	Tue,  2 Jul 2024 17:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGzu6nJ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YySvBuNW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2E51514DC;
-	Tue,  2 Jul 2024 17:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0F915218A;
+	Tue,  2 Jul 2024 17:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941314; cv=none; b=BLBD/HU+C7PREQb1fXUao5//TG8ooRD4633huqVPX615DDCZ+lUeQQdwEsheHa460y6u+1Ujfne+dIFatImGlgOuoMSfFRNMuuXLyu2D7A2o7QzIb17KIMDwmCGfye4bpgOuDw1HfT7Vrw6kkCj81unnM0HAtNRsmU629uTN9P8=
+	t=1719940970; cv=none; b=DNl4T8ukJmESsTfW5jQlStRUXcfCYvBovEGsWA0PjL+4kzxr7zrIJjkBtP/jxynOWH7dm+0yomxopAhlhbHQn7zIX4OrPFQjJ995qWuOrz6bPxUW+4fvngAhmrdC2HpGGezXLlA0BuVj8E9bSuUdwuGsHI6snX7C7gIvt8xxhbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941314; c=relaxed/simple;
-	bh=b8WKXVz+A5evtNU0RmLy2PcjkNI/fHyWJ14VR/pDUVs=;
+	s=arc-20240116; t=1719940970; c=relaxed/simple;
+	bh=nLcQdP7YjK8UaiXVjiCFKgCjYRGe3bd2ofxMHXauCqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tu5UMUrvdKznE/CtZSQv9Y71C8ZyhrvKb0rRZpGAWyX+1fFp7gpS9ww2qJFg6Pf2hC0hhIID8SK7sOrOe7RCC/nXkw7t6dGFOL1MYDmzvgfM4inENU/uK4P+Kj1AnUVdytNOxwepIziMkdooU1ELcjSk49Gs4MjSgffLweiOslg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGzu6nJ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6F3C116B1;
-	Tue,  2 Jul 2024 17:28:33 +0000 (UTC)
+	 MIME-Version; b=FJJPzappLA8gMsrBgQ5dPUADLnxJtPf25lr6ZRXsAo/tRyW0r7HqGMDQYRM110yUmcRQyqTbkyyyEsc4tQ8JfJK7Sf+2k3POsMeem6lKV/dmVuNnFeofmsblUsdYmPANnm6R6K92RCRKQ30D9QU8YzdFxcg7XkEG0lUNlb3jeuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YySvBuNW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0FAC116B1;
+	Tue,  2 Jul 2024 17:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941314;
-	bh=b8WKXVz+A5evtNU0RmLy2PcjkNI/fHyWJ14VR/pDUVs=;
+	s=korg; t=1719940970;
+	bh=nLcQdP7YjK8UaiXVjiCFKgCjYRGe3bd2ofxMHXauCqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kGzu6nJ+Of8W0xJX2x0UqLeCs5tCn7FjxPyPlm8Efbk9meo/1rko8YLSYtzQM3+fV
-	 EbEkQ8KgvAR4AWJ0ZYaTJZ2NuuleS8AOw9zlOm0aefheAkj4y/CIDUCFItIetRHwkO
-	 wZJkhnxVIpuYXF8Rsl64TxFuOU2LwlCivYFSDfiw=
+	b=YySvBuNWuXORTBysGaa/2tznKuI/rrAR+5uRkATuG3BTD9l6vv8L6JHre9Sino/cu
+	 P4QfPociDNKHwE5gIsnD9nbaQ2smxBaEbxzSxukwZHOqZ4GysGgb8L5JTdQZjruenv
+	 0fVZhgQnwbAO1Xw2jmsgD8FrHaFQdkwf7FQTLX/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Narasimhan V <Narasimhan.V@amd.com>,
-	Jan Beulich <jbeulich@suse.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 003/128] x86/mm/numa: Use NUMA_NO_NODE when calling memblock_set_node()
+Subject: [PATCH 6.6 090/163] iio: xilinx-ams: Dont include ams_ctrl_channels in scan_mask
 Date: Tue,  2 Jul 2024 19:03:24 +0200
-Message-ID: <20240702170226.364430407@linuxfoundation.org>
+Message-ID: <20240702170236.468812653@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Beulich <jbeulich@suse.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 3ac36aa7307363b7247ccb6f6a804e11496b2b36 ]
+[ Upstream commit 89b898c627a49b978a4c323ea6856eacfc21f6ba ]
 
-memblock_set_node() warns about using MAX_NUMNODES, see
+ams_enable_channel_sequence constructs a "scan_mask" for all the PS and
+PL channels. This works out fine, since scan_index for these channels is
+less than 64. However, it also includes the ams_ctrl_channels, where
+scan_index is greater than 64, triggering undefined behavior. Since we
+don't need these channels anyway, just exclude them.
 
-  e0eec24e2e19 ("memblock: make memblock_set_node() also warn about use of MAX_NUMNODES")
-
-for details.
-
-Reported-by: Narasimhan V <Narasimhan.V@amd.com>
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Cc: stable@vger.kernel.org
-[bp: commit message]
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/r/20240603141005.23261-1-bp@kernel.org
-Link: https://lore.kernel.org/r/abadb736-a239-49e4-ab42-ace7acdd4278@suse.com
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Link: https://lore.kernel.org/r/20240311162800.11074-1-sean.anderson@linux.dev
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/numa.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iio/adc/xilinx-ams.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index c7fa5396c0f05..c281326baa144 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -523,7 +523,7 @@ static void __init numa_clear_kernel_node_hotplug(void)
- 	for_each_reserved_mem_region(mb_region) {
- 		int nid = memblock_get_region_node(mb_region);
+diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
+index f0b71a1220e02..f52abf759260f 100644
+--- a/drivers/iio/adc/xilinx-ams.c
++++ b/drivers/iio/adc/xilinx-ams.c
+@@ -414,8 +414,12 @@ static void ams_enable_channel_sequence(struct iio_dev *indio_dev)
  
--		if (nid != MAX_NUMNODES)
-+		if (nid != NUMA_NO_NODE)
- 			node_set(nid, reserved_nodemask);
- 	}
+ 	/* Run calibration of PS & PL as part of the sequence */
+ 	scan_mask = BIT(0) | BIT(AMS_PS_SEQ_MAX);
+-	for (i = 0; i < indio_dev->num_channels; i++)
+-		scan_mask |= BIT_ULL(indio_dev->channels[i].scan_index);
++	for (i = 0; i < indio_dev->num_channels; i++) {
++		const struct iio_chan_spec *chan = &indio_dev->channels[i];
++
++		if (chan->scan_index < AMS_CTRL_SEQ_BASE)
++			scan_mask |= BIT_ULL(chan->scan_index);
++	}
  
-@@ -643,9 +643,9 @@ static int __init numa_init(int (*init_func)(void))
- 	nodes_clear(node_online_map);
- 	memset(&numa_meminfo, 0, sizeof(numa_meminfo));
- 	WARN_ON(memblock_set_node(0, ULLONG_MAX, &memblock.memory,
--				  MAX_NUMNODES));
-+				  NUMA_NO_NODE));
- 	WARN_ON(memblock_set_node(0, ULLONG_MAX, &memblock.reserved,
--				  MAX_NUMNODES));
-+				  NUMA_NO_NODE));
- 	/* In case that parsing SRAT failed. */
- 	WARN_ON(memblock_clear_hotplug(0, ULLONG_MAX));
- 	numa_reset_distance();
+ 	if (ams->ps_base) {
+ 		/* put sysmon in a soft reset to change the sequence */
 -- 
 2.43.0
 
