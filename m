@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-56754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915909245D3
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:27:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 027169245FF
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C31811C21261
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:27:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B289C287082
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 027A01BE24F;
-	Tue,  2 Jul 2024 17:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F153C1BE251;
+	Tue,  2 Jul 2024 17:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5GNL9Vj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j0lemFa1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5AAC1514DC;
-	Tue,  2 Jul 2024 17:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6A21514DC;
+	Tue,  2 Jul 2024 17:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941245; cv=none; b=pQvzdJBOyyTjWTVvI2GjA5hx0O6blhqR42DJyLCQ6dsJPe4vHHVah2miUTaF+J53apwUVyULaqPqhm2lQJAoxKKeZwy+jLb1DZi4hxxtl6wLU+zFxbOOwFjI9B6LRSQq55N+3m2T8MAQditupNb6gDkFkH/mwCvg3i/p4fWBHLY=
+	t=1719941386; cv=none; b=ES8gxEcJSOMgh/ffHhbUVk/e+GSt96BPHysJ9VJWLwoLF2OOqSzQlIyWUqCuM1GTlrvcqahwKwIey32gEtYQRpec87M5ZIyzIFilrEBF6snRRos4UubE6evQYabvemxm5bCg1wa3pM5NSx3n5ODVMuISWGZk1VsAjsWL23BkI08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941245; c=relaxed/simple;
-	bh=Br+rm8p1DuuLhlXC0KU9yVkuWFxtrQFxusn9uT2TfX4=;
+	s=arc-20240116; t=1719941386; c=relaxed/simple;
+	bh=OjiZu7I9NU/c4fH945zFo2yj6m/p5Pf9Jhg8DfflOpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n1p0SkzzHMfr3aa19H6DtbgQseZ9EsKZdccs4ki4E30XIeUslxqB/uf894FSllG9xkUeHiBQNTnCgp/uVcJeGUmx8UbGVhX1G2tpEqyKwKjQ2lMDMNO2qgGlVysvgJu889Vg0Vm65cKAJRGUt7GHE8+DmDMc4OwptflIzpSThq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5GNL9Vj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F8EC116B1;
-	Tue,  2 Jul 2024 17:27:24 +0000 (UTC)
+	 MIME-Version; b=PfZE2/wi2lR1G7cEHhUbLMU431lIstaBDdHKFFubT9njKLsCa72iYrAQkGoEk3/ctY02U/q5uhoYnt7oz/4EnO4PMxUqgpLi+J0BAHbyT9qznoKLetQabH2c+O37BIfBYetqdlwULXn9f+zBy8NCUTxSXAq2DdCELzS1ii7KyMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j0lemFa1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB33C116B1;
+	Tue,  2 Jul 2024 17:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941245;
-	bh=Br+rm8p1DuuLhlXC0KU9yVkuWFxtrQFxusn9uT2TfX4=;
+	s=korg; t=1719941386;
+	bh=OjiZu7I9NU/c4fH945zFo2yj6m/p5Pf9Jhg8DfflOpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I5GNL9VjHCBOrB2bq5Py9dI0in+UIeeHjZjdX7Ixmh0ZBKe2iTFQorl2OYykZwKm8
-	 5kMuEmbJkXAnwrC/ejTKSdsd16b9e9vSo6zUwOH5SJrqbB1Q+rFIIV2jF+Fp+yh98B
-	 AZq6lD92R/TFrdtp0lSSFqpAP7D2x7CK6YLrzr9Q=
+	b=j0lemFa1uoH/UdJ/M84tIcsE6ZC/KoGM3jCUCIybtOX5LLdrEMsZ+tiA74VFMuWI5
+	 3ClsjepQZYTBJLUKRWbErmafKCFY7MkaBpBYOVzTVAjDPYnTt8YJ4c4MBweun8bBP9
+	 z04NLp0wlWLK/3RdP+Kvmr6+R/YQWM7JqUCjscUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Dave Airlie <airlied@redhat.com>
-Subject: [PATCH 6.6 135/163] drm/drm_file: Fix pid refcounting race
+	Joachim Vandersmissen <git@jvdsn.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 048/128] crypto: ecdh - explicitly zeroize private_key
 Date: Tue,  2 Jul 2024 19:04:09 +0200
-Message-ID: <20240702170238.163549673@linuxfoundation.org>
+Message-ID: <20240702170228.051727350@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Joachim Vandersmissen <git@jvdsn.com>
 
-commit 4f2a129b33a2054e62273edd5a051c34c08d96e9 upstream.
+[ Upstream commit 73e5984e540a76a2ee1868b91590c922da8c24c9 ]
 
-<maarten.lankhorst@linux.intel.com>, Maxime Ripard
-<mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>
+private_key is overwritten with the key parameter passed in by the
+caller (if present), or alternatively a newly generated private key.
+However, it is possible that the caller provides a key (or the newly
+generated key) which is shorter than the previous key. In that
+scenario, some key material from the previous key would not be
+overwritten. The easiest solution is to explicitly zeroize the entire
+private_key array first.
 
-filp->pid is supposed to be a refcounted pointer; however, before this
-patch, drm_file_update_pid() only increments the refcount of a struct
-pid after storing a pointer to it in filp->pid and dropping the
-dev->filelist_mutex, making the following race possible:
+Note that this patch slightly changes the behavior of this function:
+previously, if the ecc_gen_privkey failed, the old private_key would
+remain. Now, the private_key is always zeroized. This behavior is
+consistent with the case where params.key is set and ecc_is_key_valid
+fails.
 
-process A               process B
-=========               =========
-                        begin drm_file_update_pid
-                        mutex_lock(&dev->filelist_mutex)
-                        rcu_replace_pointer(filp->pid, <pid B>, 1)
-                        mutex_unlock(&dev->filelist_mutex)
-begin drm_file_update_pid
-mutex_lock(&dev->filelist_mutex)
-rcu_replace_pointer(filp->pid, <pid A>, 1)
-mutex_unlock(&dev->filelist_mutex)
-get_pid(<pid A>)
-synchronize_rcu()
-put_pid(<pid B>)   *** pid B reaches refcount 0 and is freed here ***
-                        get_pid(<pid B>)   *** UAF ***
-                        synchronize_rcu()
-                        put_pid(<pid A>)
-
-As far as I know, this race can only occur with CONFIG_PREEMPT_RCU=y
-because it requires RCU to detect a quiescent state in code that is not
-explicitly calling into the scheduler.
-
-This race leads to use-after-free of a "struct pid".
-It is probably somewhat hard to hit because process A has to pass
-through a synchronize_rcu() operation while process B is between
-mutex_unlock() and get_pid().
-
-Fix it by ensuring that by the time a pointer to the current task's pid
-is stored in the file, an extra reference to the pid has been taken.
-
-This fix also removes the condition for synchronize_rcu(); I think
-that optimization is unnecessary complexity, since in that case we
-would usually have bailed out on the lockless check above.
-
-Fixes: 1c7a387ffef8 ("drm: Update file owner during use")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Joachim Vandersmissen <git@jvdsn.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_file.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ crypto/ecdh.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/drm_file.c
-+++ b/drivers/gpu/drm/drm_file.c
-@@ -529,14 +529,12 @@ void drm_file_update_pid(struct drm_file
+diff --git a/crypto/ecdh.c b/crypto/ecdh.c
+index 80afee3234fbe..3049f147e0117 100644
+--- a/crypto/ecdh.c
++++ b/crypto/ecdh.c
+@@ -33,6 +33,8 @@ static int ecdh_set_secret(struct crypto_kpp *tfm, const void *buf,
+ 	    params.key_size > sizeof(u64) * ctx->ndigits)
+ 		return -EINVAL;
  
- 	dev = filp->minor->dev;
- 	mutex_lock(&dev->filelist_mutex);
-+	get_pid(pid);
- 	old = rcu_replace_pointer(filp->pid, pid, 1);
- 	mutex_unlock(&dev->filelist_mutex);
- 
--	if (pid != old) {
--		get_pid(pid);
--		synchronize_rcu();
--		put_pid(old);
--	}
-+	synchronize_rcu();
-+	put_pid(old);
- }
- 
- /**
++	memset(ctx->private_key, 0, sizeof(ctx->private_key));
++
+ 	if (!params.key || !params.key_size)
+ 		return ecc_gen_privkey(ctx->curve_id, ctx->ndigits,
+ 				       ctx->private_key);
+-- 
+2.43.0
+
 
 
 
