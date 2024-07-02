@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-56562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9E979244F2
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:16:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 783379245F7
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BC4B2890B1
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:16:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02E78B27768
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138C21BE873;
-	Tue,  2 Jul 2024 17:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2A31BE842;
+	Tue,  2 Jul 2024 17:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxhOugz5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WxFsPzF5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21C71BE223;
-	Tue,  2 Jul 2024 17:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3CF1BE22B;
+	Tue,  2 Jul 2024 17:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940596; cv=none; b=f+d99/lGgtzPmNtdvVpU6+comqoKpFTljl1Dd8mpPqhP3VIuKHr75gIFh4QWjY2tOlqXfBnWQDlapyZ/2hp9p4wUKPbe4R4KGkTRXP8GGMT3UnU0bTvKBp574Vj9MyE7sA7z1kJVfCtB0p6ztNP9y6prq2/O1UZJrsL2582Lk7I=
+	t=1719941356; cv=none; b=J6jdio5w+hji0z9Zqscabw7uKAMR5/eeahG0Z1owfTTLLUq0md+GMQhN/eJqMt4TiHQrB8da1NkURK2rx4h9Ys6OIJlv8W7XmiS4Iqvq62RRcwZ+Iymsrn22WzGX9IkxQJOliAfHKixGKOnmSyK3WmMoAyqBqiUB6MPaDz1McaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940596; c=relaxed/simple;
-	bh=IyA/ubz4lxv8kiYGpVVLYhCndhyapOZNaQ9m78NV7Rw=;
+	s=arc-20240116; t=1719941356; c=relaxed/simple;
+	bh=64zkpMYtgzeZMTduHgPJpBf6YvLaGylHb4msWL4CqfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t1fo2cLK+b+ZCwzwBm6P+Gcc5cep833zosecZYITaKmR6yCFCprAgnQwqZKoqMYT9IKwtg5ClLhszJJ3Vs+hA+u75DXoK2xZzlkMHiMbHj9cQHkulX7FP+MDIeIR+fhSwebbKE/S08Ml6GvfYjZLFnocfNWhKegjpD6s1mGYkt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxhOugz5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48AEDC116B1;
-	Tue,  2 Jul 2024 17:16:36 +0000 (UTC)
+	 MIME-Version; b=WzfZBLc+QsXwToLm6MKEPVyoSSSDDTXljPElBa56Y7nk32NZR2t9NLl8gfe05bezE0GIUsiwhyOsWhcOrJ58oeaKXKNkaNQpF7aNwlLMmEcwT4bVCnQ/i94jwM3nVr1HzT5GJFFLTytn1zHauoHwgG0dECfnvgbWfr01J5vaPFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WxFsPzF5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7F8C116B1;
+	Tue,  2 Jul 2024 17:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940596;
-	bh=IyA/ubz4lxv8kiYGpVVLYhCndhyapOZNaQ9m78NV7Rw=;
+	s=korg; t=1719941356;
+	bh=64zkpMYtgzeZMTduHgPJpBf6YvLaGylHb4msWL4CqfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dxhOugz5JLDBF20tQvp5brmtDXJtiMMtHWj62kFu1lpN9M3vaGgEfRsbI95jbU4CY
-	 B7OhE5GNM7exYyJMrRUhuSvSqld1hUsb3MAhhw34ua7RjR3HBRT82K/XJXRyJ5K7Ls
-	 k3QReWQAEslWgPl/SGDF3aZoH7rDObiNm+sWeevU=
+	b=WxFsPzF5fbrPUddURLVY3zQbJzStTLdOqOgyNE92eyXwx2kAS+ieJ3fEILH1pexHv
+	 KPjYurfghiRwUDceq6ORVcux6xZUkRSRMFHP4TT8dTNhgg2uFcCpvAtcmKQhMKIURJ
+	 0UD15Uaefsbpu96hGZGiIK+fkhS+0eHky/zj3gm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	yangge <yangge1116@126.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <21cnbao@gmail.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 202/222] mm/page_alloc: Separate THP PCP into movable and non-movable categories
-Date: Tue,  2 Jul 2024 19:04:00 +0200
-Message-ID: <20240702170251.706841578@linuxfoundation.org>
+	Uros Bizjak <ubizjak@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 040/128] x86/fpu: Fix AMD X86_BUG_FXSAVE_LEAK fixup
+Date: Tue,  2 Jul 2024 19:04:01 +0200
+Message-ID: <20240702170227.752131524@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,114 +65,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: yangge <yangge1116@126.com>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-commit bf14ed81f571f8dba31cd72ab2e50fbcc877cc31 upstream.
+[ Upstream commit 5d31174f3c8c465d9dbe88f6b9d1fe5716f44981 ]
 
-Since commit 5d0a661d808f ("mm/page_alloc: use only one PCP list for
-THP-sized allocations") no longer differentiates the migration type of
-pages in THP-sized PCP list, it's possible that non-movable allocation
-requests may get a CMA page from the list, in some cases, it's not
-acceptable.
+The assembly snippet in restore_fpregs_from_fpstate() that implements
+X86_BUG_FXSAVE_LEAK fixup loads the value from a random variable,
+preferably the one that is already in the L1 cache.
 
-If a large number of CMA memory are configured in system (for example, the
-CMA memory accounts for 50% of the system memory), starting a virtual
-machine with device passthrough will get stuck.  During starting the
-virtual machine, it will call pin_user_pages_remote(..., FOLL_LONGTERM,
-...) to pin memory.  Normally if a page is present and in CMA area,
-pin_user_pages_remote() will migrate the page from CMA area to non-CMA
-area because of FOLL_LONGTERM flag.  But if non-movable allocation
-requests return CMA memory, migrate_longterm_unpinnable_pages() will
-migrate a CMA page to another CMA page, which will fail to pass the check
-in check_and_migrate_movable_pages() and cause migration endless.
+However, the access to fpinit_state via *fpstate pointer is not
+implemented correctly. The "m" asm constraint requires dereferenced
+pointer variable, otherwise the compiler just reloads the value
+via temporary stack slot. The current asm code reflects this:
 
-Call trace:
-pin_user_pages_remote
---__gup_longterm_locked // endless loops in this function
-----_get_user_pages_locked
-----check_and_migrate_movable_pages
-------migrate_longterm_unpinnable_pages
---------alloc_migration_target
+     mov    %rdi,(%rsp)
+     ...
+     fildl  (%rsp)
 
-This problem will also have a negative impact on CMA itself.  For example,
-when CMA is borrowed by THP, and we need to reclaim it through cma_alloc()
-or dma_alloc_coherent(), we must move those pages out to ensure CMA's
-users can retrieve that contigous memory.  Currently, CMA's memory is
-occupied by non-movable pages, meaning we can't relocate them.  As a
-result, cma_alloc() is more likely to fail.
+With dereferenced pointer variable, the code does what the
+comment above the asm snippet says:
 
-To fix the problem above, we add one PCP list for THP, which will not
-introduce a new cacheline for struct per_cpu_pages.  THP will have 2 PCP
-lists, one PCP list is used by MOVABLE allocation, and the other PCP list
-is used by UNMOVABLE allocation.  MOVABLE allocation contains GPF_MOVABLE,
-and UNMOVABLE allocation contains GFP_UNMOVABLE and GFP_RECLAIMABLE.
+     fildl  (%rdi)
 
-Link: https://lkml.kernel.org/r/1718845190-4456-1-git-send-email-yangge1116@126.com
-Fixes: 5d0a661d808f ("mm/page_alloc: use only one PCP list for THP-sized allocations")
-Signed-off-by: yangge <yangge1116@126.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <21cnbao@gmail.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Also, remove the pointless %P operand modifier. The modifier is
+ineffective on non-symbolic references - it was used to prevent
+%rip-relative addresses in .altinstr sections, but FILDL in the
+.text section can use %rip-relative addresses without problems.
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20240315081849.5187-1-ubizjak@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mmzone.h |    9 ++++-----
- mm/page_alloc.c        |    9 +++++++--
- 2 files changed, 11 insertions(+), 7 deletions(-)
+ arch/x86/kernel/fpu/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -651,13 +651,12 @@ enum zone_watermarks {
- };
- 
- /*
-- * One per migratetype for each PAGE_ALLOC_COSTLY_ORDER. One additional list
-- * for THP which will usually be GFP_MOVABLE. Even if it is another type,
-- * it should not contribute to serious fragmentation causing THP allocation
-- * failures.
-+ * One per migratetype for each PAGE_ALLOC_COSTLY_ORDER. Two additional lists
-+ * are added for THP. One PCP list is used by GPF_MOVABLE, and the other PCP list
-+ * is used by GFP_UNMOVABLE and GFP_RECLAIMABLE.
-  */
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--#define NR_PCP_THP 1
-+#define NR_PCP_THP 2
- #else
- #define NR_PCP_THP 0
- #endif
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -521,10 +521,15 @@ out:
- 
- static inline unsigned int order_to_pindex(int migratetype, int order)
- {
-+	bool __maybe_unused movable;
-+
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 	if (order > PAGE_ALLOC_COSTLY_ORDER) {
- 		VM_BUG_ON(order != pageblock_order);
--		return NR_LOWORDER_PCP_LISTS;
-+
-+		movable = migratetype == MIGRATE_MOVABLE;
-+
-+		return NR_LOWORDER_PCP_LISTS + movable;
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index 1d190761d00fd..f1446f532b17b 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -145,8 +145,8 @@ void restore_fpregs_from_fpstate(struct fpstate *fpstate, u64 mask)
+ 		asm volatile(
+ 			"fnclex\n\t"
+ 			"emms\n\t"
+-			"fildl %P[addr]"	/* set F?P to defined value */
+-			: : [addr] "m" (fpstate));
++			"fildl %[addr]"	/* set F?P to defined value */
++			: : [addr] "m" (*fpstate));
  	}
- #else
- 	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
-@@ -538,7 +543,7 @@ static inline int pindex_to_order(unsign
- 	int order = pindex / MIGRATE_PCPTYPES;
  
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--	if (pindex == NR_LOWORDER_PCP_LISTS)
-+	if (pindex >= NR_LOWORDER_PCP_LISTS)
- 		order = pageblock_order;
- #else
- 	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
+ 	if (use_xsave()) {
+-- 
+2.43.0
+
 
 
 
