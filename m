@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-56757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D7F09245D6
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:27:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4220F9244CB
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:15:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 194721F2241A
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:27:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73CA31C21EE1
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67E11BE842;
-	Tue,  2 Jul 2024 17:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A501BE22B;
+	Tue,  2 Jul 2024 17:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPQahCjF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXgj5scq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F4F1BE226;
-	Tue,  2 Jul 2024 17:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961CE1BE22F;
+	Tue,  2 Jul 2024 17:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941255; cv=none; b=BQuAPw1EzBdI3NjMgFeFsmhwbZtiKgSAMeTq3d5nBA7gtXJGnhQ4ihX0Ae2Cv4VwAFGTBrdwc5k352TmqOy+VZWB15t5Z9dNJnpQ8U6yj4SKOyNYPXGNmQ6jjY1SImjQG0+Lw5SNXxFoqxKhAZCmCYh/FLDaPKGcrJy8IRY05Jk=
+	t=1719940504; cv=none; b=YYxIL9EGoM/7xgdSYHp1qMN6MCSBaQ1UwP6+65RbPiT8mhY51AzK/7HzBWxCzuw4sSq/M1xmNY5Oq1wHN+zfjbV1ResKsXdlC/kTNWyLqJ2T+xs1IaIUQsgP6t46UpAdaXZ63RWK2ZhAUS7I52mJOTwb2FfbBdjL50GRvA8dAWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941255; c=relaxed/simple;
-	bh=mGVfF0XpzDfvuScifMx6i9u9Hks/dqBqgwdVjAcaowc=;
+	s=arc-20240116; t=1719940504; c=relaxed/simple;
+	bh=vaUmNJOy/RcA2KrPfBX+G73YKSsbe49oWbjYVYKkga0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mcjBJ3BPkFkaG5uPtDcHX3pFnGZGx+99PktEVpqHu4I6HFBLXbK2LPR3KV9QXIcKv0BLb4ISGwBhszmEInogsBDKKsZr9aJL1LAqFQPA8goh3JgD5yvSt8Z+h16LRDXL8AsqdsXS14W6OQEVHIGquGGd2GeQkc0ETqFyMNi/RgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPQahCjF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCDD9C116B1;
-	Tue,  2 Jul 2024 17:27:34 +0000 (UTC)
+	 MIME-Version; b=IAfF9//4NI3ER/BEOD5G+tfK6DfAYjGcD9TrBZ/y1NJieC2e8K6wGWBdn3h3FqJiVU7XiLePlBO5nzt4B8+O9shyYcyfYxRRy0XF9KWOSH049uQAV7PrRh3F+1i1FT5iM2CWRNuLxFe0dxBdI0RsbbLjs1wAEUiVry9Tih6bUiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXgj5scq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F835C4AF0A;
+	Tue,  2 Jul 2024 17:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941255;
-	bh=mGVfF0XpzDfvuScifMx6i9u9Hks/dqBqgwdVjAcaowc=;
+	s=korg; t=1719940504;
+	bh=vaUmNJOy/RcA2KrPfBX+G73YKSsbe49oWbjYVYKkga0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EPQahCjFu7NUQd+OkAlE8Cs3CvY+8MEhx0MeFDCJKtGRMxz+m8LLwm8UN9MW4NjLA
-	 j/SiYTj3bNXlaWTEiF16buqP+ed52dbHO4JNrLgaJ9okRyRkFmWI0SBLj4HI/Z5Y6a
-	 Y0t+a580j5xMw7m3TaXEg5s93li9og1D8HzVMDok=
+	b=uXgj5scqnYoopRdtJOXoGMydnzFCZNfEg0OX5ikwgBOxPtet9pwg6dt6CX03fyc3l
+	 3lZatELpusaKj01LlrgFWmkcsf9D9fycDj+wqiqRJP/gyeHc4KOTyfIgI9Bmu0+MHD
+	 ll5mYgL+QRFFMhMzyB7lLBTu7oPAV60RsWlKLj1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
-	Huang-Huang Bao <i@eh5.me>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 011/128] pinctrl: rockchip: fix pinmux reset in rockchip_pmx_set
+	Diederik de Haas <didi.debian@cknow.org>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.9 174/222] kbuild: Install dtb files as 0644 in Makefile.dtbinst
 Date: Tue,  2 Jul 2024 19:03:32 +0200
-Message-ID: <20240702170226.661725036@linuxfoundation.org>
+Message-ID: <20240702170250.627869282@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang-Huang Bao <i@eh5.me>
+From: Dragan Simic <dsimic@manjaro.org>
 
-[ Upstream commit 4ea4d4808e342ddf89ba24b93ffa2057005aaced ]
+commit 9cc5f3bf63aa98bd7cc7ce8a8599077fde13283e upstream.
 
-rockchip_pmx_set reset all pinmuxs in group to 0 in the case of error,
-add missing bank data retrieval in that code to avoid setting mux on
-unexpected pins.
+The compiled dtb files aren't executable, so install them with 0644 as their
+permission mode, instead of defaulting to 0755 for the permission mode and
+installing them with the executable bits set.
 
-Fixes: 14797189b35e ("pinctrl: rockchip: add return value to rockchip_set_mux")
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Huang-Huang Bao <i@eh5.me>
-Link: https://lore.kernel.org/r/20240606125755.53778-5-i@eh5.me
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Some Linux distributions, including Debian, [1][2][3] already include fixes
+in their kernel package build recipes to change the dtb file permissions to
+0644 in their kernel packages.  These changes, when additionally propagated
+into the long-term kernel versions, will allow such distributions to remove
+their downstream fixes.
+
+[1] https://salsa.debian.org/kernel-team/linux/-/merge_requests/642
+[2] https://salsa.debian.org/kernel-team/linux/-/merge_requests/749
+[3] https://salsa.debian.org/kernel-team/linux/-/blob/debian/6.8.12-1/debian/rules.real#L193
+
+Cc: Diederik de Haas <didi.debian@cknow.org>
+Cc: <stable@vger.kernel.org>
+Fixes: aefd80307a05 ("kbuild: refactor Makefile.dtbinst more")
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-rockchip.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ scripts/Makefile.dtbinst |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
-index 7a437ae674b76..d26682f21ad1e 100644
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -2752,8 +2752,10 @@ static int rockchip_pmx_set(struct pinctrl_dev *pctldev, unsigned selector,
+--- a/scripts/Makefile.dtbinst
++++ b/scripts/Makefile.dtbinst
+@@ -17,7 +17,7 @@ include $(srctree)/scripts/Kbuild.includ
+ dst := $(INSTALL_DTBS_PATH)
  
- 	if (ret) {
- 		/* revert the already done pin settings */
--		for (cnt--; cnt >= 0; cnt--)
-+		for (cnt--; cnt >= 0; cnt--) {
-+			bank = pin_to_bank(info, pins[cnt]);
- 			rockchip_set_mux(bank, pins[cnt] - bank->pin_base, 0);
-+		}
+ quiet_cmd_dtb_install = INSTALL $@
+-      cmd_dtb_install = install -D $< $@
++      cmd_dtb_install = install -D -m 0644 $< $@
  
- 		return ret;
- 	}
--- 
-2.43.0
-
+ $(dst)/%: $(obj)/%
+ 	$(call cmd,dtb_install)
 
 
 
