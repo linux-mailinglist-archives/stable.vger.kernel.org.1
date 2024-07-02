@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-56678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E86092457F
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:23:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED7879245EE
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFA892825DB
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:23:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99D111F2294E
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7963D1BE222;
-	Tue,  2 Jul 2024 17:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FC21BF30F;
+	Tue,  2 Jul 2024 17:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+wt2ROo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMgPC67S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397001BE22B;
-	Tue,  2 Jul 2024 17:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C091BE873;
+	Tue,  2 Jul 2024 17:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940987; cv=none; b=u2fUr51LY/Slhb6hC/j0IIImsVCl3N5yIhKdETF2B/z4QUCBbzjHId9K0bboYPr7nx2aGPqt5SMRbfdqAzqEKrofTTXNGmozI2HyS4pW+iyWXEQCXnkGnjBB1NmnV7FVfGcVQy08822hHw7/JBpXL7vNCUsPLJ0SCr+WnA3bRE0=
+	t=1719941331; cv=none; b=D3qA6cUwhgLS1QkGjHvf3P9fQnRAitzfFuS9owfNolcVVlea/B6tv8CyRriVGP9R9lBI9F67kUV+tOge6ZnoqBu7GlIxe+3o2+tQavnlzMeQXojtBeSQDiWfBLF3GuxC1t8PHD0B4SmbyiUTPa8CklLIgCKIMIwY8JPsaehC83M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940987; c=relaxed/simple;
-	bh=GXd/O8pMvX41qJeO3Trh/MiSOSIEKUY4O6+CDre+na8=;
+	s=arc-20240116; t=1719941331; c=relaxed/simple;
+	bh=ZXjEVqn8tKZx+jqWX004fk3GIZijEFSTKU52b6dq4zU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W3CVxjBLmsOO//EbkjioNl71aOiBV67Xw/BpGRyCZgxgZuXFWFNGv9AgNDOs+V6rS8MC70fnVrrJCnxsjEfrGYNiZZgD9rMUCCr/bptwLuu/ofT7MYy9Q5ZanvdfPO6cUKflX+LplkJDpQCp1Xxnf+xR47RFdczvUS26HXj4Dak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+wt2ROo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F8AC4AF0D;
-	Tue,  2 Jul 2024 17:23:06 +0000 (UTC)
+	 MIME-Version; b=QU+0utDhYG16PNJVr1wuBPwKsIZnE0gymCEp1TSgrTqJmkEb0XJRXmTE8321loogI3lRX/t0fkPB8x1b9uWsJ/SbuleQ4ui5KlEwklgUpuml3df6faXbJGNp2LBGPX3Grpr67kt7a2aYQqVD0TcUvkwOEtUKZ7/uB2pq7IgXzck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMgPC67S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92177C4AF0C;
+	Tue,  2 Jul 2024 17:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940987;
-	bh=GXd/O8pMvX41qJeO3Trh/MiSOSIEKUY4O6+CDre+na8=;
+	s=korg; t=1719941331;
+	bh=ZXjEVqn8tKZx+jqWX004fk3GIZijEFSTKU52b6dq4zU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1+wt2ROosX+/TcZuOyAmzcAXaRg/W3D37HuE8JXZvG1wnFPLuKVswuSO8jOfdPdZa
-	 JTjZiF/rIi8sZSbmpgmw7x6OVmtFc2C9C9sWNriL7HOdNPY4hlBmBric1c9tbSumTF
-	 g+a3fUJs3AUvC7aVn0iZXVH8vI2dqrlegteNvlMk=
+	b=XMgPC67SRtj76Q047kRZeA9mUEFxMxehSa8AxYrEyabzwAlcS9d3TESj5fX9VailB
+	 A6E6slGTh79FIggsaFb/dbpJUGZOjk4vw2MJx53lCLaS240sENYTqeB0zURfrd7oKS
+	 hS+kxiZglSstye3wMNTjPMCjjAID9Lz8iQnSGy6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Huang-Huang Bao <i@eh5.me>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/163] i2c: testunit: discard write requests while old command is running
+Subject: [PATCH 6.1 008/128] pinctrl: rockchip: fix pinmux bits for RK3328 GPIO2-B pins
 Date: Tue,  2 Jul 2024 19:03:29 +0200
-Message-ID: <20240702170236.659813167@linuxfoundation.org>
+Message-ID: <20240702170226.550005005@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Huang-Huang Bao <i@eh5.me>
 
-[ Upstream commit c116deafd1a5cc1e9739099eb32114e90623209c ]
+[ Upstream commit e8448a6c817c2aa6c6af785b1d45678bd5977e8d ]
 
-When clearing registers on new write requests was added, the protection
-for currently running commands was missed leading to concurrent access
-to the testunit registers. Check the flag beforehand.
+The pinmux bits for GPIO2-B0 to GPIO2-B6 actually have 2 bits width,
+correct the bank flag for GPIO2-B. The pinmux bits for GPIO2-B7 is
+recalculated so it remain unchanged.
 
-Fixes: b39ab96aa894 ("i2c: testunit: add support for block process calls")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+The pinmux bits for those pins are not explicitly specified in RK3328
+TRM, however we can get hint from pad name and its correspinding IOMUX
+setting for pins in interface descriptions. The correspinding IOMIX
+settings for GPIO2-B0 to GPIO2-B6 can be found in the same row next to
+occurrences of following pad names in RK3328 TRM.
+
+GPIO2-B0: IO_SPIclkm0_GPIO2B0vccio5
+GPIO2-B1: IO_SPItxdm0_GPIO2B1vccio5
+GPIO2-B2: IO_SPIrxdm0_GPIO2B2vccio5
+GPIO2-B3: IO_SPIcsn0m0_GPIO2B3vccio5
+GPIO2-B4: IO_SPIcsn1m0_FLASHvol_sel_GPIO2B4vccio5
+GPIO2-B5: IO_ I2C2sda_TSADCshut_GPIO2B5vccio5
+GPIO2-B6: IO_ I2C2scl_GPIO2B6vccio5
+
+This fix has been tested on NanoPi R2S for fixing confliting pinmux bits
+between GPIO2-B7 with GPIO2-B5.
+
+Signed-off-by: Huang-Huang Bao <i@eh5.me>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 3818e4a7678e ("pinctrl: rockchip: Add rk3328 pinctrl support")
+Link: https://lore.kernel.org/r/20240606125755.53778-2-i@eh5.me
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-slave-testunit.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pinctrl/pinctrl-rockchip.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/i2c/i2c-slave-testunit.c b/drivers/i2c/i2c-slave-testunit.c
-index a5dcbc3c2c141..ca43e98cae1b2 100644
---- a/drivers/i2c/i2c-slave-testunit.c
-+++ b/drivers/i2c/i2c-slave-testunit.c
-@@ -121,6 +121,9 @@ static int i2c_slave_testunit_slave_cb(struct i2c_client *client,
- 		break;
+diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
+index 0276b52f37168..7ebfa37b601e5 100644
+--- a/drivers/pinctrl/pinctrl-rockchip.c
++++ b/drivers/pinctrl/pinctrl-rockchip.c
+@@ -635,12 +635,6 @@ static struct rockchip_mux_recalced_data rk3308_mux_recalced_data[] = {
  
- 	case I2C_SLAVE_WRITE_REQUESTED:
-+		if (test_bit(TU_FLAG_IN_PROCESS, &tu->flags))
-+			return -EBUSY;
-+
- 		memset(tu->regs, 0, TU_NUM_REGS);
- 		tu->reg_idx = 0;
- 		break;
+ static struct rockchip_mux_recalced_data rk3328_mux_recalced_data[] = {
+ 	{
+-		.num = 2,
+-		.pin = 12,
+-		.reg = 0x24,
+-		.bit = 8,
+-		.mask = 0x3
+-	}, {
+ 		.num = 2,
+ 		.pin = 15,
+ 		.reg = 0x28,
+@@ -3766,7 +3760,7 @@ static struct rockchip_pin_bank rk3328_pin_banks[] = {
+ 	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", 0, 0, 0, 0),
+ 	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", 0, 0, 0, 0),
+ 	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", 0,
+-			     IOMUX_WIDTH_3BIT,
++			     0,
+ 			     IOMUX_WIDTH_3BIT,
+ 			     0),
+ 	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3",
 -- 
 2.43.0
 
