@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-56573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01784924506
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:17:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E260924600
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 818A7B26C28
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:17:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 293551F217BE
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E6C41C2300;
-	Tue,  2 Jul 2024 17:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86CCE1BE251;
+	Tue,  2 Jul 2024 17:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZGRYFf/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzbatXdR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF56E1C0DEA;
-	Tue,  2 Jul 2024 17:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4561A1514DC;
+	Tue,  2 Jul 2024 17:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940632; cv=none; b=Lz50QcQoYd3A4qyc/D6r1C0YzNR/1bFJ4gpFgOZefXPdHT/Tnc0PLPUekeDLwf4S3jQVM3j0CoQMjlWgVPAjtqTM9CVwPLdW69lZjdcHGQbi5qAUA54aJOmfHSiLGbor0jGSgB4t+FcrNBqv+jmrUd+i/bOVXoqqdoYO54j78lE=
+	t=1719941390; cv=none; b=jydqMAF708W0Vx+OBW0FrldaSzpHCVMB2tohNRFJ62nvLkdb5suP9/kNEaeVIWMUZDjVv4ixiEbOUhrOiJ8ws1L7QNlAm1yb8zNkrxGwTfig8hvqNDLn0VA0uXqmzeccvLhzbkDbyPkUtaXDJFRu1kNMRcOdorPpsHDHQjhUHZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940632; c=relaxed/simple;
-	bh=HA8mZCIT1oCF4gg9Nko89ywZI86WW+IkaPb9fSbkprI=;
+	s=arc-20240116; t=1719941390; c=relaxed/simple;
+	bh=H087jhGaFbkeQf6JHLaDM0hcDl/b+1mIuMO/IYZOHvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KpX9AiAOCuBaQxT7RUgwpkCz2vmmz6IQMsUhuLM0Srdb+7ziHSLJZYGlsf9Ahl++bdp539PuvLU3J3mmH8NOUrLWu91NSkd3RSc2fH5OptAt6o3d8vdpWlFltHq7Mx9AnhuLvFIZJMBdHzbbfb5nijVeSRn1lPQ+JTKah8P7uv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZGRYFf/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C48AC116B1;
-	Tue,  2 Jul 2024 17:17:11 +0000 (UTC)
+	 MIME-Version; b=XDzSECX+jK+cxR+pW/virFQdo6kJl3JzJvdihyEKDpv4597V15+tt/42PG7GNPD70bN9pxrs5UwTEJ0GTYlBJsf1TPDknu6V/VBBS4ZEqFl6sigSJBbNHjsHndn7v+GEn6AtSvwdSzX0g8MBohI6S7L8DhFDV2j69DuGdAPA23w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzbatXdR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61857C116B1;
+	Tue,  2 Jul 2024 17:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940632;
-	bh=HA8mZCIT1oCF4gg9Nko89ywZI86WW+IkaPb9fSbkprI=;
+	s=korg; t=1719941390;
+	bh=H087jhGaFbkeQf6JHLaDM0hcDl/b+1mIuMO/IYZOHvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gZGRYFf/6mU0cH/GqkC0eCo1dhsMgtmgi58ubX5Y3NEPh1Rv+oxuy2y+6S2Nn5igW
-	 D83iNCpPs1A6hXuGQYbG51lMQNqWHCJjADFVQG4Gvap27AnWxdfkT3ACPTA8kA7OHQ
-	 P+OflJh5zinQcvmWoJEWhVlWwKwTg5A01G0UzOIs=
+	b=QzbatXdROxEO4UMeK+tnzu5OTGwNrOfHRo9CppUEA62aKQHnm/VjmlntNzR6GFSrr
+	 id0aha8aYlbMpeHOML3c7WwRnVo9UlECHqPuTTWwuG+LMM8oZhu8Sn/xe+UQ8+jWGo
+	 fYu9pQgS7bnyFJS5F69JQd3taxeEKeFP+hnwyvWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
+	Oswald Buddenhagen <oswald.buddenhagen@gmx.de>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 212/222] cxl/region: Convert cxl_pmem_region_alloc to scope-based resource management
+Subject: [PATCH 6.1 049/128] ALSA: emux: improve patch ioctl data validation
 Date: Tue,  2 Jul 2024 19:04:10 +0200
-Message-ID: <20240702170252.089778206@linuxfoundation.org>
+Message-ID: <20240702170228.087786513@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,130 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
 
-[ Upstream commit d357dd8ad2f154376e5cb930284e7bf4fe21ffaa ]
+[ Upstream commit 89b32ccb12ae67e630c6453d778ec30a592a212f ]
 
-A recent bugfix to cxl_pmem_region_alloc() to fix an
-error-unwind-memleak [1], highlighted a use case for scope-based resource
-management.
+In load_data(), make the validation of and skipping over the main info
+block match that in load_guspatch().
 
-Delete the goto for releasing @cxl_region_rwsem, and return error codes
-directly from error condition paths.
+In load_guspatch(), add checking that the specified patch length matches
+the actually supplied data, like load_data() already did.
 
-The caller, devm_cxl_add_pmem_region(), is no longer given @cxlr_pmem
-directly it must retrieve it from @cxlr->cxlr_pmem. This retrieval from
-@cxlr was already in place for @cxlr->cxl_nvb, and converting
-cxl_pmem_region_alloc() to return an int makes it less awkward to handle
-no_free_ptr().
-
-Cc: Li Zhijian <lizhijian@fujitsu.com>
-Reported-by: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Closes: http://lore.kernel.org/r/20240430174540.000039ce@Huawei.com
-Link: http://lore.kernel.org/r/20240428030748.318985-1-lizhijian@fujitsu.com
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/171451430965.1147997.15782562063090960666.stgit@dwillia2-xfh.jf.intel.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Stable-dep-of: 84ec985944ef ("cxl/mem: Fix no cxl_nvd during pmem region auto-assembling")
+Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+Message-ID: <20240406064830.1029573-8-oswald.buddenhagen@gmx.de>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/region.c | 43 ++++++++++++++++-----------------------
- 1 file changed, 17 insertions(+), 26 deletions(-)
+ sound/synth/emux/soundfont.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 18b95149640b6..bcb30e04e0963 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -2681,26 +2681,21 @@ int cxl_get_poison_by_endpoint(struct cxl_port *port)
+diff --git a/sound/synth/emux/soundfont.c b/sound/synth/emux/soundfont.c
+index 16f00097cb95a..eed47e4830248 100644
+--- a/sound/synth/emux/soundfont.c
++++ b/sound/synth/emux/soundfont.c
+@@ -701,7 +701,6 @@ load_data(struct snd_sf_list *sflist, const void __user *data, long count)
+ 	struct snd_soundfont *sf;
+ 	struct soundfont_sample_info sample_info;
+ 	struct snd_sf_sample *sp;
+-	long off;
  
- static struct lock_class_key cxl_pmem_region_key;
+ 	/* patch must be opened */
+ 	sf = sflist->currsf;
+@@ -711,12 +710,16 @@ load_data(struct snd_sf_list *sflist, const void __user *data, long count)
+ 	if (is_special_type(sf->type))
+ 		return -EINVAL;
  
--static struct cxl_pmem_region *cxl_pmem_region_alloc(struct cxl_region *cxlr)
-+static int cxl_pmem_region_alloc(struct cxl_region *cxlr)
- {
- 	struct cxl_region_params *p = &cxlr->params;
- 	struct cxl_nvdimm_bridge *cxl_nvb;
--	struct cxl_pmem_region *cxlr_pmem;
- 	struct device *dev;
- 	int i;
++	if (count < (long)sizeof(sample_info)) {
++		return -EINVAL;
++	}
+ 	if (copy_from_user(&sample_info, data, sizeof(sample_info)))
+ 		return -EFAULT;
++	data += sizeof(sample_info);
++	count -= sizeof(sample_info);
  
--	down_read(&cxl_region_rwsem);
--	if (p->state != CXL_CONFIG_COMMIT) {
--		cxlr_pmem = ERR_PTR(-ENXIO);
--		goto out;
--	}
-+	guard(rwsem_read)(&cxl_region_rwsem);
-+	if (p->state != CXL_CONFIG_COMMIT)
-+		return -ENXIO;
+-	off = sizeof(sample_info);
+-
+-	if (sample_info.size != (count-off)/2)
++	// SoundFont uses S16LE samples.
++	if (sample_info.size * 2 != count)
+ 		return -EINVAL;
  
--	cxlr_pmem = kzalloc(struct_size(cxlr_pmem, mapping, p->nr_targets),
--			    GFP_KERNEL);
--	if (!cxlr_pmem) {
--		cxlr_pmem = ERR_PTR(-ENOMEM);
--		goto out;
--	}
-+	struct cxl_pmem_region *cxlr_pmem __free(kfree) =
-+		kzalloc(struct_size(cxlr_pmem, mapping, p->nr_targets), GFP_KERNEL);
-+	if (!cxlr_pmem)
-+		return -ENOMEM;
- 
- 	cxlr_pmem->hpa_range.start = p->res->start;
- 	cxlr_pmem->hpa_range.end = p->res->end;
-@@ -2718,11 +2713,8 @@ static struct cxl_pmem_region *cxl_pmem_region_alloc(struct cxl_region *cxlr)
- 		 */
- 		if (i == 0) {
- 			cxl_nvb = cxl_find_nvdimm_bridge(cxlmd);
--			if (!cxl_nvb) {
--				kfree(cxlr_pmem);
--				cxlr_pmem = ERR_PTR(-ENODEV);
--				goto out;
--			}
-+			if (!cxl_nvb)
-+				return -ENODEV;
- 			cxlr->cxl_nvb = cxl_nvb;
- 		}
- 		m->cxlmd = cxlmd;
-@@ -2733,18 +2725,16 @@ static struct cxl_pmem_region *cxl_pmem_region_alloc(struct cxl_region *cxlr)
+ 	/* Check for dup */
+@@ -744,7 +747,7 @@ load_data(struct snd_sf_list *sflist, const void __user *data, long count)
+ 		int  rc;
+ 		rc = sflist->callback.sample_new
+ 			(sflist->callback.private_data, sp, sflist->memhdr,
+-			 data + off, count - off);
++			 data, count);
+ 		if (rc < 0) {
+ 			sf_sample_delete(sflist, sf, sp);
+ 			return rc;
+@@ -957,10 +960,12 @@ load_guspatch(struct snd_sf_list *sflist, const char __user *data,
  	}
+ 	if (copy_from_user(&patch, data, sizeof(patch)))
+ 		return -EFAULT;
+-	
+ 	count -= sizeof(patch);
+ 	data += sizeof(patch);
  
- 	dev = &cxlr_pmem->dev;
--	cxlr_pmem->cxlr = cxlr;
--	cxlr->cxlr_pmem = cxlr_pmem;
- 	device_initialize(dev);
- 	lockdep_set_class(&dev->mutex, &cxl_pmem_region_key);
- 	device_set_pm_not_required(dev);
- 	dev->parent = &cxlr->dev;
- 	dev->bus = &cxl_bus_type;
- 	dev->type = &cxl_pmem_region_type;
--out:
--	up_read(&cxl_region_rwsem);
-+	cxlr_pmem->cxlr = cxlr;
-+	cxlr->cxlr_pmem = no_free_ptr(cxlr_pmem);
- 
--	return cxlr_pmem;
-+	return 0;
- }
- 
- static void cxl_dax_region_release(struct device *dev)
-@@ -2861,9 +2851,10 @@ static int devm_cxl_add_pmem_region(struct cxl_region *cxlr)
- 	struct device *dev;
- 	int rc;
- 
--	cxlr_pmem = cxl_pmem_region_alloc(cxlr);
--	if (IS_ERR(cxlr_pmem))
--		return PTR_ERR(cxlr_pmem);
-+	rc = cxl_pmem_region_alloc(cxlr);
-+	if (rc)
-+		return rc;
-+	cxlr_pmem = cxlr->cxlr_pmem;
- 	cxl_nvb = cxlr->cxl_nvb;
- 
- 	dev = &cxlr_pmem->dev;
++	if ((patch.len << (patch.mode & WAVE_16_BITS ? 1 : 0)) != count)
++		return -EINVAL;
++
+ 	sf = newsf(sflist, SNDRV_SFNT_PAT_TYPE_GUS|SNDRV_SFNT_PAT_SHARED, NULL);
+ 	if (sf == NULL)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
