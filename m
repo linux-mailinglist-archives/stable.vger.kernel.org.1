@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-56423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54011924451
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:08:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA699924453
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:09:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F41471F21A47
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:08:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1884C1C230C1
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:09:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F9861BE228;
-	Tue,  2 Jul 2024 17:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26FBF1BE22C;
+	Tue,  2 Jul 2024 17:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHvmcjXL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xcmCmVMJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E748178381;
-	Tue,  2 Jul 2024 17:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D621A1BD51B;
+	Tue,  2 Jul 2024 17:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940137; cv=none; b=SLdYH4Pf3U32w/9+ldgjgjvN8rB6Wv/W/oYgg79FuTJwosGIL6eJX4K/zD2zrN4+4wShUFs3tfLU1s6zcNaEUWVOy9lRw/ShppYXD96Aqj9Qv4GMeYXhq+QI+P7TPrgKc7Uq2e+VhWbaOpyqfQSf538SYYTg1y1X3SxXuzmDlhA=
+	t=1719940143; cv=none; b=gbbl/RMNS7B2lfkt3ZRd6v2oJRR19zPEjp+QKVrfiELIkYGfF3/G7iytPyRUQ8h5j+IRzufD2H1zdax28r1LxUFOq2cIMUpV9L7Q5rLbt/NZ4YgegIeyjS0KZyrDEYRvbHFbLDNwpAT/qLStCkWJu9fsE+ksSpn/xa4z/bkPa+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940137; c=relaxed/simple;
-	bh=4tvy+/UyY0cAU1NVocyVulMESpoJqWfI5r78DyE1wrM=;
+	s=arc-20240116; t=1719940143; c=relaxed/simple;
+	bh=OyVM8ok5HXR9p38z1SItW2bq7t0BLAX86eCec9pEbIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HsWbNcOx7LGrGsW5pG9gMFJna0oAajGFQPNit5gakoltBAT0p290DusFx4N9dXrmdileRALbjtVgtrdenblDGVq0THc+Wqtpms7qQy1bibfBkIe4Ugn+03cS5vqP+2zYI+6yGLnhry0iCdtSf92VoGgUg4Tpgtg8Bcc2xvDvNiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHvmcjXL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF0F7C116B1;
-	Tue,  2 Jul 2024 17:08:56 +0000 (UTC)
+	 MIME-Version; b=g1aFy6hKh6cC5RLaLrxr1Ie2kOTlDeWYeP45YUEGf4YQeqS9G7oiCwVvBYtn07tEYjeHmTuCJFipzRDYTIPXS53QRPoclC3xXCHDtlYzIDM6oQLaql6WrnARw1q+mrY99JhX/Iq0Ay42HzSKndeSbWo3R/I7QaGF/Kc5CVmqBNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xcmCmVMJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D098C116B1;
+	Tue,  2 Jul 2024 17:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940137;
-	bh=4tvy+/UyY0cAU1NVocyVulMESpoJqWfI5r78DyE1wrM=;
+	s=korg; t=1719940143;
+	bh=OyVM8ok5HXR9p38z1SItW2bq7t0BLAX86eCec9pEbIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YHvmcjXLeFI2VTfkJqU+6Pht3s1SMmTAMhITBg6robZqboKpkDLk0taBGzQVXk9yz
-	 o3BEGSfd9FUllQclHuVFCp7FPjif7apw3zWPws7t9DiuNj8QWWutHpKwDok9oH2Exk
-	 bU4EddOxZ0bmopJQ13Z5YPgBVZJH9ea/1JDrWiPg=
+	b=xcmCmVMJycGXoi0CfO24pek5F/1mhPig5B9U59Bb5DRP1r1yBr9rBwyDlYvJgq3iE
+	 Krr3IoL0opfc1lmshUKg8+Bf8CtAJkUlfVCwGyNNbk4DGwrI3RcXO/B997AyvXqfNe
+	 yF1rpDMprFNoP4q2b5Dgvu9G6jF4IFnEpV8O/F2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 064/222] net: mana: Fix possible double free in error handling path
-Date: Tue,  2 Jul 2024 19:01:42 +0200
-Message-ID: <20240702170246.428568108@linuxfoundation.org>
+Subject: [PATCH 6.9 065/222] bpf: Take return from set_memory_ro() into account with bpf_prog_lock_ro()
+Date: Tue,  2 Jul 2024 19:01:43 +0200
+Message-ID: <20240702170246.466415590@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
 References: <20240702170243.963426416@linuxfoundation.org>
@@ -66,37 +68,85 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 1864b8224195d0e43ddb92a8151f54f6562090cc ]
+[ Upstream commit 7d2cc63eca0c993c99d18893214abf8f85d566d8 ]
 
-When auxiliary_device_add() returns error and then calls
-auxiliary_device_uninit(), callback function adev_release
-calls kfree(madev). We shouldn't call kfree(madev) again
-in the error handling path. Set 'madev' to NULL.
+set_memory_ro() can fail, leaving memory unprotected.
 
-Fixes: a69839d4327d ("net: mana: Add support for auxiliary device")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://patch.msgid.link/20240625130314.2661257-1-make24@iscas.ac.cn
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Check its return and take it into account as an error.
+
+Link: https://github.com/KSPP/linux/issues/7
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-hardening@vger.kernel.org <linux-hardening@vger.kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Message-ID: <286def78955e04382b227cb3e4b6ba272a7442e3.1709850515.git.christophe.leroy@csgroup.eu>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/filter.h | 5 +++--
+ kernel/bpf/core.c      | 4 +++-
+ kernel/bpf/verifier.c  | 8 ++++++--
+ 3 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index d8af5e7e15b4d..191d50ba646d8 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -2800,6 +2800,8 @@ static int add_adev(struct gdma_dev *gd)
- 	if (ret)
- 		goto init_fail;
+diff --git a/include/linux/filter.h b/include/linux/filter.h
+index 219ee7a768744..35791b1c61c7d 100644
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -887,14 +887,15 @@ bpf_ctx_narrow_access_offset(u32 off, u32 size, u32 size_default)
  
-+	/* madev is owned by the auxiliary device */
-+	madev = NULL;
- 	ret = auxiliary_device_add(adev);
- 	if (ret)
- 		goto add_fail;
+ #define bpf_classic_proglen(fprog) (fprog->len * sizeof(fprog->filter[0]))
+ 
+-static inline void bpf_prog_lock_ro(struct bpf_prog *fp)
++static inline int __must_check bpf_prog_lock_ro(struct bpf_prog *fp)
+ {
+ #ifndef CONFIG_BPF_JIT_ALWAYS_ON
+ 	if (!fp->jited) {
+ 		set_vm_flush_reset_perms(fp);
+-		set_memory_ro((unsigned long)fp, fp->pages);
++		return set_memory_ro((unsigned long)fp, fp->pages);
+ 	}
+ #endif
++	return 0;
+ }
+ 
+ static inline void bpf_jit_binary_lock_ro(struct bpf_binary_header *hdr)
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index 1ea5ce5bb5993..9985988845e36 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -2403,7 +2403,9 @@ struct bpf_prog *bpf_prog_select_runtime(struct bpf_prog *fp, int *err)
+ 	}
+ 
+ finalize:
+-	bpf_prog_lock_ro(fp);
++	*err = bpf_prog_lock_ro(fp);
++	if (*err)
++		return fp;
+ 
+ 	/* The tail call compatibility check can only be done at
+ 	 * this late stage as we need to determine, if we deal
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index ab558eea1c9ee..d5fca9deac5a1 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -19354,10 +19354,14 @@ static int jit_subprogs(struct bpf_verifier_env *env)
+ 	 * bpf_prog_load will add the kallsyms for the main program.
+ 	 */
+ 	for (i = 1; i < env->subprog_cnt; i++) {
+-		bpf_prog_lock_ro(func[i]);
+-		bpf_prog_kallsyms_add(func[i]);
++		err = bpf_prog_lock_ro(func[i]);
++		if (err)
++			goto out_free;
+ 	}
+ 
++	for (i = 1; i < env->subprog_cnt; i++)
++		bpf_prog_kallsyms_add(func[i]);
++
+ 	/* Last step: make now unused interpreter insns from main
+ 	 * prog consistent for later dump requests, so they can
+ 	 * later look the same as if they were interpreted only.
 -- 
 2.43.0
 
