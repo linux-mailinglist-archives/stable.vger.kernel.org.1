@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-56779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED7879245EE
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B799244C8
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:14:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99D111F2294E
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF90C1F2187E
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:14:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FC21BF30F;
-	Tue,  2 Jul 2024 17:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4323C1BE22A;
+	Tue,  2 Jul 2024 17:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMgPC67S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlsg7myd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C091BE873;
-	Tue,  2 Jul 2024 17:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DC715B0FE;
+	Tue,  2 Jul 2024 17:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941331; cv=none; b=D3qA6cUwhgLS1QkGjHvf3P9fQnRAitzfFuS9owfNolcVVlea/B6tv8CyRriVGP9R9lBI9F67kUV+tOge6ZnoqBu7GlIxe+3o2+tQavnlzMeQXojtBeSQDiWfBLF3GuxC1t8PHD0B4SmbyiUTPa8CklLIgCKIMIwY8JPsaehC83M=
+	t=1719940495; cv=none; b=Lk76Vrtl2gUlciSGJUiSep7bbfq30Q/wb/Y2+4AZC5NaobXD9AJOOBkYtuXUNL+Q287TT0aw2MKwE1ihEScKtIYo3Bse+uQosmxvCueJ64FD/XlPmQt8xNYaxHkGD9+/nkFAw1PlB7ZNhOr11XhLdFwqOFTDjDz3dwX6FCxhGTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941331; c=relaxed/simple;
-	bh=ZXjEVqn8tKZx+jqWX004fk3GIZijEFSTKU52b6dq4zU=;
+	s=arc-20240116; t=1719940495; c=relaxed/simple;
+	bh=cv7Yy7oztt668SxbI8pl/8CqUTJ2h02wKrdhAuZQeog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QU+0utDhYG16PNJVr1wuBPwKsIZnE0gymCEp1TSgrTqJmkEb0XJRXmTE8321loogI3lRX/t0fkPB8x1b9uWsJ/SbuleQ4ui5KlEwklgUpuml3df6faXbJGNp2LBGPX3Grpr67kt7a2aYQqVD0TcUvkwOEtUKZ7/uB2pq7IgXzck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMgPC67S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92177C4AF0C;
-	Tue,  2 Jul 2024 17:28:50 +0000 (UTC)
+	 MIME-Version; b=IwTm2l5tcxFivduhOgTeyu88Wxz5/NicbDhdrYQ08zNE4pkYkbt3gftvLS/LosJviWg6bBAFvznLirg9a8peznzZ1V6Lrk/XswE1kYblyMs8EN+UlQ0nir0xBfL1j9wRrl8/qkBYbQX8aN3JKekVpx0kIWDgbhsDdvqz3ncFWx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlsg7myd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7749CC116B1;
+	Tue,  2 Jul 2024 17:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941331;
-	bh=ZXjEVqn8tKZx+jqWX004fk3GIZijEFSTKU52b6dq4zU=;
+	s=korg; t=1719940494;
+	bh=cv7Yy7oztt668SxbI8pl/8CqUTJ2h02wKrdhAuZQeog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XMgPC67SRtj76Q047kRZeA9mUEFxMxehSa8AxYrEyabzwAlcS9d3TESj5fX9VailB
-	 A6E6slGTh79FIggsaFb/dbpJUGZOjk4vw2MJx53lCLaS240sENYTqeB0zURfrd7oKS
-	 hS+kxiZglSstye3wMNTjPMCjjAID9Lz8iQnSGy6k=
+	b=jlsg7mydzHGpySenaPhjygNF/9jq188MDpA/BsSycdtoyUxRU1An8vO8huYYUyZQd
+	 gRCticQBx8onSxifWqd6Qo+kvnpTf+ExvKV7ofTfvEQH3AfWHfATrAezKZy/1rojX2
+	 zBz98yMDLu1vWB16fEU010/mpO/9KN+EvFaDBitk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huang-Huang Bao <i@eh5.me>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 008/128] pinctrl: rockchip: fix pinmux bits for RK3328 GPIO2-B pins
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.9 171/222] cpu: Fix broken cmdline "nosmp" and "maxcpus=0"
 Date: Tue,  2 Jul 2024 19:03:29 +0200
-Message-ID: <20240702170226.550005005@linuxfoundation.org>
+Message-ID: <20240702170250.513173972@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang-Huang Bao <i@eh5.me>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit e8448a6c817c2aa6c6af785b1d45678bd5977e8d ]
+commit 6ef8eb5125722c241fd60d7b0c872d5c2e5dd4ca upstream.
 
-The pinmux bits for GPIO2-B0 to GPIO2-B6 actually have 2 bits width,
-correct the bank flag for GPIO2-B. The pinmux bits for GPIO2-B7 is
-recalculated so it remain unchanged.
+After the rework of "Parallel CPU bringup", the cmdline "nosmp" and
+"maxcpus=0" parameters are not working anymore. These parameters set
+setup_max_cpus to zero and that's handed to bringup_nonboot_cpus().
 
-The pinmux bits for those pins are not explicitly specified in RK3328
-TRM, however we can get hint from pad name and its correspinding IOMUX
-setting for pins in interface descriptions. The correspinding IOMIX
-settings for GPIO2-B0 to GPIO2-B6 can be found in the same row next to
-occurrences of following pad names in RK3328 TRM.
+The code there does a decrement before checking for zero, which brings it
+into the negative space and brings up all CPUs.
 
-GPIO2-B0: IO_SPIclkm0_GPIO2B0vccio5
-GPIO2-B1: IO_SPItxdm0_GPIO2B1vccio5
-GPIO2-B2: IO_SPIrxdm0_GPIO2B2vccio5
-GPIO2-B3: IO_SPIcsn0m0_GPIO2B3vccio5
-GPIO2-B4: IO_SPIcsn1m0_FLASHvol_sel_GPIO2B4vccio5
-GPIO2-B5: IO_ I2C2sda_TSADCshut_GPIO2B5vccio5
-GPIO2-B6: IO_ I2C2scl_GPIO2B6vccio5
+Add a zero check at the beginning of the function to prevent this.
 
-This fix has been tested on NanoPi R2S for fixing confliting pinmux bits
-between GPIO2-B7 with GPIO2-B5.
+[ tglx: Massaged change log ]
 
-Signed-off-by: Huang-Huang Bao <i@eh5.me>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Fixes: 3818e4a7678e ("pinctrl: rockchip: Add rk3328 pinctrl support")
-Link: https://lore.kernel.org/r/20240606125755.53778-2-i@eh5.me
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 18415f33e2ac4ab382 ("cpu/hotplug: Allow "parallel" bringup up to CPUHP_BP_KICK_AP_STATE")
+Fixes: 06c6796e0304234da6 ("cpu/hotplug: Fix off by one in cpuhp_bringup_mask()")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240618081336.3996825-1-chenhuacai@loongson.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-rockchip.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ kernel/cpu.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
-index 0276b52f37168..7ebfa37b601e5 100644
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -635,12 +635,6 @@ static struct rockchip_mux_recalced_data rk3308_mux_recalced_data[] = {
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -1859,6 +1859,9 @@ static inline bool cpuhp_bringup_cpus_pa
  
- static struct rockchip_mux_recalced_data rk3328_mux_recalced_data[] = {
- 	{
--		.num = 2,
--		.pin = 12,
--		.reg = 0x24,
--		.bit = 8,
--		.mask = 0x3
--	}, {
- 		.num = 2,
- 		.pin = 15,
- 		.reg = 0x28,
-@@ -3766,7 +3760,7 @@ static struct rockchip_pin_bank rk3328_pin_banks[] = {
- 	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", 0, 0, 0, 0),
- 	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", 0, 0, 0, 0),
- 	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", 0,
--			     IOMUX_WIDTH_3BIT,
-+			     0,
- 			     IOMUX_WIDTH_3BIT,
- 			     0),
- 	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3",
--- 
-2.43.0
-
+ void __init bringup_nonboot_cpus(unsigned int max_cpus)
+ {
++	if (!max_cpus)
++		return;
++
+ 	/* Try parallel bringup optimization if enabled */
+ 	if (cpuhp_bringup_cpus_parallel(max_cpus))
+ 		return;
 
 
 
