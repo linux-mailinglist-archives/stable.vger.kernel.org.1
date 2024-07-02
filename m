@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-56785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F8F9245F5
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BE7C9245A2
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:25:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC0861F23377
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94B8DB23FDF
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0811BE846;
-	Tue,  2 Jul 2024 17:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA6D1BE224;
+	Tue,  2 Jul 2024 17:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAen88S4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iz1Q/TIi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE65D1BE22B;
-	Tue,  2 Jul 2024 17:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790161B583A;
+	Tue,  2 Jul 2024 17:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941353; cv=none; b=jN76F7XGZPZ/GAYWEm+ORV61yufhrTlwA5WnKeJv1XR63bAzdMAmYnZ4HWd0GmJvj+B05CZfli36NUbuip/XtvAaEuG67PZ/vG96o28WKsYqH8obEZ0PNVPvs159tWpN2CFNCQ/2wdmO4AT0FWmbxj/rNJJnXhVIIVB0oUEwD4U=
+	t=1719941096; cv=none; b=GSTABs2ghLikz6O3ELJ1DtrvFCUUvSHfgQaPdFD+Ztp7gphAi/dMGExCMc8TOWkijysNuysbCgF2MDu+9V9zMfCyJkVKrCCGQpqrYf9UnKoPUaDP6SyCeB4ALPcQPdC+a4V5aF8rPYFxkNn+m9OvjmV6eBqCFBICbbYLWV2Vwf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941353; c=relaxed/simple;
-	bh=an3yqWV00t7ayZ+Z7tDS1imUBLr6m9ia1aGzijfpTkI=;
+	s=arc-20240116; t=1719941096; c=relaxed/simple;
+	bh=PxKa4aJMl8COiaJeQ8f5vdPniAYgEzuNgUsUrT7UdJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mPRr0FpbcVl9fEsnOeSQj+gDz6jRHrHF9l/xb4oYa+XGNF4QLSSl6qzgXSiVE3XGulcV0RPWVSfD1jqnVTLWQtFja8GUrmTQqu0E66xUYVprP2X4A86onY75gglTmnE+040+7DSJxN4s/jzZj1rTTMGcpSBrADfkKqVX9HEi9Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAen88S4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D76C116B1;
-	Tue,  2 Jul 2024 17:29:12 +0000 (UTC)
+	 MIME-Version; b=dWAHbF1EFMl2ULiZ670Dq1jCjX8kl4gYGS2sm9Cw6gLoCYb2yxNi7I32/3iVaUZ+d5Q4+tfYfuGkRPcJPGMTghNSx0YfBE9iiJSB3sJblSCS12Aerv6+ekVhHo3S4OQBRrgLbIGJYT+//SPO3GhOu8EmmgaeuOSGKSU5P4jbEPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iz1Q/TIi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A2BC116B1;
+	Tue,  2 Jul 2024 17:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941352;
-	bh=an3yqWV00t7ayZ+Z7tDS1imUBLr6m9ia1aGzijfpTkI=;
+	s=korg; t=1719941096;
+	bh=PxKa4aJMl8COiaJeQ8f5vdPniAYgEzuNgUsUrT7UdJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RAen88S4qExyx2btGrIJE/WtfwZfK2ofRbmf8tZCpY0YQs0jwaV7xaYvpv45vvww5
-	 su6mw4VbNrxMN+HgBr/A/28IIbOL0DA930YqHgRyJc8lroC5ZHo4iHrpFP+rZWvrRM
-	 sqpJYHqHVYVBepp5Gub8g19iLXF9ZMl6PipBlsXQ=
+	b=Iz1Q/TIippcyuq2SRhn3n29LIx69A88YKtRuV+SZpm359sM8FCxk1LEkJpg6wHxiU
+	 KtizexlinOXW/fHKeYBoU6BKIdJqAS/UEydQI0T5+pKTnyO/wxunvVUG9GcHqInn17
+	 pv/lxHrCDz+iLDp/GJPNOOZ9dNvl+Soel2s1RtQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Coquelin <maxime.coquelin@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Xie Yongji <xieyongji@bytedance.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/128] vduse: Temporarily fail if control queue feature requested
+	Aaron Rainbolt <arainbolt@kfocus.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.6 126/163] cpufreq: intel_pstate: Use HWP to initialize ITMT if CPPC is missing
 Date: Tue,  2 Jul 2024 19:04:00 +0200
-Message-ID: <20240702170227.711109409@linuxfoundation.org>
+Message-ID: <20240702170237.820808280@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Coquelin <maxime.coquelin@redhat.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 56e71885b0349241c07631a7b979b61e81afab6a ]
+commit a1ff59784b277795a613beaa5d3dd9c5595c69a7 upstream.
 
-Virtio-net driver control queue implementation is not safe
-when used with VDUSE. If the VDUSE application does not
-reply to control queue messages, it currently ends up
-hanging the kernel thread sending this command.
+It is reported that single-thread performance on some hybrid systems
+dropped significantly after commit 7feec7430edd ("ACPI: CPPC: Only probe
+for _CPC if CPPC v2 is acked") which prevented _CPC from being used if
+the support for it had not been confirmed by the platform firmware.
 
-Some work is on-going to make the control queue
-implementation robust with VDUSE. Until it is completed,
-let's fail features check if control-queue feature is
-requested.
+The problem is that if the platform firmware does not confirm CPPC v2
+support, cppc_get_perf_caps() returns an error which prevents the
+intel_pstate driver from enabling ITMT.  Consequently, the scheduler
+does not get any hints on CPU performance differences, so in a hybrid
+system some tasks may run on CPUs with lower capacity even though they
+should be running on high-capacity CPUs.
 
-Signed-off-by: Maxime Coquelin <maxime.coquelin@redhat.com>
-Message-Id: <20240109111025.1320976-3-maxime.coquelin@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To address this, modify intel_pstate to use the information from
+MSR_HWP_CAPABILITIES to enable ITMT if CPPC is not available (which is
+done already if the highest performance number coming from CPPC is not
+realistic).
+
+Fixes: 7feec7430edd ("ACPI: CPPC: Only probe for _CPC if CPPC v2 is acked")
+Closes: https://lore.kernel.org/linux-acpi/d01b0a1f-bd33-47fe-ab41-43843d8a374f@kfocus.org
+Link: https://lore.kernel.org/linux-acpi/ZnD22b3Br1ng7alf@kf-XE
+Reported-by: Aaron Rainbolt <arainbolt@kfocus.org>
+Tested-by: Aaron Rainbolt <arainbolt@kfocus.org>
+Cc: 5.19+ <stable@vger.kernel.org> # 5.19+
+Link: https://patch.msgid.link/12460110.O9o76ZdvQC@rjwysocki.net
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vdpa/vdpa_user/vduse_dev.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/cpufreq/intel_pstate.c |   13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
-index cb35a76146b39..0ccece3f4f7da 100644
---- a/drivers/vdpa/vdpa_user/vduse_dev.c
-+++ b/drivers/vdpa/vdpa_user/vduse_dev.c
-@@ -8,6 +8,7 @@
-  *
-  */
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -356,15 +356,14 @@ static void intel_pstate_set_itmt_prio(i
+ 	int ret;
  
-+#include "linux/virtio_net.h"
- #include <linux/init.h>
- #include <linux/module.h>
- #include <linux/cdev.h>
-@@ -28,6 +29,7 @@
- #include <uapi/linux/virtio_config.h>
- #include <uapi/linux/virtio_ids.h>
- #include <uapi/linux/virtio_blk.h>
-+#include <uapi/linux/virtio_ring.h>
- #include <linux/mod_devicetable.h>
+ 	ret = cppc_get_perf_caps(cpu, &cppc_perf);
+-	if (ret)
+-		return;
+-
+ 	/*
+-	 * On some systems with overclocking enabled, CPPC.highest_perf is hardcoded to 0xff.
+-	 * In this case we can't use CPPC.highest_perf to enable ITMT.
+-	 * In this case we can look at MSR_HWP_CAPABILITIES bits [8:0] to decide.
++	 * If CPPC is not available, fall back to MSR_HWP_CAPABILITIES bits [8:0].
++	 *
++	 * Also, on some systems with overclocking enabled, CPPC.highest_perf is
++	 * hardcoded to 0xff, so CPPC.highest_perf cannot be used to enable ITMT.
++	 * Fall back to MSR_HWP_CAPABILITIES then too.
+ 	 */
+-	if (cppc_perf.highest_perf == CPPC_MAX_PERF)
++	if (ret || cppc_perf.highest_perf == CPPC_MAX_PERF)
+ 		cppc_perf.highest_perf = HWP_HIGHEST_PERF(READ_ONCE(all_cpu_data[cpu]->hwp_cap_cached));
  
- #include "iova_domain.h"
-@@ -1425,6 +1427,9 @@ static bool features_is_valid(struct vduse_dev_config *config)
- 	if ((config->device_id == VIRTIO_ID_BLOCK) &&
- 			(config->features & BIT_ULL(VIRTIO_BLK_F_CONFIG_WCE)))
- 		return false;
-+	else if ((config->device_id == VIRTIO_ID_NET) &&
-+			(config->features & BIT_ULL(VIRTIO_NET_F_CTRL_VQ)))
-+		return false;
- 
- 	return true;
- }
--- 
-2.43.0
-
+ 	/*
 
 
 
