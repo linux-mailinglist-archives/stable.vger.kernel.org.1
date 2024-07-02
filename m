@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-56782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F8089245F2
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F1C2924596
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:24:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C7DF1C21F37
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14D661F22B5E
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1488A1C005C;
-	Tue,  2 Jul 2024 17:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901E51BE222;
+	Tue,  2 Jul 2024 17:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cIGviO5N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tunPFUOP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA1D1C0056;
-	Tue,  2 Jul 2024 17:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E12315218A;
+	Tue,  2 Jul 2024 17:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941341; cv=none; b=eIPD9ZH0DMA35VewPmxqqfHDljrbNRnHBFd0tmOcCV0AdOVcrbYrBnLC+zIK/WWoysLoHf43Nyo9STo2XAnlhac1lUPvZ5jaOVba2NQ4FDiKksj2lU4LYsygA/rmuCuNoAckhDmPuowVmZ7s7OEIDlf38T3FS9gUmXvKNMIMHGw=
+	t=1719941058; cv=none; b=Gh/YZrNY4r7xDB6l9dza+y3W7bpAY0BvyQZhRx+4gk0pQNh8+dXskNipK3WNI1/VcZ6fyNMrxOGhAq5lmszsVNIuixVxaoEYoujLKU0DQMVrYmxJb7B52bL6PN2KGmLm99w3Irpc9y0PMDWan3fFC1qCqOStTdYXHBrfdctBmXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941341; c=relaxed/simple;
-	bh=gnitumKiTxGPY6PIiL6PCmbUfYDh4ugabyBQBqR8APQ=;
+	s=arc-20240116; t=1719941058; c=relaxed/simple;
+	bh=tBDlXoEI8Yx1Y7gI8pAupH1O9nN3v7Ev15AJLofoLGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEfPe6SEK0UfRKD7Jl4LySRHD2zHvaGZdW5NWZN5YJSNBkkAGeRsIFJ8LfxhX3QO+IJvU8SY6e+/qIjn94bl3ojAT3J7IxcqGWTiw9uPgen3xY60ZzJyWLodXLqs8+qLDNfqMcZjF0VHPDW7tzGYCkkE2DuaAC+T9/H4NR7M3zc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cIGviO5N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3AEAC116B1;
-	Tue,  2 Jul 2024 17:29:00 +0000 (UTC)
+	 MIME-Version; b=Sm9Om7GoT6icWwmQAGxOjwHjxxv7H+Wm6xH/TgkQX8XneX+QEkFFnzCkt3T6O/qbS8dyWybt6uVx2u543DMKWB+oou79+E5vI8jrxIqsA1vKSoS1KJCQXR2hMs1m+mA/BBpmvqKZx+dpOEE+5O/uDg3U8iWE9O2r9dR5UgYfFu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tunPFUOP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF2CC116B1;
+	Tue,  2 Jul 2024 17:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941341;
-	bh=gnitumKiTxGPY6PIiL6PCmbUfYDh4ugabyBQBqR8APQ=;
+	s=korg; t=1719941058;
+	bh=tBDlXoEI8Yx1Y7gI8pAupH1O9nN3v7Ev15AJLofoLGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cIGviO5NWSmTlkSy+ef+zQ1uZ+nXuuWHPFXoAGogPA9y27CkSb5B81iNisjXM4K4P
-	 tTJS/OdahFDhdNFa/mC5uJwKqV6RpMeqP9DtdjABEsPL/3FjmIh0mh3RYdU5yH/lFq
-	 ia1STasN24YGtJynvjyzTzZ6is1DMsD7Sd6bLI/s=
+	b=tunPFUOPSy3SMLV1VY2pj7sD/vtsid/oYZrcQ9IWzxVo0OH+vGYJ/aDAJavEqjcsC
+	 T1kTqtqXhwzrykZ+X2EUi9ZqecjZQttrxU872av1JkecWIMLNlNCazGFVEqsmgL6uW
+	 +p8wFEAEMXoQHWgxYio4m/jB8f0HGBg0uAgvSAu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristram Ha <tristram.ha@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 028/128] net: dsa: microchip: fix wrong register write when masking interrupt
-Date: Tue,  2 Jul 2024 19:03:49 +0200
-Message-ID: <20240702170227.297846734@linuxfoundation.org>
+	Udit Kumar <u-kumar1@ti.com>
+Subject: [PATCH 6.6 116/163] serial: 8250_omap: Implementation of Errata i2310
+Date: Tue,  2 Jul 2024 19:03:50 +0200
+Message-ID: <20240702170237.446836585@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +60,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristram Ha <tristram.ha@microchip.com>
+From: Udit Kumar <u-kumar1@ti.com>
 
-[ Upstream commit b1c4b4d45263241ec6c2405a8df8265d4b58e707 ]
+commit 9d141c1e615795eeb93cd35501ad144ee997a826 upstream.
 
-The switch global port interrupt mask, REG_SW_PORT_INT_MASK__4, is
-defined as 0x001C in ksz9477_reg.h.  The designers used 32-bit value in
-anticipation for increase of port count in future product but currently
-the maximum port count is 7 and the effective value is 0x7F in register
-0x001F.  Each port has its own interrupt mask and is defined as 0x#01F.
-It uses only 4 bits for different interrupts.
+As per Errata i2310[0], Erroneous timeout can be triggered,
+if this Erroneous interrupt is not cleared then it may leads
+to storm of interrupts, therefore apply Errata i2310 solution.
 
-The developer who implemented the current interrupt mechanism in the
-switch driver noticed there are similarities between the mechanism to
-mask port interrupts in global interrupt and individual interrupts in
-each port and so used the same code to handle these interrupts.  He
-updated the code to use the new macro REG_SW_PORT_INT_MASK__1 which is
-defined as 0x1F in ksz_common.h but he forgot to update the 32-bit write
-to 8-bit as now the mask registers are 0x1F and 0x#01F.
+[0] https://www.ti.com/lit/pdf/sprz536 page 23
 
-In addition all KSZ switches other than the KSZ9897/KSZ9893 and LAN937X
-families use only 8-bit access and so this common code will eventually
-be changed to accommodate them.
-
-Fixes: e1add7dd6183 ("net: dsa: microchip: use common irq routines for girq and pirq")
-Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
-Link: https://lore.kernel.org/r/1719009262-2948-1-git-send-email-Tristram.Ha@microchip.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b67e830d38fa ("serial: 8250: 8250_omap: Fix possible interrupt storm on K3 SoCs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Udit Kumar <u-kumar1@ti.com>
+Link: https://lore.kernel.org/r/20240619105903.165434-1-u-kumar1@ti.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/microchip/ksz_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_omap.c |   25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index f9f43897f86c1..9dbe188f09c3c 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -1790,7 +1790,7 @@ static void ksz_irq_bus_sync_unlock(struct irq_data *d)
- 	struct ksz_device *dev = kirq->dev;
- 	int ret;
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -165,6 +165,10 @@ static u32 uart_read(struct omap8250_pri
+ 	return readl(priv->membase + (reg << OMAP_UART_REGSHIFT));
+ }
  
--	ret = ksz_write32(dev, kirq->reg_mask, kirq->masked);
-+	ret = ksz_write8(dev, kirq->reg_mask, kirq->masked);
- 	if (ret)
- 		dev_err(dev->dev, "failed to change IRQ mask\n");
++/* Timeout low and High */
++#define UART_OMAP_TO_L                 0x26
++#define UART_OMAP_TO_H                 0x27
++
+ /*
+  * Called on runtime PM resume path from omap8250_restore_regs(), and
+  * omap8250_set_mctrl().
+@@ -646,13 +650,24 @@ static irqreturn_t omap8250_irq(int irq,
  
--- 
-2.43.0
-
+ 	/*
+ 	 * On K3 SoCs, it is observed that RX TIMEOUT is signalled after
+-	 * FIFO has been drained, in which case a dummy read of RX FIFO
+-	 * is required to clear RX TIMEOUT condition.
++	 * FIFO has been drained or erroneously.
++	 * So apply solution of Errata i2310 as mentioned in
++	 * https://www.ti.com/lit/pdf/sprz536
+ 	 */
+ 	if (priv->habit & UART_RX_TIMEOUT_QUIRK &&
+-	    (iir & UART_IIR_RX_TIMEOUT) == UART_IIR_RX_TIMEOUT &&
+-	    serial_port_in(port, UART_OMAP_RX_LVL) == 0) {
+-		serial_port_in(port, UART_RX);
++		(iir & UART_IIR_RX_TIMEOUT) == UART_IIR_RX_TIMEOUT) {
++		unsigned char efr2, timeout_h, timeout_l;
++
++		efr2 = serial_in(up, UART_OMAP_EFR2);
++		timeout_h = serial_in(up, UART_OMAP_TO_H);
++		timeout_l = serial_in(up, UART_OMAP_TO_L);
++		serial_out(up, UART_OMAP_TO_H, 0xFF);
++		serial_out(up, UART_OMAP_TO_L, 0xFF);
++		serial_out(up, UART_OMAP_EFR2, UART_OMAP_EFR2_TIMEOUT_BEHAVE);
++		serial_in(up, UART_IIR);
++		serial_out(up, UART_OMAP_EFR2, efr2);
++		serial_out(up, UART_OMAP_TO_H, timeout_h);
++		serial_out(up, UART_OMAP_TO_L, timeout_l);
+ 	}
+ 
+ 	/* Stop processing interrupts on input overrun */
 
 
 
