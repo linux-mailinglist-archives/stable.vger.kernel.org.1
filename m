@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-56457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6605924476
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:10:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBFFE924530
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:19:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94DB128AA82
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:10:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 484FC1F21EBF
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8170F1BE232;
-	Tue,  2 Jul 2024 17:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AB21BE24E;
+	Tue,  2 Jul 2024 17:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUaR+RTR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+maaSI2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D57E1BE229;
-	Tue,  2 Jul 2024 17:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF16BE5A;
+	Tue,  2 Jul 2024 17:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940250; cv=none; b=hlKC3YQp2PVlaK9ldOuUgdffN7HdgOifLocxCtPBbkJ/ysFRVJ8dDe9lH797/bibcRLWegn59a1mZcYPQK7ZlrD0tQsg0Vx3PzH1D170YQ2EXo7A8SCLG+uFUnnKBzHAAA3yTk1UlewhGHTyrPq1cd8yXj86sibsoDqd5gw92dc=
+	t=1719940741; cv=none; b=HnwdDlbalUH+0G7tUAhrX0RuALHZwAvqd2m9KnOjgDytMFuMIS7OOLCiueT7qTYkBfDkh4JIEDusIgBeCh3o0hzxf7Y5MWvZ4kEdc8qU4dIDpAoaZq4zwi5tfzhpaLuB9plHio8ae/0AAo09dDf3KrQhL6zWQtzv9HGAg3Dsv8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940250; c=relaxed/simple;
-	bh=VIgq2G8BX6aAsMF/8EgmsVLg/hE9bgtUo7jymFecdZ8=;
+	s=arc-20240116; t=1719940741; c=relaxed/simple;
+	bh=n+v2DQ3fHq1mAhbtuecXVkNkC2kU0CBBtaZKJ3+OiMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FsME2mx6dWhxaIic1i0rFw+pqjsZ0vd+HoWXBwflGcgxsnj/wtOF4T0flfkq0/df5ynjgujeDOvHGXq+3ixdgIWe4IOYVlnPa84XonKNWNACU5SUsDKQAPSxCzsq9eEmg3RP3LTWyCP3U5POLrgWa2bWmnFmAl0gkmSfA+g+1+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUaR+RTR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69172C4AF07;
-	Tue,  2 Jul 2024 17:10:49 +0000 (UTC)
+	 MIME-Version; b=tickJEUyGAhYAMY6xGde0h5ByTnf+bWoQqEGUs5Q2zaT5J8nLGvt7hweuRPF1eRZR60h/2u+VqHkFRpxpY9TZ86zFMZJEscMTFs7QWIvcIj4xZImkiXvxRltgMVVuGJfDUU6wd8FFx95ymm6USaNYPey4XRw5/ik+6fDOb8CDYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+maaSI2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48775C116B1;
+	Tue,  2 Jul 2024 17:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940249;
-	bh=VIgq2G8BX6aAsMF/8EgmsVLg/hE9bgtUo7jymFecdZ8=;
+	s=korg; t=1719940741;
+	bh=n+v2DQ3fHq1mAhbtuecXVkNkC2kU0CBBtaZKJ3+OiMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sUaR+RTR0HuGRbPjgj90giwnFgod/LWSxYifXh4L7c5gwrJuJw+3h5I1oqa/cKbbW
-	 CE9GZJDuOoo+tjnJuCaTH5NIlq57G5I1sGYhNUrR2o2TXd8USl3ib6jsoC1eKVGcnD
-	 Lo/4ar7DD/QfhzGV59rwoRNn/uXFxY7p21I8C1ws=
+	b=i+maaSI2J+bb/phMjxL1nrTBl9Ev4nlcqd6uoYwJWKrViBMc0m+VYCyPe60Y5Lect
+	 1K0us+Ct9bstWgc2iBzh6fcez1PwfTM/m2NDxUa9TxVhjxrzxYiJt83dO7dSjcW89y
+	 KLhhw8foWXonoDD0ycQ/wEnDMc2h+OCMpZPfCDw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Zac Ecob <zacecob@protonmail.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 098/222] gpio: davinci: Validate the obtained number of IRQs
+Subject: [PATCH 6.6 022/163] bpf: Add missed var_off setting in set_sext32_default_val()
 Date: Tue,  2 Jul 2024 19:02:16 +0200
-Message-ID: <20240702170247.715179465@linuxfoundation.org>
+Message-ID: <20240702170233.899573532@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Yonghong Song <yonghong.song@linux.dev>
 
-[ Upstream commit 7aa9b96e9a73e4ec1771492d0527bd5fc5ef9164 ]
+[ Upstream commit 380d5f89a4815ff88461a45de2fb6f28533df708 ]
 
-Value of pdata->gpio_unbanked is taken from Device Tree. In case of broken
-DT due to any error this value can be any. Without this value validation
-there can be out of chips->irqs array boundaries access in
-davinci_gpio_probe().
+Zac reported a verification failure and Alexei reproduced the issue
+with a simple reproducer ([1]). The verification failure is due to missed
+setting for var_off.
 
-Validate the obtained nirq value so that it won't exceed the maximum
-number of IRQs per bank.
+The following is the reproducer in [1]:
+  0: R1=ctx() R10=fp0
+  0: (71) r3 = *(u8 *)(r10 -387)        ;
+     R3_w=scalar(smin=smin32=0,smax=umax=smax32=umax32=255,var_off=(0x0; 0xff)) R10=fp0
+  1: (bc) w7 = (s8)w3                   ;
+     R3_w=scalar(smin=smin32=0,smax=umax=smax32=umax32=255,var_off=(0x0; 0xff))
+     R7_w=scalar(smin=smin32=0,smax=umax=smax32=umax32=127,var_off=(0x0; 0x7f))
+  2: (36) if w7 >= 0x2533823b goto pc-3
+     mark_precise: frame0: last_idx 2 first_idx 0 subseq_idx -1
+     mark_precise: frame0: regs=r7 stack= before 1: (bc) w7 = (s8)w3
+     mark_precise: frame0: regs=r3 stack= before 0: (71) r3 = *(u8 *)(r10 -387)
+  2: R7_w=scalar(smin=smin32=0,smax=umax=smax32=umax32=127,var_off=(0x0; 0x7f))
+  3: (b4) w0 = 0                        ; R0_w=0
+  4: (95) exit
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Note that after insn 1, the var_off for R7 is (0x0; 0x7f). This is not correct
+since upper 24 bits of w7 could be 0 or 1. So correct var_off should be
+(0x0; 0xffffffff). Missing var_off setting in set_sext32_default_val() caused later
+incorrect analysis in zext_32_to_64(dst_reg) and reg_bounds_sync(dst_reg).
 
-Fixes: eb3744a2dd01 ("gpio: davinci: Do not assume continuous IRQ numbering")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Link: https://lore.kernel.org/r/20240618144344.16943-1-amishin@t-argos.ru
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+To fix the issue, set var_off correctly in set_sext32_default_val(). The correct
+reg state after insn 1 becomes:
+  1: (bc) w7 = (s8)w3                   ;
+     R3_w=scalar(smin=smin32=0,smax=umax=smax32=umax32=255,var_off=(0x0; 0xff))
+     R7_w=scalar(smin=0,smax=umax=0xffffffff,smin32=-128,smax32=127,var_off=(0x0; 0xffffffff))
+and at insn 2, the verifier correctly determines either branch is possible.
+
+  [1] https://lore.kernel.org/bpf/CAADnVQLPU0Shz7dWV4bn2BgtGdxN3uFHPeobGBA72tpg5Xoykw@mail.gmail.com/
+
+Fixes: 8100928c8814 ("bpf: Support new sign-extension mov insns")
+Reported-by: Zac Ecob <zacecob@protonmail.com>
+Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20240615174626.3994813-1-yonghong.song@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-davinci.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/bpf/verifier.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpio/gpio-davinci.c b/drivers/gpio/gpio-davinci.c
-index bb499e3629125..1d0175d6350b7 100644
---- a/drivers/gpio/gpio-davinci.c
-+++ b/drivers/gpio/gpio-davinci.c
-@@ -225,6 +225,11 @@ static int davinci_gpio_probe(struct platform_device *pdev)
- 	else
- 		nirq = DIV_ROUND_UP(ngpio, 16);
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index ec0464c075bb4..291bda5ef5526 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -6159,6 +6159,7 @@ static void set_sext32_default_val(struct bpf_reg_state *reg, int size)
+ 	}
+ 	reg->u32_min_value = 0;
+ 	reg->u32_max_value = U32_MAX;
++	reg->var_off = tnum_subreg(tnum_unknown);
+ }
  
-+	if (nirq > MAX_INT_PER_BANK) {
-+		dev_err(dev, "Too many IRQs!\n");
-+		return -EINVAL;
-+	}
-+
- 	chips = devm_kzalloc(dev, sizeof(*chips), GFP_KERNEL);
- 	if (!chips)
- 		return -ENOMEM;
+ static void coerce_subreg_to_size_sx(struct bpf_reg_state *reg, int size)
 -- 
 2.43.0
 
