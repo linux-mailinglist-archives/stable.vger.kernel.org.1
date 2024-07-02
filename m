@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-56535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 087339244CF
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:15:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2B699245D8
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:27:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF7C1288DF2
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:15:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6F021C21DE5
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:27:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5776F1BF31D;
-	Tue,  2 Jul 2024 17:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3636D1BE251;
+	Tue,  2 Jul 2024 17:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxVEh8xI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZNz6ME3/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C2A1BF301;
-	Tue,  2 Jul 2024 17:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05CC1514DC;
+	Tue,  2 Jul 2024 17:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940508; cv=none; b=cfD8XAStwfo1anT4B/EJS4LkdpGoGeQ955C/Z8GTF8vQOSLuF7a7gG+08UIbtAV0vJnufjOq8ng5bAGq0LJ9wq4aX3nPEJglNV+91Cov1cuQNpQw+y/MpON/k4PyKTNS1eF0OeuYsSpmfJnxmOTzfC5/HPk4ZXGR5wCl9gPBiJw=
+	t=1719941263; cv=none; b=rFD+TXxvvKN1a5wt0Mb3jKGmJA/nB7a9k2qd6YoxHFpWaZIGmLq71qYTckGg447jveG3E00vcvvAEPsJ9OZVZ3ggMPc35s2GQ9UWkisM/QvgGRrrvTIhRYJV2rkhBH5gM+dgQt1y0WOVx4i7T5CruqkrjK90BGKTQwRJI6hNOU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940508; c=relaxed/simple;
-	bh=rw5Gi67vN7T6vY+rX23B8sxgXhX4QLvYGoGxazAj0vk=;
+	s=arc-20240116; t=1719941263; c=relaxed/simple;
+	bh=zJHX+i+WFyHfjYn3keIzFTnnY9jVC44zcUqWxe1kuwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=duowCYyrebEniAGAV8m468Zjd1kdtb/CYjLBz9iRMkmQWlz+M42uTengM7iuOEFY47kZ1PBdPpiGmSgr7uyqrDa2FELSTK3qisNJIO/1TG4ea3L0gJuDFocuw6Mk5vp5OosKxrgKQYJukrO6bpgquz7QElfq5dn1HlChP144cRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxVEh8xI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D4E5C4AF0A;
-	Tue,  2 Jul 2024 17:15:07 +0000 (UTC)
+	 MIME-Version; b=YasR3NLsIUDeD3fpqW6Edk4erK9/7pJ1RCJGIXQm67R5CsDUh1nl+w2MRQxSk7hrD8XoNg1XGCpzrdnONJhqNMGNTJQjISg4xJb/MORavJ8Ass5WQ2wgeNy9UepYKZNZNVWg5nZeH71NGckAMldt35u8JTBq3iveZ01RE1IoatM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZNz6ME3/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6ECC116B1;
+	Tue,  2 Jul 2024 17:27:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940507;
-	bh=rw5Gi67vN7T6vY+rX23B8sxgXhX4QLvYGoGxazAj0vk=;
+	s=korg; t=1719941262;
+	bh=zJHX+i+WFyHfjYn3keIzFTnnY9jVC44zcUqWxe1kuwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yxVEh8xIhHTzoRZb7Mep+iX6iiDM5dHH40F6ccOtzHsr+39rSDGoDiLuKqHglJdlP
-	 H6SDLfyhBgXakGdoCy9mDHjEgMSyBCJI3VtE0VEPjXcD1aHAgRpizJRzND3tPM4ow8
-	 6jErF/5zwSZeqIw34E2BOCRZnUYKwjtz10OpQAD0=
+	b=ZNz6ME3/zCTIE497DwKt8EMfRJx3KketLc5g6Pz9R8D9COxvyywdOkCfj5lWiNHiq
+	 xdo/S2UtMhQGgM7JLiaMDV9siyQ2bkZjf6WDdmVSOXyAl9AE5thV5bBl2/0haqB6yZ
+	 EyfY1OzBC7/D5DIputGIzhvhCfS62O3zzkGa2d7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 6.9 175/222] sh: rework sync_file_range ABI
-Date: Tue,  2 Jul 2024 19:03:33 +0200
-Message-ID: <20240702170250.666142023@linuxfoundation.org>
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 013/128] dt-bindings: i2c: Drop unneeded quotes
+Date: Tue,  2 Jul 2024 19:03:34 +0200
+Message-ID: <20240702170226.735963571@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +66,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Rob Herring <robh@kernel.org>
 
-commit 30766f1105d6d2459c3b9fe34a3e52b637a72950 upstream.
+[ Upstream commit fc114c75680da73c3815512d880f69cecc9a9b87 ]
 
-The unusual function calling conventions on SuperH ended up causing
-sync_file_range to have the wrong argument order, with the 'flags'
-argument getting sorted before 'nbytes' by the compiler.
+Cleanup bindings dropping unneeded quotes. Once all these are fixed,
+checking for this can be enabled in yamllint.
 
-In userspace, I found that musl, glibc, uclibc and strace all expect the
-normal calling conventions with 'nbytes' last, so changing the kernel
-to match them should make all of those work.
-
-In order to be able to also fix libc implementations to work with existing
-kernels, they need to be able to tell which ABI is used. An easy way
-to do this is to add yet another system call using the sync_file_range2
-ABI that works the same on all architectures.
-
-Old user binaries can now work on new kernels, and new binaries can
-try the new sync_file_range2() to work with new kernels or fall back
-to the old sync_file_range() version if that doesn't exist.
-
-Cc: stable@vger.kernel.org
-Fixes: 75c92acdd5b1 ("sh: Wire up new syscalls.")
-Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Reviewed-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Stable-dep-of: d4e001ffeccf ("dt-bindings: i2c: atmel,at91sam: correct path to i2c-controller schema")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/kernel/sys_sh32.c           |   11 +++++++++++
- arch/sh/kernel/syscalls/syscall.tbl |    3 ++-
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/i2c/amlogic,meson6-i2c.yaml | 4 ++--
+ Documentation/devicetree/bindings/i2c/apple,i2c.yaml          | 4 ++--
+ Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml  | 2 +-
+ Documentation/devicetree/bindings/i2c/cdns,i2c-r1p10.yaml     | 4 ++--
+ Documentation/devicetree/bindings/i2c/i2c-mux-gpio.yaml       | 4 ++--
+ Documentation/devicetree/bindings/i2c/qcom,i2c-geni-qcom.yaml | 4 ++--
+ Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml       | 2 +-
+ .../devicetree/bindings/i2c/xlnx,xps-iic-2.00.a.yaml          | 4 ++--
+ 8 files changed, 14 insertions(+), 14 deletions(-)
 
---- a/arch/sh/kernel/sys_sh32.c
-+++ b/arch/sh/kernel/sys_sh32.c
-@@ -59,3 +59,14 @@ asmlinkage int sys_fadvise64_64_wrapper(
- 				 (u64)len0 << 32 | len1, advice);
- #endif
- }
-+
-+/*
-+ * swap the arguments the way that libc wants them instead of
-+ * moving flags ahead of the 64-bit nbytes argument
-+ */
-+SYSCALL_DEFINE6(sh_sync_file_range6, int, fd, SC_ARG64(offset),
-+                SC_ARG64(nbytes), unsigned int, flags)
-+{
-+        return ksys_sync_file_range(fd, SC_VAL64(loff_t, offset),
-+                                    SC_VAL64(loff_t, nbytes), flags);
-+}
---- a/arch/sh/kernel/syscalls/syscall.tbl
-+++ b/arch/sh/kernel/syscalls/syscall.tbl
-@@ -321,7 +321,7 @@
- 311	common	set_robust_list			sys_set_robust_list
- 312	common	get_robust_list			sys_get_robust_list
- 313	common	splice				sys_splice
--314	common	sync_file_range			sys_sync_file_range
-+314	common	sync_file_range			sys_sh_sync_file_range6
- 315	common	tee				sys_tee
- 316	common	vmsplice			sys_vmsplice
- 317	common	move_pages			sys_move_pages
-@@ -395,6 +395,7 @@
- 385	common	pkey_alloc			sys_pkey_alloc
- 386	common	pkey_free			sys_pkey_free
- 387	common	rseq				sys_rseq
-+388	common	sync_file_range2		sys_sync_file_range2
- # room for arch specific syscalls
- 393	common	semget				sys_semget
- 394	common	semctl				sys_semctl
+diff --git a/Documentation/devicetree/bindings/i2c/amlogic,meson6-i2c.yaml b/Documentation/devicetree/bindings/i2c/amlogic,meson6-i2c.yaml
+index 199a354ccb970..26bed558c6b87 100644
+--- a/Documentation/devicetree/bindings/i2c/amlogic,meson6-i2c.yaml
++++ b/Documentation/devicetree/bindings/i2c/amlogic,meson6-i2c.yaml
+@@ -2,8 +2,8 @@
+ # Copyright 2019 BayLibre, SAS
+ %YAML 1.2
+ ---
+-$id: "http://devicetree.org/schemas/i2c/amlogic,meson6-i2c.yaml#"
+-$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++$id: http://devicetree.org/schemas/i2c/amlogic,meson6-i2c.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Amlogic Meson I2C Controller
+ 
+diff --git a/Documentation/devicetree/bindings/i2c/apple,i2c.yaml b/Documentation/devicetree/bindings/i2c/apple,i2c.yaml
+index 4ac61fec90e26..243da7003cec5 100644
+--- a/Documentation/devicetree/bindings/i2c/apple,i2c.yaml
++++ b/Documentation/devicetree/bindings/i2c/apple,i2c.yaml
+@@ -1,8 +1,8 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+ %YAML 1.2
+ ---
+-$id: "http://devicetree.org/schemas/i2c/apple,i2c.yaml#"
+-$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++$id: http://devicetree.org/schemas/i2c/apple,i2c.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Apple/PASemi I2C controller
+ 
+diff --git a/Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml b/Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml
+index ea2303c0e1431..6adedd3ec399b 100644
+--- a/Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml
++++ b/Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml
+@@ -75,7 +75,7 @@ required:
+   - clocks
+ 
+ allOf:
+-  - $ref: "i2c-controller.yaml"
++  - $ref: i2c-controller.yaml
+   - if:
+       properties:
+         compatible:
+diff --git a/Documentation/devicetree/bindings/i2c/cdns,i2c-r1p10.yaml b/Documentation/devicetree/bindings/i2c/cdns,i2c-r1p10.yaml
+index 2e95cda7262ad..7a675aa08c442 100644
+--- a/Documentation/devicetree/bindings/i2c/cdns,i2c-r1p10.yaml
++++ b/Documentation/devicetree/bindings/i2c/cdns,i2c-r1p10.yaml
+@@ -1,8 +1,8 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+ %YAML 1.2
+ ---
+-$id: "http://devicetree.org/schemas/i2c/cdns,i2c-r1p10.yaml#"
+-$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++$id: http://devicetree.org/schemas/i2c/cdns,i2c-r1p10.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Cadence I2C controller
+ 
+diff --git a/Documentation/devicetree/bindings/i2c/i2c-mux-gpio.yaml b/Documentation/devicetree/bindings/i2c/i2c-mux-gpio.yaml
+index 6e0a5686af048..f34cc7ad5a00e 100644
+--- a/Documentation/devicetree/bindings/i2c/i2c-mux-gpio.yaml
++++ b/Documentation/devicetree/bindings/i2c/i2c-mux-gpio.yaml
+@@ -45,7 +45,7 @@ properties:
+ 
+   i2c-parent:
+     description: phandle of the I2C bus that this multiplexer's master-side port is connected to
+-    $ref: "/schemas/types.yaml#/definitions/phandle"
++    $ref: /schemas/types.yaml#/definitions/phandle
+ 
+   mux-gpios:
+     description: list of GPIOs used to control the muxer
+@@ -55,7 +55,7 @@ properties:
+   idle-state:
+     description: Value to set the muxer to when idle. When no value is given, it defaults to the
+       last value used.
+-    $ref: "/schemas/types.yaml#/definitions/uint32"
++    $ref: /schemas/types.yaml#/definitions/uint32
+ 
+ allOf:
+   - $ref: i2c-mux.yaml
+diff --git a/Documentation/devicetree/bindings/i2c/qcom,i2c-geni-qcom.yaml b/Documentation/devicetree/bindings/i2c/qcom,i2c-geni-qcom.yaml
+index 0e7ed00562e21..5a44fdcbdd59b 100644
+--- a/Documentation/devicetree/bindings/i2c/qcom,i2c-geni-qcom.yaml
++++ b/Documentation/devicetree/bindings/i2c/qcom,i2c-geni-qcom.yaml
+@@ -1,8 +1,8 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+ %YAML 1.2
+ ---
+-$id: "http://devicetree.org/schemas/i2c/qcom,i2c-geni-qcom.yaml#"
+-$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++$id: http://devicetree.org/schemas/i2c/qcom,i2c-geni-qcom.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Qualcomm Geni based QUP I2C Controller
+ 
+diff --git a/Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml b/Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml
+index bf396e9466aaf..94b75d9f66cdb 100644
+--- a/Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml
++++ b/Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml
+@@ -90,7 +90,7 @@ properties:
+   st,syscfg-fmp:
+     description: Use to set Fast Mode Plus bit within SYSCFG when Fast Mode
+       Plus speed is selected by slave.
+-    $ref: "/schemas/types.yaml#/definitions/phandle-array"
++    $ref: /schemas/types.yaml#/definitions/phandle-array
+     items:
+       - items:
+           - description: phandle to syscfg
+diff --git a/Documentation/devicetree/bindings/i2c/xlnx,xps-iic-2.00.a.yaml b/Documentation/devicetree/bindings/i2c/xlnx,xps-iic-2.00.a.yaml
+index 8d241a703d855..f3b53ecae5625 100644
+--- a/Documentation/devicetree/bindings/i2c/xlnx,xps-iic-2.00.a.yaml
++++ b/Documentation/devicetree/bindings/i2c/xlnx,xps-iic-2.00.a.yaml
+@@ -1,8 +1,8 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+ %YAML 1.2
+ ---
+-$id: "http://devicetree.org/schemas/i2c/xlnx,xps-iic-2.00.a.yaml#"
+-$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++$id: http://devicetree.org/schemas/i2c/xlnx,xps-iic-2.00.a.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Xilinx IIC controller
+ 
+-- 
+2.43.0
+
 
 
 
