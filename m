@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-56597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D1B6924528
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:19:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5052E92446C
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:10:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0898F1F21B8C
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:19:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E97581F21915
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434471C2319;
-	Tue,  2 Jul 2024 17:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7754A1BE22C;
+	Tue,  2 Jul 2024 17:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="klCe9XsP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iltHqc+/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019AA1BBBD7;
-	Tue,  2 Jul 2024 17:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D5C15B0FE;
+	Tue,  2 Jul 2024 17:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940713; cv=none; b=bnEKKjZ7s7zXaryD6tBx9MASey+QM3LUJ5Vq3IHHxPO9FUrmihtaEpaCWX59eWjwJEawdzroeJ03J08+VtdSCEwvHx4w1JJRBq2es/GHyQgnYih5uHrhjYpuWdFBC3Q4gdrwSx5UAHt3Id+OYPNoXi0dI/Fm5n+VUKmADyY1WqM=
+	t=1719940227; cv=none; b=GL6SLPAGc9RVDfK4dghbI4dzDX/Vis67kotT+koo+2+UGPJVnT/Ajn0U0iYOGuB+/Xh91qgApgdPReUlJLx1LPeYc02n5jg3Yxc/Dq+eg1dBGD15UTWao8Cj9t7n2K49jaxunfMlZExEYhaRV/30gmpJPzWfvaBSzDZC/BG9Kpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940713; c=relaxed/simple;
-	bh=Sz6gtsUMIRUEe6oOlAWAG9vbqiL8lDo8LRYEiec+EmE=;
+	s=arc-20240116; t=1719940227; c=relaxed/simple;
+	bh=Va3GTSb9ev6gE+rilAMEj5KMAi1uuEsPsOF9byrwK48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfKHYGXNi/1eArymnKOsSR8f9YSEhlI5zxBMQPGKnOhPC9DOtHiHoYonRjRV6HTqrw1Ni+i2b4dBO1JWEaGQcLluBrpt9cy9JTbKVf0yVa6j8dPCKRfPIMSfkkqKlXkdaT39OYPBP0MSEdZ6l4edTWXcaZcVovGYJSNJXE/tsaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=klCe9XsP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66575C116B1;
-	Tue,  2 Jul 2024 17:18:32 +0000 (UTC)
+	 MIME-Version; b=nPuRTILDyiyQfpnSlXJ92CLPeEml/TDZ8LEAJQz1gCwE2ZjHX1A7OVCgqoLpkknk8SBtJruV0MiCbkIl4AlRYwTp+a96r3qXmmhAA+lt/cPGrMAB1rkPIdtlxRxJgjDZKr23Q4UXS/AiZIzMwJQicQtQHJ6dvQkmPWgWBFLkqoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iltHqc+/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B45C116B1;
+	Tue,  2 Jul 2024 17:10:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940712;
-	bh=Sz6gtsUMIRUEe6oOlAWAG9vbqiL8lDo8LRYEiec+EmE=;
+	s=korg; t=1719940227;
+	bh=Va3GTSb9ev6gE+rilAMEj5KMAi1uuEsPsOF9byrwK48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=klCe9XsPtw0EtwpYyt7jStKCsM5bcnaq4bNx76G4drBmIh8zLWf8+vG8KFTSwakjr
-	 57XO+TXmlACiew76ROgPNR1f3u84ivLsSd0xxZiUamZpjd5w00K+xf4P/SNXNqyesr
-	 m2cd9+7eQxyyAdRxKKzF9Z1iBKbgZsoJVKGXJ18c=
+	b=iltHqc+/cH1XP2Ay/D8Lnc9yx+rX570RoAWbbfd+pjfhATaim6smhfyOWbonQcOCo
+	 HUuN2a2WJuqDv2m/BilfYFcvXJ4UkHebYky7ZOPS7dSq8fGTQwnYog4w90nOtSX22n
+	 jkPysK8Iu8iJm8+zK0EBmHou22Qz+5ipPKsGiQqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/163] wifi: mac80211: Use flexible array in struct ieee80211_tim_ie
+Subject: [PATCH 6.9 091/222] evm: Enforce signatures on unsupported filesystem for EVM_INIT_X509
 Date: Tue,  2 Jul 2024 19:02:09 +0200
-Message-ID: <20240702170233.633864085@linuxfoundation.org>
+Message-ID: <20240702170247.452866502@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+From: Stefan Berger <stefanb@linux.ibm.com>
 
-[ Upstream commit 2ae5c9248e06dac2c2360be26b4e25f673238337 ]
+[ Upstream commit 47add87ad181473e5ef2438918669540ba5016a6 ]
 
-Currently struct ieee80211_tim_ie defines:
-	u8 virtual_map[1];
+Unsupported filesystems currently do not enforce any signatures. Add
+support for signature enforcement of the "original" and "portable &
+immutable" signatures when EVM_INIT_X509 is enabled.
 
-Per the guidance in [1] change this to be a flexible array.
+The "original" signature type contains filesystem specific metadata.
+Thus it cannot be copied up and verified. However with EVM_INIT_X509
+and EVM_ALLOW_METADATA_WRITES enabled, the "original" file signature
+may be written.
 
-Per the discussion in [2] wrap the virtual_map in a union with a u8
-item in order to preserve the existing expectation that the
-virtual_map must contain at least one octet (at least when used in a
-non-S1G PPDU). This means that no driver changes are required.
+When EVM_ALLOW_METADATA_WRITES is not set or once it is removed from
+/sys/kernel/security/evm by setting EVM_INIT_HMAC for example, it is not
+possible to write or remove xattrs on the overlay filesystem.
 
-[1] https://docs.kernel.org/process/deprecated.html#zero-length-and-one-element-arrays
-[2] https://lore.kernel.org/linux-wireless/202308301529.AC90A9EF98@keescook/
+This change still prevents EVM from writing HMAC signatures on
+unsupported filesystem when EVM_INIT_HMAC is enabled.
 
-Suggested-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20230831-ieee80211_tim_ie-v3-2-e10ff584ab5d@quicinc.com
-[add wifi prefix]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Co-developed-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ieee80211.h | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ security/integrity/evm/evm_main.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index aaaa5b90bfe25..5fbc08930941c 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -951,17 +951,24 @@ struct ieee80211_wide_bw_chansw_ie {
-  * @dtim_count: DTIM Count
-  * @dtim_period: DTIM Period
-  * @bitmap_ctrl: Bitmap Control
-+ * @required_octet: "Syntatic sugar" to force the struct size to the
-+ *                  minimum valid size when carried in a non-S1G PPDU
-  * @virtual_map: Partial Virtual Bitmap
-  *
-  * This structure represents the payload of the "TIM element" as
-- * described in IEEE Std 802.11-2020 section 9.4.2.5.
-+ * described in IEEE Std 802.11-2020 section 9.4.2.5. Note that this
-+ * definition is only applicable when the element is carried in a
-+ * non-S1G PPDU. When the TIM is carried in an S1G PPDU, the Bitmap
-+ * Control and Partial Virtual Bitmap may not be present.
-  */
- struct ieee80211_tim_ie {
- 	u8 dtim_count;
- 	u8 dtim_period;
- 	u8 bitmap_ctrl;
--	/* variable size: 1 - 251 bytes */
--	u8 virtual_map[1];
-+	union {
-+		u8 required_octet;
-+		DECLARE_FLEX_ARRAY(u8, virtual_map);
-+	};
- } __packed;
+diff --git a/security/integrity/evm/evm_main.c b/security/integrity/evm/evm_main.c
+index 81dbade5b9b3d..518b3090cdb77 100644
+--- a/security/integrity/evm/evm_main.c
++++ b/security/integrity/evm/evm_main.c
+@@ -192,7 +192,11 @@ static enum integrity_status evm_verify_hmac(struct dentry *dentry,
+ 		     iint->evm_status == INTEGRITY_PASS_IMMUTABLE))
+ 		return iint->evm_status;
  
- /**
+-	if (is_unsupported_fs(dentry))
++	/*
++	 * On unsupported filesystems without EVM_INIT_X509 enabled, skip
++	 * signature verification.
++	 */
++	if (!(evm_initialized & EVM_INIT_X509) && is_unsupported_fs(dentry))
+ 		return INTEGRITY_UNKNOWN;
+ 
+ 	/* if status is not PASS, try to check again - against -ENOMEM */
+@@ -260,7 +264,8 @@ static enum integrity_status evm_verify_hmac(struct dentry *dentry,
+ 				evm_status = INTEGRITY_PASS_IMMUTABLE;
+ 			} else if (!IS_RDONLY(inode) &&
+ 				   !(inode->i_sb->s_readonly_remount) &&
+-				   !IS_IMMUTABLE(inode)) {
++				   !IS_IMMUTABLE(inode) &&
++				   !is_unsupported_fs(dentry)) {
+ 				evm_update_evmxattr(dentry, xattr_name,
+ 						    xattr_value,
+ 						    xattr_value_len);
+@@ -418,9 +423,6 @@ enum integrity_status evm_verifyxattr(struct dentry *dentry,
+ 	if (!evm_key_loaded() || !evm_protected_xattr(xattr_name))
+ 		return INTEGRITY_UNKNOWN;
+ 
+-	if (is_unsupported_fs(dentry))
+-		return INTEGRITY_UNKNOWN;
+-
+ 	return evm_verify_hmac(dentry, xattr_name, xattr_value,
+ 				 xattr_value_len);
+ }
 -- 
 2.43.0
 
