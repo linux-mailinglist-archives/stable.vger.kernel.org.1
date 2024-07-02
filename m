@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-56707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EEBE9245A0
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:24:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ABC29244F0
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:16:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E019F28925C
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:24:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ED1C1F2155D
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC521BE222;
-	Tue,  2 Jul 2024 17:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F04B1BE85B;
+	Tue,  2 Jul 2024 17:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXspqi0g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPUKe8uT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16F81B583A;
-	Tue,  2 Jul 2024 17:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0291BE223;
+	Tue,  2 Jul 2024 17:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941089; cv=none; b=U/EJbQCvfZ/AMGnban7YL3DuJtuGtzZ2v3bOHFS7eYDUbr+/wNXTNDvWXjbsNTV5os6A5qmJcGfD0MfU5ji5w31vK2O0Ist5cHRKgCGVmcrAjJsSKZzOIBWppwDISlFjtGwh7SuxQXcfQSKEnx9o7sw1rCCs7Pff16f9pnbSP1I=
+	t=1719940587; cv=none; b=OVJuBf1Rg6FDg7xXvZDieTgKbqZ9icOzlz0n+7GtszqP9AzLY6vCZ1U9UAc4h6Hl3mRoKoVreC2l8OnLubJSqBcxUmWT4Z1eXU34Cg1NWt1RoyRn407Dhj07rl1rBUbPcfnO94d9WTIGHDoaeulhhIXJExvmasla17FlZWRXUls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941089; c=relaxed/simple;
-	bh=9tJqgm4TofYRzNmV/de+AcGQO8VVgoWd+/mJicq5u6U=;
+	s=arc-20240116; t=1719940587; c=relaxed/simple;
+	bh=qrKrshO4c3GgVVppMV2SRAMS+AlbNNyPV7tYkGz8tdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W160f/JfC2S+s0pND8fjd542ftGal3I/Js402V/w9mtXIp3ewY8bkGx1YEN6BvFVRiqvB7fLllxFOfAqgMv4ravkVahNMeTvjnTzKlGc4flcPD62pmjO94t+yM6iBNpFeP5C/+Mvd1+Pe0MAl9JMNLFUu4x7A31oML3Zsu0QHc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXspqi0g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52121C116B1;
-	Tue,  2 Jul 2024 17:24:48 +0000 (UTC)
+	 MIME-Version; b=O6JCNBuQ/Dx6j6fd5gJJyG2fuKohWpyAy33hAh7vYESx/BKQtMCGZp9EWo+PU2G7EkreoeqEwDexFZ6pVXiF5y6drbD/+MBGhAhVfqpdaXMfhAORwBSrPiWI2JwNB4n2tGJBtfhAJfBa/DPSWruX+Ild57f78W5U99PYkkKpv2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPUKe8uT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBF3C116B1;
+	Tue,  2 Jul 2024 17:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941088;
-	bh=9tJqgm4TofYRzNmV/de+AcGQO8VVgoWd+/mJicq5u6U=;
+	s=korg; t=1719940587;
+	bh=qrKrshO4c3GgVVppMV2SRAMS+AlbNNyPV7tYkGz8tdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dXspqi0gM/075YkIiHzz/w13YWR1ZuK7KNVUHa0psPxX6ziuK5P7e25WR+zXdpMBb
-	 JC5ZWDsen4CLVlOo6+qC4Dy4h7Daeux0U9vr+ZHeIa7BUPwmJ9RpzFN7KRg2Q0pWsY
-	 M7aw3CUWnMUONGetnlLlXE1NJRfRXG7SBVQv1LbY=
+	b=QPUKe8uTMK1EDmFN2gbzfMFwAMJRi84m+D/9Gm+e3magA79rL42XmtFXPjz2SbFTB
+	 BBpxWw71ML3ySStHyfUPNbu1kRJW8RStaKONCJdIzwhp/PWH5RJOCVuUiyER9j66Px
+	 AYg+EciskJACE7dhtkCKwPHl67lp+7ls8LDchtBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+daa36413a5cedf799ae4@syzkaller.appspotmail.com,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.6 124/163] net: can: j1939: enhanced error handling for tightly received RTS messages in xtp_rx_rts_session_new
+	Kent Overstreet <kent.overstreet@linux.dev>
+Subject: [PATCH 6.9 200/222] bcachefs: btree_gc can now handle unknown btrees
 Date: Tue,  2 Jul 2024 19:03:58 +0200
-Message-ID: <20240702170237.746481186@linuxfoundation.org>
+Message-ID: <20240702170251.629218295@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +60,273 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Kent Overstreet <kent.overstreet@linux.dev>
 
-commit d3e2904f71ea0fe7eaff1d68a2b0363c888ea0fb upstream.
+commit 088d0de81220a74d7d553febb81656927f10bb16 upstream.
 
-This patch enhances error handling in scenarios with RTS (Request to
-Send) messages arriving closely. It replaces the less informative WARN_ON_ONCE
-backtraces with a new error handling method. This provides clearer error
-messages and allows for the early termination of problematic sessions.
-Previously, sessions were only released at the end of j1939_xtp_rx_rts().
+Compatibility fix - we no longer have a separate table for which order
+gc walks btrees in, and special case the stripes btree directly.
 
-Potentially this could be reproduced with something like:
-testj1939 -r vcan0:0x80 &
-while true; do
-	# send first RTS
-	cansend vcan0 18EC8090#1014000303002301;
-	# send second RTS
-	cansend vcan0 18EC8090#1014000303002301;
-	# send abort
-	cansend vcan0 18EC8090#ff00000000002301;
-done
-
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Reported-by: syzbot+daa36413a5cedf799ae4@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/all/20231117124959.961171-1-o.rempel@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/j1939/transport.c |   19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ fs/bcachefs/bcachefs.h       |   44 ---------------------------------------
+ fs/bcachefs/btree_gc.c       |   15 ++++++-------
+ fs/bcachefs/btree_gc.h       |   48 +++++++++++++++++++------------------------
+ fs/bcachefs/btree_gc_types.h |   29 +++++++++++++++++++++++++
+ fs/bcachefs/ec.c             |    2 -
+ 5 files changed, 60 insertions(+), 78 deletions(-)
+ create mode 100644 fs/bcachefs/btree_gc_types.h
 
---- a/net/can/j1939/transport.c
-+++ b/net/can/j1939/transport.c
-@@ -1593,8 +1593,8 @@ j1939_session *j1939_xtp_rx_rts_session_
- 	struct j1939_sk_buff_cb skcb = *j1939_skb_to_cb(skb);
- 	struct j1939_session *session;
- 	const u8 *dat;
-+	int len, ret;
- 	pgn_t pgn;
--	int len;
+--- a/fs/bcachefs/bcachefs.h
++++ b/fs/bcachefs/bcachefs.h
+@@ -455,6 +455,7 @@ enum bch_time_stats {
+ };
  
- 	netdev_dbg(priv->ndev, "%s\n", __func__);
+ #include "alloc_types.h"
++#include "btree_gc_types.h"
+ #include "btree_types.h"
+ #include "btree_node_scan_types.h"
+ #include "btree_write_buffer_types.h"
+@@ -485,49 +486,6 @@ enum bch_time_stats {
  
-@@ -1653,7 +1653,22 @@ j1939_session *j1939_xtp_rx_rts_session_
- 	session->tskey = priv->rx_tskey++;
- 	j1939_sk_errqueue(session, J1939_ERRQUEUE_RX_RTS);
+ struct btree;
  
--	WARN_ON_ONCE(j1939_session_activate(session));
-+	ret = j1939_session_activate(session);
-+	if (ret) {
-+		/* Entering this scope indicates an issue with the J1939 bus.
-+		 * Possible scenarios include:
-+		 * - A time lapse occurred, and a new session was initiated
-+		 *   due to another packet being sent correctly. This could
-+		 *   have been caused by too long interrupt, debugger, or being
-+		 *   out-scheduled by another task.
-+		 * - The bus is receiving numerous erroneous packets, either
-+		 *   from a malfunctioning device or during a test scenario.
-+		 */
-+		netdev_alert(priv->ndev, "%s: 0x%p: concurrent session with same addr (%02x %02x) is already active.\n",
-+			     __func__, session, skcb.addr.sa, skcb.addr.da);
-+		j1939_session_put(session);
-+		return NULL;
-+	}
+-enum gc_phase {
+-	GC_PHASE_NOT_RUNNING,
+-	GC_PHASE_START,
+-	GC_PHASE_SB,
+-
+-	GC_PHASE_BTREE_stripes,
+-	GC_PHASE_BTREE_extents,
+-	GC_PHASE_BTREE_inodes,
+-	GC_PHASE_BTREE_dirents,
+-	GC_PHASE_BTREE_xattrs,
+-	GC_PHASE_BTREE_alloc,
+-	GC_PHASE_BTREE_quotas,
+-	GC_PHASE_BTREE_reflink,
+-	GC_PHASE_BTREE_subvolumes,
+-	GC_PHASE_BTREE_snapshots,
+-	GC_PHASE_BTREE_lru,
+-	GC_PHASE_BTREE_freespace,
+-	GC_PHASE_BTREE_need_discard,
+-	GC_PHASE_BTREE_backpointers,
+-	GC_PHASE_BTREE_bucket_gens,
+-	GC_PHASE_BTREE_snapshot_trees,
+-	GC_PHASE_BTREE_deleted_inodes,
+-	GC_PHASE_BTREE_logged_ops,
+-	GC_PHASE_BTREE_rebalance_work,
+-	GC_PHASE_BTREE_subvolume_children,
+-
+-	GC_PHASE_PENDING_DELETE,
+-};
+-
+-struct gc_pos {
+-	enum gc_phase		phase;
+-	struct bpos		pos;
+-	unsigned		level;
+-};
+-
+-struct reflink_gc {
+-	u64		offset;
+-	u32		size;
+-	u32		refcount;
+-};
+-
+-typedef GENRADIX(struct reflink_gc) reflink_gc_table;
+-
+ struct io_count {
+ 	u64			sectors[2][BCH_DATA_NR];
+ };
+--- a/fs/bcachefs/btree_gc.c
++++ b/fs/bcachefs/btree_gc.c
+@@ -1080,8 +1080,7 @@ fsck_err:
  
- 	return session;
+ static inline int btree_id_gc_phase_cmp(enum btree_id l, enum btree_id r)
+ {
+-	return  (int) btree_id_to_gc_phase(l) -
+-		(int) btree_id_to_gc_phase(r);
++	return cmp_int(gc_btree_order(l), gc_btree_order(r));
  }
+ 
+ static int bch2_gc_btrees(struct bch_fs *c, bool initial, bool metadata_only)
+@@ -1126,7 +1125,7 @@ static void mark_metadata_sectors(struct
+ 			min_t(u64, bucket_to_sector(ca, b + 1), end) - start;
+ 
+ 		bch2_mark_metadata_bucket(c, ca, b, type, sectors,
+-					  gc_phase(GC_PHASE_SB), flags);
++					  gc_phase(GC_PHASE_sb), flags);
+ 		b++;
+ 		start += sectors;
+ 	} while (start < end);
+@@ -1155,14 +1154,14 @@ static void bch2_mark_dev_superblock(str
+ 		b = ca->journal.buckets[i];
+ 		bch2_mark_metadata_bucket(c, ca, b, BCH_DATA_journal,
+ 					  ca->mi.bucket_size,
+-					  gc_phase(GC_PHASE_SB), flags);
++					  gc_phase(GC_PHASE_sb), flags);
+ 	}
+ }
+ 
+ static void bch2_mark_superblocks(struct bch_fs *c)
+ {
+ 	mutex_lock(&c->sb_lock);
+-	gc_pos_set(c, gc_phase(GC_PHASE_SB));
++	gc_pos_set(c, gc_phase(GC_PHASE_sb));
+ 
+ 	for_each_online_member(c, ca)
+ 		bch2_mark_dev_superblock(c, ca, BTREE_TRIGGER_GC);
+@@ -1773,7 +1772,7 @@ int bch2_gc(struct bch_fs *c, bool initi
+ 	if (ret)
+ 		goto out;
+ again:
+-	gc_pos_set(c, gc_phase(GC_PHASE_START));
++	gc_pos_set(c, gc_phase(GC_PHASE_start));
+ 
+ 	bch2_mark_superblocks(c);
+ 
+@@ -1800,7 +1799,7 @@ again:
+ 		 */
+ 		bch_info(c, "Second GC pass needed, restarting:");
+ 		clear_bit(BCH_FS_need_another_gc, &c->flags);
+-		__gc_pos_set(c, gc_phase(GC_PHASE_NOT_RUNNING));
++		__gc_pos_set(c, gc_phase(GC_PHASE_not_running));
+ 
+ 		bch2_gc_stripes_reset(c, metadata_only);
+ 		bch2_gc_alloc_reset(c, metadata_only);
+@@ -1827,7 +1826,7 @@ out:
+ 
+ 	percpu_down_write(&c->mark_lock);
+ 	/* Indicates that gc is no longer in progress: */
+-	__gc_pos_set(c, gc_phase(GC_PHASE_NOT_RUNNING));
++	__gc_pos_set(c, gc_phase(GC_PHASE_not_running));
+ 
+ 	bch2_gc_free(c);
+ 	percpu_up_write(&c->mark_lock);
+--- a/fs/bcachefs/btree_gc.h
++++ b/fs/bcachefs/btree_gc.h
+@@ -3,6 +3,7 @@
+ #define _BCACHEFS_BTREE_GC_H
+ 
+ #include "bkey.h"
++#include "btree_gc_types.h"
+ #include "btree_types.h"
+ 
+ int bch2_check_topology(struct bch_fs *);
+@@ -35,38 +36,17 @@ int bch2_gc_thread_start(struct bch_fs *
+ /* Position of (the start of) a gc phase: */
+ static inline struct gc_pos gc_phase(enum gc_phase phase)
+ {
+-	return (struct gc_pos) {
+-		.phase	= phase,
+-		.pos	= POS_MIN,
+-		.level	= 0,
+-	};
+-}
+-
+-static inline int gc_pos_cmp(struct gc_pos l, struct gc_pos r)
+-{
+-	return  cmp_int(l.phase, r.phase) ?:
+-		bpos_cmp(l.pos, r.pos) ?:
+-		cmp_int(l.level, r.level);
+-}
+-
+-static inline enum gc_phase btree_id_to_gc_phase(enum btree_id id)
+-{
+-	switch (id) {
+-#define x(name, v, ...) case BTREE_ID_##name: return GC_PHASE_BTREE_##name;
+-	BCH_BTREE_IDS()
+-#undef x
+-	default:
+-		BUG();
+-	}
++	return (struct gc_pos) { .phase	= phase, };
+ }
+ 
+-static inline struct gc_pos gc_pos_btree(enum btree_id id,
++static inline struct gc_pos gc_pos_btree(enum btree_id btree,
+ 					 struct bpos pos, unsigned level)
+ {
+ 	return (struct gc_pos) {
+-		.phase	= btree_id_to_gc_phase(id),
+-		.pos	= pos,
++		.phase	= GC_PHASE_btree,
++		.btree	= btree,
+ 		.level	= level,
++		.pos	= pos,
+ 	};
+ }
+ 
+@@ -91,6 +71,22 @@ static inline struct gc_pos gc_pos_btree
+ 	return gc_pos_btree(id, SPOS_MAX, BTREE_MAX_DEPTH);
+ }
+ 
++static inline int gc_btree_order(enum btree_id btree)
++{
++	if (btree == BTREE_ID_stripes)
++		return -1;
++	return btree;
++}
++
++static inline int gc_pos_cmp(struct gc_pos l, struct gc_pos r)
++{
++	return   cmp_int(l.phase, r.phase) ?:
++		 cmp_int(gc_btree_order(l.btree),
++			 gc_btree_order(r.btree)) ?:
++		-cmp_int(l.level, r.level) ?:
++		 bpos_cmp(l.pos, r.pos);
++}
++
+ static inline bool gc_visited(struct bch_fs *c, struct gc_pos pos)
+ {
+ 	unsigned seq;
+--- /dev/null
++++ b/fs/bcachefs/btree_gc_types.h
+@@ -0,0 +1,29 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _BCACHEFS_BTREE_GC_TYPES_H
++#define _BCACHEFS_BTREE_GC_TYPES_H
++
++#include <linux/generic-radix-tree.h>
++
++enum gc_phase {
++	GC_PHASE_not_running,
++	GC_PHASE_start,
++	GC_PHASE_sb,
++	GC_PHASE_btree,
++};
++
++struct gc_pos {
++	enum gc_phase		phase:8;
++	enum btree_id		btree:8;
++	u16			level;
++	struct bpos		pos;
++};
++
++struct reflink_gc {
++	u64		offset;
++	u32		size;
++	u32		refcount;
++};
++
++typedef GENRADIX(struct reflink_gc) reflink_gc_table;
++
++#endif /* _BCACHEFS_BTREE_GC_TYPES_H */
+--- a/fs/bcachefs/ec.c
++++ b/fs/bcachefs/ec.c
+@@ -880,7 +880,7 @@ static int __ec_stripe_mem_alloc(struct
+ 	if (!genradix_ptr_alloc(&c->stripes, idx, gfp))
+ 		return -BCH_ERR_ENOMEM_ec_stripe_mem_alloc;
+ 
+-	if (c->gc_pos.phase != GC_PHASE_NOT_RUNNING &&
++	if (c->gc_pos.phase != GC_PHASE_not_running &&
+ 	    !genradix_ptr_alloc(&c->gc_stripes, idx, gfp))
+ 		return -BCH_ERR_ENOMEM_ec_stripe_mem_alloc;
+ 
 
 
 
