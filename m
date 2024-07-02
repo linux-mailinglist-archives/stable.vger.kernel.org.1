@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-56778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E00B9245EC
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:28:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 439819244C7
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:14:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD0C81F21BD9
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:28:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1C00B25C7C
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484571BE24F;
-	Tue,  2 Jul 2024 17:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8ED1BE233;
+	Tue,  2 Jul 2024 17:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFrC/uzy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0GkV3D/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0632F1514DC;
-	Tue,  2 Jul 2024 17:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9F215B0FE;
+	Tue,  2 Jul 2024 17:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941328; cv=none; b=p3TdWXMoJnT14d78NNCribhuyBBYZediVrRWCOkrTlM3rbzD73RfSwArUQMXwSRxVfzZ3/PyzCDtjPJCSvxj2P01VNruxh/YUHqHnuZj6L5s81/JIFdBFsm+rAEykx3UvlXR3FieN7N2FEjDrQxfIVvy1miHskKYi+imVIwwOsk=
+	t=1719940491; cv=none; b=tOUotG/Kf7CYNlYSJAjnqrWrOZqr3TkokxOxVpzPWgVB8SDIyntCTIyUP5y1uTP+ajxnOIpKUOx/Kkxhx61x2CGkOqPnUi27yWKikT49cydWy40VZoofFErEqXbCpm4N+aQ7buPVCECMImffArSOjnN7d9pfNPXgXiT/oxcmNho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941328; c=relaxed/simple;
-	bh=Unhs/sxQdeb0Z8FV/Qlwv+ScKe0rM6eYTqnDEU7S2Ds=;
+	s=arc-20240116; t=1719940491; c=relaxed/simple;
+	bh=iEqEmCFwcuaFkralKCC19lo2wMHth8Yys8bY3ALHWxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DFSWUFKiW+Xhfgiu/n9ZsDooRiSUc5Eh263DI6V5MsjOU1xMVoIMkr3up+MHKFubnBtF7uA1EHgH9Z8Q2vs/VptDQZH1VYkFH+aP0fcqlMYehFyRQ4NgoF9PqA4fO5YER/ZcWgsVTmXZktmXFSsK/OVgmsntHI6qky5hadt1zJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFrC/uzy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD65C116B1;
-	Tue,  2 Jul 2024 17:28:47 +0000 (UTC)
+	 MIME-Version; b=GRLQi6NxR33L/vc2QuYRi/hfgQn1tRX0WCbIJp9aycTS314fnVaP6ojd/+i85jffGY5cRFSjjnK71h4sS7b2OMUbza1YAWz8jgB81WFonvoYpKa5kETJkBLqRQ24zPDTa8feXlQIkc/ITRBGtT7+5uSmhx2LQJLqN67bBSy2Muo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0GkV3D/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D5AC116B1;
+	Tue,  2 Jul 2024 17:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941327;
-	bh=Unhs/sxQdeb0Z8FV/Qlwv+ScKe0rM6eYTqnDEU7S2Ds=;
+	s=korg; t=1719940491;
+	bh=iEqEmCFwcuaFkralKCC19lo2wMHth8Yys8bY3ALHWxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mFrC/uzymLkzeywoY3NFbwMpKEpAo+QYcL25Il0qqW9Ew6xTzkwvHVVMVoS5kjb9z
-	 exh6Hh22XiITMy9ZHmSEGmqoEKZWEdX0o6KAJGUkOlj/Gjhb2vDX9PjnEOuZiQB7ID
-	 mAkDuB6yv70sRf95PP/Q9hW3tu0srr0PbBjfGwpY=
+	b=y0GkV3D/tZdAFhld+qlHCs7hLU6xqFUrSLnRvGkjIJynnyFuAIUWWqW681lsyUbOo
+	 53LKQlgzVnQdyrAYoMwGBS5LEKXiCOzgsr/tMz7YPLsrbT4T62G3HhEPRYp+00pOom
+	 VYz2W2X/jMsT1sD2xQ0MDkwjw7HlCqGJhKks5iA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilian Heyne <mheyne@amazon.de>,
-	Hagar Hemdan <hagarhem@amazon.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/128] pinctrl: fix deadlock in create_pinctrl() when handling -EPROBE_DEFER
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.9 170/222] irqchip/loongson-eiointc: Use early_cpu_to_node() instead of cpu_to_node()
 Date: Tue,  2 Jul 2024 19:03:28 +0200
-Message-ID: <20240702170226.513461654@linuxfoundation.org>
+Message-ID: <20240702170250.474551904@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hagar Hemdan <hagarhem@amazon.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit adec57ff8e66aee632f3dd1f93787c13d112b7a1 ]
+commit 2d64eaeeeda5659d52da1af79d237269ba3c2d2c upstream.
 
-In create_pinctrl(), pinctrl_maps_mutex is acquired before calling
-add_setting(). If add_setting() returns -EPROBE_DEFER, create_pinctrl()
-calls pinctrl_free(). However, pinctrl_free() attempts to acquire
-pinctrl_maps_mutex, which is already held by create_pinctrl(), leading to
-a potential deadlock.
+Multi-bridge machines required that all eiointc controllers in the system
+are initialized, otherwise the system does not boot.
 
-This patch resolves the issue by releasing pinctrl_maps_mutex before
-calling pinctrl_free(), preventing the deadlock.
+The initialization happens on the boot CPU during early boot and relies on
+cpu_to_node() for identifying the individual nodes.
 
-This bug was discovered and resolved using Coverity Static Analysis
-Security Testing (SAST) by Synopsys, Inc.
+That works when the number of possible CPUs is large enough, but with a
+command line limit, e.g. "nr_cpus=$N" for kdump, but fails when the CPUs
+of the secondary nodes are not covered.
 
-Fixes: 42fed7ba44e4 ("pinctrl: move subsystem mutex to pinctrl_dev struct")
-Suggested-by: Maximilian Heyne <mheyne@amazon.de>
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-Link: https://lore.kernel.org/r/20240604085838.3344-1-hagarhem@amazon.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+During early ACPI enumeration all CPU to node mappings are recorded up to
+CONFIG_NR_CPUS. These are accessible via early_cpu_to_node() even in the
+case that "nr_cpus=N" truncates the number of possible CPUs and only
+provides the possible CPUs via cpu_to_node() translation.
+
+Change the node lookup in the driver to use early_cpu_to_node() so that
+even with a limitation on the number of possible CPUs all eointc instances
+are initialized.
+
+This can't obviously cure the case where CONFIG_NR_CPUS is too small.
+
+[ tglx: Massaged changelog ]
+
+Fixes: 64cc451e45e1 ("irqchip/loongson-eiointc: Fix incorrect use of acpi_get_vec_parent")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240623034113.1808727-1-chenhuacai@loongson.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-loongson-eiointc.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
-index 223482584f54f..db5fc55a5c964 100644
---- a/drivers/pinctrl/core.c
-+++ b/drivers/pinctrl/core.c
-@@ -1092,8 +1092,8 @@ static struct pinctrl *create_pinctrl(struct device *dev,
- 		 * an -EPROBE_DEFER later, as that is the worst case.
- 		 */
- 		if (ret == -EPROBE_DEFER) {
--			pinctrl_free(p, false);
- 			mutex_unlock(&pinctrl_maps_mutex);
-+			pinctrl_free(p, false);
- 			return ERR_PTR(ret);
- 		}
- 	}
--- 
-2.43.0
-
+--- a/drivers/irqchip/irq-loongson-eiointc.c
++++ b/drivers/irqchip/irq-loongson-eiointc.c
+@@ -15,6 +15,7 @@
+ #include <linux/irqchip/chained_irq.h>
+ #include <linux/kernel.h>
+ #include <linux/syscore_ops.h>
++#include <asm/numa.h>
+ 
+ #define EIOINTC_REG_NODEMAP	0x14a0
+ #define EIOINTC_REG_IPMAP	0x14c0
+@@ -339,7 +340,7 @@ static int __init pch_msi_parse_madt(uni
+ 	int node;
+ 
+ 	if (cpu_has_flatmode)
+-		node = cpu_to_node(eiointc_priv[nr_pics - 1]->node * CORES_PER_EIO_NODE);
++		node = early_cpu_to_node(eiointc_priv[nr_pics - 1]->node * CORES_PER_EIO_NODE);
+ 	else
+ 		node = eiointc_priv[nr_pics - 1]->node;
+ 
+@@ -431,7 +432,7 @@ int __init eiointc_acpi_init(struct irq_
+ 		goto out_free_handle;
+ 
+ 	if (cpu_has_flatmode)
+-		node = cpu_to_node(acpi_eiointc->node * CORES_PER_EIO_NODE);
++		node = early_cpu_to_node(acpi_eiointc->node * CORES_PER_EIO_NODE);
+ 	else
+ 		node = acpi_eiointc->node;
+ 	acpi_set_vec_parent(node, priv->eiointc_domain, pch_group);
 
 
 
