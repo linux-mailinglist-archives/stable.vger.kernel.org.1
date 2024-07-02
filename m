@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-56760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B42419245D9
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:27:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE7F79244D4
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:15:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 414B6B25C5C
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:27:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 685851F21C22
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:15:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927BC1BE251;
-	Tue,  2 Jul 2024 17:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB7081BBBFE;
+	Tue,  2 Jul 2024 17:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNfrr0IX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JQsXPn3E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5067D1514DC;
-	Tue,  2 Jul 2024 17:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E5D14293;
+	Tue,  2 Jul 2024 17:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941266; cv=none; b=Knd3COYs1hGOyZwEkHV27ZlXOO1LnYL7IaSezd376MjrM5LyyDpR550yqW8HqufYMv+wOeIOU9l+T2STDg28Ni3qibpqNGOcBiBdR9kxny/OQxWNfv90namUJjaaG1rhTo5Q2rLAN2yMOGdPaAcwOc/vJ3zw9Xfix3YGk8zPqyg=
+	t=1719940520; cv=none; b=GEczrrQVzUBPRlh9s5YKO3IvpHmieegz0So3ikjXSs5S4qki/ODGlozh8JWBhFfSJt4du40EwTnRnhz94dI+jThAub/ab5kJEgCJU7FJPYXBHyQ/09Lv0kOylGoghNP8eWzuY6XJKVvp7YyZ90cS6ExbBpP0NacGueBYbYCxjqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941266; c=relaxed/simple;
-	bh=vrf1uZ+aV7Cwy3V1VRQs+2U2YaPTbP5oKK04ct4NakM=;
+	s=arc-20240116; t=1719940520; c=relaxed/simple;
+	bh=/u/rAnE9yEeDB3I+M8VNk2564sl12cInDq65JU+E4HE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XAR4NThDAnLnUSep/UPldbWHFHcbi27PVZ+Kv1ykvYpVBd4mFkdBss1S9+YjmMzw1UKWEm9qT6KXpojtnhnlf3uXxaGBy9+/Ntw7D3mRIv24moyUOJnzZa60qvRn7QZVs6hy6Y0F5OQjRsv3+ubG3L04SQe7DOuU5pR71jTCa8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNfrr0IX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95C8C116B1;
-	Tue,  2 Jul 2024 17:27:45 +0000 (UTC)
+	 MIME-Version; b=oXt0iMVtGyMADXYDRUQzOHyXEXeuZzmxfbxbf5AEkFyP56TQhbQ/A/RinIX03WqHt4ixMp/OKfrInvJtICZCZytclVgKOg8kE0AMdgYgGkJIOdWejiAddfnswEI23nC/6omUOt5++4UuFmA1eX+rKitI8DnYCHnaHbRuP1Ue53I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JQsXPn3E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9308BC116B1;
+	Tue,  2 Jul 2024 17:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941266;
-	bh=vrf1uZ+aV7Cwy3V1VRQs+2U2YaPTbP5oKK04ct4NakM=;
+	s=korg; t=1719940520;
+	bh=/u/rAnE9yEeDB3I+M8VNk2564sl12cInDq65JU+E4HE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UNfrr0IXyWLFGjTT1izYq+4ImkPqAAoGtayqadIHQpic5u5GNTEZgN91EQcO7I0ve
-	 N44r+pdU1npe5fbizWuG5K0b3/CxcVArWUU7TAZFVZbOakWG4ezbjFLLmJrU2fBxzY
-	 o7JaQDP6Xpigob1oywLPQ5472taY4lGGoaxQg70k=
+	b=JQsXPn3EGgGgR1+Ps5pGDjvh0PZ43Qh9hXjScMYrbUvglYDsmiSmUhyrGUVPUWjO+
+	 mdzcEpPqVBRHrzLPBRpZkaR9UHybwj55ddHo0hBNyNWq7mprYGhC0a5L8UEUxeu1RS
+	 Adsc/Jyru1wGNaDcZFzA9J2HOrbvKnDSzRquXu40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 014/128] dt-bindings: i2c: atmel,at91sam: correct path to i2c-controller schema
-Date: Tue,  2 Jul 2024 19:03:35 +0200
-Message-ID: <20240702170226.773034119@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 6.9 178/222] hexagon: fix fadvise64_64 calling conventions
+Date: Tue,  2 Jul 2024 19:03:36 +0200
+Message-ID: <20240702170250.780488976@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +60,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit d4e001ffeccfc128c715057e866f301ac9b95728 ]
+commit 896842284c6ccba25ec9d78b7b6e62cdd507c083 upstream.
 
-The referenced i2c-controller.yaml schema is provided by dtschema
-package (outside of Linux kernel), so use full path to reference it.
+fadvise64_64() has two 64-bit arguments at the wrong alignment
+for hexagon, which turns them into a 7-argument syscall that is
+not supported by Linux.
 
+The downstream musl port for hexagon actually asks for a 6-argument
+version the same way we do it on arm, csky, powerpc, so make the
+kernel do it the same way to avoid having to change both.
+
+Link: https://github.com/quic/musl/blob/hexagon/arch/hexagon/syscall_arch.h#L78
 Cc: stable@vger.kernel.org
-Fixes: 7ea75dd386be ("dt-bindings: i2c: convert i2c-at91 to json-schema")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/hexagon/include/asm/syscalls.h |    6 ++++++
+ arch/hexagon/kernel/syscalltab.c    |    7 +++++++
+ 2 files changed, 13 insertions(+)
+ create mode 100644 arch/hexagon/include/asm/syscalls.h
 
-diff --git a/Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml b/Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml
-index 6adedd3ec399b..c22e459c175ab 100644
---- a/Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml
-+++ b/Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml
-@@ -75,7 +75,7 @@ required:
-   - clocks
+--- /dev/null
++++ b/arch/hexagon/include/asm/syscalls.h
+@@ -0,0 +1,6 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#include <asm-generic/syscalls.h>
++
++asmlinkage long sys_hexagon_fadvise64_64(int fd, int advice,
++	                                  u32 a2, u32 a3, u32 a4, u32 a5);
+--- a/arch/hexagon/kernel/syscalltab.c
++++ b/arch/hexagon/kernel/syscalltab.c
+@@ -14,6 +14,13 @@
+ #undef __SYSCALL
+ #define __SYSCALL(nr, call) [nr] = (call),
  
- allOf:
--  - $ref: i2c-controller.yaml
-+  - $ref: /schemas/i2c/i2c-controller.yaml#
-   - if:
-       properties:
-         compatible:
--- 
-2.43.0
-
++SYSCALL_DEFINE6(hexagon_fadvise64_64, int, fd, int, advice,
++		SC_ARG64(offset), SC_ARG64(len))
++{
++	return ksys_fadvise64_64(fd, SC_VAL64(loff_t, offset), SC_VAL64(loff_t, len), advice);
++}
++#define sys_fadvise64_64 sys_hexagon_fadvise64_64
++
+ void *sys_call_table[__NR_syscalls] = {
+ #include <asm/unistd.h>
+ };
 
 
 
