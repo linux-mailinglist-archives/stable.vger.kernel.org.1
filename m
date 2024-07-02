@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-56561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BF1C9244F3
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:16:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F8F9245F5
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A69F0B25148
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:16:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC0861F23377
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28931BE227;
-	Tue,  2 Jul 2024 17:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0811BE846;
+	Tue,  2 Jul 2024 17:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+uNhh+U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAen88S4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E7781F;
-	Tue,  2 Jul 2024 17:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE65D1BE22B;
+	Tue,  2 Jul 2024 17:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940593; cv=none; b=uvr9I/RUmKQvVlEVDRASlZA35YT4zV1mym0K+vAGKs3x9eyOBWp76tZY58Gj6NW5sEFEReBN7s65/i1tbNXp5S28m8M15KQ2oVjBfTrRoME0b0D8Fjb/cgzwO0GayTKFaAX5Sd1E+YpHRAcGQvHcX9KlXLAGUtIM8fMRg6FyVm4=
+	t=1719941353; cv=none; b=jN76F7XGZPZ/GAYWEm+ORV61yufhrTlwA5WnKeJv1XR63bAzdMAmYnZ4HWd0GmJvj+B05CZfli36NUbuip/XtvAaEuG67PZ/vG96o28WKsYqH8obEZ0PNVPvs159tWpN2CFNCQ/2wdmO4AT0FWmbxj/rNJJnXhVIIVB0oUEwD4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940593; c=relaxed/simple;
-	bh=j9DCMALPyXlvu4HPk1kfc4Aqi0DsUeygrF16AszFKj4=;
+	s=arc-20240116; t=1719941353; c=relaxed/simple;
+	bh=an3yqWV00t7ayZ+Z7tDS1imUBLr6m9ia1aGzijfpTkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eahEo21pwtYzCTAGWqZz0SrV8G6gqtu1yVvyLuglLrAV0wNeSluQCJc2YSG36tvZmfDOLInFR4ctgFiPv8Wd6NdAeR1lipllmZASvIsWpWtpSK1OnVhhdRkzKh9la1c6fHPaHDLfCZHljGg1PstCX7y1ViYxGGqrafMzO9RPCMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+uNhh+U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D2AC116B1;
-	Tue,  2 Jul 2024 17:16:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mPRr0FpbcVl9fEsnOeSQj+gDz6jRHrHF9l/xb4oYa+XGNF4QLSSl6qzgXSiVE3XGulcV0RPWVSfD1jqnVTLWQtFja8GUrmTQqu0E66xUYVprP2X4A86onY75gglTmnE+040+7DSJxN4s/jzZj1rTTMGcpSBrADfkKqVX9HEi9Bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAen88S4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D76C116B1;
+	Tue,  2 Jul 2024 17:29:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940593;
-	bh=j9DCMALPyXlvu4HPk1kfc4Aqi0DsUeygrF16AszFKj4=;
+	s=korg; t=1719941352;
+	bh=an3yqWV00t7ayZ+Z7tDS1imUBLr6m9ia1aGzijfpTkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+uNhh+U8kBuJ3t0xDSp4jr37tLZGtCZUMdStjo3CPmSIMwXGo5RmFtKIzOU8xJJG
-	 +hUbayE+5adXXWFMHbmpsIlhyCatKa9+t6ffSZ0s+gsO23hlK+pM7ElK4RJbq8bKBS
-	 C3tOGtk0yNSdSlV5ebz6DGSnBl2N/zPdn3dbtkS0=
+	b=RAen88S4qExyx2btGrIJE/WtfwZfK2ofRbmf8tZCpY0YQs0jwaV7xaYvpv45vvww5
+	 su6mw4VbNrxMN+HgBr/A/28IIbOL0DA930YqHgRyJc8lroC5ZHo4iHrpFP+rZWvrRM
+	 sqpJYHqHVYVBepp5Gub8g19iLXF9ZMl6PipBlsXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Maxime Coquelin <maxime.coquelin@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Xie Yongji <xieyongji@bytedance.com>,
+	Jason Wang <jasowang@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 201/222] Revert "net: sfp: enhance quirk for Fibrestore 2.5G copper SFP module"
-Date: Tue,  2 Jul 2024 19:03:59 +0200
-Message-ID: <20240702170251.666861248@linuxfoundation.org>
+Subject: [PATCH 6.1 039/128] vduse: Temporarily fail if control queue feature requested
+Date: Tue,  2 Jul 2024 19:04:00 +0200
+Message-ID: <20240702170227.711109409@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +66,68 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Maxime Coquelin <maxime.coquelin@redhat.com>
 
-This reverts commit b3dcad0bfd62fcc9367d8092a71918db53804f53 which is
-commit cd4a32e60061789676f7f018a94fcc9ec56732a0 upstream.
+[ Upstream commit 56e71885b0349241c07631a7b979b61e81afab6a ]
 
-Turned out that this should not have been applied to the stable tree.
+Virtio-net driver control queue implementation is not safe
+when used with VDUSE. If the VDUSE application does not
+reply to control queue messages, it currently ends up
+hanging the kernel thread sending this command.
 
-Link: https://lore.kernel.org/r/20240628172211.17ccefe9@dellmb
-Reported-by: Marek Behún <kabel@kernel.org>
-Cc: Jiri Pirko <jiri@nvidia.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Some work is on-going to make the control queue
+implementation robust with VDUSE. Until it is completed,
+let's fail features check if control-queue feature is
+requested.
+
+Signed-off-by: Maxime Coquelin <maxime.coquelin@redhat.com>
+Message-Id: <20240109111025.1320976-3-maxime.coquelin@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/sfp.c |   18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+ drivers/vdpa/vdpa_user/vduse_dev.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -385,23 +385,18 @@ static void sfp_fixup_rollball(struct sf
- 	sfp->phy_t_retry = msecs_to_jiffies(1000);
+diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
+index cb35a76146b39..0ccece3f4f7da 100644
+--- a/drivers/vdpa/vdpa_user/vduse_dev.c
++++ b/drivers/vdpa/vdpa_user/vduse_dev.c
+@@ -8,6 +8,7 @@
+  *
+  */
+ 
++#include "linux/virtio_net.h"
+ #include <linux/init.h>
+ #include <linux/module.h>
+ #include <linux/cdev.h>
+@@ -28,6 +29,7 @@
+ #include <uapi/linux/virtio_config.h>
+ #include <uapi/linux/virtio_ids.h>
+ #include <uapi/linux/virtio_blk.h>
++#include <uapi/linux/virtio_ring.h>
+ #include <linux/mod_devicetable.h>
+ 
+ #include "iova_domain.h"
+@@ -1425,6 +1427,9 @@ static bool features_is_valid(struct vduse_dev_config *config)
+ 	if ((config->device_id == VIRTIO_ID_BLOCK) &&
+ 			(config->features & BIT_ULL(VIRTIO_BLK_F_CONFIG_WCE)))
+ 		return false;
++	else if ((config->device_id == VIRTIO_ID_NET) &&
++			(config->features & BIT_ULL(VIRTIO_NET_F_CTRL_VQ)))
++		return false;
+ 
+ 	return true;
  }
- 
--static void sfp_fixup_fs_2_5gt(struct sfp *sfp)
-+static void sfp_fixup_fs_10gt(struct sfp *sfp)
- {
-+	sfp_fixup_10gbaset_30m(sfp);
- 	sfp_fixup_rollball(sfp);
- 
--	/* The RollBall fixup is not enough for FS modules, the PHY chip inside
-+	/* The RollBall fixup is not enough for FS modules, the AQR chip inside
- 	 * them does not return 0xffff for PHY ID registers in all MMDs for the
- 	 * while initializing. They need a 4 second wait before accessing PHY.
- 	 */
- 	sfp->module_t_wait = msecs_to_jiffies(4000);
- }
- 
--static void sfp_fixup_fs_10gt(struct sfp *sfp)
--{
--	sfp_fixup_10gbaset_30m(sfp);
--	sfp_fixup_fs_2_5gt(sfp);
--}
--
- static void sfp_fixup_halny_gsfp(struct sfp *sfp)
- {
- 	/* Ignore the TX_FAULT and LOS signals on this module.
-@@ -477,10 +472,6 @@ static const struct sfp_quirk sfp_quirks
- 	// Rollball protocol to talk to the PHY.
- 	SFP_QUIRK_F("FS", "SFP-10G-T", sfp_fixup_fs_10gt),
- 
--	// Fiberstore SFP-2.5G-T uses Rollball protocol to talk to the PHY and
--	// needs 4 sec wait before probing the PHY.
--	SFP_QUIRK_F("FS", "SFP-2.5G-T", sfp_fixup_fs_2_5gt),
--
- 	// Fiberstore GPON-ONU-34-20BI can operate at 2500base-X, but report 1.2GBd
- 	// NRZ in their EEPROM
- 	SFP_QUIRK("FS", "GPON-ONU-34-20BI", sfp_quirk_2500basex,
-@@ -497,6 +488,9 @@ static const struct sfp_quirk sfp_quirks
- 	SFP_QUIRK("HUAWEI", "MA5671A", sfp_quirk_2500basex,
- 		  sfp_fixup_ignore_tx_fault),
- 
-+	// FS 2.5G Base-T
-+	SFP_QUIRK_M("FS", "SFP-2.5G-T", sfp_quirk_oem_2_5g),
-+
- 	// Lantech 8330-262D-E can operate at 2500base-X, but incorrectly report
- 	// 2500MBd NRZ in their EEPROM
- 	SFP_QUIRK_M("Lantech", "8330-262D-E", sfp_quirk_2500basex),
+-- 
+2.43.0
+
 
 
 
