@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-56816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE1A924615
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:31:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9941C924624
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:31:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DF161C2084A
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:30:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28BA3B269A1
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE0E71BD005;
-	Tue,  2 Jul 2024 17:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52A563D;
+	Tue,  2 Jul 2024 17:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Km9joVWk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jaJ+mZg+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9613D978;
-	Tue,  2 Jul 2024 17:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6166C1BD005;
+	Tue,  2 Jul 2024 17:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941457; cv=none; b=RE/Cz+U/D0NaZP57ZSi3Letp4KgJdu088vQPivK+uGuUtJcenb+TaD7o4y02AJ+obnIziQwtl7n/szpjLg+qwZp3+Id0EImOMhtHbV4cFya69C59LXqg2pi2CPEJeXf6h1YYnFqYMLjg3ZHObOXl+vrRnlcFh2TTjYahWFJ11Sk=
+	t=1719941494; cv=none; b=octLkYXV+l4ttSFjXduK+UCal8E+YT08iCaxxEquW2I4zUMvtIvx/1xwgc+kxnKVh3GoTBph8lgJn32N62VtQ069mpXnT4uzyeN8fyxW5EWeClK1nMl5c5HJsZSNzwHCEseoE1X1j8EhXhOeVKW81wim/XAjcsyEtyCC1ey+Hjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941457; c=relaxed/simple;
-	bh=icmPyTG1mISpKqDw9EFpXkfEWBKv8FSqDVs07y3MvWM=;
+	s=arc-20240116; t=1719941494; c=relaxed/simple;
+	bh=NhJljT6A59HZTj1p1GgtffrLWRV0y2IORChOirLjoiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=st3opiVskhW7gYJ5ebrH1LFp8ufPn4i25VBIbGsEeYRzqGmNOVo9K93Kc3C0H2AdFgeE3h1vMDMT0EGeqel9XLKvobJr7kt0hkoiNjAwJ5YGDSP/Cv2/9h795Fck+oYxp5Y1SY26yDmA7ojR6FLDbcsoX3BwX97iWBk14nXi5ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Km9joVWk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA021C116B1;
-	Tue,  2 Jul 2024 17:30:56 +0000 (UTC)
+	 MIME-Version; b=gmCwdUo8YDLz5pzOp9640n1OWCmTSrpZB8q3X9n2pl1rcf0PUIFWUbYFxwveqY0dRIoUq7MzdqTLo1toKibOlqU4536QyUWS6u3uIwTvKGX6n59AG2YSqLsuj4r9rTVQX4b1ztPhDtCxBPiKhEqdTDD0p1PLZ/WcxNJVrG6lJXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jaJ+mZg+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED9CC116B1;
+	Tue,  2 Jul 2024 17:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941457;
-	bh=icmPyTG1mISpKqDw9EFpXkfEWBKv8FSqDVs07y3MvWM=;
+	s=korg; t=1719941494;
+	bh=NhJljT6A59HZTj1p1GgtffrLWRV0y2IORChOirLjoiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Km9joVWkZUUSw8rkaCsuRYjenmHksy/FLo0xzzTm0fL9lTuEnCPvKVPO+gReQqkGC
-	 qh+0NaUvqQj4SDlL/jZur2Tl7wNCHm9e8lsVp4xs+vs8m1EsrcSJ3StRMcN0wNK/44
-	 Pc9a/9qzgIvURp0zyFvJahHrlv50bpllQ+O/Ymzg=
+	b=jaJ+mZg+MdHov6ttyZJ4HUhqeEH3p8VTFyUDyIANJtGX27vBLHqd/uRpNX6CCOido
+	 XGYZlt1bQyTjYJJMksQsx2gIKPUwK9UpIZ0vveqr4uS7G3llSAY38wIjWV86iAx44T
+	 9iiulvbD/TuVX3fEl9Iu3rxc2QrO1FNyrbkYhiGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Adhemerval Zanella <adhemerval.zanella@linaro.org>,
+	Helge Deller <deller@gmx.de>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/128] x86: stop playing stack games in profile_pc()
-Date: Tue,  2 Jul 2024 19:04:23 +0200
-Message-ID: <20240702170228.577403509@linuxfoundation.org>
+Subject: [PATCH 6.1 063/128] parisc: use generic sys_fanotify_mark implementation
+Date: Tue,  2 Jul 2024 19:04:24 +0200
+Message-ID: <20240702170228.616097638@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
 References: <20240702170226.231899085@linuxfoundation.org>
@@ -65,93 +67,97 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 093d9603b60093a9aaae942db56107f6432a5dca ]
+[ Upstream commit 403f17a330732a666ae793f3b15bc75bb5540524 ]
 
-The 'profile_pc()' function is used for timer-based profiling, which
-isn't really all that relevant any more to begin with, but it also ends
-up making assumptions based on the stack layout that aren't necessarily
-valid.
+The sys_fanotify_mark() syscall on parisc uses the reverse word order
+for the two halves of the 64-bit argument compared to all syscalls on
+all 32-bit architectures. As far as I can tell, the problem is that
+the function arguments on parisc are sorted backwards (26, 25, 24, 23,
+...) compared to everyone else, so the calling conventions of using an
+even/odd register pair in native word order result in the lower word
+coming first in function arguments, matching the expected behavior
+on little-endian architectures. The system call conventions however
+ended up matching what the other 32-bit architectures do.
 
-Basically, the code tries to account the time spent in spinlocks to the
-caller rather than the spinlock, and while I support that as a concept,
-it's not worth the code complexity or the KASAN warnings when no serious
-profiling is done using timers anyway these days.
+A glibc cleanup in 2020 changed the userspace behavior in a way that
+handles all architectures consistently, but this inadvertently broke
+parisc32 by changing to the same method as everyone else.
 
-And the code really does depend on stack layout that is only true in the
-simplest of cases.  We've lost the comment at some point (I think when
-the 32-bit and 64-bit code was unified), but it used to say:
+The change made it into glibc-2.35 and subsequently into debian 12
+(bookworm), which is the latest stable release. This means we
+need to choose between reverting the glibc change or changing the
+kernel to match it again, but either hange will leave some systems
+broken.
 
-	Assume the lock function has either no stack frame or a copy
-	of eflags from PUSHF.
+Pick the option that is more likely to help current and future
+users and change the kernel to match current glibc. This also
+means the behavior is now consistent across architectures, but
+it breaks running new kernels with old glibc builds before 2.35.
 
-which explains why it just blindly loads a word or two straight off the
-stack pointer and then takes a minimal look at the values to just check
-if they might be eflags or the return pc:
+Link: https://sourceware.org/git/?p=glibc.git;a=commitdiff;h=d150181d73d9
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/commit/arch/parisc/kernel/sys_parisc.c?h=57b1dfbd5b4a39d
+Cc: Adhemerval Zanella <adhemerval.zanella@linaro.org>
+Tested-by: Helge Deller <deller@gmx.de>
+Acked-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+I found this through code inspection, please double-check to make
+sure I got the bug and the fix right.
 
-	Eflags always has bits 22 and up cleared unlike kernel addresses
+The alternative is to fix this by reverting glibc back to the
+unusual behavior.
 
-but that basic stack layout assumption assumes that there isn't any lock
-debugging etc going on that would complicate the code and cause a stack
-frame.
-
-It causes KASAN unhappiness reported for years by syzkaller [1] and
-others [2].
-
-With no real practical reason for this any more, just remove the code.
-
-Just for historical interest, here's some background commits relating to
-this code from 2006:
-
-  0cb91a229364 ("i386: Account spinlocks to the caller during profiling for !FP kernels")
-  31679f38d886 ("Simplify profile_pc on x86-64")
-
-and a code unification from 2009:
-
-  ef4512882dbe ("x86: time_32/64.c unify profile_pc")
-
-but the basics of this thing actually goes back to before the git tree.
-
-Link: https://syzkaller.appspot.com/bug?extid=84fe685c02cd112a2ac3 [1]
-Link: https://lore.kernel.org/all/CAK55_s7Xyq=nh97=K=G1sxueOFrJDAvPOJAL4TPTCAYvmxO9_A@mail.gmail.com/ [2]
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/time.c | 20 +-------------------
- 1 file changed, 1 insertion(+), 19 deletions(-)
+ arch/parisc/Kconfig                     | 1 +
+ arch/parisc/kernel/sys_parisc32.c       | 9 ---------
+ arch/parisc/kernel/syscalls/syscall.tbl | 2 +-
+ 3 files changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/kernel/time.c b/arch/x86/kernel/time.c
-index e42faa792c079..52e1f3f0b361c 100644
---- a/arch/x86/kernel/time.c
-+++ b/arch/x86/kernel/time.c
-@@ -27,25 +27,7 @@
- 
- unsigned long profile_pc(struct pt_regs *regs)
- {
--	unsigned long pc = instruction_pointer(regs);
--
--	if (!user_mode(regs) && in_lock_functions(pc)) {
--#ifdef CONFIG_FRAME_POINTER
--		return *(unsigned long *)(regs->bp + sizeof(long));
--#else
--		unsigned long *sp = (unsigned long *)regs->sp;
--		/*
--		 * Return address is either directly at stack pointer
--		 * or above a saved flags. Eflags has bits 22-31 zero,
--		 * kernel addresses don't.
--		 */
--		if (sp[0] >> 22)
--			return sp[0];
--		if (sp[1] >> 22)
--			return sp[1];
--#endif
--	}
--	return pc;
-+	return instruction_pointer(regs);
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index abf39ecda6fb1..5762633ea95e4 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -14,6 +14,7 @@ config PARISC
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
+ 	select ARCH_HAS_PTE_SPECIAL
+ 	select ARCH_NO_SG_CHAIN
++	select ARCH_SPLIT_ARG64 if !64BIT
+ 	select ARCH_SUPPORTS_HUGETLBFS if PA20
+ 	select ARCH_SUPPORTS_MEMORY_FAILURE
+ 	select ARCH_STACKWALK
+diff --git a/arch/parisc/kernel/sys_parisc32.c b/arch/parisc/kernel/sys_parisc32.c
+index 2a12a547b447b..826c8e51b5853 100644
+--- a/arch/parisc/kernel/sys_parisc32.c
++++ b/arch/parisc/kernel/sys_parisc32.c
+@@ -23,12 +23,3 @@ asmlinkage long sys32_unimplemented(int r26, int r25, int r24, int r23,
+     	current->comm, current->pid, r20);
+     return -ENOSYS;
  }
- EXPORT_SYMBOL(profile_pc);
- 
+-
+-asmlinkage long sys32_fanotify_mark(compat_int_t fanotify_fd, compat_uint_t flags,
+-	compat_uint_t mask0, compat_uint_t mask1, compat_int_t dfd,
+-	const char  __user * pathname)
+-{
+-	return sys_fanotify_mark(fanotify_fd, flags,
+-			((__u64)mask1 << 32) | mask0,
+-			 dfd, pathname);
+-}
+diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
+index ba4884eaa5057..42702f5d49f28 100644
+--- a/arch/parisc/kernel/syscalls/syscall.tbl
++++ b/arch/parisc/kernel/syscalls/syscall.tbl
+@@ -364,7 +364,7 @@
+ 320	common	accept4			sys_accept4
+ 321	common	prlimit64		sys_prlimit64
+ 322	common	fanotify_init		sys_fanotify_init
+-323	common	fanotify_mark		sys_fanotify_mark		sys32_fanotify_mark
++323	common	fanotify_mark		sys_fanotify_mark		compat_sys_fanotify_mark
+ 324	32	clock_adjtime		sys_clock_adjtime32
+ 324	64	clock_adjtime		sys_clock_adjtime
+ 325	common	name_to_handle_at	sys_name_to_handle_at
 -- 
 2.43.0
 
