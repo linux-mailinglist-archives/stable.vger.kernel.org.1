@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-56789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18FFF9245F9
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF5A19244FB
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:17:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B0601C24A05
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A9051F20EFD
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:17:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66371BF323;
-	Tue,  2 Jul 2024 17:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3631B583A;
+	Tue,  2 Jul 2024 17:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P40HHeu9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tC0hRbkA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830AD1BE857;
-	Tue,  2 Jul 2024 17:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF76A1BE226;
+	Tue,  2 Jul 2024 17:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941366; cv=none; b=rP3s+AT9oCL5sK6G2ptjodOs2VvepllyyOsZ670rx2VZt9GJyN/eVsywOMH07LylzSO2EgjZlTpxDQrAqDJMC/gcP/yoj3GtNmysKCJNJKr5mGzRIseWkUW31wRW1w/CQgGTVBA579UgOkT9GWiPJ+oQlBZ5gElFC25sYZI8Y2I=
+	t=1719940610; cv=none; b=Kx4HugYdB3cAFK3vcQBPOIxclCn2ZdT5h4Ny0XXKunJaEwvBgxL69BPR44lGm0+GcCcrZ2yz4n2dHDLS73K5s3M6bdS5OBghR24wmhx0hEC1LI0bJ0W9ce7btktPplkdgBb59qVqF+K4s/X4mbD8hiEtITt6/XpcIj7rLhF1bT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941366; c=relaxed/simple;
-	bh=TujLTNeHavTXm2STGQT7ihvSD1cjqoW7CuU88jU42ik=;
+	s=arc-20240116; t=1719940610; c=relaxed/simple;
+	bh=kbofdHiKNiFfT0QkMuu+OS92Dt4NyGRAAq1DcwssfaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2dWqYQjl5gljgCM0a+7Y/YsTtx34f2Uf8GGB8QZG7toUiNzw8yTCyqAaXYuitGRktoQMLALXf4gga8Qzg/RNTUnoWe46ErkrNs8iQSiFVaO2nObug1Qb9xny7jDv/Fl2GwN7AEICpqdc6ymuGcIdfVa0LX1pjzXd/iRooS0+As=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P40HHeu9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D2FC116B1;
-	Tue,  2 Jul 2024 17:29:25 +0000 (UTC)
+	 MIME-Version; b=rxzVI3p51wBBh0PVGZxK+lss2x2RIwEY9DzPo57zQ98itzbJ4JjsSHqWZVZScCLUPE54nfC++7481WQi+5f9CgJhv0BlNNTKtidZuR7YkvMAsCXZiDyOR22MVz5w3Xew/6rDq2JH5K7hSmHy3iJm8Bg3AzoJiwdxTCSEO9N191A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tC0hRbkA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A549C116B1;
+	Tue,  2 Jul 2024 17:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941366;
-	bh=TujLTNeHavTXm2STGQT7ihvSD1cjqoW7CuU88jU42ik=;
+	s=korg; t=1719940609;
+	bh=kbofdHiKNiFfT0QkMuu+OS92Dt4NyGRAAq1DcwssfaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P40HHeu9WQIm9By2ezMloy4sl/EYHQy6eQcg8b5WIF09djVG9844gMpkUnSGq1IkW
-	 tEYD5vWfMVg1SoYRYZkWiOP3PPJ+r9V+xK1Cf0L4WHFeMrA+0vm85jOtlO9UiGlC7P
-	 CdIGo3Y9QuTkJXsZ1byWM3YvwvA+REuj5azKg/wo=
+	b=tC0hRbkA7KbgFDADv7VI+xuEU+HuSzfgVXgtCV+qX3pU1DcD5dYUTXaTOJt2bcyGM
+	 gXP+kL9MsF3mpX9eAsEEYYRhrY8AB83BDe4iIslA4pB3I7+hF4yuQ1IqUOgmhJDE84
+	 vlrQu2Dd9akzRb72Qt2fKo1Bg3njnjql3SoVP8/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Anton Protopopov <aspsk@isovalent.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/128] bpf: Add a check for struct bpf_fib_lookup size
+Subject: [PATCH 6.9 206/222] arm64: dts: rockchip: Rename LED related pinctrl nodes on rk3308-rock-pi-s
 Date: Tue,  2 Jul 2024 19:04:04 +0200
-Message-ID: <20240702170227.863792165@linuxfoundation.org>
+Message-ID: <20240702170251.860576264@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Protopopov <aspsk@isovalent.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit 59b418c7063d30e0a3e1f592d47df096db83185c ]
+[ Upstream commit d2a52f678883fe4bc00bca89366b1ba504750abf ]
 
-The struct bpf_fib_lookup should not grow outside of its 64 bytes.
-Add a static assert to validate this.
+The nodename, <name>-gpio, of referenced pinctrl nodes for the two LEDs
+on the ROCK Pi S cause DT schema validation error:
 
-Suggested-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240326101742.17421-4-aspsk@isovalent.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+  leds: green-led-gpio: {'rockchip,pins': [[0, 6, 0, 90]], 'phandle': [[98]]} is not of type 'array'
+        from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml#
+  leds: heartbeat-led-gpio: {'rockchip,pins': [[0, 5, 0, 90]], 'phandle': [[99]]} is not of type 'array'
+        from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml#
+
+Rename the pinctrl nodes and symbols to pass DT schema validation, also
+extend LED nodes with information about color and function.
+
+Fixes: 2e04c25b1320 ("arm64: dts: rockchip: add ROCK Pi S DTS support")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20240521211029.1236094-7-jonas@kwiboo.se
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 7a07413913538..dc89c34247187 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -82,6 +82,9 @@
- #include <net/mptcp.h>
- #include <net/netfilter/nf_conntrack_bpf.h>
+diff --git a/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts b/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
+index 84f4b4a44644c..079101cddd65f 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
+@@ -5,6 +5,8 @@
+  */
  
-+/* Keep the struct bpf_fib_lookup small so that it fits into a cacheline */
-+static_assert(sizeof(struct bpf_fib_lookup) == 64, "struct bpf_fib_lookup size check");
+ /dts-v1/;
 +
- static const struct bpf_func_proto *
- bpf_sk_base_func_proto(enum bpf_func_id func_id);
++#include <dt-bindings/leds/common.h>
+ #include "rk3308.dtsi"
  
+ / {
+@@ -24,17 +26,21 @@
+ 	leds {
+ 		compatible = "gpio-leds";
+ 		pinctrl-names = "default";
+-		pinctrl-0 = <&green_led_gio>, <&heartbeat_led_gpio>;
++		pinctrl-0 = <&green_led>, <&heartbeat_led>;
+ 
+ 		green-led {
++			color = <LED_COLOR_ID_GREEN>;
+ 			default-state = "on";
++			function = LED_FUNCTION_POWER;
+ 			gpios = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
+ 			label = "rockpis:green:power";
+ 			linux,default-trigger = "default-on";
+ 		};
+ 
+ 		blue-led {
++			color = <LED_COLOR_ID_BLUE>;
+ 			default-state = "on";
++			function = LED_FUNCTION_HEARTBEAT;
+ 			gpios = <&gpio0 RK_PA5 GPIO_ACTIVE_HIGH>;
+ 			label = "rockpis:blue:user";
+ 			linux,default-trigger = "heartbeat";
+@@ -216,11 +222,11 @@
+ 	pinctrl-0 = <&rtc_32k>;
+ 
+ 	leds {
+-		green_led_gio: green-led-gpio {
++		green_led: green-led {
+ 			rockchip,pins = <0 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
+ 		};
+ 
+-		heartbeat_led_gpio: heartbeat-led-gpio {
++		heartbeat_led: heartbeat-led {
+ 			rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
+ 		};
+ 	};
 -- 
 2.43.0
 
