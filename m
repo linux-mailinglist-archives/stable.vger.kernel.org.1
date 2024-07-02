@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-56625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A775924548
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:20:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 133C792448E
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:12:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 272DA1F22785
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:20:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6CC2B24F5C
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D05B01BE222;
-	Tue,  2 Jul 2024 17:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8371BE22B;
+	Tue,  2 Jul 2024 17:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qut/XLbj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNPBlWAg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBE61BE226;
-	Tue,  2 Jul 2024 17:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06ED15218A;
+	Tue,  2 Jul 2024 17:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940809; cv=none; b=hx+e1b3crV2P+wOQx57kv2e4tmfX6AdxRwJ2VvS3Cy16D1IAl6laj6uz3HMB5FuEiXK1i+a/hZUeVwTUloZohGHK1n8PRiLprjsAiLCURpISFePq0d0ue9bdHi/Ak1UHW9sHsO5HP0zq7Y4VFegitalvUCwgve4MfUaYpG0KrVI=
+	t=1719940324; cv=none; b=fiF9naQge5x3vrK29rSe9kDWyJ2ghyMEd1ny5Qs6wPfNYBahVn1HvFn5OlR4MlUpoWXjB0J/vud0VuPH6z5LY7cEefN564mYgcKRiBrkGbzZU+wpjEDjl42FImnWKaKya5BQEjWOxvafxv4++fKfws4nuBNIlL6XXbjx6SfW7zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940809; c=relaxed/simple;
-	bh=fAUg+VBC1tjeQ5LW4U44yTs49HE3HhJj4juoC29jQPQ=;
+	s=arc-20240116; t=1719940324; c=relaxed/simple;
+	bh=l6RbndkR2CFvO/vR2LDxdGzw9jnXmVkTRVQ6PKOpR18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGZfOwXmofq5Rlmeto5bBJwHxlSMbMaA/0ZoxTd9buEHQfUxu5kUAwEu06+QyoSrGk+r7zcH28RpHgXGroRFrbyEVtepNqPc+HvpyPXi4GFFZa+Ch6vGXS/OAZzZhGTaZYrQ+rahKzAyrxJlxVlojs/bAvPXML24hEF4rTvXymo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qut/XLbj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF4BC116B1;
-	Tue,  2 Jul 2024 17:20:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E7gUgQN7U8Nl/+/f7gb/idQWrPVyr+NP9CNyVNpM4eUMcQzoSwH3yyiChJ3+8HRqBBPKdGrvuY6TncBnRB2S7hHWFrn9dRwW+BVtyV4I4JZHo+oTsurYVDAXWmLiVzFtpz0cB8ndODd5ajPNjU+otLPTbxlBCWUTOsS73z5zd6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNPBlWAg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6213EC116B1;
+	Tue,  2 Jul 2024 17:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940809;
-	bh=fAUg+VBC1tjeQ5LW4U44yTs49HE3HhJj4juoC29jQPQ=;
+	s=korg; t=1719940323;
+	bh=l6RbndkR2CFvO/vR2LDxdGzw9jnXmVkTRVQ6PKOpR18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qut/XLbjoLaI5/3My34tgZW4FWHovH4PbpTKH0bJ73Hezr4Y8TU6qa8q0aHDmtUsV
-	 509s3OtpRbqgniFcy5p/E3vTbk3EFa1WjcInE+FlNRApLXmTXajP2P95B1WXizu41N
-	 b8TrgC/2AiG77bB7Zh1QokrAYCZhm458XW2OjyLY=
+	b=zNPBlWAgTPz74pxXGL2CVpaQIkiohmVUyCoXp6FAI+ywy7UZ1J7+kBlzN8OwXafyX
+	 9jQngVTD/i8fNwJ2D9od8L+44aPt3z8TDu12EjcmjmhGnksA3VSLUDfNtd/1k9N14K
+	 lqjh9JWY6aPa9ZLcxAkGu18fiCM3+Hp0grVif4nk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Rizkalla <ajarizzo@gmail.com>,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Angel Iglesias <ang.iglesiasg@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 002/163] iio: pressure: bmp280: Fix BMP580 temperature reading
-Date: Tue,  2 Jul 2024 19:01:56 +0200
-Message-ID: <20240702170233.143724864@linuxfoundation.org>
+Subject: [PATCH 6.9 079/222] drm/xe/xe_devcoredump: Check NULL before assignments
+Date: Tue,  2 Jul 2024 19:01:57 +0200
+Message-ID: <20240702170246.999703496@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Rizkalla <ajarizzo@gmail.com>
+From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 
-[ Upstream commit 0f0f6306617cb4b6231fc9d4ec68ab9a56dba7c0 ]
+[ Upstream commit b15e65349553b1689d15fbdebea874ca5ae2274a ]
 
-Fix overflow issue when storing BMP580 temperature reading and
-properly preserve sign of 24-bit data.
+Assign 'xe_devcoredump_snapshot *' and 'xe_device *' only if
+'coredump' is not NULL.
 
-Signed-off-by: Adam Rizkalla <ajarizzo@gmail.com>
-Tested-By: Vasileios Amoiridis <vassilisamir@gmail.com>
-Acked-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-Link: https://lore.kernel.org/r/Zin2udkXRD0+GrML@adam-asahi.lan
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+v2
+- Fix commit messages.
+
+v3
+- Define variables before code.(Ashutosh/Jose)
+
+v4
+- Drop return check for coredump_to_xe. (Jose/Rodrigo)
+
+v5
+- Modify misleading commit message. (Matt)
+
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: José Roberto de Souza <jose.souza@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240328123739.3633428-1-himal.prasad.ghimiray@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/bmp280-core.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/xe/xe_devcoredump.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index 4c493db7db965..a65630d5742f0 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -1385,12 +1385,12 @@ static int bmp580_read_temp(struct bmp280_data *data, int *val, int *val2)
+diff --git a/drivers/gpu/drm/xe/xe_devcoredump.c b/drivers/gpu/drm/xe/xe_devcoredump.c
+index 68d3d623a05bf..ccec291b02ccd 100644
+--- a/drivers/gpu/drm/xe/xe_devcoredump.c
++++ b/drivers/gpu/drm/xe/xe_devcoredump.c
+@@ -74,17 +74,19 @@ static ssize_t xe_devcoredump_read(char *buffer, loff_t offset,
+ 				   size_t count, void *data, size_t datalen)
+ {
+ 	struct xe_devcoredump *coredump = data;
+-	struct xe_device *xe = coredump_to_xe(coredump);
+-	struct xe_devcoredump_snapshot *ss = &coredump->snapshot;
++	struct xe_device *xe;
++	struct xe_devcoredump_snapshot *ss;
+ 	struct drm_printer p;
+ 	struct drm_print_iterator iter;
+ 	struct timespec64 ts;
+ 	int i;
  
- 	/*
- 	 * Temperature is returned in Celsius degrees in fractional
--	 * form down 2^16. We rescale by x1000 to return milli Celsius
--	 * to respect IIO ABI.
-+	 * form down 2^16. We rescale by x1000 to return millidegrees
-+	 * Celsius to respect IIO ABI.
- 	 */
--	*val = raw_temp * 1000;
--	*val2 = 16;
--	return IIO_VAL_FRACTIONAL_LOG2;
-+	raw_temp = sign_extend32(raw_temp, 23);
-+	*val = ((s64)raw_temp * 1000) / (1 << 16);
-+	return IIO_VAL_INT;
- }
+-	/* Our device is gone already... */
+-	if (!data || !coredump_to_xe(coredump))
++	if (!coredump)
+ 		return -ENODEV;
  
- static int bmp580_read_press(struct bmp280_data *data, int *val, int *val2)
++	xe = coredump_to_xe(coredump);
++	ss = &coredump->snapshot;
++
+ 	/* Ensure delayed work is captured before continuing */
+ 	flush_work(&ss->work);
+ 
 -- 
 2.43.0
 
