@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-56472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AC33924486
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:11:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5494B92456A
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:22:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0679428ADD8
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:11:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5955B21E05
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB46F1BE22C;
-	Tue,  2 Jul 2024 17:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B101BD51A;
+	Tue,  2 Jul 2024 17:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBnGA2UY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ds1Jrfkk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638CB15B0FE;
-	Tue,  2 Jul 2024 17:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38773D978;
+	Tue,  2 Jul 2024 17:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940298; cv=none; b=p8EPZkV/2T0WaFNof2G/gghUpmuQkYsQTfp1ALV3lJ/0Cub36/dMqNUPCEA5R8QtYbF/8P4eGu0X00BqtICwRdIQ5aQpLwUsvzQ4z8VNo0rDxmVZAOSby1aNpUADZz50aQxUR2pEnvM5AThXbp3HuZNlQ0HRFfJ2XfE1GXbnmG0=
+	t=1719940919; cv=none; b=Za8QoDfzmOSN3HrjqMhClX1XsXIelKf7QpknQOEL9IB2GTaFEUZBfJcpOWOUJksHLQ55XM+bfD+IYsjhmCHZGJNaKueHtbNWy3ZNTqYuoMLGge1xO7Fl2OFpqGDr/gRbMdVlgdgB6PJokHbISTzm88qQut1d2CJ9YH4oQxGFwfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940298; c=relaxed/simple;
-	bh=y1OMkd4PU5mu51Dh/XRvQHM0l1ETSoduPcGl5vJz1UU=;
+	s=arc-20240116; t=1719940919; c=relaxed/simple;
+	bh=23eru5sUMM+nO4ddJaSiMIYzDIygQSfUUlWpohgt99o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=andq2UXuQDq2b/N7SLA+J2LnmWS+z+EbhbwMmnB05pBxfPpzcY3tFtIOn9flMzZM8pHv2l+P2IXS5wg1Ll+PI77XUTr3uOq00KE9J9iCaJR2QGi3KAEBiSH+SlwP0efX549zGA1uhqvFM7XR3cqyiVxj1D8FqayqlrbR5Rvqz6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBnGA2UY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F11C116B1;
-	Tue,  2 Jul 2024 17:11:37 +0000 (UTC)
+	 MIME-Version; b=qSZFXQ3I6j4zsSsURcm3Ykedh/qv68hp4kByaAlQgWOPdRgDsz2vTP/42qVk9cYZaNQ63lcI+23Bo8fv6IGH1+oT+MFng5mbJv3CvUCNHcMd3o+fWMfX9vcHkwLDb3dwvUG2sv3M9chYqWwYpN5b4Ny3U4RjT1S6SuWWvHHweNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ds1Jrfkk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552D1C116B1;
+	Tue,  2 Jul 2024 17:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940298;
-	bh=y1OMkd4PU5mu51Dh/XRvQHM0l1ETSoduPcGl5vJz1UU=;
+	s=korg; t=1719940918;
+	bh=23eru5sUMM+nO4ddJaSiMIYzDIygQSfUUlWpohgt99o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MBnGA2UYd+eVu9+5qfEWIvlsuj+ovem8xIjmYJzBodYSGrLOUQfVK8RbhcIOmfFuG
-	 zikPNRh4PY9KUzfswzGNXLnCld2BAy5hzYDjQWkGFk6kOYa1b07aDWPu3fXUj9gdKs
-	 gp9jfCXK7u2mv0uJPhlm2TCKWE674JhCoQxeBN8o=
+	b=Ds1JrfkkhUgY34ypF80M66OYr33tjBNo/eC9bErTewOXvCKUT6sB1Swgq7cPfnH9i
+	 g18g+IEBHGE1xZRZjStf9G7cS7yyKKgLdPS72xaDucB6hDIjDa5paP+xm+bEH6KyQ0
+	 rH/x/x2rJGF2Rjx5Bwa3iMGKkNe4tiQ304JVapuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 111/222] x86: stop playing stack games in profile_pc()
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jan Sokolowski <jan.sokolowski@intel.com>,
+	Karen Ostrowska <karen.ostrowska@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.6 035/163] ice: Rebuild TC queues on VSI queue reconfiguration
 Date: Tue,  2 Jul 2024 19:02:29 +0200
-Message-ID: <20240702170248.209903892@linuxfoundation.org>
+Message-ID: <20240702170234.386554941@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Jan Sokolowski <jan.sokolowski@intel.com>
 
-[ Upstream commit 093d9603b60093a9aaae942db56107f6432a5dca ]
+[ Upstream commit f4b91c1d17c676b8ad4c6bd674da874f3f7d5701 ]
 
-The 'profile_pc()' function is used for timer-based profiling, which
-isn't really all that relevant any more to begin with, but it also ends
-up making assumptions based on the stack layout that aren't necessarily
-valid.
+TC queues needs to be correctly updated when the number of queues on
+a VSI is reconfigured, so netdev's queue and TC settings will be
+dynamically adjusted and could accurately represent the underlying
+hardware state after changes to the VSI queue counts.
 
-Basically, the code tries to account the time spent in spinlocks to the
-caller rather than the spinlock, and while I support that as a concept,
-it's not worth the code complexity or the KASAN warnings when no serious
-profiling is done using timers anyway these days.
-
-And the code really does depend on stack layout that is only true in the
-simplest of cases.  We've lost the comment at some point (I think when
-the 32-bit and 64-bit code was unified), but it used to say:
-
-	Assume the lock function has either no stack frame or a copy
-	of eflags from PUSHF.
-
-which explains why it just blindly loads a word or two straight off the
-stack pointer and then takes a minimal look at the values to just check
-if they might be eflags or the return pc:
-
-	Eflags always has bits 22 and up cleared unlike kernel addresses
-
-but that basic stack layout assumption assumes that there isn't any lock
-debugging etc going on that would complicate the code and cause a stack
-frame.
-
-It causes KASAN unhappiness reported for years by syzkaller [1] and
-others [2].
-
-With no real practical reason for this any more, just remove the code.
-
-Just for historical interest, here's some background commits relating to
-this code from 2006:
-
-  0cb91a229364 ("i386: Account spinlocks to the caller during profiling for !FP kernels")
-  31679f38d886 ("Simplify profile_pc on x86-64")
-
-and a code unification from 2009:
-
-  ef4512882dbe ("x86: time_32/64.c unify profile_pc")
-
-but the basics of this thing actually goes back to before the git tree.
-
-Link: https://syzkaller.appspot.com/bug?extid=84fe685c02cd112a2ac3 [1]
-Link: https://lore.kernel.org/all/CAK55_s7Xyq=nh97=K=G1sxueOFrJDAvPOJAL4TPTCAYvmxO9_A@mail.gmail.com/ [2]
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 0754d65bd4be ("ice: Add infrastructure for mqprio support via ndo_setup_tc")
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
+Signed-off-by: Karen Ostrowska <karen.ostrowska@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/time.c | 20 +-------------------
- 1 file changed, 1 insertion(+), 19 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/time.c b/arch/x86/kernel/time.c
-index e42faa792c079..52e1f3f0b361c 100644
---- a/arch/x86/kernel/time.c
-+++ b/arch/x86/kernel/time.c
-@@ -27,25 +27,7 @@
- 
- unsigned long profile_pc(struct pt_regs *regs)
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 26ef8aec4cfdf..600a2f5370875 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -3958,7 +3958,7 @@ bool ice_is_wol_supported(struct ice_hw *hw)
+ int ice_vsi_recfg_qs(struct ice_vsi *vsi, int new_rx, int new_tx, bool locked)
  {
--	unsigned long pc = instruction_pointer(regs);
--
--	if (!user_mode(regs) && in_lock_functions(pc)) {
--#ifdef CONFIG_FRAME_POINTER
--		return *(unsigned long *)(regs->bp + sizeof(long));
--#else
--		unsigned long *sp = (unsigned long *)regs->sp;
--		/*
--		 * Return address is either directly at stack pointer
--		 * or above a saved flags. Eflags has bits 22-31 zero,
--		 * kernel addresses don't.
--		 */
--		if (sp[0] >> 22)
--			return sp[0];
--		if (sp[1] >> 22)
--			return sp[1];
--#endif
--	}
--	return pc;
-+	return instruction_pointer(regs);
- }
- EXPORT_SYMBOL(profile_pc);
+ 	struct ice_pf *pf = vsi->back;
+-	int err = 0, timeout = 50;
++	int i, err = 0, timeout = 50;
  
+ 	if (!new_rx && !new_tx)
+ 		return -EINVAL;
+@@ -3984,6 +3984,14 @@ int ice_vsi_recfg_qs(struct ice_vsi *vsi, int new_rx, int new_tx, bool locked)
+ 
+ 	ice_vsi_close(vsi);
+ 	ice_vsi_rebuild(vsi, ICE_VSI_FLAG_NO_INIT);
++
++	ice_for_each_traffic_class(i) {
++		if (vsi->tc_cfg.ena_tc & BIT(i))
++			netdev_set_tc_queue(vsi->netdev,
++					    vsi->tc_cfg.tc_info[i].netdev_tc,
++					    vsi->tc_cfg.tc_info[i].qcount_tx,
++					    vsi->tc_cfg.tc_info[i].qoffset);
++	}
+ 	ice_pf_dcb_recfg(pf, locked);
+ 	ice_vsi_open(vsi);
+ done:
 -- 
 2.43.0
 
