@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-56569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1848F9244FE
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:17:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E387D9245FC
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9001285419
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:17:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D8B01F2156C
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178141BE240;
-	Tue,  2 Jul 2024 17:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6861BE85B;
+	Tue,  2 Jul 2024 17:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLG5OCfR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTORCpKS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D1E39847;
-	Tue,  2 Jul 2024 17:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C18316B394;
+	Tue,  2 Jul 2024 17:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940619; cv=none; b=peC0EoIkNUlMT1PfusI9fvSIdI1rZ2F3hFzjDvxAgPmtwcVIkRuUCi4m79b+tiuXaw2pEWVLq+a1OW5QOJuH5xZ0shtfzW19rueLRNKD5pgve3qPUajxMYCpbuGpPJwpofCNQuqaWAKQdoC98prObFqtBAmimXDMeagAv1B1Sx4=
+	t=1719941376; cv=none; b=aOlCgYrfsuI6OKt5+drxW/7UteeB/Z+1VLiv+rnYNT8SEUFZTy0KZkuIV/2iR/ZqKLIdND4WKelZoVwMVymYFlue2Y134eoAb1HuT0rYKYXywzpX9s61hssNYNMb5YAeHnJ95VZLlo4qInTiXC7D7GKnBKSPdhBzfd+sELN3XKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940619; c=relaxed/simple;
-	bh=6qV1Zq4lxHusgA7cwV4KOzN5yTqMHtltNiM3C2M1xTk=;
+	s=arc-20240116; t=1719941376; c=relaxed/simple;
+	bh=upYgjViNrt7zM2NCP9E0HjT8AI3kiPNZPJfWlhEbx/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qp4M566sLIueNu31xfNE0tgHXh5UzfQZpulQAWNb6CcQnMeRRh0fyX50+7MhtQTUPib59fsTmZEgl1yBaG2EreEJWP5fgTgkPvOnQCMRda7ZdFBSl6dY7Ut4QmjF7s+l39Nuwkwh2qzAce179iEB9KaxF7RARqeMp1MUhPMiN74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLG5OCfR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F38C4AF07;
-	Tue,  2 Jul 2024 17:16:59 +0000 (UTC)
+	 MIME-Version; b=B8ObWJvoKebIJh3yUe8WEs3a/Nwc8udo9kit3XlSKM73/kDwT0AjCf+Efg75oeknoKlHjf1KdhYcKQKCkpOZHs7dgyJekKdqoY3ydqTtaxRwudZsDgUzZhB8OJPBFmqVRsZiR6tyqG6B7BgSwuf4F7RTSxcuHuP1R/8J6grIOkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTORCpKS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC8EC116B1;
+	Tue,  2 Jul 2024 17:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940619;
-	bh=6qV1Zq4lxHusgA7cwV4KOzN5yTqMHtltNiM3C2M1xTk=;
+	s=korg; t=1719941376;
+	bh=upYgjViNrt7zM2NCP9E0HjT8AI3kiPNZPJfWlhEbx/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eLG5OCfR9xvktGuCx83vnJSc+i+ZRFR0rL2TdsWVZTKjyG62wUw55LIO3zGNUuEkh
-	 /eThB6ZsSmjDL6000mKKLStVMpcFuxbdBugsd1kXUxfcZrBuxMT02C2sYE4stJTIQG
-	 Pk0zA/UBQKZqOzgCuvsiRfukXn2E/E8MmGmodVY4=
+	b=rTORCpKSfGPj1YGPSd7ZuIEj3iIBiOMfD4EHH+UbzifCiNJqsXVdKhuo+Q811T3si
+	 bUXXVFmnp3o6qKhugw+ispfPuColg7eu8/Jh8mfzB/uk6sB/UGeAfPvOtGoOUOT3v8
+	 MTG6fg+38iBFIOzEIUTCnQk890rfXwrV8Vpzg2Hk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Jonker <jbx6244@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Dawei Li <dawei.li@shingroup.cn>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 209/222] ARM: dts: rockchip: rk3066a: add #sound-dai-cells to hdmi node
+Subject: [PATCH 6.1 046/128] net/iucv: Avoid explicit cpumask var allocation on stack
 Date: Tue,  2 Jul 2024 19:04:07 +0200
-Message-ID: <20240702170251.975913171@linuxfoundation.org>
+Message-ID: <20240702170227.977368155@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Jonker <jbx6244@gmail.com>
+From: Dawei Li <dawei.li@shingroup.cn>
 
-[ Upstream commit cca46f811d0000c1522a5e18ea48c27a15e45c05 ]
+[ Upstream commit be4e1304419c99a164b4c0e101c7c2a756b635b9 ]
 
-'#sound-dai-cells' is required to properly interpret
-the list of DAI specified in the 'sound-dai' property,
-so add them to the 'hdmi' node for 'rk3066a.dtsi'.
+For CONFIG_CPUMASK_OFFSTACK=y kernel, explicit allocation of cpumask
+variable on stack is not recommended since it can cause potential stack
+overflow.
 
-Fixes: fadc78062477 ("ARM: dts: rockchip: add rk3066 hdmi nodes")
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-Link: https://lore.kernel.org/r/8b229dcc-94e4-4bbc-9efc-9d5ddd694532@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Instead, kernel code should always use *cpumask_var API(s) to allocate
+cpumask var in config-neutral way, leaving allocation strategy to
+CONFIG_CPUMASK_OFFSTACK.
+
+Use *cpumask_var API(s) to address it.
+
+Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240331053441.1276826-2-dawei.li@shingroup.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/rockchip/rk3066a.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ net/iucv/iucv.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/boot/dts/rockchip/rk3066a.dtsi b/arch/arm/boot/dts/rockchip/rk3066a.dtsi
-index 30139f21de64d..15cbd94d7ec05 100644
---- a/arch/arm/boot/dts/rockchip/rk3066a.dtsi
-+++ b/arch/arm/boot/dts/rockchip/rk3066a.dtsi
-@@ -128,6 +128,7 @@
- 		pinctrl-0 = <&hdmii2c_xfer>, <&hdmi_hpd>;
- 		power-domains = <&power RK3066_PD_VIO>;
- 		rockchip,grf = <&grf>;
-+		#sound-dai-cells = <0>;
- 		status = "disabled";
+diff --git a/net/iucv/iucv.c b/net/iucv/iucv.c
+index f66b5f74cd83a..db41eb2d977f2 100644
+--- a/net/iucv/iucv.c
++++ b/net/iucv/iucv.c
+@@ -519,7 +519,7 @@ static void iucv_setmask_mp(void)
+  */
+ static void iucv_setmask_up(void)
+ {
+-	cpumask_t cpumask;
++	static cpumask_t cpumask;
+ 	int cpu;
  
- 		ports {
+ 	/* Disable all cpu but the first in cpu_irq_cpumask. */
+@@ -627,23 +627,33 @@ static int iucv_cpu_online(unsigned int cpu)
+ 
+ static int iucv_cpu_down_prep(unsigned int cpu)
+ {
+-	cpumask_t cpumask;
++	cpumask_var_t cpumask;
++	int ret = 0;
+ 
+ 	if (!iucv_path_table)
+ 		return 0;
+ 
+-	cpumask_copy(&cpumask, &iucv_buffer_cpumask);
+-	cpumask_clear_cpu(cpu, &cpumask);
+-	if (cpumask_empty(&cpumask))
++	if (!alloc_cpumask_var(&cpumask, GFP_KERNEL))
++		return -ENOMEM;
++
++	cpumask_copy(cpumask, &iucv_buffer_cpumask);
++	cpumask_clear_cpu(cpu, cpumask);
++	if (cpumask_empty(cpumask)) {
+ 		/* Can't offline last IUCV enabled cpu. */
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto __free_cpumask;
++	}
+ 
+ 	iucv_retrieve_cpu(NULL);
+ 	if (!cpumask_empty(&iucv_irq_cpumask))
+-		return 0;
++		goto __free_cpumask;
++
+ 	smp_call_function_single(cpumask_first(&iucv_buffer_cpumask),
+ 				 iucv_allow_cpu, NULL, 1);
+-	return 0;
++
++__free_cpumask:
++	free_cpumask_var(cpumask);
++	return ret;
+ }
+ 
+ /**
 -- 
 2.43.0
 
