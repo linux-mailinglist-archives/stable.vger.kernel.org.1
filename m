@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-56748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007979245CD
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:27:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34ABB924603
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:30:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78746B25A61
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:27:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 670C01C21E6A
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753571BE842;
-	Tue,  2 Jul 2024 17:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBAE81BE846;
+	Tue,  2 Jul 2024 17:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YrEwCRgJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQ/xI4Sv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7A51514DC;
-	Tue,  2 Jul 2024 17:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF061514DC;
+	Tue,  2 Jul 2024 17:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941226; cv=none; b=lJW/xScQTYkjwY/nAyzmApG57lZEn6jcaznd1uLnWgFH5wyhQWbzjadIC2LiY7ZVk7sm1j5N+ALkw1NYR+wO34pQIDABRXEAVdr002kdJf2uAQdV9HMqmKKqiMgnzue6jxq0OAzH7FEm/ECfHFiZqVRkHEXC0mqtKypaqMrvfpk=
+	t=1719941400; cv=none; b=foPkSaeat05j8b9pDP2AHs4EUEjBBaDHkwP5Q99k1a11mOz9EtoXWG8hGkOwEOG9cSOh+r1JMhGUKE78aVyXGWibkRUQW4p5CyZHCUv4zEPP2vVHYX7nwbOI0EM9UBc4gmW2UojRboTq1ZP+ZhqD1AUiz0poqHLlkBf94974KNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941226; c=relaxed/simple;
-	bh=58sI27AyId/knF8KzrVLir853RDMIeBM6RIKmLimn8E=;
+	s=arc-20240116; t=1719941400; c=relaxed/simple;
+	bh=FXT33upDb2VwdlmbjtF0F0u9NMdms5DL7YhHOeLjyEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NP16H8XhLhIXQ/KTsrS1JxrDqCKyUD741Lx4zwGHyZwTIhn6TgiNUU4rBlzyJMyRfDxvxxwuubRI7VuS2scbvxRz6/fEbmtNBzXon/lVf3aE4ZNs+qqhyA1VkuRFlANbJuvzgyw1lSp2Sx/KhW08k/ZRxKFXvihLu4zsMfOLYaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YrEwCRgJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA346C116B1;
-	Tue,  2 Jul 2024 17:27:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U7l2YS81NjvJ1IWxzvtKSFpI99xtZzOBKG/0YrXlWG0mvbM3DkR1ElPEHP2f6zAIvXRZAO9pxR74MbyCZmuSgZf8ZWVFIFrVK9CyezWgwPO0ly87EGV0CQWw0cK2vRhoWOcEyIt7IDU2ZeR3uCE9U8c+lr/D9E+6tMRfBiTXy3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQ/xI4Sv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E559FC116B1;
+	Tue,  2 Jul 2024 17:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941226;
-	bh=58sI27AyId/knF8KzrVLir853RDMIeBM6RIKmLimn8E=;
+	s=korg; t=1719941400;
+	bh=FXT33upDb2VwdlmbjtF0F0u9NMdms5DL7YhHOeLjyEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YrEwCRgJGqXs76RemIMmoJo0L6XLvE/2lJEgJOVFPFV4UW4lMdXDzuwWxtLynSVBQ
-	 9hOeYw/m8LDMaIROpcFrtoupYEGVwrpIVfvztjW+w9nFHnvuOTixvYv8yniRpxY5Tz
-	 kKwwt0uK6AJPoj8typ86/ySST6Tv6xFZkCUN76T4=
+	b=KQ/xI4SvyuH6TjR+EKwATCBdwZvcaVTz01sof+c2NYJyjxZW6Xc3bBLwh2g/zfKqe
+	 u/2g+KcUJd2sV3HcItZNwPrt5AefMxOjzWe2Ud9X1aS6PwNaYD3WscNJ0KPEmLExo2
+	 in9utZdgcS4RsCm6rULmdlMrJEHjTLmnro/TzMV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.6 139/163] drm/i915/gt: Fix potential UAF by revoke of fence registers
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Erick Archer <erick.archer@outlook.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 052/128] drm/radeon/radeon_display: Decrease the size of allocated memory
 Date: Tue,  2 Jul 2024 19:04:13 +0200
-Message-ID: <20240702170238.314598097@linuxfoundation.org>
+Message-ID: <20240702170228.200503207@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +61,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+From: Erick Archer <erick.archer@outlook.com>
 
-commit 996c3412a06578e9d779a16b9e79ace18125ab50 upstream.
+[ Upstream commit ae6a233092747e9652eb793d92f79d0820e01c6a ]
 
-CI has been sporadically reporting the following issue triggered by
-igt@i915_selftest@live@hangcheck on ADL-P and similar machines:
+This is an effort to get rid of all multiplications from allocation
+functions in order to prevent integer overflows [1] [2].
 
-<6> [414.049203] i915: Running intel_hangcheck_live_selftests/igt_reset_evict_fence
-...
-<6> [414.068804] i915 0000:00:02.0: [drm] GT0: GUC: submission enabled
-<6> [414.068812] i915 0000:00:02.0: [drm] GT0: GUC: SLPC enabled
-<3> [414.070354] Unable to pin Y-tiled fence; err:-4
-<3> [414.071282] i915_vma_revoke_fence:301 GEM_BUG_ON(!i915_active_is_idle(&fence->active))
-...
-<4>[  609.603992] ------------[ cut here ]------------
-<2>[  609.603995] kernel BUG at drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c:301!
-<4>[  609.604003] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-<4>[  609.604006] CPU: 0 PID: 268 Comm: kworker/u64:3 Tainted: G     U  W          6.9.0-CI_DRM_14785-g1ba62f8cea9c+ #1
-<4>[  609.604008] Hardware name: Intel Corporation Alder Lake Client Platform/AlderLake-P DDR4 RVP, BIOS RPLPFWI1.R00.4035.A00.2301200723 01/20/2023
-<4>[  609.604010] Workqueue: i915 __i915_gem_free_work [i915]
-<4>[  609.604149] RIP: 0010:i915_vma_revoke_fence+0x187/0x1f0 [i915]
-...
-<4>[  609.604271] Call Trace:
-<4>[  609.604273]  <TASK>
-...
-<4>[  609.604716]  __i915_vma_evict+0x2e9/0x550 [i915]
-<4>[  609.604852]  __i915_vma_unbind+0x7c/0x160 [i915]
-<4>[  609.604977]  force_unbind+0x24/0xa0 [i915]
-<4>[  609.605098]  i915_vma_destroy+0x2f/0xa0 [i915]
-<4>[  609.605210]  __i915_gem_object_pages_fini+0x51/0x2f0 [i915]
-<4>[  609.605330]  __i915_gem_free_objects.isra.0+0x6a/0xc0 [i915]
-<4>[  609.605440]  process_scheduled_works+0x351/0x690
-...
+In this case, the memory allocated to store RADEONFB_CONN_LIMIT pointers
+to "drm_connector" structures can be avoided. This is because this
+memory area is never accessed.
 
-In the past, there were similar failures reported by CI from other IGT
-tests, observed on other platforms.
+Also, in the kzalloc function, it is preferred to use sizeof(*pointer)
+instead of sizeof(type) due to the type of the variable can change and
+one needs not change the former (unlike the latter).
 
-Before commit 63baf4f3d587 ("drm/i915/gt: Only wait for GPU activity
-before unbinding a GGTT fence"), i915_vma_revoke_fence() was waiting for
-idleness of vma->active via fence_update().   That commit introduced
-vma->fence->active in order for the fence_update() to be able to wait
-selectively on that one instead of vma->active since only idleness of
-fence registers was needed.  But then, another commit 0d86ee35097a
-("drm/i915/gt: Make fence revocation unequivocal") replaced the call to
-fence_update() in i915_vma_revoke_fence() with only fence_write(), and
-also added that GEM_BUG_ON(!i915_active_is_idle(&fence->active)) in front.
-No justification was provided on why we might then expect idleness of
-vma->fence->active without first waiting on it.
+At the same time take advantage to remove the "#if 0" block, the code
+where the removed memory area was accessed, and the RADEONFB_CONN_LIMIT
+constant due to now is never used.
 
-The issue can be potentially caused by a race among revocation of fence
-registers on one side and sequential execution of signal callbacks invoked
-on completion of a request that was using them on the other, still
-processed in parallel to revocation of those fence registers.  Fix it by
-waiting for idleness of vma->fence->active in i915_vma_revoke_fence().
-
-Fixes: 0d86ee35097a ("drm/i915/gt: Make fence revocation unequivocal")
-Closes: https://gitlab.freedesktop.org/drm/intel/issues/10021
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: stable@vger.kernel.org # v5.8+
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240603195446.297690-2-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit 24bb052d3dd499c5956abad5f7d8e4fd07da7fb1)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments [1]
+Link: https://github.com/KSPP/linux/issues/160 [2]
+Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Erick Archer <erick.archer@outlook.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/radeon/radeon.h         | 1 -
+ drivers/gpu/drm/radeon/radeon_display.c | 8 +-------
+ 2 files changed, 1 insertion(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c
-+++ b/drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c
-@@ -298,6 +298,7 @@ void i915_vma_revoke_fence(struct i915_v
+diff --git a/drivers/gpu/drm/radeon/radeon.h b/drivers/gpu/drm/radeon/radeon.h
+index 166c18d62f6d7..ec86c04a0d989 100644
+--- a/drivers/gpu/drm/radeon/radeon.h
++++ b/drivers/gpu/drm/radeon/radeon.h
+@@ -131,7 +131,6 @@ extern int radeon_cik_support;
+ /* RADEON_IB_POOL_SIZE must be a power of 2 */
+ #define RADEON_IB_POOL_SIZE			16
+ #define RADEON_DEBUGFS_MAX_COMPONENTS		32
+-#define RADEONFB_CONN_LIMIT			4
+ #define RADEON_BIOS_NUM_SCRATCH			8
+ 
+ /* internal ring indices */
+diff --git a/drivers/gpu/drm/radeon/radeon_display.c b/drivers/gpu/drm/radeon/radeon_display.c
+index 1814bb8e14f10..dbee301b3b2e8 100644
+--- a/drivers/gpu/drm/radeon/radeon_display.c
++++ b/drivers/gpu/drm/radeon/radeon_display.c
+@@ -683,7 +683,7 @@ static void radeon_crtc_init(struct drm_device *dev, int index)
+ 	struct radeon_device *rdev = dev->dev_private;
+ 	struct radeon_crtc *radeon_crtc;
+ 
+-	radeon_crtc = kzalloc(sizeof(struct radeon_crtc) + (RADEONFB_CONN_LIMIT * sizeof(struct drm_connector *)), GFP_KERNEL);
++	radeon_crtc = kzalloc(sizeof(*radeon_crtc), GFP_KERNEL);
+ 	if (radeon_crtc == NULL)
  		return;
  
- 	GEM_BUG_ON(fence->vma != vma);
-+	i915_active_wait(&fence->active);
- 	GEM_BUG_ON(!i915_active_is_idle(&fence->active));
- 	GEM_BUG_ON(atomic_read(&fence->pin_count));
+@@ -709,12 +709,6 @@ static void radeon_crtc_init(struct drm_device *dev, int index)
+ 	dev->mode_config.cursor_width = radeon_crtc->max_cursor_width;
+ 	dev->mode_config.cursor_height = radeon_crtc->max_cursor_height;
  
+-#if 0
+-	radeon_crtc->mode_set.crtc = &radeon_crtc->base;
+-	radeon_crtc->mode_set.connectors = (struct drm_connector **)(radeon_crtc + 1);
+-	radeon_crtc->mode_set.num_connectors = 0;
+-#endif
+-
+ 	if (rdev->is_atom_bios && (ASIC_IS_AVIVO(rdev) || radeon_r4xx_atom))
+ 		radeon_atombios_init_crtc(dev, radeon_crtc);
+ 	else
+-- 
+2.43.0
+
 
 
 
