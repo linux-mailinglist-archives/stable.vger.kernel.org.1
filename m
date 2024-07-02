@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-56747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87B329245CC
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:27:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EDBD924508
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:18:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44A0628A5D1
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:27:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 671941C22AAB
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813E71BE251;
-	Tue,  2 Jul 2024 17:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6965E1C0067;
+	Tue,  2 Jul 2024 17:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKw7ki/C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zfd5YSSB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4D915218A;
-	Tue,  2 Jul 2024 17:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A651C2319;
+	Tue,  2 Jul 2024 17:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941223; cv=none; b=cta8abESbrH/lYtCdymdMUfoufs9OUzk3SICAAEMoN8Gpke/iStabG8uv14aENEZaf/iVnPu7StfsLSABzeMXsY3oA9zDaS0Q/ZfFR4WnGZBSL84hWib32LSLYkwyv+lEg8gYKKe2ihLsZbWjNDS1iLcCLKPBUgzbsg3t3BSVto=
+	t=1719940639; cv=none; b=idr48tKgpzNlNZzj8e0OgoZ1SD9BrBECsf2TM21pQS/Uzip/m0eaqPFTwZQf978WyhUbktArG4/tIT3/7e+yEmSr+5uXPEbL5uTPKN/OEjiQ9fVo/wtP17Dz5Wm4RyZ7RyuvgYqGyU0buOBqbWxrPBqStvDjPVvGSsx3gLtEaDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941223; c=relaxed/simple;
-	bh=hG7FJPAIaPSdmg8tjqyi3brawauj8BHJSMmLsEFAyg0=;
+	s=arc-20240116; t=1719940639; c=relaxed/simple;
+	bh=llnxrEQcIivxNRw9QjLE6CEvdCgOt9wN2d8rwixSDN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QQwIAGKyR5FiBnL2G17WhuiElIcb47xyGwYBJt7zE1G448RKPdd8G6gf2SKpeTHvygU7RjytW3saGmfR6Eud0UDXkz00dLKAiq6SRZ1qU2odQQMGrm7p4UgS78sOvai/gOnUyJwArZ3oK+xCwn7M1ourO4S/BOEqu6NUn3KZOrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKw7ki/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7ED2C116B1;
-	Tue,  2 Jul 2024 17:27:02 +0000 (UTC)
+	 MIME-Version; b=m0/9slxdQMM7cpImnA9iie/4qD1qQn+yMh9/iSsGgHrYvQ0g+/ivxDs+7c3DwQw+rZgSRHWVhX0cIgk0+0r9E9Im5Nzb/PMDuszHwBKNDSOYMxAvPdXbHKP0LJYTjxk3dPvbRFingFBmN1KZh7zpCesyCmtAg1T/IT/5J2Oq6yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zfd5YSSB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74921C116B1;
+	Tue,  2 Jul 2024 17:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941223;
-	bh=hG7FJPAIaPSdmg8tjqyi3brawauj8BHJSMmLsEFAyg0=;
+	s=korg; t=1719940638;
+	bh=llnxrEQcIivxNRw9QjLE6CEvdCgOt9wN2d8rwixSDN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KKw7ki/CSh9DZd6+7q+2gPT19otbK7sEJ1DETysQ9fj3c47jVuJEi3Wp71EUJ0xCB
-	 orSQ7OxYHG9lo2aM7h82UmzYkJnah7ju6F0dVPNgpKQ6N9bM54+A+3/sJLOJ19qgFJ
-	 lHUD5SIFR7GKrJmhqy8ND1Iynhyy7yHTJQer1YyE=
+	b=Zfd5YSSBVsYjcp1Q8MspgmjHyuMQglB1F+QC0ix22BfXEEQAi2R9ZuIew6ODdJD4v
+	 tN60nJjK6Jn9EDIwHFl7PtQvJWKTMOj4QPsH0HrnRgMxi63CAvPLcTmNC53HmPt/FU
+	 gxUaIMNRTTYz5SkGQvdR1U3owQSMHqVRhr0kwkzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fusheng Huang <fusheng.huang@ecarxgroup.com>,
-	Julia Zhang <Julia.Zhang@amd.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 138/163] drm/amdgpu: avoid using null object of framebuffer
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 214/222] arm64: dts: rockchip: fix PMIC interrupt pin on ROCK Pi E
 Date: Tue,  2 Jul 2024 19:04:12 +0200
-Message-ID: <20240702170238.277601459@linuxfoundation.org>
+Message-ID: <20240702170252.166413565@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julia Zhang <julia.zhang@amd.com>
+From: FUKAUMI Naoki <naoki@radxa.com>
 
-commit bcfa48ff785bd121316592b131ff6531e3e696bb upstream.
+[ Upstream commit 02afd3d5b9fa4ffed284c0f7e7bec609097804fc ]
 
-Instead of using state->fb->obj[0] directly, get object from framebuffer
-by calling drm_gem_fb_get_obj() and return error code when object is
-null to avoid using null object of framebuffer.
+use GPIO0_A2 as interrupt pin for PMIC. GPIO2_A6 was used for
+pre-production board.
 
-Reported-by: Fusheng Huang <fusheng.huang@ecarxgroup.com>
-Signed-off-by: Julia Zhang <Julia.Zhang@amd.com>
-Reviewed-by: Huang Rui <ray.huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b918e81f2145 ("arm64: dts: rockchip: rk3328: Add Radxa ROCK Pi E")
+Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
+Link: https://lore.kernel.org/r/20240619050047.1217-1-naoki@radxa.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c
-@@ -2,6 +2,7 @@
- 
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_simple_kms_helper.h>
-+#include <drm/drm_gem_framebuffer_helper.h>
- #include <drm/drm_vblank.h>
- 
- #include "amdgpu.h"
-@@ -313,7 +314,13 @@ static int amdgpu_vkms_prepare_fb(struct
- 		return 0;
- 	}
- 	afb = to_amdgpu_framebuffer(new_state->fb);
--	obj = new_state->fb->obj[0];
-+
-+	obj = drm_gem_fb_get_obj(new_state->fb, 0);
-+	if (!obj) {
-+		DRM_ERROR("Failed to get obj from framebuffer\n");
-+		return -EINVAL;
-+	}
-+
- 	rbo = gem_to_amdgpu_bo(obj);
- 	adev = amdgpu_ttm_adev(rbo->tbo.bdev);
- 
-@@ -367,12 +374,19 @@ static void amdgpu_vkms_cleanup_fb(struc
- 				   struct drm_plane_state *old_state)
- {
- 	struct amdgpu_bo *rbo;
-+	struct drm_gem_object *obj;
- 	int r;
- 
- 	if (!old_state->fb)
- 		return;
- 
--	rbo = gem_to_amdgpu_bo(old_state->fb->obj[0]);
-+	obj = drm_gem_fb_get_obj(old_state->fb, 0);
-+	if (!obj) {
-+		DRM_ERROR("Failed to get obj from framebuffer\n");
-+		return;
-+	}
-+
-+	rbo = gem_to_amdgpu_bo(obj);
- 	r = amdgpu_bo_reserve(rbo, false);
- 	if (unlikely(r)) {
- 		DRM_ERROR("failed to reserve rbo before unpin\n");
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts b/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
+index f09d60bbe6c4f..a608a219543e5 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
+@@ -241,8 +241,8 @@
+ 	rk805: pmic@18 {
+ 		compatible = "rockchip,rk805";
+ 		reg = <0x18>;
+-		interrupt-parent = <&gpio2>;
+-		interrupts = <6 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-parent = <&gpio0>;
++		interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
+ 		#clock-cells = <1>;
+ 		clock-output-names = "xin32k", "rk805-clkout2";
+ 		gpio-controller;
+-- 
+2.43.0
+
 
 
 
