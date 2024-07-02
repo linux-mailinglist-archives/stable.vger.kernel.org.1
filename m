@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-56736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AFB59245C1
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7647E92463A
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:32:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04063289FA1
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:26:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32640282914
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D081BE224;
-	Tue,  2 Jul 2024 17:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BAB11BD51F;
+	Tue,  2 Jul 2024 17:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DyTrBitm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqhXJKzQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3684B15218A;
-	Tue,  2 Jul 2024 17:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCEB1BD00C;
+	Tue,  2 Jul 2024 17:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941187; cv=none; b=SJaayHbr6852tzdI3Q8R3dUKNMvot37FQdh7Hfr43+rmUwj8Jp7XGoeDV9mh3t+2fXZT7psviAjMFh4MPs/2QpK5fEqROCT6Qe3+sc1afMy2jNo8zuZrQhN2H9ovyYPzqsfibTru3HamG9HjgTOk5zmpPasgthv9vBHpSDHGnC0=
+	t=1719941552; cv=none; b=PF9Td7B/pF72i9ODY5v78WW/rqQdk1FzERfa/rvjP6j8nq+A6UmQvC5yHdpotNu1zb9iF3gwnxLwbITGpewk32e06v6P5ZgINaAI+ZjSZ+AOYGlJMMPkGv0hpsJ/a08u5AzEFwBGnQ5BpRuUZi/O9oSZsr0JQl9kTM0hOr2UvhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941187; c=relaxed/simple;
-	bh=Y+ydvRPwoK+WepZgTPeJs28az6CJUgShlv8l3M7hzUA=;
+	s=arc-20240116; t=1719941552; c=relaxed/simple;
+	bh=/cCikUa5jiU8B1EG43VLO8dZfduhI22O8eHMkORZwE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mRS0SrAzYaz/AsB4DWls6AFNc2b1RZ+oFEP7osNdhjjId9ib2pDJ5CG+ZuKUunjW85ZmHxx0/Fob+gxhCbSY7+SJZW7cte2s2sHYywzf6VPYT4upI/ROlfY2nwbibeYFkpss4VZA5bE5BThpciMcfvGGFjWmCznSNXtiKpB6u+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DyTrBitm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CEFEC116B1;
-	Tue,  2 Jul 2024 17:26:26 +0000 (UTC)
+	 MIME-Version; b=UHArSK3d5c/iIe+GQhGi0+MlhPvPPw3qhtBJ95GNhQ3tyyHxgGV9HXkitKl34P9MAr6euIdhZxmXXYg/NwVg8+W8aVVS18Q7klINozOmVBoS8W+hckUjdkQyVFYs08M7xk8z7YuE+iVoinyKiKGBmRtkgVU+YdajXabMFDLfqrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqhXJKzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351A5C116B1;
+	Tue,  2 Jul 2024 17:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941187;
-	bh=Y+ydvRPwoK+WepZgTPeJs28az6CJUgShlv8l3M7hzUA=;
+	s=korg; t=1719941551;
+	bh=/cCikUa5jiU8B1EG43VLO8dZfduhI22O8eHMkORZwE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DyTrBitm0SRqlbQMyG/Wj+BatrGmP3zEtm6xwY7ut+aygXVG858SosLLMHEawH3iT
-	 SbAmYYdKJ46aN68Jd/cVXPRrYCT5Iml6zfZ/wD26Pk/9BDCGzaEs/JZJyo1uEI+M3x
-	 VvLNftf8oKFS3DyiZK3WjzQk5Y/W0E6cRCaELkIw=
+	b=tqhXJKzQOXP/Pnxz4tk5Lry4dMLxwqx9wovghuFItmzgfKy+oev8hdfjQjFn7AC20
+	 oKR/Yo2D7t7/o8H6bzoiU7uH4mdk/zoSirjaLCwyaHj4vFUmUe5uaNZu/M25PHPhvo
+	 VWAk+co3a5E2iVfPHIyf+LySPREHOHmRNuHM7/D4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 154/163] arm64: dts: rockchip: Fix SD NAND and eMMC init on rk3308-rock-pi-s
+	Christoph Hellwig <hch@lst.de>,
+	Barry Song <v-songbaohua@oppo.com>,
+	Martin Wege <martin.l.wege@gmail.com>,
+	NeilBrown <neilb@suse.de>,
+	Anna Schumaker <anna@kernel.org>,
+	Steve French <sfrench@samba.org>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Chuanhua Han <hanchuanhua@oppo.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Chris Li <chrisl@kernel.org>,
+	"Huang, Ying" <ying.huang@intel.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 067/128] nfs: drop the incorrect assertion in nfs_swap_rw()
 Date: Tue,  2 Jul 2024 19:04:28 +0200
-Message-ID: <20240702170238.890062166@linuxfoundation.org>
+Message-ID: <20240702170228.769694258@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +73,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 1fb98c855ccd7bc7f50c7a9626fbb8440454760b ]
+commit 54e7d59841dab977f6cb1183d658b1b82c9f4e94 upstream.
 
-Radxa ROCK Pi S have optional onboard SD NAND on board revision v1.1,
-v1.2 and v1.3, revision v1.5 changed to use optional onboard eMMC.
+Since commit 2282679fb20b ("mm: submit multipage write for SWP_FS_OPS
+swap-space"), we can plug multiple pages then unplug them all together.
+That means iov_iter_count(iter) could be way bigger than PAGE_SIZE, it
+actually equals the size of iov_iter_npages(iter, INT_MAX).
 
-The optional SD NAND typically fails to initialize:
+Note this issue has nothing to do with large folios as we don't support
+THP_SWPOUT to non-block devices.
 
-  mmc_host mmc0: Bus speed (slot 0) = 400000Hz (slot req 400000Hz, actual 400000HZ div = 0)
-  mmc0: error -110 whilst initialising SD card
-  mmc_host mmc0: Bus speed (slot 0) = 300000Hz (slot req 300000Hz, actual 300000HZ div = 0)
-  mmc0: error -110 whilst initialising SD card
-  mmc_host mmc0: Bus speed (slot 0) = 200000Hz (slot req 200000Hz, actual 200000HZ div = 0)
-  mmc0: error -110 whilst initialising SD card
-  mmc_host mmc0: Bus speed (slot 0) = 100000Hz (slot req 100000Hz, actual 100000HZ div = 0)
-  mmc0: error -110 whilst initialising SD card
-
-Add pinctrl and cap-sd-highspeed to fix SD NAND initialization. Also
-drop bus-width and mmc-hs200-1_8v to fix eMMC initialization on the new
-v1.5 board revision, only 3v3 signal voltage is used.
-
-Fixes: 2e04c25b1320 ("arm64: dts: rockchip: add ROCK Pi S DTS support")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20240521211029.1236094-4-jonas@kwiboo.se
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[v-songbaohua@oppo.com: figure out the cause and correct the commit message]
+Link: https://lkml.kernel.org/r/20240618065647.21791-1-21cnbao@gmail.com
+Fixes: 2282679fb20b ("mm: submit multipage write for SWP_FS_OPS swap-space")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+Closes: https://lore.kernel.org/linux-mm/20240617053201.GA16852@lst.de/
+Reviewed-by: Martin Wege <martin.l.wege@gmail.com>
+Cc: NeilBrown <neilb@suse.de>
+Cc: Anna Schumaker <anna@kernel.org>
+Cc: Steve French <sfrench@samba.org>
+Cc: Trond Myklebust <trondmy@kernel.org>
+Cc: Chuanhua Han <hanchuanhua@oppo.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Jeff Layton <jlayton@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/nfs/direct.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts b/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
-index e9810d2f04071..40b2f27aa6312 100644
---- a/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
-@@ -126,10 +126,12 @@
- };
+--- a/fs/nfs/direct.c
++++ b/fs/nfs/direct.c
+@@ -131,8 +131,6 @@ int nfs_swap_rw(struct kiocb *iocb, stru
+ {
+ 	ssize_t ret;
  
- &emmc {
--	bus-width = <4>;
- 	cap-mmc-highspeed;
--	mmc-hs200-1_8v;
-+	cap-sd-highspeed;
-+	no-sdio;
- 	non-removable;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&emmc_bus8 &emmc_clk &emmc_cmd>;
- 	vmmc-supply = <&vcc_io>;
- 	status = "okay";
- };
--- 
-2.43.0
-
+-	VM_BUG_ON(iov_iter_count(iter) != PAGE_SIZE);
+-
+ 	if (iov_iter_rw(iter) == READ)
+ 		ret = nfs_file_direct_read(iocb, iter, true);
+ 	else
 
 
 
