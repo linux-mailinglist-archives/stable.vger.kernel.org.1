@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-56615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9ACB92453C
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:20:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C205A924483
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:11:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9656528A192
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:20:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77A941F21663
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8811BE251;
-	Tue,  2 Jul 2024 17:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098051BE22F;
+	Tue,  2 Jul 2024 17:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S6PWd/hz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TY5YGd1u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAEA1BE227;
-	Tue,  2 Jul 2024 17:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD44B15B0FE;
+	Tue,  2 Jul 2024 17:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940776; cv=none; b=gSUyExhs7OBEkbB/a+buror4XEXLQpUa8DSxn0dAYxC96OoTrGkNAc59839RxbIJfHYxryhJTWiNdVP/QX7SX6NOydplp74Y2WPsbYnhgcwa2e32gSntTA8MQj5/H3wuVv1BGHhjrNgpPSZmJUPmmeLni1gKnHBQog2Y/FuZhxg=
+	t=1719940288; cv=none; b=Plhze8+rm4QQttJ5Zst1rNXobinN2Xjx+cazCKJlXhlX/vwOKF0u5ddq/vbPx5dh1Zxnu4sie790CLFXT3tPyBW3NalzzHejJ2RG0p0WJhDj7mdmBmwosLYPHRY3Y6ifYru5PhVUpU+ITKlLrxYkMQlrnTESpRSOhGaq1p0WxIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940776; c=relaxed/simple;
-	bh=VXfR5f4Qt9siGKoyG4ofipv7KJaJSDSFpsdZNqoVKac=;
+	s=arc-20240116; t=1719940288; c=relaxed/simple;
+	bh=T8XfnKDpRbGAYfKZ3YxlqzkXFD6tRNliFtDs1CKvPqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aOIauBBogqKVWyOtWJiHvvHwXqCjHGVNZpn7SDc7QE6XPeN3F4EqDA1r9bwPgjvR3uqvziEX7mgKtBOn/ap7qxMwqNawOOaMtfuzH0MJPtLkRW4TU4QMgvCMBV0e/movlo8IrrC3jKnr+2iKPUGeZhK1Irn2SkYyu8B83/OkMqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S6PWd/hz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC3BC116B1;
-	Tue,  2 Jul 2024 17:19:34 +0000 (UTC)
+	 MIME-Version; b=bSFeV0xW3dGW0VVCyUUqTa5Oqpm7KCgbnHHD89cogTq+6IIkXEmXa6RxjpY+WhZbKWKVejfinC0SxbbmAGJjGVKNiGfysRLVYfF4hAw4xiTUdlnLgt70sIp91X/WnY/TKNfzIHTtNH2hJfDd+sRx/WoLVDoqlbnAPAKGPXOMrHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TY5YGd1u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434E5C116B1;
+	Tue,  2 Jul 2024 17:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940775;
-	bh=VXfR5f4Qt9siGKoyG4ofipv7KJaJSDSFpsdZNqoVKac=;
+	s=korg; t=1719940288;
+	bh=T8XfnKDpRbGAYfKZ3YxlqzkXFD6tRNliFtDs1CKvPqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S6PWd/hzRB3R1Z2m2Ssu4uAdsY8+0ztjyP5gEuzGQYXDU0b6zyudnMYCfZBYbTk6L
-	 +pU1PRWc63Y3wYM/Ygcshawgn2qrfY92MWQSYXhde+ia8PAuCe6e/nmYbyEmQO4MIE
-	 Bq4ZlopQuJtGCn6iXo8ZLbx0Q/SwpuVPfRfmmWtY=
+	b=TY5YGd1uYPDb18QqZL43nOfclNzX3pGBi+Rp88FP9lBJcTkiprFHg7+0v30jdFMGg
+	 qR5msNyiQQzqaLPJHOMBornhbJp13k0VYi2dvAQc1Z/Ee6nRgmoP2VqmPmB0eEJFyd
+	 CLXNMbOket4jLET3aTrjoXix5CALboCpOf6ICT4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Narasimhan V <Narasimhan.V@amd.com>,
-	Jan Beulich <jbeulich@suse.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
+	Dawei Li <dawei.li@shingroup.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 005/163] x86/mm/numa: Use NUMA_NO_NODE when calling memblock_set_node()
-Date: Tue,  2 Jul 2024 19:01:59 +0200
-Message-ID: <20240702170233.256675286@linuxfoundation.org>
+Subject: [PATCH 6.9 082/222] net/dpaa2: Avoid explicit cpumask var allocation on stack
+Date: Tue,  2 Jul 2024 19:02:00 +0200
+Message-ID: <20240702170247.113310483@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Beulich <jbeulich@suse.com>
+From: Dawei Li <dawei.li@shingroup.cn>
 
-[ Upstream commit 3ac36aa7307363b7247ccb6f6a804e11496b2b36 ]
+[ Upstream commit d33fe1714a44ff540629b149d8fab4ac6967585c ]
 
-memblock_set_node() warns about using MAX_NUMNODES, see
+For CONFIG_CPUMASK_OFFSTACK=y kernel, explicit allocation of cpumask
+variable on stack is not recommended since it can cause potential stack
+overflow.
 
-  e0eec24e2e19 ("memblock: make memblock_set_node() also warn about use of MAX_NUMNODES")
+Instead, kernel code should always use *cpumask_var API(s) to allocate
+cpumask var in config-neutral way, leaving allocation strategy to
+CONFIG_CPUMASK_OFFSTACK.
 
-for details.
+Use *cpumask_var API(s) to address it.
 
-Reported-by: Narasimhan V <Narasimhan.V@amd.com>
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Cc: stable@vger.kernel.org
-[bp: commit message]
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/r/20240603141005.23261-1-bp@kernel.org
-Link: https://lore.kernel.org/r/abadb736-a239-49e4-ab42-ace7acdd4278@suse.com
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
+Link: https://lore.kernel.org/r/20240331053441.1276826-3-dawei.li@shingroup.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/numa.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index c7fa5396c0f05..c281326baa144 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -523,7 +523,7 @@ static void __init numa_clear_kernel_node_hotplug(void)
- 	for_each_reserved_mem_region(mb_region) {
- 		int nid = memblock_get_region_node(mb_region);
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+index 888509cf1f210..40e8818295951 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+@@ -2896,11 +2896,14 @@ static int dpaa2_eth_xdp_xmit(struct net_device *net_dev, int n,
+ static int update_xps(struct dpaa2_eth_priv *priv)
+ {
+ 	struct net_device *net_dev = priv->net_dev;
+-	struct cpumask xps_mask;
+-	struct dpaa2_eth_fq *fq;
+ 	int i, num_queues, netdev_queues;
++	struct dpaa2_eth_fq *fq;
++	cpumask_var_t xps_mask;
+ 	int err = 0;
  
--		if (nid != MAX_NUMNODES)
-+		if (nid != NUMA_NO_NODE)
- 			node_set(nid, reserved_nodemask);
++	if (!alloc_cpumask_var(&xps_mask, GFP_KERNEL))
++		return -ENOMEM;
++
+ 	num_queues = dpaa2_eth_queue_count(priv);
+ 	netdev_queues = (net_dev->num_tc ? : 1) * num_queues;
+ 
+@@ -2910,16 +2913,17 @@ static int update_xps(struct dpaa2_eth_priv *priv)
+ 	for (i = 0; i < netdev_queues; i++) {
+ 		fq = &priv->fq[i % num_queues];
+ 
+-		cpumask_clear(&xps_mask);
+-		cpumask_set_cpu(fq->target_cpu, &xps_mask);
++		cpumask_clear(xps_mask);
++		cpumask_set_cpu(fq->target_cpu, xps_mask);
+ 
+-		err = netif_set_xps_queue(net_dev, &xps_mask, i);
++		err = netif_set_xps_queue(net_dev, xps_mask, i);
+ 		if (err) {
+ 			netdev_warn_once(net_dev, "Error setting XPS queue\n");
+ 			break;
+ 		}
  	}
  
-@@ -643,9 +643,9 @@ static int __init numa_init(int (*init_func)(void))
- 	nodes_clear(node_online_map);
- 	memset(&numa_meminfo, 0, sizeof(numa_meminfo));
- 	WARN_ON(memblock_set_node(0, ULLONG_MAX, &memblock.memory,
--				  MAX_NUMNODES));
-+				  NUMA_NO_NODE));
- 	WARN_ON(memblock_set_node(0, ULLONG_MAX, &memblock.reserved,
--				  MAX_NUMNODES));
-+				  NUMA_NO_NODE));
- 	/* In case that parsing SRAT failed. */
- 	WARN_ON(memblock_clear_hotplug(0, ULLONG_MAX));
- 	numa_reset_distance();
++	free_cpumask_var(xps_mask);
+ 	return err;
+ }
+ 
 -- 
 2.43.0
 
