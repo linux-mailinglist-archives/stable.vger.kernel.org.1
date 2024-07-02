@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-56345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7BD923D3A
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 14:07:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D25E923D4A
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 14:09:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 524FE2879A8
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 12:07:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEB19282DCA
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 12:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CE115B57B;
-	Tue,  2 Jul 2024 12:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7758515CD75;
+	Tue,  2 Jul 2024 12:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="fcmQQVOk"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="EOH8mait"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD4314D703
-	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 12:07:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE75382488
+	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 12:09:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719922033; cv=none; b=ZlpSvMosqsUaOzp+96Bq+YMsJY4eaeTeauZF0HxVBIVw1QWzoVua8KJFlNTC3SMIrC1EBE+6sKNXWcUmymu3SkkURx2Wxg/ROhVRe6J/uupRCVs7uL+YjtOQxEvz2+BI+rN9i/tvmcIkCKwLdd2Csiv7so+WZhN9CXfaxHi0L/A=
+	t=1719922176; cv=none; b=JPr7hlpN0K3zKAEVlnwE2Yjmd4cpiqqheNGxU8XVpa7cpOFpTWWbN1QpoRbLrG6saINkh+V1QHWSnev2TrTt6giZ9bc7EMvLveoXHiJWvXqq2UiqFStbL2jrhgoQ3x2iaJIdb2dtdEqQq6/Z0aUS1r9kbDg8vBwwxjhCZiHNvNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719922033; c=relaxed/simple;
-	bh=d8i++GiRfnui0M6A3dHa5xxHn7NDiIxhIjRCDecJ5Ts=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=hV9804y6w+doHXZHZaMMtyUtCDaf0/mzXtvfnC/97GRg/GZHhoZNPVlh11f6WINUQ2z7SLUHuMKuJXAJLUKOYtdwzwyW7ixzSQWA2Ixh4JUwZWVKEDHubbNfrC7Tj5kzCqSSTYH+iFvvBjxvuHP6GGxBCOBqt1hXs2OWpkNtMBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=fcmQQVOk; arc=none smtp.client-ip=212.227.15.15
+	s=arc-20240116; t=1719922176; c=relaxed/simple;
+	bh=qP5P+C7sZUu4GpX8hY9sVNICF+1KVS2a3mrIXc8AWCM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=bOosaOjMRjXRqgu3OflW7u7TZwmY4z+EWh1SEv1Knl49W8NzJindvnLvuo8uKr2p9zQ9r3F2YVVXZJkj1KygzSfjFbc6xhw2+NIZpzl/yKO6bg1UqOqYyyMritNTJdOxQzjzoOUlgjApbeA5p94TJZ5h0JGaMjlDToyW8ftC/PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=EOH8mait; arc=none smtp.client-ip=212.227.15.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1719922016; x=1720526816; i=w_armin@gmx.de;
-	bh=Ilw9DAdpFRu4mJaCitepxFoSQPasmg8ruvPtwYjihVk=;
+	s=s31663417; t=1719922159; x=1720526959; i=w_armin@gmx.de;
+	bh=kdl3nV7mggj15c0t4Z+HO/aB8YQVF/5FTDZKXk40dwg=;
 	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=fcmQQVOkJIuUNDNXutzoOOK/Br+LdyyMpTgZc/yXs/plin/zkIh8SCA/00++Sf6+
-	 R0JzhRv+qYvi/9z75bk2FqiWzxA7qGhrqN3t8xOFxUMi3hK/Jw6CjgfV6F5vHFnYH
-	 yYsVDw2EHxDQLR7k8quQhSe6VOOkQu76/70f+NL04EAGjBNVHdMQv/6MFAw6owmkG
-	 l0FX8g+QZahDJxeSe7iVP4AJZMI1uOVuU9Q44PYT13W3C/a9wUqXgSJTE6Dpd5BLr
-	 yXNHtlHQExNGKqQV0ziEhqYrwO/dPCZ1EWCEn0+tERuLWTdEGJyR1Y4YYzQvj7cJK
-	 JaX/3PfK0fzPUWZCvQ==
+	b=EOH8maitklvz4+00uxA4vgP7i6GmtGDRXl/cpYamzczWzgBWbaEM/z/4wrNybsbd
+	 3dKQK5OyuapAcwaIPmuEmdIgUvu9zFwP/ulGL7VjEl/NJOSOe+Lt3WGn4Dmnxx3Vv
+	 oAGtaQgdbi0goHYa+YHUpo1qj6K30C+ZYbifYmXbLbmFT+j+qepdPBJceH1ZJHHQP
+	 ZGnUzl0uF2QK3nYlLjdwcmNVkyXglH0dZNa2KeAlUCH6JmNIHCTdBtTSqGWdthMq6
+	 njgE6xlhJojYwvN7xa3b+glPuK+S5EdJjDyE/rN4zc2sTPn9CB6YlG6Qjm+38EztQ
+	 k2/YC0BbLy9Y0vMRnA==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from mx-inspiron.dip.tu-dresden.de ([141.76.183.169]) by
- mail.gmx.net (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1Mel3n-1rq6LS3zRV-00qh5Q; Tue, 02 Jul 2024 14:06:56 +0200
+ mail.gmx.net (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1N4QsO-1sG7k82UZ4-00zevt; Tue, 02 Jul 2024 14:09:19 +0200
 From: Armin Wolf <W_Armin@gmx.de>
 To: coproscefalo@gmail.com
 Cc: hdegoede@redhat.com,
@@ -55,8 +55,8 @@ Cc: hdegoede@redhat.com,
 	sashal@kernel.org,
 	stable@vger.kernel.org
 Subject: [PATCH] Revert "platform/x86: toshiba_acpi: Add quirk for buttons on Z830"
-Date: Tue,  2 Jul 2024 14:06:46 +0200
-Message-Id: <20240702120646.10756-1-W_Armin@gmx.de>
+Date: Tue,  2 Jul 2024 14:09:13 +0200
+Message-Id: <20240702120913.11078-1-W_Armin@gmx.de>
 X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,27 +66,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:+LRLZnc4ikeB5cQTRpPA2Xo8kHuoyzK50HoUZeYfj7jgdmapshO
- UVx6rnAZxSX3xAFkchi8+269WrxkqG/Ij9Kh7PmocZQa+Z1SCvs0UPQsIPO1rp/W+ne0swS
- hRKEjR0jjRChXx3SX0J9Wu96Q1jCs2aLsqAuX39pYRH8IVd6kHUWiF1C20pQvp8HIHcGMjP
- nIt6TidI0T24XyarnrZ2w==
+X-Provags-ID: V03:K1:Hh1al5b1GvN6wMKrLfTVWiERtFAh9dhW8Of5Uk7/VEy96j0Z080
+ hB10VGtcvfHZ53EGcINDU8MqpLzWURNhRK5jUrvTjUCb3+urqvKdgyY0UuBjgDWuoH2dCcL
+ lIZcK4nwAIV+y0qWIdcLnEgjUKHrfNKAlXuphUwz1Y6psdqqxGxX77n9pSRyE431xT9qbD/
+ R4ieX2I2MTnFzalo5lmEA==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:/WuTf59MYBM=;iea/jz+kBwFlvfqStTgd8ytey9F
- uJMrAweodunm1WtlkC7/DJIQ2ALehx0VmMqwQ6nTiiD0qpHIQq31NeXszvdBeil7MlovNOTIl
- hU4BZtrVFYa7/9JHt5QfouFGrASOV9O3JbKN3T89HczTz4HGOaGijzyKedZlVyJAOoz9dn1/C
- BMa8VXUi7vdBbrdJt2pgv85GZ0pKC2vZJmRwFG90je+wAepXp2cDRA7mrc/DXemN2bOuracl/
- tNZ22FRVMAJfxwyIfk+olOPhrJTLqvCWIyX8eyfAPZEFt+hRrkWGP451nx+qxHc1Xee8r/Oh4
- dq1+c1cSt7XEu1ihWgFJZuAVIWimda4mrIeus3U9U0915lnOz4b0aI8MtQy6q6WAv+I6o6HrM
- 6gvC1j8pGEcfYw/5V2xt7f7wLERWEECLE6oyaU15tHg0sdUrdtvrflsV3h24DDO4lSq22Fw4y
- 0FZHwzQvvz9WXYD/nE/0m+fga0Q+/4ymbGiNJN50MMcP2Y4plKs0S+VNhJTTAHdO7Ec/uqqoW
- 7B0QenRZg+HcoYApAeZqE1YO0ShmqIaF5hFBwwO2A+Sy9of2Yaa3EEK/5Pr0Lqlz67cZObvbw
- 1EF7lH5SL7ekVacMjR+B+fDWt9QQOuuy9U8VkcE/B/7Swu3rk4h06DplIROwo6kNaTUzL4Lyc
- AyTCK4xXJhNkIS88ByRNd8+xH6Ivznl7M60AwdRwjRFAhlWvT6N+JJE7wSdI7dseU9gVYlXHd
- gu5I+rseRoPNB8Z/E5dqCYgQwcTh8Z41M7Qw47VKfUGWP1ZiAbAyz4JLY2s+nt9X0w2dk21/+
- a+eWSrgaVoZAwiOzKjOFDGPm4M/0j/kgFtjuRC7wDWgtnPu2ncLAZDc+HthEz0fXJwe82t3KA
- oC7RSw7uJ3FqhIaulnifQdAvSyqyXA/W56X8=
+UI-OutboundReport: notjunk:1;M01:P0:O7GSyiB0tV0=;zcNT5Nd6rz6XJk7nRn3iJ+FS5ps
+ j7m5kQhaEO5OCFSj3zydmws7YLypJBsH/Ipm5kpvbXrpQJSCegzwGZH2lAq9INc666xyDS/rW
+ eqWQIavu5N6RGrH0bLDQJfwb5wsOZe0xuQmzzMJW+/dQZewrFU+ZDoWSLWEXtsJtiBgZ+5za/
+ knaZalChiZzAYM3v3c/GfIGX9GFBtdC3F1AJ16X5oPPSewDnJZ5QbEzUI6Q6etKr0lfTQe5As
+ 7goqUGpWYSlzgOo9EI9dpBFLazZTQzMM9Kwpl+UyD/5CV9rFH/fKAo/rpbxxkNi0WktvwM3Zv
+ pceuSjqrZaXgxwvsO5nP0a5R5BBlOPE8sg9/CKfFx+WQLUOO4+L82BYcH8n6BmaF5PjUbYjkV
+ fN0Nj5oumz7mY2cdx1K0JSsiTRdEN4D94NRl+nKDU3uvCvhtaiAML2cSmZbjVcGYvhHc1rsgr
+ T6DeaCT+tnRe8j5iNqkv+Q2B4f5NmLsWJ6n5o9Zh4WRdiXfblss8fScrQSGQ+jd0TDK10LeSe
+ MABtVTedd9p4w+IYTGDvfmbj0lgvbTUOfNEw0VVpTYm1U+559etyIWmp4Ikqrx4gSo/wjtTJk
+ hiK/squSNSjWGLyaNvq8E/ekx0ZMuboLDwpnioDk8wfh8aAsLj/fZ9WzPxK7gqTbq9ctL53vC
+ G1Mh3vLV3471DyykgP7eOyRNhHkS/J17pQcmctzBJ3xDEN21lOkbCmd4ucLUBnQd9ELfExn9o
+ oiLmXluL7lqIqth+hJi4iMA/vmee+lb931xg3b18/CnXGuAYDJFFO8RyIEE3/QMym+Vb5RZjW
+ ccNi15Z/6xa5RlxlZA7BTeJa2BzJHx4VqOc2h6CdCgoncDRi4MWXaGHwAH4JSjL+KdOmPpPTI
+ a8hbwIqAyQBZbfg==
 
-This reverts commit 10c66da9f87a96572ad92642ae060e827313b11c.
+This reverts commit a63054e677fd098fbe69fc9a35325a300c14c698.
 
 The associated patch depends on the availability of the ACPI
 quickstart button driver, which will be available starting with
@@ -96,9 +96,9 @@ older kernels.
 Even worse, it was found out that the patch is buggy, causing
 regressions for people using older kernels.
 
-Fix this by simply reverting the patch from the 6.9 stable tree.
+Fix this by simply reverting the patch from the 6.6 stable tree.
 
-Cc: <stable@vger.kernel.org> # 6.9.x
+Cc: <stable@vger.kernel.org> # 6.6.x
 Reported-by: kemal <kmal@cock.li>
 Signed-off-by: Armin Wolf <W_Armin@gmx.de>
 =2D--
@@ -107,7 +107,7 @@ Signed-off-by: Armin Wolf <W_Armin@gmx.de>
 
 diff --git a/drivers/platform/x86/toshiba_acpi.c b/drivers/platform/x86/to=
 shiba_acpi.c
-index 16e941449b14..77244c9aa60d 100644
+index 2a5a651235fe..291f14ef6702 100644
 =2D-- a/drivers/platform/x86/toshiba_acpi.c
 +++ b/drivers/platform/x86/toshiba_acpi.c
 @@ -57,11 +57,6 @@ module_param(turn_on_panel_on_resume, int, 0644);
@@ -131,7 +131,7 @@ index 16e941449b14..77244c9aa60d 100644
  #define HCI_HOTKEY_ENABLE		0x09
  #define HCI_HOTKEY_SPECIAL_FUNCTIONS	0x10
  #define HCI_LCD_BRIGHTNESS_BITS		3
-@@ -2737,15 +2731,10 @@ static int toshiba_acpi_enable_hotkeys(struct tosh=
+@@ -2736,15 +2730,10 @@ static int toshiba_acpi_enable_hotkeys(struct tosh=
 iba_acpi_dev *dev)
  		return -ENODEV;
 
@@ -149,7 +149,7 @@ iba_acpi_dev *dev)
  		result =3D hci_write(dev, HCI_HOTKEY_EVENT,
  				   HCI_HOTKEY_SPECIAL_FUNCTIONS);
  	else
-@@ -3269,14 +3258,7 @@ static const char *find_hci_method(acpi_handle hand=
+@@ -3268,14 +3257,7 @@ static const char *find_hci_method(acpi_handle hand=
 le)
   * works. toshiba_acpi_resume() uses HCI_PANEL_POWER_ON to avoid changing
   * the configured brightness level.
@@ -167,7 +167,7 @@ se
  	{
  	 /* Toshiba Port=C3=A9g=C3=A9 R700 */
  	 /* https://bugzilla.kernel.org/show_bug.cgi?id=3D21012 */
-@@ -3284,7 +3266,6 @@ static const struct dmi_system_id toshiba_dmi_quirks=
+@@ -3283,7 +3265,6 @@ static const struct dmi_system_id toshiba_dmi_quirks=
 [] =3D {
  		DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
  		DMI_MATCH(DMI_PRODUCT_NAME, "PORTEGE R700"),
@@ -176,7 +176,7 @@ se
  	},
  	{
  	 /* Toshiba Satellite/Port=C3=A9g=C3=A9 R830 */
-@@ -3294,7 +3275,6 @@ static const struct dmi_system_id toshiba_dmi_quirks=
+@@ -3293,7 +3274,6 @@ static const struct dmi_system_id toshiba_dmi_quirks=
 [] =3D {
  		DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
  		DMI_MATCH(DMI_PRODUCT_NAME, "R830"),
@@ -185,7 +185,7 @@ se
  	},
  	{
  	 /* Toshiba Satellite/Port=C3=A9g=C3=A9 Z830 */
-@@ -3302,7 +3282,6 @@ static const struct dmi_system_id toshiba_dmi_quirks=
+@@ -3301,7 +3281,6 @@ static const struct dmi_system_id toshiba_dmi_quirks=
 [] =3D {
  		DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
  		DMI_MATCH(DMI_PRODUCT_NAME, "Z830"),
@@ -195,7 +195,7 @@ KEY_QUICKSTART),
  	},
  };
 
-@@ -3311,8 +3290,6 @@ static int toshiba_acpi_add(struct acpi_device *acpi=
+@@ -3310,8 +3289,6 @@ static int toshiba_acpi_add(struct acpi_device *acpi=
 _dev)
  	struct toshiba_acpi_dev *dev;
  	const char *hci_method;
@@ -205,7 +205,7 @@ _dev)
  	int ret =3D 0;
 
  	if (toshiba_acpi)
-@@ -3465,15 +3442,8 @@ static int toshiba_acpi_add(struct acpi_device *acp=
+@@ -3464,15 +3441,8 @@ static int toshiba_acpi_add(struct acpi_device *acp=
 i_dev)
  	}
  #endif
