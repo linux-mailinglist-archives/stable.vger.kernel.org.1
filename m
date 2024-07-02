@@ -1,65 +1,47 @@
-Return-Path: <stable+bounces-56294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB23E91ECC3
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 03:40:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B2691ECE3
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 04:08:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1862D1C219F7
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 01:40:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB6A9B2255E
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 02:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080938F4E;
-	Tue,  2 Jul 2024 01:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143AFC133;
+	Tue,  2 Jul 2024 02:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i1vl7NjM"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="G2LR8mni"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1594564D;
-	Tue,  2 Jul 2024 01:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E444D3C38
+	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 02:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719884427; cv=none; b=dP2hdsU2JCWtKk9VI/2TXvwvJ5Q602K+uza+OUQeQtYvYEetm0JdG75uJ44hFeZzPRv0imXguIEncWpf5eji4ZUk9Zkx4jFBdWDMQedQPHVW327O2bZBWqZRfwns58NFswwi3ogDUvdI4+59EAFYfgH+Tl86hNZfvQUURpIo4bc=
+	t=1719886083; cv=none; b=E6AlrKmYslBI3R6HuliFVFN80PvnxOoNTAiHNYDmeQz3G/RZ3ROFEQJvSRFIq9YA+pAMIwW96zq5V6AKvB7hgSHLyisiNMJr0++9uxtOAtlgoNaBUsCLQzQk96QhVJeWbaMP44O1YXYuE+yYHL9u6bwWyG2RZgqbZYzro8zvY8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719884427; c=relaxed/simple;
-	bh=3rWIcEBuDquwT65mdmMptUDstbXhoHxLkzl2I+eVtbE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Fz8zw04wVslWdbcSudZz7JUVWx13/nzb6fH/dDN0i/8RH9oEwymdoOuG7hHiO/myRz140VQL9NkqClYPEOqPMdvTt3J+7Z4No6YvRgJCIgmjKcz8uXOzJHwZr7ixuDeQQMmdIffvPigbWdrn2lacYVVEaEQhGJZa1SV6x4CMEPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i1vl7NjM; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719884426; x=1751420426;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=3rWIcEBuDquwT65mdmMptUDstbXhoHxLkzl2I+eVtbE=;
-  b=i1vl7NjMTN28RiBHaD/0R+0YjdHLcx2f+gntf2nd3znrlj1TOxw7KZiA
-   RhP9KBOIhhQbLkP/lPPgu3shhpcQWhExEEjq9+ZoeL/zTqSTbXuhDbAHN
-   YvXEYUgiyQp4cVQblDs4pIHemKLDC6w6Z4Y1q0amoN+0++IINs6JMKN/A
-   B7hRqxHhWvWHfiUjLmqLneRE7CGUFOgcJtBb1vuiUUabjFbhfPgcY6j4w
-   WkIE5IxBUy4PMs6NFMM0vbXJUXAgFAQGe+6594Ygl1NB+butuudcQ/y0a
-   +MR0DcBxDJU4s+ilqa5yE5hRpoKVrgDKUCzPrsMIAlvgTtud3qN3kYV1U
-   Q==;
-X-CSE-ConnectionGUID: 9wroL5s2S2O146ABOk1n1Q==
-X-CSE-MsgGUID: 4rb+p1atRreB6mF6McSPjw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11120"; a="28170611"
-X-IronPort-AV: E=Sophos;i="6.09,177,1716274800"; 
-   d="scan'208";a="28170611"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2024 18:40:25 -0700
-X-CSE-ConnectionGUID: bZfVIyY8QFmgdJ7w841ySA==
-X-CSE-MsgGUID: KN3DL8ezQbWFQVfa63X4LQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,177,1716274800"; 
-   d="scan'208";a="50168557"
-Received: from mohdfai2-mobl.gar.corp.intel.com (HELO [10.247.38.161]) ([10.247.38.161])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2024 18:40:21 -0700
-Message-ID: <d14d14ec-2d86-46f4-9a70-6a1cd3b016c5@linux.intel.com>
-Date: Tue, 2 Jul 2024 09:40:09 +0800
+	s=arc-20240116; t=1719886083; c=relaxed/simple;
+	bh=mqbuUn8SstetqwMEgJhDzNHBoA2H0/6RZZk86cHB5BI=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=U88haIIVgZk10TH2Oj9MTlGUYLdHUrbDc1SsbWAxuOXMBd1UXLMn+OYD8DDbghGtWP6/wFApAzs3J6fcP4Ox34U9eEW9gceC4942sXlvq9LJFqn4QoLwikFSyakik6OJ+mRWXnY+e1gU1klJfyAVti5+00kc3UYILx0ZMvrusSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=G2LR8mni; arc=none smtp.client-ip=115.124.30.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1719886078; h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type;
+	bh=BSjxLx45/dqE76s/WmX8kltJqe/j8keV+TgY0cmK50A=;
+	b=G2LR8mni2AHHAheO9xedV3kcRyYPZ4JUuu+iMi+IjNuZ1uU854uQzxkVQIerZfg9mLJanK0ohwRe+ZMbaifwX4PmigbWCfGrSD2ZQikcEzkeZAo8U/sZyz/qGL934GXAXXXoVdJ0JvfI0U+toVScLL5R2po+XRl/XR9xyI+5SPQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032014031;MF=guwen@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0W9ghq4X_1719886077;
+Received: from 30.221.130.47(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0W9ghq4X_1719886077)
+          by smtp.aliyun-inc.com;
+          Tue, 02 Jul 2024 10:07:57 +0800
+Message-ID: <e66d3dd0-4d16-463f-a567-b5f5f8da6a92@linux.alibaba.com>
+Date: Tue, 2 Jul 2024 10:07:56 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,103 +49,54 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH iwl-net v1 1/1] igc: Fix packet still tx
- after gate close by reducing i226 MAC retry buffer
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Jesse Brandeburg <jesse.brandeburg@intel.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Vinicius Costa Gomes <vinicius.gomes@intel.com>, netdev@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240701100058.3301229-1-faizal.abdul.rahim@linux.intel.com>
- <e981261e-77be-407b-b601-f7214a4f57dd@molgen.mpg.de>
-Content-Language: en-US
-From: "Abdul Rahim, Faizal" <faizal.abdul.rahim@linux.intel.com>
-In-Reply-To: <e981261e-77be-407b-b601-f7214a4f57dd@molgen.mpg.de>
+From: Wen Gu <guwen@linux.alibaba.com>
+Subject: Re: Please backport d8616ee2affc ("bpf, sockmap: Fix
+ sk->sk_forward_alloc warn_on in sk_stream_kill_queues") to linux-5.10.y
+To: stable@vger.kernel.org
+Cc: alikernel-developer@linux.alibaba.com, Dust Li
+ <dust.li@linux.alibaba.com>, "D. Wythe" <alibuda@linux.alibaba.com>,
+ mqaio@linux.alibaba.com
+References: <d11bc7e6-a2c7-445a-8561-3599eafb07b0@linux.alibaba.com>
+In-Reply-To: <d11bc7e6-a2c7-445a-8561-3599eafb07b0@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Hi Paul,
 
-Thanks for reviewing.
 
-On 1/7/2024 8:42 pm, Paul Menzel wrote:
-> Dear Faizal,
+On 2024/6/30 20:55, Wen Gu wrote:
+> Hi stable team,
 > 
+> Could you please backport [1] to linux-5.10.y?
 > 
-> Thank you for your patch.
+> I noticed a regression caused by [2], which was merged to linux-5.10.y since v5.10.80.
 > 
-> Am 01.07.24 um 12:00 schrieb Faizal Rahim:
->> AVNU testing uncovered that even when the taprio gate is closed,
->> some packets still transmit.
+> After sock_map_unhash() helper was removed in [2], sock elems added to the bpf sock map
+> via sock_hash_update_common() cannot be removed if they are in the icsk_accept_queue
+> of the listener sock. Since they have not been accept()ed, they cannot be removed via
+> sock_map_close()->sock_map_remove_links() either.
 > 
-> What is AVNU? *some* would fit on the line above.
-
-AVNU stands for "Avnu Alliance." AVNU (Audio Video Bridging Network 
-Alliance) is an industry consortium that promotes and certifies 
-interoperability of devices implementing IEEE 802.1 standards for 
-time-sensitive applications.
-
-This AVNU test refers to AVNU certification test plan.
-Should I add this information in the commit ?
-
->> A known i225/6 hardware errata states traffic might overflow the planned
+> It can be reproduced in network test with short-lived connections. If the server is
+> stopped during the test, there is a probability that some sock elems will remain in
+> the bpf sock map.
 > 
-> Do you have an idea for that errata? Please document it. (I see you added 
-> it at the end. Maybe use [1] notation for referencing it.)
-
-Sure.
-
->> Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+> And with [1], the sock_map_destroy() helper is introduced to invoke sock_map_remove_links()
+> when inet_csk_listen_stop()->inet_child_forget()->inet_csk_destroy_sock(), to remove the
+> sock elems from the bpf sock map in such situation.
 > 
-> As you Cc’ed stable@vger.kernel.org, add a Fixes: tag?
-
-Accidentally CC'ed stable@vger.kernel.org.
-Since it's a hardware bug, not software, probably Fixes: tag not needed ?
-Not sure which Fixes: commit to point to hmm.
-
-I'll remove stable kernel email and omit Fixes: tag, is that okay?
-
->>   /* Returns the TSN specific registers to their default values after
->>    * the adapter is reset.
->>    */
->> @@ -91,6 +100,9 @@ static int igc_tsn_disable_offload(struct igc_adapter 
->> *adapter)
->>       wr32(IGC_TXPBS, I225_TXPBSIZE_DEFAULT);
->>       wr32(IGC_DTXMXPKTSZ, IGC_DTXMXPKTSZ_DEFAULT);
->> +    if (igc_is_device_id_i226(hw))
->> +        igc_tsn_restore_retx_default(adapter);
->> +
->>       tqavctrl = rd32(IGC_TQAVCTRL);
->>       tqavctrl &= ~(IGC_TQAVCTRL_TRANSMIT_MODE_TSN |
->>                 IGC_TQAVCTRL_ENHANCED_QAV | IGC_TQAVCTRL_FUTSCDDIS);
->> @@ -111,6 +123,25 @@ static int igc_tsn_disable_offload(struct 
->> igc_adapter *adapter)
->>       return 0;
->>   }
->> +/* To partially fix i226 HW errata, reduce MAC internal buffering from 
->> 192 Bytes
->> + * to 88 Bytes by setting RETX_CTL register using the recommendation from:
->> + * a) Ethernet Controller I225/I22 Specification Update Rev 2.1
->> + *    Item 9: TSN: Packet Transmission Might Cross the Qbv Window
->> + * b) I225/6 SW User Manual Rev 1.2.4: Section 8.11.5 Retry Buffer Control
->> + */
->> +static void igc_tsn_set_retx_qbvfullth(struct igc_adapter *adapter)
+> [1] d8616ee2affc ("bpf, sockmap: Fix sk->sk_forward_alloc warn_on in sk_stream_kill_queues")
+> (link: https://lore.kernel.org/all/20220524075311.649153-1-wangyufen@huawei.com/)
+> [2] 8b5c98a67c1b ("bpf, sockmap: Remove unhash handler for BPF sockmap usage")
+> (link: https://lore.kernel.org/all/20211103204736.248403-3-john.fastabend@gmail.com/)
 > 
-> It’d put threshold in the name.
+> Thanks!
+> Wen Gu
 
-My earlier thought is that it is easier to look for the keyword "qbvfullth" 
-in the i226 SW User Manual where you'll get a hit that brings you directly 
-to that register. "qbvfullthreshold" would not.
-There are some comments in the new code that links 'th' to 'threshold' for 
-the reader.
+Hi stable team,
 
-But I'm okay to change it to "qbvfullthreshold".
-Thoughts?
+Just want to confirm that the backport of this patch is consistent with the stable tree rules
+as I thought. And is there any other information I need to provide? :)
 
-Regards,
-Faizal
+Thanks for your efforts and time.
+
+Regards.
 
