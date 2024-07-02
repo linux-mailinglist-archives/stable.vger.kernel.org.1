@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-56871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6214A924658
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:34:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBB9C92465B
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:34:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C159285E2F
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:34:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67756B27423
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DCE31BE235;
-	Tue,  2 Jul 2024 17:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1291BF31E;
+	Tue,  2 Jul 2024 17:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jNxJq28m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JR2iWlH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1ADC1BD005;
-	Tue,  2 Jul 2024 17:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6DF1BE872;
+	Tue,  2 Jul 2024 17:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941642; cv=none; b=oERvl8vU1kZhULUZWehFfgg2BGVFq97vZPeWYJRDx9ocE6cOOv3xR4TabbrO4xUDEKU2kt/XKmDnDPD8GAupQkKifN+2Mhh/nJsUVA0a56L4l3ZL2CFiBc5gCxE3LrF9q1bJGFGprhm27nip/Td/h0E/M2Z+Ipw004I3m8LEhmY=
+	t=1719941649; cv=none; b=fdahbv9UZ6ySDVYQiTPp+DYWU9r+qNIOV1pC4ALjP6qXszOFEYMfHEPXA5uv97pHG4M+HFCdvYzGBMRhN0Z1xlgutRJi1ih9CrRadqrsWznbKK9LNUYj3xM15fceOxwIHEHO5cPLCpThpXX58hGpP9NGu75QP+w83+d2P1ktgJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941642; c=relaxed/simple;
-	bh=cFEPzgMykpKq6xhTQpEHypfwVpyJH7tdwKoClFtn4Tg=;
+	s=arc-20240116; t=1719941649; c=relaxed/simple;
+	bh=n/zDebyYCj7l+QPLUkL1tLQaM6ar2bEKgNS/WkzZ+0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nlj4txbvjKl6nX8YVxeQfk9cErHFD8L1hV4HYnbFP76kh4lxBQugYjA7tEt0EpaezZlwmGa3gv+RTxmFeVNmOgSsV75Zg/GkEepbf9Lq9qu0FiYUK/ZuKMw+xlAQQD6698bm89HkG1H4UWkCH7853IAFnU+V5wXG9cIN2k9pKtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jNxJq28m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F47C116B1;
-	Tue,  2 Jul 2024 17:34:00 +0000 (UTC)
+	 MIME-Version; b=iKoJfiDdVO6nSd5ypekYdMYQSKVRkwcJBw8WVWdHjN3wU8fW+DDNrcBCO1coV+3I7ZZvrxQ+YfH3MmTULCSZLDAwdR3dVmVqXlKTbwHmdGJ3HkdRXk9zGd/Jb3rou4sRFISrg35KOClZnUgPCLr1EBJzvVr5KWM1A2R6YhEu0FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JR2iWlH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FCECC4AF0A;
+	Tue,  2 Jul 2024 17:34:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941641;
-	bh=cFEPzgMykpKq6xhTQpEHypfwVpyJH7tdwKoClFtn4Tg=;
+	s=korg; t=1719941648;
+	bh=n/zDebyYCj7l+QPLUkL1tLQaM6ar2bEKgNS/WkzZ+0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jNxJq28mbP3MaZyV/YFnOZfua3eR1BEIXho6gF7TeK+Snn71CtCwale65kakQK/WW
-	 q9loNLBDfq1ayA4gHRl7UdOoq0hnXRwWqL4d3AAnIgU7JwkPnBTSkh84sHJ3knHnoU
-	 d17rY8jP1DGp1vYTx8OozJIbWUiN6obmKojq5Ml0=
+	b=0JR2iWlHV2M7CZ9orpiVfmQrSTFcx2hukoI7HxWccT3TEReg6lpaBHezwFpvlRXwK
+	 WWf+fr/iyzOxTTEWvKhV17CcVFMLyhn0ImjWfBOa1oldoyD2KgMk0rmhMf2SoxY+4e
+	 qYLPzImN1tjNJctO9MxID8lPcxaS1HqT13Npi6j4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jonas Karlman <jonas@kwiboo.se>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 124/128] arm64: dts: rockchip: Fix SD NAND and eMMC init on rk3308-rock-pi-s
-Date: Tue,  2 Jul 2024 19:05:25 +0200
-Message-ID: <20240702170230.910106581@linuxfoundation.org>
+Subject: [PATCH 6.1 125/128] arm64: dts: rockchip: Rename LED related pinctrl nodes on rk3308-rock-pi-s
+Date: Tue,  2 Jul 2024 19:05:26 +0200
+Message-ID: <20240702170230.948248293@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
 References: <20240702170226.231899085@linuxfoundation.org>
@@ -68,54 +68,78 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit 1fb98c855ccd7bc7f50c7a9626fbb8440454760b ]
+[ Upstream commit d2a52f678883fe4bc00bca89366b1ba504750abf ]
 
-Radxa ROCK Pi S have optional onboard SD NAND on board revision v1.1,
-v1.2 and v1.3, revision v1.5 changed to use optional onboard eMMC.
+The nodename, <name>-gpio, of referenced pinctrl nodes for the two LEDs
+on the ROCK Pi S cause DT schema validation error:
 
-The optional SD NAND typically fails to initialize:
+  leds: green-led-gpio: {'rockchip,pins': [[0, 6, 0, 90]], 'phandle': [[98]]} is not of type 'array'
+        from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml#
+  leds: heartbeat-led-gpio: {'rockchip,pins': [[0, 5, 0, 90]], 'phandle': [[99]]} is not of type 'array'
+        from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml#
 
-  mmc_host mmc0: Bus speed (slot 0) = 400000Hz (slot req 400000Hz, actual 400000HZ div = 0)
-  mmc0: error -110 whilst initialising SD card
-  mmc_host mmc0: Bus speed (slot 0) = 300000Hz (slot req 300000Hz, actual 300000HZ div = 0)
-  mmc0: error -110 whilst initialising SD card
-  mmc_host mmc0: Bus speed (slot 0) = 200000Hz (slot req 200000Hz, actual 200000HZ div = 0)
-  mmc0: error -110 whilst initialising SD card
-  mmc_host mmc0: Bus speed (slot 0) = 100000Hz (slot req 100000Hz, actual 100000HZ div = 0)
-  mmc0: error -110 whilst initialising SD card
-
-Add pinctrl and cap-sd-highspeed to fix SD NAND initialization. Also
-drop bus-width and mmc-hs200-1_8v to fix eMMC initialization on the new
-v1.5 board revision, only 3v3 signal voltage is used.
+Rename the pinctrl nodes and symbols to pass DT schema validation, also
+extend LED nodes with information about color and function.
 
 Fixes: 2e04c25b1320 ("arm64: dts: rockchip: add ROCK Pi S DTS support")
 Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20240521211029.1236094-4-jonas@kwiboo.se
+Link: https://lore.kernel.org/r/20240521211029.1236094-7-jonas@kwiboo.se
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts b/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
-index a71f249ed384e..e9d5d55f0a8ae 100644
+index e9d5d55f0a8ae..edc8d2e3980d0 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
-@@ -127,10 +127,12 @@
- };
+@@ -5,6 +5,8 @@
+  */
  
- &emmc {
--	bus-width = <4>;
- 	cap-mmc-highspeed;
--	mmc-hs200-1_8v;
-+	cap-sd-highspeed;
-+	no-sdio;
- 	non-removable;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&emmc_bus8 &emmc_clk &emmc_cmd>;
- 	vmmc-supply = <&vcc_io>;
- 	status = "okay";
- };
+ /dts-v1/;
++
++#include <dt-bindings/leds/common.h>
+ #include "rk3308.dtsi"
+ 
+ / {
+@@ -24,17 +26,21 @@
+ 	leds {
+ 		compatible = "gpio-leds";
+ 		pinctrl-names = "default";
+-		pinctrl-0 = <&green_led_gio>, <&heartbeat_led_gpio>;
++		pinctrl-0 = <&green_led>, <&heartbeat_led>;
+ 
+ 		green-led {
++			color = <LED_COLOR_ID_GREEN>;
+ 			default-state = "on";
++			function = LED_FUNCTION_POWER;
+ 			gpios = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
+ 			label = "rockpis:green:power";
+ 			linux,default-trigger = "default-on";
+ 		};
+ 
+ 		blue-led {
++			color = <LED_COLOR_ID_BLUE>;
+ 			default-state = "on";
++			function = LED_FUNCTION_HEARTBEAT;
+ 			gpios = <&gpio0 RK_PA5 GPIO_ACTIVE_HIGH>;
+ 			label = "rockpis:blue:user";
+ 			linux,default-trigger = "heartbeat";
+@@ -155,11 +161,11 @@
+ 	pinctrl-0 = <&rtc_32k>;
+ 
+ 	leds {
+-		green_led_gio: green-led-gpio {
++		green_led: green-led {
+ 			rockchip,pins = <0 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
+ 		};
+ 
+-		heartbeat_led_gpio: heartbeat-led-gpio {
++		heartbeat_led: heartbeat-led {
+ 			rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
+ 		};
+ 	};
 -- 
 2.43.0
 
