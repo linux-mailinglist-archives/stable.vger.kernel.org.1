@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0C9A924594
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:24:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19F64924510
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:18:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92DDA287DFE
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:24:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2C8F1F22FE8
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:18:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355F71BE222;
-	Tue,  2 Jul 2024 17:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD0481C0DC9;
+	Tue,  2 Jul 2024 17:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ik1JIpVf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2bRS8Ao"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E727415218A;
-	Tue,  2 Jul 2024 17:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB651C006A;
+	Tue,  2 Jul 2024 17:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941052; cv=none; b=PLFWRVzii8riNLdBYHwj7Na8LvcqoOK7JTZeB/gnzLKJM3Gyl7/JOG4ht/aJwHnjuN67Xr9KJaWdKcOoqwT65BZJCI72Wyns6ZKFL2IfX6xVJQ5qIiOOu0KnjYzBzNW77tsP/4k1LCMDJUm/c5e41Z2/AOk4nOpPwHZX8cx54M0=
+	t=1719940658; cv=none; b=GS3rkT6Fe2+VmaR8KPS56UkWBK1ghIJxthCMINQWCAkn51vPGnjXdy4PIH41fjhvldCAxCMlDIWFF9yeV2IoQv98TT/P8eyq8OT8s17CeRqDorKpTBGiC/y2LoKSXUCQaddJOXYSUAN4nT5wez4S5b6IeD/sszDvA3NLLEef8LQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941052; c=relaxed/simple;
-	bh=YNRghvgxUVww4R8ppFCOfO8byVouqQo1c4uVvQ1BK4w=;
+	s=arc-20240116; t=1719940658; c=relaxed/simple;
+	bh=gOgq5l+vXErrNiLZA+Hzq7MFwz3PhVb5EVDBHaNRXEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t+b3dFyhEOlWygve8YGCUfGodtbphhLE+QPh6ZS1IGT0dmsOrTt7Lux5GoMfdWHR4dlmf/4wUOuh9lE0EZzX8RFkw4voiLnz+PMMlLoMfrKT5Qj27nIoLKqE93/5rwaf+B2pWM8OPszoQNJ7tV6IopAHex5WSrh/RmuLFoDDLgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ik1JIpVf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9A6C116B1;
-	Tue,  2 Jul 2024 17:24:11 +0000 (UTC)
+	 MIME-Version; b=aP2x3e+v58hz6lB+bdi4Q2c5Fa46tz638tHqGc2nsa72F0O4d6BizOGqBglCynujO1Eq5VCp2KruXlNb0F+VAnbuji2qwJ4pijz3muSUlQXeskZdMMHJBN76NZbsLVsas3U2QiC/UuZg5GkEYNKb7RN6nSCWevIplVqLr56D1gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2bRS8Ao; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C185C4AF11;
+	Tue,  2 Jul 2024 17:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941051;
-	bh=YNRghvgxUVww4R8ppFCOfO8byVouqQo1c4uVvQ1BK4w=;
+	s=korg; t=1719940658;
+	bh=gOgq5l+vXErrNiLZA+Hzq7MFwz3PhVb5EVDBHaNRXEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ik1JIpVfGMK5G2jAZ4oQYi2LtcQlPuQzduaYSukyWvkvp7TKdUCuyhWNFGRJYY4do
-	 ziWH1LFmqvS9Bu0MlQqu7rMaebVjW8yXgU8GuldLpkmjOprn+dvyYiv9BS4pHuFb7Y
-	 20B/pXOwfC4fr2RXr3l3+V1x7q+EoBPkmd21Hmrg=
+	b=Q2bRS8AoB7ahEQTKXKRuIdq0JARNDW0Ihp6hAXR4i5O5+nSeE7BZYQ69cML0ekPLW
+	 PqE7NHwMs7eyf9GGwbmm91XHPNLx8YeyF2uiRPU/TlZ37bda5yn2mqP7cwA8XZggEk
+	 VnIkDiOYONOkhpExl+Wk001bt9TEKmi9qXn7lLVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jos Wang <joswang@lenovo.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 114/163] usb: dwc3: core: Workaround for CSR read timeout
+	Damien Le Moal <dlemoal@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.9 190/222] ata: ahci: Clean up sysfs file on error
 Date: Tue,  2 Jul 2024 19:03:48 +0200
-Message-ID: <20240702170237.370302014@linuxfoundation.org>
+Message-ID: <20240702170251.247729919@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jos Wang <joswang@lenovo.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit fc1d1a712b517bbcb383b1f1f7ef478e7d0579f2 upstream.
+commit eeb25a09c5e0805d92e4ebd12c4b0ad0df1b0295 upstream.
 
-This is a workaround for STAR 4846132, which only affects
-DWC_usb31 version2.00a operating in host mode.
+.probe() (ahci_init_one()) calls sysfs_add_file_to_group(), however,
+if probe() fails after this call, we currently never call
+sysfs_remove_file_from_group().
 
-There is a problem in DWC_usb31 version 2.00a operating
-in host mode that would cause a CSR read timeout When CSR
-read coincides with RAM Clock Gating Entry. By disable
-Clock Gating, sacrificing power consumption for normal
-operation.
+(The sysfs_remove_file_from_group() call in .remove() (ahci_remove_one())
+does not help, as .remove() is not called on .probe() error.)
 
-Cc: stable <stable@kernel.org> # 5.10.x: 1e43c86d: usb: dwc3: core: Add DWC31 version 2.00a controller
-Signed-off-by: Jos Wang <joswang@lenovo.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20240619114529.3441-1-joswang1221@gmail.com
+Thus, if probe() fails after the sysfs_add_file_to_group() call, the next
+time we insmod the module we will get:
+
+sysfs: cannot create duplicate filename '/devices/pci0000:00/0000:00:04.0/remapped_nvme'
+CPU: 11 PID: 954 Comm: modprobe Not tainted 6.10.0-rc5 #43
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x5d/0x80
+ sysfs_warn_dup.cold+0x17/0x23
+ sysfs_add_file_mode_ns+0x11a/0x130
+ sysfs_add_file_to_group+0x7e/0xc0
+ ahci_init_one+0x31f/0xd40 [ahci]
+
+Fixes: 894fba7f434a ("ata: ahci: Add sysfs attribute to show remapped NVMe device count")
+Cc: stable@vger.kernel.org
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Link: https://lore.kernel.org/r/20240629124210.181537-10-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |   20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ drivers/ata/ahci.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -865,12 +865,16 @@ static bool dwc3_core_is_valid(struct dw
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -1975,8 +1975,10 @@ static int ahci_init_one(struct pci_dev
+ 	n_ports = max(ahci_nr_ports(hpriv->cap), fls(hpriv->port_map));
  
- static void dwc3_core_setup_global_control(struct dwc3 *dwc)
- {
-+	unsigned int power_opt;
-+	unsigned int hw_mode;
- 	u32 reg;
+ 	host = ata_host_alloc_pinfo(&pdev->dev, ppi, n_ports);
+-	if (!host)
+-		return -ENOMEM;
++	if (!host) {
++		rc = -ENOMEM;
++		goto err_rm_sysfs_file;
++	}
+ 	host->private_data = hpriv;
  
- 	reg = dwc3_readl(dwc->regs, DWC3_GCTL);
- 	reg &= ~DWC3_GCTL_SCALEDOWN_MASK;
-+	hw_mode = DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
-+	power_opt = DWC3_GHWPARAMS1_EN_PWROPT(dwc->hwparams.hwparams1);
+ 	if (ahci_init_msi(pdev, n_ports, hpriv) < 0) {
+@@ -2031,11 +2033,11 @@ static int ahci_init_one(struct pci_dev
+ 	/* initialize adapter */
+ 	rc = ahci_configure_dma_masks(pdev, hpriv);
+ 	if (rc)
+-		return rc;
++		goto err_rm_sysfs_file;
  
--	switch (DWC3_GHWPARAMS1_EN_PWROPT(dwc->hwparams.hwparams1)) {
-+	switch (power_opt) {
- 	case DWC3_GHWPARAMS1_EN_PWROPT_CLK:
- 		/**
- 		 * WORKAROUND: DWC3 revisions between 2.10a and 2.50a have an
-@@ -903,6 +907,20 @@ static void dwc3_core_setup_global_contr
- 		break;
- 	}
+ 	rc = ahci_pci_reset_controller(host);
+ 	if (rc)
+-		return rc;
++		goto err_rm_sysfs_file;
  
-+	/*
-+	 * This is a workaround for STAR#4846132, which only affects
-+	 * DWC_usb31 version2.00a operating in host mode.
-+	 *
-+	 * There is a problem in DWC_usb31 version 2.00a operating
-+	 * in host mode that would cause a CSR read timeout When CSR
-+	 * read coincides with RAM Clock Gating Entry. By disable
-+	 * Clock Gating, sacrificing power consumption for normal
-+	 * operation.
-+	 */
-+	if (power_opt != DWC3_GHWPARAMS1_EN_PWROPT_NO &&
-+	    hw_mode != DWC3_GHWPARAMS0_MODE_GADGET && DWC3_VER_IS(DWC31, 200A))
-+		reg |= DWC3_GCTL_DSBLCLKGTNG;
+ 	ahci_pci_init_controller(host);
+ 	ahci_pci_print_info(host);
+@@ -2044,10 +2046,15 @@ static int ahci_init_one(struct pci_dev
+ 
+ 	rc = ahci_host_activate(host, &ahci_sht);
+ 	if (rc)
+-		return rc;
++		goto err_rm_sysfs_file;
+ 
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	return 0;
 +
- 	/* check if current dwc3 is on simulation board */
- 	if (dwc->hwparams.hwparams6 & DWC3_GHWPARAMS6_EN_FPGA) {
- 		dev_info(dwc->dev, "Running with FPGA optimizations\n");
++err_rm_sysfs_file:
++	sysfs_remove_file_from_group(&pdev->dev.kobj,
++				     &dev_attr_remapped_nvme.attr, NULL);
++	return rc;
+ }
+ 
+ static void ahci_shutdown_one(struct pci_dev *pdev)
 
 
 
