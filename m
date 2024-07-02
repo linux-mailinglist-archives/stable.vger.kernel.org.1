@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-56545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00CB9244DD
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:15:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 072A792456D
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:22:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A0711F22008
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:15:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6C1A28488D
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B181BE251;
-	Tue,  2 Jul 2024 17:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA281BE224;
+	Tue,  2 Jul 2024 17:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpmQeNRC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HfpHerjV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AB61BE22B;
-	Tue,  2 Jul 2024 17:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8A914293;
+	Tue,  2 Jul 2024 17:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940540; cv=none; b=CkrpwddkuFJkPUtXx3TBKTelI6MQ7AlWrLcEmIomNx6YgQhDeYz9GtbBlThqwN3TneTlsjfmiBucbKx1eX71aVG5Up96UXOX7w1MrwbYhSnUlIkmQST1vbfrohWR+Xz3X6ydcaLyH68ixyzeQZ0ZFoHOSWQa/HdqRUtHItRs4Sw=
+	t=1719940926; cv=none; b=g3sbCtnTRLEVdKGuQYvP0/atBxx4H1wlSm0YGWeCR0WymXa2qh6inn2ZlSSRwnitIRRHwWpR0o1Do8Z0IGgqtustWrZQ2ZDSshmj3RepwdefYVCy7eJ6JlofrqGPdCf/2enudO3dM+qGEu/Bjmp/5y4HW0BFO53l/Y7w/DG+5vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940540; c=relaxed/simple;
-	bh=oEP2vb3wSEqEKmz1U9kBhmgQ6egR3Oo8cAraKhSSrW0=;
+	s=arc-20240116; t=1719940926; c=relaxed/simple;
+	bh=7FiJLdySe36HZ1mxOsZqgCvAi4WGZCvcq6cb+xxdpq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AEbAVNMRYHquNXKNlLtkC2JZ5VOgEN8Nj9Mi9wr8jrTFd4RNVm8uhwIdaNGGtpG/TE4fG2XvSvH1cbVPCT34gwS7ewaFcr7yoE5YZnyzrUQPFL3H2yemgjOw56XdICo3xqQQiU8GkZnZr/pAo2/VwanBXsLJAK/GVXS5gyFlcTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpmQeNRC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBA4C116B1;
-	Tue,  2 Jul 2024 17:15:39 +0000 (UTC)
+	 MIME-Version; b=QGLrEolDedU2HF3MBv/WiulZLAr5fjz59V2Tw7PROxtbXAoPqKjdc0kUH5U4lFa9a/1Td19yqQwrQdHfjkHbi8If/oZ+VhR5CPrcQB48AafkqsNGi95nHqqCOyHl1eKu35xdZjr/a/aCiXBka18w+sHm80NuCBnDW9VWtEctJo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HfpHerjV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C81EC116B1;
+	Tue,  2 Jul 2024 17:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940540;
-	bh=oEP2vb3wSEqEKmz1U9kBhmgQ6egR3Oo8cAraKhSSrW0=;
+	s=korg; t=1719940926;
+	bh=7FiJLdySe36HZ1mxOsZqgCvAi4WGZCvcq6cb+xxdpq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xpmQeNRCDGsq9SJREZqHXYiuBQ8GFCKObn1M2FEsAcMOWE4kmMV+ihks+/KkXEDg8
-	 gMz4yZJyo/oJ0OdcshxAawrGn6Rt8h+KaOov0ixRPPN3AwEvTyM6WRdbisZa3xT03j
-	 31yOOAKMoTKWnGgCcBE5N52S+noxMAV8oqVOzGyI=
+	b=HfpHerjVooP02k89RvwpNv2j6Po1MhqJJgKUt78abySmaWxEZwCjszti6e0yHRDMs
+	 MgzaFhZ51bwabZqJVOf8AzO6yPlXNnf53kSXCDjxFnovZ1LBel5UuWp/EtWOrdM4an
+	 GY4Kbt3OaJBgMlFb16iB/ma8SH02GJLZKMAjLQRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.9 153/222] usb: ucsi: stm32: fix command completion handling
-Date: Tue,  2 Jul 2024 19:03:11 +0200
-Message-ID: <20240702170249.826273321@linuxfoundation.org>
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 078/163] x86: stop playing stack games in profile_pc()
+Date: Tue,  2 Jul 2024 19:03:12 +0200
+Message-ID: <20240702170236.015096494@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 8e1ec117efdfd4b2f59f57bd0ad16b4edf5b963f upstream.
+[ Upstream commit 093d9603b60093a9aaae942db56107f6432a5dca ]
 
-Sometimes errors are seen, when doing DR swap, like:
-[   24.672481] ucsi-stm32g0-i2c 0-0035: UCSI_GET_PDOS failed (-5)
-[   24.720188] ucsi-stm32g0-i2c 0-0035: ucsi_handle_connector_change:
- GET_CONNECTOR_STATUS failed (-5)
+The 'profile_pc()' function is used for timer-based profiling, which
+isn't really all that relevant any more to begin with, but it also ends
+up making assumptions based on the stack layout that aren't necessarily
+valid.
 
-There may be some race, which lead to read CCI, before the command complete
-flag is set, hence returning -EIO. Similar fix has been done also in
-ucsi_acpi [1].
+Basically, the code tries to account the time spent in spinlocks to the
+caller rather than the spinlock, and while I support that as a concept,
+it's not worth the code complexity or the KASAN warnings when no serious
+profiling is done using timers anyway these days.
 
-In case of a spurious or otherwise delayed notification it is
-possible that CCI still reports the previous completion. The
-UCSI spec is aware of this and provides two completion bits in
-CCI, one for normal commands and one for acks. As acks and commands
-alternate the notification handler can determine if the completion
-bit is from the current command.
+And the code really does depend on stack layout that is only true in the
+simplest of cases.  We've lost the comment at some point (I think when
+the 32-bit and 64-bit code was unified), but it used to say:
 
-To fix this add the ACK_PENDING bit for ucsi_stm32g0 and only complete
-commands if the completion bit matches.
+	Assume the lock function has either no stack frame or a copy
+	of eflags from PUSHF.
 
-[1] https://lore.kernel.org/lkml/20240121204123.275441-3-lk@c--e.de/
+which explains why it just blindly loads a word or two straight off the
+stack pointer and then takes a minimal look at the values to just check
+if they might be eflags or the return pc:
 
-Fixes: 72849d4fcee7 ("usb: typec: ucsi: stm32g0: add support for stm32g0 controller")
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Link: https://lore.kernel.org/stable/20240612124656.2305603-1-fabrice.gasnier%40foss.st.com
-Cc: stable <stable@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240612124656.2305603-1-fabrice.gasnier@foss.st.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	Eflags always has bits 22 and up cleared unlike kernel addresses
+
+but that basic stack layout assumption assumes that there isn't any lock
+debugging etc going on that would complicate the code and cause a stack
+frame.
+
+It causes KASAN unhappiness reported for years by syzkaller [1] and
+others [2].
+
+With no real practical reason for this any more, just remove the code.
+
+Just for historical interest, here's some background commits relating to
+this code from 2006:
+
+  0cb91a229364 ("i386: Account spinlocks to the caller during profiling for !FP kernels")
+  31679f38d886 ("Simplify profile_pc on x86-64")
+
+and a code unification from 2009:
+
+  ef4512882dbe ("x86: time_32/64.c unify profile_pc")
+
+but the basics of this thing actually goes back to before the git tree.
+
+Link: https://syzkaller.appspot.com/bug?extid=84fe685c02cd112a2ac3 [1]
+Link: https://lore.kernel.org/all/CAK55_s7Xyq=nh97=K=G1sxueOFrJDAvPOJAL4TPTCAYvmxO9_A@mail.gmail.com/ [2]
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi_stm32g0.c |   19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ arch/x86/kernel/time.c | 20 +-------------------
+ 1 file changed, 1 insertion(+), 19 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi_stm32g0.c
-+++ b/drivers/usb/typec/ucsi/ucsi_stm32g0.c
-@@ -64,6 +64,7 @@ struct ucsi_stm32g0 {
- 	struct completion complete;
- 	struct device *dev;
- 	unsigned long flags;
-+#define ACK_PENDING	2
- 	const char *fw_name;
- 	struct ucsi *ucsi;
- 	bool suspended;
-@@ -395,9 +396,13 @@ static int ucsi_stm32g0_sync_write(struc
- 				   size_t len)
+diff --git a/arch/x86/kernel/time.c b/arch/x86/kernel/time.c
+index e42faa792c079..52e1f3f0b361c 100644
+--- a/arch/x86/kernel/time.c
++++ b/arch/x86/kernel/time.c
+@@ -27,25 +27,7 @@
+ 
+ unsigned long profile_pc(struct pt_regs *regs)
  {
- 	struct ucsi_stm32g0 *g0 = ucsi_get_drvdata(ucsi);
-+	bool ack = UCSI_COMMAND(*(u64 *)val) == UCSI_ACK_CC_CI;
- 	int ret;
- 
--	set_bit(COMMAND_PENDING, &g0->flags);
-+	if (ack)
-+		set_bit(ACK_PENDING, &g0->flags);
-+	else
-+		set_bit(COMMAND_PENDING, &g0->flags);
- 
- 	ret = ucsi_stm32g0_async_write(ucsi, offset, val, len);
- 	if (ret)
-@@ -405,9 +410,14 @@ static int ucsi_stm32g0_sync_write(struc
- 
- 	if (!wait_for_completion_timeout(&g0->complete, msecs_to_jiffies(5000)))
- 		ret = -ETIMEDOUT;
-+	else
-+		return 0;
- 
- out_clear_bit:
--	clear_bit(COMMAND_PENDING, &g0->flags);
-+	if (ack)
-+		clear_bit(ACK_PENDING, &g0->flags);
-+	else
-+		clear_bit(COMMAND_PENDING, &g0->flags);
- 
- 	return ret;
+-	unsigned long pc = instruction_pointer(regs);
+-
+-	if (!user_mode(regs) && in_lock_functions(pc)) {
+-#ifdef CONFIG_FRAME_POINTER
+-		return *(unsigned long *)(regs->bp + sizeof(long));
+-#else
+-		unsigned long *sp = (unsigned long *)regs->sp;
+-		/*
+-		 * Return address is either directly at stack pointer
+-		 * or above a saved flags. Eflags has bits 22-31 zero,
+-		 * kernel addresses don't.
+-		 */
+-		if (sp[0] >> 22)
+-			return sp[0];
+-		if (sp[1] >> 22)
+-			return sp[1];
+-#endif
+-	}
+-	return pc;
++	return instruction_pointer(regs);
  }
-@@ -428,8 +438,9 @@ static irqreturn_t ucsi_stm32g0_irq_hand
- 	if (UCSI_CCI_CONNECTOR(cci))
- 		ucsi_connector_change(g0->ucsi, UCSI_CCI_CONNECTOR(cci));
+ EXPORT_SYMBOL(profile_pc);
  
--	if (test_bit(COMMAND_PENDING, &g0->flags) &&
--	    cci & (UCSI_CCI_ACK_COMPLETE | UCSI_CCI_COMMAND_COMPLETE))
-+	if (cci & UCSI_CCI_ACK_COMPLETE && test_and_clear_bit(ACK_PENDING, &g0->flags))
-+		complete(&g0->complete);
-+	if (cci & UCSI_CCI_COMMAND_COMPLETE && test_and_clear_bit(COMMAND_PENDING, &g0->flags))
- 		complete(&g0->complete);
- 
- 	return IRQ_HANDLED;
+-- 
+2.43.0
+
 
 
 
