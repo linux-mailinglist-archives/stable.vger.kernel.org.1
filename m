@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-56731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4600B9245BA
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:26:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BE1A924615
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:31:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 015BD289CF9
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:26:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DF161C2084A
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156061BE24D;
-	Tue,  2 Jul 2024 17:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE0E71BD005;
+	Tue,  2 Jul 2024 17:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0npvdmR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Km9joVWk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8AEE1BE226;
-	Tue,  2 Jul 2024 17:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9613D978;
+	Tue,  2 Jul 2024 17:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941169; cv=none; b=eysPHt998aXSLmeg38Gk8dobP90Tbsn8r59cwP6XsWZzSy1srh4jAcLwbaCDTKCXJjYHlNz8vza7BenYcnFoQtHTKOosBXs/6OvY8tiED7KxezGnIGAFe5lwuydHXyQUvgDWIbwO+t/JtYcMygCyb1kzY3Z3IFgGyfC15yNsnc8=
+	t=1719941457; cv=none; b=RE/Cz+U/D0NaZP57ZSi3Letp4KgJdu088vQPivK+uGuUtJcenb+TaD7o4y02AJ+obnIziQwtl7n/szpjLg+qwZp3+Id0EImOMhtHbV4cFya69C59LXqg2pi2CPEJeXf6h1YYnFqYMLjg3ZHObOXl+vrRnlcFh2TTjYahWFJ11Sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941169; c=relaxed/simple;
-	bh=a1m2am5bt7gbR7fgz1znbWivIVe2g6teE58WxKUiPUQ=;
+	s=arc-20240116; t=1719941457; c=relaxed/simple;
+	bh=icmPyTG1mISpKqDw9EFpXkfEWBKv8FSqDVs07y3MvWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5t4WT01C2j6NDN9800Lqrmtd+mwV+rwRnPSMO9QtuAfXA9TRP7mQesunmFZM5Tq7reqmA/mflOz1xnMHiYYzLyugOp0AXrFWS/MY4Ve3b5wwMSlvkSahX7EVI6iOvJ15E92H06My8iV/XsKlzJ1OLsNAa5EeS14IAKbmdV962g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0npvdmR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F2FC4AF0A;
-	Tue,  2 Jul 2024 17:26:09 +0000 (UTC)
+	 MIME-Version; b=st3opiVskhW7gYJ5ebrH1LFp8ufPn4i25VBIbGsEeYRzqGmNOVo9K93Kc3C0H2AdFgeE3h1vMDMT0EGeqel9XLKvobJr7kt0hkoiNjAwJ5YGDSP/Cv2/9h795Fck+oYxp5Y1SY26yDmA7ojR6FLDbcsoX3BwX97iWBk14nXi5ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Km9joVWk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA021C116B1;
+	Tue,  2 Jul 2024 17:30:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941169;
-	bh=a1m2am5bt7gbR7fgz1znbWivIVe2g6teE58WxKUiPUQ=;
+	s=korg; t=1719941457;
+	bh=icmPyTG1mISpKqDw9EFpXkfEWBKv8FSqDVs07y3MvWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T0npvdmRvYcw++yDYIQj0cTBMHfae7wmBNPlaASzPxqk9jH+NGW4Ym8X1CGF1h16J
-	 +rwsnHvL5vqT+UCv5SdBTK46Asz5moG1WF6/RCZ4BfzwbhrbAhh26bPM6n0bpC2vDl
-	 v1qNiYhqA/QPZtNYNq8J7n0mubYCU+K4feYwkawo=
+	b=Km9joVWkZUUSw8rkaCsuRYjenmHksy/FLo0xzzTm0fL9lTuEnCPvKVPO+gReQqkGC
+	 qh+0NaUvqQj4SDlL/jZur2Tl7wNCHm9e8lsVp4xs+vs8m1EsrcSJ3StRMcN0wNK/44
+	 Pc9a/9qzgIvURp0zyFvJahHrlv50bpllQ+O/Ymzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	kernel test robot <lkp@intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 149/163] syscalls: fix sys_fanotify_mark prototype
+Subject: [PATCH 6.1 062/128] x86: stop playing stack games in profile_pc()
 Date: Tue,  2 Jul 2024 19:04:23 +0200
-Message-ID: <20240702170238.702993799@linuxfoundation.org>
+Message-ID: <20240702170228.577403509@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 63e2f40c9e3187641afacde4153f54b3ee4dbc8c ]
+[ Upstream commit 093d9603b60093a9aaae942db56107f6432a5dca ]
 
-My earlier fix missed an incorrect function prototype that shows up on
-native 32-bit builds:
+The 'profile_pc()' function is used for timer-based profiling, which
+isn't really all that relevant any more to begin with, but it also ends
+up making assumptions based on the stack layout that aren't necessarily
+valid.
 
-In file included from fs/notify/fanotify/fanotify_user.c:14:
-include/linux/syscalls.h:248:25: error: conflicting types for 'sys_fanotify_mark'; have 'long int(int,  unsigned int,  u32,  u32,  int,  const char *)' {aka 'long int(int,  unsigned int,  unsigned int,  unsigned int,  int,  const char *)'}
- 1924 | SYSCALL32_DEFINE6(fanotify_mark,
-      | ^~~~~~~~~~~~~~~~~
-include/linux/syscalls.h:862:17: note: previous declaration of 'sys_fanotify_mark' with type 'long int(int,  unsigned int,  u64,  int, const char *)' {aka 'long int(int,  unsigned int,  long long unsigned int,  int,  const char *)'}
+Basically, the code tries to account the time spent in spinlocks to the
+caller rather than the spinlock, and while I support that as a concept,
+it's not worth the code complexity or the KASAN warnings when no serious
+profiling is done using timers anyway these days.
 
-On x86 and powerpc, the prototype is also wrong but hidden in an #ifdef,
-so it never caused problems.
+And the code really does depend on stack layout that is only true in the
+simplest of cases.  We've lost the comment at some point (I think when
+the 32-bit and 64-bit code was unified), but it used to say:
 
-Add another alternative declaration that matches the conditional function
-definition.
+	Assume the lock function has either no stack frame or a copy
+	of eflags from PUSHF.
 
-Fixes: 403f17a33073 ("parisc: use generic sys_fanotify_mark implementation")
-Cc: stable@vger.kernel.org
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+which explains why it just blindly loads a word or two straight off the
+stack pointer and then takes a minimal look at the values to just check
+if they might be eflags or the return pc:
+
+	Eflags always has bits 22 and up cleared unlike kernel addresses
+
+but that basic stack layout assumption assumes that there isn't any lock
+debugging etc going on that would complicate the code and cause a stack
+frame.
+
+It causes KASAN unhappiness reported for years by syzkaller [1] and
+others [2].
+
+With no real practical reason for this any more, just remove the code.
+
+Just for historical interest, here's some background commits relating to
+this code from 2006:
+
+  0cb91a229364 ("i386: Account spinlocks to the caller during profiling for !FP kernels")
+  31679f38d886 ("Simplify profile_pc on x86-64")
+
+and a code unification from 2009:
+
+  ef4512882dbe ("x86: time_32/64.c unify profile_pc")
+
+but the basics of this thing actually goes back to before the git tree.
+
+Link: https://syzkaller.appspot.com/bug?extid=84fe685c02cd112a2ac3 [1]
+Link: https://lore.kernel.org/all/CAK55_s7Xyq=nh97=K=G1sxueOFrJDAvPOJAL4TPTCAYvmxO9_A@mail.gmail.com/ [2]
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/syscalls.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/kernel/time.c | 20 +-------------------
+ 1 file changed, 1 insertion(+), 19 deletions(-)
 
-diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
-index 705977c1b2b2b..36c592e43d652 100644
---- a/include/linux/syscalls.h
-+++ b/include/linux/syscalls.h
-@@ -840,9 +840,15 @@ asmlinkage long sys_prlimit64(pid_t pid, unsigned int resource,
- 				const struct rlimit64 __user *new_rlim,
- 				struct rlimit64 __user *old_rlim);
- asmlinkage long sys_fanotify_init(unsigned int flags, unsigned int event_f_flags);
-+#if defined(CONFIG_ARCH_SPLIT_ARG64)
-+asmlinkage long sys_fanotify_mark(int fanotify_fd, unsigned int flags,
-+                                unsigned int mask_1, unsigned int mask_2,
-+				int dfd, const char  __user * pathname);
-+#else
- asmlinkage long sys_fanotify_mark(int fanotify_fd, unsigned int flags,
- 				  u64 mask, int fd,
- 				  const char  __user *pathname);
-+#endif
- asmlinkage long sys_name_to_handle_at(int dfd, const char __user *name,
- 				      struct file_handle __user *handle,
- 				      int __user *mnt_id, int flag);
+diff --git a/arch/x86/kernel/time.c b/arch/x86/kernel/time.c
+index e42faa792c079..52e1f3f0b361c 100644
+--- a/arch/x86/kernel/time.c
++++ b/arch/x86/kernel/time.c
+@@ -27,25 +27,7 @@
+ 
+ unsigned long profile_pc(struct pt_regs *regs)
+ {
+-	unsigned long pc = instruction_pointer(regs);
+-
+-	if (!user_mode(regs) && in_lock_functions(pc)) {
+-#ifdef CONFIG_FRAME_POINTER
+-		return *(unsigned long *)(regs->bp + sizeof(long));
+-#else
+-		unsigned long *sp = (unsigned long *)regs->sp;
+-		/*
+-		 * Return address is either directly at stack pointer
+-		 * or above a saved flags. Eflags has bits 22-31 zero,
+-		 * kernel addresses don't.
+-		 */
+-		if (sp[0] >> 22)
+-			return sp[0];
+-		if (sp[1] >> 22)
+-			return sp[1];
+-#endif
+-	}
+-	return pc;
++	return instruction_pointer(regs);
+ }
+ EXPORT_SYMBOL(profile_pc);
+ 
 -- 
 2.43.0
 
