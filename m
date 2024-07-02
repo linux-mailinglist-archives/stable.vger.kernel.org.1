@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-56638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68AAD924556
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:21:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8235C92449A
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:12:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D8191F22268
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:21:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 395A21F2166D
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1401BE22B;
-	Tue,  2 Jul 2024 17:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E0981BE22A;
+	Tue,  2 Jul 2024 17:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKbqmZYs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p2Ao7Rx8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA3F3D978;
-	Tue,  2 Jul 2024 17:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3E815B0FE;
+	Tue,  2 Jul 2024 17:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940854; cv=none; b=Dse8j9Fr0a+fvWUf6vUP5ejraPushuT+LB8n7Z2eoLG8Szd0mN+P++Fh+veArh/7CglWDTx5mEFEQWgLPI9O6F5xkpz/oqMW60x7Z39St5NxvSIwenOy9ZuDyui1ot5ihpr+c0g6KNWqJo4OoTe0i9nTnGFmaVdj8qFvxGZeYXY=
+	t=1719940357; cv=none; b=fR2dBkcrzDblaCsrVF/EXJ/pGdBPwgSnT6Gr+aHwUqg+kdwQI+UjGpYzdZHZkTwRFP8Z2jgMSMm7XJPwHcJ+3LoKBhNz1cH07XUuUmb/y8rbhwJW9J0LuX1w7W6XTNXoWQWcOH9bXDb/+pN3wsm42gjph94dschAHsj9LUO4qrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940854; c=relaxed/simple;
-	bh=30mGicKbY6reWOBfBttFRZRF/GUTN49ZlubxI7HSDoQ=;
+	s=arc-20240116; t=1719940357; c=relaxed/simple;
+	bh=9aCDg2uq4h732Ei97rqWYtVfRkp1Zwtq8kaKYblTw+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fEzK4Xp76MgyWTt0PdiHkQwBELsyPzdEwJIk9pcc2ZpGKqEfPoWEv8NbvM/gSl0HtL6CjbuDYODs1ZFhj4YgtfHhKt5gNjsM1kiiPxz0cbQklNc22QUycnH0TJou8qhPuPvEYys250AwKmVJGjygvAuo0bDsxYbn+Fpd++tGOxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKbqmZYs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C766C116B1;
-	Tue,  2 Jul 2024 17:20:53 +0000 (UTC)
+	 MIME-Version; b=cioxpGz58xVMexmKcjF6AR+O+y/C/M6RuIXTNWGnEb86Il5xRIfjJYay86webTLeGNTxmRTOpooEGM1q0Eg7jFZfYlRyIXg1lVFLICwODkxZyrs7nJyej2v3aFWG1/q1UZLbxNikynU3fNspghjjRnFUepoW/3IZCbEDEjJ0lYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2Ao7Rx8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B92C116B1;
+	Tue,  2 Jul 2024 17:12:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940854;
-	bh=30mGicKbY6reWOBfBttFRZRF/GUTN49ZlubxI7HSDoQ=;
+	s=korg; t=1719940357;
+	bh=9aCDg2uq4h732Ei97rqWYtVfRkp1Zwtq8kaKYblTw+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dKbqmZYsZNC830r9hw1H6VIJsr6nX1aVXEvLQb7bhV1Sz/Q/rbid85udFlUgZQUiB
-	 smc6RFXt6FKAkuG70eonlEw2fcwbItI2gjh+HAECw690KNQetINZoOIO0jjC7P0CCH
-	 L3mDZOTRJa2tvajXEmeq0J823e3maMsHY5gKaFL8=
+	b=p2Ao7Rx8X/ExtZWFWTOqRcFoqzia4YAHsmwqkH8qa/6j8aJl3fUSSktiZv/haZwar
+	 Gcl1JpFbykXnTaJ/AavDd2Tr6/jZt/+7oB4Ww3EMAGtCGXVnZOikD0vHNRDmKGxdq7
+	 qaEajGAYdvio9jq53yTYWMa2+F1kdvE25zs4THE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Coquelin <maxime.coquelin@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Xie Yongji <xieyongji@bytedance.com>,
-	Jason Wang <jasowang@redhat.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/163] vduse: Temporarily fail if control queue feature requested
+Subject: [PATCH 6.9 131/222] kbuild: rpm-pkg: fix build error with CONFIG_MODULES=n
 Date: Tue,  2 Jul 2024 19:02:49 +0200
-Message-ID: <20240702170235.145238861@linuxfoundation.org>
+Message-ID: <20240702170248.976814304@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +60,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Coquelin <maxime.coquelin@redhat.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 56e71885b0349241c07631a7b979b61e81afab6a ]
+[ Upstream commit 8d1001f7bdd0553a796998f4fff07ee13e1c1cad ]
 
-Virtio-net driver control queue implementation is not safe
-when used with VDUSE. If the VDUSE application does not
-reply to control queue messages, it currently ends up
-hanging the kernel thread sending this command.
+When CONFIG_MODULES is disabled, 'make (bin)rpm-pkg' fails:
 
-Some work is on-going to make the control queue
-implementation robust with VDUSE. Until it is completed,
-let's fail features check if control-queue feature is
-requested.
+  $ make allnoconfig binrpm-pkg
+    [ snip ]
+  error: File not found: .../linux/rpmbuild/BUILDROOT/kernel-6.10.0_rc3-1.i386/lib/modules/6.10.0-rc3/kernel
+  error: File not found: .../linux/rpmbuild/BUILDROOT/kernel-6.10.0_rc3-1.i386/lib/modules/6.10.0-rc3/modules.order
 
-Signed-off-by: Maxime Coquelin <maxime.coquelin@redhat.com>
-Message-Id: <20240109111025.1320976-3-maxime.coquelin@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+To make it work irrespective of CONFIG_MODULES, this commit specifies
+the directory path, /lib/modules/%{KERNELRELEASE}, instead of individual
+files.
+
+However, doing so would cause new warnings:
+
+  warning: File listed twice: /lib/modules/6.10.0-rc3-dirty/modules.alias
+  warning: File listed twice: /lib/modules/6.10.0-rc3-dirty/modules.alias.bin
+  warning: File listed twice: /lib/modules/6.10.0-rc3-dirty/modules.builtin.alias.bin
+  warning: File listed twice: /lib/modules/6.10.0-rc3-dirty/modules.builtin.bin
+  warning: File listed twice: /lib/modules/6.10.0-rc3-dirty/modules.dep
+  warning: File listed twice: /lib/modules/6.10.0-rc3-dirty/modules.dep.bin
+  warning: File listed twice: /lib/modules/6.10.0-rc3-dirty/modules.devname
+  warning: File listed twice: /lib/modules/6.10.0-rc3-dirty/modules.softdep
+  warning: File listed twice: /lib/modules/6.10.0-rc3-dirty/modules.symbols
+  warning: File listed twice: /lib/modules/6.10.0-rc3-dirty/modules.symbols.bin
+
+These files exist in /lib/modules/%{KERNELRELEASE} and are also explicitly
+marked as %ghost.
+
+Suppress depmod because depmod-generated files are not packaged.
+
+Fixes: 615b3a3d2d41 ("kbuild: rpm-pkg: do not include depmod-generated files")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/vdpa_user/vduse_dev.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ scripts/package/kernel.spec | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
-index d91fe7e0733b6..d7bda179ef79f 100644
---- a/drivers/vdpa/vdpa_user/vduse_dev.c
-+++ b/drivers/vdpa/vdpa_user/vduse_dev.c
-@@ -8,6 +8,7 @@
-  *
-  */
+diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
+index e095eb1e290ec..fffc8af8deb17 100644
+--- a/scripts/package/kernel.spec
++++ b/scripts/package/kernel.spec
+@@ -57,7 +57,8 @@ patch -p1 < %{SOURCE2}
+ %install
+ mkdir -p %{buildroot}/lib/modules/%{KERNELRELEASE}
+ cp $(%{make} %{makeflags} -s image_name) %{buildroot}/lib/modules/%{KERNELRELEASE}/vmlinuz
+-%{make} %{makeflags} INSTALL_MOD_PATH=%{buildroot} modules_install
++# DEPMOD=true makes depmod no-op. We do not package depmod-generated files.
++%{make} %{makeflags} INSTALL_MOD_PATH=%{buildroot} DEPMOD=true modules_install
+ %{make} %{makeflags} INSTALL_HDR_PATH=%{buildroot}/usr headers_install
+ cp System.map %{buildroot}/lib/modules/%{KERNELRELEASE}
+ cp .config %{buildroot}/lib/modules/%{KERNELRELEASE}/config
+@@ -70,10 +71,7 @@ ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KERNELRELEA
+ %endif
  
-+#include "linux/virtio_net.h"
- #include <linux/init.h>
- #include <linux/module.h>
- #include <linux/cdev.h>
-@@ -28,6 +29,7 @@
- #include <uapi/linux/virtio_config.h>
- #include <uapi/linux/virtio_ids.h>
- #include <uapi/linux/virtio_blk.h>
-+#include <uapi/linux/virtio_ring.h>
- #include <linux/mod_devicetable.h>
+ {
+-	for x in System.map config kernel modules.builtin \
+-			modules.builtin.modinfo modules.order vmlinuz; do
+-		echo "/lib/modules/%{KERNELRELEASE}/${x}"
+-	done
++	echo "/lib/modules/%{KERNELRELEASE}"
  
- #include "iova_domain.h"
-@@ -1671,6 +1673,9 @@ static bool features_is_valid(struct vduse_dev_config *config)
- 	if ((config->device_id == VIRTIO_ID_BLOCK) &&
- 			(config->features & BIT_ULL(VIRTIO_BLK_F_CONFIG_WCE)))
- 		return false;
-+	else if ((config->device_id == VIRTIO_ID_NET) &&
-+			(config->features & BIT_ULL(VIRTIO_NET_F_CTRL_VQ)))
-+		return false;
- 
- 	return true;
- }
+ 	for x in alias alias.bin builtin.alias.bin builtin.bin dep dep.bin \
+ 					devname softdep symbols symbols.bin; do
 -- 
 2.43.0
 
