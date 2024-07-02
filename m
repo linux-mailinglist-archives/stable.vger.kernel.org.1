@@ -1,100 +1,227 @@
-Return-Path: <stable+bounces-56311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED8E91EDC4
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 06:17:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E344A91EDE5
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 06:30:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74D241F23B3D
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 04:17:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91966285EC7
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 04:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 521C12030B;
-	Tue,  2 Jul 2024 04:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7379B2D02E;
+	Tue,  2 Jul 2024 04:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O3+AyBJW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RoFgC81S"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF596FCB
-	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 04:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AF9372
+	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 04:29:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719893848; cv=none; b=SFxxPjMt1kU2zFR1CpeJrm7JgB+flnzpxKgBtTs2NHlg9jl3RszR/edU21S3Ub3sEVog95F4I5jbHUtNZsp+cyWC4+208FmUEqdEi5vi7is5XWaPpmm2Z6UleVQBO9qJCgy70l0v7Tj91mQPJgig2QnUKCxw6tpMJ2zM9JdELGs=
+	t=1719894599; cv=none; b=hNI9HLEBmTZgMMfXaHjt/lIJWxJWemO0PY6uExmY0LvPogq07hcy04serfjoPilQnaXVB7/ak86iS1qy2c857pdUwha8i3m707ucro2Bti+pvw2HS0FYrrHecc/dvEFMIIfYkiuSRovyaUczHgmEJ+benOFWCT1/VgziFwed7gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719893848; c=relaxed/simple;
-	bh=4RBsP+gLp7CEDt736ft2qwpPcaY/in2ja5pZhYfph1U=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=LQnNwBEanGwqWR++Kid3/mLy+81+Nt9TjJp6cdYXWpwJz7+O0oQuA21KydzsB3jVgAitoDrjs9XoqjspNBKELxPhGVpZW1luUrwZmsbT/9ZJvN501PXMUXWU3gVHizo0bHImydbJP/w+9O0I/2Ww5197WE/xu2limzfa2FzKxXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O3+AyBJW; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719893847; x=1751429847;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=4RBsP+gLp7CEDt736ft2qwpPcaY/in2ja5pZhYfph1U=;
-  b=O3+AyBJWsxTmlAgZu6/E13FON4aFuOmeTr4iMCjfArKYj4bEAajvuEux
-   mZqE85pU+0LpLui6XAwEFuD9bSNUAjFuYHkUIg6yiIWuGmJNAj6DQcLQ9
-   fPCa6RMwGIiWIogRz7PZcO0CSztogbu1bDX0dCWtcQP/RcTXqMfOyUrjU
-   lXG4VK5Y9GzDaqoC6lg6CHVt3G1W14/z5lR/aZ37jpOZU0FBigeeL6SQb
-   5NyP6W8n7y5rpQ/wbN34ACRnawVhQbqVr/8qhjFgU5Cxej8tL29Nv3ZO9
-   lShH1zYej/Eq+9wj4yJuZdESry5WQBiqe4o8iQ3SHgA7zC5ToR6bj+2aa
-   g==;
-X-CSE-ConnectionGUID: uCX86P/BTCWplfGi67G1Bg==
-X-CSE-MsgGUID: HxFC/W/QT+uTqfBK+ipXuA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11120"; a="17186718"
-X-IronPort-AV: E=Sophos;i="6.09,178,1716274800"; 
-   d="scan'208";a="17186718"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2024 21:17:26 -0700
-X-CSE-ConnectionGUID: VayP5luzQQar7sU/J4MTrg==
-X-CSE-MsgGUID: UdNM6wJFT5W//+uYn1WPog==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,178,1716274800"; 
-   d="scan'208";a="50207570"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 01 Jul 2024 21:17:25 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sOUxG-000Nhc-0U;
-	Tue, 02 Jul 2024 04:17:22 +0000
-Date: Tue, 2 Jul 2024 12:16:52 +0800
-From: kernel test robot <lkp@intel.com>
-To: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [Intel-wired-lan] [PATCH iwl-net v1 1/4] igc: Fix
- qbv_config_change_errors logics
-Message-ID: <ZoN_NLFz3jyc2j29@6724a33121ae>
+	s=arc-20240116; t=1719894599; c=relaxed/simple;
+	bh=zcixEUS6XsMOCRxjX6d6tG5bte/K0SaEark3niy57Fk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uildWr25hTBscYOI1NdlteV0WnwKftI1cxgFRVsEZ5sngOh3kyJpR07K3O5LbWAWCIKFBdk7r7Xj41Y06FrvuaJhLEqmbdUIO9JgKUqfkA9d1OHeVV/t6yzQv6m2a4IsSSLAn1th1mUKsuad4FZhMjsmUr9qlIPblhgckYZuM2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RoFgC81S; arc=none smtp.client-ip=209.85.167.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3d84546a05bso571225b6e.1
+        for <stable@vger.kernel.org>; Mon, 01 Jul 2024 21:29:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719894596; x=1720499396; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=e/9ENtMAL2XpXCc3oQNvYhDVvO8Mw3hYfch7UFPZuHw=;
+        b=RoFgC81S75nwm35bcN21ReDfGrTqeVkrwMmopOz8DaSdS//Th+g+DMibGQilWKwTmn
+         Mv8VSC95QiJulhiB4br6LkycRT1mytLZe7+3+Fdmx146d7KE4sJukipY9fYQYgDHitmr
+         B7SgdIWrYkfLIlYBkjMt3ucTqInZyco+8uO5nhJXbdZTGvq+ZpjlcznFJ9SqKWQ+Pdja
+         ew1vOIJxSNhXMs8Vp1F/9S/SZcPNw5sf7cx0WIoFV/VfarR36+Qq3on/dYfM2dDSeUlR
+         8DKD3TRDjFNlrQ3twgmmmH7h+7x1Eu4Cen7/S0x2FoTVJJnyNRcJmNG5t+OjfAwM6uEe
+         SePw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719894596; x=1720499396;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e/9ENtMAL2XpXCc3oQNvYhDVvO8Mw3hYfch7UFPZuHw=;
+        b=EQ1Zp1Vz6OjEnaePpyh7dKpyaJdkSPvRfWrXituxBelhdJgeLIUBVRUO8eiS0WKhl+
+         Rt8gAr3Wt99Vfn51N9vSzMcJSCTE/YFZZE9NS/gD1sMwYeQjJ7+xbupwCFRCi4G08zaZ
+         4XlQAKb3mFTAZqGFU3293WNJwKJpSOFKDluys40J3dh5V5q6FauX25jS6vVIWKmdgLNl
+         UpntZgxi6182WX3VYYSMnv53OG7axpyLhAS2f0LnqYt7Ti6TZAqOdzzQj1tQH0CRW2Ym
+         erSyGcyElCMtlsCR6+lmbyrqKE8sgvCx0KkJogiShV6NAK5KuJf7ZhyKq3YzoPTbpvlz
+         DeTQ==
+X-Gm-Message-State: AOJu0Yw8fsxMgSaxjo5I14h24zc0YG7ShtUWLXVJi9P2oZ/0a6XmLp3e
+	LCEd+HNu0qQ7YIFOsiF1UVFrt9iAO2R35Mvn9u0kM46gu6j+sFLM31EQ5dlI
+X-Google-Smtp-Source: AGHT+IGO0UAZT5LW/Lp/IIwiZEThnWjumZUWITpOSy7S4lKPnuoMHiUl/3krYvVBVnZA167s8xDxmw==
+X-Received: by 2002:a05:6808:1408:b0:3d5:5e73:1645 with SMTP id 5614622812f47-3d6afdb4752mr11463793b6e.0.1719894596452;
+        Mon, 01 Jul 2024 21:29:56 -0700 (PDT)
+Received: from lrumancik.svl.corp.google.com ([2620:15c:2a3:200:9e40:1748:c1c9:5ced])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70804a95fc4sm7378268b3a.215.2024.07.01.21.29.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jul 2024 21:29:56 -0700 (PDT)
+From: Leah Rumancik <leah.rumancik@gmail.com>
+To: stable@vger.kernel.org
+Cc: Miaohe Lin <linmiaohe@huawei.com>,
+	Thorvald Natvig <thorvald@google.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Peng Zhang <zhangpeng.00@bytedance.com>,
+	Tycho Andersen <tandersen@netflix.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.6] fork: defer linking file vma until vma is fully initialized
+Date: Mon,  1 Jul 2024 21:29:48 -0700
+Message-ID: <20240702042948.2629267-1-leah.rumancik@gmail.com>
+X-Mailer: git-send-email 2.45.2.803.g4e1b14247a-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240702040926.3327530-2-faizal.abdul.rahim@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Miaohe Lin <linmiaohe@huawei.com>
 
-Thanks for your patch.
+commit 35e351780fa9d8240dd6f7e4f245f9ea37e96c19 upstream.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Thorvald reported a WARNING [1]. And the root cause is below race:
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+ CPU 1					CPU 2
+ fork					hugetlbfs_fallocate
+  dup_mmap				 hugetlbfs_punch_hole
+   i_mmap_lock_write(mapping);
+   vma_interval_tree_insert_after -- Child vma is visible through i_mmap tree.
+   i_mmap_unlock_write(mapping);
+   hugetlb_dup_vma_private -- Clear vma_lock outside i_mmap_rwsem!
+					 i_mmap_lock_write(mapping);
+   					 hugetlb_vmdelete_list
+					  vma_interval_tree_foreach
+					   hugetlb_vma_trylock_write -- Vma_lock is cleared.
+   tmp->vm_ops->open -- Alloc new vma_lock outside i_mmap_rwsem!
+					   hugetlb_vma_unlock_write -- Vma_lock is assigned!!!
+					 i_mmap_unlock_write(mapping);
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [Intel-wired-lan] [PATCH iwl-net v1 1/4] igc: Fix qbv_config_change_errors logics
-Link: https://lore.kernel.org/stable/20240702040926.3327530-2-faizal.abdul.rahim%40linux.intel.com
+hugetlb_dup_vma_private() and hugetlb_vm_op_open() are called outside
+i_mmap_rwsem lock while vma lock can be used in the same time.  Fix this
+by deferring linking file vma until vma is fully initialized.  Those vmas
+should be initialized first before they can be used.
 
+Backport notes:
+
+The first backport attempt (cec11fa2e) was reverted (dd782da4707). This is
+the new backport of the original fix (35e351780fa9).
+
+35e351780f ("fork: defer linking file vma until vma is fully initialized")
+fixed a hugetlb locking race by moving a bunch of intialization code to earlier
+in the function. The call to open() was included in the move but the call to
+copy_page_range was not, effectively inverting their relative ordering. This
+created an issue for the vfio code which assumes copy_page_range happens before
+the call to open() - vfio's open zaps the vma so that the fault handler is
+invoked later, but when we inverted the ordering, copy_page_range can set up
+mappings post-zap which would prevent the fault handler from being invoked
+later. This patch moves the call to copy_page_range to earlier than the call to
+open() to restore the original ordering of the two functions while keeping the
+fix for hugetlb intact.
+
+Commit aac6db75a9 made several changes to vfio_pci_core.c, including
+removing the vfio-pci custom open function. This resolves the issue on
+the main branch and so we only need to apply these changes when
+backporting to stable branches.
+
+35e351780f ("fork: defer linking file vma until vma is fully initialized")-> v6.9-rc5
+aac6db75a9 ("vfio/pci: Use unmap_mapping_range()") -> v6.10-rc4
+
+Link: https://lkml.kernel.org/r/20240410091441.3539905-1-linmiaohe@huawei.com
+Fixes: 8d9bfb260814 ("hugetlb: add vma based lock for pmd sharing")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Reported-by: Thorvald Natvig <thorvald@google.com>
+Closes: https://lore.kernel.org/linux-mm/20240129161735.6gmjsswx62o4pbja@revolver/T/ [1]
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Peng Zhang <zhangpeng.00@bytedance.com>
+Cc: Tycho Andersen <tandersen@netflix.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+---
+ kernel/fork.c | 27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
+
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 177ce7438db6..122d2cd124d5 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -727,6 +727,19 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 		} else if (anon_vma_fork(tmp, mpnt))
+ 			goto fail_nomem_anon_vma_fork;
+ 		vm_flags_clear(tmp, VM_LOCKED_MASK);
++		/*
++		 * Copy/update hugetlb private vma information.
++		 */
++		if (is_vm_hugetlb_page(tmp))
++			hugetlb_dup_vma_private(tmp);
++
++		if (!(tmp->vm_flags & VM_WIPEONFORK) &&
++				copy_page_range(tmp, mpnt))
++			goto fail_nomem_vmi_store;
++
++		if (tmp->vm_ops && tmp->vm_ops->open)
++			tmp->vm_ops->open(tmp);
++
+ 		file = tmp->vm_file;
+ 		if (file) {
+ 			struct address_space *mapping = file->f_mapping;
+@@ -743,25 +756,11 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 			i_mmap_unlock_write(mapping);
+ 		}
+ 
+-		/*
+-		 * Copy/update hugetlb private vma information.
+-		 */
+-		if (is_vm_hugetlb_page(tmp))
+-			hugetlb_dup_vma_private(tmp);
+-
+ 		/* Link the vma into the MT */
+ 		if (vma_iter_bulk_store(&vmi, tmp))
+ 			goto fail_nomem_vmi_store;
+ 
+ 		mm->map_count++;
+-		if (!(tmp->vm_flags & VM_WIPEONFORK))
+-			retval = copy_page_range(tmp, mpnt);
+-
+-		if (tmp->vm_ops && tmp->vm_ops->open)
+-			tmp->vm_ops->open(tmp);
+-
+-		if (retval)
+-			goto loop_out;
+ 	}
+ 	/* a new mm has just been created */
+ 	retval = arch_dup_mmap(oldmm, mm);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.45.2.803.g4e1b14247a-goog
 
 
