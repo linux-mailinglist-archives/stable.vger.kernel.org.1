@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-56709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE7C9245A2
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:25:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E979244F2
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:16:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94B8DB23FDF
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:24:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BC4B2890B1
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA6D1BE224;
-	Tue,  2 Jul 2024 17:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138C21BE873;
+	Tue,  2 Jul 2024 17:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iz1Q/TIi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxhOugz5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790161B583A;
-	Tue,  2 Jul 2024 17:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21C71BE223;
+	Tue,  2 Jul 2024 17:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941096; cv=none; b=GSTABs2ghLikz6O3ELJ1DtrvFCUUvSHfgQaPdFD+Ztp7gphAi/dMGExCMc8TOWkijysNuysbCgF2MDu+9V9zMfCyJkVKrCCGQpqrYf9UnKoPUaDP6SyCeB4ALPcQPdC+a4V5aF8rPYFxkNn+m9OvjmV6eBqCFBICbbYLWV2Vwf0=
+	t=1719940596; cv=none; b=f+d99/lGgtzPmNtdvVpU6+comqoKpFTljl1Dd8mpPqhP3VIuKHr75gIFh4QWjY2tOlqXfBnWQDlapyZ/2hp9p4wUKPbe4R4KGkTRXP8GGMT3UnU0bTvKBp574Vj9MyE7sA7z1kJVfCtB0p6ztNP9y6prq2/O1UZJrsL2582Lk7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941096; c=relaxed/simple;
-	bh=PxKa4aJMl8COiaJeQ8f5vdPniAYgEzuNgUsUrT7UdJw=;
+	s=arc-20240116; t=1719940596; c=relaxed/simple;
+	bh=IyA/ubz4lxv8kiYGpVVLYhCndhyapOZNaQ9m78NV7Rw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dWAHbF1EFMl2ULiZ670Dq1jCjX8kl4gYGS2sm9Cw6gLoCYb2yxNi7I32/3iVaUZ+d5Q4+tfYfuGkRPcJPGMTghNSx0YfBE9iiJSB3sJblSCS12Aerv6+ekVhHo3S4OQBRrgLbIGJYT+//SPO3GhOu8EmmgaeuOSGKSU5P4jbEPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iz1Q/TIi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A2BC116B1;
-	Tue,  2 Jul 2024 17:24:55 +0000 (UTC)
+	 MIME-Version; b=t1fo2cLK+b+ZCwzwBm6P+Gcc5cep833zosecZYITaKmR6yCFCprAgnQwqZKoqMYT9IKwtg5ClLhszJJ3Vs+hA+u75DXoK2xZzlkMHiMbHj9cQHkulX7FP+MDIeIR+fhSwebbKE/S08Ml6GvfYjZLFnocfNWhKegjpD6s1mGYkt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxhOugz5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48AEDC116B1;
+	Tue,  2 Jul 2024 17:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941096;
-	bh=PxKa4aJMl8COiaJeQ8f5vdPniAYgEzuNgUsUrT7UdJw=;
+	s=korg; t=1719940596;
+	bh=IyA/ubz4lxv8kiYGpVVLYhCndhyapOZNaQ9m78NV7Rw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iz1Q/TIippcyuq2SRhn3n29LIx69A88YKtRuV+SZpm359sM8FCxk1LEkJpg6wHxiU
-	 KtizexlinOXW/fHKeYBoU6BKIdJqAS/UEydQI0T5+pKTnyO/wxunvVUG9GcHqInn17
-	 pv/lxHrCDz+iLDp/GJPNOOZ9dNvl+Soel2s1RtQE=
+	b=dxhOugz5JLDBF20tQvp5brmtDXJtiMMtHWj62kFu1lpN9M3vaGgEfRsbI95jbU4CY
+	 B7OhE5GNM7exYyJMrRUhuSvSqld1hUsb3MAhhw34ua7RjR3HBRT82K/XJXRyJ5K7Ls
+	 k3QReWQAEslWgPl/SGDF3aZoH7rDObiNm+sWeevU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Rainbolt <arainbolt@kfocus.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.6 126/163] cpufreq: intel_pstate: Use HWP to initialize ITMT if CPPC is missing
+	yangge <yangge1116@126.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <21cnbao@gmail.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 202/222] mm/page_alloc: Separate THP PCP into movable and non-movable categories
 Date: Tue,  2 Jul 2024 19:04:00 +0200
-Message-ID: <20240702170237.820808280@linuxfoundation.org>
+Message-ID: <20240702170251.706841578@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +64,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: yangge <yangge1116@126.com>
 
-commit a1ff59784b277795a613beaa5d3dd9c5595c69a7 upstream.
+commit bf14ed81f571f8dba31cd72ab2e50fbcc877cc31 upstream.
 
-It is reported that single-thread performance on some hybrid systems
-dropped significantly after commit 7feec7430edd ("ACPI: CPPC: Only probe
-for _CPC if CPPC v2 is acked") which prevented _CPC from being used if
-the support for it had not been confirmed by the platform firmware.
+Since commit 5d0a661d808f ("mm/page_alloc: use only one PCP list for
+THP-sized allocations") no longer differentiates the migration type of
+pages in THP-sized PCP list, it's possible that non-movable allocation
+requests may get a CMA page from the list, in some cases, it's not
+acceptable.
 
-The problem is that if the platform firmware does not confirm CPPC v2
-support, cppc_get_perf_caps() returns an error which prevents the
-intel_pstate driver from enabling ITMT.  Consequently, the scheduler
-does not get any hints on CPU performance differences, so in a hybrid
-system some tasks may run on CPUs with lower capacity even though they
-should be running on high-capacity CPUs.
+If a large number of CMA memory are configured in system (for example, the
+CMA memory accounts for 50% of the system memory), starting a virtual
+machine with device passthrough will get stuck.  During starting the
+virtual machine, it will call pin_user_pages_remote(..., FOLL_LONGTERM,
+...) to pin memory.  Normally if a page is present and in CMA area,
+pin_user_pages_remote() will migrate the page from CMA area to non-CMA
+area because of FOLL_LONGTERM flag.  But if non-movable allocation
+requests return CMA memory, migrate_longterm_unpinnable_pages() will
+migrate a CMA page to another CMA page, which will fail to pass the check
+in check_and_migrate_movable_pages() and cause migration endless.
 
-To address this, modify intel_pstate to use the information from
-MSR_HWP_CAPABILITIES to enable ITMT if CPPC is not available (which is
-done already if the highest performance number coming from CPPC is not
-realistic).
+Call trace:
+pin_user_pages_remote
+--__gup_longterm_locked // endless loops in this function
+----_get_user_pages_locked
+----check_and_migrate_movable_pages
+------migrate_longterm_unpinnable_pages
+--------alloc_migration_target
 
-Fixes: 7feec7430edd ("ACPI: CPPC: Only probe for _CPC if CPPC v2 is acked")
-Closes: https://lore.kernel.org/linux-acpi/d01b0a1f-bd33-47fe-ab41-43843d8a374f@kfocus.org
-Link: https://lore.kernel.org/linux-acpi/ZnD22b3Br1ng7alf@kf-XE
-Reported-by: Aaron Rainbolt <arainbolt@kfocus.org>
-Tested-by: Aaron Rainbolt <arainbolt@kfocus.org>
-Cc: 5.19+ <stable@vger.kernel.org> # 5.19+
-Link: https://patch.msgid.link/12460110.O9o76ZdvQC@rjwysocki.net
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+This problem will also have a negative impact on CMA itself.  For example,
+when CMA is borrowed by THP, and we need to reclaim it through cma_alloc()
+or dma_alloc_coherent(), we must move those pages out to ensure CMA's
+users can retrieve that contigous memory.  Currently, CMA's memory is
+occupied by non-movable pages, meaning we can't relocate them.  As a
+result, cma_alloc() is more likely to fail.
+
+To fix the problem above, we add one PCP list for THP, which will not
+introduce a new cacheline for struct per_cpu_pages.  THP will have 2 PCP
+lists, one PCP list is used by MOVABLE allocation, and the other PCP list
+is used by UNMOVABLE allocation.  MOVABLE allocation contains GPF_MOVABLE,
+and UNMOVABLE allocation contains GFP_UNMOVABLE and GFP_RECLAIMABLE.
+
+Link: https://lkml.kernel.org/r/1718845190-4456-1-git-send-email-yangge1116@126.com
+Fixes: 5d0a661d808f ("mm/page_alloc: use only one PCP list for THP-sized allocations")
+Signed-off-by: yangge <yangge1116@126.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <21cnbao@gmail.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/intel_pstate.c |   13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ include/linux/mmzone.h |    9 ++++-----
+ mm/page_alloc.c        |    9 +++++++--
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -356,15 +356,14 @@ static void intel_pstate_set_itmt_prio(i
- 	int ret;
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -651,13 +651,12 @@ enum zone_watermarks {
+ };
  
- 	ret = cppc_get_perf_caps(cpu, &cppc_perf);
--	if (ret)
--		return;
--
- 	/*
--	 * On some systems with overclocking enabled, CPPC.highest_perf is hardcoded to 0xff.
--	 * In this case we can't use CPPC.highest_perf to enable ITMT.
--	 * In this case we can look at MSR_HWP_CAPABILITIES bits [8:0] to decide.
-+	 * If CPPC is not available, fall back to MSR_HWP_CAPABILITIES bits [8:0].
-+	 *
-+	 * Also, on some systems with overclocking enabled, CPPC.highest_perf is
-+	 * hardcoded to 0xff, so CPPC.highest_perf cannot be used to enable ITMT.
-+	 * Fall back to MSR_HWP_CAPABILITIES then too.
- 	 */
--	if (cppc_perf.highest_perf == CPPC_MAX_PERF)
-+	if (ret || cppc_perf.highest_perf == CPPC_MAX_PERF)
- 		cppc_perf.highest_perf = HWP_HIGHEST_PERF(READ_ONCE(all_cpu_data[cpu]->hwp_cap_cached));
+ /*
+- * One per migratetype for each PAGE_ALLOC_COSTLY_ORDER. One additional list
+- * for THP which will usually be GFP_MOVABLE. Even if it is another type,
+- * it should not contribute to serious fragmentation causing THP allocation
+- * failures.
++ * One per migratetype for each PAGE_ALLOC_COSTLY_ORDER. Two additional lists
++ * are added for THP. One PCP list is used by GPF_MOVABLE, and the other PCP list
++ * is used by GFP_UNMOVABLE and GFP_RECLAIMABLE.
+  */
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-#define NR_PCP_THP 1
++#define NR_PCP_THP 2
+ #else
+ #define NR_PCP_THP 0
+ #endif
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -521,10 +521,15 @@ out:
  
- 	/*
+ static inline unsigned int order_to_pindex(int migratetype, int order)
+ {
++	bool __maybe_unused movable;
++
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	if (order > PAGE_ALLOC_COSTLY_ORDER) {
+ 		VM_BUG_ON(order != pageblock_order);
+-		return NR_LOWORDER_PCP_LISTS;
++
++		movable = migratetype == MIGRATE_MOVABLE;
++
++		return NR_LOWORDER_PCP_LISTS + movable;
+ 	}
+ #else
+ 	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
+@@ -538,7 +543,7 @@ static inline int pindex_to_order(unsign
+ 	int order = pindex / MIGRATE_PCPTYPES;
+ 
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	if (pindex == NR_LOWORDER_PCP_LISTS)
++	if (pindex >= NR_LOWORDER_PCP_LISTS)
+ 		order = pageblock_order;
+ #else
+ 	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
 
 
 
