@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-56530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 439819244C7
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:14:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E86092457F
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:23:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1C00B25C7C
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:14:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFA892825DB
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8ED1BE233;
-	Tue,  2 Jul 2024 17:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7963D1BE222;
+	Tue,  2 Jul 2024 17:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0GkV3D/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+wt2ROo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9F215B0FE;
-	Tue,  2 Jul 2024 17:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397001BE22B;
+	Tue,  2 Jul 2024 17:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940491; cv=none; b=tOUotG/Kf7CYNlYSJAjnqrWrOZqr3TkokxOxVpzPWgVB8SDIyntCTIyUP5y1uTP+ajxnOIpKUOx/Kkxhx61x2CGkOqPnUi27yWKikT49cydWy40VZoofFErEqXbCpm4N+aQ7buPVCECMImffArSOjnN7d9pfNPXgXiT/oxcmNho=
+	t=1719940987; cv=none; b=u2fUr51LY/Slhb6hC/j0IIImsVCl3N5yIhKdETF2B/z4QUCBbzjHId9K0bboYPr7nx2aGPqt5SMRbfdqAzqEKrofTTXNGmozI2HyS4pW+iyWXEQCXnkGnjBB1NmnV7FVfGcVQy08822hHw7/JBpXL7vNCUsPLJ0SCr+WnA3bRE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940491; c=relaxed/simple;
-	bh=iEqEmCFwcuaFkralKCC19lo2wMHth8Yys8bY3ALHWxA=;
+	s=arc-20240116; t=1719940987; c=relaxed/simple;
+	bh=GXd/O8pMvX41qJeO3Trh/MiSOSIEKUY4O6+CDre+na8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GRLQi6NxR33L/vc2QuYRi/hfgQn1tRX0WCbIJp9aycTS314fnVaP6ojd/+i85jffGY5cRFSjjnK71h4sS7b2OMUbza1YAWz8jgB81WFonvoYpKa5kETJkBLqRQ24zPDTa8feXlQIkc/ITRBGtT7+5uSmhx2LQJLqN67bBSy2Muo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0GkV3D/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D5AC116B1;
-	Tue,  2 Jul 2024 17:14:51 +0000 (UTC)
+	 MIME-Version; b=W3CVxjBLmsOO//EbkjioNl71aOiBV67Xw/BpGRyCZgxgZuXFWFNGv9AgNDOs+V6rS8MC70fnVrrJCnxsjEfrGYNiZZgD9rMUCCr/bptwLuu/ofT7MYy9Q5ZanvdfPO6cUKflX+LplkJDpQCp1Xxnf+xR47RFdczvUS26HXj4Dak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+wt2ROo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F8AC4AF0D;
+	Tue,  2 Jul 2024 17:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940491;
-	bh=iEqEmCFwcuaFkralKCC19lo2wMHth8Yys8bY3ALHWxA=;
+	s=korg; t=1719940987;
+	bh=GXd/O8pMvX41qJeO3Trh/MiSOSIEKUY4O6+CDre+na8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y0GkV3D/tZdAFhld+qlHCs7hLU6xqFUrSLnRvGkjIJynnyFuAIUWWqW681lsyUbOo
-	 53LKQlgzVnQdyrAYoMwGBS5LEKXiCOzgsr/tMz7YPLsrbT4T62G3HhEPRYp+00pOom
-	 VYz2W2X/jMsT1sD2xQ0MDkwjw7HlCqGJhKks5iA4=
+	b=1+wt2ROosX+/TcZuOyAmzcAXaRg/W3D37HuE8JXZvG1wnFPLuKVswuSO8jOfdPdZa
+	 JTjZiF/rIi8sZSbmpgmw7x6OVmtFc2C9C9sWNriL7HOdNPY4hlBmBric1c9tbSumTF
+	 g+a3fUJs3AUvC7aVn0iZXVH8vI2dqrlegteNvlMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.9 170/222] irqchip/loongson-eiointc: Use early_cpu_to_node() instead of cpu_to_node()
-Date: Tue,  2 Jul 2024 19:03:28 +0200
-Message-ID: <20240702170250.474551904@linuxfoundation.org>
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 095/163] i2c: testunit: discard write requests while old command is running
+Date: Tue,  2 Jul 2024 19:03:29 +0200
+Message-ID: <20240702170236.659813167@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 2d64eaeeeda5659d52da1af79d237269ba3c2d2c upstream.
+[ Upstream commit c116deafd1a5cc1e9739099eb32114e90623209c ]
 
-Multi-bridge machines required that all eiointc controllers in the system
-are initialized, otherwise the system does not boot.
+When clearing registers on new write requests was added, the protection
+for currently running commands was missed leading to concurrent access
+to the testunit registers. Check the flag beforehand.
 
-The initialization happens on the boot CPU during early boot and relies on
-cpu_to_node() for identifying the individual nodes.
-
-That works when the number of possible CPUs is large enough, but with a
-command line limit, e.g. "nr_cpus=$N" for kdump, but fails when the CPUs
-of the secondary nodes are not covered.
-
-During early ACPI enumeration all CPU to node mappings are recorded up to
-CONFIG_NR_CPUS. These are accessible via early_cpu_to_node() even in the
-case that "nr_cpus=N" truncates the number of possible CPUs and only
-provides the possible CPUs via cpu_to_node() translation.
-
-Change the node lookup in the driver to use early_cpu_to_node() so that
-even with a limitation on the number of possible CPUs all eointc instances
-are initialized.
-
-This can't obviously cure the case where CONFIG_NR_CPUS is too small.
-
-[ tglx: Massaged changelog ]
-
-Fixes: 64cc451e45e1 ("irqchip/loongson-eiointc: Fix incorrect use of acpi_get_vec_parent")
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240623034113.1808727-1-chenhuacai@loongson.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b39ab96aa894 ("i2c: testunit: add support for block process calls")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-loongson-eiointc.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/i2c/i2c-slave-testunit.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/irqchip/irq-loongson-eiointc.c
-+++ b/drivers/irqchip/irq-loongson-eiointc.c
-@@ -15,6 +15,7 @@
- #include <linux/irqchip/chained_irq.h>
- #include <linux/kernel.h>
- #include <linux/syscore_ops.h>
-+#include <asm/numa.h>
+diff --git a/drivers/i2c/i2c-slave-testunit.c b/drivers/i2c/i2c-slave-testunit.c
+index a5dcbc3c2c141..ca43e98cae1b2 100644
+--- a/drivers/i2c/i2c-slave-testunit.c
++++ b/drivers/i2c/i2c-slave-testunit.c
+@@ -121,6 +121,9 @@ static int i2c_slave_testunit_slave_cb(struct i2c_client *client,
+ 		break;
  
- #define EIOINTC_REG_NODEMAP	0x14a0
- #define EIOINTC_REG_IPMAP	0x14c0
-@@ -339,7 +340,7 @@ static int __init pch_msi_parse_madt(uni
- 	int node;
- 
- 	if (cpu_has_flatmode)
--		node = cpu_to_node(eiointc_priv[nr_pics - 1]->node * CORES_PER_EIO_NODE);
-+		node = early_cpu_to_node(eiointc_priv[nr_pics - 1]->node * CORES_PER_EIO_NODE);
- 	else
- 		node = eiointc_priv[nr_pics - 1]->node;
- 
-@@ -431,7 +432,7 @@ int __init eiointc_acpi_init(struct irq_
- 		goto out_free_handle;
- 
- 	if (cpu_has_flatmode)
--		node = cpu_to_node(acpi_eiointc->node * CORES_PER_EIO_NODE);
-+		node = early_cpu_to_node(acpi_eiointc->node * CORES_PER_EIO_NODE);
- 	else
- 		node = acpi_eiointc->node;
- 	acpi_set_vec_parent(node, priv->eiointc_domain, pch_group);
+ 	case I2C_SLAVE_WRITE_REQUESTED:
++		if (test_bit(TU_FLAG_IN_PROCESS, &tu->flags))
++			return -EBUSY;
++
+ 		memset(tu->regs, 0, TU_NUM_REGS);
+ 		tu->reg_idx = 0;
+ 		break;
+-- 
+2.43.0
+
 
 
 
