@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-56607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2106A924532
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:19:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94DE2924479
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:11:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3A79B20463
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:19:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 498881F217E6
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5181C005C;
-	Tue,  2 Jul 2024 17:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA381BE22B;
+	Tue,  2 Jul 2024 17:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFOXRO4P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IoYeQNGh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4542E1BE251;
-	Tue,  2 Jul 2024 17:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D6E1BD002;
+	Tue,  2 Jul 2024 17:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940748; cv=none; b=d3zz1Vc9sTurjyLs37+6psQRPOWZC9SEpZbZcpDll+LbbPW2RzAlAladZ/1rofJn3ud1/PurSRZ6aOQbvAUMAX5mbBrU6l1glgO7WTsi6RT9MpRoo+TQhttCK1YiRK7KRoeosn56oZaRCj0gUgAVdl4zHoqYnkDryUAxQGFjRN4=
+	t=1719940259; cv=none; b=PgP13M+17GWI5qFm1FUoLaltV65zOQ3Rijxm/l1ERPfs3j9g7k6OniZLtM/7jC5RevBo6MqbLs0oIQthqDe1UPZ+4FIMc8Xt5wtuaMf0eqr5MQK5d7z0rs4gZxO1qlY1QgXBEH20hElFpIjO44EK5g2QOm4rZLyX6XbP3ugudNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940748; c=relaxed/simple;
-	bh=AdVD32OE+hepq/QCA+91GMCrcRqzNZTENsq2x+4p9EI=;
+	s=arc-20240116; t=1719940259; c=relaxed/simple;
+	bh=6KW1WDhY7shtYeTTgQc+ea8DaNau6F2mFesg0VRkO40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Artt9AKEVWBKpDMwAbrTW68kdTJ9aknx+FKoR3+cczh2YGk+Re6yHU7x0V44ZfS5SZcQ7rB4LcO7VsLFggZ52xnDBTRdLlp9UoeFyONgk/wjSgI7S0rUkpcseYR3qDKoYUk2nFIvDDkuYNqeCfBnNIWBEx6hqTqBIhZQhvxN3R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFOXRO4P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EAFAC116B1;
-	Tue,  2 Jul 2024 17:19:07 +0000 (UTC)
+	 MIME-Version; b=N4SwTxRC2t9cWW8IHbJFuO262EMxDqqJc2CtgkE7+PZq7zgUq2gtTa3E7t3v2Tq1cr0oy0sMpd0lw+vIYPoiw28iV4S1hzwBuf3nP34OoOtIprYo7zrGGy1NdZ5W+6xXNCfyEknctnwBEEJALF01LlnfYMhh8ubmcKrdlC40MRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IoYeQNGh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD11C116B1;
+	Tue,  2 Jul 2024 17:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940748;
-	bh=AdVD32OE+hepq/QCA+91GMCrcRqzNZTENsq2x+4p9EI=;
+	s=korg; t=1719940259;
+	bh=6KW1WDhY7shtYeTTgQc+ea8DaNau6F2mFesg0VRkO40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xFOXRO4Px1H4HHhZhL6+zZIXPzQplIiGqt5lnCl4fy0R4Pxh4s2JHAfOhC+DAVDNl
-	 oFPdNZwe9+JhQxhaeomjmcKoqJFdviwcjjHTmrokrL6uuepED4NtJSms6VV7YIi5n8
-	 Kt7sozoX2lK4k26z/LrUU4WMjnWh8onAqyAsKObw=
+	b=IoYeQNGhkn6uo8Z47to08CrGzCWccJJjKnhMfCApp2UiygnSzhv5IfDAmwPHGA65i
+	 v14Kx6MRIPqmdHYjCPU1lJHkaYI1ofdYOa3OO//bg7R+v1ukR2t+x789vv1/H4LMpb
+	 xd8ahFFsA8/6O1LBJ7sY/npC+NY3xdD8QWKAt++k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/163] s390/pci: Add missing virt_to_phys() for directed DIBV
+Subject: [PATCH 6.9 100/222] nfsd: initialise nfsd_info.mutex early.
 Date: Tue,  2 Jul 2024 19:02:18 +0200
-Message-ID: <20240702170233.974268823@linuxfoundation.org>
+Message-ID: <20240702170247.791872173@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 4181b51c38875de9f6f11248fa0bcf3246c19c82 ]
+[ Upstream commit e0011bca603c101f2a3c007bdb77f7006fa78fb1 ]
 
-In commit 4e4dc65ab578 ("s390/pci: use phys_to_virt() for AIBVs/DIBVs")
-the setting of dibv_addr was missed when adding virt_to_phys(). This
-only affects systems with directed interrupt delivery enabled which are
-not generally available.
+nfsd_info.mutex can be dereferenced by svc_pool_stats_start()
+immediately after the new netns is created.  Currently this can
+trigger an oops.
 
-Fixes: 4e4dc65ab578 ("s390/pci: use phys_to_virt() for AIBVs/DIBVs")
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Move the initialisation earlier before it can possibly be dereferenced.
+
+Fixes: 7b207ccd9833 ("svc: don't hold reference for poolstats, only mutex.")
+Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Closes: https://lore.kernel.org/all/c2e9f6de-1ec4-4d3a-b18d-d5a6ec0814a0@linux.ibm.com/
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_irq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfsctl.c | 2 ++
+ fs/nfsd/nfssvc.c | 1 -
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/pci/pci_irq.c b/arch/s390/pci/pci_irq.c
-index ff8f24854c646..0ef83b6ac0db7 100644
---- a/arch/s390/pci/pci_irq.c
-+++ b/arch/s390/pci/pci_irq.c
-@@ -410,7 +410,7 @@ static void __init cpu_enable_directed_irq(void *unused)
- 	union zpci_sic_iib iib = {{0}};
- 	union zpci_sic_iib ziib = {{0}};
+diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
+index 4d23bb1d08c0a..332847daa1b41 100644
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1679,6 +1679,8 @@ static __net_init int nfsd_net_init(struct net *net)
+ 	nn->nfsd_svcstats.program = &nfsd_program;
+ 	nn->nfsd_versions = NULL;
+ 	nn->nfsd4_minorversions = NULL;
++	nn->nfsd_info.mutex = &nfsd_mutex;
++	nn->nfsd_serv = NULL;
+ 	nfsd4_init_leases_net(nn);
+ 	get_random_bytes(&nn->siphash_key, sizeof(nn->siphash_key));
+ 	seqlock_init(&nn->writeverf_lock);
+diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
+index c0d17b92b249f..f23b00cb9f631 100644
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -673,7 +673,6 @@ int nfsd_create_serv(struct net *net)
+ 		return error;
+ 	}
+ 	spin_lock(&nfsd_notifier_lock);
+-	nn->nfsd_info.mutex = &nfsd_mutex;
+ 	nn->nfsd_serv = serv;
+ 	spin_unlock(&nfsd_notifier_lock);
  
--	iib.cdiib.dibv_addr = (u64) zpci_ibv[smp_processor_id()]->vector;
-+	iib.cdiib.dibv_addr = virt_to_phys(zpci_ibv[smp_processor_id()]->vector);
- 
- 	zpci_set_irq_ctrl(SIC_IRQ_MODE_SET_CPU, 0, &iib);
- 	zpci_set_irq_ctrl(SIC_IRQ_MODE_D_SINGLE, PCI_ISC, &ziib);
 -- 
 2.43.0
 
