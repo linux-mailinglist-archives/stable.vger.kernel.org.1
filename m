@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-56703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A162792459C
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:24:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDF1E924610
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:30:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CF41289002
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:24:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 466DAB2368C
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7318C1BE858;
-	Tue,  2 Jul 2024 17:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD091BD030;
+	Tue,  2 Jul 2024 17:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hgBkF8f5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bh7vxpUU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EE815218A;
-	Tue,  2 Jul 2024 17:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB0D2F5A;
+	Tue,  2 Jul 2024 17:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941075; cv=none; b=s7lPEHLN5N7Cm7ikZaZNNcj7xJ+rRBmderTELQa+R0zA91JjtadSWYW2LwZi4xb8JFVe1cI7McV/pns8ySEnoslTiKAhaIFkyClqySDj4iiboKmVmvddB7ZasEqF5rwyW/7VlJXkS4nRBy5ukXWkwyOJ9AvdJrYRoyT9NabHx/c=
+	t=1719941444; cv=none; b=khaZRW90A9U2Nbp0Eef8OzImYVOlnZ+FW79GUNKGOkoSqqx8nAccqJenzhyX2jr9nGhsr4oI4/Ftd+rocIzozE+UgfSbiCGh2iMknjRpJzG9F9kEmy3+K/WnfBDCSguVmNLQMhdW6ZPbooajpWemuyOqozYUFi4myJ8glQg2ueE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941075; c=relaxed/simple;
-	bh=F99BS3cEpkrByMkG4SajQFWcQFdd3sIT6QWC0yHR/V4=;
+	s=arc-20240116; t=1719941444; c=relaxed/simple;
+	bh=pzp093SSoOkWRJOC8Hjq3wx+lSmPmLtP9PZoVswVavs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zvygs0KvbFVcbcGeNps2XHuJl/9VgKuu+sqeKxcWpLnJgFv5fbfkfl9c77/lVgxYm8c/fkgygE1lVvuDg011TXoImthWBqHFn8CeUIB1KIPU99RPSMYPTBLCRi153UjCBXmC7yiEsBsTd1ARSqUGXEmQFlXGmEsVNYbdHkklLxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hgBkF8f5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953B1C116B1;
-	Tue,  2 Jul 2024 17:24:34 +0000 (UTC)
+	 MIME-Version; b=rebOrVgIXBFfC2EvVU0yGfGOpVRjb9lqoEtDCORwNNJXFg+1O9j4WpeIIuapL1j4PcdQw2Snf3Wj+VF23mS10GO1HZh64a3t+UGLIrOxE15nTMPB4PDyaEGmDzp7I1Qf9AYNQA/VkwdzbA/VEwWqV6vsCI5ftAVDTbhrrk+e+k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bh7vxpUU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB056C116B1;
+	Tue,  2 Jul 2024 17:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941075;
-	bh=F99BS3cEpkrByMkG4SajQFWcQFdd3sIT6QWC0yHR/V4=;
+	s=korg; t=1719941444;
+	bh=pzp093SSoOkWRJOC8Hjq3wx+lSmPmLtP9PZoVswVavs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hgBkF8f5CFY3jBguJe1kla+N2+j1+XqKTqS3r6LyY+CZuTy0J0hX0qEtNErIP1z7F
-	 uCs37DeHCXq++kx68BzxY2YQbLgnxm8QNARIWlFFsWf98tTA6kyO3JqSGnDp5dKGRF
-	 0aURnoCRiYK+ja7AZwaij+yojNOmxzaKP7cbfeA8=
+	b=bh7vxpUUwITFXMpHNm9m9MNhcessD8e0/ss/Q8NXS134f9b2LXPhSU0S7r/HFOQU5
+	 jpc/nIhJAPME9bDE35l/v2z4UldOWJ3Fwf9k0a8ArC3jx6w8FYywZtPEUS7TPEtt/2
+	 wHIsd/GGt7qItWj/W1CprqejjojG6MttzfvivqGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 121/163] tty: mcf: MCF54418 has 10 UARTS
+	Linus Torvalds <torvalds@linuxfoundation.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 034/128] netfilter: nf_tables: fully validate NFT_DATA_VALUE on store to data registers
 Date: Tue,  2 Jul 2024 19:03:55 +0200
-Message-ID: <20240702170237.632547459@linuxfoundation.org>
+Message-ID: <20240702170227.523689162@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 7c92a8bd53f24d50c8cf4aba53bb75505b382fed upstream.
+[ Upstream commit 7931d32955e09d0a11b1fe0b6aac1bfa061c005c ]
 
-Most of the colfires have up to 5 UARTs but MCF54418 has up-to 10 !
-Change the maximum value authorized.
+register store validation for NFT_DATA_VALUE is conditional, however,
+the datatype is always either NFT_DATA_VALUE or NFT_DATA_VERDICT. This
+only requires a new helper function to infer the register type from the
+set datatype so this conditional check can be removed. Otherwise,
+pointer to chain object can be leaked through the registers.
 
-Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-Cc: stable <stable@kernel.org>
-Fixes: 2545cf6e94b4 ("m68knommu: allow 4 coldfire serial ports")
-Link: https://lore.kernel.org/r/20240620-upstream-uart-v1-1-a9d0d95fb19e@yoseli.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 96518518cc41 ("netfilter: add nftables")
+Reported-by: Linus Torvalds <torvalds@linuxfoundation.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/mcf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/netfilter/nf_tables.h | 5 +++++
+ net/netfilter/nf_tables_api.c     | 8 ++++----
+ net/netfilter/nft_lookup.c        | 3 ++-
+ 3 files changed, 11 insertions(+), 5 deletions(-)
 
---- a/drivers/tty/serial/mcf.c
-+++ b/drivers/tty/serial/mcf.c
-@@ -462,7 +462,7 @@ static const struct uart_ops mcf_uart_op
- 	.verify_port	= mcf_verify_port,
- };
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index 964cf7578bd50..9a80d0251d8f3 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -582,6 +582,11 @@ static inline void *nft_set_priv(const struct nft_set *set)
+ 	return (void *)set->data;
+ }
  
--static struct mcf_uart mcf_ports[4];
-+static struct mcf_uart mcf_ports[10];
++static inline enum nft_data_types nft_set_datatype(const struct nft_set *set)
++{
++	return set->dtype == NFT_DATA_VERDICT ? NFT_DATA_VERDICT : NFT_DATA_VALUE;
++}
++
+ static inline bool nft_set_gc_is_pending(const struct nft_set *s)
+ {
+ 	return refcount_read(&s->refs) != 1;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index e838a6617b0aa..97ea72d31bd35 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -5398,8 +5398,7 @@ static int nf_tables_fill_setelem(struct sk_buff *skb,
  
- #define	MCF_MAXPORTS	ARRAY_SIZE(mcf_ports)
+ 	if (nft_set_ext_exists(ext, NFT_SET_EXT_DATA) &&
+ 	    nft_data_dump(skb, NFTA_SET_ELEM_DATA, nft_set_ext_data(ext),
+-			  set->dtype == NFT_DATA_VERDICT ? NFT_DATA_VERDICT : NFT_DATA_VALUE,
+-			  set->dlen) < 0)
++			  nft_set_datatype(set), set->dlen) < 0)
+ 		goto nla_put_failure;
  
+ 	if (nft_set_ext_exists(ext, NFT_SET_EXT_EXPRESSIONS) &&
+@@ -10448,6 +10447,9 @@ static int nft_validate_register_store(const struct nft_ctx *ctx,
+ 
+ 		return 0;
+ 	default:
++		if (type != NFT_DATA_VALUE)
++			return -EINVAL;
++
+ 		if (reg < NFT_REG_1 * NFT_REG_SIZE / NFT_REG32_SIZE)
+ 			return -EINVAL;
+ 		if (len == 0)
+@@ -10456,8 +10458,6 @@ static int nft_validate_register_store(const struct nft_ctx *ctx,
+ 		    sizeof_field(struct nft_regs, data))
+ 			return -ERANGE;
+ 
+-		if (data != NULL && type != NFT_DATA_VALUE)
+-			return -EINVAL;
+ 		return 0;
+ 	}
+ }
+diff --git a/net/netfilter/nft_lookup.c b/net/netfilter/nft_lookup.c
+index 68a5dea805480..33daee2e54c5c 100644
+--- a/net/netfilter/nft_lookup.c
++++ b/net/netfilter/nft_lookup.c
+@@ -136,7 +136,8 @@ static int nft_lookup_init(const struct nft_ctx *ctx,
+ 			return -EINVAL;
+ 
+ 		err = nft_parse_register_store(ctx, tb[NFTA_LOOKUP_DREG],
+-					       &priv->dreg, NULL, set->dtype,
++					       &priv->dreg, NULL,
++					       nft_set_datatype(set),
+ 					       set->dlen);
+ 		if (err < 0)
+ 			return err;
+-- 
+2.43.0
+
 
 
 
