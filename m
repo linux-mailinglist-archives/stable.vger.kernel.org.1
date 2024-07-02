@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-56690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38A8F92458E
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:23:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F0889244D9
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:15:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D72961F21B1D
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:23:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 463271F20F5D
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6121BBBD7;
-	Tue,  2 Jul 2024 17:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A2939847;
+	Tue,  2 Jul 2024 17:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbw7udx6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZCjKtJN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2918715218A;
-	Tue,  2 Jul 2024 17:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1357F178381;
+	Tue,  2 Jul 2024 17:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941029; cv=none; b=CoakJKfdaZ/FWVEqzpYnzGm2HxDRX3lBHucPIcaBUJAhGYRJ//8I+fLRDZ2ZCw/AuqjtPjNWDgbkUWbjEr4HWnxlEpSDAfU4pIQ8R/06vFBru4OZXK8vf16dKFs593lw3EaPrbMQL2pCDGZwALJEMk9tXawtU8Ld2+n9B+waDZs=
+	t=1719940537; cv=none; b=iCJkKkV9yiDpu6aWsYkX1VLS5G3csKUtGRO43/JtaGcJdpYKgkVwB+gs5LItybrQc0e6poKo/U2UC+ijmgT1Rq7fDtwQNKEw+upnGcXzRrek5jTHf7QIyNaFu+pEUZFarF10rAlh6qgUBsxqY1xFcf/Gsjil0eNXZiYkjmG2/GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941029; c=relaxed/simple;
-	bh=Jchn9EHC0amnzOIuw/6LW+kiFHn0C3jySeDFJjAXqhQ=;
+	s=arc-20240116; t=1719940537; c=relaxed/simple;
+	bh=6QOvTFE3adh0cvWzuI4KzWlW1YsuiucrPjQMPozDwEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/Kr4YX4YXe8bfb+N7EgeKLOc1aF7OWxRbQ2zzJFjjjef6zNYhW6jrZ6ixK4cSNjNZXbByoAckRoAzSi4yWjz+DyZDtS8jT9SZwGW34FAOphLCnbla1re6X2A2kouMMXr2+yYuI1+6r0X9pH7FDqDCnFKRPRJKepgLFROFqAs+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbw7udx6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C65C116B1;
-	Tue,  2 Jul 2024 17:23:48 +0000 (UTC)
+	 MIME-Version; b=fdgSntNJRHOG1pxFHrB2AnDR0THnzBTjpJiypfBK3QFiUCoazaX+V5jv3JxB7KE3fdOxRxHSgKm+xtZdW0Z+ug6Nlm0BDRSNfroURL7lU7v2PUFWhbEOpO9xg/+lkcWBzKb8+usNvBZg7+7yuA2b3i/W6uZK4GbrZMwcjbh9iNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZCjKtJN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7867BC116B1;
+	Tue,  2 Jul 2024 17:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941029;
-	bh=Jchn9EHC0amnzOIuw/6LW+kiFHn0C3jySeDFJjAXqhQ=;
+	s=korg; t=1719940537;
+	bh=6QOvTFE3adh0cvWzuI4KzWlW1YsuiucrPjQMPozDwEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hbw7udx6mvGFu8cyr/Za/NaPk5E/KfSDwdcZZ+GQmWjtcuJmEOvtHl9QLPuYC8ON5
-	 JVbaTUPDIl9ONRplLfOpPZ1iSLuMKQacI4y8UT1P/XmXd+ZTJ26dhyQU5tCr/HK1P5
-	 elLpj3yJnmmZ+eDsPnkvgJzR62sFbFn0sqv2JeJw=
+	b=CZCjKtJNmkn3JOqvNcc0mANecwnCn5JTFgn+tMw64fuun676tGpLzLPj9LZlexauC
+	 EFVo99PSH9oK/7fVc3AAK4ok0QBaf/3EjyRx7CK7Gjbys9ING4EzFlEzQ5FVk/MmDl
+	 VGnDlWKyZYuDKi5WSIIDQlWm3bqIPPlCyOK/D4BI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Gibson <warthog618@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 076/163] gpiolib: cdev: Disallow reconfiguration without direction (uAPI v1)
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Ferry Toth <fntoth@gmail.com>
+Subject: [PATCH 6.9 152/222] Revert "usb: gadget: u_ether: Replace netif_stop_queue with netif_device_detach"
 Date: Tue,  2 Jul 2024 19:03:10 +0200
-Message-ID: <20240702170235.940645512@linuxfoundation.org>
+Message-ID: <20240702170249.787319635@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Gibson <warthog618@gmail.com>
+From: Ferry Toth <ftoth@exalondelft.nl>
 
-[ Upstream commit 9919cce62f68e6ab68dc2a975b5dc670f8ca7d40 ]
+commit c50814a288dcee687285abc0cf935e9fe8928e59 upstream.
 
-linehandle_set_config() behaves badly when direction is not set.
-The configuration validation is borrowed from linehandle_create(), where,
-to verify the intent of the user, the direction must be set to in order
-to effect a change to the electrical configuration of a line. But, when
-applied to reconfiguration, that validation does not allow for the unset
-direction case, making it possible to clear flags set previously without
-specifying the line direction.
+This reverts commit f49449fbc21e7e9550a5203902d69c8ae7dfd918.
 
-Adding to the inconsistency, those changes are not immediately applied by
-linehandle_set_config(), but will take effect when the line value is next
-get or set.
+This commit breaks u_ether on some setups (at least Merrifield). The fix
+"usb: gadget: u_ether: Re-attach netif device to mirror detachment" party
+restores u-ether. However the netif usb: remains up even usb is switched
+from device to host mode. This creates problems for user space as the
+interface remains in the routing table while not realy present and network
+managers (connman) not detecting a network change.
 
-For example, by requesting a configuration with no flags set, an output
-line with GPIOHANDLE_REQUEST_ACTIVE_LOW and GPIOHANDLE_REQUEST_OPEN_DRAIN
-requested could have those flags cleared, inverting the sense of the line
-and changing the line drive to push-pull on the next line value set.
+Various attempts to find the root cause were unsuccesful up to now. Therefore
+revert until a solution is found.
 
-Ensure the intent of the user by disallowing configurations which do not
-have direction set, returning an error to userspace to indicate that the
-configuration is invalid.
-
-And, for clarity, use lflags, a local copy of gcnf.flags, throughout when
-dealing with the requested flags, rather than a mixture of both.
-
-Fixes: e588bb1eae31 ("gpio: add new SET_CONFIG ioctl() to gpio chardev")
-Signed-off-by: Kent Gibson <warthog618@gmail.com>
-Link: https://lore.kernel.org/r/20240626052925.174272-2-warthog618@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/linux-usb/20231006141231.7220-1-hgajjar@de.adit-jv.com/
+Reported-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Reported-by: Ferry Toth <fntoth@gmail.com>
+Fixes: f49449fbc21e ("usb: gadget: u_ether: Replace netif_stop_queue with netif_device_detach")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ferry Toth <fntoth@gmail.com>
+Link: https://lore.kernel.org/r/20240620204832.24518-3-ftoth@exalondelft.nl
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-cdev.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/usb/gadget/function/u_ether.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
-index b4b71e68b90de..d526a4c91e82e 100644
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -132,6 +132,10 @@ struct linehandle_state {
- 	GPIOHANDLE_REQUEST_OPEN_DRAIN | \
- 	GPIOHANDLE_REQUEST_OPEN_SOURCE)
+--- a/drivers/usb/gadget/function/u_ether.c
++++ b/drivers/usb/gadget/function/u_ether.c
+@@ -1200,7 +1200,7 @@ void gether_disconnect(struct gether *li
  
-+#define GPIOHANDLE_REQUEST_DIRECTION_FLAGS \
-+	(GPIOHANDLE_REQUEST_INPUT | \
-+	 GPIOHANDLE_REQUEST_OUTPUT)
-+
- static int linehandle_validate_flags(u32 flags)
- {
- 	/* Return an error if an unknown flag is set */
-@@ -212,21 +216,21 @@ static long linehandle_set_config(struct linehandle_state *lh,
- 	if (ret)
- 		return ret;
+ 	DBG(dev, "%s\n", __func__);
  
-+	/* Lines must be reconfigured explicitly as input or output. */
-+	if (!(lflags & GPIOHANDLE_REQUEST_DIRECTION_FLAGS))
-+		return -EINVAL;
-+
- 	for (i = 0; i < lh->num_descs; i++) {
- 		desc = lh->descs[i];
--		linehandle_flags_to_desc_flags(gcnf.flags, &desc->flags);
-+		linehandle_flags_to_desc_flags(lflags, &desc->flags);
+-	netif_device_detach(dev->net);
++	netif_stop_queue(dev->net);
+ 	netif_carrier_off(dev->net);
  
--		/*
--		 * Lines have to be requested explicitly for input
--		 * or output, else the line will be treated "as is".
--		 */
- 		if (lflags & GPIOHANDLE_REQUEST_OUTPUT) {
- 			int val = !!gcnf.default_values[i];
- 
- 			ret = gpiod_direction_output(desc, val);
- 			if (ret)
- 				return ret;
--		} else if (lflags & GPIOHANDLE_REQUEST_INPUT) {
-+		} else {
- 			ret = gpiod_direction_input(desc);
- 			if (ret)
- 				return ret;
--- 
-2.43.0
-
+ 	/* disable endpoints, forcing (synchronous) completion
 
 
 
