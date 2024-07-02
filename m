@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-56764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E04789245DD
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:28:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB763924513
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:18:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AA3D2835F0
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:28:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBA6F1C228DD
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407CF1BE251;
-	Tue,  2 Jul 2024 17:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D06A1C8FB7;
+	Tue,  2 Jul 2024 17:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUVbQz/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfRs2S4Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F316F1514DC;
-	Tue,  2 Jul 2024 17:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0901C8FA7;
+	Tue,  2 Jul 2024 17:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941280; cv=none; b=JnlGsI02Mv72CI6HcJ8mtbAwVSakSiZVganhe1ZKKWYx8gR3sk1E0B0Unk/LcxGpF/xeXulYd82hDeYn9UpB40CA1fc8w0wG6lm3kXqDCRmuZN1fnTVVaoC9oajHC0bOLKgJtq9gNqq3KbBeUP21If08DEIVDGgs4jYKMMZ8k8Q=
+	t=1719940662; cv=none; b=Vjk3uskVPiQvGF85WppGo5JjQWitGKGlkt51lVA4ofO8qWTyxfxCFtyiLk/Qd8FQqVC/ioHwnzVDJ1blqxAZy6Yj/xbQrEaDj1AM13nB4h8FZdELX49boRNWh+KdwykVKmNb4Xfs29Tcg2dOQaVlHQ3J2vHzHUn7D//YxLIwF8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941280; c=relaxed/simple;
-	bh=8+kwuofvz5G1uV2tyb1n4nntbvFqXdfoMcMuwUmTIuY=;
+	s=arc-20240116; t=1719940662; c=relaxed/simple;
+	bh=V2almonY0bHuwiNHW2pSLafMHVT1OGhNacViKwA/wGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ayc0XKAuGQfdcGGS2taoOJmYZuVZEXCPVh8iV+76rpT04xJGNLgfPu2NFHkJFzm4ltaYfueMAeSBfQMaRIT923n94OUvkBvKNGLk8OLGCnDrpAoi7RDrqRXrvPcxZzTSMAo7Vinj7SxgLgSQg9qB+mIzkqBiGGJJCPQyuiA87sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUVbQz/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C25C116B1;
-	Tue,  2 Jul 2024 17:27:59 +0000 (UTC)
+	 MIME-Version; b=OaZujRaVidzDvLYur2ZDrMv9b07ntsuOKzhfC9VL55+oDDtLIaPpkaSoZoEU91X5JXopqjs/WHBj6ro01d4q0ECPxKkBPKrQQ80sQpYWGl+HxS+AMaNo5wjtxlvqUuJAKsOOalP/ewGSCriGF4JlhjMMVGzDHTKzfRDUzxG3+MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YfRs2S4Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F02CC4AF07;
+	Tue,  2 Jul 2024 17:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941279;
-	bh=8+kwuofvz5G1uV2tyb1n4nntbvFqXdfoMcMuwUmTIuY=;
+	s=korg; t=1719940661;
+	bh=V2almonY0bHuwiNHW2pSLafMHVT1OGhNacViKwA/wGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QUVbQz/TeQ3K5P8oB31oZH1jllzZHSLcJUBZzl6XiGbe25sgXO8VfWOyGCUM+iFDz
-	 swPnZEfGApBC8b02HM1xXDcQB3O9u5Mw/TMYHtnSbNGdEcdwDKwQ7Sx8X6pDSt6GIv
-	 F8BvDGaYCT/AhvZkHW7RzbqomXBJby72n3cLezMQ=
+	b=YfRs2S4Q5I+u2Rj62pGbgOnKFilBM3S2p1xxOkTE4bfi1Ui2Om3Epe8NeJB270Srd
+	 bS7dENq9l84Cgr7XHlXL5yD/o/38aG9chPeleu1uwnMfbyJi4onjtkoF6AtOKOaKcC
+	 dBl5nV6EJnyyzerJdYvC1BethKnuVmT49kDu1fsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 018/128] ASoC: amd: acp: remove i2s configuration check in acp_i2s_probe()
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>
+Subject: [PATCH 6.9 181/222] drm/fbdev-dma: Only set smem_start is enable per module option
 Date: Tue,  2 Jul 2024 19:03:39 +0200
-Message-ID: <20240702170226.920261596@linuxfoundation.org>
+Message-ID: <20240702170250.894008343@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 70fa3900c3ed92158628710e81d274e5cb52f92b ]
+commit d92a7580392ad4681b1d4f9275d00b95375ebe01 upstream.
 
-ACP supports different pin configurations for I2S IO. Checking ACP pin
-configuration value against specific value breaks the functionality for
-other I2S pin configurations. This check is no longer required in i2s dai
-driver probe call as i2s configuration check will be verified during acp
-platform device creation sequence.
-Remove i2s_mode check in acp_i2s_probe() function.
+Only export struct fb_info.fix.smem_start if that is required by the
+user and the memory does not come from vmalloc().
 
-Fixes: b24484c18b10 ("ASoC: amd: acp: ACP code generic to support newer platforms")
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Link: https://msgid.link/r/20240617072844.871468-2-Vijendar.Mukunda@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Setting struct fb_info.fix.smem_start breaks systems where DMA
+memory is backed by vmalloc address space. An example error is
+shown below.
+
+[    3.536043] ------------[ cut here ]------------
+[    3.540716] virt_to_phys used for non-linear address: 000000007fc4f540 (0xffff800086001000)
+[    3.552628] WARNING: CPU: 4 PID: 61 at arch/arm64/mm/physaddr.c:12 __virt_to_phys+0x68/0x98
+[    3.565455] Modules linked in:
+[    3.568525] CPU: 4 PID: 61 Comm: kworker/u12:5 Not tainted 6.6.23-06226-g4986cc3e1b75-dirty #250
+[    3.577310] Hardware name: NXP i.MX95 19X19 board (DT)
+[    3.582452] Workqueue: events_unbound deferred_probe_work_func
+[    3.588291] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    3.595233] pc : __virt_to_phys+0x68/0x98
+[    3.599246] lr : __virt_to_phys+0x68/0x98
+[    3.603276] sp : ffff800083603990
+[    3.677939] Call trace:
+[    3.680393]  __virt_to_phys+0x68/0x98
+[    3.684067]  drm_fbdev_dma_helper_fb_probe+0x138/0x238
+[    3.689214]  __drm_fb_helper_initial_config_and_unlock+0x2b0/0x4c0
+[    3.695385]  drm_fb_helper_initial_config+0x4c/0x68
+[    3.700264]  drm_fbdev_dma_client_hotplug+0x8c/0xe0
+[    3.705161]  drm_client_register+0x60/0xb0
+[    3.709269]  drm_fbdev_dma_setup+0x94/0x148
+
+Additionally, DMA memory is assumed to by contiguous in physical
+address space, which is not guaranteed by vmalloc().
+
+Resolve this by checking the module flag drm_leak_fbdev_smem when
+DRM allocated the instance of struct fb_info. Fbdev-dma then only
+sets smem_start only if required (via FBINFO_HIDE_SMEM_START). Also
+guarantee that the framebuffer is not located in vmalloc address
+space.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reported-by: Peng Fan (OSS) <peng.fan@oss.nxp.com>
+Closes: https://lore.kernel.org/dri-devel/20240604080328.4024838-1-peng.fan@oss.nxp.com/
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Closes: https://lore.kernel.org/dri-devel/CAMuHMdX3N0szUvt1VTbroa2zrT1Nye_VzPb5qqCZ7z5gSm7HGw@mail.gmail.com/
+Fixes: a51c7663f144 ("drm/fb-helper: Consolidate CONFIG_DRM_FBDEV_LEAK_PHYS_SMEM")
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: <stable@vger.kernel.org> # v6.4+
+Link: https://patchwork.freedesktop.org/patch/msgid/20240617152843.11886-1-tzimmermann@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/acp/acp-i2s.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/gpu/drm/drm_fb_helper.c |    6 +++---
+ drivers/gpu/drm/drm_fbdev_dma.c |    5 ++++-
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/amd/acp/acp-i2s.c b/sound/soc/amd/acp/acp-i2s.c
-index ac416572db0d3..3c78207f9ad9d 100644
---- a/sound/soc/amd/acp/acp-i2s.c
-+++ b/sound/soc/amd/acp/acp-i2s.c
-@@ -537,20 +537,12 @@ int asoc_acp_i2s_probe(struct snd_soc_dai *dai)
- {
- 	struct device *dev = dai->component->dev;
- 	struct acp_dev_data *adata = dev_get_drvdata(dev);
--	struct acp_resource *rsrc = adata->rsrc;
--	unsigned int val;
+--- a/drivers/gpu/drm/drm_fb_helper.c
++++ b/drivers/gpu/drm/drm_fb_helper.c
+@@ -524,6 +524,9 @@ struct fb_info *drm_fb_helper_alloc_info
+ 	if (!info)
+ 		return ERR_PTR(-ENOMEM);
  
- 	if (!adata->acp_base) {
- 		dev_err(dev, "I2S base is NULL\n");
- 		return -EINVAL;
- 	}
++	if (!drm_leak_fbdev_smem)
++		info->flags |= FBINFO_HIDE_SMEM_START;
++
+ 	ret = fb_alloc_cmap(&info->cmap, 256, 0);
+ 	if (ret)
+ 		goto err_release;
+@@ -1860,9 +1863,6 @@ __drm_fb_helper_initial_config_and_unloc
+ 	info = fb_helper->info;
+ 	info->var.pixclock = 0;
  
--	val = readl(adata->acp_base + rsrc->i2s_pin_cfg_offset);
--	if (val != rsrc->i2s_mode) {
--		dev_err(dev, "I2S Mode not supported val %x\n", val);
--		return -EINVAL;
--	}
+-	if (!drm_leak_fbdev_smem)
+-		info->flags |= FBINFO_HIDE_SMEM_START;
 -
+ 	/* Need to drop locks to avoid recursive deadlock in
+ 	 * register_framebuffer. This is ok because the only thing left to do is
+ 	 * register the fbdev emulation instance in kernel_fb_helper_list. */
+--- a/drivers/gpu/drm/drm_fbdev_dma.c
++++ b/drivers/gpu/drm/drm_fbdev_dma.c
+@@ -130,7 +130,10 @@ static int drm_fbdev_dma_helper_fb_probe
+ 		info->flags |= FBINFO_READS_FAST; /* signal caching */
+ 	info->screen_size = sizes->surface_height * fb->pitches[0];
+ 	info->screen_buffer = map.vaddr;
+-	info->fix.smem_start = page_to_phys(virt_to_page(info->screen_buffer));
++	if (!(info->flags & FBINFO_HIDE_SMEM_START)) {
++		if (!drm_WARN_ON(dev, is_vmalloc_addr(info->screen_buffer)))
++			info->fix.smem_start = page_to_phys(virt_to_page(info->screen_buffer));
++	}
+ 	info->fix.smem_len = info->screen_size;
+ 
  	return 0;
- }
- EXPORT_SYMBOL_NS_GPL(asoc_acp_i2s_probe, SND_SOC_ACP_COMMON);
--- 
-2.43.0
-
 
 
 
