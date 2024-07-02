@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-56622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C2E924545
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:20:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6285392448B
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:11:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5CF11F2211A
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:20:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94D301C21DFB
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA6CA1C007D;
-	Tue,  2 Jul 2024 17:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966451BE229;
+	Tue,  2 Jul 2024 17:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkfjTFz5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WSd9brr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C5C1BE85B;
-	Tue,  2 Jul 2024 17:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544B815218A;
+	Tue,  2 Jul 2024 17:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940799; cv=none; b=RM6kyY4lawCrE2KKK/Av4VZoT26yfhMt04axJDwZntq0O/dbrIHFh+DVUgKBXsO3oXXheqEH3mmpqU7LWDGNbg6BUycMM5RubqbZzdtsjl7fzgk0gUOg45/T0O4kSnQQjsHrcS85O0YNnwXiswsRHKANTVGC7FbY6u8Mb4/6CFM=
+	t=1719940314; cv=none; b=rgGswdk9mL2ioqVD7OeZo/e47E9xSFsVAOzA96aUiHPNIk8XKd617z0H/9T9goFz53lC1KqxvTCrWj8dXN+F4OTWn2kqnAMUwjvhQqB/lLCoWRpMQu/b0VnnVxbxENoZ4PQRWtK8yxZlP6NHcxyfP62hmdLwO+3ZOR4KthkiJFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940799; c=relaxed/simple;
-	bh=E53R7/xAEmXyMNG8LZwclPqkTPATfj/JZx75mSn77Qo=;
+	s=arc-20240116; t=1719940314; c=relaxed/simple;
+	bh=5t0RyREuQ9zsH0143+R1R8Uh2XxRivtbAL5kACEd9tM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MC3pPS42RN2zuQbeLp53miMqdNkGsnA7ZI2rVqWfTxm+VZiVoIA0VdacNvqd/sDed7a/Lx2IXRdXOUlwET7OwkGTl0/yoo4vdWbltrBKEQvrsY49kzv0qIBLNCxQVaCcGkpd5ySav51xtqJJ79JetaIhoSkQ1owUotqqlNfZb/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkfjTFz5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0077C116B1;
-	Tue,  2 Jul 2024 17:19:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ix0nJ29F1p/8hG5P3urIiay1swgemfwG0DbwsAnedabLw81CsuKikixjfBymJwgpkrGSqvPyxKTozCOcDbIBCOmG+jUNN56XP5tU5SNBNMwb3hiWccPRSOadUkARuujGaiWsRnXsIVMKKCzqWRYtnHTfyeU3ywV32QCgYzomI5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1WSd9brr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2D4C116B1;
+	Tue,  2 Jul 2024 17:11:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940799;
-	bh=E53R7/xAEmXyMNG8LZwclPqkTPATfj/JZx75mSn77Qo=;
+	s=korg; t=1719940314;
+	bh=5t0RyREuQ9zsH0143+R1R8Uh2XxRivtbAL5kACEd9tM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XkfjTFz5Sv39mYGCgNl0QZxNfz5X1IzSKwLLrgvNd6A6nvgCC45GJQYH5MbnIEM4q
-	 diKu8J8kLVEBd0LOYRjbaKDvHQxZIy0YLmqBQNrQigunhyMaC9TIem0u8EO/gvkDjv
-	 dJqqw06fBP1cz8gRVpxHKqdiFWA+QVgBMqSJ+gvI=
+	b=1WSd9brrLDuCQn9Fi1MD5bE6vZUSfPDxxx5p7XiBC6FQceiw6QwDZ8o4EVe3ZP71v
+	 Q6S3A4tFpvnlkgDfMP+rvsL+zwq3kZ0DaW0LbOfYthIjHx/CHeSVT1n1z2AowZdJoq
+	 CEBldcOIa4rpAp/WZydU5xiT+9zHd5O+Im1hkcvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huang-Huang Bao <i@eh5.me>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/163] pinctrl: rockchip: fix pinmux bits for RK3328 GPIO3-B pins
-Date: Tue,  2 Jul 2024 19:02:03 +0200
-Message-ID: <20240702170233.406057360@linuxfoundation.org>
+Subject: [PATCH 6.9 086/222] media: dvbdev: Initialize sbuf
+Date: Tue,  2 Jul 2024 19:02:04 +0200
+Message-ID: <20240702170247.264321585@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,115 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang-Huang Bao <i@eh5.me>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 5ef6914e0bf578357b4c906ffe6b26e7eedb8ccf ]
+[ Upstream commit 17d1316de0d7dc1bdc5d6e3ad4efd30a9bf1a381 ]
 
-The pinmux bits for GPIO3-B1 to GPIO3-B6 pins are not explicitly
-specified in RK3328 TRM, however we can get hint from pad name and its
-correspinding IOMUX setting for pins in interface descriptions. The
-correspinding IOMIX settings for these pins can be found in the same
-row next to occurrences of following pad names in RK3328 TRM.
+Because the size passed to copy_from_user() cannot be known beforehand,
+it needs to be checked during runtime with check_object_size. That makes
+gcc believe that the content of sbuf can be used before init.
 
-GPIO3-B1:  IO_TSPd5m0_CIFdata5m0_GPIO3B1vccio6
-GPIO3-B2: IO_TSPd6m0_CIFdata6m0_GPIO3B2vccio6
-GPIO3-B3: IO_TSPd7m0_CIFdata7m0_GPIO3B3vccio6
-GPIO3-B4: IO_CARDclkm0_GPIO3B4vccio6
-GPIO3-B5: IO_CARDrstm0_GPIO3B5vccio6
-GPIO3-B6: IO_CARDdetm0_GPIO3B6vccio6
+Fix:
+./include/linux/thread_info.h:215:17: warning: ‘sbuf’ may be used uninitialized [-Wmaybe-uninitialized]
 
-Add pinmux data to rk3328_mux_recalced_data as mux register offset for
-these pins does not follow rockchip convention.
-
-Signed-off-by: Huang-Huang Bao <i@eh5.me>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Fixes: 3818e4a7678e ("pinctrl: rockchip: Add rk3328 pinctrl support")
-Link: https://lore.kernel.org/r/20240606125755.53778-3-i@eh5.me
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-rockchip.c | 51 ++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ drivers/media/dvb-core/dvbdev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
-index c99a290a938af..6072b5d72ee54 100644
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -634,17 +634,68 @@ static struct rockchip_mux_recalced_data rk3308_mux_recalced_data[] = {
- 
- static struct rockchip_mux_recalced_data rk3328_mux_recalced_data[] = {
- 	{
-+		/* gpio2_b7_sel */
- 		.num = 2,
- 		.pin = 15,
- 		.reg = 0x28,
- 		.bit = 0,
- 		.mask = 0x7
- 	}, {
-+		/* gpio2_c7_sel */
- 		.num = 2,
- 		.pin = 23,
- 		.reg = 0x30,
- 		.bit = 14,
- 		.mask = 0x3
-+	}, {
-+		/* gpio3_b1_sel */
-+		.num = 3,
-+		.pin = 9,
-+		.reg = 0x44,
-+		.bit = 2,
-+		.mask = 0x3
-+	}, {
-+		/* gpio3_b2_sel */
-+		.num = 3,
-+		.pin = 10,
-+		.reg = 0x44,
-+		.bit = 4,
-+		.mask = 0x3
-+	}, {
-+		/* gpio3_b3_sel */
-+		.num = 3,
-+		.pin = 11,
-+		.reg = 0x44,
-+		.bit = 6,
-+		.mask = 0x3
-+	}, {
-+		/* gpio3_b4_sel */
-+		.num = 3,
-+		.pin = 12,
-+		.reg = 0x44,
-+		.bit = 8,
-+		.mask = 0x3
-+	}, {
-+		/* gpio3_b5_sel */
-+		.num = 3,
-+		.pin = 13,
-+		.reg = 0x44,
-+		.bit = 10,
-+		.mask = 0x3
-+	}, {
-+		/* gpio3_b6_sel */
-+		.num = 3,
-+		.pin = 14,
-+		.reg = 0x44,
-+		.bit = 12,
-+		.mask = 0x3
-+	}, {
-+		/* gpio3_b7_sel */
-+		.num = 3,
-+		.pin = 15,
-+		.reg = 0x44,
-+		.bit = 14,
-+		.mask = 0x3
- 	},
- };
- 
+diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
+index 733d0bc4b4cc3..b43695bc51e75 100644
+--- a/drivers/media/dvb-core/dvbdev.c
++++ b/drivers/media/dvb-core/dvbdev.c
+@@ -956,7 +956,7 @@ int dvb_usercopy(struct file *file,
+ 		 int (*func)(struct file *file,
+ 			     unsigned int cmd, void *arg))
+ {
+-	char    sbuf[128];
++	char    sbuf[128] = {};
+ 	void    *mbuf = NULL;
+ 	void    *parg = NULL;
+ 	int     err  = -EINVAL;
 -- 
 2.43.0
 
