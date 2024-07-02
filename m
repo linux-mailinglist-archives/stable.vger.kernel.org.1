@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-56492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE5192449C
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:12:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2BD4924564
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:21:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 232AE1F2136F
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:12:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 339241F21C1C
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80AAB1BE22A;
-	Tue,  2 Jul 2024 17:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC0E1BD51A;
+	Tue,  2 Jul 2024 17:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d5JNCS3t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R0Vge8sa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DBF415B0FE;
-	Tue,  2 Jul 2024 17:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A65D14293;
+	Tue,  2 Jul 2024 17:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940364; cv=none; b=OWo5RInO6ZIqE8+fVpA7KvOA748e8FMy0Mc2K8RyCSsrwsnuwYEcAlIe3AwNt2aObUeks4kXoUPH3hQblIuD/SP5EiA1lrRec7UnVR4Tqe+dPO/JQByR/afddkxAM7Et4vrTsIhuCz1dbXWEJG0CxlIT8bYTTbgVuKAzmXqtEEI=
+	t=1719940899; cv=none; b=rvVZvpsqj6NEWs2P5umixzdjrC48hFtVjohwWAVS9RD6IInsQ0I5h4KJ0aBH0rrr2n+VFrHVG7gY9rVkyDKDHjMc5qsxo18WbSY5R381U4HIL7gqTkYenBbahLqOzlnvfYdBWcub/6NruFEVyl3Gd2k+r/UTSz5rlOnyWX+8dqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940364; c=relaxed/simple;
-	bh=2iBr7YeKGR5rSJwDQsRqT1114k+SvEn6B0OH/SgA4qI=;
+	s=arc-20240116; t=1719940899; c=relaxed/simple;
+	bh=g8LnxbnbX0udakfV5pkjuPLmtdKbwhJe9155O/N8nyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ObA4KUOQWuGElPpE5+/m4lFvJrHfwpt4sYI4pSZbx0jFlh0aYMH1eXcyOeQYNv17ZcObShgYKVlYWRpFPLp12aNm6UHkecWlbnIbPElOoi5xu72ma/jSnSgMwcGA2QHQC6L8J4sNSnOh7ryfVjwUMaY/FZ/JtBIOiklsDNGNf6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d5JNCS3t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EEF3C116B1;
-	Tue,  2 Jul 2024 17:12:43 +0000 (UTC)
+	 MIME-Version; b=fvTvBtJ2IKejiOeIrAMwlw5YHS2ZoZb9HOsA+FBdoC+EvFC/zMJK6dxuXoFLrK7lULes9KMsTAxD1aJLEGNAvoZsSZ+ilHp12UUKvLXLt3Kucoja6+quaniAu6oZTLwUJSKDMzJu3IKVc8QDYTRMoot3nmL+TXDyPrJ0p2/xJps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R0Vge8sa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB062C116B1;
+	Tue,  2 Jul 2024 17:21:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940363;
-	bh=2iBr7YeKGR5rSJwDQsRqT1114k+SvEn6B0OH/SgA4qI=;
+	s=korg; t=1719940899;
+	bh=g8LnxbnbX0udakfV5pkjuPLmtdKbwhJe9155O/N8nyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d5JNCS3tH4mL+nU5fL2r3AqRNXmNuTrFkaFiHtXYvLae0248ucOdwJWEj6DMyDnmS
-	 qG7rJahqA8p0/P9LvOVKCa2ydl64H+KLrGqBhk9FG0FtHS3SkUL5XZrbvaxtnWCVp/
-	 qF+IiQnzKR+oWHt69On5i4BIta1iGYa+SG8mkDvY=
+	b=R0Vge8saCiQMuRu6N/B8Dv54Cvi3n8dYjNiPd9XiOWD+jLWw8m0Hu/LUgmOa35AKy
+	 UogLp4KTtCIcZbJA0tJvNdKa8CUmxG5tHWPyOY3ER+bK0NP+n7aHcXfvdBR+vcjRWl
+	 Y8wlGRFrjiCfR5PGoYoslCcufWLUdoowH+RBCsmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 115/222] ocfs2: fix DIO failure due to insufficient transaction credits
+	luoxuanqiang <luoxuanqiang@kylinos.cn>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 039/163] Fix race for duplicate reqsk on identical SYN
 Date: Tue,  2 Jul 2024 19:02:33 +0200
-Message-ID: <20240702170248.365239659@linuxfoundation.org>
+Message-ID: <20240702170234.540122471@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,146 +64,200 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: luoxuanqiang <luoxuanqiang@kylinos.cn>
 
-commit be346c1a6eeb49d8fda827d2a9522124c2f72f36 upstream.
+[ Upstream commit ff46e3b4421923937b7f6e44ffcd3549a074f321 ]
 
-The code in ocfs2_dio_end_io_write() estimates number of necessary
-transaction credits using ocfs2_calc_extend_credits().  This however does
-not take into account that the IO could be arbitrarily large and can
-contain arbitrary number of extents.
+When bonding is configured in BOND_MODE_BROADCAST mode, if two identical
+SYN packets are received at the same time and processed on different CPUs,
+it can potentially create the same sk (sock) but two different reqsk
+(request_sock) in tcp_conn_request().
 
-Extent tree manipulations do often extend the current transaction but not
-in all of the cases.  For example if we have only single block extents in
-the tree, ocfs2_mark_extent_written() will end up calling
-ocfs2_replace_extent_rec() all the time and we will never extend the
-current transaction and eventually exhaust all the transaction credits if
-the IO contains many single block extents.  Once that happens a
-WARN_ON(jbd2_handle_buffer_credits(handle) <= 0) is triggered in
-jbd2_journal_dirty_metadata() and subsequently OCFS2 aborts in response to
-this error.  This was actually triggered by one of our customers on a
-heavily fragmented OCFS2 filesystem.
+These two different reqsk will respond with two SYNACK packets, and since
+the generation of the seq (ISN) incorporates a timestamp, the final two
+SYNACK packets will have different seq values.
 
-To fix the issue make sure the transaction always has enough credits for
-one extent insert before each call of ocfs2_mark_extent_written().
+The consequence is that when the Client receives and replies with an ACK
+to the earlier SYNACK packet, we will reset(RST) it.
 
-Heming Zhao said:
+========================================================================
 
-------
-PANIC: "Kernel panic - not syncing: OCFS2: (device dm-1): panic forced after error"
+This behavior is consistently reproducible in my local setup,
+which comprises:
 
-PID: xxx  TASK: xxxx  CPU: 5  COMMAND: "SubmitThread-CA"
-  #0 machine_kexec at ffffffff8c069932
-  #1 __crash_kexec at ffffffff8c1338fa
-  #2 panic at ffffffff8c1d69b9
-  #3 ocfs2_handle_error at ffffffffc0c86c0c [ocfs2]
-  #4 __ocfs2_abort at ffffffffc0c88387 [ocfs2]
-  #5 ocfs2_journal_dirty at ffffffffc0c51e98 [ocfs2]
-  #6 ocfs2_split_extent at ffffffffc0c27ea3 [ocfs2]
-  #7 ocfs2_change_extent_flag at ffffffffc0c28053 [ocfs2]
-  #8 ocfs2_mark_extent_written at ffffffffc0c28347 [ocfs2]
-  #9 ocfs2_dio_end_io_write at ffffffffc0c2bef9 [ocfs2]
-#10 ocfs2_dio_end_io at ffffffffc0c2c0f5 [ocfs2]
-#11 dio_complete at ffffffff8c2b9fa7
-#12 do_blockdev_direct_IO at ffffffff8c2bc09f
-#13 ocfs2_direct_IO at ffffffffc0c2b653 [ocfs2]
-#14 generic_file_direct_write at ffffffff8c1dcf14
-#15 __generic_file_write_iter at ffffffff8c1dd07b
-#16 ocfs2_file_write_iter at ffffffffc0c49f1f [ocfs2]
-#17 aio_write at ffffffff8c2cc72e
-#18 kmem_cache_alloc at ffffffff8c248dde
-#19 do_io_submit at ffffffff8c2ccada
-#20 do_syscall_64 at ffffffff8c004984
-#21 entry_SYSCALL_64_after_hwframe at ffffffff8c8000ba
+                  | NETA1 ------ NETB1 |
+PC_A --- bond --- |                    | --- bond --- PC_B
+                  | NETA2 ------ NETB2 |
 
-Link: https://lkml.kernel.org/r/20240617095543.6971-1-jack@suse.cz
-Link: https://lkml.kernel.org/r/20240614145243.8837-1-jack@suse.cz
-Fixes: c15471f79506 ("ocfs2: fix sparse file & data ordering issue in direct io")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- PC_A is the Server and has two network cards, NETA1 and NETA2. I have
+  bonded these two cards using BOND_MODE_BROADCAST mode and configured
+  them to be handled by different CPU.
+
+- PC_B is the Client, also equipped with two network cards, NETB1 and
+  NETB2, which are also bonded and configured in BOND_MODE_BROADCAST mode.
+
+If the client attempts a TCP connection to the server, it might encounter
+a failure. Capturing packets from the server side reveals:
+
+10.10.10.10.45182 > localhost: Flags [S], seq 320236027,
+10.10.10.10.45182 > localhost: Flags [S], seq 320236027,
+localhost > 10.10.10.10.45182: Flags [S.], seq 2967855116,
+localhost > 10.10.10.10.45182: Flags [S.], seq 2967855123, <==
+10.10.10.10.45182 > localhost: Flags [.], ack 4294967290,
+10.10.10.10.45182 > localhost: Flags [.], ack 4294967290,
+localhost > 10.10.10.10.45182: Flags [R], seq 2967855117, <==
+localhost > 10.10.10.10.45182: Flags [R], seq 2967855117,
+
+Two SYNACKs with different seq numbers are sent by localhost,
+resulting in an anomaly.
+
+========================================================================
+
+The attempted solution is as follows:
+Add a return value to inet_csk_reqsk_queue_hash_add() to confirm if the
+ehash insertion is successful (Up to now, the reason for unsuccessful
+insertion is that a reqsk for the same connection has already been
+inserted). If the insertion fails, release the reqsk.
+
+Due to the refcnt, Kuniyuki suggests also adding a return value check
+for the DCCP module; if ehash insertion fails, indicating a successful
+insertion of the same connection, simply release the reqsk as well.
+
+Simultaneously, In the reqsk_queue_hash_req(), the start of the
+req->rsk_timer is adjusted to be after successful insertion.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: luoxuanqiang <luoxuanqiang@kylinos.cn>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240621013929.1386815-1-luoxuanqiang@kylinos.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/aops.c        |    5 +++++
- fs/ocfs2/journal.c     |   17 +++++++++++++++++
- fs/ocfs2/journal.h     |    2 ++
- fs/ocfs2/ocfs2_trace.h |    2 ++
- 4 files changed, 26 insertions(+)
+ include/net/inet_connection_sock.h |  2 +-
+ net/dccp/ipv4.c                    |  7 +++++--
+ net/dccp/ipv6.c                    |  7 +++++--
+ net/ipv4/inet_connection_sock.c    | 17 +++++++++++++----
+ net/ipv4/tcp_input.c               |  7 ++++++-
+ 5 files changed, 30 insertions(+), 10 deletions(-)
 
---- a/fs/ocfs2/aops.c
-+++ b/fs/ocfs2/aops.c
-@@ -2368,6 +2368,11 @@ static int ocfs2_dio_end_io_write(struct
- 	}
+diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
+index 6ecac01115d9c..fee1e56505510 100644
+--- a/include/net/inet_connection_sock.h
++++ b/include/net/inet_connection_sock.h
+@@ -264,7 +264,7 @@ struct dst_entry *inet_csk_route_child_sock(const struct sock *sk,
+ struct sock *inet_csk_reqsk_queue_add(struct sock *sk,
+ 				      struct request_sock *req,
+ 				      struct sock *child);
+-void inet_csk_reqsk_queue_hash_add(struct sock *sk, struct request_sock *req,
++bool inet_csk_reqsk_queue_hash_add(struct sock *sk, struct request_sock *req,
+ 				   unsigned long timeout);
+ struct sock *inet_csk_complete_hashdance(struct sock *sk, struct sock *child,
+ 					 struct request_sock *req,
+diff --git a/net/dccp/ipv4.c b/net/dccp/ipv4.c
+index 524b7e581a036..65a6733fc897f 100644
+--- a/net/dccp/ipv4.c
++++ b/net/dccp/ipv4.c
+@@ -655,8 +655,11 @@ int dccp_v4_conn_request(struct sock *sk, struct sk_buff *skb)
+ 	if (dccp_v4_send_response(sk, req))
+ 		goto drop_and_free;
  
- 	list_for_each_entry(ue, &dwc->dw_zero_list, ue_node) {
-+		ret = ocfs2_assure_trans_credits(handle, credits);
-+		if (ret < 0) {
-+			mlog_errno(ret);
-+			break;
-+		}
- 		ret = ocfs2_mark_extent_written(inode, &et, handle,
- 						ue->ue_cpos, 1,
- 						ue->ue_phys,
---- a/fs/ocfs2/journal.c
-+++ b/fs/ocfs2/journal.c
-@@ -446,6 +446,23 @@ bail:
+-	inet_csk_reqsk_queue_hash_add(sk, req, DCCP_TIMEOUT_INIT);
+-	reqsk_put(req);
++	if (unlikely(!inet_csk_reqsk_queue_hash_add(sk, req, DCCP_TIMEOUT_INIT)))
++		reqsk_free(req);
++	else
++		reqsk_put(req);
++
+ 	return 0;
+ 
+ drop_and_free:
+diff --git a/net/dccp/ipv6.c b/net/dccp/ipv6.c
+index 6f5a556f4f6d7..683e4291b348a 100644
+--- a/net/dccp/ipv6.c
++++ b/net/dccp/ipv6.c
+@@ -398,8 +398,11 @@ static int dccp_v6_conn_request(struct sock *sk, struct sk_buff *skb)
+ 	if (dccp_v6_send_response(sk, req))
+ 		goto drop_and_free;
+ 
+-	inet_csk_reqsk_queue_hash_add(sk, req, DCCP_TIMEOUT_INIT);
+-	reqsk_put(req);
++	if (unlikely(!inet_csk_reqsk_queue_hash_add(sk, req, DCCP_TIMEOUT_INIT)))
++		reqsk_free(req);
++	else
++		reqsk_put(req);
++
+ 	return 0;
+ 
+ drop_and_free:
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index a018981b45142..8720f3840b698 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -1116,25 +1116,34 @@ static void reqsk_timer_handler(struct timer_list *t)
+ 	inet_csk_reqsk_queue_drop_and_put(oreq->rsk_listener, oreq);
  }
  
- /*
-+ * Make sure handle has at least 'nblocks' credits available. If it does not
-+ * have that many credits available, we will try to extend the handle to have
-+ * enough credits. If that fails, we will restart transaction to have enough
-+ * credits. Similar notes regarding data consistency and locking implications
-+ * as for ocfs2_extend_trans() apply here.
-+ */
-+int ocfs2_assure_trans_credits(handle_t *handle, int nblocks)
-+{
-+	int old_nblks = jbd2_handle_buffer_credits(handle);
+-static void reqsk_queue_hash_req(struct request_sock *req,
++static bool reqsk_queue_hash_req(struct request_sock *req,
+ 				 unsigned long timeout)
+ {
++	bool found_dup_sk = false;
 +
-+	trace_ocfs2_assure_trans_credits(old_nblks);
-+	if (old_nblks >= nblocks)
-+		return 0;
-+	return ocfs2_extend_trans(handle, nblocks - old_nblks);
-+}
++	if (!inet_ehash_insert(req_to_sk(req), NULL, &found_dup_sk))
++		return false;
 +
-+/*
-  * If we have fewer than thresh credits, extend by OCFS2_MAX_TRANS_DATA.
-  * If that fails, restart the transaction & regain write access for the
-  * buffer head which is used for metadata modifications.
---- a/fs/ocfs2/journal.h
-+++ b/fs/ocfs2/journal.h
-@@ -243,6 +243,8 @@ handle_t		    *ocfs2_start_trans(struct
- int			     ocfs2_commit_trans(struct ocfs2_super *osb,
- 						handle_t *handle);
- int			     ocfs2_extend_trans(handle_t *handle, int nblocks);
-+int			     ocfs2_assure_trans_credits(handle_t *handle,
-+						int nblocks);
- int			     ocfs2_allocate_extend_trans(handle_t *handle,
- 						int thresh);
++	/* The timer needs to be setup after a successful insertion. */
+ 	timer_setup(&req->rsk_timer, reqsk_timer_handler, TIMER_PINNED);
+ 	mod_timer(&req->rsk_timer, jiffies + timeout);
  
---- a/fs/ocfs2/ocfs2_trace.h
-+++ b/fs/ocfs2/ocfs2_trace.h
-@@ -2577,6 +2577,8 @@ DEFINE_OCFS2_ULL_UINT_EVENT(ocfs2_commit
+-	inet_ehash_insert(req_to_sk(req), NULL, NULL);
+ 	/* before letting lookups find us, make sure all req fields
+ 	 * are committed to memory and refcnt initialized.
+ 	 */
+ 	smp_wmb();
+ 	refcount_set(&req->rsk_refcnt, 2 + 1);
++	return true;
+ }
  
- DEFINE_OCFS2_INT_INT_EVENT(ocfs2_extend_trans);
- 
-+DEFINE_OCFS2_INT_EVENT(ocfs2_assure_trans_credits);
+-void inet_csk_reqsk_queue_hash_add(struct sock *sk, struct request_sock *req,
++bool inet_csk_reqsk_queue_hash_add(struct sock *sk, struct request_sock *req,
+ 				   unsigned long timeout)
+ {
+-	reqsk_queue_hash_req(req, timeout);
++	if (!reqsk_queue_hash_req(req, timeout))
++		return false;
 +
- DEFINE_OCFS2_INT_EVENT(ocfs2_extend_trans_restart);
+ 	inet_csk_reqsk_queue_added(sk);
++	return true;
+ }
+ EXPORT_SYMBOL_GPL(inet_csk_reqsk_queue_hash_add);
  
- DEFINE_OCFS2_INT_INT_EVENT(ocfs2_allocate_extend_trans);
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index abd6e95d2dca8..64707a5227f5a 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -7091,7 +7091,12 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
+ 		tcp_rsk(req)->tfo_listener = false;
+ 		if (!want_cookie) {
+ 			req->timeout = tcp_timeout_init((struct sock *)req);
+-			inet_csk_reqsk_queue_hash_add(sk, req, req->timeout);
++			if (unlikely(!inet_csk_reqsk_queue_hash_add(sk, req,
++								    req->timeout))) {
++				reqsk_free(req);
++				return 0;
++			}
++
+ 		}
+ 		af_ops->send_synack(sk, dst, &fl, req, &foc,
+ 				    !want_cookie ? TCP_SYNACK_NORMAL :
+-- 
+2.43.0
+
 
 
 
