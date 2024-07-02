@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21A099244FD
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:17:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 043EB9245A9
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:25:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC0101F2204F
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:17:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A814A1F22880
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211041BE222;
-	Tue,  2 Jul 2024 17:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F08D1BD51A;
+	Tue,  2 Jul 2024 17:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ezCvj2fU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKT7iTaB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B6539847;
-	Tue,  2 Jul 2024 17:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CF415218A;
+	Tue,  2 Jul 2024 17:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940616; cv=none; b=oozoRpSGyHlkkmwYkuY83PFcy94QAIete2R55k34NCGI0yjxzbfqr8PdgkZoMnNWNHz815zrzSFzs3eqX9/4OOuJSWe1GqT3/FTwn4K1JOnTAnzF+87iWKyErHq3G5UzULS5QjGNIEiH7c9V6/dEQRIeZhhBMTztNkOkFDHPi8E=
+	t=1719941119; cv=none; b=QjR5DJoNqNPtArSOM7vHJB9pOkpQWXzIA6vVB1r85FbyJUJ5JH1OmvtkQYa9XZdKco7r/jooFa1CreOMkBXdNvn4RMXP2epYIr0jApZqiyP0TvDTTsMF0g1sMpzvuZLjxOw+hJoz+4Hr0OKE5Z2f+94wu8dr1vsZrRppr6abvgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940616; c=relaxed/simple;
-	bh=tYOBszBEH59lATrRPTxZKsAkj0P+82MHBDpHt46tLa8=;
+	s=arc-20240116; t=1719941119; c=relaxed/simple;
+	bh=CuZlntJWmHl1LHvOAD3obo3UOVO4Tdf96RsCCWX3NJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cr79scfXku4ByfAWo8XCaI/AEvlWQi2OqcS5c30O+RbiRg4cVXs6uOyVzoHhdAHLeFSiddEH2qHmy5oxXos+1+jOJZGNOUGHC3G6fWY+gNZ2s4Cj1E8YrYKYgvvVrZBvVO5jObMm57U1bOetGFktrDPWJKd8jh/y/kzVbzqBspI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ezCvj2fU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8EDC116B1;
-	Tue,  2 Jul 2024 17:16:55 +0000 (UTC)
+	 MIME-Version; b=t1xiPHKksoiQsrHjbqY3qEoFicoYGAjRO/1fHI0BVzrU1tyW77C2uq2kGAM5Txl2D/XsmahsZpGpmPlZz6+vKElxfVtbnOuayRGu3Zlo/JtxvQkNa7EN5yI5mtdnbhntXbvEiPAqR+BLAdnxNdhq17hOxK1Af1pg2Mwqv9sC0fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKT7iTaB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB6FC116B1;
+	Tue,  2 Jul 2024 17:25:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940616;
-	bh=tYOBszBEH59lATrRPTxZKsAkj0P+82MHBDpHt46tLa8=;
+	s=korg; t=1719941119;
+	bh=CuZlntJWmHl1LHvOAD3obo3UOVO4Tdf96RsCCWX3NJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ezCvj2fUurBW0nfSqxmTUliTSarPPKXMXowwcULNxY7pk56KK1YIviz2Y+sWneg4e
-	 YA6zexztnNaVVY8BXjYtvREVtfhDoyS6C+fPQ5KRdi1B3CnCaq+anp2y6V9O0At7cT
-	 XH8NejV8MzdZpsrn7M19T08xVVbZzULhRqQiG+Tg=
+	b=LKT7iTaBg18RT+9KUIHRR95evbrR6ytV0nGkjxMBJl42mEe1JP9FA26+X31RCAyCn
+	 TsR1GEF2k4iND0sU6yRk+jezIBdl2xNIb6NRd9EMwAXToXy60Fjnoo3gpZhZJ3kou+
+	 uyAjPSrfywPub4BA/McRXBjHvnGu0k/jBwoNX/+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 208/222] arm64: dts: rockchip: Fix the value of `dlg,jack-det-rate` mismatch on rk3399-gru
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 132/163] btrfs: zoned: fix initial free space detection
 Date: Tue,  2 Jul 2024 19:04:06 +0200
-Message-ID: <20240702170251.937523462@linuxfoundation.org>
+Message-ID: <20240702170238.050105415@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit a500c0b4b589ae6fb79140c9d96bd5cd31393d41 ]
+commit b9fd2affe4aa99a4ca14ee87e1f38fea22ece52a upstream.
 
-According to Documentation/devicetree/bindings/sound/dialog,da7219.yaml,
-the value of `dlg,jack-det-rate` property should be "32_64" instead of
-"32ms_64ms".
+When creating a new block group, it calls btrfs_add_new_free_space() to add
+the entire block group range into the free space accounting.
+__btrfs_add_free_space_zoned() checks if size == block_group->length to
+detect the initial free space adding, and proceed that case properly.
 
-Fixes: dc0ff0fa3a9b ("ASoC: da7219: Add Jack insertion detection polarity")
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Link: https://lore.kernel.org/r/20240613-jack-rate-v2-2-ebc5f9f37931@chromium.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, if the zone_capacity == zone_size and the over-write speed is fast
+enough, the entire zone can be over-written within one transaction. That
+confuses __btrfs_add_free_space_zoned() to handle it as an initial free
+space accounting. As a result, that block group becomes a strange state: 0
+used bytes, 0 zone_unusable bytes, but alloc_offset == zone_capacity (no
+allocation anymore).
+
+The initial free space accounting can properly be checked by checking
+alloc_offset too.
+
+Fixes: 98173255bddd ("btrfs: zoned: calculate free space from zone capacity")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi | 2 +-
+ fs/btrfs/free-space-cache.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi
-index 789fd0dcc88ba..3cd63d1e8f15b 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi
-@@ -450,7 +450,7 @@ ap_i2c_audio: &i2c8 {
- 			dlg,btn-cfg = <50>;
- 			dlg,mic-det-thr = <500>;
- 			dlg,jack-ins-deb = <20>;
--			dlg,jack-det-rate = "32ms_64ms";
-+			dlg,jack-det-rate = "32_64";
- 			dlg,jack-rem-deb = <1>;
+--- a/fs/btrfs/free-space-cache.c
++++ b/fs/btrfs/free-space-cache.c
+@@ -2695,7 +2695,7 @@ static int __btrfs_add_free_space_zoned(
+ 	u64 offset = bytenr - block_group->start;
+ 	u64 to_free, to_unusable;
+ 	int bg_reclaim_threshold = 0;
+-	bool initial = (size == block_group->length);
++	bool initial = ((size == block_group->length) && (block_group->alloc_offset == 0));
+ 	u64 reclaimable_unusable;
  
- 			dlg,a-d-btn-thr = <0xa>;
--- 
-2.43.0
-
+ 	WARN_ON(!initial && offset + size > block_group->zone_capacity);
 
 
 
