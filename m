@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-56794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 605129245FE
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E9E9245AD
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:25:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 924AB1C24C37
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 970E01C20A3C
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B72D1BE842;
-	Tue,  2 Jul 2024 17:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0BF11BE85E;
+	Tue,  2 Jul 2024 17:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwwAhbLf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bvye00L1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5DB16B394;
-	Tue,  2 Jul 2024 17:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC491BE849;
+	Tue,  2 Jul 2024 17:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941383; cv=none; b=fOJ5rhV4v1IumC9WUSwefYhiByR5euTEEGHbudSFHYSiuk4oksyySPpZbxyiD6mNS0m0FY0OnDfvl8NrEBB8x7qBJRps8uy8PHH+4Juoebfbr+sH1zRVhu9jzeJt6Qt24qBG0OjHX53dfDS3RLW/8App5VcNfSzCqieuwNeMvzk=
+	t=1719941126; cv=none; b=hXftEgrzKnZQESNRmwuqp2XirG6XepCZQHZxI/Dy2BdsgYfm+bQ8jXor+yQrX1LY4OD8l96Nscg81R9gtJrR4MSxDRsTj75Lx7j2Hods9k2TC7qf5CUb+z+GeQqw2EAFgg/cDodSW0u0RQs3dx93BOO8J0I8C+cxYV6ZZ8zYg8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941383; c=relaxed/simple;
-	bh=OWDXNZv3j+4JyBTwCu3/J3EoSI+hHXJqHKjKxOQK1uI=;
+	s=arc-20240116; t=1719941126; c=relaxed/simple;
+	bh=ExNQWRmanlbj5E0NE7p8uQCKjpWVa4qMqgIcsMJZyHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TxovP3dvENBAhty+9vfmtDlqsXSAnQRA0/IoGPxBzvq/2ISpO8+OyKwTvTOI5jsxXvNEWsxF2xvG1CTUYY9itOIvB9jQUi7bjhqPxuBM+gIdcoUb4gY7zVcdseaHrN/YK/mjoJIB+oiRPGMdHUqnCY84WMvCH1w6Ds68U6NzDBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwwAhbLf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAC9C116B1;
-	Tue,  2 Jul 2024 17:29:42 +0000 (UTC)
+	 MIME-Version; b=iOIYc6T7zyBRcTHzjE1srWahJvd5cerLml2+4nK15JXiNDeiWHz+H+F2G/z9c31o/Of/FqdYJkYruY3L192tHCha5n7MG/dOX/FKWJ1rSzcov841Gm/9mC5m8zE0NJxHTA/V5lqoKO3UIbzKOnEbxlwR9hrYyjQWdjRwoz8ICXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bvye00L1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDD4C4AF0D;
+	Tue,  2 Jul 2024 17:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941383;
-	bh=OWDXNZv3j+4JyBTwCu3/J3EoSI+hHXJqHKjKxOQK1uI=;
+	s=korg; t=1719941126;
+	bh=ExNQWRmanlbj5E0NE7p8uQCKjpWVa4qMqgIcsMJZyHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rwwAhbLf+EnZCD2c+XERMBmmyO7DB6NLoCQSZdNnPn3dVue4/yYpYY+vs/OxACRzW
-	 ZoLzh9H6OhgxkM6AlQ/E6TsUC7NGjxwzxXqSyqXHKal+2e3Or397oOrJG6T57JVe3K
-	 OWJ81aMlPpE/z9I5eZKpMOUCvDlrQoGUagBxljaw=
+	b=Bvye00L1thstWp85p58lnTmSF0P/YQVDyFvGSpTqixHh4Y5oaRqCo+QaYmb3UOyTW
+	 alN1d5ACCxoUlRoUBCsFcAcNzrGppMcmMuHoF9ppn1Sb6mVY8sQbM+xx4jKYNaitao
+	 dYYZXthdNs8qyS4fRXY1KVLjzM6+nQd9dashXDqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dawei Li <dawei.li@shingroup.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/128] net/dpaa2: Avoid explicit cpumask var allocation on stack
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 6.6 134/163] hexagon: fix fadvise64_64 calling conventions
 Date: Tue,  2 Jul 2024 19:04:08 +0200
-Message-ID: <20240702170228.014714952@linuxfoundation.org>
+Message-ID: <20240702170238.125752421@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +60,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dawei Li <dawei.li@shingroup.cn>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit d33fe1714a44ff540629b149d8fab4ac6967585c ]
+commit 896842284c6ccba25ec9d78b7b6e62cdd507c083 upstream.
 
-For CONFIG_CPUMASK_OFFSTACK=y kernel, explicit allocation of cpumask
-variable on stack is not recommended since it can cause potential stack
-overflow.
+fadvise64_64() has two 64-bit arguments at the wrong alignment
+for hexagon, which turns them into a 7-argument syscall that is
+not supported by Linux.
 
-Instead, kernel code should always use *cpumask_var API(s) to allocate
-cpumask var in config-neutral way, leaving allocation strategy to
-CONFIG_CPUMASK_OFFSTACK.
+The downstream musl port for hexagon actually asks for a 6-argument
+version the same way we do it on arm, csky, powerpc, so make the
+kernel do it the same way to avoid having to change both.
 
-Use *cpumask_var API(s) to address it.
-
-Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
-Link: https://lore.kernel.org/r/20240331053441.1276826-3-dawei.li@shingroup.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://github.com/quic/musl/blob/hexagon/arch/hexagon/syscall_arch.h#L78
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ arch/hexagon/include/asm/syscalls.h |    6 ++++++
+ arch/hexagon/kernel/syscalltab.c    |    7 +++++++
+ 2 files changed, 13 insertions(+)
+ create mode 100644 arch/hexagon/include/asm/syscalls.h
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-index de62eee58a00e..bbbe7c5b5d35a 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-@@ -2754,11 +2754,14 @@ static int dpaa2_eth_xdp_xmit(struct net_device *net_dev, int n,
- static int update_xps(struct dpaa2_eth_priv *priv)
- {
- 	struct net_device *net_dev = priv->net_dev;
--	struct cpumask xps_mask;
--	struct dpaa2_eth_fq *fq;
- 	int i, num_queues, netdev_queues;
-+	struct dpaa2_eth_fq *fq;
-+	cpumask_var_t xps_mask;
- 	int err = 0;
- 
-+	if (!alloc_cpumask_var(&xps_mask, GFP_KERNEL))
-+		return -ENOMEM;
+--- /dev/null
++++ b/arch/hexagon/include/asm/syscalls.h
+@@ -0,0 +1,6 @@
++/* SPDX-License-Identifier: GPL-2.0 */
 +
- 	num_queues = dpaa2_eth_queue_count(priv);
- 	netdev_queues = (net_dev->num_tc ? : 1) * num_queues;
++#include <asm-generic/syscalls.h>
++
++asmlinkage long sys_hexagon_fadvise64_64(int fd, int advice,
++	                                  u32 a2, u32 a3, u32 a4, u32 a5);
+--- a/arch/hexagon/kernel/syscalltab.c
++++ b/arch/hexagon/kernel/syscalltab.c
+@@ -14,6 +14,13 @@
+ #undef __SYSCALL
+ #define __SYSCALL(nr, call) [nr] = (call),
  
-@@ -2768,16 +2771,17 @@ static int update_xps(struct dpaa2_eth_priv *priv)
- 	for (i = 0; i < netdev_queues; i++) {
- 		fq = &priv->fq[i % num_queues];
- 
--		cpumask_clear(&xps_mask);
--		cpumask_set_cpu(fq->target_cpu, &xps_mask);
-+		cpumask_clear(xps_mask);
-+		cpumask_set_cpu(fq->target_cpu, xps_mask);
- 
--		err = netif_set_xps_queue(net_dev, &xps_mask, i);
-+		err = netif_set_xps_queue(net_dev, xps_mask, i);
- 		if (err) {
- 			netdev_warn_once(net_dev, "Error setting XPS queue\n");
- 			break;
- 		}
- 	}
- 
-+	free_cpumask_var(xps_mask);
- 	return err;
- }
- 
--- 
-2.43.0
-
++SYSCALL_DEFINE6(hexagon_fadvise64_64, int, fd, int, advice,
++		SC_ARG64(offset), SC_ARG64(len))
++{
++	return ksys_fadvise64_64(fd, SC_VAL64(loff_t, offset), SC_VAL64(loff_t, len), advice);
++}
++#define sys_fadvise64_64 sys_hexagon_fadvise64_64
++
+ void *sys_call_table[__NR_syscalls] = {
+ #include <asm/unistd.h>
+ };
 
 
 
