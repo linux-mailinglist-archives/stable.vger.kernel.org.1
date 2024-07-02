@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-56826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7658924621
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:31:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CDBC924623
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:31:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8D241C218D8
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:31:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEDE51C21E50
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546511BE235;
-	Tue,  2 Jul 2024 17:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD091BD50C;
+	Tue,  2 Jul 2024 17:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KFHDOG93"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a7Ss2aPt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1334A1BC06B;
-	Tue,  2 Jul 2024 17:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2E71BC06B;
+	Tue,  2 Jul 2024 17:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941491; cv=none; b=AvFDbZ6+VC03rURf0P/P4MEXLbQ5DO1uMquMdbgPXx2dzttSoUKw9DEU7rD56p6UgOIgBhVtILS9/3mvXBX6CYIgKGWG94VpbDHE6QpRV1XfjuH92I9I38VcFlIyODRbLPDDMlBdw4i4nW3PUe4DL/xsjeBS3fh1et/Rny5x+44=
+	t=1719941497; cv=none; b=INKi71ywArKNvDxOsTSZ7iUDHWF5/xLWspUuRaAhJMPkDtz99nDY0c48qiQepzC/MmLn7f0bhW0YYaUE4ipx854p4YubzwPG3kzZc2YNnA6D3dKCT8pG1jjzkA+jdYRhnsqjnzzD+nlpiyh4mi9CKmMw13o79BOt0RhB+JF3iVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941491; c=relaxed/simple;
-	bh=pLalbS28e7KBFMAhFBGfML4dCwehA5hc+I9sZGxQj4A=;
+	s=arc-20240116; t=1719941497; c=relaxed/simple;
+	bh=xtwueXOvediKGoQjDZitdYqIO4dmIslZ/DI7tihkofA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YAU+xD6qAefq3mZ1b4Sg336BRHvzw/VO04uYqZtDXErVTgxUn+DucZ0DjTXFTfyaUTueIQBrDoaXasxFM1PLDN+iP/cP6tVa806scyesq35geCp0MMIxlIGWA2iNJ64H/7vQXk/B9us31/8S7lANTCBrwImkkoiXigKvVU4Zxh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KFHDOG93; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23176C4AF0E;
-	Tue,  2 Jul 2024 17:31:29 +0000 (UTC)
+	 MIME-Version; b=epRcGqDHBs8tdCybxVe+E0OUQWOfo2l4Y2M/9PGvUXcJRlDm3e1qu5nqdNE8J2rhb42pomeqxG1jVbuujO111XniK8j27FdSXQSmVsGG8jr/+S8QO5nx9pDCYN6EiQj2SjhL+GiajDuOidSLVvqyHzsvRLqJ+oENgTlRgkDDZdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a7Ss2aPt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F8EC116B1;
+	Tue,  2 Jul 2024 17:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941490;
-	bh=pLalbS28e7KBFMAhFBGfML4dCwehA5hc+I9sZGxQj4A=;
+	s=korg; t=1719941497;
+	bh=xtwueXOvediKGoQjDZitdYqIO4dmIslZ/DI7tihkofA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KFHDOG93ufgBJz1+1E4qw2pLvDQnqfXVT7BKfZa5nJ9wdzqUnTJN+iN2I963i47hP
-	 +pF6kEHoTKaWeV5EN+DfhOs3NG3tQ4f2i5wNc1KAW6M8qM1e0WkuVzyy3NaY6JQn+Q
-	 S9qg5UHcwVPCfoaom8fjVQDGZvUS0rLjJyl/H0vM=
+	b=a7Ss2aPtrB7dZmHr51htdchVMZKrwVEFthOdj0PnEbbovQBo6e80DADJDcunLVN3r
+	 EMVzFnBoJDDY+uaW4zfK2eJL/viqenxeKQ/4o+cBu+jWaiJFFkL3ugsP8lrIo5q2fV
+	 EuFisDkzbtjPFs+4RklcVDn8sPXvRjZx5srqfVLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Vasileios Amoiridis <vassilisamir@gmail.com>,
 	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 080/128] iio: chemical: bme680: Fix overflows in compensate() functions
-Date: Tue,  2 Jul 2024 19:04:41 +0200
-Message-ID: <20240702170229.252755493@linuxfoundation.org>
+Subject: [PATCH 6.1 081/128] iio: chemical: bme680: Fix sensor data read operation
+Date: Tue,  2 Jul 2024 19:04:42 +0200
+Message-ID: <20240702170229.289333543@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
 References: <20240702170226.231899085@linuxfoundation.org>
@@ -68,71 +68,137 @@ Content-Transfer-Encoding: 8bit
 
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-commit fdd478c3ae98c3f13628e110dce9b6cfb0d9b3c8 upstream.
+commit 4241665e6ea063a9c1d734de790121a71db763fc upstream.
 
-There are cases in the compensate functions of the driver that
-there could be overflows of variables due to bit shifting ops.
-These implications were initially discussed here [1] and they
-were mentioned in log message of Commit 1b3bd8592780 ("iio:
-chemical: Add support for Bosch BME680 sensor").
+A read operation is happening as follows:
 
-[1]: https://lore.kernel.org/linux-iio/20180728114028.3c1bbe81@archlinux/
+a) Set sensor to forced mode
+b) Sensor measures values and update data registers and sleeps again
+c) Read data registers
+
+In the current implementation the read operation happens immediately
+after the sensor is set to forced mode so the sensor does not have
+the time to update properly the registers. This leads to the following
+2 problems:
+
+1) The first ever value which is read by the register is always wrong
+2) Every read operation, puts the register into forced mode and reads
+the data that were calculated in the previous conversion.
+
+This behaviour was tested in 2 ways:
+
+1) The internal meas_status_0 register was read before and after every
+read operation in order to verify that the data were ready even before
+the register was set to forced mode and also to check that after the
+forced mode was set the new data were not yet ready.
+
+2) Physically changing the temperature and measuring the temperature
+
+This commit adds the waiting time in between the set of the forced mode
+and the read of the data. The function is taken from the Bosch BME68x
+Sensor API [1].
+
+[1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L490
 
 Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
 Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Link: https://lore.kernel.org/r/20240606212313.207550-4-vassilisamir@gmail.com
+Link: https://lore.kernel.org/r/20240606212313.207550-5-vassilisamir@gmail.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/chemical/bme680_core.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/iio/chemical/bme680.h      |    2 +
+ drivers/iio/chemical/bme680_core.c |   46 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 48 insertions(+)
 
+--- a/drivers/iio/chemical/bme680.h
++++ b/drivers/iio/chemical/bme680.h
+@@ -54,7 +54,9 @@
+ #define   BME680_NB_CONV_MASK			GENMASK(3, 0)
+ 
+ #define BME680_REG_MEAS_STAT_0			0x1D
++#define   BME680_NEW_DATA_BIT			BIT(7)
+ #define   BME680_GAS_MEAS_BIT			BIT(6)
++#define   BME680_MEAS_BIT			BIT(5)
+ 
+ /* Calibration Parameters */
+ #define BME680_T2_LSB_REG	0x8A
 --- a/drivers/iio/chemical/bme680_core.c
 +++ b/drivers/iio/chemical/bme680_core.c
-@@ -342,10 +342,10 @@ static s16 bme680_compensate_temp(struct
- 	if (!calib->par_t2)
- 		bme680_read_calib(data, calib);
- 
--	var1 = (adc_temp >> 3) - (calib->par_t1 << 1);
-+	var1 = (adc_temp >> 3) - ((s32)calib->par_t1 << 1);
- 	var2 = (var1 * calib->par_t2) >> 11;
- 	var3 = ((var1 >> 1) * (var1 >> 1)) >> 12;
--	var3 = (var3 * (calib->par_t3 << 4)) >> 14;
-+	var3 = (var3 * ((s32)calib->par_t3 << 4)) >> 14;
- 	data->t_fine = var2 + var3;
- 	calc_temp = (data->t_fine * 5 + 128) >> 8;
- 
-@@ -368,9 +368,9 @@ static u32 bme680_compensate_press(struc
- 	var1 = (data->t_fine >> 1) - 64000;
- 	var2 = ((((var1 >> 2) * (var1 >> 2)) >> 11) * calib->par_p6) >> 2;
- 	var2 = var2 + (var1 * calib->par_p5 << 1);
--	var2 = (var2 >> 2) + (calib->par_p4 << 16);
-+	var2 = (var2 >> 2) + ((s32)calib->par_p4 << 16);
- 	var1 = (((((var1 >> 2) * (var1 >> 2)) >> 13) *
--			(calib->par_p3 << 5)) >> 3) +
-+			((s32)calib->par_p3 << 5)) >> 3) +
- 			((calib->par_p2 * var1) >> 1);
- 	var1 = var1 >> 18;
- 	var1 = ((32768 + var1) * calib->par_p1) >> 15;
-@@ -388,7 +388,7 @@ static u32 bme680_compensate_press(struc
- 	var3 = ((press_comp >> 8) * (press_comp >> 8) *
- 			(press_comp >> 8) * calib->par_p10) >> 17;
- 
--	press_comp += (var1 + var2 + var3 + (calib->par_p7 << 7)) >> 4;
-+	press_comp += (var1 + var2 + var3 + ((s32)calib->par_p7 << 7)) >> 4;
- 
- 	return press_comp;
+@@ -10,6 +10,7 @@
+  */
+ #include <linux/acpi.h>
+ #include <linux/bitfield.h>
++#include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/module.h>
+ #include <linux/log2.h>
+@@ -532,6 +533,43 @@ static u8 bme680_oversampling_to_reg(u8
+ 	return ilog2(val) + 1;
  }
-@@ -414,7 +414,7 @@ static u32 bme680_compensate_humid(struc
- 		 (((temp_scaled * ((temp_scaled * calib->par_h5) / 100))
- 		   >> 6) / 100) + (1 << 14))) >> 10;
- 	var3 = var1 * var2;
--	var4 = calib->par_h6 << 7;
-+	var4 = (s32)calib->par_h6 << 7;
- 	var4 = (var4 + ((temp_scaled * calib->par_h7) / 100)) >> 4;
- 	var5 = ((var3 >> 14) * (var3 >> 14)) >> 10;
- 	var6 = (var4 * var5) >> 1;
+ 
++/*
++ * Taken from Bosch BME680 API:
++ * https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L490
++ */
++static int bme680_wait_for_eoc(struct bme680_data *data)
++{
++	struct device *dev = regmap_get_device(data->regmap);
++	unsigned int check;
++	int ret;
++	/*
++	 * (Sum of oversampling ratios * time per oversampling) +
++	 * TPH measurement + gas measurement + wait transition from forced mode
++	 * + heater duration
++	 */
++	int wait_eoc_us = ((data->oversampling_temp + data->oversampling_press +
++			   data->oversampling_humid) * 1936) + (477 * 4) +
++			   (477 * 5) + 1000 + (data->heater_dur * 1000);
++
++	usleep_range(wait_eoc_us, wait_eoc_us + 100);
++
++	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &check);
++	if (ret) {
++		dev_err(dev, "failed to read measurement status register.\n");
++		return ret;
++	}
++	if (check & BME680_MEAS_BIT) {
++		dev_err(dev, "Device measurement cycle incomplete.\n");
++		return -EBUSY;
++	}
++	if (!(check & BME680_NEW_DATA_BIT)) {
++		dev_err(dev, "No new data available from the device.\n");
++		return -ENODATA;
++	}
++
++	return 0;
++}
++
+ static int bme680_chip_config(struct bme680_data *data)
+ {
+ 	struct device *dev = regmap_get_device(data->regmap);
+@@ -622,6 +660,10 @@ static int bme680_read_temp(struct bme68
+ 	if (ret < 0)
+ 		return ret;
+ 
++	ret = bme680_wait_for_eoc(data);
++	if (ret)
++		return ret;
++
+ 	ret = regmap_bulk_read(data->regmap, BME680_REG_TEMP_MSB,
+ 			       &tmp, 3);
+ 	if (ret < 0) {
+@@ -738,6 +780,10 @@ static int bme680_read_gas(struct bme680
+ 	if (ret < 0)
+ 		return ret;
+ 
++	ret = bme680_wait_for_eoc(data);
++	if (ret)
++		return ret;
++
+ 	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &check);
+ 	if (check & BME680_GAS_MEAS_BIT) {
+ 		dev_err(dev, "gas measurement incomplete\n");
 
 
 
