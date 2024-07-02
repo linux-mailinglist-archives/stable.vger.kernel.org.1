@@ -1,52 +1,91 @@
-Return-Path: <stable+bounces-56338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CEB923AEB
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 11:58:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B32923B90
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 12:36:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B21B91F24403
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 09:58:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EA6728561B
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 10:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548E7158DC0;
-	Tue,  2 Jul 2024 09:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3E6158A3D;
+	Tue,  2 Jul 2024 10:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+WrJ0Vc"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="LMU8yjF3";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qC9IOtM6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout7-smtp.messagingengine.com (fout7-smtp.messagingengine.com [103.168.172.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1335D156F5D
-	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 09:56:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3037F158A17
+	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 10:35:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719914205; cv=none; b=FYERSE5cJTboJ47kF7l334Rg1S0JdrY/KB6twVtvuBeHs1ipy/VIsQEr0rosE5KQhJajvtdMVihdYYU5ZtQwqx9wv425dh5whSsr8WZFJIYZp7s3ag/EcixTqyNaKnWexp6LTmby1CgrujPAgWFXMA8yvyv3t/Y7Xsilb6GcaIg=
+	t=1719916559; cv=none; b=XLLnK5toguGnJYPJcbqGUpIQv2updEklhn1jhaS/G9re5T3V83y18itle2xjzuP6wLIN4uzvzKaiO60H9fzae/LNKZAd6FTKScA0WVd2sogHPOlkAxdYMxIQoolZ0WuXffep0VKrouZtyvLl2rOha8Xvt8Wvh5E3QaWZzE5maLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719914205; c=relaxed/simple;
-	bh=RvXygVoyCYG11d6tmyOOXt+UMY0FLIqUPlJkvbsgXpw=;
+	s=arc-20240116; t=1719916559; c=relaxed/simple;
+	bh=c3u6YuTYU/BMSsGdp3v01wj142ezhZzArVPd5/1SH+0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I9YwOINdyO2yQXqL0uPHHmJeWgi22j/Zr6DuhUY8Q7iHCG08sdAsDVc7GG6CtHCeLDiTnyu+jUqcZNGlIQT8nt40C41Ca927bz5A357eOD4LlYGm1ULP8ozPRjVB47shUJNUyUqC9pgNlOPr85EWZWVjHiGbTLYEGQ0/brKyljI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+WrJ0Vc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485FBC116B1;
-	Tue,  2 Jul 2024 09:56:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719914204;
-	bh=RvXygVoyCYG11d6tmyOOXt+UMY0FLIqUPlJkvbsgXpw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n+WrJ0VcAiiZNuhGGItd1lugWXfYdLdk8sjkzo34ijLCO3VhY1oKrbdh5mYB5kJAF
-	 jCRA5mgsycnk3799AsX1cSFj5It0ZmgfZ/NxNO1hJ6PY8NTv/V6+ATWZ/6VS6Esbu9
-	 gnXx51qkhSv0g2X8t8ZJzAP11C/ZhH9HgfeQm5ec=
-Date: Tue, 2 Jul 2024 11:56:35 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Ashish.Kalra@amd.com, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] efi/x86: Free EFI memory map only when
- installing a new one." failed to apply to 6.1-stable tree
-Message-ID: <2024070229-molasses-jolly-6230@gregkh>
-References: <2024062442-bonfire-detonator-1b17@gregkh>
- <CAMj1kXF5dosTmitMvCiYCb8Xo=+a23zrUd1F7cyWfpMFba0SXg@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=DBHEE15sJZ2rvaKUadQ622rS5PsP2c/FdODe694/ECKQz0dA2Ai5yhH+IEWs0dV5x9BKwmIRY/Eb+egTpan/Nja85bamIg+nHMnBHsd05moolPIvx1vlEOgbNvBjjze2kt4ag0sFEis/BxfozlFO4UH42VQ3ki4/bmy7eb4kv8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=LMU8yjF3; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qC9IOtM6; arc=none smtp.client-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 4005D1380487;
+	Tue,  2 Jul 2024 06:35:56 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Tue, 02 Jul 2024 06:35:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1719916556; x=1720002956; bh=duCbWC7XJ3
+	4XZdZF3NzsQNdk8ujDcqaKzSQD9UJw9+U=; b=LMU8yjF3K0q2Pv8RtdBBF3KAWH
+	4jmqOyq9R7z0jMFkWOpJt6teOK07XmAK8SnRyM2P2Nxie0Y8QlAGkLJzEYBT4nNk
+	bSEq8VrzdhhZgGYJbPEBJdx6oL2qcPna0o2B1pCRXhhbp8NQWtMM5Tyw/WGxetyE
+	ke003Nu5kXXBpLR5iYxEyrF62NIZ7Jog8zswN4SR1UdCXwlARfpVuSp3wPPJSuFd
+	XbG/YoE14wsZeh2RCCKFW04MYAjS37ENdOsyR2IOSU6C1jPQYnxKWnwBVnNHvLLj
+	Raz4Sx4YoF3I9xB4A89Wi8sZFHMBXYTXm678rMyx1sNqw2GrxZiKUSnF7Xag==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1719916556; x=1720002956; bh=duCbWC7XJ34XZdZF3NzsQNdk8ujD
+	cqaKzSQD9UJw9+U=; b=qC9IOtM6kJYoVuEbjZL/M3OgUxA9LInxVTL7h8jp8vTy
+	J6yvy9+QqFubsReJtGEl5FzJIzhqFJuxlGgHcDRh62ba2w3zjw+PbTaZ9dAGsFAS
+	vdtVVxj+rzXbKbEx30nNKg7pF+mBylH2REiOR/LzTveFPMkaCJ2ROI18MqWEcXiq
+	lOmh+AsWWgok875kCaHMbONuM52EUqve0r+i/sF7kdmLgV2rVUBSA6AxZn3ZIVF5
+	zt7CfzLekF7VfEwZKMs8ppTR6eT39kPHipK6SwRi4oqmpWCn1mAbg47WwSvAVXvz
+	ItvoGBMGfB7nE7Ab7HhHSffHvDaFDrGIGBKJ7G190w==
+X-ME-Sender: <xms:C9iDZolfwsHpAF5EmaFaTrxlMPTpfzTyD0VKWTe_NWpEDN57FziTmQ>
+    <xme:C9iDZn3f2UkvPqh7QtfnyThQ2ascVn5lrkyfoPcczNtwf-DUdgYtLMAYr4ztvCCES
+    jjx-BKZ_EnJ-g>
+X-ME-Received: <xmr:C9iDZmrOKpUocrpSrN6MlPt_niQtm_5JoJ1uHQ7PShpNMQP-qRD-Jz5tZDeI6q6L3YRKdBwUmy-kBY4ttgrDsdDEaCE7m6U6hKdBKg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudehgddvjecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkfhggtggujgesthdtre
+    dttddtvdenucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheq
+    necuggftrfgrthhtvghrnhepheegvdevvdeljeeugfdtudduhfekledtiefhveejkeejue
+    fhtdeufefhgfehkeetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghi
+    lhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+X-ME-Proxy: <xmx:C9iDZkmLSHPdOsjkKJGr2EtqraG-oFOtlfx8ORx74gsXGB1h1_HP5Q>
+    <xmx:C9iDZm2oljTzCC6B0477vwuY-N1mecxEDgO90cgkLn29QT9IprjMgQ>
+    <xmx:C9iDZrtA2gozOIL_Hp9FXA_dkzMDg3y0WFo3QU3-HXmaZJtjf7TVTw>
+    <xmx:C9iDZiUjF_7h8GbS9Pdevwx-L5JDDJwl9dKmBpXzgGIvOQ24gPSQlg>
+    <xmx:DNiDZpQRGoRWxX3VTn3KQ_n2q0apa9gtYvQdsWHrGM547M6h4noGgG9r>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 2 Jul 2024 06:35:54 -0400 (EDT)
+Date: Tue, 2 Jul 2024 12:35:37 +0200
+From: Greg KH <greg@kroah.com>
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH 5.10.y 1/5] drivers: fix typo in firmware/efi/memmap.c
+Message-ID: <2024070232-virtuous-uproar-21a7@gregkh>
+References: <2024062455-glazing-flask-cf0c@gregkh>
+ <20240629151357.866803-6-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,38 +94,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXF5dosTmitMvCiYCb8Xo=+a23zrUd1F7cyWfpMFba0SXg@mail.gmail.com>
+In-Reply-To: <20240629151357.866803-6-ardb+git@google.com>
 
-On Sat, Jun 29, 2024 at 04:50:50PM +0200, Ard Biesheuvel wrote:
-> On Mon, 24 Jun 2024 at 18:41, <gregkh@linuxfoundation.org> wrote:
-> >
-> >
-> > The patch below does not apply to the 6.1-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> >
-> > To reproduce the conflict and resubmit, you may use the following commands:
-> >
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x 75dde792d6f6c2d0af50278bd374bf0c512fe196
-> > # <resolve conflicts, build, test, etc.>
-> > git commit -s
-> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024062442-bonfire-detonator-1b17@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-> >
-> > Possible dependencies:
-> >
-> > 75dde792d6f6 ("efi/x86: Free EFI memory map only when installing a new one.")
-> > d85e3e349407 ("efi: xen: Set EFI_PARAVIRT for Xen dom0 boot on all architectures")
-> > fdc6d38d64a2 ("efi: memmap: Move manipulation routines into x86 arch tree")
-> >
+On Sat, Jun 29, 2024 at 05:13:58PM +0200, Ard Biesheuvel wrote:
+> From: Zheng Zhi Yuan <kevinjone25@g.ncu.edu.tw>
 > 
-> Please apply these dependencies (in reverse order) as stable
-> prerequisites. I build and boot tested the result, and it works as
-> expected.
+> [ Commit 1df4d1724baafa55e9803414ebcdf1ca702bc958 upstream ]
+> 
+> This patch fixes the spelling error in firmware/efi/memmap.c, changing
+> it to the correct word.
+> 
+> Signed-off-by: Zheng Zhi Yuan <kevinjone25@g.ncu.edu.tw>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  drivers/firmware/efi/memmap.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/firmware/efi/memmap.c b/drivers/firmware/efi/memmap.c
+> index 2ff1883dc788..b4070b5e4c45 100644
+> --- a/drivers/firmware/efi/memmap.c
+> +++ b/drivers/firmware/efi/memmap.c
+> @@ -245,7 +245,7 @@ int __init efi_memmap_install(struct efi_memory_map_data *data)
+>   * @range: Address range (start, end) to split around
+>   *
+>   * Returns the number of additional EFI memmap entries required to
+> - * accomodate @range.
+> + * accommodate @range.
+>   */
+>  int __init efi_memmap_split_count(efi_memory_desc_t *md, struct range *range)
+>  {
+> -- 
+> 2.45.2.803.g4e1b14247a-goog
+> 
+> 
 
-That worked, thanks!
+All now queued up, thanks.
 
 greg k-h
 
