@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-56698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1C2924596
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:24:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF099245FD
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14D661F22B5E
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:24:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFF19B279C5
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901E51BE222;
-	Tue,  2 Jul 2024 17:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6AF1BE842;
+	Tue,  2 Jul 2024 17:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tunPFUOP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgjZWAua"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E12315218A;
-	Tue,  2 Jul 2024 17:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB171514DC;
+	Tue,  2 Jul 2024 17:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941058; cv=none; b=Gh/YZrNY4r7xDB6l9dza+y3W7bpAY0BvyQZhRx+4gk0pQNh8+dXskNipK3WNI1/VcZ6fyNMrxOGhAq5lmszsVNIuixVxaoEYoujLKU0DQMVrYmxJb7B52bL6PN2KGmLm99w3Irpc9y0PMDWan3fFC1qCqOStTdYXHBrfdctBmXs=
+	t=1719941379; cv=none; b=bmvQGZt8jPD2ZZGxwcWpVssfQ19fIN6yLZCklTnDQoZpnmtNlDJKY78Co223CW8U56j4j7gkO+/kiS8LCcCbIIItlg/Rd+MLMaI1A0q1uoaTVzQVoM3+xjkUUIIk6nuoXbjWotc//WRlD+p0Qqnm0zxSNSqjxlKfayYndtUkcUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941058; c=relaxed/simple;
-	bh=tBDlXoEI8Yx1Y7gI8pAupH1O9nN3v7Ev15AJLofoLGc=;
+	s=arc-20240116; t=1719941379; c=relaxed/simple;
+	bh=rPtveOKM5fgvPTVBOV/jO/E6OwqzcjsfotN1jFfNF/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sm9Om7GoT6icWwmQAGxOjwHjxxv7H+Wm6xH/TgkQX8XneX+QEkFFnzCkt3T6O/qbS8dyWybt6uVx2u543DMKWB+oou79+E5vI8jrxIqsA1vKSoS1KJCQXR2hMs1m+mA/BBpmvqKZx+dpOEE+5O/uDg3U8iWE9O2r9dR5UgYfFu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tunPFUOP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF2CC116B1;
-	Tue,  2 Jul 2024 17:24:17 +0000 (UTC)
+	 MIME-Version; b=KWxSsjYLiBhAZFu7/KWrFd0RpfCzxczZZB7NaRBXuQSdTT/DrUcG12jXU6GorWSIQMuHVKgGq7xvimmm55VHHz7Icl2vcqerWd19VpdygAeIqp13kU+OMofmOTT56qQ5J/NUJCO8LQHrUChiQBH21ZZvV6AjVWbQoMJUI/yBkMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fgjZWAua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F110C116B1;
+	Tue,  2 Jul 2024 17:29:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941058;
-	bh=tBDlXoEI8Yx1Y7gI8pAupH1O9nN3v7Ev15AJLofoLGc=;
+	s=korg; t=1719941379;
+	bh=rPtveOKM5fgvPTVBOV/jO/E6OwqzcjsfotN1jFfNF/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tunPFUOPSy3SMLV1VY2pj7sD/vtsid/oYZrcQ9IWzxVo0OH+vGYJ/aDAJavEqjcsC
-	 T1kTqtqXhwzrykZ+X2EUi9ZqecjZQttrxU872av1JkecWIMLNlNCazGFVEqsmgL6uW
-	 +p8wFEAEMXoQHWgxYio4m/jB8f0HGBg0uAgvSAu4=
+	b=fgjZWAuaipc0TBiZaTXqZIC1j9tM15A5c8SRbRj/nti+hYGOfyLPEiWxeeiZDFwSi
+	 ZXAxKDc1SGojhjinVvLTKOM+zUuDqhaMfCTG/R69ymJQ5/vZ6/PiViMEu587K213qm
+	 WkAR9oCDjJMyVekctGet2Bq7V+5skjdeOkgCj794=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Udit Kumar <u-kumar1@ti.com>
-Subject: [PATCH 6.6 116/163] serial: 8250_omap: Implementation of Errata i2310
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 029/128] sparc: fix old compat_sys_select()
 Date: Tue,  2 Jul 2024 19:03:50 +0200
-Message-ID: <20240702170237.446836585@linuxfoundation.org>
+Message-ID: <20240702170227.336824012@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,72 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Udit Kumar <u-kumar1@ti.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 9d141c1e615795eeb93cd35501ad144ee997a826 upstream.
+[ Upstream commit bae6428a9fffb2023191b0723e276cf1377a7c9f ]
 
-As per Errata i2310[0], Erroneous timeout can be triggered,
-if this Erroneous interrupt is not cleared then it may leads
-to storm of interrupts, therefore apply Errata i2310 solution.
+sparc has two identical select syscalls at numbers 93 and 230, respectively.
+During the conversion to the modern syscall.tbl format, the older one of the
+two broke in compat mode, and now refers to the native 64-bit syscall.
 
-[0] https://www.ti.com/lit/pdf/sprz536 page 23
+Restore the correct behavior. This has very little effect, as glibc has
+been using the newer number anyway.
 
-Fixes: b67e830d38fa ("serial: 8250: 8250_omap: Fix possible interrupt storm on K3 SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Udit Kumar <u-kumar1@ti.com>
-Link: https://lore.kernel.org/r/20240619105903.165434-1-u-kumar1@ti.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6ff645dd683a ("sparc: add system call table generation support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_omap.c |   25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ arch/sparc/kernel/syscalls/syscall.tbl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -165,6 +165,10 @@ static u32 uart_read(struct omap8250_pri
- 	return readl(priv->membase + (reg << OMAP_UART_REGSHIFT));
- }
- 
-+/* Timeout low and High */
-+#define UART_OMAP_TO_L                 0x26
-+#define UART_OMAP_TO_H                 0x27
-+
- /*
-  * Called on runtime PM resume path from omap8250_restore_regs(), and
-  * omap8250_set_mctrl().
-@@ -646,13 +650,24 @@ static irqreturn_t omap8250_irq(int irq,
- 
- 	/*
- 	 * On K3 SoCs, it is observed that RX TIMEOUT is signalled after
--	 * FIFO has been drained, in which case a dummy read of RX FIFO
--	 * is required to clear RX TIMEOUT condition.
-+	 * FIFO has been drained or erroneously.
-+	 * So apply solution of Errata i2310 as mentioned in
-+	 * https://www.ti.com/lit/pdf/sprz536
- 	 */
- 	if (priv->habit & UART_RX_TIMEOUT_QUIRK &&
--	    (iir & UART_IIR_RX_TIMEOUT) == UART_IIR_RX_TIMEOUT &&
--	    serial_port_in(port, UART_OMAP_RX_LVL) == 0) {
--		serial_port_in(port, UART_RX);
-+		(iir & UART_IIR_RX_TIMEOUT) == UART_IIR_RX_TIMEOUT) {
-+		unsigned char efr2, timeout_h, timeout_l;
-+
-+		efr2 = serial_in(up, UART_OMAP_EFR2);
-+		timeout_h = serial_in(up, UART_OMAP_TO_H);
-+		timeout_l = serial_in(up, UART_OMAP_TO_L);
-+		serial_out(up, UART_OMAP_TO_H, 0xFF);
-+		serial_out(up, UART_OMAP_TO_L, 0xFF);
-+		serial_out(up, UART_OMAP_EFR2, UART_OMAP_EFR2_TIMEOUT_BEHAVE);
-+		serial_in(up, UART_IIR);
-+		serial_out(up, UART_OMAP_EFR2, efr2);
-+		serial_out(up, UART_OMAP_TO_H, timeout_h);
-+		serial_out(up, UART_OMAP_TO_L, timeout_l);
- 	}
- 
- 	/* Stop processing interrupts on input overrun */
+diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
+index 4398cc6fb68dd..5119e9609903c 100644
+--- a/arch/sparc/kernel/syscalls/syscall.tbl
++++ b/arch/sparc/kernel/syscalls/syscall.tbl
+@@ -117,7 +117,7 @@
+ 90	common	dup2			sys_dup2
+ 91	32	setfsuid32		sys_setfsuid
+ 92	common	fcntl			sys_fcntl			compat_sys_fcntl
+-93	common	select			sys_select
++93	common	select			sys_select			compat_sys_select
+ 94	32	setfsgid32		sys_setfsgid
+ 95	common	fsync			sys_fsync
+ 96	common	setpriority		sys_setpriority
+-- 
+2.43.0
+
 
 
 
