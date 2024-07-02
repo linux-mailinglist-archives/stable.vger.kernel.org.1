@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-56379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3434A92441C
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:06:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D139F924429
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:07:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 677D11C22D0B
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:06:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72E921F21D94
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8791BE234;
-	Tue,  2 Jul 2024 17:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66181BE249;
+	Tue,  2 Jul 2024 17:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3NEv1ot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sRm8wnIJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927D01BE22C;
-	Tue,  2 Jul 2024 17:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66768178381;
+	Tue,  2 Jul 2024 17:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719939990; cv=none; b=KPKHUu/WHJA/91vCyIcqEKYoPPooK9frVUwWNCcMVHmua02mA+Ho0F/gs5iI5KURIZgKqvlX0Bgw8D3jA55KboWXgw/GQF/I3OXetD/zSk7SFkWZL5p3OSlvfaW6rhHJ2q995m8Yfm6/7FULVCM9+g5YidIcHVpgTUkQQh0XY7c=
+	t=1719940026; cv=none; b=o3M8XKRHqyTn3yjyM38wJPRdU2RehtvSKZOAO5k9FRuvAFKR1c+6YglONq/sOiPlr8iSanPdPE80mJprWyPXx2XoQ9Dksp8vck58dAaRB/fdxdzie66Ox0TgHT5bqSj8VOqHcqIdZh8njCMDswp3jVghVTfDm2pRzQxHIQ7k2xU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719939990; c=relaxed/simple;
-	bh=DGqCP8FevJMts5EvU7An+AgkrYtRiY1Uh8UHdomLZi8=;
+	s=arc-20240116; t=1719940026; c=relaxed/simple;
+	bh=89hjCFzK5SJ2eKc6wj7v9sJJljp5m1JcHG8z995VQWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rd38Is6A35wbhFxfBhZvZemQBW42CpK3ObDqhFczW5D2m/NSMKZ+BKwNjnA7hDDajUhCnGSIgc2Y5Ss/HwXRMH/Czg37ySJl6IL+lU/ejpwLy+K7Bl2LkExkpolcnCyBUSqj9aBxKK/3+n91gsC4PlyczmnC64+PJVt6xdhZr0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3NEv1ot; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E0FC116B1;
-	Tue,  2 Jul 2024 17:06:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QtZ7McBPN1M0zs7sVaQhraPKBzT6320sLQwRx9sRZy1d43TLD3/WHvftq8fKborlvAo90RtHhnhmk5js3G6baQ9NeNCg7fUoCeAaH6dM01082fnrdGyapWm5GGIBvnFQg3QFcvaS5uNe2veGjQBr9zlpZ/FtxjzKZ+ccKMQwzL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sRm8wnIJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17D4C4AF0A;
+	Tue,  2 Jul 2024 17:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719939990;
-	bh=DGqCP8FevJMts5EvU7An+AgkrYtRiY1Uh8UHdomLZi8=;
+	s=korg; t=1719940026;
+	bh=89hjCFzK5SJ2eKc6wj7v9sJJljp5m1JcHG8z995VQWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a3NEv1otcyNWTTb110eOJAudCkBiZMZUZRE5LHNRlOaVHaEoLN2f043V3Fg6G5Mv4
-	 WfaINQAkBK6LMv1iNgPm9wQSLgxlcJs4jTXrN8Tu+il3+Um9S+TR9WHPgjir49DyDT
-	 bvLH/3f+QQR/kBsG8OKI5XItakDdLjWXiZgVxlIM=
+	b=sRm8wnIJEI1UhIUcjAQ2a09iuKxi+SySUZT7G77Bva1CbytlMbktrCZBMW64lH1ho
+	 7DQ86G+fVnBqRfk+N1q9oNB39uPDtujHQOMZq8kvYxjZruH9KuRQ6f+78IxA70Lins
+	 KHnmYMwVHxZskKW2nEWQR/w60xQc+NqqTIMiUQVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 012/222] pwm: stm32: Fix for settings using period > UINT32_MAX
-Date: Tue,  2 Jul 2024 19:00:50 +0200
-Message-ID: <20240702170244.442979853@linuxfoundation.org>
+Subject: [PATCH 6.9 013/222] pwm: stm32: Calculate prescaler with a division instead of a loop
+Date: Tue,  2 Jul 2024 19:00:51 +0200
+Message-ID: <20240702170244.481308773@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
 References: <20240702170243.963426416@linuxfoundation.org>
@@ -68,82 +68,70 @@ Content-Transfer-Encoding: 8bit
 
 From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit d44d635635a7192c773a75e674a8590a163e879e ]
+[ Upstream commit 8002fbeef1e469b2c397d5cd2940e37b32a17849 ]
 
-stm32_pwm_config() took the duty_cycle and period values with the type
-int, however stm32_pwm_apply() passed u64 values there. Expand the
-function parameters to u64 to not discard relevant bits and adapt the
-calculations to the wider type.
+Instead of looping over increasing values for the prescaler and testing
+if it's big enough, calculate the value using a single division.
 
-To ensure the calculations won't overflow, check in .probe() the input
-clk doesn't run faster than 1 GHz.
-
-Link: https://lore.kernel.org/r/06b4a650a608d0887d934c1b2b8919e0f78e4db2.1710711976.git.u.kleine-koenig@pengutronix.de
+Link: https://lore.kernel.org/r/498a44b313a6c0a84ccddd03cd67aadaaaf7daf2.1710711976.git.u.kleine-koenig@pengutronix.de
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Stable-dep-of: c45fcf46ca23 ("pwm: stm32: Refuse too small period requests")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-stm32.c | 28 ++++++++++++++++++++--------
- 1 file changed, 20 insertions(+), 8 deletions(-)
+ drivers/pwm/pwm-stm32.c | 30 +++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-index d50194ad24b1c..27fcc90504f67 100644
+index 27fcc90504f67..1c8911353b81d 100644
 --- a/drivers/pwm/pwm-stm32.c
 +++ b/drivers/pwm/pwm-stm32.c
-@@ -309,16 +309,18 @@ static int stm32_pwm_capture(struct pwm_chip *chip, struct pwm_device *pwm,
- }
- 
+@@ -311,29 +311,33 @@ static int stm32_pwm_capture(struct pwm_chip *chip, struct pwm_device *pwm,
  static int stm32_pwm_config(struct stm32_pwm *priv, unsigned int ch,
--			    int duty_ns, int period_ns)
-+			    u64 duty_ns, u64 period_ns)
+ 			    u64 duty_ns, u64 period_ns)
  {
- 	unsigned long long prd, div, dty;
- 	unsigned int prescaler = 0;
+-	unsigned long long prd, div, dty;
+-	unsigned int prescaler = 0;
++	unsigned long long prd, dty;
++	unsigned long long prescaler;
  	u32 ccmr, mask, shift;
  
--	/* Period and prescaler values depends on clock rate */
--	div = (unsigned long long)clk_get_rate(priv->clk) * period_ns;
+ 	/*
+ 	 * .probe() asserted that clk_get_rate() is not bigger than 1 GHz, so
+-	 * this won't overflow.
++	 * the calculations here won't overflow.
++	 * First we need to find the minimal value for prescaler such that
++	 *
++	 *        period_ns * clkrate
++	 *   ------------------------------
++	 *   NSEC_PER_SEC * (prescaler + 1)
++	 *
++	 * isn't bigger than max_arr.
+ 	 */
+-	div = mul_u64_u64_div_u64(period_ns, clk_get_rate(priv->clk),
+-				  NSEC_PER_SEC);
+-	prd = div;
 -
--	do_div(div, NSEC_PER_SEC);
-+	/*
-+	 * .probe() asserted that clk_get_rate() is not bigger than 1 GHz, so
-+	 * this won't overflow.
-+	 */
-+	div = mul_u64_u64_div_u64(period_ns, clk_get_rate(priv->clk),
-+				  NSEC_PER_SEC);
- 	prd = div;
+-	while (div > priv->max_arr) {
+-		prescaler++;
+-		div = prd;
+-		do_div(div, prescaler + 1);
+-	}
  
- 	while (div > priv->max_arr) {
-@@ -351,9 +353,8 @@ static int stm32_pwm_config(struct stm32_pwm *priv, unsigned int ch,
- 	regmap_set_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE);
+-	prd = div;
++	prescaler = mul_u64_u64_div_u64(period_ns, clk_get_rate(priv->clk),
++					(u64)NSEC_PER_SEC * priv->max_arr);
++	if (prescaler > 0)
++		prescaler -= 1;
  
- 	/* Calculate the duty cycles */
--	dty = (unsigned long long)clk_get_rate(priv->clk) * duty_ns;
--	do_div(dty, prescaler + 1);
--	do_div(dty, NSEC_PER_SEC);
-+	dty = mul_u64_u64_div_u64(duty_ns, clk_get_rate(priv->clk),
+ 	if (prescaler > MAX_TIM_PSC)
+ 		return -EINVAL;
+ 
++	prd = mul_u64_u64_div_u64(period_ns, clk_get_rate(priv->clk),
 +				  (u64)NSEC_PER_SEC * (prescaler + 1));
- 
- 	regmap_write(priv->regmap, TIM_CCR1 + 4 * ch, dty);
- 
-@@ -657,6 +658,17 @@ static int stm32_pwm_probe(struct platform_device *pdev)
- 
- 	stm32_pwm_detect_complementary(priv);
- 
-+	ret = devm_clk_rate_exclusive_get(dev, priv->clk);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to lock clock\n");
 +
-+	/*
-+	 * With the clk running with not more than 1 GHz the calculations in
-+	 * .apply() won't overflow.
-+	 */
-+	if (clk_get_rate(priv->clk) > 1000000000)
-+		return dev_err_probe(dev, -EINVAL, "Failed to lock clock\n");
-+
- 	chip->ops = &stm32pwm_ops;
- 
- 	/* Initialize clock refcount to number of enabled PWM channels. */
+ 	/*
+ 	 * All channels share the same prescaler and counter so when two
+ 	 * channels are active at the same time we can't change them
 -- 
 2.43.0
 
