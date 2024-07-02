@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-56332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB83923944
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 11:12:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B2DD92398C
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 11:18:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA276284626
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 09:12:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E43B1C21C69
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 09:18:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8654D1591EA;
-	Tue,  2 Jul 2024 09:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08277152161;
+	Tue,  2 Jul 2024 09:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLLD9ify"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pQ5vJqlD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459DB152E13
-	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 09:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DD3156F55
+	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 09:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719911422; cv=none; b=I+RYja4ogbN+4ubS12v6FpaklcMoh1sHOlap2wKUiXbhAKnzLiguhcJTKLqnmrNJ1bEIhOgHv5vHtjOnRyOrPx98RVG8Dni6D8zsB2sH2SgNh/yOpQJN2jVCrgIQHAFTQLjN7Q1sGRivahI+yeGxRMyStAXhlsH9YVc5e8jtkK8=
+	t=1719911485; cv=none; b=LryMOwHMbudMHs6SPU+FrBkUZwDsYw60jAy2cQHuF9Zpualp72pbO/cyeUF7HSYwrLtMhSw++1nZO6SnklcZkC/o7ioHbldBqk2y1CClP9rrD4RJNNLlQynAOBcB6fLqLlUjoc+6XcGQ95AhXM90kF5G+AkWeUSRogsXEfTeRzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719911422; c=relaxed/simple;
-	bh=dPKfDFIfF8WOCfJLDobvzAxFeEC6zXekcNn+FgKXTwQ=;
+	s=arc-20240116; t=1719911485; c=relaxed/simple;
+	bh=FEV61FocoFxJcnReu6pquuss/8LJMBziMctBrOWTMbk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c53umsggGGeLq9CUJXknIDsX57EZEe8OeZdwrFLuhUBYusNq2fkXbdXn8hSBX71GeUsNwbU0Ugsjmk+hUo2KDZNfRLiZvvSzwE4fr0X3ueCmqy34mX9/19tSRZOzDeAyDxv7igWnI6AjHf4M/fVf+LDMm9b8bfxv4cZTiPeBLzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLLD9ify; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 838D7C4AF0C;
-	Tue,  2 Jul 2024 09:10:21 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=d+DQSJDnCe8eOmkAODJrhN+jlQlhAyd8v5p/9p/LquDTHo3e3FP5Q9HkQiu5WAWk+OiJOu+nrh1cU6dhi/PkzTrd3SYEBew7PZxq5Am1B5NDxOg8A4E2EpBRK57tE/DS8UuFOos+i+8NRuP4vI15HnDq2BATUgW0rrbXJjf++2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQ5vJqlD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1834EC4AF10;
+	Tue,  2 Jul 2024 09:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719911421;
-	bh=dPKfDFIfF8WOCfJLDobvzAxFeEC6zXekcNn+FgKXTwQ=;
+	s=korg; t=1719911485;
+	bh=FEV61FocoFxJcnReu6pquuss/8LJMBziMctBrOWTMbk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qLLD9ifyefeOv4JnXOBjrhbGXj1a8lIclJy8MAkBiouWFoc4uEYz0iKMY/l9viIw/
-	 /JpyReEf+TA444VeVgeLuPGNTI9MarilFH0PHkfy6VIvurCwFjVTU+n4hxRLzyJpKz
-	 QcNJlUIARFrzDb4rwhQbFhUfE8+pyhQK1KdmDo3I=
-Date: Tue, 2 Jul 2024 11:10:19 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: Re: [PATCH 5.4/5.10/5.15] nfs: Leave pages in the pagecache if
- readpage failed
-Message-ID: <2024070209-angles-rejoin-afe7@gregkh>
-References: <20240626184614.80363-1-kuniyu@amazon.com>
+	b=pQ5vJqlDDKFCmkEAmjR7d1uQL7dSdAZWYzQCF8qJIHJ8dP6B+54D1E9sbrSGed+iJ
+	 ST4ynHnhc0H/aUlzoOzcBET4B5s84ygIzYFVKtheGmXXD2a6b7eu1YoLDtNDrZDhIq
+	 V83SYcCgNXXs1NXIi40U8Y1GLUWs9K6+6TFQJfQM=
+Date: Tue, 2 Jul 2024 11:11:22 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Damien Le Moal <dlemoal@kernel.org>
+Cc: cassel@kernel.org, hare@suse.de, john.g.garry@oracle.com,
+	stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] ata: libata-core: Fix null pointer
+ dereference on error" failed to apply to 6.9-stable tree
+Message-ID: <2024070208-dazzling-charging-d5db@gregkh>
+References: <2024070105-falsify-surrender-babc@gregkh>
+ <64b91917-f2bc-48a2-9382-e4045c91dad9@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,28 +56,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240626184614.80363-1-kuniyu@amazon.com>
+In-Reply-To: <64b91917-f2bc-48a2-9382-e4045c91dad9@kernel.org>
 
-On Wed, Jun 26, 2024 at 11:46:14AM -0700, Kuniyuki Iwashima wrote:
-> From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+On Tue, Jul 02, 2024 at 06:50:05AM +0900, Damien Le Moal wrote:
+> On 7/1/24 23:31, gregkh@linuxfoundation.org wrote:
+> > 
+> > The patch below does not apply to the 6.9-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> > 
+> > To reproduce the conflict and resubmit, you may use the following commands:
+> > 
+> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.9.y
+> > git checkout FETCH_HEAD
+> > git cherry-pick -x 5d92c7c566dc76d96e0e19e481d926bbe6631c1e
+> > # <resolve conflicts, build, test, etc.>
+> > git commit -s
+> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070105-falsify-surrender-babc@gregkh' --subject-prefix 'PATCH 6.9.y' HEAD^..
+> > 
+> > Possible dependencies:
+> > 
+> > 5d92c7c566dc ("ata: libata-core: Fix null pointer dereference on error")
 > 
-> commit 0b768a9610c6de9811c6d33900bebfb665192ee1 upstream
+> Greg,
 > 
-> The pagecache handles readpage failing by itself; it doesn't want
-> filesystems to remove pages from under it.
-> 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-> ---
-> When NFS server returns NFS4ERR_SERVERFAULT, the client returned
-> Remote I/O error immediately on 4.14 and 6.1, but on 5.4/5.10/5.15,
-> the client retries forever and get stuck until userspace aborts it.
-> 
-> The patch fixed the issue but did not have Fixes: tag.
-> 
-> Please backport this to 5.4/5.10/5.15.
+> I am confused... This patch applies cleanly to linux-6.9.y. The procedure above
+> also works just fine. And the "Possible dependencies" on itself does not make
+> sense. Bot problem ?
 
-Now queued up, thanks.
+Odd, this seems to already be in the tree, sorry for the noise.
 
 greg k-h
 
