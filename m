@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-56844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C219924639
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:32:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDE069245C0
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:26:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 161ED1F228C5
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:32:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFE961C21B2F
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258911BE876;
-	Tue,  2 Jul 2024 17:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344911BE22B;
+	Tue,  2 Jul 2024 17:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4XEeECs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHkN7+AU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D147E1BD50C;
-	Tue,  2 Jul 2024 17:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71C415218A;
+	Tue,  2 Jul 2024 17:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941548; cv=none; b=uVSkea2q9jdrfz5cFs+mWqNNGt/2GIjrUdr2dSFDxzwtWT/gCsm0otA8kZTPPQnc2VYAKG1yU6rpDBHqm3vciujlL034a0mOzqdtAeOdxBUbwaBCabrYoQ6iDdcU5hfP6RL9UZj1k8FJhK39FOUjhlwAML6f6iz7L+9sWVoaRh4=
+	t=1719941184; cv=none; b=KfBFEL3E+ITltlMDIaNIspVPaq8clPVlQD7No+HXupcbemw3dTeEbj089umzmnBz4tzyPYYlQ635km11G/9/gKejaj1n1XPQHSl/uGsPDYyDa4DWh2+LPw1Yigw7PaAch3NEl0QwX0GIyHDwj+5JjqoLtfTpul4a2I6EdJSfp0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941548; c=relaxed/simple;
-	bh=Ku3WlfexE5ooHqOyct1rNzBU+IW6SZc+gz9WTwQZV4U=;
+	s=arc-20240116; t=1719941184; c=relaxed/simple;
+	bh=wNZYrPVPnlFJRyquo99lOxk2rLH2BrBAob8Mnj91hZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=agSSDvUKgKEyELVQWnINBSP5k+YECQhmRB5MHecUYHnXruJeIwzBmgHmQtoOqviEMX1o6o877nSGDTkjXgyIkltQkW/wNNatx/Do0o4x36Gm2GY2rHSeJ8jGyZQsxo4H2+6PgRVdyItJNyLK7iXjC7HZBIRLkU9tSlCfDATsUq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z4XEeECs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 571B7C116B1;
-	Tue,  2 Jul 2024 17:32:28 +0000 (UTC)
+	 MIME-Version; b=IhM9RFsi7kktbmb3W8yLh8G/Bm3884F0o+1vr7Ulnmr9sUykLLc/6ICYU0qOxXwPKkghzY51nnx2rcWBcTbXOPPQsn+J9KuzvxptaOP1MBUHRKB7yCB7hBhjg/f8daQ7KUsV0g4thNa0cvyghTCvn/H01++f63SD/lqjY54W6g0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHkN7+AU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D03E9C4AF07;
+	Tue,  2 Jul 2024 17:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941548;
-	bh=Ku3WlfexE5ooHqOyct1rNzBU+IW6SZc+gz9WTwQZV4U=;
+	s=korg; t=1719941183;
+	bh=wNZYrPVPnlFJRyquo99lOxk2rLH2BrBAob8Mnj91hZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z4XEeECsRPspqBQDAe/sKYTZVEg9QBQ1QEs4thy5H0Av7KtGUo/iG9w+fKZnMJpPK
-	 H5cC37TqeqaGroyL2yuItZtj5nKJ1EIaKXKL7i7CY77LN+gYfp0j9FNkz7Z/GWiTWx
-	 j/22kArhIQ8gXfxYIYDwp3qnqyeCDdTPYZaSnUgg=
+	b=NHkN7+AU4ZFARh7qBUvpMwjUpXuRMMw7lvnOtVT4qL9xH+hA7Pq3HX9PrukuKj7Wl
+	 pnvQ7N328ddr0rVJ8Uqt1WpY9HyOxOSGCuqprJYX1k2aLgaycNIMrE6BVEMnsi4SCO
+	 n0G0iM7FJbgrVsW3Zz30z1TxcV4XPG+RnWBe0wYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
+	yangge <yangge1116@126.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <21cnbao@gmail.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 066/128] ocfs2: fix DIO failure due to insufficient transaction credits
+Subject: [PATCH 6.6 153/163] mm/page_alloc: Separate THP PCP into movable and non-movable categories
 Date: Tue,  2 Jul 2024 19:04:27 +0200
-Message-ID: <20240702170228.731085079@linuxfoundation.org>
+Message-ID: <20240702170238.852826789@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,146 +64,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: yangge <yangge1116@126.com>
 
-commit be346c1a6eeb49d8fda827d2a9522124c2f72f36 upstream.
+commit bf14ed81f571f8dba31cd72ab2e50fbcc877cc31 upstream.
 
-The code in ocfs2_dio_end_io_write() estimates number of necessary
-transaction credits using ocfs2_calc_extend_credits().  This however does
-not take into account that the IO could be arbitrarily large and can
-contain arbitrary number of extents.
+Since commit 5d0a661d808f ("mm/page_alloc: use only one PCP list for
+THP-sized allocations") no longer differentiates the migration type of
+pages in THP-sized PCP list, it's possible that non-movable allocation
+requests may get a CMA page from the list, in some cases, it's not
+acceptable.
 
-Extent tree manipulations do often extend the current transaction but not
-in all of the cases.  For example if we have only single block extents in
-the tree, ocfs2_mark_extent_written() will end up calling
-ocfs2_replace_extent_rec() all the time and we will never extend the
-current transaction and eventually exhaust all the transaction credits if
-the IO contains many single block extents.  Once that happens a
-WARN_ON(jbd2_handle_buffer_credits(handle) <= 0) is triggered in
-jbd2_journal_dirty_metadata() and subsequently OCFS2 aborts in response to
-this error.  This was actually triggered by one of our customers on a
-heavily fragmented OCFS2 filesystem.
+If a large number of CMA memory are configured in system (for example, the
+CMA memory accounts for 50% of the system memory), starting a virtual
+machine with device passthrough will get stuck.  During starting the
+virtual machine, it will call pin_user_pages_remote(..., FOLL_LONGTERM,
+...) to pin memory.  Normally if a page is present and in CMA area,
+pin_user_pages_remote() will migrate the page from CMA area to non-CMA
+area because of FOLL_LONGTERM flag.  But if non-movable allocation
+requests return CMA memory, migrate_longterm_unpinnable_pages() will
+migrate a CMA page to another CMA page, which will fail to pass the check
+in check_and_migrate_movable_pages() and cause migration endless.
 
-To fix the issue make sure the transaction always has enough credits for
-one extent insert before each call of ocfs2_mark_extent_written().
+Call trace:
+pin_user_pages_remote
+--__gup_longterm_locked // endless loops in this function
+----_get_user_pages_locked
+----check_and_migrate_movable_pages
+------migrate_longterm_unpinnable_pages
+--------alloc_migration_target
 
-Heming Zhao said:
+This problem will also have a negative impact on CMA itself.  For example,
+when CMA is borrowed by THP, and we need to reclaim it through cma_alloc()
+or dma_alloc_coherent(), we must move those pages out to ensure CMA's
+users can retrieve that contigous memory.  Currently, CMA's memory is
+occupied by non-movable pages, meaning we can't relocate them.  As a
+result, cma_alloc() is more likely to fail.
 
-------
-PANIC: "Kernel panic - not syncing: OCFS2: (device dm-1): panic forced after error"
+To fix the problem above, we add one PCP list for THP, which will not
+introduce a new cacheline for struct per_cpu_pages.  THP will have 2 PCP
+lists, one PCP list is used by MOVABLE allocation, and the other PCP list
+is used by UNMOVABLE allocation.  MOVABLE allocation contains GPF_MOVABLE,
+and UNMOVABLE allocation contains GFP_UNMOVABLE and GFP_RECLAIMABLE.
 
-PID: xxx  TASK: xxxx  CPU: 5  COMMAND: "SubmitThread-CA"
-  #0 machine_kexec at ffffffff8c069932
-  #1 __crash_kexec at ffffffff8c1338fa
-  #2 panic at ffffffff8c1d69b9
-  #3 ocfs2_handle_error at ffffffffc0c86c0c [ocfs2]
-  #4 __ocfs2_abort at ffffffffc0c88387 [ocfs2]
-  #5 ocfs2_journal_dirty at ffffffffc0c51e98 [ocfs2]
-  #6 ocfs2_split_extent at ffffffffc0c27ea3 [ocfs2]
-  #7 ocfs2_change_extent_flag at ffffffffc0c28053 [ocfs2]
-  #8 ocfs2_mark_extent_written at ffffffffc0c28347 [ocfs2]
-  #9 ocfs2_dio_end_io_write at ffffffffc0c2bef9 [ocfs2]
-#10 ocfs2_dio_end_io at ffffffffc0c2c0f5 [ocfs2]
-#11 dio_complete at ffffffff8c2b9fa7
-#12 do_blockdev_direct_IO at ffffffff8c2bc09f
-#13 ocfs2_direct_IO at ffffffffc0c2b653 [ocfs2]
-#14 generic_file_direct_write at ffffffff8c1dcf14
-#15 __generic_file_write_iter at ffffffff8c1dd07b
-#16 ocfs2_file_write_iter at ffffffffc0c49f1f [ocfs2]
-#17 aio_write at ffffffff8c2cc72e
-#18 kmem_cache_alloc at ffffffff8c248dde
-#19 do_io_submit at ffffffff8c2ccada
-#20 do_syscall_64 at ffffffff8c004984
-#21 entry_SYSCALL_64_after_hwframe at ffffffff8c8000ba
-
-Link: https://lkml.kernel.org/r/20240617095543.6971-1-jack@suse.cz
-Link: https://lkml.kernel.org/r/20240614145243.8837-1-jack@suse.cz
-Fixes: c15471f79506 ("ocfs2: fix sparse file & data ordering issue in direct io")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
+Link: https://lkml.kernel.org/r/1718845190-4456-1-git-send-email-yangge1116@126.com
+Fixes: 5d0a661d808f ("mm/page_alloc: use only one PCP list for THP-sized allocations")
+Signed-off-by: yangge <yangge1116@126.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <21cnbao@gmail.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/aops.c        |    5 +++++
- fs/ocfs2/journal.c     |   17 +++++++++++++++++
- fs/ocfs2/journal.h     |    2 ++
- fs/ocfs2/ocfs2_trace.h |    2 ++
- 4 files changed, 26 insertions(+)
+ include/linux/mmzone.h |    9 ++++-----
+ mm/page_alloc.c        |    9 +++++++--
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
---- a/fs/ocfs2/aops.c
-+++ b/fs/ocfs2/aops.c
-@@ -2370,6 +2370,11 @@ static int ocfs2_dio_end_io_write(struct
- 	}
- 
- 	list_for_each_entry(ue, &dwc->dw_zero_list, ue_node) {
-+		ret = ocfs2_assure_trans_credits(handle, credits);
-+		if (ret < 0) {
-+			mlog_errno(ret);
-+			break;
-+		}
- 		ret = ocfs2_mark_extent_written(inode, &et, handle,
- 						ue->ue_cpos, 1,
- 						ue->ue_phys,
---- a/fs/ocfs2/journal.c
-+++ b/fs/ocfs2/journal.c
-@@ -448,6 +448,23 @@ bail:
- }
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -664,13 +664,12 @@ enum zone_watermarks {
+ };
  
  /*
-+ * Make sure handle has at least 'nblocks' credits available. If it does not
-+ * have that many credits available, we will try to extend the handle to have
-+ * enough credits. If that fails, we will restart transaction to have enough
-+ * credits. Similar notes regarding data consistency and locking implications
-+ * as for ocfs2_extend_trans() apply here.
-+ */
-+int ocfs2_assure_trans_credits(handle_t *handle, int nblocks)
-+{
-+	int old_nblks = jbd2_handle_buffer_credits(handle);
+- * One per migratetype for each PAGE_ALLOC_COSTLY_ORDER. One additional list
+- * for THP which will usually be GFP_MOVABLE. Even if it is another type,
+- * it should not contribute to serious fragmentation causing THP allocation
+- * failures.
++ * One per migratetype for each PAGE_ALLOC_COSTLY_ORDER. Two additional lists
++ * are added for THP. One PCP list is used by GPF_MOVABLE, and the other PCP list
++ * is used by GFP_UNMOVABLE and GFP_RECLAIMABLE.
+  */
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-#define NR_PCP_THP 1
++#define NR_PCP_THP 2
+ #else
+ #define NR_PCP_THP 0
+ #endif
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -519,10 +519,15 @@ out:
+ 
+ static inline unsigned int order_to_pindex(int migratetype, int order)
+ {
++	bool __maybe_unused movable;
 +
-+	trace_ocfs2_assure_trans_credits(old_nblks);
-+	if (old_nblks >= nblocks)
-+		return 0;
-+	return ocfs2_extend_trans(handle, nblocks - old_nblks);
-+}
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	if (order > PAGE_ALLOC_COSTLY_ORDER) {
+ 		VM_BUG_ON(order != pageblock_order);
+-		return NR_LOWORDER_PCP_LISTS;
 +
-+/*
-  * If we have fewer than thresh credits, extend by OCFS2_MAX_TRANS_DATA.
-  * If that fails, restart the transaction & regain write access for the
-  * buffer head which is used for metadata modifications.
---- a/fs/ocfs2/journal.h
-+++ b/fs/ocfs2/journal.h
-@@ -243,6 +243,8 @@ handle_t		    *ocfs2_start_trans(struct
- int			     ocfs2_commit_trans(struct ocfs2_super *osb,
- 						handle_t *handle);
- int			     ocfs2_extend_trans(handle_t *handle, int nblocks);
-+int			     ocfs2_assure_trans_credits(handle_t *handle,
-+						int nblocks);
- int			     ocfs2_allocate_extend_trans(handle_t *handle,
- 						int thresh);
- 
---- a/fs/ocfs2/ocfs2_trace.h
-+++ b/fs/ocfs2/ocfs2_trace.h
-@@ -2578,6 +2578,8 @@ DEFINE_OCFS2_ULL_UINT_EVENT(ocfs2_commit
- 
- DEFINE_OCFS2_INT_INT_EVENT(ocfs2_extend_trans);
- 
-+DEFINE_OCFS2_INT_EVENT(ocfs2_assure_trans_credits);
++		movable = migratetype == MIGRATE_MOVABLE;
 +
- DEFINE_OCFS2_INT_EVENT(ocfs2_extend_trans_restart);
++		return NR_LOWORDER_PCP_LISTS + movable;
+ 	}
+ #else
+ 	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
+@@ -536,7 +541,7 @@ static inline int pindex_to_order(unsign
+ 	int order = pindex / MIGRATE_PCPTYPES;
  
- DEFINE_OCFS2_INT_INT_EVENT(ocfs2_allocate_extend_trans);
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	if (pindex == NR_LOWORDER_PCP_LISTS)
++	if (pindex >= NR_LOWORDER_PCP_LISTS)
+ 		order = pageblock_order;
+ #else
+ 	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
 
 
 
