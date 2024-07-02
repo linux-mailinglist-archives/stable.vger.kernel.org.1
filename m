@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-56559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ABC29244F0
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:16:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E7479245F3
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ED1C1F2155D
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:16:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF073285FB3
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F04B1BE85B;
-	Tue,  2 Jul 2024 17:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F6A21C0076;
+	Tue,  2 Jul 2024 17:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPUKe8uT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5gsmwen"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0291BE223;
-	Tue,  2 Jul 2024 17:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22891BF31D;
+	Tue,  2 Jul 2024 17:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940587; cv=none; b=OVJuBf1Rg6FDg7xXvZDieTgKbqZ9icOzlz0n+7GtszqP9AzLY6vCZ1U9UAc4h6Hl3mRoKoVreC2l8OnLubJSqBcxUmWT4Z1eXU34Cg1NWt1RoyRn407Dhj07rl1rBUbPcfnO94d9WTIGHDoaeulhhIXJExvmasla17FlZWRXUls=
+	t=1719941344; cv=none; b=si0CjU4IJzEus9JDD4/DE5dMuFGxR7UVcJT8yCq06Zm7K0zSGVptM97ppMfpL62TkPq16kzc2h6ofp+9dptnALr6z5SbMRDOag60Y05fb1g5JKallY1JJ+UJrOMuD3YJOFmlYqssW/RdGf8dOkWTkHPyEkqngFQEDBtcGSybIyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940587; c=relaxed/simple;
-	bh=qrKrshO4c3GgVVppMV2SRAMS+AlbNNyPV7tYkGz8tdc=;
+	s=arc-20240116; t=1719941344; c=relaxed/simple;
+	bh=ikdGvtg9j0M/6SIA5Vbd0yl0RWKsYP7XSsG/AgS83Lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6JCNBuQ/Dx6j6fd5gJJyG2fuKohWpyAy33hAh7vYESx/BKQtMCGZp9EWo+PU2G7EkreoeqEwDexFZ6pVXiF5y6drbD/+MBGhAhVfqpdaXMfhAORwBSrPiWI2JwNB4n2tGJBtfhAJfBa/DPSWruX+Ild57f78W5U99PYkkKpv2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPUKe8uT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBF3C116B1;
-	Tue,  2 Jul 2024 17:16:26 +0000 (UTC)
+	 MIME-Version; b=Faq9ka5rBNNA3VtR1la8yMxy4gwk96pcHYdBpdDBhcRRQSQ1L32YZY57J6EULH0y1a8aP2wWiUnCNNijL3jmOXYF/yrEQjoe2QvBYQXFmBCFyS8EQveF2AGTPxavuWlaD9SI4gqGUenveh2f+uD74ABrKULNbBkHkpcD/PkIOF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5gsmwen; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DFE5C116B1;
+	Tue,  2 Jul 2024 17:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940587;
-	bh=qrKrshO4c3GgVVppMV2SRAMS+AlbNNyPV7tYkGz8tdc=;
+	s=korg; t=1719941344;
+	bh=ikdGvtg9j0M/6SIA5Vbd0yl0RWKsYP7XSsG/AgS83Lg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QPUKe8uTMK1EDmFN2gbzfMFwAMJRi84m+D/9Gm+e3magA79rL42XmtFXPjz2SbFTB
-	 BBpxWw71ML3ySStHyfUPNbu1kRJW8RStaKONCJdIzwhp/PWH5RJOCVuUiyER9j66Px
-	 AYg+EciskJACE7dhtkCKwPHl67lp+7ls8LDchtBk=
+	b=F5gsmwenGqAj9wQqXTvOYU/mVOANomenjfINcpAxhubJVMvGEY2KDKRmccJUXOFmI
+	 dWPwnmtyDkQFrDPwhLq6DkWMIb3878aEVnjpnq9R8ndAmkUWMDDQ+56yOFNELVQeHx
+	 s++dhbM28bLpa2FQJqtAjG4N78nTn9NLnYDjCkjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Overstreet <kent.overstreet@linux.dev>
-Subject: [PATCH 6.9 200/222] bcachefs: btree_gc can now handle unknown btrees
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 037/128] drm/panel: ilitek-ili9881c: Fix warning with GPIO controllers that sleep
 Date: Tue,  2 Jul 2024 19:03:58 +0200
-Message-ID: <20240702170251.629218295@linuxfoundation.org>
+Message-ID: <20240702170227.636480516@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,273 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-commit 088d0de81220a74d7d553febb81656927f10bb16 upstream.
+[ Upstream commit ee7860cd8b5763017f8dc785c2851fecb7a0c565 ]
 
-Compatibility fix - we no longer have a separate table for which order
-gc walks btrees in, and special case the stripes btree directly.
+The ilitek-ili9881c controls the reset GPIO using the non-sleeping
+gpiod_set_value() function. This complains loudly when the GPIO
+controller needs to sleep. As the caller can sleep, use
+gpiod_set_value_cansleep() to fix the issue.
 
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240317154839.21260-1-laurent.pinchart@ideasonboard.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240317154839.21260-1-laurent.pinchart@ideasonboard.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/bcachefs/bcachefs.h       |   44 ---------------------------------------
- fs/bcachefs/btree_gc.c       |   15 ++++++-------
- fs/bcachefs/btree_gc.h       |   48 +++++++++++++++++++------------------------
- fs/bcachefs/btree_gc_types.h |   29 +++++++++++++++++++++++++
- fs/bcachefs/ec.c             |    2 -
- 5 files changed, 60 insertions(+), 78 deletions(-)
- create mode 100644 fs/bcachefs/btree_gc_types.h
+ drivers/gpu/drm/panel/panel-ilitek-ili9881c.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/bcachefs/bcachefs.h
-+++ b/fs/bcachefs/bcachefs.h
-@@ -455,6 +455,7 @@ enum bch_time_stats {
- };
+diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c b/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
+index cbb68caa36f26..4014c537e397d 100644
+--- a/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
++++ b/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
+@@ -716,10 +716,10 @@ static int ili9881c_prepare(struct drm_panel *panel)
+ 	msleep(5);
  
- #include "alloc_types.h"
-+#include "btree_gc_types.h"
- #include "btree_types.h"
- #include "btree_node_scan_types.h"
- #include "btree_write_buffer_types.h"
-@@ -485,49 +486,6 @@ enum bch_time_stats {
+ 	/* And reset it */
+-	gpiod_set_value(ctx->reset, 1);
++	gpiod_set_value_cansleep(ctx->reset, 1);
+ 	msleep(20);
  
- struct btree;
+-	gpiod_set_value(ctx->reset, 0);
++	gpiod_set_value_cansleep(ctx->reset, 0);
+ 	msleep(20);
  
--enum gc_phase {
--	GC_PHASE_NOT_RUNNING,
--	GC_PHASE_START,
--	GC_PHASE_SB,
--
--	GC_PHASE_BTREE_stripes,
--	GC_PHASE_BTREE_extents,
--	GC_PHASE_BTREE_inodes,
--	GC_PHASE_BTREE_dirents,
--	GC_PHASE_BTREE_xattrs,
--	GC_PHASE_BTREE_alloc,
--	GC_PHASE_BTREE_quotas,
--	GC_PHASE_BTREE_reflink,
--	GC_PHASE_BTREE_subvolumes,
--	GC_PHASE_BTREE_snapshots,
--	GC_PHASE_BTREE_lru,
--	GC_PHASE_BTREE_freespace,
--	GC_PHASE_BTREE_need_discard,
--	GC_PHASE_BTREE_backpointers,
--	GC_PHASE_BTREE_bucket_gens,
--	GC_PHASE_BTREE_snapshot_trees,
--	GC_PHASE_BTREE_deleted_inodes,
--	GC_PHASE_BTREE_logged_ops,
--	GC_PHASE_BTREE_rebalance_work,
--	GC_PHASE_BTREE_subvolume_children,
--
--	GC_PHASE_PENDING_DELETE,
--};
--
--struct gc_pos {
--	enum gc_phase		phase;
--	struct bpos		pos;
--	unsigned		level;
--};
--
--struct reflink_gc {
--	u64		offset;
--	u32		size;
--	u32		refcount;
--};
--
--typedef GENRADIX(struct reflink_gc) reflink_gc_table;
--
- struct io_count {
- 	u64			sectors[2][BCH_DATA_NR];
- };
---- a/fs/bcachefs/btree_gc.c
-+++ b/fs/bcachefs/btree_gc.c
-@@ -1080,8 +1080,7 @@ fsck_err:
+ 	for (i = 0; i < ctx->desc->init_length; i++) {
+@@ -774,7 +774,7 @@ static int ili9881c_unprepare(struct drm_panel *panel)
  
- static inline int btree_id_gc_phase_cmp(enum btree_id l, enum btree_id r)
- {
--	return  (int) btree_id_to_gc_phase(l) -
--		(int) btree_id_to_gc_phase(r);
-+	return cmp_int(gc_btree_order(l), gc_btree_order(r));
+ 	mipi_dsi_dcs_enter_sleep_mode(ctx->dsi);
+ 	regulator_disable(ctx->power);
+-	gpiod_set_value(ctx->reset, 1);
++	gpiod_set_value_cansleep(ctx->reset, 1);
+ 
+ 	return 0;
  }
- 
- static int bch2_gc_btrees(struct bch_fs *c, bool initial, bool metadata_only)
-@@ -1126,7 +1125,7 @@ static void mark_metadata_sectors(struct
- 			min_t(u64, bucket_to_sector(ca, b + 1), end) - start;
- 
- 		bch2_mark_metadata_bucket(c, ca, b, type, sectors,
--					  gc_phase(GC_PHASE_SB), flags);
-+					  gc_phase(GC_PHASE_sb), flags);
- 		b++;
- 		start += sectors;
- 	} while (start < end);
-@@ -1155,14 +1154,14 @@ static void bch2_mark_dev_superblock(str
- 		b = ca->journal.buckets[i];
- 		bch2_mark_metadata_bucket(c, ca, b, BCH_DATA_journal,
- 					  ca->mi.bucket_size,
--					  gc_phase(GC_PHASE_SB), flags);
-+					  gc_phase(GC_PHASE_sb), flags);
- 	}
- }
- 
- static void bch2_mark_superblocks(struct bch_fs *c)
- {
- 	mutex_lock(&c->sb_lock);
--	gc_pos_set(c, gc_phase(GC_PHASE_SB));
-+	gc_pos_set(c, gc_phase(GC_PHASE_sb));
- 
- 	for_each_online_member(c, ca)
- 		bch2_mark_dev_superblock(c, ca, BTREE_TRIGGER_GC);
-@@ -1773,7 +1772,7 @@ int bch2_gc(struct bch_fs *c, bool initi
- 	if (ret)
- 		goto out;
- again:
--	gc_pos_set(c, gc_phase(GC_PHASE_START));
-+	gc_pos_set(c, gc_phase(GC_PHASE_start));
- 
- 	bch2_mark_superblocks(c);
- 
-@@ -1800,7 +1799,7 @@ again:
- 		 */
- 		bch_info(c, "Second GC pass needed, restarting:");
- 		clear_bit(BCH_FS_need_another_gc, &c->flags);
--		__gc_pos_set(c, gc_phase(GC_PHASE_NOT_RUNNING));
-+		__gc_pos_set(c, gc_phase(GC_PHASE_not_running));
- 
- 		bch2_gc_stripes_reset(c, metadata_only);
- 		bch2_gc_alloc_reset(c, metadata_only);
-@@ -1827,7 +1826,7 @@ out:
- 
- 	percpu_down_write(&c->mark_lock);
- 	/* Indicates that gc is no longer in progress: */
--	__gc_pos_set(c, gc_phase(GC_PHASE_NOT_RUNNING));
-+	__gc_pos_set(c, gc_phase(GC_PHASE_not_running));
- 
- 	bch2_gc_free(c);
- 	percpu_up_write(&c->mark_lock);
---- a/fs/bcachefs/btree_gc.h
-+++ b/fs/bcachefs/btree_gc.h
-@@ -3,6 +3,7 @@
- #define _BCACHEFS_BTREE_GC_H
- 
- #include "bkey.h"
-+#include "btree_gc_types.h"
- #include "btree_types.h"
- 
- int bch2_check_topology(struct bch_fs *);
-@@ -35,38 +36,17 @@ int bch2_gc_thread_start(struct bch_fs *
- /* Position of (the start of) a gc phase: */
- static inline struct gc_pos gc_phase(enum gc_phase phase)
- {
--	return (struct gc_pos) {
--		.phase	= phase,
--		.pos	= POS_MIN,
--		.level	= 0,
--	};
--}
--
--static inline int gc_pos_cmp(struct gc_pos l, struct gc_pos r)
--{
--	return  cmp_int(l.phase, r.phase) ?:
--		bpos_cmp(l.pos, r.pos) ?:
--		cmp_int(l.level, r.level);
--}
--
--static inline enum gc_phase btree_id_to_gc_phase(enum btree_id id)
--{
--	switch (id) {
--#define x(name, v, ...) case BTREE_ID_##name: return GC_PHASE_BTREE_##name;
--	BCH_BTREE_IDS()
--#undef x
--	default:
--		BUG();
--	}
-+	return (struct gc_pos) { .phase	= phase, };
- }
- 
--static inline struct gc_pos gc_pos_btree(enum btree_id id,
-+static inline struct gc_pos gc_pos_btree(enum btree_id btree,
- 					 struct bpos pos, unsigned level)
- {
- 	return (struct gc_pos) {
--		.phase	= btree_id_to_gc_phase(id),
--		.pos	= pos,
-+		.phase	= GC_PHASE_btree,
-+		.btree	= btree,
- 		.level	= level,
-+		.pos	= pos,
- 	};
- }
- 
-@@ -91,6 +71,22 @@ static inline struct gc_pos gc_pos_btree
- 	return gc_pos_btree(id, SPOS_MAX, BTREE_MAX_DEPTH);
- }
- 
-+static inline int gc_btree_order(enum btree_id btree)
-+{
-+	if (btree == BTREE_ID_stripes)
-+		return -1;
-+	return btree;
-+}
-+
-+static inline int gc_pos_cmp(struct gc_pos l, struct gc_pos r)
-+{
-+	return   cmp_int(l.phase, r.phase) ?:
-+		 cmp_int(gc_btree_order(l.btree),
-+			 gc_btree_order(r.btree)) ?:
-+		-cmp_int(l.level, r.level) ?:
-+		 bpos_cmp(l.pos, r.pos);
-+}
-+
- static inline bool gc_visited(struct bch_fs *c, struct gc_pos pos)
- {
- 	unsigned seq;
---- /dev/null
-+++ b/fs/bcachefs/btree_gc_types.h
-@@ -0,0 +1,29 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _BCACHEFS_BTREE_GC_TYPES_H
-+#define _BCACHEFS_BTREE_GC_TYPES_H
-+
-+#include <linux/generic-radix-tree.h>
-+
-+enum gc_phase {
-+	GC_PHASE_not_running,
-+	GC_PHASE_start,
-+	GC_PHASE_sb,
-+	GC_PHASE_btree,
-+};
-+
-+struct gc_pos {
-+	enum gc_phase		phase:8;
-+	enum btree_id		btree:8;
-+	u16			level;
-+	struct bpos		pos;
-+};
-+
-+struct reflink_gc {
-+	u64		offset;
-+	u32		size;
-+	u32		refcount;
-+};
-+
-+typedef GENRADIX(struct reflink_gc) reflink_gc_table;
-+
-+#endif /* _BCACHEFS_BTREE_GC_TYPES_H */
---- a/fs/bcachefs/ec.c
-+++ b/fs/bcachefs/ec.c
-@@ -880,7 +880,7 @@ static int __ec_stripe_mem_alloc(struct
- 	if (!genradix_ptr_alloc(&c->stripes, idx, gfp))
- 		return -BCH_ERR_ENOMEM_ec_stripe_mem_alloc;
- 
--	if (c->gc_pos.phase != GC_PHASE_NOT_RUNNING &&
-+	if (c->gc_pos.phase != GC_PHASE_not_running &&
- 	    !genradix_ptr_alloc(&c->gc_stripes, idx, gfp))
- 		return -BCH_ERR_ENOMEM_ec_stripe_mem_alloc;
- 
+-- 
+2.43.0
+
 
 
 
