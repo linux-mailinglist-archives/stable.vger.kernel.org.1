@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-56702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCE2F92459B
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:24:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B899244EC
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:16:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 430FBB23C7C
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:24:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D56A1F215B4
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1613D1BE22B;
-	Tue,  2 Jul 2024 17:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2361BE251;
+	Tue,  2 Jul 2024 17:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fOEGXXxL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IeG+ufzN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E771BE223;
-	Tue,  2 Jul 2024 17:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09FD81BE223;
+	Tue,  2 Jul 2024 17:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941071; cv=none; b=YldIe3J5EzCc8zYfhekQ1Hs+loU5GlrOppnsWNM9Mtuoh6HsQ9uByBcn/e+toXSghh0OhqvSyO6ZLPPC7qlFoEQGfbC8yz/T9biie0hm2/iq8RuXUzCzGj1g0x8frQPB5JJsZSAxE0vMWXcGZJ/sp/RoyFiVMwebbfCh1PMSYXo=
+	t=1719940574; cv=none; b=AxSTNRjgYDZ4cmhzQ19BOUIwh81k4nWOyOXT6Aww06st81+RObzfN2iEwKGGzlrohIBEaI0V5G+IqP33fUGA6mLzfhMpnP3bYDZxHUdGNyDSQDuiuHWsWcOT7vqIj+/aE6mK8yCFVcueVDHvI6PGLorgDAOFjSiut1buThMTCLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941071; c=relaxed/simple;
-	bh=YkducO6tRX4Xm6JmCkpFjpb8I+zIgAweyD6NjS13sPM=;
+	s=arc-20240116; t=1719940574; c=relaxed/simple;
+	bh=H/c4Y/qfWhW6nftjHpED4gs5usWCkPH8nyX3BhprWLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZaZcXXmrMEs04LDJK5QHnYriwTFutkkFYPmI3EBrK68R5b/fK9ZFiVNLG80/uM64MpiGC0IpElBwisDwRZ8Cp63UtwOXVjy0N/nXohOBP7amTkca6Z6p/ZjcfuhgQZgkDMDg433x6q2E41KopBuBNgDwB6Ro/cu1iqBJo/jC2TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fOEGXXxL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389E6C116B1;
-	Tue,  2 Jul 2024 17:24:30 +0000 (UTC)
+	 MIME-Version; b=CXXQAaA8PVW+TTmvqv/CRH2XHoAzysbqswdfww5y15wgJlnBCahhHaLtv/X8cLn9NhuTdpYZR11rpBWWt+VPKLYjsa2TtU3izOX7By5mKG8SKRNv0GafQzc9dRCJfZxTKBvw8kq31kA7eCd7N4QeoLOIeg7MuWPdG0noOJJaLfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IeG+ufzN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71022C116B1;
+	Tue,  2 Jul 2024 17:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941071;
-	bh=YkducO6tRX4Xm6JmCkpFjpb8I+zIgAweyD6NjS13sPM=;
+	s=korg; t=1719940573;
+	bh=H/c4Y/qfWhW6nftjHpED4gs5usWCkPH8nyX3BhprWLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fOEGXXxLiTR3xst1X99Bk9rrycJPjkTTUmbiJZ3ijcBOpoXj1E3sARw+pD1JiYP/8
-	 enIrbt5JdGY9s0ncox+P7PNc5lDLt9+HwXPyFJRFgvUMssaFvIAfHgWvgtE6gr9Gaa
-	 APAihn3+h07nadZ7oEq6DbEDyxQ3vRAB0c6oCu0Q=
+	b=IeG+ufzNNo6uCZqQOs6FsoOUaML+IGBQv3HwlpG4ORNh8jZnoc3VN5y00pHWdGZJp
+	 CXqD+QMcbIWI2IMm9OkE9AkZU8Iy9/+sUy+LcIA01XON29YNOJLb9yIIpvwTc6u/hb
+	 KruUVATXWloSzEwz6Fxnp64Lk25TDSJFc7MPj87I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dirk Su <dirk.su@canonical.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 120/163] ALSA: hda/realtek: fix mute/micmute LEDs dont work for EliteBook 645/665 G11.
+	syzbot+e49ccab73449180bc9be@syzkaller.appspotmail.com,
+	Kent Overstreet <kent.overstreet@linux.dev>
+Subject: [PATCH 6.9 196/222] bcachefs: Fix sb_field_downgrade validation
 Date: Tue,  2 Jul 2024 19:03:54 +0200
-Message-ID: <20240702170237.594817265@linuxfoundation.org>
+Message-ID: <20240702170251.477775156@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dirk Su <dirk.su@canonical.com>
+From: Kent Overstreet <kent.overstreet@linux.dev>
 
-commit 3cd59d8ef8df7d7a079f54d56502dae8f716b39b upstream.
+commit 692aa7a54b2b28d59f24b3bf8250837805484b99 upstream.
 
-HP EliteBook 645/665 G11 needs ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk to
-make mic-mute/audio-mute working.
+- bch2_sb_downgrade_validate() wasn't checking for a downgrade entry
+  extending past the end of the superblock section
 
-Signed-off-by: Dirk Su <dirk.su@canonical.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240626021437.77039-1-dirk.su@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+- for_each_downgrade_entry() is used in to_text() and needs to work on
+  malformed input; it also was missing a check for a field extending
+  past the end of the section
+
+Reported-by: syzbot+e49ccab73449180bc9be@syzkaller.appspotmail.com
+Fixes: 84f1638795da ("bcachefs: bch_sb_field_downgrade")
+Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/bcachefs/sb-downgrade.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9963,6 +9963,9 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8c7c, "HP ProBook 445 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8c7d, "HP ProBook 465 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8c7e, "HP ProBook 465 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x8c7f, "HP EliteBook 645 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x8c80, "HP EliteBook 645 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x8c81, "HP EliteBook 665 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8c89, "HP ProBook 460 G11", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c8a, "HP EliteBook 630", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c8c, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
+--- a/fs/bcachefs/sb-downgrade.c
++++ b/fs/bcachefs/sb-downgrade.c
+@@ -134,7 +134,8 @@ downgrade_entry_next_c(const struct bch_
+ #define for_each_downgrade_entry(_d, _i)						\
+ 	for (const struct bch_sb_field_downgrade_entry *_i = (_d)->entries;		\
+ 	     (void *) _i	< vstruct_end(&(_d)->field) &&				\
+-	     (void *) &_i->errors[0] < vstruct_end(&(_d)->field);			\
++	     (void *) &_i->errors[0] <= vstruct_end(&(_d)->field) &&			\
++	     (void *) downgrade_entry_next_c(_i) <= vstruct_end(&(_d)->field);		\
+ 	     _i = downgrade_entry_next_c(_i))
+ 
+ static int bch2_sb_downgrade_validate(struct bch_sb *sb, struct bch_sb_field *f,
+@@ -142,7 +143,9 @@ static int bch2_sb_downgrade_validate(st
+ {
+ 	struct bch_sb_field_downgrade *e = field_to_type(f, downgrade);
+ 
+-	for_each_downgrade_entry(e, i) {
++	for (const struct bch_sb_field_downgrade_entry *i = e->entries;
++	     (void *) i	< vstruct_end(&e->field);
++	     i = downgrade_entry_next_c(i)) {
+ 		if (BCH_VERSION_MAJOR(le16_to_cpu(i->version)) !=
+ 		    BCH_VERSION_MAJOR(le16_to_cpu(sb->version))) {
+ 			prt_printf(err, "downgrade entry with mismatched major version (%u != %u)",
 
 
 
