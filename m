@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-56750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2D939245CE
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:27:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C002924515
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:18:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FE1C28A720
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:27:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0C47289328
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50B81BE847;
-	Tue,  2 Jul 2024 17:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124DF1BD51A;
+	Tue,  2 Jul 2024 17:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJfJrmyZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lh64zrcA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929921514DC;
-	Tue,  2 Jul 2024 17:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62981B5814;
+	Tue,  2 Jul 2024 17:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941232; cv=none; b=J6VCOVdrS0NypLLV253w7Tue3025d2VAjKs2xvwJ7NqtSIIBO744rzi6uO6xEXov54LMJBg6NsskfCytt2gleFQE+jSEeJRm4BTnUtvR2EyCAIQawLjwyY/+0ErFnG2l7HKZnUrwVsRTxNRhf63KyxcHg4DxE+wRD1Mg39MNT10=
+	t=1719940668; cv=none; b=RriATJXTBDJQGntZyzJIy7RR05SKZocbdIWUm9VsFI0XZYhPFgaXr5/pUOpXfz8yLPcHLCOMN6+ZvDwqP0W/6JeLAlfabmgYD4+mhGnfut+etCCXK2UaQqxuFGqKiO/k5XRirQa6uoogEQdQWKpUfCni3yJnSLS+8d5DgTlVaY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941232; c=relaxed/simple;
-	bh=DzrzmuicDvTk7sQyURiR4pEWTzgBqgQ2E24KzjpIIPk=;
+	s=arc-20240116; t=1719940668; c=relaxed/simple;
+	bh=qayHwMkQxjUBr7nC3iZlW7fMiMHw9ttqrEbJj/D2LaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RRyeRV9Y0p2Iht5EIsTqGsW8bvvmyItqa/6s+LQHn8ZZMSamN5bZ9LqmfR6s/7b2XL6oGfXkQZjoVVL/1ASHwrd6QnRwWXytDQBRUTLUSBkDTuxM1cUDk5T8iCAW5RRxX/7EM83aLuMN8BVkAyjqpywtMoUOTxY6Ww7sGr6CaOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJfJrmyZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4AAC116B1;
-	Tue,  2 Jul 2024 17:27:11 +0000 (UTC)
+	 MIME-Version; b=oi/38dt7FfkJZx8LpIRpkZgQli+VaHXXYL64NrusEGZQwMlp7q8D2gws1EMzzwSP2JuKWgUdXBXRPZENmfIuAoFtsgyk5iRILrGotVQxXRpAW5fg0us9sJETKYerHIEoaO7AzT6+r9+xZHhjliy8CWpNPtUDQGULc/wxEz9Eth8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lh64zrcA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C362C116B1;
+	Tue,  2 Jul 2024 17:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941232;
-	bh=DzrzmuicDvTk7sQyURiR4pEWTzgBqgQ2E24KzjpIIPk=;
+	s=korg; t=1719940668;
+	bh=qayHwMkQxjUBr7nC3iZlW7fMiMHw9ttqrEbJj/D2LaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zJfJrmyZw8ploLXjVrn5sak4CI3wo6aymeZ5pKNc3BtDlrr0yJmwif62JhOtHcCaj
-	 Mh3giTFMzJKpWMKj4yN1AiNVkoze+Fgyzf45JVHHqNFKAeRJagut909febY6gnV1lt
-	 axaq2Zqd1Voaaqw/TwNRu3UTxT/+c7cuRMUkHbvg=
+	b=lh64zrcAGXrgteJGIzSgVYlosR4q0CSi9L7vW0TpdpmDrceQP5BqKzI5bjewxci6/
+	 uXAYPxAQ+etNLsKsjoliO6L9935KOu1EknDryqLu/dK4BzRZiFsjwOXqfdMVtTkuMF
+	 KGoImXCIZVANfuhbXHqFseFUgyVB/QtzyKfOPXug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Michael Strauss <michael.strauss@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.6 141/163] drm/amd/display: Send DP_TOTAL_LTTPR_CNT during detection if LTTPR is present
+	Alex Bee <knaerzche@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 217/222] arm64: dts: rockchip: Add sound-dai-cells for RK3368
 Date: Tue,  2 Jul 2024 19:04:15 +0200
-Message-ID: <20240702170238.390502441@linuxfoundation.org>
+Message-ID: <20240702170252.282164530@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Strauss <michael.strauss@amd.com>
+From: Alex Bee <knaerzche@gmail.com>
 
-commit 2ec6c7f802332d1eff16f03e7c757f1543ee1183 upstream.
+[ Upstream commit 8d7ec44aa5d1eb94a30319074762a1740440cdc8 ]
 
-[WHY]
-New register field added in DP2.1 SCR, needed for auxless ALPM
+Add the missing #sound-dai-cells for RK3368's I2S and S/PDIF controllers.
 
-[HOW]
-Echo value read from 0xF0007 back to sink
-
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Michael Strauss <michael.strauss@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f7d89dfe1e31 ("arm64: dts: rockchip: add i2s nodes support for RK3368 SoCs")
+Fixes: 0328d68ea76d ("arm64: dts: rockchip: add rk3368 spdif node")
+Signed-off-by: Alex Bee <knaerzche@gmail.com>
+Link: https://lore.kernel.org/r/20240623090116.670607-4-knaerzche@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c |   10 +++++++++-
- drivers/gpu/drm/amd/display/include/dpcd_defs.h                    |    5 +++++
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3368.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-@@ -1584,9 +1584,17 @@ static bool retrieve_link_cap(struct dc_
- 			return false;
- 	}
+diff --git a/arch/arm64/boot/dts/rockchip/rk3368.dtsi b/arch/arm64/boot/dts/rockchip/rk3368.dtsi
+index 62af0cb94839b..5ce82b64b6836 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3368.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3368.dtsi
+@@ -793,6 +793,7 @@
+ 		dma-names = "tx";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&spdif_tx>;
++		#sound-dai-cells = <0>;
+ 		status = "disabled";
+ 	};
  
--	if (dp_is_lttpr_present(link))
-+	if (dp_is_lttpr_present(link)) {
- 		configure_lttpr_mode_transparent(link);
+@@ -804,6 +805,7 @@
+ 		clocks = <&cru SCLK_I2S_2CH>, <&cru HCLK_I2S_2CH>;
+ 		dmas = <&dmac_bus 6>, <&dmac_bus 7>;
+ 		dma-names = "tx", "rx";
++		#sound-dai-cells = <0>;
+ 		status = "disabled";
+ 	};
  
-+		// Echo TOTAL_LTTPR_CNT back downstream
-+		core_link_write_dpcd(
-+				link,
-+				DP_TOTAL_LTTPR_CNT,
-+				&link->dpcd_caps.lttpr_caps.phy_repeater_cnt,
-+				sizeof(link->dpcd_caps.lttpr_caps.phy_repeater_cnt));
-+	}
-+
- 	/* Read DP tunneling information. */
- 	status = dpcd_get_tunneling_device_data(link);
+@@ -817,6 +819,7 @@
+ 		dma-names = "tx", "rx";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&i2s_8ch_bus>;
++		#sound-dai-cells = <0>;
+ 		status = "disabled";
+ 	};
  
---- a/drivers/gpu/drm/amd/display/include/dpcd_defs.h
-+++ b/drivers/gpu/drm/amd/display/include/dpcd_defs.h
-@@ -177,4 +177,9 @@ enum dpcd_psr_sink_states {
- #define DP_SINK_PR_PIXEL_DEVIATION_PER_LINE     0x379
- #define DP_SINK_PR_MAX_NUMBER_OF_DEVIATION_LINE 0x37A
- 
-+/* Remove once drm_dp_helper.h is updated upstream */
-+#ifndef DP_TOTAL_LTTPR_CNT
-+#define DP_TOTAL_LTTPR_CNT                                  0xF000A /* 2.1 */
-+#endif
-+
- #endif /* __DAL_DPCD_DEFS_H__ */
+-- 
+2.43.0
+
 
 
 
