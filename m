@@ -1,132 +1,210 @@
-Return-Path: <stable+bounces-56313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDB6C91EE31
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 07:15:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D47A091EEB5
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 08:02:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F3B51F22982
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 05:15:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89A022847C5
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 06:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2484779E;
-	Tue,  2 Jul 2024 05:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D4F74CB23;
+	Tue,  2 Jul 2024 06:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="g+/6Qg7r"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ia6Wdthh";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QNbMJsVZ";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ia6Wdthh";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QNbMJsVZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3762A339B1
-	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 05:15:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6066A342;
+	Tue,  2 Jul 2024 06:02:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719897331; cv=none; b=QxNYaU24b88EvL8J0xehJK5zcjk6m4VPYcBFJkmGTgdGoSL5hNA8Ec/qtMQsWiVCdT7Sy9/Ub8qEdMaKfOAnBZu86PUZPa7wgVOaEY+oWzQ+OGo5URDPljQ9gHK16OzPIAL0UXa/eZYKZmuBdCbUMLH9YJ/7xW0rZH536GsIzj8=
+	t=1719900156; cv=none; b=e+uK60TUSCIGztcHPQDjBDQRdJ0ETBuhJCcybxze/+9l7y6UKNsfeEUVRFnMJJ1vLybOcEV5V8bcRPP6Sn2kxHeiyHli2aFhYhmw9wNvjHZ89O4bNVltZkiOBlMowF01PTWEMmKnwKwxMsnRyWVqQtPY1hOaJT2ItNhsLSwYmmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719897331; c=relaxed/simple;
-	bh=gwUHLMvROBtiR4lWNGAYwsWo7SWaaTdIfS35b+n6CSo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NCFY02JiFBq1L8tnoJzd7PHBpiHN7reuWMNnj1biKDrdBlhKlhq45b3cXzM+pIO7CXl7i2Jqg/kqQfa3h5P6aMjMTJiwzjzC0s5Y5v9EhTIdC5VmDt1wsShPB6uw7bdCSJoeflYqg3uCo3t/59Q3tSVvtmQr/tdUfqLqud+RapI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=g+/6Qg7r; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-7182a634815so2191032a12.3
-        for <stable@vger.kernel.org>; Mon, 01 Jul 2024 22:15:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719897329; x=1720502129; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BSVGA1NqzD8+RwsUi1pxJNxEDfClGTBrTdKnbsjw64U=;
-        b=g+/6Qg7ryDXx7+kvz8/YDqFcaQI0fXoH9suMQV0UkGd5IEuO8HoYpq26XnoNF1Iwbq
-         bmphLPC1lEbt3IfuYJ0q5MAUX6Y33MoEPAdFOHOZIQa/miQGrvyTxS9NbM0p1j0coT8I
-         zq9FXqEGj3ySUo3I7sfMZ2aL9wOQYQ2EfEho99+R8aWvQOd2rwTJMfeK0HJpWNzFUncV
-         UdRefSYMm6SqAch9AyxV08LjknqpN/OPUhNrcpLPxv+UBAhNhdxAqHyhB6dUZYzoEsC7
-         1Jcx75IIE2kBiIy0Z/1f1uZrPBVPtXPsPfbZbIMISme3qNnXHHUvElu+G5xgIrfv+tgC
-         MLiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719897329; x=1720502129;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BSVGA1NqzD8+RwsUi1pxJNxEDfClGTBrTdKnbsjw64U=;
-        b=sMjJGm6KujPReN8D43K8zMSRI/IHa52JTbz3B0yHyA++L1usCdxx/ASwgnJn/Gc3cB
-         FtlU8rgalGnlGy7q9J4yeAzzOy/2YoHbFMdwsLwebL2sDnclih7AH8/M2BNcm3Grjyyr
-         BXZfyBdxERIoCLsBC/xeHBxdW/1VDlRtY7iwh5vxbmEAtceoRhAwMybNfKLudSJsx9N8
-         eeSltArpHRyCPzG8xoUR/zZIMeH0zaMcnZCqaUqiA/LBP7HAzkEze2F2cprDcovOSJnX
-         f36tYUysc+RFNfKgz2NKPAiJ+JEpI0jLSYplGrQ6WF4zGo+QqZzy9VcJB0IG+4T8xTDn
-         Im7w==
-X-Forwarded-Encrypted: i=1; AJvYcCVL/cU3CVPTevC8EhAY3N5HeemMP0awIcRtPzAtt3eWzA2EErJ818CjLuFPPU7+NqUv7zWUx0nn9RmT+XwlNUqg/olt7fdz
-X-Gm-Message-State: AOJu0YxYBqs0A47uMU0nRUbrDoPlCaFgs5LzMZ4/INhgtfBE70hlfj+0
-	BvrchaBvldHU081psITLriAD584xENZ0FbEjB4NEkB1AdKiJmAiuEzWJpj6zqmc=
-X-Google-Smtp-Source: AGHT+IEm7OBi3HKDMeGDVx09VV6N1pDpq1JjC1MRP7keTE059spnR/JoI4AduNHYTeO/MMUWdGUrcQ==
-X-Received: by 2002:a05:6a21:3983:b0:1be:e1f9:a33 with SMTP id adf61e73a8af0-1bef610d0femr7432248637.32.1719897329448;
-        Mon, 01 Jul 2024 22:15:29 -0700 (PDT)
-Received: from localhost ([122.172.82.13])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fad58e84d7sm61170145ad.74.2024.07.01.22.15.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jul 2024 22:15:28 -0700 (PDT)
-Date: Tue, 2 Jul 2024 10:45:26 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
-	Stephen Boyd <sboyd@kernel.org>, Nikunj Kela <nkela@quicinc.com>,
-	Prasad Sodagudi <psodagud@quicinc.com>, linux-pm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-tegra@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] OPP: Fix support for required OPPs for multiple PM
- domains
-Message-ID: <20240702051526.hyqhvmxnywofsjp2@vireshk-i7>
-References: <20240618155013.323322-1-ulf.hansson@linaro.org>
- <20240625105425.pkociumt4biv4j36@vireshk-i7>
- <CAPDyKFpLfBjozpcOzKp4jngkYenqSdpmejvCK37XvE1-WbBY2g@mail.gmail.com>
- <20240701114748.hodf6pngk7opx373@vireshk-i7>
+	s=arc-20240116; t=1719900156; c=relaxed/simple;
+	bh=kGvkyIJchibKQwsRixensZtOji8fEHU+wBr15WUN4rA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IlV8JLXaiZj9PUKgTGS19olg00dKPmfYy5crQAgx72aC84PYNRViA7071i+/wari104GqIgZiJEKOa898NG+Pa0C9xgZLkabqMVzXKjPZ7jadA6SIKKQzrXAsLICHD+ds3jVhzEAGoiae3N7uu4T4NPP+kwb73zfzgiDOBIi8ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ia6Wdthh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QNbMJsVZ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ia6Wdthh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QNbMJsVZ; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id AA1A11FB84;
+	Tue,  2 Jul 2024 06:02:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1719900136; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vCyFo7qTaIUmUWUVVm7e2zEuFe/h+LUUA4eXNYgfnWE=;
+	b=ia6WdthhZxnuf0zzE8iw3tHplSmY+zsIsUR/hgKA+vxPH2FNKAYOrC9yX0M+YIj5/cJ18t
+	8zGyXziKILCqOCTpQxIUSbfw/o+7pzMhe2XyQhXzekK7WyUxCdJRknSCBr1hPyQzOA12Kf
+	nXLdtdcpCN7ey+xvOj3sv2Xg4P2wRrc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1719900136;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vCyFo7qTaIUmUWUVVm7e2zEuFe/h+LUUA4eXNYgfnWE=;
+	b=QNbMJsVZnqU3O+ZLbWky7BRI6nwiOkQZl5v1Zo6N6/E+VRKAio3/JuRt+00nMeaKT7OlSq
+	MGxyg5sAkwWoJkAw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ia6Wdthh;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QNbMJsVZ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1719900136; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vCyFo7qTaIUmUWUVVm7e2zEuFe/h+LUUA4eXNYgfnWE=;
+	b=ia6WdthhZxnuf0zzE8iw3tHplSmY+zsIsUR/hgKA+vxPH2FNKAYOrC9yX0M+YIj5/cJ18t
+	8zGyXziKILCqOCTpQxIUSbfw/o+7pzMhe2XyQhXzekK7WyUxCdJRknSCBr1hPyQzOA12Kf
+	nXLdtdcpCN7ey+xvOj3sv2Xg4P2wRrc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1719900136;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vCyFo7qTaIUmUWUVVm7e2zEuFe/h+LUUA4eXNYgfnWE=;
+	b=QNbMJsVZnqU3O+ZLbWky7BRI6nwiOkQZl5v1Zo6N6/E+VRKAio3/JuRt+00nMeaKT7OlSq
+	MGxyg5sAkwWoJkAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 12ACA13A9A;
+	Tue,  2 Jul 2024 06:02:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Gl/fN+eXg2YmagAAD6G6ig
+	(envelope-from <hare@suse.de>); Tue, 02 Jul 2024 06:02:15 +0000
+Message-ID: <a78246f8-635f-4718-8190-5147a03495ea@suse.de>
+Date: Tue, 2 Jul 2024 08:02:15 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240701114748.hodf6pngk7opx373@vireshk-i7>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 3/7] ata: libata-scsi: Honor the D_SENSE bit for
+ CK_COND=1 and no error
+Content-Language: en-US
+To: Igor Pylypiv <ipylypiv@google.com>, Damien Le Moal <dlemoal@kernel.org>,
+ Niklas Cassel <cassel@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>, linux-ide@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240702024735.1152293-1-ipylypiv@google.com>
+ <20240702024735.1152293-4-ipylypiv@google.com>
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <20240702024735.1152293-4-ipylypiv@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-4.50 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
+	MX_GOOD(-0.01)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	ARC_NA(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: AA1A11FB84
+X-Spam-Flag: NO
+X-Spam-Score: -4.50
+X-Spam-Level: 
 
-On 01-07-24, 17:17, Viresh Kumar wrote:
-> What about this patch instead ?
+On 7/2/24 04:47, Igor Pylypiv wrote:
+> SAT-5 revision 8 specification removed the text about the ANSI INCITS
+> 431-2007 compliance which was requiring SCSI/ATA Translation (SAT) to
+> return descriptor format sense data for the ATA PASS-THROUGH commands
+> regardless of the setting of the D_SENSE bit.
 > 
-> diff --git a/drivers/opp/core.c b/drivers/opp/core.c
-> index 5f4598246a87..2086292f8355 100644
-> --- a/drivers/opp/core.c
-> +++ b/drivers/opp/core.c
-> @@ -1091,7 +1091,8 @@ static int _set_required_opps(struct device *dev, struct opp_table *opp_table,
->  		if (devs[index]) {
->  			required_opp = opp ? opp->required_opps[index] : NULL;
->  
-> -			ret = dev_pm_opp_set_opp(devs[index], required_opp);
-> +			/* Set required OPPs forcefully */
-> +			ret = dev_pm_opp_set_opp_forced(devs[index], required_opp, true);
+> Let's honor the D_SENSE bit for ATA PASS-THROUGH commands while
+> generating the "ATA PASS-THROUGH INFORMATION AVAILABLE" sense data.
+> 
+> SAT-5 revision 7
+> ================
+> 
+> 12.2.2.8 Fixed format sense data
+> 
+> Table 212 shows the fields returned in the fixed format sense data
+> (see SPC-5) for ATA PASS-THROUGH commands. SATLs compliant with ANSI
+> INCITS 431-2007, SCSI/ATA Translation (SAT) return descriptor format
+> sense data for the ATA PASS-THROUGH commands regardless of the setting
+> of the D_SENSE bit.
+> 
+> SAT-5 revision 8
+> ================
+> 
+> 12.2.2.8 Fixed format sense data
+> 
+> Table 211 shows the fields returned in the fixed format sense data
+> (see SPC-5) for ATA PASS-THROUGH commands.
+> 
+> Cc: stable@vger.kernel.org # 4.19+
+> Reported-by: Niklas Cassel <cassel@kernel.org>
+> Closes: https://lore.kernel.org/linux-ide/Zn1WUhmLglM4iais@ryzen.lan
+> Reviewed-by: Niklas Cassel <cassel@kernel.org>
+> Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
+> ---
+>   drivers/ata/libata-scsi.c | 7 ++-----
+>   1 file changed, 2 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+> index b59cbb5ce5a6..076fbeadce01 100644
+> --- a/drivers/ata/libata-scsi.c
+> +++ b/drivers/ata/libata-scsi.c
+> @@ -941,11 +941,8 @@ static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
+>   				   &sense_key, &asc, &ascq);
+>   		ata_scsi_set_sense(qc->dev, cmd, sense_key, asc, ascq);
+>   	} else {
+> -		/*
+> -		 * ATA PASS-THROUGH INFORMATION AVAILABLE
+> -		 * Always in descriptor format sense.
+> -		 */
+> -		scsi_build_sense(cmd, 1, RECOVERED_ERROR, 0, 0x1D);
+> +		/* ATA PASS-THROUGH INFORMATION AVAILABLE */
+> +		ata_scsi_set_sense(qc->dev, cmd, RECOVERED_ERROR, 0, 0x1D);
+>   	}
+>   }
+>   
+Reviewed-by: Hannes Reinecke <hare@suse.de>
 
-Maybe better to do just this instead:
+Cheers,
 
-diff --git a/drivers/opp/core.c b/drivers/opp/core.c
-index 5f4598246a87..9484acbeaa66 100644
---- a/drivers/opp/core.c
-+++ b/drivers/opp/core.c
-@@ -1386,7 +1386,12 @@ int dev_pm_opp_set_opp(struct device *dev, struct dev_pm_opp *opp)
-                return PTR_ERR(opp_table);
-        }
-
--       ret = _set_opp(dev, opp_table, opp, NULL, false);
-+       /*
-+        * For a genpd's OPP table, we always want to set the OPP (and
-+        * performance level) and let the genpd core take care of aggregating
-+        * the votes. Set `forced` to true for a genpd here.
-+        */
-+       ret = _set_opp(dev, opp_table, opp, NULL, opp_table->is_genpd);
-        dev_pm_opp_put_opp_table(opp_table);
-
-        return ret;
-
+Hannes
 -- 
-viresh
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
+
 
