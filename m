@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-56618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32CA192453F
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:20:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AC33924486
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:11:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E36A828AA77
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:20:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0679428ADD8
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 645111BD51A;
-	Tue,  2 Jul 2024 17:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB46F1BE22C;
+	Tue,  2 Jul 2024 17:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gd2xyZHS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBnGA2UY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213591B5814;
-	Tue,  2 Jul 2024 17:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638CB15B0FE;
+	Tue,  2 Jul 2024 17:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940786; cv=none; b=InN+8v/0tmRybBbU0Gu9eDt2Rb2UDiJ3bqJID1mgTr+xUAnZDvB6DbvHlNKw+1gEH4TohB2jBAObolZzcyvciQJSlvsSxSz6zrTcZYDYaOpGIgQZY0dxZWtK2hDy3cCpRgKSbhTObOBm6VDqO8MB2R3jZcg6ODUuQCPveIeRe+s=
+	t=1719940298; cv=none; b=p8EPZkV/2T0WaFNof2G/gghUpmuQkYsQTfp1ALV3lJ/0Cub36/dMqNUPCEA5R8QtYbF/8P4eGu0X00BqtICwRdIQ5aQpLwUsvzQ4z8VNo0rDxmVZAOSby1aNpUADZz50aQxUR2pEnvM5AThXbp3HuZNlQ0HRFfJ2XfE1GXbnmG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940786; c=relaxed/simple;
-	bh=IU0SHoL8aakp/WONAUKcZxeBawD8Je5V2vRup08wx/Y=;
+	s=arc-20240116; t=1719940298; c=relaxed/simple;
+	bh=y1OMkd4PU5mu51Dh/XRvQHM0l1ETSoduPcGl5vJz1UU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S2fVifZXWaVUj89rVF8IuqkL58AjIsJA4h545pvZj1/ZAKJCSov+nybvQL0aFTrzek6JjukHrYwcv4ubjLNlhjwCjLMx24wWeVOE2mVIPFalzcc4IaKPfYMm0izxYQ9O92NuYz4c0RmJBi2vGhkzqLfY6qL+b/URqQ2kihE2W44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gd2xyZHS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95DC5C116B1;
-	Tue,  2 Jul 2024 17:19:45 +0000 (UTC)
+	 MIME-Version; b=andq2UXuQDq2b/N7SLA+J2LnmWS+z+EbhbwMmnB05pBxfPpzcY3tFtIOn9flMzZM8pHv2l+P2IXS5wg1Ll+PI77XUTr3uOq00KE9J9iCaJR2QGi3KAEBiSH+SlwP0efX549zGA1uhqvFM7XR3cqyiVxj1D8FqayqlrbR5Rvqz6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBnGA2UY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F11C116B1;
+	Tue,  2 Jul 2024 17:11:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940786;
-	bh=IU0SHoL8aakp/WONAUKcZxeBawD8Je5V2vRup08wx/Y=;
+	s=korg; t=1719940298;
+	bh=y1OMkd4PU5mu51Dh/XRvQHM0l1ETSoduPcGl5vJz1UU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gd2xyZHSUjul0psZbCUogDE8XhS60YokXNCgGmfzI9iyLVbcDnblqLaAvySz7iPvd
-	 2Ax98QeFDJz90Yd0oy04egPuPV3LbY02a3heVv4lTrZG6Ubos1nYZy/zp8NcCMllBw
-	 Yewu57WVZ4e+S887oh8WzB7t+zEuGXF/u8ELjMuI=
+	b=MBnGA2UYd+eVu9+5qfEWIvlsuj+ovem8xIjmYJzBodYSGrLOUQfVK8RbhcIOmfFuG
+	 zikPNRh4PY9KUzfswzGNXLnCld2BAy5hzYDjQWkGFk6kOYa1b07aDWPu3fXUj9gdKs
+	 gp9jfCXK7u2mv0uJPhlm2TCKWE674JhCoQxeBN8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Enguerrand de Ribaucourt <enguerrand.de-ribaucourt@savoirfairelinux.com>,
-	Woojung Huh <Woojung.huh@microchip.com>,
-	Arun Ramadoss <arun.ramadoss@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 034/163] net: dsa: microchip: use collision based back pressure mode
-Date: Tue,  2 Jul 2024 19:02:28 +0200
-Message-ID: <20240702170234.349197184@linuxfoundation.org>
+Subject: [PATCH 6.9 111/222] x86: stop playing stack games in profile_pc()
+Date: Tue,  2 Jul 2024 19:02:29 +0200
+Message-ID: <20240702170248.209903892@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Enguerrand de Ribaucourt <enguerrand.de-ribaucourt@savoirfairelinux.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit d963c95bc9840d070a788c35e41b715a648717f7 ]
+[ Upstream commit 093d9603b60093a9aaae942db56107f6432a5dca ]
 
-Errata DS80000758 states that carrier sense back pressure mode can cause
-link down issues in 100BASE-TX half duplex mode. The datasheet also
-recommends to always use the collision based back pressure mode.
+The 'profile_pc()' function is used for timer-based profiling, which
+isn't really all that relevant any more to begin with, but it also ends
+up making assumptions based on the stack layout that aren't necessarily
+valid.
 
-Fixes: b987e98e50ab ("dsa: add DSA switch driver for Microchip KSZ9477")
-Signed-off-by: Enguerrand de Ribaucourt <enguerrand.de-ribaucourt@savoirfairelinux.com>
-Reviewed-by: Woojung Huh <Woojung.huh@microchip.com>
-Acked-by: Arun Ramadoss <arun.ramadoss@microchip.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Basically, the code tries to account the time spent in spinlocks to the
+caller rather than the spinlock, and while I support that as a concept,
+it's not worth the code complexity or the KASAN warnings when no serious
+profiling is done using timers anyway these days.
+
+And the code really does depend on stack layout that is only true in the
+simplest of cases.  We've lost the comment at some point (I think when
+the 32-bit and 64-bit code was unified), but it used to say:
+
+	Assume the lock function has either no stack frame or a copy
+	of eflags from PUSHF.
+
+which explains why it just blindly loads a word or two straight off the
+stack pointer and then takes a minimal look at the values to just check
+if they might be eflags or the return pc:
+
+	Eflags always has bits 22 and up cleared unlike kernel addresses
+
+but that basic stack layout assumption assumes that there isn't any lock
+debugging etc going on that would complicate the code and cause a stack
+frame.
+
+It causes KASAN unhappiness reported for years by syzkaller [1] and
+others [2].
+
+With no real practical reason for this any more, just remove the code.
+
+Just for historical interest, here's some background commits relating to
+this code from 2006:
+
+  0cb91a229364 ("i386: Account spinlocks to the caller during profiling for !FP kernels")
+  31679f38d886 ("Simplify profile_pc on x86-64")
+
+and a code unification from 2009:
+
+  ef4512882dbe ("x86: time_32/64.c unify profile_pc")
+
+but the basics of this thing actually goes back to before the git tree.
+
+Link: https://syzkaller.appspot.com/bug?extid=84fe685c02cd112a2ac3 [1]
+Link: https://lore.kernel.org/all/CAK55_s7Xyq=nh97=K=G1sxueOFrJDAvPOJAL4TPTCAYvmxO9_A@mail.gmail.com/ [2]
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/microchip/ksz9477.c     | 4 ++++
- drivers/net/dsa/microchip/ksz9477_reg.h | 1 +
- 2 files changed, 5 insertions(+)
+ arch/x86/kernel/time.c | 20 +-------------------
+ 1 file changed, 1 insertion(+), 19 deletions(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz9477.c b/drivers/net/dsa/microchip/ksz9477.c
-index 353c41e031f1a..a7e8fcdf25768 100644
---- a/drivers/net/dsa/microchip/ksz9477.c
-+++ b/drivers/net/dsa/microchip/ksz9477.c
-@@ -1112,6 +1112,10 @@ int ksz9477_setup(struct dsa_switch *ds)
- 	/* Enable REG_SW_MTU__2 reg by setting SW_JUMBO_PACKET */
- 	ksz_cfg(dev, REG_SW_MAC_CTRL_1, SW_JUMBO_PACKET, true);
+diff --git a/arch/x86/kernel/time.c b/arch/x86/kernel/time.c
+index e42faa792c079..52e1f3f0b361c 100644
+--- a/arch/x86/kernel/time.c
++++ b/arch/x86/kernel/time.c
+@@ -27,25 +27,7 @@
  
-+	/* Use collision based back pressure mode. */
-+	ksz_cfg(dev, REG_SW_MAC_CTRL_1, SW_BACK_PRESSURE,
-+		SW_BACK_PRESSURE_COLLISION);
-+
- 	/* Now we can configure default MTU value */
- 	ret = regmap_update_bits(ksz_regmap_16(dev), REG_SW_MTU__2, REG_SW_MTU_MASK,
- 				 VLAN_ETH_FRAME_LEN + ETH_FCS_LEN);
-diff --git a/drivers/net/dsa/microchip/ksz9477_reg.h b/drivers/net/dsa/microchip/ksz9477_reg.h
-index cba3dba58bc37..a2ef4b18349c4 100644
---- a/drivers/net/dsa/microchip/ksz9477_reg.h
-+++ b/drivers/net/dsa/microchip/ksz9477_reg.h
-@@ -267,6 +267,7 @@
- #define REG_SW_MAC_CTRL_1		0x0331
+ unsigned long profile_pc(struct pt_regs *regs)
+ {
+-	unsigned long pc = instruction_pointer(regs);
+-
+-	if (!user_mode(regs) && in_lock_functions(pc)) {
+-#ifdef CONFIG_FRAME_POINTER
+-		return *(unsigned long *)(regs->bp + sizeof(long));
+-#else
+-		unsigned long *sp = (unsigned long *)regs->sp;
+-		/*
+-		 * Return address is either directly at stack pointer
+-		 * or above a saved flags. Eflags has bits 22-31 zero,
+-		 * kernel addresses don't.
+-		 */
+-		if (sp[0] >> 22)
+-			return sp[0];
+-		if (sp[1] >> 22)
+-			return sp[1];
+-#endif
+-	}
+-	return pc;
++	return instruction_pointer(regs);
+ }
+ EXPORT_SYMBOL(profile_pc);
  
- #define SW_BACK_PRESSURE		BIT(5)
-+#define SW_BACK_PRESSURE_COLLISION	0
- #define FAIR_FLOW_CTRL			BIT(4)
- #define NO_EXC_COLLISION_DROP		BIT(3)
- #define SW_JUMBO_PACKET			BIT(2)
 -- 
 2.43.0
 
