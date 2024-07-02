@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E04F5924602
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 007979245CD
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:27:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DC081C21E6A
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78746B25A61
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B5811BE251;
-	Tue,  2 Jul 2024 17:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753571BE842;
+	Tue,  2 Jul 2024 17:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zc6CEazE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YrEwCRgJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C011514DC;
-	Tue,  2 Jul 2024 17:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7A51514DC;
+	Tue,  2 Jul 2024 17:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941397; cv=none; b=IGzfNuKHXSD4+C0prcouwuynd49FsjQ2cwXl267o0K1r4Q8YplZYlQQaBwyuIsfooK0oh4PFq/f5lyxnwgtNYu3s6EeD840ZG/ucqbRCEVNxWuwC2z420oidf1GF3TLYepjrP7b2s+hf9clWxiniRF2/jFsqz61pHptQz6kPAcY=
+	t=1719941226; cv=none; b=lJW/xScQTYkjwY/nAyzmApG57lZEn6jcaznd1uLnWgFH5wyhQWbzjadIC2LiY7ZVk7sm1j5N+ALkw1NYR+wO34pQIDABRXEAVdr002kdJf2uAQdV9HMqmKKqiMgnzue6jxq0OAzH7FEm/ECfHFiZqVRkHEXC0mqtKypaqMrvfpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941397; c=relaxed/simple;
-	bh=qFvIRaP5htAS3D6ey4tGPj75U04WBaiLyhcmkmDw0YQ=;
+	s=arc-20240116; t=1719941226; c=relaxed/simple;
+	bh=58sI27AyId/knF8KzrVLir853RDMIeBM6RIKmLimn8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NAAbUpRP/OCvTrVrBp6ZeHbG2IuxFm/8/jqeyOs5U9hFZwSQ2Qzp8KI4KGJDPxaTD6OF6X03YkmoSIK1OHBTngoau/93kbArzUJUte3+HV8ZuhEzI2TFIPU9YYwEL3LVtTeS9o4CBeNuuyZJMl9tn6g2gegKPjQFLaqGpEYTWAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zc6CEazE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A28DAC116B1;
-	Tue,  2 Jul 2024 17:29:56 +0000 (UTC)
+	 MIME-Version; b=NP16H8XhLhIXQ/KTsrS1JxrDqCKyUD741Lx4zwGHyZwTIhn6TgiNUU4rBlzyJMyRfDxvxxwuubRI7VuS2scbvxRz6/fEbmtNBzXon/lVf3aE4ZNs+qqhyA1VkuRFlANbJuvzgyw1lSp2Sx/KhW08k/ZRxKFXvihLu4zsMfOLYaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YrEwCRgJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA346C116B1;
+	Tue,  2 Jul 2024 17:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941397;
-	bh=qFvIRaP5htAS3D6ey4tGPj75U04WBaiLyhcmkmDw0YQ=;
+	s=korg; t=1719941226;
+	bh=58sI27AyId/knF8KzrVLir853RDMIeBM6RIKmLimn8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zc6CEazEkQf5pRlFp3Tt2P9ll7bwQGIgUYvuFtvEBivz8Y3XWpPiaJc1E3606bziH
-	 lpldLfxgAdDO+59hTsEDz/CVtAdXBzOvKXAg73Y2Uz4WDkeAHpfspRPSGcMXuBSDRr
-	 z55LMW6UMlGJV4C/pM+3l48xlLKeB/i1gCvjCg5M=
+	b=YrEwCRgJGqXs76RemIMmoJo0L6XLvE/2lJEgJOVFPFV4UW4lMdXDzuwWxtLynSVBQ
+	 9hOeYw/m8LDMaIROpcFrtoupYEGVwrpIVfvztjW+w9nFHnvuOTixvYv8yniRpxY5Tz
+	 kKwwt0uK6AJPoj8typ86/ySST6Tv6xFZkCUN76T4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Davis <afd@ti.com>,
-	Nishanth Menon <nm@ti.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/128] soc: ti: wkup_m3_ipc: Send NULL dummy message instead of pointer message
-Date: Tue,  2 Jul 2024 19:04:12 +0200
-Message-ID: <20240702170228.163923417@linuxfoundation.org>
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.6 139/163] drm/i915/gt: Fix potential UAF by revoke of fence registers
+Date: Tue,  2 Jul 2024 19:04:13 +0200
+Message-ID: <20240702170238.314598097@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Davis <afd@ti.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-[ Upstream commit ddbf3204f600a4d1f153498f618369fca352ae00 ]
+commit 996c3412a06578e9d779a16b9e79ace18125ab50 upstream.
 
-mbox_send_message() sends a u32 bit message, not a pointer to a message.
-We only convert to a pointer type as a generic type. If we want to send
-a dummy message of 0, then simply send 0 (NULL).
+CI has been sporadically reporting the following issue triggered by
+igt@i915_selftest@live@hangcheck on ADL-P and similar machines:
 
-Signed-off-by: Andrew Davis <afd@ti.com>
-Link: https://lore.kernel.org/r/20240325165507.30323-1-afd@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+<6> [414.049203] i915: Running intel_hangcheck_live_selftests/igt_reset_evict_fence
+...
+<6> [414.068804] i915 0000:00:02.0: [drm] GT0: GUC: submission enabled
+<6> [414.068812] i915 0000:00:02.0: [drm] GT0: GUC: SLPC enabled
+<3> [414.070354] Unable to pin Y-tiled fence; err:-4
+<3> [414.071282] i915_vma_revoke_fence:301 GEM_BUG_ON(!i915_active_is_idle(&fence->active))
+...
+<4>[  609.603992] ------------[ cut here ]------------
+<2>[  609.603995] kernel BUG at drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c:301!
+<4>[  609.604003] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+<4>[  609.604006] CPU: 0 PID: 268 Comm: kworker/u64:3 Tainted: G     U  W          6.9.0-CI_DRM_14785-g1ba62f8cea9c+ #1
+<4>[  609.604008] Hardware name: Intel Corporation Alder Lake Client Platform/AlderLake-P DDR4 RVP, BIOS RPLPFWI1.R00.4035.A00.2301200723 01/20/2023
+<4>[  609.604010] Workqueue: i915 __i915_gem_free_work [i915]
+<4>[  609.604149] RIP: 0010:i915_vma_revoke_fence+0x187/0x1f0 [i915]
+...
+<4>[  609.604271] Call Trace:
+<4>[  609.604273]  <TASK>
+...
+<4>[  609.604716]  __i915_vma_evict+0x2e9/0x550 [i915]
+<4>[  609.604852]  __i915_vma_unbind+0x7c/0x160 [i915]
+<4>[  609.604977]  force_unbind+0x24/0xa0 [i915]
+<4>[  609.605098]  i915_vma_destroy+0x2f/0xa0 [i915]
+<4>[  609.605210]  __i915_gem_object_pages_fini+0x51/0x2f0 [i915]
+<4>[  609.605330]  __i915_gem_free_objects.isra.0+0x6a/0xc0 [i915]
+<4>[  609.605440]  process_scheduled_works+0x351/0x690
+...
+
+In the past, there were similar failures reported by CI from other IGT
+tests, observed on other platforms.
+
+Before commit 63baf4f3d587 ("drm/i915/gt: Only wait for GPU activity
+before unbinding a GGTT fence"), i915_vma_revoke_fence() was waiting for
+idleness of vma->active via fence_update().   That commit introduced
+vma->fence->active in order for the fence_update() to be able to wait
+selectively on that one instead of vma->active since only idleness of
+fence registers was needed.  But then, another commit 0d86ee35097a
+("drm/i915/gt: Make fence revocation unequivocal") replaced the call to
+fence_update() in i915_vma_revoke_fence() with only fence_write(), and
+also added that GEM_BUG_ON(!i915_active_is_idle(&fence->active)) in front.
+No justification was provided on why we might then expect idleness of
+vma->fence->active without first waiting on it.
+
+The issue can be potentially caused by a race among revocation of fence
+registers on one side and sequential execution of signal callbacks invoked
+on completion of a request that was using them on the other, still
+processed in parallel to revocation of those fence registers.  Fix it by
+waiting for idleness of vma->fence->active in i915_vma_revoke_fence().
+
+Fixes: 0d86ee35097a ("drm/i915/gt: Make fence revocation unequivocal")
+Closes: https://gitlab.freedesktop.org/drm/intel/issues/10021
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: stable@vger.kernel.org # v5.8+
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240603195446.297690-2-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit 24bb052d3dd499c5956abad5f7d8e4fd07da7fb1)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/ti/wkup_m3_ipc.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/soc/ti/wkup_m3_ipc.c b/drivers/soc/ti/wkup_m3_ipc.c
-index 343c58ed58961..103d793bae748 100644
---- a/drivers/soc/ti/wkup_m3_ipc.c
-+++ b/drivers/soc/ti/wkup_m3_ipc.c
-@@ -16,7 +16,6 @@
- #include <linux/irq.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/omap-mailbox.h>
- #include <linux/platform_device.h>
- #include <linux/remoteproc.h>
- #include <linux/suspend.h>
-@@ -314,7 +313,6 @@ static irqreturn_t wkup_m3_txev_handler(int irq, void *ipc_data)
- static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
- {
- 	struct device *dev = m3_ipc->dev;
--	mbox_msg_t dummy_msg = 0;
- 	int ret;
+--- a/drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c
++++ b/drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c
+@@ -298,6 +298,7 @@ void i915_vma_revoke_fence(struct i915_v
+ 		return;
  
- 	if (!m3_ipc->mbox) {
-@@ -330,7 +328,7 @@ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
- 	 * the RX callback to avoid multiple interrupts being received
- 	 * by the CM3.
- 	 */
--	ret = mbox_send_message(m3_ipc->mbox, &dummy_msg);
-+	ret = mbox_send_message(m3_ipc->mbox, NULL);
- 	if (ret < 0) {
- 		dev_err(dev, "%s: mbox_send_message() failed: %d\n",
- 			__func__, ret);
-@@ -352,7 +350,6 @@ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
- static int wkup_m3_ping_noirq(struct wkup_m3_ipc *m3_ipc)
- {
- 	struct device *dev = m3_ipc->dev;
--	mbox_msg_t dummy_msg = 0;
- 	int ret;
+ 	GEM_BUG_ON(fence->vma != vma);
++	i915_active_wait(&fence->active);
+ 	GEM_BUG_ON(!i915_active_is_idle(&fence->active));
+ 	GEM_BUG_ON(atomic_read(&fence->pin_count));
  
- 	if (!m3_ipc->mbox) {
-@@ -361,7 +358,7 @@ static int wkup_m3_ping_noirq(struct wkup_m3_ipc *m3_ipc)
- 		return -EIO;
- 	}
- 
--	ret = mbox_send_message(m3_ipc->mbox, &dummy_msg);
-+	ret = mbox_send_message(m3_ipc->mbox, NULL);
- 	if (ret < 0) {
- 		dev_err(dev, "%s: mbox_send_message() failed: %d\n",
- 			__func__, ret);
--- 
-2.43.0
-
 
 
 
