@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-56495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5081D9244A1
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:13:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C038A92455A
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:21:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD1E41F21A91
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:13:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A8EE289BFF
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:21:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7311B1BE24B;
-	Tue,  2 Jul 2024 17:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6981B5814;
+	Tue,  2 Jul 2024 17:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1YelsW/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pu0iK+mW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332F41BE244;
-	Tue,  2 Jul 2024 17:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AB514293;
+	Tue,  2 Jul 2024 17:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940374; cv=none; b=nl8Uu5ZPAjcDlxKH1gZkr6Bj3IlEhzUt3RqwAiM/cWwumzdeOYfu9wPd6E8pkpJwkL5+epupuaOjWlkAPByVem0d4xU7xFp8uYwq7/Px+v9WJAoSCEeTQ5YRspuRfB/l5hVfToE0+59rQE5Jr9llx2JQ6wwpsbtkqthCYwX82RA=
+	t=1719940867; cv=none; b=Ib5+b4MoS0++b2pmM7zn3Ku6vIsZguUO1AlgGYh6evbecxf2edOH5IXWBsQByXW+g9Cu5JxMhfHqO4NqQ7nbAaNQAvVx0SOuBSVdkLiRQpc+Blj1gYscXVO/evvSIvicBKQ34dDtn45i0Dm/gu0R7ZcPv6s2G7OG5c5P9O9NTAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940374; c=relaxed/simple;
-	bh=5cp0K2rRLxBy5IZHVl7fI0Lc2nhmVPgaxqkCVBZE074=;
+	s=arc-20240116; t=1719940867; c=relaxed/simple;
+	bh=GYKGm4JdOtQEg92vAwkJNyXx+7LlBVXiOvUTpOj/bGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o7S2YDUGoD02TXRusgTOqPK4AmpP1KpQDglA76SDIlaBZrJGa05tnFhHDkZbtn1U59oPAxj8QOJ1Pnvbvk45kJGKQxcii7tdK0RrNPckqoFfHL1r02mSmwzEVGkQRUUiAdxyWN4PuGCZCCT+UN7Wfq+o0xrT7LVVWcUgTf2pz2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N1YelsW/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB9CC116B1;
-	Tue,  2 Jul 2024 17:12:53 +0000 (UTC)
+	 MIME-Version; b=TcasGWta29ApcILob9eDWwvz8UvBzx9u+xQPJiDVCpqCIkf18C7lenzUcIq/sOS1acYm9tfdIaJy7PlR0fQy4g1uh2muNW70AcdJwibmZKuA6cGqegqOh3ZuX5J/uo0tB0naN11PdiPu+L3EyJctFJ9tRgtS0Gj0qBbV0IyVGMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pu0iK+mW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21AE5C116B1;
+	Tue,  2 Jul 2024 17:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940373;
-	bh=5cp0K2rRLxBy5IZHVl7fI0Lc2nhmVPgaxqkCVBZE074=;
+	s=korg; t=1719940866;
+	bh=GYKGm4JdOtQEg92vAwkJNyXx+7LlBVXiOvUTpOj/bGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N1YelsW/HE6bXSS5gy+VRBzzDSS8cfwlYzCjcACiJhgJDfmcs1C1Pjf1zQ4l7Kxpa
-	 9HoThxfxTnGDninKtkotr4Y+vaDDgwTn8AVPhLujPB4pxJPPDffr30w/mfSNXZ8lLf
-	 Y6AYvpYzeQPMW1Y26+PIWu+1qtU9aYRz4IQR16kw=
+	b=pu0iK+mWYwWmyKnG2EQwfj68nsM0Pqh87x5Uf79MkthqP++UvNl6KX6fHSVCNCzlA
+	 ijZTjZFsVS/CaD/tgnHZcahdViFRj64+DJoUPQUMU7LRW7OfvibwdkTD4i8OdXxao3
+	 Ae8b+eviebmym9qODlScYH9LMa0h5dv3xVCRlbTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.g.garry@oracle.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	syzbot+603bcd9b0bf1d94dbb9b@syzkaller.appspotmail.com,
+	syzbot+eb02dc7f03dce0ef39f3@syzkaller.appspotmail.com,
+	syzbot+b4e65ca24fd4d0c734c3@syzkaller.appspotmail.com,
+	syzbot+d2b113dc9fea5e1d2848@syzkaller.appspotmail.com,
+	syzbot+1a3cf6f08d68868f9db3@syzkaller.appspotmail.com,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 135/222] ata,scsi: libata-core: Do not leak memory for ata_port struct members
+Subject: [PATCH 6.6 059/163] bpf: Mark bpf prog stack with kmsan_unposion_memory in interpreter mode
 Date: Tue,  2 Jul 2024 19:02:53 +0200
-Message-ID: <20240702170249.130821129@linuxfoundation.org>
+Message-ID: <20240702170235.298944140@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +68,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-[ Upstream commit f6549f538fe0b2c389e1a7037f4e21039e25137a ]
+[ Upstream commit e8742081db7d01f980c6161ae1e8a1dbc1e30979 ]
 
-libsas is currently not freeing all the struct ata_port struct members,
-e.g. ncq_sense_buf for a driver supporting Command Duration Limits (CDL).
+syzbot reported uninit memory usages during map_{lookup,delete}_elem.
 
-Add a function, ata_port_free(), that is used to free a ata_port,
-including its struct members. It makes sense to keep the code related to
-freeing a ata_port in its own function, which will also free all the
-struct members of struct ata_port.
+==========
+BUG: KMSAN: uninit-value in __dev_map_lookup_elem kernel/bpf/devmap.c:441 [inline]
+BUG: KMSAN: uninit-value in dev_map_lookup_elem+0xf3/0x170 kernel/bpf/devmap.c:796
+__dev_map_lookup_elem kernel/bpf/devmap.c:441 [inline]
+dev_map_lookup_elem+0xf3/0x170 kernel/bpf/devmap.c:796
+____bpf_map_lookup_elem kernel/bpf/helpers.c:42 [inline]
+bpf_map_lookup_elem+0x5c/0x80 kernel/bpf/helpers.c:38
+___bpf_prog_run+0x13fe/0xe0f0 kernel/bpf/core.c:1997
+__bpf_prog_run256+0xb5/0xe0 kernel/bpf/core.c:2237
+==========
 
-Fixes: 18bd7718b5c4 ("scsi: ata: libata: Handle completion of CDL commands using policy 0xD")
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20240629124210.181537-8-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+The reproducer should be in the interpreter mode.
+
+The C reproducer is trying to run the following bpf prog:
+
+    0: (18) r0 = 0x0
+    2: (18) r1 = map[id:49]
+    4: (b7) r8 = 16777216
+    5: (7b) *(u64 *)(r10 -8) = r8
+    6: (bf) r2 = r10
+    7: (07) r2 += -229
+            ^^^^^^^^^^
+
+    8: (b7) r3 = 8
+    9: (b7) r4 = 0
+   10: (85) call dev_map_lookup_elem#1543472
+   11: (95) exit
+
+It is due to the "void *key" (r2) passed to the helper. bpf allows uninit
+stack memory access for bpf prog with the right privileges. This patch
+uses kmsan_unpoison_memory() to mark the stack as initialized.
+
+This should address different syzbot reports on the uninit "void *key"
+argument during map_{lookup,delete}_elem.
+
+Reported-by: syzbot+603bcd9b0bf1d94dbb9b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/bpf/000000000000f9ce6d061494e694@google.com/
+Reported-by: syzbot+eb02dc7f03dce0ef39f3@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/bpf/000000000000a5c69c06147c2238@google.com/
+Reported-by: syzbot+b4e65ca24fd4d0c734c3@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/bpf/000000000000ac56fb06143b6cfa@google.com/
+Reported-by: syzbot+d2b113dc9fea5e1d2848@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/bpf/0000000000000d69b206142d1ff7@google.com/
+Reported-by: syzbot+1a3cf6f08d68868f9db3@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/bpf/0000000000006f876b061478e878@google.com/
+Tested-by: syzbot+1a3cf6f08d68868f9db3@syzkaller.appspotmail.com
+Suggested-by: Yonghong Song <yonghong.song@linux.dev>
+Suggested-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20240328185801.1843078-1-martin.lau@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-core.c          | 24 ++++++++++++++----------
- drivers/scsi/libsas/sas_ata.c      |  6 +++---
- drivers/scsi/libsas/sas_discover.c |  2 +-
- include/linux/libata.h             |  1 +
- 4 files changed, 19 insertions(+), 14 deletions(-)
+ kernel/bpf/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 2cf597edc013b..62237df4fe77e 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -5534,6 +5534,18 @@ struct ata_port *ata_port_alloc(struct ata_host *host)
- 	return ap;
- }
- 
-+void ata_port_free(struct ata_port *ap)
-+{
-+	if (!ap)
-+		return;
-+
-+	kfree(ap->pmp_link);
-+	kfree(ap->slave_link);
-+	kfree(ap->ncq_sense_buf);
-+	kfree(ap);
-+}
-+EXPORT_SYMBOL_GPL(ata_port_free);
-+
- static void ata_devres_release(struct device *gendev, void *res)
- {
- 	struct ata_host *host = dev_get_drvdata(gendev);
-@@ -5560,15 +5572,7 @@ static void ata_host_release(struct kref *kref)
- 	int i;
- 
- 	for (i = 0; i < host->n_ports; i++) {
--		struct ata_port *ap = host->ports[i];
--
--		if (!ap)
--			continue;
--
--		kfree(ap->pmp_link);
--		kfree(ap->slave_link);
--		kfree(ap->ncq_sense_buf);
--		kfree(ap);
-+		ata_port_free(host->ports[i]);
- 		host->ports[i] = NULL;
- 	}
- 	kfree(host);
-@@ -5951,7 +5955,7 @@ int ata_host_register(struct ata_host *host, const struct scsi_host_template *sh
- 	 * allocation time.
- 	 */
- 	for (i = host->n_ports; host->ports[i]; i++)
--		kfree(host->ports[i]);
-+		ata_port_free(host->ports[i]);
- 
- 	/* give ports names and add SCSI hosts */
- 	for (i = 0; i < host->n_ports; i++) {
-diff --git a/drivers/scsi/libsas/sas_ata.c b/drivers/scsi/libsas/sas_ata.c
-index 12e2653846e3f..70891a1e98a01 100644
---- a/drivers/scsi/libsas/sas_ata.c
-+++ b/drivers/scsi/libsas/sas_ata.c
-@@ -610,15 +610,15 @@ int sas_ata_init(struct domain_device *found_dev)
- 
- 	rc = ata_sas_tport_add(ata_host->dev, ap);
- 	if (rc)
--		goto destroy_port;
-+		goto free_port;
- 
- 	found_dev->sata_dev.ata_host = ata_host;
- 	found_dev->sata_dev.ap = ap;
- 
- 	return 0;
- 
--destroy_port:
--	kfree(ap);
-+free_port:
-+	ata_port_free(ap);
- free_host:
- 	ata_host_put(ata_host);
- 	return rc;
-diff --git a/drivers/scsi/libsas/sas_discover.c b/drivers/scsi/libsas/sas_discover.c
-index 8fb7c41c09624..48d975c6dbf2c 100644
---- a/drivers/scsi/libsas/sas_discover.c
-+++ b/drivers/scsi/libsas/sas_discover.c
-@@ -301,7 +301,7 @@ void sas_free_device(struct kref *kref)
- 
- 	if (dev_is_sata(dev) && dev->sata_dev.ap) {
- 		ata_sas_tport_delete(dev->sata_dev.ap);
--		kfree(dev->sata_dev.ap);
-+		ata_port_free(dev->sata_dev.ap);
- 		ata_host_put(dev->sata_dev.ata_host);
- 		dev->sata_dev.ata_host = NULL;
- 		dev->sata_dev.ap = NULL;
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index 324d792e7c786..186a6cbbbfbc6 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -1242,6 +1242,7 @@ extern int ata_slave_link_init(struct ata_port *ap);
- extern struct ata_port *ata_sas_port_alloc(struct ata_host *,
- 					   struct ata_port_info *, struct Scsi_Host *);
- extern void ata_port_probe(struct ata_port *ap);
-+extern void ata_port_free(struct ata_port *ap);
- extern int ata_sas_tport_add(struct device *parent, struct ata_port *ap);
- extern void ata_sas_tport_delete(struct ata_port *ap);
- extern int ata_sas_slave_configure(struct scsi_device *, struct ata_port *);
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index bdbce41d1bb4a..77a9b12e00af7 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -2174,6 +2174,7 @@ static unsigned int PROG_NAME(stack_size)(const void *ctx, const struct bpf_insn
+ 	u64 stack[stack_size / sizeof(u64)]; \
+ 	u64 regs[MAX_BPF_EXT_REG] = {}; \
+ \
++	kmsan_unpoison_memory(stack, sizeof(stack)); \
+ 	FP = (u64) (unsigned long) &stack[ARRAY_SIZE(stack)]; \
+ 	ARG1 = (u64) (unsigned long) ctx; \
+ 	return ___bpf_prog_run(regs, insn); \
+@@ -2187,6 +2188,7 @@ static u64 PROG_NAME_ARGS(stack_size)(u64 r1, u64 r2, u64 r3, u64 r4, u64 r5, \
+ 	u64 stack[stack_size / sizeof(u64)]; \
+ 	u64 regs[MAX_BPF_EXT_REG]; \
+ \
++	kmsan_unpoison_memory(stack, sizeof(stack)); \
+ 	FP = (u64) (unsigned long) &stack[ARRAY_SIZE(stack)]; \
+ 	BPF_R1 = r1; \
+ 	BPF_R2 = r2; \
 -- 
 2.43.0
 
