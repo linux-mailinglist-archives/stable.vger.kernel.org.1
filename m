@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-56451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9586924470
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:10:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80410924529
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:19:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 271001C21DBD
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:10:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3504D1F21BD9
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A581B1BE85C;
-	Tue,  2 Jul 2024 17:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F82A1BF313;
+	Tue,  2 Jul 2024 17:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AOMIL946"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxjS/lCK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F841BE847;
-	Tue,  2 Jul 2024 17:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F667178381;
+	Tue,  2 Jul 2024 17:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940230; cv=none; b=MHA2jszONn4S+8WA3/kaKnf+o4t3akzkHy1bZA0eP3vBbmkp6YR6btkM0PjlDutcdw0/etRcM9Rfvu8ZZsgzyLtthSxwLAKo6bfBGYHPt8+udd0bTOip1UcpFpm4+dVvkQ+JJ8y8igv4zCWx45oT+1f3UdTUP22JDU12VmTLgRs=
+	t=1719940716; cv=none; b=nMrXUGCjek+Mv+pVRkMf0rfFyB99oFJ8fqsTruG2/mVQGv2tRS1iAbiGjW09KYJu5uK5T7gPn1dxlfSygcVtwy/jXWketsMfcL/ajLILLJjyjumPRraeemYV8AuefqmAg9PjyLf2N6QFVyEWZA3/tij8UUr0DVxvKNBZnkiGyfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940230; c=relaxed/simple;
-	bh=rZQkhXm+GeCgSL4PAhG4pErRBOOc8KLQ36Bh33Kadlg=;
+	s=arc-20240116; t=1719940716; c=relaxed/simple;
+	bh=5eCt+1Q6pyAeDGe7Yi6iJ6Hf2XyUKweOc3Agk9Jt0pQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qTMdQM6B0Gx6mvSOodHeKAUb7RxWHUuvrCD+DmnIQBnvJF/0ovUl74c9TIkabdldVPnrko+pCoov10/bhiHApyIXYSulmAD3om5uts617dQAzZGz4I6EAXvtTeymTaQURRB94rjngodHbctUsksBtsOSH8aTCkVSz1qEuX1oNcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AOMIL946; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AFAC116B1;
-	Tue,  2 Jul 2024 17:10:29 +0000 (UTC)
+	 MIME-Version; b=h0FAWanvUNoFwS2pkaGuLCHDbtVAtLvlYgw0QDx5BtDXPdxeYBw0y5e6vp8r0mwBoGm2Ua35L7hFdpvGVSQ56C/9HPa18pOFy5EY8SQEc8e3Soi2+cXnifmSKWnmbSTTp4ztvwAl0JbuXjbe9TN33XD8i2P3S2oskoJxEr58S2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxjS/lCK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3573C116B1;
+	Tue,  2 Jul 2024 17:18:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940230;
-	bh=rZQkhXm+GeCgSL4PAhG4pErRBOOc8KLQ36Bh33Kadlg=;
+	s=korg; t=1719940716;
+	bh=5eCt+1Q6pyAeDGe7Yi6iJ6Hf2XyUKweOc3Agk9Jt0pQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AOMIL946Iby690+A+PFcX6N2WTJz4UJJsyWuMbixfTDK/bXQv5GwmsL35boM3YO+h
-	 ewQ2QzFhIFbwDI2JtL9smPmUYVKMG2jWhzx/gPOiU57dFNkvNnY8aAgcsOlbV3sm80
-	 8oDimNJwVBa1oAi6YpTQnfwZt8sLxBrE4kqMPHG4=
+	b=cxjS/lCKDP+xcC01ofVe9PlnsX0MMOFunRK3aLNLZ2PnLefRHomLEisOaEXF3Dagz
+	 ewCYllu7DA3+cdci1tkWv7xB2euRGF6DHca7bRtoD0aHmzHdgcamQiuUxkq3W9gIDA
+	 jQXvAvYC9gwowxH4z7/3noXJWUlGxKsaeZY1UXwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Erick Archer <erick.archer@outlook.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Alibek Omarov <a1ba.omarov@gmail.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 092/222] drm/radeon/radeon_display: Decrease the size of allocated memory
+Subject: [PATCH 6.6 016/163] ASoC: rockchip: i2s-tdm: Fix trcm mode by setting clock on right mclk
 Date: Tue,  2 Jul 2024 19:02:10 +0200
-Message-ID: <20240702170247.489838889@linuxfoundation.org>
+Message-ID: <20240702170233.672348444@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erick Archer <erick.archer@outlook.com>
+From: Alibek Omarov <a1ba.omarov@gmail.com>
 
-[ Upstream commit ae6a233092747e9652eb793d92f79d0820e01c6a ]
+[ Upstream commit ccd8d753f0fe8f16745fa2b6be5946349731d901 ]
 
-This is an effort to get rid of all multiplications from allocation
-functions in order to prevent integer overflows [1] [2].
+When TRCM mode is enabled, I2S RX and TX clocks are synchronized through
+selected clock source. Without this fix BCLK and LRCK might get parented
+to an uninitialized MCLK and the DAI will receive data at wrong pace.
 
-In this case, the memory allocated to store RADEONFB_CONN_LIMIT pointers
-to "drm_connector" structures can be avoided. This is because this
-memory area is never accessed.
+However, unlike in original i2s-tdm driver, there is no need to manually
+synchronize mclk_rx and mclk_tx, as only one gets used anyway.
 
-Also, in the kzalloc function, it is preferred to use sizeof(*pointer)
-instead of sizeof(type) due to the type of the variable can change and
-one needs not change the former (unlike the latter).
+Tested on a board with RK3568 SoC and Silergy SY24145S codec with enabled and
+disabled TRCM mode.
 
-At the same time take advantage to remove the "#if 0" block, the code
-where the removed memory area was accessed, and the RADEONFB_CONN_LIMIT
-constant due to now is never used.
-
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments [1]
-Link: https://github.com/KSPP/linux/issues/160 [2]
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Erick Archer <erick.archer@outlook.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 9e2ab4b18ebd ("ASoC: rockchip: i2s-tdm: Fix inaccurate sampling rates")
+Signed-off-by: Alibek Omarov <a1ba.omarov@gmail.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://msgid.link/r/20240604184752.697313-1-a1ba.omarov@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/radeon.h         | 1 -
- drivers/gpu/drm/radeon/radeon_display.c | 8 +-------
- 2 files changed, 1 insertion(+), 8 deletions(-)
+ sound/soc/rockchip/rockchip_i2s_tdm.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/radeon.h b/drivers/gpu/drm/radeon/radeon.h
-index 3e5ff17e3cafb..0999c8eaae94a 100644
---- a/drivers/gpu/drm/radeon/radeon.h
-+++ b/drivers/gpu/drm/radeon/radeon.h
-@@ -132,7 +132,6 @@ extern int radeon_cik_support;
- /* RADEON_IB_POOL_SIZE must be a power of 2 */
- #define RADEON_IB_POOL_SIZE			16
- #define RADEON_DEBUGFS_MAX_COMPONENTS		32
--#define RADEONFB_CONN_LIMIT			4
- #define RADEON_BIOS_NUM_SCRATCH			8
+diff --git a/sound/soc/rockchip/rockchip_i2s_tdm.c b/sound/soc/rockchip/rockchip_i2s_tdm.c
+index 15f8919fd224a..e6a6eabc47e5b 100644
+--- a/sound/soc/rockchip/rockchip_i2s_tdm.c
++++ b/sound/soc/rockchip/rockchip_i2s_tdm.c
+@@ -657,8 +657,17 @@ static int rockchip_i2s_tdm_hw_params(struct snd_pcm_substream *substream,
+ 	int err;
  
- /* internal ring indices */
-diff --git a/drivers/gpu/drm/radeon/radeon_display.c b/drivers/gpu/drm/radeon/radeon_display.c
-index efd18c8d84c83..5f1d24d3120c4 100644
---- a/drivers/gpu/drm/radeon/radeon_display.c
-+++ b/drivers/gpu/drm/radeon/radeon_display.c
-@@ -683,7 +683,7 @@ static void radeon_crtc_init(struct drm_device *dev, int index)
- 	struct radeon_device *rdev = dev->dev_private;
- 	struct radeon_crtc *radeon_crtc;
+ 	if (i2s_tdm->is_master_mode) {
+-		struct clk *mclk = (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) ?
+-			i2s_tdm->mclk_tx : i2s_tdm->mclk_rx;
++		struct clk *mclk;
++
++		if (i2s_tdm->clk_trcm == TRCM_TX) {
++			mclk = i2s_tdm->mclk_tx;
++		} else if (i2s_tdm->clk_trcm == TRCM_RX) {
++			mclk = i2s_tdm->mclk_rx;
++		} else if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
++			mclk = i2s_tdm->mclk_tx;
++		} else {
++			mclk = i2s_tdm->mclk_rx;
++		}
  
--	radeon_crtc = kzalloc(sizeof(struct radeon_crtc) + (RADEONFB_CONN_LIMIT * sizeof(struct drm_connector *)), GFP_KERNEL);
-+	radeon_crtc = kzalloc(sizeof(*radeon_crtc), GFP_KERNEL);
- 	if (radeon_crtc == NULL)
- 		return;
- 
-@@ -709,12 +709,6 @@ static void radeon_crtc_init(struct drm_device *dev, int index)
- 	dev->mode_config.cursor_width = radeon_crtc->max_cursor_width;
- 	dev->mode_config.cursor_height = radeon_crtc->max_cursor_height;
- 
--#if 0
--	radeon_crtc->mode_set.crtc = &radeon_crtc->base;
--	radeon_crtc->mode_set.connectors = (struct drm_connector **)(radeon_crtc + 1);
--	radeon_crtc->mode_set.num_connectors = 0;
--#endif
--
- 	if (rdev->is_atom_bios && (ASIC_IS_AVIVO(rdev) || radeon_r4xx_atom))
- 		radeon_atombios_init_crtc(dev, radeon_crtc);
- 	else
+ 		err = clk_set_rate(mclk, DEFAULT_MCLK_FS * params_rate(params));
+ 		if (err)
 -- 
 2.43.0
 
