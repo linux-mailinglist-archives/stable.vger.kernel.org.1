@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-56455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A81EF924474
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:10:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FEE492452E
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:19:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6251728A49D
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:10:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B8571F218A3
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4941BE22A;
-	Tue,  2 Jul 2024 17:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C2C1BE23B;
+	Tue,  2 Jul 2024 17:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ir2/b5hF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wepS92mG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18D81BD002;
-	Tue,  2 Jul 2024 17:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCE1BE5A;
+	Tue,  2 Jul 2024 17:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940243; cv=none; b=srQTolbqZfsireQsjqFwAQbYkvB7KvKEbYBAXP6t1LPCvl5NJSwU75VIUlUfT7UvnSdOWnStP8SH85ZVAaQuLC1mSy/ImJCErSwOCHLYCWhYd+Wt3lFf2aCJOKhQiI5PLDjWCCWAAEsPsVvfvNh2EMz7SzSiQUmktt9l1jl4D0E=
+	t=1719940733; cv=none; b=t3+vVIH5J6U/CCy9AcwZ+kNqVnIqM8Z7K3QtUGSqZ+vvXVHT2UFEQ5w31uuz8MCQ1VjNTsV/voMcR4erSeHvRgN2LsVifq83E2whNr8DgAKYDwZUPD2a7kU8hfTetrNEJHZ8itM0o2AsuffH0q95tO7qIevZcNA88vu5WFjKl+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940243; c=relaxed/simple;
-	bh=/iQbMqtV2TvB7VupZf25/jpF/0fb4hHgqJ+yshi1sxM=;
+	s=arc-20240116; t=1719940733; c=relaxed/simple;
+	bh=qEg/JPLpa8wa1dVWdrxRatvcbFAQXlG3mwQ//9L8fXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JqHUhDl8WuUgWAWBX2DnLP4s7WtTSz4N9kELljLwYLhTVw8fWFU7EilbOzkWEKdQ7sJvj8NbGspVWugYktxn3YAYhaYIUylxx/Iu5Fdzg5c+toy/l5YTBRdrboP2E8M1ZCKidBbvnRitBwKb0HN+SOqlHHL+8WMtiNv9vbtX/ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ir2/b5hF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE29EC116B1;
-	Tue,  2 Jul 2024 17:10:42 +0000 (UTC)
+	 MIME-Version; b=nX9rZzN1rFLdgBmEKv8lvH0j+bJOb8OecVREuVElGnkwj3M89mtJ3r2yml+bpSgj4aBdSfZjTsjiGzeJU2G38JjvAQ9tLfQ6V/BJcoIjw4dwTKjZshpUq9dkq6CkLn1lgljSkGepXewLdHU+41FSB/XObjOPFGu++bfUDKO+Axo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wepS92mG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD55C116B1;
+	Tue,  2 Jul 2024 17:18:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940243;
-	bh=/iQbMqtV2TvB7VupZf25/jpF/0fb4hHgqJ+yshi1sxM=;
+	s=korg; t=1719940733;
+	bh=qEg/JPLpa8wa1dVWdrxRatvcbFAQXlG3mwQ//9L8fXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ir2/b5hF3Hm0vsK7mfNwr4kOttGBChWzn+G9bNpAI1ydUoUjIhlVJ2hZXdELexjdY
-	 HtOoGoyxDbpsD9BHcd3FdTVe6pZnx3guU3jpswGZcmc065McQmbFD251i+q+jygOqp
-	 KvZmGng0KAplW0msjYuzoqaI8XhuvKB7Djxflrps=
+	b=wepS92mGQg3QPeMGK50SDzRj7bE1KI0O56PRpiMfkoAerhUwgNE8+4H4NEp2JodwQ
+	 2MvRVbNIRLiPq8hebuHlj0x4lHevFkMDjhGjvranrSqqzEH5fTbAQ8P3RCl1Eey6sf
+	 PYPNdAmVNCFmAxgcdVY5LybK/eyieqphd9FeB2nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 096/222] nvmet: make tsas attribute idempotent for RDMA
-Date: Tue,  2 Jul 2024 19:02:14 +0200
-Message-ID: <20240702170247.640603234@linuxfoundation.org>
+Subject: [PATCH 6.6 021/163] ASoC: q6apm-lpass-dai: close graph on prepare errors
+Date: Tue,  2 Jul 2024 19:02:15 +0200
+Message-ID: <20240702170233.860817084@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +63,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@kernel.org>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-[ Upstream commit 0f1f5803920d2a6b88bee950914fd37421e17170 ]
+[ Upstream commit be1fae62cf253a5b67526cee9fbc07689b97c125 ]
 
-The RDMA transport defines values for TSAS, but it cannot be changed as
-we only support the 'connected' mode.
-So to avoid errors during reconfiguration we should allow to write the
-current value.
+There is an issue around with error handling and graph management with
+the exising code, none of the error paths close the graph, which result in
+leaving the loaded graph in dsp, however the driver thinks otherwise.
 
-Fixes: 3f123494db72 ("nvmet: make TCP sectype settable via configfs")
-Signed-off-by: Hannes Reinecke <hare@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+This can have a nasty side effect specially when we try to load the same
+graph to dsp, dsp returns error which leaves the board with no sound and
+requires restart.
+
+Fix this by properly closing the graph when we hit errors between
+open and close.
+
+Fixes: 30ad723b93ad ("ASoC: qdsp6: audioreach: add q6apm lpass dai support")
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # X13s
+Link: https://lore.kernel.org/r/20240613-q6apm-fixes-v1-1-d88953675ab3@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/configfs.c | 39 ++++++++++++++++++++++++++--------
- include/linux/nvme.h           |  2 ++
- 2 files changed, 32 insertions(+), 9 deletions(-)
+ sound/soc/qcom/qdsp6/q6apm-lpass-dais.c | 32 +++++++++++++++----------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/nvme/target/configfs.c b/drivers/nvme/target/configfs.c
-index c9640e6d10cab..d80c3b93d6ce9 100644
---- a/drivers/nvme/target/configfs.c
-+++ b/drivers/nvme/target/configfs.c
-@@ -413,25 +413,46 @@ static ssize_t nvmet_addr_tsas_show(struct config_item *item,
- 	return sprintf(page, "\n");
+diff --git a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
+index 7ad604b80e25e..6511f0a08de16 100644
+--- a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
++++ b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
+@@ -140,14 +140,17 @@ static void q6apm_lpass_dai_shutdown(struct snd_pcm_substream *substream, struct
+ 	struct q6apm_lpass_dai_data *dai_data = dev_get_drvdata(dai->dev);
+ 	int rc;
+ 
+-	if (!dai_data->is_port_started[dai->id])
+-		return;
+-	rc = q6apm_graph_stop(dai_data->graph[dai->id]);
+-	if (rc < 0)
+-		dev_err(dai->dev, "fail to close APM port (%d)\n", rc);
++	if (dai_data->is_port_started[dai->id]) {
++		rc = q6apm_graph_stop(dai_data->graph[dai->id]);
++		dai_data->is_port_started[dai->id] = false;
++		if (rc < 0)
++			dev_err(dai->dev, "fail to close APM port (%d)\n", rc);
++	}
+ 
+-	q6apm_graph_close(dai_data->graph[dai->id]);
+-	dai_data->is_port_started[dai->id] = false;
++	if (dai_data->graph[dai->id]) {
++		q6apm_graph_close(dai_data->graph[dai->id]);
++		dai_data->graph[dai->id] = NULL;
++	}
  }
  
-+static u8 nvmet_addr_tsas_rdma_store(const char *page)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(nvmet_addr_tsas_rdma); i++) {
-+		if (sysfs_streq(page, nvmet_addr_tsas_rdma[i].name))
-+			return nvmet_addr_tsas_rdma[i].type;
-+	}
-+	return NVMF_RDMA_QPTYPE_INVALID;
-+}
-+
-+static u8 nvmet_addr_tsas_tcp_store(const char *page)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(nvmet_addr_tsas_tcp); i++) {
-+		if (sysfs_streq(page, nvmet_addr_tsas_tcp[i].name))
-+			return nvmet_addr_tsas_tcp[i].type;
-+	}
-+	return NVMF_TCP_SECTYPE_INVALID;
-+}
-+
- static ssize_t nvmet_addr_tsas_store(struct config_item *item,
- 		const char *page, size_t count)
- {
- 	struct nvmet_port *port = to_nvmet_port(item);
- 	u8 treq = nvmet_port_disc_addr_treq_mask(port);
--	u8 sectype;
--	int i;
-+	u8 sectype, qptype;
+ static int q6apm_lpass_dai_prepare(struct snd_pcm_substream *substream, struct snd_soc_dai *dai)
+@@ -162,8 +165,10 @@ static int q6apm_lpass_dai_prepare(struct snd_pcm_substream *substream, struct s
+ 		q6apm_graph_stop(dai_data->graph[dai->id]);
+ 		dai_data->is_port_started[dai->id] = false;
  
- 	if (nvmet_is_port_enabled(port, __func__))
- 		return -EACCES;
- 
--	if (port->disc_addr.trtype != NVMF_TRTYPE_TCP)
--		return -EINVAL;
--
--	for (i = 0; i < ARRAY_SIZE(nvmet_addr_tsas_tcp); i++) {
--		if (sysfs_streq(page, nvmet_addr_tsas_tcp[i].name)) {
--			sectype = nvmet_addr_tsas_tcp[i].type;
-+	if (port->disc_addr.trtype == NVMF_TRTYPE_RDMA) {
-+		qptype = nvmet_addr_tsas_rdma_store(page);
-+		if (qptype == port->disc_addr.tsas.rdma.qptype)
-+			return count;
-+	} else if (port->disc_addr.trtype == NVMF_TRTYPE_TCP) {
-+		sectype = nvmet_addr_tsas_tcp_store(page);
-+		if (sectype != NVMF_TCP_SECTYPE_INVALID)
- 			goto found;
--		}
+-		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
++		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
+ 			q6apm_graph_close(dai_data->graph[dai->id]);
++			dai_data->graph[dai->id] = NULL;
++		}
  	}
  
- 	pr_err("Invalid value '%s' for tsas\n", page);
-diff --git a/include/linux/nvme.h b/include/linux/nvme.h
-index 69ac2abf8acfe..c693ac344ec05 100644
---- a/include/linux/nvme.h
-+++ b/include/linux/nvme.h
-@@ -85,6 +85,7 @@ enum {
- enum {
- 	NVMF_RDMA_QPTYPE_CONNECTED	= 1, /* Reliable Connected */
- 	NVMF_RDMA_QPTYPE_DATAGRAM	= 2, /* Reliable Datagram */
-+	NVMF_RDMA_QPTYPE_INVALID	= 0xff,
- };
+ 	/**
+@@ -182,26 +187,29 @@ static int q6apm_lpass_dai_prepare(struct snd_pcm_substream *substream, struct s
  
- /* RDMA Provider Type codes for Discovery Log Page entry TSAS
-@@ -110,6 +111,7 @@ enum {
- 	NVMF_TCP_SECTYPE_NONE = 0, /* No Security */
- 	NVMF_TCP_SECTYPE_TLS12 = 1, /* TLSv1.2, NVMe-oF 1.1 and NVMe-TCP 3.6.1.1 */
- 	NVMF_TCP_SECTYPE_TLS13 = 2, /* TLSv1.3, NVMe-oF 1.1 and NVMe-TCP 3.6.1.1 */
-+	NVMF_TCP_SECTYPE_INVALID = 0xff,
- };
+ 	cfg->direction = substream->stream;
+ 	rc = q6apm_graph_media_format_pcm(dai_data->graph[dai->id], cfg);
+-
+ 	if (rc) {
+ 		dev_err(dai->dev, "Failed to set media format %d\n", rc);
+-		return rc;
++		goto err;
+ 	}
  
- #define NVME_AQ_DEPTH		32
+ 	rc = q6apm_graph_prepare(dai_data->graph[dai->id]);
+ 	if (rc) {
+ 		dev_err(dai->dev, "Failed to prepare Graph %d\n", rc);
+-		return rc;
++		goto err;
+ 	}
+ 
+ 	rc = q6apm_graph_start(dai_data->graph[dai->id]);
+ 	if (rc < 0) {
+ 		dev_err(dai->dev, "fail to start APM port %x\n", dai->id);
+-		return rc;
++		goto err;
+ 	}
+ 	dai_data->is_port_started[dai->id] = true;
+ 
+ 	return 0;
++err:
++	q6apm_graph_close(dai_data->graph[dai->id]);
++	dai_data->graph[dai->id] = NULL;
++	return rc;
+ }
+ 
+ static int q6apm_lpass_dai_startup(struct snd_pcm_substream *substream, struct snd_soc_dai *dai)
 -- 
 2.43.0
 
