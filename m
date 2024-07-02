@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-56519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A5E9244BD
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:14:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD60924574
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:22:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AF2A1F21478
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:14:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72A302853F0
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67BD01BE233;
-	Tue,  2 Jul 2024 17:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261D31BE222;
+	Tue,  2 Jul 2024 17:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3uhroBJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CP1Hm54P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2756F15B0FE;
-	Tue,  2 Jul 2024 17:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70DC15218A;
+	Tue,  2 Jul 2024 17:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940455; cv=none; b=ODKruN3H2ttLFDcELAQl3Zw6vlWgUJ49tqznfG6HurqotKSKNbL1myvYvg3qP6mdgrWz/oIBSUXDLgyq1u1jLOvwulOookvfsXNdV5V7j9Zp8jnZD4xSYj8CxpHUn6XtxtX+HArgS8kE/6+iRCvHgrgG17lJ64z6fA8kRcp6Y3o=
+	t=1719940949; cv=none; b=Tn4kPr3tBeNohmcf7sXZdtQv6PW4+cszQ+UKHnRi/x8M3U+yNYDjgqY7S2tH6cA+KhiT4UynlAnqGzI1Hb7y8sqPeHJlJtMRjmIGWCNgPXazrVnayr5SgYZIC7sNjpOWpwjDHE7U521QmRk8ozhL3MnPVRhd7vXPxovLfBkzPMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940455; c=relaxed/simple;
-	bh=F+7IBiwpBpmlXmNBw4Uj9RVRFD4/rUiQh2LGIv4mdAE=;
+	s=arc-20240116; t=1719940949; c=relaxed/simple;
+	bh=X0TtqjYsP6wDSK0t8AaKuvC7n3Q4YIk/0Szf0ctni5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F+9Yl3Nqs6+H+Ih1X7M9u0CcS1/NoScrcnTxXQ8Hd9xCXvrxmMIFJ+y/8DaUK9POdJ7IIZIk0sPmfW2Zgx2HQLWRkk9nc4sQ6APC0eogrtDg/z7J+swM6+p8BvJIpHrOzopwoz1VolSfqk/+E7PEpziHRL6f4VjQND4288Y5iTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3uhroBJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 875B0C116B1;
-	Tue,  2 Jul 2024 17:14:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cVFQpDQDN2B2hZQz/eG9VbPRdLjekLzRBv7Ye5j5nRnHR01NVtGZ3L6r2kdJ4z1wUf3hoOb4bCVotYZEzhiX+6Eb1Bkx9TpK7jUQDlnwMFDFT8XCOY/94lXXUJ84seqCYhIqbwoXB5u5kxk6gPin6XZBEbVUP6pxEEjT6580qrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CP1Hm54P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436C2C116B1;
+	Tue,  2 Jul 2024 17:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940455;
-	bh=F+7IBiwpBpmlXmNBw4Uj9RVRFD4/rUiQh2LGIv4mdAE=;
+	s=korg; t=1719940949;
+	bh=X0TtqjYsP6wDSK0t8AaKuvC7n3Q4YIk/0Szf0ctni5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R3uhroBJTVDxqGT8Wf09uKdNOdWlxhawod1iiWiV97WCdxz9vi05WTNo2yyIz7l8+
-	 reeMXgV1yom0a81PAzTr8exm8Im4Qjm0DytvvmMWx9rjhF9/iC4Io0wFRR1AueVg/f
-	 thfGy69bvwEubRg4973SaLzbtUWdO1Bgzk6gaez0=
+	b=CP1Hm54PCWNVKDCNwTjSE3Pb3mF02S1bO9sA3NTNlL9spwuF01NDAkT+v/F1wze93
+	 FP//RqxaRv11vpGvPklYCBD7v9jC4I4h+8slN6mK0wekNh/jYxlJAzDvVlzUXKiZYi
+	 lDaRQeUJ/DHUOyCeG6W7odLX49zeZJqpVgpvw6LM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Doug Brown <doug@schmorgal.com>
-Subject: [PATCH 6.9 160/222] serial: bcm63xx-uart: fix tx after conversion to uart_port_tx_limited()
-Date: Tue,  2 Jul 2024 19:03:18 +0200
-Message-ID: <20240702170250.093503815@linuxfoundation.org>
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 085/163] mmc: sdhci-pci-o2micro: Convert PCIBIOS_* return codes to errnos
+Date: Tue,  2 Jul 2024 19:03:19 +0200
+Message-ID: <20240702170236.281917074@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +60,223 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit ea55c65dedf40e9c1911dc1e63e26bc9a59692b9 upstream.
+commit a91bf3b3beadbb4f8b3bbc7969fb2ae1615e25c8 upstream.
 
-When bcm63xx-uart was converted to uart_port_tx_limited(), it implicitly
-added a call to stop_tx(). This causes garbage to be put out on the
-serial console. To fix this, pass UART_TX_NOSTOP in flags, and manually
-call stop_tx() ourselves analogue to how a similar issue was fixed in
-commit 7be50f2e8f20 ("serial: mxs-auart: fix tx").
+sdhci_pci_o2_probe() uses pci_read_config_{byte,dword}() that return
+PCIBIOS_* codes. The return code is then returned as is but as
+sdhci_pci_o2_probe() is probe function chain, it should return normal
+errnos.
 
-Fixes: d11cc8c3c4b6 ("tty: serial: use uart_port_tx_limited()")
+Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
+errno before returning them. Add a label for read failure so that the
+conversion can be done in one place rather than on all of the return
+statements.
+
+Fixes: 3d757ddbd68c ("mmc: sdhci-pci-o2micro: add Bayhub new chip GG8 support for UHS-I")
+Fixes: d599005afde8 ("mmc: sdhci-pci-o2micro: Add missing checks in sdhci_pci_o2_probe")
+Fixes: 706adf6bc31c ("mmc: sdhci-pci-o2micro: Add SeaBird SeaEagle SD3 support")
+Fixes: 01acf6917aed ("mmc: sdhci-pci: add support of O2Micro/BayHubTech SD hosts")
+Fixes: 26daa1ed40c6 ("mmc: sdhci: Disable ADMA on some O2Micro SD/MMC parts.")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Signed-off-by: Doug Brown <doug@schmorgal.com>
-Link: https://lore.kernel.org/r/20240606195632.173255-4-doug@schmorgal.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240527132443.14038-2-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/bcm63xx_uart.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci-pci-o2micro.c |   41 ++++++++++++++++++-----------------
+ 1 file changed, 22 insertions(+), 19 deletions(-)
 
---- a/drivers/tty/serial/bcm63xx_uart.c
-+++ b/drivers/tty/serial/bcm63xx_uart.c
-@@ -308,8 +308,8 @@ static void bcm_uart_do_tx(struct uart_p
+--- a/drivers/mmc/host/sdhci-pci-o2micro.c
++++ b/drivers/mmc/host/sdhci-pci-o2micro.c
+@@ -823,7 +823,7 @@ static int sdhci_pci_o2_probe(struct sdh
+ 		ret = pci_read_config_byte(chip->pdev,
+ 				O2_SD_LOCK_WP, &scratch);
+ 		if (ret)
+-			return ret;
++			goto read_fail;
+ 		scratch &= 0x7f;
+ 		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch);
  
- 	val = bcm_uart_readl(port, UART_MCTL_REG);
- 	val = (val & UART_MCTL_TXFIFOFILL_MASK) >> UART_MCTL_TXFIFOFILL_SHIFT;
--
--	pending = uart_port_tx_limited(port, ch, port->fifosize - val,
-+	pending = uart_port_tx_limited_flags(port, ch, UART_TX_NOSTOP,
-+		port->fifosize - val,
- 		true,
- 		bcm_uart_writel(port, ch, UART_FIFO_REG),
- 		({}));
-@@ -320,6 +320,9 @@ static void bcm_uart_do_tx(struct uart_p
- 	val = bcm_uart_readl(port, UART_IR_REG);
- 	val &= ~UART_TX_INT_MASK;
- 	bcm_uart_writel(port, val, UART_IR_REG);
+@@ -834,7 +834,7 @@ static int sdhci_pci_o2_probe(struct sdh
+ 		ret = pci_read_config_byte(chip->pdev,
+ 				O2_SD_CLKREQ, &scratch);
+ 		if (ret)
+-			return ret;
++			goto read_fail;
+ 		scratch |= 0x20;
+ 		pci_write_config_byte(chip->pdev, O2_SD_CLKREQ, scratch);
+ 
+@@ -843,7 +843,7 @@ static int sdhci_pci_o2_probe(struct sdh
+ 		 */
+ 		ret = pci_read_config_byte(chip->pdev, O2_SD_CAPS, &scratch);
+ 		if (ret)
+-			return ret;
++			goto read_fail;
+ 		scratch |= 0x01;
+ 		pci_write_config_byte(chip->pdev, O2_SD_CAPS, scratch);
+ 		pci_write_config_byte(chip->pdev, O2_SD_CAPS, 0x73);
+@@ -856,7 +856,7 @@ static int sdhci_pci_o2_probe(struct sdh
+ 		ret = pci_read_config_byte(chip->pdev,
+ 				O2_SD_INF_MOD, &scratch);
+ 		if (ret)
+-			return ret;
++			goto read_fail;
+ 		scratch |= 0x08;
+ 		pci_write_config_byte(chip->pdev, O2_SD_INF_MOD, scratch);
+ 
+@@ -864,7 +864,7 @@ static int sdhci_pci_o2_probe(struct sdh
+ 		ret = pci_read_config_byte(chip->pdev,
+ 				O2_SD_LOCK_WP, &scratch);
+ 		if (ret)
+-			return ret;
++			goto read_fail;
+ 		scratch |= 0x80;
+ 		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch);
+ 		break;
+@@ -875,7 +875,7 @@ static int sdhci_pci_o2_probe(struct sdh
+ 		ret = pci_read_config_byte(chip->pdev,
+ 				O2_SD_LOCK_WP, &scratch);
+ 		if (ret)
+-			return ret;
++			goto read_fail;
+ 
+ 		scratch &= 0x7f;
+ 		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch);
+@@ -886,7 +886,7 @@ static int sdhci_pci_o2_probe(struct sdh
+ 						    O2_SD_FUNC_REG0,
+ 						    &scratch_32);
+ 			if (ret)
+-				return ret;
++				goto read_fail;
+ 			scratch_32 = ((scratch_32 & 0xFF000000) >> 24);
+ 
+ 			/* Check Whether subId is 0x11 or 0x12 */
+@@ -898,7 +898,7 @@ static int sdhci_pci_o2_probe(struct sdh
+ 							    O2_SD_FUNC_REG4,
+ 							    &scratch_32);
+ 				if (ret)
+-					return ret;
++					goto read_fail;
+ 
+ 				/* Enable Base Clk setting change */
+ 				scratch_32 |= O2_SD_FREG4_ENABLE_CLK_SET;
+@@ -921,7 +921,7 @@ static int sdhci_pci_o2_probe(struct sdh
+ 		ret = pci_read_config_dword(chip->pdev,
+ 					    O2_SD_CLK_SETTING, &scratch_32);
+ 		if (ret)
+-			return ret;
++			goto read_fail;
+ 
+ 		scratch_32 &= ~(0xFF00);
+ 		scratch_32 |= 0x07E0C800;
+@@ -931,14 +931,14 @@ static int sdhci_pci_o2_probe(struct sdh
+ 		ret = pci_read_config_dword(chip->pdev,
+ 					    O2_SD_CLKREQ, &scratch_32);
+ 		if (ret)
+-			return ret;
++			goto read_fail;
+ 		scratch_32 |= 0x3;
+ 		pci_write_config_dword(chip->pdev, O2_SD_CLKREQ, scratch_32);
+ 
+ 		ret = pci_read_config_dword(chip->pdev,
+ 					    O2_SD_PLL_SETTING, &scratch_32);
+ 		if (ret)
+-			return ret;
++			goto read_fail;
+ 
+ 		scratch_32 &= ~(0x1F3F070E);
+ 		scratch_32 |= 0x18270106;
+@@ -949,7 +949,7 @@ static int sdhci_pci_o2_probe(struct sdh
+ 		ret = pci_read_config_dword(chip->pdev,
+ 					    O2_SD_CAP_REG2, &scratch_32);
+ 		if (ret)
+-			return ret;
++			goto read_fail;
+ 		scratch_32 &= ~(0xE0);
+ 		pci_write_config_dword(chip->pdev,
+ 				       O2_SD_CAP_REG2, scratch_32);
+@@ -961,7 +961,7 @@ static int sdhci_pci_o2_probe(struct sdh
+ 		ret = pci_read_config_byte(chip->pdev,
+ 					   O2_SD_LOCK_WP, &scratch);
+ 		if (ret)
+-			return ret;
++			goto read_fail;
+ 		scratch |= 0x80;
+ 		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch);
+ 		break;
+@@ -971,7 +971,7 @@ static int sdhci_pci_o2_probe(struct sdh
+ 		ret = pci_read_config_byte(chip->pdev,
+ 				O2_SD_LOCK_WP, &scratch);
+ 		if (ret)
+-			return ret;
++			goto read_fail;
+ 
+ 		scratch &= 0x7f;
+ 		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch);
+@@ -979,7 +979,7 @@ static int sdhci_pci_o2_probe(struct sdh
+ 		ret = pci_read_config_dword(chip->pdev,
+ 					    O2_SD_PLL_SETTING, &scratch_32);
+ 		if (ret)
+-			return ret;
++			goto read_fail;
+ 
+ 		if ((scratch_32 & 0xff000000) == 0x01000000) {
+ 			scratch_32 &= 0x0000FFFF;
+@@ -998,7 +998,7 @@ static int sdhci_pci_o2_probe(struct sdh
+ 						    O2_SD_FUNC_REG4,
+ 						    &scratch_32);
+ 			if (ret)
+-				return ret;
++				goto read_fail;
+ 			scratch_32 |= (1 << 22);
+ 			pci_write_config_dword(chip->pdev,
+ 					       O2_SD_FUNC_REG4, scratch_32);
+@@ -1017,7 +1017,7 @@ static int sdhci_pci_o2_probe(struct sdh
+ 		ret = pci_read_config_byte(chip->pdev,
+ 					   O2_SD_LOCK_WP, &scratch);
+ 		if (ret)
+-			return ret;
++			goto read_fail;
+ 		scratch |= 0x80;
+ 		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch);
+ 		break;
+@@ -1028,7 +1028,7 @@ static int sdhci_pci_o2_probe(struct sdh
+ 		/* UnLock WP */
+ 		ret = pci_read_config_byte(chip->pdev, O2_SD_LOCK_WP, &scratch);
+ 		if (ret)
+-			return ret;
++			goto read_fail;
+ 		scratch &= 0x7f;
+ 		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch);
+ 
+@@ -1057,13 +1057,16 @@ static int sdhci_pci_o2_probe(struct sdh
+ 		/* Lock WP */
+ 		ret = pci_read_config_byte(chip->pdev, O2_SD_LOCK_WP, &scratch);
+ 		if (ret)
+-			return ret;
++			goto read_fail;
+ 		scratch |= 0x80;
+ 		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch);
+ 		break;
+ 	}
+ 
+ 	return 0;
 +
-+	if (uart_tx_stopped(port))
-+		bcm_uart_stop_tx(port);
++read_fail:
++	return pcibios_err_to_errno(ret);
  }
  
- /*
+ #ifdef CONFIG_PM_SLEEP
 
 
 
