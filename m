@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-56558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B55A39244EF
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:16:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EEBE9245A0
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:24:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F3E52865EC
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:16:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E019F28925C
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DEB1BE863;
-	Tue,  2 Jul 2024 17:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC521BE222;
+	Tue,  2 Jul 2024 17:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6L7uVn3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXspqi0g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641BB81F;
-	Tue,  2 Jul 2024 17:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16F81B583A;
+	Tue,  2 Jul 2024 17:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940584; cv=none; b=QAURo3iWIK5zMEdi41nazoqgxm9R3ujkI8HAO1fuMbkg26HXHfWViRAeLE/ieloPAqeAeaNksH0d0zGR6GbzixH0Bpj8ALsNH+iBHKW+GhFwITpy/K/UqoAW3MTDrJbv9f2PD0U0A3fpk9aSEDtSkF7zIuSJtU6xRNBkZ7wAhT8=
+	t=1719941089; cv=none; b=U/EJbQCvfZ/AMGnban7YL3DuJtuGtzZ2v3bOHFS7eYDUbr+/wNXTNDvWXjbsNTV5os6A5qmJcGfD0MfU5ji5w31vK2O0Ist5cHRKgCGVmcrAjJsSKZzOIBWppwDISlFjtGwh7SuxQXcfQSKEnx9o7sw1rCCs7Pff16f9pnbSP1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940584; c=relaxed/simple;
-	bh=gD0FfXZVW5sj2r1fDKCm4BwUpPJXG6OcAzTCSUxNg6o=;
+	s=arc-20240116; t=1719941089; c=relaxed/simple;
+	bh=9tJqgm4TofYRzNmV/de+AcGQO8VVgoWd+/mJicq5u6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ijnvWSM0OExrotxDYhjjA+oJlMlioYr6liHAvUrggvPPtJ5mzoSEBtSwRxtZg+zh//qq5L0j3D0cKCNxGKpN51rL4c2OT3b3+CzKmziVmf0I9uFCZp6P1Zcm+k2DXcjULj/e4Q5UK1lwijr1kCTOirnp9jlPZyfWLLMiYsER50U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6L7uVn3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7898AC116B1;
-	Tue,  2 Jul 2024 17:16:23 +0000 (UTC)
+	 MIME-Version; b=W160f/JfC2S+s0pND8fjd542ftGal3I/Js402V/w9mtXIp3ewY8bkGx1YEN6BvFVRiqvB7fLllxFOfAqgMv4ravkVahNMeTvjnTzKlGc4flcPD62pmjO94t+yM6iBNpFeP5C/+Mvd1+Pe0MAl9JMNLFUu4x7A31oML3Zsu0QHc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXspqi0g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52121C116B1;
+	Tue,  2 Jul 2024 17:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940583;
-	bh=gD0FfXZVW5sj2r1fDKCm4BwUpPJXG6OcAzTCSUxNg6o=;
+	s=korg; t=1719941088;
+	bh=9tJqgm4TofYRzNmV/de+AcGQO8VVgoWd+/mJicq5u6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B6L7uVn36QNDcrQME/gTU9MpL4W3QtD7EJRqOhPFZ8zLf+zR+QF7Wj7/YbMTTY3VJ
-	 L4YQE+IpyMdH+OkjNE0F4zA6gprUb554/pxPMPG6VDDTZHkBqNfxiu/w7YfxXp7f/2
-	 ys/7VijHXVTC5VaDrkOI257Q83vz2d34O/dnpx0k=
+	b=dXspqi0gM/075YkIiHzz/w13YWR1ZuK7KNVUHa0psPxX6ziuK5P7e25WR+zXdpMBb
+	 JC5ZWDsen4CLVlOo6+qC4Dy4h7Daeux0U9vr+ZHeIa7BUPwmJ9RpzFN7KRg2Q0pWsY
+	 M7aw3CUWnMUONGetnlLlXE1NJRfRXG7SBVQv1LbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Overstreet <kent.overstreet@linux.dev>
-Subject: [PATCH 6.9 199/222] bcachefs: Fix setting of downgrade recovery passes/errors
-Date: Tue,  2 Jul 2024 19:03:57 +0200
-Message-ID: <20240702170251.591232513@linuxfoundation.org>
+	syzbot+daa36413a5cedf799ae4@syzkaller.appspotmail.com,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.6 124/163] net: can: j1939: enhanced error handling for tightly received RTS messages in xtp_rx_rts_session_new
+Date: Tue,  2 Jul 2024 19:03:58 +0200
+Message-ID: <20240702170237.746481186@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 247c056bde2ebc9fad2fc62332dc7cc99b58d720 upstream.
+commit d3e2904f71ea0fe7eaff1d68a2b0363c888ea0fb upstream.
 
-bch2_check_version_downgrade() was setting c->sb.version, which
-bch2_sb_set_downgrade() expects to be at the previous version; and it
-shouldn't even have been set directly because c->sb.version is updated
-by write_super().
+This patch enhances error handling in scenarios with RTS (Request to
+Send) messages arriving closely. It replaces the less informative WARN_ON_ONCE
+backtraces with a new error handling method. This provides clearer error
+messages and allows for the early termination of problematic sessions.
+Previously, sessions were only released at the end of j1939_xtp_rx_rts().
 
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+Potentially this could be reproduced with something like:
+testj1939 -r vcan0:0x80 &
+while true; do
+	# send first RTS
+	cansend vcan0 18EC8090#1014000303002301;
+	# send second RTS
+	cansend vcan0 18EC8090#1014000303002301;
+	# send abort
+	cansend vcan0 18EC8090#ff00000000002301;
+done
+
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Reported-by: syzbot+daa36413a5cedf799ae4@syzkaller.appspotmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/all/20231117124959.961171-1-o.rempel@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/bcachefs/super-io.c |   12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ net/can/j1939/transport.c |   19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
---- a/fs/bcachefs/super-io.c
-+++ b/fs/bcachefs/super-io.c
-@@ -1123,18 +1123,12 @@ bool bch2_check_version_downgrade(struct
- 	 * c->sb will be checked before we write the superblock, so update it as
- 	 * well:
- 	 */
--	if (BCH_SB_VERSION_UPGRADE_COMPLETE(c->disk_sb.sb) > bcachefs_metadata_version_current) {
-+	if (BCH_SB_VERSION_UPGRADE_COMPLETE(c->disk_sb.sb) > bcachefs_metadata_version_current)
- 		SET_BCH_SB_VERSION_UPGRADE_COMPLETE(c->disk_sb.sb, bcachefs_metadata_version_current);
--		c->sb.version_upgrade_complete = bcachefs_metadata_version_current;
--	}
--	if (c->sb.version > bcachefs_metadata_version_current) {
-+	if (c->sb.version > bcachefs_metadata_version_current)
- 		c->disk_sb.sb->version = cpu_to_le16(bcachefs_metadata_version_current);
--		c->sb.version = bcachefs_metadata_version_current;
--	}
--	if (c->sb.version_min > bcachefs_metadata_version_current) {
-+	if (c->sb.version_min > bcachefs_metadata_version_current)
- 		c->disk_sb.sb->version_min = cpu_to_le16(bcachefs_metadata_version_current);
--		c->sb.version_min = bcachefs_metadata_version_current;
--	}
- 	c->disk_sb.sb->compat[0] &= cpu_to_le64((1ULL << BCH_COMPAT_NR) - 1);
- 	return ret;
+--- a/net/can/j1939/transport.c
++++ b/net/can/j1939/transport.c
+@@ -1593,8 +1593,8 @@ j1939_session *j1939_xtp_rx_rts_session_
+ 	struct j1939_sk_buff_cb skcb = *j1939_skb_to_cb(skb);
+ 	struct j1939_session *session;
+ 	const u8 *dat;
++	int len, ret;
+ 	pgn_t pgn;
+-	int len;
+ 
+ 	netdev_dbg(priv->ndev, "%s\n", __func__);
+ 
+@@ -1653,7 +1653,22 @@ j1939_session *j1939_xtp_rx_rts_session_
+ 	session->tskey = priv->rx_tskey++;
+ 	j1939_sk_errqueue(session, J1939_ERRQUEUE_RX_RTS);
+ 
+-	WARN_ON_ONCE(j1939_session_activate(session));
++	ret = j1939_session_activate(session);
++	if (ret) {
++		/* Entering this scope indicates an issue with the J1939 bus.
++		 * Possible scenarios include:
++		 * - A time lapse occurred, and a new session was initiated
++		 *   due to another packet being sent correctly. This could
++		 *   have been caused by too long interrupt, debugger, or being
++		 *   out-scheduled by another task.
++		 * - The bus is receiving numerous erroneous packets, either
++		 *   from a malfunctioning device or during a test scenario.
++		 */
++		netdev_alert(priv->ndev, "%s: 0x%p: concurrent session with same addr (%02x %02x) is already active.\n",
++			     __func__, session, skcb.addr.sa, skcb.addr.da);
++		j1939_session_put(session);
++		return NULL;
++	}
+ 
+ 	return session;
  }
 
 
