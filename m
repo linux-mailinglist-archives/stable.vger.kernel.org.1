@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-56795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 027169245FF
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7522924503
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:17:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B289C287082
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BC331F21225
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F153C1BE251;
-	Tue,  2 Jul 2024 17:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428DE1BF325;
+	Tue,  2 Jul 2024 17:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j0lemFa1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJHZ+76L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6A21514DC;
-	Tue,  2 Jul 2024 17:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39041BF30B;
+	Tue,  2 Jul 2024 17:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941386; cv=none; b=ES8gxEcJSOMgh/ffHhbUVk/e+GSt96BPHysJ9VJWLwoLF2OOqSzQlIyWUqCuM1GTlrvcqahwKwIey32gEtYQRpec87M5ZIyzIFilrEBF6snRRos4UubE6evQYabvemxm5bCg1wa3pM5NSx3n5ODVMuISWGZk1VsAjsWL23BkI08=
+	t=1719940630; cv=none; b=afz/llGRrot7BStnwrs5kOvaci7TIlU70/bT72X6Zm1YUHrE603G7Ca/GBoIASFcaB9Gf3DMiLv3l1l41k6dMdqTtLgG7qrBeo9eB01X9t73V/biZMIW0NFySg7UcOVNbBtNAydzv6OOQtmTzIYl+hkrsBUvTMcjQ9HqwTNV8A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941386; c=relaxed/simple;
-	bh=OjiZu7I9NU/c4fH945zFo2yj6m/p5Pf9Jhg8DfflOpk=;
+	s=arc-20240116; t=1719940630; c=relaxed/simple;
+	bh=V96RXwO3iHO6AYqNOuV6Orkg/Rq89byydr/kMQ9MHGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PfZE2/wi2lR1G7cEHhUbLMU431lIstaBDdHKFFubT9njKLsCa72iYrAQkGoEk3/ctY02U/q5uhoYnt7oz/4EnO4PMxUqgpLi+J0BAHbyT9qznoKLetQabH2c+O37BIfBYetqdlwULXn9f+zBy8NCUTxSXAq2DdCELzS1ii7KyMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j0lemFa1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB33C116B1;
-	Tue,  2 Jul 2024 17:29:45 +0000 (UTC)
+	 MIME-Version; b=Lv49M21odBre9XF7NhzRZ60SxUPUoMvAEGd7D4a7r3sbT1Dbpu/h0KiHg3cNn7UAKmu6SJaB7Katg/t67okN9QOtMFRYVmaniPv7fysUHAp2eHhxZOAnaUqRxEgeGlyrOHUjUDFmKlKW8buNnvAmzSlGG+vKMLWscIaIudeUxvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJHZ+76L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A9FC116B1;
+	Tue,  2 Jul 2024 17:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941386;
-	bh=OjiZu7I9NU/c4fH945zFo2yj6m/p5Pf9Jhg8DfflOpk=;
+	s=korg; t=1719940629;
+	bh=V96RXwO3iHO6AYqNOuV6Orkg/Rq89byydr/kMQ9MHGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j0lemFa1uoH/UdJ/M84tIcsE6ZC/KoGM3jCUCIybtOX5LLdrEMsZ+tiA74VFMuWI5
-	 3ClsjepQZYTBJLUKRWbErmafKCFY7MkaBpBYOVzTVAjDPYnTt8YJ4c4MBweun8bBP9
-	 z04NLp0wlWLK/3RdP+Kvmr6+R/YQWM7JqUCjscUg=
+	b=zJHZ+76LbU1jVqiRqdu9fCLAQrcdtnQm8X6CZGE7sPxFbiJJdP9U/xq/2rOIxACLg
+	 aF5iP2A3VQ3UPOtUJFi7oFL2AX3G1dcZ9qTdUXRuYaOug0igInvTg5Ci1xtm/TlfrK
+	 LYbLc9vHMGF7uogHHeZUdm71whftJkwR8nRBeFcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joachim Vandersmissen <git@jvdsn.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Dragan Simic <dsimic@manjaro.org>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/128] crypto: ecdh - explicitly zeroize private_key
+Subject: [PATCH 6.9 211/222] arm64: dts: rockchip: make poweroff(8) work on Radxa ROCK 5A
 Date: Tue,  2 Jul 2024 19:04:09 +0200
-Message-ID: <20240702170228.051727350@linuxfoundation.org>
+Message-ID: <20240702170252.051591426@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joachim Vandersmissen <git@jvdsn.com>
+From: FUKAUMI Naoki <naoki@radxa.com>
 
-[ Upstream commit 73e5984e540a76a2ee1868b91590c922da8c24c9 ]
+[ Upstream commit d05f7aff7ac23884ed9103a876325047ff9049aa ]
 
-private_key is overwritten with the key parameter passed in by the
-caller (if present), or alternatively a newly generated private key.
-However, it is possible that the caller provides a key (or the newly
-generated key) which is shorter than the previous key. In that
-scenario, some key material from the previous key would not be
-overwritten. The easiest solution is to explicitly zeroize the entire
-private_key array first.
+Designate the RK806 PMIC on the Radxa ROCK 5A as the system power
+controller, so the board shuts down properly on poweroff(8).
 
-Note that this patch slightly changes the behavior of this function:
-previously, if the ecc_gen_privkey failed, the old private_key would
-remain. Now, the private_key is always zeroized. This behavior is
-consistent with the case where params.key is set and ecc_is_key_valid
-fails.
-
-Signed-off-by: Joachim Vandersmissen <git@jvdsn.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 75fdcbc8f4c1 ("arm64: dts: rockchip: add PMIC to rock-5a")
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
+Link: https://lore.kernel.org/r/20240612033523.37166-1-naoki@radxa.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/ecdh.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/crypto/ecdh.c b/crypto/ecdh.c
-index 80afee3234fbe..3049f147e0117 100644
---- a/crypto/ecdh.c
-+++ b/crypto/ecdh.c
-@@ -33,6 +33,8 @@ static int ecdh_set_secret(struct crypto_kpp *tfm, const void *buf,
- 	    params.key_size > sizeof(u64) * ctx->ndigits)
- 		return -EINVAL;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
+index 2002fd0221fa3..ef776aec9d4b5 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
+@@ -394,6 +394,7 @@
+ 		pinctrl-0 = <&pmic_pins>, <&rk806_dvs1_null>,
+ 			    <&rk806_dvs2_null>, <&rk806_dvs3_null>;
+ 		spi-max-frequency = <1000000>;
++		system-power-controller;
  
-+	memset(ctx->private_key, 0, sizeof(ctx->private_key));
-+
- 	if (!params.key || !params.key_size)
- 		return ecc_gen_privkey(ctx->curve_id, ctx->ndigits,
- 				       ctx->private_key);
+ 		vcc1-supply = <&vcc5v0_sys>;
+ 		vcc2-supply = <&vcc5v0_sys>;
 -- 
 2.43.0
 
