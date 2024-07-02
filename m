@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-56700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D54C924598
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:24:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9036592460D
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:30:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCBC21F22B36
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:24:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C23CC1C2100D
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B721BD51A;
-	Tue,  2 Jul 2024 17:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB441BD005;
+	Tue,  2 Jul 2024 17:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdGfYvpP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOhX9zBd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA77715218A;
-	Tue,  2 Jul 2024 17:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEC963D;
+	Tue,  2 Jul 2024 17:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941065; cv=none; b=hRSOn4XMGE6HTER5si50UK8grQIHea2pOEyDJ/8CnfBx+CILC9wP6uZHx32cgqrlIzps7g2uOHA5pGE8ft5xycJIMbpPuQHQijS3vUneYTXNdYDXEKuXdHDW2SUyGWXMcN4hWxyHIzIUmRE4hHYiK5fcYWZMvUcPcBxVKLVO8VI=
+	t=1719941435; cv=none; b=tLZexx5N5IJmfZLAo7wq38Cgg3VMs1nUy6rzilRkiRnMA0FbAg0jyBCRKu/8fCvghRDDl3KCh1KZz8OciZL4xHVpMJFyCyi+4BaBnlPvtBrb05Rg+z+stKMz22NwnUjNsndA0LtMpixORzzcWvc9X1Cb1/NadnhcfYo5YLeKjxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941065; c=relaxed/simple;
-	bh=A9NGJ6GcVIRK2ivYGjxYOAKrk+KBjByfQSiJq2R1e3c=;
+	s=arc-20240116; t=1719941435; c=relaxed/simple;
+	bh=v/JAcGf7RM26XApilN+tcuE+JhEMmBsCi/eixjTAE9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tNkGIpX4/pINMg+Fht8jzH3VxE51PLPkE/CJXbr122sg4Zl8Kg+Ds0nntxg3qnRNdqOGzXOIG0ALpbBQwFXJtfMxaHlkMFUWmAUUcJNU7YBWl30SEl6dsDpmxNAalJ+3CLl73id2fBQ2uyJXD/8qvF7sR27Sam4yvj+opXdKF50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdGfYvpP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2FBC116B1;
-	Tue,  2 Jul 2024 17:24:24 +0000 (UTC)
+	 MIME-Version; b=j+9jDHvhiQQFlRefG+u7d8skl9rdueH/6TH4fzPNODRLep/gtytsM16GWScf3zBONKX5ygm26grAb9KqC/7/JfSSd4SYzhnepTMVkBzKYxg/Pn6Fkadeprjpml/k979CcT6VqODq2O+kxz3RfQ15/PbNMg3uL8/MwWxDFEkq7bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOhX9zBd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C450C116B1;
+	Tue,  2 Jul 2024 17:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941064;
-	bh=A9NGJ6GcVIRK2ivYGjxYOAKrk+KBjByfQSiJq2R1e3c=;
+	s=korg; t=1719941434;
+	bh=v/JAcGf7RM26XApilN+tcuE+JhEMmBsCi/eixjTAE9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LdGfYvpPDqe0HRrGGuKL7caBcQ3XEnGlTzot6MnAYWWJO2pXwC8iIDn6MQ1Qi0TUt
-	 56tsVNRzhje/c+u+FzbF1/UyEL2WVJxkt5LQpGpycnEvi8nKdy5p68DJMHgWGvsTKd
-	 neFdbQSSMDZY57tTvRF7rZawx1HMzZTJZSeSIPkQ=
+	b=IOhX9zBdNP0bvbN5SWg1A2aCWjpl2WS3R5cUxPZKyp4HSTf1t9AVKV2EL+9Rm2ryX
+	 GE5mQ7/C0heiSn/kQUJo+EVT0sQo3g/2XbogkYdy/Vbi8845eAAX3vG/uJXuU6rJHO
+	 eUcRO01fh/BfUVfjhMqZwO/9dg0ZBESrSoXGLD6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Doug Brown <doug@schmorgal.com>
-Subject: [PATCH 6.6 118/163] serial: core: introduce uart_port_tx_limited_flags()
+	Helge Deller <deller@gmx.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 031/128] parisc: use correct compat recv/recvfrom syscalls
 Date: Tue,  2 Jul 2024 19:03:52 +0200
-Message-ID: <20240702170237.521750535@linuxfoundation.org>
+Message-ID: <20240702170227.411751743@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 9bb43b9e8d9a288a214e9b17acc9e46fda3977cf upstream.
+[ Upstream commit 20a50787349fadf66ac5c48f62e58d753878d2bb ]
 
-Analogue to uart_port_tx_flags() introduced in commit 3ee07964d407
-("serial: core: introduce uart_port_tx_flags()"), add a _flags variant
-for uart_port_tx_limited().
+Johannes missed parisc back when he introduced the compat version
+of these syscalls, so receiving cmsg messages that require a compat
+conversion is still broken.
 
-Fixes: d11cc8c3c4b6 ("tty: serial: use uart_port_tx_limited()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Signed-off-by: Doug Brown <doug@schmorgal.com>
-Link: https://lore.kernel.org/r/20240606195632.173255-3-doug@schmorgal.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use the correct calls like the other architectures do.
+
+Fixes: 1dacc76d0014 ("net/compat/wext: send different messages to compat tasks")
+Acked-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/serial_core.h |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ arch/parisc/kernel/syscalls/syscall.tbl | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -827,6 +827,24 @@ enum UART_TX_FLAGS {
- })
- 
- /**
-+ * uart_port_tx_limited_flags -- transmit helper for uart_port with count limiting with flags
-+ * @port: uart port
-+ * @ch: variable to store a character to be written to the HW
-+ * @flags: %UART_TX_NOSTOP or similar
-+ * @count: a limit of characters to send
-+ * @tx_ready: can HW accept more data function
-+ * @put_char: function to write a character
-+ * @tx_done: function to call after the loop is done
-+ *
-+ * See uart_port_tx_limited() for more details.
-+ */
-+#define uart_port_tx_limited_flags(port, ch, flags, count, tx_ready, put_char, tx_done) ({ \
-+	unsigned int __count = (count);							   \
-+	__uart_port_tx(port, ch, flags, tx_ready, put_char, tx_done, __count,		   \
-+			__count--);							   \
-+})
-+
-+/**
-  * uart_port_tx -- transmit helper for uart_port
-  * @port: uart port
-  * @ch: variable to store a character to be written to the HW
+diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
+index 0e42fceb2d5e2..ba4884eaa5057 100644
+--- a/arch/parisc/kernel/syscalls/syscall.tbl
++++ b/arch/parisc/kernel/syscalls/syscall.tbl
+@@ -108,7 +108,7 @@
+ 95	common	fchown			sys_fchown
+ 96	common	getpriority		sys_getpriority
+ 97	common	setpriority		sys_setpriority
+-98	common	recv			sys_recv
++98	common	recv			sys_recv			compat_sys_recv
+ 99	common	statfs			sys_statfs			compat_sys_statfs
+ 100	common	fstatfs			sys_fstatfs			compat_sys_fstatfs
+ 101	common	stat64			sys_stat64
+@@ -135,7 +135,7 @@
+ 120	common	clone			sys_clone_wrapper
+ 121	common	setdomainname		sys_setdomainname
+ 122	common	sendfile		sys_sendfile			compat_sys_sendfile
+-123	common	recvfrom		sys_recvfrom
++123	common	recvfrom		sys_recvfrom			compat_sys_recvfrom
+ 124	32	adjtimex		sys_adjtimex_time32
+ 124	64	adjtimex		sys_adjtimex
+ 125	common	mprotect		sys_mprotect
+-- 
+2.43.0
+
 
 
 
