@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-56600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45A3692452D
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:19:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 861AA924472
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:10:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC39BB2763B
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:19:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4195D28A9DD
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9F41C0DCD;
-	Tue,  2 Jul 2024 17:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741F21BE23A;
+	Tue,  2 Jul 2024 17:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrWeOCag"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VB3H2xTR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF7439847;
-	Tue,  2 Jul 2024 17:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322B61BE229;
+	Tue,  2 Jul 2024 17:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940723; cv=none; b=XeFug3mZCsfTRGYTbCrKiG2v76Wv9aCJvpbniJkhXPm6dFqWDgSJsRoFQag9Hoxelrk9vQnkY3c2M1vpVskervmAOAMKtpHijCUULfK4Q1oxKQzPoIftt1sHlFHGdKkaYsDyf+yyM2NsjiBYQHtvO3BtgIjbNXbkzGG6kI3rR+Y=
+	t=1719940240; cv=none; b=JqmQMcxLjgiWfwAsSGAbMt6qJYxcVjttho5JXSiKglwlwnTLiLl3jBT4TyacpFWVshawck7akvtjm3mfPf3/dXJzYf85ajZ9J+5TiXwslfH7Oj7e3lk2pGp/b3Mk42qUQ7MK1oEsnRtE99wdnpwc8NRhJjHNxtGOrTL3WYh0Xgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940723; c=relaxed/simple;
-	bh=gkeZxMsp5fUFDY9pn1vHZax5JsR+MJissmdgFnwNBIM=;
+	s=arc-20240116; t=1719940240; c=relaxed/simple;
+	bh=38fLKdCSzsZ4gRwSz7M43Qq6hbZFTgab5AN3aG9iHS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eYTbHKZaHPtIZiPOxNzoX1wlWjYGC3jElXOIjD0RhbC8O+e2Yrvd0N4JoZFl9ijeJQaq8ZazrPIpzi17DJINWztglB1I2Av9G2UU3580xisFhKGp2ApuczdodkcNZNDTM1ADz62HaJ+mHClMckJJlu8FO4EfYASDSyJSuMx8bWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrWeOCag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F7A4C116B1;
-	Tue,  2 Jul 2024 17:18:42 +0000 (UTC)
+	 MIME-Version; b=bsWT1dmmyEVY9joHsQq9f/gWC+l1rOYXipTOBAmdUXa45ry+/BQ8TDlnCJozR+Atz4E2vIfQ0Jcr5mW+k5UKhCpjDHZPQ8ZbnO/9f1lAAgVhkoZs5om8bM9Ym5n1a9F4Ghm9AuWSZFAUZMhRt4Thg16SFngzvjBb34G4QjreSQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VB3H2xTR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9621FC116B1;
+	Tue,  2 Jul 2024 17:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940722;
-	bh=gkeZxMsp5fUFDY9pn1vHZax5JsR+MJissmdgFnwNBIM=;
+	s=korg; t=1719940240;
+	bh=38fLKdCSzsZ4gRwSz7M43Qq6hbZFTgab5AN3aG9iHS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RrWeOCagwvfG6YqZAW0T61Qd8AZ4r3vZmE9l5mBdLvMRLU580fSb+U9VptE8qyaJo
-	 vb7/KVUT8+w3gal2sPLhlU1nbc9z4LvJ3bKR+kGZa2dBI0fnHLPHKxG+GNkovh+LqJ
-	 qs4wbgRD/ri/LHCzFdFaiLRKTojgyUeFg8XoPk6E=
+	b=VB3H2xTRb1ZVqQoIJ4uvRvw8y8HEVHwfqa0il/oKMqQuBKu3FQuFaTUYKVk7qsav6
+	 waDzmiDqjMElyabsTEAoX8Bjnk0KU/Mdx3yKsIJEwskHTw+X+1PwLHnoxMpT0rLn26
+	 ca81JQo72BQYlrti5ECxRJTU7LvXTqyg1xP3SK80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Hannes Reinecke <hare@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 018/163] ASoC: atmel: convert not to use asoc_xxx()
-Date: Tue,  2 Jul 2024 19:02:12 +0200
-Message-ID: <20240702170233.748833906@linuxfoundation.org>
+Subject: [PATCH 6.9 095/222] nvme: fixup comment for nvme RDMA Provider Type
+Date: Tue,  2 Jul 2024 19:02:13 +0200
+Message-ID: <20240702170247.602994609@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,245 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Hannes Reinecke <hare@suse.de>
 
-[ Upstream commit 6547effc3aea50cc3c60874f9a65a19f4919ef9d ]
+[ Upstream commit f80a55fa90fa76d01e3fffaa5d0413e522ab9a00 ]
 
-ASoC is now unified asoc_xxx() into snd_soc_xxx().
-This patch convert asoc_xxx() to snd_soc_xxx().
+PRTYPE is the provider type, not the QP service type.
 
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://lore.kernel.org/r/87r0n4qniq.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 2ed22161b19b ("ASoC: atmel: atmel-classd: Re-add dai_link->platform to fix card init")
+Fixes: eb793e2c9286 ("nvme.h: add NVMe over Fabrics definitions")
+Signed-off-by: Hannes Reinecke <hare@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/atmel/atmel-classd.c   | 10 +++++-----
- sound/soc/atmel/atmel-pcm-dma.c  |  8 ++++----
- sound/soc/atmel/atmel-pcm-pdc.c  |  4 ++--
- sound/soc/atmel/atmel-pdmic.c    | 12 ++++++------
- sound/soc/atmel/atmel_wm8904.c   |  4 ++--
- sound/soc/atmel/mikroe-proto.c   |  2 +-
- sound/soc/atmel/sam9g20_wm8731.c |  2 +-
- sound/soc/atmel/sam9x5_wm8731.c  |  2 +-
- 8 files changed, 22 insertions(+), 22 deletions(-)
+ include/linux/nvme.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/atmel/atmel-classd.c b/sound/soc/atmel/atmel-classd.c
-index 4c1985711218d..6aed1ee443b44 100644
---- a/sound/soc/atmel/atmel-classd.c
-+++ b/sound/soc/atmel/atmel-classd.c
-@@ -118,7 +118,7 @@ static const struct snd_pcm_hardware atmel_classd_hw = {
- static int atmel_classd_cpu_dai_startup(struct snd_pcm_substream *substream,
- 					struct snd_soc_dai *cpu_dai)
- {
--	struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct atmel_classd *dd = snd_soc_card_get_drvdata(rtd->card);
- 	int err;
+diff --git a/include/linux/nvme.h b/include/linux/nvme.h
+index 4255732022953..69ac2abf8acfe 100644
+--- a/include/linux/nvme.h
++++ b/include/linux/nvme.h
+@@ -87,8 +87,8 @@ enum {
+ 	NVMF_RDMA_QPTYPE_DATAGRAM	= 2, /* Reliable Datagram */
+ };
  
-@@ -141,7 +141,7 @@ atmel_classd_platform_configure_dma(struct snd_pcm_substream *substream,
- 	struct snd_pcm_hw_params *params,
- 	struct dma_slave_config *slave_config)
- {
--	struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct atmel_classd *dd = snd_soc_card_get_drvdata(rtd->card);
- 
- 	if (params_physical_width(params) != 16) {
-@@ -338,7 +338,7 @@ atmel_classd_cpu_dai_hw_params(struct snd_pcm_substream *substream,
- 			       struct snd_pcm_hw_params *params,
- 			       struct snd_soc_dai *cpu_dai)
- {
--	struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct atmel_classd *dd = snd_soc_card_get_drvdata(rtd->card);
- 	struct snd_soc_component *component = cpu_dai->component;
- 	int fs;
-@@ -381,7 +381,7 @@ static void
- atmel_classd_cpu_dai_shutdown(struct snd_pcm_substream *substream,
- 			      struct snd_soc_dai *cpu_dai)
- {
--	struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct atmel_classd *dd = snd_soc_card_get_drvdata(rtd->card);
- 
- 	clk_disable_unprepare(dd->gclk);
-@@ -478,7 +478,7 @@ static int atmel_classd_asoc_card_init(struct device *dev,
- 		return -ENOMEM;
- 
- 	dai_link->cpus		= comp;
--	dai_link->codecs	= &asoc_dummy_dlc;
-+	dai_link->codecs	= &snd_soc_dummy_dlc;
- 
- 	dai_link->num_cpus	= 1;
- 	dai_link->num_codecs	= 1;
-diff --git a/sound/soc/atmel/atmel-pcm-dma.c b/sound/soc/atmel/atmel-pcm-dma.c
-index 96a8c7dba98ff..7306e04da513b 100644
---- a/sound/soc/atmel/atmel-pcm-dma.c
-+++ b/sound/soc/atmel/atmel-pcm-dma.c
-@@ -52,10 +52,10 @@ static const struct snd_pcm_hardware atmel_pcm_dma_hardware = {
- static void atmel_pcm_dma_irq(u32 ssc_sr,
- 	struct snd_pcm_substream *substream)
- {
--	struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct atmel_pcm_dma_params *prtd;
- 
--	prtd = snd_soc_dai_get_dma_data(asoc_rtd_to_cpu(rtd, 0), substream);
-+	prtd = snd_soc_dai_get_dma_data(snd_soc_rtd_to_cpu(rtd, 0), substream);
- 
- 	if (ssc_sr & prtd->mask->ssc_error) {
- 		if (snd_pcm_running(substream))
-@@ -77,12 +77,12 @@ static void atmel_pcm_dma_irq(u32 ssc_sr,
- static int atmel_pcm_configure_dma(struct snd_pcm_substream *substream,
- 	struct snd_pcm_hw_params *params, struct dma_slave_config *slave_config)
- {
--	struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct atmel_pcm_dma_params *prtd;
- 	struct ssc_device *ssc;
- 	int ret;
- 
--	prtd = snd_soc_dai_get_dma_data(asoc_rtd_to_cpu(rtd, 0), substream);
-+	prtd = snd_soc_dai_get_dma_data(snd_soc_rtd_to_cpu(rtd, 0), substream);
- 	ssc = prtd->ssc;
- 
- 	ret = snd_hwparams_to_dma_slave_config(substream, params, slave_config);
-diff --git a/sound/soc/atmel/atmel-pcm-pdc.c b/sound/soc/atmel/atmel-pcm-pdc.c
-index 3e7ea2021b46b..7db8df85c54f3 100644
---- a/sound/soc/atmel/atmel-pcm-pdc.c
-+++ b/sound/soc/atmel/atmel-pcm-pdc.c
-@@ -140,12 +140,12 @@ static int atmel_pcm_hw_params(struct snd_soc_component *component,
- {
- 	struct snd_pcm_runtime *runtime = substream->runtime;
- 	struct atmel_runtime_data *prtd = runtime->private_data;
--	struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 
- 	/* this may get called several times by oss emulation
- 	 * with different params */
- 
--	prtd->params = snd_soc_dai_get_dma_data(asoc_rtd_to_cpu(rtd, 0), substream);
-+	prtd->params = snd_soc_dai_get_dma_data(snd_soc_rtd_to_cpu(rtd, 0), substream);
- 	prtd->params->dma_intr_handler = atmel_pcm_dma_irq;
- 
- 	prtd->dma_buffer = runtime->dma_addr;
-diff --git a/sound/soc/atmel/atmel-pdmic.c b/sound/soc/atmel/atmel-pdmic.c
-index 0db7815d230c3..fa29dd8ef2089 100644
---- a/sound/soc/atmel/atmel-pdmic.c
-+++ b/sound/soc/atmel/atmel-pdmic.c
-@@ -104,7 +104,7 @@ static struct atmel_pdmic_pdata *atmel_pdmic_dt_init(struct device *dev)
- static int atmel_pdmic_cpu_dai_startup(struct snd_pcm_substream *substream,
- 					struct snd_soc_dai *cpu_dai)
- {
--	struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct atmel_pdmic *dd = snd_soc_card_get_drvdata(rtd->card);
- 	int ret;
- 
-@@ -132,7 +132,7 @@ static int atmel_pdmic_cpu_dai_startup(struct snd_pcm_substream *substream,
- static void atmel_pdmic_cpu_dai_shutdown(struct snd_pcm_substream *substream,
- 					struct snd_soc_dai *cpu_dai)
- {
--	struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct atmel_pdmic *dd = snd_soc_card_get_drvdata(rtd->card);
- 
- 	/* Disable the overrun error interrupt */
-@@ -145,7 +145,7 @@ static void atmel_pdmic_cpu_dai_shutdown(struct snd_pcm_substream *substream,
- static int atmel_pdmic_cpu_dai_prepare(struct snd_pcm_substream *substream,
- 					struct snd_soc_dai *cpu_dai)
- {
--	struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct atmel_pdmic *dd = snd_soc_card_get_drvdata(rtd->card);
- 	struct snd_soc_component *component = cpu_dai->component;
- 	u32 val;
-@@ -191,7 +191,7 @@ atmel_pdmic_platform_configure_dma(struct snd_pcm_substream *substream,
- 				struct snd_pcm_hw_params *params,
- 				struct dma_slave_config *slave_config)
- {
--	struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct atmel_pdmic *dd = snd_soc_card_get_drvdata(rtd->card);
- 	int ret;
- 
-@@ -356,7 +356,7 @@ atmel_pdmic_cpu_dai_hw_params(struct snd_pcm_substream *substream,
- 			      struct snd_pcm_hw_params *params,
- 			      struct snd_soc_dai *cpu_dai)
- {
--	struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct atmel_pdmic *dd = snd_soc_card_get_drvdata(rtd->card);
- 	struct snd_soc_component *component = cpu_dai->component;
- 	unsigned int rate_min = substream->runtime->hw.rate_min;
-@@ -501,7 +501,7 @@ static int atmel_pdmic_asoc_card_init(struct device *dev,
- 		return -ENOMEM;
- 
- 	dai_link->cpus		= comp;
--	dai_link->codecs	= &asoc_dummy_dlc;
-+	dai_link->codecs	= &snd_soc_dummy_dlc;
- 
- 	dai_link->num_cpus	= 1;
- 	dai_link->num_codecs	= 1;
-diff --git a/sound/soc/atmel/atmel_wm8904.c b/sound/soc/atmel/atmel_wm8904.c
-index 00e98136bec25..01e944fa11483 100644
---- a/sound/soc/atmel/atmel_wm8904.c
-+++ b/sound/soc/atmel/atmel_wm8904.c
-@@ -26,8 +26,8 @@ static const struct snd_soc_dapm_widget atmel_asoc_wm8904_dapm_widgets[] = {
- static int atmel_asoc_wm8904_hw_params(struct snd_pcm_substream *substream,
- 		struct snd_pcm_hw_params *params)
- {
--	struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
--	struct snd_soc_dai *codec_dai = asoc_rtd_to_codec(rtd, 0);
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
-+	struct snd_soc_dai *codec_dai = snd_soc_rtd_to_codec(rtd, 0);
- 	int ret;
- 
- 	ret = snd_soc_dai_set_pll(codec_dai, WM8904_FLL_MCLK, WM8904_FLL_MCLK,
-diff --git a/sound/soc/atmel/mikroe-proto.c b/sound/soc/atmel/mikroe-proto.c
-index 30c87c2c1b0bd..18a8760443ae6 100644
---- a/sound/soc/atmel/mikroe-proto.c
-+++ b/sound/soc/atmel/mikroe-proto.c
-@@ -21,7 +21,7 @@
- static int snd_proto_init(struct snd_soc_pcm_runtime *rtd)
- {
- 	struct snd_soc_card *card = rtd->card;
--	struct snd_soc_dai *codec_dai = asoc_rtd_to_codec(rtd, 0);
-+	struct snd_soc_dai *codec_dai = snd_soc_rtd_to_codec(rtd, 0);
- 
- 	/* Set proto sysclk */
- 	int ret = snd_soc_dai_set_sysclk(codec_dai, WM8731_SYSCLK_XTAL,
-diff --git a/sound/soc/atmel/sam9g20_wm8731.c b/sound/soc/atmel/sam9g20_wm8731.c
-index 0405e9e49140e..d3ec9826d505f 100644
---- a/sound/soc/atmel/sam9g20_wm8731.c
-+++ b/sound/soc/atmel/sam9g20_wm8731.c
-@@ -66,7 +66,7 @@ static const struct snd_soc_dapm_route intercon[] = {
+-/* RDMA QP Service Type codes for Discovery Log Page entry TSAS
+- * RDMA_QPTYPE field
++/* RDMA Provider Type codes for Discovery Log Page entry TSAS
++ * RDMA_PRTYPE field
   */
- static int at91sam9g20ek_wm8731_init(struct snd_soc_pcm_runtime *rtd)
- {
--	struct snd_soc_dai *codec_dai = asoc_rtd_to_codec(rtd, 0);
-+	struct snd_soc_dai *codec_dai = snd_soc_rtd_to_codec(rtd, 0);
- 	struct device *dev = rtd->dev;
- 	int ret;
- 
-diff --git a/sound/soc/atmel/sam9x5_wm8731.c b/sound/soc/atmel/sam9x5_wm8731.c
-index cd1d59a90e021..d1c1f370a9cd5 100644
---- a/sound/soc/atmel/sam9x5_wm8731.c
-+++ b/sound/soc/atmel/sam9x5_wm8731.c
-@@ -40,7 +40,7 @@ struct sam9x5_drvdata {
-  */
- static int sam9x5_wm8731_init(struct snd_soc_pcm_runtime *rtd)
- {
--	struct snd_soc_dai *codec_dai = asoc_rtd_to_codec(rtd, 0);
-+	struct snd_soc_dai *codec_dai = snd_soc_rtd_to_codec(rtd, 0);
- 	struct device *dev = rtd->dev;
- 	int ret;
- 
+ enum {
+ 	NVMF_RDMA_PRTYPE_NOT_SPECIFIED	= 1, /* No Provider Specified */
 -- 
 2.43.0
 
