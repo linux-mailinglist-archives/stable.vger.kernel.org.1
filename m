@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-56551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B949244E8
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:16:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68F54924597
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:24:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63C871F22663
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:16:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FD031F22044
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59381BE257;
-	Tue,  2 Jul 2024 17:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67761BE223;
+	Tue,  2 Jul 2024 17:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4NnProS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1PRvPaX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B1915218A;
-	Tue,  2 Jul 2024 17:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7643015218A;
+	Tue,  2 Jul 2024 17:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940561; cv=none; b=cF2+VcyW7MNlRH5AKT6lGNoQC62im1FfG7dkg/FEFHzqx9aicWVfqXU1zWNjv4dceNIOP3EpDdw+kJFlX6DDghGTEa/xs5AIuNCpWFAo+fcYH77ZhGSqmxsaisYd8CxPRrHI+FQlglCW4OX2riiIi695Q3rYUVmLiFTjWouu/EM=
+	t=1719941061; cv=none; b=EkjQXl2bOqEf+W2CZ4Yc54AIOhjJy0Jx93ps0gLMDO8iM4PGaAR0JuS3DtYpIU6hX4ATOrcuu4S3c3ZOLtUb2yuCkdNWfdHxD/PpV57iIumZHlaLHFwPnYgeEt8rqvHsg1OoTzDxPo9965RWFMpLdr5g2r7HlX2PF7yw8S5omuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940561; c=relaxed/simple;
-	bh=J0QF9UFgFgnbj+XGkjE/OY9RyiG9UXmIORozThEMk0o=;
+	s=arc-20240116; t=1719941061; c=relaxed/simple;
+	bh=oBKtzy06sf7Rhis1jN67WVCIgf3hYdkWbGv0ZAFebHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GnFoTIya5TfIPvoSy1OLEOhCCgHyxuRs++FHU8sVLzGtL2HPGBG0Zo2iMIo9k0QCGDCVsU4WXujDcKgWwB+k5NNKgtRoN8/6/7Eyu6TR218JZNyAfVw6i6pz8Bas2Rh7gMJc0abCzBPeW1rJTC8tX8niHG2zai+Xrr+lH59AYVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4NnProS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAAC0C116B1;
-	Tue,  2 Jul 2024 17:16:00 +0000 (UTC)
+	 MIME-Version; b=ng/co+39255jnSQFCESVL0jFmKXIgK5noHwc7hvgpmVSR9g/ws8tBe4Aq7oBXnndEOvOFIYjTEQxf/NkfP3DdpGg4M+8QPOOb+quHcxyL4EUOyQN2WDVZ03Dmyo0OECJMXSfRz7NVZiXrbPcGTFx/JCE3CTbXS8y8v5Vn8rg3Ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1PRvPaX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B5BC4AF0A;
+	Tue,  2 Jul 2024 17:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940561;
-	bh=J0QF9UFgFgnbj+XGkjE/OY9RyiG9UXmIORozThEMk0o=;
+	s=korg; t=1719941061;
+	bh=oBKtzy06sf7Rhis1jN67WVCIgf3hYdkWbGv0ZAFebHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R4NnProSLzZ+gIxwMSA67c4QTtBXOufP+yhJOY+6+x+0QC80oCWIpm2c9SNHT1diQ
-	 gWO7KS8axpeD2j8xASPygr+o+spOYJo7u1jrxOjIvPe8VjXf7BcdG0G0486QL9VjrT
-	 Fvs0mR59p3Q1wrblVNrOLdSVLfSAfstF/amzdYT0=
+	b=A1PRvPaXe4zYxMnW8muS7Lkq7us0jgJqHFXnSehsuxteH34a39262AaNE4nbMZPdO
+	 hLG4ypSewvHLg6aDnJ5WLAJidLrp38BlCNmR7s20xPcE3dGbIWgnOPJWWqdxKomOhS
+	 XqUMh73paIali2OuQkAXkccxNEty+kATbbY6X9NU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.9 192/222] ata: libata-core: Fix double free on error
-Date: Tue,  2 Jul 2024 19:03:50 +0200
-Message-ID: <20240702170251.324045780@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: [PATCH 6.6 117/163] serial: imx: set receiver level before starting uart
+Date: Tue,  2 Jul 2024 19:03:51 +0200
+Message-ID: <20240702170237.484023961@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-commit ab9e0c529eb7cafebdd31fe1644524e80a48b05d upstream.
+commit a81dbd0463eca317eee44985a66aa6cc2ce5c101 upstream.
 
-If e.g. the ata_port_alloc() call in ata_host_alloc() fails, we will jump
-to the err_out label, which will call devres_release_group().
-devres_release_group() will trigger a call to ata_host_release().
-ata_host_release() calls kfree(host), so executing the kfree(host) in
-ata_host_alloc() will lead to a double free:
+Set the receiver level to something > 0 before calling imx_uart_start_rx
+in rs485_config. This is necessary to avoid an interrupt storm that
+might prevent the system from booting. This was seen on an i.MX7 device
+when the rs485-rts-active-low property was active in the device tree.
 
-kernel BUG at mm/slub.c:553!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 11 PID: 599 Comm: (udev-worker) Not tainted 6.10.0-rc5 #47
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
-RIP: 0010:kfree+0x2cf/0x2f0
-Code: 5d 41 5e 41 5f 5d e9 80 d6 ff ff 4d 89 f1 41 b8 01 00 00 00 48 89 d9 48 89 da
-RSP: 0018:ffffc90000f377f0 EFLAGS: 00010246
-RAX: ffff888112b1f2c0 RBX: ffff888112b1f2c0 RCX: ffff888112b1f320
-RDX: 000000000000400b RSI: ffffffffc02c9de5 RDI: ffff888112b1f2c0
-RBP: ffffc90000f37830 R08: 0000000000000000 R09: 0000000000000000
-R10: ffffc90000f37610 R11: 617461203a736b6e R12: ffffea00044ac780
-R13: ffff888100046400 R14: ffffffffc02c9de5 R15: 0000000000000006
-FS:  00007f2f1cabe980(0000) GS:ffff88813b380000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f2f1c3acf75 CR3: 0000000111724000 CR4: 0000000000750ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __die_body.cold+0x19/0x27
- ? die+0x2e/0x50
- ? do_trap+0xca/0x110
- ? do_error_trap+0x6a/0x90
- ? kfree+0x2cf/0x2f0
- ? exc_invalid_op+0x50/0x70
- ? kfree+0x2cf/0x2f0
- ? asm_exc_invalid_op+0x1a/0x20
- ? ata_host_alloc+0xf5/0x120 [libata]
- ? ata_host_alloc+0xf5/0x120 [libata]
- ? kfree+0x2cf/0x2f0
- ata_host_alloc+0xf5/0x120 [libata]
- ata_host_alloc_pinfo+0x14/0xa0 [libata]
- ahci_init_one+0x6c9/0xd20 [ahci]
-
-Ensure that we will not call kfree(host) twice, by performing the kfree()
-only if the devres_open_group() call failed.
-
-Fixes: dafd6c496381 ("libata: ensure host is free'd on error exit paths")
-Cc: stable@vger.kernel.org
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20240629124210.181537-9-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Fixes: 6d215f83e5fc ("serial: imx: warn user when using unsupported configuration")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Link: https://lore.kernel.org/r/20240621153829.183780-1-eichest@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-core.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/tty/serial/imx.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -5621,8 +5621,10 @@ struct ata_host *ata_host_alloc(struct d
- 	if (!host)
- 		return NULL;
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -1959,8 +1959,10 @@ static int imx_uart_rs485_config(struct
  
--	if (!devres_open_group(dev, NULL, GFP_KERNEL))
--		goto err_free;
-+	if (!devres_open_group(dev, NULL, GFP_KERNEL)) {
-+		kfree(host);
-+		return NULL;
+ 	/* Make sure Rx is enabled in case Tx is active with Rx disabled */
+ 	if (!(rs485conf->flags & SER_RS485_ENABLED) ||
+-	    rs485conf->flags & SER_RS485_RX_DURING_TX)
++	    rs485conf->flags & SER_RS485_RX_DURING_TX) {
++		imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
+ 		imx_uart_start_rx(port);
 +	}
  
- 	dr = devres_alloc(ata_devres_release, 0, GFP_KERNEL);
- 	if (!dr)
-@@ -5654,8 +5656,6 @@ struct ata_host *ata_host_alloc(struct d
- 
-  err_out:
- 	devres_release_group(dev, NULL);
-- err_free:
--	kfree(host);
- 	return NULL;
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(ata_host_alloc);
 
 
 
