@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B549245F6
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 518819244FA
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:17:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F055E1F23101
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83FEF1C222C6
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0B71BE858;
-	Tue,  2 Jul 2024 17:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6821C007C;
+	Tue,  2 Jul 2024 17:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VdMlXSIT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9NUCS/9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2D91BE22B;
-	Tue,  2 Jul 2024 17:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A10F1C006A;
+	Tue,  2 Jul 2024 17:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941359; cv=none; b=tzBDirfozYpiKgGH1bG5J0wi/79sY4Z0RtiRdL33rU/16Mehogyg6vI1TblaCw6F6W13ZiCszb5TWUScIaz9ATbA7+7ZfuMbOGGa3OC82HQGiYTVa8y9fChCQQFh6OMYNNeQ6bCr/8WtQMyo1b+3X12EZQzCLOu+u73HMQ3OVK0=
+	t=1719940606; cv=none; b=BR/CYhH9hysfcYJpwTU2l6eGSOwj/iNNEulH78e+CJLCuWZ39uQNww5JCLRGqhmRkF3gsoJVLeMY/F0jPTka/m3Vntt7s+r6RjRBpLREvGRvS5QYo/t9QRko1IMovFQtHA/9o7IEO1h8i8lAeujKc0nqGKDqJPdV8YMJliyQ0Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941359; c=relaxed/simple;
-	bh=OKvF8MkyCF97k5rwbRrPIBV4lYic/b1naMTsxPMSnCk=;
+	s=arc-20240116; t=1719940606; c=relaxed/simple;
+	bh=4du2s4hoeO8pCtbLL5Nvv/p1+GwyTEx8C0Qk+Y5U8tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TpYuPhRxnEO7fJaJPupIYqu4pbiDq6Tj5nkO6YDBVNa9Sc4bwaBYE0q2CgIY1Ieb1cE72gt6SSTl3G4cxFx/7NlC6ZBLGln2Q1mchGkkM3kMFYRv3W/orWtGYxpgyyF5dJ4CNOP9FLU8HS1K+7OYg4s5p+xTDp3GWdooYb7isE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VdMlXSIT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DFFCC116B1;
-	Tue,  2 Jul 2024 17:29:18 +0000 (UTC)
+	 MIME-Version; b=pa2mpB3dTGtTXNImM3C0CKEXBSzR/uUi3llqeuOdZUBvfDUDK1p1HxUODxeSmEpnPnM4PsKgvTYcDwSgsMoskUw/vtc1kX+p26FNHf0RZw1e9Wr1Y45fPlDGIK/pY8F/AXGDlUlnUykGMHq27VNl4HMFyfEl2Wrnejix0sVQfoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9NUCS/9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFF7C4AF0F;
+	Tue,  2 Jul 2024 17:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941359;
-	bh=OKvF8MkyCF97k5rwbRrPIBV4lYic/b1naMTsxPMSnCk=;
+	s=korg; t=1719940606;
+	bh=4du2s4hoeO8pCtbLL5Nvv/p1+GwyTEx8C0Qk+Y5U8tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VdMlXSITmikyq1d2GsVECBU77t1DaFgW1RIFQZoGN2jqEPUawpgc9qRx8i/H2Z/tH
-	 kPFusRX8/4KZQROOOwvVniCyXh42a7NWPykU05B0RBxKVQaUx5PSeXX2bZU2OwAiKX
-	 tBt/5NLDWO4Jf4arZJtjKSaz+s0ckt8wtQiR/3ao=
+	b=w9NUCS/9qXfeJHTqguclZ+wm/9Qw6ltp+MA2PtdGud2twmq686cXhJ0rw97HKbo4F
+	 /A780fnACQdbkXh1eE/aeCfhte2RCLEjHsgVDIAlCtGSY9yt+0kvOo3qaeTrv8dtnk
+	 hkwbba2V1OFw+hH4CECdQLMS56MT+Oly37AkldGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/128] mtd: partitions: redboot: Added conversion of operands to a larger type
-Date: Tue,  2 Jul 2024 19:04:02 +0200
-Message-ID: <20240702170227.788724575@linuxfoundation.org>
+Subject: [PATCH 6.9 205/222] arm64: dts: rockchip: Fix SD NAND and eMMC init on rk3308-rock-pi-s
+Date: Tue,  2 Jul 2024 19:04:03 +0200
+Message-ID: <20240702170251.822255565@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit 1162bc2f8f5de7da23d18aa4b7fbd4e93c369c50 ]
+[ Upstream commit 1fb98c855ccd7bc7f50c7a9626fbb8440454760b ]
 
-The value of an arithmetic expression directory * master->erasesize is
-subject to overflow due to a failure to cast operands to a larger data
-type before perfroming arithmetic
+Radxa ROCK Pi S have optional onboard SD NAND on board revision v1.1,
+v1.2 and v1.3, revision v1.5 changed to use optional onboard eMMC.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+The optional SD NAND typically fails to initialize:
 
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240315093758.20790-1-arefev@swemel.ru
+  mmc_host mmc0: Bus speed (slot 0) = 400000Hz (slot req 400000Hz, actual 400000HZ div = 0)
+  mmc0: error -110 whilst initialising SD card
+  mmc_host mmc0: Bus speed (slot 0) = 300000Hz (slot req 300000Hz, actual 300000HZ div = 0)
+  mmc0: error -110 whilst initialising SD card
+  mmc_host mmc0: Bus speed (slot 0) = 200000Hz (slot req 200000Hz, actual 200000HZ div = 0)
+  mmc0: error -110 whilst initialising SD card
+  mmc_host mmc0: Bus speed (slot 0) = 100000Hz (slot req 100000Hz, actual 100000HZ div = 0)
+  mmc0: error -110 whilst initialising SD card
+
+Add pinctrl and cap-sd-highspeed to fix SD NAND initialization. Also
+drop bus-width and mmc-hs200-1_8v to fix eMMC initialization on the new
+v1.5 board revision, only 3v3 signal voltage is used.
+
+Fixes: 2e04c25b1320 ("arm64: dts: rockchip: add ROCK Pi S DTS support")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20240521211029.1236094-4-jonas@kwiboo.se
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/parsers/redboot.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/parsers/redboot.c b/drivers/mtd/parsers/redboot.c
-index a16b42a885816..3b55b676ca6b9 100644
---- a/drivers/mtd/parsers/redboot.c
-+++ b/drivers/mtd/parsers/redboot.c
-@@ -102,7 +102,7 @@ static int parse_redboot_partitions(struct mtd_info *master,
- 			offset -= master->erasesize;
- 		}
- 	} else {
--		offset = directory * master->erasesize;
-+		offset = (unsigned long) directory * master->erasesize;
- 		while (mtd_block_isbad(master, offset)) {
- 			offset += master->erasesize;
- 			if (offset == master->size)
+diff --git a/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts b/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
+index b47fe02c33fbd..84f4b4a44644c 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
+@@ -126,10 +126,12 @@
+ };
+ 
+ &emmc {
+-	bus-width = <4>;
+ 	cap-mmc-highspeed;
+-	mmc-hs200-1_8v;
++	cap-sd-highspeed;
++	no-sdio;
+ 	non-removable;
++	pinctrl-names = "default";
++	pinctrl-0 = <&emmc_bus8 &emmc_clk &emmc_cmd>;
+ 	vmmc-supply = <&vcc_io>;
+ 	status = "okay";
+ };
 -- 
 2.43.0
 
