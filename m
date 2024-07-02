@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-56526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267889244C3
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:14:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B9739245E7
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:28:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF68B1F21AB1
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:14:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D96131F2197A
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9A71BE22A;
-	Tue,  2 Jul 2024 17:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03A91BE863;
+	Tue,  2 Jul 2024 17:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bx9jH7n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGzu6nJ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9FE15B0FE;
-	Tue,  2 Jul 2024 17:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2E51514DC;
+	Tue,  2 Jul 2024 17:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940478; cv=none; b=gqXauBdV4D+1VMwnF450UtvvnhBVlQo1tsi+nJqgd7e5qIS1ovSt4aVqNdlzXdkKBUMN/tHJ3w2gD7XkeXQh7hU/IWAlQTbVENjE31mem4hofP5uqA1obezKbpfpzA4nHVdQcJF7N5Bp5VcGMbLKrBIgUllcPWMv0PciV0kNjoA=
+	t=1719941314; cv=none; b=BLBD/HU+C7PREQb1fXUao5//TG8ooRD4633huqVPX615DDCZ+lUeQQdwEsheHa460y6u+1Ujfne+dIFatImGlgOuoMSfFRNMuuXLyu2D7A2o7QzIb17KIMDwmCGfye4bpgOuDw1HfT7Vrw6kkCj81unnM0HAtNRsmU629uTN9P8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940478; c=relaxed/simple;
-	bh=xSTJZgICYZqC22YnyHGBaqqAuxFuuf0D6KDgaNpjXFg=;
+	s=arc-20240116; t=1719941314; c=relaxed/simple;
+	bh=b8WKXVz+A5evtNU0RmLy2PcjkNI/fHyWJ14VR/pDUVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YB22D6KF6IqMmcIIzxNP6gu5f+xzm/P0TJZ2TWfCMZODmaHRC2MPWGHxX2dZH4kEcK2jSMNzIYFEHP+eEYRvkFzqleDIiiJWoKr2O9KyqnpHuTXvtbDunaAtXdH1Tuhr+wd69JVnNj/lqHkgueynJJBeTE0LasX7IZwpUn/NQ18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bx9jH7n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9768EC116B1;
-	Tue,  2 Jul 2024 17:14:37 +0000 (UTC)
+	 MIME-Version; b=tu5UMUrvdKznE/CtZSQv9Y71C8ZyhrvKb0rRZpGAWyX+1fFp7gpS9ww2qJFg6Pf2hC0hhIID8SK7sOrOe7RCC/nXkw7t6dGFOL1MYDmzvgfM4inENU/uK4P+Kj1AnUVdytNOxwepIziMkdooU1ELcjSk49Gs4MjSgffLweiOslg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGzu6nJ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6F3C116B1;
+	Tue,  2 Jul 2024 17:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940478;
-	bh=xSTJZgICYZqC22YnyHGBaqqAuxFuuf0D6KDgaNpjXFg=;
+	s=korg; t=1719941314;
+	bh=b8WKXVz+A5evtNU0RmLy2PcjkNI/fHyWJ14VR/pDUVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1bx9jH7nw6hsi8++xmHpyFeMII2Pb51SSHYWlicWmjkT+f998T+c8CvnwYMFfACqK
-	 z9FuHzWuhYLMkzCSu/cKkenxrhe67UjAM0y+8LR7622KYLWloOlFU9iRAegt67qbo1
-	 gEdvP3YGOIS1H7gjQFpkLqQ+KMeFoYPWydp4D6wU=
+	b=kGzu6nJ+Of8W0xJX2x0UqLeCs5tCn7FjxPyPlm8Efbk9meo/1rko8YLSYtzQM3+fV
+	 EbEkQ8KgvAR4AWJ0ZYaTJZ2NuuleS8AOw9zlOm0aefheAkj4y/CIDUCFItIetRHwkO
+	 wZJkhnxVIpuYXF8Rsl64TxFuOU2LwlCivYFSDfiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+daa36413a5cedf799ae4@syzkaller.appspotmail.com,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.9 166/222] net: can: j1939: enhanced error handling for tightly received RTS messages in xtp_rx_rts_session_new
+	Narasimhan V <Narasimhan.V@amd.com>,
+	Jan Beulich <jbeulich@suse.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 003/128] x86/mm/numa: Use NUMA_NO_NODE when calling memblock_set_node()
 Date: Tue,  2 Jul 2024 19:03:24 +0200
-Message-ID: <20240702170250.322075740@linuxfoundation.org>
+Message-ID: <20240702170226.364430407@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +65,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Jan Beulich <jbeulich@suse.com>
 
-commit d3e2904f71ea0fe7eaff1d68a2b0363c888ea0fb upstream.
+[ Upstream commit 3ac36aa7307363b7247ccb6f6a804e11496b2b36 ]
 
-This patch enhances error handling in scenarios with RTS (Request to
-Send) messages arriving closely. It replaces the less informative WARN_ON_ONCE
-backtraces with a new error handling method. This provides clearer error
-messages and allows for the early termination of problematic sessions.
-Previously, sessions were only released at the end of j1939_xtp_rx_rts().
+memblock_set_node() warns about using MAX_NUMNODES, see
 
-Potentially this could be reproduced with something like:
-testj1939 -r vcan0:0x80 &
-while true; do
-	# send first RTS
-	cansend vcan0 18EC8090#1014000303002301;
-	# send second RTS
-	cansend vcan0 18EC8090#1014000303002301;
-	# send abort
-	cansend vcan0 18EC8090#ff00000000002301;
-done
+  e0eec24e2e19 ("memblock: make memblock_set_node() also warn about use of MAX_NUMNODES")
 
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Reported-by: syzbot+daa36413a5cedf799ae4@syzkaller.appspotmail.com
+for details.
+
+Reported-by: Narasimhan V <Narasimhan.V@amd.com>
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/all/20231117124959.961171-1-o.rempel@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[bp: commit message]
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/r/20240603141005.23261-1-bp@kernel.org
+Link: https://lore.kernel.org/r/abadb736-a239-49e4-ab42-ace7acdd4278@suse.com
+Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/j1939/transport.c |   19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ arch/x86/mm/numa.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/net/can/j1939/transport.c
-+++ b/net/can/j1939/transport.c
-@@ -1593,8 +1593,8 @@ j1939_session *j1939_xtp_rx_rts_session_
- 	struct j1939_sk_buff_cb skcb = *j1939_skb_to_cb(skb);
- 	struct j1939_session *session;
- 	const u8 *dat;
-+	int len, ret;
- 	pgn_t pgn;
--	int len;
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index c7fa5396c0f05..c281326baa144 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -523,7 +523,7 @@ static void __init numa_clear_kernel_node_hotplug(void)
+ 	for_each_reserved_mem_region(mb_region) {
+ 		int nid = memblock_get_region_node(mb_region);
  
- 	netdev_dbg(priv->ndev, "%s\n", __func__);
+-		if (nid != MAX_NUMNODES)
++		if (nid != NUMA_NO_NODE)
+ 			node_set(nid, reserved_nodemask);
+ 	}
  
-@@ -1653,7 +1653,22 @@ j1939_session *j1939_xtp_rx_rts_session_
- 	session->tskey = priv->rx_tskey++;
- 	j1939_sk_errqueue(session, J1939_ERRQUEUE_RX_RTS);
- 
--	WARN_ON_ONCE(j1939_session_activate(session));
-+	ret = j1939_session_activate(session);
-+	if (ret) {
-+		/* Entering this scope indicates an issue with the J1939 bus.
-+		 * Possible scenarios include:
-+		 * - A time lapse occurred, and a new session was initiated
-+		 *   due to another packet being sent correctly. This could
-+		 *   have been caused by too long interrupt, debugger, or being
-+		 *   out-scheduled by another task.
-+		 * - The bus is receiving numerous erroneous packets, either
-+		 *   from a malfunctioning device or during a test scenario.
-+		 */
-+		netdev_alert(priv->ndev, "%s: 0x%p: concurrent session with same addr (%02x %02x) is already active.\n",
-+			     __func__, session, skcb.addr.sa, skcb.addr.da);
-+		j1939_session_put(session);
-+		return NULL;
-+	}
- 
- 	return session;
- }
+@@ -643,9 +643,9 @@ static int __init numa_init(int (*init_func)(void))
+ 	nodes_clear(node_online_map);
+ 	memset(&numa_meminfo, 0, sizeof(numa_meminfo));
+ 	WARN_ON(memblock_set_node(0, ULLONG_MAX, &memblock.memory,
+-				  MAX_NUMNODES));
++				  NUMA_NO_NODE));
+ 	WARN_ON(memblock_set_node(0, ULLONG_MAX, &memblock.reserved,
+-				  MAX_NUMNODES));
++				  NUMA_NO_NODE));
+ 	/* In case that parsing SRAT failed. */
+ 	WARN_ON(memblock_clear_hotplug(0, ULLONG_MAX));
+ 	numa_reset_distance();
+-- 
+2.43.0
+
 
 
 
