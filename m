@@ -1,204 +1,216 @@
-Return-Path: <stable+bounces-56318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F022191F021
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 09:29:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBAA291F051
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 09:36:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7770280CD6
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 07:29:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0BFA1C21B8D
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 07:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 305CB14A4F1;
-	Tue,  2 Jul 2024 07:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fdb3KBO6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6AE13D61A;
+	Tue,  2 Jul 2024 07:36:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1676E14885D;
-	Tue,  2 Jul 2024 07:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4649274047
+	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 07:36:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719905326; cv=none; b=Lyb3r0j0EAt8mL0T+B7xiFtsefKiBBhjyoMAaJHLAvEIh20Bv3ApmUfpE94qgV9HdrNAiUVsUXKG91esYPEomh/rzF7YeSrx8HIrrgYlTn3sTSXH4IIGVAxCmGDWKuvkPO5vghjv1bpfyv0BvdVwXyURzMI1tP9FG0wV57c9W2s=
+	t=1719905766; cv=none; b=irTZIunEj+BuooPwG2sjOX0ff7+YJvetjoF+Cdi6aP1x3bBMNFi6bPm1EuNyDgCp/b01oFtyFfSHDtJFXJi031hqrgUTERBN8SgpDiOuc/6AVHTLqXlyr9Dzztfuil0TSeuFFrUeklqUR8JDSu0jf8Tt2c1rYf6DvKp1o8HprvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719905326; c=relaxed/simple;
-	bh=vsqePUHcK0fv7suLmKyy9AE69S893Nx2DFSfYA7/48Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O4zxKkJd9kMvkrzMMvTdL39FweuC3wqstzajoeBVStKRge57lPHaA9z5kMOhlNVtcIFyE5TeWoWTfU4rc3cqARGA9NUZpz3snSKnsQsdjJnE/xMlDoQ43jmM7x3ie/6vI7Z6qVgfcLjWexdkpeQwv3a+02Q4hNH+nhIAMKw/EuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fdb3KBO6; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a7523f0870cso248783866b.3;
-        Tue, 02 Jul 2024 00:28:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719905321; x=1720510121; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZjkiIMimDM469BE4g0PtLb2eLPRo0mVKPcjnEkFhjs0=;
-        b=Fdb3KBO6Jh7FeZJWQIdZf7+86ycNHbhm51rJ+V/KSA1Y47LVR2ruyNmExL5ck/g5rz
-         sBl79Dfmtld50O/Sl+E46rJL4/xI3JrK5Ly9bdRnBfUo+gYcOQk249slh5NP0xM0yl60
-         amQzOtTMjRVGBOl4VgsImIKtqMjDbC6dXtC5RgUoTM45LPhkyVV8YlYTHJTJaVmYYiXk
-         QSjDfOMxyksN6yaVch3wo91Q57xH/6OjkB4raOVhxiBS5Y4p1eWtevzDkGeisVIXYV3Q
-         BT9Ux8Hb3c+BA8MKRtkJKrOVk2yiL00O37v8lY+5h8a2gQtFFxMJZTvqHouDI6ivC8Q5
-         ChDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719905321; x=1720510121;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZjkiIMimDM469BE4g0PtLb2eLPRo0mVKPcjnEkFhjs0=;
-        b=IORYZy67U1waiDAZ/7VdBmSFRuS/WqE1nrvuvcGV1DyvbRIy0ih+A9Y0vSfV2uqweB
-         K2arq4E/quEJ8Ph5u83iJehZEDx6Cy/mZtVywFOSSVny1wOichmHuRvJkwsDRU2PEso+
-         5aeYFw0lfaS9ZYdMCDdni45hfPHN4mRdRNtqjuoKLi68pgBrrKNY29hVNG5VybCbTrXm
-         9qPylnSjHQ361kBXg8t3DcaEDqZyYLD8RKbNahtHThpFcGonukB2jr1h2QRQ/ap0hRNY
-         1m/mLXeFmLV1swiyuZmlcbqMn2Ind4aMaSSLBL0FzMfCfKObjqdxeSciHyPODpEfVRYG
-         dXzA==
-X-Forwarded-Encrypted: i=1; AJvYcCVHK1pjPpdT8xLLytwBD+B4MsklGa3gcl8eTCArPt9OLfOnMIdQV/+L9WzEdj+lwv5MZgBeG44drimUd32RgZkdUJCzCJLivxXDq0kFZlNn+sFbH5ECL8kkGWWDcOO73hER5D/hEafjruY0p+CszuZvwddA7Qp0QXoNKG5fB15aYA==
-X-Gm-Message-State: AOJu0YwJu3riLyoGTdjvoQS60d2wzNpkd6W4bo2IZsAyjbGtDTzUKCeT
-	Kq4KKMBLdVCiZhs9JEEWJ1C1Dd+obroka7XGzhfJA3kWoSy5aRHd
-X-Google-Smtp-Source: AGHT+IEqfipeae6eXqvRg9I/YLGEBz4jcyUx09ob+ngbQXPCuRclXOGmihGS1vdIK2VK9uvDeeqapg==
-X-Received: by 2002:a17:906:d7a2:b0:a72:7da4:267c with SMTP id a640c23a62f3a-a751440237fmr490569466b.12.1719905321190;
-        Tue, 02 Jul 2024 00:28:41 -0700 (PDT)
-Received: from ?IPV6:2a02:908:1980:aac0::f4a9? ([2a02:908:1980:aac0::f4a9])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7525fb8387sm166302366b.94.2024.07.02.00.28.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jul 2024 00:28:40 -0700 (PDT)
-Message-ID: <81aa100e-044c-4ea8-a2ff-cd34711e137e@gmail.com>
-Date: Tue, 2 Jul 2024 09:28:39 +0200
+	s=arc-20240116; t=1719905766; c=relaxed/simple;
+	bh=Erb47PsTQcQJPbvv0daIhSjhyCzxZolPWjgN0ownyc0=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=A6q+ZwNkoCBfj6pr8lkV2vhmCXIMQI3YB+CGt1oyO92Vl2YxTx806tfY6u4dX6K1D3T2R1c3wH+9pgaYr30sGMIECzxLph56uXPhm5D6twJwnboOQtl2fXngQYh1EqxMV2tegJmmLOe9DleXI3I6aS9kx1XToFJ3Z+nAUyObhQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4WCvmv6PwzzdZLV;
+	Tue,  2 Jul 2024 15:34:23 +0800 (CST)
+Received: from kwepemd200019.china.huawei.com (unknown [7.221.188.193])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7EBE518009B;
+	Tue,  2 Jul 2024 15:36:00 +0800 (CST)
+Received: from [10.173.127.72] (10.173.127.72) by
+ kwepemd200019.china.huawei.com (7.221.188.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 2 Jul 2024 15:35:59 +0800
+Subject: Re: [PATCH 6.6] fork: defer linking file vma until vma is fully
+ initialized
+To: Leah Rumancik <leah.rumancik@gmail.com>
+CC: Thorvald Natvig <thorvald@google.com>, Jane Chu <jane.chu@oracle.com>,
+	Christian Brauner <brauner@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>, "Liam R . Howlett"
+	<Liam.Howlett@oracle.com>, Mateusz Guzik <mjguzik@gmail.com>, Matthew Wilcox
+	<willy@infradead.org>, Muchun Song <muchun.song@linux.dev>, Oleg Nesterov
+	<oleg@redhat.com>, Peng Zhang <zhangpeng.00@bytedance.com>, Tycho Andersen
+	<tandersen@netflix.com>, Andrew Morton <akpm@linux-foundation.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
+References: <20240702042948.2629267-1-leah.rumancik@gmail.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <70af466d-0d0b-b984-a4af-b60d3e11856e@huawei.com>
+Date: Tue, 2 Jul 2024 15:35:58 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] ACPI: processor_idle: Fix invalid comparison with
- insertion sort for latency
-To: Kuan-Wei Chiu <visitorckw@gmail.com>, rafael@kernel.org
-Cc: lenb@kernel.org, mario.limonciello@amd.com, akpm@linux-foundation.org,
- jserv@ccns.ncku.edu.tw, alexdeucher@gmail.com, regressions@leemhuis.info,
- linux-acpi@vger.kernel.org, regressions@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <CAJZ5v0iY=S+WKWvDAAWxLcOwvpOG5Cck1gQv4p+FfW1Nca0Yqw@mail.gmail.com>
- <20240701205639.117194-1-visitorckw@gmail.com>
+In-Reply-To: <20240702042948.2629267-1-leah.rumancik@gmail.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-From: Julian Sikorski <belegdol@gmail.com>
-In-Reply-To: <20240701205639.117194-1-visitorckw@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemd200019.china.huawei.com (7.221.188.193)
 
-Am 01.07.24 um 22:56 schrieb Kuan-Wei Chiu:
-> The acpi_cst_latency_cmp comparison function currently used for sorting
-> C-state latencies does not satisfy transitivity, causing incorrect
-> sorting results. Specifically, if there are two valid acpi_processor_cx
-> elements A and B and one invalid element C, it may occur that A < B,
-> A = C, and B = C. Sorting algorithms assume that if A < B and A = C,
-> then C < B, leading to incorrect ordering.
+On 2024/7/2 12:29, Leah Rumancik wrote:
+> From: Miaohe Lin <linmiaohe@huawei.com>
 > 
-> Given the small size of the array (<=8), we replace the library sort
-> function with a simple insertion sort that properly ignores invalid
-> elements and sorts valid ones based on latency. This change ensures
-> correct ordering of the C-state latencies.
+> commit 35e351780fa9d8240dd6f7e4f245f9ea37e96c19 upstream.
 > 
-> Fixes: 65ea8f2c6e23 ("ACPI: processor idle: Fix up C-state latency if not ordered")
-> Cc: stable@vger.kernel.org
-> Reported-by: Julian Sikorski <belegdol@gmail.com>
-> Closes: https://lore.kernel.org/lkml/70674dc7-5586-4183-8953-8095567e73df@gmail.com/
-> Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+> Thorvald reported a WARNING [1]. And the root cause is below race:
+> 
+>  CPU 1					CPU 2
+>  fork					hugetlbfs_fallocate
+>   dup_mmap				 hugetlbfs_punch_hole
+>    i_mmap_lock_write(mapping);
+>    vma_interval_tree_insert_after -- Child vma is visible through i_mmap tree.
+>    i_mmap_unlock_write(mapping);
+>    hugetlb_dup_vma_private -- Clear vma_lock outside i_mmap_rwsem!
+> 					 i_mmap_lock_write(mapping);
+>    					 hugetlb_vmdelete_list
+> 					  vma_interval_tree_foreach
+> 					   hugetlb_vma_trylock_write -- Vma_lock is cleared.
+>    tmp->vm_ops->open -- Alloc new vma_lock outside i_mmap_rwsem!
+> 					   hugetlb_vma_unlock_write -- Vma_lock is assigned!!!
+> 					 i_mmap_unlock_write(mapping);
+> 
+> hugetlb_dup_vma_private() and hugetlb_vm_op_open() are called outside
+> i_mmap_rwsem lock while vma lock can be used in the same time.  Fix this
+> by deferring linking file vma until vma is fully initialized.  Those vmas
+> should be initialized first before they can be used.
+> 
+> Backport notes:
+> 
+> The first backport attempt (cec11fa2e) was reverted (dd782da4707). This is
+> the new backport of the original fix (35e351780fa9).
+> 
+> 35e351780f ("fork: defer linking file vma until vma is fully initialized")
+> fixed a hugetlb locking race by moving a bunch of intialization code to earlier
+> in the function. The call to open() was included in the move but the call to
+> copy_page_range was not, effectively inverting their relative ordering. This
+> created an issue for the vfio code which assumes copy_page_range happens before
+> the call to open() - vfio's open zaps the vma so that the fault handler is
+> invoked later, but when we inverted the ordering, copy_page_range can set up
+> mappings post-zap which would prevent the fault handler from being invoked
+> later. This patch moves the call to copy_page_range to earlier than the call to
+> open() to restore the original ordering of the two functions while keeping the
+> fix for hugetlb intact.
+
+Thanks for your update!
+
+> 
+> Commit aac6db75a9 made several changes to vfio_pci_core.c, including
+> removing the vfio-pci custom open function. This resolves the issue on
+> the main branch and so we only need to apply these changes when
+> backporting to stable branches.
+> 
+> 35e351780f ("fork: defer linking file vma until vma is fully initialized")-> v6.9-rc5
+> aac6db75a9 ("vfio/pci: Use unmap_mapping_range()") -> v6.10-rc4
+> 
+> Link: https://lkml.kernel.org/r/20240410091441.3539905-1-linmiaohe@huawei.com
+> Fixes: 8d9bfb260814 ("hugetlb: add vma based lock for pmd sharing")
+> Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+> Reported-by: Thorvald Natvig <thorvald@google.com>
+> Closes: https://lore.kernel.org/linux-mm/20240129161735.6gmjsswx62o4pbja@revolver/T/ [1]
+> Reviewed-by: Jane Chu <jane.chu@oracle.com>
+> Cc: Christian Brauner <brauner@kernel.org>
+> Cc: Heiko Carstens <hca@linux.ibm.com>
+> Cc: Kent Overstreet <kent.overstreet@linux.dev>
+> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Cc: Mateusz Guzik <mjguzik@gmail.com>
+> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: Miaohe Lin <linmiaohe@huawei.com>
+> Cc: Muchun Song <muchun.song@linux.dev>
+> Cc: Oleg Nesterov <oleg@redhat.com>
+> Cc: Peng Zhang <zhangpeng.00@bytedance.com>
+> Cc: Tycho Andersen <tandersen@netflix.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 > ---
-> v3 -> v4:
-> - Rename the parameter 'arr' to 'states'.
-> - Add empty lines to enhance readability.
+>  kernel/fork.c | 27 +++++++++++++--------------
+>  1 file changed, 13 insertions(+), 14 deletions(-)
 > 
-> Note: I only performed a build test and a simple unit test to ensure
->        the latency of valid elements is correctly sorted in the randomly
->        generated data.
-> 
-
-Hello,
-
-thanks for the patch. I have tested this applied on top of Fedora 6.9.7 
-kernel on my Asus laptop and the message about suspend not reaching the 
-deepest state is gone. Thank you.
-I wonder whether this will also fix random S3 suspend issues I have been 
-seeing on my 5600x since 6.9 kernel too. I will definitely try.
-
-Best regards,
-Julian
-
-Tested-by: Julian Sikorski <belegdol@gmail.com>
-
->   drivers/acpi/processor_idle.c | 37 +++++++++++++++--------------------
->   1 file changed, 16 insertions(+), 21 deletions(-)
-> 
-> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-> index bd6a7857ce05..831fa4a12159 100644
-> --- a/drivers/acpi/processor_idle.c
-> +++ b/drivers/acpi/processor_idle.c
-> @@ -16,7 +16,6 @@
->   #include <linux/acpi.h>
->   #include <linux/dmi.h>
->   #include <linux/sched.h>       /* need_resched() */
-> -#include <linux/sort.h>
->   #include <linux/tick.h>
->   #include <linux/cpuidle.h>
->   #include <linux/cpu.h>
-> @@ -386,25 +385,24 @@ static void acpi_processor_power_verify_c3(struct acpi_processor *pr,
->   	acpi_write_bit_register(ACPI_BITREG_BUS_MASTER_RLD, 1);
->   }
->   
-> -static int acpi_cst_latency_cmp(const void *a, const void *b)
-> +static void acpi_cst_latency_sort(struct acpi_processor_cx *states, size_t length)
->   {
-> -	const struct acpi_processor_cx *x = a, *y = b;
-> +	int i, j, k;
->   
-> -	if (!(x->valid && y->valid))
-> -		return 0;
-> -	if (x->latency > y->latency)
-> -		return 1;
-> -	if (x->latency < y->latency)
-> -		return -1;
-> -	return 0;
-> -}
-> -static void acpi_cst_latency_swap(void *a, void *b, int n)
-> -{
-> -	struct acpi_processor_cx *x = a, *y = b;
-> +	for (i = 1; i < length; i++) {
-> +		if (!states[i].valid)
-> +			continue;
->   
-> -	if (!(x->valid && y->valid))
-> -		return;
-> -	swap(x->latency, y->latency);
-> +		for (j = i - 1, k = i; j >= 0; j--) {
-> +			if (!states[j].valid)
-> +				continue;
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index 177ce7438db6..122d2cd124d5 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -727,6 +727,19 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+>  		} else if (anon_vma_fork(tmp, mpnt))
+>  			goto fail_nomem_anon_vma_fork;
+>  		vm_flags_clear(tmp, VM_LOCKED_MASK);
+> +		/*
+> +		 * Copy/update hugetlb private vma information.
+> +		 */
+> +		if (is_vm_hugetlb_page(tmp))
+> +			hugetlb_dup_vma_private(tmp);
 > +
-> +			if (states[j].latency > states[k].latency)
-> +				swap(states[j].latency, states[k].latency);
+> +		if (!(tmp->vm_flags & VM_WIPEONFORK) &&
+> +				copy_page_range(tmp, mpnt))
+> +			goto fail_nomem_vmi_store;
 > +
-> +			k = j;
-> +		}
-> +	}
->   }
->   
->   static int acpi_processor_power_verify(struct acpi_processor *pr)
-> @@ -449,10 +447,7 @@ static int acpi_processor_power_verify(struct acpi_processor *pr)
->   
->   	if (buggy_latency) {
->   		pr_notice("FW issue: working around C-state latencies out of order\n");
-> -		sort(&pr->power.states[1], max_cstate,
-> -		     sizeof(struct acpi_processor_cx),
-> -		     acpi_cst_latency_cmp,
-> -		     acpi_cst_latency_swap);
-> +		acpi_cst_latency_sort(&pr->power.states[1], max_cstate);
->   	}
->   
->   	lapic_timer_propagate_broadcast(pr);
+> +		if (tmp->vm_ops && tmp->vm_ops->open)
+> +			tmp->vm_ops->open(tmp);
+> +
+>  		file = tmp->vm_file;
+>  		if (file) {
+>  			struct address_space *mapping = file->f_mapping;
+> @@ -743,25 +756,11 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+>  			i_mmap_unlock_write(mapping);
+>  		}
+>  
+> -		/*
+> -		 * Copy/update hugetlb private vma information.
+> -		 */
+> -		if (is_vm_hugetlb_page(tmp))
+> -			hugetlb_dup_vma_private(tmp);
+> -
+>  		/* Link the vma into the MT */
+>  		if (vma_iter_bulk_store(&vmi, tmp))
+>  			goto fail_nomem_vmi_store;
+>  
+>  		mm->map_count++;
+> -		if (!(tmp->vm_flags & VM_WIPEONFORK))
+> -			retval = copy_page_range(tmp, mpnt);
+
+I have a vague memory that copy_page_range should be called after vma is inserted into the i_mmap tree.
+Or there might be a problem:
+
+dup_mmap			remove_migration_ptes
+ copy_page_range -- Child process copys migration entry from parent
+				 rmap_walk
+				  rmap_walk_file
+				   i_mmap_lock_read(mapping);
+				   vma_interval_tree_foreach
+				    remove_migration_pte -- The vma of child process is still invisible
+				    So migration entry lefts in the child process's address space.
+				   i_mmap_unlock_read(mapping);
+ i_mmap_lock_write(mapping);
+ vma_interval_tree_insert_after
+  -- To late! Child process has stale migration entry left while migration is already done!
+ i_mmap_unlock_write(mapping);
+				
+But I'm not really sure. I might miss something.
+Thanks.
+.
 
 
