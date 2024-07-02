@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-56775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D94C9245E8
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:28:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 353F79244C4
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:14:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04A4C1F23559
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:28:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 670271C21DBD
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D059E1BE864;
-	Tue,  2 Jul 2024 17:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB5D1BE22F;
+	Tue,  2 Jul 2024 17:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIXvm4d4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsHOz+Dv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7F81BE251;
-	Tue,  2 Jul 2024 17:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5E615B0FE;
+	Tue,  2 Jul 2024 17:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941317; cv=none; b=otJVdNlzCbnH761asaG3NqraKYIObMygTiWtFLaYfR7pVfroqWvl5H3JlsoZIZ9yE7xSR9XXUL1WojHg3MEhHPK8qjZIoDCIo29trJii6FWXUh+I0sxZXchqIpnqEsytYdzQJ/1IJzofkNg083Dq9UgFH9V0iCiMs6JE0TzvPIE=
+	t=1719940481; cv=none; b=nqdy23er6W/MrXDbtQz7DJzsLjAdAtFY40MCrT8HyeC06KOP01SnsaIscq3BmF1fqsy0/R27c/g1mzYGfqc2N3MhkdEh9is1j0YMeOsRLfy4TsGlwm01XSWPmgh8msICy+EUxm8sYk1k/aA6u6QSWOx9hwFhG1D1+ca1guBv5E0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941317; c=relaxed/simple;
-	bh=6/mZEM5GQYS6cfM2ZD0TvrXBurqNf9KZjv7BdsdxHyI=;
+	s=arc-20240116; t=1719940481; c=relaxed/simple;
+	bh=QPVE8+8waImthiGce3yQ9nqGI05PUbWTq9m0tkSCK9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uJY4ybVeGKheD7b9jpJ8fWbXv9kdutAWLDhMSoSS1xMkTdcHa/C+DbrXw9UQCfcxl5OIj2QZKdPDYwoDuziuDkEAVTAClObk1/BuPoAS1Y+AQZaOjLYoPexpJ5YNZyt5/0dKpSBa5MFjpsfbeT7tpm1SpYw6ZwY5AuiUgqzWfgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIXvm4d4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A7AC116B1;
-	Tue,  2 Jul 2024 17:28:36 +0000 (UTC)
+	 MIME-Version; b=TJyhMwi0QX8sZseb0grJBxPXpuxDoCrNNCtcqoX4DewxoegxkG9k9dSPhJwGmFyrWt0NTGz+L3q2l2eq/PzQo8rvRbVl2F9TkXavSf2DcMSJ8jqNQrq28bkfWuv2oluc/oIJYIPt933rZsAQFokAp+akHABPj5rR4gPnpUxAvwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsHOz+Dv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3123C116B1;
+	Tue,  2 Jul 2024 17:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941317;
-	bh=6/mZEM5GQYS6cfM2ZD0TvrXBurqNf9KZjv7BdsdxHyI=;
+	s=korg; t=1719940481;
+	bh=QPVE8+8waImthiGce3yQ9nqGI05PUbWTq9m0tkSCK9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AIXvm4d492rvb9ogxeX4+BBVrZaCxQUXW5hT7FpmZ04t5NcMik/9R2kI6Ix3m+OO9
-	 eZLuW0etNhiAU7GpVLskQfusDB3hrIRIgJEG+2uqhIwKs0niAc2sKcZTb75UBWpxGx
-	 fibcglAQt+BP9a2NG6Lo8Q8WkwTzzu5xMqGjQ6YY=
+	b=zsHOz+Dv4mxSJpR91BO2PCfDibsZRNEThd8vrJK7e7LrkGIoZrSV33Wrb4aYEFZOT
+	 QKV7NVx+LVA9J7Y3z+qPR6dRzt9fVUBURZVZaHCKju5Kd84BxLbXxmKM+HypNfVFB2
+	 1xZew2D/0H0/PHpLn2/GvfBca0EJjqRs9Uob+jaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stuart Axon <stuaxo2@yahoo.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 004/128] ACPI: x86: utils: Add Picasso to the list for forcing StorageD3Enable
+	Thomas Gleixner <tglx@linutronix.de>,
+	Mostafa Saleh <smostafa@google.com>,
+	Bjorn Heelgas <bhelgaas@google.com>
+Subject: [PATCH 6.9 167/222] PCI/MSI: Fix UAF in msi_capability_init
 Date: Tue,  2 Jul 2024 19:03:25 +0200
-Message-ID: <20240702170226.401226297@linuxfoundation.org>
+Message-ID: <20240702170250.359901504@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Mostafa Saleh <smostafa@google.com>
 
-[ Upstream commit 10b6b4a8ac6120ec36555fd286eed577f7632e3b ]
+commit 9eee5330656bf92f51cb1f09b2dc9f8cf975b3d1 upstream.
 
-Picasso was the first APU that introduced s2idle support from AMD,
-and it was predating before vendors started to use `StorageD3Enable`
-in their firmware.
+KFENCE reports the following UAF:
 
-Windows doesn't have problems with this hardware and NVME so it was
-likely on the list of hardcoded CPUs to use this behavior in Windows.
+ BUG: KFENCE: use-after-free read in __pci_enable_msi_range+0x2c0/0x488
 
-Add it to the list for Linux to avoid NVME resume issues.
+ Use-after-free read at 0x0000000024629571 (in kfence-#12):
+  __pci_enable_msi_range+0x2c0/0x488
+  pci_alloc_irq_vectors_affinity+0xec/0x14c
+  pci_alloc_irq_vectors+0x18/0x28
 
-Reported-by: Stuart Axon <stuaxo2@yahoo.com>
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2449
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: e79a10652bbd ("ACPI: x86: Force StorageD3Enable on more products")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ kfence-#12: 0x0000000008614900-0x00000000e06c228d, size=104, cache=kmalloc-128
+
+ allocated by task 81 on cpu 7 at 10.808142s:
+  __kmem_cache_alloc_node+0x1f0/0x2bc
+  kmalloc_trace+0x44/0x138
+  msi_alloc_desc+0x3c/0x9c
+  msi_domain_insert_msi_desc+0x30/0x78
+  msi_setup_msi_desc+0x13c/0x184
+  __pci_enable_msi_range+0x258/0x488
+  pci_alloc_irq_vectors_affinity+0xec/0x14c
+  pci_alloc_irq_vectors+0x18/0x28
+
+ freed by task 81 on cpu 7 at 10.811436s:
+  msi_domain_free_descs+0xd4/0x10c
+  msi_domain_free_locked.part.0+0xc0/0x1d8
+  msi_domain_alloc_irqs_all_locked+0xb4/0xbc
+  pci_msi_setup_msi_irqs+0x30/0x4c
+  __pci_enable_msi_range+0x2a8/0x488
+  pci_alloc_irq_vectors_affinity+0xec/0x14c
+  pci_alloc_irq_vectors+0x18/0x28
+
+Descriptor allocation done in:
+__pci_enable_msi_range
+    msi_capability_init
+        msi_setup_msi_desc
+            msi_insert_msi_desc
+                msi_domain_insert_msi_desc
+                    msi_alloc_desc
+                        ...
+
+Freed in case of failure in __msi_domain_alloc_locked()
+__pci_enable_msi_range
+    msi_capability_init
+        pci_msi_setup_msi_irqs
+            msi_domain_alloc_irqs_all_locked
+                msi_domain_alloc_locked
+                    __msi_domain_alloc_locked => fails
+                    msi_domain_free_locked
+                        ...
+
+That failure propagates back to pci_msi_setup_msi_irqs() in
+msi_capability_init() which accesses the descriptor for unmasking in the
+error exit path.
+
+Cure it by copying the descriptor and using the copy for the error exit path
+unmask operation.
+
+[ tglx: Massaged change log ]
+
+Fixes: bf6e054e0e3f ("genirq/msi: Provide msi_device_populate/destroy_sysfs()")
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Mostafa Saleh <smostafa@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Bjorn Heelgas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240624203729.1094506-1-smostafa@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/x86/utils.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/msi/msi.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index e45285d4e62a4..ef431393381a0 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -213,6 +213,7 @@ bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *s
-       disk in the system.
-  */
- static const struct x86_cpu_id storage_d3_cpu_ids[] = {
-+	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 24, NULL),  /* Picasso */
- 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),	/* Renoir */
- 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL),	/* Lucienne */
- 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 25, 80, NULL),	/* Cezanne */
--- 
-2.43.0
-
+--- a/drivers/pci/msi/msi.c
++++ b/drivers/pci/msi/msi.c
+@@ -349,7 +349,7 @@ static int msi_capability_init(struct pc
+ 			       struct irq_affinity *affd)
+ {
+ 	struct irq_affinity_desc *masks = NULL;
+-	struct msi_desc *entry;
++	struct msi_desc *entry, desc;
+ 	int ret;
+ 
+ 	/* Reject multi-MSI early on irq domain enabled architectures */
+@@ -374,6 +374,12 @@ static int msi_capability_init(struct pc
+ 	/* All MSIs are unmasked by default; mask them all */
+ 	entry = msi_first_desc(&dev->dev, MSI_DESC_ALL);
+ 	pci_msi_mask(entry, msi_multi_mask(entry));
++	/*
++	 * Copy the MSI descriptor for the error path because
++	 * pci_msi_setup_msi_irqs() will free it for the hierarchical
++	 * interrupt domain case.
++	 */
++	memcpy(&desc, entry, sizeof(desc));
+ 
+ 	/* Configure MSI capability structure */
+ 	ret = pci_msi_setup_msi_irqs(dev, nvec, PCI_CAP_ID_MSI);
+@@ -393,7 +399,7 @@ static int msi_capability_init(struct pc
+ 	goto unlock;
+ 
+ err:
+-	pci_msi_unmask(entry, msi_multi_mask(entry));
++	pci_msi_unmask(&desc, msi_multi_mask(&desc));
+ 	pci_free_msi_irqs(dev);
+ fail:
+ 	dev->msi_enabled = 0;
 
 
 
