@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-56536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 872F69244D3
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:15:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85A7392458B
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:23:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08640B25E53
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:15:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 469112871A5
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60FCD1BE23F;
-	Tue,  2 Jul 2024 17:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CEB21BD51A;
+	Tue,  2 Jul 2024 17:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ini+5ock"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4QK497b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1882B1BE22A;
-	Tue,  2 Jul 2024 17:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF5D1BBBD7;
+	Tue,  2 Jul 2024 17:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940511; cv=none; b=hHb4Y2gowiPntfIm6HBtH6sjunFJCxURXKatUkK8AM7S7HwTWW64RkChAKG5mKDR51cgDm2URgBmHAYO4CnqQZsrnHp4yuti9sIjBcgFQUcw6nJXzYIMlUYMe7g0hZYWkah2B7B8Q4aflBnmY29PAXL204cHnzMAH3L5uZFhD8M=
+	t=1719941019; cv=none; b=ix23AP2hch6n39IBLa6Koh+6MM3VOKRft8XnuJ0HtTPmAbgd8+jB7KznKf/1f1R2X7en7enjRyuAhK6Kbc/PYqw8Sk04u9XTh0QghC/G0RYnsbdBwLoCqFgnd9r6XZxJC9CxkA+SUEZORnfJ/0nrE/I2sVRmF8gL8EUpTijtK7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940511; c=relaxed/simple;
-	bh=VGkN7Uxr6h3U8ybUL1JVNQYVEUfxN0KoTLSxEPGAe9Q=;
+	s=arc-20240116; t=1719941019; c=relaxed/simple;
+	bh=c+HQVhPUgR2FLGXY8Rb11LClCf4gFzwZwzgo1TyTaOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PydsFvkInnLf3/Mgpdc9XjDB/PDcN6W4z+DfVUJu85r/qoKDmaHMNBKgXWcFfWJSoLj+IP6bE8VnFrA2HRPyaVByJ6VaRArACow6tVVyjSzkTd+iw1OYnkch4swQ9cL6JYmau+hb5KolacJAQNYWOMqKgkU2+qe9he10QRV2KhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ini+5ock; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 974C5C116B1;
-	Tue,  2 Jul 2024 17:15:10 +0000 (UTC)
+	 MIME-Version; b=oBJWYyILZcBagW6pEe1W6W7BbJgOT+ZVDdFKHYIRgBbBnW+qmIm4/xc6J+mx/+JiP2DyW7L41e8wg14IFvHAaMDKDnx8Ir1lOGU1k4wZVUfH4E4+952kneyHQ2qcuwYZG439EkaYptxJ75fA5O1mn/ge0Pa1Ch+8zC+p1VxO5rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4QK497b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 939D2C116B1;
+	Tue,  2 Jul 2024 17:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940511;
-	bh=VGkN7Uxr6h3U8ybUL1JVNQYVEUfxN0KoTLSxEPGAe9Q=;
+	s=korg; t=1719941019;
+	bh=c+HQVhPUgR2FLGXY8Rb11LClCf4gFzwZwzgo1TyTaOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ini+5ockzqO//Mt5hKGZA7Yjl/SsUm3szysrvl+y7Dv/dAQWBKpD+/hdSda6QjSPi
-	 ZOh7LIxnEQnFvPXqmnA9qxYlG/laCRnrTjpzrqdyBSyk8mexgl8cgQGubmhgYRwlwe
-	 ZAgCY8271N25VYaIr9OW1hOv07r8TPrEzKo6mpj0=
+	b=Q4QK497bVp0FrtbulMcWO1tOz/0tOEioD53hSMnCgdNVSjgWM8P/equ2Jmzu+GS8k
+	 mmeX3gSppHIcSjrDpDFD1dD+MRN92VqTGv7AHjPQc21cE6n7E+h4o4L6ifiUjNw2s/
+	 RxfaRr1JdfG8SzssXm/Lu/obn85NgigGd4koX6GM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Liu <neal_liu@aspeedtech.com>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Jeremy Kerr <jk@codeconstruct.com.au>
-Subject: [PATCH 6.9 149/222] usb: gadget: aspeed_udc: fix device address configuration
+	Jesse Taube <jesse@rivosinc.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 073/163] RISC-V: fix vector insn load/store width mask
 Date: Tue,  2 Jul 2024 19:03:07 +0200
-Message-ID: <20240702170249.671260622@linuxfoundation.org>
+Message-ID: <20240702170235.828595564@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Kerr <jk@codeconstruct.com.au>
+From: Jesse Taube <jesse@rivosinc.com>
 
-commit dba7567c2fbbf10a4de2471cdb0e16e5572dc007 upstream.
+[ Upstream commit 04a2aef59cfe192aa99020601d922359978cc72a ]
 
-In the aspeed UDC setup, we configure the UDC hardware with the assigned
-USB device address.
+RVFDQ_FL_FS_WIDTH_MASK should be 3 bits [14-12], shifted down by 12 bits.
+Replace GENMASK(3, 0) with GENMASK(2, 0).
 
-However, we have an off-by-one in the bitmask, so we're only setting the
-lower 6 bits of the address (USB addresses being 7 bits, and the
-hardware bitmask being bits 0:6).
-
-This means that device enumeration fails if the assigned address is
-greater than 64:
-
-[  344.607255] usb 1-1: new high-speed USB device number 63 using ehci-platform
-[  344.808459] usb 1-1: New USB device found, idVendor=cc00, idProduct=cc00, bcdDevice= 6.10
-[  344.817684] usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[  344.825671] usb 1-1: Product: Test device
-[  344.831075] usb 1-1: Manufacturer: Test vendor
-[  344.836335] usb 1-1: SerialNumber: 00
-[  349.917181] usb 1-1: USB disconnect, device number 63
-[  352.036775] usb 1-1: new high-speed USB device number 64 using ehci-platform
-[  352.249432] usb 1-1: device descriptor read/all, error -71
-[  352.696740] usb 1-1: new high-speed USB device number 65 using ehci-platform
-[  352.909431] usb 1-1: device descriptor read/all, error -71
-
-Use the correct mask of 0x7f (rather than 0x3f), and generate this
-through the GENMASK macro, so we have numbers that correspond exactly
-to the hardware register definition.
-
-Fixes: 055276c13205 ("usb: gadget: add Aspeed ast2600 udc driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Neal Liu <neal_liu@aspeedtech.com>
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Link: https://lore.kernel.org/r/20240613-aspeed-udc-v2-1-29501ce9cb7a@codeconstruct.com.au
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cd054837243b ("riscv: Allocate user's vector context in the first-use trap")
+Signed-off-by: Jesse Taube <jesse@rivosinc.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Link: https://lore.kernel.org/r/20240606182800.415831-1-jesse@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/aspeed_udc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/riscv/include/asm/insn.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/udc/aspeed_udc.c
-+++ b/drivers/usb/gadget/udc/aspeed_udc.c
-@@ -66,8 +66,8 @@
- #define USB_UPSTREAM_EN			BIT(0)
+diff --git a/arch/riscv/include/asm/insn.h b/arch/riscv/include/asm/insn.h
+index 06e439eeef9ad..09fde95a5e8f7 100644
+--- a/arch/riscv/include/asm/insn.h
++++ b/arch/riscv/include/asm/insn.h
+@@ -145,7 +145,7 @@
  
- /* Main config reg */
--#define UDC_CFG_SET_ADDR(x)		((x) & 0x3f)
--#define UDC_CFG_ADDR_MASK		(0x3f)
-+#define UDC_CFG_SET_ADDR(x)		((x) & UDC_CFG_ADDR_MASK)
-+#define UDC_CFG_ADDR_MASK		GENMASK(6, 0)
- 
- /* Interrupt ctrl & status reg */
- #define UDC_IRQ_EP_POOL_NAK		BIT(17)
+ /* parts of opcode for RVF, RVD and RVQ */
+ #define RVFDQ_FL_FS_WIDTH_OFF	12
+-#define RVFDQ_FL_FS_WIDTH_MASK	GENMASK(3, 0)
++#define RVFDQ_FL_FS_WIDTH_MASK	GENMASK(2, 0)
+ #define RVFDQ_FL_FS_WIDTH_W	2
+ #define RVFDQ_FL_FS_WIDTH_D	3
+ #define RVFDQ_LS_FS_WIDTH_Q	4
+-- 
+2.43.0
+
 
 
 
