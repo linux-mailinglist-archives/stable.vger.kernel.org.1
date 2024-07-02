@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-56590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DAEF924520
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:19:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34D97924514
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:18:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A1DD2840D4
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:19:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D39161F21B4C
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35B615218A;
-	Tue,  2 Jul 2024 17:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3D31C0DD4;
+	Tue,  2 Jul 2024 17:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTIWNzP5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgK+riQD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711191BE226;
-	Tue,  2 Jul 2024 17:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384BB1B5814;
+	Tue,  2 Jul 2024 17:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940689; cv=none; b=ODGzSAHKFXt6tKVbk7yk4aP9bsk8w+gFbV9TbeBc1wer0i7hK9m8VUZdd6/0KrXHv+IkZF+bidF3HQzzpRwNvJtMuFeaAZbYP5+SmuG5QvRCWVtlbdO3b63J5nlem2TwaumOtxAIlRUEEqlK027KzJA0Ekzn/Ji71mby1Y2DRAI=
+	t=1719940665; cv=none; b=rPD0Asx/XoHtEFUSKyDjtent3fBXVaeS4+R+EvNVRM8ols6unKTnM0xKkr4Ofv80kBg9erg8wKH3DIt6qwCbbWJvTvYhJEPggHCbSUP8kBYaYqiAqYUmHQgLxfDzLT39tYeQOjbwxaAoVhNMamFbXzcNMV3hTtvudD5aFOdSyeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940689; c=relaxed/simple;
-	bh=deOwfQEeSyoY4n8dzRwazHOz1bNLHSUABDSINAOTQVs=;
+	s=arc-20240116; t=1719940665; c=relaxed/simple;
+	bh=Hexyp1Jpax5OUyVIv0MXHJeRRS2sEtE70yrLsAZ6NKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O8+VRLEKsIRmF904ePqIRD73bclJ3cphleFqPyxUIUsOUWzVfJlSSt3Ku1MXUoTyCp5b59zKRWsd79QntFJGRtulJXk2BfGUkxBJm69ivEUC8d3uK8yj1JdlJmfy50ulF09T9lpWKYjpOmk9A5IBz9ylrr3Vna+Exy8xUx5GWQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTIWNzP5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2BCAC116B1;
-	Tue,  2 Jul 2024 17:18:08 +0000 (UTC)
+	 MIME-Version; b=YQ12v34t9UdOqlcQIX6o7kiLB30K8s2kphTRMntIFYU8EAiJ1e/jHBuzteFHXXpdEqjFDCciJssemREtTIASlTBORJ5GwlC0iLxa06bJaXEsqHvULCWj4NHVyBrJzbkbVXRKRXXDSz8IpH3Undz3wF9NPW+aYm2e9KXtHltATEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgK+riQD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921FFC116B1;
+	Tue,  2 Jul 2024 17:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940689;
-	bh=deOwfQEeSyoY4n8dzRwazHOz1bNLHSUABDSINAOTQVs=;
+	s=korg; t=1719940665;
+	bh=Hexyp1Jpax5OUyVIv0MXHJeRRS2sEtE70yrLsAZ6NKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zTIWNzP5aoup7sWq2JS9BPYx8E3CJLWS+tV6x+juOd/YWZmnFNRpX7tFrOYRoXEyc
-	 hgXwsOjT53Xkac1eEwraJzzuMQeOUxEn23/d2qnNy/8bfSlNZuVC1zvkZotdu003fu
-	 bU7t4htLWmoFLMZykORDhAxgzEpa+gaQl7F9dHkc=
+	b=XgK+riQDAnSlIku4P5JFIe96lvUToiSWhzWfZYXsHXTNTJf6kOCMtNDMUh+7BVeQH
+	 G0/6RpOj7HibQ2iXAKqTsBKT6Wl4TgXTx7+Mn2JExxG0hXMiIJbZWm3ivUbjnQJD3Y
+	 quAYszhUKg1nMHiK6oH7Y87dWSC34F/DnvJKknDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	Andy Yan <andyshrk@163.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 215/222] reset: gpio: Fix missing gpiolib dependency for GPIO reset controller
-Date: Tue,  2 Jul 2024 19:04:13 +0200
-Message-ID: <20240702170252.205481301@linuxfoundation.org>
+Subject: [PATCH 6.9 216/222] arm64: dts: rockchip: Fix the i2c address of es8316 on Cool Pi 4B
+Date: Tue,  2 Jul 2024 19:04:14 +0200
+Message-ID: <20240702170252.243618381@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
 References: <20240702170243.963426416@linuxfoundation.org>
@@ -67,41 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Andy Yan <andyshrk@163.com>
 
-[ Upstream commit 01f6a84c7a3eaabafd787608d630db31c6904f5c ]
+[ Upstream commit 5d101df8fc3261607bd946a222248dd193956a0a ]
 
-The GPIO reset controller uses gpiolib but there is no Kconfig
-dependency reflecting this fact, add one.
+According to the hardware design, the i2c address of audio codec es8316
+on Cool Pi 4B is 0x10.
 
-With the addition of the controller to the arm64 defconfig this is
-causing build breaks for arm64 virtconfig in -next:
+This fix the read/write error like bellow:
+es8316 7-0011: ASoC: error at soc_component_write_no_lock on es8316.7-0011 for register: [0x0000000c] -6
+es8316 7-0011: ASoC: error at soc_component_write_no_lock on es8316.7-0011 for register: [0x00000003] -6
+es8316 7-0011: ASoC: error at soc_component_read_no_lock on es8316.7-0011 for register: [0x00000016] -6
+es8316 7-0011: ASoC: error at soc_component_read_no_lock on es8316.7-0011 for register: [0x00000016] -6
 
-aarch64-linux-gnu-ld: drivers/reset/core.o: in function `__reset_add_reset_gpio_lookup':
-/build/stage/linux/drivers/reset/core.c:861:(.text+0xccc): undefined reference to `gpio_device_find_by_fwnode'
-
-Fixes: cee544a40e44 ("reset: gpio: Add GPIO-based reset controller")
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240325-reset-gpiolib-deps-v2-1-3ed2517f5f53@kernel.org
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Fixes: 3f5d336d64d6 ("arm64: dts: rockchip: Add support for rk3588s based board Cool Pi 4B")
+Signed-off-by: Andy Yan <andyshrk@163.com>
+Link: https://lore.kernel.org/r/20240623115526.2154645-1-andyshrk@163.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/reset/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/rockchip/rk3588s-coolpi-4b.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-index 85b27c42cf65b..f426b4c391796 100644
---- a/drivers/reset/Kconfig
-+++ b/drivers/reset/Kconfig
-@@ -68,6 +68,7 @@ config RESET_BRCMSTB_RESCAL
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-coolpi-4b.dts b/arch/arm64/boot/dts/rockchip/rk3588s-coolpi-4b.dts
+index e037bf9db75af..adba82c6e2e1e 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588s-coolpi-4b.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3588s-coolpi-4b.dts
+@@ -283,9 +283,9 @@
+ 	pinctrl-0 = <&i2c7m0_xfer>;
+ 	status = "okay";
  
- config RESET_GPIO
- 	tristate "GPIO reset controller"
-+	depends on GPIOLIB
- 	help
- 	  This enables a generic reset controller for resets attached via
- 	  GPIOs.  Typically for OF platforms this driver expects "reset-gpios"
+-	es8316: audio-codec@11 {
++	es8316: audio-codec@10 {
+ 		compatible = "everest,es8316";
+-		reg = <0x11>;
++		reg = <0x10>;
+ 		assigned-clocks = <&cru I2S0_8CH_MCLKOUT>;
+ 		assigned-clock-rates = <12288000>;
+ 		clocks = <&cru I2S0_8CH_MCLKOUT>;
 -- 
 2.43.0
 
