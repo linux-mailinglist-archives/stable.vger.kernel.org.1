@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-56680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F680924584
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:23:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1129245D4
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:27:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FB0F1C2215E
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:23:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C95791F218EA
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603C11BE23D;
-	Tue,  2 Jul 2024 17:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566371BE846;
+	Tue,  2 Jul 2024 17:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xq3Xb0XH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwPySZ4p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC0115218A;
-	Tue,  2 Jul 2024 17:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FEA1514DC;
+	Tue,  2 Jul 2024 17:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940994; cv=none; b=WwV/HqWIbcqxc0caUpuvrZ+PgWLhq7w8QberuY2IQqJXjpRh98LKHNwMTsKYgcNIqDHydXlDN85kgHmsrGOz/KcoQh4C4wgbhxwqwwI9mPaFkyP1boBsccRWlomPYea0d6h2s67uJKt0RgN09jbc4ZHX9/+IQ8cV+rjZ1Cb/m6U=
+	t=1719941252; cv=none; b=YGef4WfQvVzvvo9z7TjkNJb15pvQsM+IxTOcDKJs3zvfrVqvrUezxTe8xmPJpFXHLV5+ywnJJiZ5DelB+gBcBN02n7qma5BjtmKsefg6Wl1NcNzG1s8IRKjJeWEdw5TL+HHy0wnrwwkFuveHtIEj9iqtFxebISViAxXZ5Xz8fxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940994; c=relaxed/simple;
-	bh=pUI4Ga9AhS19cLLBsKTjIYxO7rB8bLV7tuoRfdBROGI=;
+	s=arc-20240116; t=1719941252; c=relaxed/simple;
+	bh=LllFre0D9LaX9i/UCubQvl434Nxn08fhVIJaVDCu5XQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=caRrFyOw+v/EDagYQIUtaiFmETiPKsE3KjFI28wSzGwiD4CLt0TnQvSfXnqKCZ/D+rSs/UB5nfCvtVwxCCfZ87Ndw5q7uJVke5wcYQeB6MspEwLrD0bBHcfv7WeFqUjT07JKElE71TXLFkmx+AfE8xZ72Ozy1QE27zTXu23zdk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xq3Xb0XH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961ECC116B1;
-	Tue,  2 Jul 2024 17:23:13 +0000 (UTC)
+	 MIME-Version; b=BbKHaqrZtMjgH4dwSRRMap8ZUarz6t0WEkaUo6ZZq+0OohcUp99hGnA7aHe63ykAm4Uqk++fztgq/m1DHW/eUjwmagckckoR5WTy3Y+1y3vAlK9vANUG/UPVz4FRBTGp9B4FuVjtjIp03LVaHlJGKP0jtRFa12PMrkvrZx2zFHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwPySZ4p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89DB2C116B1;
+	Tue,  2 Jul 2024 17:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940994;
-	bh=pUI4Ga9AhS19cLLBsKTjIYxO7rB8bLV7tuoRfdBROGI=;
+	s=korg; t=1719941251;
+	bh=LllFre0D9LaX9i/UCubQvl434Nxn08fhVIJaVDCu5XQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xq3Xb0XHeHfPLEEdBVM89BFWs7aA49xyMwPAz0eU2Wz7DC/tM7B4Z2Onk0S6DAck4
-	 5n9O+IKKGbVfganJA6FCX/74Ya2KH2oH085FP2gyyGxtXPfbQxtEeHBmljZbbKvwDV
-	 YiU9hzzug2/xKfA8Xya1FwDNNixjGja7PNHzvFEE=
+	b=kwPySZ4p5W4WpjTdcNq1M3SjU6GEpP/a5SHtaTRJmvCleevr88sbS8Q515BIsTVE9
+	 M1EJcrgCemMLPq+Cjx+fUG/iCwePuTIJsg/nM/Hd40NirytVM4+kbAWhIiTIHtcadu
+	 Elqo+tTpX0CZgzkkdFioQd6bskXcXSWXZdER3Hfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.g.garry@oracle.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Huang-Huang Bao <i@eh5.me>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 097/163] ata,scsi: libata-core: Do not leak memory for ata_port struct members
+Subject: [PATCH 6.1 010/128] pinctrl: rockchip: use dedicated pinctrl type for RK3328
 Date: Tue,  2 Jul 2024 19:03:31 +0200
-Message-ID: <20240702170236.734342120@linuxfoundation.org>
+Message-ID: <20240702170226.624626448@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Huang-Huang Bao <i@eh5.me>
 
-[ Upstream commit f6549f538fe0b2c389e1a7037f4e21039e25137a ]
+[ Upstream commit 01b4b1d1cec48ef4c26616c2fc4600b2c9fec05a ]
 
-libsas is currently not freeing all the struct ata_port struct members,
-e.g. ncq_sense_buf for a driver supporting Command Duration Limits (CDL).
+rk3328_pin_ctrl uses type of RK3288 which has a hack in
+rockchip_pinctrl_suspend and rockchip_pinctrl_resume to restore GPIO6-C6
+at assume, the hack is not applicable to RK3328 as GPIO6 is not even
+exist in it. So use a dedicated pinctrl type to skip this hack.
 
-Add a function, ata_port_free(), that is used to free a ata_port,
-including its struct members. It makes sense to keep the code related to
-freeing a ata_port in its own function, which will also free all the
-struct members of struct ata_port.
-
-Fixes: 18bd7718b5c4 ("scsi: ata: libata: Handle completion of CDL commands using policy 0xD")
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20240629124210.181537-8-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Fixes: 3818e4a7678e ("pinctrl: rockchip: Add rk3328 pinctrl support")
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Huang-Huang Bao <i@eh5.me>
+Link: https://lore.kernel.org/r/20240606125755.53778-4-i@eh5.me
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-core.c          | 24 ++++++++++++++----------
- drivers/scsi/libsas/sas_ata.c      |  6 +++---
- drivers/scsi/libsas/sas_discover.c |  2 +-
- include/linux/libata.h             |  1 +
- 4 files changed, 19 insertions(+), 14 deletions(-)
+ drivers/pinctrl/pinctrl-rockchip.c | 5 ++++-
+ drivers/pinctrl/pinctrl-rockchip.h | 1 +
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 9712da1cbfc8a..8489ae17e16c0 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -5499,6 +5499,18 @@ struct ata_port *ata_port_alloc(struct ata_host *host)
- 	return ap;
- }
- 
-+void ata_port_free(struct ata_port *ap)
-+{
-+	if (!ap)
-+		return;
-+
-+	kfree(ap->pmp_link);
-+	kfree(ap->slave_link);
-+	kfree(ap->ncq_sense_buf);
-+	kfree(ap);
-+}
-+EXPORT_SYMBOL_GPL(ata_port_free);
-+
- static void ata_devres_release(struct device *gendev, void *res)
- {
- 	struct ata_host *host = dev_get_drvdata(gendev);
-@@ -5525,15 +5537,7 @@ static void ata_host_release(struct kref *kref)
- 	int i;
- 
- 	for (i = 0; i < host->n_ports; i++) {
--		struct ata_port *ap = host->ports[i];
--
--		if (!ap)
--			continue;
--
--		kfree(ap->pmp_link);
--		kfree(ap->slave_link);
--		kfree(ap->ncq_sense_buf);
--		kfree(ap);
-+		ata_port_free(host->ports[i]);
- 		host->ports[i] = NULL;
- 	}
- 	kfree(host);
-@@ -5916,7 +5920,7 @@ int ata_host_register(struct ata_host *host, const struct scsi_host_template *sh
- 	 * allocation time.
- 	 */
- 	for (i = host->n_ports; host->ports[i]; i++)
--		kfree(host->ports[i]);
-+		ata_port_free(host->ports[i]);
- 
- 	/* give ports names and add SCSI hosts */
- 	for (i = 0; i < host->n_ports; i++) {
-diff --git a/drivers/scsi/libsas/sas_ata.c b/drivers/scsi/libsas/sas_ata.c
-index 12e2653846e3f..70891a1e98a01 100644
---- a/drivers/scsi/libsas/sas_ata.c
-+++ b/drivers/scsi/libsas/sas_ata.c
-@@ -610,15 +610,15 @@ int sas_ata_init(struct domain_device *found_dev)
- 
- 	rc = ata_sas_tport_add(ata_host->dev, ap);
- 	if (rc)
--		goto destroy_port;
-+		goto free_port;
- 
- 	found_dev->sata_dev.ata_host = ata_host;
- 	found_dev->sata_dev.ap = ap;
- 
- 	return 0;
- 
--destroy_port:
--	kfree(ap);
-+free_port:
-+	ata_port_free(ap);
- free_host:
- 	ata_host_put(ata_host);
- 	return rc;
-diff --git a/drivers/scsi/libsas/sas_discover.c b/drivers/scsi/libsas/sas_discover.c
-index ff7b63b10aeb3..8afd8ce259e27 100644
---- a/drivers/scsi/libsas/sas_discover.c
-+++ b/drivers/scsi/libsas/sas_discover.c
-@@ -301,7 +301,7 @@ void sas_free_device(struct kref *kref)
- 
- 	if (dev_is_sata(dev) && dev->sata_dev.ap) {
- 		ata_sas_tport_delete(dev->sata_dev.ap);
--		kfree(dev->sata_dev.ap);
-+		ata_port_free(dev->sata_dev.ap);
- 		ata_host_put(dev->sata_dev.ata_host);
- 		dev->sata_dev.ata_host = NULL;
- 		dev->sata_dev.ap = NULL;
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index e20bbcf594bf3..91c4e11cb6abb 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -1242,6 +1242,7 @@ extern int ata_slave_link_init(struct ata_port *ap);
- extern struct ata_port *ata_sas_port_alloc(struct ata_host *,
- 					   struct ata_port_info *, struct Scsi_Host *);
- extern void ata_port_probe(struct ata_port *ap);
-+extern void ata_port_free(struct ata_port *ap);
- extern int ata_sas_tport_add(struct device *parent, struct ata_port *ap);
- extern void ata_sas_tport_delete(struct ata_port *ap);
- extern int ata_sas_slave_configure(struct scsi_device *, struct ata_port *);
+diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
+index a2203124562ff..7a437ae674b76 100644
+--- a/drivers/pinctrl/pinctrl-rockchip.c
++++ b/drivers/pinctrl/pinctrl-rockchip.c
+@@ -2479,6 +2479,7 @@ static int rockchip_get_pull(struct rockchip_pin_bank *bank, int pin_num)
+ 	case RK3188:
+ 	case RK3288:
+ 	case RK3308:
++	case RK3328:
+ 	case RK3368:
+ 	case RK3399:
+ 	case RK3568:
+@@ -2537,6 +2538,7 @@ static int rockchip_set_pull(struct rockchip_pin_bank *bank,
+ 	case RK3188:
+ 	case RK3288:
+ 	case RK3308:
++	case RK3328:
+ 	case RK3368:
+ 	case RK3399:
+ 	case RK3568:
+@@ -2799,6 +2801,7 @@ static bool rockchip_pinconf_pull_valid(struct rockchip_pin_ctrl *ctrl,
+ 	case RK3188:
+ 	case RK3288:
+ 	case RK3308:
++	case RK3328:
+ 	case RK3368:
+ 	case RK3399:
+ 	case RK3568:
+@@ -3825,7 +3828,7 @@ static struct rockchip_pin_ctrl rk3328_pin_ctrl = {
+ 		.pin_banks		= rk3328_pin_banks,
+ 		.nr_banks		= ARRAY_SIZE(rk3328_pin_banks),
+ 		.label			= "RK3328-GPIO",
+-		.type			= RK3288,
++		.type			= RK3328,
+ 		.grf_mux_offset		= 0x0,
+ 		.iomux_recalced		= rk3328_mux_recalced_data,
+ 		.niomux_recalced	= ARRAY_SIZE(rk3328_mux_recalced_data),
+diff --git a/drivers/pinctrl/pinctrl-rockchip.h b/drivers/pinctrl/pinctrl-rockchip.h
+index 4759f336941ef..849266f8b1913 100644
+--- a/drivers/pinctrl/pinctrl-rockchip.h
++++ b/drivers/pinctrl/pinctrl-rockchip.h
+@@ -193,6 +193,7 @@ enum rockchip_pinctrl_type {
+ 	RK3188,
+ 	RK3288,
+ 	RK3308,
++	RK3328,
+ 	RK3368,
+ 	RK3399,
+ 	RK3568,
 -- 
 2.43.0
 
