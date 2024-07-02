@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-56800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47E93924604
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:30:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D939245CE
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:27:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6446B27A7E
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:30:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FE1C28A720
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0121BE85B;
-	Tue,  2 Jul 2024 17:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50B81BE847;
+	Tue,  2 Jul 2024 17:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AY7LsmT3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJfJrmyZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3861BE85E;
-	Tue,  2 Jul 2024 17:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929921514DC;
+	Tue,  2 Jul 2024 17:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941404; cv=none; b=snaNt/rfhqmoBafqxZIczwFg0upBUF09BlVu5dTOHpbsOiVmiF6VVWbhny4dK4dBBRMp5yKk47+dRUwjbHHP3pX7rKFlMqTfrF0yAD5fTkcEBe7cmTDTrYg21inQmefN6fGmi6aN0GjEmHUecXbDv8GiwQefh94vK3ojY0kgymI=
+	t=1719941232; cv=none; b=J6VCOVdrS0NypLLV253w7Tue3025d2VAjKs2xvwJ7NqtSIIBO744rzi6uO6xEXov54LMJBg6NsskfCytt2gleFQE+jSEeJRm4BTnUtvR2EyCAIQawLjwyY/+0ErFnG2l7HKZnUrwVsRTxNRhf63KyxcHg4DxE+wRD1Mg39MNT10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941404; c=relaxed/simple;
-	bh=vx7Iw0okpU50weN6kX7XVou4+93mdRXBmSbSgip6tHw=;
+	s=arc-20240116; t=1719941232; c=relaxed/simple;
+	bh=DzrzmuicDvTk7sQyURiR4pEWTzgBqgQ2E24KzjpIIPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GlIFFQ3rsRaGrrquIsGzg3Cgirf5G3fXPQrVkW2qY2eVEzaN7LCcqAH6o5Pb4EFc01soUZ6g1Zx3qt/repaXdLzIZuPemIvy6Wy+EbNCroLeiZKkk01Fh+peaixIlGHGWP33KgE6F26RLsK3wAVSf9C615UiwOCswsMubKhAbsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AY7LsmT3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E81CC116B1;
-	Tue,  2 Jul 2024 17:30:03 +0000 (UTC)
+	 MIME-Version; b=RRyeRV9Y0p2Iht5EIsTqGsW8bvvmyItqa/6s+LQHn8ZZMSamN5bZ9LqmfR6s/7b2XL6oGfXkQZjoVVL/1ASHwrd6QnRwWXytDQBRUTLUSBkDTuxM1cUDk5T8iCAW5RRxX/7EM83aLuMN8BVkAyjqpywtMoUOTxY6Ww7sGr6CaOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJfJrmyZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4AAC116B1;
+	Tue,  2 Jul 2024 17:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941403;
-	bh=vx7Iw0okpU50weN6kX7XVou4+93mdRXBmSbSgip6tHw=;
+	s=korg; t=1719941232;
+	bh=DzrzmuicDvTk7sQyURiR4pEWTzgBqgQ2E24KzjpIIPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AY7LsmT3C6vrSiUHyUfyuE3/JxYbSL/EgE6FjO0e2r1GHDJRBG+iamtAIWmHmEq4W
-	 iQxNv24uzLmq2jH3ThRgwtcyQm8Mnfikqg4ON48XiHVKNiwyUT1p7jiBcwr2wImTVs
-	 PIgpL1WWT9kCUs7bPvGcPvn5fo3dtGD9dlsLyqLA=
+	b=zJfJrmyZw8ploLXjVrn5sak4CI3wo6aymeZ5pKNc3BtDlrr0yJmwif62JhOtHcCaj
+	 Mh3giTFMzJKpWMKj4yN1AiNVkoze+Fgyzf45JVHHqNFKAeRJagut909febY6gnV1lt
+	 axaq2Zqd1Voaaqw/TwNRu3UTxT/+c7cuRMUkHbvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 053/128] nvme: fixup comment for nvme RDMA Provider Type
-Date: Tue,  2 Jul 2024 19:04:14 +0200
-Message-ID: <20240702170228.236943299@linuxfoundation.org>
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Michael Strauss <michael.strauss@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.6 141/163] drm/amd/display: Send DP_TOTAL_LTTPR_CNT during detection if LTTPR is present
+Date: Tue,  2 Jul 2024 19:04:15 +0200
+Message-ID: <20240702170238.390502441@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@suse.de>
+From: Michael Strauss <michael.strauss@amd.com>
 
-[ Upstream commit f80a55fa90fa76d01e3fffaa5d0413e522ab9a00 ]
+commit 2ec6c7f802332d1eff16f03e7c757f1543ee1183 upstream.
 
-PRTYPE is the provider type, not the QP service type.
+[WHY]
+New register field added in DP2.1 SCR, needed for auxless ALPM
 
-Fixes: eb793e2c9286 ("nvme.h: add NVMe over Fabrics definitions")
-Signed-off-by: Hannes Reinecke <hare@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[HOW]
+Echo value read from 0xF0007 back to sink
+
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Michael Strauss <michael.strauss@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/nvme.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c |   10 +++++++++-
+ drivers/gpu/drm/amd/display/include/dpcd_defs.h                    |    5 +++++
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/nvme.h b/include/linux/nvme.h
-index e6fb36b71b59d..15086715632e0 100644
---- a/include/linux/nvme.h
-+++ b/include/linux/nvme.h
-@@ -90,8 +90,8 @@ enum {
- 	NVMF_RDMA_QPTYPE_DATAGRAM	= 2, /* Reliable Datagram */
- };
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+@@ -1584,9 +1584,17 @@ static bool retrieve_link_cap(struct dc_
+ 			return false;
+ 	}
  
--/* RDMA QP Service Type codes for Discovery Log Page entry TSAS
-- * RDMA_QPTYPE field
-+/* RDMA Provider Type codes for Discovery Log Page entry TSAS
-+ * RDMA_PRTYPE field
-  */
- enum {
- 	NVMF_RDMA_PRTYPE_NOT_SPECIFIED	= 1, /* No Provider Specified */
--- 
-2.43.0
-
+-	if (dp_is_lttpr_present(link))
++	if (dp_is_lttpr_present(link)) {
+ 		configure_lttpr_mode_transparent(link);
+ 
++		// Echo TOTAL_LTTPR_CNT back downstream
++		core_link_write_dpcd(
++				link,
++				DP_TOTAL_LTTPR_CNT,
++				&link->dpcd_caps.lttpr_caps.phy_repeater_cnt,
++				sizeof(link->dpcd_caps.lttpr_caps.phy_repeater_cnt));
++	}
++
+ 	/* Read DP tunneling information. */
+ 	status = dpcd_get_tunneling_device_data(link);
+ 
+--- a/drivers/gpu/drm/amd/display/include/dpcd_defs.h
++++ b/drivers/gpu/drm/amd/display/include/dpcd_defs.h
+@@ -177,4 +177,9 @@ enum dpcd_psr_sink_states {
+ #define DP_SINK_PR_PIXEL_DEVIATION_PER_LINE     0x379
+ #define DP_SINK_PR_MAX_NUMBER_OF_DEVIATION_LINE 0x37A
+ 
++/* Remove once drm_dp_helper.h is updated upstream */
++#ifndef DP_TOTAL_LTTPR_CNT
++#define DP_TOTAL_LTTPR_CNT                                  0xF000A /* 2.1 */
++#endif
++
+ #endif /* __DAL_DPCD_DEFS_H__ */
 
 
 
