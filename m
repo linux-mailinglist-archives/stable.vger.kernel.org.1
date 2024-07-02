@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-56659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76BE92456C
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:22:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 390AB9244AD
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:13:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36D95B21FA1
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:22:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A52A1C21F98
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F211BE224;
-	Tue,  2 Jul 2024 17:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9BF1BE22F;
+	Tue,  2 Jul 2024 17:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HYgvmPNu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GpveERh3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535D83D978;
-	Tue,  2 Jul 2024 17:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A58215B0FE;
+	Tue,  2 Jul 2024 17:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940922; cv=none; b=nSEPs5fYDD1UaMwBYB5M3SbUhgqUnpcHwWxhz2bM0bOEpehJmDwro7oLxgZlAA+yulzrWfDIa8YacEMti4RLKwj5INGGzOlNi3CUbBqhB2t8YuxYdEaFCW254ROLvs8RAzytdUhpeN5b3R5PKgbTJHGlBOoqU0+4BUfQqYvSzak=
+	t=1719940411; cv=none; b=e9gww0rmgClSBOoBZikOS69tfKKGXMMJiW7U6b9fVlrY6b4Yd+DkAE9u50gblV0TPOpIrWhw2KBlqwB1sJNkcKQhVStvuKCB+gRbHPHfyujVUfD74OXPmk6IjCCl6dZa47dQ+50NSANMdjPsgFMMg4ypddiUBUsEtOl20t1UcSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940922; c=relaxed/simple;
-	bh=YdYWjJkGnbfDIIZZux7+D4PbIC2+0Dsli/Aeb7j2uI8=;
+	s=arc-20240116; t=1719940411; c=relaxed/simple;
+	bh=9IwSLamx/4ci/TNS7/rfbGn/9h2SmN7IyyWkscbuock=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O91UK7eF96EptkFQNLwOvlyao8kxqIWMIdXud/jo6SiQqAJc5GS5367CT8S/lN8g2l8cArW/DQon4uKpt3BIOomxpPu9dHN+q8+xz4nvQrXEwUC8ZPWydwg84GtpNfu+2KKKysrBq3n0hU1rthIaxQ4XHDr2dXgiIARfQUwbRIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HYgvmPNu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B162FC116B1;
-	Tue,  2 Jul 2024 17:22:01 +0000 (UTC)
+	 MIME-Version; b=iOusbWzdy3rS70mf85OY/8Ei+Qf6QtiGCo6fG7dehs+aAdS2bXUx5NP5VaW913Zw4gKa34WOPEgDZ6W4RUZWu/3MI6X5tJeOcKY+ZGcWDbiTDnOvkROFXEXyDfk8NDmX/TV5ckX4EwkX2bbdUYQesTb4mHFuPzmYYDJ0jQqKQIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GpveERh3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844F6C116B1;
+	Tue,  2 Jul 2024 17:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940922;
-	bh=YdYWjJkGnbfDIIZZux7+D4PbIC2+0Dsli/Aeb7j2uI8=;
+	s=korg; t=1719940411;
+	bh=9IwSLamx/4ci/TNS7/rfbGn/9h2SmN7IyyWkscbuock=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HYgvmPNu2wez1oSHd7cEX0crZY3VaT6iOYLQQQAfXDtN7Nusu9TWLq3/36HGQm94g
-	 JmfZbm+RzwsVT0cPeX0M7ORVZJkR/U4C6ux5r4v3Y8NXndIrVfVxSoeknC5re2DPJM
-	 qKyFlNxCEO2+bUQ3kAuvdDCiBj/tOdshg3rxsoX4=
+	b=GpveERh36cE1l5nC0HHR6m70wnFmwgr3x4R1rEwNboRCmhAQW9ph6uW9F0ULuYDem
+	 8DVIGrYMQ6EI6eIkRSpovX066Y5ZfsHiG0lu1aLa3wsWK3WXLo99A5+HfZ0KX+AoKn
+	 yBZAFEjzCXrJkIwmXHcDH5CmP10hqoHqFSuq68Gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Erick Archer <erick.archer@outlook.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/163] drm/radeon/radeon_display: Decrease the size of allocated memory
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.9 145/222] usb: gadget: printer: fix races against disable
 Date: Tue,  2 Jul 2024 19:03:03 +0200
-Message-ID: <20240702170235.677428311@linuxfoundation.org>
+Message-ID: <20240702170249.520486989@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +59,147 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erick Archer <erick.archer@outlook.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit ae6a233092747e9652eb793d92f79d0820e01c6a ]
+commit e587a7633dfee8987a999cf253f7c52a8e09276c upstream.
 
-This is an effort to get rid of all multiplications from allocation
-functions in order to prevent integer overflows [1] [2].
+printer_read() and printer_write() guard against the race
+against disable() by checking the dev->interface flag,
+which in turn is guarded by a spinlock.
+These functions, however, drop the lock on multiple occasions.
+This means that the test has to be redone after reacquiring
+the lock and before doing IO.
 
-In this case, the memory allocated to store RADEONFB_CONN_LIMIT pointers
-to "drm_connector" structures can be avoided. This is because this
-memory area is never accessed.
+Add the tests.
 
-Also, in the kzalloc function, it is preferred to use sizeof(*pointer)
-instead of sizeof(type) due to the type of the variable can change and
-one needs not change the former (unlike the latter).
+This also addresses CVE-2024-25741
 
-At the same time take advantage to remove the "#if 0" block, the code
-where the removed memory area was accessed, and the RADEONFB_CONN_LIMIT
-constant due to now is never used.
-
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments [1]
-Link: https://github.com/KSPP/linux/issues/160 [2]
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Erick Archer <erick.archer@outlook.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7f2ca14d2f9b9 ("usb: gadget: function: printer: Interface is disabled and returns error")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20240620114039.5767-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/radeon.h         | 1 -
- drivers/gpu/drm/radeon/radeon_display.c | 8 +-------
- 2 files changed, 1 insertion(+), 8 deletions(-)
+ drivers/usb/gadget/function/f_printer.c |   39 +++++++++++++++++++++++---------
+ 1 file changed, 29 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/radeon.h b/drivers/gpu/drm/radeon/radeon.h
-index 3d3d2109dfebc..426a49851e349 100644
---- a/drivers/gpu/drm/radeon/radeon.h
-+++ b/drivers/gpu/drm/radeon/radeon.h
-@@ -132,7 +132,6 @@ extern int radeon_cik_support;
- /* RADEON_IB_POOL_SIZE must be a power of 2 */
- #define RADEON_IB_POOL_SIZE			16
- #define RADEON_DEBUGFS_MAX_COMPONENTS		32
--#define RADEONFB_CONN_LIMIT			4
- #define RADEON_BIOS_NUM_SCRATCH			8
+--- a/drivers/usb/gadget/function/f_printer.c
++++ b/drivers/usb/gadget/function/f_printer.c
+@@ -450,11 +450,8 @@ printer_read(struct file *fd, char __use
+ 	mutex_lock(&dev->lock_printer_io);
+ 	spin_lock_irqsave(&dev->lock, flags);
  
- /* internal ring indices */
-diff --git a/drivers/gpu/drm/radeon/radeon_display.c b/drivers/gpu/drm/radeon/radeon_display.c
-index efd18c8d84c83..5f1d24d3120c4 100644
---- a/drivers/gpu/drm/radeon/radeon_display.c
-+++ b/drivers/gpu/drm/radeon/radeon_display.c
-@@ -683,7 +683,7 @@ static void radeon_crtc_init(struct drm_device *dev, int index)
- 	struct radeon_device *rdev = dev->dev_private;
- 	struct radeon_crtc *radeon_crtc;
+-	if (dev->interface < 0) {
+-		spin_unlock_irqrestore(&dev->lock, flags);
+-		mutex_unlock(&dev->lock_printer_io);
+-		return -ENODEV;
+-	}
++	if (dev->interface < 0)
++		goto out_disabled;
  
--	radeon_crtc = kzalloc(sizeof(struct radeon_crtc) + (RADEONFB_CONN_LIMIT * sizeof(struct drm_connector *)), GFP_KERNEL);
-+	radeon_crtc = kzalloc(sizeof(*radeon_crtc), GFP_KERNEL);
- 	if (radeon_crtc == NULL)
- 		return;
+ 	/* We will use this flag later to check if a printer reset happened
+ 	 * after we turn interrupts back on.
+@@ -462,6 +459,9 @@ printer_read(struct file *fd, char __use
+ 	dev->reset_printer = 0;
  
-@@ -709,12 +709,6 @@ static void radeon_crtc_init(struct drm_device *dev, int index)
- 	dev->mode_config.cursor_width = radeon_crtc->max_cursor_width;
- 	dev->mode_config.cursor_height = radeon_crtc->max_cursor_height;
+ 	setup_rx_reqs(dev);
++	/* this dropped the lock - need to retest */
++	if (dev->interface < 0)
++		goto out_disabled;
  
--#if 0
--	radeon_crtc->mode_set.crtc = &radeon_crtc->base;
--	radeon_crtc->mode_set.connectors = (struct drm_connector **)(radeon_crtc + 1);
--	radeon_crtc->mode_set.num_connectors = 0;
--#endif
--
- 	if (rdev->is_atom_bios && (ASIC_IS_AVIVO(rdev) || radeon_r4xx_atom))
- 		radeon_atombios_init_crtc(dev, radeon_crtc);
+ 	bytes_copied = 0;
+ 	current_rx_req = dev->current_rx_req;
+@@ -495,6 +495,8 @@ printer_read(struct file *fd, char __use
+ 		wait_event_interruptible(dev->rx_wait,
+ 				(likely(!list_empty(&dev->rx_buffers))));
+ 		spin_lock_irqsave(&dev->lock, flags);
++		if (dev->interface < 0)
++			goto out_disabled;
+ 	}
+ 
+ 	/* We have data to return then copy it to the caller's buffer.*/
+@@ -538,6 +540,9 @@ printer_read(struct file *fd, char __use
+ 			return -EAGAIN;
+ 		}
+ 
++		if (dev->interface < 0)
++			goto out_disabled;
++
+ 		/* If we not returning all the data left in this RX request
+ 		 * buffer then adjust the amount of data left in the buffer.
+ 		 * Othewise if we are done with this RX request buffer then
+@@ -567,6 +572,11 @@ printer_read(struct file *fd, char __use
+ 		return bytes_copied;
  	else
--- 
-2.43.0
-
+ 		return -EAGAIN;
++
++out_disabled:
++	spin_unlock_irqrestore(&dev->lock, flags);
++	mutex_unlock(&dev->lock_printer_io);
++	return -ENODEV;
+ }
+ 
+ static ssize_t
+@@ -587,11 +597,8 @@ printer_write(struct file *fd, const cha
+ 	mutex_lock(&dev->lock_printer_io);
+ 	spin_lock_irqsave(&dev->lock, flags);
+ 
+-	if (dev->interface < 0) {
+-		spin_unlock_irqrestore(&dev->lock, flags);
+-		mutex_unlock(&dev->lock_printer_io);
+-		return -ENODEV;
+-	}
++	if (dev->interface < 0)
++		goto out_disabled;
+ 
+ 	/* Check if a printer reset happens while we have interrupts on */
+ 	dev->reset_printer = 0;
+@@ -614,6 +621,8 @@ printer_write(struct file *fd, const cha
+ 		wait_event_interruptible(dev->tx_wait,
+ 				(likely(!list_empty(&dev->tx_reqs))));
+ 		spin_lock_irqsave(&dev->lock, flags);
++		if (dev->interface < 0)
++			goto out_disabled;
+ 	}
+ 
+ 	while (likely(!list_empty(&dev->tx_reqs)) && len) {
+@@ -663,6 +672,9 @@ printer_write(struct file *fd, const cha
+ 			return -EAGAIN;
+ 		}
+ 
++		if (dev->interface < 0)
++			goto out_disabled;
++
+ 		list_add(&req->list, &dev->tx_reqs_active);
+ 
+ 		/* here, we unlock, and only unlock, to avoid deadlock. */
+@@ -675,6 +687,8 @@ printer_write(struct file *fd, const cha
+ 			mutex_unlock(&dev->lock_printer_io);
+ 			return -EAGAIN;
+ 		}
++		if (dev->interface < 0)
++			goto out_disabled;
+ 	}
+ 
+ 	spin_unlock_irqrestore(&dev->lock, flags);
+@@ -686,6 +700,11 @@ printer_write(struct file *fd, const cha
+ 		return bytes_copied;
+ 	else
+ 		return -EAGAIN;
++
++out_disabled:
++	spin_unlock_irqrestore(&dev->lock, flags);
++	mutex_unlock(&dev->lock_printer_io);
++	return -ENODEV;
+ }
+ 
+ static int
 
 
 
