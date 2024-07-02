@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-56755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92FEF9245D5
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:27:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5960D9244C0
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:14:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19228B25BD9
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:27:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAD681F217DD
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:14:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256A41BE842;
-	Tue,  2 Jul 2024 17:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A49A1BE22A;
+	Tue,  2 Jul 2024 17:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wv5iyhEV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ow6Ag3zW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86071514DC;
-	Tue,  2 Jul 2024 17:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D3A15B0FE;
+	Tue,  2 Jul 2024 17:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941248; cv=none; b=CxNDbvggur/ZxXK+SkYXgoEcy8lP3u1xFYf3HpDAVdKOP9diFYGO8WOyyfSdX+ilARQeEEThNgoJfZ5vmO++zETxqHGgFo+ZHD+qdTjbp9aLllrC7DP57zrja0Oai+Z+JNSyMK2+9uXOO0I2ZptDvYq88swBShHBmv9Q2ceE+B4=
+	t=1719940468; cv=none; b=atwmQo8mfJ0AENHIcd8z4EB3FGR3ijS+iDUcH2WUdt8g4eY7M5MtVbeRn+eFMkVLt8AEG5AUvtFQSaRpz5h1mjeEUHYBt3GeyvKfSBpgfm2JuzeUX/fRK2bIoTfi1+D41DxGdA6BVZ4X0olEj0eBhI6Xc/YI/PDZ099/ouHSITI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941248; c=relaxed/simple;
-	bh=J6KN1FZdNtRaRSApPyTaHk0YxMvKzAaslr4lXvCPKDc=;
+	s=arc-20240116; t=1719940468; c=relaxed/simple;
+	bh=OOWFuoPuqsBw6h8yJw259gmEuSPC5dy4Kt1g4G+6hT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jpbkg/2/vO0Y1SiWmiaLRO8wUdTejlpBped6ZySvoYQh1qH59zCIeHx/ZKr9g4agEnpiNPxQ8AsHLIoX48D4mFDspFkns5vMulChcHrHalJ5vO7ld+DX61TdZ8CE3YQ0exaoxBlUcOQRE4gFVhNXz8WJeVF9pSxcIwXWGgtl8yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wv5iyhEV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B13CC116B1;
-	Tue,  2 Jul 2024 17:27:28 +0000 (UTC)
+	 MIME-Version; b=Exbl58YdrMrkzpmRd9T32/NbIqhZUEJwY4sXV1SZOG45KqsFGU/phM4ph7IWDjlGYAfU17SyKdZfWAfGbmwvoH6uF6BwfAf7Rnjl8eFymDgNzVAiZQ71RCHtI/iQttEGpJuN5WVdFe0lUdqvv2jo06zSxXKM2AK5lslsfkZy7Js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ow6Ag3zW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AC7C116B1;
+	Tue,  2 Jul 2024 17:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941248;
-	bh=J6KN1FZdNtRaRSApPyTaHk0YxMvKzAaslr4lXvCPKDc=;
+	s=korg; t=1719940468;
+	bh=OOWFuoPuqsBw6h8yJw259gmEuSPC5dy4Kt1g4G+6hT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wv5iyhEVtQkOwiI6jDg0JDHGqltWoi0zE/PpkTmiahOV+sm5nVuN4SQnFF23AVHjn
-	 4a35bV1BzR9oMtVsefBoPTci2vY99Fj8ATzULdrV3bDhH/UYsiDyGvH9xdVbmDpxg7
-	 pysjTrRKr6MNtDrwfbBOI5IdKoKLpEQWhIwjhaog=
+	b=Ow6Ag3zWtNZsHefsZoyOz7E0oa6Xs3p+buU8zSRlp6jvINsoo15oVQWORtsMYrGpL
+	 t5QhjSfoTozTI021vi19xlOFowSR++4npJm9zYTjEGvN1mZ5HHUjwndJ1FsCEqjH8t
+	 cs6VDX+YJwrMsnCtgEWlBblkjtQJkEyFiqdMcu3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/128] usb: typec: ucsi: Never send a lone connector change ack
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	syzbot+5681e40d297b30f5b513@syzkaller.appspotmail.com
+Subject: [PATCH 6.9 164/222] net: can: j1939: Initialize unused data in j1939_send_one()
 Date: Tue,  2 Jul 2024 19:03:22 +0200
-Message-ID: <20240702170226.290822179@linuxfoundation.org>
+Message-ID: <20240702170250.246216137@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,159 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit de52aca4d9d56c3b2f00b638d457075914b1a227 ]
+commit b7cdf1dd5d2a2d8200efd98d1893684db48fe134 upstream.
 
-Some PPM implementation do not like UCSI_ACK_CONNECTOR_CHANGE
-without UCSI_ACK_COMMAND_COMPLETE. Moreover, doing this is racy
-as it requires sending two UCSI_ACK_CC_CI commands in a row and
-the second one will be started with UCSI_CCI_ACK_COMPLETE already
-set in CCI.
+syzbot reported kernel-infoleak in raw_recvmsg() [1]. j1939_send_one()
+creates full frame including unused data, but it doesn't initialize
+it. This causes the kernel-infoleak issue. Fix this by initializing
+unused data.
 
-Bundle the UCSI_ACK_CONNECTOR_CHANGE with the UCSI_ACK_COMMAND_COMPLETE
-for the UCSI_GET_CONNECTOR_STATUS command that is sent while
-handling a connector change event.
+[1]
+BUG: KMSAN: kernel-infoleak in instrument_copy_to_user include/linux/instrumented.h:114 [inline]
+BUG: KMSAN: kernel-infoleak in copy_to_user_iter lib/iov_iter.c:24 [inline]
+BUG: KMSAN: kernel-infoleak in iterate_ubuf include/linux/iov_iter.h:29 [inline]
+BUG: KMSAN: kernel-infoleak in iterate_and_advance2 include/linux/iov_iter.h:245 [inline]
+BUG: KMSAN: kernel-infoleak in iterate_and_advance include/linux/iov_iter.h:271 [inline]
+BUG: KMSAN: kernel-infoleak in _copy_to_iter+0x366/0x2520 lib/iov_iter.c:185
+ instrument_copy_to_user include/linux/instrumented.h:114 [inline]
+ copy_to_user_iter lib/iov_iter.c:24 [inline]
+ iterate_ubuf include/linux/iov_iter.h:29 [inline]
+ iterate_and_advance2 include/linux/iov_iter.h:245 [inline]
+ iterate_and_advance include/linux/iov_iter.h:271 [inline]
+ _copy_to_iter+0x366/0x2520 lib/iov_iter.c:185
+ copy_to_iter include/linux/uio.h:196 [inline]
+ memcpy_to_msg include/linux/skbuff.h:4113 [inline]
+ raw_recvmsg+0x2b8/0x9e0 net/can/raw.c:1008
+ sock_recvmsg_nosec net/socket.c:1046 [inline]
+ sock_recvmsg+0x2c4/0x340 net/socket.c:1068
+ ____sys_recvmsg+0x18a/0x620 net/socket.c:2803
+ ___sys_recvmsg+0x223/0x840 net/socket.c:2845
+ do_recvmmsg+0x4fc/0xfd0 net/socket.c:2939
+ __sys_recvmmsg net/socket.c:3018 [inline]
+ __do_sys_recvmmsg net/socket.c:3041 [inline]
+ __se_sys_recvmmsg net/socket.c:3034 [inline]
+ __x64_sys_recvmmsg+0x397/0x490 net/socket.c:3034
+ x64_sys_call+0xf6c/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:300
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240327224554.1772525-3-lk@c--e.de
+Uninit was created at:
+ slab_post_alloc_hook mm/slub.c:3804 [inline]
+ slab_alloc_node mm/slub.c:3845 [inline]
+ kmem_cache_alloc_node+0x613/0xc50 mm/slub.c:3888
+ kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:577
+ __alloc_skb+0x35b/0x7a0 net/core/skbuff.c:668
+ alloc_skb include/linux/skbuff.h:1313 [inline]
+ alloc_skb_with_frags+0xc8/0xbf0 net/core/skbuff.c:6504
+ sock_alloc_send_pskb+0xa81/0xbf0 net/core/sock.c:2795
+ sock_alloc_send_skb include/net/sock.h:1842 [inline]
+ j1939_sk_alloc_skb net/can/j1939/socket.c:878 [inline]
+ j1939_sk_send_loop net/can/j1939/socket.c:1142 [inline]
+ j1939_sk_sendmsg+0xc0a/0x2730 net/can/j1939/socket.c:1277
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ __sock_sendmsg+0x30f/0x380 net/socket.c:745
+ ____sys_sendmsg+0x877/0xb60 net/socket.c:2584
+ ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2638
+ __sys_sendmsg net/socket.c:2667 [inline]
+ __do_sys_sendmsg net/socket.c:2676 [inline]
+ __se_sys_sendmsg net/socket.c:2674 [inline]
+ __x64_sys_sendmsg+0x307/0x4a0 net/socket.c:2674
+ x64_sys_call+0xc4b/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:47
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Bytes 12-15 of 16 are uninitialized
+Memory access of size 16 starts at ffff888120969690
+Data copied to user address 00000000200017c0
+
+CPU: 1 PID: 5050 Comm: syz-executor198 Not tainted 6.9.0-rc5-syzkaller-00031-g71b1543c83d6 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Reported-and-tested-by: syzbot+5681e40d297b30f5b513@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5681e40d297b30f5b513
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Link: https://lore.kernel.org/all/20240517035953.2617090-1-syoshida@redhat.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 8bdf8a42bca4 ("usb: typec: ucsi: Ack also failed Get Error commands")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |   48 ++++++++++++++++++------------------------
- 1 file changed, 21 insertions(+), 27 deletions(-)
+ net/can/j1939/main.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -36,22 +36,16 @@
-  */
- #define UCSI_SWAP_TIMEOUT_MS	5000
+--- a/net/can/j1939/main.c
++++ b/net/can/j1939/main.c
+@@ -30,10 +30,6 @@ MODULE_ALIAS("can-proto-" __stringify(CA
+ /* CAN_HDR: #bytes before can_frame data part */
+ #define J1939_CAN_HDR (offsetof(struct can_frame, data))
  
--static int ucsi_acknowledge_command(struct ucsi *ucsi)
-+static int ucsi_acknowledge(struct ucsi *ucsi, bool conn_ack)
+-/* CAN_FTR: #bytes beyond data part */
+-#define J1939_CAN_FTR (sizeof(struct can_frame) - J1939_CAN_HDR - \
+-		 sizeof(((struct can_frame *)0)->data))
+-
+ /* lowest layer */
+ static void j1939_can_recv(struct sk_buff *iskb, void *data)
  {
- 	u64 ctrl;
+@@ -342,7 +338,7 @@ int j1939_send_one(struct j1939_priv *pr
+ 	memset(cf, 0, J1939_CAN_HDR);
  
- 	ctrl = UCSI_ACK_CC_CI;
- 	ctrl |= UCSI_ACK_COMMAND_COMPLETE;
--
--	return ucsi->ops->sync_write(ucsi, UCSI_CONTROL, &ctrl, sizeof(ctrl));
--}
--
--static int ucsi_acknowledge_connector_change(struct ucsi *ucsi)
--{
--	u64 ctrl;
--
--	ctrl = UCSI_ACK_CC_CI;
--	ctrl |= UCSI_ACK_CONNECTOR_CHANGE;
-+	if (conn_ack) {
-+		clear_bit(EVENT_PENDING, &ucsi->flags);
-+		ctrl |= UCSI_ACK_CONNECTOR_CHANGE;
-+	}
+ 	/* make it a full can frame again */
+-	skb_put(skb, J1939_CAN_FTR + (8 - dlc));
++	skb_put_zero(skb, 8 - dlc);
  
- 	return ucsi->ops->sync_write(ucsi, UCSI_CONTROL, &ctrl, sizeof(ctrl));
- }
-@@ -64,7 +58,7 @@ static int ucsi_read_error(struct ucsi *
- 	int ret;
- 
- 	/* Acknowledge the command that failed */
--	ret = ucsi_acknowledge_command(ucsi);
-+	ret = ucsi_acknowledge(ucsi, false);
- 	if (ret)
- 		return ret;
- 
-@@ -76,7 +70,7 @@ static int ucsi_read_error(struct ucsi *
- 	if (ret)
- 		return ret;
- 
--	ret = ucsi_acknowledge_command(ucsi);
-+	ret = ucsi_acknowledge(ucsi, false);
- 	if (ret)
- 		return ret;
- 
-@@ -139,7 +133,7 @@ static int ucsi_exec_command(struct ucsi
- 		return -EIO;
- 
- 	if (cci & UCSI_CCI_NOT_SUPPORTED) {
--		if (ucsi_acknowledge_command(ucsi) < 0)
-+		if (ucsi_acknowledge(ucsi, false) < 0)
- 			dev_err(ucsi->dev,
- 				"ACK of unsupported command failed\n");
- 		return -EOPNOTSUPP;
-@@ -152,15 +146,15 @@ static int ucsi_exec_command(struct ucsi
- 	}
- 
- 	if (cmd == UCSI_CANCEL && cci & UCSI_CCI_CANCEL_COMPLETE) {
--		ret = ucsi_acknowledge_command(ucsi);
-+		ret = ucsi_acknowledge(ucsi, false);
- 		return ret ? ret : -EBUSY;
- 	}
- 
- 	return UCSI_CCI_LENGTH(cci);
- }
- 
--int ucsi_send_command(struct ucsi *ucsi, u64 command,
--		      void *data, size_t size)
-+static int ucsi_send_command_common(struct ucsi *ucsi, u64 command,
-+				    void *data, size_t size, bool conn_ack)
- {
- 	u8 length;
- 	int ret;
-@@ -179,7 +173,7 @@ int ucsi_send_command(struct ucsi *ucsi,
- 			goto out;
- 	}
- 
--	ret = ucsi_acknowledge_command(ucsi);
-+	ret = ucsi_acknowledge(ucsi, conn_ack);
- 	if (ret)
- 		goto out;
- 
-@@ -188,6 +182,12 @@ out:
- 	mutex_unlock(&ucsi->ppm_lock);
- 	return ret;
- }
-+
-+int ucsi_send_command(struct ucsi *ucsi, u64 command,
-+		      void *data, size_t size)
-+{
-+	return ucsi_send_command_common(ucsi, command, data, size, false);
-+}
- EXPORT_SYMBOL_GPL(ucsi_send_command);
- 
- /* -------------------------------------------------------------------------- */
-@@ -785,7 +785,9 @@ static void ucsi_handle_connector_change
- 	mutex_lock(&con->lock);
- 
- 	command = UCSI_GET_CONNECTOR_STATUS | UCSI_CONNECTOR_NUMBER(con->num);
--	ret = ucsi_send_command(ucsi, command, &con->status, sizeof(con->status));
-+
-+	ret = ucsi_send_command_common(ucsi, command, &con->status,
-+				       sizeof(con->status), true);
- 	if (ret < 0) {
- 		dev_err(ucsi->dev, "%s: GET_CONNECTOR_STATUS failed (%d)\n",
- 			__func__, ret);
-@@ -833,14 +835,6 @@ static void ucsi_handle_connector_change
- 	if (con->status.change & UCSI_CONSTAT_CAM_CHANGE)
- 		ucsi_partner_task(con, ucsi_check_altmodes, 1, 0);
- 
--	mutex_lock(&ucsi->ppm_lock);
--	clear_bit(EVENT_PENDING, &con->ucsi->flags);
--	ret = ucsi_acknowledge_connector_change(ucsi);
--	mutex_unlock(&ucsi->ppm_lock);
--
--	if (ret)
--		dev_err(ucsi->dev, "%s: ACK failed (%d)", __func__, ret);
--
- out_unlock:
- 	mutex_unlock(&con->lock);
- }
+ 	canid = CAN_EFF_FLAG |
+ 		(skcb->priority << 26) |
 
 
 
