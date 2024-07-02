@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-56706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D46E92459F
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:24:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B55A39244EF
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:16:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED1C21F21DB4
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:24:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F3E52865EC
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9AE81BE226;
-	Tue,  2 Jul 2024 17:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DEB1BE863;
+	Tue,  2 Jul 2024 17:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAu1CaOk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6L7uVn3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875C615218A;
-	Tue,  2 Jul 2024 17:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641BB81F;
+	Tue,  2 Jul 2024 17:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941085; cv=none; b=MMG0uHitIjgZ1nJeccEDXxQoRKJS5Lx+OLshjxQP1Wo3iOJfErE7RJX5zBSMYT1EtEedfGVIIc5OZPt2pfjB0CUwFbSB6MhNHhts55qmXPktM+FcyFyjsMiUksVM69Zn9Ft7SbCx5p+s+qHATHu2XecvaimMPciVb7P468rBSmw=
+	t=1719940584; cv=none; b=QAURo3iWIK5zMEdi41nazoqgxm9R3ujkI8HAO1fuMbkg26HXHfWViRAeLE/ieloPAqeAeaNksH0d0zGR6GbzixH0Bpj8ALsNH+iBHKW+GhFwITpy/K/UqoAW3MTDrJbv9f2PD0U0A3fpk9aSEDtSkF7zIuSJtU6xRNBkZ7wAhT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941085; c=relaxed/simple;
-	bh=oZ6AKxHbyuoBX3EI9hfG0xKYLw5aud8qA6Iczt8RPEY=;
+	s=arc-20240116; t=1719940584; c=relaxed/simple;
+	bh=gD0FfXZVW5sj2r1fDKCm4BwUpPJXG6OcAzTCSUxNg6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UOPwhaFo8EgSd4DDGcY5NYzFXzpGWw6x6yTnEUimZMAQqICqZufkmORCc0mqvsAOXre5MXXrj8sjWKzrPhTd7znxxBs7gJQdcN44mPxR1EqXsyP9eLZedNtsxfevM6MpDdtpqmytA/oc9tWZsbi+X7ez/TpGe/isR5+VrTk6Sro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAu1CaOk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2D1C116B1;
-	Tue,  2 Jul 2024 17:24:44 +0000 (UTC)
+	 MIME-Version; b=ijnvWSM0OExrotxDYhjjA+oJlMlioYr6liHAvUrggvPPtJ5mzoSEBtSwRxtZg+zh//qq5L0j3D0cKCNxGKpN51rL4c2OT3b3+CzKmziVmf0I9uFCZp6P1Zcm+k2DXcjULj/e4Q5UK1lwijr1kCTOirnp9jlPZyfWLLMiYsER50U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6L7uVn3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7898AC116B1;
+	Tue,  2 Jul 2024 17:16:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941085;
-	bh=oZ6AKxHbyuoBX3EI9hfG0xKYLw5aud8qA6Iczt8RPEY=;
+	s=korg; t=1719940583;
+	bh=gD0FfXZVW5sj2r1fDKCm4BwUpPJXG6OcAzTCSUxNg6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JAu1CaOk20R/Nv+YZ65jk3HedtwiuimZk6zXZt6jXupNVKPxmOV2d0J6kAZbhc1r9
-	 L2CR0sQ7K7sJ/mADD4S4r1hmMifP4n8R1MyebLDVWRW52YNn4oK898D5pIRvpNPpYE
-	 z43Slr7mXHlTgyLxkghu2IWD54+N80s77JqaEVe0=
+	b=B6L7uVn36QNDcrQME/gTU9MpL4W3QtD7EJRqOhPFZ8zLf+zR+QF7Wj7/YbMTTY3VJ
+	 L4YQE+IpyMdH+OkjNE0F4zA6gprUb554/pxPMPG6VDDTZHkBqNfxiu/w7YfxXp7f/2
+	 ys/7VijHXVTC5VaDrkOI257Q83vz2d34O/dnpx0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexander=20H=C3=B6lzl?= <alexander.hoelzl@gmx.net>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.6 123/163] net: can: j1939: recover socket queue on CAN bus error during BAM transmission
+	Kent Overstreet <kent.overstreet@linux.dev>
+Subject: [PATCH 6.9 199/222] bcachefs: Fix setting of downgrade recovery passes/errors
 Date: Tue,  2 Jul 2024 19:03:57 +0200
-Message-ID: <20240702170237.708542193@linuxfoundation.org>
+Message-ID: <20240702170251.591232513@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +58,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Kent Overstreet <kent.overstreet@linux.dev>
 
-commit 9ad1da14ab3bf23087ae45fe399d84a109ddb81a upstream.
+commit 247c056bde2ebc9fad2fc62332dc7cc99b58d720 upstream.
 
-Addresses an issue where a CAN bus error during a BAM transmission
-could stall the socket queue, preventing further transmissions even
-after the bus error is resolved. The fix activates the next queued
-session after the error recovery, allowing communication to continue.
+bch2_check_version_downgrade() was setting c->sb.version, which
+bch2_sb_set_downgrade() expects to be at the previous version; and it
+shouldn't even have been set directly because c->sb.version is updated
+by write_super().
 
-Fixes: 9d71dd0c70099 ("can: add support of SAE J1939 protocol")
-Cc: stable@vger.kernel.org
-Reported-by: Alexander Hölzl <alexander.hoelzl@gmx.net>
-Tested-by: Alexander Hölzl <alexander.hoelzl@gmx.net>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/all/20240528070648.1947203-1-o.rempel@pengutronix.de
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/j1939/transport.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/bcachefs/super-io.c |   12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
---- a/net/can/j1939/transport.c
-+++ b/net/can/j1939/transport.c
-@@ -1681,6 +1681,8 @@ static int j1939_xtp_rx_rts_session_acti
- 
- 		j1939_session_timers_cancel(session);
- 		j1939_session_cancel(session, J1939_XTP_ABORT_BUSY);
-+		if (session->transmission)
-+			j1939_session_deactivate_activate_next(session);
- 
- 		return -EBUSY;
- 	}
+--- a/fs/bcachefs/super-io.c
++++ b/fs/bcachefs/super-io.c
+@@ -1123,18 +1123,12 @@ bool bch2_check_version_downgrade(struct
+ 	 * c->sb will be checked before we write the superblock, so update it as
+ 	 * well:
+ 	 */
+-	if (BCH_SB_VERSION_UPGRADE_COMPLETE(c->disk_sb.sb) > bcachefs_metadata_version_current) {
++	if (BCH_SB_VERSION_UPGRADE_COMPLETE(c->disk_sb.sb) > bcachefs_metadata_version_current)
+ 		SET_BCH_SB_VERSION_UPGRADE_COMPLETE(c->disk_sb.sb, bcachefs_metadata_version_current);
+-		c->sb.version_upgrade_complete = bcachefs_metadata_version_current;
+-	}
+-	if (c->sb.version > bcachefs_metadata_version_current) {
++	if (c->sb.version > bcachefs_metadata_version_current)
+ 		c->disk_sb.sb->version = cpu_to_le16(bcachefs_metadata_version_current);
+-		c->sb.version = bcachefs_metadata_version_current;
+-	}
+-	if (c->sb.version_min > bcachefs_metadata_version_current) {
++	if (c->sb.version_min > bcachefs_metadata_version_current)
+ 		c->disk_sb.sb->version_min = cpu_to_le16(bcachefs_metadata_version_current);
+-		c->sb.version_min = bcachefs_metadata_version_current;
+-	}
+ 	c->disk_sb.sb->compat[0] &= cpu_to_le64((1ULL << BCH_COMPAT_NR) - 1);
+ 	return ret;
+ }
 
 
 
