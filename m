@@ -1,127 +1,87 @@
-Return-Path: <stable+bounces-56327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A91C9237D1
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 10:43:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3CE09237D2
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 10:43:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 381B31C220AB
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 08:43:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5013F1F21CA3
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 08:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17AD514EC79;
-	Tue,  2 Jul 2024 08:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B581C14F106;
+	Tue,  2 Jul 2024 08:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d6urIkI3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LK7R3hU7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB73C14E2FB
-	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 08:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6906114E2D8;
+	Tue,  2 Jul 2024 08:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719909763; cv=none; b=QXfzdlK7kS7Iob1X7LaPD8jaODyA0GNDsJrwOjksVK/aJKBDcizXVGTaSGqJhfwAL1oBveEDM9sD0i9P3qBNVXA/GOvu1XO8ZmLWigeGmzDsf8XDy8pf+P5VkQcYHQPJXiVPPL6J6rUseRGDe5lkT+Y7uR/xRH5j7BTA3ePwYYw=
+	t=1719909765; cv=none; b=Rfl8Pr9aS8lziA6MbFekWlCe7ep5s1oM0boMjpO8DHjYvfo1POf3OMzD0Gv3lC6FkLob3onFtxANw+oO6aGigEjYDodPydQetqrJvkCiPAfUV5W/k6/Lkejgy4vy35Y9FXR2pBWFlLzo3dyjPQOJ6cJYCP43dwFQlV3ghn5VW+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719909763; c=relaxed/simple;
-	bh=WAKIFiSeV41Ht5XwnPCQZdNase3NIfnh2+5eVub4HoU=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dVfiOxHPW9I6t6uvZZPIs15185DYV2L4RcNRFTbHYV36S+x94CoRfE5inUVPQxcvNS63fSH36vCdzZdMgi/NOt86/Q8ZGw8BgAHylPkOEoqhJHgW9awgG2UaIAFDhkrU/iI0GmwVZXPQbd6Y1pa8CFSnkZm+rjpbVqab64TUrUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d6urIkI3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6198BC116B1;
-	Tue,  2 Jul 2024 08:42:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719909763;
-	bh=WAKIFiSeV41Ht5XwnPCQZdNase3NIfnh2+5eVub4HoU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=d6urIkI3U91Q55RHbgcYR1mF7L7SI074qI283nM41yBAYC7eCqf4r7q9aDVCnPd1a
-	 ILiNBb41nW1FoCLDDsClFegENQlBeE5iNY0E3AGiV3MWd14+rc4Fgclsm8mGPJfYFH
-	 et8iAmI7gGxu1FXsn6oVFZ/t0aQjoIy/kJJ5TXv4TZJBY37bbeP4oKv70VoUkX16fS
-	 cszzwYC7DAIItLZ+T6c0XByKUEfT0nhn7ZKe0xAEr7oIJP24nEZK2Df7ZCKiMYLaE5
-	 /8erlbX6Q7Dis42LkgMeBN8gkk8ZPjtCuGwXuAUyFcnW744aJi5z26NXmFW9WB5zQF
-	 /Lbul1OUi+EJg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1sOZ60-0092WK-Sd;
-	Tue, 02 Jul 2024 09:42:41 +0100
-Date: Tue, 02 Jul 2024 09:42:40 +0100
-Message-ID: <864j98i3r3.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: James Gowans <jgowans@amazon.com>
-Cc: <stable@vger.kernel.org>,
-	<gregkh@linuxfoundation.org>,
-	<chenxiang66@hisilicon.com>,
-	<oliver.upton@linux.dev>,
-	<yuzenghui@huawei.com>,
-	<sironi@amazon.de>
-Subject: Re: [PATCH 5.15.y] KVM: arm64: vgic-v4: Make the doorbell request robust w.r.t preemption
-In-Reply-To: <20240701111933.41973-1-jgowans@amazon.com>
-References: <2023072323-trident-unturned-7999@gregkh>
-	<20240701111933.41973-1-jgowans@amazon.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1719909765; c=relaxed/simple;
+	bh=5Nsih7U/aO4FDaKQBrW36vzZDZ8b0W+azxYjgclNQlU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gnY4C6BABixIkSJwmqgiTbQ1E+IVeGuE4e3HOBcvNEd2SkkYsN3GQjeKh/8PvJ6iFKCuSVnNoNpVBRmtfWMvjoYojZ8k1737MQOneOmlsJ1SZjmVV8pz9opGSrTZPDEIw/lhfESlB5DXGKPQTXaUbmdTQtFXRQuog+AhscptHmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LK7R3hU7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA0CC4AF0C;
+	Tue,  2 Jul 2024 08:42:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1719909765;
+	bh=5Nsih7U/aO4FDaKQBrW36vzZDZ8b0W+azxYjgclNQlU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LK7R3hU71yLTUK+9P7JB4kRVQbvtCiJ/Zt9foC/8C8W1PA8lz7h3QPCdLKZ3kNjAS
+	 ZTxL2UCmtGozOlddTbAj+YG5PVhfGe59eiw4TmyOVup6u4nV3yp5oLkSoNrAsQdrXL
+	 kInQLSZY5Z5pFSDqHEEkTR/C8ra8kU+k41M6jY2E=
+Date: Tue, 2 Jul 2024 10:42:41 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>
+Cc: Eric Woudstra <ericwouds@gmail.com>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.9 029/250] net: sfp: enhance quirk for Fibrestore 2.5G
+ copper SFP module
+Message-ID: <2024070235-troubling-effort-056e@gregkh>
+References: <20240625085548.033507125@linuxfoundation.org>
+ <20240625085549.174362251@linuxfoundation.org>
+ <20240628172211.17ccefe9@dellmb>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: jgowans@amazon.com, stable@vger.kernel.org, gregkh@linuxfoundation.org, chenxiang66@hisilicon.com, oliver.upton@linux.dev, yuzenghui@huawei.com, sironi@amazon.de
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240628172211.17ccefe9@dellmb>
 
-On Mon, 01 Jul 2024 12:19:33 +0100,
-James Gowans <jgowans@amazon.com> wrote:
+On Fri, Jun 28, 2024 at 05:22:11PM +0200, Marek Behún wrote:
+> On Tue, 25 Jun 2024 11:29:47 +0200
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 > 
-> From: Marc Zyngier <maz@kernel.org>
+> > 6.9-stable review patch.  If anyone has any objections, please let me know.
 > 
-> Xiang reports that VMs occasionally fail to boot on GICv4.1 systems when
-> running a preemptible kernel, as it is possible that a vCPU is blocked
-> without requesting a doorbell interrupt.
+> Sorry I overlooked this, I thought I already replied to this, but in
+> fact I replied to another patch not to be backported:
 > 
-> The issue is that any preemption that occurs between vgic_v4_put() and
-> schedule() on the block path will mark the vPE as nonresident and *not*
-> request a doorbell irq. This occurs because when the vcpu thread is
-> resumed on its way to block, vcpu_load() will make the vPE resident
-> again. Once the vcpu actually blocks, we don't request a doorbell
-> anymore, and the vcpu won't be woken up on interrupt delivery.
+>   net: sfp: add quirk for another multigig RollBall transceiver
+>   https://lore.kernel.org/stable/20240527165441.2c5516c9@dellmb/
 > 
-> Fix it by tracking that we're entering WFI, and key the doorbell
-> request on that flag. This allows us not to make the vPE resident
-> when going through a preempt/schedule cycle, meaning we don't lose
-> any state.
+> This patch (net: sfp: enhance quirk for Fibrestore 2.5G copper SFP
+> module) has the same problem: it depends on the same series, so it
+> should not be backported.
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 8e01d9a396e6 ("KVM: arm64: vgic-v4: Move the GICv4 residency flow to be driven by vcpu_load/put")
-> Reported-by: Xiang Chen <chenxiang66@hisilicon.com>
-> Suggested-by: Zenghui Yu <yuzenghui@huawei.com>
-> Tested-by: Xiang Chen <chenxiang66@hisilicon.com>
-> Co-developed-by: Oliver Upton <oliver.upton@linux.dev>
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> Acked-by: Zenghui Yu <yuzenghui@huawei.com>
-> Link: https://lore.kernel.org/r/20230713070657.3873244-1-maz@kernel.org
-> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+> Eric informs me that it was already released as 6.9.7 :-(
 > 
-> (cherry picked from commit b321c31c9b7b309dcde5e8854b741c8e6a9a05f0)
-> 
-> [modified to wrangle the vCPU flags directly instead of going through
-> the flag helper macros as they have not yet been introduced. Also doing
-> the flag wranging in the kvm_arch_vcpu_{un}blocking() hooks as the
-> introduction of kvm_vcpu_wfi has not yet happened. See:
-> 6109c5a6ab7f ("KVM: arm64: Move vGIC v4 handling for WFI out arch callback hook")]
-> 
-> Signed-off-by: James Gowans <jgowans@amazon.com>
+> What can we do?
 
-Acked-by: Marc Zyngier <maz@kernel.org>
+Now reverted, thanks.
 
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+greg k-h
 
