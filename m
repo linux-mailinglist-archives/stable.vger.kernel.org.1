@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-56449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6037F92446B
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:10:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D1B6924528
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:19:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F37B8B23D9A
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:10:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0898F1F21B8C
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CCA1BE22A;
-	Tue,  2 Jul 2024 17:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434471C2319;
+	Tue,  2 Jul 2024 17:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9LnUP2W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="klCe9XsP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2436315218A;
-	Tue,  2 Jul 2024 17:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019AA1BBBD7;
+	Tue,  2 Jul 2024 17:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940224; cv=none; b=eGwn430BrsJA9tosNDWAiyBjpEPpseqbA5DFD3G//CuHGBLZQfQLPtsn469ZMCumXvdZoWFDPdyx/9pTugrC2KddM/jvPqtdjYRw+FA8By8BTC/sFoZud08Dagsf3Pu9w2yH781BeORD8amzhtzi9k+zXJczSgx0FmRowfXMMc4=
+	t=1719940713; cv=none; b=bnEKKjZ7s7zXaryD6tBx9MASey+QM3LUJ5Vq3IHHxPO9FUrmihtaEpaCWX59eWjwJEawdzroeJ03J08+VtdSCEwvHx4w1JJRBq2es/GHyQgnYih5uHrhjYpuWdFBC3Q4gdrwSx5UAHt3Id+OYPNoXi0dI/Fm5n+VUKmADyY1WqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940224; c=relaxed/simple;
-	bh=tiTqfn78M7gMYBNmCS1w5BHe7j5Pl9RkaD+6LexcobE=;
+	s=arc-20240116; t=1719940713; c=relaxed/simple;
+	bh=Sz6gtsUMIRUEe6oOlAWAG9vbqiL8lDo8LRYEiec+EmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FkPH+JU4yVOpYU9uhtl8AbiPujrXS0At5VnGLzV+qRfBJc7/VQ6TTG/mDgwpOkKDeEilZFoKwxsag2ivLbOxEqRlXGaebZuasp3ZuzCugOwPmqLlSuojjWG4U/D5ZUVz9Ymm+IouNWLBvBoHOtw7cErPsRF8KEzFRJ6zCI7jm/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9LnUP2W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92202C116B1;
-	Tue,  2 Jul 2024 17:10:23 +0000 (UTC)
+	 MIME-Version; b=tfKHYGXNi/1eArymnKOsSR8f9YSEhlI5zxBMQPGKnOhPC9DOtHiHoYonRjRV6HTqrw1Ni+i2b4dBO1JWEaGQcLluBrpt9cy9JTbKVf0yVa6j8dPCKRfPIMSfkkqKlXkdaT39OYPBP0MSEdZ6l4edTWXcaZcVovGYJSNJXE/tsaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=klCe9XsP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66575C116B1;
+	Tue,  2 Jul 2024 17:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940224;
-	bh=tiTqfn78M7gMYBNmCS1w5BHe7j5Pl9RkaD+6LexcobE=;
+	s=korg; t=1719940712;
+	bh=Sz6gtsUMIRUEe6oOlAWAG9vbqiL8lDo8LRYEiec+EmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9LnUP2WonuIPzQbY9J3TaMbL34m+onQgslhbaBddKwGlNRbo+dU6aWwBnDn4jmwk
-	 6Yiw+1ltUxttaGHjbCtOwQdQHeFTeJUSHCoGwLy07m5NdPqiVfk3PCQNEY/QurbS7A
-	 onLLf39YyC2KteIg+ncfVtSRGajv3ObBkbQpmlyk=
+	b=klCe9XsPtw0EtwpYyt7jStKCsM5bcnaq4bNx76G4drBmIh8zLWf8+vG8KFTSwakjr
+	 57XO+TXmlACiew76ROgPNR1f3u84ivLsSd0xxZiUamZpjd5w00K+xf4P/SNXNqyesr
+	 m2cd9+7eQxyyAdRxKKzF9Z1iBKbgZsoJVKGXJ18c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Kees Cook <keescook@chromium.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 090/222] gfs2: Fix NULL pointer dereference in gfs2_log_flush
-Date: Tue,  2 Jul 2024 19:02:08 +0200
-Message-ID: <20240702170247.415604116@linuxfoundation.org>
+Subject: [PATCH 6.6 015/163] wifi: mac80211: Use flexible array in struct ieee80211_tim_ie
+Date: Tue,  2 Jul 2024 19:02:09 +0200
+Message-ID: <20240702170233.633864085@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-[ Upstream commit 35264909e9d1973ab9aaa2a1b07cda70f12bb828 ]
+[ Upstream commit 2ae5c9248e06dac2c2360be26b4e25f673238337 ]
 
-In gfs2_jindex_free(), set sdp->sd_jdesc to NULL under the log flush
-lock to provide exclusion against gfs2_log_flush().
+Currently struct ieee80211_tim_ie defines:
+	u8 virtual_map[1];
 
-In gfs2_log_flush(), check if sdp->sd_jdesc is non-NULL before
-dereferencing it.  Otherwise, we could run into a NULL pointer
-dereference when outstanding glock work races with an unmount
-(glock_work_func -> run_queue -> do_xmote -> inode_go_sync ->
-gfs2_log_flush).
+Per the guidance in [1] change this to be a flexible array.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Per the discussion in [2] wrap the virtual_map in a union with a u8
+item in order to preserve the existing expectation that the
+virtual_map must contain at least one octet (at least when used in a
+non-S1G PPDU). This means that no driver changes are required.
+
+[1] https://docs.kernel.org/process/deprecated.html#zero-length-and-one-element-arrays
+[2] https://lore.kernel.org/linux-wireless/202308301529.AC90A9EF98@keescook/
+
+Suggested-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20230831-ieee80211_tim_ie-v3-2-e10ff584ab5d@quicinc.com
+[add wifi prefix]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/log.c   | 3 ++-
- fs/gfs2/super.c | 4 ++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ include/linux/ieee80211.h | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-index 8cddf955ebc0c..a6dd68b458cec 100644
---- a/fs/gfs2/log.c
-+++ b/fs/gfs2/log.c
-@@ -1108,7 +1108,8 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
- 	lops_before_commit(sdp, tr);
- 	if (gfs2_withdrawing_or_withdrawn(sdp))
- 		goto out_withdraw;
--	gfs2_log_submit_bio(&sdp->sd_jdesc->jd_log_bio, REQ_OP_WRITE);
-+	if (sdp->sd_jdesc)
-+		gfs2_log_submit_bio(&sdp->sd_jdesc->jd_log_bio, REQ_OP_WRITE);
- 	if (gfs2_withdrawing_or_withdrawn(sdp))
- 		goto out_withdraw;
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index aaaa5b90bfe25..5fbc08930941c 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -951,17 +951,24 @@ struct ieee80211_wide_bw_chansw_ie {
+  * @dtim_count: DTIM Count
+  * @dtim_period: DTIM Period
+  * @bitmap_ctrl: Bitmap Control
++ * @required_octet: "Syntatic sugar" to force the struct size to the
++ *                  minimum valid size when carried in a non-S1G PPDU
+  * @virtual_map: Partial Virtual Bitmap
+  *
+  * This structure represents the payload of the "TIM element" as
+- * described in IEEE Std 802.11-2020 section 9.4.2.5.
++ * described in IEEE Std 802.11-2020 section 9.4.2.5. Note that this
++ * definition is only applicable when the element is carried in a
++ * non-S1G PPDU. When the TIM is carried in an S1G PPDU, the Bitmap
++ * Control and Partial Virtual Bitmap may not be present.
+  */
+ struct ieee80211_tim_ie {
+ 	u8 dtim_count;
+ 	u8 dtim_period;
+ 	u8 bitmap_ctrl;
+-	/* variable size: 1 - 251 bytes */
+-	u8 virtual_map[1];
++	union {
++		u8 required_octet;
++		DECLARE_FLEX_ARRAY(u8, virtual_map);
++	};
+ } __packed;
  
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index 2d780b4701a23..ee61fcb7f200d 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -67,9 +67,13 @@ void gfs2_jindex_free(struct gfs2_sbd *sdp)
- 	sdp->sd_journals = 0;
- 	spin_unlock(&sdp->sd_jindex_spin);
- 
-+	down_write(&sdp->sd_log_flush_lock);
- 	sdp->sd_jdesc = NULL;
-+	up_write(&sdp->sd_log_flush_lock);
-+
- 	while (!list_empty(&list)) {
- 		jd = list_first_entry(&list, struct gfs2_jdesc, jd_list);
-+		BUG_ON(jd->jd_log_bio);
- 		gfs2_free_journal_extents(jd);
- 		list_del(&jd->jd_list);
- 		iput(jd->jd_inode);
+ /**
 -- 
 2.43.0
 
