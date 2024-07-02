@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-56401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 138FF92443A
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:08:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34D3F92443F
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:08:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1E4B1F2155D
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:08:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5F5E28980A
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53341BE24F;
-	Tue,  2 Jul 2024 17:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2A21BE23A;
+	Tue,  2 Jul 2024 17:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKzIPG1n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEC6TiU0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743D51BE22F;
-	Tue,  2 Jul 2024 17:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7F71BD51B;
+	Tue,  2 Jul 2024 17:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940063; cv=none; b=ZJy1ByBAjkN1xx92zHcHslJO53lSLyecXp4RGALtvP50coy6kdTY0IGqQGmZxUwHy5MbD9OKvzG1948SCT4VRkHt//d6s5wyHzKffZt+jjIgK1fUeiOYqc8KC9YxlEd5nthovllMYd8oNnHVBLh7DcJf6FL36q0GF6ZHNtqjigk=
+	t=1719940079; cv=none; b=Jw07EKmzktplwc842n8szXCDohDx+0/gdbF9VrntUl6B0661Vh4pwDgS827dSKoHz8/FD1m6YArp8ma70wiOxK0LjuW6DUvLRQWgl5BoDnce6QJ8MPhr+fvllFphBiiZwYjoHrJ1GHyLTgo6S07/Q3Rnnm62AXynecXohmayvSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940063; c=relaxed/simple;
-	bh=9ub4YLPs1Euwdk9z+3X3pW7tOhjJylLu2jZw0UlIkmg=;
+	s=arc-20240116; t=1719940079; c=relaxed/simple;
+	bh=J4tV59TfLx04wl2g0R1AmfHnY3p3fLvtJccEfl/3ekc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZwKqlbXXJ4ZQ8VVHS2fcxyslv4xVEW8S8pTYm48mOhFjUFcE2w1xmhXQ+kUmVEug1blsYc7ixvtDyqfizd3c1y/3ZcF+4FNeMu/dYXJyXmnOssnRw8waNsIFqdbNHvC0uQYTf/qr6/ZuHUiKKOjMdvDSlkfPokSJPwlj04VnZro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKzIPG1n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62BFC116B1;
-	Tue,  2 Jul 2024 17:07:42 +0000 (UTC)
+	 MIME-Version; b=dIVF6p1cgogVul/ol4Ta9pJ3pDIci8C//4HrAPC7DoS+DZdVW0iRChMgB2a2bPeBVl2hCrCUMi+Q9gO7ajafCdjxnDI9ZmYEOkGlrc6uy11CTgKfncOXZmAL/HVqkeXUWSZPO8xjlEaPFRuYiYVMsHD63J7zNEKq9wDOqSr1DfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEC6TiU0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296BDC116B1;
+	Tue,  2 Jul 2024 17:07:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940063;
-	bh=9ub4YLPs1Euwdk9z+3X3pW7tOhjJylLu2jZw0UlIkmg=;
+	s=korg; t=1719940079;
+	bh=J4tV59TfLx04wl2g0R1AmfHnY3p3fLvtJccEfl/3ekc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NKzIPG1nYmEHh18f/WcUBTbcrtFoW8dU8vgyda+Sgx0GG19ys6MPPCvO4wp81+wej
-	 6htJWLgGRQyoaHGsGnQDkxqTNxLi0nGXY9ZNO1Zom1PnPWdHJbowcGJ1e9y0/H4pry
-	 aQcX/z9VnMbkumO0ujj6mN3P+heG548kicKWdxqs=
+	b=tEC6TiU07zKWb92VkOqqTspfQ08Gz88dqF91xDZj0A9E3RWkIMeW37SRyjyOgsZNV
+	 9hkaOpGjfcHZIss3l+E3atz5MEobneX3D8Iptc84kwVRYUgewVcd+rgDzN8S1kGcXU
+	 fISzT0SYOvHdyi4p0ZMIC0MzNgfSaJU5WKzGbKiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Maciej Strozek <mstrozek@opensource.cirrus.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 014/222] pwm: stm32: Refuse too small period requests
-Date: Tue,  2 Jul 2024 19:00:52 +0200
-Message-ID: <20240702170244.519414513@linuxfoundation.org>
+Subject: [PATCH 6.9 015/222] ASoC: cs42l43: Increase default type detect time and button delay
+Date: Tue,  2 Jul 2024 19:00:53 +0200
+Message-ID: <20240702170244.557016477@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
 References: <20240702170243.963426416@linuxfoundation.org>
@@ -61,48 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Maciej Strozek <mstrozek@opensource.cirrus.com>
 
-[ Upstream commit c45fcf46ca2368dafe7e5c513a711a6f0f974308 ]
+[ Upstream commit afe377286ad49e0b69071d2a767e2c6553f4094b ]
 
-If period_ns is small, prd might well become 0. Catch that case because
-otherwise with
+Some problematic headsets have been discovered, to help with correctly
+identifying these, the detect time must be increased. Also improve the
+reliability of the impedance value from the button detect by slightly
+increasing the button detect delay.
 
-	regmap_write(priv->regmap, TIM_ARR, prd - 1);
-
-a few lines down quite a big period is configured.
-
-Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
-Cc: stable@vger.kernel.org
-Reviewed-by: Trevor Gamblin <tgamblin@baylibre.com>
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/b86f62f099983646f97eeb6bfc0117bb2d0c340d.1718979150.git.u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Fixes: 686b8f711b99 ("ASoC: cs42l43: Lower default type detect time")
+Signed-off-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://msgid.link/r/20240604132843.3309114-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-stm32.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/codecs/cs42l43-jack.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-index 1c8911353b81d..a8a1075f932df 100644
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -337,6 +337,8 @@ static int stm32_pwm_config(struct stm32_pwm *priv, unsigned int ch,
+diff --git a/sound/soc/codecs/cs42l43-jack.c b/sound/soc/codecs/cs42l43-jack.c
+index 901b9dbcf5854..d9ab003e166bf 100644
+--- a/sound/soc/codecs/cs42l43-jack.c
++++ b/sound/soc/codecs/cs42l43-jack.c
+@@ -121,7 +121,7 @@ int cs42l43_set_jack(struct snd_soc_component *component,
+ 		priv->buttons[3] = 735;
+ 	}
  
- 	prd = mul_u64_u64_div_u64(period_ns, clk_get_rate(priv->clk),
- 				  (u64)NSEC_PER_SEC * (prescaler + 1));
-+	if (!prd)
-+		return -EINVAL;
+-	ret = cs42l43_find_index(priv, "cirrus,detect-us", 1000, &priv->detect_us,
++	ret = cs42l43_find_index(priv, "cirrus,detect-us", 50000, &priv->detect_us,
+ 				 cs42l43_accdet_us, ARRAY_SIZE(cs42l43_accdet_us));
+ 	if (ret < 0)
+ 		goto error;
+@@ -433,7 +433,7 @@ irqreturn_t cs42l43_button_press(int irq, void *data)
  
- 	/*
- 	 * All channels share the same prescaler and counter so when two
+ 	// Wait for 2 full cycles of comb filter to ensure good reading
+ 	queue_delayed_work(system_wq, &priv->button_press_work,
+-			   msecs_to_jiffies(10));
++			   msecs_to_jiffies(20));
+ 
+ 	return IRQ_HANDLED;
+ }
 -- 
 2.43.0
 
