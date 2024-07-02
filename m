@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-56424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBC14924452
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:09:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99DF292445D
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:09:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53A361F21C1A
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:09:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDCCB1C23A99
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A8F1BD505;
-	Tue,  2 Jul 2024 17:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDF71BE229;
+	Tue,  2 Jul 2024 17:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+Jiy8hu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCjCFuj/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950DBBE5A;
-	Tue,  2 Jul 2024 17:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEFA15218A;
+	Tue,  2 Jul 2024 17:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940140; cv=none; b=ewTNX+/niTU7VYRuExHJELERtblZvbHnb11e9AXRonzvJqX2HFp01OjHFCfhLwcmkfy+6tsbm5kB+EvRMLirDsO1F3KqqhXrWB7M25zTgGYBtCr69YfG0n/epnCKwbM5jSRHk/b5z9upGUpN5UVQDYzVpFL41Our69rnyuwrQFQ=
+	t=1719940178; cv=none; b=a/U52KvYN3WWc4lZpIXo638/7/zEWXuat1AKbOTVB0Y4oNPpo4P6UZmtYYVsUxVad8Hi3s1/VZ/ATdeHKQFj/b4he62GjmBwddCw5xMSZymJs3ioMPuWavVrjcKg4yzU4ydPVi2RGFa/NCX5Cri+ekb5DAqT/jpQautfnYEd6sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940140; c=relaxed/simple;
-	bh=+UyrmMFObGHhmciaf4cdRjGXKSVqwxOpt9K2r84vU64=;
+	s=arc-20240116; t=1719940178; c=relaxed/simple;
+	bh=33Li1+qhrxocp/JW+i5XEumwik31ktRRz6WcSBKysW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=owg4oxZDuLFy0F1Qkc/D2AOdhcr6TcBs5lUbIKqnp6757Ue1+x0bZAEqKcFSei8p4iwfisWCT5lX8VMC0jM0i1LRpqDH9hQ0Q5aRLaVLxPXKcj4JCSRdmhl4voeLt4Em7gZIhT78D3eJwUhWchoDTzsMhE7w6JPPVV22GmlIdUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+Jiy8hu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3857C116B1;
-	Tue,  2 Jul 2024 17:08:59 +0000 (UTC)
+	 MIME-Version; b=raQTldeyAp1lzR/OUCK3ltIlbsv24dshXwuLZ4MpSfQFmMWrRWt14Z6MhX1i28K0gvpSJloDjCwLth+tUouq+zBUOaXE34zfnV8oR2Yrg0mS0YF9kSBosaK0YtJLVXxcN1jiYv68WI36wpC1esvT2pHG2PdSGzz+ncWUhikj0iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCjCFuj/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41020C116B1;
+	Tue,  2 Jul 2024 17:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940140;
-	bh=+UyrmMFObGHhmciaf4cdRjGXKSVqwxOpt9K2r84vU64=;
+	s=korg; t=1719940177;
+	bh=33Li1+qhrxocp/JW+i5XEumwik31ktRRz6WcSBKysW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j+Jiy8huBCO/Py36aRQTACTbMb98RUHxly7/K68OoGSn2917Dl11eO3Fj4ATqvjak
-	 Xx8kF9Tzp7JonSzPHBR1/s5Wqu1sTyT2lsb/XF/WjVysFkgiKG/kXn5lA7/e/Rof5r
-	 JUuOwkDwlKZs8qwHt3B24HgbV347epQXgywnvvi8=
+	b=hCjCFuj/Y3d3OjCwn51aLa51DhaGCdveyBl+wLx4F8XxkPQBOF1B5vQV7Sgb0tNPn
+	 PcPrPOw2puF3tDrs8OgQ0Uk6YTm7i8IgSswoJ/F/aCnswZMfGYqGfxnP4RisHJJFhW
+	 ceRtNo2wdwBNtqY/ZVxA3i/WRSAHHKCTS0xNfoOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8576cfa84070dce4d59b@syzkaller.appspotmail.com,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	luoxuanqiang <luoxuanqiang@kylinos.cn>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 047/222] btrfs: use NOFS context when getting inodes during logging and log replay
-Date: Tue,  2 Jul 2024 19:01:25 +0200
-Message-ID: <20240702170245.774883613@linuxfoundation.org>
+Subject: [PATCH 6.9 048/222] Fix race for duplicate reqsk on identical SYN
+Date: Tue,  2 Jul 2024 19:01:26 +0200
+Message-ID: <20240702170245.813400211@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
 References: <20240702170243.963426416@linuxfoundation.org>
@@ -70,415 +68,193 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: luoxuanqiang <luoxuanqiang@kylinos.cn>
 
-[ Upstream commit d1825752e3074b5ff8d7f6016160e2b7c5c367ca ]
+[ Upstream commit ff46e3b4421923937b7f6e44ffcd3549a074f321 ]
 
-During inode logging (and log replay too), we are holding a transaction
-handle and we often need to call btrfs_iget(), which will read an inode
-from its subvolume btree if it's not loaded in memory and that results in
-allocating an inode with GFP_KERNEL semantics at the btrfs_alloc_inode()
-callback - and this may recurse into the filesystem in case we are under
-memory pressure and attempt to commit the current transaction, resulting
-in a deadlock since the logging (or log replay) task is holding a
-transaction handle open.
+When bonding is configured in BOND_MODE_BROADCAST mode, if two identical
+SYN packets are received at the same time and processed on different CPUs,
+it can potentially create the same sk (sock) but two different reqsk
+(request_sock) in tcp_conn_request().
 
-Syzbot reported this with the following stack traces:
+These two different reqsk will respond with two SYNACK packets, and since
+the generation of the seq (ISN) incorporates a timestamp, the final two
+SYNACK packets will have different seq values.
 
-  WARNING: possible circular locking dependency detected
-  6.10.0-rc2-syzkaller-00361-g061d1af7b030 #0 Not tainted
-  ------------------------------------------------------
-  syz-executor.1/9919 is trying to acquire lock:
-  ffffffff8dd3aac0 (fs_reclaim){+.+.}-{0:0}, at: might_alloc include/linux/sched/mm.h:334 [inline]
-  ffffffff8dd3aac0 (fs_reclaim){+.+.}-{0:0}, at: slab_pre_alloc_hook mm/slub.c:3891 [inline]
-  ffffffff8dd3aac0 (fs_reclaim){+.+.}-{0:0}, at: slab_alloc_node mm/slub.c:3981 [inline]
-  ffffffff8dd3aac0 (fs_reclaim){+.+.}-{0:0}, at: kmem_cache_alloc_lru_noprof+0x58/0x2f0 mm/slub.c:4020
+The consequence is that when the Client receives and replies with an ACK
+to the earlier SYNACK packet, we will reset(RST) it.
 
-  but task is already holding lock:
-  ffff88804b569358 (&ei->log_mutex){+.+.}-{3:3}, at: btrfs_log_inode+0x39c/0x4660 fs/btrfs/tree-log.c:6481
+========================================================================
 
-  which lock already depends on the new lock.
+This behavior is consistently reproducible in my local setup,
+which comprises:
 
-  the existing dependency chain (in reverse order) is:
+                  | NETA1 ------ NETB1 |
+PC_A --- bond --- |                    | --- bond --- PC_B
+                  | NETA2 ------ NETB2 |
 
-  -> #3 (&ei->log_mutex){+.+.}-{3:3}:
-         __mutex_lock_common kernel/locking/mutex.c:608 [inline]
-         __mutex_lock+0x175/0x9c0 kernel/locking/mutex.c:752
-         btrfs_log_inode+0x39c/0x4660 fs/btrfs/tree-log.c:6481
-         btrfs_log_inode_parent+0x8cb/0x2a90 fs/btrfs/tree-log.c:7079
-         btrfs_log_dentry_safe+0x59/0x80 fs/btrfs/tree-log.c:7180
-         btrfs_sync_file+0x9c1/0xe10 fs/btrfs/file.c:1959
-         vfs_fsync_range+0x141/0x230 fs/sync.c:188
-         generic_write_sync include/linux/fs.h:2794 [inline]
-         btrfs_do_write_iter+0x584/0x10c0 fs/btrfs/file.c:1705
-         new_sync_write fs/read_write.c:497 [inline]
-         vfs_write+0x6b6/0x1140 fs/read_write.c:590
-         ksys_write+0x12f/0x260 fs/read_write.c:643
-         do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
-         __do_fast_syscall_32+0x73/0x120 arch/x86/entry/common.c:386
-         do_fast_syscall_32+0x32/0x80 arch/x86/entry/common.c:411
-         entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+- PC_A is the Server and has two network cards, NETA1 and NETA2. I have
+  bonded these two cards using BOND_MODE_BROADCAST mode and configured
+  them to be handled by different CPU.
 
-  -> #2 (btrfs_trans_num_extwriters){++++}-{0:0}:
-         join_transaction+0x164/0xf40 fs/btrfs/transaction.c:315
-         start_transaction+0x427/0x1a70 fs/btrfs/transaction.c:700
-         btrfs_commit_super+0xa1/0x110 fs/btrfs/disk-io.c:4170
-         close_ctree+0xcb0/0xf90 fs/btrfs/disk-io.c:4324
-         generic_shutdown_super+0x159/0x3d0 fs/super.c:642
-         kill_anon_super+0x3a/0x60 fs/super.c:1226
-         btrfs_kill_super+0x3b/0x50 fs/btrfs/super.c:2096
-         deactivate_locked_super+0xbe/0x1a0 fs/super.c:473
-         deactivate_super+0xde/0x100 fs/super.c:506
-         cleanup_mnt+0x222/0x450 fs/namespace.c:1267
-         task_work_run+0x14e/0x250 kernel/task_work.c:180
-         resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
-         exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
-         exit_to_user_mode_prepare include/linux/entry-common.h:328 [inline]
-         __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
-         syscall_exit_to_user_mode+0x278/0x2a0 kernel/entry/common.c:218
-         __do_fast_syscall_32+0x80/0x120 arch/x86/entry/common.c:389
-         do_fast_syscall_32+0x32/0x80 arch/x86/entry/common.c:411
-         entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+- PC_B is the Client, also equipped with two network cards, NETB1 and
+  NETB2, which are also bonded and configured in BOND_MODE_BROADCAST mode.
 
-  -> #1 (btrfs_trans_num_writers){++++}-{0:0}:
-         __lock_release kernel/locking/lockdep.c:5468 [inline]
-         lock_release+0x33e/0x6c0 kernel/locking/lockdep.c:5774
-         percpu_up_read include/linux/percpu-rwsem.h:99 [inline]
-         __sb_end_write include/linux/fs.h:1650 [inline]
-         sb_end_intwrite include/linux/fs.h:1767 [inline]
-         __btrfs_end_transaction+0x5ca/0x920 fs/btrfs/transaction.c:1071
-         btrfs_commit_inode_delayed_inode+0x228/0x330 fs/btrfs/delayed-inode.c:1301
-         btrfs_evict_inode+0x960/0xe80 fs/btrfs/inode.c:5291
-         evict+0x2ed/0x6c0 fs/inode.c:667
-         iput_final fs/inode.c:1741 [inline]
-         iput.part.0+0x5a8/0x7f0 fs/inode.c:1767
-         iput+0x5c/0x80 fs/inode.c:1757
-         dentry_unlink_inode+0x295/0x480 fs/dcache.c:400
-         __dentry_kill+0x1d0/0x600 fs/dcache.c:603
-         dput.part.0+0x4b1/0x9b0 fs/dcache.c:845
-         dput+0x1f/0x30 fs/dcache.c:835
-         ovl_stack_put+0x60/0x90 fs/overlayfs/util.c:132
-         ovl_destroy_inode+0xc6/0x190 fs/overlayfs/super.c:182
-         destroy_inode+0xc4/0x1b0 fs/inode.c:311
-         iput_final fs/inode.c:1741 [inline]
-         iput.part.0+0x5a8/0x7f0 fs/inode.c:1767
-         iput+0x5c/0x80 fs/inode.c:1757
-         dentry_unlink_inode+0x295/0x480 fs/dcache.c:400
-         __dentry_kill+0x1d0/0x600 fs/dcache.c:603
-         shrink_kill fs/dcache.c:1048 [inline]
-         shrink_dentry_list+0x140/0x5d0 fs/dcache.c:1075
-         prune_dcache_sb+0xeb/0x150 fs/dcache.c:1156
-         super_cache_scan+0x32a/0x550 fs/super.c:221
-         do_shrink_slab+0x44f/0x11c0 mm/shrinker.c:435
-         shrink_slab_memcg mm/shrinker.c:548 [inline]
-         shrink_slab+0xa87/0x1310 mm/shrinker.c:626
-         shrink_one+0x493/0x7c0 mm/vmscan.c:4790
-         shrink_many mm/vmscan.c:4851 [inline]
-         lru_gen_shrink_node+0x89f/0x1750 mm/vmscan.c:4951
-         shrink_node mm/vmscan.c:5910 [inline]
-         kswapd_shrink_node mm/vmscan.c:6720 [inline]
-         balance_pgdat+0x1105/0x1970 mm/vmscan.c:6911
-         kswapd+0x5ea/0xbf0 mm/vmscan.c:7180
-         kthread+0x2c1/0x3a0 kernel/kthread.c:389
-         ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
-         ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+If the client attempts a TCP connection to the server, it might encounter
+a failure. Capturing packets from the server side reveals:
 
-  -> #0 (fs_reclaim){+.+.}-{0:0}:
-         check_prev_add kernel/locking/lockdep.c:3134 [inline]
-         check_prevs_add kernel/locking/lockdep.c:3253 [inline]
-         validate_chain kernel/locking/lockdep.c:3869 [inline]
-         __lock_acquire+0x2478/0x3b30 kernel/locking/lockdep.c:5137
-         lock_acquire kernel/locking/lockdep.c:5754 [inline]
-         lock_acquire+0x1b1/0x560 kernel/locking/lockdep.c:5719
-         __fs_reclaim_acquire mm/page_alloc.c:3801 [inline]
-         fs_reclaim_acquire+0x102/0x160 mm/page_alloc.c:3815
-         might_alloc include/linux/sched/mm.h:334 [inline]
-         slab_pre_alloc_hook mm/slub.c:3891 [inline]
-         slab_alloc_node mm/slub.c:3981 [inline]
-         kmem_cache_alloc_lru_noprof+0x58/0x2f0 mm/slub.c:4020
-         btrfs_alloc_inode+0x118/0xb20 fs/btrfs/inode.c:8411
-         alloc_inode+0x5d/0x230 fs/inode.c:261
-         iget5_locked fs/inode.c:1235 [inline]
-         iget5_locked+0x1c9/0x2c0 fs/inode.c:1228
-         btrfs_iget_locked fs/btrfs/inode.c:5590 [inline]
-         btrfs_iget_path fs/btrfs/inode.c:5607 [inline]
-         btrfs_iget+0xfb/0x230 fs/btrfs/inode.c:5636
-         add_conflicting_inode fs/btrfs/tree-log.c:5657 [inline]
-         copy_inode_items_to_log+0x1039/0x1e30 fs/btrfs/tree-log.c:5928
-         btrfs_log_inode+0xa48/0x4660 fs/btrfs/tree-log.c:6592
-         log_new_delayed_dentries fs/btrfs/tree-log.c:6363 [inline]
-         btrfs_log_inode+0x27dd/0x4660 fs/btrfs/tree-log.c:6718
-         btrfs_log_all_parents fs/btrfs/tree-log.c:6833 [inline]
-         btrfs_log_inode_parent+0x22ba/0x2a90 fs/btrfs/tree-log.c:7141
-         btrfs_log_dentry_safe+0x59/0x80 fs/btrfs/tree-log.c:7180
-         btrfs_sync_file+0x9c1/0xe10 fs/btrfs/file.c:1959
-         vfs_fsync_range+0x141/0x230 fs/sync.c:188
-         generic_write_sync include/linux/fs.h:2794 [inline]
-         btrfs_do_write_iter+0x584/0x10c0 fs/btrfs/file.c:1705
-         do_iter_readv_writev+0x504/0x780 fs/read_write.c:741
-         vfs_writev+0x36f/0xde0 fs/read_write.c:971
-         do_pwritev+0x1b2/0x260 fs/read_write.c:1072
-         __do_compat_sys_pwritev2 fs/read_write.c:1218 [inline]
-         __se_compat_sys_pwritev2 fs/read_write.c:1210 [inline]
-         __ia32_compat_sys_pwritev2+0x121/0x1b0 fs/read_write.c:1210
-         do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
-         __do_fast_syscall_32+0x73/0x120 arch/x86/entry/common.c:386
-         do_fast_syscall_32+0x32/0x80 arch/x86/entry/common.c:411
-         entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+10.10.10.10.45182 > localhost: Flags [S], seq 320236027,
+10.10.10.10.45182 > localhost: Flags [S], seq 320236027,
+localhost > 10.10.10.10.45182: Flags [S.], seq 2967855116,
+localhost > 10.10.10.10.45182: Flags [S.], seq 2967855123, <==
+10.10.10.10.45182 > localhost: Flags [.], ack 4294967290,
+10.10.10.10.45182 > localhost: Flags [.], ack 4294967290,
+localhost > 10.10.10.10.45182: Flags [R], seq 2967855117, <==
+localhost > 10.10.10.10.45182: Flags [R], seq 2967855117,
 
-  other info that might help us debug this:
+Two SYNACKs with different seq numbers are sent by localhost,
+resulting in an anomaly.
 
-  Chain exists of:
-    fs_reclaim --> btrfs_trans_num_extwriters --> &ei->log_mutex
+========================================================================
 
-   Possible unsafe locking scenario:
+The attempted solution is as follows:
+Add a return value to inet_csk_reqsk_queue_hash_add() to confirm if the
+ehash insertion is successful (Up to now, the reason for unsuccessful
+insertion is that a reqsk for the same connection has already been
+inserted). If the insertion fails, release the reqsk.
 
-         CPU0                    CPU1
-         ----                    ----
-    lock(&ei->log_mutex);
-                                 lock(btrfs_trans_num_extwriters);
-                                 lock(&ei->log_mutex);
-    lock(fs_reclaim);
+Due to the refcnt, Kuniyuki suggests also adding a return value check
+for the DCCP module; if ehash insertion fails, indicating a successful
+insertion of the same connection, simply release the reqsk as well.
 
-   *** DEADLOCK ***
+Simultaneously, In the reqsk_queue_hash_req(), the start of the
+req->rsk_timer is adjusted to be after successful insertion.
 
-  7 locks held by syz-executor.1/9919:
-   #0: ffff88802be20420 (sb_writers#23){.+.+}-{0:0}, at: do_pwritev+0x1b2/0x260 fs/read_write.c:1072
-   #1: ffff888065c0f8f0 (&sb->s_type->i_mutex_key#33){++++}-{3:3}, at: inode_lock include/linux/fs.h:791 [inline]
-   #1: ffff888065c0f8f0 (&sb->s_type->i_mutex_key#33){++++}-{3:3}, at: btrfs_inode_lock+0xc8/0x110 fs/btrfs/inode.c:385
-   #2: ffff888065c0f778 (&ei->i_mmap_lock){++++}-{3:3}, at: btrfs_inode_lock+0xee/0x110 fs/btrfs/inode.c:388
-   #3: ffff88802be20610 (sb_internal#4){.+.+}-{0:0}, at: btrfs_sync_file+0x95b/0xe10 fs/btrfs/file.c:1952
-   #4: ffff8880546323f0 (btrfs_trans_num_writers){++++}-{0:0}, at: join_transaction+0x430/0xf40 fs/btrfs/transaction.c:290
-   #5: ffff888054632418 (btrfs_trans_num_extwriters){++++}-{0:0}, at: join_transaction+0x430/0xf40 fs/btrfs/transaction.c:290
-   #6: ffff88804b569358 (&ei->log_mutex){+.+.}-{3:3}, at: btrfs_log_inode+0x39c/0x4660 fs/btrfs/tree-log.c:6481
-
-  stack backtrace:
-  CPU: 2 PID: 9919 Comm: syz-executor.1 Not tainted 6.10.0-rc2-syzkaller-00361-g061d1af7b030 #0
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-  Call Trace:
-   <TASK>
-   __dump_stack lib/dump_stack.c:88 [inline]
-   dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:114
-   check_noncircular+0x31a/0x400 kernel/locking/lockdep.c:2187
-   check_prev_add kernel/locking/lockdep.c:3134 [inline]
-   check_prevs_add kernel/locking/lockdep.c:3253 [inline]
-   validate_chain kernel/locking/lockdep.c:3869 [inline]
-   __lock_acquire+0x2478/0x3b30 kernel/locking/lockdep.c:5137
-   lock_acquire kernel/locking/lockdep.c:5754 [inline]
-   lock_acquire+0x1b1/0x560 kernel/locking/lockdep.c:5719
-   __fs_reclaim_acquire mm/page_alloc.c:3801 [inline]
-   fs_reclaim_acquire+0x102/0x160 mm/page_alloc.c:3815
-   might_alloc include/linux/sched/mm.h:334 [inline]
-   slab_pre_alloc_hook mm/slub.c:3891 [inline]
-   slab_alloc_node mm/slub.c:3981 [inline]
-   kmem_cache_alloc_lru_noprof+0x58/0x2f0 mm/slub.c:4020
-   btrfs_alloc_inode+0x118/0xb20 fs/btrfs/inode.c:8411
-   alloc_inode+0x5d/0x230 fs/inode.c:261
-   iget5_locked fs/inode.c:1235 [inline]
-   iget5_locked+0x1c9/0x2c0 fs/inode.c:1228
-   btrfs_iget_locked fs/btrfs/inode.c:5590 [inline]
-   btrfs_iget_path fs/btrfs/inode.c:5607 [inline]
-   btrfs_iget+0xfb/0x230 fs/btrfs/inode.c:5636
-   add_conflicting_inode fs/btrfs/tree-log.c:5657 [inline]
-   copy_inode_items_to_log+0x1039/0x1e30 fs/btrfs/tree-log.c:5928
-   btrfs_log_inode+0xa48/0x4660 fs/btrfs/tree-log.c:6592
-   log_new_delayed_dentries fs/btrfs/tree-log.c:6363 [inline]
-   btrfs_log_inode+0x27dd/0x4660 fs/btrfs/tree-log.c:6718
-   btrfs_log_all_parents fs/btrfs/tree-log.c:6833 [inline]
-   btrfs_log_inode_parent+0x22ba/0x2a90 fs/btrfs/tree-log.c:7141
-   btrfs_log_dentry_safe+0x59/0x80 fs/btrfs/tree-log.c:7180
-   btrfs_sync_file+0x9c1/0xe10 fs/btrfs/file.c:1959
-   vfs_fsync_range+0x141/0x230 fs/sync.c:188
-   generic_write_sync include/linux/fs.h:2794 [inline]
-   btrfs_do_write_iter+0x584/0x10c0 fs/btrfs/file.c:1705
-   do_iter_readv_writev+0x504/0x780 fs/read_write.c:741
-   vfs_writev+0x36f/0xde0 fs/read_write.c:971
-   do_pwritev+0x1b2/0x260 fs/read_write.c:1072
-   __do_compat_sys_pwritev2 fs/read_write.c:1218 [inline]
-   __se_compat_sys_pwritev2 fs/read_write.c:1210 [inline]
-   __ia32_compat_sys_pwritev2+0x121/0x1b0 fs/read_write.c:1210
-   do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
-   __do_fast_syscall_32+0x73/0x120 arch/x86/entry/common.c:386
-   do_fast_syscall_32+0x32/0x80 arch/x86/entry/common.c:411
-   entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-  RIP: 0023:0xf7334579
-  Code: b8 01 10 06 03 (...)
-  RSP: 002b:00000000f5f265ac EFLAGS: 00000292 ORIG_RAX: 000000000000017b
-  RAX: ffffffffffffffda RBX: 0000000000000004 RCX: 00000000200002c0
-  RDX: 0000000000000001 RSI: 0000000000000000 RDI: 0000000000000000
-  RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000292 R12: 0000000000000000
-  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-
-Fix this by ensuring we are under a NOFS scope whenever we call
-btrfs_iget() during inode logging and log replay.
-
-Reported-by: syzbot+8576cfa84070dce4d59b@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/000000000000274a3a061abbd928@google.com/
-Fixes: 712e36c5f2a7 ("btrfs: use GFP_KERNEL in btrfs_alloc_inode")
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: luoxuanqiang <luoxuanqiang@kylinos.cn>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240621013929.1386815-1-luoxuanqiang@kylinos.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c | 43 ++++++++++++++++++++++++++++---------------
- 1 file changed, 28 insertions(+), 15 deletions(-)
+ include/net/inet_connection_sock.h |  2 +-
+ net/dccp/ipv4.c                    |  7 +++++--
+ net/dccp/ipv6.c                    |  7 +++++--
+ net/ipv4/inet_connection_sock.c    | 17 +++++++++++++----
+ net/ipv4/tcp_input.c               |  7 ++++++-
+ 5 files changed, 30 insertions(+), 10 deletions(-)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index d4fc5fedd8ee5..9d156aa8f20d1 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -138,6 +138,25 @@ static void wait_log_commit(struct btrfs_root *root, int transid);
-  * and once to do all the other items.
-  */
+diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
+index ccf171f7eb60d..146ece8563cae 100644
+--- a/include/net/inet_connection_sock.h
++++ b/include/net/inet_connection_sock.h
+@@ -266,7 +266,7 @@ struct dst_entry *inet_csk_route_child_sock(const struct sock *sk,
+ struct sock *inet_csk_reqsk_queue_add(struct sock *sk,
+ 				      struct request_sock *req,
+ 				      struct sock *child);
+-void inet_csk_reqsk_queue_hash_add(struct sock *sk, struct request_sock *req,
++bool inet_csk_reqsk_queue_hash_add(struct sock *sk, struct request_sock *req,
+ 				   unsigned long timeout);
+ struct sock *inet_csk_complete_hashdance(struct sock *sk, struct sock *child,
+ 					 struct request_sock *req,
+diff --git a/net/dccp/ipv4.c b/net/dccp/ipv4.c
+index 44b033fe1ef68..f94d30b171992 100644
+--- a/net/dccp/ipv4.c
++++ b/net/dccp/ipv4.c
+@@ -655,8 +655,11 @@ int dccp_v4_conn_request(struct sock *sk, struct sk_buff *skb)
+ 	if (dccp_v4_send_response(sk, req))
+ 		goto drop_and_free;
  
-+static struct inode *btrfs_iget_logging(u64 objectid, struct btrfs_root *root)
-+{
-+	unsigned int nofs_flag;
-+	struct inode *inode;
+-	inet_csk_reqsk_queue_hash_add(sk, req, DCCP_TIMEOUT_INIT);
+-	reqsk_put(req);
++	if (unlikely(!inet_csk_reqsk_queue_hash_add(sk, req, DCCP_TIMEOUT_INIT)))
++		reqsk_free(req);
++	else
++		reqsk_put(req);
 +
-+	/*
-+	 * We're holding a transaction handle whether we are logging or
-+	 * replaying a log tree, so we must make sure NOFS semantics apply
-+	 * because btrfs_alloc_inode() may be triggered and it uses GFP_KERNEL
-+	 * to allocate an inode, which can recurse back into the filesystem and
-+	 * attempt a transaction commit, resulting in a deadlock.
-+	 */
-+	nofs_flag = memalloc_nofs_save();
-+	inode = btrfs_iget(root->fs_info->sb, objectid, root);
-+	memalloc_nofs_restore(nofs_flag);
+ 	return 0;
+ 
+ drop_and_free:
+diff --git a/net/dccp/ipv6.c b/net/dccp/ipv6.c
+index ded07e09f8135..ddbd490b3531b 100644
+--- a/net/dccp/ipv6.c
++++ b/net/dccp/ipv6.c
+@@ -398,8 +398,11 @@ static int dccp_v6_conn_request(struct sock *sk, struct sk_buff *skb)
+ 	if (dccp_v6_send_response(sk, req))
+ 		goto drop_and_free;
+ 
+-	inet_csk_reqsk_queue_hash_add(sk, req, DCCP_TIMEOUT_INIT);
+-	reqsk_put(req);
++	if (unlikely(!inet_csk_reqsk_queue_hash_add(sk, req, DCCP_TIMEOUT_INIT)))
++		reqsk_free(req);
++	else
++		reqsk_put(req);
 +
-+	return inode;
-+}
+ 	return 0;
+ 
+ drop_and_free:
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index 3b38610958ee4..39e9070fe3cdf 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -1121,25 +1121,34 @@ static void reqsk_timer_handler(struct timer_list *t)
+ 	inet_csk_reqsk_queue_drop_and_put(oreq->rsk_listener, oreq);
+ }
+ 
+-static void reqsk_queue_hash_req(struct request_sock *req,
++static bool reqsk_queue_hash_req(struct request_sock *req,
+ 				 unsigned long timeout)
+ {
++	bool found_dup_sk = false;
 +
- /*
-  * start a sub transaction and setup the log tree
-  * this increments the log tree writer count to make the people
-@@ -600,7 +619,7 @@ static noinline struct inode *read_one_inode(struct btrfs_root *root,
++	if (!inet_ehash_insert(req_to_sk(req), NULL, &found_dup_sk))
++		return false;
++
++	/* The timer needs to be setup after a successful insertion. */
+ 	timer_setup(&req->rsk_timer, reqsk_timer_handler, TIMER_PINNED);
+ 	mod_timer(&req->rsk_timer, jiffies + timeout);
+ 
+-	inet_ehash_insert(req_to_sk(req), NULL, NULL);
+ 	/* before letting lookups find us, make sure all req fields
+ 	 * are committed to memory and refcnt initialized.
+ 	 */
+ 	smp_wmb();
+ 	refcount_set(&req->rsk_refcnt, 2 + 1);
++	return true;
+ }
+ 
+-void inet_csk_reqsk_queue_hash_add(struct sock *sk, struct request_sock *req,
++bool inet_csk_reqsk_queue_hash_add(struct sock *sk, struct request_sock *req,
+ 				   unsigned long timeout)
  {
- 	struct inode *inode;
+-	reqsk_queue_hash_req(req, timeout);
++	if (!reqsk_queue_hash_req(req, timeout))
++		return false;
++
+ 	inet_csk_reqsk_queue_added(sk);
++	return true;
+ }
+ EXPORT_SYMBOL_GPL(inet_csk_reqsk_queue_hash_add);
  
--	inode = btrfs_iget(root->fs_info->sb, objectid, root);
-+	inode = btrfs_iget_logging(objectid, root);
- 	if (IS_ERR(inode))
- 		inode = NULL;
- 	return inode;
-@@ -5434,7 +5453,6 @@ static int log_new_dir_dentries(struct btrfs_trans_handle *trans,
- 				struct btrfs_log_ctx *ctx)
- {
- 	struct btrfs_root *root = start_inode->root;
--	struct btrfs_fs_info *fs_info = root->fs_info;
- 	struct btrfs_path *path;
- 	LIST_HEAD(dir_list);
- 	struct btrfs_dir_list *dir_elem;
-@@ -5495,7 +5513,7 @@ static int log_new_dir_dentries(struct btrfs_trans_handle *trans,
- 				continue;
- 
- 			btrfs_release_path(path);
--			di_inode = btrfs_iget(fs_info->sb, di_key.objectid, root);
-+			di_inode = btrfs_iget_logging(di_key.objectid, root);
- 			if (IS_ERR(di_inode)) {
- 				ret = PTR_ERR(di_inode);
- 				goto out;
-@@ -5555,7 +5573,7 @@ static int log_new_dir_dentries(struct btrfs_trans_handle *trans,
- 		btrfs_add_delayed_iput(curr_inode);
- 		curr_inode = NULL;
- 
--		vfs_inode = btrfs_iget(fs_info->sb, ino, root);
-+		vfs_inode = btrfs_iget_logging(ino, root);
- 		if (IS_ERR(vfs_inode)) {
- 			ret = PTR_ERR(vfs_inode);
- 			break;
-@@ -5650,7 +5668,7 @@ static int add_conflicting_inode(struct btrfs_trans_handle *trans,
- 	if (ctx->num_conflict_inodes >= MAX_CONFLICT_INODES)
- 		return BTRFS_LOG_FORCE_COMMIT;
- 
--	inode = btrfs_iget(root->fs_info->sb, ino, root);
-+	inode = btrfs_iget_logging(ino, root);
- 	/*
- 	 * If the other inode that had a conflicting dir entry was deleted in
- 	 * the current transaction then we either:
-@@ -5751,7 +5769,6 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
- 				  struct btrfs_root *root,
- 				  struct btrfs_log_ctx *ctx)
- {
--	struct btrfs_fs_info *fs_info = root->fs_info;
- 	int ret = 0;
- 
- 	/*
-@@ -5782,7 +5799,7 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
- 		list_del(&curr->list);
- 		kfree(curr);
- 
--		inode = btrfs_iget(fs_info->sb, ino, root);
-+		inode = btrfs_iget_logging(ino, root);
- 		/*
- 		 * If the other inode that had a conflicting dir entry was
- 		 * deleted in the current transaction, we need to log its parent
-@@ -5793,7 +5810,7 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
- 			if (ret != -ENOENT)
- 				break;
- 
--			inode = btrfs_iget(fs_info->sb, parent, root);
-+			inode = btrfs_iget_logging(parent, root);
- 			if (IS_ERR(inode)) {
- 				ret = PTR_ERR(inode);
- 				break;
-@@ -6315,7 +6332,6 @@ static int log_new_delayed_dentries(struct btrfs_trans_handle *trans,
- 				    struct btrfs_log_ctx *ctx)
- {
- 	const bool orig_log_new_dentries = ctx->log_new_dentries;
--	struct btrfs_fs_info *fs_info = trans->fs_info;
- 	struct btrfs_delayed_item *item;
- 	int ret = 0;
- 
-@@ -6341,7 +6357,7 @@ static int log_new_delayed_dentries(struct btrfs_trans_handle *trans,
- 		if (key.type == BTRFS_ROOT_ITEM_KEY)
- 			continue;
- 
--		di_inode = btrfs_iget(fs_info->sb, key.objectid, inode->root);
-+		di_inode = btrfs_iget_logging(key.objectid, inode->root);
- 		if (IS_ERR(di_inode)) {
- 			ret = PTR_ERR(di_inode);
- 			break;
-@@ -6725,7 +6741,6 @@ static int btrfs_log_all_parents(struct btrfs_trans_handle *trans,
- 				 struct btrfs_inode *inode,
- 				 struct btrfs_log_ctx *ctx)
- {
--	struct btrfs_fs_info *fs_info = trans->fs_info;
- 	int ret;
- 	struct btrfs_path *path;
- 	struct btrfs_key key;
-@@ -6790,8 +6805,7 @@ static int btrfs_log_all_parents(struct btrfs_trans_handle *trans,
- 				cur_offset = item_size;
- 			}
- 
--			dir_inode = btrfs_iget(fs_info->sb, inode_key.objectid,
--					       root);
-+			dir_inode = btrfs_iget_logging(inode_key.objectid, root);
- 			/*
- 			 * If the parent inode was deleted, return an error to
- 			 * fallback to a transaction commit. This is to prevent
-@@ -6853,7 +6867,6 @@ static int log_new_ancestors(struct btrfs_trans_handle *trans,
- 	btrfs_item_key_to_cpu(path->nodes[0], &found_key, path->slots[0]);
- 
- 	while (true) {
--		struct btrfs_fs_info *fs_info = root->fs_info;
- 		struct extent_buffer *leaf;
- 		int slot;
- 		struct btrfs_key search_key;
-@@ -6868,7 +6881,7 @@ static int log_new_ancestors(struct btrfs_trans_handle *trans,
- 		search_key.objectid = found_key.offset;
- 		search_key.type = BTRFS_INODE_ITEM_KEY;
- 		search_key.offset = 0;
--		inode = btrfs_iget(fs_info->sb, ino, root);
-+		inode = btrfs_iget_logging(ino, root);
- 		if (IS_ERR(inode))
- 			return PTR_ERR(inode);
- 
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 1054a440332d3..d37b45b90a61c 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -7243,7 +7243,12 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
+ 		tcp_rsk(req)->tfo_listener = false;
+ 		if (!want_cookie) {
+ 			req->timeout = tcp_timeout_init((struct sock *)req);
+-			inet_csk_reqsk_queue_hash_add(sk, req, req->timeout);
++			if (unlikely(!inet_csk_reqsk_queue_hash_add(sk, req,
++								    req->timeout))) {
++				reqsk_free(req);
++				return 0;
++			}
++
+ 		}
+ 		af_ops->send_synack(sk, dst, &fl, req, &foc,
+ 				    !want_cookie ? TCP_SYNACK_NORMAL :
 -- 
 2.43.0
 
