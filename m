@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-56321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C94C291F30F
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 10:23:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 710A691F855
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 10:24:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B084B21C38
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 08:23:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBE961F2307F
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 08:24:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CADB314B950;
-	Tue,  2 Jul 2024 08:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F103114E2F1;
+	Tue,  2 Jul 2024 08:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T53a1L4b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4nfYCWT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5A116419
-	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 08:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9220914E2E9
+	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 08:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719908577; cv=none; b=h+i7sD/Vx5HWCBayqYkpbfsUPDSXZknSFgIxv03tCo1dP9r+dypt8CSfK6VgbFcNi0s2sGimQsDssCLDsp6Z+wx6kBdoKD3uH6o2tqmpkzLHLlRip13YTfQgd+elBI/FoU+jIvja0iApQCj7SNhRVWwLTn5m+ICIqltX4TwGyXg=
+	t=1719908641; cv=none; b=Nl4wMb7hKGhlI04EBgFZWCKZZFqS9GE2raDmeJ6z7kIZkQk2UY4mGm0roCNEgJAB0na7oTDoz8n9elLU3kIZSEsq1D26asqIHlrse6HYMhnl/0aHMJmXtGIg2iUlsn1OaXMsZS6LKRxR4qv0afH5irnX5yNS9aWgw+mTheTA5lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719908577; c=relaxed/simple;
-	bh=c3WJZ4kCJmtSs2qMg3I9PyF6yTxnaIAVtvLfjy2xJ0Y=;
+	s=arc-20240116; t=1719908641; c=relaxed/simple;
+	bh=HwuNYHhAlzi0weewNtA+GrJQ2bgQUTsIRBGXlc4jmqU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qM71DtEGSfysQKd8x4tgqvFqLe5j+HJPfnCm5m3AkXjj7S4UGOa8YArCtHXNfE2ePkCcVhowk2walX+HYw2EAFXV8riGL0MDTwsSN/89Yf4dfEoiK0o8Zlqw7sFw9PbtSKo3+4SaMETYBeyJVayRYRWpPhOCaYc7z0hGiQW/1zc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T53a1L4b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0B8C116B1;
-	Tue,  2 Jul 2024 08:22:56 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=CTBuM+Gx2yP1RNeMHug4R30yfJ04IRmeXtg+d5JNB7ouWCCHVIhQrrr2IbJb7feKotXpGighh/0yOvHqZDjtTCqDIRh85bfWMxkJyp1Bd9SdoqOw48bR/B7QjNROWmxX9cEVeknttpFddHcITeqv4B9QN4yLHwbSOphMvhlYAyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4nfYCWT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C93C32781;
+	Tue,  2 Jul 2024 08:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719908576;
-	bh=c3WJZ4kCJmtSs2qMg3I9PyF6yTxnaIAVtvLfjy2xJ0Y=;
+	s=korg; t=1719908641;
+	bh=HwuNYHhAlzi0weewNtA+GrJQ2bgQUTsIRBGXlc4jmqU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T53a1L4bQWulJ/rNTXwOM15foT0jALhUTSEHTCLYPSZdIuOA0Y6WCkzvFo71MpbnL
-	 VkBZ7ADYOYEeDK5IbCaSaF5fQ0T4PQzlCvF+9+fZ8OKEs/sJZ6ZSpwVcFfDOXAmDfH
-	 0KhjgWyl+oe14beukPEr6voCXzA0Wini/wixV2r0=
-Date: Tue, 2 Jul 2024 10:22:53 +0200
+	b=r4nfYCWT1+J0mPm9uDfzNSxZAN3aTyOSIGZvAtS7qc4lMZuBkYWLRqiA9vBs7Q3SS
+	 2i5+zmACdi7ysz3rW1QDiuZH+BPlHXQ+KMh6NuQ9jYjRxIayisfht6zjcdGjKv+EYw
+	 HZSepn1empIyvJKv/9byTT585VFs0UTEt2BdFHRo=
+Date: Tue, 2 Jul 2024 10:23:58 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Wen Gu <guwen@linux.alibaba.com>
 Cc: stable@vger.kernel.org, alikernel-developer@linux.alibaba.com,
@@ -46,9 +46,8 @@ Cc: stable@vger.kernel.org, alikernel-developer@linux.alibaba.com,
 	"D. Wythe" <alibuda@linux.alibaba.com>, mqaio@linux.alibaba.com
 Subject: Re: Please backport d8616ee2affc ("bpf, sockmap: Fix
  sk->sk_forward_alloc warn_on in sk_stream_kill_queues") to linux-5.10.y
-Message-ID: <2024070221-clergyman-oversold-d24a@gregkh>
+Message-ID: <2024070225-dictation-rebuff-be4b@gregkh>
 References: <d11bc7e6-a2c7-445a-8561-3599eafb07b0@linux.alibaba.com>
- <e66d3dd0-4d16-463f-a567-b5f5f8da6a92@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,46 +56,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e66d3dd0-4d16-463f-a567-b5f5f8da6a92@linux.alibaba.com>
+In-Reply-To: <d11bc7e6-a2c7-445a-8561-3599eafb07b0@linux.alibaba.com>
 
-On Tue, Jul 02, 2024 at 10:07:56AM +0800, Wen Gu wrote:
-> 
-> 
-> On 2024/6/30 20:55, Wen Gu wrote:
-> > Hi stable team,
-> > 
-> > Could you please backport [1] to linux-5.10.y?
-> > 
-> > I noticed a regression caused by [2], which was merged to linux-5.10.y since v5.10.80.
-> > 
-> > After sock_map_unhash() helper was removed in [2], sock elems added to the bpf sock map
-> > via sock_hash_update_common() cannot be removed if they are in the icsk_accept_queue
-> > of the listener sock. Since they have not been accept()ed, they cannot be removed via
-> > sock_map_close()->sock_map_remove_links() either.
-> > 
-> > It can be reproduced in network test with short-lived connections. If the server is
-> > stopped during the test, there is a probability that some sock elems will remain in
-> > the bpf sock map.
-> > 
-> > And with [1], the sock_map_destroy() helper is introduced to invoke sock_map_remove_links()
-> > when inet_csk_listen_stop()->inet_child_forget()->inet_csk_destroy_sock(), to remove the
-> > sock elems from the bpf sock map in such situation.
-> > 
-> > [1] d8616ee2affc ("bpf, sockmap: Fix sk->sk_forward_alloc warn_on in sk_stream_kill_queues")
-> > (link: https://lore.kernel.org/all/20220524075311.649153-1-wangyufen@huawei.com/)
-> > [2] 8b5c98a67c1b ("bpf, sockmap: Remove unhash handler for BPF sockmap usage")
-> > (link: https://lore.kernel.org/all/20211103204736.248403-3-john.fastabend@gmail.com/)
-> > 
-> > Thanks!
-> > Wen Gu
-> 
+On Sun, Jun 30, 2024 at 08:55:56PM +0800, Wen Gu wrote:
 > Hi stable team,
 > 
-> Just want to confirm that the backport of this patch is consistent with the stable tree rules
-> as I thought. And is there any other information I need to provide? :)
+> Could you please backport [1] to linux-5.10.y?
+> 
+> I noticed a regression caused by [2], which was merged to linux-5.10.y since v5.10.80.
+> 
+> After sock_map_unhash() helper was removed in [2], sock elems added to the bpf sock map
+> via sock_hash_update_common() cannot be removed if they are in the icsk_accept_queue
+> of the listener sock. Since they have not been accept()ed, they cannot be removed via
+> sock_map_close()->sock_map_remove_links() either.
+> 
+> It can be reproduced in network test with short-lived connections. If the server is
+> stopped during the test, there is a probability that some sock elems will remain in
+> the bpf sock map.
+> 
+> And with [1], the sock_map_destroy() helper is introduced to invoke sock_map_remove_links()
+> when inet_csk_listen_stop()->inet_child_forget()->inet_csk_destroy_sock(), to remove the
+> sock elems from the bpf sock map in such situation.
+> 
+> [1] d8616ee2affc ("bpf, sockmap: Fix sk->sk_forward_alloc warn_on in sk_stream_kill_queues")
+> (link: https://lore.kernel.org/all/20220524075311.649153-1-wangyufen@huawei.com/)
+> [2] 8b5c98a67c1b ("bpf, sockmap: Remove unhash handler for BPF sockmap usage")
+> (link: https://lore.kernel.org/all/20211103204736.248403-3-john.fastabend@gmail.com/)
 
-Please relax, you sent this on Sunday and asked about it on Tuesday,
-barely 1 day later?
+As there is fuzz with this patch, please send a backported, and tested,
+version of this patch so we can include it and properly show who it was
+requested from.
+
+thanks,
 
 greg k-h
 
