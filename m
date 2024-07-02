@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-56534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4220F9244CB
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:15:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04D85924586
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:23:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73CA31C21EE1
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:15:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0D172864DB
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A501BE22B;
-	Tue,  2 Jul 2024 17:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49E61BE244;
+	Tue,  2 Jul 2024 17:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXgj5scq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xbnEvEE2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961CE1BE22F;
-	Tue,  2 Jul 2024 17:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7350316B394;
+	Tue,  2 Jul 2024 17:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940504; cv=none; b=YYxIL9EGoM/7xgdSYHp1qMN6MCSBaQ1UwP6+65RbPiT8mhY51AzK/7HzBWxCzuw4sSq/M1xmNY5Oq1wHN+zfjbV1ResKsXdlC/kTNWyLqJ2T+xs1IaIUQsgP6t46UpAdaXZ63RWK2ZhAUS7I52mJOTwb2FfbBdjL50GRvA8dAWU=
+	t=1719941005; cv=none; b=JUCvN6TOs/CDGNE+CKHF7jYUNYOrZKRHBBj+OVGkodjGx/EZDIwSK/Gml2MOLouTUz32eslKYYcVUp+kguapQ5pmpUXRJSnG1ihYbRktlauuDqT6JZHsKfIJXfHILZXT95qT83QuD26vdiJvII37tXimSRXXIn73e4/flQN5b1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940504; c=relaxed/simple;
-	bh=vaUmNJOy/RcA2KrPfBX+G73YKSsbe49oWbjYVYKkga0=;
+	s=arc-20240116; t=1719941005; c=relaxed/simple;
+	bh=Wgt3spuTpg/71TMO4wrKsOn5KAZbQIqIxwGJs47UDY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IAfF9//4NI3ER/BEOD5G+tfK6DfAYjGcD9TrBZ/y1NJieC2e8K6wGWBdn3h3FqJiVU7XiLePlBO5nzt4B8+O9shyYcyfYxRRy0XF9KWOSH049uQAV7PrRh3F+1i1FT5iM2CWRNuLxFe0dxBdI0RsbbLjs1wAEUiVry9Tih6bUiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXgj5scq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F835C4AF0A;
-	Tue,  2 Jul 2024 17:15:03 +0000 (UTC)
+	 MIME-Version; b=FXiWuuNq+w/QFgjsJqNh+uhkajlTzXTWYAwvKRztM+3ut0BiCDJ/mEang9WiIzs1BLmcyuv2cEyOlNmJFoIK9TS5S1DaICEVxhb1xs+pembQBzlIo/LSQa+DrehsJMF0OF2PmkryQt0NKzl2kVhk+8KJjtQGFPS3TxbFgUFKYHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xbnEvEE2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6566C116B1;
+	Tue,  2 Jul 2024 17:23:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940504;
-	bh=vaUmNJOy/RcA2KrPfBX+G73YKSsbe49oWbjYVYKkga0=;
+	s=korg; t=1719941005;
+	bh=Wgt3spuTpg/71TMO4wrKsOn5KAZbQIqIxwGJs47UDY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uXgj5scqnYoopRdtJOXoGMydnzFCZNfEg0OX5ikwgBOxPtet9pwg6dt6CX03fyc3l
-	 3lZatELpusaKj01LlrgFWmkcsf9D9fycDj+wqiqRJP/gyeHc4KOTyfIgI9Bmu0+MHD
-	 ll5mYgL+QRFFMhMzyB7lLBTu7oPAV60RsWlKLj1Y=
+	b=xbnEvEE2dtS2YARBLgEWO22WOCDH5DVmjHpWXruI/uWrNTwS/JC2JlimQclpPKLtX
+	 Zyo87y8PQAVlLxFP1QYYMHyAhbmtYCc49N4Zo598CF23EtpE2FWl1cPtVfLZBJa24T
+	 MBo1jW2BOFnKi4I36NXEByDy9j0V5XYD+M23VYfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 6.9 174/222] kbuild: Install dtb files as 0644 in Makefile.dtbinst
-Date: Tue,  2 Jul 2024 19:03:32 +0200
-Message-ID: <20240702170250.627869282@linuxfoundation.org>
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 099/163] iio: accel: fxls8962af: select IIO_BUFFER & IIO_KFIFO_BUF
+Date: Tue,  2 Jul 2024 19:03:33 +0200
+Message-ID: <20240702170236.810351424@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragan Simic <dsimic@manjaro.org>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-commit 9cc5f3bf63aa98bd7cc7ce8a8599077fde13283e upstream.
+commit a821d7111e3f7c8869961b606714a299bfe20014 upstream.
 
-The compiled dtb files aren't executable, so install them with 0644 as their
-permission mode, instead of defaulting to 0755 for the permission mode and
-installing them with the executable bits set.
+Provide missing symbols to the module:
+ERROR: modpost: iio_push_to_buffers [drivers/iio/accel/fxls8962af-core.ko] undefined!
+ERROR: modpost: devm_iio_kfifo_buffer_setup_ext [drivers/iio/accel/fxls8962af-core.ko] undefined!
 
-Some Linux distributions, including Debian, [1][2][3] already include fixes
-in their kernel package build recipes to change the dtb file permissions to
-0644 in their kernel packages.  These changes, when additionally propagated
-into the long-term kernel versions, will allow such distributions to remove
-their downstream fixes.
-
-[1] https://salsa.debian.org/kernel-team/linux/-/merge_requests/642
-[2] https://salsa.debian.org/kernel-team/linux/-/merge_requests/749
-[3] https://salsa.debian.org/kernel-team/linux/-/blob/debian/6.8.12-1/debian/rules.real#L193
-
-Cc: Diederik de Haas <didi.debian@cknow.org>
-Cc: <stable@vger.kernel.org>
-Fixes: aefd80307a05 ("kbuild: refactor Makefile.dtbinst more")
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 79e3a5bdd9ef ("iio: accel: fxls8962af: add hw buffered sampling")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://lore.kernel.org/r/20240605203810.2908980-2-alexander.sverdlin@siemens.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/Makefile.dtbinst |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/accel/Kconfig |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/scripts/Makefile.dtbinst
-+++ b/scripts/Makefile.dtbinst
-@@ -17,7 +17,7 @@ include $(srctree)/scripts/Kbuild.includ
- dst := $(INSTALL_DTBS_PATH)
+--- a/drivers/iio/accel/Kconfig
++++ b/drivers/iio/accel/Kconfig
+@@ -325,6 +325,8 @@ config DMARD10
+ config FXLS8962AF
+ 	tristate
+ 	depends on I2C || !I2C # cannot be built-in for modular I2C
++	select IIO_BUFFER
++	select IIO_KFIFO_BUF
  
- quiet_cmd_dtb_install = INSTALL $@
--      cmd_dtb_install = install -D $< $@
-+      cmd_dtb_install = install -D -m 0644 $< $@
- 
- $(dst)/%: $(obj)/%
- 	$(call cmd,dtb_install)
+ config FXLS8962AF_I2C
+ 	tristate "NXP FXLS8962AF/FXLS8964AF Accelerometer I2C Driver"
 
 
 
