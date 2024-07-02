@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3E5E924554
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:21:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 322B6924498
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:12:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1E55B21A6C
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:20:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBAC11F21B14
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534BD1BD51A;
-	Tue,  2 Jul 2024 17:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA3C1BE22A;
+	Tue,  2 Jul 2024 17:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/l/JRGN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GgJ35raZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1291C1B5814;
-	Tue,  2 Jul 2024 17:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC5A15B0FE;
+	Tue,  2 Jul 2024 17:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940844; cv=none; b=C2DI/gzFB6x/tk6mu+VWuNDWRHragZLxNPcffVtmGS2tx9c8rDKX1mYsmnnpwCJ2RXi9OBufV+IwqEBmNJdN9XiXXv5arQ9vmcqv++P4ulCgxmVod4qNFwFvKTEyw+qxHJpSwy7RFmE/wxyzr+mYi2lgNA86ktn/JxjgshW9fEU=
+	t=1719940351; cv=none; b=bxK7AdFO+grFfkPYlM1m7End0V/Nvq5YqsxZkkMBmDjgVRrVPRntFRsEHoPtkBWQmFIJYo9NpfKHgDwiWN6+e+E1MXB5ONuakRb0ry7QhMJv7oO94zOKZjVwbCW7byaMgPkuV4oRlL7cM0hzjge5mG7bQOs5PO4K9T2TnPRSQ68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940844; c=relaxed/simple;
-	bh=Qrh6P8PlREEEZk1duU+HnRXtMuBJHKZ16CwkWPiXq1Y=;
+	s=arc-20240116; t=1719940351; c=relaxed/simple;
+	bh=BJ515ChxV1Ba3PIJthzHAdQFkPYTLorsUFYjijEuK94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pUFyk9N6VUGrVY7iRiEwc6DzBrkUUrGKCAbAEnnfVmMvG+KGydP7MkFxXQ8PONfwoblKCphcF+fHlcYNaU4fPer3/AiPlJhGQL/D10mb8bblKTkX0sz/8h71YS7R51DQBtE145ucMdko2PGw2RCZEEe629N00LbUqSmqZlxdgAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/l/JRGN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780EDC116B1;
-	Tue,  2 Jul 2024 17:20:43 +0000 (UTC)
+	 MIME-Version; b=IVBArNWfrrS8txXy/mbocpFtli+13pK1CIf6kKe6D/8ii11oKHHXAChqGrAss45N9E/mAo3g1j+Ra/oy4IFYwgthtGewuOoPu+A59L0eiHLBcTwK9DF7TS4Gcg1EapPd5l7xkojJM9PtE4EJvtKwckIDYqeyjvvl8PKqW+TbhrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GgJ35raZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5065BC116B1;
+	Tue,  2 Jul 2024 17:12:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940844;
-	bh=Qrh6P8PlREEEZk1duU+HnRXtMuBJHKZ16CwkWPiXq1Y=;
+	s=korg; t=1719940350;
+	bh=BJ515ChxV1Ba3PIJthzHAdQFkPYTLorsUFYjijEuK94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P/l/JRGNRKCaGfg/8PRg5yVci4p6zGppieDEPkpLiDUeESNwDVq9UM/bv2yX8Tdv6
-	 4kpIXehJ2DoXTxKT5nCFTUH7xrZiol01laGazn58oaZNG2+uvxacV61DpL4YvDlydC
-	 ghYTtboA3sTAz/isJ+yksuOPq4JI8wK8U7KiNyqY=
+	b=GgJ35raZuO8mRJGlCk6WlZMdn7MnUQl0Y+Ogc4J9zv+HAwHlzJPdiBhsn5o3z8wlK
+	 4Qwh2/KT8v4KQ1CQ2Nf5K0wFGlWwQvOlw7vGxfemudRhe3CMulfn++vagwCV/rYubI
+	 yqb6CF+shtRHtNAaZbYOYeZth0m2JS4lXyC/BkCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Mark-PK Tsai <mark-pk.tsai@mediatek.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/163] drm/panel: ilitek-ili9881c: Fix warning with GPIO controllers that sleep
+Subject: [PATCH 6.9 129/222] kbuild: doc: Update default INSTALL_MOD_DIR from extra to updates
 Date: Tue,  2 Jul 2024 19:02:47 +0200
-Message-ID: <20240702170235.071125536@linuxfoundation.org>
+Message-ID: <20240702170248.901406118@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Mark-PK Tsai <mark-pk.tsai@mediatek.com>
 
-[ Upstream commit ee7860cd8b5763017f8dc785c2851fecb7a0c565 ]
+[ Upstream commit 07d4cc2e7444356faac6552d0688a1670cc9d749 ]
 
-The ilitek-ili9881c controls the reset GPIO using the non-sleeping
-gpiod_set_value() function. This complains loudly when the GPIO
-controller needs to sleep. As the caller can sleep, use
-gpiod_set_value_cansleep() to fix the issue.
+The default INSTALL_MOD_DIR was changed from 'extra' to
+'updates' in commit b74d7bb7ca24 ("kbuild: Modify default
+INSTALL_MOD_DIR from extra to updates").
 
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20240317154839.21260-1-laurent.pinchart@ideasonboard.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240317154839.21260-1-laurent.pinchart@ideasonboard.com
+This commit updates the documentation to align with the
+latest kernel.
+
+Fixes: b74d7bb7ca24 ("kbuild: Modify default INSTALL_MOD_DIR from extra to updates")
+Signed-off-by: Mark-PK Tsai <mark-pk.tsai@mediatek.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-ilitek-ili9881c.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ Documentation/kbuild/modules.rst | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c b/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
-index 7838947a1bf3c..bb201f848ae97 100644
---- a/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
-+++ b/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
-@@ -883,10 +883,10 @@ static int ili9881c_prepare(struct drm_panel *panel)
- 	msleep(5);
+diff --git a/Documentation/kbuild/modules.rst b/Documentation/kbuild/modules.rst
+index a1f3eb7a43e23..131863142cbb3 100644
+--- a/Documentation/kbuild/modules.rst
++++ b/Documentation/kbuild/modules.rst
+@@ -128,7 +128,7 @@ executed to make module versioning work.
  
- 	/* And reset it */
--	gpiod_set_value(ctx->reset, 1);
-+	gpiod_set_value_cansleep(ctx->reset, 1);
- 	msleep(20);
+ 	modules_install
+ 		Install the external module(s). The default location is
+-		/lib/modules/<kernel_release>/extra/, but a prefix may
++		/lib/modules/<kernel_release>/updates/, but a prefix may
+ 		be added with INSTALL_MOD_PATH (discussed in section 5).
  
--	gpiod_set_value(ctx->reset, 0);
-+	gpiod_set_value_cansleep(ctx->reset, 0);
- 	msleep(20);
+ 	clean
+@@ -417,7 +417,7 @@ directory:
  
- 	for (i = 0; i < ctx->desc->init_length; i++) {
-@@ -941,7 +941,7 @@ static int ili9881c_unprepare(struct drm_panel *panel)
+ And external modules are installed in:
  
- 	mipi_dsi_dcs_enter_sleep_mode(ctx->dsi);
- 	regulator_disable(ctx->power);
--	gpiod_set_value(ctx->reset, 1);
-+	gpiod_set_value_cansleep(ctx->reset, 1);
+-	/lib/modules/$(KERNELRELEASE)/extra/
++	/lib/modules/$(KERNELRELEASE)/updates/
  
- 	return 0;
- }
+ 5.1 INSTALL_MOD_PATH
+ --------------------
+@@ -438,10 +438,10 @@ And external modules are installed in:
+ -------------------
+ 
+ 	External modules are by default installed to a directory under
+-	/lib/modules/$(KERNELRELEASE)/extra/, but you may wish to
++	/lib/modules/$(KERNELRELEASE)/updates/, but you may wish to
+ 	locate modules for a specific functionality in a separate
+ 	directory. For this purpose, use INSTALL_MOD_DIR to specify an
+-	alternative name to "extra."::
++	alternative name to "updates."::
+ 
+ 		$ make INSTALL_MOD_DIR=gandalf -C $KDIR \
+ 		       M=$PWD modules_install
 -- 
 2.43.0
 
