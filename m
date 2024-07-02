@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A497C9244B2
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:13:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 777B292454A
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:20:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2702D1F213A3
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:13:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAAAB1C22154
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A641A1BE22B;
-	Tue,  2 Jul 2024 17:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31CE01BBBD7;
+	Tue,  2 Jul 2024 17:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiD58B2J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhD/giu5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A1D15B0FE;
-	Tue,  2 Jul 2024 17:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BAC3D978;
+	Tue,  2 Jul 2024 17:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940427; cv=none; b=uH/iRk0SjauYJxB73Nl4DCKM/+e+cO8p+zcnAvCsN6JbkeZUkDPN5JZTIvA/8bG5LKd9GesaSzk+sEra7k3jm5YjByq0RgiviHcA5YSEAAQP74EKdPQGPO6QYntXl+v+39CB/z+v/5SLq2TUS5OjZbAn3aj01Rj5A5jXEcTsTJ8=
+	t=1719940817; cv=none; b=M7oL7vrHMdmSoAuO3ejHTiLIqye5q+aKcVRyMeZZzm/XPc3BSakGAeEN/8f8pky8JdNbYzmRJqlhp3Jha8sfsOaKHEsHHa9913K4Rtu2gg+ax2bqMu0PGkAe4DwdA3LW/0b54j+3JjufNk6E5XZsIcIhg3IFou7XtNaN7yMSUoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940427; c=relaxed/simple;
-	bh=QmjlO+vxYbqLCY+PZCYOPk3VuCTBQ+zC4fn4s45ba3k=;
+	s=arc-20240116; t=1719940817; c=relaxed/simple;
+	bh=Da5KviLU0wPc6tLuTsrNEQfQoR3wHI80j8PZ1ew94NY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E3tyzoEvqszP5fOZVPRliQnrYM02FIkVXwc7A1X/6sgON7NrCznU64uFeCQ4RO8cm2b+P5MxH+duxhOsPlfd053FvF/KUJZF0qWUeSuejOnN+0inCseQcOPK4OSZG8erAzi9TpMYgbN0FEmrjONeIktEFIZwkP5QH3R97TqCHzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiD58B2J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D81FEC116B1;
-	Tue,  2 Jul 2024 17:13:46 +0000 (UTC)
+	 MIME-Version; b=Mt1wxY6rnqFIYCHXBN2eWYKXFivLSH5CwPLTqI4bQjOfNWjk5dJCNaDdqPs4zKdF3ek7WuiTOXVQOAwPQQZDg8ojyOiVHsVVKjH+k1xuZgKjDVn2rx+KmFR8j1zne2bZJAAVp4369mp005eYHvMp7X/GzO8ZkPMoLaXbhWIMwxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WhD/giu5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B36C116B1;
+	Tue,  2 Jul 2024 17:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940427;
-	bh=QmjlO+vxYbqLCY+PZCYOPk3VuCTBQ+zC4fn4s45ba3k=;
+	s=korg; t=1719940816;
+	bh=Da5KviLU0wPc6tLuTsrNEQfQoR3wHI80j8PZ1ew94NY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HiD58B2JbInY3UH/2sZ/QZDIjPpZjcvMYc9i3ihVPhmRCiQ9wbh4GwsowNtVJl98c
-	 u/rKjnlAh9AZ7+egLmaX4VEtq7md5DkeE82jmvqmvUfdP5mvn7pmHxXhdzd9itUTVX
-	 iLJ/rNBLofcNuePQq2M8wh+2lMvjAShkDn71NGtg=
+	b=WhD/giu5gErelRo2VAWCByxlVlHzNeRrQZJjIyjO09vDTX5zpSufnoHTAf5AX9Qm5
+	 mKJmsOF38y+qDUPgHRlsE8YREklrvGKGvUdKKYF9o78My3h7SY0Kjcav94Ty6o8G85
+	 n5OhRHb+otvo6onA7JTLG2oLChWFP9qxvJGRYrt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.9 121/222] mmc: sdhci-pci-o2micro: Convert PCIBIOS_* return codes to errnos
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 045/163] powerpc: restore some missing spu syscalls
 Date: Tue,  2 Jul 2024 19:02:39 +0200
-Message-ID: <20240702170248.594915489@linuxfoundation.org>
+Message-ID: <20240702170234.768490251@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,223 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit a91bf3b3beadbb4f8b3bbc7969fb2ae1615e25c8 upstream.
+[ Upstream commit b1e31c134a8ab2e8f5fd62323b6b45a950ac704d ]
 
-sdhci_pci_o2_probe() uses pci_read_config_{byte,dword}() that return
-PCIBIOS_* codes. The return code is then returned as is but as
-sdhci_pci_o2_probe() is probe function chain, it should return normal
-errnos.
+A couple of system calls were inadventently removed from the table during
+a bugfix for 32-bit powerpc entry. Restore the original behavior.
 
-Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
-errno before returning them. Add a label for read failure so that the
-conversion can be done in one place rather than on all of the return
-statements.
-
-Fixes: 3d757ddbd68c ("mmc: sdhci-pci-o2micro: add Bayhub new chip GG8 support for UHS-I")
-Fixes: d599005afde8 ("mmc: sdhci-pci-o2micro: Add missing checks in sdhci_pci_o2_probe")
-Fixes: 706adf6bc31c ("mmc: sdhci-pci-o2micro: Add SeaBird SeaEagle SD3 support")
-Fixes: 01acf6917aed ("mmc: sdhci-pci: add support of O2Micro/BayHubTech SD hosts")
-Fixes: 26daa1ed40c6 ("mmc: sdhci: Disable ADMA on some O2Micro SD/MMC parts.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240527132443.14038-2-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e23750623835 ("powerpc/32: fix syscall wrappers with 64-bit arguments of unaligned register-pairs")
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-pci-o2micro.c |   41 ++++++++++++++++++-----------------
- 1 file changed, 22 insertions(+), 19 deletions(-)
+ arch/powerpc/kernel/syscalls/syscall.tbl | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/mmc/host/sdhci-pci-o2micro.c
-+++ b/drivers/mmc/host/sdhci-pci-o2micro.c
-@@ -823,7 +823,7 @@ static int sdhci_pci_o2_probe(struct sdh
- 		ret = pci_read_config_byte(chip->pdev,
- 				O2_SD_LOCK_WP, &scratch);
- 		if (ret)
--			return ret;
-+			goto read_fail;
- 		scratch &= 0x7f;
- 		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch);
- 
-@@ -834,7 +834,7 @@ static int sdhci_pci_o2_probe(struct sdh
- 		ret = pci_read_config_byte(chip->pdev,
- 				O2_SD_CLKREQ, &scratch);
- 		if (ret)
--			return ret;
-+			goto read_fail;
- 		scratch |= 0x20;
- 		pci_write_config_byte(chip->pdev, O2_SD_CLKREQ, scratch);
- 
-@@ -843,7 +843,7 @@ static int sdhci_pci_o2_probe(struct sdh
- 		 */
- 		ret = pci_read_config_byte(chip->pdev, O2_SD_CAPS, &scratch);
- 		if (ret)
--			return ret;
-+			goto read_fail;
- 		scratch |= 0x01;
- 		pci_write_config_byte(chip->pdev, O2_SD_CAPS, scratch);
- 		pci_write_config_byte(chip->pdev, O2_SD_CAPS, 0x73);
-@@ -856,7 +856,7 @@ static int sdhci_pci_o2_probe(struct sdh
- 		ret = pci_read_config_byte(chip->pdev,
- 				O2_SD_INF_MOD, &scratch);
- 		if (ret)
--			return ret;
-+			goto read_fail;
- 		scratch |= 0x08;
- 		pci_write_config_byte(chip->pdev, O2_SD_INF_MOD, scratch);
- 
-@@ -864,7 +864,7 @@ static int sdhci_pci_o2_probe(struct sdh
- 		ret = pci_read_config_byte(chip->pdev,
- 				O2_SD_LOCK_WP, &scratch);
- 		if (ret)
--			return ret;
-+			goto read_fail;
- 		scratch |= 0x80;
- 		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch);
- 		break;
-@@ -875,7 +875,7 @@ static int sdhci_pci_o2_probe(struct sdh
- 		ret = pci_read_config_byte(chip->pdev,
- 				O2_SD_LOCK_WP, &scratch);
- 		if (ret)
--			return ret;
-+			goto read_fail;
- 
- 		scratch &= 0x7f;
- 		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch);
-@@ -886,7 +886,7 @@ static int sdhci_pci_o2_probe(struct sdh
- 						    O2_SD_FUNC_REG0,
- 						    &scratch_32);
- 			if (ret)
--				return ret;
-+				goto read_fail;
- 			scratch_32 = ((scratch_32 & 0xFF000000) >> 24);
- 
- 			/* Check Whether subId is 0x11 or 0x12 */
-@@ -898,7 +898,7 @@ static int sdhci_pci_o2_probe(struct sdh
- 							    O2_SD_FUNC_REG4,
- 							    &scratch_32);
- 				if (ret)
--					return ret;
-+					goto read_fail;
- 
- 				/* Enable Base Clk setting change */
- 				scratch_32 |= O2_SD_FREG4_ENABLE_CLK_SET;
-@@ -921,7 +921,7 @@ static int sdhci_pci_o2_probe(struct sdh
- 		ret = pci_read_config_dword(chip->pdev,
- 					    O2_SD_CLK_SETTING, &scratch_32);
- 		if (ret)
--			return ret;
-+			goto read_fail;
- 
- 		scratch_32 &= ~(0xFF00);
- 		scratch_32 |= 0x07E0C800;
-@@ -931,14 +931,14 @@ static int sdhci_pci_o2_probe(struct sdh
- 		ret = pci_read_config_dword(chip->pdev,
- 					    O2_SD_CLKREQ, &scratch_32);
- 		if (ret)
--			return ret;
-+			goto read_fail;
- 		scratch_32 |= 0x3;
- 		pci_write_config_dword(chip->pdev, O2_SD_CLKREQ, scratch_32);
- 
- 		ret = pci_read_config_dword(chip->pdev,
- 					    O2_SD_PLL_SETTING, &scratch_32);
- 		if (ret)
--			return ret;
-+			goto read_fail;
- 
- 		scratch_32 &= ~(0x1F3F070E);
- 		scratch_32 |= 0x18270106;
-@@ -949,7 +949,7 @@ static int sdhci_pci_o2_probe(struct sdh
- 		ret = pci_read_config_dword(chip->pdev,
- 					    O2_SD_CAP_REG2, &scratch_32);
- 		if (ret)
--			return ret;
-+			goto read_fail;
- 		scratch_32 &= ~(0xE0);
- 		pci_write_config_dword(chip->pdev,
- 				       O2_SD_CAP_REG2, scratch_32);
-@@ -961,7 +961,7 @@ static int sdhci_pci_o2_probe(struct sdh
- 		ret = pci_read_config_byte(chip->pdev,
- 					   O2_SD_LOCK_WP, &scratch);
- 		if (ret)
--			return ret;
-+			goto read_fail;
- 		scratch |= 0x80;
- 		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch);
- 		break;
-@@ -971,7 +971,7 @@ static int sdhci_pci_o2_probe(struct sdh
- 		ret = pci_read_config_byte(chip->pdev,
- 				O2_SD_LOCK_WP, &scratch);
- 		if (ret)
--			return ret;
-+			goto read_fail;
- 
- 		scratch &= 0x7f;
- 		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch);
-@@ -979,7 +979,7 @@ static int sdhci_pci_o2_probe(struct sdh
- 		ret = pci_read_config_dword(chip->pdev,
- 					    O2_SD_PLL_SETTING, &scratch_32);
- 		if (ret)
--			return ret;
-+			goto read_fail;
- 
- 		if ((scratch_32 & 0xff000000) == 0x01000000) {
- 			scratch_32 &= 0x0000FFFF;
-@@ -998,7 +998,7 @@ static int sdhci_pci_o2_probe(struct sdh
- 						    O2_SD_FUNC_REG4,
- 						    &scratch_32);
- 			if (ret)
--				return ret;
-+				goto read_fail;
- 			scratch_32 |= (1 << 22);
- 			pci_write_config_dword(chip->pdev,
- 					       O2_SD_FUNC_REG4, scratch_32);
-@@ -1017,7 +1017,7 @@ static int sdhci_pci_o2_probe(struct sdh
- 		ret = pci_read_config_byte(chip->pdev,
- 					   O2_SD_LOCK_WP, &scratch);
- 		if (ret)
--			return ret;
-+			goto read_fail;
- 		scratch |= 0x80;
- 		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch);
- 		break;
-@@ -1028,7 +1028,7 @@ static int sdhci_pci_o2_probe(struct sdh
- 		/* UnLock WP */
- 		ret = pci_read_config_byte(chip->pdev, O2_SD_LOCK_WP, &scratch);
- 		if (ret)
--			return ret;
-+			goto read_fail;
- 		scratch &= 0x7f;
- 		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch);
- 
-@@ -1057,13 +1057,16 @@ static int sdhci_pci_o2_probe(struct sdh
- 		/* Lock WP */
- 		ret = pci_read_config_byte(chip->pdev, O2_SD_LOCK_WP, &scratch);
- 		if (ret)
--			return ret;
-+			goto read_fail;
- 		scratch |= 0x80;
- 		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch);
- 		break;
- 	}
- 
- 	return 0;
-+
-+read_fail:
-+	return pcibios_err_to_errno(ret);
- }
- 
- #ifdef CONFIG_PM_SLEEP
+diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
+index 20e50586e8a26..b012579247ee8 100644
+--- a/arch/powerpc/kernel/syscalls/syscall.tbl
++++ b/arch/powerpc/kernel/syscalls/syscall.tbl
+@@ -230,8 +230,10 @@
+ 178	nospu 	rt_sigsuspend			sys_rt_sigsuspend		compat_sys_rt_sigsuspend
+ 179	32	pread64				sys_ppc_pread64			compat_sys_ppc_pread64
+ 179	64	pread64				sys_pread64
++179	spu	pread64				sys_pread64
+ 180	32	pwrite64			sys_ppc_pwrite64		compat_sys_ppc_pwrite64
+ 180	64	pwrite64			sys_pwrite64
++180	spu	pwrite64			sys_pwrite64
+ 181	common	chown				sys_chown
+ 182	common	getcwd				sys_getcwd
+ 183	common	capget				sys_capget
+@@ -246,6 +248,7 @@
+ 190	common	ugetrlimit			sys_getrlimit			compat_sys_getrlimit
+ 191	32	readahead			sys_ppc_readahead		compat_sys_ppc_readahead
+ 191	64	readahead			sys_readahead
++191	spu	readahead			sys_readahead
+ 192	32	mmap2				sys_mmap2			compat_sys_mmap2
+ 193	32	truncate64			sys_ppc_truncate64		compat_sys_ppc_truncate64
+ 194	32	ftruncate64			sys_ppc_ftruncate64		compat_sys_ppc_ftruncate64
+@@ -293,6 +296,7 @@
+ 232	nospu	set_tid_address			sys_set_tid_address
+ 233	32	fadvise64			sys_ppc32_fadvise64		compat_sys_ppc32_fadvise64
+ 233	64	fadvise64			sys_fadvise64
++233	spu	fadvise64			sys_fadvise64
+ 234	nospu	exit_group			sys_exit_group
+ 235	nospu	lookup_dcookie			sys_lookup_dcookie		compat_sys_lookup_dcookie
+ 236	common	epoll_create			sys_epoll_create
+-- 
+2.43.0
+
 
 
 
