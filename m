@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-56624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7357B924547
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:20:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFB9592448C
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:12:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DCBE1F21DBB
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:20:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 750921F214DA
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:12:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CB71C0DD4;
-	Tue,  2 Jul 2024 17:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAEC91BE22B;
+	Tue,  2 Jul 2024 17:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2FpRFIf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tS6PBTT8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3684C1C007E;
-	Tue,  2 Jul 2024 17:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886BC15218A;
+	Tue,  2 Jul 2024 17:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940806; cv=none; b=TIabCri3EpGNCQ6R0Z5kkhAEzCoyYh7IWRnkC7OHgDl8a7RhVcP832crJMdba3LMDV4u2sFqmfWDLpeMMMakTfybV98bBLQEhKiz6+aMm2p0t+wA1vbGzPUuu9xUyLeYHpZyX5neqytBPNL7xNk1A4plUo4Akob5dx0a+Vyh2Hg=
+	t=1719940317; cv=none; b=nsOW23mo9qhJsMdtG8NOuyGPN0NC39BLBUSrg5sjRMzWCdqNMSHwxYZ/SUpnkifJHfZI3LW24Ny2dadqXikd4N/dDjUE++lANzGfS7TQbRbIdGkoQ96GXdIZgzp/sYVmbJ4X7/oW6Ot4Mw3nDjdMlsS4d0tbEC0Q9B7EJ2H+1Ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940806; c=relaxed/simple;
-	bh=SlOoHxtrxaSUoihrQPeeLJVaULpHzejnMHJBSfaeWE8=;
+	s=arc-20240116; t=1719940317; c=relaxed/simple;
+	bh=J36xiiIEOCnuF3Q4ovoEPTkPuImhkn4TamV1WhsfQ9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WI1FZYJ9hd524nRBpJ5OId4Q7Vi0X9EgrSVmVNSE3zx6eCybMiPZqu1B2LCIh1okMmS9/P+cU3CNUqIj0MMLZVaEABfA4Oc0pFmWc9vBCTjuSOaJO0SZjS8MqZTbqPgD/4YfPIO04QAuAIJE5z/XEWk/oCQm33u+mDEfX59XD+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2FpRFIf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93862C116B1;
-	Tue,  2 Jul 2024 17:20:05 +0000 (UTC)
+	 MIME-Version; b=Pktt/55kX8A0w3wfuAc1+7yXiga8u13loRCSJwWZfd6EPwpbn+RtHt7gaGVKEArR9mgAcdG6nMDmXDkYb/asOds+J5GuBDDx36Y5Ly1KuexCBaYmGQY3Db6xqWqi3Rm68SDDsr4GLgd5yccq0W65p9eX1gqC8miDm9UE4UetNcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tS6PBTT8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A7FC4AF0A;
+	Tue,  2 Jul 2024 17:11:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940806;
-	bh=SlOoHxtrxaSUoihrQPeeLJVaULpHzejnMHJBSfaeWE8=;
+	s=korg; t=1719940317;
+	bh=J36xiiIEOCnuF3Q4ovoEPTkPuImhkn4TamV1WhsfQ9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T2FpRFIfAB5/Xx9d8mp0O/hFvJ9djmtg+m3fy6zHuilyrVnCUX/nzxJa3fymY0bYR
-	 fqTh0SrdBPp+jwVXSm0eN40qhKfEgNHaimW1S7FaVPxxTGwT3vC+ZebFTCbCgNu9S+
-	 yZyniyphCJoCsb2fzD3gQeI9nZ+0zCKzZ19v47wM=
+	b=tS6PBTT8j1BrCZszWZcL+yNhbuo50UgrP8BWXT6qY6EZJVk8HQdeHxV2CfDAD4+Gf
+	 m1hW8v8CX91F64JGtyEtu41+z3HoIRQGBO6JI8qJTXthSI/Fn3WiJxIGNwNJrrWbXB
+	 SQVlM+kemalGw1HxgMbkTurf/uyfskhgGeqUa3eE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
-	Huang-Huang Bao <i@eh5.me>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/163] pinctrl: rockchip: fix pinmux reset in rockchip_pmx_set
+Subject: [PATCH 6.9 087/222] irqchip/loongson: Select GENERIC_IRQ_EFFECTIVE_AFF_MASK if SMP for IRQ_LOONGARCH_CPU
 Date: Tue,  2 Jul 2024 19:02:05 +0200
-Message-ID: <20240702170233.481415878@linuxfoundation.org>
+Message-ID: <20240702170247.302391657@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang-Huang Bao <i@eh5.me>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 4ea4d4808e342ddf89ba24b93ffa2057005aaced ]
+[ Upstream commit 42a7d887664b02a747ef5d479f6fd01081564af8 ]
 
-rockchip_pmx_set reset all pinmuxs in group to 0 in the case of error,
-add missing bank data retrieval in that code to avoid setting mux on
-unexpected pins.
+An interrupt's effective affinity can only be different from its configured
+affinity if there are multiple CPUs. Make it clear that this option is only
+meaningful when SMP is enabled. Otherwise, there exists "WARNING: unmet
+direct dependencies detected for GENERIC_IRQ_EFFECTIVE_AFF_MASK" when make
+menuconfig if CONFIG_SMP is not set on LoongArch.
 
-Fixes: 14797189b35e ("pinctrl: rockchip: add return value to rockchip_set_mux")
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Huang-Huang Bao <i@eh5.me>
-Link: https://lore.kernel.org/r/20240606125755.53778-5-i@eh5.me
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240326121130.16622-3-yangtiezhu@loongson.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-rockchip.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/irqchip/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
-index 974f16f83e59d..caf8d0a98c327 100644
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -2751,8 +2751,10 @@ static int rockchip_pmx_set(struct pinctrl_dev *pctldev, unsigned selector,
- 
- 	if (ret) {
- 		/* revert the already done pin settings */
--		for (cnt--; cnt >= 0; cnt--)
-+		for (cnt--; cnt >= 0; cnt--) {
-+			bank = pin_to_bank(info, pins[cnt]);
- 			rockchip_set_mux(bank, pins[cnt] - bank->pin_base, 0);
-+		}
- 
- 		return ret;
- 	}
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index 72c07a12f5e18..bfa1d77749f3e 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -568,7 +568,7 @@ config IRQ_LOONGARCH_CPU
+ 	bool
+ 	select GENERIC_IRQ_CHIP
+ 	select IRQ_DOMAIN
+-	select GENERIC_IRQ_EFFECTIVE_AFF_MASK
++	select GENERIC_IRQ_EFFECTIVE_AFF_MASK if SMP
+ 	select LOONGSON_HTVEC
+ 	select LOONGSON_LIOINTC
+ 	select LOONGSON_EIOINTC
 -- 
 2.43.0
 
