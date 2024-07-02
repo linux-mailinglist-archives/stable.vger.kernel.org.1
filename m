@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-56633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F1A7924551
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:20:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 400F5924494
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 469F01F22D64
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:20:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71DDC1C21DFB
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCE31BE871;
-	Tue,  2 Jul 2024 17:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915211BE23C;
+	Tue,  2 Jul 2024 17:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w99xcWyh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kdqUhqbF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366A71BE23F;
-	Tue,  2 Jul 2024 17:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502A31BC08A;
+	Tue,  2 Jul 2024 17:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940837; cv=none; b=fkW9wDVjggb2zuYa7lE0LidVYPbvZUkN7x2Ge2JFsImxX1exsc63LarVq8s7LkeZjF32FhienbzSBn5v4Axrh7i+qP8wmVWt8cYNiNo9F9BUYjnxXU2CQ6E+T/a7q9tGD5ws+GgWeSpexb2QqDFeW1+QY99M1uZ3CAXJnSBzJh4=
+	t=1719940344; cv=none; b=go2JHMJbEZlSmCWaQGs9gbZNAN9yqI5shsDMoGQp1OKvjxMltV/6m8XReIzU3ZfVZeU0PamvyBLkAuqdXZyvMd6fE9jc1QcEXN6l0nMxUt8XF/+MBdjQERswMIyLlKTlZ09RaK0GPpaWh6CsAJG1lGgFHszkIQ2TXwF6I00QIr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940837; c=relaxed/simple;
-	bh=nnqQToZES+f9GhmD+VNADMymRkL/EHP6W+BbyrQ0EMw=;
+	s=arc-20240116; t=1719940344; c=relaxed/simple;
+	bh=FOVpnDjkpa5TdaBXAg63xC9zuQFDw7/TMVWeiMDRSUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V4MLq93+a8cTmkK/HKCyYZdFLbUwFB5KgPj14mp8cq2QxR9kNrY0EL7bTjCcO4OiX27NMwyMSP5gxEwFjhcy1vsv5okehIKXfcbuLb3d3/dayS3fGQ/SqVYVAbBxLvRt2/mOS1EH2e0ymxbST65C7hX1E3U9opn9+9r7gIHTe+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w99xcWyh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E54C116B1;
-	Tue,  2 Jul 2024 17:20:36 +0000 (UTC)
+	 MIME-Version; b=DPKCnt0lrQFXbwK8fI/w5kIX6jv1g2NTxn+zQESAI3M/zTlCSb7rht6zLNKm/dFdzbPpjZEdciTPR3Mm1p1Xbb/lWhXzpfZilsdMY8N3g506c5quAz68S7MJzhiWt70+JkBLnCaBICLJT2VcuBVnx1VgplY3x2UNf4M1a6MSv/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kdqUhqbF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1E4C116B1;
+	Tue,  2 Jul 2024 17:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940837;
-	bh=nnqQToZES+f9GhmD+VNADMymRkL/EHP6W+BbyrQ0EMw=;
+	s=korg; t=1719940343;
+	bh=FOVpnDjkpa5TdaBXAg63xC9zuQFDw7/TMVWeiMDRSUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w99xcWyhPCaz0DwpZkK8xQZmZIdl2JSPpjYcvKoMeWQjihT65R9Xy8pKJqda1CvyI
-	 YT0gEuhO0MWeyhf584TJO2O6lHa2RC+qELkadifNEfouwgUn7s4ELYhpDHUjyi05J8
-	 Xc8so8FfUH2PnILs3uLJ2rd1qBPqX2t1y/IelpTY=
+	b=kdqUhqbFH7nu9QMgVtVrjGt+zkJVbC1ISNQFYFAOMBHeTEibD4Go1f5ILgL5LFLjG
+	 LzQmAr5oYtz5cXcwz2mfThAPVpiwMY3fygyN0VkbQ3OC3tdoxD04BbkD0O/hbE5UVT
+	 x2Hif2qENTKqAzhBxaJ9517SMq2AtuppxNyT/l80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/163] bpf: Take return from set_memory_ro() into account with bpf_prog_lock_ro()
+Subject: [PATCH 6.9 127/222] SUNRPC: Fix backchannel reply, again
 Date: Tue,  2 Jul 2024 19:02:45 +0200
-Message-ID: <20240702170234.995247911@linuxfoundation.org>
+Message-ID: <20240702170248.823706034@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 7d2cc63eca0c993c99d18893214abf8f85d566d8 ]
+[ Upstream commit 6ddc9deacc1312762c2edd9de00ce76b00f69f7c ]
 
-set_memory_ro() can fail, leaving memory unprotected.
+I still see "RPC: Could not send backchannel reply error: -110"
+quite often, along with slow-running tests. Debugging shows that the
+backchannel is still stumbling when it has to queue a callback reply
+on a busy transport.
 
-Check its return and take it into account as an error.
+Note that every one of these timeouts causes a connection loss by
+virtue of the xprt_conditional_disconnect() call in that arm of
+call_cb_transmit_status().
 
-Link: https://github.com/KSPP/linux/issues/7
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linux-hardening@vger.kernel.org <linux-hardening@vger.kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Message-ID: <286def78955e04382b227cb3e4b6ba272a7442e3.1709850515.git.christophe.leroy@csgroup.eu>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+I found that setting to_maxval is necessary to get the RPC timeout
+logic to behave whenever to_exponential is not set.
+
+Fixes: 57331a59ac0d ("NFSv4.1: Use the nfs_client's rpc timeouts for backchannel")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/filter.h | 5 +++--
- kernel/bpf/core.c      | 4 +++-
- kernel/bpf/verifier.c  | 8 ++++++--
- 3 files changed, 12 insertions(+), 5 deletions(-)
+ net/sunrpc/svc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/filter.h b/include/linux/filter.h
-index 5090e940ba3e4..5a2800ec94ea6 100644
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -842,14 +842,15 @@ bpf_ctx_narrow_access_offset(u32 off, u32 size, u32 size_default)
- 
- #define bpf_classic_proglen(fprog) (fprog->len * sizeof(fprog->filter[0]))
- 
--static inline void bpf_prog_lock_ro(struct bpf_prog *fp)
-+static inline int __must_check bpf_prog_lock_ro(struct bpf_prog *fp)
+diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
+index 2b4b1276d4e86..d9cda1e53a017 100644
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -1557,9 +1557,11 @@ void svc_process(struct svc_rqst *rqstp)
+  */
+ void svc_process_bc(struct rpc_rqst *req, struct svc_rqst *rqstp)
  {
- #ifndef CONFIG_BPF_JIT_ALWAYS_ON
- 	if (!fp->jited) {
- 		set_vm_flush_reset_perms(fp);
--		set_memory_ro((unsigned long)fp, fp->pages);
-+		return set_memory_ro((unsigned long)fp, fp->pages);
++	struct rpc_timeout timeout = {
++		.to_increment		= 0,
++	};
+ 	struct rpc_task *task;
+ 	int proc_error;
+-	struct rpc_timeout timeout;
+ 
+ 	/* Build the svc_rqst used by the common processing routine */
+ 	rqstp->rq_xid = req->rq_xid;
+@@ -1612,6 +1614,7 @@ void svc_process_bc(struct rpc_rqst *req, struct svc_rqst *rqstp)
+ 		timeout.to_initval = req->rq_xprt->timeout->to_initval;
+ 		timeout.to_retries = req->rq_xprt->timeout->to_retries;
  	}
- #endif
-+	return 0;
- }
++	timeout.to_maxval = timeout.to_initval;
+ 	memcpy(&req->rq_snd_buf, &rqstp->rq_res, sizeof(req->rq_snd_buf));
+ 	task = rpc_run_bc_task(req, &timeout);
  
- static inline void bpf_jit_binary_lock_ro(struct bpf_binary_header *hdr)
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 05445a4d55181..bdbce41d1bb4a 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -2373,7 +2373,9 @@ struct bpf_prog *bpf_prog_select_runtime(struct bpf_prog *fp, int *err)
- 	}
- 
- finalize:
--	bpf_prog_lock_ro(fp);
-+	*err = bpf_prog_lock_ro(fp);
-+	if (*err)
-+		return fp;
- 
- 	/* The tail call compatibility check can only be done at
- 	 * this late stage as we need to determine, if we deal
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 171045b6956d9..aa546355918cb 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -18625,10 +18625,14 @@ static int jit_subprogs(struct bpf_verifier_env *env)
- 	 * bpf_prog_load will add the kallsyms for the main program.
- 	 */
- 	for (i = 1; i < env->subprog_cnt; i++) {
--		bpf_prog_lock_ro(func[i]);
--		bpf_prog_kallsyms_add(func[i]);
-+		err = bpf_prog_lock_ro(func[i]);
-+		if (err)
-+			goto out_free;
- 	}
- 
-+	for (i = 1; i < env->subprog_cnt; i++)
-+		bpf_prog_kallsyms_add(func[i]);
-+
- 	/* Last step: make now unused interpreter insns from main
- 	 * prog consistent for later dump requests, so they can
- 	 * later look the same as if they were interpreted only.
 -- 
 2.43.0
 
