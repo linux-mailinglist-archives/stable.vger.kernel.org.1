@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-56593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1713E924524
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:19:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 895ED924469
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B32D1C20D41
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:19:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAD031C2199E
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B941BE858;
-	Tue,  2 Jul 2024 17:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA56B1BE22A;
+	Tue,  2 Jul 2024 17:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="irBIkE2B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKFb+9AU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A401BE257;
-	Tue,  2 Jul 2024 17:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DB515218A;
+	Tue,  2 Jul 2024 17:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940699; cv=none; b=H8MNSf4vMsot0G2VCt/yB/rixSupcSzDTLTGGy2Tobo3hjOBc79EogD6P/GLRYzfKNJNJfdht46opD6CZZ+cM9Jxjk3O54XDB9zpxBMXqRkOZaW6DRCkiKJIooBMZVykEoqOVBKiZoktRuflB0QOYmgD/PuoxE3CBOzPLWw5dl8=
+	t=1719940217; cv=none; b=Nqw4QSkmg5NVRNhcUrG0tSQdbDVzyZdsmGIhDVFsqHRydjHk2xbtFxZWMtsGGniYVV9VJv8EawIbHR+5E71JGZ7Ktny+flNbW/ZbzxVVbc9LbXzEb2SpWtLLPpPbxOV/CQnMxqzQ/BNIf9NbYHCplPhp0hq/8/CAGDEe/K0lZ6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940699; c=relaxed/simple;
-	bh=HG9843NN4s8eIwd/UPv1IC5b2ei3PZDKr/yAP/E+7F8=;
+	s=arc-20240116; t=1719940217; c=relaxed/simple;
+	bh=E4oILg/DSVnF+Ekd11kXQnIW9BWXxa5EexBOzIOV3GQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UBxWpyqff3pOF385yI9XYbZOhnfU0ssoSvNevN+If+/NzAaVR0IRbZXcbChBHMMXqdQRGfJXwVCB4lXlSUK+HpgDwuAQQYT9f1X6Jxyh3aazeAmwt0w/ujbRcu8zfpL7yLIMEIcIXxhtmxU29odazfkvRGPGffrO3/xwdgjbMWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=irBIkE2B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C642BC4AF07;
-	Tue,  2 Jul 2024 17:18:18 +0000 (UTC)
+	 MIME-Version; b=LgQPgAy8uU+BSjCMjHF2jVgzO0FL1vSP4gheA5zWCw1225cY7+3h2xJhfWmKA+7MP40NSoaWrsmj3BTo1Vj3h/Grkgzzv4hooxEh18BPgZMHyAu036NgGV979vPLKxqhoFwdme02XcpXVPvp7xC1Q4ewgphZUKovy98IaCwsWfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKFb+9AU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF6DC116B1;
+	Tue,  2 Jul 2024 17:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940699;
-	bh=HG9843NN4s8eIwd/UPv1IC5b2ei3PZDKr/yAP/E+7F8=;
+	s=korg; t=1719940217;
+	bh=E4oILg/DSVnF+Ekd11kXQnIW9BWXxa5EexBOzIOV3GQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=irBIkE2BCxOxlKlfxQg9bBOnMVgpjoB1NJwoOGcyvff5fu3KoyjLgwY5hK/S40L/U
-	 Nb4zCtrLeIAjj8jLxos7eNkepNmD3E283zWOdmWg+qrpiZPYRKHPgimw/stlg/n+vQ
-	 78hz95qNrqIXgxcNRgpsytbMcbY+1+Yj1td/ejio=
+	b=tKFb+9AUjppmIzzvjxJ5HG1Uhg6cn5N+sQtiRPSIfESMkXh1IBAmLeNMOkSvOp7lq
+	 /7o1LyrcN9dO6qMVHIj0d7De/dk8Jb5vd3wrFKQ01ZsyEZcm08sZul6Gv2i39KhA1w
+	 i+lFqiXye9j0NtI6mVphFeNgVub49G3A56+/CAwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Wenchao Hao <haowenchao2@huawei.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 003/163] usb: typec: ucsi: Never send a lone connector change ack
-Date: Tue,  2 Jul 2024 19:01:57 +0200
-Message-ID: <20240702170233.181685116@linuxfoundation.org>
+Subject: [PATCH 6.9 080/222] RDMA/restrack: Fix potential invalid address access
+Date: Tue,  2 Jul 2024 19:01:58 +0200
+Message-ID: <20240702170247.037923786@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,161 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Wenchao Hao <haowenchao2@huawei.com>
 
-[ Upstream commit de52aca4d9d56c3b2f00b638d457075914b1a227 ]
+[ Upstream commit ca537a34775c103f7b14d7bbd976403f1d1525d8 ]
 
-Some PPM implementation do not like UCSI_ACK_CONNECTOR_CHANGE
-without UCSI_ACK_COMMAND_COMPLETE. Moreover, doing this is racy
-as it requires sending two UCSI_ACK_CC_CI commands in a row and
-the second one will be started with UCSI_CCI_ACK_COMPLETE already
-set in CCI.
+struct rdma_restrack_entry's kern_name was set to KBUILD_MODNAME
+in ib_create_cq(), while if the module exited but forgot del this
+rdma_restrack_entry, it would cause a invalid address access in
+rdma_restrack_clean() when print the owner of this rdma_restrack_entry.
 
-Bundle the UCSI_ACK_CONNECTOR_CHANGE with the UCSI_ACK_COMMAND_COMPLETE
-for the UCSI_GET_CONNECTOR_STATUS command that is sent while
-handling a connector change event.
+These code is used to help find one forgotten PD release in one of the
+ULPs. But it is not needed anymore, so delete them.
 
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240327224554.1772525-3-lk@c--e.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 8bdf8a42bca4 ("usb: typec: ucsi: Ack also failed Get Error commands")
+Signed-off-by: Wenchao Hao <haowenchao2@huawei.com>
+Link: https://lore.kernel.org/r/20240318092320.1215235-1-haowenchao2@huawei.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c | 48 +++++++++++++++--------------------
- 1 file changed, 21 insertions(+), 27 deletions(-)
+ drivers/infiniband/core/restrack.c | 51 +-----------------------------
+ 1 file changed, 1 insertion(+), 50 deletions(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-index 7f575b9b3debe..9b0ad06db6dab 100644
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -49,22 +49,16 @@ static int ucsi_read_message_in(struct ucsi *ucsi, void *buf,
- 	return ucsi->ops->read(ucsi, UCSI_MESSAGE_IN, buf, buf_size);
+diff --git a/drivers/infiniband/core/restrack.c b/drivers/infiniband/core/restrack.c
+index 01a499a8b88db..438ed35881752 100644
+--- a/drivers/infiniband/core/restrack.c
++++ b/drivers/infiniband/core/restrack.c
+@@ -37,22 +37,6 @@ int rdma_restrack_init(struct ib_device *dev)
+ 	return 0;
  }
  
--static int ucsi_acknowledge_command(struct ucsi *ucsi)
-+static int ucsi_acknowledge(struct ucsi *ucsi, bool conn_ack)
- {
- 	u64 ctrl;
- 
- 	ctrl = UCSI_ACK_CC_CI;
- 	ctrl |= UCSI_ACK_COMMAND_COMPLETE;
--
--	return ucsi->ops->sync_write(ucsi, UCSI_CONTROL, &ctrl, sizeof(ctrl));
--}
--
--static int ucsi_acknowledge_connector_change(struct ucsi *ucsi)
+-static const char *type2str(enum rdma_restrack_type type)
 -{
--	u64 ctrl;
+-	static const char * const names[RDMA_RESTRACK_MAX] = {
+-		[RDMA_RESTRACK_PD] = "PD",
+-		[RDMA_RESTRACK_CQ] = "CQ",
+-		[RDMA_RESTRACK_QP] = "QP",
+-		[RDMA_RESTRACK_CM_ID] = "CM_ID",
+-		[RDMA_RESTRACK_MR] = "MR",
+-		[RDMA_RESTRACK_CTX] = "CTX",
+-		[RDMA_RESTRACK_COUNTER] = "COUNTER",
+-		[RDMA_RESTRACK_SRQ] = "SRQ",
+-	};
 -
--	ctrl = UCSI_ACK_CC_CI;
--	ctrl |= UCSI_ACK_CONNECTOR_CHANGE;
-+	if (conn_ack) {
-+		clear_bit(EVENT_PENDING, &ucsi->flags);
-+		ctrl |= UCSI_ACK_CONNECTOR_CHANGE;
-+	}
- 
- 	return ucsi->ops->sync_write(ucsi, UCSI_CONTROL, &ctrl, sizeof(ctrl));
- }
-@@ -77,7 +71,7 @@ static int ucsi_read_error(struct ucsi *ucsi)
- 	int ret;
- 
- 	/* Acknowledge the command that failed */
--	ret = ucsi_acknowledge_command(ucsi);
-+	ret = ucsi_acknowledge(ucsi, false);
- 	if (ret)
- 		return ret;
- 
-@@ -89,7 +83,7 @@ static int ucsi_read_error(struct ucsi *ucsi)
- 	if (ret)
- 		return ret;
- 
--	ret = ucsi_acknowledge_command(ucsi);
-+	ret = ucsi_acknowledge(ucsi, false);
- 	if (ret)
- 		return ret;
- 
-@@ -152,7 +146,7 @@ static int ucsi_exec_command(struct ucsi *ucsi, u64 cmd)
- 		return -EIO;
- 
- 	if (cci & UCSI_CCI_NOT_SUPPORTED) {
--		if (ucsi_acknowledge_command(ucsi) < 0)
-+		if (ucsi_acknowledge(ucsi, false) < 0)
- 			dev_err(ucsi->dev,
- 				"ACK of unsupported command failed\n");
- 		return -EOPNOTSUPP;
-@@ -165,15 +159,15 @@ static int ucsi_exec_command(struct ucsi *ucsi, u64 cmd)
- 	}
- 
- 	if (cmd == UCSI_CANCEL && cci & UCSI_CCI_CANCEL_COMPLETE) {
--		ret = ucsi_acknowledge_command(ucsi);
-+		ret = ucsi_acknowledge(ucsi, false);
- 		return ret ? ret : -EBUSY;
- 	}
- 
- 	return UCSI_CCI_LENGTH(cci);
- }
- 
--int ucsi_send_command(struct ucsi *ucsi, u64 command,
--		      void *data, size_t size)
-+static int ucsi_send_command_common(struct ucsi *ucsi, u64 command,
-+				    void *data, size_t size, bool conn_ack)
+-	return names[type];
+-};
+-
+ /**
+  * rdma_restrack_clean() - clean resource tracking
+  * @dev:  IB device
+@@ -60,47 +44,14 @@ static const char *type2str(enum rdma_restrack_type type)
+ void rdma_restrack_clean(struct ib_device *dev)
  {
- 	u8 length;
- 	int ret;
-@@ -192,7 +186,7 @@ int ucsi_send_command(struct ucsi *ucsi, u64 command,
- 			goto out;
+ 	struct rdma_restrack_root *rt = dev->res;
+-	struct rdma_restrack_entry *e;
+-	char buf[TASK_COMM_LEN];
+-	bool found = false;
+-	const char *owner;
+ 	int i;
+ 
+ 	for (i = 0 ; i < RDMA_RESTRACK_MAX; i++) {
+ 		struct xarray *xa = &dev->res[i].xa;
+ 
+-		if (!xa_empty(xa)) {
+-			unsigned long index;
+-
+-			if (!found) {
+-				pr_err("restrack: %s", CUT_HERE);
+-				dev_err(&dev->dev, "BUG: RESTRACK detected leak of resources\n");
+-			}
+-			xa_for_each(xa, index, e) {
+-				if (rdma_is_kernel_res(e)) {
+-					owner = e->kern_name;
+-				} else {
+-					/*
+-					 * There is no need to call get_task_struct here,
+-					 * because we can be here only if there are more
+-					 * get_task_struct() call than put_task_struct().
+-					 */
+-					get_task_comm(buf, e->task);
+-					owner = buf;
+-				}
+-
+-				pr_err("restrack: %s %s object allocated by %s is not freed\n",
+-				       rdma_is_kernel_res(e) ? "Kernel" :
+-							       "User",
+-				       type2str(e->type), owner);
+-			}
+-			found = true;
+-		}
++		WARN_ON(!xa_empty(xa));
+ 		xa_destroy(xa);
  	}
- 
--	ret = ucsi_acknowledge_command(ucsi);
-+	ret = ucsi_acknowledge(ucsi, conn_ack);
- 	if (ret)
- 		goto out;
- 
-@@ -201,6 +195,12 @@ int ucsi_send_command(struct ucsi *ucsi, u64 command,
- 	mutex_unlock(&ucsi->ppm_lock);
- 	return ret;
- }
-+
-+int ucsi_send_command(struct ucsi *ucsi, u64 command,
-+		      void *data, size_t size)
-+{
-+	return ucsi_send_command_common(ucsi, command, data, size, false);
-+}
- EXPORT_SYMBOL_GPL(ucsi_send_command);
- 
- /* -------------------------------------------------------------------------- */
-@@ -886,7 +886,9 @@ static void ucsi_handle_connector_change(struct work_struct *work)
- 	mutex_lock(&con->lock);
- 
- 	command = UCSI_GET_CONNECTOR_STATUS | UCSI_CONNECTOR_NUMBER(con->num);
--	ret = ucsi_send_command(ucsi, command, &con->status, sizeof(con->status));
-+
-+	ret = ucsi_send_command_common(ucsi, command, &con->status,
-+				       sizeof(con->status), true);
- 	if (ret < 0) {
- 		dev_err(ucsi->dev, "%s: GET_CONNECTOR_STATUS failed (%d)\n",
- 			__func__, ret);
-@@ -938,14 +940,6 @@ static void ucsi_handle_connector_change(struct work_struct *work)
- 	if (con->status.change & UCSI_CONSTAT_CAM_CHANGE)
- 		ucsi_partner_task(con, ucsi_check_altmodes, 1, 0);
- 
--	mutex_lock(&ucsi->ppm_lock);
--	clear_bit(EVENT_PENDING, &con->ucsi->flags);
--	ret = ucsi_acknowledge_connector_change(ucsi);
--	mutex_unlock(&ucsi->ppm_lock);
+-	if (found)
+-		pr_err("restrack: %s", CUT_HERE);
 -
--	if (ret)
--		dev_err(ucsi->dev, "%s: ACK failed (%d)", __func__, ret);
--
- out_unlock:
- 	mutex_unlock(&con->lock);
+ 	kfree(rt);
  }
+ 
 -- 
 2.43.0
 
