@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-56799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34ABB924603
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:30:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DAEF924520
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:19:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 670C01C21E6A
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:30:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A1DD2840D4
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBAE81BE846;
-	Tue,  2 Jul 2024 17:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35B615218A;
+	Tue,  2 Jul 2024 17:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQ/xI4Sv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTIWNzP5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF061514DC;
-	Tue,  2 Jul 2024 17:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711191BE226;
+	Tue,  2 Jul 2024 17:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941400; cv=none; b=foPkSaeat05j8b9pDP2AHs4EUEjBBaDHkwP5Q99k1a11mOz9EtoXWG8hGkOwEOG9cSOh+r1JMhGUKE78aVyXGWibkRUQW4p5CyZHCUv4zEPP2vVHYX7nwbOI0EM9UBc4gmW2UojRboTq1ZP+ZhqD1AUiz0poqHLlkBf94974KNk=
+	t=1719940689; cv=none; b=ODGzSAHKFXt6tKVbk7yk4aP9bsk8w+gFbV9TbeBc1wer0i7hK9m8VUZdd6/0KrXHv+IkZF+bidF3HQzzpRwNvJtMuFeaAZbYP5+SmuG5QvRCWVtlbdO3b63J5nlem2TwaumOtxAIlRUEEqlK027KzJA0Ekzn/Ji71mby1Y2DRAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941400; c=relaxed/simple;
-	bh=FXT33upDb2VwdlmbjtF0F0u9NMdms5DL7YhHOeLjyEs=;
+	s=arc-20240116; t=1719940689; c=relaxed/simple;
+	bh=deOwfQEeSyoY4n8dzRwazHOz1bNLHSUABDSINAOTQVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U7l2YS81NjvJ1IWxzvtKSFpI99xtZzOBKG/0YrXlWG0mvbM3DkR1ElPEHP2f6zAIvXRZAO9pxR74MbyCZmuSgZf8ZWVFIFrVK9CyezWgwPO0ly87EGV0CQWw0cK2vRhoWOcEyIt7IDU2ZeR3uCE9U8c+lr/D9E+6tMRfBiTXy3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQ/xI4Sv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E559FC116B1;
-	Tue,  2 Jul 2024 17:29:59 +0000 (UTC)
+	 MIME-Version; b=O8+VRLEKsIRmF904ePqIRD73bclJ3cphleFqPyxUIUsOUWzVfJlSSt3Ku1MXUoTyCp5b59zKRWsd79QntFJGRtulJXk2BfGUkxBJm69ivEUC8d3uK8yj1JdlJmfy50ulF09T9lpWKYjpOmk9A5IBz9ylrr3Vna+Exy8xUx5GWQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTIWNzP5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2BCAC116B1;
+	Tue,  2 Jul 2024 17:18:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941400;
-	bh=FXT33upDb2VwdlmbjtF0F0u9NMdms5DL7YhHOeLjyEs=;
+	s=korg; t=1719940689;
+	bh=deOwfQEeSyoY4n8dzRwazHOz1bNLHSUABDSINAOTQVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KQ/xI4SvyuH6TjR+EKwATCBdwZvcaVTz01sof+c2NYJyjxZW6Xc3bBLwh2g/zfKqe
-	 u/2g+KcUJd2sV3HcItZNwPrt5AefMxOjzWe2Ud9X1aS6PwNaYD3WscNJ0KPEmLExo2
-	 in9utZdgcS4RsCm6rULmdlMrJEHjTLmnro/TzMV4=
+	b=zTIWNzP5aoup7sWq2JS9BPYx8E3CJLWS+tV6x+juOd/YWZmnFNRpX7tFrOYRoXEyc
+	 hgXwsOjT53Xkac1eEwraJzzuMQeOUxEn23/d2qnNy/8bfSlNZuVC1zvkZotdu003fu
+	 bU7t4htLWmoFLMZykORDhAxgzEpa+gaQl7F9dHkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Erick Archer <erick.archer@outlook.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/128] drm/radeon/radeon_display: Decrease the size of allocated memory
+Subject: [PATCH 6.9 215/222] reset: gpio: Fix missing gpiolib dependency for GPIO reset controller
 Date: Tue,  2 Jul 2024 19:04:13 +0200
-Message-ID: <20240702170228.200503207@linuxfoundation.org>
+Message-ID: <20240702170252.205481301@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erick Archer <erick.archer@outlook.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit ae6a233092747e9652eb793d92f79d0820e01c6a ]
+[ Upstream commit 01f6a84c7a3eaabafd787608d630db31c6904f5c ]
 
-This is an effort to get rid of all multiplications from allocation
-functions in order to prevent integer overflows [1] [2].
+The GPIO reset controller uses gpiolib but there is no Kconfig
+dependency reflecting this fact, add one.
 
-In this case, the memory allocated to store RADEONFB_CONN_LIMIT pointers
-to "drm_connector" structures can be avoided. This is because this
-memory area is never accessed.
+With the addition of the controller to the arm64 defconfig this is
+causing build breaks for arm64 virtconfig in -next:
 
-Also, in the kzalloc function, it is preferred to use sizeof(*pointer)
-instead of sizeof(type) due to the type of the variable can change and
-one needs not change the former (unlike the latter).
+aarch64-linux-gnu-ld: drivers/reset/core.o: in function `__reset_add_reset_gpio_lookup':
+/build/stage/linux/drivers/reset/core.c:861:(.text+0xccc): undefined reference to `gpio_device_find_by_fwnode'
 
-At the same time take advantage to remove the "#if 0" block, the code
-where the removed memory area was accessed, and the RADEONFB_CONN_LIMIT
-constant due to now is never used.
-
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments [1]
-Link: https://github.com/KSPP/linux/issues/160 [2]
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Erick Archer <erick.archer@outlook.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: cee544a40e44 ("reset: gpio: Add GPIO-based reset controller")
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240325-reset-gpiolib-deps-v2-1-3ed2517f5f53@kernel.org
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/radeon.h         | 1 -
- drivers/gpu/drm/radeon/radeon_display.c | 8 +-------
- 2 files changed, 1 insertion(+), 8 deletions(-)
+ drivers/reset/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/radeon/radeon.h b/drivers/gpu/drm/radeon/radeon.h
-index 166c18d62f6d7..ec86c04a0d989 100644
---- a/drivers/gpu/drm/radeon/radeon.h
-+++ b/drivers/gpu/drm/radeon/radeon.h
-@@ -131,7 +131,6 @@ extern int radeon_cik_support;
- /* RADEON_IB_POOL_SIZE must be a power of 2 */
- #define RADEON_IB_POOL_SIZE			16
- #define RADEON_DEBUGFS_MAX_COMPONENTS		32
--#define RADEONFB_CONN_LIMIT			4
- #define RADEON_BIOS_NUM_SCRATCH			8
+diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
+index 85b27c42cf65b..f426b4c391796 100644
+--- a/drivers/reset/Kconfig
++++ b/drivers/reset/Kconfig
+@@ -68,6 +68,7 @@ config RESET_BRCMSTB_RESCAL
  
- /* internal ring indices */
-diff --git a/drivers/gpu/drm/radeon/radeon_display.c b/drivers/gpu/drm/radeon/radeon_display.c
-index 1814bb8e14f10..dbee301b3b2e8 100644
---- a/drivers/gpu/drm/radeon/radeon_display.c
-+++ b/drivers/gpu/drm/radeon/radeon_display.c
-@@ -683,7 +683,7 @@ static void radeon_crtc_init(struct drm_device *dev, int index)
- 	struct radeon_device *rdev = dev->dev_private;
- 	struct radeon_crtc *radeon_crtc;
- 
--	radeon_crtc = kzalloc(sizeof(struct radeon_crtc) + (RADEONFB_CONN_LIMIT * sizeof(struct drm_connector *)), GFP_KERNEL);
-+	radeon_crtc = kzalloc(sizeof(*radeon_crtc), GFP_KERNEL);
- 	if (radeon_crtc == NULL)
- 		return;
- 
-@@ -709,12 +709,6 @@ static void radeon_crtc_init(struct drm_device *dev, int index)
- 	dev->mode_config.cursor_width = radeon_crtc->max_cursor_width;
- 	dev->mode_config.cursor_height = radeon_crtc->max_cursor_height;
- 
--#if 0
--	radeon_crtc->mode_set.crtc = &radeon_crtc->base;
--	radeon_crtc->mode_set.connectors = (struct drm_connector **)(radeon_crtc + 1);
--	radeon_crtc->mode_set.num_connectors = 0;
--#endif
--
- 	if (rdev->is_atom_bios && (ASIC_IS_AVIVO(rdev) || radeon_r4xx_atom))
- 		radeon_atombios_init_crtc(dev, radeon_crtc);
- 	else
+ config RESET_GPIO
+ 	tristate "GPIO reset controller"
++	depends on GPIOLIB
+ 	help
+ 	  This enables a generic reset controller for resets attached via
+ 	  GPIOs.  Typically for OF platforms this driver expects "reset-gpios"
 -- 
 2.43.0
 
