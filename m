@@ -1,99 +1,101 @@
-Return-Path: <stable+bounces-56352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5A91923F32
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 15:40:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F5EE9240FA
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 16:34:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31786B29708
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 13:40:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C081428279B
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 14:34:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D141B47DC;
-	Tue,  2 Jul 2024 13:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03F316C6BD;
+	Tue,  2 Jul 2024 14:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iBPVwi6L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OzXFPyfb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C414A1AED5D;
-	Tue,  2 Jul 2024 13:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702671E50F
+	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 14:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719927632; cv=none; b=FNQ4D+D4OEh61UEaI4sA2glmNLRpx9paHmORiZcmDcJlTcZTzoFozlWjfLDwry9rKkPugHFZZPKqo3GxqsPArHciBIVSSWkG/TrTORnQnaMv07fVgbRzYb4Esb0InxG4LW24VK6VDq70g03/QMTWjusQyi7XrljM36drFNgh1f4=
+	t=1719930864; cv=none; b=ZDHPXAPB7gNgFd5Q8a+sGmgw1mAPXr9GWTBCv8A8pnFyPVJNpHVPFgbDHSNTTlepvnRUXv4Qc1+2uRI4X9Q0+jRJdu3bK88qnfKoffEFow3O5zKmyXjkBs0fGtB6Jks39vCVfazM3Ni5UwYpbKxfZ6NEOqeiTLsdLwidw4Q2N4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719927632; c=relaxed/simple;
-	bh=oWyMMPuMnk/cVjDHZftH+TzqlB1ahjPwRtOGWTrmum4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=dG9IVJy7jK8T65e70N5agKy+NTLUmvBVTIaJEyeh0bQvy6uHc7RrnRHULb347B+x8sdCsQZiI/erMorxrFqsfAJHrD63ygdJ0hYFzB6x2avNfznoIYCdLl1zL96j19Z5weV9lm5MvMjfos5HCei9ETs7AHf8V1tueWDW62PKyMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iBPVwi6L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4C7AAC116B1;
-	Tue,  2 Jul 2024 13:40:32 +0000 (UTC)
+	s=arc-20240116; t=1719930864; c=relaxed/simple;
+	bh=mojNYh3uNQO75hHSGvw6JO3ulgr5yNRSA2t8lCJMkWQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AG2nobonSoWlGUUmXFKHtqfzpuPo8BdDRLnqWc3FJeaEf1LyYCHxz6MBEcL8Wpn3TGh8Eyb2Ck88IHF0Le/2nlfXZZok3rImLXflWdTnFzp4cs+HQocG6M5lVcSPvtc+2HsFJNbtGs6UI5tuFMDu7EL5LUtN5RIBru8FoXuYAMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OzXFPyfb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE8CDC116B1;
+	Tue,  2 Jul 2024 14:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719927632;
-	bh=oWyMMPuMnk/cVjDHZftH+TzqlB1ahjPwRtOGWTrmum4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=iBPVwi6LyVgmhJNUGEtqynTEpSRPX/kUSJrh9ZjrUKwHEy0Z/svKF1QxOl0ldaJ6/
-	 YnNkN53iWQNyVTRWUot5Fx2Q/1Y0YqzT+OIPcl73IDoGywY2wzbcqsxumYOeKK+RP9
-	 31690r0e+f+OYTvzOPfDex/4GcMC/fUJ9QFZmW1GC6dQRNohtAbC/fZFh4Q2IkXEVI
-	 yN0l5chOUxW6g2tDVzwKGbssDRXy+wydi3WPfotNJl4M4bbS3EBmrfDQakGbbbdzlZ
-	 s92nAey6swXuU3dsjDnxmuH8tmEmR2eshfvkJqQ68Ud2JKFX7p+1dK1KWKyCu6ZbdH
-	 VSb9Fl9S+hReQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 38CB5CF3B95;
-	Tue,  2 Jul 2024 13:40:32 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1719930864;
+	bh=mojNYh3uNQO75hHSGvw6JO3ulgr5yNRSA2t8lCJMkWQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OzXFPyfbfY1e6lCMS+qIYZrQShym7mgsnaFlXNXuyoYtCywG33I7CkekXs5aUZWX9
+	 408MAHHmtAcLiFVkhr/EZnZ7+eB6L4MrVYHkBiT6O28CVR5MjV+Q/mRjfJXY2/p1yi
+	 5YS/ULKTMDOOHPOicGZdJNjo6mn0S+WAJndET63aW5EGUn+Wrl0SPLU+h0fHgIaGqb
+	 Yhezpvs/ycdmqbYJTtSvtUo0K81m+wggPNUM0TH/k7hDINBDQt5W0jvOx/X4akqfLK
+	 lyHb/axzXVunqU5bS1Jq5BpThmWVFEFhD4dlraokHefXOeq36ZS6VCYx3GsJjpgHta
+	 MBVvewbcZI7iw==
+Date: Tue, 2 Jul 2024 07:51:35 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Damien Le Moal <dlemoal@kernel.org>, cassel@kernel.org, hare@suse.de,
+	john.g.garry@oracle.com, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] ata: libata-core: Fix null pointer
+ dereference on error" failed to apply to 6.9-stable tree
+Message-ID: <ZoPpx32wXDpZ9dFQ@sashalap>
+References: <2024070105-falsify-surrender-babc@gregkh>
+ <64b91917-f2bc-48a2-9382-e4045c91dad9@kernel.org>
+ <2024070208-dazzling-charging-d5db@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: stmmac: dwmac-qcom-ethqos: fix error array size
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <171992763222.28501.4782727810061359612.git-patchwork-notify@kernel.org>
-Date: Tue, 02 Jul 2024 13:40:32 +0000
-References: <20240701014720.2547856-1-quic_yijiyang@quicinc.com>
-In-Reply-To: <20240701014720.2547856-1-quic_yijiyang@quicinc.com>
-To: YijieYang <quic_yijiyang@quicinc.com>
-Cc: vkoul@kernel.org, alexandre.torgue@foss.st.com, joabreu@synopsys.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, bartosz.golaszewski@linaro.org,
- netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- kernel@quicinc.com, quic_tengfan@quicinc.com, quic_aiquny@quicinc.com,
- quic_jiegan@quicinc.com, stable@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <2024070208-dazzling-charging-d5db@gregkh>
 
-Hello:
+On Tue, Jul 02, 2024 at 11:11:22AM +0200, Greg KH wrote:
+>On Tue, Jul 02, 2024 at 06:50:05AM +0900, Damien Le Moal wrote:
+>> On 7/1/24 23:31, gregkh@linuxfoundation.org wrote:
+>> >
+>> > The patch below does not apply to the 6.9-stable tree.
+>> > If someone wants it applied there, or to any other stable or longterm
+>> > tree, then please email the backport, including the original git commit
+>> > id to <stable@vger.kernel.org>.
+>> >
+>> > To reproduce the conflict and resubmit, you may use the following commands:
+>> >
+>> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.9.y
+>> > git checkout FETCH_HEAD
+>> > git cherry-pick -x 5d92c7c566dc76d96e0e19e481d926bbe6631c1e
+>> > # <resolve conflicts, build, test, etc.>
+>> > git commit -s
+>> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070105-falsify-surrender-babc@gregkh' --subject-prefix 'PATCH 6.9.y' HEAD^..
+>> >
+>> > Possible dependencies:
+>> >
+>> > 5d92c7c566dc ("ata: libata-core: Fix null pointer dereference on error")
+>>
+>> Greg,
+>>
+>> I am confused... This patch applies cleanly to linux-6.9.y. The procedure above
+>> also works just fine. And the "Possible dependencies" on itself does not make
+>> sense. Bot problem ?
+>
+>Odd, this seems to already be in the tree, sorry for the noise.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Sorry, I didn't expect something like this would happen, but it went in
+as a dependency for a different patch.
 
-On Mon, 1 Jul 2024 09:47:20 +0800 you wrote:
-> From: Yijie Yang <quic_yijiyang@quicinc.com>
-> 
-> Correct member @num_por with size of right array @emac_v4_0_0_por for
-> struct ethqos_emac_driver_data @emac_v4_0_0_data.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 8c4d92e82d50 ("net: stmmac: dwmac-qcom-ethqos: add support for emac4 on sa8775p platforms")
-> Signed-off-by: Yijie Yang <quic_yijiyang@quicinc.com>
-> 
-> [...]
-
-Here is the summary with links:
-  - net: stmmac: dwmac-qcom-ethqos: fix error array size
-    https://git.kernel.org/netdev/net/c/b698ab56837b
-
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks,
+Sasha
 
