@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-56756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B1129245D4
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:27:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD719244CA
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:15:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C95791F218EA
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:27:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C6351C21F60
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566371BE846;
-	Tue,  2 Jul 2024 17:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E51EF1BE232;
+	Tue,  2 Jul 2024 17:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwPySZ4p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBEXU8Cc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FEA1514DC;
-	Tue,  2 Jul 2024 17:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A205015B0FE;
+	Tue,  2 Jul 2024 17:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941252; cv=none; b=YGef4WfQvVzvvo9z7TjkNJb15pvQsM+IxTOcDKJs3zvfrVqvrUezxTe8xmPJpFXHLV5+ywnJJiZ5DelB+gBcBN02n7qma5BjtmKsefg6Wl1NcNzG1s8IRKjJeWEdw5TL+HHy0wnrwwkFuveHtIEj9iqtFxebISViAxXZ5Xz8fxk=
+	t=1719940501; cv=none; b=C67h9tns4UDJtVFQs9XONfMLb5qMDIVDTJ0uVrv79cL3gwPxFjchVeCMIgxVwVS83ZJSNkgPFiEzo1Ns4qIGUO5IKxPoojMK1fV2+On//jJvRCV8HBDthU0OOV40K68ExRs4Rip8jkeyyuBttxmj4DaeaitnYyQCtMemcMoIhBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941252; c=relaxed/simple;
-	bh=LllFre0D9LaX9i/UCubQvl434Nxn08fhVIJaVDCu5XQ=;
+	s=arc-20240116; t=1719940501; c=relaxed/simple;
+	bh=3PNfVrGqJN/gaiYW/SsKeQFKMqPpTepQ4u6efltq7ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BbKHaqrZtMjgH4dwSRRMap8ZUarz6t0WEkaUo6ZZq+0OohcUp99hGnA7aHe63ykAm4Uqk++fztgq/m1DHW/eUjwmagckckoR5WTy3Y+1y3vAlK9vANUG/UPVz4FRBTGp9B4FuVjtjIp03LVaHlJGKP0jtRFa12PMrkvrZx2zFHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwPySZ4p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89DB2C116B1;
-	Tue,  2 Jul 2024 17:27:31 +0000 (UTC)
+	 MIME-Version; b=qW9eDHOrei5buOgMrxU6/Lde5Uws3iBsU3LPCf/CoFBrItyxt1f+b/cpTmpiabXnEVD6N1Nf5CKRAyx/h4GM5t4fUNNw+luqJ5JSepisnV8+nnpC7CX+GtlK2Qujaj7UVlL4EAZZr3L0CQ6MBOqzYfrTzSaMkF4fhd90243s3UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBEXU8Cc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F09EC116B1;
+	Tue,  2 Jul 2024 17:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941251;
-	bh=LllFre0D9LaX9i/UCubQvl434Nxn08fhVIJaVDCu5XQ=;
+	s=korg; t=1719940501;
+	bh=3PNfVrGqJN/gaiYW/SsKeQFKMqPpTepQ4u6efltq7ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kwPySZ4p5W4WpjTdcNq1M3SjU6GEpP/a5SHtaTRJmvCleevr88sbS8Q515BIsTVE9
-	 M1EJcrgCemMLPq+Cjx+fUG/iCwePuTIJsg/nM/Hd40NirytVM4+kbAWhIiTIHtcadu
-	 Elqo+tTpX0CZgzkkdFioQd6bskXcXSWXZdER3Hfo=
+	b=eBEXU8CcDmEBY3HSyYknlHQV+zyuo0wiMWX0dJAiiP2DAjzr1nm+kfXPZCdd1G0zF
+	 +fNcXCIQMkTDNOlZwaVPYJy2aJ7GF1ZwmPUkISbFL6aBUed+T4wakHaJ21DmMh2+sh
+	 6rLOjrCZkX8uptF8gi4TCXkogpbMdD4UjcrRjm3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
-	Huang-Huang Bao <i@eh5.me>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 010/128] pinctrl: rockchip: use dedicated pinctrl type for RK3328
+	Tianli Xiong <xiongtianli@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.9 173/222] irqchip/loongson-liointc: Set different ISRs for different cores
 Date: Tue,  2 Jul 2024 19:03:31 +0200
-Message-ID: <20240702170226.624626448@linuxfoundation.org>
+Message-ID: <20240702170250.589786232@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang-Huang Bao <i@eh5.me>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 01b4b1d1cec48ef4c26616c2fc4600b2c9fec05a ]
+commit a9c3ee5d0fdb069b54902300df6ac822027f3b0a upstream.
 
-rk3328_pin_ctrl uses type of RK3288 which has a hack in
-rockchip_pinctrl_suspend and rockchip_pinctrl_resume to restore GPIO6-C6
-at assume, the hack is not applicable to RK3328 as GPIO6 is not even
-exist in it. So use a dedicated pinctrl type to skip this hack.
+The liointc hardware provides separate Interrupt Status Registers (ISR) for
+each core. The current code uses always the ISR of core #0, which works
+during boot because by default all interrupts are routed to core #0.
 
-Fixes: 3818e4a7678e ("pinctrl: rockchip: Add rk3328 pinctrl support")
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Huang-Huang Bao <i@eh5.me>
-Link: https://lore.kernel.org/r/20240606125755.53778-4-i@eh5.me
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When the interrupt routing changes in the firmware configuration then this
+causes interrupts to be lost because they are not configured in the
+corresponding core.
+
+Use the core index to access the correct ISR instead of a hardcoded 0.
+
+[ tglx: Massaged changelog ]
+
+Fixes: 0858ed035a85 ("irqchip/loongson-liointc: Add ACPI init support")
+Co-developed-by: Tianli Xiong <xiongtianli@loongson.cn>
+Signed-off-by: Tianli Xiong <xiongtianli@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240622043338.1566945-1-chenhuacai@loongson.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-rockchip.c | 5 ++++-
- drivers/pinctrl/pinctrl-rockchip.h | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-loongson-liointc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
-index a2203124562ff..7a437ae674b76 100644
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -2479,6 +2479,7 @@ static int rockchip_get_pull(struct rockchip_pin_bank *bank, int pin_num)
- 	case RK3188:
- 	case RK3288:
- 	case RK3308:
-+	case RK3328:
- 	case RK3368:
- 	case RK3399:
- 	case RK3568:
-@@ -2537,6 +2538,7 @@ static int rockchip_set_pull(struct rockchip_pin_bank *bank,
- 	case RK3188:
- 	case RK3288:
- 	case RK3308:
-+	case RK3328:
- 	case RK3368:
- 	case RK3399:
- 	case RK3568:
-@@ -2799,6 +2801,7 @@ static bool rockchip_pinconf_pull_valid(struct rockchip_pin_ctrl *ctrl,
- 	case RK3188:
- 	case RK3288:
- 	case RK3308:
-+	case RK3328:
- 	case RK3368:
- 	case RK3399:
- 	case RK3568:
-@@ -3825,7 +3828,7 @@ static struct rockchip_pin_ctrl rk3328_pin_ctrl = {
- 		.pin_banks		= rk3328_pin_banks,
- 		.nr_banks		= ARRAY_SIZE(rk3328_pin_banks),
- 		.label			= "RK3328-GPIO",
--		.type			= RK3288,
-+		.type			= RK3328,
- 		.grf_mux_offset		= 0x0,
- 		.iomux_recalced		= rk3328_mux_recalced_data,
- 		.niomux_recalced	= ARRAY_SIZE(rk3328_mux_recalced_data),
-diff --git a/drivers/pinctrl/pinctrl-rockchip.h b/drivers/pinctrl/pinctrl-rockchip.h
-index 4759f336941ef..849266f8b1913 100644
---- a/drivers/pinctrl/pinctrl-rockchip.h
-+++ b/drivers/pinctrl/pinctrl-rockchip.h
-@@ -193,6 +193,7 @@ enum rockchip_pinctrl_type {
- 	RK3188,
- 	RK3288,
- 	RK3308,
-+	RK3328,
- 	RK3368,
- 	RK3399,
- 	RK3568,
--- 
-2.43.0
-
+--- a/drivers/irqchip/irq-loongson-liointc.c
++++ b/drivers/irqchip/irq-loongson-liointc.c
+@@ -28,7 +28,7 @@
+ 
+ #define LIOINTC_INTC_CHIP_START	0x20
+ 
+-#define LIOINTC_REG_INTC_STATUS	(LIOINTC_INTC_CHIP_START + 0x20)
++#define LIOINTC_REG_INTC_STATUS(core)	(LIOINTC_INTC_CHIP_START + 0x20 + (core) * 8)
+ #define LIOINTC_REG_INTC_EN_STATUS	(LIOINTC_INTC_CHIP_START + 0x04)
+ #define LIOINTC_REG_INTC_ENABLE	(LIOINTC_INTC_CHIP_START + 0x08)
+ #define LIOINTC_REG_INTC_DISABLE	(LIOINTC_INTC_CHIP_START + 0x0c)
+@@ -217,7 +217,7 @@ static int liointc_init(phys_addr_t addr
+ 		goto out_free_priv;
+ 
+ 	for (i = 0; i < LIOINTC_NUM_CORES; i++)
+-		priv->core_isr[i] = base + LIOINTC_REG_INTC_STATUS;
++		priv->core_isr[i] = base + LIOINTC_REG_INTC_STATUS(i);
+ 
+ 	for (i = 0; i < LIOINTC_NUM_PARENT; i++)
+ 		priv->handler[i].parent_int_map = parent_int_map[i];
 
 
 
