@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-56547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D6B29244E0
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:16:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CC692456F
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:22:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80AD61C22002
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:16:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B0AF28434D
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA041BE223;
-	Tue,  2 Jul 2024 17:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6AAE1BBBD7;
+	Tue,  2 Jul 2024 17:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hg1Vk7LM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hx8co11V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1D6178381;
-	Tue,  2 Jul 2024 17:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 733BE15218A;
+	Tue,  2 Jul 2024 17:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940547; cv=none; b=G4IUd8WIxaTtpOi2ca3Xa1tHV+LiNNX6n0WEZzSq4MKefblP8A8/kzK+Lu7dbPtF6/pwKPHUHryog/H0XY9Dtg4SsB3UKKpUDljrCUvEAHdMkNmOhmcYyibmy3Cic5OQtH9/BQX5t56Aoh06gQ5YF289BCuPbaUOPLHVBxnz1uA=
+	t=1719940933; cv=none; b=U4fyPyL+BdNjltb6CDDvbdRAxmF3c1sac7LDkzSlPreo9rQvQ6TSULNJnNzCMvjcHDPxWL7SUmTwBziRx4nVjG3oYVVfJUKZchvsufyzCz3lSL8dnKpq5ehho3j97gz/v/QPyUrX/+5zSAkwUyM6FpuWxqx/NIXyjmWPct3FYWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940547; c=relaxed/simple;
-	bh=+7hFTAgTWfhPBHWp0D/8EiMx3u3/qny7j2OX+4AZ3AU=;
+	s=arc-20240116; t=1719940933; c=relaxed/simple;
+	bh=JY/X8N1Tf7bkDDpI5OjStF4CcjwjpJx/fszVKayEvfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j9o5s4GQ2Mlmk99DxlWch3OSblLJji3uj8jy65q3hfE+pNSN1rBhizDXEJm9mdOmzvnRl0neurHk9Gv3kfeYLfxGKBTh1oWeS06/B0wgDcZMvsmloh7il8km+0vN0zz0sH3XV772K2eyo8i/oR1H4rJN0Ca3AuWUWDJAfQ+3cpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hg1Vk7LM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AAD0C116B1;
-	Tue,  2 Jul 2024 17:15:46 +0000 (UTC)
+	 MIME-Version; b=cn7q7Cq4WDHY0p8c+z8f37La1gxwcBDG1VDJ+pt8Xl2Bb6OgNPjadH9C6WcrO0Eul+OEg80G/+YTFqI8pF3q3kKRjGqr+LElFNpg4X1L0jJnKvGPbFdCPSFQIvyHfKOD0GDMVuuJReTo9aefwbImnog6NaFBf60b8rnIgrRUTzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hx8co11V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75BCDC116B1;
+	Tue,  2 Jul 2024 17:22:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940547;
-	bh=+7hFTAgTWfhPBHWp0D/8EiMx3u3/qny7j2OX+4AZ3AU=;
+	s=korg; t=1719940932;
+	bh=JY/X8N1Tf7bkDDpI5OjStF4CcjwjpJx/fszVKayEvfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hg1Vk7LMtZzbjJcz3whzSgzS2JMS4vQBxlGulWKsDcJ/2kfQSv8CI2+UulizZfBgX
-	 6BJCk9Oq7JFMYQYrOGapOumjUCufj7S0NSckC4lxl8Hxt68D7sCCq8cz6C6532exe7
-	 IJ9gQj/3uKTfTcOPBYmNEEwu8SRu/tN97qEY5E1g=
+	b=Hx8co11VfDK7h283IVt2tpnF4k54WnOnVsm2y05QR1FC31dJjHJbrQVtPA9H1mNwX
+	 /OTkhPxp/T8XRo1SpvdnkEuOsSo2Uns7i1IQacls7TezhRLCSm/LLfFsAnKa/bd8l7
+	 OFXm4MzRdFY8wv+rswMHzGaNzs+fhUIBiI7rR4Mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Brown <doug@schmorgal.com>
-Subject: [PATCH 6.9 155/222] Revert "serial: core: only stop transmit when HW fifo is empty"
-Date: Tue,  2 Jul 2024 19:03:13 +0200
-Message-ID: <20240702170249.903686296@linuxfoundation.org>
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.6 080/163] Revert "MIPS: pci: lantiq: restore reset gpio polarity"
+Date: Tue,  2 Jul 2024 19:03:14 +0200
+Message-ID: <20240702170236.090316103@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Brown <doug@schmorgal.com>
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-commit c5603e2a621dac10c5e21cc430848ebcfa6c7e01 upstream.
+commit 6e5aee08bd2517397c9572243a816664f2ead547 upstream.
 
-This reverts commit 7bfb915a597a301abb892f620fe5c283a9fdbd77.
+This reverts commit 277a0363120276645ae598d8d5fea7265e076ae9.
 
-This commit broke pxa and omap-serial, because it inhibited them from
-calling stop_tx() if their TX FIFOs weren't completely empty. This
-resulted in these two drivers hanging during transmits because the TX
-interrupt would stay enabled, and a new TX interrupt would never fire.
+While fixing old boards with broken DTs, this change will break
+newer ones with correct gpio polarity annotation.
 
-Cc: stable@vger.kernel.org
-Fixes: 7bfb915a597a ("serial: core: only stop transmit when HW fifo is empty")
-Signed-off-by: Doug Brown <doug@schmorgal.com>
-Link: https://lore.kernel.org/r/20240606195632.173255-2-doug@schmorgal.com
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/serial_core.h |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/mips/pci/pci-lantiq.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -789,8 +789,7 @@ enum UART_TX_FLAGS {
- 	if (pending < WAKEUP_CHARS) {					      \
- 		uart_write_wakeup(__port);				      \
- 									      \
--		if (!((flags) & UART_TX_NOSTOP) && pending == 0 &&	      \
--		    __port->ops->tx_empty(__port))			      \
-+		if (!((flags) & UART_TX_NOSTOP) && pending == 0)	      \
- 			__port->ops->stop_tx(__port);			      \
- 	}								      \
- 									      \
+--- a/arch/mips/pci/pci-lantiq.c
++++ b/arch/mips/pci/pci-lantiq.c
+@@ -124,14 +124,14 @@ static int ltq_pci_startup(struct platfo
+ 		clk_disable(clk_external);
+ 
+ 	/* setup reset gpio used by pci */
+-	reset_gpio = devm_gpiod_get_optional(&pdev->dev, "reset", GPIOD_ASIS);
++	reset_gpio = devm_gpiod_get_optional(&pdev->dev, "reset",
++					     GPIOD_OUT_LOW);
+ 	error = PTR_ERR_OR_ZERO(reset_gpio);
+ 	if (error) {
+ 		dev_err(&pdev->dev, "failed to request gpio: %d\n", error);
+ 		return error;
+ 	}
+ 	gpiod_set_consumer_name(reset_gpio, "pci_reset");
+-	gpiod_direction_output(reset_gpio, 1);
+ 
+ 	/* enable auto-switching between PCI and EBU */
+ 	ltq_pci_w32(0xa, PCI_CR_CLK_CTRL);
+@@ -194,10 +194,10 @@ static int ltq_pci_startup(struct platfo
+ 
+ 	/* toggle reset pin */
+ 	if (reset_gpio) {
+-		gpiod_set_value_cansleep(reset_gpio, 0);
++		gpiod_set_value_cansleep(reset_gpio, 1);
+ 		wmb();
+ 		mdelay(1);
+-		gpiod_set_value_cansleep(reset_gpio, 1);
++		gpiod_set_value_cansleep(reset_gpio, 0);
+ 	}
+ 	return 0;
+ }
 
 
 
