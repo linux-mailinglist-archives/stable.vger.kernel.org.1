@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EDBD924508
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:18:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E04F5924602
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 671941C22AAB
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:18:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DC081C21E6A
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6965E1C0067;
-	Tue,  2 Jul 2024 17:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B5811BE251;
+	Tue,  2 Jul 2024 17:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zfd5YSSB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zc6CEazE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A651C2319;
-	Tue,  2 Jul 2024 17:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C011514DC;
+	Tue,  2 Jul 2024 17:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940639; cv=none; b=idr48tKgpzNlNZzj8e0OgoZ1SD9BrBECsf2TM21pQS/Uzip/m0eaqPFTwZQf978WyhUbktArG4/tIT3/7e+yEmSr+5uXPEbL5uTPKN/OEjiQ9fVo/wtP17Dz5Wm4RyZ7RyuvgYqGyU0buOBqbWxrPBqStvDjPVvGSsx3gLtEaDw=
+	t=1719941397; cv=none; b=IGzfNuKHXSD4+C0prcouwuynd49FsjQ2cwXl267o0K1r4Q8YplZYlQQaBwyuIsfooK0oh4PFq/f5lyxnwgtNYu3s6EeD840ZG/ucqbRCEVNxWuwC2z420oidf1GF3TLYepjrP7b2s+hf9clWxiniRF2/jFsqz61pHptQz6kPAcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940639; c=relaxed/simple;
-	bh=llnxrEQcIivxNRw9QjLE6CEvdCgOt9wN2d8rwixSDN4=;
+	s=arc-20240116; t=1719941397; c=relaxed/simple;
+	bh=qFvIRaP5htAS3D6ey4tGPj75U04WBaiLyhcmkmDw0YQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m0/9slxdQMM7cpImnA9iie/4qD1qQn+yMh9/iSsGgHrYvQ0g+/ivxDs+7c3DwQw+rZgSRHWVhX0cIgk0+0r9E9Im5Nzb/PMDuszHwBKNDSOYMxAvPdXbHKP0LJYTjxk3dPvbRFingFBmN1KZh7zpCesyCmtAg1T/IT/5J2Oq6yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zfd5YSSB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74921C116B1;
-	Tue,  2 Jul 2024 17:17:18 +0000 (UTC)
+	 MIME-Version; b=NAAbUpRP/OCvTrVrBp6ZeHbG2IuxFm/8/jqeyOs5U9hFZwSQ2Qzp8KI4KGJDPxaTD6OF6X03YkmoSIK1OHBTngoau/93kbArzUJUte3+HV8ZuhEzI2TFIPU9YYwEL3LVtTeS9o4CBeNuuyZJMl9tn6g2gegKPjQFLaqGpEYTWAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zc6CEazE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A28DAC116B1;
+	Tue,  2 Jul 2024 17:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940638;
-	bh=llnxrEQcIivxNRw9QjLE6CEvdCgOt9wN2d8rwixSDN4=;
+	s=korg; t=1719941397;
+	bh=qFvIRaP5htAS3D6ey4tGPj75U04WBaiLyhcmkmDw0YQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zfd5YSSBVsYjcp1Q8MspgmjHyuMQglB1F+QC0ix22BfXEEQAi2R9ZuIew6ODdJD4v
-	 tN60nJjK6Jn9EDIwHFl7PtQvJWKTMOj4QPsH0HrnRgMxi63CAvPLcTmNC53HmPt/FU
-	 gxUaIMNRTTYz5SkGQvdR1U3owQSMHqVRhr0kwkzE=
+	b=Zc6CEazEkQf5pRlFp3Tt2P9ll7bwQGIgUYvuFtvEBivz8Y3XWpPiaJc1E3606bziH
+	 lpldLfxgAdDO+59hTsEDz/CVtAdXBzOvKXAg73Y2Uz4WDkeAHpfspRPSGcMXuBSDRr
+	 z55LMW6UMlGJV4C/pM+3l48xlLKeB/i1gCvjCg5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Andrew Davis <afd@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 214/222] arm64: dts: rockchip: fix PMIC interrupt pin on ROCK Pi E
+Subject: [PATCH 6.1 051/128] soc: ti: wkup_m3_ipc: Send NULL dummy message instead of pointer message
 Date: Tue,  2 Jul 2024 19:04:12 +0200
-Message-ID: <20240702170252.166413565@linuxfoundation.org>
+Message-ID: <20240702170228.163923417@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: FUKAUMI Naoki <naoki@radxa.com>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit 02afd3d5b9fa4ffed284c0f7e7bec609097804fc ]
+[ Upstream commit ddbf3204f600a4d1f153498f618369fca352ae00 ]
 
-use GPIO0_A2 as interrupt pin for PMIC. GPIO2_A6 was used for
-pre-production board.
+mbox_send_message() sends a u32 bit message, not a pointer to a message.
+We only convert to a pointer type as a generic type. If we want to send
+a dummy message of 0, then simply send 0 (NULL).
 
-Fixes: b918e81f2145 ("arm64: dts: rockchip: rk3328: Add Radxa ROCK Pi E")
-Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
-Link: https://lore.kernel.org/r/20240619050047.1217-1-naoki@radxa.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20240325165507.30323-1-afd@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/soc/ti/wkup_m3_ipc.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts b/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
-index f09d60bbe6c4f..a608a219543e5 100644
---- a/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
-@@ -241,8 +241,8 @@
- 	rk805: pmic@18 {
- 		compatible = "rockchip,rk805";
- 		reg = <0x18>;
--		interrupt-parent = <&gpio2>;
--		interrupts = <6 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio0>;
-+		interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
- 		#clock-cells = <1>;
- 		clock-output-names = "xin32k", "rk805-clkout2";
- 		gpio-controller;
+diff --git a/drivers/soc/ti/wkup_m3_ipc.c b/drivers/soc/ti/wkup_m3_ipc.c
+index 343c58ed58961..103d793bae748 100644
+--- a/drivers/soc/ti/wkup_m3_ipc.c
++++ b/drivers/soc/ti/wkup_m3_ipc.c
+@@ -16,7 +16,6 @@
+ #include <linux/irq.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/omap-mailbox.h>
+ #include <linux/platform_device.h>
+ #include <linux/remoteproc.h>
+ #include <linux/suspend.h>
+@@ -314,7 +313,6 @@ static irqreturn_t wkup_m3_txev_handler(int irq, void *ipc_data)
+ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
+ {
+ 	struct device *dev = m3_ipc->dev;
+-	mbox_msg_t dummy_msg = 0;
+ 	int ret;
+ 
+ 	if (!m3_ipc->mbox) {
+@@ -330,7 +328,7 @@ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
+ 	 * the RX callback to avoid multiple interrupts being received
+ 	 * by the CM3.
+ 	 */
+-	ret = mbox_send_message(m3_ipc->mbox, &dummy_msg);
++	ret = mbox_send_message(m3_ipc->mbox, NULL);
+ 	if (ret < 0) {
+ 		dev_err(dev, "%s: mbox_send_message() failed: %d\n",
+ 			__func__, ret);
+@@ -352,7 +350,6 @@ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
+ static int wkup_m3_ping_noirq(struct wkup_m3_ipc *m3_ipc)
+ {
+ 	struct device *dev = m3_ipc->dev;
+-	mbox_msg_t dummy_msg = 0;
+ 	int ret;
+ 
+ 	if (!m3_ipc->mbox) {
+@@ -361,7 +358,7 @@ static int wkup_m3_ping_noirq(struct wkup_m3_ipc *m3_ipc)
+ 		return -EIO;
+ 	}
+ 
+-	ret = mbox_send_message(m3_ipc->mbox, &dummy_msg);
++	ret = mbox_send_message(m3_ipc->mbox, NULL);
+ 	if (ret < 0) {
+ 		dev_err(dev, "%s: mbox_send_message() failed: %d\n",
+ 			__func__, ret);
 -- 
 2.43.0
 
