@@ -1,93 +1,108 @@
-Return-Path: <stable+bounces-56322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710A691F855
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 10:24:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 152A1923152
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 10:36:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBE961F2307F
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 08:24:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 406B2B23725
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 08:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F103114E2F1;
-	Tue,  2 Jul 2024 08:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96CF12B163;
+	Tue,  2 Jul 2024 08:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4nfYCWT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sujjuxdg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9220914E2E9
-	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 08:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DB917C72
+	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 08:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719908641; cv=none; b=Nl4wMb7hKGhlI04EBgFZWCKZZFqS9GE2raDmeJ6z7kIZkQk2UY4mGm0roCNEgJAB0na7oTDoz8n9elLU3kIZSEsq1D26asqIHlrse6HYMhnl/0aHMJmXtGIg2iUlsn1OaXMsZS6LKRxR4qv0afH5irnX5yNS9aWgw+mTheTA5lk=
+	t=1719909383; cv=none; b=uR4OoeTdQCr1gMKetae8mCuK+hfr+l3qh7fnNBH4gGCTflk15m5HbD2X1mTK90KzhKPPO9GnnKNOA/DJYUg5JStDxd2A7H1LAeNkpKEP8cjc417t+xd0k3N6CMirX519hrcpiyt8evT8rFvDBjV/sIMbdURVOaffZCOi64TXAsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719908641; c=relaxed/simple;
-	bh=HwuNYHhAlzi0weewNtA+GrJQ2bgQUTsIRBGXlc4jmqU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CTBuM+Gx2yP1RNeMHug4R30yfJ04IRmeXtg+d5JNB7ouWCCHVIhQrrr2IbJb7feKotXpGighh/0yOvHqZDjtTCqDIRh85bfWMxkJyp1Bd9SdoqOw48bR/B7QjNROWmxX9cEVeknttpFddHcITeqv4B9QN4yLHwbSOphMvhlYAyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4nfYCWT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C93C32781;
-	Tue,  2 Jul 2024 08:24:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719908641;
-	bh=HwuNYHhAlzi0weewNtA+GrJQ2bgQUTsIRBGXlc4jmqU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=r4nfYCWT1+J0mPm9uDfzNSxZAN3aTyOSIGZvAtS7qc4lMZuBkYWLRqiA9vBs7Q3SS
-	 2i5+zmACdi7ysz3rW1QDiuZH+BPlHXQ+KMh6NuQ9jYjRxIayisfht6zjcdGjKv+EYw
-	 HZSepn1empIyvJKv/9byTT585VFs0UTEt2BdFHRo=
-Date: Tue, 2 Jul 2024 10:23:58 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Wen Gu <guwen@linux.alibaba.com>
-Cc: stable@vger.kernel.org, alikernel-developer@linux.alibaba.com,
-	Dust Li <dust.li@linux.alibaba.com>,
-	"D. Wythe" <alibuda@linux.alibaba.com>, mqaio@linux.alibaba.com
-Subject: Re: Please backport d8616ee2affc ("bpf, sockmap: Fix
- sk->sk_forward_alloc warn_on in sk_stream_kill_queues") to linux-5.10.y
-Message-ID: <2024070225-dictation-rebuff-be4b@gregkh>
-References: <d11bc7e6-a2c7-445a-8561-3599eafb07b0@linux.alibaba.com>
+	s=arc-20240116; t=1719909383; c=relaxed/simple;
+	bh=OKkoSHW1x7JRrFJ1g0E3bowB2xX2QXIvgfi0ltu5Zcs=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DUzy1KOaKlLPv47i2beYfh6IDHqWqqJH7grPtHt8I940mN8ingZQsNfVYg/nBXWf7KvRAfZq33yf1ysPvFLcA9nlrnwPDKqeZWrEWktg4PhuMXLEmQd2t3IAcBdYKdr3h44QXWjg0Q39bFFbtvhgDU8g5jtXCI6ukU/G7ePVAVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sujjuxdg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D247C116B1;
+	Tue,  2 Jul 2024 08:36:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719909383;
+	bh=OKkoSHW1x7JRrFJ1g0E3bowB2xX2QXIvgfi0ltu5Zcs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=sujjuxdgWJTLk5PIVyik4PEbjixPCsfESJj7xhgoBK+9M3L62pB+anWLxBhBZit8P
+	 zhvyCvXGMNjzuYtRHCXfTITFEB8OTwdYhkk2W69uMSNsg90d1OiHnNQ+yCeKqcxSvm
+	 GM4bdetHtsMdZqkgJU78MSngoKVPe5vy71uLHdS8xOhRR5p5zrhbVjeq8gPZii6eLp
+	 no1ycP+uDlMiX08n8ECByk5o1xA9/+suMagLMftzQyFOxDaWN+q0rw8sjCV2yMTyUK
+	 bsHFEiFXeWWd50iiZdbvtyeARkl1RpWyPOauoyBcO5DsvbAtuj7IZTDcW7D5u2qhQg
+	 h5qccxpcgk0+A==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sOYzs-0092RS-Ok;
+	Tue, 02 Jul 2024 09:36:20 +0100
+Date: Tue, 02 Jul 2024 09:36:20 +0100
+Message-ID: <867ce4i41n.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: "Gowans, James" <jgowans@amazon.com>
+Cc: "gregkh@linuxfoundation.org"
+	<gregkh@linuxfoundation.org>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"chenxiang66@hisilicon.com" <chenxiang66@hisilicon.com>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"Sironi, Filippo"
+	<sironi@amazon.de>
+Subject: Re: FAILED: patch "[PATCH] KVM: arm64: vgic-v4: Make the doorbell request robust w.r.t" failed to apply to 5.10-stable tree
+In-Reply-To: <62f253b96773478773a6cc79977663a687e0f8eb.camel@amazon.com>
+References: <2023072324-aviation-delirious-b27d@gregkh>
+	<62f253b96773478773a6cc79977663a687e0f8eb.camel@amazon.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d11bc7e6-a2c7-445a-8561-3599eafb07b0@linux.alibaba.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: jgowans@amazon.com, gregkh@linuxfoundation.org, yuzenghui@huawei.com, chenxiang66@hisilicon.com, oliver.upton@linux.dev, stable@vger.kernel.org, sironi@amazon.de
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Sun, Jun 30, 2024 at 08:55:56PM +0800, Wen Gu wrote:
-> Hi stable team,
+On Mon, 01 Jul 2024 11:56:57 +0100,
+"Gowans, James" <jgowans@amazon.com> wrote:
 > 
-> Could you please backport [1] to linux-5.10.y?
+> On Sun, 2023-07-23 at 22:41 +0200, gregkh@linuxfoundation.org wrote:
+> > The patch below does not apply to the 5.10-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
 > 
-> I noticed a regression caused by [2], which was merged to linux-5.10.y since v5.10.80.
+> Blast from the past, but we've recently been bitten by this bug when
+> running a v5.10 kernel. I'm going to back-port it to v5.10 and v5.15,
+> resolve the conflicts and post it.
 > 
-> After sock_map_unhash() helper was removed in [2], sock elems added to the bpf sock map
-> via sock_hash_update_common() cannot be removed if they are in the icsk_accept_queue
-> of the listener sock. Since they have not been accept()ed, they cannot be removed via
-> sock_map_close()->sock_map_remove_links() either.
-> 
-> It can be reproduced in network test with short-lived connections. If the server is
-> stopped during the test, there is a probability that some sock elems will remain in
-> the bpf sock map.
-> 
-> And with [1], the sock_map_destroy() helper is introduced to invoke sock_map_remove_links()
-> when inet_csk_listen_stop()->inet_child_forget()->inet_csk_destroy_sock(), to remove the
-> sock elems from the bpf sock map in such situation.
-> 
-> [1] d8616ee2affc ("bpf, sockmap: Fix sk->sk_forward_alloc warn_on in sk_stream_kill_queues")
-> (link: https://lore.kernel.org/all/20220524075311.649153-1-wangyufen@huawei.com/)
-> [2] 8b5c98a67c1b ("bpf, sockmap: Remove unhash handler for BPF sockmap usage")
-> (link: https://lore.kernel.org/all/20211103204736.248403-3-john.fastabend@gmail.com/)
+> Marc, please will you take a look and see if you're happy with the
+> backport? The main change is going back to the old style of vCPU flag
+> manipulation.
 
-As there is fuzz with this patch, please send a backported, and tested,
-version of this patch so we can include it and properly show who it was
-requested from.
+Thanks for having a stab at this.
 
-thanks,
+I eyeballed the two patches, and couldn't see anything untoward.
+However, I haven't tested them, as life is too short to run
+prehistoric kernels ;-).
 
-greg k-h
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
