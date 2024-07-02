@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-56576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C4A92450A
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:18:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A54889245E3
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:28:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 537351C22D15
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:18:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FD2428263F
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7F431C0061;
-	Tue,  2 Jul 2024 17:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 115401BE22B;
+	Tue,  2 Jul 2024 17:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="llDPVIfy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DB1wisNw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8748A1BE846;
-	Tue,  2 Jul 2024 17:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C2A1514DC;
+	Tue,  2 Jul 2024 17:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940642; cv=none; b=D/nv3aLryJ1hOkyDFnjIXeF4I8Xk8EwSX82RZ2N41L5wc5YgRrGC7vN3j18ZohZP9JW9YaHw6QE9L67XvrBsKfxwnq5DrzAZunSpsEIlXy3RncHNxDihXP+6OTiiF2G/CidzNLNEMH65gh8Me8bsqwzTA7oTWdBWMK9ef4jT7PM=
+	t=1719941301; cv=none; b=FRx1HJ7ehLkuaaM1wHLNqaDXOo71GwbRfWRJeAwyu/7h8kZaUsiEZNaVB3wOfEnAjXxWfTiuGuYrTSekksXj8rKSJyQeT7SIB45e/I43HpFaPefowhuKhHM28vjGlI/KSGp6+XnMtob92yP9lSW5PShno3G45+/2DeLX4uP4tg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940642; c=relaxed/simple;
-	bh=IiEqP1J6dk/eYn83NAUGFXa4Pgr7Ls9S1breN+C44xI=;
+	s=arc-20240116; t=1719941301; c=relaxed/simple;
+	bh=Qua3BFbP8n/KHJ4g1qzPtbWKrqFQQnvcQz1KqwdRjrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dh3htcWpz/ahsxBMvf3thE3dagSvbGaEN+0AY58XJ/A9fos9WWQ6P4/MtEhIXhxKEO0CY5CHbubou4F3TubxmFRenYWxZiOl9FcohvfmzzQ7tOlFudcpCjZK8RCs8HzjdWI7I64Dgc4tEl8SVj5DljlGuw6xKEZMSCQczNLfRu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=llDPVIfy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB010C116B1;
-	Tue,  2 Jul 2024 17:17:21 +0000 (UTC)
+	 MIME-Version; b=ahRCjyH8dsTqJ9JzrJWHVeySyiIb3jpZ+Unm1AGZEpe7weP1WXXbYsg4fXr6lFs1o5mUIs+Pxg7yX8GIYmISOB8UsX01dFMgFbJNgUzuZs9ZsJ0R989gG7D48KWmGwISlfwAOsYn3lfA/jM1uWP5jFU5tso3uWZorAqCxx+A+Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DB1wisNw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB455C116B1;
+	Tue,  2 Jul 2024 17:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940642;
-	bh=IiEqP1J6dk/eYn83NAUGFXa4Pgr7Ls9S1breN+C44xI=;
+	s=korg; t=1719941300;
+	bh=Qua3BFbP8n/KHJ4g1qzPtbWKrqFQQnvcQz1KqwdRjrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=llDPVIfyRfZXb6LGMwiG8ypWzhCdbVdtXcFpVVxdkVx6D5CEIikBYubL0sEKaZIpG
-	 1WnnkK7qvnW7a1DOklseYHJNJpLzKAm81k1LaWe5UB9nrpCHFiLGZEV2KIeNgdlRkR
-	 FaSSA25AM41h1oqCgvy8nzzCb2Lcb4EiK/gyoGhk=
+	b=DB1wisNwFhkToxFV6eCF2FhC03ljvpFcdBZhwcmBmadtKlo6Sy+RUTGIbij80K1V3
+	 PZD0ZxmandOh7etfk4PFkDNP5iZrYLiZDcItCI7O0d0ApqTKzWhSzJ/RC96ARB5euk
+	 R7UAygMdGUOjjbXyOe3a0Vl/Idqcs/0QGab5acWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Michael Strauss <michael.strauss@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.9 185/222] drm/amd/display: Send DP_TOTAL_LTTPR_CNT during detection if LTTPR is present
-Date: Tue,  2 Jul 2024 19:03:43 +0200
-Message-ID: <20240702170251.057435123@linuxfoundation.org>
+	Nick Child <nnac123@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 023/128] ibmvnic: Free any outstanding tx skbs during scrq reset
+Date: Tue,  2 Jul 2024 19:03:44 +0200
+Message-ID: <20240702170227.111131753@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Strauss <michael.strauss@amd.com>
+From: Nick Child <nnac123@linux.ibm.com>
 
-commit 2ec6c7f802332d1eff16f03e7c757f1543ee1183 upstream.
+[ Upstream commit 49bbeb5719c2f56907d3a9623b47c6c15c2c431d ]
 
-[WHY]
-New register field added in DP2.1 SCR, needed for auxless ALPM
+There are 2 types of outstanding tx skb's:
+Type 1: Packets that are sitting in the drivers ind_buff that are
+waiting to be batch sent to the NIC. During a device reset, these are
+freed with a call to ibmvnic_tx_scrq_clean_buffer()
+Type 2: Packets that have been sent to the NIC and are awaiting a TX
+completion IRQ. These are free'd during a reset with a call to
+clean_tx_pools()
 
-[HOW]
-Echo value read from 0xF0007 back to sink
+During any reset which requires us to free the tx irq, ensure that the
+Type 2 skb references are freed. Since the irq is released, it is
+impossible for the NIC to inform of any completions.
 
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Michael Strauss <michael.strauss@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Furthermore, later in the reset process is a call to init_tx_pools()
+which marks every entry in the tx pool as free (ie not outstanding).
+So if the driver is to make a call to init_tx_pools(), it must first
+be sure that the tx pool is empty of skb references.
+
+This issue was discovered by observing the following in the logs during
+EEH testing:
+	TX free map points to untracked skb (tso_pool 0 idx=4)
+	TX free map points to untracked skb (tso_pool 0 idx=5)
+	TX free map points to untracked skb (tso_pool 1 idx=36)
+
+Fixes: 65d6470d139a ("ibmvnic: clean pending indirect buffs during reset")
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c |   10 +++++++++-
- drivers/gpu/drm/amd/display/include/dpcd_defs.h                    |    5 +++++
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ibm/ibmvnic.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-@@ -1590,9 +1590,17 @@ static bool retrieve_link_cap(struct dc_
- 			return false;
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index 157be4e9be4b7..8f377d0a80fe6 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -3859,6 +3859,12 @@ static void release_sub_crqs(struct ibmvnic_adapter *adapter, bool do_h_free)
+ 		adapter->num_active_tx_scrqs = 0;
  	}
  
--	if (dp_is_lttpr_present(link))
-+	if (dp_is_lttpr_present(link)) {
- 		configure_lttpr_mode_transparent(link);
- 
-+		// Echo TOTAL_LTTPR_CNT back downstream
-+		core_link_write_dpcd(
-+				link,
-+				DP_TOTAL_LTTPR_CNT,
-+				&link->dpcd_caps.lttpr_caps.phy_repeater_cnt,
-+				sizeof(link->dpcd_caps.lttpr_caps.phy_repeater_cnt));
-+	}
++	/* Clean any remaining outstanding SKBs
++	 * we freed the irq so we won't be hearing
++	 * from them
++	 */
++	clean_tx_pools(adapter);
 +
- 	/* Read DP tunneling information. */
- 	status = dpcd_get_tunneling_device_data(link);
- 
---- a/drivers/gpu/drm/amd/display/include/dpcd_defs.h
-+++ b/drivers/gpu/drm/amd/display/include/dpcd_defs.h
-@@ -177,4 +177,9 @@ enum dpcd_psr_sink_states {
- #define DP_SINK_PR_PIXEL_DEVIATION_PER_LINE     0x379
- #define DP_SINK_PR_MAX_NUMBER_OF_DEVIATION_LINE 0x37A
- 
-+/* Remove once drm_dp_helper.h is updated upstream */
-+#ifndef DP_TOTAL_LTTPR_CNT
-+#define DP_TOTAL_LTTPR_CNT                                  0xF000A /* 2.1 */
-+#endif
-+
- #endif /* __DAL_DPCD_DEFS_H__ */
+ 	if (adapter->rx_scrq) {
+ 		for (i = 0; i < adapter->num_active_rx_scrqs; i++) {
+ 			if (!adapter->rx_scrq[i])
+-- 
+2.43.0
+
 
 
 
