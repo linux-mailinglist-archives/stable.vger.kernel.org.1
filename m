@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-56745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20DC9245CA
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:26:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A63692461C
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:31:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D98C28A434
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:26:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C943288793
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2ED1BE847;
-	Tue,  2 Jul 2024 17:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246401BD4EA;
+	Tue,  2 Jul 2024 17:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6RqWgDq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wb9AXold"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CEF01BE258;
-	Tue,  2 Jul 2024 17:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AC163D;
+	Tue,  2 Jul 2024 17:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941216; cv=none; b=pRQpVCssMMb2PlR9SsnpNNVRULyc+2Y44W0CaHNEOAC8eKYm+ebEDtFrGZoHDv5P/F7FksN6nwvoSLKkGgYhz3c91Up9D8dCfy8vBR+0tltj3OwxBDZPwxoPxbbhmGRNZKBOt4sfMDfy9Vpdao7gR1be2iDp4BaQRSCUU+9ufNg=
+	t=1719941474; cv=none; b=ZMfYbpZ8bTiiGrcf9PT/JzB+zWd7izgu1VQOb11TM/4+zMc9xqfSHPzR2pW4J2trTUqSrs3afmr0CdcOJaQQN8Dg0ijXczAu+GHxBla/45yNN8Z+44wduHYt4YGa9p+FmPcHujHsHaFpo3IPIJhG/rSa8ZvlKhWoH++ITU6iXmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941216; c=relaxed/simple;
-	bh=CBxrAPtD8LCf6FKA0iRG9R1ebhL6NrzNMFXnHmkrxro=;
+	s=arc-20240116; t=1719941474; c=relaxed/simple;
+	bh=eL/a3J80ZsPNyjRx75RgApiYKSyQAGVkaYVzD8a24Lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvy1Du8RcX3NUiIQxe5aUJ+Kab3WXQ1fWRoH64JHkJA4BXakXeX8wgeiPxqNdAGZgGBOMZqb7J25EoXWQWvc5Z6sNZFL6yZLx/UYe4sJGy9rj2nVIvyTJlQy3qUQO2eNsv2qp8mYsp41fESiTnLvjqVj/l5CzVScMFUqI8KHjGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6RqWgDq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28D5C4AF07;
-	Tue,  2 Jul 2024 17:26:55 +0000 (UTC)
+	 MIME-Version; b=UejTqC7P2e3S9DVHBQy9QaCudAvRRR353uXKnZRBOI3EAlPIeHWzwg3TCcLNOIk0Ow3UjRv0VScR0G7MqpN35yrInhgydSbGjMBJfTtUFhP8HIpYg/RRmb6BugdjrDIoiRzbzdJ84HJ7it+qsmOiiDOyfa0FoqxzhPv58oTZndc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wb9AXold; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 453F5C116B1;
+	Tue,  2 Jul 2024 17:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941216;
-	bh=CBxrAPtD8LCf6FKA0iRG9R1ebhL6NrzNMFXnHmkrxro=;
+	s=korg; t=1719941474;
+	bh=eL/a3J80ZsPNyjRx75RgApiYKSyQAGVkaYVzD8a24Lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T6RqWgDqK4iDywCB8gqGJpAc5YYRluJPRnWBn8HdWa9OqFJ5xVNBtyt/woEhvKHfz
-	 nKwnlMoRfhoAORIkYb0H2c4YSULEdmaoOBtpLvJB7DLYOfFqQnoo0gh/ercqFiYgrl
-	 cTHTNqlhAMl4krJOf1dSMTizLaEyyYjes2WEZKW8=
+	b=wb9AXoldwm+dZDbf1qasBnHHUmueL+jv0RRmcihrCXK21DG5mCqNZesFxWXqCynUA
+	 vU+XE7NipdKHL3g1ReSW05nsfSMSGn8P4VNhrgTqAqtRhcXsj9r2BjOz6Y5PatSCDU
+	 dgiCWhrUIu92p0EBg+fQiIdnQ1AxMQpj4uaVaH3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alison Schofield <alison.schofield@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 162/163] cxl/region: Avoid null pointer dereference in region lookup
+Subject: [PATCH 6.1 075/128] i2c: testunit: discard write requests while old command is running
 Date: Tue,  2 Jul 2024 19:04:36 +0200
-Message-ID: <20240702170239.191759115@linuxfoundation.org>
+Message-ID: <20240702170229.067448024@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alison Schofield <alison.schofield@intel.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 285f2a08841432fc3e498b1cd00cce5216cdf189 ]
+[ Upstream commit c116deafd1a5cc1e9739099eb32114e90623209c ]
 
-cxl_dpa_to_region() looks up a region based on a memdev and DPA.
-It wrongly assumes an endpoint found mapping the DPA is also of
-a fully assembled region. When not true it leads to a null pointer
-dereference looking up the region name.
+When clearing registers on new write requests was added, the protection
+for currently running commands was missed leading to concurrent access
+to the testunit registers. Check the flag beforehand.
 
-This appears during testing of region lookup after a failure to
-assemble a BIOS defined region or if the lookup raced with the
-assembly of the BIOS defined region.
-
-Failure to clean up BIOS defined regions that fail assembly is an
-issue in itself and a fix to that problem will alleviate some of
-the impact. It will not alleviate the race condition so let's harden
-this path.
-
-The behavior change is that the kernel oops due to a null pointer
-dereference is replaced with a dev_dbg() message noting that an
-endpoint was mapped.
-
-Additional comments are added so that future users of this function
-can more clearly understand what it provides.
-
-Fixes: 0a105ab28a4d ("cxl/memdev: Warn of poison inject or clear to a mapped region")
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://patch.msgid.link/20240604003609.202682-1-alison.schofield@intel.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Fixes: b39ab96aa894 ("i2c: testunit: add support for block process calls")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/region.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/i2c/i2c-slave-testunit.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index d2ce309434654..0d59af19ecee7 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -2518,22 +2518,33 @@ static int __cxl_dpa_to_region(struct device *dev, void *arg)
- {
- 	struct cxl_dpa_to_region_context *ctx = arg;
- 	struct cxl_endpoint_decoder *cxled;
-+	struct cxl_region *cxlr;
- 	u64 dpa = ctx->dpa;
+diff --git a/drivers/i2c/i2c-slave-testunit.c b/drivers/i2c/i2c-slave-testunit.c
+index 4945adc69d78d..54c08f48a8b85 100644
+--- a/drivers/i2c/i2c-slave-testunit.c
++++ b/drivers/i2c/i2c-slave-testunit.c
+@@ -121,6 +121,9 @@ static int i2c_slave_testunit_slave_cb(struct i2c_client *client,
+ 		break;
  
- 	if (!is_endpoint_decoder(dev))
- 		return 0;
- 
- 	cxled = to_cxl_endpoint_decoder(dev);
--	if (!cxled->dpa_res || !resource_size(cxled->dpa_res))
-+	if (!cxled || !cxled->dpa_res || !resource_size(cxled->dpa_res))
- 		return 0;
- 
- 	if (dpa > cxled->dpa_res->end || dpa < cxled->dpa_res->start)
- 		return 0;
- 
--	dev_dbg(dev, "dpa:0x%llx mapped in region:%s\n", dpa,
--		dev_name(&cxled->cxld.region->dev));
-+	/*
-+	 * Stop the region search (return 1) when an endpoint mapping is
-+	 * found. The region may not be fully constructed so offering
-+	 * the cxlr in the context structure is not guaranteed.
-+	 */
-+	cxlr = cxled->cxld.region;
-+	if (cxlr)
-+		dev_dbg(dev, "dpa:0x%llx mapped in region:%s\n", dpa,
-+			dev_name(&cxlr->dev));
-+	else
-+		dev_dbg(dev, "dpa:0x%llx mapped in endpoint:%s\n", dpa,
-+			dev_name(dev));
- 
--	ctx->cxlr = cxled->cxld.region;
-+	ctx->cxlr = cxlr;
- 
- 	return 1;
- }
+ 	case I2C_SLAVE_WRITE_REQUESTED:
++		if (test_bit(TU_FLAG_IN_PROCESS, &tu->flags))
++			return -EBUSY;
++
+ 		memset(tu->regs, 0, TU_NUM_REGS);
+ 		tu->reg_idx = 0;
+ 		break;
 -- 
 2.43.0
 
