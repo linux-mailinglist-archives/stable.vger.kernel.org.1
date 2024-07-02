@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-56603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FEE492452E
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:19:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81638924475
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:10:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B8571F218A3
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:19:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B428D1C21E50
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:10:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C2C1BE23B;
-	Tue,  2 Jul 2024 17:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBEF1BE23E;
+	Tue,  2 Jul 2024 17:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wepS92mG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjLX9naN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCE1BE5A;
-	Tue,  2 Jul 2024 17:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED481BD002;
+	Tue,  2 Jul 2024 17:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940733; cv=none; b=t3+vVIH5J6U/CCy9AcwZ+kNqVnIqM8Z7K3QtUGSqZ+vvXVHT2UFEQ5w31uuz8MCQ1VjNTsV/voMcR4erSeHvRgN2LsVifq83E2whNr8DgAKYDwZUPD2a7kU8hfTetrNEJHZ8itM0o2AsuffH0q95tO7qIevZcNA88vu5WFjKl+8=
+	t=1719940247; cv=none; b=OWM6fukRS6wXUmNBuXI4K+2a5XhhUk64R3uNrxuurL7ZI1I0GcNm4d1VUpxd0pgE1Ym1md/IVcPBxMBM12M8vawp9xpKR25mhls2g7BxP6c8FBv+xLzsO2W97WKA5fU5YW4ADUPL0o/WnR/lJMDlrVS6fvTNVnxTDE+n31bOwqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940733; c=relaxed/simple;
-	bh=qEg/JPLpa8wa1dVWdrxRatvcbFAQXlG3mwQ//9L8fXM=;
+	s=arc-20240116; t=1719940247; c=relaxed/simple;
+	bh=axIlLpq3Ltfdo0lUDcZL3UWrZGo98kOVDbcTjVdVHiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nX9rZzN1rFLdgBmEKv8lvH0j+bJOb8OecVREuVElGnkwj3M89mtJ3r2yml+bpSgj4aBdSfZjTsjiGzeJU2G38JjvAQ9tLfQ6V/BJcoIjw4dwTKjZshpUq9dkq6CkLn1lgljSkGepXewLdHU+41FSB/XObjOPFGu++bfUDKO+Axo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wepS92mG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD55C116B1;
-	Tue,  2 Jul 2024 17:18:53 +0000 (UTC)
+	 MIME-Version; b=Ma+XKV9RTJZMt5idkjZHkx05r2SDtSFE7SC3KA7fuhLUi/R/y4RvZ3Yv2AwObt0CCAXEwvJj8At1Npyup2GHRB4AE56z+lJxQVazXHm+RK7mIOWvLN1wJNeaFONYWhGr7l84C0W3bQMFSIwmmakckekHxvCFBBp4pQwEZFbWdfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjLX9naN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4736CC116B1;
+	Tue,  2 Jul 2024 17:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940733;
-	bh=qEg/JPLpa8wa1dVWdrxRatvcbFAQXlG3mwQ//9L8fXM=;
+	s=korg; t=1719940246;
+	bh=axIlLpq3Ltfdo0lUDcZL3UWrZGo98kOVDbcTjVdVHiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wepS92mGQg3QPeMGK50SDzRj7bE1KI0O56PRpiMfkoAerhUwgNE8+4H4NEp2JodwQ
-	 2MvRVbNIRLiPq8hebuHlj0x4lHevFkMDjhGjvranrSqqzEH5fTbAQ8P3RCl1Eey6sf
-	 PYPNdAmVNCFmAxgcdVY5LybK/eyieqphd9FeB2nc=
+	b=yjLX9naN/uhY9QzXY9oc9kAuqX2D6L+33/WBm/A8TbQx1fnVlrpkjo0Qn8x84/66z
+	 w55JiNddb4IVdBCqjvHUM9XpN4B5RPK1xwHnqMbWIdcGofm4LU/BDOMSK4/rx29M2l
+	 PAPHJh4WZ8xuBazhkoczbVWiBIhPPHzerDmeUE/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Liu Ying <victor.liu@nxp.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/163] ASoC: q6apm-lpass-dai: close graph on prepare errors
+Subject: [PATCH 6.9 097/222] drm/panel: simple: Add missing display timing flags for KOE TX26D202VM0BWA
 Date: Tue,  2 Jul 2024 19:02:15 +0200
-Message-ID: <20240702170233.860817084@linuxfoundation.org>
+Message-ID: <20240702170247.677070003@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From: Liu Ying <victor.liu@nxp.com>
 
-[ Upstream commit be1fae62cf253a5b67526cee9fbc07689b97c125 ]
+[ Upstream commit 37ce99b77762256ec9fda58d58fd613230151456 ]
 
-There is an issue around with error handling and graph management with
-the exising code, none of the error paths close the graph, which result in
-leaving the loaded graph in dsp, however the driver thinks otherwise.
+KOE TX26D202VM0BWA panel spec indicates the DE signal is active high in
+timing chart, so add DISPLAY_FLAGS_DE_HIGH flag in display timing flags.
+This aligns display_timing with panel_desc.
 
-This can have a nasty side effect specially when we try to load the same
-graph to dsp, dsp returns error which leaves the board with no sound and
-requires restart.
-
-Fix this by properly closing the graph when we hit errors between
-open and close.
-
-Fixes: 30ad723b93ad ("ASoC: qdsp6: audioreach: add q6apm lpass dai support")
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # X13s
-Link: https://lore.kernel.org/r/20240613-q6apm-fixes-v1-1-d88953675ab3@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 8a07052440c2 ("drm/panel: simple: Add support for KOE TX26D202VM0BWA panel")
+Signed-off-by: Liu Ying <victor.liu@nxp.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240624015612.341983-1-victor.liu@nxp.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240624015612.341983-1-victor.liu@nxp.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/qdsp6/q6apm-lpass-dais.c | 32 +++++++++++++++----------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
-index 7ad604b80e25e..6511f0a08de16 100644
---- a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
-+++ b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
-@@ -140,14 +140,17 @@ static void q6apm_lpass_dai_shutdown(struct snd_pcm_substream *substream, struct
- 	struct q6apm_lpass_dai_data *dai_data = dev_get_drvdata(dai->dev);
- 	int rc;
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index e8fe5a69454d0..6aac6f2accb43 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -2707,6 +2707,7 @@ static const struct display_timing koe_tx26d202vm0bwa_timing = {
+ 	.vfront_porch = { 3, 5, 10 },
+ 	.vback_porch = { 2, 5, 10 },
+ 	.vsync_len = { 5, 5, 5 },
++	.flags = DISPLAY_FLAGS_DE_HIGH,
+ };
  
--	if (!dai_data->is_port_started[dai->id])
--		return;
--	rc = q6apm_graph_stop(dai_data->graph[dai->id]);
--	if (rc < 0)
--		dev_err(dai->dev, "fail to close APM port (%d)\n", rc);
-+	if (dai_data->is_port_started[dai->id]) {
-+		rc = q6apm_graph_stop(dai_data->graph[dai->id]);
-+		dai_data->is_port_started[dai->id] = false;
-+		if (rc < 0)
-+			dev_err(dai->dev, "fail to close APM port (%d)\n", rc);
-+	}
- 
--	q6apm_graph_close(dai_data->graph[dai->id]);
--	dai_data->is_port_started[dai->id] = false;
-+	if (dai_data->graph[dai->id]) {
-+		q6apm_graph_close(dai_data->graph[dai->id]);
-+		dai_data->graph[dai->id] = NULL;
-+	}
- }
- 
- static int q6apm_lpass_dai_prepare(struct snd_pcm_substream *substream, struct snd_soc_dai *dai)
-@@ -162,8 +165,10 @@ static int q6apm_lpass_dai_prepare(struct snd_pcm_substream *substream, struct s
- 		q6apm_graph_stop(dai_data->graph[dai->id]);
- 		dai_data->is_port_started[dai->id] = false;
- 
--		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
-+		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
- 			q6apm_graph_close(dai_data->graph[dai->id]);
-+			dai_data->graph[dai->id] = NULL;
-+		}
- 	}
- 
- 	/**
-@@ -182,26 +187,29 @@ static int q6apm_lpass_dai_prepare(struct snd_pcm_substream *substream, struct s
- 
- 	cfg->direction = substream->stream;
- 	rc = q6apm_graph_media_format_pcm(dai_data->graph[dai->id], cfg);
--
- 	if (rc) {
- 		dev_err(dai->dev, "Failed to set media format %d\n", rc);
--		return rc;
-+		goto err;
- 	}
- 
- 	rc = q6apm_graph_prepare(dai_data->graph[dai->id]);
- 	if (rc) {
- 		dev_err(dai->dev, "Failed to prepare Graph %d\n", rc);
--		return rc;
-+		goto err;
- 	}
- 
- 	rc = q6apm_graph_start(dai_data->graph[dai->id]);
- 	if (rc < 0) {
- 		dev_err(dai->dev, "fail to start APM port %x\n", dai->id);
--		return rc;
-+		goto err;
- 	}
- 	dai_data->is_port_started[dai->id] = true;
- 
- 	return 0;
-+err:
-+	q6apm_graph_close(dai_data->graph[dai->id]);
-+	dai_data->graph[dai->id] = NULL;
-+	return rc;
- }
- 
- static int q6apm_lpass_dai_startup(struct snd_pcm_substream *substream, struct snd_soc_dai *dai)
+ static const struct panel_desc koe_tx26d202vm0bwa = {
 -- 
 2.43.0
 
