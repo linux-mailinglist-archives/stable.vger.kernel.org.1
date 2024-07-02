@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04D85924586
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:23:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A659245D7
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:27:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0D172864DB
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:23:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E3B1282862
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:27:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49E61BE244;
-	Tue,  2 Jul 2024 17:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40A31BE22B;
+	Tue,  2 Jul 2024 17:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xbnEvEE2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhdAt9aD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7350316B394;
-	Tue,  2 Jul 2024 17:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B041514DC;
+	Tue,  2 Jul 2024 17:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941005; cv=none; b=JUCvN6TOs/CDGNE+CKHF7jYUNYOrZKRHBBj+OVGkodjGx/EZDIwSK/Gml2MOLouTUz32eslKYYcVUp+kguapQ5pmpUXRJSnG1ihYbRktlauuDqT6JZHsKfIJXfHILZXT95qT83QuD26vdiJvII37tXimSRXXIn73e4/flQN5b1U=
+	t=1719941259; cv=none; b=sDGDQHnjKxM65ytf4JLI+2f7aDA+hfcrq5Gyce+LYhm+XK2q+P02itIbH40OJ9PwMN/wLsMRcSIR+E46ZDtbanYPYhK5LFw5quXzZQn/f5HiVreDW+SrFD4wg4p29a9Lyr7Xg3ZG/i+B0eZKLlex+LnFt968v0m3tgXgOCoKxb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941005; c=relaxed/simple;
-	bh=Wgt3spuTpg/71TMO4wrKsOn5KAZbQIqIxwGJs47UDY8=;
+	s=arc-20240116; t=1719941259; c=relaxed/simple;
+	bh=v0mzWV2mJFQSmee/PSUSrvYVX/Ovg+6fwMoX+WdutkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FXiWuuNq+w/QFgjsJqNh+uhkajlTzXTWYAwvKRztM+3ut0BiCDJ/mEang9WiIzs1BLmcyuv2cEyOlNmJFoIK9TS5S1DaICEVxhb1xs+pembQBzlIo/LSQa+DrehsJMF0OF2PmkryQt0NKzl2kVhk+8KJjtQGFPS3TxbFgUFKYHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xbnEvEE2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6566C116B1;
-	Tue,  2 Jul 2024 17:23:24 +0000 (UTC)
+	 MIME-Version; b=IrmO71ixGNxE5a82W3x3AVtdftUyGm42Fy1zA9ukW+JFrmsE7zgkA/+05UYjiwF6avfkqup14m+P/4m9+gp0245WcmFL8eCNeTKliJ0tR2qjGchQHhCp8tg4aIJ2+swzdPb3iLIQJrUQ9PqiVyha26EIy6n4+6yYbuV40XoZt5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhdAt9aD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D81C116B1;
+	Tue,  2 Jul 2024 17:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941005;
-	bh=Wgt3spuTpg/71TMO4wrKsOn5KAZbQIqIxwGJs47UDY8=;
+	s=korg; t=1719941259;
+	bh=v0mzWV2mJFQSmee/PSUSrvYVX/Ovg+6fwMoX+WdutkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xbnEvEE2dtS2YARBLgEWO22WOCDH5DVmjHpWXruI/uWrNTwS/JC2JlimQclpPKLtX
-	 Zyo87y8PQAVlLxFP1QYYMHyAhbmtYCc49N4Zo598CF23EtpE2FWl1cPtVfLZBJa24T
-	 MBo1jW2BOFnKi4I36NXEByDy9j0V5XYD+M23VYfM=
+	b=LhdAt9aDx/n+o9ihgz0SbR5qQiSpxDSwNDQA8fLlq6TT7yxP3B8UZgg3NJBWyL+Lw
+	 G8M8uJ40FSZ3MZmvSUtqH3igV11/LjjjoQ15uFsZz0OPsNBzXzsx+Ho56IR9OwhEa8
+	 18p4n2iwqtAVwHsOr/H/4psrJVJCkX4zHTwF+Z0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 099/163] iio: accel: fxls8962af: select IIO_BUFFER & IIO_KFIFO_BUF
+	Martin Schiller <ms@dev.tdt.de>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 012/128] MIPS: pci: lantiq: restore reset gpio polarity
 Date: Tue,  2 Jul 2024 19:03:33 +0200
-Message-ID: <20240702170236.810351424@linuxfoundation.org>
+Message-ID: <20240702170226.699245531@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Martin Schiller <ms@dev.tdt.de>
 
-commit a821d7111e3f7c8869961b606714a299bfe20014 upstream.
+[ Upstream commit 277a0363120276645ae598d8d5fea7265e076ae9 ]
 
-Provide missing symbols to the module:
-ERROR: modpost: iio_push_to_buffers [drivers/iio/accel/fxls8962af-core.ko] undefined!
-ERROR: modpost: devm_iio_kfifo_buffer_setup_ext [drivers/iio/accel/fxls8962af-core.ko] undefined!
+Commit 90c2d2eb7ab5 ("MIPS: pci: lantiq: switch to using gpiod API") not
+only switched to the gpiod API, but also inverted / changed the polarity
+of the GPIO.
 
+According to the PCI specification, the RST# pin is an active-low
+signal. However, most of the device trees that have been widely used for
+a long time (mainly in the openWrt project) define this GPIO as
+active-high and the old driver code inverted the signal internally.
+
+Apparently there are actually boards where the reset gpio must be
+operated inverted. For this reason, we cannot use the GPIOD_OUT_LOW/HIGH
+flag for initialization. Instead, we must explicitly set the gpio to
+value 1 in order to take into account any "GPIO_ACTIVE_LOW" flag that
+may have been set.
+
+In order to remain compatible with all these existing device trees, we
+should therefore keep the logic as it was before the commit.
+
+Fixes: 90c2d2eb7ab5 ("MIPS: pci: lantiq: switch to using gpiod API")
 Cc: stable@vger.kernel.org
-Fixes: 79e3a5bdd9ef ("iio: accel: fxls8962af: add hw buffered sampling")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Reviewed-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://lore.kernel.org/r/20240605203810.2908980-2-alexander.sverdlin@siemens.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Martin Schiller <ms@dev.tdt.de>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/Kconfig |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/pci/pci-lantiq.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/iio/accel/Kconfig
-+++ b/drivers/iio/accel/Kconfig
-@@ -325,6 +325,8 @@ config DMARD10
- config FXLS8962AF
- 	tristate
- 	depends on I2C || !I2C # cannot be built-in for modular I2C
-+	select IIO_BUFFER
-+	select IIO_KFIFO_BUF
+diff --git a/arch/mips/pci/pci-lantiq.c b/arch/mips/pci/pci-lantiq.c
+index 8d16cd021f604..5c83f54341299 100644
+--- a/arch/mips/pci/pci-lantiq.c
++++ b/arch/mips/pci/pci-lantiq.c
+@@ -124,14 +124,14 @@ static int ltq_pci_startup(struct platform_device *pdev)
+ 		clk_disable(clk_external);
  
- config FXLS8962AF_I2C
- 	tristate "NXP FXLS8962AF/FXLS8964AF Accelerometer I2C Driver"
+ 	/* setup reset gpio used by pci */
+-	reset_gpio = devm_gpiod_get_optional(&pdev->dev, "reset",
+-					     GPIOD_OUT_LOW);
++	reset_gpio = devm_gpiod_get_optional(&pdev->dev, "reset", GPIOD_ASIS);
+ 	error = PTR_ERR_OR_ZERO(reset_gpio);
+ 	if (error) {
+ 		dev_err(&pdev->dev, "failed to request gpio: %d\n", error);
+ 		return error;
+ 	}
+ 	gpiod_set_consumer_name(reset_gpio, "pci_reset");
++	gpiod_direction_output(reset_gpio, 1);
+ 
+ 	/* enable auto-switching between PCI and EBU */
+ 	ltq_pci_w32(0xa, PCI_CR_CLK_CTRL);
+@@ -194,10 +194,10 @@ static int ltq_pci_startup(struct platform_device *pdev)
+ 
+ 	/* toggle reset pin */
+ 	if (reset_gpio) {
+-		gpiod_set_value_cansleep(reset_gpio, 1);
++		gpiod_set_value_cansleep(reset_gpio, 0);
+ 		wmb();
+ 		mdelay(1);
+-		gpiod_set_value_cansleep(reset_gpio, 0);
++		gpiod_set_value_cansleep(reset_gpio, 1);
+ 	}
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
