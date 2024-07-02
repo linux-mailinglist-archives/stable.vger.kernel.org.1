@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-56583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34D97924514
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:18:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A6F9245CF
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:27:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D39161F21B4C
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:18:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E3A0B25B07
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3D31C0DD4;
-	Tue,  2 Jul 2024 17:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18EE1BE24F;
+	Tue,  2 Jul 2024 17:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgK+riQD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4TPmTX4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384BB1B5814;
-	Tue,  2 Jul 2024 17:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7046A1514DC;
+	Tue,  2 Jul 2024 17:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940665; cv=none; b=rPD0Asx/XoHtEFUSKyDjtent3fBXVaeS4+R+EvNVRM8ols6unKTnM0xKkr4Ofv80kBg9erg8wKH3DIt6qwCbbWJvTvYhJEPggHCbSUP8kBYaYqiAqYUmHQgLxfDzLT39tYeQOjbwxaAoVhNMamFbXzcNMV3hTtvudD5aFOdSyeE=
+	t=1719941229; cv=none; b=jiSIICEuOjBjye7eBeWc2dxEz6E/Vl13w8hJkEVE6y//9OYxqSsnvI24L9gonXHdcWWq7eojYsl/y9nQQ8K7lUJ6IoeBt0zxjioY8D8EbKBo5f7+xXL8+NXZS/jgi6R3235QQ3VCqGbu6lItWYmgrK8QNVLb9jJEdpOayqQ/8SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940665; c=relaxed/simple;
-	bh=Hexyp1Jpax5OUyVIv0MXHJeRRS2sEtE70yrLsAZ6NKk=;
+	s=arc-20240116; t=1719941229; c=relaxed/simple;
+	bh=SapN4vWpsvNQLK6wHDuAQJsLZtzyOelUnpWkaSKxVBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQ12v34t9UdOqlcQIX6o7kiLB30K8s2kphTRMntIFYU8EAiJ1e/jHBuzteFHXXpdEqjFDCciJssemREtTIASlTBORJ5GwlC0iLxa06bJaXEsqHvULCWj4NHVyBrJzbkbVXRKRXXDSz8IpH3Undz3wF9NPW+aYm2e9KXtHltATEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgK+riQD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921FFC116B1;
-	Tue,  2 Jul 2024 17:17:44 +0000 (UTC)
+	 MIME-Version; b=r+6iPzyVMponjZU7YE/LLaNM13I/vEQ2FbBuhZpG1fZEK5YN3aczHWo0uiKZ6r9dUwXl5wI69xv7WwHB4PbARG0gwDHiRJ/t00EU/O6y9rfr0ZyQ14iTGD8HYFVnwZ23W3f17NLnwFCp0CJjZLKjIbgvzoTkU0ihWUTtrlouqLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4TPmTX4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE46EC116B1;
+	Tue,  2 Jul 2024 17:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940665;
-	bh=Hexyp1Jpax5OUyVIv0MXHJeRRS2sEtE70yrLsAZ6NKk=;
+	s=korg; t=1719941229;
+	bh=SapN4vWpsvNQLK6wHDuAQJsLZtzyOelUnpWkaSKxVBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XgK+riQDAnSlIku4P5JFIe96lvUToiSWhzWfZYXsHXTNTJf6kOCMtNDMUh+7BVeQH
-	 G0/6RpOj7HibQ2iXAKqTsBKT6Wl4TgXTx7+Mn2JExxG0hXMiIJbZWm3ivUbjnQJD3Y
-	 quAYszhUKg1nMHiK6oH7Y87dWSC34F/DnvJKknDY=
+	b=b4TPmTX4DT2EpWfBZRbTEoGdEPJRBhcZVW5rtcTA+AoZkwFqMnFF2w/sJq2wFH2WU
+	 ROuk5vjc+dswUcJwBduVObAZC4fVKyFJr9b0Xln/fuhuJ1Y5H9N1hF/0GPxWjvQ6p9
+	 r0cO3iymG384WKoQ4x/e4JWcal106eA5ai62QgEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andyshrk@163.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 216/222] arm64: dts: rockchip: Fix the i2c address of es8316 on Cool Pi 4B
+	Ma Ke <make24@iscas.ac.cn>,
+	Lyude Paul <lyude@redhat.com>
+Subject: [PATCH 6.6 140/163] drm/nouveau/dispnv04: fix null pointer dereference in nv17_tv_get_hd_modes
 Date: Tue,  2 Jul 2024 19:04:14 +0200
-Message-ID: <20240702170252.243618381@linuxfoundation.org>
+Message-ID: <20240702170238.353168015@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andyshrk@163.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 5d101df8fc3261607bd946a222248dd193956a0a ]
+commit 6d411c8ccc0137a612e0044489030a194ff5c843 upstream.
 
-According to the hardware design, the i2c address of audio codec es8316
-on Cool Pi 4B is 0x10.
+In nv17_tv_get_hd_modes(), the return value of drm_mode_duplicate() is
+assigned to mode, which will lead to a possible NULL pointer dereference
+on failure of drm_mode_duplicate(). The same applies to drm_cvt_mode().
+Add a check to avoid null pointer dereference.
 
-This fix the read/write error like bellow:
-es8316 7-0011: ASoC: error at soc_component_write_no_lock on es8316.7-0011 for register: [0x0000000c] -6
-es8316 7-0011: ASoC: error at soc_component_write_no_lock on es8316.7-0011 for register: [0x00000003] -6
-es8316 7-0011: ASoC: error at soc_component_read_no_lock on es8316.7-0011 for register: [0x00000016] -6
-es8316 7-0011: ASoC: error at soc_component_read_no_lock on es8316.7-0011 for register: [0x00000016] -6
-
-Fixes: 3f5d336d64d6 ("arm64: dts: rockchip: Add support for rk3588s based board Cool Pi 4B")
-Signed-off-by: Andy Yan <andyshrk@163.com>
-Link: https://lore.kernel.org/r/20240623115526.2154645-1-andyshrk@163.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240625081029.2619437-1-make24@iscas.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588s-coolpi-4b.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/nouveau/dispnv04/tvnv17.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-coolpi-4b.dts b/arch/arm64/boot/dts/rockchip/rk3588s-coolpi-4b.dts
-index e037bf9db75af..adba82c6e2e1e 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588s-coolpi-4b.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3588s-coolpi-4b.dts
-@@ -283,9 +283,9 @@
- 	pinctrl-0 = <&i2c7m0_xfer>;
- 	status = "okay";
+--- a/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
++++ b/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
+@@ -260,6 +260,8 @@ static int nv17_tv_get_hd_modes(struct d
+ 		if (modes[i].hdisplay == output_mode->hdisplay &&
+ 		    modes[i].vdisplay == output_mode->vdisplay) {
+ 			mode = drm_mode_duplicate(encoder->dev, output_mode);
++			if (!mode)
++				continue;
+ 			mode->type |= DRM_MODE_TYPE_PREFERRED;
  
--	es8316: audio-codec@11 {
-+	es8316: audio-codec@10 {
- 		compatible = "everest,es8316";
--		reg = <0x11>;
-+		reg = <0x10>;
- 		assigned-clocks = <&cru I2S0_8CH_MCLKOUT>;
- 		assigned-clock-rates = <12288000>;
- 		clocks = <&cru I2S0_8CH_MCLKOUT>;
--- 
-2.43.0
-
+ 		} else {
+@@ -267,6 +269,8 @@ static int nv17_tv_get_hd_modes(struct d
+ 					    modes[i].vdisplay, 60, false,
+ 					    (output_mode->flags &
+ 					     DRM_MODE_FLAG_INTERLACE), false);
++			if (!mode)
++				continue;
+ 		}
+ 
+ 		/* CVT modes are sometimes unsuitable... */
 
 
 
