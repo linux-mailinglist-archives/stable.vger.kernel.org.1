@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-56523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5960D9244C0
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:14:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF525924578
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:22:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAD681F217DD
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:14:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BB531F21BF9
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A49A1BE22A;
-	Tue,  2 Jul 2024 17:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EEA1BBBD7;
+	Tue,  2 Jul 2024 17:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ow6Ag3zW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvEGjw3K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D3A15B0FE;
-	Tue,  2 Jul 2024 17:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F262C15218A;
+	Tue,  2 Jul 2024 17:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940468; cv=none; b=atwmQo8mfJ0AENHIcd8z4EB3FGR3ijS+iDUcH2WUdt8g4eY7M5MtVbeRn+eFMkVLt8AEG5AUvtFQSaRpz5h1mjeEUHYBt3GeyvKfSBpgfm2JuzeUX/fRK2bIoTfi1+D41DxGdA6BVZ4X0olEj0eBhI6Xc/YI/PDZ099/ouHSITI=
+	t=1719940964; cv=none; b=EAcnTh+g92woXhzSBMW03PPha2/gF/c1mNvIV4Zf168sISsBOYOhNipae4PCH3h6BPnPJl4+m6GU37s1XaMKCv5AAQlFbYNx9GYMdec6JvOgdJIPKs2xSi5vh+ra85gM+q3Oh6SuvFUIHQWB9C5pbdyQ3GwYvZUhSl18fCVQWe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940468; c=relaxed/simple;
-	bh=OOWFuoPuqsBw6h8yJw259gmEuSPC5dy4Kt1g4G+6hT8=;
+	s=arc-20240116; t=1719940964; c=relaxed/simple;
+	bh=G4Rd8uMHjgCmop8ocmYfuBWuHqm7XP6V/su7XVBJWSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Exbl58YdrMrkzpmRd9T32/NbIqhZUEJwY4sXV1SZOG45KqsFGU/phM4ph7IWDjlGYAfU17SyKdZfWAfGbmwvoH6uF6BwfAf7Rnjl8eFymDgNzVAiZQ71RCHtI/iQttEGpJuN5WVdFe0lUdqvv2jo06zSxXKM2AK5lslsfkZy7Js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ow6Ag3zW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AC7C116B1;
-	Tue,  2 Jul 2024 17:14:27 +0000 (UTC)
+	 MIME-Version; b=kliWYZd+JjAgaSlzw7Kr9t6cLP8fSLbBWODDnwdYHF+j/vlssgXqZfcZakKOg3QaW2+MM446DYoiGx2gxx3xx/muvbdlomwnupEBjpGpVB9vtW4yJ5mGEHxzWMRO+bF/XfN95HlEXblRBWDNQhixo4/m98EHXAr8c/5UYGcOABs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvEGjw3K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630ABC116B1;
+	Tue,  2 Jul 2024 17:22:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940468;
-	bh=OOWFuoPuqsBw6h8yJw259gmEuSPC5dy4Kt1g4G+6hT8=;
+	s=korg; t=1719940963;
+	bh=G4Rd8uMHjgCmop8ocmYfuBWuHqm7XP6V/su7XVBJWSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ow6Ag3zWtNZsHefsZoyOz7E0oa6Xs3p+buU8zSRlp6jvINsoo15oVQWORtsMYrGpL
-	 t5QhjSfoTozTI021vi19xlOFowSR++4npJm9zYTjEGvN1mZ5HHUjwndJ1FsCEqjH8t
-	 cs6VDX+YJwrMsnCtgEWlBblkjtQJkEyFiqdMcu3k=
+	b=fvEGjw3KrqyG8z27xBgDgQdhyuOk5iC61MSlUw8sohGIrZjabY7Fs/d2NmIcm3d3J
+	 FIG4PhVA4X3/6EXRjSonl0atyblrhukj1B1jNFHLHJx+CuqgoCFaGbrSS/UimC0UPX
+	 1MXZ3+zt14LEf5TrNxFwDiL6WkkdiMYr5FbKvcSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	syzbot+5681e40d297b30f5b513@syzkaller.appspotmail.com
-Subject: [PATCH 6.9 164/222] net: can: j1939: Initialize unused data in j1939_send_one()
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 088/163] mmc: sdhci: Do not invert write-protect twice
 Date: Tue,  2 Jul 2024 19:03:22 +0200
-Message-ID: <20240702170250.246216137@linuxfoundation.org>
+Message-ID: <20240702170236.394185450@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit b7cdf1dd5d2a2d8200efd98d1893684db48fe134 upstream.
+commit fbd64f902b93fe9658b855b9892ae59ef6ea22b9 upstream.
 
-syzbot reported kernel-infoleak in raw_recvmsg() [1]. j1939_send_one()
-creates full frame including unused data, but it doesn't initialize
-it. This causes the kernel-infoleak issue. Fix this by initializing
-unused data.
+mmc_of_parse() reads device property "wp-inverted" and sets
+MMC_CAP2_RO_ACTIVE_HIGH if it is true. MMC_CAP2_RO_ACTIVE_HIGH is used
+to invert a write-protect (AKA read-only) GPIO value.
 
-[1]
-BUG: KMSAN: kernel-infoleak in instrument_copy_to_user include/linux/instrumented.h:114 [inline]
-BUG: KMSAN: kernel-infoleak in copy_to_user_iter lib/iov_iter.c:24 [inline]
-BUG: KMSAN: kernel-infoleak in iterate_ubuf include/linux/iov_iter.h:29 [inline]
-BUG: KMSAN: kernel-infoleak in iterate_and_advance2 include/linux/iov_iter.h:245 [inline]
-BUG: KMSAN: kernel-infoleak in iterate_and_advance include/linux/iov_iter.h:271 [inline]
-BUG: KMSAN: kernel-infoleak in _copy_to_iter+0x366/0x2520 lib/iov_iter.c:185
- instrument_copy_to_user include/linux/instrumented.h:114 [inline]
- copy_to_user_iter lib/iov_iter.c:24 [inline]
- iterate_ubuf include/linux/iov_iter.h:29 [inline]
- iterate_and_advance2 include/linux/iov_iter.h:245 [inline]
- iterate_and_advance include/linux/iov_iter.h:271 [inline]
- _copy_to_iter+0x366/0x2520 lib/iov_iter.c:185
- copy_to_iter include/linux/uio.h:196 [inline]
- memcpy_to_msg include/linux/skbuff.h:4113 [inline]
- raw_recvmsg+0x2b8/0x9e0 net/can/raw.c:1008
- sock_recvmsg_nosec net/socket.c:1046 [inline]
- sock_recvmsg+0x2c4/0x340 net/socket.c:1068
- ____sys_recvmsg+0x18a/0x620 net/socket.c:2803
- ___sys_recvmsg+0x223/0x840 net/socket.c:2845
- do_recvmmsg+0x4fc/0xfd0 net/socket.c:2939
- __sys_recvmmsg net/socket.c:3018 [inline]
- __do_sys_recvmmsg net/socket.c:3041 [inline]
- __se_sys_recvmmsg net/socket.c:3034 [inline]
- __x64_sys_recvmmsg+0x397/0x490 net/socket.c:3034
- x64_sys_call+0xf6c/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:300
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+sdhci_get_property() also reads "wp-inverted" and sets
+SDHCI_QUIRK_INVERTED_WRITE_PROTECT which is used to invert the
+write-protect value as well but also acts upon a value read out from the
+SDHCI_PRESENT_STATE register.
 
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:3804 [inline]
- slab_alloc_node mm/slub.c:3845 [inline]
- kmem_cache_alloc_node+0x613/0xc50 mm/slub.c:3888
- kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:577
- __alloc_skb+0x35b/0x7a0 net/core/skbuff.c:668
- alloc_skb include/linux/skbuff.h:1313 [inline]
- alloc_skb_with_frags+0xc8/0xbf0 net/core/skbuff.c:6504
- sock_alloc_send_pskb+0xa81/0xbf0 net/core/sock.c:2795
- sock_alloc_send_skb include/net/sock.h:1842 [inline]
- j1939_sk_alloc_skb net/can/j1939/socket.c:878 [inline]
- j1939_sk_send_loop net/can/j1939/socket.c:1142 [inline]
- j1939_sk_sendmsg+0xc0a/0x2730 net/can/j1939/socket.c:1277
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg+0x30f/0x380 net/socket.c:745
- ____sys_sendmsg+0x877/0xb60 net/socket.c:2584
- ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2638
- __sys_sendmsg net/socket.c:2667 [inline]
- __do_sys_sendmsg net/socket.c:2676 [inline]
- __se_sys_sendmsg net/socket.c:2674 [inline]
- __x64_sys_sendmsg+0x307/0x4a0 net/socket.c:2674
- x64_sys_call+0xc4b/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:47
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Many drivers call both mmc_of_parse() and sdhci_get_property(),
+so that both MMC_CAP2_RO_ACTIVE_HIGH and
+SDHCI_QUIRK_INVERTED_WRITE_PROTECT will be set if the controller has
+device property "wp-inverted".
 
-Bytes 12-15 of 16 are uninitialized
-Memory access of size 16 starts at ffff888120969690
-Data copied to user address 00000000200017c0
+Amend the logic in sdhci_check_ro() to allow for that possibility,
+so that the write-protect value is not inverted twice.
 
-CPU: 1 PID: 5050 Comm: syz-executor198 Not tainted 6.9.0-rc5-syzkaller-00031-g71b1543c83d6 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+Also do not invert the value if it is a negative error value. Note that
+callers treat an error the same as not-write-protected, so the result is
+functionally the same in that case.
 
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Reported-and-tested-by: syzbot+5681e40d297b30f5b513@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5681e40d297b30f5b513
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Link: https://lore.kernel.org/all/20240517035953.2617090-1-syoshida@redhat.com
+Also do not invert the value if sdhci host operation ->get_ro() is used.
+None of the users of that callback set SDHCI_QUIRK_INVERTED_WRITE_PROTECT
+directly or indirectly, but two do call mmc_gpio_get_ro(), so leave it to
+them to deal with that if they ever set SDHCI_QUIRK_INVERTED_WRITE_PROTECT
+in the future.
+
+Fixes: 6d5cd068ee59 ("mmc: sdhci: use WP GPIO in sdhci_check_ro()")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://lore.kernel.org/r/20240614080051.4005-2-adrian.hunter@intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/j1939/main.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/mmc/host/sdhci.c |   22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
---- a/net/can/j1939/main.c
-+++ b/net/can/j1939/main.c
-@@ -30,10 +30,6 @@ MODULE_ALIAS("can-proto-" __stringify(CA
- /* CAN_HDR: #bytes before can_frame data part */
- #define J1939_CAN_HDR (offsetof(struct can_frame, data))
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -2515,26 +2515,34 @@ EXPORT_SYMBOL_GPL(sdhci_get_cd_nogpio);
  
--/* CAN_FTR: #bytes beyond data part */
--#define J1939_CAN_FTR (sizeof(struct can_frame) - J1939_CAN_HDR - \
--		 sizeof(((struct can_frame *)0)->data))
--
- /* lowest layer */
- static void j1939_can_recv(struct sk_buff *iskb, void *data)
+ static int sdhci_check_ro(struct sdhci_host *host)
  {
-@@ -342,7 +338,7 @@ int j1939_send_one(struct j1939_priv *pr
- 	memset(cf, 0, J1939_CAN_HDR);
++	bool allow_invert = false;
+ 	unsigned long flags;
+ 	int is_readonly;
  
- 	/* make it a full can frame again */
--	skb_put(skb, J1939_CAN_FTR + (8 - dlc));
-+	skb_put_zero(skb, 8 - dlc);
+ 	spin_lock_irqsave(&host->lock, flags);
  
- 	canid = CAN_EFF_FLAG |
- 		(skcb->priority << 26) |
+-	if (host->flags & SDHCI_DEVICE_DEAD)
++	if (host->flags & SDHCI_DEVICE_DEAD) {
+ 		is_readonly = 0;
+-	else if (host->ops->get_ro)
++	} else if (host->ops->get_ro) {
+ 		is_readonly = host->ops->get_ro(host);
+-	else if (mmc_can_gpio_ro(host->mmc))
++	} else if (mmc_can_gpio_ro(host->mmc)) {
+ 		is_readonly = mmc_gpio_get_ro(host->mmc);
+-	else
++		/* Do not invert twice */
++		allow_invert = !(host->mmc->caps2 & MMC_CAP2_RO_ACTIVE_HIGH);
++	} else {
+ 		is_readonly = !(sdhci_readl(host, SDHCI_PRESENT_STATE)
+ 				& SDHCI_WRITE_PROTECT);
++		allow_invert = true;
++	}
+ 
+ 	spin_unlock_irqrestore(&host->lock, flags);
+ 
+-	/* This quirk needs to be replaced by a callback-function later */
+-	return host->quirks & SDHCI_QUIRK_INVERTED_WRITE_PROTECT ?
+-		!is_readonly : is_readonly;
++	if (is_readonly >= 0 &&
++	    allow_invert &&
++	    (host->quirks & SDHCI_QUIRK_INVERTED_WRITE_PROTECT))
++		is_readonly = !is_readonly;
++
++	return is_readonly;
+ }
+ 
+ #define SAMPLE_COUNT	5
 
 
 
