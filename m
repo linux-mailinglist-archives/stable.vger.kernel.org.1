@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5CA924569
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:21:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B369244B0
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:13:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 764DBB218D3
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:21:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 031871C21FAF
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9BCB1BBBD7;
-	Tue,  2 Jul 2024 17:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6756F1BE22F;
+	Tue,  2 Jul 2024 17:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FahKWJkD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zgcjsqpr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A789414293;
-	Tue,  2 Jul 2024 17:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BF615B0FE;
+	Tue,  2 Jul 2024 17:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940915; cv=none; b=R/DaLjxW9bKniPjurRpIfMLS2ecUFY/Sg3484QDDV+kxOFkzteo01jZve1S9m/hI2CuA6Ead8mi2/xiNy3igRtYCCdwRZc+AZxl57mq69ii4ND98FH4jCQSyH6Q8K2wO+KL0liK8tWOR8aJmkbE0FmMxWHj9mmrdGvV8cni4JuQ=
+	t=1719940424; cv=none; b=Xx3HvR3EjeBL94ogb4baXP8yIGBWhic8ceVwxODeaOL3sYY1UGW7MzQbizUb5G4zJvwWP/ZXrFJnu2nkwzmtu+N3Vt0TqsPCyBmIlt65+MSpsOHqtziKdStK8OoLG3BWsfAosNS+oooS87qr5HO1yVfx116cT8TC+SBKrUYz5Fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940915; c=relaxed/simple;
-	bh=hdXozXLfdRnvok+0HCY5FdA/YfFQySySf6mAKJGgAeI=;
+	s=arc-20240116; t=1719940424; c=relaxed/simple;
+	bh=Mw8ljh/VLWUU/J3vmQ9uhlvITRjUTFHqYufatRV2xiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S5BVygDuOa+Ctgh4afRmchpOseiwR25xcr8om9lA8vt56gwAY+pIZ3Uiu7YxUWA5fTYOPoIl6ziVqz4/uXX7FfXtSOJtEZmBZls7RJWG4cHDorJs88W20n0nP2mrE9CEsD6bwLiufM1OHtPcYdK2phZ8wuZF8agz5oNY/Kny4+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FahKWJkD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12508C116B1;
-	Tue,  2 Jul 2024 17:21:54 +0000 (UTC)
+	 MIME-Version; b=afjKHwQcrsZgepc2D9u5YudMyOBk9+HsvHObcNn17bw3zyWTjk7M2HoT+Si6YacB7b4y1jOAejte7W/Qrytl+CoJ/cd8WfYakCIZCY4wK5F1Of8TVf1oBo0WGiVN0HCaHB0DrONlVP7cUmHb+fzAu+bHvwRtrI489oFOfpSMDcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zgcjsqpr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F0FC116B1;
+	Tue,  2 Jul 2024 17:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940915;
-	bh=hdXozXLfdRnvok+0HCY5FdA/YfFQySySf6mAKJGgAeI=;
+	s=korg; t=1719940424;
+	bh=Mw8ljh/VLWUU/J3vmQ9uhlvITRjUTFHqYufatRV2xiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FahKWJkDtm5ryk0aNOQRQu1vsiSzo1ekGXmoqFGKF8A/4x9TdQd2T7rrhfiyhpG2m
-	 zDbRw75lAvn6ehAMArG4glo+LppU0NI4Aa1fesBewWPVYlDE4cWqM0OKoqqxv0QebU
-	 ncwT5OJoQuz8zIg4pTmnjIc5t+6YQ14+MELq2nUM=
+	b=ZgcjsqprHYjC5qkDpevCR3zBDziM3GEuhVExjAEJQknn4621nr88FALMYBTrLWFzz
+	 GxlGcxOnjrL3wkbjv62w4BqkWPh8BJxKnUokP4ECQze1Q0X2pwNp4AtPkedHX8wYbf
+	 ErnqDamID0Etqqd00Hnuicgd4/GA9aGlfcxW6JD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/163] parisc: use correct compat recv/recvfrom syscalls
+	Sergei Antonov <saproj@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.9 120/222] Revert "mmc: moxart-mmc: Use sg_miter for PIO"
 Date: Tue,  2 Jul 2024 19:02:38 +0200
-Message-ID: <20240702170234.730134031@linuxfoundation.org>
+Message-ID: <20240702170248.557207365@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,192 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 20a50787349fadf66ac5c48f62e58d753878d2bb ]
+commit 84bb8d8bbd8384081c3fc5c4f20b223524af529d upstream.
 
-Johannes missed parisc back when he introduced the compat version
-of these syscalls, so receiving cmsg messages that require a compat
-conversion is still broken.
+This reverts commit 3ee0e7c3e67cab83ffbbe7707b43df8d41c9fe47.
 
-Use the correct calls like the other architectures do.
+The patch is not working for unknown reasons and I would
+need access to the hardware to fix the bug.
 
-Fixes: 1dacc76d0014 ("net/compat/wext: send different messages to compat tasks")
-Acked-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This shouldn't matter anyway: the Moxa Art is not expected
+to use highmem, and sg_miter() is only necessary to have
+to properly deal with highmem.
+
+Reported-by: Sergei Antonov <saproj@gmail.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 3ee0e7c3e67c ("mmc: moxart-mmc: Use sg_miter for PIO")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240606-mmc-moxart-revert-v1-1-a01c2f40de9c@linaro.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/syscalls/syscall.tbl | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/moxart-mmc.c | 78 +++++++++++++++++++----------------
+ 1 file changed, 43 insertions(+), 35 deletions(-)
 
-diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
-index e97c175b56f96..47b3bb90080de 100644
---- a/arch/parisc/kernel/syscalls/syscall.tbl
-+++ b/arch/parisc/kernel/syscalls/syscall.tbl
-@@ -108,7 +108,7 @@
- 95	common	fchown			sys_fchown
- 96	common	getpriority		sys_getpriority
- 97	common	setpriority		sys_setpriority
--98	common	recv			sys_recv
-+98	common	recv			sys_recv			compat_sys_recv
- 99	common	statfs			sys_statfs			compat_sys_statfs
- 100	common	fstatfs			sys_fstatfs			compat_sys_fstatfs
- 101	common	stat64			sys_stat64
-@@ -135,7 +135,7 @@
- 120	common	clone			sys_clone_wrapper
- 121	common	setdomainname		sys_setdomainname
- 122	common	sendfile		sys_sendfile			compat_sys_sendfile
--123	common	recvfrom		sys_recvfrom
-+123	common	recvfrom		sys_recvfrom			compat_sys_recvfrom
- 124	32	adjtimex		sys_adjtimex_time32
- 124	64	adjtimex		sys_adjtimex
- 125	common	mprotect		sys_mprotect
+diff --git a/drivers/mmc/host/moxart-mmc.c b/drivers/mmc/host/moxart-mmc.c
+index 9a5f75163aca..8ede4ce93271 100644
+--- a/drivers/mmc/host/moxart-mmc.c
++++ b/drivers/mmc/host/moxart-mmc.c
+@@ -131,10 +131,12 @@ struct moxart_host {
+ 	struct dma_async_tx_descriptor	*tx_desc;
+ 	struct mmc_host			*mmc;
+ 	struct mmc_request		*mrq;
++	struct scatterlist		*cur_sg;
+ 	struct completion		dma_complete;
+ 	struct completion		pio_complete;
+ 
+-	struct sg_mapping_iter		sg_miter;
++	u32				num_sg;
++	u32				data_remain;
+ 	u32				data_len;
+ 	u32				fifo_width;
+ 	u32				timeout;
+@@ -146,6 +148,35 @@ struct moxart_host {
+ 	bool				is_removed;
+ };
+ 
++static inline void moxart_init_sg(struct moxart_host *host,
++				  struct mmc_data *data)
++{
++	host->cur_sg = data->sg;
++	host->num_sg = data->sg_len;
++	host->data_remain = host->cur_sg->length;
++
++	if (host->data_remain > host->data_len)
++		host->data_remain = host->data_len;
++}
++
++static inline int moxart_next_sg(struct moxart_host *host)
++{
++	int remain;
++	struct mmc_data *data = host->mrq->cmd->data;
++
++	host->cur_sg++;
++	host->num_sg--;
++
++	if (host->num_sg > 0) {
++		host->data_remain = host->cur_sg->length;
++		remain = host->data_len - data->bytes_xfered;
++		if (remain > 0 && remain < host->data_remain)
++			host->data_remain = remain;
++	}
++
++	return host->num_sg;
++}
++
+ static int moxart_wait_for_status(struct moxart_host *host,
+ 				  u32 mask, u32 *status)
+ {
+@@ -278,29 +309,14 @@ static void moxart_transfer_dma(struct mmc_data *data, struct moxart_host *host)
+ 
+ static void moxart_transfer_pio(struct moxart_host *host)
+ {
+-	struct sg_mapping_iter *sgm = &host->sg_miter;
+ 	struct mmc_data *data = host->mrq->cmd->data;
+ 	u32 *sgp, len = 0, remain, status;
+ 
+ 	if (host->data_len == data->bytes_xfered)
+ 		return;
+ 
+-	/*
+-	 * By updating sgm->consumes this will get a proper pointer into the
+-	 * buffer at any time.
+-	 */
+-	if (!sg_miter_next(sgm)) {
+-		/* This shold not happen */
+-		dev_err(mmc_dev(host->mmc), "ran out of scatterlist prematurely\n");
+-		data->error = -EINVAL;
+-		complete(&host->pio_complete);
+-		return;
+-	}
+-	sgp = sgm->addr;
+-	remain = sgm->length;
+-	if (remain > host->data_len)
+-		remain = host->data_len;
+-	sgm->consumed = 0;
++	sgp = sg_virt(host->cur_sg);
++	remain = host->data_remain;
+ 
+ 	if (data->flags & MMC_DATA_WRITE) {
+ 		while (remain > 0) {
+@@ -315,7 +331,6 @@ static void moxart_transfer_pio(struct moxart_host *host)
+ 				sgp++;
+ 				len += 4;
+ 			}
+-			sgm->consumed += len;
+ 			remain -= len;
+ 		}
+ 
+@@ -332,22 +347,22 @@ static void moxart_transfer_pio(struct moxart_host *host)
+ 				sgp++;
+ 				len += 4;
+ 			}
+-			sgm->consumed += len;
+ 			remain -= len;
+ 		}
+ 	}
+ 
+-	data->bytes_xfered += sgm->consumed;
+-	if (host->data_len == data->bytes_xfered) {
++	data->bytes_xfered += host->data_remain - remain;
++	host->data_remain = remain;
++
++	if (host->data_len != data->bytes_xfered)
++		moxart_next_sg(host);
++	else
+ 		complete(&host->pio_complete);
+-		return;
+-	}
+ }
+ 
+ static void moxart_prepare_data(struct moxart_host *host)
+ {
+ 	struct mmc_data *data = host->mrq->cmd->data;
+-	unsigned int flags = SG_MITER_ATOMIC; /* Used from IRQ */
+ 	u32 datactrl;
+ 	int blksz_bits;
+ 
+@@ -358,19 +373,15 @@ static void moxart_prepare_data(struct moxart_host *host)
+ 	blksz_bits = ffs(data->blksz) - 1;
+ 	BUG_ON(1 << blksz_bits != data->blksz);
+ 
++	moxart_init_sg(host, data);
++
+ 	datactrl = DCR_DATA_EN | (blksz_bits & DCR_BLK_SIZE);
+ 
+-	if (data->flags & MMC_DATA_WRITE) {
+-		flags |= SG_MITER_FROM_SG;
++	if (data->flags & MMC_DATA_WRITE)
+ 		datactrl |= DCR_DATA_WRITE;
+-	} else {
+-		flags |= SG_MITER_TO_SG;
+-	}
+ 
+ 	if (moxart_use_dma(host))
+ 		datactrl |= DCR_DMA_EN;
+-	else
+-		sg_miter_start(&host->sg_miter, data->sg, data->sg_len, flags);
+ 
+ 	writel(DCR_DATA_FIFO_RESET, host->base + REG_DATA_CONTROL);
+ 	writel(MASK_DATA | FIFO_URUN | FIFO_ORUN, host->base + REG_CLEAR);
+@@ -443,9 +454,6 @@ static void moxart_request(struct mmc_host *mmc, struct mmc_request *mrq)
+ 	}
+ 
+ request_done:
+-	if (!moxart_use_dma(host))
+-		sg_miter_stop(&host->sg_miter);
+-
+ 	spin_unlock_irqrestore(&host->lock, flags);
+ 	mmc_request_done(host->mmc, mrq);
+ }
 -- 
-2.43.0
+2.45.2
 
 
 
