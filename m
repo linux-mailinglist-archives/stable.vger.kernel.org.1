@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-56763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A776A9245DC
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:27:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15DAE9244D7
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:15:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BDC81F2221F
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:27:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE89A1F21DBE
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:15:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC76E1BE24F;
-	Tue,  2 Jul 2024 17:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4191BE226;
+	Tue,  2 Jul 2024 17:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7p0Z4zY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBZNW2XO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999FD1514DC;
-	Tue,  2 Jul 2024 17:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D57916B394;
+	Tue,  2 Jul 2024 17:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941276; cv=none; b=hPPvluUvcqUSAjPjhCDzKXILkzQQTJamIoLFqcQg3SzORC9gxoP/NKWyHPu1iLMCQFrGamUyQ53Yz4b9gbdY5qHOJBO2rK3NVJHPyx2Hmko1npIctrgv5mvlChJVgwxGGv/yzF1wE9pFiDelwmPFmTqrV4dYjSO3S/0JqUkSXRs=
+	t=1719940527; cv=none; b=UXCFB0LYwiZNIsaOfcLsVmXgPV5DJfMBXU6Ozou2QoiEh8eKSV24zEFTWS0cn5n4hj/YH2TRGRM0Su6x7bFiTcGl3OxQA8MLxc+wjXVC58KltTAPX9Cg5OM3Qwohfx18NMmW5ljNoo+ipYeM7DlN3R8sRJGVV5V14/ZtRRMwuWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941276; c=relaxed/simple;
-	bh=jIiCtRmv8ic+3ZED3Se9WBYSU5ekVMRSLSxOKhgg7fk=;
+	s=arc-20240116; t=1719940527; c=relaxed/simple;
+	bh=Ih5igsKj8qtpviTm/GKzqRyBb0hGetvz/nkwqvFhpzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m8k4Q49NC7df5MBAOutPTQXptD38tm+UvqkAXPsegsADUFbkb2R/rtSTJaen8wDgELZasPlXkDChtEiS0YzDpYp29sviMleIGugDICkz4Y9pZoy6shJhJpppsd4x5AezRZBzeFpqasytk9+/2QCgW1j70MP6EhwQCEZvL04c7AU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7p0Z4zY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097B3C116B1;
-	Tue,  2 Jul 2024 17:27:55 +0000 (UTC)
+	 MIME-Version; b=aD9ynThJopPIKnXd73uharIffNuk8jzAJ2ug+5x9bb9eaUsoB13m9NU2dqUejon3HnBNgTvwRIrecgvw6pnNFs3/g974R142C5vY4q5S9nGzyPc99Ne0raPmZpfx3/eRCvCDyq+u72jDL4HIEEyFpj+3cj+cSMM8rTKsO3MKrGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBZNW2XO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89235C116B1;
+	Tue,  2 Jul 2024 17:15:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941276;
-	bh=jIiCtRmv8ic+3ZED3Se9WBYSU5ekVMRSLSxOKhgg7fk=;
+	s=korg; t=1719940527;
+	bh=Ih5igsKj8qtpviTm/GKzqRyBb0hGetvz/nkwqvFhpzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t7p0Z4zYppzE6rLvnAsPqR+cvqpLWJyhKw+vmrd3e+Y11iRvhpFhV0dDRoI8nQPVO
-	 i2vUCCBp9wyi9pDxNeNsCMpDp31Iq2DtbMBvjCj9Qwcdw2A6HG6HHfKIhErRA6wGhZ
-	 wFYkDG5i5W/BbyhCrU9F42Nnj4TZaL5nFXCRguK0=
+	b=tBZNW2XOwv04KBCJEbTexuGZhqJdN1bY5NYIoomEDlmtPwSHd4mZUq1kNRnM8T0et
+	 w5tUSIJKkY/jhJwk/IawoWB57znwnSj0vy180CfWukX2IP5QmJ+1M4TChC/21mqcfe
+	 vQaXLeQrWJP1skkh7bofh2E8iWk1pob4wozTDJqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 017/128] s390/pci: Add missing virt_to_phys() for directed DIBV
+	Ma Ke <make24@iscas.ac.cn>,
+	Lyude Paul <lyude@redhat.com>
+Subject: [PATCH 6.9 180/222] drm/nouveau/dispnv04: fix null pointer dereference in nv17_tv_get_ld_modes
 Date: Tue,  2 Jul 2024 19:03:38 +0200
-Message-ID: <20240702170226.882936240@linuxfoundation.org>
+Message-ID: <20240702170250.856321059@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 4181b51c38875de9f6f11248fa0bcf3246c19c82 ]
+commit 66edf3fb331b6c55439b10f9862987b0916b3726 upstream.
 
-In commit 4e4dc65ab578 ("s390/pci: use phys_to_virt() for AIBVs/DIBVs")
-the setting of dibv_addr was missed when adding virt_to_phys(). This
-only affects systems with directed interrupt delivery enabled which are
-not generally available.
+In nv17_tv_get_ld_modes(), the return value of drm_mode_duplicate() is
+assigned to mode, which will lead to a possible NULL pointer dereference
+on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-Fixes: 4e4dc65ab578 ("s390/pci: use phys_to_virt() for AIBVs/DIBVs")
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240625081828.2620794-1-make24@iscas.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/pci/pci_irq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/dispnv04/tvnv17.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/s390/pci/pci_irq.c b/arch/s390/pci/pci_irq.c
-index a2b42a63a53ba..04c19ab93a329 100644
---- a/arch/s390/pci/pci_irq.c
-+++ b/arch/s390/pci/pci_irq.c
-@@ -410,7 +410,7 @@ static void __init cpu_enable_directed_irq(void *unused)
- 	union zpci_sic_iib iib = {{0}};
- 	union zpci_sic_iib ziib = {{0}};
+--- a/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
++++ b/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
+@@ -209,6 +209,8 @@ static int nv17_tv_get_ld_modes(struct d
+ 		struct drm_display_mode *mode;
  
--	iib.cdiib.dibv_addr = (u64) zpci_ibv[smp_processor_id()]->vector;
-+	iib.cdiib.dibv_addr = virt_to_phys(zpci_ibv[smp_processor_id()]->vector);
+ 		mode = drm_mode_duplicate(encoder->dev, tv_mode);
++		if (!mode)
++			continue;
  
- 	zpci_set_irq_ctrl(SIC_IRQ_MODE_SET_CPU, 0, &iib);
- 	zpci_set_irq_ctrl(SIC_IRQ_MODE_D_SINGLE, PCI_ISC, &ziib);
--- 
-2.43.0
-
+ 		mode->clock = tv_norm->tv_enc_mode.vrefresh *
+ 			mode->htotal / 1000 *
 
 
 
