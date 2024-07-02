@@ -1,143 +1,176 @@
-Return-Path: <stable+bounces-56301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A9F91ED14
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 04:48:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC39F91ED4F
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 05:06:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11106B229F4
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 02:48:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F1261F22CBA
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 03:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F2B376E5;
-	Tue,  2 Jul 2024 02:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D28D15E8C;
+	Tue,  2 Jul 2024 03:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E/y/Zik2"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="o41JgPjp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6EBF2B9D8
-	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 02:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8059A17741
+	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 03:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719888467; cv=none; b=OtX9Lvi+L+1CZYfnHcq/Onma9B4T8gEMc5r4K0SG0KfFv8NBtXd4ZA8kB1UUDbxw63F9Wkh6qMOEC/XzfQOxfkk706FnIZS7RM4b3TZ1CG5rQvKPpFhH000tPfzY8CmeYwhzyURpn5qvum3zJC3L2WptZX7WMdqzSt+nbV8mcU8=
+	t=1719889556; cv=none; b=hyNqK4wSATGGZBPSzLF9NxCb46jmKe8CXYeZFNMuPlJeu/t+OCJObwuxLxs704mPCE+24UMyEohZCpDXVushztsubad2d6r90GiUy4FuAyGcLwTaNwCt3voi/uFbAG7Frtrh4cXXnyWFTPaONInrVRjRAeMSNSgKieG+L/mGjgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719888467; c=relaxed/simple;
-	bh=UQZTNgxuo/nQ4A40i4CKkg/R6rQqJGLMQemrM+QDYEI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=koWYU5OZ3i05ftXYcYU8Bqf06ymu5eio2o81rkZ5R7aGNcCAQbZ5wmfMvYF0Vp4WPQRNJhi3lM6kSmtdM+FBLEIE1DcbT8pN5xEh4FphDRRAWFSwFp6S+xvYYgUcysOU/epuDd/2SWP0ToYKDKbOVyukGNuU9rffd83VTxQyjYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ipylypiv.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E/y/Zik2; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ipylypiv.bounces.google.com
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e0360f8d773so6101989276.3
-        for <stable@vger.kernel.org>; Mon, 01 Jul 2024 19:47:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1719888465; x=1720493265; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=w00QSz187T1KSvOH92zkWn3h1qrakV8FNdVfs8AN5w0=;
-        b=E/y/Zik2Y4fQQm2Xc+17rXiBV52nI6BWL3bE2wodmL6A1SnHxUTMAnDhCsdta9/Z+0
-         gtcF+zEmEe5DHYRcTR3iayRrwdTQLUm7sHYeCMFsOsYjUQ0qzLLpArqxJTzfFpBdPt0c
-         VXryAc162Y1wmcsEg73UP48XQq8E40HkbYIZJm2qjEi8yXVvQb/jLvngKeCoxCHr19M/
-         20mxqtxEX+6yogcMVoI0fbIYhky2v+6VltyJFTBNov5pxdXnK6F8H9oel6D4Be/zPtYt
-         pRcVxppH63gMfpsf0STrMdG/mS/oG/fjXXErZ5+LAKwX0sX4fLFd7QGXRozrve17W7Kc
-         IFkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719888465; x=1720493265;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=w00QSz187T1KSvOH92zkWn3h1qrakV8FNdVfs8AN5w0=;
-        b=n/qb1bT5ZYkOjXl2U+9RxWEI96hsNrLb1Rha3Ic0Ue4e+JGgrcDgM4KQp30kfWCa/y
-         sirP9QS4VbrJfItmeMq6VQYsmPFVtk+no1sL/Ne8x0y2WnTBIeVzBWVR4nQxC6M/lp4l
-         q7BW39Fgrg4N/fpU8DzcWbkgcoGdUSETrhPZB9omNpruvzJTpLUGCFIFDlHlw787ndmV
-         fek8II8RIkv3gKZpJ8CgCe4l1xKiUN2uc05nANw1CLfJd/o37ZacN+QbnBPFp2ZmTnyS
-         2w4slSqyDIYZMgHKO62NdHlQ3KHi3p0/kTs6PiOxDSX74/vcifEgmqfN95darhIwWfLH
-         ixrw==
-X-Forwarded-Encrypted: i=1; AJvYcCV0aE6ejPWPCFkyBlalVC98wSixiXCJ6z0j3F50nib731X5b/z9Yir5llRme+3sNSDrqd0YSW8KoBXFKt9c6lJQ57zp4Tci
-X-Gm-Message-State: AOJu0YzWFHqq2sh95Ky6ahtMRciUxuadvct36BtVb2UgiY9VucpocXk3
-	mboBSpbofx7EuMlT/2f8H32U26Q7Uja/nSWesdUcKPIvuw2H//0a1ymSidlJZetcaXKDLCnlsFz
-	KwAhUmdOxzQ==
-X-Google-Smtp-Source: AGHT+IEvUTFIgKCzrTE5ovL08iBb/D3RskDQu4+yIlR5yKTtxFavno3Ikw8Oljg6ZVkQd+fpyujDnQ6yQRlZtg==
-X-Received: from ip.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:57f3])
- (user=ipylypiv job=sendgmr) by 2002:a25:9206:0:b0:e03:4d2d:b0df with SMTP id
- 3f1490d57ef6-e036eb573b9mr201128276.6.1719888464966; Mon, 01 Jul 2024
- 19:47:44 -0700 (PDT)
-Date: Tue,  2 Jul 2024 02:47:31 +0000
-In-Reply-To: <20240702024735.1152293-1-ipylypiv@google.com>
+	s=arc-20240116; t=1719889556; c=relaxed/simple;
+	bh=23ph6r5VXMDQKdco/Fw+ZuEsUh+mZ//JGstrBx+X7wE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=QBejHhpGzZlrel86v7/ZFFxrtXT8KkA426T1KrqzqAHNNatj9WEbG5AbPCwkZk/E5SAZDbw1AEDajtbU+8dzt4jpQkWJzVII5J/wf/s3xJO5op44zlgPL8RVx7/MeNyr6+8VKQ+6R6/mwg++quwPv7b/qUGuO0rkDPQ6Z7+uzRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=o41JgPjp; arc=none smtp.client-ip=220.197.31.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:Subject:Date:Message-Id; bh=CNozovelqz9bThWYv4
+	U1HR30BdREZsihwPC9LtuwEfw=; b=o41JgPjp7rP71Uw4jEl9i+hy4QIMGIt/U/
+	nw8KrgCpyX6vRTpr7u29LnI+8A733vlsTXLl2CmQeMy8ueZm4N/CaRIIJLOS8ZE9
+	M6pebmWcQ56RLAKw5auZHCEbJdlp81MaS5eHXFYpupWpr/14/9T1UqQZ50nSh6kn
+	pSMBM7JAQ=
+Received: from hg-OptiPlex-7040.hygon.cn (unknown [118.242.3.34])
+	by gzga-smtp-mta-g1-2 (Coremail) with SMTP id _____wCnT_C0aoNm2KJJAQ--.59848S2;
+	Tue, 02 Jul 2024 10:49:26 +0800 (CST)
+From: yangge1116@126.com
+To: stable@vger.kernel.org
+Cc: yangge1116@126.com,
+	21cnbao@gmail.com,
+	akpm@linux-foundation.org,
+	baolin.wang@linux.alibaba.com,
+	mgorman@techsingularity.net,
+	liuzixing@hygon.cn
+Subject: [PATCH 6.9.y] mm/page_alloc: Separate THP PCP into movable and non-movable categories
+Date: Tue,  2 Jul 2024 10:49:20 +0800
+Message-Id: <1719888560-570-1-git-send-email-yangge1116@126.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <2024070126-android-legume-192d@gregkh>
+References: <2024070126-android-legume-192d@gregkh>
+X-CM-TRANSID:_____wCnT_C0aoNm2KJJAQ--.59848S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAFWUtF17Xw18JF1UuFWDXFb_yoWruw1rpF
+	WxGr1ay3yjqry5Aw1xA3Wqkr1rCwnxGFsrCrW09ry8ZwsxJFWS9a4xKF1qvFy8ZrW5AF4U
+	Xr9rt3s3CF4DZ37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j5-B_UUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiGBcQG2VLcJAyNwAAsP
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240702024735.1152293-1-ipylypiv@google.com>
-X-Mailer: git-send-email 2.45.2.803.g4e1b14247a-goog
-Message-ID: <20240702024735.1152293-4-ipylypiv@google.com>
-Subject: [PATCH v5 3/7] ata: libata-scsi: Honor the D_SENSE bit for CK_COND=1
- and no error
-From: Igor Pylypiv <ipylypiv@google.com>
-To: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>, Hannes Reinecke <hare@suse.de>, linux-ide@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Igor Pylypiv <ipylypiv@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-SAT-5 revision 8 specification removed the text about the ANSI INCITS
-431-2007 compliance which was requiring SCSI/ATA Translation (SAT) to
-return descriptor format sense data for the ATA PASS-THROUGH commands
-regardless of the setting of the D_SENSE bit.
+From: yangge <yangge1116@126.com>
 
-Let's honor the D_SENSE bit for ATA PASS-THROUGH commands while
-generating the "ATA PASS-THROUGH INFORMATION AVAILABLE" sense data.
+Since commit 5d0a661d808f ("mm/page_alloc: use only one PCP list for
+THP-sized allocations") no longer differentiates the migration type of
+pages in THP-sized PCP list, it's possible that non-movable allocation
+requests may get a CMA page from the list, in some cases, it's not
+acceptable.
 
-SAT-5 revision 7
-================
+If a large number of CMA memory are configured in system (for example, the
+CMA memory accounts for 50% of the system memory), starting a virtual
+machine with device passthrough will get stuck.  During starting the
+virtual machine, it will call pin_user_pages_remote(..., FOLL_LONGTERM,
+...) to pin memory.  Normally if a page is present and in CMA area,
+pin_user_pages_remote() will migrate the page from CMA area to non-CMA
+area because of FOLL_LONGTERM flag.  But if non-movable allocation
+requests return CMA memory, migrate_longterm_unpinnable_pages() will
+migrate a CMA page to another CMA page, which will fail to pass the check
+in check_and_migrate_movable_pages() and cause migration endless.
 
-12.2.2.8 Fixed format sense data
+Call trace:
+pin_user_pages_remote
+--__gup_longterm_locked // endless loops in this function
+----_get_user_pages_locked
+----check_and_migrate_movable_pages
+------migrate_longterm_unpinnable_pages
+--------alloc_migration_target
 
-Table 212 shows the fields returned in the fixed format sense data
-(see SPC-5) for ATA PASS-THROUGH commands. SATLs compliant with ANSI
-INCITS 431-2007, SCSI/ATA Translation (SAT) return descriptor format
-sense data for the ATA PASS-THROUGH commands regardless of the setting
-of the D_SENSE bit.
+This problem will also have a negative impact on CMA itself.  For example,
+when CMA is borrowed by THP, and we need to reclaim it through cma_alloc()
+or dma_alloc_coherent(), we must move those pages out to ensure CMA's
+users can retrieve that contigous memory.  Currently, CMA's memory is
+occupied by non-movable pages, meaning we can't relocate them.  As a
+result, cma_alloc() is more likely to fail.
 
-SAT-5 revision 8
-================
+To fix the problem above, we add one PCP list for THP, which will not
+introduce a new cacheline for struct per_cpu_pages.  THP will have 2 PCP
+lists, one PCP list is used by MOVABLE allocation, and the other PCP list
+is used by UNMOVABLE allocation.  MOVABLE allocation contains GPF_MOVABLE,
+and UNMOVABLE allocation contains GFP_UNMOVABLE and GFP_RECLAIMABLE.
 
-12.2.2.8 Fixed format sense data
-
-Table 211 shows the fields returned in the fixed format sense data
-(see SPC-5) for ATA PASS-THROUGH commands.
-
-Cc: stable@vger.kernel.org # 4.19+
-Reported-by: Niklas Cassel <cassel@kernel.org>
-Closes: https://lore.kernel.org/linux-ide/Zn1WUhmLglM4iais@ryzen.lan
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
+Link: https://lkml.kernel.org/r/1718845190-4456-1-git-send-email-yangge1116@126.com
+Fixes: 5d0a661d808f ("mm/page_alloc: use only one PCP list for THP-sized allocations")
+Signed-off-by: yangge <yangge1116@126.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <21cnbao@gmail.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit bf14ed81f571f8dba31cd72ab2e50fbcc877cc31)
+Signed-off-by: yangge <yangge1116@126.com>
 ---
- drivers/ata/libata-scsi.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ include/linux/mmzone.h | 9 ++++-----
+ mm/page_alloc.c        | 9 +++++++--
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index b59cbb5ce5a6..076fbeadce01 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -941,11 +941,8 @@ static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
- 				   &sense_key, &asc, &ascq);
- 		ata_scsi_set_sense(qc->dev, cmd, sense_key, asc, ascq);
- 	} else {
--		/*
--		 * ATA PASS-THROUGH INFORMATION AVAILABLE
--		 * Always in descriptor format sense.
--		 */
--		scsi_build_sense(cmd, 1, RECOVERED_ERROR, 0, 0x1D);
-+		/* ATA PASS-THROUGH INFORMATION AVAILABLE */
-+		ata_scsi_set_sense(qc->dev, cmd, RECOVERED_ERROR, 0, 0x1D);
- 	}
- }
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index c11b7cd..a4f6f1f 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -651,13 +651,12 @@ enum zone_watermarks {
+ };
  
+ /*
+- * One per migratetype for each PAGE_ALLOC_COSTLY_ORDER. One additional list
+- * for THP which will usually be GFP_MOVABLE. Even if it is another type,
+- * it should not contribute to serious fragmentation causing THP allocation
+- * failures.
++ * One per migratetype for each PAGE_ALLOC_COSTLY_ORDER. Two additional lists
++ * are added for THP. One PCP list is used by GPF_MOVABLE, and the other PCP list
++ * is used by GFP_UNMOVABLE and GFP_RECLAIMABLE.
+  */
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-#define NR_PCP_THP 1
++#define NR_PCP_THP 2
+ #else
+ #define NR_PCP_THP 0
+ #endif
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 14d39f3..00fafda 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -521,10 +521,15 @@ static void bad_page(struct page *page, const char *reason)
+ 
+ static inline unsigned int order_to_pindex(int migratetype, int order)
+ {
++	bool __maybe_unused movable;
++
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	if (order > PAGE_ALLOC_COSTLY_ORDER) {
+ 		VM_BUG_ON(order != pageblock_order);
+-		return NR_LOWORDER_PCP_LISTS;
++
++		movable = migratetype == MIGRATE_MOVABLE;
++
++		return NR_LOWORDER_PCP_LISTS + movable;
+ 	}
+ #else
+ 	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
+@@ -538,7 +543,7 @@ static inline int pindex_to_order(unsigned int pindex)
+ 	int order = pindex / MIGRATE_PCPTYPES;
+ 
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	if (pindex == NR_LOWORDER_PCP_LISTS)
++	if (pindex >= NR_LOWORDER_PCP_LISTS)
+ 		order = pageblock_order;
+ #else
+ 	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
 -- 
-2.45.2.803.g4e1b14247a-goog
+2.7.4
 
 
