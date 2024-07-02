@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-56434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B8792445C
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:09:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A8992445E
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:09:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6B19B236EC
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:09:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E48311F2163C
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321301BE22A;
-	Tue,  2 Jul 2024 17:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DC91BE22A;
+	Tue,  2 Jul 2024 17:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUakiJs6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gpX7gEQA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BF215218A;
-	Tue,  2 Jul 2024 17:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E2515218A;
+	Tue,  2 Jul 2024 17:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940174; cv=none; b=kHHkKQ2ByeuaLDrADg6G3OLNdCDJELloQ1CwBFoi3Q4A81mDfEzmBEqmxmt2QG8Ansfli8AYP3TW4HdVAzz3o/XWq9v9iHWF/fPFY5CQs6vCZ2ACRoM6HoSkD7JRqUMSeMlcFejZGCS6sdSDMjlBow9T8exUkarBY3D3YOpGoIw=
+	t=1719940181; cv=none; b=UUpUDVqChn14thCMZBukzn2x/Ai1J8OgaF8BcTDP6wikHAler9uej9bVWa1gI7BRDAp2KwqTIJp2LC2W9kvK/NzEnAkO6vXki8+qrA0cx2dh9WQ3u7D4GKdl/z9EapGgiCVNV5t4nSuiEYjda9VZ9YcxJ1FW4Vj/InEcvtLMZJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940174; c=relaxed/simple;
-	bh=2RJIYhKxq1E5ghkpn+da3P7Q/Vl+Jsp5CbZ7EaMte38=;
+	s=arc-20240116; t=1719940181; c=relaxed/simple;
+	bh=QuSTVOja5AQanNZN47m3KBAh6IhzyDFP0WSdYRdz5HQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NYcTjyPGq5AcmnMJGmaB4CWvgxxaLNeqtDHcgPgLGfHqQcS+BO4Y4HC4eMLBMd2Au8tRT0IAFHwcIu9AX42cbYKM0ppU2DeG7IUhfiy4GajkC3LntmzhDjLXc/qKrdc0GaPMwRUQ6VG7Mzmwg3rKasOAf4ZOSyST239jaEapr9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUakiJs6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BAC9C116B1;
-	Tue,  2 Jul 2024 17:09:33 +0000 (UTC)
+	 MIME-Version; b=EvnrFlLSD7du5/TU1B6dirmN7qnsrll4nmgIE2ja+H3x7Bvx/vHYy+yo5eSWPqAaTSBMDHIy1OfVkOOOED2skm2vcUNzDcj3EkWzCVl+/vZttRcm9MpPVf+nhCCF5vY6CgVXbdCho8LCs8twrzqxM6rAagUhMj2kSpD1WGUIVMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gpX7gEQA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80FA9C116B1;
+	Tue,  2 Jul 2024 17:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940173;
-	bh=2RJIYhKxq1E5ghkpn+da3P7Q/Vl+Jsp5CbZ7EaMte38=;
+	s=korg; t=1719940180;
+	bh=QuSTVOja5AQanNZN47m3KBAh6IhzyDFP0WSdYRdz5HQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SUakiJs6VDGGV2eWLOoW1d1yqplNL3Z6jcQCEIuDKWh2eu2+vFPRzdoDqsqZW/wNX
-	 4g6eo0IVo5hYGjD+Gi1lVpnM/Bt2Bop3Y8PDtFrKNDfODfp5+zmLUQ53bCOh4xzx0E
-	 uPR14jU4QIBsq7+qogPcZkqNdrLbSEZx8PyLdBc0=
+	b=gpX7gEQAfOtV323j6NbEyMcLp7T/tE+N7bDZNZvrrAxvrSPUwX2on5Dbm5pKEYzJK
+	 pXIF+h+xjsMXq08W6Ji3CZ2swiU/FIJesnRaE+NqrLVtcAYNPvoyefDUZIfKf1ovT7
+	 ERdleVRLmtM/Wdp8ZIbi5iWVpOM50YZGUqd1IwYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 074/222] mtd: partitions: redboot: Added conversion of operands to a larger type
-Date: Tue,  2 Jul 2024 19:01:52 +0200
-Message-ID: <20240702170246.809547689@linuxfoundation.org>
+Subject: [PATCH 6.9 075/222] wifi: ieee80211: check for NULL in ieee80211_mle_size_ok()
+Date: Tue,  2 Jul 2024 19:01:53 +0200
+Message-ID: <20240702170246.847211712@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
 References: <20240702170243.963426416@linuxfoundation.org>
@@ -66,37 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 1162bc2f8f5de7da23d18aa4b7fbd4e93c369c50 ]
+[ Upstream commit b7793a1a2f370c28b17d9554b58e9dc51afcfcbd ]
 
-The value of an arithmetic expression directory * master->erasesize is
-subject to overflow due to a failure to cast operands to a larger data
-type before perfroming arithmetic
+For simplicity, we may want to pass a NULL element, and
+while we should then pass also a zero length, just be a
+bit more careful here.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240315093758.20790-1-arefev@swemel.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240318184907.4d983653cb8d.Ic3ea99b60c61ac2f7d38cb9fd202a03c97a05601@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/parsers/redboot.c | 2 +-
+ include/linux/ieee80211.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/parsers/redboot.c b/drivers/mtd/parsers/redboot.c
-index a16b42a885816..3b55b676ca6b9 100644
---- a/drivers/mtd/parsers/redboot.c
-+++ b/drivers/mtd/parsers/redboot.c
-@@ -102,7 +102,7 @@ static int parse_redboot_partitions(struct mtd_info *master,
- 			offset -= master->erasesize;
- 		}
- 	} else {
--		offset = directory * master->erasesize;
-+		offset = (unsigned long) directory * master->erasesize;
- 		while (mtd_block_isbad(master, offset)) {
- 			offset += master->erasesize;
- 			if (offset == master->size)
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index ac5be38d8aaf0..4fd9735bb75e5 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -5166,7 +5166,7 @@ static inline bool ieee80211_mle_size_ok(const u8 *data, size_t len)
+ 	bool check_common_len = false;
+ 	u16 control;
+ 
+-	if (len < fixed)
++	if (!data || len < fixed)
+ 		return false;
+ 
+ 	control = le16_to_cpu(mle->control);
 -- 
 2.43.0
 
