@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-56697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F11924595
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:24:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F8089245F2
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DED31B23757
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:24:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C7DF1C21F37
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48AAF1BE224;
-	Tue,  2 Jul 2024 17:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1488A1C005C;
+	Tue,  2 Jul 2024 17:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sns+rWHL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cIGviO5N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0788115218A;
-	Tue,  2 Jul 2024 17:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA1D1C0056;
+	Tue,  2 Jul 2024 17:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941055; cv=none; b=U9B3NOjEhkvcY4xqBbwY0P6RiFoyCt5R4OMX3t7KGxHNxE0DP9WVlAW5VAq3DU8LA5jK7MbtC0kEtF0XrOsyIWDEdmi0QiRWhPcxcZ2A+A66MVfPrjlqALnosaL3pfa+jBI1goGsAwhyvO3NwxLVCdo/MYqhqJdcDsSzgdX508k=
+	t=1719941341; cv=none; b=eIPD9ZH0DMA35VewPmxqqfHDljrbNRnHBFd0tmOcCV0AdOVcrbYrBnLC+zIK/WWoysLoHf43Nyo9STo2XAnlhac1lUPvZ5jaOVba2NQ4FDiKksj2lU4LYsygA/rmuCuNoAckhDmPuowVmZ7s7OEIDlf38T3FS9gUmXvKNMIMHGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941055; c=relaxed/simple;
-	bh=RDo+G3RQom1oSaIk/nFqWCO1PoN74DjrfxlihDlQjf0=;
+	s=arc-20240116; t=1719941341; c=relaxed/simple;
+	bh=gnitumKiTxGPY6PIiL6PCmbUfYDh4ugabyBQBqR8APQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+pHARDcEPN3n1SMXejA9EfHypQiw0ubKERtr4qj+0Z/0O36R6bgw116pX3AvsLsj/ZaF1F9pTZ2MnGQN7hnfhOm6Q1wdIQforQGi3N+kuFdwm1eUjdRXCXWrBM8/LG0f+WwgFQd5HbybCdpDNRSAWGZCGqOeEZRVw6ht1bc3og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sns+rWHL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B092C116B1;
-	Tue,  2 Jul 2024 17:24:14 +0000 (UTC)
+	 MIME-Version; b=tEfPe6SEK0UfRKD7Jl4LySRHD2zHvaGZdW5NWZN5YJSNBkkAGeRsIFJ8LfxhX3QO+IJvU8SY6e+/qIjn94bl3ojAT3J7IxcqGWTiw9uPgen3xY60ZzJyWLodXLqs8+qLDNfqMcZjF0VHPDW7tzGYCkkE2DuaAC+T9/H4NR7M3zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cIGviO5N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3AEAC116B1;
+	Tue,  2 Jul 2024 17:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941054;
-	bh=RDo+G3RQom1oSaIk/nFqWCO1PoN74DjrfxlihDlQjf0=;
+	s=korg; t=1719941341;
+	bh=gnitumKiTxGPY6PIiL6PCmbUfYDh4ugabyBQBqR8APQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sns+rWHLvVr17DC9lt0dNPS48XUHTEpHAN7V+nCQoGRGfCDZFmmdLtNqUd05gc1/o
-	 Z7a0t237vy005+fCWMX4olIcjPxih5B/s5rgZMy5TjzRp63M1eFhitKxDFN1/Fj8HO
-	 9nAkvOh7sguLqx7zSQkGnO9sLJgd1hOWa19YDtL0=
+	b=cIGviO5NWSmTlkSy+ef+zQ1uZ+nXuuWHPFXoAGogPA9y27CkSb5B81iNisjXM4K4P
+	 tTJS/OdahFDhdNFa/mC5uJwKqV6RpMeqP9DtdjABEsPL/3FjmIh0mh3RYdU5yH/lFq
+	 ia1STasN24YGtJynvjyzTzZ6is1DMsD7Sd6bLI/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Brown <doug@schmorgal.com>
-Subject: [PATCH 6.6 115/163] Revert "serial: core: only stop transmit when HW fifo is empty"
+	Tristram Ha <tristram.ha@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 028/128] net: dsa: microchip: fix wrong register write when masking interrupt
 Date: Tue,  2 Jul 2024 19:03:49 +0200
-Message-ID: <20240702170237.408963252@linuxfoundation.org>
+Message-ID: <20240702170227.297846734@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Brown <doug@schmorgal.com>
+From: Tristram Ha <tristram.ha@microchip.com>
 
-commit c5603e2a621dac10c5e21cc430848ebcfa6c7e01 upstream.
+[ Upstream commit b1c4b4d45263241ec6c2405a8df8265d4b58e707 ]
 
-This reverts commit 7bfb915a597a301abb892f620fe5c283a9fdbd77.
+The switch global port interrupt mask, REG_SW_PORT_INT_MASK__4, is
+defined as 0x001C in ksz9477_reg.h.  The designers used 32-bit value in
+anticipation for increase of port count in future product but currently
+the maximum port count is 7 and the effective value is 0x7F in register
+0x001F.  Each port has its own interrupt mask and is defined as 0x#01F.
+It uses only 4 bits for different interrupts.
 
-This commit broke pxa and omap-serial, because it inhibited them from
-calling stop_tx() if their TX FIFOs weren't completely empty. This
-resulted in these two drivers hanging during transmits because the TX
-interrupt would stay enabled, and a new TX interrupt would never fire.
+The developer who implemented the current interrupt mechanism in the
+switch driver noticed there are similarities between the mechanism to
+mask port interrupts in global interrupt and individual interrupts in
+each port and so used the same code to handle these interrupts.  He
+updated the code to use the new macro REG_SW_PORT_INT_MASK__1 which is
+defined as 0x1F in ksz_common.h but he forgot to update the 32-bit write
+to 8-bit as now the mask registers are 0x1F and 0x#01F.
 
-Cc: stable@vger.kernel.org
-Fixes: 7bfb915a597a ("serial: core: only stop transmit when HW fifo is empty")
-Signed-off-by: Doug Brown <doug@schmorgal.com>
-Link: https://lore.kernel.org/r/20240606195632.173255-2-doug@schmorgal.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In addition all KSZ switches other than the KSZ9897/KSZ9893 and LAN937X
+families use only 8-bit access and so this common code will eventually
+be changed to accommodate them.
+
+Fixes: e1add7dd6183 ("net: dsa: microchip: use common irq routines for girq and pirq")
+Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
+Link: https://lore.kernel.org/r/1719009262-2948-1-git-send-email-Tristram.Ha@microchip.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/serial_core.h |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/dsa/microchip/ksz_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -787,8 +787,7 @@ enum UART_TX_FLAGS {
- 	if (pending < WAKEUP_CHARS) {					      \
- 		uart_write_wakeup(__port);				      \
- 									      \
--		if (!((flags) & UART_TX_NOSTOP) && pending == 0 &&	      \
--		    __port->ops->tx_empty(__port))			      \
-+		if (!((flags) & UART_TX_NOSTOP) && pending == 0)	      \
- 			__port->ops->stop_tx(__port);			      \
- 	}								      \
- 									      \
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index f9f43897f86c1..9dbe188f09c3c 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -1790,7 +1790,7 @@ static void ksz_irq_bus_sync_unlock(struct irq_data *d)
+ 	struct ksz_device *dev = kirq->dev;
+ 	int ret;
+ 
+-	ret = ksz_write32(dev, kirq->reg_mask, kirq->masked);
++	ret = ksz_write8(dev, kirq->reg_mask, kirq->masked);
+ 	if (ret)
+ 		dev_err(dev->dev, "failed to change IRQ mask\n");
+ 
+-- 
+2.43.0
+
 
 
 
