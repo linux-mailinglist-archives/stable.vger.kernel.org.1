@@ -1,333 +1,189 @@
-Return-Path: <stable+bounces-56365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2A10924305
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:59:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A64459243A4
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 18:33:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B1592893DE
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 15:59:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0144BB21E6E
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 16:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6302A1BC08D;
-	Tue,  2 Jul 2024 15:59:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X85o72j6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 205FA1BD01E;
+	Tue,  2 Jul 2024 16:33:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843F91BB69C
-	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 15:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719935955; cv=fail; b=PltyeqgfJ8A/zflYdHdePWCEup87QZ+KxmuJdnaBNfOIE3STXx97o+EUYQj4/7YMbxGviFUNShQZl052kZ0eK3P4jii76hk5fD5PdwNX3Epnwxou5M9ukGB/2dg9/vVx8NyoqdNk0vanH/PNgp0039KFc0ZyC72ZZvRBrwYVAoo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719935955; c=relaxed/simple;
-	bh=bVoqbwUrvOBJ8/mu44p7DPG2NmjQQ/ejiGbrTc/qhQ0=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=CT92SP2LmQOkMpsEY//2zBlaW/h5i1cQXwqtML7FgtKJ2ZKoqJ7NKkVzKHuWvX0+GHE9vULTz55J3UH0n/sHxKAZA1LF63noC/+vFi3pJmIMjlP/UQHm1mZ3nto64jP9VF58v6e2oxMeq/5MBTnhGCB9/RtRkhQv+tZXCE3Kbtw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X85o72j6; arc=fail smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719935954; x=1751471954;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=bVoqbwUrvOBJ8/mu44p7DPG2NmjQQ/ejiGbrTc/qhQ0=;
-  b=X85o72j6agMwfjjPzR8CcOHLe3c6kUWepOCJaTVfzfqXqT3KK2CcA6p3
-   ezY1qQVyHNMjlD7OzBwbnhk6toMwygAfd1R6bQqZrZwOgr6KqJZ5gqU9s
-   0n0TFOrxpBMwjSB8gG9ka1ScRUNm10OooISHvni66W8At5EC5v5tYqya6
-   kvzepM+MXgquHP1xUl8JhMoTPwCm+ZFVY4aIXFxDWMzFri4Ep/VqJipzY
-   hi1GRBoen9Sq5gk5SBJvB7Z7kuHmmrx+qhqMoE5a8U+5ZCblrxr1lE1cf
-   qt8nw85/fCrnkW4BnX6CCBwdSscf+MDKP0r9uVTPS5Y22koZkaMzzhtm8
-   Q==;
-X-CSE-ConnectionGUID: tv30LYlbTSW3h2U2vEUNlg==
-X-CSE-MsgGUID: +wjo10OQS46rJKE0sYbNZg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="17243874"
-X-IronPort-AV: E=Sophos;i="6.09,178,1716274800"; 
-   d="scan'208";a="17243874"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2024 08:59:13 -0700
-X-CSE-ConnectionGUID: WbpFrA5lR/6TJI3pDZTUEg==
-X-CSE-MsgGUID: PNmJOF1AS9G2U/XMF7lQdg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,178,1716274800"; 
-   d="scan'208";a="50290775"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 02 Jul 2024 08:59:13 -0700
-Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Tue, 2 Jul 2024 08:59:12 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Tue, 2 Jul 2024 08:59:12 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.101)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 2 Jul 2024 08:59:11 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=D6KM0khBd4DbHt5fyLXLjQqh54G+t4ugg+Fb0+d0p9dFSz0Em25u6NYa7X8MpppbD8ia2xFDnY/wFN2FSTh61qo2WaE1PPQXAGfY/B/cx0ueV1U5w3igtoFhmUjJgDD3M8Ddxv+dotUkJ5//aXfwt8Kpw7K7kQ/rbsC91/d2+PfJ0xYandPhl8LPPoa3fQBWrZ/o+RNar936te2ldG4YpeQEKk+/s3B2rpwpOpw22CoaF9lf5UWoR+e41SSS3PbL98DIQ77UhvbulYpQtFS4W3O4n7dxBFTbaJvwkLbVAMISfz2d3SkqVcN+gJlN7XQgwc3l6I1dytuVKPOsCg3/XA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ycb3NSmzWGtcCPI2ZIWrfiuSXTfLSt2lj+9Hnr7R/Jc=;
- b=hF9nd4fOiTxeFwhfn6cwuRHUrChkJzCTnwio3SRjmq+AhUdvhUSSpi/fpzG0vlsjQBIPpdxWJv9s9WqMZl8v9ulqcpaJQkjgripIXrtnrAtS0VQoEBiUy+6XH8QYZeG45ZQ+24MziE1z+wn0XptfrKaKot8jUpxIqVti/SuIV2Ib1fP1PbNlncUIQivTwz2bNbRwn2fuLmcO5NHZe049S4b7qd6L8vqMBPKxT4y4++j+5aBzElkMzcup+KyTmM7vRLT7bLtV5C8sbmj1K7kKrd0kFaQCZQT6DxCf75/A/zy0xdinm8+WTGr3Oi4RGrRKCx4sW2G8FLxfxwK3ybTh1Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BYAPR11MB2854.namprd11.prod.outlook.com (2603:10b6:a02:c9::12)
- by LV2PR11MB6023.namprd11.prod.outlook.com (2603:10b6:408:17b::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.32; Tue, 2 Jul
- 2024 15:59:08 +0000
-Received: from BYAPR11MB2854.namprd11.prod.outlook.com
- ([fe80::8a98:4745:7147:ed42]) by BYAPR11MB2854.namprd11.prod.outlook.com
- ([fe80::8a98:4745:7147:ed42%5]) with mapi id 15.20.7719.028; Tue, 2 Jul 2024
- 15:59:08 +0000
-Date: Tue, 2 Jul 2024 11:59:01 -0400
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-CC: <intel-xe@lists.freedesktop.org>, Pallavi Mishra
-	<pallavi.mishra@intel.com>, Matthew Auld <matthew.auld@intel.com>,
-	<dri-devel@lists.freedesktop.org>, Joonas Lahtinen
-	<joonas.lahtinen@linux.intel.com>, Effie Yu <effie.yu@intel.com>, "Matthew
- Brost" <matthew.brost@intel.com>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Jose Souza <jose.souza@intel.com>,
-	Michal Mrozek <michal.mrozek@intel.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH] drm/xe: Use write-back caching mode for system memory on
- DGFX
-Message-ID: <ZoQjxVu4kAnSQdyq@intel.com>
-References: <20240619163904.2935-1-thomas.hellstrom@linux.intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240619163904.2935-1-thomas.hellstrom@linux.intel.com>
-X-ClientProxiedBy: BYAPR01CA0009.prod.exchangelabs.com (2603:10b6:a02:80::22)
- To BYAPR11MB2854.namprd11.prod.outlook.com (2603:10b6:a02:c9::12)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD25814293;
+	Tue,  2 Jul 2024 16:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719938016; cv=none; b=szNGoDJtXgVN3dDFAbL7hIWDY76XrgPDpMVyOrzljOiGPfr+QBHqY42tl/SNMXVewAjVrW5wHeWCccDpQxsDyG/mnQRFrCFzDMadLYXayzpvS4m3DSJXx5WY/dTBSOYKfd+EdKV1XT58eL+169Hw5Chg1odrIFXGJJYDbSK3Gok=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719938016; c=relaxed/simple;
+	bh=ebXSFWi2A8+Sv8Mbh7XlxktphkLbAUzL4isbm5tY51A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ho/csQTRGRLqA0jC83flJj6aw0N2UTcg41sF29d3/TfVt8TTndjKc0orRfTgn3JfXlEiKfFixMcUSt8WfGDE6oV5XfHtbWpOjHEDviMq0eWkKosybsj6Ydv1eBgOlP4KhF14dh/d3WExGioP+LDTQAs1NX01siMffhIgsbX2xBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E7677339;
+	Tue,  2 Jul 2024 09:33:56 -0700 (PDT)
+Received: from [10.1.32.193] (XHFQ2J9959.cambridge.arm.com [10.1.32.193])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9FDDF3F73B;
+	Tue,  2 Jul 2024 09:33:30 -0700 (PDT)
+Message-ID: <46fb005b-30e4-4340-b1e2-8789833f952c@arm.com>
+Date: Tue, 2 Jul 2024 17:33:29 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR11MB2854:EE_|LV2PR11MB6023:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9f54b241-07ab-4899-3c5e-08dc9aafe818
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?8vjJozC27qAHdl1fL4wuO6qpuWQizXeF7Gkt2jMtxXQbK2JMBMhpU7HlAN?=
- =?iso-8859-1?Q?Y4TyaLzYmS0dgUehU/HCoQWeSYIU8MZ3P0s24UJVNabiDUYLn/4MK43WMR?=
- =?iso-8859-1?Q?i3Kk4LgMelk2c+FIRFY/1aBok8iTZJCRL1E1nlMCVu2fgByKbTftKXiNtu?=
- =?iso-8859-1?Q?lTX48McffEXfPQFIraXBhfqLMA6UwWB2FUhgy3eeykVqgUU/qcBAKFvYQ9?=
- =?iso-8859-1?Q?ydxNF1pD/KXhltyBvDg+6QkdLZFMFwW2LxA09JY9ZYJ9ArLwMz5vCe9fQ7?=
- =?iso-8859-1?Q?Q121Tl4dRkJ8AiZ6Un9RE21KTlwBsUZwvoV+SuBCeiv9VS3iLmcvK2NHRF?=
- =?iso-8859-1?Q?+1bb/9MqfPSATNt56/zPWJK1Mizjtk8oG9H4LhrIzdSagsBuN8qvxNpFUp?=
- =?iso-8859-1?Q?dfvmGN6G3aegP/dxA5LJfR96Ph6JHDgaXFim0yZrKS9JG3t//J3uGYLxED?=
- =?iso-8859-1?Q?mDvw8DBKhGq/In1CQfYUrKCC+uqNdjHMHpDJBCvIX9hvqioi4grH1GQ9q8?=
- =?iso-8859-1?Q?ybCFOKrMzjWK/DU44prnfasdfuF3kNteiu1oqHIqw/B0EL9sWHXmryCQ13?=
- =?iso-8859-1?Q?ia36pFWJSNhDZ5QdTPQu76lOLN91EcMoBD90cw2KZQ/7NiFiSwOBXB+Izm?=
- =?iso-8859-1?Q?KNZ46cnogy3Gn+eAe0r4IFn/AZTeXQxRP+P8Sy+acbsvTc9yRrHwT5sOCJ?=
- =?iso-8859-1?Q?5dEVdBf9gqiyxPJBU+Vo3zjD4I5VziH9v0TJsh8u+nibTMUUCP5za0JUdu?=
- =?iso-8859-1?Q?I113Ak65cj6FusoygviUCezu4UCW4mbePzazJaSQYsMQ1XMev8Y+AqaLLm?=
- =?iso-8859-1?Q?OvPpkYhN7oRTzN856+XF3BS6AoMrsNeorjdDn1bFBsGvI+hjySbyEu2rSG?=
- =?iso-8859-1?Q?6i+vfvycCW31iL8BC7ICOpfTnb/aOA+1Jdz9Pb8IKYiu5Xtwj48Vu1ECws?=
- =?iso-8859-1?Q?XcI9ZQCMnNDoEnOLxq4JPWqjgGhomb8SE+gDm8whey970eN1vJ1MYyq9xa?=
- =?iso-8859-1?Q?uFf0WM4AN2demhj0AS3rQgxY4+/cIvdIbvvPXu+Ot2PZk8AySgGqWtY6ho?=
- =?iso-8859-1?Q?4eLWLZc9jWs/v/AS4+b88HsmgXQVMe0yz3C6vWGiLX7AV0y+HRvlHCnq6K?=
- =?iso-8859-1?Q?c+sQRv/E+92EjOFXWfZnyd6Do89rcj1GVACbEhtcJ1uGIsQpHF2W9JY0W4?=
- =?iso-8859-1?Q?5zdQfPA41Cx/k5Iadf7Kqg89EDKBG0MRb3Ge+ECNt9aBTE9yhPbTEHDCbo?=
- =?iso-8859-1?Q?H9ATNAQB24HY1QR9BLjYjaPF2EhWcQtdb88yW2zlT/qzT+HXfFfckCHmji?=
- =?iso-8859-1?Q?pj2AGNQFKwk1+B0yCJGfRY19/bcQ8yLy1logHSOTpzBIxTKtkI/0tt/NL1?=
- =?iso-8859-1?Q?3gZQdXZOyOVBqz2hVhHLp4V4mUWKHRdA=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB2854.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?XT9tWb/cfvVQwDR0Sy6Anri+Zly/XcbTvtSvY3bqOoftKeDPr/G9OM7e9M?=
- =?iso-8859-1?Q?Wfizcbn3kYQ00qG6i54tl5oxt42uUFp5vuGCHDLPLCI3vqyv9N5amTeWLS?=
- =?iso-8859-1?Q?LYvjUVzQPIv7wGbZz/7v4GDJCjOFnZr2642/XbD+CI7db+X/B4EVnlfhuK?=
- =?iso-8859-1?Q?uBaN8yWiP5Rr35FFymxImDesmMvEAt6d99lw6wGhggBRxoXIMq0Adapr01?=
- =?iso-8859-1?Q?6uK68xCv5yUVEJ5bq/Xe2Uc8vEfUBS93X0GIMRh4/8qOdWsGHw9lMvzgr4?=
- =?iso-8859-1?Q?yW2nqH6tq3Cz28XCsvsV49nq+7xM4Jy/iA/J7nddU+/hOWNHNdr/Xyh0U5?=
- =?iso-8859-1?Q?bqjf+LCEjYYiVAvQewzFoZpgMLVa9oFFMYkBN4lo3NDohk6PoiGoceiwcI?=
- =?iso-8859-1?Q?GObmej9nIbCNBUMVjSveDU6uemFMW+5BUn1RCH57U1deI0Op3ePjJpf/lO?=
- =?iso-8859-1?Q?Zq+0qQERq/0nf73w4HxKfZgjILK7C/8zWV8upWG/+ertD/sf39/lSdTsmJ?=
- =?iso-8859-1?Q?cRuTW7hL4VV4WUWP0YXS0NN3Zhr3zu0bEkpz0mAhQeFN2A5RaJU0CBeprR?=
- =?iso-8859-1?Q?Kz5cl4eVRQYqdJMOePuLN9TKF3GwSM+tdG8QEXfcInltJV/Jh82JWDipOS?=
- =?iso-8859-1?Q?E+BaJlR1AKXGMAD0RX0gIgRDy8/UN5vLXty7PH/9qO8TIffzYHPq4PSybI?=
- =?iso-8859-1?Q?+4/mit1RUDQwH9Z2nNvX9MDZsJZfbkRvCI89sRN7kgh2h5/vFOuHJHKf5P?=
- =?iso-8859-1?Q?N0iXXj5exbBRIYq6T41k1x/kMWGy+LAGDm/vc8oHmAvYBUCGLurJPmLt9Q?=
- =?iso-8859-1?Q?M4byUNyJNtO0OoEQEiZ7sAqOTygGS+7Juo/3Tw0A3aopgpJF0O6+JZoCZq?=
- =?iso-8859-1?Q?ufJdvf8CtNRrjl0ZyBYkhsUxpZNPN9/KJbs9dzD6JG9Gx+XxPxe+Ddeoug?=
- =?iso-8859-1?Q?x8iFmkOs3OZJo33VhkgtagMiPEWzRMtMmAlHX7ti6a5gUBwy6QxUgzKZbE?=
- =?iso-8859-1?Q?nkklUPP0trhb4PD7FdkekYTaj6F9medDFUmQi/0tMYEmECBtBIJvN/W7mt?=
- =?iso-8859-1?Q?bax2eswTLHlKE/GopIBT/I5C5CnbAPsw9Sy51cXtG7TvHN0XgodPxwLzy8?=
- =?iso-8859-1?Q?wRXFq4pq6aX5TuVeRN2cU0x1beIGttFgTGjuVWhtffA9cBdgu453khQ2nq?=
- =?iso-8859-1?Q?twrvdrCDqECXdBTDGnjvBrs2bJg3PlaPaagd5ifQrJxFVYne05EWEcnDhz?=
- =?iso-8859-1?Q?7oob6Y2gWvBulfyr/hdeSUqDDwqnVdWb0q3Ute8LJQBiukgBaX7MDtVJ/W?=
- =?iso-8859-1?Q?oZlYnWbhru4rfJVepmzPEZtwoaqL9BS6sddQ0p1mhON8gZ6UthVwNUATgc?=
- =?iso-8859-1?Q?w1ezzz7sBGMSz4kOsrjqMWGeYjHL6nG3KftGsFytxbGbytvVIhPUaM/ccC?=
- =?iso-8859-1?Q?VqszDJ4/6jsivc/MZpz+iYzxwDKt6d7+QCp2KXI1TNtc7A6Yqf7WCTkhdH?=
- =?iso-8859-1?Q?J+STLMh/KTmXOwhun/MrDD4a1eCVm4FG3Tc/gMjR+E2Q3PtqSuniNeZFtR?=
- =?iso-8859-1?Q?QrDV6gosEYKACoP+AtRFzxPffCFVx+AktOWnSpqmuMJhUT7OpPmHOBqMQA?=
- =?iso-8859-1?Q?3pG6PeTTCHTpZ38AMV6QuC1uM/L1QcD8JW?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9f54b241-07ab-4899-3c5e-08dc9aafe818
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB2854.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2024 15:59:08.6378
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VtCc1uWClXd+eaiEsmguXW3sV7DMyydQYvYN4Td5h3dDWKDwD4oQmEfi+DyEPxQOqztcvferfKHm+gYvMPtSEw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR11MB6023
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] mm: Fix khugepaged activation policy
+Content-Language: en-GB
+To: David Hildenbrand <david@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ Barry Song <baohua@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Lance Yang <ioworker0@gmail.com>, Yang Shi <shy828301@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240702144617.2291480-1-ryan.roberts@arm.com>
+ <c877a136-4294-4f00-b0ac-7194fe170452@redhat.com>
+ <ed5042af-b12f-4a36-a2e7-9d8983141099@arm.com>
+ <686d3f32-45b0-4dd5-8954-e75748b9c946@redhat.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <686d3f32-45b0-4dd5-8954-e75748b9c946@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 19, 2024 at 06:39:04PM +0200, Thomas Hellstr�m wrote:
-> The caching mode for buffer objects with VRAM as a possible
-> placement was forced to write-combined, regardless of placement.
-> 
-> However, write-combined system memory is expensive to allocate and
-> even though it is pooled, the pool is expensive to shrink, since
-> it involves global CPU TLB flushes.
-> 
-> Moreover write-combined system memory from TTM is only reliably
-> available on x86 and DGFX doesn't have an x86 restriction.
-> 
-> So regardless of the cpu caching mode selected for a bo,
-> internally use write-back caching mode for system memory on DGFX.
-> 
-> Coherency is maintained, but user-space clients may perceive a
-> difference in cpu access speeds.
+On 02/07/2024 16:38, David Hildenbrand wrote:
+> On 02.07.24 17:29, Ryan Roberts wrote:
+>> On 02/07/2024 15:57, David Hildenbrand wrote:
+>>> On 02.07.24 16:46, Ryan Roberts wrote:
+>>>> Since the introduction of mTHP, the docuementation has stated that
+>>>> khugepaged would be enabled when any mTHP size is enabled, and disabled
+>>>> when all mTHP sizes are disabled. There are 2 problems with this; 1.
+>>>> this is not what was implemented by the code and 2. this is not the
+>>>> desirable behavior.
+>>>>
+>>>> Desirable behavior is for khugepaged to be enabled when any PMD-sized
+>>>> THP is enabled, anon or file. (Note that file THP is still controlled by
+>>>> the top-level control so we must always consider that, as well as the
+>>>> PMD-size mTHP control for anon). khugepaged only supports collapsing to
+>>>> PMD-sized THP so there is no value in enabling it when PMD-sized THP is
+>>>> disabled. So let's change the code and documentation to reflect this
+>>>> policy.
+>>>>
+>>>> Further, per-size enabled control modification events were not
+>>>> previously forwarded to khugepaged to give it an opportunity to start or
+>>>> stop. Consequently the following was resulting in khugepaged eroneously
+>>>> not being activated:
+>>>>
+>>>>     echo never > /sys/kernel/mm/transparent_hugepage/enabled
+>>>>     echo always > /sys/kernel/mm/transparent_hugepage/hugepages-2048kB/enabled
+>>>>
+>>>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+>>>> Fixes: 3485b88390b0 ("mm: thp: introduce multi-size THP sysfs interface")
+>>>> Closes:
+>>>> https://lore.kernel.org/linux-mm/7a0bbe69-1e3d-4263-b206-da007791a5c4@redhat.com/
+>>>> Cc: stable@vger.kernel.org
+>>>> ---
+>>>>
+>>>> Hi All,
+>>>>
+>>>> Applies on top of today's mm-unstable (9bb8753acdd8). No regressions
+>>>> observed in
+>>>> mm selftests.
+>>>>
+>>>> When fixing this I also noticed that khugepaged doesn't get (and never has
+>>>> been)
+>>>> activated/deactivated by `shmem_enabled=`. I'm not sure if khugepaged knows how
+>>>> to collapse shmem - perhaps it should be activated in this case?
+>>>>
+>>>
+>>> Call me confused.
+>>>
+>>> khugepaged_scan_mm_slot() and madvise_collapse() only all
+>>> hpage_collapse_scan_file() with ... IS_ENABLED(CONFIG_SHMEM) ?
+>>
+>> Looks like khugepaged_scan_mm_slot() was converted from:
+>>
+>>    if (shmem_file(vma->vm_file)) {
+>>
+>> to:
+>>
+>>    if (IS_ENABLED(CONFIG_SHMEM) && vma->vm_file) {
 
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+CONFIG_READ_ONLY_THP_FOR_FS depends on CONFIG_SHMEM in Kconfig, so I think this is all correct/safe. Although I'm not really sure what the need for the dependency is.
+
+>>
+>> By 99cb0dbd47a15d395bf3faa78dc122bc5efe3fc0 which adds THP collapse support for
+>> non-shmem files. Clearly that looks wrong, but I guess never spotted in practice
+>> because noone disables shemem?
+>>
+>> I guess madvise_collapse() was a copy/paste?
+>>
+> 
+> Likely.
+> 
+>>>
+>>> collapse_file() is only called by hpage_collapse_scan_file() ... and there we
+>>> check "shmem_file(file)".
+>>>
+>>> So why is the IS_ENABLED(CONFIG_SHMEM) check in there if collapse_file() seems
+>>> to "collapse filemap/tmpfs/shmem pages into huge one".
+>>>
+>>> Anyhow, we certainly can collapse shmem (that's how it all started IIUC).
+>>
+>> Yes, thanks for pointing me at it. Should have just searched "shmem" in
+>> khugepaged.c :-/
+>>
+>>>
+>>> Besides that, khugepaged only seems to collapse !shmem with
+>>>    VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
+>>
+>> That makes sense. I guess I could use IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) to
+>> tighen the (non-shmem) file THP check in hugepage_pmd_enabled() (currently I'm
+>> unconditionally using the top-level enabled setting as a "is THP enabled for
+>> files" check).
+
+I'll do a v2 with this addition if you agree?
+
+static inline bool hugepage_pmd_enabled(void)
+{
+	/*
+	 * We cover both the anon and the file-backed case here; for
+	 * file-backed, we must return true if globally enabled, regardless of
+	 * the anon pmd size control status.
+	 */
+	return (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && hugepage_global_enabled()) ||
+	       test_bit(PMD_ORDER, &huge_anon_orders_always) ||
+	       test_bit(PMD_ORDER, &huge_anon_orders_madvise) ||
+	       (test_bit(PMD_ORDER, &huge_anon_orders_inherit) && hugepage_global_enabled());
+}
+
+>>
+>> But back to my original question, I think hugepage_pmd_enabled() should also be
+>> explicitly checking the appropriate shmem_enabled controls and ORing in the
+>> result? Otherwise in a situation where only shmem is THP enabled (and file/anon
+>> THP is disabled) khugepaged won't run.
+> 
+> I think so.
+
+I'll do this part as a separate change since it's fixing a separate bug.
 
 > 
-> Signed-off-by: Thomas Hellstr�m <thomas.hellstrom@linux.intel.com>
-> Fixes: 622f709ca629 ("drm/xe/uapi: Add support for CPU caching mode")
-> Cc: Pallavi Mishra <pallavi.mishra@intel.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> Cc: Effie Yu <effie.yu@intel.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Jose Souza <jose.souza@intel.com>
-> Cc: Michal Mrozek <michal.mrozek@intel.com>
-> Cc: <stable@vger.kernel.org> # v6.8+
-> ---
->  drivers/gpu/drm/xe/xe_bo.c       | 47 +++++++++++++++++++-------------
->  drivers/gpu/drm/xe/xe_bo_types.h |  3 +-
->  include/uapi/drm/xe_drm.h        |  8 +++++-
->  3 files changed, 37 insertions(+), 21 deletions(-)
+>>
+>>>
+>>> The thp_vma_allowable_order() check tests if we are allowed to collapse a
+>>> PMD_ORDER in that VMA.
+>>
+>> I don't follow the relevance of this statement.
 > 
-> diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-> index 65c696966e96..31192d983d9e 100644
-> --- a/drivers/gpu/drm/xe/xe_bo.c
-> +++ b/drivers/gpu/drm/xe/xe_bo.c
-> @@ -343,7 +343,7 @@ static struct ttm_tt *xe_ttm_tt_create(struct ttm_buffer_object *ttm_bo,
->  	struct xe_device *xe = xe_bo_device(bo);
->  	struct xe_ttm_tt *tt;
->  	unsigned long extra_pages;
-> -	enum ttm_caching caching;
-> +	enum ttm_caching caching = ttm_cached;
->  	int err;
->  
->  	tt = kzalloc(sizeof(*tt), GFP_KERNEL);
-> @@ -357,26 +357,35 @@ static struct ttm_tt *xe_ttm_tt_create(struct ttm_buffer_object *ttm_bo,
->  		extra_pages = DIV_ROUND_UP(xe_device_ccs_bytes(xe, bo->size),
->  					   PAGE_SIZE);
->  
-> -	switch (bo->cpu_caching) {
-> -	case DRM_XE_GEM_CPU_CACHING_WC:
-> -		caching = ttm_write_combined;
-> -		break;
-> -	default:
-> -		caching = ttm_cached;
-> -		break;
-> -	}
-> -
-> -	WARN_ON((bo->flags & XE_BO_FLAG_USER) && !bo->cpu_caching);
-> -
->  	/*
-> -	 * Display scanout is always non-coherent with the CPU cache.
-> -	 *
-> -	 * For Xe_LPG and beyond, PPGTT PTE lookups are also non-coherent and
-> -	 * require a CPU:WC mapping.
-> +	 * DGFX system memory is always WB / ttm_cached, since
-> +	 * other caching modes are only supported on x86. DGFX
-> +	 * GPU system memory accesses are always coherent with the
-> +	 * CPU.
->  	 */
-> -	if ((!bo->cpu_caching && bo->flags & XE_BO_FLAG_SCANOUT) ||
-> -	    (xe->info.graphics_verx100 >= 1270 && bo->flags & XE_BO_FLAG_PAGETABLE))
-> -		caching = ttm_write_combined;
-> +	if (!IS_DGFX(xe)) {
-> +		switch (bo->cpu_caching) {
-> +		case DRM_XE_GEM_CPU_CACHING_WC:
-> +			caching = ttm_write_combined;
-> +			break;
-> +		default:
-> +			caching = ttm_cached;
-> +			break;
-> +		}
-> +
-> +		WARN_ON((bo->flags & XE_BO_FLAG_USER) && !bo->cpu_caching);
-> +
-> +		/*
-> +		 * Display scanout is always non-coherent with the CPU cache.
-> +		 *
-> +		 * For Xe_LPG and beyond, PPGTT PTE lookups are also
-> +		 * non-coherent and require a CPU:WC mapping.
-> +		 */
-> +		if ((!bo->cpu_caching && bo->flags & XE_BO_FLAG_SCANOUT) ||
-> +		    (xe->info.graphics_verx100 >= 1270 &&
-> +		     bo->flags & XE_BO_FLAG_PAGETABLE))
-> +			caching = ttm_write_combined;
-> +	}
->  
->  	if (bo->flags & XE_BO_FLAG_NEEDS_UC) {
->  		/*
-> diff --git a/drivers/gpu/drm/xe/xe_bo_types.h b/drivers/gpu/drm/xe/xe_bo_types.h
-> index 86422e113d39..10450f1fbbde 100644
-> --- a/drivers/gpu/drm/xe/xe_bo_types.h
-> +++ b/drivers/gpu/drm/xe/xe_bo_types.h
-> @@ -66,7 +66,8 @@ struct xe_bo {
->  
->  	/**
->  	 * @cpu_caching: CPU caching mode. Currently only used for userspace
-> -	 * objects.
-> +	 * objects. Exceptions are system memory on DGFX, which is always
-> +	 * WB.
->  	 */
->  	u16 cpu_caching;
->  
-> diff --git a/include/uapi/drm/xe_drm.h b/include/uapi/drm/xe_drm.h
-> index 93e00be44b2d..1189b3044723 100644
-> --- a/include/uapi/drm/xe_drm.h
-> +++ b/include/uapi/drm/xe_drm.h
-> @@ -783,7 +783,13 @@ struct drm_xe_gem_create {
->  #define DRM_XE_GEM_CPU_CACHING_WC                      2
->  	/**
->  	 * @cpu_caching: The CPU caching mode to select for this object. If
-> -	 * mmaping the object the mode selected here will also be used.
-> +	 * mmaping the object the mode selected here will also be used. The
-> +	 * exception is when mapping system memory (including evicted
-> +	 * system memory) on discrete GPUs. The caching mode selected will
-> +	 * then be overridden to DRM_XE_GEM_CPU_CACHING_WB, and coherency
-> +	 * between GPU- and CPU is guaranteed. The caching mode of
-> +	 * existing CPU-mappings will be updated transparently to
-> +	 * user-space clients.
->  	 */
->  	__u16 cpu_caching;
->  	/** @pad: MBZ */
-> -- 
-> 2.44.0
-> 
+> On whatever VMA we indicate true, we will try to collapse in khugepaged.
+> Regarding the question, what khugepaged will try to collapse.
+
+Oh I see. Yes agreed. But we don't have a VMA when enabling/disabling khugepaged. We just want to know "are there vmas for which khugepaged would attempt to collapse to PMD size?"
 
