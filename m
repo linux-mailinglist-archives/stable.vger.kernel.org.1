@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-56784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A16509245F4
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E362C9245A1
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:24:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E127286076
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6440FB23B1E
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 449B01BF331;
-	Tue,  2 Jul 2024 17:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B791BD4E9;
+	Tue,  2 Jul 2024 17:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IeYGNP1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6yU1fqO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032BF1BE863;
-	Tue,  2 Jul 2024 17:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46A515218A;
+	Tue,  2 Jul 2024 17:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941348; cv=none; b=ajGEuY4l/85pyR0xpdWU6KxwqL/IX4e84sWDPOswdDHP163bSOI8VeIKPT7y8ohPEfmeUzkj+vq/6sabxdFisjAgkPbLej0l1kx7yyLXpmtRIQhqcZrVsKHCo0hBBkSwBX6r1+3Dl3GyLoCLDLq3g5tujQntqfRwRyRVr+DtXyw=
+	t=1719941092; cv=none; b=jl4vGlEs5dn8ZTyim/zLx6P/CnumTLMckGkgYpbzLtL2JUtRXdxvALyp9x5L47al/D84IzGr963CSusw95sDGL8uxYOcnHn9ZHsn57pu3Tvx4/ddVOrbD9uKRsMNJU7AX03CNbriDOZRMjFBWxAtq5LfWlHoqMZn6J4UfhKbauY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941348; c=relaxed/simple;
-	bh=qM2hZh2pShhVp4P/fF14ttdlHU2OcZ9Xxw8vqg+Hl0Y=;
+	s=arc-20240116; t=1719941092; c=relaxed/simple;
+	bh=cJXpNC0I8D7r8RIwX5OGTQyBCPyZxCpJON79IEp/SJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WaWcPctw21fxaCCY73hnHyFIO7OM80VDpKa/am3iWhlXRfMH1WUKhHYAtcwMVUFn1d7APhNsbsISlzWL0WXlLciSrF/a57h2swFT6PiPdMcI0LvdsQqdDk6c3bsFY/scfEVY/e+29LQdqpsKo2Bo+Lx/lloevHhUAkXd1//1GA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IeYGNP1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BACDC116B1;
-	Tue,  2 Jul 2024 17:29:07 +0000 (UTC)
+	 MIME-Version; b=oie4snvz7ulVFi7gwKxNCCaS+GW8eWt0ql/b+ULkbtDtJDfZcRlr9g1iageITvTH1wZKP404oM7Olo2Dff/LGRA1hEdFngR68BBgz9Mo2LlpoyENsQVebLGnFNE/B1prW/u24z3XYJ97jXPy9TfopwL5biBmFxj7HJgQLhHexxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6yU1fqO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B3FC116B1;
+	Tue,  2 Jul 2024 17:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941347;
-	bh=qM2hZh2pShhVp4P/fF14ttdlHU2OcZ9Xxw8vqg+Hl0Y=;
+	s=korg; t=1719941092;
+	bh=cJXpNC0I8D7r8RIwX5OGTQyBCPyZxCpJON79IEp/SJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0IeYGNP1KSquMqQTf3ZKs9gvwXJhpsDgMOOsUpF55VNqZcUXQ0hS5gGOJwMAqOr75
-	 NhrMXsKCdLusJbR8HJ1lWR82AqWze58bfIWiMyRFdJvW7ShGrgg7VvaEwctUP/+qlI
-	 PSfmHZ6Kmts2QPQprJ1BBq2yLRRV+hzWjNDp17mY=
+	b=H6yU1fqOAvSqw0n7I9+oc7pwML9KCOAB/6HJ1U3HX6ozeB06CwW/ceH3BTY6khJaX
+	 drjmVMT2j1+XycfPAZiDCNh6JkgLCJaSx3ZSv/+Uv6+nVZKGlpTIWQYu4uKdXdlM+S
+	 WP7Uk5VRnqRlmlgN4SJt8EQCGHTnUdI1hBFdkwzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>,
-	Xie Yongji <xieyongji@bytedance.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Maxime Coquelin <maxime.coquelin@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/128] vduse: validate block features only with block devices
+	Thomas Gleixner <tglx@linutronix.de>,
+	Mostafa Saleh <smostafa@google.com>,
+	Bjorn Heelgas <bhelgaas@google.com>
+Subject: [PATCH 6.6 125/163] PCI/MSI: Fix UAF in msi_capability_init
 Date: Tue,  2 Jul 2024 19:03:59 +0200
-Message-ID: <20240702170227.673758243@linuxfoundation.org>
+Message-ID: <20240702170237.783974391@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +60,119 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Coquelin <maxime.coquelin@redhat.com>
+From: Mostafa Saleh <smostafa@google.com>
 
-[ Upstream commit a115b5716fc9a64652aa9cb332070087178ffafa ]
+commit 9eee5330656bf92f51cb1f09b2dc9f8cf975b3d1 upstream.
 
-This patch is preliminary work to enable network device
-type support to VDUSE.
+KFENCE reports the following UAF:
 
-As VIRTIO_BLK_F_CONFIG_WCE shares the same value as
-VIRTIO_NET_F_HOST_TSO4, we need to restrict its check
-to Virtio-blk device type.
+ BUG: KFENCE: use-after-free read in __pci_enable_msi_range+0x2c0/0x488
 
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
-Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
-Signed-off-by: Maxime Coquelin <maxime.coquelin@redhat.com>
-Message-Id: <20240109111025.1320976-2-maxime.coquelin@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ Use-after-free read at 0x0000000024629571 (in kfence-#12):
+  __pci_enable_msi_range+0x2c0/0x488
+  pci_alloc_irq_vectors_affinity+0xec/0x14c
+  pci_alloc_irq_vectors+0x18/0x28
+
+ kfence-#12: 0x0000000008614900-0x00000000e06c228d, size=104, cache=kmalloc-128
+
+ allocated by task 81 on cpu 7 at 10.808142s:
+  __kmem_cache_alloc_node+0x1f0/0x2bc
+  kmalloc_trace+0x44/0x138
+  msi_alloc_desc+0x3c/0x9c
+  msi_domain_insert_msi_desc+0x30/0x78
+  msi_setup_msi_desc+0x13c/0x184
+  __pci_enable_msi_range+0x258/0x488
+  pci_alloc_irq_vectors_affinity+0xec/0x14c
+  pci_alloc_irq_vectors+0x18/0x28
+
+ freed by task 81 on cpu 7 at 10.811436s:
+  msi_domain_free_descs+0xd4/0x10c
+  msi_domain_free_locked.part.0+0xc0/0x1d8
+  msi_domain_alloc_irqs_all_locked+0xb4/0xbc
+  pci_msi_setup_msi_irqs+0x30/0x4c
+  __pci_enable_msi_range+0x2a8/0x488
+  pci_alloc_irq_vectors_affinity+0xec/0x14c
+  pci_alloc_irq_vectors+0x18/0x28
+
+Descriptor allocation done in:
+__pci_enable_msi_range
+    msi_capability_init
+        msi_setup_msi_desc
+            msi_insert_msi_desc
+                msi_domain_insert_msi_desc
+                    msi_alloc_desc
+                        ...
+
+Freed in case of failure in __msi_domain_alloc_locked()
+__pci_enable_msi_range
+    msi_capability_init
+        pci_msi_setup_msi_irqs
+            msi_domain_alloc_irqs_all_locked
+                msi_domain_alloc_locked
+                    __msi_domain_alloc_locked => fails
+                    msi_domain_free_locked
+                        ...
+
+That failure propagates back to pci_msi_setup_msi_irqs() in
+msi_capability_init() which accesses the descriptor for unmasking in the
+error exit path.
+
+Cure it by copying the descriptor and using the copy for the error exit path
+unmask operation.
+
+[ tglx: Massaged change log ]
+
+Fixes: bf6e054e0e3f ("genirq/msi: Provide msi_device_populate/destroy_sysfs()")
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Mostafa Saleh <smostafa@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Bjorn Heelgas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240624203729.1094506-1-smostafa@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vdpa/vdpa_user/vduse_dev.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/pci/msi/msi.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
-index edcd74cc4c0f7..cb35a76146b39 100644
---- a/drivers/vdpa/vdpa_user/vduse_dev.c
-+++ b/drivers/vdpa/vdpa_user/vduse_dev.c
-@@ -1416,13 +1416,14 @@ static bool device_is_allowed(u32 device_id)
- 	return false;
- }
- 
--static bool features_is_valid(u64 features)
-+static bool features_is_valid(struct vduse_dev_config *config)
+--- a/drivers/pci/msi/msi.c
++++ b/drivers/pci/msi/msi.c
+@@ -348,7 +348,7 @@ static int msi_capability_init(struct pc
+ 			       struct irq_affinity *affd)
  {
--	if (!(features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)))
-+	if (!(config->features & BIT_ULL(VIRTIO_F_ACCESS_PLATFORM)))
- 		return false;
+ 	struct irq_affinity_desc *masks = NULL;
+-	struct msi_desc *entry;
++	struct msi_desc *entry, desc;
+ 	int ret;
  
- 	/* Now we only support read-only configuration space */
--	if (features & (1ULL << VIRTIO_BLK_F_CONFIG_WCE))
-+	if ((config->device_id == VIRTIO_ID_BLOCK) &&
-+			(config->features & BIT_ULL(VIRTIO_BLK_F_CONFIG_WCE)))
- 		return false;
+ 	/* Reject multi-MSI early on irq domain enabled architectures */
+@@ -373,6 +373,12 @@ static int msi_capability_init(struct pc
+ 	/* All MSIs are unmasked by default; mask them all */
+ 	entry = msi_first_desc(&dev->dev, MSI_DESC_ALL);
+ 	pci_msi_mask(entry, msi_multi_mask(entry));
++	/*
++	 * Copy the MSI descriptor for the error path because
++	 * pci_msi_setup_msi_irqs() will free it for the hierarchical
++	 * interrupt domain case.
++	 */
++	memcpy(&desc, entry, sizeof(desc));
  
- 	return true;
-@@ -1449,7 +1450,7 @@ static bool vduse_validate_config(struct vduse_dev_config *config)
- 	if (!device_is_allowed(config->device_id))
- 		return false;
+ 	/* Configure MSI capability structure */
+ 	ret = pci_msi_setup_msi_irqs(dev, nvec, PCI_CAP_ID_MSI);
+@@ -392,7 +398,7 @@ static int msi_capability_init(struct pc
+ 	goto unlock;
  
--	if (!features_is_valid(config->features))
-+	if (!features_is_valid(config))
- 		return false;
- 
- 	return true;
--- 
-2.43.0
-
+ err:
+-	pci_msi_unmask(entry, msi_multi_mask(entry));
++	pci_msi_unmask(&desc, msi_multi_mask(&desc));
+ 	pci_free_msi_irqs(dev);
+ fail:
+ 	dev->msi_enabled = 0;
 
 
 
