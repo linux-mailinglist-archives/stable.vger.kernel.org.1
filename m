@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-56606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7843924531
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:19:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD11924478
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:10:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62BE91F222D4
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:19:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20E281F217E6
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:10:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699DE1BF331;
-	Tue,  2 Jul 2024 17:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A744515218A;
+	Tue,  2 Jul 2024 17:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zwh//HIJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9Asfkez"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B06BE5A;
-	Tue,  2 Jul 2024 17:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A241BD002;
+	Tue,  2 Jul 2024 17:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940745; cv=none; b=HgQAm7kZJ+cspMi0e3WnqhF5E5cVC8NsHvVgH5qvmtA+Y0u4gDZq+LY3ZGhdPhyFLEYfswfOuOErdVtuj9BRwCkuzxf7B/NjBqrOxjbPOV1J5yfiO/cnzOiWGdO0pYhDrJ6Q5HjtO9YU1R1rZ3xeL//gEwa2WcCWun6eTXtnKac=
+	t=1719940256; cv=none; b=pocnd616AfXP1zARrPHBJYDMmBD5dKuuH0vFRZh7xXDm+rDHmOpV/y4RO31pyoFcfwCL79BfOd9Q/2Kx6W/Hyklf8QvFsGQvGo12CKBDeGyQvL2Cf/jCvYwAW2wiKtjXNRGkFt6MZopT+66U36wjDrUQgQhArDL2b9GqcmiV9QE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940745; c=relaxed/simple;
-	bh=qGE/k/euiXx/17BStPI8qNorQ/JySKVjZq0jbgKm05Y=;
+	s=arc-20240116; t=1719940256; c=relaxed/simple;
+	bh=+JxtE16RxdIFc9qPfBrgxVs1HYhMWOd/XSuoLdbniGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UEk0RnmMDEJYCuh7byK/9WJzB7eiL2CME8im92As3G7EIf0Hufn3TIpqEkurmUVGU0Ko05rN7/zwRKCoYuq8q3wLatq24UN97FufYNJ3aUg9yDq5lMb29quWhVOiFoe8pABIMWYkaVyGtsG00+2P8g7Ahb12YtccE0nDTF9EyHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zwh//HIJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 885BEC116B1;
-	Tue,  2 Jul 2024 17:19:04 +0000 (UTC)
+	 MIME-Version; b=DeG1qIaTGNs6foCLIstMlSthOKAwot61rohk+meT3AGpA2w/hFLKss5hTg2MXYcL3ARpJyCNMKJ9kIlxrTR/KHVf7CKnUKier8B24s8Xjzzc68meN1SBuIpGemOJmRggq27EUiiedh45SzAdNuiaXgLviEmK7P3bCjwdzTmxTtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9Asfkez; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E5FC116B1;
+	Tue,  2 Jul 2024 17:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940745;
-	bh=qGE/k/euiXx/17BStPI8qNorQ/JySKVjZq0jbgKm05Y=;
+	s=korg; t=1719940256;
+	bh=+JxtE16RxdIFc9qPfBrgxVs1HYhMWOd/XSuoLdbniGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zwh//HIJUDy5CGJrurkSBcv7VQY727M8b4+qNCMS4mmkxayXnqgSp2wwlxA9JSCIk
-	 sI3GsA4ndyuOE8eWHv2JfnPzOb9LeW/DZcoddVMkg5ClOW5dZ2YP+MOC8/coAls6mY
-	 ZpaJNP4YY4mSCFSHcOwgbQ8fWw1W+Qh1xRW1RoH8=
+	b=y9AsfkezdRpFojlokdZurFD9WDvomzvhuomGIQjcSJr4KfGjG2QEW5h/KpME7VQJK
+	 5lHvPrPqf55sZr7OJz3dpsVBvfrgOrlvZtB5aX2YTwoxVCI8jdhqCr862zy0MONFNP
+	 wBd2321uZnDWrjx4a189aNHCh+Q35iIKCm3TWM0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/163] bpf: Add missed var_off setting in coerce_subreg_to_size_sx()
+Subject: [PATCH 6.9 099/222] arm64: Clear the initial ID map correctly before remapping
 Date: Tue,  2 Jul 2024 19:02:17 +0200
-Message-ID: <20240702170233.936341721@linuxfoundation.org>
+Message-ID: <20240702170247.753335606@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Zenghui Yu <yuzenghui@huawei.com>
 
-[ Upstream commit 44b7f7151dfc2e0947f39ed4b9bc4b0c2ccd46fc ]
+[ Upstream commit ecc54006f158ae0245a13e59026da2f0239c1b86 ]
 
-In coerce_subreg_to_size_sx(), for the case where upper
-sign extension bits are the same for smax32 and smin32
-values, we missed to setup properly. This is especially
-problematic if both smax32 and smin32's sign extension
-bits are 1.
+In the attempt to clear and recreate the initial ID map for LPA2, we
+wrongly use 'start - end' as the map size and make the memset() almost a
+nop.
 
-The following is a simple example illustrating the inconsistent
-verifier states due to missed var_off:
+Fix it by passing the correct map size.
 
-  0: (85) call bpf_get_prandom_u32#7    ; R0_w=scalar()
-  1: (bf) r3 = r0                       ; R0_w=scalar(id=1) R3_w=scalar(id=1)
-  2: (57) r3 &= 15                      ; R3_w=scalar(smin=smin32=0,smax=umax=smax32=umax32=15,var_off=(0x0; 0xf))
-  3: (47) r3 |= 128                     ; R3_w=scalar(smin=umin=smin32=umin32=128,smax=umax=smax32=umax32=143,var_off=(0x80; 0xf))
-  4: (bc) w7 = (s8)w3
-  REG INVARIANTS VIOLATION (alu): range bounds violation u64=[0xffffff80, 0x8f] s64=[0xffffff80, 0x8f]
-    u32=[0xffffff80, 0x8f] s32=[0x80, 0xffffff8f] var_off=(0x80, 0xf)
-
-The var_off=(0x80, 0xf) is not correct, and the correct one should
-be var_off=(0xffffff80; 0xf) since from insn 3, we know that at
-insn 4, the sign extension bits will be 1. This patch fixed this
-issue by setting var_off properly.
-
-Fixes: 8100928c8814 ("bpf: Support new sign-extension mov insns")
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20240615174632.3995278-1-yonghong.song@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 9684ec186f8f ("arm64: Enable LPA2 at boot if supported by the system")
+Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20240621092809.162-1-yuzenghui@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/kernel/pi/map_kernel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 291bda5ef5526..171045b6956d9 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -6204,6 +6204,7 @@ static void coerce_subreg_to_size_sx(struct bpf_reg_state *reg, int size)
- 		reg->s32_max_value = s32_max;
- 		reg->u32_min_value = (u32)s32_min;
- 		reg->u32_max_value = (u32)s32_max;
-+		reg->var_off = tnum_subreg(tnum_range(s32_min, s32_max));
- 		return;
- 	}
+diff --git a/arch/arm64/kernel/pi/map_kernel.c b/arch/arm64/kernel/pi/map_kernel.c
+index 5fa08e13e17e5..f374a3e5a5fe1 100644
+--- a/arch/arm64/kernel/pi/map_kernel.c
++++ b/arch/arm64/kernel/pi/map_kernel.c
+@@ -173,7 +173,7 @@ static void __init remap_idmap_for_lpa2(void)
+ 	 * Don't bother with the FDT, we no longer need it after this.
+ 	 */
+ 	memset(init_idmap_pg_dir, 0,
+-	       (u64)init_idmap_pg_dir - (u64)init_idmap_pg_end);
++	       (u64)init_idmap_pg_end - (u64)init_idmap_pg_dir);
  
+ 	create_init_idmap(init_idmap_pg_dir, mask);
+ 	dsb(ishst);
 -- 
 2.43.0
 
