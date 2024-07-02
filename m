@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-56572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7522924503
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:17:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C389245B5
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:25:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BC331F21225
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:17:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 404871F2267B
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428DE1BF325;
-	Tue,  2 Jul 2024 17:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE03A1BE224;
+	Tue,  2 Jul 2024 17:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJHZ+76L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2g6BYGsV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39041BF30B;
-	Tue,  2 Jul 2024 17:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5801BD4E9;
+	Tue,  2 Jul 2024 17:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940630; cv=none; b=afz/llGRrot7BStnwrs5kOvaci7TIlU70/bT72X6Zm1YUHrE603G7Ca/GBoIASFcaB9Gf3DMiLv3l1l41k6dMdqTtLgG7qrBeo9eB01X9t73V/biZMIW0NFySg7UcOVNbBtNAydzv6OOQtmTzIYl+hkrsBUvTMcjQ9HqwTNV8A4=
+	t=1719941153; cv=none; b=jI+Qj41kUw80mk1afAkII79VtwXHvCnwf1QQpzIsbG/65N2JwURzbg6nJ8kboW2T8EfY6qQnVBrD00/sDEm6ykLufsHv6cN2RCg4J9XmGd9oC5reW/gzRyJJjh1DReyi3sjVBlcQ/2M4oP5WBUwv7wG4h+ln+eWt8Q8FyQx7Pu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940630; c=relaxed/simple;
-	bh=V96RXwO3iHO6AYqNOuV6Orkg/Rq89byydr/kMQ9MHGc=;
+	s=arc-20240116; t=1719941153; c=relaxed/simple;
+	bh=7vjweHlSL3g7uvee6JieEJwwoB//3RFLK9joj4qhVRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lv49M21odBre9XF7NhzRZ60SxUPUoMvAEGd7D4a7r3sbT1Dbpu/h0KiHg3cNn7UAKmu6SJaB7Katg/t67okN9QOtMFRYVmaniPv7fysUHAp2eHhxZOAnaUqRxEgeGlyrOHUjUDFmKlKW8buNnvAmzSlGG+vKMLWscIaIudeUxvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJHZ+76L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A9FC116B1;
-	Tue,  2 Jul 2024 17:17:08 +0000 (UTC)
+	 MIME-Version; b=r6YhdUWjr/Mxov4YU1NJRCJtbMpWl35ws8pFaxJaARMXFnJue5LCUfU39Je5xczR4Sr/DHK9Vb4/K6XEtqgfU97TfGs/T6n4KdpfKfAnqoctMhnlNu4MIpCfvEW0ILtDa/cyxumIfk3w05lQtitw1S0D7qStBtCJ7hZ3i26L458=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2g6BYGsV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8595C116B1;
+	Tue,  2 Jul 2024 17:25:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940629;
-	bh=V96RXwO3iHO6AYqNOuV6Orkg/Rq89byydr/kMQ9MHGc=;
+	s=korg; t=1719941153;
+	bh=7vjweHlSL3g7uvee6JieEJwwoB//3RFLK9joj4qhVRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zJHZ+76LbU1jVqiRqdu9fCLAQrcdtnQm8X6CZGE7sPxFbiJJdP9U/xq/2rOIxACLg
-	 aF5iP2A3VQ3UPOtUJFi7oFL2AX3G1dcZ9qTdUXRuYaOug0igInvTg5Ci1xtm/TlfrK
-	 LYbLc9vHMGF7uogHHeZUdm71whftJkwR8nRBeFcg=
+	b=2g6BYGsV6cXhQ0tKp35q6wybLPX4/X1Lr2jrByEMz+8YRWpp3u3ypCOJ6iGp9P98e
+	 Tf9NS5r6fBt16uRuIVyQDcl5jje/FgIQvzDzI0BexPSWG+K26lAo2X9jG3R1Xr2TKQ
+	 /8rAm6AKxAe1ybrSSHYNH9n2Zy6cakBPQLGFAfG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragan Simic <dsimic@manjaro.org>,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 211/222] arm64: dts: rockchip: make poweroff(8) work on Radxa ROCK 5A
-Date: Tue,  2 Jul 2024 19:04:09 +0200
-Message-ID: <20240702170252.051591426@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Lyude Paul <lyude@redhat.com>
+Subject: [PATCH 6.6 136/163] drm/nouveau/dispnv04: fix null pointer dereference in nv17_tv_get_ld_modes
+Date: Tue,  2 Jul 2024 19:04:10 +0200
+Message-ID: <20240702170238.200491841@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: FUKAUMI Naoki <naoki@radxa.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit d05f7aff7ac23884ed9103a876325047ff9049aa ]
+commit 66edf3fb331b6c55439b10f9862987b0916b3726 upstream.
 
-Designate the RK806 PMIC on the Radxa ROCK 5A as the system power
-controller, so the board shuts down properly on poweroff(8).
+In nv17_tv_get_ld_modes(), the return value of drm_mode_duplicate() is
+assigned to mode, which will lead to a possible NULL pointer dereference
+on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-Fixes: 75fdcbc8f4c1 ("arm64: dts: rockchip: add PMIC to rock-5a")
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
-Link: https://lore.kernel.org/r/20240612033523.37166-1-naoki@radxa.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240625081828.2620794-1-make24@iscas.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/nouveau/dispnv04/tvnv17.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
-index 2002fd0221fa3..ef776aec9d4b5 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3588s-rock-5a.dts
-@@ -394,6 +394,7 @@
- 		pinctrl-0 = <&pmic_pins>, <&rk806_dvs1_null>,
- 			    <&rk806_dvs2_null>, <&rk806_dvs3_null>;
- 		spi-max-frequency = <1000000>;
-+		system-power-controller;
+--- a/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
++++ b/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
+@@ -209,6 +209,8 @@ static int nv17_tv_get_ld_modes(struct d
+ 		struct drm_display_mode *mode;
  
- 		vcc1-supply = <&vcc5v0_sys>;
- 		vcc2-supply = <&vcc5v0_sys>;
--- 
-2.43.0
-
+ 		mode = drm_mode_duplicate(encoder->dev, tv_mode);
++		if (!mode)
++			continue;
+ 
+ 		mode->clock = tv_norm->tv_enc_mode.vrefresh *
+ 			mode->htotal / 1000 *
 
 
 
