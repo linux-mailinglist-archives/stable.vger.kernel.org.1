@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-56506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390AB9244AD
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:13:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B7AB924577
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:22:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A52A1C21F98
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:13:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 315811F21318
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9BF1BE22F;
-	Tue,  2 Jul 2024 17:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D891BE222;
+	Tue,  2 Jul 2024 17:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GpveERh3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhSoyBdP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A58215B0FE;
-	Tue,  2 Jul 2024 17:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB3415218A;
+	Tue,  2 Jul 2024 17:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940411; cv=none; b=e9gww0rmgClSBOoBZikOS69tfKKGXMMJiW7U6b9fVlrY6b4Yd+DkAE9u50gblV0TPOpIrWhw2KBlqwB1sJNkcKQhVStvuKCB+gRbHPHfyujVUfD74OXPmk6IjCCl6dZa47dQ+50NSANMdjPsgFMMg4ypddiUBUsEtOl20t1UcSU=
+	t=1719940960; cv=none; b=q9Dp27h/IGLTNiva9ppSKfd/JsHRdWFecaLud7mVx69OGZlD0tWbljZ1sF0pTpFy1E+HvUjQVLtM6TEwrsCdxBuXz+3rbq3geYVvVqvCuILiUYVdpECx6YiG9msz21lb2ZLJVMRhpUt+R0CaYLtIkavuwNg2qZLdpqBAW0iC0L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940411; c=relaxed/simple;
-	bh=9IwSLamx/4ci/TNS7/rfbGn/9h2SmN7IyyWkscbuock=;
+	s=arc-20240116; t=1719940960; c=relaxed/simple;
+	bh=ByEzZoe4JIs4prGvnQk9bxNEgiwutoTJrd9l9VDq7rc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iOusbWzdy3rS70mf85OY/8Ei+Qf6QtiGCo6fG7dehs+aAdS2bXUx5NP5VaW913Zw4gKa34WOPEgDZ6W4RUZWu/3MI6X5tJeOcKY+ZGcWDbiTDnOvkROFXEXyDfk8NDmX/TV5ckX4EwkX2bbdUYQesTb4mHFuPzmYYDJ0jQqKQIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GpveERh3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844F6C116B1;
-	Tue,  2 Jul 2024 17:13:30 +0000 (UTC)
+	 MIME-Version; b=qxeinGTwwtot9tLpHcspD5VSKmMH+76h0Nm/ht+p/sKuj3jmAuO7NdizHQpFLpDoNtWOetLt8rA2LtsFsUYdW4+Y9BM+DKMqQmdP1zAXofWe+gLU5yYop1HzF+1qDpVI96RbnZbFA29xXia20OylT2DOH1ng7iuTQtwCd/fhNPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhSoyBdP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1800C116B1;
+	Tue,  2 Jul 2024 17:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940411;
-	bh=9IwSLamx/4ci/TNS7/rfbGn/9h2SmN7IyyWkscbuock=;
+	s=korg; t=1719940960;
+	bh=ByEzZoe4JIs4prGvnQk9bxNEgiwutoTJrd9l9VDq7rc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GpveERh36cE1l5nC0HHR6m70wnFmwgr3x4R1rEwNboRCmhAQW9ph6uW9F0ULuYDem
-	 8DVIGrYMQ6EI6eIkRSpovX066Y5ZfsHiG0lu1aLa3wsWK3WXLo99A5+HfZ0KX+AoKn
-	 yBZAFEjzCXrJkIwmXHcDH5CmP10hqoHqFSuq68Gg=
+	b=RhSoyBdPhYv+IBkyvuKoS54+j/NUh+0cZBsMBKIOzxmCEAmr1Qa47IhtilNrwfMg/
+	 PFJy0kW5tGIVSwp9rMwyOP+grLazNs/QE6De51PYF5TV3eAyQtu6OTkFGdL9rp3yNU
+	 87iuQM8lzhdl9QJCI7PMzDSDSK636W6UAikoe9Ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.9 145/222] usb: gadget: printer: fix races against disable
-Date: Tue,  2 Jul 2024 19:03:03 +0200
-Message-ID: <20240702170249.520486989@linuxfoundation.org>
+	Hannes Reinecke <hare@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 070/163] nvme: fixup comment for nvme RDMA Provider Type
+Date: Tue,  2 Jul 2024 19:03:04 +0200
+Message-ID: <20240702170235.713924191@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,145 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Hannes Reinecke <hare@suse.de>
 
-commit e587a7633dfee8987a999cf253f7c52a8e09276c upstream.
+[ Upstream commit f80a55fa90fa76d01e3fffaa5d0413e522ab9a00 ]
 
-printer_read() and printer_write() guard against the race
-against disable() by checking the dev->interface flag,
-which in turn is guarded by a spinlock.
-These functions, however, drop the lock on multiple occasions.
-This means that the test has to be redone after reacquiring
-the lock and before doing IO.
+PRTYPE is the provider type, not the QP service type.
 
-Add the tests.
-
-This also addresses CVE-2024-25741
-
-Fixes: 7f2ca14d2f9b9 ("usb: gadget: function: printer: Interface is disabled and returns error")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20240620114039.5767-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: eb793e2c9286 ("nvme.h: add NVMe over Fabrics definitions")
+Signed-off-by: Hannes Reinecke <hare@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_printer.c |   39 +++++++++++++++++++++++---------
- 1 file changed, 29 insertions(+), 10 deletions(-)
+ include/linux/nvme.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/function/f_printer.c
-+++ b/drivers/usb/gadget/function/f_printer.c
-@@ -450,11 +450,8 @@ printer_read(struct file *fd, char __use
- 	mutex_lock(&dev->lock_printer_io);
- 	spin_lock_irqsave(&dev->lock, flags);
+diff --git a/include/linux/nvme.h b/include/linux/nvme.h
+index 26dd3f859d9d7..b61038de139e5 100644
+--- a/include/linux/nvme.h
++++ b/include/linux/nvme.h
+@@ -90,8 +90,8 @@ enum {
+ 	NVMF_RDMA_QPTYPE_DATAGRAM	= 2, /* Reliable Datagram */
+ };
  
--	if (dev->interface < 0) {
--		spin_unlock_irqrestore(&dev->lock, flags);
--		mutex_unlock(&dev->lock_printer_io);
--		return -ENODEV;
--	}
-+	if (dev->interface < 0)
-+		goto out_disabled;
- 
- 	/* We will use this flag later to check if a printer reset happened
- 	 * after we turn interrupts back on.
-@@ -462,6 +459,9 @@ printer_read(struct file *fd, char __use
- 	dev->reset_printer = 0;
- 
- 	setup_rx_reqs(dev);
-+	/* this dropped the lock - need to retest */
-+	if (dev->interface < 0)
-+		goto out_disabled;
- 
- 	bytes_copied = 0;
- 	current_rx_req = dev->current_rx_req;
-@@ -495,6 +495,8 @@ printer_read(struct file *fd, char __use
- 		wait_event_interruptible(dev->rx_wait,
- 				(likely(!list_empty(&dev->rx_buffers))));
- 		spin_lock_irqsave(&dev->lock, flags);
-+		if (dev->interface < 0)
-+			goto out_disabled;
- 	}
- 
- 	/* We have data to return then copy it to the caller's buffer.*/
-@@ -538,6 +540,9 @@ printer_read(struct file *fd, char __use
- 			return -EAGAIN;
- 		}
- 
-+		if (dev->interface < 0)
-+			goto out_disabled;
-+
- 		/* If we not returning all the data left in this RX request
- 		 * buffer then adjust the amount of data left in the buffer.
- 		 * Othewise if we are done with this RX request buffer then
-@@ -567,6 +572,11 @@ printer_read(struct file *fd, char __use
- 		return bytes_copied;
- 	else
- 		return -EAGAIN;
-+
-+out_disabled:
-+	spin_unlock_irqrestore(&dev->lock, flags);
-+	mutex_unlock(&dev->lock_printer_io);
-+	return -ENODEV;
- }
- 
- static ssize_t
-@@ -587,11 +597,8 @@ printer_write(struct file *fd, const cha
- 	mutex_lock(&dev->lock_printer_io);
- 	spin_lock_irqsave(&dev->lock, flags);
- 
--	if (dev->interface < 0) {
--		spin_unlock_irqrestore(&dev->lock, flags);
--		mutex_unlock(&dev->lock_printer_io);
--		return -ENODEV;
--	}
-+	if (dev->interface < 0)
-+		goto out_disabled;
- 
- 	/* Check if a printer reset happens while we have interrupts on */
- 	dev->reset_printer = 0;
-@@ -614,6 +621,8 @@ printer_write(struct file *fd, const cha
- 		wait_event_interruptible(dev->tx_wait,
- 				(likely(!list_empty(&dev->tx_reqs))));
- 		spin_lock_irqsave(&dev->lock, flags);
-+		if (dev->interface < 0)
-+			goto out_disabled;
- 	}
- 
- 	while (likely(!list_empty(&dev->tx_reqs)) && len) {
-@@ -663,6 +672,9 @@ printer_write(struct file *fd, const cha
- 			return -EAGAIN;
- 		}
- 
-+		if (dev->interface < 0)
-+			goto out_disabled;
-+
- 		list_add(&req->list, &dev->tx_reqs_active);
- 
- 		/* here, we unlock, and only unlock, to avoid deadlock. */
-@@ -675,6 +687,8 @@ printer_write(struct file *fd, const cha
- 			mutex_unlock(&dev->lock_printer_io);
- 			return -EAGAIN;
- 		}
-+		if (dev->interface < 0)
-+			goto out_disabled;
- 	}
- 
- 	spin_unlock_irqrestore(&dev->lock, flags);
-@@ -686,6 +700,11 @@ printer_write(struct file *fd, const cha
- 		return bytes_copied;
- 	else
- 		return -EAGAIN;
-+
-+out_disabled:
-+	spin_unlock_irqrestore(&dev->lock, flags);
-+	mutex_unlock(&dev->lock_printer_io);
-+	return -ENODEV;
- }
- 
- static int
+-/* RDMA QP Service Type codes for Discovery Log Page entry TSAS
+- * RDMA_QPTYPE field
++/* RDMA Provider Type codes for Discovery Log Page entry TSAS
++ * RDMA_PRTYPE field
+  */
+ enum {
+ 	NVMF_RDMA_PRTYPE_NOT_SPECIFIED	= 1, /* No Provider Specified */
+-- 
+2.43.0
+
 
 
 
