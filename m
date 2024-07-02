@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-56827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9941C924624
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:31:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 073AB9245BB
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:26:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28BA3B269A1
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:31:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B764E289C57
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:26:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52A563D;
-	Tue,  2 Jul 2024 17:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557D71BE227;
+	Tue,  2 Jul 2024 17:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jaJ+mZg+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="McSrC4sD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6166C1BD005;
-	Tue,  2 Jul 2024 17:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147CA15218A;
+	Tue,  2 Jul 2024 17:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941494; cv=none; b=octLkYXV+l4ttSFjXduK+UCal8E+YT08iCaxxEquW2I4zUMvtIvx/1xwgc+kxnKVh3GoTBph8lgJn32N62VtQ069mpXnT4uzyeN8fyxW5EWeClK1nMl5c5HJsZSNzwHCEseoE1X1j8EhXhOeVKW81wim/XAjcsyEtyCC1ey+Hjw=
+	t=1719941173; cv=none; b=rvF7PrvGVqHzvf8QPBQ0Di88gkChF8hOFhh/WL+yPQpuDAzG2FSnS32ZfV0+I2sGTGy30iTgklG65Y2dhJeIdGMFUjjYR/8m9v2b22j/kpLLziGXKwbg5xndM7BYoqNw5PweoQkkHvi1cHsfseS6wUBPxVR1q9ZxlKW0WCtVMhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941494; c=relaxed/simple;
-	bh=NhJljT6A59HZTj1p1GgtffrLWRV0y2IORChOirLjoiE=;
+	s=arc-20240116; t=1719941173; c=relaxed/simple;
+	bh=WEqxZInY+TSTquqY+RmEcolal41cdZKsbweYHvMlzu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmCwdUo8YDLz5pzOp9640n1OWCmTSrpZB8q3X9n2pl1rcf0PUIFWUbYFxwveqY0dRIoUq7MzdqTLo1toKibOlqU4536QyUWS6u3uIwTvKGX6n59AG2YSqLsuj4r9rTVQX4b1ztPhDtCxBPiKhEqdTDD0p1PLZ/WcxNJVrG6lJXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jaJ+mZg+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED9CC116B1;
-	Tue,  2 Jul 2024 17:31:33 +0000 (UTC)
+	 MIME-Version; b=enS3ZqHA4VJuhoAOskxsRZwC1Fd5Pz/uwP6KmUbKUMuw+ASL8ZQt+lnxzWJG0rFFXHEVFr50KbOHZPBRu3xm+tCP3ORJHP4oRinHrHKibE2JAQZbG5J3C8sVN2zm/EsoFvu+WwNovBR7stkJEuohGntKq93U5EuHgvvY9u9iJpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=McSrC4sD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB99C4AF07;
+	Tue,  2 Jul 2024 17:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941494;
-	bh=NhJljT6A59HZTj1p1GgtffrLWRV0y2IORChOirLjoiE=;
+	s=korg; t=1719941173;
+	bh=WEqxZInY+TSTquqY+RmEcolal41cdZKsbweYHvMlzu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jaJ+mZg+MdHov6ttyZJ4HUhqeEH3p8VTFyUDyIANJtGX27vBLHqd/uRpNX6CCOido
-	 XGYZlt1bQyTjYJJMksQsx2gIKPUwK9UpIZ0vveqr4uS7G3llSAY38wIjWV86iAx44T
-	 9iiulvbD/TuVX3fEl9Iu3rxc2QrO1FNyrbkYhiGc=
+	b=McSrC4sDT2oGSS/8Pk0ILYAVBOEcPPfhuh9Qr5FyoMQigZR2vOl0fHc/e+kP+Kf6G
+	 GxqyWezP0u/dW4eU1JIVS5rTF4lWIaiiztIvPU2qPWmOd37T8N01rs/4ANfA/cGRan
+	 7eLc7Mp6l0bC0mOOV2O2PptqVzLyTGzrPxIVZbE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adhemerval Zanella <adhemerval.zanella@linaro.org>,
-	Helge Deller <deller@gmx.de>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/128] parisc: use generic sys_fanotify_mark implementation
+	Yiqun Leng <yqleng@linux.alibaba.com>,
+	Jingbo Xu <jefflexu@linux.alibaba.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Yue Hu <huyue2@coolpad.com>,
+	Chao Yu <chao@kernel.org>,
+	Hongbo Li <lihongbo22@huawei.com>
+Subject: [PATCH 6.6 150/163] erofs: fix NULL dereference of dif->bdev_handle in fscache mode
 Date: Tue,  2 Jul 2024 19:04:24 +0200
-Message-ID: <20240702170228.616097638@linuxfoundation.org>
+Message-ID: <20240702170238.740497033@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jingbo Xu <jefflexu@linux.alibaba.com>
 
-[ Upstream commit 403f17a330732a666ae793f3b15bc75bb5540524 ]
+commit 8bd90b6ae7856dd5000b75691d905b39b9ea5d6b upstream.
 
-The sys_fanotify_mark() syscall on parisc uses the reverse word order
-for the two halves of the 64-bit argument compared to all syscalls on
-all 32-bit architectures. As far as I can tell, the problem is that
-the function arguments on parisc are sorted backwards (26, 25, 24, 23,
-...) compared to everyone else, so the calling conventions of using an
-even/odd register pair in native word order result in the lower word
-coming first in function arguments, matching the expected behavior
-on little-endian architectures. The system call conventions however
-ended up matching what the other 32-bit architectures do.
+Avoid NULL dereference of dif->bdev_handle, as dif->bdev_handle is NULL
+in fscache mode.
 
-A glibc cleanup in 2020 changed the userspace behavior in a way that
-handles all architectures consistently, but this inadvertently broke
-parisc32 by changing to the same method as everyone else.
+ BUG: kernel NULL pointer dereference, address: 0000000000000000
+ RIP: 0010:erofs_map_dev+0xbd/0x1c0
+ Call Trace:
+  <TASK>
+  erofs_fscache_data_read_slice+0xa7/0x340
+  erofs_fscache_data_read+0x11/0x30
+  erofs_fscache_readahead+0xd9/0x100
+  read_pages+0x47/0x1f0
+  page_cache_ra_order+0x1e5/0x270
+  filemap_get_pages+0xf2/0x5f0
+  filemap_read+0xb8/0x2e0
+  vfs_read+0x18d/0x2b0
+  ksys_read+0x53/0xd0
+  do_syscall_64+0x42/0xf0
+  entry_SYSCALL_64_after_hwframe+0x6e/0x76
 
-The change made it into glibc-2.35 and subsequently into debian 12
-(bookworm), which is the latest stable release. This means we
-need to choose between reverting the glibc change or changing the
-kernel to match it again, but either hange will leave some systems
-broken.
-
-Pick the option that is more likely to help current and future
-users and change the kernel to match current glibc. This also
-means the behavior is now consistent across architectures, but
-it breaks running new kernels with old glibc builds before 2.35.
-
-Link: https://sourceware.org/git/?p=glibc.git;a=commitdiff;h=d150181d73d9
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/commit/arch/parisc/kernel/sys_parisc.c?h=57b1dfbd5b4a39d
-Cc: Adhemerval Zanella <adhemerval.zanella@linaro.org>
-Tested-by: Helge Deller <deller@gmx.de>
-Acked-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reported-by: Yiqun Leng <yqleng@linux.alibaba.com>
+Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=7245
+Fixes: 49845720080d ("erofs: Convert to use bdev_open_by_path()")
+Signed-off-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Yue Hu <huyue2@coolpad.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Link: https://lore.kernel.org/r/20231114070704.23398-1-jefflexu@linux.alibaba.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
-I found this through code inspection, please double-check to make
-sure I got the bug and the fix right.
+ fs/erofs/data.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-The alternative is to fix this by reverting glibc back to the
-unusual behavior.
-
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/parisc/Kconfig                     | 1 +
- arch/parisc/kernel/sys_parisc32.c       | 9 ---------
- arch/parisc/kernel/syscalls/syscall.tbl | 2 +-
- 3 files changed, 2 insertions(+), 10 deletions(-)
-
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index abf39ecda6fb1..5762633ea95e4 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -14,6 +14,7 @@ config PARISC
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_NO_SG_CHAIN
-+	select ARCH_SPLIT_ARG64 if !64BIT
- 	select ARCH_SUPPORTS_HUGETLBFS if PA20
- 	select ARCH_SUPPORTS_MEMORY_FAILURE
- 	select ARCH_STACKWALK
-diff --git a/arch/parisc/kernel/sys_parisc32.c b/arch/parisc/kernel/sys_parisc32.c
-index 2a12a547b447b..826c8e51b5853 100644
---- a/arch/parisc/kernel/sys_parisc32.c
-+++ b/arch/parisc/kernel/sys_parisc32.c
-@@ -23,12 +23,3 @@ asmlinkage long sys32_unimplemented(int r26, int r25, int r24, int r23,
-     	current->comm, current->pid, r20);
-     return -ENOSYS;
- }
--
--asmlinkage long sys32_fanotify_mark(compat_int_t fanotify_fd, compat_uint_t flags,
--	compat_uint_t mask0, compat_uint_t mask1, compat_int_t dfd,
--	const char  __user * pathname)
--{
--	return sys_fanotify_mark(fanotify_fd, flags,
--			((__u64)mask1 << 32) | mask0,
--			 dfd, pathname);
--}
-diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
-index ba4884eaa5057..42702f5d49f28 100644
---- a/arch/parisc/kernel/syscalls/syscall.tbl
-+++ b/arch/parisc/kernel/syscalls/syscall.tbl
-@@ -364,7 +364,7 @@
- 320	common	accept4			sys_accept4
- 321	common	prlimit64		sys_prlimit64
- 322	common	fanotify_init		sys_fanotify_init
--323	common	fanotify_mark		sys_fanotify_mark		sys32_fanotify_mark
-+323	common	fanotify_mark		sys_fanotify_mark		compat_sys_fanotify_mark
- 324	32	clock_adjtime		sys_clock_adjtime32
- 324	64	clock_adjtime		sys_clock_adjtime
- 325	common	name_to_handle_at	sys_name_to_handle_at
--- 
-2.43.0
-
+--- a/fs/erofs/data.c
++++ b/fs/erofs/data.c
+@@ -222,7 +222,7 @@ int erofs_map_dev(struct super_block *sb
+ 			up_read(&devs->rwsem);
+ 			return 0;
+ 		}
+-		map->m_bdev = dif->bdev_handle->bdev;
++		map->m_bdev = dif->bdev_handle ? dif->bdev_handle->bdev : NULL;
+ 		map->m_daxdev = dif->dax_dev;
+ 		map->m_dax_part_off = dif->dax_part_off;
+ 		map->m_fscache = dif->fscache;
+@@ -240,7 +240,8 @@ int erofs_map_dev(struct super_block *sb
+ 			if (map->m_pa >= startoff &&
+ 			    map->m_pa < startoff + length) {
+ 				map->m_pa -= startoff;
+-				map->m_bdev = dif->bdev_handle->bdev;
++				map->m_bdev = dif->bdev_handle ?
++					      dif->bdev_handle->bdev : NULL;
+ 				map->m_daxdev = dif->dax_dev;
+ 				map->m_dax_part_off = dif->dax_part_off;
+ 				map->m_fscache = dif->fscache;
 
 
 
