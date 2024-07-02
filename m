@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-56564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CFE09244F8
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:17:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D2AE9245A4
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:25:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 085681F218A3
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:17:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1257D1F22DC9
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF5F1BF31E;
-	Tue,  2 Jul 2024 17:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9965D1BE223;
+	Tue,  2 Jul 2024 17:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odBmSGco"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TX9mjiNC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B3A1BF30B;
-	Tue,  2 Jul 2024 17:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57EB215218A;
+	Tue,  2 Jul 2024 17:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940603; cv=none; b=QYBI1h5efYziWr1CCpzTaHOg62ywDfFNKQmxAboUjPrle5hdTvCi/SiIWp95fDwyJkXZRdCWlcrkSItPTCDsJP5klwkkI2ywbH25pgp2LDO6RW4suTK0zIkVovoesrv4GZDyWoDSMpNj32r8p/cBluKiuhhA3+787HP0rVwOFA8=
+	t=1719941103; cv=none; b=qHO5zoR+eyZAoEyMarACYrtj5kuzOwL0sqNodFiSI1vHPwkScvk+HOKx8/un/MzLLhyPPlhfUtp7N+1t8Ie42kaLPMH7cl6sfEChQU85M/uAb/KiHs6aFX4FLXVxBE8whh0hGgvutqCqC0bimXnzOjxDK5RDgurgQ7aN+1rTTn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940603; c=relaxed/simple;
-	bh=fPGwyImUqJ+2wgM6IWhQE4QxbHAN93Gin6LShPybPNY=;
+	s=arc-20240116; t=1719941103; c=relaxed/simple;
+	bh=4gd+f/Awi64kZKeajVqo1SJX8UzaT4fGXVT+bTN8w2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ctxV0ucG2WAWHDs6w7rKUTHm2Psv7MZR7MikCl+dh++sMFcq4RW7Ad3QMfkNd7T5Xms51Qtk6l4ma9S0z6WCpZ49E4yM+O2z+vtfxBWYsHISsqHoeXxYAnv638yqgd6ckxqg/uvFlzdWeG0bN6ETc29oCBjRQqyk+h4ZM30FxZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odBmSGco; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE8EC4AF0F;
-	Tue,  2 Jul 2024 17:16:42 +0000 (UTC)
+	 MIME-Version; b=dGxMXFNZPAavhg4k4F9DAK53CljULew/COJunE09Bj1yj+8ny4V9dLJYIlJcpP8Zvxx06TAo3uVfgOlOAjPVxxqgo/twxSvQ1+CFW5gZTMUmj8Ro61a++ZiYZe3iD9SKQDENwfRJHYh4eBy1csdYQ3Obe4a/fN2axh1hF87E/X4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TX9mjiNC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD79EC116B1;
+	Tue,  2 Jul 2024 17:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940603;
-	bh=fPGwyImUqJ+2wgM6IWhQE4QxbHAN93Gin6LShPybPNY=;
+	s=korg; t=1719941103;
+	bh=4gd+f/Awi64kZKeajVqo1SJX8UzaT4fGXVT+bTN8w2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=odBmSGcowiuX8znmAg5exmf9YQdX97g1YAEDQGYqMLThlMYmARnKHiGk9Es8L5K4j
-	 VeitCQ25YBe9N6ljqLj9zztbCSOhYNN8SihSP5I2F7Xpya/Lmnn6ECEBdnc05uDSdU
-	 yQe4TZbFmCYvO9xSNoT+QoRTku7/GmNSO4G1aMAw=
+	b=TX9mjiNCfQQ1flefUULhtjTtqV92NUqwlNO8CAeuY7xxDpRYXxyD14JEIx8L5/dYS
+	 uXCTV9cecP5Dk02Mq83EUg+dOX4BxHEMWtZm+Nj1oLZlIiT1raDxee9zYgUtBDy1aF
+	 hEWHuS6C/Eb9pET2WrlEK6mveVK/LAWNuAsLCRFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.9 204/222] pwm: stm32: Fix error message to not describe the previous error path
+	Yuntao Wang <ytcoode@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.6 128/163] cpu/hotplug: Fix dynstate assignment in __cpuhp_setup_state_cpuslocked()
 Date: Tue,  2 Jul 2024 19:04:02 +0200
-Message-ID: <20240702170251.783773846@linuxfoundation.org>
+Message-ID: <20240702170237.895539631@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,44 +59,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Yuntao Wang <ytcoode@gmail.com>
 
-commit f01af3022d4a46362c5dda3d35dea939f3246d10 upstream.
+commit 932d8476399f622aa0767a4a0a9e78e5341dc0e1 upstream.
 
-"Failed to lock the clock" is an appropriate error message for
-clk_rate_exclusive_get() failing, but not for the clock running too
-fast for the driver's calculations.
+Commit 4205e4786d0b ("cpu/hotplug: Provide dynamic range for prepare
+stage") added a dynamic range for the prepare states, but did not handle
+the assignment of the dynstate variable in __cpuhp_setup_state_cpuslocked().
 
-Adapt the error message accordingly.
+This causes the corresponding startup callback not to be invoked when
+calling __cpuhp_setup_state_cpuslocked() with the CPUHP_BP_PREPARE_DYN
+parameter, even though it should be.
 
-Fixes: d44d635635a7 ("pwm: stm32: Fix for settings using period > UINT32_MAX")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/285182163211203fc823a65b180761f46e828dcb.1718979150.git.u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Currently, the users of __cpuhp_setup_state_cpuslocked(), for one reason or
+another, have not triggered this bug.
+
+Fixes: 4205e4786d0b ("cpu/hotplug: Provide dynamic range for prepare stage")
+Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240515134554.427071-1-ytcoode@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-stm32.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/cpu.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -679,7 +679,8 @@ static int stm32_pwm_probe(struct platfo
- 	 * .apply() won't overflow.
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -2495,7 +2495,7 @@ EXPORT_SYMBOL_GPL(__cpuhp_state_add_inst
+  * The caller needs to hold cpus read locked while calling this function.
+  * Return:
+  *   On success:
+- *      Positive state number if @state is CPUHP_AP_ONLINE_DYN;
++ *      Positive state number if @state is CPUHP_AP_ONLINE_DYN or CPUHP_BP_PREPARE_DYN;
+  *      0 for all other states
+  *   On failure: proper (negative) error code
+  */
+@@ -2518,7 +2518,7 @@ int __cpuhp_setup_state_cpuslocked(enum
+ 	ret = cpuhp_store_callbacks(state, name, startup, teardown,
+ 				    multi_instance);
+ 
+-	dynstate = state == CPUHP_AP_ONLINE_DYN;
++	dynstate = state == CPUHP_AP_ONLINE_DYN || state == CPUHP_BP_PREPARE_DYN;
+ 	if (ret > 0 && dynstate) {
+ 		state = ret;
+ 		ret = 0;
+@@ -2549,8 +2549,8 @@ int __cpuhp_setup_state_cpuslocked(enum
+ out:
+ 	mutex_unlock(&cpuhp_state_mutex);
+ 	/*
+-	 * If the requested state is CPUHP_AP_ONLINE_DYN, return the
+-	 * dynamically allocated state in case of success.
++	 * If the requested state is CPUHP_AP_ONLINE_DYN or CPUHP_BP_PREPARE_DYN,
++	 * return the dynamically allocated state in case of success.
  	 */
- 	if (clk_get_rate(priv->clk) > 1000000000)
--		return dev_err_probe(dev, -EINVAL, "Failed to lock clock\n");
-+		return dev_err_probe(dev, -EINVAL, "Clock freq too high (%lu)\n",
-+				     clk_get_rate(priv->clk));
- 
- 	chip->ops = &stm32pwm_ops;
- 
+ 	if (!ret && dynstate)
+ 		return state;
 
 
 
