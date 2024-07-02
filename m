@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-56462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D11C92447B
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:11:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7EE6924536
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:20:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48A6628AB6D
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:11:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F46928A6E4
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBE31BE22B;
-	Tue,  2 Jul 2024 17:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693161BE846;
+	Tue,  2 Jul 2024 17:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vI7oqORN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnonkZb9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997B815B0FE;
-	Tue,  2 Jul 2024 17:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2639B1BE22B;
+	Tue,  2 Jul 2024 17:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940266; cv=none; b=o6AuKJ4JvzTLTJOklhVL9JZrwGSAYYQQBXygcefz0TQ/UceEm6T7mDl6B2Vev5CFytjdSzwq9vQ95VAkIVL9znXbIrKkr4tKYlZ+kz8waHDouNvvt7JYNNxeq/gOpxR9z3JiPXJxjcnfeXYy4O7jvFc97T8rt/RVgEkoHIbKn4w=
+	t=1719940755; cv=none; b=cA+cg6liaDJycP32i0XeG3wYqnOqox+qqwGlDuP+C2wkOyamg75LjKMETJCxvXR4FNNHjc4RWbiqKzDIiuxoprwXl6eU2aZ9EGm+6jbch6vx6MUc0AguTiqNpxLfeEhk3l/rYQyMawyIDK/u6K2W9kgV1Z+JJJp7QzbEe2nt+HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940266; c=relaxed/simple;
-	bh=1ucRHKF5RqviqWN6kl0GKurFbkL9AKHCPPMEQnBHCGc=;
+	s=arc-20240116; t=1719940755; c=relaxed/simple;
+	bh=41Y4utmzgFHtOyp00YLABO+k55YJZo1pADXLsNqkmJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WrHtY3L70DkYYAprMCZ+h6fw7ZHvuITgw/Gb1LQg5Z1rvMw/66PmR0xEl8ueyoXLGP3L6rewKgqkhEzLpFH82r4dfJrD6FFFMVbrn2fp2DzfFsDwyrhaHtIuB9WgprB7iK/OXvpN1GnbFrqQx8GW3+E1tE+hyVkM4bFI72/h3wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vI7oqORN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95E5C116B1;
-	Tue,  2 Jul 2024 17:11:05 +0000 (UTC)
+	 MIME-Version; b=b9lHbsnczRybQRcnltHzN7bI3Orh61+6X0mCrQvKs1JvlGAUpcYmawi1IaGslFkIsZ98mNBoG68yqJzSAUzLJ5WRDQnznCPw6a3vpE2p8weLhho/jZWK3YQA/GY99pnBazf2kU2Wpt6Ny8nZTYmu/MYL9lPfI6DYOeuN/KpFveE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnonkZb9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 547F7C116B1;
+	Tue,  2 Jul 2024 17:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940266;
-	bh=1ucRHKF5RqviqWN6kl0GKurFbkL9AKHCPPMEQnBHCGc=;
+	s=korg; t=1719940754;
+	bh=41Y4utmzgFHtOyp00YLABO+k55YJZo1pADXLsNqkmJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vI7oqORNamBWyI7ZhiXnmpz0YJvuzOY6rPjvwpoKm+2MuGpXkb+ZjI1StMomXlgLK
-	 fWqbSU97zeI1ddNVObnjtGB0xDnqPoD26eNBedH4UgRTv3u+0K66iUDLg01Vi/UUW+
-	 6rcX8+3FAJhURMhwL7dde14ymdg1WDoyzX8mYYQs=
+	b=EnonkZb9dNMnDwuV2gHz6qsazKceY2NMoJjUBtiV3k0+McleErj62P5OiIIqaI7l6
+	 Og/4SrkH+kd/eyXAe1UJH/TlVpX/qlHMDN5/A6Qpke8W7/j2L6XshEP5Lq9GZxesnY
+	 LFvyCJ6oamiEh5V/l/SYOcxChGfibapF7t3gPzdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Feifei Xu <Feifei.Xu@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 102/222] drm/amdgpu: Fix pci state save during mode-1 reset
+Subject: [PATCH 6.6 026/163] ASoC: amd: acp: remove i2s configuration check in acp_i2s_probe()
 Date: Tue,  2 Jul 2024 19:02:20 +0200
-Message-ID: <20240702170247.866363417@linuxfoundation.org>
+Message-ID: <20240702170234.049384933@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit 74fa02c4a5ea1ade5156a6ce494d3ea83881c2d8 ]
+[ Upstream commit 70fa3900c3ed92158628710e81d274e5cb52f92b ]
 
-Cache the PCI state before bus master is disabled. The saved state is
-later used for other cases like restoring config space after mode-2
-reset.
+ACP supports different pin configurations for I2S IO. Checking ACP pin
+configuration value against specific value breaks the functionality for
+other I2S pin configurations. This check is no longer required in i2s dai
+driver probe call as i2s configuration check will be verified during acp
+platform device creation sequence.
+Remove i2s_mode check in acp_i2s_probe() function.
 
-Fixes: 5c03e5843e6b ("drm/amdgpu:add smu mode1/2 support for aldebaran")
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Feifei Xu <Feifei.Xu@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: b24484c18b10 ("ASoC: amd: acp: ACP code generic to support newer platforms")
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://msgid.link/r/20240617072844.871468-2-Vijendar.Mukunda@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ sound/soc/amd/acp/acp-i2s.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 941d6e379b8a6..eb8af023326ab 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -5121,11 +5121,14 @@ int amdgpu_device_mode1_reset(struct amdgpu_device *adev)
+diff --git a/sound/soc/amd/acp/acp-i2s.c b/sound/soc/amd/acp/acp-i2s.c
+index df350014966a0..cf2fdde5aaa18 100644
+--- a/sound/soc/amd/acp/acp-i2s.c
++++ b/sound/soc/amd/acp/acp-i2s.c
+@@ -543,20 +543,12 @@ static int acp_i2s_probe(struct snd_soc_dai *dai)
+ {
+ 	struct device *dev = dai->component->dev;
+ 	struct acp_dev_data *adata = dev_get_drvdata(dev);
+-	struct acp_resource *rsrc = adata->rsrc;
+-	unsigned int val;
  
- 	dev_info(adev->dev, "GPU mode1 reset\n");
+ 	if (!adata->acp_base) {
+ 		dev_err(dev, "I2S base is NULL\n");
+ 		return -EINVAL;
+ 	}
  
-+	/* Cache the state before bus master disable. The saved config space
-+	 * values are used in other cases like restore after mode-2 reset.
-+	 */
-+	amdgpu_device_cache_pci_state(adev->pdev);
-+
- 	/* disable BM */
- 	pci_clear_master(adev->pdev);
- 
--	amdgpu_device_cache_pci_state(adev->pdev);
+-	val = readl(adata->acp_base + rsrc->i2s_pin_cfg_offset);
+-	if (val != rsrc->i2s_mode) {
+-		dev_err(dev, "I2S Mode not supported val %x\n", val);
+-		return -EINVAL;
+-	}
 -
- 	if (amdgpu_dpm_is_mode1_reset_supported(adev)) {
- 		dev_info(adev->dev, "GPU smu mode1 reset\n");
- 		ret = amdgpu_dpm_mode1_reset(adev);
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
