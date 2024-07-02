@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-56489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2229E924499
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:12:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B528924555
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:21:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D364B28B521
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:12:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D573FB21899
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828D71BE22F;
-	Tue,  2 Jul 2024 17:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21651B583A;
+	Tue,  2 Jul 2024 17:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s12Uri1H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPU4ECkc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DBD11BC08A;
-	Tue,  2 Jul 2024 17:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FB143152;
+	Tue,  2 Jul 2024 17:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940354; cv=none; b=Nospi/u27ytj0ZqJJR1oSF5/7T4oJAu3gEK74l9PQAxC1Mi8qjIalv9Qd7ueuPmEATbriyc3idm06RLOr5D54W/x1D6c91GpjTwoXgdteHXUl/HItu7RE1LU37BK/kx6WcNkRuz7jHaYw4jw0urQPBXIr+u1qAn+p0areIDWxIw=
+	t=1719940847; cv=none; b=LVihrrmWIlco/rE5QuSJsr9Ddss/mOn9ca9RvcVzCliyHVFKVjdFbZdaTeKdV3mrxZyC4S+Zacn9XCBWR0CHkCIm6vR/c6LeAo+IOO4S33u9obeOQE59ibkFtWXtTTCETwcQn76Nmz7ClVlisEvWPJF1TcxFQl5FO7zs1ZbjISk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940354; c=relaxed/simple;
-	bh=BZTXdX8Q5VEQllcLGqCcejHQwoB1n6mTrYkZqVEYHLY=;
+	s=arc-20240116; t=1719940847; c=relaxed/simple;
+	bh=C0NOzj7nVz5WXXNeLc7KP17J2PiD2BLSATOsu6opTKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uFXqBMlhR2wSh5GiGkBGSx3WHh/GCZOB/kWkUaEJIJv879qZgq4xSbW94SNjRZPF5PDgEGbd1yFAaAmDvQbXZ4VFRGqs2yuAlLjjAMCYIuBRX7NJazeLDUWAY2juXHvbJtgdIV3irV5AEQWZAJ4j6RLYQkhYQm8C6ODBRXmmLYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s12Uri1H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFDE6C116B1;
-	Tue,  2 Jul 2024 17:12:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pmG78NlLqFlZ3cYdVW6dch8z7JV2A92Qrpcv78ZD8r4wv5uv2yUDocuk3EaJ2gE0EJNzUXEAVvSUfiwvSYzQPA4dya1iOB05I91tD3+TUtnt+XPeiybM9vHFgdRY/KcRtcTmFDPGCaMPoF3Ud5N1s7UbrI+eGlnIAybMt4gKFxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPU4ECkc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4DE7C116B1;
+	Tue,  2 Jul 2024 17:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940354;
-	bh=BZTXdX8Q5VEQllcLGqCcejHQwoB1n6mTrYkZqVEYHLY=;
+	s=korg; t=1719940847;
+	bh=C0NOzj7nVz5WXXNeLc7KP17J2PiD2BLSATOsu6opTKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s12Uri1HBqJ4j0+ryDw9vqjoP+u7m2jC1SElPMxqwSNXQpqf1t5oLbEOG9x0sJ2HS
-	 JEPHm6ec/NhpR900aLJ2N+07vaIMkj2zYpCpgrKIgAliG+1bDgU5TIlhDY8u1JQkEI
-	 E4gXrJKC00PMtbuCY2FnE6VFGAKPddEv2GcNX8U8=
+	b=BPU4ECkcdWpk+vsZHYw/l6vbhLrIKdqn3F3gBZQBfvVc5/yWbm23f4I9vhdHDjjUO
+	 1FBaXGSaHt/ayWf0q9ERkHrDy2N9S+KZwVkUjdnavlwxJL4tUrLgF1uIJd0NhR68Ec
+	 KXyxb0AoafSk6inn6G5Q+iOMmTOq5CQ0F2NEpyl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thayne Harbaugh <thayne@mastodonlabs.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	Xie Yongji <xieyongji@bytedance.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Maxime Coquelin <maxime.coquelin@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 130/222] kbuild: Fix build target deb-pkg: ln: failed to create hard link
+Subject: [PATCH 6.6 054/163] vduse: validate block features only with block devices
 Date: Tue,  2 Jul 2024 19:02:48 +0200
-Message-ID: <20240702170248.939516728@linuxfoundation.org>
+Message-ID: <20240702170235.108027545@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +63,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thayne Harbaugh <thayne@mastodonlabs.com>
+From: Maxime Coquelin <maxime.coquelin@redhat.com>
 
-[ Upstream commit c61566538968ffb040acc411246fd7ad38c7e8c9 ]
+[ Upstream commit a115b5716fc9a64652aa9cb332070087178ffafa ]
 
-The make deb-pkg target calls debian-orig which attempts to either
-hard link the source .tar to the build-output location or copy the
-source .tar to the build-output location.  The test to determine
-whether to ln or cp is incorrectly expanded by Make and consequently
-always attempts to ln the source .tar.  This fix corrects the escaping
-of '$' so that the test is expanded by the shell rather than by Make
-and appropriately selects between ln and cp.
+This patch is preliminary work to enable network device
+type support to VDUSE.
 
-Fixes: b44aa8c96e9e ("kbuild: deb-pkg: make .orig tarball a hard link if possible")
-Signed-off-by: Thayne Harbaugh <thayne@mastodonlabs.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+As VIRTIO_BLK_F_CONFIG_WCE shares the same value as
+VIRTIO_NET_F_HOST_TSO4, we need to restrict its check
+to Virtio-blk device type.
+
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
+Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
+Signed-off-by: Maxime Coquelin <maxime.coquelin@redhat.com>
+Message-Id: <20240109111025.1320976-2-maxime.coquelin@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.package | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vdpa/vdpa_user/vduse_dev.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/Makefile.package b/scripts/Makefile.package
-index 38653f3e81088..bf016af8bf8ad 100644
---- a/scripts/Makefile.package
-+++ b/scripts/Makefile.package
-@@ -103,7 +103,7 @@ debian-orig: private version = $(shell dpkg-parsechangelog -S Version | sed 's/-
- debian-orig: private orig-name = $(source)_$(version).orig.tar$(debian-orig-suffix)
- debian-orig: mkdebian-opts = --need-source
- debian-orig: linux.tar$(debian-orig-suffix) debian
--	$(Q)if [ "$(df  --output=target .. 2>/dev/null)" = "$(df --output=target $< 2>/dev/null)" ]; then \
-+	$(Q)if [ "$$(df  --output=target .. 2>/dev/null)" = "$$(df --output=target $< 2>/dev/null)" ]; then \
- 		ln -f $< ../$(orig-name); \
- 	else \
- 		cp $< ../$(orig-name); \
+diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
+index df7869537ef14..d91fe7e0733b6 100644
+--- a/drivers/vdpa/vdpa_user/vduse_dev.c
++++ b/drivers/vdpa/vdpa_user/vduse_dev.c
+@@ -1662,13 +1662,14 @@ static bool device_is_allowed(u32 device_id)
+ 	return false;
+ }
+ 
+-static bool features_is_valid(u64 features)
++static bool features_is_valid(struct vduse_dev_config *config)
+ {
+-	if (!(features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)))
++	if (!(config->features & BIT_ULL(VIRTIO_F_ACCESS_PLATFORM)))
+ 		return false;
+ 
+ 	/* Now we only support read-only configuration space */
+-	if (features & (1ULL << VIRTIO_BLK_F_CONFIG_WCE))
++	if ((config->device_id == VIRTIO_ID_BLOCK) &&
++			(config->features & BIT_ULL(VIRTIO_BLK_F_CONFIG_WCE)))
+ 		return false;
+ 
+ 	return true;
+@@ -1695,7 +1696,7 @@ static bool vduse_validate_config(struct vduse_dev_config *config)
+ 	if (!device_is_allowed(config->device_id))
+ 		return false;
+ 
+-	if (!features_is_valid(config->features))
++	if (!features_is_valid(config))
+ 		return false;
+ 
+ 	return true;
 -- 
 2.43.0
 
