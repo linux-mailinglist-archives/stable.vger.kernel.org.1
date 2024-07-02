@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-56759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2B699245D8
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:27:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD8F9244D2
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:15:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6F021C21DE5
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:27:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 072A41F21CB3
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3636D1BE251;
-	Tue,  2 Jul 2024 17:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650F61BE246;
+	Tue,  2 Jul 2024 17:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZNz6ME3/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usZ0PdQT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05CC1514DC;
-	Tue,  2 Jul 2024 17:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2264B1BD519;
+	Tue,  2 Jul 2024 17:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941263; cv=none; b=rFD+TXxvvKN1a5wt0Mb3jKGmJA/nB7a9k2qd6YoxHFpWaZIGmLq71qYTckGg447jveG3E00vcvvAEPsJ9OZVZ3ggMPc35s2GQ9UWkisM/QvgGRrrvTIhRYJV2rkhBH5gM+dgQt1y0WOVx4i7T5CruqkrjK90BGKTQwRJI6hNOU8=
+	t=1719940514; cv=none; b=arsB1+vJsKJolS6P0bscCJ2CVVtv8mV0VA+FTCf1fQkvp0QFn4musOq1Y/PPIYAXqgmMjuEPcYq3FiUEuFk6WnvH0hs8e4OPZhr3eluD9haNsmLduMagUZ+5BboK7YBWyY/eFBNm0Qr4bie569HVYhcTjVhxDQTpCIUzVlvmp2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941263; c=relaxed/simple;
-	bh=zJHX+i+WFyHfjYn3keIzFTnnY9jVC44zcUqWxe1kuwk=;
+	s=arc-20240116; t=1719940514; c=relaxed/simple;
+	bh=tn16fLeCbRaFXazyQLvClau7FzIbJX4dS+AoIuUPc5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YasR3NLsIUDeD3fpqW6Edk4erK9/7pJ1RCJGIXQm67R5CsDUh1nl+w2MRQxSk7hrD8XoNg1XGCpzrdnONJhqNMGNTJQjISg4xJb/MORavJ8Ass5WQ2wgeNy9UepYKZNZNVWg5nZeH71NGckAMldt35u8JTBq3iveZ01RE1IoatM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZNz6ME3/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6ECC116B1;
-	Tue,  2 Jul 2024 17:27:42 +0000 (UTC)
+	 MIME-Version; b=n88Edo+1rZWE6FwoxReoiyTqaMlyiymgmBET96njnyBnNKW1/z/qCyyyIFmEpksk9kmWfFpIzeJFT5OG7Wav7x+7I0VHtC78zV8j3P+EBubfsJ9foj+x/z+02URh5buK7NykrOI7seRxMT+LCJxtBpuqzymb3zml16yL7cFjvyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usZ0PdQT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC57C116B1;
+	Tue,  2 Jul 2024 17:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941262;
-	bh=zJHX+i+WFyHfjYn3keIzFTnnY9jVC44zcUqWxe1kuwk=;
+	s=korg; t=1719940514;
+	bh=tn16fLeCbRaFXazyQLvClau7FzIbJX4dS+AoIuUPc5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZNz6ME3/zCTIE497DwKt8EMfRJx3KketLc5g6Pz9R8D9COxvyywdOkCfj5lWiNHiq
-	 xdo/S2UtMhQGgM7JLiaMDV9siyQ2bkZjf6WDdmVSOXyAl9AE5thV5bBl2/0haqB6yZ
-	 EyfY1OzBC7/D5DIputGIzhvhCfS62O3zzkGa2d7k=
+	b=usZ0PdQTawHwsrMljM6stsd/a6zAJ1sr6hwjwVyC6xAYGv4s5XiWFfarmHFQeG5PG
+	 0UezSeni3X+rrQb3rzQMelbjc2839vfVEICgDwEpQEqaF4SEHowxBaUhrj9+xIsXtQ
+	 yVRJjwu/0PF8c6UM/9E9ui7/Krsdp8e0exXpPr9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 013/128] dt-bindings: i2c: Drop unneeded quotes
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.9 176/222] btrfs: zoned: fix initial free space detection
 Date: Tue,  2 Jul 2024 19:03:34 +0200
-Message-ID: <20240702170226.735963571@linuxfoundation.org>
+Message-ID: <20240702170250.704082425@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,162 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit fc114c75680da73c3815512d880f69cecc9a9b87 ]
+commit b9fd2affe4aa99a4ca14ee87e1f38fea22ece52a upstream.
 
-Cleanup bindings dropping unneeded quotes. Once all these are fixed,
-checking for this can be enabled in yamllint.
+When creating a new block group, it calls btrfs_add_new_free_space() to add
+the entire block group range into the free space accounting.
+__btrfs_add_free_space_zoned() checks if size == block_group->length to
+detect the initial free space adding, and proceed that case properly.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Reviewed-by: Alain Volmat <alain.volmat@foss.st.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Stable-dep-of: d4e001ffeccf ("dt-bindings: i2c: atmel,at91sam: correct path to i2c-controller schema")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, if the zone_capacity == zone_size and the over-write speed is fast
+enough, the entire zone can be over-written within one transaction. That
+confuses __btrfs_add_free_space_zoned() to handle it as an initial free
+space accounting. As a result, that block group becomes a strange state: 0
+used bytes, 0 zone_unusable bytes, but alloc_offset == zone_capacity (no
+allocation anymore).
+
+The initial free space accounting can properly be checked by checking
+alloc_offset too.
+
+Fixes: 98173255bddd ("btrfs: zoned: calculate free space from zone capacity")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/i2c/amlogic,meson6-i2c.yaml | 4 ++--
- Documentation/devicetree/bindings/i2c/apple,i2c.yaml          | 4 ++--
- Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml  | 2 +-
- Documentation/devicetree/bindings/i2c/cdns,i2c-r1p10.yaml     | 4 ++--
- Documentation/devicetree/bindings/i2c/i2c-mux-gpio.yaml       | 4 ++--
- Documentation/devicetree/bindings/i2c/qcom,i2c-geni-qcom.yaml | 4 ++--
- Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml       | 2 +-
- .../devicetree/bindings/i2c/xlnx,xps-iic-2.00.a.yaml          | 4 ++--
- 8 files changed, 14 insertions(+), 14 deletions(-)
+ fs/btrfs/free-space-cache.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/i2c/amlogic,meson6-i2c.yaml b/Documentation/devicetree/bindings/i2c/amlogic,meson6-i2c.yaml
-index 199a354ccb970..26bed558c6b87 100644
---- a/Documentation/devicetree/bindings/i2c/amlogic,meson6-i2c.yaml
-+++ b/Documentation/devicetree/bindings/i2c/amlogic,meson6-i2c.yaml
-@@ -2,8 +2,8 @@
- # Copyright 2019 BayLibre, SAS
- %YAML 1.2
- ---
--$id: "http://devicetree.org/schemas/i2c/amlogic,meson6-i2c.yaml#"
--$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+$id: http://devicetree.org/schemas/i2c/amlogic,meson6-i2c.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+--- a/fs/btrfs/free-space-cache.c
++++ b/fs/btrfs/free-space-cache.c
+@@ -2697,7 +2697,7 @@ static int __btrfs_add_free_space_zoned(
+ 	u64 offset = bytenr - block_group->start;
+ 	u64 to_free, to_unusable;
+ 	int bg_reclaim_threshold = 0;
+-	bool initial = (size == block_group->length);
++	bool initial = ((size == block_group->length) && (block_group->alloc_offset == 0));
+ 	u64 reclaimable_unusable;
  
- title: Amlogic Meson I2C Controller
- 
-diff --git a/Documentation/devicetree/bindings/i2c/apple,i2c.yaml b/Documentation/devicetree/bindings/i2c/apple,i2c.yaml
-index 4ac61fec90e26..243da7003cec5 100644
---- a/Documentation/devicetree/bindings/i2c/apple,i2c.yaml
-+++ b/Documentation/devicetree/bindings/i2c/apple,i2c.yaml
-@@ -1,8 +1,8 @@
- # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
- %YAML 1.2
- ---
--$id: "http://devicetree.org/schemas/i2c/apple,i2c.yaml#"
--$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+$id: http://devicetree.org/schemas/i2c/apple,i2c.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
- 
- title: Apple/PASemi I2C controller
- 
-diff --git a/Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml b/Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml
-index ea2303c0e1431..6adedd3ec399b 100644
---- a/Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml
-+++ b/Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml
-@@ -75,7 +75,7 @@ required:
-   - clocks
- 
- allOf:
--  - $ref: "i2c-controller.yaml"
-+  - $ref: i2c-controller.yaml
-   - if:
-       properties:
-         compatible:
-diff --git a/Documentation/devicetree/bindings/i2c/cdns,i2c-r1p10.yaml b/Documentation/devicetree/bindings/i2c/cdns,i2c-r1p10.yaml
-index 2e95cda7262ad..7a675aa08c442 100644
---- a/Documentation/devicetree/bindings/i2c/cdns,i2c-r1p10.yaml
-+++ b/Documentation/devicetree/bindings/i2c/cdns,i2c-r1p10.yaml
-@@ -1,8 +1,8 @@
- # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
- %YAML 1.2
- ---
--$id: "http://devicetree.org/schemas/i2c/cdns,i2c-r1p10.yaml#"
--$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+$id: http://devicetree.org/schemas/i2c/cdns,i2c-r1p10.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
- 
- title: Cadence I2C controller
- 
-diff --git a/Documentation/devicetree/bindings/i2c/i2c-mux-gpio.yaml b/Documentation/devicetree/bindings/i2c/i2c-mux-gpio.yaml
-index 6e0a5686af048..f34cc7ad5a00e 100644
---- a/Documentation/devicetree/bindings/i2c/i2c-mux-gpio.yaml
-+++ b/Documentation/devicetree/bindings/i2c/i2c-mux-gpio.yaml
-@@ -45,7 +45,7 @@ properties:
- 
-   i2c-parent:
-     description: phandle of the I2C bus that this multiplexer's master-side port is connected to
--    $ref: "/schemas/types.yaml#/definitions/phandle"
-+    $ref: /schemas/types.yaml#/definitions/phandle
- 
-   mux-gpios:
-     description: list of GPIOs used to control the muxer
-@@ -55,7 +55,7 @@ properties:
-   idle-state:
-     description: Value to set the muxer to when idle. When no value is given, it defaults to the
-       last value used.
--    $ref: "/schemas/types.yaml#/definitions/uint32"
-+    $ref: /schemas/types.yaml#/definitions/uint32
- 
- allOf:
-   - $ref: i2c-mux.yaml
-diff --git a/Documentation/devicetree/bindings/i2c/qcom,i2c-geni-qcom.yaml b/Documentation/devicetree/bindings/i2c/qcom,i2c-geni-qcom.yaml
-index 0e7ed00562e21..5a44fdcbdd59b 100644
---- a/Documentation/devicetree/bindings/i2c/qcom,i2c-geni-qcom.yaml
-+++ b/Documentation/devicetree/bindings/i2c/qcom,i2c-geni-qcom.yaml
-@@ -1,8 +1,8 @@
- # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
- %YAML 1.2
- ---
--$id: "http://devicetree.org/schemas/i2c/qcom,i2c-geni-qcom.yaml#"
--$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+$id: http://devicetree.org/schemas/i2c/qcom,i2c-geni-qcom.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
- 
- title: Qualcomm Geni based QUP I2C Controller
- 
-diff --git a/Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml b/Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml
-index bf396e9466aaf..94b75d9f66cdb 100644
---- a/Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml
-+++ b/Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml
-@@ -90,7 +90,7 @@ properties:
-   st,syscfg-fmp:
-     description: Use to set Fast Mode Plus bit within SYSCFG when Fast Mode
-       Plus speed is selected by slave.
--    $ref: "/schemas/types.yaml#/definitions/phandle-array"
-+    $ref: /schemas/types.yaml#/definitions/phandle-array
-     items:
-       - items:
-           - description: phandle to syscfg
-diff --git a/Documentation/devicetree/bindings/i2c/xlnx,xps-iic-2.00.a.yaml b/Documentation/devicetree/bindings/i2c/xlnx,xps-iic-2.00.a.yaml
-index 8d241a703d855..f3b53ecae5625 100644
---- a/Documentation/devicetree/bindings/i2c/xlnx,xps-iic-2.00.a.yaml
-+++ b/Documentation/devicetree/bindings/i2c/xlnx,xps-iic-2.00.a.yaml
-@@ -1,8 +1,8 @@
- # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
- %YAML 1.2
- ---
--$id: "http://devicetree.org/schemas/i2c/xlnx,xps-iic-2.00.a.yaml#"
--$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+$id: http://devicetree.org/schemas/i2c/xlnx,xps-iic-2.00.a.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
- 
- title: Xilinx IIC controller
- 
--- 
-2.43.0
-
+ 	WARN_ON(!initial && offset + size > block_group->zone_capacity);
 
 
 
