@@ -1,216 +1,197 @@
-Return-Path: <stable+bounces-56319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBAA291F051
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 09:36:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D3891F0ED
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 10:21:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0BFA1C21B8D
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 07:36:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AAC1B23568
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 08:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6AE13D61A;
-	Tue,  2 Jul 2024 07:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C6E144D0B;
+	Tue,  2 Jul 2024 08:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="LjuCx+x5"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4649274047
-	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 07:36:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD87E7829C
+	for <stable@vger.kernel.org>; Tue,  2 Jul 2024 08:20:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719905766; cv=none; b=irTZIunEj+BuooPwG2sjOX0ff7+YJvetjoF+Cdi6aP1x3bBMNFi6bPm1EuNyDgCp/b01oFtyFfSHDtJFXJi031hqrgUTERBN8SgpDiOuc/6AVHTLqXlyr9Dzztfuil0TSeuFFrUeklqUR8JDSu0jf8Tt2c1rYf6DvKp1o8HprvY=
+	t=1719908453; cv=none; b=djXe0fItOPKeHwTZFn18MIxy2zixPfczV+KlA0IZODaKbOs5AJANpYoXeatdW0DKoJnvUjgB7ViPYg+eJ5e6+li/0LWYtJcEi6mactdtOsGNIRyxr5jbutyRAoSIIfdmWkVWI2ijp+1u8DhPOsFUbOtrd0GKActJznonr51SzGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719905766; c=relaxed/simple;
-	bh=Erb47PsTQcQJPbvv0daIhSjhyCzxZolPWjgN0ownyc0=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=A6q+ZwNkoCBfj6pr8lkV2vhmCXIMQI3YB+CGt1oyO92Vl2YxTx806tfY6u4dX6K1D3T2R1c3wH+9pgaYr30sGMIECzxLph56uXPhm5D6twJwnboOQtl2fXngQYh1EqxMV2tegJmmLOe9DleXI3I6aS9kx1XToFJ3Z+nAUyObhQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4WCvmv6PwzzdZLV;
-	Tue,  2 Jul 2024 15:34:23 +0800 (CST)
-Received: from kwepemd200019.china.huawei.com (unknown [7.221.188.193])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7EBE518009B;
-	Tue,  2 Jul 2024 15:36:00 +0800 (CST)
-Received: from [10.173.127.72] (10.173.127.72) by
- kwepemd200019.china.huawei.com (7.221.188.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 2 Jul 2024 15:35:59 +0800
-Subject: Re: [PATCH 6.6] fork: defer linking file vma until vma is fully
- initialized
-To: Leah Rumancik <leah.rumancik@gmail.com>
-CC: Thorvald Natvig <thorvald@google.com>, Jane Chu <jane.chu@oracle.com>,
-	Christian Brauner <brauner@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>, "Liam R . Howlett"
-	<Liam.Howlett@oracle.com>, Mateusz Guzik <mjguzik@gmail.com>, Matthew Wilcox
-	<willy@infradead.org>, Muchun Song <muchun.song@linux.dev>, Oleg Nesterov
-	<oleg@redhat.com>, Peng Zhang <zhangpeng.00@bytedance.com>, Tycho Andersen
-	<tandersen@netflix.com>, Andrew Morton <akpm@linux-foundation.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
-References: <20240702042948.2629267-1-leah.rumancik@gmail.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <70af466d-0d0b-b984-a4af-b60d3e11856e@huawei.com>
-Date: Tue, 2 Jul 2024 15:35:58 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	s=arc-20240116; t=1719908453; c=relaxed/simple;
+	bh=6OfNLsEcuwgQPbhcCUlgVHhhJgMvu5X5FAPBqs+/CLI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=C7AfxmCBIX5j99IUnHtP2VZLo4gHOysZ1uyMFELp7d5z6fGgyZm3Z9OCGQIN3sox8qQwZtO8QpZH4N+5Izb5y/9QrYr+fBQsS8aiXWqoFeAOBZeoq68mWbqGrDodZE1XeLIIItuL/rGdyZKoCOEND1OUR0Wdqp3tHd9n9yIZg2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=LjuCx+x5; arc=none smtp.client-ip=209.85.166.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-7eb895539e3so158779039f.2
+        for <stable@vger.kernel.org>; Tue, 02 Jul 2024 01:20:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1719908451; x=1720513251; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LjW1AaPPleDTehNvhUI4Uy1cfpQXZFORbmNIpyEf1Vs=;
+        b=LjuCx+x52ukip3o2XVtv14shpNrqPMmSGYszR4wI6fOUZQ3wldmKBTn7VyMauzVSjW
+         nUiWY0LGl021UhGFMnJqLFUqIHBFoNOUB4LHQkcJ+NOEQz3Sq545mKAPXtmcDEpQJFWE
+         LXDmLX9Mb+/yqZfsdbnDZVPxYzQMDhXyRCvpo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719908451; x=1720513251;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LjW1AaPPleDTehNvhUI4Uy1cfpQXZFORbmNIpyEf1Vs=;
+        b=oXmIL0b+tXqOCx4JQ2F8GA0FKIh6rKan/eDinU5wK0IsPiyn/EfM36HrWGfQX+8VoD
+         Lv/Q6WYMw2B8qzX1VoHwHIovGCii3DMefNet6/vdsn9mhlPeQ7ZraSJUyyE7bvv+dhgk
+         M+0DkNgMt5Maxn/SnxIe8nvg2EsukpJab1+bQgU0LbLwZv9y439Hn/B1UWajYkGl1p95
+         bjupYhRxFg3fVVRFcbBYaFOMuxKXmxM1WAVQjwzhRuepHFkvodE3lcmEHxQDscfIOQZK
+         drmGWAzgl2q9xi40QbGEV2kYGnhsFecF3JQS4G8QIJAXsF/zNlLkkgyd4IWxTnNy6nAW
+         luZg==
+X-Forwarded-Encrypted: i=1; AJvYcCU9xL1nz9lAT0cCKPjbkFUHuCtpya7l7NTSVXRMaaOwZQTPC70i3/RirNBu/IPhRKT4MZ8KQqbfZbIR7MrulW7T5wPk3vwc
+X-Gm-Message-State: AOJu0Yxt4uzMq4WnsD49JJczXsZKWEtGNC52l1xut0LQgY0Q9rdxNMda
+	Rr+VhBuu9Jq23lSiW219YPLoo4q6DvTwmIiGK4XAvd+08inHIUkQz7zB7PpJgOrMGMJZ6/3Q8Gp
+	oVwagjqARwFtRyIhQowwiO7G1TRzGL96yg7oAnaYV5TAzLhR8rQ==
+X-Google-Smtp-Source: AGHT+IH9o61cvuN+VnixhLr4W4vbDhnrsa3JHsyiS0SWCmokqqVTuxhftscbNsFyCGR3neeNzJdUmOMXH3MqV0MEt9Y=
+X-Received: by 2002:a05:6602:2bfa:b0:7f3:d731:c6df with SMTP id
+ ca18e2360f4ac-7f62ee501eamr919293739f.10.1719908450692; Tue, 02 Jul 2024
+ 01:20:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240702042948.2629267-1-leah.rumancik@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemd200019.china.huawei.com (7.221.188.193)
+References: <20240702021254.1610188-1-zack.rusin@broadcom.com> <20240702021254.1610188-2-zack.rusin@broadcom.com>
+In-Reply-To: <20240702021254.1610188-2-zack.rusin@broadcom.com>
+From: Martin Krastev <martin.krastev@broadcom.com>
+Date: Tue, 2 Jul 2024 11:20:39 +0300
+Message-ID: <CAKLwHdW=KMS2wWueFvWexSLiFo50hENmwju7pLPNLraCqZyvJw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] drm/vmwgfx: Fix a deadlock in dma buf fence polling
+To: Zack Rusin <zack.rusin@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, ian.forbes@broadcom.com, 
+	maaz.mombasawala@broadcom.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2024/7/2 12:29, Leah Rumancik wrote:
-> From: Miaohe Lin <linmiaohe@huawei.com>
-> 
-> commit 35e351780fa9d8240dd6f7e4f245f9ea37e96c19 upstream.
-> 
-> Thorvald reported a WARNING [1]. And the root cause is below race:
-> 
->  CPU 1					CPU 2
->  fork					hugetlbfs_fallocate
->   dup_mmap				 hugetlbfs_punch_hole
->    i_mmap_lock_write(mapping);
->    vma_interval_tree_insert_after -- Child vma is visible through i_mmap tree.
->    i_mmap_unlock_write(mapping);
->    hugetlb_dup_vma_private -- Clear vma_lock outside i_mmap_rwsem!
-> 					 i_mmap_lock_write(mapping);
->    					 hugetlb_vmdelete_list
-> 					  vma_interval_tree_foreach
-> 					   hugetlb_vma_trylock_write -- Vma_lock is cleared.
->    tmp->vm_ops->open -- Alloc new vma_lock outside i_mmap_rwsem!
-> 					   hugetlb_vma_unlock_write -- Vma_lock is assigned!!!
-> 					 i_mmap_unlock_write(mapping);
-> 
-> hugetlb_dup_vma_private() and hugetlb_vm_op_open() are called outside
-> i_mmap_rwsem lock while vma lock can be used in the same time.  Fix this
-> by deferring linking file vma until vma is fully initialized.  Those vmas
-> should be initialized first before they can be used.
-> 
-> Backport notes:
-> 
-> The first backport attempt (cec11fa2e) was reverted (dd782da4707). This is
-> the new backport of the original fix (35e351780fa9).
-> 
-> 35e351780f ("fork: defer linking file vma until vma is fully initialized")
-> fixed a hugetlb locking race by moving a bunch of intialization code to earlier
-> in the function. The call to open() was included in the move but the call to
-> copy_page_range was not, effectively inverting their relative ordering. This
-> created an issue for the vfio code which assumes copy_page_range happens before
-> the call to open() - vfio's open zaps the vma so that the fault handler is
-> invoked later, but when we inverted the ordering, copy_page_range can set up
-> mappings post-zap which would prevent the fault handler from being invoked
-> later. This patch moves the call to copy_page_range to earlier than the call to
-> open() to restore the original ordering of the two functions while keeping the
-> fix for hugetlb intact.
-
-Thanks for your update!
-
-> 
-> Commit aac6db75a9 made several changes to vfio_pci_core.c, including
-> removing the vfio-pci custom open function. This resolves the issue on
-> the main branch and so we only need to apply these changes when
-> backporting to stable branches.
-> 
-> 35e351780f ("fork: defer linking file vma until vma is fully initialized")-> v6.9-rc5
-> aac6db75a9 ("vfio/pci: Use unmap_mapping_range()") -> v6.10-rc4
-> 
-> Link: https://lkml.kernel.org/r/20240410091441.3539905-1-linmiaohe@huawei.com
-> Fixes: 8d9bfb260814 ("hugetlb: add vma based lock for pmd sharing")
-> Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-> Reported-by: Thorvald Natvig <thorvald@google.com>
-> Closes: https://lore.kernel.org/linux-mm/20240129161735.6gmjsswx62o4pbja@revolver/T/ [1]
-> Reviewed-by: Jane Chu <jane.chu@oracle.com>
-> Cc: Christian Brauner <brauner@kernel.org>
-> Cc: Heiko Carstens <hca@linux.ibm.com>
-> Cc: Kent Overstreet <kent.overstreet@linux.dev>
-> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Cc: Mateusz Guzik <mjguzik@gmail.com>
-> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: Miaohe Lin <linmiaohe@huawei.com>
-> Cc: Muchun Song <muchun.song@linux.dev>
-> Cc: Oleg Nesterov <oleg@redhat.com>
-> Cc: Peng Zhang <zhangpeng.00@bytedance.com>
-> Cc: Tycho Andersen <tandersen@netflix.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+On Tue, Jul 2, 2024 at 5:12=E2=80=AFAM Zack Rusin <zack.rusin@broadcom.com>=
+ wrote:
+>
+> Introduce a version of the fence ops that on release doesn't remove
+> the fence from the pending list, and thus doesn't require a lock to
+> fix poll->fence wait->fence unref deadlocks.
+>
+> vmwgfx overwrites the wait callback to iterate over the list of all
+> fences and update their status, to do that it holds a lock to prevent
+> the list modifcations from other threads. The fence destroy callback
+> both deletes the fence and removes it from the list of pending
+> fences, for which it holds a lock.
+>
+> dma buf polling cb unrefs a fence after it's been signaled: so the poll
+> calls the wait, which signals the fences, which are being destroyed.
+> The destruction tries to acquire the lock on the pending fences list
+> which it can never get because it's held by the wait from which it
+> was called.
+>
+> Old bug, but not a lot of userspace apps were using dma-buf polling
+> interfaces. Fix those, in particular this fixes KDE stalls/deadlock.
+>
+> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+> Fixes: 2298e804e96e ("drm/vmwgfx: rework to new fence interface, v2")
+> Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadc=
+om.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.2+
 > ---
->  kernel/fork.c | 27 +++++++++++++--------------
->  1 file changed, 13 insertions(+), 14 deletions(-)
-> 
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index 177ce7438db6..122d2cd124d5 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -727,6 +727,19 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
->  		} else if (anon_vma_fork(tmp, mpnt))
->  			goto fail_nomem_anon_vma_fork;
->  		vm_flags_clear(tmp, VM_LOCKED_MASK);
-> +		/*
-> +		 * Copy/update hugetlb private vma information.
-> +		 */
-> +		if (is_vm_hugetlb_page(tmp))
-> +			hugetlb_dup_vma_private(tmp);
-> +
-> +		if (!(tmp->vm_flags & VM_WIPEONFORK) &&
-> +				copy_page_range(tmp, mpnt))
-> +			goto fail_nomem_vmi_store;
-> +
-> +		if (tmp->vm_ops && tmp->vm_ops->open)
-> +			tmp->vm_ops->open(tmp);
-> +
->  		file = tmp->vm_file;
->  		if (file) {
->  			struct address_space *mapping = file->f_mapping;
-> @@ -743,25 +756,11 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
->  			i_mmap_unlock_write(mapping);
->  		}
->  
-> -		/*
-> -		 * Copy/update hugetlb private vma information.
-> -		 */
-> -		if (is_vm_hugetlb_page(tmp))
-> -			hugetlb_dup_vma_private(tmp);
+>  drivers/gpu/drm/vmwgfx/vmwgfx_fence.c | 17 +++++++----------
+>  1 file changed, 7 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c b/drivers/gpu/drm/vmwg=
+fx/vmwgfx_fence.c
+> index 5efc6a766f64..588d50ababf6 100644
+> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
+> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
+> @@ -32,7 +32,6 @@
+>  #define VMW_FENCE_WRAP (1 << 31)
+>
+>  struct vmw_fence_manager {
+> -       int num_fence_objects;
+>         struct vmw_private *dev_priv;
+>         spinlock_t lock;
+>         struct list_head fence_list;
+> @@ -124,13 +123,13 @@ static void vmw_fence_obj_destroy(struct dma_fence =
+*f)
+>  {
+>         struct vmw_fence_obj *fence =3D
+>                 container_of(f, struct vmw_fence_obj, base);
 > -
->  		/* Link the vma into the MT */
->  		if (vma_iter_bulk_store(&vmi, tmp))
->  			goto fail_nomem_vmi_store;
->  
->  		mm->map_count++;
-> -		if (!(tmp->vm_flags & VM_WIPEONFORK))
-> -			retval = copy_page_range(tmp, mpnt);
+>         struct vmw_fence_manager *fman =3D fman_from_fence(fence);
+>
+> -       spin_lock(&fman->lock);
+> -       list_del_init(&fence->head);
+> -       --fman->num_fence_objects;
+> -       spin_unlock(&fman->lock);
+> +       if (!list_empty(&fence->head)) {
+> +               spin_lock(&fman->lock);
+> +               list_del_init(&fence->head);
+> +               spin_unlock(&fman->lock);
+> +       }
+>         fence->destroy(fence);
+>  }
+>
+> @@ -257,7 +256,6 @@ static const struct dma_fence_ops vmw_fence_ops =3D {
+>         .release =3D vmw_fence_obj_destroy,
+>  };
+>
+> -
+>  /*
+>   * Execute signal actions on fences recently signaled.
+>   * This is done from a workqueue so we don't have to execute
+> @@ -355,7 +353,6 @@ static int vmw_fence_obj_init(struct vmw_fence_manage=
+r *fman,
+>                 goto out_unlock;
+>         }
+>         list_add_tail(&fence->head, &fman->fence_list);
+> -       ++fman->num_fence_objects;
+>
+>  out_unlock:
+>         spin_unlock(&fman->lock);
+> @@ -403,7 +400,7 @@ static bool vmw_fence_goal_new_locked(struct vmw_fenc=
+e_manager *fman,
+>                                       u32 passed_seqno)
+>  {
+>         u32 goal_seqno;
+> -       struct vmw_fence_obj *fence;
+> +       struct vmw_fence_obj *fence, *next_fence;
+>
+>         if (likely(!fman->seqno_valid))
+>                 return false;
+> @@ -413,7 +410,7 @@ static bool vmw_fence_goal_new_locked(struct vmw_fenc=
+e_manager *fman,
+>                 return false;
+>
+>         fman->seqno_valid =3D false;
+> -       list_for_each_entry(fence, &fman->fence_list, head) {
+> +       list_for_each_entry_safe(fence, next_fence, &fman->fence_list, he=
+ad) {
+>                 if (!list_empty(&fence->seq_passed_actions)) {
+>                         fman->seqno_valid =3D true;
+>                         vmw_fence_goal_write(fman->dev_priv,
+> --
+> 2.43.0
+>
 
-I have a vague memory that copy_page_range should be called after vma is inserted into the i_mmap tree.
-Or there might be a problem:
+LGTM
 
-dup_mmap			remove_migration_ptes
- copy_page_range -- Child process copys migration entry from parent
-				 rmap_walk
-				  rmap_walk_file
-				   i_mmap_lock_read(mapping);
-				   vma_interval_tree_foreach
-				    remove_migration_pte -- The vma of child process is still invisible
-				    So migration entry lefts in the child process's address space.
-				   i_mmap_unlock_read(mapping);
- i_mmap_lock_write(mapping);
- vma_interval_tree_insert_after
-  -- To late! Child process has stale migration entry left while migration is already done!
- i_mmap_unlock_write(mapping);
-				
-But I'm not really sure. I might miss something.
-Thanks.
-.
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
 
+Regards,
+Martin
 
