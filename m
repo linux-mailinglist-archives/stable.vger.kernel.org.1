@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-56461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189F292447A
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:11:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E25F4924535
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:20:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7AA61F217DD
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:11:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73E7E28A72F
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4201BE22A;
-	Tue,  2 Jul 2024 17:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC5C1C68BE;
+	Tue,  2 Jul 2024 17:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBfBDwQq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktdljd86"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD3C15B0FE;
-	Tue,  2 Jul 2024 17:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACD01C68A2;
+	Tue,  2 Jul 2024 17:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940263; cv=none; b=Uw9PM6s3ivDYv2Poxm38g+WNHmwuIA8kZ40UGItLctZVU1iFd59tq1sNcy4uOhGZb1dCJYPEGyQRnpSgCxIi1icL6psNPedQ5CDdJ/E0RgWkXW/ctI7z6AYPQsM5tr/0S4a/JVB7cx0Rz+3/YgSWAux8qr4jlIscha2xtxdzseQ=
+	t=1719940751; cv=none; b=uizpxOGhrbjxOfw6zXs7tF8j0Eyv564uLKbh3laTUCNZiExPWVxsCR9AfxpSnTtlbBjqrGnStHy5Rd1JbWAC+4H5DKda0VFpNiED4chFrzdDEmLknD68N8yygAQyYJtP3cOCVIHiAgDUA/wcdH8dsDF5qGDM11H1W1A2WL8KOcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940263; c=relaxed/simple;
-	bh=MmfwdZdHXpUVv8Jhu1NJf6MQzS2ei8tV+WYLpYq6Lk4=;
+	s=arc-20240116; t=1719940751; c=relaxed/simple;
+	bh=CLSB9l0uAV2LmR/nCDkiIY9+Sd5P/rVjBnRQ9sJhZ5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGi7oLngolXQRxSdsDEJ/WYcuCf2NNbvGkRp3EQyB0CyiHBw3GfuwCqVrA6mUWjssBWgQL0aQThIx+eGL3bSG+VyyCFGIQ/Jy5c5ftctdiuCiE418Sio3KySJzOKVaXPvxjQE/lDJYrr0MOyx8z0MEQtv7lrRrwpnJlUDMqaIWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBfBDwQq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F43C116B1;
-	Tue,  2 Jul 2024 17:11:02 +0000 (UTC)
+	 MIME-Version; b=cXwxuFEQAsoh5xTgiiTMTCfpRtDTZM15uw6XebVKn0dL4vdpauk82EzjBozDVZ8IUkkdEI/3/vH1kjrhqLsJEVk+mAQmzvgMhW8ySD8LE1XfJCW5rfI2jHNJiJD3JgXJreRirlcQphxmwlGOIxgEfjLvIxHKMdAO100a/yR0V/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktdljd86; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0AF9C4AF0A;
+	Tue,  2 Jul 2024 17:19:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940262;
-	bh=MmfwdZdHXpUVv8Jhu1NJf6MQzS2ei8tV+WYLpYq6Lk4=;
+	s=korg; t=1719940751;
+	bh=CLSB9l0uAV2LmR/nCDkiIY9+Sd5P/rVjBnRQ9sJhZ5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uBfBDwQqMv0Ya59PEAw/Vg0bP/KHT2PouHxl/IE3Rcj3mjvYWhhAwu7WfGYE0SIw/
-	 itImoeMY0+tmOT504nkyzAzzwCkm90cfkyv15hZiIG2daprLmqAJOpTK5E3/e7UszL
-	 I6hIbZ4+x3KK8G00vFZkBUZkaDyNZXjth5KNy39Q=
+	b=ktdljd86PHm4yn3H2r0Xa9/QkZFHALU1yX41CdrDNukPxhvVVPqsdsm7u6xttAJSr
+	 gOXc1469qjujoKQVFS3TRfrL6ghxn9rrYhH5FoTKNbiLLP5skoPKKFhXM3rgXQQFNC
+	 YrS8O9Uhp2So4qntvg8hhAXKAYHx/h5g0GiXCtX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Taube <jesse@rivosinc.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 101/222] RISC-V: fix vector insn load/store width mask
+Subject: [PATCH 6.6 025/163] ASoC: amd: acp: add a null check for chip_pdev structure
 Date: Tue,  2 Jul 2024 19:02:19 +0200
-Message-ID: <20240702170247.829150050@linuxfoundation.org>
+Message-ID: <20240702170234.011585649@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Taube <jesse@rivosinc.com>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit 04a2aef59cfe192aa99020601d922359978cc72a ]
+[ Upstream commit 98d919dfee1cc402ca29d45da642852d7c9a2301 ]
 
-RVFDQ_FL_FS_WIDTH_MASK should be 3 bits [14-12], shifted down by 12 bits.
-Replace GENMASK(3, 0) with GENMASK(2, 0).
+When acp platform device creation is skipped, chip->chip_pdev value will
+remain NULL. Add NULL check for chip->chip_pdev structure in
+snd_acp_resume() function to avoid null pointer dereference.
 
-Fixes: cd054837243b ("riscv: Allocate user's vector context in the first-use trap")
-Signed-off-by: Jesse Taube <jesse@rivosinc.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Link: https://lore.kernel.org/r/20240606182800.415831-1-jesse@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 088a40980efb ("ASoC: amd: acp: add pm ops support for acp pci driver")
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://msgid.link/r/20240617072844.871468-1-Vijendar.Mukunda@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/insn.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/amd/acp/acp-pci.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/arch/riscv/include/asm/insn.h b/arch/riscv/include/asm/insn.h
-index 06e439eeef9ad..09fde95a5e8f7 100644
---- a/arch/riscv/include/asm/insn.h
-+++ b/arch/riscv/include/asm/insn.h
-@@ -145,7 +145,7 @@
+diff --git a/sound/soc/amd/acp/acp-pci.c b/sound/soc/amd/acp/acp-pci.c
+index 223238f662f83..7de6446e6f7c1 100644
+--- a/sound/soc/amd/acp/acp-pci.c
++++ b/sound/soc/amd/acp/acp-pci.c
+@@ -185,10 +185,12 @@ static int __maybe_unused snd_acp_resume(struct device *dev)
+ 	ret = acp_init(chip);
+ 	if (ret)
+ 		dev_err(dev, "ACP init failed\n");
+-	child = chip->chip_pdev->dev;
+-	adata = dev_get_drvdata(&child);
+-	if (adata)
+-		acp_enable_interrupts(adata);
++	if (chip->chip_pdev) {
++		child = chip->chip_pdev->dev;
++		adata = dev_get_drvdata(&child);
++		if (adata)
++			acp_enable_interrupts(adata);
++	}
+ 	return ret;
+ }
  
- /* parts of opcode for RVF, RVD and RVQ */
- #define RVFDQ_FL_FS_WIDTH_OFF	12
--#define RVFDQ_FL_FS_WIDTH_MASK	GENMASK(3, 0)
-+#define RVFDQ_FL_FS_WIDTH_MASK	GENMASK(2, 0)
- #define RVFDQ_FL_FS_WIDTH_W	2
- #define RVFDQ_FL_FS_WIDTH_D	3
- #define RVFDQ_LS_FS_WIDTH_Q	4
 -- 
 2.43.0
 
