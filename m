@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BD8F9244D2
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22410924588
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:23:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 072A41F21CB3
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:15:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C21101F24EF1
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650F61BE246;
-	Tue,  2 Jul 2024 17:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB541BE23F;
+	Tue,  2 Jul 2024 17:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usZ0PdQT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1s0Lvoa9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2264B1BD519;
-	Tue,  2 Jul 2024 17:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5D21BE24E;
+	Tue,  2 Jul 2024 17:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940514; cv=none; b=arsB1+vJsKJolS6P0bscCJ2CVVtv8mV0VA+FTCf1fQkvp0QFn4musOq1Y/PPIYAXqgmMjuEPcYq3FiUEuFk6WnvH0hs8e4OPZhr3eluD9haNsmLduMagUZ+5BboK7YBWyY/eFBNm0Qr4bie569HVYhcTjVhxDQTpCIUzVlvmp2E=
+	t=1719941008; cv=none; b=l3WezR/z3Fk8WcnDBjMgAsWTA3ZrFkT/BS4fDZUDlIDKlIAEDL6UGOjrkDy675yvAzwY0aMDAr6QQm7NaDk5GjOXugj7aQ4ccwoscpUWRl4ayzIN2RUhu4d5fBLKo70fwjhd4kSmKrGxP+JRcJJE0S+0986br3Tuy3kiQ8/BUV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940514; c=relaxed/simple;
-	bh=tn16fLeCbRaFXazyQLvClau7FzIbJX4dS+AoIuUPc5s=;
+	s=arc-20240116; t=1719941008; c=relaxed/simple;
+	bh=7uZDbg2o/mtG/DW3qTM8Dnr2+CG/tc4phGSfrMwtJaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n88Edo+1rZWE6FwoxReoiyTqaMlyiymgmBET96njnyBnNKW1/z/qCyyyIFmEpksk9kmWfFpIzeJFT5OG7Wav7x+7I0VHtC78zV8j3P+EBubfsJ9foj+x/z+02URh5buK7NykrOI7seRxMT+LCJxtBpuqzymb3zml16yL7cFjvyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usZ0PdQT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC57C116B1;
-	Tue,  2 Jul 2024 17:15:13 +0000 (UTC)
+	 MIME-Version; b=ZbldFZuVC65fqrGrinw1uI2vB1T3qMipKvYmmS/RE85h2VoDvgpuaEhBiPbIJAss7L0iT/wWRGI4/Ma2sPZxKlCW28/LDAWJN7OC7VfvZPX1T4d4gp6y6AvfVsBc9x4kXD/cSpGj4NZmGdgNriLlyo7H9gSStLTwxDUbmDj03yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1s0Lvoa9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E906C116B1;
+	Tue,  2 Jul 2024 17:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940514;
-	bh=tn16fLeCbRaFXazyQLvClau7FzIbJX4dS+AoIuUPc5s=;
+	s=korg; t=1719941008;
+	bh=7uZDbg2o/mtG/DW3qTM8Dnr2+CG/tc4phGSfrMwtJaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=usZ0PdQTawHwsrMljM6stsd/a6zAJ1sr6hwjwVyC6xAYGv4s5XiWFfarmHFQeG5PG
-	 0UezSeni3X+rrQb3rzQMelbjc2839vfVEICgDwEpQEqaF4SEHowxBaUhrj9+xIsXtQ
-	 yVRJjwu/0PF8c6UM/9E9ui7/Krsdp8e0exXpPr9A=
+	b=1s0Lvoa9XB8PfhrPJPmnUnrv0Cvi3pVu3/FRQkzHTa0XfkI1OY+p/v6TnwJI/Uear
+	 NhxSc+2zof5EM0o6iwmtCX5PO5olyHYka3vTuHd5fu8WGfaqecbgr3pgMvJ7B01TYq
+	 oz0lCLqto4twmdoJoRR/JjPiswxRqT+Jsx/2IH8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.9 176/222] btrfs: zoned: fix initial free space detection
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 100/163] iio: chemical: bme680: Fix pressure value output
 Date: Tue,  2 Jul 2024 19:03:34 +0200
-Message-ID: <20240702170250.704082425@linuxfoundation.org>
+Message-ID: <20240702170236.847294003@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-commit b9fd2affe4aa99a4ca14ee87e1f38fea22ece52a upstream.
+commit ae1f7b93b52095be6776d0f34957b4f35dda44d9 upstream.
 
-When creating a new block group, it calls btrfs_add_new_free_space() to add
-the entire block group range into the free space accounting.
-__btrfs_add_free_space_zoned() checks if size == block_group->length to
-detect the initial free space adding, and proceed that case properly.
+The IIO standard units are measured in kPa while the driver
+is using hPa.
 
-However, if the zone_capacity == zone_size and the over-write speed is fast
-enough, the entire zone can be over-written within one transaction. That
-confuses __btrfs_add_free_space_zoned() to handle it as an initial free
-space accounting. As a result, that block group becomes a strange state: 0
-used bytes, 0 zone_unusable bytes, but alloc_offset == zone_capacity (no
-allocation anymore).
+Apart from checking the userspace value itself, it is mentioned also
+in the Bosch API [1] that the pressure value is in Pascal.
 
-The initial free space accounting can properly be checked by checking
-alloc_offset too.
+[1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x_defs.h#L742
 
-Fixes: 98173255bddd ("btrfs: zoned: calculate free space from zone capacity")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://lore.kernel.org/r/20240606212313.207550-2-vassilisamir@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/free-space-cache.c |    2 +-
+ drivers/iio/chemical/bme680_core.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/free-space-cache.c
-+++ b/fs/btrfs/free-space-cache.c
-@@ -2697,7 +2697,7 @@ static int __btrfs_add_free_space_zoned(
- 	u64 offset = bytenr - block_group->start;
- 	u64 to_free, to_unusable;
- 	int bg_reclaim_threshold = 0;
--	bool initial = (size == block_group->length);
-+	bool initial = ((size == block_group->length) && (block_group->alloc_offset == 0));
- 	u64 reclaimable_unusable;
+--- a/drivers/iio/chemical/bme680_core.c
++++ b/drivers/iio/chemical/bme680_core.c
+@@ -678,7 +678,7 @@ static int bme680_read_press(struct bme6
+ 	}
  
- 	WARN_ON(!initial && offset + size > block_group->zone_capacity);
+ 	*val = bme680_compensate_press(data, adc_press);
+-	*val2 = 100;
++	*val2 = 1000;
+ 	return IIO_VAL_FRACTIONAL;
+ }
+ 
 
 
 
