@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-56786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 783379245F7
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C219245A3
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:25:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02E78B27768
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF51B1F22658
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2A31BE842;
-	Tue,  2 Jul 2024 17:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AB301BD51A;
+	Tue,  2 Jul 2024 17:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WxFsPzF5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zaoFJOYj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3CF1BE22B;
-	Tue,  2 Jul 2024 17:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499C315218A;
+	Tue,  2 Jul 2024 17:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941356; cv=none; b=J6jdio5w+hji0z9Zqscabw7uKAMR5/eeahG0Z1owfTTLLUq0md+GMQhN/eJqMt4TiHQrB8da1NkURK2rx4h9Ys6OIJlv8W7XmiS4Iqvq62RRcwZ+Iymsrn22WzGX9IkxQJOliAfHKixGKOnmSyK3WmMoAyqBqiUB6MPaDz1McaQ=
+	t=1719941100; cv=none; b=Ozi1PmRPAAgCqpxs669A/q4V9GnbrGVIcQyfTYEjhjIvjrL4VVStALXcMzhyu9rTuQ5lTBPq8dLMm21o+FjK5gkAUWWX85GcALYNvNW4ntFFwBGUztJh5mM3FGDJYyJs3TlXE3ZOYWAhVQuGOiWunfZPzAbMzkZaopbv9XxKgVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941356; c=relaxed/simple;
-	bh=64zkpMYtgzeZMTduHgPJpBf6YvLaGylHb4msWL4CqfY=;
+	s=arc-20240116; t=1719941100; c=relaxed/simple;
+	bh=JkFejznC6/v5V6uihbkStKiIDPkz6lgIYMchfIvrg3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WzfZBLc+QsXwToLm6MKEPVyoSSSDDTXljPElBa56Y7nk32NZR2t9NLl8gfe05bezE0GIUsiwhyOsWhcOrJ58oeaKXKNkaNQpF7aNwlLMmEcwT4bVCnQ/i94jwM3nVr1HzT5GJFFLTytn1zHauoHwgG0dECfnvgbWfr01J5vaPFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WxFsPzF5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7F8C116B1;
-	Tue,  2 Jul 2024 17:29:15 +0000 (UTC)
+	 MIME-Version; b=aoBxOBwFHM5GYAYbeACRHHdfB8GkLS7OS0Q1NFHQ0IGpQgVsdQ44kKF7iFQJ9MOFkkcCG6i6zIe0g193nx7PaCwp/VyV/1cwUsVIN3OcPFu/W6z2291cgNYg6B9xGcSSn1NTiOp8ewJbGAkmDKmIqzqS++XzVHA1k/dxKngUwUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zaoFJOYj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E06C116B1;
+	Tue,  2 Jul 2024 17:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941356;
-	bh=64zkpMYtgzeZMTduHgPJpBf6YvLaGylHb4msWL4CqfY=;
+	s=korg; t=1719941099;
+	bh=JkFejznC6/v5V6uihbkStKiIDPkz6lgIYMchfIvrg3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WxFsPzF5fbrPUddURLVY3zQbJzStTLdOqOgyNE92eyXwx2kAS+ieJ3fEILH1pexHv
-	 KPjYurfghiRwUDceq6ORVcux6xZUkRSRMFHP4TT8dTNhgg2uFcCpvAtcmKQhMKIURJ
-	 0UD15Uaefsbpu96hGZGiIK+fkhS+0eHky/zj3gm0=
+	b=zaoFJOYjVCGS7CYwOd2QlmN2J6IDdeP6zXX+Fowr/iynsvfCPGiwYQyOmxqJ8rZFN
+	 l/v21oIGbRkvebsDZhl3nZYUntPtebhwECU73OOgvpQ7wNiCs2dkAND8Evf5B24Thc
+	 6TUhKjXdQiqc8gICck5A10mbTywYoptYFDBchHjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/128] x86/fpu: Fix AMD X86_BUG_FXSAVE_LEAK fixup
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.6 127/163] irqchip/loongson-eiointc: Use early_cpu_to_node() instead of cpu_to_node()
 Date: Tue,  2 Jul 2024 19:04:01 +0200
-Message-ID: <20240702170227.752131524@linuxfoundation.org>
+Message-ID: <20240702170237.858712522@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 5d31174f3c8c465d9dbe88f6b9d1fe5716f44981 ]
+commit 2d64eaeeeda5659d52da1af79d237269ba3c2d2c upstream.
 
-The assembly snippet in restore_fpregs_from_fpstate() that implements
-X86_BUG_FXSAVE_LEAK fixup loads the value from a random variable,
-preferably the one that is already in the L1 cache.
+Multi-bridge machines required that all eiointc controllers in the system
+are initialized, otherwise the system does not boot.
 
-However, the access to fpinit_state via *fpstate pointer is not
-implemented correctly. The "m" asm constraint requires dereferenced
-pointer variable, otherwise the compiler just reloads the value
-via temporary stack slot. The current asm code reflects this:
+The initialization happens on the boot CPU during early boot and relies on
+cpu_to_node() for identifying the individual nodes.
 
-     mov    %rdi,(%rsp)
-     ...
-     fildl  (%rsp)
+That works when the number of possible CPUs is large enough, but with a
+command line limit, e.g. "nr_cpus=$N" for kdump, but fails when the CPUs
+of the secondary nodes are not covered.
 
-With dereferenced pointer variable, the code does what the
-comment above the asm snippet says:
+During early ACPI enumeration all CPU to node mappings are recorded up to
+CONFIG_NR_CPUS. These are accessible via early_cpu_to_node() even in the
+case that "nr_cpus=N" truncates the number of possible CPUs and only
+provides the possible CPUs via cpu_to_node() translation.
 
-     fildl  (%rdi)
+Change the node lookup in the driver to use early_cpu_to_node() so that
+even with a limitation on the number of possible CPUs all eointc instances
+are initialized.
 
-Also, remove the pointless %P operand modifier. The modifier is
-ineffective on non-symbolic references - it was used to prevent
-%rip-relative addresses in .altinstr sections, but FILDL in the
-.text section can use %rip-relative addresses without problems.
+This can't obviously cure the case where CONFIG_NR_CPUS is too small.
 
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240315081849.5187-1-ubizjak@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ tglx: Massaged changelog ]
+
+Fixes: 64cc451e45e1 ("irqchip/loongson-eiointc: Fix incorrect use of acpi_get_vec_parent")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240623034113.1808727-1-chenhuacai@loongson.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/fpu/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-loongson-eiointc.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-index 1d190761d00fd..f1446f532b17b 100644
---- a/arch/x86/kernel/fpu/core.c
-+++ b/arch/x86/kernel/fpu/core.c
-@@ -145,8 +145,8 @@ void restore_fpregs_from_fpstate(struct fpstate *fpstate, u64 mask)
- 		asm volatile(
- 			"fnclex\n\t"
- 			"emms\n\t"
--			"fildl %P[addr]"	/* set F?P to defined value */
--			: : [addr] "m" (fpstate));
-+			"fildl %[addr]"	/* set F?P to defined value */
-+			: : [addr] "m" (*fpstate));
- 	}
+--- a/drivers/irqchip/irq-loongson-eiointc.c
++++ b/drivers/irqchip/irq-loongson-eiointc.c
+@@ -15,6 +15,7 @@
+ #include <linux/irqchip/chained_irq.h>
+ #include <linux/kernel.h>
+ #include <linux/syscore_ops.h>
++#include <asm/numa.h>
  
- 	if (use_xsave()) {
--- 
-2.43.0
-
+ #define EIOINTC_REG_NODEMAP	0x14a0
+ #define EIOINTC_REG_IPMAP	0x14c0
+@@ -349,7 +350,7 @@ static int __init pch_msi_parse_madt(uni
+ 	int node;
+ 
+ 	if (cpu_has_flatmode)
+-		node = cpu_to_node(eiointc_priv[nr_pics - 1]->node * CORES_PER_EIO_NODE);
++		node = early_cpu_to_node(eiointc_priv[nr_pics - 1]->node * CORES_PER_EIO_NODE);
+ 	else
+ 		node = eiointc_priv[nr_pics - 1]->node;
+ 
+@@ -441,7 +442,7 @@ int __init eiointc_acpi_init(struct irq_
+ 		goto out_free_handle;
+ 
+ 	if (cpu_has_flatmode)
+-		node = cpu_to_node(acpi_eiointc->node * CORES_PER_EIO_NODE);
++		node = early_cpu_to_node(acpi_eiointc->node * CORES_PER_EIO_NODE);
+ 	else
+ 		node = acpi_eiointc->node;
+ 	acpi_set_vec_parent(node, priv->eiointc_domain, pch_group);
 
 
 
