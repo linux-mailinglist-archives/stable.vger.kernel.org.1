@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-56528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C58B9244C5
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:14:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 560249245EA
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:28:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E65B1C21B1C
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:14:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1265E283A4A
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3581B1BE22B;
-	Tue,  2 Jul 2024 17:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212521BE857;
+	Tue,  2 Jul 2024 17:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EI/rL7j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rp+ojxK3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88EA15B0FE;
-	Tue,  2 Jul 2024 17:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EAB1BE251;
+	Tue,  2 Jul 2024 17:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940485; cv=none; b=K0Zzt6V8eKY969LUF+eIP9ZEMWlBvpS/6PT8bnEG/FxO32U31C4ZyEBvuV9dbGy8clJJhiGHKhud2o0N7tvGtwRaDq8jLi2v9kO8DVr0t2yQ8yFYa6p3wsXn4ApTGipx6ApepFRveONmB0ceXuHs3lBQhW3ba0xVKbzwiKNng5k=
+	t=1719941320; cv=none; b=duE8q7xKRUPZUBBbVtuV3EjyohPq5lR+Wuj0DI3RnnsDQN5WA8H/d3Tz0kN2DE/FBAfL9LhmRmd1yefRN8eSWj0/jwLwHu1K9kMGUGc5fBkOQlfjlRWfiID3dYFWox7yUHQz+RSHUhc3TQ8zZ9H+1trJtPo/1c6yptuCWYd5DoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940485; c=relaxed/simple;
-	bh=tSyv2BNtAwtAK4eDX6CWiioKg6d2/QZ7kY6StIV4TT4=;
+	s=arc-20240116; t=1719941320; c=relaxed/simple;
+	bh=Kgc72/wY4vsILA2RetK6AEhgNGjIAtj8DJFmpDbuWSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Chu+4O0hqN3yni07dLJ4UD9UMaHT7XbDRcIdTyr5yYNd4ovI168RpSdOfFOUY2Zn1E6umOUmqZyqGarNLckhsoR/Yofcx4OsRJDf3fNqoGMeypn89jxKr5gBl3b8gFTSUjUfZD+Rnn1bvA/d4Bu0RpZzul3L7IsECQ59OmUYH/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EI/rL7j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4BFC116B1;
-	Tue,  2 Jul 2024 17:14:44 +0000 (UTC)
+	 MIME-Version; b=tPLcYBED2cn24KCzajlOEHBiswd57LMtp/x2sozNgDYkna2XHpYU5tFMLJYigB6iAuv4vPQgR3kEW6RPaow57NAU29A3IFwZah/PFd4f9hws1w0jjXW+txUQlVB86WPfEFBpj5jXtCsZAd8ojI/VURVTGcdQSCIbNzSWDKyOzow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rp+ojxK3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436A4C116B1;
+	Tue,  2 Jul 2024 17:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940484;
-	bh=tSyv2BNtAwtAK4eDX6CWiioKg6d2/QZ7kY6StIV4TT4=;
+	s=korg; t=1719941320;
+	bh=Kgc72/wY4vsILA2RetK6AEhgNGjIAtj8DJFmpDbuWSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1EI/rL7j32BZscO1KZxzRkXBoEBVeMZ/AGiDHym076pbpFU3S9tH+jn1BCW1z9t8W
-	 CQWYrw8zjYjrCNsLEqBSR5pHbBH3GPgqd4gJzLkpnq1quVBdxjYj/FS0+0dKa9lFhA
-	 UcmPHnBRx0RVNIncXhIhYfvT8Ll3rV54BAVsPBL8=
+	b=Rp+ojxK3gtNAyC8Kjb/gYmLoYIWe3LLOMoXEWB67Phmz+Q6pvig5x0x3hc8iZpmls
+	 B4my8PUTvsiKfBqYNU11Ega0H/QDiDXmlUcG7RRJZRt3WtAzJVYG3hSDl5W5DqcC0J
+	 6BfTi2TUIXyXPFw1H4vVdwCNlOKuXGfSGjkwAe5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.9 168/222] nvmet-fc: Remove __counted_by from nvmet_fc_tgt_queue.fod[]
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 005/128] ACPI: x86: Force StorageD3Enable on more products
 Date: Tue,  2 Jul 2024 19:03:26 +0200
-Message-ID: <20240702170250.397887175@linuxfoundation.org>
+Message-ID: <20240702170226.438872782@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 440e2051c577896275c0e0513ec26964e04c7810 upstream.
+[ Upstream commit e79a10652bbd320649da705ca1ea0c04351af403 ]
 
-Work for __counted_by on generic pointers in structures (not just
-flexible array members) has started landing in Clang 19 (current tip of
-tree). During the development of this feature, a restriction was added
-to __counted_by to prevent the flexible array member's element type from
-including a flexible array member itself such as:
+A Rembrandt-based HP thin client is reported to have problems where
+the NVME disk isn't present after resume from s2idle.
 
-  struct foo {
-    int count;
-    char buf[];
-  };
+This is because the NVME disk wasn't put into D3 at suspend, and
+that happened because the StorageD3Enable _DSD was missing in the BIOS.
 
-  struct bar {
-    int count;
-    struct foo data[] __counted_by(count);
-  };
+As AMD's architecture requires that the NVME is in D3 for s2idle, adjust
+the criteria for force_storage_d3 to match *all* Zen SoCs when the FADT
+advertises low power idle support.
 
-because the size of data cannot be calculated with the standard array
-size formula:
+This will ensure that any future products with this BIOS deficiency don't
+need to be added to the allow list of overrides.
 
-  sizeof(struct foo) * count
-
-This restriction was downgraded to a warning but due to CONFIG_WERROR,
-it can still break the build. The application of __counted_by on the fod
-member of 'struct nvmet_fc_tgt_queue' triggers this restriction,
-resulting in:
-
-  drivers/nvme/target/fc.c:151:2: error: 'counted_by' should not be applied to an array with element of unknown size because 'struct nvmet_fc_fcp_iod' is a struct type with a flexible array member. This will be an error in a future compiler version [-Werror,-Wbounds-safety-counted-by-elt-type-unknown-size]
-    151 |         struct nvmet_fc_fcp_iod         fod[] __counted_by(sqsize);
-        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  1 error generated.
-
-Remove this use of __counted_by to fix the warning/error. However,
-rather than remove it altogether, leave it commented, as it may be
-possible to support this in future compiler releases.
-
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2027
-Fixes: ccd3129aca28 ("nvmet-fc: Annotate struct nvmet_fc_tgt_queue with __counted_by")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/fc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/x86/utils.c | 24 ++++++++++--------------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
 
---- a/drivers/nvme/target/fc.c
-+++ b/drivers/nvme/target/fc.c
-@@ -148,7 +148,7 @@ struct nvmet_fc_tgt_queue {
- 	struct workqueue_struct		*work_q;
- 	struct kref			ref;
- 	/* array of fcp_iods */
--	struct nvmet_fc_fcp_iod		fod[] __counted_by(sqsize);
-+	struct nvmet_fc_fcp_iod		fod[] /* __counted_by(sqsize) */;
- } __aligned(sizeof(unsigned long long));
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index ef431393381a0..d0257758cf989 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -188,16 +188,16 @@ bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *s
+ }
  
- struct nvmet_fc_hostport {
+ /*
+- * AMD systems from Renoir and Lucienne *require* that the NVME controller
++ * AMD systems from Renoir onwards *require* that the NVME controller
+  * is put into D3 over a Modern Standby / suspend-to-idle cycle.
+  *
+  * This is "typically" accomplished using the `StorageD3Enable`
+  * property in the _DSD that is checked via the `acpi_storage_d3` function
+- * but this property was introduced after many of these systems launched
+- * and most OEM systems don't have it in their BIOS.
++ * but some OEM systems still don't have it in their BIOS.
+  *
+  * The Microsoft documentation for StorageD3Enable mentioned that Windows has
+- * a hardcoded allowlist for D3 support, which was used for these platforms.
++ * a hardcoded allowlist for D3 support as well as a registry key to override
++ * the BIOS, which has been used for these cases.
+  *
+  * This allows quirking on Linux in a similar fashion.
+  *
+@@ -210,19 +210,15 @@ bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *s
+  *    https://bugzilla.kernel.org/show_bug.cgi?id=216773
+  *    https://bugzilla.kernel.org/show_bug.cgi?id=217003
+  * 2) On at least one HP system StorageD3Enable is missing on the second NVME
+-      disk in the system.
++ *    disk in the system.
++ * 3) On at least one HP Rembrandt system StorageD3Enable is missing on the only
++ *    NVME device.
+  */
+-static const struct x86_cpu_id storage_d3_cpu_ids[] = {
+-	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 24, NULL),  /* Picasso */
+-	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),	/* Renoir */
+-	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL),	/* Lucienne */
+-	X86_MATCH_VENDOR_FAM_MODEL(AMD, 25, 80, NULL),	/* Cezanne */
+-	{}
+-};
+-
+ bool force_storage_d3(void)
+ {
+-	return x86_match_cpu(storage_d3_cpu_ids);
++	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
++		return false;
++	return acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0;
+ }
+ 
+ /*
+-- 
+2.43.0
+
 
 
 
