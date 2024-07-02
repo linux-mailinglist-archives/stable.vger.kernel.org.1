@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-56850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FABC92463F
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:32:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F0892464A
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:33:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEEF31F217D9
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:32:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6B4BB21E1D
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66E8F1BD51F;
-	Tue,  2 Jul 2024 17:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C661BD4EA;
+	Tue,  2 Jul 2024 17:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2OyARdx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQ/fLKPO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D9F63D;
-	Tue,  2 Jul 2024 17:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CDB63D;
+	Tue,  2 Jul 2024 17:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941570; cv=none; b=IgtPNCDmlVtRXEj0ov8s+QQTixXcj7bBZQIcs+Pjy4uvPjSGmIJBGP+0wwUEvOsTJcnxYH+Kn2yW7tC1liGAh36S+JVqXddMZFfFmU78UwwOO23cJJ/XB1+0DV2+TOa8MCc33Bdhv1c/Qjw2WnPv5upZgUWRFWVdFE4VSfCPwQ4=
+	t=1719941607; cv=none; b=nz6CKCZpELP7rWGWWaXSeMA11d71YokLTrS+4YT6WWHkQn6ityq1NhYOynX2SQ/T6pwUNVmbS20DPzpHZ4FgCIIypLBEMTfhmyuF0pqJcCag5OP0OGnOzu7RpJMphwfLVsh0DtdUTttuNEpqkbnwRrMVOfWrRoaTSTvErdCXA6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941570; c=relaxed/simple;
-	bh=Kd8T8LsCfpgpsaCLBZbj1PY3jvV1w/ocGylevKDbmW0=;
+	s=arc-20240116; t=1719941607; c=relaxed/simple;
+	bh=RB8i2R6hXIq9QLMM1ODFYaKqwEZVkofRFckG/yClkMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m4PHzVPNOfluarNrg+xSH1dk8eVYHCfMFpbJteqzuxsUVajlYQJH9kf6qOLog3YAfSnk38XhEYx2LW+7/wm8YJ/UaTpaD2CfntmwpU7r80ZihZ+EHJDVTW/6vRKenmmYphhkLfz5GZ/2NDDLFd/OKUg90rAV8qPl7lJ3fBwlma8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2OyARdx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78CF6C116B1;
-	Tue,  2 Jul 2024 17:32:49 +0000 (UTC)
+	 MIME-Version; b=I2NjkGT17T4iCVGUq6WoNqybfDzaI1/l7kBYb4oVbmX6NYXCA/ssII4VkbhpZ32brlCyu5ovvePgfPrah3zGKdN2I1uJxplUMGvJ79XX1oOzgDSvEhdvLpjugjc214FMEml7B6HnQ9RxIKntIBkZ+IxeDonMe13DLfjCmL2dIBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQ/fLKPO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9DDC116B1;
+	Tue,  2 Jul 2024 17:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941570;
-	bh=Kd8T8LsCfpgpsaCLBZbj1PY3jvV1w/ocGylevKDbmW0=;
+	s=korg; t=1719941607;
+	bh=RB8i2R6hXIq9QLMM1ODFYaKqwEZVkofRFckG/yClkMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V2OyARdxHCwwtXRJcPoyjt3NqyYyDhYq6SV9Sn8TWHmQ4hTcomE2LGBVuY5H2lYQC
-	 CDh7srE63M5cvtejQU4trs0IjN2twXSmOzUCjwwXgATdsat7/FyC9i5tUpcOvFSs5E
-	 0cyKt5F8z8973DySQzi6kYdj5Ngo5Swsr59wDLZw=
+	b=qQ/fLKPOFbNHkEOXT9PsIWl4+JtT5nrIU/7WrY9sJmOR9YnwtzSRDbeKKnCD3D65j
+	 q6ZrIH45aRia8zdBYFiTmZo/PDxfGI+e4XiHxWUD0ZdaCx+Dc51GN+bqAMR9IDwDpd
+	 UIJCJYO1/Wgx+WcLc/8e6p++Yg+dzQlBNHboZW+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+daa36413a5cedf799ae4@syzkaller.appspotmail.com,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.1 096/128] net: can: j1939: enhanced error handling for tightly received RTS messages in xtp_rx_rts_session_new
-Date: Tue,  2 Jul 2024 19:04:57 +0200
-Message-ID: <20240702170229.850890257@linuxfoundation.org>
+	Aaron Rainbolt <arainbolt@kfocus.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.1 097/128] cpufreq: intel_pstate: Use HWP to initialize ITMT if CPPC is missing
+Date: Tue,  2 Jul 2024 19:04:58 +0200
+Message-ID: <20240702170229.888996799@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
 References: <20240702170226.231899085@linuxfoundation.org>
@@ -66,74 +66,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit d3e2904f71ea0fe7eaff1d68a2b0363c888ea0fb upstream.
+commit a1ff59784b277795a613beaa5d3dd9c5595c69a7 upstream.
 
-This patch enhances error handling in scenarios with RTS (Request to
-Send) messages arriving closely. It replaces the less informative WARN_ON_ONCE
-backtraces with a new error handling method. This provides clearer error
-messages and allows for the early termination of problematic sessions.
-Previously, sessions were only released at the end of j1939_xtp_rx_rts().
+It is reported that single-thread performance on some hybrid systems
+dropped significantly after commit 7feec7430edd ("ACPI: CPPC: Only probe
+for _CPC if CPPC v2 is acked") which prevented _CPC from being used if
+the support for it had not been confirmed by the platform firmware.
 
-Potentially this could be reproduced with something like:
-testj1939 -r vcan0:0x80 &
-while true; do
-	# send first RTS
-	cansend vcan0 18EC8090#1014000303002301;
-	# send second RTS
-	cansend vcan0 18EC8090#1014000303002301;
-	# send abort
-	cansend vcan0 18EC8090#ff00000000002301;
-done
+The problem is that if the platform firmware does not confirm CPPC v2
+support, cppc_get_perf_caps() returns an error which prevents the
+intel_pstate driver from enabling ITMT.  Consequently, the scheduler
+does not get any hints on CPU performance differences, so in a hybrid
+system some tasks may run on CPUs with lower capacity even though they
+should be running on high-capacity CPUs.
 
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Reported-by: syzbot+daa36413a5cedf799ae4@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/all/20231117124959.961171-1-o.rempel@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+To address this, modify intel_pstate to use the information from
+MSR_HWP_CAPABILITIES to enable ITMT if CPPC is not available (which is
+done already if the highest performance number coming from CPPC is not
+realistic).
+
+Fixes: 7feec7430edd ("ACPI: CPPC: Only probe for _CPC if CPPC v2 is acked")
+Closes: https://lore.kernel.org/linux-acpi/d01b0a1f-bd33-47fe-ab41-43843d8a374f@kfocus.org
+Link: https://lore.kernel.org/linux-acpi/ZnD22b3Br1ng7alf@kf-XE
+Reported-by: Aaron Rainbolt <arainbolt@kfocus.org>
+Tested-by: Aaron Rainbolt <arainbolt@kfocus.org>
+Cc: 5.19+ <stable@vger.kernel.org> # 5.19+
+Link: https://patch.msgid.link/12460110.O9o76ZdvQC@rjwysocki.net
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/j1939/transport.c |   19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/cpufreq/intel_pstate.c |   13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
---- a/net/can/j1939/transport.c
-+++ b/net/can/j1939/transport.c
-@@ -1593,8 +1593,8 @@ j1939_session *j1939_xtp_rx_rts_session_
- 	struct j1939_sk_buff_cb skcb = *j1939_skb_to_cb(skb);
- 	struct j1939_session *session;
- 	const u8 *dat;
-+	int len, ret;
- 	pgn_t pgn;
--	int len;
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -348,15 +348,14 @@ static void intel_pstate_set_itmt_prio(i
+ 	int ret;
  
- 	netdev_dbg(priv->ndev, "%s\n", __func__);
+ 	ret = cppc_get_perf_caps(cpu, &cppc_perf);
+-	if (ret)
+-		return;
+-
+ 	/*
+-	 * On some systems with overclocking enabled, CPPC.highest_perf is hardcoded to 0xff.
+-	 * In this case we can't use CPPC.highest_perf to enable ITMT.
+-	 * In this case we can look at MSR_HWP_CAPABILITIES bits [8:0] to decide.
++	 * If CPPC is not available, fall back to MSR_HWP_CAPABILITIES bits [8:0].
++	 *
++	 * Also, on some systems with overclocking enabled, CPPC.highest_perf is
++	 * hardcoded to 0xff, so CPPC.highest_perf cannot be used to enable ITMT.
++	 * Fall back to MSR_HWP_CAPABILITIES then too.
+ 	 */
+-	if (cppc_perf.highest_perf == CPPC_MAX_PERF)
++	if (ret || cppc_perf.highest_perf == CPPC_MAX_PERF)
+ 		cppc_perf.highest_perf = HWP_HIGHEST_PERF(READ_ONCE(all_cpu_data[cpu]->hwp_cap_cached));
  
-@@ -1653,7 +1653,22 @@ j1939_session *j1939_xtp_rx_rts_session_
- 	session->tskey = priv->rx_tskey++;
- 	j1939_sk_errqueue(session, J1939_ERRQUEUE_RX_RTS);
- 
--	WARN_ON_ONCE(j1939_session_activate(session));
-+	ret = j1939_session_activate(session);
-+	if (ret) {
-+		/* Entering this scope indicates an issue with the J1939 bus.
-+		 * Possible scenarios include:
-+		 * - A time lapse occurred, and a new session was initiated
-+		 *   due to another packet being sent correctly. This could
-+		 *   have been caused by too long interrupt, debugger, or being
-+		 *   out-scheduled by another task.
-+		 * - The bus is receiving numerous erroneous packets, either
-+		 *   from a malfunctioning device or during a test scenario.
-+		 */
-+		netdev_alert(priv->ndev, "%s: 0x%p: concurrent session with same addr (%02x %02x) is already active.\n",
-+			     __func__, session, skcb.addr.sa, skcb.addr.da);
-+		j1939_session_put(session);
-+		return NULL;
-+	}
- 
- 	return session;
- }
+ 	/*
 
 
 
