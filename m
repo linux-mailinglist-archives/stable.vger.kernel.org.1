@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-56817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A520924617
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:31:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2551A9245C7
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:26:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36A72B2240B
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:31:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5B1228A26A
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 358281BD50C;
-	Tue,  2 Jul 2024 17:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE221BE257;
+	Tue,  2 Jul 2024 17:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4uumWXJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhtJLqaC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E766A3D978;
-	Tue,  2 Jul 2024 17:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68F01514DC;
+	Tue,  2 Jul 2024 17:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941461; cv=none; b=KcnDbU2jEXkXD/cSc5sR82sRl02+JrZM6yX19n0QnHudQl6kluHbUVdNCdsifZwire7iBzgoMpI3AjgPX/SLlh9lW8ubDnvwCQayjY62XbKgtxneIqkAwqIoGbgzX2yRuIy9uOm1xKM4+DuRwob60S4FmvEoKX/UxKcKyFuBrA0=
+	t=1719941206; cv=none; b=nmjffXD7sZ/Lg70JI9YkDfhE4oKrlubmIUE3gsuJYZMtwb3OuPwbGsXs1be1JnCMqqBsdR+LWBSS1kZUJCU7t1Pqf5w758DUlwexZ3zsGGZkx0ODrXz84XKWwCRoYy6AnxX2PbbVxAwtnNMndBjTdEQGsiSVDDGGZbP0u/6JdcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941461; c=relaxed/simple;
-	bh=L0y4aiSsIyLgIQbKfQoBrXiZEcGoeeYVrK1bamg+EX8=;
+	s=arc-20240116; t=1719941206; c=relaxed/simple;
+	bh=GEyTevV/9EldTmg23r8FiXeAcaE7pgcY2cqZCmsM8YU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BchdHN2IHZt1MPXwccNSQbkYT2OpoZoctFvoUWWR3BncHpGmWJ5eSuWM1iLby75XE7emzbGw3nfAkoRaAYAl4cGUzf+yO/yyiB2BZoAZYXQkOaa/pyP3AHa5+V9CtAp8uEaXjW96Ky4L67u+QimW5SlWJ9Q7xA+6Fd2NkTCZles=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4uumWXJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584D8C116B1;
-	Tue,  2 Jul 2024 17:31:00 +0000 (UTC)
+	 MIME-Version; b=F9xG8gFR6I6v4qRoT9NfCfl3F8LjWg97tbGe7mqDhFD1TGxLMSqZXolxNetaLeoLHRb0wGBnFkX2ZMx5Ao2LGbUN2YFlzyucl6rvmcufFyQJh56cIxNB7e6J8EgFkxxj3WohAJPbZ0q3wq3O+8eqvPh/8J27w9GmTIzIQLBA1fM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FhtJLqaC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17ED3C116B1;
+	Tue,  2 Jul 2024 17:26:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941460;
-	bh=L0y4aiSsIyLgIQbKfQoBrXiZEcGoeeYVrK1bamg+EX8=;
+	s=korg; t=1719941206;
+	bh=GEyTevV/9EldTmg23r8FiXeAcaE7pgcY2cqZCmsM8YU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y4uumWXJwqLQcs0OF1ECI+n5sOA21/psZAFBIkcnZe5q2NTXl0m4luW2Q+8PYiC5+
-	 niABiIebnZmKG4QdX8zbIB8W8q1ZgJmi3nJ22IxAco75FvfJYD2DE4jx48CPIFmmTl
-	 X6hMazrD8XfWRXUmEZmjmbkArKpNuLUNtJoYD7CE=
+	b=FhtJLqaC4d7i3EHncWY1cQm4g7fl67LQB9fKQ4n3rdD0DjsiLapL57iJpVkgnVaDr
+	 tAl5b4v73i/wsvuje47VDyHuhZY4vSj6MNR4mSKVW4Kpz8WT65btsd5DTtGwVNCv6Q
+	 MpTbJ9FgFtU07CsLTV1OAgJFxilGfccrlccC3X54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 071/128] mmc: sdhci: Do not lock spinlock around mmc_gpio_get_ro()
-Date: Tue,  2 Jul 2024 19:04:32 +0200
-Message-ID: <20240702170228.918756435@linuxfoundation.org>
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 159/163] arm64: dts: rockchip: fix PMIC interrupt pin on ROCK Pi E
+Date: Tue,  2 Jul 2024 19:04:33 +0200
+Message-ID: <20240702170239.078644353@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: FUKAUMI Naoki <naoki@radxa.com>
 
-commit ab069ce125965a5e282f7b53b86aee76ab32975c upstream.
+[ Upstream commit 02afd3d5b9fa4ffed284c0f7e7bec609097804fc ]
 
-sdhci_check_ro() can call mmc_gpio_get_ro() while holding the sdhci
-host->lock spinlock. That would be a problem if the GPIO access done by
-mmc_gpio_get_ro() needed to sleep.
+use GPIO0_A2 as interrupt pin for PMIC. GPIO2_A6 was used for
+pre-production board.
 
-However, host->lock is not needed anyway. The mmc core ensures that host
-operations do not race with each other, and asynchronous callbacks like the
-interrupt handler, software timeouts, completion work etc, cannot affect
-sdhci_check_ro().
-
-So remove the locking.
-
-Fixes: 6d5cd068ee59 ("mmc: sdhci: use WP GPIO in sdhci_check_ro()")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240614080051.4005-3-adrian.hunter@intel.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b918e81f2145 ("arm64: dts: rockchip: rk3328: Add Radxa ROCK Pi E")
+Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
+Link: https://lore.kernel.org/r/20240619050047.1217-1-naoki@radxa.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci.c |    5 -----
- 1 file changed, 5 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -2540,11 +2540,8 @@ EXPORT_SYMBOL_GPL(sdhci_get_cd_nogpio);
- static int sdhci_check_ro(struct sdhci_host *host)
- {
- 	bool allow_invert = false;
--	unsigned long flags;
- 	int is_readonly;
- 
--	spin_lock_irqsave(&host->lock, flags);
--
- 	if (host->flags & SDHCI_DEVICE_DEAD) {
- 		is_readonly = 0;
- 	} else if (host->ops->get_ro) {
-@@ -2559,8 +2556,6 @@ static int sdhci_check_ro(struct sdhci_h
- 		allow_invert = true;
- 	}
- 
--	spin_unlock_irqrestore(&host->lock, flags);
--
- 	if (is_readonly >= 0 &&
- 	    allow_invert &&
- 	    (host->quirks & SDHCI_QUIRK_INVERTED_WRITE_PROTECT))
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts b/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
+index 018a3a5075c72..d9905a08c6ce8 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
+@@ -186,8 +186,8 @@
+ 	rk805: pmic@18 {
+ 		compatible = "rockchip,rk805";
+ 		reg = <0x18>;
+-		interrupt-parent = <&gpio2>;
+-		interrupts = <6 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-parent = <&gpio0>;
++		interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
+ 		#clock-cells = <1>;
+ 		clock-output-names = "xin32k", "rk805-clkout2";
+ 		gpio-controller;
+-- 
+2.43.0
+
 
 
 
