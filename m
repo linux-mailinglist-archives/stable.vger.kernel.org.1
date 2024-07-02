@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-56677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C91292457E
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:23:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E00B9245EC
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:28:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 275002819C3
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:23:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD0C81F21BD9
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:28:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC3C1BBBD7;
-	Tue,  2 Jul 2024 17:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484571BE24F;
+	Tue,  2 Jul 2024 17:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JQAtE2G3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFrC/uzy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E68915218A;
-	Tue,  2 Jul 2024 17:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0632F1514DC;
+	Tue,  2 Jul 2024 17:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940984; cv=none; b=RnY4Rsk5SNLxKq7udeuhmOpHHeTklEjejHGovyjPDN43PPMLjersiVC2J8AUj3rZ1SDh4qJjfw6Jm5xqjjztvmfTfHmLXL9pD2ykrV0XWrqJwl07bKKlZlSiH9E8Kkxis5OohFlJfZ1bhhWma3hUDpEUoOADce+wW/BfIDBViaA=
+	t=1719941328; cv=none; b=p3TdWXMoJnT14d78NNCribhuyBBYZediVrRWCOkrTlM3rbzD73RfSwArUQMXwSRxVfzZ3/PyzCDtjPJCSvxj2P01VNruxh/YUHqHnuZj6L5s81/JIFdBFsm+rAEykx3UvlXR3FieN7N2FEjDrQxfIVvy1miHskKYi+imVIwwOsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940984; c=relaxed/simple;
-	bh=1KKCAx4bRt48W3Z3sDEKZ5670V6pxyYbKw/2Ok00ieg=;
+	s=arc-20240116; t=1719941328; c=relaxed/simple;
+	bh=Unhs/sxQdeb0Z8FV/Qlwv+ScKe0rM6eYTqnDEU7S2Ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WSfQhCqCRniumGNcKD9/7w4UJllewriGdrWjOoprpI8B9iLIJek+6dkyf8rva09fsRpi2r0Lroon8K14ITaffHc/RnzBXqNz6KuOygyI/5x9zwkBv6vCxdLxnajTg6NgsDlGA1eM3WkiP9THLsLoQ13vwX12Z9H0DaphAlGiXy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JQAtE2G3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CBB8C116B1;
-	Tue,  2 Jul 2024 17:23:03 +0000 (UTC)
+	 MIME-Version; b=DFSWUFKiW+Xhfgiu/n9ZsDooRiSUc5Eh263DI6V5MsjOU1xMVoIMkr3up+MHKFubnBtF7uA1EHgH9Z8Q2vs/VptDQZH1VYkFH+aP0fcqlMYehFyRQ4NgoF9PqA4fO5YER/ZcWgsVTmXZktmXFSsK/OVgmsntHI6qky5hadt1zJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFrC/uzy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD65C116B1;
+	Tue,  2 Jul 2024 17:28:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940983;
-	bh=1KKCAx4bRt48W3Z3sDEKZ5670V6pxyYbKw/2Ok00ieg=;
+	s=korg; t=1719941327;
+	bh=Unhs/sxQdeb0Z8FV/Qlwv+ScKe0rM6eYTqnDEU7S2Ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JQAtE2G3Ks7odo/c64IUnUgewEDRhX0TdBeN61fyEUusu3JdXQTRWRNmXLF/+eKU4
-	 S/eal5a7kLm47wXmC+WbzoL7baDyn7Pj0fT4vEDTWZUSa1E4fILu0i+Q0SGdE4Fh1v
-	 33rFzCzVKH1AYEP02yrwM6Xu3W1JIepS5ZvqfOyg=
+	b=mFrC/uzymLkzeywoY3NFbwMpKEpAo+QYcL25Il0qqW9Ew6xTzkwvHVVMVoS5kjb9z
+	 exh6Hh22XiITMy9ZHmSEGmqoEKZWEdX0o6KAJGUkOlj/Gjhb2vDX9PjnEOuZiQB7ID
+	 mAkDuB6yv70sRf95PP/Q9hW3tu0srr0PbBjfGwpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Maximilian Heyne <mheyne@amazon.de>,
+	Hagar Hemdan <hagarhem@amazon.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 094/163] i2c: testunit: dont erase registers after STOP
+Subject: [PATCH 6.1 007/128] pinctrl: fix deadlock in create_pinctrl() when handling -EPROBE_DEFER
 Date: Tue,  2 Jul 2024 19:03:28 +0200
-Message-ID: <20240702170236.621263408@linuxfoundation.org>
+Message-ID: <20240702170226.513461654@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Hagar Hemdan <hagarhem@amazon.com>
 
-[ Upstream commit c422b6a630240f706063e0ecbb894aa8491b1fa1 ]
+[ Upstream commit adec57ff8e66aee632f3dd1f93787c13d112b7a1 ]
 
-STOP fallsthrough to WRITE_REQUESTED but this became problematic when
-clearing the testunit registers was added to the latter. Actually, there
-is no reason to clear the testunit state after STOP. Doing it when a new
-WRITE_REQUESTED arrives is enough. So, no need to fallthrough, at all.
+In create_pinctrl(), pinctrl_maps_mutex is acquired before calling
+add_setting(). If add_setting() returns -EPROBE_DEFER, create_pinctrl()
+calls pinctrl_free(). However, pinctrl_free() attempts to acquire
+pinctrl_maps_mutex, which is already held by create_pinctrl(), leading to
+a potential deadlock.
 
-Fixes: b39ab96aa894 ("i2c: testunit: add support for block process calls")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+This patch resolves the issue by releasing pinctrl_maps_mutex before
+calling pinctrl_free(), preventing the deadlock.
+
+This bug was discovered and resolved using Coverity Static Analysis
+Security Testing (SAST) by Synopsys, Inc.
+
+Fixes: 42fed7ba44e4 ("pinctrl: move subsystem mutex to pinctrl_dev struct")
+Suggested-by: Maximilian Heyne <mheyne@amazon.de>
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Link: https://lore.kernel.org/r/20240604085838.3344-1-hagarhem@amazon.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-slave-testunit.c | 2 +-
+ drivers/pinctrl/core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/i2c-slave-testunit.c b/drivers/i2c/i2c-slave-testunit.c
-index a49642bbae4b7..a5dcbc3c2c141 100644
---- a/drivers/i2c/i2c-slave-testunit.c
-+++ b/drivers/i2c/i2c-slave-testunit.c
-@@ -118,7 +118,7 @@ static int i2c_slave_testunit_slave_cb(struct i2c_client *client,
- 			queue_delayed_work(system_long_wq, &tu->worker,
- 					   msecs_to_jiffies(10 * tu->regs[TU_REG_DELAY]));
+diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
+index 223482584f54f..db5fc55a5c964 100644
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -1092,8 +1092,8 @@ static struct pinctrl *create_pinctrl(struct device *dev,
+ 		 * an -EPROBE_DEFER later, as that is the worst case.
+ 		 */
+ 		if (ret == -EPROBE_DEFER) {
+-			pinctrl_free(p, false);
+ 			mutex_unlock(&pinctrl_maps_mutex);
++			pinctrl_free(p, false);
+ 			return ERR_PTR(ret);
  		}
--		fallthrough;
-+		break;
- 
- 	case I2C_SLAVE_WRITE_REQUESTED:
- 		memset(tu->regs, 0, TU_NUM_REGS);
+ 	}
 -- 
 2.43.0
 
