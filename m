@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9351F9245FB
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:29:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21A099244FD
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:17:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44AFB286CCD
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:29:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC0101F2204F
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03681BE251;
-	Tue,  2 Jul 2024 17:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211041BE222;
+	Tue,  2 Jul 2024 17:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/tsRnQ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ezCvj2fU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE8D16B394;
-	Tue,  2 Jul 2024 17:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B6539847;
+	Tue,  2 Jul 2024 17:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941373; cv=none; b=RfAippIExZWUg4LPzaJYH5HxcxcMxjvVLtwhwEIjZdHuBb9tusAD3Hb61LEJkVgnk+vcrKEwVPlqHdzosavy/lLiVO9i0bi1ryrK2kcFR4AiXWwp8HmjPyb9uwSrYV3Xs6Ros3CTLp3MBjCCOBuN5DJesRHSIHzcKo8e1QJEWsA=
+	t=1719940616; cv=none; b=oozoRpSGyHlkkmwYkuY83PFcy94QAIete2R55k34NCGI0yjxzbfqr8PdgkZoMnNWNHz815zrzSFzs3eqX9/4OOuJSWe1GqT3/FTwn4K1JOnTAnzF+87iWKyErHq3G5UzULS5QjGNIEiH7c9V6/dEQRIeZhhBMTztNkOkFDHPi8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941373; c=relaxed/simple;
-	bh=MZXnwV/si+ydrkNSG70296+OXMhSJ5aK6WkEVMF6wtc=;
+	s=arc-20240116; t=1719940616; c=relaxed/simple;
+	bh=tYOBszBEH59lATrRPTxZKsAkj0P+82MHBDpHt46tLa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CWmxFkzKEeqLffrCI8jUAVKBuaUoKs5xhucQnt6acwmaQ6/3Kkg/hfFI1MyGF8PxChgSi5X4al7r6vo6RpVl7oif8Hu+sJWxlrqhY96rbJW3S+QZkd6x9rj+XyWFa3g1ecHitpju8W/mnQ99tw3824SccgGTj7jRSqyWW+O3yNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/tsRnQ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46A5C116B1;
-	Tue,  2 Jul 2024 17:29:32 +0000 (UTC)
+	 MIME-Version; b=Cr79scfXku4ByfAWo8XCaI/AEvlWQi2OqcS5c30O+RbiRg4cVXs6uOyVzoHhdAHLeFSiddEH2qHmy5oxXos+1+jOJZGNOUGHC3G6fWY+gNZ2s4Cj1E8YrYKYgvvVrZBvVO5jObMm57U1bOetGFktrDPWJKd8jh/y/kzVbzqBspI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ezCvj2fU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8EDC116B1;
+	Tue,  2 Jul 2024 17:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941373;
-	bh=MZXnwV/si+ydrkNSG70296+OXMhSJ5aK6WkEVMF6wtc=;
+	s=korg; t=1719940616;
+	bh=tYOBszBEH59lATrRPTxZKsAkj0P+82MHBDpHt46tLa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H/tsRnQ63uXIUs4SSf4aojLkLOfveisx44RXhFNgn0hZmKpYsGQITxiQRXQHIX8R/
-	 39wuMJvXKpWLH7X1jxmsZmtoS2pEFZNKHyVB5KuDoR+/O/6BeKSHoNvoUvIv/isKtD
-	 m3E6HpDgmgXmB2fMX+2ggKBCFWz2bZMg4vmMF/Vo=
+	b=ezCvj2fUurBW0nfSqxmTUliTSarPPKXMXowwcULNxY7pk56KK1YIviz2Y+sWneg4e
+	 YA6zexztnNaVVY8BXjYtvREVtfhDoyS6C+fPQ5KRdi1B3CnCaq+anp2y6V9O0At7cT
+	 XH8NejV8MzdZpsrn7M19T08xVVbZzULhRqQiG+Tg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenchao Hao <haowenchao2@huawei.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/128] RDMA/restrack: Fix potential invalid address access
+Subject: [PATCH 6.9 208/222] arm64: dts: rockchip: Fix the value of `dlg,jack-det-rate` mismatch on rk3399-gru
 Date: Tue,  2 Jul 2024 19:04:06 +0200
-Message-ID: <20240702170227.938440198@linuxfoundation.org>
+Message-ID: <20240702170251.937523462@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-References: <20240702170226.231899085@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenchao Hao <haowenchao2@huawei.com>
+From: Hsin-Te Yuan <yuanhsinte@chromium.org>
 
-[ Upstream commit ca537a34775c103f7b14d7bbd976403f1d1525d8 ]
+[ Upstream commit a500c0b4b589ae6fb79140c9d96bd5cd31393d41 ]
 
-struct rdma_restrack_entry's kern_name was set to KBUILD_MODNAME
-in ib_create_cq(), while if the module exited but forgot del this
-rdma_restrack_entry, it would cause a invalid address access in
-rdma_restrack_clean() when print the owner of this rdma_restrack_entry.
+According to Documentation/devicetree/bindings/sound/dialog,da7219.yaml,
+the value of `dlg,jack-det-rate` property should be "32_64" instead of
+"32ms_64ms".
 
-These code is used to help find one forgotten PD release in one of the
-ULPs. But it is not needed anymore, so delete them.
-
-Signed-off-by: Wenchao Hao <haowenchao2@huawei.com>
-Link: https://lore.kernel.org/r/20240318092320.1215235-1-haowenchao2@huawei.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: dc0ff0fa3a9b ("ASoC: da7219: Add Jack insertion detection polarity")
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Link: https://lore.kernel.org/r/20240613-jack-rate-v2-2-ebc5f9f37931@chromium.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/restrack.c | 51 +-----------------------------
- 1 file changed, 1 insertion(+), 50 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/restrack.c b/drivers/infiniband/core/restrack.c
-index 01a499a8b88db..438ed35881752 100644
---- a/drivers/infiniband/core/restrack.c
-+++ b/drivers/infiniband/core/restrack.c
-@@ -37,22 +37,6 @@ int rdma_restrack_init(struct ib_device *dev)
- 	return 0;
- }
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi
+index 789fd0dcc88ba..3cd63d1e8f15b 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi
+@@ -450,7 +450,7 @@ ap_i2c_audio: &i2c8 {
+ 			dlg,btn-cfg = <50>;
+ 			dlg,mic-det-thr = <500>;
+ 			dlg,jack-ins-deb = <20>;
+-			dlg,jack-det-rate = "32ms_64ms";
++			dlg,jack-det-rate = "32_64";
+ 			dlg,jack-rem-deb = <1>;
  
--static const char *type2str(enum rdma_restrack_type type)
--{
--	static const char * const names[RDMA_RESTRACK_MAX] = {
--		[RDMA_RESTRACK_PD] = "PD",
--		[RDMA_RESTRACK_CQ] = "CQ",
--		[RDMA_RESTRACK_QP] = "QP",
--		[RDMA_RESTRACK_CM_ID] = "CM_ID",
--		[RDMA_RESTRACK_MR] = "MR",
--		[RDMA_RESTRACK_CTX] = "CTX",
--		[RDMA_RESTRACK_COUNTER] = "COUNTER",
--		[RDMA_RESTRACK_SRQ] = "SRQ",
--	};
--
--	return names[type];
--};
--
- /**
-  * rdma_restrack_clean() - clean resource tracking
-  * @dev:  IB device
-@@ -60,47 +44,14 @@ static const char *type2str(enum rdma_restrack_type type)
- void rdma_restrack_clean(struct ib_device *dev)
- {
- 	struct rdma_restrack_root *rt = dev->res;
--	struct rdma_restrack_entry *e;
--	char buf[TASK_COMM_LEN];
--	bool found = false;
--	const char *owner;
- 	int i;
- 
- 	for (i = 0 ; i < RDMA_RESTRACK_MAX; i++) {
- 		struct xarray *xa = &dev->res[i].xa;
- 
--		if (!xa_empty(xa)) {
--			unsigned long index;
--
--			if (!found) {
--				pr_err("restrack: %s", CUT_HERE);
--				dev_err(&dev->dev, "BUG: RESTRACK detected leak of resources\n");
--			}
--			xa_for_each(xa, index, e) {
--				if (rdma_is_kernel_res(e)) {
--					owner = e->kern_name;
--				} else {
--					/*
--					 * There is no need to call get_task_struct here,
--					 * because we can be here only if there are more
--					 * get_task_struct() call than put_task_struct().
--					 */
--					get_task_comm(buf, e->task);
--					owner = buf;
--				}
--
--				pr_err("restrack: %s %s object allocated by %s is not freed\n",
--				       rdma_is_kernel_res(e) ? "Kernel" :
--							       "User",
--				       type2str(e->type), owner);
--			}
--			found = true;
--		}
-+		WARN_ON(!xa_empty(xa));
- 		xa_destroy(xa);
- 	}
--	if (found)
--		pr_err("restrack: %s", CUT_HERE);
--
- 	kfree(rt);
- }
- 
+ 			dlg,a-d-btn-thr = <0xa>;
 -- 
 2.43.0
 
