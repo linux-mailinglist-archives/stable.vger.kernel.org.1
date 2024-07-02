@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-56672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCB7E924579
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:22:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF3B9244C1
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:14:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82FE11F22924
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:22:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59E941F217DD
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0561BD51A;
-	Tue,  2 Jul 2024 17:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB43E15B0FE;
+	Tue,  2 Jul 2024 17:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjalMs/n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KokWHo1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF2F15218A;
-	Tue,  2 Jul 2024 17:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4561BC08A;
+	Tue,  2 Jul 2024 17:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940967; cv=none; b=G6HmTAB2c8spuhJTF/Row3Q9T4Vl5vGFMX/DPXlvQSvLWXyeEv1gKwWyKdrd8eUy2HNK6DtwNGVS1SPsaAihD6a/sG+ujNzSZjY9Cm2aCq3hpZ+GfNVubpN+emU02ectMPo13KVEqe2/RZYd4FEv80EiX4Md9uZ5C4rh5kugaBI=
+	t=1719940471; cv=none; b=iZOaktwCXsuX4Wp+8Zw6ix7oQfqaccq0+I7kMM9MEEc9pO55/27sZ6NJsONPBA298tyWN+YD7oUROpfyjJxAVoFkXXgPYXqljD9hXC/6deAitOM99KTtEmvB44EvT73rNmW8Up/aL0HZliZ2hXGEqka57gO0esrtMLgaHGrlZsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940967; c=relaxed/simple;
-	bh=SwyRQ6Jq3glTgkIy/Pt7NSlxs2MWosQNGx4KAXCoUIo=;
+	s=arc-20240116; t=1719940471; c=relaxed/simple;
+	bh=+Qs/Zrc/+BDzjhrBC2HsbEg0A7sHkrbHsNOLXcXaMoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jyI9PvhSguzFFC7Yu0pC/JzA4z9rvUMPIZZJ+O0Dufeb73Af84ZZ+ncRRHQztWu/yoxjAfGebxdRIpwpa+TII0/B+WV5XXA6IvU8/38M6z75ekuCVGN83o3S6j+7eWDzoi1RKYJ//I95qNfSs38r71vQ0WBwVmUUJMCFVn2BVGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjalMs/n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9588C116B1;
-	Tue,  2 Jul 2024 17:22:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PxFXrJFbbSBKHu0FClN/t+0l7sIN7Etjgg/tAYDmnf1grKMm/e/BojkbNyFMAu3NJ0gLR++TXCPq/PPl/VunYkxmBXQzyVepj9we9dHwpF9pMhmnx5d7fyd4yvktw/6Yu9eJuB2cFlYnz06c4S9vqCn70NFeFwQBuNksqn+VSNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KokWHo1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5C8C116B1;
+	Tue,  2 Jul 2024 17:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940967;
-	bh=SwyRQ6Jq3glTgkIy/Pt7NSlxs2MWosQNGx4KAXCoUIo=;
+	s=korg; t=1719940471;
+	bh=+Qs/Zrc/+BDzjhrBC2HsbEg0A7sHkrbHsNOLXcXaMoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjalMs/nFP4KkPbygtFFyjpE+HMPHuY6Wj3GCNZx6kKkFuFAD9qDlFuZjo4hfFAmk
-	 srqFYHWAk9vFB5POSNgpw5LnHlMfnx78h9kgwzez8VHuOgJR5VQAwgDrA3OXUQ8F1v
-	 qP82ipf2dl0J0UaiwEUITaaMnPZlfbkaALziHIQM=
+	b=KokWHo1F87eQCVNbGGUYbkHCMzcZZ/kbAqzmk/+yQb/BAzThXSN8s60B9MahpqWds
+	 Ey6Q5fdZI9eGGVlu0D8QAnJeBpVS7PfEvZFFWtc/dfy4cHDEGQorZM+QgFpFF+aXAV
+	 OcHC9VszozfIvYTefYxbLAVHtZKCvJQQYNKn9mDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 089/163] mmc: sdhci: Do not lock spinlock around mmc_gpio_get_ro()
+	=?UTF-8?q?Alexander=20H=C3=B6lzl?= <alexander.hoelzl@gmx.net>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.9 165/222] net: can: j1939: recover socket queue on CAN bus error during BAM transmission
 Date: Tue,  2 Jul 2024 19:03:23 +0200
-Message-ID: <20240702170236.431025039@linuxfoundation.org>
+Message-ID: <20240702170250.284127309@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
+References: <20240702170243.963426416@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,60 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit ab069ce125965a5e282f7b53b86aee76ab32975c upstream.
+commit 9ad1da14ab3bf23087ae45fe399d84a109ddb81a upstream.
 
-sdhci_check_ro() can call mmc_gpio_get_ro() while holding the sdhci
-host->lock spinlock. That would be a problem if the GPIO access done by
-mmc_gpio_get_ro() needed to sleep.
+Addresses an issue where a CAN bus error during a BAM transmission
+could stall the socket queue, preventing further transmissions even
+after the bus error is resolved. The fix activates the next queued
+session after the error recovery, allowing communication to continue.
 
-However, host->lock is not needed anyway. The mmc core ensures that host
-operations do not race with each other, and asynchronous callbacks like the
-interrupt handler, software timeouts, completion work etc, cannot affect
-sdhci_check_ro().
-
-So remove the locking.
-
-Fixes: 6d5cd068ee59 ("mmc: sdhci: use WP GPIO in sdhci_check_ro()")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Fixes: 9d71dd0c70099 ("can: add support of SAE J1939 protocol")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240614080051.4005-3-adrian.hunter@intel.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reported-by: Alexander Hölzl <alexander.hoelzl@gmx.net>
+Tested-by: Alexander Hölzl <alexander.hoelzl@gmx.net>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/all/20240528070648.1947203-1-o.rempel@pengutronix.de
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci.c |    5 -----
- 1 file changed, 5 deletions(-)
+ net/can/j1939/transport.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -2516,11 +2516,8 @@ EXPORT_SYMBOL_GPL(sdhci_get_cd_nogpio);
- static int sdhci_check_ro(struct sdhci_host *host)
- {
- 	bool allow_invert = false;
--	unsigned long flags;
- 	int is_readonly;
+--- a/net/can/j1939/transport.c
++++ b/net/can/j1939/transport.c
+@@ -1681,6 +1681,8 @@ static int j1939_xtp_rx_rts_session_acti
  
--	spin_lock_irqsave(&host->lock, flags);
--
- 	if (host->flags & SDHCI_DEVICE_DEAD) {
- 		is_readonly = 0;
- 	} else if (host->ops->get_ro) {
-@@ -2535,8 +2532,6 @@ static int sdhci_check_ro(struct sdhci_h
- 		allow_invert = true;
+ 		j1939_session_timers_cancel(session);
+ 		j1939_session_cancel(session, J1939_XTP_ABORT_BUSY);
++		if (session->transmission)
++			j1939_session_deactivate_activate_next(session);
+ 
+ 		return -EBUSY;
  	}
- 
--	spin_unlock_irqrestore(&host->lock, flags);
--
- 	if (is_readonly >= 0 &&
- 	    allow_invert &&
- 	    (host->quirks & SDHCI_QUIRK_INVERTED_WRITE_PROTECT))
 
 
 
