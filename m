@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-56733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 867B79245BC
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:26:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E86924630
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:32:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6C7C1C21485
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:26:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED66CB23A1B
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2482A1BE22B;
-	Tue,  2 Jul 2024 17:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363431BE221;
+	Tue,  2 Jul 2024 17:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qV3YQMue"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGkkkS8C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74151BE223;
-	Tue,  2 Jul 2024 17:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D6A63D;
+	Tue,  2 Jul 2024 17:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941176; cv=none; b=iiPwO1tGahwlN8gYu3zwJ65n7KdSp0gZlUBw2U16+pNDZjKkoNDNuoBdBttRVO/Bt6i9CUilNMEZLM2bGZN+U2uvhomoI9cukGliXDlNKo0eYkrkNlgUz566ovDqhar6bWffcqH//6pIIFqoQPxLHZj01jFf2rtzgNO9c7UtFAk=
+	t=1719941529; cv=none; b=Fyz0ebkk1RXWEEHsGH08Nvzmnl4oHU9aXMblOE0tGH+wCFw0huNdV9YplBngaMk5tdox7STpWer2+XHwRXKVkJxJk+u8Vsfz0B69yj7ANZI8f7anHPd7+78hctP5Cz5fJzikVi/SIKT9FzbZzaYFCeUkWksRs3Jx05UiIab1zeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941176; c=relaxed/simple;
-	bh=nY0X2K5NZcoCXMH3I4H9r1PMC5Y22lBKyxmKeYwAlzo=;
+	s=arc-20240116; t=1719941529; c=relaxed/simple;
+	bh=8a5dx8GlvgdaqbP0b8adJtJUSRQ5aYGW1ik4THe+Cwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p8q34OyP2XwZQ0BGjOgH4WoWOnZYdn9DcxTmQNSKL6FRDyF1h9fPKWWfQGQ7+YPEH2lH140E8NqdjTr9nP8e39bSxTep9vUApUKJf21g1L0D4pV57hIUkA90Y3GNheBOd8v0F5lI8VtgcpM2z73gp5t0WUbeZFmcBX1ijzjQAvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qV3YQMue; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFBC0C4AF0A;
-	Tue,  2 Jul 2024 17:26:15 +0000 (UTC)
+	 MIME-Version; b=la+TzjRNQFq0+Yh/pYMwHhZll9NpRGT5XG9ASqkr123RatrAOBa71ntW5QfmfMoBOIbvnnIHQVyjh/5Lhb7JxhCJz/H99Cax25wqjVoU/R1Uw5j8ho2KveSB7VeVEg8reFyLHv9S4NkqEC9A60h5+Fmg+rfr4/CB2cmtmNT0wD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGkkkS8C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F2AFC116B1;
+	Tue,  2 Jul 2024 17:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941176;
-	bh=nY0X2K5NZcoCXMH3I4H9r1PMC5Y22lBKyxmKeYwAlzo=;
+	s=korg; t=1719941528;
+	bh=8a5dx8GlvgdaqbP0b8adJtJUSRQ5aYGW1ik4THe+Cwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qV3YQMuerVQBcPhth9NqgfaZqa2sQKjxOnzs6kWMSjJW6bITg6Wdeo5y6xhIcY7Sq
-	 K0g6q3+HjWIU6mBI3mpWAPTtIJKe8h2lyKtVrcKSnxNR14hV+uLtEjjYroX5fiuT+a
-	 c0iqIFHTWzIiB/KKCrJy2p23tmxTP+erKoEw3VMY=
+	b=CGkkkS8CBuuB/XO+iUr6v7JBa2LwNVmGpc1EbxxkoUIBuMYdrnxcHC/cx9/LjJaYG
+	 4bdoB9V+57isIzCi9mPv0mrvqaIxjOERWQ1jdq/bT7FOqQcujRoR0UoMyW6YeYuRLi
+	 WxOQ4sFKo246YofJD9a1Gcd1ALPa2dZa3ZLcx4Cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.6 151/163] pwm: stm32: Refuse too small period requests
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.1 064/128] Revert "MIPS: pci: lantiq: restore reset gpio polarity"
 Date: Tue,  2 Jul 2024 19:04:25 +0200
-Message-ID: <20240702170238.778033678@linuxfoundation.org>
+Message-ID: <20240702170228.652728858@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +58,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-commit c45fcf46ca2368dafe7e5c513a711a6f0f974308 upstream.
+commit 6e5aee08bd2517397c9572243a816664f2ead547 upstream.
 
-If period_ns is small, prd might well become 0. Catch that case because
-otherwise with
+This reverts commit 277a0363120276645ae598d8d5fea7265e076ae9.
 
-	regmap_write(priv->regmap, TIM_ARR, prd - 1);
+While fixing old boards with broken DTs, this change will break
+newer ones with correct gpio polarity annotation.
 
-a few lines down quite a big period is configured.
-
-Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
-Cc: stable@vger.kernel.org
-Reviewed-by: Trevor Gamblin <tgamblin@baylibre.com>
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/b86f62f099983646f97eeb6bfc0117bb2d0c340d.1718979150.git.u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-stm32.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/mips/pci/pci-lantiq.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -344,6 +344,9 @@ static int stm32_pwm_config(struct stm32
+--- a/arch/mips/pci/pci-lantiq.c
++++ b/arch/mips/pci/pci-lantiq.c
+@@ -124,14 +124,14 @@ static int ltq_pci_startup(struct platfo
+ 		clk_disable(clk_external);
  
- 	prd = div;
+ 	/* setup reset gpio used by pci */
+-	reset_gpio = devm_gpiod_get_optional(&pdev->dev, "reset", GPIOD_ASIS);
++	reset_gpio = devm_gpiod_get_optional(&pdev->dev, "reset",
++					     GPIOD_OUT_LOW);
+ 	error = PTR_ERR_OR_ZERO(reset_gpio);
+ 	if (error) {
+ 		dev_err(&pdev->dev, "failed to request gpio: %d\n", error);
+ 		return error;
+ 	}
+ 	gpiod_set_consumer_name(reset_gpio, "pci_reset");
+-	gpiod_direction_output(reset_gpio, 1);
  
-+	if (!prd)
-+		return -EINVAL;
-+
- 	if (prescaler > MAX_TIM_PSC)
- 		return -EINVAL;
+ 	/* enable auto-switching between PCI and EBU */
+ 	ltq_pci_w32(0xa, PCI_CR_CLK_CTRL);
+@@ -194,10 +194,10 @@ static int ltq_pci_startup(struct platfo
  
+ 	/* toggle reset pin */
+ 	if (reset_gpio) {
+-		gpiod_set_value_cansleep(reset_gpio, 0);
++		gpiod_set_value_cansleep(reset_gpio, 1);
+ 		wmb();
+ 		mdelay(1);
+-		gpiod_set_value_cansleep(reset_gpio, 1);
++		gpiod_set_value_cansleep(reset_gpio, 0);
+ 	}
+ 	return 0;
+ }
 
 
 
