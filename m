@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-56751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C1D39245D0
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:27:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83E2F924607
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:30:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 837311C21261
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:27:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 045261F212A5
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF6C1BE846;
-	Tue,  2 Jul 2024 17:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB3A1BC06B;
+	Tue,  2 Jul 2024 17:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2CBhXtE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KNusMAKV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00771514DC;
-	Tue,  2 Jul 2024 17:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3F42F5A;
+	Tue,  2 Jul 2024 17:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941235; cv=none; b=JHofdRYkVUk5Mu75Jfx6mwHj9zrrgID7HOekw0HPOE1IA5Kon+pGBUBnfOjRk2PLAJ9zcX6884kSkk+8TD133exVZFZkBD4BFJGLLZOyYWXsUMHLxXOUNsJU6v2PgS28/gR4fqm9nyPgZINlR136Puw8As8goYPyFYAhKO2nQvc=
+	t=1719941414; cv=none; b=hrfCNhsrwCBdKOx1XZsgnoJoVbcdxHWaNELzaQWn3MpwpQeEwOpDG3zvUC9fOIhsuggcUeAwUBXeTnG/AtOazKIPRTRHKMv8jUDxjNWBsctEWMAc3CJV6zlumb5eBVInQJMIGJWX+614sw/X8pLHE2JPZq6g64JBh4UyAE9tiG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941235; c=relaxed/simple;
-	bh=Ytw8ylg8k8pk5mrn9Lde8YA8zb16q4XAThw2jANUEWY=;
+	s=arc-20240116; t=1719941414; c=relaxed/simple;
+	bh=lC12KkxMa0Dqc4WBP3j5ceDvhmUOnn0XbhIRxWmh/Fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oorReLfSWMZezom2zVsJbZEjXvzG+2KubyOtoREX8t311a8jrHSD6Cdgvm48cB0ArZSUsvoUNOKHnmuohaO0k3nrRwligrYB73A0yXZEvz765Wb1mnWOrFn5TYBmCfN5s2z7uKtyz2WLxYqupYoOeDm7ikQ+szmkc4jD8UZOp+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2CBhXtE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AC2C4AF07;
-	Tue,  2 Jul 2024 17:27:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DyC0YXgebBOmcnH8s5cOXlNfVWgzmX6Kxx7gl6Aaybe346Cbc9UJ+FEk1j7yLxUQelhubb+WyH9Np1kSprIEguEDawxyuvz1vboWmMnJJKcQPhSUB6l1jYwF1DGUgQ0WP2DiHRfGvC8/aGtI0FqqtS01ybHIswvpeR3FlQkrTqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KNusMAKV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702BEC116B1;
+	Tue,  2 Jul 2024 17:30:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719941235;
-	bh=Ytw8ylg8k8pk5mrn9Lde8YA8zb16q4XAThw2jANUEWY=;
+	s=korg; t=1719941413;
+	bh=lC12KkxMa0Dqc4WBP3j5ceDvhmUOnn0XbhIRxWmh/Fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T2CBhXtErf74tgPvPZZ4OMWjw56a6rSe0BbC65FKU4ql4TPahJP09Oit7n/B6OIBo
-	 UiFriotbGR4lGu3YV3PixLUlVCMbfPZgeWiQm3wQBWH6Fllu98DbH6bU4KdcAfgMpf
-	 6JnsVSUQYW2tkVCmxZ8RXYwNbC5EdOsyPvld2SA0=
+	b=KNusMAKVPrX2igR3TskfkiJvGBSuw4Z+2rl7tEIyVovOSorkjDRQvPTEBqO5pEjwe
+	 A921oz0h+aPvJe2WViaWAzSaQijWlAaIXzhAKzXbZCKa74cBBcJR6YbE4vvYWIQ84Q
+	 ECb60I/OyNZsYeGeDo2zlv+KFvGkUNGpDHVLw/6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 142/163] drm/amdgpu/atomfirmware: fix parsing of vram_info
-Date: Tue,  2 Jul 2024 19:04:16 +0200
-Message-ID: <20240702170238.428898561@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 056/128] drm/amd/amdgpu: Fix style errors in amdgpu_drv.c & amdgpu_device.c
+Date: Tue,  2 Jul 2024 19:04:17 +0200
+Message-ID: <20240702170228.352167909@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
-References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
+References: <20240702170226.231899085@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +62,179 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit f6f49dda49db72e7a0b4ca32c77391d5ff5ce232 upstream.
+[ Upstream commit 47fc644f801e4414753a9b7e87ed41f991cd68c3 ]
 
-v3.x changed the how vram width was encoded.  The previous
-implementation actually worked correctly for most boards.
-Fix the implementation to work correctly everywhere.
+Fix following checkpatch style errors in amdgpu_drv.c &
+amdgpu_device.c
 
-This fixes the vram width reported in the kernel log on
-some boards.
+ERROR: exactly one space required after that #ifdef
+ERROR: spaces required around that '+=' (ctx:WxV)
+ERROR: space required before the open brace '{'
+ERROR: spaces required around that '||' (ctx:VxE)
+ERROR: space prohibited before that close parenthesis ')'
+ERROR: space required before the open parenthesis '('
+ERROR: space required before the open brace '{'
+ERROR: code indent should use tabs where possible
 
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 74fa02c4a5ea ("drm/amdgpu: Fix pci state save during mode-1 reset")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_atomfirmware.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 65 +++++++++++-----------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c    |  2 +-
+ 2 files changed, 34 insertions(+), 33 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_atomfirmware.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_atomfirmware.c
-@@ -399,7 +399,7 @@ amdgpu_atomfirmware_get_vram_info(struct
- 					mem_channel_number = vram_info->v30.channel_num;
- 					mem_channel_width = vram_info->v30.channel_width;
- 					if (vram_width)
--						*vram_width = mem_channel_number * (1 << mem_channel_width);
-+						*vram_width = mem_channel_number * 16;
- 					break;
- 				default:
- 					return -EINVAL;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index b11690a816e73..985688696202a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -980,7 +980,7 @@ void amdgpu_device_program_register_sequence(struct amdgpu_device *adev,
+ 	if (array_size % 3)
+ 		return;
+ 
+-	for (i = 0; i < array_size; i +=3) {
++	for (i = 0; i < array_size; i += 3) {
+ 		reg = registers[i + 0];
+ 		and_mask = registers[i + 1];
+ 		or_mask = registers[i + 2];
+@@ -1552,7 +1552,7 @@ static int amdgpu_device_check_arguments(struct amdgpu_device *adev)
+ 		dev_warn(adev->dev, "sched jobs (%d) must be at least 4\n",
+ 			 amdgpu_sched_jobs);
+ 		amdgpu_sched_jobs = 4;
+-	} else if (!is_power_of_2(amdgpu_sched_jobs)){
++	} else if (!is_power_of_2(amdgpu_sched_jobs)) {
+ 		dev_warn(adev->dev, "sched jobs (%d) must be a power of 2\n",
+ 			 amdgpu_sched_jobs);
+ 		amdgpu_sched_jobs = roundup_pow_of_two(amdgpu_sched_jobs);
+@@ -2747,8 +2747,9 @@ static int amdgpu_device_ip_late_init(struct amdgpu_device *adev)
+ 		DRM_ERROR("enable mgpu fan boost failed (%d).\n", r);
+ 
+ 	/* For passthrough configuration on arcturus and aldebaran, enable special handling SBR */
+-	if (amdgpu_passthrough(adev) && ((adev->asic_type == CHIP_ARCTURUS && adev->gmc.xgmi.num_physical_nodes > 1)||
+-			       adev->asic_type == CHIP_ALDEBARAN ))
++	if (amdgpu_passthrough(adev) &&
++	    ((adev->asic_type == CHIP_ARCTURUS && adev->gmc.xgmi.num_physical_nodes > 1) ||
++	     adev->asic_type == CHIP_ALDEBARAN))
+ 		amdgpu_dpm_handle_passthrough_sbr(adev, true);
+ 
+ 	if (adev->gmc.xgmi.num_physical_nodes > 1) {
+@@ -3077,7 +3078,7 @@ static int amdgpu_device_ip_suspend_phase2(struct amdgpu_device *adev)
+ 		}
+ 		adev->ip_blocks[i].status.hw = false;
+ 		/* handle putting the SMC in the appropriate state */
+-		if(!amdgpu_sriov_vf(adev)){
++		if (!amdgpu_sriov_vf(adev)) {
+ 			if (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_SMC) {
+ 				r = amdgpu_dpm_set_mp1_state(adev, adev->mp1_state);
+ 				if (r) {
+@@ -4048,7 +4049,7 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
+ 
+ 	/* disable all interrupts */
+ 	amdgpu_irq_disable_all(adev);
+-	if (adev->mode_info.mode_config_initialized){
++	if (adev->mode_info.mode_config_initialized) {
+ 		if (!drm_drv_uses_atomic_modeset(adev_to_drm(adev)))
+ 			drm_helper_force_disable_all(adev_to_drm(adev));
+ 		else
+@@ -4755,42 +4756,42 @@ bool amdgpu_device_should_recover_gpu(struct amdgpu_device *adev)
+ 
+ int amdgpu_device_mode1_reset(struct amdgpu_device *adev)
+ {
+-        u32 i;
+-        int ret = 0;
++	u32 i;
++	int ret = 0;
+ 
+-        amdgpu_atombios_scratch_regs_engine_hung(adev, true);
++	amdgpu_atombios_scratch_regs_engine_hung(adev, true);
+ 
+-        dev_info(adev->dev, "GPU mode1 reset\n");
++	dev_info(adev->dev, "GPU mode1 reset\n");
+ 
+-        /* disable BM */
+-        pci_clear_master(adev->pdev);
++	/* disable BM */
++	pci_clear_master(adev->pdev);
+ 
+-        amdgpu_device_cache_pci_state(adev->pdev);
++	amdgpu_device_cache_pci_state(adev->pdev);
+ 
+-        if (amdgpu_dpm_is_mode1_reset_supported(adev)) {
+-                dev_info(adev->dev, "GPU smu mode1 reset\n");
+-                ret = amdgpu_dpm_mode1_reset(adev);
+-        } else {
+-                dev_info(adev->dev, "GPU psp mode1 reset\n");
+-                ret = psp_gpu_reset(adev);
+-        }
++	if (amdgpu_dpm_is_mode1_reset_supported(adev)) {
++		dev_info(adev->dev, "GPU smu mode1 reset\n");
++		ret = amdgpu_dpm_mode1_reset(adev);
++	} else {
++		dev_info(adev->dev, "GPU psp mode1 reset\n");
++		ret = psp_gpu_reset(adev);
++	}
+ 
+-        if (ret)
+-                dev_err(adev->dev, "GPU mode1 reset failed\n");
++	if (ret)
++		dev_err(adev->dev, "GPU mode1 reset failed\n");
+ 
+-        amdgpu_device_load_pci_state(adev->pdev);
++	amdgpu_device_load_pci_state(adev->pdev);
+ 
+-        /* wait for asic to come out of reset */
+-        for (i = 0; i < adev->usec_timeout; i++) {
+-                u32 memsize = adev->nbio.funcs->get_memsize(adev);
++	/* wait for asic to come out of reset */
++	for (i = 0; i < adev->usec_timeout; i++) {
++		u32 memsize = adev->nbio.funcs->get_memsize(adev);
+ 
+-                if (memsize != 0xffffffff)
+-                        break;
+-                udelay(1);
+-        }
++		if (memsize != 0xffffffff)
++			break;
++		udelay(1);
++	}
+ 
+-        amdgpu_atombios_scratch_regs_engine_hung(adev, false);
+-        return ret;
++	amdgpu_atombios_scratch_regs_engine_hung(adev, false);
++	return ret;
+ }
+ 
+ int amdgpu_device_pre_asic_reset(struct amdgpu_device *adev,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index 9a5416331f02e..238c15c0c7e1e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -1662,7 +1662,7 @@ static const u16 amdgpu_unsupported_pciidlist[] = {
+ };
+ 
+ static const struct pci_device_id pciidlist[] = {
+-#ifdef  CONFIG_DRM_AMDGPU_SI
++#ifdef CONFIG_DRM_AMDGPU_SI
+ 	{0x1002, 0x6780, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TAHITI},
+ 	{0x1002, 0x6784, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TAHITI},
+ 	{0x1002, 0x6788, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TAHITI},
+-- 
+2.43.0
+
 
 
 
