@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-56487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2CD4924496
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:12:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 722CA924552
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 19:20:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4AAA1C21647
-	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:12:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A1A828A6CE
+	for <lists+stable@lfdr.de>; Tue,  2 Jul 2024 17:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 364561BE234;
-	Tue,  2 Jul 2024 17:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0604E1BE876;
+	Tue,  2 Jul 2024 17:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJp5UU1t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDO5mI5o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB29E1BE229;
-	Tue,  2 Jul 2024 17:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8F41BE22B;
+	Tue,  2 Jul 2024 17:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940348; cv=none; b=SQjrpZ0nap0ekWcMWyetC8GbrkJ0ZPVicpOv27GKDdajEoeT7ANQGQqZA2Bk7IPdgs5fLifUt6N8Pbq6JZZH40McD362uCwKDA1S17TilKQpMV4T1hHom/x/QEhTijQm9NgxI7lHDcWs8p0tUs1+1Kz9RiQdqJAeTQAGSdWTye8=
+	t=1719940840; cv=none; b=tOD79C54g2sLd13eg0gQGRFsRtY8d3QIIPdsrIQPfhF/KxTBqI3zUZqKXc0FQsHrJuHoBTnMfBVrlZ9cU2Tt/FtNLt7pxhK0Lgc8r7m+/9+x9zXaYGQhrLk9qS3IFqUAeCkF87Le5JgVsOM1FKUTuBbjmBsaGycxgup5A4KUV9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940348; c=relaxed/simple;
-	bh=x7vVgyrixu/Pm4pf47lo5ebNEMNSHw6RaxvRdjxrVSw=;
+	s=arc-20240116; t=1719940840; c=relaxed/simple;
+	bh=umC2O5XeVuFr4aTqNYSa4/Vqk2C1UygoDWuv89HVRko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kWx8Ks9WE3Ios0UJewPt+2rJmYnTiMI1ttMIBSvLg9qZI7nulFk+KEYoLcrILS0oTE95Zlbv7iSXr/R7fcSEVCVswf4g9mS8eCzDMjm+Vah2c9tPpIc/vrONO/4+SjSblP5ZdcUubzcfre/50ZJ4GoA1dGm0D2EqzkVn4WTXGms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJp5UU1t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E789AC116B1;
-	Tue,  2 Jul 2024 17:12:26 +0000 (UTC)
+	 MIME-Version; b=ixHuHFktqo5ZGeGHRr8dPeel4BErFOt+QCDGxlVCLCNZXn4jTKyMWdanGkwwHf3V/VBHDTwpkR4ZBSPqjZt7CFrza4BJeOCaVlyteS7nvufS+clRY4Ni25enl/hkC+RwZRDZmluEX8QUqjBMNmYvJEpIrj/E9IFy1LLnrRIT9BA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDO5mI5o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BDE6C116B1;
+	Tue,  2 Jul 2024 17:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940347;
-	bh=x7vVgyrixu/Pm4pf47lo5ebNEMNSHw6RaxvRdjxrVSw=;
+	s=korg; t=1719940840;
+	bh=umC2O5XeVuFr4aTqNYSa4/Vqk2C1UygoDWuv89HVRko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wJp5UU1t88NcsYhODKZl0szgJzwvdtW8FeJucGxD01FgFV7QX9Jl4RbHFnkIfQKjj
-	 8mMJs+iVTKiAAhvPmKueqYV5mHv8PHcEUir7dweVxVXPpzqySPsxQhce7gbblBDla8
-	 JGoNH1I4gRQ30PfhZZoWBhXcUtppx4jDy3Q5+yPw=
+	b=VDO5mI5oFJi0S/kGTRXKeaqt0BoSJxP9K9XU3gQq4uhpqs8pUZrFTHPS2aIoYzZRO
+	 YkcGpO9830X2bPO36krZiBlFErwW3w54YN/03Pb5HVz6K5FN6FIf8gYg2B4QWB29tY
+	 MCs4I9rJk81u5z8kHj+L16wIambPlMDLdECOi4Jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	David Lechner <dlechner@baylibre.com>,
-	William Breathitt Gray <wbg@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 128/222] counter: ti-eqep: enable clock at probe
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Puranjay Mohan <puranjay12@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Johan Almbladh <johan.almbladh@anyfinetworks.com>
+Subject: [PATCH 6.6 052/163] bpf: Take return from set_memory_rox() into account with bpf_jit_binary_lock_ro()
 Date: Tue,  2 Jul 2024 19:02:46 +0200
-Message-ID: <20240702170248.863755934@linuxfoundation.org>
+Message-ID: <20240702170235.032610427@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +68,235 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 0cf81c73e4c6a4861128a8f27861176ec312af4e ]
+[ Upstream commit e60adf513275c3a38e5cb67f7fd12387e43a3ff5 ]
 
-The TI eQEP clock is both a functional and interface clock. Since it is
-required for the device to function, we should be enabling it at probe.
+set_memory_rox() can fail, leaving memory unprotected.
 
-Up to now, we've just been lucky that the clock was enabled by something
-else on the system already.
+Check return and bail out when bpf_jit_binary_lock_ro() returns
+an error.
 
-Fixes: f213729f6796 ("counter: new TI eQEP driver")
-Reviewed-by: Judith Mendez <jm@ti.com>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://lore.kernel.org/r/20240621-ti-eqep-enable-clock-v2-1-edd3421b54d4@baylibre.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Link: https://github.com/KSPP/linux/issues/7
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-hardening@vger.kernel.org <linux-hardening@vger.kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Puranjay Mohan <puranjay12@gmail.com>
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>  # s390x
+Acked-by: Tiezhu Yang <yangtiezhu@loongson.cn>  # LoongArch
+Reviewed-by: Johan Almbladh <johan.almbladh@anyfinetworks.com> # MIPS Part
+Message-ID: <036b6393f23a2032ce75a1c92220b2afcb798d5d.1709850515.git.christophe.leroy@csgroup.eu>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/counter/ti-eqep.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm/net/bpf_jit_32.c        | 25 ++++++++++++-------------
+ arch/loongarch/net/bpf_jit.c     | 22 ++++++++++++++++------
+ arch/mips/net/bpf_jit_comp.c     |  3 ++-
+ arch/parisc/net/bpf_jit_core.c   |  8 +++++++-
+ arch/s390/net/bpf_jit_comp.c     |  6 +++++-
+ arch/sparc/net/bpf_jit_comp_64.c |  6 +++++-
+ arch/x86/net/bpf_jit_comp32.c    |  3 +--
+ include/linux/filter.h           |  5 +++--
+ 8 files changed, 51 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/counter/ti-eqep.c b/drivers/counter/ti-eqep.c
-index b0f24cf3e891d..4d3de4a35801f 100644
---- a/drivers/counter/ti-eqep.c
-+++ b/drivers/counter/ti-eqep.c
-@@ -6,6 +6,7 @@
-  */
+diff --git a/arch/arm/net/bpf_jit_32.c b/arch/arm/net/bpf_jit_32.c
+index 6a1c9fca5260b..ac8e4d9bf9544 100644
+--- a/arch/arm/net/bpf_jit_32.c
++++ b/arch/arm/net/bpf_jit_32.c
+@@ -1982,28 +1982,21 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+ 	/* If building the body of the JITed code fails somehow,
+ 	 * we fall back to the interpretation.
+ 	 */
+-	if (build_body(&ctx) < 0) {
+-		image_ptr = NULL;
+-		bpf_jit_binary_free(header);
+-		prog = orig_prog;
+-		goto out_imms;
+-	}
++	if (build_body(&ctx) < 0)
++		goto out_free;
+ 	build_epilogue(&ctx);
  
- #include <linux/bitops.h>
-+#include <linux/clk.h>
- #include <linux/counter.h>
- #include <linux/kernel.h>
- #include <linux/mod_devicetable.h>
-@@ -376,6 +377,7 @@ static int ti_eqep_probe(struct platform_device *pdev)
- 	struct counter_device *counter;
- 	struct ti_eqep_cnt *priv;
- 	void __iomem *base;
-+	struct clk *clk;
- 	int err;
+ 	/* 3.) Extra pass to validate JITed Code */
+-	if (validate_code(&ctx)) {
+-		image_ptr = NULL;
+-		bpf_jit_binary_free(header);
+-		prog = orig_prog;
+-		goto out_imms;
+-	}
++	if (validate_code(&ctx))
++		goto out_free;
+ 	flush_icache_range((u32)header, (u32)(ctx.target + ctx.idx));
  
- 	counter = devm_counter_alloc(dev, sizeof(*priv));
-@@ -415,6 +417,10 @@ static int ti_eqep_probe(struct platform_device *pdev)
- 	pm_runtime_enable(dev);
- 	pm_runtime_get_sync(dev);
+ 	if (bpf_jit_enable > 1)
+ 		/* there are 2 passes here */
+ 		bpf_jit_dump(prog->len, image_size, 2, ctx.target);
  
-+	clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(clk))
-+		return dev_err_probe(dev, PTR_ERR(clk), "failed to enable clock\n");
+-	bpf_jit_binary_lock_ro(header);
++	if (bpf_jit_binary_lock_ro(header))
++		goto out_free;
+ 	prog->bpf_func = (void *)ctx.target;
+ 	prog->jited = 1;
+ 	prog->jited_len = image_size;
+@@ -2020,5 +2013,11 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+ 		bpf_jit_prog_release_other(prog, prog == orig_prog ?
+ 					   tmp : orig_prog);
+ 	return prog;
 +
- 	err = counter_add(counter);
- 	if (err < 0) {
- 		pm_runtime_put_sync(dev);
++out_free:
++	image_ptr = NULL;
++	bpf_jit_binary_free(header);
++	prog = orig_prog;
++	goto out_imms;
+ }
+ 
+diff --git a/arch/loongarch/net/bpf_jit.c b/arch/loongarch/net/bpf_jit.c
+index 9eb7753d117df..13cd480385ca8 100644
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -1206,16 +1206,19 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+ 	flush_icache_range((unsigned long)header, (unsigned long)(ctx.image + ctx.idx));
+ 
+ 	if (!prog->is_func || extra_pass) {
++		int err;
++
+ 		if (extra_pass && ctx.idx != jit_data->ctx.idx) {
+ 			pr_err_once("multi-func JIT bug %d != %d\n",
+ 				    ctx.idx, jit_data->ctx.idx);
+-			bpf_jit_binary_free(header);
+-			prog->bpf_func = NULL;
+-			prog->jited = 0;
+-			prog->jited_len = 0;
+-			goto out_offset;
++			goto out_free;
++		}
++		err = bpf_jit_binary_lock_ro(header);
++		if (err) {
++			pr_err_once("bpf_jit_binary_lock_ro() returned %d\n",
++				    err);
++			goto out_free;
+ 		}
+-		bpf_jit_binary_lock_ro(header);
+ 	} else {
+ 		jit_data->ctx = ctx;
+ 		jit_data->image = image_ptr;
+@@ -1246,6 +1249,13 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+ 	out_offset = -1;
+ 
+ 	return prog;
++
++out_free:
++	bpf_jit_binary_free(header);
++	prog->bpf_func = NULL;
++	prog->jited = 0;
++	prog->jited_len = 0;
++	goto out_offset;
+ }
+ 
+ /* Indicate the JIT backend supports mixing bpf2bpf and tailcalls. */
+diff --git a/arch/mips/net/bpf_jit_comp.c b/arch/mips/net/bpf_jit_comp.c
+index a40d926b65139..e355dfca44008 100644
+--- a/arch/mips/net/bpf_jit_comp.c
++++ b/arch/mips/net/bpf_jit_comp.c
+@@ -1012,7 +1012,8 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+ 	bpf_prog_fill_jited_linfo(prog, &ctx.descriptors[1]);
+ 
+ 	/* Set as read-only exec and flush instruction cache */
+-	bpf_jit_binary_lock_ro(header);
++	if (bpf_jit_binary_lock_ro(header))
++		goto out_err;
+ 	flush_icache_range((unsigned long)header,
+ 			   (unsigned long)&ctx.target[ctx.jit_index]);
+ 
+diff --git a/arch/parisc/net/bpf_jit_core.c b/arch/parisc/net/bpf_jit_core.c
+index d6ee2fd455503..979f45d4d1fbe 100644
+--- a/arch/parisc/net/bpf_jit_core.c
++++ b/arch/parisc/net/bpf_jit_core.c
+@@ -167,7 +167,13 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+ 	bpf_flush_icache(jit_data->header, ctx->insns + ctx->ninsns);
+ 
+ 	if (!prog->is_func || extra_pass) {
+-		bpf_jit_binary_lock_ro(jit_data->header);
++		if (bpf_jit_binary_lock_ro(jit_data->header)) {
++			bpf_jit_binary_free(jit_data->header);
++			prog->bpf_func = NULL;
++			prog->jited = 0;
++			prog->jited_len = 0;
++			goto out_offset;
++		}
+ 		prologue_len = ctx->epilogue_offset - ctx->body_len;
+ 		for (i = 0; i < prog->len; i++)
+ 			ctx->offset[i] += prologue_len;
+diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
+index 62ee557d4b499..05746e22fe79c 100644
+--- a/arch/s390/net/bpf_jit_comp.c
++++ b/arch/s390/net/bpf_jit_comp.c
+@@ -1973,7 +1973,11 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
+ 		print_fn_code(jit.prg_buf, jit.size_prg);
+ 	}
+ 	if (!fp->is_func || extra_pass) {
+-		bpf_jit_binary_lock_ro(header);
++		if (bpf_jit_binary_lock_ro(header)) {
++			bpf_jit_binary_free(header);
++			fp = orig_fp;
++			goto free_addrs;
++		}
+ 	} else {
+ 		jit_data->header = header;
+ 		jit_data->ctx = jit;
+diff --git a/arch/sparc/net/bpf_jit_comp_64.c b/arch/sparc/net/bpf_jit_comp_64.c
+index fa0759bfe498e..73bf0aea8baf1 100644
+--- a/arch/sparc/net/bpf_jit_comp_64.c
++++ b/arch/sparc/net/bpf_jit_comp_64.c
+@@ -1602,7 +1602,11 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+ 	bpf_flush_icache(header, (u8 *)header + header->size);
+ 
+ 	if (!prog->is_func || extra_pass) {
+-		bpf_jit_binary_lock_ro(header);
++		if (bpf_jit_binary_lock_ro(header)) {
++			bpf_jit_binary_free(header);
++			prog = orig_prog;
++			goto out_off;
++		}
+ 	} else {
+ 		jit_data->ctx = ctx;
+ 		jit_data->image = image_ptr;
+diff --git a/arch/x86/net/bpf_jit_comp32.c b/arch/x86/net/bpf_jit_comp32.c
+index 429a89c5468b5..f2fc8c38629b5 100644
+--- a/arch/x86/net/bpf_jit_comp32.c
++++ b/arch/x86/net/bpf_jit_comp32.c
+@@ -2600,8 +2600,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+ 	if (bpf_jit_enable > 1)
+ 		bpf_jit_dump(prog->len, proglen, pass + 1, image);
+ 
+-	if (image) {
+-		bpf_jit_binary_lock_ro(header);
++	if (image && !bpf_jit_binary_lock_ro(header)) {
+ 		prog->bpf_func = (void *)image;
+ 		prog->jited = 1;
+ 		prog->jited_len = proglen;
+diff --git a/include/linux/filter.h b/include/linux/filter.h
+index 5a2800ec94ea6..a74d97114a542 100644
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -853,10 +853,11 @@ static inline int __must_check bpf_prog_lock_ro(struct bpf_prog *fp)
+ 	return 0;
+ }
+ 
+-static inline void bpf_jit_binary_lock_ro(struct bpf_binary_header *hdr)
++static inline int __must_check
++bpf_jit_binary_lock_ro(struct bpf_binary_header *hdr)
+ {
+ 	set_vm_flush_reset_perms(hdr);
+-	set_memory_rox((unsigned long)hdr, hdr->size >> PAGE_SHIFT);
++	return set_memory_rox((unsigned long)hdr, hdr->size >> PAGE_SHIFT);
+ }
+ 
+ int sk_filter_trim_cap(struct sock *sk, struct sk_buff *skb, unsigned int cap);
 -- 
 2.43.0
 
