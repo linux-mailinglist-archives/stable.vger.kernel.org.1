@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-57745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94268925DC8
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5651925F21
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:51:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C504F1C20283
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9143B2FD6B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF89194159;
-	Wed,  3 Jul 2024 11:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192A1181329;
+	Wed,  3 Jul 2024 10:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjMVrW51"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJr/AYpQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E506186E5A;
-	Wed,  3 Jul 2024 11:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55A818131D;
+	Wed,  3 Jul 2024 10:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005805; cv=none; b=tBKpbb8XHsAiw+LXUSJUQ63Q8X+rU6p4BGoqcWx9wUSf/vaT2f+ialkZbzWUzkT4etoGy2Xi6q/4iVS9BGyYjjn8z4dFTZq/UQt/2AxhVH7x43thK2AAPpz45rI5GTiU5Wx+sSUx3/oB2Sz/til87C2YaOoqzRIN0TiN05KPHSg=
+	t=1720003414; cv=none; b=G+ytqNcROoUvySIxEflcvhrWiPPdpVwOjYgXTs44la4L3ulOGO08MP6F5WJRw0bFumI2j+Wzl54luqRGOkbxaQsYlsakPlPY5bFY19iz3eUtFB/V73OTlCCBUxmyC7+s+uYWJqu9NAtU3V8t1jTBpYoP3YguleGcPZM9gtaIG8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005805; c=relaxed/simple;
-	bh=Qag7OV+aaVLPZbq2BAImU5W6CT795JnUqc0RTIb2PZk=;
+	s=arc-20240116; t=1720003414; c=relaxed/simple;
+	bh=b1Qg/vRW3VWNgvArkD6jXHRH3OGGiZokysspEE0jWBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fyfgys+GwnacnjCUYARic2OUytwnryPp41W0EDisHsOXkF4RqBbKK5y6CrtA3iPuieWuYCFKY6Z4eHnbX5Damn9g6oZRxNrWUS0pZWykTtwcFabK2AYIJRrcCRTbq+u3eIm+kEAw9KJGLakfwgSd1t+x4xUHKP2i2VakyfbYB2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjMVrW51; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4A0C2BD10;
-	Wed,  3 Jul 2024 11:23:24 +0000 (UTC)
+	 MIME-Version; b=UmmexVDY6hRF5o/1+UlV/hsHetLxdpfNx7LcW6bxH5s9BUTF8Yv3yxKRd7v8RVokI0Qw6U0IQPOZNMUvCvYCvZC3twJLdGgia5jCzIbefEeVmGLSn4bc8bWiVUXcfn8liGoeNd0zTRc5dNxMD7+blJ9SHdT5FFZwiEAu4NfAb1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJr/AYpQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B58BC2BD10;
+	Wed,  3 Jul 2024 10:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005805;
-	bh=Qag7OV+aaVLPZbq2BAImU5W6CT795JnUqc0RTIb2PZk=;
+	s=korg; t=1720003414;
+	bh=b1Qg/vRW3VWNgvArkD6jXHRH3OGGiZokysspEE0jWBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EjMVrW51NVfKrqt4fJHiI9wEjBmE395eXmnkOY2C1tN6J7K1J9KwROlIQpkLvKtje
-	 dYhO9LpIb3A6aTAgxhXy4oBeXsQ5ZmG/5Ix3e3A2/52VZaBl85KCHNMaXJUZtV+fYv
-	 uIaYj/RYFqjiPAuiW7idfQDhEtJpvTPEyT4R95TQ=
+	b=XJr/AYpQk6L8aCoWG+Td78mrz/B8bATbY199PxtVBIIBO0umLDXb/CQWRtalJT/A9
+	 BuNjW4HR7bE7HDpg9oLMOs6eX5odBHRWZkLAn5VrY6Rmlx+Icn9Jc2qfUHxp3wKpPo
+	 7GY2XfOjPQ/RgWfXJE81/I0Qb8gpvz6fTb+8G3es=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b62c37cdd58103293a5a@syzkaller.appspotmail.com,
-	syzbot+cfbe1da5fdfc39efc293@syzkaller.appspotmail.com,
-	kernel test robot <oliver.sang@intel.com>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 202/356] netfilter: ipset: Fix suspicious rcu_dereference_protected()
+Subject: [PATCH 4.19 041/139] Bluetooth: L2CAP: Fix rejecting L2CAP_CONN_PARAM_UPDATE_REQ
 Date: Wed,  3 Jul 2024 12:38:58 +0200
-Message-ID: <20240703102920.745866861@linuxfoundation.org>
+Message-ID: <20240703102831.990107025@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +61,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jozsef Kadlecsik <kadlec@netfilter.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 8ecd06277a7664f4ef018abae3abd3451d64e7a6 ]
+[ Upstream commit 806a5198c05987b748b50f3d0c0cfb3d417381a4 ]
 
-When destroying all sets, we are either in pernet exit phase or
-are executing a "destroy all sets command" from userspace. The latter
-was taken into account in ip_set_dereference() (nfnetlink mutex is held),
-but the former was not. The patch adds the required check to
-rcu_dereference_protected() in ip_set_dereference().
+This removes the bogus check for max > hcon->le_conn_max_interval since
+the later is just the initial maximum conn interval not the maximum the
+stack could support which is really 3200=4000ms.
 
-Fixes: 4e7aaa6b82d6 ("netfilter: ipset: Fix race between namespace cleanup and gc in the list:set type")
-Reported-by: syzbot+b62c37cdd58103293a5a@syzkaller.appspotmail.com
-Reported-by: syzbot+cfbe1da5fdfc39efc293@syzkaller.appspotmail.com
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202406141556.e0b6f17e-lkp@intel.com
-Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+In order to pass GAP/CONN/CPUP/BV-05-C one shall probably enter values
+of the following fields in IXIT that would cause hci_check_conn_params
+to fail:
+
+TSPX_conn_update_int_min
+TSPX_conn_update_int_max
+TSPX_conn_update_peripheral_latency
+TSPX_conn_update_supervision_timeout
+
+Link: https://github.com/bluez/bluez/issues/847
+Fixes: e4b019515f95 ("Bluetooth: Enforce validation on max value of connection interval")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipset/ip_set_core.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ include/net/bluetooth/hci_core.h | 36 ++++++++++++++++++++++++++++----
+ net/bluetooth/l2cap_core.c       |  8 +------
+ 2 files changed, 33 insertions(+), 11 deletions(-)
 
-diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-index 8819c28a0e491..f2f6b7325c706 100644
---- a/net/netfilter/ipset/ip_set_core.c
-+++ b/net/netfilter/ipset/ip_set_core.c
-@@ -53,12 +53,13 @@ MODULE_DESCRIPTION("core IP set support");
- MODULE_ALIAS_NFNL_SUBSYS(NFNL_SUBSYS_IPSET);
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 878e7e92d8efd..7aa8e8e615812 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -1430,18 +1430,46 @@ static inline int hci_check_conn_params(u16 min, u16 max, u16 latency,
+ {
+ 	u16 max_latency;
  
- /* When the nfnl mutex or ip_set_ref_lock is held: */
--#define ip_set_dereference(p)		\
--	rcu_dereference_protected(p,	\
-+#define ip_set_dereference(inst)	\
-+	rcu_dereference_protected((inst)->ip_set_list,	\
- 		lockdep_nfnl_is_held(NFNL_SUBSYS_IPSET) || \
--		lockdep_is_held(&ip_set_ref_lock))
-+		lockdep_is_held(&ip_set_ref_lock) || \
-+		(inst)->is_deleted)
- #define ip_set(inst, id)		\
--	ip_set_dereference((inst)->ip_set_list)[id]
-+	ip_set_dereference(inst)[id]
- #define ip_set_ref_netlink(inst,id)	\
- 	rcu_dereference_raw((inst)->ip_set_list)[id]
- #define ip_set_dereference_nfnl(p)	\
-@@ -1135,7 +1136,7 @@ static int ip_set_create(struct sk_buff *skb, const struct nfnl_info *info,
- 		if (!list)
- 			goto cleanup;
- 		/* nfnl mutex is held, both lists are valid */
--		tmp = ip_set_dereference(inst->ip_set_list);
-+		tmp = ip_set_dereference(inst);
- 		memcpy(list, tmp, sizeof(struct ip_set *) * inst->ip_set_max);
- 		rcu_assign_pointer(inst->ip_set_list, list);
- 		/* Make sure all current packets have passed through */
+-	if (min > max || min < 6 || max > 3200)
++	if (min > max) {
++		BT_WARN("min %d > max %d", min, max);
+ 		return -EINVAL;
++	}
++
++	if (min < 6) {
++		BT_WARN("min %d < 6", min);
++		return -EINVAL;
++	}
++
++	if (max > 3200) {
++		BT_WARN("max %d > 3200", max);
++		return -EINVAL;
++	}
++
++	if (to_multiplier < 10) {
++		BT_WARN("to_multiplier %d < 10", to_multiplier);
++		return -EINVAL;
++	}
+ 
+-	if (to_multiplier < 10 || to_multiplier > 3200)
++	if (to_multiplier > 3200) {
++		BT_WARN("to_multiplier %d > 3200", to_multiplier);
+ 		return -EINVAL;
++	}
+ 
+-	if (max >= to_multiplier * 8)
++	if (max >= to_multiplier * 8) {
++		BT_WARN("max %d >= to_multiplier %d * 8", max, to_multiplier);
+ 		return -EINVAL;
++	}
+ 
+ 	max_latency = (to_multiplier * 4 / max) - 1;
+-	if (latency > 499 || latency > max_latency)
++	if (latency > 499) {
++		BT_WARN("latency %d > 499", latency);
+ 		return -EINVAL;
++	}
++
++	if (latency > max_latency) {
++		BT_WARN("latency %d > max_latency %d", latency, max_latency);
++		return -EINVAL;
++	}
+ 
+ 	return 0;
+ }
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 3c6e72c4fdde3..3f9b2b4a62ffd 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -5316,13 +5316,7 @@ static inline int l2cap_conn_param_update_req(struct l2cap_conn *conn,
+ 
+ 	memset(&rsp, 0, sizeof(rsp));
+ 
+-	if (max > hcon->le_conn_max_interval) {
+-		BT_DBG("requested connection interval exceeds current bounds.");
+-		err = -EINVAL;
+-	} else {
+-		err = hci_check_conn_params(min, max, latency, to_multiplier);
+-	}
+-
++	err = hci_check_conn_params(min, max, latency, to_multiplier);
+ 	if (err)
+ 		rsp.result = cpu_to_le16(L2CAP_CONN_PARAM_REJECTED);
+ 	else
 -- 
 2.43.0
 
