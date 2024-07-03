@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-57055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D7F7925A8C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:01:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 197AF925CBD
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:22:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 473AB29E5B2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:00:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAB641F211CE
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B5718FDC2;
-	Wed,  3 Jul 2024 10:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2005191F8A;
+	Wed,  3 Jul 2024 11:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZvLArQG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ri++oAb5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002B1175555;
-	Wed,  3 Jul 2024 10:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB481849D3;
+	Wed,  3 Jul 2024 11:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003706; cv=none; b=MZcymDt1WPR4VXigvn+kTTnr6LKt6e6IyhmI3VoeX+HOgdGiM0Xb13tgZNA7hP/W3raPrpd2gWrBi79Qgr/qrWG8kBITO8zOdkDfqR5V7wFhjMyCrOI1l9IVEGyq8taThjg7NA+q6zDV6vpIdxqkaEC+JQ4Og8OJ6N42IxAyFKY=
+	t=1720005078; cv=none; b=Wlhuoqo+q8GwG0kb2LJSyTqiNR/8l0+bVdN4b1/eTmv3dR7Nn0/W5UvgrjTYgIkOtgdoWqdhkWOScWy6Frcx6g4Fv3JdwSiCbhFHgw8Ez+VSskKnjGKwJudAu1mxNq+t+VgKqpUg8GUHDGPeYhxnhwBE4pFZ2ti+RxQri5dRbI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003706; c=relaxed/simple;
-	bh=8zVur7EbOExhQl78GgvGHmXuPfVGkRM+4TKcFMZPphw=;
+	s=arc-20240116; t=1720005078; c=relaxed/simple;
+	bh=WkyVuZwKzHvYZM0C80KWlruyWvuVUDNczsV3mUxTM30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QURPhgK9zGRas51JJMedWGByN0D/jK+Gp5rLvsXnZXTLFYdLi4fbmfGlDLDD5/qzr8LYAIa9XcoVwj02UrsRnVn59DUDBH825eSd8dTY3WiV/0oVFu8nqRvGkSZfDqSsBBdYaOw+stCZr5iRrr9K7POQAD54j9sIbd6kZXSc470=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZvLArQG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD9AC2BD10;
-	Wed,  3 Jul 2024 10:48:25 +0000 (UTC)
+	 MIME-Version; b=YvPg7LSWQ9DEJ6fNKoO5yUv9UXNOLDuneHhbg47HVPMwyfnjir+S2nqaIkdaBhCCBq4+3MtzoKUS2IIHHm1/bbEcbBeNJg74gsnAJdfKCJK5pwQ7r9UzN5S0AuDLle7Jbe5nLs3XIWT4pH515Rawa+0d1nmWRdfcDNt7X/ufMz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ri++oAb5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA22DC2BD10;
+	Wed,  3 Jul 2024 11:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003705;
-	bh=8zVur7EbOExhQl78GgvGHmXuPfVGkRM+4TKcFMZPphw=;
+	s=korg; t=1720005078;
+	bh=WkyVuZwKzHvYZM0C80KWlruyWvuVUDNczsV3mUxTM30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZvLArQGCMktFg0mUSjn6EcJ3wKnvQrt3IPiMxy9DL9PsebNP0a7Uc1r/YtJzeR0E
-	 q9IAZiYv3fdJfwjX00k1U5MGijjlWYG5kQ5duBmQ1Ox3EZSKM6sB7oyVhgc21sxFpc
-	 EYdLA1/36dMsD8+a9RljUJRTWAv2E6sFQbJ0I9cQ=
+	b=Ri++oAb5+UyXqmsdNAuOq2x2+YiXRiFMzBBeFDpMlI/X2XAg+IWLPgQJa8/GL47pd
+	 AI7bXWziQIIjVeV3yGTTG3jX0JRaBhZutw2oyqn1Qrechamm7a19LkkMEjZpnbmY9i
+	 5LlBtZrGZUQ5YJb+bq8aQMnJK11GwZEvF68AVLY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netdev@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
-Subject: [PATCH 4.19 136/139] ipv6: annotate some data-races around sk->sk_prot
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 252/290] iio: chemical: bme680: Fix sensor data read operation
 Date: Wed,  3 Jul 2024 12:40:33 +0200
-Message-ID: <20240703102835.569180528@linuxfoundation.org>
+Message-ID: <20240703102913.667634300@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,186 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-commit 086d49058cd8471046ae9927524708820f5fd1c7 upstream.
+commit 4241665e6ea063a9c1d734de790121a71db763fc upstream.
 
-Changes from the original is that the applied code to inet6_sendmsg
-and inet6_recvmsg is ported to inet_sendmsg and inet_recvmsg because
-the same functions are shared between ipv4 and v6 in 4.19 kernel.
+A read operation is happening as follows:
 
-The original commit message is as below.
+a) Set sensor to forced mode
+b) Sensor measures values and update data registers and sleeps again
+c) Read data registers
 
-IPv6 has this hack changing sk->sk_prot when an IPv6 socket
-is 'converted' to an IPv4 one with IPV6_ADDRFORM option.
+In the current implementation the read operation happens immediately
+after the sensor is set to forced mode so the sensor does not have
+the time to update properly the registers. This leads to the following
+2 problems:
 
-This operation is only performed for TCP and UDP, knowing
-their 'struct proto' for the two network families are populated
-in the same way, and can not disappear while a reader
-might use and dereference sk->sk_prot.
+1) The first ever value which is read by the register is always wrong
+2) Every read operation, puts the register into forced mode and reads
+the data that were calculated in the previous conversion.
 
-If we think about it all reads of sk->sk_prot while
-either socket lock or RTNL is not acquired should be using READ_ONCE().
+This behaviour was tested in 2 ways:
 
-Also note that other layers like MPTCP, XFRM, CHELSIO_TLS also
-write over sk->sk_prot.
+1) The internal meas_status_0 register was read before and after every
+read operation in order to verify that the data were ready even before
+the register was set to forced mode and also to check that after the
+forced mode was set the new data were not yet ready.
 
-BUG: KCSAN: data-race in inet6_recvmsg / ipv6_setsockopt
+2) Physically changing the temperature and measuring the temperature
 
-write to 0xffff8881386f7aa8 of 8 bytes by task 26932 on cpu 0:
- do_ipv6_setsockopt net/ipv6/ipv6_sockglue.c:492 [inline]
- ipv6_setsockopt+0x3758/0x3910 net/ipv6/ipv6_sockglue.c:1019
- udpv6_setsockopt+0x85/0x90 net/ipv6/udp.c:1649
- sock_common_setsockopt+0x5d/0x70 net/core/sock.c:3489
- __sys_setsockopt+0x209/0x2a0 net/socket.c:2180
- __do_sys_setsockopt net/socket.c:2191 [inline]
- __se_sys_setsockopt net/socket.c:2188 [inline]
- __x64_sys_setsockopt+0x62/0x70 net/socket.c:2188
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x44/0xd0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x44/0xae
+This commit adds the waiting time in between the set of the forced mode
+and the read of the data. The function is taken from the Bosch BME68x
+Sensor API [1].
 
-read to 0xffff8881386f7aa8 of 8 bytes by task 26911 on cpu 1:
- inet6_recvmsg+0x7a/0x210 net/ipv6/af_inet6.c:659
- ____sys_recvmsg+0x16c/0x320
- ___sys_recvmsg net/socket.c:2674 [inline]
- do_recvmmsg+0x3f5/0xae0 net/socket.c:2768
- __sys_recvmmsg net/socket.c:2847 [inline]
- __do_sys_recvmmsg net/socket.c:2870 [inline]
- __se_sys_recvmmsg net/socket.c:2863 [inline]
- __x64_sys_recvmmsg+0xde/0x160 net/socket.c:2863
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x44/0xd0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x44/0xae
+[1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L490
 
-value changed: 0xffffffff85e0e980 -> 0xffffffff85e01580
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 26911 Comm: syz-executor.3 Not tainted 5.17.0-rc2-syzkaller-00316-g0457e5153e0e-dirty #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
+Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://lore.kernel.org/r/20240606212313.207550-5-vassilisamir@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/af_inet.c       |   15 +++++++++++----
- net/ipv6/af_inet6.c      |   14 ++++++++++----
- net/ipv6/ipv6_sockglue.c |    6 ++++--
- 3 files changed, 25 insertions(+), 10 deletions(-)
+ drivers/iio/chemical/bme680.h      |    2 +
+ drivers/iio/chemical/bme680_core.c |   46 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 48 insertions(+)
 
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -789,15 +789,19 @@ EXPORT_SYMBOL(inet_getname);
- int inet_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
- {
- 	struct sock *sk = sock->sk;
-+	const struct proto *prot;
+--- a/drivers/iio/chemical/bme680.h
++++ b/drivers/iio/chemical/bme680.h
+@@ -54,7 +54,9 @@
+ #define   BME680_NB_CONV_MASK			GENMASK(3, 0)
  
- 	sock_rps_record_flow(sk);
+ #define BME680_REG_MEAS_STAT_0			0x1D
++#define   BME680_NEW_DATA_BIT			BIT(7)
+ #define   BME680_GAS_MEAS_BIT			BIT(6)
++#define   BME680_MEAS_BIT			BIT(5)
  
-+	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
-+	prot = READ_ONCE(sk->sk_prot);
-+
- 	/* We may need to bind the socket. */
--	if (!inet_sk(sk)->inet_num && !sk->sk_prot->no_autobind &&
-+	if (!inet_sk(sk)->inet_num && !prot->no_autobind &&
- 	    inet_autobind(sk))
- 		return -EAGAIN;
- 
--	return sk->sk_prot->sendmsg(sk, msg, size);
-+	return prot->sendmsg(sk, msg, size);
+ /* Calibration Parameters */
+ #define BME680_T2_LSB_REG	0x8A
+--- a/drivers/iio/chemical/bme680_core.c
++++ b/drivers/iio/chemical/bme680_core.c
+@@ -10,6 +10,7 @@
+  */
+ #include <linux/acpi.h>
+ #include <linux/bitfield.h>
++#include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/module.h>
+ #include <linux/log2.h>
+@@ -532,6 +533,43 @@ static u8 bme680_oversampling_to_reg(u8
+ 	return ilog2(val) + 1;
  }
- EXPORT_SYMBOL(inet_sendmsg);
  
-@@ -823,14 +827,17 @@ int inet_recvmsg(struct socket *sock, st
- 		 int flags)
++/*
++ * Taken from Bosch BME680 API:
++ * https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L490
++ */
++static int bme680_wait_for_eoc(struct bme680_data *data)
++{
++	struct device *dev = regmap_get_device(data->regmap);
++	unsigned int check;
++	int ret;
++	/*
++	 * (Sum of oversampling ratios * time per oversampling) +
++	 * TPH measurement + gas measurement + wait transition from forced mode
++	 * + heater duration
++	 */
++	int wait_eoc_us = ((data->oversampling_temp + data->oversampling_press +
++			   data->oversampling_humid) * 1936) + (477 * 4) +
++			   (477 * 5) + 1000 + (data->heater_dur * 1000);
++
++	usleep_range(wait_eoc_us, wait_eoc_us + 100);
++
++	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &check);
++	if (ret) {
++		dev_err(dev, "failed to read measurement status register.\n");
++		return ret;
++	}
++	if (check & BME680_MEAS_BIT) {
++		dev_err(dev, "Device measurement cycle incomplete.\n");
++		return -EBUSY;
++	}
++	if (!(check & BME680_NEW_DATA_BIT)) {
++		dev_err(dev, "No new data available from the device.\n");
++		return -ENODATA;
++	}
++
++	return 0;
++}
++
+ static int bme680_chip_config(struct bme680_data *data)
  {
- 	struct sock *sk = sock->sk;
-+	const struct proto *prot;
- 	int addr_len = 0;
- 	int err;
+ 	struct device *dev = regmap_get_device(data->regmap);
+@@ -622,6 +660,10 @@ static int bme680_read_temp(struct bme68
+ 	if (ret < 0)
+ 		return ret;
  
- 	if (likely(!(flags & MSG_ERRQUEUE)))
- 		sock_rps_record_flow(sk);
++	ret = bme680_wait_for_eoc(data);
++	if (ret)
++		return ret;
++
+ 	ret = regmap_bulk_read(data->regmap, BME680_REG_TEMP_MSB,
+ 			       &tmp, 3);
+ 	if (ret < 0) {
+@@ -738,6 +780,10 @@ static int bme680_read_gas(struct bme680
+ 	if (ret < 0)
+ 		return ret;
  
--	err = sk->sk_prot->recvmsg(sk, msg, size, flags & MSG_DONTWAIT,
--				   flags & ~MSG_DONTWAIT, &addr_len);
-+	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
-+	prot = READ_ONCE(sk->sk_prot);
-+	err = prot->recvmsg(sk, msg, size, flags & MSG_DONTWAIT,
-+			    flags & ~MSG_DONTWAIT, &addr_len);
- 	if (err >= 0)
- 		msg->msg_namelen = addr_len;
- 	return err;
---- a/net/ipv6/af_inet6.c
-+++ b/net/ipv6/af_inet6.c
-@@ -443,11 +443,14 @@ out_unlock:
- int inet6_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
- {
- 	struct sock *sk = sock->sk;
-+	const struct proto *prot;
- 	int err = 0;
- 
-+	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
-+	prot = READ_ONCE(sk->sk_prot);
- 	/* If the socket has its own bind function then use it. */
--	if (sk->sk_prot->bind)
--		return sk->sk_prot->bind(sk, uaddr, addr_len);
-+	if (prot->bind)
-+		return prot->bind(sk, uaddr, addr_len);
- 
- 	if (addr_len < SIN6_LEN_RFC2133)
- 		return -EINVAL;
-@@ -558,6 +561,7 @@ int inet6_ioctl(struct socket *sock, uns
- {
- 	struct sock *sk = sock->sk;
- 	struct net *net = sock_net(sk);
-+	const struct proto *prot;
- 
- 	switch (cmd) {
- 	case SIOCGSTAMP:
-@@ -578,9 +582,11 @@ int inet6_ioctl(struct socket *sock, uns
- 	case SIOCSIFDSTADDR:
- 		return addrconf_set_dstaddr(net, (void __user *) arg);
- 	default:
--		if (!sk->sk_prot->ioctl)
-+		/* IPV6_ADDRFORM can change sk->sk_prot under us. */
-+		prot = READ_ONCE(sk->sk_prot);
-+		if (!prot->ioctl)
- 			return -ENOIOCTLCMD;
--		return sk->sk_prot->ioctl(sk, cmd, arg);
-+		return prot->ioctl(sk, cmd, arg);
- 	}
- 	/*NOTREACHED*/
- 	return 0;
---- a/net/ipv6/ipv6_sockglue.c
-+++ b/net/ipv6/ipv6_sockglue.c
-@@ -224,7 +224,8 @@ static int do_ipv6_setsockopt(struct soc
- 				sock_prot_inuse_add(net, sk->sk_prot, -1);
- 				sock_prot_inuse_add(net, &tcp_prot, 1);
- 				local_bh_enable();
--				sk->sk_prot = &tcp_prot;
-+				/* Paired with READ_ONCE(sk->sk_prot) in net/ipv6/af_inet6.c */
-+				WRITE_ONCE(sk->sk_prot, &tcp_prot);
- 				icsk->icsk_af_ops = &ipv4_specific;
- 				sk->sk_socket->ops = &inet_stream_ops;
- 				sk->sk_family = PF_INET;
-@@ -238,7 +239,8 @@ static int do_ipv6_setsockopt(struct soc
- 				sock_prot_inuse_add(net, sk->sk_prot, -1);
- 				sock_prot_inuse_add(net, prot, 1);
- 				local_bh_enable();
--				sk->sk_prot = prot;
-+				/* Paired with READ_ONCE(sk->sk_prot) in net/ipv6/af_inet6.c */
-+				WRITE_ONCE(sk->sk_prot, prot);
- 				sk->sk_socket->ops = &inet_dgram_ops;
- 				sk->sk_family = PF_INET;
- 			}
++	ret = bme680_wait_for_eoc(data);
++	if (ret)
++		return ret;
++
+ 	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &check);
+ 	if (check & BME680_GAS_MEAS_BIT) {
+ 		dev_err(dev, "gas measurement incomplete\n");
 
 
 
