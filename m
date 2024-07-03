@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD654925BE9
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:12:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1800925D5D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:28:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E00C51C2217A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D5DC1F246E8
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D18318E779;
-	Wed,  3 Jul 2024 11:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7439C181BA8;
+	Wed,  3 Jul 2024 11:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvby8KFr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmyjG0HR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA2F157E62;
-	Wed,  3 Jul 2024 11:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CC7181B9A;
+	Wed,  3 Jul 2024 11:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004407; cv=none; b=skRxfSUQe2BM675XLBy/O+z5Bc31s6xpq3O/+oSxCkIkTbsiyQIoxaEkTLuSPyzq6gTzXVLoytCeIab6Vyi2jdom1Wdip7qe9BOsLc5ElWl9vXBXZCPleYPyOBL09OEkQ8nkByd3ZgRkIkr2hJMDpSqwVC2apDX3V95UvxF0ydA=
+	t=1720005511; cv=none; b=VpUy1Rxc2XWzVCdsri5kDoGT7sNveFwE5sD5hD5jPq9Rq+vfOgFiAEy49cdbgzt8G+CIcXyjLplbR5RdrwTuzzfW7Yt7kAcxDImuBB85wl7AnvUmQ2/iNRlKEgao6aa0J2ydnm4Eq1XwcIeu94YnXYtvdeeSrUR/VfgcmPFqZps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004407; c=relaxed/simple;
-	bh=Ob+aW11RWUG2KPFp8Sm0mCA4Eh5766YjPDlbW7arATE=;
+	s=arc-20240116; t=1720005511; c=relaxed/simple;
+	bh=vccb+btgH162YNSprVbU7NBk7EhMzFfvaDUMB5UEAnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F6s0Z4QmOJMiJTOiOfGSN+eZHgR+dt3k0gQ7BZ7BnvRa/Fp2rpeVYUPMx94+kihS6dmIMG6I4ck8n6zxaj4m+J03J1/+PPOFtZkKHNx4qKV7pSsC5cONJxinEmqDJYeykP03x/QJvEqM97BvVtOO8wc2UtZNQz/IxQT9D7tZGSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvby8KFr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC55C2BD10;
-	Wed,  3 Jul 2024 11:00:06 +0000 (UTC)
+	 MIME-Version; b=JqaTowB1JEnVkiwIqsxqTRXPG8TitPI07AIXEuGqCT0Rt7xCtekQtWqIDXZlUqxl1fLqofRXQI58Pnf4cNPh+4W+LbLpZpsL4X+7FN2Wxj8yY+H7xYObgQ09uXIwXPDuK2Q49GRA5PQHX5Ssi/AOlOhGhk7vXw0bRTez1YmneUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QmyjG0HR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A89EBC2BD10;
+	Wed,  3 Jul 2024 11:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004406;
-	bh=Ob+aW11RWUG2KPFp8Sm0mCA4Eh5766YjPDlbW7arATE=;
+	s=korg; t=1720005511;
+	bh=vccb+btgH162YNSprVbU7NBk7EhMzFfvaDUMB5UEAnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hvby8KFrk00X5n7sD/po9X5PvyxXvBvoFvjUomzxAvUv1Ykzegy1NkvbhXVy1h1nz
-	 crOkBIAMMsfYXvYYE+nFHJNe2OAywk+puIXg7rIrzIGVXoYk+ddYNkptbBaLRcBPyM
-	 sXKbTKoz41T0XHbJn43yW1Phsa7BYl0igwQbFr48=
+	b=QmyjG0HRaCaYM6kni2ysPzAwKf+GyXPiDZEJS9yZY8TveA3ue0O9pnPl+FQmbLnLg
+	 7uGZM2u35V7f3WFsI+x5DAEk3hPnZleQdxiAvXPpZuzoiLIj8dYZ41plAEAr0/yjmS
+	 TnDRXr+x9Jvthcsfo8xe1HEmVJT0xdS7t7FSTv9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 032/290] serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when using prescaler
-Date: Wed,  3 Jul 2024 12:36:53 +0200
-Message-ID: <20240703102905.411581649@linuxfoundation.org>
+	Pierre Tomon <pierretom+12@ik.me>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.15 078/356] xhci: Set correct transferred length for cancelled bulk transfers
+Date: Wed,  3 Jul 2024 12:36:54 +0200
+Message-ID: <20240703102916.054181703@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 8492bd91aa055907c67ef04f2b56f6dadd1f44bf ]
+commit f0260589b439e2637ad54a2b25f00a516ef28a57 upstream.
 
-When using a high speed clock with a low baud rate, the 4x prescaler is
-automatically selected if required. In that case, sc16is7xx_set_baud()
-properly configures the chip registers, but returns an incorrect baud
-rate by not taking into account the prescaler value. This incorrect baud
-rate is then fed to uart_update_timeout().
+The transferred length is set incorrectly for cancelled bulk
+transfer TDs in case the bulk transfer ring stops on the last transfer
+block with a 'Stop - Length Invalid' completion code.
 
-For example, with an input clock of 80MHz, and a selected baud rate of 50,
-sc16is7xx_set_baud() will return 200 instead of 50.
+length essentially ends up being set to the requested length:
+urb->actual_length = urb->transfer_buffer_length
 
-Fix this by first changing the prescaler variable to hold the selected
-prescaler value instead of the MCR bitfield. Then properly take into
-account the selected prescaler value in the return value computation.
+Length for 'Stop - Length Invalid' cases should be the sum of all
+TRB transfer block lengths up to the one the ring stopped on,
+_excluding_ the one stopped on.
 
-Also add better documentation about the divisor value computation.
+Fix this by always summing up TRB lengths for 'Stop - Length Invalid'
+bulk cases.
 
-Fixes: dfeae619d781 ("serial: sc16is7xx")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20240430200431.4102923-1-hugo@hugovil.com
+This issue was discovered by Alan Stern while debugging
+https://bugzilla.kernel.org/show_bug.cgi?id=218890, but does not
+solve that bug. Issue is older than 4.10 kernel but fix won't apply
+to those due to major reworks in that area.
+
+Tested-by: Pierre Tomon <pierretom+12@ik.me>
+Cc: stable@vger.kernel.org # v4.10+
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240611120610.3264502-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/usb/host/xhci-ring.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 88b84d43c2d62..4ea52426acf9e 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -490,16 +490,28 @@ static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
- 	return reg == SC16IS7XX_RHR_REG;
- }
- 
-+/*
-+ * Configure programmable baud rate generator (divisor) according to the
-+ * desired baud rate.
-+ *
-+ * From the datasheet, the divisor is computed according to:
-+ *
-+ *              XTAL1 input frequency
-+ *             -----------------------
-+ *                    prescaler
-+ * divisor = ---------------------------
-+ *            baud-rate x sampling-rate
-+ */
- static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- {
- 	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
- 	u8 lcr;
--	u8 prescaler = 0;
-+	unsigned int prescaler = 1;
- 	unsigned long clk = port->uartclk, div = clk / 16 / baud;
- 
- 	if (div >= BIT(16)) {
--		prescaler = SC16IS7XX_MCR_CLKSEL_BIT;
--		div /= 4;
-+		prescaler = 4;
-+		div /= prescaler;
- 	}
- 
- 	/* In an amazing feat of design, the Enhanced Features Register shares
-@@ -534,9 +546,10 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 
- 	mutex_unlock(&s->efr_lock);
- 
-+	/* If bit MCR_CLKSEL is set, the divide by 4 prescaler is activated. */
- 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
- 			      SC16IS7XX_MCR_CLKSEL_BIT,
--			      prescaler);
-+			      prescaler == 1 ? 0 : SC16IS7XX_MCR_CLKSEL_BIT);
- 
- 	/* Open the LCR divisors for configuration */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
-@@ -551,7 +564,7 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 	/* Put LCR back to the normal mode */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
- 
--	return DIV_ROUND_CLOSEST(clk / 16, div);
-+	return DIV_ROUND_CLOSEST((clk / prescaler) / 16, div);
- }
- 
- static void sc16is7xx_handle_rx(struct uart_port *port, unsigned int rxlen,
--- 
-2.43.0
-
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -2570,9 +2570,8 @@ static int process_bulk_intr_td(struct x
+ 		goto finish_td;
+ 	case COMP_STOPPED_LENGTH_INVALID:
+ 		/* stopped on ep trb with invalid length, exclude it */
+-		ep_trb_len	= 0;
+-		remaining	= 0;
+-		break;
++		td->urb->actual_length = sum_trb_lengths(xhci, ep_ring, ep_trb);
++		goto finish_td;
+ 	case COMP_USB_TRANSACTION_ERROR:
+ 		if (xhci->quirks & XHCI_NO_SOFT_RETRY ||
+ 		    (ep->err_count++ > MAX_SOFT_RETRY) ||
 
 
 
