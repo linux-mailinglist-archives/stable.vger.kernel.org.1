@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-57060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEA41925AB6
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7894C925CB6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F89329E944
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFAA51F2146A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8164E175555;
-	Wed,  3 Jul 2024 10:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ACAC1891BB;
+	Wed,  3 Jul 2024 11:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sll5xKhp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLQf09Q4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EFFB17556C;
-	Wed,  3 Jul 2024 10:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8EB16DEAC;
+	Wed,  3 Jul 2024 11:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003722; cv=none; b=dmCjfNCEdZhBYk5/QVxovmW6Q0l12wEAxMns0WSx9bcjs/eeqISDHj49YbF5Mp+qZRdMnpfG+lxX85lqluNNuZgbVoWPi3kTKEnQcWwelxbDqfr/g0EGcOWe4XxhgVuuHOpLp/I+UvFrvY1gqKbrlF+hATJH43XM7B+/Hk0dwLM=
+	t=1720005045; cv=none; b=rTVDBKFJkyoiDYs2s3anwXJbyToCvUCi9XfMn2gyxYOm50sumWTLbDsX4oJBAX5fFBcl9thqq8gjKhrdq4SzdFlfOCiQih3rw08RtUpSOBV93dWrwzkZdCh6Yhdezzw9c0d4M3TndzkQI4EVZimRBYAKjP6J0CESENo1RCnKUGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003722; c=relaxed/simple;
-	bh=hzsdWHx4ytnuP1IKDvcROtAlTr9Gmq9VIP4Vben3X7E=;
+	s=arc-20240116; t=1720005045; c=relaxed/simple;
+	bh=gNbIu1EonmOZXJp3QBdSJ+i0oWvEWDGJxKtIWDNjvDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XdbDatBjW7tboEnEm1BB9CdvP6pRg2xgjWjncR5yLsuVPCQAMOUW1FIoT6YKbVAFnjXuC/RxA8cCAR0J1m1jVHaCuyE/P9YENxOt6XM1zNO7zsI1EkKLipXLt7/2u+iG4+/K8g8nNC7QBv9NESeWixIrAQIL6xkzOFkrZtZ7A1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sll5xKhp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF9CC2BD10;
-	Wed,  3 Jul 2024 10:48:41 +0000 (UTC)
+	 MIME-Version; b=Iubr/m20v5BWEETShDx3n1Qy4bC8VfzwAmnV/CASKFVj+SeRkrU28Mq1KenJrbgijrDqNL6ePrWEpckQ5xwCzql/j6fjvxvazdhyUzmV5K35xqp4bV/6sC8SxO0Wm0jbJsro/CaRpzQgQ5P/bimY7z+3dI49B3o3oqIyqfpkies=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLQf09Q4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F264C2BD10;
+	Wed,  3 Jul 2024 11:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003722;
-	bh=hzsdWHx4ytnuP1IKDvcROtAlTr9Gmq9VIP4Vben3X7E=;
+	s=korg; t=1720005045;
+	bh=gNbIu1EonmOZXJp3QBdSJ+i0oWvEWDGJxKtIWDNjvDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sll5xKhpGOFYqOLOmtjqwLcVF7YPelMjelsAHOMjnC6gc1c9jj1RPburIFhFSF7/U
-	 0cQLQDaX7DAbqWNISZhk1ngJ8ns5l4/ubMrjG2CBjqQCZg8f9YL53fMWy3Ol/+gc5x
-	 Ko6N54eNzyPxHe1Odrta1iD3c6xsM4+SUJlaL8lo=
+	b=oLQf09Q4yNZNNR/qx5J8Afj23WdstkG0TEZyqKugUi9lwj2c04x/GQ/0lmklKz8Jz
+	 Q+xDwmBulu8iOrB7zbgnAga+S0WUkTwlk9Bv/05oj8QCJP1LOvFhUufFgBWWb5uKmv
+	 1oEdz4gmXSSaMK+RfEZ0CesG4fI5ldCsNC79oyCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	syzbot+00c18ee8497dd3be6ade@syzkaller.appspotmail.com
-Subject: [PATCH 4.19 126/139] usb: atm: cxacru: fix endpoint checking in cxacru_bind()
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 242/290] x86: stop playing stack games in profile_pc()
 Date: Wed,  3 Jul 2024 12:40:23 +0200
-Message-ID: <20240703102835.193500519@linuxfoundation.org>
+Message-ID: <20240703102913.293242775@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 2eabb655a968b862bc0c31629a09f0fbf3c80d51 upstream.
+[ Upstream commit 093d9603b60093a9aaae942db56107f6432a5dca ]
 
-Syzbot is still reporting quite an old issue [1] that occurs due to
-incomplete checking of present usb endpoints. As such, wrong
-endpoints types may be used at urb sumbitting stage which in turn
-triggers a warning in usb_submit_urb().
+The 'profile_pc()' function is used for timer-based profiling, which
+isn't really all that relevant any more to begin with, but it also ends
+up making assumptions based on the stack layout that aren't necessarily
+valid.
 
-Fix the issue by verifying that required endpoint types are present
-for both in and out endpoints, taking into account cmd endpoint type.
+Basically, the code tries to account the time spent in spinlocks to the
+caller rather than the spinlock, and while I support that as a concept,
+it's not worth the code complexity or the KASAN warnings when no serious
+profiling is done using timers anyway these days.
 
-Unfortunately, this patch has not been tested on real hardware.
+And the code really does depend on stack layout that is only true in the
+simplest of cases.  We've lost the comment at some point (I think when
+the 32-bit and 64-bit code was unified), but it used to say:
 
-[1] Syzbot report:
-usb 1-1: BOGUS urb xfer, pipe 1 != type 3
-WARNING: CPU: 0 PID: 8667 at drivers/usb/core/urb.c:502 usb_submit_urb+0xed2/0x18a0 drivers/usb/core/urb.c:502
-Modules linked in:
-CPU: 0 PID: 8667 Comm: kworker/0:4 Not tainted 5.14.0-rc4-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: usb_hub_wq hub_event
-RIP: 0010:usb_submit_urb+0xed2/0x18a0 drivers/usb/core/urb.c:502
-...
-Call Trace:
- cxacru_cm+0x3c0/0x8e0 drivers/usb/atm/cxacru.c:649
- cxacru_card_status+0x22/0xd0 drivers/usb/atm/cxacru.c:760
- cxacru_bind+0x7ac/0x11a0 drivers/usb/atm/cxacru.c:1209
- usbatm_usb_probe+0x321/0x1ae0 drivers/usb/atm/usbatm.c:1055
- cxacru_usb_probe+0xdf/0x1e0 drivers/usb/atm/cxacru.c:1363
- usb_probe_interface+0x315/0x7f0 drivers/usb/core/driver.c:396
- call_driver_probe drivers/base/dd.c:517 [inline]
- really_probe+0x23c/0xcd0 drivers/base/dd.c:595
- __driver_probe_device+0x338/0x4d0 drivers/base/dd.c:747
- driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:777
- __device_attach_driver+0x20b/0x2f0 drivers/base/dd.c:894
- bus_for_each_drv+0x15f/0x1e0 drivers/base/bus.c:427
- __device_attach+0x228/0x4a0 drivers/base/dd.c:965
- bus_probe_device+0x1e4/0x290 drivers/base/bus.c:487
- device_add+0xc2f/0x2180 drivers/base/core.c:3354
- usb_set_configuration+0x113a/0x1910 drivers/usb/core/message.c:2170
- usb_generic_driver_probe+0xba/0x100 drivers/usb/core/generic.c:238
- usb_probe_device+0xd9/0x2c0 drivers/usb/core/driver.c:293
+	Assume the lock function has either no stack frame or a copy
+	of eflags from PUSHF.
 
-Reported-and-tested-by: syzbot+00c18ee8497dd3be6ade@syzkaller.appspotmail.com
-Fixes: 902ffc3c707c ("USB: cxacru: Use a bulk/int URB to access the command endpoint")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://lore.kernel.org/r/20240609131546.3932-1-n.zhandarovich@fintech.ru
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+which explains why it just blindly loads a word or two straight off the
+stack pointer and then takes a minimal look at the values to just check
+if they might be eflags or the return pc:
+
+	Eflags always has bits 22 and up cleared unlike kernel addresses
+
+but that basic stack layout assumption assumes that there isn't any lock
+debugging etc going on that would complicate the code and cause a stack
+frame.
+
+It causes KASAN unhappiness reported for years by syzkaller [1] and
+others [2].
+
+With no real practical reason for this any more, just remove the code.
+
+Just for historical interest, here's some background commits relating to
+this code from 2006:
+
+  0cb91a229364 ("i386: Account spinlocks to the caller during profiling for !FP kernels")
+  31679f38d886 ("Simplify profile_pc on x86-64")
+
+and a code unification from 2009:
+
+  ef4512882dbe ("x86: time_32/64.c unify profile_pc")
+
+but the basics of this thing actually goes back to before the git tree.
+
+Link: https://syzkaller.appspot.com/bug?extid=84fe685c02cd112a2ac3 [1]
+Link: https://lore.kernel.org/all/CAK55_s7Xyq=nh97=K=G1sxueOFrJDAvPOJAL4TPTCAYvmxO9_A@mail.gmail.com/ [2]
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/atm/cxacru.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/x86/kernel/time.c | 20 +-------------------
+ 1 file changed, 1 insertion(+), 19 deletions(-)
 
---- a/drivers/usb/atm/cxacru.c
-+++ b/drivers/usb/atm/cxacru.c
-@@ -1127,6 +1127,7 @@ static int cxacru_bind(struct usbatm_dat
- 	struct cxacru_data *instance;
- 	struct usb_device *usb_dev = interface_to_usbdev(intf);
- 	struct usb_host_endpoint *cmd_ep = usb_dev->ep_in[CXACRU_EP_CMD];
-+	struct usb_endpoint_descriptor *in, *out;
- 	int ret;
+diff --git a/arch/x86/kernel/time.c b/arch/x86/kernel/time.c
+index e42faa792c079..52e1f3f0b361c 100644
+--- a/arch/x86/kernel/time.c
++++ b/arch/x86/kernel/time.c
+@@ -27,25 +27,7 @@
  
- 	/* instance init */
-@@ -1172,6 +1173,19 @@ static int cxacru_bind(struct usbatm_dat
- 		ret = -ENODEV;
- 		goto fail;
- 	}
-+
-+	if (usb_endpoint_xfer_int(&cmd_ep->desc))
-+		ret = usb_find_common_endpoints(intf->cur_altsetting,
-+						NULL, NULL, &in, &out);
-+	else
-+		ret = usb_find_common_endpoints(intf->cur_altsetting,
-+						&in, &out, NULL, NULL);
-+
-+	if (ret) {
-+		usb_err(usbatm_instance, "cxacru_bind: interface has incorrect endpoints\n");
-+		ret = -ENODEV;
-+		goto fail;
-+	}
+ unsigned long profile_pc(struct pt_regs *regs)
+ {
+-	unsigned long pc = instruction_pointer(regs);
+-
+-	if (!user_mode(regs) && in_lock_functions(pc)) {
+-#ifdef CONFIG_FRAME_POINTER
+-		return *(unsigned long *)(regs->bp + sizeof(long));
+-#else
+-		unsigned long *sp = (unsigned long *)regs->sp;
+-		/*
+-		 * Return address is either directly at stack pointer
+-		 * or above a saved flags. Eflags has bits 22-31 zero,
+-		 * kernel addresses don't.
+-		 */
+-		if (sp[0] >> 22)
+-			return sp[0];
+-		if (sp[1] >> 22)
+-			return sp[1];
+-#endif
+-	}
+-	return pc;
++	return instruction_pointer(regs);
+ }
+ EXPORT_SYMBOL(profile_pc);
  
- 	if ((cmd_ep->desc.bmAttributes & USB_ENDPOINT_XFERTYPE_MASK)
- 			== USB_ENDPOINT_XFER_INT) {
+-- 
+2.43.0
+
 
 
 
