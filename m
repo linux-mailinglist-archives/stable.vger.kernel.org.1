@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-57101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1A6C925AB2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC5E9259DD
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:51:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECAC71C2604F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9B501F21EEF
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C8715B984;
-	Wed,  3 Jul 2024 10:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9946817C204;
+	Wed,  3 Jul 2024 10:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTtv5Qb/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EiS311kY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933391DFC7;
-	Wed,  3 Jul 2024 10:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55FF4172798;
+	Wed,  3 Jul 2024 10:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003851; cv=none; b=NRMMeLcS27djUAJu32efTB42dxLUg+96tRMhZXNsUWEN5ScMSafLCXWhS9CWuavv90cN/WiPRGkWHuNt3uq4sXMFtzKzLZjo3CJ4vePfd2JEkgT03fQckMTRVxBsSsbPSr2fJQzQ7MA1qkVg2R3Z3U0kh9O5b2dbxXjWgP2WWS4=
+	t=1720003361; cv=none; b=SVxrkShN6RJfGm3Bxgpb6r7FQ4+3II7MwWPs0O1L2iLqKvcWaNItAqU/slvuMSGZ+UCkZwGVLz1crWYvGGKbiAQZsjzcmSffZ/ww7uW1mITddhuH9gemwIHIRydu18xznzGBBC61udzxn2PSwwplh2AYhZ4LH6PCaZUr8wYD5QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003851; c=relaxed/simple;
-	bh=49E8KhEDUiIkSpe4hiFpBKiRZKOvteznsJ8MFm1FAlU=;
+	s=arc-20240116; t=1720003361; c=relaxed/simple;
+	bh=+Mw7riF4Gw+W/o6T8X46C50lcohR9VcS8ybhSzLuNjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TLYUooz3tGgAvAyCufenZUBVZE7aW3EthtyO6CallfBUPzIZdxUG42U7J//AMpqAkk9fbIN3fiYObfXngXzMgOhRAgb0ErzOFE0XOaU4sqDJzDokrxPPQqM7WPuE6sliAgFzk8Y/HPEhtB0ZmnOaEuGyS/axQX8vsTjHvEFCgHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTtv5Qb/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 190F3C2BD10;
-	Wed,  3 Jul 2024 10:50:50 +0000 (UTC)
+	 MIME-Version; b=TYMbBQ5pug+eeiv+rSu/nOfwQairGVE9WWlKoHJmS82rwznNKoMGMalUZXc+4SU8wOR+8WZC+Jeypz0ayZu+Lx1aSWj7QeD4ULpLOsDV0BS/+YSL9AlTSMGcyJ3hscXwxyPrUR7i+SZKDHQJLVM4z73+L09ueBBJoG2FBqbLGJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EiS311kY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF81CC2BD10;
+	Wed,  3 Jul 2024 10:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003851;
-	bh=49E8KhEDUiIkSpe4hiFpBKiRZKOvteznsJ8MFm1FAlU=;
+	s=korg; t=1720003361;
+	bh=+Mw7riF4Gw+W/o6T8X46C50lcohR9VcS8ybhSzLuNjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oTtv5Qb/v2S814RY7wl10BC/KknzR3xhpSOB+Lp/ETu94BvXimNz1LsoyCdSgLnM0
-	 gZakmwUZUIUMWa2d4HspOLkYIxi4IUqPIkGRrylXvbY1T/GEQI9nnBvqgc17Lu4wkd
-	 oAyZO/DTN38lslg1eUwImFnrR1G5n0UztGhapAGI=
+	b=EiS311kY0bcWx1WHImdNmBrOsXdMMbPpNn87K6ECrHsOM26myKngLaIIjzuwRfOD6
+	 ZTRSJCMmUSuiCwzxFdzaoFku5fSbh14N8QxoqN6WAX3f6xbLtNn5ps21a6HDNN0ntX
+	 YNg2bwhNx6mdbrTkeRy2QVMfmuxKQlr9/NdmTlGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	David Bauer <mail@david-bauer.net>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 041/189] nilfs2: return the mapped address from nilfs_get_page()
-Date: Wed,  3 Jul 2024 12:38:22 +0200
-Message-ID: <20240703102843.063165730@linuxfoundation.org>
+Subject: [PATCH 4.19 006/139] vxlan: Fix regression when dropping packets due to invalid src addresses
+Date: Wed,  3 Jul 2024 12:38:23 +0200
+Message-ID: <20240703102830.676908413@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,148 +66,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 09a46acb3697e50548bb265afa1d79163659dd85 ]
+[ Upstream commit 1cd4bc987abb2823836cbb8f887026011ccddc8a ]
 
-In prepartion for switching from kmap() to kmap_local(), return the kmap
-address from nilfs_get_page() instead of having the caller look up
-page_address().
+Commit f58f45c1e5b9 ("vxlan: drop packets from invalid src-address")
+has recently been added to vxlan mainly in the context of source
+address snooping/learning so that when it is enabled, an entry in the
+FDB is not being created for an invalid address for the corresponding
+tunnel endpoint.
 
-[konishi.ryusuke: fixed a missing blank line after declaration]
-Link: https://lkml.kernel.org/r/20231127143036.2425-7-konishi.ryusuke@gmail.com
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 7373a51e7998 ("nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors")
+Before commit f58f45c1e5b9 vxlan was similarly behaving as geneve in
+that it passed through whichever macs were set in the L2 header. It
+turns out that this change in behavior breaks setups, for example,
+Cilium with netkit in L3 mode for Pods as well as tunnel mode has been
+passing before the change in f58f45c1e5b9 for both vxlan and geneve.
+After mentioned change it is only passing for geneve as in case of
+vxlan packets are dropped due to vxlan_set_mac() returning false as
+source and destination macs are zero which for E/W traffic via tunnel
+is totally fine.
+
+Fix it by only opting into the is_valid_ether_addr() check in
+vxlan_set_mac() when in fact source address snooping/learning is
+actually enabled in vxlan. This is done by moving the check into
+vxlan_snoop(). With this change, the Cilium connectivity test suite
+passes again for both tunnel flavors.
+
+Fixes: f58f45c1e5b9 ("vxlan: drop packets from invalid src-address")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: David Bauer <mail@david-bauer.net>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: David Bauer <mail@david-bauer.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/dir.c | 57 +++++++++++++++++++++++--------------------------
- 1 file changed, 27 insertions(+), 30 deletions(-)
+ drivers/net/vxlan.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
-index 24cfe9db66e02..22f1f75a90c1a 100644
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -186,19 +186,24 @@ static bool nilfs_check_page(struct page *page)
- 	return false;
- }
+diff --git a/drivers/net/vxlan.c b/drivers/net/vxlan.c
+index d5c8d0d54b33d..82f104ec73383 100644
+--- a/drivers/net/vxlan.c
++++ b/drivers/net/vxlan.c
+@@ -1040,6 +1040,10 @@ static bool vxlan_snoop(struct net_device *dev,
+ 	struct vxlan_fdb *f;
+ 	u32 ifindex = 0;
  
--static struct page *nilfs_get_page(struct inode *dir, unsigned long n)
-+static void *nilfs_get_page(struct inode *dir, unsigned long n,
-+		struct page **pagep)
- {
- 	struct address_space *mapping = dir->i_mapping;
- 	struct page *page = read_mapping_page(mapping, n, NULL);
-+	void *kaddr;
- 
--	if (!IS_ERR(page)) {
--		kmap(page);
--		if (unlikely(!PageChecked(page))) {
--			if (!nilfs_check_page(page))
--				goto fail;
--		}
-+	if (IS_ERR(page))
-+		return page;
++	/* Ignore packets from invalid src-address */
++	if (!is_valid_ether_addr(src_mac))
++		return true;
 +
-+	kaddr = kmap(page);
-+	if (unlikely(!PageChecked(page))) {
-+		if (!nilfs_check_page(page))
-+			goto fail;
- 	}
--	return page;
-+
-+	*pagep = page;
-+	return kaddr;
- 
- fail:
- 	nilfs_put_page(page);
-@@ -275,14 +280,14 @@ static int nilfs_readdir(struct file *file, struct dir_context *ctx)
- 	for ( ; n < npages; n++, offset = 0) {
- 		char *kaddr, *limit;
- 		struct nilfs_dir_entry *de;
--		struct page *page = nilfs_get_page(inode, n);
-+		struct page *page;
- 
--		if (IS_ERR(page)) {
-+		kaddr = nilfs_get_page(inode, n, &page);
-+		if (IS_ERR(kaddr)) {
- 			nilfs_error(sb, "bad page in #%lu", inode->i_ino);
- 			ctx->pos += PAGE_SIZE - offset;
- 			return -EIO;
- 		}
--		kaddr = page_address(page);
- 		de = (struct nilfs_dir_entry *)(kaddr + offset);
- 		limit = kaddr + nilfs_last_byte(inode, n) -
- 			NILFS_DIR_REC_LEN(1);
-@@ -345,11 +350,9 @@ nilfs_find_entry(struct inode *dir, const struct qstr *qstr,
- 		start = 0;
- 	n = start;
- 	do {
--		char *kaddr;
-+		char *kaddr = nilfs_get_page(dir, n, &page);
- 
--		page = nilfs_get_page(dir, n);
--		if (!IS_ERR(page)) {
--			kaddr = page_address(page);
-+		if (!IS_ERR(kaddr)) {
- 			de = (struct nilfs_dir_entry *)kaddr;
- 			kaddr += nilfs_last_byte(dir, n) - reclen;
- 			while ((char *) de <= kaddr) {
-@@ -387,15 +390,11 @@ nilfs_find_entry(struct inode *dir, const struct qstr *qstr,
- 
- struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct page **p)
- {
--	struct page *page = nilfs_get_page(dir, 0);
--	struct nilfs_dir_entry *de = NULL;
-+	struct nilfs_dir_entry *de = nilfs_get_page(dir, 0, p);
- 
--	if (!IS_ERR(page)) {
--		de = nilfs_next_entry(
--			(struct nilfs_dir_entry *)page_address(page));
--		*p = page;
--	}
--	return de;
-+	if (IS_ERR(de))
-+		return NULL;
-+	return nilfs_next_entry(de);
- }
- 
- ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
-@@ -459,12 +458,11 @@ int nilfs_add_link(struct dentry *dentry, struct inode *inode)
- 	for (n = 0; n <= npages; n++) {
- 		char *dir_end;
- 
--		page = nilfs_get_page(dir, n);
--		err = PTR_ERR(page);
--		if (IS_ERR(page))
-+		kaddr = nilfs_get_page(dir, n, &page);
-+		err = PTR_ERR(kaddr);
-+		if (IS_ERR(kaddr))
- 			goto out;
- 		lock_page(page);
--		kaddr = page_address(page);
- 		dir_end = kaddr + nilfs_last_byte(dir, n);
- 		de = (struct nilfs_dir_entry *)kaddr;
- 		kaddr += PAGE_SIZE - reclen;
-@@ -627,11 +625,10 @@ int nilfs_empty_dir(struct inode *inode)
- 		char *kaddr;
- 		struct nilfs_dir_entry *de;
- 
--		page = nilfs_get_page(inode, i);
--		if (IS_ERR(page))
-+		kaddr = nilfs_get_page(inode, i, &page);
-+		if (IS_ERR(kaddr))
- 			continue;
- 
--		kaddr = page_address(page);
- 		de = (struct nilfs_dir_entry *)kaddr;
- 		kaddr += nilfs_last_byte(inode, i) - NILFS_DIR_REC_LEN(1);
- 
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	if (src_ip->sa.sa_family == AF_INET6 &&
+ 	    (ipv6_addr_type(&src_ip->sin6.sin6_addr) & IPV6_ADDR_LINKLOCAL))
 -- 
 2.43.0
 
