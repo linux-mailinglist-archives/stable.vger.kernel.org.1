@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDFB4925E28
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 225B8925ADB
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:04:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2607D1C20503
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD65229ACF2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796AA17C207;
-	Wed,  3 Jul 2024 11:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3429C185E7A;
+	Wed,  3 Jul 2024 10:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPVaF2o/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WiJonDGJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3766717BB03;
-	Wed,  3 Jul 2024 11:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DD2185E71;
+	Wed,  3 Jul 2024 10:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006010; cv=none; b=snXYkfkTlZnwiyfCot9QTrpw67lCC865JKGDsfwNIyej/vDcGWrh0X57EtEb2aqINBmS77r8SPWizawFuDFJB6e3Jrev40g5ZB0MSig5U4AgKAZL2i6cjoULwFrMi+4WfTz60au91MLbeTQlHF+BbGBreQTWcIOPXPfRR9wcvHE=
+	t=1720003623; cv=none; b=orXhi6z7yzkJcRiMJHfeqG7wcni/uyfwNJg/vocyIcQ0ksXILHj4ap/aAkPdpa7VWs2J3buTDZUTt3Y8adNdMKtUMk1mpgv4HG1+Rz/mx/rjtat4oAEW8Frjxr+mfzJRDgTxeG+C9gvSP/v3ZQytcjdjVs+/Y5S2MIk+4i6xFmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006010; c=relaxed/simple;
-	bh=0/q2IWBbsgcZx/Xtmf3rnujB/l5bz2FhDIri+eE3Mfg=;
+	s=arc-20240116; t=1720003623; c=relaxed/simple;
+	bh=OABvjchr7e7G1ERV3JIcKs+bp5KjxF3CbKIUnIcsDhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b8NrANJMsvkvgT7g2hhvqDsBku16E8V8W+oBHOMKGJoWtTx9jH/oABtTPOpAqVDwyZPSNPw/lSDOL762MRVVkbI3tVP/f5rIbsSwzWDHLnNZpjKA9cRW86+YJ1DujbAzPgUAhp9/ItnZERbq2arS4BbhRz3mrpLof24CTYf5fVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPVaF2o/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B295EC2BD10;
-	Wed,  3 Jul 2024 11:26:49 +0000 (UTC)
+	 MIME-Version; b=otH6UKm29m7jEq+mRysvwojEoE526DVai3iGlI8rrnCSp10o32jFlr9gpw/twKcRdQ0V04L/nDzUsvTDp3QEOczB2Eeyj5Z8CuXtov/34AW4hMAf4iF00LcDx5IJi7Sx4kCU6Bc3lzZ2DXH3CBKi5um48Zf02c7X2xqceFRfEAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WiJonDGJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F91BC2BD10;
+	Wed,  3 Jul 2024 10:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006010;
-	bh=0/q2IWBbsgcZx/Xtmf3rnujB/l5bz2FhDIri+eE3Mfg=;
+	s=korg; t=1720003622;
+	bh=OABvjchr7e7G1ERV3JIcKs+bp5KjxF3CbKIUnIcsDhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tPVaF2o/Ryc4PyT0bIYJNIWnGfiSSJ7NbtZ+6Q18WfSzpaeOQsVEHrtx8WSSWSeo0
-	 akHBXlyKq/urwWy2Ou+QWaPzZUC4dk0lA0Y4rNpzM4YwFPF9wlpniSvRRjWVaBg56H
-	 0XLjhAm+VVUYt2neEcRz3qEpduHt6xkY5QNRG5Q8=
+	b=WiJonDGJrxCdRWfQtRlnWgSUiTX8wlmXtImCf2/D/JL6jJ2f7cV8qJ2Akkokx4nEg
+	 FyoO8BFM5kDJ8dTxXTZn1+ZoLVboSK/U7b9xVb0wxLcDYjmei+y2ygRyAzK+5Ogdwk
+	 lHfKqOf6vpa1MdS4TeUjISq1xLsh2AVWqvBrxjUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
-	Mark Brown <broonie@kernel.org>,
+	Oswald Buddenhagen <oswald.buddenhagen@gmx.de>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 270/356] ASoC: fsl-asoc-card: set priv->pdev before using it
+Subject: [PATCH 4.19 109/139] ALSA: emux: improve patch ioctl data validation
 Date: Wed,  3 Jul 2024 12:40:06 +0200
-Message-ID: <20240703102923.328821818@linuxfoundation.org>
+Message-ID: <20240703102834.557094901@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
 
-[ Upstream commit 90f3feb24172185f1832636264943e8b5e289245 ]
+[ Upstream commit 89b32ccb12ae67e630c6453d778ec30a592a212f ]
 
-priv->pdev pointer was set after being used in
-fsl_asoc_card_audmux_init().
-Move this assignment at the start of the probe function, so
-sub-functions can correctly use pdev through priv.
+In load_data(), make the validation of and skipping over the main info
+block match that in load_guspatch().
 
-fsl_asoc_card_audmux_init() dereferences priv->pdev to get access to the
-dev struct, used with dev_err macros.
-As priv is zero-initialised, there would be a NULL pointer dereference.
-Note that if priv->dev is dereferenced before assignment but never used,
-for example if there is no error to be printed, the driver won't crash
-probably due to compiler optimisations.
+In load_guspatch(), add checking that the specified patch length matches
+the actually supplied data, like load_data() already did.
 
-Fixes: 708b4351f08c ("ASoC: fsl: Add Freescale Generic ASoC Sound Card with ASRC support")
-Signed-off-by: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
-Link: https://patch.msgid.link/20240620132511.4291-2-elinor.montmasson@savoirfairelinux.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+Message-ID: <20240406064830.1029573-8-oswald.buddenhagen@gmx.de>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl-asoc-card.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/synth/emux/soundfont.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-index 5000d779aade2..98a157e46637a 100644
---- a/sound/soc/fsl/fsl-asoc-card.c
-+++ b/sound/soc/fsl/fsl-asoc-card.c
-@@ -548,6 +548,8 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 	if (!priv)
- 		return -ENOMEM;
+diff --git a/sound/synth/emux/soundfont.c b/sound/synth/emux/soundfont.c
+index 31a4ea94830e0..235b16af6083d 100644
+--- a/sound/synth/emux/soundfont.c
++++ b/sound/synth/emux/soundfont.c
+@@ -710,7 +710,6 @@ load_data(struct snd_sf_list *sflist, const void __user *data, long count)
+ 	struct snd_soundfont *sf;
+ 	struct soundfont_sample_info sample_info;
+ 	struct snd_sf_sample *sp;
+-	long off;
  
-+	priv->pdev = pdev;
-+
- 	cpu_np = of_parse_phandle(np, "audio-cpu", 0);
- 	/* Give a chance to old DT binding */
- 	if (!cpu_np)
-@@ -742,7 +744,6 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+ 	/* patch must be opened */
+ 	if ((sf = sflist->currsf) == NULL)
+@@ -719,12 +718,16 @@ load_data(struct snd_sf_list *sflist, const void __user *data, long count)
+ 	if (is_special_type(sf->type))
+ 		return -EINVAL;
+ 
++	if (count < (long)sizeof(sample_info)) {
++		return -EINVAL;
++	}
+ 	if (copy_from_user(&sample_info, data, sizeof(sample_info)))
+ 		return -EFAULT;
++	data += sizeof(sample_info);
++	count -= sizeof(sample_info);
+ 
+-	off = sizeof(sample_info);
+-
+-	if (sample_info.size != (count-off)/2)
++	// SoundFont uses S16LE samples.
++	if (sample_info.size * 2 != count)
+ 		return -EINVAL;
+ 
+ 	/* Check for dup */
+@@ -751,7 +754,7 @@ load_data(struct snd_sf_list *sflist, const void __user *data, long count)
+ 		int  rc;
+ 		rc = sflist->callback.sample_new
+ 			(sflist->callback.private_data, sp, sflist->memhdr,
+-			 data + off, count - off);
++			 data, count);
+ 		if (rc < 0) {
+ 			sf_sample_delete(sflist, sf, sp);
+ 			return rc;
+@@ -962,10 +965,12 @@ load_guspatch(struct snd_sf_list *sflist, const char __user *data,
  	}
+ 	if (copy_from_user(&patch, data, sizeof(patch)))
+ 		return -EFAULT;
+-	
+ 	count -= sizeof(patch);
+ 	data += sizeof(patch);
  
- 	/* Initialize sound card */
--	priv->pdev = pdev;
- 	priv->card.dev = &pdev->dev;
- 	priv->card.owner = THIS_MODULE;
- 	ret = snd_soc_of_parse_card_name(&priv->card, "model");
++	if ((patch.len << (patch.mode & WAVE_16_BITS ? 1 : 0)) != count)
++		return -EINVAL;
++
+ 	sf = newsf(sflist, SNDRV_SFNT_PAT_TYPE_GUS|SNDRV_SFNT_PAT_SHARED, NULL);
+ 	if (sf == NULL)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
