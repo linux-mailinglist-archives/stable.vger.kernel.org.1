@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A046925A72
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:59:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36BE5925B8D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:09:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE7B81C25F81
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:59:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E00901F21AF2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C13118E74F;
-	Wed,  3 Jul 2024 10:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51B2188CDD;
+	Wed,  3 Jul 2024 10:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3Ib1O91"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQmRVjEm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC24019884D;
-	Wed,  3 Jul 2024 10:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94110187554;
+	Wed,  3 Jul 2024 10:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003662; cv=none; b=UK2p1xYAQTIv1xWiYwPUPPDLG7L0G3dMzdUeYVelDx90iuh3qc1WBlYmvUdPgnWiC2IIfBdrxUle8pmUQYIuoBLT0Da5OpWSVFmvYTNxsb5FPktNHuy9PA6EzUtuYjdezFg/9LoXSYwByRx3VGy2bM2tJqGb0f5bRCaRL7Yn91Y=
+	t=1720004215; cv=none; b=X9BUs23qqid4mXPALIPSW2yVndWvsleX7PhpRWdyUcJ0KN4Z6EyGDmb+aBoqi3oADiHSfYWgMWQwLjZmuEJd/qB2QiqU89v+392lr8s3u/USYT4ngxw6Dg87dycoRJdyMJVChXLA7K1yMGymvYsyb2lgPZeKbWNKwXu67vtCS9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003662; c=relaxed/simple;
-	bh=+/9w9D/4QPQrL8iEbgjMPZTuMrihZDLGlCzOCD2AvVs=;
+	s=arc-20240116; t=1720004215; c=relaxed/simple;
+	bh=AMlyiqLoVfvDd0k1xDnH8K+WHJHy3uhrcmVDhyU0TtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kD1HICDDkGI0qg8NAbdFyjUw1SFk09S4pFe16G/1V/vLrXHId8tR0niPuM6XTQJnsS0FPItHrW6Rr2+iljFVaFzm0ycNq7QcGY+ouGOSqJuukaBgbiBZi+0j2Un1nbmjKXgsUkgPgjpXPQCE9pDnKLB6pA/l30Jc/EtFU96DQ3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3Ib1O91; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAF4C2BD10;
-	Wed,  3 Jul 2024 10:47:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=crasYohHCTtfykZOITTG+/VCYJKRh8HYIbXiP3FJT3614OJ3PaVFnRUx1TJU+SoA/Cd4v9GlxvOo3i1NH9vbFgKXqj8RS9EVOZrAnsYhWkuUm4bq767tix7+HDoIi/Ay1NhTX+9YsIDVgpizX1ZP1PqfAGjbfCN2rBukuBvi4os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQmRVjEm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C203C4AF0C;
+	Wed,  3 Jul 2024 10:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003661;
-	bh=+/9w9D/4QPQrL8iEbgjMPZTuMrihZDLGlCzOCD2AvVs=;
+	s=korg; t=1720004215;
+	bh=AMlyiqLoVfvDd0k1xDnH8K+WHJHy3uhrcmVDhyU0TtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a3Ib1O91PlwO3lGjOO46KEINLbjFb9r4ZFIsPNJey0ET+DIx00EUSuOjlhYJBVeMY
-	 6ldSQEQyHo6P6u+K6oGJCZnkGCmywmU9NVYEZrhkhPfjEK2UunFUlKTEl2cGIMy/fq
-	 jrnwdZuljAHpKjk4nyWav2EgUp7n2Skxbq+Ws4Lk=
+	b=QQmRVjEmUQaBXe2+CJHvBTwG4+YZYUhAWMxWa8G4Cr2RdgM0S2ZdhGaG10LSZSWRc
+	 ZcEf+QQZo1TzhLqVAT8y6yRMEb6GNaf6giCE2VayUFftl42uaBZHg5/XO0zTYfHZ0y
+	 lo6KRfDEdpAroeYGAb2Aq2md9x+rMSAmSR4uepeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 4.19 121/139] iio: chemical: bme680: Fix overflows in compensate() functions
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.4 157/189] mmc: sdhci-pci: Convert PCIBIOS_* return codes to errnos
 Date: Wed,  3 Jul 2024 12:40:18 +0200
-Message-ID: <20240703102835.006771834@linuxfoundation.org>
+Message-ID: <20240703102847.395262549@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +60,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit fdd478c3ae98c3f13628e110dce9b6cfb0d9b3c8 upstream.
+commit ebc4fc34eae8ddfbef49f2bdaced1bf4167ef80d upstream.
 
-There are cases in the compensate functions of the driver that
-there could be overflows of variables due to bit shifting ops.
-These implications were initially discussed here [1] and they
-were mentioned in log message of Commit 1b3bd8592780 ("iio:
-chemical: Add support for Bosch BME680 sensor").
+jmicron_pmos() and sdhci_pci_probe() use pci_{read,write}_config_byte()
+that return PCIBIOS_* codes. The return code is then returned as is by
+jmicron_probe() and sdhci_pci_probe(). Similarly, the return code is
+also returned as is from jmicron_resume(). Both probe and resume
+functions should return normal errnos.
 
-[1]: https://lore.kernel.org/linux-iio/20180728114028.3c1bbe81@archlinux/
+Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
+errno before returning them the fix these issues.
 
-Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Link: https://lore.kernel.org/r/20240606212313.207550-4-vassilisamir@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 7582041ff3d4 ("mmc: sdhci-pci: fix simple_return.cocci warnings")
+Fixes: 45211e215984 ("sdhci: toggle JMicron PMOS setting")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240527132443.14038-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/chemical/bme680_core.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/mmc/host/sdhci-pci-core.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -348,10 +348,10 @@ static s16 bme680_compensate_temp(struct
- 	if (!calib->par_t2)
- 		bme680_read_calib(data, calib);
+--- a/drivers/mmc/host/sdhci-pci-core.c
++++ b/drivers/mmc/host/sdhci-pci-core.c
+@@ -1376,7 +1376,7 @@ static int jmicron_pmos(struct sdhci_pci
  
--	var1 = (adc_temp >> 3) - (calib->par_t1 << 1);
-+	var1 = (adc_temp >> 3) - ((s32)calib->par_t1 << 1);
- 	var2 = (var1 * calib->par_t2) >> 11;
- 	var3 = ((var1 >> 1) * (var1 >> 1)) >> 12;
--	var3 = (var3 * (calib->par_t3 << 4)) >> 14;
-+	var3 = (var3 * ((s32)calib->par_t3 << 4)) >> 14;
- 	data->t_fine = var2 + var3;
- 	calc_temp = (data->t_fine * 5 + 128) >> 8;
+ 	ret = pci_read_config_byte(chip->pdev, 0xAE, &scratch);
+ 	if (ret)
+-		return ret;
++		goto fail;
  
-@@ -374,9 +374,9 @@ static u32 bme680_compensate_press(struc
- 	var1 = (data->t_fine >> 1) - 64000;
- 	var2 = ((((var1 >> 2) * (var1 >> 2)) >> 11) * calib->par_p6) >> 2;
- 	var2 = var2 + (var1 * calib->par_p5 << 1);
--	var2 = (var2 >> 2) + (calib->par_p4 << 16);
-+	var2 = (var2 >> 2) + ((s32)calib->par_p4 << 16);
- 	var1 = (((((var1 >> 2) * (var1 >> 2)) >> 13) *
--			(calib->par_p3 << 5)) >> 3) +
-+			((s32)calib->par_p3 << 5)) >> 3) +
- 			((calib->par_p2 * var1) >> 1);
- 	var1 = var1 >> 18;
- 	var1 = ((32768 + var1) * calib->par_p1) >> 15;
-@@ -394,7 +394,7 @@ static u32 bme680_compensate_press(struc
- 	var3 = ((press_comp >> 8) * (press_comp >> 8) *
- 			(press_comp >> 8) * calib->par_p10) >> 17;
+ 	/*
+ 	 * Turn PMOS on [bit 0], set over current detection to 2.4 V
+@@ -1387,7 +1387,10 @@ static int jmicron_pmos(struct sdhci_pci
+ 	else
+ 		scratch &= ~0x47;
  
--	press_comp += (var1 + var2 + var3 + (calib->par_p7 << 7)) >> 4;
-+	press_comp += (var1 + var2 + var3 + ((s32)calib->par_p7 << 7)) >> 4;
- 
- 	return press_comp;
+-	return pci_write_config_byte(chip->pdev, 0xAE, scratch);
++	ret = pci_write_config_byte(chip->pdev, 0xAE, scratch);
++
++fail:
++	return pcibios_err_to_errno(ret);
  }
-@@ -420,7 +420,7 @@ static u32 bme680_compensate_humid(struc
- 		 (((temp_scaled * ((temp_scaled * calib->par_h5) / 100))
- 		   >> 6) / 100) + (1 << 14))) >> 10;
- 	var3 = var1 * var2;
--	var4 = calib->par_h6 << 7;
-+	var4 = (s32)calib->par_h6 << 7;
- 	var4 = (var4 + ((temp_scaled * calib->par_h7) / 100)) >> 4;
- 	var5 = ((var3 >> 14) * (var3 >> 14)) >> 10;
- 	var6 = (var4 * var5) >> 1;
+ 
+ static int jmicron_probe(struct sdhci_pci_chip *chip)
+@@ -2303,7 +2306,7 @@ static int sdhci_pci_probe(struct pci_de
+ 
+ 	ret = pci_read_config_byte(pdev, PCI_SLOT_INFO, &slots);
+ 	if (ret)
+-		return ret;
++		return pcibios_err_to_errno(ret);
+ 
+ 	slots = PCI_SLOT_INFO_SLOTS(slots) + 1;
+ 	dev_dbg(&pdev->dev, "found %d slot(s)\n", slots);
+@@ -2312,7 +2315,7 @@ static int sdhci_pci_probe(struct pci_de
+ 
+ 	ret = pci_read_config_byte(pdev, PCI_SLOT_INFO, &first_bar);
+ 	if (ret)
+-		return ret;
++		return pcibios_err_to_errno(ret);
+ 
+ 	first_bar &= PCI_SLOT_INFO_FIRST_BAR_MASK;
+ 
 
 
 
