@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-57049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65CA7925A79
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:00:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C87925B63
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:08:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9737E1C2224C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:00:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A97571C20900
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE2918FC72;
-	Wed,  3 Jul 2024 10:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C03185096;
+	Wed,  3 Jul 2024 10:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sXNK7CRQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nq/dsYJ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3501891C6;
-	Wed,  3 Jul 2024 10:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3488F1741DD;
+	Wed,  3 Jul 2024 10:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003683; cv=none; b=H4c+lronTI5tpEfmKHbBq0gGZo/usyfI4E0jNc5VWjSOV5Wkaol5ti0ehQE5kDpRXrv1oZNVnEZtn8UHrzbZJhiFi9QLSFFM5kGkosaDoaJjC6oQn/TIimwb+mwzbeo0D9mQc4pUCOVzZGHabBZriMOj31PwAoNSO4gcvBIGQcI=
+	t=1720004136; cv=none; b=MLXw1stmQQlytQcIqVUyGwRH62nJ0lEzJeJqn3M6eH8PVuZ0bssFFFhPmNFLTf3rjJv+dkUEvjvFPtpG8EjpUF7c9JpYdu4dPUDfwEKv1tj9INwYwOvm6+P3yIZE6B2TSEhHRjSyhFti9zcYuhrEoe9c6xPEnaC1fQCj4edOGi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003683; c=relaxed/simple;
-	bh=8wGIh617/lau7MXYP222sVaBnrowcUh8AZNhkrnrqoM=;
+	s=arc-20240116; t=1720004136; c=relaxed/simple;
+	bh=x2h4Pr+a+LjAkfRqgr7BCXsxanK5dinpBLbQMrhTBV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fqoiZJVSTnxNoQT6tICQudAHkH3/9Z3W65bU2bVIfldoNK+2utS+QHdZ+aApkNxCv9nOJzW6IeNb1uDgEzYfr7RbEXaPKPLrHopmZhxq9Xvrj5mm9ox/kVVNl7OjONbg8iLt6KDGnFKp08FxDABctN/AFNhl/uoCLtZhgaecWTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sXNK7CRQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622EDC2BD10;
-	Wed,  3 Jul 2024 10:48:02 +0000 (UTC)
+	 MIME-Version; b=Tl06VQMpZ72xfppzYVycrgG8gflxkAe12EKnPSQEyllgea2FXgRVm+e1OPxloeJf3pvNkXfYnuV6VzM3l3AZ10lnxuuQw6NC9mlYTdQsHZ9og+fFikp7i52OFjBOO6h75n6Q57sNOt/RC0GMBYO8dg5yhGqQBD2w7ytKoroMFkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nq/dsYJ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B28C4AF0D;
+	Wed,  3 Jul 2024 10:55:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003682;
-	bh=8wGIh617/lau7MXYP222sVaBnrowcUh8AZNhkrnrqoM=;
+	s=korg; t=1720004136;
+	bh=x2h4Pr+a+LjAkfRqgr7BCXsxanK5dinpBLbQMrhTBV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sXNK7CRQG8EuGML6zYZNao0Mx7ME+PgvN5M802TMpKC1ZKubPDVpyLE9EAtLJrJjB
-	 QYM8HxvgVRYG5mLu0dF2fgelerBRMzG6FmUN1EbVvK9Jf9dZvvwp58WKpA4syeUmuI
-	 W3U5t37vdZhe/Z2aR8uf8oEC5LxJuzv8jGZzxlhY=
+	b=Nq/dsYJ+VKFnD/9HQ3T909rLSCfoPrVovAYAxJ4qdvbBRwVD7zPDN4r/eFoKCcTHr
+	 Y8Z8NgP+3dX+y77LL0GKsfN+LSrShc3Q86QwehWuar9fWDcDUAzuojoBhWeNWEhf29
+	 GQEAyNXJUJgjZ0prj81lVPmoeGDsYhlnG4e7IybY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre Tomon <pierretom+12@ik.me>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Marc Ferland <marc.ferland@sonatest.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 097/139] xhci: Set correct transferred length for cancelled bulk transfers
+Subject: [PATCH 5.4 133/189] iio: dac: ad5592r: fix temperature channel scaling value
 Date: Wed,  3 Jul 2024 12:39:54 +0200
-Message-ID: <20240703102834.102111279@linuxfoundation.org>
+Message-ID: <20240703102846.505655192@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Marc Ferland <marc.ferland@sonatest.com>
 
-[ Upstream commit f0260589b439e2637ad54a2b25f00a516ef28a57 ]
+[ Upstream commit 279428df888319bf68f2686934897301a250bb84 ]
 
-The transferred length is set incorrectly for cancelled bulk
-transfer TDs in case the bulk transfer ring stops on the last transfer
-block with a 'Stop - Length Invalid' completion code.
+The scale value for the temperature channel is (assuming Vref=2.5 and
+the datasheet):
 
-length essentially ends up being set to the requested length:
-urb->actual_length = urb->transfer_buffer_length
+    376.7897513
 
-Length for 'Stop - Length Invalid' cases should be the sum of all
-TRB transfer block lengths up to the one the ring stopped on,
-_excluding_ the one stopped on.
+When calculating both val and val2 for the temperature scale we
+use (3767897513/25) and multiply it by Vref (here I assume 2500mV) to
+obtain:
 
-Fix this by always summing up TRB lengths for 'Stop - Length Invalid'
-bulk cases.
+  2500 * (3767897513/25) ==> 376789751300
 
-This issue was discovered by Alan Stern while debugging
-https://bugzilla.kernel.org/show_bug.cgi?id=218890, but does not
-solve that bug. Issue is older than 4.10 kernel but fix won't apply
-to those due to major reworks in that area.
+Finally we divide with remainder by 10^9 to get:
 
-Tested-by: Pierre Tomon <pierretom+12@ik.me>
-Cc: stable@vger.kernel.org # v4.10+
-Cc: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240611120610.3264502-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    val = 376
+    val2 = 789751300
+
+However, we return IIO_VAL_INT_PLUS_MICRO (should have been NANO) as
+the scale type. So when converting the raw temperature value to the
+'processed' temperature value we will get (assuming raw=810,
+offset=-753):
+
+    processed = (raw + offset) * scale_val
+              = (810 + -753) * 376
+	      = 21432
+
+    processed += div((raw + offset) * scale_val2, 10^6)
+              += div((810 + -753) * 789751300, 10^6)
+	      += 45015
+    ==> 66447
+    ==> 66.4 Celcius
+
+instead of the expected 21.5 Celsius.
+
+Fix this issue by changing IIO_VAL_INT_PLUS_MICRO to
+IIO_VAL_INT_PLUS_NANO.
+
+Fixes: 56ca9db862bf ("iio: dac: Add support for the AD5592R/AD5593R ADCs/DACs")
+Signed-off-by: Marc Ferland <marc.ferland@sonatest.com>
+Link: https://lore.kernel.org/r/20240501150554.1871390-1-marc.ferland@sonatest.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/iio/dac/ad5592r-base.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 614fb89ddef61..26e57a9918995 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2288,9 +2288,8 @@ static int process_bulk_intr_td(struct xhci_hcd *xhci, struct xhci_td *td,
- 		goto finish_td;
- 	case COMP_STOPPED_LENGTH_INVALID:
- 		/* stopped on ep trb with invalid length, exclude it */
--		ep_trb_len	= 0;
--		remaining	= 0;
--		break;
-+		td->urb->actual_length = sum_trb_lengths(xhci, ep_ring, ep_trb);
-+		goto finish_td;
- 	case COMP_USB_TRANSACTION_ERROR:
- 		if ((ep_ring->err_count++ > MAX_SOFT_RETRY) ||
- 		    le32_to_cpu(slot_ctx->tt_info) & TT_SLOT)
+diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
+index 5c242479bb811..75025be02dd29 100644
+--- a/drivers/iio/dac/ad5592r-base.c
++++ b/drivers/iio/dac/ad5592r-base.c
+@@ -414,7 +414,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
+ 			s64 tmp = *val * (3767897513LL / 25LL);
+ 			*val = div_s64_rem(tmp, 1000000000LL, val2);
+ 
+-			return IIO_VAL_INT_PLUS_MICRO;
++			return IIO_VAL_INT_PLUS_NANO;
+ 		}
+ 
+ 		mutex_lock(&st->lock);
 -- 
 2.43.0
 
