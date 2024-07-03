@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-57661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D6B0925D6A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:28:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D6D6925C0F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:14:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01A86294C7A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F72A1C21748
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2421822C7;
-	Wed,  3 Jul 2024 11:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE1E171648;
+	Wed,  3 Jul 2024 11:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1DOSI/1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBDOPtBL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B4C16F8FA;
-	Wed,  3 Jul 2024 11:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FC84DA14;
+	Wed,  3 Jul 2024 11:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005553; cv=none; b=HWrrAym4fkE0KvFPEiLy2riCZorIw+9VbZO0fWIwEVlpq3st/j/vqszNm+tZtY5hFf6sJ8BqSEu/qNZX4httyOQSs6EBiTzRFT11XoZLtqygzshrU/+qyNHET+MckevsZBQv1+FhNSFw2wE6hSvCrsn9iG8H5/UgycA3bB4jV+U=
+	t=1720004542; cv=none; b=j0pb/gL0phOC+J1TQh23vDDWRg4gLmwnNExu3iX63kjojzgvDVrLavZzJQAaMPagaMz5tYGVMfET0fBmxb9yUKOckX07O5i1pkytCS2j5Fryx2VQjy8uNwrdbfoY6FGuxM5gweEw7MXyqNV/gKV/rlkRnFzCaRxI9L800JooDPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005553; c=relaxed/simple;
-	bh=1nLo055LbL49e7/AiWJmTvjW40QLialKTPLu8gvP+Jk=;
+	s=arc-20240116; t=1720004542; c=relaxed/simple;
+	bh=reLPntVk8Q58aXbUtdNuMqxUD9nuGH6aJFRI+dKXSAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G7eSjcVWYsJyNyAmO7QY4Li8OrnFSjLlQ19xf8yZ/7F52zJbD7isZVg0iBgatEKD7K5fmYPVh4G//iKjfNEf/8bnkmUEKywBHp2MEmggCRmPECRqu7apdxz7xFLg5HUGt7oXvmLRgRndSCnCKuxXxMfWxV2DCWSUSo/1qLY/jr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1DOSI/1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6BBC2BD10;
-	Wed,  3 Jul 2024 11:19:12 +0000 (UTC)
+	 MIME-Version; b=cwZior4PWsuJAmG3kgcceDczreYHOgpadrDqOoTbI7MrLS017pJRsOOrI5wZwLv4f0HF5kG7L3NII/BS+CGoauTCdA7DrzqGDRBAFp0beoytHplrdY0izOqUTfYuin9LRrNC33Y21mwcovOW0xP65WwnPZWjfEW+b3W1UPORVtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBDOPtBL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482FAC2BD10;
+	Wed,  3 Jul 2024 11:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005553;
-	bh=1nLo055LbL49e7/AiWJmTvjW40QLialKTPLu8gvP+Jk=;
+	s=korg; t=1720004542;
+	bh=reLPntVk8Q58aXbUtdNuMqxUD9nuGH6aJFRI+dKXSAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M1DOSI/1ada+XmVrFOp33QpkCY7yfJNrcnZGf5oVvIo1ZFS05l4crVeQpwOhv44nZ
-	 tWAMZdvsA9rIslmm3L7e3xw5DESgnHob4q1Af4iB4ebDRBkRkFfOGgrMqyVCEHRiwg
-	 leE7JccsvJ2pgJyL4lA65NMI1GNGTGq5jCeT2eKw=
+	b=IBDOPtBL7AmtbACzwY10NAnn8gKrCT8+lK/qgaBRb1SbN1SO3tBwX4oHTw5C+yt7w
+	 /QzhHDyXXaA9TCs9Yfst0De51C/zQMNWxzP4UsLNArS9e4u4MiSgXa4ElGj/T3QFNw
+	 me81IdMXE8UL6mqDEkxatOKTS0q8+HyRH2euTgy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	syzbot+07a2e4a1a57118ef7355@syzkaller.appspotmail.com,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>
-Subject: [PATCH 5.15 120/356] sock_map: avoid race between sock_map_close and sk_psock_put
-Date: Wed,  3 Jul 2024 12:37:36 +0200
-Message-ID: <20240703102917.635160754@linuxfoundation.org>
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 076/290] iio: imu: inv_icm42600: delete unneeded update watermark call
+Date: Wed,  3 Jul 2024 12:37:37 +0200
+Message-ID: <20240703102907.068011434@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-commit 4b4647add7d3c8530493f7247d11e257ee425bf0 upstream.
+commit 245f3b149e6cc3ac6ee612cdb7042263bfc9e73c upstream.
 
-sk_psock_get will return NULL if the refcount of psock has gone to 0, which
-will happen when the last call of sk_psock_put is done. However,
-sk_psock_drop may not have finished yet, so the close callback will still
-point to sock_map_close despite psock being NULL.
+Update watermark will be done inside the hwfifo_set_watermark callback
+just after the update_scan_mode. It is useless to do it here.
 
-This can be reproduced with a thread deleting an element from the sock map,
-while the second one creates a socket, adds it to the map and closes it.
-
-That will trigger the WARN_ON_ONCE:
-
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 7220 at net/core/sock_map.c:1701 sock_map_close+0x2a2/0x2d0 net/core/sock_map.c:1701
-Modules linked in:
-CPU: 1 PID: 7220 Comm: syz-executor380 Not tainted 6.9.0-syzkaller-07726-g3c999d1ae3c7 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
-RIP: 0010:sock_map_close+0x2a2/0x2d0 net/core/sock_map.c:1701
-Code: df e8 92 29 88 f8 48 8b 1b 48 89 d8 48 c1 e8 03 42 80 3c 20 00 74 08 48 89 df e8 79 29 88 f8 4c 8b 23 eb 89 e8 4f 15 23 f8 90 <0f> 0b 90 48 83 c4 08 5b 41 5c 41 5d 41 5e 41 5f 5d e9 13 26 3d 02
-RSP: 0018:ffffc9000441fda8 EFLAGS: 00010293
-RAX: ffffffff89731ae1 RBX: ffffffff94b87540 RCX: ffff888029470000
-RDX: 0000000000000000 RSI: ffffffff8bcab5c0 RDI: ffffffff8c1faba0
-RBP: 0000000000000000 R08: ffffffff92f9b61f R09: 1ffffffff25f36c3
-R10: dffffc0000000000 R11: fffffbfff25f36c4 R12: ffffffff89731840
-R13: ffff88804b587000 R14: ffff88804b587000 R15: ffffffff89731870
-FS:  000055555e080380(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 00000000207d4000 CR4: 0000000000350ef0
-Call Trace:
- <TASK>
- unix_release+0x87/0xc0 net/unix/af_unix.c:1048
- __sock_release net/socket.c:659 [inline]
- sock_close+0xbe/0x240 net/socket.c:1421
- __fput+0x42b/0x8a0 fs/file_table.c:422
- __do_sys_close fs/open.c:1556 [inline]
- __se_sys_close fs/open.c:1541 [inline]
- __x64_sys_close+0x7f/0x110 fs/open.c:1541
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fb37d618070
-Code: 00 00 48 c7 c2 b8 ff ff ff f7 d8 64 89 02 b8 ff ff ff ff eb d4 e8 10 2c 00 00 80 3d 31 f0 07 00 00 74 17 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 48 c3 0f 1f 80 00 00 00 00 48 83 ec 18 89 7c
-RSP: 002b:00007ffcd4a525d8 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
-RAX: ffffffffffffffda RBX: 0000000000000005 RCX: 00007fb37d618070
-RDX: 0000000000000010 RSI: 00000000200001c0 RDI: 0000000000000004
-RBP: 0000000000000000 R08: 0000000100000000 R09: 0000000100000000
-R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-
-Use sk_psock, which will only check that the pointer is not been set to
-NULL yet, which should only happen after the callbacks are restored. If,
-then, a reference can still be gotten, we may call sk_psock_stop and cancel
-psock->work.
-
-As suggested by Paolo Abeni, reorder the condition so the control flow is
-less convoluted.
-
-After that change, the reproducer does not trigger the WARN_ON_ONCE
-anymore.
-
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Reported-by: syzbot+07a2e4a1a57118ef7355@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=07a2e4a1a57118ef7355
-Fixes: aadb2bb83ff7 ("sock_map: Fix a potential use-after-free in sock_map_close()")
-Fixes: 5b4a79ba65a1 ("bpf, sockmap: Don't let sock_map_{close,destroy,unhash} call itself")
+Fixes: 7f85e42a6c54 ("iio: imu: inv_icm42600: add buffer support in iio devices")
 Cc: stable@vger.kernel.org
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Acked-by: Jakub Sitnicki <jakub@cloudflare.com>
-Link: https://lore.kernel.org/r/20240524144702.1178377-1-cascardo@igalia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Link: https://lore.kernel.org/r/20240527210008.612932-1-inv.git-commit@tdk.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock_map.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c |    4 ----
+ drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  |    4 ----
+ 2 files changed, 8 deletions(-)
 
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -1566,19 +1566,23 @@ void sock_map_close(struct sock *sk, lon
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+@@ -128,10 +128,6 @@ static int inv_icm42600_accel_update_sca
+ 	/* update data FIFO write */
+ 	inv_icm42600_timestamp_apply_odr(ts, 0, 0, 0);
+ 	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
+-	if (ret)
+-		goto out_unlock;
+-
+-	ret = inv_icm42600_buffer_update_watermark(st);
  
- 	lock_sock(sk);
- 	rcu_read_lock();
--	psock = sk_psock_get(sk);
--	if (unlikely(!psock)) {
--		rcu_read_unlock();
--		release_sock(sk);
--		saved_close = READ_ONCE(sk->sk_prot)->close;
--	} else {
-+	psock = sk_psock(sk);
-+	if (likely(psock)) {
- 		saved_close = psock->saved_close;
- 		sock_map_remove_links(sk, psock);
-+		psock = sk_psock_get(sk);
-+		if (unlikely(!psock))
-+			goto no_psock;
- 		rcu_read_unlock();
- 		sk_psock_stop(psock);
- 		release_sock(sk);
- 		cancel_delayed_work_sync(&psock->work);
- 		sk_psock_put(sk, psock);
-+	} else {
-+		saved_close = READ_ONCE(sk->sk_prot)->close;
-+no_psock:
-+		rcu_read_unlock();
-+		release_sock(sk);
- 	}
+ out_unlock:
+ 	mutex_unlock(&st->lock);
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+@@ -128,10 +128,6 @@ static int inv_icm42600_gyro_update_scan
+ 	/* update data FIFO write */
+ 	inv_icm42600_timestamp_apply_odr(ts, 0, 0, 0);
+ 	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
+-	if (ret)
+-		goto out_unlock;
+-
+-	ret = inv_icm42600_buffer_update_watermark(st);
  
- 	/* Make sure we do not recurse. This is a bug.
+ out_unlock:
+ 	mutex_unlock(&st->lock);
 
 
 
