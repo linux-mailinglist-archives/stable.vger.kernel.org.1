@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-57732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12767925FC4
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 643E4925FE2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:14:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8547B23E11
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 595CDB2B281
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B642191F97;
-	Wed,  3 Jul 2024 11:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DDA41940AA;
+	Wed,  3 Jul 2024 11:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18oAuSTJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvfcLFx+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286A6191F8A;
-	Wed,  3 Jul 2024 11:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12011940A1;
+	Wed,  3 Jul 2024 11:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005766; cv=none; b=WAZGv3bSw/2ncnDF7SLqjOhfc2tLmjCWDOgwlF/3pQz71lT2JXzjREo9zHmY5WvA+frH4acuN6pzD1UtaToGsKwf5cS/3eX8vsmy5zFPmhjPIaCNba8qcsxZuKdc639oTthyOpcxHbFvjuSpGITjfrBK1TQeU1tsSWKI1B6Ylnc=
+	t=1720005778; cv=none; b=ISnpebCNOWn4A3p/+xv1RLuwAMZjJNFVotJ37rz7WTHIa67jQwPfPWbSObIgsHT6sBj1TRPd+mB0PnKNWD/Rn047fwKkdMBnSOFip6s+peRd9q+0lXnY55z4BFQIt31lCU76ZL0O3v8neSGjByVk/ARGQjUFWmUaJqv4xZzcIM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005766; c=relaxed/simple;
-	bh=0YlrgHzMnH+IykQ03jioJiGj0qo7phGsOz0VPKPAH1U=;
+	s=arc-20240116; t=1720005778; c=relaxed/simple;
+	bh=RaxyoBjj54OI6BIKosTlXf3+AjneCTk31P3rlB/3aho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m96qBSIatq77i7xqRu7PGkO+pLM+W7EDG2kh1o+u/6PID2JmRdAMhINiKyMaNxPoR6PmnlEOhph7Ukqcph1HqIXaG/m+1AkQzb9bXQN7fWjmTajzdBt165jFfWfyHBm6QC+aKNi9Dq/oUnvYnYC/kqwxWk4RjVZxksFUtD/PV70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18oAuSTJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A53C9C2BD10;
-	Wed,  3 Jul 2024 11:22:45 +0000 (UTC)
+	 MIME-Version; b=n/m8Cv5FcG630MzFIU9AJjRVUGYnbhRLuOnzYEgXvmUOw8QlZjK+PVVO33FREVAQUjD8yOdogjszwTp+RRER7njFHoTm3W1PQLPLD/+m2WGlrscIbFnzJlpcZooMzklDi8xQVzY/gCLS5C+pF5YI16j01M+QFOKCYHQDjbTd6dM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvfcLFx+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78B94C2BD10;
+	Wed,  3 Jul 2024 11:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005766;
-	bh=0YlrgHzMnH+IykQ03jioJiGj0qo7phGsOz0VPKPAH1U=;
+	s=korg; t=1720005777;
+	bh=RaxyoBjj54OI6BIKosTlXf3+AjneCTk31P3rlB/3aho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=18oAuSTJ4VLuQ7BPrcKKOYyvKKZm8UNOZxpv5Tf4sW+jY0o7E9igRNwWCNxlx1AUr
-	 1EJ/Ue8VcJWQR+ws1lQa57Mt3UnRvzJzGLMTPaQjA5pO+hm5bDakQY+xyPuAV1pBCO
-	 QbHiJszb/BWp2Nmol4+bKmtDG2JVDjRiid74sJG8=
+	b=qvfcLFx+R0t649eA8gl0Lxm8t4JoJMG03ygFUejTy9XQMwzebOJs2SsUFNLOdwiOp
+	 di7rHk0XjVVihFRam4OS/fLvm4bULWNW3uuvednn0pUk/z9N/ESrx3TH4moD8hACyU
+	 ndjK8IxbPgE+Vdb0b4iD3V8HQet5jwVWH1KelF6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+b87c222546179f4513a7@syzkaller.appspotmail.com,
+	David Ruth <druth@chromium.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 190/356] xfrm6: check ip6_dst_idev() return value in xfrm6_get_saddr()
-Date: Wed,  3 Jul 2024 12:38:46 +0200
-Message-ID: <20240703102920.294633696@linuxfoundation.org>
+Subject: [PATCH 5.15 194/356] net/sched: act_api: fix possible infinite loop in tcf_idr_check_alloc()
+Date: Wed,  3 Jul 2024 12:38:50 +0200
+Message-ID: <20240703102920.444706983@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
 References: <20240703102913.093882413@linuxfoundation.org>
@@ -68,90 +68,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: David Ruth <druth@chromium.org>
 
-[ Upstream commit d46401052c2d5614da8efea5788532f0401cb164 ]
+[ Upstream commit d864319871b05fadd153e0aede4811ca7008f5d6 ]
 
-ip6_dst_idev() can return NULL, xfrm6_get_saddr() must act accordingly.
+syzbot found hanging tasks waiting on rtnl_lock [1]
 
-syzbot reported:
+A reproducer is available in the syzbot bug.
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 1 PID: 12 Comm: kworker/u8:1 Not tainted 6.10.0-rc2-syzkaller-00383-gb8481381d4e2 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
-Workqueue: wg-kex-wg1 wg_packet_handshake_send_worker
- RIP: 0010:xfrm6_get_saddr+0x93/0x130 net/ipv6/xfrm6_policy.c:64
-Code: df 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 97 00 00 00 4c 8b ab d8 00 00 00 48 b8 00 00 00 00 00 fc ff df 4c 89 ea 48 c1 ea 03 <80> 3c 02 00 0f 85 86 00 00 00 4d 8b 6d 00 e8 ca 13 47 01 48 b8 00
-RSP: 0018:ffffc90000117378 EFLAGS: 00010246
-RAX: dffffc0000000000 RBX: ffff88807b079dc0 RCX: ffffffff89a0d6d7
-RDX: 0000000000000000 RSI: ffffffff89a0d6e9 RDI: ffff88807b079e98
-RBP: ffff88807ad73248 R08: 0000000000000007 R09: fffffffffffff000
-R10: ffff88807b079dc0 R11: 0000000000000007 R12: ffffc90000117480
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff8880b9300000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f4586d00440 CR3: 0000000079042000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+When a request to add multiple actions with the same index is sent, the
+second request will block forever on the first request. This holds
+rtnl_lock, and causes tasks to hang.
+
+Return -EAGAIN to prevent infinite looping, while keeping documented
+behavior.
+
+[1]
+
+INFO: task kworker/1:0:5088 blocked for more than 143 seconds.
+Not tainted 6.9.0-rc4-syzkaller-00173-g3cdb45594619 #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:kworker/1:0 state:D stack:23744 pid:5088 tgid:5088 ppid:2 flags:0x00004000
+Workqueue: events_power_efficient reg_check_chans_work
 Call Trace:
- <TASK>
-  xfrm_get_saddr net/xfrm/xfrm_policy.c:2452 [inline]
-  xfrm_tmpl_resolve_one net/xfrm/xfrm_policy.c:2481 [inline]
-  xfrm_tmpl_resolve+0xa26/0xf10 net/xfrm/xfrm_policy.c:2541
-  xfrm_resolve_and_create_bundle+0x140/0x2570 net/xfrm/xfrm_policy.c:2835
-  xfrm_bundle_lookup net/xfrm/xfrm_policy.c:3070 [inline]
-  xfrm_lookup_with_ifid+0x4d1/0x1e60 net/xfrm/xfrm_policy.c:3201
-  xfrm_lookup net/xfrm/xfrm_policy.c:3298 [inline]
-  xfrm_lookup_route+0x3b/0x200 net/xfrm/xfrm_policy.c:3309
-  ip6_dst_lookup_flow+0x15c/0x1d0 net/ipv6/ip6_output.c:1256
-  send6+0x611/0xd20 drivers/net/wireguard/socket.c:139
-  wg_socket_send_skb_to_peer+0xf9/0x220 drivers/net/wireguard/socket.c:178
-  wg_socket_send_buffer_to_peer+0x12b/0x190 drivers/net/wireguard/socket.c:200
-  wg_packet_send_handshake_initiation+0x227/0x360 drivers/net/wireguard/send.c:40
-  wg_packet_handshake_send_worker+0x1c/0x30 drivers/net/wireguard/send.c:51
-  process_one_work+0x9fb/0x1b60 kernel/workqueue.c:3231
-  process_scheduled_works kernel/workqueue.c:3312 [inline]
-  worker_thread+0x6c8/0xf70 kernel/workqueue.c:3393
-  kthread+0x2c1/0x3a0 kernel/kthread.c:389
-  ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+<TASK>
+context_switch kernel/sched/core.c:5409 [inline]
+__schedule+0xf15/0x5d00 kernel/sched/core.c:6746
+__schedule_loop kernel/sched/core.c:6823 [inline]
+schedule+0xe7/0x350 kernel/sched/core.c:6838
+schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:6895
+__mutex_lock_common kernel/locking/mutex.c:684 [inline]
+__mutex_lock+0x5b8/0x9c0 kernel/locking/mutex.c:752
+wiphy_lock include/net/cfg80211.h:5953 [inline]
+reg_leave_invalid_chans net/wireless/reg.c:2466 [inline]
+reg_check_chans_work+0x10a/0x10e0 net/wireless/reg.c:2481
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240615154231.234442-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0190c1d452a9 ("net: sched: atomically check-allocate action")
+Reported-by: syzbot+b87c222546179f4513a7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b87c222546179f4513a7
+Signed-off-by: David Ruth <druth@chromium.org>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://lore.kernel.org/r/20240614190326.1349786-1-druth@chromium.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/xfrm6_policy.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/sched/act_api.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/ipv6/xfrm6_policy.c b/net/ipv6/xfrm6_policy.c
-index 4c3aa97f23faa..7c903e0e446cb 100644
---- a/net/ipv6/xfrm6_policy.c
-+++ b/net/ipv6/xfrm6_policy.c
-@@ -57,12 +57,18 @@ static int xfrm6_get_saddr(struct net *net, int oif,
- {
- 	struct dst_entry *dst;
- 	struct net_device *dev;
-+	struct inet6_dev *idev;
+diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+index c029ffd491c1a..0b4deb33bdf7a 100644
+--- a/net/sched/act_api.c
++++ b/net/sched/act_api.c
+@@ -569,7 +569,6 @@ int tcf_idr_check_alloc(struct tc_action_net *tn, u32 *index,
+ 	u32 max;
  
- 	dst = xfrm6_dst_lookup(net, 0, oif, NULL, daddr, mark);
- 	if (IS_ERR(dst))
- 		return -EHOSTUNREACH;
+ 	if (*index) {
+-again:
+ 		rcu_read_lock();
+ 		p = idr_find(&idrinfo->action_idr, *index);
  
--	dev = ip6_dst_idev(dst)->dev;
-+	idev = ip6_dst_idev(dst);
-+	if (!idev) {
-+		dst_release(dst);
-+		return -EHOSTUNREACH;
-+	}
-+	dev = idev->dev;
- 	ipv6_dev_get_saddr(dev_net(dev), dev, &daddr->in6, 0, &saddr->in6);
- 	dst_release(dst);
- 	return 0;
+@@ -578,7 +577,7 @@ int tcf_idr_check_alloc(struct tc_action_net *tn, u32 *index,
+ 			 * index but did not assign the pointer yet.
+ 			 */
+ 			rcu_read_unlock();
+-			goto again;
++			return -EAGAIN;
+ 		}
+ 
+ 		if (!p) {
 -- 
 2.43.0
 
