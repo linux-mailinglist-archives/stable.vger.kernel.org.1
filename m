@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-57443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E90D925C8E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:19:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38013925B24
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2876E1F21C2A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:19:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8CC62828C3
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C734A1849CF;
-	Wed,  3 Jul 2024 11:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34FFD17E8FB;
+	Wed,  3 Jul 2024 10:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQcvli0C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnArtRCb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839B81849C8;
-	Wed,  3 Jul 2024 11:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6994173326;
+	Wed,  3 Jul 2024 10:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004898; cv=none; b=bN0CcLzUeFlFm555M6Iy3iseKc1LKI88+iNiqkx1wBDCvNGHxbq/33p346Vz2grv3atpofb/CsUM3UA+/D5o49hceUzFZLIGT+/5BjIj3QxcvA6N4z7lhfREVWW1eVNS4ESn6BM6XUrclQHaGUkvc/H4HOmiijovZTuonZo2dvU=
+	t=1720003975; cv=none; b=QSPyIVvS/eg+6Dae9iZxR/DxtojZkxkxXUPV9SH5QEsUcfcMQ9L/cvKiuVy8jhN7pkDXIoJu0JTT6oQTO3Stgx2380+HMWjd+9h6Sq3rJX3faGib52lvd7y98ai89x8liNlgFMuI0C4W5P88Go1NaeOhUempEG9EyByTNINqXPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004898; c=relaxed/simple;
-	bh=JIEd1QANUKdobjUmRQVOQimLZXKFoab2tHNabkvSOPc=;
+	s=arc-20240116; t=1720003975; c=relaxed/simple;
+	bh=DVeQOHjIG93Ybzmm18rRKi4Tli6FCIcHLc7dgKbAVeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JZKIVmrfOwfnaV31ffYmF9ES2kQdwyXAaIEZ7WR5nBrOaP/Q35B6OoLCC+nObnzlp7sm22qcvJ/InZ3iw08WB8tBOh3uz7d3zEVRzvdAvFeeGrr9kzHzsdHvOREL0NjAsPcnaFAmk98M9/NHX3SwTBpLy/lWC0MlseTTJIba1VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQcvli0C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD38C2BD10;
-	Wed,  3 Jul 2024 11:08:17 +0000 (UTC)
+	 MIME-Version; b=J1Rnp66ioKQ626F6WUngfMRP6LWIN1cvMk88z1BNCvivMnuiC9tf1G1QSiBOdrXXe6Y4Ki4FI1+FcAqWwP3hK4avHJ4lV19VbP7tsXB2dJ2jJ2hcck7geEZqGcnWTLl7Qcq6pDCV0D2owP0sgoheBYNiGVc8tc3wuPYBbb7SQUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnArtRCb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6808CC2BD10;
+	Wed,  3 Jul 2024 10:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004898;
-	bh=JIEd1QANUKdobjUmRQVOQimLZXKFoab2tHNabkvSOPc=;
+	s=korg; t=1720003974;
+	bh=DVeQOHjIG93Ybzmm18rRKi4Tli6FCIcHLc7dgKbAVeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gQcvli0CIp0r7MRM3Mqile7wlzzyMhfM2lSQJ8DVyGB/g6PaZ9zpF8sW5gW43WUI+
-	 z0mkzKFt2zhVLCtgPn2GzVsnkaihYkK9qD8KihWDxa6/NseF18WnjJpzK2uz9KoJAs
-	 ANKGihcFDTI0ZYXMKrQ02RTHGkf5PgkfkkLJ0KoY=
+	b=HnArtRCbpJcZ1DNsOs3Zb/vd51OCgKH+nF5pgDk7u5C02e15HKPJ96gW0ErryzcD7
+	 0V3UciltZulzAomHQ50aQ6jyu29VJQu8mwDQci69yEG+VUz+6PHT0yc9Z1O3EZ7FbL
+	 +Cpt/Qfu9yjtj+TFV4q0pa6LpffjXXFJiWxwPaFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanath S <Sanath.S@amd.com>,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 162/290] ACPICA: Revert "ACPICA: avoid Info: mapping multiple BARs. Your kernel is fine."
+	Oleg Nesterov <oleg@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.4 082/189] tick/nohz_full: Dont abuse smp_call_function_single() in tick_setup_device()
 Date: Wed,  3 Jul 2024 12:39:03 +0200
-Message-ID: <20240703102910.297807606@linuxfoundation.org>
+Message-ID: <20240703102844.597805260@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +61,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit a83e1385b780d41307433ddbc86e3c528db031f0 ]
+commit 07c54cc5988f19c9642fd463c2dbdac7fc52f777 upstream.
 
-Undo the modifications made in commit d410ee5109a1 ("ACPICA: avoid
-"Info: mapping multiple BARs. Your kernel is fine.""). The initial
-purpose of this commit was to stop memory mappings for operation
-regions from overlapping page boundaries, as it can trigger warnings
-if different page attributes are present.
+After the recent commit 5097cbcb38e6 ("sched/isolation: Prevent boot crash
+when the boot CPU is nohz_full") the kernel no longer crashes, but there is
+another problem.
 
-However, it was found that when this situation arises, mapping
-continues until the boundary's end, but there is still an attempt to
-read/write the entire length of the map, leading to a NULL pointer
-deference. For example, if a four-byte mapping request is made but
-only one byte is mapped because it hits the current page boundary's
-end, a four-byte read/write attempt is still made, resulting in a NULL
-pointer deference.
+In this case tick_setup_device() calls tick_take_do_timer_from_boot() to
+update tick_do_timer_cpu and this triggers the WARN_ON_ONCE(irqs_disabled)
+in smp_call_function_single().
 
-Instead, map the entire length, as the ACPI specification does not
-mandate that it must be within the same page boundary. It is
-permissible for it to be mapped across different regions.
+Kill tick_take_do_timer_from_boot() and just use WRITE_ONCE(), the new
+comment explains why this is safe (thanks Thomas!).
 
-Link: https://github.com/acpica/acpica/pull/954
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218849
-Fixes: d410ee5109a1 ("ACPICA: avoid "Info: mapping multiple BARs. Your kernel is fine."")
-Co-developed-by: Sanath S <Sanath.S@amd.com>
-Signed-off-by: Sanath S <Sanath.S@amd.com>
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 08ae95f4fd3b ("nohz_full: Allow the boot CPU to be nohz_full")
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240528122019.GA28794@redhat.com
+Link: https://lore.kernel.org/all/20240522151742.GA10400@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpica/exregion.c | 23 ++---------------------
- 1 file changed, 2 insertions(+), 21 deletions(-)
+ kernel/time/tick-common.c |   42 ++++++++++++++----------------------------
+ 1 file changed, 14 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/acpi/acpica/exregion.c b/drivers/acpi/acpica/exregion.c
-index 4914dbc445179..5bbbd015de5a4 100644
---- a/drivers/acpi/acpica/exregion.c
-+++ b/drivers/acpi/acpica/exregion.c
-@@ -44,7 +44,6 @@ acpi_ex_system_memory_space_handler(u32 function,
- 	struct acpi_mem_mapping *mm = mem_info->cur_mm;
- 	u32 length;
- 	acpi_size map_length;
--	acpi_size page_boundary_map_length;
- #ifdef ACPI_MISALIGNMENT_NOT_SUPPORTED
- 	u32 remainder;
- #endif
-@@ -138,26 +137,8 @@ acpi_ex_system_memory_space_handler(u32 function,
- 		map_length = (acpi_size)
- 		    ((mem_info->address + mem_info->length) - address);
+--- a/kernel/time/tick-common.c
++++ b/kernel/time/tick-common.c
+@@ -177,26 +177,6 @@ void tick_setup_periodic(struct clock_ev
+ 	}
+ }
  
--		/*
--		 * If mapping the entire remaining portion of the region will cross
--		 * a page boundary, just map up to the page boundary, do not cross.
--		 * On some systems, crossing a page boundary while mapping regions
--		 * can cause warnings if the pages have different attributes
--		 * due to resource management.
--		 *
--		 * This has the added benefit of constraining a single mapping to
--		 * one page, which is similar to the original code that used a 4k
--		 * maximum window.
--		 */
--		page_boundary_map_length = (acpi_size)
--		    (ACPI_ROUND_UP(address, ACPI_DEFAULT_PAGE_SIZE) - address);
--		if (page_boundary_map_length == 0) {
--			page_boundary_map_length = ACPI_DEFAULT_PAGE_SIZE;
--		}
+-#ifdef CONFIG_NO_HZ_FULL
+-static void giveup_do_timer(void *info)
+-{
+-	int cpu = *(unsigned int *)info;
 -
--		if (map_length > page_boundary_map_length) {
--			map_length = page_boundary_map_length;
--		}
-+		if (map_length > ACPI_DEFAULT_PAGE_SIZE)
-+			map_length = ACPI_DEFAULT_PAGE_SIZE;
+-	WARN_ON(tick_do_timer_cpu != smp_processor_id());
+-
+-	tick_do_timer_cpu = cpu;
+-}
+-
+-static void tick_take_do_timer_from_boot(void)
+-{
+-	int cpu = smp_processor_id();
+-	int from = tick_do_timer_boot_cpu;
+-
+-	if (from >= 0 && from != cpu)
+-		smp_call_function_single(from, giveup_do_timer, &cpu, 1);
+-}
+-#endif
+-
+ /*
+  * Setup the tick device
+  */
+@@ -220,19 +200,25 @@ static void tick_setup_device(struct tic
+ 			tick_next_period = ktime_get();
+ #ifdef CONFIG_NO_HZ_FULL
+ 			/*
+-			 * The boot CPU may be nohz_full, in which case set
+-			 * tick_do_timer_boot_cpu so the first housekeeping
+-			 * secondary that comes up will take do_timer from
+-			 * us.
++			 * The boot CPU may be nohz_full, in which case the
++			 * first housekeeping secondary will take do_timer()
++			 * from it.
+ 			 */
+ 			if (tick_nohz_full_cpu(cpu))
+ 				tick_do_timer_boot_cpu = cpu;
  
- 		/* Create a new mapping starting at the address given */
+-		} else if (tick_do_timer_boot_cpu != -1 &&
+-						!tick_nohz_full_cpu(cpu)) {
+-			tick_take_do_timer_from_boot();
++		} else if (tick_do_timer_boot_cpu != -1 && !tick_nohz_full_cpu(cpu)) {
+ 			tick_do_timer_boot_cpu = -1;
+-			WARN_ON(tick_do_timer_cpu != cpu);
++			/*
++			 * The boot CPU will stay in periodic (NOHZ disabled)
++			 * mode until clocksource_done_booting() called after
++			 * smp_init() selects a high resolution clocksource and
++			 * timekeeping_notify() kicks the NOHZ stuff alive.
++			 *
++			 * So this WRITE_ONCE can only race with the READ_ONCE
++			 * check in tick_periodic() but this race is harmless.
++			 */
++			WRITE_ONCE(tick_do_timer_cpu, cpu);
+ #endif
+ 		}
  
--- 
-2.43.0
-
 
 
 
