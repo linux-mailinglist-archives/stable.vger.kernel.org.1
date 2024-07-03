@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-57162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A3D925B2D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9771C925C81
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:19:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F184C2882EF
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:05:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EFF82C2FEC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8943181B9A;
-	Wed,  3 Jul 2024 10:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F171836C3;
+	Wed,  3 Jul 2024 11:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pP3fY4l7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dT/Tc/jf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874B2173336;
-	Wed,  3 Jul 2024 10:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A6718307B;
+	Wed,  3 Jul 2024 11:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004035; cv=none; b=Qu+eC/yEmpWbqe/LDoOlbrn8pksQ/Wldu6Bn9QPGXfkqAKGEU163xQl0zeQOK93Zj0r0JbjLiABBOD9pt8XHUeFsn/8LNNP3mvwt6o44AgICNLj7V0pQvM6kfnXJAaLCKKT8nIv7QiAJsmAMXvO3HtYPLz6+H+JjQj3E1mxK+2g=
+	t=1720004867; cv=none; b=PSZnewwPloC/SoF6LAH8RG3tlk7dNdmpYeMcbELnF3tlk9LYCXySGbZnPZJFuZODoQebkAs5kXsTh0UtEqFe5MqGWQYatranCr6MQIf5DvbkJuyOPDtRDuFAUWsK672V3MIw8CH6WFljMzmfn6vCqg71Mf+Lkvt9abfU0J6CU+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004035; c=relaxed/simple;
-	bh=iLFwtsOpH/Rx7G+hJ4rRlnsGZLy2p2kkTSTTvI9dDdk=;
+	s=arc-20240116; t=1720004867; c=relaxed/simple;
+	bh=7P6dSIMim+BAhSuhRoS+I45YMhKOnLJ1XnVfkZu12SQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cWB+zaj4xn7Dh/EWxhRnWQ0Ew+iQ7dbn4DEN9yh0HbCXGxi64P04XWLm5od7XAQwHghOd+WT1e3vMHAXSeLeNeeVisIl+bmlTy0gbEqlRFycoYR7Bm5wN1WaKfl/zxv7INFVcre3RFowTzZH3mAk4kRE7QMdziheb14ocpdGJj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pP3fY4l7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A77FC32781;
-	Wed,  3 Jul 2024 10:53:54 +0000 (UTC)
+	 MIME-Version; b=ioDZdPzgDVI1bjnBsbu5tJb10FDSy9nzlNx6eUOD6gmVE+LrSunnKdAIjgBqod+unTkZOJzPt50hXVk8DH0+3fzmIrVB8tiVKw7KvwXL5eQ3ELklHlJBonrmq2f7u4guCcl2Mdz4XtoS+AqQyWKA+uGboJWkx7hOlbBluNpkSCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dT/Tc/jf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A381C2BD10;
+	Wed,  3 Jul 2024 11:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004035;
-	bh=iLFwtsOpH/Rx7G+hJ4rRlnsGZLy2p2kkTSTTvI9dDdk=;
+	s=korg; t=1720004867;
+	bh=7P6dSIMim+BAhSuhRoS+I45YMhKOnLJ1XnVfkZu12SQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pP3fY4l7Hwt05sLNqId8qhD5RrJHyGoB6JUVrD6A6Ev6PJljmWke5ZgXEYQqMIBPB
-	 RIFimpvQIE8IGcCgPSXFP3QCHmk1eGxc02ojKMw0mbyJDcD7vwEpgeapILwckx4Kyc
-	 THPg3d8UhMLI6nqkGQm4b2+eCHZjsuonioJwhpfE=
+	b=dT/Tc/jfJ9gPQe0LM9oiN80GR7td9U6x0b+yHJIKoKrpXoHfP7ZxybkoqvRaA2QZh
+	 KWjiPFp81QDgDM5TzurXt699PqQDyH02somw/wozBAcYy+ty5rmn9q3iRmwVxNP1Ln
+	 0Po94qcPbgpy3TqYm+Yh8q6L5xduyob8c7J46EtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 103/189] cipso: fix total option length computation
+	Thomas Gleixner <tglx@linutronix.de>,
+	Borislav Petkov <bp@alien8.de>,
+	Tony Luck <tony.luck@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	stable+noautosel@kernel.org
+Subject: [PATCH 5.10 183/290] x86/cpu: Fix x86_match_cpu() to match just X86_VENDOR_INTEL
 Date: Wed,  3 Jul 2024 12:39:24 +0200
-Message-ID: <20240703102845.390127799@linuxfoundation.org>
+Message-ID: <20240703102911.082506672@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Tony Luck <tony.luck@intel.com>
 
-[ Upstream commit 9f36169912331fa035d7b73a91252d7c2512eb1a ]
+[ Upstream commit 93022482b2948a9a7e9b5a2bb685f2e1cb4c3348 ]
 
-As evident from the definition of ip_options_get(), the IP option
-IPOPT_END is used to pad the IP option data array, not IPOPT_NOP. Yet
-the loop that walks the IP options to determine the total IP options
-length in cipso_v4_delopt() doesn't take IPOPT_END into account.
+Code in v6.9 arch/x86/kernel/smpboot.c was changed by commit
 
-Fix it by recognizing the IPOPT_END value as the end of actual options.
+  4db64279bc2b ("x86/cpu: Switch to new Intel CPU model defines") from:
 
-Fixes: 014ab19a69c3 ("selinux: Set socket NetLabel based on connection endpoint")
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+  static const struct x86_cpu_id intel_cod_cpu[] = {
+          X86_MATCH_INTEL_FAM6_MODEL(HASWELL_X, 0),       /* COD */
+          X86_MATCH_INTEL_FAM6_MODEL(BROADWELL_X, 0),     /* COD */
+          X86_MATCH_INTEL_FAM6_MODEL(ANY, 1),             /* SNC */	<--- 443
+          {}
+  };
+
+  static bool match_llc(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
+  {
+          const struct x86_cpu_id *id = x86_match_cpu(intel_cod_cpu);
+
+to:
+
+  static const struct x86_cpu_id intel_cod_cpu[] = {
+           X86_MATCH_VFM(INTEL_HASWELL_X,   0),    /* COD */
+           X86_MATCH_VFM(INTEL_BROADWELL_X, 0),    /* COD */
+           X86_MATCH_VFM(INTEL_ANY,         1),    /* SNC */
+           {}
+   };
+
+  static bool match_llc(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
+  {
+          const struct x86_cpu_id *id = x86_match_cpu(intel_cod_cpu);
+
+On an Intel CPU with SNC enabled this code previously matched the rule on line
+443 to avoid printing messages about insane cache configuration.  The new code
+did not match any rules.
+
+Expanding the macros for the intel_cod_cpu[] array shows that the old is
+equivalent to:
+
+  static const struct x86_cpu_id intel_cod_cpu[] = {
+  [0] = { .vendor = 0, .family = 6, .model = 0x3F, .steppings = 0, .feature = 0, .driver_data = 0 },
+  [1] = { .vendor = 0, .family = 6, .model = 0x4F, .steppings = 0, .feature = 0, .driver_data = 0 },
+  [2] = { .vendor = 0, .family = 6, .model = 0x00, .steppings = 0, .feature = 0, .driver_data = 1 },
+  [3] = { .vendor = 0, .family = 0, .model = 0x00, .steppings = 0, .feature = 0, .driver_data = 0 }
+  }
+
+while the new code expands to:
+
+  static const struct x86_cpu_id intel_cod_cpu[] = {
+  [0] = { .vendor = 0, .family = 6, .model = 0x3F, .steppings = 0, .feature = 0, .driver_data = 0 },
+  [1] = { .vendor = 0, .family = 6, .model = 0x4F, .steppings = 0, .feature = 0, .driver_data = 0 },
+  [2] = { .vendor = 0, .family = 0, .model = 0x00, .steppings = 0, .feature = 0, .driver_data = 1 },
+  [3] = { .vendor = 0, .family = 0, .model = 0x00, .steppings = 0, .feature = 0, .driver_data = 0 }
+  }
+
+Looking at the code for x86_match_cpu():
+
+  const struct x86_cpu_id *x86_match_cpu(const struct x86_cpu_id *match)
+  {
+           const struct x86_cpu_id *m;
+           struct cpuinfo_x86 *c = &boot_cpu_data;
+
+           for (m = match;
+                m->vendor | m->family | m->model | m->steppings | m->feature;
+                m++) {
+       		...
+           }
+           return NULL;
+
+it is clear that there was no match because the ANY entry in the table (array
+index 2) is now the loop termination condition (all of vendor, family, model,
+steppings, and feature are zero).
+
+So this code was working before because the "ANY" check was looking for any
+Intel CPU in family 6. But fails now because the family is a wild card. So the
+root cause is that x86_match_cpu() has never been able to match on a rule with
+just X86_VENDOR_INTEL and all other fields set to wildcards.
+
+Add a new flags field to struct x86_cpu_id that has a bit set to indicate that
+this entry in the array is valid. Update X86_MATCH*() macros to set that bit.
+Change the end-marker check in x86_match_cpu() to just check the flags field
+for this bit.
+
+Backporter notes: The commit in Fixes is really the one that is broken:
+you can't have m->vendor as part of the loop termination conditional in
+x86_match_cpu() because it can happen - as it has happened above
+- that that whole conditional is 0 albeit vendor == 0 is a valid case
+- X86_VENDOR_INTEL is 0.
+
+However, the only case where the above happens is the SNC check added by
+4db64279bc2b1 so you only need this fix if you have backported that
+other commit
+
+  4db64279bc2b ("x86/cpu: Switch to new Intel CPU model defines")
+
+Fixes: 644e9cbbe3fc ("Add driver auto probing for x86 features v4")
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Suggested-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable+noautosel@kernel.org> # see above
+Link: https://lore.kernel.org/r/20240517144312.GBZkdtAOuJZCvxhFbJ@fat_crate.local
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/cipso_ipv4.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/cpu_device_id.h | 5 +++++
+ arch/x86/kernel/cpu/match.c          | 4 +---
+ include/linux/mod_devicetable.h      | 2 ++
+ 3 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/cipso_ipv4.c b/net/ipv4/cipso_ipv4.c
-index 42eaad5e515f8..39a6f0d34208e 100644
---- a/net/ipv4/cipso_ipv4.c
-+++ b/net/ipv4/cipso_ipv4.c
-@@ -2015,12 +2015,16 @@ static int cipso_v4_delopt(struct ip_options_rcu __rcu **opt_ptr)
- 		 * from there we can determine the new total option length */
- 		iter = 0;
- 		optlen_new = 0;
--		while (iter < opt->opt.optlen)
--			if (opt->opt.__data[iter] != IPOPT_NOP) {
-+		while (iter < opt->opt.optlen) {
-+			if (opt->opt.__data[iter] == IPOPT_END) {
-+				break;
-+			} else if (opt->opt.__data[iter] == IPOPT_NOP) {
-+				iter++;
-+			} else {
- 				iter += opt->opt.__data[iter + 1];
- 				optlen_new = iter;
--			} else
--				iter++;
-+			}
-+		}
- 		hdr_delta = opt->opt.optlen;
- 		opt->opt.optlen = (optlen_new + 3) & ~3;
- 		hdr_delta -= opt->opt.optlen;
+diff --git a/arch/x86/include/asm/cpu_device_id.h b/arch/x86/include/asm/cpu_device_id.h
+index dd7b9463696f5..e8e3dbe7f1730 100644
+--- a/arch/x86/include/asm/cpu_device_id.h
++++ b/arch/x86/include/asm/cpu_device_id.h
+@@ -53,6 +53,9 @@
+ #define X86_CENTAUR_FAM6_C7_D		0xd
+ #define X86_CENTAUR_FAM6_NANO		0xf
+ 
++/* x86_cpu_id::flags */
++#define X86_CPU_ID_FLAG_ENTRY_VALID	BIT(0)
++
+ #define X86_STEPPINGS(mins, maxs)    GENMASK(maxs, mins)
+ /**
+  * X86_MATCH_VENDOR_FAM_MODEL_STEPPINGS_FEATURE - Base macro for CPU matching
+@@ -79,6 +82,7 @@
+ 	.model		= _model,					\
+ 	.steppings	= _steppings,					\
+ 	.feature	= _feature,					\
++	.flags		= X86_CPU_ID_FLAG_ENTRY_VALID,			\
+ 	.driver_data	= (unsigned long) _data				\
+ }
+ 
+@@ -89,6 +93,7 @@
+ 	.model		= _model,					\
+ 	.steppings	= _steppings,					\
+ 	.feature	= _feature,					\
++	.flags		= X86_CPU_ID_FLAG_ENTRY_VALID,			\
+ 	.driver_data	= (unsigned long) _data				\
+ }
+ 
+diff --git a/arch/x86/kernel/cpu/match.c b/arch/x86/kernel/cpu/match.c
+index ad6776081e60d..ae71b8ef909c9 100644
+--- a/arch/x86/kernel/cpu/match.c
++++ b/arch/x86/kernel/cpu/match.c
+@@ -39,9 +39,7 @@ const struct x86_cpu_id *x86_match_cpu(const struct x86_cpu_id *match)
+ 	const struct x86_cpu_id *m;
+ 	struct cpuinfo_x86 *c = &boot_cpu_data;
+ 
+-	for (m = match;
+-	     m->vendor | m->family | m->model | m->steppings | m->feature;
+-	     m++) {
++	for (m = match; m->flags & X86_CPU_ID_FLAG_ENTRY_VALID; m++) {
+ 		if (m->vendor != X86_VENDOR_ANY && c->x86_vendor != m->vendor)
+ 			continue;
+ 		if (m->family != X86_FAMILY_ANY && c->x86 != m->family)
+diff --git a/include/linux/mod_devicetable.h b/include/linux/mod_devicetable.h
+index 5b08a473cdba4..18be4459aaf72 100644
+--- a/include/linux/mod_devicetable.h
++++ b/include/linux/mod_devicetable.h
+@@ -669,6 +669,8 @@ struct x86_cpu_id {
+ 	__u16 model;
+ 	__u16 steppings;
+ 	__u16 feature;	/* bit index */
++	/* Solely for kernel-internal use: DO NOT EXPORT to userspace! */
++	__u16 flags;
+ 	kernel_ulong_t driver_data;
+ };
+ 
 -- 
 2.43.0
 
