@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-57283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EEEB925C30
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:15:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2034C925D61
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:28:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D20BE2925F9
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C06D61F252D4
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F211197A61;
-	Wed,  3 Jul 2024 11:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7CF181CE6;
+	Wed,  3 Jul 2024 11:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXpjPXy2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XtXzs5uk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15A7197559;
-	Wed,  3 Jul 2024 11:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECEA181B9A;
+	Wed,  3 Jul 2024 11:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004413; cv=none; b=Km9FeOzASrLf25e9fdjbbVDMi3EpkpW7Z300Pmg/qBx2Ukb46VR+m76vHnZBGlFdGyR7NZRIVc0dRyqSPHq4kBthYCCHJSXKJW62RsCDOVNIh0e1ouviyOKJuSRtcvaw8mQhCH4Yssr8RxCtkHEHum4zLtSfXSXNMXyCiuN3RsM=
+	t=1720005523; cv=none; b=kkIsCq6EiS3pl47JoHgTTh32gu/aWr2Sg/YuX8KIvPZRSLoM85PfHkAKghHCWGAQNsw+agkvFlKnL1Uk6xJqqqucK4dDDYw+qE5N2tqu4tXggQLCF/doZRz6YxDMx9V11+NQGG5tyPkFGdDyki+vpf/FqzHotaORkMgw1OITS0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004413; c=relaxed/simple;
-	bh=qQBRK5orJOaasjtacMavLvQHoa8edKm7vmQokHLXhsM=;
+	s=arc-20240116; t=1720005523; c=relaxed/simple;
+	bh=+R4bSm6t3WnrSHDiAI8K3HDiCVZ6324rSTejLVM3OVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O7rciM2mnpY78JMAf4hyrrsZmgkoHkxrjRPiBY0JuGCjuyIuhOyTxZJPr2YrRaxO1SIKTSDQyKpmlsc+WseAVBGjf1Yq5YMqpCl/Rschb68m/DYweCMSpZ7bzGIPcjk022I6wTozKwplIMtNHDBx1ki+85vwp4bu4cmOMl245fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXpjPXy2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE2AC32781;
-	Wed,  3 Jul 2024 11:00:11 +0000 (UTC)
+	 MIME-Version; b=qZwDuE5mhI5F2hj9xFAPRIRD9z01a2zSls7hxILe6Atee03VQPYPDxdd0MJifeT9CsPo/DOQB7Pxxa/9nFdbWu2JChqG+QLpIMMTztANBTUK2zhAT9Q3mdi7p661PPagI/5elIpxcNRCnMr+3xeciVEqCmkshDn6WZMrcUpGCo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XtXzs5uk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722F1C4AF0B;
+	Wed,  3 Jul 2024 11:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004412;
-	bh=qQBRK5orJOaasjtacMavLvQHoa8edKm7vmQokHLXhsM=;
+	s=korg; t=1720005522;
+	bh=+R4bSm6t3WnrSHDiAI8K3HDiCVZ6324rSTejLVM3OVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eXpjPXy2y5vsa2zNIhjj2XGPxsjH2eNmoFYG/QskoWdavYNOBn3jM85z88G9aef1B
-	 50PUpOfQ7WV7802OJ2N5CcSp2aJRJZEmI38rhrmyqmo/kJM88IW1XWOGdptT+vYngg
-	 PqKLBBgl1d1xah5XHFoRG/ZCxeMJVLirnoJqmSUk=
+	b=XtXzs5ukdvAQVgMSGLHcolTfzGgSNDXGMtOj18ZHMoNBkMafkpZMT0PX6aGaCZO36
+	 3R+0PXm16z5R/3lVKt71JdXRtnDMIi706syghFlYY9Uaob8Mi+sSAwvHHdBKJhtjSX
+	 wv9e+tQ8v4moblCj15ZkiquwqZCQpPLTv1IE1BHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dev Jain <dev.jain@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Sri Jayaramappa <sjayaram@akamai.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 034/290] selftests/mm: compaction_test: fix incorrect write of zero to nr_hugepages
+	Kuangyi Chiang <ki.chiang65@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.15 079/356] xhci: Apply reset resume quirk to Etron EJ188 xHCI host
 Date: Wed,  3 Jul 2024 12:36:55 +0200
-Message-ID: <20240703102905.486816193@linuxfoundation.org>
+Message-ID: <20240703102916.093281136@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dev Jain <dev.jain@arm.com>
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
 
-[ Upstream commit 9ad665ef55eaad1ead1406a58a34f615a7c18b5e ]
+commit 17bd54555c2aaecfdb38e2734149f684a73fa584 upstream.
 
-Currently, the test tries to set nr_hugepages to zero, but that is not
-actually done because the file offset is not reset after read().  Fix that
-using lseek().
+As described in commit c877b3b2ad5c ("xhci: Add reset on resume quirk for
+asrock p67 host"), EJ188 have the same issue as EJ168, where completely
+dies on resume. So apply XHCI_RESET_ON_RESUME quirk to EJ188 as well.
 
-Link: https://lkml.kernel.org/r/20240521074358.675031-3-dev.jain@arm.com
-Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Cc: <stable@vger.kernel.org>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Sri Jayaramappa <sjayaram@akamai.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240611120610.3264502-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/vm/compaction_test.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/host/xhci-pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/vm/compaction_test.c b/tools/testing/selftests/vm/compaction_test.c
-index 9b420140ba2ba..55dec92e1e58c 100644
---- a/tools/testing/selftests/vm/compaction_test.c
-+++ b/tools/testing/selftests/vm/compaction_test.c
-@@ -103,6 +103,8 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
- 		goto close_fd;
- 	}
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -36,6 +36,7 @@
  
-+	lseek(fd, 0, SEEK_SET);
+ #define PCI_VENDOR_ID_ETRON		0x1b6f
+ #define PCI_DEVICE_ID_EJ168		0x7023
++#define PCI_DEVICE_ID_EJ188		0x7052
+ 
+ #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI	0x8c31
+ #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI	0x9c31
+@@ -276,6 +277,10 @@ static void xhci_pci_quirks(struct devic
+ 		xhci->quirks |= XHCI_TRUST_TX_LENGTH;
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+ 	}
++	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
++			pdev->device == PCI_DEVICE_ID_EJ188)
++		xhci->quirks |= XHCI_RESET_ON_RESUME;
 +
- 	/* Start with the initial condition of 0 huge pages*/
- 	if (write(fd, "0", sizeof(char)) != sizeof(char)) {
- 		perror("Failed to write 0 to /proc/sys/vm/nr_hugepages\n");
--- 
-2.43.0
-
+ 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
+ 	    pdev->device == 0x0014) {
+ 		xhci->quirks |= XHCI_TRUST_TX_LENGTH;
 
 
 
