@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-57801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D94CE925E13
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:34:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FAAC925CA0
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 170541C24B10
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:34:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBADE1F20F7F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD18A17B409;
-	Wed,  3 Jul 2024 11:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8927B186285;
+	Wed,  3 Jul 2024 11:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DBhI8tpY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/08tv5z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB8617B404;
-	Wed,  3 Jul 2024 11:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48267185E7A;
+	Wed,  3 Jul 2024 11:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005974; cv=none; b=jG0FnfPZiwO68sQcy2q0gRXrbTmE2eFMU5pSe1v4ySpBLPIF/I75JwTjxPuciSoc2W6wo/WzPyhifgoWaG3JpIhIv1y17O+lVsEmZ+IT7fWAjMI9MENZ8J8qvFrCQCUJ9V33Jj6bKam4PSgwgCUp26SoBp8Zy09G8xA+SFWjgII=
+	t=1720004962; cv=none; b=K1zMXLjJ0LEcFhvrm2W3NTI4/v4D9EZ+mgqCwYM/MoA5PuvnPgJqa7UVr1mfTsy+duJzL+WinRvXEVrYq/8uQF0YHhpG/ClLzGjF46OsATcX2D3/ntqbLvMYdx7pzrzM0SIXD6dR9nTdXaSmpr3q4K1M0L4fAY6qfI8TJ2++AYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005974; c=relaxed/simple;
-	bh=W4qNDTKHAOF140uf3BpTYvmDc9PV5KOlzkln9Tmbu0A=;
+	s=arc-20240116; t=1720004962; c=relaxed/simple;
+	bh=gOBTAZ56Fc5AKFv4NNHorWuWuKdA3Ist3bDdJNCjQwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pGTrSZ71Bf6coMmioW0VKfyfsEhlkTVahuWGOmV7k/Gv/jw5ib6i2Y3tDlWWrrBxKD6Bii6+t9fuqPAV8JryxoeM4EX1G3GEpJqjWRTCbMiIGSul4KIfEKdEoI3OaY33PneCWrzEMt8Ja/Uh7N82YAvkBEV/UcE0aAXyJCBD79g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DBhI8tpY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A75C2BD10;
-	Wed,  3 Jul 2024 11:26:13 +0000 (UTC)
+	 MIME-Version; b=XK6rG/Y2K28SwywprwA+54SZcTirkkaEMuWjx+Ceu8ilmm5QzfZLW6qR0XUc+AQvZn5R+tmqR1yCtAs7CSU4TwyoYLNYDJNxkLZmjZ7wqOFzQZiip9MxxJqQycJx2mGwJnRCWh4Y1Dm+eASk79gbl2H+WoHYacCVk/Ec22L9Tg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/08tv5z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E26C2BD10;
+	Wed,  3 Jul 2024 11:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005974;
-	bh=W4qNDTKHAOF140uf3BpTYvmDc9PV5KOlzkln9Tmbu0A=;
+	s=korg; t=1720004962;
+	bh=gOBTAZ56Fc5AKFv4NNHorWuWuKdA3Ist3bDdJNCjQwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DBhI8tpY5LLBQw6YWth66K3r5LaYPS0oF3WkbDq5F7pTvuCuM8R0HCRTJc5udWi0I
-	 TmRnai3PZ8GxOxCKECSyARxT2ZVrFMiOB9sgxKaMqvR3k1+shGaD4tdVnzKV/4SYkE
-	 0en1R7p7GIgVoPhEVhHDDPvkxpcKVUQAgvHWaUsQ=
+	b=z/08tv5z3HwvxZGbfUyWDgTfKVqxoyWjKjmPCi076IIB+WGmlGfn2+SLQSNwjtqJT
+	 1/erKuymh2polmBJzZNRHEjG3i2+6OsdhI/AjGVi1kJQNskg5oBHe6hIf5DsJnvAfi
+	 ykVrrOj9uCpNqfmr5SbjI9Vevf4fpoc0YOmJ2uLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shailend Chand <shailend@google.com>,
-	Ziwei Xiao <ziweixiao@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 259/356] gve: Clear napi->skb before dev_kfree_skb_any()
+Subject: [PATCH 5.10 214/290] SUNRPC: Fix a NULL pointer deref in trace_svc_stats_latency()
 Date: Wed,  3 Jul 2024 12:39:55 +0200
-Message-ID: <20240703102922.915220386@linuxfoundation.org>
+Message-ID: <20240703102912.242666945@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +61,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziwei Xiao <ziweixiao@google.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 6f4d93b78ade0a4c2cafd587f7b429ce95abb02e ]
+[ Upstream commit 5c11720767f70d34357d00a15ba5a0ad052c40fe ]
 
-gve_rx_free_skb incorrectly leaves napi->skb referencing an skb after it
-is freed with dev_kfree_skb_any(). This can result in a subsequent call
-to napi_get_frags returning a dangling pointer.
+Some paths through svc_process() leave rqst->rq_procinfo set to
+NULL, which triggers a crash if tracing happens to be enabled.
 
-Fix this by clearing napi->skb before the skb is freed.
-
-Fixes: 9b8dd5e5ea48 ("gve: DQO: Add RX path")
-Cc: stable@vger.kernel.org
-Reported-by: Shailend Chand <shailend@google.com>
-Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
-Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Reviewed-by: Shailend Chand <shailend@google.com>
-Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Link: https://lore.kernel.org/r/20240612001654.923887-1-ziweixiao@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 89ff87494c6e ("SUNRPC: Display RPC procedure names instead of proc numbers")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_rx_dqo.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ include/linux/sunrpc/svc.h    |  1 +
+ include/trace/events/sunrpc.h |  8 ++++----
+ net/sunrpc/svc.c              | 15 +++++++++++++++
+ 3 files changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-index 630f42a3037b0..8756f9cbd631e 100644
---- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-@@ -465,11 +465,13 @@ static void gve_rx_skb_hash(struct sk_buff *skb,
- 	skb_set_hash(skb, le32_to_cpu(compl_desc->hash), hash_type);
+diff --git a/include/linux/sunrpc/svc.h b/include/linux/sunrpc/svc.h
+index 1cf7a7799cc04..8583825c4aea2 100644
+--- a/include/linux/sunrpc/svc.h
++++ b/include/linux/sunrpc/svc.h
+@@ -498,6 +498,7 @@ void		   svc_wake_up(struct svc_serv *);
+ void		   svc_reserve(struct svc_rqst *rqstp, int space);
+ struct svc_pool *  svc_pool_for_cpu(struct svc_serv *serv, int cpu);
+ char *		   svc_print_addr(struct svc_rqst *, char *, size_t);
++const char *	   svc_proc_name(const struct svc_rqst *rqstp);
+ int		   svc_encode_result_payload(struct svc_rqst *rqstp,
+ 					     unsigned int offset,
+ 					     unsigned int length);
+diff --git a/include/trace/events/sunrpc.h b/include/trace/events/sunrpc.h
+index 56e4a57d25382..5d34deca0f300 100644
+--- a/include/trace/events/sunrpc.h
++++ b/include/trace/events/sunrpc.h
+@@ -1578,7 +1578,7 @@ TRACE_EVENT(svc_process,
+ 		__field(u32, vers)
+ 		__field(u32, proc)
+ 		__string(service, name)
+-		__string(procedure, rqst->rq_procinfo->pc_name)
++		__string(procedure, svc_proc_name(rqst))
+ 		__string(addr, rqst->rq_xprt ?
+ 			 rqst->rq_xprt->xpt_remotebuf : "(null)")
+ 	),
+@@ -1588,7 +1588,7 @@ TRACE_EVENT(svc_process,
+ 		__entry->vers = rqst->rq_vers;
+ 		__entry->proc = rqst->rq_proc;
+ 		__assign_str(service, name);
+-		__assign_str(procedure, rqst->rq_procinfo->pc_name);
++		__assign_str(procedure, svc_proc_name(rqst));
+ 		__assign_str(addr, rqst->rq_xprt ?
+ 			     rqst->rq_xprt->xpt_remotebuf : "(null)");
+ 	),
+@@ -1854,7 +1854,7 @@ TRACE_EVENT(svc_stats_latency,
+ 	TP_STRUCT__entry(
+ 		__field(u32, xid)
+ 		__field(unsigned long, execute)
+-		__string(procedure, rqst->rq_procinfo->pc_name)
++		__string(procedure, svc_proc_name(rqst))
+ 		__string(addr, rqst->rq_xprt->xpt_remotebuf)
+ 	),
+ 
+@@ -1862,7 +1862,7 @@ TRACE_EVENT(svc_stats_latency,
+ 		__entry->xid = be32_to_cpu(rqst->rq_xid);
+ 		__entry->execute = ktime_to_us(ktime_sub(ktime_get(),
+ 							 rqst->rq_stime));
+-		__assign_str(procedure, rqst->rq_procinfo->pc_name);
++		__assign_str(procedure, svc_proc_name(rqst));
+ 		__assign_str(addr, rqst->rq_xprt->xpt_remotebuf);
+ 	),
+ 
+diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
+index ac7b3a93d9920..f8815ae776e68 100644
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -1612,6 +1612,21 @@ u32 svc_max_payload(const struct svc_rqst *rqstp)
  }
+ EXPORT_SYMBOL_GPL(svc_max_payload);
  
--static void gve_rx_free_skb(struct gve_rx_ring *rx)
-+static void gve_rx_free_skb(struct napi_struct *napi, struct gve_rx_ring *rx)
- {
- 	if (!rx->ctx.skb_head)
- 		return;
- 
-+	if (rx->ctx.skb_head == napi->skb)
-+		napi->skb = NULL;
- 	dev_kfree_skb_any(rx->ctx.skb_head);
- 	rx->ctx.skb_head = NULL;
- 	rx->ctx.skb_tail = NULL;
-@@ -690,7 +692,7 @@ int gve_rx_poll_dqo(struct gve_notify_block *block, int budget)
- 
- 		err = gve_rx_dqo(napi, rx, compl_desc, rx->q_num);
- 		if (err < 0) {
--			gve_rx_free_skb(rx);
-+			gve_rx_free_skb(napi, rx);
- 			u64_stats_update_begin(&rx->statss);
- 			if (err == -ENOMEM)
- 				rx->rx_skb_alloc_fail++;
-@@ -733,7 +735,7 @@ int gve_rx_poll_dqo(struct gve_notify_block *block, int budget)
- 
- 		/* gve_rx_complete_skb() will consume skb if successful */
- 		if (gve_rx_complete_skb(rx, napi, compl_desc, feat) != 0) {
--			gve_rx_free_skb(rx);
-+			gve_rx_free_skb(napi, rx);
- 			u64_stats_update_begin(&rx->statss);
- 			rx->rx_desc_err_dropped_pkt++;
- 			u64_stats_update_end(&rx->statss);
++/**
++ * svc_proc_name - Return RPC procedure name in string form
++ * @rqstp: svc_rqst to operate on
++ *
++ * Return value:
++ *   Pointer to a NUL-terminated string
++ */
++const char *svc_proc_name(const struct svc_rqst *rqstp)
++{
++	if (rqstp && rqstp->rq_procinfo)
++		return rqstp->rq_procinfo->pc_name;
++	return "unknown";
++}
++
++
+ /**
+  * svc_encode_result_payload - mark a range of bytes as a result payload
+  * @rqstp: svc_rqst to operate on
 -- 
 2.43.0
 
