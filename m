@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-56995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1F36925A1B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:54:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2DFA925B34
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:06:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D289B1C25F3F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:54:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 989D91F22634
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEDB6183090;
-	Wed,  3 Jul 2024 10:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E184C18307D;
+	Wed,  3 Jul 2024 10:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xAnF5m2e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8CAEkED"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8E2137910;
-	Wed,  3 Jul 2024 10:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A050A1741CE;
+	Wed,  3 Jul 2024 10:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003520; cv=none; b=jhENeuMPjb5++ZY/pL+kvX8aUxx29CEcFbBtgvoCmN0DecYBsbb3CyFWQzp/inukh4roXUF0s/9i7lZP4QhipQG9qcC9KzaF8jONMD6Wow39rZNtBCcxEpCn4fIp/kzUBXtAC2K3M4WZyjWCpUyyqt9Rj5avJsIQiHQqbfn2xKY=
+	t=1720004063; cv=none; b=B3cG6N+grCbKV48BlLUQ5zEI3kW4A+/v5pMZmONNXOL79GvYv219enqtqJOgJXV0PPs77kic/U+ZU8wxFFGKbhqGZUlWewwJ/a31xGEpqj1bmoQDwxsExYxTTlbnA51WsX7UxtIzDswdk7Cs/D2TszjYkd/YrkW8iXCSHqyZFgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003520; c=relaxed/simple;
-	bh=8/QtBQpTN7q3BdMuBKEJn86BbMAo1iXxTPM3xjAXabc=;
+	s=arc-20240116; t=1720004063; c=relaxed/simple;
+	bh=HMHf29gYUhspBqGBd6RFObOyQI5lX3EC+NkFYobYMFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ll1f9V3sKK75ZKQZ+TCrX9LE6Zm1aSGn5yGNFTUCBUf94/QdVJgdnzJM99YIJE4yxEdqfB58Xl77Ui7a8dlB0bwn/hiTTP+bYerIbg61KF4ERV0ENCDjVRBnBd7a2PPSremM4uEw/OvmUalpwnesgBNawjLjadV6mORA9cPaP6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xAnF5m2e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E54D0C2BD10;
-	Wed,  3 Jul 2024 10:45:19 +0000 (UTC)
+	 MIME-Version; b=PzlfHfU/fz1yYkHyRk22SwHiljMbDr91C/Y/zLDLn3uBSYM3oAYiD6jRjZMsJsevtANTRUEKD8hdZdELYtEXSH3QQaMN9dQvj3T0sp6yc3PMGVukydSCmfy5gaIPTGcDNa0uLpJrZq7llUQaNGKN/vOqr9PiyzH2EujwcE2UbEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8CAEkED; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3FCC2BD10;
+	Wed,  3 Jul 2024 10:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003520;
-	bh=8/QtBQpTN7q3BdMuBKEJn86BbMAo1iXxTPM3xjAXabc=;
+	s=korg; t=1720004063;
+	bh=HMHf29gYUhspBqGBd6RFObOyQI5lX3EC+NkFYobYMFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xAnF5m2eVwYuxG1d2/6FPg07UAVc6ErumXtHrJzALSPvc+9eve4bt6/nQNiMPJZ3W
-	 KIqhokU4TxT6QwkU9FahPOu71LL/UjX5VR8/VT2KptcfxmH8VxRTSu/yp4x4gbRe7E
-	 9aLAtE3ymhAU6V/x0wonxDnrren576omWEffF/cg=
+	b=n8CAEkEDnu3up7/ZGfyIo6JdZOv/DNv7K4jR5ESuCQNrBr6bl3yIX6bG7kDj64vqp
+	 9IPywgMaFogIB6QaGNCKINhANgiAeKf+ll9aEhIk8u85CEByV/UkjdbtdX9Iib2rYT
+	 PhTY65MsLu1iae3C39JLyvxyOVe7Ljo7Xr4IKa88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jason Wang <jasowang@redhat.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 075/139] virtio_net: checksum offloading handling fix
+Subject: [PATCH 5.4 111/189] virtio_net: checksum offloading handling fix
 Date: Wed,  3 Jul 2024 12:39:32 +0200
-Message-ID: <20240703102833.273805803@linuxfoundation.org>
+Message-ID: <20240703102845.690648375@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -98,12 +98,14 @@ Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/virtio_net.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 4faf3275b1f61..ef8770093c48c 100644
 --- a/drivers/net/virtio_net.c
 +++ b/drivers/net/virtio_net.c
-@@ -3020,8 +3020,15 @@ static int virtnet_probe(struct virtio_d
+@@ -3157,8 +3157,16 @@ static int virtnet_probe(struct virtio_device *vdev)
  			dev->features |= dev->hw_features & NETIF_F_ALL_TSO;
  		/* (!csum && gso) case will be fixed by register_netdev() */
  	}
@@ -118,9 +120,13 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
 +	 * validating these packets' checksums, so the driver won't have to.
 +	 */
 +	dev->features |= NETIF_F_RXCSUM;
- 
- 	dev->vlan_features = dev->features;
- 
++
+ 	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_TSO4) ||
+ 	    virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_TSO6))
+ 		dev->features |= NETIF_F_GRO_HW;
+-- 
+2.43.0
+
 
 
 
