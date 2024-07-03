@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2A09925E80
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:37:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35817925CD0
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 109FD1C23F12
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:37:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3A8C2C46EA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2EB18307C;
-	Wed,  3 Jul 2024 11:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBE4194A63;
+	Wed,  3 Jul 2024 11:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQBUJnj0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzo6tl5V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA24183076;
-	Wed,  3 Jul 2024 11:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D717188CDA;
+	Wed,  3 Jul 2024 11:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006241; cv=none; b=KhaAHEEZtH4ial5ck+qm+Xb4f53HuLpvbj164gn0DHySDWm2jrJWMaHFbkPoyQKRFzZ+G+baYme9FJUTfw5462yRSLWBAJm0KQvO6aj4m6PVsIlvAOh5y8/eUPp2TuS9NlHN1UV7niO28LHVyAWwVSugon8InLE0BOcggO2Z/IQ=
+	t=1720005129; cv=none; b=NrOR1E8SoqkT7IQAdDu4YCvA8dSdVguvBJ5Y+itdyAoe8VfJnIKoYuKHH4TSRA2TSeHeYXcVasfdxFCWk6CY1NxukdNxIB8lpaQwB+76EoD3Xsg7qGf8JijaRAQUGW8nIQpLgkEAPbHuzb3TOvsQF+mnAGxQfsDuO3LT2AQOtLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006241; c=relaxed/simple;
-	bh=hj9+RgJqKZcZaXd30CWq1q7WpLdKu6L2QNT+QXfMzxw=;
+	s=arc-20240116; t=1720005129; c=relaxed/simple;
+	bh=i6GBEmwuFqdZtFeb7iwHVpoCvdnY1YKYhSn95cmb4KM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h0o5T2qZZF5hSGi4rH45dbN87vVxjSk4JTgDmHHdu2o7b7Rd7OgkzxAfRkFH5OaLj7YrZEljuYUCe7Fb12a/wdgha4F+wukKFwshXCWy0EGbq89Ns3CLB36vSnRt8JTet1ntZbJtMCn29cs1mYem3kvEHlkRaGkRhRFcle1H5to=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQBUJnj0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B63C2BD10;
-	Wed,  3 Jul 2024 11:30:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=h312dXINH50RM1voUJCmiaXRk96qjJwlXpEDAItdB09JnC8mc5QjB8XF7ZtGhl7ffOgNmMu//f3D/R1I1yTGOZOxH1ra2g8tM/U9+HdGqd/i+en1GZi6kxP4MpENhI7Kwol7l5tmdTxRgKJLcnFhXYCdDj8SK6ZWXOOnCBRK4y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzo6tl5V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5792C4AF0D;
+	Wed,  3 Jul 2024 11:12:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006241;
-	bh=hj9+RgJqKZcZaXd30CWq1q7WpLdKu6L2QNT+QXfMzxw=;
+	s=korg; t=1720005129;
+	bh=i6GBEmwuFqdZtFeb7iwHVpoCvdnY1YKYhSn95cmb4KM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EQBUJnj0N3Lakj0h+cP4tBGsSHglwVhlgpoHJSKU+tF9ktNxewAWcM230k8pw2QVv
-	 XXZvqMfweXFJhauIfHCm0bVUuGXUbBOIpjJ25oC+0WJVt4UwXAb5g+seXjOcShChyN
-	 Zg1bktH3YEd7nMwAGT05/klgJGF3P8ilNoyW7bhk=
+	b=tzo6tl5VR1pjevCIZihc/XDzZ/krBLTdTIeclcPBa5t0WKxLd9+U9wC/VoCTZyaT7
+	 lJJsiRxfyyChgCzD/COtsZvQy3mxIflCIEB2yy+6nsdR5f3+gbs/NQJHMKW6Xe9MQM
+	 4HGCRKPKOsrl59pl1jEd+D13zETASELI6u/glzZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 316/356] net: usb: ax88179_178a: improve link status logs
+	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 5.10 271/290] batman-adv: Dont accept TT entries for out-of-spec VIDs
 Date: Wed,  3 Jul 2024 12:40:52 +0200
-Message-ID: <20240703102925.071562001@linuxfoundation.org>
+Message-ID: <20240703102914.387867455@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +60,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 058722ee350c0bdd664e467156feb2bf5d9cc271 upstream.
+commit 537a350d14321c8cca5efbf0a33a404fec3a9f9e upstream.
 
-Avoid spurious link status logs that may ultimately be wrong; for example,
-if the link is set to down with the cable plugged, then the cable is
-unplugged and after this the link is set to up, the last new log that is
-appearing is incorrectly telling that the link is up.
+The internal handling of VLAN IDs in batman-adv is only specified for
+following encodings:
 
-In order to avoid errors, show link status logs after link_reset
-processing, and in order to avoid spurious as much as possible, only show
-the link loss when some link status change is detected.
+* VLAN is used
+  - bit 15 is 1
+  - bit 11 - bit 0 is the VLAN ID (0-4095)
+  - remaining bits are 0
+* No VLAN is used
+  - bit 15 is 0
+  - remaining bits are 0
 
-cc: stable@vger.kernel.org
-Fixes: e2ca90c276e1 ("ax88179_178a: ASIX AX88179_178A USB 3.0/2.0 to gigabit ethernet adapter driver")
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+batman-adv was only preparing new translation table entries (based on its
+soft interface information) using this encoding format. But the receive
+path was never checking if entries in the roam or TT TVLVs were also
+following this encoding.
+
+It was therefore possible to create more than the expected maximum of 4096
++ 1 entries in the originator VLAN list. Simply by setting the "remaining
+bits" to "random" values in corresponding TVLV.
+
+Cc: stable@vger.kernel.org
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+Reported-by: Linus Lüssing <linus.luessing@c0d3.blue>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/ax88179_178a.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/batman-adv/originator.c |   27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -326,7 +326,8 @@ static void ax88179_status(struct usbnet
- 
- 	if (netif_carrier_ok(dev->net) != link) {
- 		usbnet_link_change(dev, link, 1);
--		netdev_info(dev->net, "ax88179 - Link status is: %d\n", link);
-+		if (!link)
-+			netdev_info(dev->net, "ax88179 - Link status is: 0\n");
- 	}
+--- a/net/batman-adv/originator.c
++++ b/net/batman-adv/originator.c
+@@ -11,6 +11,7 @@
+ #include <linux/errno.h>
+ #include <linux/etherdevice.h>
+ #include <linux/gfp.h>
++#include <linux/if_vlan.h>
+ #include <linux/jiffies.h>
+ #include <linux/kernel.h>
+ #include <linux/kref.h>
+@@ -133,6 +134,29 @@ batadv_orig_node_vlan_get(struct batadv_
  }
  
-@@ -1558,6 +1559,7 @@ static int ax88179_link_reset(struct usb
- 			 GMII_PHY_PHYSR, 2, &tmp16);
- 
- 	if (!(tmp16 & GMII_PHY_PHYSR_LINK)) {
-+		netdev_info(dev->net, "ax88179 - Link status is: 0\n");
- 		return 0;
- 	} else if (GMII_PHY_PHYSR_GIGA == (tmp16 & GMII_PHY_PHYSR_SMASK)) {
- 		mode |= AX_MEDIUM_GIGAMODE | AX_MEDIUM_EN_125MHZ;
-@@ -1595,6 +1597,8 @@ static int ax88179_link_reset(struct usb
- 
- 	netif_carrier_on(dev->net);
- 
-+	netdev_info(dev->net, "ax88179 - Link status is: 1\n");
+ /**
++ * batadv_vlan_id_valid() - check if vlan id is in valid batman-adv encoding
++ * @vid: the VLAN identifier
++ *
++ * Return: true when either no vlan is set or if VLAN is in correct range,
++ *  false otherwise
++ */
++static bool batadv_vlan_id_valid(unsigned short vid)
++{
++	unsigned short non_vlan = vid & ~(BATADV_VLAN_HAS_TAG | VLAN_VID_MASK);
 +
- 	return 0;
- }
++	if (vid == 0)
++		return true;
++
++	if (!(vid & BATADV_VLAN_HAS_TAG))
++		return false;
++
++	if (non_vlan)
++		return false;
++
++	return true;
++}
++
++/**
+  * batadv_orig_node_vlan_new() - search and possibly create an orig_node_vlan
+  *  object
+  * @orig_node: the originator serving the VLAN
+@@ -150,6 +174,9 @@ batadv_orig_node_vlan_new(struct batadv_
+ {
+ 	struct batadv_orig_node_vlan *vlan;
  
++	if (!batadv_vlan_id_valid(vid))
++		return NULL;
++
+ 	spin_lock_bh(&orig_node->vlan_list_lock);
+ 
+ 	/* first look if an object for this vid already exists */
 
 
 
