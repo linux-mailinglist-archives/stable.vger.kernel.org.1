@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 728BB925CED
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:24:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92B3D925E9D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:38:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F0A828E77E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:24:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63975295307
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF5918F2E6;
-	Wed,  3 Jul 2024 11:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0575317DA36;
+	Wed,  3 Jul 2024 11:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vR4dISVc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lE6QaHpz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A10143879;
-	Wed,  3 Jul 2024 11:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B924B7CF1F;
+	Wed,  3 Jul 2024 11:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005209; cv=none; b=qxSuF5QTRN3pkIQJogeEnDy4/2qstFJFwCQHGCB9jpZXIOI5k8230Z4gRCLDdZ5wEC1WqbZuSk785FAl0RWH4oiYbvoyYA4XZAX150Ea+e3f0rKv4LU1rrneNmVeWjY0m9M0Gx1/rnBqmMZvjYAa183U3qEHbbuwMCO0I+SlTtE=
+	t=1720006126; cv=none; b=NdzPzjS41z3IA0Fwz++wJj5f4J1C76ILm7sy27771inXcVA5U2F8njXrkbKoKrXvtKwQPd8+4Tow+0Voau6Tcg0GWaJ3Oalzy+5xPOqmXmY4v+Rp9+IxLVe0C+9KdzyHokX6pD+p6GZW0kdajpA+GZzwijfh9TE/CPrBMPpryYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005209; c=relaxed/simple;
-	bh=xQghc3YpTdtudGXOEjJZJ4R6g/U2he2piomrisU/Vlo=;
+	s=arc-20240116; t=1720006126; c=relaxed/simple;
+	bh=TaV2VHwRX2Hyqr2bpvpBbvXUXe/bYULoVYogMLlNCw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bFMbkoSyo0xi6psnsBttqvfDQeW7vhSSO9jn6wUVPHRlkQHhXNGcflWK1uzLLIT9jAXiSfbo7aVQUWuBaJwdL0Y/lP0MeYfEYunpaMfXh2vTD1yByZqCMnEbgy1ssxa7cpOPrJFLucLRCZDRCvTyXxsU7yvMSI4oNWeSGSfN+Rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vR4dISVc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0F0C2BD10;
-	Wed,  3 Jul 2024 11:13:28 +0000 (UTC)
+	 MIME-Version; b=np6vobDxu21ySH5lDMbY4MRphhA417A19JkxdBk9lYSWQ+ovFwhTjEOPDp8Y1ynK8OxA4qMJOU+9TliUfnNVnuU2GPYJHRSyehpEOJ05XFJQIFgKmsC1B9AKp7A/n2ydc8ZklTyxBqZaFR5xRKzB4syg0OCIzb+Y5HCbDUQcifk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lE6QaHpz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356B0C2BD10;
+	Wed,  3 Jul 2024 11:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005209;
-	bh=xQghc3YpTdtudGXOEjJZJ4R6g/U2he2piomrisU/Vlo=;
+	s=korg; t=1720006126;
+	bh=TaV2VHwRX2Hyqr2bpvpBbvXUXe/bYULoVYogMLlNCw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vR4dISVcbs3dXrHnLdyeu+Z/SsSvLbwgSDZ6HW87VzSB0GFhLAz9paEd2XPptIKmS
-	 S+vu7px0ACxJ2iwKKAWdRvBtBFa44WqPP7ovJUmMI4WVrF6iriOiDHUnAgmoiUwxcr
-	 hXTNGDwm6kIO1/i1yyJ5Pd5+U+39IozS9N5LYPI8=
+	b=lE6QaHpzFgDZ3oh0VdfCfZ3Io3TAK8yK/zRpC9dpzkts6BQ3zy6V7JGACjzUKlNcm
+	 OkWFH1csjSslbisGYkfpPmRkLrQHiL1PJARgViKZYRKAHOxVzMmWNMGK15EP4g2KhU
+	 sXCjTlQ61PZzIfJ4j9HpckX+u3eyUea9MdljfBSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+daa36413a5cedf799ae4@syzkaller.appspotmail.com,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.10 263/290] net: can: j1939: enhanced error handling for tightly received RTS messages in xtp_rx_rts_session_new
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 308/356] i2c: testunit: dont erase registers after STOP
 Date: Wed,  3 Jul 2024 12:40:44 +0200
-Message-ID: <20240703102914.076932473@linuxfoundation.org>
+Message-ID: <20240703102924.766059770@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit d3e2904f71ea0fe7eaff1d68a2b0363c888ea0fb upstream.
+[ Upstream commit c422b6a630240f706063e0ecbb894aa8491b1fa1 ]
 
-This patch enhances error handling in scenarios with RTS (Request to
-Send) messages arriving closely. It replaces the less informative WARN_ON_ONCE
-backtraces with a new error handling method. This provides clearer error
-messages and allows for the early termination of problematic sessions.
-Previously, sessions were only released at the end of j1939_xtp_rx_rts().
+STOP fallsthrough to WRITE_REQUESTED but this became problematic when
+clearing the testunit registers was added to the latter. Actually, there
+is no reason to clear the testunit state after STOP. Doing it when a new
+WRITE_REQUESTED arrives is enough. So, no need to fallthrough, at all.
 
-Potentially this could be reproduced with something like:
-testj1939 -r vcan0:0x80 &
-while true; do
-	# send first RTS
-	cansend vcan0 18EC8090#1014000303002301;
-	# send second RTS
-	cansend vcan0 18EC8090#1014000303002301;
-	# send abort
-	cansend vcan0 18EC8090#ff00000000002301;
-done
-
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Reported-by: syzbot+daa36413a5cedf799ae4@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/all/20231117124959.961171-1-o.rempel@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b39ab96aa894 ("i2c: testunit: add support for block process calls")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/j1939/transport.c |   19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/i2c/i2c-slave-testunit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/can/j1939/transport.c
-+++ b/net/can/j1939/transport.c
-@@ -1577,8 +1577,8 @@ j1939_session *j1939_xtp_rx_rts_session_
- 	struct j1939_sk_buff_cb skcb = *j1939_skb_to_cb(skb);
- 	struct j1939_session *session;
- 	const u8 *dat;
-+	int len, ret;
- 	pgn_t pgn;
--	int len;
+diff --git a/drivers/i2c/i2c-slave-testunit.c b/drivers/i2c/i2c-slave-testunit.c
+index 56dae08dfd489..1beae30c418b8 100644
+--- a/drivers/i2c/i2c-slave-testunit.c
++++ b/drivers/i2c/i2c-slave-testunit.c
+@@ -118,7 +118,7 @@ static int i2c_slave_testunit_slave_cb(struct i2c_client *client,
+ 			queue_delayed_work(system_long_wq, &tu->worker,
+ 					   msecs_to_jiffies(10 * tu->regs[TU_REG_DELAY]));
+ 		}
+-		fallthrough;
++		break;
  
- 	netdev_dbg(priv->ndev, "%s\n", __func__);
- 
-@@ -1634,7 +1634,22 @@ j1939_session *j1939_xtp_rx_rts_session_
- 	session->pkt.rx = 0;
- 	session->pkt.tx = 0;
- 
--	WARN_ON_ONCE(j1939_session_activate(session));
-+	ret = j1939_session_activate(session);
-+	if (ret) {
-+		/* Entering this scope indicates an issue with the J1939 bus.
-+		 * Possible scenarios include:
-+		 * - A time lapse occurred, and a new session was initiated
-+		 *   due to another packet being sent correctly. This could
-+		 *   have been caused by too long interrupt, debugger, or being
-+		 *   out-scheduled by another task.
-+		 * - The bus is receiving numerous erroneous packets, either
-+		 *   from a malfunctioning device or during a test scenario.
-+		 */
-+		netdev_alert(priv->ndev, "%s: 0x%p: concurrent session with same addr (%02x %02x) is already active.\n",
-+			     __func__, session, skcb.addr.sa, skcb.addr.da);
-+		j1939_session_put(session);
-+		return NULL;
-+	}
- 
- 	return session;
- }
+ 	case I2C_SLAVE_WRITE_REQUESTED:
+ 		memset(tu->regs, 0, TU_NUM_REGS);
+-- 
+2.43.0
+
 
 
 
