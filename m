@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-57141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3E00925ADA
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:04:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD57C925A3C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:55:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02A291C2572D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:04:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA896295332
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C238173334;
-	Wed,  3 Jul 2024 10:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE51181B88;
+	Wed,  3 Jul 2024 10:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqfGOcBj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGCCNrER"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBC4173326;
-	Wed,  3 Jul 2024 10:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF5A173335;
+	Wed,  3 Jul 2024 10:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003972; cv=none; b=R5U5VsUVOgSgLnz7JOcSuqw5Uwe1jc4edO7RAMUNuB/iLLG0bHsx7j2coungcgMNzWBj6HUb2iKiwZEYyYctTDmgM7oQazNmqjeZoPUG0Aqcat59CFsiKdaFbRbHd9y9aAtrjRI2GUP9502dOgJ7W+zeSDadQJ2fgvAoyMKcStY=
+	t=1720003426; cv=none; b=IiQ5YwTs8Gha5qhmKygELjZvxxIHg3ceVUxKRQrQAf+xOaFQ77/hN5RcCkIJ5yFXXCN+R8Z9lm5h5Sb7rfJeNjKydl1U0GwTTsDIyq+8r2AHMS1n/oX3HSKp+6MbLrlEMZDhuGDnkYw8q+5A9oafuqEoVX5U08gQ+cwZ2jgbzfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003972; c=relaxed/simple;
-	bh=ucLTI6Qe12sIW7r63zu/Xk32GfzQEVj7/e9DQg8FxPE=;
+	s=arc-20240116; t=1720003426; c=relaxed/simple;
+	bh=/ZgZ23+gazvAgVM6GfrWauAWPuGTzO6E9ixpbR+6La4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dnf3iIJ7z6f/s7M6nxxRBOSV38mO9obmSj7KIfWJuMgIq9XFCpkghTAPR4YUrbKi/dA3Bkf0alsJz43tDhS4ms3lehF57EwAkPjlhzU4nl8QLMkLuvyx53DKwtKS48BsNfg5FnepaVXfqvuOvq+7QUpCFVHI4pffojeJ3OpD9r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqfGOcBj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706F9C2BD10;
-	Wed,  3 Jul 2024 10:52:51 +0000 (UTC)
+	 MIME-Version; b=uZ2NYHW54TWsv6zpX/utQX2jbBwJxpGeHPkSgEBotwT8nTx+YAQv4BcdtYm5KoZcic0HSPNkr1l3zmYHkuYHEete5a9ZnYv1fMbWMPwOxz9CxDQhTOpyEnOPE7t836fosxVQFdSST++30SU3Mvpa3pe5cHPL4sFqASS1/+Daf5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGCCNrER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D11C32781;
+	Wed,  3 Jul 2024 10:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003971;
-	bh=ucLTI6Qe12sIW7r63zu/Xk32GfzQEVj7/e9DQg8FxPE=;
+	s=korg; t=1720003426;
+	bh=/ZgZ23+gazvAgVM6GfrWauAWPuGTzO6E9ixpbR+6La4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iqfGOcBj2er0qd7rzqGIO4eLIOvpFWgjksuVZMwHL7frsRVnfIR9oxlS7bCINX4jf
-	 8EQ2rDUthjfuxWnds6deYcW+Q/DqDnK1Bf62pUXHEqVcEoqGAn3yK1nsVWgLq/McxF
-	 2nov5/Wf2K3I8y7CHMh5bY2TX6Ac7ug+y6SPagbQ=
+	b=MGCCNrERPCqiHAX6KmwE1qKPq9OpE5qxHVYdUBzVCi8KvqG2ThYAL5FFlntm4fgoi
+	 dVqHlXn6bqfL+xq9aIsmUCjekIl/ufF/F6SqvuV/jSqsoKnRKD1yqZcBZXYoM9DBc4
+	 IXsAogNfsOfYO19mQg1QsaK4zg5mmHJ0E0r1HXX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 081/189] nilfs2: fix potential kernel bug due to lack of writeback flag waiting
+	Jani Nikula <jani.nikula@intel.com>,
+	Inki Dae <inki.dae@samsung.com>
+Subject: [PATCH 4.19 045/139] drm/exynos/vidi: fix memory leak in .get_modes()
 Date: Wed,  3 Jul 2024 12:39:02 +0200
-Message-ID: <20240703102844.560694654@linuxfoundation.org>
+Message-ID: <20240703102832.139374767@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit a4ca369ca221bb7e06c725792ac107f0e48e82e7 upstream.
+commit 38e3825631b1f314b21e3ade00b5a4d737eb054e upstream.
 
-Destructive writes to a block device on which nilfs2 is mounted can cause
-a kernel bug in the folio/page writeback start routine or writeback end
-routine (__folio_start_writeback in the log below):
+The duplicated EDID is never freed. Fix it.
 
- kernel BUG at mm/page-writeback.c:3070!
- Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
- ...
- RIP: 0010:__folio_start_writeback+0xbaa/0x10e0
- Code: 25 ff 0f 00 00 0f 84 18 01 00 00 e8 40 ca c6 ff e9 17 f6 ff ff
-  e8 36 ca c6 ff 4c 89 f7 48 c7 c6 80 c0 12 84 e8 e7 b3 0f 00 90 <0f>
-  0b e8 1f ca c6 ff 4c 89 f7 48 c7 c6 a0 c6 12 84 e8 d0 b3 0f 00
- ...
- Call Trace:
-  <TASK>
-  nilfs_segctor_do_construct+0x4654/0x69d0 [nilfs2]
-  nilfs_segctor_construct+0x181/0x6b0 [nilfs2]
-  nilfs_segctor_thread+0x548/0x11c0 [nilfs2]
-  kthread+0x2f0/0x390
-  ret_from_fork+0x4b/0x80
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
-
-This is because when the log writer starts a writeback for segment summary
-blocks or a super root block that use the backing device's page cache, it
-does not wait for the ongoing folio/page writeback, resulting in an
-inconsistent writeback state.
-
-Fix this issue by waiting for ongoing writebacks when putting
-folios/pages on the backing device into writeback state.
-
-Link: https://lkml.kernel.org/r/20240530141556.4411-1-konishi.ryusuke@gmail.com
-Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/segment.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -1692,6 +1692,7 @@ static void nilfs_segctor_prepare_write(
- 			if (bh->b_page != bd_page) {
- 				if (bd_page) {
- 					lock_page(bd_page);
-+					wait_on_page_writeback(bd_page);
- 					clear_page_dirty_for_io(bd_page);
- 					set_page_writeback(bd_page);
- 					unlock_page(bd_page);
-@@ -1705,6 +1706,7 @@ static void nilfs_segctor_prepare_write(
- 			if (bh == segbuf->sb_super_root) {
- 				if (bh->b_page != bd_page) {
- 					lock_page(bd_page);
-+					wait_on_page_writeback(bd_page);
- 					clear_page_dirty_for_io(bd_page);
- 					set_page_writeback(bd_page);
- 					unlock_page(bd_page);
-@@ -1721,6 +1723,7 @@ static void nilfs_segctor_prepare_write(
- 	}
- 	if (bd_page) {
- 		lock_page(bd_page);
-+		wait_on_page_writeback(bd_page);
- 		clear_page_dirty_for_io(bd_page);
- 		set_page_writeback(bd_page);
- 		unlock_page(bd_page);
+--- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+@@ -302,6 +302,7 @@ static int vidi_get_modes(struct drm_con
+ 	struct vidi_context *ctx = ctx_from_connector(connector);
+ 	struct edid *edid;
+ 	int edid_len;
++	int count;
+ 
+ 	/*
+ 	 * the edid data comes from user side and it would be set
+@@ -321,7 +322,11 @@ static int vidi_get_modes(struct drm_con
+ 
+ 	drm_connector_update_edid_property(connector, edid);
+ 
+-	return drm_add_edid_modes(connector, edid);
++	count = drm_add_edid_modes(connector, edid);
++
++	kfree(edid);
++
++	return count;
+ }
+ 
+ static const struct drm_connector_helper_funcs vidi_connector_helper_funcs = {
 
 
 
