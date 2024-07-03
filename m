@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB648925C6D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:18:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03BE49259DA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:51:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8248F2C2C13
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:18:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 358711C246FB
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D67137910;
-	Wed,  3 Jul 2024 11:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11CEF61FDF;
+	Wed,  3 Jul 2024 10:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzCAuR0f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INjeWDX6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419F7181BAC;
-	Wed,  3 Jul 2024 11:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1914142E73;
+	Wed,  3 Jul 2024 10:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004795; cv=none; b=lnTIbegSLmXNRZQwOWdASicwmLLZ1UWYSzeJQ7b48PaTH1B+BZX5a45MzlH8g8F9PUvYu/E/AOwvUODKFqc2CQOPTZ7Zv8ZkHSTYQ5QZmGsznqfMeeJC9ie8/LpxtjhwRnRlbpI+Nrgq6un3ny7lGr4rPwYcWX+HAHKZlzo1arQ=
+	t=1720003355; cv=none; b=U3LnIFtYXiGnPD7pYINUmWEXiAfamY8cZ5nMlqFR/r8T2anDObZDnUHqSIOxFc3XtSxxyUjekA4kxewI+GEbG6A8fK/wYgIgBGXgGDazDkiOY/4e248mXcbwYqTYkVhgVGn8hj2hUfgYChXxs/SKh7foXmZkgAFGy6a5uJ6TylE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004795; c=relaxed/simple;
-	bh=L0DrZGEuB8RqBJeIotlN9aw9rl8GxwoOekSupNwnyUw=;
+	s=arc-20240116; t=1720003355; c=relaxed/simple;
+	bh=MYp2TcomlwbqlYZOJMGRFZyeffG9bJlbBcQP/r8L0ZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZbX2ZJ+G+MY2dN7iEFc1PkmxYIIj8zU5IYPoz9uwWlCgYx4o6Sqs953X1NMNt5AycMrXyohsoaMEGPoAp6vSbS1YeFkizBxpaX2rM0f0Q5dYi9AEnosB7rV+H41mpIxeIpjk2LeLq8YKm7r+iVQhSuI0+izdbYK/33dalUcWi2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzCAuR0f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA167C2BD10;
-	Wed,  3 Jul 2024 11:06:34 +0000 (UTC)
+	 MIME-Version; b=PAs7lLN7X1KcdI9N6LFxsMeM++ZCVxdMOXh/gD5nbseUjfhZcM8giLtH+32LI3ac3ThMtvrEbyc8JDy0z9et68/vGI7qBqNs8LRXf5FFbA7xlv2djrgulhR9EOiIeLqLFiszMFpthHHW3WEbvX7Y2LCMbe8OgIAVskyU/fDGJp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INjeWDX6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07217C2BD10;
+	Wed,  3 Jul 2024 10:42:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004795;
-	bh=L0DrZGEuB8RqBJeIotlN9aw9rl8GxwoOekSupNwnyUw=;
+	s=korg; t=1720003355;
+	bh=MYp2TcomlwbqlYZOJMGRFZyeffG9bJlbBcQP/r8L0ZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bzCAuR0fCHQV9s2Vt5t9Akq2U/75/BXQ05Vgg81LKEBvVJnYhyJ1cpIBlY4VGooZV
-	 /GWvvPMbZscivYzItQO1mho+/24R1Latwy3skSaRiYe031Wc4z50JNjeQRg7Xfg/mA
-	 80DcpSNkgWngw2PcBMXbfS/3TFydL4Bi+vAblGFc=
+	b=INjeWDX6r8Yzjd48ALaVprK1eVud0S48Jii+rHBpDrc3ugwt2+FdLN9CepgFxo/z2
+	 5a5Bs82WPPTTBXoZq/z5MRCaihP6HHhNHEk2uTlFLQKr+HDA7Je7tGX0JxlePcI8OH
+	 iWMWUSU+P/uFSdOy9bLWO8IU69eO3/Kh18B9d2os=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uri Arev <me@wantyapps.xyz>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 120/290] Bluetooth: ath3k: Fix multiple issues reported by checkpatch.pl
+Subject: [PATCH 4.19 004/139] wifi: iwlwifi: mvm: dont read past the mfuart notifcation
 Date: Wed,  3 Jul 2024 12:38:21 +0200
-Message-ID: <20240703102908.723471882@linuxfoundation.org>
+Message-ID: <20240703102830.601916515@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,192 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uri Arev <me@wantyapps.xyz>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit 68aa21054ec3a1a313af90a5f95ade16c3326d20 ]
+[ Upstream commit 4bb95f4535489ed830cf9b34b0a891e384d1aee4 ]
 
-This fixes some CHECKs reported by the checkpatch script.
+In case the firmware sends a notification that claims it has more data
+than it has, we will read past that was allocated for the notification.
+Remove the print of the buffer, we won't see it by default. If needed,
+we can see the content with tracing.
 
-Issues reported in ath3k.c:
--------
-ath3k.c
--------
-CHECK: Please don't use multiple blank lines
-+
-+
+This was reported by KFENCE.
 
-CHECK: Blank lines aren't necessary after an open brace '{'
-+static const struct usb_device_id ath3k_blist_tbl[] = {
-+
-
-CHECK: Alignment should match open parenthesis
-+static int ath3k_load_firmware(struct usb_device *udev,
-+                               const struct firmware *firmware)
-
-CHECK: Alignment should match open parenthesis
-+               err = usb_bulk_msg(udev, pipe, send_buf, size,
-+                                       &len, 3000);
-
-CHECK: Unnecessary parentheses around 'len != size'
-+               if (err || (len != size)) {
-
-CHECK: Alignment should match open parenthesis
-+static int ath3k_get_version(struct usb_device *udev,
-+                       struct ath3k_version *version)
-
-CHECK: Alignment should match open parenthesis
-+static int ath3k_load_fwfile(struct usb_device *udev,
-+               const struct firmware *firmware)
-
-CHECK: Alignment should match open parenthesis
-+               err = usb_bulk_msg(udev, pipe, send_buf, size,
-+                                       &len, 3000);
-
-CHECK: Unnecessary parentheses around 'len != size'
-+               if (err || (len != size)) {
-
-CHECK: Blank lines aren't necessary after an open brace '{'
-+       switch (fw_version.ref_clock) {
-+
-
-CHECK: Alignment should match open parenthesis
-+       snprintf(filename, ATH3K_NAME_LEN, "ar3k/ramps_0x%08x_%d%s",
-+               le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
-
-CHECK: Alignment should match open parenthesis
-+static int ath3k_probe(struct usb_interface *intf,
-+                       const struct usb_device_id *id)
-
-CHECK: Alignment should match open parenthesis
-+                       BT_ERR("Firmware file \"%s\" not found",
-+                                                       ATH3K_FIRMWARE);
-
-CHECK: Alignment should match open parenthesis
-+               BT_ERR("Firmware file \"%s\" request failed (err=%d)",
-+                                               ATH3K_FIRMWARE, ret);
-
-total: 0 errors, 0 warnings, 14 checks, 540 lines checked
-
-Signed-off-by: Uri Arev <me@wantyapps.xyz>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: bdccdb854f2f ("iwlwifi: mvm: support MFUART dump in case of MFUART assert")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240513132416.ba82a01a559e.Ia91dd20f5e1ca1ad380b95e68aebf2794f553d9b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/ath3k.c | 25 +++++++++++--------------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/drivers/bluetooth/ath3k.c b/drivers/bluetooth/ath3k.c
-index 759d7828931d9..56ada48104f0e 100644
---- a/drivers/bluetooth/ath3k.c
-+++ b/drivers/bluetooth/ath3k.c
-@@ -3,7 +3,6 @@
-  * Copyright (c) 2008-2009 Atheros Communications Inc.
-  */
- 
--
- #include <linux/module.h>
- #include <linux/kernel.h>
- #include <linux/init.h>
-@@ -129,7 +128,6 @@ MODULE_DEVICE_TABLE(usb, ath3k_table);
-  * for AR3012
-  */
- static const struct usb_device_id ath3k_blist_tbl[] = {
--
- 	/* Atheros AR3012 with sflash firmware*/
- 	{ USB_DEVICE(0x0489, 0xe04e), .driver_info = BTUSB_ATH3012 },
- 	{ USB_DEVICE(0x0489, 0xe04d), .driver_info = BTUSB_ATH3012 },
-@@ -203,7 +201,7 @@ static inline void ath3k_log_failed_loading(int err, int len, int size,
- #define TIMEGAP_USEC_MAX	100
- 
- static int ath3k_load_firmware(struct usb_device *udev,
--				const struct firmware *firmware)
-+			       const struct firmware *firmware)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index c7e2b88cd5abb..a46c731f70780 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -195,20 +195,10 @@ void iwl_mvm_mfu_assert_dump_notif(struct iwl_mvm *mvm,
  {
- 	u8 *send_buf;
- 	int len = 0;
-@@ -238,9 +236,9 @@ static int ath3k_load_firmware(struct usb_device *udev,
- 		memcpy(send_buf, firmware->data + sent, size);
+ 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
+ 	struct iwl_mfu_assert_dump_notif *mfu_dump_notif = (void *)pkt->data;
+-	__le32 *dump_data = mfu_dump_notif->data;
+-	int n_words = le32_to_cpu(mfu_dump_notif->data_size) / sizeof(__le32);
+-	int i;
  
- 		err = usb_bulk_msg(udev, pipe, send_buf, size,
--					&len, 3000);
-+				   &len, 3000);
- 
--		if (err || (len != size)) {
-+		if (err || len != size) {
- 			ath3k_log_failed_loading(err, len, size, count);
- 			goto error;
- 		}
-@@ -263,7 +261,7 @@ static int ath3k_get_state(struct usb_device *udev, unsigned char *state)
+ 	if (mfu_dump_notif->index_num == 0)
+ 		IWL_INFO(mvm, "MFUART assert id 0x%x occurred\n",
+ 			 le32_to_cpu(mfu_dump_notif->assert_id));
+-
+-	for (i = 0; i < n_words; i++)
+-		IWL_DEBUG_INFO(mvm,
+-			       "MFUART assert dump, dword %u: 0x%08x\n",
+-			       le16_to_cpu(mfu_dump_notif->index_num) *
+-			       n_words + i,
+-			       le32_to_cpu(dump_data[i]));
  }
  
- static int ath3k_get_version(struct usb_device *udev,
--			struct ath3k_version *version)
-+			     struct ath3k_version *version)
- {
- 	return usb_control_msg_recv(udev, 0, ATH3K_GETVERSION,
- 				    USB_TYPE_VENDOR | USB_DIR_IN, 0, 0,
-@@ -272,7 +270,7 @@ static int ath3k_get_version(struct usb_device *udev,
- }
- 
- static int ath3k_load_fwfile(struct usb_device *udev,
--		const struct firmware *firmware)
-+			     const struct firmware *firmware)
- {
- 	u8 *send_buf;
- 	int len = 0;
-@@ -311,8 +309,8 @@ static int ath3k_load_fwfile(struct usb_device *udev,
- 		memcpy(send_buf, firmware->data + sent, size);
- 
- 		err = usb_bulk_msg(udev, pipe, send_buf, size,
--					&len, 3000);
--		if (err || (len != size)) {
-+				   &len, 3000);
-+		if (err || len != size) {
- 			ath3k_log_failed_loading(err, len, size, count);
- 			kfree(send_buf);
- 			return err;
-@@ -426,7 +424,6 @@ static int ath3k_load_syscfg(struct usb_device *udev)
- 	}
- 
- 	switch (fw_version.ref_clock) {
--
- 	case ATH3K_XTAL_FREQ_26M:
- 		clk_value = 26;
- 		break;
-@@ -442,7 +439,7 @@ static int ath3k_load_syscfg(struct usb_device *udev)
- 	}
- 
- 	snprintf(filename, ATH3K_NAME_LEN, "ar3k/ramps_0x%08x_%d%s",
--		le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
-+		 le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
- 
- 	ret = request_firmware(&firmware, filename, &udev->dev);
- 	if (ret < 0) {
-@@ -457,7 +454,7 @@ static int ath3k_load_syscfg(struct usb_device *udev)
- }
- 
- static int ath3k_probe(struct usb_interface *intf,
--			const struct usb_device_id *id)
-+		       const struct usb_device_id *id)
- {
- 	const struct firmware *firmware;
- 	struct usb_device *udev = interface_to_usbdev(intf);
-@@ -506,10 +503,10 @@ static int ath3k_probe(struct usb_interface *intf,
- 	if (ret < 0) {
- 		if (ret == -ENOENT)
- 			BT_ERR("Firmware file \"%s\" not found",
--							ATH3K_FIRMWARE);
-+			       ATH3K_FIRMWARE);
- 		else
- 			BT_ERR("Firmware file \"%s\" request failed (err=%d)",
--							ATH3K_FIRMWARE, ret);
-+			       ATH3K_FIRMWARE, ret);
- 		return ret;
- 	}
- 
+ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
 -- 
 2.43.0
 
