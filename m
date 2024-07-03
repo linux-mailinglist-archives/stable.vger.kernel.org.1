@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-57733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC1B6925DBF
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE7D925AC1
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2980D1C20AEA
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 821171F213F3
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D96191F85;
-	Wed,  3 Jul 2024 11:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582AA17C21F;
+	Wed,  3 Jul 2024 10:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2GJ0jjQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqNJsxwR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181F1191F91;
-	Wed,  3 Jul 2024 11:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15FE3171E70;
+	Wed,  3 Jul 2024 10:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005769; cv=none; b=fwh7PN6C7Lbs8qNCMchKHubYUa/2ZyHHumLUzEAn9XO4nxepe7PQ/LAc0Nlth9LMX4dCYXOykDHMO/xp9OFaMkMrinSQ1HWgZ7HHrNq9tCBcw3Lfm10Sx8oltmoYh5G2gFusw3ie84roAAaJSC9U4HOdVrtmcj/BuEbYz5iLp9I=
+	t=1720003923; cv=none; b=b4bZllVtiCLO0NAAnLOVGn3nGYr+FkF/FSfAdrzMATYPxngRi/6IrWapv1i6xUy1Dm0kjOnhiW6dBcAaJ3kXxJUE6hhq1rzvRNNxsIN2gFBDZtAYnIMDiKRyHUaJdZ72JZlDPGd81tNQhqrYCMGBT06vKQZnGZs+ICI8lRh6Cjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005769; c=relaxed/simple;
-	bh=VgoVxbwnyORVHXOtNu168/FQ4tV+vWG9E+SBIgPB/Uk=;
+	s=arc-20240116; t=1720003923; c=relaxed/simple;
+	bh=YPbNl8aLL4TFmBZ/CdfneTja+cKoTSHE5MfU0vmeRiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fK0J5z+bkg54Jkrr/XE08irkcucsWuIPZfELia4NjW8oXq1kqKbfTCj/jX6VwzclzXKQUgrRT8G2qlxwoppVn9QAx+77CUflo1zsF8UsSI0JvFtoNyaZrXrGmQb5N9cMto9Sr+ZJd9biVb5jyUf955XcWX10ZSiy+nOENk02s8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2GJ0jjQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90490C2BD10;
-	Wed,  3 Jul 2024 11:22:48 +0000 (UTC)
+	 MIME-Version; b=AUz2M3Ch+9GVzBjpqOTp8UDxuFTwwtDmNNZMcptKZZp5lyjPVgcuUtXNjX6oG09hrMG1Dc3k4/axBM1vARjSa05lspL8Nu/xoxyD8vK96AlwxIGBkNKsyPEWBRbO8HdGN3dxET7Gce01y0vtQWcNfXdcwcOim5uw3KAceHMgFMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqNJsxwR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E9EC2BD10;
+	Wed,  3 Jul 2024 10:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005769;
-	bh=VgoVxbwnyORVHXOtNu168/FQ4tV+vWG9E+SBIgPB/Uk=;
+	s=korg; t=1720003923;
+	bh=YPbNl8aLL4TFmBZ/CdfneTja+cKoTSHE5MfU0vmeRiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2GJ0jjQI/zUQGghQR2xaTkBfBH79Qc/H/Wg9aZMz5C2/wb4gc/BhYpUwspo4zY64
-	 LYG5u3RyRQeJ70fFUYdjwA++akxamJwTyMwtDlRl+CjIBpYuCSkvp4DcTgPISxjlya
-	 Lmid5xPEnBhLsqvfhTWEyabLEwPzxN2NnFMCADjY=
+	b=mqNJsxwRLUQVn+396x2KAkwrftmIUfzVsnrpr5xIVeM1VT8IucOHeJfCDhtLDfIaY
+	 W/KxDzQMr4dhweS4LhOTJyHA+GHJylTeJLiElV3lCFSfO97BSCDNuQuwqKQi4KJsUx
+	 1OPvkkjHxyvXIAViFmlumhCxdDpRaImsJ14vtoS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 191/356] netns: Make get_net_ns() handle zero refcount net
+	stable <stable@kernel.org>,
+	syzbot+ffa8143439596313a85a@syzkaller.appspotmail.com,
+	Ashish Sangwan <a.sangwan@samsung.com>,
+	Namjae Jeon <namjae.jeon@samsung.com>,
+	Dirk Behme <dirk.behme@de.bosch.com>
+Subject: [PATCH 5.4 066/189] drivers: core: synchronize really_probe() and dev_uevent()
 Date: Wed,  3 Jul 2024 12:38:47 +0200
-Message-ID: <20240703102920.331546542@linuxfoundation.org>
+Message-ID: <20240703102843.999416951@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Dirk Behme <dirk.behme@de.bosch.com>
 
-[ Upstream commit ff960f9d3edbe08a736b5a224d91a305ccc946b0 ]
+commit c0a40097f0bc81deafc15f9195d1fb54595cd6d0 upstream.
 
-Syzkaller hit a warning:
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 3 PID: 7890 at lib/refcount.c:25 refcount_warn_saturate+0xdf/0x1d0
-Modules linked in:
-CPU: 3 PID: 7890 Comm: tun Not tainted 6.10.0-rc3-00100-gcaa4f9578aba-dirty #310
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:refcount_warn_saturate+0xdf/0x1d0
-Code: 41 49 04 31 ff 89 de e8 9f 1e cd fe 84 db 75 9c e8 76 26 cd fe c6 05 b6 41 49 04 01 90 48 c7 c7 b8 8e 25 86 e8 d2 05 b5 fe 90 <0f> 0b 90 90 e9 79 ff ff ff e8 53 26 cd fe 0f b6 1
-RSP: 0018:ffff8881067b7da0 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff811c72ac
-RDX: ffff8881026a2140 RSI: ffffffff811c72b5 RDI: 0000000000000001
-RBP: ffff8881067b7db0 R08: 0000000000000000 R09: 205b5d3730353139
-R10: 0000000000000000 R11: 205d303938375420 R12: ffff8881086500c4
-R13: ffff8881086500c4 R14: ffff8881086500b0 R15: ffff888108650040
-FS:  00007f5b2961a4c0(0000) GS:ffff88823bd00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055d7ed36fd18 CR3: 00000001482f6000 CR4: 00000000000006f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ? show_regs+0xa3/0xc0
- ? __warn+0xa5/0x1c0
- ? refcount_warn_saturate+0xdf/0x1d0
- ? report_bug+0x1fc/0x2d0
- ? refcount_warn_saturate+0xdf/0x1d0
- ? handle_bug+0xa1/0x110
- ? exc_invalid_op+0x3c/0xb0
- ? asm_exc_invalid_op+0x1f/0x30
- ? __warn_printk+0xcc/0x140
- ? __warn_printk+0xd5/0x140
- ? refcount_warn_saturate+0xdf/0x1d0
- get_net_ns+0xa4/0xc0
- ? __pfx_get_net_ns+0x10/0x10
- open_related_ns+0x5a/0x130
- __tun_chr_ioctl+0x1616/0x2370
- ? __sanitizer_cov_trace_switch+0x58/0xa0
- ? __sanitizer_cov_trace_const_cmp2+0x1c/0x30
- ? __pfx_tun_chr_ioctl+0x10/0x10
- tun_chr_ioctl+0x2f/0x40
- __x64_sys_ioctl+0x11b/0x160
- x64_sys_call+0x1211/0x20d0
- do_syscall_64+0x9e/0x1d0
+Synchronize the dev->driver usage in really_probe() and dev_uevent().
+These can run in different threads, what can result in the following
+race condition for dev->driver uninitialization:
+
+Thread #1:
+==========
+
+really_probe() {
+...
+probe_failed:
+...
+device_unbind_cleanup(dev) {
+    ...
+    dev->driver = NULL;   // <= Failed probe sets dev->driver to NULL
+    ...
+    }
+...
+}
+
+Thread #2:
+==========
+
+dev_uevent() {
+...
+if (dev->driver)
+      // If dev->driver is NULLed from really_probe() from here on,
+      // after above check, the system crashes
+      add_uevent_var(env, "DRIVER=%s", dev->driver->name);
+...
+}
+
+really_probe() holds the lock, already. So nothing needs to be done
+there. dev_uevent() is called with lock held, often, too. But not
+always. What implies that we can't add any locking in dev_uevent()
+itself. So fix this race by adding the lock to the non-protected
+path. This is the path where above race is observed:
+
+ dev_uevent+0x235/0x380
+ uevent_show+0x10c/0x1f0  <= Add lock here
+ dev_attr_show+0x3a/0xa0
+ sysfs_kf_seq_show+0x17c/0x250
+ kernfs_seq_show+0x7c/0x90
+ seq_read_iter+0x2d7/0x940
+ kernfs_fop_read_iter+0xc6/0x310
+ vfs_read+0x5bc/0x6b0
+ ksys_read+0xeb/0x1b0
+ __x64_sys_read+0x42/0x50
+ x64_sys_call+0x27ad/0x2d30
+ do_syscall_64+0xcd/0x1d0
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f5b28f165d7
-Code: b3 66 90 48 8b 05 b1 48 2d 00 64 c7 00 26 00 00 00 48 c7 c0 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 81 48 2d 00 8
-RSP: 002b:00007ffc2b59c5e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f5b28f165d7
-RDX: 0000000000000000 RSI: 00000000000054e3 RDI: 0000000000000003
-RBP: 00007ffc2b59c650 R08: 00007f5b291ed8c0 R09: 00007f5b2961a4c0
-R10: 0000000029690010 R11: 0000000000000246 R12: 0000000000400730
-R13: 00007ffc2b59cf40 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-Kernel panic - not syncing: kernel: panic_on_warn set ...
 
-This is trigger as below:
-          ns0                                    ns1
-tun_set_iff() //dev is tun0
-   tun->dev = dev
-//ip link set tun0 netns ns1
-                                       put_net() //ref is 0
-__tun_chr_ioctl() //TUNGETDEVNETNS
-   net = dev_net(tun->dev);
-   open_related_ns(&net->ns, get_net_ns); //ns1
-     get_net_ns()
-        get_net() //addition on 0
+Similar cases are reported by syzkaller in
 
-Use maybe_get_net() in get_net_ns in case net's ref is zero to fix this
+https://syzkaller.appspot.com/bug?extid=ffa8143439596313a85a
 
-Fixes: 0c3e0e3bb623 ("tun: Add ioctl() TUNGETDEVNETNS cmd to allow obtaining real net ns of tun device")
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Link: https://lore.kernel.org/r/20240614131302.2698509-1-yuehaibing@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But these are regarding the *initialization* of dev->driver
+
+dev->driver = drv;
+
+As this switches dev->driver to non-NULL these reports can be considered
+to be false-positives (which should be "fixed" by this commit, as well,
+though).
+
+The same issue was reported and tried to be fixed back in 2015 in
+
+https://lore.kernel.org/lkml/1421259054-2574-1-git-send-email-a.sangwan@samsung.com/
+
+already.
+
+Fixes: 239378f16aa1 ("Driver core: add uevent vars for devices of a class")
+Cc: stable <stable@kernel.org>
+Cc: syzbot+ffa8143439596313a85a@syzkaller.appspotmail.com
+Cc: Ashish Sangwan <a.sangwan@samsung.com>
+Cc: Namjae Jeon <namjae.jeon@samsung.com>
+Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+Link: https://lore.kernel.org/r/20240513050634.3964461-1-dirk.behme@de.bosch.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/net_namespace.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/base/core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index a209db33fa5f7..3addbce20f8ed 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -651,11 +651,16 @@ EXPORT_SYMBOL_GPL(__put_net);
-  * get_net_ns - increment the refcount of the network namespace
-  * @ns: common namespace (net)
-  *
-- * Returns the net's common namespace.
-+ * Returns the net's common namespace or ERR_PTR() if ref is zero.
-  */
- struct ns_common *get_net_ns(struct ns_common *ns)
- {
--	return &get_net(container_of(ns, struct net, ns))->ns;
-+	struct net *net;
-+
-+	net = maybe_get_net(container_of(ns, struct net, ns));
-+	if (net)
-+		return &net->ns;
-+	return ERR_PTR(-EINVAL);
- }
- EXPORT_SYMBOL_GPL(get_net_ns);
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -1273,8 +1273,11 @@ static ssize_t uevent_show(struct device
+ 	if (!env)
+ 		return -ENOMEM;
  
--- 
-2.43.0
-
++	/* Synchronize with really_probe() */
++	device_lock(dev);
+ 	/* let the kset specific function add its keys */
+ 	retval = kset->uevent_ops->uevent(kset, &dev->kobj, env);
++	device_unlock(dev);
+ 	if (retval)
+ 		goto out;
+ 
 
 
 
