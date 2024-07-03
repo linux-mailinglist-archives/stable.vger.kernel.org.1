@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9263925CBF
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:22:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E0F925E45
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54B081F218F3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:22:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C71FF1C2341D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B664191F9A;
-	Wed,  3 Jul 2024 11:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDB81741CF;
+	Wed,  3 Jul 2024 11:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xt0I6y2k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iNkLfOAE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190741849D3;
-	Wed,  3 Jul 2024 11:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18B817DA0B;
+	Wed,  3 Jul 2024 11:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005088; cv=none; b=AnVDTI+N6K2plMe/HT3FoV8ruhXzvMP9FpZCPKNBSEkKjoRg/20qBpcu++kt3oOByBEj5ulrsI+U0QzZcVJCxx3s2sEEbaMAsJNIOU6LvQYskwOMQih/41umRkEgMVzjL6EKiyx/4NDGtDXGwaFkaMQ/Wv7QUP0iJF99Zq+nw0k=
+	t=1720006102; cv=none; b=mk2W6dk/4VbKBj0UjwBBAQBm37rian0mSqGmzHJNkwW8lhcpfARAE5PpQPkBRk7VzNb54GFbo1ZKN8FrcCiIMcvcvE+jKpk0MrgBnJ7SCKkMmdpmoSl1wsf3eQ4GnZ6IKh3/9ZtNQDNicPiShPilivWmZmAVVJAUw2GtF+g111Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005088; c=relaxed/simple;
-	bh=Es6cnd/Vx7itMKQSGFn7q/wJgVLIcdQKinz+pJ331jU=;
+	s=arc-20240116; t=1720006102; c=relaxed/simple;
+	bh=hBiJ8U49VxpCfEFjJ6tJDNGiitxJnxYrV6/80YJrid8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lC1NSnn5JZ7tjtcaVYIjhBkV+UJ8PGf+/KvWS0mrw5/vXTxAqk4DWpZOU1YQJHRl7PT+LSaWjgDisfCEYFHObxV2pMljQqv/FmG9ij69dYhVwxxdaLSVSFRHd7tM36VXMf50DD1O4XAYsSeRgz5ngvGYU/T7hN/tqq6Ece8iOxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xt0I6y2k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89565C2BD10;
-	Wed,  3 Jul 2024 11:11:27 +0000 (UTC)
+	 MIME-Version; b=o/RbvWNW+dk+lB5TWI+/O94p1TqBP32f1bzYrMlcHWHZI0pijoS1gCmGajAY+A02nAvRvRVwr/qogZGBp/kM9/Sdfdayzf0w5EYQUHsGDSHELMgQt2CmtEBhYIld2U0zu08hNqi1RecTtLeM82tye4SnyVzMJaUbQ/cK8ZZw6eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iNkLfOAE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F069C2BD10;
+	Wed,  3 Jul 2024 11:28:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005087;
-	bh=Es6cnd/Vx7itMKQSGFn7q/wJgVLIcdQKinz+pJ331jU=;
+	s=korg; t=1720006102;
+	bh=hBiJ8U49VxpCfEFjJ6tJDNGiitxJnxYrV6/80YJrid8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xt0I6y2kXOBXs3r0hOMDITrVgDpvH7zF6e/hv8ghzQayfWlRxenv8P+DBVIo80pzQ
-	 Kj2sCBx9+eEyQ4fY9K+FF3tpwdCYUiNlrQV/epDG7aAUsWiRjvRpxQlK4zFVkdT4So
-	 QVxKSFMqoZtjR/S0jrErtYmO09F+6wcx6W5Qbusg=
+	b=iNkLfOAEq/7zI+KiQUDD9XFPaEvTenvLNZucWWyguA/uyGhz/C7uCbrk0iTt+bp0K
+	 2t7aQDfHyTpPsmk/vK+yzG237oJbEjJe9BV86fD5R81bHFWhHL7QaU20F6RYa2jkPU
+	 +0do4uuHMBwfFEXya4aBv6BhGV7kLf5/xGjRn0aA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 5.10 255/290] usb: gadget: printer: fix races against disable
-Date: Wed,  3 Jul 2024 12:40:36 +0200
-Message-ID: <20240703102913.778302347@linuxfoundation.org>
+	Kent Gibson <warthog618@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 301/356] gpiolib: cdev: Disallow reconfiguration without direction (uAPI v1)
+Date: Wed,  3 Jul 2024 12:40:37 +0200
+Message-ID: <20240703102924.502777713@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,145 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Kent Gibson <warthog618@gmail.com>
 
-commit e587a7633dfee8987a999cf253f7c52a8e09276c upstream.
+[ Upstream commit 9919cce62f68e6ab68dc2a975b5dc670f8ca7d40 ]
 
-printer_read() and printer_write() guard against the race
-against disable() by checking the dev->interface flag,
-which in turn is guarded by a spinlock.
-These functions, however, drop the lock on multiple occasions.
-This means that the test has to be redone after reacquiring
-the lock and before doing IO.
+linehandle_set_config() behaves badly when direction is not set.
+The configuration validation is borrowed from linehandle_create(), where,
+to verify the intent of the user, the direction must be set to in order
+to effect a change to the electrical configuration of a line. But, when
+applied to reconfiguration, that validation does not allow for the unset
+direction case, making it possible to clear flags set previously without
+specifying the line direction.
 
-Add the tests.
+Adding to the inconsistency, those changes are not immediately applied by
+linehandle_set_config(), but will take effect when the line value is next
+get or set.
 
-This also addresses CVE-2024-25741
+For example, by requesting a configuration with no flags set, an output
+line with GPIOHANDLE_REQUEST_ACTIVE_LOW and GPIOHANDLE_REQUEST_OPEN_DRAIN
+requested could have those flags cleared, inverting the sense of the line
+and changing the line drive to push-pull on the next line value set.
 
-Fixes: 7f2ca14d2f9b9 ("usb: gadget: function: printer: Interface is disabled and returns error")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20240620114039.5767-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Ensure the intent of the user by disallowing configurations which do not
+have direction set, returning an error to userspace to indicate that the
+configuration is invalid.
+
+And, for clarity, use lflags, a local copy of gcnf.flags, throughout when
+dealing with the requested flags, rather than a mixture of both.
+
+Fixes: e588bb1eae31 ("gpio: add new SET_CONFIG ioctl() to gpio chardev")
+Signed-off-by: Kent Gibson <warthog618@gmail.com>
+Link: https://lore.kernel.org/r/20240626052925.174272-2-warthog618@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_printer.c |   39 +++++++++++++++++++++++---------
- 1 file changed, 29 insertions(+), 10 deletions(-)
+ drivers/gpio/gpiolib-cdev.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/gadget/function/f_printer.c
-+++ b/drivers/usb/gadget/function/f_printer.c
-@@ -446,11 +446,8 @@ printer_read(struct file *fd, char __use
- 	mutex_lock(&dev->lock_printer_io);
- 	spin_lock_irqsave(&dev->lock, flags);
+diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
+index 1db991cb2efce..c2f9d95d1086f 100644
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -127,6 +127,10 @@ struct linehandle_state {
+ 	GPIOHANDLE_REQUEST_OPEN_DRAIN | \
+ 	GPIOHANDLE_REQUEST_OPEN_SOURCE)
  
--	if (dev->interface < 0) {
--		spin_unlock_irqrestore(&dev->lock, flags);
--		mutex_unlock(&dev->lock_printer_io);
--		return -ENODEV;
--	}
-+	if (dev->interface < 0)
-+		goto out_disabled;
- 
- 	/* We will use this flag later to check if a printer reset happened
- 	 * after we turn interrupts back on.
-@@ -458,6 +455,9 @@ printer_read(struct file *fd, char __use
- 	dev->reset_printer = 0;
- 
- 	setup_rx_reqs(dev);
-+	/* this dropped the lock - need to retest */
-+	if (dev->interface < 0)
-+		goto out_disabled;
- 
- 	bytes_copied = 0;
- 	current_rx_req = dev->current_rx_req;
-@@ -491,6 +491,8 @@ printer_read(struct file *fd, char __use
- 		wait_event_interruptible(dev->rx_wait,
- 				(likely(!list_empty(&dev->rx_buffers))));
- 		spin_lock_irqsave(&dev->lock, flags);
-+		if (dev->interface < 0)
-+			goto out_disabled;
- 	}
- 
- 	/* We have data to return then copy it to the caller's buffer.*/
-@@ -534,6 +536,9 @@ printer_read(struct file *fd, char __use
- 			return -EAGAIN;
- 		}
- 
-+		if (dev->interface < 0)
-+			goto out_disabled;
++#define GPIOHANDLE_REQUEST_DIRECTION_FLAGS \
++	(GPIOHANDLE_REQUEST_INPUT | \
++	 GPIOHANDLE_REQUEST_OUTPUT)
 +
- 		/* If we not returning all the data left in this RX request
- 		 * buffer then adjust the amount of data left in the buffer.
- 		 * Othewise if we are done with this RX request buffer then
-@@ -563,6 +568,11 @@ printer_read(struct file *fd, char __use
- 		return bytes_copied;
- 	else
- 		return -EAGAIN;
+ static int linehandle_validate_flags(u32 flags)
+ {
+ 	/* Return an error if an unknown flag is set */
+@@ -207,21 +211,21 @@ static long linehandle_set_config(struct linehandle_state *lh,
+ 	if (ret)
+ 		return ret;
+ 
++	/* Lines must be reconfigured explicitly as input or output. */
++	if (!(lflags & GPIOHANDLE_REQUEST_DIRECTION_FLAGS))
++		return -EINVAL;
 +
-+out_disabled:
-+	spin_unlock_irqrestore(&dev->lock, flags);
-+	mutex_unlock(&dev->lock_printer_io);
-+	return -ENODEV;
- }
+ 	for (i = 0; i < lh->num_descs; i++) {
+ 		desc = lh->descs[i];
+-		linehandle_flags_to_desc_flags(gcnf.flags, &desc->flags);
++		linehandle_flags_to_desc_flags(lflags, &desc->flags);
  
- static ssize_t
-@@ -583,11 +593,8 @@ printer_write(struct file *fd, const cha
- 	mutex_lock(&dev->lock_printer_io);
- 	spin_lock_irqsave(&dev->lock, flags);
+-		/*
+-		 * Lines have to be requested explicitly for input
+-		 * or output, else the line will be treated "as is".
+-		 */
+ 		if (lflags & GPIOHANDLE_REQUEST_OUTPUT) {
+ 			int val = !!gcnf.default_values[i];
  
--	if (dev->interface < 0) {
--		spin_unlock_irqrestore(&dev->lock, flags);
--		mutex_unlock(&dev->lock_printer_io);
--		return -ENODEV;
--	}
-+	if (dev->interface < 0)
-+		goto out_disabled;
- 
- 	/* Check if a printer reset happens while we have interrupts on */
- 	dev->reset_printer = 0;
-@@ -610,6 +617,8 @@ printer_write(struct file *fd, const cha
- 		wait_event_interruptible(dev->tx_wait,
- 				(likely(!list_empty(&dev->tx_reqs))));
- 		spin_lock_irqsave(&dev->lock, flags);
-+		if (dev->interface < 0)
-+			goto out_disabled;
- 	}
- 
- 	while (likely(!list_empty(&dev->tx_reqs)) && len) {
-@@ -659,6 +668,9 @@ printer_write(struct file *fd, const cha
- 			return -EAGAIN;
- 		}
- 
-+		if (dev->interface < 0)
-+			goto out_disabled;
-+
- 		list_add(&req->list, &dev->tx_reqs_active);
- 
- 		/* here, we unlock, and only unlock, to avoid deadlock. */
-@@ -672,6 +684,8 @@ printer_write(struct file *fd, const cha
- 			mutex_unlock(&dev->lock_printer_io);
- 			return -EAGAIN;
- 		}
-+		if (dev->interface < 0)
-+			goto out_disabled;
- 	}
- 
- 	spin_unlock_irqrestore(&dev->lock, flags);
-@@ -683,6 +697,11 @@ printer_write(struct file *fd, const cha
- 		return bytes_copied;
- 	else
- 		return -EAGAIN;
-+
-+out_disabled:
-+	spin_unlock_irqrestore(&dev->lock, flags);
-+	mutex_unlock(&dev->lock_printer_io);
-+	return -ENODEV;
- }
- 
- static int
+ 			ret = gpiod_direction_output(desc, val);
+ 			if (ret)
+ 				return ret;
+-		} else if (lflags & GPIOHANDLE_REQUEST_INPUT) {
++		} else {
+ 			ret = gpiod_direction_input(desc);
+ 			if (ret)
+ 				return ret;
+-- 
+2.43.0
+
 
 
 
