@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-57234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 940B1925BA8
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:10:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9263925CBF
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:22:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C42471C25AD0
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:10:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54B081F218F3
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C525619412A;
-	Wed,  3 Jul 2024 10:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B664191F9A;
+	Wed,  3 Jul 2024 11:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6V9L0ld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xt0I6y2k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84753194123;
-	Wed,  3 Jul 2024 10:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190741849D3;
+	Wed,  3 Jul 2024 11:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004264; cv=none; b=FkYfaek5oEe8J6znObDWJWGwn36QWxtCnik2btlNqxKq/nJDl+c79FzmN1o3uab0ayDesMsutp+Z7v4C/nWicl8M24SWzH2SL5PyJV1iNW5T0D+7C0ytRcgmPhL6HY2kWxjM/NsffxHccndyABIETEOld/I6zC66cUZmDK0+TSs=
+	t=1720005088; cv=none; b=AnVDTI+N6K2plMe/HT3FoV8ruhXzvMP9FpZCPKNBSEkKjoRg/20qBpcu++kt3oOByBEj5ulrsI+U0QzZcVJCxx3s2sEEbaMAsJNIOU6LvQYskwOMQih/41umRkEgMVzjL6EKiyx/4NDGtDXGwaFkaMQ/Wv7QUP0iJF99Zq+nw0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004264; c=relaxed/simple;
-	bh=0KiQyQ0fr92bHrWmwYXuj7lcrCErBUzPXthSbbjYdAU=;
+	s=arc-20240116; t=1720005088; c=relaxed/simple;
+	bh=Es6cnd/Vx7itMKQSGFn7q/wJgVLIcdQKinz+pJ331jU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A9tzYU6GrijeQtXc540HwHQJsw1SsmDhLCiOrGO2AqbmCFVf91nPfwjOL8vNOnQm2PaufAC1ffThjGaF04DHTowiOQXEfrgP/8eN0ko3GoiGYW+5xFLNoUX6mmB04xBDD7TMeaaA5/kzpTjPZzH6dG4PndwdM06GTY/FBgxQWLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6V9L0ld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA4BEC2BD10;
-	Wed,  3 Jul 2024 10:57:43 +0000 (UTC)
+	 MIME-Version; b=lC1NSnn5JZ7tjtcaVYIjhBkV+UJ8PGf+/KvWS0mrw5/vXTxAqk4DWpZOU1YQJHRl7PT+LSaWjgDisfCEYFHObxV2pMljQqv/FmG9ij69dYhVwxxdaLSVSFRHd7tM36VXMf50DD1O4XAYsSeRgz5ngvGYU/T7hN/tqq6Ece8iOxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xt0I6y2k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89565C2BD10;
+	Wed,  3 Jul 2024 11:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004264;
-	bh=0KiQyQ0fr92bHrWmwYXuj7lcrCErBUzPXthSbbjYdAU=;
+	s=korg; t=1720005087;
+	bh=Es6cnd/Vx7itMKQSGFn7q/wJgVLIcdQKinz+pJ331jU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a6V9L0ld4vTdFWSt7AB4weE8jxJgCDTiqVQ03nGSTtJh+BzTaN6N0bKZFzeH8M+il
-	 JJY3ZDITE4ezMCh4G2obrAuQbxxihEfCODjAjpPgeqFt7Ib1EaloDoBt/71bUn+9ZA
-	 gt92Yyp9dFOc9j/3VrPjAPeCPGZVisHzEFJvOr3w=
+	b=Xt0I6y2kXOBXs3r0hOMDITrVgDpvH7zF6e/hv8ghzQayfWlRxenv8P+DBVIo80pzQ
+	 Kj2sCBx9+eEyQ4fY9K+FF3tpwdCYUiNlrQV/epDG7aAUsWiRjvRpxQlK4zFVkdT4So
+	 QVxKSFMqoZtjR/S0jrErtYmO09F+6wcx6W5Qbusg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guo Ren <guoren@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 5.4 175/189] csky, hexagon: fix broken sys_sync_file_range
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 5.10 255/290] usb: gadget: printer: fix races against disable
 Date: Wed,  3 Jul 2024 12:40:36 +0200
-Message-ID: <20240703102848.077167943@linuxfoundation.org>
+Message-ID: <20240703102913.778302347@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 3339b99ef6fe38dac43b534cba3a8a0e29fb2eff upstream.
+commit e587a7633dfee8987a999cf253f7c52a8e09276c upstream.
 
-Both of these architectures require u64 function arguments to be
-passed in even/odd pairs of registers or stack slots, which in case of
-sync_file_range would result in a seven-argument system call that is
-not currently possible. The system call is therefore incompatible with
-all existing binaries.
+printer_read() and printer_write() guard against the race
+against disable() by checking the dev->interface flag,
+which in turn is guarded by a spinlock.
+These functions, however, drop the lock on multiple occasions.
+This means that the test has to be redone after reacquiring
+the lock and before doing IO.
 
-While it would be possible to implement support for seven arguments
-like on mips, it seems better to use a six-argument version, either
-with the normal argument order but misaligned as on most architectures
-or with the reordered sync_file_range2() calling conventions as on
-arm and powerpc.
+Add the tests.
 
-Cc: stable@vger.kernel.org
-Acked-by: Guo Ren <guoren@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+This also addresses CVE-2024-25741
+
+Fixes: 7f2ca14d2f9b9 ("usb: gadget: function: printer: Interface is disabled and returns error")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20240620114039.5767-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/csky/include/uapi/asm/unistd.h    |    1 +
- arch/hexagon/include/uapi/asm/unistd.h |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/usb/gadget/function/f_printer.c |   39 +++++++++++++++++++++++---------
+ 1 file changed, 29 insertions(+), 10 deletions(-)
 
---- a/arch/csky/include/uapi/asm/unistd.h
-+++ b/arch/csky/include/uapi/asm/unistd.h
-@@ -7,6 +7,7 @@
- #define __ARCH_WANT_SYS_CLONE3
- #define __ARCH_WANT_SET_GET_RLIMIT
- #define __ARCH_WANT_TIME32_SYSCALLS
-+#define __ARCH_WANT_SYNC_FILE_RANGE2
- #include <asm-generic/unistd.h>
+--- a/drivers/usb/gadget/function/f_printer.c
++++ b/drivers/usb/gadget/function/f_printer.c
+@@ -446,11 +446,8 @@ printer_read(struct file *fd, char __use
+ 	mutex_lock(&dev->lock_printer_io);
+ 	spin_lock_irqsave(&dev->lock, flags);
  
- #define __NR_set_thread_area	(__NR_arch_specific_syscall + 0)
---- a/arch/hexagon/include/uapi/asm/unistd.h
-+++ b/arch/hexagon/include/uapi/asm/unistd.h
-@@ -36,5 +36,6 @@
- #define __ARCH_WANT_SYS_VFORK
- #define __ARCH_WANT_SYS_FORK
- #define __ARCH_WANT_TIME32_SYSCALLS
-+#define __ARCH_WANT_SYNC_FILE_RANGE2
+-	if (dev->interface < 0) {
+-		spin_unlock_irqrestore(&dev->lock, flags);
+-		mutex_unlock(&dev->lock_printer_io);
+-		return -ENODEV;
+-	}
++	if (dev->interface < 0)
++		goto out_disabled;
  
- #include <asm-generic/unistd.h>
+ 	/* We will use this flag later to check if a printer reset happened
+ 	 * after we turn interrupts back on.
+@@ -458,6 +455,9 @@ printer_read(struct file *fd, char __use
+ 	dev->reset_printer = 0;
+ 
+ 	setup_rx_reqs(dev);
++	/* this dropped the lock - need to retest */
++	if (dev->interface < 0)
++		goto out_disabled;
+ 
+ 	bytes_copied = 0;
+ 	current_rx_req = dev->current_rx_req;
+@@ -491,6 +491,8 @@ printer_read(struct file *fd, char __use
+ 		wait_event_interruptible(dev->rx_wait,
+ 				(likely(!list_empty(&dev->rx_buffers))));
+ 		spin_lock_irqsave(&dev->lock, flags);
++		if (dev->interface < 0)
++			goto out_disabled;
+ 	}
+ 
+ 	/* We have data to return then copy it to the caller's buffer.*/
+@@ -534,6 +536,9 @@ printer_read(struct file *fd, char __use
+ 			return -EAGAIN;
+ 		}
+ 
++		if (dev->interface < 0)
++			goto out_disabled;
++
+ 		/* If we not returning all the data left in this RX request
+ 		 * buffer then adjust the amount of data left in the buffer.
+ 		 * Othewise if we are done with this RX request buffer then
+@@ -563,6 +568,11 @@ printer_read(struct file *fd, char __use
+ 		return bytes_copied;
+ 	else
+ 		return -EAGAIN;
++
++out_disabled:
++	spin_unlock_irqrestore(&dev->lock, flags);
++	mutex_unlock(&dev->lock_printer_io);
++	return -ENODEV;
+ }
+ 
+ static ssize_t
+@@ -583,11 +593,8 @@ printer_write(struct file *fd, const cha
+ 	mutex_lock(&dev->lock_printer_io);
+ 	spin_lock_irqsave(&dev->lock, flags);
+ 
+-	if (dev->interface < 0) {
+-		spin_unlock_irqrestore(&dev->lock, flags);
+-		mutex_unlock(&dev->lock_printer_io);
+-		return -ENODEV;
+-	}
++	if (dev->interface < 0)
++		goto out_disabled;
+ 
+ 	/* Check if a printer reset happens while we have interrupts on */
+ 	dev->reset_printer = 0;
+@@ -610,6 +617,8 @@ printer_write(struct file *fd, const cha
+ 		wait_event_interruptible(dev->tx_wait,
+ 				(likely(!list_empty(&dev->tx_reqs))));
+ 		spin_lock_irqsave(&dev->lock, flags);
++		if (dev->interface < 0)
++			goto out_disabled;
+ 	}
+ 
+ 	while (likely(!list_empty(&dev->tx_reqs)) && len) {
+@@ -659,6 +668,9 @@ printer_write(struct file *fd, const cha
+ 			return -EAGAIN;
+ 		}
+ 
++		if (dev->interface < 0)
++			goto out_disabled;
++
+ 		list_add(&req->list, &dev->tx_reqs_active);
+ 
+ 		/* here, we unlock, and only unlock, to avoid deadlock. */
+@@ -672,6 +684,8 @@ printer_write(struct file *fd, const cha
+ 			mutex_unlock(&dev->lock_printer_io);
+ 			return -EAGAIN;
+ 		}
++		if (dev->interface < 0)
++			goto out_disabled;
+ 	}
+ 
+ 	spin_unlock_irqrestore(&dev->lock, flags);
+@@ -683,6 +697,11 @@ printer_write(struct file *fd, const cha
+ 		return bytes_copied;
+ 	else
+ 		return -EAGAIN;
++
++out_disabled:
++	spin_unlock_irqrestore(&dev->lock, flags);
++	mutex_unlock(&dev->lock_printer_io);
++	return -ENODEV;
+ }
+ 
+ static int
 
 
 
