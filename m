@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-57258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D991925BD2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:12:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A72C4925D41
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E305B1F22170
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 332171F21E94
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD070194132;
-	Wed,  3 Jul 2024 10:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C369142904;
+	Wed,  3 Jul 2024 11:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3JcZVQC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KFizdlwE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3B5186E31;
-	Wed,  3 Jul 2024 10:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6406E5ED;
+	Wed,  3 Jul 2024 11:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004336; cv=none; b=OFGiE4SD9kABOlX/1r6P6M7doeykyPRZG8BeBdM1NGWmKRfn+LbpMDmgGstquS9kzoV0cLiiZQhbAiP0DHAq0ISv/irkQjY5ybgYcHadTgLpMAg+muPu/3eV6Msf4BWO7UaasqA6g69jwFGwuOs/EOSbTjN0XSEcdFAM792NAcQ=
+	t=1720005427; cv=none; b=OCHZZoyx1Q9hYUrsfj0QVVp4++J5DOug/RyE1o4jfJX7QjY7hSxoJhUtHZpECiSNXXczwSuRGmetMOyrdWF8AyARmEaVufNZfvVzm3usXzU+kqc5/ueupliF/7NqxLyWvxVsuuMVxKd/Vchiw7SlLvfrmi/Fb9DTz6H1pMiepQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004336; c=relaxed/simple;
-	bh=q/a4CFtlv1dVdtH/gxVv37WBxuLdsqbA1k9HQ85pgmU=;
+	s=arc-20240116; t=1720005427; c=relaxed/simple;
+	bh=aZ6YlC5x3jfZ2b6Y99zz0NjJMXT/qrtAX5cH0le3LdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qU3IaQN2DfWMt12JawGBFv/gO1btVD36iCjm6ZmfiCCtpX36vPgqPAewx2mqiT9KeyPQ9eJvNzIHfkKjMfS7q8NbAS8UixW5iqUULcBcE2/YDr2U9hQYD8nSTnSQDahUP7LDE7wKsmr1stxsnt8iQZpgbMhR0m5yp9nRuwSeoUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3JcZVQC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0233FC2BD10;
-	Wed,  3 Jul 2024 10:58:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Lz4wvx3CJ+yRCSNfTFIT2reuTXbEcy5TII4Pzt3zMFvYIhNJjFcimDiZpWeeRST5q1VwHq5thYz+xZFOeMLmbEu4TZ23Ikw7r2uxvsJmWxWOaC4ShEpWRDzCL9ySRD7tkwoCLh2HgE2mhCdbZ6C4OjUYviRZsW2SY5aB9pVFjEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KFizdlwE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 656B9C2BD10;
+	Wed,  3 Jul 2024 11:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004336;
-	bh=q/a4CFtlv1dVdtH/gxVv37WBxuLdsqbA1k9HQ85pgmU=;
+	s=korg; t=1720005426;
+	bh=aZ6YlC5x3jfZ2b6Y99zz0NjJMXT/qrtAX5cH0le3LdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W3JcZVQCbq/mPvrSMrheutVNcukaMITgwcb1hFURzknFj4qQ+OW+nTZOO0rkWs6av
-	 U9rErObmsyYsmBwkoHKvMAOwDeRL8BjKz7ouN0oPKej71APS1j08BjbrPNTrQXLAL3
-	 6fFbTTWmhBCdWClTuIgBmacNOdeO0HJUQWrh1SuA=
+	b=KFizdlwEoOTmx+z7T/StS7JzaYQ1eC6hbDb91TGwPRvHZnSqldVAfQ6q3QPfgO/P0
+	 Pe0nN4FsOeQJCfhsZ5GNlgiSltP1emxhKEIYSZCNve6qCUzuqWgOy+vv13m+dHMMLz
+	 793W9Ba1ysCz5iJ3WtzGCza+RwJDl2Am6HJcdfNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 5.10 001/290] tracing/selftests: Fix kprobe event name test for .isra. functions
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 046/356] misc/pvpanic: deduplicate common code
 Date: Wed,  3 Jul 2024 12:36:22 +0200
-Message-ID: <20240703102904.230012779@linuxfoundation.org>
+Message-ID: <20240703102914.838249410@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +59,333 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit 23a4b108accc29a6125ed14de4a044689ffeda78 upstream.
+[ Upstream commit c1426d392aebc51da4944d950d89e483e43f6f14 ]
 
-The kprobe_eventname.tc test checks if a function with .isra. can have a
-kprobe attached to it. It loops through the kallsyms file for all the
-functions that have the .isra. name, and checks if it exists in the
-available_filter_functions file, and if it does, it uses it to attach a
-kprobe to it.
+pvpanic-mmio.c and pvpanic-pci.c share a lot of code.
+Refactor it into pvpanic.c where it doesn't have to be kept in sync
+manually and where the core logic can be understood more easily.
 
-The issue is that kprobes can not attach to functions that are listed more
-than once in available_filter_functions. With the latest kernel, the
-function that is found is: rapl_event_update.isra.0
+No functional change.
 
-  # grep rapl_event_update.isra.0 /sys/kernel/tracing/available_filter_functions
-  rapl_event_update.isra.0
-  rapl_event_update.isra.0
-
-It is listed twice. This causes the attached kprobe to it to fail which in
-turn fails the test. Instead of just picking the function function that is
-found in available_filter_functions, pick the first one that is listed
-only once in available_filter_functions.
-
-Cc: stable@vger.kernel.org
-Fixes: 604e3548236d ("selftests/ftrace: Select an existing function in kprobe_eventname test")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lore.kernel.org/r/20231011-pvpanic-cleanup-v2-1-4b21d56f779f@weissschuh.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: ee59be35d7a8 ("misc/pvpanic-pci: register attributes via pci_driver")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/misc/pvpanic/pvpanic-mmio.c | 58 +---------------------
+ drivers/misc/pvpanic/pvpanic-pci.c  | 58 +---------------------
+ drivers/misc/pvpanic/pvpanic.c      | 76 ++++++++++++++++++++++++++++-
+ drivers/misc/pvpanic/pvpanic.h      | 10 +---
+ 4 files changed, 80 insertions(+), 122 deletions(-)
 
---- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc
-+++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc
-@@ -30,7 +30,8 @@ find_dot_func() {
- 	fi
+diff --git a/drivers/misc/pvpanic/pvpanic-mmio.c b/drivers/misc/pvpanic/pvpanic-mmio.c
+index eb97167c03fb4..9715798acce3d 100644
+--- a/drivers/misc/pvpanic/pvpanic-mmio.c
++++ b/drivers/misc/pvpanic/pvpanic-mmio.c
+@@ -24,52 +24,9 @@ MODULE_AUTHOR("Hu Tao <hutao@cn.fujitsu.com>");
+ MODULE_DESCRIPTION("pvpanic-mmio device driver");
+ MODULE_LICENSE("GPL");
  
- 	grep " [tT] .*\.isra\..*" /proc/kallsyms | cut -f 3 -d " " | while read f; do
--		if grep -s $f available_filter_functions; then
-+		cnt=`grep -s $f available_filter_functions | wc -l`;
-+		if [ $cnt -eq 1 ]; then
- 			echo $f
- 			break
- 		fi
+-static ssize_t capability_show(struct device *dev, struct device_attribute *attr, char *buf)
+-{
+-	struct pvpanic_instance *pi = dev_get_drvdata(dev);
+-
+-	return sysfs_emit(buf, "%x\n", pi->capability);
+-}
+-static DEVICE_ATTR_RO(capability);
+-
+-static ssize_t events_show(struct device *dev, struct device_attribute *attr, char *buf)
+-{
+-	struct pvpanic_instance *pi = dev_get_drvdata(dev);
+-
+-	return sysfs_emit(buf, "%x\n", pi->events);
+-}
+-
+-static ssize_t events_store(struct device *dev, struct device_attribute *attr,
+-			    const char *buf, size_t count)
+-{
+-	struct pvpanic_instance *pi = dev_get_drvdata(dev);
+-	unsigned int tmp;
+-	int err;
+-
+-	err = kstrtouint(buf, 16, &tmp);
+-	if (err)
+-		return err;
+-
+-	if ((tmp & pi->capability) != tmp)
+-		return -EINVAL;
+-
+-	pi->events = tmp;
+-
+-	return count;
+-}
+-static DEVICE_ATTR_RW(events);
+-
+-static struct attribute *pvpanic_mmio_dev_attrs[] = {
+-	&dev_attr_capability.attr,
+-	&dev_attr_events.attr,
+-	NULL
+-};
+-ATTRIBUTE_GROUPS(pvpanic_mmio_dev);
+-
+ static int pvpanic_mmio_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+-	struct pvpanic_instance *pi;
+ 	struct resource *res;
+ 	void __iomem *base;
+ 
+@@ -92,18 +49,7 @@ static int pvpanic_mmio_probe(struct platform_device *pdev)
+ 		return -EINVAL;
+ 	}
+ 
+-	pi = devm_kmalloc(dev, sizeof(*pi), GFP_KERNEL);
+-	if (!pi)
+-		return -ENOMEM;
+-
+-	pi->base = base;
+-	pi->capability = PVPANIC_PANICKED | PVPANIC_CRASH_LOADED;
+-
+-	/* initialize capability by RDPT */
+-	pi->capability &= ioread8(base);
+-	pi->events = pi->capability;
+-
+-	return devm_pvpanic_probe(dev, pi);
++	return devm_pvpanic_probe(dev, base);
+ }
+ 
+ static const struct of_device_id pvpanic_mmio_match[] = {
+@@ -123,7 +69,7 @@ static struct platform_driver pvpanic_mmio_driver = {
+ 		.name = "pvpanic-mmio",
+ 		.of_match_table = pvpanic_mmio_match,
+ 		.acpi_match_table = pvpanic_device_ids,
+-		.dev_groups = pvpanic_mmio_dev_groups,
++		.dev_groups = pvpanic_dev_groups,
+ 	},
+ 	.probe = pvpanic_mmio_probe,
+ };
+diff --git a/drivers/misc/pvpanic/pvpanic-pci.c b/drivers/misc/pvpanic/pvpanic-pci.c
+index 07eddb5ea30fa..689af4c28c2a9 100644
+--- a/drivers/misc/pvpanic/pvpanic-pci.c
++++ b/drivers/misc/pvpanic/pvpanic-pci.c
+@@ -22,51 +22,8 @@ MODULE_AUTHOR("Mihai Carabas <mihai.carabas@oracle.com>");
+ MODULE_DESCRIPTION("pvpanic device driver");
+ MODULE_LICENSE("GPL");
+ 
+-static ssize_t capability_show(struct device *dev, struct device_attribute *attr, char *buf)
+-{
+-	struct pvpanic_instance *pi = dev_get_drvdata(dev);
+-
+-	return sysfs_emit(buf, "%x\n", pi->capability);
+-}
+-static DEVICE_ATTR_RO(capability);
+-
+-static ssize_t events_show(struct device *dev, struct device_attribute *attr, char *buf)
+-{
+-	struct pvpanic_instance *pi = dev_get_drvdata(dev);
+-
+-	return sysfs_emit(buf, "%x\n", pi->events);
+-}
+-
+-static ssize_t events_store(struct device *dev, struct device_attribute *attr,
+-			    const char *buf, size_t count)
+-{
+-	struct pvpanic_instance *pi = dev_get_drvdata(dev);
+-	unsigned int tmp;
+-	int err;
+-
+-	err = kstrtouint(buf, 16, &tmp);
+-	if (err)
+-		return err;
+-
+-	if ((tmp & pi->capability) != tmp)
+-		return -EINVAL;
+-
+-	pi->events = tmp;
+-
+-	return count;
+-}
+-static DEVICE_ATTR_RW(events);
+-
+-static struct attribute *pvpanic_pci_dev_attrs[] = {
+-	&dev_attr_capability.attr,
+-	&dev_attr_events.attr,
+-	NULL
+-};
+-ATTRIBUTE_GROUPS(pvpanic_pci_dev);
+-
+ static int pvpanic_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ {
+-	struct pvpanic_instance *pi;
+ 	void __iomem *base;
+ 	int ret;
+ 
+@@ -78,18 +35,7 @@ static int pvpanic_pci_probe(struct pci_dev *pdev, const struct pci_device_id *e
+ 	if (!base)
+ 		return -ENOMEM;
+ 
+-	pi = devm_kmalloc(&pdev->dev, sizeof(*pi), GFP_KERNEL);
+-	if (!pi)
+-		return -ENOMEM;
+-
+-	pi->base = base;
+-	pi->capability = PVPANIC_PANICKED | PVPANIC_CRASH_LOADED;
+-
+-	/* initlize capability by RDPT */
+-	pi->capability &= ioread8(base);
+-	pi->events = pi->capability;
+-
+-	return devm_pvpanic_probe(&pdev->dev, pi);
++	return devm_pvpanic_probe(&pdev->dev, base);
+ }
+ 
+ static const struct pci_device_id pvpanic_pci_id_tbl[]  = {
+@@ -103,7 +49,7 @@ static struct pci_driver pvpanic_pci_driver = {
+ 	.id_table =     pvpanic_pci_id_tbl,
+ 	.probe =        pvpanic_pci_probe,
+ 	.driver = {
+-		.dev_groups = pvpanic_pci_dev_groups,
++		.dev_groups = pvpanic_dev_groups,
+ 	},
+ };
+ module_pci_driver(pvpanic_pci_driver);
+diff --git a/drivers/misc/pvpanic/pvpanic.c b/drivers/misc/pvpanic/pvpanic.c
+index 049a120063489..305b367e0ce34 100644
+--- a/drivers/misc/pvpanic/pvpanic.c
++++ b/drivers/misc/pvpanic/pvpanic.c
+@@ -7,6 +7,7 @@
+  *  Copyright (C) 2021 Oracle.
+  */
+ 
++#include <linux/device.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+ #include <linux/kexec.h>
+@@ -26,6 +27,13 @@ MODULE_AUTHOR("Mihai Carabas <mihai.carabas@oracle.com>");
+ MODULE_DESCRIPTION("pvpanic device driver");
+ MODULE_LICENSE("GPL");
+ 
++struct pvpanic_instance {
++	void __iomem *base;
++	unsigned int capability;
++	unsigned int events;
++	struct list_head list;
++};
++
+ static struct list_head pvpanic_list;
+ static spinlock_t pvpanic_lock;
+ 
+@@ -81,11 +89,75 @@ static void pvpanic_remove(void *param)
+ 	spin_unlock(&pvpanic_lock);
+ }
+ 
+-int devm_pvpanic_probe(struct device *dev, struct pvpanic_instance *pi)
++static ssize_t capability_show(struct device *dev, struct device_attribute *attr, char *buf)
++{
++	struct pvpanic_instance *pi = dev_get_drvdata(dev);
++
++	return sysfs_emit(buf, "%x\n", pi->capability);
++}
++static DEVICE_ATTR_RO(capability);
++
++static ssize_t events_show(struct device *dev, struct device_attribute *attr, char *buf)
++{
++	struct pvpanic_instance *pi = dev_get_drvdata(dev);
++
++	return sysfs_emit(buf, "%x\n", pi->events);
++}
++
++static ssize_t events_store(struct device *dev, struct device_attribute *attr,
++			    const char *buf, size_t count)
++{
++	struct pvpanic_instance *pi = dev_get_drvdata(dev);
++	unsigned int tmp;
++	int err;
++
++	err = kstrtouint(buf, 16, &tmp);
++	if (err)
++		return err;
++
++	if ((tmp & pi->capability) != tmp)
++		return -EINVAL;
++
++	pi->events = tmp;
++
++	return count;
++}
++static DEVICE_ATTR_RW(events);
++
++static struct attribute *pvpanic_dev_attrs[] = {
++	&dev_attr_capability.attr,
++	&dev_attr_events.attr,
++	NULL
++};
++
++static const struct attribute_group pvpanic_dev_group = {
++	.attrs = pvpanic_dev_attrs,
++};
++
++const struct attribute_group *pvpanic_dev_groups[] = {
++	&pvpanic_dev_group,
++	NULL
++};
++EXPORT_SYMBOL_GPL(pvpanic_dev_groups);
++
++int devm_pvpanic_probe(struct device *dev, void __iomem *base)
+ {
+-	if (!pi || !pi->base)
++	struct pvpanic_instance *pi;
++
++	if (!base)
+ 		return -EINVAL;
+ 
++	pi = devm_kmalloc(dev, sizeof(*pi), GFP_KERNEL);
++	if (!pi)
++		return -ENOMEM;
++
++	pi->base = base;
++	pi->capability = PVPANIC_PANICKED | PVPANIC_CRASH_LOADED;
++
++	/* initlize capability by RDPT */
++	pi->capability &= ioread8(base);
++	pi->events = pi->capability;
++
+ 	spin_lock(&pvpanic_lock);
+ 	list_add(&pi->list, &pvpanic_list);
+ 	spin_unlock(&pvpanic_lock);
+diff --git a/drivers/misc/pvpanic/pvpanic.h b/drivers/misc/pvpanic/pvpanic.h
+index 4935459517548..46ffb10438adf 100644
+--- a/drivers/misc/pvpanic/pvpanic.h
++++ b/drivers/misc/pvpanic/pvpanic.h
+@@ -8,13 +8,7 @@
+ #ifndef PVPANIC_H_
+ #define PVPANIC_H_
+ 
+-struct pvpanic_instance {
+-	void __iomem *base;
+-	unsigned int capability;
+-	unsigned int events;
+-	struct list_head list;
+-};
+-
+-int devm_pvpanic_probe(struct device *dev, struct pvpanic_instance *pi);
++int devm_pvpanic_probe(struct device *dev, void __iomem *base);
++extern const struct attribute_group *pvpanic_dev_groups[];
+ 
+ #endif /* PVPANIC_H_ */
+-- 
+2.43.0
+
 
 
 
