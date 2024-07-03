@@ -1,172 +1,89 @@
-Return-Path: <stable+bounces-57917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F16929260B3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:43:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A209260E9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:52:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 325C428A06A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:42:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 003DAB21B73
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1367017556B;
-	Wed,  3 Jul 2024 12:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5F9173359;
+	Wed,  3 Jul 2024 12:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="joYWoJIL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kty/ro7y"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DA6178CCF;
-	Wed,  3 Jul 2024 12:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0551E4A9;
+	Wed,  3 Jul 2024 12:52:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720010566; cv=none; b=ZcZG7PIMc/dCwB4Ofu+beCt5BmLC2V3O3J1P1/NHuqknzLqxAR+ScJ/WAeB9k92xTYfoKKFbZV6Wkd7VBUh0bXDPCul75aCMaPOvszGt/mQjbEavzvUKF+BNLgDPtWevn4b6fxCcj6J2kg9QGLUpqcUWIT4Z3MP7PU0sr+6HvwE=
+	t=1720011137; cv=none; b=FyIooK1J14hUbpv91OquDxJiCVJsUdO+pWg+iQJDdg/SCSvEiITXuifWeUYjNVkhbMFAKYefddO4y6r3Q7gJBpvfyGnRQSgvDrekde/I4lJTZFA7rSaPzvyiSJNb9I55Wk8MD8ah3AlMJccEhP+8tbFI3IR0P0GGT3+1mxXDKL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720010566; c=relaxed/simple;
-	bh=fgF5tJ5DEDXTYIiL7qd21XjNbHYxNUXjyhHSksjF43M=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=NrgQUhEXV6H51mfWpTGhaZ2So1UK6pGi4wwx8lpvOE+SYUxp7d4pTnT8E3masPlxgeXvvl5A8UaSO7S1VqpuorRgHk1N4CZ6Vm3vAdyTJVMf5m3rzTT2vLa7A/pZ7pSede2LyTkxeZ5bZRfr5dKJiatT5/mLmjfRkeWdvlFtnPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=joYWoJIL; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1720011137; c=relaxed/simple;
+	bh=nNNUZm664y5+aNHN4KM1zSbOCRzvw78F77j06vmhomo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hje5e6UDC6Kd7DJVgMWsqnlsGd+2tyLZz/3GOEE8mx9jb/+3fBeF34u4eRls8VGMKdEXmK4R4RdlIUCQr1eP0HmCkLYO2o/epf61z8a8NMaDqlj/uBrzQtbhZR0frWwLjPoYbt9XubQ4TjEi1Mk93b2o4BzrEIqhApf5VK6j4X0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kty/ro7y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51E5C2BD10;
+	Wed,  3 Jul 2024 12:52:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1720011137;
+	bh=nNNUZm664y5+aNHN4KM1zSbOCRzvw78F77j06vmhomo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kty/ro7yN0MVcaiFs/RgccK6ns6GLON2tUIMFvzFvwSv6b0ey8XcpVI6MCS3ch1wl
+	 0CNLWswpyQ7hiWG7p9J2pEgiNFva+pKmpU2a2AzZ5pd6Tnuby6s46LqGSJsrm6UX88
+	 FRiva05RaMVzlStoV5iBynIFgYMohnpfOiqjqtZU=
+Date: Wed, 3 Jul 2024 14:52:14 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15 067/356] selftests/mm: log a consistent test name
+ for check_compaction
+Message-ID: <2024070349-convent-quiver-dc57@gregkh>
+References: <20240703102913.093882413@linuxfoundation.org>
+ <20240703102915.636328702@linuxfoundation.org>
+ <416ea8e5-f3e0-47b3-93c2-34a67c474d8f@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1720010560;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3oNe79QFYy0BsgqHNRdTuV4KBXJ2XwhFBof2yObhRJQ=;
-	b=joYWoJILWQcLuVUoMWuHU+2kafxCfq51hIeDwC3CDaRgCIKFzfbT1x+DK57xH+WsoxMc9H
-	03PQ57rwOw+1z8zxII+rk7yeL/Ev2uhX0X3rMQjwmDECu4tXf5xYGScIrmPaoaeSzapSkL
-	8O8vWZBJ+qqv5cKZvs7UxZ1L47D1FuzcQO9GEt0abtVAgY/0lLYS6xORI7GcoI3lBNTBp6
-	KBKXTU2ctDnpGRCp+Kc1pTegYcKzO0+DPWdbVv+v3uvoT6iGddIw+aAcRCNH48TzNxRABP
-	fu6H2NSCFY5hwHV5lyzo6BjLLoTONDf/NG4/CgD9GYGYuDL3O30/2fEUyORAXA==
-Date: Wed, 03 Jul 2024 14:42:37 +0200
-From: Dragan Simic <dsimic@manjaro.org>
-To: dri-devel@lists.freedesktop.org
-Cc: boris.brezillon@collabora.com, robh@kernel.org, steven.price@arm.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- airlied@gmail.com, daniel@ffwll.ch, linux-kernel@vger.kernel.org, Diederik
- de Haas <didi.debian@cknow.org>, Furkan Kardame <f.kardame@manjaro.org>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] drm/panfrost: Mark simple_ondemand governor as softdep
-In-Reply-To: <4e1e00422a14db4e2a80870afb704405da16fd1b.1718655077.git.dsimic@manjaro.org>
-References: <4e1e00422a14db4e2a80870afb704405da16fd1b.1718655077.git.dsimic@manjaro.org>
-Message-ID: <f672e7460c92bc9e0c195804f7e99d0b@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <416ea8e5-f3e0-47b3-93c2-34a67c474d8f@sirena.org.uk>
 
-Hello everyone,
+On Wed, Jul 03, 2024 at 01:02:18PM +0100, Mark Brown wrote:
+> On Wed, Jul 03, 2024 at 12:36:43PM +0200, Greg Kroah-Hartman wrote:
+> 
+> > Every test result report in the compaction test prints a distinct log
+> > messae, and some of the reports print a name that varies at runtime.  This
+> > causes problems for automation since a lot of automation software uses the
+> > printed string as the name of the test, if the name varies from run to run
+> > and from pass to fail then the automation software can't identify that a
+> > test changed result or that the same tests are being run.
+> > 
+> > Refactor the logging to use a consistent name when printing the result of
+> > the test, printing the existing messages as diagnostic information instead
+> > so they are still available for people trying to interpret the results.
+> 
+> I'm not convinced that this is a good stable candidate, it will change
+> the output people are seeing in their test environment which might be an
+> undesirable change.
 
-On 2024-06-17 22:17, Dragan Simic wrote:
-> Panfrost DRM driver uses devfreq to perform DVFS, while using 
-> simple_ondemand
-> devfreq governor by default.  This causes driver initialization to fail 
-> on
-> boot when simple_ondemand governor isn't built into the kernel 
-> statically,
-> as a result of the missing module dependency and, consequently, the 
-> required
-> governor module not being included in the initial ramdisk.  Thus, let's 
-> mark
-> simple_ondemand governor as a softdep for Panfrost, to have its kernel 
-> module
-> included in the initial ramdisk.
-> 
-> This is a rather longstanding issue that has forced distributions to 
-> build
-> devfreq governors statically into their kernels, [1][2] or has forced 
-> users
-> to introduce some unnecessary workarounds. [3]
-> 
-> For future reference, not having support for the simple_ondemand 
-> governor in
-> the initial ramdisk produces errors in the kernel log similar to these 
-> below,
-> which were taken from a Pine64 RockPro64:
-> 
->   panfrost ff9a0000.gpu: [drm:panfrost_devfreq_init [panfrost]]
-> *ERROR* Couldn't initialize GPU devfreq
->   panfrost ff9a0000.gpu: Fatal error during GPU init
->   panfrost: probe of ff9a0000.gpu failed with error -22
-> 
-> Having simple_ondemand marked as a softdep for Panfrost may not resolve 
-> this
-> issue for all Linux distributions.  In particular, it will remain 
-> unresolved
-> for the distributions whose utilities for the initial ramdisk 
-> generation do
-> not handle the available softdep information [4] properly yet.  
-> However, some
-> Linux distributions already handle softdeps properly while generating 
-> their
-> initial ramdisks, [5] and this is a prerequisite step in the right 
-> direction
-> for the distributions that don't handle them properly yet.
-> 
-> [1] 
-> https://gitlab.manjaro.org/manjaro-arm/packages/core/linux/-/blob/linux61/config?ref_type=heads#L8180
-> [2] https://salsa.debian.org/kernel-team/linux/-/merge_requests/1066
-> [3] https://forum.pine64.org/showthread.php?tid=15458
-> [4] 
-> https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git/commit/?id=49d8e0b59052999de577ab732b719cfbeb89504d
-> [5] 
-> https://github.com/archlinux/mkinitcpio/commit/97ac4d37aae084a050be512f6d8f4489054668ad
-> 
-> Cc: Diederik de Haas <didi.debian@cknow.org>
-> Cc: Furkan Kardame <f.kardame@manjaro.org>
-> Cc: stable@vger.kernel.org
-> Fixes: f3ba91228e8e ("drm/panfrost: Add initial panfrost driver")
-> Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Did it change the output in a breaking way in the other stable trees and
+normal releases that happened with this commit in it?
 
-Just checking, could this patch be accepted, please?  The Lima 
-counterpart
-has already been accepted. [6]
+thanks,
 
-The approach in this patch is far from perfect, but it's still fine 
-until
-there's a better solution, such as harddeps.  I'll continue my research
-about the possibility for introducing harddeps, which would hopefully
-replace quite a few instances of the softdep (ab)use that already extend
-rather far.  For example, have a look at the commit d5178578bcd4 (btrfs:
-directly call into crypto framework for checksumming) [7] and the lines
-containing MODULE_SOFTDEP() at the very end of fs/btrfs/super.c. [8]
-
-If a filesystem driver can rely on the (ab)use of softdeps, which may be
-fragile or seen as a bit wrong, I think we can follow the same approach,
-at least until a better solution is available.
-
-[6] 
-https://cgit.freedesktop.org/drm/drm-misc/commit/?id=0c94f58cef319ad054fd909b3bf4b7d09c03e11c
-[7] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d5178578bcd4
-[8] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/btrfs/super.c#n2593
-
-> ---
->  drivers/gpu/drm/panfrost/panfrost_drv.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.c
-> b/drivers/gpu/drm/panfrost/panfrost_drv.c
-> index ef9f6c0716d5..149737d7a07e 100644
-> --- a/drivers/gpu/drm/panfrost/panfrost_drv.c
-> +++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
-> @@ -828,3 +828,4 @@ module_platform_driver(panfrost_driver);
->  MODULE_AUTHOR("Panfrost Project Developers");
->  MODULE_DESCRIPTION("Panfrost DRM Driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_SOFTDEP("pre: governor_simpleondemand");
+greg k-h
 
