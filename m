@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 305C3925D8D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A4D5925C06
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:14:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7485C29B4A4
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D66841F2094E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA810185086;
-	Wed,  3 Jul 2024 11:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E429F176AB0;
+	Wed,  3 Jul 2024 11:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hh5pzRKS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uTwC1h1p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85D0185084;
-	Wed,  3 Jul 2024 11:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A345F13D61B;
+	Wed,  3 Jul 2024 11:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005629; cv=none; b=daNZg8XLJyaRyKxugTs7MNr/5XeS9Di9Nir3L84VtlMOLS3UArtiVf0wUfAzGJdQrRb3FoPePKaX3K+QeEWUTlHVnDyHeoZ1f2uqFatuvcqIIoQXMb/xeorUs5x7MU0qrPlJibxx6eVUxYpYPP9+1QvfuHYUtEJ1FOQajLgNX2Y=
+	t=1720004512; cv=none; b=uZRGjkoMgMdaGr3yLwfZj6W+mHT4/JXJQFf4Mg17+P3r16XbOdRbyKq0aoXB7uAM1fxZa4dLrKPOdpcJfgICxGwpPAy1CpiIvgg34cL5FGomRLJ29EEu0QEg7L9PFwW/MvwFKCmfnccz1D3AWABES7IcE/KuDQyJYf25iXv3mV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005629; c=relaxed/simple;
-	bh=psqAzXUUlSMXPmTCD01YeEynih1bCzOtk4+rDakCfCY=;
+	s=arc-20240116; t=1720004512; c=relaxed/simple;
+	bh=Mp0B5Bh5SuVu4+lItSsIOsZrHLYd01EpBQ7th6MTBAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cvkarss8JIJjqAhSCd7J89xQef8/FG9WZPDrYQVnK8NCxUAcfJMP6cD1IfULIstpYKOlP5RRNZPWkhcOy8TcuEOmCHiMlfrdv9M6VANzGxVc6YGPNEPD/jU7DLW4vHgFNjnlQgcgEuhuL98MrZYcsE80qtEPdF+SwipW6cQ6ckU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hh5pzRKS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27700C2BD10;
-	Wed,  3 Jul 2024 11:20:28 +0000 (UTC)
+	 MIME-Version; b=Tiueu2DPqQ33+6odQIlFsW5L5kD8FSFgxGSPXExsBnLP5OmkZJSDDGoZwa1KbmSKTNTU46s6+9DPVvz80eKPP6ITiZtK1TJJMjPrjTJFTYfjJ9lw7jnc9N0dmaYDRwQBI3VrDe2ykrcxa6oWIrqwnHHhf87J/7+ZBEi3/40HLgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uTwC1h1p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270BFC2BD10;
+	Wed,  3 Jul 2024 11:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005629;
-	bh=psqAzXUUlSMXPmTCD01YeEynih1bCzOtk4+rDakCfCY=;
+	s=korg; t=1720004512;
+	bh=Mp0B5Bh5SuVu4+lItSsIOsZrHLYd01EpBQ7th6MTBAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hh5pzRKS/J9wLCK4Rv4s4eKeKB7w2OJSApOvlrcwKLT8ZrbMd5QnwqcnV0vqRbP4D
-	 h8iGgF8dCM0fHasahDfDHbwRhd3/R0SFp8lQi4wUXtt9GKJuW5WRYi2IvBWqKkqG3U
-	 wv/AaSz7QybMA+ksyDPWRhI0ia103SFiCz91m4gA=
+	b=uTwC1h1pGtstddrQxnGcNhWnH5Z3hiAc7DRnYuAfjcUbD9ZmqZpYevBnNQDq0OZ8g
+	 L7wmKuf3DklVImx3iIilkHKYR5F0KZjhYimuOGSjrI+TNaUvupkhuI6JUvyE+djQ9P
+	 787tBjDhVsOzBQ3PRMkOWqg8Rrn7l4v2C9q9D8ko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Ferland <marc.ferland@sonatest.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 112/356] iio: dac: ad5592r: fix temperature channel scaling value
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 067/290] tcp: fix race in tcp_v6_syn_recv_sock()
 Date: Wed,  3 Jul 2024 12:37:28 +0200
-Message-ID: <20240703102917.335828113@linuxfoundation.org>
+Message-ID: <20240703102906.730007665@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Ferland <marc.ferland@sonatest.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 279428df888319bf68f2686934897301a250bb84 upstream.
+[ Upstream commit d37fe4255abe8e7b419b90c5847e8ec2b8debb08 ]
 
-The scale value for the temperature channel is (assuming Vref=2.5 and
-the datasheet):
+tcp_v6_syn_recv_sock() calls ip6_dst_store() before
+inet_sk(newsk)->pinet6 has been set up.
 
-    376.7897513
+This means ip6_dst_store() writes over the parent (listener)
+np->dst_cookie.
 
-When calculating both val and val2 for the temperature scale we
-use (3767897513/25) and multiply it by Vref (here I assume 2500mV) to
-obtain:
+This is racy because multiple threads could share the same
+parent and their final np->dst_cookie could be wrong.
 
-  2500 * (3767897513/25) ==> 376789751300
+Move ip6_dst_store() call after inet_sk(newsk)->pinet6
+has been changed and after the copy of parent ipv6_pinfo.
 
-Finally we divide with remainder by 10^9 to get:
-
-    val = 376
-    val2 = 789751300
-
-However, we return IIO_VAL_INT_PLUS_MICRO (should have been NANO) as
-the scale type. So when converting the raw temperature value to the
-'processed' temperature value we will get (assuming raw=810,
-offset=-753):
-
-    processed = (raw + offset) * scale_val
-              = (810 + -753) * 376
-	      = 21432
-
-    processed += div((raw + offset) * scale_val2, 10^6)
-              += div((810 + -753) * 789751300, 10^6)
-	      += 45015
-    ==> 66447
-    ==> 66.4 Celcius
-
-instead of the expected 21.5 Celsius.
-
-Fix this issue by changing IIO_VAL_INT_PLUS_MICRO to
-IIO_VAL_INT_PLUS_NANO.
-
-Fixes: 56ca9db862bf ("iio: dac: Add support for the AD5592R/AD5593R ADCs/DACs")
-Signed-off-by: Marc Ferland <marc.ferland@sonatest.com>
-Link: https://lore.kernel.org/r/20240501150554.1871390-1-marc.ferland@sonatest.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/dac/ad5592r-base.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/tcp_ipv6.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/dac/ad5592r-base.c
-+++ b/drivers/iio/dac/ad5592r-base.c
-@@ -411,7 +411,7 @@ static int ad5592r_read_raw(struct iio_d
- 			s64 tmp = *val * (3767897513LL / 25LL);
- 			*val = div_s64_rem(tmp, 1000000000LL, val2);
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index 79d6f6ea3c546..003221d6f52e9 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -1311,7 +1311,6 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
+ 	 */
  
--			return IIO_VAL_INT_PLUS_MICRO;
-+			return IIO_VAL_INT_PLUS_NANO;
- 		}
+ 	newsk->sk_gso_type = SKB_GSO_TCPV6;
+-	ip6_dst_store(newsk, dst, NULL, NULL);
+ 	inet6_sk_rx_dst_set(newsk, skb);
  
- 		mutex_lock(&st->lock);
+ 	inet_sk(newsk)->pinet6 = tcp_inet6_sk(newsk);
+@@ -1322,6 +1321,8 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
+ 
+ 	memcpy(newnp, np, sizeof(struct ipv6_pinfo));
+ 
++	ip6_dst_store(newsk, dst, NULL, NULL);
++
+ 	newsk->sk_v6_daddr = ireq->ir_v6_rmt_addr;
+ 	newnp->saddr = ireq->ir_v6_loc_addr;
+ 	newsk->sk_v6_rcv_saddr = ireq->ir_v6_loc_addr;
+-- 
+2.43.0
+
 
 
 
