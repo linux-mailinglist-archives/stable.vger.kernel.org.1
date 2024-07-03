@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-57419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE70925F77
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:00:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11CC8925B2B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E7CDB39E2F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:18:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC02A28F530
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A72D1822EC;
-	Wed,  3 Jul 2024 11:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0425118133C;
+	Wed,  3 Jul 2024 10:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MAbcI1qG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1M+7fm7I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3773216F8FA;
-	Wed,  3 Jul 2024 11:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5979173336;
+	Wed,  3 Jul 2024 10:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004819; cv=none; b=P7KRsxQuS2dkcUd2OxfV4F7gU31GIovmlfmnu7lzCqyi9zzDFwwX3I/ilYRIr+mk124CP3qa9kB2bW5ckm0m2nFhblzegHUpIt4eahbg6F/M/eaK3ca1tYVnbp+0KyMcId8afrByT4783KPh3X/l59GR9dLny/aQezkFZ2AnVg4=
+	t=1720004020; cv=none; b=VrtHln8k7nUmcCtBWSNOvX8qizC78b/vBjhY6NkvNwrt69A0JovzuaJ2M0A7Ov2Q7uoy/BZhd61T2DFKOvv2sPKltzxrmNIwFIyPCZga/ZvSN0Xn/O8Ss1lnPsqoGZAiV0SPUri/2JGG0z7ulhGpA+1r8gMBtKM8zKwUaJVUiLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004819; c=relaxed/simple;
-	bh=MhRk/IX6Vc9g3SozI72H+yuIXBx8ZE6uKUtb7NTr5T8=;
+	s=arc-20240116; t=1720004020; c=relaxed/simple;
+	bh=irObsscxo2AkFfAmKgQ6qMYBcDctXHZil0FoB0+zLLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nNweADJFzCeakSKFsMqa8ZWlexYJVwiNhlBAj+D+CosclOA7I9MTy2glmrf+ZbxA/bSmHjDma0+2JuQ7ckiTFTefg0Tigo5uds2+5dxGgtCbFrxlYanDc0GGERdNMPpR7Bg/9qow/4jjgM4VNq4ciJgzFvoLGblt8rET5eENHh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MAbcI1qG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE734C2BD10;
-	Wed,  3 Jul 2024 11:06:58 +0000 (UTC)
+	 MIME-Version; b=WVHP72VGxfQvgwSP+LB4ZUQ8g+DeAMFd8YoZHNURq+3/2mQFp8YjGPq80IkSywary1dvYGhq7zZS5sw6AikXH3T4T+HegDfNUhUIXGX0b9Ai5mMrO/3b5/3TBDHCOQDDidKivyw8cxt+m7mue4fPI/2NgT0XViKCsILJtNLrplQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1M+7fm7I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38AA0C2BD10;
+	Wed,  3 Jul 2024 10:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004819;
-	bh=MhRk/IX6Vc9g3SozI72H+yuIXBx8ZE6uKUtb7NTr5T8=;
+	s=korg; t=1720004020;
+	bh=irObsscxo2AkFfAmKgQ6qMYBcDctXHZil0FoB0+zLLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MAbcI1qGPT5fZ4fQZPSgBsO0PGLgQ+xGUUt2euVEXLqfnNDnQaCDd+0k1PZAOFqrJ
-	 hL915PxDaMs3mZtfMf44+sJD17sd/A02SxJz6YZrA/W+athzF6r3FNS0fI4zZjrtvi
-	 jUdu1VK4Q89ClrX5NjLemyy+XRhJPOzZ2PDDlkDQ=
+	b=1M+7fm7IZeSp6QRv3WUFI6nKA6VN4RjzWuq6ibKo/BzyTOMJFXWn1TBCiq8N3xNuN
+	 wCFCuLmMtdKiOxJeDUb9P1hexuKaM5ga2c52HXl5FyIGbRYZiq8tNi4oCSfRylZhPn
+	 QW0es8ILiCz+O6OMJajcrOGIyfDMH+FkB9uxJ9+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Martin Leung <martin.leung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 5.10 170/290] drm/amd/display: revert Exit idle optimizations before HDCP execution
+	"Alessandro Carminati (Red Hat)" <alessandro.carminati@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 090/189] selftests/bpf: Prevent client connect before server bind in test_tc_tunnel.sh
 Date: Wed,  3 Jul 2024 12:39:11 +0200
-Message-ID: <20240703102910.596564582@linuxfoundation.org>
+Message-ID: <20240703102844.898388286@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Leung <martin.leung@amd.com>
+From: Alessandro Carminati (Red Hat) <alessandro.carminati@gmail.com>
 
-commit f2703a3596a279b0be6eeed4c500bdbaa8dc3ce4 upstream.
+[ Upstream commit f803bcf9208a2540acb4c32bdc3616673169f490 ]
 
-why and how:
-causes black screen on PNP on DCN 3.5
+In some systems, the netcat server can incur in delay to start listening.
+When this happens, the test can randomly fail in various points.
+This is an example error message:
 
-This reverts commit f30a3bea92bd ("drm/amd/display: Exit idle
-optimizations before HDCP execution")
+   # ip gre none gso
+   # encap 192.168.1.1 to 192.168.1.2, type gre, mac none len 2000
+   # test basic connectivity
+   # Ncat: Connection refused.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Martin Leung <martin.leung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The issue stems from a race condition between the netcat client and server.
+The test author had addressed this problem by implementing a sleep, which
+I have removed in this patch.
+This patch introduces a function capable of sleeping for up to two seconds.
+However, it can terminate the waiting period early if the port is reported
+to be listening.
+
+Signed-off-by: Alessandro Carminati (Red Hat) <alessandro.carminati@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240314105911.213411-1-alessandro.carminati@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c    |   10 ----------
- drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h |    8 --------
- 2 files changed, 18 deletions(-)
+ tools/testing/selftests/bpf/test_tc_tunnel.sh | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
-@@ -86,14 +86,6 @@ static uint8_t is_cp_desired_hdcp2(struc
- 			!hdcp->connection.is_hdcp2_revoked;
+diff --git a/tools/testing/selftests/bpf/test_tc_tunnel.sh b/tools/testing/selftests/bpf/test_tc_tunnel.sh
+index 7c76b841b17bb..21bde60c95230 100755
+--- a/tools/testing/selftests/bpf/test_tc_tunnel.sh
++++ b/tools/testing/selftests/bpf/test_tc_tunnel.sh
+@@ -71,7 +71,6 @@ cleanup() {
+ server_listen() {
+ 	ip netns exec "${ns2}" nc "${netcat_opt}" -l -p "${port}" > "${outfile}" &
+ 	server_pid=$!
+-	sleep 0.2
  }
  
--static void exit_idle_optimizations(struct mod_hdcp *hdcp)
--{
--	struct mod_hdcp_dm *dm = &hdcp->config.dm;
--
--	if (dm->funcs.exit_idle_optimizations)
--		dm->funcs.exit_idle_optimizations(dm->handle);
--}
--
- static enum mod_hdcp_status execution(struct mod_hdcp *hdcp,
- 		struct mod_hdcp_event_context *event_ctx,
- 		union mod_hdcp_transition_input *input)
-@@ -456,8 +448,6 @@ enum mod_hdcp_status mod_hdcp_process_ev
- 	memset(&event_ctx, 0, sizeof(struct mod_hdcp_event_context));
- 	event_ctx.event = event;
+ client_connect() {
+@@ -92,6 +91,16 @@ verify_data() {
+ 	fi
+ }
  
--	exit_idle_optimizations(hdcp);
--
- 	/* execute and transition */
- 	exec_status = execution(hdcp, &event_ctx, &hdcp->auth.trans_input);
- 	trans_status = transition(
---- a/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
-+++ b/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
-@@ -143,13 +143,6 @@ struct mod_hdcp_ddc {
- 	} funcs;
- };
++wait_for_port() {
++	for i in $(seq 20); do
++		if ip netns exec "${ns2}" ss ${2:--4}OHntl | grep -q "$1"; then
++			return 0
++		fi
++		sleep 0.1
++	done
++	return 1
++}
++
+ set -e
  
--struct mod_hdcp_dm {
--	void *handle;
--	struct {
--		void (*exit_idle_optimizations)(void *handle);
--	} funcs;
--};
--
- struct mod_hdcp_psp {
- 	void *handle;
- 	void *funcs;
-@@ -259,7 +252,6 @@ struct mod_hdcp_display_query {
- struct mod_hdcp_config {
- 	struct mod_hdcp_psp psp;
- 	struct mod_hdcp_ddc ddc;
--	struct mod_hdcp_dm dm;
- 	uint8_t index;
- };
+ # no arguments: automated test, run all
+@@ -183,6 +192,7 @@ setup
+ # basic communication works
+ echo "test basic connectivity"
+ server_listen
++wait_for_port ${port} ${netcat_opt}
+ client_connect
+ verify_data
  
+@@ -194,6 +204,7 @@ ip netns exec "${ns1}" tc filter add dev veth1 egress \
+ 	section "encap_${tuntype}_${mac}"
+ echo "test bpf encap without decap (expect failure)"
+ server_listen
++wait_for_port ${port} ${netcat_opt}
+ ! client_connect
+ 
+ if [[ "$tuntype" =~ "udp" ]]; then
+-- 
+2.43.0
+
 
 
 
