@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-57739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BCC1925DC4
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DAE8925F15
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:49:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CABCE1C21087
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1E85B3375A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C9A194123;
-	Wed,  3 Jul 2024 11:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2666C17C9F2;
+	Wed,  3 Jul 2024 10:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOpRJ05/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhLoTHHB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA0513BAFA;
-	Wed,  3 Jul 2024 11:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D975061FE7;
+	Wed,  3 Jul 2024 10:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005786; cv=none; b=c61BFJrW3GGvyU4HCi8fbVMDG4a39YsF7Faa2T6nX+ffGKDKcuv3QGXpt1SpP1+gw0MOyFm5J4QNchlUcouWWfqUhGz+Fs1/248Ng8HeFDC9kFAU75ZRzpA6iINsVCjf4ztzqI2hqiA4zDomyi9MurPQBma/eQIohmH4gcDU3To=
+	t=1720003938; cv=none; b=WfEIFUe52him16FiPB/Y6PhsSNE5maLNpdivHYmyiVyKF3ylm9hrTv9GHV6I5g3yxf8K0BXO2l5GgFcJk8SEXTQXqbuLZEYWXP6TkAslC13BA94mZqb0azd1xXwJmUag/mdSLrqHE7Ku882sFh5cvxGC9ShvMYB09IGJjIap9O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005786; c=relaxed/simple;
-	bh=aLb/4LjILvNQyFS03flh55qZt4GrdYxoVoU33Hk5IqU=;
+	s=arc-20240116; t=1720003938; c=relaxed/simple;
+	bh=/SxluMjsZAla8EsHHSw1Wd0if0PHMlp3K6KiMTco6Jo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OnPUOzuuXOvVnr2ESYm2bHG2GVDQ/Pc6Z1xZwHPq+XaZYOYSqcHXLliTOJtBvGygBKnWf6T+m16odS3evrNANH+ASKqG3tXoptshiHoCewqrCoOjcg6POM4rwByGTt7Y0/Bg4bsY8dx4jsvShgp+qKbkWmBI3pXFzxAwtaBw6iY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOpRJ05/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C70C2BD10;
-	Wed,  3 Jul 2024 11:23:06 +0000 (UTC)
+	 MIME-Version; b=DvDZimx9kf18oW0/o9waNZ1VPjc1g63XlWRCyXQrNEzs9sysh0L2sg2QEOUu3/0wQzUDjsC01xXQ9dYanb1Q3U9LvF0jpYvGu8tN551pVRsLcNFyfp8itiMeNyCqV6gSpay9mfzNjqaAm9VopYkuroBPOLRGv8mfddlGSlQooCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhLoTHHB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 079F2C2BD10;
+	Wed,  3 Jul 2024 10:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005786;
-	bh=aLb/4LjILvNQyFS03flh55qZt4GrdYxoVoU33Hk5IqU=;
+	s=korg; t=1720003938;
+	bh=/SxluMjsZAla8EsHHSw1Wd0if0PHMlp3K6KiMTco6Jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pOpRJ05/gOkTRc8XfNsD5IQFpAfsIUc1TP5lTaU8rKT+gXphRRkeL4lTQZfHMCSA4
-	 ybbVUXaT4Ic7BAhG1aQkIbvmMZHRVE6u/OX4pznvncgl1xmARLwCLO7rFW7mJk3J02
-	 q5vuDI1dUdPnJ0ML2+DZe7m6zfn3dGGw+Wutsi8c=
+	b=LhLoTHHBVB+ymNoA7zJOiF2Lwcmz5dMZai4rcLaUAh/WnwaFpGX/dFM/F+D2kJauN
+	 ltoBtrEdrPecw/Nhb0tbDQV42+45/QEOJjl9HOlXDvg1/9evSHOtQFf+2bOZxtJyt/
+	 y8+AQE9IuHeu7Eiks3zN0E5OBXWQPIAa7Rlie9kc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlad Buslov <vladbu@nvidia.com>,
-	Oz Shlomo <ozsh@nvidia.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 196/356] net/sched: act_ct: set net pointer when creating new nf_flow_table
+	Rik van Riel <riel@surriel.com>,
+	Baoquan He <bhe@redhat.com>,
+	Dave Young <dyoung@redhat.com>,
+	Vivek Goyal <vgoyal@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 071/189] fs/proc: fix softlockup in __read_vmcore
 Date: Wed,  3 Jul 2024 12:38:52 +0200
-Message-ID: <20240703102920.518800242@linuxfoundation.org>
+Message-ID: <20240703102844.187186058@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlad Buslov <vladbu@nvidia.com>
+From: Rik van Riel <riel@surriel.com>
 
-[ Upstream commit fc54d9065f90dd25063883f404e6ff9a76913e73 ]
+commit 5cbcb62dddf5346077feb82b7b0c9254222d3445 upstream.
 
-Following patches in series use the pointer to access flow table offload
-debug variables.
+While taking a kernel core dump with makedumpfile on a larger system,
+softlockup messages often appear.
 
-Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
-Signed-off-by: Oz Shlomo <ozsh@nvidia.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 88c67aeb1407 ("sched: act_ct: add netns into the key of tcf_ct_flow_table")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While softlockup warnings can be harmless, they can also interfere with
+things like RCU freeing memory, which can be problematic when the kdump
+kexec image is configured with as little memory as possible.
+
+Avoid the softlockup, and give things like work items and RCU a chance to
+do their thing during __read_vmcore by adding a cond_resched.
+
+Link: https://lkml.kernel.org/r/20240507091858.36ff767f@imladris.surriel.com
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_ct.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/proc/vmcore.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
-index b4c42b257ae7c..0307b4366db10 100644
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -276,7 +276,7 @@ static struct nf_flowtable_type flowtable_ct = {
- 	.owner		= THIS_MODULE,
- };
+--- a/fs/proc/vmcore.c
++++ b/fs/proc/vmcore.c
+@@ -374,6 +374,8 @@ static ssize_t __read_vmcore(char *buffe
+ 		/* leave now if filled buffer already */
+ 		if (buflen == 0)
+ 			return acc;
++
++		cond_resched();
+ 	}
  
--static int tcf_ct_flow_table_get(struct tcf_ct_params *params)
-+static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
- {
- 	struct tcf_ct_flow_table *ct_ft;
- 	int err = -ENOMEM;
-@@ -302,6 +302,7 @@ static int tcf_ct_flow_table_get(struct tcf_ct_params *params)
- 	err = nf_flow_table_init(&ct_ft->nf_ft);
- 	if (err)
- 		goto err_init;
-+	write_pnet(&ct_ft->nf_ft.net, net);
- 
- 	__module_get(THIS_MODULE);
- out_unlock:
-@@ -1304,7 +1305,7 @@ static int tcf_ct_init(struct net *net, struct nlattr *nla,
- 	if (err)
- 		goto cleanup;
- 
--	err = tcf_ct_flow_table_get(params);
-+	err = tcf_ct_flow_table_get(net, params);
- 	if (err)
- 		goto cleanup_params;
- 
--- 
-2.43.0
-
+ 	list_for_each_entry(m, &vmcore_list, list) {
 
 
 
