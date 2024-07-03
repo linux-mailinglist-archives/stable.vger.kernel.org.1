@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-57221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00854925B92
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:09:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67883925E24
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7794C2905D6
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:09:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B01BE2A2A51
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B5518C329;
-	Wed,  3 Jul 2024 10:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7AF171E72;
+	Wed,  3 Jul 2024 11:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iu090SAu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nq6go5qf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5D318A95E;
-	Wed,  3 Jul 2024 10:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14221DA327;
+	Wed,  3 Jul 2024 11:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004225; cv=none; b=KhLUUk5IA4JgzZda0U9wIQBgSKOAhVdipCkukCMIRGrz/b+2CgHPmj7ue2YnKRuaZY79yAPRT0XToMmIrwKm3CJh0wEGsL3hK7qegDT8UcFCyvfdAuzBFJQ+SxNdP+AohQCpJaQ5bPcyoIqcPD6V1oe9i2/yvyFgAdCwmv4KXdI=
+	t=1720005963; cv=none; b=AVQqmBz02XPE+pub79b0zicocVH2EPU5jfLPOrr3ACGPAVpCSf4Oz54U8H3Z1fdxSnnWmkSP5XBlWBdVoU+DPen8PFtLtqB8+ZzFLW22ezSk42ZahTntP6BbX+gPcQXNIxz5BNJv4Q6oPAOT068P/rW7uf9e9Ag7W1ZHKXexmH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004225; c=relaxed/simple;
-	bh=VQEBxE8Sxa/rL6+ZQOjr6Gipu0Y9L8uBO5dsRU/t1/I=;
+	s=arc-20240116; t=1720005963; c=relaxed/simple;
+	bh=FrVAIJ1pRk/cbvfojJ2VQlVgSPMcZu8lqfdXW9J5Nic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tmC1H/cwwRT6CRZoWrcJGgL6eqsUWpYFBVmXfmaynopx+ktypZk8tQbmV90jM7cTrat7br0reiu/Zrx3xfZeRpVSnSzAa1dmzvyxi/AtcfLn1whB8FyFXl48lzD5v+gaYMMLDlsbLqGKJPraMiXzHQK1NxJer/gfTcBM3wqUryE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iu090SAu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA19C32781;
-	Wed,  3 Jul 2024 10:57:04 +0000 (UTC)
+	 MIME-Version; b=j/sl7NtNdpIn3iS0Kiycv7XnWvNk4u/oYCw3yYzIijrt58zaVZnRd7NNzMiMT5i4V1Up/e1duWrHGtZOVwJnDWNwg8RDMG5fSbzJbX23KjlrVRdt0PLtdBlT3k9cAC5em4X89ZQtSb1jtmWRlIzoLjIXo4XEIqzEtNEUnn/Z+Qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nq6go5qf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6523FC2BD10;
+	Wed,  3 Jul 2024 11:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004225;
-	bh=VQEBxE8Sxa/rL6+ZQOjr6Gipu0Y9L8uBO5dsRU/t1/I=;
+	s=korg; t=1720005962;
+	bh=FrVAIJ1pRk/cbvfojJ2VQlVgSPMcZu8lqfdXW9J5Nic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iu090SAuHDLBB9oW4zqaF8eOyJX8M3tLhvMXPsORqygs41ZRkucVaKGsKOr8coWMo
-	 AcLQdozZai77JGt7rgt5S83DNmAKa2RkaAHw6rI4lvm/qSEXFGs/Y8zyvSkUnI2vl7
-	 tNyeComy90iUs4ytAC0KfmgKDUlFao2jJ9twX/mY=
+	b=Nq6go5qf7ixhkGJrQaqirV/IgWKA/Hp8ATQeJm75mJrnJE62DCqfiYCLaYqzdPopU
+	 K3vT09wD8K2WlTL8OQ9uZUWpxBJTTeiVtoYL4ok8ohP3/HysBk2yOfy1bDgdOzC5tR
+	 mdTCEFwjkeyt+GuC+w66yW47jlpfabuAeoiJzy2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Naveen Naidu <naveennaidu479@gmail.com>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Narasimhan V <Narasimhan.V@amd.com>,
+	Jan Beulich <jbeulich@suse.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 129/189] PCI: Add PCI_ERROR_RESPONSE and related definitions
-Date: Wed,  3 Jul 2024 12:39:50 +0200
-Message-ID: <20240703102846.359094459@linuxfoundation.org>
+Subject: [PATCH 5.15 255/356] x86/mm/numa: Use NUMA_NO_NODE when calling memblock_set_node()
+Date: Wed,  3 Jul 2024 12:39:51 +0200
+Message-ID: <20240703102922.763942486@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +63,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen Naidu <naveennaidu479@gmail.com>
+From: Jan Beulich <jbeulich@suse.com>
 
-[ Upstream commit 57bdeef4716689d9b0e3571034d65cf420f6efcd ]
+[ Upstream commit 3ac36aa7307363b7247ccb6f6a804e11496b2b36 ]
 
-A config or MMIO read from a PCI device that doesn't exist or doesn't
-respond causes a PCI error. There's no real data to return to satisfy the
-CPU read, so most hardware fabricates ~0 data.
+memblock_set_node() warns about using MAX_NUMNODES, see
 
-Add a PCI_ERROR_RESPONSE definition for that and use it where appropriate
-to make these checks consistent and easier to find.
+  e0eec24e2e19 ("memblock: make memblock_set_node() also warn about use of MAX_NUMNODES")
 
-Also add helper definitions PCI_SET_ERROR_RESPONSE() and
-PCI_POSSIBLE_ERROR() to make the code more readable.
+for details.
 
-Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://lore.kernel.org/r/55563bf4dfc5d3fdc96695373c659d099bf175b1.1637243717.git.naveennaidu479@gmail.com
-Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Pali Rohár <pali@kernel.org>
-Stable-dep-of: c625dabbf1c4 ("x86/amd_nb: Check for invalid SMN reads")
+Reported-by: Narasimhan V <Narasimhan.V@amd.com>
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Cc: stable@vger.kernel.org
+[bp: commit message]
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/r/20240603141005.23261-1-bp@kernel.org
+Link: https://lore.kernel.org/r/abadb736-a239-49e4-ab42-ace7acdd4278@suse.com
+Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pci.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/x86/mm/numa.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 1cd5caa567cf5..7edc6de9e88c2 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -129,6 +129,15 @@ enum pci_interrupt_pin {
- /* The number of legacy PCI INTx interrupts */
- #define PCI_NUM_INTX	4
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index 1a1c0c242f272..d074a1b4f976c 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -522,7 +522,7 @@ static void __init numa_clear_kernel_node_hotplug(void)
+ 	for_each_reserved_mem_region(mb_region) {
+ 		int nid = memblock_get_region_node(mb_region);
  
-+/*
-+ * Reading from a device that doesn't respond typically returns ~0.  A
-+ * successful read from a device may also return ~0, so you need additional
-+ * information to reliably identify errors.
-+ */
-+#define PCI_ERROR_RESPONSE		(~0ULL)
-+#define PCI_SET_ERROR_RESPONSE(val)	(*(val) = ((typeof(*(val))) PCI_ERROR_RESPONSE))
-+#define PCI_POSSIBLE_ERROR(val)		((val) == ((typeof(val)) PCI_ERROR_RESPONSE))
-+
- /*
-  * pci_power_t values must match the bits in the Capabilities PME_Support
-  * and Control/Status PowerState fields in the Power Management capability.
+-		if (nid != MAX_NUMNODES)
++		if (nid != NUMA_NO_NODE)
+ 			node_set(nid, reserved_nodemask);
+ 	}
+ 
+@@ -642,9 +642,9 @@ static int __init numa_init(int (*init_func)(void))
+ 	nodes_clear(node_online_map);
+ 	memset(&numa_meminfo, 0, sizeof(numa_meminfo));
+ 	WARN_ON(memblock_set_node(0, ULLONG_MAX, &memblock.memory,
+-				  MAX_NUMNODES));
++				  NUMA_NO_NODE));
+ 	WARN_ON(memblock_set_node(0, ULLONG_MAX, &memblock.reserved,
+-				  MAX_NUMNODES));
++				  NUMA_NO_NODE));
+ 	/* In case that parsing SRAT failed. */
+ 	WARN_ON(memblock_clear_hotplug(0, ULLONG_MAX));
+ 	numa_reset_distance();
 -- 
 2.43.0
 
