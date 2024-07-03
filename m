@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-57582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7CCB925D18
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:25:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D726925D46
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9B1F1C21AEE
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:25:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3DFC1F21BF9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2322F171E72;
-	Wed,  3 Jul 2024 11:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D1E17DA25;
+	Wed,  3 Jul 2024 11:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EGWB5KZE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcpdLWJ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D709C139D1E;
-	Wed,  3 Jul 2024 11:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585F513776F;
+	Wed,  3 Jul 2024 11:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005318; cv=none; b=eh8iBqylbM38fTJSMwpxBBRDMoLnXNvt5Cdkk0EA+GRhZHxWrr3UmtMthyOPbcbtDEkAWBw8v/W+r+e2x45/sOh1ASy03fpodPHfuC7AtkeLwAJUhomSBCPXbWaK9lwMNtHrMb4aznEibqGy10acYm/vjWsA+ZFdN//BD0Mvv34=
+	t=1720005443; cv=none; b=dQ7GzFPu+okbet8O1OUzXW4OXefLk33vdrTJ47Ui8sY/Bhp/wOJEJ76/+KMGV4xFadkQ3UVED0tHRreUuICnVrfZ6UMNKbRDOQkTpa7KFrEvsN//N2zG24J47FcwLi62GElPyrteNtyQLhenPBumZmQASJTzSF6uTPHfZx9w4BQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005318; c=relaxed/simple;
-	bh=+C5FoclgxYAWnFyl5MSEmwazMPulY+rCNX4X4fJDEK8=;
+	s=arc-20240116; t=1720005443; c=relaxed/simple;
+	bh=Zqu5jC+tTWSruFlsvochXnUY9LmzvezWBX5rMgqj/eQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ClocyLi+BPEjD+XpDj8E2lxtwbttv6WfDGxBQiTzOpJQinBJD02ZAY8CCNOIzo0TB9P0tv4n0vbtGE02OeL7jM0QkQDiisER9EGMDFdmmHUZmwcI/YWEef2pGwAJ3xHAaKnM5w0QxmJ4jXHx7sxOaArQ6z0vSBx0woiTQyRwyhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EGWB5KZE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F35C2BD10;
-	Wed,  3 Jul 2024 11:15:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BNArux/5fWi5F9PjXlK5TDudM1HEZMeZ+VyTwX0xWm5PLXXQsr1Y8zpEPnL04si1bPxMlVvP8J2GfauS4OBJjoRPjokvlu+2uDuBcoSG09gZRpSIXt2/ixTO5Im1RYxnhUebyb04WdYc/DxdDdpodNzsOfmFpk7fU2sNzqaS93k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wcpdLWJ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA4EC2BD10;
+	Wed,  3 Jul 2024 11:17:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005318;
-	bh=+C5FoclgxYAWnFyl5MSEmwazMPulY+rCNX4X4fJDEK8=;
+	s=korg; t=1720005443;
+	bh=Zqu5jC+tTWSruFlsvochXnUY9LmzvezWBX5rMgqj/eQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EGWB5KZEjczBcOmpsc0vpVKJ6gyy4po+UYQo0MUipFa0RdpDjnsEwCPpmt4aFkI+P
-	 NaQYN0AZnbwgYxbDx2iamULFNECidPz5w550Qkk6SoIJkgMAFiFNU/gtkb+SXmcSDm
-	 ST0FY+vWGHHGytWY4EZgebOIq3EklkpT1gKzfgbY=
+	b=wcpdLWJ0r5qT2TdVI10xWNdlwe3L2y0xKOn74Ip0Pp4j/aNnvLo0TaPwDIHPO6HRN
+	 +MIgfwe39HuOCfyEnq2xTIAh0gUj1XogPz5Gt2sgyfX5fymbnE0D5rNiJOQMp4KFC9
+	 KG+8CjpeRRG7I3ZLiaKyFTr4QoiHXIK3zExEl/1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Anson Jacob <Anson.Jacob@amd.com>,
-	George Shen <george.shen@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Abaci Robot <abaci@linux.alibaba.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 040/356] drm/amd/display: Handle Y carry-over in VCP X.Y calculation
-Date: Wed,  3 Jul 2024 12:36:16 +0200
-Message-ID: <20240703102914.612402441@linuxfoundation.org>
+Subject: [PATCH 5.15 041/356] drm/amd/display: Clean up some inconsistent indenting
+Date: Wed,  3 Jul 2024 12:36:17 +0200
+Message-ID: <20240703102914.650021553@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
 References: <20240703102913.093882413@linuxfoundation.org>
@@ -63,48 +62,192 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Shen <george.shen@amd.com>
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 
-[ Upstream commit 3626a6aebe62ce7067cdc460c0c644e9445386bb ]
+[ Upstream commit 1da2fcc435114ea5a65d7e15fc31b4d0ce11113c ]
 
-[Why/How]
-Theoretically rare corner case where ceil(Y) results in rounding
-up to an integer. If this happens, the 1 should be carried over to
-the X value.
+Eliminate the follow smatch warning:
 
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Acked-by: Anson Jacob <Anson.Jacob@amd.com>
-Signed-off-by: George Shen <george.shen@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+drivers/gpu/drm/amd/amdgpu/../display/dmub/src/dmub_srv.c:622
+dmub_srv_cmd_execute() warn: inconsistent indenting.
+
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 892b41b16f61 ("drm/amd/display: Fix incorrect DSC instance for MST")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn10/dcn10_stream_encoder.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ .../amd/display/amdgpu_dm/amdgpu_dm_debugfs.c | 72 +++++++++----------
+ 1 file changed, 36 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_stream_encoder.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_stream_encoder.c
-index cf364ae931386..d0799c426a84d 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_stream_encoder.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_stream_encoder.c
-@@ -644,6 +644,12 @@ void enc1_stream_encoder_set_throttled_vcp_size(
- 				x),
- 			26));
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+index ed2f6802b0e20..fc0f6b0089ba0 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+@@ -1315,9 +1315,9 @@ static ssize_t dp_dsc_clock_en_read(struct file *f, char __user *buf,
  
-+	// If y rounds up to integer, carry it over to x.
-+	if (y >> 26) {
-+		x += 1;
-+		y = 0;
-+	}
-+
- 	REG_SET_2(DP_MSE_RATE_CNTL, 0,
- 		DP_MSE_RATE_X, x,
- 		DP_MSE_RATE_Y, y);
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+-			if (pipe_ctx && pipe_ctx->stream &&
+-			    pipe_ctx->stream->link == aconnector->dc_link)
+-				break;
++		if (pipe_ctx && pipe_ctx->stream &&
++		    pipe_ctx->stream->link == aconnector->dc_link)
++			break;
+ 	}
+ 
+ 	if (!pipe_ctx) {
+@@ -1421,9 +1421,9 @@ static ssize_t dp_dsc_clock_en_write(struct file *f, const char __user *buf,
+ 
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+-			if (pipe_ctx && pipe_ctx->stream &&
+-			    pipe_ctx->stream->link == aconnector->dc_link)
+-				break;
++		if (pipe_ctx && pipe_ctx->stream &&
++		    pipe_ctx->stream->link == aconnector->dc_link)
++			break;
+ 	}
+ 
+ 	if (!pipe_ctx || !pipe_ctx->stream)
+@@ -1506,9 +1506,9 @@ static ssize_t dp_dsc_slice_width_read(struct file *f, char __user *buf,
+ 
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+-			if (pipe_ctx && pipe_ctx->stream &&
+-			    pipe_ctx->stream->link == aconnector->dc_link)
+-				break;
++		if (pipe_ctx && pipe_ctx->stream &&
++		    pipe_ctx->stream->link == aconnector->dc_link)
++			break;
+ 	}
+ 
+ 	if (!pipe_ctx) {
+@@ -1610,9 +1610,9 @@ static ssize_t dp_dsc_slice_width_write(struct file *f, const char __user *buf,
+ 
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+-			if (pipe_ctx && pipe_ctx->stream &&
+-			    pipe_ctx->stream->link == aconnector->dc_link)
+-				break;
++		if (pipe_ctx && pipe_ctx->stream &&
++		    pipe_ctx->stream->link == aconnector->dc_link)
++			break;
+ 	}
+ 
+ 	if (!pipe_ctx || !pipe_ctx->stream)
+@@ -1695,9 +1695,9 @@ static ssize_t dp_dsc_slice_height_read(struct file *f, char __user *buf,
+ 
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+-			if (pipe_ctx && pipe_ctx->stream &&
+-			    pipe_ctx->stream->link == aconnector->dc_link)
+-				break;
++		if (pipe_ctx && pipe_ctx->stream &&
++		    pipe_ctx->stream->link == aconnector->dc_link)
++			break;
+ 	}
+ 
+ 	if (!pipe_ctx) {
+@@ -1799,9 +1799,9 @@ static ssize_t dp_dsc_slice_height_write(struct file *f, const char __user *buf,
+ 
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+-			if (pipe_ctx && pipe_ctx->stream &&
+-			    pipe_ctx->stream->link == aconnector->dc_link)
+-				break;
++		if (pipe_ctx && pipe_ctx->stream &&
++		    pipe_ctx->stream->link == aconnector->dc_link)
++			break;
+ 	}
+ 
+ 	if (!pipe_ctx || !pipe_ctx->stream)
+@@ -1880,9 +1880,9 @@ static ssize_t dp_dsc_bits_per_pixel_read(struct file *f, char __user *buf,
+ 
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+-			if (pipe_ctx && pipe_ctx->stream &&
+-			    pipe_ctx->stream->link == aconnector->dc_link)
+-				break;
++		if (pipe_ctx && pipe_ctx->stream &&
++		    pipe_ctx->stream->link == aconnector->dc_link)
++			break;
+ 	}
+ 
+ 	if (!pipe_ctx) {
+@@ -1981,9 +1981,9 @@ static ssize_t dp_dsc_bits_per_pixel_write(struct file *f, const char __user *bu
+ 
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+-			if (pipe_ctx && pipe_ctx->stream &&
+-			    pipe_ctx->stream->link == aconnector->dc_link)
+-				break;
++		if (pipe_ctx && pipe_ctx->stream &&
++		    pipe_ctx->stream->link == aconnector->dc_link)
++			break;
+ 	}
+ 
+ 	if (!pipe_ctx || !pipe_ctx->stream)
+@@ -2060,9 +2060,9 @@ static ssize_t dp_dsc_pic_width_read(struct file *f, char __user *buf,
+ 
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+-			if (pipe_ctx && pipe_ctx->stream &&
+-			    pipe_ctx->stream->link == aconnector->dc_link)
+-				break;
++		if (pipe_ctx && pipe_ctx->stream &&
++		    pipe_ctx->stream->link == aconnector->dc_link)
++			break;
+ 	}
+ 
+ 	if (!pipe_ctx) {
+@@ -2121,9 +2121,9 @@ static ssize_t dp_dsc_pic_height_read(struct file *f, char __user *buf,
+ 
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+-			if (pipe_ctx && pipe_ctx->stream &&
+-			    pipe_ctx->stream->link == aconnector->dc_link)
+-				break;
++		if (pipe_ctx && pipe_ctx->stream &&
++		    pipe_ctx->stream->link == aconnector->dc_link)
++			break;
+ 	}
+ 
+ 	if (!pipe_ctx) {
+@@ -2197,9 +2197,9 @@ static ssize_t dp_dsc_chunk_size_read(struct file *f, char __user *buf,
+ 
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+-			if (pipe_ctx && pipe_ctx->stream &&
+-			    pipe_ctx->stream->link == aconnector->dc_link)
+-				break;
++		if (pipe_ctx && pipe_ctx->stream &&
++		    pipe_ctx->stream->link == aconnector->dc_link)
++			break;
+ 	}
+ 
+ 	if (!pipe_ctx) {
+@@ -2273,9 +2273,9 @@ static ssize_t dp_dsc_slice_bpg_offset_read(struct file *f, char __user *buf,
+ 
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+-			if (pipe_ctx && pipe_ctx->stream &&
+-			    pipe_ctx->stream->link == aconnector->dc_link)
+-				break;
++		if (pipe_ctx && pipe_ctx->stream &&
++		    pipe_ctx->stream->link == aconnector->dc_link)
++			break;
+ 	}
+ 
+ 	if (!pipe_ctx) {
 -- 
 2.43.0
 
