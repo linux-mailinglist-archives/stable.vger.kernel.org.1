@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-57741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 302E2925DC5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9791E925C91
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:19:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAFE31F21EA5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E7E81F22E38
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:19:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B89E18C340;
-	Wed,  3 Jul 2024 11:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D361849CD;
+	Wed,  3 Jul 2024 11:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKLPDBaD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZrzjRXO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E59187551;
-	Wed,  3 Jul 2024 11:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725D11836EF;
+	Wed,  3 Jul 2024 11:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005793; cv=none; b=p2ZDSPvthRS6Dc9uwHFYv1CmIgEYXnEWBlKpHXXuOHp1sg3zIBu3NY8xUs3GT0+RywfKbBI1x3ZQYHqNItdV3sx/H9U9/kwnfyHqhtick5rW48ZWyD8yx1cxqNQXeKVRy/QmLpw/VxvouiqLebpHoT/D58OSXBGXjiuIygOeg0I=
+	t=1720004904; cv=none; b=oIVKXwrYX3Sw8EWIiF91CuoIz2aQKR0lIcXkRoK8ADunisYNuFY8GhDuxwvfBdhNsBHOU3nIt4dC3/EOOQx9BnuntOs7okZ3xB1umDZK/tBQfkCcRoP0eSL9l44uekUv6263lBwuvVeMhMae9Ywtlf/h4hPOZVXlkvsb1GKzQ5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005793; c=relaxed/simple;
-	bh=Va4ogR3LjV6CIHLlDit2gzbQnsjEcz5vaW8Z89pzDj8=;
+	s=arc-20240116; t=1720004904; c=relaxed/simple;
+	bh=s3MbZ8zcz6C2/iZO/afECOIpg6YvztTuzyJwo7hAaMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vn7xtBSmv7jBmmfCmdZaLiEuNcBXNlks00TLRLgO2kEkYqt7/oYeZ4nn4hqQARbri+1r6tkDhheWejSM17eNgRRpdOzgjRtGE7ia51LC+F6wH/e4R3B00r91h6m23M50gDICpj1JlQFRmn8E6HmMxLh6BKRU3YPt1iqFZNxmg0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKLPDBaD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 655EFC2BD10;
-	Wed,  3 Jul 2024 11:23:12 +0000 (UTC)
+	 MIME-Version; b=qld5p6w7gra6ZBjr9MvoIhy7EVQ9Xz3y+ccxUGfWfxF9rTVGt1JBlmBBuFSSeIXo47JYmz2KYdRsDpSRuRM+Mqg4IH8PfWgAcuZ1UdhRa248YyXcniI4tR4V5KjAEZBzocaG5YgXrf0ybyA3pmb6HMl7qdYxDImk8tj++WObPMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZrzjRXO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAAC1C2BD10;
+	Wed,  3 Jul 2024 11:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005792;
-	bh=Va4ogR3LjV6CIHLlDit2gzbQnsjEcz5vaW8Z89pzDj8=;
+	s=korg; t=1720004904;
+	bh=s3MbZ8zcz6C2/iZO/afECOIpg6YvztTuzyJwo7hAaMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UKLPDBaDftVYbmD9POfDp+FbPHr5FUxWR0h8N7k9geUYwScq7pOatgOh2248sqQPZ
-	 Leqp7ABlN7OZv4lXvwE0CK8R/lRqvPNWV3AADRATSzjbyU51sD9/P+ew6BHPOikHo/
-	 npN5BnxbP+mKzRCM8TmvJmDCUAxacLosSsWYA4rs=
+	b=jZrzjRXOfEJ4z/QxMjZbTl9+mJWJhzyNlnPjOH4CreeLdd5hB6iqO/vBytCdWn7+s
+	 nsGD3m+ARaEr6Fx1HE7mcvPJ2HCyFas2W+r+EpdkhzDxVRNDPLKj1uzoi442Jw55dM
+	 5sURLr/Q5MyYknC1iyQ8fHiphZKJUrGv0eraLvhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Heng Qi <hengqi@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 198/356] ptp: fix integer overflow in max_vclocks_store
-Date: Wed,  3 Jul 2024 12:38:54 +0200
-Message-ID: <20240703102920.595166778@linuxfoundation.org>
+Subject: [PATCH 5.10 154/290] regulator: core: Fix modpost error "regulator_get_regmap" undefined
+Date: Wed,  3 Jul 2024 12:38:55 +0200
+Message-ID: <20240703102909.996810933@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 81d23d2a24012e448f651e007fac2cfd20a45ce0 ]
+[ Upstream commit 3f60497c658d2072714d097a177612d34b34aa3d ]
 
-On 32bit systems, the "4 * max" multiply can overflow.  Use kcalloc()
-to do the allocation to prevent this.
+Fix the modpost error "regulator_get_regmap" undefined by adding export
+symbol.
 
-Fixes: 44c494c8e30e ("ptp: track available ptp vclocks information")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
-Link: https://lore.kernel.org/r/ee8110ed-6619-4bd7-9024-28c1f2ac24f4@moroto.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 04eca28cde52 ("regulator: Add helpers for low-level register access")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202406110117.mk5UR3VZ-lkp@intel.com
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://lore.kernel.org/r/20240610195532.175942-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_sysfs.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/regulator/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ptp/ptp_sysfs.c b/drivers/ptp/ptp_sysfs.c
-index 0bdfdd4bb0fa2..be58d5257bcb6 100644
---- a/drivers/ptp/ptp_sysfs.c
-+++ b/drivers/ptp/ptp_sysfs.c
-@@ -280,8 +280,7 @@ static ssize_t max_vclocks_store(struct device *dev,
- 	if (max < ptp->n_vclocks)
- 		goto out;
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 2d1a23b9eae3b..7082cffdd10e6 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -3185,6 +3185,7 @@ struct regmap *regulator_get_regmap(struct regulator *regulator)
  
--	size = sizeof(int) * max;
--	vclock_index = kzalloc(size, GFP_KERNEL);
-+	vclock_index = kcalloc(max, sizeof(int), GFP_KERNEL);
- 	if (!vclock_index) {
- 		err = -ENOMEM;
- 		goto out;
+ 	return map ? map : ERR_PTR(-EOPNOTSUPP);
+ }
++EXPORT_SYMBOL_GPL(regulator_get_regmap);
+ 
+ /**
+  * regulator_get_hardware_vsel_register - get the HW voltage selector register
 -- 
 2.43.0
 
