@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-57689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5A2925D8B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E77925C09
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:14:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DE221C20F34
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A4951F212A3
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A50190043;
-	Wed,  3 Jul 2024 11:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB30917837D;
+	Wed,  3 Jul 2024 11:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nF5mZSAE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhGIpHsv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8744418FDD6;
-	Wed,  3 Jul 2024 11:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C20178374;
+	Wed,  3 Jul 2024 11:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005638; cv=none; b=fVjz+DqLV+eTBbjJ5uESEDAop9zT9eBKvNk46VG8LEfSFaNJaCisuAcd7rGSu5ltHnyTtRzzaT01Txpagk3NjdZsIGGx0O6uhq5h5fIud3sizfOXkJlEAXQoDrylSkG/PDvJ7r2zIP31FtNO14rRKDRZPTshEJArwxY35s3+GWw=
+	t=1720004524; cv=none; b=sA98dTpnLnzF2aTQYGqxNBx3g/7oK8NcmzZ5W5hKfQXLXqe7UBfVZQx5LBqi2ekfNNDEyTsL5DwG3hbwWkEjryb+9emhIu/iAy/OZ51gjIhByg89WvPwltb6kcajp4IRyVIrzDVChlj+fvzXJ6RizF1dFp8IxydrczRtVUTkxOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005638; c=relaxed/simple;
-	bh=01cjC0TUd0b7rmJLOCfuFFA8x5TINVQ1of6dMq+QRdY=;
+	s=arc-20240116; t=1720004524; c=relaxed/simple;
+	bh=fXRzNoIIlD+9MPrhe/zGvblB2IDuIBfcsJ7XQC/pRPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Js/XNcnpHO17cQMwSz/JnHjTCKOm5Q32gdjhKLGSUjXXo+euerFAtBq4TtXWEq/zLvvlHTmFL3PMNIgmQJZZlA4tZBEn7+sbb+8yRD6o3e4eq9DH9oHGdX68shwcAV0uaZbCjv51Q6A/arcdiBwrbIx7tMUyMCkp/QH1JBOKBD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nF5mZSAE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C35AC32781;
-	Wed,  3 Jul 2024 11:20:37 +0000 (UTC)
+	 MIME-Version; b=EUBOjtmKS2qBNLDaGfQLKq7rZ3ljcjHaR/PyAqNpe/ifilKHR47v8NNCMd2NCHvSaQF30MlR7q79xsdqMYQfXiMSnjIk4m0a69gqthqxFUdOmoQ1ZMgVv7fH4rhNP7KZ8/OaJEla6l+eMmajqf7ihwL23EWPejwAwCRIwrqYi54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhGIpHsv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA669C2BD10;
+	Wed,  3 Jul 2024 11:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005638;
-	bh=01cjC0TUd0b7rmJLOCfuFFA8x5TINVQ1of6dMq+QRdY=;
+	s=korg; t=1720004524;
+	bh=fXRzNoIIlD+9MPrhe/zGvblB2IDuIBfcsJ7XQC/pRPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nF5mZSAElWvtqVNn5pl7AbPqP1byJoht4YF2HF/3Ko0eW/atHXyoIQDFRCBi0p6T9
-	 Dvt8hRknUMHj5ntAGpK7ECIOJ1KGZzm3Nyia7ILSPGt6KcdYbvI5UY7J8dEkL7CFjK
-	 KXk8OzL9mQSvqEBaz5HauicHuaZcWHCH49fu8MWc=
+	b=RhGIpHsvEz06YKnehrtravIQkzaMUqn3zmC+UbQ2kGSH3kObQ5mJYbSzjraLEY2tw
+	 c5U+VVPlKHzkK8fsUzaI8JvXOtzGeitJFoEz9cJlWcYWAkcefFQIeekJ+4M91EoYUg
+	 5LRwILGsbLyE7McYdzfaei3BQQ4WR8zjAhqu1VzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jani Nikula <jani.nikula@intel.com>,
-	Inki Dae <inki.dae@samsung.com>
-Subject: [PATCH 5.15 115/356] drm/exynos/vidi: fix memory leak in .get_modes()
-Date: Wed,  3 Jul 2024 12:37:31 +0200
-Message-ID: <20240703102917.448365719@linuxfoundation.org>
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 071/290] net: stmmac: replace priv->speed with the portTransmitRate from the tc-cbs parameters
+Date: Wed,  3 Jul 2024 12:37:32 +0200
+Message-ID: <20240703102906.881916954@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-commit 38e3825631b1f314b21e3ade00b5a4d737eb054e upstream.
+[ Upstream commit be27b896529787e23a35ae4befb6337ce73fcca0 ]
 
-The duplicated EDID is never freed. Fix it.
+The current cbs parameter depends on speed after uplinking,
+which is not needed and will report a configuration error
+if the port is not initially connected. The UAPI exposed by
+tc-cbs requires userspace to recalculate the send slope anyway,
+because the formula depends on port_transmit_rate (see man tc-cbs),
+which is not an invariant from tc's perspective. Therefore, we
+use offload->sendslope and offload->idleslope to derive the
+original port_transmit_rate from the CBS formula.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1f705bc61aee ("net: stmmac: Add support for CBS QDISC")
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://lore.kernel.org/r/20240608143524.2065736-1-xiaolei.wang@windriver.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_vidi.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 25 ++++++++-----------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
---- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-@@ -308,6 +308,7 @@ static int vidi_get_modes(struct drm_con
- 	struct vidi_context *ctx = ctx_from_connector(connector);
- 	struct edid *edid;
- 	int edid_len;
-+	int count;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+index 43165c662740d..6b93a7614ad98 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+@@ -310,10 +310,11 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
+ 			struct tc_cbs_qopt_offload *qopt)
+ {
+ 	u32 tx_queues_count = priv->plat->tx_queues_to_use;
++	s64 port_transmit_rate_kbps;
+ 	u32 queue = qopt->queue;
+-	u32 ptr, speed_div;
+ 	u32 mode_to_use;
+ 	u64 value;
++	u32 ptr;
+ 	int ret;
  
- 	/*
- 	 * the edid data comes from user side and it would be set
-@@ -327,7 +328,11 @@ static int vidi_get_modes(struct drm_con
+ 	/* Queue 0 is not AVB capable */
+@@ -322,30 +323,26 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
+ 	if (!priv->dma_cap.av)
+ 		return -EOPNOTSUPP;
  
- 	drm_connector_update_edid_property(connector, edid);
- 
--	return drm_add_edid_modes(connector, edid);
-+	count = drm_add_edid_modes(connector, edid);
++	port_transmit_rate_kbps = qopt->idleslope - qopt->sendslope;
 +
-+	kfree(edid);
-+
-+	return count;
- }
+ 	/* Port Transmit Rate and Speed Divider */
+-	switch (priv->speed) {
++	switch (div_s64(port_transmit_rate_kbps, 1000)) {
+ 	case SPEED_10000:
+-		ptr = 32;
+-		speed_div = 10000000;
+-		break;
+ 	case SPEED_5000:
+ 		ptr = 32;
+-		speed_div = 5000000;
+ 		break;
+ 	case SPEED_2500:
+-		ptr = 8;
+-		speed_div = 2500000;
+-		break;
+ 	case SPEED_1000:
+ 		ptr = 8;
+-		speed_div = 1000000;
+ 		break;
+ 	case SPEED_100:
+ 		ptr = 4;
+-		speed_div = 100000;
+ 		break;
+ 	default:
+-		return -EOPNOTSUPP;
++		netdev_err(priv->dev,
++			   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
++			   port_transmit_rate_kbps);
++		return -EINVAL;
+ 	}
  
- static const struct drm_connector_helper_funcs vidi_connector_helper_funcs = {
+ 	mode_to_use = priv->plat->tx_queues_cfg[queue].mode_to_use;
+@@ -365,10 +362,10 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
+ 	}
+ 
+ 	/* Final adjustments for HW */
+-	value = div_s64(qopt->idleslope * 1024ll * ptr, speed_div);
++	value = div_s64(qopt->idleslope * 1024ll * ptr, port_transmit_rate_kbps);
+ 	priv->plat->tx_queues_cfg[queue].idle_slope = value & GENMASK(31, 0);
+ 
+-	value = div_s64(-qopt->sendslope * 1024ll * ptr, speed_div);
++	value = div_s64(-qopt->sendslope * 1024ll * ptr, port_transmit_rate_kbps);
+ 	priv->plat->tx_queues_cfg[queue].send_slope = value & GENMASK(31, 0);
+ 
+ 	value = qopt->hicredit * 1024ll * 8;
+-- 
+2.43.0
+
 
 
 
