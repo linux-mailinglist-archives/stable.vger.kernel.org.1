@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312D0925B84
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:09:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98F88925CAE
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF90E1F292D1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:09:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C46731C20CC9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68FC2188CBE;
-	Wed,  3 Jul 2024 10:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E46C187567;
+	Wed,  3 Jul 2024 11:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yg6xyurE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebTd4Tfm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E7A1428E4;
-	Wed,  3 Jul 2024 10:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D22116F8F5;
+	Wed,  3 Jul 2024 11:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004203; cv=none; b=JwJaRD22L3W6VZT21DObPW6T8uuy9llGl6ERkuyBLfyVQHQg39R23Nb4i10+E0OuueSsSlvAgaKLXANBjl6vMui1syB2QyqluwdeJbaFi1+EpuISDq1Qsxf4iP20iRg8x7/Jlwz3lIPaDDxAJV/AOYMut36trl67RDEjNgiPWZ8=
+	t=1720005019; cv=none; b=XEUTeQCNxluY9QIaszdDbqHsSGxKa1h0eOIMeyIDJUI8L3LifJ3Oa+bBDs25OMdgkZvclFeQYy2vOBHSB9yG3erqw5cTGwONLuq3kftlk+cZWGtDOs2me3yB0Qdoorzzzg8dXQjP79UyfwrRLicdCWqUT/ysLoBbyxGs/Q1oJWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004203; c=relaxed/simple;
-	bh=yuKXtjYbrI5x9YhJ7AyI7pzC40EGnbkF/ooYq1Sx44s=;
+	s=arc-20240116; t=1720005019; c=relaxed/simple;
+	bh=vcGfLFLVAxtSD/Zuq76jI/KPoE/dVOF3x+UTUSp3IEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wma1kiEcheHJ456hzZBxoYSrJyX0fdhNzVHCes0OoGvBHqIsLnCCTUIZVRxFFpbbRADGcDznvetOqsJB6ly7vETiSkG/EtElpB/Bt//wG4r5SnhetNza/gfLXF1iTCMBEvYTJro7SoYuHsdTWQEsmTaEZVtYnAvM0UoEaqZTX4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yg6xyurE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B14BC2BD10;
-	Wed,  3 Jul 2024 10:56:42 +0000 (UTC)
+	 MIME-Version; b=ntB6h9OsnE1VzyFwuXSDdhMAuBwGqnA1tp/WDyNQNrAvX0r2yB5dwUjH6P7AhxIgTTgWwN2rDqRqms92dji6Aw78/JG6+LbplNZ/iN8/fnvmH/k7C3dgdZEvQ3QX9ai0XjyrnXNJLHt9Kg1oAwndtzI2+y/Dd3aAZBVxvr+wrtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebTd4Tfm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4883C2BD10;
+	Wed,  3 Jul 2024 11:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004202;
-	bh=yuKXtjYbrI5x9YhJ7AyI7pzC40EGnbkF/ooYq1Sx44s=;
+	s=korg; t=1720005019;
+	bh=vcGfLFLVAxtSD/Zuq76jI/KPoE/dVOF3x+UTUSp3IEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yg6xyurERw5oFXm8Qgb5nhzKOhc7SiuYM9RysIhS/6XFOsOukgBG1Af0+ftcW9l0V
-	 NC4CWS3+JT4JMOqRrRPIdfdhPF3bSofAyGFKcXjg818gR3JHCE9Iq0fUY6+mZoVHge
-	 XQGTfGlqVg4aDFtWSBRWaJNWLcthU3rKxCD3D7ZA=
+	b=ebTd4TfmPiO+qZ+VMPfdP2SZkxze7OAsFqjefuNlyhLd+FESrfpUnilndaiaRL5hN
+	 5XQ0cMQGvAHcwRB4k8dfk2oeZn5L+v+Pp5AVvijpQ85KhQElIauQgRVOC0a28/OzKH
+	 hEO9A4GBm1p7GW2txb9C26lMxPQqEvTYCY8LCyFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Davis <afd@ti.com>,
-	Nishanth Menon <nm@ti.com>,
+	Oswald Buddenhagen <oswald.buddenhagen@gmx.de>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 153/189] soc: ti: wkup_m3_ipc: Send NULL dummy message instead of pointer message
-Date: Wed,  3 Jul 2024 12:40:14 +0200
-Message-ID: <20240703102847.246164000@linuxfoundation.org>
+Subject: [PATCH 5.10 234/290] ALSA: emux: improve patch ioctl data validation
+Date: Wed,  3 Jul 2024 12:40:15 +0200
+Message-ID: <20240703102912.991117399@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Davis <afd@ti.com>
+From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
 
-[ Upstream commit ddbf3204f600a4d1f153498f618369fca352ae00 ]
+[ Upstream commit 89b32ccb12ae67e630c6453d778ec30a592a212f ]
 
-mbox_send_message() sends a u32 bit message, not a pointer to a message.
-We only convert to a pointer type as a generic type. If we want to send
-a dummy message of 0, then simply send 0 (NULL).
+In load_data(), make the validation of and skipping over the main info
+block match that in load_guspatch().
 
-Signed-off-by: Andrew Davis <afd@ti.com>
-Link: https://lore.kernel.org/r/20240325165507.30323-1-afd@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+In load_guspatch(), add checking that the specified patch length matches
+the actually supplied data, like load_data() already did.
+
+Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+Message-ID: <20240406064830.1029573-8-oswald.buddenhagen@gmx.de>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/ti/wkup_m3_ipc.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ sound/synth/emux/soundfont.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/soc/ti/wkup_m3_ipc.c b/drivers/soc/ti/wkup_m3_ipc.c
-index ef3f95fefab58..6634709e646c4 100644
---- a/drivers/soc/ti/wkup_m3_ipc.c
-+++ b/drivers/soc/ti/wkup_m3_ipc.c
-@@ -14,7 +14,6 @@
- #include <linux/irq.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/omap-mailbox.h>
- #include <linux/platform_device.h>
- #include <linux/remoteproc.h>
- #include <linux/suspend.h>
-@@ -151,7 +150,6 @@ static irqreturn_t wkup_m3_txev_handler(int irq, void *ipc_data)
- static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
- {
- 	struct device *dev = m3_ipc->dev;
--	mbox_msg_t dummy_msg = 0;
- 	int ret;
+diff --git a/sound/synth/emux/soundfont.c b/sound/synth/emux/soundfont.c
+index 9ebc711afa6b5..18b2d84926563 100644
+--- a/sound/synth/emux/soundfont.c
++++ b/sound/synth/emux/soundfont.c
+@@ -697,7 +697,6 @@ load_data(struct snd_sf_list *sflist, const void __user *data, long count)
+ 	struct snd_soundfont *sf;
+ 	struct soundfont_sample_info sample_info;
+ 	struct snd_sf_sample *sp;
+-	long off;
  
- 	if (!m3_ipc->mbox) {
-@@ -167,7 +165,7 @@ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
- 	 * the RX callback to avoid multiple interrupts being received
- 	 * by the CM3.
- 	 */
--	ret = mbox_send_message(m3_ipc->mbox, &dummy_msg);
-+	ret = mbox_send_message(m3_ipc->mbox, NULL);
- 	if (ret < 0) {
- 		dev_err(dev, "%s: mbox_send_message() failed: %d\n",
- 			__func__, ret);
-@@ -189,7 +187,6 @@ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
- static int wkup_m3_ping_noirq(struct wkup_m3_ipc *m3_ipc)
- {
- 	struct device *dev = m3_ipc->dev;
--	mbox_msg_t dummy_msg = 0;
- 	int ret;
+ 	/* patch must be opened */
+ 	if ((sf = sflist->currsf) == NULL)
+@@ -706,12 +705,16 @@ load_data(struct snd_sf_list *sflist, const void __user *data, long count)
+ 	if (is_special_type(sf->type))
+ 		return -EINVAL;
  
- 	if (!m3_ipc->mbox) {
-@@ -198,7 +195,7 @@ static int wkup_m3_ping_noirq(struct wkup_m3_ipc *m3_ipc)
- 		return -EIO;
++	if (count < (long)sizeof(sample_info)) {
++		return -EINVAL;
++	}
+ 	if (copy_from_user(&sample_info, data, sizeof(sample_info)))
+ 		return -EFAULT;
++	data += sizeof(sample_info);
++	count -= sizeof(sample_info);
+ 
+-	off = sizeof(sample_info);
+-
+-	if (sample_info.size != (count-off)/2)
++	// SoundFont uses S16LE samples.
++	if (sample_info.size * 2 != count)
+ 		return -EINVAL;
+ 
+ 	/* Check for dup */
+@@ -738,7 +741,7 @@ load_data(struct snd_sf_list *sflist, const void __user *data, long count)
+ 		int  rc;
+ 		rc = sflist->callback.sample_new
+ 			(sflist->callback.private_data, sp, sflist->memhdr,
+-			 data + off, count - off);
++			 data, count);
+ 		if (rc < 0) {
+ 			sf_sample_delete(sflist, sf, sp);
+ 			return rc;
+@@ -951,10 +954,12 @@ load_guspatch(struct snd_sf_list *sflist, const char __user *data,
  	}
+ 	if (copy_from_user(&patch, data, sizeof(patch)))
+ 		return -EFAULT;
+-	
+ 	count -= sizeof(patch);
+ 	data += sizeof(patch);
  
--	ret = mbox_send_message(m3_ipc->mbox, &dummy_msg);
-+	ret = mbox_send_message(m3_ipc->mbox, NULL);
- 	if (ret < 0) {
- 		dev_err(dev, "%s: mbox_send_message() failed: %d\n",
- 			__func__, ret);
++	if ((patch.len << (patch.mode & WAVE_16_BITS ? 1 : 0)) != count)
++		return -EINVAL;
++
+ 	sf = newsf(sflist, SNDRV_SFNT_PAT_TYPE_GUS|SNDRV_SFNT_PAT_SHARED, NULL);
+ 	if (sf == NULL)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
