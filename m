@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-57051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3655925ACE
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:04:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4547C925E55
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DECCC29E432
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:00:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 692731C23F40
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819C418EFD6;
-	Wed,  3 Jul 2024 10:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E254A17FADC;
+	Wed,  3 Jul 2024 11:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2o25XDy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bClSfVR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F859175555;
-	Wed,  3 Jul 2024 10:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4B113A27E;
+	Wed,  3 Jul 2024 11:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003689; cv=none; b=C8yYG8xDspPm2pRb0pbgyPueeVkPDR1uFQ/d/bkvrHOzwnjPhVc/okDzxXS90zyq3QDDAw3Ypu5eO6uXq4cYTZ3hhtsoN4DbXYb8d8b/c2SgoOzvCDKeN8szhRiWwkSZRmpDA9Jx7BoY9ov0dsDQ1desLOPVDy42bAEqQop3/A0=
+	t=1720006149; cv=none; b=nBGf9vNIQ9xI78853ij0TxrKERufmMlhpx8bRYm8VdNKhQ10nx+AocLEo22+PEWY55bOxDf/YNFVNJfcljNhcO81P7t9qga5L41qBGbARGOuTtfRib6OxBQ9QB+2gkSKTSdvu7K5GWg8pbWB75Vb6J1hbKextqkPvaaJ+AzW+88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003689; c=relaxed/simple;
-	bh=8AHK4fUjZPjgkIb1xhomYMGZlkvQeE5eWXD4HYU9Kdg=;
+	s=arc-20240116; t=1720006149; c=relaxed/simple;
+	bh=cDkRzQkSa1y7gpb91KkRLX2+dSYvwUdo9gE3oH/hXAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XwmYzRD3/SneO8kyCUSzxa7iPnbhL/S0hxmIXp7Ql+mxLoSVER8ZsoUt9ube1+NAP4ZQu82n4on4pCFQ5Z0b7sRK1LLtMPXrbh/BzBDk0cBsYjMfH0YgAxnTRx3d4lN7x/R2QE2qOk/PORHK3zMrXNmbP9sJVo3cbfL4P1PY7GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2o25XDy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8362C2BD10;
-	Wed,  3 Jul 2024 10:48:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GLJ+0SXfJYSBe4uSLnEJ0nSAc0YeUjhGkAEzK2HoWfKjoMwnX/CLBliBLXxOeOYc4/vc6s68kiRnZxieocQFSRl6iSJIwmn+hxtE5VQ9e85ptEJHNaAUV4esb5S7uLL+G2NJyXeh2xaPPxqZqrtsSHrIzQw6Wufqc6jHXlHi5jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bClSfVR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCAF6C2BD10;
+	Wed,  3 Jul 2024 11:29:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003689;
-	bh=8AHK4fUjZPjgkIb1xhomYMGZlkvQeE5eWXD4HYU9Kdg=;
+	s=korg; t=1720006149;
+	bh=cDkRzQkSa1y7gpb91KkRLX2+dSYvwUdo9gE3oH/hXAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y2o25XDybgkqrZJ7kZKel3e/neVNGoMt+GTrPlvuVqhksOR0q6EGOFpIy6A2wXSIO
-	 G2kLhJxDy1CvCBMofSGpTebUcd1oX4eUHYRLABly2qBzCm0VD5W6C+4bYBkHLUxtII
-	 aM7aGoCYce0tNz3ras4CIAV5ApuOgaGawvgTSjFw=
+	b=2bClSfVRV9B23h+WynZ8isVrDgnZxDULoMsQzryP5nEE8JzqnMoPQeaKCFYoOHqpC
+	 jSaO82F0Pqhs009ozS0YqjnAzuRqHd/1tmUuCKA46ILE1+8lwiTipIKqVHywNccRkd
+	 vUO5KcNAM3baa8Mua+keqMf1UUWxQ5gzIvQjZmZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 4.19 124/139] usb: gadget: printer: SS+ support
+	Jason Wang <jasowang@redhat.com>,
+	Xie Yongji <xieyongji@bytedance.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Maxime Coquelin <maxime.coquelin@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 285/356] vduse: validate block features only with block devices
 Date: Wed,  3 Jul 2024 12:40:21 +0200
-Message-ID: <20240703102835.118126183@linuxfoundation.org>
+Message-ID: <20240703102923.896470164@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,37 +63,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Maxime Coquelin <maxime.coquelin@redhat.com>
 
-commit fd80731e5e9d1402cb2f85022a6abf9b1982ec5f upstream.
+[ Upstream commit a115b5716fc9a64652aa9cb332070087178ffafa ]
 
-We need to treat super speed plus as super speed, not the default,
-which is full speed.
+This patch is preliminary work to enable network device
+type support to VDUSE.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240620093800.28901-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As VIRTIO_BLK_F_CONFIG_WCE shares the same value as
+VIRTIO_NET_F_HOST_TSO4, we need to restrict its check
+to Virtio-blk device type.
+
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
+Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
+Signed-off-by: Maxime Coquelin <maxime.coquelin@redhat.com>
+Message-Id: <20240109111025.1320976-2-maxime.coquelin@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_printer.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/vdpa/vdpa_user/vduse_dev.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/gadget/function/f_printer.c
-+++ b/drivers/usb/gadget/function/f_printer.c
-@@ -208,6 +208,7 @@ static inline struct usb_endpoint_descri
- 					struct usb_endpoint_descriptor *ss)
+diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
+index 564864f039d20..898ef597338a2 100644
+--- a/drivers/vdpa/vdpa_user/vduse_dev.c
++++ b/drivers/vdpa/vdpa_user/vduse_dev.c
+@@ -1227,13 +1227,14 @@ static bool device_is_allowed(u32 device_id)
+ 	return false;
+ }
+ 
+-static bool features_is_valid(u64 features)
++static bool features_is_valid(struct vduse_dev_config *config)
  {
- 	switch (gadget->speed) {
-+	case USB_SPEED_SUPER_PLUS:
- 	case USB_SPEED_SUPER:
- 		return ss;
- 	case USB_SPEED_HIGH:
+-	if (!(features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)))
++	if (!(config->features & BIT_ULL(VIRTIO_F_ACCESS_PLATFORM)))
+ 		return false;
+ 
+ 	/* Now we only support read-only configuration space */
+-	if (features & (1ULL << VIRTIO_BLK_F_CONFIG_WCE))
++	if ((config->device_id == VIRTIO_ID_BLOCK) &&
++			(config->features & BIT_ULL(VIRTIO_BLK_F_CONFIG_WCE)))
+ 		return false;
+ 
+ 	return true;
+@@ -1260,7 +1261,7 @@ static bool vduse_validate_config(struct vduse_dev_config *config)
+ 	if (!device_is_allowed(config->device_id))
+ 		return false;
+ 
+-	if (!features_is_valid(config->features))
++	if (!features_is_valid(config))
+ 		return false;
+ 
+ 	return true;
+-- 
+2.43.0
+
 
 
 
