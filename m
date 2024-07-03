@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9386A925AD2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:04:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24837925DD0
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 401B71F21004
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:04:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C5A1281E3C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD3A17DA39;
-	Wed,  3 Jul 2024 10:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6370B19413B;
+	Wed,  3 Jul 2024 11:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vspHy+LR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQDje62C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE0817C238;
-	Wed,  3 Jul 2024 10:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214BE175549;
+	Wed,  3 Jul 2024 11:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003957; cv=none; b=XN3e9vXtCt+2x0+rhZwvQHZqviEtuo2NOIdbNOcWeuQeHXKvSrkihyVvzibmpffkNBbm4jFu2pVSa+UuwPcM0GFK8YFZ5ktukRQovfKLqgBwfV5d2BE5CG/gsMNDsSyzPYNrYAa7mhT8MNbsbMcgQKQIuh0Dpt2+MeYrPDGNYuU=
+	t=1720005802; cv=none; b=nxbIdkdY3Ew+qCpKJVI7gcrLGtMN940x9mLqDoE09I1ggt60DyFzqeJ6evnxDru39OsHnV6dFC4kk6kEQRqu4K5J+OZyoIX+rkR+AfALLtXk1HwTFyhQp049v22ffGrCBCQzfyAapxYdMVfhMNv1rQ3SawQPfoBKS34IG+AOeZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003957; c=relaxed/simple;
-	bh=y2rQj+MJVQom60xm5HWNWwP82VO8jbYtqjScj6KXCJA=;
+	s=arc-20240116; t=1720005802; c=relaxed/simple;
+	bh=vBPMLiFZRLIVMNxoUqpuk3TYsHFklkR8Dhg3Bt1c49Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YKKcCDPAlUW6wQdRTo61t3VFj0z0JdRS8uY5bxlU5CXuY3CHYk+Hk3+3qDBLcpdTJTJTtN+0QrXKeP53nEZZbV+s2mn+Q2HRMSgfPJm55MS+k7Ef9CJa9wPYKDKgCUjroGCYmDI1FCXNymmzm+FJxZiCbvVaocO/f34CXXffEAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vspHy+LR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F46C2BD10;
-	Wed,  3 Jul 2024 10:52:36 +0000 (UTC)
+	 MIME-Version; b=YLSgqBJYe/O+IgFs0S1jJZmd4jmGbBqqnyqrHF8yoZ/II1LFM/kgVaCgC9gw9vQ2gAaB6CQw6h2BE7YZ51kial3U8f66dJn4dAngksdXovEadq9SOpIrHQ/mPKrI3pccBKccjRg/ioNs/rwQhXGiVJJ6lHADQHCKSIe1IBGxoPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQDje62C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB42C2BD10;
+	Wed,  3 Jul 2024 11:23:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003956;
-	bh=y2rQj+MJVQom60xm5HWNWwP82VO8jbYtqjScj6KXCJA=;
+	s=korg; t=1720005802;
+	bh=vBPMLiFZRLIVMNxoUqpuk3TYsHFklkR8Dhg3Bt1c49Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vspHy+LR8LoYuaieywDfqNSZy0rleUx8KKFmQ/Eykl0ybEyn+Qte5vqGGU/H1WQLS
-	 zqFepbvF8KwuzgiEhWrUM0cN9mSBWjLTVoLH1ZBJ6SYy2pAhb+32bXRgR9Em/w0BjG
-	 k6yfm3B+1Jj2SZlo/C4/uHrl7S/RCT6V9/XUuAmA=
+	b=HQDje62CFJdNZ+64UbT+ZvkcW0pjuBb+NGMLoCiObw/fO8fEjtP+SWGEObrWFCbcO
+	 e8ftS8Hoz+yaq6QYCOxsgEvJ9ep1J1U5W7iwUpHZKQLUnMwWGLF9DYnnyTUxnPOMVr
+	 sPPKnLNUjZDTB8edQqnJiBUC/XhEyUrgp+ZmlcHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	stable@kernel.org
-Subject: [PATCH 5.4 076/189] intel_th: pci: Add Granite Rapids support
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 201/356] octeontx2-pf: Add error handling to VLAN unoffload handling
 Date: Wed,  3 Jul 2024 12:38:57 +0200
-Message-ID: <20240703102844.375112275@linuxfoundation.org>
+Message-ID: <20240703102920.708413739@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+From: Simon Horman <horms@kernel.org>
 
-commit e44937889bdf4ecd1f0c25762b7226406b9b7a69 upstream.
+[ Upstream commit b95a4afe2defd6f46891985f9436a568cd35a31c ]
 
-Add support for the Trace Hub in Granite Rapids.
+otx2_sq_append_skb makes used of __vlan_hwaccel_push_inside()
+to unoffload VLANs - push them from skb meta data into skb data.
+However, it omitts a check for __vlan_hwaccel_push_inside()
+returning NULL.
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20240429130119.1518073-11-alexander.shishkin@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by inspection based on [1] and [2].
+Compile tested only.
+
+[1] Re: [PATCH net-next v1] net: stmmac: Enable TSO on VLANs
+    https://lore.kernel.org/all/ZmrN2W8Fye450TKs@shell.armlinux.org.uk/
+[2] Re: [PATCH net-next v2] net: stmmac: Enable TSO on VLANs
+    https://lore.kernel.org/all/CANn89i+11L5=tKsa7V7Aeyxaj6nYGRwy35PAbCRYJ73G+b25sg@mail.gmail.com/
+
+Fixes: fd9d7859db6c ("octeontx2-pf: Implement ingress/egress VLAN offload")
+Signed-off-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/intel_th/pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/hwtracing/intel_th/pci.c
-+++ b/drivers/hwtracing/intel_th/pci.c
-@@ -300,6 +300,11 @@ static const struct pci_device_id intel_
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
- 	},
- 	{
-+		/* Granite Rapids */
-+		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x0963),
-+		.driver_data = (kernel_ulong_t)&intel_th_2x,
-+	},
-+	{
- 		/* Rocket Lake CPU */
- 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x4c19),
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+index d1e3928a24f5c..761eb8671096e 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+@@ -933,8 +933,11 @@ bool otx2_sq_append_skb(struct net_device *netdev, struct otx2_snd_queue *sq,
+ 
+ 	if (skb_shinfo(skb)->gso_size && !is_hw_tso_supported(pfvf, skb)) {
+ 		/* Insert vlan tag before giving pkt to tso */
+-		if (skb_vlan_tag_present(skb))
++		if (skb_vlan_tag_present(skb)) {
+ 			skb = __vlan_hwaccel_push_inside(skb);
++			if (!skb)
++				return true;
++		}
+ 		otx2_sq_append_tso(pfvf, sq, skb, qidx);
+ 		return true;
+ 	}
+-- 
+2.43.0
+
 
 
 
