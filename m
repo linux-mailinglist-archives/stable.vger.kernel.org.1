@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-57012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 226A1925A2A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:55:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E46925E16
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C121F1F2192A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F52A2A0B47
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7451849F7;
-	Wed,  3 Jul 2024 10:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D63F7158A3E;
+	Wed,  3 Jul 2024 11:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bawANc96"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdlNaJNJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D71F1836EF;
-	Wed,  3 Jul 2024 10:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9225313247D;
+	Wed,  3 Jul 2024 11:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003571; cv=none; b=XGiWvk6bVG5Az8nc/Gm/AD2A5xIFkDsihFxcmLkmGSNOspiLby7ulJ2sTDlRADOrrLVcimL7VE+WL3c2LMP119SHQ1GahJl5flkOw189/3zQGysOeJxx94GlxkF11VvAOHCB+T6PH77jE+j6CMZSmpxNnP6yDACt6fBb0Z4jrYI=
+	t=1720005862; cv=none; b=nW1h/PeLGlw2a+0xaJuNfNA0fyYX5BYkxNueCUkWtagP3sPmzGGrxBkLgiK8QFXtT44OxP8Yx6z1zdx92zFw2UZqOmb5pltQ4q6IntrNXsjxSzyfHNA4xPJXg8zZ3SxhxxEYLOoxJUXpswYeDePnvWToK+KEwwq0Uqgp7eN6Yd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003571; c=relaxed/simple;
-	bh=WlBRH1OiZ0wALColTZy0oVFwGaGjAD71rXO3wb5KW4M=;
+	s=arc-20240116; t=1720005862; c=relaxed/simple;
+	bh=0o8vD6K7CHeiw7viHGdou0Nc5hv+jm/OfVM1rPzySwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QsxJODul/JVJILKJTzLVhksXjK0VQpF03rACdfEDh6JRND7DeRmA7JFj5J2QpyRPAh1TGGS0reV3ojZ93Y04EIilheb6XyjEkzxzE7cWD4pgr/6016SBRh9jywnIUWnGGvNUvKTSvj6yBNif07LLqEVrGmPv3XjOv+sIYo28thI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bawANc96; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9678C2BD10;
-	Wed,  3 Jul 2024 10:46:10 +0000 (UTC)
+	 MIME-Version; b=U0M3L8Lugy8OD5Cy/g0zLJtomuNL3l5CZc/leB3LJ0SfyoSgZ+XtLvAiwFGgZ5HYoCOGfPOFDPKNTHFJxltOYXpvXhBj29TrMPhHdNtVTY/5Z5w80UmTdpcYM6LSQnntP3wx/DRPfhgBhF/VIoEVVmfnA85ClscQ3YpSJlObxOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdlNaJNJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1516DC2BD10;
+	Wed,  3 Jul 2024 11:24:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003571;
-	bh=WlBRH1OiZ0wALColTZy0oVFwGaGjAD71rXO3wb5KW4M=;
+	s=korg; t=1720005862;
+	bh=0o8vD6K7CHeiw7viHGdou0Nc5hv+jm/OfVM1rPzySwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bawANc963Jn/yFWMM6cN+G4KJa6X6sNzF71hWG4nGlF+7+bnStfPHhjXEb9ySFsW5
-	 nzcF5e8lBmlg9sHjQfHriMaRKj9RO79TOP+tTipc6bBvzEE4CxRgG972QQfRJ3688g
-	 bg0CPZWFxA2566PU0Cp2gNtPR0mOObrLaiRcfQ2k=
+	b=sdlNaJNJloVx1rs3iR3RnFYI7xUVu++Iro/okqY2GTKnSEcomHm86gVx+C8/fqzH0
+	 W1qYiJlqfZqh4msYxmercPvUnEC2Wp//V81XHEPmYHfWqSH8FfgsVcSdbPnTA6js8W
+	 18d3Hh7k6G0gLM0SOwhfAdYjbo5inDqysbzPpzyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 061/139] rcutorture: Fix rcu_torture_one_read() pipe_count overflow comment
+	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 222/356] ALSA: hda/realtek: Limit mic boost on N14AP7
 Date: Wed,  3 Jul 2024 12:39:18 +0200
-Message-ID: <20240703102832.744026390@linuxfoundation.org>
+Message-ID: <20240703102921.511297448@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
 
-[ Upstream commit 8b9b443fa860276822b25057cb3ff3b28734dec0 ]
+commit 86a433862912f52597263aa224a9ed82bcd533bf upstream.
 
-The "pipe_count > RCU_TORTURE_PIPE_LEN" check has a comment saying "Should
-not happen, but...".  This is only true when testing an RCU whose grace
-periods are always long enough.  This commit therefore fixes this comment.
+The internal mic boost on the N14AP7 is too high. Fix this by applying the
+ALC269_FIXUP_LIMIT_INT_MIC_BOOST fixup to the machine to limit the gain.
 
-Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
-Closes: https://lore.kernel.org/lkml/CAHk-=wi7rJ-eGq+xaxVfzFEgbL9tdf6Kc8Z89rCpfcQOKm74Tw@mail.gmail.com/
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240605153923.2837-1-edson.drosdeck@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/rcu/rcutorture.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 0b7af7e2bcbb1..8986ef3a95888 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -1334,7 +1334,8 @@ static bool rcu_torture_one_read(struct torture_random_state *trsp)
- 	preempt_disable();
- 	pipe_count = p->rtort_pipe_count;
- 	if (pipe_count > RCU_TORTURE_PIPE_LEN) {
--		/* Should not happen, but... */
-+		// Should not happen in a correct RCU implementation,
-+		// happens quite often for torture_type=busted.
- 		pipe_count = RCU_TORTURE_PIPE_LEN;
- 	}
- 	completed = cur_ops->get_gp_seq();
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9463,6 +9463,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1b7d, 0xa831, "Ordissimo EVE2 ", ALC269VB_FIXUP_ORDISSIMO_EVE2), /* Also known as Malata PC-B1303 */
+ 	SND_PCI_QUIRK(0x1c06, 0x2013, "Lemote A1802", ALC269_FIXUP_LEMOTE_A1802),
+ 	SND_PCI_QUIRK(0x1c06, 0x2015, "Lemote A190X", ALC269_FIXUP_LEMOTE_A190X),
++	SND_PCI_QUIRK(0x1c6c, 0x122a, "Positivo N14AP7", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x1c6c, 0x1251, "Positivo N14KP6-TG", ALC288_FIXUP_DELL1_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1d05, 0x1132, "TongFang PHxTxX1", ALC256_FIXUP_SET_COEF_DEFAULTS),
+ 	SND_PCI_QUIRK(0x1d05, 0x1096, "TongFang GMxMRxx", ALC269_FIXUP_NO_SHUTUP),
 
 
 
