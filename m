@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D1F2925CEE
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:24:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC757925E4D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D804F1F2670B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:24:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 844F01F24B58
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB256157E62;
-	Wed,  3 Jul 2024 11:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA9917DA38;
+	Wed,  3 Jul 2024 11:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeJEo9D7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1PDVMbQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD85143879;
-	Wed,  3 Jul 2024 11:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9814817DA30;
+	Wed,  3 Jul 2024 11:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005212; cv=none; b=c1npG7VQwRN/zT2EZ2aVwArZsyZm1a41LFjmerk1eHNS4oGd1l+J88AchcPVc/mm8odHvGVMYRAa18LJOPqILJrAz1HKLkuNG1mI/XthLtiAQqH3P1CjXRMHSBJURGf8cc9DX8NiCAWB8y2oxTEXC7drOjg1t4M7eyha32KbY4A=
+	t=1720006130; cv=none; b=vAwpB0V51aeQ2j++3mmIaRtLjl4sUm0+PqeAueb4auYtAi1OvN4CgKlbjhEXAD2ygAi4ZBNFpwzOugdIcPQstDAR8axguVXV9T+vOQF0J5kW9a28kjKwIP14RvRJ/DK/oU0uHI5gJIF9CbBHZgijukLN3roytapjPe9FiGMoH6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005212; c=relaxed/simple;
-	bh=rnfpfTcHxE/wvkQ2mhA4x4zZEu9slPsErnYM8Kr+Ug0=;
+	s=arc-20240116; t=1720006130; c=relaxed/simple;
+	bh=ABWaIo7/8QfZixdcuWA68C6KYhnLx7cl716w2+RRGss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqtUoaKLhJTJPAx6R46ZVZAdCV6zDgkn6IDMrfKoE9uNmVHt1eNX+qSJn66sMRLg6xQEvfkA8RgBpEi7YmxbzQJ+D82xBikjPMy+m58eil56WI9024/uBLxB05bBfj3ym2IHj8Zc1q1N+Rrxm4e+XsCcscpAUb5A1AiZ/cKdLvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeJEo9D7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02554C2BD10;
-	Wed,  3 Jul 2024 11:13:31 +0000 (UTC)
+	 MIME-Version; b=tYJu+TaNiDSB9rdMb5gektICuW+BLo8PfK4ty7q7OZ49rEH6fPdkEqYEhAUDyWZttT7j30zUQ6X5o58TO/6N9aMlOnnNlie6dbyKig2jHMws1qBj5L/ty5RpY7mStKszuvHdNAy/8B9tAHN8U9Lew4xBzPZeS90+ImVcmArTakc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1PDVMbQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2128CC2BD10;
+	Wed,  3 Jul 2024 11:28:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005212;
-	bh=rnfpfTcHxE/wvkQ2mhA4x4zZEu9slPsErnYM8Kr+Ug0=;
+	s=korg; t=1720006130;
+	bh=ABWaIo7/8QfZixdcuWA68C6KYhnLx7cl716w2+RRGss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CeJEo9D7StLc2VPCIvBfrP9jzglHOpOv6UjgzXR6q6Aw1GJrtZUgdxVN2rbYI0s+e
-	 JkHgDFTSOfqGJrEeFHBeUG6dDbgcHGFpipxjSoyTZDRH6DPMvNBVXYt56JmzhkdW4k
-	 aEfuu/VupJtaKz0xk8a1pAt/Wcc6GMFQDjTFQ/Ms=
+	b=Z1PDVMbQnY1Az2fyFu83yolpm1CDvOuNyHhF/oPvwhX1u8O9/+l4gCHZ8SHAnpVMp
+	 ozR+mPykKjfBVzbHN+Yb0IZD+CfVse+wanprHd3VNYqxaDBv3HiF+CKHJ8gtvsnnRC
+	 SzyUeBycJDrRtF6jh2/oZUHi0K0J7VhGJO4HqwRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 5.10 264/290] kbuild: Install dtb files as 0644 in Makefile.dtbinst
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 309/356] i2c: testunit: discard write requests while old command is running
 Date: Wed,  3 Jul 2024 12:40:45 +0200
-Message-ID: <20240703102914.114606364@linuxfoundation.org>
+Message-ID: <20240703102924.804169518@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragan Simic <dsimic@manjaro.org>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 9cc5f3bf63aa98bd7cc7ce8a8599077fde13283e upstream.
+[ Upstream commit c116deafd1a5cc1e9739099eb32114e90623209c ]
 
-The compiled dtb files aren't executable, so install them with 0644 as their
-permission mode, instead of defaulting to 0755 for the permission mode and
-installing them with the executable bits set.
+When clearing registers on new write requests was added, the protection
+for currently running commands was missed leading to concurrent access
+to the testunit registers. Check the flag beforehand.
 
-Some Linux distributions, including Debian, [1][2][3] already include fixes
-in their kernel package build recipes to change the dtb file permissions to
-0644 in their kernel packages.  These changes, when additionally propagated
-into the long-term kernel versions, will allow such distributions to remove
-their downstream fixes.
-
-[1] https://salsa.debian.org/kernel-team/linux/-/merge_requests/642
-[2] https://salsa.debian.org/kernel-team/linux/-/merge_requests/749
-[3] https://salsa.debian.org/kernel-team/linux/-/blob/debian/6.8.12-1/debian/rules.real#L193
-
-Cc: Diederik de Haas <didi.debian@cknow.org>
-Cc: <stable@vger.kernel.org>
-Fixes: aefd80307a05 ("kbuild: refactor Makefile.dtbinst more")
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b39ab96aa894 ("i2c: testunit: add support for block process calls")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.dtbinst |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/i2c-slave-testunit.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/scripts/Makefile.dtbinst
-+++ b/scripts/Makefile.dtbinst
-@@ -24,7 +24,7 @@ __dtbs_install: $(dtbs) $(subdirs)
- 	@:
+diff --git a/drivers/i2c/i2c-slave-testunit.c b/drivers/i2c/i2c-slave-testunit.c
+index 1beae30c418b8..cd0d87b089fec 100644
+--- a/drivers/i2c/i2c-slave-testunit.c
++++ b/drivers/i2c/i2c-slave-testunit.c
+@@ -121,6 +121,9 @@ static int i2c_slave_testunit_slave_cb(struct i2c_client *client,
+ 		break;
  
- quiet_cmd_dtb_install = INSTALL $@
--      cmd_dtb_install = install -D $< $@
-+      cmd_dtb_install = install -D -m 0644 $< $@
- 
- $(dst)/%.dtb: $(obj)/%.dtb
- 	$(call cmd,dtb_install)
+ 	case I2C_SLAVE_WRITE_REQUESTED:
++		if (test_bit(TU_FLAG_IN_PROCESS, &tu->flags))
++			return -EBUSY;
++
+ 		memset(tu->regs, 0, TU_NUM_REGS);
+ 		tu->reg_idx = 0;
+ 		break;
+-- 
+2.43.0
+
 
 
 
