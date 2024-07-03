@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C815925E08
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:33:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FBA3925EB6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:39:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD8D31F210B8
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:33:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B283BB39DF2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03CEE178CEA;
-	Wed,  3 Jul 2024 11:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8433B1822EE;
+	Wed,  3 Jul 2024 11:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0YOM0aA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VT9R8OB3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5964176ADB;
-	Wed,  3 Jul 2024 11:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BCE16F8FA;
+	Wed,  3 Jul 2024 11:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005936; cv=none; b=F/jeuceT6Q/QIfBx8N8HPJCGsL2HpJqjGT8IMpSUw5uz38ShjWpRAi2Oodm0MbCs2bVoFjZPGHVaSB2bzezt2O+j45O1Ak6IH219fFMn1eAwYGnJ9/VwBl/hWEMwnfSYUmwuNuXTQzMaRaKAnDD2OOaB0InQAKaC8fxBxXaipPY=
+	t=1720004816; cv=none; b=PQdIww8HsqHIQcd5ggnF8qrZqYRW9xoVVvNktWaTcXM2PryfMK1Pk0890FqiET0aSVDi/i4lgWCecx9b61ZWFg8J25ZxgWKVl+FGNdwmALpU/0c91/vvXPy0gIHnUnzFgWlfLdRkp+Fb7cOyPZQRc1skVaVLN+To2ET7aYX1wrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005936; c=relaxed/simple;
-	bh=VWDRoMvDDvZN1xfhOsUvzDkvuSWI6h6SLnIhUdtr+4Y=;
+	s=arc-20240116; t=1720004816; c=relaxed/simple;
+	bh=9Ru+SI5nT6hBDkEsFb1StFcT2K0S8zvDBGb49ECGoKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bTVeuEAXQCPAY8pS4JFy6U/hqs3fNO/DdQgDJb52/wWEzLrFNHa1BTdBPB9ZiSPJWKNjUxi1/6aetjUcr9fYjbPHpVHmK6bLMJGjACVmjbyUV1+uqg6bIDJexjt529JOpcsVhiXQRFFWZZ7i+BpVx3L1i6tl3fbr52lbFGSPoFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0YOM0aA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32B5C2BD10;
-	Wed,  3 Jul 2024 11:25:35 +0000 (UTC)
+	 MIME-Version; b=bN5PpvRP8VG5mEW4246OL5fvxEYN7YCWeVxJyQYPFnExQj/PQTDLxX2Kk/r3bPvNUBp6IlxzfvYPihcJLXNIZNV7QnLYl61UFh2C1N1HgatTZuep5I16f8jNx7oJqwgv1IKsKXQz97JXr02bxNxEnNS9APmwcHWTt39+kMDB3qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VT9R8OB3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9EFC2BD10;
+	Wed,  3 Jul 2024 11:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005936;
-	bh=VWDRoMvDDvZN1xfhOsUvzDkvuSWI6h6SLnIhUdtr+4Y=;
+	s=korg; t=1720004816;
+	bh=9Ru+SI5nT6hBDkEsFb1StFcT2K0S8zvDBGb49ECGoKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k0YOM0aAf3K7wnk6adwor5/Xz9VLG9r5WwGTUwbVJZgVuBCIrB9K7Y/NpAbTknf6b
-	 ndS9HKfYLTUI0ce+C7pEDbhcWDevIeba46imuZIVOEI16Y0SSBWuBuNDo6awKY1nE/
-	 lVUBe56YHAjpSOh/9n4LgRlywkmcBLOuY9MIflBM=
+	b=VT9R8OB35x2bUZglOE2RrvNdormWDsXqUbBfL3JipN6Wm09bTzsKL9HLkmlUCnorz
+	 pr8oNK4gdjj8aQ9YzMV7DuzIWCptaIVCPDVVhNHRgYmd3HijqEuDlSI1PRNLonuYSy
+	 w4OPldskn6TD/chPEHITUDCd2sS6bqHL8F0gzvvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Shubin <n.shubin@yadro.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 214/356] dmaengine: ioatdma: Fix missing kmem_cache_destroy()
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 5.10 169/290] dt-bindings: i2c: google,cros-ec-i2c-tunnel: correct path to i2c-controller schema
 Date: Wed,  3 Jul 2024 12:39:10 +0200
-Message-ID: <20240703102921.208628698@linuxfoundation.org>
+Message-ID: <20240703102910.559286879@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Shubin <n.shubin@yadro.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 5422145d0b749ad554ada772133b9b20f9fb0ec8 ]
+commit 5c8cfd592bb7632200b4edac8f2c7ec892ed9d81 upstream.
 
-Fix missing kmem_cache_destroy() for ioat_sed_cache in
-ioat_exit_module().
+The referenced i2c-controller.yaml schema is provided by dtschema
+package (outside of Linux kernel), so use full path to reference it.
 
-Noticed via:
-
-```
-modprobe ioatdma
-rmmod ioatdma
-modprobe ioatdma
-debugfs: Directory 'ioat_sed_ent' with parent 'slab' already present!
-```
-
-Fixes: c0f28ce66ecf ("dmaengine: ioatdma: move all the init routines")
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
-Acked-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20240514-ioatdma_fixes-v1-1-2776a0913254@yadro.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 1acd4577a66f ("dt-bindings: i2c: convert i2c-cros-ec-tunnel to json-schema")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ioat/init.c | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/i2c/google,cros-ec-i2c-tunnel.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
-index 8a115bafab6ab..2a47b9053bad8 100644
---- a/drivers/dma/ioat/init.c
-+++ b/drivers/dma/ioat/init.c
-@@ -1450,6 +1450,7 @@ module_init(ioat_init_module);
- static void __exit ioat_exit_module(void)
- {
- 	pci_unregister_driver(&ioat_pci_driver);
-+	kmem_cache_destroy(ioat_sed_cache);
- 	kmem_cache_destroy(ioat_cache);
- }
- module_exit(ioat_exit_module);
--- 
-2.43.0
-
+--- a/Documentation/devicetree/bindings/i2c/google,cros-ec-i2c-tunnel.yaml
++++ b/Documentation/devicetree/bindings/i2c/google,cros-ec-i2c-tunnel.yaml
+@@ -22,7 +22,7 @@ description: |
+   google,cros-ec-spi or google,cros-ec-i2c.
+ 
+ allOf:
+-  - $ref: i2c-controller.yaml#
++  - $ref: /schemas/i2c/i2c-controller.yaml#
+ 
+ properties:
+   compatible:
 
 
 
