@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-56937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77DB39259D5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:50:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15289925B13
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA2C21C21C9E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:50:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2C0B29FBE6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F69017BB0B;
-	Wed,  3 Jul 2024 10:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D8717BB2A;
+	Wed,  3 Jul 2024 10:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBWhLqn7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KuauXKOz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB4717BB03;
-	Wed,  3 Jul 2024 10:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4E417BB11;
+	Wed,  3 Jul 2024 10:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003345; cv=none; b=PB+9MjZH4sRvBsZFN8WB2OtaEdiNmacaj6g3LzI6TAxe65gvxtYjmkzZWp1eSKRNWn/KHQ9Hwjz6VGyCz2uOcNMhgyJ6ZLWQxOT1IiJsanxXV4RKf33YsGoYl/tdALCszIEKiM2aYG8VFeks+W6I0yncP2M1jmudwwUhobKZuXI=
+	t=1720003893; cv=none; b=FSahHG00j5iz4nD0jRWv+WcC/r3vwDn/IFBeCHk+B9NGi2TBpqsQfjoJsMQ2NSY25jwTuwcAktyQu0Ob8fdW7pJecQk9l5ZpbwPP1SPN4jFQayqAufXY9MBF8jfa50HoUnXNsJkk59T2+QmDwI9SBRJhi3nexYBNLELD0fnEYRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003345; c=relaxed/simple;
-	bh=qif630qFhRR6oW4reg6zKKg2SVHFZa2qbPGXRkXLigE=;
+	s=arc-20240116; t=1720003893; c=relaxed/simple;
+	bh=l5hpcUq9CsakyXnyCnbtxR2WjS2tXNUzpodKnpww6ZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Azr5IQrehqNOnAEtx+eXw+SEivQNyMH1TchoGBRSMMNoLWwg0bFDcEcMNQWp8J2e98TS/00w5ghhPKkoDA0XVpR0cPm3O+OvXJPFuud7Ccpq9kj/+ruXNnn38asPjLSwkcP2/KErdnM9Dum3VbQMowNYa85fyBNiSlobwlesAXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBWhLqn7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4301CC32781;
-	Wed,  3 Jul 2024 10:42:23 +0000 (UTC)
+	 MIME-Version; b=vDffCynQKf88cy2rzxdiVecuY8okqgesKcF3FlnxQAB3uEuiTXSBlxY6CRnwICN40UPqeLjfc2KtpJ11OsliEV5AXskEijZDBS1RrxPc4FTBUne6Vv3qshhVot+3YXi8MYWm62Ry9ACa8+mMEtUJEdNjRL0GB6kuMwWhOBscw1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KuauXKOz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9473C2BD10;
+	Wed,  3 Jul 2024 10:51:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003343;
-	bh=qif630qFhRR6oW4reg6zKKg2SVHFZa2qbPGXRkXLigE=;
+	s=korg; t=1720003893;
+	bh=l5hpcUq9CsakyXnyCnbtxR2WjS2tXNUzpodKnpww6ZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MBWhLqn7CiG10++8xe88HWPGUD6VPRUiqS26iGSR6amIfddPXFxk+mpqexXogm/ZC
-	 /1mmR4rcQL+7t81j6282KrE+yykvVOQLEAMegYutkiHkIjY2ccfvulVtKwQIU+1k9N
-	 qTENEe5DSi3jBQ9fzRF6/D1x8KNrSq8jOJiNLKF4=
+	b=KuauXKOzMFdY10wey2H+wcXzKxmSFs+30FLAThgUXkJJ/qmPtvXlP3bp+OhBeNQVh
+	 U5sIzrTlWWV/4t72+/ECbQlsBg7Jzj80eQOEZrLdxpcNr4NfaeB8133OflnT0DNaHr
+	 U7o75+8kLS2lQGikMuAf+6GslZYQ7eV4bXiegAcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Anson Jacob <Anson.Jacob@amd.com>,
-	George Shen <george.shen@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	"Kun(llfl)" <llfl@linux.alibaba.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 018/139] drm/amd/display: Handle Y carry-over in VCP X.Y calculation
+Subject: [PATCH 5.4 054/189] iommu/amd: Fix sysfs leak in iommu init
 Date: Wed,  3 Jul 2024 12:38:35 +0200
-Message-ID: <20240703102831.128144050@linuxfoundation.org>
+Message-ID: <20240703102843.552117061@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Shen <george.shen@amd.com>
+From: Kun(llfl) <llfl@linux.alibaba.com>
 
-[ Upstream commit 3626a6aebe62ce7067cdc460c0c644e9445386bb ]
+[ Upstream commit a295ec52c8624883885396fde7b4df1a179627c3 ]
 
-[Why/How]
-Theoretically rare corner case where ceil(Y) results in rounding
-up to an integer. If this happens, the 1 should be carried over to
-the X value.
+During the iommu initialization, iommu_init_pci() adds sysfs nodes.
+However, these nodes aren't remove in free_iommu_resources() subsequently.
 
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Acked-by: Anson Jacob <Anson.Jacob@amd.com>
-Signed-off-by: George Shen <george.shen@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 39ab9555c241 ("iommu: Add sysfs bindings for struct iommu_device")
+Signed-off-by: Kun(llfl) <llfl@linux.alibaba.com>
+Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Link: https://lore.kernel.org/r/c8e0d11c6ab1ee48299c288009cf9c5dae07b42d.1715215003.git.llfl@linux.alibaba.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn10/dcn10_stream_encoder.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iommu/amd_iommu_init.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_stream_encoder.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_stream_encoder.c
-index 6f9078f3c4d39..17bcf7ce4099c 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_stream_encoder.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_stream_encoder.c
-@@ -620,6 +620,12 @@ void enc1_stream_encoder_set_mst_bandwidth(
- 				x),
- 			26));
+--- a/drivers/iommu/amd_iommu_init.c
++++ b/drivers/iommu/amd_iommu_init.c
+@@ -1410,8 +1410,17 @@ static int __init init_iommu_from_acpi(s
+ 	return 0;
+ }
  
-+	// If y rounds up to integer, carry it over to x.
-+	if (y >> 26) {
-+		x += 1;
-+		y = 0;
++static void __init free_sysfs(struct amd_iommu *iommu)
++{
++	if (iommu->iommu.dev) {
++		iommu_device_unregister(&iommu->iommu);
++		iommu_device_sysfs_remove(&iommu->iommu);
 +	}
++}
 +
- 	REG_SET_2(DP_MSE_RATE_CNTL, 0,
- 		DP_MSE_RATE_X, x,
- 		DP_MSE_RATE_Y, y);
--- 
-2.43.0
-
+ static void __init free_iommu_one(struct amd_iommu *iommu)
+ {
++	free_sysfs(iommu);
+ 	free_command_buffer(iommu);
+ 	free_event_buffer(iommu);
+ 	free_ppr_log(iommu);
 
 
 
