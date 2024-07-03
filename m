@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E49925C45
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:16:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C99B925B1E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9D5029B11D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:15:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16B30292214
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF40117B429;
-	Wed,  3 Jul 2024 11:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5E01791EF;
+	Wed,  3 Jul 2024 10:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OBOFRJYh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oThibMRR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF24179641;
-	Wed,  3 Jul 2024 11:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD8C177983;
+	Wed,  3 Jul 2024 10:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004602; cv=none; b=mmnZ7fjFeJQphaCZE+wjkKF+T9xEKgd05JGHItQaszCFKvFu3rnGZip7+hWYBNWjUZG54slWMf0dC5VtzGUxqLsTs3ar7+4qwAYVqemiLYRc61/PZCN2vy4cwmAOykBZiLq5IJv1+r9UiMv5AciXeoIGT57TdLapZTImyFlEWFI=
+	t=1720003770; cv=none; b=UUF5VIFmdLqHh8xpLE1auR6YgkAa1DENyqgWl0LtNTggiXf8aTivUZlyR62VGbpyr6UfxlBP7ls/3Ou/ooZiF6/M/rwpkaGZqbwuAPO6w4sI6DxJeE2Tx5b99NVvR8kW3OSL3DCToryMfYvRCmaKbNHoJraN3qvvkQ0LpSFaxmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004602; c=relaxed/simple;
-	bh=pBGeHI98N7dF+pVRhZc01tfpc69FqshjSpiECqdHqHg=;
+	s=arc-20240116; t=1720003770; c=relaxed/simple;
+	bh=Vz3ZcjIxFhx/ciRpvWaHK6RG8CHC83U8M0+n3dr63oE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ltTD8+sIzDuct0P4iN1usxJbH7CEEiCS2xevAInG5+wrURjGerd4HZweePX+BjZsYguuAxXKDBiHXO75br0btkJWSp5C/jMx36ROnRIpqdHTz5s6k0MLvHk6tdkv1+23WCySB6Nbnh1xdI1NZ5mgRU8pM4bUdf2LWnKO0UC1BLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OBOFRJYh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09990C2BD10;
-	Wed,  3 Jul 2024 11:03:21 +0000 (UTC)
+	 MIME-Version; b=oqnX/5CiZ2BZqGMmoCgDggYKJV9vq0ajxkqT2bEZAbjncRrg2kDoI7AaJnfhnFZmN0NyykbJgTNIZwhZ6shnPxAmihV9nkwsLndiwr59XZtNZjS7Kp/eI8nRp+3eY9OIiVqThlNW1zyu/J9u470DmBtoO0Eqy0mjcBvuy5fSn3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oThibMRR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 194D9C2BD10;
+	Wed,  3 Jul 2024 10:49:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004602;
-	bh=pBGeHI98N7dF+pVRhZc01tfpc69FqshjSpiECqdHqHg=;
+	s=korg; t=1720003770;
+	bh=Vz3ZcjIxFhx/ciRpvWaHK6RG8CHC83U8M0+n3dr63oE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OBOFRJYhJofBqPXNQb0d3ynsO5EkMhYkBOGtTSIKai/YzL0jUVrUcgKey0qYm3IVe
-	 g43E6ipVYBGR3vPLrdQWmIenPhbJS2NfqXXi+aKWamu4FpCq05c6mL0c0o93qsXFxw
-	 W2RKiXBnjuvwxx6kEisWpBsHHmBy+PvLz2OLND+8=
+	b=oThibMRR0NJCq8iIwJ/xtqAw4gPZIFyDQa0ietQ3RrmO52tjT45G7m2sflbFIf5Eb
+	 ZwhVfRwviiEuNA/LynXaPtO6xPvIH4aEC6hsWT9pOx+clqyZOjhKEaqe/XF8m6gZRm
+	 ZVf11QQYOUM8Li3E1h4HcWsASmf38Z3ChvmILpj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	YonglongLi <liyonglong@chinatelecom.cn>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 097/290] mptcp: pm: inc RmAddr MIB counter once per RM_ADDR ID
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 017/189] af_unix: Annotate data-races around sk->sk_state in UNIX_DIAG.
 Date: Wed,  3 Jul 2024 12:37:58 +0200
-Message-ID: <20240703102907.856223693@linuxfoundation.org>
+Message-ID: <20240703102842.154274129@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YonglongLi <liyonglong@chinatelecom.cn>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 6a09788c1a66e3d8b04b3b3e7618cc817bb60ae9 upstream.
+[ Upstream commit 0aa3be7b3e1f8f997312cc4705f8165e02806f8f ]
 
-The RmAddr MIB counter is supposed to be incremented once when a valid
-RM_ADDR has been received. Before this patch, it could have been
-incremented as many times as the number of subflows connected to the
-linked address ID, so it could have been 0, 1 or more than 1.
+While dumping AF_UNIX sockets via UNIX_DIAG, sk->sk_state is read
+locklessly.
 
-The "RmSubflow" is incremented after a local operation. In this case,
-it is normal to tied it with the number of subflows that have been
-actually removed.
+Let's use READ_ONCE() there.
 
-The "remove invalid addresses" MP Join subtest has been modified to
-validate this case. A broadcast IP address is now used instead: the
-client will not be able to create a subflow to this address. The
-consequence is that when receiving the RM_ADDR with the ID attached to
-this broadcast IP address, no subflow linked to this ID will be found.
+Note that the result could be inconsistent if the socket is dumped
+during the state change.  This is common for other SOCK_DIAG and
+similar interfaces.
 
-Fixes: 7a7e52e38a40 ("mptcp: add RM_ADDR related mibs")
-Cc: stable@vger.kernel.org
-Co-developed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: YonglongLi <liyonglong@chinatelecom.cn>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240607-upstream-net-20240607-misc-fixes-v1-2-1ab9ddfa3d00@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in pm_netlink.c because the commit 9f12e97bf16c ("mptcp:
-  unify RM_ADDR and RM_SUBFLOW receiving"), and commit d0b698ca9a27
-  ("mptcp: remove multi addresses in PM") are not in this version. To
-  fix the issue, the incrementation should be done outside the loop: the
-  same resolution has been applied here.
-  The selftest modification has been dropped, because the modified test
-  is not in this version. That's fine, we can test with selftests from a
-  newer version. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c9da99e6475f ("unix_diag: Fixup RQLEN extension report")
+Fixes: 2aac7a2cb0d9 ("unix_diag: Pending connections IDs NLA")
+Fixes: 45a96b9be6ec ("unix_diag: Dumping all sockets core")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/unix/diag.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -427,10 +427,10 @@ void mptcp_pm_nl_rm_addr_received(struct
- 		msk->pm.subflows--;
- 		WRITE_ONCE(msk->pm.accept_addr, true);
+diff --git a/net/unix/diag.c b/net/unix/diag.c
+index 2975e7a061d0b..4666fabb04933 100644
+--- a/net/unix/diag.c
++++ b/net/unix/diag.c
+@@ -64,7 +64,7 @@ static int sk_diag_dump_icons(struct sock *sk, struct sk_buff *nlskb)
+ 	u32 *buf;
+ 	int i;
  
--		__MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RMADDR);
--
- 		break;
- 	}
-+
-+	__MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RMADDR);
- }
+-	if (sk->sk_state == TCP_LISTEN) {
++	if (READ_ONCE(sk->sk_state) == TCP_LISTEN) {
+ 		spin_lock(&sk->sk_receive_queue.lock);
  
- void mptcp_pm_nl_rm_subflow_received(struct mptcp_sock *msk, u8 rm_id)
+ 		attr = nla_reserve(nlskb, UNIX_DIAG_ICONS,
+@@ -102,7 +102,7 @@ static int sk_diag_show_rqlen(struct sock *sk, struct sk_buff *nlskb)
+ {
+ 	struct unix_diag_rqlen rql;
+ 
+-	if (sk->sk_state == TCP_LISTEN) {
++	if (READ_ONCE(sk->sk_state) == TCP_LISTEN) {
+ 		rql.udiag_rqueue = sk->sk_receive_queue.qlen;
+ 		rql.udiag_wqueue = sk->sk_max_ack_backlog;
+ 	} else {
+@@ -135,7 +135,7 @@ static int sk_diag_fill(struct sock *sk, struct sk_buff *skb, struct unix_diag_r
+ 	rep = nlmsg_data(nlh);
+ 	rep->udiag_family = AF_UNIX;
+ 	rep->udiag_type = sk->sk_type;
+-	rep->udiag_state = sk->sk_state;
++	rep->udiag_state = READ_ONCE(sk->sk_state);
+ 	rep->pad = 0;
+ 	rep->udiag_ino = sk_ino;
+ 	sock_diag_save_cookie(sk, rep->udiag_cookie);
+@@ -218,7 +218,7 @@ static int unix_diag_dump(struct sk_buff *skb, struct netlink_callback *cb)
+ 				continue;
+ 			if (num < s_num)
+ 				goto next;
+-			if (!(req->udiag_states & (1 << sk->sk_state)))
++			if (!(req->udiag_states & (1 << READ_ONCE(sk->sk_state))))
+ 				goto next;
+ 			if (sk_diag_dump(sk, skb, req, sk_user_ns(skb->sk),
+ 					 NETLINK_CB(cb->skb).portid,
+-- 
+2.43.0
+
 
 
 
