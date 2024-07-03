@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5227F925A8F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:01:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E49925C45
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:16:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02EB61F21615
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9D5029B11D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFBF178CEE;
-	Wed,  3 Jul 2024 10:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF40117B429;
+	Wed,  3 Jul 2024 11:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KMFHnf7l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OBOFRJYh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C778178CCD;
-	Wed,  3 Jul 2024 10:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF24179641;
+	Wed,  3 Jul 2024 11:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003767; cv=none; b=EpfY1zHe+KtfF7BAvHcEclMj/41gsGYy3kNq3Q1hS+nkf7jgBXluOQO5uE6ESRwEHuISEkfjDtAqInyy4LTi7JDxS2uO1hCp2mg8JLCWx3FBbiZ+lskPt67HkCnny6DMHVVgHxHyu1ooVzC33B1w6nZT+jJgNpyL78XskqewiFU=
+	t=1720004602; cv=none; b=mmnZ7fjFeJQphaCZE+wjkKF+T9xEKgd05JGHItQaszCFKvFu3rnGZip7+hWYBNWjUZG54slWMf0dC5VtzGUxqLsTs3ar7+4qwAYVqemiLYRc61/PZCN2vy4cwmAOykBZiLq5IJv1+r9UiMv5AciXeoIGT57TdLapZTImyFlEWFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003767; c=relaxed/simple;
-	bh=D5FIhWTdfYtd4XF6XYCuVHz1tOmSqKXdrkC91DPQGkA=;
+	s=arc-20240116; t=1720004602; c=relaxed/simple;
+	bh=pBGeHI98N7dF+pVRhZc01tfpc69FqshjSpiECqdHqHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I7v+3cSwBbpmS/58gQGLMZa3vqFaZa1TlOcNWlpXcimOORwCOTG7mfQFOBGOjYLoL8ke8iOoz+E82fyZKdwwl2KkHF3leKByYU7sngbd3iRNG20EFfas5OVN2YgYVmb+fojPPR/3rIDJL9/0aMzEDMpARmPKnrMVmjyMjE78Ipo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KMFHnf7l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C53BC2BD10;
-	Wed,  3 Jul 2024 10:49:26 +0000 (UTC)
+	 MIME-Version; b=ltTD8+sIzDuct0P4iN1usxJbH7CEEiCS2xevAInG5+wrURjGerd4HZweePX+BjZsYguuAxXKDBiHXO75br0btkJWSp5C/jMx36ROnRIpqdHTz5s6k0MLvHk6tdkv1+23WCySB6Nbnh1xdI1NZ5mgRU8pM4bUdf2LWnKO0UC1BLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OBOFRJYh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09990C2BD10;
+	Wed,  3 Jul 2024 11:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003767;
-	bh=D5FIhWTdfYtd4XF6XYCuVHz1tOmSqKXdrkC91DPQGkA=;
+	s=korg; t=1720004602;
+	bh=pBGeHI98N7dF+pVRhZc01tfpc69FqshjSpiECqdHqHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KMFHnf7ltju023yfK2LU9lOUuN1hlxkYHMxTGrjZlrmSdmCQyj1VHrX/+N+5aULAt
-	 t3P/llIfq1iGvkAFXocXEkIQgVABF/p/wl3eyMq9Aqc76EnCRBR3sr2Y99jej3109p
-	 Xnr85sqcNZmJydh0mDz0ajgxOvR4K8QLoaNDB054=
+	b=OBOFRJYhJofBqPXNQb0d3ynsO5EkMhYkBOGtTSIKai/YzL0jUVrUcgKey0qYm3IVe
+	 g43E6ipVYBGR3vPLrdQWmIenPhbJS2NfqXXi+aKWamu4FpCq05c6mL0c0o93qsXFxw
+	 W2RKiXBnjuvwxx6kEisWpBsHHmBy+PvLz2OLND+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 016/189] af_unix: Annotate data-races around sk->sk_state in sendmsg() and recvmsg().
-Date: Wed,  3 Jul 2024 12:37:57 +0200
-Message-ID: <20240703102842.116905355@linuxfoundation.org>
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	YonglongLi <liyonglong@chinatelecom.cn>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 097/290] mptcp: pm: inc RmAddr MIB counter once per RM_ADDR ID
+Date: Wed,  3 Jul 2024 12:37:58 +0200
+Message-ID: <20240703102907.856223693@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: YonglongLi <liyonglong@chinatelecom.cn>
 
-[ Upstream commit 8a34d4e8d9742a24f74998f45a6a98edd923319b ]
+commit 6a09788c1a66e3d8b04b3b3e7618cc817bb60ae9 upstream.
 
-The following functions read sk->sk_state locklessly and proceed only if
-the state is TCP_ESTABLISHED.
+The RmAddr MIB counter is supposed to be incremented once when a valid
+RM_ADDR has been received. Before this patch, it could have been
+incremented as many times as the number of subflows connected to the
+linked address ID, so it could have been 0, 1 or more than 1.
 
-  * unix_stream_sendmsg
-  * unix_stream_read_generic
-  * unix_seqpacket_sendmsg
-  * unix_seqpacket_recvmsg
+The "RmSubflow" is incremented after a local operation. In this case,
+it is normal to tied it with the number of subflows that have been
+actually removed.
 
-Let's use READ_ONCE() there.
+The "remove invalid addresses" MP Join subtest has been modified to
+validate this case. A broadcast IP address is now used instead: the
+client will not be able to create a subflow to this address. The
+consequence is that when receiving the RM_ADDR with the ID attached to
+this broadcast IP address, no subflow linked to this ID will be found.
 
-Fixes: a05d2ad1c1f3 ("af_unix: Only allow recv on connected seqpacket sockets.")
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7a7e52e38a40 ("mptcp: add RM_ADDR related mibs")
+Cc: stable@vger.kernel.org
+Co-developed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: YonglongLi <liyonglong@chinatelecom.cn>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240607-upstream-net-20240607-misc-fixes-v1-2-1ab9ddfa3d00@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in pm_netlink.c because the commit 9f12e97bf16c ("mptcp:
+  unify RM_ADDR and RM_SUBFLOW receiving"), and commit d0b698ca9a27
+  ("mptcp: remove multi addresses in PM") are not in this version. To
+  fix the issue, the incrementation should be done outside the loop: the
+  same resolution has been applied here.
+  The selftest modification has been dropped, because the modified test
+  is not in this version. That's fine, we can test with selftests from a
+  newer version. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/mptcp/pm_netlink.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 73cc992bed880..0611ff921421e 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -1881,7 +1881,7 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
- 		goto out_err;
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -427,10 +427,10 @@ void mptcp_pm_nl_rm_addr_received(struct
+ 		msk->pm.subflows--;
+ 		WRITE_ONCE(msk->pm.accept_addr, true);
  
- 	if (msg->msg_namelen) {
--		err = sk->sk_state == TCP_ESTABLISHED ? -EISCONN : -EOPNOTSUPP;
-+		err = READ_ONCE(sk->sk_state) == TCP_ESTABLISHED ? -EISCONN : -EOPNOTSUPP;
- 		goto out_err;
- 	} else {
- 		err = -ENOTCONN;
-@@ -2083,7 +2083,7 @@ static int unix_seqpacket_sendmsg(struct socket *sock, struct msghdr *msg,
- 	if (err)
- 		return err;
- 
--	if (sk->sk_state != TCP_ESTABLISHED)
-+	if (READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)
- 		return -ENOTCONN;
- 
- 	if (msg->msg_namelen)
-@@ -2097,7 +2097,7 @@ static int unix_seqpacket_recvmsg(struct socket *sock, struct msghdr *msg,
- {
- 	struct sock *sk = sock->sk;
- 
--	if (sk->sk_state != TCP_ESTABLISHED)
-+	if (READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)
- 		return -ENOTCONN;
- 
- 	return unix_dgram_recvmsg(sock, msg, size, flags);
-@@ -2293,7 +2293,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- 	size_t size = state->size;
- 	unsigned int last_len;
- 
--	if (unlikely(sk->sk_state != TCP_ESTABLISHED)) {
-+	if (unlikely(READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)) {
- 		err = -EINVAL;
- 		goto out;
+-		__MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RMADDR);
+-
+ 		break;
  	}
--- 
-2.43.0
-
++
++	__MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RMADDR);
+ }
+ 
+ void mptcp_pm_nl_rm_subflow_received(struct mptcp_sock *msk, u8 rm_id)
 
 
 
