@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-57128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890AA925AC3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45850925A7E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:00:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40CA61F24D0D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4438F298D11
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718BD17C229;
-	Wed,  3 Jul 2024 10:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E6C17FAB0;
+	Wed,  3 Jul 2024 10:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/q6jlWD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XAKb+AGp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2562013D60F;
-	Wed,  3 Jul 2024 10:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231B317E459;
+	Wed,  3 Jul 2024 10:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003932; cv=none; b=PaazSN8kNvcXQSqyE549eELgMietQ5EL1qNnmYG97EcLAwFmIzIYhO9I73eCPmnnjqalF+eKrVDBay6+zzG/AuHtEIeQeWxkQBbDMr51/yIBNcZnbROcuVdvG0bstE6grjB8aAIstc/kVAEzgc/M7CvG7nuBIPk72FBY08t51wg=
+	t=1720003388; cv=none; b=LUvu8xXgJfoW0UDYpnt6i3DGqHzOMvQ6LDApmQNsiVgtf6JsWLQmIRpYVkIPjqHrCgEFP065P1cXB0Q1uaTir/4VIlwJ+mqibONsD/VF/xPE1D7QloqC48cRGwZdlhzKG2Hzbao6utbwv5qQV1iq/Cpejg3fX4y08IraYEwkUPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003932; c=relaxed/simple;
-	bh=qTEPYiMFhyyJ8jSD4WqYAVTdGzRPqUgtQic0rAoiDD8=;
+	s=arc-20240116; t=1720003388; c=relaxed/simple;
+	bh=aTIy21kyL7jucKvr84juf8W1gOSaatwMJYmbMMXcKQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P79dvMOW6C3VMECEkfRINAVJLOLtXhjeP8p98Td8EUkeYq38Uwmy1xTlnWWibhIJkgePbUQG/Uc48rlpGaQGN5FCo4/GwRHrJRZa4UOyILRIUM6/BqRpzOGJ+SFXfxSixPntSSQxGSwDlhgrDsYhr3COs4zPXAIS3jhD/sDpQKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/q6jlWD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2DAC2BD10;
-	Wed,  3 Jul 2024 10:52:11 +0000 (UTC)
+	 MIME-Version; b=qqvgP1GF2bOYkXLdA4WPqcd5d7DZIM6WaDwKwX/1zLyVHcFGpadt8RVBHJAS5xkhwbm2VZaCsueNSO8MCgEYVwrZT695kN/7d8SnUzaHVrjIfz9MuJlb45BzjqjfWFLEm84Gj3JH0/+DlcSAVwZ0UXO/Tff5BbAgmzOHCznxg8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XAKb+AGp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D68AC2BD10;
+	Wed,  3 Jul 2024 10:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003932;
-	bh=qTEPYiMFhyyJ8jSD4WqYAVTdGzRPqUgtQic0rAoiDD8=;
+	s=korg; t=1720003388;
+	bh=aTIy21kyL7jucKvr84juf8W1gOSaatwMJYmbMMXcKQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/q6jlWDcqHPYA+fS4W8GPldn9iK47M+Pl2oommtbq4wL7WNZLfzq0bq2ezzkd/g1
-	 EA601N2WpCx7NIqTEPHpFDd9E3QwPdSxLbloILHbuHlAnUxPScORCm4Lm//pnkZSRm
-	 0YaUwnScFMjo+GXbAR/47EOrpNghYEoIJ3f3eo64=
+	b=XAKb+AGp5AxVKxx67hWyJ1HjO2z7UEtuhvnjqwnpBRPSSHoDJF5t/82ZUTlQEjZPi
+	 O/ftOLVj9C+YcMKZjb8GxgHdUyoEra2JZFmn4c5/Q+nmugFHM6T/KxAzcIz3hVGLfD
+	 T6WvaCmDeT4WSrI4PRgnWjDnRBbyMpCCv4ZjmfUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 5.4 069/189] tracing/selftests: Fix kprobe event name test for .isra. functions
+	Kuangyi Chiang <ki.chiang65@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 4.19 033/139] xhci: Apply broken streams quirk to Etron EJ188 xHCI host
 Date: Wed,  3 Jul 2024 12:38:50 +0200
-Message-ID: <20240703102844.111789793@linuxfoundation.org>
+Message-ID: <20240703102831.692482155@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
 
-commit 23a4b108accc29a6125ed14de4a044689ffeda78 upstream.
+commit 91f7a1524a92c70ffe264db8bdfa075f15bbbeb9 upstream.
 
-The kprobe_eventname.tc test checks if a function with .isra. can have a
-kprobe attached to it. It loops through the kallsyms file for all the
-functions that have the .isra. name, and checks if it exists in the
-available_filter_functions file, and if it does, it uses it to attach a
-kprobe to it.
-
-The issue is that kprobes can not attach to functions that are listed more
-than once in available_filter_functions. With the latest kernel, the
-function that is found is: rapl_event_update.isra.0
-
-  # grep rapl_event_update.isra.0 /sys/kernel/tracing/available_filter_functions
-  rapl_event_update.isra.0
-  rapl_event_update.isra.0
-
-It is listed twice. This causes the attached kprobe to it to fail which in
-turn fails the test. Instead of just picking the function function that is
-found in available_filter_functions, pick the first one that is listed
-only once in available_filter_functions.
+As described in commit 8f873c1ff4ca ("xhci: Blacklist using streams on the
+Etron EJ168 controller"), EJ188 have the same issue as EJ168, where Streams
+do not work reliable on EJ188. So apply XHCI_BROKEN_STREAMS quirk to EJ188
+as well.
 
 Cc: stable@vger.kernel.org
-Fixes: 604e3548236d ("selftests/ftrace: Select an existing function in kprobe_eventname test")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240611120610.3264502-4-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-pci.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc
-+++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc
-@@ -31,7 +31,8 @@ find_dot_func() {
- 	fi
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -225,8 +225,10 @@ static void xhci_pci_quirks(struct devic
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+ 	}
+ 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
+-			pdev->device == PCI_DEVICE_ID_EJ188)
++			pdev->device == PCI_DEVICE_ID_EJ188) {
+ 		xhci->quirks |= XHCI_RESET_ON_RESUME;
++		xhci->quirks |= XHCI_BROKEN_STREAMS;
++	}
  
- 	grep " [tT] .*\.isra\..*" /proc/kallsyms | cut -f 3 -d " " | while read f; do
--		if grep -s $f available_filter_functions; then
-+		cnt=`grep -s $f available_filter_functions | wc -l`;
-+		if [ $cnt -eq 1 ]; then
- 			echo $f
- 			break
- 		fi
+ 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
+ 	    pdev->device == 0x0014) {
 
 
 
