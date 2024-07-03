@@ -1,134 +1,133 @@
-Return-Path: <stable+bounces-57921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C0C9260FB
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:55:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A67269260F8
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:55:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06F3F1C20958
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:55:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D1DB1F233B6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0325177981;
-	Wed,  3 Jul 2024 12:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D0AC178360;
+	Wed,  3 Jul 2024 12:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fzqIIL96"
+	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="qkKeVgqV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACB91E4A9;
-	Wed,  3 Jul 2024 12:55:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95B9177981
+	for <stable@vger.kernel.org>; Wed,  3 Jul 2024 12:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720011353; cv=none; b=T6WotAsjKgfLN5773XOD0yRih5B9+3HWWqcIovWsfU7L5OK22D0AJ3JmEw75DET9UhXSXOe03AaaFY9faCPde0nayeoWrs3wR0jz6/mN6DhRcv3cROSHXqyGIENe+uESh1YdA38Esik2AfFhHh1DmBWXkNTC7/TvPrKYeDZ0qWA=
+	t=1720011295; cv=none; b=ubHYxJ2roWp9q3e5xxQnTZZjV4IiP21Pz1YIhxWV0gozEBz1YGO89tAaen9ihiQBlhkzMJBgutp0p7t0Rse7cLOnEP4MvmT0dSrIYwgPFav0VyRrJYfbdTQYGoSnjIMpYmwrRtpHOu+15VIuFIhgaCxjH4nvPhn9pYe3Hi/tAEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720011353; c=relaxed/simple;
-	bh=l3hEx+PbLuUpy/+qRRMgCRVW3yeyFiqr4kdTiKkFx2Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uCXM9JcUtCPcFcuZNNHv9T4JLWfYeNv82e2jLtWA1iNfuehB4UFyMFPZ9RX4Krxrp4qWYIh0X6wbj9CY9VMvoeRZ7UoPy3mm5ZqT0cGsnttHD/rBR2iKYDBkZchX11pOBFEoGd+E5IKLreURMnY9J43Ad3fSuUdtBknR3FE8MLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fzqIIL96; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D29C2BD10;
-	Wed,  3 Jul 2024 12:55:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720011353;
-	bh=l3hEx+PbLuUpy/+qRRMgCRVW3yeyFiqr4kdTiKkFx2Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fzqIIL96IDbMJTLSVZzS9qwsp8b3bwlPTDPZXs6oCQzMvs77y5+H1O/x1IXoD3+cS
-	 U+dfraqj2LSJC+fztzPzu4F5AV/0dW6h/fuRWUwZJloKVrSGtbTRrVvoCySzLy/abJ
-	 QA8tLZpuFjFXUte4rLYAw/ieiF/kt6cI+MD5QYiO0bEk+7LViOy7FbJXD4SulAFu3Y
-	 I9ynMh1KwM/5Mzr9+4OjDtovE79B0gKDouPdNmAhW4anmqC43Ho94kTa5JRsqsGlvl
-	 IiyHVmdWLjxqCF7NXNRzqwX7AJ5WOHlRQ8OB1ZSWetquJp8tRG6kW3k7RCsGwMrzR0
-	 iRB5pXDZYmb1w==
-Date: Wed, 3 Jul 2024 15:53:18 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Narasimhan V <Narasimhan.V@amd.com>,
-	Jan Beulich <jbeulich@suse.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15 255/356] x86/mm/numa: Use NUMA_NO_NODE when calling
- memblock_set_node()
-Message-ID: <ZoVJvsHESDvXZ413@kernel.org>
-References: <20240703102913.093882413@linuxfoundation.org>
- <20240703102922.763942486@linuxfoundation.org>
+	s=arc-20240116; t=1720011295; c=relaxed/simple;
+	bh=rS/W1TqSZ7g/nTd/PX/LNoXQ3bRZucqWJPbOkYLIWVg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QbnFlf7UGyAkp+OTN+SbgWXSecxvtCScjtRivvCN7lK9oT+wWrPzhPXuTEfpUULplBmHMKqe2OBMGlr7HzHYNkP6/nvNy0SI6FAs+12GFYhJnJm5EyegcBtdV4XUIUfYkXcjEYUJxVHnYY2bWcnMw0HkvrsX6veEY2PjWb9RfTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=qkKeVgqV; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2c96f037145so899048a91.3
+        for <stable@vger.kernel.org>; Wed, 03 Jul 2024 05:54:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1720011293; x=1720616093; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=855SeBJK+kQf7yXIRTBaRAUIqwJW4HXVIPFfDWbcfMY=;
+        b=qkKeVgqVy2uM/EjmzNmoPeHxE95g05fjqa5c6spheBbedtNopGlmxFHGeQmr+IZI7i
+         d3k020UBbuwZl8cb8qravxUXirgmT7mOckRHlbCrcCqlIKdgpTFViYEor8k+wwnm116q
+         /RAIt4efJ9fk7rtAe2vP4xvKb96Ia54DU4QejUlE2HqE0OxKefAUIvgPdeGonqNrQshx
+         XbfPc5wo2A02qGC4csBGIQHU4OCDik0W9551omv66wjM2u4Zi6+vP7uvLoqoixRwsL+Y
+         9qjonhJZvSoMntiYsJlV5cdNu0MWoDi0KdyunleKktds6BaoqTP0JXp/Lghd0510Bu92
+         grEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720011293; x=1720616093;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=855SeBJK+kQf7yXIRTBaRAUIqwJW4HXVIPFfDWbcfMY=;
+        b=V6Jre/jtVZ2MpV65DX2QZrxVKUzkWTSE69+p8qUbvs0JRfJd7JVMIOdOkzRnqyNTxV
+         wmRwl5Qp+tvLqwIhXHjcawSAxF/PzQUtxxSqW7sqdbXl4axK/QqVwPsini0psrnGdREa
+         zr7bg4dcdlpJlDC4wvc19MNzQk26Ya1Dy2HBnUyUmkSHlxGntfn7YrAgobYfKdz+ivJA
+         E/2bKm1iOKJ93Wpdr2A7vWm2x253KNYn+ell9SAnPZgMYjpXMmsoclNQbbqgqZgax+7/
+         jwb3NS254qcyTHW9hb1JnreFAc4RQWMKd3VlBlytaCVAM6ZRzMlw4L0yuF8Im+FV24Qf
+         n9Yg==
+X-Gm-Message-State: AOJu0Yy9U1ExwljQPB64O3wPxoR4u5yH+QKQ/Qzvkg8vzVda1Xkl7uIv
+	9j0XvsEZDG0N5Li6YYzwxz2m56jvImsY2jCn3U8nkaqstrtOFwIG/VlrwUEX5XW0ie0JfvWLUIN
+	VwCYJst+JzJJcaSedPCLKrVYLOAhT9MUFQttyiA==
+X-Google-Smtp-Source: AGHT+IFeyxBhLt9MzjsdGvcxDI6Ss8W8+j+tZYOJYbNYqfjc+caqhGP3E6bzdV7g9BE3Tqajxbf9EkaaSQfkC7aoh3c=
+X-Received: by 2002:a17:90a:8583:b0:2c8:df15:5ad7 with SMTP id
+ 98e67ed59e1d1-2c93d777302mr8133982a91.45.1720011292909; Wed, 03 Jul 2024
+ 05:54:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240703102922.763942486@linuxfoundation.org>
+References: <20240702170233.048122282@linuxfoundation.org>
+In-Reply-To: <20240702170233.048122282@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Wed, 3 Jul 2024 21:54:42 +0900
+Message-ID: <CAKL4bV5_povtwC25oFZfBHHzjHN_=aKGb_0zE_ZJyUJ_WseeNA@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/163] 6.6.37-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 03, 2024 at 12:39:51PM +0200, Greg Kroah-Hartman wrote:
-> 5.15-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Jan Beulich <jbeulich@suse.com>
-> 
-> [ Upstream commit 3ac36aa7307363b7247ccb6f6a804e11496b2b36 ]
-> 
-> memblock_set_node() warns about using MAX_NUMNODES, see
-> 
->   e0eec24e2e19 ("memblock: make memblock_set_node() also warn about use of MAX_NUMNODES")
-> 
-> for details.
+Hi Greg
 
-This commit was a fix for e0eec24e2e19, it's not needed for kernels before 6.8.
- 
-> Reported-by: Narasimhan V <Narasimhan.V@amd.com>
-> Signed-off-by: Jan Beulich <jbeulich@suse.com>
-> Cc: stable@vger.kernel.org
-> [bp: commit message]
-> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-> Tested-by: Paul E. McKenney <paulmck@kernel.org>
-> Link: https://lore.kernel.org/r/20240603141005.23261-1-bp@kernel.org
-> Link: https://lore.kernel.org/r/abadb736-a239-49e4-ab42-ace7acdd4278@suse.com
-> Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  arch/x86/mm/numa.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-> index 1a1c0c242f272..d074a1b4f976c 100644
-> --- a/arch/x86/mm/numa.c
-> +++ b/arch/x86/mm/numa.c
-> @@ -522,7 +522,7 @@ static void __init numa_clear_kernel_node_hotplug(void)
->  	for_each_reserved_mem_region(mb_region) {
->  		int nid = memblock_get_region_node(mb_region);
->  
-> -		if (nid != MAX_NUMNODES)
-> +		if (nid != NUMA_NO_NODE)
->  			node_set(nid, reserved_nodemask);
->  	}
->  
-> @@ -642,9 +642,9 @@ static int __init numa_init(int (*init_func)(void))
->  	nodes_clear(node_online_map);
->  	memset(&numa_meminfo, 0, sizeof(numa_meminfo));
->  	WARN_ON(memblock_set_node(0, ULLONG_MAX, &memblock.memory,
-> -				  MAX_NUMNODES));
-> +				  NUMA_NO_NODE));
->  	WARN_ON(memblock_set_node(0, ULLONG_MAX, &memblock.reserved,
-> -				  MAX_NUMNODES));
-> +				  NUMA_NO_NODE));
->  	/* In case that parsing SRAT failed. */
->  	WARN_ON(memblock_clear_hotplug(0, ULLONG_MAX));
->  	numa_reset_distance();
-> -- 
-> 2.43.0
-> 
-> 
-> 
+On Wed, Jul 3, 2024 at 2:19=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.37 release.
+> There are 163 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 04 Jul 2024 17:01:55 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.37-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
--- 
-Sincerely yours,
-Mike.
+6.6.37-rc1 tested.
+
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
+
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+
+[    0.000000] Linux version 6.6.37-rc1rv
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.1.1 20240522, GNU ld (GNU
+Binutils) 2.42.0) #1 SMP PREEMPT_DYNAMIC Wed Jul  3 20:52:59 JST 2024
+
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
