@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B3D925E9D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:38:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB989925BBF
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:11:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63975295307
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2F93291C08
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:10:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0575317DA36;
-	Wed,  3 Jul 2024 11:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 576891946C1;
+	Wed,  3 Jul 2024 10:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lE6QaHpz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMi175IA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B924B7CF1F;
-	Wed,  3 Jul 2024 11:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153BD1946A2;
+	Wed,  3 Jul 2024 10:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006126; cv=none; b=NdzPzjS41z3IA0Fwz++wJj5f4J1C76ILm7sy27771inXcVA5U2F8njXrkbKoKrXvtKwQPd8+4Tow+0Voau6Tcg0GWaJ3Oalzy+5xPOqmXmY4v+Rp9+IxLVe0C+9KdzyHokX6pD+p6GZW0kdajpA+GZzwijfh9TE/CPrBMPpryYc=
+	t=1720004291; cv=none; b=RyyVARLCKnsKevQSIKPoDag3vDtdU4/ZrrqBwliAuRFIA+45YQHbiqUpx89OM2Ou/gSGeXwBqSVOZBf6oLeoY6bbHWK1B8PyX15aU9djqmJMzmvtCANGZhWqlHsOjhHHH6nFW7+wlE44udjNHajoQoT/gp9LS5/VL+gV+4kT//c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006126; c=relaxed/simple;
-	bh=TaV2VHwRX2Hyqr2bpvpBbvXUXe/bYULoVYogMLlNCw8=;
+	s=arc-20240116; t=1720004291; c=relaxed/simple;
+	bh=wN2/YEbmXUaQm6dQLJtelCZijrDrI3nvIC9rR+UESHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=np6vobDxu21ySH5lDMbY4MRphhA417A19JkxdBk9lYSWQ+ovFwhTjEOPDp8Y1ynK8OxA4qMJOU+9TliUfnNVnuU2GPYJHRSyehpEOJ05XFJQIFgKmsC1B9AKp7A/n2ydc8ZklTyxBqZaFR5xRKzB4syg0OCIzb+Y5HCbDUQcifk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lE6QaHpz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356B0C2BD10;
-	Wed,  3 Jul 2024 11:28:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SbLfxllVrPklvzUnYmIzqpgiOtsXunVcBEtI/KnnBTP47b2xMTPnixvXSllhkM2Ajd19qCD9ohOPpoVQsco7kTwxWJfJtcWddHOXKHf2acyI2hVZDXR/aXaJZV7fpGZ4Kkj630Z0E00bTBFvATxMGiuLj36A+Gv5y1FSMxgTUNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RMi175IA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922CBC2BD10;
+	Wed,  3 Jul 2024 10:58:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006126;
-	bh=TaV2VHwRX2Hyqr2bpvpBbvXUXe/bYULoVYogMLlNCw8=;
+	s=korg; t=1720004291;
+	bh=wN2/YEbmXUaQm6dQLJtelCZijrDrI3nvIC9rR+UESHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lE6QaHpzFgDZ3oh0VdfCfZ3Io3TAK8yK/zRpC9dpzkts6BQ3zy6V7JGACjzUKlNcm
-	 OkWFH1csjSslbisGYkfpPmRkLrQHiL1PJARgViKZYRKAHOxVzMmWNMGK15EP4g2KhU
-	 sXCjTlQ61PZzIfJ4j9HpckX+u3eyUea9MdljfBSU=
+	b=RMi175IAaK2Z76EsoWibyl7A49+OjIJxvR66U3aytZwdekn2E5fHmS/RE5CN5wsDF
+	 uAmFTj2LDh5K+JyvNZ0ffLJUjbPZXG5fiWPn5bzilt+3v0rLUu5e7cKSZ1+ZM0tF9i
+	 RQqkaBOX17f47lyRWxlalWlXC47IKJiTqFmPsVLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 308/356] i2c: testunit: dont erase registers after STOP
+	Trevor Gamblin <tgamblin@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 5.4 183/189] pwm: stm32: Refuse too small period requests
 Date: Wed,  3 Jul 2024 12:40:44 +0200
-Message-ID: <20240703102924.766059770@linuxfoundation.org>
+Message-ID: <20240703102848.376824812@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit c422b6a630240f706063e0ecbb894aa8491b1fa1 ]
+commit c45fcf46ca2368dafe7e5c513a711a6f0f974308 upstream.
 
-STOP fallsthrough to WRITE_REQUESTED but this became problematic when
-clearing the testunit registers was added to the latter. Actually, there
-is no reason to clear the testunit state after STOP. Doing it when a new
-WRITE_REQUESTED arrives is enough. So, no need to fallthrough, at all.
+If period_ns is small, prd might well become 0. Catch that case because
+otherwise with
 
-Fixes: b39ab96aa894 ("i2c: testunit: add support for block process calls")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	regmap_write(priv->regmap, TIM_ARR, prd - 1);
+
+a few lines down quite a big period is configured.
+
+Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
+Cc: stable@vger.kernel.org
+Reviewed-by: Trevor Gamblin <tgamblin@baylibre.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/b86f62f099983646f97eeb6bfc0117bb2d0c340d.1718979150.git.u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-slave-testunit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pwm/pwm-stm32.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/i2c/i2c-slave-testunit.c b/drivers/i2c/i2c-slave-testunit.c
-index 56dae08dfd489..1beae30c418b8 100644
---- a/drivers/i2c/i2c-slave-testunit.c
-+++ b/drivers/i2c/i2c-slave-testunit.c
-@@ -118,7 +118,7 @@ static int i2c_slave_testunit_slave_cb(struct i2c_client *client,
- 			queue_delayed_work(system_long_wq, &tu->worker,
- 					   msecs_to_jiffies(10 * tu->regs[TU_REG_DELAY]));
- 		}
--		fallthrough;
-+		break;
+--- a/drivers/pwm/pwm-stm32.c
++++ b/drivers/pwm/pwm-stm32.c
+@@ -337,6 +337,9 @@ static int stm32_pwm_config(struct stm32
  
- 	case I2C_SLAVE_WRITE_REQUESTED:
- 		memset(tu->regs, 0, TU_NUM_REGS);
--- 
-2.43.0
-
+ 	prd = div;
+ 
++	if (!prd)
++		return -EINVAL;
++
+ 	if (prescaler > MAX_TIM_PSC)
+ 		return -EINVAL;
+ 
 
 
 
