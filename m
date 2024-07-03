@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-57403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 817E0925EF4
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:44:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 462F5925DDB
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19D41B396FD
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:18:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFCD02962F7
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537FA181B96;
-	Wed,  3 Jul 2024 11:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4248619412C;
+	Wed,  3 Jul 2024 11:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVFdInAO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="007C835W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB7A17625D;
-	Wed,  3 Jul 2024 11:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0149E13BAFA;
+	Wed,  3 Jul 2024 11:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004772; cv=none; b=AlSkdDNNz0+DTBAGz1muOtrhqIXgTbEBK1plxCluV4eg0DkZO5eyYkmzN/yIAW/u4binY2szEV7V6SoF/dFqH4rQFuwCJQdh+epDRFeFbAfsmQnY/qBGi7deoicgk7lSPxVsX7Vp7uUwPrJIeGooSvpYTHpOTvJeNt/cgRufM5A=
+	t=1720005790; cv=none; b=cLV5CCfEk2siqA+1k1rLmt5szZbsWO9D28gsj97jokWhb2ehMF5QUmz0pCpj0vECREpWHG/uTXpSVx+zYjG94WoOBpmDly9yrTX/UBfV+YA7CbiGcktwN49JAoWpj2gw34TIX7b2E5K7fBQlFEz93EZR7oj4gjtLtS3NJFEx9uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004772; c=relaxed/simple;
-	bh=WBb9affVVZkESIpadg4efFjj6/GzYbOA0ATVp93zHZU=;
+	s=arc-20240116; t=1720005790; c=relaxed/simple;
+	bh=K+2DfE0gHLqQ5WJKAQHUhv5ijIaAzQ4ARAr/hsx8tqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Onb/TkvYARJ3VcFUftSOzDQIuHufsulp9E8/tgUTOMciwijyNWBpD5VJUf14HJKJ40U+wC/eaO2yU1NBAluR8vW0bkIp5ATCqiLb/b1FYkgJCtX05U1XWKTW7rYF96DT6MgCevROiTPoOLcEr9GWJWgoiO/gG39iKmvXrIt96oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVFdInAO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C565C2BD10;
-	Wed,  3 Jul 2024 11:06:11 +0000 (UTC)
+	 MIME-Version; b=C2clqeP3A26ntnDn7U14IeTuBCT1zdR81a6T6OHvSeW37lGCJaengziiSyCDvrIAxl9eG8fVuYV9D1YymB5aaxycOuOKFafkUwpwbLEzhuZkfZIF/FqjP/ZJ2J51OMscR6dwFG0MKZv8sAlE+OCgOmgXhd4Gt6UPrdV3KDWZRvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=007C835W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8C7C2BD10;
+	Wed,  3 Jul 2024 11:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004771;
-	bh=WBb9affVVZkESIpadg4efFjj6/GzYbOA0ATVp93zHZU=;
+	s=korg; t=1720005789;
+	bh=K+2DfE0gHLqQ5WJKAQHUhv5ijIaAzQ4ARAr/hsx8tqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aVFdInAOaX8jKxbglh58EQxEXSlsr7YQMTMUpskIoMoG0plhEzVgYVqpNXbrTtjSK
-	 jPLADM7YSFlWSPavlK3GOYiyscC1A3hzb2e3jjkZAM5veAxKmhKGiOGAMxfCsKUxHl
-	 npK7sNn0yJifMrea1lPApVeD6m4V8IKV+jvL88kM=
+	b=007C835WvJNG60nDzMJUk+0RvnWQFo0FtoJcjNhwTr5HqPJdfwh+gCutaZwtSdQ7U
+	 Lui1iV4d6hBq1pMXGaKQH9z3jEWOMK8ZCWpoBrr5VhCFkN7MKdlLoryKgBy8W8MFHc
+	 fBTWl4JEpjC/KC7NUj9rgI2BpCONkDL0SRZGBFgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b62c37cdd58103293a5a@syzkaller.appspotmail.com,
-	syzbot+cfbe1da5fdfc39efc293@syzkaller.appspotmail.com,
-	kernel test robot <oliver.sang@intel.com>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Shuang Li <shuali@redhat.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 152/290] netfilter: ipset: Fix suspicious rcu_dereference_protected()
+Subject: [PATCH 5.15 197/356] sched: act_ct: add netns into the key of tcf_ct_flow_table
 Date: Wed,  3 Jul 2024 12:38:53 +0200
-Message-ID: <20240703102909.922771443@linuxfoundation.org>
+Message-ID: <20240703102920.557328538@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jozsef Kadlecsik <kadlec@netfilter.org>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 8ecd06277a7664f4ef018abae3abd3451d64e7a6 ]
+[ Upstream commit 88c67aeb14070bab61d3dd8be96c8b42ebcaf53a ]
 
-When destroying all sets, we are either in pernet exit phase or
-are executing a "destroy all sets command" from userspace. The latter
-was taken into account in ip_set_dereference() (nfnetlink mutex is held),
-but the former was not. The patch adds the required check to
-rcu_dereference_protected() in ip_set_dereference().
+zones_ht is a global hashtable for flow_table with zone as key. However,
+it does not consider netns when getting a flow_table from zones_ht in
+tcf_ct_init(), and it means an act_ct action in netns A may get a
+flow_table that belongs to netns B if it has the same zone value.
 
-Fixes: 4e7aaa6b82d6 ("netfilter: ipset: Fix race between namespace cleanup and gc in the list:set type")
-Reported-by: syzbot+b62c37cdd58103293a5a@syzkaller.appspotmail.com
-Reported-by: syzbot+cfbe1da5fdfc39efc293@syzkaller.appspotmail.com
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202406141556.e0b6f17e-lkp@intel.com
-Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+In Shuang's test with the TOPO:
+
+  tcf2_c <---> tcf2_sw1 <---> tcf2_sw2 <---> tcf2_s
+
+tcf2_sw1 and tcf2_sw2 saw the same flow and used the same flow table,
+which caused their ct entries entering unexpected states and the
+TCP connection not able to end normally.
+
+This patch fixes the issue simply by adding netns into the key of
+tcf_ct_flow_table so that an act_ct action gets a flow_table that
+belongs to its own netns in tcf_ct_init().
+
+Note that for easy coding we don't use tcf_ct_flow_table.nf_ft.net,
+as the ct_ft is initialized after inserting it to the hashtable in
+tcf_ct_flow_table_get() and also it requires to implement several
+functions in rhashtable_params including hashfn, obj_hashfn and
+obj_cmpfn.
+
+Fixes: 64ff70b80fd4 ("net/sched: act_ct: Offload established connections to flow table")
+Reported-by: Shuang Li <shuali@redhat.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/1db5b6cc6902c5fc6f8c6cbd85494a2008087be5.1718488050.git.lucien.xin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipset/ip_set_core.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ net/sched/act_ct.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-index ecd693fca224f..bac92369a5436 100644
---- a/net/netfilter/ipset/ip_set_core.c
-+++ b/net/netfilter/ipset/ip_set_core.c
-@@ -53,12 +53,13 @@ MODULE_DESCRIPTION("core IP set support");
- MODULE_ALIAS_NFNL_SUBSYS(NFNL_SUBSYS_IPSET);
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index 0307b4366db10..5319de38cc6df 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -38,21 +38,26 @@ static struct workqueue_struct *act_ct_wq;
+ static struct rhashtable zones_ht;
+ static DEFINE_MUTEX(zones_mutex);
  
- /* When the nfnl mutex or ip_set_ref_lock is held: */
--#define ip_set_dereference(p)		\
--	rcu_dereference_protected(p,	\
-+#define ip_set_dereference(inst)	\
-+	rcu_dereference_protected((inst)->ip_set_list,	\
- 		lockdep_nfnl_is_held(NFNL_SUBSYS_IPSET) || \
--		lockdep_is_held(&ip_set_ref_lock))
-+		lockdep_is_held(&ip_set_ref_lock) || \
-+		(inst)->is_deleted)
- #define ip_set(inst, id)		\
--	ip_set_dereference((inst)->ip_set_list)[id]
-+	ip_set_dereference(inst)[id]
- #define ip_set_ref_netlink(inst,id)	\
- 	rcu_dereference_raw((inst)->ip_set_list)[id]
- #define ip_set_dereference_nfnl(p)	\
-@@ -1137,7 +1138,7 @@ static int ip_set_create(struct net *net, struct sock *ctnl,
- 		if (!list)
- 			goto cleanup;
- 		/* nfnl mutex is held, both lists are valid */
--		tmp = ip_set_dereference(inst->ip_set_list);
-+		tmp = ip_set_dereference(inst);
- 		memcpy(list, tmp, sizeof(struct ip_set *) * inst->ip_set_max);
- 		rcu_assign_pointer(inst->ip_set_list, list);
- 		/* Make sure all current packets have passed through */
++struct zones_ht_key {
++	struct net *net;
++	u16 zone;
++};
++
+ struct tcf_ct_flow_table {
+ 	struct rhash_head node; /* In zones tables */
+ 
+ 	struct rcu_work rwork;
+ 	struct nf_flowtable nf_ft;
+ 	refcount_t ref;
+-	u16 zone;
++	struct zones_ht_key key;
+ 
+ 	bool dying;
+ };
+ 
+ static const struct rhashtable_params zones_params = {
+ 	.head_offset = offsetof(struct tcf_ct_flow_table, node),
+-	.key_offset = offsetof(struct tcf_ct_flow_table, zone),
+-	.key_len = sizeof_field(struct tcf_ct_flow_table, zone),
++	.key_offset = offsetof(struct tcf_ct_flow_table, key),
++	.key_len = sizeof_field(struct tcf_ct_flow_table, key),
+ 	.automatic_shrinking = true,
+ };
+ 
+@@ -278,11 +283,12 @@ static struct nf_flowtable_type flowtable_ct = {
+ 
+ static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
+ {
++	struct zones_ht_key key = { .net = net, .zone = params->zone };
+ 	struct tcf_ct_flow_table *ct_ft;
+ 	int err = -ENOMEM;
+ 
+ 	mutex_lock(&zones_mutex);
+-	ct_ft = rhashtable_lookup_fast(&zones_ht, &params->zone, zones_params);
++	ct_ft = rhashtable_lookup_fast(&zones_ht, &key, zones_params);
+ 	if (ct_ft && refcount_inc_not_zero(&ct_ft->ref))
+ 		goto out_unlock;
+ 
+@@ -291,7 +297,7 @@ static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
+ 		goto err_alloc;
+ 	refcount_set(&ct_ft->ref, 1);
+ 
+-	ct_ft->zone = params->zone;
++	ct_ft->key = key;
+ 	err = rhashtable_insert_fast(&zones_ht, &ct_ft->node, zones_params);
+ 	if (err)
+ 		goto err_insert;
 -- 
 2.43.0
 
