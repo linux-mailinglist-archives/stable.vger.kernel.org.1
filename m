@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-57464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FAAC925CA0
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6B4B925B68
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:08:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBADE1F20F7F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 907DA1F24FA5
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8927B186285;
-	Wed,  3 Jul 2024 11:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9EC1850B1;
+	Wed,  3 Jul 2024 10:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/08tv5z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdvDtdf7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48267185E7A;
-	Wed,  3 Jul 2024 11:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3601850A8;
+	Wed,  3 Jul 2024 10:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004962; cv=none; b=K1zMXLjJ0LEcFhvrm2W3NTI4/v4D9EZ+mgqCwYM/MoA5PuvnPgJqa7UVr1mfTsy+duJzL+WinRvXEVrYq/8uQF0YHhpG/ClLzGjF46OsATcX2D3/ntqbLvMYdx7pzrzM0SIXD6dR9nTdXaSmpr3q4K1M0L4fAY6qfI8TJ2++AYY=
+	t=1720004139; cv=none; b=p37WeQHqF/pKZalhLF3rTkXns8Y52Fbxx9cspdsQ8pDd7sDjVRSoOv2itjuXIBFuU2S65JQJhvIBFvjftGfN056zG2u1cULeYpKwzG3tofrKD3RCw7Vo05mK97SbVQcbQHVTfbw7ZZb/zrap/g++2H5kap9QnJ2L1a5IWc4WZGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004962; c=relaxed/simple;
-	bh=gOBTAZ56Fc5AKFv4NNHorWuWuKdA3Ist3bDdJNCjQwA=;
+	s=arc-20240116; t=1720004139; c=relaxed/simple;
+	bh=PdRTEHXcamTO6gC5mMnfHI1v2T4bMaWLLR6UG9X0BYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XK6rG/Y2K28SwywprwA+54SZcTirkkaEMuWjx+Ceu8ilmm5QzfZLW6qR0XUc+AQvZn5R+tmqR1yCtAs7CSU4TwyoYLNYDJNxkLZmjZ7wqOFzQZiip9MxxJqQycJx2mGwJnRCWh4Y1Dm+eASk79gbl2H+WoHYacCVk/Ec22L9Tg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/08tv5z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E26C2BD10;
-	Wed,  3 Jul 2024 11:09:21 +0000 (UTC)
+	 MIME-Version; b=PjV+b6B+bwxJtA3hFqHqPhf3iJNiPWUpBtI1D2YDU+j848qHSEY3VjhzvayU3vyhFCUNXYEPgiaMi+4lRIgkZ6NsoQ6OBahv+P57sWt0+1xecCmKDU87WJ2JtQ1nJqCsnrdjB7WNwbihKp8wcAeM9kFfJsEeYLfrb5Dlmma+ndk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdvDtdf7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F23C2BD10;
+	Wed,  3 Jul 2024 10:55:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004962;
-	bh=gOBTAZ56Fc5AKFv4NNHorWuWuKdA3Ist3bDdJNCjQwA=;
+	s=korg; t=1720004139;
+	bh=PdRTEHXcamTO6gC5mMnfHI1v2T4bMaWLLR6UG9X0BYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z/08tv5z3HwvxZGbfUyWDgTfKVqxoyWjKjmPCi076IIB+WGmlGfn2+SLQSNwjtqJT
-	 1/erKuymh2polmBJzZNRHEjG3i2+6OsdhI/AjGVi1kJQNskg5oBHe6hIf5DsJnvAfi
-	 ykVrrOj9uCpNqfmr5SbjI9Vevf4fpoc0YOmJ2uLk=
+	b=sdvDtdf7RvlqjiTGpK7VCkKfw7QfW7W7rLl7dsdEpf6DeQtowEePz3gHUVgkNXIQY
+	 hr03K8GvNAwKAlua4ACAoTMWh6ogbn6k9l/aTJQDP5OWuqklYljlhgwX2dNGLoP/oU
+	 1BXNNlGaTbebTaALw8c+QD+LVKFfmJOZoRYiVB98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Maximilian Heyne <mheyne@amazon.de>,
+	Hagar Hemdan <hagarhem@amazon.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 214/290] SUNRPC: Fix a NULL pointer deref in trace_svc_stats_latency()
+Subject: [PATCH 5.4 134/189] pinctrl: fix deadlock in create_pinctrl() when handling -EPROBE_DEFER
 Date: Wed,  3 Jul 2024 12:39:55 +0200
-Message-ID: <20240703102912.242666945@linuxfoundation.org>
+Message-ID: <20240703102846.542333481@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Hagar Hemdan <hagarhem@amazon.com>
 
-[ Upstream commit 5c11720767f70d34357d00a15ba5a0ad052c40fe ]
+[ Upstream commit adec57ff8e66aee632f3dd1f93787c13d112b7a1 ]
 
-Some paths through svc_process() leave rqst->rq_procinfo set to
-NULL, which triggers a crash if tracing happens to be enabled.
+In create_pinctrl(), pinctrl_maps_mutex is acquired before calling
+add_setting(). If add_setting() returns -EPROBE_DEFER, create_pinctrl()
+calls pinctrl_free(). However, pinctrl_free() attempts to acquire
+pinctrl_maps_mutex, which is already held by create_pinctrl(), leading to
+a potential deadlock.
 
-Fixes: 89ff87494c6e ("SUNRPC: Display RPC procedure names instead of proc numbers")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+This patch resolves the issue by releasing pinctrl_maps_mutex before
+calling pinctrl_free(), preventing the deadlock.
+
+This bug was discovered and resolved using Coverity Static Analysis
+Security Testing (SAST) by Synopsys, Inc.
+
+Fixes: 42fed7ba44e4 ("pinctrl: move subsystem mutex to pinctrl_dev struct")
+Suggested-by: Maximilian Heyne <mheyne@amazon.de>
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Link: https://lore.kernel.org/r/20240604085838.3344-1-hagarhem@amazon.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/svc.h    |  1 +
- include/trace/events/sunrpc.h |  8 ++++----
- net/sunrpc/svc.c              | 15 +++++++++++++++
- 3 files changed, 20 insertions(+), 4 deletions(-)
+ drivers/pinctrl/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/sunrpc/svc.h b/include/linux/sunrpc/svc.h
-index 1cf7a7799cc04..8583825c4aea2 100644
---- a/include/linux/sunrpc/svc.h
-+++ b/include/linux/sunrpc/svc.h
-@@ -498,6 +498,7 @@ void		   svc_wake_up(struct svc_serv *);
- void		   svc_reserve(struct svc_rqst *rqstp, int space);
- struct svc_pool *  svc_pool_for_cpu(struct svc_serv *serv, int cpu);
- char *		   svc_print_addr(struct svc_rqst *, char *, size_t);
-+const char *	   svc_proc_name(const struct svc_rqst *rqstp);
- int		   svc_encode_result_payload(struct svc_rqst *rqstp,
- 					     unsigned int offset,
- 					     unsigned int length);
-diff --git a/include/trace/events/sunrpc.h b/include/trace/events/sunrpc.h
-index 56e4a57d25382..5d34deca0f300 100644
---- a/include/trace/events/sunrpc.h
-+++ b/include/trace/events/sunrpc.h
-@@ -1578,7 +1578,7 @@ TRACE_EVENT(svc_process,
- 		__field(u32, vers)
- 		__field(u32, proc)
- 		__string(service, name)
--		__string(procedure, rqst->rq_procinfo->pc_name)
-+		__string(procedure, svc_proc_name(rqst))
- 		__string(addr, rqst->rq_xprt ?
- 			 rqst->rq_xprt->xpt_remotebuf : "(null)")
- 	),
-@@ -1588,7 +1588,7 @@ TRACE_EVENT(svc_process,
- 		__entry->vers = rqst->rq_vers;
- 		__entry->proc = rqst->rq_proc;
- 		__assign_str(service, name);
--		__assign_str(procedure, rqst->rq_procinfo->pc_name);
-+		__assign_str(procedure, svc_proc_name(rqst));
- 		__assign_str(addr, rqst->rq_xprt ?
- 			     rqst->rq_xprt->xpt_remotebuf : "(null)");
- 	),
-@@ -1854,7 +1854,7 @@ TRACE_EVENT(svc_stats_latency,
- 	TP_STRUCT__entry(
- 		__field(u32, xid)
- 		__field(unsigned long, execute)
--		__string(procedure, rqst->rq_procinfo->pc_name)
-+		__string(procedure, svc_proc_name(rqst))
- 		__string(addr, rqst->rq_xprt->xpt_remotebuf)
- 	),
- 
-@@ -1862,7 +1862,7 @@ TRACE_EVENT(svc_stats_latency,
- 		__entry->xid = be32_to_cpu(rqst->rq_xid);
- 		__entry->execute = ktime_to_us(ktime_sub(ktime_get(),
- 							 rqst->rq_stime));
--		__assign_str(procedure, rqst->rq_procinfo->pc_name);
-+		__assign_str(procedure, svc_proc_name(rqst));
- 		__assign_str(addr, rqst->rq_xprt->xpt_remotebuf);
- 	),
- 
-diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
-index ac7b3a93d9920..f8815ae776e68 100644
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -1612,6 +1612,21 @@ u32 svc_max_payload(const struct svc_rqst *rqstp)
- }
- EXPORT_SYMBOL_GPL(svc_max_payload);
- 
-+/**
-+ * svc_proc_name - Return RPC procedure name in string form
-+ * @rqstp: svc_rqst to operate on
-+ *
-+ * Return value:
-+ *   Pointer to a NUL-terminated string
-+ */
-+const char *svc_proc_name(const struct svc_rqst *rqstp)
-+{
-+	if (rqstp && rqstp->rq_procinfo)
-+		return rqstp->rq_procinfo->pc_name;
-+	return "unknown";
-+}
-+
-+
- /**
-  * svc_encode_result_payload - mark a range of bytes as a result payload
-  * @rqstp: svc_rqst to operate on
+diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
+index 44802e5017945..1d8324e220fcf 100644
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -1090,8 +1090,8 @@ static struct pinctrl *create_pinctrl(struct device *dev,
+ 		 * an -EPROBE_DEFER later, as that is the worst case.
+ 		 */
+ 		if (ret == -EPROBE_DEFER) {
+-			pinctrl_free(p, false);
+ 			mutex_unlock(&pinctrl_maps_mutex);
++			pinctrl_free(p, false);
+ 			return ERR_PTR(ret);
+ 		}
+ 	}
 -- 
 2.43.0
 
