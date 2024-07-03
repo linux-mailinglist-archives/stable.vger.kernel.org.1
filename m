@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-57267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72935925BF1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:13:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73735925D43
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD8552852DA
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A47F71C20310
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E86D3194C79;
-	Wed,  3 Jul 2024 10:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0DC6E5ED;
+	Wed,  3 Jul 2024 11:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2oobXQR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AEPsk+g4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B3F194A6F;
-	Wed,  3 Jul 2024 10:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0AD413776F;
+	Wed,  3 Jul 2024 11:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004363; cv=none; b=Rk5ePIjaYrjKa7kKb3/e8TaYSZpLHQTnqRLa0fpY2rjRPOrplVIKvyBEsPxpUKeBClkFtdDe52I+BJRn3ZSTXD3q7mshu3cUnTv5iAWBsC+SMm4lp2Jp+tjrXRgXHAtc+HP4ZRWIqUu+/YRpBGObWJcIpH6F9NQjp4i6VlcJyEY=
+	t=1720005432; cv=none; b=T4SxQjgt5M2crSvPTinudEotIeGL2grE+nm2QjJdwhQZ+v0SiGQCAvQqevRJISRb3+rE2kdcesXbqjTkqk/qvRQr2jDQP7lmCsEw9dUUC3svZveRw1VF6MXo6yLntVbWAuvyodb2bfgZvr3Nce73++Blc+MxphR+bhNwIUt1Kg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004363; c=relaxed/simple;
-	bh=V+GCiI3ruv5jDLpgP1KU6n6l8Zp37ki/bDmzhaXmqf4=;
+	s=arc-20240116; t=1720005432; c=relaxed/simple;
+	bh=37zQFbXQpx2RSlUgjAxvnuicUJsXTMyflBkWg26iSnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sfMIb+2KInZyU33VDJniMN374eaqsHbIGyJnN3CFJ3oRvlYVaaAJ9cYgjp0z9mQwq2C9PoC2p5wylGcNwxS9wo8eYbz02IJqWDsz5NpFAYdAvWJp3LK7ejeq63WLL7NiuNDyGDxi0VQu0RaIyUUHEyfUYswWd+a0y0a/TSQDcno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2oobXQR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F79C32781;
-	Wed,  3 Jul 2024 10:59:22 +0000 (UTC)
+	 MIME-Version; b=WiSgcp6or0227pm708XUvpQdwP4wDB/cZhpsZuah4dFspJrm1Fr8JKwY1YW9M8FTfxZ2wYe6npfc66JQtgUrbr2UmcwKVU6DHXZtaKjOIX3sDPIbwwGSffVF58LBocc/Y/D+yw6OIXxHrGNrA+WvCfhxRcNAdwLEOUyHwG9fuaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEPsk+g4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53171C2BD10;
+	Wed,  3 Jul 2024 11:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004363;
-	bh=V+GCiI3ruv5jDLpgP1KU6n6l8Zp37ki/bDmzhaXmqf4=;
+	s=korg; t=1720005432;
+	bh=37zQFbXQpx2RSlUgjAxvnuicUJsXTMyflBkWg26iSnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z2oobXQRab2I2i9fXrlc9EJ4fUb4cMJmH2mQN6xmVlRw8JVZrnAMi6c8oDJfl3mv7
-	 wcc93qv1+Tw/AV9qVLurBbhGOpROr2OlRL88zB8aPXv6YFYzr2zaOjibtnlqj7VpJN
-	 Y+q1e3+yqbxfhxJDsGkhc56Q0VJYKY2ES8BfOjq4=
+	b=AEPsk+g4C4pLnq7Ghb2LZI1npFEXg2z22c7txjAnmkkXo1pB+rKNlGvDBsLCWsaxs
+	 zHDBc93urD4nVFRgYlFOy/DZTwj9exVKkYfLDEzjkq9/+bYGrD0GHF1HdqTp2UVFt1
+	 5V9urUhpGUHge3xVInp7ZArZT5P2k87w7UGr5RH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 002/290] null_blk: Print correct max open zones limit in null_init_zoned_dev()
-Date: Wed,  3 Jul 2024 12:36:23 +0200
-Message-ID: <20240703102904.268750625@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Dan Carpenter <dan.carpenter@oracle.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 048/356] skbuff: introduce skb_pull_data
+Date: Wed,  3 Jul 2024 12:36:24 +0200
+Message-ID: <20240703102914.912442169@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 233e27b4d21c3e44eb863f03e566d3a22e81a7ae upstream.
+[ Upstream commit 13244cccc2b61ec715f0ac583d3037497004d4a5 ]
 
-When changing the maximum number of open zones, print that number
-instead of the total number of zones.
+Like skb_pull but returns the original data pointer before pulling the
+data after performing a check against sbk->len.
 
-Fixes: dc4d137ee3b7 ("null_blk: add support for max open/active zone limit for zoned devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Link: https://lore.kernel.org/r/20240528062852.437599-1-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This allows to change code that does "struct foo *p = (void *)skb->data;"
+which is hard to audit and error prone, to:
+
+        p = skb_pull_data(skb, sizeof(*p));
+        if (!p)
+                return;
+
+Which is both safer and cleaner.
+
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
+Stable-dep-of: cda0d6a198e2 ("Bluetooth: qca: fix info leak when fetching fw build id")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk/zoned.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/skbuff.h |  2 ++
+ net/core/skbuff.c      | 24 ++++++++++++++++++++++++
+ 2 files changed, 26 insertions(+)
 
---- a/drivers/block/null_blk/zoned.c
-+++ b/drivers/block/null_blk/zoned.c
-@@ -81,7 +81,7 @@ int null_init_zoned_dev(struct nullb_dev
- 	if (dev->zone_max_active && dev->zone_max_open > dev->zone_max_active) {
- 		dev->zone_max_open = dev->zone_max_active;
- 		pr_info("changed the maximum number of open zones to %u\n",
--			dev->nr_zones);
-+			dev->zone_max_open);
- 	} else if (dev->zone_max_open >= dev->nr_zones - dev->zone_nr_conv) {
- 		dev->zone_max_open = 0;
- 		pr_info("zone_max_open limit disabled, limit >= zone count\n");
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 15de91c65a09a..b230c422dc3b9 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -2447,6 +2447,8 @@ static inline void *skb_pull_inline(struct sk_buff *skb, unsigned int len)
+ 	return unlikely(len > skb->len) ? NULL : __skb_pull(skb, len);
+ }
+ 
++void *skb_pull_data(struct sk_buff *skb, size_t len);
++
+ void *__pskb_pull_tail(struct sk_buff *skb, int delta);
+ 
+ static inline void *__pskb_pull(struct sk_buff *skb, unsigned int len)
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 4ec8cfd357eba..17073429cc365 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -2071,6 +2071,30 @@ void *skb_pull(struct sk_buff *skb, unsigned int len)
+ }
+ EXPORT_SYMBOL(skb_pull);
+ 
++/**
++ *	skb_pull_data - remove data from the start of a buffer returning its
++ *	original position.
++ *	@skb: buffer to use
++ *	@len: amount of data to remove
++ *
++ *	This function removes data from the start of a buffer, returning
++ *	the memory to the headroom. A pointer to the original data in the buffer
++ *	is returned after checking if there is enough data to pull. Once the
++ *	data has been pulled future pushes will overwrite the old data.
++ */
++void *skb_pull_data(struct sk_buff *skb, size_t len)
++{
++	void *data = skb->data;
++
++	if (skb->len < len)
++		return NULL;
++
++	skb_pull(skb, len);
++
++	return data;
++}
++EXPORT_SYMBOL(skb_pull_data);
++
+ /**
+  *	skb_trim - remove end from a buffer
+  *	@skb: buffer to alter
+-- 
+2.43.0
+
 
 
 
