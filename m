@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-56936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AF019259D2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:50:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A9D9925AB9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D4B41C20E12
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:50:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE0BF1C25B0A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD0417B501;
-	Wed,  3 Jul 2024 10:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9D917BB1E;
+	Wed,  3 Jul 2024 10:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZO14p3M+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="syXgFnu7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14671DFC7;
-	Wed,  3 Jul 2024 10:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C52261FDF;
+	Wed,  3 Jul 2024 10:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003340; cv=none; b=bN4ivWDaRRS/URlWF8IdxSrfgR+69u0hXKymksLzm8bf0vagVieC4szaoKxa3UpppZpr26VhH0rRFc+TJV9KSBySh/r4QzK1xXYaBkBFr71R65+k6DQAV9LR2wckQkY/8ussSZLI+GXVDPN3dq5eJRu3RmCa3TqM3bzrfvFjWP8=
+	t=1720003890; cv=none; b=ScNoDE7iLTjfplhtljxIEHGhRBDk4seXgg6uZH9Su0Fxr/qVI9sqRdI12u1Kq4uGBo48w+8aQdd2TBQyZyDaQYqjg89CmmKVD1L/5UnMhe7lFrMnGCf/TdaPX93d7TdIUbEdz9IyTsXEZSVrqFrVsUXeZ2H7QqQ11x7/UGacSZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003340; c=relaxed/simple;
-	bh=qNzulG/q5qdA8Km+p3RPkMv3W2F0AKrLYHZmdtk/ock=;
+	s=arc-20240116; t=1720003890; c=relaxed/simple;
+	bh=XM1YQu7Sl5b7FJpqmtZOg4CmOo6RFe2wxgrFqt4wOVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpZU3oG2zGDxDtuVR0JRsPRgYAUh/K1h4OXAPZoT3qdJvHt7d4DDQ9osg5BySpRqrai3AGoAJCI0YyctMylQwoZyH5iiFcnvcjtU1u4myxgla5SS4QTMk4wkVpE77rGmK0s1Nu+U4u7+sKjb2BJWBbnie/AWkul4aKkzR3qodVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZO14p3M+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48418C2BD10;
-	Wed,  3 Jul 2024 10:42:20 +0000 (UTC)
+	 MIME-Version; b=G3tjeLWLmthGlMRY3Cf8oPKsg/SvUHu17IEksEicbXNJHFDKmMJuKgQiGiXM6eJ00G1nrgvCY5H1WDrgHcc2IghsXMDki5KQnmrjm+6wOXGcfbpNmfktZRk4bxddKzpxizBJVlNWkq8wpCQU6rlqywv58lGmTLNZGQK3Uk08lDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=syXgFnu7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D1BC2BD10;
+	Wed,  3 Jul 2024 10:51:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003340;
-	bh=qNzulG/q5qdA8Km+p3RPkMv3W2F0AKrLYHZmdtk/ock=;
+	s=korg; t=1720003890;
+	bh=XM1YQu7Sl5b7FJpqmtZOg4CmOo6RFe2wxgrFqt4wOVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZO14p3M+dNUic3myJZsjNA0A++/aNajwV3ZRQKSi/pJkmEHtYkA6SMqsLvR//9lZh
-	 zmfTYcY2GHENzs9GN0ncjZ2wbYppekb6IT7BYmy48/PbFv8TYVSAimS0rBNFTyoeuk
-	 X1xqc0kucSnCeLcrZPLc+oJ1q1tYD6o54MYgs82w=
+	b=syXgFnu7MUuqCXfyu3K26FcqIlIxJzwtwCyp7uojfiYGmhwWRBVi5UpS096SBOEY9
+	 2v82FKs5OyRzCrzG4s45ysPzWDzWCH43mndZezz+rasPbmn0FyNi7UGRDJspp/iA1F
+	 qE6wYVjjH+/mvnd+o8pUrTb92WSseqr4Ahl93LlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wesley Cheng <quic_wcheng@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>,
-	stable <stable@kernel.org>
-Subject: [PATCH 4.19 017/139] usb: gadget: f_fs: Fix race between aio_cancel() and AIO request complete
+	syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 053/189] HID: core: remove unnecessary WARN_ON() in implement()
 Date: Wed,  3 Jul 2024 12:38:34 +0200
-Message-ID: <20240703102831.089275794@linuxfoundation.org>
+Message-ID: <20240703102843.515092673@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wesley Cheng <quic_wcheng@quicinc.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 24729b307eefcd7c476065cd7351c1a018082c19 ]
+[ Upstream commit 4aa2dcfbad538adf7becd0034a3754e1bd01b2b5 ]
 
-FFS based applications can utilize the aio_cancel() callback to dequeue
-pending USB requests submitted to the UDC.  There is a scenario where the
-FFS application issues an AIO cancel call, while the UDC is handling a
-soft disconnect.  For a DWC3 based implementation, the callstack looks
-like the following:
+Syzkaller hit a warning [1] in a call to implement() when trying
+to write a value into a field of smaller size in an output report.
 
-    DWC3 Gadget                               FFS Application
-dwc3_gadget_soft_disconnect()              ...
-  --> dwc3_stop_active_transfers()
-    --> dwc3_gadget_giveback(-ESHUTDOWN)
-      --> ffs_epfile_async_io_complete()   ffs_aio_cancel()
-        --> usb_ep_free_request()            --> usb_ep_dequeue()
+Since implement() already has a warn message printed out with the
+help of hid_warn() and value in question gets trimmed with:
+	...
+	value &= m;
+	...
+WARN_ON may be considered superfluous. Remove it to suppress future
+syzkaller triggers.
 
-There is currently no locking implemented between the AIO completion
-handler and AIO cancel, so the issue occurs if the completion routine is
-running in parallel to an AIO cancel call coming from the FFS application.
-As the completion call frees the USB request (io_data->req) the FFS
-application is also referencing it for the usb_ep_dequeue() call.  This can
-lead to accessing a stale/hanging pointer.
+[1]
+WARNING: CPU: 0 PID: 5084 at drivers/hid/hid-core.c:1451 implement drivers/hid/hid-core.c:1451 [inline]
+WARNING: CPU: 0 PID: 5084 at drivers/hid/hid-core.c:1451 hid_output_report+0x548/0x760 drivers/hid/hid-core.c:1863
+Modules linked in:
+CPU: 0 PID: 5084 Comm: syz-executor424 Not tainted 6.9.0-rc7-syzkaller-00183-gcf87f46fd34d #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
+RIP: 0010:implement drivers/hid/hid-core.c:1451 [inline]
+RIP: 0010:hid_output_report+0x548/0x760 drivers/hid/hid-core.c:1863
+...
+Call Trace:
+ <TASK>
+ __usbhid_submit_report drivers/hid/usbhid/hid-core.c:591 [inline]
+ usbhid_submit_report+0x43d/0x9e0 drivers/hid/usbhid/hid-core.c:636
+ hiddev_ioctl+0x138b/0x1f00 drivers/hid/usbhid/hiddev.c:726
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:904 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:890
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+...
 
-commit b566d38857fc ("usb: gadget: f_fs: use io_data->status consistently")
-relocated the usb_ep_free_request() into ffs_epfile_async_io_complete().
-However, in order to properly implement locking to mitigate this issue, the
-spinlock can't be added to ffs_epfile_async_io_complete(), as
-usb_ep_dequeue() (if successfully dequeuing a USB request) will call the
-function driver's completion handler in the same context.  Hence, leading
-into a deadlock.
-
-Fix this issue by moving the usb_ep_free_request() back to
-ffs_user_copy_worker(), and ensuring that it explicitly sets io_data->req
-to NULL after freeing it within the ffs->eps_lock.  This resolves the race
-condition above, as the ffs_aio_cancel() routine will not continue
-attempting to dequeue a request that has already been freed, or the
-ffs_user_copy_work() not freeing the USB request until the AIO cancel is
-done referencing it.
-
-This fix depends on
-  commit b566d38857fc ("usb: gadget: f_fs: use io_data->status
-  consistently")
-
-Fixes: 2e4c7553cd6f ("usb: gadget: f_fs: add aio support")
-Cc: stable <stable@kernel.org>	# b566d38857fc ("usb: gadget: f_fs: use io_data->status consistently")
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Link: https://lore.kernel.org/r/20240409014059.6740-1-quic_wcheng@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 95d1c8951e5b ("HID: simplify implement() a bit")
+Reported-by: <syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com>
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_fs.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hid/hid-core.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
-index 7294586b08dc0..0d8dae1797a97 100644
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -761,6 +761,7 @@ static void ffs_user_copy_worker(struct work_struct *work)
- 	int ret = io_data->req->status ? io_data->req->status :
- 					 io_data->req->actual;
- 	bool kiocb_has_eventfd = io_data->kiocb->ki_flags & IOCB_EVENTFD;
-+	unsigned long flags;
- 
- 	if (io_data->read && ret > 0) {
- 		mm_segment_t oldfs = get_fs();
-@@ -777,7 +778,10 @@ static void ffs_user_copy_worker(struct work_struct *work)
- 	if (io_data->ffs->ffs_eventfd && !kiocb_has_eventfd)
- 		eventfd_signal(io_data->ffs->ffs_eventfd, 1);
- 
-+	spin_lock_irqsave(&io_data->ffs->eps_lock, flags);
- 	usb_ep_free_request(io_data->ep, io_data->req);
-+	io_data->req = NULL;
-+	spin_unlock_irqrestore(&io_data->ffs->eps_lock, flags);
- 
- 	if (io_data->read)
- 		kfree(io_data->to_free);
+diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
+index e0820feb7e19a..2462be8c4ae65 100644
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -1439,7 +1439,6 @@ static void implement(const struct hid_device *hid, u8 *report,
+ 			hid_warn(hid,
+ 				 "%s() called with too large value %d (n: %d)! (%s)\n",
+ 				 __func__, value, n, current->comm);
+-			WARN_ON(1);
+ 			value &= m;
+ 		}
+ 	}
 -- 
 2.43.0
 
