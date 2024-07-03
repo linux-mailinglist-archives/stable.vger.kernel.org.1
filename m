@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-57679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49F5D925D7E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1361925AC6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0ED62971AD
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B16D929EBC7
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578BF1836EC;
-	Wed,  3 Jul 2024 11:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C142D16F0FB;
+	Wed,  3 Jul 2024 10:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GwMGzR9u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmH3J0km"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D13017966F;
-	Wed,  3 Jul 2024 11:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8047C13D61B;
+	Wed,  3 Jul 2024 10:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005612; cv=none; b=F6gHHbN2y4LzIAErqBN4AkSHGn8dQSaR3cZolnnPf3R4fUUvmDN50/8nzKdX/n/rttsqlFOJvnqjKay/YY4LUm/QXqhyyhFC+BXdQ/AhgkamdHM3MsziVVzY7Nt/4t/k9jcKyKvR+R+AYQfnNwJFmew8J7Y2h1Dh1qEXUI9GmZY=
+	t=1720003755; cv=none; b=qjpfm22HAIuxQKmW4nQD6PRMn1zrTG5qIEBdu3LKPCONoBmLyCVHigGttxKeWmOsDFR/cQlWSdGfMjQsujjpDthgj2U1y88asxRGuuB0G1FyapdBqjA8RfBrSoxj8lZ+Z4GFr6Z9Bh8XZBYoau7SlN9L0uUdD3FckqAMb55hUMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005612; c=relaxed/simple;
-	bh=2dK3vqzNzYE0XdfeoLsbODcJdzBFJghGpfqtThlZPas=;
+	s=arc-20240116; t=1720003755; c=relaxed/simple;
+	bh=OB8ltOrF2bGfiVz7A5tXhfR8/mlnf6sb9U9w2IzQcgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IL2mj2/4I11klTbQSUm6poeU6ZVDbxIy9qeU0W7mP3/1WWq/8rf4yqldoQPiy3Ghtigp26X4z1+ontzvSK7MdCiftVoEu0cp4WNmNmCS2ETcN4qeMbbbsRv7XN89e7eI/z6spV8g8G4RNG98jrH1YZTSCCeb2lT+nsgE8ZtcwUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GwMGzR9u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B11C2BD10;
-	Wed,  3 Jul 2024 11:20:11 +0000 (UTC)
+	 MIME-Version; b=W9jAa9rGb9p7/7L66tt77pNl4wx0IRg6oQJyiH2ysnkMRGjzRFMLSJS/EpcF0N+pxIlE5gfS2Ki0+2/hCIB6J9GObqGPzBiRc5eYJl6jDsI/unDK2IoudBvX0Eyq1gX+u54rOiMC12QnyV4Sr9z7CcM6GzB2p2lQ7hqj+j8iF6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmH3J0km; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B484C32781;
+	Wed,  3 Jul 2024 10:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005611;
-	bh=2dK3vqzNzYE0XdfeoLsbODcJdzBFJghGpfqtThlZPas=;
+	s=korg; t=1720003755;
+	bh=OB8ltOrF2bGfiVz7A5tXhfR8/mlnf6sb9U9w2IzQcgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GwMGzR9uRNcWNncbcnBRfeCoQU7gy0Dde732IeK7MFJsnqA00umsjzhW3Z4puwY9U
-	 URHVoLZ2hgVprXsWqzDYFTQTaj84H2/IQ/6pHefd4+JK8WAQntfcUMWloYog3fR1Vw
-	 3ySod0lFicXiWOO6ijI5Wo7f6RXzVk9FDrwHgdFY=
+	b=VmH3J0kmfDrdqWXv5Mi7rosnVPloa01mVaOR+91Td9srxMByLMcnJocDYoP/MzUjm
+	 JAR1eoHw/sH9idGh27WufARyt84ihqnrZgCvObT5ovEBe4arcqd42tZlg9e2mUXz0x
+	 y54JkaFqOPLJNcjvzivJiFQJJzQwzlB/CO52kbIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Yang Shi <shy828301@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Xu Yu <xuyu@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 137/356] mm/huge_memory: dont unpoison huge_zero_folio
+	Noam Rathaus <noamr@ssd-disclosure.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 012/189] net/sched: taprio: always validate TCA_TAPRIO_ATTR_PRIOMAP
 Date: Wed,  3 Jul 2024 12:37:53 +0200
-Message-ID: <20240703102918.285050945@linuxfoundation.org>
+Message-ID: <20240703102841.966388192@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,95 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaohe Lin <linmiaohe@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit fe6f86f4b40855a130a19aa589f9ba7f650423f4 upstream.
+[ Upstream commit f921a58ae20852d188f70842431ce6519c4fdc36 ]
 
-When I did memory failure tests recently, below panic occurs:
+If one TCA_TAPRIO_ATTR_PRIOMAP attribute has been provided,
+taprio_parse_mqprio_opt() must validate it, or userspace
+can inject arbitrary data to the kernel, the second time
+taprio_change() is called.
 
- kernel BUG at include/linux/mm.h:1135!
- invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
- CPU: 9 PID: 137 Comm: kswapd1 Not tainted 6.9.0-rc4-00491-gd5ce28f156fe-dirty #14
- RIP: 0010:shrink_huge_zero_page_scan+0x168/0x1a0
- RSP: 0018:ffff9933c6c57bd0 EFLAGS: 00000246
- RAX: 000000000000003e RBX: 0000000000000000 RCX: ffff88f61fc5c9c8
- RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff88f61fc5c9c0
- RBP: ffffcd7c446b0000 R08: ffffffff9a9405f0 R09: 0000000000005492
- R10: 00000000000030ea R11: ffffffff9a9405f0 R12: 0000000000000000
- R13: 0000000000000000 R14: 0000000000000000 R15: ffff88e703c4ac00
- FS:  0000000000000000(0000) GS:ffff88f61fc40000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 000055f4da6e9878 CR3: 0000000c71048000 CR4: 00000000000006f0
- Call Trace:
-  <TASK>
-  do_shrink_slab+0x14f/0x6a0
-  shrink_slab+0xca/0x8c0
-  shrink_node+0x2d0/0x7d0
-  balance_pgdat+0x33a/0x720
-  kswapd+0x1f3/0x410
-  kthread+0xd5/0x100
-  ret_from_fork+0x2f/0x50
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
- Modules linked in: mce_inject hwpoison_inject
- ---[ end trace 0000000000000000 ]---
- RIP: 0010:shrink_huge_zero_page_scan+0x168/0x1a0
- RSP: 0018:ffff9933c6c57bd0 EFLAGS: 00000246
- RAX: 000000000000003e RBX: 0000000000000000 RCX: ffff88f61fc5c9c8
- RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff88f61fc5c9c0
- RBP: ffffcd7c446b0000 R08: ffffffff9a9405f0 R09: 0000000000005492
- R10: 00000000000030ea R11: ffffffff9a9405f0 R12: 0000000000000000
- R13: 0000000000000000 R14: 0000000000000000 R15: ffff88e703c4ac00
- FS:  0000000000000000(0000) GS:ffff88f61fc40000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 000055f4da6e9878 CR3: 0000000c71048000 CR4: 00000000000006f0
+First call (with valid attributes) sets dev->num_tc
+to a non zero value.
 
-The root cause is that HWPoison flag will be set for huge_zero_folio
-without increasing the folio refcnt.  But then unpoison_memory() will
-decrease the folio refcnt unexpectedly as it appears like a successfully
-hwpoisoned folio leading to VM_BUG_ON_PAGE(page_ref_count(page) == 0) when
-releasing huge_zero_folio.
+Second call (with arbitrary mqprio attributes)
+returns early from taprio_parse_mqprio_opt()
+and bad things can happen.
 
-Skip unpoisoning huge_zero_folio in unpoison_memory() to fix this issue.
-We're not prepared to unpoison huge_zero_folio yet.
-
-Link: https://lkml.kernel.org/r/20240516122608.22610-1-linmiaohe@huawei.com
-Fixes: 478d134e9506 ("mm/huge_memory: do not overkill when splitting huge_zero_page")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Yang Shi <shy828301@gmail.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Xu Yu <xuyu@linux.alibaba.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
+Reported-by: Noam Rathaus <noamr@ssd-disclosure.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://lore.kernel.org/r/20240604181511.769870-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memory-failure.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ net/sched/sch_taprio.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2051,6 +2051,13 @@ int unpoison_memory(unsigned long pfn)
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index e4c4d23a1b535..7b896be009d55 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -925,16 +925,13 @@ static int taprio_parse_mqprio_opt(struct net_device *dev,
+ {
+ 	int i, j;
  
- 	mutex_lock(&mf_mutex);
- 
-+	if (is_huge_zero_page(page)) {
-+		unpoison_pr_info("Unpoison: huge zero page is not supported %#lx\n",
-+				 pfn, &unpoison_rs);
-+		ret = -EOPNOTSUPP;
-+		goto unlock_mutex;
+-	if (!qopt && !dev->num_tc) {
+-		NL_SET_ERR_MSG(extack, "'mqprio' configuration is necessary");
+-		return -EINVAL;
+-	}
+-
+-	/* If num_tc is already set, it means that the user already
+-	 * configured the mqprio part
+-	 */
+-	if (dev->num_tc)
++	if (!qopt) {
++		if (!dev->num_tc) {
++			NL_SET_ERR_MSG(extack, "'mqprio' configuration is necessary");
++			return -EINVAL;
++		}
+ 		return 0;
 +	}
-+
- 	if (!PageHWPoison(p)) {
- 		unpoison_pr_info("Unpoison: Page was already unpoisoned %#lx\n",
- 				 pfn, &unpoison_rs);
+ 
+ 	/* Verify num_tc is not out of max range */
+ 	if (qopt->num_tc > TC_MAX_QUEUE) {
+-- 
+2.43.0
+
 
 
 
