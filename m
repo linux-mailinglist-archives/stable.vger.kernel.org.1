@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED91925DA7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 164369259CC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:50:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B02A21C22BD2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 484971C21A3B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB11187556;
-	Wed,  3 Jul 2024 11:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4480A17B41D;
+	Wed,  3 Jul 2024 10:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THl15cmt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ff66iuQT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C60118754E;
-	Wed,  3 Jul 2024 11:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30DC17B418;
+	Wed,  3 Jul 2024 10:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005712; cv=none; b=U/lgpf4NxAUKkfuzrXxbubgXVDgMy0gz8tQkBDBESqMUczv+p0brGArrQL8RROB85OOf4/7xxRf680e0dlRbN8JM0deZe2BQSSdwm8rELK2LA4UkiRsAiICfg+y/BQ2NskxBsFaTkd3TtnObZlJ3l70TN8Hy8uxXJCKqWeVgYOE=
+	t=1720003323; cv=none; b=o0iSbwI7Dnw3Vj/NySy/w8tnBFI0oUBZIJG3i6jLFov8JO9d9IeRdndGk67SLV5hKzH7JT355dTN9muCuEb3WMkvO1AlA+YRc3KWobM24hfMgy7G8orkSzJwCGI6HMnfk7gI1vz99AYaG2+N7Il43ScyXtvKZN0qs5dreixSwMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005712; c=relaxed/simple;
-	bh=JpCXe6gH6T8rSmlxwInnGixbM+Cv7m4xoc6AYRb+VSI=;
+	s=arc-20240116; t=1720003323; c=relaxed/simple;
+	bh=YHf/OonYuD9b99c4oG0slVDE8K7yrcxsWlT1V3HpMAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kxCYTUVQisJnWU8lw5UyZUaclBhlXBOkInubaqkd+sDKPiDgaLsYIRBm4tgc/gutF98iNjHwpp04vKTU/ZCZ7P8GdhZMO/kULSRNzS83NWRHV+2uY1rnB0W1mdd6puiH5n0sl39xcuCkfo/ymra43AVZSSdwIN0aBhvPlRPWsVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THl15cmt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C44DC2BD10;
-	Wed,  3 Jul 2024 11:21:51 +0000 (UTC)
+	 MIME-Version; b=jKYbCXCEGTNxgVjvuGp4elL600vehVj4salwM9OwX0TS6er1asXurVHTais9xAFdXYaGFlHre2VONf3QQzLZuQ4omhU0pBrMJkBzAsd6BTV4xiwnttBmdqfDEPLCxCkd4eVcWhQaGJYCOVI72AhA1wJqKbYyEwQZOF6e+vbgInQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ff66iuQT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75410C2BD10;
+	Wed,  3 Jul 2024 10:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005712;
-	bh=JpCXe6gH6T8rSmlxwInnGixbM+Cv7m4xoc6AYRb+VSI=;
+	s=korg; t=1720003322;
+	bh=YHf/OonYuD9b99c4oG0slVDE8K7yrcxsWlT1V3HpMAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=THl15cmteqpNhTrevDxd9AH56baZQn/uwk3QgO3Tmcs+DMrcfzSiXLpR852Bd4Ok3
-	 ovQrvOiAmP7AJF2mt2bxThm6vIoEOb4G2DvDoqgJcZ95vD7WVYZ6cPSKyoim8hKWxz
-	 r/zt9sT9SScsoUdWImn/jwnCD9Pwp0oN8u3rC4g0=
+	b=Ff66iuQT0OrvPi2Q2p0/qmSSD78uOpQmxPoAkfgexFHRpaDjj/h34TSoba7poJBwj
+	 HXKQCzctsSF6o8fqtfPDAzeTD1J3HW3hxwp5yn2kyeN31w/RylQZoFldYW1p4Agawa
+	 O36mL83XNLgtgAC01S0JEg7Kl5Q4+eHDMe1tpN6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathanl@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 171/356] powerpc/pseries: Enforce hcall result buffer validity and size
-Date: Wed,  3 Jul 2024 12:38:27 +0200
-Message-ID: <20240703102919.576074926@linuxfoundation.org>
+Subject: [PATCH 4.19 011/139] af_unix: Annotate data-races around sk->sk_state in sendmsg() and recvmsg().
+Date: Wed,  3 Jul 2024 12:38:28 +0200
+Message-ID: <20240703102830.865504079@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit ff2e185cf73df480ec69675936c4ee75a445c3e4 ]
+[ Upstream commit 8a34d4e8d9742a24f74998f45a6a98edd923319b ]
 
-plpar_hcall(), plpar_hcall9(), and related functions expect callers to
-provide valid result buffers of certain minimum size. Currently this
-is communicated only through comments in the code and the compiler has
-no idea.
+The following functions read sk->sk_state locklessly and proceed only if
+the state is TCP_ESTABLISHED.
 
-For example, if I write a bug like this:
+  * unix_stream_sendmsg
+  * unix_stream_read_generic
+  * unix_seqpacket_sendmsg
+  * unix_seqpacket_recvmsg
 
-  long retbuf[PLPAR_HCALL_BUFSIZE]; // should be PLPAR_HCALL9_BUFSIZE
-  plpar_hcall9(H_ALLOCATE_VAS_WINDOW, retbuf, ...);
+Let's use READ_ONCE() there.
 
-This compiles with no diagnostics emitted, but likely results in stack
-corruption at runtime when plpar_hcall9() stores results past the end
-of the array. (To be clear this is a contrived example and I have not
-found a real instance yet.)
-
-To make this class of error less likely, we can use explicitly-sized
-array parameters instead of pointers in the declarations for the hcall
-APIs. When compiled with -Warray-bounds[1], the code above now
-provokes a diagnostic like this:
-
-error: array argument is too small;
-is of size 32, callee requires at least 72 [-Werror,-Warray-bounds]
-   60 |                 plpar_hcall9(H_ALLOCATE_VAS_WINDOW, retbuf,
-      |                 ^                                   ~~~~~~
-
-[1] Enabled for LLVM builds but not GCC for now. See commit
-    0da6e5fd6c37 ("gcc: disable '-Warray-bounds' for gcc-13 too") and
-    related changes.
-
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240408-pseries-hvcall-retbuf-v1-1-ebc73d7253cf@linux.ibm.com
+Fixes: a05d2ad1c1f3 ("af_unix: Only allow recv on connected seqpacket sockets.")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/hvcall.h | 8 ++++----
+ net/unix/af_unix.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index c25f160bb9978..47cec207e5571 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -472,7 +472,7 @@ long plpar_hcall_norets_notrace(unsigned long opcode, ...);
-  * Used for all but the craziest of phyp interfaces (see plpar_hcall9)
-  */
- #define PLPAR_HCALL_BUFSIZE 4
--long plpar_hcall(unsigned long opcode, unsigned long *retbuf, ...);
-+long plpar_hcall(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL_BUFSIZE], ...);
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 5266908c65ec4..c01955ccf6b39 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1886,7 +1886,7 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
+ 		goto out_err;
  
- /**
-  * plpar_hcall_raw: - Make a hypervisor call without calculating hcall stats
-@@ -486,7 +486,7 @@ long plpar_hcall(unsigned long opcode, unsigned long *retbuf, ...);
-  * plpar_hcall, but plpar_hcall_raw works in real mode and does not
-  * calculate hypervisor call statistics.
-  */
--long plpar_hcall_raw(unsigned long opcode, unsigned long *retbuf, ...);
-+long plpar_hcall_raw(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL_BUFSIZE], ...);
+ 	if (msg->msg_namelen) {
+-		err = sk->sk_state == TCP_ESTABLISHED ? -EISCONN : -EOPNOTSUPP;
++		err = READ_ONCE(sk->sk_state) == TCP_ESTABLISHED ? -EISCONN : -EOPNOTSUPP;
+ 		goto out_err;
+ 	} else {
+ 		err = -ENOTCONN;
+@@ -2088,7 +2088,7 @@ static int unix_seqpacket_sendmsg(struct socket *sock, struct msghdr *msg,
+ 	if (err)
+ 		return err;
  
- /**
-  * plpar_hcall9: - Make a pseries hypervisor call with up to 9 return arguments
-@@ -497,8 +497,8 @@ long plpar_hcall_raw(unsigned long opcode, unsigned long *retbuf, ...);
-  * PLPAR_HCALL9_BUFSIZE to size the return argument buffer.
-  */
- #define PLPAR_HCALL9_BUFSIZE 9
--long plpar_hcall9(unsigned long opcode, unsigned long *retbuf, ...);
--long plpar_hcall9_raw(unsigned long opcode, unsigned long *retbuf, ...);
-+long plpar_hcall9(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL9_BUFSIZE], ...);
-+long plpar_hcall9_raw(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL9_BUFSIZE], ...);
+-	if (sk->sk_state != TCP_ESTABLISHED)
++	if (READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)
+ 		return -ENOTCONN;
  
- struct hvcall_mpp_data {
- 	unsigned long entitled_mem;
+ 	if (msg->msg_namelen)
+@@ -2102,7 +2102,7 @@ static int unix_seqpacket_recvmsg(struct socket *sock, struct msghdr *msg,
+ {
+ 	struct sock *sk = sock->sk;
+ 
+-	if (sk->sk_state != TCP_ESTABLISHED)
++	if (READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)
+ 		return -ENOTCONN;
+ 
+ 	return unix_dgram_recvmsg(sock, msg, size, flags);
+@@ -2298,7 +2298,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 	size_t size = state->size;
+ 	unsigned int last_len;
+ 
+-	if (unlikely(sk->sk_state != TCP_ESTABLISHED)) {
++	if (unlikely(READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)) {
+ 		err = -EINVAL;
+ 		goto out;
+ 	}
 -- 
 2.43.0
 
