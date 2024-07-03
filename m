@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-56977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5742F925A05
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:53:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 334B9925B25
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0207D1F26386
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A87F428D642
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871DF181CEB;
-	Wed,  3 Jul 2024 10:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2388D181329;
+	Wed,  3 Jul 2024 10:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0NbijB0y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QhejsOp9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458A5173351;
-	Wed,  3 Jul 2024 10:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D583C173345;
+	Wed,  3 Jul 2024 10:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003467; cv=none; b=eNH2httxjuJifpddUZCZqgU2sjESbfVUdX3ly1HMfGHDHwztx52KUFpb2ypEOzRGPhC7lV/VIxOZkRk1vEbOpPP/XweI5CuVlSXkW6etN0CT10WE8Z5y9Hi/HUEQ0SyDoYFmMjIjFLyNWlVQYH57nIeWG2uc961NCgJ5WncLuXU=
+	t=1720004008; cv=none; b=sfO8RHSydKGEWqzkZqnzocSbsUE7d6QyXPxC+/mbdAXyG9uTBLpOCDSXQxWAYA5qLhKPulhhimg3l0CDDyvxTdBDbnaEz+/AY25MGo6CtckhrnZ3vHiaY6ag45oI17PF50szNvDEOTKjtD1aiMcRPkq76+sLfCVlw6CzPwrLURI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003467; c=relaxed/simple;
-	bh=V75Ply1UlpJt/4OhJQ6LQvGbuCYE4q/XvGjAnKM6GoQ=;
+	s=arc-20240116; t=1720004008; c=relaxed/simple;
+	bh=kWBygkhxnt5kPWJZZAfRMm0rqiLFFzgPmoSppwNJcXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZAHtfpQ/jyNmlUw+U9opcVdi6iMFaPZkv7sX6NH6OAZrGX2xuSnB7M0k7jyqqvuM+WnkxH8y2G3xaSGUsRacpbUWJIUXCXAJhNVY/CBjIxxSMB4kv4fdN7Bn4u34xFSPYKTT2BDTS125kAURHmpo35M1vXG3bJHJMtxwjdmRRTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0NbijB0y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3515C2BD10;
-	Wed,  3 Jul 2024 10:44:26 +0000 (UTC)
+	 MIME-Version; b=ifgTKZf6KPFNem8AbkdydAXKwNONkawNCYoF+AqWkl1ez+OGshjYLK7iz5++ONRwslnj4WwwvP00iVkBCoTW4scRcFXipcjPQJk+OMtRRLhR05s2cMLauVLgUN62PizFuVZjsL7NdPC0q8z9ocLrN7ePIDvg9fE886aDbWaG5ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QhejsOp9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BDBFC2BD10;
+	Wed,  3 Jul 2024 10:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003467;
-	bh=V75Ply1UlpJt/4OhJQ6LQvGbuCYE4q/XvGjAnKM6GoQ=;
+	s=korg; t=1720004008;
+	bh=kWBygkhxnt5kPWJZZAfRMm0rqiLFFzgPmoSppwNJcXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0NbijB0yYAE+qSJA0xkaxoUyfsyyU1VYPMQ/oEIHhg0E490Q+no9nQt7P6g1ARaAM
-	 sROKA0jTbdfG+/o1fxfo8uwMZ5t2rYgewY2YZz1wNlusiZdS9sUHtpmEs0ue2DnMYa
-	 8zpnne6Dqm4pmF9NQhVfHK6KuQ5jwfnLp951FcPs=
+	b=QhejsOp9pcSLdpAZMZbQuRCkC6OkRFgpsAofv+dEqEB1wtVQLH720u3CAEYH8/b9a
+	 RkctlKUotkM+h+2JUeCybqmTt+WWoEYWV30yrMNlDVLG3L6vqv+Ou6ar5d7V/XzGR8
+	 V5wgFgm/CfFVbpZPomSW1D9uc1v7Efewuw6iHQ04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 026/139] nilfs2: Remove check for PageError
+Subject: [PATCH 5.4 062/189] Bluetooth: L2CAP: Fix rejecting L2CAP_CONN_PARAM_UPDATE_REQ
 Date: Wed,  3 Jul 2024 12:38:43 +0200
-Message-ID: <20240703102831.427718858@linuxfoundation.org>
+Message-ID: <20240703102843.848642610@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +61,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 79ea65563ad8aaab309d61eeb4d5019dd6cf5fa0 ]
+[ Upstream commit 806a5198c05987b748b50f3d0c0cfb3d417381a4 ]
 
-If read_mapping_page() encounters an error, it returns an errno, not a
-page with PageError set, so this test is not needed.
+This removes the bogus check for max > hcon->le_conn_max_interval since
+the later is just the initial maximum conn interval not the maximum the
+stack could support which is really 3200=4000ms.
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Stable-dep-of: 7373a51e7998 ("nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors")
+In order to pass GAP/CONN/CPUP/BV-05-C one shall probably enter values
+of the following fields in IXIT that would cause hci_check_conn_params
+to fail:
+
+TSPX_conn_update_int_min
+TSPX_conn_update_int_max
+TSPX_conn_update_peripheral_latency
+TSPX_conn_update_supervision_timeout
+
+Link: https://github.com/bluez/bluez/issues/847
+Fixes: e4b019515f95 ("Bluetooth: Enforce validation on max value of connection interval")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/dir.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/bluetooth/hci_core.h | 36 ++++++++++++++++++++++++++++----
+ net/bluetooth/l2cap_core.c       |  8 +------
+ 2 files changed, 33 insertions(+), 11 deletions(-)
 
-diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
-index eb7de9e2a384e..24cfe9db66e02 100644
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -194,7 +194,7 @@ static struct page *nilfs_get_page(struct inode *dir, unsigned long n)
- 	if (!IS_ERR(page)) {
- 		kmap(page);
- 		if (unlikely(!PageChecked(page))) {
--			if (PageError(page) || !nilfs_check_page(page))
-+			if (!nilfs_check_page(page))
- 				goto fail;
- 		}
- 	}
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 26983d26af197..6ba83a54dda7a 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -1451,18 +1451,46 @@ static inline int hci_check_conn_params(u16 min, u16 max, u16 latency,
+ {
+ 	u16 max_latency;
+ 
+-	if (min > max || min < 6 || max > 3200)
++	if (min > max) {
++		BT_WARN("min %d > max %d", min, max);
+ 		return -EINVAL;
++	}
++
++	if (min < 6) {
++		BT_WARN("min %d < 6", min);
++		return -EINVAL;
++	}
++
++	if (max > 3200) {
++		BT_WARN("max %d > 3200", max);
++		return -EINVAL;
++	}
++
++	if (to_multiplier < 10) {
++		BT_WARN("to_multiplier %d < 10", to_multiplier);
++		return -EINVAL;
++	}
+ 
+-	if (to_multiplier < 10 || to_multiplier > 3200)
++	if (to_multiplier > 3200) {
++		BT_WARN("to_multiplier %d > 3200", to_multiplier);
+ 		return -EINVAL;
++	}
+ 
+-	if (max >= to_multiplier * 8)
++	if (max >= to_multiplier * 8) {
++		BT_WARN("max %d >= to_multiplier %d * 8", max, to_multiplier);
+ 		return -EINVAL;
++	}
+ 
+ 	max_latency = (to_multiplier * 4 / max) - 1;
+-	if (latency > 499 || latency > max_latency)
++	if (latency > 499) {
++		BT_WARN("latency %d > 499", latency);
+ 		return -EINVAL;
++	}
++
++	if (latency > max_latency) {
++		BT_WARN("latency %d > max_latency %d", latency, max_latency);
++		return -EINVAL;
++	}
+ 
+ 	return 0;
+ }
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 8709c4506343f..2eea802a9cb2f 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -5334,13 +5334,7 @@ static inline int l2cap_conn_param_update_req(struct l2cap_conn *conn,
+ 
+ 	memset(&rsp, 0, sizeof(rsp));
+ 
+-	if (max > hcon->le_conn_max_interval) {
+-		BT_DBG("requested connection interval exceeds current bounds.");
+-		err = -EINVAL;
+-	} else {
+-		err = hci_check_conn_params(min, max, latency, to_multiplier);
+-	}
+-
++	err = hci_check_conn_params(min, max, latency, to_multiplier);
+ 	if (err)
+ 		rsp.result = cpu_to_le16(L2CAP_CONN_PARAM_REJECTED);
+ 	else
 -- 
 2.43.0
 
