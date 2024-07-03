@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-57812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBBA5925E27
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6DD4925B77
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:09:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01DDB1C20CC5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25C0A1C22384
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:09:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD99717DA33;
-	Wed,  3 Jul 2024 11:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED381862BE;
+	Wed,  3 Jul 2024 10:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+ksss5i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ckX5KnCJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6E717BB14;
-	Wed,  3 Jul 2024 11:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA2F1862A9;
+	Wed,  3 Jul 2024 10:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006007; cv=none; b=kv4WKPaQdvm6xWqI/ezsr9KBV1AFpZn7dnrhvY8kOHJ4l0kksqYtc8gZkyb6T8QjgzFOQBJOJhD5ZEXyf3LFTfxprVEOq0D4o+D8KR4ccWi1DO3snBZKMEvwJRwDyrZSkp3CDuw8chCtQBV8vKUN6f/ASWx7iVKVO5NLpXmIryc=
+	t=1720004172; cv=none; b=TacOwTqYAkeCWEo2VG9AR9VdZw1aGrllMyH5NuBU8so1iZOQSt7u5QKY7VhniXfjLB2SDK6XmMHTPOXRNtwXPGOLpgA+wg+touWdGlm2LxA3uZe3fpRRH+gKOxJPYj1uC8cxcBRVlFXf1qa6aVmlOJj0Kwv5g1kjPXiTszE+3YY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006007; c=relaxed/simple;
-	bh=+LTaelwGgaK3qXUKXIGffmalOdR/q3mGUuplbHMQZcg=;
+	s=arc-20240116; t=1720004172; c=relaxed/simple;
+	bh=EvBXb1EZl2cFc0p5d2SzydjMP9nhVmN/LcKQAfKE+JA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eYxNd3wh+fzVTEXvDs7xiZDpQU9mA7NtijMnM8nwhzq2B9trOz4LVaDdYdvsuf0J5YNgzbuzEUL7ki3SvmFIlHWkXEtacNB80hTeCoogxRVmtkljsr1HrgsIdJMaDJYHsmG2OL3ktAWyk/TCc02hSkkCXD9Z6PmHtQK8eboGxzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+ksss5i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2763C2BD10;
-	Wed,  3 Jul 2024 11:26:46 +0000 (UTC)
+	 MIME-Version; b=ZSm0vOS5y9qUdxxGUbM3BVd0Gq/Fmwxrrymw6jjnLiZl5lxAoKDV3BC5WlIA7Xm6Li3in3XgOYaqjJpIr/7D4TJLnRNkF+IeYgHk+j8JGfJ1wnZYDMD4ZSO2IufpurFgIo+RrL162Z2U2DJkJbJoC8b6pm5QfPJaRL8EuawdpvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ckX5KnCJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8CC5C4AF0D;
+	Wed,  3 Jul 2024 10:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006007;
-	bh=+LTaelwGgaK3qXUKXIGffmalOdR/q3mGUuplbHMQZcg=;
+	s=korg; t=1720004172;
+	bh=EvBXb1EZl2cFc0p5d2SzydjMP9nhVmN/LcKQAfKE+JA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m+ksss5iOKh5HSrcdbVVcafDJ4pQotUYkNquAhIn+Ieuw8+TzYKwmnTY7If+L8xEJ
-	 UWj5bBo+gqqrjOHzPfDVyteHjeT0P07QJVVVSIvGHO4Kg3Q4omBG1HPjVRjl+4sG6x
-	 PLGITIS+UXeEFhl/LHsySrm35fBotFqBVbG1jGbc=
+	b=ckX5KnCJk/UCkJmvkJdqnpIyxkn3tQ43WamANX9MN7SvYYGKB2/hTXi5UOT4KpCUn
+	 Fot68gsuDv5j4hQUCUfFBvS3vD1P1ONBtbRmaOpqPRZsfcL0QglWI7gdHNR0U12pTx
+	 sS4JxprBUe+mCtoWkbzZz6y71dHrmtHEtnYTjkeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 269/356] net: stmmac: Assign configured channel value to EXTTS event
+Subject: [PATCH 5.4 144/189] sparc: fix old compat_sys_select()
 Date: Wed,  3 Jul 2024 12:40:05 +0200
-Message-ID: <20240703102923.292323432@linuxfoundation.org>
+Message-ID: <20240703102846.914291444@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 8851346912a1fa33e7a5966fe51f07313b274627 ]
+[ Upstream commit bae6428a9fffb2023191b0723e276cf1377a7c9f ]
 
-Assign the configured channel value to the EXTTS event in the timestamp
-interrupt handler. Without assigning the correct channel, applications
-like ts2phc will refuse to accept the event, resulting in errors such
-as:
-...
-ts2phc[656.834]: config item end1.ts2phc.pin_index is 0
-ts2phc[656.834]: config item end1.ts2phc.channel is 3
-ts2phc[656.834]: config item end1.ts2phc.extts_polarity is 2
-ts2phc[656.834]: config item end1.ts2phc.extts_correction is 0
-...
-ts2phc[656.862]: extts on unexpected channel
-ts2phc[658.141]: extts on unexpected channel
-ts2phc[659.140]: extts on unexpected channel
+sparc has two identical select syscalls at numbers 93 and 230, respectively.
+During the conversion to the modern syscall.tbl format, the older one of the
+two broke in compat mode, and now refers to the native 64-bit syscall.
 
-Fixes: f4da56529da60 ("net: stmmac: Add support for external trigger timestamping")
-Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://lore.kernel.org/r/20240618073821.619751-1-o.rempel@pengutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Restore the correct behavior. This has very little effect, as glibc has
+been using the newer number anyway.
+
+Fixes: 6ff645dd683a ("sparc: add system call table generation support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/sparc/kernel/syscalls/syscall.tbl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-index 2c6245b2281ca..0d3d7874f0fc6 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-@@ -176,6 +176,7 @@ static void timestamp_interrupt(struct stmmac_priv *priv)
- {
- 	u32 num_snapshot, ts_status, tsync_int;
- 	struct ptp_clock_event event;
-+	u32 acr_value, channel;
- 	unsigned long flags;
- 	u64 ptp_time;
- 	int i;
-@@ -201,12 +202,15 @@ static void timestamp_interrupt(struct stmmac_priv *priv)
- 	num_snapshot = (ts_status & GMAC_TIMESTAMP_ATSNS_MASK) >>
- 		       GMAC_TIMESTAMP_ATSNS_SHIFT;
- 
-+	acr_value = readl(priv->ptpaddr + PTP_ACR);
-+	channel = ilog2(FIELD_GET(PTP_ACR_MASK, acr_value));
-+
- 	for (i = 0; i < num_snapshot; i++) {
- 		spin_lock_irqsave(&priv->ptp_lock, flags);
- 		get_ptptime(priv->ptpaddr, &ptp_time);
- 		spin_unlock_irqrestore(&priv->ptp_lock, flags);
- 		event.type = PTP_CLOCK_EXTTS;
--		event.index = 0;
-+		event.index = channel;
- 		event.timestamp = ptp_time;
- 		ptp_clock_event(priv->ptp_clock, &event);
- 	}
+diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
+index 8c8cc7537fb27..8235655e03221 100644
+--- a/arch/sparc/kernel/syscalls/syscall.tbl
++++ b/arch/sparc/kernel/syscalls/syscall.tbl
+@@ -117,7 +117,7 @@
+ 90	common	dup2			sys_dup2
+ 91	32	setfsuid32		sys_setfsuid
+ 92	common	fcntl			sys_fcntl			compat_sys_fcntl
+-93	common	select			sys_select
++93	common	select			sys_select			compat_sys_select
+ 94	32	setfsgid32		sys_setfsgid
+ 95	common	fsync			sys_fsync
+ 96	common	setpriority		sys_setpriority
 -- 
 2.43.0
 
