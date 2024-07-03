@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-57656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0331C925D63
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:28:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73623925D47
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8765A1F25A61
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EE881F21655
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51581741D1;
-	Wed,  3 Jul 2024 11:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8111513F432;
+	Wed,  3 Jul 2024 11:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVq29Sv/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E90vYuek"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8209B7CF1F;
-	Wed,  3 Jul 2024 11:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401D413776F;
+	Wed,  3 Jul 2024 11:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005538; cv=none; b=ttekumGguOOAuaFZEJKEvEZNQB7n96+jRM+sPXJE18wCb5Mj9TcZ+cldw06xY8HLOst0XwO/ae+r7wJM2YuqWrWKN2aK/Ge8rsTrkO3BcUh4WJ5npFK6OeyIV72xWG6lZKEG2SOQs6EKA4ZG8ZQ3yY9/4v19B3P9hYPAaSNv5wc=
+	t=1720005449; cv=none; b=CvxD6id4lpsEA8Fxh1tBxHSQmrHNjIUMYmDF96uDbiliwCu0Kzverc0pX8+wuPDoxyIY1xFovEeWnXSh0C9sUMNShpcTRMuxxw68G0JBrSzqS16Bw8jC5VgoKv8pJIcxicjqAQLCi+s3j31tJiSbE3EsHm3Iyk7l24284vIBZ50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005538; c=relaxed/simple;
-	bh=towXHcOCXvFiZbZslO9up+cvaiFGY+fI6d7K2FoeKh4=;
+	s=arc-20240116; t=1720005449; c=relaxed/simple;
+	bh=fCwr3lEevsBT3kdMhDRikrtpKriz4CQ0KHfXAKmorTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ROsKyhQAsfVK/v1J9DvIpJOZZwcj6Pl9/iFGXpwm2BVNUjzEz1SufEtFbOXW1fNJRAB/Mh3VPbyfmiMFZgdyuJkHzDhSs2OiStGKbtFVvCkQjzmCMRTqclaoroyDWdwHZXBWQmVYqCeTcaUnJN9qb2nUwMY44HJsMg9F5zqfJJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVq29Sv/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F300AC2BD10;
-	Wed,  3 Jul 2024 11:18:57 +0000 (UTC)
+	 MIME-Version; b=fz6fRceyVfKQJu9rCw4yxEBcmvj7+YCDbQYYUIURDLZ131RXPGPCEY/5F+XGHwuxHFbl5yEBjHpSJTPOFj8dMrPJFMjIHvp6j4ST1SMPWrJ7P7PQce/EWEYZaD/i8cF2+y2xAzVErjY1TzjMHdpV8bG8JLGN4NqYtvUi+PmGpc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E90vYuek; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DBAC2BD10;
+	Wed,  3 Jul 2024 11:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005538;
-	bh=towXHcOCXvFiZbZslO9up+cvaiFGY+fI6d7K2FoeKh4=;
+	s=korg; t=1720005449;
+	bh=fCwr3lEevsBT3kdMhDRikrtpKriz4CQ0KHfXAKmorTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vVq29Sv/pmjvuDSqvuPYDilwzzQaxA3umLTohqi4SlWy3YJdBJRQEvwtYwBSLG7/r
-	 4hga9U95cNnPn8hKR2lvD0bvVflKLXJ3v339SueB5XA5jLp12th1OlZmMgTCkKuqsx
-	 Qfq8PTnnTa2teGhzRONzVH8TpdCrnilafEpG0Ktc=
+	b=E90vYuekDbGH1o66rm7mq7tbI5/eGlbL+93HauziaVIrsfKjcFCqia3tvwSkykZHH
+	 y5HAx/7z/xBN8r9bSFlmuOklvaxxtr+WiFbtwlLl4rbm5PNtH+HmLM5yb0CU60KCGR
+	 ADMf5EdBp+lkAERcp1xmG/XgfzyBB5CnHGVWV6Cw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Andryuk <jandryuk@gmail.com>,
-	Peter Hutterer <peter.hutterer@who-t.net>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Jason Andryuk <jason.andryuk@amd.com>
-Subject: [PATCH 5.15 084/356] Input: try trimming too long modalias strings
-Date: Wed,  3 Jul 2024 12:37:00 +0200
-Message-ID: <20240703102916.282271898@linuxfoundation.org>
+	Guenter Roeck <linux@roeck-us.net>,
+	Russell King <linux@armlinux.org.uk>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 085/356] clk: sifive: Do not register clkdevs for PRCI clocks
+Date: Wed,  3 Jul 2024 12:37:01 +0200
+Message-ID: <20240703102916.319554571@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
 References: <20240703102913.093882413@linuxfoundation.org>
@@ -67,213 +68,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-commit 0774d19038c496f0c3602fb505c43e1b2d8eed85 upstream.
+[ Upstream commit 2607133196c35f31892ee199ce7ffa717bea4ad1 ]
 
-If an input device declares too many capability bits then modalias
-string for such device may become too long and not fit into uevent
-buffer, resulting in failure of sending said uevent. This, in turn,
-may prevent userspace from recognizing existence of such devices.
+These clkdevs were unnecessary, because systems using this driver always
+look up clocks using the devicetree. And as Russell King points out[1],
+since the provided device name was truncated, lookups via clkdev would
+never match.
 
-This is typically not a concern for real hardware devices as they have
-limited number of keys, but happen with synthetic devices such as
-ones created by xen-kbdfront driver, which creates devices as being
-capable of delivering all possible keys, since it doesn't know what
-keys the backend may produce.
+Recently, commit 8d532528ff6a ("clkdev: report over-sized strings when
+creating clkdev entries") caused clkdev registration to fail due to the
+truncation, and this now prevents the driver from probing. Fix the
+driver by removing the clkdev registration.
 
-To deal with such devices input core will attempt to trim key data,
-in the hope that the rest of modalias string will fit in the given
-buffer. When trimming key data it will indicate that it is not
-complete by placing "+," sign, resulting in conversions like this:
-
-old: k71,72,73,74,78,7A,7B,7C,7D,8E,9E,A4,AD,E0,E1,E4,F8,174,
-new: k71,72,73,74,78,7A,7B,7C,+,
-
-This should allow existing udev rules continue to work with existing
-devices, and will also allow writing more complex rules that would
-recognize trimmed modalias and check input device characteristics by
-other means (for example by parsing KEY= data in uevent or parsing
-input device sysfs attributes).
-
-Note that the driver core may try adding more uevent environment
-variables once input core is done adding its own, so when forming
-modalias we can not use the entire available buffer, so we reduce
-it by somewhat an arbitrary amount (96 bytes).
-
-Reported-by: Jason Andryuk <jandryuk@gmail.com>
-Reviewed-by: Peter Hutterer <peter.hutterer@who-t.net>
-Tested-by: Jason Andryuk <jandryuk@gmail.com>
-Link: https://lore.kernel.org/r/ZjAWMQCJdrxZkvkB@google.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Link: https://lore.kernel.org/linux-clk/ZkfYqj+OcAxd9O2t@shell.armlinux.org.uk/ [1]
+Fixes: 30b8e27e3b58 ("clk: sifive: add a driver for the SiFive FU540 PRCI IP block")
+Fixes: 8d532528ff6a ("clkdev: report over-sized strings when creating clkdev entries")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/linux-clk/7eda7621-0dde-4153-89e4-172e4c095d01@roeck-us.net/
+Suggested-by: Russell King <linux@armlinux.org.uk>
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Link: https://lore.kernel.org/r/20240528001432.1200403-1-samuel.holland@sifive.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ drivers/clk/sifive/sifive-prci.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
----
- drivers/input/input.c |  105 ++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 90 insertions(+), 15 deletions(-)
-
---- a/drivers/input/input.c
-+++ b/drivers/input/input.c
-@@ -1360,19 +1360,19 @@ static int input_print_modalias_bits(cha
- 				     char name, unsigned long *bm,
- 				     unsigned int min_bit, unsigned int max_bit)
- {
--	int len = 0, i;
-+	int bit = min_bit;
-+	int len = 0;
+diff --git a/drivers/clk/sifive/sifive-prci.c b/drivers/clk/sifive/sifive-prci.c
+index 80a288c59e56d..8b573ff646f65 100644
+--- a/drivers/clk/sifive/sifive-prci.c
++++ b/drivers/clk/sifive/sifive-prci.c
+@@ -4,7 +4,6 @@
+  * Copyright (C) 2020 Zong Li
+  */
  
- 	len += snprintf(buf, max(size, 0), "%c", name);
--	for (i = min_bit; i < max_bit; i++)
--		if (bm[BIT_WORD(i)] & BIT_MASK(i))
--			len += snprintf(buf + len, max(size - len, 0), "%X,", i);
-+	for_each_set_bit_from(bit, bm, max_bit)
-+		len += snprintf(buf + len, max(size - len, 0), "%X,", bit);
- 	return len;
- }
+-#include <linux/clkdev.h>
+ #include <linux/delay.h>
+ #include <linux/io.h>
+ #include <linux/of_device.h>
+@@ -541,13 +540,6 @@ static int __prci_register_clocks(struct device *dev, struct __prci_data *pd,
+ 			return r;
+ 		}
  
--static int input_print_modalias(char *buf, int size, struct input_dev *id,
--				int add_cr)
-+static int input_print_modalias_parts(char *buf, int size, int full_len,
-+				      struct input_dev *id)
- {
--	int len;
-+	int len, klen, remainder, space;
- 
- 	len = snprintf(buf, max(size, 0),
- 		       "input:b%04Xv%04Xp%04Xe%04X-",
-@@ -1381,8 +1381,49 @@ static int input_print_modalias(char *bu
- 
- 	len += input_print_modalias_bits(buf + len, size - len,
- 				'e', id->evbit, 0, EV_MAX);
--	len += input_print_modalias_bits(buf + len, size - len,
-+
-+	/*
-+	 * Calculate the remaining space in the buffer making sure we
-+	 * have place for the terminating 0.
-+	 */
-+	space = max(size - (len + 1), 0);
-+
-+	klen = input_print_modalias_bits(buf + len, size - len,
- 				'k', id->keybit, KEY_MIN_INTERESTING, KEY_MAX);
-+	len += klen;
-+
-+	/*
-+	 * If we have more data than we can fit in the buffer, check
-+	 * if we can trim key data to fit in the rest. We will indicate
-+	 * that key data is incomplete by adding "+" sign at the end, like
-+	 * this: * "k1,2,3,45,+,".
-+	 *
-+	 * Note that we shortest key info (if present) is "k+," so we
-+	 * can only try to trim if key data is longer than that.
-+	 */
-+	if (full_len && size < full_len + 1 && klen > 3) {
-+		remainder = full_len - len;
-+		/*
-+		 * We can only trim if we have space for the remainder
-+		 * and also for at least "k+," which is 3 more characters.
-+		 */
-+		if (remainder <= space - 3) {
-+			int i;
-+			/*
-+			 * We are guaranteed to have 'k' in the buffer, so
-+			 * we need at least 3 additional bytes for storing
-+			 * "+," in addition to the remainder.
-+			 */
-+			for (i = size - 1 - remainder - 3; i >= 0; i--) {
-+				if (buf[i] == 'k' || buf[i] == ',') {
-+					strcpy(buf + i + 1, "+,");
-+					len = i + 3; /* Not counting '\0' */
-+					break;
-+				}
-+			}
-+		}
-+	}
-+
- 	len += input_print_modalias_bits(buf + len, size - len,
- 				'r', id->relbit, 0, REL_MAX);
- 	len += input_print_modalias_bits(buf + len, size - len,
-@@ -1398,12 +1439,25 @@ static int input_print_modalias(char *bu
- 	len += input_print_modalias_bits(buf + len, size - len,
- 				'w', id->swbit, 0, SW_MAX);
- 
--	if (add_cr)
--		len += snprintf(buf + len, max(size - len, 0), "\n");
+-		r = clk_hw_register_clkdev(&pic->hw, pic->name, dev_name(dev));
+-		if (r) {
+-			dev_warn(dev, "Failed to register clkdev for %s: %d\n",
+-				 init.name, r);
+-			return r;
+-		}
 -
- 	return len;
- }
+ 		pd->hw_clks.hws[i] = &pic->hw;
+ 	}
  
-+static int input_print_modalias(char *buf, int size, struct input_dev *id)
-+{
-+	int full_len;
-+
-+	/*
-+	 * Printing is done in 2 passes: first one figures out total length
-+	 * needed for the modalias string, second one will try to trim key
-+	 * data in case when buffer is too small for the entire modalias.
-+	 * If the buffer is too small regardless, it will fill as much as it
-+	 * can (without trimming key data) into the buffer and leave it to
-+	 * the caller to figure out what to do with the result.
-+	 */
-+	full_len = input_print_modalias_parts(NULL, 0, 0, id);
-+	return input_print_modalias_parts(buf, size, full_len, id);
-+}
-+
- static ssize_t input_dev_show_modalias(struct device *dev,
- 				       struct device_attribute *attr,
- 				       char *buf)
-@@ -1411,7 +1465,9 @@ static ssize_t input_dev_show_modalias(s
- 	struct input_dev *id = to_input_dev(dev);
- 	ssize_t len;
- 
--	len = input_print_modalias(buf, PAGE_SIZE, id, 1);
-+	len = input_print_modalias(buf, PAGE_SIZE, id);
-+	if (len < PAGE_SIZE - 2)
-+		len += snprintf(buf + len, PAGE_SIZE - len, "\n");
- 
- 	return min_t(int, len, PAGE_SIZE);
- }
-@@ -1623,6 +1679,23 @@ static int input_add_uevent_bm_var(struc
- 	return 0;
- }
- 
-+/*
-+ * This is a pretty gross hack. When building uevent data the driver core
-+ * may try adding more environment variables to kobj_uevent_env without
-+ * telling us, so we have no idea how much of the buffer we can use to
-+ * avoid overflows/-ENOMEM elsewhere. To work around this let's artificially
-+ * reduce amount of memory we will use for the modalias environment variable.
-+ *
-+ * The potential additions are:
-+ *
-+ * SEQNUM=18446744073709551615 - (%llu - 28 bytes)
-+ * HOME=/ (6 bytes)
-+ * PATH=/sbin:/bin:/usr/sbin:/usr/bin (34 bytes)
-+ *
-+ * 68 bytes total. Allow extra buffer - 96 bytes
-+ */
-+#define UEVENT_ENV_EXTRA_LEN	96
-+
- static int input_add_uevent_modalias_var(struct kobj_uevent_env *env,
- 					 struct input_dev *dev)
- {
-@@ -1632,9 +1705,11 @@ static int input_add_uevent_modalias_var
- 		return -ENOMEM;
- 
- 	len = input_print_modalias(&env->buf[env->buflen - 1],
--				   sizeof(env->buf) - env->buflen,
--				   dev, 0);
--	if (len >= (sizeof(env->buf) - env->buflen))
-+				   (int)sizeof(env->buf) - env->buflen -
-+					UEVENT_ENV_EXTRA_LEN,
-+				   dev);
-+	if (len >= ((int)sizeof(env->buf) - env->buflen -
-+					UEVENT_ENV_EXTRA_LEN))
- 		return -ENOMEM;
- 
- 	env->buflen += len;
+-- 
+2.43.0
+
 
 
 
