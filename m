@@ -1,251 +1,245 @@
-Return-Path: <stable+bounces-56924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 660C49256B9
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:25:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0526D92572C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:46:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E72861F26E47
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 09:25:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23E061C20C89
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 09:46:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3D313DDCF;
-	Wed,  3 Jul 2024 09:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C2613A261;
+	Wed,  3 Jul 2024 09:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Sgsbf1jU";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Yc3bWi7N"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SvNujiS4"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh2-smtp.messagingengine.com (fhigh2-smtp.messagingengine.com [103.168.172.153])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376B213698B;
-	Wed,  3 Jul 2024 09:25:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7DE13541F;
+	Wed,  3 Jul 2024 09:46:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719998730; cv=none; b=pcQLXcE53UVxMxGBLx24Uef4bbjeIznwCeYCsWFUNSBXcuYj4pef1TQUpvIk9HABHSV034GOcgwGAA97oJM5vmZ6vCiCVXZmFFUoTCss3mcAgPoBXBSypNylEzWgg0wk35e3A0ibOaZNhmSKsoGoh4pnncGw5tR1TRIn2VBCFFA=
+	t=1719999993; cv=none; b=dnZ31UyZPcmMBp4Mjtj/PUf1XAfcS3Gmhzy22PyrirtiYQX6ZdcfpZXnWLsHETLD+GzNVNUnbCIKtT6R60DtZqA+xElYvrQ47lquQUFImpwVjN4bl0SqG2gPIOAukkJne32bTN9X2sQwampfER8vuOQqTWUrFyedLpYHyzTcjq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719998730; c=relaxed/simple;
-	bh=aNr5LsPPRXyZ7znURdhRpNzyLMqjsxePdNEZVumFhEU=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=aofTNRQZ8TNcGGVm7xRvXH3mF/MOaBang8XOLZz2lwvaLlZvoeoeBg4R8BiyLwPGsLA2OyhvH+iw9eCz4H6U6Cwlhxd99jnm9oSVqE2dnoR7uUZyUHzpIrWx4z+pU6R1zJ2hgQ2pidg7HwBxvV88KizE0ixpJj3qhy0BcBGrekI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Sgsbf1jU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Yc3bWi7N; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 4B1D111401BD;
-	Wed,  3 Jul 2024 05:25:26 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Wed, 03 Jul 2024 05:25:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1719998726; x=1720085126; bh=1EJB48ZUHi
-	VP/+yG3YT6uhk4ELVB4dHK9uYd0Uk+epE=; b=Sgsbf1jUQYfka50MHVgxqd+q2D
-	kcYBPT8sp01BlFcXTSJXaO+mjt18ZKxFuWgl5h7rECS0PCPyQ+Jluvd8kWv3MPKg
-	gtdEQHO2iKBG0J6KSbxlSlPf1bK08b7yXQIU7p2Jwp5HBN9+zADk+vu9SxefqAV8
-	LsS+LurGs1s4scFaATOOVTx4exVjrqAZF28dkGT3DbkcnONXrtyk9llOFWMO7fIN
-	d0TUAkkE0MaBfBAcqw0kE1POiGbWiuNleEWw/9Ts8+RrjvDSFY7YFPohZVXvCydz
-	XrsivSi2wbuSozgCey5hEVTLTV3PmuOguorDTbqQxuPFmszmiRLwgZG7cTxA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1719998726; x=1720085126; bh=1EJB48ZUHiVP/+yG3YT6uhk4ELVB
-	4dHK9uYd0Uk+epE=; b=Yc3bWi7NdTkraAjJ8FMA5lSjqD5Z2hGaiiebRsmCpBL3
-	DeCO068ll1kVnmJjmqEEkwpvxs/uw+mVBbBh+hQGgUaKhEW7jBl6xEy34wweNkhi
-	8QR853g1O0lMyDTGGUP1lzsjxOhtNzP+79ayXhyNLQ6eYTRx+e6Pgy9V5CcKBg1C
-	6BGUbpdagRuAQCVUtxbbv/T5oUU01+icDE6AZd9T1+mlef41VP4+vBg46dbjpwT2
-	GWK5wdd3uIx+i+MKVamADA2nMWNJT02cKXRyJ27YiIfDHsp7o6kcyJYRlbOmfNzE
-	mT5fxDU/UBjFC371EtnTlnMN/m7o4JHuJ7Hx8WSWDw==
-X-ME-Sender: <xms:BRmFZhX_aF1opeOf99uk22W4aqlpGWuOato-W9EKGijR2l_Z5iJYVA>
-    <xme:BRmFZhmWM8Db_N1ZHCTgHDClFBsg1CCSjuAWlEoCDHs7r2jbgRGhyhQbNlAEFJGgi
-    Y88i_3RhXEzsnVa-BA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudejgdduiecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeelhfettdekkeeggffgvedvieehudeljeetkeefjedthedtjeejhfeiudetfffh
-    hfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhlihhnrghrohdrohhrghdpthhugi
-    hsuhhithgvrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghi
-    lhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:BRmFZta2PTPYw-PEyN6Sjhs2F35CDrVqgoeUpXuzwCrmMJTIS7sNGg>
-    <xmx:BRmFZkWJtqmVjpbWcdZKqc0fOyVJDurPudSjU4d7KcsM6hfnCCdBbQ>
-    <xmx:BRmFZrk07N8bf5Xpw592SB8deAhy5doXspuNhLQVHDonsCX-2KftCw>
-    <xmx:BRmFZhdFYxhyoqFSZZUntYkIAKjM7StE0EwL0viU6M9UNPQiT8LGlA>
-    <xmx:BhmFZl3JePpItb98l70bxngIR7NomNzkfm7NC_Xct4aI7Ghhvnc90BEP>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 1AAEDB6008D; Wed,  3 Jul 2024 05:25:25 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-566-g3812ddbbc-fm-20240627.001-g3812ddbb
+	s=arc-20240116; t=1719999993; c=relaxed/simple;
+	bh=e4PmHOKCXsSy3VJhe4/b/xhQ5o/JWNWiodnpv89roh8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ab7jJgVj90VR3WVJI9HKM9dH65jX2umFbwqQc7Fd14gXFffT3z69KSL2RvysjxbKVyCQb9LclDEh6ARl1+d6TVm8BPO6HJq5HkAtJ6lUm7y4LJ0LY1qxwOq+kO5fZdQE4fMbbwSVA3EEbwpel5x7EpQOIDc3P+RxEjOgAp/a3xE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SvNujiS4; arc=none smtp.client-ip=209.85.219.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-dfe43dca3bfso4867273276.0;
+        Wed, 03 Jul 2024 02:46:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719999990; x=1720604790; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VtEhPZzFC3WYUCzkzU+BMtXUO+QJbt1cXqLAXxOunD8=;
+        b=SvNujiS4PuXHHw9bvBiFbf/yngPA2t9Kc1qqE5ow1m+GxPItuxRtzQUxMtY4Wx0bET
+         126OM9JDT1g7B7Icpg+ZoN0VkcoLbukNzOqOuZYoj7vz30dHtP11+tkiRJo+8P7J+GQM
+         iacsakuAyUb57PJrrKm9mXnKMwz8rLr7OFRhQivewC5jU6n9KpF8UI+NOpFk4KXqDh+5
+         nxX64V4JpoFskBahpwR44mdGm3ZHG7JNjykOHaftdP8Ca+c6XSO52uJTuDJohHiSiax5
+         5/PJyGlUBN28JkGuvoj+vGRp0Fo/zo13UvEuqyjSF659ks0tVmHJWKpU3M8hbWtxEKO/
+         phHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719999990; x=1720604790;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VtEhPZzFC3WYUCzkzU+BMtXUO+QJbt1cXqLAXxOunD8=;
+        b=i0uPjgnOmUteLtFwtlWj8zw+1NtG9KOx6mg+OK1UF64wpw/Gecsjqbv+ru1jVySxzh
+         SXsYWGPNb8zlSWHTcmTZxRCBOXap/DdgnoTPsEy1HEOZ/FvfimbnrxlwjzQ1GzS5wTpa
+         UrG/hJ3pDDyZKTKXys1Qwz0vcKgIypeVjJ91sEf0t3fVujC/tMASCB6ACAVHC9+puU8t
+         lAwx9ThFO6poHDpGIwkAmgVlU2vLOSszV2AsRTu8QsAFzGHQhfn71LvdA9miub/j8qig
+         NMYjbHnPesOCK2aCF1O+fiFsdP6OZlWmXK0dmMnbEtF+xzItrM4azl1uHTaij7RMLhwv
+         CYFg==
+X-Forwarded-Encrypted: i=1; AJvYcCX+Nc0m9FAYtbC/YTUd4zbbg6qw6WbDGlLIsMIuZ/u1imSZuTSvtfBrROJjADbe52Jrj9UR8yjHSk+W/hAWcpQWUjPsf2f/YL7EKBrmmuSerWTVW/7jeVcY79J2zLsSFWYRoRrE
+X-Gm-Message-State: AOJu0YzTKJYA5cSl5oEe9H93095ykcREgESCWXuKbv+NyEKAr6d8IktF
+	fsT/tb9E5asSLYt0j2f4j9vJrhKdzLa/ls+ww2kB11IIE1cLFDEGxY9P2CFA7V05dZbhrLPvHf8
+	dXaGriLW2Z2y4Gt2JF/12mVklVeH7pw==
+X-Google-Smtp-Source: AGHT+IFN6fJQ9FxDMTyB8AfK32sF4RcKcTiuXHuahStmF3o94VAYMckaMoXyAs7LTUHzEjZuWyRrspjYyMGCS3OXBkA=
+X-Received: by 2002:a25:e089:0:b0:dff:338e:4f6 with SMTP id
+ 3f1490d57ef6-e036eaf9069mr10571411276.5.1719999990222; Wed, 03 Jul 2024
+ 02:46:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <c440be12-3c22-4bb6-9a10-e3fd03b87974@app.fastmail.com>
-In-Reply-To: 
- <CA+G9fYuK+dFrz3dcuUkxbP3R-5NUiSVNJ3tAcRc=Wn=Hs0C5ng@mail.gmail.com>
-References: <20240702170243.963426416@linuxfoundation.org>
- <CA+G9fYuK+dFrz3dcuUkxbP3R-5NUiSVNJ3tAcRc=Wn=Hs0C5ng@mail.gmail.com>
-Date: Wed, 03 Jul 2024 11:24:29 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Naresh Kamboju" <naresh.kamboju@linaro.org>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- "Linus Torvalds" <torvalds@linux-foundation.org>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Guenter Roeck" <linux@roeck-us.net>, shuah <shuah@kernel.org>,
- patches@kernelci.org, lkft-triage@lists.linaro.org,
- "Pavel Machek" <pavel@denx.de>, "Jon Hunter" <jonathanh@nvidia.com>,
- "Florian Fainelli" <f.fainelli@gmail.com>,
- "Sudip Mukherjee" <sudipm.mukherjee@gmail.com>, srw@sladewatkins.net,
- rwarsow@gmx.de, "Conor Dooley" <conor@kernel.org>,
- Allen <allen.lkml@gmail.com>, "Mark Brown" <broonie@kernel.org>,
- linux-block <linux-block@vger.kernel.org>, "Jens Axboe" <axboe@kernel.dk>,
- "Dan Carpenter" <dan.carpenter@linaro.org>,
- "Anders Roxell" <anders.roxell@linaro.org>,
- "Can Guo" <quic_cang@quicinc.com>, "Ziqi Chen" <quic_ziqichen@quicinc.com>,
- "Bart Van Assche" <bvanassche@acm.org>,
- "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: Re: [PATCH 6.9 000/222] 6.9.8-rc1 review
-Content-Type: text/plain
+References: <1719038884-1903-1-git-send-email-yangge1116@126.com>
+In-Reply-To: <1719038884-1903-1-git-send-email-yangge1116@126.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Wed, 3 Jul 2024 21:46:19 +1200
+Message-ID: <CAGsJ_4yO5NJ4kSDPaS-QdRyKfw-A52HE+Jn38vQpbonFSE8ZoQ@mail.gmail.com>
+Subject: Re: [PATCH V2] mm/gup: Clear the LRU flag of a page before adding to
+ LRU batch
+To: yangge1116@126.com
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, david@redhat.com, 
+	baolin.wang@linux.alibaba.com, liuzixing@hygon.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 3, 2024, at 11:08, Naresh Kamboju wrote:
-> On Tue, 2 Jul 2024 at 22:36, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
->>
->> This is the start of the stable review cycle for the 6.9.8 release.
->> There are 222 patches in this series, all will be posted as a response
->> to this one.  If anyone has any issues with these being applied, please
->> let me know.
->>
->> Responses should be made by Thu, 04 Jul 2024 17:01:55 +0000.
->> Anything received after that time might be too late.
->>
->> The whole patch series can be found in one patch at:
->>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.8-rc1.gz
->> or in the git tree and branch at:
->>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
->> and the diffstat can be found below.
->>
->> thanks,
->>
->> greg k-h
->>
+On Sat, Jun 22, 2024 at 6:48=E2=80=AFPM <yangge1116@126.com> wrote:
 >
-> The following kernel warning was noticed on arm64 Qualcomm db845c device while
-> booting stable-rc 6.9.8-rc1.
+> From: yangge <yangge1116@126.com>
 >
-> This is not always a reproducible warning.
+> If a large number of CMA memory are configured in system (for example, th=
+e
+> CMA memory accounts for 50% of the system memory), starting a virtual
+> virtual machine, it will call pin_user_pages_remote(..., FOLL_LONGTERM,
+> ...) to pin memory.  Normally if a page is present and in CMA area,
+> pin_user_pages_remote() will migrate the page from CMA area to non-CMA
+> area because of FOLL_LONGTERM flag. But the current code will cause the
+> migration failure due to unexpected page refcounts, and eventually cause
+> the virtual machine fail to start.
+>
+> If a page is added in LRU batch, its refcount increases one, remove the
+> page from LRU batch decreases one. Page migration requires the page is no=
+t
+> referenced by others except page mapping. Before migrating a page, we
+> should try to drain the page from LRU batch in case the page is in it,
+> however, folio_test_lru() is not sufficient to tell whether the page is
+> in LRU batch or not, if the page is in LRU batch, the migration will fail=
+.
+>
+> To solve the problem above, we modify the logic of adding to LRU batch.
+> Before adding a page to LRU batch, we clear the LRU flag of the page so
+> that we can check whether the page is in LRU batch by folio_test_lru(page=
+).
+> Seems making the LRU flag of the page invisible a long time is no problem=
+,
+> because a new page is allocated from buddy and added to the lru batch,
+> its LRU flag is also not visible for a long time.
+>
+> Cc: <stable@vger.kernel.org>
 
-I see that commit 77691af484e2 ("scsi: ufs: core: Quiesce request
-queues before checking pending cmds") got backported, and
-this adds direct calls to the function that warns, so this
-is my first suspicion without having done a detailed analysis.
+you have Cced stable, what is the fixes tag?
 
-Adding everyone from that commit to Cc.
-
-Naresh, could you try reverting that commit?
-
-      Arnd
-
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> Signed-off-by: yangge <yangge1116@126.com>
+> ---
+>  mm/swap.c | 43 +++++++++++++++++++++++++++++++------------
+>  1 file changed, 31 insertions(+), 12 deletions(-)
 >
-> Boot log:
-> ------
-> [    0.000000] Linux version 6.9.8-rc1 (tuxmake@tuxmake) (Debian clang
-> version 18.1.8 (++20240615103650+3b5b5c1ec4a3-1~exp1~20240615223815.136),
-> Debian LLD 18.1.8) #1 SMP PREEMPT @1719942561
-> [    0.000000] KASLR enabled
-> [    0.000000] Machine model: Thundercomm Dragonboard 845c
-> ...
-> [    7.097994] ------------[ cut here ]------------
-> [    7.097997] WARNING: CPU: 5 PID: 418 at block/blk-mq.c:262
-> blk_mq_unquiesce_tagset (/builds/linux/block/blk-mq.c:295
-> /builds/linux/block/blk-mq.c:297)
-> [    7.098009] Modules linked in: drm_display_helper qcom_q6v5_mss
-> camcc_sdm845 i2c_qcom_geni videobuf2_memops qcom_rng bluetooth
-> videobuf2_common spi_geni_qcom qrtr gpi phy_qcom_qmp_usb aux_bridge
-> stm_core slim_qcom_ngd_ctrl qcrypto phy_qcom_qmp_ufs cfg80211 rfkill
-> icc_osm_l3 phy_qcom_qmp_pcie lmh ufs_qcom slimbus qcom_wdt
-> pdr_interface llcc_qcom qcom_q6v5_pas(+) qcom_pil_info icc_bwmon
-> qcom_q6v5 display_connector qcom_sysmon qcom_common drm_kms_helper
-> qcom_glink_smem mdt_loader qmi_helpers drm backlight socinfo rmtfs_mem
-> [    7.098062] Hardware name: Thundercomm Dragonboard 845c (DT)
-> [    7.098064] Workqueue: devfreq_wq devfreq_monitor
-> [    7.098071] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [    7.098074] pc : blk_mq_unquiesce_tagset
-> (/builds/linux/block/blk-mq.c:295 /builds/linux/block/blk-mq.c:297)
-> [    7.098077] lr : blk_mq_unquiesce_tagset
-> (/builds/linux/block/blk-mq.c:262 /builds/linux/block/blk-mq.c:297)
-> [    7.098080] sp : ffff8000812f3b40
-> [    7.098081] x29: ffff8000812f3b40 x28: 00000000000f4240 x27: 20c49ba5e353f7cf
-> [    7.098086] x26: 0000000000000000 x25: 0000000000000000 x24: ffff5bbe0a2e9910
-> [    7.098089] x23: ffff5bbe01f1a170 x22: ffff5bbe0a2e9220 x21: 0000000000000000
-> [    7.098093] x20: ffff5bbe0a2e9620 x19: ffff5bbe01f1a0e0 x18: 0000000000000002
-> [    7.098096] x17: 0000000000000400 x16: 0000000000000400 x15: 00000000a63e566e
-> [    7.098099] x14: 0000000000015eb9 x13: ffff8000812f0000 x12: ffff8000812f4000
-> [    7.098103] x11: 7cea885bfc7e6700 x10: ffffb0c2e5eb69ac x9 : 0000000000000000
-> [    7.098106] x8 : ffff5bbe0a2e9624 x7 : ffff5bbe0c828000 x6 : 0000000000000003
-> [    7.098110] x5 : 00000000000009d3 x4 : 000000000000039e x3 : ffff8000812f3af0
-> [    7.098113] x2 : ffff5bbe0a2acc00 x1 : 0000000000000000 x0 : 0000000000000000
-> [    7.098117] Call trace:
-> [    7.098118] blk_mq_unquiesce_tagset
-> (/builds/linux/block/blk-mq.c:295 /builds/linux/block/blk-mq.c:297)
-> [    7.098121] ufshcd_devfreq_scale
-> (/builds/linux/drivers/ufs/core/ufshcd.c:2050
-> /builds/linux/drivers/ufs/core/ufshcd.c:1426
-> /builds/linux/drivers/ufs/core/ufshcd.c:1472)
-> [    7.098126] ufshcd_devfreq_target
-> (/builds/linux/drivers/ufs/core/ufshcd.c:1581)
-> [    7.098129] devfreq_set_target (/builds/linux/drivers/devfreq/devfreq.c:364)
-> [    7.098132] devfreq_update_target (/builds/linux/drivers/devfreq/devfreq.c:0)
-> [    7.098134] devfreq_monitor (/builds/linux/drivers/devfreq/devfreq.c:461)
-> [    7.098136] process_scheduled_works
-> (/builds/linux/kernel/workqueue.c:3272
-> /builds/linux/kernel/workqueue.c:3348)
-> [    7.098141] worker_thread (/builds/linux/include/linux/list.h:373
-> /builds/linux/kernel/workqueue.c:955
-> /builds/linux/kernel/workqueue.c:3430)
-> [    7.098143] kthread (/builds/linux/kernel/kthread.c:390)
-> [    7.098146] ret_from_fork (/builds/linux/arch/arm64/kernel/entry.S:861)
-> [    7.098150] ---[ end trace 0000000000000000 ]---
+> diff --git a/mm/swap.c b/mm/swap.c
+> index dc205bd..9caf6b0 100644
+> --- a/mm/swap.c
+> +++ b/mm/swap.c
+> @@ -211,10 +211,6 @@ static void folio_batch_move_lru(struct folio_batch =
+*fbatch, move_fn_t move_fn)
+>         for (i =3D 0; i < folio_batch_count(fbatch); i++) {
+>                 struct folio *folio =3D fbatch->folios[i];
 >
+> -               /* block memcg migration while the folio moves between lr=
+u */
+> -               if (move_fn !=3D lru_add_fn && !folio_test_clear_lru(foli=
+o))
+> -                       continue;
+> -
+>                 folio_lruvec_relock_irqsave(folio, &lruvec, &flags);
+>                 move_fn(lruvec, folio);
 >
-> Full boot log link:
->  - 
-> https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.9.y/build/v6.9.7-223-g03247eed042d/testrun/24504400/suite/log-parser-boot/test/check-kernel-exception/log
->  - https://lkft.validation.linaro.org/scheduler/job/7711345#L5312
+> @@ -255,11 +251,16 @@ static void lru_move_tail_fn(struct lruvec *lruvec,=
+ struct folio *folio)
+>  void folio_rotate_reclaimable(struct folio *folio)
+>  {
+>         if (!folio_test_locked(folio) && !folio_test_dirty(folio) &&
+> -           !folio_test_unevictable(folio) && folio_test_lru(folio)) {
+> +           !folio_test_unevictable(folio)) {
+>                 struct folio_batch *fbatch;
+>                 unsigned long flags;
 >
-> Details of build and test environment:
->  - 
-> https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2ihUJNrmztabOMpKVRNzLpixoUR
+>                 folio_get(folio);
+> +               if (!folio_test_clear_lru(folio)) {
+> +                       folio_put(folio);
+> +                       return;
+> +               }
+> +
+>                 local_lock_irqsave(&lru_rotate.lock, flags);
+>                 fbatch =3D this_cpu_ptr(&lru_rotate.fbatch);
+>                 folio_batch_add_and_move(fbatch, folio, lru_move_tail_fn)=
+;
+> @@ -352,11 +353,15 @@ static void folio_activate_drain(int cpu)
 >
-> Build, vmlinux, System.map and Image,
->  - 
-> https://storage.tuxsuite.com/public/linaro/lkft/builds/2ihUHH774XQWba653iwCVtCnpjl/
+>  void folio_activate(struct folio *folio)
+>  {
+> -       if (folio_test_lru(folio) && !folio_test_active(folio) &&
+> -           !folio_test_unevictable(folio)) {
+> +       if (!folio_test_active(folio) && !folio_test_unevictable(folio)) =
+{
+>                 struct folio_batch *fbatch;
 >
-> metadata:
-> -------
->   git_describe: v6.9.7-223-g03247eed042d
->   git_repo: 
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
->   git_sha: 03247eed042d6a770c3a2adaeed6b7b4a0f0b46c
->   kernel-config:
-> https://storage.tuxsuite.com/public/linaro/lkft/builds/2ihUHH774XQWba653iwCVtCnpjl/config
->   kernel_version: 6.9.8-rc1
->   toolchain: clang-18
->   build-url: 
-> https://storage.tuxsuite.com/public/linaro/lkft/builds/2ihUHH774XQWba653iwCVtCnpjl/
->   build_name: clang-18-lkftconfig
+>                 folio_get(folio);
+> +               if (!folio_test_clear_lru(folio)) {
+> +                       folio_put(folio);
+> +                       return;
+> +               }
+> +
+>                 local_lock(&cpu_fbatches.lock);
+>                 fbatch =3D this_cpu_ptr(&cpu_fbatches.activate);
+>                 folio_batch_add_and_move(fbatch, folio, folio_activate_fn=
+);
+> @@ -700,6 +705,11 @@ void deactivate_file_folio(struct folio *folio)
+>                 return;
 >
+>         folio_get(folio);
+> +       if (!folio_test_clear_lru(folio)) {
+> +               folio_put(folio);
+> +               return;
+> +       }
+> +
+>         local_lock(&cpu_fbatches.lock);
+>         fbatch =3D this_cpu_ptr(&cpu_fbatches.lru_deactivate_file);
+>         folio_batch_add_and_move(fbatch, folio, lru_deactivate_file_fn);
+> @@ -716,11 +726,16 @@ void deactivate_file_folio(struct folio *folio)
+>   */
+>  void folio_deactivate(struct folio *folio)
+>  {
+> -       if (folio_test_lru(folio) && !folio_test_unevictable(folio) &&
+> -           (folio_test_active(folio) || lru_gen_enabled())) {
+> +       if (!folio_test_unevictable(folio) && (folio_test_active(folio) |=
+|
+> +           lru_gen_enabled())) {
+>                 struct folio_batch *fbatch;
+>
+>                 folio_get(folio);
+> +               if (!folio_test_clear_lru(folio)) {
+> +                       folio_put(folio);
+> +                       return;
+> +               }
+> +
+>                 local_lock(&cpu_fbatches.lock);
+>                 fbatch =3D this_cpu_ptr(&cpu_fbatches.lru_deactivate);
+>                 folio_batch_add_and_move(fbatch, folio, lru_deactivate_fn=
+);
+> @@ -737,12 +752,16 @@ void folio_deactivate(struct folio *folio)
+>   */
+>  void folio_mark_lazyfree(struct folio *folio)
+>  {
+> -       if (folio_test_lru(folio) && folio_test_anon(folio) &&
+> -           folio_test_swapbacked(folio) && !folio_test_swapcache(folio) =
+&&
+> -           !folio_test_unevictable(folio)) {
+> +       if (folio_test_anon(folio) && folio_test_swapbacked(folio) &&
+> +           !folio_test_swapcache(folio) && !folio_test_unevictable(folio=
+)) {
+>                 struct folio_batch *fbatch;
+>
+>                 folio_get(folio);
+> +               if (!folio_test_clear_lru(folio)) {
+> +                       folio_put(folio);
+> +                       return;
+> +               }
+> +
+>                 local_lock(&cpu_fbatches.lock);
+>                 fbatch =3D this_cpu_ptr(&cpu_fbatches.lru_lazyfree);
+>                 folio_batch_add_and_move(fbatch, folio, lru_lazyfree_fn);
 > --
-> Linaro LKFT
-> https://lkft.linaro.org
+> 2.7.4
+>
 
