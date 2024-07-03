@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-57751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C637925DD5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 558E49259FA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:53:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BCF91C22FC2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88DD61C24A61
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3D61946DD;
-	Wed,  3 Jul 2024 11:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E64181B8C;
+	Wed,  3 Jul 2024 10:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqCGYd3C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jsm3LpxV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043311891D3;
-	Wed,  3 Jul 2024 11:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E7E173335;
+	Wed,  3 Jul 2024 10:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005823; cv=none; b=VF2gcmoCPnCqhBOuSnHmT0ZrIDntJI1fuYtaB3FfM4D5LI2/L1/emfBrVfxHAy3N3fOzUyAEgoWjPBhRbkhYs8ufet74kdu0h6joXl6YK1suoivA3S4/2mK9r9Nh8h17nfbBJsgb0dcjSWu281CcNmZi+ZgnmAnz63P6QHvsKaM=
+	t=1720003429; cv=none; b=njmdy1V+XNYbWd7IxMX/Kt4fXo719zd8yUAHDoUGjN/hedp3SFWJJVO5ge1lJfYxeO6kx56VnEt067TvQu6qQD2PkOz5TvFBXegQ/svIdHRnuXJPeJbQd9m/lkSxeO/ELDiDjLg9TVh8w1BkYQSaz4g29CxOJEX1PMX5/nL7PuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005823; c=relaxed/simple;
-	bh=W0y8OERDwmS9OgRN5IrQ+imlLhanqAiqeuP+7bsMdr4=;
+	s=arc-20240116; t=1720003429; c=relaxed/simple;
+	bh=ru0iQNEqC5AiccLMUg5gun+LhY8CZxqnauZNqMw2bEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=haMqVQg7otElDFltX58LeMSNpDpGHbHNtTFSoTnufcOoF3/tJ/8nr+5E3+CMN3xBsY7XgxJlKLHozXaKJCYuwu3CYCFClB/S07CESNGnnuE5cAEnUY89yrYiN8N9PMX73vzkCza+qGsj95TUA1yHMJmxDYXtjxeTjHbyHrQj1bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqCGYd3C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C90EC2BD10;
-	Wed,  3 Jul 2024 11:23:42 +0000 (UTC)
+	 MIME-Version; b=tWJt4s4DFi8g6jk7wF9bdAUQBFArmmfOOo2d3XBbOq1JlnguXY6YArAc6Qkx/zkKO6je/POTIUrrCv+iypK0GiwSjPywxsZkxzqt/WClxL4ZwwVekdhOiZ26rgWyc/H8eoGWoqXcsPUzHQR+ilEPxONGy8D55dAmENG+khfSiIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jsm3LpxV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080C4C2BD10;
+	Wed,  3 Jul 2024 10:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005822;
-	bh=W0y8OERDwmS9OgRN5IrQ+imlLhanqAiqeuP+7bsMdr4=;
+	s=korg; t=1720003429;
+	bh=ru0iQNEqC5AiccLMUg5gun+LhY8CZxqnauZNqMw2bEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wqCGYd3C/xUOGtSh30WxjgJs/alGLayu57xpv8hLoqW4zJnVNhIBFtQigKCOa0Ch4
-	 YE0edetm5GBcfrEZp7uhrzD5g3MZZ3rFAuaxvZbiU+Z0Fk2Q/tLpt2flHsrInwwHa/
-	 etYHAMNVXgVbAVn95NvX3vskBK+wjmMviGMaUTUs=
+	b=Jsm3LpxVpwfdriAVKup2Tzt3vrLRIstwRi/yx6lNGDtu97k4ekv25Ci16mvDeiFm7
+	 8B5PH+iMRY9m6QNr4gst60U27V+jT+RnydSlDwELE/1+MISp1to9nwx+EI9cojDHkz
+	 lN796lpq0eg6H3iEYmH/nd9x8fCkbKcRkgAT5Ydk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li RongQing <lirongqing@baidu.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 207/356] dmaengine: idxd: Fix possible Use-After-Free in irq_process_work_list
+	stable <stable@kernel.org>,
+	Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
+Subject: [PATCH 4.19 046/139] vmci: prevent speculation leaks by sanitizing event in event_deliver()
 Date: Wed,  3 Jul 2024 12:39:03 +0200
-Message-ID: <20240703102920.938413001@linuxfoundation.org>
+Message-ID: <20240703102832.176096465@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li RongQing <lirongqing@baidu.com>
+From: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
 
-[ Upstream commit e3215deca4520773cd2b155bed164c12365149a7 ]
+commit 8003f00d895310d409b2bf9ef907c56b42a4e0f4 upstream.
 
-Use list_for_each_entry_safe() to allow iterating through the list and
-deleting the entry in the iteration process. The descriptor is freed via
-idxd_desc_complete() and there's a slight chance may cause issue for
-the list iterator when the descriptor is reused by another thread
-without it being deleted from the list.
+Coverity spotted that event_msg is controlled by user-space,
+event_msg->event_data.event is passed to event_deliver() and used
+as an index without sanitization.
 
-Fixes: 16e19e11228b ("dmaengine: idxd: Fix list corruption in description completion")
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Fenghua Yu <fenghua.yu@intel.com>
-Link: https://lore.kernel.org/r/20240603012444.11902-1-lirongqing@baidu.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This change ensures that the event index is sanitized to mitigate any
+possibility of speculative information leaks.
+
+This bug was discovered and resolved using Coverity Static Analysis
+Security Testing (SAST) by Synopsys, Inc.
+
+Only compile tested, no access to HW.
+
+Fixes: 1d990201f9bb ("VMCI: event handling implementation.")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
+Link: https://lore.kernel.org/stable/20231127193533.46174-1-hagarhem%40amazon.com
+Link: https://lore.kernel.org/r/20240430085916.4753-1-hagarhem@amazon.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/irq.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/misc/vmw_vmci/vmci_event.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/idxd/irq.c b/drivers/dma/idxd/irq.c
-index 6d6af0dc3c0ec..1296076ea217c 100644
---- a/drivers/dma/idxd/irq.c
-+++ b/drivers/dma/idxd/irq.c
-@@ -233,11 +233,13 @@ static void irq_process_work_list(struct idxd_irq_entry *irq_entry)
+--- a/drivers/misc/vmw_vmci/vmci_event.c
++++ b/drivers/misc/vmw_vmci/vmci_event.c
+@@ -17,6 +17,7 @@
+ #include <linux/vmw_vmci_api.h>
+ #include <linux/list.h>
+ #include <linux/module.h>
++#include <linux/nospec.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+ #include <linux/rculist.h>
+@@ -94,9 +95,12 @@ static void event_deliver(struct vmci_ev
+ {
+ 	struct vmci_subscription *cur;
+ 	struct list_head *subscriber_list;
++	u32 sanitized_event, max_vmci_event;
  
- 	spin_unlock(&irq_entry->list_lock);
- 
--	list_for_each_entry(desc, &flist, list) {
-+	list_for_each_entry_safe(desc, n, &flist, list) {
- 		/*
- 		 * Check against the original status as ABORT is software defined
- 		 * and 0xff, which DSA_COMP_STATUS_MASK can mask out.
- 		 */
-+		list_del(&desc->list);
-+
- 		if (unlikely(desc->completion->status == IDXD_COMP_DESC_ABORT)) {
- 			complete_desc(desc, IDXD_COMPLETE_ABORT);
- 			continue;
--- 
-2.43.0
-
+ 	rcu_read_lock();
+-	subscriber_list = &subscriber_array[event_msg->event_data.event];
++	max_vmci_event = ARRAY_SIZE(subscriber_array);
++	sanitized_event = array_index_nospec(event_msg->event_data.event, max_vmci_event);
++	subscriber_list = &subscriber_array[sanitized_event];
+ 	list_for_each_entry_rcu(cur, subscriber_list, node) {
+ 		cur->callback(cur->id, &event_msg->event_data,
+ 			      cur->callback_data);
 
 
 
