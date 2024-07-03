@@ -1,137 +1,137 @@
-Return-Path: <stable+bounces-57914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A22592606D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:34:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1134392606F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7518DB316F6
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:22:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C487E1F22307
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C496417554A;
-	Wed,  3 Jul 2024 12:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C50CE176AA4;
+	Wed,  3 Jul 2024 12:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="QXkAxWXB"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="erEep//Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57163172798
-	for <stable@vger.kernel.org>; Wed,  3 Jul 2024 12:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E915B17335C
+	for <stable@vger.kernel.org>; Wed,  3 Jul 2024 12:35:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720009362; cv=none; b=X/WrXHexbYXp+f7SYw2a0o+7TljAD2oCj3USO+5OGrmx3661eAGjWR/3bHqYqI/ix+UvhZjPVnZsHQgtpbGUBHMC7ClGqN5Yh/yD87WABSmo4GDTnm56nczCZ3f1xls/bFnZHLuaAhy/TJwAxO38KcU2h9WOU9ONrLlpQhMOnjY=
+	t=1720010112; cv=none; b=Yy53WfM65pT2EWivOFSmDDvFVcp9ek82zA3PNUaBlSPg6HT7SoC37pQKjI/dcUMRL0kMjekf0VzyPrOrZ6OTNCby4wNHKVzGRhjmg522mH1jYZqKvNBVOPnwXbdAJnmeQN1pdMbCZZwf7qzkgMBf5NvQFeRTO+S86OjcYfK7LSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720009362; c=relaxed/simple;
-	bh=TX2gvgdit2no2Bm4JOYvYuXVgfwUmwr1dfS1rQTimbE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o/S9ja7yHQHTliyfmXvQ6OLQyTIqSzQ2m5vfBAHjY3p+vRY3RP3Gu9YDLu3ta2G90qfnERP2OzCfQxMtkI5PsMExg9UHslAyBOXuanhEpF3tqj+xwFAnCsbtt+cLIw3x+JnPrCBZyPWjsMLL01V4sBLcbYKrtqEAUmMU6lwsQu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=QXkAxWXB; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2ec3f875e68so59510361fa.0
-        for <stable@vger.kernel.org>; Wed, 03 Jul 2024 05:22:39 -0700 (PDT)
+	s=arc-20240116; t=1720010112; c=relaxed/simple;
+	bh=cfGy4hd/MJDQaAlZyWKj8dMD+MgtojL710RreopYNk4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uaT+TNPYHP+1j3hQkwsRrV/bdwkEp02/5JZiWmrBgd/GGrPtoUlBbDCAq6nMchIAQ9Eg6FLYsCVDYePH+XTRFLRf4Hk2xo+ybHhnGmDirzi+iwfYY6ouPgUn63n2itzRSYdDVBO6G0/EeKFv9swz7SMOylVVailp5nVJDtnGWT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=erEep//Q; arc=none smtp.client-ip=209.85.222.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-8100f08b5a8so516350241.0
+        for <stable@vger.kernel.org>; Wed, 03 Jul 2024 05:35:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1720009358; x=1720614158; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sYo5IBsgfXZoFfV/jrH0cWY+s6dZqG1CrWcT7nsdClQ=;
-        b=QXkAxWXBHNwL167XOVQY5fWzRVOXxoEm2BmBn6sxC+LcqcFSbJohvP8kh3jrOcXevG
-         TfNZQqv5GC6NvzJBzBD7Iv0i5s26+QRtwI6uJgIy183ciDlwcTmNKPz4w/4+d7KulSXT
-         b+8V2C4n3ZTDkNd4qe8VAuOZN6sALW7zkbQQPmqHIFmv0YB+NRQFS/7ybc+fBXL49yv7
-         OPlYo9hBiA1t9Z7E+7nYYyUTGZ+nDAoB24tVhXr7lm38ctyNct8h5PNpYfZXNBVnDBI3
-         EyRu3MXoOL0wW3O6118tjF4tQDA4DNYfLUDFHSU/FxiqzL+eHiOSTI0gKQrHI3iFUwdV
-         2JOw==
+        d=linaro.org; s=google; t=1720010110; x=1720614910; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pj8SrAjLpSLjliuG99WdKny0d1AT/67yDFEWTU/8uKo=;
+        b=erEep//QN5IXm7I1epEj8I1BLWCjLhgaUkdFy0OsgNUbm/sTbX25lI0309bLOna9zI
+         3B0meQB7XuQJ2z+I+Bw5vLZoFTtIjkJJEcTD9e6DoPyLws4jwQUKO2Td7xa79GsxmiAi
+         LJGMgNYE7e0SdOywpuKcompPZypvWwXmMPjZ9Mcp2qoh9b5uou+/DqRnHC9QtUQTOsEV
+         MqGCq8G2yKf29qakj0oFMZhapUilwaDMzVl1/312RRdZvzBuZQjXKA+QSnc0XYFD/UxT
+         9md6fxCuIu9ehR2wbW/IKCeHm1VF/aTjACo7frld7jpJEgT90K3pHOkvnA3r2URpp+Jt
+         nPuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720009358; x=1720614158;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sYo5IBsgfXZoFfV/jrH0cWY+s6dZqG1CrWcT7nsdClQ=;
-        b=wPlXv4GlZCaA2AOVC9aQqPDOvCgHcvT92p8nkHCj20tlGrh8j0oIZKp4teENMXEbn+
-         Hy+G2DBl0EqiNAhw8169duhiydmYKQB0eelu5Fl0X+J3APinIf81pgg4bSwqmvXqEp+5
-         TMDD4zOp0oxx3LZZLBFy7845ExAVmSmn+HQwa4BO0/SWWIXEGH08MBdxLT/FlpZDqOvw
-         2QoGlBVcDZxkRF/zlXUotm9pDx0U8wFnmWuASA5x1FYS+ljvxI4keRkyL88vW2fJXH8C
-         6M1gEGYWg/cICM0JCy32BmKdLY5iyAxS/XEzry1Xq9c3X/BByBkBz4ho8YhmWQcH5AA1
-         Ndqw==
-X-Forwarded-Encrypted: i=1; AJvYcCWTnoJcq6XwilMK/ceKL6/d1ZTnGiy/KLms1rssh6o2FgtKNmh/QtuXSCysRk4J0kX2juERHG+vRqj7TB8Vf8ZRMLzLAeNm
-X-Gm-Message-State: AOJu0Ywo6IS6CwfBOCvgs992P42CPoM8szswFvI2v9cdfTrxMENxIvoK
-	V6A7ypp/u/W7hDYBBjrucrTPhux7DiAfWS0ZNfBA2mO1wU8NIAF0MUVrFv0x568=
-X-Google-Smtp-Source: AGHT+IHZ4VR/Z2EA5bNROzM44bBxwS+VTMY4KF41urbY5op+dc5ajamiSRVwX7gtAx+LOXib0By3RA==
-X-Received: by 2002:a2e:a902:0:b0:2ee:6062:b559 with SMTP id 38308e7fff4ca-2ee6062b816mr81975241fa.8.1720009358326;
-        Wed, 03 Jul 2024 05:22:38 -0700 (PDT)
-Received: from ?IPV6:2a10:bac0:b000:757f:69b1:bdb0:82db:8b8b? ([2a10:bac0:b000:757f:69b1:bdb0:82db:8b8b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4256b064f16sm236821285e9.27.2024.07.03.05.22.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Jul 2024 05:22:37 -0700 (PDT)
-Message-ID: <d405c84e-2b8c-4139-b4ea-d716fe53dfca@suse.com>
-Date: Wed, 3 Jul 2024 15:22:35 +0300
+        d=1e100.net; s=20230601; t=1720010110; x=1720614910;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Pj8SrAjLpSLjliuG99WdKny0d1AT/67yDFEWTU/8uKo=;
+        b=lzv670nQcyxxTBzstBg7waV+Qfd7ThWgOrfttD68irx1Ri/Bh7ALtBcJsl00jkA02a
+         PXO1gJ9PQB4rzOPDI1ySS8uNQaK8Ke3FNzCepLIgYhYXTJGJaDpIuD19p9pYYpEoji/C
+         Nre8Oq7Cow2cO9xkS5OZgzIgJrfobSUowLFY6pZJeOwesAZn39afezNLUzOdRiFyedT+
+         JaQbB/UZAu1b0NMyc1tJdYCYVZ6s0Hhdfe6Lk0xFJvC3AV2RU5eQWvuPH2Qz7/ASz6x3
+         XSdrjTZnMqNWdoTLZepl7l2LH69L1yCU6rp5WYaYTOKIQT1y+VFz/fQjPqT+yBMPtoPT
+         f3Wg==
+X-Gm-Message-State: AOJu0Yzh8ITKsD1XIxqSWbZCBG5Qq74Tt87NRHeiWztxqj54LsjjlF2U
+	MxzxjLSb2sC3+JgV+Bd89D1rCqD/3aCUKWxRr3EQxcT4FS4q9wZ4RJBDQH3fhGBq3IpB6A8YV7u
+	Kl1wjjzS4CcO81OQE8oU8tMci7CnPw6uMdqfHmw==
+X-Google-Smtp-Source: AGHT+IFC2Ceua1RohvvkAIKkyjcpb3zdlon3mgykMv7og6AVgIzZvwsefW9dPMvY1y6HF6Y22NRmSxg3gPVSzvwQPTc=
+X-Received: by 2002:a05:6122:4287:b0:4ef:58d4:70f8 with SMTP id
+ 71dfb90a1353d-4f2a572cb78mr13958132e0c.13.1720010109406; Wed, 03 Jul 2024
+ 05:35:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv5 3/4] x86/tdx: Dynamically disable SEPT violations from
- causing #VEs
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240624114149.377492-1-kirill.shutemov@linux.intel.com>
- <20240624114149.377492-4-kirill.shutemov@linux.intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-In-Reply-To: <20240624114149.377492-4-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20240702170233.048122282@linuxfoundation.org> <CA+G9fYs=KkeYFMS01s3VZmeSYd1zJphinPFCk1G2AJ7LZ=+8=A@mail.gmail.com>
+In-Reply-To: <CA+G9fYs=KkeYFMS01s3VZmeSYd1zJphinPFCk1G2AJ7LZ=+8=A@mail.gmail.com>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 3 Jul 2024 18:04:57 +0530
+Message-ID: <CA+G9fYvcbdKN8B9t-ukO2aZCOwkjNme8+XhLcL-=wcd+XXRP6g@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/163] 6.6.37-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Kees Cook <keescook@chromium.org>, Alexei Starovoitov <ast@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
+On Wed, 3 Jul 2024 at 14:27, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+>
+> On Tue, 2 Jul 2024 at 22:48, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > This is the start of the stable review cycle for the 6.6.37 release.
+> > There are 163 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Thu, 04 Jul 2024 17:01:55 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.37-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+>
+> The following powerpc builds failed on stable-rc 6.6.
+>
+> powerpc:
+>  - gcc-13-defconfig
+>  - clang-18-defconfig
+>
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+>
+> Build log:
+> ---------
+> arch/powerpc/net/bpf_jit_comp.c: In function 'bpf_int_jit_compile':
+> arch/powerpc/net/bpf_jit_comp.c:208:17: error: ignoring return value
+> of 'bpf_jit_binary_lock_ro' declared with attribute
+> 'warn_unused_result' [-Werror=unused-result]
+>   208 |                 bpf_jit_binary_lock_ro(bpf_hdr);
+>       |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> cc1: all warnings being treated as errors
+>
 
+Anders bisected this down to,
+first bad commit: [28ae2e78321b5ac25958b3fcae0dcc80116e0c50]
+  bpf: Take return from set_memory_rox() into account with
+bpf_jit_binary_lock_ro()
 
-On 24.06.24 г. 14:41 ч., Kirill A. Shutemov wrote:
-
-<snip>
-
-
-
-> --- a/arch/x86/include/asm/shared/tdx.h
-> +++ b/arch/x86/include/asm/shared/tdx.h
-> @@ -19,9 +19,17 @@
->   #define TDG_VM_RD			7
->   #define TDG_VM_WR			8
->   
-> -/* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
-> +/* TDX TD-Scope Metadata. To be used by TDG.VM.WR and TDG.VM.RD */
-> +#define TDCS_CONFIG_FLAGS		0x1110000300000016
-> +#define TDCS_TD_CTLS			0x1110000300000017
->   #define TDCS_NOTIFY_ENABLES		0x9100000000000010
->   
-> +/* TDCS_CONFIG_FLAGS bits */
-> +#define TDCS_CONFIG_FLEXIBLE_PENDING_VE	BIT_ULL(1)
-
-
-So where is this bit documented, because in td_scope_metadata.json 
-CONFIG_FLAGS' individual bits aren't documented. All other TDX docs 
-refer to the ABI .json file.
-
-Landing code for undocumented bits unfortunately precludes any quality 
-review on behalf of independent parties.
-
-> +
-> +/* TDCS_TD_CTLS bits */
-> +#define TD_CTLS_PENDING_VE_DISABLE	BIT_ULL(0)
-
-In contrast the TD_CTLS bits are documented in the same .json file.
-
-> +
->   /* TDX hypercall Leaf IDs */
->   #define TDVMCALL_MAP_GPA		0x10001
->   #define TDVMCALL_GET_QUOTE		0x10002
+- Naresh
 
