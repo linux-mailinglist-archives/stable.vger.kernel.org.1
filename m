@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C919D925C6C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:18:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3831925A44
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:56:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84E9B2C2A23
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:18:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7AD3297C29
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B281822C3;
-	Wed,  3 Jul 2024 11:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4843317B4FC;
+	Wed,  3 Jul 2024 10:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCaKaAQh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+rx9M01"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F31E181D17;
-	Wed,  3 Jul 2024 11:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050D817B4FF;
+	Wed,  3 Jul 2024 10:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004792; cv=none; b=X22uNRg4FeMrAJCv2rUMxay/z4YBNtBj1FQbQwNYkMap620oOU9E813kUkSw4bCYP0HHfl1zemxvjIwUX2CChfWgRTtmbTM85EIFPzoyoHxiipCVAVHBUK807UmicpMlivyCig5xkIi9MFEoaz1w8hflaei1Ijk5VdrMgZe/eu8=
+	t=1720003332; cv=none; b=j1gNq5wpqOpOkgE0p9dW+IidNhR1nA1SEzwguyTswfZggKjdEd0Ya2QIW2oa0zjea4j8QmuR8Kmo6Zt1qMSN9q03GfbLXjlAms1svAjbD3T4VC0bFADSSRVn1BdlgS7mtmyu5nMoWjPcswJx2ft3c5BM3aOq56fuuOTwi3Fu38o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004792; c=relaxed/simple;
-	bh=BQIpY7MUJpHd2H5iUEGUcOfzVuXAbKF+rTdaqImjMHU=;
+	s=arc-20240116; t=1720003332; c=relaxed/simple;
+	bh=CYnSKYLUpaWSMm5doIJs3+rsN+8vFlzZDjPChQMzetg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=opfaGXEv3guPe40rryX2AQJ1zl+onG8FhUztHetilk9yTBSnND5wJMTM2SrgVX1ZrsBDnoK9DdOrOpCIeLVMx6eP5+V9Mr+T/THBFehPW2HrMeXnqnwSKnsWu2txuSdz2Oo81mcANQPbhDbm7WS613/+fjYFrFFrmwTLhNTTVJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCaKaAQh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12C3C2BD10;
-	Wed,  3 Jul 2024 11:06:31 +0000 (UTC)
+	 MIME-Version; b=pjtRsakBcRyTBnrJvhdVyvKg3DL+kjs01QSM5Y/T0UcLbhZqli88yccRflx8o9CieitlnRWWOZCBoHVHHrt7RtwK6Q2iHWDGGu7KBPK7bF0iZfqaJJYTMLrCofYPxiPcDxjDl1AtI8yYlOKeXZN8sCsCsaRfvNI9AppzN0cemlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+rx9M01; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D78C2BD10;
+	Wed,  3 Jul 2024 10:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004792;
-	bh=BQIpY7MUJpHd2H5iUEGUcOfzVuXAbKF+rTdaqImjMHU=;
+	s=korg; t=1720003331;
+	bh=CYnSKYLUpaWSMm5doIJs3+rsN+8vFlzZDjPChQMzetg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eCaKaAQhTq4cPpJAYt1PetBc+WAZTcX+RWlbntB7lpeUX2v/Q8hqHNZmaknlol5It
-	 hQiAiIvTe+wYT8Me49sAagSGihVIUREEco/NusTmdsC5hsB2cjC7LORuUf2H6iFGEB
-	 SvrnjJ7P/NNV7eZBVOpiF4POQvlHIGMgW18B1vrw=
+	b=b+rx9M01ae5HPRnnjCyeKNvcBzjHa4fSbRDZfvOQSQcKzZG+qI8ssf4f750qqGGKw
+	 9FYO2ZqLzAipZVubHgUNllTFraAR9aEccXCxyZ2f0uVBP/dUEZla6yxXtQo8VDwo/d
+	 +JjGrAu7Kpd0npxiJ8ycGV3RoPI9Hn8XH+nTjHXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunlei He <heyunlei@oppo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 129/290] f2fs: remove clear SB_INLINECRYPT flag in default_options
-Date: Wed,  3 Jul 2024 12:38:30 +0200
-Message-ID: <20240703102909.058803817@linuxfoundation.org>
+Subject: [PATCH 4.19 014/139] af_unix: Use unix_recvq_full_lockless() in unix_stream_connect().
+Date: Wed,  3 Jul 2024 12:38:31 +0200
+Message-ID: <20240703102830.977058578@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunlei He <heyunlei@oppo.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit ac5eecf481c29942eb9a862e758c0c8b68090c33 ]
+[ Upstream commit 45d872f0e65593176d880ec148f41ad7c02e40a7 ]
 
-In f2fs_remount, SB_INLINECRYPT flag will be clear and re-set.
-If create new file or open file during this gap, these files
-will not use inlinecrypt. Worse case, it may lead to data
-corruption if wrappedkey_v0 is enable.
+Once sk->sk_state is changed to TCP_LISTEN, it never changes.
 
-Thread A:                               Thread B:
+unix_accept() takes advantage of this characteristics; it does not
+hold the listener's unix_state_lock() and only acquires recvq lock
+to pop one skb.
 
--f2fs_remount				-f2fs_file_open or f2fs_new_inode
-  -default_options
-	<- clear SB_INLINECRYPT flag
+It means unix_state_lock() does not prevent the queue length from
+changing in unix_stream_connect().
 
-                                          -fscrypt_select_encryption_impl
+Thus, we need to use unix_recvq_full_lockless() to avoid data-race.
 
-  -parse_options
-	<- set SB_INLINECRYPT again
+Now we remove unix_recvq_full() as no one uses it.
 
-Signed-off-by: Yunlei He <heyunlei@oppo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Note that we can remove READ_ONCE() for sk->sk_max_ack_backlog in
+unix_recvq_full_lockless() because of the following reasons:
+
+  (1) For SOCK_DGRAM, it is a written-once field in unix_create1()
+
+  (2) For SOCK_STREAM and SOCK_SEQPACKET, it is changed under the
+      listener's unix_state_lock() in unix_listen(), and we hold
+      the lock in unix_stream_connect()
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/unix/af_unix.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 1281b59da6a2a..9fed42e7bb1d2 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1745,8 +1745,6 @@ static void default_options(struct f2fs_sb_info *sbi)
- 	F2FS_OPTION(sbi).compress_mode = COMPR_MODE_FS;
- 	F2FS_OPTION(sbi).bggc_mode = BGGC_MODE_ON;
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 4a4b6d2544534..dfcafbb8cd0e0 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -194,15 +194,9 @@ static inline int unix_may_send(struct sock *sk, struct sock *osk)
+ 	return unix_peer(osk) == NULL || unix_our_peer(sk, osk);
+ }
  
--	sbi->sb->s_flags &= ~SB_INLINECRYPT;
+-static inline int unix_recvq_full(const struct sock *sk)
+-{
+-	return skb_queue_len(&sk->sk_receive_queue) > sk->sk_max_ack_backlog;
+-}
 -
- 	set_opt(sbi, INLINE_XATTR);
- 	set_opt(sbi, INLINE_DATA);
- 	set_opt(sbi, INLINE_DENTRY);
+ static inline int unix_recvq_full_lockless(const struct sock *sk)
+ {
+-	return skb_queue_len_lockless(&sk->sk_receive_queue) >
+-		READ_ONCE(sk->sk_max_ack_backlog);
++	return skb_queue_len_lockless(&sk->sk_receive_queue) > sk->sk_max_ack_backlog;
+ }
+ 
+ struct sock *unix_peer_get(struct sock *s)
+@@ -1306,7 +1300,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 	if (other->sk_shutdown & RCV_SHUTDOWN)
+ 		goto out_unlock;
+ 
+-	if (unix_recvq_full(other)) {
++	if (unix_recvq_full_lockless(other)) {
+ 		err = -EAGAIN;
+ 		if (!timeo)
+ 			goto out_unlock;
 -- 
 2.43.0
 
