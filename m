@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-57547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5464925CEF
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:24:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4932F925CF1
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50B821F25EA3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:24:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6324BB360B9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B537918F2EC;
-	Wed,  3 Jul 2024 11:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43D2194A57;
+	Wed,  3 Jul 2024 10:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxrswMOx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDWumdo6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729A917A5A5;
-	Wed,  3 Jul 2024 11:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2E31891B6;
+	Wed,  3 Jul 2024 10:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005215; cv=none; b=Y/5S9uQYptPYhJ50M+f40yvXYPKq+gwZTC+rr4eS2iMU0ZS7x/V1Iex7q5EwE+foNbjCh8qVR72ZAmZ4q/YW7kpQ/Xh8mr4Q/KzQMRR9VbpXfH4uYn/rsuKIJKVJV7uZ/5rgfglBJAdXl4L1mGadZTSMINOAxsSDC6xAJz8XTD4=
+	t=1720004300; cv=none; b=ahvALEWghXanMExFnTfRTtP/i5U+IoX6f1K5X3DQdYUFBSYkNmTE993H9+4egU/yhL2vHCEOTDqmdAGnmrI6eSuCH55QT20HTK74uAifLw7Pnc8QhOtBZH+LH+ADdjNGg2sNzTI2z21UKgbAXqhQX+PZqJ9rjVLMPpus9z1lu8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005215; c=relaxed/simple;
-	bh=BENghkcBHx6bpmuisW7CHAXQC+duiwE/yosWT4/9UdQ=;
+	s=arc-20240116; t=1720004300; c=relaxed/simple;
+	bh=CjYwkpMyuCyp3K3M/ANdQK31XthczZFlnBw9oHS6i5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u8EI7vRQYmbPWh0XH3Cr2hQWPd7BoFqJkVZm5oy/oGsduYAUTA+NmFDkwnm/KZ6c/pAr9Oebq+AlZLU6lU0WU2TCUfGxWtDVnNfu7M82A8UBagR8RlDqxiRE9QNfyl0ECh1bDfrFoZO6/A/Wrumz4OIvZTI1G800nQ8bN3YYLJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxrswMOx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5ABC2BD10;
-	Wed,  3 Jul 2024 11:13:34 +0000 (UTC)
+	 MIME-Version; b=PD5o0EQR2nryt3SnbVhyLkPW9fDlc5tkNYF15cXvomdVVEBCIS3oTFqUK+LefxL/i6iKBlMdYKqWtnq6Zo2QilqjbXgJk3hksxPYCSdwIyZ/kEydkM/zyUCGa+lZ1aMR367Zw1mIzOI6BpRuxAD8JIju2KVRIozR5gf5ccyvUDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDWumdo6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C07C4AF0B;
+	Wed,  3 Jul 2024 10:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005215;
-	bh=BENghkcBHx6bpmuisW7CHAXQC+duiwE/yosWT4/9UdQ=;
+	s=korg; t=1720004300;
+	bh=CjYwkpMyuCyp3K3M/ANdQK31XthczZFlnBw9oHS6i5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxrswMOxGB+Yf2EG+s2aStgPaz7BBMY0r+FG4mwjcudtzlYHl/2rixdMPf+36jmeT
-	 yddjW/i4nYZVrirL2QIUr8E42IQl95K68H0e1nC95bLbCFsy1Zywi7PsO21a8G9WA1
-	 lmBrBw2hCf6hs3Nlg91JVCJQu2KYFsqmlvDdJKpM=
+	b=QDWumdo6l2orsll0rTMyIw3zMqgav841Hk+kyg+AtK/xAmvlMVFTJohNuRBZCn1NC
+	 PJyo/G0RxkRlBamOjUHsOU3d3hJOyWGOKwAn6aPUkGB4FoJmMU5U4CmzXXeSdacZYP
+	 S52VavLtCJWJjIQOqI/n72/IL8ACEGYSaxq778Zg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netdev@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 5.10 265/290] sh: rework sync_file_range ABI
-Date: Wed,  3 Jul 2024 12:40:46 +0200
-Message-ID: <20240703102914.152821902@linuxfoundation.org>
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
+Subject: [PATCH 5.4 186/189] ipv6: Fix data races around sk->sk_prot.
+Date: Wed,  3 Jul 2024 12:40:47 +0200
+Message-ID: <20240703102848.492659343@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +63,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 30766f1105d6d2459c3b9fe34a3e52b637a72950 upstream.
+commit 364f997b5cfe1db0d63a390fe7c801fa2b3115f6 upstream.
 
-The unusual function calling conventions on SuperH ended up causing
-sync_file_range to have the wrong argument order, with the 'flags'
-argument getting sorted before 'nbytes' by the compiler.
+Commit 086d49058cd8 ("ipv6: annotate some data-races around sk->sk_prot")
+fixed some data-races around sk->sk_prot but it was not enough.
 
-In userspace, I found that musl, glibc, uclibc and strace all expect the
-normal calling conventions with 'nbytes' last, so changing the kernel
-to match them should make all of those work.
+Some functions in inet6_(stream|dgram)_ops still access sk->sk_prot
+without lock_sock() or rtnl_lock(), so they need READ_ONCE() to avoid
+load tearing.
 
-In order to be able to also fix libc implementations to work with existing
-kernels, they need to be able to tell which ABI is used. An easy way
-to do this is to add yet another system call using the sync_file_range2
-ABI that works the same on all architectures.
-
-Old user binaries can now work on new kernels, and new binaries can
-try the new sync_file_range2() to work with new kernels or fall back
-to the old sync_file_range() version if that doesn't exist.
-
-Cc: stable@vger.kernel.org
-Fixes: 75c92acdd5b1 ("sh: Wire up new syscalls.")
-Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sh/kernel/sys_sh32.c           |   11 +++++++++++
- arch/sh/kernel/syscalls/syscall.tbl |    3 ++-
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ net/core/sock.c          |    6 ++++--
+ net/ipv4/af_inet.c       |   23 ++++++++++++++++-------
+ net/ipv6/ipv6_sockglue.c |    4 ++--
+ 3 files changed, 22 insertions(+), 11 deletions(-)
 
---- a/arch/sh/kernel/sys_sh32.c
-+++ b/arch/sh/kernel/sys_sh32.c
-@@ -59,3 +59,14 @@ asmlinkage int sys_fadvise64_64_wrapper(
- 				 (u64)len0 << 32 | len1, advice);
- #endif
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -3172,7 +3172,8 @@ int sock_common_getsockopt(struct socket
+ {
+ 	struct sock *sk = sock->sk;
+ 
+-	return sk->sk_prot->getsockopt(sk, level, optname, optval, optlen);
++	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
++	return READ_ONCE(sk->sk_prot)->getsockopt(sk, level, optname, optval, optlen);
  }
+ EXPORT_SYMBOL(sock_common_getsockopt);
+ 
+@@ -3213,7 +3214,8 @@ int sock_common_setsockopt(struct socket
+ {
+ 	struct sock *sk = sock->sk;
+ 
+-	return sk->sk_prot->setsockopt(sk, level, optname, optval, optlen);
++	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
++	return READ_ONCE(sk->sk_prot)->setsockopt(sk, level, optname, optval, optlen);
+ }
+ EXPORT_SYMBOL(sock_common_setsockopt);
+ 
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -553,22 +553,27 @@ int inet_dgram_connect(struct socket *so
+ 		       int addr_len, int flags)
+ {
+ 	struct sock *sk = sock->sk;
++	const struct proto *prot;
+ 	int err;
+ 
+ 	if (addr_len < sizeof(uaddr->sa_family))
+ 		return -EINVAL;
 +
-+/*
-+ * swap the arguments the way that libc wants them instead of
-+ * moving flags ahead of the 64-bit nbytes argument
-+ */
-+SYSCALL_DEFINE6(sh_sync_file_range6, int, fd, SC_ARG64(offset),
-+                SC_ARG64(nbytes), unsigned int, flags)
-+{
-+        return ksys_sync_file_range(fd, SC_VAL64(loff_t, offset),
-+                                    SC_VAL64(loff_t, nbytes), flags);
-+}
---- a/arch/sh/kernel/syscalls/syscall.tbl
-+++ b/arch/sh/kernel/syscalls/syscall.tbl
-@@ -321,7 +321,7 @@
- 311	common	set_robust_list			sys_set_robust_list
- 312	common	get_robust_list			sys_get_robust_list
- 313	common	splice				sys_splice
--314	common	sync_file_range			sys_sync_file_range
-+314	common	sync_file_range			sys_sh_sync_file_range6
- 315	common	tee				sys_tee
- 316	common	vmsplice			sys_vmsplice
- 317	common	move_pages			sys_move_pages
-@@ -395,6 +395,7 @@
- 385	common	pkey_alloc			sys_pkey_alloc
- 386	common	pkey_free			sys_pkey_free
- 387	common	rseq				sys_rseq
-+388	common	sync_file_range2		sys_sync_file_range2
- # room for arch specific syscalls
- 393	common	semget				sys_semget
- 394	common	semctl				sys_semctl
++	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
++	prot = READ_ONCE(sk->sk_prot);
++
+ 	if (uaddr->sa_family == AF_UNSPEC)
+-		return sk->sk_prot->disconnect(sk, flags);
++		return prot->disconnect(sk, flags);
+ 
+ 	if (BPF_CGROUP_PRE_CONNECT_ENABLED(sk)) {
+-		err = sk->sk_prot->pre_connect(sk, uaddr, addr_len);
++		err = prot->pre_connect(sk, uaddr, addr_len);
+ 		if (err)
+ 			return err;
+ 	}
+ 
+ 	if (!inet_sk(sk)->inet_num && inet_autobind(sk))
+ 		return -EAGAIN;
+-	return sk->sk_prot->connect(sk, uaddr, addr_len);
++	return prot->connect(sk, uaddr, addr_len);
+ }
+ EXPORT_SYMBOL(inet_dgram_connect);
+ 
+@@ -731,10 +736,11 @@ EXPORT_SYMBOL(inet_stream_connect);
+ int inet_accept(struct socket *sock, struct socket *newsock, int flags,
+ 		bool kern)
+ {
+-	struct sock *sk1 = sock->sk;
++	struct sock *sk1 = sock->sk, *sk2;
+ 	int err = -EINVAL;
+-	struct sock *sk2 = sk1->sk_prot->accept(sk1, flags, &err, kern);
+ 
++	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
++	sk2 = READ_ONCE(sk1->sk_prot)->accept(sk1, flags, &err, kern);
+ 	if (!sk2)
+ 		goto do_err;
+ 
+@@ -815,12 +821,15 @@ ssize_t inet_sendpage(struct socket *soc
+ 		      size_t size, int flags)
+ {
+ 	struct sock *sk = sock->sk;
++	const struct proto *prot;
+ 
+ 	if (unlikely(inet_send_prepare(sk)))
+ 		return -EAGAIN;
+ 
+-	if (sk->sk_prot->sendpage)
+-		return sk->sk_prot->sendpage(sk, page, offset, size, flags);
++	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
++	prot = READ_ONCE(sk->sk_prot);
++	if (prot->sendpage)
++		return prot->sendpage(sk, page, offset, size, flags);
+ 	return sock_no_sendpage(sock, page, offset, size, flags);
+ }
+ EXPORT_SYMBOL(inet_sendpage);
+--- a/net/ipv6/ipv6_sockglue.c
++++ b/net/ipv6/ipv6_sockglue.c
+@@ -222,7 +222,7 @@ static int do_ipv6_setsockopt(struct soc
+ 				sock_prot_inuse_add(net, sk->sk_prot, -1);
+ 				sock_prot_inuse_add(net, &tcp_prot, 1);
+ 				local_bh_enable();
+-				/* Paired with READ_ONCE(sk->sk_prot) in net/ipv6/af_inet6.c */
++				/* Paired with READ_ONCE(sk->sk_prot) in inet6_stream_ops */
+ 				WRITE_ONCE(sk->sk_prot, &tcp_prot);
+ 				icsk->icsk_af_ops = &ipv4_specific;
+ 				sk->sk_socket->ops = &inet_stream_ops;
+@@ -237,7 +237,7 @@ static int do_ipv6_setsockopt(struct soc
+ 				sock_prot_inuse_add(net, sk->sk_prot, -1);
+ 				sock_prot_inuse_add(net, prot, 1);
+ 				local_bh_enable();
+-				/* Paired with READ_ONCE(sk->sk_prot) in net/ipv6/af_inet6.c */
++				/* Paired with READ_ONCE(sk->sk_prot) in inet6_dgram_ops */
+ 				WRITE_ONCE(sk->sk_prot, prot);
+ 				sk->sk_socket->ops = &inet_dgram_ops;
+ 				sk->sk_family = PF_INET;
 
 
 
