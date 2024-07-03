@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0701F925CB9
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 810E6925A86
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:01:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B31FC1F21588
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 384CD1F21727
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7410318C333;
-	Wed,  3 Jul 2024 11:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D614A176ADE;
+	Wed,  3 Jul 2024 10:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+s5yi2T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LL46A4+T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD7E1891DC;
-	Wed,  3 Jul 2024 11:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91AE513D61B;
+	Wed,  3 Jul 2024 10:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005064; cv=none; b=jMtStDnv2xL0SochuP63ZzQmtByZbq+4zaWi5b8BUy5V3P6b3iPe6Ccr2mjBVQHB8TKuEMt4dcpweieGNJjYoB+wi7LQh4ICBh21VcFUpjqwBN8FlY7+916hFnfVdyrcvEYc6cn9qgeMajzp5n9GnVtK278HJpYN0fMUILF0BOI=
+	t=1720003740; cv=none; b=eX6nnpceo3ByB4xKAW3heAsiu1cUs+J6TPnWSxPVDb9slyczGXwInL+obkNbp0aWQbfb2rT1rojT+CbSdZcjDxWXOLgD7j0yi99/qqlJhLnoQc/b201FSMhyLbui90cwVHpXU07C/XUv92iMcVVmmTOXv46eRmx7LmT7whcA2qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005064; c=relaxed/simple;
-	bh=hSGzjuz4bOLAvHGQwUzEqATyWL1/H09yrIfloVKf3Bg=;
+	s=arc-20240116; t=1720003740; c=relaxed/simple;
+	bh=r9ONEPz7DEpvd8RlWPcBocHCFtsxEUbPuGaiSOCq5Ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ck5xXnu1I+IIQUtNTqv33LmQGkRlDNKd098whfd2frcS79P4cIGoQ/otslzc9tm0WJaMb74iEts/DPvEPe2qvHl6QVBhwklSCOse9jKdqm9NnPSmSVtuW54/nTsfx4kKHcLjlECLCMJVjCokAYw3ai3d5CnflAzw0y0mAcFw+vU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+s5yi2T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4807EC2BD10;
-	Wed,  3 Jul 2024 11:11:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rN1ufjFgSVfnXloOcyfnaVIL7tNWiXMpcpPruJyhcJumCBNCrqmLDU7t+3HYn62sXvQB+ahzjMCGkueCZWwvvzwOl8Mqrki9LXf0GtOdGxsZxaoOCiT5eWUBoQbYQp2tBjK89McoqECY6qkP9pTTiiVjhos8NxGwDkfrhSjjORs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LL46A4+T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E1CC2BD10;
+	Wed,  3 Jul 2024 10:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005063;
-	bh=hSGzjuz4bOLAvHGQwUzEqATyWL1/H09yrIfloVKf3Bg=;
+	s=korg; t=1720003740;
+	bh=r9ONEPz7DEpvd8RlWPcBocHCFtsxEUbPuGaiSOCq5Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+s5yi2TjraxvBmjMw/KnLDwMy8x//CvQloE3Rpf+F7IUWD6i/2AMn62fnsjqfEP8
-	 VEiVu8g20wR1b33xQFPxmJ5aq2CeI+GKnkSkt6JHXqyrdJ08vIqzY2T9ekBNSfxEUz
-	 6p2zEelX95cv/qlA/7wnf7fXulxHSriqB/CIgXek=
+	b=LL46A4+Tba5v1+f+vMX/fdbLWfrNK2vLVljnjjCLHm46vxHUrYPDCnkDZfxLlzU+g
+	 pRB3epyLQmqweT9ZsnMzbU0VUEg2tYM1vPCHBTtwU3WfOdKR6y2yyjPznOM80j5Z8n
+	 WzhKQIgosqLDxmn86tbmkmSyie8HQCwGGJy1AuRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Yang <hagisf@usp.br>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 248/290] iio: adc: ad7266: Fix variable checking bug
+	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 4.19 132/139] batman-adv: Dont accept TT entries for out-of-spec VIDs
 Date: Wed,  3 Jul 2024 12:40:29 +0200
-Message-ID: <20240703102913.518440706@linuxfoundation.org>
+Message-ID: <20240703102835.419999426@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +60,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Yang <hagisf@usp.br>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit a2b86132955268b2a1703082fbc2d4832fc001b8 upstream.
+commit 537a350d14321c8cca5efbf0a33a404fec3a9f9e upstream.
 
-The ret variable was not checked after iio_device_release_direct_mode(),
-which could possibly cause errors
+The internal handling of VLAN IDs in batman-adv is only specified for
+following encodings:
 
-Fixes: c70df20e3159 ("iio: adc: ad7266: claim direct mode during sensor read")
-Signed-off-by: Fernando Yang <hagisf@usp.br>
-Link: https://lore.kernel.org/r/20240603180757.8560-1-hagisf@usp.br
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+* VLAN is used
+  - bit 15 is 1
+  - bit 11 - bit 0 is the VLAN ID (0-4095)
+  - remaining bits are 0
+* No VLAN is used
+  - bit 15 is 0
+  - remaining bits are 0
+
+batman-adv was only preparing new translation table entries (based on its
+soft interface information) using this encoding format. But the receive
+path was never checking if entries in the roam or TT TVLVs were also
+following this encoding.
+
+It was therefore possible to create more than the expected maximum of 4096
++ 1 entries in the originator VLAN list. Simply by setting the "remaining
+bits" to "random" values in corresponding TVLV.
+
+Cc: stable@vger.kernel.org
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+Reported-by: Linus Lüssing <linus.luessing@c0d3.blue>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7266.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/batman-adv/originator.c |   27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
---- a/drivers/iio/adc/ad7266.c
-+++ b/drivers/iio/adc/ad7266.c
-@@ -157,6 +157,8 @@ static int ad7266_read_raw(struct iio_de
- 		ret = ad7266_read_single(st, val, chan->address);
- 		iio_device_release_direct_mode(indio_dev);
+--- a/net/batman-adv/originator.c
++++ b/net/batman-adv/originator.c
+@@ -23,6 +23,7 @@
+ #include <linux/errno.h>
+ #include <linux/etherdevice.h>
+ #include <linux/gfp.h>
++#include <linux/if_vlan.h>
+ #include <linux/jiffies.h>
+ #include <linux/kernel.h>
+ #include <linux/kref.h>
+@@ -144,6 +145,29 @@ batadv_orig_node_vlan_get(struct batadv_
+ }
  
-+		if (ret < 0)
-+			return ret;
- 		*val = (*val >> 2) & 0xfff;
- 		if (chan->scan_type.sign == 's')
- 			*val = sign_extend32(*val, 11);
+ /**
++ * batadv_vlan_id_valid() - check if vlan id is in valid batman-adv encoding
++ * @vid: the VLAN identifier
++ *
++ * Return: true when either no vlan is set or if VLAN is in correct range,
++ *  false otherwise
++ */
++static bool batadv_vlan_id_valid(unsigned short vid)
++{
++	unsigned short non_vlan = vid & ~(BATADV_VLAN_HAS_TAG | VLAN_VID_MASK);
++
++	if (vid == 0)
++		return true;
++
++	if (!(vid & BATADV_VLAN_HAS_TAG))
++		return false;
++
++	if (non_vlan)
++		return false;
++
++	return true;
++}
++
++/**
+  * batadv_orig_node_vlan_new() - search and possibly create an orig_node_vlan
+  *  object
+  * @orig_node: the originator serving the VLAN
+@@ -161,6 +185,9 @@ batadv_orig_node_vlan_new(struct batadv_
+ {
+ 	struct batadv_orig_node_vlan *vlan;
+ 
++	if (!batadv_vlan_id_valid(vid))
++		return NULL;
++
+ 	spin_lock_bh(&orig_node->vlan_list_lock);
+ 
+ 	/* first look if an object for this vid already exists */
 
 
 
