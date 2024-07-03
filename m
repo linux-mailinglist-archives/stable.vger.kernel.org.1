@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-57083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5A6D925F70
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:59:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D9DF925F50
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:56:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8680B2DDFC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:02:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49DD2B2B812
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904981993B6;
-	Wed,  3 Jul 2024 10:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237AC183099;
+	Wed,  3 Jul 2024 11:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdmqMOs5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NWmHkAmM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8E11993A5;
-	Wed,  3 Jul 2024 10:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DC8183090;
+	Wed,  3 Jul 2024 11:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003792; cv=none; b=DxnCJSU0257GWV4Sz+1hCjiUbM4YVIsB57LdYjz4ncO34PeQLTDQtlVmrhdwDzl+4ohmrBzocgL5AkWTo1uJddH2t9o5SBphUz+GF/Mq6tN3nTxlbiSgt5sxXBivseWdaBDp29rFp5n7F3/WmGufl9FixsHm4oVPfXqiG47q1jM=
+	t=1720005588; cv=none; b=ihOcC8ls/t/GgKFMcAWV/faMMydf3B0ZmBRjW7WO7v3EqLPxvzmoaQudDH7Qe1gS17X/ENFRDvTEzbHkQXz13eUXgAPYWHl26RWH03Wq3jHKhQ+VTB63KwPG5a+E1R4bXLeJgy+5Y6zL1sJ9DfClZh8rtEFFe7oLHP0Kcq9QAr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003792; c=relaxed/simple;
-	bh=f1zN087hzp5qzVVBITQmjuOaL/ZGytVMP3IfpQMV/6s=;
+	s=arc-20240116; t=1720005588; c=relaxed/simple;
+	bh=x5cOgeGT1SaLIUP3hrFAnsmusYBVGOlwlrhcTMTevkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rm/UiZghYIdxRRUCoo9iv9z0HyTnO8ktVxZbhVF5pnBSXFyw8zG3kfK+0NFNBVAo7dWHpSDjsAtSNAVwtzWCf1Dm0az0nfZV/sSz/2tBOX5L4ckYMY/Y2T+zTbp/vECn7pUnsR7m3btFBIasb746GBEb696/EAH1kemhUSvDzjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdmqMOs5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DFDC2BD10;
-	Wed,  3 Jul 2024 10:49:51 +0000 (UTC)
+	 MIME-Version; b=bCUV3oqSNq2uLsB9TieuuosgTtsNwsTrF1jLLxSm5YD8FFtDWUfMsYffdpSicVQGTbi0xlsNubFIEm3i1DOHY+JXKZgO86T0+s5mVikVaCxByW7t2gYrMPo5Umx1+Dz0tMxb5OFpzNzCqD30UIfF60TVsR7UT23TrMl6inM50WA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NWmHkAmM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A69C4AF0B;
+	Wed,  3 Jul 2024 11:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003792;
-	bh=f1zN087hzp5qzVVBITQmjuOaL/ZGytVMP3IfpQMV/6s=;
+	s=korg; t=1720005588;
+	bh=x5cOgeGT1SaLIUP3hrFAnsmusYBVGOlwlrhcTMTevkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fdmqMOs5QKPwGhKN7l4BPtg2VSpT7oDlEN32CkmwFRFAxfbSOnD1N0VtaRWxF/QEo
-	 2/tYFBpr+jIPFKp9JtkHgOm7sVi1w/iVVTq1BtUNpd/k7dqVsrm9eLcwnNN6XlFMJR
-	 OLoHMcK4iH0z53L++C+0FPryflYsG+bhAOqZ3o6g=
+	b=NWmHkAmMJxPb3ClFvINmG/KL3WQMkjdqWObdRIaI0JN6oUmZBF4mQdRy5IBvET96a
+	 1kDu0XnKxfDrrVbEpN3zxRFFdm4FnlwSwBZ8ykGivTxOQ4klQkM3dzw6LMzFBeGF+2
+	 HFanliHJmkUMPxFoiY9Lx08yMf/MeH66SyRicfj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-	Luciano Coelho <luciano.coelho@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 005/189] wifi: iwlwifi: dbg_ini: move iwl_dbg_tlv_free outside of debugfs ifdef
-Date: Wed,  3 Jul 2024 12:37:46 +0200
-Message-ID: <20240703102841.703698477@linuxfoundation.org>
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 5.15 131/356] intel_th: pci: Add Sapphire Rapids SOC support
+Date: Wed,  3 Jul 2024 12:37:47 +0200
+Message-ID: <20240703102918.056219775@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-[ Upstream commit 87821b67dea87addbc4ab093ba752753b002176a ]
+commit 2e1da7efabe05cb0cf0b358883b2bc89080ed0eb upstream.
 
-The driver should call iwl_dbg_tlv_free even if debugfs is not defined
-since ini mode does not depend on debugfs ifdef.
+Add support for the Trace Hub in Sapphire Rapids SOC.
 
-Fixes: 68f6f492c4fa ("iwlwifi: trans: support loading ini TLVs from external file")
-Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
-Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240510170500.c8e3723f55b0.I5e805732b0be31ee6b83c642ec652a34e974ff10@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20240429130119.1518073-13-alexander.shishkin@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwtracing/intel_th/pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index 1848b957dc5cd..9e63230da1ec0 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -1669,8 +1669,8 @@ struct iwl_drv *iwl_drv_start(struct iwl_trans *trans)
- err_fw:
- #ifdef CONFIG_IWLWIFI_DEBUGFS
- 	debugfs_remove_recursive(drv->dbgfs_drv);
--	iwl_dbg_tlv_free(drv->trans);
- #endif
-+	iwl_dbg_tlv_free(drv->trans);
- 	kfree(drv);
- err:
- 	return ERR_PTR(ret);
--- 
-2.43.0
-
+--- a/drivers/hwtracing/intel_th/pci.c
++++ b/drivers/hwtracing/intel_th/pci.c
+@@ -315,6 +315,11 @@ static const struct pci_device_id intel_
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+ 	},
+ 	{
++		/* Sapphire Rapids SOC */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x3456),
++		.driver_data = (kernel_ulong_t)&intel_th_2x,
++	},
++	{
+ 		/* Alder Lake CPU */
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 
 
 
