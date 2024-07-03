@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-57358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9C8925C28
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:15:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40D4F925DAF
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDC1F1C20B70
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:15:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F45DB264A5
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD4417B4F8;
-	Wed,  3 Jul 2024 11:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EACC1741F9;
+	Wed,  3 Jul 2024 11:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6F/Rw1M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0RmfIBMT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA1761FDF;
-	Wed,  3 Jul 2024 11:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9A013E024;
+	Wed,  3 Jul 2024 11:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004638; cv=none; b=AfeYCXov5otXRk0WAKmOqILggAS1LM8cEhhVnf9rL94LtNO9/PA1UffJj6OjOtUXN2NeHMExONwYdXMvagAYxcjpaWCF9GrUQP0KBhNpr7HdpQhlTqI5RllZ1Q5U1fhkToybNbkLa7n7soMEjLKjbzSp7EwkHlI0zYseUogredE=
+	t=1720005656; cv=none; b=mwxcDrXgrbdWfmoZ+pZJtXi+4yenYfXANyXZQkzkATznngdsyOU71qLRKnCMBYuDd9EBBNqLLt9O9RnmEj5nvwFvSzu1PBVqWffks7KFEftxunwB7THkdt2XqLGVvnqx12O6IFqdtmjap57nvRg5qR2KLObIjlA8n6sd6lB9PsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004638; c=relaxed/simple;
-	bh=wr8fEsu5L8r1UboTcDhjPISIAkjFHnYiLVSYCKweJLs=;
+	s=arc-20240116; t=1720005656; c=relaxed/simple;
+	bh=TK76AAZ4q6YmKVG8dAr995hacdE8gGU6380W2PRBQ7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AuSradkKgvoNtGHL17QpujqXQtY0v8PCVO5TwSYoTTlwpCHcyDPbuJKoIiPPZxOLXpBndm9hLRE3nQj0NLQnW+XvvTb/khZH8mMT7WwmlTpLaXXfC8pmhzCMoyf+ntntcpXh/m0MRDEuLPK8ScomqDev5jtBgU2JrqG077SsmFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6F/Rw1M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C07C2BD10;
-	Wed,  3 Jul 2024 11:03:57 +0000 (UTC)
+	 MIME-Version; b=mQo7CsDjpPmTpUWTERGy4rMvYpXS4nImzyyvpYWbSr9wfpPj6f4ZiYtq6mBlXtQrtULsQLXJ9Of25ZL5SHXErUnHADYLmBWMy/FdtodegXmySwIFZug6/J6OHUbpj48IaTwY0iPl5Y/oqQt7uu6CuMK+Q4WDbsWapPXUeuHe/E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0RmfIBMT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B681CC2BD10;
+	Wed,  3 Jul 2024 11:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004637;
-	bh=wr8fEsu5L8r1UboTcDhjPISIAkjFHnYiLVSYCKweJLs=;
+	s=korg; t=1720005656;
+	bh=TK76AAZ4q6YmKVG8dAr995hacdE8gGU6380W2PRBQ7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w6F/Rw1M+RH2prWv+a9C93zLiJOS2DCtCiCgnF2RLRDNTq03+U/BeOgJhQYCdvhwo
-	 pV5Fh0wf++qjiQJZYxmt4C04jxWI4Jeg3Mm54mnxNTVrsohWzkchaJlrx9m610/xL0
-	 Dp1teXPvI79dcCwvIVFrfGjCBIRkclxVt91xL5QQ=
+	b=0RmfIBMTsy+HDU9q4L7I9jQiSgOj6iZ6yp8NfpoMh3DCtKXDtlKce3n/AP7cIABj5
+	 RN9YwcyKypabUPKh4zyzt6QQRju1+GtWuLdU/rxPMpl0TB/eSIvy/4cqgbwmglgc4B
+	 OlFMyOYwTvcQ/JwKiw0FzpTUyw/B16sZrEqPSe18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Stitt <justinstitt@google.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Zqiang <qiang.zhang1211@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 108/290] block/ioctl: prefer different overflow check
+Subject: [PATCH 5.15 153/356] rcutorture: Make stall-tasks directly exit when rcutorture tests end
 Date: Wed,  3 Jul 2024 12:38:09 +0200
-Message-ID: <20240703102908.273744641@linuxfoundation.org>
+Message-ID: <20240703102918.891631297@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Stitt <justinstitt@google.com>
+From: Zqiang <qiang.zhang1211@gmail.com>
 
-[ Upstream commit ccb326b5f9e623eb7f130fbbf2505ec0e2dcaff9 ]
+[ Upstream commit 431315a563015f259b28e34c5842f6166439e969 ]
 
-Running syzkaller with the newly reintroduced signed integer overflow
-sanitizer shows this report:
+When the rcutorture tests start to exit, the rcu_torture_cleanup() is
+invoked to stop kthreads and release resources, if the stall-task
+kthreads exist, cpu-stall has started and the rcutorture.stall_cpu
+is set to a larger value, the rcu_torture_cleanup() will be blocked
+for a long time and the hung-task may occur, this commit therefore
+add kthread_should_stop() to the loop of cpu-stall operation, when
+rcutorture tests ends, no need to wait for cpu-stall to end, exit
+directly.
 
-[   62.982337] ------------[ cut here ]------------
-[   62.985692] cgroup: Invalid name
-[   62.986211] UBSAN: signed-integer-overflow in ../block/ioctl.c:36:46
-[   62.989370] 9pnet_fd: p9_fd_create_tcp (7343): problem connecting socket to 127.0.0.1
-[   62.992992] 9223372036854775807 + 4095 cannot be represented in type 'long long'
-[   62.997827] 9pnet_fd: p9_fd_create_tcp (7345): problem connecting socket to 127.0.0.1
-[   62.999369] random: crng reseeded on system resumption
-[   63.000634] GUP no longer grows the stack in syz-executor.2 (7353): 20002000-20003000 (20001000)
-[   63.000668] CPU: 0 PID: 7353 Comm: syz-executor.2 Not tainted 6.8.0-rc2-00035-gb3ef86b5a957 #1
-[   63.000677] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   63.000682] Call Trace:
-[   63.000686]  <TASK>
-[   63.000731]  dump_stack_lvl+0x93/0xd0
-[   63.000919]  __get_user_pages+0x903/0xd30
-[   63.001030]  __gup_longterm_locked+0x153e/0x1ba0
-[   63.001041]  ? _raw_read_unlock_irqrestore+0x17/0x50
-[   63.001072]  ? try_get_folio+0x29c/0x2d0
-[   63.001083]  internal_get_user_pages_fast+0x1119/0x1530
-[   63.001109]  iov_iter_extract_pages+0x23b/0x580
-[   63.001206]  bio_iov_iter_get_pages+0x4de/0x1220
-[   63.001235]  iomap_dio_bio_iter+0x9b6/0x1410
-[   63.001297]  __iomap_dio_rw+0xab4/0x1810
-[   63.001316]  iomap_dio_rw+0x45/0xa0
-[   63.001328]  ext4_file_write_iter+0xdde/0x1390
-[   63.001372]  vfs_write+0x599/0xbd0
-[   63.001394]  ksys_write+0xc8/0x190
-[   63.001403]  do_syscall_64+0xd4/0x1b0
-[   63.001421]  ? arch_exit_to_user_mode_prepare+0x3a/0x60
-[   63.001479]  entry_SYSCALL_64_after_hwframe+0x6f/0x77
-[   63.001535] RIP: 0033:0x7f7fd3ebf539
-[   63.001551] Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 14 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-[   63.001562] RSP: 002b:00007f7fd32570c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-[   63.001584] RAX: ffffffffffffffda RBX: 00007f7fd3ff3f80 RCX: 00007f7fd3ebf539
-[   63.001590] RDX: 4db6d1e4f7e43360 RSI: 0000000020000000 RDI: 0000000000000004
-[   63.001595] RBP: 00007f7fd3f1e496 R08: 0000000000000000 R09: 0000000000000000
-[   63.001599] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-[   63.001604] R13: 0000000000000006 R14: 00007f7fd3ff3f80 R15: 00007ffd415ad2b8
-...
-[   63.018142] ---[ end trace ]---
+Use the following command to test:
 
-Historically, the signed integer overflow sanitizer did not work in the
-kernel due to its interaction with `-fwrapv` but this has since been
-changed [1] in the newest version of Clang; It was re-enabled in the
-kernel with Commit 557f8c582a9ba8ab ("ubsan: Reintroduce signed overflow
-sanitizer").
+insmod rcutorture.ko torture_type=srcu fwd_progress=0 stat_interval=4
+stall_cpu_block=1 stall_cpu=200 stall_cpu_holdoff=10 read_exit_burst=0
+object_debug=1
+rmmod rcutorture
 
-Let's rework this overflow checking logic to not actually perform an
-overflow during the check itself, thus avoiding the UBSAN splat.
+[15361.918610] INFO: task rmmod:878 blocked for more than 122 seconds.
+[15361.918613]       Tainted: G        W
+6.8.0-rc2-yoctodev-standard+ #25
+[15361.918615] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
+disables this message.
+[15361.918616] task:rmmod           state:D stack:0     pid:878
+tgid:878   ppid:773    flags:0x00004002
+[15361.918621] Call Trace:
+[15361.918623]  <TASK>
+[15361.918626]  __schedule+0xc0d/0x28f0
+[15361.918631]  ? __pfx___schedule+0x10/0x10
+[15361.918635]  ? rcu_is_watching+0x19/0xb0
+[15361.918638]  ? schedule+0x1f6/0x290
+[15361.918642]  ? __pfx_lock_release+0x10/0x10
+[15361.918645]  ? schedule+0xc9/0x290
+[15361.918648]  ? schedule+0xc9/0x290
+[15361.918653]  ? trace_preempt_off+0x54/0x100
+[15361.918657]  ? schedule+0xc9/0x290
+[15361.918661]  schedule+0xd0/0x290
+[15361.918665]  schedule_timeout+0x56d/0x7d0
+[15361.918669]  ? debug_smp_processor_id+0x1b/0x30
+[15361.918672]  ? rcu_is_watching+0x19/0xb0
+[15361.918676]  ? __pfx_schedule_timeout+0x10/0x10
+[15361.918679]  ? debug_smp_processor_id+0x1b/0x30
+[15361.918683]  ? rcu_is_watching+0x19/0xb0
+[15361.918686]  ? wait_for_completion+0x179/0x4c0
+[15361.918690]  ? __pfx_lock_release+0x10/0x10
+[15361.918693]  ? __kasan_check_write+0x18/0x20
+[15361.918696]  ? wait_for_completion+0x9d/0x4c0
+[15361.918700]  ? _raw_spin_unlock_irq+0x36/0x50
+[15361.918703]  ? wait_for_completion+0x179/0x4c0
+[15361.918707]  ? _raw_spin_unlock_irq+0x36/0x50
+[15361.918710]  ? wait_for_completion+0x179/0x4c0
+[15361.918714]  ? trace_preempt_on+0x54/0x100
+[15361.918718]  ? wait_for_completion+0x179/0x4c0
+[15361.918723]  wait_for_completion+0x181/0x4c0
+[15361.918728]  ? __pfx_wait_for_completion+0x10/0x10
+[15361.918738]  kthread_stop+0x152/0x470
+[15361.918742]  _torture_stop_kthread+0x44/0xc0 [torture
+7af7f9cbba28271a10503b653f9e05d518fbc8c3]
+[15361.918752]  rcu_torture_cleanup+0x2ac/0xe90 [rcutorture
+f2cb1f556ee7956270927183c4c2c7749a336529]
+[15361.918766]  ? __pfx_rcu_torture_cleanup+0x10/0x10 [rcutorture
+f2cb1f556ee7956270927183c4c2c7749a336529]
+[15361.918777]  ? __kasan_check_write+0x18/0x20
+[15361.918781]  ? __mutex_unlock_slowpath+0x17c/0x670
+[15361.918789]  ? __might_fault+0xcd/0x180
+[15361.918793]  ? find_module_all+0x104/0x1d0
+[15361.918799]  __x64_sys_delete_module+0x2a4/0x3f0
+[15361.918803]  ? __pfx___x64_sys_delete_module+0x10/0x10
+[15361.918807]  ? syscall_exit_to_user_mode+0x149/0x280
 
-[1]: https://github.com/llvm/llvm-project/pull/82432
-
-Signed-off-by: Justin Stitt <justinstitt@google.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240507-b4-sio-block-ioctl-v3-1-ba0c2b32275e@google.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/ioctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/rcu/rcutorture.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/block/ioctl.c b/block/ioctl.c
-index bc97698e0e8a3..11e692741f17c 100644
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -32,7 +32,7 @@ static int blkpg_do_ioctl(struct block_device *bdev,
- 	if (op == BLKPG_DEL_PARTITION)
- 		return bdev_del_partition(bdev, p.pno);
- 
--	if (p.start < 0 || p.length <= 0 || p.start + p.length < 0)
-+	if (p.start < 0 || p.length <= 0 || LLONG_MAX - p.length < p.start)
- 		return -EINVAL;
- 	/* Check that the partition is aligned to the block size */
- 	if (!IS_ALIGNED(p.start | p.length, bdev_logical_block_size(bdev)))
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index 82c6046db8a42..e9323cc5da73b 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -2061,8 +2061,8 @@ static int rcu_torture_stall(void *args)
+ 			preempt_disable();
+ 		pr_alert("%s start on CPU %d.\n",
+ 			  __func__, raw_smp_processor_id());
+-		while (ULONG_CMP_LT((unsigned long)ktime_get_seconds(),
+-				    stop_at))
++		while (ULONG_CMP_LT((unsigned long)ktime_get_seconds(), stop_at) &&
++		       !kthread_should_stop())
+ 			if (stall_cpu_block) {
+ #ifdef CONFIG_PREEMPTION
+ 				preempt_schedule();
 -- 
 2.43.0
 
