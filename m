@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-57116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8C22925B20
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D0D2925E15
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:34:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 030D12996DD
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87B68B2E907
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE6E61FDF;
-	Wed,  3 Jul 2024 10:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBEB173323;
+	Wed,  3 Jul 2024 11:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="onMl2KNv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cEmv3xTE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A56217BB11;
-	Wed,  3 Jul 2024 10:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3825061FDF;
+	Wed,  3 Jul 2024 11:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003896; cv=none; b=b9l4MwYG7armn+K8QTHh7YRg4DvFMCTtDK2EbhdTPAU0fLlGKr6La6xm7YVLVU5sYPM7mkqIN3saOGsddNaGZ14mnId1rYtHbSeByd41krWPDiR670x4OaxBM4c5htlNLvBBhM1e054KFjon8g+6ycI/X/JixKAl4SaLmPVSQIs=
+	t=1720004626; cv=none; b=X1lgOvlDiWdzCZFCUzQpHFpboYJhv+knkXMXecnuvB7G8JbgaaK1dEiiF1cji51SJea9g4Z1I8b/rruwiWHrbxpIghczzUOkZekb+ZfuyBifLuZDOgCWCaqbmvcwUk7ZgHwn1zBdXj6S+UTUNuCh7H2lsayALI1uk2DUCd6u3Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003896; c=relaxed/simple;
-	bh=i7m8ZTUTZM8wYDv7ban4Q8zUWw9l/OrUlunLY6p7r3E=;
+	s=arc-20240116; t=1720004626; c=relaxed/simple;
+	bh=dvAoAgdHNcfsR6OJ/nwCkbjowitMxhcwF3fj6FLnubI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B84N5qWeJl8veKQkxezea+owf0YEfVUewaAJ++Y2PxVYykxM5tZDf1WceXSwH6WoUT7wNfYOIQQuNI0Tjk+vWIzv36+3gZPjOSk3GvfDuDgHiSbgT8cfcmburDKERN45FoImiCyLduXBCHFUo2tREGPOTdpCh14Oiv/EP95zg7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=onMl2KNv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3596C2BD10;
-	Wed,  3 Jul 2024 10:51:35 +0000 (UTC)
+	 MIME-Version; b=GUcC1zxqeIA0LpuVlvEfmozHZcZVfg2gQKuwtyjdFUlMbRXc/WA2Z8Od/xQQizkNkPTVysH5M9kEbcS8w0UKwAlw7mff0PDKEikPbn6WjH1Ifh1Xx7QO+gSsb1S4X4xvfeS9+AVK4H3N9vdhvAsgpWYbj6+CK2aPG90o6CD95Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cEmv3xTE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD8DC2BD10;
+	Wed,  3 Jul 2024 11:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003896;
-	bh=i7m8ZTUTZM8wYDv7ban4Q8zUWw9l/OrUlunLY6p7r3E=;
+	s=korg; t=1720004626;
+	bh=dvAoAgdHNcfsR6OJ/nwCkbjowitMxhcwF3fj6FLnubI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=onMl2KNvYUDCD3QPKP9eu4BqphyxriWvZoIAU2Wb/6DUO94BZd1utykPHmcaedk4i
-	 8NkoMSmiz2gc9Mc4+b3SU2ojxGMZYU/+aVlm8Cem8fYmyqolD0jIxs4cqs/uddfAQk
-	 1qJu+lC//OtIZKpLvw35CU0vYAlg2XI+Ct5Xh0iA=
+	b=cEmv3xTEN3Qnb9wlBHObYMnxX5HH1Dgwo6AjIhBhMTv4iP+ue4jKWRZYjAh3jy5Q4
+	 wa+nPvJUS+hpCJT7ZDIqR5UFd9cXerspy4e9ghM88CRvbxLHBuBDGVAqKLwl4r8jyF
+	 BEOs5AetlV/fMgg0SpcphauzlHilG/3w9lvmSi40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Qilong <zhangqilong3@huawei.com>,
-	Peter Ujfalusi <peter.ujfalusi@ti.com>,
-	Mark Brown <broonie@kernel.org>,
+	syzbot+0cb5bb0f4bf9e79db3b3@syzkaller.appspotmail.com,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 025/189] ASoC: ti: davinci-mcasp: remove always zero of davinci_mcasp_get_dt_params
+Subject: [PATCH 5.10 105/290] padata: Disable BH when taking works lock on MT path
 Date: Wed,  3 Jul 2024 12:38:06 +0200
-Message-ID: <20240703102842.457261703@linuxfoundation.org>
+Message-ID: <20240703102908.162062039@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Qilong <zhangqilong3@huawei.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 19f6e424d6150b5eede2277dbc6dfd3bf42e994f ]
+[ Upstream commit 58329c4312031603bb1786b44265c26d5065fe72 ]
 
-davinci_mcasp_get_dt_params alway return zero, and its return value
-could be ignored by the caller. So make it 'void' type to avoid the
-check its return value.
+As the old padata code can execute in softirq context, disable
+softirqs for the new padata_do_mutithreaded code too as otherwise
+lockdep will get antsy.
 
-Fixes: 764958f2b5239 ("ASoC: ti: davinci-mcasp: Support for auxclk-fs-ratio")
-Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Link: https://lore.kernel.org/r/20201102103428.32678-1-zhangqilong3@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: d18ca8635db2 ("ASoC: ti: davinci-mcasp: Fix race condition during probe")
+Reported-by: syzbot+0cb5bb0f4bf9e79db3b3@syzkaller.appspotmail.com
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/ti/davinci-mcasp.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ kernel/padata.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
-index 76267fd4a9d88..b08948ffc61d0 100644
---- a/sound/soc/ti/davinci-mcasp.c
-+++ b/sound/soc/ti/davinci-mcasp.c
-@@ -2082,20 +2082,18 @@ static inline int davinci_mcasp_init_gpiochip(struct davinci_mcasp *mcasp)
- }
- #endif /* CONFIG_GPIOLIB */
- 
--static int davinci_mcasp_get_dt_params(struct davinci_mcasp *mcasp)
-+static void davinci_mcasp_get_dt_params(struct davinci_mcasp *mcasp)
+diff --git a/kernel/padata.c b/kernel/padata.c
+index fdcd78302cd72..471ccbc44541d 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -111,7 +111,7 @@ static int __init padata_work_alloc_mt(int nworks, void *data,
  {
- 	struct device_node *np = mcasp->dev->of_node;
- 	int ret;
- 	u32 val;
+ 	int i;
  
- 	if (!np)
--		return 0;
-+		return;
+-	spin_lock(&padata_works_lock);
++	spin_lock_bh(&padata_works_lock);
+ 	/* Start at 1 because the current task participates in the job. */
+ 	for (i = 1; i < nworks; ++i) {
+ 		struct padata_work *pw = padata_work_alloc();
+@@ -121,7 +121,7 @@ static int __init padata_work_alloc_mt(int nworks, void *data,
+ 		padata_work_init(pw, padata_mt_helper, data, 0);
+ 		list_add(&pw->pw_list, head);
+ 	}
+-	spin_unlock(&padata_works_lock);
++	spin_unlock_bh(&padata_works_lock);
  
- 	ret = of_property_read_u32(np, "auxclk-fs-ratio", &val);
- 	if (ret >= 0)
- 		mcasp->auxclk_fs_ratio = val;
--
--	return 0;
+ 	return i;
+ }
+@@ -139,12 +139,12 @@ static void __init padata_works_free(struct list_head *works)
+ 	if (list_empty(works))
+ 		return;
+ 
+-	spin_lock(&padata_works_lock);
++	spin_lock_bh(&padata_works_lock);
+ 	list_for_each_entry_safe(cur, next, works, pw_list) {
+ 		list_del(&cur->pw_list);
+ 		padata_work_free(cur);
+ 	}
+-	spin_unlock(&padata_works_lock);
++	spin_unlock_bh(&padata_works_lock);
  }
  
- static int davinci_mcasp_probe(struct platform_device *pdev)
-@@ -2331,9 +2329,7 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err;
- 
--	ret = davinci_mcasp_get_dt_params(mcasp);
--	if (ret)
--		return -EINVAL;
-+	davinci_mcasp_get_dt_params(mcasp);
- 
- 	ret = devm_snd_soc_register_component(&pdev->dev,
- 					&davinci_mcasp_component,
+ static void padata_parallel_worker(struct work_struct *parallel_work)
 -- 
 2.43.0
 
