@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 810E6925A86
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:01:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF96925EFC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:46:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 384CD1F21727
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE5F0B35C3E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:10:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D614A176ADE;
-	Wed,  3 Jul 2024 10:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C9519D885;
+	Wed,  3 Jul 2024 10:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LL46A4+T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EbSFzHsl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91AE513D61B;
-	Wed,  3 Jul 2024 10:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39D5191F90;
+	Wed,  3 Jul 2024 10:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003740; cv=none; b=eX6nnpceo3ByB4xKAW3heAsiu1cUs+J6TPnWSxPVDb9slyczGXwInL+obkNbp0aWQbfb2rT1rojT+CbSdZcjDxWXOLgD7j0yi99/qqlJhLnoQc/b201FSMhyLbui90cwVHpXU07C/XUv92iMcVVmmTOXv46eRmx7LmT7whcA2qo=
+	t=1720004243; cv=none; b=ax+JDHHnUgndgPBszRM6DV8/p7n9fpJHxGMSFN+FKe3KM6JBfadzA2CZy4LLm8UPQVfzBAwqkLq28w48u5bUgMdOnUPFABjaJY+6PI1KLWNQY1RLCCEoCKtBILfH7PKrRmenGLCHSBtVTWCBYQck6NfuHkELXcxu7FKI7TZr4u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003740; c=relaxed/simple;
-	bh=r9ONEPz7DEpvd8RlWPcBocHCFtsxEUbPuGaiSOCq5Ao=;
+	s=arc-20240116; t=1720004243; c=relaxed/simple;
+	bh=/kSFv9DM/JAX/VAya3V1gzUnq83owQFygpIZmeUeC1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rN1ufjFgSVfnXloOcyfnaVIL7tNWiXMpcpPruJyhcJumCBNCrqmLDU7t+3HYn62sXvQB+ahzjMCGkueCZWwvvzwOl8Mqrki9LXf0GtOdGxsZxaoOCiT5eWUBoQbYQp2tBjK89McoqECY6qkP9pTTiiVjhos8NxGwDkfrhSjjORs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LL46A4+T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E1CC2BD10;
-	Wed,  3 Jul 2024 10:48:59 +0000 (UTC)
+	 MIME-Version; b=P7hw94zS32K3NGJAxlriUBZWsZSF/qBGtbbxS2g82NtMq3rLT6qDe1t2CzX5RH06mLiQyPG1CfPa11ehp3GPDKbK3mb96uVyx8emYaQSkxqbvtpTiSMpfiSyTowDrRbbvgHBMlnEN4lvGffSRar2je+YnMqOPunFrgaiUHgrYnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EbSFzHsl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32348C2BD10;
+	Wed,  3 Jul 2024 10:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003740;
-	bh=r9ONEPz7DEpvd8RlWPcBocHCFtsxEUbPuGaiSOCq5Ao=;
+	s=korg; t=1720004243;
+	bh=/kSFv9DM/JAX/VAya3V1gzUnq83owQFygpIZmeUeC1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LL46A4+Tba5v1+f+vMX/fdbLWfrNK2vLVljnjjCLHm46vxHUrYPDCnkDZfxLlzU+g
-	 pRB3epyLQmqweT9ZsnMzbU0VUEg2tYM1vPCHBTtwU3WfOdKR6y2yyjPznOM80j5Z8n
-	 WzhKQIgosqLDxmn86tbmkmSyie8HQCwGGJy1AuRM=
+	b=EbSFzHsliAJp8vP7j6bssUDq+1CIyYXkkhB60fu6MWzgcm/1tcw72lxi/VuTszWlS
+	 DJfzcmvzthX12UTiqSiD++WUWTWeF5zlOc5f/3On7Gc4OqRO+noxknt112td5oafes
+	 e7rTWLSE+/c924pgajVHfFRegN/wQLHzXa0QT81g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 4.19 132/139] batman-adv: Dont accept TT entries for out-of-spec VIDs
+	stable <stable@kernel.org>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	syzbot+00c18ee8497dd3be6ade@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 168/189] usb: atm: cxacru: fix endpoint checking in cxacru_bind()
 Date: Wed,  3 Jul 2024 12:40:29 +0200
-Message-ID: <20240703102835.419999426@linuxfoundation.org>
+Message-ID: <20240703102847.808996341@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,97 +60,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit 537a350d14321c8cca5efbf0a33a404fec3a9f9e upstream.
+commit 2eabb655a968b862bc0c31629a09f0fbf3c80d51 upstream.
 
-The internal handling of VLAN IDs in batman-adv is only specified for
-following encodings:
+Syzbot is still reporting quite an old issue [1] that occurs due to
+incomplete checking of present usb endpoints. As such, wrong
+endpoints types may be used at urb sumbitting stage which in turn
+triggers a warning in usb_submit_urb().
 
-* VLAN is used
-  - bit 15 is 1
-  - bit 11 - bit 0 is the VLAN ID (0-4095)
-  - remaining bits are 0
-* No VLAN is used
-  - bit 15 is 0
-  - remaining bits are 0
+Fix the issue by verifying that required endpoint types are present
+for both in and out endpoints, taking into account cmd endpoint type.
 
-batman-adv was only preparing new translation table entries (based on its
-soft interface information) using this encoding format. But the receive
-path was never checking if entries in the roam or TT TVLVs were also
-following this encoding.
+Unfortunately, this patch has not been tested on real hardware.
 
-It was therefore possible to create more than the expected maximum of 4096
-+ 1 entries in the originator VLAN list. Simply by setting the "remaining
-bits" to "random" values in corresponding TVLV.
+[1] Syzbot report:
+usb 1-1: BOGUS urb xfer, pipe 1 != type 3
+WARNING: CPU: 0 PID: 8667 at drivers/usb/core/urb.c:502 usb_submit_urb+0xed2/0x18a0 drivers/usb/core/urb.c:502
+Modules linked in:
+CPU: 0 PID: 8667 Comm: kworker/0:4 Not tainted 5.14.0-rc4-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:usb_submit_urb+0xed2/0x18a0 drivers/usb/core/urb.c:502
+...
+Call Trace:
+ cxacru_cm+0x3c0/0x8e0 drivers/usb/atm/cxacru.c:649
+ cxacru_card_status+0x22/0xd0 drivers/usb/atm/cxacru.c:760
+ cxacru_bind+0x7ac/0x11a0 drivers/usb/atm/cxacru.c:1209
+ usbatm_usb_probe+0x321/0x1ae0 drivers/usb/atm/usbatm.c:1055
+ cxacru_usb_probe+0xdf/0x1e0 drivers/usb/atm/cxacru.c:1363
+ usb_probe_interface+0x315/0x7f0 drivers/usb/core/driver.c:396
+ call_driver_probe drivers/base/dd.c:517 [inline]
+ really_probe+0x23c/0xcd0 drivers/base/dd.c:595
+ __driver_probe_device+0x338/0x4d0 drivers/base/dd.c:747
+ driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:777
+ __device_attach_driver+0x20b/0x2f0 drivers/base/dd.c:894
+ bus_for_each_drv+0x15f/0x1e0 drivers/base/bus.c:427
+ __device_attach+0x228/0x4a0 drivers/base/dd.c:965
+ bus_probe_device+0x1e4/0x290 drivers/base/bus.c:487
+ device_add+0xc2f/0x2180 drivers/base/core.c:3354
+ usb_set_configuration+0x113a/0x1910 drivers/usb/core/message.c:2170
+ usb_generic_driver_probe+0xba/0x100 drivers/usb/core/generic.c:238
+ usb_probe_device+0xd9/0x2c0 drivers/usb/core/driver.c:293
 
-Cc: stable@vger.kernel.org
-Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
-Reported-by: Linus Lüssing <linus.luessing@c0d3.blue>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Reported-and-tested-by: syzbot+00c18ee8497dd3be6ade@syzkaller.appspotmail.com
+Fixes: 902ffc3c707c ("USB: cxacru: Use a bulk/int URB to access the command endpoint")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://lore.kernel.org/r/20240609131546.3932-1-n.zhandarovich@fintech.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/originator.c |   27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ drivers/usb/atm/cxacru.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/net/batman-adv/originator.c
-+++ b/net/batman-adv/originator.c
-@@ -23,6 +23,7 @@
- #include <linux/errno.h>
- #include <linux/etherdevice.h>
- #include <linux/gfp.h>
-+#include <linux/if_vlan.h>
- #include <linux/jiffies.h>
- #include <linux/kernel.h>
- #include <linux/kref.h>
-@@ -144,6 +145,29 @@ batadv_orig_node_vlan_get(struct batadv_
- }
+--- a/drivers/usb/atm/cxacru.c
++++ b/drivers/usb/atm/cxacru.c
+@@ -1135,6 +1135,7 @@ static int cxacru_bind(struct usbatm_dat
+ 	struct cxacru_data *instance;
+ 	struct usb_device *usb_dev = interface_to_usbdev(intf);
+ 	struct usb_host_endpoint *cmd_ep = usb_dev->ep_in[CXACRU_EP_CMD];
++	struct usb_endpoint_descriptor *in, *out;
+ 	int ret;
  
- /**
-+ * batadv_vlan_id_valid() - check if vlan id is in valid batman-adv encoding
-+ * @vid: the VLAN identifier
-+ *
-+ * Return: true when either no vlan is set or if VLAN is in correct range,
-+ *  false otherwise
-+ */
-+static bool batadv_vlan_id_valid(unsigned short vid)
-+{
-+	unsigned short non_vlan = vid & ~(BATADV_VLAN_HAS_TAG | VLAN_VID_MASK);
+ 	/* instance init */
+@@ -1180,6 +1181,19 @@ static int cxacru_bind(struct usbatm_dat
+ 		ret = -ENODEV;
+ 		goto fail;
+ 	}
 +
-+	if (vid == 0)
-+		return true;
++	if (usb_endpoint_xfer_int(&cmd_ep->desc))
++		ret = usb_find_common_endpoints(intf->cur_altsetting,
++						NULL, NULL, &in, &out);
++	else
++		ret = usb_find_common_endpoints(intf->cur_altsetting,
++						&in, &out, NULL, NULL);
 +
-+	if (!(vid & BATADV_VLAN_HAS_TAG))
-+		return false;
-+
-+	if (non_vlan)
-+		return false;
-+
-+	return true;
-+}
-+
-+/**
-  * batadv_orig_node_vlan_new() - search and possibly create an orig_node_vlan
-  *  object
-  * @orig_node: the originator serving the VLAN
-@@ -161,6 +185,9 @@ batadv_orig_node_vlan_new(struct batadv_
- {
- 	struct batadv_orig_node_vlan *vlan;
++	if (ret) {
++		usb_err(usbatm_instance, "cxacru_bind: interface has incorrect endpoints\n");
++		ret = -ENODEV;
++		goto fail;
++	}
  
-+	if (!batadv_vlan_id_valid(vid))
-+		return NULL;
-+
- 	spin_lock_bh(&orig_node->vlan_list_lock);
- 
- 	/* first look if an object for this vid already exists */
+ 	if ((cmd_ep->desc.bmAttributes & USB_ENDPOINT_XFERTYPE_MASK)
+ 			== USB_ENDPOINT_XFER_INT) {
 
 
 
