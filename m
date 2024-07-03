@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-56967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B929A9259FC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:53:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6424C925E37
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBFAC1C246FB
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C9F9B33A92
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3451A181B96;
-	Wed,  3 Jul 2024 10:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F4E17E918;
+	Wed,  3 Jul 2024 10:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUvvjhWB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QuRBR/Th"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67E617B4FF;
-	Wed,  3 Jul 2024 10:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69F417E8EE;
+	Wed,  3 Jul 2024 10:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003433; cv=none; b=V+zSXlaGgePkk85joqBQro0zIbS34JvB39+D04eSxwu3DPGL+6Hl6jEM6NdXyj0HrmH0++Dti0Hs3/KEJwq9z62l0e12LqktTi0UI4/GrUGfqAxeqP58nCYQGThg5VTdHtCbld3DwMfhpDxkKBPIur98/4Qlv5mv3RpLeWGc5v4=
+	t=1720003977; cv=none; b=M8R41umqmDDrv+uQrhTytLwJ7SViwxBy4l9YjuBzbUK+rYA5PUD2TC6F8Qpe37tXOP8PTvUvPB4lRGP58QeGzlwL7k+Qvn5fr2mNtpLaowWV31YygVdti78czUB2KJuNvxu4UmBJthV8vhMoVo5WeDXtEBX/d/MhegMXHUmPrtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003433; c=relaxed/simple;
-	bh=3gpsihCq1+frJdbEYLExpWwqljOkVcSp5GVS76d9y6I=;
+	s=arc-20240116; t=1720003977; c=relaxed/simple;
+	bh=DZpTmII+pwoD4cRGBakfBs4t7K5alkVemm6BxQUvM00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cjCZdYTtfxziYRqHEkwg0OJWa/iyuju/RN/NqhqSdtuZ2uGFufmWF9lmcKoq1RQCl6LNVBI1lbzAHwnQz7rODBrgxmhB9BOJX9eD9AAp9bcZBinXae45QbfPFYW2XHRkZ0gzFaWGDuRyOR0/6mebTAB+3OTaPKPIZfXqFIYLaXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUvvjhWB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C800C2BD10;
-	Wed,  3 Jul 2024 10:43:52 +0000 (UTC)
+	 MIME-Version; b=sGd/8evejSGg4vdCvrPWTZq1YppViz4oAnqjHWtj6NgmSQg+yRMj+BGNL6WfEJBYY72xJf8VpLz/OFtF2IuqyYTj2LYU7Z2Aq05GgrB7WCnqAPqu8q/T3J1y+sxsvc+0mVpcaaBFEhgak059z+1WWisULYLg3qS7q95009QSvWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QuRBR/Th; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5959AC2BD10;
+	Wed,  3 Jul 2024 10:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003432;
-	bh=3gpsihCq1+frJdbEYLExpWwqljOkVcSp5GVS76d9y6I=;
+	s=korg; t=1720003977;
+	bh=DZpTmII+pwoD4cRGBakfBs4t7K5alkVemm6BxQUvM00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BUvvjhWB+HLbFXpC1g27edlABkEZxYi3sRGpcff/oCKYX2OTpvJdMkDjiP6ZysbPG
-	 EulqZ2KUxqF6aRAtUb2q4gc3IhADDwzQp2o6f+TxGiqhC1x/8DC03Zi/TiY3LvL3tf
-	 O7/o3598wOyTiLtM19v67icCvM4xhyorAH/xW1JA=
+	b=QuRBR/Th/jt6lUP1fk6a7M8hGinvTNs2H8tztkT1lq2d33ztidqk5w8ZwQApQ/CyE
+	 fdGc3TShLTGGdBi6Z3EoauztOruSxHZDLqkG+8x4/AR5NydRRJSmuom92NthOBhaOr
+	 7JfEKm1Xrnm3qW/WU7bVzzylVNs/R1snYIj+l+x0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rik van Riel <riel@surriel.com>,
-	Baoquan He <bhe@redhat.com>,
-	Dave Young <dyoung@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 047/139] fs/proc: fix softlockup in __read_vmcore
+	Vineeth Pillai <viremana@linux.microsoft.com>,
+	Michael Kelley <mikelley@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>
+Subject: [PATCH 5.4 083/189] hv_utils: drain the timesync packets on onchannelcallback
 Date: Wed,  3 Jul 2024 12:39:04 +0200
-Message-ID: <20240703102832.212636666@linuxfoundation.org>
+Message-ID: <20240703102844.634836546@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Vineeth Pillai <viremana@linux.microsoft.com>
 
-commit 5cbcb62dddf5346077feb82b7b0c9254222d3445 upstream.
+commit b46b4a8a57c377b72a98c7930a9f6969d2d4784e upstream.
 
-While taking a kernel core dump with makedumpfile on a larger system,
-softlockup messages often appear.
+There could be instances where a system stall prevents the timesync
+packets to be consumed. And this might lead to more than one packet
+pending in the ring buffer. Current code empties one packet per callback
+and it might be a stale one. So drain all the packets from ring buffer
+on each callback.
 
-While softlockup warnings can be harmless, they can also interfere with
-things like RCU freeing memory, which can be problematic when the kdump
-kexec image is configured with as little memory as possible.
-
-Avoid the softlockup, and give things like work items and RCU a chance to
-do their thing during __read_vmcore by adding a cond_resched.
-
-Link: https://lkml.kernel.org/r/20240507091858.36ff767f@imladris.surriel.com
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Acked-by: Baoquan He <bhe@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Vineeth Pillai <viremana@linux.microsoft.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lore.kernel.org/r/20200821152849.99517-1-viremana@linux.microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+[ The old code in the upstream commit uses HV_HYP_PAGE_SIZE, but
+  the old code in 5.4.y sitll uses PAGE_SIZE. Fixed this manually for 5.4.y.
+  Note: 5.4.y already has the define HV_HYP_PAGE_SIZE, so the new code in
+  in the upstream commit works for 5.4.y.
+  If there are multiple messages in the host-to-guest ringbuffer of the TimeSync
+  device, 5.4.y only handles 1 message, and later the host puts new messages
+  into the ringbuffer without signaling the guest because the ringbuffer is not
+  empty, causing a "hung" ringbuffer. Backported the mainline fix for this issue.]
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/vmcore.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hv/hv_util.c |   19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
---- a/fs/proc/vmcore.c
-+++ b/fs/proc/vmcore.c
-@@ -359,6 +359,8 @@ static ssize_t __read_vmcore(char *buffe
- 		/* leave now if filled buffer already */
- 		if (buflen == 0)
- 			return acc;
-+
-+		cond_resched();
- 	}
+--- a/drivers/hv/hv_util.c
++++ b/drivers/hv/hv_util.c
+@@ -283,10 +283,23 @@ static void timesync_onchannelcallback(v
+ 	struct ictimesync_ref_data *refdata;
+ 	u8 *time_txf_buf = util_timesynch.recv_buffer;
  
- 	list_for_each_entry(m, &vmcore_list, list) {
+-	vmbus_recvpacket(channel, time_txf_buf,
+-			 PAGE_SIZE, &recvlen, &requestid);
++	/*
++	 * Drain the ring buffer and use the last packet to update
++	 * host_ts
++	 */
++	while (1) {
++		int ret = vmbus_recvpacket(channel, time_txf_buf,
++					   HV_HYP_PAGE_SIZE, &recvlen,
++					   &requestid);
++		if (ret) {
++			pr_warn_once("TimeSync IC pkt recv failed (Err: %d)\n",
++				     ret);
++			break;
++		}
++
++		if (!recvlen)
++			break;
+ 
+-	if (recvlen > 0) {
+ 		icmsghdrp = (struct icmsg_hdr *)&time_txf_buf[
+ 				sizeof(struct vmbuspipe_hdr)];
+ 
 
 
 
