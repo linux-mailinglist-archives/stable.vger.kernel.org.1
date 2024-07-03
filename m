@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-57769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D51925DED
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CEA7925C80
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:19:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02C351C224F5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:32:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B76D01F26836
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B0418FC8E;
-	Wed,  3 Jul 2024 11:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB121836C1;
+	Wed,  3 Jul 2024 11:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K879pY+9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWv25suh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C877718FC8F;
-	Wed,  3 Jul 2024 11:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED54183093;
+	Wed,  3 Jul 2024 11:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005877; cv=none; b=npRzlE0ljbJ7/8/X5qjmsURBLsRLhK8IeSFPYb3+q9GlrBQhdOBU6VGoaLLsymNwowIjmtNEEbbR0CYAtqkh+INCgpA0DxpWksQWWRYM/U0G640x+4YoSvXvuQzA2KxMHB4uGWXn92erFu2VF9OkoH1WxMUljvrPUtD333NrCGw=
+	t=1720004864; cv=none; b=pPGvcZGcqi7zJv0628B+1Y+gCtwBkx5ziMUTr50WoQ/zZT1xrLeKnR/L0iKMB60d7Oy/HZmglIF9LRI7HGBo2kpbfLBEkq7l9sxP+7QzK6m6CaOgYbMIT+ldBKbrwRm4O2Y5CMs+9nXfft7UR3RWLGEoj3h1kZZ0L1kG7ublX4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005877; c=relaxed/simple;
-	bh=g8nivP6HH+AAm6eGCRmV0Wmv+6rfpPx2sPwdPRhX4DA=;
+	s=arc-20240116; t=1720004864; c=relaxed/simple;
+	bh=8uoQDsKtU0X5zc4sh+Ys+a6NkVD5NXp/QIaQ3rPrWLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TNOEBWrJjrBdhFuS7UFS3bpF7CXRPCjLlReNNxJDN7KsnNFQq305WjDZ81GncJrYZPnf6o75X66MAtKzqRzTQEirlIjwlgaKKkFRDy6VtQHLo+Jsasqu7HtVWltoiNyFAP7YtmnUHmJeOT/xaZr5ltwubbymrJAiwQKIZymhde0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K879pY+9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A3AC4AF0C;
-	Wed,  3 Jul 2024 11:24:37 +0000 (UTC)
+	 MIME-Version; b=rx/+YO/uodHeaUfQm4XOapQAE7pCsLBz0k85UtZlyHOI3gYPtFLrbLb9yisMD3MiCvIjjlVQGL7RYzqYubt/qGcwJyChR27nCigwemJZUnq+bQQD/m7K29IgLmED9lFQBeaz/psQGVc7lAcJ6LQmpEbf/bShvx4cDj8Zxnu55v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWv25suh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D27EC2BD10;
+	Wed,  3 Jul 2024 11:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005877;
-	bh=g8nivP6HH+AAm6eGCRmV0Wmv+6rfpPx2sPwdPRhX4DA=;
+	s=korg; t=1720004864;
+	bh=8uoQDsKtU0X5zc4sh+Ys+a6NkVD5NXp/QIaQ3rPrWLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K879pY+9Ty6bBhYmeJ1C08iuy+yLHC/56pJiFSoNp/YqETRTVtsMRG5Oa4YcG0lNA
-	 CPlm3mBSZ/Cl0t5eW0UwjGwd9i2KHIPRQ37qppzWRMEQrUVhZQH094kJEzO09w3X1D
-	 ymgTEvuTeeOU4ctd3Nsldi6ZUPkC+Kem+PjrFMCo=
+	b=IWv25suh0wVrOXjphfeTq7zk9exqJzwnKDiPomArsuXWIi8/H6SsoyozzRtDJuns2
+	 Uf76uuRl2IDwYaT3Cy3b+4yBvZzUK1oaePurjPM+hOKtVbgX/wM35/LB2g0UPyt38W
+	 cnqQyDwpezckei1b4Mrr1qulI7DO16Myt+b4dc3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Cardwell <ncardwell@google.com>,
-	Yuchung Cheng <ycheng@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 227/356] tcp: clear tp->retrans_stamp in tcp_rcv_fastopen_synack()
+	Tony Luck <tony.luck@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 182/290] x86/cpu/vfm: Add new macros to work with (vendor/family/model) values
 Date: Wed,  3 Jul 2024 12:39:23 +0200
-Message-ID: <20240703102921.702005708@linuxfoundation.org>
+Message-ID: <20240703102911.045679605@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Tony Luck <tony.luck@intel.com>
 
-commit 9e046bb111f13461d3f9331e24e974324245140e upstream.
+[ Upstream commit e6dfdc2e89a0adedf455814c91b977d6a584cc88 ]
 
-Some applications were reporting ETIMEDOUT errors on apparently
-good looking flows, according to packet dumps.
+To avoid adding a slew of new macros for each new Intel CPU family
+switch over from providing CPU model number #defines to a new
+scheme that encodes vendor, family, and model in a single number.
 
-We were able to root cause the issue to an accidental setting
-of tp->retrans_stamp in the following scenario:
+  [ bp: s/casted/cast/g ]
 
-- client sends TFO SYN with data.
-- server has TFO disabled, ACKs only SYN but not payload.
-- client receives SYNACK covering only SYN.
-- tcp_ack() eats SYN and sets tp->retrans_stamp to 0.
-- tcp_rcv_fastopen_synack() calls tcp_xmit_retransmit_queue()
-  to retransmit TFO payload w/o SYN, sets tp->retrans_stamp to "now",
-  but we are not in any loss recovery state.
-- TFO payload is ACKed.
-- we are not in any loss recovery state, and don't see any dupacks,
-  so we don't get to any code path that clears tp->retrans_stamp.
-- tp->retrans_stamp stays non-zero for the lifetime of the connection.
-- after first RTO, tcp_clamp_rto_to_user_timeout() clamps second RTO
-  to 1 jiffy due to bogus tp->retrans_stamp.
-- on clamped RTO with non-zero icsk_retransmits, retransmits_timed_out()
-  sets start_ts from tp->retrans_stamp from TFO payload retransmit
-  hours/days ago, and computes bogus long elapsed time for loss recovery,
-  and suffers ETIMEDOUT early.
-
-Fixes: a7abf3cd76e1 ("tcp: consider using standard rtx logic in tcp_rcv_fastopen_synack()")
-CC: stable@vger.kernel.org
-Co-developed-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Co-developed-by: Yuchung Cheng <ycheng@google.com>
-Signed-off-by: Yuchung Cheng <ycheng@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240614130615.396837-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240416211941.9369-3-tony.luck@intel.com
+Stable-dep-of: 93022482b294 ("x86/cpu: Fix x86_match_cpu() to match just X86_VENDOR_INTEL")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/cpu_device_id.h | 93 ++++++++++++++++++++++++++++
+ 1 file changed, 93 insertions(+)
 
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -6104,6 +6104,7 @@ static bool tcp_rcv_fastopen_synack(stru
- 		skb_rbtree_walk_from(data)
- 			 tcp_mark_skb_lost(sk, data);
- 		tcp_xmit_retransmit_queue(sk);
-+		tp->retrans_stamp = 0;
- 		NET_INC_STATS(sock_net(sk),
- 				LINUX_MIB_TCPFASTOPENACTIVEFAIL);
- 		return true;
+diff --git a/arch/x86/include/asm/cpu_device_id.h b/arch/x86/include/asm/cpu_device_id.h
+index eb8fcede9e3bf..dd7b9463696f5 100644
+--- a/arch/x86/include/asm/cpu_device_id.h
++++ b/arch/x86/include/asm/cpu_device_id.h
+@@ -2,6 +2,39 @@
+ #ifndef _ASM_X86_CPU_DEVICE_ID
+ #define _ASM_X86_CPU_DEVICE_ID
+ 
++/*
++ * Can't use <linux/bitfield.h> because it generates expressions that
++ * cannot be used in structure initializers. Bitfield construction
++ * here must match the union in struct cpuinfo_86:
++ *	union {
++ *		struct {
++ *			__u8	x86_model;
++ *			__u8	x86;
++ *			__u8	x86_vendor;
++ *			__u8	x86_reserved;
++ *		};
++ *		__u32		x86_vfm;
++ *	};
++ */
++#define VFM_MODEL_BIT	0
++#define VFM_FAMILY_BIT	8
++#define VFM_VENDOR_BIT	16
++#define VFM_RSVD_BIT	24
++
++#define	VFM_MODEL_MASK	GENMASK(VFM_FAMILY_BIT - 1, VFM_MODEL_BIT)
++#define	VFM_FAMILY_MASK	GENMASK(VFM_VENDOR_BIT - 1, VFM_FAMILY_BIT)
++#define	VFM_VENDOR_MASK	GENMASK(VFM_RSVD_BIT - 1, VFM_VENDOR_BIT)
++
++#define VFM_MODEL(vfm)	(((vfm) & VFM_MODEL_MASK) >> VFM_MODEL_BIT)
++#define VFM_FAMILY(vfm)	(((vfm) & VFM_FAMILY_MASK) >> VFM_FAMILY_BIT)
++#define VFM_VENDOR(vfm)	(((vfm) & VFM_VENDOR_MASK) >> VFM_VENDOR_BIT)
++
++#define	VFM_MAKE(_vendor, _family, _model) (	\
++	((_model) << VFM_MODEL_BIT) |		\
++	((_family) << VFM_FAMILY_BIT) |		\
++	((_vendor) << VFM_VENDOR_BIT)		\
++)
++
+ /*
+  * Declare drivers belonging to specific x86 CPUs
+  * Similar in spirit to pci_device_id and related PCI functions
+@@ -49,6 +82,16 @@
+ 	.driver_data	= (unsigned long) _data				\
+ }
+ 
++#define X86_MATCH_VENDORID_FAM_MODEL_STEPPINGS_FEATURE(_vendor, _family, _model, \
++						    _steppings, _feature, _data) { \
++	.vendor		= _vendor,					\
++	.family		= _family,					\
++	.model		= _model,					\
++	.steppings	= _steppings,					\
++	.feature	= _feature,					\
++	.driver_data	= (unsigned long) _data				\
++}
++
+ /**
+  * X86_MATCH_VENDOR_FAM_MODEL_FEATURE - Macro for CPU matching
+  * @_vendor:	The vendor name, e.g. INTEL, AMD, HYGON, ..., ANY
+@@ -164,6 +207,56 @@
+ 	X86_MATCH_VENDOR_FAM_MODEL_STEPPINGS_FEATURE(INTEL, 6, INTEL_FAM6_##model, \
+ 						     steppings, X86_FEATURE_ANY, data)
+ 
++/**
++ * X86_MATCH_VFM - Match encoded vendor/family/model
++ * @vfm:	Encoded 8-bits each for vendor, family, model
++ * @data:	Driver specific data or NULL. The internal storage
++ *		format is unsigned long. The supplied value, pointer
++ *		etc. is cast to unsigned long internally.
++ *
++ * Stepping and feature are set to wildcards
++ */
++#define X86_MATCH_VFM(vfm, data)			\
++	X86_MATCH_VENDORID_FAM_MODEL_STEPPINGS_FEATURE(	\
++		VFM_VENDOR(vfm),			\
++		VFM_FAMILY(vfm),			\
++		VFM_MODEL(vfm),				\
++		X86_STEPPING_ANY, X86_FEATURE_ANY, data)
++
++/**
++ * X86_MATCH_VFM_STEPPINGS - Match encoded vendor/family/model/stepping
++ * @vfm:	Encoded 8-bits each for vendor, family, model
++ * @steppings:	Bitmask of steppings to match
++ * @data:	Driver specific data or NULL. The internal storage
++ *		format is unsigned long. The supplied value, pointer
++ *		etc. is cast to unsigned long internally.
++ *
++ * feature is set to wildcard
++ */
++#define X86_MATCH_VFM_STEPPINGS(vfm, steppings, data)	\
++	X86_MATCH_VENDORID_FAM_MODEL_STEPPINGS_FEATURE(	\
++		VFM_VENDOR(vfm),			\
++		VFM_FAMILY(vfm),			\
++		VFM_MODEL(vfm),				\
++		steppings, X86_FEATURE_ANY, data)
++
++/**
++ * X86_MATCH_VFM_FEATURE - Match encoded vendor/family/model/feature
++ * @vfm:	Encoded 8-bits each for vendor, family, model
++ * @feature:	A X86_FEATURE bit
++ * @data:	Driver specific data or NULL. The internal storage
++ *		format is unsigned long. The supplied value, pointer
++ *		etc. is cast to unsigned long internally.
++ *
++ * Steppings is set to wildcard
++ */
++#define X86_MATCH_VFM_FEATURE(vfm, feature, data)	\
++	X86_MATCH_VENDORID_FAM_MODEL_STEPPINGS_FEATURE(	\
++		VFM_VENDOR(vfm),			\
++		VFM_FAMILY(vfm),			\
++		VFM_MODEL(vfm),				\
++		X86_STEPPING_ANY, feature, data)
++
+ /*
+  * Match specific microcode revisions.
+  *
+-- 
+2.43.0
+
 
 
 
