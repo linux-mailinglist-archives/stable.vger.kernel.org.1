@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-57374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB03925C34
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:16:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09EC2925AEE
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:04:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEE2C1F213F7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10AE229EBD5
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4349F17C239;
-	Wed,  3 Jul 2024 11:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCEB16F914;
+	Wed,  3 Jul 2024 10:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FuxN4uvp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T8tjtO3v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F361D17C21F;
-	Wed,  3 Jul 2024 11:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF7D16F0E4;
+	Wed,  3 Jul 2024 10:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004685; cv=none; b=BLkSoMsdn1gj+96Hs08DwTpeco/McygNIHQK32nbqa0BnEb4nSWASQcYo7lRxfvvGKJKKh/gC26qcy+BzQ5i7+tomEHy4sbr3SEVC7mJxsubgK39Tw3SXmfknEIuEb1l7Nxe2fjO9w8bKFmTIe+LAUy+RxuT3x3cv1fqignmFE0=
+	t=1720003758; cv=none; b=HhtO5Nsa2bmBmaS7hoi3HRpZx67dEXZpa3xu+9jpHd4Iaccp1AKEv15rE58a4V9D3JUaJ70/8qyI3k0ZH8Y0+yTS9ULnYbIt/7ReTXMyMLiM/omZAQ+LIzr/NMiKAjYsqg9bGWVZXXG6u56u6xV506FkOdipC6PSfwkpxVtM1vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004685; c=relaxed/simple;
-	bh=KyYDqRln1a8MnaimvAS/CJbr9hXSjLHXdSccG/M57qY=;
+	s=arc-20240116; t=1720003758; c=relaxed/simple;
+	bh=ClNMGVW6pAUE4or/Ti1vTPAjIBqqxRv9rzyD7PCNIsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hkmRPUXYv6RdoOPa59KE7VtiGY8e3DORsFlzyAmml5+CVvWB03iE9cLa6rotNMF4+Im6yoKH5xnUl6NxeZ92HkzmarYXweoTX4vrauEy80O09hlAQPR6SYuMkVjgdiycIfD5gIfHPuUQWNpGZKIi47NuxGyVqluOKlGo4O77q7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FuxN4uvp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7798AC2BD10;
-	Wed,  3 Jul 2024 11:04:44 +0000 (UTC)
+	 MIME-Version; b=ctp7nCf2Jlsmj6lz+6rc8KL+yLoc75ABqF6TYmU6aez4eHKjA5Z5LhRgbKpw+dU1uxSazRtYOksRxGDN9/Xksaniw9hovNddwR3Ick4+sTGOQTxijlcRpku8kz+mxPnxVkUZcHYyIiow22x4tQl/GRZ9Vh2iQ4d6fmhU2jbbUtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T8tjtO3v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B0AC2BD10;
+	Wed,  3 Jul 2024 10:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004684;
-	bh=KyYDqRln1a8MnaimvAS/CJbr9hXSjLHXdSccG/M57qY=;
+	s=korg; t=1720003758;
+	bh=ClNMGVW6pAUE4or/Ti1vTPAjIBqqxRv9rzyD7PCNIsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FuxN4uvptpzgrR7GXEy77tITVqE03WIdAhRKXBFp1OeUgU+ca+02obCECPGmartSW
-	 e6a4SHSrlccHJfF7K2qVWhtGRIyQNlYeSMEQSHk7RAIGmHSFRTEp+kZmurG5atwrxk
-	 2gDNvBqL2Fz567vuptB+WJ5Ol5/Ok6IqyL7vAkxM=
+	b=T8tjtO3vRs5ZxMFXWTi9PFDe42YNDa9SmyxH1zMBf7uh0YS3iZFQoJAJogVMznnUw
+	 H5BK5v8Gz/+b9Fx/zi493SHclGcTyLB3LTBaD8YkVZSzMgFkhiA46emdS0hH61KwyT
+	 TNjJGsMUF9EvZsMkHBZygfEM+tT3MGb2xpdchUdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.10 093/290] tick/nohz_full: Dont abuse smp_call_function_single() in tick_setup_device()
+	Karol Kolacinski <karol.kolacinski@intel.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 013/189] ptp: Fix error message on failed pin verification
 Date: Wed,  3 Jul 2024 12:37:54 +0200
-Message-ID: <20240703102907.702353576@linuxfoundation.org>
+Message-ID: <20240703102842.003871497@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Karol Kolacinski <karol.kolacinski@intel.com>
 
-commit 07c54cc5988f19c9642fd463c2dbdac7fc52f777 upstream.
+[ Upstream commit 323a359f9b077f382f4483023d096a4d316fd135 ]
 
-After the recent commit 5097cbcb38e6 ("sched/isolation: Prevent boot crash
-when the boot CPU is nohz_full") the kernel no longer crashes, but there is
-another problem.
+On failed verification of PTP clock pin, error message prints channel
+number instead of pin index after "pin", which is incorrect.
 
-In this case tick_setup_device() calls tick_take_do_timer_from_boot() to
-update tick_do_timer_cpu and this triggers the WARN_ON_ONCE(irqs_disabled)
-in smp_call_function_single().
+Fix error message by adding channel number to the message and printing
+pin number instead of channel number.
 
-Kill tick_take_do_timer_from_boot() and just use WRITE_ONCE(), the new
-comment explains why this is safe (thanks Thomas!).
-
-Fixes: 08ae95f4fd3b ("nohz_full: Allow the boot CPU to be nohz_full")
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240528122019.GA28794@redhat.com
-Link: https://lore.kernel.org/all/20240522151742.GA10400@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6092315dfdec ("ptp: introduce programmable pins.")
+Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Link: https://lore.kernel.org/r/20240604120555.16643-1-karol.kolacinski@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-common.c |   42 ++++++++++++++----------------------------
- 1 file changed, 14 insertions(+), 28 deletions(-)
+ drivers/ptp/ptp_chardev.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -177,26 +177,6 @@ void tick_setup_periodic(struct clock_ev
+diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
+index 87bd6c072ac2f..37c4807f15c60 100644
+--- a/drivers/ptp/ptp_chardev.c
++++ b/drivers/ptp/ptp_chardev.c
+@@ -84,7 +84,8 @@ int ptp_set_pinfunc(struct ptp_clock *ptp, unsigned int pin,
  	}
- }
  
--#ifdef CONFIG_NO_HZ_FULL
--static void giveup_do_timer(void *info)
--{
--	int cpu = *(unsigned int *)info;
--
--	WARN_ON(tick_do_timer_cpu != smp_processor_id());
--
--	tick_do_timer_cpu = cpu;
--}
--
--static void tick_take_do_timer_from_boot(void)
--{
--	int cpu = smp_processor_id();
--	int from = tick_do_timer_boot_cpu;
--
--	if (from >= 0 && from != cpu)
--		smp_call_function_single(from, giveup_do_timer, &cpu, 1);
--}
--#endif
--
- /*
-  * Setup the tick device
-  */
-@@ -220,19 +200,25 @@ static void tick_setup_device(struct tic
- 			tick_next_period = ktime_get();
- #ifdef CONFIG_NO_HZ_FULL
- 			/*
--			 * The boot CPU may be nohz_full, in which case set
--			 * tick_do_timer_boot_cpu so the first housekeeping
--			 * secondary that comes up will take do_timer from
--			 * us.
-+			 * The boot CPU may be nohz_full, in which case the
-+			 * first housekeeping secondary will take do_timer()
-+			 * from it.
- 			 */
- 			if (tick_nohz_full_cpu(cpu))
- 				tick_do_timer_boot_cpu = cpu;
+ 	if (info->verify(info, pin, func, chan)) {
+-		pr_err("driver cannot use function %u on pin %u\n", func, chan);
++		pr_err("driver cannot use function %u and channel %u on pin %u\n",
++		       func, chan, pin);
+ 		return -EOPNOTSUPP;
+ 	}
  
--		} else if (tick_do_timer_boot_cpu != -1 &&
--						!tick_nohz_full_cpu(cpu)) {
--			tick_take_do_timer_from_boot();
-+		} else if (tick_do_timer_boot_cpu != -1 && !tick_nohz_full_cpu(cpu)) {
- 			tick_do_timer_boot_cpu = -1;
--			WARN_ON(tick_do_timer_cpu != cpu);
-+			/*
-+			 * The boot CPU will stay in periodic (NOHZ disabled)
-+			 * mode until clocksource_done_booting() called after
-+			 * smp_init() selects a high resolution clocksource and
-+			 * timekeeping_notify() kicks the NOHZ stuff alive.
-+			 *
-+			 * So this WRITE_ONCE can only race with the READ_ONCE
-+			 * check in tick_periodic() but this race is harmless.
-+			 */
-+			WRITE_ONCE(tick_do_timer_cpu, cpu);
- #endif
- 		}
- 
+-- 
+2.43.0
+
 
 
 
