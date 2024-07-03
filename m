@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-57683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DD5B925D89
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 707CE925C36
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:16:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D10129B346
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D90B1F20F7F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A83D1849C5;
-	Wed,  3 Jul 2024 11:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC9317C7A9;
+	Wed,  3 Jul 2024 11:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSehNlIc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FuGNMCVw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB74F184136;
-	Wed,  3 Jul 2024 11:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2728461FDF;
+	Wed,  3 Jul 2024 11:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005623; cv=none; b=bg/X0OtTVjOR5AME0H13e12OHJ7CMJkmRf3rLnHRdAtA/17pINPwut/bfcXwGlf+84gXltkj+uPFGsp4i4rSIGrZJkl8OWVULc9nGvxfYLOqVhOwWsJrrkxd9CQSG8hHMMKjBEkYiLK7txYIB2RoyqhyPbjAOzv2trZzwSrtRsk=
+	t=1720004691; cv=none; b=t51xkgv7sTMhgoR0tWqzatUW0R/X66F8tYW9jM/+oYsfCrGtxyRlgwvE2j99ZmQs0wdOkpbHBcNxEOkCQCY1qg8DQne0ndrXnrZ5n69CZzsa/NGizOcfJ3asg146SlUk0mH7jy2Rf63wqcu/PBGSREIRu2D6pZChPI3h0mkJEOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005623; c=relaxed/simple;
-	bh=gj+chmS6bPmRFe0Ed/SkWBKj2EptoMPhTv5J16+Yz1M=;
+	s=arc-20240116; t=1720004691; c=relaxed/simple;
+	bh=2vhhxmDyK5Xs0PWTWAyXQU2d5ofUo30sCICbn6VpN24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nLVpmEsS3WITiBWatpspgYzHv6Y+nemeiHt0qgsEAwPj5wEtdBTvtdrcADPPaoirGEuD9NMN30FV6j3NCUsUXT8Tsw8oBUYU1mARSl7K1Y0eye/zlQ0VRJng3GHsWExrLuQMzVjx6pfghzcOcNvYCrjXNuk97SLyDKcrDMTYn5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSehNlIc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E66C4AF0C;
-	Wed,  3 Jul 2024 11:20:23 +0000 (UTC)
+	 MIME-Version; b=A7EKNRi624KSziL9E6vX//jRj6GKgLv0ODzW0QXzVroSzDOovEiGTOiUC6rOL3jg63Nni/0ilsVIUm3ykl/rlu/KKuuYRPYxMgCq1r4A3eo1tfbtq3FXwzACbe/CMY7MgSWXw0JgUHxak2ObjVjNd8lJhB7YUyx6s5KOeXGqDRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FuGNMCVw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62278C2BD10;
+	Wed,  3 Jul 2024 11:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005623;
-	bh=gj+chmS6bPmRFe0Ed/SkWBKj2EptoMPhTv5J16+Yz1M=;
+	s=korg; t=1720004690;
+	bh=2vhhxmDyK5Xs0PWTWAyXQU2d5ofUo30sCICbn6VpN24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bSehNlIc/zhaqnDLGnMZOPZdJqk3sehLULT19u7ePNXJ35bzdH2WQPwa/Hj6gMkO/
-	 /JylBqiX4iUo0wZGlYI7uC7EIgUGcrkTOeEjYqqKuv9+/e0d35RnnrwuSJ3j98zxpy
-	 xFzXTfrJN73avYhfdU+G6d+di1UP6astXh+RuO5U=
+	b=FuGNMCVweRTo3P501k9lvypGTT+hHNQDi0Iuzyu+rQoxUuqhgyYSkssCKJqW69/cT
+	 PXT6gxD9ZdigjBjCEg3wtqXdn4OPKuYYHr5+e+Jrv7++GcrHPqgSL3m1iVTIzORdK6
+	 W/w/5/ogecL1SefGGL5Kjjn5yjyNj1PUDlwRX2xo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	YonglongLi <liyonglong@chinatelecom.cn>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 140/356] mptcp: pm: inc RmAddr MIB counter once per RM_ADDR ID
+	Matthias Goergens <matthias.goergens@gmail.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 5.10 095/290] hugetlb_encode.h: fix undefined behaviour (34 << 26)
 Date: Wed,  3 Jul 2024 12:37:56 +0200
-Message-ID: <20240703102918.396157348@linuxfoundation.org>
+Message-ID: <20240703102907.778397034@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +65,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YonglongLi <liyonglong@chinatelecom.cn>
+From: Matthias Goergens <matthias.goergens@gmail.com>
 
-commit 6a09788c1a66e3d8b04b3b3e7618cc817bb60ae9 upstream.
+commit 710bb68c2e3a24512e2d2bae470960d7488e97b1 upstream.
 
-The RmAddr MIB counter is supposed to be incremented once when a valid
-RM_ADDR has been received. Before this patch, it could have been
-incremented as many times as the number of subflows connected to the
-linked address ID, so it could have been 0, 1 or more than 1.
+Left-shifting past the size of your datatype is undefined behaviour in C.
+The literal 34 gets the type `int`, and that one is not big enough to be
+left shifted by 26 bits.
 
-The "RmSubflow" is incremented after a local operation. In this case,
-it is normal to tied it with the number of subflows that have been
-actually removed.
+An `unsigned` is long enough (on any machine that has at least 32 bits for
+their ints.)
 
-The "remove invalid addresses" MP Join subtest has been modified to
-validate this case. A broadcast IP address is now used instead: the
-client will not be able to create a subflow to this address. The
-consequence is that when receiving the RM_ADDR with the ID attached to
-this broadcast IP address, no subflow linked to this ID will be found.
+For uniformity, we mark all the literals as unsigned.  But it's only
+really needed for HUGETLB_FLAG_ENCODE_16GB.
 
-Fixes: 7a7e52e38a40 ("mptcp: add RM_ADDR related mibs")
-Cc: stable@vger.kernel.org
-Co-developed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: YonglongLi <liyonglong@chinatelecom.cn>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240607-upstream-net-20240607-misc-fixes-v1-2-1ab9ddfa3d00@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in pm_netlink.c because the context has changed later in
-  multiple commits linked to new features, e.g. commit 86e39e04482b
-  ("mptcp: keep track of local endpoint still available for each msk"),
-  commit a88c9e496937 ("mptcp: do not block subflows creation on errors")
-  and commit 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking"),
-  but the independent lines that needed to be modified were still there.
-  Conflicts in the selftests, because many features modifying the whole
-  file have been added later, e.g. commit ae7bd9ccecc3 ("selftests:
-  mptcp: join: option to execute specific tests"). The same
-  modifications have been reported to the old code: simply changing the
-  IP address and add a new comment. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Thanks to Randy Dunlap for an initial review and suggestion.
+
+Link: https://lkml.kernel.org/r/20220905031904.150925-1-matthias.goergens@gmail.com
+Signed-off-by: Matthias Goergens <matthias.goergens@gmail.com>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Muchun Song <songmuchun@bytedance.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[cmllamas: fix trivial conflict due to missing page encondigs]
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c                          |    5 ++++-
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    3 ++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ include/uapi/asm-generic/hugetlb_encode.h  |   26 +++++++++++++-------------
+ tools/include/asm-generic/hugetlb_encode.h |   20 ++++++++++----------
+ 2 files changed, 23 insertions(+), 23 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -757,8 +757,11 @@ static void mptcp_pm_nl_rm_addr_or_subfl
+--- a/include/uapi/asm-generic/hugetlb_encode.h
++++ b/include/uapi/asm-generic/hugetlb_encode.h
+@@ -20,18 +20,18 @@
+ #define HUGETLB_FLAG_ENCODE_SHIFT	26
+ #define HUGETLB_FLAG_ENCODE_MASK	0x3f
  
- 			removed = true;
- 			msk->pm.subflows--;
--			__MPTCP_INC_STATS(sock_net(sk), rm_type);
-+			if (rm_type == MPTCP_MIB_RMSUBFLOW)
-+				__MPTCP_INC_STATS(sock_net(sk), rm_type);
- 		}
-+		if (rm_type == MPTCP_MIB_RMADDR)
-+			__MPTCP_INC_STATS(sock_net(sk), rm_type);
- 		if (!removed)
- 			continue;
+-#define HUGETLB_FLAG_ENCODE_16KB	(14 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_64KB	(16 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_512KB	(19 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_1MB		(20 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_2MB		(21 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_8MB		(23 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_16MB	(24 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_32MB	(25 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_256MB	(28 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_512MB	(29 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_1GB		(30 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_2GB		(31 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_16GB	(34 << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_16KB	(14U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_64KB	(16U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_512KB	(19U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_1MB		(20U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_2MB		(21U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_8MB		(23U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_16MB	(24U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_32MB	(25U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_256MB	(28U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_512MB	(29U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_1GB		(30U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_2GB		(31U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_16GB	(34U << HUGETLB_FLAG_ENCODE_SHIFT)
  
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -1307,7 +1307,8 @@ remove_tests()
- 	ip netns exec $ns1 ./pm_nl_ctl limits 3 3
- 	ip netns exec $ns1 ./pm_nl_ctl add 10.0.12.1 flags signal
- 	ip netns exec $ns1 ./pm_nl_ctl add 10.0.3.1 flags signal
--	ip netns exec $ns1 ./pm_nl_ctl add 10.0.14.1 flags signal
-+	# broadcast IP: no packet for this address will be received on ns1
-+	ip netns exec $ns1 ./pm_nl_ctl add 224.0.0.1 flags signal
- 	ip netns exec $ns2 ./pm_nl_ctl limits 3 3
- 	run_tests $ns1 $ns2 10.0.1.1 0 -3 0 slow
- 	chk_join_nr "remove invalid addresses" 1 1 1
+ #endif /* _ASM_GENERIC_HUGETLB_ENCODE_H_ */
+--- a/tools/include/asm-generic/hugetlb_encode.h
++++ b/tools/include/asm-generic/hugetlb_encode.h
+@@ -20,15 +20,15 @@
+ #define HUGETLB_FLAG_ENCODE_SHIFT	26
+ #define HUGETLB_FLAG_ENCODE_MASK	0x3f
+ 
+-#define HUGETLB_FLAG_ENCODE_64KB	(16 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_512KB	(19 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_1MB		(20 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_2MB		(21 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_8MB		(23 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_16MB	(24 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_256MB	(28 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_1GB		(30 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_2GB		(31 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_16GB	(34 << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_64KB	(16U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_512KB	(19U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_1MB		(20U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_2MB		(21U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_8MB		(23U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_16MB	(24U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_256MB	(28U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_1GB		(30U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_2GB		(31U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_16GB	(34U << HUGETLB_FLAG_ENCODE_SHIFT)
+ 
+ #endif /* _ASM_GENERIC_HUGETLB_ENCODE_H_ */
 
 
 
