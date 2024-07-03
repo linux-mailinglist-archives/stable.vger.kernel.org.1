@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-57467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2504925CA2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C078925E4A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DBF01F209A7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 557A92A0E82
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C31D1862B1;
-	Wed,  3 Jul 2024 11:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21C617B4FE;
+	Wed,  3 Jul 2024 11:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ki5oToUI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t3H6hzPN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281B6142649;
-	Wed,  3 Jul 2024 11:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F3817B4E9;
+	Wed,  3 Jul 2024 11:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004971; cv=none; b=SoT0hR91ge4Bxy1aHFSuVfOn5+HANrV61EJKM10ij0tGP6dvNCiqNBB/bCOxaPXkP+WZqGmlajH9JZkuIIhhxhSBufa6T3ot+XYlic72mP1RGl0M4V9t5Ib20qcc5+GZXVcBuakZug0pWaFcDUnyS/1I68qcRAM+0iOl/JDDlwQ=
+	t=1720005983; cv=none; b=eK3BacCt7itzOwFUOs7EbkhGxH7dKDutxwUG1QKtI/wgl9HnmqUgTIeP54YhtXvYDLR+h670zRhYenA5hY5vv7rY/FKIH5sdIeqCBou1mXHK8mr9xdHZkh6uKGJPxoL3SLKZCa4ZUxJERPTqUxDFDkJSgU211kU2LjtsJM6kJZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004971; c=relaxed/simple;
-	bh=Q8RjESsjSQ2wrrQyu3W3/SFandNkIV8bUGN3jeBGvs8=;
+	s=arc-20240116; t=1720005983; c=relaxed/simple;
+	bh=wgG2PbDe/Tj/jXvXg/29luVXAhSSc1ZHm32wp9n27Ws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R6z7zD1eOs6ehjrhjObLm8sHqeHXPQMXG2xQub3V9r891CJUuLsR8ceERYBjxFBS8D+Jy5/9TXGdhiTLMGKeB5vgN/4W6PWvlwLvZZX/X4eNiLZlnf4QxNbOf+Rt17AVy3J+uL4sj3tYY0vzPKd+h8Me60h0sMbEe5CmsUcKtOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ki5oToUI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5A8C4AF0B;
-	Wed,  3 Jul 2024 11:09:30 +0000 (UTC)
+	 MIME-Version; b=iHNvQd9zp3lR/2kBUKhwyaoWlKRmJt5rTre4v2dowRV1nRlC0WSa9Kn7LX+ZdizOt8tfgOfBHcnoiEAXf56BDW0Sjs/wHbnvIISr7oigyvNvduRyxNjNtNnXeluEo39eFlQL+VyFmTMG8FItUgYYYB6HdDxvjjCw8GzQRyUVTcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t3H6hzPN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8CDEC2BD10;
+	Wed,  3 Jul 2024 11:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004971;
-	bh=Q8RjESsjSQ2wrrQyu3W3/SFandNkIV8bUGN3jeBGvs8=;
+	s=korg; t=1720005983;
+	bh=wgG2PbDe/Tj/jXvXg/29luVXAhSSc1ZHm32wp9n27Ws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ki5oToUI0Er/AdjD4ysaONK/P+qNhYUtvxfi5Sy3+uwbyu3giVC2ATL9aD4MNh6nU
-	 OiOhve11NUzJCva2/7dcw0mglv86cu64LsbFRLXpcYfJ+X+Xn08S5K7ySwBIG3OGIh
-	 6GnDkTsNLXAypq9pU4Vf2TvTz+d7pB3bVxrhvtTs=
+	b=t3H6hzPN4hdM6BME3fMNvWcO37BffTRrvXHkiYSm0mgX+egzevJUpn02CuZv4Xhzi
+	 zs/lQKQHSRVVdUQHXTGlROcG6UP0G4mXl9YR1+Em+9lX792cWPwZCNAAUaAX7nM7nZ
+	 RvVdhKDvpr8EdKdbGktXo1+OLjET8Py+bOcQQzps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Benes <vbenes@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Huang-Huang Bao <i@eh5.me>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 217/290] nfsd: hold a lighter-weight client reference over CB_RECALL_ANY
+Subject: [PATCH 5.15 262/356] pinctrl: rockchip: fix pinmux bits for RK3328 GPIO2-B pins
 Date: Wed,  3 Jul 2024 12:39:58 +0200
-Message-ID: <20240703102912.354855505@linuxfoundation.org>
+Message-ID: <20240703102923.028413238@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Huang-Huang Bao <i@eh5.me>
 
-[ Upstream commit 10396f4df8b75ff6ab0aa2cd74296565466f2c8d ]
+[ Upstream commit e8448a6c817c2aa6c6af785b1d45678bd5977e8d ]
 
-Currently the CB_RECALL_ANY job takes a cl_rpc_users reference to the
-client. While a callback job is technically an RPC that counter is
-really more for client-driven RPCs, and this has the effect of
-preventing the client from being unhashed until the callback completes.
+The pinmux bits for GPIO2-B0 to GPIO2-B6 actually have 2 bits width,
+correct the bank flag for GPIO2-B. The pinmux bits for GPIO2-B7 is
+recalculated so it remain unchanged.
 
-If nfsd decides to send a CB_RECALL_ANY just as the client reboots, we
-can end up in a situation where the callback can't complete on the (now
-dead) callback channel, but the new client can't connect because the old
-client can't be unhashed. This usually manifests as a NFS4ERR_DELAY
-return on the CREATE_SESSION operation.
+The pinmux bits for those pins are not explicitly specified in RK3328
+TRM, however we can get hint from pad name and its correspinding IOMUX
+setting for pins in interface descriptions. The correspinding IOMIX
+settings for GPIO2-B0 to GPIO2-B6 can be found in the same row next to
+occurrences of following pad names in RK3328 TRM.
 
-The job is only holding a reference to the client so it can clear a flag
-after the RPC completes. Fix this by having CB_RECALL_ANY instead hold a
-reference to the cl_nfsdfs.cl_ref. Typically we only take that sort of
-reference when dealing with the nfsdfs info files, but it should work
-appropriately here to ensure that the nfs4_client doesn't disappear.
+GPIO2-B0: IO_SPIclkm0_GPIO2B0vccio5
+GPIO2-B1: IO_SPItxdm0_GPIO2B1vccio5
+GPIO2-B2: IO_SPIrxdm0_GPIO2B2vccio5
+GPIO2-B3: IO_SPIcsn0m0_GPIO2B3vccio5
+GPIO2-B4: IO_SPIcsn1m0_FLASHvol_sel_GPIO2B4vccio5
+GPIO2-B5: IO_ I2C2sda_TSADCshut_GPIO2B5vccio5
+GPIO2-B6: IO_ I2C2scl_GPIO2B6vccio5
 
-Fixes: 44df6f439a17 ("NFSD: add delegation reaper to react to low memory condition")
-Reported-by: Vladimir Benes <vbenes@redhat.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+This fix has been tested on NanoPi R2S for fixing confliting pinmux bits
+between GPIO2-B7 with GPIO2-B5.
+
+Signed-off-by: Huang-Huang Bao <i@eh5.me>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 3818e4a7678e ("pinctrl: rockchip: Add rk3328 pinctrl support")
+Link: https://lore.kernel.org/r/20240606125755.53778-2-i@eh5.me
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/pinctrl/pinctrl-rockchip.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 228560f3fd0e0..8e84ddccce4bf 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -2888,12 +2888,9 @@ static void
- nfsd4_cb_recall_any_release(struct nfsd4_callback *cb)
- {
- 	struct nfs4_client *clp = cb->cb_clp;
--	struct nfsd_net *nn = net_generic(clp->net, nfsd_net_id);
+diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
+index a6f4aca9c61c4..693a24eac9892 100644
+--- a/drivers/pinctrl/pinctrl-rockchip.c
++++ b/drivers/pinctrl/pinctrl-rockchip.c
+@@ -564,12 +564,6 @@ static struct rockchip_mux_recalced_data rk3308_mux_recalced_data[] = {
  
--	spin_lock(&nn->client_lock);
- 	clear_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags);
--	put_client_renew_locked(clp);
--	spin_unlock(&nn->client_lock);
-+	drop_client(clp);
- }
- 
- static const struct nfsd4_callback_ops nfsd4_cb_recall_any_ops = {
-@@ -6230,7 +6227,7 @@ deleg_reaper(struct nfsd_net *nn)
- 		list_add(&clp->cl_ra_cblist, &cblist);
- 
- 		/* release in nfsd4_cb_recall_any_release */
--		atomic_inc(&clp->cl_rpc_users);
-+		kref_get(&clp->cl_nfsdfs.cl_ref);
- 		set_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags);
- 		clp->cl_ra_time = ktime_get_boottime_seconds();
- 	}
+ static struct rockchip_mux_recalced_data rk3328_mux_recalced_data[] = {
+ 	{
+-		.num = 2,
+-		.pin = 12,
+-		.reg = 0x24,
+-		.bit = 8,
+-		.mask = 0x3
+-	}, {
+ 		.num = 2,
+ 		.pin = 15,
+ 		.reg = 0x28,
+@@ -3181,7 +3175,7 @@ static struct rockchip_pin_bank rk3328_pin_banks[] = {
+ 	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", 0, 0, 0, 0),
+ 	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", 0, 0, 0, 0),
+ 	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", 0,
+-			     IOMUX_WIDTH_3BIT,
++			     0,
+ 			     IOMUX_WIDTH_3BIT,
+ 			     0),
+ 	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3",
 -- 
 2.43.0
 
