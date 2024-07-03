@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-56944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F70925ECE
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:41:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0823925D9E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D679B24E07
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:51:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E5861C21119
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D31CD172777;
-	Wed,  3 Jul 2024 10:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0D89186E32;
+	Wed,  3 Jul 2024 11:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OWCgRII8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tu8EriRz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC00172798;
-	Wed,  3 Jul 2024 10:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD91245945;
+	Wed,  3 Jul 2024 11:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003364; cv=none; b=DZ7KWeNOk7W91y37/RDjdruU6KaBVY4wdhuzM120xPzDmWQ83VRQKrHSb8Ue3gawLOYW2qcKYWg6oAijj2lYz8aiNS8KMLZDFhssosuLyT/1U5q21f4HjLi2nmCUglu89ykYyFF5nN8WUCm07UNejjBxUMnhHMIkCgZG2UAXRkA=
+	t=1720005703; cv=none; b=PzvOiThvHCx4yIjneXVxnYWsbzx1IRDqpg9qu25JREQxvKvyA5jXVbYTfF6K2Ne9ZCRiPg+JZsnzzRsuL2B31UM7yCmNdi9AsJDQbJG/KzKRnWBi6n8Z2nozTm3ic5uRpX+VD+BXf6jUVLQ04HDCOhr3oTjHM5oMUIDpOfX4Zfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003364; c=relaxed/simple;
-	bh=hWvNuHTn1sdQNKV1EoIG053vkxlSMFGEyk6YMYXpDQk=;
+	s=arc-20240116; t=1720005703; c=relaxed/simple;
+	bh=Xt7SnP01WmMRmZubeBfFGp2o0+qncHA+SotrobE6OSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ksrpObdKTP3jnSbzuWWMiBITvwDeyXvEyLpSIShkaWSgnUxpLmXFDSknE+maurdZZ99oYuRbGzko87N4oFc7ZvW9OaPg42WRC5m0ajOPcaee7fxX9bHrgb0xcVnD6GHtSVQZ8Quq1LxzKiopsPoVxhd++0BdlhJ7Puzja4mE1Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OWCgRII8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF781C2BD10;
-	Wed,  3 Jul 2024 10:42:43 +0000 (UTC)
+	 MIME-Version; b=jTKtdEi2pm6pRkq0AHw0XUAVJQv6OZwbpRbSbwi5o5h/+t9ri1+Kvd+c+sh1CPGCV8aa3R4IxUsW6OPQCIzj0HZWWmCw6H5eQASkL1cwc5wFOestXxr9BID7xBIgLiWPOSt0z3En4kTKsNyWamjNleGwNA8awX15jQlkN31M+bY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tu8EriRz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36014C2BD10;
+	Wed,  3 Jul 2024 11:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003364;
-	bh=hWvNuHTn1sdQNKV1EoIG053vkxlSMFGEyk6YMYXpDQk=;
+	s=korg; t=1720005703;
+	bh=Xt7SnP01WmMRmZubeBfFGp2o0+qncHA+SotrobE6OSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OWCgRII8MwwtiEXeu03FD1DevUCKw4sHqLntyLgxpDrfdX7NLA91kQ30kQ21iYD0J
-	 zi/Sp1B+I6C8CoGJx0Rr6NLoAESpQMSXSqbSHYaXJDG329v6y+9gi5ms963d06Ovmt
-	 J97GiwB3CBxiVZrnwTm1i7S2FD1ZV2iKuebBDcsU=
+	b=tu8EriRzxPCtYE/rCwg28u0PH8IxCij9MP08bVkNV0oPygpBEvOCxiylLHnu3+O54
+	 eOUglp8DKcYHDrbZlzYU367bZGRy3rR7fDDaJ5jXtdoBeZAc6TCDpBmmB7rh4CVVoO
+	 z5h2p5jijcwJL241fGkNXqVBGbbdyeJuLVI9gH9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 007/139] tcp: count CLOSE-WAIT sockets for TCP_MIB_CURRESTAB
+Subject: [PATCH 5.15 168/356] drm/amd/display: Exit idle optimizations before HDCP execution
 Date: Wed,  3 Jul 2024 12:38:24 +0200
-Message-ID: <20240703102830.713841952@linuxfoundation.org>
+Message-ID: <20240703102919.460674497@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +66,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-[ Upstream commit a46d0ea5c94205f40ecf912d1bb7806a8a64704f ]
+[ Upstream commit f30a3bea92bdab398531129d187629fb1d28f598 ]
 
-According to RFC 1213, we should also take CLOSE-WAIT sockets into
-consideration:
+[WHY]
+PSP can access DCN registers during command submission and we need
+to ensure that DCN is not in PG before doing so.
 
-  "tcpCurrEstab OBJECT-TYPE
-   ...
-   The number of TCP connections for which the current state
-   is either ESTABLISHED or CLOSE- WAIT."
+[HOW]
+Add a callback to DM to lock and notify DC for idle optimization exit.
+It can't be DC directly because of a potential race condition with the
+link protection thread and the rest of DM operation.
 
-After this, CurrEstab counter will display the total number of
-ESTABLISHED and CLOSE-WAIT sockets.
-
-The logic of counting
-When we increment the counter?
-a) if we change the state to ESTABLISHED.
-b) if we change the state from SYN-RECEIVED to CLOSE-WAIT.
-
-When we decrement the counter?
-a) if the socket leaves ESTABLISHED and will never go into CLOSE-WAIT,
-say, on the client side, changing from ESTABLISHED to FIN-WAIT-1.
-b) if the socket leaves CLOSE-WAIT, say, on the server side, changing
-from CLOSE-WAIT to LAST-ACK.
-
-Please note: there are two chances that old state of socket can be changed
-to CLOSE-WAIT in tcp_fin(). One is SYN-RECV, the other is ESTABLISHED.
-So we have to take care of the former case.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c    | 10 ++++++++++
+ drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h |  8 ++++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index e3475f833f8fe..0cbfb57de0f07 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2242,6 +2242,10 @@ void tcp_set_state(struct sock *sk, int state)
- 		if (oldstate != TCP_ESTABLISHED)
- 			TCP_INC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
- 		break;
-+	case TCP_CLOSE_WAIT:
-+		if (oldstate == TCP_SYN_RECV)
-+			TCP_INC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
-+		break;
+diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
+index 3e81850a7ffe3..47bb973669d85 100644
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
+@@ -88,6 +88,14 @@ static uint8_t is_cp_desired_hdcp2(struct mod_hdcp *hdcp)
+ 			!hdcp->connection.is_hdcp2_revoked;
+ }
  
- 	case TCP_CLOSE:
- 		if (oldstate == TCP_CLOSE_WAIT || oldstate == TCP_ESTABLISHED)
-@@ -2253,7 +2257,7 @@ void tcp_set_state(struct sock *sk, int state)
- 			inet_put_port(sk);
- 		/* fall through */
- 	default:
--		if (oldstate == TCP_ESTABLISHED)
-+		if (oldstate == TCP_ESTABLISHED || oldstate == TCP_CLOSE_WAIT)
- 			TCP_DEC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
- 	}
++static void exit_idle_optimizations(struct mod_hdcp *hdcp)
++{
++	struct mod_hdcp_dm *dm = &hdcp->config.dm;
++
++	if (dm->funcs.exit_idle_optimizations)
++		dm->funcs.exit_idle_optimizations(dm->handle);
++}
++
+ static enum mod_hdcp_status execution(struct mod_hdcp *hdcp,
+ 		struct mod_hdcp_event_context *event_ctx,
+ 		union mod_hdcp_transition_input *input)
+@@ -507,6 +515,8 @@ enum mod_hdcp_status mod_hdcp_process_event(struct mod_hdcp *hdcp,
+ 	memset(&event_ctx, 0, sizeof(struct mod_hdcp_event_context));
+ 	event_ctx.event = event;
+ 
++	exit_idle_optimizations(hdcp);
++
+ 	/* execute and transition */
+ 	exec_status = execution(hdcp, &event_ctx, &hdcp->auth.trans_input);
+ 	trans_status = transition(
+diff --git a/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h b/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
+index f37101f5a7777..8a620c34396c7 100644
+--- a/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
++++ b/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
+@@ -154,6 +154,13 @@ struct mod_hdcp_ddc {
+ 	} funcs;
+ };
+ 
++struct mod_hdcp_dm {
++	void *handle;
++	struct {
++		void (*exit_idle_optimizations)(void *handle);
++	} funcs;
++};
++
+ struct mod_hdcp_psp {
+ 	void *handle;
+ 	void *funcs;
+@@ -269,6 +276,7 @@ struct mod_hdcp_display_query {
+ struct mod_hdcp_config {
+ 	struct mod_hdcp_psp psp;
+ 	struct mod_hdcp_ddc ddc;
++	struct mod_hdcp_dm dm;
+ 	uint8_t index;
+ };
  
 -- 
 2.43.0
