@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-57086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CDE7925A9A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:02:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98DC3925D78
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35E971F213F6
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:02:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB45C1C21F48
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F5E315D5B3;
-	Wed,  3 Jul 2024 10:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099851836C2;
+	Wed,  3 Jul 2024 11:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXCgXyVV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8YQfO/g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE8D17967A;
-	Wed,  3 Jul 2024 10:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA21A17966F;
+	Wed,  3 Jul 2024 11:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003801; cv=none; b=LHaX8Ytgy82kLWDelvPl1AkYXSxKnAMuPOGzGHBMiPc19JyUJIm+bhCBUfaqcNV6J2p56ZJZzhK/cQPiayc+WfpP25/NZBbfefEZCFlXmVASgzwTDPEjEs2dsYBA/Cffnid2eGYXGtR1UdNDbskE4McfvD5qAT0vJU4eBNDbkCM=
+	t=1720005602; cv=none; b=UDiSa1hJMqlfZd8LB4Tn+8JdW06VWL3ZSRxk2rNewgWa/tJ2infSu5emdHyf4WhymgsD7GBQixUhlrkKTo1u4z2fFdEjyBjf90gGK31RN4Zz/BXBDxeuP3ah/oJKBP/5iRRMHmav86lhKtRzplPMUI63sC1Fiyb+k+DRNBVdrtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003801; c=relaxed/simple;
-	bh=PKjqseXSVIEVhmhIRT/Ju6tVCWGDjrIHKM3uHTcPLXY=;
+	s=arc-20240116; t=1720005602; c=relaxed/simple;
+	bh=tvF1vvilwRxLzu0YV71ptFq1LQLS85r0kK/G1bGaZtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBHE2O0qxhU1NkUMEnFZkjT4oqtl06BK4Bf8dE3rmw7uAcqRQ2tQ1dDny0Gh70ZxIp9QpqYmDoBAo6ytrwDEkX8HCjQSZEUsXqpYR5/TJlB+grSz8l1Fq5JsyJ0XdZ/bijFdSnE29ut0Fd7uycAiJ4JbBXwsdB+Ru1fYbHjZXf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXCgXyVV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5EACC2BD10;
-	Wed,  3 Jul 2024 10:50:00 +0000 (UTC)
+	 MIME-Version; b=mvacxqmNbw//gfOWTGNxcBX7bVZ5Qibs1Eiaeip9ZC9P3x0FlLmO5bfD+dnvzSiMqSyzKxyGXCzXjNkScsKMSvda+nTsccZOTKRK9c7UE4gY+SWtasTJ+TFqzbt9kwoQ4lSmJQNTrZ94RYHhFipxhI1oyIIIGzqjZoPwBFlhq3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8YQfO/g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F453C2BD10;
+	Wed,  3 Jul 2024 11:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003801;
-	bh=PKjqseXSVIEVhmhIRT/Ju6tVCWGDjrIHKM3uHTcPLXY=;
+	s=korg; t=1720005602;
+	bh=tvF1vvilwRxLzu0YV71ptFq1LQLS85r0kK/G1bGaZtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PXCgXyVVChsV571040U67lYKskHgzYQ2IK3elvQlS/GEaud7mEpMWS7WQWrqw+Xeg
-	 spFEJi+TMdI+rYRm590EdFdSlCZVFEjKg8TTuiYWvhYtR1BkbskPOB3YJCHAKHUXNA
-	 iIY5KRrIy0suYcaV6IFls9anXMyeSavyLrfbscis=
+	b=B8YQfO/gXsKJFy9BMKyJ0MGkqp4SMGjIM8CywWo90kokK0AMmkPFGfvFzq478q17X
+	 yzDbc0G+TDfBAn00VQAEo8pR1mUAdfJNR7XBx9Rdp/IVR52J2VxT+TX5qaS3Sojdxs
+	 nS7zMm93ATkW/XEj7RLAIl3wKvOFM+I4ZRxIz2sA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangyu Hua <hbh25y@gmail.com>,
-	Cong Wang <cong.wang@bytedance.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 008/189] net: sched: sch_multiq: fix possible OOB write in multiq_tune()
-Date: Wed,  3 Jul 2024 12:37:49 +0200
-Message-ID: <20240703102841.815902010@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 134/356] nilfs2: fix potential kernel bug due to lack of writeback flag waiting
+Date: Wed,  3 Jul 2024 12:37:50 +0200
+Message-ID: <20240703102918.167613298@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangyu Hua <hbh25y@gmail.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit affc18fdc694190ca7575b9a86632a73b9fe043d ]
+commit a4ca369ca221bb7e06c725792ac107f0e48e82e7 upstream.
 
-q->bands will be assigned to qopt->bands to execute subsequent code logic
-after kmalloc. So the old q->bands should not be used in kmalloc.
-Otherwise, an out-of-bounds write will occur.
+Destructive writes to a block device on which nilfs2 is mounted can cause
+a kernel bug in the folio/page writeback start routine or writeback end
+routine (__folio_start_writeback in the log below):
 
-Fixes: c2999f7fb05b ("net: sched: multiq: don't call qdisc_put() while holding tree lock")
-Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
-Acked-by: Cong Wang <cong.wang@bytedance.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ kernel BUG at mm/page-writeback.c:3070!
+ Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+ ...
+ RIP: 0010:__folio_start_writeback+0xbaa/0x10e0
+ Code: 25 ff 0f 00 00 0f 84 18 01 00 00 e8 40 ca c6 ff e9 17 f6 ff ff
+  e8 36 ca c6 ff 4c 89 f7 48 c7 c6 80 c0 12 84 e8 e7 b3 0f 00 90 <0f>
+  0b e8 1f ca c6 ff 4c 89 f7 48 c7 c6 a0 c6 12 84 e8 d0 b3 0f 00
+ ...
+ Call Trace:
+  <TASK>
+  nilfs_segctor_do_construct+0x4654/0x69d0 [nilfs2]
+  nilfs_segctor_construct+0x181/0x6b0 [nilfs2]
+  nilfs_segctor_thread+0x548/0x11c0 [nilfs2]
+  kthread+0x2f0/0x390
+  ret_from_fork+0x4b/0x80
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+
+This is because when the log writer starts a writeback for segment summary
+blocks or a super root block that use the backing device's page cache, it
+does not wait for the ongoing folio/page writeback, resulting in an
+inconsistent writeback state.
+
+Fix this issue by waiting for ongoing writebacks when putting
+folios/pages on the backing device into writeback state.
+
+Link: https://lkml.kernel.org/r/20240530141556.4411-1-konishi.ryusuke@gmail.com
+Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_multiq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/segment.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sched/sch_multiq.c b/net/sched/sch_multiq.c
-index 1330ad2249317..b822d3e74637d 100644
---- a/net/sched/sch_multiq.c
-+++ b/net/sched/sch_multiq.c
-@@ -186,7 +186,7 @@ static int multiq_tune(struct Qdisc *sch, struct nlattr *opt,
- 
- 	qopt->bands = qdisc_dev(sch)->real_num_tx_queues;
- 
--	removed = kmalloc(sizeof(*removed) * (q->max_bands - q->bands),
-+	removed = kmalloc(sizeof(*removed) * (q->max_bands - qopt->bands),
- 			  GFP_KERNEL);
- 	if (!removed)
- 		return -ENOMEM;
--- 
-2.43.0
-
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -1692,6 +1692,7 @@ static void nilfs_segctor_prepare_write(
+ 			if (bh->b_page != bd_page) {
+ 				if (bd_page) {
+ 					lock_page(bd_page);
++					wait_on_page_writeback(bd_page);
+ 					clear_page_dirty_for_io(bd_page);
+ 					set_page_writeback(bd_page);
+ 					unlock_page(bd_page);
+@@ -1705,6 +1706,7 @@ static void nilfs_segctor_prepare_write(
+ 			if (bh == segbuf->sb_super_root) {
+ 				if (bh->b_page != bd_page) {
+ 					lock_page(bd_page);
++					wait_on_page_writeback(bd_page);
+ 					clear_page_dirty_for_io(bd_page);
+ 					set_page_writeback(bd_page);
+ 					unlock_page(bd_page);
+@@ -1721,6 +1723,7 @@ static void nilfs_segctor_prepare_write(
+ 	}
+ 	if (bd_page) {
+ 		lock_page(bd_page);
++		wait_on_page_writeback(bd_page);
+ 		clear_page_dirty_for_io(bd_page);
+ 		set_page_writeback(bd_page);
+ 		unlock_page(bd_page);
 
 
 
