@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D46925F61
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:58:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDFB4925E28
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F915B3BA7C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2607D1C20503
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A74C188CDD;
-	Wed,  3 Jul 2024 11:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796AA17C207;
+	Wed,  3 Jul 2024 11:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RePdMdjG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPVaF2o/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD43B16DEAC;
-	Wed,  3 Jul 2024 11:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3766717BB03;
+	Wed,  3 Jul 2024 11:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005043; cv=none; b=jkfbZnXWHgixjRh6pkzKM8+hSDSod4j3V7DRBURi1QGi8Td9fG8bthEFpCa0XCNrE3F6vxtNinbvAd4uk3bnJDaZ/uGe7rHKdBv96kIB/wFmZnIAc/6zh9BC6pd3yjfwB7M/BeCwKhvCu3Xuf1t6/H6BJzKztax8N7al/JlKzxM=
+	t=1720006010; cv=none; b=snXYkfkTlZnwiyfCot9QTrpw67lCC865JKGDsfwNIyej/vDcGWrh0X57EtEb2aqINBmS77r8SPWizawFuDFJB6e3Jrev40g5ZB0MSig5U4AgKAZL2i6cjoULwFrMi+4WfTz60au91MLbeTQlHF+BbGBreQTWcIOPXPfRR9wcvHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005043; c=relaxed/simple;
-	bh=Bm4mg30AGVTav0JGa2QGMCMAHDqjfGCP5qDm+8+RpgE=;
+	s=arc-20240116; t=1720006010; c=relaxed/simple;
+	bh=0/q2IWBbsgcZx/Xtmf3rnujB/l5bz2FhDIri+eE3Mfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GHFqqk3VZ1kjmbfkbZeUP9Oz9D+wtMLtXDLaktdYaheDt+TXK/9IxbyIZn14HWJ7rH+UNHZFHIkGS8kM/t7KUyS4VOCyN6LyMqnToqlN9S2sv5d4/GZt9xFLglhtUhNFeMNigI3551PeItewJWcD9fmvv5BEiyGjw3KCq1Gj0s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RePdMdjG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A34C2BD10;
-	Wed,  3 Jul 2024 11:10:42 +0000 (UTC)
+	 MIME-Version; b=b8NrANJMsvkvgT7g2hhvqDsBku16E8V8W+oBHOMKGJoWtTx9jH/oABtTPOpAqVDwyZPSNPw/lSDOL762MRVVkbI3tVP/f5rIbsSwzWDHLnNZpjKA9cRW86+YJ1DujbAzPgUAhp9/ItnZERbq2arS4BbhRz3mrpLof24CTYf5fVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPVaF2o/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B295EC2BD10;
+	Wed,  3 Jul 2024 11:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005042;
-	bh=Bm4mg30AGVTav0JGa2QGMCMAHDqjfGCP5qDm+8+RpgE=;
+	s=korg; t=1720006010;
+	bh=0/q2IWBbsgcZx/Xtmf3rnujB/l5bz2FhDIri+eE3Mfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RePdMdjGMqgV1JGAl14jmE6A/+iHZSq1f92qXS5ZpzR6xrut9ODHyLjlpqiVfNq83
-	 eumDXD8FKCcyNqpM/y0md7wgw0CgnN75fKZF1O9Qfd81SmKyi4zDT/7YhXfehUujYr
-	 Ijjyzwp7EVAyXxHQWp4UrVpHntPr0dJ0Fzz2imVk=
+	b=tPVaF2o/Ryc4PyT0bIYJNIWnGfiSSJ7NbtZ+6Q18WfSzpaeOQsVEHrtx8WSSWSeo0
+	 akHBXlyKq/urwWy2Ou+QWaPzZUC4dk0lA0Y4rNpzM4YwFPF9wlpniSvRRjWVaBg56H
+	 0XLjhAm+VVUYt2neEcRz3qEpduHt6xkY5QNRG5Q8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
+	Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 224/290] sparc: fix old compat_sys_select()
-Date: Wed,  3 Jul 2024 12:40:05 +0200
-Message-ID: <20240703102912.617783667@linuxfoundation.org>
+Subject: [PATCH 5.15 270/356] ASoC: fsl-asoc-card: set priv->pdev before using it
+Date: Wed,  3 Jul 2024 12:40:06 +0200
+Message-ID: <20240703102923.328821818@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
 
-[ Upstream commit bae6428a9fffb2023191b0723e276cf1377a7c9f ]
+[ Upstream commit 90f3feb24172185f1832636264943e8b5e289245 ]
 
-sparc has two identical select syscalls at numbers 93 and 230, respectively.
-During the conversion to the modern syscall.tbl format, the older one of the
-two broke in compat mode, and now refers to the native 64-bit syscall.
+priv->pdev pointer was set after being used in
+fsl_asoc_card_audmux_init().
+Move this assignment at the start of the probe function, so
+sub-functions can correctly use pdev through priv.
 
-Restore the correct behavior. This has very little effect, as glibc has
-been using the newer number anyway.
+fsl_asoc_card_audmux_init() dereferences priv->pdev to get access to the
+dev struct, used with dev_err macros.
+As priv is zero-initialised, there would be a NULL pointer dereference.
+Note that if priv->dev is dereferenced before assignment but never used,
+for example if there is no error to be printed, the driver won't crash
+probably due to compiler optimisations.
 
-Fixes: 6ff645dd683a ("sparc: add system call table generation support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 708b4351f08c ("ASoC: fsl: Add Freescale Generic ASoC Sound Card with ASRC support")
+Signed-off-by: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+Link: https://patch.msgid.link/20240620132511.4291-2-elinor.montmasson@savoirfairelinux.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/kernel/syscalls/syscall.tbl | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/fsl/fsl-asoc-card.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
-index 78160260991be..6869c7c71ebaf 100644
---- a/arch/sparc/kernel/syscalls/syscall.tbl
-+++ b/arch/sparc/kernel/syscalls/syscall.tbl
-@@ -117,7 +117,7 @@
- 90	common	dup2			sys_dup2
- 91	32	setfsuid32		sys_setfsuid
- 92	common	fcntl			sys_fcntl			compat_sys_fcntl
--93	common	select			sys_select
-+93	common	select			sys_select			compat_sys_select
- 94	32	setfsgid32		sys_setfsgid
- 95	common	fsync			sys_fsync
- 96	common	setpriority		sys_setpriority
+diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
+index 5000d779aade2..98a157e46637a 100644
+--- a/sound/soc/fsl/fsl-asoc-card.c
++++ b/sound/soc/fsl/fsl-asoc-card.c
+@@ -548,6 +548,8 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
++	priv->pdev = pdev;
++
+ 	cpu_np = of_parse_phandle(np, "audio-cpu", 0);
+ 	/* Give a chance to old DT binding */
+ 	if (!cpu_np)
+@@ -742,7 +744,6 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	/* Initialize sound card */
+-	priv->pdev = pdev;
+ 	priv->card.dev = &pdev->dev;
+ 	priv->card.owner = THIS_MODULE;
+ 	ret = snd_soc_of_parse_card_name(&priv->card, "model");
 -- 
 2.43.0
 
