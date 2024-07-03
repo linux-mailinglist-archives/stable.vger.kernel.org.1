@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-57279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92963925BE7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:12:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45870925F2D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:52:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A9051F22ADC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3641B2AEA0
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6EC194A6F;
-	Wed,  3 Jul 2024 11:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E2F181D02;
+	Wed,  3 Jul 2024 11:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zVcU3sLo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGbiJ81q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08EBC174EFE;
-	Wed,  3 Jul 2024 11:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4607CF1F;
+	Wed,  3 Jul 2024 11:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004401; cv=none; b=p2Nbar+uYr/Jv5Rj/YKkhg5jyLCdcTHtTzlD0ukmIF3JBErRaPDd/0kIEjUqztON5tZ6Ci7G/IA1Quz6gx7X/y6JSNb5xjkGxqJG/JCnc5/Jxw7+keWCZdOTtzOJSTm7vwVkF6g0PZVnBZ09vzjHSiNOfk9X0cBjgpg9B5CbfnY=
+	t=1720005541; cv=none; b=DWeNtjRQl2zPLyLwJm6OeOq0nBIFimaDvHKJERfjs0SP8/ZXs1sJ1zicKgmNOKZjQmvH1yWW/c5vSphtitrKNtoBL6Eybu948Cejal7m1Bn42IX9b4tPc25kgNJtQt6C6JKf3eRGFje59V7HtJsgGeQsdEHQMqWYOBCjuf/28Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004401; c=relaxed/simple;
-	bh=f1dkN0lsppzRwY3RDD7Yl7GgYwChzuPfKIZ2cVvjlWE=;
+	s=arc-20240116; t=1720005541; c=relaxed/simple;
+	bh=/koDuKThRHaXv9148oCZGVLexqe4dqCbg6cIs9H/TUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tFgRV3m7m+qUeBL+WnKo5N/CCLYXj5Z8CF25Q6h3WWL+Q0dD5GDTpKDLFbRSd9uDj3/yTrNhiohnMzVX+uFRyr43eyq4w4uAb1O9OlJ4DeSMsY5fwcQ+Hyhb7emXiBjf3q64b5PBpBgkUMoEYhIg6IujpdN6yvaEmW/ITFxe91w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zVcU3sLo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F919C2BD10;
-	Wed,  3 Jul 2024 11:00:00 +0000 (UTC)
+	 MIME-Version; b=NSw7BmAQoXjV6L/AUNehmMEz7lNhWnjyZ22p6P2BU8ZNRWLHbX6bTWE/R5X0rqxnLsQmJ71Y3L9C2PGwokkL2i4YZQczGIXRhjmmK9C0bmPJuEzR+Q6//1gx+w3MX8reOnxrwMjMaRdu/qaPd57Sjr8sE/tWvkfkTkqE5MUrneU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGbiJ81q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B8AC2BD10;
+	Wed,  3 Jul 2024 11:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004400;
-	bh=f1dkN0lsppzRwY3RDD7Yl7GgYwChzuPfKIZ2cVvjlWE=;
+	s=korg; t=1720005541;
+	bh=/koDuKThRHaXv9148oCZGVLexqe4dqCbg6cIs9H/TUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zVcU3sLoWN3BrHNUJZ3/b5sB5qQ6VH7xV9aUpSCxllE+q4Mo9vJknbv/SfqifaeZI
-	 /hthYcsZeV4uOO4Vjxbyf/jVFiBdOC1u4Pgl9jbYr0sm/XYuXymm3Ccymry61BCd35
-	 m+tFUW2Vvbj3IVrI3lgwhC55cHEUMBJDfmBj5FPU=
+	b=RGbiJ81qiu9KW3TZYU4IALTRO27Efm2pt33juEIPyfnYgJZwfllO11otLWPTtvmPi
+	 NKd/zEIxX+MT8c43cQ7IwNHTlYmrf7ZLQxxRex1ijQ+b5LEIj2zUrItSjrGyVcOcOe
+	 9HRqWA6W659yXEMlJHELwz+o7dxdKU9a3Qof3LKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Anson Jacob <Anson.Jacob@amd.com>,
-	George Shen <george.shen@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 030/290] drm/amd/display: Handle Y carry-over in VCP X.Y calculation
+	Kyle Tso <kyletso@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.15 075/356] usb: typec: tcpm: Ignore received Hard Reset in TOGGLING state
 Date: Wed,  3 Jul 2024 12:36:51 +0200
-Message-ID: <20240703102905.334208768@linuxfoundation.org>
+Message-ID: <20240703102915.940785272@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Shen <george.shen@amd.com>
+From: Kyle Tso <kyletso@google.com>
 
-[ Upstream commit 3626a6aebe62ce7067cdc460c0c644e9445386bb ]
+commit fc8fb9eea94d8f476e15f3a4a7addeb16b3b99d6 upstream.
 
-[Why/How]
-Theoretically rare corner case where ceil(Y) results in rounding
-up to an integer. If this happens, the 1 should be carried over to
-the X value.
+Similar to what fixed in Commit a6fe37f428c1 ("usb: typec: tcpm: Skip
+hard reset when in error recovery"), the handling of the received Hard
+Reset has to be skipped during TOGGLING state.
 
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Acked-by: Anson Jacob <Anson.Jacob@amd.com>
-Signed-off-by: George Shen <george.shen@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ 4086.021288] VBUS off
+[ 4086.021295] pending state change SNK_READY -> SNK_UNATTACHED @ 650 ms [rev2 NONE_AMS]
+[ 4086.022113] VBUS VSAFE0V
+[ 4086.022117] state change SNK_READY -> SNK_UNATTACHED [rev2 NONE_AMS]
+[ 4086.022447] VBUS off
+[ 4086.022450] state change SNK_UNATTACHED -> SNK_UNATTACHED [rev2 NONE_AMS]
+[ 4086.023060] VBUS VSAFE0V
+[ 4086.023064] state change SNK_UNATTACHED -> SNK_UNATTACHED [rev2 NONE_AMS]
+[ 4086.023070] disable BIST MODE TESTDATA
+[ 4086.023766] disable vbus discharge ret:0
+[ 4086.023911] Setting usb_comm capable false
+[ 4086.028874] Setting voltage/current limit 0 mV 0 mA
+[ 4086.028888] polarity 0
+[ 4086.030305] Requesting mux state 0, usb-role 0, orientation 0
+[ 4086.033539] Start toggling
+[ 4086.038496] state change SNK_UNATTACHED -> TOGGLING [rev2 NONE_AMS]
+
+// This Hard Reset is unexpected
+[ 4086.038499] Received hard reset
+[ 4086.038501] state change TOGGLING -> HARD_RESET_START [rev2 HARD_RESET]
+
+Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kyle Tso <kyletso@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240520154858.1072347-1-kyletso@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn10/dcn10_stream_encoder.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/usb/typec/tcpm/tcpm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_stream_encoder.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_stream_encoder.c
-index f70fcadf1ee55..a4a6b99bddbaf 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_stream_encoder.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_stream_encoder.c
-@@ -633,6 +633,12 @@ void enc1_stream_encoder_set_throttled_vcp_size(
- 				x),
- 			26));
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -5351,6 +5351,7 @@ static void _tcpm_pd_hard_reset(struct t
+ 		port->tcpc->set_bist_data(port->tcpc, false);
  
-+	// If y rounds up to integer, carry it over to x.
-+	if (y >> 26) {
-+		x += 1;
-+		y = 0;
-+	}
-+
- 	REG_SET_2(DP_MSE_RATE_CNTL, 0,
- 		DP_MSE_RATE_X, x,
- 		DP_MSE_RATE_Y, y);
--- 
-2.43.0
-
+ 	switch (port->state) {
++	case TOGGLING:
+ 	case ERROR_RECOVERY:
+ 	case PORT_RESET:
+ 	case PORT_RESET_WAIT_OFF:
 
 
 
