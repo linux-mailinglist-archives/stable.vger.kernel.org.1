@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04FF5925CB1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55803925E4B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4F2B2C4131
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8727F1C20886
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D1C188CB4;
-	Wed,  3 Jul 2024 11:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 094CB17DA35;
+	Wed,  3 Jul 2024 11:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ul9rzCuF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZY5ZInOX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4759616F8F5;
-	Wed,  3 Jul 2024 11:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB967171E67;
+	Wed,  3 Jul 2024 11:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005025; cv=none; b=F/J0GDsNQWjtGoA9O1gsXkpifMR6lvhQSdgj+OgtQBkHW1bF/piE0sh7VATMtDGiMYAtutSR53ovpZ87s6V+O3ufoT+znW/1ld5kNgcaexp5wtI/lMINK5hXij2rkelDqOpvMn7P/ru3aslMFZQVtuQH/uCoCluRbXMlXBIZI1g=
+	t=1720006123; cv=none; b=UXv5zZFzSFQGvM3CE1cRZ+sgIiOdVhTOsbatrnPnMg6kjPFR4n3i27WC6VOSOGQr+3CcLMBlsNHvEJ0qoPALAWlzv6u7BJMi+6gzKbQYd+rZ5sLP+d0hXdC59b3Ym4V8RRPWuB0htkFJT55XVJbVwLGSNFZ8MyKUA0QSbpQp4T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005025; c=relaxed/simple;
-	bh=8PyZhA/8/u+0FgqWvMrspCWx034LlJnDElczIMrDWMw=;
+	s=arc-20240116; t=1720006123; c=relaxed/simple;
+	bh=myoQQ4Vjb1jQ6613wFVkNwBFDKHf7Gpv3WnwyTmPkFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rbcMPLd7gkhwZcrvBz3J0pb3bK/+S9k7QZEvjNp3OEL1Kc4NA7KOZf4psgEFkuayGOqQtwiJoIzJQtHIoCai7xNJDPZN/gaOY1JSNI1ejM4wbOx127o1PXqoUN+HuhFDACwPD5cxtqhJTyP1DK3FzYSwHtFBRyLJ5g8EeWRqZio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ul9rzCuF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0087C2BD10;
-	Wed,  3 Jul 2024 11:10:24 +0000 (UTC)
+	 MIME-Version; b=dtPzhQuvB0/jqyQRyQd1m2kAsvIMKQy0JvZqFULLXhWJb3FC2Mkw+6zHb4tvbQTBu4SPm4T2VoXxfe+f7bHU5IpCb9ttJh9PUSx4wu42ZF7B6L/HbCQpMY2wl759f3gY+GTV4Kj+DXWAUKWwnx3At/zHZF9pyYsqMCkQPUpyNwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZY5ZInOX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42498C2BD10;
+	Wed,  3 Jul 2024 11:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005025;
-	bh=8PyZhA/8/u+0FgqWvMrspCWx034LlJnDElczIMrDWMw=;
+	s=korg; t=1720006123;
+	bh=myoQQ4Vjb1jQ6613wFVkNwBFDKHf7Gpv3WnwyTmPkFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ul9rzCuFKUKpzUBbckKCzzgF2ZQZto9dED5D5p4F/p0FrhS8ovGBFlMqXEVtQi1PD
-	 5QDDMJJLxgDQTR1zHbQ8pnpAWhZUrnloVSAvctriYIAr3goPQz1wuLQ8QgAgAq1kmD
-	 yML5IpVz/gUINIIE+sQ64tLjk4HNdx0Q6VCJK1nA=
+	b=ZY5ZInOXNEz1zT9lVoQP2JlyL9skcanNxl6nqF2kfFO1c0H3SwConJ4Rw9sAB4ZnK
+	 7Y1BoaXtpHQe7oUSf53ZsR7NWlcveeK/JfKHjdkLi/VhorZvo+QuM/jgooKzZ8+WGN
+	 q3doT2T5/FDbJZWoc1j3KfCv6oiAjsTPlsZmmoe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Davis <afd@ti.com>,
-	Nishanth Menon <nm@ti.com>,
+	Linus Torvalds <torvalds@linuxfoundation.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 236/290] soc: ti: wkup_m3_ipc: Send NULL dummy message instead of pointer message
+Subject: [PATCH 5.15 281/356] netfilter: nf_tables: fully validate NFT_DATA_VALUE on store to data registers
 Date: Wed,  3 Jul 2024 12:40:17 +0200
-Message-ID: <20240703102913.066010444@linuxfoundation.org>
+Message-ID: <20240703102923.746704925@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Davis <afd@ti.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit ddbf3204f600a4d1f153498f618369fca352ae00 ]
+[ Upstream commit 7931d32955e09d0a11b1fe0b6aac1bfa061c005c ]
 
-mbox_send_message() sends a u32 bit message, not a pointer to a message.
-We only convert to a pointer type as a generic type. If we want to send
-a dummy message of 0, then simply send 0 (NULL).
+register store validation for NFT_DATA_VALUE is conditional, however,
+the datatype is always either NFT_DATA_VALUE or NFT_DATA_VERDICT. This
+only requires a new helper function to infer the register type from the
+set datatype so this conditional check can be removed. Otherwise,
+pointer to chain object can be leaked through the registers.
 
-Signed-off-by: Andrew Davis <afd@ti.com>
-Link: https://lore.kernel.org/r/20240325165507.30323-1-afd@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fixes: 96518518cc41 ("netfilter: add nftables")
+Reported-by: Linus Torvalds <torvalds@linuxfoundation.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/ti/wkup_m3_ipc.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ include/net/netfilter/nf_tables.h | 5 +++++
+ net/netfilter/nf_tables_api.c     | 8 ++++----
+ net/netfilter/nft_lookup.c        | 3 ++-
+ 3 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/soc/ti/wkup_m3_ipc.c b/drivers/soc/ti/wkup_m3_ipc.c
-index ef3f95fefab58..6634709e646c4 100644
---- a/drivers/soc/ti/wkup_m3_ipc.c
-+++ b/drivers/soc/ti/wkup_m3_ipc.c
-@@ -14,7 +14,6 @@
- #include <linux/irq.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/omap-mailbox.h>
- #include <linux/platform_device.h>
- #include <linux/remoteproc.h>
- #include <linux/suspend.h>
-@@ -151,7 +150,6 @@ static irqreturn_t wkup_m3_txev_handler(int irq, void *ipc_data)
- static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
- {
- 	struct device *dev = m3_ipc->dev;
--	mbox_msg_t dummy_msg = 0;
- 	int ret;
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index 1e6e4af4df0ae..3ff6b3362800b 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -567,6 +567,11 @@ static inline void *nft_set_priv(const struct nft_set *set)
+ 	return (void *)set->data;
+ }
  
- 	if (!m3_ipc->mbox) {
-@@ -167,7 +165,7 @@ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
- 	 * the RX callback to avoid multiple interrupts being received
- 	 * by the CM3.
- 	 */
--	ret = mbox_send_message(m3_ipc->mbox, &dummy_msg);
-+	ret = mbox_send_message(m3_ipc->mbox, NULL);
- 	if (ret < 0) {
- 		dev_err(dev, "%s: mbox_send_message() failed: %d\n",
- 			__func__, ret);
-@@ -189,7 +187,6 @@ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
- static int wkup_m3_ping_noirq(struct wkup_m3_ipc *m3_ipc)
++static inline enum nft_data_types nft_set_datatype(const struct nft_set *set)
++{
++	return set->dtype == NFT_DATA_VERDICT ? NFT_DATA_VERDICT : NFT_DATA_VALUE;
++}
++
+ static inline bool nft_set_gc_is_pending(const struct nft_set *s)
  {
- 	struct device *dev = m3_ipc->dev;
--	mbox_msg_t dummy_msg = 0;
- 	int ret;
+ 	return refcount_read(&s->refs) != 1;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 3999b89793fce..506dc5c4cdccb 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -5328,8 +5328,7 @@ static int nf_tables_fill_setelem(struct sk_buff *skb,
  
- 	if (!m3_ipc->mbox) {
-@@ -198,7 +195,7 @@ static int wkup_m3_ping_noirq(struct wkup_m3_ipc *m3_ipc)
- 		return -EIO;
+ 	if (nft_set_ext_exists(ext, NFT_SET_EXT_DATA) &&
+ 	    nft_data_dump(skb, NFTA_SET_ELEM_DATA, nft_set_ext_data(ext),
+-			  set->dtype == NFT_DATA_VERDICT ? NFT_DATA_VERDICT : NFT_DATA_VALUE,
+-			  set->dlen) < 0)
++			  nft_set_datatype(set), set->dlen) < 0)
+ 		goto nla_put_failure;
+ 
+ 	if (nft_set_ext_exists(ext, NFT_SET_EXT_EXPRESSIONS) &&
+@@ -10249,6 +10248,9 @@ static int nft_validate_register_store(const struct nft_ctx *ctx,
+ 
+ 		return 0;
+ 	default:
++		if (type != NFT_DATA_VALUE)
++			return -EINVAL;
++
+ 		if (reg < NFT_REG_1 * NFT_REG_SIZE / NFT_REG32_SIZE)
+ 			return -EINVAL;
+ 		if (len == 0)
+@@ -10257,8 +10259,6 @@ static int nft_validate_register_store(const struct nft_ctx *ctx,
+ 		    sizeof_field(struct nft_regs, data))
+ 			return -ERANGE;
+ 
+-		if (data != NULL && type != NFT_DATA_VALUE)
+-			return -EINVAL;
+ 		return 0;
  	}
+ }
+diff --git a/net/netfilter/nft_lookup.c b/net/netfilter/nft_lookup.c
+index 9d18c5428d53c..b9df27c2718be 100644
+--- a/net/netfilter/nft_lookup.c
++++ b/net/netfilter/nft_lookup.c
+@@ -136,7 +136,8 @@ static int nft_lookup_init(const struct nft_ctx *ctx,
+ 			return -EINVAL;
  
--	ret = mbox_send_message(m3_ipc->mbox, &dummy_msg);
-+	ret = mbox_send_message(m3_ipc->mbox, NULL);
- 	if (ret < 0) {
- 		dev_err(dev, "%s: mbox_send_message() failed: %d\n",
- 			__func__, ret);
+ 		err = nft_parse_register_store(ctx, tb[NFTA_LOOKUP_DREG],
+-					       &priv->dreg, NULL, set->dtype,
++					       &priv->dreg, NULL,
++					       nft_set_datatype(set),
+ 					       set->dlen);
+ 		if (err < 0)
+ 			return err;
 -- 
 2.43.0
 
