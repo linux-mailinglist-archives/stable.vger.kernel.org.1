@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02AC4925EF3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:44:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5DA3925DDE
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDE02B387C6
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 668AE29B746
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A4217D35E;
-	Wed,  3 Jul 2024 11:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C657194127;
+	Wed,  3 Jul 2024 11:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYJFKxFb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EsRtxaX2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1ABB17CA19;
-	Wed,  3 Jul 2024 11:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B310188CDA;
+	Wed,  3 Jul 2024 11:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004708; cv=none; b=tRszMybEX8jxa6997vzB53uLqilDICdmeHCmBdXFKiLsK3f/RaFW9af2Z/pMfhk9UMvijKjWW23yQqyOj8S/+8eoc3W+x8D6TDfP8qqYKtSNr3TDbUBt0R2ixMu5lVATAH/tUkqblE6hUT7GtZrmJQNJZlwWhZ7AcIuQc5ls5rw=
+	t=1720005784; cv=none; b=NFOA0mbUtmSZvXtZBWrxd4c0vBf7Rf6fz9EfcZdocpOCGKdeVeSIbqfqdeJEf+brF6n+/go/ch38KE3h5ZrPyWl4jAOmQtOgmtLk8GlRjqP30asXE5++mt4he1T5nY/4RXHrKFMY30hRhk2DxDggjs7w90C1noblu6XtgQ5QcrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004708; c=relaxed/simple;
-	bh=qu9HqUYs63otIqUKNIxIfESIYnpsQHNR81Gk7HIhvF4=;
+	s=arc-20240116; t=1720005784; c=relaxed/simple;
+	bh=DA4GQ90blD2u5WGhwJvhhm9Gu24Ci9uNFizwu+ErVMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nJ5mVDR4MSepzneeqgenKM07OS66Kiu0CRCnq5FyCYhCEQAqPnmMEPjF4DdjmwRX/JG6ckSkrI+CXk3VOZ6SgZ3pM6qvmEBDK7WJPTuFiA8kWQHhbnmj2TVrpptdSy9b4/2x+gpl/L/k0m4tKtPAyzIZEHmlgzXMctM8cdsUxfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYJFKxFb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9ECC2BD10;
-	Wed,  3 Jul 2024 11:05:07 +0000 (UTC)
+	 MIME-Version; b=tIzP4S65fb7ElGuKhxesjQr8tPjKf8GhorS8Uo+I+Z1K33VBQMKZHbOTyA2X+bHrfMS2cEwtO9X04Wff4TFZXZOa+JsEKRqdNc97qWkR5lE28zaXaxSH6Al3YS7++a/G2iUawgURJ5C3QbVLualnwKzYe1C937k4RZa4bz5kLUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EsRtxaX2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE95C2BD10;
+	Wed,  3 Jul 2024 11:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004708;
-	bh=qu9HqUYs63otIqUKNIxIfESIYnpsQHNR81Gk7HIhvF4=;
+	s=korg; t=1720005783;
+	bh=DA4GQ90blD2u5WGhwJvhhm9Gu24Ci9uNFizwu+ErVMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZYJFKxFb5og/TUVpgnYF+pIGywmQCuapUcFL7yJ32hp0ucn6COS65Kb17ZBsWx49Q
-	 yyCQBCER/fccKZXhb9CVqp5KzTKA12/t+cQTOykq8/rrn8Ye51DyeOJKwsh3WHo/id
-	 F6dckPOJQigNGZecSepfKQrjOCjO7UwEKBIJlbMM=
+	b=EsRtxaX225PS5F7KN8hU5vNworGRMujBgujIlKjsIbwEJruO3s6NgqUBZdq+rbMU7
+	 Q4zrF8uQ4VVsK3doM1ERZpjmkh4zvNv2lEpR8SBYvLMAPz40KI6L5T4ym5BHQFlYGI
+	 7wngiikrPzzTenwaPMDMD7KaVZuYl9viXWV6W80U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Songyang Li <leesongyang@outlook.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Jan Kara <jack@suse.cz>,
+	Roman Smirnov <r.smirnov@omp.ru>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 133/290] MIPS: Octeon: Add PCIe link status check
+Subject: [PATCH 5.15 178/356] udf: udftime: prevent overflow in udf_disk_stamp_to_time()
 Date: Wed,  3 Jul 2024 12:38:34 +0200
-Message-ID: <20240703102909.209025324@linuxfoundation.org>
+Message-ID: <20240703102919.839067227@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Songyang Li <leesongyang@outlook.com>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-[ Upstream commit 29b83a64df3b42c88c0338696feb6fdcd7f1f3b7 ]
+[ Upstream commit 3b84adf460381169c085e4bc09e7b57e9e16db0a ]
 
-The standard PCIe configuration read-write interface is used to
-access the configuration space of the peripheral PCIe devices
-of the mips processor after the PCIe link surprise down, it can
-generate kernel panic caused by "Data bus error". So it is
-necessary to add PCIe link status check for system protection.
-When the PCIe link is down or in training, assigning a value
-of 0 to the configuration address can prevent read-write behavior
-to the configuration space of peripheral PCIe devices, thereby
-preventing kernel panic.
+An overflow can occur in a situation where src.centiseconds
+takes the value of 255. This situation is unlikely, but there
+is no validation check anywere in the code.
 
-Signed-off-by: Songyang Li <leesongyang@outlook.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Found by Linux Verification Center (linuxtesting.org) with Svace.
+
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20240327132755.13945-1-r.smirnov@omp.ru>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/pci/pcie-octeon.c | 6 ++++++
- 1 file changed, 6 insertions(+)
- mode change 100644 => 100755 arch/mips/pci/pcie-octeon.c
+ fs/udf/udftime.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
-old mode 100644
-new mode 100755
-index d919a0d813a17..38de2a9c3cf1a
---- a/arch/mips/pci/pcie-octeon.c
-+++ b/arch/mips/pci/pcie-octeon.c
-@@ -230,12 +230,18 @@ static inline uint64_t __cvmx_pcie_build_config_addr(int pcie_port, int bus,
- {
- 	union cvmx_pcie_address pcie_addr;
- 	union cvmx_pciercx_cfg006 pciercx_cfg006;
-+	union cvmx_pciercx_cfg032 pciercx_cfg032;
- 
- 	pciercx_cfg006.u32 =
- 	    cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG006(pcie_port));
- 	if ((bus <= pciercx_cfg006.s.pbnum) && (dev != 0))
- 		return 0;
- 
-+	pciercx_cfg032.u32 =
-+		cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG032(pcie_port));
-+	if ((pciercx_cfg032.s.dlla == 0) || (pciercx_cfg032.s.lt == 1))
-+		return 0;
+diff --git a/fs/udf/udftime.c b/fs/udf/udftime.c
+index fce4ad976c8c2..26169b1f482c3 100644
+--- a/fs/udf/udftime.c
++++ b/fs/udf/udftime.c
+@@ -60,13 +60,18 @@ udf_disk_stamp_to_time(struct timespec64 *dest, struct timestamp src)
+ 	dest->tv_sec = mktime64(year, src.month, src.day, src.hour, src.minute,
+ 			src.second);
+ 	dest->tv_sec -= offset * 60;
+-	dest->tv_nsec = 1000 * (src.centiseconds * 10000 +
+-			src.hundredsOfMicroseconds * 100 + src.microseconds);
 +
- 	pcie_addr.u64 = 0;
- 	pcie_addr.config.upper = 2;
- 	pcie_addr.config.io = 1;
+ 	/*
+ 	 * Sanitize nanosecond field since reportedly some filesystems are
+ 	 * recorded with bogus sub-second values.
+ 	 */
+-	dest->tv_nsec %= NSEC_PER_SEC;
++	if (src.centiseconds < 100 && src.hundredsOfMicroseconds < 100 &&
++	    src.microseconds < 100) {
++		dest->tv_nsec = 1000 * (src.centiseconds * 10000 +
++			src.hundredsOfMicroseconds * 100 + src.microseconds);
++	} else {
++		dest->tv_nsec = 0;
++	}
+ }
+ 
+ void
 -- 
 2.43.0
 
