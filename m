@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-57535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83024925CE3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:23:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 872FA925E68
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:36:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DF86288C8F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:23:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA4B31C23610
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2D6194C7E;
-	Wed,  3 Jul 2024 11:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D11181CED;
+	Wed,  3 Jul 2024 11:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkkJyceV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8tXJ7hy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC7D18A95F;
-	Wed,  3 Jul 2024 11:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F011741DD;
+	Wed,  3 Jul 2024 11:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005174; cv=none; b=jxtX2HmjL+oS1Ukjimq44JB6hxumJC+wxjXHSfAlga8224GzN+CRq0zAeJrQdm7r/oYM+N9e47BEK/Js4oIXsQv6j2UCoh9n1+g4YCyXVq+YZOg5gLIYzydIZVb2iDahYZAD12OpllrXPjDd1Vp9kKrDgQmyKNWSVMr4ccqGwI8=
+	t=1720006191; cv=none; b=DfU5gepjMabf82h6QWx2ldIUif4LA9PNYX/4OfrETbZfAfEcGlem3/NB0BTeA++bO3BWWHIfYLWT3b308EKDo0K2QvjR59nN4JMkB44rGBmqCnGdcVZC6wZRv8Qr7di+QsbPhykfKyoFEYJNlx5j9NXAYdNzjreWDlowP9sZMrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005174; c=relaxed/simple;
-	bh=n2mOuBf+DomS4RfAqRz/ZCSo5bDxN+9oLhBBs3jq9N8=;
+	s=arc-20240116; t=1720006191; c=relaxed/simple;
+	bh=JZ0pJFFifHaPMvZ00qw7qHRXe5uwWnmGLafLrKqURko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gcz0jzFe/mVTffS7O/qV3uKjWn0yEnpqUFRuON8TTODnsCZDr6kabPWImC6BbWEq0iCPRYcHdM+lZLMlYIz+d7jHK05jiuv9x4Z1L/4dU2IG0R4RiABSJpa2dl6tWXSs46fb2dDHAuCh5IiHf8P97uET3RmmVelqIqEjV0JxfTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkkJyceV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A848FC2BD10;
-	Wed,  3 Jul 2024 11:12:53 +0000 (UTC)
+	 MIME-Version; b=VpU3IE/vTm92lquiAznzBcEBw4s+UB8O0pHbBkxpNMsF33LiOubeeGF10+XFWt9f9Bs+YJWHwfqDWRcj+/Vu28pw8c0aYMD7xtKSr84ENwrR3EBx+uMDGxuQSJRRydlfnS16GpNupjLzttbEunLCU/HynVl7sw0M/NqzDIQYssg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8tXJ7hy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F2E1C2BD10;
+	Wed,  3 Jul 2024 11:29:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005174;
-	bh=n2mOuBf+DomS4RfAqRz/ZCSo5bDxN+9oLhBBs3jq9N8=;
+	s=korg; t=1720006190;
+	bh=JZ0pJFFifHaPMvZ00qw7qHRXe5uwWnmGLafLrKqURko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zkkJyceVdlxQuG3U8Vs+ohSW76X7m0+JaOUpqxcRLezSBRq/FEw8auap916UaH4Aa
-	 fdKXGTjx8oDFXZbGHI1vLquREQ+8uvfRtaUzEEf8vMRMsQmTtVKwoLvSU8yP9f7+rg
-	 pUw7cwAblKlY8/I407kbAoonL0J6Oq05hGiKIsCw=
+	b=W8tXJ7hyjC+dr2zXUQxmdwOaJcIvfHxKKTWJmWGMB2YF1cPp06rrEJ4YlL4VViZ6Y
+	 Ya35B3KBPgpe0vulELdltYZrv/I0VEliS5vDdvcEYleiYU05JZcPRgZwZ5My9h8RKu
+	 y8LMhHKfKYucepYKTk1arCfROPGoELMhQckCvWj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 5.10 285/290] efi: xen: Set EFI_PARAVIRT for Xen dom0 boot on all architectures
-Date: Wed,  3 Jul 2024 12:41:06 +0200
-Message-ID: <20240703102914.914826185@linuxfoundation.org>
+	Guo Ren <guoren@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.15 331/356] csky, hexagon: fix broken sys_sync_file_range
+Date: Wed,  3 Jul 2024 12:41:07 +0200
+Message-ID: <20240703102925.634037574@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,100 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Commit d85e3e34940788578eeffd94e8b7e1d28e7278e9 upstream ]
+commit 3339b99ef6fe38dac43b534cba3a8a0e29fb2eff upstream.
 
-Currently, the EFI_PARAVIRT flag is only used by Xen dom0 boot on x86,
-even though other architectures also support pseudo-EFI boot, where the
-core kernel is invoked directly and provided with a set of data tables
-that resemble the ones constructed by the EFI stub, which never actually
-runs in that case.
+Both of these architectures require u64 function arguments to be
+passed in even/odd pairs of registers or stack slots, which in case of
+sync_file_range would result in a seven-argument system call that is
+not currently possible. The system call is therefore incompatible with
+all existing binaries.
 
-Let's fix this inconsistency, and always set this flag when booting dom0
-via the EFI boot path. Note that Xen on x86 does not provide the EFI
-memory map in this case, whereas other architectures do, so move the
-associated EFI_PARAVIRT check into the x86 platform code.
+While it would be possible to implement support for seven arguments
+like on mips, it seems better to use a six-argument version, either
+with the normal argument order but misaligned as on most architectures
+or with the reordered sync_file_range2() calling conventions as on
+arm and powerpc.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Cc: stable@vger.kernel.org
+Acked-by: Guo Ren <guoren@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/platform/efi/efi.c      |    8 +++++---
- arch/x86/platform/efi/memmap.c   |    3 +++
- drivers/firmware/efi/fdtparams.c |    4 ++++
- drivers/firmware/efi/memmap.c    |    3 ---
- 4 files changed, 12 insertions(+), 6 deletions(-)
+ arch/csky/include/uapi/asm/unistd.h    |    1 +
+ arch/hexagon/include/uapi/asm/unistd.h |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -234,9 +234,11 @@ int __init efi_memblock_x86_reserve_rang
- 	data.desc_size		= e->efi_memdesc_size;
- 	data.desc_version	= e->efi_memdesc_version;
+--- a/arch/csky/include/uapi/asm/unistd.h
++++ b/arch/csky/include/uapi/asm/unistd.h
+@@ -6,6 +6,7 @@
+ #define __ARCH_WANT_SYS_CLONE3
+ #define __ARCH_WANT_SET_GET_RLIMIT
+ #define __ARCH_WANT_TIME32_SYSCALLS
++#define __ARCH_WANT_SYNC_FILE_RANGE2
+ #include <asm-generic/unistd.h>
  
--	rv = efi_memmap_init_early(&data);
--	if (rv)
--		return rv;
-+	if (!efi_enabled(EFI_PARAVIRT)) {
-+		rv = efi_memmap_init_early(&data);
-+		if (rv)
-+			return rv;
-+	}
+ #define __NR_set_thread_area	(__NR_arch_specific_syscall + 0)
+--- a/arch/hexagon/include/uapi/asm/unistd.h
++++ b/arch/hexagon/include/uapi/asm/unistd.h
+@@ -36,5 +36,6 @@
+ #define __ARCH_WANT_SYS_VFORK
+ #define __ARCH_WANT_SYS_FORK
+ #define __ARCH_WANT_TIME32_SYSCALLS
++#define __ARCH_WANT_SYNC_FILE_RANGE2
  
- 	if (add_efi_memmap || do_efi_soft_reserve())
- 		do_add_efi_memmap();
---- a/arch/x86/platform/efi/memmap.c
-+++ b/arch/x86/platform/efi/memmap.c
-@@ -94,6 +94,9 @@ int __init efi_memmap_install(struct efi
- {
- 	efi_memmap_unmap();
- 
-+	if (efi_enabled(EFI_PARAVIRT))
-+		return 0;
-+
- 	return __efi_memmap_init(data);
- }
- 
---- a/drivers/firmware/efi/fdtparams.c
-+++ b/drivers/firmware/efi/fdtparams.c
-@@ -30,11 +30,13 @@ static __initconst const char name[][22]
- 
- static __initconst const struct {
- 	const char	path[17];
-+	u8		paravirt;
- 	const char	params[PARAMCOUNT][26];
- } dt_params[] = {
- 	{
- #ifdef CONFIG_XEN    //  <-------17------>
- 		.path = "/hypervisor/uefi",
-+		.paravirt = 1,
- 		.params = {
- 			[SYSTAB] = "xen,uefi-system-table",
- 			[MMBASE] = "xen,uefi-mmap-start",
-@@ -121,6 +123,8 @@ u64 __init efi_get_fdt_params(struct efi
- 			pr_err("Can't find property '%s' in DT!\n", pname);
- 			return 0;
- 		}
-+		if (dt_params[i].paravirt)
-+			set_bit(EFI_PARAVIRT, &efi.flags);
- 		return systab;
- 	}
- notfound:
---- a/drivers/firmware/efi/memmap.c
-+++ b/drivers/firmware/efi/memmap.c
-@@ -39,9 +39,6 @@ int __init __efi_memmap_init(struct efi_
- 	struct efi_memory_map map;
- 	phys_addr_t phys_map;
- 
--	if (efi_enabled(EFI_PARAVIRT))
--		return 0;
--
- 	phys_map = data->phys_map;
- 
- 	if (data->flags & EFI_MEMMAP_LATE)
+ #include <asm-generic/unistd.h>
 
 
 
