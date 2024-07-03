@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-57186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A5DC925B5C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:08:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 869D6925A62
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:57:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47B9B1F22918
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:08:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D225A298FF0
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DA81849C8;
-	Wed,  3 Jul 2024 10:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF21E1849EE;
+	Wed,  3 Jul 2024 10:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5FspISu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RcW4uSQ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413B2184133;
-	Wed,  3 Jul 2024 10:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBD1136E2A;
+	Wed,  3 Jul 2024 10:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004113; cv=none; b=VlEU8IY7s1Qbxud+aMasirfhoGjuDDWwfyk4mugVJcGJ5c1HicxOvFsDF+9gimd4QV/Tmd1CceyXMaVctoPPFcv2fPhl0PfVq/CMW7FezzY2x0PB5usl+vDWSFhsj0HUvlgGZChIQkCc44YQyyRqFm9+mub3mvOlmFIYWnTshV8=
+	t=1720003565; cv=none; b=u3w2cnGPM6DCWmuH0KZGPxByLXWSIcmXevYlHFdfjPWNGs3OfOgd5ilzLMtpw6R65GEhFgB5tnDhxzKUCnU3yEVxPLaHgtB0yk5cAhawhMfmZMZCa4Nqvxn2w+Rk/eV5/OI0qSZV5LDafvUpEG0PUgtSIxn6qpQIHuN4o+oOzO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004113; c=relaxed/simple;
-	bh=wI7QWjdSk9nSFKHCuNGtvD9SpzwNkgelpmUHCXv3FcY=;
+	s=arc-20240116; t=1720003565; c=relaxed/simple;
+	bh=IZZKQRNdsxqiXzzWSrZPFf1UzOW9vbf2tCc5gE7Pm8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XUGtHV9M2gCOS0b1ejsxali8lgQqkffvIupwNP5VDTQnq3iyCu01+aIYbnRSDR3brmZTuNz2FpYeqT9PxkdSoIRoBK24vCxqkzz69rF9c3GrreYqUNFfvisWckXEO93YZFBqyccyCu1bD65/TveYbt3Nzl3CirO0pU+RxlyzJsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5FspISu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBCFDC4AF0C;
-	Wed,  3 Jul 2024 10:55:12 +0000 (UTC)
+	 MIME-Version; b=JldJYg01nKAb47XXS+BSEX3gkhIM3U+I1kP5p0d07j126z+8wQ7ThqiFVT3PSaG3dZX4iGmF4D0sjN4Wi8ZA0VUBvyhFeikjsNxuQ+Y5KhJVICwDsNAmIqshS6zeH61eTBMGjvh3xeFXWCnP7le84uJV8QKzbEnRQapD+Pmm5SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RcW4uSQ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6DE8C2BD10;
+	Wed,  3 Jul 2024 10:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004113;
-	bh=wI7QWjdSk9nSFKHCuNGtvD9SpzwNkgelpmUHCXv3FcY=;
+	s=korg; t=1720003565;
+	bh=IZZKQRNdsxqiXzzWSrZPFf1UzOW9vbf2tCc5gE7Pm8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T5FspISu/PCfir/VGKcGBEvRDUmBX43fxneEMdO7Ce1nkSBM2rZUf8t6z5W0hfCZe
-	 nbOkIMwg4o+ltuOfN1El2NGHG1j3UrfxtNFXOxnCFbPK2TcykLRRGbtMIBNMjguIkM
-	 l6NcQzGxu46sz0rDEHqp1hDb0ToE7e6Z3VEJ/DTw=
+	b=RcW4uSQ4QknRt66WHBzxEv3HmVtIdZEnBzdYr1iR9qgxg86jDTJKQgIB52oMHTTQK
+	 e0dzxBC32BPU9byHrfmLE6GCcHdqyU2OkR600Hn1B5XhUW0KD3pEAjleDzYv9xV5GB
+	 UQcmD8tG8RVPYNyZK/l3sYKvTbPsZFU0CEGqgS4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathanl@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 095/189] powerpc/pseries: Enforce hcall result buffer validity and size
+	Matthias Goergens <matthias.goergens@gmail.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 4.19 059/139] hugetlb_encode.h: fix undefined behaviour (34 << 26)
 Date: Wed,  3 Jul 2024 12:39:16 +0200
-Message-ID: <20240703102845.088574510@linuxfoundation.org>
+Message-ID: <20240703102832.669148760@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +65,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Matthias Goergens <matthias.goergens@gmail.com>
 
-[ Upstream commit ff2e185cf73df480ec69675936c4ee75a445c3e4 ]
+commit 710bb68c2e3a24512e2d2bae470960d7488e97b1 upstream.
 
-plpar_hcall(), plpar_hcall9(), and related functions expect callers to
-provide valid result buffers of certain minimum size. Currently this
-is communicated only through comments in the code and the compiler has
-no idea.
+Left-shifting past the size of your datatype is undefined behaviour in C.
+The literal 34 gets the type `int`, and that one is not big enough to be
+left shifted by 26 bits.
 
-For example, if I write a bug like this:
+An `unsigned` is long enough (on any machine that has at least 32 bits for
+their ints.)
 
-  long retbuf[PLPAR_HCALL_BUFSIZE]; // should be PLPAR_HCALL9_BUFSIZE
-  plpar_hcall9(H_ALLOCATE_VAS_WINDOW, retbuf, ...);
+For uniformity, we mark all the literals as unsigned.  But it's only
+really needed for HUGETLB_FLAG_ENCODE_16GB.
 
-This compiles with no diagnostics emitted, but likely results in stack
-corruption at runtime when plpar_hcall9() stores results past the end
-of the array. (To be clear this is a contrived example and I have not
-found a real instance yet.)
+Thanks to Randy Dunlap for an initial review and suggestion.
 
-To make this class of error less likely, we can use explicitly-sized
-array parameters instead of pointers in the declarations for the hcall
-APIs. When compiled with -Warray-bounds[1], the code above now
-provokes a diagnostic like this:
-
-error: array argument is too small;
-is of size 32, callee requires at least 72 [-Werror,-Warray-bounds]
-   60 |                 plpar_hcall9(H_ALLOCATE_VAS_WINDOW, retbuf,
-      |                 ^                                   ~~~~~~
-
-[1] Enabled for LLVM builds but not GCC for now. See commit
-    0da6e5fd6c37 ("gcc: disable '-Warray-bounds' for gcc-13 too") and
-    related changes.
-
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240408-pseries-hvcall-retbuf-v1-1-ebc73d7253cf@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20220905031904.150925-1-matthias.goergens@gmail.com
+Signed-off-by: Matthias Goergens <matthias.goergens@gmail.com>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Muchun Song <songmuchun@bytedance.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[cmllamas: fix trivial conflict due to missing page encondigs]
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/hvcall.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/uapi/asm-generic/hugetlb_encode.h  |   24 ++++++++++++------------
+ tools/include/asm-generic/hugetlb_encode.h |   20 ++++++++++----------
+ 2 files changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index 0826c4ed83770..c4a6dad1e605c 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -403,7 +403,7 @@ long plpar_hcall_norets(unsigned long opcode, ...);
-  * Used for all but the craziest of phyp interfaces (see plpar_hcall9)
-  */
- #define PLPAR_HCALL_BUFSIZE 4
--long plpar_hcall(unsigned long opcode, unsigned long *retbuf, ...);
-+long plpar_hcall(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL_BUFSIZE], ...);
+--- a/include/uapi/asm-generic/hugetlb_encode.h
++++ b/include/uapi/asm-generic/hugetlb_encode.h
+@@ -20,17 +20,17 @@
+ #define HUGETLB_FLAG_ENCODE_SHIFT	26
+ #define HUGETLB_FLAG_ENCODE_MASK	0x3f
  
- /**
-  * plpar_hcall_raw: - Make a hypervisor call without calculating hcall stats
-@@ -417,7 +417,7 @@ long plpar_hcall(unsigned long opcode, unsigned long *retbuf, ...);
-  * plpar_hcall, but plpar_hcall_raw works in real mode and does not
-  * calculate hypervisor call statistics.
-  */
--long plpar_hcall_raw(unsigned long opcode, unsigned long *retbuf, ...);
-+long plpar_hcall_raw(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL_BUFSIZE], ...);
+-#define HUGETLB_FLAG_ENCODE_64KB	(16 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_512KB	(19 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_1MB		(20 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_2MB		(21 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_8MB		(23 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_16MB	(24 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_32MB	(25 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_256MB	(28 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_512MB	(29 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_1GB		(30 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_2GB		(31 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_16GB	(34 << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_64KB	(16U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_512KB	(19U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_1MB		(20U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_2MB		(21U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_8MB		(23U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_16MB	(24U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_32MB	(25U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_256MB	(28U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_512MB	(29U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_1GB		(30U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_2GB		(31U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_16GB	(34U << HUGETLB_FLAG_ENCODE_SHIFT)
  
- /**
-  * plpar_hcall9: - Make a pseries hypervisor call with up to 9 return arguments
-@@ -428,8 +428,8 @@ long plpar_hcall_raw(unsigned long opcode, unsigned long *retbuf, ...);
-  * PLPAR_HCALL9_BUFSIZE to size the return argument buffer.
-  */
- #define PLPAR_HCALL9_BUFSIZE 9
--long plpar_hcall9(unsigned long opcode, unsigned long *retbuf, ...);
--long plpar_hcall9_raw(unsigned long opcode, unsigned long *retbuf, ...);
-+long plpar_hcall9(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL9_BUFSIZE], ...);
-+long plpar_hcall9_raw(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL9_BUFSIZE], ...);
+ #endif /* _ASM_GENERIC_HUGETLB_ENCODE_H_ */
+--- a/tools/include/asm-generic/hugetlb_encode.h
++++ b/tools/include/asm-generic/hugetlb_encode.h
+@@ -20,15 +20,15 @@
+ #define HUGETLB_FLAG_ENCODE_SHIFT	26
+ #define HUGETLB_FLAG_ENCODE_MASK	0x3f
  
- struct hvcall_mpp_data {
- 	unsigned long entitled_mem;
--- 
-2.43.0
-
+-#define HUGETLB_FLAG_ENCODE_64KB	(16 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_512KB	(19 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_1MB		(20 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_2MB		(21 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_8MB		(23 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_16MB	(24 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_256MB	(28 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_1GB		(30 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_2GB		(31 << HUGETLB_FLAG_ENCODE_SHIFT)
+-#define HUGETLB_FLAG_ENCODE_16GB	(34 << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_64KB	(16U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_512KB	(19U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_1MB		(20U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_2MB		(21U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_8MB		(23U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_16MB	(24U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_256MB	(28U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_1GB		(30U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_2GB		(31U << HUGETLB_FLAG_ENCODE_SHIFT)
++#define HUGETLB_FLAG_ENCODE_16GB	(34U << HUGETLB_FLAG_ENCODE_SHIFT)
+ 
+ #endif /* _ASM_GENERIC_HUGETLB_ENCODE_H_ */
 
 
 
