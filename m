@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-57173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ADA3925B37
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:06:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6FBA925C01
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:13:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EABA32858B2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:06:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 734CCB2E2AB
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D2C19AD95;
-	Wed,  3 Jul 2024 10:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E07183092;
+	Wed,  3 Jul 2024 10:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XI122SRR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J72wYiL2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85FA183091;
-	Wed,  3 Jul 2024 10:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D4A7CF1F;
+	Wed,  3 Jul 2024 10:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004074; cv=none; b=o8sRi72jRlsukTwAjq2qRPqx+4GQekj2kvEf9LA62y1F2LTyHVt4fCJQyLLa3mkoozRTZM6L46paIiVrsaSOH9H3YzbgemiQJR7Oo3HLKWk6UStSYTrIUMf21+SsOj4iZl4RyUG46SLAQnSaC9sVsEOaBimzsFHsLjadXyUtNrs=
+	t=1720003526; cv=none; b=unss7FNd/AFZ9gZ6s+sTIPNNrVM8Ubz1v6V13ETgMxr0mrS4sIwSCxODmacqetUc1X6kdKRKuKOOxV81fBJjLKnUhm9D2pQ7gUP0Wkh7pbLwPcYBjg1iNDMDIOQqwbTZITRB7h3zwQjtOfuNmBggyaUnG9WK8BeYT1eu2bmddN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004074; c=relaxed/simple;
-	bh=rT+eFjbB1SviXCVDztNibDTwFDxM/UBZGGYNLS+iE3k=;
+	s=arc-20240116; t=1720003526; c=relaxed/simple;
+	bh=fNray+cyU8KcSJNxyMCBUyVJGS1G2X7TZs7kjym5fl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aM2tmH1/sYvn+iN1H/i0lks5MyUJ8hcw69KQ9tshkG6ps05PxLpA/KtHrzaQQbQ24Wi0fz8069o1cpmBHdfMeyXNAAbXv3J7u9VlrNb+YLlrQKEDsvkPNkj2nca3E4JmIOtpj9rlxzmyfiH9N1FH1QUBj5T4UwJf5VPR2h2EUx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XI122SRR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10606C2BD10;
-	Wed,  3 Jul 2024 10:54:33 +0000 (UTC)
+	 MIME-Version; b=Z4dA9HcoWFAuqn+J44DzqsaguMo2jLlrWooocsvmzOHftZpbvtJiQyvOkOSZ8irVBHTfazM7WmVg8pCtiw2SAkDtb9JqVnI8y+umeOWFH6p3c0fy8bxnX1a6rofzP0y3katpGU/hEl5XdZyQwdG5OmA5YfhiU/qlVS4fUuVgGvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J72wYiL2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC2BC2BD10;
+	Wed,  3 Jul 2024 10:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004074;
-	bh=rT+eFjbB1SviXCVDztNibDTwFDxM/UBZGGYNLS+iE3k=;
+	s=korg; t=1720003526;
+	bh=fNray+cyU8KcSJNxyMCBUyVJGS1G2X7TZs7kjym5fl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XI122SRR8rcaAKQKhcrJ+iw4SCPDury4RmcLmJbOKUTKe8mCpA5pj/mTnhF7MIuzf
-	 dwGPPda5H7mwOXSu2AGaiqSan+lY9h3TzLPbkI37htxD8t6M9kg+5JRsdJf6djZEp6
-	 Cbb6E6g4Mp8o3/LhRxiP7udUR3aU+sQkeOVWNsGA=
+	b=J72wYiL2/JBO9IuJxlqkO0G5C/XRBk481AsTyKc27dGNNM/Ho+wAnnAmj3M++cAxR
+	 VMPRIwGoEouq4vgD3QPiEWuRVzJddFAwAFuNc95Th/O1DGCviEqttp3FddH7GqapA5
+	 E21H77d+LGFL+oudpVUOBZZjWlB7rxcfz6FqJD80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com,
-	Oliver Neukum <oneukum@suse.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 113/189] net: usb: rtl8150 fix unintiatilzed variables in rtl8150_get_link_ksettings
+Subject: [PATCH 4.19 077/139] regulator: core: Fix modpost error "regulator_get_regmap" undefined
 Date: Wed,  3 Jul 2024 12:39:34 +0200
-Message-ID: <20240703102845.765083796@linuxfoundation.org>
+Message-ID: <20240703102833.348705542@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit fba383985354e83474f95f36d7c65feb75dba19d ]
+[ Upstream commit 3f60497c658d2072714d097a177612d34b34aa3d ]
 
-This functions retrieves values by passing a pointer. As the function
-that retrieves them can fail before touching the pointers, the variables
-must be initialized.
+Fix the modpost error "regulator_get_regmap" undefined by adding export
+symbol.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20240619132816.11526-1-oneukum@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 04eca28cde52 ("regulator: Add helpers for low-level register access")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202406110117.mk5UR3VZ-lkp@intel.com
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://lore.kernel.org/r/20240610195532.175942-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/rtl8150.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/regulator/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index 491625c1c3084..387091cb91340 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -798,7 +798,8 @@ static int rtl8150_get_link_ksettings(struct net_device *netdev,
- 				      struct ethtool_link_ksettings *ecmd)
- {
- 	rtl8150_t *dev = netdev_priv(netdev);
--	short lpa, bmcr;
-+	short lpa = 0;
-+	short bmcr = 0;
- 	u32 supported;
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 14f9977f1ec08..6831ce0ae49dd 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -2710,6 +2710,7 @@ struct regmap *regulator_get_regmap(struct regulator *regulator)
  
- 	supported = (SUPPORTED_10baseT_Half |
+ 	return map ? map : ERR_PTR(-EOPNOTSUPP);
+ }
++EXPORT_SYMBOL_GPL(regulator_get_regmap);
+ 
+ /**
+  * regulator_get_hardware_vsel_register - get the HW voltage selector register
 -- 
 2.43.0
 
