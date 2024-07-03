@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-57824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4A35925E34
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D41C925A2E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:55:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A5D51F2505F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C1251C260F7
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B34917C239;
-	Wed,  3 Jul 2024 11:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD10D136E2A;
+	Wed,  3 Jul 2024 10:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRMOw6Gm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIDdnOfV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4C813B280;
-	Wed,  3 Jul 2024 11:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7E21741D8;
+	Wed,  3 Jul 2024 10:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006042; cv=none; b=jmnzc8PWjp6eGqLvzP1de/xmJt3BuydcWkFdWQ5jXVyHBqriHfRey9OGvt0igv2SYGZ+CWFCOrmQd89gFq/VvSWUgf3ydF0BjcxAkNlcLOwO3ht9gvPfy73Ugucpuqqmh5Owmwi3YUg3X7d6SYn9VgZ2EpeHI1cgk3+M5W1wj9w=
+	t=1720003583; cv=none; b=jTkPK93T+RJICN8x+AOsctozgDm1foBz/rGEAt3OA2M3Wec4Ob2RxL+E+pkfcyAi7u4cxscPLpqGMue6nlLPSAjC1jMlgzvGMbKKh/zUx1CSFU9BN1j+Pg8UB9qmNRurLVqkoziJHt82T0VaQ9gphtKfR0VE6ukv2FYpkdWyPK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006042; c=relaxed/simple;
-	bh=G8tQI3Vs6PKKe+N7II8qczfimkJOX3OkBebEFFygN4o=;
+	s=arc-20240116; t=1720003583; c=relaxed/simple;
+	bh=hO132jt60qibtyvaRIfN67KOxoqsd3uzPxhAtwFLSPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z08+ynfQD9kyZMpCYEE5A4F/z9+q9rO9ijiCU4QdzBwLllYxzT+hk/kzkmpHWyhnmBm6N31v89kRyPfYYVNn+yE6yYTRLXKfOkhIc2Eccs8KcMdZog5egGIkVZLTDhBzJ48dX4yO5Fj3RWM+2Xnnf+UgqegS123Uq37QX03zNZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRMOw6Gm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 520CFC2BD10;
-	Wed,  3 Jul 2024 11:27:22 +0000 (UTC)
+	 MIME-Version; b=URSbO2VDFl8E00rQ84atkTUAbQJ/aSjvoQxb2f+dOW5TDQ9XQcxl6hr57B5iM8foUO4cDLvcQakLt/mqRBTvG48NZkvFj19AjHAq7bpR1ArYQfwR8IDTP+zHcBbxS8kBMQvR+A6EZ/6ARvzcX/SqanC0952cX0+DFpE2kEoAN28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIDdnOfV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 075E5C2BD10;
+	Wed,  3 Jul 2024 10:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006042;
-	bh=G8tQI3Vs6PKKe+N7II8qczfimkJOX3OkBebEFFygN4o=;
+	s=korg; t=1720003583;
+	bh=hO132jt60qibtyvaRIfN67KOxoqsd3uzPxhAtwFLSPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FRMOw6Gm3Hm+Q1O06tBKjVVMt0KG6u/XsuQsB9udK2SnAIk5woICDXHoIcrBsTODr
-	 2gekf7cEebYDnCH6nWKQzWX5Jj+xSDlr98+mHcNDc16cEtGnqX+K0/b7BaxytnEB7f
-	 gXXlgVdAHRjJo3A308sx0iVgOhYn8vI2ujsJLTxQ=
+	b=QIDdnOfVUYe4vtp18/DvvcrWvk2IY0PO0mD7G4oy5aG90iOH4T1DRO6oBj8fcThb7
+	 qL3t8S1OUGejYRHfI5GaTBVX1tTl7UKh4krnFiAgMZNbBUmCpdO5EHUj5uaBF+93iE
+	 19aKImRtX39II6GFaN8u4Ex63rF0Zc/DnbLU08WM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Nam Cao <namcao@linutronix.de>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 250/356] riscv: fix overlap of allocated page and PTR_ERR
+Subject: [PATCH 4.19 089/139] x86/amd_nb: Check for invalid SMN reads
 Date: Wed,  3 Jul 2024 12:39:46 +0200
-Message-ID: <20240703102922.577139484@linuxfoundation.org>
+Message-ID: <20240703102833.802719611@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-[ Upstream commit 994af1825a2aa286f4903ff64a1c7378b52defe6 ]
+[ Upstream commit c625dabbf1c4a8e77e4734014f2fde7aa9071a1f ]
 
-On riscv32, it is possible for the last page in virtual address space
-(0xfffff000) to be allocated. This page overlaps with PTR_ERR, so that
-shouldn't happen.
+AMD Zen-based systems use a System Management Network (SMN) that
+provides access to implementation-specific registers.
 
-There is already some code to ensure memblock won't allocate the last page.
-However, buddy allocator is left unchecked.
+SMN accesses are done indirectly through an index/data pair in PCI
+config space. The PCI config access may fail and return an error code.
+This would prevent the "read" value from being updated.
 
-Fix this by reserving physical memory that would be mapped at virtual
-addresses greater than 0xfffff000.
+However, the PCI config access may succeed, but the return value may be
+invalid. This is in similar fashion to PCI bad reads, i.e. return all
+bits set.
 
-Reported-by: Björn Töpel <bjorn@kernel.org>
-Closes: https://lore.kernel.org/linux-riscv/878r1ibpdn.fsf@all.your.base.are.belong.to.us
-Fixes: 76d2a0493a17 ("RISC-V: Init and Halt Code")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Tested-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Link: https://lore.kernel.org/r/20240425115201.3044202-1-namcao@linutronix.de
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Most systems will return 0 for SMN addresses that are not accessible.
+This is in line with AMD convention that unavailable registers are
+Read-as-Zero/Writes-Ignored.
+
+However, some systems will return a "PCI Error Response" instead. This
+value, along with an error code of 0 from the PCI config access, will
+confuse callers of the amd_smn_read() function.
+
+Check for this condition, clear the return value, and set a proper error
+code.
+
+Fixes: ddfe43cdc0da ("x86/amd_nb: Add SMN and Indirect Data Fabric access for AMD Fam17h")
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230403164244.471141-1-yazen.ghannam@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/init.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ arch/x86/kernel/amd_nb.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index c9d63c476d315..c30cc3ac93a72 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -192,18 +192,19 @@ static void __init setup_bootmem(void)
- 	phys_ram_base = memblock_start_of_DRAM();
- #endif
- 	/*
--	 * memblock allocator is not aware of the fact that last 4K bytes of
--	 * the addressable memory can not be mapped because of IS_ERR_VALUE
--	 * macro. Make sure that last 4k bytes are not usable by memblock
--	 * if end of dram is equal to maximum addressable memory.  For 64-bit
--	 * kernel, this problem can't happen here as the end of the virtual
--	 * address space is occupied by the kernel mapping then this check must
--	 * be done as soon as the kernel mapping base address is determined.
-+	 * Reserve physical address space that would be mapped to virtual
-+	 * addresses greater than (void *)(-PAGE_SIZE) because:
-+	 *  - This memory would overlap with ERR_PTR
-+	 *  - This memory belongs to high memory, which is not supported
-+	 *
-+	 * This is not applicable to 64-bit kernel, because virtual addresses
-+	 * after (void *)(-PAGE_SIZE) are not linearly mapped: they are
-+	 * occupied by kernel mapping. Also it is unrealistic for high memory
-+	 * to exist on 64-bit platforms.
- 	 */
- 	if (!IS_ENABLED(CONFIG_64BIT)) {
--		max_mapped_addr = __pa(~(ulong)0);
--		if (max_mapped_addr == (phys_ram_end - 1))
--			memblock_set_current_limit(max_mapped_addr - 4096);
-+		max_mapped_addr = __va_to_pa_nodebug(-PAGE_SIZE);
-+		memblock_reserve(max_mapped_addr, (phys_addr_t)-max_mapped_addr);
- 	}
+diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
+index 923b4bac96138..ef1fa51ea98e9 100644
+--- a/arch/x86/kernel/amd_nb.c
++++ b/arch/x86/kernel/amd_nb.c
+@@ -145,7 +145,14 @@ static int __amd_smn_rw(u16 node, u32 address, u32 *value, bool write)
  
- 	min_low_pfn = PFN_UP(phys_ram_base);
+ int amd_smn_read(u16 node, u32 address, u32 *value)
+ {
+-	return __amd_smn_rw(node, address, value, false);
++	int err = __amd_smn_rw(node, address, value, false);
++
++	if (PCI_POSSIBLE_ERROR(*value)) {
++		err = -ENODEV;
++		*value = 0;
++	}
++
++	return err;
+ }
+ EXPORT_SYMBOL_GPL(amd_smn_read);
+ 
 -- 
 2.43.0
 
