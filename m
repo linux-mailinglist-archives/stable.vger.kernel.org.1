@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-56930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164369259CC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:50:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE015925DCC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 484971C21A3B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:50:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81E4AB33407
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4480A17B41D;
-	Wed,  3 Jul 2024 10:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE9217BB0B;
+	Wed,  3 Jul 2024 10:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ff66iuQT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYYcdPYg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30DC17B418;
-	Wed,  3 Jul 2024 10:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE8E17BB01;
+	Wed,  3 Jul 2024 10:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003323; cv=none; b=o0iSbwI7Dnw3Vj/NySy/w8tnBFI0oUBZIJG3i6jLFov8JO9d9IeRdndGk67SLV5hKzH7JT355dTN9muCuEb3WMkvO1AlA+YRc3KWobM24hfMgy7G8orkSzJwCGI6HMnfk7gI1vz99AYaG2+N7Il43ScyXtvKZN0qs5dreixSwMQ=
+	t=1720003869; cv=none; b=lG6FUQkv9/YnUZ6RLdRVT/8GZcnAir+O/JvoUOO4E3Ez1l3H0yWKf1TNwcNI7gWBDE5yCPh15ZhXph199jnh4wNT2NCRUJzkpz3zaDBLXcRJH7AUxttWrof7g/sYXIaR7IrbOvNyd8iQ24btPNvnUbuQW3cturCGi80uw+OiON8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003323; c=relaxed/simple;
-	bh=YHf/OonYuD9b99c4oG0slVDE8K7yrcxsWlT1V3HpMAE=;
+	s=arc-20240116; t=1720003869; c=relaxed/simple;
+	bh=ldDhJtttJVyK7zWDH2+KO4w905kCPTrzQqSOGyXzhrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jKYbCXCEGTNxgVjvuGp4elL600vehVj4salwM9OwX0TS6er1asXurVHTais9xAFdXYaGFlHre2VONf3QQzLZuQ4omhU0pBrMJkBzAsd6BTV4xiwnttBmdqfDEPLCxCkd4eVcWhQaGJYCOVI72AhA1wJqKbYyEwQZOF6e+vbgInQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ff66iuQT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75410C2BD10;
-	Wed,  3 Jul 2024 10:42:02 +0000 (UTC)
+	 MIME-Version; b=OpVxrT7sS82GPweTG6O+dTZhvTyCeJtUfB0WILtCXyecDoy9ao8IJWJ/NJgneSrjBBzinityBC29e2OlHdI7CJ1tPe0ELhOvPoIAgNnQZ9ayYt0IYNhPZ0HOtkcbQK6z+Hf1ZbJQgDf4Nie9GlWPFFKed0DTiIhJBHS+jqCdk34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYYcdPYg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDDBAC2BD10;
+	Wed,  3 Jul 2024 10:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003322;
-	bh=YHf/OonYuD9b99c4oG0slVDE8K7yrcxsWlT1V3HpMAE=;
+	s=korg; t=1720003869;
+	bh=ldDhJtttJVyK7zWDH2+KO4w905kCPTrzQqSOGyXzhrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ff66iuQT0OrvPi2Q2p0/qmSSD78uOpQmxPoAkfgexFHRpaDjj/h34TSoba7poJBwj
-	 HXKQCzctsSF6o8fqtfPDAzeTD1J3HW3hxwp5yn2kyeN31w/RylQZoFldYW1p4Agawa
-	 O36mL83XNLgtgAC01S0JEg7Kl5Q4+eHDMe1tpN6I=
+	b=gYYcdPYgVGR8F0du3OPa0KTTgDVNeneYbkA07OcZHC22+fRK3PyDjZfOzWbdy8vwF
+	 eFiKzN0ko5Jr3o0bcJ1TYQH2w9y3ZNdOF+v7GPrp/Fbw3jjpTVqlg5oe59NZZ+PKwA
+	 oIJfEKsuNefRUxLkGXEi//x9+5ZtdfX5gSzHnhQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 011/139] af_unix: Annotate data-races around sk->sk_state in sendmsg() and recvmsg().
+	Kuangyi Chiang <ki.chiang65@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.4 047/189] xhci: Apply reset resume quirk to Etron EJ188 xHCI host
 Date: Wed,  3 Jul 2024 12:38:28 +0200
-Message-ID: <20240703102830.865504079@linuxfoundation.org>
+Message-ID: <20240703102843.290900937@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
 
-[ Upstream commit 8a34d4e8d9742a24f74998f45a6a98edd923319b ]
+commit 17bd54555c2aaecfdb38e2734149f684a73fa584 upstream.
 
-The following functions read sk->sk_state locklessly and proceed only if
-the state is TCP_ESTABLISHED.
+As described in commit c877b3b2ad5c ("xhci: Add reset on resume quirk for
+asrock p67 host"), EJ188 have the same issue as EJ168, where completely
+dies on resume. So apply XHCI_RESET_ON_RESUME quirk to EJ188 as well.
 
-  * unix_stream_sendmsg
-  * unix_stream_read_generic
-  * unix_seqpacket_sendmsg
-  * unix_seqpacket_recvmsg
-
-Let's use READ_ONCE() there.
-
-Fixes: a05d2ad1c1f3 ("af_unix: Only allow recv on connected seqpacket sockets.")
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240611120610.3264502-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/host/xhci-pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 5266908c65ec4..c01955ccf6b39 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -1886,7 +1886,7 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
- 		goto out_err;
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -33,6 +33,7 @@
  
- 	if (msg->msg_namelen) {
--		err = sk->sk_state == TCP_ESTABLISHED ? -EISCONN : -EOPNOTSUPP;
-+		err = READ_ONCE(sk->sk_state) == TCP_ESTABLISHED ? -EISCONN : -EOPNOTSUPP;
- 		goto out_err;
- 	} else {
- 		err = -ENOTCONN;
-@@ -2088,7 +2088,7 @@ static int unix_seqpacket_sendmsg(struct socket *sock, struct msghdr *msg,
- 	if (err)
- 		return err;
+ #define PCI_VENDOR_ID_ETRON		0x1b6f
+ #define PCI_DEVICE_ID_EJ168		0x7023
++#define PCI_DEVICE_ID_EJ188		0x7052
  
--	if (sk->sk_state != TCP_ESTABLISHED)
-+	if (READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)
- 		return -ENOTCONN;
- 
- 	if (msg->msg_namelen)
-@@ -2102,7 +2102,7 @@ static int unix_seqpacket_recvmsg(struct socket *sock, struct msghdr *msg,
- {
- 	struct sock *sk = sock->sk;
- 
--	if (sk->sk_state != TCP_ESTABLISHED)
-+	if (READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)
- 		return -ENOTCONN;
- 
- 	return unix_dgram_recvmsg(sock, msg, size, flags);
-@@ -2298,7 +2298,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- 	size_t size = state->size;
- 	unsigned int last_len;
- 
--	if (unlikely(sk->sk_state != TCP_ESTABLISHED)) {
-+	if (unlikely(READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)) {
- 		err = -EINVAL;
- 		goto out;
+ #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI	0x8c31
+ #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI	0x9c31
+@@ -256,6 +257,10 @@ static void xhci_pci_quirks(struct devic
+ 		xhci->quirks |= XHCI_TRUST_TX_LENGTH;
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
  	}
--- 
-2.43.0
-
++	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
++			pdev->device == PCI_DEVICE_ID_EJ188)
++		xhci->quirks |= XHCI_RESET_ON_RESUME;
++
+ 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
+ 	    pdev->device == 0x0014) {
+ 		xhci->quirks |= XHCI_TRUST_TX_LENGTH;
 
 
 
