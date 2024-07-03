@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-57377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9FBB925C37
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:16:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 262A8925A97
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:02:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC9DD1C203E5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5E281F2170D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:02:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC5E17C7C4;
-	Wed,  3 Jul 2024 11:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CA8817A5B6;
+	Wed,  3 Jul 2024 10:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8qHZoag"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kgc1A2JJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA65173328;
-	Wed,  3 Jul 2024 11:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C34517A5B0;
+	Wed,  3 Jul 2024 10:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004693; cv=none; b=YoiffnMrtPWWHz9wnD+gEt06O413PIjaKVawGAg6GZKCTb1OmKaWLCfP3InKYhc5yFBnClbAu8sgmByX1gcAiDJ9lR9AYR9Ct4Ba9ziL2SPppob/NNwTAfMfRo2oe6v8lKOFkFkxSRlfTP9LO7gXNOrY3Py3ljpXx2ep3qKCeEg=
+	t=1720003795; cv=none; b=UvS/PFlaJwJSp6svZkHfRDJVSl9kh+I2M++OHXb653BWQ6rBXnEVUhUtG2511hHcRhuBkF5fLDFhIH2zfkfSUiMFhZoe+7qX+qzWVXxLsHBrg+acAZX2BcnV2I+E+SvsYPRDnyaPhob7u7InraUFgj/Eraa2x83K1ZvCWeCzIf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004693; c=relaxed/simple;
-	bh=S0OUneQuKI8vBqi7mTFrwsR15fU4+3GoL86YHBNQT+w=;
+	s=arc-20240116; t=1720003795; c=relaxed/simple;
+	bh=YSNd/sdLxDpvb5a1I7/VosOHaz2S4Lm8o5hKT05zqFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B6ZbrLVIk9g2zkQtozb5xHn4CitolLlsR96gQWSJmj7qyaU5OwOJSvbXO1qAHjHpvT11JedInJYu/TeB+2P7LtmIok5E4U1TOHqDXOdwzckfZDTw1K1Vy1gz56t+8AzFY6v7RB9S5ZAlgdZUYftn6mi8zpFAtyMY9yssPAVCB9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8qHZoag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52639C2BD10;
-	Wed,  3 Jul 2024 11:04:53 +0000 (UTC)
+	 MIME-Version; b=aQGd+0bAJACV2QkLkTMxI2SPWgFU0aCS+UEbT5onfkklCfjs4J+lOD/OhxDXrhWatgnUWp3THoeysRVSX+ZypVgZwnWC2DAzdiplZ0b3BjaK+5IVSthDpb4VMcCwMo8t2pAYkSXWK7V2O8ON6UegtM9QJOutHg8En6Ak73AAAoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kgc1A2JJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6EA8C2BD10;
+	Wed,  3 Jul 2024 10:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004693;
-	bh=S0OUneQuKI8vBqi7mTFrwsR15fU4+3GoL86YHBNQT+w=;
+	s=korg; t=1720003795;
+	bh=YSNd/sdLxDpvb5a1I7/VosOHaz2S4Lm8o5hKT05zqFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y8qHZoagAdaDhLXdrdFlygH7e3cxL8/0pZhatGcYa9vffnaBuyzSNcQpe4xHwkJdr
-	 ZGd0BaMNt9L726xk1/N1t3aBk0lJ0++SpUD8MThR/o4NtQFcmp8tGL8JYGAnL2nAS1
-	 xob2+d6usMAPNT3BqED44687pz9Up835znjoByCQ=
+	b=Kgc1A2JJ3m7YYjauB6bDfDTVT6/4KkakKA7B3v3L/tginNuPCB7uaiFtDkiQf53AW
+	 X/tvNP8JvJMCRJSXHC5As0wEjJ2BVc1a+xLfvrFJBKic4oxwhBKXrGXylMS8S2t+xD
+	 SkvLqHGIzyIz1PcSVJzC3zjc+5fr8uaVhPi1NtyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Beleswar Padhi <b-padhi@ti.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 5.10 086/290] remoteproc: k3-r5: Do not allow core1 to power up before core0 via sysfs
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 006/189] wifi: iwlwifi: mvm: dont read past the mfuart notifcation
 Date: Wed,  3 Jul 2024 12:37:47 +0200
-Message-ID: <20240703102907.442478413@linuxfoundation.org>
+Message-ID: <20240703102841.741634788@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Beleswar Padhi <b-padhi@ti.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-commit 3c8a9066d584f5010b6f4ba03bf6b19d28973d52 upstream.
+[ Upstream commit 4bb95f4535489ed830cf9b34b0a891e384d1aee4 ]
 
-PSC controller has a limitation that it can only power-up the second
-core when the first core is in ON state. Power-state for core0 should be
-equal to or higher than core1.
+In case the firmware sends a notification that claims it has more data
+than it has, we will read past that was allocated for the notification.
+Remove the print of the buffer, we won't see it by default. If needed,
+we can see the content with tracing.
 
-Therefore, prevent core1 from powering up before core0 during the start
-process from sysfs. Similarly, prevent core0 from shutting down before
-core1 has been shut down from sysfs.
+This was reported by KFENCE.
 
-Fixes: 6dedbd1d5443 ("remoteproc: k3-r5: Add a remoteproc driver for R5F subsystem")
-Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240430105307.1190615-3-b-padhi@ti.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bdccdb854f2f ("iwlwifi: mvm: support MFUART dump in case of MFUART assert")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240513132416.ba82a01a559e.Ia91dd20f5e1ca1ad380b95e68aebf2794f553d9b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/ti_k3_r5_remoteproc.c |   23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
---- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
-+++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
-@@ -429,7 +429,7 @@ static int k3_r5_rproc_start(struct rpro
- 	struct k3_r5_cluster *cluster = kproc->cluster;
- 	struct mbox_client *client = &kproc->client;
- 	struct device *dev = kproc->dev;
--	struct k3_r5_core *core;
-+	struct k3_r5_core *core0, *core;
- 	u32 boot_addr;
- 	int ret;
- 
-@@ -478,6 +478,15 @@ static int k3_r5_rproc_start(struct rpro
- 				goto unroll_core_run;
- 		}
- 	} else {
-+		/* do not allow core 1 to start before core 0 */
-+		core0 = list_first_entry(&cluster->cores, struct k3_r5_core,
-+					 elem);
-+		if (core != core0 && core0->rproc->state == RPROC_OFFLINE) {
-+			dev_err(dev, "%s: can not start core 1 before core 0\n",
-+				__func__);
-+			return -EPERM;
-+		}
-+
- 		ret = k3_r5_core_run(core);
- 		if (ret)
- 			goto put_mbox;
-@@ -518,7 +527,8 @@ static int k3_r5_rproc_stop(struct rproc
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index c5b08a68f6fa1..27bd9ed48bec4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -197,20 +197,10 @@ void iwl_mvm_mfu_assert_dump_notif(struct iwl_mvm *mvm,
  {
- 	struct k3_r5_rproc *kproc = rproc->priv;
- 	struct k3_r5_cluster *cluster = kproc->cluster;
--	struct k3_r5_core *core = kproc->core;
-+	struct device *dev = kproc->dev;
-+	struct k3_r5_core *core1, *core = kproc->core;
- 	int ret;
+ 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
+ 	struct iwl_mfu_assert_dump_notif *mfu_dump_notif = (void *)pkt->data;
+-	__le32 *dump_data = mfu_dump_notif->data;
+-	int n_words = le32_to_cpu(mfu_dump_notif->data_size) / sizeof(__le32);
+-	int i;
  
- 	/* halt all applicable cores */
-@@ -531,6 +541,15 @@ static int k3_r5_rproc_stop(struct rproc
- 			}
- 		}
- 	} else {
-+		/* do not allow core 0 to stop before core 1 */
-+		core1 = list_last_entry(&cluster->cores, struct k3_r5_core,
-+					elem);
-+		if (core != core1 && core1->rproc->state != RPROC_OFFLINE) {
-+			dev_err(dev, "%s: can not stop core 0 before core 1\n",
-+				__func__);
-+			return -EPERM;
-+		}
-+
- 		ret = k3_r5_core_halt(core);
- 		if (ret)
- 			goto out;
+ 	if (mfu_dump_notif->index_num == 0)
+ 		IWL_INFO(mvm, "MFUART assert id 0x%x occurred\n",
+ 			 le32_to_cpu(mfu_dump_notif->assert_id));
+-
+-	for (i = 0; i < n_words; i++)
+-		IWL_DEBUG_INFO(mvm,
+-			       "MFUART assert dump, dword %u: 0x%08x\n",
+-			       le16_to_cpu(mfu_dump_notif->index_num) *
+-			       n_words + i,
+-			       le32_to_cpu(dump_data[i]));
+ }
+ 
+ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
+-- 
+2.43.0
+
 
 
 
