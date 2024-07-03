@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF73925C5B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:17:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE919925DE9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3A0E285CB1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:17:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0E7C2871BC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F36117FAD3;
-	Wed,  3 Jul 2024 11:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5D4191F9B;
+	Wed,  3 Jul 2024 11:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKKhUHJM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1GpvQQa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5894817FAD4;
-	Wed,  3 Jul 2024 11:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B077193097;
+	Wed,  3 Jul 2024 11:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004753; cv=none; b=jl39d5YXH3uXqJ7Bw7Zax7C48rhSlm6xb/46lFYH3bPWjfmEDlJ4aISV7dkuyRlHNCc4TtJfeJvS8MmemJh5qBQDQatFW17k6SaKzXbYZ2glrAQqAkhcqZpRMnGTfQQLzQPU2yAK0JAl5JeCS+Jfq6sjY/j1SRUYMIVmR2j+OuA=
+	t=1720005772; cv=none; b=FygxiWIx6cO1D4xBhrdTQZbbnobWwt123zbG9ro0SfDoFA2qE/7xHZh4WS6U44FJOoQFZNP4O1z5jxSsHv5q0r1Nls1v2ljm+x9G+lMcJhY67sUE3JydyqdQ0rZLUBtu6ZvCSxFVood783XHuWkkCf1EAkIvU2SyTNGhY3Xt+N0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004753; c=relaxed/simple;
-	bh=ahJjbb6Ez6+f4Pm3f6IBb6nj/3hFG5IkeCm9ayGnQsQ=;
+	s=arc-20240116; t=1720005772; c=relaxed/simple;
+	bh=GfwJNBnwSfJ+uWOUiUNpfM3n7ruEJdqJPwdY30+zAYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GM7l/Py7YmT1qDUZjdn483fG2p3DNwoOKDgQdGj5M8Y7OBcgOAdLokx8WbfML52tpSTEjq4Tm2cXzxJx4ObT03GDBNhbzgtWcrdaYUMyphecJ5p6qMKxO3BTgcBEYRUTq+p/pS4ddyhz7N12xFhKPvIuwrGdW5GVfTtQHCXCEVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKKhUHJM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D352DC32781;
-	Wed,  3 Jul 2024 11:05:52 +0000 (UTC)
+	 MIME-Version; b=Ai9puup9NMShhWXIdoXlxcgV6l1K34ebZVsQghDPEEjhF9JzpiyRIZvVrOCwqUesD0RwB01zi4aXAm56qNInEMGwfeL3RQdYKs83HUva/d59S90k5nQinVEFPPjubTslJCijpp1BupAsMkvVnAKsz8SxE+ALCRGcvCGFXvvMeN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1GpvQQa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B88C2BD10;
+	Wed,  3 Jul 2024 11:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004753;
-	bh=ahJjbb6Ez6+f4Pm3f6IBb6nj/3hFG5IkeCm9ayGnQsQ=;
+	s=korg; t=1720005772;
+	bh=GfwJNBnwSfJ+uWOUiUNpfM3n7ruEJdqJPwdY30+zAYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vKKhUHJMkCwjkOqoJdPN+0aMXXI7MDry54C+4Je1UkjlgkaPdLOoYKOWjo8xcZPxH
-	 zEu8660a+k8nWI+3Kjs5t/BBqBHdfdKgvvIyFBCFJN9OJXAjnKvW57wOSKbNcpr6jp
-	 eeGbAoKqmNbbdPLjoQRIXkAN4UdGwKAuvhFSOr+8=
+	b=I1GpvQQaMNebudKefJkQgVBQktLA+pZ0pi781Ak7lMPTng07IKdt6fFdeHHTWuUlW
+	 IqBiBEzA3Ot5X0zmYBcz57bsGbUuIdvxD0U0JnCd0WnfQRfXmKXyq+efTdlxj9IDlK
+	 hdFnlLY0zmBxP2iQ2hw0nzACsx1CbN4KRbJw76Bo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuang Li <shuali@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 147/290] tipc: force a dst refcount before doing decryption
+Subject: [PATCH 5.15 192/356] qca_spi: Make interrupt remembering atomic
 Date: Wed,  3 Jul 2024 12:38:48 +0200
-Message-ID: <20240703102909.735967927@linuxfoundation.org>
+Message-ID: <20240703102920.368788475@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 2ebe8f840c7450ecbfca9d18ac92e9ce9155e269 ]
+[ Upstream commit 2d7198278ece01818cd95a3beffbdf8b2a353fa0 ]
 
-As it says in commit 3bc07321ccc2 ("xfrm: Force a dst refcount before
-entering the xfrm type handlers"):
+The whole mechanism to remember occurred SPI interrupts is not atomic,
+which could lead to unexpected behavior. So fix this by using atomic bit
+operations instead.
 
-"Crypto requests might return asynchronous. In this case we leave the
- rcu protected region, so force a refcount on the skb's destination
- entry before we enter the xfrm type input/output handlers."
-
-On TIPC decryption path it has the same problem, and skb_dst_force()
-should be called before doing decryption to avoid a possible crash.
-
-Shuang reported this issue when this warning is triggered:
-
-  [] WARNING: include/net/dst.h:337 tipc_sk_rcv+0x1055/0x1ea0 [tipc]
-  [] Kdump: loaded Tainted: G W --------- - - 4.18.0-496.el8.x86_64+debug
-  [] Workqueue: crypto cryptd_queue_worker
-  [] RIP: 0010:tipc_sk_rcv+0x1055/0x1ea0 [tipc]
-  [] Call Trace:
-  [] tipc_sk_mcast_rcv+0x548/0xea0 [tipc]
-  [] tipc_rcv+0xcf5/0x1060 [tipc]
-  [] tipc_aead_decrypt_done+0x215/0x2e0 [tipc]
-  [] cryptd_aead_crypt+0xdb/0x190
-  [] cryptd_queue_worker+0xed/0x190
-  [] process_one_work+0x93d/0x17e0
-
-Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
-Reported-by: Shuang Li <shuali@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Link: https://lore.kernel.org/r/fbe3195fad6997a4eec62d9bf076b2ad03ac336b.1718476040.git.lucien.xin@gmail.com
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20240614145030.7781-1-wahrenst@gmx.net
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/node.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/qualcomm/qca_debug.c |  6 ++----
+ drivers/net/ethernet/qualcomm/qca_spi.c   | 16 ++++++++--------
+ drivers/net/ethernet/qualcomm/qca_spi.h   |  3 +--
+ 3 files changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/net/tipc/node.c b/net/tipc/node.c
-index 9e3cfeb82a23d..5f6866407be54 100644
---- a/net/tipc/node.c
-+++ b/net/tipc/node.c
-@@ -2076,6 +2076,7 @@ void tipc_rcv(struct net *net, struct sk_buff *skb, struct tipc_bearer *b)
- 	} else {
- 		n = tipc_node_find_by_id(net, ehdr->id);
- 	}
-+	skb_dst_force(skb);
- 	tipc_crypto_rcv(net, (n) ? n->crypto_rx : NULL, &skb, b);
- 	if (!skb)
- 		return;
+diff --git a/drivers/net/ethernet/qualcomm/qca_debug.c b/drivers/net/ethernet/qualcomm/qca_debug.c
+index 8b61bebd96e4b..9819a0c810f5c 100644
+--- a/drivers/net/ethernet/qualcomm/qca_debug.c
++++ b/drivers/net/ethernet/qualcomm/qca_debug.c
+@@ -111,10 +111,8 @@ qcaspi_info_show(struct seq_file *s, void *what)
+ 
+ 	seq_printf(s, "IRQ              : %d\n",
+ 		   qca->spi_dev->irq);
+-	seq_printf(s, "INTR REQ         : %u\n",
+-		   qca->intr_req);
+-	seq_printf(s, "INTR SVC         : %u\n",
+-		   qca->intr_svc);
++	seq_printf(s, "INTR             : %lx\n",
++		   qca->intr);
+ 
+ 	seq_printf(s, "SPI max speed    : %lu\n",
+ 		   (unsigned long)qca->spi_dev->max_speed_hz);
+diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
+index e02f6ac0125d1..385e4c62ca03c 100644
+--- a/drivers/net/ethernet/qualcomm/qca_spi.c
++++ b/drivers/net/ethernet/qualcomm/qca_spi.c
+@@ -49,6 +49,8 @@
+ 
+ #define MAX_DMA_BURST_LEN 5000
+ 
++#define SPI_INTR 0
++
+ /*   Modules parameters     */
+ #define QCASPI_CLK_SPEED_MIN 1000000
+ #define QCASPI_CLK_SPEED_MAX 16000000
+@@ -593,14 +595,14 @@ qcaspi_spi_thread(void *data)
+ 			continue;
+ 		}
+ 
+-		if ((qca->intr_req == qca->intr_svc) &&
++		if (!test_bit(SPI_INTR, &qca->intr) &&
+ 		    !qca->txr.skb[qca->txr.head])
+ 			schedule();
+ 
+ 		set_current_state(TASK_RUNNING);
+ 
+-		netdev_dbg(qca->net_dev, "have work to do. int: %d, tx_skb: %p\n",
+-			   qca->intr_req - qca->intr_svc,
++		netdev_dbg(qca->net_dev, "have work to do. int: %lu, tx_skb: %p\n",
++			   qca->intr,
+ 			   qca->txr.skb[qca->txr.head]);
+ 
+ 		qcaspi_qca7k_sync(qca, QCASPI_EVENT_UPDATE);
+@@ -614,8 +616,7 @@ qcaspi_spi_thread(void *data)
+ 			msleep(QCASPI_QCA7K_REBOOT_TIME_MS);
+ 		}
+ 
+-		if (qca->intr_svc != qca->intr_req) {
+-			qca->intr_svc = qca->intr_req;
++		if (test_and_clear_bit(SPI_INTR, &qca->intr)) {
+ 			start_spi_intr_handling(qca, &intr_cause);
+ 
+ 			if (intr_cause & SPI_INT_CPU_ON) {
+@@ -677,7 +678,7 @@ qcaspi_intr_handler(int irq, void *data)
+ {
+ 	struct qcaspi *qca = data;
+ 
+-	qca->intr_req++;
++	set_bit(SPI_INTR, &qca->intr);
+ 	if (qca->spi_thread)
+ 		wake_up_process(qca->spi_thread);
+ 
+@@ -693,8 +694,7 @@ qcaspi_netdev_open(struct net_device *dev)
+ 	if (!qca)
+ 		return -EINVAL;
+ 
+-	qca->intr_req = 1;
+-	qca->intr_svc = 0;
++	set_bit(SPI_INTR, &qca->intr);
+ 	qca->sync = QCASPI_SYNC_UNKNOWN;
+ 	qcafrm_fsm_init_spi(&qca->frm_handle);
+ 
+diff --git a/drivers/net/ethernet/qualcomm/qca_spi.h b/drivers/net/ethernet/qualcomm/qca_spi.h
+index 3067356106f0b..58ad910068d4b 100644
+--- a/drivers/net/ethernet/qualcomm/qca_spi.h
++++ b/drivers/net/ethernet/qualcomm/qca_spi.h
+@@ -93,8 +93,7 @@ struct qcaspi {
+ 	struct qcafrm_handle frm_handle;
+ 	struct sk_buff *rx_skb;
+ 
+-	unsigned int intr_req;
+-	unsigned int intr_svc;
++	unsigned long intr;
+ 	u16 reset_count;
+ 
+ #ifdef CONFIG_DEBUG_FS
 -- 
 2.43.0
 
