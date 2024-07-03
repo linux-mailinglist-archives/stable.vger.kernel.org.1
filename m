@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B350D925CB5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEA41925AB6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E474C1C20372
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F89329E944
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 301AF188CDF;
-	Wed,  3 Jul 2024 11:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8164E175555;
+	Wed,  3 Jul 2024 10:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bX86+RDR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sll5xKhp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6DC16DEAC;
-	Wed,  3 Jul 2024 11:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EFFB17556C;
+	Wed,  3 Jul 2024 10:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005040; cv=none; b=MaTqQtEaaWNxqEzZSwZL+dTZbmROtPrBd+tfwnSVT7/bipaMi3bk4kufm+gx3hVmxnohOc/yS8Kev6o3Be/4U6XirxSSh6p2kNB8g2bqR2RGiLgRSXGGtKyquflBvWVNAff5dTY8zuMkdTWpk0k9Um/aFe27FRepYpemSdEbPDU=
+	t=1720003722; cv=none; b=dmCjfNCEdZhBYk5/QVxovmW6Q0l12wEAxMns0WSx9bcjs/eeqISDHj49YbF5Mp+qZRdMnpfG+lxX85lqluNNuZgbVoWPi3kTKEnQcWwelxbDqfr/g0EGcOWe4XxhgVuuHOpLp/I+UvFrvY1gqKbrlF+hATJH43XM7B+/Hk0dwLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005040; c=relaxed/simple;
-	bh=KoBlOLMOPq7hmMxXxPR1K/AvRWWIZoGVpu9+sazNBN4=;
+	s=arc-20240116; t=1720003722; c=relaxed/simple;
+	bh=hzsdWHx4ytnuP1IKDvcROtAlTr9Gmq9VIP4Vben3X7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NC0FYVB5nJzEXWEt6I99paellZPElL8/b6SGk95rVLF18L2/AmZhkd9+Y110EgQzVT57ESCNSNwK3Dy/lkqm2EGJJQeZbGjqnQJ/AlO9oNHBywk68k008hObDPJ7ugp8DFmc7Z2WWynsDBRhd3tdu01uZ/ZRT39NDSdGLqbLTPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bX86+RDR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67ECFC2BD10;
-	Wed,  3 Jul 2024 11:10:39 +0000 (UTC)
+	 MIME-Version; b=XdbDatBjW7tboEnEm1BB9CdvP6pRg2xgjWjncR5yLsuVPCQAMOUW1FIoT6YKbVAFnjXuC/RxA8cCAR0J1m1jVHaCuyE/P9YENxOt6XM1zNO7zsI1EkKLipXLt7/2u+iG4+/K8g8nNC7QBv9NESeWixIrAQIL6xkzOFkrZtZ7A1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sll5xKhp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF9CC2BD10;
+	Wed,  3 Jul 2024 10:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005039;
-	bh=KoBlOLMOPq7hmMxXxPR1K/AvRWWIZoGVpu9+sazNBN4=;
+	s=korg; t=1720003722;
+	bh=hzsdWHx4ytnuP1IKDvcROtAlTr9Gmq9VIP4Vben3X7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bX86+RDREULWyEvecgCODX2pX62Mw1hIwJwzG79b20DhEsZ/FSeaI0haGp8D8VHNk
-	 qprePycoLKse0OMZbAY8AxbdTXMOMbRrqhaaexp1EU/slQL9gNfYd4w52Fu3OARn48
-	 S9or2M7I7dpfrVd5VN/LgT6QOOhxvZA5VJrqDBMs=
+	b=sll5xKhpGOFYqOLOmtjqwLcVF7YPelMjelsAHOMjnC6gc1c9jj1RPburIFhFSF7/U
+	 0cQLQDaX7DAbqWNISZhk1ngJ8ns5l4/ubMrjG2CBjqQCZg8f9YL53fMWy3Ol/+gc5x
+	 Ko6N54eNzyPxHe1Odrta1iD3c6xsM4+SUJlaL8lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Gibson <warthog618@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 241/290] gpiolib: cdev: Disallow reconfiguration without direction (uAPI v1)
-Date: Wed,  3 Jul 2024 12:40:22 +0200
-Message-ID: <20240703102913.253696684@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	syzbot+00c18ee8497dd3be6ade@syzkaller.appspotmail.com
+Subject: [PATCH 4.19 126/139] usb: atm: cxacru: fix endpoint checking in cxacru_bind()
+Date: Wed,  3 Jul 2024 12:40:23 +0200
+Message-ID: <20240703102835.193500519@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Gibson <warthog618@gmail.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 9919cce62f68e6ab68dc2a975b5dc670f8ca7d40 ]
+commit 2eabb655a968b862bc0c31629a09f0fbf3c80d51 upstream.
 
-linehandle_set_config() behaves badly when direction is not set.
-The configuration validation is borrowed from linehandle_create(), where,
-to verify the intent of the user, the direction must be set to in order
-to effect a change to the electrical configuration of a line. But, when
-applied to reconfiguration, that validation does not allow for the unset
-direction case, making it possible to clear flags set previously without
-specifying the line direction.
+Syzbot is still reporting quite an old issue [1] that occurs due to
+incomplete checking of present usb endpoints. As such, wrong
+endpoints types may be used at urb sumbitting stage which in turn
+triggers a warning in usb_submit_urb().
 
-Adding to the inconsistency, those changes are not immediately applied by
-linehandle_set_config(), but will take effect when the line value is next
-get or set.
+Fix the issue by verifying that required endpoint types are present
+for both in and out endpoints, taking into account cmd endpoint type.
 
-For example, by requesting a configuration with no flags set, an output
-line with GPIOHANDLE_REQUEST_ACTIVE_LOW and GPIOHANDLE_REQUEST_OPEN_DRAIN
-requested could have those flags cleared, inverting the sense of the line
-and changing the line drive to push-pull on the next line value set.
+Unfortunately, this patch has not been tested on real hardware.
 
-Ensure the intent of the user by disallowing configurations which do not
-have direction set, returning an error to userspace to indicate that the
-configuration is invalid.
+[1] Syzbot report:
+usb 1-1: BOGUS urb xfer, pipe 1 != type 3
+WARNING: CPU: 0 PID: 8667 at drivers/usb/core/urb.c:502 usb_submit_urb+0xed2/0x18a0 drivers/usb/core/urb.c:502
+Modules linked in:
+CPU: 0 PID: 8667 Comm: kworker/0:4 Not tainted 5.14.0-rc4-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:usb_submit_urb+0xed2/0x18a0 drivers/usb/core/urb.c:502
+...
+Call Trace:
+ cxacru_cm+0x3c0/0x8e0 drivers/usb/atm/cxacru.c:649
+ cxacru_card_status+0x22/0xd0 drivers/usb/atm/cxacru.c:760
+ cxacru_bind+0x7ac/0x11a0 drivers/usb/atm/cxacru.c:1209
+ usbatm_usb_probe+0x321/0x1ae0 drivers/usb/atm/usbatm.c:1055
+ cxacru_usb_probe+0xdf/0x1e0 drivers/usb/atm/cxacru.c:1363
+ usb_probe_interface+0x315/0x7f0 drivers/usb/core/driver.c:396
+ call_driver_probe drivers/base/dd.c:517 [inline]
+ really_probe+0x23c/0xcd0 drivers/base/dd.c:595
+ __driver_probe_device+0x338/0x4d0 drivers/base/dd.c:747
+ driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:777
+ __device_attach_driver+0x20b/0x2f0 drivers/base/dd.c:894
+ bus_for_each_drv+0x15f/0x1e0 drivers/base/bus.c:427
+ __device_attach+0x228/0x4a0 drivers/base/dd.c:965
+ bus_probe_device+0x1e4/0x290 drivers/base/bus.c:487
+ device_add+0xc2f/0x2180 drivers/base/core.c:3354
+ usb_set_configuration+0x113a/0x1910 drivers/usb/core/message.c:2170
+ usb_generic_driver_probe+0xba/0x100 drivers/usb/core/generic.c:238
+ usb_probe_device+0xd9/0x2c0 drivers/usb/core/driver.c:293
 
-And, for clarity, use lflags, a local copy of gcnf.flags, throughout when
-dealing with the requested flags, rather than a mixture of both.
-
-Fixes: e588bb1eae31 ("gpio: add new SET_CONFIG ioctl() to gpio chardev")
-Signed-off-by: Kent Gibson <warthog618@gmail.com>
-Link: https://lore.kernel.org/r/20240626052925.174272-2-warthog618@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-tested-by: syzbot+00c18ee8497dd3be6ade@syzkaller.appspotmail.com
+Fixes: 902ffc3c707c ("USB: cxacru: Use a bulk/int URB to access the command endpoint")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://lore.kernel.org/r/20240609131546.3932-1-n.zhandarovich@fintech.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-cdev.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/usb/atm/cxacru.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
-index 40d0196d8bdcc..95861916deffb 100644
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -83,6 +83,10 @@ struct linehandle_state {
- 	GPIOHANDLE_REQUEST_OPEN_DRAIN | \
- 	GPIOHANDLE_REQUEST_OPEN_SOURCE)
+--- a/drivers/usb/atm/cxacru.c
++++ b/drivers/usb/atm/cxacru.c
+@@ -1127,6 +1127,7 @@ static int cxacru_bind(struct usbatm_dat
+ 	struct cxacru_data *instance;
+ 	struct usb_device *usb_dev = interface_to_usbdev(intf);
+ 	struct usb_host_endpoint *cmd_ep = usb_dev->ep_in[CXACRU_EP_CMD];
++	struct usb_endpoint_descriptor *in, *out;
+ 	int ret;
  
-+#define GPIOHANDLE_REQUEST_DIRECTION_FLAGS \
-+	(GPIOHANDLE_REQUEST_INPUT | \
-+	 GPIOHANDLE_REQUEST_OUTPUT)
+ 	/* instance init */
+@@ -1172,6 +1173,19 @@ static int cxacru_bind(struct usbatm_dat
+ 		ret = -ENODEV;
+ 		goto fail;
+ 	}
 +
- static int linehandle_validate_flags(u32 flags)
- {
- 	/* Return an error if an unknown flag is set */
-@@ -163,21 +167,21 @@ static long linehandle_set_config(struct linehandle_state *lh,
- 	if (ret)
- 		return ret;
- 
-+	/* Lines must be reconfigured explicitly as input or output. */
-+	if (!(lflags & GPIOHANDLE_REQUEST_DIRECTION_FLAGS))
-+		return -EINVAL;
++	if (usb_endpoint_xfer_int(&cmd_ep->desc))
++		ret = usb_find_common_endpoints(intf->cur_altsetting,
++						NULL, NULL, &in, &out);
++	else
++		ret = usb_find_common_endpoints(intf->cur_altsetting,
++						&in, &out, NULL, NULL);
 +
- 	for (i = 0; i < lh->num_descs; i++) {
- 		desc = lh->descs[i];
--		linehandle_flags_to_desc_flags(gcnf.flags, &desc->flags);
-+		linehandle_flags_to_desc_flags(lflags, &desc->flags);
++	if (ret) {
++		usb_err(usbatm_instance, "cxacru_bind: interface has incorrect endpoints\n");
++		ret = -ENODEV;
++		goto fail;
++	}
  
--		/*
--		 * Lines have to be requested explicitly for input
--		 * or output, else the line will be treated "as is".
--		 */
- 		if (lflags & GPIOHANDLE_REQUEST_OUTPUT) {
- 			int val = !!gcnf.default_values[i];
- 
- 			ret = gpiod_direction_output(desc, val);
- 			if (ret)
- 				return ret;
--		} else if (lflags & GPIOHANDLE_REQUEST_INPUT) {
-+		} else {
- 			ret = gpiod_direction_input(desc);
- 			if (ret)
- 				return ret;
--- 
-2.43.0
-
+ 	if ((cmd_ep->desc.bmAttributes & USB_ENDPOINT_XFERTYPE_MASK)
+ 			== USB_ENDPOINT_XFER_INT) {
 
 
 
