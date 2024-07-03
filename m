@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-57765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96BA7925E18
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:34:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC6C925B5E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:08:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFD8F2A0D92
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:32:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FC1D1C204F8
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE15F194ADC;
-	Wed,  3 Jul 2024 11:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC451849EE;
+	Wed,  3 Jul 2024 10:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="akYSNTQZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjeBh+1e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE1617556B;
-	Wed,  3 Jul 2024 11:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788DF1836EF;
+	Wed,  3 Jul 2024 10:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005865; cv=none; b=RS9uyZ3kkTE/GpR9MFM2yVRKVHAcGyunhRgpntzLQfQHvND9pmxZi0LFzNzapPy43cHL6O4Tv7CzHQ3hf+KcRQX+zS2eKVENxnhl+vQ341mfULEXTGiAGYmEJrO6TmqqnMKCv7QLhCkun/UnhXhXMKfL1fD+Cxyira0ZwThwL1w=
+	t=1720004122; cv=none; b=OJWWXgUDxogsflLKh+D6zclIOhQSRnBZBZRd8EVLXsrS5O+stqW0clY6VVPODvXHq63yjgL/Q5Odl4/Oca2fQQVTwi1fVxqctZjwYBb/y4ZVRr4Ly+mwDSeutpNbpRnmwzpR1Bot0zQBvGajm0ZsCHJnWc4PpyolwRq23kwb9C8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005865; c=relaxed/simple;
-	bh=j/ifpxQ9TEf9eC+Bh2Zhoo/7eLj/E7EY/5u3UHj6bJ4=;
+	s=arc-20240116; t=1720004122; c=relaxed/simple;
+	bh=prOVu5KDLwQPGGiViUOcL9w20z0xvWs+MBJHUIgsu8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T+Exd1FeM8mlBfZijTSulgq4XIHoVJ0szKCf5Ur+sOeu9pR+DQyV6XXGf7ChMZG7QJjAosZ/oZUO9kckLDHpMXc6Q5Ir1YOGZYorP0lZiTKNB35e0u1lrbRkBjykkI4/4wGZtBrl5n1WTsdVIsojGipDl4lFRfNEnn0tO3mo2n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=akYSNTQZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131E7C2BD10;
-	Wed,  3 Jul 2024 11:24:24 +0000 (UTC)
+	 MIME-Version; b=tBLUQ/RuMquHLO4rGg4zmCigeqrlBXoOTis9dh3ZsC9oP9eV6+jlYfgXnQRkoY1sr7l/b3lE0fhdFAngQkpRFmiFFKY3t69e9cIUpoEuaXfkmZscf5vpPxjtOKPjvdRkDDhs/F/3wwPjyujMyAqeDdxFriAqSaHJa0glRU42lTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjeBh+1e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24C7C2BD10;
+	Wed,  3 Jul 2024 10:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005865;
-	bh=j/ifpxQ9TEf9eC+Bh2Zhoo/7eLj/E7EY/5u3UHj6bJ4=;
+	s=korg; t=1720004122;
+	bh=prOVu5KDLwQPGGiViUOcL9w20z0xvWs+MBJHUIgsu8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=akYSNTQZixhO1rJqo1Ut8GbejzNo23gctM5DiVaqHt1w9ZQYBgOQEBxTh+HzS60uT
-	 fT4s+6AFCOhAm2Wy5u/9c3jaS6fwEG8Rr4IikQPJjTJV8AtJzSgOQTIGWaC3q5u3SZ
-	 u2jPbhLZgeuCLD2kObdfhJe/gkgHexFufBXMayLA=
+	b=AjeBh+1eMS2SZI9tSXasrWZPZAD83k2W9XVcQQMp4NjXWzKQEA+GRn7qc03yW5s3V
+	 4ZnUpyCI51w2DtijXBtCnFFov2qObLYCMt9HoE7Wx5ptMgGJzhTEGci+OygVP0DWXl
+	 WUgk98NacObnLBRywDehhc1jW7pWoaLDwuAH+kiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ville Syrjala <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 5.15 223/356] drm/i915/mso: using joiner is not possible with eDP MSO
+	Jan Kara <jack@suse.cz>,
+	Roman Smirnov <r.smirnov@omp.ru>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 098/189] udf: udftime: prevent overflow in udf_disk_stamp_to_time()
 Date: Wed,  3 Jul 2024 12:39:19 +0200
-Message-ID: <20240703102921.550287890@linuxfoundation.org>
+Message-ID: <20240703102845.201226200@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-commit 49cc17967be95d64606d5684416ee51eec35e84a upstream.
+[ Upstream commit 3b84adf460381169c085e4bc09e7b57e9e16db0a ]
 
-It's not possible to use the joiner at the same time with eDP MSO. When
-a panel needs MSO, it's not optional, so MSO trumps joiner.
+An overflow can occur in a situation where src.centiseconds
+takes the value of 255. This situation is unlikely, but there
+is no validation check anywere in the code.
 
-v3: Only change intel_dp_has_joiner(), leave debugfs alone (Ville)
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-Fixes: bc71194e8897 ("drm/i915/edp: enable eDP MSO during link training")
-Cc: <stable@vger.kernel.org> # v5.13+
-Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1668
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240614142311.589089-1-jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 8b5a92ca24eb96bb71e2a55e352687487d87687f)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20240327132755.13945-1-r.smirnov@omp.ru>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/udf/udftime.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -226,6 +226,10 @@ bool intel_dp_can_bigjoiner(struct intel
- 	struct intel_encoder *encoder = &intel_dig_port->base;
- 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
- 
-+	/* eDP MSO is not compatible with joiner */
-+	if (intel_dp->mso_link_count)
-+		return false;
+diff --git a/fs/udf/udftime.c b/fs/udf/udftime.c
+index fce4ad976c8c2..26169b1f482c3 100644
+--- a/fs/udf/udftime.c
++++ b/fs/udf/udftime.c
+@@ -60,13 +60,18 @@ udf_disk_stamp_to_time(struct timespec64 *dest, struct timestamp src)
+ 	dest->tv_sec = mktime64(year, src.month, src.day, src.hour, src.minute,
+ 			src.second);
+ 	dest->tv_sec -= offset * 60;
+-	dest->tv_nsec = 1000 * (src.centiseconds * 10000 +
+-			src.hundredsOfMicroseconds * 100 + src.microseconds);
 +
- 	return DISPLAY_VER(dev_priv) >= 12 ||
- 		(DISPLAY_VER(dev_priv) == 11 &&
- 		 encoder->port != PORT_A);
+ 	/*
+ 	 * Sanitize nanosecond field since reportedly some filesystems are
+ 	 * recorded with bogus sub-second values.
+ 	 */
+-	dest->tv_nsec %= NSEC_PER_SEC;
++	if (src.centiseconds < 100 && src.hundredsOfMicroseconds < 100 &&
++	    src.microseconds < 100) {
++		dest->tv_nsec = 1000 * (src.centiseconds * 10000 +
++			src.hundredsOfMicroseconds * 100 + src.microseconds);
++	} else {
++		dest->tv_nsec = 0;
++	}
+ }
+ 
+ void
+-- 
+2.43.0
+
 
 
 
