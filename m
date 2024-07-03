@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-57096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38944925AAC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:02:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43952925F4C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:56:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59E4E1C24F38
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:02:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C890FB3606F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6A017B43F;
-	Wed,  3 Jul 2024 10:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F63186290;
+	Wed,  3 Jul 2024 11:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZ0FJR3J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPEIeJJ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D063C13A27E;
-	Wed,  3 Jul 2024 10:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FF645945;
+	Wed,  3 Jul 2024 11:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003836; cv=none; b=j/P/+snQMSVNTcmIm+bSeUTSk38DYFEg0ko0WaxVG/Gj98AQT4iJgekB1/FfTxuo063OI1S6pSdISpCozbkD3ZQroR9XhbfRafrBfBuQu1mCWsR20XZPfuCNLDZrrJRxYlxXTlhZ/+1wteHIOY71QKALZYAe7ic1USYPYmfc0KE=
+	t=1720005686; cv=none; b=cB0aOgQ9FzhjHqclBgXbC9SedD+awjk3jPmjrjlshBEpoxHYqGeNluEt5kByFIf+89zyCBPPSmxWPA8aXUNdQvx7NsNiLAAQYpQqoiB/IPE081JEr5wzK5De6vzpWuMkDlOMEF8XvbP6qUrcEmiONAL/T+RjBS0fF2ULfLmeamo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003836; c=relaxed/simple;
-	bh=aCJHn/jX0P7pUCSiEN8pGRonEGGN4U1yXS2OvcXekgg=;
+	s=arc-20240116; t=1720005686; c=relaxed/simple;
+	bh=7cp5ayP4VujSMnjDIqXGOx3om1zbs3jkE3wJhZsro2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RRnSxI1Yv5KMDkqaRasM9PCj+AH7kJzu1Kx7nMYbjD2e9cZhJPXHENH596Xy9KQShDaBwpk/BNodl57PhMzU7XnxUmI97QNw7T4d42QVcI+ogUi9rVLB0Q5CbwGV/rcqPGdjLLdMAXY9d9RpnAlyeiWJ7CjiOYk/0ekmIZ2A1yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZ0FJR3J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 581E9C2BD10;
-	Wed,  3 Jul 2024 10:50:36 +0000 (UTC)
+	 MIME-Version; b=H+7WTgBm2/IH8QHXW/8l2Ma8/kMAMtdInY+1eAfu7wHOtvcDn9KR3jqFmrMsJKYHPKgxqULDY55P/OwgCLv4ZmnePKqLieVjqymXOes1EJW8MpBbo4ExmkH5Sb5mhoApSBF/47TvAGP07M3ou092s3nB0KqjqGrA8WdcNdLj10g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPEIeJJ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B39CC2BD10;
+	Wed,  3 Jul 2024 11:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003836;
-	bh=aCJHn/jX0P7pUCSiEN8pGRonEGGN4U1yXS2OvcXekgg=;
+	s=korg; t=1720005685;
+	bh=7cp5ayP4VujSMnjDIqXGOx3om1zbs3jkE3wJhZsro2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sZ0FJR3J6WMEkDhgnqzvlhBth49PQ6vk0L+Tzr0TPpFf3TtZWJ1V9zZ0sA0bnU3UF
-	 tAQEK9vNK3GbP39a14h/FmnQ0dlYQHzb3lLg8KAPtCBPJc/Co001n9WMeYMJvHKfH3
-	 3+275ouu3AHn03Jnd4EEHl3TsOUKtk2mfncJearY=
+	b=sPEIeJJ8WeQtA7lfRXPJC/DX/LT5J0n1aN8UDF8KzQdeU1ApwGIH/Q/XI5GhYi6SZ
+	 X5WjGGqDCwIGoPXUQZCiaMiL2mSYhZIL7NAC46NP/HNK0Sjkfnp2Yn8JZsdJgaNozM
+	 Ctz0Wex3j3tqD9rWXlNHeFicBZ8+AuKQ6BqT2UTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dev Jain <dev.jain@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Sri Jayaramappa <sjayaram@akamai.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Martin Hoyer <mhoyer@redhat.com>,
+	John Meneghini <jmeneghi@redhat.com>,
+	Manish Rangankar <mrangankar@marvell.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 037/189] selftests/mm: compaction_test: fix bogus test success on Aarch64
+Subject: [PATCH 5.15 162/356] scsi: qedi: Fix crash while reading debugfs attribute
 Date: Wed,  3 Jul 2024 12:38:18 +0200
-Message-ID: <20240703102842.911048237@linuxfoundation.org>
+Message-ID: <20240703102919.234324344@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,111 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dev Jain <dev.jain@arm.com>
+From: Manish Rangankar <mrangankar@marvell.com>
 
-[ Upstream commit d4202e66a4b1fe6968f17f9f09bbc30d08f028a1 ]
+[ Upstream commit 28027ec8e32ecbadcd67623edb290dad61e735b5 ]
 
-Patch series "Fixes for compaction_test", v2.
+The qedi_dbg_do_not_recover_cmd_read() function invokes sprintf() directly
+on a __user pointer, which results into the crash.
 
-The compaction_test memory selftest introduces fragmentation in memory
-and then tries to allocate as many hugepages as possible. This series
-addresses some problems.
+To fix this issue, use a small local stack buffer for sprintf() and then
+call simple_read_from_buffer(), which in turns make the copy_to_user()
+call.
 
-On Aarch64, if nr_hugepages == 0, then the test trivially succeeds since
-compaction_index becomes 0, which is less than 3, due to no division by
-zero exception being raised. We fix that by checking for division by
-zero.
+BUG: unable to handle page fault for address: 00007f4801111000
+PGD 8000000864df6067 P4D 8000000864df6067 PUD 864df7067 PMD 846028067 PTE 0
+Oops: 0002 [#1] PREEMPT SMP PTI
+Hardware name: HPE ProLiant DL380 Gen10/ProLiant DL380 Gen10, BIOS U30 06/15/2023
+RIP: 0010:memcpy_orig+0xcd/0x130
+RSP: 0018:ffffb7a18c3ffc40 EFLAGS: 00010202
+RAX: 00007f4801111000 RBX: 00007f4801111000 RCX: 000000000000000f
+RDX: 000000000000000f RSI: ffffffffc0bfd7a0 RDI: 00007f4801111000
+RBP: ffffffffc0bfd7a0 R08: 725f746f6e5f6f64 R09: 3d7265766f636572
+R10: ffffb7a18c3ffd08 R11: 0000000000000000 R12: 00007f4881110fff
+R13: 000000007fffffff R14: ffffb7a18c3ffca0 R15: ffffffffc0bfd7af
+FS:  00007f480118a740(0000) GS:ffff98e38af00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f4801111000 CR3: 0000000864b8e001 CR4: 00000000007706e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? __die_body+0x1a/0x60
+ ? page_fault_oops+0x183/0x510
+ ? exc_page_fault+0x69/0x150
+ ? asm_exc_page_fault+0x22/0x30
+ ? memcpy_orig+0xcd/0x130
+ vsnprintf+0x102/0x4c0
+ sprintf+0x51/0x80
+ qedi_dbg_do_not_recover_cmd_read+0x2f/0x50 [qedi 6bcfdeeecdea037da47069eca2ba717c84a77324]
+ full_proxy_read+0x50/0x80
+ vfs_read+0xa5/0x2e0
+ ? folio_add_new_anon_rmap+0x44/0xa0
+ ? set_pte_at+0x15/0x30
+ ? do_pte_missing+0x426/0x7f0
+ ksys_read+0xa5/0xe0
+ do_syscall_64+0x58/0x80
+ ? __count_memcg_events+0x46/0x90
+ ? count_memcg_event_mm+0x3d/0x60
+ ? handle_mm_fault+0x196/0x2f0
+ ? do_user_addr_fault+0x267/0x890
+ ? exc_page_fault+0x69/0x150
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+RIP: 0033:0x7f4800f20b4d
 
-Secondly, correctly set the number of hugepages to zero before trying
-to set a large number of them.
-
-Now, consider a situation in which, at the start of the test, a non-zero
-number of hugepages have been already set (while running the entire
-selftests/mm suite, or manually by the admin). The test operates on 80%
-of memory to avoid OOM-killer invocation, and because some memory is
-already blocked by hugepages, it would increase the chance of OOM-killing.
-Also, since mem_free used in check_compaction() is the value before we
-set nr_hugepages to zero, the chance that the compaction_index will
-be small is very high if the preset nr_hugepages was high, leading to a
-bogus test success.
-
-This patch (of 3):
-
-Currently, if at runtime we are not able to allocate a huge page, the test
-will trivially pass on Aarch64 due to no exception being raised on
-division by zero while computing compaction_index.  Fix that by checking
-for nr_hugepages == 0.  Anyways, in general, avoid a division by zero by
-exiting the program beforehand.  While at it, fix a typo, and handle the
-case where the number of hugepages may overflow an integer.
-
-Link: https://lkml.kernel.org/r/20240521074358.675031-1-dev.jain@arm.com
-Link: https://lkml.kernel.org/r/20240521074358.675031-2-dev.jain@arm.com
-Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Sri Jayaramappa <sjayaram@akamai.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Tested-by: Martin Hoyer <mhoyer@redhat.com>
+Reviewed-by: John Meneghini <jmeneghi@redhat.com>
+Signed-off-by: Manish Rangankar <mrangankar@marvell.com>
+Link: https://lore.kernel.org/r/20240415072155.30840-1-mrangankar@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vm/compaction_test.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ drivers/scsi/qedi/qedi_debugfs.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/vm/compaction_test.c b/tools/testing/selftests/vm/compaction_test.c
-index 6be4b70a26592..b5587a751664a 100644
---- a/tools/testing/selftests/vm/compaction_test.c
-+++ b/tools/testing/selftests/vm/compaction_test.c
-@@ -81,12 +81,13 @@ int prereq(void)
- 	return -1;
+diff --git a/drivers/scsi/qedi/qedi_debugfs.c b/drivers/scsi/qedi/qedi_debugfs.c
+index 42f5afb60055c..6e724f47ab9e8 100644
+--- a/drivers/scsi/qedi/qedi_debugfs.c
++++ b/drivers/scsi/qedi/qedi_debugfs.c
+@@ -120,15 +120,11 @@ static ssize_t
+ qedi_dbg_do_not_recover_cmd_read(struct file *filp, char __user *buffer,
+ 				 size_t count, loff_t *ppos)
+ {
+-	size_t cnt = 0;
+-
+-	if (*ppos)
+-		return 0;
++	char buf[64];
++	int len;
+ 
+-	cnt = sprintf(buffer, "do_not_recover=%d\n", qedi_do_not_recover);
+-	cnt = min_t(int, count, cnt - *ppos);
+-	*ppos += cnt;
+-	return cnt;
++	len = sprintf(buf, "do_not_recover=%d\n", qedi_do_not_recover);
++	return simple_read_from_buffer(buffer, count, ppos, buf, len);
  }
  
--int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
-+int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
- {
-+	unsigned long nr_hugepages_ul;
- 	int fd, ret = -1;
- 	int compaction_index = 0;
--	char initial_nr_hugepages[10] = {0};
--	char nr_hugepages[10] = {0};
-+	char initial_nr_hugepages[20] = {0};
-+	char nr_hugepages[20] = {0};
- 
- 	/* We want to test with 80% of available memory. Else, OOM killer comes
- 	   in to play */
-@@ -135,7 +136,12 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
- 
- 	/* We should have been able to request at least 1/3 rd of the memory in
- 	   huge pages */
--	compaction_index = mem_free/(atoi(nr_hugepages) * hugepage_size);
-+	nr_hugepages_ul = strtoul(nr_hugepages, NULL, 10);
-+	if (!nr_hugepages_ul) {
-+		ksft_print_msg("ERROR: No memory is available as huge pages\n");
-+		goto close_fd;
-+	}
-+	compaction_index = mem_free/(nr_hugepages_ul * hugepage_size);
- 
- 	lseek(fd, 0, SEEK_SET);
- 
-@@ -146,11 +152,11 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
- 		goto close_fd;
- 	}
- 
--	ksft_print_msg("Number of huge pages allocated = %d\n",
--		       atoi(nr_hugepages));
-+	ksft_print_msg("Number of huge pages allocated = %lu\n",
-+		       nr_hugepages_ul);
- 
- 	if (compaction_index > 3) {
--		ksft_print_msg("ERROR: Less that 1/%d of memory is available\n"
-+		ksft_print_msg("ERROR: Less than 1/%d of memory is available\n"
- 			       "as huge pages\n", compaction_index);
- 		goto close_fd;
- 	}
+ static int
 -- 
 2.43.0
 
