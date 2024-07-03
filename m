@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-57327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4A80925C10
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:14:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C23925D6E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:28:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D74921C21748
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7627228183A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07330171671;
-	Wed,  3 Jul 2024 11:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B08791822D4;
+	Wed,  3 Jul 2024 11:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uc7qTkhy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rhpTjjX+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96A616FF2A;
-	Wed,  3 Jul 2024 11:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F12316F8FA;
+	Wed,  3 Jul 2024 11:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004545; cv=none; b=JlOUDOQl9fsbquZacF6V9pwM2MJv9ZDSsPqVi2oJgAE2NeFiM+hfZRC3qzlPP5g6I18+hv6PjyGNoXG09lL+iMkJbn89Or1wIpcdo0RF7w+HDQ8le790ruQG0T+oauMWrVBDIx9ZjTit5MTZhVNA4q1NYpNkwu4FR0VSim53HhU=
+	t=1720005562; cv=none; b=dUBabLAcxNSfXWLfu25A++GNxWljqsa06BAjM0hPM4FBauLq6lqcwABezHhAbem4akV/u/YV4slgkAKvRtoFarHX01DP7jZPdcFOUJILuUtLWTeucM8c1GCkg7axQMLKSctNTVViAhBxQs7os0fxkLW2D6qGmRnq0qj2e7dCWWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004545; c=relaxed/simple;
-	bh=uKUWR1SMiemcMwgvDVFLvJ745jeg2bUeYSr2Rp1kCuU=;
+	s=arc-20240116; t=1720005562; c=relaxed/simple;
+	bh=2qDYh6dzES3ChLNX7PY9eZgZ9vtHSNQcK8Wq6WXla0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RF2qaa0ypTlVKd5PZRiiqMmRxwCl6TH4myGWjcw69TcTrxUOEGp9bqVMjvfXkCG+E5N/eQrDT8ngEIhxNP/RDQrtWRF7l7826bEQmEFYLdIgKCRmdGIxl/5PtfceDDPixHiMKRxIJd1oH79+hWVbgLRvxJ50jnknGIPvLfOslM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uc7qTkhy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F94C32781;
-	Wed,  3 Jul 2024 11:02:25 +0000 (UTC)
+	 MIME-Version; b=sa5e5xeO4u6XySVog38Q3yyFO7/Icfg72A9gBOBmJy2k8gZQjy7Dx/cE+2pwoq2LVnZSEYQEioLbyjhuEtlodZovVkLDETRE2pgVqbVXpLNtm1yKrA4Jq2aeb9aSvvrhAiazV+MtKiYgczeLnGDCdIhDalpYNfNMPVL+cgukVPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rhpTjjX+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92D1C2BD10;
+	Wed,  3 Jul 2024 11:19:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004545;
-	bh=uKUWR1SMiemcMwgvDVFLvJ745jeg2bUeYSr2Rp1kCuU=;
+	s=korg; t=1720005562;
+	bh=2qDYh6dzES3ChLNX7PY9eZgZ9vtHSNQcK8Wq6WXla0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uc7qTkhyk9/hosfKrkoCyzB2WJuF8txqKbJsxA4fYL381kECfOLm5JwXTERiFbr9g
-	 iW+c+0AXQhw3E7gcQJTFCGiMdxS9qRTo5pBmEkC/lUaHPAmvB1CdJ2tt9yErbssWPg
-	 l+odF3uhzrMkrNi2xdqbgx8rEvt5ttsMMpqgMxSM=
+	b=rhpTjjX+L5DPT4Gd+Z3AA/yxVnNNnjj14k8j3Kp0CsLZ1CMeubqyszeFacqU3gewt
+	 HrlqMYuFcrt24kvFMEPLLOQtNQQ4klBnpuLp0wp4EK/4XK0brk2X9zvc6fMslfgKBU
+	 0Azp3adYS1OVuZflKC2sI7LTkaNgoijRvzgG9XUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	syzbot+ffa8143439596313a85a@syzkaller.appspotmail.com,
-	Ashish Sangwan <a.sangwan@samsung.com>,
-	Namjae Jeon <namjae.jeon@samsung.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>
-Subject: [PATCH 5.10 077/290] drivers: core: synchronize really_probe() and dev_uevent()
-Date: Wed,  3 Jul 2024 12:37:38 +0200
-Message-ID: <20240703102907.104873902@linuxfoundation.org>
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 123/356] knfsd: LOOKUP can return an illegal error value
+Date: Wed,  3 Jul 2024 12:37:39 +0200
+Message-ID: <20240703102917.748432735@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dirk Behme <dirk.behme@de.bosch.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit c0a40097f0bc81deafc15f9195d1fb54595cd6d0 upstream.
+commit e221c45da3770962418fb30c27d941bbc70d595a upstream.
 
-Synchronize the dev->driver usage in really_probe() and dev_uevent().
-These can run in different threads, what can result in the following
-race condition for dev->driver uninitialization:
+The 'NFS error' NFSERR_OPNOTSUPP is not described by any of the official
+NFS related RFCs, but appears to have snuck into some older .x files for
+NFSv2.
+Either way, it is not in RFC1094, RFC1813 or any of the NFSv4 RFCs, so
+should not be returned by the knfsd server, and particularly not by the
+"LOOKUP" operation.
 
-Thread #1:
-==========
+Instead, let's return NFSERR_STALE, which is more appropriate if the
+filesystem encodes the filehandle as FILEID_INVALID.
 
-really_probe() {
-...
-probe_failed:
-...
-device_unbind_cleanup(dev) {
-    ...
-    dev->driver = NULL;   // <= Failed probe sets dev->driver to NULL
-    ...
-    }
-...
-}
-
-Thread #2:
-==========
-
-dev_uevent() {
-...
-if (dev->driver)
-      // If dev->driver is NULLed from really_probe() from here on,
-      // after above check, the system crashes
-      add_uevent_var(env, "DRIVER=%s", dev->driver->name);
-...
-}
-
-really_probe() holds the lock, already. So nothing needs to be done
-there. dev_uevent() is called with lock held, often, too. But not
-always. What implies that we can't add any locking in dev_uevent()
-itself. So fix this race by adding the lock to the non-protected
-path. This is the path where above race is observed:
-
- dev_uevent+0x235/0x380
- uevent_show+0x10c/0x1f0  <= Add lock here
- dev_attr_show+0x3a/0xa0
- sysfs_kf_seq_show+0x17c/0x250
- kernfs_seq_show+0x7c/0x90
- seq_read_iter+0x2d7/0x940
- kernfs_fop_read_iter+0xc6/0x310
- vfs_read+0x5bc/0x6b0
- ksys_read+0xeb/0x1b0
- __x64_sys_read+0x42/0x50
- x64_sys_call+0x27ad/0x2d30
- do_syscall_64+0xcd/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Similar cases are reported by syzkaller in
-
-https://syzkaller.appspot.com/bug?extid=ffa8143439596313a85a
-
-But these are regarding the *initialization* of dev->driver
-
-dev->driver = drv;
-
-As this switches dev->driver to non-NULL these reports can be considered
-to be false-positives (which should be "fixed" by this commit, as well,
-though).
-
-The same issue was reported and tried to be fixed back in 2015 in
-
-https://lore.kernel.org/lkml/1421259054-2574-1-git-send-email-a.sangwan@samsung.com/
-
-already.
-
-Fixes: 239378f16aa1 ("Driver core: add uevent vars for devices of a class")
-Cc: stable <stable@kernel.org>
-Cc: syzbot+ffa8143439596313a85a@syzkaller.appspotmail.com
-Cc: Ashish Sangwan <a.sangwan@samsung.com>
-Cc: Namjae Jeon <namjae.jeon@samsung.com>
-Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
-Link: https://lore.kernel.org/r/20240513050634.3964461-1-dirk.behme@de.bosch.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/core.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/nfsd/nfsfh.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -2008,8 +2008,11 @@ static ssize_t uevent_show(struct device
- 	if (!env)
- 		return -ENOMEM;
+--- a/fs/nfsd/nfsfh.c
++++ b/fs/nfsd/nfsfh.c
+@@ -569,7 +569,7 @@ fh_compose(struct svc_fh *fhp, struct sv
+ 		_fh_update(fhp, exp, dentry);
+ 	if (fhp->fh_handle.fh_fileid_type == FILEID_INVALID) {
+ 		fh_put(fhp);
+-		return nfserr_opnotsupp;
++		return nfserr_stale;
+ 	}
  
-+	/* Synchronize with really_probe() */
-+	device_lock(dev);
- 	/* let the kset specific function add its keys */
- 	retval = kset->uevent_ops->uevent(kset, &dev->kobj, env);
-+	device_unlock(dev);
- 	if (retval)
- 		goto out;
+ 	return 0;
+@@ -595,7 +595,7 @@ fh_update(struct svc_fh *fhp)
  
+ 	_fh_update(fhp, fhp->fh_export, dentry);
+ 	if (fhp->fh_handle.fh_fileid_type == FILEID_INVALID)
+-		return nfserr_opnotsupp;
++		return nfserr_stale;
+ 	return 0;
+ out_bad:
+ 	printk(KERN_ERR "fh_update: fh not verified!\n");
 
 
 
