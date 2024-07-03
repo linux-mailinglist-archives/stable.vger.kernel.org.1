@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-57334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3DFB925C15
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:14:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 973F8925A92
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:01:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31B171C246DF
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B206D1C260AC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4414B1791EF;
-	Wed,  3 Jul 2024 11:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A092117994F;
+	Wed,  3 Jul 2024 10:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLMwJDiJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uc19vQ2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0307E171679;
-	Wed,  3 Jul 2024 11:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5434C17084B;
+	Wed,  3 Jul 2024 10:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004567; cv=none; b=bVE+sIWwxdcOqPGJClbHE2yCiVwjan+cVSXrKZrkzmkhWypuSB1zUqivrdcD5CPBSKiCSMTc0g8lv5cubnbyKH4/s4etRbLhHNV/FzZbKt4wcAQ1orxXjVuQDlIIsZzfng8hDf2AHYfPQC6aIozQrtJZgY6owgBjpn7SH+A87aU=
+	t=1720003786; cv=none; b=pVsckUOhljMLbFcyG7Z8R/Aw977Scs6IFc5vVZJX+ZTZq6OpSZD6cHdTleSiv3EmIqvwHTDQkC/5XdWjSr/T2Nlo140Uqc8YCscDD3nWFf/NpOSP6XE3A7HceUyorms9pyYDanqRzQhRXqUCLp3TBTClxWER3FWzPOlBImLeoG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004567; c=relaxed/simple;
-	bh=Uc6IKj63tGWBQm4oX7OWiWAnV0DXK9nQ/PjifDskKRE=;
+	s=arc-20240116; t=1720003786; c=relaxed/simple;
+	bh=bvg1rdhxw6eVeoGxTKuYg9TI5unqA2zSXiqNcQKU9Mk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=caPQTv+kbxBZHgeled/uPbKb+ahvcEdG35wFytQqD0hwY5ARHpvdVrL8K1NfCHdmOkXdOac3OEc7OIt6cZU/UGoPlysaw+FD/kVOjc7WmQLGENCutQ5/NMuurapxFEvKRTGajzNka+ECVx+N5V1F8FJdeigtXSsP4efOjcCex2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLMwJDiJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E21CC2BD10;
-	Wed,  3 Jul 2024 11:02:46 +0000 (UTC)
+	 MIME-Version; b=bXwtGInVFUzNXPNOcCuQ0ooZCG46nkJu0boNLIYTp/Mc6CDPAwQML23hFHrZv2rUdylf+gYd+KFTONWbfIBUlOpizuUPgY2ZwiLL38F2ObU+l5OSPo7/RE64zfRfZ31s0YoTeIYc/+DYaBu3Sq+R5iVvnWbbTc+4njFQ2oJvwB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uc19vQ2t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFCBC2BD10;
+	Wed,  3 Jul 2024 10:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004566;
-	bh=Uc6IKj63tGWBQm4oX7OWiWAnV0DXK9nQ/PjifDskKRE=;
+	s=korg; t=1720003786;
+	bh=bvg1rdhxw6eVeoGxTKuYg9TI5unqA2zSXiqNcQKU9Mk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZLMwJDiJjsjPa4DXr5PLh1weAodelKOIrgqd6LliQU3PZyV0qmpZnlywZdhshgXER
-	 INCNfhgqntEAlfGm2iRaPqUNX4rPt+Xged3jS1tE9gASfIjVNLGnT+Seym92qXEfzm
-	 HCzC/WJHb93VMaJlpO0w+6t+aD4H4xEO2Q2idhzk=
+	b=uc19vQ2t+PiumANCyhJySNCA2K418DeF+JRWoHNyeksSIMmovyC8pERNYaSTMusMM
+	 R9WQ3iqVFifbHTEHaxEMzqnrLD1HrMVHhN3YKnm4pKpf3lqSJzaSyz3WVnTM7V+XbY
+	 9azEzxDZyWa3zBcJKbwgkaKRtKf0GtuTXCsF7u3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Yue <glass.su@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Jun Piao <piaojun@huawei.com>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 083/290] ocfs2: fix races between hole punching and AIO+DIO
+	Lin Ma <linma@zju.edu.cn>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 003/189] wifi: cfg80211: pmsr: use correct nla_get_uX functions
 Date: Wed,  3 Jul 2024 12:37:44 +0200
-Message-ID: <20240703102907.329936795@linuxfoundation.org>
+Message-ID: <20240703102841.626922289@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,96 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Yue <glass.su@suse.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-commit 952b023f06a24b2ad6ba67304c4c84d45bea2f18 upstream.
+[ Upstream commit ab904521f4de52fef4f179d2dfc1877645ef5f5c ]
 
-After commit "ocfs2: return real error code in ocfs2_dio_wr_get_block",
-fstests/generic/300 become from always failed to sometimes failed:
+The commit 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM
+initiator API") defines four attributes NL80211_PMSR_FTM_REQ_ATTR_
+{NUM_BURSTS_EXP}/{BURST_PERIOD}/{BURST_DURATION}/{FTMS_PER_BURST} in
+following ways.
 
-========================================================================
-[  473.293420 ] run fstests generic/300
+static const struct nla_policy
+nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
+    ...
+    [NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP] =
+        NLA_POLICY_MAX(NLA_U8, 15),
+    [NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD] = { .type = NLA_U16 },
+    [NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION] =
+        NLA_POLICY_MAX(NLA_U8, 15),
+    [NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST] =
+        NLA_POLICY_MAX(NLA_U8, 31),
+    ...
+};
 
-[  475.296983 ] JBD2: Ignoring recovery information on journal
-[  475.302473 ] ocfs2: Mounting device (253,1) on (node local, slot 0) with ordered data mode.
-[  494.290998 ] OCFS2: ERROR (device dm-1): ocfs2_change_extent_flag: Owner 5668 has an extent at cpos 78723 which can no longer be found
-[  494.291609 ] On-disk corruption discovered. Please run fsck.ocfs2 once the filesystem is unmounted.
-[  494.292018 ] OCFS2: File system is now read-only.
-[  494.292224 ] (kworker/19:11,2628,19):ocfs2_mark_extent_written:5272 ERROR: status = -30
-[  494.292602 ] (kworker/19:11,2628,19):ocfs2_dio_end_io_write:2374 ERROR: status = -3
-fio: io_u error on file /mnt/scratch/racer: Read-only file system: write offset=460849152, buflen=131072
-=========================================================================
+That is, those attributes are expected to be NLA_U8 and NLA_U16 types.
+However, the consumers of these attributes in `pmsr_parse_ftm` blindly
+all use `nla_get_u32`, which is incorrect and causes functionality issues
+on little-endian platforms. Hence, fix them with the correct `nla_get_u8`
+and `nla_get_u16` functions.
 
-In __blockdev_direct_IO, ocfs2_dio_wr_get_block is called to add unwritten
-extents to a list.  extents are also inserted into extent tree in
-ocfs2_write_begin_nolock.  Then another thread call fallocate to puch a
-hole at one of the unwritten extent.  The extent at cpos was removed by
-ocfs2_remove_extent().  At end io worker thread, ocfs2_search_extent_list
-found there is no such extent at the cpos.
-
-    T1                        T2                T3
-                              inode lock
-                                ...
-                                insert extents
-                                ...
-                              inode unlock
-ocfs2_fallocate
- __ocfs2_change_file_space
-  inode lock
-  lock ip_alloc_sem
-  ocfs2_remove_inode_range inode
-   ocfs2_remove_btree_range
-    ocfs2_remove_extent
-    ^---remove the extent at cpos 78723
-  ...
-  unlock ip_alloc_sem
-  inode unlock
-                                       ocfs2_dio_end_io
-                                        ocfs2_dio_end_io_write
-                                         lock ip_alloc_sem
-                                         ocfs2_mark_extent_written
-                                          ocfs2_change_extent_flag
-                                           ocfs2_search_extent_list
-                                           ^---failed to find extent
-                                          ...
-                                          unlock ip_alloc_sem
-
-In most filesystems, fallocate is not compatible with racing with AIO+DIO,
-so fix it by adding to wait for all dio before fallocate/punch_hole like
-ext4.
-
-Link: https://lkml.kernel.org/r/20240408082041.20925-3-glass.su@suse.com
-Fixes: b25801038da5 ("ocfs2: Support xfs style space reservation ioctls")
-Signed-off-by: Su Yue <glass.su@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM initiator API")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Link: https://msgid.link/20240521075059.47999-1-linma@zju.edu.cn
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/file.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/wireless/pmsr.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/ocfs2/file.c
-+++ b/fs/ocfs2/file.c
-@@ -1940,6 +1940,8 @@ static int __ocfs2_change_file_space(str
+diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
+index 0c7bd1f2c55c0..0cd1cb269ab58 100644
+--- a/net/wireless/pmsr.c
++++ b/net/wireless/pmsr.c
+@@ -58,7 +58,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	out->ftm.burst_period = 0;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD])
+ 		out->ftm.burst_period =
+-			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD]);
++			nla_get_u16(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD]);
  
- 	inode_lock(inode);
+ 	out->ftm.asap = !!tb[NL80211_PMSR_FTM_REQ_ATTR_ASAP];
+ 	if (out->ftm.asap && !capa->ftm.asap) {
+@@ -77,7 +77,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	out->ftm.num_bursts_exp = 0;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP])
+ 		out->ftm.num_bursts_exp =
+-			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP]);
++			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP]);
  
-+	/* Wait all existing dio workers, newcomers will block on i_rwsem */
-+	inode_dio_wait(inode);
- 	/*
- 	 * This prevents concurrent writes on other nodes
- 	 */
+ 	if (capa->ftm.max_bursts_exponent >= 0 &&
+ 	    out->ftm.num_bursts_exp > capa->ftm.max_bursts_exponent) {
+@@ -90,7 +90,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	out->ftm.burst_duration = 15;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION])
+ 		out->ftm.burst_duration =
+-			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION]);
++			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION]);
+ 
+ 	out->ftm.ftms_per_burst = 0;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST])
+@@ -109,7 +109,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	out->ftm.ftmr_retries = 3;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES])
+ 		out->ftm.ftmr_retries =
+-			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES]);
++			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES]);
+ 
+ 	out->ftm.request_lci = !!tb[NL80211_PMSR_FTM_REQ_ATTR_REQUEST_LCI];
+ 	if (out->ftm.request_lci && !capa->ftm.request_lci) {
+-- 
+2.43.0
+
 
 
 
