@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-57735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A523A925DC2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 890AA925AC3
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31D2C1F2288D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40CA61F24D0D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD21194080;
-	Wed,  3 Jul 2024 11:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718BD17C229;
+	Wed,  3 Jul 2024 10:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzwd1Zz8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/q6jlWD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C06191F99;
-	Wed,  3 Jul 2024 11:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2562013D60F;
+	Wed,  3 Jul 2024 10:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005775; cv=none; b=aSc9nbeYU2dDpWE4BfLnhTLe7Buzd7VfM26CRpk4sqcl/GynU4pH05D89v4ksRy2QMiynlMn70e38MZXicA2rA8gFTqfOj39jUyT/FakrLdjUX3MUewD0BTD9kgqoyMMrYhDtURy6HJ3ApY4L7YCAKQulWEIBXByJmUbH9C3vk4=
+	t=1720003932; cv=none; b=PaazSN8kNvcXQSqyE549eELgMietQ5EL1qNnmYG97EcLAwFmIzIYhO9I73eCPmnnjqalF+eKrVDBay6+zzG/AuHtEIeQeWxkQBbDMr51/yIBNcZnbROcuVdvG0bstE6grjB8aAIstc/kVAEzgc/M7CvG7nuBIPk72FBY08t51wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005775; c=relaxed/simple;
-	bh=MooeqnX4FQc59onP6Fr/+zBfaaEgXfY6BfJ39Gl9mWY=;
+	s=arc-20240116; t=1720003932; c=relaxed/simple;
+	bh=qTEPYiMFhyyJ8jSD4WqYAVTdGzRPqUgtQic0rAoiDD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qdRMvzjIdm8oET5xVxh0VDptkOgpwLKQ5K/V4D+RfgHN9Qe5OsErA9soup5fit2I/NrTHaG3jwyGz5ptC+k5x+/zMpqq0/wOC1EZgrsyY5iFdysQImlbP2kmQvBDWgUNcynpAeE687Hvls6m/iwUGbBhUCc/Ys5BapFBSyucYbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzwd1Zz8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90892C32781;
-	Wed,  3 Jul 2024 11:22:54 +0000 (UTC)
+	 MIME-Version; b=P79dvMOW6C3VMECEkfRINAVJLOLtXhjeP8p98Td8EUkeYq38Uwmy1xTlnWWibhIJkgePbUQG/Uc48rlpGaQGN5FCo4/GwRHrJRZa4UOyILRIUM6/BqRpzOGJ+SFXfxSixPntSSQxGSwDlhgrDsYhr3COs4zPXAIS3jhD/sDpQKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/q6jlWD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2DAC2BD10;
+	Wed,  3 Jul 2024 10:52:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005775;
-	bh=MooeqnX4FQc59onP6Fr/+zBfaaEgXfY6BfJ39Gl9mWY=;
+	s=korg; t=1720003932;
+	bh=qTEPYiMFhyyJ8jSD4WqYAVTdGzRPqUgtQic0rAoiDD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tzwd1Zz8KY0HZxXBcU/NLfJ+VbqiiwsVGqr9g3lIyg58uynD3CyiuZvL46zAxdrq/
-	 21Rpdvz/J90P/F9VvDYaCnF+UVGpoal2WPh8RQInbRa/Pcwj/fgKi9jhq5NM7GqipO
-	 4VH4obISABaFSiGJ/gqbJjE1MVnPUdxNhvWe9DSI=
+	b=a/q6jlWDcqHPYA+fS4W8GPldn9iK47M+Pl2oommtbq4wL7WNZLfzq0bq2ezzkd/g1
+	 EA601N2WpCx7NIqTEPHpFDd9E3QwPdSxLbloILHbuHlAnUxPScORCm4Lm//pnkZSRm
+	 0YaUwnScFMjo+GXbAR/47EOrpNghYEoIJ3f3eo64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Vlad Buslov <vladbu@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 193/356] net/sched: act_api: rely on rcu in tcf_idr_check_alloc
-Date: Wed,  3 Jul 2024 12:38:49 +0200
-Message-ID: <20240703102920.407062922@linuxfoundation.org>
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 5.4 069/189] tracing/selftests: Fix kprobe event name test for .isra. functions
+Date: Wed,  3 Jul 2024 12:38:50 +0200
+Message-ID: <20240703102844.111789793@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,178 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 4b55e86736d5b492cf689125da2600f59c7d2c39 ]
+commit 23a4b108accc29a6125ed14de4a044689ffeda78 upstream.
 
-Instead of relying only on the idrinfo->lock mutex for
-bind/alloc logic, rely on a combination of rcu + mutex + atomics
-to better scale the case where multiple rtnl-less filters are
-binding to the same action object.
+The kprobe_eventname.tc test checks if a function with .isra. can have a
+kprobe attached to it. It loops through the kallsyms file for all the
+functions that have the .isra. name, and checks if it exists in the
+available_filter_functions file, and if it does, it uses it to attach a
+kprobe to it.
 
-Action binding happens when an action index is specified explicitly and
-an action exists which such index exists. Example:
-  tc actions add action drop index 1
-  tc filter add ... matchall action drop index 1
-  tc filter add ... matchall action drop index 1
-  tc filter add ... matchall action drop index 1
-  tc filter ls ...
-     filter protocol all pref 49150 matchall chain 0 filter protocol all pref 49150 matchall chain 0 handle 0x1
-     not_in_hw
-           action order 1: gact action drop
-            random type none pass val 0
-            index 1 ref 4 bind 3
+The issue is that kprobes can not attach to functions that are listed more
+than once in available_filter_functions. With the latest kernel, the
+function that is found is: rapl_event_update.isra.0
 
-   filter protocol all pref 49151 matchall chain 0 filter protocol all pref 49151 matchall chain 0 handle 0x1
-     not_in_hw
-           action order 1: gact action drop
-            random type none pass val 0
-            index 1 ref 4 bind 3
+  # grep rapl_event_update.isra.0 /sys/kernel/tracing/available_filter_functions
+  rapl_event_update.isra.0
+  rapl_event_update.isra.0
 
-   filter protocol all pref 49152 matchall chain 0 filter protocol all pref 49152 matchall chain 0 handle 0x1
-     not_in_hw
-           action order 1: gact action drop
-            random type none pass val 0
-            index 1 ref 4 bind 3
+It is listed twice. This causes the attached kprobe to it to fail which in
+turn fails the test. Instead of just picking the function function that is
+found in available_filter_functions, pick the first one that is listed
+only once in available_filter_functions.
 
-When no index is specified, as before, grab the mutex and allocate
-in the idr the next available id. In this version, as opposed to before,
-it's simplified to store the -EBUSY pointer instead of the previous
-alloc + replace combination.
-
-When an index is specified, rely on rcu to find if there's an object in
-such index. If there's none, fallback to the above, serializing on the
-mutex and reserving the specified id. If there's one, it can be an -EBUSY
-pointer, in which case we just try again until it's an action, or an action.
-Given the rcu guarantees, the action found could be dead and therefore
-we need to bump the refcount if it's not 0, handling the case it's
-in fact 0.
-
-As bind and the action refcount are already atomics, these increments can
-happen without the mutex protection while many tcf_idr_check_alloc race
-to bind to the same action instance.
-
-In case binding encounters a parallel delete or add, it will return
--EAGAIN in order to try again. Both filter and action apis already
-have the retry machinery in-place. In case it's an unlocked filter it
-retries under the rtnl lock.
-
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
-Link: https://lore.kernel.org/r/20231211181807.96028-2-pctammela@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: d864319871b0 ("net/sched: act_api: fix possible infinite loop in tcf_idr_check_alloc()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 604e3548236d ("selftests/ftrace: Select an existing function in kprobe_eventname test")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_api.c | 65 ++++++++++++++++++++++++++++++---------------
- 1 file changed, 43 insertions(+), 22 deletions(-)
+ tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-index d775676956bf9..c029ffd491c1a 100644
---- a/net/sched/act_api.c
-+++ b/net/sched/act_api.c
-@@ -555,6 +555,9 @@ EXPORT_SYMBOL(tcf_idr_cleanup);
-  * its reference and bind counters, and return 1. Otherwise insert temporary
-  * error pointer (to prevent concurrent users from inserting actions with same
-  * index) and return 0.
-+ *
-+ * May return -EAGAIN for binding actions in case of a parallel add/delete on
-+ * the requested index.
-  */
+--- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc
++++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc
+@@ -31,7 +31,8 @@ find_dot_func() {
+ 	fi
  
- int tcf_idr_check_alloc(struct tc_action_net *tn, u32 *index,
-@@ -563,43 +566,61 @@ int tcf_idr_check_alloc(struct tc_action_net *tn, u32 *index,
- 	struct tcf_idrinfo *idrinfo = tn->idrinfo;
- 	struct tc_action *p;
- 	int ret;
-+	u32 max;
- 
--again:
--	mutex_lock(&idrinfo->lock);
- 	if (*index) {
-+again:
-+		rcu_read_lock();
- 		p = idr_find(&idrinfo->action_idr, *index);
-+
- 		if (IS_ERR(p)) {
- 			/* This means that another process allocated
- 			 * index but did not assign the pointer yet.
- 			 */
--			mutex_unlock(&idrinfo->lock);
-+			rcu_read_unlock();
- 			goto again;
- 		}
- 
--		if (p) {
--			refcount_inc(&p->tcfa_refcnt);
--			if (bind)
--				atomic_inc(&p->tcfa_bindcnt);
--			*a = p;
--			ret = 1;
--		} else {
--			*a = NULL;
--			ret = idr_alloc_u32(&idrinfo->action_idr, NULL, index,
--					    *index, GFP_KERNEL);
--			if (!ret)
--				idr_replace(&idrinfo->action_idr,
--					    ERR_PTR(-EBUSY), *index);
-+		if (!p) {
-+			/* Empty slot, try to allocate it */
-+			max = *index;
-+			rcu_read_unlock();
-+			goto new;
-+		}
-+
-+		if (!refcount_inc_not_zero(&p->tcfa_refcnt)) {
-+			/* Action was deleted in parallel */
-+			rcu_read_unlock();
-+			return -EAGAIN;
- 		}
-+
-+		if (bind)
-+			atomic_inc(&p->tcfa_bindcnt);
-+		*a = p;
-+
-+		rcu_read_unlock();
-+
-+		return 1;
- 	} else {
-+		/* Find a slot */
- 		*index = 1;
--		*a = NULL;
--		ret = idr_alloc_u32(&idrinfo->action_idr, NULL, index,
--				    UINT_MAX, GFP_KERNEL);
--		if (!ret)
--			idr_replace(&idrinfo->action_idr, ERR_PTR(-EBUSY),
--				    *index);
-+		max = UINT_MAX;
- 	}
-+
-+new:
-+	*a = NULL;
-+
-+	mutex_lock(&idrinfo->lock);
-+	ret = idr_alloc_u32(&idrinfo->action_idr, ERR_PTR(-EBUSY), index, max,
-+			    GFP_KERNEL);
- 	mutex_unlock(&idrinfo->lock);
-+
-+	/* N binds raced for action allocation,
-+	 * retry for all the ones that failed.
-+	 */
-+	if (ret == -ENOSPC && *index == max)
-+		ret = -EAGAIN;
-+
- 	return ret;
- }
- EXPORT_SYMBOL(tcf_idr_check_alloc);
--- 
-2.43.0
-
+ 	grep " [tT] .*\.isra\..*" /proc/kallsyms | cut -f 3 -d " " | while read f; do
+-		if grep -s $f available_filter_functions; then
++		cnt=`grep -s $f available_filter_functions | wc -l`;
++		if [ $cnt -eq 1 ]; then
+ 			echo $f
+ 			break
+ 		fi
 
 
 
