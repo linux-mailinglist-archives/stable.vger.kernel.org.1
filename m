@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-57680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9884E925D7F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 305C3925D8D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E6DE29B03D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7485C29B4A4
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453251836EE;
-	Wed,  3 Jul 2024 11:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA810185086;
+	Wed,  3 Jul 2024 11:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2UUdTZ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hh5pzRKS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01208174EC9;
-	Wed,  3 Jul 2024 11:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85D0185084;
+	Wed,  3 Jul 2024 11:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005615; cv=none; b=YgE6AGrfgBQGiNBJWEjb9MlyqwSCoeqomZ/HSYtCX2Q601OndLXZ9wvnvyBv4ZIHldn0+AGaYASH5J/aLJUoosvm3csxTNNemvbhL/tuRRwrPyL0/hxi4T1EbjmWk/tv6CXKYaeTOmIX6aCw2Ny94/1GjGTxues3HUsvFTwrwk4=
+	t=1720005629; cv=none; b=daNZg8XLJyaRyKxugTs7MNr/5XeS9Di9Nir3L84VtlMOLS3UArtiVf0wUfAzGJdQrRb3FoPePKaX3K+QeEWUTlHVnDyHeoZ1f2uqFatuvcqIIoQXMb/xeorUs5x7MU0qrPlJibxx6eVUxYpYPP9+1QvfuHYUtEJ1FOQajLgNX2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005615; c=relaxed/simple;
-	bh=dXDG4PtQvf+CXUoOaWQ72qNXdRkXAnguWDGVv/ac2NY=;
+	s=arc-20240116; t=1720005629; c=relaxed/simple;
+	bh=psqAzXUUlSMXPmTCD01YeEynih1bCzOtk4+rDakCfCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RSX5hzNmW2Ydesn0iqSHH9bXq0ZXWqth/2iCRH7pAXrUsW6LwbiBC/zeSgdwSeCaNr4J+qSFv5zlI+VzYW+kfAP/IWEnRh3w2XaZ4Q1y+R70qMPahWjIAE3Frq/hoppm+V9Inaa0qXhzhtT0vXw1dNImK/yaZ739RoHAOTY9Ri8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2UUdTZ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78B94C2BD10;
-	Wed,  3 Jul 2024 11:20:14 +0000 (UTC)
+	 MIME-Version; b=Cvkarss8JIJjqAhSCd7J89xQef8/FG9WZPDrYQVnK8NCxUAcfJMP6cD1IfULIstpYKOlP5RRNZPWkhcOy8TcuEOmCHiMlfrdv9M6VANzGxVc6YGPNEPD/jU7DLW4vHgFNjnlQgcgEuhuL98MrZYcsE80qtEPdF+SwipW6cQ6ckU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hh5pzRKS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27700C2BD10;
+	Wed,  3 Jul 2024 11:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005614;
-	bh=dXDG4PtQvf+CXUoOaWQ72qNXdRkXAnguWDGVv/ac2NY=;
+	s=korg; t=1720005629;
+	bh=psqAzXUUlSMXPmTCD01YeEynih1bCzOtk4+rDakCfCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A2UUdTZ5hGxwINnIwGt6yCBPXl5gKjy3eSPkBy7BcGnIKjUk41xDiQAZSgS1C6git
-	 qlflYW0CvJLXub+/culYJwJjXb/dHlygV3lUL2jIWJXt7Xom2QOMVc6ae19mVdr+Kr
-	 vpV3Xv9LWju2iAdTtlYTrEICdte7jwW3myxyfDsE=
+	b=Hh5pzRKS/J9wLCK4Rv4s4eKeKB7w2OJSApOvlrcwKLT8ZrbMd5QnwqcnV0vqRbP4D
+	 h8iGgF8dCM0fHasahDfDHbwRhd3/R0SFp8lQi4wUXtt9GKJuW5WRYi2IvBWqKkqG3U
+	 wv/AaSz7QybMA+ksyDPWRhI0ia103SFiCz91m4gA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
+	Marc Ferland <marc.ferland@sonatest.com>,
 	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 111/356] iio: adc: ad9467: fix scan type sign
-Date: Wed,  3 Jul 2024 12:37:27 +0200
-Message-ID: <20240703102917.299431946@linuxfoundation.org>
+Subject: [PATCH 5.15 112/356] iio: dac: ad5592r: fix temperature channel scaling value
+Date: Wed,  3 Jul 2024 12:37:28 +0200
+Message-ID: <20240703102917.335828113@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
 References: <20240703102913.093882413@linuxfoundation.org>
@@ -66,42 +66,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Marc Ferland <marc.ferland@sonatest.com>
 
-commit 8a01ef749b0a632f0e1f4ead0f08b3310d99fcb1 upstream.
+commit 279428df888319bf68f2686934897301a250bb84 upstream.
 
-According to the IIO documentation, the sign in the scan type should be
-lower case. The ad9467 driver was incorrectly using upper case.
+The scale value for the temperature channel is (assuming Vref=2.5 and
+the datasheet):
 
-Fix by changing to lower case.
+    376.7897513
 
-Fixes: 4606d0f4b05f ("iio: adc: ad9467: add support for AD9434 high-speed ADC")
-Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://lore.kernel.org/r/20240503-ad9467-fix-scan-type-sign-v1-1-c7a1a066ebb9@baylibre.com
+When calculating both val and val2 for the temperature scale we
+use (3767897513/25) and multiply it by Vref (here I assume 2500mV) to
+obtain:
+
+  2500 * (3767897513/25) ==> 376789751300
+
+Finally we divide with remainder by 10^9 to get:
+
+    val = 376
+    val2 = 789751300
+
+However, we return IIO_VAL_INT_PLUS_MICRO (should have been NANO) as
+the scale type. So when converting the raw temperature value to the
+'processed' temperature value we will get (assuming raw=810,
+offset=-753):
+
+    processed = (raw + offset) * scale_val
+              = (810 + -753) * 376
+	      = 21432
+
+    processed += div((raw + offset) * scale_val2, 10^6)
+              += div((810 + -753) * 789751300, 10^6)
+	      += 45015
+    ==> 66447
+    ==> 66.4 Celcius
+
+instead of the expected 21.5 Celsius.
+
+Fix this issue by changing IIO_VAL_INT_PLUS_MICRO to
+IIO_VAL_INT_PLUS_NANO.
+
+Fixes: 56ca9db862bf ("iio: dac: Add support for the AD5592R/AD5593R ADCs/DACs")
+Signed-off-by: Marc Ferland <marc.ferland@sonatest.com>
+Link: https://lore.kernel.org/r/20240501150554.1871390-1-marc.ferland@sonatest.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad9467.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/dac/ad5592r-base.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/ad9467.c
-+++ b/drivers/iio/adc/ad9467.c
-@@ -223,11 +223,11 @@ static void __ad9467_get_scale(struct ad
- }
+--- a/drivers/iio/dac/ad5592r-base.c
++++ b/drivers/iio/dac/ad5592r-base.c
+@@ -411,7 +411,7 @@ static int ad5592r_read_raw(struct iio_d
+ 			s64 tmp = *val * (3767897513LL / 25LL);
+ 			*val = div_s64_rem(tmp, 1000000000LL, val2);
  
- static const struct iio_chan_spec ad9434_channels[] = {
--	AD9467_CHAN(0, 0, 12, 'S'),
-+	AD9467_CHAN(0, 0, 12, 's'),
- };
+-			return IIO_VAL_INT_PLUS_MICRO;
++			return IIO_VAL_INT_PLUS_NANO;
+ 		}
  
- static const struct iio_chan_spec ad9467_channels[] = {
--	AD9467_CHAN(0, 0, 16, 'S'),
-+	AD9467_CHAN(0, 0, 16, 's'),
- };
- 
- static const struct ad9467_chip_info ad9467_chip_tbl[] = {
+ 		mutex_lock(&st->lock);
 
 
 
