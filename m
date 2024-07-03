@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-57320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E77925C09
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:14:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9226925D9B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A4951F212A3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7114A29B5C5
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB30917837D;
-	Wed,  3 Jul 2024 11:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D6B1850BD;
+	Wed,  3 Jul 2024 11:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhGIpHsv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1jWTDHN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C20178374;
-	Wed,  3 Jul 2024 11:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D720D17FAB0;
+	Wed,  3 Jul 2024 11:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004524; cv=none; b=sA98dTpnLnzF2aTQYGqxNBx3g/7oK8NcmzZ5W5hKfQXLXqe7UBfVZQx5LBqi2ekfNNDEyTsL5DwG3hbwWkEjryb+9emhIu/iAy/OZ51gjIhByg89WvPwltb6kcajp4IRyVIrzDVChlj+fvzXJ6RizF1dFp8IxydrczRtVUTkxOo=
+	t=1720005641; cv=none; b=RkwGHg7iamZtF0EZLkhHrGmckKYytZ+nITbaCvwTIpIjUY3Hkse0MwQcb3xas+BTCsLjWGzIAt0bfH1XvACd6OUSie12JfelhZcJohpqZoBNIwvNoJqQidRyju9bo0sqSfNcPBnho3Om0Qah/mDg8VSAMWuIu8MgkZujQ+le3WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004524; c=relaxed/simple;
-	bh=fXRzNoIIlD+9MPrhe/zGvblB2IDuIBfcsJ7XQC/pRPg=;
+	s=arc-20240116; t=1720005641; c=relaxed/simple;
+	bh=9mgsngXbSyBWmiOuUoRsS5GR3YI/441I/bjGUSfzo3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EUBOjtmKS2qBNLDaGfQLKq7rZ3ljcjHaR/PyAqNpe/ifilKHR47v8NNCMd2NCHvSaQF30MlR7q79xsdqMYQfXiMSnjIk4m0a69gqthqxFUdOmoQ1ZMgVv7fH4rhNP7KZ8/OaJEla6l+eMmajqf7ihwL23EWPejwAwCRIwrqYi54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhGIpHsv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA669C2BD10;
-	Wed,  3 Jul 2024 11:02:03 +0000 (UTC)
+	 MIME-Version; b=MiOQjDjLNrW3xjkcaiJLQGQ5xqanLAmuD0rOoa+KWuD0ZXAsLSZ39UiuTJs4p2AF+UeHhkBYrWyk4YIWyt5pTU4f+dJ2R5wYz1MmcDtxqxJfR99ViTb8BjXyTPeHR1K26Y7p74N3yL2Gui/JzMW3/s40tcvkir9sblrLJoJC+w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1jWTDHN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02412C2BD10;
+	Wed,  3 Jul 2024 11:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004524;
-	bh=fXRzNoIIlD+9MPrhe/zGvblB2IDuIBfcsJ7XQC/pRPg=;
+	s=korg; t=1720005641;
+	bh=9mgsngXbSyBWmiOuUoRsS5GR3YI/441I/bjGUSfzo3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RhGIpHsvEz06YKnehrtravIQkzaMUqn3zmC+UbQ2kGSH3kObQ5mJYbSzjraLEY2tw
-	 c5U+VVPlKHzkK8fsUzaI8JvXOtzGeitJFoEz9cJlWcYWAkcefFQIeekJ+4M91EoYUg
-	 5LRwILGsbLyE7McYdzfaei3BQQ4WR8zjAhqu1VzY=
+	b=f1jWTDHNN5tacYXbgh/gMB+NZv2n+qDcvL9hcWfHIzrIG5E0P22lXLwWtrPcvwOpv
+	 t2M/g0OH9QwzbRaefnv7JJHLM0CKUrLMtLPz3u5strvizP+3n0+NT4Pwi++lkvIX2v
+	 MNYtxSVPakM3J4DXTYDbAQx+75WRzTr5Z+OqYeRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 071/290] net: stmmac: replace priv->speed with the portTransmitRate from the tc-cbs parameters
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Inki Dae <inki.dae@samsung.com>
+Subject: [PATCH 5.15 116/356] drm/exynos: hdmi: report safe 640x480 mode as a fallback when no EDID found
 Date: Wed,  3 Jul 2024 12:37:32 +0200
-Message-ID: <20240703102906.881916954@linuxfoundation.org>
+Message-ID: <20240703102917.486492847@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +61,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit be27b896529787e23a35ae4befb6337ce73fcca0 ]
+commit 799d4b392417ed6889030a5b2335ccb6dcf030ab upstream.
 
-The current cbs parameter depends on speed after uplinking,
-which is not needed and will report a configuration error
-if the port is not initially connected. The UAPI exposed by
-tc-cbs requires userspace to recalculate the send slope anyway,
-because the formula depends on port_transmit_rate (see man tc-cbs),
-which is not an invariant from tc's perspective. Therefore, we
-use offload->sendslope and offload->idleslope to derive the
-original port_transmit_rate from the CBS formula.
+When reading EDID fails and driver reports no modes available, the DRM
+core adds an artificial 1024x786 mode to the connector. Unfortunately
+some variants of the Exynos HDMI (like the one in Exynos4 SoCs) are not
+able to drive such mode, so report a safe 640x480 mode instead of nothing
+in case of the EDID reading failure.
 
-Fixes: 1f705bc61aee ("net: stmmac: Add support for CBS QDISC")
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://lore.kernel.org/r/20240608143524.2065736-1-xiaolei.wang@windriver.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes the following issue observed on Trats2 board since commit
+13d5b040363c ("drm/exynos: do not return negative values from .get_modes()"):
+
+[drm] Exynos DRM: using 11c00000.fimd device for DMA mapping operations
+exynos-drm exynos-drm: bound 11c00000.fimd (ops fimd_component_ops)
+exynos-drm exynos-drm: bound 12c10000.mixer (ops mixer_component_ops)
+exynos-dsi 11c80000.dsi: [drm:samsung_dsim_host_attach] Attached s6e8aa0 device (lanes:4 bpp:24 mode-flags:0x10b)
+exynos-drm exynos-drm: bound 11c80000.dsi (ops exynos_dsi_component_ops)
+exynos-drm exynos-drm: bound 12d00000.hdmi (ops hdmi_component_ops)
+[drm] Initialized exynos 1.1.0 20180330 for exynos-drm on minor 1
+exynos-hdmi 12d00000.hdmi: [drm:hdmiphy_enable.part.0] *ERROR* PLL could not reach steady state
+panel-samsung-s6e8aa0 11c80000.dsi.0: ID: 0xa2, 0x20, 0x8c
+exynos-mixer 12c10000.mixer: timeout waiting for VSYNC
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 11 at drivers/gpu/drm/drm_atomic_helper.c:1682 drm_atomic_helper_wait_for_vblanks.part.0+0x2b0/0x2b8
+[CRTC:70:crtc-1] vblank wait timed out
+Modules linked in:
+CPU: 1 PID: 11 Comm: kworker/u16:0 Not tainted 6.9.0-rc5-next-20240424 #14913
+Hardware name: Samsung Exynos (Flattened Device Tree)
+Workqueue: events_unbound deferred_probe_work_func
+Call trace:
+ unwind_backtrace from show_stack+0x10/0x14
+ show_stack from dump_stack_lvl+0x68/0x88
+ dump_stack_lvl from __warn+0x7c/0x1c4
+ __warn from warn_slowpath_fmt+0x11c/0x1a8
+ warn_slowpath_fmt from drm_atomic_helper_wait_for_vblanks.part.0+0x2b0/0x2b8
+ drm_atomic_helper_wait_for_vblanks.part.0 from drm_atomic_helper_commit_tail_rpm+0x7c/0x8c
+ drm_atomic_helper_commit_tail_rpm from commit_tail+0x9c/0x184
+ commit_tail from drm_atomic_helper_commit+0x168/0x190
+ drm_atomic_helper_commit from drm_atomic_commit+0xb4/0xe0
+ drm_atomic_commit from drm_client_modeset_commit_atomic+0x23c/0x27c
+ drm_client_modeset_commit_atomic from drm_client_modeset_commit_locked+0x60/0x1cc
+ drm_client_modeset_commit_locked from drm_client_modeset_commit+0x24/0x40
+ drm_client_modeset_commit from __drm_fb_helper_restore_fbdev_mode_unlocked+0x9c/0xc4
+ __drm_fb_helper_restore_fbdev_mode_unlocked from drm_fb_helper_set_par+0x2c/0x3c
+ drm_fb_helper_set_par from fbcon_init+0x3d8/0x550
+ fbcon_init from visual_init+0xc0/0x108
+ visual_init from do_bind_con_driver+0x1b8/0x3a4
+ do_bind_con_driver from do_take_over_console+0x140/0x1ec
+ do_take_over_console from do_fbcon_takeover+0x70/0xd0
+ do_fbcon_takeover from fbcon_fb_registered+0x19c/0x1ac
+ fbcon_fb_registered from register_framebuffer+0x190/0x21c
+ register_framebuffer from __drm_fb_helper_initial_config_and_unlock+0x350/0x574
+ __drm_fb_helper_initial_config_and_unlock from exynos_drm_fbdev_client_hotplug+0x6c/0xb0
+ exynos_drm_fbdev_client_hotplug from drm_client_register+0x58/0x94
+ drm_client_register from exynos_drm_bind+0x160/0x190
+ exynos_drm_bind from try_to_bring_up_aggregate_device+0x200/0x2d8
+ try_to_bring_up_aggregate_device from __component_add+0xb0/0x170
+ __component_add from mixer_probe+0x74/0xcc
+ mixer_probe from platform_probe+0x5c/0xb8
+ platform_probe from really_probe+0xe0/0x3d8
+ really_probe from __driver_probe_device+0x9c/0x1e4
+ __driver_probe_device from driver_probe_device+0x30/0xc0
+ driver_probe_device from __device_attach_driver+0xa8/0x120
+ __device_attach_driver from bus_for_each_drv+0x80/0xcc
+ bus_for_each_drv from __device_attach+0xac/0x1fc
+ __device_attach from bus_probe_device+0x8c/0x90
+ bus_probe_device from deferred_probe_work_func+0x98/0xe0
+ deferred_probe_work_func from process_one_work+0x240/0x6d0
+ process_one_work from worker_thread+0x1a0/0x3f4
+ worker_thread from kthread+0x104/0x138
+ kthread from ret_from_fork+0x14/0x28
+Exception stack(0xf0895fb0 to 0xf0895ff8)
+...
+irq event stamp: 82357
+hardirqs last  enabled at (82363): [<c01a96e8>] vprintk_emit+0x308/0x33c
+hardirqs last disabled at (82368): [<c01a969c>] vprintk_emit+0x2bc/0x33c
+softirqs last  enabled at (81614): [<c0101644>] __do_softirq+0x320/0x500
+softirqs last disabled at (81609): [<c012dfe0>] __irq_exit_rcu+0x130/0x184
+---[ end trace 0000000000000000 ]---
+exynos-drm exynos-drm: [drm] *ERROR* flip_done timed out
+exynos-drm exynos-drm: [drm] *ERROR* [CRTC:70:crtc-1] commit wait timed out
+exynos-drm exynos-drm: [drm] *ERROR* flip_done timed out
+exynos-drm exynos-drm: [drm] *ERROR* [CONNECTOR:74:HDMI-A-1] commit wait timed out
+exynos-drm exynos-drm: [drm] *ERROR* flip_done timed out
+exynos-drm exynos-drm: [drm] *ERROR* [PLANE:56:plane-5] commit wait timed out
+exynos-mixer 12c10000.mixer: timeout waiting for VSYNC
+
+Cc: stable@vger.kernel.org
+Fixes: 13d5b040363c ("drm/exynos: do not return negative values from .get_modes()")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 25 ++++++++-----------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/exynos/exynos_hdmi.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-index 43165c662740d..6b93a7614ad98 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -310,10 +310,11 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
- 			struct tc_cbs_qopt_offload *qopt)
- {
- 	u32 tx_queues_count = priv->plat->tx_queues_to_use;
-+	s64 port_transmit_rate_kbps;
- 	u32 queue = qopt->queue;
--	u32 ptr, speed_div;
- 	u32 mode_to_use;
- 	u64 value;
-+	u32 ptr;
+--- a/drivers/gpu/drm/exynos/exynos_hdmi.c
++++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
+@@ -887,11 +887,11 @@ static int hdmi_get_modes(struct drm_con
  	int ret;
  
- 	/* Queue 0 is not AVB capable */
-@@ -322,30 +323,26 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
- 	if (!priv->dma_cap.av)
- 		return -EOPNOTSUPP;
+ 	if (!hdata->ddc_adpt)
+-		return 0;
++		goto no_edid;
  
-+	port_transmit_rate_kbps = qopt->idleslope - qopt->sendslope;
+ 	edid = drm_get_edid(connector, hdata->ddc_adpt);
+ 	if (!edid)
+-		return 0;
++		goto no_edid;
+ 
+ 	hdata->dvi_mode = !drm_detect_hdmi_monitor(edid);
+ 	DRM_DEV_DEBUG_KMS(hdata->dev, "%s : width[%d] x height[%d]\n",
+@@ -906,6 +906,9 @@ static int hdmi_get_modes(struct drm_con
+ 	kfree(edid);
+ 
+ 	return ret;
 +
- 	/* Port Transmit Rate and Speed Divider */
--	switch (priv->speed) {
-+	switch (div_s64(port_transmit_rate_kbps, 1000)) {
- 	case SPEED_10000:
--		ptr = 32;
--		speed_div = 10000000;
--		break;
- 	case SPEED_5000:
- 		ptr = 32;
--		speed_div = 5000000;
- 		break;
- 	case SPEED_2500:
--		ptr = 8;
--		speed_div = 2500000;
--		break;
- 	case SPEED_1000:
- 		ptr = 8;
--		speed_div = 1000000;
- 		break;
- 	case SPEED_100:
- 		ptr = 4;
--		speed_div = 100000;
- 		break;
- 	default:
--		return -EOPNOTSUPP;
-+		netdev_err(priv->dev,
-+			   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
-+			   port_transmit_rate_kbps);
-+		return -EINVAL;
- 	}
++no_edid:
++	return drm_add_modes_noedid(connector, 640, 480);
+ }
  
- 	mode_to_use = priv->plat->tx_queues_cfg[queue].mode_to_use;
-@@ -365,10 +362,10 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
- 	}
- 
- 	/* Final adjustments for HW */
--	value = div_s64(qopt->idleslope * 1024ll * ptr, speed_div);
-+	value = div_s64(qopt->idleslope * 1024ll * ptr, port_transmit_rate_kbps);
- 	priv->plat->tx_queues_cfg[queue].idle_slope = value & GENMASK(31, 0);
- 
--	value = div_s64(-qopt->sendslope * 1024ll * ptr, speed_div);
-+	value = div_s64(-qopt->sendslope * 1024ll * ptr, port_transmit_rate_kbps);
- 	priv->plat->tx_queues_cfg[queue].send_slope = value & GENMASK(31, 0);
- 
- 	value = qopt->hicredit * 1024ll * 8;
--- 
-2.43.0
-
+ static int hdmi_find_phy_conf(struct hdmi_context *hdata, u32 pixel_clock)
 
 
 
