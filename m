@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-57779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED4A925E1B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:34:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8E88925A1C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:54:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1645B29935C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:33:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 285861C25EDA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 114EA176AAF;
-	Wed,  3 Jul 2024 11:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A81B183094;
+	Wed,  3 Jul 2024 10:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uORBpy5G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjloaYP2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C325413D61B;
-	Wed,  3 Jul 2024 11:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56EF07CF1F;
+	Wed,  3 Jul 2024 10:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005908; cv=none; b=l8qqJG89Qx5R0sPeRpqpgdeaxmkZq5k6Q+a0QWzMdIerqw+FpEDnhYUUk978YpS2/rjUdDMbR4oSmOXPaYcwZ6fb4/crJmjM+yjS6tXjvcXeEqiz7PE+JiLbRIbXeqfdepqpZwZlX4ZS4Iyr7zx2BbcjGF2BkOpgn6E5T8kyx5A=
+	t=1720003523; cv=none; b=TuT1yno1Fy3GedrCJ9+GkM2TnLbFgj3OIdErpuL/0493RCuVFXZxMcKVMRe8FUFnkGcNq5YK+NHDQDyu6Orc6lYGG7Jbr6xnMzGGuFy9dL1oLt9n4pXMQVH+tutt0W41btSE86+2Aftma8j0X20TPWUAhHYy8WHa7P2FkvqWqyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005908; c=relaxed/simple;
-	bh=JYdOM3qKS0qio1H7P4n8EQads23bxxspKfKPP8xdi7o=;
+	s=arc-20240116; t=1720003523; c=relaxed/simple;
+	bh=u2u7dfnug24IIKK5MpmOTH+mq0ivvqQpKHMx7U1NuQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e9ZhDKq4mVigB7z6J9T/ysWmTVh8j/YCtCHKuAkcj1wQ7TY8NKfo2ZQpUDZmPezoPx+DTNs3YQOgv2U4eXR7O+PTSz1xcUepBNY7faQWQPg/C4+pq27JQceRYl6c8i+ldJU+/e+xsZWPVhgtLQBepPZbHiabODqAWLPKzCp0VLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uORBpy5G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4571AC2BD10;
-	Wed,  3 Jul 2024 11:25:08 +0000 (UTC)
+	 MIME-Version; b=nyuWKB17amQ0n0wSMrOSNt1ODM+5rAR2v3i0qXV/Hd1gXdYE0HrnCqaqSogZ9t8zoieuFOSAVTPoZY7Z1bKWKC3XsKvpnqnBQ+Pupv0Eh4wplji5qBi1AhVq3UsB1sWQUnBXpQ8hSHEht+7ibZmBQfuYqL1fwT6HyTyvUUT4eAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjloaYP2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A6FC32781;
+	Wed,  3 Jul 2024 10:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005908;
-	bh=JYdOM3qKS0qio1H7P4n8EQads23bxxspKfKPP8xdi7o=;
+	s=korg; t=1720003523;
+	bh=u2u7dfnug24IIKK5MpmOTH+mq0ivvqQpKHMx7U1NuQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uORBpy5Gey2jhMgvSy3r0WLKGEn4qkvyOXoNg+hiGuXE8QXLojOj1xU2RowVS8PFm
-	 hr7QePJFXzGHvGA0JdwfOb+/v8w60g0LOwmpIY5aYLLJe5y0034DxXMJGDzhJWJsyI
-	 02ZF0V86FUIXwRpSrUfpFuHEB3G+q3br4pKwZdwY=
+	b=GjloaYP2ZOZV+780SGOGWA4z3sN73mHfonH5I+XZYTigE2KKSj/8quDgKNhwy0STm
+	 pViaN1Ji93W0q2OVrrWHT7rDXqPm2P8IqlJFOAmZfO3Jgw/7zpIVr2ke8ubE89F78U
+	 e38zPnRjkQ/lU/Eh25Tsn0OTo3JxbXhCCqbInMaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com,
+	Oliver Neukum <oneukum@suse.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 236/356] ARM: dts: samsung: smdk4412: fix keypad no-autorepeat
-Date: Wed,  3 Jul 2024 12:39:32 +0200
-Message-ID: <20240703102922.043664820@linuxfoundation.org>
+Subject: [PATCH 4.19 076/139] net: usb: rtl8150 fix unintiatilzed variables in rtl8150_get_link_ksettings
+Date: Wed,  3 Jul 2024 12:39:33 +0200
+Message-ID: <20240703102833.310932379@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 4ac4c1d794e7ff454d191bbdab7585ed8dbf3758 ]
+[ Upstream commit fba383985354e83474f95f36d7c65feb75dba19d ]
 
-Although the Samsung SoC keypad binding defined
-linux,keypad-no-autorepeat property, Linux driver never implemented it
-and always used linux,input-no-autorepeat.  Correct the DTS to use
-property actually implemented.
+This functions retrieves values by passing a pointer. As the function
+that retrieves them can fail before touching the pointers, the variables
+must be initialized.
 
-This also fixes dtbs_check errors like:
-
-  exynos4412-smdk4412.dtb: keypad@100a0000: 'key-A', 'key-B', 'key-C', 'key-D', 'key-E', 'linux,keypad-no-autorepeat' do not match any of the regexes: '^key-[0-9a-z]+$', 'pinctrl-[0-9]+'
-
-Cc: <stable@vger.kernel.org>
-Fixes: c9b92dd70107 ("ARM: dts: Add keypad entries to SMDK4412")
-Link: https://lore.kernel.org/r/20240312183105.715735-3-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20240619132816.11526-1-oneukum@suse.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/exynos4412-smdk4412.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/rtl8150.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/exynos4412-smdk4412.dts b/arch/arm/boot/dts/exynos4412-smdk4412.dts
-index cc99b955af0c8..deebed6ea0031 100644
---- a/arch/arm/boot/dts/exynos4412-smdk4412.dts
-+++ b/arch/arm/boot/dts/exynos4412-smdk4412.dts
-@@ -65,7 +65,7 @@
- &keypad {
- 	samsung,keypad-num-rows = <3>;
- 	samsung,keypad-num-columns = <8>;
--	linux,keypad-no-autorepeat;
-+	linux,input-no-autorepeat;
- 	wakeup-source;
- 	pinctrl-0 = <&keypad_rows &keypad_cols>;
- 	pinctrl-names = "default";
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index 933d1a74bcdb3..9534c2f6dcef6 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -804,7 +804,8 @@ static int rtl8150_get_link_ksettings(struct net_device *netdev,
+ 				      struct ethtool_link_ksettings *ecmd)
+ {
+ 	rtl8150_t *dev = netdev_priv(netdev);
+-	short lpa, bmcr;
++	short lpa = 0;
++	short bmcr = 0;
+ 	u32 supported;
+ 
+ 	supported = (SUPPORTED_10baseT_Half |
 -- 
 2.43.0
 
