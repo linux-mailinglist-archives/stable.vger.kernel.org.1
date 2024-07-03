@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-57681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC488925D7B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA6E925C35
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6273D1F25983
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6936E1F21102
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360291836DA;
-	Wed,  3 Jul 2024 11:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A6D17C221;
+	Wed,  3 Jul 2024 11:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W21KIGw0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xf2fI4Am"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E851313B2AC;
-	Wed,  3 Jul 2024 11:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D3713B280;
+	Wed,  3 Jul 2024 11:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005618; cv=none; b=ldy7OEb734RCT+OCOHYJljL09r2ojWKc/b5Ep6K7topbTJSi2JCQHVqIII2Ksp12aoNCkrB6NYRFcjGWECn9aThHsFjyciOIuO6MC03k2zDh+9QZKea5UC+1urmHsVzVZ9lzuBILE8iexU5i/P9gKcZ220M1/BlAZkjEwhKphyc=
+	t=1720004688; cv=none; b=SuZd3AhWskSA29Hdvr9Cqo+Cz7Qw3eLvhj5r8zapwqYQcHFHhvzMgR/iul5pDAXmecYkeDX39LrXl6qhddr3VB9KtZF03MIVLk4/ol7MumoWe8jaxFyEjk2zcnvHRzTS+/ufWC0s3fo/qbY4WTud3TVWRI6s3xTMfHytSpbg4lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005618; c=relaxed/simple;
-	bh=OUVV2tRxT6jEq5XvwVq+rDMc0clEeHpkSk25UnvSb2A=;
+	s=arc-20240116; t=1720004688; c=relaxed/simple;
+	bh=1JlTW75juxLUMM/E89eVE3I0ZqUyAFlflA3sTA45y3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DGZH9e7jAPn35O9ISi1sLICbN/hA5BXsnR/3wcCAxamseJtC5zhVFaVPsoGR/k9wbNvMpzFTwW1cPnv97phWZqZJOpAVryX9heszkRc0zHhAoIz0PrfZcTw8MlxmZxoo0LIeErfhlcXmJhuPl5PtpXlsEKkMOB9BL3LJgQCKkIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W21KIGw0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64998C2BD10;
-	Wed,  3 Jul 2024 11:20:17 +0000 (UTC)
+	 MIME-Version; b=dnqbb1mEe6jmP3h83QioII5M4jPAC3bQKw9sUn1XILICGr/EejoBc8Zcg3sve6ZAJdMcpwDvPpu+SrXKA6zjbVR6sd92aWI70lz473QFrnYgnKDHTZrhYxE4ZTZhbwcHbUwJO0HMfqbYkHYYcRAJwv8ILpRVY93rBmzyysFr998=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xf2fI4Am; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9E1C32781;
+	Wed,  3 Jul 2024 11:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005617;
-	bh=OUVV2tRxT6jEq5XvwVq+rDMc0clEeHpkSk25UnvSb2A=;
+	s=korg; t=1720004687;
+	bh=1JlTW75juxLUMM/E89eVE3I0ZqUyAFlflA3sTA45y3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W21KIGw03h0PI7ndIOKZ8ePHL8okQzjEmdzUHHaVOo36oDdHFhWBV9gWuKa2RoIZi
-	 M8Ezk4nABfWCQc+jyjrFjZFnNkz6EC/GJfK7xL/Jzc0DZ8jBk32LzNNIHZF3y54c4C
-	 deQcn97YL6TKz0M9mQifJ4fj/2w2YdnkQY5bkIMY=
+	b=Xf2fI4AmpvTSozk2wvpc1IJusOe6Whyz16TVA1PF8w6mrixUVUl0RsjFFmm1KvOZA
+	 9EtjunTbFPYyXJRC4giyTb4DlVzir2iBJiOleEzE3BU0PPYGlwqf/fuFkkbScM6cOj
+	 TpVuJj33AQG9j82PVvla//VFLKdTKfGHmdCqWbJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Doug Brown <doug@schmorgal.com>,
 	stable <stable@kernel.org>
-Subject: [PATCH 5.15 138/356] serial: 8250_pxa: Configure tx_loadsz to match FIFO IRQ level
-Date: Wed,  3 Jul 2024 12:37:54 +0200
-Message-ID: <20240703102918.322235889@linuxfoundation.org>
+Subject: [PATCH 5.10 094/290] serial: 8250_pxa: Configure tx_loadsz to match FIFO IRQ level
+Date: Wed,  3 Jul 2024 12:37:55 +0200
+Message-ID: <20240703102907.739885258@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
