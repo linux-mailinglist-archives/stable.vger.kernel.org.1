@@ -1,107 +1,176 @@
-Return-Path: <stable+bounces-57922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E864926161
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 15:04:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8BE29261B3
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 15:21:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8E3D1C20E30
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:04:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18186B238B2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE79E178367;
-	Wed,  3 Jul 2024 13:04:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W8bMvv4G"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111AC178CEA;
+	Wed,  3 Jul 2024 13:20:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04137136986;
-	Wed,  3 Jul 2024 13:04:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B581428F8;
+	Wed,  3 Jul 2024 13:20:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720011869; cv=none; b=h82V59a5GN/6+sRGqhMnl6TnBoPnZhPMJhLO2cIMX8qVQxbBpW/5DaTv5Ae6/j40fiTOW17SMzd0QtQy2j7/8cU5lIrJNksOSLM/EP5Z9XSUDCtGTonIk3yjb2DRL9JWSINxOFo2uYMtNhTGGfy1dABrhYtFKIltKeXOQ5ncGNQ=
+	t=1720012824; cv=none; b=XqW8HIXAxsp2tKp4psjW7Pqs3eLWdM4dqTIayOhVji5Iw7G7jjwkjG8B6ZektTD134cvSFtJbcWVaJslUXAeMU4D4v3iNq49ljNKxYmXBQHS5pR64ozEItsnV67mYsV8/VknsHo8g752szVeAK4er8hFC1Kawdk/RdRzRBUw0Ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720011869; c=relaxed/simple;
-	bh=oatb/h0wiAkJxZ0BcqIZuCcpxjldh9yKP555vVf00uI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WlS5vovUcpkUTqZo3ZBjV+ObVfhreFxgm/C1k/4Ywjw1A63c39Badw6mxzv3Dz/jFplRmIoxcCMtCQRRWyLZrpnQHC5RVxRBDq51i8hZ1mYA4l5qTt1ftqPw89ANO79pl6DCbmmcdWm9SjzNHLiJLioOejoA6c7pa8RBSA4o3QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W8bMvv4G; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720011868; x=1751547868;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=oatb/h0wiAkJxZ0BcqIZuCcpxjldh9yKP555vVf00uI=;
-  b=W8bMvv4GtxYvco+H3E4IG+VS4oJ9Mi9o5hqcjJ4tjtrCkd0lzFidpH7A
-   8ChxRTAduxpQ6UDzsm3gsujeAKxyj0JbK5gAwegDbFFYQjAGXZK8BM/jt
-   8BodI7oaS9UY01/sD86hm05pM9mE2xpPDhLEg9Ue2b3QY1fExjQon+Bv3
-   yiFRUIPxd4jzdssHx60S+Ahm7Dk6DLuC6bFvWWSDSjXkBcGGpFEwi6ugl
-   SIbZdxLQgCAnOw3a3ro7FjCS2j4pSjJ6NsvVQJVC18I7RrYc4ikYoPULU
-   SbdA++VR4HuCeqox8+najKc4b3H5gelw3P7hXNxj/FBkC99NIyUVS+K+X
-   w==;
-X-CSE-ConnectionGUID: UekKHiaHRiWEkk+6hfq6nw==
-X-CSE-MsgGUID: kiA0hPb8TNC5b98xN9/CyA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="27855320"
-X-IronPort-AV: E=Sophos;i="6.09,182,1716274800"; 
-   d="scan'208";a="27855320"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2024 06:04:26 -0700
-X-CSE-ConnectionGUID: jWlEzqgwRcO16/X/cv05kw==
-X-CSE-MsgGUID: CQBcOgWnQb6uiJtQhpQfTQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,182,1716274800"; 
-   d="scan'208";a="50557465"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa003.fm.intel.com with ESMTP; 03 Jul 2024 06:04:24 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 0FFE2194; Wed, 03 Jul 2024 16:04:22 +0300 (EEST)
-Date: Wed, 3 Jul 2024 16:04:22 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCHv5 3/4] x86/tdx: Dynamically disable SEPT violations from
- causing #VEs
-Message-ID: <oujihwk2ghwpobsuivxlgflalwxigctjp6nld2jdtz4cbwoqnp@7v3s7ap4ul6u>
-References: <20240624114149.377492-1-kirill.shutemov@linux.intel.com>
- <20240624114149.377492-4-kirill.shutemov@linux.intel.com>
- <05d0b24a-2e21-48c0-85b7-a9dd935ac449@suse.com>
+	s=arc-20240116; t=1720012824; c=relaxed/simple;
+	bh=nrYBlQVDY4wdv3cIojmtcgZBo6zZUA17TcFzzDUqcnI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bRrIpo0DAWZQd24b0o+lyzX18u6As9Uf2SwR/w3vseUVzFvPLXaA+uyg1edlG53d41pc4dheXVZIpKsYSZra/YU1jVI2Z7yTBbAtMpJaPtXsn1py6tMyU7qZOC9CO/iICt1zHNvcf12pWwM2kwy8oQKV16zapKoOf7350231dZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4135C367;
+	Wed,  3 Jul 2024 06:20:46 -0700 (PDT)
+Received: from [10.1.37.29] (e122027.cambridge.arm.com [10.1.37.29])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AA2C93F762;
+	Wed,  3 Jul 2024 06:20:18 -0700 (PDT)
+Message-ID: <e42a55ba-cbb5-47a4-bec6-9c3067040970@arm.com>
+Date: Wed, 3 Jul 2024 14:20:16 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <05d0b24a-2e21-48c0-85b7-a9dd935ac449@suse.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/panfrost: Mark simple_ondemand governor as softdep
+To: Dragan Simic <dsimic@manjaro.org>, dri-devel@lists.freedesktop.org
+Cc: boris.brezillon@collabora.com, robh@kernel.org,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ airlied@gmail.com, daniel@ffwll.ch, linux-kernel@vger.kernel.org,
+ Diederik de Haas <didi.debian@cknow.org>,
+ Furkan Kardame <f.kardame@manjaro.org>, stable@vger.kernel.org
+References: <4e1e00422a14db4e2a80870afb704405da16fd1b.1718655077.git.dsimic@manjaro.org>
+ <f672e7460c92bc9e0c195804f7e99d0b@manjaro.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <f672e7460c92bc9e0c195804f7e99d0b@manjaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 03, 2024 at 02:39:09PM +0300, Nikolay Borisov wrote:
-> > diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-> > index 7e12cfa28bec..fecb2a6e864b 100644
-> > --- a/arch/x86/include/asm/shared/tdx.h
-> > +++ b/arch/x86/include/asm/shared/tdx.h
-> > @@ -19,9 +19,17 @@
-> >   #define TDG_VM_RD			7
-> >   #define TDG_VM_WR			8
-> > -/* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
-> > +/* TDX TD-Scope Metadata. To be used by TDG.VM.WR and TDG.VM.RD */
-> > +#define TDCS_CONFIG_FLAGS		0x1110000300000016
-> 0x9110000300000016
-> > +#define TDCS_TD_CTLS			0x1110000300000017
-> 0x9110000300000017
+On 03/07/2024 13:42, Dragan Simic wrote:
+> Hello everyone,
+> 
+> On 2024-06-17 22:17, Dragan Simic wrote:
+>> Panfrost DRM driver uses devfreq to perform DVFS, while using
+>> simple_ondemand
+>> devfreq governor by default.  This causes driver initialization to
+>> fail on
+>> boot when simple_ondemand governor isn't built into the kernel
+>> statically,
+>> as a result of the missing module dependency and, consequently, the
+>> required
+>> governor module not being included in the initial ramdisk.  Thus,
+>> let's mark
+>> simple_ondemand governor as a softdep for Panfrost, to have its kernel
+>> module
+>> included in the initial ramdisk.
+>>
+>> This is a rather longstanding issue that has forced distributions to
+>> build
+>> devfreq governors statically into their kernels, [1][2] or has forced
+>> users
+>> to introduce some unnecessary workarounds. [3]
+>>
+>> For future reference, not having support for the simple_ondemand
+>> governor in
+>> the initial ramdisk produces errors in the kernel log similar to these
+>> below,
+>> which were taken from a Pine64 RockPro64:
+>>
+>>   panfrost ff9a0000.gpu: [drm:panfrost_devfreq_init [panfrost]]
+>> *ERROR* Couldn't initialize GPU devfreq
+>>   panfrost ff9a0000.gpu: Fatal error during GPU init
+>>   panfrost: probe of ff9a0000.gpu failed with error -22
+>>
+>> Having simple_ondemand marked as a softdep for Panfrost may not
+>> resolve this
+>> issue for all Linux distributions.  In particular, it will remain
+>> unresolved
+>> for the distributions whose utilities for the initial ramdisk
+>> generation do
+>> not handle the available softdep information [4] properly yet. 
+>> However, some
+>> Linux distributions already handle softdeps properly while generating
+>> their
+>> initial ramdisks, [5] and this is a prerequisite step in the right
+>> direction
+>> for the distributions that don't handle them properly yet.
+>>
+>> [1]
+>> https://gitlab.manjaro.org/manjaro-arm/packages/core/linux/-/blob/linux61/config?ref_type=heads#L8180
+>> [2] https://salsa.debian.org/kernel-team/linux/-/merge_requests/1066
+>> [3] https://forum.pine64.org/showthread.php?tid=15458
+>> [4]
+>> https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git/commit/?id=49d8e0b59052999de577ab732b719cfbeb89504d
+>> [5]
+>> https://github.com/archlinux/mkinitcpio/commit/97ac4d37aae084a050be512f6d8f4489054668ad
+>>
+>> Cc: Diederik de Haas <didi.debian@cknow.org>
+>> Cc: Furkan Kardame <f.kardame@manjaro.org>
+>> Cc: stable@vger.kernel.org
+>> Fixes: f3ba91228e8e ("drm/panfrost: Add initial panfrost driver")
+>> Signed-off-by: Dragan Simic <dsimic@manjaro.org>
 
-Setting bit 63 in these field id is regression in new TDX spec and TDX
-module. It is going to be fixed in next version. Both versions of field
-ids are going to be valid.
+Reviewed-by: Steven Price <steven.price@arm.com>
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> 
+> Just checking, could this patch be accepted, please?  The Lima counterpart
+> has already been accepted. [6]
+
+Thanks for the prod - I have to admit I saw there was discussion about
+the Lima patch and so just put this on my list to look again later after
+the discussion had reached a conclusion.
+
+> The approach in this patch is far from perfect, but it's still fine until
+> there's a better solution, such as harddeps.  I'll continue my research
+> about the possibility for introducing harddeps, which would hopefully
+> replace quite a few instances of the softdep (ab)use that already extend
+> rather far.  For example, have a look at the commit d5178578bcd4 (btrfs:
+> directly call into crypto framework for checksumming) [7] and the lines
+> containing MODULE_SOFTDEP() at the very end of fs/btrfs/super.c. [8]
+
+I agree - it's not perfect, but it's the best we have for now. I hope
+sometime we'll have a cleaner solution to express dependencies like this
+(good luck! ;) ).
+
+Thanks,
+
+Steve
+
+> If a filesystem driver can rely on the (ab)use of softdeps, which may be
+> fragile or seen as a bit wrong, I think we can follow the same approach,
+> at least until a better solution is available.
+> 
+> [6]
+> https://cgit.freedesktop.org/drm/drm-misc/commit/?id=0c94f58cef319ad054fd909b3bf4b7d09c03e11c
+> [7]
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d5178578bcd4
+> [8]
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/btrfs/super.c#n2593
+> 
+>> ---
+>>  drivers/gpu/drm/panfrost/panfrost_drv.c | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.c
+>> b/drivers/gpu/drm/panfrost/panfrost_drv.c
+>> index ef9f6c0716d5..149737d7a07e 100644
+>> --- a/drivers/gpu/drm/panfrost/panfrost_drv.c
+>> +++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
+>> @@ -828,3 +828,4 @@ module_platform_driver(panfrost_driver);
+>>  MODULE_AUTHOR("Panfrost Project Developers");
+>>  MODULE_DESCRIPTION("Panfrost DRM Driver");
+>>  MODULE_LICENSE("GPL v2");
+>> +MODULE_SOFTDEP("pre: governor_simpleondemand");
+
 
