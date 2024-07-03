@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-56965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD57C925A3C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:55:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E04925DE6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA896295332
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6DE6B280AC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE51181B88;
-	Wed,  3 Jul 2024 10:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB53194A57;
+	Wed,  3 Jul 2024 11:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGCCNrER"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZMm3HCy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF5A173335;
-	Wed,  3 Jul 2024 10:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1770718C35D;
+	Wed,  3 Jul 2024 11:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003426; cv=none; b=IiQ5YwTs8Gha5qhmKygELjZvxxIHg3ceVUxKRQrQAf+xOaFQ77/hN5RcCkIJ5yFXXCN+R8Z9lm5h5Sb7rfJeNjKydl1U0GwTTsDIyq+8r2AHMS1n/oX3HSKp+6MbLrlEMZDhuGDnkYw8q+5A9oafuqEoVX5U08gQ+cwZ2jgbzfM=
+	t=1720005820; cv=none; b=mhAqPLs37Wn1IYofye9mpvNDF8zINmNGDz8ev4SonjxQWl33zU8PgRWoV02Fta0dQv9KOPhdnq+dcW0lzsS80cvqkSip0MLLTaSUgQfaL0JH9bo1DuwGV7iEr409y0KS/Dc+R7R+K2MgFc5zlwHTWJ1rVH0DhPZKHaYFMwgrEwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003426; c=relaxed/simple;
-	bh=/ZgZ23+gazvAgVM6GfrWauAWPuGTzO6E9ixpbR+6La4=;
+	s=arc-20240116; t=1720005820; c=relaxed/simple;
+	bh=MKX4Lv0MXlZEPjLFYMh3gBkhQ75SR4PQdNq9v5KFfMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uZ2NYHW54TWsv6zpX/utQX2jbBwJxpGeHPkSgEBotwT8nTx+YAQv4BcdtYm5KoZcic0HSPNkr1l3zmYHkuYHEete5a9ZnYv1fMbWMPwOxz9CxDQhTOpyEnOPE7t836fosxVQFdSST++30SU3Mvpa3pe5cHPL4sFqASS1/+Daf5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGCCNrER; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D11C32781;
-	Wed,  3 Jul 2024 10:43:45 +0000 (UTC)
+	 MIME-Version; b=bSMZVTtt5pKwRbS7Z4FbKr3sHfoBCCXnoKWWHxQmcH4rqWgFaF48nKrgRI14SL0+axsk+mWgg8Sm1dCQbYFvi2Qlb9y47Tj36EZidmnSvO5dnVzN+F9IAIvp6IDdo+uWeafB4Ld4/4JA0sb/a+GlEyXCBFQ2saCbMSrE55B5iuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZMm3HCy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A74C2BD10;
+	Wed,  3 Jul 2024 11:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003426;
-	bh=/ZgZ23+gazvAgVM6GfrWauAWPuGTzO6E9ixpbR+6La4=;
+	s=korg; t=1720005820;
+	bh=MKX4Lv0MXlZEPjLFYMh3gBkhQ75SR4PQdNq9v5KFfMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MGCCNrERPCqiHAX6KmwE1qKPq9OpE5qxHVYdUBzVCi8KvqG2ThYAL5FFlntm4fgoi
-	 dVqHlXn6bqfL+xq9aIsmUCjekIl/ufF/F6SqvuV/jSqsoKnRKD1yqZcBZXYoM9DBc4
-	 IXsAogNfsOfYO19mQg1QsaK4zg5mmHJ0E0r1HXX4=
+	b=kZMm3HCyfB5EZvIG4iV6OKXyqehmsnAXarNLcsn/XvUuhkv+OEQblPMwK1jwTCmfZ
+	 SdbFPnzp9a/o9CACU4keokwcf35Cn3SjpKMK8tagU8MJ/Bu49ClkjsYNXyXsXxGqO8
+	 wAqJWp/cbAxIFXlBln1vwGfo8BZjMr+p91LjaiK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jani Nikula <jani.nikula@intel.com>,
-	Inki Dae <inki.dae@samsung.com>
-Subject: [PATCH 4.19 045/139] drm/exynos/vidi: fix memory leak in .get_modes()
+	kernel test robot <lkp@intel.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 206/356] regulator: core: Fix modpost error "regulator_get_regmap" undefined
 Date: Wed,  3 Jul 2024 12:39:02 +0200
-Message-ID: <20240703102832.139374767@linuxfoundation.org>
+Message-ID: <20240703102920.899892904@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit 38e3825631b1f314b21e3ade00b5a4d737eb054e upstream.
+[ Upstream commit 3f60497c658d2072714d097a177612d34b34aa3d ]
 
-The duplicated EDID is never freed. Fix it.
+Fix the modpost error "regulator_get_regmap" undefined by adding export
+symbol.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 04eca28cde52 ("regulator: Add helpers for low-level register access")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202406110117.mk5UR3VZ-lkp@intel.com
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://lore.kernel.org/r/20240610195532.175942-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_vidi.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/regulator/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-@@ -302,6 +302,7 @@ static int vidi_get_modes(struct drm_con
- 	struct vidi_context *ctx = ctx_from_connector(connector);
- 	struct edid *edid;
- 	int edid_len;
-+	int count;
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index d6febb9ec60d9..879f4a77e91db 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -3297,6 +3297,7 @@ struct regmap *regulator_get_regmap(struct regulator *regulator)
  
- 	/*
- 	 * the edid data comes from user side and it would be set
-@@ -321,7 +322,11 @@ static int vidi_get_modes(struct drm_con
- 
- 	drm_connector_update_edid_property(connector, edid);
- 
--	return drm_add_edid_modes(connector, edid);
-+	count = drm_add_edid_modes(connector, edid);
-+
-+	kfree(edid);
-+
-+	return count;
+ 	return map ? map : ERR_PTR(-EOPNOTSUPP);
  }
++EXPORT_SYMBOL_GPL(regulator_get_regmap);
  
- static const struct drm_connector_helper_funcs vidi_connector_helper_funcs = {
+ /**
+  * regulator_get_hardware_vsel_register - get the HW voltage selector register
+-- 
+2.43.0
+
 
 
 
