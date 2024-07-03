@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-57161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC32E925B2C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F21925A0B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:53:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFE69285AC6
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:05:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C58241C249E2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA56181B96;
-	Wed,  3 Jul 2024 10:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD991822D7;
+	Wed,  3 Jul 2024 10:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMhEKcMI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4GC/6nk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E181E173336;
-	Wed,  3 Jul 2024 10:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD08C1822CB;
+	Wed,  3 Jul 2024 10:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004033; cv=none; b=LGQsbme2u8h1m7cBh7a3T0TwCZdlZ6TLpSNX0GoXhggxQn4JyRWggjHKIukRZTCTp+9HmDANOf571VkBhRatYtZUUj8JClXIZ7C7DoOz47BUMoRnUjO+OE5lc6fBsCxwTfwDOjLMEzeFsk1NLwqGifigMEcHB716XWkarQ7SNK8=
+	t=1720003490; cv=none; b=QK59Ld42WQvZmJveZBj3E6RRREsgXudR8AOD1QG7ROWyCazEuz1lLRbIpvuingejs2pEyyj75sk4nCJYs1QjUQGZ7RGswx7WY7YWPqXgf/D/8U9HB4wpkBW9TpXGbYm/xcGG3fCqqVXpMMqPXnHIBP5ym16s/EtTq8Ak31BaIG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004033; c=relaxed/simple;
-	bh=6tnkqEdgD1VAZeSnbQl76kIwoN3MPuT9k2PKyNWUH64=;
+	s=arc-20240116; t=1720003490; c=relaxed/simple;
+	bh=gkKzw4aKQeLR5oiWkcpGqcphP3KcQmrdfrzYwnKB1jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CWwKPflSSfQDX9Jd51msCrZi0HRTuv4t8QT9ueHWenLIYKmzDiTwVjCRzt9NMpLUxb4g0xzb8jFIoPHDgBO3LmnLxL1qeluOyr917huImOfIbZ/AgTi/80+3Py+CeFKTB9sBUw5BG0PgTE6pJXWjhGUmfqAw770PJj5l95TyXvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMhEKcMI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB39C2BD10;
-	Wed,  3 Jul 2024 10:53:51 +0000 (UTC)
+	 MIME-Version; b=QLIs2YQYv0eNaD6xvBlmd3OZOjk3ijQH/1FTGKSJPqYaGEUM3/yODUfh1mBOi/8tLSxsG5X/m6D7JepbZdz6LmkD3v0kStszdgxXNUT5GFmgCzm+vA8SBOt/5hng+bYGu0oYYtw8BkMf36o30z2YTESp63CcdBbE1YQwpFOygB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4GC/6nk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AED5C2BD10;
+	Wed,  3 Jul 2024 10:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004032;
-	bh=6tnkqEdgD1VAZeSnbQl76kIwoN3MPuT9k2PKyNWUH64=;
+	s=korg; t=1720003490;
+	bh=gkKzw4aKQeLR5oiWkcpGqcphP3KcQmrdfrzYwnKB1jM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SMhEKcMIgMQBvuDI4acIPruEak/B+gj3fgKjowr6KiJHYHO+7DAHFf1toz9ekGCEO
-	 wB3VrcRjtnqy+VXgIMFLyjvMs1CEQwSBUVNWN+U1DLcGjr1/mwqaVa3sieqARwwkX/
-	 XSlxtwZlB5/F9ndKRmGWEgE3Xuef94jFUd+mQixM=
+	b=D4GC/6nkvimpsIewBD2KI8AXgqLSjyXROnOj+Kbz3UDysXQ05BcvuR24C1d2FUYrv
+	 /54spxkIEj5p3Gvm998taiz1VcqGYWkGw+4scOHkNJmYe0CQJmLQ2+ztiIdibagVlR
+	 BT3qhBqfR6exfSJOn3Y/RUFVJ5jaD4xMSacrmtGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Alex Henrie <alexhenrie24@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 102/189] mips: bmips: BCM6358: make sure CBR is correctly set
+Subject: [PATCH 4.19 066/139] usb: misc: uss720: check for incompatible versions of the Belkin F5U002
 Date: Wed,  3 Jul 2024 12:39:23 +0200
-Message-ID: <20240703102845.352483446@linuxfoundation.org>
+Message-ID: <20240703102832.934437195@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Alex Henrie <alexhenrie24@gmail.com>
 
-[ Upstream commit ce5cdd3b05216b704a704f466fb4c2dff3778caf ]
+[ Upstream commit 3295f1b866bfbcabd625511968e8a5c541f9ab32 ]
 
-It was discovered that some device have CBR address set to 0 causing
-kernel panic when arch_sync_dma_for_cpu_all is called.
+The incompatible device in my possession has a sticker that says
+"F5U002 Rev 2" and "P80453-B", and lsusb identifies it as
+"050d:0002 Belkin Components IEEE-1284 Controller". There is a bug
+report from 2007 from Michael Trausch who was seeing the exact same
+errors that I saw in 2024 trying to use this cable.
 
-This was notice in situation where the system is booted from TP1 and
-BMIPS_GET_CBR() returns 0 instead of a valid address and
-!!(read_c0_brcm_cmt_local() & (1 << 31)); not failing.
-
-The current check whether RAC flush should be disabled or not are not
-enough hence lets check if CBR is a valid address or not.
-
-Fixes: ab327f8acdf8 ("mips: bmips: BCM6358: disable RAC flush for TP1")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Link: https://lore.kernel.org/all/46DE5830.9060401@trausch.us/
+Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
+Link: https://lore.kernel.org/r/20240326150723.99939-5-alexhenrie24@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/bmips/setup.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/misc/uss720.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
-index 36fbedcbd518d..4ef8842100b30 100644
---- a/arch/mips/bmips/setup.c
-+++ b/arch/mips/bmips/setup.c
-@@ -110,7 +110,8 @@ static void bcm6358_quirks(void)
- 	 * RAC flush causes kernel panics on BCM6358 when booting from TP1
- 	 * because the bootloader is not initializing it properly.
- 	 */
--	bmips_rac_flush_disable = !!(read_c0_brcm_cmt_local() & (1 << 31));
-+	bmips_rac_flush_disable = !!(read_c0_brcm_cmt_local() & (1 << 31)) ||
-+				  !!BMIPS_GET_CBR();
- }
+diff --git a/drivers/usb/misc/uss720.c b/drivers/usb/misc/uss720.c
+index 0be8efcda15d5..d972c09629397 100644
+--- a/drivers/usb/misc/uss720.c
++++ b/drivers/usb/misc/uss720.c
+@@ -677,7 +677,7 @@ static int uss720_probe(struct usb_interface *intf,
+ 	struct parport_uss720_private *priv;
+ 	struct parport *pp;
+ 	unsigned char reg;
+-	int i;
++	int ret;
  
- static void bcm6368_quirks(void)
+ 	dev_dbg(&intf->dev, "probe: vendor id 0x%x, device id 0x%x\n",
+ 		le16_to_cpu(usbdev->descriptor.idVendor),
+@@ -688,8 +688,8 @@ static int uss720_probe(struct usb_interface *intf,
+ 		usb_put_dev(usbdev);
+ 		return -ENODEV;
+ 	}
+-	i = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
+-	dev_dbg(&intf->dev, "set interface result %d\n", i);
++	ret = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
++	dev_dbg(&intf->dev, "set interface result %d\n", ret);
+ 
+ 	interface = intf->cur_altsetting;
+ 
+@@ -725,12 +725,18 @@ static int uss720_probe(struct usb_interface *intf,
+ 	set_1284_register(pp, 7, 0x00, GFP_KERNEL);
+ 	set_1284_register(pp, 6, 0x30, GFP_KERNEL);  /* PS/2 mode */
+ 	set_1284_register(pp, 2, 0x0c, GFP_KERNEL);
+-	/* debugging */
+-	get_1284_register(pp, 0, &reg, GFP_KERNEL);
++
++	/* The Belkin F5U002 Rev 2 P80453-B USB parallel port adapter shares the
++	 * device ID 050d:0002 with some other device that works with this
++	 * driver, but it itself does not. Detect and handle the bad cable
++	 * here. */
++	ret = get_1284_register(pp, 0, &reg, GFP_KERNEL);
+ 	dev_dbg(&intf->dev, "reg: %7ph\n", priv->reg);
++	if (ret < 0)
++		return ret;
+ 
+-	i = usb_find_last_int_in_endpoint(interface, &epd);
+-	if (!i) {
++	ret = usb_find_last_int_in_endpoint(interface, &epd);
++	if (!ret) {
+ 		dev_dbg(&intf->dev, "epaddr %d interval %d\n",
+ 				epd->bEndpointAddress, epd->bInterval);
+ 	}
 -- 
 2.43.0
 
