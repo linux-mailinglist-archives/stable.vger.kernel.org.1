@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-57360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 301F6925C29
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:15:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99A49925ABD
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA1441F201A1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:15:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FB231F2567C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D69C17B503;
-	Wed,  3 Jul 2024 11:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D82F17C206;
+	Wed,  3 Jul 2024 10:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1clDsX34"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhiwtMuZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD30717B4E9;
-	Wed,  3 Jul 2024 11:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BEB3171E70;
+	Wed,  3 Jul 2024 10:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004644; cv=none; b=nRJNM5DCcfhuauHhWBk06Uz2/3qcbFgYIfvFLbuqcNRrvX2kOO99kPGh26dEtL60yG7tP21tNidq0pdCxjTwyDIUg0g6tLmQLoEpAfIAleyLPcnETIyKC/eQJtSPwDlAhNYpr1WRIpCWzqspEaLFyJPWdeNHeHNGIyzkGK6BGTo=
+	t=1720003911; cv=none; b=uY1d/Bqc+OqointGpZRRLYTNwifvxnyVs8OdU/eFzcqFIGMgnHVX4xenHBYcRjVoYe7/vxBq9I6Sn57iebr+oKIE9wYGT9Ahc+ozlQ/otPCtCY10KODOemfKxRw52mQ/j7m3TCF1wv43x0lReywTLDT1BFRFCIbiyCyle+LePGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004644; c=relaxed/simple;
-	bh=EK6MF3TRYGulg4ik57VQ+ILecZwX8p99C45UfPOo7m4=;
+	s=arc-20240116; t=1720003911; c=relaxed/simple;
+	bh=5nl4B9SM9KVitWpEYL7ZIikt8zdr0ZlOCxvsjWMaO3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EmodSTSKExzXR+CFT1R2CiDP8pyyfeE7vJiTZRmGs+QDu/A3Xpm4SyXXPtQXLban0xXAM8XrpjSDDolSAgVvfmKois4yxex0N8+GmDJoytsbnETB4QMt5gnweymyNKb7aoUAFH3vMLXELuKx8jSTOIeqe7bb/meLT5QBHXCInq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1clDsX34; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64FC7C2BD10;
-	Wed,  3 Jul 2024 11:04:03 +0000 (UTC)
+	 MIME-Version; b=dar6xCBMEdT/K+OHt+4OsyG8dwcKbKkDMwAD37P60kYJeAEO3ualBI8tX3OxnZR+23dw0fP5aOr1MXyHKIxhD5YwjmpnPA4sFg/DMJUIBghfs39ycnDjkaFKqQXLm8mLxrT5IRgHCv0Btxe51hHtLof9ulbqzQstr3alID9BMZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhiwtMuZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5685C2BD10;
+	Wed,  3 Jul 2024 10:51:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004643;
-	bh=EK6MF3TRYGulg4ik57VQ+ILecZwX8p99C45UfPOo7m4=;
+	s=korg; t=1720003911;
+	bh=5nl4B9SM9KVitWpEYL7ZIikt8zdr0ZlOCxvsjWMaO3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1clDsX34SPATzeQcBr3cqNgjNBlfIDm3T/8/WToVD+d/JHDw4/d/CYQC5qGrkSWxA
-	 h9VQb1CGV/fPMs4JaqRRJPQPLIRjDcW8uDeQ7JoEJEjR+4eoZWxYiaX1RuGrKrM1GP
-	 ya6Mb52DSN0KQXpLW76yhK3FZOpzYHB8jMDD/xhc=
+	b=zhiwtMuZXV7jtI6u8PW4PSXx5PoK+4wnfChM/+h2p4x9AkXLS+Uerbp5AwfIe5pW8
+	 rxRmlEIBgrG3OvAZ9Dc6ki/HTzZ2kJ797hpHlc9U/uxJOKtFBoh/97jiC5yq5aU01K
+	 Vkn08NYTArXd9nSdRlhCeJ2+7JsA5LApfZUoiq5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Jai Luthra <j-luthra@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 110/290] selftests/bpf: Fix flaky test btf_map_in_map/lookup_update
+Subject: [PATCH 5.4 030/189] ASoC: ti: davinci-mcasp: Fix race condition during probe
 Date: Wed,  3 Jul 2024 12:38:11 +0200
-Message-ID: <20240703102908.348883325@linuxfoundation.org>
+Message-ID: <20240703102842.644108326@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Joao Paulo Goncalves <joao.goncalves@toradex.com>
 
-[ Upstream commit 14bb1e8c8d4ad5d9d2febb7d19c70a3cf536e1e5 ]
+[ Upstream commit d18ca8635db2f88c17acbdf6412f26d4f6aff414 ]
 
-Recently, I frequently hit the following test failure:
+When using davinci-mcasp as CPU DAI with simple-card, there are some
+conditions that cause simple-card to finish registering a sound card before
+davinci-mcasp finishes registering all sound components. This creates a
+non-working sound card from userspace with no problem indication apart
+from not being able to play/record audio on a PCM stream. The issue
+arises during simultaneous probe execution of both drivers. Specifically,
+the simple-card driver, awaiting a CPU DAI, proceeds as soon as
+davinci-mcasp registers its DAI. However, this process can lead to the
+client mutex lock (client_mutex in soc-core.c) being held or davinci-mcasp
+being preempted before PCM DMA registration on davinci-mcasp finishes.
+This situation occurs when the probes of both drivers run concurrently.
+Below is the code path for this condition. To solve the issue, defer
+davinci-mcasp CPU DAI registration to the last step in the audio part of
+it. This way, simple-card CPU DAI parsing will be deferred until all
+audio components are registered.
 
-  [root@arch-fb-vm1 bpf]# ./test_progs -n 33/1
-  test_lookup_update:PASS:skel_open 0 nsec
-  [...]
-  test_lookup_update:PASS:sync_rcu 0 nsec
-  test_lookup_update:FAIL:map1_leak inner_map1 leaked!
-  #33/1    btf_map_in_map/lookup_update:FAIL
-  #33      btf_map_in_map:FAIL
+Fail Code Path:
 
-In the test, after map is closed and then after two rcu grace periods,
-it is assumed that map_id is not available to user space.
+simple-card.c: probe starts
+simple-card.c: simple_dai_link_of: simple_parse_node(..,cpu,..) returns EPROBE_DEFER, no CPU DAI yet
+davinci-mcasp.c: probe starts
+davinci-mcasp.c: devm_snd_soc_register_component() register CPU DAI
+simple-card.c: probes again, finish CPU DAI parsing and call devm_snd_soc_register_card()
+simple-card.c: finish probe
+davinci-mcasp.c: *dma_pcm_platform_register() register PCM  DMA
+davinci-mcasp.c: probe finish
 
-But the above assumption cannot be guaranteed. After zero or one
-or two rcu grace periods in different siturations, the actual
-freeing-map-work is put into a workqueue. Later on, when the work
-is dequeued, the map will be actually freed.
-See bpf_map_put() in kernel/bpf/syscall.c.
-
-By using workqueue, there is no ganrantee that map will be actually
-freed after a couple of rcu grace periods. This patch removed
-such map leak detection and then the test can pass consistently.
-
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240322061353.632136-1-yonghong.song@linux.dev
+Cc: stable@vger.kernel.org
+Fixes: 9fbd58cf4ab0 ("ASoC: davinci-mcasp: Choose PCM driver based on configured DMA controller")
+Signed-off-by: Joao Paulo Goncalves <joao.goncalves@toradex.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Reviewed-by: Jai Luthra <j-luthra@ti.com>
+Link: https://lore.kernel.org/r/20240417184138.1104774-1-jpaulo.silvagoncalves@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/prog_tests/btf_map_in_map.c | 26 +------------------
- 1 file changed, 1 insertion(+), 25 deletions(-)
+ sound/soc/ti/davinci-mcasp.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c b/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c
-index 76ebe4c250f11..a434828bc7ab7 100644
---- a/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c
-+++ b/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c
-@@ -58,7 +58,7 @@ static void test_lookup_update(void)
- 	int map1_fd, map2_fd, map3_fd, map4_fd, map5_fd, map1_id, map2_id;
- 	int outer_arr_fd, outer_hash_fd, outer_arr_dyn_fd;
- 	struct test_btf_map_in_map *skel;
--	int err, key = 0, val, i, fd;
-+	int err, key = 0, val, i;
+diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
+index 633cd7fd3dcf3..dc40b5c5d501e 100644
+--- a/sound/soc/ti/davinci-mcasp.c
++++ b/sound/soc/ti/davinci-mcasp.c
+@@ -2270,12 +2270,6 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
  
- 	skel = test_btf_map_in_map__open_and_load();
- 	if (CHECK(!skel, "skel_open", "failed to open&load skeleton\n"))
-@@ -135,30 +135,6 @@ static void test_lookup_update(void)
- 	CHECK(map1_id == 0, "map1_id", "failed to get ID 1\n");
- 	CHECK(map2_id == 0, "map2_id", "failed to get ID 2\n");
+ 	mcasp_reparent_fck(pdev);
  
--	test_btf_map_in_map__destroy(skel);
--	skel = NULL;
+-	ret = devm_snd_soc_register_component(&pdev->dev, &davinci_mcasp_component,
+-					      &davinci_mcasp_dai[mcasp->op_mode], 1);
 -
--	/* we need to either wait for or force synchronize_rcu(), before
--	 * checking for "still exists" condition, otherwise map could still be
--	 * resolvable by ID, causing false positives.
--	 *
--	 * Older kernels (5.8 and earlier) freed map only after two
--	 * synchronize_rcu()s, so trigger two, to be entirely sure.
--	 */
--	CHECK(kern_sync_rcu(), "sync_rcu", "failed\n");
--	CHECK(kern_sync_rcu(), "sync_rcu", "failed\n");
+-	if (ret != 0)
+-		goto err;
 -
--	fd = bpf_map_get_fd_by_id(map1_id);
--	if (CHECK(fd >= 0, "map1_leak", "inner_map1 leaked!\n")) {
--		close(fd);
--		goto cleanup;
--	}
--	fd = bpf_map_get_fd_by_id(map2_id);
--	if (CHECK(fd >= 0, "map2_leak", "inner_map2 leaked!\n")) {
--		close(fd);
--		goto cleanup;
--	}
--
- cleanup:
- 	test_btf_map_in_map__destroy(skel);
- }
+ 	ret = davinci_mcasp_get_dma_type(mcasp);
+ 	switch (ret) {
+ 	case PCM_EDMA:
+@@ -2296,6 +2290,12 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
+ 		goto err;
+ 	}
+ 
++	ret = devm_snd_soc_register_component(&pdev->dev, &davinci_mcasp_component,
++					      &davinci_mcasp_dai[mcasp->op_mode], 1);
++
++	if (ret != 0)
++		goto err;
++
+ no_audio:
+ 	ret = davinci_mcasp_init_gpiochip(mcasp);
+ 	if (ret) {
 -- 
 2.43.0
 
