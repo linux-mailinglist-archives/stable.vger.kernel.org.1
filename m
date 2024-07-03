@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55FC925A71
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:59:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04FF5925CB1
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 232E51C2638C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:59:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4F2B2C4131
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170F6198845;
-	Wed,  3 Jul 2024 10:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D1C188CB4;
+	Wed,  3 Jul 2024 11:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sG8ewtt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ul9rzCuF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85AD18A93A;
-	Wed,  3 Jul 2024 10:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4759616F8F5;
+	Wed,  3 Jul 2024 11:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003655; cv=none; b=LmrsXfJMvG4wmd3q+kvoBDVSYNVSo4TWSXGqUXWov/dGl0jTjiry4SZvkEjIXua7olmcmE+1NcjveztWKBw8uKxtDX4WqZs6r11SCLDIfaScVwb7N1s0YVsbiNNdJsbcYWm4EpybVH8XGsNerIhb7pDJSj51bLJq4IVPLrYCXNA=
+	t=1720005025; cv=none; b=F/J0GDsNQWjtGoA9O1gsXkpifMR6lvhQSdgj+OgtQBkHW1bF/piE0sh7VATMtDGiMYAtutSR53ovpZ87s6V+O3ufoT+znW/1ld5kNgcaexp5wtI/lMINK5hXij2rkelDqOpvMn7P/ru3aslMFZQVtuQH/uCoCluRbXMlXBIZI1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003655; c=relaxed/simple;
-	bh=fsikqbeNIdy54V6Hedz6M1Uglh62OKWHQtkT2Z6WsOs=;
+	s=arc-20240116; t=1720005025; c=relaxed/simple;
+	bh=8PyZhA/8/u+0FgqWvMrspCWx034LlJnDElczIMrDWMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KPMgSkV4lkWfxy5ZQYF9E4Ilt4Z9J9eNkM1Nn/P2ZCJHqwi5iApScp9iSR8SH8uR9wUCnpejiW8maqt1nk69AAGRAbZ/pA+Go6sFG7eHb4wUzClA+5JzLyloPkCLOx8FoFJAJJPaW97npDLYZjpxcW1xCmPpb771T4hpZiIBOiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sG8ewtt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4208BC32781;
-	Wed,  3 Jul 2024 10:47:35 +0000 (UTC)
+	 MIME-Version; b=rbcMPLd7gkhwZcrvBz3J0pb3bK/+S9k7QZEvjNp3OEL1Kc4NA7KOZf4psgEFkuayGOqQtwiJoIzJQtHIoCai7xNJDPZN/gaOY1JSNI1ejM4wbOx127o1PXqoUN+HuhFDACwPD5cxtqhJTyP1DK3FzYSwHtFBRyLJ5g8EeWRqZio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ul9rzCuF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0087C2BD10;
+	Wed,  3 Jul 2024 11:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003655;
-	bh=fsikqbeNIdy54V6Hedz6M1Uglh62OKWHQtkT2Z6WsOs=;
+	s=korg; t=1720005025;
+	bh=8PyZhA/8/u+0FgqWvMrspCWx034LlJnDElczIMrDWMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1sG8ewtt0Uu63Xixd1PbSuEGN/svG6sgudrJ1FUFEIlRlu7vxs4Mph2vxN0hCvxfR
-	 lyoOJ1GvM9JW/JxiIZyAHDC1rRK7O+PodjMSJ6fDRdfEvXOj8I1CGU3J4fbiXC0iPC
-	 BJCCqBUxTyLR+vqF/1SUEV1eDnKel46Egu1EBQEw=
+	b=ul9rzCuFKUKpzUBbckKCzzgF2ZQZto9dED5D5p4F/p0FrhS8ovGBFlMqXEVtQi1PD
+	 5QDDMJJLxgDQTR1zHbQ8pnpAWhZUrnloVSAvctriYIAr3goPQz1wuLQ8QgAgAq1kmD
+	 yML5IpVz/gUINIIE+sQ64tLjk4HNdx0Q6VCJK1nA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 4.19 119/139] iio: chemical: bme680: Fix pressure value output
-Date: Wed,  3 Jul 2024 12:40:16 +0200
-Message-ID: <20240703102834.932201552@linuxfoundation.org>
+	Andrew Davis <afd@ti.com>,
+	Nishanth Menon <nm@ti.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 236/290] soc: ti: wkup_m3_ipc: Send NULL dummy message instead of pointer message
+Date: Wed,  3 Jul 2024 12:40:17 +0200
+Message-ID: <20240703102913.066010444@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
+From: Andrew Davis <afd@ti.com>
 
-commit ae1f7b93b52095be6776d0f34957b4f35dda44d9 upstream.
+[ Upstream commit ddbf3204f600a4d1f153498f618369fca352ae00 ]
 
-The IIO standard units are measured in kPa while the driver
-is using hPa.
+mbox_send_message() sends a u32 bit message, not a pointer to a message.
+We only convert to a pointer type as a generic type. If we want to send
+a dummy message of 0, then simply send 0 (NULL).
 
-Apart from checking the userspace value itself, it is mentioned also
-in the Bosch API [1] that the pressure value is in Pascal.
-
-[1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x_defs.h#L742
-
-Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Link: https://lore.kernel.org/r/20240606212313.207550-2-vassilisamir@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20240325165507.30323-1-afd@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/chemical/bme680_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/ti/wkup_m3_ipc.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -678,7 +678,7 @@ static int bme680_read_press(struct bme6
+diff --git a/drivers/soc/ti/wkup_m3_ipc.c b/drivers/soc/ti/wkup_m3_ipc.c
+index ef3f95fefab58..6634709e646c4 100644
+--- a/drivers/soc/ti/wkup_m3_ipc.c
++++ b/drivers/soc/ti/wkup_m3_ipc.c
+@@ -14,7 +14,6 @@
+ #include <linux/irq.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/omap-mailbox.h>
+ #include <linux/platform_device.h>
+ #include <linux/remoteproc.h>
+ #include <linux/suspend.h>
+@@ -151,7 +150,6 @@ static irqreturn_t wkup_m3_txev_handler(int irq, void *ipc_data)
+ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
+ {
+ 	struct device *dev = m3_ipc->dev;
+-	mbox_msg_t dummy_msg = 0;
+ 	int ret;
+ 
+ 	if (!m3_ipc->mbox) {
+@@ -167,7 +165,7 @@ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
+ 	 * the RX callback to avoid multiple interrupts being received
+ 	 * by the CM3.
+ 	 */
+-	ret = mbox_send_message(m3_ipc->mbox, &dummy_msg);
++	ret = mbox_send_message(m3_ipc->mbox, NULL);
+ 	if (ret < 0) {
+ 		dev_err(dev, "%s: mbox_send_message() failed: %d\n",
+ 			__func__, ret);
+@@ -189,7 +187,6 @@ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
+ static int wkup_m3_ping_noirq(struct wkup_m3_ipc *m3_ipc)
+ {
+ 	struct device *dev = m3_ipc->dev;
+-	mbox_msg_t dummy_msg = 0;
+ 	int ret;
+ 
+ 	if (!m3_ipc->mbox) {
+@@ -198,7 +195,7 @@ static int wkup_m3_ping_noirq(struct wkup_m3_ipc *m3_ipc)
+ 		return -EIO;
  	}
  
- 	*val = bme680_compensate_press(data, adc_press);
--	*val2 = 100;
-+	*val2 = 1000;
- 	return IIO_VAL_FRACTIONAL;
- }
- 
+-	ret = mbox_send_message(m3_ipc->mbox, &dummy_msg);
++	ret = mbox_send_message(m3_ipc->mbox, NULL);
+ 	if (ret < 0) {
+ 		dev_err(dev, "%s: mbox_send_message() failed: %d\n",
+ 			__func__, ret);
+-- 
+2.43.0
+
 
 
 
