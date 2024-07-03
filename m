@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77D4C925CB0
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E55FC925A71
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:59:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 316BF2C4133
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 232E51C2638C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:59:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA35188CA4;
-	Wed,  3 Jul 2024 11:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170F6198845;
+	Wed,  3 Jul 2024 10:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgCJ/8fZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sG8ewtt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C31816F8F5;
-	Wed,  3 Jul 2024 11:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85AD18A93A;
+	Wed,  3 Jul 2024 10:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005022; cv=none; b=sYEZdKiGLrTrbeaXP+T3QKWHYG1iozgkjnJWccpn0FiM6XvpnVnU/G8AvrwT44ZrAtKjxWO8aYIY/wIwv865eGfO5QsMn9onsCZMzkxDhZGUazuSe+oPGzgRkg8W/lBvRRhjMuzikcHcx0ZYpExMPjzYYCkGhR0pDFNT0wWbnQM=
+	t=1720003655; cv=none; b=LmrsXfJMvG4wmd3q+kvoBDVSYNVSo4TWSXGqUXWov/dGl0jTjiry4SZvkEjIXua7olmcmE+1NcjveztWKBw8uKxtDX4WqZs6r11SCLDIfaScVwb7N1s0YVsbiNNdJsbcYWm4EpybVH8XGsNerIhb7pDJSj51bLJq4IVPLrYCXNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005022; c=relaxed/simple;
-	bh=NORuUS8pLgBCMbc7SSGZMxZb+snPTrVT3EhmjPL0wpM=;
+	s=arc-20240116; t=1720003655; c=relaxed/simple;
+	bh=fsikqbeNIdy54V6Hedz6M1Uglh62OKWHQtkT2Z6WsOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hsd89r07t8L0Js1tI510gU1QO+6jRCkys5/vYcUZrqHk4+R5iLic0rujLK6cimGe+7vxLfKZ9XLbgeyFl4AaPfLoRZe7x8cIAaLJVmisM3BR5EHSOafTCNhQOx7X54a1Svqcu1HPHkQvn3dqrpvqJjV0E1+PGwLINcZyAWanSsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgCJ/8fZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C820AC4AF0C;
-	Wed,  3 Jul 2024 11:10:21 +0000 (UTC)
+	 MIME-Version; b=KPMgSkV4lkWfxy5ZQYF9E4Ilt4Z9J9eNkM1Nn/P2ZCJHqwi5iApScp9iSR8SH8uR9wUCnpejiW8maqt1nk69AAGRAbZ/pA+Go6sFG7eHb4wUzClA+5JzLyloPkCLOx8FoFJAJJPaW97npDLYZjpxcW1xCmPpb771T4hpZiIBOiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sG8ewtt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4208BC32781;
+	Wed,  3 Jul 2024 10:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005022;
-	bh=NORuUS8pLgBCMbc7SSGZMxZb+snPTrVT3EhmjPL0wpM=;
+	s=korg; t=1720003655;
+	bh=fsikqbeNIdy54V6Hedz6M1Uglh62OKWHQtkT2Z6WsOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EgCJ/8fZ5KIQGfUathNk1rW1yBHV9Pazgi0AQCJWb+mv/0/i8UZZ/oBWANrOzMUWN
-	 CiY7XiF12KmmdLBvl9z2JM7YaNdqRtBToW61Ga07Yalj4t+ZUpJWMu3M+gahMBfv9w
-	 41GhOy1K+elPHhAQozfo+nYVnMZuxEtcba736/0k=
+	b=1sG8ewtt0Uu63Xixd1PbSuEGN/svG6sgudrJ1FUFEIlRlu7vxs4Mph2vxN0hCvxfR
+	 lyoOJ1GvM9JW/JxiIZyAHDC1rRK7O+PodjMSJ6fDRdfEvXOj8I1CGU3J4fbiXC0iPC
+	 BJCCqBUxTyLR+vqF/1SUEV1eDnKel46Egu1EBQEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 235/290] media: dvbdev: Initialize sbuf
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 4.19 119/139] iio: chemical: bme680: Fix pressure value output
 Date: Wed,  3 Jul 2024 12:40:16 +0200
-Message-ID: <20240703102913.028725101@linuxfoundation.org>
+Message-ID: <20240703102834.932201552@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-[ Upstream commit 17d1316de0d7dc1bdc5d6e3ad4efd30a9bf1a381 ]
+commit ae1f7b93b52095be6776d0f34957b4f35dda44d9 upstream.
 
-Because the size passed to copy_from_user() cannot be known beforehand,
-it needs to be checked during runtime with check_object_size. That makes
-gcc believe that the content of sbuf can be used before init.
+The IIO standard units are measured in kPa while the driver
+is using hPa.
 
-Fix:
-./include/linux/thread_info.h:215:17: warning: ‘sbuf’ may be used uninitialized [-Wmaybe-uninitialized]
+Apart from checking the userspace value itself, it is mentioned also
+in the Bosch API [1] that the pressure value is in Pascal.
 
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x_defs.h#L742
+
+Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://lore.kernel.org/r/20240606212313.207550-2-vassilisamir@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvbdev.c | 2 +-
+ drivers/iio/chemical/bme680_core.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
-index 23a0c209744dc..661588fc64f6a 100644
---- a/drivers/media/dvb-core/dvbdev.c
-+++ b/drivers/media/dvb-core/dvbdev.c
-@@ -974,7 +974,7 @@ int dvb_usercopy(struct file *file,
- 		     int (*func)(struct file *file,
- 		     unsigned int cmd, void *arg))
- {
--	char    sbuf[128];
-+	char    sbuf[128] = {};
- 	void    *mbuf = NULL;
- 	void    *parg = NULL;
- 	int     err  = -EINVAL;
--- 
-2.43.0
-
+--- a/drivers/iio/chemical/bme680_core.c
++++ b/drivers/iio/chemical/bme680_core.c
+@@ -678,7 +678,7 @@ static int bme680_read_press(struct bme6
+ 	}
+ 
+ 	*val = bme680_compensate_press(data, adc_press);
+-	*val2 = 100;
++	*val2 = 1000;
+ 	return IIO_VAL_FRACTIONAL;
+ }
+ 
 
 
 
