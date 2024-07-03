@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A8BF925C87
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:19:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76A00925A0D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:54:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 475B21F26DFC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:19:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A82991C22B9A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6267184111;
-	Wed,  3 Jul 2024 11:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 449491822F2;
+	Wed,  3 Jul 2024 10:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+UZNU5z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EAw8lu0V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B6817966F;
-	Wed,  3 Jul 2024 11:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F031822EC;
+	Wed,  3 Jul 2024 10:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004879; cv=none; b=L+3LMalhdpIVWQVSn8GH7b4y8GzNifK6efB67n3rPkUYMKGB6N2b9QTCKRjS9H/ejtip55lporT7U2iD+Z3QbVvIoaheIewYs/+DlznVDxkM1HYhPzoej5NygCAAnU7g0+WQ5juQ0be3BiYXsYYmD7El62BwUmDcuB8CL6cFadY=
+	t=1720003503; cv=none; b=cmckWLY05QcuY4M60QlJpuNRj7rwqbNLDJYPPmsi0D9sYDGQTLRRv5GeEFJuQJ3Dfp/WP7/Y1vrw2CnAUFm7cmwSMkW8fZtbaWQmlealWH8zZ2A9S7eJ+50GXmp/O72dK+O5MYDuiSx697w++DP/OeHifqgCyksboP6HwnecnzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004879; c=relaxed/simple;
-	bh=DbkVV5hF7EdfSgpr61V+IEtIzRT+mmVhsVNfPhtH2Oo=;
+	s=arc-20240116; t=1720003503; c=relaxed/simple;
+	bh=VWcb0uBWqkDTpC2u3eWfAmRXMMs96iXojgQ/K8z5zlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/CsFDDwTF9brCMIv1lDvp8RMaS3jrB7AKMjhrtVMYCLAKia+bBYm4kPBrA6IH6aiihnQrOg85YQ6TCKtdWHmvapYVmH+arvBVQJIMUNPS3ZuR11xI5RTC0c7xqNEo7ySPcgjmL2CBy8oW6K9Wnp8bjO1YZbFNLM0vISDGRiXvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+UZNU5z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08CE4C2BD10;
-	Wed,  3 Jul 2024 11:07:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RSrywqaDuV/tF1qxcKHEsIQqAAL0W6DUHkK0/yxN4tPXM6Pbr8Jfj/OYK9d06BCmrlZIZ0zICdUzge5jO98rC8IMJt6p4u6X8Omk/GaOFo5E4EY62EATNJT6SVD65x/mbmlju5Z3es3pWHICjPQyzKx7F8Ez5GMvMf8Uo7bCc/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EAw8lu0V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 334F2C2BD10;
+	Wed,  3 Jul 2024 10:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004879;
-	bh=DbkVV5hF7EdfSgpr61V+IEtIzRT+mmVhsVNfPhtH2Oo=;
+	s=korg; t=1720003502;
+	bh=VWcb0uBWqkDTpC2u3eWfAmRXMMs96iXojgQ/K8z5zlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K+UZNU5zx3s4yHR8Ps2M74bIjxfLhBdGj9fI8XAEr3U4bb7kLzwYlrdWolyarFswQ
-	 31pmUvIunB+WtIf9Twqh3/+e3MXs1Wh8l3IbDC1xDJdyvkz42e+KCvGI7mHfVUgF9u
-	 09929yB+XCjKp0pRmMTbE1OfXo1Wu5RUFAbSoIYc=
+	b=EAw8lu0V/FyPm323gCz9j5ncDoFuWa2ZvcVZSwxLqqkXC6lLRRFoSZvPvurrhuqNr
+	 sWHDLXDTCeLZJ8PGM74SbwtIezyXRNrUmUtnoiub3Al+yR4svBdidAxisv/AdwuU12
+	 Djh0NwLwiyZHu7z6B5cAd/FVDfx2cEERRuDGej2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 186/290] r8169: improve rtl8169_start_xmit
+Subject: [PATCH 4.19 070/139] MIPS: Routerboard 532: Fix vendor retry check code
 Date: Wed,  3 Jul 2024 12:39:27 +0200
-Message-ID: <20240703102911.196700578@linuxfoundation.org>
+Message-ID: <20240703102833.085255597@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,77 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 41294e6a434d4f19e957c55b275ea0324f275009 ]
+[ Upstream commit ae9daffd9028f2500c9ac1517e46d4f2b57efb80 ]
 
-Improve the following in rtl8169_start_xmit:
-- tp->cur_tx can be accessed in parallel by rtl_tx(), therefore
-  annotate the race by using WRITE_ONCE
-- avoid checking stop_queue a second time by moving the doorbell check
-- netif_stop_queue() uses atomic operation set_bit() that includes a
-  full memory barrier on some platforms, therefore use
-  smp_mb__after_atomic to avoid overhead
+read_config_dword() contains strange condition checking ret for a
+number of values. The ret variable, however, is always zero because
+config_access() never returns anything else. Thus, the retry is always
+taken until number of tries is exceeded.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/80085451-3eaf-507a-c7c0-08d607c46fbc@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: c71e3a5cffd5 ("r8169: Fix possible ring buffer corruption on fragmented Tx packets.")
+The code looks like it wants to check *val instead of ret to see if the
+read gave an error response.
+
+Fixes: 73b4390fb234 ("[MIPS] Routerboard 532: Support for base system")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ arch/mips/pci/ops-rc32434.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 0847b64fbb2f4..b678fd1436a4c 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4331,7 +4331,7 @@ static netdev_tx_t rtl8169_start_xmit(struct sk_buff *skb,
- 	/* rtl_tx needs to see descriptor changes before updated tp->cur_tx */
- 	smp_wmb();
- 
--	tp->cur_tx += frags + 1;
-+	WRITE_ONCE(tp->cur_tx, tp->cur_tx + frags + 1);
- 
- 	stop_queue = !rtl_tx_slots_avail(tp, MAX_SKB_FRAGS);
- 	if (unlikely(stop_queue)) {
-@@ -4340,13 +4340,6 @@ static netdev_tx_t rtl8169_start_xmit(struct sk_buff *skb,
- 		 */
- 		smp_wmb();
- 		netif_stop_queue(dev);
--		door_bell = true;
--	}
--
--	if (door_bell)
--		rtl8169_doorbell(tp);
--
--	if (unlikely(stop_queue)) {
- 		/* Sync with rtl_tx:
- 		 * - publish queue status and cur_tx ring index (write barrier)
- 		 * - refresh dirty_tx ring index (read barrier).
-@@ -4354,11 +4347,15 @@ static netdev_tx_t rtl8169_start_xmit(struct sk_buff *skb,
- 		 * status and forget to wake up queue, a racing rtl_tx thread
- 		 * can't.
- 		 */
--		smp_mb();
-+		smp_mb__after_atomic();
- 		if (rtl_tx_slots_avail(tp, MAX_SKB_FRAGS))
- 			netif_start_queue(dev);
-+		door_bell = true;
- 	}
- 
-+	if (door_bell)
-+		rtl8169_doorbell(tp);
-+
- 	return NETDEV_TX_OK;
- 
- err_dma_1:
+diff --git a/arch/mips/pci/ops-rc32434.c b/arch/mips/pci/ops-rc32434.c
+index 874ed6df97683..34b9323bdabb0 100644
+--- a/arch/mips/pci/ops-rc32434.c
++++ b/arch/mips/pci/ops-rc32434.c
+@@ -112,8 +112,8 @@ static int read_config_dword(struct pci_bus *bus, unsigned int devfn,
+ 	 * gives them time to settle
+ 	 */
+ 	if (where == PCI_VENDOR_ID) {
+-		if (ret == 0xffffffff || ret == 0x00000000 ||
+-		    ret == 0x0000ffff || ret == 0xffff0000) {
++		if (*val == 0xffffffff || *val == 0x00000000 ||
++		    *val == 0x0000ffff || *val == 0xffff0000) {
+ 			if (delay > 4)
+ 				return 0;
+ 			delay *= 2;
 -- 
 2.43.0
 
