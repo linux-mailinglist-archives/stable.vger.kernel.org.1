@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-57709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6182A925D9C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2B4A9259DB
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:51:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9357C1C22B2A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C07C1F2189D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C191862BE;
-	Wed,  3 Jul 2024 11:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9A417B512;
+	Wed,  3 Jul 2024 10:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ttjK61O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCY9KjSU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A7245945;
-	Wed,  3 Jul 2024 11:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B80A17C201;
+	Wed,  3 Jul 2024 10:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005697; cv=none; b=acnXBhImj07TXi9w6VtipjIHd/wrhFUKuab7ScljFtKOxsQN0RIo3bO7rwtfFUgvT0V/3Dkp5w0tGpMmBEgYQlCvZb3ywv6a59eWcv0kfg19tr0oO48X66HENJhfTeUxthWghMJKxvagIA+SLN5Sf6k8X3VpW5TOBrOYwju4iFQ=
+	t=1720003358; cv=none; b=Ll32qm3tv7XCHLwJEpGS0qenLFt+FcFyFn8xzFQUqA940PGEuitzUIxZarjObf/LmhxK0x8dAPSNA/sPHo3EyNwJJ8f8GT/eHGj1uB9VgwpU0MHOfMhHvyZ9l2iQIUnfFRU2GdEhCHKLsNJNt2U7zprXZrE6ZcceQsaY7jr6jpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005697; c=relaxed/simple;
-	bh=nchOhLu6Rp70ae6SpCC5IYQYBbk76aRr1yqF1HPnnYM=;
+	s=arc-20240116; t=1720003358; c=relaxed/simple;
+	bh=SUiTNn00z382zLUtfgSGh0lCwQ+10baIpjq8Rz45Lt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SlVB0Llu1WxW1yAHVyn2zcKypqH1I/cyxWgIf106KRMSjMV6bOyNgP3DHLiWlaYzRd5YDnsPh+ZrTHc3whN5skeDFY26tkGOrix48G9IkPHaeSZU6jbbONs5pHsJ6Sd3ANcrn4ie1s+wB4hEzFIpCIeaHhxVudGVWXWgJYz+/Cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ttjK61O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4708AC2BD10;
-	Wed,  3 Jul 2024 11:21:37 +0000 (UTC)
+	 MIME-Version; b=NHcjkseceSr8WSaRKuFojGecPhr34NbovSaMZpwcKK8F7zSA1492MHCcrdlGcwn1c8Gey6rYreqRZP3DvVi3Q2UoPo8zxKMWii8ocmhYdUXwCAQnx22gELK1daSp7Sm4tC1St0TNEE4neagOyqKUecda2rYdxbgYorgQzTll3vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCY9KjSU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D0AC2BD10;
+	Wed,  3 Jul 2024 10:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005697;
-	bh=nchOhLu6Rp70ae6SpCC5IYQYBbk76aRr1yqF1HPnnYM=;
+	s=korg; t=1720003358;
+	bh=SUiTNn00z382zLUtfgSGh0lCwQ+10baIpjq8Rz45Lt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ttjK61OqhTq5sLtu1cNrFOAqGZrlcWaUmLxoDyUMFJTfxWJKFbQrvUTCR13AE8Bi
-	 IHCV8rBdFfd9en98uAZW9Be9DibRb+hhKGIxnqYCKQNMG2vcRvJYeBzfOSNxuMAUNi
-	 zJcX1lxq6ox7jyD7IFPsyu3B01zE7JHtB6UsSezI=
+	b=gCY9KjSUborEzvUiyH7MtuITsIGzLZo3VV056hzlwPZ7lRpeAfTs0SoLjoFp6XU/b
+	 zYPKTxJKbGeanSpVwq61azkyyHKc7pUypdiRFLCxdte48dmd9ALmSjPYmrSik/zoJM
+	 4BJUm222T0sJ0rtzBxC4GPD/vkLUNCmg0G9xK1Nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Lebrun <dlebrun@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 166/356] ACPI: video: Add backlight=native quirk for Lenovo Slim 7 16ARH7
+Subject: [PATCH 4.19 005/139] ipv6: sr: block BH in seg6_output_core() and seg6_input_core()
 Date: Wed,  3 Jul 2024 12:38:22 +0200
-Message-ID: <20240703102919.385328656@linuxfoundation.org>
+Message-ID: <20240703102830.639731318@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit c901f63dc142c48326931f164f787dfff69273d9 ]
+[ Upstream commit c0b98ac1cc104f48763cdb27b1e9ac25fd81fc90 ]
 
-Lenovo Slim 7 16ARH7 is a machine with switchable graphics between AMD
-and Nvidia, and the backlight can't be adjusted properly unless
-acpi_backlight=native is passed.  Although nvidia-wmi-backlight is
-present and loaded, this doesn't work as expected at all.
+As explained in commit 1378817486d6 ("tipc: block BH
+before using dst_cache"), net/core/dst_cache.c
+helpers need to be called with BH disabled.
 
-For making it working as default, add the corresponding quirk entry
-with a DMI matching "LENOVO" "82UX".
+Disabling preemption in seg6_output_core() is not good enough,
+because seg6_output_core() is called from process context,
+lwtunnel_output() only uses rcu_read_lock().
 
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1217750
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+We might be interrupted by a softirq, re-enter seg6_output_core()
+and corrupt dst_cache data structures.
+
+Fix the race by using local_bh_disable() instead of
+preempt_disable().
+
+Apply a similar change in seg6_input_core().
+
+Fixes: fa79581ea66c ("ipv6: sr: fix several BUGs when preemption is enabled")
+Fixes: 6c8702c60b88 ("ipv6: sr: add support for SRH encapsulation and injection with lwtunnels")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: David Lebrun <dlebrun@google.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240531132636.2637995-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/ipv6/seg6_iptunnel.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index a5cb9e1d48bcc..338e1f44906a9 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -341,6 +341,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "82BK"),
- 		},
- 	},
-+	{
-+	 .callback = video_detect_force_native,
-+	 /* Lenovo Slim 7 16ARH7 */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "82UX"),
-+		},
-+	},
- 	{
- 	 .callback = video_detect_force_native,
- 	 /* Lenovo ThinkPad X131e (3371 AMD version) */
+diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+index 2e90672852c86..7dc447e08a486 100644
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -313,9 +313,8 @@ static int seg6_input(struct sk_buff *skb)
+ 
+ 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
+ 
+-	preempt_disable();
++	local_bh_disable();
+ 	dst = dst_cache_get(&slwt->cache);
+-	preempt_enable();
+ 
+ 	skb_dst_drop(skb);
+ 
+@@ -323,14 +322,13 @@ static int seg6_input(struct sk_buff *skb)
+ 		ip6_route_input(skb);
+ 		dst = skb_dst(skb);
+ 		if (!dst->error) {
+-			preempt_disable();
+ 			dst_cache_set_ip6(&slwt->cache, dst,
+ 					  &ipv6_hdr(skb)->saddr);
+-			preempt_enable();
+ 		}
+ 	} else {
+ 		skb_dst_set(skb, dst);
+ 	}
++	local_bh_enable();
+ 
+ 	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+ 	if (unlikely(err))
+@@ -352,9 +350,9 @@ static int seg6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 
+ 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
+ 
+-	preempt_disable();
++	local_bh_disable();
+ 	dst = dst_cache_get(&slwt->cache);
+-	preempt_enable();
++	local_bh_enable();
+ 
+ 	if (unlikely(!dst)) {
+ 		struct ipv6hdr *hdr = ipv6_hdr(skb);
+@@ -374,9 +372,9 @@ static int seg6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			goto drop;
+ 		}
+ 
+-		preempt_disable();
++		local_bh_disable();
+ 		dst_cache_set_ip6(&slwt->cache, dst, &fl6.saddr);
+-		preempt_enable();
++		local_bh_enable();
+ 	}
+ 
+ 	skb_dst_drop(skb);
 -- 
 2.43.0
 
