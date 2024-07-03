@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02EB3925DEE
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F06925A0C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:53:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34BD51C239DD
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:32:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 499771C249E2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03146194AF8;
-	Wed,  3 Jul 2024 11:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E601A1822DB;
+	Wed,  3 Jul 2024 10:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsMCJ3ac"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHTMPytS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C4518FC8F;
-	Wed,  3 Jul 2024 11:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B191822CB;
+	Wed,  3 Jul 2024 10:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005880; cv=none; b=deHmJfQXx36BlVgvegMVYWxdPSsguqcD+LikXU/nF0zYRLzIRmnFg0Jw7r2HblVmoBtDAD9Mu1jGHTQvv2P0mYkHuXbf1xmzhXwmz1VRu8AyZ1ceHv2T+3sXly+4e8gjriarZ1xE4AvqDKXPnhjhL6GWnnVkRjg6GP34f0LHSvg=
+	t=1720003493; cv=none; b=QkbgQE6cKH+u5qhAtYaQql8u9DwG29yqPrb3wi0YowUhVLVHMruN98n6YsP4i7IffVhUsJfwVIHwQA/QHEMQRiFJhNNDHASj2FB7rwNrK6XG9ZdG/riX15muKIminvMSCXkvunSve0XRApsAfmo46fO0CYbt5LYir32R+DOY9tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005880; c=relaxed/simple;
-	bh=SADyX61874o3SQgdW/MTBr9oQ53w2fMhFyLF8WchG5Y=;
+	s=arc-20240116; t=1720003493; c=relaxed/simple;
+	bh=QLDY+2hNO0UtdO2lE/yUWgjAza3VZb05/bSFG2tG1Yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ujv0QLSdHO4ajbEa1NGaRkIOFiGjrGGqTN/CaQdkZKwweaCW+aG0p8caV/Hr7xwLN77tAhZF8ALzm872b+LA7cQDjrKlaE0qEBoTAJj7fnY//no5Qmh7gNw6ViQMZxFwQgOVXSfWxncYvQdIuNPPznO8DZ+rv1hXpMO7EzcGwi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lsMCJ3ac; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C152C2BD10;
-	Wed,  3 Jul 2024 11:24:40 +0000 (UTC)
+	 MIME-Version; b=iR2J+zti2/c9fPh5l1dk51ip5ZRig95biqw4JyxE3hGP/qcMxm0uwgbbom7Gp8VSr7xw8gH5H2MAxTI+ENlM+UULACh7LuRM4MwY00gS/PFtq7rknikLQFDF7wFjHqBy9BR3hKoecPU4JnOcDpyZKk3TSURQniFxdJjpende+NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lHTMPytS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A5CEC2BD10;
+	Wed,  3 Jul 2024 10:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005880;
-	bh=SADyX61874o3SQgdW/MTBr9oQ53w2fMhFyLF8WchG5Y=;
+	s=korg; t=1720003493;
+	bh=QLDY+2hNO0UtdO2lE/yUWgjAza3VZb05/bSFG2tG1Yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lsMCJ3acsOWyRg0eX5qw1GYXCUwzUTdwxgCiJ28ihGxqsOfAXZJ1u/O6kyaPpuc4c
-	 /iGkvwvX3w0pvWcJJW5XbhXDjSmIovypFdRXGoGx5C3fBB86iOh/BodMhoe+3M36td
-	 HKO6CAq3n+XKQB/KyuVeE7wOZuHohChifOtwRJA8=
+	b=lHTMPytSdVQ3GcbPeSpebPM2eK4DGP2ZAlS5mrLA1xo95xp0aIy7Unz0EcP6jeIF9
+	 rn8tFXZFAvIvZKVZc0W3CKJvprXrdZcr85f3evFvV9GvuC7InzKzDVbm0FqeefQVPA
+	 LqHMoOROdmIOJXOyoXp5pjfmnvfRdGcV1RaWsfQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 5.15 228/356] i2c: ocores: set IACK bit after core is enabled
+	Jan Kara <jack@suse.cz>,
+	Roman Smirnov <r.smirnov@omp.ru>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 067/139] udf: udftime: prevent overflow in udf_disk_stamp_to_time()
 Date: Wed,  3 Jul 2024 12:39:24 +0200
-Message-ID: <20240703102921.738941752@linuxfoundation.org>
+Message-ID: <20240703102832.971940468@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Grygorii Tertychnyi <grembeter@gmail.com>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-commit 5a72477273066b5b357801ab2d315ef14949d402 upstream.
+[ Upstream commit 3b84adf460381169c085e4bc09e7b57e9e16db0a ]
 
-Setting IACK bit when core is disabled does not clear the "Interrupt Flag"
-bit in the status register, and the interrupt remains pending.
+An overflow can occur in a situation where src.centiseconds
+takes the value of 255. This situation is unlikely, but there
+is no validation check anywere in the code.
 
-Sometimes it causes failure for the very first message transfer, that is
-usually a device probe.
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-Hence, set IACK bit after core is enabled to clear pending interrupt.
-
-Fixes: 18f98b1e3147 ("[PATCH] i2c: New bus driver for the OpenCores I2C controller")
-Signed-off-by: Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>
-Acked-by: Peter Korsgaard <peter@korsgaard.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20240327132755.13945-1-r.smirnov@omp.ru>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-ocores.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/udf/udftime.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/i2c/busses/i2c-ocores.c
-+++ b/drivers/i2c/busses/i2c-ocores.c
-@@ -442,8 +442,8 @@ static int ocores_init(struct device *de
- 	oc_setreg(i2c, OCI2C_PREHIGH, prescale >> 8);
- 
- 	/* Init the device */
--	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
- 	oc_setreg(i2c, OCI2C_CONTROL, ctrl | OCI2C_CTRL_EN);
-+	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
- 
- 	return 0;
+diff --git a/fs/udf/udftime.c b/fs/udf/udftime.c
+index fce4ad976c8c2..26169b1f482c3 100644
+--- a/fs/udf/udftime.c
++++ b/fs/udf/udftime.c
+@@ -60,13 +60,18 @@ udf_disk_stamp_to_time(struct timespec64 *dest, struct timestamp src)
+ 	dest->tv_sec = mktime64(year, src.month, src.day, src.hour, src.minute,
+ 			src.second);
+ 	dest->tv_sec -= offset * 60;
+-	dest->tv_nsec = 1000 * (src.centiseconds * 10000 +
+-			src.hundredsOfMicroseconds * 100 + src.microseconds);
++
+ 	/*
+ 	 * Sanitize nanosecond field since reportedly some filesystems are
+ 	 * recorded with bogus sub-second values.
+ 	 */
+-	dest->tv_nsec %= NSEC_PER_SEC;
++	if (src.centiseconds < 100 && src.hundredsOfMicroseconds < 100 &&
++	    src.microseconds < 100) {
++		dest->tv_nsec = 1000 * (src.centiseconds * 10000 +
++			src.hundredsOfMicroseconds * 100 + src.microseconds);
++	} else {
++		dest->tv_nsec = 0;
++	}
  }
+ 
+ void
+-- 
+2.43.0
+
 
 
 
