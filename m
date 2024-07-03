@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-56973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81DF9925F13
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:49:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF9E925DFC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:33:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 260F7B2FFEC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9105B1F25994
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:33:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2D3181BA8;
-	Wed,  3 Jul 2024 10:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB14177983;
+	Wed,  3 Jul 2024 11:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2Y/9869"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0EZKcmU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A185173351;
-	Wed,  3 Jul 2024 10:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17CD5176FBD;
+	Wed,  3 Jul 2024 11:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003455; cv=none; b=dBR0yzxQU1ZakgdD7kSp3T6WjSHP11qyj5qEzJ2Sg8voQVMAw1DLQkpZVIRsP8uJlO2lt+xNgHWoJM/5oWZ0gtSlr2HkdvD+jcAYaOJCRwsVcAkMRzbfs/g+iguudc6CBy23QF7WrPoMtae/qjIXjS3COEdK5iVsBPjzX9QU+Yw=
+	t=1720005921; cv=none; b=gtwwzwdvrxSyfqKzc7lWRzC2v0aDnH+tqvjWudAb+jyCt8fu8hqVoIV38rgVYlXBVSHgLnsXVQgDbAqMN7y+lgxxAUNQP/WtR3CZkDQyGNedAlFljubDEXPB+hcbkcY9OIUmbJkx+If1fD/7Ad7U8OXFcKQZy+mVepOwdLl2HzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003455; c=relaxed/simple;
-	bh=GbSw5bygV2mnVSG/ib0Nywb8gv5rSdLZi5+GEc1awSI=;
+	s=arc-20240116; t=1720005921; c=relaxed/simple;
+	bh=yrI4bomtuAJDzklCO5pANTq+T6IgN/ZW6LcaOdvEB8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gA2SvPwxMf1Vo/FlQ4HuSw18iU2UxTwcqZILUzHHMzf/eNdMpnsXy/teG1WrLIncoTR1P2pNlDmN/5+qxjnQfgM1CVGE9kAlT5ZTQaBieCwyhDuzaIgfirFFOg6h93WThDLt/WTbdH3/xpt4ynlr7ywGPGmfwzVzy5VwagpT7qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2Y/9869; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1080FC2BD10;
-	Wed,  3 Jul 2024 10:44:14 +0000 (UTC)
+	 MIME-Version; b=fDLMRg3PSepDAtnLk1gN4+kr2fJLv4Vc/HEvBc6rbPsxcPnBZfrZ85BcSeC6KztIQBfn8SSiMO/7IqFhbLLLLJnKPpcA9RZD9XJb7B6LZEyGeuP30Eyo4jLriQhZWxOtVEF+DDD/3QQf2Geb4IYlPj19Nn6/LPJ+pCo4iVcpiWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0EZKcmU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91034C32781;
+	Wed,  3 Jul 2024 11:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003455;
-	bh=GbSw5bygV2mnVSG/ib0Nywb8gv5rSdLZi5+GEc1awSI=;
+	s=korg; t=1720005921;
+	bh=yrI4bomtuAJDzklCO5pANTq+T6IgN/ZW6LcaOdvEB8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R2Y/9869TpXSPdma+rUIb/aze+w+u7iF4hBmVS3Q1kx/rUCePFeLcsHQ1NBzuaFM0
-	 y2bNyKhWGQK2qvn068SgNUUqK2Ib4cZc0aXNoMY0sSYk7uI7wFhFZx3nAjEd9iY4RD
-	 A1xMHOJKtKshLsR40VOOdJ7StMKDHD4850PhnuKY=
+	b=l0EZKcmU+6jVWWluIPTWu7sYv4XiiKKae6dQzOpWlXUraXhc6hhvkZy8JCvUpeOlj
+	 F4+41f8HJCvfmoGQsnRBy61r5bOWVRBKhUensUNSGiFkpN0uCEFO8btD1sDzd/Xvjh
+	 Z2zW/GTNp/2a5r7CmDoG1x8IjmplaDAI3wWzJeK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	stable@kernel.org
-Subject: [PATCH 4.19 052/139] intel_th: pci: Add Granite Rapids support
+	Nikita Shubin <n.shubin@yadro.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 213/356] dmaengine: ioatdma: Fix kmemleak in ioat_pci_probe()
 Date: Wed,  3 Jul 2024 12:39:09 +0200
-Message-ID: <20240703102832.404928000@linuxfoundation.org>
+Message-ID: <20240703102921.170286741@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+From: Nikita Shubin <n.shubin@yadro.com>
 
-commit e44937889bdf4ecd1f0c25762b7226406b9b7a69 upstream.
+[ Upstream commit 29b7cd255f3628e0d65be33a939d8b5bba10aa62 ]
 
-Add support for the Trace Hub in Granite Rapids.
+If probing fails we end up with leaking ioatdma_device and each
+allocated channel.
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20240429130119.1518073-11-alexander.shishkin@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Following kmemleak easy to reproduce by injecting an error in
+ioat_alloc_chan_resources() when doing ioat_dma_self_test().
+
+unreferenced object 0xffff888014ad5800 (size 1024): [..]
+    [<ffffffff827692ca>] kmemleak_alloc+0x4a/0x80
+    [<ffffffff81430600>] kmalloc_trace+0x270/0x2f0
+    [<ffffffffa000b7d1>] ioat_pci_probe+0xc1/0x1c0 [ioatdma]
+[..]
+
+repeated for each ioatdma channel:
+
+unreferenced object 0xffff8880148e5c00 (size 512): [..]
+    [<ffffffff827692ca>] kmemleak_alloc+0x4a/0x80
+    [<ffffffff81430600>] kmalloc_trace+0x270/0x2f0
+    [<ffffffffa0009641>] ioat_enumerate_channels+0x101/0x2d0 [ioatdma]
+    [<ffffffffa000b266>] ioat3_dma_probe+0x4d6/0x970 [ioatdma]
+    [<ffffffffa000b891>] ioat_pci_probe+0x181/0x1c0 [ioatdma]
+[..]
+
+Fixes: bf453a0a18b2 ("dmaengine: ioat: Support in-use unbind")
+Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20240528-ioatdma-fixes-v2-3-a9f2fbe26ab1@yadro.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/intel_th/pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/dma/ioat/init.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/hwtracing/intel_th/pci.c
-+++ b/drivers/hwtracing/intel_th/pci.c
-@@ -266,6 +266,11 @@ static const struct pci_device_id intel_
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
- 	},
- 	{
-+		/* Granite Rapids */
-+		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x0963),
-+		.driver_data = (kernel_ulong_t)&intel_th_2x,
-+	},
-+	{
- 		/* Rocket Lake CPU */
- 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x4c19),
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
+index ceba1b4083a9d..8a115bafab6ab 100644
+--- a/drivers/dma/ioat/init.c
++++ b/drivers/dma/ioat/init.c
+@@ -1346,6 +1346,7 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	void __iomem * const *iomap;
+ 	struct device *dev = &pdev->dev;
+ 	struct ioatdma_device *device;
++	unsigned int i;
+ 	u8 version;
+ 	int err;
+ 
+@@ -1385,6 +1386,9 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 
+ 	err = ioat3_dma_probe(device, ioat_dca_enabled);
+ 	if (err) {
++		for (i = 0; i < IOAT_MAX_CHANS; i++)
++			kfree(device->idx[i]);
++		kfree(device);
+ 		dev_err(dev, "Intel(R) I/OAT DMA Engine init failed\n");
+ 		return -ENODEV;
+ 	}
+-- 
+2.43.0
+
 
 
 
