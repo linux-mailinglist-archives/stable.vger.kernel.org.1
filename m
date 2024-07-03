@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC7219259CB
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:50:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7421925AB5
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF2E61C22F2F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:50:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C7CC1F22D7B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4451799F;
-	Wed,  3 Jul 2024 10:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B516317277F;
+	Wed,  3 Jul 2024 10:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXG0lYiO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+DqT9Sn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5608F13A27E;
-	Wed,  3 Jul 2024 10:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DA31DFC7;
+	Wed,  3 Jul 2024 10:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003320; cv=none; b=EG6D1cc5L/DCXsKjWzkn1D1p9O8KALS23YkY2qEjgIjI7C+LMUcWdhOCzk8zyabGXW9gRmvWWea0y6KANVjmP/0uGYTwWYYnZ9jlr0yMWmw2Z8BwULyOnGCd+KcquWQ2Zy/XZ7pbzTd6Oj6+u3Ci9W03zwVSdXTAQr56wHvejMo=
+	t=1720003866; cv=none; b=QQxxmKl6MMPPnt8vUdgvW3maWkz6312XSGR8KavJHEI6OVIVP4JfK3bY63seRbd88dQ+As+6YBMj1VMShOWF6b40nziDnUvJq6IAhVKm6Zvrq+/D0T1w63mlXNN3yvlP/HV/x+GHx24eypRfRaQXCZlyDTiUOA54vhW9shHXHvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003320; c=relaxed/simple;
-	bh=kRocdW16zqNHR7246yFwvh9pHA70SEpkB+sRmvkPN80=;
+	s=arc-20240116; t=1720003866; c=relaxed/simple;
+	bh=4q8Hq8s2bZSXASQOQU0IB/KFf2FDbGRuzQJw9/6vn0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DpLZtAsDchF6FZLKy7gVXQzJqWpDC6A+uQheJrvjAfFmg3QQw4zTpfwmuDHqT8SGz+k2iku9YX374ujUk3o1va1KUL82tZ2Is18rwknlmxVy0l+VuFy8Hqo/tOhr28EAKcn3XBTAWeW1JeqhX+xlyRI8gA6A6V0KbLbWoR+xnaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXG0lYiO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E78BC2BD10;
-	Wed,  3 Jul 2024 10:41:59 +0000 (UTC)
+	 MIME-Version; b=lNSRtjU7RHjyn5OQca52Pk8x8IONQoSIReMbgkDZuP9i+M8YxcMbHvGG9C18Y2pfRKzY3CwEJ5xDIlN9qU+REA53w3sf2T7BcW/0Nhps5oY0bYzKphppleGxxs3U5svgIQDALIVyuEiuZlvr04aSkidcl82vntyZfWOen2b7JiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+DqT9Sn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3096C2BD10;
+	Wed,  3 Jul 2024 10:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003319;
-	bh=kRocdW16zqNHR7246yFwvh9pHA70SEpkB+sRmvkPN80=;
+	s=korg; t=1720003866;
+	bh=4q8Hq8s2bZSXASQOQU0IB/KFf2FDbGRuzQJw9/6vn0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uXG0lYiOQ3ssH19MSAxXOzS4lbUIgLFnMZFeaEmIWT9IDLyGHNDTvQB5wvOhZ8PBb
-	 Uf3w7DiZgS9U7WnnabQCVx9So25R1D5M6oI2uny8bx9zP20NT6UK4mNAmBOgtXNnd/
-	 6/agM3Vdq/sbXsBBkWxXr0F7zONUg0RYWkri35iM=
+	b=L+DqT9Sn/hsDehEpvsRm7xpku+gxEICwe4GCTkMkdCG2hxCAd8MRR2ucijgkajUPL
+	 T6m6fAIlAlGzGnDXyeNfyx7xuRxPdoSsIi2tGF2ScrcbEONfSZXP/GPFO8LrNimJ4f
+	 Xbau5SXZjSbDX+YkYDkDXh59kFA3/nkCOx70F4/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 010/139] af_unix: Annotate data-races around sk->sk_state in unix_write_space() and poll().
+	Pierre Tomon <pierretom+12@ik.me>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.4 046/189] xhci: Set correct transferred length for cancelled bulk transfers
 Date: Wed,  3 Jul 2024 12:38:27 +0200
-Message-ID: <20240703102830.827749927@linuxfoundation.org>
+Message-ID: <20240703102843.251251436@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,132 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit eb0718fb3e97ad0d6f4529b810103451c90adf94 ]
+commit f0260589b439e2637ad54a2b25f00a516ef28a57 upstream.
 
-unix_poll() and unix_dgram_poll() read sk->sk_state locklessly and
-calls unix_writable() which also reads sk->sk_state without holding
-unix_state_lock().
+The transferred length is set incorrectly for cancelled bulk
+transfer TDs in case the bulk transfer ring stops on the last transfer
+block with a 'Stop - Length Invalid' completion code.
 
-Let's use READ_ONCE() in unix_poll() and unix_dgram_poll() and pass
-it to unix_writable().
+length essentially ends up being set to the requested length:
+urb->actual_length = urb->transfer_buffer_length
 
-While at it, we remove TCP_SYN_SENT check in unix_dgram_poll() as
-that state does not exist for AF_UNIX socket since the code was added.
+Length for 'Stop - Length Invalid' cases should be the sum of all
+TRB transfer block lengths up to the one the ring stopped on,
+_excluding_ the one stopped on.
 
-Fixes: 1586a5877db9 ("af_unix: do not report POLLOUT on listeners")
-Fixes: 3c73419c09a5 ("af_unix: fix 'poll for write'/ connected DGRAM sockets")
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by always summing up TRB lengths for 'Stop - Length Invalid'
+bulk cases.
+
+This issue was discovered by Alan Stern while debugging
+https://bugzilla.kernel.org/show_bug.cgi?id=218890, but does not
+solve that bug. Issue is older than 4.10 kernel but fix won't apply
+to those due to major reworks in that area.
+
+Tested-by: Pierre Tomon <pierretom+12@ik.me>
+Cc: stable@vger.kernel.org # v4.10+
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240611120610.3264502-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ drivers/usb/host/xhci-ring.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index d363a268f272e..5266908c65ec4 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -454,9 +454,9 @@ static int unix_dgram_peer_wake_me(struct sock *sk, struct sock *other)
- 	return 0;
- }
- 
--static int unix_writable(const struct sock *sk)
-+static int unix_writable(const struct sock *sk, unsigned char state)
- {
--	return sk->sk_state != TCP_LISTEN &&
-+	return state != TCP_LISTEN &&
- 	       (refcount_read(&sk->sk_wmem_alloc) << 2) <= sk->sk_sndbuf;
- }
- 
-@@ -465,7 +465,7 @@ static void unix_write_space(struct sock *sk)
- 	struct socket_wq *wq;
- 
- 	rcu_read_lock();
--	if (unix_writable(sk)) {
-+	if (unix_writable(sk, READ_ONCE(sk->sk_state))) {
- 		wq = rcu_dereference(sk->sk_wq);
- 		if (skwq_has_sleeper(wq))
- 			wake_up_interruptible_sync_poll(&wq->wait,
-@@ -2683,12 +2683,14 @@ static int unix_compat_ioctl(struct socket *sock, unsigned int cmd, unsigned lon
- static __poll_t unix_poll(struct file *file, struct socket *sock, poll_table *wait)
- {
- 	struct sock *sk = sock->sk;
-+	unsigned char state;
- 	__poll_t mask;
- 	u8 shutdown;
- 
- 	sock_poll_wait(file, sock, wait);
- 	mask = 0;
- 	shutdown = READ_ONCE(sk->sk_shutdown);
-+	state = READ_ONCE(sk->sk_state);
- 
- 	/* exceptional events? */
- 	if (sk->sk_err)
-@@ -2704,14 +2706,14 @@ static __poll_t unix_poll(struct file *file, struct socket *sock, poll_table *wa
- 
- 	/* Connection-based need to check for termination and startup */
- 	if ((sk->sk_type == SOCK_STREAM || sk->sk_type == SOCK_SEQPACKET) &&
--	    sk->sk_state == TCP_CLOSE)
-+	    state == TCP_CLOSE)
- 		mask |= EPOLLHUP;
- 
- 	/*
- 	 * we set writable also when the other side has shut down the
- 	 * connection. This prevents stuck sockets.
- 	 */
--	if (unix_writable(sk))
-+	if (unix_writable(sk, state))
- 		mask |= EPOLLOUT | EPOLLWRNORM | EPOLLWRBAND;
- 
- 	return mask;
-@@ -2722,12 +2724,14 @@ static __poll_t unix_dgram_poll(struct file *file, struct socket *sock,
- {
- 	struct sock *sk = sock->sk, *other;
- 	unsigned int writable;
-+	unsigned char state;
- 	__poll_t mask;
- 	u8 shutdown;
- 
- 	sock_poll_wait(file, sock, wait);
- 	mask = 0;
- 	shutdown = READ_ONCE(sk->sk_shutdown);
-+	state = READ_ONCE(sk->sk_state);
- 
- 	/* exceptional events? */
- 	if (sk->sk_err || !skb_queue_empty_lockless(&sk->sk_error_queue))
-@@ -2744,19 +2748,14 @@ static __poll_t unix_dgram_poll(struct file *file, struct socket *sock,
- 		mask |= EPOLLIN | EPOLLRDNORM;
- 
- 	/* Connection-based need to check for termination and startup */
--	if (sk->sk_type == SOCK_SEQPACKET) {
--		if (sk->sk_state == TCP_CLOSE)
--			mask |= EPOLLHUP;
--		/* connection hasn't started yet? */
--		if (sk->sk_state == TCP_SYN_SENT)
--			return mask;
--	}
-+	if (sk->sk_type == SOCK_SEQPACKET && state == TCP_CLOSE)
-+		mask |= EPOLLHUP;
- 
- 	/* No write status requested, avoid expensive OUT tests. */
- 	if (!(poll_requested_events(wait) & (EPOLLWRBAND|EPOLLWRNORM|EPOLLOUT)))
- 		return mask;
- 
--	writable = unix_writable(sk);
-+	writable = unix_writable(sk, state);
- 	if (writable) {
- 		unix_state_lock(sk);
- 
--- 
-2.43.0
-
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -2343,9 +2343,8 @@ static int process_bulk_intr_td(struct x
+ 		goto finish_td;
+ 	case COMP_STOPPED_LENGTH_INVALID:
+ 		/* stopped on ep trb with invalid length, exclude it */
+-		ep_trb_len	= 0;
+-		remaining	= 0;
+-		break;
++		td->urb->actual_length = sum_trb_lengths(xhci, ep_ring, ep_trb);
++		goto finish_td;
+ 	case COMP_USB_TRANSACTION_ERROR:
+ 		if (xhci->quirks & XHCI_NO_SOFT_RETRY ||
+ 		    (ep_ring->err_count++ > MAX_SOFT_RETRY) ||
 
 
 
