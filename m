@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D4F925DAF
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF04A925ABC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F45DB264A5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FA291C21449
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EACC1741F9;
-	Wed,  3 Jul 2024 11:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E1F17C204;
+	Wed,  3 Jul 2024 10:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0RmfIBMT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXEByKiw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9A013E024;
-	Wed,  3 Jul 2024 11:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48777142E8E;
+	Wed,  3 Jul 2024 10:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005656; cv=none; b=mwxcDrXgrbdWfmoZ+pZJtXi+4yenYfXANyXZQkzkATznngdsyOU71qLRKnCMBYuDd9EBBNqLLt9O9RnmEj5nvwFvSzu1PBVqWffks7KFEftxunwB7THkdt2XqLGVvnqx12O6IFqdtmjap57nvRg5qR2KLObIjlA8n6sd6lB9PsE=
+	t=1720003908; cv=none; b=EYTj2q60qCDUp53ljiMC0RXhFBv47dSvnI7a8CD7PXPabHcWlIRkEeSOV6svwrUTUYlYLOylbMlfKfn5t4V67cCazlb7endcrp9T0bVFp7G3UfEtrLIXIgR2NPHoABNP6g1HARalIpgOEOku9stSGZUX9GFFfvSOSWtJw+bb8no=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005656; c=relaxed/simple;
-	bh=TK76AAZ4q6YmKVG8dAr995hacdE8gGU6380W2PRBQ7k=;
+	s=arc-20240116; t=1720003908; c=relaxed/simple;
+	bh=ejpKI254iS63CXCCUdPEvgSzFl5KBwKaiCKziIkKYZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mQo7CsDjpPmTpUWTERGy4rMvYpXS4nImzyyvpYWbSr9wfpPj6f4ZiYtq6mBlXtQrtULsQLXJ9Of25ZL5SHXErUnHADYLmBWMy/FdtodegXmySwIFZug6/J6OHUbpj48IaTwY0iPl5Y/oqQt7uu6CuMK+Q4WDbsWapPXUeuHe/E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0RmfIBMT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B681CC2BD10;
-	Wed,  3 Jul 2024 11:20:55 +0000 (UTC)
+	 MIME-Version; b=hAzdd5i80Zv56SPgLyWulBnbDFOrb9w1Pq8HH64t5nPeY71CunqkgQ5VZ2THSfsPJxwFDZxWV/uuV9I6PY/ajU04GA8kMIjEoSH0XKPFavVWJRvwBKbx/sKzA2j30ZBQKivZ+csTPICQTCAzabslCV6zrybyG9asqS9+K9uIVRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXEByKiw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8974C2BD10;
+	Wed,  3 Jul 2024 10:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005656;
-	bh=TK76AAZ4q6YmKVG8dAr995hacdE8gGU6380W2PRBQ7k=;
+	s=korg; t=1720003908;
+	bh=ejpKI254iS63CXCCUdPEvgSzFl5KBwKaiCKziIkKYZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0RmfIBMTsy+HDU9q4L7I9jQiSgOj6iZ6yp8NfpoMh3DCtKXDtlKce3n/AP7cIABj5
-	 RN9YwcyKypabUPKh4zyzt6QQRju1+GtWuLdU/rxPMpl0TB/eSIvy/4cqgbwmglgc4B
-	 OlFMyOYwTvcQ/JwKiw0FzpTUyw/B16sZrEqPSe18=
+	b=nXEByKiw0cd3P/kWq3FarnF70jwggGcPpT2s0v8bHRqu8hC3hN+Il33LufnXd3r9V
+	 xMGC6wZI74AUUedf9KiGyLi/l2f/I8e6qBG3Uy9VgxfAJI7LR26LfebptmKIqSYhVz
+	 UMnWfhXyoOQ28gX+f4kLihtl28Ocqw51Poex+fTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Peter Ujfalusi <peter.ujfalusi@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 153/356] rcutorture: Make stall-tasks directly exit when rcutorture tests end
-Date: Wed,  3 Jul 2024 12:38:09 +0200
-Message-ID: <20240703102918.891631297@linuxfoundation.org>
+Subject: [PATCH 5.4 029/189] ASoC: ti: davinci-mcasp: Handle missing required DT properties
+Date: Wed,  3 Jul 2024 12:38:10 +0200
+Message-ID: <20240703102842.607094279@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +62,198 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+From: Peter Ujfalusi <peter.ujfalusi@ti.com>
 
-[ Upstream commit 431315a563015f259b28e34c5842f6166439e969 ]
+[ Upstream commit 1b4fb70e5b28a477478417a7958e0228460ffe68 ]
 
-When the rcutorture tests start to exit, the rcu_torture_cleanup() is
-invoked to stop kthreads and release resources, if the stall-task
-kthreads exist, cpu-stall has started and the rcutorture.stall_cpu
-is set to a larger value, the rcu_torture_cleanup() will be blocked
-for a long time and the hung-task may occur, this commit therefore
-add kthread_should_stop() to the loop of cpu-stall operation, when
-rcutorture tests ends, no need to wait for cpu-stall to end, exit
-directly.
+McASP needs three required properties to be usable for audio:
+op-mode, tdm-slots and the serial-dir array.
 
-Use the following command to test:
+Instead of probing the driver even without the needed information we should
+make sure that all the parameters are provided for operation.
 
-insmod rcutorture.ko torture_type=srcu fwd_progress=0 stat_interval=4
-stall_cpu_block=1 stall_cpu=200 stall_cpu_holdoff=10 read_exit_burst=0
-object_debug=1
-rmmod rcutorture
+The fact that McASP can act as a GPIO controller for it's pins complicates
+this a bit, but as a general rule we can:
+- we fail the probe if McASP is not configured to be used as gpiochip
+- we will not register the DAI (and PCM) if gpiochip is defined
 
-[15361.918610] INFO: task rmmod:878 blocked for more than 122 seconds.
-[15361.918613]       Tainted: G        W
-6.8.0-rc2-yoctodev-standard+ #25
-[15361.918615] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
-disables this message.
-[15361.918616] task:rmmod           state:D stack:0     pid:878
-tgid:878   ppid:773    flags:0x00004002
-[15361.918621] Call Trace:
-[15361.918623]  <TASK>
-[15361.918626]  __schedule+0xc0d/0x28f0
-[15361.918631]  ? __pfx___schedule+0x10/0x10
-[15361.918635]  ? rcu_is_watching+0x19/0xb0
-[15361.918638]  ? schedule+0x1f6/0x290
-[15361.918642]  ? __pfx_lock_release+0x10/0x10
-[15361.918645]  ? schedule+0xc9/0x290
-[15361.918648]  ? schedule+0xc9/0x290
-[15361.918653]  ? trace_preempt_off+0x54/0x100
-[15361.918657]  ? schedule+0xc9/0x290
-[15361.918661]  schedule+0xd0/0x290
-[15361.918665]  schedule_timeout+0x56d/0x7d0
-[15361.918669]  ? debug_smp_processor_id+0x1b/0x30
-[15361.918672]  ? rcu_is_watching+0x19/0xb0
-[15361.918676]  ? __pfx_schedule_timeout+0x10/0x10
-[15361.918679]  ? debug_smp_processor_id+0x1b/0x30
-[15361.918683]  ? rcu_is_watching+0x19/0xb0
-[15361.918686]  ? wait_for_completion+0x179/0x4c0
-[15361.918690]  ? __pfx_lock_release+0x10/0x10
-[15361.918693]  ? __kasan_check_write+0x18/0x20
-[15361.918696]  ? wait_for_completion+0x9d/0x4c0
-[15361.918700]  ? _raw_spin_unlock_irq+0x36/0x50
-[15361.918703]  ? wait_for_completion+0x179/0x4c0
-[15361.918707]  ? _raw_spin_unlock_irq+0x36/0x50
-[15361.918710]  ? wait_for_completion+0x179/0x4c0
-[15361.918714]  ? trace_preempt_on+0x54/0x100
-[15361.918718]  ? wait_for_completion+0x179/0x4c0
-[15361.918723]  wait_for_completion+0x181/0x4c0
-[15361.918728]  ? __pfx_wait_for_completion+0x10/0x10
-[15361.918738]  kthread_stop+0x152/0x470
-[15361.918742]  _torture_stop_kthread+0x44/0xc0 [torture
-7af7f9cbba28271a10503b653f9e05d518fbc8c3]
-[15361.918752]  rcu_torture_cleanup+0x2ac/0xe90 [rcutorture
-f2cb1f556ee7956270927183c4c2c7749a336529]
-[15361.918766]  ? __pfx_rcu_torture_cleanup+0x10/0x10 [rcutorture
-f2cb1f556ee7956270927183c4c2c7749a336529]
-[15361.918777]  ? __kasan_check_write+0x18/0x20
-[15361.918781]  ? __mutex_unlock_slowpath+0x17c/0x670
-[15361.918789]  ? __might_fault+0xcd/0x180
-[15361.918793]  ? find_module_all+0x104/0x1d0
-[15361.918799]  __x64_sys_delete_module+0x2a4/0x3f0
-[15361.918803]  ? __pfx___x64_sys_delete_module+0x10/0x10
-[15361.918807]  ? syscall_exit_to_user_mode+0x149/0x280
-
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Link: https://lore.kernel.org/r/20201106072551.689-5-peter.ujfalusi@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: d18ca8635db2 ("ASoC: ti: davinci-mcasp: Fix race condition during probe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/ti/davinci-mcasp.c | 77 +++++++++++++++++++++++++++---------
+ 1 file changed, 58 insertions(+), 19 deletions(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 82c6046db8a42..e9323cc5da73b 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -2061,8 +2061,8 @@ static int rcu_torture_stall(void *args)
- 			preempt_disable();
- 		pr_alert("%s start on CPU %d.\n",
- 			  __func__, raw_smp_processor_id());
--		while (ULONG_CMP_LT((unsigned long)ktime_get_seconds(),
--				    stop_at))
-+		while (ULONG_CMP_LT((unsigned long)ktime_get_seconds(), stop_at) &&
-+		       !kthread_should_stop())
- 			if (stall_cpu_block) {
- #ifdef CONFIG_PREEMPTION
- 				preempt_schedule();
+diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
+index 637c26cad2e6e..633cd7fd3dcf3 100644
+--- a/sound/soc/ti/davinci-mcasp.c
++++ b/sound/soc/ti/davinci-mcasp.c
+@@ -82,6 +82,9 @@ struct davinci_mcasp {
+ 	struct snd_pcm_substream *substreams[2];
+ 	unsigned int dai_fmt;
+ 
++	/* Audio can not be enabled due to missing parameter(s) */
++	bool	missing_audio_param;
++
+ 	/* McASP specific data */
+ 	int	tdm_slots;
+ 	u32	tdm_mask[2];
+@@ -1723,6 +1726,17 @@ static int mcasp_reparent_fck(struct platform_device *pdev)
+ 	return ret;
+ }
+ 
++static bool davinci_mcasp_have_gpiochip(struct davinci_mcasp *mcasp)
++{
++#ifdef CONFIG_OF_GPIO
++	if (mcasp->dev->of_node &&
++	    of_property_read_bool(mcasp->dev->of_node, "gpio-controller"))
++		return true;
++#endif
++
++	return false;
++}
++
+ static int davinci_mcasp_get_config(struct davinci_mcasp *mcasp,
+ 				    struct platform_device *pdev)
+ {
+@@ -1747,8 +1761,12 @@ static int davinci_mcasp_get_config(struct davinci_mcasp *mcasp,
+ 		return -EINVAL;
+ 	}
+ 
+-	if (of_property_read_u32(np, "op-mode", &val) == 0)
++	if (of_property_read_u32(np, "op-mode", &val) == 0) {
+ 		pdata->op_mode = val;
++	} else {
++		mcasp->missing_audio_param = true;
++		goto out;
++	}
+ 
+ 	if (of_property_read_u32(np, "tdm-slots", &val) == 0) {
+ 		if (val < 2 || val > 32) {
+@@ -1757,6 +1775,9 @@ static int davinci_mcasp_get_config(struct davinci_mcasp *mcasp,
+ 		}
+ 
+ 		pdata->tdm_slots = val;
++	} else if (pdata->op_mode == DAVINCI_MCASP_IIS_MODE) {
++		mcasp->missing_audio_param = true;
++		goto out;
+ 	}
+ 
+ 	of_serial_dir32 = of_get_property(np, "serial-dir", &val);
+@@ -1773,6 +1794,9 @@ static int davinci_mcasp_get_config(struct davinci_mcasp *mcasp,
+ 
+ 		pdata->num_serializer = val;
+ 		pdata->serial_dir = of_serial_dir;
++	} else {
++		mcasp->missing_audio_param = true;
++		goto out;
+ 	}
+ 
+ 	if (of_property_read_u32(np, "tx-num-evt", &val) == 0)
+@@ -1798,6 +1822,16 @@ static int davinci_mcasp_get_config(struct davinci_mcasp *mcasp,
+ out:
+ 	mcasp->pdata = pdata;
+ 
++	if (mcasp->missing_audio_param) {
++		if (davinci_mcasp_have_gpiochip(mcasp)) {
++			dev_dbg(&pdev->dev, "Missing DT parameter(s) for audio\n");
++			return 0;
++		}
++
++		dev_err(&pdev->dev, "Insufficient DT parameter(s)\n");
++		return -ENODEV;
++	}
++
+ 	mcasp->op_mode = pdata->op_mode;
+ 	/* sanity check for tdm slots parameter */
+ 	if (mcasp->op_mode == DAVINCI_MCASP_IIS_MODE) {
+@@ -2044,7 +2078,7 @@ static const struct gpio_chip davinci_mcasp_template_chip = {
+ 
+ static int davinci_mcasp_init_gpiochip(struct davinci_mcasp *mcasp)
+ {
+-	if (!of_property_read_bool(mcasp->dev->of_node, "gpio-controller"))
++	if (!davinci_mcasp_have_gpiochip(mcasp))
+ 		return 0;
+ 
+ 	mcasp->gpio_chip = davinci_mcasp_template_chip;
+@@ -2083,11 +2117,6 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
+ 	if (!mcasp)
+ 		return	-ENOMEM;
+ 
+-	mcasp->dev = &pdev->dev;
+-	ret = davinci_mcasp_get_config(mcasp, pdev);
+-	if (ret)
+-		return ret;
+-
+ 	mem = platform_get_resource_byname(pdev, IORESOURCE_MEM, "mpu");
+ 	if (!mem) {
+ 		dev_warn(mcasp->dev,
+@@ -2103,8 +2132,23 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
+ 	if (IS_ERR(mcasp->base))
+ 		return PTR_ERR(mcasp->base);
+ 
++	dev_set_drvdata(&pdev->dev, mcasp);
+ 	pm_runtime_enable(&pdev->dev);
+ 
++	mcasp->dev = &pdev->dev;
++	ret = davinci_mcasp_get_config(mcasp, pdev);
++	if (ret)
++		goto err;
++
++	/* All PINS as McASP */
++	pm_runtime_get_sync(mcasp->dev);
++	mcasp_set_reg(mcasp, DAVINCI_MCASP_PFUNC_REG, 0x00000000);
++	pm_runtime_put(mcasp->dev);
++
++	/* Skip audio related setup code if the configuration is not adequat */
++	if (mcasp->missing_audio_param)
++		goto no_audio;
++
+ 	irq = platform_get_irq_byname_optional(pdev, "common");
+ 	if (irq > 0) {
+ 		irq_name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s_common",
+@@ -2224,19 +2268,8 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err;
+ 
+-	dev_set_drvdata(&pdev->dev, mcasp);
+-
+ 	mcasp_reparent_fck(pdev);
+ 
+-	/* All PINS as McASP */
+-	pm_runtime_get_sync(mcasp->dev);
+-	mcasp_set_reg(mcasp, DAVINCI_MCASP_PFUNC_REG, 0x00000000);
+-	pm_runtime_put(mcasp->dev);
+-
+-	ret = davinci_mcasp_init_gpiochip(mcasp);
+-	if (ret)
+-		goto err;
+-
+ 	ret = devm_snd_soc_register_component(&pdev->dev, &davinci_mcasp_component,
+ 					      &davinci_mcasp_dai[mcasp->op_mode], 1);
+ 
+@@ -2263,8 +2296,14 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
+ 		goto err;
+ 	}
+ 
+-	return 0;
++no_audio:
++	ret = davinci_mcasp_init_gpiochip(mcasp);
++	if (ret) {
++		dev_err(&pdev->dev, "gpiochip registration failed: %d\n", ret);
++		goto err;
++	}
+ 
++	return 0;
+ err:
+ 	pm_runtime_disable(&pdev->dev);
+ 	return ret;
 -- 
 2.43.0
 
