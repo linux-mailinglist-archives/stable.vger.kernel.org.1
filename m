@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-57630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAB3D925D4A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B2B0925F0B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0916C1C21BE1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B19DB37236
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A5A17DE12;
-	Wed,  3 Jul 2024 11:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0F018FC81;
+	Wed,  3 Jul 2024 11:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hlfAHHNc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxtGXX7C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4826417DA39;
-	Wed,  3 Jul 2024 11:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE3716C688;
+	Wed,  3 Jul 2024 11:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005461; cv=none; b=MdLzCUPBWXnwR3zFv4gdrz09pDKE9ZPxnMhW4dtx+8/N2ND5NrpQWcCzkchDsd9p3/RxyhvRDe2A/whmiDaxFflEEOYQVUxlGEenoDnfROYunVU+/X+07yPS+uMt7dFnRak96/S89xJLOtk6miPBfH/oPWXGYn8OZ2PT8O+WcRY=
+	t=1720004446; cv=none; b=bCBy17CwtY9yUM7hM6WbSepzr3Oh7zhtVG77Yxy7O7lQs6/tSSupSKuRpq+FFXxsFl7sNU14x0YtHDAk//plMX3lEvxAMeU4//PbsjqIXfGShli1sGHmgysp9VoYIPMSpLQZg1nz+IGon4dHknWLMqN3cbAnjQcOkpb6sKRAkWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005461; c=relaxed/simple;
-	bh=cB1L/VNbPEzpHSt0lfqjzXVe+3ZJwqshXREo/p8TJoA=;
+	s=arc-20240116; t=1720004446; c=relaxed/simple;
+	bh=ZJYJjL0x332yc3syo66bD8Tgdw7YU5kfxzapIAMqzhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TExTtjPzHe/dHnrCL08+P+gTupLGViIpS44Ugq81mUXJPT7Ks9EdG4rQV+bBihG9A8F3c/qiOHvn7/Y+uWgfZfylu786GnH1avr6f1YFdgIBl0x9VQVRx9Yjrb/LbByekG+MIx+iJPnCSYW5u0FByAHHgDMTJ8kMH9Sm9EnAOTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hlfAHHNc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83BE0C4AF0B;
-	Wed,  3 Jul 2024 11:17:40 +0000 (UTC)
+	 MIME-Version; b=MQL2rxdjOfrA8+Lj/zOgajCjpzd0yitVPwgJrgoO3LUZw5nugUwdXgin9KwEyKjMNIHM3WVVzpaMKUMQKb6ot7dniAhiudbkJiDaP4dbLym0EZ/4Wn3XLYmwyzCWHxgR30Cqg4/nVwqXkde6dJkBEm6P/pbZrDiWh4wZ1csd108=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxtGXX7C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55944C2BD10;
+	Wed,  3 Jul 2024 11:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005460;
-	bh=cB1L/VNbPEzpHSt0lfqjzXVe+3ZJwqshXREo/p8TJoA=;
+	s=korg; t=1720004446;
+	bh=ZJYJjL0x332yc3syo66bD8Tgdw7YU5kfxzapIAMqzhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hlfAHHNc+IyUfS4zZIcDoCMvj3Uy6uFX/b2aDO1H3JOCdeqrzE7k7BRAnrFASpq/T
-	 02yQl+wr9JUjo+N3Fa7Ym76/fZsVBi+a2ZrJuG3LOcx6WmOSRk+yPCl8BIw2EWvNMf
-	 5EgbucQ/oCGfaefFqCQFFdV9wqR43etje/J6H634=
+	b=TxtGXX7C/Y8Xg+h23QJqWJrrvZ1V575j0swZ3oXzeehJMolTCxq/SwjaFzBJhasBu
+	 Q3IsMFa0PMfRfH/zFnZdJsL7O9fl2nWnKVL9TjdYit2QoiQWlRUR97WH4AgYd3LoYo
+	 KGFlWhLY6eL60JYUhKNzXgH6KgfRDKXOuZPP5+zQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregor Herburger <gregor.herburger@tq-group.com>,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 089/356] gpio: tqmx86: fix typo in Kconfig label
+	Alan Stern <stern@rowland.harvard.edu>,
+	syzbot+5f996b83575ef4058638@syzkaller.appspotmail.com,
+	syzbot+1b2abad17596ad03dcff@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 044/290] USB: class: cdc-wdm: Fix CPU lockup caused by excessive log messages
 Date: Wed,  3 Jul 2024 12:37:05 +0200
-Message-ID: <20240703102916.468953293@linuxfoundation.org>
+Message-ID: <20240703102905.865309800@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregor Herburger <gregor.herburger@tq-group.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit 8c219e52ca4d9a67cd6a7074e91bf29b55edc075 ]
+commit 22f00812862564b314784167a89f27b444f82a46 upstream.
 
-Fix description for GPIO_TQMX86 from QTMX86 to TQMx86.
+The syzbot fuzzer found that the interrupt-URB completion callback in
+the cdc-wdm driver was taking too long, and the driver's immediate
+resubmission of interrupt URBs with -EPROTO status combined with the
+dummy-hcd emulation to cause a CPU lockup:
 
-Fixes: b868db94a6a7 ("gpio: tqmx86: Add GPIO from for this IO controller")
-Signed-off-by: Gregor Herburger <gregor.herburger@tq-group.com>
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/e0e38c9944ad6d281d9a662a45d289b88edc808e.1717063994.git.matthias.schiffer@ew.tq-group.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+cdc_wdm 1-1:1.0: nonzero urb status received: -71
+cdc_wdm 1-1:1.0: wdm_int_callback - 0 bytes
+watchdog: BUG: soft lockup - CPU#0 stuck for 26s! [syz-executor782:6625]
+CPU#0 Utilization every 4s during lockup:
+	#1:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
+	#2:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
+	#3:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
+	#4:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
+	#5:  98% system,	  1% softirq,	  3% hardirq,	  0% idle
+Modules linked in:
+irq event stamp: 73096
+hardirqs last  enabled at (73095): [<ffff80008037bc00>] console_emit_next_record kernel/printk/printk.c:2935 [inline]
+hardirqs last  enabled at (73095): [<ffff80008037bc00>] console_flush_all+0x650/0xb74 kernel/printk/printk.c:2994
+hardirqs last disabled at (73096): [<ffff80008af10b00>] __el1_irq arch/arm64/kernel/entry-common.c:533 [inline]
+hardirqs last disabled at (73096): [<ffff80008af10b00>] el1_interrupt+0x24/0x68 arch/arm64/kernel/entry-common.c:551
+softirqs last  enabled at (73048): [<ffff8000801ea530>] softirq_handle_end kernel/softirq.c:400 [inline]
+softirqs last  enabled at (73048): [<ffff8000801ea530>] handle_softirqs+0xa60/0xc34 kernel/softirq.c:582
+softirqs last disabled at (73043): [<ffff800080020de8>] __do_softirq+0x14/0x20 kernel/softirq.c:588
+CPU: 0 PID: 6625 Comm: syz-executor782 Tainted: G        W          6.10.0-rc2-syzkaller-g8867bbd4a056 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
+
+Testing showed that the problem did not occur if the two error
+messages -- the first two lines above -- were removed; apparently adding
+material to the kernel log takes a surprisingly large amount of time.
+
+In any case, the best approach for preventing these lockups and to
+avoid spamming the log with thousands of error messages per second is
+to ratelimit the two dev_err() calls.  Therefore we replace them with
+dev_err_ratelimited().
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Suggested-by: Greg KH <gregkh@linuxfoundation.org>
+Reported-and-tested-by: syzbot+5f996b83575ef4058638@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/00000000000073d54b061a6a1c65@google.com/
+Reported-and-tested-by: syzbot+1b2abad17596ad03dcff@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/000000000000f45085061aa9b37e@google.com/
+Fixes: 9908a32e94de ("USB: remove err() macro from usb class drivers")
+Link: https://lore.kernel.org/linux-usb/40dfa45b-5f21-4eef-a8c1-51a2f320e267@rowland.harvard.edu/
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/29855215-52f5-4385-b058-91f42c2bee18@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/class/cdc-wdm.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 7b9def6b10047..a36afb47a6334 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -1396,7 +1396,7 @@ config GPIO_TPS68470
- 	  drivers are loaded.
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -252,14 +252,14 @@ static void wdm_int_callback(struct urb
+ 			dev_err(&desc->intf->dev, "Stall on int endpoint\n");
+ 			goto sw; /* halt is cleared in work */
+ 		default:
+-			dev_err(&desc->intf->dev,
++			dev_err_ratelimited(&desc->intf->dev,
+ 				"nonzero urb status received: %d\n", status);
+ 			break;
+ 		}
+ 	}
  
- config GPIO_TQMX86
--	tristate "TQ-Systems QTMX86 GPIO"
-+	tristate "TQ-Systems TQMx86 GPIO"
- 	depends on MFD_TQMX86 || COMPILE_TEST
- 	depends on HAS_IOPORT_MAP
- 	select GPIOLIB_IRQCHIP
--- 
-2.43.0
-
+ 	if (urb->actual_length < sizeof(struct usb_cdc_notification)) {
+-		dev_err(&desc->intf->dev, "wdm_int_callback - %d bytes\n",
++		dev_err_ratelimited(&desc->intf->dev, "wdm_int_callback - %d bytes\n",
+ 			urb->actual_length);
+ 		goto exit;
+ 	}
 
 
 
