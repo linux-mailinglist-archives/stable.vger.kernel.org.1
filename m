@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-57336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CBC4925C2F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:15:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A6D925F70
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:59:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B50D629A502
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8680B2DDFC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19AD317966D;
-	Wed,  3 Jul 2024 11:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904981993B6;
+	Wed,  3 Jul 2024 10:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="COKBGojV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdmqMOs5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBB4178CFA;
-	Wed,  3 Jul 2024 11:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8E11993A5;
+	Wed,  3 Jul 2024 10:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004572; cv=none; b=UJDsR7tyWJvyjcBDrUcwG+HM+knYsMuZvObHwl441UwQII9cvglFL7F9SVI3V0UMlWaFVZXasUrK6z3gjlL+vfirzOjCFo47EQ9MSCC6Uqkyk88yfUHtidYIBGoANLOBMV3Ga+k6J7T041CPbQR8hKM8mlKOGaRLKJ9HTksWHgo=
+	t=1720003792; cv=none; b=DxnCJSU0257GWV4Sz+1hCjiUbM4YVIsB57LdYjz4ncO34PeQLTDQtlVmrhdwDzl+4ohmrBzocgL5AkWTo1uJddH2t9o5SBphUz+GF/Mq6tN3nTxlbiSgt5sxXBivseWdaBDp29rFp5n7F3/WmGufl9FixsHm4oVPfXqiG47q1jM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004572; c=relaxed/simple;
-	bh=cwX9FXjtTpNlOgvtE0rIV7HmR2PIRMSgwlxAr3ih3Cg=;
+	s=arc-20240116; t=1720003792; c=relaxed/simple;
+	bh=f1zN087hzp5qzVVBITQmjuOaL/ZGytVMP3IfpQMV/6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z52LW+86INP19dt1nuKUyKx/WRlgr92G0lQdDSaLJ/DsLzJFAZgdtIDsFg2jeNSLCXSUvxwVt5KX9EOcRC4RCE9AJ3sBSHGdYIQuZVnRefkle88660zQS1ki/wybZDPGUd6FdLIrxC/1efeIR8BP4VKkTI+eCqRlkYLhHgbJEec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=COKBGojV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53C5BC4AF0B;
-	Wed,  3 Jul 2024 11:02:52 +0000 (UTC)
+	 MIME-Version; b=Rm/UiZghYIdxRRUCoo9iv9z0HyTnO8ktVxZbhVF5pnBSXFyw8zG3kfK+0NFNBVAo7dWHpSDjsAtSNAVwtzWCf1Dm0az0nfZV/sSz/2tBOX5L4ckYMY/Y2T+zTbp/vECn7pUnsR7m3btFBIasb746GBEb696/EAH1kemhUSvDzjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdmqMOs5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DFDC2BD10;
+	Wed,  3 Jul 2024 10:49:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004572;
-	bh=cwX9FXjtTpNlOgvtE0rIV7HmR2PIRMSgwlxAr3ih3Cg=;
+	s=korg; t=1720003792;
+	bh=f1zN087hzp5qzVVBITQmjuOaL/ZGytVMP3IfpQMV/6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=COKBGojVkZJ+sbqlL90OWWC1Cy8Zx73p9aTUBb7JA11ysXAp/eRQlcBuvUBFa90Df
-	 xhYPMWRBdlldA14rMQ9Gwtz5ldgSkWYQ11eICKLkFVGi9JuDKjk0UJH20YhGkwN1bL
-	 Lk9oSOG3a7YJClaf9E4faXGtHglRnKRmDiW4TFhI=
+	b=fdmqMOs5QKPwGhKN7l4BPtg2VSpT7oDlEN32CkmwFRFAxfbSOnD1N0VtaRWxF/QEo
+	 2/tYFBpr+jIPFKp9JtkHgOm7sVi1w/iVVTq1BtUNpd/k7dqVsrm9eLcwnNN6XlFMJR
+	 OLoHMcK4iH0z53L++C+0FPryflYsG+bhAOqZ3o6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Nuno Sa <nuno.sa@analog.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 085/290] dmaengine: axi-dmac: fix possible race in remove()
+	Shahar S Matityahu <shahar.s.matityahu@intel.com>,
+	Luciano Coelho <luciano.coelho@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 005/189] wifi: iwlwifi: dbg_ini: move iwl_dbg_tlv_free outside of debugfs ifdef
 Date: Wed,  3 Jul 2024 12:37:46 +0200
-Message-ID: <20240703102907.405338379@linuxfoundation.org>
+Message-ID: <20240703102841.703698477@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
 
-commit 1bc31444209c8efae98cb78818131950d9a6f4d6 upstream.
+[ Upstream commit 87821b67dea87addbc4ab093ba752753b002176a ]
 
-We need to first free the IRQ before calling of_dma_controller_free().
-Otherwise we could get an interrupt and schedule a tasklet while
-removing the DMA controller.
+The driver should call iwl_dbg_tlv_free even if debugfs is not defined
+since ini mode does not depend on debugfs ifdef.
 
-Fixes: 0e3b67b348b8 ("dmaengine: Add support for the Analog Devices AXI-DMAC DMA controller")
-Cc: stable@kernel.org
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20240328-axi-dmac-devm-probe-v3-1-523c0176df70@analog.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 68f6f492c4fa ("iwlwifi: trans: support loading ini TLVs from external file")
+Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240510170500.c8e3723f55b0.I5e805732b0be31ee6b83c642ec652a34e974ff10@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dma-axi-dmac.c |    2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/dma/dma-axi-dmac.c
-+++ b/drivers/dma/dma-axi-dmac.c
-@@ -1020,8 +1020,8 @@ static int axi_dmac_remove(struct platfo
- {
- 	struct axi_dmac *dmac = platform_get_drvdata(pdev);
- 
--	of_dma_controller_free(pdev->dev.of_node);
- 	free_irq(dmac->irq, dmac);
-+	of_dma_controller_free(pdev->dev.of_node);
- 	tasklet_kill(&dmac->chan.vchan.task);
- 	dma_async_device_unregister(&dmac->dma_dev);
- 	clk_disable_unprepare(dmac->clk);
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index 1848b957dc5cd..9e63230da1ec0 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -1669,8 +1669,8 @@ struct iwl_drv *iwl_drv_start(struct iwl_trans *trans)
+ err_fw:
+ #ifdef CONFIG_IWLWIFI_DEBUGFS
+ 	debugfs_remove_recursive(drv->dbgfs_drv);
+-	iwl_dbg_tlv_free(drv->trans);
+ #endif
++	iwl_dbg_tlv_free(drv->trans);
+ 	kfree(drv);
+ err:
+ 	return ERR_PTR(ret);
+-- 
+2.43.0
+
 
 
 
