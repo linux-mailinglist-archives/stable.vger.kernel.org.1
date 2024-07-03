@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2AE9925F1F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:51:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28A70925EE8
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:43:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7053BB34F11
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:32:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A150EB33F37
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62AB4194AD9;
-	Wed,  3 Jul 2024 11:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F3E181B8D;
+	Wed,  3 Jul 2024 10:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLuUKdi/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPayvyMz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21876174EF3;
-	Wed,  3 Jul 2024 11:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2737173336;
+	Wed,  3 Jul 2024 10:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005872; cv=none; b=dTzWHkVnGTfCyjjN1A0mCnQWfLzKjfNtyCUqJLQDv9OSB/UNy48WeSMS9VkKTuT8OAom0LkvcITOuypH3j0P/3jtBcXlVWPg+q/hHQ89iHuQDpS4qipm+++RDH0iYFxkhJ5TWbxk13hcNikLtcotYpAC1zwvF7hHGPa6YZ4ra8s=
+	t=1720004026; cv=none; b=nD0NuynmVLAo9pYtuNqKE7XHLFIOxaqXQt06ax4wCFkzPmA+DvI8D66GNeP1USBNHfUVW6DBgTz2+CB2NbRXnY3ZPfUmVBMefTZ4fC8wyCLTh3/dCMXRnK+X2gf/iWIOmXqHa6mqw/gZEuHx23m8dSlkR1wT15gQSVBUxscEQHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005872; c=relaxed/simple;
-	bh=sMFZstKMMmSmlTvCsgRZXYkQ3JfI56qQbvqHjN6Tp7E=;
+	s=arc-20240116; t=1720004026; c=relaxed/simple;
+	bh=PIcOlf72aBk/6cYaK0eg4pgMArt5SYVOYmWADGAjAac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OqJrs+hEsdn8Ep8s2NJMrRebldjwe8gt6wwoOelVafGkK46OuTD+xVBKeTPsNIatPSboUCxETTdcSw+V911NS+Sh0znUwr00PvVqL/sAsa5AKZ5G31D2FSTykOxUjeC94/k05a/oSGFnCjljBK4Te+429qpuneznIJMXFACacTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLuUKdi/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64BE7C2BD10;
-	Wed,  3 Jul 2024 11:24:31 +0000 (UTC)
+	 MIME-Version; b=O3KHEWDMXnThCR7jk0TSc6au8NdTkfIuNLoz10GzmVcGMDkAEXuSPVN7PKjPe9E2XFRSRE8vnPg54a/ZwbKucBIM0JEjIFiwq0QF7DkRT6maVf5XYimUCp6w5AnkYvMRLdLTKSvg5bdwI2zO7ukgZYKZQkTpXkBli3HofrDjcAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPayvyMz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2726EC2BD10;
+	Wed,  3 Jul 2024 10:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005871;
-	bh=sMFZstKMMmSmlTvCsgRZXYkQ3JfI56qQbvqHjN6Tp7E=;
+	s=korg; t=1720004026;
+	bh=PIcOlf72aBk/6cYaK0eg4pgMArt5SYVOYmWADGAjAac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VLuUKdi/BUJg6P9Z8kPZTorZ/J+4YR5ggyRLylo6gEzsLRYYXJ2ckopgyOqNnHGLS
-	 Yux+GrE8wRf8UdxmWSl8OozjtWidjQManFI/7nWGiX72jz+jq6UjTbUFsKnyGQgypK
-	 V6GHt8ICfIE0fiC+HH+cgVOn78aJQznDk5O4D3og=
+	b=fPayvyMzmxQkAkbLZCPQ4A4N8Xe8K0/tsD7zuqlQY4E5XN/jT6W8U7cjli2LPJVIz
+	 39sJJvuQn+NzAK7LEgZK14/74apbkWP2kASN9Hepusb8+l3r5hOwm0mp+BSOKyvCXL
+	 3XedsDR6VNcXM75L+zf9xl2cVqV+KlAtI/uGiH0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Allison Henderson <allison.henderson@oracle.com>,
-	Chuck Lever III <chuck.lever@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 225/356] gcov: add support for GCC 14
+	Songyang Li <leesongyang@outlook.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 100/189] MIPS: Octeon: Add PCIe link status check
 Date: Wed,  3 Jul 2024 12:39:21 +0200
-Message-ID: <20240703102921.628133397@linuxfoundation.org>
+Message-ID: <20240703102845.276292206@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Songyang Li <leesongyang@outlook.com>
 
-commit c1558bc57b8e5b4da5d821537cd30e2e660861d8 upstream.
+[ Upstream commit 29b83a64df3b42c88c0338696feb6fdcd7f1f3b7 ]
 
-Using gcov on kernels compiled with GCC 14 results in truncated 16-byte
-long .gcda files with no usable data.  To fix this, update GCOV_COUNTERS
-to match the value defined by GCC 14.
+The standard PCIe configuration read-write interface is used to
+access the configuration space of the peripheral PCIe devices
+of the mips processor after the PCIe link surprise down, it can
+generate kernel panic caused by "Data bus error". So it is
+necessary to add PCIe link status check for system protection.
+When the PCIe link is down or in training, assigning a value
+of 0 to the configuration address can prevent read-write behavior
+to the configuration space of peripheral PCIe devices, thereby
+preventing kernel panic.
 
-Tested with GCC versions 14.1.0 and 13.2.0.
-
-Link: https://lkml.kernel.org/r/20240610092743.1609845-1-oberpar@linux.ibm.com
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Reported-by: Allison Henderson <allison.henderson@oracle.com>
-Reported-by: Chuck Lever III <chuck.lever@oracle.com>
-Tested-by: Chuck Lever <chuck.lever@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Songyang Li <leesongyang@outlook.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/gcov/gcc_4_7.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/mips/pci/pcie-octeon.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+ mode change 100644 => 100755 arch/mips/pci/pcie-octeon.c
 
---- a/kernel/gcov/gcc_4_7.c
-+++ b/kernel/gcov/gcc_4_7.c
-@@ -18,7 +18,9 @@
- #include <linux/mm.h>
- #include "gcov.h"
+diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
+old mode 100644
+new mode 100755
+index d919a0d813a17..38de2a9c3cf1a
+--- a/arch/mips/pci/pcie-octeon.c
++++ b/arch/mips/pci/pcie-octeon.c
+@@ -230,12 +230,18 @@ static inline uint64_t __cvmx_pcie_build_config_addr(int pcie_port, int bus,
+ {
+ 	union cvmx_pcie_address pcie_addr;
+ 	union cvmx_pciercx_cfg006 pciercx_cfg006;
++	union cvmx_pciercx_cfg032 pciercx_cfg032;
  
--#if (__GNUC__ >= 10)
-+#if (__GNUC__ >= 14)
-+#define GCOV_COUNTERS			9
-+#elif (__GNUC__ >= 10)
- #define GCOV_COUNTERS			8
- #elif (__GNUC__ >= 7)
- #define GCOV_COUNTERS			9
+ 	pciercx_cfg006.u32 =
+ 	    cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG006(pcie_port));
+ 	if ((bus <= pciercx_cfg006.s.pbnum) && (dev != 0))
+ 		return 0;
+ 
++	pciercx_cfg032.u32 =
++		cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG032(pcie_port));
++	if ((pciercx_cfg032.s.dlla == 0) || (pciercx_cfg032.s.lt == 1))
++		return 0;
++
+ 	pcie_addr.u64 = 0;
+ 	pcie_addr.config.upper = 2;
+ 	pcie_addr.config.io = 1;
+-- 
+2.43.0
+
 
 
 
