@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2823C925F8A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:02:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95113925D74
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:28:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25453B374F3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C712E1C2273B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C67C176FC3;
-	Wed,  3 Jul 2024 11:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65963183086;
+	Wed,  3 Jul 2024 11:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7N6lMl7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4hs8Frk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA47D176AB8;
-	Wed,  3 Jul 2024 11:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CEE1822DB;
+	Wed,  3 Jul 2024 11:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004506; cv=none; b=DxghHXTysbms8k4w28CaZOZFWCaAjcDenzCCcu7zldajX03ubAp4REEyEEL8vCu+Gmd7keWkLzQgxdCGaoRN9bm0fFXIi6Of50OTAr6HlpTbJlXffu3WN+emXnlHr2/bqViwezfOWZakYvwzV5LKHkQ4wGh/kzJDMEk5asUoIns=
+	t=1720005577; cv=none; b=R20wcUDfnf0u5phRpdUchgElD3F03jG1qyfKPgnQVyhzQbqncvPnOMMuWq2gXqRrWZUfx+8/VWJzat1rGOtyUj9IMXk0gU5FZY5L0VfEkxR/gw77OMmSeeGoEiuxsCMgv0cCsLTfR1LelCIFPUU+mp+fJqbLI9cMEW0eDap9i1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004506; c=relaxed/simple;
-	bh=IjvmeJsWkBuRrJ63xcttB3D9DKpWqI/12gkdI1qNoqg=;
+	s=arc-20240116; t=1720005577; c=relaxed/simple;
+	bh=yG9FFlz50Zenedz4NvXEEsisqVgvTYGQnENp3QTGReA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fPJqr5DWeDL8VHWhjEMRM8sRPCzZxI0KZI/0JvBfsKvzRgeio94tfESvQtJ8JCBy9BqeQjlS7MwwV21afC9oWTW/PYEw8YdRhS/uOZrXt1zjqnHiDfqtYk8vumz3J4AK5AC+tDKWh36OBmRY55O+WC10TuAsajk2thXfghQZebs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7N6lMl7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40752C2BD10;
-	Wed,  3 Jul 2024 11:01:46 +0000 (UTC)
+	 MIME-Version; b=k42MOfV93cItEp2v9SvE63tAeoxfqqknFtX05pF05Mc8kWV4ItaF/UCbluH01gSmS9stUdsPOyE3fhzMEg9u7tAAdipM7Eays+m88M+xHLiPkKkjvAbDFJIHQUGdu+oQFJEJGm6ZgZarTwcO4WyBJCig1jCufCcI3XSSHB4uI3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4hs8Frk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED43C2BD10;
+	Wed,  3 Jul 2024 11:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004506;
-	bh=IjvmeJsWkBuRrJ63xcttB3D9DKpWqI/12gkdI1qNoqg=;
+	s=korg; t=1720005577;
+	bh=yG9FFlz50Zenedz4NvXEEsisqVgvTYGQnENp3QTGReA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h7N6lMl7D0MS7b3l/PiZls7ORSLEQu0CaBrS7J4FX0IC6rhb2OxP/bNqo1d8scCOY
-	 HWxozvSNI2rk2mG7bbVquGxoTkkaXZKkTSAHwUSzn+IO2aNAEGw81bDKj5iW0FmVBS
-	 ZJ46776cTB423ZZAGJlKU6g/V+V8RxsbZK6c561E=
+	b=b4hs8FrkNgEtdglWW322G3QbPIlxjUOZ6DUZcS1htiqXRuDT7sVyU0MrUM3cgtDHo
+	 X5w62lMoJOuit71mXTTv8TuoGMTffklFNDaszq2OYEOhKes1f8h7aGCC8k157gkaBf
+	 yCbtMtBrS5mNm42kG9M+LHK0MqaGdlsTZ/VEEPrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amjad Ouled-Ameur <amjad.ouled-ameur@arm.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Rao Shoaib <Rao.Shoaib@oracle.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 065/290] drm/komeda: check for error-valued pointer
+Subject: [PATCH 5.15 110/356] af_unix: Read with MSG_PEEK loops if the first unread byte is OOB
 Date: Wed,  3 Jul 2024 12:37:26 +0200
-Message-ID: <20240703102906.655628166@linuxfoundation.org>
+Message-ID: <20240703102917.262429961@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amjad Ouled-Ameur <amjad.ouled-ameur@arm.com>
+From: Rao Shoaib <Rao.Shoaib@oracle.com>
 
-[ Upstream commit b880018edd3a577e50366338194dee9b899947e0 ]
+[ Upstream commit a6736a0addd60fccc3a3508461d72314cc609772 ]
 
-komeda_pipeline_get_state() may return an error-valued pointer, thus
-check the pointer for negative or null value before dereferencing.
+Read with MSG_PEEK flag loops if the first byte to read is an OOB byte.
+commit 22dd70eb2c3d ("af_unix: Don't peek OOB data without MSG_OOB.")
+addresses the loop issue but does not address the issue that no data
+beyond OOB byte can be read.
 
-Fixes: 502932a03fce ("drm/komeda: Add the initial scaler support for CORE")
-Signed-off-by: Amjad Ouled-Ameur <amjad.ouled-ameur@arm.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240610102056.40406-1-amjad.ouled-ameur@arm.com
+>>> from socket import *
+>>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+>>> c1.send(b'a', MSG_OOB)
+1
+>>> c1.send(b'b')
+1
+>>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
+b'b'
+
+>>> from socket import *
+>>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+>>> c2.setsockopt(SOL_SOCKET, SO_OOBINLINE, 1)
+>>> c1.send(b'a', MSG_OOB)
+1
+>>> c1.send(b'b')
+1
+>>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
+b'a'
+>>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
+b'a'
+>>> c2.recv(1, MSG_DONTWAIT)
+b'a'
+>>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
+b'b'
+>>>
+
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Signed-off-by: Rao Shoaib <Rao.Shoaib@oracle.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240611084639.2248934-1-Rao.Shoaib@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/unix/af_unix.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c b/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
-index 1e922703e26b2..7cc891c091f84 100644
---- a/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
-+++ b/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
-@@ -259,7 +259,7 @@ komeda_component_get_avail_scaler(struct komeda_component *c,
- 	u32 avail_scalers;
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2565,18 +2565,18 @@ static struct sk_buff *manage_oob(struct
+ 		if (skb == u->oob_skb) {
+ 			if (copied) {
+ 				skb = NULL;
+-			} else if (sock_flag(sk, SOCK_URGINLINE)) {
+-				if (!(flags & MSG_PEEK)) {
++			} else if (!(flags & MSG_PEEK)) {
++				if (sock_flag(sk, SOCK_URGINLINE)) {
+ 					WRITE_ONCE(u->oob_skb, NULL);
+ 					consume_skb(skb);
++				} else {
++					__skb_unlink(skb, &sk->sk_receive_queue);
++					WRITE_ONCE(u->oob_skb, NULL);
++					unlinked_skb = skb;
++					skb = skb_peek(&sk->sk_receive_queue);
+ 				}
+-			} else if (flags & MSG_PEEK) {
+-				skb = NULL;
+-			} else {
+-				__skb_unlink(skb, &sk->sk_receive_queue);
+-				WRITE_ONCE(u->oob_skb, NULL);
+-				unlinked_skb = skb;
+-				skb = skb_peek(&sk->sk_receive_queue);
++			} else if (!sock_flag(sk, SOCK_URGINLINE)) {
++				skb = skb_peek_next(skb, &sk->sk_receive_queue);
+ 			}
+ 		}
  
- 	pipe_st = komeda_pipeline_get_state(c->pipeline, state);
--	if (!pipe_st)
-+	if (IS_ERR_OR_NULL(pipe_st))
- 		return NULL;
- 
- 	avail_scalers = (pipe_st->active_comps & KOMEDA_PIPELINE_SCALERS) ^
--- 
-2.43.0
-
 
 
 
