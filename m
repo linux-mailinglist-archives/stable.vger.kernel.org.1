@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-57129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691EA925AC4
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BCC1925DC4
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B81A1C20FB0
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CABCE1C21087
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF22317C23B;
-	Wed,  3 Jul 2024 10:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C9A194123;
+	Wed,  3 Jul 2024 11:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1g6y3GMB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOpRJ05/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EEA313D60F;
-	Wed,  3 Jul 2024 10:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA0513BAFA;
+	Wed,  3 Jul 2024 11:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003935; cv=none; b=iqa8XiDQWPk976P47Dw1dtCTi4OFxf0xcA36NA7j3AcGoHJGX69T5UW9Ua2ifV3cNrdbujFTgEln0BTk0C+qjX0Cm7QKrNJFXXb3RW4HxDZ4+LwBudhbjhplDP5lruQisRx/cgu9fw+WGvE5Y4JZVdseE9Gca+DnHDP8IE8+ols=
+	t=1720005786; cv=none; b=c61BFJrW3GGvyU4HCi8fbVMDG4a39YsF7Faa2T6nX+ffGKDKcuv3QGXpt1SpP1+gw0MOyFm5J4QNchlUcouWWfqUhGz+Fs1/248Ng8HeFDC9kFAU75ZRzpA6iINsVCjf4ztzqI2hqiA4zDomyi9MurPQBma/eQIohmH4gcDU3To=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003935; c=relaxed/simple;
-	bh=0t8AyZQM5GjUwOD4RW9N1l7C7VuNfoGn4joyJsplj3I=;
+	s=arc-20240116; t=1720005786; c=relaxed/simple;
+	bh=aLb/4LjILvNQyFS03flh55qZt4GrdYxoVoU33Hk5IqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JkEfT07uqnyKSiKZyqrt3i6hfqHXgSoskzZPykCppsJ10AK8zqvz9ZixaFWUT+P1quQ5l0OVVb1NXwrgsZXcVmVQn370uWLRoSVncFNDUN8YeDc/0tqXOZdbXaTV3Q4DCyOPnSogdy/fx8djZM70TQ2MLK2ZLFijVeeCxKKWTWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1g6y3GMB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186AEC4AF0B;
-	Wed,  3 Jul 2024 10:52:14 +0000 (UTC)
+	 MIME-Version; b=OnPUOzuuXOvVnr2ESYm2bHG2GVDQ/Pc6Z1xZwHPq+XaZYOYSqcHXLliTOJtBvGygBKnWf6T+m16odS3evrNANH+ASKqG3tXoptshiHoCewqrCoOjcg6POM4rwByGTt7Y0/Bg4bsY8dx4jsvShgp+qKbkWmBI3pXFzxAwtaBw6iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOpRJ05/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C70C2BD10;
+	Wed,  3 Jul 2024 11:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003935;
-	bh=0t8AyZQM5GjUwOD4RW9N1l7C7VuNfoGn4joyJsplj3I=;
+	s=korg; t=1720005786;
+	bh=aLb/4LjILvNQyFS03flh55qZt4GrdYxoVoU33Hk5IqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1g6y3GMBwsNB+GOMfsrRoKkn9OTIRaBjPnd1D9VE+X3YVvhAYok/epfrJAphjcuC8
-	 JP5e58qHR6iv8UsDwvtKfWeyZOZxbMxKW/PLPqXNjhqo7Pl9U9IUzkAsnDBtZCK+4M
-	 DWiOEOu6e7rDGjCf3LmTDgAqNlXPH8JESn6ii60Y=
+	b=pOpRJ05/gOkTRc8XfNsD5IQFpAfsIUc1TP5lTaU8rKT+gXphRRkeL4lTQZfHMCSA4
+	 ybbVUXaT4Ic7BAhG1aQkIbvmMZHRVE6u/OX4pznvncgl1xmARLwCLO7rFW7mJk3J02
+	 q5vuDI1dUdPnJ0ML2+DZe7m6zfn3dGGw+Wutsi8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
-Subject: [PATCH 5.4 070/189] vmci: prevent speculation leaks by sanitizing event in event_deliver()
-Date: Wed,  3 Jul 2024 12:38:51 +0200
-Message-ID: <20240703102844.149875283@linuxfoundation.org>
+	Vlad Buslov <vladbu@nvidia.com>,
+	Oz Shlomo <ozsh@nvidia.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 196/356] net/sched: act_ct: set net pointer when creating new nf_flow_table
+Date: Wed,  3 Jul 2024 12:38:52 +0200
+Message-ID: <20240703102920.518800242@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
+From: Vlad Buslov <vladbu@nvidia.com>
 
-commit 8003f00d895310d409b2bf9ef907c56b42a4e0f4 upstream.
+[ Upstream commit fc54d9065f90dd25063883f404e6ff9a76913e73 ]
 
-Coverity spotted that event_msg is controlled by user-space,
-event_msg->event_data.event is passed to event_deliver() and used
-as an index without sanitization.
+Following patches in series use the pointer to access flow table offload
+debug variables.
 
-This change ensures that the event index is sanitized to mitigate any
-possibility of speculative information leaks.
-
-This bug was discovered and resolved using Coverity Static Analysis
-Security Testing (SAST) by Synopsys, Inc.
-
-Only compile tested, no access to HW.
-
-Fixes: 1d990201f9bb ("VMCI: event handling implementation.")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
-Link: https://lore.kernel.org/stable/20231127193533.46174-1-hagarhem%40amazon.com
-Link: https://lore.kernel.org/r/20240430085916.4753-1-hagarhem@amazon.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: Oz Shlomo <ozsh@nvidia.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 88c67aeb1407 ("sched: act_ct: add netns into the key of tcf_ct_flow_table")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_event.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/sched/act_ct.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/misc/vmw_vmci/vmci_event.c
-+++ b/drivers/misc/vmw_vmci/vmci_event.c
-@@ -9,6 +9,7 @@
- #include <linux/vmw_vmci_api.h>
- #include <linux/list.h>
- #include <linux/module.h>
-+#include <linux/nospec.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
- #include <linux/rculist.h>
-@@ -86,9 +87,12 @@ static void event_deliver(struct vmci_ev
- {
- 	struct vmci_subscription *cur;
- 	struct list_head *subscriber_list;
-+	u32 sanitized_event, max_vmci_event;
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index b4c42b257ae7c..0307b4366db10 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -276,7 +276,7 @@ static struct nf_flowtable_type flowtable_ct = {
+ 	.owner		= THIS_MODULE,
+ };
  
- 	rcu_read_lock();
--	subscriber_list = &subscriber_array[event_msg->event_data.event];
-+	max_vmci_event = ARRAY_SIZE(subscriber_array);
-+	sanitized_event = array_index_nospec(event_msg->event_data.event, max_vmci_event);
-+	subscriber_list = &subscriber_array[sanitized_event];
- 	list_for_each_entry_rcu(cur, subscriber_list, node) {
- 		cur->callback(cur->id, &event_msg->event_data,
- 			      cur->callback_data);
+-static int tcf_ct_flow_table_get(struct tcf_ct_params *params)
++static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
+ {
+ 	struct tcf_ct_flow_table *ct_ft;
+ 	int err = -ENOMEM;
+@@ -302,6 +302,7 @@ static int tcf_ct_flow_table_get(struct tcf_ct_params *params)
+ 	err = nf_flow_table_init(&ct_ft->nf_ft);
+ 	if (err)
+ 		goto err_init;
++	write_pnet(&ct_ft->nf_ft.net, net);
+ 
+ 	__module_get(THIS_MODULE);
+ out_unlock:
+@@ -1304,7 +1305,7 @@ static int tcf_ct_init(struct net *net, struct nlattr *nla,
+ 	if (err)
+ 		goto cleanup;
+ 
+-	err = tcf_ct_flow_table_get(params);
++	err = tcf_ct_flow_table_get(net, params);
+ 	if (err)
+ 		goto cleanup_params;
+ 
+-- 
+2.43.0
+
 
 
 
