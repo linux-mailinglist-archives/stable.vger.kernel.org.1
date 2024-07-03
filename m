@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-57774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 969AD925F26
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:52:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDBDA925B30
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2DCDB24CC6
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:32:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3993C288771
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495D116EC0C;
-	Wed,  3 Jul 2024 11:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F0B1822D3;
+	Wed,  3 Jul 2024 10:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgGmpmLq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wMV7e74x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AD616EBF2;
-	Wed,  3 Jul 2024 11:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF34A1822D2;
+	Wed,  3 Jul 2024 10:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005893; cv=none; b=XUQ+YYZCToFXDqno+hARjq1v76ifhCHnro2k3mUUJ6E4pmPoP6h1aifilD5+gsmmkjNDpVSg36WsB3Ilvifv5hUUTqzoEJXVHTkwZ/Oh7i63V66vcWAeaxEOvUOJMOt5VObHCa5WaGKdRKu+coLLZwkoQdOXhkSPjtVQ0UPxfCE=
+	t=1720004048; cv=none; b=Pt+RakinlY4wAa+QKO9swsXfI8ZxWySASmGh9oiEGCX+5U7xVfcfcA/tELtl9KQ9ntrbiUNMAcKr4QNyhqWa+wlXBe1WFCdKvMkVVvEKldkf+n2WKi1sTwPtkPxdlEoXEYr4dXMqogHqALzz8iukLXMGLUFo3m6SSsvhlV/ERes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005893; c=relaxed/simple;
-	bh=qta9eh5EC2cNwEug9t8y5/4fau9gQMzaZbbdaVptJk0=;
+	s=arc-20240116; t=1720004048; c=relaxed/simple;
+	bh=dFfznCMYJn+2c1RQNZNrzwkodt4GPNQyr+qkp7OvwKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ngKNuCptUdmqGEQ+SFzI/nacpHsDXx1+yy/naYR1h6p7eivQx3yhQjae0aQLbMTK1OHBcTa1um3WfqO+Cv6JyQouiUg3vXrNNj40jT8t+fQLrwDTe+izP0H5cgboukLCqw1oZZk8TlB3IzAUsYIQZo02WU6frQe9sH+eIhSIkZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgGmpmLq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80AA9C2BD10;
-	Wed,  3 Jul 2024 11:24:52 +0000 (UTC)
+	 MIME-Version; b=ETRmCoTIpkiho1fxa+n0m4moW5oRIOxOHuRqQKINtaJZmQOhXFwGOAkcybf1ul8gCdI7oU3Jr1fJSHiK1Mh2n374qzdD2pVg1RpCGl4YnHCYDnoWhRIBE2IzIJW7mnDiqp+ygSZDFZf8SQLRAjiTJx3LP+cTEmRFulr4OyGWOT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wMV7e74x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A95C2BD10;
+	Wed,  3 Jul 2024 10:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005892;
-	bh=qta9eh5EC2cNwEug9t8y5/4fau9gQMzaZbbdaVptJk0=;
+	s=korg; t=1720004047;
+	bh=dFfznCMYJn+2c1RQNZNrzwkodt4GPNQyr+qkp7OvwKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YgGmpmLqFJcMzwueHPQXjUcUI7S0f4Kp7JNXPT355ricbSiwi5tp8s1DSBlCFcTK6
-	 t5ONEYTmFUKn8u4Oo4e9WxD1rWvONL7Y70RmO/3T4LDB6HSIRF2gIlNLIeDzzbxEPe
-	 oqsz6VsFxb8PTEhfVQKMbAbooIXtdRMmGm8nARY0=
+	b=wMV7e74xna4Q2ZxqQNDp4YZD7+S+1FPR/Vh7S1FIduFqcSM3d2cFRBXoytUsZuq3o
+	 G0xNHjoZ9NBefb3oJaWVPfpTYGsS7IU+EFJZQhIE2IDHZwEf9BYCC8iVjTKH96p8F6
+	 vJ3d5cB9E4cJPhidHekemLVbKbzpQ1VeOy0m2o6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Martin Leung <martin.leung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 5.15 231/356] drm/amd/display: revert Exit idle optimizations before HDCP execution
-Date: Wed,  3 Jul 2024 12:39:27 +0200
-Message-ID: <20240703102921.852517172@linuxfoundation.org>
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 107/189] xfrm6: check ip6_dst_idev() return value in xfrm6_get_saddr()
+Date: Wed,  3 Jul 2024 12:39:28 +0200
+Message-ID: <20240703102845.540380572@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Leung <martin.leung@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit f2703a3596a279b0be6eeed4c500bdbaa8dc3ce4 upstream.
+[ Upstream commit d46401052c2d5614da8efea5788532f0401cb164 ]
 
-why and how:
-causes black screen on PNP on DCN 3.5
+ip6_dst_idev() can return NULL, xfrm6_get_saddr() must act accordingly.
 
-This reverts commit f30a3bea92bd ("drm/amd/display: Exit idle
-optimizations before HDCP execution")
+syzbot reported:
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Martin Leung <martin.leung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 1 PID: 12 Comm: kworker/u8:1 Not tainted 6.10.0-rc2-syzkaller-00383-gb8481381d4e2 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
+Workqueue: wg-kex-wg1 wg_packet_handshake_send_worker
+ RIP: 0010:xfrm6_get_saddr+0x93/0x130 net/ipv6/xfrm6_policy.c:64
+Code: df 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 97 00 00 00 4c 8b ab d8 00 00 00 48 b8 00 00 00 00 00 fc ff df 4c 89 ea 48 c1 ea 03 <80> 3c 02 00 0f 85 86 00 00 00 4d 8b 6d 00 e8 ca 13 47 01 48 b8 00
+RSP: 0018:ffffc90000117378 EFLAGS: 00010246
+RAX: dffffc0000000000 RBX: ffff88807b079dc0 RCX: ffffffff89a0d6d7
+RDX: 0000000000000000 RSI: ffffffff89a0d6e9 RDI: ffff88807b079e98
+RBP: ffff88807ad73248 R08: 0000000000000007 R09: fffffffffffff000
+R10: ffff88807b079dc0 R11: 0000000000000007 R12: ffffc90000117480
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff8880b9300000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f4586d00440 CR3: 0000000079042000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  xfrm_get_saddr net/xfrm/xfrm_policy.c:2452 [inline]
+  xfrm_tmpl_resolve_one net/xfrm/xfrm_policy.c:2481 [inline]
+  xfrm_tmpl_resolve+0xa26/0xf10 net/xfrm/xfrm_policy.c:2541
+  xfrm_resolve_and_create_bundle+0x140/0x2570 net/xfrm/xfrm_policy.c:2835
+  xfrm_bundle_lookup net/xfrm/xfrm_policy.c:3070 [inline]
+  xfrm_lookup_with_ifid+0x4d1/0x1e60 net/xfrm/xfrm_policy.c:3201
+  xfrm_lookup net/xfrm/xfrm_policy.c:3298 [inline]
+  xfrm_lookup_route+0x3b/0x200 net/xfrm/xfrm_policy.c:3309
+  ip6_dst_lookup_flow+0x15c/0x1d0 net/ipv6/ip6_output.c:1256
+  send6+0x611/0xd20 drivers/net/wireguard/socket.c:139
+  wg_socket_send_skb_to_peer+0xf9/0x220 drivers/net/wireguard/socket.c:178
+  wg_socket_send_buffer_to_peer+0x12b/0x190 drivers/net/wireguard/socket.c:200
+  wg_packet_send_handshake_initiation+0x227/0x360 drivers/net/wireguard/send.c:40
+  wg_packet_handshake_send_worker+0x1c/0x30 drivers/net/wireguard/send.c:51
+  process_one_work+0x9fb/0x1b60 kernel/workqueue.c:3231
+  process_scheduled_works kernel/workqueue.c:3312 [inline]
+  worker_thread+0x6c8/0xf70 kernel/workqueue.c:3393
+  kthread+0x2c1/0x3a0 kernel/kthread.c:389
+  ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240615154231.234442-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c    |   10 ----------
- drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h |    8 --------
- 2 files changed, 18 deletions(-)
+ net/ipv6/xfrm6_policy.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
-@@ -88,14 +88,6 @@ static uint8_t is_cp_desired_hdcp2(struc
- 			!hdcp->connection.is_hdcp2_revoked;
- }
+diff --git a/net/ipv6/xfrm6_policy.c b/net/ipv6/xfrm6_policy.c
+index 4c3aa97f23faa..7c903e0e446cb 100644
+--- a/net/ipv6/xfrm6_policy.c
++++ b/net/ipv6/xfrm6_policy.c
+@@ -57,12 +57,18 @@ static int xfrm6_get_saddr(struct net *net, int oif,
+ {
+ 	struct dst_entry *dst;
+ 	struct net_device *dev;
++	struct inet6_dev *idev;
  
--static void exit_idle_optimizations(struct mod_hdcp *hdcp)
--{
--	struct mod_hdcp_dm *dm = &hdcp->config.dm;
--
--	if (dm->funcs.exit_idle_optimizations)
--		dm->funcs.exit_idle_optimizations(dm->handle);
--}
--
- static enum mod_hdcp_status execution(struct mod_hdcp *hdcp,
- 		struct mod_hdcp_event_context *event_ctx,
- 		union mod_hdcp_transition_input *input)
-@@ -515,8 +507,6 @@ enum mod_hdcp_status mod_hdcp_process_ev
- 	memset(&event_ctx, 0, sizeof(struct mod_hdcp_event_context));
- 	event_ctx.event = event;
+ 	dst = xfrm6_dst_lookup(net, 0, oif, NULL, daddr, mark);
+ 	if (IS_ERR(dst))
+ 		return -EHOSTUNREACH;
  
--	exit_idle_optimizations(hdcp);
--
- 	/* execute and transition */
- 	exec_status = execution(hdcp, &event_ctx, &hdcp->auth.trans_input);
- 	trans_status = transition(
---- a/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
-+++ b/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
-@@ -154,13 +154,6 @@ struct mod_hdcp_ddc {
- 	} funcs;
- };
- 
--struct mod_hdcp_dm {
--	void *handle;
--	struct {
--		void (*exit_idle_optimizations)(void *handle);
--	} funcs;
--};
--
- struct mod_hdcp_psp {
- 	void *handle;
- 	void *funcs;
-@@ -276,7 +269,6 @@ struct mod_hdcp_display_query {
- struct mod_hdcp_config {
- 	struct mod_hdcp_psp psp;
- 	struct mod_hdcp_ddc ddc;
--	struct mod_hdcp_dm dm;
- 	uint8_t index;
- };
- 
+-	dev = ip6_dst_idev(dst)->dev;
++	idev = ip6_dst_idev(dst);
++	if (!idev) {
++		dst_release(dst);
++		return -EHOSTUNREACH;
++	}
++	dev = idev->dev;
+ 	ipv6_dev_get_saddr(dev_net(dev), dev, &daddr->in6, 0, &saddr->in6);
+ 	dst_release(dst);
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
