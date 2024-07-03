@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-57894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F40925E88
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:37:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E2B925F86
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:01:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FA241C20E62
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:37:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EBF7B3C68B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE8716DEAC;
-	Wed,  3 Jul 2024 11:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53BC51946C0;
+	Wed,  3 Jul 2024 11:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phW/sipG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtG6sl0U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF381836F0;
-	Wed,  3 Jul 2024 11:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1185117DA3A;
+	Wed,  3 Jul 2024 11:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006253; cv=none; b=fEAaIKy2ThNciNSL/ZEtw7coI9h/oBshvzS/92nDk3favert83TCsfpVLB5fFFwg+TGPJbZwHCflgLfx6Wpv2hB6fsNlRHXbi/7OOoF+sMLTBF8fq/xztBJMF8ch/vxYLCTgmxMajpZrpV4l+VxWijeSVniFiP6XWL+DZOMUN0w=
+	t=1720005141; cv=none; b=mqIdPIzhgYldd7qbVkSjtYMO/R1NdDj+dbkJab10WnrMQrJnRCi5xLGpRBgwVvIcIoKX6mu5ciYKtwMmS+yPppk/lpr7MuTdKH+/TKLmacCai761Spt7tzshStu3M8ndixpsMced6PS8ksfT06q9Axp+Ese2XH11EbmsNIr1Ibo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006253; c=relaxed/simple;
-	bh=AcT5+DqsVAc6kJOB57fiEEGKKyPGPKno/271FFfTJ8s=;
+	s=arc-20240116; t=1720005141; c=relaxed/simple;
+	bh=ygWvaBaw302ysyykFmyHzkU5TIRq+HnJVWyZ2MZ7rwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hmPOZEhcmeDmP8sLImisEJ7BX5Vi/Zeyt3XZDqjL5EQfCkR/zXx8/Z6AWmnh1x0G4rjZGDah9VzFqPFOkeb0rgqc1nY74p4PNekTWtEhdm72FJHT5/AWGpl894rG5fZOcTMyRlajUTruB3paHUZ+PJcm5cNKjyBuZ5vVwoxXz2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phW/sipG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622C7C2BD10;
-	Wed,  3 Jul 2024 11:30:52 +0000 (UTC)
+	 MIME-Version; b=T4v+KWUJ63FvLhe962rWQGMdlOgni45TYpSnkuwAVKHCfn4c4k/gDaMPqzq5mu00pFUoKtxNMH4B8T2Iscfm25o24A12WKTUG5NkVqE/z0j7M0YzNCo6jsM4kPgNNeCz2S7ar73MP4jKiA4x9TU2eBlqlRg/2uJGakNmxvr6Y88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtG6sl0U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C634C2BD10;
+	Wed,  3 Jul 2024 11:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006252;
-	bh=AcT5+DqsVAc6kJOB57fiEEGKKyPGPKno/271FFfTJ8s=;
+	s=korg; t=1720005140;
+	bh=ygWvaBaw302ysyykFmyHzkU5TIRq+HnJVWyZ2MZ7rwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=phW/sipGm4kWyw/Yk6+7pi03QGw0z3GD8dFOOGJMdlJgHLe/LMtUm2ifMaRpcvj/b
-	 wxXVxWxn6y27zyLFYi1Zg730LmdX+IqFuKlbSD4d0P891DSDj/P+NEbyFjbBoYpMNO
-	 /brGUO4J/xSlc0302bIlu/TFe3g/qCfcb+uGBkcY=
+	b=VtG6sl0UjswW1Xtw13oFPV9/lAUAIEmlyjCvkOJjb8menBhpiHwt7+E/cLSo9Q5fv
+	 X1SiRuTx5kfhW/fmDfzAwUdhoEG9jS4+1QVKTE446pxeak8d7u9S5r3CLCVrw/W2q8
+	 +JsH3tLGSwB0ms6nnRBJZP9XgtSpgEGKLJQhHrDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	syzbot+00c18ee8497dd3be6ade@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 320/356] usb: atm: cxacru: fix endpoint checking in cxacru_bind()
+	Arnd Bergmann <arnd@arndb.de>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 5.10 275/290] syscalls: fix compat_sys_io_pgetevents_time64 usage
 Date: Wed,  3 Jul 2024 12:40:56 +0200
-Message-ID: <20240703102925.221990944@linuxfoundation.org>
+Message-ID: <20240703102914.536478782@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +61,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 2eabb655a968b862bc0c31629a09f0fbf3c80d51 upstream.
+commit d3882564a77c21eb746ba5364f3fa89b88de3d61 upstream.
 
-Syzbot is still reporting quite an old issue [1] that occurs due to
-incomplete checking of present usb endpoints. As such, wrong
-endpoints types may be used at urb sumbitting stage which in turn
-triggers a warning in usb_submit_urb().
+Using sys_io_pgetevents() as the entry point for compat mode tasks
+works almost correctly, but misses the sign extension for the min_nr
+and nr arguments.
 
-Fix the issue by verifying that required endpoint types are present
-for both in and out endpoints, taking into account cmd endpoint type.
+This was addressed on parisc by switching to
+compat_sys_io_pgetevents_time64() in commit 6431e92fc827 ("parisc:
+io_pgetevents_time64() needs compat syscall in 32-bit compat mode"),
+as well as by using more sophisticated system call wrappers on x86 and
+s390. However, arm64, mips, powerpc, sparc and riscv still have the
+same bug.
 
-Unfortunately, this patch has not been tested on real hardware.
+Change all of them over to use compat_sys_io_pgetevents_time64()
+like parisc already does. This was clearly the intention when the
+function was originally added, but it got hooked up incorrectly in
+the tables.
 
-[1] Syzbot report:
-usb 1-1: BOGUS urb xfer, pipe 1 != type 3
-WARNING: CPU: 0 PID: 8667 at drivers/usb/core/urb.c:502 usb_submit_urb+0xed2/0x18a0 drivers/usb/core/urb.c:502
-Modules linked in:
-CPU: 0 PID: 8667 Comm: kworker/0:4 Not tainted 5.14.0-rc4-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: usb_hub_wq hub_event
-RIP: 0010:usb_submit_urb+0xed2/0x18a0 drivers/usb/core/urb.c:502
-...
-Call Trace:
- cxacru_cm+0x3c0/0x8e0 drivers/usb/atm/cxacru.c:649
- cxacru_card_status+0x22/0xd0 drivers/usb/atm/cxacru.c:760
- cxacru_bind+0x7ac/0x11a0 drivers/usb/atm/cxacru.c:1209
- usbatm_usb_probe+0x321/0x1ae0 drivers/usb/atm/usbatm.c:1055
- cxacru_usb_probe+0xdf/0x1e0 drivers/usb/atm/cxacru.c:1363
- usb_probe_interface+0x315/0x7f0 drivers/usb/core/driver.c:396
- call_driver_probe drivers/base/dd.c:517 [inline]
- really_probe+0x23c/0xcd0 drivers/base/dd.c:595
- __driver_probe_device+0x338/0x4d0 drivers/base/dd.c:747
- driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:777
- __device_attach_driver+0x20b/0x2f0 drivers/base/dd.c:894
- bus_for_each_drv+0x15f/0x1e0 drivers/base/bus.c:427
- __device_attach+0x228/0x4a0 drivers/base/dd.c:965
- bus_probe_device+0x1e4/0x290 drivers/base/bus.c:487
- device_add+0xc2f/0x2180 drivers/base/core.c:3354
- usb_set_configuration+0x113a/0x1910 drivers/usb/core/message.c:2170
- usb_generic_driver_probe+0xba/0x100 drivers/usb/core/generic.c:238
- usb_probe_device+0xd9/0x2c0 drivers/usb/core/driver.c:293
-
-Reported-and-tested-by: syzbot+00c18ee8497dd3be6ade@syzkaller.appspotmail.com
-Fixes: 902ffc3c707c ("USB: cxacru: Use a bulk/int URB to access the command endpoint")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://lore.kernel.org/r/20240609131546.3932-1-n.zhandarovich@fintech.ru
+Cc: stable@vger.kernel.org
+Fixes: 48166e6ea47d ("y2038: add 64-bit time_t syscalls to all 32-bit architectures")
+Acked-by: Heiko Carstens <hca@linux.ibm.com> # s390
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/atm/cxacru.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/arm64/include/asm/unistd32.h         |    2 +-
+ arch/mips/kernel/syscalls/syscall_n32.tbl |    2 +-
+ arch/mips/kernel/syscalls/syscall_o32.tbl |    2 +-
+ arch/powerpc/kernel/syscalls/syscall.tbl  |    2 +-
+ arch/s390/kernel/syscalls/syscall.tbl     |    2 +-
+ arch/sparc/kernel/syscalls/syscall.tbl    |    2 +-
+ arch/x86/entry/syscalls/syscall_32.tbl    |    2 +-
+ include/uapi/asm-generic/unistd.h         |    2 +-
+ kernel/sys_ni.c                           |    2 +-
+ 9 files changed, 9 insertions(+), 9 deletions(-)
 
---- a/drivers/usb/atm/cxacru.c
-+++ b/drivers/usb/atm/cxacru.c
-@@ -1131,6 +1131,7 @@ static int cxacru_bind(struct usbatm_dat
- 	struct cxacru_data *instance;
- 	struct usb_device *usb_dev = interface_to_usbdev(intf);
- 	struct usb_host_endpoint *cmd_ep = usb_dev->ep_in[CXACRU_EP_CMD];
-+	struct usb_endpoint_descriptor *in, *out;
- 	int ret;
- 
- 	/* instance init */
-@@ -1176,6 +1177,19 @@ static int cxacru_bind(struct usbatm_dat
- 		ret = -ENODEV;
- 		goto fail;
- 	}
-+
-+	if (usb_endpoint_xfer_int(&cmd_ep->desc))
-+		ret = usb_find_common_endpoints(intf->cur_altsetting,
-+						NULL, NULL, &in, &out);
-+	else
-+		ret = usb_find_common_endpoints(intf->cur_altsetting,
-+						&in, &out, NULL, NULL);
-+
-+	if (ret) {
-+		usb_err(usbatm_instance, "cxacru_bind: interface has incorrect endpoints\n");
-+		ret = -ENODEV;
-+		goto fail;
-+	}
- 
- 	if ((cmd_ep->desc.bmAttributes & USB_ENDPOINT_XFERTYPE_MASK)
- 			== USB_ENDPOINT_XFER_INT) {
+--- a/arch/arm64/include/asm/unistd32.h
++++ b/arch/arm64/include/asm/unistd32.h
+@@ -840,7 +840,7 @@ __SYSCALL(__NR_pselect6_time64, compat_s
+ #define __NR_ppoll_time64 414
+ __SYSCALL(__NR_ppoll_time64, compat_sys_ppoll_time64)
+ #define __NR_io_pgetevents_time64 416
+-__SYSCALL(__NR_io_pgetevents_time64, sys_io_pgetevents)
++__SYSCALL(__NR_io_pgetevents_time64, compat_sys_io_pgetevents_time64)
+ #define __NR_recvmmsg_time64 417
+ __SYSCALL(__NR_recvmmsg_time64, compat_sys_recvmmsg_time64)
+ #define __NR_mq_timedsend_time64 418
+--- a/arch/mips/kernel/syscalls/syscall_n32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_n32.tbl
+@@ -354,7 +354,7 @@
+ 412	n32	utimensat_time64		sys_utimensat
+ 413	n32	pselect6_time64			compat_sys_pselect6_time64
+ 414	n32	ppoll_time64			compat_sys_ppoll_time64
+-416	n32	io_pgetevents_time64		sys_io_pgetevents
++416	n32	io_pgetevents_time64		compat_sys_io_pgetevents_time64
+ 417	n32	recvmmsg_time64			compat_sys_recvmmsg_time64
+ 418	n32	mq_timedsend_time64		sys_mq_timedsend
+ 419	n32	mq_timedreceive_time64		sys_mq_timedreceive
+--- a/arch/mips/kernel/syscalls/syscall_o32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
+@@ -403,7 +403,7 @@
+ 412	o32	utimensat_time64		sys_utimensat			sys_utimensat
+ 413	o32	pselect6_time64			sys_pselect6			compat_sys_pselect6_time64
+ 414	o32	ppoll_time64			sys_ppoll			compat_sys_ppoll_time64
+-416	o32	io_pgetevents_time64		sys_io_pgetevents		sys_io_pgetevents
++416	o32	io_pgetevents_time64		sys_io_pgetevents		compat_sys_io_pgetevents_time64
+ 417	o32	recvmmsg_time64			sys_recvmmsg			compat_sys_recvmmsg_time64
+ 418	o32	mq_timedsend_time64		sys_mq_timedsend		sys_mq_timedsend
+ 419	o32	mq_timedreceive_time64		sys_mq_timedreceive		sys_mq_timedreceive
+--- a/arch/powerpc/kernel/syscalls/syscall.tbl
++++ b/arch/powerpc/kernel/syscalls/syscall.tbl
+@@ -503,7 +503,7 @@
+ 412	32	utimensat_time64		sys_utimensat			sys_utimensat
+ 413	32	pselect6_time64			sys_pselect6			compat_sys_pselect6_time64
+ 414	32	ppoll_time64			sys_ppoll			compat_sys_ppoll_time64
+-416	32	io_pgetevents_time64		sys_io_pgetevents		sys_io_pgetevents
++416	32	io_pgetevents_time64		sys_io_pgetevents		compat_sys_io_pgetevents_time64
+ 417	32	recvmmsg_time64			sys_recvmmsg			compat_sys_recvmmsg_time64
+ 418	32	mq_timedsend_time64		sys_mq_timedsend		sys_mq_timedsend
+ 419	32	mq_timedreceive_time64		sys_mq_timedreceive		sys_mq_timedreceive
+--- a/arch/s390/kernel/syscalls/syscall.tbl
++++ b/arch/s390/kernel/syscalls/syscall.tbl
+@@ -418,7 +418,7 @@
+ 412	32	utimensat_time64	-				sys_utimensat
+ 413	32	pselect6_time64		-				compat_sys_pselect6_time64
+ 414	32	ppoll_time64		-				compat_sys_ppoll_time64
+-416	32	io_pgetevents_time64	-				sys_io_pgetevents
++416	32	io_pgetevents_time64	-				compat_sys_io_pgetevents_time64
+ 417	32	recvmmsg_time64		-				compat_sys_recvmmsg_time64
+ 418	32	mq_timedsend_time64	-				sys_mq_timedsend
+ 419	32	mq_timedreceive_time64	-				sys_mq_timedreceive
+--- a/arch/sparc/kernel/syscalls/syscall.tbl
++++ b/arch/sparc/kernel/syscalls/syscall.tbl
+@@ -461,7 +461,7 @@
+ 412	32	utimensat_time64		sys_utimensat			sys_utimensat
+ 413	32	pselect6_time64			sys_pselect6			compat_sys_pselect6_time64
+ 414	32	ppoll_time64			sys_ppoll			compat_sys_ppoll_time64
+-416	32	io_pgetevents_time64		sys_io_pgetevents		sys_io_pgetevents
++416	32	io_pgetevents_time64		sys_io_pgetevents		compat_sys_io_pgetevents_time64
+ 417	32	recvmmsg_time64			sys_recvmmsg			compat_sys_recvmmsg_time64
+ 418	32	mq_timedsend_time64		sys_mq_timedsend		sys_mq_timedsend
+ 419	32	mq_timedreceive_time64		sys_mq_timedreceive		sys_mq_timedreceive
+--- a/arch/x86/entry/syscalls/syscall_32.tbl
++++ b/arch/x86/entry/syscalls/syscall_32.tbl
+@@ -420,7 +420,7 @@
+ 412	i386	utimensat_time64	sys_utimensat
+ 413	i386	pselect6_time64		sys_pselect6			compat_sys_pselect6_time64
+ 414	i386	ppoll_time64		sys_ppoll			compat_sys_ppoll_time64
+-416	i386	io_pgetevents_time64	sys_io_pgetevents
++416	i386	io_pgetevents_time64	sys_io_pgetevents		compat_sys_io_pgetevents_time64
+ 417	i386	recvmmsg_time64		sys_recvmmsg			compat_sys_recvmmsg_time64
+ 418	i386	mq_timedsend_time64	sys_mq_timedsend
+ 419	i386	mq_timedreceive_time64	sys_mq_timedreceive
+--- a/include/uapi/asm-generic/unistd.h
++++ b/include/uapi/asm-generic/unistd.h
+@@ -805,7 +805,7 @@ __SC_COMP(__NR_pselect6_time64, sys_psel
+ #define __NR_ppoll_time64 414
+ __SC_COMP(__NR_ppoll_time64, sys_ppoll, compat_sys_ppoll_time64)
+ #define __NR_io_pgetevents_time64 416
+-__SYSCALL(__NR_io_pgetevents_time64, sys_io_pgetevents)
++__SC_COMP(__NR_io_pgetevents_time64, sys_io_pgetevents, compat_sys_io_pgetevents_time64)
+ #define __NR_recvmmsg_time64 417
+ __SC_COMP(__NR_recvmmsg_time64, sys_recvmmsg, compat_sys_recvmmsg_time64)
+ #define __NR_mq_timedsend_time64 418
+--- a/kernel/sys_ni.c
++++ b/kernel/sys_ni.c
+@@ -46,8 +46,8 @@ COND_SYSCALL(io_getevents_time32);
+ COND_SYSCALL(io_getevents);
+ COND_SYSCALL(io_pgetevents_time32);
+ COND_SYSCALL(io_pgetevents);
+-COND_SYSCALL_COMPAT(io_pgetevents_time32);
+ COND_SYSCALL_COMPAT(io_pgetevents);
++COND_SYSCALL_COMPAT(io_pgetevents_time64);
+ COND_SYSCALL(io_uring_setup);
+ COND_SYSCALL(io_uring_enter);
+ COND_SYSCALL(io_uring_register);
 
 
 
