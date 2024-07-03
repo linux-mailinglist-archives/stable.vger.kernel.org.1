@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-57280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB78F925BE8
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:12:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05691925D4F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 825E31F213DF
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC102294EFA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5211318E75D;
-	Wed,  3 Jul 2024 11:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A3D17F511;
+	Wed,  3 Jul 2024 11:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJaNh7MC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBbz5V0T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DD71957E4;
-	Wed,  3 Jul 2024 11:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA2617E907;
+	Wed,  3 Jul 2024 11:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004404; cv=none; b=Oh8+7zJv/icLmV/RVFOPS8SfNZcTe75piAUMS5/GO5721C2M2UAtHvSoW+4C/KfJlhNXXbxcqtTwy2p0+OhSQtF62BM1XDw4MHIecbCML2+H9+Xi/CgNtrNhwYRrKlfuLVDGBzCQJtoc+SmXgHHf8Zkl7ZpywvbTlkvKqeqp3+c=
+	t=1720005479; cv=none; b=WZOlrPR/c52e36UvORVwwufIr+D4m5qH7sNuxEvJBzMk6LQYVR0DmKpvpd/52jPQwyKjsiVg9Nd+8K7FlznyubndRgdZxIUx21HG95B9MWi93U0ARnkzQ8aCDQEDhMI6shkwlzfcbMFAWjMcDrwU3WKNXaZ6otDkTlYpi5XzXqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004404; c=relaxed/simple;
-	bh=TuItk1MdMaFg6X0EO4tEIdkXHiAtlacJyPIS7t8Li5E=;
+	s=arc-20240116; t=1720005479; c=relaxed/simple;
+	bh=xLyQPwijlaKI/STzcc0V9uu5jFFOasKaVVrEURncdTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=erdUVk9244/+Z9JXIpIqv3Gn3M2mJNrIcKY4h8LaKMhHpIqxFHyuUI/sqPlrCWzP4SOZfdYY9uKvvqhGt3WP+6Vzovy2p7MD+UBUyPYMkWZ+KRJelcxP/Dtsf/ZSohGACCUMMWBOzehcEcLjLK6QyDAuZ1CTxJbaJNBMFwntNpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJaNh7MC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A64C4AF0B;
-	Wed,  3 Jul 2024 11:00:03 +0000 (UTC)
+	 MIME-Version; b=sIohsbBtKG8KEA7vYfHvU8QR3W1oTOvMa0xF/IaFS1TQll57/IybHb4mXFVXdJLZdjkomxM3gLqKW/dX1oIWsOgJQ/yGr2tQp0pMiGqkvV1CKXGserDUz+F3sRvPqtPMw/NpZ6l5Wfqy6I2OWbMXmGzjTibonuqqtk/zDDFE1kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBbz5V0T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB5DC2BD10;
+	Wed,  3 Jul 2024 11:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004403;
-	bh=TuItk1MdMaFg6X0EO4tEIdkXHiAtlacJyPIS7t8Li5E=;
+	s=korg; t=1720005478;
+	bh=xLyQPwijlaKI/STzcc0V9uu5jFFOasKaVVrEURncdTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJaNh7MCEQv7n7AWa9HTmqG4Mdk7e4P3lX9Y9RScshQtKdlRWiCGHDxAz5AI92Qo/
-	 FkMgU/SPsRvQA0L5fNUYiQYkMQbxVEvCgiHwqmgOs30oj04hxmey6Zx9bkfL+I/5Lq
-	 DAQqV3bRdSoxnk1kbqr0RV3JgRe9qBACjxSt4Me4=
+	b=XBbz5V0TG4c5h5V8eDyjtMgfCpJphkWGMFS9qbeEnW1tJNCWXbHLS/w7kEslb5qaG
+	 k4ieYJuXQLIwfjMBjt+kYPzF+f+JMuLunTAYVPJSCbUo4H2BNa//J9cryAgAHUfcM9
+	 +qUNA/qND4Wgh4FYRtXN6NOOo43H6OaHzkCKnXow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 031/290] serial: sc16is7xx: replace hardcoded divisor value with BIT() macro
-Date: Wed,  3 Jul 2024 12:36:52 +0200
-Message-ID: <20240703102905.372660875@linuxfoundation.org>
+	syzbot+9dfe490c8176301c1d06@syzkaller.appspotmail.com,
+	Dave Kleikamp <shaggy@kernel.org>
+Subject: [PATCH 5.15 077/356] jfs: xattr: fix buffer overflow for invalid xattr
+Date: Wed,  3 Jul 2024 12:36:53 +0200
+Message-ID: <20240703102916.017491417@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 2e57cefc4477659527f7adab1f87cdbf60ef1ae6 ]
+commit 7c55b78818cfb732680c4a72ab270cc2d2ee3d0f upstream.
 
-To better show why the limit is what it is, since we have only 16 bits for
-the divisor.
+When an xattr size is not what is expected, it is printed out to the
+kernel log in hex format as a form of debugging.  But when that xattr
+size is bigger than the expected size, printing it out can cause an
+access off the end of the buffer.
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-13-hugo@hugovil.com
+Fix this all up by properly restricting the size of the debug hex dump
+in the kernel log.
+
+Reported-by: syzbot+9dfe490c8176301c1d06@syzkaller.appspotmail.com
+Cc: Dave Kleikamp <shaggy@kernel.org>
+Link: https://lore.kernel.org/r/2024051433-slider-cloning-98f9@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 8492bd91aa05 ("serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when using prescaler")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jfs/xattr.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index d751f8ce5cf6d..88b84d43c2d62 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -497,7 +497,7 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 	u8 prescaler = 0;
- 	unsigned long clk = port->uartclk, div = clk / 16 / baud;
+--- a/fs/jfs/xattr.c
++++ b/fs/jfs/xattr.c
+@@ -557,9 +557,11 @@ static int ea_get(struct inode *inode, s
  
--	if (div > 0xffff) {
-+	if (div >= BIT(16)) {
- 		prescaler = SC16IS7XX_MCR_CLKSEL_BIT;
- 		div /= 4;
- 	}
--- 
-2.43.0
-
+       size_check:
+ 	if (EALIST_SIZE(ea_buf->xattr) != ea_size) {
++		int size = min_t(int, EALIST_SIZE(ea_buf->xattr), ea_size);
++
+ 		printk(KERN_ERR "ea_get: invalid extended attribute\n");
+ 		print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
+-				     ea_buf->xattr, ea_size, 1);
++				     ea_buf->xattr, size, 1);
+ 		ea_release(inode, ea_buf);
+ 		rc = -EIO;
+ 		goto clean_up;
 
 
 
