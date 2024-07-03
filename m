@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9377F925CBB
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:22:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB1A925E6F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:36:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54BFC2C442B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3DBB296066
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC707191F80;
-	Wed,  3 Jul 2024 11:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C5C17D8AA;
+	Wed,  3 Jul 2024 11:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsrHCZ0N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OiMNtB6T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA5D1849D3;
-	Wed,  3 Jul 2024 11:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52BC16E5ED;
+	Wed,  3 Jul 2024 11:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005072; cv=none; b=AxC0uf+5Xovvy2oReAjs7Y71TWYJS8NS5u0JXYaig5Fzz2zhOipkMC2DIddL1WjwkcssXMZ+E4o90prMz9MgSRDbH+vl3m2qMErc4cNQOvLXfs2JfgiTzeYFfmB4P+Q63l2TuGbMdmLTuSsSyUDUIth6ygMMAN03KpV8LAy2s/w=
+	t=1720006085; cv=none; b=kvgbosm1K3cVL9L1bWw1Mf3QtGyyJYalh1cVCcmk3L5ZCTncn/YaiaRhPKgOB8rPh+XafF0r34FCymqBzQ79IMNr6lsFtmhQgGncRYSqMubhyko2VwQS2q9NoMW9i9ktg5suEu4vK30efcprKTQ/yVovmdcv52RF7Q4bYGMNBfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005072; c=relaxed/simple;
-	bh=c5HOigGoKD0xn9PyhLw6DVRABknT7FXdnhTDmc0iUJ0=;
+	s=arc-20240116; t=1720006085; c=relaxed/simple;
+	bh=WqnA6W80ySVu5UtQqCMf6Pkez5HLF1nxbyLcbOnZq8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cruMAwHwqk96X19ehIKtbw4qVSIpgBjRr6i2/DgH2K3rxEUIiHp/l9EDbIDgFsxdkMAvVYTaFefxhAWGQ0tTZljX/Xcw1nGFtJAYkP1wQ99iGNNF0ptef/hTr8n2tCGufyXGR0RvV7LI1U0YKNfGwXohn+40kFzbsHW5YPopG3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsrHCZ0N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1DCC2BD10;
-	Wed,  3 Jul 2024 11:11:11 +0000 (UTC)
+	 MIME-Version; b=T1W5Sisasf474qqb0Xh2aQszp3HgzaHBGlcvi5CDoERWS+cIbU6xX/4wuzTwkCBkMwSmfv/EyRM8IGk0o3j3qmkjjcR7mdFAeYzvsS19VzkA2NG0qCuYdSx2zlShkbvbvAGmZ0TF07i1+/Ma1Rj4pt7mHeXUvEIs/H/3pJe6FKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OiMNtB6T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953DDC2BD10;
+	Wed,  3 Jul 2024 11:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005072;
-	bh=c5HOigGoKD0xn9PyhLw6DVRABknT7FXdnhTDmc0iUJ0=;
+	s=korg; t=1720006085;
+	bh=WqnA6W80ySVu5UtQqCMf6Pkez5HLF1nxbyLcbOnZq8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GsrHCZ0NX/9xBHK5Dwh2t+orqzlGbWJ/a97WTs9+gB7OXv6dHkvG8GwE5mKQLa1tB
-	 UO5MqleobSQCHjA1t+D1unUyrxlqx7g6oukxVXzUKg8McTVz3+fdOp86QiWUjrJBNJ
-	 PEuSjqV1FgJwSsNuRE0wWiK90f4dCiUWe3o3Uqec=
+	b=OiMNtB6TiPOpjVErOKVIs8+iJyUN6Z+b29tmlTKv0ehfczRHt3kI2XlDAZQdUAeDi
+	 dbhXOLRhr4Fr5kXxjqN5PeqJyCVFykETKfz35+wXHCmEGOW1aMz2a335vv0grFsScq
+	 F/k8L4K37W3gQ3ZCk6A4Piv64GLXeZskBhoJkgEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 251/290] iio: chemical: bme680: Fix overflows in compensate() functions
+	Andrew Davis <afd@ti.com>,
+	Nishanth Menon <nm@ti.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 296/356] soc: ti: wkup_m3_ipc: Send NULL dummy message instead of pointer message
 Date: Wed,  3 Jul 2024 12:40:32 +0200
-Message-ID: <20240703102913.630409866@linuxfoundation.org>
+Message-ID: <20240703102924.313835654@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
+From: Andrew Davis <afd@ti.com>
 
-commit fdd478c3ae98c3f13628e110dce9b6cfb0d9b3c8 upstream.
+[ Upstream commit ddbf3204f600a4d1f153498f618369fca352ae00 ]
 
-There are cases in the compensate functions of the driver that
-there could be overflows of variables due to bit shifting ops.
-These implications were initially discussed here [1] and they
-were mentioned in log message of Commit 1b3bd8592780 ("iio:
-chemical: Add support for Bosch BME680 sensor").
+mbox_send_message() sends a u32 bit message, not a pointer to a message.
+We only convert to a pointer type as a generic type. If we want to send
+a dummy message of 0, then simply send 0 (NULL).
 
-[1]: https://lore.kernel.org/linux-iio/20180728114028.3c1bbe81@archlinux/
-
-Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Link: https://lore.kernel.org/r/20240606212313.207550-4-vassilisamir@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20240325165507.30323-1-afd@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/chemical/bme680_core.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/soc/ti/wkup_m3_ipc.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -342,10 +342,10 @@ static s16 bme680_compensate_temp(struct
- 	if (!calib->par_t2)
- 		bme680_read_calib(data, calib);
+diff --git a/drivers/soc/ti/wkup_m3_ipc.c b/drivers/soc/ti/wkup_m3_ipc.c
+index 8b3ff44fd9010..967c40059a431 100644
+--- a/drivers/soc/ti/wkup_m3_ipc.c
++++ b/drivers/soc/ti/wkup_m3_ipc.c
+@@ -14,7 +14,6 @@
+ #include <linux/irq.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/omap-mailbox.h>
+ #include <linux/platform_device.h>
+ #include <linux/remoteproc.h>
+ #include <linux/suspend.h>
+@@ -151,7 +150,6 @@ static irqreturn_t wkup_m3_txev_handler(int irq, void *ipc_data)
+ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
+ {
+ 	struct device *dev = m3_ipc->dev;
+-	mbox_msg_t dummy_msg = 0;
+ 	int ret;
  
--	var1 = (adc_temp >> 3) - (calib->par_t1 << 1);
-+	var1 = (adc_temp >> 3) - ((s32)calib->par_t1 << 1);
- 	var2 = (var1 * calib->par_t2) >> 11;
- 	var3 = ((var1 >> 1) * (var1 >> 1)) >> 12;
--	var3 = (var3 * (calib->par_t3 << 4)) >> 14;
-+	var3 = (var3 * ((s32)calib->par_t3 << 4)) >> 14;
- 	data->t_fine = var2 + var3;
- 	calc_temp = (data->t_fine * 5 + 128) >> 8;
+ 	if (!m3_ipc->mbox) {
+@@ -167,7 +165,7 @@ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
+ 	 * the RX callback to avoid multiple interrupts being received
+ 	 * by the CM3.
+ 	 */
+-	ret = mbox_send_message(m3_ipc->mbox, &dummy_msg);
++	ret = mbox_send_message(m3_ipc->mbox, NULL);
+ 	if (ret < 0) {
+ 		dev_err(dev, "%s: mbox_send_message() failed: %d\n",
+ 			__func__, ret);
+@@ -189,7 +187,6 @@ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
+ static int wkup_m3_ping_noirq(struct wkup_m3_ipc *m3_ipc)
+ {
+ 	struct device *dev = m3_ipc->dev;
+-	mbox_msg_t dummy_msg = 0;
+ 	int ret;
  
-@@ -368,9 +368,9 @@ static u32 bme680_compensate_press(struc
- 	var1 = (data->t_fine >> 1) - 64000;
- 	var2 = ((((var1 >> 2) * (var1 >> 2)) >> 11) * calib->par_p6) >> 2;
- 	var2 = var2 + (var1 * calib->par_p5 << 1);
--	var2 = (var2 >> 2) + (calib->par_p4 << 16);
-+	var2 = (var2 >> 2) + ((s32)calib->par_p4 << 16);
- 	var1 = (((((var1 >> 2) * (var1 >> 2)) >> 13) *
--			(calib->par_p3 << 5)) >> 3) +
-+			((s32)calib->par_p3 << 5)) >> 3) +
- 			((calib->par_p2 * var1) >> 1);
- 	var1 = var1 >> 18;
- 	var1 = ((32768 + var1) * calib->par_p1) >> 15;
-@@ -388,7 +388,7 @@ static u32 bme680_compensate_press(struc
- 	var3 = ((press_comp >> 8) * (press_comp >> 8) *
- 			(press_comp >> 8) * calib->par_p10) >> 17;
+ 	if (!m3_ipc->mbox) {
+@@ -198,7 +195,7 @@ static int wkup_m3_ping_noirq(struct wkup_m3_ipc *m3_ipc)
+ 		return -EIO;
+ 	}
  
--	press_comp += (var1 + var2 + var3 + (calib->par_p7 << 7)) >> 4;
-+	press_comp += (var1 + var2 + var3 + ((s32)calib->par_p7 << 7)) >> 4;
- 
- 	return press_comp;
- }
-@@ -414,7 +414,7 @@ static u32 bme680_compensate_humid(struc
- 		 (((temp_scaled * ((temp_scaled * calib->par_h5) / 100))
- 		   >> 6) / 100) + (1 << 14))) >> 10;
- 	var3 = var1 * var2;
--	var4 = calib->par_h6 << 7;
-+	var4 = (s32)calib->par_h6 << 7;
- 	var4 = (var4 + ((temp_scaled * calib->par_h7) / 100)) >> 4;
- 	var5 = ((var3 >> 14) * (var3 >> 14)) >> 10;
- 	var6 = (var4 * var5) >> 1;
+-	ret = mbox_send_message(m3_ipc->mbox, &dummy_msg);
++	ret = mbox_send_message(m3_ipc->mbox, NULL);
+ 	if (ret < 0) {
+ 		dev_err(dev, "%s: mbox_send_message() failed: %d\n",
+ 			__func__, ret);
+-- 
+2.43.0
+
 
 
 
