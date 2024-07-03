@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840A9925C7A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:19:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 226A1925A2A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:55:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A40A1F25E8B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:19:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C121F1F2192A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2A7183089;
-	Wed,  3 Jul 2024 11:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7451849F7;
+	Wed,  3 Jul 2024 10:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0tIeF9R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bawANc96"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7C4183077;
-	Wed,  3 Jul 2024 11:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D71F1836EF;
+	Wed,  3 Jul 2024 10:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004841; cv=none; b=NYkdVbIbi9DHE7fGHu1w9OXqLtIkSoxuweEqs7paqh4K60WMMa5LsLF4KynlwwBhjzB/O5JHSFvUaDd+E/FzXvuYES9BSAt8Dt3j+6f8rH/rFGGFbwpFK/Rfvg6pyKFhFH7QqLMUaegnStWzhKVncMZBjJjndCC49JPoauFw1xo=
+	t=1720003571; cv=none; b=XGiWvk6bVG5Az8nc/Gm/AD2A5xIFkDsihFxcmLkmGSNOspiLby7ulJ2sTDlRADOrrLVcimL7VE+WL3c2LMP119SHQ1GahJl5flkOw189/3zQGysOeJxx94GlxkF11VvAOHCB+T6PH77jE+j6CMZSmpxNnP6yDACt6fBb0Z4jrYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004841; c=relaxed/simple;
-	bh=o5bxa3LxeEUnmpImEGIpL916PxAtfE7z/W8SUaLkZOU=;
+	s=arc-20240116; t=1720003571; c=relaxed/simple;
+	bh=WlBRH1OiZ0wALColTZy0oVFwGaGjAD71rXO3wb5KW4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PMihkL5SfSYz+LNC5GvDD3WvVPaWdl3XjPWRuKOdYGA7eEvmAMpTKzZQHvfYooPPYiFMxsMxy6ImXc62cd3zIlRH6cnbEKPTIJ/L8C667s3EbiLVgy9H0VHo2LySteZq6r83Kt55t5Y/7Toohgcu1Npo7SiH5YfimLaUlmmp9jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0tIeF9R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388C4C32781;
-	Wed,  3 Jul 2024 11:07:20 +0000 (UTC)
+	 MIME-Version; b=QsxJODul/JVJILKJTzLVhksXjK0VQpF03rACdfEDh6JRND7DeRmA7JFj5J2QpyRPAh1TGGS0reV3ojZ93Y04EIilheb6XyjEkzxzE7cWD4pgr/6016SBRh9jywnIUWnGGvNUvKTSvj6yBNif07LLqEVrGmPv3XjOv+sIYo28thI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bawANc96; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9678C2BD10;
+	Wed,  3 Jul 2024 10:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004840;
-	bh=o5bxa3LxeEUnmpImEGIpL916PxAtfE7z/W8SUaLkZOU=;
+	s=korg; t=1720003571;
+	bh=WlBRH1OiZ0wALColTZy0oVFwGaGjAD71rXO3wb5KW4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b0tIeF9RHWE1F0DxKz0I4SjsYwkgtK0A3HfbYxaE8Qll1g8t5Ye5NqaKQB6WDIjV8
-	 0Yh9SYbuY71TeYx9Z3V7oiEWOuhjRjWlIzYA32YfAJP4gT9qydnZ9XbHkX5inNcDyr
-	 MknvIagarz7gg8SMjUpeo4t7rzd7pBUeH8RccRjQ=
+	b=bawANc963Jn/yFWMM6cN+G4KJa6X6sNzF71hWG4nGlF+7+bnStfPHhjXEb9ySFsW5
+	 nzcF5e8lBmlg9sHjQfHriMaRKj9RO79TOP+tTipc6bBvzEE4CxRgG972QQfRJ3688g
+	 bg0CPZWFxA2566PU0Cp2gNtPR0mOObrLaiRcfQ2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 176/290] pmdomain: ti-sci: Fix duplicate PD referrals
-Date: Wed,  3 Jul 2024 12:39:17 +0200
-Message-ID: <20240703102910.822148593@linuxfoundation.org>
+Subject: [PATCH 4.19 061/139] rcutorture: Fix rcu_torture_one_read() pipe_count overflow comment
+Date: Wed,  3 Jul 2024 12:39:18 +0200
+Message-ID: <20240703102832.744026390@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit 670c900f69645db394efb38934b3344d8804171a ]
+[ Upstream commit 8b9b443fa860276822b25057cb3ff3b28734dec0 ]
 
-When the dts file has multiple referrers to a single PD (e.g.
-simple-framebuffer and dss nodes both point to the DSS power-domain) the
-ti-sci driver will create two power domains, both with the same ID, and
-that will cause problems as one of the power domains will hide the other
-one.
+The "pipe_count > RCU_TORTURE_PIPE_LEN" check has a comment saying "Should
+not happen, but...".  This is only true when testing an RCU whose grace
+periods are always long enough.  This commit therefore fixes this comment.
 
-Fix this checking if a PD with the ID has already been created, and only
-create a PD for new IDs.
-
-Fixes: efa5c01cd7ee ("soc: ti: ti_sci_pm_domains: switch to use multiple genpds instead of one")
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240415-ti-sci-pd-v1-1-a0e56b8ad897@ideasonboard.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
+Closes: https://lore.kernel.org/lkml/CAHk-=wi7rJ-eGq+xaxVfzFEgbL9tdf6Kc8Z89rCpfcQOKm74Tw@mail.gmail.com/
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/ti/ti_sci_pm_domains.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ kernel/rcu/rcutorture.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soc/ti/ti_sci_pm_domains.c b/drivers/soc/ti/ti_sci_pm_domains.c
-index a33ec7eaf23d1..17984a7bffba5 100644
---- a/drivers/soc/ti/ti_sci_pm_domains.c
-+++ b/drivers/soc/ti/ti_sci_pm_domains.c
-@@ -114,6 +114,18 @@ static const struct of_device_id ti_sci_pm_domain_matches[] = {
- };
- MODULE_DEVICE_TABLE(of, ti_sci_pm_domain_matches);
- 
-+static bool ti_sci_pm_idx_exists(struct ti_sci_genpd_provider *pd_provider, u32 idx)
-+{
-+	struct ti_sci_pm_domain *pd;
-+
-+	list_for_each_entry(pd, &pd_provider->pd_list, node) {
-+		if (pd->idx == idx)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static int ti_sci_pm_domain_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -153,8 +165,14 @@ static int ti_sci_pm_domain_probe(struct platform_device *pdev)
- 				break;
- 
- 			if (args.args_count >= 1 && args.np == dev->of_node) {
--				if (args.args[0] > max_id)
-+				if (args.args[0] > max_id) {
- 					max_id = args.args[0];
-+				} else {
-+					if (ti_sci_pm_idx_exists(pd_provider, args.args[0])) {
-+						index++;
-+						continue;
-+					}
-+				}
- 
- 				pd = devm_kzalloc(dev, sizeof(*pd), GFP_KERNEL);
- 				if (!pd)
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index 0b7af7e2bcbb1..8986ef3a95888 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -1334,7 +1334,8 @@ static bool rcu_torture_one_read(struct torture_random_state *trsp)
+ 	preempt_disable();
+ 	pipe_count = p->rtort_pipe_count;
+ 	if (pipe_count > RCU_TORTURE_PIPE_LEN) {
+-		/* Should not happen, but... */
++		// Should not happen in a correct RCU implementation,
++		// happens quite often for torture_type=busted.
+ 		pipe_count = RCU_TORTURE_PIPE_LEN;
+ 	}
+ 	completed = cur_ops->get_gp_seq();
 -- 
 2.43.0
 
