@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6DE6925BF8
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:13:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D95BA925D35
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8152D1F21220
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E373294B98
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402BB18FDC2;
-	Wed,  3 Jul 2024 11:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86CA917334F;
+	Wed,  3 Jul 2024 11:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvKgusaE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCQ8lCyW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F19176226;
-	Wed,  3 Jul 2024 11:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B0C173334;
+	Wed,  3 Jul 2024 11:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004459; cv=none; b=gVB29NDyx4xiFeOOjKD9IjX2yGNBw9ttRt2ad7e7/PDdC3gklt76K5cS7m9h0frUZpN1AQvohlfa/zNOSsjHV3ZPqJYE8aZIdN7Rr5vC1tT1h2eWbBb0k7iCTpuGwJRgBYXuawwmIU7S6TRBl2E2uR6aXyC76/guEBe5T9Xs4i4=
+	t=1720005394; cv=none; b=iI7/LQO6kF1EZ3xKZu1ZTZix94HkYStUdcxFRahGz2M9li/Afgq2OYLHlLJCS7j3fXarH2RpLrZsOnMhXTaYg/56thq5MIQiGyP+Mk1nTzPY5xiAqE5s5QUoUjr1v2ItFH4Tb3QXDaW/5OD87+JP04Q/dsJnrnQhyAtDNdAuu6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004459; c=relaxed/simple;
-	bh=yvi558BC+m0FMRJTmCdS6sNDpsyeD6OWFxg+TpTBjP0=;
+	s=arc-20240116; t=1720005394; c=relaxed/simple;
+	bh=dvSNmikJRxcA9veEUGSIa5yYvSusBNWdXjkUB7TDy/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JDfowIh/Z6Nm4ojghd6pJDEo4UYwZsLaCwxMzliIbzEyJW/O1cc89bX5AeC3xzg6E4sYmBWWp3wuQ0WUdOF0l1d9kKECNlKvK64vRXEVjZ++e+XfrlNTdLsf6MO3WsUuc8mIVLc7200FLw0ZlEdiahfdkbNPZt3bLHIUtSKVxGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvKgusaE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295D7C32781;
-	Wed,  3 Jul 2024 11:00:57 +0000 (UTC)
+	 MIME-Version; b=hNo/eSn6qS/A7DDzGzQxkvgrFtnoMsFqWl+FpJ0EcxD8rELwFV+kHPMogaW8uRyRoD0mZRYnvo6+VqnxRoxIqgmG3TpNswWB/dMU08u226gx5Ydg4Tu4HzitKapVB6ylekAaRf8MoxJCBqdt78U2gKe5UAO5Z4AOo/DjxlRQeSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCQ8lCyW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC20C2BD10;
+	Wed,  3 Jul 2024 11:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004458;
-	bh=yvi558BC+m0FMRJTmCdS6sNDpsyeD6OWFxg+TpTBjP0=;
+	s=korg; t=1720005394;
+	bh=dvSNmikJRxcA9veEUGSIa5yYvSusBNWdXjkUB7TDy/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tvKgusaE7JKLVvbwzTSKgnwzLFA0mlSpIvqrfYQLCD8aoMYFYOXeIao1qXVlE59b9
-	 zpvwCWsxrijSXuBF+F8f6d+XWmdOScZ8kKE7mEhiGT35kzld5QGgjZN8BxCfc2vp9g
-	 BizU+AOM3pj3f2dzVkDRCauhS4f2GWEYRJmAysvw=
+	b=jCQ8lCyWJMafwqa6Ji7jZLTF1MRIk8N4glNgPZ3HTrPhT3E95yTKnvJ6N7hvudthl
+	 KiMu/r3LI3Glv78aj2kIRBYCMqPPFmwuEBjOhcd1wrOB659itP+h+KmZFLpqBZQ/6t
+	 wPthZ8kKl7O8yeUXUjeUNCl5wXR+F9MgVrngpTRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 021/290] af_unix: Annotate data-races around sk->sk_state in unix_write_space() and poll().
+Subject: [PATCH 5.15 066/356] selftests/mm: conform test to TAP format output
 Date: Wed,  3 Jul 2024 12:36:42 +0200
-Message-ID: <20240703102904.992443989@linuxfoundation.org>
+Message-ID: <20240703102915.597720666@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +63,231 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-[ Upstream commit eb0718fb3e97ad0d6f4529b810103451c90adf94 ]
+[ Upstream commit 9a21701edc41465de56f97914741bfb7bfc2517d ]
 
-unix_poll() and unix_dgram_poll() read sk->sk_state locklessly and
-calls unix_writable() which also reads sk->sk_state without holding
-unix_state_lock().
+Conform the layout, informational and status messages to TAP.  No
+functional change is intended other than the layout of output messages.
 
-Let's use READ_ONCE() in unix_poll() and unix_dgram_poll() and pass
-it to unix_writable().
-
-While at it, we remove TCP_SYN_SENT check in unix_dgram_poll() as
-that state does not exist for AF_UNIX socket since the code was added.
-
-Fixes: 1586a5877db9 ("af_unix: do not report POLLOUT on listeners")
-Fixes: 3c73419c09a5 ("af_unix: fix 'poll for write'/ connected DGRAM sockets")
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lkml.kernel.org/r/20240101083614.1076768-1-usama.anjum@collabora.com
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: d4202e66a4b1 ("selftests/mm: compaction_test: fix bogus test success on Aarch64")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ tools/testing/selftests/vm/compaction_test.c | 91 ++++++++++----------
+ 1 file changed, 44 insertions(+), 47 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index c2aaf4b832c65..33dd6ed8de25d 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -447,9 +447,9 @@ static int unix_dgram_peer_wake_me(struct sock *sk, struct sock *other)
- 	return 0;
+diff --git a/tools/testing/selftests/vm/compaction_test.c b/tools/testing/selftests/vm/compaction_test.c
+index 55dec92e1e58c..f81931c1f8386 100644
+--- a/tools/testing/selftests/vm/compaction_test.c
++++ b/tools/testing/selftests/vm/compaction_test.c
+@@ -33,7 +33,7 @@ int read_memory_info(unsigned long *memfree, unsigned long *hugepagesize)
+ 	FILE *cmdfile = popen(cmd, "r");
+ 
+ 	if (!(fgets(buffer, sizeof(buffer), cmdfile))) {
+-		perror("Failed to read meminfo\n");
++		ksft_print_msg("Failed to read meminfo: %s\n", strerror(errno));
+ 		return -1;
+ 	}
+ 
+@@ -44,7 +44,7 @@ int read_memory_info(unsigned long *memfree, unsigned long *hugepagesize)
+ 	cmdfile = popen(cmd, "r");
+ 
+ 	if (!(fgets(buffer, sizeof(buffer), cmdfile))) {
+-		perror("Failed to read meminfo\n");
++		ksft_print_msg("Failed to read meminfo: %s\n", strerror(errno));
+ 		return -1;
+ 	}
+ 
+@@ -62,14 +62,14 @@ int prereq(void)
+ 	fd = open("/proc/sys/vm/compact_unevictable_allowed",
+ 		  O_RDONLY | O_NONBLOCK);
+ 	if (fd < 0) {
+-		perror("Failed to open\n"
+-		       "/proc/sys/vm/compact_unevictable_allowed\n");
++		ksft_print_msg("Failed to open /proc/sys/vm/compact_unevictable_allowed: %s\n",
++			       strerror(errno));
+ 		return -1;
+ 	}
+ 
+ 	if (read(fd, &allowed, sizeof(char)) != sizeof(char)) {
+-		perror("Failed to read from\n"
+-		       "/proc/sys/vm/compact_unevictable_allowed\n");
++		ksft_print_msg("Failed to read from /proc/sys/vm/compact_unevictable_allowed: %s\n",
++			       strerror(errno));
+ 		close(fd);
+ 		return -1;
+ 	}
+@@ -78,12 +78,13 @@ int prereq(void)
+ 	if (allowed == '1')
+ 		return 0;
+ 
++	ksft_print_msg("Compaction isn't allowed\n");
+ 	return -1;
  }
  
--static int unix_writable(const struct sock *sk)
-+static int unix_writable(const struct sock *sk, unsigned char state)
+ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
  {
--	return sk->sk_state != TCP_LISTEN &&
-+	return state != TCP_LISTEN &&
- 	       (refcount_read(&sk->sk_wmem_alloc) << 2) <= sk->sk_sndbuf;
- }
+-	int fd;
++	int fd, ret = -1;
+ 	int compaction_index = 0;
+ 	char initial_nr_hugepages[10] = {0};
+ 	char nr_hugepages[10] = {0};
+@@ -94,12 +95,14 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
  
-@@ -458,7 +458,7 @@ static void unix_write_space(struct sock *sk)
- 	struct socket_wq *wq;
+ 	fd = open("/proc/sys/vm/nr_hugepages", O_RDWR | O_NONBLOCK);
+ 	if (fd < 0) {
+-		perror("Failed to open /proc/sys/vm/nr_hugepages");
++		ksft_test_result_fail("Failed to open /proc/sys/vm/nr_hugepages: %s\n",
++				      strerror(errno));
+ 		return -1;
+ 	}
  
- 	rcu_read_lock();
--	if (unix_writable(sk)) {
-+	if (unix_writable(sk, READ_ONCE(sk->sk_state))) {
- 		wq = rcu_dereference(sk->sk_wq);
- 		if (skwq_has_sleeper(wq))
- 			wake_up_interruptible_sync_poll(&wq->wait,
-@@ -2713,12 +2713,14 @@ static int unix_compat_ioctl(struct socket *sock, unsigned int cmd, unsigned lon
- static __poll_t unix_poll(struct file *file, struct socket *sock, poll_table *wait)
- {
- 	struct sock *sk = sock->sk;
-+	unsigned char state;
- 	__poll_t mask;
- 	u8 shutdown;
+ 	if (read(fd, initial_nr_hugepages, sizeof(initial_nr_hugepages)) <= 0) {
+-		perror("Failed to read from /proc/sys/vm/nr_hugepages");
++		ksft_test_result_fail("Failed to read from /proc/sys/vm/nr_hugepages: %s\n",
++				      strerror(errno));
+ 		goto close_fd;
+ 	}
  
- 	sock_poll_wait(file, sock, wait);
- 	mask = 0;
- 	shutdown = READ_ONCE(sk->sk_shutdown);
-+	state = READ_ONCE(sk->sk_state);
+@@ -107,7 +110,8 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
  
- 	/* exceptional events? */
- 	if (sk->sk_err)
-@@ -2734,14 +2736,14 @@ static __poll_t unix_poll(struct file *file, struct socket *sock, poll_table *wa
+ 	/* Start with the initial condition of 0 huge pages*/
+ 	if (write(fd, "0", sizeof(char)) != sizeof(char)) {
+-		perror("Failed to write 0 to /proc/sys/vm/nr_hugepages\n");
++		ksft_test_result_fail("Failed to write 0 to /proc/sys/vm/nr_hugepages: %s\n",
++				      strerror(errno));
+ 		goto close_fd;
+ 	}
  
- 	/* Connection-based need to check for termination and startup */
- 	if ((sk->sk_type == SOCK_STREAM || sk->sk_type == SOCK_SEQPACKET) &&
--	    sk->sk_state == TCP_CLOSE)
-+	    state == TCP_CLOSE)
- 		mask |= EPOLLHUP;
+@@ -116,14 +120,16 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 	/* Request a large number of huge pages. The Kernel will allocate
+ 	   as much as it can */
+ 	if (write(fd, "100000", (6*sizeof(char))) != (6*sizeof(char))) {
+-		perror("Failed to write 100000 to /proc/sys/vm/nr_hugepages\n");
++		ksft_test_result_fail("Failed to write 100000 to /proc/sys/vm/nr_hugepages: %s\n",
++				      strerror(errno));
+ 		goto close_fd;
+ 	}
  
- 	/*
- 	 * we set writable also when the other side has shut down the
- 	 * connection. This prevents stuck sockets.
- 	 */
--	if (unix_writable(sk))
-+	if (unix_writable(sk, state))
- 		mask |= EPOLLOUT | EPOLLWRNORM | EPOLLWRBAND;
+ 	lseek(fd, 0, SEEK_SET);
  
- 	return mask;
-@@ -2752,12 +2754,14 @@ static __poll_t unix_dgram_poll(struct file *file, struct socket *sock,
- {
- 	struct sock *sk = sock->sk, *other;
- 	unsigned int writable;
-+	unsigned char state;
- 	__poll_t mask;
- 	u8 shutdown;
+ 	if (read(fd, nr_hugepages, sizeof(nr_hugepages)) <= 0) {
+-		perror("Failed to re-read from /proc/sys/vm/nr_hugepages\n");
++		ksft_test_result_fail("Failed to re-read from /proc/sys/vm/nr_hugepages: %s\n",
++				      strerror(errno));
+ 		goto close_fd;
+ 	}
  
- 	sock_poll_wait(file, sock, wait);
- 	mask = 0;
- 	shutdown = READ_ONCE(sk->sk_shutdown);
-+	state = READ_ONCE(sk->sk_state);
+@@ -131,67 +137,58 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 	   huge pages */
+ 	compaction_index = mem_free/(atoi(nr_hugepages) * hugepage_size);
  
- 	/* exceptional events? */
- 	if (sk->sk_err || !skb_queue_empty_lockless(&sk->sk_error_queue))
-@@ -2774,19 +2778,14 @@ static __poll_t unix_dgram_poll(struct file *file, struct socket *sock,
- 		mask |= EPOLLIN | EPOLLRDNORM;
- 
- 	/* Connection-based need to check for termination and startup */
--	if (sk->sk_type == SOCK_SEQPACKET) {
--		if (sk->sk_state == TCP_CLOSE)
--			mask |= EPOLLHUP;
--		/* connection hasn't started yet? */
--		if (sk->sk_state == TCP_SYN_SENT)
--			return mask;
+-	if (compaction_index > 3) {
+-		printf("No of huge pages allocated = %d\n",
+-		       (atoi(nr_hugepages)));
+-		fprintf(stderr, "ERROR: Less that 1/%d of memory is available\n"
+-			"as huge pages\n", compaction_index);
+-		goto close_fd;
 -	}
-+	if (sk->sk_type == SOCK_SEQPACKET && state == TCP_CLOSE)
-+		mask |= EPOLLHUP;
+-
+-	printf("No of huge pages allocated = %d\n",
+-	       (atoi(nr_hugepages)));
+-
+ 	lseek(fd, 0, SEEK_SET);
  
- 	/* No write status requested, avoid expensive OUT tests. */
- 	if (!(poll_requested_events(wait) & (EPOLLWRBAND|EPOLLWRNORM|EPOLLOUT)))
- 		return mask;
+ 	if (write(fd, initial_nr_hugepages, strlen(initial_nr_hugepages))
+ 	    != strlen(initial_nr_hugepages)) {
+-		perror("Failed to write value to /proc/sys/vm/nr_hugepages\n");
++		ksft_test_result_fail("Failed to write value to /proc/sys/vm/nr_hugepages: %s\n",
++				      strerror(errno));
+ 		goto close_fd;
+ 	}
  
--	writable = unix_writable(sk);
-+	writable = unix_writable(sk, state);
- 	if (writable) {
- 		unix_state_lock(sk);
+-	close(fd);
+-	return 0;
++	if (compaction_index > 3) {
++		ksft_print_msg("ERROR: Less that 1/%d of memory is available\n"
++			       "as huge pages\n", compaction_index);
++		ksft_test_result_fail("No of huge pages allocated = %d\n", (atoi(nr_hugepages)));
++		goto close_fd;
++	}
++
++	ksft_test_result_pass("Memory compaction succeeded. No of huge pages allocated = %d\n",
++			      (atoi(nr_hugepages)));
++	ret = 0;
  
+  close_fd:
+ 	close(fd);
+-	printf("Not OK. Compaction test failed.");
+-	return -1;
++	return ret;
+ }
+ 
+ 
+ int main(int argc, char **argv)
+ {
+ 	struct rlimit lim;
+-	struct map_list *list, *entry;
++	struct map_list *list = NULL, *entry;
+ 	size_t page_size, i;
+ 	void *map = NULL;
+ 	unsigned long mem_free = 0;
+ 	unsigned long hugepage_size = 0;
+ 	long mem_fragmentable_MB = 0;
+ 
+-	if (prereq() != 0) {
+-		printf("Either the sysctl compact_unevictable_allowed is not\n"
+-		       "set to 1 or couldn't read the proc file.\n"
+-		       "Skipping the test\n");
+-		return KSFT_SKIP;
+-	}
++	ksft_print_header();
++
++	if (prereq() != 0)
++		return ksft_exit_pass();
++
++	ksft_set_plan(1);
+ 
+ 	lim.rlim_cur = RLIM_INFINITY;
+ 	lim.rlim_max = RLIM_INFINITY;
+-	if (setrlimit(RLIMIT_MEMLOCK, &lim)) {
+-		perror("Failed to set rlimit:\n");
+-		return -1;
+-	}
++	if (setrlimit(RLIMIT_MEMLOCK, &lim))
++		ksft_exit_fail_msg("Failed to set rlimit: %s\n", strerror(errno));
+ 
+ 	page_size = getpagesize();
+ 
+-	list = NULL;
+-
+-	if (read_memory_info(&mem_free, &hugepage_size) != 0) {
+-		printf("ERROR: Cannot read meminfo\n");
+-		return -1;
+-	}
++	if (read_memory_info(&mem_free, &hugepage_size) != 0)
++		ksft_exit_fail_msg("Failed to get meminfo\n");
+ 
+ 	mem_fragmentable_MB = mem_free * 0.8 / 1024;
+ 
+@@ -227,7 +224,7 @@ int main(int argc, char **argv)
+ 	}
+ 
+ 	if (check_compaction(mem_free, hugepage_size) == 0)
+-		return 0;
++		return ksft_exit_pass();
+ 
+-	return -1;
++	return ksft_exit_fail();
+ }
 -- 
 2.43.0
 
