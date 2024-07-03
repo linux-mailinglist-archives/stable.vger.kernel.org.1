@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-57634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E076925F06
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:47:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30EB6925BF9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:13:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D1E0B255C4
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF9DC1F20CC4
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117A417E900;
-	Wed,  3 Jul 2024 11:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A1518FDC9;
+	Wed,  3 Jul 2024 11:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYCB15o9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lODvFNyb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E08176AC4;
-	Wed,  3 Jul 2024 11:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B066918FDC3;
+	Wed,  3 Jul 2024 11:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005472; cv=none; b=nBwxwTwvGJbNI9OV2z4lZW5Utn/3NNwLsq8anGmFzGsaHWQKwnGaXVEJBViLmzL/pxKzCiMqhvOhqM98YJBtpckNkhkUPpMwdMePIXKtdov3N2DjFJLgFAV8tXavBzCJhXWr96keHQcskQgebeunZtAyzk3pFl4IZ+lkep3DfBA=
+	t=1720004462; cv=none; b=K1PxgAV2zSd99RJFi/AavgsZliREFa7iBbIlEjFln1/twOfZVG+pTw13teQ/lhQyp1S2ds+Xuacja+UNjM8aaePTF5fqvC+CJG/l9lf/JPhcP2nmrTnIRYpP8ZCFGBfMLJPpLJwmaVxuDMxoSujsmNH12XMG+J+Pb9CxDtMpRr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005472; c=relaxed/simple;
-	bh=EYWLlwdBjQb+mhYrRIrEE8qahc9RDmWbXWMK/PfCmf4=;
+	s=arc-20240116; t=1720004462; c=relaxed/simple;
+	bh=J/t+ta8KCb0EKEAnFpn1v7lhj+4R8DstDcQ1zfc8uAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k4VqVCoretdaM6IBP+aRzPoLMOD3fANQ6wMcBvsDIELxYg4Ux+CuzF3wgsN2gS+G6yOuMuz7TArOo4yRiGA5pR/d34/u5T6k8iZYENZqpkCZrWJAp67PR6GA/oTgb3WQNoeOrU3/v4UP2mmpBiE38IrTC7toUJhqR3IQ440l7NQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYCB15o9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FC6C2BD10;
-	Wed,  3 Jul 2024 11:17:52 +0000 (UTC)
+	 MIME-Version; b=Kbbn0MPK5qGVqWvdv/291LW+Tcg0f6xqKhFyDiyGw+625T4JxNLHawTYR2ZlLoN7RPwQVFA9LF+8UP5/OieUuSOoXCULEeXMCZHyO7YEwCGUaPu+X4AJ4Av+u0v0GLsF9eda3y7b23xQhXOFb997hVeAEGCACOGWnuHI/WIxAug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lODvFNyb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF967C2BD10;
+	Wed,  3 Jul 2024 11:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005472;
-	bh=EYWLlwdBjQb+mhYrRIrEE8qahc9RDmWbXWMK/PfCmf4=;
+	s=korg; t=1720004462;
+	bh=J/t+ta8KCb0EKEAnFpn1v7lhj+4R8DstDcQ1zfc8uAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BYCB15o9YSbOlt2d3G18vsbrexW/8GtLmiCEcr0lT31AHUgO62xzMF0fDdeBQmsPl
-	 Co0hnT6GhtR1cCZwQuNL2C4SCw01SFUisT66Yjda7UsNX8KsPZQyuDDBmtHAiq6XYz
-	 V/qeanBKsoFu2LmEtel6Xc/OajG2ddnX3AVebu/s=
+	b=lODvFNyb1rYkL4xstRfbqu9vIXVvdOv3U+4X2fFm6G5LKPOXporMfi/R3idaWLNAC
+	 +B0WVb1QjQgmIqsblN6UmTv/yQe8DE5DL9v8kRk1YyqxzEkWGpsThsSQvTCArsT82C
+	 utH9Kwx7vOIh2sUf5pJ+mNqKZRjlGls3+pF4006E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kun(llfl)" <llfl@linux.alibaba.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 093/356] iommu/amd: Fix sysfs leak in iommu init
+	Kuangyi Chiang <ki.chiang65@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.10 048/290] xhci: Apply reset resume quirk to Etron EJ188 xHCI host
 Date: Wed,  3 Jul 2024 12:37:09 +0200
-Message-ID: <20240703102916.617943356@linuxfoundation.org>
+Message-ID: <20240703102906.017788575@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kun(llfl) <llfl@linux.alibaba.com>
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
 
-[ Upstream commit a295ec52c8624883885396fde7b4df1a179627c3 ]
+commit 17bd54555c2aaecfdb38e2734149f684a73fa584 upstream.
 
-During the iommu initialization, iommu_init_pci() adds sysfs nodes.
-However, these nodes aren't remove in free_iommu_resources() subsequently.
+As described in commit c877b3b2ad5c ("xhci: Add reset on resume quirk for
+asrock p67 host"), EJ188 have the same issue as EJ168, where completely
+dies on resume. So apply XHCI_RESET_ON_RESUME quirk to EJ188 as well.
 
-Fixes: 39ab9555c241 ("iommu: Add sysfs bindings for struct iommu_device")
-Signed-off-by: Kun(llfl) <llfl@linux.alibaba.com>
-Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Link: https://lore.kernel.org/r/c8e0d11c6ab1ee48299c288009cf9c5dae07b42d.1715215003.git.llfl@linux.alibaba.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240611120610.3264502-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/init.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/usb/host/xhci-pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index 724874ad0b2a8..70f3720d96c7e 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -1493,8 +1493,17 @@ static void __init free_pci_segments(void)
- 	}
- }
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -35,6 +35,7 @@
  
-+static void __init free_sysfs(struct amd_iommu *iommu)
-+{
-+	if (iommu->iommu.dev) {
-+		iommu_device_unregister(&iommu->iommu);
-+		iommu_device_sysfs_remove(&iommu->iommu);
-+	}
-+}
+ #define PCI_VENDOR_ID_ETRON		0x1b6f
+ #define PCI_DEVICE_ID_EJ168		0x7023
++#define PCI_DEVICE_ID_EJ188		0x7052
+ 
+ #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI	0x8c31
+ #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI	0x9c31
+@@ -270,6 +271,10 @@ static void xhci_pci_quirks(struct devic
+ 		xhci->quirks |= XHCI_TRUST_TX_LENGTH;
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+ 	}
++	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
++			pdev->device == PCI_DEVICE_ID_EJ188)
++		xhci->quirks |= XHCI_RESET_ON_RESUME;
 +
- static void __init free_iommu_one(struct amd_iommu *iommu)
- {
-+	free_sysfs(iommu);
- 	free_cwwb_sem(iommu);
- 	free_command_buffer(iommu);
- 	free_event_buffer(iommu);
--- 
-2.43.0
-
+ 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
+ 	    pdev->device == 0x0014) {
+ 		xhci->quirks |= XHCI_TRUST_TX_LENGTH;
 
 
 
