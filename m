@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B60925DE1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 838B4925AB1
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D7BA28C16D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B59C01C2601E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85460190692;
-	Wed,  3 Jul 2024 11:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307C519AD54;
+	Wed,  3 Jul 2024 10:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wkj4ot5J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBfRkkkA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F6118C334;
-	Wed,  3 Jul 2024 11:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1EFC17B40C;
+	Wed,  3 Jul 2024 10:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005736; cv=none; b=QQmzbV9gB1S8LvEaWCd02Gc+lMvPYjmrwfHRFeB3r3jh5kvXZL6WGPS79qSB+j1xiW9PouJNKn3my4y8M7ks9Wi0UDj3e9Y4aCmeerwv2SsbtzGpKS6HVDW+04D4wca/xtPGkdEKdccUEmEyDWq89CqGSHQWrajIOoEXbTKMiDA=
+	t=1720003849; cv=none; b=MJGBK8bu2UE4LcSEe9Ynh0sBTY29ZUyDa/ZEgIQ8nHvOnfOpWKbgPGH9Cltz7qLSaldX1fDeHStXd1PHb6WHzVmIPqT0F3TOMBgpMt5Nl1hM9VM2xozONaJzQ+Q/vFJpO+s8yAH6Wtnk69NcPbO7ycLY8OUlwgFVBv7d/KBqBxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005736; c=relaxed/simple;
-	bh=L756DJeL4BljDFdUKNu76S+aICYz9u+Zqt8hF/TcWFk=;
+	s=arc-20240116; t=1720003849; c=relaxed/simple;
+	bh=qrrQyF7oCUeI3h76FhuECRt04XjLLiqRXRW7pA6T6TM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HWsztv9nMPa9phDZMrjTAvKYeZ2kBxPKWyB/Y1bj7pRkQ8OI0Wf4FmDW4jGrGdzdTquxLhBHHDid3+0PNH+zATmHJuVMX3dJ7aeHsSbJUhk+GqAaZATrG8KrgTxZxTisy2IdIvjSp1/cSkwbCg1SkFxrVZBDrDzcbLWj3SQkUVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wkj4ot5J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFBFBC2BD10;
-	Wed,  3 Jul 2024 11:22:15 +0000 (UTC)
+	 MIME-Version; b=DL/leIhK0Vk87tbsiwm8uX8qhmIYbxss74brkIVZqrfzQ8BQ5Ao/yamEYy1sEzdyT/HYRGscyom3yA9PKeQ+/mpnOn6JNs0KMnBg3zKdTfawOh73agtBJDQRhBucshzUyuUFkM2oP5f+2av1+S01b5X7AqX4LVFt7WZTHN6N1RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBfRkkkA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1DFC2BD10;
+	Wed,  3 Jul 2024 10:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005736;
-	bh=L756DJeL4BljDFdUKNu76S+aICYz9u+Zqt8hF/TcWFk=;
+	s=korg; t=1720003848;
+	bh=qrrQyF7oCUeI3h76FhuECRt04XjLLiqRXRW7pA6T6TM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wkj4ot5JPSSpiSB4rLAc/+/foOvjhiPuUTr/eKq6e1lbKtBnwQsrzK50VMhbH0+6p
-	 fK5sP0Y+wNefpf1wpUqcD8P96CE2e5Zq+z6a4SX/OxqP286qjHPd60r4Ab1ZEJBLIN
-	 FUqjFzTUVTfdJSE22/jHLD9UrSHy3mD20DfxTJSQ=
+	b=VBfRkkkA8kfVA6Kf1DnScBgxWrPO/fMQMNu9iYYLaLPpEjgxHBdFoTCYp42li+UpR
+	 6VxcO/EpXn59eZVS+B0H+QFPDc6yC93kdqOhp3r2MXJG5czimLhoAbuP+7mpvHp4Eu
+	 IAQJU04a4yLu6Oyz4GiohHNT0ShsK5rKfgmHGSEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.15 148/356] Bluetooth: qca: Fix error code in qca_read_fw_build_info()
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.4 023/189] usb: gadget: f_fs: Fix race between aio_cancel() and AIO request complete
 Date: Wed,  3 Jul 2024 12:38:04 +0200
-Message-ID: <20240703102918.701179155@linuxfoundation.org>
+Message-ID: <20240703102842.381400890@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-commit a189f0ee6685457528db7a36ded3085e5d13ddc3 upstream.
+[ Upstream commit 24729b307eefcd7c476065cd7351c1a018082c19 ]
 
-Return -ENOMEM on allocation failure.  Don't return success.
+FFS based applications can utilize the aio_cancel() callback to dequeue
+pending USB requests submitted to the UDC.  There is a scenario where the
+FFS application issues an AIO cancel call, while the UDC is handling a
+soft disconnect.  For a DWC3 based implementation, the callstack looks
+like the following:
 
-Fixes: cda0d6a198e2 ("Bluetooth: qca: fix info leak when fetching fw build id")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+    DWC3 Gadget                               FFS Application
+dwc3_gadget_soft_disconnect()              ...
+  --> dwc3_stop_active_transfers()
+    --> dwc3_gadget_giveback(-ESHUTDOWN)
+      --> ffs_epfile_async_io_complete()   ffs_aio_cancel()
+        --> usb_ep_free_request()            --> usb_ep_dequeue()
+
+There is currently no locking implemented between the AIO completion
+handler and AIO cancel, so the issue occurs if the completion routine is
+running in parallel to an AIO cancel call coming from the FFS application.
+As the completion call frees the USB request (io_data->req) the FFS
+application is also referencing it for the usb_ep_dequeue() call.  This can
+lead to accessing a stale/hanging pointer.
+
+commit b566d38857fc ("usb: gadget: f_fs: use io_data->status consistently")
+relocated the usb_ep_free_request() into ffs_epfile_async_io_complete().
+However, in order to properly implement locking to mitigate this issue, the
+spinlock can't be added to ffs_epfile_async_io_complete(), as
+usb_ep_dequeue() (if successfully dequeuing a USB request) will call the
+function driver's completion handler in the same context.  Hence, leading
+into a deadlock.
+
+Fix this issue by moving the usb_ep_free_request() back to
+ffs_user_copy_worker(), and ensuring that it explicitly sets io_data->req
+to NULL after freeing it within the ffs->eps_lock.  This resolves the race
+condition above, as the ffs_aio_cancel() routine will not continue
+attempting to dequeue a request that has already been freed, or the
+ffs_user_copy_work() not freeing the USB request until the AIO cancel is
+done referencing it.
+
+This fix depends on
+  commit b566d38857fc ("usb: gadget: f_fs: use io_data->status
+  consistently")
+
+Fixes: 2e4c7553cd6f ("usb: gadget: f_fs: add aio support")
+Cc: stable <stable@kernel.org>	# b566d38857fc ("usb: gadget: f_fs: use io_data->status consistently")
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20240409014059.6740-1-quic_wcheng@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btqca.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_fs.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -147,8 +147,10 @@ static int qca_read_fw_build_info(struct
- 	}
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -827,6 +827,7 @@ static void ffs_user_copy_worker(struct
+ 	int ret = io_data->req->status ? io_data->req->status :
+ 					 io_data->req->actual;
+ 	bool kiocb_has_eventfd = io_data->kiocb->ki_flags & IOCB_EVENTFD;
++	unsigned long flags;
  
- 	build_label = kstrndup(&edl->data[1], build_lbl_len, GFP_KERNEL);
--	if (!build_label)
-+	if (!build_label) {
-+		err = -ENOMEM;
- 		goto out;
-+	}
+ 	if (io_data->read && ret > 0) {
+ 		mm_segment_t oldfs = get_fs();
+@@ -843,7 +844,10 @@ static void ffs_user_copy_worker(struct
+ 	if (io_data->ffs->ffs_eventfd && !kiocb_has_eventfd)
+ 		eventfd_signal(io_data->ffs->ffs_eventfd, 1);
  
- 	hci_set_fw_info(hdev, "%s", build_label);
++	spin_lock_irqsave(&io_data->ffs->eps_lock, flags);
+ 	usb_ep_free_request(io_data->ep, io_data->req);
++	io_data->req = NULL;
++	spin_unlock_irqrestore(&io_data->ffs->eps_lock, flags);
  
+ 	if (io_data->read)
+ 		kfree(io_data->to_free);
 
 
 
