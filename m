@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-57602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4F5925F00
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:46:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F2BD925D3A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9417B3DE2B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:26:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AE2328D748
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC39F176224;
-	Wed,  3 Jul 2024 11:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F69C17D34C;
+	Wed,  3 Jul 2024 11:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NupwJvWb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGbVdnLE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5306F17C202;
-	Wed,  3 Jul 2024 11:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B7413776F;
+	Wed,  3 Jul 2024 11:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005376; cv=none; b=bcZzH+a3c4mOTEjuiNDOl1oWVh3UoVBHeh9MdIqo+Xx6SLLdsAIj8tM1rBnbnA/u1xEZqa8gs08cuOZ0+NDWJGCle+C+IAXY0BKqrxzJZ2xRLB7xQfGE40P+LjS4ep5FBdkIB43bTc90wRqmkxxHwuljhceYBnv+6zQspryKkWY=
+	t=1720005409; cv=none; b=fJOy9XcNUYor19U8WSUPMwRcIXRFrKcxpMwrvKFZLbNvvj2Oha2zlCKyPkmZj/Ub1j5VmNDa0plUT+PxYB0sngHSWECTUAtd9iEcEyhgZmY08epnMs4fhD/4ua5wN8+fCvvvupK96y4JG8TZIXIyjf5cF7QnVcFkpDPH9gRR8NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005376; c=relaxed/simple;
-	bh=iUtxXvXylXZAZja85P931xCVe6sof7ruSIK7Kd0Y49I=;
+	s=arc-20240116; t=1720005409; c=relaxed/simple;
+	bh=qLWbr8MxwSi+GbIFujEvHpak02CHXX7mXmqaSPG2Jko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KUXQ0Vx/B6YF6EhtK7qIsmCrZyoVlpG1XD3/6UMnlfxyiYKt8DvZOim8m7FBSOIXviPChk6nr2ZJM8K+db2gf0EEnfKxDONzLmO99epZCZ5QxcjbF1XagLSe+lvvC4azBV5YqmSsN8g3jFJoOxgdCTD3Us3PBDQKykZGgBWBtBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NupwJvWb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC45C2BD10;
-	Wed,  3 Jul 2024 11:16:15 +0000 (UTC)
+	 MIME-Version; b=b4kFD3Bny2b+9Lggy73v0rfV9AdEx+UItRmKrTvVyvqLeAcm/NGi0nNmt+ew3pKukigmS1CyudMlF1QE8D2XNp4z/a1B5jxxqn2vUEH/KEtd0gqFlUWNA1RcalLoG5ySPnxUrqA7/2+SNnyZlIBAK7qY5pGB5X4uL2iMXJUpC08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGbVdnLE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BBCC2BD10;
+	Wed,  3 Jul 2024 11:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005376;
-	bh=iUtxXvXylXZAZja85P931xCVe6sof7ruSIK7Kd0Y49I=;
+	s=korg; t=1720005408;
+	bh=qLWbr8MxwSi+GbIFujEvHpak02CHXX7mXmqaSPG2Jko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NupwJvWbqz2mimX4nqKudVgQvQ+jIwBjF3jjy6YTgmnprIW3o0Ty1+zIc4ozPj/3w
-	 FYEkKWZ7N0tURf1tKr3JIyfJliSqLEibDKrTHH37h9bi5MkbrtNymA0jZQKcXrC4cU
-	 3+vOz+K4y+v9andFU8T41arABlG3v7sJqBECS1+c=
+	b=gGbVdnLEThxmaPF8R1DBgke1XBFJPMN7vQi88bj4SViSL7hFosPNsfT7lkT80xCbE
+	 nzaQ9SI6MDi/76gSfqPZKXKLPvoBzfVKvW8RQZWzdzab2HQQ/Ekir+IXOocqdFc0hN
+	 pzLJlOSwApTvjc7mmklcQ2S5N7Hjc5lqL25f1B60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 043/356] drm/amd/display: Fix incorrect DSC instance for MST
-Date: Wed,  3 Jul 2024 12:36:19 +0200
-Message-ID: <20240703102914.725404376@linuxfoundation.org>
+Subject: [PATCH 5.15 044/356] pvpanic: Keep single style across modules
+Date: Wed,  3 Jul 2024 12:36:20 +0200
+Message-ID: <20240703102914.763129825@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
 References: <20240703102913.093882413@linuxfoundation.org>
@@ -68,164 +65,80 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 892b41b16f6163e6556545835abba668fcab4eea ]
+[ Upstream commit 33a430419456991480cde9d8889e5a27f6049df4 ]
 
-[Why] DSC debugfs, such as dp_dsc_clock_en_read,
-use aconnector->dc_link to find pipe_ctx for display.
-Displays connected to MST hub share the same dc_link.
-DSC instance is from pipe_ctx. This causes incorrect
-DSC instance for display connected to MST hub.
+We have different style on where we place module_*() and MODULE_*() macros.
+Inherit the style from the original module (now pvpanic-mmio.c).
 
-[How] Add aconnector->sink check to find pipe_ctx.
-
-CC: stable@vger.kernel.org
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Mihai Carabas <mihai.carabas@oracle.com
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20210829124354.81653-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: ee59be35d7a8 ("misc/pvpanic-pci: register attributes via pci_driver")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/amdgpu_dm/amdgpu_dm_debugfs.c | 48 ++++++++++++++-----
- 1 file changed, 36 insertions(+), 12 deletions(-)
+ drivers/misc/pvpanic/pvpanic-pci.c | 14 ++++++--------
+ drivers/misc/pvpanic/pvpanic.c     |  3 +--
+ 2 files changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-index 939734eecf709..8ccd43ec68829 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-@@ -1316,7 +1316,9 @@ static ssize_t dp_dsc_clock_en_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
+diff --git a/drivers/misc/pvpanic/pvpanic-pci.c b/drivers/misc/pvpanic/pvpanic-pci.c
+index 741116b3d9958..7d1220f4c95bc 100644
+--- a/drivers/misc/pvpanic/pvpanic-pci.c
++++ b/drivers/misc/pvpanic/pvpanic-pci.c
+@@ -22,11 +22,6 @@ MODULE_AUTHOR("Mihai Carabas <mihai.carabas@oracle.com>");
+ MODULE_DESCRIPTION("pvpanic device driver ");
+ MODULE_LICENSE("GPL");
  
-@@ -1417,7 +1419,9 @@ static ssize_t dp_dsc_clock_en_write(struct file *f, const char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
+-static const struct pci_device_id pvpanic_pci_id_tbl[]  = {
+-	{ PCI_DEVICE(PCI_VENDOR_ID_REDHAT, PCI_DEVICE_ID_REDHAT_PVPANIC)},
+-	{}
+-};
+-
+ static ssize_t capability_show(struct device *dev,
+ 			       struct device_attribute *attr, char *buf)
+ {
+@@ -99,6 +94,12 @@ static int pvpanic_pci_probe(struct pci_dev *pdev,
+ 	return devm_pvpanic_probe(&pdev->dev, pi);
+ }
  
-@@ -1502,7 +1506,9 @@ static ssize_t dp_dsc_slice_width_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
++static const struct pci_device_id pvpanic_pci_id_tbl[]  = {
++	{ PCI_DEVICE(PCI_VENDOR_ID_REDHAT, PCI_DEVICE_ID_REDHAT_PVPANIC)},
++	{}
++};
++MODULE_DEVICE_TABLE(pci, pvpanic_pci_id_tbl);
++
+ static struct pci_driver pvpanic_pci_driver = {
+ 	.name =         "pvpanic-pci",
+ 	.id_table =     pvpanic_pci_id_tbl,
+@@ -107,7 +108,4 @@ static struct pci_driver pvpanic_pci_driver = {
+ 		.dev_groups = pvpanic_pci_dev_groups,
+ 	},
+ };
+-
+-MODULE_DEVICE_TABLE(pci, pvpanic_pci_id_tbl);
+-
+ module_pci_driver(pvpanic_pci_driver);
+diff --git a/drivers/misc/pvpanic/pvpanic.c b/drivers/misc/pvpanic/pvpanic.c
+index b9e6400a574b0..477bf9c6b6bc5 100644
+--- a/drivers/misc/pvpanic/pvpanic.c
++++ b/drivers/misc/pvpanic/pvpanic.c
+@@ -107,6 +107,7 @@ static int pvpanic_init(void)
  
-@@ -1601,7 +1607,9 @@ static ssize_t dp_dsc_slice_width_write(struct file *f, const char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
+ 	return 0;
+ }
++module_init(pvpanic_init);
  
-@@ -1686,7 +1694,9 @@ static ssize_t dp_dsc_slice_height_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
+ static void pvpanic_exit(void)
+ {
+@@ -114,6 +115,4 @@ static void pvpanic_exit(void)
+ 					 &pvpanic_panic_nb);
  
-@@ -1785,7 +1795,9 @@ static ssize_t dp_dsc_slice_height_write(struct file *f, const char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -1866,7 +1878,9 @@ static ssize_t dp_dsc_bits_per_pixel_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -1962,7 +1976,9 @@ static ssize_t dp_dsc_bits_per_pixel_write(struct file *f, const char __user *bu
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2041,7 +2057,9 @@ static ssize_t dp_dsc_pic_width_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2097,7 +2115,9 @@ static ssize_t dp_dsc_pic_height_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2168,7 +2188,9 @@ static ssize_t dp_dsc_chunk_size_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2239,7 +2261,9 @@ static ssize_t dp_dsc_slice_bpg_offset_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
+ }
+-
+-module_init(pvpanic_init);
+ module_exit(pvpanic_exit);
 -- 
 2.43.0
 
