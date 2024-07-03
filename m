@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1B6E925EF2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:44:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C378925DE0
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C075B33DFE
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:05:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48E301F2417F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E19181325;
-	Wed,  3 Jul 2024 10:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C80B194A49;
+	Wed,  3 Jul 2024 11:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pDaom17T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sj4PkjXr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E313317E8EE;
-	Wed,  3 Jul 2024 10:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A33C175549;
+	Wed,  3 Jul 2024 11:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004000; cv=none; b=H05evZzcsT+B3NfY2Ykn7uVZ63Ws+wlHjv+x3ajofClpjBqgl2HU4EUvD9/wHnQX897ugxQgo9EBLKVcBIkoyIIt3G6QfDxqz0yuMwV3JT7q14c/y0Q/QI9/dI6PxbkJyxH/v+rd5TlyLQpY+JdsUBsff8o/cU9y1VlzdvdkBPA=
+	t=1720005844; cv=none; b=CW8aKFceBslLp/nUPbFZuo10JBNA1zG620fp/c0NS/QWNTnP4gqduowgwGAvreAoJga1eHIwyp6493MdwpOmh5nHp9Y5DMBZCy7DbNM69NLppqPNc57YysX6mSfUuLoBJWGGbroJnjgucbSSfQXWLEleuB3ACK+jWmrmwfPW/3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004000; c=relaxed/simple;
-	bh=UbLH1ncyTM02kgoSG8r9gZ+EWuTgKpE9qtM2t7KscIM=;
+	s=arc-20240116; t=1720005844; c=relaxed/simple;
+	bh=NZY/xF2ggVyR1EnPHSMnZSmUvshpZGB5NPVm7hmKLas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d1mOrFJpB/84H5x4+vuw0u6i/J0wJiD3kdxrR5+h5G1oajiKAartQf7vO850VY2djqqHbiSF2WVDdxHt3+ymGCYGgLR7hTnkXZDcuYJyatHh3FL9Sp/9Oh78DhFAXa1qYnqy+xC6QDWfhLa4Z/qLveVVMGmP03K9dmUnX1iJ+CM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDaom17T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6592FC2BD10;
-	Wed,  3 Jul 2024 10:53:19 +0000 (UTC)
+	 MIME-Version; b=f8bRFifvUUScZTXtsHkeB3rUMzoYdZ9PRz8hkM5uLsphqQk/xbsKsCeiGmLMSC10p0OCCbX2dKgT0x3fSBUl5RETJ8ZPTNN7HNJOmJk7JxwIEY4UQqb7Ofb785VeyALJiJVttoYcj2GbuIqwEF2mwZbdmCfNqJqfw8OOe/J78Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sj4PkjXr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867FDC2BD10;
+	Wed,  3 Jul 2024 11:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003999;
-	bh=UbLH1ncyTM02kgoSG8r9gZ+EWuTgKpE9qtM2t7KscIM=;
+	s=korg; t=1720005843;
+	bh=NZY/xF2ggVyR1EnPHSMnZSmUvshpZGB5NPVm7hmKLas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pDaom17Truxc6n2AihzEyaF/Qk3mf4NkS8QuJn+QzYzWwhPUU5he9PHWzm8TcBQlh
-	 z2OC+tfQUPfmW1adfnVE6lMydMOQHemZzp6uCNyi7YIMTcZpck35dK15ZQZJ8UgRpV
-	 DOpCnN7png3Jr7TXr7z+mcf+wCXMzCE8odR2lSBU=
+	b=Sj4PkjXrcxE28uvs3o8eGYocHnK8CVvbeW0utEij7QIPPTo7AQS+mCc58VBLTvkhy
+	 iYExMN/OL7jQxQjRxHza5J8BvW1+jMOyU1K08NcMThIypp7/Vl6z/uTZXHR0RhaFJq
+	 Egoz+KwSfjmRdrT+vexu1j1F3mh1rf1lIDz20Bbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Miotk <adam.miotk@arm.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 059/189] drm/bridge/panel: Fix runtime warning on panel bridge release
+Subject: [PATCH 5.15 184/356] mips: bmips: BCM6358: make sure CBR is correctly set
 Date: Wed,  3 Jul 2024 12:38:40 +0200
-Message-ID: <20240703102843.737799300@linuxfoundation.org>
+Message-ID: <20240703102920.068125634@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Miotk <adam.miotk@arm.com>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit ce62600c4dbee8d43b02277669dd91785a9b81d9 ]
+[ Upstream commit ce5cdd3b05216b704a704f466fb4c2dff3778caf ]
 
-Device managed panel bridge wrappers are created by calling to
-drm_panel_bridge_add_typed() and registering a release handler for
-clean-up when the device gets unbound.
+It was discovered that some device have CBR address set to 0 causing
+kernel panic when arch_sync_dma_for_cpu_all is called.
 
-Since the memory for this bridge is also managed and linked to the panel
-device, the release function should not try to free that memory.
-Moreover, the call to devm_kfree() inside drm_panel_bridge_remove() will
-fail in this case and emit a warning because the panel bridge resource
-is no longer on the device resources list (it has been removed from
-there before the call to release handlers).
+This was notice in situation where the system is booted from TP1 and
+BMIPS_GET_CBR() returns 0 instead of a valid address and
+!!(read_c0_brcm_cmt_local() & (1 << 31)); not failing.
 
-Fixes: 67022227ffb1 ("drm/bridge: Add a devm_ allocator for panel bridge.")
-Signed-off-by: Adam Miotk <adam.miotk@arm.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240610102739.139852-1-adam.miotk@arm.com
+The current check whether RAC flush should be disabled or not are not
+enough hence lets check if CBR is a valid address or not.
+
+Fixes: ab327f8acdf8 ("mips: bmips: BCM6358: disable RAC flush for TP1")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/panel.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/mips/bmips/setup.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/panel.c b/drivers/gpu/drm/bridge/panel.c
-index b12ae3a4c5f11..695dba0f018f8 100644
---- a/drivers/gpu/drm/bridge/panel.c
-+++ b/drivers/gpu/drm/bridge/panel.c
-@@ -203,9 +203,12 @@ EXPORT_SYMBOL(drm_panel_bridge_remove);
- 
- static void devm_drm_panel_bridge_release(struct device *dev, void *res)
- {
--	struct drm_bridge **bridge = res;
-+	struct drm_bridge *bridge = *(struct drm_bridge **)res;
- 
--	drm_panel_bridge_remove(*bridge);
-+	if (!bridge)
-+		return;
-+
-+	drm_bridge_remove(bridge);
+diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
+index 45c7cf582348e..6e5c2c5070179 100644
+--- a/arch/mips/bmips/setup.c
++++ b/arch/mips/bmips/setup.c
+@@ -110,7 +110,8 @@ static void bcm6358_quirks(void)
+ 	 * RAC flush causes kernel panics on BCM6358 when booting from TP1
+ 	 * because the bootloader is not initializing it properly.
+ 	 */
+-	bmips_rac_flush_disable = !!(read_c0_brcm_cmt_local() & (1 << 31));
++	bmips_rac_flush_disable = !!(read_c0_brcm_cmt_local() & (1 << 31)) ||
++				  !!BMIPS_GET_CBR();
  }
  
- /**
+ static void bcm6368_quirks(void)
 -- 
 2.43.0
 
