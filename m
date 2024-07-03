@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-57677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD89925FE1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:13:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0C59925FDE
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:13:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D24EFB283FF
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B380B34378
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E710D1836CE;
-	Wed,  3 Jul 2024 11:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991EB18628C;
+	Wed,  3 Jul 2024 11:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lKTyslwu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gTTnDu1i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43DD17966F;
-	Wed,  3 Jul 2024 11:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5760A45945;
+	Wed,  3 Jul 2024 11:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005605; cv=none; b=sVWi2y3ZrvAk/VrSvsZ6IM0XXEQLXgDzPHbVLZXvgtDGvb84FRleD+gfQSPnYxa32UwCJQ6+sbBiuU2Uv7bOJnk/mUiSSSU74afbTVIrA5sXUH8kz/uj5KFM0JJvJ21Tdf5QBBk0LqgVJsbRzn4JziDsoLIfUQ7BLc8hoZU09jE=
+	t=1720005683; cv=none; b=MyrWyZwBtSGWzm5IG5ubaHIkyepI6wHiY+OHFt5zKSsrmqp8gWACm9EMh/cQ3CsRcQuBS4uaMt03bctT7J0JmWs5tkolTLVU0GnS1XSHTad11ISwq7SQG7IAI/1USlRNI0k96x5+DdMRoLH4vocrx5R52TTBcueWkF71C/kDCpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005605; c=relaxed/simple;
-	bh=DIwYEeKhH+lu8fh2ilLWA07887QZ7csFde3u7vS3sLE=;
+	s=arc-20240116; t=1720005683; c=relaxed/simple;
+	bh=UcEf5ZU40WKG8/MgdUqhIKLUP3B1JuJcXXlO8GbbvRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W5AhQl3rPB8+c933tk3/Jn19dJZuvr0X9/F9YGneRyo69Ik9EULcXO9uhZ2/W0GoRiexWoH3QiX/m4gP0XtSa07KDbkmxxi5PkXJeQl5nNznfA6F63b9gFxeb7+oVp/QfeaOCnL6o0mxqN4oYLCpZRGvFKUPpJcXQfnD16D/MxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lKTyslwu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B528C2BD10;
-	Wed,  3 Jul 2024 11:20:04 +0000 (UTC)
+	 MIME-Version; b=MGVFCgeJaeFHrB05jkJPeAyzftnrUCq7ygWZZkrVsCaEG1TuYAAQlhs/Ryly8ogvkVfFjm8uAF2PEKswTjrNhOVQcFbhcw6EtIymWxSFqCGejdma1d26eDBkjdNwlKPkKFHQa9mz6QU6QUa2QCuQccOV82VI83mdmzC+fVAsosY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gTTnDu1i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96FF0C2BD10;
+	Wed,  3 Jul 2024 11:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005605;
-	bh=DIwYEeKhH+lu8fh2ilLWA07887QZ7csFde3u7vS3sLE=;
+	s=korg; t=1720005683;
+	bh=UcEf5ZU40WKG8/MgdUqhIKLUP3B1JuJcXXlO8GbbvRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lKTyslwuJXotHFwWTSHYBOb/+tN/qvIFVVtrP0JvhTkxtQHiQ6twdL04dcxVFN1VI
-	 aCxV+beP/W6N4gEV87A1nUUDTyh9eTKUuok2FCUp1zG5oIt7T5ZM6SIa9ZFM+pjPPy
-	 0jJ//V6pRXTcsfhp4bPy8ZXfbc18aktzdYuoXDqQ=
+	b=gTTnDu1ibnw6UsDhnBb4DzsA54PoONru7NIqIB8xF/k3JTvFycthd1ECmUGYtIzaV
+	 ZJFvj0qfmzwY0Wt7/1I25GDf9gQ3ZEjDtqKNnMXQw1x8dlRVJ+UND4WGXEPtHp+Y+j
+	 rgI1xc0AwXF6hz4+mtD3aocxlhsHeWPxl1ZOEGBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.15 135/356] tick/nohz_full: Dont abuse smp_call_function_single() in tick_setup_device()
-Date: Wed,  3 Jul 2024 12:37:51 +0200
-Message-ID: <20240703102918.209464334@linuxfoundation.org>
+	xingwei lee <xrivendell7@gmail.com>,
+	yue sun <samsun1006219@gmail.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Shichao Lai <shichaorai@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 144/356] usb-storage: alauda: Check whether the media is initialized
+Date: Wed,  3 Jul 2024 12:38:00 +0200
+Message-ID: <20240703102918.551328996@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
 References: <20240703102913.093882413@linuxfoundation.org>
@@ -65,95 +68,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Shichao Lai <shichaorai@gmail.com>
 
-commit 07c54cc5988f19c9642fd463c2dbdac7fc52f777 upstream.
+[ Upstream commit 16637fea001ab3c8df528a8995b3211906165a30 ]
 
-After the recent commit 5097cbcb38e6 ("sched/isolation: Prevent boot crash
-when the boot CPU is nohz_full") the kernel no longer crashes, but there is
-another problem.
+The member "uzonesize" of struct alauda_info will remain 0
+if alauda_init_media() fails, potentially causing divide errors
+in alauda_read_data() and alauda_write_lba().
+- Add a member "media_initialized" to struct alauda_info.
+- Change a condition in alauda_check_media() to ensure the
+  first initialization.
+- Add an error check for the return value of alauda_init_media().
 
-In this case tick_setup_device() calls tick_take_do_timer_from_boot() to
-update tick_do_timer_cpu and this triggers the WARN_ON_ONCE(irqs_disabled)
-in smp_call_function_single().
-
-Kill tick_take_do_timer_from_boot() and just use WRITE_ONCE(), the new
-comment explains why this is safe (thanks Thomas!).
-
-Fixes: 08ae95f4fd3b ("nohz_full: Allow the boot CPU to be nohz_full")
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240528122019.GA28794@redhat.com
-Link: https://lore.kernel.org/all/20240522151742.GA10400@redhat.com
+Fixes: e80b0fade09e ("[PATCH] USB Storage: add alauda support")
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Reported-by: yue sun <samsun1006219@gmail.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Shichao Lai <shichaorai@gmail.com>
+Link: https://lore.kernel.org/r/20240526012745.2852061-1-shichaorai@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-common.c |   42 ++++++++++++++----------------------------
- 1 file changed, 14 insertions(+), 28 deletions(-)
+ drivers/usb/storage/alauda.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -179,26 +179,6 @@ void tick_setup_periodic(struct clock_ev
+diff --git a/drivers/usb/storage/alauda.c b/drivers/usb/storage/alauda.c
+index dcc4778d1ae99..17fe35083f048 100644
+--- a/drivers/usb/storage/alauda.c
++++ b/drivers/usb/storage/alauda.c
+@@ -105,6 +105,8 @@ struct alauda_info {
+ 	unsigned char sense_key;
+ 	unsigned long sense_asc;	/* additional sense code */
+ 	unsigned long sense_ascq;	/* additional sense code qualifier */
++
++	bool media_initialized;
+ };
+ 
+ #define short_pack(lsb,msb) ( ((u16)(lsb)) | ( ((u16)(msb))<<8 ) )
+@@ -476,11 +478,12 @@ static int alauda_check_media(struct us_data *us)
  	}
- }
  
--#ifdef CONFIG_NO_HZ_FULL
--static void giveup_do_timer(void *info)
--{
--	int cpu = *(unsigned int *)info;
+ 	/* Check for media change */
+-	if (status[0] & 0x08) {
++	if (status[0] & 0x08 || !info->media_initialized) {
+ 		usb_stor_dbg(us, "Media change detected\n");
+ 		alauda_free_maps(&MEDIA_INFO(us));
+-		alauda_init_media(us);
 -
--	WARN_ON(tick_do_timer_cpu != smp_processor_id());
--
--	tick_do_timer_cpu = cpu;
--}
--
--static void tick_take_do_timer_from_boot(void)
--{
--	int cpu = smp_processor_id();
--	int from = tick_do_timer_boot_cpu;
--
--	if (from >= 0 && from != cpu)
--		smp_call_function_single(from, giveup_do_timer, &cpu, 1);
--}
--#endif
--
- /*
-  * Setup the tick device
-  */
-@@ -222,19 +202,25 @@ static void tick_setup_device(struct tic
- 			tick_next_period = ktime_get();
- #ifdef CONFIG_NO_HZ_FULL
- 			/*
--			 * The boot CPU may be nohz_full, in which case set
--			 * tick_do_timer_boot_cpu so the first housekeeping
--			 * secondary that comes up will take do_timer from
--			 * us.
-+			 * The boot CPU may be nohz_full, in which case the
-+			 * first housekeeping secondary will take do_timer()
-+			 * from it.
- 			 */
- 			if (tick_nohz_full_cpu(cpu))
- 				tick_do_timer_boot_cpu = cpu;
- 
--		} else if (tick_do_timer_boot_cpu != -1 &&
--						!tick_nohz_full_cpu(cpu)) {
--			tick_take_do_timer_from_boot();
-+		} else if (tick_do_timer_boot_cpu != -1 && !tick_nohz_full_cpu(cpu)) {
- 			tick_do_timer_boot_cpu = -1;
--			WARN_ON(tick_do_timer_cpu != cpu);
-+			/*
-+			 * The boot CPU will stay in periodic (NOHZ disabled)
-+			 * mode until clocksource_done_booting() called after
-+			 * smp_init() selects a high resolution clocksource and
-+			 * timekeeping_notify() kicks the NOHZ stuff alive.
-+			 *
-+			 * So this WRITE_ONCE can only race with the READ_ONCE
-+			 * check in tick_periodic() but this race is harmless.
-+			 */
-+			WRITE_ONCE(tick_do_timer_cpu, cpu);
- #endif
- 		}
- 
++		rc = alauda_init_media(us);
++		if (rc == USB_STOR_TRANSPORT_GOOD)
++			info->media_initialized = true;
+ 		info->sense_key = UNIT_ATTENTION;
+ 		info->sense_asc = 0x28;
+ 		info->sense_ascq = 0x00;
+-- 
+2.43.0
+
 
 
 
