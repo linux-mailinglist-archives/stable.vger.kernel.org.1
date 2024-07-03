@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-57122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD4E1925ABE
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A30925C4D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:17:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 782DB1F22A39
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DDA029B1EF
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB2417C212;
-	Wed,  3 Jul 2024 10:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9449B17B42F;
+	Wed,  3 Jul 2024 11:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="psnyKMyc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lmMxZwMM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38571171E70;
-	Wed,  3 Jul 2024 10:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E9B1DFC7;
+	Wed,  3 Jul 2024 11:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003914; cv=none; b=S/wm6Kt6kstXAycnxGCnealkaoMIPVyygdqaZn7mg6Nv80qhbdIx3B+cZET2eOT9MozKZlcOWinIgza2mM+37PZZP/dbbvAlTEcn0BHEI+e2CyJoAqrJqENx6OPuAg1j2cnjfNEXFRxovRVedIN+loUgQDhvkGYsPIv6x6OBNtE=
+	t=1720004614; cv=none; b=kl1PBWysH/N2w3S4w8+YDxlPP8w3OGNhiFifQeQXeFno1+Hn8hrCdsKRP+GPPRlE1uW1iwAD+j9hRzsDV/ggFe4npbF4h0G/aDSRo0LwMSaFTovW7vP75WUNjJx+tjjqrYwE6lsXLXm/wumueWXGPYDrdPdzbdQ8vXul4dTD8dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003914; c=relaxed/simple;
-	bh=2D1MVleHWMbDJZqwQfvE3Ako3D1PU5jiV2/jzh/weTI=;
+	s=arc-20240116; t=1720004614; c=relaxed/simple;
+	bh=cdyQ+dz/bWN5HEdYsaQ4j+ScT3PPPLuIadCPjL5aF4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ru/mp2C3tmdByqz6YUCT5PMnDD73k8b2gSzsJQ4zosZqFxUK8Pz9shR9W1uKGnHxj/0YO+kiJmal5TqK1/wcGAjfeKyXHA7QpdblxU01Nyyb3JAgeKbBULseDr9NZ/CfzxAv0JBXTYXQ2HCCvzpZdUtRLxkRoKj+x5mCMP2IWm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=psnyKMyc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB0B4C2BD10;
-	Wed,  3 Jul 2024 10:51:53 +0000 (UTC)
+	 MIME-Version; b=YUmVx4Bz1J11P47M2tncLI4u4lPkUBBqU7NfGT3KdrK2Rg2qPfBx8/upjYuAeSE/BCIu4Nd/L/LzVc3rz3Fm6vycImc1Zyky9jmyK7WB5tAbNP7AFFoIgS82Gr4mlpfm1MLMQeRONLQqbglr3ypi59jIyE3QRenouYPrb9DlkbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lmMxZwMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB127C2BD10;
+	Wed,  3 Jul 2024 11:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003914;
-	bh=2D1MVleHWMbDJZqwQfvE3Ako3D1PU5jiV2/jzh/weTI=;
+	s=korg; t=1720004614;
+	bh=cdyQ+dz/bWN5HEdYsaQ4j+ScT3PPPLuIadCPjL5aF4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=psnyKMyc1bGYVCQAXaVKyaqtfOilCh15Mq6XFCqG34uwD8MuLiNHRLLGh4FfLLVyg
-	 YUzrhmT0iQxWv1nj9BPuJvc5s01dhsyrvzrlEvtYVul8PHvENVMr6Sq9Ons6DjIvNb
-	 vH+9VoAO/W+BpoMfsPKb/x6aca90CU7JHTLEnPoI=
+	b=lmMxZwMMNjOYlTh7OYLCfqFfljHl4XQaK4t4HXIIehA8sWu19KLnORaM53dN6y3lv
+	 PJYvGWVeE/KVOuq5K1nmE4YKHptj+Hd3XB6Wd+UeMiGSVM0exD49gD1b49VuD4QTzV
+	 NtlZ3XHJWUbm0l0AJwdmpf3wO7U4FSq9gj+4Qmec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	xingwei lee <xrivendell7@gmail.com>,
+	yue sun <samsun1006219@gmail.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Shichao Lai <shichaorai@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 021/189] af_unix: Annotate data-race of sk->sk_shutdown in sk_diag_fill().
+Subject: [PATCH 5.10 101/290] usb-storage: alauda: Check whether the media is initialized
 Date: Wed,  3 Jul 2024 12:38:02 +0200
-Message-ID: <20240703102842.305029611@linuxfoundation.org>
+Message-ID: <20240703102908.011837150@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Shichao Lai <shichaorai@gmail.com>
 
-[ Upstream commit efaf24e30ec39ebbea9112227485805a48b0ceb1 ]
+[ Upstream commit 16637fea001ab3c8df528a8995b3211906165a30 ]
 
-While dumping sockets via UNIX_DIAG, we do not hold unix_state_lock().
+The member "uzonesize" of struct alauda_info will remain 0
+if alauda_init_media() fails, potentially causing divide errors
+in alauda_read_data() and alauda_write_lba().
+- Add a member "media_initialized" to struct alauda_info.
+- Change a condition in alauda_check_media() to ensure the
+  first initialization.
+- Add an error check for the return value of alauda_init_media().
 
-Let's use READ_ONCE() to read sk->sk_shutdown.
-
-Fixes: e4e541a84863 ("sock-diag: Report shutdown for inet and unix sockets (v2)")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: e80b0fade09e ("[PATCH] USB Storage: add alauda support")
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Reported-by: yue sun <samsun1006219@gmail.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Shichao Lai <shichaorai@gmail.com>
+Link: https://lore.kernel.org/r/20240526012745.2852061-1-shichaorai@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/diag.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/storage/alauda.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/unix/diag.c b/net/unix/diag.c
-index 5bc5cb83cc6e4..7066a36234106 100644
---- a/net/unix/diag.c
-+++ b/net/unix/diag.c
-@@ -164,7 +164,7 @@ static int sk_diag_fill(struct sock *sk, struct sk_buff *skb, struct unix_diag_r
- 	    sock_diag_put_meminfo(sk, skb, UNIX_DIAG_MEMINFO))
- 		goto out_nlmsg_trim;
+diff --git a/drivers/usb/storage/alauda.c b/drivers/usb/storage/alauda.c
+index dcc4778d1ae99..17fe35083f048 100644
+--- a/drivers/usb/storage/alauda.c
++++ b/drivers/usb/storage/alauda.c
+@@ -105,6 +105,8 @@ struct alauda_info {
+ 	unsigned char sense_key;
+ 	unsigned long sense_asc;	/* additional sense code */
+ 	unsigned long sense_ascq;	/* additional sense code qualifier */
++
++	bool media_initialized;
+ };
  
--	if (nla_put_u8(skb, UNIX_DIAG_SHUTDOWN, sk->sk_shutdown))
-+	if (nla_put_u8(skb, UNIX_DIAG_SHUTDOWN, READ_ONCE(sk->sk_shutdown)))
- 		goto out_nlmsg_trim;
+ #define short_pack(lsb,msb) ( ((u16)(lsb)) | ( ((u16)(msb))<<8 ) )
+@@ -476,11 +478,12 @@ static int alauda_check_media(struct us_data *us)
+ 	}
  
- 	if ((req->udiag_show & UDIAG_SHOW_UID) &&
+ 	/* Check for media change */
+-	if (status[0] & 0x08) {
++	if (status[0] & 0x08 || !info->media_initialized) {
+ 		usb_stor_dbg(us, "Media change detected\n");
+ 		alauda_free_maps(&MEDIA_INFO(us));
+-		alauda_init_media(us);
+-
++		rc = alauda_init_media(us);
++		if (rc == USB_STOR_TRANSPORT_GOOD)
++			info->media_initialized = true;
+ 		info->sense_key = UNIT_ATTENTION;
+ 		info->sense_asc = 0x28;
+ 		info->sense_ascq = 0x00;
 -- 
 2.43.0
 
