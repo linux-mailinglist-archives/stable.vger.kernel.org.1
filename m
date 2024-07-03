@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-56966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 558E49259FA
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:53:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E90D925C8E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:19:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88DD61C24A61
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2876E1F21C2A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E64181B8C;
-	Wed,  3 Jul 2024 10:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C734A1849CF;
+	Wed,  3 Jul 2024 11:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jsm3LpxV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQcvli0C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E7E173335;
-	Wed,  3 Jul 2024 10:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839B81849C8;
+	Wed,  3 Jul 2024 11:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003429; cv=none; b=njmdy1V+XNYbWd7IxMX/Kt4fXo719zd8yUAHDoUGjN/hedp3SFWJJVO5ge1lJfYxeO6kx56VnEt067TvQu6qQD2PkOz5TvFBXegQ/svIdHRnuXJPeJbQd9m/lkSxeO/ELDiDjLg9TVh8w1BkYQSaz4g29CxOJEX1PMX5/nL7PuU=
+	t=1720004898; cv=none; b=bN0CcLzUeFlFm555M6Iy3iseKc1LKI88+iNiqkx1wBDCvNGHxbq/33p346Vz2grv3atpofb/CsUM3UA+/D5o49hceUzFZLIGT+/5BjIj3QxcvA6N4z7lhfREVWW1eVNS4ESn6BM6XUrclQHaGUkvc/H4HOmiijovZTuonZo2dvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003429; c=relaxed/simple;
-	bh=ru0iQNEqC5AiccLMUg5gun+LhY8CZxqnauZNqMw2bEY=;
+	s=arc-20240116; t=1720004898; c=relaxed/simple;
+	bh=JIEd1QANUKdobjUmRQVOQimLZXKFoab2tHNabkvSOPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tWJt4s4DFi8g6jk7wF9bdAUQBFArmmfOOo2d3XBbOq1JlnguXY6YArAc6Qkx/zkKO6je/POTIUrrCv+iypK0GiwSjPywxsZkxzqt/WClxL4ZwwVekdhOiZ26rgWyc/H8eoGWoqXcsPUzHQR+ilEPxONGy8D55dAmENG+khfSiIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jsm3LpxV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080C4C2BD10;
-	Wed,  3 Jul 2024 10:43:48 +0000 (UTC)
+	 MIME-Version; b=JZKIVmrfOwfnaV31ffYmF9ES2kQdwyXAaIEZ7WR5nBrOaP/Q35B6OoLCC+nObnzlp7sm22qcvJ/InZ3iw08WB8tBOh3uz7d3zEVRzvdAvFeeGrr9kzHzsdHvOREL0NjAsPcnaFAmk98M9/NHX3SwTBpLy/lWC0MlseTTJIba1VU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQcvli0C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD38C2BD10;
+	Wed,  3 Jul 2024 11:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003429;
-	bh=ru0iQNEqC5AiccLMUg5gun+LhY8CZxqnauZNqMw2bEY=;
+	s=korg; t=1720004898;
+	bh=JIEd1QANUKdobjUmRQVOQimLZXKFoab2tHNabkvSOPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jsm3LpxVpwfdriAVKup2Tzt3vrLRIstwRi/yx6lNGDtu97k4ekv25Ci16mvDeiFm7
-	 8B5PH+iMRY9m6QNr4gst60U27V+jT+RnydSlDwELE/1+MISp1to9nwx+EI9cojDHkz
-	 lN796lpq0eg6H3iEYmH/nd9x8fCkbKcRkgAT5Ydk=
+	b=gQcvli0CIp0r7MRM3Mqile7wlzzyMhfM2lSQJ8DVyGB/g6PaZ9zpF8sW5gW43WUI+
+	 z0mkzKFt2zhVLCtgPn2GzVsnkaihYkK9qD8KihWDxa6/NseF18WnjJpzK2uz9KoJAs
+	 ANKGihcFDTI0ZYXMKrQ02RTHGkf5PgkfkkLJ0KoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
-Subject: [PATCH 4.19 046/139] vmci: prevent speculation leaks by sanitizing event in event_deliver()
+	Sanath S <Sanath.S@amd.com>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 162/290] ACPICA: Revert "ACPICA: avoid Info: mapping multiple BARs. Your kernel is fine."
 Date: Wed,  3 Jul 2024 12:39:03 +0200
-Message-ID: <20240703102832.176096465@linuxfoundation.org>
+Message-ID: <20240703102910.297807606@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-commit 8003f00d895310d409b2bf9ef907c56b42a4e0f4 upstream.
+[ Upstream commit a83e1385b780d41307433ddbc86e3c528db031f0 ]
 
-Coverity spotted that event_msg is controlled by user-space,
-event_msg->event_data.event is passed to event_deliver() and used
-as an index without sanitization.
+Undo the modifications made in commit d410ee5109a1 ("ACPICA: avoid
+"Info: mapping multiple BARs. Your kernel is fine.""). The initial
+purpose of this commit was to stop memory mappings for operation
+regions from overlapping page boundaries, as it can trigger warnings
+if different page attributes are present.
 
-This change ensures that the event index is sanitized to mitigate any
-possibility of speculative information leaks.
+However, it was found that when this situation arises, mapping
+continues until the boundary's end, but there is still an attempt to
+read/write the entire length of the map, leading to a NULL pointer
+deference. For example, if a four-byte mapping request is made but
+only one byte is mapped because it hits the current page boundary's
+end, a four-byte read/write attempt is still made, resulting in a NULL
+pointer deference.
 
-This bug was discovered and resolved using Coverity Static Analysis
-Security Testing (SAST) by Synopsys, Inc.
+Instead, map the entire length, as the ACPI specification does not
+mandate that it must be within the same page boundary. It is
+permissible for it to be mapped across different regions.
 
-Only compile tested, no access to HW.
-
-Fixes: 1d990201f9bb ("VMCI: event handling implementation.")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
-Link: https://lore.kernel.org/stable/20231127193533.46174-1-hagarhem%40amazon.com
-Link: https://lore.kernel.org/r/20240430085916.4753-1-hagarhem@amazon.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://github.com/acpica/acpica/pull/954
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218849
+Fixes: d410ee5109a1 ("ACPICA: avoid "Info: mapping multiple BARs. Your kernel is fine."")
+Co-developed-by: Sanath S <Sanath.S@amd.com>
+Signed-off-by: Sanath S <Sanath.S@amd.com>
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_event.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/acpi/acpica/exregion.c | 23 ++---------------------
+ 1 file changed, 2 insertions(+), 21 deletions(-)
 
---- a/drivers/misc/vmw_vmci/vmci_event.c
-+++ b/drivers/misc/vmw_vmci/vmci_event.c
-@@ -17,6 +17,7 @@
- #include <linux/vmw_vmci_api.h>
- #include <linux/list.h>
- #include <linux/module.h>
-+#include <linux/nospec.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
- #include <linux/rculist.h>
-@@ -94,9 +95,12 @@ static void event_deliver(struct vmci_ev
- {
- 	struct vmci_subscription *cur;
- 	struct list_head *subscriber_list;
-+	u32 sanitized_event, max_vmci_event;
+diff --git a/drivers/acpi/acpica/exregion.c b/drivers/acpi/acpica/exregion.c
+index 4914dbc445179..5bbbd015de5a4 100644
+--- a/drivers/acpi/acpica/exregion.c
++++ b/drivers/acpi/acpica/exregion.c
+@@ -44,7 +44,6 @@ acpi_ex_system_memory_space_handler(u32 function,
+ 	struct acpi_mem_mapping *mm = mem_info->cur_mm;
+ 	u32 length;
+ 	acpi_size map_length;
+-	acpi_size page_boundary_map_length;
+ #ifdef ACPI_MISALIGNMENT_NOT_SUPPORTED
+ 	u32 remainder;
+ #endif
+@@ -138,26 +137,8 @@ acpi_ex_system_memory_space_handler(u32 function,
+ 		map_length = (acpi_size)
+ 		    ((mem_info->address + mem_info->length) - address);
  
- 	rcu_read_lock();
--	subscriber_list = &subscriber_array[event_msg->event_data.event];
-+	max_vmci_event = ARRAY_SIZE(subscriber_array);
-+	sanitized_event = array_index_nospec(event_msg->event_data.event, max_vmci_event);
-+	subscriber_list = &subscriber_array[sanitized_event];
- 	list_for_each_entry_rcu(cur, subscriber_list, node) {
- 		cur->callback(cur->id, &event_msg->event_data,
- 			      cur->callback_data);
+-		/*
+-		 * If mapping the entire remaining portion of the region will cross
+-		 * a page boundary, just map up to the page boundary, do not cross.
+-		 * On some systems, crossing a page boundary while mapping regions
+-		 * can cause warnings if the pages have different attributes
+-		 * due to resource management.
+-		 *
+-		 * This has the added benefit of constraining a single mapping to
+-		 * one page, which is similar to the original code that used a 4k
+-		 * maximum window.
+-		 */
+-		page_boundary_map_length = (acpi_size)
+-		    (ACPI_ROUND_UP(address, ACPI_DEFAULT_PAGE_SIZE) - address);
+-		if (page_boundary_map_length == 0) {
+-			page_boundary_map_length = ACPI_DEFAULT_PAGE_SIZE;
+-		}
+-
+-		if (map_length > page_boundary_map_length) {
+-			map_length = page_boundary_map_length;
+-		}
++		if (map_length > ACPI_DEFAULT_PAGE_SIZE)
++			map_length = ACPI_DEFAULT_PAGE_SIZE;
+ 
+ 		/* Create a new mapping starting at the address given */
+ 
+-- 
+2.43.0
+
 
 
 
