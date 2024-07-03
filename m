@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-57399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D81925C60
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:17:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BE66925C63
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:17:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BFA31C204BF
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:17:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 112D51F20632
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:17:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFFF18132A;
-	Wed,  3 Jul 2024 11:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85B5181B90;
+	Wed,  3 Jul 2024 11:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TKSPjqRq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8X5iYoG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A987181328;
-	Wed,  3 Jul 2024 11:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9639918133B;
+	Wed,  3 Jul 2024 11:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004759; cv=none; b=aR8UDTcYIqmmFEJyDTlY3mjYtsZG9E98H5RGJXqis5Ts8cGt/F0yO6igMTKYfwo6pLm+FavKn5+iEPaa1lSUCgTTz6HxNtyymLaFeOnk9nJeCpuVrw992i+XUeQcnAnVYNpJo6CPscHQkSUN5XT5h764m7R0itZg7AwHpMoMAL0=
+	t=1720004765; cv=none; b=G+PVt0VDlgjqeeE1IEIGef4NWCRkopIEBFej2Zx3XTnMkE/69F8XPoFKpbMMhYjTsnKc8fM4RPPgmAu89vLCtsJc+f6uxa9VFunjpwFWb9Qkl3vtVQ/i5+82wcuMZJvmSTfA7wHbotp0gTN4ZRSVwmjOiumkC8MNWK5c/bToJo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004759; c=relaxed/simple;
-	bh=uJK4J6lbnIbDing6Ntb1wwe/BttTVYAgLux6mCIj2Zc=;
+	s=arc-20240116; t=1720004765; c=relaxed/simple;
+	bh=PBiY/S2B9xytr7OccDuQeBK0LRDSwZQG+HIQl/jQvnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u5qLEhZqSXgK7Puxo1If/sy/+kRIMFNiavpcAVLL0JPhiTfwb/bmPy9D89nGPnjmz0pyrtLgoqdVO5Wm1SPrdZsCSjeJz1MeHo8sGg5NZrdTbNxjNXlp3kaJYIbc/SlRRyO04U0LrXrO7g1joo4g2aMSPGaSeD4nItbYRHSIaM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TKSPjqRq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3175C4AF0C;
-	Wed,  3 Jul 2024 11:05:58 +0000 (UTC)
+	 MIME-Version; b=Ax+3fZ1E0kEqU/AZIRVSyVLX69poKL+UpZQd65gHzD0J6KTxD7kJlM/4uP+VgqNFDVQ0FJ2LwMQevjyftyX9pEGtcIqJ1NtUr2RCm/HmQcbk8nim3HfYhAR59AVWPgHHanSjdN37G2ZtDHocUro4laUqAY8OG2T+FHEJnrkaDaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8X5iYoG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEFBC2BD10;
+	Wed,  3 Jul 2024 11:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004759;
-	bh=uJK4J6lbnIbDing6Ntb1wwe/BttTVYAgLux6mCIj2Zc=;
+	s=korg; t=1720004765;
+	bh=PBiY/S2B9xytr7OccDuQeBK0LRDSwZQG+HIQl/jQvnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TKSPjqRqnNHIbjV7lr9m3zBcbFeWAfYVme5pptM9YFYrZVWSkb7NyER0tpZ1nYxY9
-	 jEzfgYMwjsOpfqQdyBqXpSCKgFvpPlSjR/za6p8pwsB+s8mEF7qx+Basw678kYlISe
-	 VbkH4rfjEUlBG3hNvsjEhNLBvShZ8GB6RYQSZxII=
+	b=A8X5iYoGxTdhadKNC1EAgyMXaRRZTGANBdnH2hDgpGcuHzcjcINEhhnstSZcHekpy
+	 fdlrhfIS/EDVR7Cbpd35JJitUG9CxDOYN2sarGKv7gVcwmZVH+8FVPn3IMwaNVYnhM
+	 h/1y9m4hf2e60b3olgbtPCCYGjwpsY+f1mL91foE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuang Li <shuali@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
 	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 149/290] sched: act_ct: add netns into the key of tcf_ct_flow_table
-Date: Wed,  3 Jul 2024 12:38:50 +0200
-Message-ID: <20240703102909.810440485@linuxfoundation.org>
+Subject: [PATCH 5.10 150/290] net: stmmac: No need to calculate speed divider when offload is disabled
+Date: Wed,  3 Jul 2024 12:38:51 +0200
+Message-ID: <20240703102909.847336661@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
 References: <20240703102904.170852981@linuxfoundation.org>
@@ -68,101 +67,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit 88c67aeb14070bab61d3dd8be96c8b42ebcaf53a ]
+[ Upstream commit b8c43360f6e424131fa81d3ba8792ad8ff25a09e ]
 
-zones_ht is a global hashtable for flow_table with zone as key. However,
-it does not consider netns when getting a flow_table from zones_ht in
-tcf_ct_init(), and it means an act_ct action in netns A may get a
-flow_table that belongs to netns B if it has the same zone value.
+commit be27b8965297 ("net: stmmac: replace priv->speed with
+the portTransmitRate from the tc-cbs parameters") introduced
+a problem. When deleting, it prompts "Invalid portTransmitRate
+0 (idleSlope - sendSlope)" and exits. Add judgment on cbs.enable.
+Only when offload is enabled, speed divider needs to be calculated.
 
-In Shuang's test with the TOPO:
-
-  tcf2_c <---> tcf2_sw1 <---> tcf2_sw2 <---> tcf2_s
-
-tcf2_sw1 and tcf2_sw2 saw the same flow and used the same flow table,
-which caused their ct entries entering unexpected states and the
-TCP connection not able to end normally.
-
-This patch fixes the issue simply by adding netns into the key of
-tcf_ct_flow_table so that an act_ct action gets a flow_table that
-belongs to its own netns in tcf_ct_init().
-
-Note that for easy coding we don't use tcf_ct_flow_table.nf_ft.net,
-as the ct_ft is initialized after inserting it to the hashtable in
-tcf_ct_flow_table_get() and also it requires to implement several
-functions in rhashtable_params including hashfn, obj_hashfn and
-obj_cmpfn.
-
-Fixes: 64ff70b80fd4 ("net/sched: act_ct: Offload established connections to flow table")
-Reported-by: Shuang Li <shuali@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Fixes: be27b8965297 ("net: stmmac: replace priv->speed with the portTransmitRate from the tc-cbs parameters")
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/1db5b6cc6902c5fc6f8c6cbd85494a2008087be5.1718488050.git.lucien.xin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240617013922.1035854-1-xiaolei.wang@windriver.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_ct.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 40 ++++++++++---------
+ 1 file changed, 22 insertions(+), 18 deletions(-)
 
-diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
-index 155426d5a48f6..c6d6a6fe9602b 100644
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -38,21 +38,26 @@ static struct workqueue_struct *act_ct_wq;
- static struct rhashtable zones_ht;
- static DEFINE_MUTEX(zones_mutex);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+index 6b93a7614ad98..4da1a80de7225 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+@@ -325,24 +325,28 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
  
-+struct zones_ht_key {
-+	struct net *net;
-+	u16 zone;
-+};
-+
- struct tcf_ct_flow_table {
- 	struct rhash_head node; /* In zones tables */
+ 	port_transmit_rate_kbps = qopt->idleslope - qopt->sendslope;
  
- 	struct rcu_work rwork;
- 	struct nf_flowtable nf_ft;
- 	refcount_t ref;
--	u16 zone;
-+	struct zones_ht_key key;
+-	/* Port Transmit Rate and Speed Divider */
+-	switch (div_s64(port_transmit_rate_kbps, 1000)) {
+-	case SPEED_10000:
+-	case SPEED_5000:
+-		ptr = 32;
+-		break;
+-	case SPEED_2500:
+-	case SPEED_1000:
+-		ptr = 8;
+-		break;
+-	case SPEED_100:
+-		ptr = 4;
+-		break;
+-	default:
+-		netdev_err(priv->dev,
+-			   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
+-			   port_transmit_rate_kbps);
+-		return -EINVAL;
++	if (qopt->enable) {
++		/* Port Transmit Rate and Speed Divider */
++		switch (div_s64(port_transmit_rate_kbps, 1000)) {
++		case SPEED_10000:
++		case SPEED_5000:
++			ptr = 32;
++			break;
++		case SPEED_2500:
++		case SPEED_1000:
++			ptr = 8;
++			break;
++		case SPEED_100:
++			ptr = 4;
++			break;
++		default:
++			netdev_err(priv->dev,
++				   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
++				   port_transmit_rate_kbps);
++			return -EINVAL;
++		}
++	} else {
++		ptr = 0;
+ 	}
  
- 	bool dying;
- };
- 
- static const struct rhashtable_params zones_params = {
- 	.head_offset = offsetof(struct tcf_ct_flow_table, node),
--	.key_offset = offsetof(struct tcf_ct_flow_table, zone),
--	.key_len = sizeof_field(struct tcf_ct_flow_table, zone),
-+	.key_offset = offsetof(struct tcf_ct_flow_table, key),
-+	.key_len = sizeof_field(struct tcf_ct_flow_table, key),
- 	.automatic_shrinking = true,
- };
- 
-@@ -277,11 +282,12 @@ static struct nf_flowtable_type flowtable_ct = {
- 
- static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
- {
-+	struct zones_ht_key key = { .net = net, .zone = params->zone };
- 	struct tcf_ct_flow_table *ct_ft;
- 	int err = -ENOMEM;
- 
- 	mutex_lock(&zones_mutex);
--	ct_ft = rhashtable_lookup_fast(&zones_ht, &params->zone, zones_params);
-+	ct_ft = rhashtable_lookup_fast(&zones_ht, &key, zones_params);
- 	if (ct_ft && refcount_inc_not_zero(&ct_ft->ref))
- 		goto out_unlock;
- 
-@@ -290,7 +296,7 @@ static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
- 		goto err_alloc;
- 	refcount_set(&ct_ft->ref, 1);
- 
--	ct_ft->zone = params->zone;
-+	ct_ft->key = key;
- 	err = rhashtable_insert_fast(&zones_ht, &ct_ft->node, zones_params);
- 	if (err)
- 		goto err_insert;
+ 	mode_to_use = priv->plat->tx_queues_cfg[queue].mode_to_use;
 -- 
 2.43.0
 
