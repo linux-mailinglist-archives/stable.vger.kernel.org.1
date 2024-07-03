@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0134A9259CD
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:50:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C0A7925CF0
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:24:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABE951F22138
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:50:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12C0DB39916
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:18:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FEA17B425;
-	Wed,  3 Jul 2024 10:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9EF181CEF;
+	Wed,  3 Jul 2024 11:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aw+4JRho"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neK+kD9N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505FF17B421;
-	Wed,  3 Jul 2024 10:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4E3181CE6;
+	Wed,  3 Jul 2024 11:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003326; cv=none; b=Lz7Tl+H9dkIPRL3v0KxI4renZYudtawHJv/evHW56wzZ/O8orvCoa1+jBQqj1aulg0ivTBtSAa7GbF7lRBUiOgj0vMHmViVf54JYCgN1sfy7ipGaEk9bNbTdsGGwRtrUzZQS84jW31i6CDBLtDqwIYnEekUtwUfbkD36Kw4pE00=
+	t=1720004789; cv=none; b=TB7MMfxzIy/lHWOVmrfMRWlOd4GBsctgMGL+l5oCcEfsWkDz7OcOHQAuWGOVYppsU9VM/IU5GG5Q41ZUX5GsYO0Uvl/GgD/oiwboKloeVVIEQazn29IasP8gVGpBpHCVDNRgaF5UO5srLbvfOc2YnOZqZEhhDzRZ+gvXwEuz+Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003326; c=relaxed/simple;
-	bh=TKrqwjrNB6IRJW2lCsb0yowVEymfGlVBEUUNWrs2cMk=;
+	s=arc-20240116; t=1720004789; c=relaxed/simple;
+	bh=yB7t6Kyez1TolSsLI2gltSdVPCk9d1uxVmt3Gq5Qz2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FZnk0qrKTFkGnDUPnAstCRSyN5eT5N/w7s0VLFiy3HN8BDhQ+W3fu4T7B40OPFC1n4SZEz9bi/tZYAd9rNrQkfEtuxDZelgGlpd5zu2lCeCrOC6TVWe64AKF54A1MgFBjTozRJnlKm8rYRHvCVicx/PLOu7qt6czE1LJyxsTR8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aw+4JRho; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C277C2BD10;
-	Wed,  3 Jul 2024 10:42:05 +0000 (UTC)
+	 MIME-Version; b=LCSpQRtE6ySSqr7lb1+c1lG+T4TnUsNT/GjyGZ4CVvlYOIhfFL0mvbdOTVgoIZ9xIf8lvjbHz2i/CQmDkB/9Pj1SPD1MD/mXpRXrQKLIXzxfPlWWGiceprUjB2o8wxmOWI9qRVu2T/LL5ownYt6YsTD/57kw3ePVSzEIVusnjjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neK+kD9N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D528EC32781;
+	Wed,  3 Jul 2024 11:06:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003325;
-	bh=TKrqwjrNB6IRJW2lCsb0yowVEymfGlVBEUUNWrs2cMk=;
+	s=korg; t=1720004789;
+	bh=yB7t6Kyez1TolSsLI2gltSdVPCk9d1uxVmt3Gq5Qz2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aw+4JRho42McF8916kjjYzoHOf9Kga3IFQHB4gdtoCG725j6zHXWfpBh7cz9NBT75
-	 x6ubTGaRjuA4c+JT3DPeICuk8gQhAF+ArT6vIT84RS8jQqE/Wk75FD9b/2FQXBZDDg
-	 LnHD/DsaFlo43z6vuPWcYV4Q8bk6tHeEY33zclcQ=
+	b=neK+kD9NwKVpYyl3CSg6r/m79geGFvRa/eaQydGYKu80FUL2rZwrwHTlkoHXzs5gr
+	 wM5D0ETg4GYYa8Uhev++qZmvLuqkcIY5KxJFTlRp2tHgVUkpU08JSDgnvekhSUexfh
+	 vqZ44J5E9bU/ulEZM4M9Gd4t6+4jAGdJ1zy19skg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Aleksandr Aprelkov <aaprelkov@usergate.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 012/139] af_unix: Annotate data-races around sk->sk_state in UNIX_DIAG.
+Subject: [PATCH 5.10 128/290] iommu/arm-smmu-v3: Free MSIs in case of ENOMEM
 Date: Wed,  3 Jul 2024 12:38:29 +0200
-Message-ID: <20240703102830.902885065@linuxfoundation.org>
+Message-ID: <20240703102909.021653701@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Aleksandr Aprelkov <aaprelkov@usergate.com>
 
-[ Upstream commit 0aa3be7b3e1f8f997312cc4705f8165e02806f8f ]
+[ Upstream commit 80fea979dd9d48d67c5b48d2f690c5da3e543ebd ]
 
-While dumping AF_UNIX sockets via UNIX_DIAG, sk->sk_state is read
-locklessly.
+If devm_add_action() returns -ENOMEM, then MSIs are allocated but not
+not freed on teardown. Use devm_add_action_or_reset() instead to keep
+the static analyser happy.
 
-Let's use READ_ONCE() there.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Note that the result could be inconsistent if the socket is dumped
-during the state change.  This is common for other SOCK_DIAG and
-similar interfaces.
-
-Fixes: c9da99e6475f ("unix_diag: Fixup RQLEN extension report")
-Fixes: 2aac7a2cb0d9 ("unix_diag: Pending connections IDs NLA")
-Fixes: 45a96b9be6ec ("unix_diag: Dumping all sockets core")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Aleksandr Aprelkov <aaprelkov@usergate.com>
+Link: https://lore.kernel.org/r/20240403053759.643164-1-aaprelkov@usergate.com
+[will: Tweak commit message, remove warning message]
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/diag.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/unix/diag.c b/net/unix/diag.c
-index d6ceac688defc..f27b4e55da0e8 100644
---- a/net/unix/diag.c
-+++ b/net/unix/diag.c
-@@ -61,7 +61,7 @@ static int sk_diag_dump_icons(struct sock *sk, struct sk_buff *nlskb)
- 	u32 *buf;
- 	int i;
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+index 982c42c873102..9ac7b37290eb0 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -2925,7 +2925,7 @@ static void arm_smmu_setup_msis(struct arm_smmu_device *smmu)
+ 	}
  
--	if (sk->sk_state == TCP_LISTEN) {
-+	if (READ_ONCE(sk->sk_state) == TCP_LISTEN) {
- 		spin_lock(&sk->sk_receive_queue.lock);
+ 	/* Add callback to free MSIs on teardown */
+-	devm_add_action(dev, arm_smmu_free_msis, dev);
++	devm_add_action_or_reset(dev, arm_smmu_free_msis, dev);
+ }
  
- 		attr = nla_reserve(nlskb, UNIX_DIAG_ICONS,
-@@ -99,7 +99,7 @@ static int sk_diag_show_rqlen(struct sock *sk, struct sk_buff *nlskb)
- {
- 	struct unix_diag_rqlen rql;
- 
--	if (sk->sk_state == TCP_LISTEN) {
-+	if (READ_ONCE(sk->sk_state) == TCP_LISTEN) {
- 		rql.udiag_rqueue = sk->sk_receive_queue.qlen;
- 		rql.udiag_wqueue = sk->sk_max_ack_backlog;
- 	} else {
-@@ -124,7 +124,7 @@ static int sk_diag_fill(struct sock *sk, struct sk_buff *skb, struct unix_diag_r
- 	rep = nlmsg_data(nlh);
- 	rep->udiag_family = AF_UNIX;
- 	rep->udiag_type = sk->sk_type;
--	rep->udiag_state = sk->sk_state;
-+	rep->udiag_state = READ_ONCE(sk->sk_state);
- 	rep->pad = 0;
- 	rep->udiag_ino = sk_ino;
- 	sock_diag_save_cookie(sk, rep->udiag_cookie);
-@@ -202,7 +202,7 @@ static int unix_diag_dump(struct sk_buff *skb, struct netlink_callback *cb)
- 				continue;
- 			if (num < s_num)
- 				goto next;
--			if (!(req->udiag_states & (1 << sk->sk_state)))
-+			if (!(req->udiag_states & (1 << READ_ONCE(sk->sk_state))))
- 				goto next;
- 			if (sk_diag_dump(sk, skb, req,
- 					 NETLINK_CB(cb->skb).portid,
+ static void arm_smmu_setup_unique_irqs(struct arm_smmu_device *smmu)
 -- 
 2.43.0
 
