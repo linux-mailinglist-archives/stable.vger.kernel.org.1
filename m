@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A615925CA7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CBE0925B73
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D92B2C3F03
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F1D41C210C7
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC168186E3B;
-	Wed,  3 Jul 2024 11:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE39F18629B;
+	Wed,  3 Jul 2024 10:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJKZGGyP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLojUaeH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0B845945;
-	Wed,  3 Jul 2024 11:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A51F185E68;
+	Wed,  3 Jul 2024 10:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004986; cv=none; b=gNF+8Gi2qNImlxZympqEQBH7jthRjIDx6e9op4CICOuKTCvyk58emhAp3QKbdIIz5C3wZXQl7Euo7sLi82w4xuToFrrzu0TJulfFEwazadCgaI96YSCr33b2E+YkO+iypJ7zqKRoZoo9ShphvZP51uNjFm0jt5zFabGdIMN0YcI=
+	t=1720004163; cv=none; b=eTt4Pb/1w02KucnQgTBidlnd4D0f49uadOswAmAYE2SvTvPh49a1sXUUw4IvyXHtQ/AQwqilA/2Ro4H+RUEh2lcL9BLKi2flsUC+iC8O36Ne4/4FJAAndseSrdW39A4hmdhHJVU0q+xfDZRPYUQc7ILNy/O54ulftoUVJqnTmM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004986; c=relaxed/simple;
-	bh=RfhwJpzppGHaV4lVUrC55x54u5kLR7x+fyIEebCV7fg=;
+	s=arc-20240116; t=1720004163; c=relaxed/simple;
+	bh=R59SU8yk5aoyh3xnpAqoxUNwtje3vekArKWI7JPoUSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cEKat3tLQvCFX+DDxcICuE6nzxgPXtseEamEj1+2gNnYwjoBtJ2UUG4qC2YFvmkuJjM5L0BmmtecnYQQn6QnZ1B3WNfkkGPDpSIiC8spPZon6PukxQVn/8R2MDKbzE3HR7fTtr33UnQrxUkO0/ZjnwJzPUBEAdo2J7Ph0ffcAhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJKZGGyP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20ECCC2BD10;
-	Wed,  3 Jul 2024 11:09:45 +0000 (UTC)
+	 MIME-Version; b=SzMtXFcsDX88ECVWtkPUR29chRPn9Z0wLYW4BhExiqPo6l7EvKWpGmAGEG9XP+w8iApUaA6s6JR+nFBTe9ZQiMk0oerQCHE29ENW3eyBKCso0NcMhXrZuz2/T0WT66IC9mThFJ9BPChFYM8+fmPatXZkcBkRYQP1NZUjlkNwIEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLojUaeH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB8BC2BD10;
+	Wed,  3 Jul 2024 10:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004986;
-	bh=RfhwJpzppGHaV4lVUrC55x54u5kLR7x+fyIEebCV7fg=;
+	s=korg; t=1720004163;
+	bh=R59SU8yk5aoyh3xnpAqoxUNwtje3vekArKWI7JPoUSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJKZGGyPklXT6rSx0bLiqKiPhViaCtgRH4Vn8LBvLSj6u6Fh+31R0K7SbvtEhflOw
-	 8xBsztevCoH1IX0lLDyll/OxidaBeWfV2gl7cF8KAgLO4WZvTCuXCnpcii1FKsXkJ0
-	 gXi83m1i5mkZpQD30D4kuCUWKITpcZS+H9MKWe4U=
+	b=OLojUaeHeleXJAi/AvZ7ZS1FGFu3E5zQU9TwxJOkLT6tn/x0IWHmSrGSbQEqYW9wx
+	 2zLax/BNtJqofeCVXmSnBcZ0KKE63H5gFMiul6DOrQiME4Uld/P8WGXcOSsZJPk3W6
+	 jXt0CLuE7cqAyokRmmIclXARuOJ8/w7Olvmyc7FI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Divya Koppera <divya.koppera@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 221/290] xdp: Move the rxq_info.mem clearing to unreg_mem_model()
-Date: Wed,  3 Jul 2024 12:40:02 +0200
-Message-ID: <20240703102912.506007356@linuxfoundation.org>
+Subject: [PATCH 5.4 142/189] net: phy: mchp: Add support for LAN8814 QUAD PHY
+Date: Wed,  3 Jul 2024 12:40:03 +0200
+Message-ID: <20240703102846.839273017@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Divya Koppera <Divya.Koppera@microchip.com>
 
-[ Upstream commit a78cae2476812cecaa4a33d0086bbb53986906bc ]
+[ Upstream commit 1623ad8ec04c771a54975fb84b22bc21c2dbcac1 ]
 
-xdp_rxq_info_unreg() implicitly calls xdp_rxq_info_unreg_mem_model().
-This may well be confusing to the driver authors, and lead to double free
-if they call xdp_rxq_info_unreg_mem_model() before xdp_rxq_info_unreg()
-(when mem model type == MEM_TYPE_PAGE_POOL).
+LAN8814 is a low-power, quad-port triple-speed (10BASE-T/100BASETX/1000BASE-T)
+Ethernet physical layer transceiver (PHY). It supports transmission and
+reception of data on standard CAT-5, as well as CAT-5e and CAT-6, unshielded
+twisted pair (UTP) cables.
 
-In fact error path of mvpp2_rxq_init() seems to currently do exactly that.
+LAN8814 supports industry-standard QSGMII (Quad Serial Gigabit Media
+Independent Interface) and Q-USGMII (Quad Universal Serial Gigabit Media
+Independent Interface) providing chip-to-chip connection to four Gigabit
+Ethernet MACs using a single serialized link (differential pair) in each
+direction.
 
-The double free will result in refcount underflow in page_pool_destroy().
-Make the interface a little more programmer friendly by clearing type and
-id so that xdp_rxq_info_unreg_mem_model() can be called multiple times.
+The LAN8814 SKU supports high-accuracy timestamping functions to
+support IEEE-1588 solutions using Microchip Ethernet switches, as well as
+customer solutions based on SoCs and FPGAs.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20210625221612.2637086-1-kuba@kernel.org
-Stable-dep-of: 7e9f79428372 ("xdp: Remove WARN() from __xdp_reg_mem_model()")
+The LAN8804 SKU has same features as that of LAN8814 SKU except that it does
+not support 1588, SyncE, or Q-USGMII with PCH/MCH.
+
+This adds support for 10BASE-T, 100BASE-TX, and 1000BASE-T,
+QSGMII link with the MAC.
+
+Signed-off-by: Divya Koppera<divya.koppera@microchip.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 54a4e5c16382 ("net: phy: micrel: add Microchip KSZ 9477 to the device table")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/xdp.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/phy/micrel.c   | 14 ++++++++++++++
+ include/linux/micrel_phy.h |  1 +
+ 2 files changed, 15 insertions(+)
 
-diff --git a/net/core/xdp.c b/net/core/xdp.c
-index b8d7fa47d293c..0f0b65981614b 100644
---- a/net/core/xdp.c
-+++ b/net/core/xdp.c
-@@ -113,8 +113,13 @@ static void mem_allocator_disconnect(void *allocator)
- void xdp_rxq_info_unreg_mem_model(struct xdp_rxq_info *xdp_rxq)
- {
- 	struct xdp_mem_allocator *xa;
-+	int type = xdp_rxq->mem.type;
- 	int id = xdp_rxq->mem.id;
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index caaa51a70cbdc..2cd812c097baf 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -1149,6 +1149,19 @@ static struct phy_driver ksphy_driver[] = {
+ 	.get_stats	= kszphy_get_stats,
+ 	.suspend	= genphy_suspend,
+ 	.resume		= kszphy_resume,
++}, {
++	.phy_id		= PHY_ID_LAN8814,
++	.phy_id_mask	= MICREL_PHY_ID_MASK,
++	.name		= "Microchip INDY Gigabit Quad PHY",
++	.driver_data	= &ksz9021_type,
++	.probe		= kszphy_probe,
++	.soft_reset	= genphy_soft_reset,
++	.read_status	= ksz9031_read_status,
++	.get_sset_count	= kszphy_get_sset_count,
++	.get_strings	= kszphy_get_strings,
++	.get_stats	= kszphy_get_stats,
++	.suspend	= genphy_suspend,
++	.resume		= kszphy_resume,
+ }, {
+ 	.phy_id		= PHY_ID_KSZ9131,
+ 	.phy_id_mask	= MICREL_PHY_ID_MASK,
+@@ -1221,6 +1234,7 @@ static struct mdio_device_id __maybe_unused micrel_tbl[] = {
+ 	{ PHY_ID_KSZ8081, MICREL_PHY_ID_MASK },
+ 	{ PHY_ID_KSZ8873MLL, MICREL_PHY_ID_MASK },
+ 	{ PHY_ID_KSZ886X, MICREL_PHY_ID_MASK },
++	{ PHY_ID_LAN8814, MICREL_PHY_ID_MASK },
+ 	{ }
+ };
  
-+	/* Reset mem info to defaults */
-+	xdp_rxq->mem.id = 0;
-+	xdp_rxq->mem.type = 0;
-+
- 	if (xdp_rxq->reg_state != REG_STATE_REGISTERED) {
- 		WARN(1, "Missing register, driver bug");
- 		return;
-@@ -123,7 +128,7 @@ void xdp_rxq_info_unreg_mem_model(struct xdp_rxq_info *xdp_rxq)
- 	if (id == 0)
- 		return;
+diff --git a/include/linux/micrel_phy.h b/include/linux/micrel_phy.h
+index 75f880c25bb86..416ee6dd25743 100644
+--- a/include/linux/micrel_phy.h
++++ b/include/linux/micrel_phy.h
+@@ -27,6 +27,7 @@
+ #define PHY_ID_KSZ8061		0x00221570
+ #define PHY_ID_KSZ9031		0x00221620
+ #define PHY_ID_KSZ9131		0x00221640
++#define PHY_ID_LAN8814		0x00221660
  
--	if (xdp_rxq->mem.type == MEM_TYPE_PAGE_POOL) {
-+	if (type == MEM_TYPE_PAGE_POOL) {
- 		rcu_read_lock();
- 		xa = rhashtable_lookup(mem_id_ht, &id, mem_id_rht_params);
- 		page_pool_destroy(xa->page_pool);
-@@ -144,10 +149,6 @@ void xdp_rxq_info_unreg(struct xdp_rxq_info *xdp_rxq)
- 
- 	xdp_rxq->reg_state = REG_STATE_UNREGISTERED;
- 	xdp_rxq->dev = NULL;
--
--	/* Reset mem info to defaults */
--	xdp_rxq->mem.id = 0;
--	xdp_rxq->mem.type = 0;
- }
- EXPORT_SYMBOL_GPL(xdp_rxq_info_unreg);
- 
+ #define PHY_ID_KSZ886X		0x00221430
+ #define PHY_ID_KSZ8863		0x00221435
 -- 
 2.43.0
 
