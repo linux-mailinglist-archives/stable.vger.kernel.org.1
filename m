@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-57263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563D5925BD7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:12:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A182925D2B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:26:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 016911F2216F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36DD6297892
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4AF194C61;
-	Wed,  3 Jul 2024 10:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF00817C20C;
+	Wed,  3 Jul 2024 11:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bo4YINfG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qh4CBFPX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39979194AFB;
-	Wed,  3 Jul 2024 10:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD20173334;
+	Wed,  3 Jul 2024 11:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004351; cv=none; b=r7szoUO/XUhngiEQFfw2THRGIBaDe4RxE5Fekcxi2Zro7R4oyiaGXN+D6h7H7dnjbWXi+s9N/T4tSFRrdXGth7Axn5QGWVFAlLDjPrArb+LaeTKnD/M027NppaVTbSCU9GXUtwtcnLc6hNuUtw62mSztdCqMOIeDxECY1TCXa3o=
+	t=1720005370; cv=none; b=QjA/79B7TJD6QJYkMVheizSDEqSbMqXoWaqKaxvF7cEqszUhUZJFV6q+NySbYvHGslBDR+t/s2HLmdB2S9xB2EBBGn3EkSMYBVDr6aTycLb4Clp8d9N4dbAvdtDi5HUmyffnimODPvImsTcfg9ELy6KyFLIhIjrS2bHrDmhyQwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004351; c=relaxed/simple;
-	bh=ga7SraLqxdN6hs+lgncIRBV8UN5pvsj4Fyw2CgYY7xk=;
+	s=arc-20240116; t=1720005370; c=relaxed/simple;
+	bh=3tEQwD1OddDjwQB0bhIQwfdGQrUCMUHpNkQ93JOMCaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HvdxHvBKbUnQha9HOeZSbXCTJjaJYzDbcL+uQLzFWMtmPn91/GxM3YgGq5FJYY0YWrTEuLWK+43YnZ/uJPi0ArCJGZM/ony/cFeOWHM20o0JckRwk9m58yj11KSUook2QaLMqvD1HFiGvrbpiqkbdrlRugYb7B5QsGLHxkaLM1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bo4YINfG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D4BC32781;
-	Wed,  3 Jul 2024 10:59:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e6wPHV6ORGYbt/se3umDTd8SuP/9gB0g4QNvXmcccEbFwMTJh7eP0tq1ORczm1uvhefJUKLemuxKF/xkMzS+ukP81bmT4AfFSFQ3hNqxwOi7wiNtXybIcb3eL0iDnaf4ZcZXkUp69WvgeTSipX9livTZS1IYdkh2zHJ7cZMhQQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qh4CBFPX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF4F2C2BD10;
+	Wed,  3 Jul 2024 11:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004351;
-	bh=ga7SraLqxdN6hs+lgncIRBV8UN5pvsj4Fyw2CgYY7xk=;
+	s=korg; t=1720005370;
+	bh=3tEQwD1OddDjwQB0bhIQwfdGQrUCMUHpNkQ93JOMCaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bo4YINfG/sY9DYl6vbmY9g+PMN1Am3KudSxDhgJVyg3fMrklR31K8o1QF7knMornu
-	 ZBJiWPEwK4aoRWq3GNBnBL1JF7/J/ua2NoCm2DTO8M+LfipQPNpZjqdFEUpobKyxjP
-	 FvpZE3YoQAqDRI0e63kgFqi/I2bLO895b4yOu3mY=
+	b=Qh4CBFPX9/m6freAtdb1D8Wkrhmn/LGj40vNEcfsvx4u2S34MJ7OWi6O/SeMmVQ2D
+	 Jol+5nq3XXZENCb/pbexYypIcJMWg/dwd038/EkMqYAcmY1ikCcr3h9PrXsWTl2mIv
+	 3oGsUNquHR9Wkm6LveI9yCDHCWa2oMghIb1QBDCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	David Lebrun <dlebrun@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 014/290] ipv6: sr: block BH in seg6_output_core() and seg6_input_core()
+Subject: [PATCH 5.15 059/356] mmc: davinci_mmc: Convert to platform remove callback returning void
 Date: Wed,  3 Jul 2024 12:36:35 +0200
-Message-ID: <20240703102904.728092632@linuxfoundation.org>
+Message-ID: <20240703102915.327981424@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +61,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yangtao Li <frank.li@vivo.com>
 
-[ Upstream commit c0b98ac1cc104f48763cdb27b1e9ac25fd81fc90 ]
+[ Upstream commit bc1711e8332da03648d8fe1950189237e66313af ]
 
-As explained in commit 1378817486d6 ("tipc: block BH
-before using dst_cache"), net/core/dst_cache.c
-helpers need to be called with BH disabled.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-Disabling preemption in seg6_output_core() is not good enough,
-because seg6_output_core() is called from process context,
-lwtunnel_output() only uses rcu_read_lock().
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-We might be interrupted by a softirq, re-enter seg6_output_core()
-and corrupt dst_cache data structures.
-
-Fix the race by using local_bh_disable() instead of
-preempt_disable().
-
-Apply a similar change in seg6_input_core().
-
-Fixes: fa79581ea66c ("ipv6: sr: fix several BUGs when preemption is enabled")
-Fixes: 6c8702c60b88 ("ipv6: sr: add support for SRH encapsulation and injection with lwtunnels")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: David Lebrun <dlebrun@google.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240531132636.2637995-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Link: https://lore.kernel.org/r/20230727070051.17778-7-frank.li@vivo.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: 55c421b36448 ("mmc: davinci: Don't strip remove function when driver is builtin")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6_iptunnel.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/mmc/host/davinci_mmc.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index 40ac23242c378..a73840da34ed9 100644
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -325,9 +325,8 @@ static int seg6_input(struct sk_buff *skb)
+diff --git a/drivers/mmc/host/davinci_mmc.c b/drivers/mmc/host/davinci_mmc.c
+index 80de660027d89..36c45867eb643 100644
+--- a/drivers/mmc/host/davinci_mmc.c
++++ b/drivers/mmc/host/davinci_mmc.c
+@@ -1347,7 +1347,7 @@ static int davinci_mmcsd_probe(struct platform_device *pdev)
+ 	return ret;
+ }
  
- 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
+-static int __exit davinci_mmcsd_remove(struct platform_device *pdev)
++static void __exit davinci_mmcsd_remove(struct platform_device *pdev)
+ {
+ 	struct mmc_davinci_host *host = platform_get_drvdata(pdev);
  
--	preempt_disable();
-+	local_bh_disable();
- 	dst = dst_cache_get(&slwt->cache);
--	preempt_enable();
+@@ -1356,8 +1356,6 @@ static int __exit davinci_mmcsd_remove(struct platform_device *pdev)
+ 	davinci_release_dma_channels(host);
+ 	clk_disable_unprepare(host->clk);
+ 	mmc_free_host(host->mmc);
+-
+-	return 0;
+ }
  
- 	skb_dst_drop(skb);
+ #ifdef CONFIG_PM
+@@ -1404,7 +1402,7 @@ static struct platform_driver davinci_mmcsd_driver = {
+ 		.of_match_table = davinci_mmc_dt_ids,
+ 	},
+ 	.probe		= davinci_mmcsd_probe,
+-	.remove		= __exit_p(davinci_mmcsd_remove),
++	.remove_new	= __exit_p(davinci_mmcsd_remove),
+ 	.id_table	= davinci_mmc_devtype,
+ };
  
-@@ -335,14 +334,13 @@ static int seg6_input(struct sk_buff *skb)
- 		ip6_route_input(skb);
- 		dst = skb_dst(skb);
- 		if (!dst->error) {
--			preempt_disable();
- 			dst_cache_set_ip6(&slwt->cache, dst,
- 					  &ipv6_hdr(skb)->saddr);
--			preempt_enable();
- 		}
- 	} else {
- 		skb_dst_set(skb, dst);
- 	}
-+	local_bh_enable();
- 
- 	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
- 	if (unlikely(err))
-@@ -364,9 +362,9 @@ static int seg6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 
- 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
- 
--	preempt_disable();
-+	local_bh_disable();
- 	dst = dst_cache_get(&slwt->cache);
--	preempt_enable();
-+	local_bh_enable();
- 
- 	if (unlikely(!dst)) {
- 		struct ipv6hdr *hdr = ipv6_hdr(skb);
-@@ -386,9 +384,9 @@ static int seg6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			goto drop;
- 		}
- 
--		preempt_disable();
-+		local_bh_disable();
- 		dst_cache_set_ip6(&slwt->cache, dst, &fl6.saddr);
--		preempt_enable();
-+		local_bh_enable();
- 	}
- 
- 	skb_dst_drop(skb);
 -- 
 2.43.0
 
