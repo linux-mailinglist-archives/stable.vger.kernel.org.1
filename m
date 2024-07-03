@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-57121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A49925ABD
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C600C925D94
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FB231F2567C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A6181F21140
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D82F17C206;
-	Wed,  3 Jul 2024 10:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8461E185E5D;
+	Wed,  3 Jul 2024 11:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhiwtMuZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+hKXJkU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BEB3171E70;
-	Wed,  3 Jul 2024 10:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D2F171E70;
+	Wed,  3 Jul 2024 11:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003911; cv=none; b=uY1d/Bqc+OqointGpZRRLYTNwifvxnyVs8OdU/eFzcqFIGMgnHVX4xenHBYcRjVoYe7/vxBq9I6Sn57iebr+oKIE9wYGT9Ahc+ozlQ/otPCtCY10KODOemfKxRw52mQ/j7m3TCF1wv43x0lReywTLDT1BFRFCIbiyCyle+LePGI=
+	t=1720005665; cv=none; b=BghKShK2eOtybRDXioT2o+zlf/i2JpQSw/pgjZz8Fdp4CsYCJCs+8bI9jr07pOr2wVkNgzteO5OHI9q+HentWPDCKKvRy8RlMi4BPXAgEVK2OXl4ntCNqRzmErPfMV3U6U8sooEg9xJ6fddoMAj43JLAvWV42e8LXCFovaqTz0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003911; c=relaxed/simple;
-	bh=5nl4B9SM9KVitWpEYL7ZIikt8zdr0ZlOCxvsjWMaO3Y=;
+	s=arc-20240116; t=1720005665; c=relaxed/simple;
+	bh=83Mvu25hh8G5fiWjj5M0bIWVAuNWvEIL8Otrc6zjPZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dar6xCBMEdT/K+OHt+4OsyG8dwcKbKkDMwAD37P60kYJeAEO3ualBI8tX3OxnZR+23dw0fP5aOr1MXyHKIxhD5YwjmpnPA4sFg/DMJUIBghfs39ycnDjkaFKqQXLm8mLxrT5IRgHCv0Btxe51hHtLof9ulbqzQstr3alID9BMZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhiwtMuZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5685C2BD10;
-	Wed,  3 Jul 2024 10:51:50 +0000 (UTC)
+	 MIME-Version; b=Enkps7ctNDG86QG/RSXqCVVso1gEuEtYItJATwBQXWiyI9GbULNQZwfJJ/kgjOirCg9LBfIDUjuTUcI3aOz2VBmQQobXetqYW42O8Lo8pXSAbyDkb55wcCkLirOx4SVK8COi4Q1M3t3KULz1Gr6tGLhR6gO/fPYwU11i8/veL/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+hKXJkU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72936C2BD10;
+	Wed,  3 Jul 2024 11:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003911;
-	bh=5nl4B9SM9KVitWpEYL7ZIikt8zdr0ZlOCxvsjWMaO3Y=;
+	s=korg; t=1720005664;
+	bh=83Mvu25hh8G5fiWjj5M0bIWVAuNWvEIL8Otrc6zjPZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zhiwtMuZXV7jtI6u8PW4PSXx5PoK+4wnfChM/+h2p4x9AkXLS+Uerbp5AwfIe5pW8
-	 rxRmlEIBgrG3OvAZ9Dc6ki/HTzZ2kJ797hpHlc9U/uxJOKtFBoh/97jiC5yq5aU01K
-	 Vkn08NYTArXd9nSdRlhCeJ2+7JsA5LApfZUoiq5k=
+	b=l+hKXJkUb8M6HrFPy7FE0qfcvjQjEFoBc8GaYi/WZPwZgnJIteeR7QOGXjQOuUs3r
+	 Hojf8k1vLyOKdAn5flhB6oHYidB0GzqvLIrtrPQziozQOyn3fSO+GJGFiZjZeFgY7k
+	 JAmqXPlKiKXSukcsdL97ofmhoQ9mY7Qw9JLggIRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Jai Luthra <j-luthra@ti.com>,
-	Mark Brown <broonie@kernel.org>,
+	"Alessandro Carminati (Red Hat)" <alessandro.carminati@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 030/189] ASoC: ti: davinci-mcasp: Fix race condition during probe
-Date: Wed,  3 Jul 2024 12:38:11 +0200
-Message-ID: <20240703102842.644108326@linuxfoundation.org>
+Subject: [PATCH 5.15 156/356] selftests/bpf: Prevent client connect before server bind in test_tc_tunnel.sh
+Date: Wed,  3 Jul 2024 12:38:12 +0200
+Message-ID: <20240703102919.004545631@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joao Paulo Goncalves <joao.goncalves@toradex.com>
+From: Alessandro Carminati (Red Hat) <alessandro.carminati@gmail.com>
 
-[ Upstream commit d18ca8635db2f88c17acbdf6412f26d4f6aff414 ]
+[ Upstream commit f803bcf9208a2540acb4c32bdc3616673169f490 ]
 
-When using davinci-mcasp as CPU DAI with simple-card, there are some
-conditions that cause simple-card to finish registering a sound card before
-davinci-mcasp finishes registering all sound components. This creates a
-non-working sound card from userspace with no problem indication apart
-from not being able to play/record audio on a PCM stream. The issue
-arises during simultaneous probe execution of both drivers. Specifically,
-the simple-card driver, awaiting a CPU DAI, proceeds as soon as
-davinci-mcasp registers its DAI. However, this process can lead to the
-client mutex lock (client_mutex in soc-core.c) being held or davinci-mcasp
-being preempted before PCM DMA registration on davinci-mcasp finishes.
-This situation occurs when the probes of both drivers run concurrently.
-Below is the code path for this condition. To solve the issue, defer
-davinci-mcasp CPU DAI registration to the last step in the audio part of
-it. This way, simple-card CPU DAI parsing will be deferred until all
-audio components are registered.
+In some systems, the netcat server can incur in delay to start listening.
+When this happens, the test can randomly fail in various points.
+This is an example error message:
 
-Fail Code Path:
+   # ip gre none gso
+   # encap 192.168.1.1 to 192.168.1.2, type gre, mac none len 2000
+   # test basic connectivity
+   # Ncat: Connection refused.
 
-simple-card.c: probe starts
-simple-card.c: simple_dai_link_of: simple_parse_node(..,cpu,..) returns EPROBE_DEFER, no CPU DAI yet
-davinci-mcasp.c: probe starts
-davinci-mcasp.c: devm_snd_soc_register_component() register CPU DAI
-simple-card.c: probes again, finish CPU DAI parsing and call devm_snd_soc_register_card()
-simple-card.c: finish probe
-davinci-mcasp.c: *dma_pcm_platform_register() register PCM  DMA
-davinci-mcasp.c: probe finish
+The issue stems from a race condition between the netcat client and server.
+The test author had addressed this problem by implementing a sleep, which
+I have removed in this patch.
+This patch introduces a function capable of sleeping for up to two seconds.
+However, it can terminate the waiting period early if the port is reported
+to be listening.
 
-Cc: stable@vger.kernel.org
-Fixes: 9fbd58cf4ab0 ("ASoC: davinci-mcasp: Choose PCM driver based on configured DMA controller")
-Signed-off-by: Joao Paulo Goncalves <joao.goncalves@toradex.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Reviewed-by: Jai Luthra <j-luthra@ti.com>
-Link: https://lore.kernel.org/r/20240417184138.1104774-1-jpaulo.silvagoncalves@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Alessandro Carminati (Red Hat) <alessandro.carminati@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240314105911.213411-1-alessandro.carminati@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/ti/davinci-mcasp.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tools/testing/selftests/bpf/test_tc_tunnel.sh | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
-index 633cd7fd3dcf3..dc40b5c5d501e 100644
---- a/sound/soc/ti/davinci-mcasp.c
-+++ b/sound/soc/ti/davinci-mcasp.c
-@@ -2270,12 +2270,6 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
+diff --git a/tools/testing/selftests/bpf/test_tc_tunnel.sh b/tools/testing/selftests/bpf/test_tc_tunnel.sh
+index 088fcad138c98..38c6e9f16f41e 100755
+--- a/tools/testing/selftests/bpf/test_tc_tunnel.sh
++++ b/tools/testing/selftests/bpf/test_tc_tunnel.sh
+@@ -71,7 +71,6 @@ cleanup() {
+ server_listen() {
+ 	ip netns exec "${ns2}" nc "${netcat_opt}" -l "${port}" > "${outfile}" &
+ 	server_pid=$!
+-	sleep 0.2
+ }
  
- 	mcasp_reparent_fck(pdev);
+ client_connect() {
+@@ -92,6 +91,16 @@ verify_data() {
+ 	fi
+ }
  
--	ret = devm_snd_soc_register_component(&pdev->dev, &davinci_mcasp_component,
--					      &davinci_mcasp_dai[mcasp->op_mode], 1);
--
--	if (ret != 0)
--		goto err;
--
- 	ret = davinci_mcasp_get_dma_type(mcasp);
- 	switch (ret) {
- 	case PCM_EDMA:
-@@ -2296,6 +2290,12 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
- 		goto err;
- 	}
- 
-+	ret = devm_snd_soc_register_component(&pdev->dev, &davinci_mcasp_component,
-+					      &davinci_mcasp_dai[mcasp->op_mode], 1);
++wait_for_port() {
++	for i in $(seq 20); do
++		if ip netns exec "${ns2}" ss ${2:--4}OHntl | grep -q "$1"; then
++			return 0
++		fi
++		sleep 0.1
++	done
++	return 1
++}
 +
-+	if (ret != 0)
-+		goto err;
-+
- no_audio:
- 	ret = davinci_mcasp_init_gpiochip(mcasp);
- 	if (ret) {
+ set -e
+ 
+ # no arguments: automated test, run all
+@@ -189,6 +198,7 @@ setup
+ # basic communication works
+ echo "test basic connectivity"
+ server_listen
++wait_for_port ${port} ${netcat_opt}
+ client_connect
+ verify_data
+ 
+@@ -200,6 +210,7 @@ ip netns exec "${ns1}" tc filter add dev veth1 egress \
+ 	section "encap_${tuntype}_${mac}"
+ echo "test bpf encap without decap (expect failure)"
+ server_listen
++wait_for_port ${port} ${netcat_opt}
+ ! client_connect
+ 
+ if [[ "$tuntype" =~ "udp" ]]; then
 -- 
 2.43.0
 
