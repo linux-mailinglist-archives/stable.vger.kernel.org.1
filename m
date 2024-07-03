@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-57459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E022925C9D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:20:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00854925B92
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:09:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 295301F20613
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:20:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7794C2905D6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628A4185E58;
-	Wed,  3 Jul 2024 11:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B5518C329;
+	Wed,  3 Jul 2024 10:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NK//VcrO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iu090SAu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6FC173348;
-	Wed,  3 Jul 2024 11:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5D318A95E;
+	Wed,  3 Jul 2024 10:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004947; cv=none; b=U/R2uoWM8kU+M/LSXZ8rz7PXf2xZaMGQKLTavdCTDpfJKCGNH9tdDsJzy5XKyZnGkW8MQ/boqbUHEKBcX7+nDHpXjYy+3Cn25BEBSpcuKR+6U8jZMJPXUBPduubSOEJWCBHlqXZhp/ZivasgJykgQ4K2ZvQqwYvAEGVpWqO1bjQ=
+	t=1720004225; cv=none; b=KhLUUk5IA4JgzZda0U9wIQBgSKOAhVdipCkukCMIRGrz/b+2CgHPmj7ue2YnKRuaZY79yAPRT0XToMmIrwKm3CJh0wEGsL3hK7qegDT8UcFCyvfdAuzBFJQ+SxNdP+AohQCpJaQ5bPcyoIqcPD6V1oe9i2/yvyFgAdCwmv4KXdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004947; c=relaxed/simple;
-	bh=TQRVVm2h3LgCHXwx+isHO29+glpX/AJJNG5612+vOrc=;
+	s=arc-20240116; t=1720004225; c=relaxed/simple;
+	bh=VQEBxE8Sxa/rL6+ZQOjr6Gipu0Y9L8uBO5dsRU/t1/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tMZVAY2BAPeetS8zXbr/e4kSraF/ZhralU1xEWMtKz23ncIrwuqfa/T3eDAQoK85mdvwuEZKrYxOLeG8A3MPxMDm1svaeNd0zmMPv7VH/MQFcPyrBYj0KJKNLOB1rFhnklbZ7K/CF2OUjVm0oLxOe0NzX9MU5cPedQgHP8++eZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NK//VcrO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98510C2BD10;
-	Wed,  3 Jul 2024 11:09:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tmC1H/cwwRT6CRZoWrcJGgL6eqsUWpYFBVmXfmaynopx+ktypZk8tQbmV90jM7cTrat7br0reiu/Zrx3xfZeRpVSnSzAa1dmzvyxi/AtcfLn1whB8FyFXl48lzD5v+gaYMMLDlsbLqGKJPraMiXzHQK1NxJer/gfTcBM3wqUryE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iu090SAu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA19C32781;
+	Wed,  3 Jul 2024 10:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004947;
-	bh=TQRVVm2h3LgCHXwx+isHO29+glpX/AJJNG5612+vOrc=;
+	s=korg; t=1720004225;
+	bh=VQEBxE8Sxa/rL6+ZQOjr6Gipu0Y9L8uBO5dsRU/t1/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NK//VcrOVf3UIY2Ohul752kzyRK99GB673n1lihPecYe42qK17Tirl8lRBRcWi3Z4
-	 S4PApwTrUOJpYEs6D5fMmqP6+HwonF30UyrmjyJTcGuvJuSx1rM6IoFY6WUAEKyT/i
-	 SL2cOJIaXXM61I7Dy0jtH41S/M2rTNMeTZsHmWqI=
+	b=iu090SAuHDLBB9oW4zqaF8eOyJX8M3tLhvMXPsORqygs41ZRkucVaKGsKOr8coWMo
+	 AcLQdozZai77JGt7rgt5S83DNmAKa2RkaAHw6rI4lvm/qSEXFGs/Y8zyvSkUnI2vl7
+	 tNyeComy90iUs4ytAC0KfmgKDUlFao2jJ9twX/mY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
-	Huang-Huang Bao <i@eh5.me>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Naveen Naidu <naveennaidu479@gmail.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 209/290] pinctrl: rockchip: use dedicated pinctrl type for RK3328
+Subject: [PATCH 5.4 129/189] PCI: Add PCI_ERROR_RESPONSE and related definitions
 Date: Wed,  3 Jul 2024 12:39:50 +0200
-Message-ID: <20240703102912.054922076@linuxfoundation.org>
+Message-ID: <20240703102846.359094459@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang-Huang Bao <i@eh5.me>
+From: Naveen Naidu <naveennaidu479@gmail.com>
 
-[ Upstream commit 01b4b1d1cec48ef4c26616c2fc4600b2c9fec05a ]
+[ Upstream commit 57bdeef4716689d9b0e3571034d65cf420f6efcd ]
 
-rk3328_pin_ctrl uses type of RK3288 which has a hack in
-rockchip_pinctrl_suspend and rockchip_pinctrl_resume to restore GPIO6-C6
-at assume, the hack is not applicable to RK3328 as GPIO6 is not even
-exist in it. So use a dedicated pinctrl type to skip this hack.
+A config or MMIO read from a PCI device that doesn't exist or doesn't
+respond causes a PCI error. There's no real data to return to satisfy the
+CPU read, so most hardware fabricates ~0 data.
 
-Fixes: 3818e4a7678e ("pinctrl: rockchip: Add rk3328 pinctrl support")
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Huang-Huang Bao <i@eh5.me>
-Link: https://lore.kernel.org/r/20240606125755.53778-4-i@eh5.me
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Add a PCI_ERROR_RESPONSE definition for that and use it where appropriate
+to make these checks consistent and easier to find.
+
+Also add helper definitions PCI_SET_ERROR_RESPONSE() and
+PCI_POSSIBLE_ERROR() to make the code more readable.
+
+Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://lore.kernel.org/r/55563bf4dfc5d3fdc96695373c659d099bf175b1.1637243717.git.naveennaidu479@gmail.com
+Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Pali Rohár <pali@kernel.org>
+Stable-dep-of: c625dabbf1c4 ("x86/amd_nb: Check for invalid SMN reads")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-rockchip.c | 5 ++++-
- drivers/pinctrl/pinctrl-rockchip.h | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ include/linux/pci.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
-index 25716bdf5bbe5..7637b25c6edf7 100644
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -1864,6 +1864,7 @@ static int rockchip_get_pull(struct rockchip_pin_bank *bank, int pin_num)
- 	case RK3188:
- 	case RK3288:
- 	case RK3308:
-+	case RK3328:
- 	case RK3368:
- 	case RK3399:
- 	case RK3568:
-@@ -1918,6 +1919,7 @@ static int rockchip_set_pull(struct rockchip_pin_bank *bank,
- 	case RK3188:
- 	case RK3288:
- 	case RK3308:
-+	case RK3328:
- 	case RK3368:
- 	case RK3399:
- 	case RK3568:
-@@ -2239,6 +2241,7 @@ static bool rockchip_pinconf_pull_valid(struct rockchip_pin_ctrl *ctrl,
- 	case RK3188:
- 	case RK3288:
- 	case RK3308:
-+	case RK3328:
- 	case RK3368:
- 	case RK3399:
- 	case RK3568:
-@@ -3717,7 +3720,7 @@ static struct rockchip_pin_ctrl rk3328_pin_ctrl = {
- 		.pin_banks		= rk3328_pin_banks,
- 		.nr_banks		= ARRAY_SIZE(rk3328_pin_banks),
- 		.label			= "RK3328-GPIO",
--		.type			= RK3288,
-+		.type			= RK3328,
- 		.grf_mux_offset		= 0x0,
- 		.iomux_recalced		= rk3328_mux_recalced_data,
- 		.niomux_recalced	= ARRAY_SIZE(rk3328_mux_recalced_data),
-diff --git a/drivers/pinctrl/pinctrl-rockchip.h b/drivers/pinctrl/pinctrl-rockchip.h
-index dba9e95406337..7263db68d0efe 100644
---- a/drivers/pinctrl/pinctrl-rockchip.h
-+++ b/drivers/pinctrl/pinctrl-rockchip.h
-@@ -27,6 +27,7 @@ enum rockchip_pinctrl_type {
- 	RK3188,
- 	RK3288,
- 	RK3308,
-+	RK3328,
- 	RK3368,
- 	RK3399,
- 	RK3568,
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 1cd5caa567cf5..7edc6de9e88c2 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -129,6 +129,15 @@ enum pci_interrupt_pin {
+ /* The number of legacy PCI INTx interrupts */
+ #define PCI_NUM_INTX	4
+ 
++/*
++ * Reading from a device that doesn't respond typically returns ~0.  A
++ * successful read from a device may also return ~0, so you need additional
++ * information to reliably identify errors.
++ */
++#define PCI_ERROR_RESPONSE		(~0ULL)
++#define PCI_SET_ERROR_RESPONSE(val)	(*(val) = ((typeof(*(val))) PCI_ERROR_RESPONSE))
++#define PCI_POSSIBLE_ERROR(val)		((val) == ((typeof(val)) PCI_ERROR_RESPONSE))
++
+ /*
+  * pci_power_t values must match the bits in the Capabilities PME_Support
+  * and Control/Status PowerState fields in the Power Management capability.
 -- 
 2.43.0
 
