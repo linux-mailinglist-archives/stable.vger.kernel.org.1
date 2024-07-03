@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1E1925D77
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CBC4925C2F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:15:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14D421F2501D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B50D629A502
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F4013A27E;
-	Wed,  3 Jul 2024 11:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19AD317966D;
+	Wed,  3 Jul 2024 11:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+i9qVun"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="COKBGojV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A51183090;
-	Wed,  3 Jul 2024 11:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBB4178CFA;
+	Wed,  3 Jul 2024 11:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005586; cv=none; b=sgM0ZUCsVcF5+BBvQM3FY7YKZACJSk8Zu5R3ErkvqA3txZB7fkpyaxNnlwkINb8uL9f5rs5LzHTPsAeYZoG1bu+OUYOnzU1WV2M3sLDQeFeSlT+rZp/K1hE8lAI3TLt891fEi5v/AhF0nt5ITnACxQ1gH3gZxluqLwiMCanWD54=
+	t=1720004572; cv=none; b=UJDsR7tyWJvyjcBDrUcwG+HM+knYsMuZvObHwl441UwQII9cvglFL7F9SVI3V0UMlWaFVZXasUrK6z3gjlL+vfirzOjCFo47EQ9MSCC6Uqkyk88yfUHtidYIBGoANLOBMV3Ga+k6J7T041CPbQR8hKM8mlKOGaRLKJ9HTksWHgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005586; c=relaxed/simple;
-	bh=/orOn/PN+FyRh1LHPf3ZjKCP8QmUq5S3HjTGxFuxNV0=;
+	s=arc-20240116; t=1720004572; c=relaxed/simple;
+	bh=cwX9FXjtTpNlOgvtE0rIV7HmR2PIRMSgwlxAr3ih3Cg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tBiTakSvQKm1BLZnrz/BVXEJIeZWHKWLz33hacAMx7LC3a5DCwjrO/K+JagqZ1NWamGfKh83aiTQ3D91PggiweXFAg/4Gg1oATDl2EkMX6Fv0bk4XRDEI8aBkzmuUfcjIjJqxWejbS2C9LIVKhE3b2P564TQTgu7UJ9eSZ4VJUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+i9qVun; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B65C2BD10;
-	Wed,  3 Jul 2024 11:19:45 +0000 (UTC)
+	 MIME-Version; b=Z52LW+86INP19dt1nuKUyKx/WRlgr92G0lQdDSaLJ/DsLzJFAZgdtIDsFg2jeNSLCXSUvxwVt5KX9EOcRC4RCE9AJ3sBSHGdYIQuZVnRefkle88660zQS1ki/wybZDPGUd6FdLIrxC/1efeIR8BP4VKkTI+eCqRlkYLhHgbJEec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=COKBGojV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53C5BC4AF0B;
+	Wed,  3 Jul 2024 11:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005585;
-	bh=/orOn/PN+FyRh1LHPf3ZjKCP8QmUq5S3HjTGxFuxNV0=;
+	s=korg; t=1720004572;
+	bh=cwX9FXjtTpNlOgvtE0rIV7HmR2PIRMSgwlxAr3ih3Cg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G+i9qVunS5fuOqpYiopoTpXjoOepZAO3jjZV4I+QvQRnMgH66x7m0GB1508Nsir9v
-	 yC17/AjAAIZa6+rPC1azIY1Mg5FfQy7T89anbgPlT24DowIZsHzWDoWFjSYYA3+9Xo
-	 61U/rT/eMlEv0GNhGtharftoDUCpbEEsUTKF6+vM=
+	b=COKBGojVkZJ+sbqlL90OWWC1Cy8Zx73p9aTUBb7JA11ysXAp/eRQlcBuvUBFa90Df
+	 xhYPMWRBdlldA14rMQ9Gwtz5ldgSkWYQ11eICKLkFVGi9JuDKjk0UJH20YhGkwN1bL
+	 Lk9oSOG3a7YJClaf9E4faXGtHglRnKRmDiW4TFhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	stable@kernel.org
-Subject: [PATCH 5.15 130/356] intel_th: pci: Add Granite Rapids SOC support
+	stable@kernel.org,
+	Nuno Sa <nuno.sa@analog.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.10 085/290] dmaengine: axi-dmac: fix possible race in remove()
 Date: Wed,  3 Jul 2024 12:37:46 +0200
-Message-ID: <20240703102918.017341011@linuxfoundation.org>
+Message-ID: <20240703102907.405338379@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-commit 854afe461b009801a171b3a49c5f75ea43e4c04c upstream.
+commit 1bc31444209c8efae98cb78818131950d9a6f4d6 upstream.
 
-Add support for the Trace Hub in Granite Rapids SOC.
+We need to first free the IRQ before calling of_dma_controller_free().
+Otherwise we could get an interrupt and schedule a tasklet while
+removing the DMA controller.
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: 0e3b67b348b8 ("dmaengine: Add support for the Analog Devices AXI-DMAC DMA controller")
 Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20240429130119.1518073-12-alexander.shishkin@linux.intel.com
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240328-axi-dmac-devm-probe-v3-1-523c0176df70@analog.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/intel_th/pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/dma/dma-axi-dmac.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwtracing/intel_th/pci.c
-+++ b/drivers/hwtracing/intel_th/pci.c
-@@ -310,6 +310,11 @@ static const struct pci_device_id intel_
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
- 	},
- 	{
-+		/* Granite Rapids SOC */
-+		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x3256),
-+		.driver_data = (kernel_ulong_t)&intel_th_2x,
-+	},
-+	{
- 		/* Alder Lake CPU */
- 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+--- a/drivers/dma/dma-axi-dmac.c
++++ b/drivers/dma/dma-axi-dmac.c
+@@ -1020,8 +1020,8 @@ static int axi_dmac_remove(struct platfo
+ {
+ 	struct axi_dmac *dmac = platform_get_drvdata(pdev);
+ 
+-	of_dma_controller_free(pdev->dev.of_node);
+ 	free_irq(dmac->irq, dmac);
++	of_dma_controller_free(pdev->dev.of_node);
+ 	tasklet_kill(&dmac->chan.vchan.task);
+ 	dma_async_device_unregister(&dmac->dma_dev);
+ 	clk_disable_unprepare(dmac->clk);
 
 
 
