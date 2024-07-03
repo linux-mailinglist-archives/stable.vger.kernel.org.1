@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-57494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41376925CB7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00AEC925E3D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 712131C20B4B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32FF91C22FC2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C001891D5;
-	Wed,  3 Jul 2024 11:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED49C17C9E1;
+	Wed,  3 Jul 2024 11:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deWAeEQN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BqvsoZqy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0445316DEAC;
-	Wed,  3 Jul 2024 11:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E3F17C7BA;
+	Wed,  3 Jul 2024 11:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005052; cv=none; b=Fw4ha640TWfvvXmcl4Z9de0STXUK7iKRj79O0kSTWZYF+fTo8WhlWQ9jeUA5fAxBomPn6OaZzDSXfAdLqI4YRzIOOsr6EI/97bLBRC7ri1Rjrx83TTx3ioKxEBk3ikLHgQck1oCa0Kymc6ap1ZvJELyjCz6TabEG3v3IdU4Edn4=
+	t=1720006063; cv=none; b=q2ddx4K//2nJSmkRJd2uLfEW1XCOmVwRl+9xbKnLWULapBq2vSML84MfbuEoWVWWt3vdXFaW98L1s2znwtxQwNTk/6OPX339EG6m/xV4UP2dnc3Sr2xQP/Lb0shcRAmd9sgrGzfgoacDnyqIhEf7ATJ19WwWkP6isBywBhJsDk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005052; c=relaxed/simple;
-	bh=UJ+wiOksZUp6tNDCjRssM3ZpN3kAluKxAKRb+JRoWbM=;
+	s=arc-20240116; t=1720006063; c=relaxed/simple;
+	bh=CZ4XQPEdlcu0v6nmGW6+nAdjQtBqaAf6u4a1SBAdWiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EqmCw+Xwozz8T//vzHQ052dVYLpHXAzJ11SKlMORUgzbwWUwB4GL/lkPIXGq9SvHCme3hfDAqCI9DuLrZzrIJm13cEcmwnXl7I7+yiE2B/KMrRQo0xRWRvI/N1SBBTks6igt5wGd14gS62Pr47LVz8CkAT0dlhWh4N+FP5IGIcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deWAeEQN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775DCC2BD10;
-	Wed,  3 Jul 2024 11:10:51 +0000 (UTC)
+	 MIME-Version; b=hPN7+WbMlwrzp61yXTYfmTzMbv3QDWMXgkj4Xl5DGE9tz/gYG9gwIm+L8LpKh13tHO99aoIPRUgPpf9y6hvPwydLth9/9I4hg9hq00T8sN2AI9BjIWe3PkFm2dm0uBTnft9uYh0Z6hUiuZZgr407OyBgedm8nbrSiRlpCPqV7Eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BqvsoZqy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A29C2BD10;
+	Wed,  3 Jul 2024 11:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005051;
-	bh=UJ+wiOksZUp6tNDCjRssM3ZpN3kAluKxAKRb+JRoWbM=;
+	s=korg; t=1720006063;
+	bh=CZ4XQPEdlcu0v6nmGW6+nAdjQtBqaAf6u4a1SBAdWiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=deWAeEQN32/QLbGGc0zTdiKmEz1OhFlXkAPL28uL2ImUzTuWgHI4Mm1R6Kf8bJbfS
-	 GHhsiiq/21JeeTXE0MMRswGV+sO/OKDfOPm1C1gMoVmM3HGlSKS8i9aeyAf5nFPuBx
-	 0hSODsI88eZxhThfzbcAYctOb2YPl69q1TB9xSvE=
+	b=BqvsoZqyXhQJlaeppszCFIOIX5fPEnXr8ZnU0HFGeQqAKr7vgknaaWtD361n7pP0I
+	 dmXPN1LTFaXz8lYB/YRZj1kV3Q0/K1PbZ/CKmVhPSjhVeCqYvAG9wW494jdqW2xkV6
+	 0erDMhJpYyX+96J9wL2OHQ4hb4hAzWSDhjfg5TJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 244/290] mmc: sdhci-pci: Convert PCIBIOS_* return codes to errnos
+	David Ahern <dsahern@kernel.org>,
+	Anton Protopopov <aspsk@isovalent.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 289/356] bpf: Add a check for struct bpf_fib_lookup size
 Date: Wed,  3 Jul 2024 12:40:25 +0200
-Message-ID: <20240703102913.369061724@linuxfoundation.org>
+Message-ID: <20240703102924.053298760@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Anton Protopopov <aspsk@isovalent.com>
 
-commit ebc4fc34eae8ddfbef49f2bdaced1bf4167ef80d upstream.
+[ Upstream commit 59b418c7063d30e0a3e1f592d47df096db83185c ]
 
-jmicron_pmos() and sdhci_pci_probe() use pci_{read,write}_config_byte()
-that return PCIBIOS_* codes. The return code is then returned as is by
-jmicron_probe() and sdhci_pci_probe(). Similarly, the return code is
-also returned as is from jmicron_resume(). Both probe and resume
-functions should return normal errnos.
+The struct bpf_fib_lookup should not grow outside of its 64 bytes.
+Add a static assert to validate this.
 
-Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
-errno before returning them the fix these issues.
-
-Fixes: 7582041ff3d4 ("mmc: sdhci-pci: fix simple_return.cocci warnings")
-Fixes: 45211e215984 ("sdhci: toggle JMicron PMOS setting")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240527132443.14038-1-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240326101742.17421-4-aspsk@isovalent.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-pci-core.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/core/filter.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/mmc/host/sdhci-pci-core.c
-+++ b/drivers/mmc/host/sdhci-pci-core.c
-@@ -1380,7 +1380,7 @@ static int jmicron_pmos(struct sdhci_pci
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 47eb1bd47aa6e..a873c8fd51b67 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -79,6 +79,9 @@
+ #include <net/tls.h>
+ #include <net/xdp.h>
  
- 	ret = pci_read_config_byte(chip->pdev, 0xAE, &scratch);
- 	if (ret)
--		return ret;
-+		goto fail;
- 
- 	/*
- 	 * Turn PMOS on [bit 0], set over current detection to 2.4 V
-@@ -1391,7 +1391,10 @@ static int jmicron_pmos(struct sdhci_pci
- 	else
- 		scratch &= ~0x47;
- 
--	return pci_write_config_byte(chip->pdev, 0xAE, scratch);
-+	ret = pci_write_config_byte(chip->pdev, 0xAE, scratch);
++/* Keep the struct bpf_fib_lookup small so that it fits into a cacheline */
++static_assert(sizeof(struct bpf_fib_lookup) == 64, "struct bpf_fib_lookup size check");
 +
-+fail:
-+	return pcibios_err_to_errno(ret);
- }
+ static const struct bpf_func_proto *
+ bpf_sk_base_func_proto(enum bpf_func_id func_id);
  
- static int jmicron_probe(struct sdhci_pci_chip *chip)
-@@ -2308,7 +2311,7 @@ static int sdhci_pci_probe(struct pci_de
- 
- 	ret = pci_read_config_byte(pdev, PCI_SLOT_INFO, &slots);
- 	if (ret)
--		return ret;
-+		return pcibios_err_to_errno(ret);
- 
- 	slots = PCI_SLOT_INFO_SLOTS(slots) + 1;
- 	dev_dbg(&pdev->dev, "found %d slot(s)\n", slots);
-@@ -2317,7 +2320,7 @@ static int sdhci_pci_probe(struct pci_de
- 
- 	ret = pci_read_config_byte(pdev, PCI_SLOT_INFO, &first_bar);
- 	if (ret)
--		return ret;
-+		return pcibios_err_to_errno(ret);
- 
- 	first_bar &= PCI_SLOT_INFO_FIRST_BAR_MASK;
- 
+-- 
+2.43.0
+
 
 
 
