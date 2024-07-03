@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-57785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B257C925E04
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:33:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED951925A88
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:01:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4E911C23373
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:33:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C6E0299EE0
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C4417164D;
-	Wed,  3 Jul 2024 11:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895C81836C2;
+	Wed,  3 Jul 2024 10:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PyDfdZmQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnMdWUjD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67A8171095;
-	Wed,  3 Jul 2024 11:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46496136E2A;
+	Wed,  3 Jul 2024 10:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005927; cv=none; b=reT3pP12Vys3YJI86QfUfXj6YDdvy7Slbd43E1Rmo+Gna9tksxcIHrz9Rfd5jOUMqsRSFrO75kSwVzrwFfDv06Ek/xvgOeddeMzJqEpQruWrqU3WlnT0dpY+ux1mZ86vMuQddncfCjr+IwRMJoZGKBbAQcBFAk/SsRmqZbXcPms=
+	t=1720003535; cv=none; b=fbYaO9V9XQd0UXYfns9hBtItnKXiQLhUFTIAbR1R553CHTyZizI8gFOFdtsqYv+g1z0Gy4Jyc7xFWlw1uu17rqH00SsuCGCohN9M5Dgxp8YJcLgvFY4fbp92vW6XsWokmLyDAqRmaS0JBbEXRJ1bw8lfv4EIRvlHopbRMprMB1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005927; c=relaxed/simple;
-	bh=9J4mZ66D5dh0eufQ+owZHqPvmj+8Y42nzivjMl4f9LA=;
+	s=arc-20240116; t=1720003535; c=relaxed/simple;
+	bh=/Zpc29smSb9LjcLTuKi6pLVqS9wmKvnjrRhfmc+dh5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qo9iJb3q/LTHJEneK3hd9Ew0900vTskSo7ZJpwEomWOYcnbfJl3XvBd6xJQZRVJ2F/GOkT7qtTuBTpjeDq2V/Aziq7hMzVkgCFGqUUofjWcoI+uVjFGO4tnMPKeNDWYGv2y7y7Uf7WGBA6e//Zo2OOaQP5rpX+gBW5k3IvW8q40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PyDfdZmQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D52C2BD10;
-	Wed,  3 Jul 2024 11:25:26 +0000 (UTC)
+	 MIME-Version; b=XOQghAF5tLju4HeLtHlm5pvvXBlDZszepeFv3M1tScWv+pLuoXfiDACLuWFZ7F+L4cc35kpsB3Q3HkDE2fnBC52g05tWCQHuCQJBM8V+0hKt35DzgJ3fgVcJHp4D01H/8OK5KXxbgzTNIFNEpGE51AC7ItjNPyWTge/kvfOrAGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnMdWUjD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C269EC2BD10;
+	Wed,  3 Jul 2024 10:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005927;
-	bh=9J4mZ66D5dh0eufQ+owZHqPvmj+8Y42nzivjMl4f9LA=;
+	s=korg; t=1720003535;
+	bh=/Zpc29smSb9LjcLTuKi6pLVqS9wmKvnjrRhfmc+dh5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PyDfdZmQN06ljtKSXlm2gKpkyJRAt0w4F7S3GgicTHEn4vj1zVhd4pL6DgqLqaJ5E
-	 pNPqD2V5XRBuNFBe+fsqwIWmb4kSNCLhmDcRUMzW5x9D74zob/O7pc91G4/fEgFQrV
-	 eM6AceNeZk3t2qNOPicjZWch0Tlm6smrIscjavYE=
+	b=hnMdWUjDTV4VUxxoHCwspMRU2KOIYmbkBk4pd2Iaahv8+NVWB3z2aQoPuCYdjsM9g
+	 1yLwTdSbBg+Sa4JmMt76Re/uV04JgyVNTl5egHo6NFwhL3FK0OEwUlyZXo22wuVRIl
+	 hVd4vBXgOIMbJu858lX/C5vJkQozbitpVB3S3y04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 241/356] tracing: Add MODULE_DESCRIPTION() to preemptirq_delay_test
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 4.19 080/139] drm/radeon: fix UBSAN warning in kv_dpm.c
 Date: Wed,  3 Jul 2024 12:39:37 +0200
-Message-ID: <20240703102922.231800953@linuxfoundation.org>
+Message-ID: <20240703102833.462116119@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 23748e3e0fbfe471eff5ce439921629f6a427828 ]
+commit a498df5421fd737d11bfd152428ba6b1c8538321 upstream.
 
-Fix the 'make W=1' warning:
+Adds bounds check for sumo_vid_mapping_entry.
 
-WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/trace/preemptirq_delay_test.o
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240518-md-preemptirq_delay_test-v1-1-387d11b30d85@quicinc.com
-
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: f96e8577da10 ("lib: Add module for testing preemptoff/irqsoff latency tracers")
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/preemptirq_delay_test.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/radeon/sumo_dpm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/trace/preemptirq_delay_test.c b/kernel/trace/preemptirq_delay_test.c
-index 8c4ffd0761624..cb0871fbdb07f 100644
---- a/kernel/trace/preemptirq_delay_test.c
-+++ b/kernel/trace/preemptirq_delay_test.c
-@@ -215,4 +215,5 @@ static void __exit preemptirq_delay_exit(void)
+--- a/drivers/gpu/drm/radeon/sumo_dpm.c
++++ b/drivers/gpu/drm/radeon/sumo_dpm.c
+@@ -1622,6 +1622,8 @@ void sumo_construct_vid_mapping_table(st
  
- module_init(preemptirq_delay_init)
- module_exit(preemptirq_delay_exit)
-+MODULE_DESCRIPTION("Preempt / IRQ disable delay thread to test latency tracers");
- MODULE_LICENSE("GPL v2");
--- 
-2.43.0
-
+ 	for (i = 0; i < SUMO_MAX_HARDWARE_POWERLEVELS; i++) {
+ 		if (table[i].ulSupportedSCLK != 0) {
++			if (table[i].usVoltageIndex >= SUMO_MAX_NUMBER_VOLTAGES)
++				continue;
+ 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_7bit =
+ 				table[i].usVoltageID;
+ 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_2bit =
 
 
 
