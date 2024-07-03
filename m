@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-57742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F3E925F14
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:49:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 465E9925F11
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FB6DB2A0FD
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1C8DB339B4
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF085194133;
-	Wed,  3 Jul 2024 11:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 266A817DA3B;
+	Wed,  3 Jul 2024 10:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doStivhd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hGN1vkZ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBD0186E5A;
-	Wed,  3 Jul 2024 11:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA3E17C238;
+	Wed,  3 Jul 2024 10:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005796; cv=none; b=BwisX9iXScmN5cg6SUKVR6qUt0igGOOuupMD9T32uDLkDE2GirVk74iB27yjfxaLZCQZV+L8GRdDgPQ48UKsHbcO7TJ0kJEkjaQWOkUGpBFFFj5mSrQZ7nRBNj3MmZTmgG36iYRl89jItxq0C5tT5EMf+qHJScVtANXt8agd1gw=
+	t=1720003947; cv=none; b=u+8/HsVZJTP5ECVMazQ5yYzpLMgbQUtpTANotbKZDtkMUsc9HYn4h2GRfS3Kuc4yu7JPFr/9NTadRG+mXkkJw71h72Xhva82NwPWa/QAJLjczZ7J58dqDAbYWaFMc6ghWttk0V386r6InyKlArbs+tqfx+g2TJ1/gqJGNC9gbro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005796; c=relaxed/simple;
-	bh=gxRj6Zwb1XP08DoomoK6boMCTgxGLt5AiAejFTMJsHI=;
+	s=arc-20240116; t=1720003947; c=relaxed/simple;
+	bh=XA5+m9nEUgSCW74yVVmTlpVZIy9+dDyppK+z2jwXzFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cZtlS0SMxMFwpx7MVTAGSSy5cUZEm2yXw3ZfIFGSEaNyi4cTIFDDW8Tj92gXUG7f1BskB6lMQH5PfJ7aVVNgzX3wSo8c4KIoGtVPKp7PyGT5scmkF+QOixoxdIRmmqAL1kAp/iuYjY3klJbiV/d6SuMMI8qeB5uoFX5/UCW4IiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doStivhd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F75C2BD10;
-	Wed,  3 Jul 2024 11:23:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JhV41mXz96noh2vTuRDcKwUWesS6FyaeyB6XU5IgmtbbdJC0nI0oXGV1CZk9kvt4nKswcc5l2f6mAgyLYSUtVNCE4VlF3r7kQ/fpvGUVVBW+p0MEqye3DJ4GKDn0hLavep/sHlsbfxTjP20q02uv/V1gq7aws3xmClebqaLajLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hGN1vkZ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E51C2BD10;
+	Wed,  3 Jul 2024 10:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005796;
-	bh=gxRj6Zwb1XP08DoomoK6boMCTgxGLt5AiAejFTMJsHI=;
+	s=korg; t=1720003947;
+	bh=XA5+m9nEUgSCW74yVVmTlpVZIy9+dDyppK+z2jwXzFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=doStivhdoN8C0WJS/TrAzt3s/P3WQ+aCaGYShs4UJcwV6uhsc1XStcse5pbShgLdp
-	 RYoY220y7p4NV5n7PwvnsPWoZZtQ3eVK9dX5HhwigG7G/7phg0u3KW1DJT9ATxdePt
-	 ZAYvhB0nOd2Cc0YEJSiWXNSimRphmqNhT/u/lcK8=
+	b=hGN1vkZ4NN+1R1JpvCEiyYmBCxkwEH/24jxGlaD4f1ljXkyURNad0SP8o6NwSzsGR
+	 1AEPRkA7nHZSx0/eU93FIXTKOV32tI3aC2IrXbJebeGKw8zpxbYgE3vtwNiauhFJ8n
+	 av9FzKNuZ9+S9jAeozMqEiCrOMcMvLWYH7I3j5BA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 199/356] net: stmmac: No need to calculate speed divider when offload is disabled
+	Rick Wertenbroek <rick.wertenbroek@gmail.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 5.4 074/189] PCI: rockchip-ep: Remove wrong mask on subsys_vendor_id
 Date: Wed,  3 Jul 2024 12:38:55 +0200
-Message-ID: <20240703102920.633080227@linuxfoundation.org>
+Message-ID: <20240703102844.300569795@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
 
-[ Upstream commit b8c43360f6e424131fa81d3ba8792ad8ff25a09e ]
+commit 2dba285caba53f309d6060fca911b43d63f41697 upstream.
 
-commit be27b8965297 ("net: stmmac: replace priv->speed with
-the portTransmitRate from the tc-cbs parameters") introduced
-a problem. When deleting, it prompts "Invalid portTransmitRate
-0 (idleSlope - sendSlope)" and exits. Add judgment on cbs.enable.
-Only when offload is enabled, speed divider needs to be calculated.
+Remove wrong mask on subsys_vendor_id. Both the Vendor ID and Subsystem
+Vendor ID are u16 variables and are written to a u32 register of the
+controller. The Subsystem Vendor ID was always 0 because the u16 value
+was masked incorrectly with GENMASK(31,16) resulting in all lower 16
+bits being set to 0 prior to the shift.
 
-Fixes: be27b8965297 ("net: stmmac: replace priv->speed with the portTransmitRate from the tc-cbs parameters")
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240617013922.1035854-1-xiaolei.wang@windriver.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Remove both masks as they are unnecessary and set the register correctly
+i.e., the lower 16-bits are the Vendor ID and the upper 16-bits are the
+Subsystem Vendor ID.
+
+This is documented in the RK3399 TRM section 17.6.7.1.17
+
+[kwilczynski: removed unnecesary newline]
+Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
+Link: https://lore.kernel.org/linux-pci/20240403144508.489835-1-rick.wertenbroek@gmail.com
+Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 40 ++++++++++---------
- 1 file changed, 22 insertions(+), 18 deletions(-)
+ drivers/pci/controller/pcie-rockchip-ep.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-index a9b5f5ad1bac4..b1a5a02bef08e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -356,24 +356,28 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
+--- a/drivers/pci/controller/pcie-rockchip-ep.c
++++ b/drivers/pci/controller/pcie-rockchip-ep.c
+@@ -130,10 +130,8 @@ static int rockchip_pcie_ep_write_header
  
- 	port_transmit_rate_kbps = qopt->idleslope - qopt->sendslope;
- 
--	/* Port Transmit Rate and Speed Divider */
--	switch (div_s64(port_transmit_rate_kbps, 1000)) {
--	case SPEED_10000:
--	case SPEED_5000:
--		ptr = 32;
--		break;
--	case SPEED_2500:
--	case SPEED_1000:
--		ptr = 8;
--		break;
--	case SPEED_100:
--		ptr = 4;
--		break;
--	default:
--		netdev_err(priv->dev,
--			   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
--			   port_transmit_rate_kbps);
--		return -EINVAL;
-+	if (qopt->enable) {
-+		/* Port Transmit Rate and Speed Divider */
-+		switch (div_s64(port_transmit_rate_kbps, 1000)) {
-+		case SPEED_10000:
-+		case SPEED_5000:
-+			ptr = 32;
-+			break;
-+		case SPEED_2500:
-+		case SPEED_1000:
-+			ptr = 8;
-+			break;
-+		case SPEED_100:
-+			ptr = 4;
-+			break;
-+		default:
-+			netdev_err(priv->dev,
-+				   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
-+				   port_transmit_rate_kbps);
-+			return -EINVAL;
-+		}
-+	} else {
-+		ptr = 0;
+ 	/* All functions share the same vendor ID with function 0 */
+ 	if (fn == 0) {
+-		u32 vid_regs = (hdr->vendorid & GENMASK(15, 0)) |
+-			       (hdr->subsys_vendor_id & GENMASK(31, 16)) << 16;
+-
+-		rockchip_pcie_write(rockchip, vid_regs,
++		rockchip_pcie_write(rockchip,
++				    hdr->vendorid | hdr->subsys_vendor_id << 16,
+ 				    PCIE_CORE_CONFIG_VENDOR);
  	}
  
- 	mode_to_use = priv->plat->tx_queues_cfg[queue].mode_to_use;
--- 
-2.43.0
-
 
 
 
