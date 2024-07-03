@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-57493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D908925DC6
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5780C925BCD
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:12:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B27D8B3BB21
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A2FC1C21449
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693931891D6;
-	Wed,  3 Jul 2024 11:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947A7194AC6;
+	Wed,  3 Jul 2024 10:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uchv6iYF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8zrmQay"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272661891B9;
-	Wed,  3 Jul 2024 11:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538FA1946A0;
+	Wed,  3 Jul 2024 10:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005049; cv=none; b=ioOoBl+d+AUq1ZFv57KXkKCepAyvljaT0TGP6t6U1rBN/IpRtDKZERK1jw1bqTZPNE/Y2S4WQ7pUY4HdSKqMZ1HWg6exjBOx4a9l2HnXxLz++fA+kCbP9RBxzrC6153EQaNTkS0PPsMeUQCdrf07zcxXeXhknaVmHiVXibfgO78=
+	t=1720004321; cv=none; b=XMLBiLCRcF+r+1bbUDsCHM9Rr9teovb+TiUhdWkz9Cbm5GGgRyLdDQGWQHk2JEAkQ/vk80ZyCIWYG96XbxNkmfhPrFqsP/rM6tGpTUh/bWyjkfCa7ukqCrzp3ATpLoQ8i5ZC1VEaExVx3StwfnVc4ODScY8GuwJ0ly/ioQAVb9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005049; c=relaxed/simple;
-	bh=nSnCfQfWCrj7MZdSlCI/fIUBurOwRf2yQ/OxJr+ZA8M=;
+	s=arc-20240116; t=1720004321; c=relaxed/simple;
+	bh=NsnQfjdYWRXGtFVKOVAAA8v5vtdnvDOcdwU+krxGl/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kwbDkceYhte+JYYfIh52Wp463GYFAN+SrJvHLzXBQ8Ly2+5A0UvOzXhjO3mDyvgTZoi8i74cjN1Z969IQ61OXldXntWeOuMqPdA5an+JE3hLvGC9e3XRmIEX61FYVqZF+eGyJUk+9Qe4BMpM+I1JPtT0AnOsp1s5YrbmvuRo6vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uchv6iYF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 422F8C2BD10;
-	Wed,  3 Jul 2024 11:10:48 +0000 (UTC)
+	 MIME-Version; b=P62R0HTJ8zCa14Gr2usGll5gpPI5z0b/UdgknxhaIOC2wg7HHisAhb9XSFTa7ky7OE1kZ9/7kiUhn5PWLC9+h7CRDasDjdiZjdELV1lYeQZnYbex15c6TTTR4ns/8dCqWaFrkX6p1j2AAcvZMznutGkVB5QdEvit7hvtN4kETvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8zrmQay; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB9DFC32781;
+	Wed,  3 Jul 2024 10:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005048;
-	bh=nSnCfQfWCrj7MZdSlCI/fIUBurOwRf2yQ/OxJr+ZA8M=;
+	s=korg; t=1720004321;
+	bh=NsnQfjdYWRXGtFVKOVAAA8v5vtdnvDOcdwU+krxGl/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uchv6iYFQMWFO3/6IzI9pv/fsSKfDgi1lrFcV6IMi1kwk8bXpCc3Mv+pj2X9o/58W
-	 4McDToXF4C/0Wa6dkjdguYcawfouQK8mVPGp3oVUEUwUAWdX1eaUL48XAgUWOxc0rZ
-	 jsMCHcTeiESWbZPHC7/QuFdexyILQpA9S3scx4XU=
+	b=W8zrmQayzGvPuYydgQeXdpLzvSzTtHOt3K6BSTHXIP1Yfd9goXmB9erUZ/KOCtKNF
+	 LIO2WnTxvZDy79Kmw1+bW3Wz6tjHOwZyFBLKwep9xUwQhePdUGA4N0xFiAWWRtCyCa
+	 h96Y8j4k7iJyG8jfSMBKqovAvO3pvnm9fbt099q4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 243/290] ocfs2: fix DIO failure due to insufficient transaction credits
-Date: Wed,  3 Jul 2024 12:40:24 +0200
-Message-ID: <20240703102913.331491963@linuxfoundation.org>
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.4 164/189] iio: chemical: bme680: Fix sensor data read operation
+Date: Wed,  3 Jul 2024 12:40:25 +0200
+Message-ID: <20240703102847.658629549@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,146 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-commit be346c1a6eeb49d8fda827d2a9522124c2f72f36 upstream.
+commit 4241665e6ea063a9c1d734de790121a71db763fc upstream.
 
-The code in ocfs2_dio_end_io_write() estimates number of necessary
-transaction credits using ocfs2_calc_extend_credits().  This however does
-not take into account that the IO could be arbitrarily large and can
-contain arbitrary number of extents.
+A read operation is happening as follows:
 
-Extent tree manipulations do often extend the current transaction but not
-in all of the cases.  For example if we have only single block extents in
-the tree, ocfs2_mark_extent_written() will end up calling
-ocfs2_replace_extent_rec() all the time and we will never extend the
-current transaction and eventually exhaust all the transaction credits if
-the IO contains many single block extents.  Once that happens a
-WARN_ON(jbd2_handle_buffer_credits(handle) <= 0) is triggered in
-jbd2_journal_dirty_metadata() and subsequently OCFS2 aborts in response to
-this error.  This was actually triggered by one of our customers on a
-heavily fragmented OCFS2 filesystem.
+a) Set sensor to forced mode
+b) Sensor measures values and update data registers and sleeps again
+c) Read data registers
 
-To fix the issue make sure the transaction always has enough credits for
-one extent insert before each call of ocfs2_mark_extent_written().
+In the current implementation the read operation happens immediately
+after the sensor is set to forced mode so the sensor does not have
+the time to update properly the registers. This leads to the following
+2 problems:
 
-Heming Zhao said:
+1) The first ever value which is read by the register is always wrong
+2) Every read operation, puts the register into forced mode and reads
+the data that were calculated in the previous conversion.
 
-------
-PANIC: "Kernel panic - not syncing: OCFS2: (device dm-1): panic forced after error"
+This behaviour was tested in 2 ways:
 
-PID: xxx  TASK: xxxx  CPU: 5  COMMAND: "SubmitThread-CA"
-  #0 machine_kexec at ffffffff8c069932
-  #1 __crash_kexec at ffffffff8c1338fa
-  #2 panic at ffffffff8c1d69b9
-  #3 ocfs2_handle_error at ffffffffc0c86c0c [ocfs2]
-  #4 __ocfs2_abort at ffffffffc0c88387 [ocfs2]
-  #5 ocfs2_journal_dirty at ffffffffc0c51e98 [ocfs2]
-  #6 ocfs2_split_extent at ffffffffc0c27ea3 [ocfs2]
-  #7 ocfs2_change_extent_flag at ffffffffc0c28053 [ocfs2]
-  #8 ocfs2_mark_extent_written at ffffffffc0c28347 [ocfs2]
-  #9 ocfs2_dio_end_io_write at ffffffffc0c2bef9 [ocfs2]
-#10 ocfs2_dio_end_io at ffffffffc0c2c0f5 [ocfs2]
-#11 dio_complete at ffffffff8c2b9fa7
-#12 do_blockdev_direct_IO at ffffffff8c2bc09f
-#13 ocfs2_direct_IO at ffffffffc0c2b653 [ocfs2]
-#14 generic_file_direct_write at ffffffff8c1dcf14
-#15 __generic_file_write_iter at ffffffff8c1dd07b
-#16 ocfs2_file_write_iter at ffffffffc0c49f1f [ocfs2]
-#17 aio_write at ffffffff8c2cc72e
-#18 kmem_cache_alloc at ffffffff8c248dde
-#19 do_io_submit at ffffffff8c2ccada
-#20 do_syscall_64 at ffffffff8c004984
-#21 entry_SYSCALL_64_after_hwframe at ffffffff8c8000ba
+1) The internal meas_status_0 register was read before and after every
+read operation in order to verify that the data were ready even before
+the register was set to forced mode and also to check that after the
+forced mode was set the new data were not yet ready.
 
-Link: https://lkml.kernel.org/r/20240617095543.6971-1-jack@suse.cz
-Link: https://lkml.kernel.org/r/20240614145243.8837-1-jack@suse.cz
-Fixes: c15471f79506 ("ocfs2: fix sparse file & data ordering issue in direct io")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+2) Physically changing the temperature and measuring the temperature
+
+This commit adds the waiting time in between the set of the forced mode
+and the read of the data. The function is taken from the Bosch BME68x
+Sensor API [1].
+
+[1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L490
+
+Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://lore.kernel.org/r/20240606212313.207550-5-vassilisamir@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/aops.c        |    5 +++++
- fs/ocfs2/journal.c     |   17 +++++++++++++++++
- fs/ocfs2/journal.h     |    2 ++
- fs/ocfs2/ocfs2_trace.h |    2 ++
- 4 files changed, 26 insertions(+)
+ drivers/iio/chemical/bme680.h      |    2 +
+ drivers/iio/chemical/bme680_core.c |   46 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 48 insertions(+)
 
---- a/fs/ocfs2/aops.c
-+++ b/fs/ocfs2/aops.c
-@@ -2373,6 +2373,11 @@ static int ocfs2_dio_end_io_write(struct
- 	}
+--- a/drivers/iio/chemical/bme680.h
++++ b/drivers/iio/chemical/bme680.h
+@@ -54,7 +54,9 @@
+ #define   BME680_NB_CONV_MASK			GENMASK(3, 0)
  
- 	list_for_each_entry(ue, &dwc->dw_zero_list, ue_node) {
-+		ret = ocfs2_assure_trans_credits(handle, credits);
-+		if (ret < 0) {
-+			mlog_errno(ret);
-+			break;
-+		}
- 		ret = ocfs2_mark_extent_written(inode, &et, handle,
- 						ue->ue_cpos, 1,
- 						ue->ue_phys,
---- a/fs/ocfs2/journal.c
-+++ b/fs/ocfs2/journal.c
-@@ -450,6 +450,23 @@ bail:
+ #define BME680_REG_MEAS_STAT_0			0x1D
++#define   BME680_NEW_DATA_BIT			BIT(7)
+ #define   BME680_GAS_MEAS_BIT			BIT(6)
++#define   BME680_MEAS_BIT			BIT(5)
+ 
+ /* Calibration Parameters */
+ #define BME680_T2_LSB_REG	0x8A
+--- a/drivers/iio/chemical/bme680_core.c
++++ b/drivers/iio/chemical/bme680_core.c
+@@ -10,6 +10,7 @@
+  */
+ #include <linux/acpi.h>
+ #include <linux/bitfield.h>
++#include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/module.h>
+ #include <linux/log2.h>
+@@ -524,6 +525,43 @@ static u8 bme680_oversampling_to_reg(u8
+ 	return ilog2(val) + 1;
  }
  
- /*
-+ * Make sure handle has at least 'nblocks' credits available. If it does not
-+ * have that many credits available, we will try to extend the handle to have
-+ * enough credits. If that fails, we will restart transaction to have enough
-+ * credits. Similar notes regarding data consistency and locking implications
-+ * as for ocfs2_extend_trans() apply here.
++/*
++ * Taken from Bosch BME680 API:
++ * https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L490
 + */
-+int ocfs2_assure_trans_credits(handle_t *handle, int nblocks)
++static int bme680_wait_for_eoc(struct bme680_data *data)
 +{
-+	int old_nblks = jbd2_handle_buffer_credits(handle);
++	struct device *dev = regmap_get_device(data->regmap);
++	unsigned int check;
++	int ret;
++	/*
++	 * (Sum of oversampling ratios * time per oversampling) +
++	 * TPH measurement + gas measurement + wait transition from forced mode
++	 * + heater duration
++	 */
++	int wait_eoc_us = ((data->oversampling_temp + data->oversampling_press +
++			   data->oversampling_humid) * 1936) + (477 * 4) +
++			   (477 * 5) + 1000 + (data->heater_dur * 1000);
 +
-+	trace_ocfs2_assure_trans_credits(old_nblks);
-+	if (old_nblks >= nblocks)
-+		return 0;
-+	return ocfs2_extend_trans(handle, nblocks - old_nblks);
++	usleep_range(wait_eoc_us, wait_eoc_us + 100);
++
++	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &check);
++	if (ret) {
++		dev_err(dev, "failed to read measurement status register.\n");
++		return ret;
++	}
++	if (check & BME680_MEAS_BIT) {
++		dev_err(dev, "Device measurement cycle incomplete.\n");
++		return -EBUSY;
++	}
++	if (!(check & BME680_NEW_DATA_BIT)) {
++		dev_err(dev, "No new data available from the device.\n");
++		return -ENODATA;
++	}
++
++	return 0;
 +}
 +
-+/*
-  * If we have fewer than thresh credits, extend by OCFS2_MAX_TRANS_DATA.
-  * If that fails, restart the transaction & regain write access for the
-  * buffer head which is used for metadata modifications.
---- a/fs/ocfs2/journal.h
-+++ b/fs/ocfs2/journal.h
-@@ -244,6 +244,8 @@ handle_t		    *ocfs2_start_trans(struct
- int			     ocfs2_commit_trans(struct ocfs2_super *osb,
- 						handle_t *handle);
- int			     ocfs2_extend_trans(handle_t *handle, int nblocks);
-+int			     ocfs2_assure_trans_credits(handle_t *handle,
-+						int nblocks);
- int			     ocfs2_allocate_extend_trans(handle_t *handle,
- 						int thresh);
+ static int bme680_chip_config(struct bme680_data *data)
+ {
+ 	struct device *dev = regmap_get_device(data->regmap);
+@@ -614,6 +652,10 @@ static int bme680_read_temp(struct bme68
+ 	if (ret < 0)
+ 		return ret;
  
---- a/fs/ocfs2/ocfs2_trace.h
-+++ b/fs/ocfs2/ocfs2_trace.h
-@@ -2578,6 +2578,8 @@ DEFINE_OCFS2_ULL_UINT_EVENT(ocfs2_commit
- 
- DEFINE_OCFS2_INT_INT_EVENT(ocfs2_extend_trans);
- 
-+DEFINE_OCFS2_INT_EVENT(ocfs2_assure_trans_credits);
++	ret = bme680_wait_for_eoc(data);
++	if (ret)
++		return ret;
 +
- DEFINE_OCFS2_INT_EVENT(ocfs2_extend_trans_restart);
+ 	ret = regmap_bulk_read(data->regmap, BME680_REG_TEMP_MSB,
+ 			       (u8 *) &tmp, 3);
+ 	if (ret < 0) {
+@@ -730,6 +772,10 @@ static int bme680_read_gas(struct bme680
+ 	if (ret < 0)
+ 		return ret;
  
- DEFINE_OCFS2_INT_INT_EVENT(ocfs2_allocate_extend_trans);
++	ret = bme680_wait_for_eoc(data);
++	if (ret)
++		return ret;
++
+ 	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &check);
+ 	if (check & BME680_GAS_MEAS_BIT) {
+ 		dev_err(dev, "gas measurement incomplete\n");
 
 
 
