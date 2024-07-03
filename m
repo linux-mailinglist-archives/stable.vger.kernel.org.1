@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-57180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 676CF925B55
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:08:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFEDB925C98
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:20:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E31C928884B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:07:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81B432C39BC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:20:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EACE919CCF5;
-	Wed,  3 Jul 2024 10:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E591174ECD;
+	Wed,  3 Jul 2024 11:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rGYxhygh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gfym+0lx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A948A19B5A3;
-	Wed,  3 Jul 2024 10:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C135B136E2A;
+	Wed,  3 Jul 2024 11:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004095; cv=none; b=jTJ3CBUdBm2WI0xxHqC6n9rAd4DTHY8/oX4NfNc5Nil4Ua3cLnyI9HWHS7dFoLwU99VnpTsFutAOssNhocgejzeaPs7uuwf7ZkgLEujnR+t8IUvFdfdXpth98bYeApblnIUeE1Aitps+LJKJy3USc8N6IKQu9yuyeYXRpwkEC5c=
+	t=1720004913; cv=none; b=HyGI1SA7G6TJssh3rlDnGSFuLvkhDNV23MK8XA6cF1J48FBCEs1zT0brBoDbhM7hh9N6jCf0I3QKB2UdCUrpzVncEL09Y0nn1/XWO16VJ2xaDNzfkqQuoXCpt0fM2ZvMqpnaxAGoEY4unaUhFnGs24akW5BPe/VjXGqai6gLV1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004095; c=relaxed/simple;
-	bh=hh/OdoEMIfuwLROH5Y8FDWzNc1ucT7aBrG5WEfzTAkM=;
+	s=arc-20240116; t=1720004913; c=relaxed/simple;
+	bh=dq88UPTgs37jU4Y0kwRNi9Xfw5uTN9dMt8B6ieJCYYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rIpwtkhN1hrLWEkhzwP8iEx5XCZLORL+8KTABCQU4zHALQVpnCkbie4dejC/LoJMd1paoiXLs5iimFwzDbrZDCG88rXUDkCGs6hWvRuyfdUR4CBakKKR0ARnC4UT0v47c7Kku+X3slLMfBBTAvlIPUN8IQK6xQgx9++O5XdaNLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rGYxhygh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC47DC2BD10;
-	Wed,  3 Jul 2024 10:54:54 +0000 (UTC)
+	 MIME-Version; b=fqs3zpjdF2jhWx4PQuRw5VKXUM/WBdvhkUQ406bw7MXdqBC32sS1CVlMFSNmtmYtdZQwm8GHHiMTM8W6Qu228qJSKV+rKz03lKqtuBLoSkdchlyQcPRpOOxNycMoLfWqGzbILQMTTnw27s8Bad+FAwlidvGg2oamlD9L9NAbWyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gfym+0lx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46AA0C2BD10;
+	Wed,  3 Jul 2024 11:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004095;
-	bh=hh/OdoEMIfuwLROH5Y8FDWzNc1ucT7aBrG5WEfzTAkM=;
+	s=korg; t=1720004913;
+	bh=dq88UPTgs37jU4Y0kwRNi9Xfw5uTN9dMt8B6ieJCYYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rGYxhyghXNBu8WnwghJfS2EoGfZxhYK03a54MHNaSlPdV+6c6muXOVQWQMhvK6gwr
-	 YUB4WPGvbo2FvWKO8gsGAwbSsvRO7jWGG8shsRJEDPCkTNoDcE2yaK0qsiIJ4MFNep
-	 vPqYNV8ZCzJIj+RwipBx6ptEjdLakJTe82I4hJkI=
+	b=Gfym+0lxH8oKcTPkquQWoG777VGmAljizAKUmjTWlTgtHf0hhNrJMBkEB19vXRKDO
+	 Tqc/Z1De4DqzZ+WY7eT4i6pEf+Ix2f75BMfGCe/4e1j+TUmMOpPkBuThDVFa+VLore
+	 ZEXk2R4SSXvUIEWJptcUkzz83/85QBsvUkJa7/KA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 5.4 119/189] i2c: ocores: set IACK bit after core is enabled
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Luya Tshimbalanga <luya@fedoraproject.org>
+Subject: [PATCH 5.10 199/290] ACPI: x86: Add a quirk for Dell Inspiron 14 2-in-1 for StorageD3Enable
 Date: Wed,  3 Jul 2024 12:39:40 +0200
-Message-ID: <20240703102845.988985085@linuxfoundation.org>
+Message-ID: <20240703102911.680694639@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Grygorii Tertychnyi <grembeter@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 5a72477273066b5b357801ab2d315ef14949d402 upstream.
+[ Upstream commit 018d6711c26e4bd26e20a819fcc7f8ab902608f3 ]
 
-Setting IACK bit when core is disabled does not clear the "Interrupt Flag"
-bit in the status register, and the interrupt remains pending.
+Dell Inspiron 14 2-in-1 has two ACPI nodes under GPP1 both with _ADR of
+0, both without _HID.  It's ambiguous which the kernel should take, but
+it seems to take "DEV0".  Unfortunately "DEV0" is missing the device
+property `StorageD3Enable` which is present on "NVME".
 
-Sometimes it causes failure for the very first message transfer, that is
-usually a device probe.
+To avoid this causing problems for suspend, add a quirk for this system
+to behave like `StorageD3Enable` property was found.
 
-Hence, set IACK bit after core is enabled to clear pending interrupt.
-
-Fixes: 18f98b1e3147 ("[PATCH] i2c: New bus driver for the OpenCores I2C controller")
-Signed-off-by: Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>
-Acked-by: Peter Korsgaard <peter@korsgaard.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216440
+Reported-and-tested-by: Luya Tshimbalanga <luya@fedoraproject.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: e79a10652bbd ("ACPI: x86: Force StorageD3Enable on more products")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-ocores.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/x86/utils.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-ocores.c
-+++ b/drivers/i2c/busses/i2c-ocores.c
-@@ -443,8 +443,8 @@ static int ocores_init(struct device *de
- 	oc_setreg(i2c, OCI2C_PREHIGH, prescale >> 8);
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index b3fb428461c6f..3a3f09b6cbfc9 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -198,7 +198,24 @@ static const struct x86_cpu_id storage_d3_cpu_ids[] = {
+ 	{}
+ };
  
- 	/* Init the device */
--	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
- 	oc_setreg(i2c, OCI2C_CONTROL, ctrl | OCI2C_CTRL_EN);
-+	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
- 
- 	return 0;
++static const struct dmi_system_id force_storage_d3_dmi[] = {
++	{
++		/*
++		 * _ADR is ambiguous between GPP1.DEV0 and GPP1.NVME
++		 * but .NVME is needed to get StorageD3Enable node
++		 * https://bugzilla.kernel.org/show_bug.cgi?id=216440
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 14 7425 2-in-1"),
++		}
++	},
++	{}
++};
++
+ bool force_storage_d3(void)
+ {
+-	return x86_match_cpu(storage_d3_cpu_ids);
++	const struct dmi_system_id *dmi_id = dmi_first_match(force_storage_d3_dmi);
++
++	return dmi_id || x86_match_cpu(storage_d3_cpu_ids);
  }
+-- 
+2.43.0
+
 
 
 
