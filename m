@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7A2925E1F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:34:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99899925A33
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:55:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 167DD1C2146E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:34:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBF401C25F53
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6900217B50C;
-	Wed,  3 Jul 2024 11:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019341741FB;
+	Wed,  3 Jul 2024 10:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugtDy9ye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0bKZiUt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2907A17B503;
-	Wed,  3 Jul 2024 11:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DE21741FC;
+	Wed,  3 Jul 2024 10:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005995; cv=none; b=YjFryU/qd9MogjFWHgFuKLHhgloepG8zoq0/4PtKKT1r0ODJai1rs30DQtx+LRl0i02+EEPh4Db3PEAg19rYc9YbUUNxhhmpoKUEkaLmeM5tUTp8lLp6lo2mfJ+N8MLAIVk3aLt8Vv9pbvZsPhFz2t3tSQJMFgrndNXeiFiV5u0=
+	t=1720003604; cv=none; b=rH3yCu/5o80zn1VPnFTj8nwJy/FOrDeq14nrH+/LvdwT9qlx9acjeWXtZSXl0YfSsYwtYZAh1UppTw91w927y06IJNjTnTP71IoG3tXP1KhUoeg31bNvQbHJyTV6UrtnMV30IPrJmwLPKZeR57DQzKqb1Kx8otn1XB+35Hg8Kxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005995; c=relaxed/simple;
-	bh=f2HZc/anAxEU2xgODzTp9yVWvJHxpbB7rUx9fJwDzUQ=;
+	s=arc-20240116; t=1720003604; c=relaxed/simple;
+	bh=+5nrnRPEeMwDgx+CyuYYqiT7T9XRr9l1pB3t5e4EVu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EcUYMAg5esBTgobw/ZvBp/DUULQWO9tjr5gcZsENZslWjsS2tqFSzcgvmFAusxSoKgk2pDeeUUCZODJYG79VXyIJsu+0a0j14OU1eXVSe1ygP28gMxJgCcYgYNmMcIE988dMUG1FuxsmcPVMfx3oSfupG9wY1Dja2QH2pOz7FNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugtDy9ye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95EACC2BD10;
-	Wed,  3 Jul 2024 11:26:34 +0000 (UTC)
+	 MIME-Version; b=N8A2lGDIQCPGfLMp8AjIWhAmYlXLa6hDonKm1rijgHGUt2/PzouFgBh2qbtZ9XMZrZ02bC2Znoyak/oTlp1bYjTNO8L5H3pxD6cbJlUB0m0wBTv+Y5qRUffQ7d5NXLJyTcJsii/vYNVK6lPqsGNGEe6yDAp7IxqFhkuxV0tc2Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0bKZiUt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA90C2BD10;
+	Wed,  3 Jul 2024 10:46:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005995;
-	bh=f2HZc/anAxEU2xgODzTp9yVWvJHxpbB7rUx9fJwDzUQ=;
+	s=korg; t=1720003604;
+	bh=+5nrnRPEeMwDgx+CyuYYqiT7T9XRr9l1pB3t5e4EVu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ugtDy9yemoP2boXI6yAP5wyMPwS0ij5uSlYlZn3OvLkWzu+PL3Mv4OwFIRcx467oa
-	 +SEIU18oOOg85GT6exU8FjoVLuoKDg6o90dA7eHl+hCFAcG4MSmWFxus5DK67FfimS
-	 g7/0sorN6m3s3HRQHIWFDkt37c7wz5iWkf+Yq7G4=
+	b=C0bKZiUtErLC1kg5SJhwU5Pm3X3efv3zDfhIlhsRQgWkEO0Kp2voD0R3o0tK/vPz5
+	 h8amYlylowZ3Gtlls+K5IiVv9g+cU7jHMceRmPH2Zh95OdB0c6RkDr8gpWqF0EukH+
+	 6B355BnZgXHYGjob34sPk+WhqwlywW6ygraAJbiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
-	Huang-Huang Bao <i@eh5.me>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Xingyuan Mo <hdthky0@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 265/356] pinctrl: rockchip: fix pinmux reset in rockchip_pmx_set
+Subject: [PATCH 4.19 104/139] netfilter: nf_tables: validate family when identifying table via handle
 Date: Wed,  3 Jul 2024 12:40:01 +0200
-Message-ID: <20240703102923.142198585@linuxfoundation.org>
+Message-ID: <20240703102834.369840428@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang-Huang Bao <i@eh5.me>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 4ea4d4808e342ddf89ba24b93ffa2057005aaced ]
+[ Upstream commit f6e1532a2697b81da00bfb184e99d15e01e9d98c ]
 
-rockchip_pmx_set reset all pinmuxs in group to 0 in the case of error,
-add missing bank data retrieval in that code to avoid setting mux on
-unexpected pins.
+Validate table family when looking up for it via NFTA_TABLE_HANDLE.
 
-Fixes: 14797189b35e ("pinctrl: rockchip: add return value to rockchip_set_mux")
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Huang-Huang Bao <i@eh5.me>
-Link: https://lore.kernel.org/r/20240606125755.53778-5-i@eh5.me
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 3ecbfd65f50e ("netfilter: nf_tables: allocate handle and delete objects via handle")
+Reported-by: Xingyuan Mo <hdthky0@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-rockchip.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
-index 30e1dec1e2f68..4ff70527755a3 100644
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -2206,8 +2206,10 @@ static int rockchip_pmx_set(struct pinctrl_dev *pctldev, unsigned selector,
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 198e4a89df481..2c31470dd61f5 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -536,7 +536,7 @@ static struct nft_table *nft_table_lookup(const struct net *net,
  
- 	if (ret) {
- 		/* revert the already done pin settings */
--		for (cnt--; cnt >= 0; cnt--)
-+		for (cnt--; cnt >= 0; cnt--) {
-+			bank = pin_to_bank(info, pins[cnt]);
- 			rockchip_set_mux(bank, pins[cnt] - bank->pin_base, 0);
-+		}
- 
- 		return ret;
+ static struct nft_table *nft_table_lookup_byhandle(const struct net *net,
+ 						   const struct nlattr *nla,
+-						   u8 genmask)
++						   int family, u8 genmask)
+ {
+ 	struct nftables_pernet *nft_net;
+ 	struct nft_table *table;
+@@ -544,6 +544,7 @@ static struct nft_table *nft_table_lookup_byhandle(const struct net *net,
+ 	nft_net = net_generic(net, nf_tables_net_id);
+ 	list_for_each_entry(table, &nft_net->tables, list) {
+ 		if (be64_to_cpu(nla_get_be64(nla)) == table->handle &&
++		    table->family == family &&
+ 		    nft_active_genmask(table, genmask))
+ 			return table;
  	}
+@@ -1189,7 +1190,7 @@ static int nf_tables_deltable(struct net *net, struct sock *nlsk,
+ 
+ 	if (nla[NFTA_TABLE_HANDLE]) {
+ 		attr = nla[NFTA_TABLE_HANDLE];
+-		table = nft_table_lookup_byhandle(net, attr, genmask);
++		table = nft_table_lookup_byhandle(net, attr, family, genmask);
+ 	} else {
+ 		attr = nla[NFTA_TABLE_NAME];
+ 		table = nft_table_lookup(net, attr, family, genmask);
 -- 
 2.43.0
 
