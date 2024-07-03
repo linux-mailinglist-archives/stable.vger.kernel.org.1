@@ -1,128 +1,127 @@
-Return-Path: <stable+bounces-57980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3069268DD
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 21:11:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F0A792695B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 22:09:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98C0D281886
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 19:11:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5FD428C21F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 20:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8DF61891B6;
-	Wed,  3 Jul 2024 19:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AAE618F2DF;
+	Wed,  3 Jul 2024 20:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="u8sAIh0k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OHF0m6/g"
 X-Original-To: stable@vger.kernel.org
-Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B602187570;
-	Wed,  3 Jul 2024 19:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FC218FDC8;
+	Wed,  3 Jul 2024 20:09:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720033906; cv=none; b=IFKfX/XbMebltPfkBGd3Y8y+GnnCkO2UEnD2CASeor85mw3g2G6HWOd9ezgKHNhskfZIfkDgBSz+YBPa6nbaxMcwTdt795Tzg3ntNqqO6cjnvPu778+0eiZ5VrFomrI7tUFI9nqmWSYYpai/FFq6TSVFxUwGRpOptI5tbBRKRSE=
+	t=1720037374; cv=none; b=J+/vBnGvH83PcKhzYv4MuzPFKoySsO/OmCWhAU1lIW4HitUhzLPKhi/TKA6viuTDTRSGHYsiRjqdi6HgPYALNFmqD9FeSXWO+yw66ugJA6ke0VKthmdSfKu2cj9L2KRUe3gk1oYXEyNj/gjnT8RUozO+qMxrhnPwwrn8knrbfRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720033906; c=relaxed/simple;
-	bh=3E3xPWB6kiGiSy2QWa5qKXmQoyeUU4QTQ749wteyoL8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B00P7OrrqV0CFeBOvuR8YSUKMqPjcpQZ4c9zAIUuYcuCvt0geTepA2YVCboBBGxrIA1RNhQA17DOi2IVjBAnFgeYG3A0zkna4fupflKTmjIFL3wYq9F/SzQZCG4oPmk4pEGA3JfK32ExLAe1iZVi/P4cR4Wznt7IocY30Og99P8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=u8sAIh0k; arc=none smtp.client-ip=199.89.1.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4WDqC3677jz6CmQyM;
-	Wed,  3 Jul 2024 19:11:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1720033898; x=1722625899; bh=6m7fScHfvSHfw4I4vLfsawbF
-	PucKc6EUzaqYNkps4vk=; b=u8sAIh0kNsdEUfY3MOrGoAaI0TvCnPmXQIvsm6OL
-	9lo1D2nPKU78UC38EZODq5CQOs72rsYWTiZ34GJHD/NZSo5kHfAoxLqvUd1FxkQf
-	pzlLd7q2g8l0EhAnZU5ZEdoNbWcnoGNL9abkOrBFNyVJI2n0dHvX4bogQ3U/ZYL1
-	lbpMsdd1GFrcet6GTtD1RTelariLEJ5bY5Pg24GFooW7dQEwEFYFe/Ya0qVnecC3
-	5WwGEzGbhNfUGfiAqEM2NqMWJJhjyxNWxhQrWCD8evKYrm11Zi6/rHgre+AsG/dk
-	rZ6Z4v4Ovq4TYoRvnaGAkqsRstdtEFlj6ajkzgNN3xt4aw==
-X-Virus-Scanned: by MailRoute
-Received: from 008.lax.mailroute.net ([127.0.0.1])
- by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id Ot4i4DB33GKA; Wed,  3 Jul 2024 19:11:38 +0000 (UTC)
-Received: from [192.168.50.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4WDqBw15YRz6Cnv3Q;
-	Wed,  3 Jul 2024 19:11:35 +0000 (UTC)
-Message-ID: <64d7746e-4751-4f46-a603-ce07f586b2d2@acm.org>
-Date: Wed, 3 Jul 2024 12:11:36 -0700
+	s=arc-20240116; t=1720037374; c=relaxed/simple;
+	bh=Wnd3o8k1qpgOfPgnkTw0f/86KjmhH34TRGl5E7XRXIw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hT6vQYI3XSIslqlu2jXL91majwU9IB1f0B62CB3IWiH37m2pFfo+X4ZQyGjT550IaCsn4EUFNRioL3s2LvjpEY9c2PgJYT1uGIfbctcFy6zqGKEMH7t33vFUJs8vssnV1Xnyg+pbFWQ9Oq59ImkJgXLdEo4qp0wlpoHvdfiA4XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OHF0m6/g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0497CC2BD10;
+	Wed,  3 Jul 2024 20:09:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720037374;
+	bh=Wnd3o8k1qpgOfPgnkTw0f/86KjmhH34TRGl5E7XRXIw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=OHF0m6/gf0FO74XTNMVbkzvMC5tPZ0F9b2WrUWqcXUvT6MTfiNRScZdkD19jNerIO
+	 fDzTQrIYSVKhWYX5omZ6dqwRY9Ohz9uDcvEQ+JDiL/x6lXiq3Z5dlJLnHklTGuBNWa
+	 OENRbiAA5oi9U2WHEGjzVEyIwA+1GBgpWH1Nasq1vZOMHOx0tjhPjC7bkG2bw1iXSq
+	 LoMOmkXUWQxrsqdLm4oaLR9NTC/oCl3a/eIIeiyYpSP5hCcWRSbe+msufoceV1FpqQ
+	 bVgv6DZT/uk/xbXywPLwNmaN4WAXahJVP5CSFxEQxI0pAgbselnFsePXgEc2M1NStP
+	 paztPvpMgCVaA==
+From: Eric Biggers <ebiggers@kernel.org>
+To: dm-devel@lists.linux.dev,
+	Alasdair Kergon <agk@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Cc: linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Matthias Kaehlcke <mka@chromium.org>,
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH] dm-verity: fix dm_is_verity_target() when dm-verity is builtin
+Date: Wed,  3 Jul 2024 13:08:13 -0700
+Message-ID: <20240703200813.64802-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1] scsi: ufs: ufshpb: Fix NULL deallocation in
- ufshpb_pre_req_mempool_destroy()
-To: Aleksandr Mishin <amishin@t-argos.ru>,
- Daejun Park <daejun7.park@samsung.com>, stable@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Can Guo <cang@codeaurora.org>, Bean Huo <beanhuo@micron.com>,
- linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
- lvc-project@linuxtesting.org
-References: <20240703111751.23377-1-amishin@t-argos.ru>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20240703111751.23377-1-amishin@t-argos.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 7/3/24 4:17 AM, Aleksandr Mishin wrote:
-> No upstream commit exists for this commit.
-> 
-> The issue was introduced with commit 41d8a9333cc9 ("scsi: ufs: ufshpb:
-> Add HPB 2.0 support").
-> 
-> In ufshpb_pre_req_mempool_destroy() __free_page() is called only if pointer
-> contains NULL value.
-> Fix this bug by modifying check condition.
-> 
-> Upstream branch code has been significantly refactored and can't be
-> backported directly.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Fixes: 41d8a9333cc9 ("scsi: ufs: ufshpb: Add HPB 2.0 support")
-> Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-> ---
->   drivers/ufs/core/ufshpb.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/ufs/core/ufshpb.c b/drivers/ufs/core/ufshpb.c
-> index b7f412d0f301..c649e8a10a23 100644
-> --- a/drivers/ufs/core/ufshpb.c
-> +++ b/drivers/ufs/core/ufshpb.c
-> @@ -2120,7 +2120,7 @@ static void ufshpb_pre_req_mempool_destroy(struct ufshpb_lu *hpb)
->   	for (i = 0; i < hpb->throttle_pre_req; i++) {
->   		pre_req = hpb->pre_req + i;
->   		bio_put(hpb->pre_req[i].bio);
-> -		if (!pre_req->wb.m_page)
-> +		if (pre_req->wb.m_page)
->   			__free_page(hpb->pre_req[i].wb.m_page);
->   		list_del_init(&pre_req->list_req);
->   	}
+From: Eric Biggers <ebiggers@google.com>
 
-Are any users of the 6.1 kernel using UFS HPB support? If not, another
-possibility is to backport commit 7e9609d2daea ("scsi: ufs: core: Remove
-HPB support").
+When CONFIG_DM_VERITY=y, dm_is_verity_target() returned true for any
+builtin dm target, not just dm-verity.  Fix this by checking for
+verity_target instead of THIS_MODULE (which is NULL for builtin code).
 
-Thanks,
+Fixes: b6c1c5745ccc ("dm: Add verity helpers for LoadPin")
+Cc: stable@vger.kernel.org
+Cc: Matthias Kaehlcke <mka@chromium.org>
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+---
+ drivers/md/dm-verity-target.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-Bart.
+diff --git a/drivers/md/dm-verity-target.c b/drivers/md/dm-verity-target.c
+index 0a2399d958b7..cf659c8feb29 100644
+--- a/drivers/md/dm-verity-target.c
++++ b/drivers/md/dm-verity-target.c
+@@ -1519,18 +1519,10 @@ static int verity_ctr(struct dm_target *ti, unsigned int argc, char **argv)
+ 	verity_dtr(ti);
+ 
+ 	return r;
+ }
+ 
+-/*
+- * Check whether a DM target is a verity target.
+- */
+-bool dm_is_verity_target(struct dm_target *ti)
+-{
+-	return ti->type->module == THIS_MODULE;
+-}
+-
+ /*
+  * Get the verity mode (error behavior) of a verity target.
+  *
+  * Returns the verity mode of the target, or -EINVAL if 'ti' is not a verity
+  * target.
+@@ -1580,10 +1572,18 @@ static struct target_type verity_target = {
+ 	.iterate_devices = verity_iterate_devices,
+ 	.io_hints	= verity_io_hints,
+ };
+ module_dm(verity);
+ 
++/*
++ * Check whether a DM target is a verity target.
++ */
++bool dm_is_verity_target(struct dm_target *ti)
++{
++	return ti->type == &verity_target;
++}
++
+ MODULE_AUTHOR("Mikulas Patocka <mpatocka@redhat.com>");
+ MODULE_AUTHOR("Mandeep Baines <msb@chromium.org>");
+ MODULE_AUTHOR("Will Drewry <wad@chromium.org>");
+ MODULE_DESCRIPTION(DM_NAME " target for transparent disk integrity checking");
+ MODULE_LICENSE("GPL");
+
+base-commit: ed28fe59c042e9b5bf3b15050aa6ee67834dc852
+-- 
+2.45.2
+
 
