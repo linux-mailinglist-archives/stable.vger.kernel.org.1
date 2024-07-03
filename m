@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAFF6925D65
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:28:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B91ED925C0D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:14:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 199EC1C2261C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8C7D1C20E40
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18E7E181D19;
-	Wed,  3 Jul 2024 11:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F7017107F;
+	Wed,  3 Jul 2024 11:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1PKVYTv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SPOLFZrO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C867F16F8FA;
-	Wed,  3 Jul 2024 11:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FD016F84E;
+	Wed,  3 Jul 2024 11:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005547; cv=none; b=JIR9H0fEMPXnbcX3rauOzA+qGcFfdWED74mQTytSESXPwogdLdo+Uz6JIQ/L86rWrOLnWWR4xhZUTaFSqCfVG0dwWIEODOxnT3UpMQsVmc5mGmdLxYmIdQtrXqJSqymGZrnVgYLBP81RiL44jlz/jWvU/qV4nwtZaagNDSlIMz0=
+	t=1720004536; cv=none; b=YfnmJVYKUDeZhotTUP2r/TaqkMQoN803pIifK+tAUr3PbNykKVIUwwc+G4rBGXk1/iDlCn6drkbNLuwpSCtIJdT86XkDsz/aPsUoAu49l3obXbEE0vkbnh/w8koIYN9Oqn1dCOaZzsMmepxFuAZYTvp2+QsCN/Ejjw2f4aoPK1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005547; c=relaxed/simple;
-	bh=BGMUyjeO72SXx6hscmlUkANDvo2lSGXy43s7nRt8fcI=;
+	s=arc-20240116; t=1720004536; c=relaxed/simple;
+	bh=kdRU+0c+PcdMXQRjNSjsNU0rr5Vku1C4ATPw2n0DitU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMN0Gg7dQuHHhyaGT4pjhOAGbVajb3A36ampdZmikjjvyn/XQh5HguJTShXSauF4seDbMsij+GiHb6De7InO3hYCPaYgSfCh1/XPaMSyqgcJbF0Xj8NyQCU9zOReUZrCWqFhY9f+5OuxWOMNyEjUWss5aB9IT3KiHMpPph4XnZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1PKVYTv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40349C2BD10;
-	Wed,  3 Jul 2024 11:19:07 +0000 (UTC)
+	 MIME-Version; b=V4VTd/q9OsjmNOeZyxNiE9UNPXOAhXd8jxyLx/y+aDamo1m9CEygs0dCHMDSfDglmJMPFbIXF/FD+HGJ7riWcNbUIirc8WsG34hWiFI9MLisTbyBo4HonDshKrsKtf6rmP7tgNsAlFQ+knHtHYS2u4XPcwactjFIahSNfSHNSLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SPOLFZrO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37A5C2BD10;
+	Wed,  3 Jul 2024 11:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005547;
-	bh=BGMUyjeO72SXx6hscmlUkANDvo2lSGXy43s7nRt8fcI=;
+	s=korg; t=1720004536;
+	bh=kdRU+0c+PcdMXQRjNSjsNU0rr5Vku1C4ATPw2n0DitU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r1PKVYTvnJgqfVlPixdFzFPDFj4h0+YKpoP/+Yk1iPYTTYYVPdc+khH2i9GHg+RCK
-	 YgkuiSRGXbU0PUTw2BXud5cSemq4uuRxbzJdu3F7wLyUdfgEYGrkW45T7oWNanJSST
-	 Tf7m42Mhq+mpFS4yp+mCbvKjtCpbk51EEYxQl+aI=
+	b=SPOLFZrOQ3LyVBy1yzlKske2xHCOQDAP5xnAvtoxLZYvZTwk5jNxKNn9fjRYdGSwn
+	 +WA8mA9jF+QKhUNcGGsIAynmcVy8bDWCSu4lJiE9FU6TdWIv7l4Jr2cNuGwm50NCom
+	 7LY4lXKkkjVaR+O/7lk814haCFVasQgAKtOP5Juo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 5.15 118/356] tracing/selftests: Fix kprobe event name test for .isra. functions
-Date: Wed,  3 Jul 2024 12:37:34 +0200
-Message-ID: <20240703102917.560266529@linuxfoundation.org>
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 074/290] iio: adc: ad9467: fix scan type sign
+Date: Wed,  3 Jul 2024 12:37:35 +0200
+Message-ID: <20240703102906.993943855@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: David Lechner <dlechner@baylibre.com>
 
-commit 23a4b108accc29a6125ed14de4a044689ffeda78 upstream.
+commit 8a01ef749b0a632f0e1f4ead0f08b3310d99fcb1 upstream.
 
-The kprobe_eventname.tc test checks if a function with .isra. can have a
-kprobe attached to it. It loops through the kallsyms file for all the
-functions that have the .isra. name, and checks if it exists in the
-available_filter_functions file, and if it does, it uses it to attach a
-kprobe to it.
+According to the IIO documentation, the sign in the scan type should be
+lower case. The ad9467 driver was incorrectly using upper case.
 
-The issue is that kprobes can not attach to functions that are listed more
-than once in available_filter_functions. With the latest kernel, the
-function that is found is: rapl_event_update.isra.0
+Fix by changing to lower case.
 
-  # grep rapl_event_update.isra.0 /sys/kernel/tracing/available_filter_functions
-  rapl_event_update.isra.0
-  rapl_event_update.isra.0
-
-It is listed twice. This causes the attached kprobe to it to fail which in
-turn fails the test. Instead of just picking the function function that is
-found in available_filter_functions, pick the first one that is listed
-only once in available_filter_functions.
-
-Cc: stable@vger.kernel.org
-Fixes: 604e3548236d ("selftests/ftrace: Select an existing function in kprobe_eventname test")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 4606d0f4b05f ("iio: adc: ad9467: add support for AD9434 high-speed ADC")
+Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://lore.kernel.org/r/20240503-ad9467-fix-scan-type-sign-v1-1-c7a1a066ebb9@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ad9467.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc
-+++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc
-@@ -30,7 +30,8 @@ find_dot_func() {
- 	fi
+--- a/drivers/iio/adc/ad9467.c
++++ b/drivers/iio/adc/ad9467.c
+@@ -223,11 +223,11 @@ static void __ad9467_get_scale(struct ad
+ }
  
- 	grep " [tT] .*\.isra\..*" /proc/kallsyms | cut -f 3 -d " " | while read f; do
--		if grep -s $f available_filter_functions; then
-+		cnt=`grep -s $f available_filter_functions | wc -l`;
-+		if [ $cnt -eq 1 ]; then
- 			echo $f
- 			break
- 		fi
+ static const struct iio_chan_spec ad9434_channels[] = {
+-	AD9467_CHAN(0, 0, 12, 'S'),
++	AD9467_CHAN(0, 0, 12, 's'),
+ };
+ 
+ static const struct iio_chan_spec ad9467_channels[] = {
+-	AD9467_CHAN(0, 0, 16, 'S'),
++	AD9467_CHAN(0, 0, 16, 's'),
+ };
+ 
+ static const struct ad9467_chip_info ad9467_chip_tbl[] = {
 
 
 
