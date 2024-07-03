@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18F76925B9F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:10:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9377F925CBB
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:22:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CC3F1C2614A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:10:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54BFC2C442B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49D8192B8B;
-	Wed,  3 Jul 2024 10:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC707191F80;
+	Wed,  3 Jul 2024 11:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwbcBpEU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsrHCZ0N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DB616F8F5;
-	Wed,  3 Jul 2024 10:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA5D1849D3;
+	Wed,  3 Jul 2024 11:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004252; cv=none; b=INfCtJxn45KBPFdNZGnxzcejYogQeNN7sGizmgOEAMX1f7UjJe+OHlgC5YEI2rly0KW+oT3ELIOAoQU4NcsiKo7yd9Pc1DQyaPaNo6TIONHkTWJ63oQp0cugOlkJXTEVcIiqFxyc4tqzZcz5iq4NwjMnEtQY6IDCPEvDnJCbYxc=
+	t=1720005072; cv=none; b=AxC0uf+5Xovvy2oReAjs7Y71TWYJS8NS5u0JXYaig5Fzz2zhOipkMC2DIddL1WjwkcssXMZ+E4o90prMz9MgSRDbH+vl3m2qMErc4cNQOvLXfs2JfgiTzeYFfmB4P+Q63l2TuGbMdmLTuSsSyUDUIth6ygMMAN03KpV8LAy2s/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004252; c=relaxed/simple;
-	bh=eUk5lNqV6ifeQKmsdjprWTN0Yi8hY6EILgOBOyeo99g=;
+	s=arc-20240116; t=1720005072; c=relaxed/simple;
+	bh=c5HOigGoKD0xn9PyhLw6DVRABknT7FXdnhTDmc0iUJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jtYGfNF80XfA0mpwrLvGxmJjC2ZqOzSEocdDBUfjiMWiC1f+MQ8iL1tOA/n1eeDqyytphPQ3TdZ8nKqZmJ9M+jAx4UZoVylBWRY00SnRvfjT8NaNKKJ9qzZ+8Favl5kN/WzC5PjecRWPeiTGT8Yh5T3K+IMviwRZWBWJcaZKHcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwbcBpEU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07096C32781;
-	Wed,  3 Jul 2024 10:57:31 +0000 (UTC)
+	 MIME-Version; b=cruMAwHwqk96X19ehIKtbw4qVSIpgBjRr6i2/DgH2K3rxEUIiHp/l9EDbIDgFsxdkMAvVYTaFefxhAWGQ0tTZljX/Xcw1nGFtJAYkP1wQ99iGNNF0ptef/hTr8n2tCGufyXGR0RvV7LI1U0YKNfGwXohn+40kFzbsHW5YPopG3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsrHCZ0N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1DCC2BD10;
+	Wed,  3 Jul 2024 11:11:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004252;
-	bh=eUk5lNqV6ifeQKmsdjprWTN0Yi8hY6EILgOBOyeo99g=;
+	s=korg; t=1720005072;
+	bh=c5HOigGoKD0xn9PyhLw6DVRABknT7FXdnhTDmc0iUJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QwbcBpEU6U8iVnmk6VzEJmXelg7TmsYiAdzVQ1IrT258FiAHNgVY9B74nRrNic0Gk
-	 FLqEI5Ijk3nHKgIi5DFRAScBgDGrqjGhuMgTQ7jVGPgtSjw2hoXz0mpIK29yW5Dppy
-	 Ns59tfFbcnWc7lFxVJ9rOTveaZ21rIS2qIiOxoAY=
+	b=GsrHCZ0NX/9xBHK5Dwh2t+orqzlGbWJ/a97WTs9+gB7OXv6dHkvG8GwE5mKQLa1tB
+	 UO5MqleobSQCHjA1t+D1unUyrxlqx7g6oukxVXzUKg8McTVz3+fdOp86QiWUjrJBNJ
+	 PEuSjqV1FgJwSsNuRE0wWiK90f4dCiUWe3o3Uqec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	syzbot+5681e40d297b30f5b513@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 171/189] net: can: j1939: Initialize unused data in j1939_send_one()
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 251/290] iio: chemical: bme680: Fix overflows in compensate() functions
 Date: Wed,  3 Jul 2024 12:40:32 +0200
-Message-ID: <20240703102847.927471447@linuxfoundation.org>
+Message-ID: <20240703102913.630409866@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-commit b7cdf1dd5d2a2d8200efd98d1893684db48fe134 upstream.
+commit fdd478c3ae98c3f13628e110dce9b6cfb0d9b3c8 upstream.
 
-syzbot reported kernel-infoleak in raw_recvmsg() [1]. j1939_send_one()
-creates full frame including unused data, but it doesn't initialize
-it. This causes the kernel-infoleak issue. Fix this by initializing
-unused data.
+There are cases in the compensate functions of the driver that
+there could be overflows of variables due to bit shifting ops.
+These implications were initially discussed here [1] and they
+were mentioned in log message of Commit 1b3bd8592780 ("iio:
+chemical: Add support for Bosch BME680 sensor").
 
-[1]
-BUG: KMSAN: kernel-infoleak in instrument_copy_to_user include/linux/instrumented.h:114 [inline]
-BUG: KMSAN: kernel-infoleak in copy_to_user_iter lib/iov_iter.c:24 [inline]
-BUG: KMSAN: kernel-infoleak in iterate_ubuf include/linux/iov_iter.h:29 [inline]
-BUG: KMSAN: kernel-infoleak in iterate_and_advance2 include/linux/iov_iter.h:245 [inline]
-BUG: KMSAN: kernel-infoleak in iterate_and_advance include/linux/iov_iter.h:271 [inline]
-BUG: KMSAN: kernel-infoleak in _copy_to_iter+0x366/0x2520 lib/iov_iter.c:185
- instrument_copy_to_user include/linux/instrumented.h:114 [inline]
- copy_to_user_iter lib/iov_iter.c:24 [inline]
- iterate_ubuf include/linux/iov_iter.h:29 [inline]
- iterate_and_advance2 include/linux/iov_iter.h:245 [inline]
- iterate_and_advance include/linux/iov_iter.h:271 [inline]
- _copy_to_iter+0x366/0x2520 lib/iov_iter.c:185
- copy_to_iter include/linux/uio.h:196 [inline]
- memcpy_to_msg include/linux/skbuff.h:4113 [inline]
- raw_recvmsg+0x2b8/0x9e0 net/can/raw.c:1008
- sock_recvmsg_nosec net/socket.c:1046 [inline]
- sock_recvmsg+0x2c4/0x340 net/socket.c:1068
- ____sys_recvmsg+0x18a/0x620 net/socket.c:2803
- ___sys_recvmsg+0x223/0x840 net/socket.c:2845
- do_recvmmsg+0x4fc/0xfd0 net/socket.c:2939
- __sys_recvmmsg net/socket.c:3018 [inline]
- __do_sys_recvmmsg net/socket.c:3041 [inline]
- __se_sys_recvmmsg net/socket.c:3034 [inline]
- __x64_sys_recvmmsg+0x397/0x490 net/socket.c:3034
- x64_sys_call+0xf6c/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:300
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[1]: https://lore.kernel.org/linux-iio/20180728114028.3c1bbe81@archlinux/
 
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:3804 [inline]
- slab_alloc_node mm/slub.c:3845 [inline]
- kmem_cache_alloc_node+0x613/0xc50 mm/slub.c:3888
- kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:577
- __alloc_skb+0x35b/0x7a0 net/core/skbuff.c:668
- alloc_skb include/linux/skbuff.h:1313 [inline]
- alloc_skb_with_frags+0xc8/0xbf0 net/core/skbuff.c:6504
- sock_alloc_send_pskb+0xa81/0xbf0 net/core/sock.c:2795
- sock_alloc_send_skb include/net/sock.h:1842 [inline]
- j1939_sk_alloc_skb net/can/j1939/socket.c:878 [inline]
- j1939_sk_send_loop net/can/j1939/socket.c:1142 [inline]
- j1939_sk_sendmsg+0xc0a/0x2730 net/can/j1939/socket.c:1277
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg+0x30f/0x380 net/socket.c:745
- ____sys_sendmsg+0x877/0xb60 net/socket.c:2584
- ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2638
- __sys_sendmsg net/socket.c:2667 [inline]
- __do_sys_sendmsg net/socket.c:2676 [inline]
- __se_sys_sendmsg net/socket.c:2674 [inline]
- __x64_sys_sendmsg+0x307/0x4a0 net/socket.c:2674
- x64_sys_call+0xc4b/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:47
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Bytes 12-15 of 16 are uninitialized
-Memory access of size 16 starts at ffff888120969690
-Data copied to user address 00000000200017c0
-
-CPU: 1 PID: 5050 Comm: syz-executor198 Not tainted 6.9.0-rc5-syzkaller-00031-g71b1543c83d6 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
-
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Reported-and-tested-by: syzbot+5681e40d297b30f5b513@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5681e40d297b30f5b513
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Link: https://lore.kernel.org/all/20240517035953.2617090-1-syoshida@redhat.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://lore.kernel.org/r/20240606212313.207550-4-vassilisamir@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/j1939/main.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/iio/chemical/bme680_core.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/net/can/j1939/main.c
-+++ b/net/can/j1939/main.c
-@@ -30,10 +30,6 @@ MODULE_ALIAS("can-proto-" __stringify(CA
- /* CAN_HDR: #bytes before can_frame data part */
- #define J1939_CAN_HDR (offsetof(struct can_frame, data))
+--- a/drivers/iio/chemical/bme680_core.c
++++ b/drivers/iio/chemical/bme680_core.c
+@@ -342,10 +342,10 @@ static s16 bme680_compensate_temp(struct
+ 	if (!calib->par_t2)
+ 		bme680_read_calib(data, calib);
  
--/* CAN_FTR: #bytes beyond data part */
--#define J1939_CAN_FTR (sizeof(struct can_frame) - J1939_CAN_HDR - \
--		 sizeof(((struct can_frame *)0)->data))
--
- /* lowest layer */
- static void j1939_can_recv(struct sk_buff *iskb, void *data)
- {
-@@ -338,7 +334,7 @@ int j1939_send_one(struct j1939_priv *pr
- 	memset(cf, 0, J1939_CAN_HDR);
+-	var1 = (adc_temp >> 3) - (calib->par_t1 << 1);
++	var1 = (adc_temp >> 3) - ((s32)calib->par_t1 << 1);
+ 	var2 = (var1 * calib->par_t2) >> 11;
+ 	var3 = ((var1 >> 1) * (var1 >> 1)) >> 12;
+-	var3 = (var3 * (calib->par_t3 << 4)) >> 14;
++	var3 = (var3 * ((s32)calib->par_t3 << 4)) >> 14;
+ 	data->t_fine = var2 + var3;
+ 	calc_temp = (data->t_fine * 5 + 128) >> 8;
  
- 	/* make it a full can frame again */
--	skb_put(skb, J1939_CAN_FTR + (8 - dlc));
-+	skb_put_zero(skb, 8 - dlc);
+@@ -368,9 +368,9 @@ static u32 bme680_compensate_press(struc
+ 	var1 = (data->t_fine >> 1) - 64000;
+ 	var2 = ((((var1 >> 2) * (var1 >> 2)) >> 11) * calib->par_p6) >> 2;
+ 	var2 = var2 + (var1 * calib->par_p5 << 1);
+-	var2 = (var2 >> 2) + (calib->par_p4 << 16);
++	var2 = (var2 >> 2) + ((s32)calib->par_p4 << 16);
+ 	var1 = (((((var1 >> 2) * (var1 >> 2)) >> 13) *
+-			(calib->par_p3 << 5)) >> 3) +
++			((s32)calib->par_p3 << 5)) >> 3) +
+ 			((calib->par_p2 * var1) >> 1);
+ 	var1 = var1 >> 18;
+ 	var1 = ((32768 + var1) * calib->par_p1) >> 15;
+@@ -388,7 +388,7 @@ static u32 bme680_compensate_press(struc
+ 	var3 = ((press_comp >> 8) * (press_comp >> 8) *
+ 			(press_comp >> 8) * calib->par_p10) >> 17;
  
- 	canid = CAN_EFF_FLAG |
- 		(skcb->priority << 26) |
+-	press_comp += (var1 + var2 + var3 + (calib->par_p7 << 7)) >> 4;
++	press_comp += (var1 + var2 + var3 + ((s32)calib->par_p7 << 7)) >> 4;
+ 
+ 	return press_comp;
+ }
+@@ -414,7 +414,7 @@ static u32 bme680_compensate_humid(struc
+ 		 (((temp_scaled * ((temp_scaled * calib->par_h5) / 100))
+ 		   >> 6) / 100) + (1 << 14))) >> 10;
+ 	var3 = var1 * var2;
+-	var4 = calib->par_h6 << 7;
++	var4 = (s32)calib->par_h6 << 7;
+ 	var4 = (var4 + ((temp_scaled * calib->par_h7) / 100)) >> 4;
+ 	var5 = ((var3 >> 14) * (var3 >> 14)) >> 10;
+ 	var6 = (var4 * var5) >> 1;
 
 
 
