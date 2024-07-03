@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-57265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D02CA925BD8
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:12:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32583925D2E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:26:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55B401F213F6
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 568FF1C21405
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D4D194C6F;
-	Wed,  3 Jul 2024 10:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938D217C229;
+	Wed,  3 Jul 2024 11:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5664YmK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1338VVP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2652B194C69;
-	Wed,  3 Jul 2024 10:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518B5173334;
+	Wed,  3 Jul 2024 11:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004357; cv=none; b=o9otw4g6RWQpqEbaleyay5m+xiAuPe/NfHkXZDTRK5dfee420AxIzTNcm8uB6vewI8ILw18IvBzDqc7KGc0+Nf3WEFxkj8IEHH0NREb+9pl7yZyguLt/GicS6k6eQRw0Emj2JEQQGi1VRFt2o67kPiQBAWxY/TWFkGrOXRf5Ono=
+	t=1720005379; cv=none; b=K1mMXZr24XwOZi9px11pwIcw9h2okJRlor4S7vBz0Tg8lv2DERN37dqqEHNWUpDnKcy7KKi1iYpSn2MzEZEp2b0/ZZTNoy2JNLrxWDEIOVfs6cDSXb06KdJbHDMbakRGrqJZRDU5YsoYwHdQPlkXV6BAUYj+Cdb6I/Nz6qNFJtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004357; c=relaxed/simple;
-	bh=CE8g7Ha/g13rRZSVT/uS3osT7QR15T9PnzAkJ8+OTaY=;
+	s=arc-20240116; t=1720005379; c=relaxed/simple;
+	bh=dL2EpbHj0IJig4mCzWi9l491oXa/Qymo8FHFSYf7DHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mwr7j0P9KuKDq52+zkzmFeFtd9r/Bpyc+yUIfSm1fRpbDmJ3TOU7kls/R1tsgMop/IP00zzRjuxw2tHykzIprN77ItjUMMWemmxMXdkLQO0//xHB5b/oaRrH1BojGKoGe3ByjvGZvCDA/aB+vp1p3mTtrOQ5x9S1976/uwk8Dqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5664YmK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7C7C32781;
-	Wed,  3 Jul 2024 10:59:16 +0000 (UTC)
+	 MIME-Version; b=t2NFMP6GMM5u2sJok3qEjL2doB3R0I1Lzo7ppZo1+cvlwhFLzL2LwizoHAWDNu+erPeJ/AsXIZot6UFklAZkZ50gxa1MDZkfyQXSurUbOc76Ww3gM34szSZ9ropqFAnu7JPd8pMgm28vSWQ2MEd97GpK8qS7KqvXdTgNtT+dyAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1338VVP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50CFC2BD10;
+	Wed,  3 Jul 2024 11:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004357;
-	bh=CE8g7Ha/g13rRZSVT/uS3osT7QR15T9PnzAkJ8+OTaY=;
+	s=korg; t=1720005379;
+	bh=dL2EpbHj0IJig4mCzWi9l491oXa/Qymo8FHFSYf7DHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v5664YmKg7/KIPyx3uSnCHe6zCAlLWjyovBq70uyKUCnZEkBCpUxbWEcb9CNkti0C
-	 4BP09Rgagk0sUAaNyFHyZEPka9puRZ4Re2elFSFoD12eU4vQCnl5ApJaA/RBq75kqu
-	 Al1aW8EQpw9PPtibgS18DzFR/+I8W16WHaEVd65w=
+	b=C1338VVP2F0AYUmY0t+zYhNuEPgNPb19c5/q6CpwQq4wCC6eMbXJmYe0xD7LwULc4
+	 guh1FUEUvffqYhykEDoxpk4YWAsFAr5eoOVtHhedkRxnBdHoP/JQhMbSieMrUT1cwd
+	 67srfyeQxQTPXR6qBk1vxVIsA2OjU67rStofIJ3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	David Bauer <mail@david-bauer.net>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 016/290] vxlan: Fix regression when dropping packets due to invalid src addresses
+Subject: [PATCH 5.15 061/356] i2c: add fwnode APIs
 Date: Wed,  3 Jul 2024 12:36:37 +0200
-Message-ID: <20240703102904.805186434@linuxfoundation.org>
+Message-ID: <20240703102915.403158847@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,66 +63,292 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-[ Upstream commit 1cd4bc987abb2823836cbb8f887026011ccddc8a ]
+[ Upstream commit 373c612d72461ddaea223592df31e62c934aae61 ]
 
-Commit f58f45c1e5b9 ("vxlan: drop packets from invalid src-address")
-has recently been added to vxlan mainly in the context of source
-address snooping/learning so that when it is enabled, an entry in the
-FDB is not being created for an invalid address for the corresponding
-tunnel endpoint.
+Add fwnode APIs for finding and getting I2C adapters, which will be
+used by the SFP code. These are passed the fwnode corresponding to
+the adapter, and return the I2C adapter. It is the responsibility of
+the caller to find the appropriate fwnode.
 
-Before commit f58f45c1e5b9 vxlan was similarly behaving as geneve in
-that it passed through whichever macs were set in the L2 header. It
-turns out that this change in behavior breaks setups, for example,
-Cilium with netkit in L3 mode for Pods as well as tunnel mode has been
-passing before the change in f58f45c1e5b9 for both vxlan and geneve.
-After mentioned change it is only passing for geneve as in case of
-vxlan packets are dropped due to vxlan_set_mac() returning false as
-source and destination macs are zero which for E/W traffic via tunnel
-is totally fine.
+We keep the DT and ACPI interfaces, but where appropriate, recode them
+to use the fwnode interfaces internally.
 
-Fix it by only opting into the is_valid_ether_addr() check in
-vxlan_set_mac() when in fact source address snooping/learning is
-actually enabled in vxlan. This is done by moving the check into
-vxlan_snoop(). With this change, the Cilium connectivity test suite
-passes again for both tunnel flavors.
-
-Fixes: f58f45c1e5b9 ("vxlan: drop packets from invalid src-address")
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: David Bauer <mail@david-bauer.net>
-Cc: Ido Schimmel <idosch@nvidia.com>
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: David Bauer <mail@david-bauer.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Stable-dep-of: 3f858bbf04db ("i2c: acpi: Unbind mux adapters before delete")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/i2c/i2c-core-acpi.c | 13 +----
+ drivers/i2c/i2c-core-base.c | 98 +++++++++++++++++++++++++++++++++++++
+ drivers/i2c/i2c-core-of.c   | 66 -------------------------
+ include/linux/i2c.h         | 24 +++++++--
+ 4 files changed, 120 insertions(+), 81 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 3096769e718ed..ec67d2eb05ecd 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1492,6 +1492,10 @@ static bool vxlan_snoop(struct net_device *dev,
- 	struct vxlan_fdb *f;
- 	u32 ifindex = 0;
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index 546cc935e035a..29a482abf1eed 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -421,18 +421,7 @@ EXPORT_SYMBOL_GPL(i2c_acpi_find_adapter_by_handle);
  
-+	/* Ignore packets from invalid src-address */
-+	if (!is_valid_ether_addr(src_mac))
-+		return true;
+ static struct i2c_client *i2c_acpi_find_client_by_adev(struct acpi_device *adev)
+ {
+-	struct device *dev;
+-	struct i2c_client *client;
+-
+-	dev = bus_find_device_by_acpi_dev(&i2c_bus_type, adev);
+-	if (!dev)
+-		return NULL;
+-
+-	client = i2c_verify_client(dev);
+-	if (!client)
+-		put_device(dev);
+-
+-	return client;
++	return i2c_find_device_by_fwnode(acpi_fwnode_handle(adev));
+ }
+ 
+ static int i2c_acpi_notify(struct notifier_block *nb, unsigned long value,
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index 1810a994c07ca..505eebbc98a09 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -1009,6 +1009,35 @@ void i2c_unregister_device(struct i2c_client *client)
+ }
+ EXPORT_SYMBOL_GPL(i2c_unregister_device);
+ 
++/**
++ * i2c_find_device_by_fwnode() - find an i2c_client for the fwnode
++ * @fwnode: &struct fwnode_handle corresponding to the &struct i2c_client
++ *
++ * Look up and return the &struct i2c_client corresponding to the @fwnode.
++ * If no client can be found, or @fwnode is NULL, this returns NULL.
++ *
++ * The user must call put_device(&client->dev) once done with the i2c client.
++ */
++struct i2c_client *i2c_find_device_by_fwnode(struct fwnode_handle *fwnode)
++{
++	struct i2c_client *client;
++	struct device *dev;
 +
- #if IS_ENABLED(CONFIG_IPV6)
- 	if (src_ip->sa.sa_family == AF_INET6 &&
- 	    (ipv6_addr_type(&src_ip->sin6.sin6_addr) & IPV6_ADDR_LINKLOCAL))
++	if (!fwnode)
++		return NULL;
++
++	dev = bus_find_device_by_fwnode(&i2c_bus_type, fwnode);
++	if (!dev)
++		return NULL;
++
++	client = i2c_verify_client(dev);
++	if (!client)
++		put_device(dev);
++
++	return client;
++}
++EXPORT_SYMBOL(i2c_find_device_by_fwnode);
++
+ 
+ static const struct i2c_device_id dummy_id[] = {
+ 	{ "dummy", 0 },
+@@ -1764,6 +1793,75 @@ int devm_i2c_add_adapter(struct device *dev, struct i2c_adapter *adapter)
+ }
+ EXPORT_SYMBOL_GPL(devm_i2c_add_adapter);
+ 
++static int i2c_dev_or_parent_fwnode_match(struct device *dev, const void *data)
++{
++	if (dev_fwnode(dev) == data)
++		return 1;
++
++	if (dev->parent && dev_fwnode(dev->parent) == data)
++		return 1;
++
++	return 0;
++}
++
++/**
++ * i2c_find_adapter_by_fwnode() - find an i2c_adapter for the fwnode
++ * @fwnode: &struct fwnode_handle corresponding to the &struct i2c_adapter
++ *
++ * Look up and return the &struct i2c_adapter corresponding to the @fwnode.
++ * If no adapter can be found, or @fwnode is NULL, this returns NULL.
++ *
++ * The user must call put_device(&adapter->dev) once done with the i2c adapter.
++ */
++struct i2c_adapter *i2c_find_adapter_by_fwnode(struct fwnode_handle *fwnode)
++{
++	struct i2c_adapter *adapter;
++	struct device *dev;
++
++	if (!fwnode)
++		return NULL;
++
++	dev = bus_find_device(&i2c_bus_type, NULL, fwnode,
++			      i2c_dev_or_parent_fwnode_match);
++	if (!dev)
++		return NULL;
++
++	adapter = i2c_verify_adapter(dev);
++	if (!adapter)
++		put_device(dev);
++
++	return adapter;
++}
++EXPORT_SYMBOL(i2c_find_adapter_by_fwnode);
++
++/**
++ * i2c_get_adapter_by_fwnode() - find an i2c_adapter for the fwnode
++ * @fwnode: &struct fwnode_handle corresponding to the &struct i2c_adapter
++ *
++ * Look up and return the &struct i2c_adapter corresponding to the @fwnode,
++ * and increment the adapter module's use count. If no adapter can be found,
++ * or @fwnode is NULL, this returns NULL.
++ *
++ * The user must call i2c_put_adapter(adapter) once done with the i2c adapter.
++ * Note that this is different from i2c_find_adapter_by_node().
++ */
++struct i2c_adapter *i2c_get_adapter_by_fwnode(struct fwnode_handle *fwnode)
++{
++	struct i2c_adapter *adapter;
++
++	adapter = i2c_find_adapter_by_fwnode(fwnode);
++	if (!adapter)
++		return NULL;
++
++	if (!try_module_get(adapter->owner)) {
++		put_device(&adapter->dev);
++		adapter = NULL;
++	}
++
++	return adapter;
++}
++EXPORT_SYMBOL(i2c_get_adapter_by_fwnode);
++
+ static void i2c_parse_timing(struct device *dev, char *prop_name, u32 *cur_val_p,
+ 			    u32 def_val, bool use_def)
+ {
+diff --git a/drivers/i2c/i2c-core-of.c b/drivers/i2c/i2c-core-of.c
+index 3ed74aa4b44bb..bce6b796e04c2 100644
+--- a/drivers/i2c/i2c-core-of.c
++++ b/drivers/i2c/i2c-core-of.c
+@@ -113,72 +113,6 @@ void of_i2c_register_devices(struct i2c_adapter *adap)
+ 	of_node_put(bus);
+ }
+ 
+-static int of_dev_or_parent_node_match(struct device *dev, const void *data)
+-{
+-	if (dev->of_node == data)
+-		return 1;
+-
+-	if (dev->parent)
+-		return dev->parent->of_node == data;
+-
+-	return 0;
+-}
+-
+-/* must call put_device() when done with returned i2c_client device */
+-struct i2c_client *of_find_i2c_device_by_node(struct device_node *node)
+-{
+-	struct device *dev;
+-	struct i2c_client *client;
+-
+-	dev = bus_find_device_by_of_node(&i2c_bus_type, node);
+-	if (!dev)
+-		return NULL;
+-
+-	client = i2c_verify_client(dev);
+-	if (!client)
+-		put_device(dev);
+-
+-	return client;
+-}
+-EXPORT_SYMBOL(of_find_i2c_device_by_node);
+-
+-/* must call put_device() when done with returned i2c_adapter device */
+-struct i2c_adapter *of_find_i2c_adapter_by_node(struct device_node *node)
+-{
+-	struct device *dev;
+-	struct i2c_adapter *adapter;
+-
+-	dev = bus_find_device(&i2c_bus_type, NULL, node,
+-			      of_dev_or_parent_node_match);
+-	if (!dev)
+-		return NULL;
+-
+-	adapter = i2c_verify_adapter(dev);
+-	if (!adapter)
+-		put_device(dev);
+-
+-	return adapter;
+-}
+-EXPORT_SYMBOL(of_find_i2c_adapter_by_node);
+-
+-/* must call i2c_put_adapter() when done with returned i2c_adapter device */
+-struct i2c_adapter *of_get_i2c_adapter_by_node(struct device_node *node)
+-{
+-	struct i2c_adapter *adapter;
+-
+-	adapter = of_find_i2c_adapter_by_node(node);
+-	if (!adapter)
+-		return NULL;
+-
+-	if (!try_module_get(adapter->owner)) {
+-		put_device(&adapter->dev);
+-		adapter = NULL;
+-	}
+-
+-	return adapter;
+-}
+-EXPORT_SYMBOL(of_get_i2c_adapter_by_node);
+-
+ static const struct of_device_id*
+ i2c_of_match_device_sysfs(const struct of_device_id *matches,
+ 				  struct i2c_client *client)
+diff --git a/include/linux/i2c.h b/include/linux/i2c.h
+index 2ce3efbe9198a..f071a121ed914 100644
+--- a/include/linux/i2c.h
++++ b/include/linux/i2c.h
+@@ -954,15 +954,33 @@ int i2c_handle_smbus_host_notify(struct i2c_adapter *adap, unsigned short addr);
+ 
+ #endif /* I2C */
+ 
++/* must call put_device() when done with returned i2c_client device */
++struct i2c_client *i2c_find_device_by_fwnode(struct fwnode_handle *fwnode);
++
++/* must call put_device() when done with returned i2c_adapter device */
++struct i2c_adapter *i2c_find_adapter_by_fwnode(struct fwnode_handle *fwnode);
++
++/* must call i2c_put_adapter() when done with returned i2c_adapter device */
++struct i2c_adapter *i2c_get_adapter_by_fwnode(struct fwnode_handle *fwnode);
++
+ #if IS_ENABLED(CONFIG_OF)
+ /* must call put_device() when done with returned i2c_client device */
+-struct i2c_client *of_find_i2c_device_by_node(struct device_node *node);
++static inline struct i2c_client *of_find_i2c_device_by_node(struct device_node *node)
++{
++	return i2c_find_device_by_fwnode(of_fwnode_handle(node));
++}
+ 
+ /* must call put_device() when done with returned i2c_adapter device */
+-struct i2c_adapter *of_find_i2c_adapter_by_node(struct device_node *node);
++static inline struct i2c_adapter *of_find_i2c_adapter_by_node(struct device_node *node)
++{
++	return i2c_find_adapter_by_fwnode(of_fwnode_handle(node));
++}
+ 
+ /* must call i2c_put_adapter() when done with returned i2c_adapter device */
+-struct i2c_adapter *of_get_i2c_adapter_by_node(struct device_node *node);
++static inline struct i2c_adapter *of_get_i2c_adapter_by_node(struct device_node *node)
++{
++	return i2c_get_adapter_by_fwnode(of_fwnode_handle(node));
++}
+ 
+ const struct of_device_id
+ *i2c_of_match_device(const struct of_device_id *matches,
 -- 
 2.43.0
 
