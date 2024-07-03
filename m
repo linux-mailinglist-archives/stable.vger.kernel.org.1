@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-57286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18423925BEE
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:13:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 612BD925EF9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:45:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49C311C210B2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 609F9B2BCB8
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A35819580A;
-	Wed,  3 Jul 2024 11:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE540181CF4;
+	Wed,  3 Jul 2024 11:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPL2eDix"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0lWmpxE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076ED6E5ED;
-	Wed,  3 Jul 2024 11:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC3F173339;
+	Wed,  3 Jul 2024 11:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004423; cv=none; b=LgI48kugaPM5Mse0eZMF4v+Y5Ph/Q1eYj6bscJ8kU7xxRSMfYQhHurYqQvD49mrf9xXxw0uxtjZdWBiYXtwGV1tjUfjJVerIis3yvzcSOrz+deNVLYWmoftTE4iRUmNxNI/FgXh7kYU7VGPPU6STpyVu0LQe57WeP8v1xin9FgA=
+	t=1720005532; cv=none; b=Wz2s4suk/ClBTfRHWzq81M2OWEgmBxXV4ZpaZsAorUCpe8WWDwoAN54cQ+DVC1qLTkn8OQsMjOMbr0l3fCZ8LyWc/e0NFKcPGJXF6Af11K+skM4ERxRVvp6iM/zECixCqvbDKZi42BWYB5/6iRyq9jy4kxykEYS5qpTYzH+c2OQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004423; c=relaxed/simple;
-	bh=26H1J4Ck0yGMBhzhE9GZXyp5tgdLdBfl8/7qOTaPOSc=;
+	s=arc-20240116; t=1720005532; c=relaxed/simple;
+	bh=uM4gdNwzHgdADHzAZzu4BxdvwjdHgIPNjlHfSNU+tik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M9LmqNxlZCotI6Uye5Y89WF7aH65Q+55imudzWRF2rKftIQeqlFUZre5ut7gLxpV/vPx6fE39P1gjxz/sHlyoTwsw0Zy7uWD/AxZYKupmN3WGpejkUMVtfrKfqOsUojg9QCn21IaNqzksS8d2flHyWGzcFhS1BhTyClvgvBqPy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPL2eDix; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0178EC32781;
-	Wed,  3 Jul 2024 11:00:21 +0000 (UTC)
+	 MIME-Version; b=rkFUVX6fLlmqag+cjUd5jwTAmAeOeo6OqLA5HzHSacMUi3TUaD9Y2PKH2klPWvrv0i3lutexglf8CmGOtq+UNgcZTSEZ52MW1iHXddZYO0+EDmqFfdWd2IDuE09uRAzGiIO10okNMQgCNuQcWUlk1uYX1o+lAq4/3NrBkUQnZ4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0lWmpxE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C175C2BD10;
+	Wed,  3 Jul 2024 11:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004422;
-	bh=26H1J4Ck0yGMBhzhE9GZXyp5tgdLdBfl8/7qOTaPOSc=;
+	s=korg; t=1720005532;
+	bh=uM4gdNwzHgdADHzAZzu4BxdvwjdHgIPNjlHfSNU+tik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bPL2eDix2xn2w670C2K7CX7iB8t8RVanylK/gQjXjImgIFaADsnrSK2UOwjMjVbD6
-	 lN5T2C3h/qppObUBmT6eAmuXnuu3CmcyBagRCeDL3VMOidxXSI60VvDmH63rHCWyzB
-	 /UNyubGjpluw6RDNNXp3IPxbDVM3NzU9RfMt9ueM=
+	b=X0lWmpxEmOvhJYqe7XJbVR9mPs7YI84s4OuZlSpkpxNJI/8OHCStjBbtx16/OC/l7
+	 /WX2KbXGN3k4EGFN8d1IQwfN3T8KELr6MrCWR0Ux/7ROvUU+SieGrWINkU2t72xxCP
+	 G/Go6k2Orb2UChdVeepTXWAJ1aCjv6qewduEcO1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dev Jain <dev.jain@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Sri Jayaramappa <sjayaram@akamai.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 037/290] selftests/mm: compaction_test: fix bogus test success on Aarch64
+	Keith Busch <kbusch@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 082/356] scsi: mpt3sas: Avoid test/set_bit() operating in non-allocated memory
 Date: Wed,  3 Jul 2024 12:36:58 +0200
-Message-ID: <20240703102905.599411411@linuxfoundation.org>
+Message-ID: <20240703102916.205342535@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,114 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dev Jain <dev.jain@arm.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit d4202e66a4b1fe6968f17f9f09bbc30d08f028a1 ]
+commit 4254dfeda82f20844299dca6c38cbffcfd499f41 upstream.
 
-Patch series "Fixes for compaction_test", v2.
+There is a potential out-of-bounds access when using test_bit() on a single
+word. The test_bit() and set_bit() functions operate on long values, and
+when testing or setting a single word, they can exceed the word
+boundary. KASAN detects this issue and produces a dump:
 
-The compaction_test memory selftest introduces fragmentation in memory
-and then tries to allocate as many hugepages as possible. This series
-addresses some problems.
+	 BUG: KASAN: slab-out-of-bounds in _scsih_add_device.constprop.0 (./arch/x86/include/asm/bitops.h:60 ./include/asm-generic/bitops/instrumented-atomic.h:29 drivers/scsi/mpt3sas/mpt3sas_scsih.c:7331) mpt3sas
 
-On Aarch64, if nr_hugepages == 0, then the test trivially succeeds since
-compaction_index becomes 0, which is less than 3, due to no division by
-zero exception being raised. We fix that by checking for division by
-zero.
+	 Write of size 8 at addr ffff8881d26e3c60 by task kworker/u1536:2/2965
 
-Secondly, correctly set the number of hugepages to zero before trying
-to set a large number of them.
+For full log, please look at [1].
 
-Now, consider a situation in which, at the start of the test, a non-zero
-number of hugepages have been already set (while running the entire
-selftests/mm suite, or manually by the admin). The test operates on 80%
-of memory to avoid OOM-killer invocation, and because some memory is
-already blocked by hugepages, it would increase the chance of OOM-killing.
-Also, since mem_free used in check_compaction() is the value before we
-set nr_hugepages to zero, the chance that the compaction_index will
-be small is very high if the preset nr_hugepages was high, leading to a
-bogus test success.
+Make the allocation at least the size of sizeof(unsigned long) so that
+set_bit() and test_bit() have sufficient room for read/write operations
+without overwriting unallocated memory.
 
-This patch (of 3):
+[1] Link: https://lore.kernel.org/all/ZkNcALr3W3KGYYJG@gmail.com/
 
-Currently, if at runtime we are not able to allocate a huge page, the test
-will trivially pass on Aarch64 due to no exception being raised on
-division by zero while computing compaction_index.  Fix that by checking
-for nr_hugepages == 0.  Anyways, in general, avoid a division by zero by
-exiting the program beforehand.  While at it, fix a typo, and handle the
-case where the number of hugepages may overflow an integer.
-
-Link: https://lkml.kernel.org/r/20240521074358.675031-1-dev.jain@arm.com
-Link: https://lkml.kernel.org/r/20240521074358.675031-2-dev.jain@arm.com
-Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Sri Jayaramappa <sjayaram@akamai.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c696f7b83ede ("scsi: mpt3sas: Implement device_remove_in_progress check in IOCTL path")
+Cc: stable@vger.kernel.org
+Suggested-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://lore.kernel.org/r/20240605085530.499432-1-leitao@debian.org
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/vm/compaction_test.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ drivers/scsi/mpt3sas/mpt3sas_base.c |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/tools/testing/selftests/vm/compaction_test.c b/tools/testing/selftests/vm/compaction_test.c
-index 6aa6460b854ea..309b3750e57e1 100644
---- a/tools/testing/selftests/vm/compaction_test.c
-+++ b/tools/testing/selftests/vm/compaction_test.c
-@@ -82,12 +82,13 @@ int prereq(void)
- 	return -1;
- }
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -8337,6 +8337,12 @@ mpt3sas_base_attach(struct MPT3SAS_ADAPT
+ 	ioc->pd_handles_sz = (ioc->facts.MaxDevHandle / 8);
+ 	if (ioc->facts.MaxDevHandle % 8)
+ 		ioc->pd_handles_sz++;
++	/*
++	 * pd_handles_sz should have, at least, the minimal room for
++	 * set_bit()/test_bit(), otherwise out-of-memory touch may occur.
++	 */
++	ioc->pd_handles_sz = ALIGN(ioc->pd_handles_sz, sizeof(unsigned long));
++
+ 	ioc->pd_handles = kzalloc(ioc->pd_handles_sz,
+ 	    GFP_KERNEL);
+ 	if (!ioc->pd_handles) {
+@@ -8354,6 +8360,13 @@ mpt3sas_base_attach(struct MPT3SAS_ADAPT
+ 	ioc->pend_os_device_add_sz = (ioc->facts.MaxDevHandle / 8);
+ 	if (ioc->facts.MaxDevHandle % 8)
+ 		ioc->pend_os_device_add_sz++;
++
++	/*
++	 * pend_os_device_add_sz should have, at least, the minimal room for
++	 * set_bit()/test_bit(), otherwise out-of-memory may occur.
++	 */
++	ioc->pend_os_device_add_sz = ALIGN(ioc->pend_os_device_add_sz,
++					   sizeof(unsigned long));
+ 	ioc->pend_os_device_add = kzalloc(ioc->pend_os_device_add_sz,
+ 	    GFP_KERNEL);
+ 	if (!ioc->pend_os_device_add) {
+@@ -8645,6 +8658,12 @@ _base_check_ioc_facts_changes(struct MPT
+ 		if (ioc->facts.MaxDevHandle % 8)
+ 			pd_handles_sz++;
  
--int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
-+int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
- {
-+	unsigned long nr_hugepages_ul;
- 	int fd, ret = -1;
- 	int compaction_index = 0;
--	char initial_nr_hugepages[10] = {0};
--	char nr_hugepages[10] = {0};
-+	char initial_nr_hugepages[20] = {0};
-+	char nr_hugepages[20] = {0};
- 
- 	/* We want to test with 80% of available memory. Else, OOM killer comes
- 	   in to play */
-@@ -136,7 +137,12 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
- 
- 	/* We should have been able to request at least 1/3 rd of the memory in
- 	   huge pages */
--	compaction_index = mem_free/(atoi(nr_hugepages) * hugepage_size);
-+	nr_hugepages_ul = strtoul(nr_hugepages, NULL, 10);
-+	if (!nr_hugepages_ul) {
-+		ksft_print_msg("ERROR: No memory is available as huge pages\n");
-+		goto close_fd;
-+	}
-+	compaction_index = mem_free/(nr_hugepages_ul * hugepage_size);
- 
- 	lseek(fd, 0, SEEK_SET);
- 
-@@ -147,11 +153,11 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
- 		goto close_fd;
- 	}
- 
--	ksft_print_msg("Number of huge pages allocated = %d\n",
--		       atoi(nr_hugepages));
-+	ksft_print_msg("Number of huge pages allocated = %lu\n",
-+		       nr_hugepages_ul);
- 
- 	if (compaction_index > 3) {
--		ksft_print_msg("ERROR: Less that 1/%d of memory is available\n"
-+		ksft_print_msg("ERROR: Less than 1/%d of memory is available\n"
- 			       "as huge pages\n", compaction_index);
- 		goto close_fd;
- 	}
--- 
-2.43.0
-
++		/*
++		 * pd_handles should have, at least, the minimal room for
++		 * set_bit()/test_bit(), otherwise out-of-memory touch may
++		 * occur.
++		 */
++		pd_handles_sz = ALIGN(pd_handles_sz, sizeof(unsigned long));
+ 		pd_handles = krealloc(ioc->pd_handles, pd_handles_sz,
+ 		    GFP_KERNEL);
+ 		if (!pd_handles) {
 
 
 
