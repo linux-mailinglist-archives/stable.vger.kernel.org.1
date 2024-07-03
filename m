@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F27C9925A42
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:56:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20950925E82
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA2BA1F222E9
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:56:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05C27299716
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 710091862B1;
-	Wed,  3 Jul 2024 10:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2A317B50A;
+	Wed,  3 Jul 2024 11:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h0DdSRb2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zAfP6tqH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2130A174ED0;
-	Wed,  3 Jul 2024 10:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E2113B280;
+	Wed,  3 Jul 2024 11:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003626; cv=none; b=cdxhgPWQLbBV5enb3K1UHeNIT2a7+irK5I4L7TtxekVVnK8cqGiQtTX1cdYQtQ7dcploA9Lbr+6AUCnuhy8a12Ctvj1IaL+ThTPtF2Y0lLNKiNyaCvosaboweD3QAeJp23T6QSErG9ABUxvR21G28XoViQmxo4GLqaWp59gm0jk=
+	t=1720006013; cv=none; b=AeYwJDTtLznZbsfaQXlTpYAygESb82TogK4jvHfxD7TsERys3lXLACQpS++yLUDdhKhgin4gxb5aeYby2hhQEuhR9bLacxptNGVxE8fKAa4J3Ny9STqsgkT+CoQD29MtVtrN63H6o907M0rDCP5+tMdSsO3kHMpyJ93a4G4kAQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003626; c=relaxed/simple;
-	bh=XLynNpUWW//4JF5Km41PS67nQZyNEnL9c8lzvnzIqQM=;
+	s=arc-20240116; t=1720006013; c=relaxed/simple;
+	bh=uZrcq+Ch/nbcI2raLdCPMMouU4fEH6qNxJnrBDNPoHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EypTKZfHg2BbAOiCDNrUSZVUz8iUJAidGtikAg6FI0R5ngcgOiml48qjg5GZoctG9d4zg8lgKnxgL1aD8CecE+JhFQJBA3MOxk0P4gzzI4Eag+6dfaVsJVNr76y4G06LAYk3OdlxrtUtVDoxelqQh8lJQngES7G9D+FaDcI9pUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h0DdSRb2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6066AC2BD10;
-	Wed,  3 Jul 2024 10:47:05 +0000 (UTC)
+	 MIME-Version; b=foQERtu7k01633j8E90Ww7kh4QDaas01l3B26zO5MuoBFyl5JXlhcbj33gcuu0ti4arB8G2/n+QfNFhPJ2ePK+7iJB0O4scBG66rYMvoOxmoNcyZ7Mz1aHvV4YMwiwLC1dhyzcEeuUq5tRYOalq0wUNwcwAzKSGgZ9rOr6X9SxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zAfP6tqH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A03C2BD10;
+	Wed,  3 Jul 2024 11:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003625;
-	bh=XLynNpUWW//4JF5Km41PS67nQZyNEnL9c8lzvnzIqQM=;
+	s=korg; t=1720006013;
+	bh=uZrcq+Ch/nbcI2raLdCPMMouU4fEH6qNxJnrBDNPoHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h0DdSRb2IOyUM+1mUdV6N/69TBRWuMq5e5yvDCX65rMTaLpND1WKyUDvWYj9fcoCz
-	 b3nGDAY1zN5U+4/qxUfK8fye5PRG1sFPg9sppNLTxub0cwr+5vwtr71Oz16nOh/uTX
-	 1mwKAcIH3M/xJHoaSzGTgD8m6vzvxUisalBw2nWw=
+	b=zAfP6tqHLmMTKoRJaAR80+7LSr0jPsjpemxS0GeyicqChhXpm2WWYCQgKWbrURt65
+	 LaFC8ols/ry0lBHGV8EZN7ls2CgV/lLx71oZ4BTUViw7T6rvgndD7z3pzXVEO04LHw
+	 PndK7ZM4fQDAHQaFGQTORtNzCOaQNzo9qTZdSGMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Tristram Ha <tristram.ha@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 110/139] media: dvbdev: Initialize sbuf
+Subject: [PATCH 5.15 271/356] net: dsa: microchip: fix initial port flush problem
 Date: Wed,  3 Jul 2024 12:40:07 +0200
-Message-ID: <20240703102834.594524245@linuxfoundation.org>
+Message-ID: <20240703102923.368095040@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Tristram Ha <tristram.ha@microchip.com>
 
-[ Upstream commit 17d1316de0d7dc1bdc5d6e3ad4efd30a9bf1a381 ]
+[ Upstream commit ad53f5f54f351e967128edbc431f0f26427172cf ]
 
-Because the size passed to copy_from_user() cannot be known beforehand,
-it needs to be checked during runtime with check_object_size. That makes
-gcc believe that the content of sbuf can be used before init.
+The very first flush in any port will flush all learned addresses in all
+ports.  This can be observed by unplugging the cable from one port while
+additional ports are connected and dumping the fdb entries.
 
-Fix:
-./include/linux/thread_info.h:215:17: warning: ‘sbuf’ may be used uninitialized [-Wmaybe-uninitialized]
+This problem is caused by the initially wrong value programmed to the
+REG_SW_LUE_CTRL_1 register.  Setting SW_FLUSH_STP_TABLE and
+SW_FLUSH_MSTP_TABLE bits does not have an immediate effect.  It is when
+ksz9477_flush_dyn_mac_table() is called then the SW_FLUSH_STP_TABLE bit
+takes effect and flushes all learned entries.  After that call both bits
+are reset and so the next port flush will not cause such problem again.
 
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: b987e98e50ab ("dsa: add DSA switch driver for Microchip KSZ9477")
+Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
+Link: https://patch.msgid.link/1718756202-2731-1-git-send-email-Tristram.Ha@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvbdev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/microchip/ksz9477.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
-index f426e1bf16f0a..5124f412c05dc 100644
---- a/drivers/media/dvb-core/dvbdev.c
-+++ b/drivers/media/dvb-core/dvbdev.c
-@@ -964,7 +964,7 @@ int dvb_usercopy(struct file *file,
- 		     int (*func)(struct file *file,
- 		     unsigned int cmd, void *arg))
+--- a/drivers/net/dsa/microchip/ksz9477.c
++++ b/drivers/net/dsa/microchip/ksz9477.c
+@@ -195,7 +195,6 @@ static int ksz9477_wait_alu_sta_ready(st
+ 
+ static int ksz9477_reset_switch(struct ksz_device *dev)
  {
--	char    sbuf[128];
-+	char    sbuf[128] = {};
- 	void    *mbuf = NULL;
- 	void    *parg = NULL;
- 	int     err  = -EINVAL;
--- 
-2.43.0
-
+-	u8 data8;
+ 	u32 data32;
+ 
+ 	/* reset switch */
+@@ -206,10 +205,8 @@ static int ksz9477_reset_switch(struct k
+ 			   SPI_AUTO_EDGE_DETECTION, 0);
+ 
+ 	/* default configuration */
+-	ksz_read8(dev, REG_SW_LUE_CTRL_1, &data8);
+-	data8 = SW_AGING_ENABLE | SW_LINK_AUTO_AGING |
+-	      SW_SRC_ADDR_FILTER | SW_FLUSH_STP_TABLE | SW_FLUSH_MSTP_TABLE;
+-	ksz_write8(dev, REG_SW_LUE_CTRL_1, data8);
++	ksz_write8(dev, REG_SW_LUE_CTRL_1,
++		   SW_AGING_ENABLE | SW_LINK_AUTO_AGING | SW_SRC_ADDR_FILTER);
+ 
+ 	/* disable interrupts */
+ 	ksz_write32(dev, REG_SW_INT_MASK__4, SWITCH_INT_MASK);
 
 
 
