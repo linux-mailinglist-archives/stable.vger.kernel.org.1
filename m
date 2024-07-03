@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-57831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00AEC925E3D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 602FA925A83
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:01:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32FF91C22FC2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92F051C22EEE
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED49C17C9E1;
-	Wed,  3 Jul 2024 11:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF7516B384;
+	Wed,  3 Jul 2024 10:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BqvsoZqy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEJ6acgz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E3F17C7BA;
-	Wed,  3 Jul 2024 11:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6DE176242;
+	Wed,  3 Jul 2024 10:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006063; cv=none; b=q2ddx4K//2nJSmkRJd2uLfEW1XCOmVwRl+9xbKnLWULapBq2vSML84MfbuEoWVWWt3vdXFaW98L1s2znwtxQwNTk/6OPX339EG6m/xV4UP2dnc3Sr2xQP/Lb0shcRAmd9sgrGzfgoacDnyqIhEf7ATJ19WwWkP6isBywBhJsDk8=
+	t=1720003732; cv=none; b=Igc+mWkA9/f/XT7jt2bbARjDvKHcV6uMnuFIY+tKTeWsmDJY2YBq8ZIwJB9SARAv/w1B+3ngl/y0aMzeN6UZlum4mqBF0d3p1Eu62wH02FE9vmOI31lAI78upJSaadYzsUJ43ztZMFkgmVVHpQ0DwEVQwG+7FVHEANMP5arDFu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006063; c=relaxed/simple;
-	bh=CZ4XQPEdlcu0v6nmGW6+nAdjQtBqaAf6u4a1SBAdWiM=;
+	s=arc-20240116; t=1720003732; c=relaxed/simple;
+	bh=/9TOwmFv931ym6RR3oVRGjpZM7IM9HckbgozZlYrGSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hPN7+WbMlwrzp61yXTYfmTzMbv3QDWMXgkj4Xl5DGE9tz/gYG9gwIm+L8LpKh13tHO99aoIPRUgPpf9y6hvPwydLth9/9I4hg9hq00T8sN2AI9BjIWe3PkFm2dm0uBTnft9uYh0Z6hUiuZZgr407OyBgedm8nbrSiRlpCPqV7Eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BqvsoZqy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A29C2BD10;
-	Wed,  3 Jul 2024 11:27:43 +0000 (UTC)
+	 MIME-Version; b=cWiVh6J6W+Dqb948XwP1f5jiZPyUS34VUeJESZm73iKljqENJol3h64N+JQ//6VZsr+yL5XvYhcMXgdYe58JwTyxxygCdIoBZEI238oA7af+ux42OKFy06B/SuwE+Cod2wRfVJZMURKE1qSXfMxQ5DLmfn+VSAj8xANHNzpAxqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEJ6acgz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 323CCC2BD10;
+	Wed,  3 Jul 2024 10:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006063;
-	bh=CZ4XQPEdlcu0v6nmGW6+nAdjQtBqaAf6u4a1SBAdWiM=;
+	s=korg; t=1720003731;
+	bh=/9TOwmFv931ym6RR3oVRGjpZM7IM9HckbgozZlYrGSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BqvsoZqyXhQJlaeppszCFIOIX5fPEnXr8ZnU0HFGeQqAKr7vgknaaWtD361n7pP0I
-	 dmXPN1LTFaXz8lYB/YRZj1kV3Q0/K1PbZ/CKmVhPSjhVeCqYvAG9wW494jdqW2xkV6
-	 0erDMhJpYyX+96J9wL2OHQ4hb4hAzWSDhjfg5TJs=
+	b=kEJ6acgzVP4rU/ev09bsTqGZFJC3VeU3qDhpcmGzoeXGBVIC5oy2cCbpaCbh4mpQ3
+	 fo2sRckq2TTGLf0Y1SssesXTnI+JaIWsrCNaU7IR6oiV5Moyx4ZpI7+shQgRtr3/JO
+	 tk47RxKWvZHsRne93ijxgUzNt+Ewy60UfTPkHNXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Anton Protopopov <aspsk@isovalent.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 289/356] bpf: Add a check for struct bpf_fib_lookup size
-Date: Wed,  3 Jul 2024 12:40:25 +0200
-Message-ID: <20240703102924.053298760@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 4.19 129/139] hexagon: fix fadvise64_64 calling conventions
+Date: Wed,  3 Jul 2024 12:40:26 +0200
+Message-ID: <20240703102835.307134046@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +60,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Protopopov <aspsk@isovalent.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 59b418c7063d30e0a3e1f592d47df096db83185c ]
+commit 896842284c6ccba25ec9d78b7b6e62cdd507c083 upstream.
 
-The struct bpf_fib_lookup should not grow outside of its 64 bytes.
-Add a static assert to validate this.
+fadvise64_64() has two 64-bit arguments at the wrong alignment
+for hexagon, which turns them into a 7-argument syscall that is
+not supported by Linux.
 
-Suggested-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240326101742.17421-4-aspsk@isovalent.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The downstream musl port for hexagon actually asks for a 6-argument
+version the same way we do it on arm, csky, powerpc, so make the
+kernel do it the same way to avoid having to change both.
+
+Link: https://github.com/quic/musl/blob/hexagon/arch/hexagon/syscall_arch.h#L78
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/filter.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/hexagon/include/asm/syscalls.h |    6 ++++++
+ arch/hexagon/kernel/syscalltab.c    |    7 +++++++
+ 2 files changed, 13 insertions(+)
+ create mode 100644 arch/hexagon/include/asm/syscalls.h
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 47eb1bd47aa6e..a873c8fd51b67 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -79,6 +79,9 @@
- #include <net/tls.h>
- #include <net/xdp.h>
- 
-+/* Keep the struct bpf_fib_lookup small so that it fits into a cacheline */
-+static_assert(sizeof(struct bpf_fib_lookup) == 64, "struct bpf_fib_lookup size check");
+--- /dev/null
++++ b/arch/hexagon/include/asm/syscalls.h
+@@ -0,0 +1,6 @@
++/* SPDX-License-Identifier: GPL-2.0 */
 +
- static const struct bpf_func_proto *
- bpf_sk_base_func_proto(enum bpf_func_id func_id);
++#include <asm-generic/syscalls.h>
++
++asmlinkage long sys_hexagon_fadvise64_64(int fd, int advice,
++	                                  u32 a2, u32 a3, u32 a4, u32 a5);
+--- a/arch/hexagon/kernel/syscalltab.c
++++ b/arch/hexagon/kernel/syscalltab.c
+@@ -27,6 +27,13 @@
+ #undef __SYSCALL
+ #define __SYSCALL(nr, call) [nr] = (call),
  
--- 
-2.43.0
-
++SYSCALL_DEFINE6(hexagon_fadvise64_64, int, fd, int, advice,
++		SC_ARG64(offset), SC_ARG64(len))
++{
++	return ksys_fadvise64_64(fd, SC_VAL64(loff_t, offset), SC_VAL64(loff_t, len), advice);
++}
++#define sys_fadvise64_64 sys_hexagon_fadvise64_64
++
+ void *sys_call_table[__NR_syscalls] = {
+ #include <asm/unistd.h>
+ };
 
 
 
