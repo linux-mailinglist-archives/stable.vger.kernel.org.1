@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7421925AB5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E0FC925C68
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:18:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C7CC1F22D7B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 702291C209A5
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B516317277F;
-	Wed,  3 Jul 2024 10:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81521741CE;
+	Wed,  3 Jul 2024 11:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+DqT9Sn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjnuB8Ek"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DA31DFC7;
-	Wed,  3 Jul 2024 10:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767D2524C;
+	Wed,  3 Jul 2024 11:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003866; cv=none; b=QQxxmKl6MMPPnt8vUdgvW3maWkz6312XSGR8KavJHEI6OVIVP4JfK3bY63seRbd88dQ+As+6YBMj1VMShOWF6b40nziDnUvJq6IAhVKm6Zvrq+/D0T1w63mlXNN3yvlP/HV/x+GHx24eypRfRaQXCZlyDTiUOA54vhW9shHXHvM=
+	t=1720004783; cv=none; b=OOmKM56LD5Ioxq1fk4VgAyN246HmFkwLfgA9oNrRYhRgUzMRrJBhsK9emWWHQizYKPDL/g3VXsZ9hub3Hskt5/FbixV/beT7OHyCrI5uruc9Hz/teLXMhRA6r9qVb+msX9I5b0f+qCkwKxUMJTVYRhStOARr5MUY9ZOhJXN6NGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003866; c=relaxed/simple;
-	bh=4q8Hq8s2bZSXASQOQU0IB/KFf2FDbGRuzQJw9/6vn0I=;
+	s=arc-20240116; t=1720004783; c=relaxed/simple;
+	bh=dwr9TqTdWb9stdE7ctEWe354KtRw9FGgdRXdl3NYeNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lNSRtjU7RHjyn5OQca52Pk8x8IONQoSIReMbgkDZuP9i+M8YxcMbHvGG9C18Y2pfRKzY3CwEJ5xDIlN9qU+REA53w3sf2T7BcW/0Nhps5oY0bYzKphppleGxxs3U5svgIQDALIVyuEiuZlvr04aSkidcl82vntyZfWOen2b7JiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+DqT9Sn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3096C2BD10;
-	Wed,  3 Jul 2024 10:51:05 +0000 (UTC)
+	 MIME-Version; b=LKatrfQYq/9hbNb/YTylgDuJD7FIJ3Md0LkTuZc44q2ms7KxO1U7grx7FMFWP8Wf4cfZLiZfbHqbPlTeWQWxBIhO12JZIOhLpsbr3ajUzP3mYeRFOz4HYGgPAMlOwUs+cST00ksboTKBH/nmFRQbxkko9HoS573e/sXxyr5K8Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjnuB8Ek; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34BDC2BD10;
+	Wed,  3 Jul 2024 11:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003866;
-	bh=4q8Hq8s2bZSXASQOQU0IB/KFf2FDbGRuzQJw9/6vn0I=;
+	s=korg; t=1720004783;
+	bh=dwr9TqTdWb9stdE7ctEWe354KtRw9FGgdRXdl3NYeNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+DqT9Sn/hsDehEpvsRm7xpku+gxEICwe4GCTkMkdCG2hxCAd8MRR2ucijgkajUPL
-	 T6m6fAIlAlGzGnDXyeNfyx7xuRxPdoSsIi2tGF2ScrcbEONfSZXP/GPFO8LrNimJ4f
-	 Xbau5SXZjSbDX+YkYDkDXh59kFA3/nkCOx70F4/o=
+	b=zjnuB8EkfcXgXMYrol6Y0+YMYES5GnA7YYfh0YwpwZ/7LBI0d+srT8PgCTnYd8Klq
+	 DYB3WV81z1T0/FGaDeHtJ31D4OoX8T+bnmaV31vTCwWjpo2tnar30Q9Q9sf1l3Y9RY
+	 fWURj49y4muU5gHnotaZ80JSm24Ffx2MjUfnQeIA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre Tomon <pierretom+12@ik.me>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 5.4 046/189] xhci: Set correct transferred length for cancelled bulk transfers
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 126/290] powerpc/io: Avoid clang null pointer arithmetic warnings
 Date: Wed,  3 Jul 2024 12:38:27 +0200
-Message-ID: <20240703102843.251251436@linuxfoundation.org>
+Message-ID: <20240703102908.947115265@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit f0260589b439e2637ad54a2b25f00a516ef28a57 upstream.
+[ Upstream commit 03c0f2c2b2220fc9cf8785cd7b61d3e71e24a366 ]
 
-The transferred length is set incorrectly for cancelled bulk
-transfer TDs in case the bulk transfer ring stops on the last transfer
-block with a 'Stop - Length Invalid' completion code.
+With -Wextra clang warns about pointer arithmetic using a null pointer.
+When building with CONFIG_PCI=n, that triggers a warning in the IO
+accessors, eg:
 
-length essentially ends up being set to the requested length:
-urb->actual_length = urb->transfer_buffer_length
+  In file included from linux/arch/powerpc/include/asm/io.h:672:
+  linux/arch/powerpc/include/asm/io-defs.h:23:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     23 | DEF_PCI_AC_RET(inb, u8, (unsigned long port), (port), pio, port)
+        | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ...
+  linux/arch/powerpc/include/asm/io.h:591:53: note: expanded from macro '__do_inb'
+    591 | #define __do_inb(port)          readb((PCI_IO_ADDR)_IO_BASE + port);
+        |                                       ~~~~~~~~~~~~~~~~~~~~~ ^
 
-Length for 'Stop - Length Invalid' cases should be the sum of all
-TRB transfer block lengths up to the one the ring stopped on,
-_excluding_ the one stopped on.
+That is because when CONFIG_PCI=n, _IO_BASE is defined as 0.
 
-Fix this by always summing up TRB lengths for 'Stop - Length Invalid'
-bulk cases.
+Although _IO_BASE is defined as plain 0, the cast (PCI_IO_ADDR) converts
+it to void * before the addition with port happens.
 
-This issue was discovered by Alan Stern while debugging
-https://bugzilla.kernel.org/show_bug.cgi?id=218890, but does not
-solve that bug. Issue is older than 4.10 kernel but fix won't apply
-to those due to major reworks in that area.
+Instead the addition can be done first, and then the cast. The resulting
+value will be the same, but avoids the warning, and also avoids void
+pointer arithmetic which is apparently non-standard.
 
-Tested-by: Pierre Tomon <pierretom+12@ik.me>
-Cc: stable@vger.kernel.org # v4.10+
-Cc: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240611120610.3264502-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Closes: https://lore.kernel.org/all/CA+G9fYtEh8zmq8k8wE-8RZwW-Qr927RLTn+KqGnq1F=ptaaNsA@mail.gmail.com
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240503075619.394467-1-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/powerpc/include/asm/io.h | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2343,9 +2343,8 @@ static int process_bulk_intr_td(struct x
- 		goto finish_td;
- 	case COMP_STOPPED_LENGTH_INVALID:
- 		/* stopped on ep trb with invalid length, exclude it */
--		ep_trb_len	= 0;
--		remaining	= 0;
--		break;
-+		td->urb->actual_length = sum_trb_lengths(xhci, ep_ring, ep_trb);
-+		goto finish_td;
- 	case COMP_USB_TRANSACTION_ERROR:
- 		if (xhci->quirks & XHCI_NO_SOFT_RETRY ||
- 		    (ep_ring->err_count++ > MAX_SOFT_RETRY) ||
+diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
+index 0182b291248ac..058d21f493fad 100644
+--- a/arch/powerpc/include/asm/io.h
++++ b/arch/powerpc/include/asm/io.h
+@@ -541,12 +541,12 @@ __do_out_asm(_rec_outl, "stwbrx")
+ #define __do_inw(port)		_rec_inw(port)
+ #define __do_inl(port)		_rec_inl(port)
+ #else /* CONFIG_PPC32 */
+-#define __do_outb(val, port)	writeb(val,(PCI_IO_ADDR)_IO_BASE+port);
+-#define __do_outw(val, port)	writew(val,(PCI_IO_ADDR)_IO_BASE+port);
+-#define __do_outl(val, port)	writel(val,(PCI_IO_ADDR)_IO_BASE+port);
+-#define __do_inb(port)		readb((PCI_IO_ADDR)_IO_BASE + port);
+-#define __do_inw(port)		readw((PCI_IO_ADDR)_IO_BASE + port);
+-#define __do_inl(port)		readl((PCI_IO_ADDR)_IO_BASE + port);
++#define __do_outb(val, port)	writeb(val,(PCI_IO_ADDR)(_IO_BASE+port));
++#define __do_outw(val, port)	writew(val,(PCI_IO_ADDR)(_IO_BASE+port));
++#define __do_outl(val, port)	writel(val,(PCI_IO_ADDR)(_IO_BASE+port));
++#define __do_inb(port)		readb((PCI_IO_ADDR)(_IO_BASE + port));
++#define __do_inw(port)		readw((PCI_IO_ADDR)(_IO_BASE + port));
++#define __do_inl(port)		readl((PCI_IO_ADDR)(_IO_BASE + port));
+ #endif /* !CONFIG_PPC32 */
+ 
+ #ifdef CONFIG_EEH
+@@ -562,12 +562,12 @@ __do_out_asm(_rec_outl, "stwbrx")
+ #define __do_writesw(a, b, n)	_outsw(PCI_FIX_ADDR(a),(b),(n))
+ #define __do_writesl(a, b, n)	_outsl(PCI_FIX_ADDR(a),(b),(n))
+ 
+-#define __do_insb(p, b, n)	readsb((PCI_IO_ADDR)_IO_BASE+(p), (b), (n))
+-#define __do_insw(p, b, n)	readsw((PCI_IO_ADDR)_IO_BASE+(p), (b), (n))
+-#define __do_insl(p, b, n)	readsl((PCI_IO_ADDR)_IO_BASE+(p), (b), (n))
+-#define __do_outsb(p, b, n)	writesb((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
+-#define __do_outsw(p, b, n)	writesw((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
+-#define __do_outsl(p, b, n)	writesl((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
++#define __do_insb(p, b, n)	readsb((PCI_IO_ADDR)(_IO_BASE+(p)), (b), (n))
++#define __do_insw(p, b, n)	readsw((PCI_IO_ADDR)(_IO_BASE+(p)), (b), (n))
++#define __do_insl(p, b, n)	readsl((PCI_IO_ADDR)(_IO_BASE+(p)), (b), (n))
++#define __do_outsb(p, b, n)	writesb((PCI_IO_ADDR)(_IO_BASE+(p)),(b),(n))
++#define __do_outsw(p, b, n)	writesw((PCI_IO_ADDR)(_IO_BASE+(p)),(b),(n))
++#define __do_outsl(p, b, n)	writesl((PCI_IO_ADDR)(_IO_BASE+(p)),(b),(n))
+ 
+ #define __do_memset_io(addr, c, n)	\
+ 				_memset_io(PCI_FIX_ADDR(addr), c, n)
+-- 
+2.43.0
+
 
 
 
