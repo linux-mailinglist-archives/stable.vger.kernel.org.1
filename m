@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-57395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B32925F6A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:59:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC1B6925DBF
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D152B38C5A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2980D1C20AEA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D56A917DA38;
-	Wed,  3 Jul 2024 11:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D96191F85;
+	Wed,  3 Jul 2024 11:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0g5zftQC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2GJ0jjQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9290285298;
-	Wed,  3 Jul 2024 11:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181F1191F91;
+	Wed,  3 Jul 2024 11:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004747; cv=none; b=P3NhHCiBLQiKqrHRZgbAUjaeWAJ37FSouKwHQH6efTrjoWnFswUF3iVYgKxC6rl5s8banBV4ZMt8HY3brKbq2m8ckZ6OR7x6KADjv+ZcL6UJkJl7J6E1exKsbpZWeriEw9wIFcSTBOPT6BrFUUAdUkgEJAF/T9arqkeIiBptLNo=
+	t=1720005769; cv=none; b=fwh7PN6C7Lbs8qNCMchKHubYUa/2ZyHHumLUzEAn9XO4nxepe7PQ/LAc0Nlth9LMX4dCYXOykDHMO/xp9OFaMkMrinSQ1HWgZ7HHrNq9tCBcw3Lfm10Sx8oltmoYh5G2gFusw3ie84roAAaJSC9U4HOdVrtmcj/BuEbYz5iLp9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004747; c=relaxed/simple;
-	bh=ayLT2Z2kLmvzIewiL4n2uEu+m8SUc9E7nRqeFGZbm5k=;
+	s=arc-20240116; t=1720005769; c=relaxed/simple;
+	bh=VgoVxbwnyORVHXOtNu168/FQ4tV+vWG9E+SBIgPB/Uk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nysxP5ZM9ez5rR9rNZNTdX69aaHBHPTk+FZLgkwjMfHDTw0cqL/luD45NiuBuqN7RU6Tt2B8wdj3U6ZKvb9XuyRFqRXx7DWSNem4+tsQxMxiJ00k89KzImDnHH4kf516vy9kiWc7AegldqBnt6tX7HZ0dXJhlisYo0gHrvTG9Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0g5zftQC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58FEC2BD10;
-	Wed,  3 Jul 2024 11:05:46 +0000 (UTC)
+	 MIME-Version; b=fK0J5z+bkg54Jkrr/XE08irkcucsWuIPZfELia4NjW8oXq1kqKbfTCj/jX6VwzclzXKQUgrRT8G2qlxwoppVn9QAx+77CUflo1zsF8UsSI0JvFtoNyaZrXrGmQb5N9cMto9Sr+ZJd9biVb5jyUf955XcWX10ZSiy+nOENk02s8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2GJ0jjQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90490C2BD10;
+	Wed,  3 Jul 2024 11:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004747;
-	bh=ayLT2Z2kLmvzIewiL4n2uEu+m8SUc9E7nRqeFGZbm5k=;
+	s=korg; t=1720005769;
+	bh=VgoVxbwnyORVHXOtNu168/FQ4tV+vWG9E+SBIgPB/Uk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0g5zftQCo9P4E5ftegn1RXo520Upoz7ysrwOSEAD/lqtmcfBN0V03coz91ohULBrZ
-	 +UjTjkCxYCK5HDlD6RHbgJ8Hm1HobBIzWAJuxwwZktXFAQqoj+gPuEd66apcAej1sf
-	 uuX5Cg2zsNhFzGHdJvNwSO2iR8kuQcsUpgh3Ob64=
+	b=h2GJ0jjQI/zUQGghQR2xaTkBfBH79Qc/H/Wg9aZMz5C2/wb4gc/BhYpUwspo4zY64
+	 LYG5u3RyRQeJ70fFUYdjwA++akxamJwTyMwtDlRl+CjIBpYuCSkvp4DcTgPISxjlya
+	 Lmid5xPEnBhLsqvfhTWEyabLEwPzxN2NnFMCADjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Vlad Buslov <vladbu@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yue Haibing <yuehaibing@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 145/290] net/sched: act_api: rely on rcu in tcf_idr_check_alloc
-Date: Wed,  3 Jul 2024 12:38:46 +0200
-Message-ID: <20240703102909.660517925@linuxfoundation.org>
+Subject: [PATCH 5.15 191/356] netns: Make get_net_ns() handle zero refcount net
+Date: Wed,  3 Jul 2024 12:38:47 +0200
+Message-ID: <20240703102920.331546542@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,175 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Yue Haibing <yuehaibing@huawei.com>
 
-[ Upstream commit 4b55e86736d5b492cf689125da2600f59c7d2c39 ]
+[ Upstream commit ff960f9d3edbe08a736b5a224d91a305ccc946b0 ]
 
-Instead of relying only on the idrinfo->lock mutex for
-bind/alloc logic, rely on a combination of rcu + mutex + atomics
-to better scale the case where multiple rtnl-less filters are
-binding to the same action object.
+Syzkaller hit a warning:
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 3 PID: 7890 at lib/refcount.c:25 refcount_warn_saturate+0xdf/0x1d0
+Modules linked in:
+CPU: 3 PID: 7890 Comm: tun Not tainted 6.10.0-rc3-00100-gcaa4f9578aba-dirty #310
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:refcount_warn_saturate+0xdf/0x1d0
+Code: 41 49 04 31 ff 89 de e8 9f 1e cd fe 84 db 75 9c e8 76 26 cd fe c6 05 b6 41 49 04 01 90 48 c7 c7 b8 8e 25 86 e8 d2 05 b5 fe 90 <0f> 0b 90 90 e9 79 ff ff ff e8 53 26 cd fe 0f b6 1
+RSP: 0018:ffff8881067b7da0 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff811c72ac
+RDX: ffff8881026a2140 RSI: ffffffff811c72b5 RDI: 0000000000000001
+RBP: ffff8881067b7db0 R08: 0000000000000000 R09: 205b5d3730353139
+R10: 0000000000000000 R11: 205d303938375420 R12: ffff8881086500c4
+R13: ffff8881086500c4 R14: ffff8881086500b0 R15: ffff888108650040
+FS:  00007f5b2961a4c0(0000) GS:ffff88823bd00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055d7ed36fd18 CR3: 00000001482f6000 CR4: 00000000000006f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ? show_regs+0xa3/0xc0
+ ? __warn+0xa5/0x1c0
+ ? refcount_warn_saturate+0xdf/0x1d0
+ ? report_bug+0x1fc/0x2d0
+ ? refcount_warn_saturate+0xdf/0x1d0
+ ? handle_bug+0xa1/0x110
+ ? exc_invalid_op+0x3c/0xb0
+ ? asm_exc_invalid_op+0x1f/0x30
+ ? __warn_printk+0xcc/0x140
+ ? __warn_printk+0xd5/0x140
+ ? refcount_warn_saturate+0xdf/0x1d0
+ get_net_ns+0xa4/0xc0
+ ? __pfx_get_net_ns+0x10/0x10
+ open_related_ns+0x5a/0x130
+ __tun_chr_ioctl+0x1616/0x2370
+ ? __sanitizer_cov_trace_switch+0x58/0xa0
+ ? __sanitizer_cov_trace_const_cmp2+0x1c/0x30
+ ? __pfx_tun_chr_ioctl+0x10/0x10
+ tun_chr_ioctl+0x2f/0x40
+ __x64_sys_ioctl+0x11b/0x160
+ x64_sys_call+0x1211/0x20d0
+ do_syscall_64+0x9e/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f5b28f165d7
+Code: b3 66 90 48 8b 05 b1 48 2d 00 64 c7 00 26 00 00 00 48 c7 c0 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 81 48 2d 00 8
+RSP: 002b:00007ffc2b59c5e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f5b28f165d7
+RDX: 0000000000000000 RSI: 00000000000054e3 RDI: 0000000000000003
+RBP: 00007ffc2b59c650 R08: 00007f5b291ed8c0 R09: 00007f5b2961a4c0
+R10: 0000000029690010 R11: 0000000000000246 R12: 0000000000400730
+R13: 00007ffc2b59cf40 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+Kernel panic - not syncing: kernel: panic_on_warn set ...
 
-Action binding happens when an action index is specified explicitly and
-an action exists which such index exists. Example:
-  tc actions add action drop index 1
-  tc filter add ... matchall action drop index 1
-  tc filter add ... matchall action drop index 1
-  tc filter add ... matchall action drop index 1
-  tc filter ls ...
-     filter protocol all pref 49150 matchall chain 0 filter protocol all pref 49150 matchall chain 0 handle 0x1
-     not_in_hw
-           action order 1: gact action drop
-            random type none pass val 0
-            index 1 ref 4 bind 3
+This is trigger as below:
+          ns0                                    ns1
+tun_set_iff() //dev is tun0
+   tun->dev = dev
+//ip link set tun0 netns ns1
+                                       put_net() //ref is 0
+__tun_chr_ioctl() //TUNGETDEVNETNS
+   net = dev_net(tun->dev);
+   open_related_ns(&net->ns, get_net_ns); //ns1
+     get_net_ns()
+        get_net() //addition on 0
 
-   filter protocol all pref 49151 matchall chain 0 filter protocol all pref 49151 matchall chain 0 handle 0x1
-     not_in_hw
-           action order 1: gact action drop
-            random type none pass val 0
-            index 1 ref 4 bind 3
+Use maybe_get_net() in get_net_ns in case net's ref is zero to fix this
 
-   filter protocol all pref 49152 matchall chain 0 filter protocol all pref 49152 matchall chain 0 handle 0x1
-     not_in_hw
-           action order 1: gact action drop
-            random type none pass val 0
-            index 1 ref 4 bind 3
-
-When no index is specified, as before, grab the mutex and allocate
-in the idr the next available id. In this version, as opposed to before,
-it's simplified to store the -EBUSY pointer instead of the previous
-alloc + replace combination.
-
-When an index is specified, rely on rcu to find if there's an object in
-such index. If there's none, fallback to the above, serializing on the
-mutex and reserving the specified id. If there's one, it can be an -EBUSY
-pointer, in which case we just try again until it's an action, or an action.
-Given the rcu guarantees, the action found could be dead and therefore
-we need to bump the refcount if it's not 0, handling the case it's
-in fact 0.
-
-As bind and the action refcount are already atomics, these increments can
-happen without the mutex protection while many tcf_idr_check_alloc race
-to bind to the same action instance.
-
-In case binding encounters a parallel delete or add, it will return
--EAGAIN in order to try again. Both filter and action apis already
-have the retry machinery in-place. In case it's an unlocked filter it
-retries under the rtnl lock.
-
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
-Link: https://lore.kernel.org/r/20231211181807.96028-2-pctammela@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: d864319871b0 ("net/sched: act_api: fix possible infinite loop in tcf_idr_check_alloc()")
+Fixes: 0c3e0e3bb623 ("tun: Add ioctl() TUNGETDEVNETNS cmd to allow obtaining real net ns of tun device")
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Link: https://lore.kernel.org/r/20240614131302.2698509-1-yuehaibing@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_api.c | 65 ++++++++++++++++++++++++++++++---------------
- 1 file changed, 43 insertions(+), 22 deletions(-)
+ net/core/net_namespace.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-index 4ab9c2a6f6501..eb6bb90ddd334 100644
---- a/net/sched/act_api.c
-+++ b/net/sched/act_api.c
-@@ -507,6 +507,9 @@ EXPORT_SYMBOL(tcf_idr_cleanup);
-  * its reference and bind counters, and return 1. Otherwise insert temporary
-  * error pointer (to prevent concurrent users from inserting actions with same
-  * index) and return 0.
-+ *
-+ * May return -EAGAIN for binding actions in case of a parallel add/delete on
-+ * the requested index.
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index a209db33fa5f7..3addbce20f8ed 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -651,11 +651,16 @@ EXPORT_SYMBOL_GPL(__put_net);
+  * get_net_ns - increment the refcount of the network namespace
+  * @ns: common namespace (net)
+  *
+- * Returns the net's common namespace.
++ * Returns the net's common namespace or ERR_PTR() if ref is zero.
   */
- 
- int tcf_idr_check_alloc(struct tc_action_net *tn, u32 *index,
-@@ -515,43 +518,61 @@ int tcf_idr_check_alloc(struct tc_action_net *tn, u32 *index,
- 	struct tcf_idrinfo *idrinfo = tn->idrinfo;
- 	struct tc_action *p;
- 	int ret;
-+	u32 max;
- 
--again:
--	mutex_lock(&idrinfo->lock);
- 	if (*index) {
-+again:
-+		rcu_read_lock();
- 		p = idr_find(&idrinfo->action_idr, *index);
+ struct ns_common *get_net_ns(struct ns_common *ns)
+ {
+-	return &get_net(container_of(ns, struct net, ns))->ns;
++	struct net *net;
 +
- 		if (IS_ERR(p)) {
- 			/* This means that another process allocated
- 			 * index but did not assign the pointer yet.
- 			 */
--			mutex_unlock(&idrinfo->lock);
-+			rcu_read_unlock();
- 			goto again;
- 		}
- 
--		if (p) {
--			refcount_inc(&p->tcfa_refcnt);
--			if (bind)
--				atomic_inc(&p->tcfa_bindcnt);
--			*a = p;
--			ret = 1;
--		} else {
--			*a = NULL;
--			ret = idr_alloc_u32(&idrinfo->action_idr, NULL, index,
--					    *index, GFP_KERNEL);
--			if (!ret)
--				idr_replace(&idrinfo->action_idr,
--					    ERR_PTR(-EBUSY), *index);
-+		if (!p) {
-+			/* Empty slot, try to allocate it */
-+			max = *index;
-+			rcu_read_unlock();
-+			goto new;
-+		}
-+
-+		if (!refcount_inc_not_zero(&p->tcfa_refcnt)) {
-+			/* Action was deleted in parallel */
-+			rcu_read_unlock();
-+			return -EAGAIN;
- 		}
-+
-+		if (bind)
-+			atomic_inc(&p->tcfa_bindcnt);
-+		*a = p;
-+
-+		rcu_read_unlock();
-+
-+		return 1;
- 	} else {
-+		/* Find a slot */
- 		*index = 1;
--		*a = NULL;
--		ret = idr_alloc_u32(&idrinfo->action_idr, NULL, index,
--				    UINT_MAX, GFP_KERNEL);
--		if (!ret)
--			idr_replace(&idrinfo->action_idr, ERR_PTR(-EBUSY),
--				    *index);
-+		max = UINT_MAX;
- 	}
-+
-+new:
-+	*a = NULL;
-+
-+	mutex_lock(&idrinfo->lock);
-+	ret = idr_alloc_u32(&idrinfo->action_idr, ERR_PTR(-EBUSY), index, max,
-+			    GFP_KERNEL);
- 	mutex_unlock(&idrinfo->lock);
-+
-+	/* N binds raced for action allocation,
-+	 * retry for all the ones that failed.
-+	 */
-+	if (ret == -ENOSPC && *index == max)
-+		ret = -EAGAIN;
-+
- 	return ret;
++	net = maybe_get_net(container_of(ns, struct net, ns));
++	if (net)
++		return &net->ns;
++	return ERR_PTR(-EINVAL);
  }
- EXPORT_SYMBOL(tcf_idr_check_alloc);
+ EXPORT_SYMBOL_GPL(get_net_ns);
+ 
 -- 
 2.43.0
 
