@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C7B925E3A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D33A8925A9C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:02:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D510F1F250FC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A99DB296EA4
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:00:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBF0142904;
-	Wed,  3 Jul 2024 11:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157B7198853;
+	Wed,  3 Jul 2024 10:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5OCino0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RiWxGuhk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A096E5ED;
-	Wed,  3 Jul 2024 11:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A9618E777;
+	Wed,  3 Jul 2024 10:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006052; cv=none; b=C1+4ieeYsy27ikDAKNb5xc5Tgtg5fD2evkA1y/uvsLA7EIIN452IAJmSQdMAadJ735ZNammOlE7W3VIWiIkPdP30ybP42xVwsUr55JI7OB9yku7bzcgsZ7DZ2KKk8q5ABsqy9Ccze9N1s4fGp2caoawqNdggWc08qxd1iR2J0sM=
+	t=1720003667; cv=none; b=No+vprSMnZDc7qEEwYKNlXJKhP4IhTKE+MiPSfPv3Mp3YKH+KsU9SdxldYs55p8z0N9m5xCgDW6FRW9OsYDbiEWKcHiCJ5LU221Zzs4XIjkkMe1piK50BTEhjGUtHoOWEBUnJraJSkgf2Blz2m5dm5XZHZ59Z7SlWn2fdWpH8jM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006052; c=relaxed/simple;
-	bh=ElUcc+8sBjOdSCZVLEmoANjz6coRInpdYTe4fdFvLhs=;
+	s=arc-20240116; t=1720003667; c=relaxed/simple;
+	bh=08M8ekhjuzdeYjV4lg2Lp7c+WoCC7+9Y+M637eWPqPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jNZ1j2Mrqye7RqX5468B0dIDhW/dm3BGdaoxFSaiHDv1fa1VpyNq5/g/uJphEYBrDWd3BU8MT/TLGHuBn7zf5cjjeP6BTBXDn+tS5iR9DHoZML++i3vmzZMjjrqztS6m6VRTlDe0mgQ48E24BTmz/B3TcOLRTHngq+9YE5A+4MU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5OCino0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79090C2BD10;
-	Wed,  3 Jul 2024 11:27:31 +0000 (UTC)
+	 MIME-Version; b=FHzdgJVok991QMnvCY/AYMyxVzYCN/hn2yApLdFItHBlw3Ugd6495KYHPJvgxsmCKJTHFvOagEf5cSwM5OWBSV5Aom5f9l3smWkrZhdVVJ38L7zBOBnoe4QB3nd1XQpiCxh12ZCvWJmFg0/GqBN0hmOZXHmM+o/pWZoSpM6+MtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RiWxGuhk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE016C2BD10;
+	Wed,  3 Jul 2024 10:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006051;
-	bh=ElUcc+8sBjOdSCZVLEmoANjz6coRInpdYTe4fdFvLhs=;
+	s=korg; t=1720003667;
+	bh=08M8ekhjuzdeYjV4lg2Lp7c+WoCC7+9Y+M637eWPqPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R5OCino0ahWmXRKaDw5N6qRgQT3OSf9+aV6GPwHkXvahBriVB7H1uugg8Ppp2+Cml
-	 avdBN4DanSqPHzafKnpyjmTuk3a0mfA07vtAXuqVnjskcpKB1Zi1Ali2h0OKm6MYEe
-	 bTHzby/06DJM7IOvqbYylqe84jw/ph4xkpl4xYuI=
+	b=RiWxGuhksWPKcetHOgXCftLjnHC2v2AE9Etq6zAAzMko7Dhp5LHVbZnkkyNz7MDjh
+	 PHLEZqKiyGV0QFaUIWpVdaIkv0/9TPba6qfATevuk8xaVIM6BHwVh+7zbs6vFdFEFj
+	 j5lsuUkVzFDlc4rPrfg6IHPpCZzA/18s4XNOMj54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Marc Ferland <marc.ferland@sonatest.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 253/356] x86/amd_nb: Check for invalid SMN reads
+Subject: [PATCH 4.19 092/139] iio: dac: ad5592r: fix temperature channel scaling value
 Date: Wed,  3 Jul 2024 12:39:49 +0200
-Message-ID: <20240703102922.689301862@linuxfoundation.org>
+Message-ID: <20240703102833.915176393@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Marc Ferland <marc.ferland@sonatest.com>
 
-[ Upstream commit c625dabbf1c4a8e77e4734014f2fde7aa9071a1f ]
+[ Upstream commit 279428df888319bf68f2686934897301a250bb84 ]
 
-AMD Zen-based systems use a System Management Network (SMN) that
-provides access to implementation-specific registers.
+The scale value for the temperature channel is (assuming Vref=2.5 and
+the datasheet):
 
-SMN accesses are done indirectly through an index/data pair in PCI
-config space. The PCI config access may fail and return an error code.
-This would prevent the "read" value from being updated.
+    376.7897513
 
-However, the PCI config access may succeed, but the return value may be
-invalid. This is in similar fashion to PCI bad reads, i.e. return all
-bits set.
+When calculating both val and val2 for the temperature scale we
+use (3767897513/25) and multiply it by Vref (here I assume 2500mV) to
+obtain:
 
-Most systems will return 0 for SMN addresses that are not accessible.
-This is in line with AMD convention that unavailable registers are
-Read-as-Zero/Writes-Ignored.
+  2500 * (3767897513/25) ==> 376789751300
 
-However, some systems will return a "PCI Error Response" instead. This
-value, along with an error code of 0 from the PCI config access, will
-confuse callers of the amd_smn_read() function.
+Finally we divide with remainder by 10^9 to get:
 
-Check for this condition, clear the return value, and set a proper error
-code.
+    val = 376
+    val2 = 789751300
 
-Fixes: ddfe43cdc0da ("x86/amd_nb: Add SMN and Indirect Data Fabric access for AMD Fam17h")
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230403164244.471141-1-yazen.ghannam@amd.com
+However, we return IIO_VAL_INT_PLUS_MICRO (should have been NANO) as
+the scale type. So when converting the raw temperature value to the
+'processed' temperature value we will get (assuming raw=810,
+offset=-753):
+
+    processed = (raw + offset) * scale_val
+              = (810 + -753) * 376
+	      = 21432
+
+    processed += div((raw + offset) * scale_val2, 10^6)
+              += div((810 + -753) * 789751300, 10^6)
+	      += 45015
+    ==> 66447
+    ==> 66.4 Celcius
+
+instead of the expected 21.5 Celsius.
+
+Fix this issue by changing IIO_VAL_INT_PLUS_MICRO to
+IIO_VAL_INT_PLUS_NANO.
+
+Fixes: 56ca9db862bf ("iio: dac: Add support for the AD5592R/AD5593R ADCs/DACs")
+Signed-off-by: Marc Ferland <marc.ferland@sonatest.com>
+Link: https://lore.kernel.org/r/20240501150554.1871390-1-marc.ferland@sonatest.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/amd_nb.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/iio/dac/ad5592r-base.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
-index c92c9c774c0e5..62cd2af806b47 100644
---- a/arch/x86/kernel/amd_nb.c
-+++ b/arch/x86/kernel/amd_nb.c
-@@ -172,7 +172,14 @@ static int __amd_smn_rw(u16 node, u32 address, u32 *value, bool write)
+diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
+index 427946be41872..414134412a5f8 100644
+--- a/drivers/iio/dac/ad5592r-base.c
++++ b/drivers/iio/dac/ad5592r-base.c
+@@ -415,7 +415,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
+ 			s64 tmp = *val * (3767897513LL / 25LL);
+ 			*val = div_s64_rem(tmp, 1000000000LL, val2);
  
- int amd_smn_read(u16 node, u32 address, u32 *value)
- {
--	return __amd_smn_rw(node, address, value, false);
-+	int err = __amd_smn_rw(node, address, value, false);
-+
-+	if (PCI_POSSIBLE_ERROR(*value)) {
-+		err = -ENODEV;
-+		*value = 0;
-+	}
-+
-+	return err;
- }
- EXPORT_SYMBOL_GPL(amd_smn_read);
+-			return IIO_VAL_INT_PLUS_MICRO;
++			return IIO_VAL_INT_PLUS_NANO;
+ 		}
  
+ 		mutex_lock(&st->lock);
 -- 
 2.43.0
 
