@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D41C925A2E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:55:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B430D925C9B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:20:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C1251C260F7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EDC91F2149B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD10D136E2A;
-	Wed,  3 Jul 2024 10:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4CA1850B2;
+	Wed,  3 Jul 2024 11:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIDdnOfV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ux0fYTQt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7E21741D8;
-	Wed,  3 Jul 2024 10:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF898136E2A;
+	Wed,  3 Jul 2024 11:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003583; cv=none; b=jTkPK93T+RJICN8x+AOsctozgDm1foBz/rGEAt3OA2M3Wec4Ob2RxL+E+pkfcyAi7u4cxscPLpqGMue6nlLPSAjC1jMlgzvGMbKKh/zUx1CSFU9BN1j+Pg8UB9qmNRurLVqkoziJHt82T0VaQ9gphtKfR0VE6ukv2FYpkdWyPK0=
+	t=1720004932; cv=none; b=gKtQEPKnGzxCCTJ0leaqUufGc2Q/SGF7TtGqaboPqlsM8wYrTiVphL+sDGQqoD+XCkzLCt1Uw3k2NQP7q2Ps0NZENdvowpksJcn73tV3KzMZCPgdNVsa46SeePSsNGuKmHB27pcFFcr5ATBXZuVvVosSEa52KKGcvtndB18U72o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003583; c=relaxed/simple;
-	bh=hO132jt60qibtyvaRIfN67KOxoqsd3uzPxhAtwFLSPg=;
+	s=arc-20240116; t=1720004932; c=relaxed/simple;
+	bh=p/pgbsExsB1URFbkpeY1vVLrjZPr4ShEZb9zcRCbx8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=URSbO2VDFl8E00rQ84atkTUAbQJ/aSjvoQxb2f+dOW5TDQ9XQcxl6hr57B5iM8foUO4cDLvcQakLt/mqRBTvG48NZkvFj19AjHAq7bpR1ArYQfwR8IDTP+zHcBbxS8kBMQvR+A6EZ/6ARvzcX/SqanC0952cX0+DFpE2kEoAN28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIDdnOfV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 075E5C2BD10;
-	Wed,  3 Jul 2024 10:46:22 +0000 (UTC)
+	 MIME-Version; b=IHzyWcuz4lP/JiZXLpl7PCfVe8RPENJpvPR44xVEFVDdk9zjH57U3fsdx3s02G6t6Zs1cdIFv45tXMTph/vYGFkXuST8/rinP7ftq9FaVU0LDrOeg7LzLz3LJUYeh2v0/hijYGJcovvaNQkBP0+aAgnjH/tMlJnIAeIkTvHlVKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ux0fYTQt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB32C2BD10;
+	Wed,  3 Jul 2024 11:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003583;
-	bh=hO132jt60qibtyvaRIfN67KOxoqsd3uzPxhAtwFLSPg=;
+	s=korg; t=1720004931;
+	bh=p/pgbsExsB1URFbkpeY1vVLrjZPr4ShEZb9zcRCbx8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QIDdnOfVUYe4vtp18/DvvcrWvk2IY0PO0mD7G4oy5aG90iOH4T1DRO6oBj8fcThb7
-	 qL3t8S1OUGejYRHfI5GaTBVX1tTl7UKh4krnFiAgMZNbBUmCpdO5EHUj5uaBF+93iE
-	 19aKImRtX39II6GFaN8u4Ex63rF0Zc/DnbLU08WM=
+	b=Ux0fYTQtwGcmshuoEWiZANA9TtZcBFCbVEv1/Ob11xrOvuAN23ePvIowiQHyq2LKa
+	 AZ4VEm/fKbBHVN5hNSxnPp32cJQQoYwHL+I9q1QAiE6ifesBxdyPiUulHv7eR/yPLf
+	 RcfnBo9r6rLby7toSfP1XMvaiu0mta2pj/PDYy+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Maximilian Heyne <mheyne@amazon.de>,
+	Hagar Hemdan <hagarhem@amazon.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 089/139] x86/amd_nb: Check for invalid SMN reads
+Subject: [PATCH 5.10 205/290] pinctrl: fix deadlock in create_pinctrl() when handling -EPROBE_DEFER
 Date: Wed,  3 Jul 2024 12:39:46 +0200
-Message-ID: <20240703102833.802719611@linuxfoundation.org>
+Message-ID: <20240703102911.905519724@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Hagar Hemdan <hagarhem@amazon.com>
 
-[ Upstream commit c625dabbf1c4a8e77e4734014f2fde7aa9071a1f ]
+[ Upstream commit adec57ff8e66aee632f3dd1f93787c13d112b7a1 ]
 
-AMD Zen-based systems use a System Management Network (SMN) that
-provides access to implementation-specific registers.
+In create_pinctrl(), pinctrl_maps_mutex is acquired before calling
+add_setting(). If add_setting() returns -EPROBE_DEFER, create_pinctrl()
+calls pinctrl_free(). However, pinctrl_free() attempts to acquire
+pinctrl_maps_mutex, which is already held by create_pinctrl(), leading to
+a potential deadlock.
 
-SMN accesses are done indirectly through an index/data pair in PCI
-config space. The PCI config access may fail and return an error code.
-This would prevent the "read" value from being updated.
+This patch resolves the issue by releasing pinctrl_maps_mutex before
+calling pinctrl_free(), preventing the deadlock.
 
-However, the PCI config access may succeed, but the return value may be
-invalid. This is in similar fashion to PCI bad reads, i.e. return all
-bits set.
+This bug was discovered and resolved using Coverity Static Analysis
+Security Testing (SAST) by Synopsys, Inc.
 
-Most systems will return 0 for SMN addresses that are not accessible.
-This is in line with AMD convention that unavailable registers are
-Read-as-Zero/Writes-Ignored.
-
-However, some systems will return a "PCI Error Response" instead. This
-value, along with an error code of 0 from the PCI config access, will
-confuse callers of the amd_smn_read() function.
-
-Check for this condition, clear the return value, and set a proper error
-code.
-
-Fixes: ddfe43cdc0da ("x86/amd_nb: Add SMN and Indirect Data Fabric access for AMD Fam17h")
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230403164244.471141-1-yazen.ghannam@amd.com
+Fixes: 42fed7ba44e4 ("pinctrl: move subsystem mutex to pinctrl_dev struct")
+Suggested-by: Maximilian Heyne <mheyne@amazon.de>
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Link: https://lore.kernel.org/r/20240604085838.3344-1-hagarhem@amazon.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/amd_nb.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/pinctrl/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
-index 923b4bac96138..ef1fa51ea98e9 100644
---- a/arch/x86/kernel/amd_nb.c
-+++ b/arch/x86/kernel/amd_nb.c
-@@ -145,7 +145,14 @@ static int __amd_smn_rw(u16 node, u32 address, u32 *value, bool write)
- 
- int amd_smn_read(u16 node, u32 address, u32 *value)
- {
--	return __amd_smn_rw(node, address, value, false);
-+	int err = __amd_smn_rw(node, address, value, false);
-+
-+	if (PCI_POSSIBLE_ERROR(*value)) {
-+		err = -ENODEV;
-+		*value = 0;
-+	}
-+
-+	return err;
- }
- EXPORT_SYMBOL_GPL(amd_smn_read);
- 
+diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
+index ee99dc56c5448..3d44d6f48cc4c 100644
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -1092,8 +1092,8 @@ static struct pinctrl *create_pinctrl(struct device *dev,
+ 		 * an -EPROBE_DEFER later, as that is the worst case.
+ 		 */
+ 		if (ret == -EPROBE_DEFER) {
+-			pinctrl_free(p, false);
+ 			mutex_unlock(&pinctrl_maps_mutex);
++			pinctrl_free(p, false);
+ 			return ERR_PTR(ret);
+ 		}
+ 	}
 -- 
 2.43.0
 
