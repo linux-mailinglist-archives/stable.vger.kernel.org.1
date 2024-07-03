@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-57006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB4CA925A24
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:54:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8146925DE2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81C001F22296
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:54:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02A35B3AE06
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE5418412D;
-	Wed,  3 Jul 2024 10:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C7918509C;
+	Wed,  3 Jul 2024 11:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="klFmncZO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPtTPkGc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C4017B4FF;
-	Wed,  3 Jul 2024 10:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E2E1741FB;
+	Wed,  3 Jul 2024 11:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003553; cv=none; b=Z++MTKfEHU8JarI9ap+72e/8pdjSdvSELVGM6Qe7AZXvM+vQiVN8R4xcdltW4ywVJfqN0TlyjgGhpCh1BP+ucalw/gayZm0xvwaWzB8eJHp/4WHybk84wi1jzfw1tgfWPyEye4mUG1ziA8lPjE3ovw3+HchLC8BKaDRt5ubxJOA=
+	t=1720004919; cv=none; b=BI/7Q6gyiPzkybx3nc+gyRxidYaZXiA4nmVOqrdJEi2/a4YtixjdKh0pZcJjOC42ovXSwcqj4NXVjgQM2cCD2CtzD9uxrDdD1AcAjXHaowO3cl+i4lpMmuOx/KCLAx0zXckBhl2u7023PJUvLFcerjp8gWefZLkf5kbc1/mfFMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003553; c=relaxed/simple;
-	bh=sWwCTQvoyAkGuxtdxZFjBa37WxQA/mdRzqIwjIuHwiw=;
+	s=arc-20240116; t=1720004919; c=relaxed/simple;
+	bh=hdBj9fSWl5GmTHpwBlrezIpkesT21Ss7RgIV6NKajGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l3u2PwczidFEWtxZMITL97oLnTBwwMjAeiMQCKzN0pz10To2FttBwua1qTubsH2r3ngFntuPBYr6KEyL/5yFIGDurARSbYJ22KuquAMFtHQkCRNKGq4Ulxa/7Gl5rll6RdbtG5Nw6fo9fKAGmpts3j25U40ntRw8kfFeAdRkSFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=klFmncZO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3799C4AF0A;
-	Wed,  3 Jul 2024 10:45:52 +0000 (UTC)
+	 MIME-Version; b=U5C+LwPEpkSsZZ+RpwB+LNwGygEcxuAEk9SvO1bNsXn7Qh9F4KhDSpRr6VaCMJYwjQr3SJnWguy+cibNvrqTvxUuGSAYc7+oC8QjhESc5O4AgYogIwkL7Si6xxHdryisg6cVW8Mz9/6dDke5pzIoF58ySKpK936WeQxbRtXWQyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPtTPkGc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29DFCC4AF0B;
+	Wed,  3 Jul 2024 11:08:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003553;
-	bh=sWwCTQvoyAkGuxtdxZFjBa37WxQA/mdRzqIwjIuHwiw=;
+	s=korg; t=1720004919;
+	bh=hdBj9fSWl5GmTHpwBlrezIpkesT21Ss7RgIV6NKajGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=klFmncZOBdlFf3SFWRWJCgtX3oD6V0PpK2fAWlL+1fvkKkw+Hj/lnVY5vEZkEI8jj
-	 nj8UVfQcNuRyhALHAUbBHyrcwIeAbga+TYJWfsEsbShGwVAC7ZHF1FCG0/oHTah8Y/
-	 5YDBtH9a9Z+HrqN9eK8YBzSmBLDkjrtc5T2MdDgk=
+	b=kPtTPkGcTbqYf7nvqKpClMYYIcyz/ARybEZxCDCvJdUvvWGxSgRhkBjx0So92kiMD
+	 y1KHUsnZcNhSnBpCwGOIZQ+NkYsXLT9zkvDqh9y3mErtLN7MlgLfsby4q+IO8rzwQs
+	 2+qPhUvxmtWZMSJjks63a6Uvmc/Cdp7wfbZEtFCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-	"Shuah Khan (Samsung OSG)" <shuah@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 085/139] selftests/ftrace: Fix checkbashisms errors
+	David Alvarez Lombardi <dqalombardi@proton.me>,
+	dbilios@stdio.gr,
+	victor.bonnelle@proton.me,
+	hurricanepootis@protonmail.com,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Elvis Angelaccio <elvis.angelaccio@kde.org>
+Subject: [PATCH 5.10 201/290] ACPI: x86: utils: Add Cezanne to the list for forcing StorageD3Enable
 Date: Wed,  3 Jul 2024 12:39:42 +0200
-Message-ID: <20240703102833.649650861@linuxfoundation.org>
+Message-ID: <20240703102911.755532644@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +67,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu <mhiramat@kernel.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 72ce3daf92ba4f5bae6e91095d40e67b367c6b2f ]
+[ Upstream commit e2a56364485e7789e7b8f342637c7f3a219f7ede ]
 
-Fix a test case to make checkbashisms clean.
+commit 018d6711c26e4 ("ACPI: x86: Add a quirk for Dell Inspiron 14 2-in-1
+for StorageD3Enable") introduced a quirk to allow a system with ambiguous
+use of _ADR 0 to force StorageD3Enable.
 
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Signed-off-by: Shuah Khan (Samsung OSG) <shuah@kernel.org>
+It was reported that several more Dell systems suffered the same symptoms.
+As the list is continuing to grow but these are all Cezanne systems,
+instead add Cezanne to the CPU list to apply the StorageD3Enable property
+and remove the whole list.
+
+It was also reported that an HP system only has StorageD3Enable on the ACPI
+device for the first NVME disk, not the second.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217003
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216773
+Reported-by: David Alvarez Lombardi <dqalombardi@proton.me>
+Reported-by: dbilios@stdio.gr
+Reported-and-tested-by: Elvis Angelaccio <elvis.angelaccio@kde.org>
+Tested-by: victor.bonnelle@proton.me
+Tested-by: hurricanepootis@protonmail.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: e79a10652bbd ("ACPI: x86: Force StorageD3Enable on more products")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ftrace/test.d/trigger/trigger-trace-marker-snapshot.tc    | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/x86/utils.c | 37 +++++++++++++------------------------
+ 1 file changed, 13 insertions(+), 24 deletions(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/trigger/trigger-trace-marker-snapshot.tc b/tools/testing/selftests/ftrace/test.d/trigger/trigger-trace-marker-snapshot.tc
-index 6748e8cb42d0f..6bf7ac7f035bc 100644
---- a/tools/testing/selftests/ftrace/test.d/trigger/trigger-trace-marker-snapshot.tc
-+++ b/tools/testing/selftests/ftrace/test.d/trigger/trigger-trace-marker-snapshot.tc
-@@ -47,10 +47,10 @@ test_trace() {
- 	fi
- 	echo "testing $line for >$x<"
- 	match=`echo $line | sed -e "s/>$x<//"`
--	if [ "$line" == "$match" ]; then
-+	if [ "$line" = "$match" ]; then
- 	    fail "$line does not have >$x< in it"
- 	fi
--	let x=$x+2
-+	x=$((x+2))
-     done
- }
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index 222b951ff56ae..f1dd086d0b87d 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -191,37 +191,26 @@ bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *s
+  * a hardcoded allowlist for D3 support, which was used for these platforms.
+  *
+  * This allows quirking on Linux in a similar fashion.
++ *
++ * Cezanne systems shouldn't *normally* need this as the BIOS includes
++ * StorageD3Enable.  But for two reasons we have added it.
++ * 1) The BIOS on a number of Dell systems have ambiguity
++ *    between the same value used for _ADR on ACPI nodes GPP1.DEV0 and GPP1.NVME.
++ *    GPP1.NVME is needed to get StorageD3Enable node set properly.
++ *    https://bugzilla.kernel.org/show_bug.cgi?id=216440
++ *    https://bugzilla.kernel.org/show_bug.cgi?id=216773
++ *    https://bugzilla.kernel.org/show_bug.cgi?id=217003
++ * 2) On at least one HP system StorageD3Enable is missing on the second NVME
++      disk in the system.
+  */
+ static const struct x86_cpu_id storage_d3_cpu_ids[] = {
+ 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),	/* Renoir */
+ 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL),	/* Lucienne */
+-	{}
+-};
+-
+-static const struct dmi_system_id force_storage_d3_dmi[] = {
+-	{
+-		/*
+-		 * _ADR is ambiguous between GPP1.DEV0 and GPP1.NVME
+-		 * but .NVME is needed to get StorageD3Enable node
+-		 * https://bugzilla.kernel.org/show_bug.cgi?id=216440
+-		 */
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 14 7425 2-in-1"),
+-		}
+-	},
+-	{
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 16 5625"),
+-		}
+-	},
++	X86_MATCH_VENDOR_FAM_MODEL(AMD, 25, 80, NULL),	/* Cezanne */
+ 	{}
+ };
  
+ bool force_storage_d3(void)
+ {
+-	const struct dmi_system_id *dmi_id = dmi_first_match(force_storage_d3_dmi);
+-
+-	return dmi_id || x86_match_cpu(storage_d3_cpu_ids);
++	return x86_match_cpu(storage_d3_cpu_ids);
+ }
 -- 
 2.43.0
 
