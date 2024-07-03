@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-57830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E845D925E44
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D93E7925F1E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:51:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA59F29F9FB
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8801B32964
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059AE17C7AB;
-	Wed,  3 Jul 2024 11:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79322176237;
+	Wed,  3 Jul 2024 10:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cEYRnZKw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPomfrC6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CF86E5ED;
-	Wed,  3 Jul 2024 11:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36EFB174EFC;
+	Wed,  3 Jul 2024 10:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006060; cv=none; b=uOg69ulZgBHqMWa7lUkV2MPefNO7M2cAHqhxmUqJ8j1urPB8JLJe9antVNk9FtQUvH2mqP4wt1KNB5S3lKTACW1COhKJ1paq9AQrSDZ13Bx0ByWnybZx8lURkqRaRQFmffPE8+w7I0hMx03qReHJkDNep1rAOioFkAxTf0wgFEE=
+	t=1720003725; cv=none; b=ESITh03dZE9VzESpvwTvWjv2nCUKwbbP0bJcp7fLaaN0725vJoewZCeNiTQA1yXkx4ZOWu7KnX+CsOacqmOr8crY3JbQxb9sTzwaWYkmAGpzmIXs1OTf7W1ZZMIFnIUPwJ9L+aS5yRBfjDhcgyAb8EbaumTzpLDO5ibtWYigM1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006060; c=relaxed/simple;
-	bh=NzEjiXdHHUudT0nVvS28kD1hZsPHUDQ7U9mVOQkg9+s=;
+	s=arc-20240116; t=1720003725; c=relaxed/simple;
+	bh=qH7OyztJBtCabDMQINNrxBWxLuejXGuTypRibpjXxQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ibu4l5D0QCmHX8Fc3DxYUXWc0XhvPOKQl47Jz2JlJ5W358F5rdl+C5SLsud0sIknPweZVbP3gViZZ+5Xw3oBkuTuPSG1WE5nrZErxFA9vdt2wXU+mkwKWFkKPCEWk88WS5ytg8t8TL8mGQ9txUBMQsVwM6QldAKKm+JLG0Tg33Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cEYRnZKw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4007CC2BD10;
-	Wed,  3 Jul 2024 11:27:40 +0000 (UTC)
+	 MIME-Version; b=JhWIikHR6KLgm3Gem18xH8Qzh4AorteAkFXs61Isz6G55WotlYqhVAmPiOQl4ruqO4ipU/ZCHbLrxhxzfwoJoviehQHWsqg0imZXlDC1RBfUcuHH4bWQrb/rSf4cUdSshN6oRUOzm+dqXcPsaHf7+rROZF+RNqgW0obyVaG3tiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPomfrC6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB7B9C2BD10;
+	Wed,  3 Jul 2024 10:48:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006060;
-	bh=NzEjiXdHHUudT0nVvS28kD1hZsPHUDQ7U9mVOQkg9+s=;
+	s=korg; t=1720003725;
+	bh=qH7OyztJBtCabDMQINNrxBWxLuejXGuTypRibpjXxQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cEYRnZKwHTpBIQA7OOxH8FdAApF5n3tOxD4K0KvAsfiW3iliFU2fvOZGShQIQGe7j
-	 3iy5tS3pwjRs4v1ylZOK7ucJMWm6FDwnULBbpR5CWKacxWMRm2OE5QN2lOikSOdJv3
-	 ZTelpFbOa0ztZoNInmooz10ICWukDFHkvSQ6Ie3s=
+	b=WPomfrC6/tg3nguSKrZXl78fojXQbtiY9GIUtfJ5bAZ3zdOdn7swm1fFVcKoCTirv
+	 gsNFqc2/+psygFz0d4uZvVw03Xv0LbbgPmj6oagudXzRjDAYvvYM4vsHQ2MNFs3kJg
+	 tYfn8PsW3v+zlwhr8kyAHOuiY6fiV3TlBTaJm8mM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 288/356] mtd: partitions: redboot: Added conversion of operands to a larger type
+	stable <stable@kernel.org>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: [PATCH 4.19 127/139] serial: imx: set receiver level before starting uart
 Date: Wed,  3 Jul 2024 12:40:24 +0200
-Message-ID: <20240703102924.015446232@linuxfoundation.org>
+Message-ID: <20240703102835.232203187@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-[ Upstream commit 1162bc2f8f5de7da23d18aa4b7fbd4e93c369c50 ]
+commit a81dbd0463eca317eee44985a66aa6cc2ce5c101 upstream.
 
-The value of an arithmetic expression directory * master->erasesize is
-subject to overflow due to a failure to cast operands to a larger data
-type before perfroming arithmetic
+Set the receiver level to something > 0 before calling imx_uart_start_rx
+in rs485_config. This is necessary to avoid an interrupt storm that
+might prevent the system from booting. This was seen on an i.MX7 device
+when the rs485-rts-active-low property was active in the device tree.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240315093758.20790-1-arefev@swemel.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6d215f83e5fc ("serial: imx: warn user when using unsupported configuration")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Link: https://lore.kernel.org/r/20240621153829.183780-1-eichest@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/parsers/redboot.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/imx.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/parsers/redboot.c b/drivers/mtd/parsers/redboot.c
-index a16b42a885816..3b55b676ca6b9 100644
---- a/drivers/mtd/parsers/redboot.c
-+++ b/drivers/mtd/parsers/redboot.c
-@@ -102,7 +102,7 @@ static int parse_redboot_partitions(struct mtd_info *master,
- 			offset -= master->erasesize;
- 		}
- 	} else {
--		offset = directory * master->erasesize;
-+		offset = (unsigned long) directory * master->erasesize;
- 		while (mtd_block_isbad(master, offset)) {
- 			offset += master->erasesize;
- 			if (offset == master->size)
--- 
-2.43.0
-
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -1860,8 +1860,10 @@ static int imx_uart_rs485_config(struct
+ 
+ 	/* Make sure Rx is enabled in case Tx is active with Rx disabled */
+ 	if (!(rs485conf->flags & SER_RS485_ENABLED) ||
+-	    rs485conf->flags & SER_RS485_RX_DURING_TX)
++	    rs485conf->flags & SER_RS485_RX_DURING_TX) {
++		imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
+ 		imx_uart_start_rx(port);
++	}
+ 
+ 	port->rs485 = *rs485conf;
+ 
 
 
 
