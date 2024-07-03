@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-57650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EBE8925D60
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:28:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E5D8925C1E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:14:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1D201C21F48
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06C632994C0
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE7E181BB8;
-	Wed,  3 Jul 2024 11:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA18176ADB;
+	Wed,  3 Jul 2024 11:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qqYSfC88"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FsxZyelZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CAD181B9A;
-	Wed,  3 Jul 2024 11:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB5D13D61B;
+	Wed,  3 Jul 2024 11:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005520; cv=none; b=oiflgerbB39/nAVZF3oUfSsDHQcaW5W5+EOP2IYFO3hI+Z2WVNdkxv4CVgwv0j+betmlLfxGQEtbtRTrg7P5LNq1H2yjxD7CuH8wy1r4vT7HSKeX6WFL+vjkPzPhPU4dl/gFMlwkxSPl0Fhq1Z00g5Y5V3Ia/dxeMoTkGJXu4WI=
+	t=1720004498; cv=none; b=NOGo5iu4zWoVtdnOHJIUOV5NNbhAObL6Lr3YtTZJK6zlZyvK+mlaZufxJC8qlgv40f0SBVpFHU8mXSkUnvWQ4UA3ohA9SYwAaI4oyGU1h0lYdc/ASJ+OK4IOfhnKaBqetIdQmMgKY5OuDQvyPrE9cz7NppnAWXHGJgx4Ywaiyxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005520; c=relaxed/simple;
-	bh=qjIG/VNoC1/9hsG405MBc+euyl4sxFbozqNrETDVCUk=;
+	s=arc-20240116; t=1720004498; c=relaxed/simple;
+	bh=VAMgWd2OHG01JFVc9zKFWIWSXlpTNca9Hnz8WqW6cuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UBNFdu/Dp4GNjxkqzg38v+P302fj7tS9fUCApghe6tIn/SWzKSq1Z2cageVrfqKCQADp4wJr5FEme51arIAJxr9aqsDFtnlCuiSyz//N0BEQEs+2at98MwCFylmTZRofhV2a0v7dcpw8kOO4vGsNV5kxEAKXElbf8xLvskL6Yms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qqYSfC88; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830F0C2BD10;
-	Wed,  3 Jul 2024 11:18:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rZF2rIaqgSPAGkS0xuWAWYwSz95SALxkOb4z/F1yzVhqKIGXJogNir8xYxwYz6eBbOlUTMrjQdVeHCcbcFMG6u71uTHmpQOwKWIW4nhkZkrrHEhWdPJXbcyf6qpYsdvzh2166N43Y3s0S2lh74phg2IJQMv44ur7sprQL4tz774=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FsxZyelZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F686C2BD10;
+	Wed,  3 Jul 2024 11:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005519;
-	bh=qjIG/VNoC1/9hsG405MBc+euyl4sxFbozqNrETDVCUk=;
+	s=korg; t=1720004497;
+	bh=VAMgWd2OHG01JFVc9zKFWIWSXlpTNca9Hnz8WqW6cuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qqYSfC88zkGHTBBkWZvw9FAaYthfx8Dhk5R7ldZvQgd+xtpQ4RfghoWq/xHoLjfdH
-	 ysoCGx8nOel2S3OF6br6+McqRJuQkcC84sC9Z0UxX0dHEQ4Wtn+s0BDpAHL/CfD7E6
-	 O8NaYFYh7oIdhzXypdiPJnCQmuPxUedBCeW/H1qI=
+	b=FsxZyelZxZ7JD8oFrrQeOFhVhkqL9R9DD6IssY5v0jvCzco0Hip/RYaYSH/5PTXjG
+	 I8plZkVG3TNQmkHWmrqa4RRGZd3GUNaf7H91JCcfrCRC4KfQulb86Sz3jXMP2W8dNJ
+	 GSGo9IN+O0CXKmQ2mixNHjrSqdkqo1kCI/uWrExQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 107/356] net: stmmac: replace priv->speed with the portTransmitRate from the tc-cbs parameters
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
+	=20Bence?= <csokas.bence@prolan.hu>, Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 062/290] net: sfp: Always call `sfp_sm_mod_remove()` on remove
 Date: Wed,  3 Jul 2024 12:37:23 +0200
-Message-ID: <20240703102917.148028326@linuxfoundation.org>
+Message-ID: <20240703102906.543164058@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Csókás, Bence <csokas.bence@prolan.hu>
 
-[ Upstream commit be27b896529787e23a35ae4befb6337ce73fcca0 ]
+[ Upstream commit e96b2933152fd87b6a41765b2f58b158fde855b6 ]
 
-The current cbs parameter depends on speed after uplinking,
-which is not needed and will report a configuration error
-if the port is not initially connected. The UAPI exposed by
-tc-cbs requires userspace to recalculate the send slope anyway,
-because the formula depends on port_transmit_rate (see man tc-cbs),
-which is not an invariant from tc's perspective. Therefore, we
-use offload->sendslope and offload->idleslope to derive the
-original port_transmit_rate from the CBS formula.
+If the module is in SFP_MOD_ERROR, `sfp_sm_mod_remove()` will
+not be run. As a consequence, `sfp_hwmon_remove()` is not getting
+run either, leaving a stale `hwmon` device behind. `sfp_sm_mod_remove()`
+itself checks `sfp->sm_mod_state` anyways, so this check was not
+really needed in the first place.
 
-Fixes: 1f705bc61aee ("net: stmmac: Add support for CBS QDISC")
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://lore.kernel.org/r/20240608143524.2065736-1-xiaolei.wang@windriver.com
+Fixes: d2e816c0293f ("net: sfp: handle module remove outside state machine")
+Signed-off-by: "Csókás, Bence" <csokas.bence@prolan.hu>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20240605084251.63502-1-csokas.bence@prolan.hu
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 25 ++++++++-----------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ drivers/net/phy/sfp.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-index 08cffc0558743..a9b5f5ad1bac4 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -341,10 +341,11 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
- 			struct tc_cbs_qopt_offload *qopt)
- {
- 	u32 tx_queues_count = priv->plat->tx_queues_to_use;
-+	s64 port_transmit_rate_kbps;
- 	u32 queue = qopt->queue;
--	u32 ptr, speed_div;
- 	u32 mode_to_use;
- 	u64 value;
-+	u32 ptr;
- 	int ret;
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index 6a5f40f11db3f..d08990437f3e7 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -1952,8 +1952,7 @@ static void sfp_sm_module(struct sfp *sfp, unsigned int event)
  
- 	/* Queue 0 is not AVB capable */
-@@ -353,30 +354,26 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
- 	if (!priv->dma_cap.av)
- 		return -EOPNOTSUPP;
- 
-+	port_transmit_rate_kbps = qopt->idleslope - qopt->sendslope;
-+
- 	/* Port Transmit Rate and Speed Divider */
--	switch (priv->speed) {
-+	switch (div_s64(port_transmit_rate_kbps, 1000)) {
- 	case SPEED_10000:
--		ptr = 32;
--		speed_div = 10000000;
--		break;
- 	case SPEED_5000:
- 		ptr = 32;
--		speed_div = 5000000;
- 		break;
- 	case SPEED_2500:
--		ptr = 8;
--		speed_div = 2500000;
--		break;
- 	case SPEED_1000:
- 		ptr = 8;
--		speed_div = 1000000;
- 		break;
- 	case SPEED_100:
- 		ptr = 4;
--		speed_div = 100000;
- 		break;
- 	default:
--		return -EOPNOTSUPP;
-+		netdev_err(priv->dev,
-+			   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
-+			   port_transmit_rate_kbps);
-+		return -EINVAL;
+ 	/* Handle remove event globally, it resets this state machine */
+ 	if (event == SFP_E_REMOVE) {
+-		if (sfp->sm_mod_state > SFP_MOD_PROBE)
+-			sfp_sm_mod_remove(sfp);
++		sfp_sm_mod_remove(sfp);
+ 		sfp_sm_mod_next(sfp, SFP_MOD_EMPTY, 0);
+ 		return;
  	}
- 
- 	mode_to_use = priv->plat->tx_queues_cfg[queue].mode_to_use;
-@@ -396,10 +393,10 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
- 	}
- 
- 	/* Final adjustments for HW */
--	value = div_s64(qopt->idleslope * 1024ll * ptr, speed_div);
-+	value = div_s64(qopt->idleslope * 1024ll * ptr, port_transmit_rate_kbps);
- 	priv->plat->tx_queues_cfg[queue].idle_slope = value & GENMASK(31, 0);
- 
--	value = div_s64(-qopt->sendslope * 1024ll * ptr, speed_div);
-+	value = div_s64(-qopt->sendslope * 1024ll * ptr, port_transmit_rate_kbps);
- 	priv->plat->tx_queues_cfg[queue].send_slope = value & GENMASK(31, 0);
- 
- 	value = qopt->hicredit * 1024ll * 8;
 -- 
 2.43.0
 
