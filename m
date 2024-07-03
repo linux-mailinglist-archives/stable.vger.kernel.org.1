@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D158925F5D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:58:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E16F3925BF3
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:13:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EC2FB32FA3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2014F1C21BBC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A8D17DE01;
-	Wed,  3 Jul 2024 11:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFDB18FC7E;
+	Wed,  3 Jul 2024 11:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAwnWWp1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kXNNIaqj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C1817DA2E;
-	Wed,  3 Jul 2024 11:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF8C17556B;
+	Wed,  3 Jul 2024 11:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005455; cv=none; b=Tt7VJI/kPAvswg8HQLvzTumq3p+goy+o7ZvClbzW/0k97zeHILrnDVJxizqbQCox5Mh/Fa/Vb+NdDQ95cHCpmNkn1iEfiF1WznpCKF+iMhPMYxvPgv/IgSAhBUt7G4POmRWlYeSXyuVJN+gHZmT597MZow+47RpPN7ywHlSFcek=
+	t=1720004444; cv=none; b=YXDXHNZc/M65C1VKfdntOl5NQW1libyjXwqmAKbsIA7ME1RTVXoeMfHH/Ttt76E9O1MZ79d4iACu9A1xr/ztNWnTy0XQm7SL4KRExIWvgI0HuMFkVQk9rEP0nHytxDI9miWBSePNpsr/CnGW1rEb9TzMkgObGzHZcjnbo0X42kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005455; c=relaxed/simple;
-	bh=D9FTbvAv/drAdFoY5ZLpESZsE80X8j3BZvo6AIbiW5Y=;
+	s=arc-20240116; t=1720004444; c=relaxed/simple;
+	bh=i46t74DeNgifrWc6Sqy618fUXhvbQWgJhGTox6f+u8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nz2Kcx+PeUNfb7Zxx7+FlhJZcAb2qPnxzg1TdvweHmbroVnC3/DB2cYXC4epQ+ueMQ3k+YLXkIvlN/BDX3Z4Ec7ZsYMJ3uta/4+WvNaooiGua58uv/auguyTqpmJxQSzKrNToaq1JflrwxR6k25f8lkwTV+HDIfQK3OWj4Cx3is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GAwnWWp1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6854C32781;
-	Wed,  3 Jul 2024 11:17:34 +0000 (UTC)
+	 MIME-Version; b=KoFlr4Sge9vgL/O1tDPqQ7eGryXl6vRsMQI4WE2Xo3RJTndxGtm9QxshdyF4KmqhjPU6Da6sNpCAa8B6RJDy07B9mN1lU+Wc2Jaudh2SGZM6Dt6MpBD9/T5M4+KatkkAulnGV8ib+P1PQpBfYIeeR8OaBA5xZkv/qMJJsjYIhYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kXNNIaqj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377CBC2BD10;
+	Wed,  3 Jul 2024 11:00:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005455;
-	bh=D9FTbvAv/drAdFoY5ZLpESZsE80X8j3BZvo6AIbiW5Y=;
+	s=korg; t=1720004443;
+	bh=i46t74DeNgifrWc6Sqy618fUXhvbQWgJhGTox6f+u8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GAwnWWp1h8xw0YNX/hk3QXyoxoAfesZJril4rYi/baQUHgZB5ZLDahvfa6Eslw4xd
-	 8fNgYPQBUoiRHecbHhDoKq6VG0oV072v1oyJ1YQfj0IgwY/F6Fze6nutAZF1pdR9bz
-	 /LEb6thgVwiDevx34sUd5LgH4Oniz56LcpAmbw/Q=
+	b=kXNNIaqjy2Ur0WsMhQp3GKMgjhMnTTkaqfrg81KhaNHysHSCgaNd6OlK69HEH0pcZ
+	 hpY90T7Nxkv4CatPKStvesp8ir6GPoNJOM7T0b0x9aSrg+wgNjehtQhZNtMZAH8/Dv
+	 cfq+YYasV1Yg6Qf56wGMjGCzzvWDchZRcP5XqCYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ye xingchen <ye.xingchen@zte.com.cn>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+c8166c541d3971bf6c87@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 087/356] platform/x86: dell-smbios-base: Use sysfs_emit()
-Date: Wed,  3 Jul 2024 12:37:03 +0200
-Message-ID: <20240703102916.393565571@linuxfoundation.org>
+Subject: [PATCH 5.10 043/290] nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors
+Date: Wed,  3 Jul 2024 12:37:04 +0200
+Message-ID: <20240703102905.825509850@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ye xingchen <ye.xingchen@zte.com.cn>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit bbfa903b4f9a0a76719f386367fed5e64187f577 ]
+[ Upstream commit 7373a51e7998b508af7136530f3a997b286ce81c ]
 
-Replace the open-code with sysfs_emit() to simplify the code.
+The error handling in nilfs_empty_dir() when a directory folio/page read
+fails is incorrect, as in the old ext2 implementation, and if the
+folio/page cannot be read or nilfs_check_folio() fails, it will falsely
+determine the directory as empty and corrupt the file system.
 
-Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
-Link: https://lore.kernel.org/r/20220923063233.239091-1-ye.xingchen@zte.com.cn
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Stable-dep-of: 1981b296f858 ("platform/x86: dell-smbios: Fix wrong token data in sysfs")
+In addition, since nilfs_empty_dir() does not immediately return on a
+failed folio/page read, but continues to loop, this can cause a long loop
+with I/O if i_size of the directory's inode is also corrupted, causing the
+log writer thread to wait and hang, as reported by syzbot.
+
+Fix these issues by making nilfs_empty_dir() immediately return a false
+value (0) if it fails to get a directory folio/page.
+
+Link: https://lkml.kernel.org/r/20240604134255.7165-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+c8166c541d3971bf6c87@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c8166c541d3971bf6c87
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell-smbios-base.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nilfs2/dir.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/dell/dell-smbios-base.c b/drivers/platform/x86/dell/dell-smbios-base.c
-index fc086b66f70b3..e61bfaf8b5c48 100644
---- a/drivers/platform/x86/dell/dell-smbios-base.c
-+++ b/drivers/platform/x86/dell/dell-smbios-base.c
-@@ -441,7 +441,7 @@ static ssize_t location_show(struct device *dev,
+diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
+index 22f1f75a90c1a..552234ef22fe7 100644
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -627,7 +627,7 @@ int nilfs_empty_dir(struct inode *inode)
  
- 	i = match_attribute(dev, attr);
- 	if (i > 0)
--		return scnprintf(buf, PAGE_SIZE, "%08x", da_tokens[i].location);
-+		return sysfs_emit(buf, "%08x", da_tokens[i].location);
- 	return 0;
- }
+ 		kaddr = nilfs_get_page(inode, i, &page);
+ 		if (IS_ERR(kaddr))
+-			continue;
++			return 0;
  
-@@ -455,7 +455,7 @@ static ssize_t value_show(struct device *dev,
- 
- 	i = match_attribute(dev, attr);
- 	if (i > 0)
--		return scnprintf(buf, PAGE_SIZE, "%08x", da_tokens[i].value);
-+		return sysfs_emit(buf, "%08x", da_tokens[i].value);
- 	return 0;
- }
- 
+ 		de = (struct nilfs_dir_entry *)kaddr;
+ 		kaddr += nilfs_last_byte(inode, i) - NILFS_DIR_REC_LEN(1);
 -- 
 2.43.0
 
