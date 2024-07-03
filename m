@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-57064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05560925A85
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:01:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E01C6925F02
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:46:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC6FA1F20632
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FE6AB3BBE6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41005176AB4;
-	Wed,  3 Jul 2024 10:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6611018C324;
+	Wed,  3 Jul 2024 11:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ou1x+Eu+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUy9tuK9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28BE17625B;
-	Wed,  3 Jul 2024 10:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234EC18A952;
+	Wed,  3 Jul 2024 11:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003735; cv=none; b=LIopyvStOfsZJe9N20JCcW2Zme1lo9HycgJjXCzxMN/nQoAakKiAQ58ZBU/kqhSbwwJRxwVdX8xwZ94tiFHb8rsOezZHloF9tIWs3xVp0TtA28As1yvAnoZ27RLaB4r3kyhlODCcsTJUZPqjtkxbIlr/6D5yWMQzKSsRsHkGwL8=
+	t=1720005058; cv=none; b=Xztt0smejnGsH16hqgwRnhVv0TfvOcswlUkMiTnCcX2DcjARR12B7vfJi1ln/1xH59MqoShZn1pyNlimRm2pvgo/H3f63e0A9h8zu/M0wg5s/1we/+0c4zzebvA/UmbcZuR85nEqHdDgQQ5u8AlTZOFx0NGKhSKHLl+VBSHV8SM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003735; c=relaxed/simple;
-	bh=B+2GzjjAnSePjaCZUkhiBpjWldo37cO626kN6ebRGog=;
+	s=arc-20240116; t=1720005058; c=relaxed/simple;
+	bh=VyBumR8KFlLX9MHirDMkfic/pPsdHi8B7GVYhqaQqlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otXHkmLl8eYKQrcR1S5QUrapebcx4kYG/YMZQSIUm/Fy0fZVhkohZAtfeAxZPtPpRRdW5ZNX20izDU2hOyRGi55HpSnyV1dNBiwlMNy3b1APx8QMG9EirCSmZ71a1I7eniScQw8iMrMHgJ4l1JXqcKhx+NYFiLvOKg0KJC2AXLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ou1x+Eu+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2865AC2BD10;
-	Wed,  3 Jul 2024 10:48:53 +0000 (UTC)
+	 MIME-Version; b=GyzTQypcnpTEshHSNUGK2naNsty7f03a4CNebvXVGfXrzWef7B1ckilfs07z0hax/ghuNnCA531h50oiN6GiRlOfcaKVN6VpmXHQgIz+TwcTLfpbMhOocx451qykueOT7/PZilKlUEXmB6+LXf+Nzg4gYS7ges+Zwz9QmhPfI7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUy9tuK9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B8A6C2BD10;
+	Wed,  3 Jul 2024 11:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003734;
-	bh=B+2GzjjAnSePjaCZUkhiBpjWldo37cO626kN6ebRGog=;
+	s=korg; t=1720005057;
+	bh=VyBumR8KFlLX9MHirDMkfic/pPsdHi8B7GVYhqaQqlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ou1x+Eu+38O4eJF4w0yQEccZ7FNIsHfPwqit3dOyjjjZdGEFGK8ZQ5Yw/HeBUhJnH
-	 nEb15iE2eCPQd0fWa7LNZXxptT6/FRBBoSecw4moHHq45buyRqlGaTTITDIQL2Ypht
-	 Ma5nh+yn6bOgFbuSvAhkTLD0kxSDhtnn/WRn6sXE=
+	b=oUy9tuK975PExpgxuOhauq8FkNaC/DPcEHLkgaok1ry0NtIdhZUIxqxmrSRbsgtgb
+	 fWoqcaY5x92gwi8MqEGmz94E1Yx5gi9jdYKbjC6BCB/LVs1Egl6G/kdNHiSGAaHgWQ
+	 AxggUQ/GnN9VicU56MT0fhkshfUio958McaLUI7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Lyude Paul <lyude@redhat.com>
-Subject: [PATCH 4.19 130/139] drm/nouveau/dispnv04: fix null pointer dereference in nv17_tv_get_ld_modes
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 246/290] mmc: sdhci: Do not lock spinlock around mmc_gpio_get_ro()
 Date: Wed,  3 Jul 2024 12:40:27 +0200
-Message-ID: <20240703102835.345639403@linuxfoundation.org>
+Message-ID: <20240703102913.443801280@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit 66edf3fb331b6c55439b10f9862987b0916b3726 upstream.
+commit ab069ce125965a5e282f7b53b86aee76ab32975c upstream.
 
-In nv17_tv_get_ld_modes(), the return value of drm_mode_duplicate() is
-assigned to mode, which will lead to a possible NULL pointer dereference
-on failure of drm_mode_duplicate(). Add a check to avoid npd.
+sdhci_check_ro() can call mmc_gpio_get_ro() while holding the sdhci
+host->lock spinlock. That would be a problem if the GPIO access done by
+mmc_gpio_get_ro() needed to sleep.
 
+However, host->lock is not needed anyway. The mmc core ensures that host
+operations do not race with each other, and asynchronous callbacks like the
+interrupt handler, software timeouts, completion work etc, cannot affect
+sdhci_check_ro().
+
+So remove the locking.
+
+Fixes: 6d5cd068ee59 ("mmc: sdhci: use WP GPIO in sdhci_check_ro()")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240625081828.2620794-1-make24@iscas.ac.cn
+Link: https://lore.kernel.org/r/20240614080051.4005-3-adrian.hunter@intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/dispnv04/tvnv17.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mmc/host/sdhci.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
-+++ b/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
-@@ -208,6 +208,8 @@ static int nv17_tv_get_ld_modes(struct d
- 		struct drm_display_mode *mode;
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -2489,11 +2489,8 @@ static int sdhci_get_cd(struct mmc_host
+ static int sdhci_check_ro(struct sdhci_host *host)
+ {
+ 	bool allow_invert = false;
+-	unsigned long flags;
+ 	int is_readonly;
  
- 		mode = drm_mode_duplicate(encoder->dev, tv_mode);
-+		if (!mode)
-+			continue;
+-	spin_lock_irqsave(&host->lock, flags);
+-
+ 	if (host->flags & SDHCI_DEVICE_DEAD) {
+ 		is_readonly = 0;
+ 	} else if (host->ops->get_ro) {
+@@ -2508,8 +2505,6 @@ static int sdhci_check_ro(struct sdhci_h
+ 		allow_invert = true;
+ 	}
  
- 		mode->clock = tv_norm->tv_enc_mode.vrefresh *
- 			mode->htotal / 1000 *
+-	spin_unlock_irqrestore(&host->lock, flags);
+-
+ 	if (is_readonly >= 0 &&
+ 	    allow_invert &&
+ 	    (host->quirks & SDHCI_QUIRK_INVERTED_WRITE_PROTECT))
 
 
 
