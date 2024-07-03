@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC86B925CD3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:23:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9884E925D7F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 750F7B37538
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E6DE29B03D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0508F177983;
-	Wed,  3 Jul 2024 11:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453251836EE;
+	Wed,  3 Jul 2024 11:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgUVsHPn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2UUdTZ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6DCF176AB0;
-	Wed,  3 Jul 2024 11:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01208174EC9;
+	Wed,  3 Jul 2024 11:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004509; cv=none; b=fZq7wdpkgfqMqqyZgsvUrSN7QPWTgky2EikzFTCPRCsjH/qkylWE3x04rgYAWMSFLj6BfF+Hs+OSP0B3CFcCE04SLBzjILgqNU8L/XVg9z8J+iQWQ6xuQet4KIb2edPo1fjKm+V5B5HDV4QfGSMDe8wmYF5/fqPKORdYwYaDMM4=
+	t=1720005615; cv=none; b=YgE6AGrfgBQGiNBJWEjb9MlyqwSCoeqomZ/HSYtCX2Q601OndLXZ9wvnvyBv4ZIHldn0+AGaYASH5J/aLJUoosvm3csxTNNemvbhL/tuRRwrPyL0/hxi4T1EbjmWk/tv6CXKYaeTOmIX6aCw2Ny94/1GjGTxues3HUsvFTwrwk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004509; c=relaxed/simple;
-	bh=/NpKifaek+7WedkD7/fwy2lzTptMbj4C/gRz7cfIb7g=;
+	s=arc-20240116; t=1720005615; c=relaxed/simple;
+	bh=dXDG4PtQvf+CXUoOaWQ72qNXdRkXAnguWDGVv/ac2NY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rTUaNvGGAIAm7Y6E9P4EEy7zE7P7D/vidOvYbCmbUx7f9TfbxZYbgNk3/ISxb2YOF/ExdsdnHhvZIuiDaTIISz4ZyYtMtA9ivAv/VyT5hAt3vlKZwtkTmG1N0oIz2gxkKHiYWvAERLrg6UIaxTQtv0iv8hDy0CSHOgte2zFNlyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgUVsHPn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A5B3C2BD10;
-	Wed,  3 Jul 2024 11:01:49 +0000 (UTC)
+	 MIME-Version; b=RSX5hzNmW2Ydesn0iqSHH9bXq0ZXWqth/2iCRH7pAXrUsW6LwbiBC/zeSgdwSeCaNr4J+qSFv5zlI+VzYW+kfAP/IWEnRh3w2XaZ4Q1y+R70qMPahWjIAE3Frq/hoppm+V9Inaa0qXhzhtT0vXw1dNImK/yaZ739RoHAOTY9Ri8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2UUdTZ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78B94C2BD10;
+	Wed,  3 Jul 2024 11:20:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004509;
-	bh=/NpKifaek+7WedkD7/fwy2lzTptMbj4C/gRz7cfIb7g=;
+	s=korg; t=1720005614;
+	bh=dXDG4PtQvf+CXUoOaWQ72qNXdRkXAnguWDGVv/ac2NY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rgUVsHPnRaXuO/Gwof6G7ay1qfvFB54+HbO0Ngpu31eTm4fv+c5ArxxQB8b1gACjX
-	 zkvAGE5ZRxxgVSat+Y5910uo0ttBh+f+jAMQgIhAHfXTjFsrSIF9G//d9if+2WXy3+
-	 lBnTqXQKN5aDbutTGF6jcVgDkib+ceI5UaHIIurg=
+	b=A2UUdTZ5hGxwINnIwGt6yCBPXl5gKjy3eSPkBy7BcGnIKjUk41xDiQAZSgS1C6git
+	 qlflYW0CvJLXub+/culYJwJjXb/dHlygV3lUL2jIWJXt7Xom2QOMVc6ae19mVdr+Kr
+	 vpV3Xv9LWju2iAdTtlYTrEICdte7jwW3myxyfDsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Miotk <adam.miotk@arm.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 066/290] drm/bridge/panel: Fix runtime warning on panel bridge release
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 111/356] iio: adc: ad9467: fix scan type sign
 Date: Wed,  3 Jul 2024 12:37:27 +0200
-Message-ID: <20240703102906.693002929@linuxfoundation.org>
+Message-ID: <20240703102917.299431946@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Miotk <adam.miotk@arm.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit ce62600c4dbee8d43b02277669dd91785a9b81d9 ]
+commit 8a01ef749b0a632f0e1f4ead0f08b3310d99fcb1 upstream.
 
-Device managed panel bridge wrappers are created by calling to
-drm_panel_bridge_add_typed() and registering a release handler for
-clean-up when the device gets unbound.
+According to the IIO documentation, the sign in the scan type should be
+lower case. The ad9467 driver was incorrectly using upper case.
 
-Since the memory for this bridge is also managed and linked to the panel
-device, the release function should not try to free that memory.
-Moreover, the call to devm_kfree() inside drm_panel_bridge_remove() will
-fail in this case and emit a warning because the panel bridge resource
-is no longer on the device resources list (it has been removed from
-there before the call to release handlers).
+Fix by changing to lower case.
 
-Fixes: 67022227ffb1 ("drm/bridge: Add a devm_ allocator for panel bridge.")
-Signed-off-by: Adam Miotk <adam.miotk@arm.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240610102739.139852-1-adam.miotk@arm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4606d0f4b05f ("iio: adc: ad9467: add support for AD9434 high-speed ADC")
+Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://lore.kernel.org/r/20240503-ad9467-fix-scan-type-sign-v1-1-c7a1a066ebb9@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/panel.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad9467.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/panel.c b/drivers/gpu/drm/bridge/panel.c
-index c916f4b8907ef..35a6d9c4e081e 100644
---- a/drivers/gpu/drm/bridge/panel.c
-+++ b/drivers/gpu/drm/bridge/panel.c
-@@ -252,9 +252,12 @@ EXPORT_SYMBOL(drm_panel_bridge_remove);
- 
- static void devm_drm_panel_bridge_release(struct device *dev, void *res)
- {
--	struct drm_bridge **bridge = res;
-+	struct drm_bridge *bridge = *(struct drm_bridge **)res;
- 
--	drm_panel_bridge_remove(*bridge);
-+	if (!bridge)
-+		return;
-+
-+	drm_bridge_remove(bridge);
+--- a/drivers/iio/adc/ad9467.c
++++ b/drivers/iio/adc/ad9467.c
+@@ -223,11 +223,11 @@ static void __ad9467_get_scale(struct ad
  }
  
- /**
--- 
-2.43.0
-
+ static const struct iio_chan_spec ad9434_channels[] = {
+-	AD9467_CHAN(0, 0, 12, 'S'),
++	AD9467_CHAN(0, 0, 12, 's'),
+ };
+ 
+ static const struct iio_chan_spec ad9467_channels[] = {
+-	AD9467_CHAN(0, 0, 16, 'S'),
++	AD9467_CHAN(0, 0, 16, 's'),
+ };
+ 
+ static const struct ad9467_chip_info ad9467_chip_tbl[] = {
 
 
 
