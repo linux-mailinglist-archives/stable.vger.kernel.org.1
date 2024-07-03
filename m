@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60B5E925C40
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:16:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B6E925EF2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:44:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 922B61C21099
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C075B33DFE
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72E217D8A9;
-	Wed,  3 Jul 2024 11:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E19181325;
+	Wed,  3 Jul 2024 10:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZQCJDmD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pDaom17T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E17817C7A2;
-	Wed,  3 Jul 2024 11:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E313317E8EE;
+	Wed,  3 Jul 2024 10:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004726; cv=none; b=N+rj09ewJ3WE2nU2lXuUAaF0KuHewA/rXoDILtD/KRBwuresPMqo8+ivT/bmN7jJexKkExyfb5YBmzBwHppV0PBHWWrTKd8QwpqYqsLc8masBJHXzrgZub47j9LMIoeM/94zPbYV9mGzIymA4k3MWOiraOniGNflY0E8BS80pzc=
+	t=1720004000; cv=none; b=H05evZzcsT+B3NfY2Ykn7uVZ63Ws+wlHjv+x3ajofClpjBqgl2HU4EUvD9/wHnQX897ugxQgo9EBLKVcBIkoyIIt3G6QfDxqz0yuMwV3JT7q14c/y0Q/QI9/dI6PxbkJyxH/v+rd5TlyLQpY+JdsUBsff8o/cU9y1VlzdvdkBPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004726; c=relaxed/simple;
-	bh=n0llrkMFPcMzxIAEf/RDZmGT9adqh21LPm/vgq4YZ1k=;
+	s=arc-20240116; t=1720004000; c=relaxed/simple;
+	bh=UbLH1ncyTM02kgoSG8r9gZ+EWuTgKpE9qtM2t7KscIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gqRDajLjNSl6Q+VOoe/6S5oXmRkKWeTIdQbigqRDEKnO76aPRkJTa9GbR+X68FrEPu62xkCc4hqCFN6IbsmNBAm5YUBYGzgqjHRN5k2KTuqYuGrHTQ9aBGbsvyNIqBVyceWZIabh5+C61qCmAjYt4uY0US0iKQOArKc5CzSXXoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZQCJDmD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A02C2BD10;
-	Wed,  3 Jul 2024 11:05:25 +0000 (UTC)
+	 MIME-Version; b=d1mOrFJpB/84H5x4+vuw0u6i/J0wJiD3kdxrR5+h5G1oajiKAartQf7vO850VY2djqqHbiSF2WVDdxHt3+ymGCYGgLR7hTnkXZDcuYJyatHh3FL9Sp/9Oh78DhFAXa1qYnqy+xC6QDWfhLa4Z/qLveVVMGmP03K9dmUnX1iJ+CM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDaom17T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6592FC2BD10;
+	Wed,  3 Jul 2024 10:53:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004726;
-	bh=n0llrkMFPcMzxIAEf/RDZmGT9adqh21LPm/vgq4YZ1k=;
+	s=korg; t=1720003999;
+	bh=UbLH1ncyTM02kgoSG8r9gZ+EWuTgKpE9qtM2t7KscIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZQCJDmDMzAOlHjDqjsb0g+bkDEUIxGfRQvGrtUc6evpH5Qi79TYY0IIaDMfBv9mk
-	 wHbKfv4VTR9/L8KtLDz+vdsXxFkKlXOXvUswcsnW4IApZjclGoNiw+arSGUQpUdlNU
-	 HGqULlH9N2EO9lHwV+9/3htJbVy1ihz8Eeo2W9CQ=
+	b=pDaom17Truxc6n2AihzEyaF/Qk3mf4NkS8QuJn+QzYzWwhPUU5he9PHWzm8TcBQlh
+	 z2OC+tfQUPfmW1adfnVE6lMydMOQHemZzp6uCNyi7YIMTcZpck35dK15ZQZJ8UgRpV
+	 DOpCnN7png3Jr7TXr7z+mcf+wCXMzCE8odR2lSBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d327a1f3b12e1e206c16@syzkaller.appspotmail.com,
-	Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
-	"David S. Miller" <davem@davemloft.net>,
+	Adam Miotk <adam.miotk@arm.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 139/290] netrom: Fix a memory leak in nr_heartbeat_expiry()
+Subject: [PATCH 5.4 059/189] drm/bridge/panel: Fix runtime warning on panel bridge release
 Date: Wed,  3 Jul 2024 12:38:40 +0200
-Message-ID: <20240703102909.437467699@linuxfoundation.org>
+Message-ID: <20240703102843.737799300@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+From: Adam Miotk <adam.miotk@arm.com>
 
-[ Upstream commit 0b9130247f3b6a1122478471ff0e014ea96bb735 ]
+[ Upstream commit ce62600c4dbee8d43b02277669dd91785a9b81d9 ]
 
-syzbot reported a memory leak in nr_create() [0].
+Device managed panel bridge wrappers are created by calling to
+drm_panel_bridge_add_typed() and registering a release handler for
+clean-up when the device gets unbound.
 
-Commit 409db27e3a2e ("netrom: Fix use-after-free of a listening socket.")
-added sock_hold() to the nr_heartbeat_expiry() function, where
-a) a socket has a SOCK_DESTROY flag or
-b) a listening socket has a SOCK_DEAD flag.
+Since the memory for this bridge is also managed and linked to the panel
+device, the release function should not try to free that memory.
+Moreover, the call to devm_kfree() inside drm_panel_bridge_remove() will
+fail in this case and emit a warning because the panel bridge resource
+is no longer on the device resources list (it has been removed from
+there before the call to release handlers).
 
-But in the case "a," when the SOCK_DESTROY flag is set, the file descriptor
-has already been closed and the nr_release() function has been called.
-So it makes no sense to hold the reference count because no one will
-call another nr_destroy_socket() and put it as in the case "b."
-
-nr_connect
-  nr_establish_data_link
-    nr_start_heartbeat
-
-nr_release
-  switch (nr->state)
-  case NR_STATE_3
-    nr->state = NR_STATE_2
-    sock_set_flag(sk, SOCK_DESTROY);
-
-                        nr_rx_frame
-                          nr_process_rx_frame
-                            switch (nr->state)
-                            case NR_STATE_2
-                              nr_state2_machine()
-                                nr_disconnect()
-                                  nr_sk(sk)->state = NR_STATE_0
-                                  sock_set_flag(sk, SOCK_DEAD)
-
-                        nr_heartbeat_expiry
-                          switch (nr->state)
-                          case NR_STATE_0
-                            if (sock_flag(sk, SOCK_DESTROY) ||
-                               (sk->sk_state == TCP_LISTEN
-                                 && sock_flag(sk, SOCK_DEAD)))
-                               sock_hold()  // ( !!! )
-                               nr_destroy_socket()
-
-To fix the memory leak, let's call sock_hold() only for a listening socket.
-
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with Syzkaller.
-
-[0]: https://syzkaller.appspot.com/bug?extid=d327a1f3b12e1e206c16
-
-Reported-by: syzbot+d327a1f3b12e1e206c16@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d327a1f3b12e1e206c16
-Fixes: 409db27e3a2e ("netrom: Fix use-after-free of a listening socket.")
-Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 67022227ffb1 ("drm/bridge: Add a devm_ allocator for panel bridge.")
+Signed-off-by: Adam Miotk <adam.miotk@arm.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240610102739.139852-1-adam.miotk@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netrom/nr_timer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/panel.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/netrom/nr_timer.c b/net/netrom/nr_timer.c
-index 4e7c968cde2dc..5e3ca068f04e0 100644
---- a/net/netrom/nr_timer.c
-+++ b/net/netrom/nr_timer.c
-@@ -121,7 +121,8 @@ static void nr_heartbeat_expiry(struct timer_list *t)
- 		   is accepted() it isn't 'dead' so doesn't get removed. */
- 		if (sock_flag(sk, SOCK_DESTROY) ||
- 		    (sk->sk_state == TCP_LISTEN && sock_flag(sk, SOCK_DEAD))) {
--			sock_hold(sk);
-+			if (sk->sk_state == TCP_LISTEN)
-+				sock_hold(sk);
- 			bh_unlock_sock(sk);
- 			nr_destroy_socket(sk);
- 			goto out;
+diff --git a/drivers/gpu/drm/bridge/panel.c b/drivers/gpu/drm/bridge/panel.c
+index b12ae3a4c5f11..695dba0f018f8 100644
+--- a/drivers/gpu/drm/bridge/panel.c
++++ b/drivers/gpu/drm/bridge/panel.c
+@@ -203,9 +203,12 @@ EXPORT_SYMBOL(drm_panel_bridge_remove);
+ 
+ static void devm_drm_panel_bridge_release(struct device *dev, void *res)
+ {
+-	struct drm_bridge **bridge = res;
++	struct drm_bridge *bridge = *(struct drm_bridge **)res;
+ 
+-	drm_panel_bridge_remove(*bridge);
++	if (!bridge)
++		return;
++
++	drm_bridge_remove(bridge);
+ }
+ 
+ /**
 -- 
 2.43.0
 
