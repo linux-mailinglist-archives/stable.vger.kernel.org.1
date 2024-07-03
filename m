@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF288925D95
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 859F7925AA6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:02:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 857A81F21557
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7BFD1C22F73
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85CF6185E6B;
-	Wed,  3 Jul 2024 11:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF4A317B41F;
+	Wed,  3 Jul 2024 10:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUAg0Gux"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqtRsuil"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4561A171E70;
-	Wed,  3 Jul 2024 11:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B53B17B419;
+	Wed,  3 Jul 2024 10:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005668; cv=none; b=GjJDanzlCKSZS7gnR4ElI+JS8gV9M46Y7OBe+Ml3uZvDQDEyxNRXsaAk8b5lVLGK1nZRSeKdgOSOothYG/k6fLR+8pHaNlY88rmmSVIYA3hpYxV2/7NLu6pdQ7Evl9cp+PexAWVPdkLXJ9YZhaGMLbtMbHk3iWoiFh9EkV7CsHk=
+	t=1720003824; cv=none; b=f+DuV3qtTYqW5jjAA5S4eVKsjsy6PrK7+1UDY3CJNs0qRSzP2A/QL9LIAi5+D9KdED2NTlddjQS5g6MhG6XnLB03F1ESdyyDlpRm3tKPmC4vMpk8qNut/ZwrpNvwucT8UP/u4YVIvq7uphP9eyzpQg6ebghYNtK82ptJXu4QCsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005668; c=relaxed/simple;
-	bh=BnYT32GPZrCyzO1P46RDr2tt8pDKm4NX+7tGxIRivrs=;
+	s=arc-20240116; t=1720003824; c=relaxed/simple;
+	bh=yAE+QVb1JvKPZ4qQ2ldN9D1ogCxkrdXPsJZb1mz7Z8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntRrOe62DG78qg1Yxg8OudY4+muQZhixlLrvKGl2p+CUv3iYG63FJmCGs1PbviY5MNa46nwgE7f8jwIdvKWbQNMJJEweKoYOKDNMcnU6ZNgI+05NhyfPZ1RRYWsRm1Wrf4ih22ZAUduYjDhQgbXhTUlEifqejp3tfgG0d4N6WQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUAg0Gux; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637F8C2BD10;
-	Wed,  3 Jul 2024 11:21:07 +0000 (UTC)
+	 MIME-Version; b=fccy6xi9RazOxdnEZEextVp5F8Dk3ppbNaD9Qu76eLlpX3G0nN9sP9HDJuyi7OJJPjP3WLLIAAsgn1AGdIoTr9HjKBXIwBQBQ/k2DpY2EAaV2T76rYgnHTwn/yQL2hu4S9siO69S8v8TCotVXMvNFAX+RfHdCYPmj7phcx8QNNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqtRsuil; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11CEC2BD10;
+	Wed,  3 Jul 2024 10:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005667;
-	bh=BnYT32GPZrCyzO1P46RDr2tt8pDKm4NX+7tGxIRivrs=;
+	s=korg; t=1720003824;
+	bh=yAE+QVb1JvKPZ4qQ2ldN9D1ogCxkrdXPsJZb1mz7Z8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dUAg0GuxrM2ZZbB5xxLp93xxdD0x547H2KBPZPf8ebImT9sN9FEvgCV/YAaxQS1KE
-	 IULOQOPXYn7NsUyOJxlpqia12Dc6TXpJbiB5gqe6+5HByF1jV2OCteP77LL2KacQ5k
-	 qO2RRIyJiWvJ0ZXWFF/HPMXh/PALSi6j/FmjZKoI=
+	b=fqtRsuilzdDqGRlO1DqL00zSRRrLKtexnUrRL5yOlEG5d6yb13RefWzg778vdfxWq
+	 mVXoSTrkrPR28OPbz841vQ/4h3VNRsXfJxt2jdhZHqG21yX5wjJfvvHgv6At1VI8mr
+	 xzLqQe/tLeqKifXLVYH9pFbkKCJk62vfMBtju1WA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 157/356] selftests/bpf: Fix flaky test btf_map_in_map/lookup_update
-Date: Wed,  3 Jul 2024 12:38:13 +0200
-Message-ID: <20240703102919.041842994@linuxfoundation.org>
+Subject: [PATCH 5.4 033/189] serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when using prescaler
+Date: Wed,  3 Jul 2024 12:38:14 +0200
+Message-ID: <20240703102842.758182158@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 14bb1e8c8d4ad5d9d2febb7d19c70a3cf536e1e5 ]
+[ Upstream commit 8492bd91aa055907c67ef04f2b56f6dadd1f44bf ]
 
-Recently, I frequently hit the following test failure:
+When using a high speed clock with a low baud rate, the 4x prescaler is
+automatically selected if required. In that case, sc16is7xx_set_baud()
+properly configures the chip registers, but returns an incorrect baud
+rate by not taking into account the prescaler value. This incorrect baud
+rate is then fed to uart_update_timeout().
 
-  [root@arch-fb-vm1 bpf]# ./test_progs -n 33/1
-  test_lookup_update:PASS:skel_open 0 nsec
-  [...]
-  test_lookup_update:PASS:sync_rcu 0 nsec
-  test_lookup_update:FAIL:map1_leak inner_map1 leaked!
-  #33/1    btf_map_in_map/lookup_update:FAIL
-  #33      btf_map_in_map:FAIL
+For example, with an input clock of 80MHz, and a selected baud rate of 50,
+sc16is7xx_set_baud() will return 200 instead of 50.
 
-In the test, after map is closed and then after two rcu grace periods,
-it is assumed that map_id is not available to user space.
+Fix this by first changing the prescaler variable to hold the selected
+prescaler value instead of the MCR bitfield. Then properly take into
+account the selected prescaler value in the return value computation.
 
-But the above assumption cannot be guaranteed. After zero or one
-or two rcu grace periods in different siturations, the actual
-freeing-map-work is put into a workqueue. Later on, when the work
-is dequeued, the map will be actually freed.
-See bpf_map_put() in kernel/bpf/syscall.c.
+Also add better documentation about the divisor value computation.
 
-By using workqueue, there is no ganrantee that map will be actually
-freed after a couple of rcu grace periods. This patch removed
-such map leak detection and then the test can pass consistently.
-
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240322061353.632136-1-yonghong.song@linux.dev
+Fixes: dfeae619d781 ("serial: sc16is7xx")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20240430200431.4102923-1-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/prog_tests/btf_map_in_map.c | 26 +------------------
- 1 file changed, 1 insertion(+), 25 deletions(-)
+ drivers/tty/serial/sc16is7xx.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c b/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c
-index eb90a6b8850d2..f4d753185001a 100644
---- a/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c
-+++ b/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c
-@@ -25,7 +25,7 @@ static void test_lookup_update(void)
- 	int map1_fd, map2_fd, map3_fd, map4_fd, map5_fd, map1_id, map2_id;
- 	int outer_arr_fd, outer_hash_fd, outer_arr_dyn_fd;
- 	struct test_btf_map_in_map *skel;
--	int err, key = 0, val, i, fd;
-+	int err, key = 0, val, i;
- 
- 	skel = test_btf_map_in_map__open_and_load();
- 	if (CHECK(!skel, "skel_open", "failed to open&load skeleton\n"))
-@@ -102,30 +102,6 @@ static void test_lookup_update(void)
- 	CHECK(map1_id == 0, "map1_id", "failed to get ID 1\n");
- 	CHECK(map2_id == 0, "map2_id", "failed to get ID 2\n");
- 
--	test_btf_map_in_map__destroy(skel);
--	skel = NULL;
--
--	/* we need to either wait for or force synchronize_rcu(), before
--	 * checking for "still exists" condition, otherwise map could still be
--	 * resolvable by ID, causing false positives.
--	 *
--	 * Older kernels (5.8 and earlier) freed map only after two
--	 * synchronize_rcu()s, so trigger two, to be entirely sure.
--	 */
--	CHECK(kern_sync_rcu(), "sync_rcu", "failed\n");
--	CHECK(kern_sync_rcu(), "sync_rcu", "failed\n");
--
--	fd = bpf_map_get_fd_by_id(map1_id);
--	if (CHECK(fd >= 0, "map1_leak", "inner_map1 leaked!\n")) {
--		close(fd);
--		goto cleanup;
--	}
--	fd = bpf_map_get_fd_by_id(map2_id);
--	if (CHECK(fd >= 0, "map2_leak", "inner_map2 leaked!\n")) {
--		close(fd);
--		goto cleanup;
--	}
--
- cleanup:
- 	test_btf_map_in_map__destroy(skel);
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index fad8d1f744466..8fb47f73cc7ad 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -489,16 +489,28 @@ static bool sc16is7xx_regmap_precious(struct device *dev, unsigned int reg)
+ 	return false;
  }
+ 
++/*
++ * Configure programmable baud rate generator (divisor) according to the
++ * desired baud rate.
++ *
++ * From the datasheet, the divisor is computed according to:
++ *
++ *              XTAL1 input frequency
++ *             -----------------------
++ *                    prescaler
++ * divisor = ---------------------------
++ *            baud-rate x sampling-rate
++ */
+ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ {
+ 	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
+ 	u8 lcr;
+-	u8 prescaler = 0;
++	unsigned int prescaler = 1;
+ 	unsigned long clk = port->uartclk, div = clk / 16 / baud;
+ 
+ 	if (div >= BIT(16)) {
+-		prescaler = SC16IS7XX_MCR_CLKSEL_BIT;
+-		div /= 4;
++		prescaler = 4;
++		div /= prescaler;
+ 	}
+ 
+ 	/* In an amazing feat of design, the Enhanced Features Register shares
+@@ -533,9 +545,10 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ 
+ 	mutex_unlock(&s->efr_lock);
+ 
++	/* If bit MCR_CLKSEL is set, the divide by 4 prescaler is activated. */
+ 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
+ 			      SC16IS7XX_MCR_CLKSEL_BIT,
+-			      prescaler);
++			      prescaler == 1 ? 0 : SC16IS7XX_MCR_CLKSEL_BIT);
+ 
+ 	/* Open the LCR divisors for configuration */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
+@@ -550,7 +563,7 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ 	/* Put LCR back to the normal mode */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
+ 
+-	return DIV_ROUND_CLOSEST(clk / 16, div);
++	return DIV_ROUND_CLOSEST((clk / prescaler) / 16, div);
+ }
+ 
+ static void sc16is7xx_handle_rx(struct uart_port *port, unsigned int rxlen,
 -- 
 2.43.0
 
