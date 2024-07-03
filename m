@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32024925D3F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FDA7925BE6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:12:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D01081F21DD4
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF3821F221EF
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43FCE17DA12;
-	Wed,  3 Jul 2024 11:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCFB21953A9;
+	Wed,  3 Jul 2024 10:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H52EdSE4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQpO73bJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0065F1741C5;
-	Wed,  3 Jul 2024 11:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925AC18E75B;
+	Wed,  3 Jul 2024 10:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005421; cv=none; b=ohSMzTtLnSauppFFM9hSW+8I42LkH7NxxF8qXHl8wdrhinMBlII+zkXppKnK5V8k4/55mQ7FMB6NkX4ucK4J/6OTtC6Yd8PRhZKLvgGYb2cJaP9/VAlHCYH/w58rZCGR3Oc66IW2zxgBCzhifCF4d6dvfnP+3xvxH3UCjgTyxko=
+	t=1720004397; cv=none; b=MfPnsL1NAtOOWPk4taPuVhHqjzOU6eWoSswvf7jlf2Ha9P5rih9yd1gnhjR27hN3S8X7mw2jlmopjXFJz3bZSnUVaw41mju32LZIVHWuoJl78E5Ne9EEyVT1eGsBicEzP2TLK2sT2jNN7ir/1WfCsRndIw23zxXcIxz1Ha22wVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005421; c=relaxed/simple;
-	bh=zd0M0y2qAyv8cqUlFwEHaFry0wsYZyHjATSJz4y259o=;
+	s=arc-20240116; t=1720004397; c=relaxed/simple;
+	bh=eJPC7CoIjUkYhoktqd9vB0DArmPGiwZ0/ZEV1LDxclE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M0iLoUqj+8NlWggd4qo9/Y3V+p8/uYgq0k5GO1rEFFqEemTobFOTkqQl/w8TaagIc15YaMSVcfFJXF/tHDw2FtiPtvkcYscKhxBEkix1JQy3l/9vdUqW+nyuJ/huhWnT9P+Zin692C7aNkkpNnyBVOLQyulnqsgOBd1XpiGmlC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H52EdSE4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B422C2BD10;
-	Wed,  3 Jul 2024 11:17:00 +0000 (UTC)
+	 MIME-Version; b=i0dRosd6yCQSrKhfowYHHglCHHStZLUN2Zo3SsqppEGCkLq7bWiXgcp6kR10fBfxYuCNfDGoed2ygwKUDGl/KqahlF+jiF76cVear7lhnak250a/rgBkQ8K/HMl2VRvbvltX7xzu274/JXe1W1O4gSptkgf8pp80faPqGF74w8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQpO73bJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A25C32781;
+	Wed,  3 Jul 2024 10:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005420;
-	bh=zd0M0y2qAyv8cqUlFwEHaFry0wsYZyHjATSJz4y259o=;
+	s=korg; t=1720004397;
+	bh=eJPC7CoIjUkYhoktqd9vB0DArmPGiwZ0/ZEV1LDxclE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H52EdSE4WP6bZRaCGkMtikNHh38aUi5rkzd8Yg5Qb4SuYfvL3Vv3wDcbuW0dd9uho
-	 7VESQ8XbfHEka8Aoz4FaKdTA4pC6EsEnqaAb6wK6kMdl1ylcRsNpH8tjFJu3IvdwBl
-	 O/1E0Fw3gqopINa6oYrgNp8vLm+r8UIOyMk6fX3c=
+	b=cQpO73bJrIEB46ixi9dm25fCd+ijik4NQTtAb8MzQfJtUU8XR5g/cGNhbOM4R8nvJ
+	 9LNtPjKUEE1/JlOTro1xfra8BgiatMkKa5bXbC+DybgU1HOcatD+lSnAxF9KqmZ25f
+	 x9M+fpnCkFyS3b2OZbqINf+iThZIUXdFhQzdCzrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	syzbot+5f996b83575ef4058638@syzkaller.appspotmail.com,
-	syzbot+1b2abad17596ad03dcff@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 074/356] USB: class: cdc-wdm: Fix CPU lockup caused by excessive log messages
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.10 029/290] usb: gadget: f_fs: Fix race between aio_cancel() and AIO request complete
 Date: Wed,  3 Jul 2024 12:36:50 +0200
-Message-ID: <20240703102915.902580164@linuxfoundation.org>
+Message-ID: <20240703102905.294717447@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-commit 22f00812862564b314784167a89f27b444f82a46 upstream.
+[ Upstream commit 24729b307eefcd7c476065cd7351c1a018082c19 ]
 
-The syzbot fuzzer found that the interrupt-URB completion callback in
-the cdc-wdm driver was taking too long, and the driver's immediate
-resubmission of interrupt URBs with -EPROTO status combined with the
-dummy-hcd emulation to cause a CPU lockup:
+FFS based applications can utilize the aio_cancel() callback to dequeue
+pending USB requests submitted to the UDC.  There is a scenario where the
+FFS application issues an AIO cancel call, while the UDC is handling a
+soft disconnect.  For a DWC3 based implementation, the callstack looks
+like the following:
 
-cdc_wdm 1-1:1.0: nonzero urb status received: -71
-cdc_wdm 1-1:1.0: wdm_int_callback - 0 bytes
-watchdog: BUG: soft lockup - CPU#0 stuck for 26s! [syz-executor782:6625]
-CPU#0 Utilization every 4s during lockup:
-	#1:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
-	#2:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
-	#3:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
-	#4:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
-	#5:  98% system,	  1% softirq,	  3% hardirq,	  0% idle
-Modules linked in:
-irq event stamp: 73096
-hardirqs last  enabled at (73095): [<ffff80008037bc00>] console_emit_next_record kernel/printk/printk.c:2935 [inline]
-hardirqs last  enabled at (73095): [<ffff80008037bc00>] console_flush_all+0x650/0xb74 kernel/printk/printk.c:2994
-hardirqs last disabled at (73096): [<ffff80008af10b00>] __el1_irq arch/arm64/kernel/entry-common.c:533 [inline]
-hardirqs last disabled at (73096): [<ffff80008af10b00>] el1_interrupt+0x24/0x68 arch/arm64/kernel/entry-common.c:551
-softirqs last  enabled at (73048): [<ffff8000801ea530>] softirq_handle_end kernel/softirq.c:400 [inline]
-softirqs last  enabled at (73048): [<ffff8000801ea530>] handle_softirqs+0xa60/0xc34 kernel/softirq.c:582
-softirqs last disabled at (73043): [<ffff800080020de8>] __do_softirq+0x14/0x20 kernel/softirq.c:588
-CPU: 0 PID: 6625 Comm: syz-executor782 Tainted: G        W          6.10.0-rc2-syzkaller-g8867bbd4a056 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
+    DWC3 Gadget                               FFS Application
+dwc3_gadget_soft_disconnect()              ...
+  --> dwc3_stop_active_transfers()
+    --> dwc3_gadget_giveback(-ESHUTDOWN)
+      --> ffs_epfile_async_io_complete()   ffs_aio_cancel()
+        --> usb_ep_free_request()            --> usb_ep_dequeue()
 
-Testing showed that the problem did not occur if the two error
-messages -- the first two lines above -- were removed; apparently adding
-material to the kernel log takes a surprisingly large amount of time.
+There is currently no locking implemented between the AIO completion
+handler and AIO cancel, so the issue occurs if the completion routine is
+running in parallel to an AIO cancel call coming from the FFS application.
+As the completion call frees the USB request (io_data->req) the FFS
+application is also referencing it for the usb_ep_dequeue() call.  This can
+lead to accessing a stale/hanging pointer.
 
-In any case, the best approach for preventing these lockups and to
-avoid spamming the log with thousands of error messages per second is
-to ratelimit the two dev_err() calls.  Therefore we replace them with
-dev_err_ratelimited().
+commit b566d38857fc ("usb: gadget: f_fs: use io_data->status consistently")
+relocated the usb_ep_free_request() into ffs_epfile_async_io_complete().
+However, in order to properly implement locking to mitigate this issue, the
+spinlock can't be added to ffs_epfile_async_io_complete(), as
+usb_ep_dequeue() (if successfully dequeuing a USB request) will call the
+function driver's completion handler in the same context.  Hence, leading
+into a deadlock.
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Suggested-by: Greg KH <gregkh@linuxfoundation.org>
-Reported-and-tested-by: syzbot+5f996b83575ef4058638@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/00000000000073d54b061a6a1c65@google.com/
-Reported-and-tested-by: syzbot+1b2abad17596ad03dcff@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/000000000000f45085061aa9b37e@google.com/
-Fixes: 9908a32e94de ("USB: remove err() macro from usb class drivers")
-Link: https://lore.kernel.org/linux-usb/40dfa45b-5f21-4eef-a8c1-51a2f320e267@rowland.harvard.edu/
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/29855215-52f5-4385-b058-91f42c2bee18@rowland.harvard.edu
+Fix this issue by moving the usb_ep_free_request() back to
+ffs_user_copy_worker(), and ensuring that it explicitly sets io_data->req
+to NULL after freeing it within the ffs->eps_lock.  This resolves the race
+condition above, as the ffs_aio_cancel() routine will not continue
+attempting to dequeue a request that has already been freed, or the
+ffs_user_copy_work() not freeing the USB request until the AIO cancel is
+done referencing it.
+
+This fix depends on
+  commit b566d38857fc ("usb: gadget: f_fs: use io_data->status
+  consistently")
+
+Fixes: 2e4c7553cd6f ("usb: gadget: f_fs: add aio support")
+Cc: stable <stable@kernel.org>	# b566d38857fc ("usb: gadget: f_fs: use io_data->status consistently")
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20240409014059.6740-1-quic_wcheng@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/cdc-wdm.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/f_fs.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -266,14 +266,14 @@ static void wdm_int_callback(struct urb
- 			dev_err(&desc->intf->dev, "Stall on int endpoint\n");
- 			goto sw; /* halt is cleared in work */
- 		default:
--			dev_err(&desc->intf->dev,
-+			dev_err_ratelimited(&desc->intf->dev,
- 				"nonzero urb status received: %d\n", status);
- 			break;
- 		}
- 	}
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -827,6 +827,7 @@ static void ffs_user_copy_worker(struct
+ 	int ret = io_data->req->status ? io_data->req->status :
+ 					 io_data->req->actual;
+ 	bool kiocb_has_eventfd = io_data->kiocb->ki_flags & IOCB_EVENTFD;
++	unsigned long flags;
  
- 	if (urb->actual_length < sizeof(struct usb_cdc_notification)) {
--		dev_err(&desc->intf->dev, "wdm_int_callback - %d bytes\n",
-+		dev_err_ratelimited(&desc->intf->dev, "wdm_int_callback - %d bytes\n",
- 			urb->actual_length);
- 		goto exit;
- 	}
+ 	if (io_data->read && ret > 0) {
+ 		kthread_use_mm(io_data->mm);
+@@ -839,7 +840,10 @@ static void ffs_user_copy_worker(struct
+ 	if (io_data->ffs->ffs_eventfd && !kiocb_has_eventfd)
+ 		eventfd_signal(io_data->ffs->ffs_eventfd, 1);
+ 
++	spin_lock_irqsave(&io_data->ffs->eps_lock, flags);
+ 	usb_ep_free_request(io_data->ep, io_data->req);
++	io_data->req = NULL;
++	spin_unlock_irqrestore(&io_data->ffs->eps_lock, flags);
+ 
+ 	if (io_data->read)
+ 		kfree(io_data->to_free);
 
 
 
