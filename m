@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-57125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE7D925AC1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B7E925CC8
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:22:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 821171F213F3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CE4AB38D16
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582AA17C21F;
-	Wed,  3 Jul 2024 10:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E96C2142904;
+	Wed,  3 Jul 2024 11:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqNJsxwR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RSFk/a7A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15FE3171E70;
-	Wed,  3 Jul 2024 10:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8918717DA3F;
+	Wed,  3 Jul 2024 11:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003923; cv=none; b=b4bZllVtiCLO0NAAnLOVGn3nGYr+FkF/FSfAdrzMATYPxngRi/6IrWapv1i6xUy1Dm0kjOnhiW6dBcAaJ3kXxJUE6hhq1rzvRNNxsIN2gFBDZtAYnIMDiKRyHUaJdZ72JZlDPGd81tNQhqrYCMGBT06vKQZnGZs+ICI8lRh6Cjs=
+	t=1720004750; cv=none; b=iiJttF1+VC+OYxENH0s9EEytUjsDfBhE/I3qi9dxlV7KH38MChW3ghA+p66mqjzxck9InGY8Kx3SdatwCS0zEjuO7HJFMQ3ie3ugb1/9bhKKgIRzJoeXSL69OAcMYNL9G+oL6PlIriI3OvzjPXZYVHHMMsX5QPwgiJjsCQ+mGpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003923; c=relaxed/simple;
-	bh=YPbNl8aLL4TFmBZ/CdfneTja+cKoTSHE5MfU0vmeRiY=;
+	s=arc-20240116; t=1720004750; c=relaxed/simple;
+	bh=K9mGwnoTjvkLOF1ud9paiGQyNnuN0JeZ+B5FPwdhn1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AUz2M3Ch+9GVzBjpqOTp8UDxuFTwwtDmNNZMcptKZZp5lyjPVgcuUtXNjX6oG09hrMG1Dc3k4/axBM1vARjSa05lspL8Nu/xoxyD8vK96AlwxIGBkNKsyPEWBRbO8HdGN3dxET7Gce01y0vtQWcNfXdcwcOim5uw3KAceHMgFMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqNJsxwR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E9EC2BD10;
-	Wed,  3 Jul 2024 10:52:02 +0000 (UTC)
+	 MIME-Version; b=l0ZyRClX/e1m8+Ovblm64SJkXxrJp1kmBSfgxVDz24mI4bZFQi1VgGn2qmYTwK2E2N2rcQLfrWJj3XW/7735MxJZKBaSvY1n1wd6ePkEFmwm9VHdBcubisuok9fJ+8T/aDjGXH6KvLVPAJAVyGupylpm2yBMNgeqSuQsbKsO1QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RSFk/a7A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB15C32781;
+	Wed,  3 Jul 2024 11:05:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003923;
-	bh=YPbNl8aLL4TFmBZ/CdfneTja+cKoTSHE5MfU0vmeRiY=;
+	s=korg; t=1720004750;
+	bh=K9mGwnoTjvkLOF1ud9paiGQyNnuN0JeZ+B5FPwdhn1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mqNJsxwRLUQVn+396x2KAkwrftmIUfzVsnrpr5xIVeM1VT8IucOHeJfCDhtLDfIaY
-	 W/KxDzQMr4dhweS4LhOTJyHA+GHJylTeJLiElV3lCFSfO97BSCDNuQuwqKQi4KJsUx
-	 1OPvkkjHxyvXIAViFmlumhCxdDpRaImsJ14vtoS4=
+	b=RSFk/a7Aaya7gpkVx+ZWGN6AcJUzVXsG708eYb7lNoDK0qml0MgwlSl2O5tHxhCN0
+	 ZeuJNFrsvcDTdItCjdlz+/UEbzRXSz5IwjZ/kpLaTcXXWM1tITQ8VtMzBfUI5SJDXq
+	 nifBVR4MSSwBpmUPotCG9pB70b8+0qjYfsiqUxDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	syzbot+ffa8143439596313a85a@syzkaller.appspotmail.com,
-	Ashish Sangwan <a.sangwan@samsung.com>,
-	Namjae Jeon <namjae.jeon@samsung.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>
-Subject: [PATCH 5.4 066/189] drivers: core: synchronize really_probe() and dev_uevent()
+	syzbot+b87c222546179f4513a7@syzkaller.appspotmail.com,
+	David Ruth <druth@chromium.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 146/290] net/sched: act_api: fix possible infinite loop in tcf_idr_check_alloc()
 Date: Wed,  3 Jul 2024 12:38:47 +0200
-Message-ID: <20240703102843.999416951@linuxfoundation.org>
+Message-ID: <20240703102909.698132276@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +64,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dirk Behme <dirk.behme@de.bosch.com>
+From: David Ruth <druth@chromium.org>
 
-commit c0a40097f0bc81deafc15f9195d1fb54595cd6d0 upstream.
+[ Upstream commit d864319871b05fadd153e0aede4811ca7008f5d6 ]
 
-Synchronize the dev->driver usage in really_probe() and dev_uevent().
-These can run in different threads, what can result in the following
-race condition for dev->driver uninitialization:
+syzbot found hanging tasks waiting on rtnl_lock [1]
 
-Thread #1:
-==========
+A reproducer is available in the syzbot bug.
 
-really_probe() {
-...
-probe_failed:
-...
-device_unbind_cleanup(dev) {
-    ...
-    dev->driver = NULL;   // <= Failed probe sets dev->driver to NULL
-    ...
-    }
-...
-}
+When a request to add multiple actions with the same index is sent, the
+second request will block forever on the first request. This holds
+rtnl_lock, and causes tasks to hang.
 
-Thread #2:
-==========
+Return -EAGAIN to prevent infinite looping, while keeping documented
+behavior.
 
-dev_uevent() {
-...
-if (dev->driver)
-      // If dev->driver is NULLed from really_probe() from here on,
-      // after above check, the system crashes
-      add_uevent_var(env, "DRIVER=%s", dev->driver->name);
-...
-}
+[1]
 
-really_probe() holds the lock, already. So nothing needs to be done
-there. dev_uevent() is called with lock held, often, too. But not
-always. What implies that we can't add any locking in dev_uevent()
-itself. So fix this race by adding the lock to the non-protected
-path. This is the path where above race is observed:
+INFO: task kworker/1:0:5088 blocked for more than 143 seconds.
+Not tainted 6.9.0-rc4-syzkaller-00173-g3cdb45594619 #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:kworker/1:0 state:D stack:23744 pid:5088 tgid:5088 ppid:2 flags:0x00004000
+Workqueue: events_power_efficient reg_check_chans_work
+Call Trace:
+<TASK>
+context_switch kernel/sched/core.c:5409 [inline]
+__schedule+0xf15/0x5d00 kernel/sched/core.c:6746
+__schedule_loop kernel/sched/core.c:6823 [inline]
+schedule+0xe7/0x350 kernel/sched/core.c:6838
+schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:6895
+__mutex_lock_common kernel/locking/mutex.c:684 [inline]
+__mutex_lock+0x5b8/0x9c0 kernel/locking/mutex.c:752
+wiphy_lock include/net/cfg80211.h:5953 [inline]
+reg_leave_invalid_chans net/wireless/reg.c:2466 [inline]
+reg_check_chans_work+0x10a/0x10e0 net/wireless/reg.c:2481
 
- dev_uevent+0x235/0x380
- uevent_show+0x10c/0x1f0  <= Add lock here
- dev_attr_show+0x3a/0xa0
- sysfs_kf_seq_show+0x17c/0x250
- kernfs_seq_show+0x7c/0x90
- seq_read_iter+0x2d7/0x940
- kernfs_fop_read_iter+0xc6/0x310
- vfs_read+0x5bc/0x6b0
- ksys_read+0xeb/0x1b0
- __x64_sys_read+0x42/0x50
- x64_sys_call+0x27ad/0x2d30
- do_syscall_64+0xcd/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Similar cases are reported by syzkaller in
-
-https://syzkaller.appspot.com/bug?extid=ffa8143439596313a85a
-
-But these are regarding the *initialization* of dev->driver
-
-dev->driver = drv;
-
-As this switches dev->driver to non-NULL these reports can be considered
-to be false-positives (which should be "fixed" by this commit, as well,
-though).
-
-The same issue was reported and tried to be fixed back in 2015 in
-
-https://lore.kernel.org/lkml/1421259054-2574-1-git-send-email-a.sangwan@samsung.com/
-
-already.
-
-Fixes: 239378f16aa1 ("Driver core: add uevent vars for devices of a class")
-Cc: stable <stable@kernel.org>
-Cc: syzbot+ffa8143439596313a85a@syzkaller.appspotmail.com
-Cc: Ashish Sangwan <a.sangwan@samsung.com>
-Cc: Namjae Jeon <namjae.jeon@samsung.com>
-Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
-Link: https://lore.kernel.org/r/20240513050634.3964461-1-dirk.behme@de.bosch.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0190c1d452a9 ("net: sched: atomically check-allocate action")
+Reported-by: syzbot+b87c222546179f4513a7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b87c222546179f4513a7
+Signed-off-by: David Ruth <druth@chromium.org>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://lore.kernel.org/r/20240614190326.1349786-1-druth@chromium.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/core.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/sched/act_api.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -1273,8 +1273,11 @@ static ssize_t uevent_show(struct device
- 	if (!env)
- 		return -ENOMEM;
+diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+index eb6bb90ddd334..bf98bb602a9de 100644
+--- a/net/sched/act_api.c
++++ b/net/sched/act_api.c
+@@ -521,7 +521,6 @@ int tcf_idr_check_alloc(struct tc_action_net *tn, u32 *index,
+ 	u32 max;
  
-+	/* Synchronize with really_probe() */
-+	device_lock(dev);
- 	/* let the kset specific function add its keys */
- 	retval = kset->uevent_ops->uevent(kset, &dev->kobj, env);
-+	device_unlock(dev);
- 	if (retval)
- 		goto out;
+ 	if (*index) {
+-again:
+ 		rcu_read_lock();
+ 		p = idr_find(&idrinfo->action_idr, *index);
  
+@@ -530,7 +529,7 @@ int tcf_idr_check_alloc(struct tc_action_net *tn, u32 *index,
+ 			 * index but did not assign the pointer yet.
+ 			 */
+ 			rcu_read_unlock();
+-			goto again;
++			return -EAGAIN;
+ 		}
+ 
+ 		if (!p) {
+-- 
+2.43.0
+
 
 
 
