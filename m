@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-57291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 942EA925C1D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:14:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E4AE925D48
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 323B12937FC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56BFE1F216C1
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A169C1891C6;
-	Wed,  3 Jul 2024 11:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D6A173326;
+	Wed,  3 Jul 2024 11:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdJVoESh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yh1BkKYg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C16518EFCE;
-	Wed,  3 Jul 2024 11:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371C317DA2E;
+	Wed,  3 Jul 2024 11:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004437; cv=none; b=D4J9uYOka8/LTIz6QaMZt7wnN4BMIaD3g+BftKQlaL1JqNE99bF4oCPHJzH42aWOFri9MFykul6kS0G8M2gX7D30xNYL9TGVfwrYYKwzM6X6RVD1hS+V3EoWi32Hx2Q2g/duLfgHZ2IL08B24xkPCBXur6poyafAo7eTKuGICeU=
+	t=1720005452; cv=none; b=Eq/ZuIE24kVO6GxvUoUu5YUMpsuSCN0ne4h4O/Gn6V15QFFOnkPuzqbkL9C0FjgdKTasFjnqhbKZdbFxRFptJQpohaONLS9JKGCBTu2Ilj+XAeu4qywUgEk3PoRa97aZvfudF1uLl3WP3po0synCVmWDPdQQHELJR6JHapPqyPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004437; c=relaxed/simple;
-	bh=Fd14rfEsc0+Y73utfZAJaG5fNe/elMLkOfwfMw2oBNE=;
+	s=arc-20240116; t=1720005452; c=relaxed/simple;
+	bh=5LQ9cN4Z7qXVhhVQ9+fmxVxeAHsKb9keBnlATHqyWIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0mGb5WT4hUhANRTLIdd/I0XqyaBhf1t/8knrK7Fc9dp3yAh8eFZhbrF+gwrE4NuZrd4QsRSx+aIud4JmC10cCh7sUvkMlR7xNQvTuza35QY/LIbjsehIUGdN+jIEt+aoEVeLf6/QKlJcC3vHrNWthRSxenAZQcsy23b1Zbv/BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdJVoESh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B83C32781;
-	Wed,  3 Jul 2024 11:00:36 +0000 (UTC)
+	 MIME-Version; b=Hb9qzFSTKxncKwCsmVfvT5HEQW3YIQvxeWpxkYJOyFkTmGbi+mR9aDkdYXCQVvdeqs12PRdqv7XleyL7T828wfXlPwzA2vUFdRbu9aljd8pxZtrbSJCVvJd3/bq9xjN1lbkD1I8VThcIndLADN0T4uReJqzu4sk2+IMgZeZlLOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yh1BkKYg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD0FC2BD10;
+	Wed,  3 Jul 2024 11:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004437;
-	bh=Fd14rfEsc0+Y73utfZAJaG5fNe/elMLkOfwfMw2oBNE=;
+	s=korg; t=1720005452;
+	bh=5LQ9cN4Z7qXVhhVQ9+fmxVxeAHsKb9keBnlATHqyWIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LdJVoESh9RWpS3tNtfyPlKFs39eFRDcYZaVfvzDM5C+bfyOnd8NMr06aHCP7ey5ez
-	 uhs0jTMc7ai3YrpAd9sZ8Jv0/TWsYL/wxyNuaidLDiVQ6s+RmmPGPbZzn3P0myTBxh
-	 CLzGr9XFKbepIxsCvIWsgDxnyE4NzirZRD5G+A9U=
+	b=yh1BkKYgANcvHzAEUut02+d2CiwF0j8XxW+eSNPXqw+OjCI7tCYYSbdIeztRrfQGW
+	 QiqwiA6BXOWgxVgoHG62d7hSW8o2vz06AzFxV+UXaVveQPhQ81rSPA2NPM/xuzsHXx
+	 M9Nf13GERsHuWGl0CDQslmnCBmXw0u84n1zvRZfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Chen Hanxiao <chenhx.fnst@fujitsu.com>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 041/290] nilfs2: Remove check for PageError
+Subject: [PATCH 5.15 086/356] SUNRPC: return proper error from gss_wrap_req_priv
 Date: Wed,  3 Jul 2024 12:37:02 +0200
-Message-ID: <20240703102905.750492925@linuxfoundation.org>
+Message-ID: <20240703102916.356873244@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Chen Hanxiao <chenhx.fnst@fujitsu.com>
 
-[ Upstream commit 79ea65563ad8aaab309d61eeb4d5019dd6cf5fa0 ]
+[ Upstream commit 33c94d7e3cb84f6d130678d6d59ba475a6c489cf ]
 
-If read_mapping_page() encounters an error, it returns an errno, not a
-page with PageError set, so this test is not needed.
+don't return 0 if snd_buf->len really greater than snd_buf->buflen
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Stable-dep-of: 7373a51e7998 ("nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors")
+Signed-off-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
+Fixes: 0c77668ddb4e ("SUNRPC: Introduce trace points in rpc_auth_gss.ko")
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/dir.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sunrpc/auth_gss/auth_gss.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
-index eb7de9e2a384e..24cfe9db66e02 100644
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -194,7 +194,7 @@ static struct page *nilfs_get_page(struct inode *dir, unsigned long n)
- 	if (!IS_ERR(page)) {
- 		kmap(page);
- 		if (unlikely(!PageChecked(page))) {
--			if (PageError(page) || !nilfs_check_page(page))
-+			if (!nilfs_check_page(page))
- 				goto fail;
- 		}
- 	}
+diff --git a/net/sunrpc/auth_gss/auth_gss.c b/net/sunrpc/auth_gss/auth_gss.c
+index 2ff66a6a7e54c..7ce4a6b7cfae6 100644
+--- a/net/sunrpc/auth_gss/auth_gss.c
++++ b/net/sunrpc/auth_gss/auth_gss.c
+@@ -1855,8 +1855,10 @@ gss_wrap_req_priv(struct rpc_cred *cred, struct gss_cl_ctx *ctx,
+ 	offset = (u8 *)p - (u8 *)snd_buf->head[0].iov_base;
+ 	maj_stat = gss_wrap(ctx->gc_gss_ctx, offset, snd_buf, inpages);
+ 	/* slack space should prevent this ever happening: */
+-	if (unlikely(snd_buf->len > snd_buf->buflen))
++	if (unlikely(snd_buf->len > snd_buf->buflen)) {
++		status = -EIO;
+ 		goto wrap_failed;
++	}
+ 	/* We're assuming that when GSS_S_CONTEXT_EXPIRED, the encryption was
+ 	 * done anyway, so it's safe to put the request on the wire: */
+ 	if (maj_stat == GSS_S_CONTEXT_EXPIRED)
 -- 
 2.43.0
 
