@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-57114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9D9925AB9
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02AC4925EF3
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:44:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE0BF1C25B0A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDE02B387C6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9D917BB1E;
-	Wed,  3 Jul 2024 10:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A4217D35E;
+	Wed,  3 Jul 2024 11:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="syXgFnu7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYJFKxFb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C52261FDF;
-	Wed,  3 Jul 2024 10:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1ABB17CA19;
+	Wed,  3 Jul 2024 11:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003890; cv=none; b=ScNoDE7iLTjfplhtljxIEHGhRBDk4seXgg6uZH9Su0Fxr/qVI9sqRdI12u1Kq4uGBo48w+8aQdd2TBQyZyDaQYqjg89CmmKVD1L/5UnMhe7lFrMnGCf/TdaPX93d7TdIUbEdz9IyTsXEZSVrqFrVsUXeZ2H7QqQ11x7/UGacSZg=
+	t=1720004708; cv=none; b=tRszMybEX8jxa6997vzB53uLqilDICdmeHCmBdXFKiLsK3f/RaFW9af2Z/pMfhk9UMvijKjWW23yQqyOj8S/+8eoc3W+x8D6TDfP8qqYKtSNr3TDbUBt0R2ixMu5lVATAH/tUkqblE6hUT7GtZrmJQNJZlwWhZ7AcIuQc5ls5rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003890; c=relaxed/simple;
-	bh=XM1YQu7Sl5b7FJpqmtZOg4CmOo6RFe2wxgrFqt4wOVI=;
+	s=arc-20240116; t=1720004708; c=relaxed/simple;
+	bh=qu9HqUYs63otIqUKNIxIfESIYnpsQHNR81Gk7HIhvF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G3tjeLWLmthGlMRY3Cf8oPKsg/SvUHu17IEksEicbXNJHFDKmMJuKgQiGiXM6eJ00G1nrgvCY5H1WDrgHcc2IghsXMDki5KQnmrjm+6wOXGcfbpNmfktZRk4bxddKzpxizBJVlNWkq8wpCQU6rlqywv58lGmTLNZGQK3Uk08lDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=syXgFnu7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D1BC2BD10;
-	Wed,  3 Jul 2024 10:51:29 +0000 (UTC)
+	 MIME-Version; b=nJ5mVDR4MSepzneeqgenKM07OS66Kiu0CRCnq5FyCYhCEQAqPnmMEPjF4DdjmwRX/JG6ckSkrI+CXk3VOZ6SgZ3pM6qvmEBDK7WJPTuFiA8kWQHhbnmj2TVrpptdSy9b4/2x+gpl/L/k0m4tKtPAyzIZEHmlgzXMctM8cdsUxfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYJFKxFb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9ECC2BD10;
+	Wed,  3 Jul 2024 11:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003890;
-	bh=XM1YQu7Sl5b7FJpqmtZOg4CmOo6RFe2wxgrFqt4wOVI=;
+	s=korg; t=1720004708;
+	bh=qu9HqUYs63otIqUKNIxIfESIYnpsQHNR81Gk7HIhvF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=syXgFnu7MUuqCXfyu3K26FcqIlIxJzwtwCyp7uojfiYGmhwWRBVi5UpS096SBOEY9
-	 2v82FKs5OyRzCrzG4s45ysPzWDzWCH43mndZezz+rasPbmn0FyNi7UGRDJspp/iA1F
-	 qE6wYVjjH+/mvnd+o8pUrTb92WSseqr4Ahl93LlQ=
+	b=ZYJFKxFb5og/TUVpgnYF+pIGywmQCuapUcFL7yJ32hp0ucn6COS65Kb17ZBsWx49Q
+	 yyCQBCER/fccKZXhb9CVqp5KzTKA12/t+cQTOykq8/rrn8Ye51DyeOJKwsh3WHo/id
+	 F6dckPOJQigNGZecSepfKQrjOCjO7UwEKBIJlbMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Jiri Kosina <jkosina@suse.com>,
+	Songyang Li <leesongyang@outlook.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 053/189] HID: core: remove unnecessary WARN_ON() in implement()
+Subject: [PATCH 5.10 133/290] MIPS: Octeon: Add PCIe link status check
 Date: Wed,  3 Jul 2024 12:38:34 +0200
-Message-ID: <20240703102843.515092673@linuxfoundation.org>
+Message-ID: <20240703102909.209025324@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Songyang Li <leesongyang@outlook.com>
 
-[ Upstream commit 4aa2dcfbad538adf7becd0034a3754e1bd01b2b5 ]
+[ Upstream commit 29b83a64df3b42c88c0338696feb6fdcd7f1f3b7 ]
 
-Syzkaller hit a warning [1] in a call to implement() when trying
-to write a value into a field of smaller size in an output report.
+The standard PCIe configuration read-write interface is used to
+access the configuration space of the peripheral PCIe devices
+of the mips processor after the PCIe link surprise down, it can
+generate kernel panic caused by "Data bus error". So it is
+necessary to add PCIe link status check for system protection.
+When the PCIe link is down or in training, assigning a value
+of 0 to the configuration address can prevent read-write behavior
+to the configuration space of peripheral PCIe devices, thereby
+preventing kernel panic.
 
-Since implement() already has a warn message printed out with the
-help of hid_warn() and value in question gets trimmed with:
-	...
-	value &= m;
-	...
-WARN_ON may be considered superfluous. Remove it to suppress future
-syzkaller triggers.
-
-[1]
-WARNING: CPU: 0 PID: 5084 at drivers/hid/hid-core.c:1451 implement drivers/hid/hid-core.c:1451 [inline]
-WARNING: CPU: 0 PID: 5084 at drivers/hid/hid-core.c:1451 hid_output_report+0x548/0x760 drivers/hid/hid-core.c:1863
-Modules linked in:
-CPU: 0 PID: 5084 Comm: syz-executor424 Not tainted 6.9.0-rc7-syzkaller-00183-gcf87f46fd34d #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
-RIP: 0010:implement drivers/hid/hid-core.c:1451 [inline]
-RIP: 0010:hid_output_report+0x548/0x760 drivers/hid/hid-core.c:1863
-...
-Call Trace:
- <TASK>
- __usbhid_submit_report drivers/hid/usbhid/hid-core.c:591 [inline]
- usbhid_submit_report+0x43d/0x9e0 drivers/hid/usbhid/hid-core.c:636
- hiddev_ioctl+0x138b/0x1f00 drivers/hid/usbhid/hiddev.c:726
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:904 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:890
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-...
-
-Fixes: 95d1c8951e5b ("HID: simplify implement() a bit")
-Reported-by: <syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com>
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Songyang Li <leesongyang@outlook.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/mips/pci/pcie-octeon.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+ mode change 100644 => 100755 arch/mips/pci/pcie-octeon.c
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index e0820feb7e19a..2462be8c4ae65 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -1439,7 +1439,6 @@ static void implement(const struct hid_device *hid, u8 *report,
- 			hid_warn(hid,
- 				 "%s() called with too large value %d (n: %d)! (%s)\n",
- 				 __func__, value, n, current->comm);
--			WARN_ON(1);
- 			value &= m;
- 		}
- 	}
+diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
+old mode 100644
+new mode 100755
+index d919a0d813a17..38de2a9c3cf1a
+--- a/arch/mips/pci/pcie-octeon.c
++++ b/arch/mips/pci/pcie-octeon.c
+@@ -230,12 +230,18 @@ static inline uint64_t __cvmx_pcie_build_config_addr(int pcie_port, int bus,
+ {
+ 	union cvmx_pcie_address pcie_addr;
+ 	union cvmx_pciercx_cfg006 pciercx_cfg006;
++	union cvmx_pciercx_cfg032 pciercx_cfg032;
+ 
+ 	pciercx_cfg006.u32 =
+ 	    cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG006(pcie_port));
+ 	if ((bus <= pciercx_cfg006.s.pbnum) && (dev != 0))
+ 		return 0;
+ 
++	pciercx_cfg032.u32 =
++		cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG032(pcie_port));
++	if ((pciercx_cfg032.s.dlla == 0) || (pciercx_cfg032.s.lt == 1))
++		return 0;
++
+ 	pcie_addr.u64 = 0;
+ 	pcie_addr.config.upper = 2;
+ 	pcie_addr.config.io = 1;
 -- 
 2.43.0
 
