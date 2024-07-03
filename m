@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-57241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B643D925BAE
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:10:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75546925E49
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8BB51C25795
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:10:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D14E1F25C3E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291971946B0;
-	Wed,  3 Jul 2024 10:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B693117DA2B;
+	Wed,  3 Jul 2024 11:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOXqEYYw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9RSHrMJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8C81946A2;
-	Wed,  3 Jul 2024 10:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7585F7CF1F;
+	Wed,  3 Jul 2024 11:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004284; cv=none; b=uSpZPXhg3QfJj5R2Q2KTZIMoIfhf4+hhdcICFEtB1rMY9lEqxuIL58y7bMKT9Yam/IF2ylNrwGveoYzcR8t8rGoiFfSJvLiUnZyyPWTkck38bZfcPOnJrkF+z3lhVa/AeiMkUHD+yIjA2DzVins/9zzGIIwx6w+IQyPhQyeb5+w=
+	t=1720006117; cv=none; b=dIMcEvYIJkFxEkAvjAh8Enj0bbMCX+fBX2+Et6rmEpqilSPJpokqysfGKOT5EAH3TwYKnnQf9bH6hqS8RZj1rnDqs9Y5dJ4TXBM/IKcynRwlIv39Y1AeycelK2Pm7iWrF+NmPpZtyz050tzdLhzrw3lGXY86p1roKMJ+mGFAYc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004284; c=relaxed/simple;
-	bh=EncP1jqPX5EW3x5c69Yj4O4FQDBYbYLATIznxk5CtBY=;
+	s=arc-20240116; t=1720006117; c=relaxed/simple;
+	bh=8BkJYCAdR9WLtMciCZtClrzDOo7Qxh22lcfxYhqRv+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=smtrr88fWU2kZgprHzvqtaII+H8zApxFs2I3hRoUZx6XDehOlanskoJTEwsLMUBq3FXGDdm1jAGruG1BYG23hBSYuNxBCTJ4THn752eHsDLCZt1j6yJ1HvP5rrBWcl4IWeBnyA9jaxUQIl1jmC+PW3NktoQ0Jc0T8IMaqv+wl6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOXqEYYw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A335C32781;
-	Wed,  3 Jul 2024 10:58:04 +0000 (UTC)
+	 MIME-Version; b=PibN5Lq+aZRqQM9KhnnHhl+zkNEdTEmYTysD5UHCq/aTgmtsLR9SiWc6zuOizIs1n3Ojwl6pPWkSvoFWmUrR4++7uUCNhf1M9ZONVTdTGDYDewveGaLUjGpgdwup+OPRwTv+TSf30vrG6V3A9RoRN154JyrI9R7UZuhYZMlUuV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9RSHrMJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF77C2BD10;
+	Wed,  3 Jul 2024 11:28:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004284;
-	bh=EncP1jqPX5EW3x5c69Yj4O4FQDBYbYLATIznxk5CtBY=;
+	s=korg; t=1720006117;
+	bh=8BkJYCAdR9WLtMciCZtClrzDOo7Qxh22lcfxYhqRv+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sOXqEYYwHfqQxb+b70uvfzBv0s/XW0uZ01u5IQN0bbU2s6s15dELIDq/Csloyodvq
-	 3umlHTCA0Cd0WQDSK/lmTkHaViDQoRcmyXoAZf6Zs9T9x3uBMO39CJoXFOl05XE8bt
-	 p0XKSoyaV0rDPX7ukoyN1NOTsc6BzU1q5rOYSUro=
+	b=D9RSHrMJhN5dBfwSk4mrd4yTjMQxthi7/1nE6t2hNODsNJdyQhV470aT9uD1YLM+F
+	 +v4QlK0aJxEhrvCU0eu6sfUaZJmWFbyiaX9jXTecR8ggcOmsex/vMfOSbIKVkF7Ja9
+	 vbKefet6z72HpGH1xZ+8KIzai45k64zCZ89j6mmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 5.4 181/189] ftruncate: pass a signed offset
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 306/356] mmc: sdhci: Do not invert write-protect twice
 Date: Wed,  3 Jul 2024 12:40:42 +0200
-Message-ID: <20240703102848.302557831@linuxfoundation.org>
+Message-ID: <20240703102924.691505644@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit 4b8e88e563b5f666446d002ad0dc1e6e8e7102b0 upstream.
+commit fbd64f902b93fe9658b855b9892ae59ef6ea22b9 upstream.
 
-The old ftruncate() syscall, using the 32-bit off_t misses a sign
-extension when called in compat mode on 64-bit architectures.  As a
-result, passing a negative length accidentally succeeds in truncating
-to file size between 2GiB and 4GiB.
+mmc_of_parse() reads device property "wp-inverted" and sets
+MMC_CAP2_RO_ACTIVE_HIGH if it is true. MMC_CAP2_RO_ACTIVE_HIGH is used
+to invert a write-protect (AKA read-only) GPIO value.
 
-Changing the type of the compat syscall to the signed compat_off_t
-changes the behavior so it instead returns -EINVAL.
+sdhci_get_property() also reads "wp-inverted" and sets
+SDHCI_QUIRK_INVERTED_WRITE_PROTECT which is used to invert the
+write-protect value as well but also acts upon a value read out from the
+SDHCI_PRESENT_STATE register.
 
-The native entry point, the truncate() syscall and the corresponding
-loff_t based variants are all correct already and do not suffer
-from this mistake.
+Many drivers call both mmc_of_parse() and sdhci_get_property(),
+so that both MMC_CAP2_RO_ACTIVE_HIGH and
+SDHCI_QUIRK_INVERTED_WRITE_PROTECT will be set if the controller has
+device property "wp-inverted".
 
-Fixes: 3f6d078d4acc ("fix compat truncate/ftruncate")
-Reviewed-by: Christian Brauner <brauner@kernel.org>
+Amend the logic in sdhci_check_ro() to allow for that possibility,
+so that the write-protect value is not inverted twice.
+
+Also do not invert the value if it is a negative error value. Note that
+callers treat an error the same as not-write-protected, so the result is
+functionally the same in that case.
+
+Also do not invert the value if sdhci host operation ->get_ro() is used.
+None of the users of that callback set SDHCI_QUIRK_INVERTED_WRITE_PROTECT
+directly or indirectly, but two do call mmc_gpio_get_ro(), so leave it to
+them to deal with that if they ever set SDHCI_QUIRK_INVERTED_WRITE_PROTECT
+in the future.
+
+Fixes: 6d5cd068ee59 ("mmc: sdhci: use WP GPIO in sdhci_check_ro()")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240614080051.4005-2-adrian.hunter@intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/open.c                |    4 ++--
- include/linux/compat.h   |    2 +-
- include/linux/syscalls.h |    2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/mmc/host/sdhci.c |   22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
---- a/fs/open.c
-+++ b/fs/open.c
-@@ -200,13 +200,13 @@ out:
- 	return error;
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -2487,26 +2487,34 @@ static int sdhci_get_cd(struct mmc_host
+ 
+ static int sdhci_check_ro(struct sdhci_host *host)
+ {
++	bool allow_invert = false;
+ 	unsigned long flags;
+ 	int is_readonly;
+ 
+ 	spin_lock_irqsave(&host->lock, flags);
+ 
+-	if (host->flags & SDHCI_DEVICE_DEAD)
++	if (host->flags & SDHCI_DEVICE_DEAD) {
+ 		is_readonly = 0;
+-	else if (host->ops->get_ro)
++	} else if (host->ops->get_ro) {
+ 		is_readonly = host->ops->get_ro(host);
+-	else if (mmc_can_gpio_ro(host->mmc))
++	} else if (mmc_can_gpio_ro(host->mmc)) {
+ 		is_readonly = mmc_gpio_get_ro(host->mmc);
+-	else
++		/* Do not invert twice */
++		allow_invert = !(host->mmc->caps2 & MMC_CAP2_RO_ACTIVE_HIGH);
++	} else {
+ 		is_readonly = !(sdhci_readl(host, SDHCI_PRESENT_STATE)
+ 				& SDHCI_WRITE_PROTECT);
++		allow_invert = true;
++	}
+ 
+ 	spin_unlock_irqrestore(&host->lock, flags);
+ 
+-	/* This quirk needs to be replaced by a callback-function later */
+-	return host->quirks & SDHCI_QUIRK_INVERTED_WRITE_PROTECT ?
+-		!is_readonly : is_readonly;
++	if (is_readonly >= 0 &&
++	    allow_invert &&
++	    (host->quirks & SDHCI_QUIRK_INVERTED_WRITE_PROTECT))
++		is_readonly = !is_readonly;
++
++	return is_readonly;
  }
  
--SYSCALL_DEFINE2(ftruncate, unsigned int, fd, unsigned long, length)
-+SYSCALL_DEFINE2(ftruncate, unsigned int, fd, off_t, length)
- {
- 	return do_sys_ftruncate(fd, length, 1);
- }
- 
- #ifdef CONFIG_COMPAT
--COMPAT_SYSCALL_DEFINE2(ftruncate, unsigned int, fd, compat_ulong_t, length)
-+COMPAT_SYSCALL_DEFINE2(ftruncate, unsigned int, fd, compat_off_t, length)
- {
- 	return do_sys_ftruncate(fd, length, 1);
- }
---- a/include/linux/compat.h
-+++ b/include/linux/compat.h
-@@ -567,7 +567,7 @@ asmlinkage long compat_sys_fstatfs(unsig
- asmlinkage long compat_sys_fstatfs64(unsigned int fd, compat_size_t sz,
- 				     struct compat_statfs64 __user *buf);
- asmlinkage long compat_sys_truncate(const char __user *, compat_off_t);
--asmlinkage long compat_sys_ftruncate(unsigned int, compat_ulong_t);
-+asmlinkage long compat_sys_ftruncate(unsigned int, compat_off_t);
- /* No generic prototype for truncate64, ftruncate64, fallocate */
- asmlinkage long compat_sys_openat(int dfd, const char __user *filename,
- 				  int flags, umode_t mode);
---- a/include/linux/syscalls.h
-+++ b/include/linux/syscalls.h
-@@ -422,7 +422,7 @@ asmlinkage long sys_fstatfs(unsigned int
- asmlinkage long sys_fstatfs64(unsigned int fd, size_t sz,
- 				struct statfs64 __user *buf);
- asmlinkage long sys_truncate(const char __user *path, long length);
--asmlinkage long sys_ftruncate(unsigned int fd, unsigned long length);
-+asmlinkage long sys_ftruncate(unsigned int fd, off_t length);
- #if BITS_PER_LONG == 32
- asmlinkage long sys_truncate64(const char __user *path, loff_t length);
- asmlinkage long sys_ftruncate64(unsigned int fd, loff_t length);
+ #define SAMPLE_COUNT	5
 
 
 
