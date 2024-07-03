@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-57603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32583925D2E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:26:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16F4C925DB2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 568FF1C21405
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:26:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94634B36B54
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938D217C229;
-	Wed,  3 Jul 2024 11:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65917194C69;
+	Wed,  3 Jul 2024 10:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1338VVP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXXiRukb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518B5173334;
-	Wed,  3 Jul 2024 11:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24609194AFB;
+	Wed,  3 Jul 2024 10:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005379; cv=none; b=K1mMXZr24XwOZi9px11pwIcw9h2okJRlor4S7vBz0Tg8lv2DERN37dqqEHNWUpDnKcy7KKi1iYpSn2MzEZEp2b0/ZZTNoy2JNLrxWDEIOVfs6cDSXb06KdJbHDMbakRGrqJZRDU5YsoYwHdQPlkXV6BAUYj+Cdb6I/Nz6qNFJtc=
+	t=1720004360; cv=none; b=SV2YP9Tt9RU3QMnlvdv0hMqEIfMRg+uei5w45xCZVs71w+1CsPU57JXYeZds1u7IodohsJpjDRT/tJpcTBS0oiuGQtBmVyGLfsBibTKh9R+oVOFxGhHIDlhLhF1WPwR60oMKi+rquB8bNpCZyB8Z2+COcgQp7m3jTD/zfRam85U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005379; c=relaxed/simple;
-	bh=dL2EpbHj0IJig4mCzWi9l491oXa/Qymo8FHFSYf7DHU=;
+	s=arc-20240116; t=1720004360; c=relaxed/simple;
+	bh=tOZv03VLaMG2lh7uDflGA0iEIUBzIfRnQXHSfLZVUhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t2NFMP6GMM5u2sJok3qEjL2doB3R0I1Lzo7ppZo1+cvlwhFLzL2LwizoHAWDNu+erPeJ/AsXIZot6UFklAZkZ50gxa1MDZkfyQXSurUbOc76Ww3gM34szSZ9ropqFAnu7JPd8pMgm28vSWQ2MEd97GpK8qS7KqvXdTgNtT+dyAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1338VVP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50CFC2BD10;
-	Wed,  3 Jul 2024 11:16:18 +0000 (UTC)
+	 MIME-Version; b=hs/uJWCSdGOXE87F7i08vRtfUJcdm5eVzmLXy95+vd4U6MSdZXP/dUlVxno+BgjVBWjtNEJPmLyMkX64Eeo46YkWB9ZinBZCPkNh9TltC7d2H5o/xCjzf1SwBa4AxA8My7j4UNY1zl5Tz0/EszFS+TbXW2NtVBw2VFQ5n8FxAd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXXiRukb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE9EC32781;
+	Wed,  3 Jul 2024 10:59:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005379;
-	bh=dL2EpbHj0IJig4mCzWi9l491oXa/Qymo8FHFSYf7DHU=;
+	s=korg; t=1720004360;
+	bh=tOZv03VLaMG2lh7uDflGA0iEIUBzIfRnQXHSfLZVUhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C1338VVP2F0AYUmY0t+zYhNuEPgNPb19c5/q6CpwQq4wCC6eMbXJmYe0xD7LwULc4
-	 guh1FUEUvffqYhykEDoxpk4YWAsFAr5eoOVtHhedkRxnBdHoP/JQhMbSieMrUT1cwd
-	 67srfyeQxQTPXR6qBk1vxVIsA2OjU67rStofIJ3s=
+	b=YXXiRukbbf9QgVyXGKt2XhCUWSvtjPw2zacSAc2dWazyh0L/Vj+qIimookQlruSZ+
+	 4u8xeC0C0uqdUBwHvoZo2WwgBPfwZ86cuE0oTCTKCa/rwTtBzUw/XOUCe461z6E6eQ
+	 6TQo2cXam2hZ/EaaYIyKXQ2bTujsLzNk/4SH3ChQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Wolfram Sang <wsa@kernel.org>,
+	Jason Xing <kernelxing@tencent.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 061/356] i2c: add fwnode APIs
-Date: Wed,  3 Jul 2024 12:36:37 +0200
-Message-ID: <20240703102915.403158847@linuxfoundation.org>
+Subject: [PATCH 5.10 017/290] tcp: count CLOSE-WAIT sockets for TCP_MIB_CURRESTAB
+Date: Wed,  3 Jul 2024 12:36:38 +0200
+Message-ID: <20240703102904.843126385@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,292 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+From: Jason Xing <kernelxing@tencent.com>
 
-[ Upstream commit 373c612d72461ddaea223592df31e62c934aae61 ]
+[ Upstream commit a46d0ea5c94205f40ecf912d1bb7806a8a64704f ]
 
-Add fwnode APIs for finding and getting I2C adapters, which will be
-used by the SFP code. These are passed the fwnode corresponding to
-the adapter, and return the I2C adapter. It is the responsibility of
-the caller to find the appropriate fwnode.
+According to RFC 1213, we should also take CLOSE-WAIT sockets into
+consideration:
 
-We keep the DT and ACPI interfaces, but where appropriate, recode them
-to use the fwnode interfaces internally.
+  "tcpCurrEstab OBJECT-TYPE
+   ...
+   The number of TCP connections for which the current state
+   is either ESTABLISHED or CLOSE- WAIT."
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Stable-dep-of: 3f858bbf04db ("i2c: acpi: Unbind mux adapters before delete")
+After this, CurrEstab counter will display the total number of
+ESTABLISHED and CLOSE-WAIT sockets.
+
+The logic of counting
+When we increment the counter?
+a) if we change the state to ESTABLISHED.
+b) if we change the state from SYN-RECEIVED to CLOSE-WAIT.
+
+When we decrement the counter?
+a) if the socket leaves ESTABLISHED and will never go into CLOSE-WAIT,
+say, on the client side, changing from ESTABLISHED to FIN-WAIT-1.
+b) if the socket leaves CLOSE-WAIT, say, on the server side, changing
+from CLOSE-WAIT to LAST-ACK.
+
+Please note: there are two chances that old state of socket can be changed
+to CLOSE-WAIT in tcp_fin(). One is SYN-RECV, the other is ESTABLISHED.
+So we have to take care of the former case.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-core-acpi.c | 13 +----
- drivers/i2c/i2c-core-base.c | 98 +++++++++++++++++++++++++++++++++++++
- drivers/i2c/i2c-core-of.c   | 66 -------------------------
- include/linux/i2c.h         | 24 +++++++--
- 4 files changed, 120 insertions(+), 81 deletions(-)
+ net/ipv4/tcp.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index 546cc935e035a..29a482abf1eed 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -421,18 +421,7 @@ EXPORT_SYMBOL_GPL(i2c_acpi_find_adapter_by_handle);
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 4ed0d303791a1..0a495b6edbc4b 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2420,6 +2420,10 @@ void tcp_set_state(struct sock *sk, int state)
+ 		if (oldstate != TCP_ESTABLISHED)
+ 			TCP_INC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
+ 		break;
++	case TCP_CLOSE_WAIT:
++		if (oldstate == TCP_SYN_RECV)
++			TCP_INC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
++		break;
  
- static struct i2c_client *i2c_acpi_find_client_by_adev(struct acpi_device *adev)
- {
--	struct device *dev;
--	struct i2c_client *client;
--
--	dev = bus_find_device_by_acpi_dev(&i2c_bus_type, adev);
--	if (!dev)
--		return NULL;
--
--	client = i2c_verify_client(dev);
--	if (!client)
--		put_device(dev);
--
--	return client;
-+	return i2c_find_device_by_fwnode(acpi_fwnode_handle(adev));
- }
+ 	case TCP_CLOSE:
+ 		if (oldstate == TCP_CLOSE_WAIT || oldstate == TCP_ESTABLISHED)
+@@ -2431,7 +2435,7 @@ void tcp_set_state(struct sock *sk, int state)
+ 			inet_put_port(sk);
+ 		fallthrough;
+ 	default:
+-		if (oldstate == TCP_ESTABLISHED)
++		if (oldstate == TCP_ESTABLISHED || oldstate == TCP_CLOSE_WAIT)
+ 			TCP_DEC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
+ 	}
  
- static int i2c_acpi_notify(struct notifier_block *nb, unsigned long value,
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index 1810a994c07ca..505eebbc98a09 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -1009,6 +1009,35 @@ void i2c_unregister_device(struct i2c_client *client)
- }
- EXPORT_SYMBOL_GPL(i2c_unregister_device);
- 
-+/**
-+ * i2c_find_device_by_fwnode() - find an i2c_client for the fwnode
-+ * @fwnode: &struct fwnode_handle corresponding to the &struct i2c_client
-+ *
-+ * Look up and return the &struct i2c_client corresponding to the @fwnode.
-+ * If no client can be found, or @fwnode is NULL, this returns NULL.
-+ *
-+ * The user must call put_device(&client->dev) once done with the i2c client.
-+ */
-+struct i2c_client *i2c_find_device_by_fwnode(struct fwnode_handle *fwnode)
-+{
-+	struct i2c_client *client;
-+	struct device *dev;
-+
-+	if (!fwnode)
-+		return NULL;
-+
-+	dev = bus_find_device_by_fwnode(&i2c_bus_type, fwnode);
-+	if (!dev)
-+		return NULL;
-+
-+	client = i2c_verify_client(dev);
-+	if (!client)
-+		put_device(dev);
-+
-+	return client;
-+}
-+EXPORT_SYMBOL(i2c_find_device_by_fwnode);
-+
- 
- static const struct i2c_device_id dummy_id[] = {
- 	{ "dummy", 0 },
-@@ -1764,6 +1793,75 @@ int devm_i2c_add_adapter(struct device *dev, struct i2c_adapter *adapter)
- }
- EXPORT_SYMBOL_GPL(devm_i2c_add_adapter);
- 
-+static int i2c_dev_or_parent_fwnode_match(struct device *dev, const void *data)
-+{
-+	if (dev_fwnode(dev) == data)
-+		return 1;
-+
-+	if (dev->parent && dev_fwnode(dev->parent) == data)
-+		return 1;
-+
-+	return 0;
-+}
-+
-+/**
-+ * i2c_find_adapter_by_fwnode() - find an i2c_adapter for the fwnode
-+ * @fwnode: &struct fwnode_handle corresponding to the &struct i2c_adapter
-+ *
-+ * Look up and return the &struct i2c_adapter corresponding to the @fwnode.
-+ * If no adapter can be found, or @fwnode is NULL, this returns NULL.
-+ *
-+ * The user must call put_device(&adapter->dev) once done with the i2c adapter.
-+ */
-+struct i2c_adapter *i2c_find_adapter_by_fwnode(struct fwnode_handle *fwnode)
-+{
-+	struct i2c_adapter *adapter;
-+	struct device *dev;
-+
-+	if (!fwnode)
-+		return NULL;
-+
-+	dev = bus_find_device(&i2c_bus_type, NULL, fwnode,
-+			      i2c_dev_or_parent_fwnode_match);
-+	if (!dev)
-+		return NULL;
-+
-+	adapter = i2c_verify_adapter(dev);
-+	if (!adapter)
-+		put_device(dev);
-+
-+	return adapter;
-+}
-+EXPORT_SYMBOL(i2c_find_adapter_by_fwnode);
-+
-+/**
-+ * i2c_get_adapter_by_fwnode() - find an i2c_adapter for the fwnode
-+ * @fwnode: &struct fwnode_handle corresponding to the &struct i2c_adapter
-+ *
-+ * Look up and return the &struct i2c_adapter corresponding to the @fwnode,
-+ * and increment the adapter module's use count. If no adapter can be found,
-+ * or @fwnode is NULL, this returns NULL.
-+ *
-+ * The user must call i2c_put_adapter(adapter) once done with the i2c adapter.
-+ * Note that this is different from i2c_find_adapter_by_node().
-+ */
-+struct i2c_adapter *i2c_get_adapter_by_fwnode(struct fwnode_handle *fwnode)
-+{
-+	struct i2c_adapter *adapter;
-+
-+	adapter = i2c_find_adapter_by_fwnode(fwnode);
-+	if (!adapter)
-+		return NULL;
-+
-+	if (!try_module_get(adapter->owner)) {
-+		put_device(&adapter->dev);
-+		adapter = NULL;
-+	}
-+
-+	return adapter;
-+}
-+EXPORT_SYMBOL(i2c_get_adapter_by_fwnode);
-+
- static void i2c_parse_timing(struct device *dev, char *prop_name, u32 *cur_val_p,
- 			    u32 def_val, bool use_def)
- {
-diff --git a/drivers/i2c/i2c-core-of.c b/drivers/i2c/i2c-core-of.c
-index 3ed74aa4b44bb..bce6b796e04c2 100644
---- a/drivers/i2c/i2c-core-of.c
-+++ b/drivers/i2c/i2c-core-of.c
-@@ -113,72 +113,6 @@ void of_i2c_register_devices(struct i2c_adapter *adap)
- 	of_node_put(bus);
- }
- 
--static int of_dev_or_parent_node_match(struct device *dev, const void *data)
--{
--	if (dev->of_node == data)
--		return 1;
--
--	if (dev->parent)
--		return dev->parent->of_node == data;
--
--	return 0;
--}
--
--/* must call put_device() when done with returned i2c_client device */
--struct i2c_client *of_find_i2c_device_by_node(struct device_node *node)
--{
--	struct device *dev;
--	struct i2c_client *client;
--
--	dev = bus_find_device_by_of_node(&i2c_bus_type, node);
--	if (!dev)
--		return NULL;
--
--	client = i2c_verify_client(dev);
--	if (!client)
--		put_device(dev);
--
--	return client;
--}
--EXPORT_SYMBOL(of_find_i2c_device_by_node);
--
--/* must call put_device() when done with returned i2c_adapter device */
--struct i2c_adapter *of_find_i2c_adapter_by_node(struct device_node *node)
--{
--	struct device *dev;
--	struct i2c_adapter *adapter;
--
--	dev = bus_find_device(&i2c_bus_type, NULL, node,
--			      of_dev_or_parent_node_match);
--	if (!dev)
--		return NULL;
--
--	adapter = i2c_verify_adapter(dev);
--	if (!adapter)
--		put_device(dev);
--
--	return adapter;
--}
--EXPORT_SYMBOL(of_find_i2c_adapter_by_node);
--
--/* must call i2c_put_adapter() when done with returned i2c_adapter device */
--struct i2c_adapter *of_get_i2c_adapter_by_node(struct device_node *node)
--{
--	struct i2c_adapter *adapter;
--
--	adapter = of_find_i2c_adapter_by_node(node);
--	if (!adapter)
--		return NULL;
--
--	if (!try_module_get(adapter->owner)) {
--		put_device(&adapter->dev);
--		adapter = NULL;
--	}
--
--	return adapter;
--}
--EXPORT_SYMBOL(of_get_i2c_adapter_by_node);
--
- static const struct of_device_id*
- i2c_of_match_device_sysfs(const struct of_device_id *matches,
- 				  struct i2c_client *client)
-diff --git a/include/linux/i2c.h b/include/linux/i2c.h
-index 2ce3efbe9198a..f071a121ed914 100644
---- a/include/linux/i2c.h
-+++ b/include/linux/i2c.h
-@@ -954,15 +954,33 @@ int i2c_handle_smbus_host_notify(struct i2c_adapter *adap, unsigned short addr);
- 
- #endif /* I2C */
- 
-+/* must call put_device() when done with returned i2c_client device */
-+struct i2c_client *i2c_find_device_by_fwnode(struct fwnode_handle *fwnode);
-+
-+/* must call put_device() when done with returned i2c_adapter device */
-+struct i2c_adapter *i2c_find_adapter_by_fwnode(struct fwnode_handle *fwnode);
-+
-+/* must call i2c_put_adapter() when done with returned i2c_adapter device */
-+struct i2c_adapter *i2c_get_adapter_by_fwnode(struct fwnode_handle *fwnode);
-+
- #if IS_ENABLED(CONFIG_OF)
- /* must call put_device() when done with returned i2c_client device */
--struct i2c_client *of_find_i2c_device_by_node(struct device_node *node);
-+static inline struct i2c_client *of_find_i2c_device_by_node(struct device_node *node)
-+{
-+	return i2c_find_device_by_fwnode(of_fwnode_handle(node));
-+}
- 
- /* must call put_device() when done with returned i2c_adapter device */
--struct i2c_adapter *of_find_i2c_adapter_by_node(struct device_node *node);
-+static inline struct i2c_adapter *of_find_i2c_adapter_by_node(struct device_node *node)
-+{
-+	return i2c_find_adapter_by_fwnode(of_fwnode_handle(node));
-+}
- 
- /* must call i2c_put_adapter() when done with returned i2c_adapter device */
--struct i2c_adapter *of_get_i2c_adapter_by_node(struct device_node *node);
-+static inline struct i2c_adapter *of_get_i2c_adapter_by_node(struct device_node *node)
-+{
-+	return i2c_get_adapter_by_fwnode(of_fwnode_handle(node));
-+}
- 
- const struct of_device_id
- *i2c_of_match_device(const struct of_device_id *matches,
 -- 
 2.43.0
 
