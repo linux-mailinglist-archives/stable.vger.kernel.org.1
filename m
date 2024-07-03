@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-57330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF440925C3F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:16:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9AB2925D71
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:28:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89E10294229
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8908A298BD7
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 830F1178CE7;
-	Wed,  3 Jul 2024 11:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69E11822DA;
+	Wed,  3 Jul 2024 11:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="loQYpXyl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XS4f38I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9EF1799F;
-	Wed,  3 Jul 2024 11:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F1616F8FA;
+	Wed,  3 Jul 2024 11:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004555; cv=none; b=QO00BKih/jPqkIsInk5Cm0R0VPm9aw64LxYNKOuQ4y38SFcoRsoNO52km/6cPtrdORqU0wYsPEH14vsVa/ifvIcWUhwfSR9f0Jkpf/2LCjJ5ny/juquhNoqxr++R7yRtXU9VtoM1ByT0azv6zNcnHOr52I37Qd2R0InqLXl2+lU=
+	t=1720005568; cv=none; b=EHAL2dxdo/5MrwGsxUiqc8+s5ALWOccI3C0Uq86b5sSUFjoHNLaBqzTjBQ8AZVDaaXYbcPsGtYwHWRak8C4zJuiMWDsTFLVL4Wcm7qJ+GvWxY+0ZhVDEu9JiMCbuT3rpr3EcVUcCg2olNPOajiWAHtucgcDO5zsfjz3zdpo1im4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004555; c=relaxed/simple;
-	bh=y/xnLKxuu5fHBkadusWKJANyhcrvEt0ursHiJyWb2zg=;
+	s=arc-20240116; t=1720005568; c=relaxed/simple;
+	bh=KsLNKuzD/fkqg4XP1gTs83gohhdH6XBt/Nl9+Xf6SnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TO6++Za4kwf6gC/C6CV6B3tEX+dFP+1psCbk6XHN0/yMmFUaUwQ9mqKG+qZHHhs/94fx25ZvAt0LcHUaa6TelQMTjsbj/iVg35/6sDb4L2vasZYUYXzd8Bk05pSPBCajJwcCGaSPeVR+rVD/rY496vQO+OJIDMFFUOd6GrrxAh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=loQYpXyl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9828C2BD10;
-	Wed,  3 Jul 2024 11:02:34 +0000 (UTC)
+	 MIME-Version; b=pTvYoNEUOU8nnHrXE/EIkbmC5URdRJyJbvPAd93HUPcxELw50vj7/BVaPp8TMwhtplK8FF45UcnpC+eXqAo6q1DCdbyzIgsiJUJ3a8I2WtJ8dRMRevWp+E/99MbOhYsXeR1E55dyg7nh5PwStK2lsGnlNL/fFGMGx1VJV023ODg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XS4f38I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD202C2BD10;
+	Wed,  3 Jul 2024 11:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004555;
-	bh=y/xnLKxuu5fHBkadusWKJANyhcrvEt0ursHiJyWb2zg=;
+	s=korg; t=1720005568;
+	bh=KsLNKuzD/fkqg4XP1gTs83gohhdH6XBt/Nl9+Xf6SnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=loQYpXylzIqFrdhqu6I1Zrr0BUIagnLVSzcvE/KJhANTr16JLW4Zkv8avpJav56aX
-	 25CXQzwFD6hqf2tNFTO9ulMCaSDxBNimSrck5KQ5+O3ULkCbRvSGGc/3OM0hKjVtf9
-	 DE4P0kN8wYS8DJ1K/Za2BTScgZ/BVE18eHFxvz7c=
+	b=1XS4f38IPTYrTyGXDcBLfZPgMcDt7Q0jFhih/ope3KRaT+GcUDyzxoSKYQ1PCHx44
+	 Wupx7sYbzosaL7DWAs5xyvFO/VfBCrndnimpPaMJ4LI9ZhZzdeAXm+oevMmNTwQgCs
+	 KFBDozU6oQhRijBZ0bSg0ahUwCpERraX13TYY+vE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
-Subject: [PATCH 5.10 080/290] vmci: prevent speculation leaks by sanitizing event in event_deliver()
+	Su Yue <glass.su@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 125/356] ocfs2: use coarse time for new created files
 Date: Wed,  3 Jul 2024 12:37:41 +0200
-Message-ID: <20240703102907.218527052@linuxfoundation.org>
+Message-ID: <20240703102917.824213004@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +68,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
+From: Su Yue <glass.su@suse.com>
 
-commit 8003f00d895310d409b2bf9ef907c56b42a4e0f4 upstream.
+commit b8cb324277ee16f3eca3055b96fce4735a5a41c6 upstream.
 
-Coverity spotted that event_msg is controlled by user-space,
-event_msg->event_data.event is passed to event_deliver() and used
-as an index without sanitization.
+The default atime related mount option is '-o realtime' which means file
+atime should be updated if atime <= ctime or atime <= mtime.  atime should
+be updated in the following scenario, but it is not:
+==========================================================
+$ rm /mnt/testfile;
+$ echo test > /mnt/testfile
+$ stat -c "%X %Y %Z" /mnt/testfile
+1711881646 1711881646 1711881646
+$ sleep 5
+$ cat /mnt/testfile > /dev/null
+$ stat -c "%X %Y %Z" /mnt/testfile
+1711881646 1711881646 1711881646
+==========================================================
 
-This change ensures that the event index is sanitized to mitigate any
-possibility of speculative information leaks.
+And the reason the atime in the test is not updated is that ocfs2 calls
+ktime_get_real_ts64() in __ocfs2_mknod_locked during file creation.  Then
+inode_set_ctime_current() is called in inode_set_ctime_current() calls
+ktime_get_coarse_real_ts64() to get current time.
 
-This bug was discovered and resolved using Coverity Static Analysis
-Security Testing (SAST) by Synopsys, Inc.
+ktime_get_real_ts64() is more accurate than ktime_get_coarse_real_ts64().
+In my test box, I saw ctime set by ktime_get_coarse_real_ts64() is less
+than ktime_get_real_ts64() even ctime is set later.  The ctime of the new
+inode is smaller than atime.
 
-Only compile tested, no access to HW.
+The call trace is like:
 
-Fixes: 1d990201f9bb ("VMCI: event handling implementation.")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
-Link: https://lore.kernel.org/stable/20231127193533.46174-1-hagarhem%40amazon.com
-Link: https://lore.kernel.org/r/20240430085916.4753-1-hagarhem@amazon.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ocfs2_create
+  ocfs2_mknod
+    __ocfs2_mknod_locked
+    ....
+
+      ktime_get_real_ts64 <------- set atime,ctime,mtime, more accurate
+      ocfs2_populate_inode
+    ...
+    ocfs2_init_acl
+      ocfs2_acl_set_mode
+        inode_set_ctime_current
+          current_time
+            ktime_get_coarse_real_ts64 <-------less accurate
+
+ocfs2_file_read_iter
+  ocfs2_inode_lock_atime
+    ocfs2_should_update_atime
+      atime <= ctime ? <-------- false, ctime < atime due to accuracy
+
+So here call ktime_get_coarse_real_ts64 to set inode time coarser while
+creating new files.  It may lower the accuracy of file times.  But it's
+not a big deal since we already use coarse time in other places like
+ocfs2_update_inode_atime and inode_set_ctime_current.
+
+Link: https://lkml.kernel.org/r/20240408082041.20925-5-glass.su@suse.com
+Fixes: c62c38f6b91b ("ocfs2: replace CURRENT_TIME macro")
+Signed-off-by: Su Yue <glass.su@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/vmw_vmci/vmci_event.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/ocfs2/namei.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/misc/vmw_vmci/vmci_event.c
-+++ b/drivers/misc/vmw_vmci/vmci_event.c
-@@ -9,6 +9,7 @@
- #include <linux/vmw_vmci_api.h>
- #include <linux/list.h>
- #include <linux/module.h>
-+#include <linux/nospec.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
- #include <linux/rculist.h>
-@@ -86,9 +87,12 @@ static void event_deliver(struct vmci_ev
- {
- 	struct vmci_subscription *cur;
- 	struct list_head *subscriber_list;
-+	u32 sanitized_event, max_vmci_event;
- 
- 	rcu_read_lock();
--	subscriber_list = &subscriber_array[event_msg->event_data.event];
-+	max_vmci_event = ARRAY_SIZE(subscriber_array);
-+	sanitized_event = array_index_nospec(event_msg->event_data.event, max_vmci_event);
-+	subscriber_list = &subscriber_array[sanitized_event];
- 	list_for_each_entry_rcu(cur, subscriber_list, node) {
- 		cur->callback(cur->id, &event_msg->event_data,
- 			      cur->callback_data);
+--- a/fs/ocfs2/namei.c
++++ b/fs/ocfs2/namei.c
+@@ -566,7 +566,7 @@ static int __ocfs2_mknod_locked(struct i
+ 	fe->i_last_eb_blk = 0;
+ 	strcpy(fe->i_signature, OCFS2_INODE_SIGNATURE);
+ 	fe->i_flags |= cpu_to_le32(OCFS2_VALID_FL);
+-	ktime_get_real_ts64(&ts);
++	ktime_get_coarse_real_ts64(&ts);
+ 	fe->i_atime = fe->i_ctime = fe->i_mtime =
+ 		cpu_to_le64(ts.tv_sec);
+ 	fe->i_mtime_nsec = fe->i_ctime_nsec = fe->i_atime_nsec =
 
 
 
