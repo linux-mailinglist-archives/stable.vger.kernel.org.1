@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-57299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30EB6925BF9
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:13:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C895925D4E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF9DC1F20CC4
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D037B1C20AB0
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A1518FDC9;
-	Wed,  3 Jul 2024 11:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ECA017DA2E;
+	Wed,  3 Jul 2024 11:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lODvFNyb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9IUDYyO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B066918FDC3;
-	Wed,  3 Jul 2024 11:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08561741C4;
+	Wed,  3 Jul 2024 11:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004462; cv=none; b=K1PxgAV2zSd99RJFi/AavgsZliREFa7iBbIlEjFln1/twOfZVG+pTw13teQ/lhQyp1S2ds+Xuacja+UNjM8aaePTF5fqvC+CJG/l9lf/JPhcP2nmrTnIRYpP8ZCFGBfMLJPpLJwmaVxuDMxoSujsmNH12XMG+J+Pb9CxDtMpRr8=
+	t=1720005475; cv=none; b=LfyA2FiuElkf1R6cnWPsnoJnmEvD2UczXzzDoJ8BFzKkRhYmEHVSgREjyeU1hIJEtpVC7awKXnQfON7ul7EE3iTYWJ2Y8Xsf0fVWYxyQSZcTH0oxPj78q1pCrCSxi+D3BKC+73pMXVSzDdNO1b5ZIsN9r6EZ8TT5tBt9pqE472w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004462; c=relaxed/simple;
-	bh=J/t+ta8KCb0EKEAnFpn1v7lhj+4R8DstDcQ1zfc8uAA=;
+	s=arc-20240116; t=1720005475; c=relaxed/simple;
+	bh=blAGvcPMcc0KMPmfIA1UCuOuQ61Pxr9HSAS+Y3hvvUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kbbn0MPK5qGVqWvdv/291LW+Tcg0f6xqKhFyDiyGw+625T4JxNLHawTYR2ZlLoN7RPwQVFA9LF+8UP5/OieUuSOoXCULEeXMCZHyO7YEwCGUaPu+X4AJ4Av+u0v0GLsF9eda3y7b23xQhXOFb997hVeAEGCACOGWnuHI/WIxAug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lODvFNyb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF967C2BD10;
-	Wed,  3 Jul 2024 11:01:01 +0000 (UTC)
+	 MIME-Version; b=ZDELC7jdF9dxRhm3u8dayYdGtaaHrCIuc2jsZojyCdD//FnY+WQAKQh9aLHhCII1gOZszdzTyTh4RpaJ+1EdFt1WrPoTp28UY8kugmXPnCrP0xuzgXkrWUvgbPep7dk3CNTdGXBWVNMttErdsOC/h4L7zKwNVnraLB+5h6mNc7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9IUDYyO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4635FC2BD10;
+	Wed,  3 Jul 2024 11:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004462;
-	bh=J/t+ta8KCb0EKEAnFpn1v7lhj+4R8DstDcQ1zfc8uAA=;
+	s=korg; t=1720005475;
+	bh=blAGvcPMcc0KMPmfIA1UCuOuQ61Pxr9HSAS+Y3hvvUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lODvFNyb1rYkL4xstRfbqu9vIXVvdOv3U+4X2fFm6G5LKPOXporMfi/R3idaWLNAC
-	 +B0WVb1QjQgmIqsblN6UmTv/yQe8DE5DL9v8kRk1YyqxzEkWGpsThsSQvTCArsT82C
-	 utH9Kwx7vOIh2sUf5pJ+mNqKZRjlGls3+pF4006E=
+	b=l9IUDYyOxg1wzL9v6q8EQT9jTUfrL47+7n3ZVZR+eM9UQSOxi0jDgXzXeV0KjCC5r
+	 U97J26PXjnLxbj/I7ByUvycDlYNep6oT+wC3zAhpoAn6v5VqSX1ztIemVXQ4rA3E8z
+	 M6uFxMx1FP/oZKXJfXRKJ0+F0ckkGcZ2+TNdr6zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuangyi Chiang <ki.chiang65@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 5.10 048/290] xhci: Apply reset resume quirk to Etron EJ188 xHCI host
-Date: Wed,  3 Jul 2024 12:37:09 +0200
-Message-ID: <20240703102906.017788575@linuxfoundation.org>
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 094/356] iommu: Return right value in iommu_sva_bind_device()
+Date: Wed,  3 Jul 2024 12:37:10 +0200
+Message-ID: <20240703102916.660695579@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuangyi Chiang <ki.chiang65@gmail.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-commit 17bd54555c2aaecfdb38e2734149f684a73fa584 upstream.
+[ Upstream commit 89e8a2366e3bce584b6c01549d5019c5cda1205e ]
 
-As described in commit c877b3b2ad5c ("xhci: Add reset on resume quirk for
-asrock p67 host"), EJ188 have the same issue as EJ168, where completely
-dies on resume. So apply XHCI_RESET_ON_RESUME quirk to EJ188 as well.
+iommu_sva_bind_device() should return either a sva bond handle or an
+ERR_PTR value in error cases. Existing drivers (idxd and uacce) only
+check the return value with IS_ERR(). This could potentially lead to
+a kernel NULL pointer dereference issue if the function returns NULL
+instead of an error pointer.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240611120610.3264502-3-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In reality, this doesn't cause any problems because iommu_sva_bind_device()
+only returns NULL when the kernel is not configured with CONFIG_IOMMU_SVA.
+In this case, iommu_dev_enable_feature(dev, IOMMU_DEV_FEAT_SVA) will
+return an error, and the device drivers won't call iommu_sva_bind_device()
+at all.
+
+Fixes: 26b25a2b98e4 ("iommu: Bind process address spaces to devices")
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Link: https://lore.kernel.org/r/20240528042528.71396-1-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/iommu.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -35,6 +35,7 @@
+diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+index d2f3435e7d176..2202a665b0927 100644
+--- a/include/linux/iommu.h
++++ b/include/linux/iommu.h
+@@ -1038,7 +1038,7 @@ iommu_aux_get_pasid(struct iommu_domain *domain, struct device *dev)
+ static inline struct iommu_sva *
+ iommu_sva_bind_device(struct device *dev, struct mm_struct *mm, void *drvdata)
+ {
+-	return NULL;
++	return ERR_PTR(-ENODEV);
+ }
  
- #define PCI_VENDOR_ID_ETRON		0x1b6f
- #define PCI_DEVICE_ID_EJ168		0x7023
-+#define PCI_DEVICE_ID_EJ188		0x7052
- 
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI	0x8c31
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI	0x9c31
-@@ -270,6 +271,10 @@ static void xhci_pci_quirks(struct devic
- 		xhci->quirks |= XHCI_TRUST_TX_LENGTH;
- 		xhci->quirks |= XHCI_BROKEN_STREAMS;
- 	}
-+	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
-+			pdev->device == PCI_DEVICE_ID_EJ188)
-+		xhci->quirks |= XHCI_RESET_ON_RESUME;
-+
- 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
- 	    pdev->device == 0x0014) {
- 		xhci->quirks |= XHCI_TRUST_TX_LENGTH;
+ static inline void iommu_sva_unbind_device(struct iommu_sva *handle)
+-- 
+2.43.0
+
 
 
 
