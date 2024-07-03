@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-57657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45870925F2D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:52:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E41925F24
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:51:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3641B2AEA0
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F627B3611B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E2F181D02;
-	Wed,  3 Jul 2024 11:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9221017DA2B;
+	Wed,  3 Jul 2024 11:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGbiJ81q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AuBouhL+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4607CF1F;
-	Wed,  3 Jul 2024 11:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5157413F432;
+	Wed,  3 Jul 2024 11:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005541; cv=none; b=DWeNtjRQl2zPLyLwJm6OeOq0nBIFimaDvHKJERfjs0SP8/ZXs1sJ1zicKgmNOKZjQmvH1yWW/c5vSphtitrKNtoBL6Eybu948Cejal7m1Bn42IX9b4tPc25kgNJtQt6C6JKf3eRGFje59V7HtJsgGeQsdEHQMqWYOBCjuf/28Z4=
+	t=1720005446; cv=none; b=sSvl35no39CedKMr8Z1hxFIGknpUyBdK/YT4lBkgipzokRyN2LOGUs5cplPTPNAzE0ewh13u+KFPNH+sRTvonBAErHDtSUl3hbKJmy2hFx38DhGGfRffp3LIo3xaOMVpochm2o2cq3lclPEjGN3Axndpu7aGAW9N0K1lip4HIAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005541; c=relaxed/simple;
-	bh=/koDuKThRHaXv9148oCZGVLexqe4dqCbg6cIs9H/TUY=;
+	s=arc-20240116; t=1720005446; c=relaxed/simple;
+	bh=5VP7xz/yNeBw2roqY97oap5h8BtDVnCtJsvRcUfih/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NSw7BmAQoXjV6L/AUNehmMEz7lNhWnjyZ22p6P2BU8ZNRWLHbX6bTWE/R5X0rqxnLsQmJ71Y3L9C2PGwokkL2i4YZQczGIXRhjmmK9C0bmPJuEzR+Q6//1gx+w3MX8reOnxrwMjMaRdu/qaPd57Sjr8sE/tWvkfkTkqE5MUrneU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGbiJ81q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B8AC2BD10;
-	Wed,  3 Jul 2024 11:19:01 +0000 (UTC)
+	 MIME-Version; b=L9KSj61JKNtyeKpShnVJHgYSP/Krik4fgAEJgMiiD307QFyLbsbG8wNComfuu/GFtKvaWhpxti2H+EH+8iBkcCcO1eOCt+PhJya6ErFwe1B/OYPht4FDkGGJz4PsbsRDaPQ5K5ZDKkeN9tDC8bTvl2txcwx5iklvSTT0YQbQyq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AuBouhL+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC3AC2BD10;
+	Wed,  3 Jul 2024 11:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005541;
-	bh=/koDuKThRHaXv9148oCZGVLexqe4dqCbg6cIs9H/TUY=;
+	s=korg; t=1720005446;
+	bh=5VP7xz/yNeBw2roqY97oap5h8BtDVnCtJsvRcUfih/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RGbiJ81qiu9KW3TZYU4IALTRO27Efm2pt33juEIPyfnYgJZwfllO11otLWPTtvmPi
-	 NKd/zEIxX+MT8c43cQ7IwNHTlYmrf7ZLQxxRex1ijQ+b5LEIj2zUrItSjrGyVcOcOe
-	 9HRqWA6W659yXEMlJHELwz+o7dxdKU9a3Qof3LKc=
+	b=AuBouhL+csOFRJPgVFkdlBKrUwrH44VjnS7Q4hPDWsurRIVFG+7UBIaXUQJk37UIu
+	 mX3LEwG4VULT3p/jLxXsCX72Xs3ecf9oZ64a//OYyM4HUcQbbWDzxT4kNJQY22zF6C
+	 gJPLsNX3SBXtAryjWfF/VPDcdAlql/PdoM1L8rz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Tso <kyletso@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.15 075/356] usb: typec: tcpm: Ignore received Hard Reset in TOGGLING state
-Date: Wed,  3 Jul 2024 12:36:51 +0200
-Message-ID: <20240703102915.940785272@linuxfoundation.org>
+	stable@kernel.org,
+	Tomas Winkler <tomas.winkler@intel.com>
+Subject: [PATCH 5.15 076/356] mei: me: release irq in mei_me_pci_resume error path
+Date: Wed,  3 Jul 2024 12:36:52 +0200
+Message-ID: <20240703102915.978957471@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
 References: <20240703102913.093882413@linuxfoundation.org>
@@ -65,55 +65,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kyle Tso <kyletso@google.com>
+From: Tomas Winkler <tomas.winkler@intel.com>
 
-commit fc8fb9eea94d8f476e15f3a4a7addeb16b3b99d6 upstream.
+commit 283cb234ef95d94c61f59e1cd070cd9499b51292 upstream.
 
-Similar to what fixed in Commit a6fe37f428c1 ("usb: typec: tcpm: Skip
-hard reset when in error recovery"), the handling of the received Hard
-Reset has to be skipped during TOGGLING state.
+The mei_me_pci_resume doesn't release irq on the error path,
+in case mei_start() fails.
 
-[ 4086.021288] VBUS off
-[ 4086.021295] pending state change SNK_READY -> SNK_UNATTACHED @ 650 ms [rev2 NONE_AMS]
-[ 4086.022113] VBUS VSAFE0V
-[ 4086.022117] state change SNK_READY -> SNK_UNATTACHED [rev2 NONE_AMS]
-[ 4086.022447] VBUS off
-[ 4086.022450] state change SNK_UNATTACHED -> SNK_UNATTACHED [rev2 NONE_AMS]
-[ 4086.023060] VBUS VSAFE0V
-[ 4086.023064] state change SNK_UNATTACHED -> SNK_UNATTACHED [rev2 NONE_AMS]
-[ 4086.023070] disable BIST MODE TESTDATA
-[ 4086.023766] disable vbus discharge ret:0
-[ 4086.023911] Setting usb_comm capable false
-[ 4086.028874] Setting voltage/current limit 0 mV 0 mA
-[ 4086.028888] polarity 0
-[ 4086.030305] Requesting mux state 0, usb-role 0, orientation 0
-[ 4086.033539] Start toggling
-[ 4086.038496] state change SNK_UNATTACHED -> TOGGLING [rev2 NONE_AMS]
-
-// This Hard Reset is unexpected
-[ 4086.038499] Received hard reset
-[ 4086.038501] state change TOGGLING -> HARD_RESET_START [rev2 HARD_RESET]
-
-Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kyle Tso <kyletso@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240520154858.1072347-1-kyletso@google.com
+Cc: <stable@kernel.org>
+Fixes: 33ec08263147 ("mei: revamp mei reset state machine")
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+Link: https://lore.kernel.org/r/20240604090728.1027307-1-tomas.winkler@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/misc/mei/pci-me.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -5351,6 +5351,7 @@ static void _tcpm_pd_hard_reset(struct t
- 		port->tcpc->set_bist_data(port->tcpc, false);
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -400,8 +400,10 @@ static int mei_me_pci_resume(struct devi
+ 	}
  
- 	switch (port->state) {
-+	case TOGGLING:
- 	case ERROR_RECOVERY:
- 	case PORT_RESET:
- 	case PORT_RESET_WAIT_OFF:
+ 	err = mei_restart(dev);
+-	if (err)
++	if (err) {
++		free_irq(pdev->irq, dev);
+ 		return err;
++	}
+ 
+ 	/* Start timer if stopped in suspend */
+ 	schedule_delayed_work(&dev->timer_work, HZ);
 
 
 
