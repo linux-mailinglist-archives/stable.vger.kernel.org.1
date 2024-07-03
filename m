@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F7F4925B9C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:10:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52236925CBA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE3261F230F0
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:10:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 090BF1F2138C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCCF2191F9A;
-	Wed,  3 Jul 2024 10:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06780191F75;
+	Wed,  3 Jul 2024 11:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHhYdEjI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTZSjvR0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C678188CDA;
-	Wed,  3 Jul 2024 10:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78841849D3;
+	Wed,  3 Jul 2024 11:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004246; cv=none; b=uqFexXGeu5QKPAHr69dXs1rJYjiERvpsDbiUdQ+WJYmb8ixGHgQqJQ6+LhOzloV7sTSmcb9AtsLAIWgv1Y18eSq0pajWSsSC6uukG2Hn1YnptFYBDGp31cjsYiCXGeXuSqO0tdE00tOo5wSP4OEoXZh+xE7S3fkdRNsXxv5IWwQ=
+	t=1720005069; cv=none; b=AEIZXsCGaIIFRbvpqCqFDSCNLn/gT9kRXDqkNUsA4NH+YhvVXH/M6dtuv5I45G75/6YRjk+T8mlZeTX5q4yRAPBpwOfk/ix5Rr+8z42a+6H0d6o92LIkY3w1jxavMNpidskyBnG1TpzYuErlIz0uU+CmWAunj2nvT45+rVr1CkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004246; c=relaxed/simple;
-	bh=+WVZuWQCjfL2ImJ23MNOtcdMfwOv3BqmGdbX7DkmjBY=;
+	s=arc-20240116; t=1720005069; c=relaxed/simple;
+	bh=mSTE8iyCN7Zn7PH0It7wKR2I4lisODdP17AYmTH1P9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bvhiY1HZvHdEEGoBEC/sAo17SVwzCsenvLHBiYWQcxbjxKrWm66m876GK8GZic2gxZanaiGn4UbYbUmV6hC4YYlBPIxjXB4ygO4V4RLocdWHccFFSNFxTz3xOUfRoYJU8Cx+XZrtoWvS6tm1xmbht2w9fQl6Jy7xmEAN6y+3gv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHhYdEjI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20771C2BD10;
-	Wed,  3 Jul 2024 10:57:25 +0000 (UTC)
+	 MIME-Version; b=s7YbXrt1QFLBBvksIL14fcYcIDeT1N5y7qMHJht88j/ZZhLOSXgWAQGRI9zQA+fXPc4OSdAt7O3p7WPJTLtnFD9fBQDBSCj1jo5kJmN4Z0M+ty1u74+Nj8EKbrAB07tsGGzIlZy7IJaNfunEbVWwBS4VoIgDsy+b+ngYGBW6jEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTZSjvR0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35300C2BD10;
+	Wed,  3 Jul 2024 11:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004246;
-	bh=+WVZuWQCjfL2ImJ23MNOtcdMfwOv3BqmGdbX7DkmjBY=;
+	s=korg; t=1720005069;
+	bh=mSTE8iyCN7Zn7PH0It7wKR2I4lisODdP17AYmTH1P9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JHhYdEjIrhaX3x3NwNVq0ItFVkPktBrzhy51tDvFVH0B2FUzhOGdqG4Gd7DBuq57J
-	 MBw/tRknfgt9ASzNS6SUpDbC7dx8fAgw5LjFf2sKhT3UtTktxoq+x6mk17pPtXTSJr
-	 x5OC6qaHJX4os5kFr/jjykovku4vcdJ/3p6Jd4ZY=
+	b=GTZSjvR0slC5mxWPKwhpuSiH/fss4WWoEBsrcDXms/f0LGirBYo6lv64e1lDwuMGg
+	 H6Jth+nTlG5RallNr34EY1kG5clC8i21kvW+Nz0Pm0v0PIAtPp0bIltOPv76BMtuCT
+	 UMcjhQAhLI9Wp/5v2eT9B7s4m6N4aVd0LKOoZNwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: [PATCH 5.4 169/189] serial: imx: set receiver level before starting uart
-Date: Wed,  3 Jul 2024 12:40:30 +0200
-Message-ID: <20240703102847.847113870@linuxfoundation.org>
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 250/290] iio: chemical: bme680: Fix calibration data variable
+Date: Wed,  3 Jul 2024 12:40:31 +0200
+Message-ID: <20240703102913.593470830@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-commit a81dbd0463eca317eee44985a66aa6cc2ce5c101 upstream.
+commit b47c0fee73a810c4503c4a94ea34858a1d865bba upstream.
 
-Set the receiver level to something > 0 before calling imx_uart_start_rx
-in rs485_config. This is necessary to avoid an interrupt storm that
-might prevent the system from booting. This was seen on an i.MX7 device
-when the rs485-rts-active-low property was active in the device tree.
+According to the BME68x Sensor API [1], the h6 calibration
+data variable should be an unsigned integer of size 8.
 
-Fixes: 6d215f83e5fc ("serial: imx: warn user when using unsupported configuration")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Link: https://lore.kernel.org/r/20240621153829.183780-1-eichest@gmail.com
+[1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x_defs.h#L789
+
+Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://lore.kernel.org/r/20240606212313.207550-3-vassilisamir@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/imx.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/iio/chemical/bme680_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -1887,8 +1887,10 @@ static int imx_uart_rs485_config(struct
- 
- 	/* Make sure Rx is enabled in case Tx is active with Rx disabled */
- 	if (!(rs485conf->flags & SER_RS485_ENABLED) ||
--	    rs485conf->flags & SER_RS485_RX_DURING_TX)
-+	    rs485conf->flags & SER_RS485_RX_DURING_TX) {
-+		imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
- 		imx_uart_start_rx(port);
-+	}
- 
- 	port->rs485 = *rs485conf;
- 
+--- a/drivers/iio/chemical/bme680_core.c
++++ b/drivers/iio/chemical/bme680_core.c
+@@ -38,7 +38,7 @@ struct bme680_calib {
+ 	s8  par_h3;
+ 	s8  par_h4;
+ 	s8  par_h5;
+-	s8  par_h6;
++	u8  par_h6;
+ 	s8  par_h7;
+ 	s8  par_gh1;
+ 	s16 par_gh2;
 
 
 
