@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34A1D925B28
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D31F3925A08
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:53:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD60B28F255
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:05:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E8C01F21A29
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA3318132D;
-	Wed,  3 Jul 2024 10:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0B5181CF9;
+	Wed,  3 Jul 2024 10:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pkx0ZJHF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnuwDY+Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3E9173336;
-	Wed,  3 Jul 2024 10:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD931741C4;
+	Wed,  3 Jul 2024 10:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004014; cv=none; b=Ymp+MwrouV0EpWE4u+9U4U61npxHnJLM4AG5Y1tCkWTmFSNDlkc5qfYxb5qFy1tQeiiRPMKY0VxrmkWwuMjFXiV8WIP8wjM68BxwbSVJsBO/G1x2yAT9F95fjPVM0RtCyLE6Zl6Fj4sKuMP0kboSyMlbvWldUiQJJ5RP2wZR59o=
+	t=1720003476; cv=none; b=MNPqBv3EjffCXUZth7vp1HGoh7LHouKe6CokBPs6Gpb43VyuqJxqw78lDUO6GwANYDh5kSNzsskWXS2bwnNRDraKy0IkrSUfguXbwVqSvAkkb8zHm5Pz/WI6OrLRZH80EG9PB0kJLgxXlQ6Bpy8BLzWLuEEeC5uW2KpduZPIsU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004014; c=relaxed/simple;
-	bh=TT6/qj+gwZzg2nHSY043GNuQ56B1liCC8hESpi61oh0=;
+	s=arc-20240116; t=1720003476; c=relaxed/simple;
+	bh=3Yu+UU6vaPrhQqXYocTs5xy1rRslQ6L1N7cLgKCZ73s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mL8pianPsGAXtzrb/5NBi5N/3QGXQeevEDRdpUx3ODl0stWNawEkdji4LkcjUWTbTsgE/MUUaA80Yr/gcuUqI7+RA2SHYhwQymZbjG3tLpT0AJ+QUoOTCqhYUlDgnj5BIqv4uO9pKTc6YpGZemvcEGD+V5j8EeR3lB46OuseUfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pkx0ZJHF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53399C2BD10;
-	Wed,  3 Jul 2024 10:53:34 +0000 (UTC)
+	 MIME-Version; b=VoEECyCwAIevlNrVeFdNZwMKtB6kaOO+IY9wBs5B6zUzJM5qoR/AMRrr4igVNGpzSXirpHVYFr/JvdbdKs/i7kqyXd2jQtk+9i9X77OhFM9x7r7eL5hlA9mIB77RfSb9HqfABaeq3ifDPvTiKuqLcZuOL0uFmkNg26pzczyMZ0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnuwDY+Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962E3C2BD10;
+	Wed,  3 Jul 2024 10:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004014;
-	bh=TT6/qj+gwZzg2nHSY043GNuQ56B1liCC8hESpi61oh0=;
+	s=korg; t=1720003476;
+	bh=3Yu+UU6vaPrhQqXYocTs5xy1rRslQ6L1N7cLgKCZ73s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pkx0ZJHFVS5SO0vgog8rNcC0r6n62BVizmUlJRjUW616xotYQe4+LMuHPB2ZgpsGw
-	 R+YdZtHm8E1sC69VNA4qv1lJ4BEr3ecVxkQZeFe/JimCbC8TIssSwC1ioBArcJeg8w
-	 LwDaAZHGYgyWE6jJ71+myYRyQHNwv+QSl8e8nz+U=
+	b=SnuwDY+QpbCGIOKA5qUcn1YRSqmch7AGcnp66Nx5AmaJZl5BU0Q8jiRlY4W0kpOKk
+	 vW15YJH+yDQe30lB44UK2UT4MIP7ND5xzpcFbP4rqTpWMT2ERRUrqJV+JsXpler6KH
+	 nhr+XOHWV+AzJpvO7aFmdzR9txmmP7P3Mw2UiJvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 064/189] net/ipv6: Fix the RT cache flush via sysctl using a previous delay
-Date: Wed,  3 Jul 2024 12:38:45 +0200
-Message-ID: <20240703102843.925031390@linuxfoundation.org>
+	Alan Stern <stern@rowland.harvard.edu>,
+	syzbot+5f996b83575ef4058638@syzkaller.appspotmail.com,
+	syzbot+1b2abad17596ad03dcff@syzkaller.appspotmail.com
+Subject: [PATCH 4.19 029/139] USB: class: cdc-wdm: Fix CPU lockup caused by excessive log messages
+Date: Wed,  3 Jul 2024 12:38:46 +0200
+Message-ID: <20240703102831.541933241@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit 14a20e5b4ad998793c5f43b0330d9e1388446cf3 ]
+commit 22f00812862564b314784167a89f27b444f82a46 upstream.
 
-The net.ipv6.route.flush system parameter takes a value which specifies
-a delay used during the flush operation for aging exception routes. The
-written value is however not used in the currently requested flush and
-instead utilized only in the next one.
+The syzbot fuzzer found that the interrupt-URB completion callback in
+the cdc-wdm driver was taking too long, and the driver's immediate
+resubmission of interrupt URBs with -EPROTO status combined with the
+dummy-hcd emulation to cause a CPU lockup:
 
-A problem is that ipv6_sysctl_rtcache_flush() first reads the old value
-of net->ipv6.sysctl.flush_delay into a local delay variable and then
-calls proc_dointvec() which actually updates the sysctl based on the
-provided input.
+cdc_wdm 1-1:1.0: nonzero urb status received: -71
+cdc_wdm 1-1:1.0: wdm_int_callback - 0 bytes
+watchdog: BUG: soft lockup - CPU#0 stuck for 26s! [syz-executor782:6625]
+CPU#0 Utilization every 4s during lockup:
+	#1:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
+	#2:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
+	#3:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
+	#4:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
+	#5:  98% system,	  1% softirq,	  3% hardirq,	  0% idle
+Modules linked in:
+irq event stamp: 73096
+hardirqs last  enabled at (73095): [<ffff80008037bc00>] console_emit_next_record kernel/printk/printk.c:2935 [inline]
+hardirqs last  enabled at (73095): [<ffff80008037bc00>] console_flush_all+0x650/0xb74 kernel/printk/printk.c:2994
+hardirqs last disabled at (73096): [<ffff80008af10b00>] __el1_irq arch/arm64/kernel/entry-common.c:533 [inline]
+hardirqs last disabled at (73096): [<ffff80008af10b00>] el1_interrupt+0x24/0x68 arch/arm64/kernel/entry-common.c:551
+softirqs last  enabled at (73048): [<ffff8000801ea530>] softirq_handle_end kernel/softirq.c:400 [inline]
+softirqs last  enabled at (73048): [<ffff8000801ea530>] handle_softirqs+0xa60/0xc34 kernel/softirq.c:582
+softirqs last disabled at (73043): [<ffff800080020de8>] __do_softirq+0x14/0x20 kernel/softirq.c:588
+CPU: 0 PID: 6625 Comm: syz-executor782 Tainted: G        W          6.10.0-rc2-syzkaller-g8867bbd4a056 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
 
-Fix the problem by switching the order of the two operations.
+Testing showed that the problem did not occur if the two error
+messages -- the first two lines above -- were removed; apparently adding
+material to the kernel log takes a surprisingly large amount of time.
 
-Fixes: 4990509f19e8 ("[NETNS][IPV6]: Make sysctls route per namespace.")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240607112828.30285-1-petr.pavlu@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In any case, the best approach for preventing these lockups and to
+avoid spamming the log with thousands of error messages per second is
+to ratelimit the two dev_err() calls.  Therefore we replace them with
+dev_err_ratelimited().
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Suggested-by: Greg KH <gregkh@linuxfoundation.org>
+Reported-and-tested-by: syzbot+5f996b83575ef4058638@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/00000000000073d54b061a6a1c65@google.com/
+Reported-and-tested-by: syzbot+1b2abad17596ad03dcff@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/000000000000f45085061aa9b37e@google.com/
+Fixes: 9908a32e94de ("USB: remove err() macro from usb class drivers")
+Link: https://lore.kernel.org/linux-usb/40dfa45b-5f21-4eef-a8c1-51a2f320e267@rowland.harvard.edu/
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/29855215-52f5-4385-b058-91f42c2bee18@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c | 4 ++--
+ drivers/usb/class/cdc-wdm.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 65772800d0d33..08cdb38d41d86 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -6142,12 +6142,12 @@ int ipv6_sysctl_rtcache_flush(struct ctl_table *ctl, int write,
- 	if (!write)
- 		return -EINVAL;
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -252,14 +252,14 @@ static void wdm_int_callback(struct urb
+ 			dev_err(&desc->intf->dev, "Stall on int endpoint\n");
+ 			goto sw; /* halt is cleared in work */
+ 		default:
+-			dev_err(&desc->intf->dev,
++			dev_err_ratelimited(&desc->intf->dev,
+ 				"nonzero urb status received: %d\n", status);
+ 			break;
+ 		}
+ 	}
  
--	net = (struct net *)ctl->extra1;
--	delay = net->ipv6.sysctl.flush_delay;
- 	ret = proc_dointvec(ctl, write, buffer, lenp, ppos);
- 	if (ret)
- 		return ret;
- 
-+	net = (struct net *)ctl->extra1;
-+	delay = net->ipv6.sysctl.flush_delay;
- 	fib6_run_gc(delay <= 0 ? 0 : (unsigned long)delay, net, delay > 0);
- 	return 0;
- }
--- 
-2.43.0
-
+ 	if (urb->actual_length < sizeof(struct usb_cdc_notification)) {
+-		dev_err(&desc->intf->dev, "wdm_int_callback - %d bytes\n",
++		dev_err_ratelimited(&desc->intf->dev, "wdm_int_callback - %d bytes\n",
+ 			urb->actual_length);
+ 		goto exit;
+ 	}
 
 
 
