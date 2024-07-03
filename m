@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-57003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05847925AE3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:04:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2915A925E3B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2CD4299F97
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:54:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D40B01F25B07
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D965A1836D6;
-	Wed,  3 Jul 2024 10:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE1E173348;
+	Wed,  3 Jul 2024 11:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0HY7Tcr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yA5eTdV0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B71136E2A;
-	Wed,  3 Jul 2024 10:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12AB6E5ED;
+	Wed,  3 Jul 2024 11:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003544; cv=none; b=um1CG3pgHiRp0btFDp75NDsluFU2ywPlnLePoU/aXuRMHcpIQF/TnnvdWnnyMJ3tSNw9lydb4TEvtK08JUTLTlgOGBZsaokzbFpUjFmL0yfViaL5j2qjRjQ0eaKAnevXFcV3B+ivqvuN4gsNobNNN+u6UzcmNeSrVBstQ20lMsU=
+	t=1720006055; cv=none; b=o83XJsQ6GKfZ59Tn6rSjMZms0V2zR6NMiNBvQW0HO9d7D711wcRZx9x9SMeCY8K2D7Q/7bKQ00DUCwSz4sZDw6IEc4tEX9B5ljyRFkC9eMvxMxLIfF+cudW99XMctqB6gBfmn/y1vezVL5OncI3eui9nHavtDRFo026IZYcVRLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003544; c=relaxed/simple;
-	bh=+YSk+Lisn7Ycf1eBWxeq8AgGRtdqansDnf+t4xVktQo=;
+	s=arc-20240116; t=1720006055; c=relaxed/simple;
+	bh=cEPMXoJFTpMTXXZa1FPcsO4fLOPeXTx2SCCK29FBI3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XbnkZ8QEN/OsVV3V4cDgCZkb3ks7RfZ9VCDGFsC8LkV8/hk5T3s+pb0vpLFgKaFddlUThkQHSq/Gl3h8NuIA5xAlqoaoq6HzgWNJ/nlU8jyK5NpijKEWANE6khsQXeBP8JxhYDefIFArsWuEYwt8zjeupLu/7Q/UFZdAI+GICTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0HY7Tcr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C82BC2BD10;
-	Wed,  3 Jul 2024 10:45:43 +0000 (UTC)
+	 MIME-Version; b=C6xmqUzN/luJYwtJBDu2FuwwW5YcVHMlRhPizNvFen5a+p/GAyy1kz4RkuOPFYKYx7rlVZhJiH5ypK/2zi8cbg7WT0oBNXJY8dGT28xPFGlGn8swPs1aMbg0irFl64EhuLAa/fsDeUdmh+hWjAZKV19mEYTs7Gp2QARf2pSATH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yA5eTdV0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6629AC2BD10;
+	Wed,  3 Jul 2024 11:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003544;
-	bh=+YSk+Lisn7Ycf1eBWxeq8AgGRtdqansDnf+t4xVktQo=;
+	s=korg; t=1720006054;
+	bh=cEPMXoJFTpMTXXZa1FPcsO4fLOPeXTx2SCCK29FBI3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B0HY7Tcr7fa588GkBOHuVDLn4worPrtjpxY2S7LOouvjKmRh5ITU2G0eZLUQU4Q/3
-	 RnHzVVDp0dC1UizqL+Ae3gmOyIz+22ujgtIWJLs5mK3ltVjUpT5nelOOZJTIwEKCHO
-	 CSCJJ2Rc3uCEhS/ZLrkyqp5ouEn/Vr9qN329XL38=
+	b=yA5eTdV0oKYf74Hpvw0ObxgwiSruDEN/uKr6mOB7ShZBPEYkr8HU3Z60xmPBwOuFZ
+	 kBl0im/9sbrxMV30orusMCZhnI79jzjXisWmgsBC63ivCProKi9DkKi9oYhhfYlomy
+	 fbikC/8eTDmiXkt7wOsG/LvMCuZm/yuWrI9ph+Uk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Nandor Kracser <bonifaido@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 083/139] ARM: dts: samsung: exynos4412-origen: fix keypad no-autorepeat
+Subject: [PATCH 5.15 244/356] ksmbd: ignore trailing slashes in share paths
 Date: Wed,  3 Jul 2024 12:39:40 +0200
-Message-ID: <20240703102833.576474852@linuxfoundation.org>
+Message-ID: <20240703102922.345195455@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Nandor Kracser <bonifaido@gmail.com>
 
-[ Upstream commit 88208d3cd79821117fd3fb80d9bcab618467d37b ]
+[ Upstream commit 405ee4097c4bc3e70556520aed5ba52a511c2266 ]
 
-Although the Samsung SoC keypad binding defined
-linux,keypad-no-autorepeat property, Linux driver never implemented it
-and always used linux,input-no-autorepeat.  Correct the DTS to use
-property actually implemented.
+Trailing slashes in share paths (like: /home/me/Share/) caused permission
+issues with shares for clients on iOS and on Android TV for me,
+but otherwise they work fine with plain old Samba.
 
-This also fixes dtbs_check errors like:
-
-  exynos4412-origen.dtb: keypad@100a0000: 'linux,keypad-no-autorepeat' does not match any of the regexes: '^key-[0-9a-z]+$', 'pinctrl-[0-9]+'
-
-Cc: <stable@vger.kernel.org>
-Fixes: bd08f6277e44 ("ARM: dts: Add keypad entries to Exynos4412 based Origen")
-Link: https://lore.kernel.org/r/20240312183105.715735-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Nandor Kracser <bonifaido@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/exynos4412-origen.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ksmbd/mgmt/share_config.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/exynos4412-origen.dts b/arch/arm/boot/dts/exynos4412-origen.dts
-index e5bfa76185a22..d42b0711b2ceb 100644
---- a/arch/arm/boot/dts/exynos4412-origen.dts
-+++ b/arch/arm/boot/dts/exynos4412-origen.dts
-@@ -437,7 +437,7 @@ buck9_reg: BUCK9 {
- &keypad {
- 	samsung,keypad-num-rows = <3>;
- 	samsung,keypad-num-columns = <2>;
--	linux,keypad-no-autorepeat;
-+	linux,input-no-autorepeat;
- 	wakeup-source;
- 	pinctrl-0 = <&keypad_rows &keypad_cols>;
- 	pinctrl-names = "default";
+diff --git a/fs/ksmbd/mgmt/share_config.c b/fs/ksmbd/mgmt/share_config.c
+index a2f0a2edceb8a..e0a6b758094fc 100644
+--- a/fs/ksmbd/mgmt/share_config.c
++++ b/fs/ksmbd/mgmt/share_config.c
+@@ -165,8 +165,12 @@ static struct ksmbd_share_config *share_config_request(struct unicode_map *um,
+ 
+ 		share->path = kstrndup(ksmbd_share_config_path(resp), path_len,
+ 				      GFP_KERNEL);
+-		if (share->path)
++		if (share->path) {
+ 			share->path_sz = strlen(share->path);
++			while (share->path_sz > 1 &&
++			       share->path[share->path_sz - 1] == '/')
++				share->path[--share->path_sz] = '\0';
++		}
+ 		share->create_mask = resp->create_mask;
+ 		share->directory_mask = resp->directory_mask;
+ 		share->force_create_mode = resp->force_create_mode;
 -- 
 2.43.0
 
