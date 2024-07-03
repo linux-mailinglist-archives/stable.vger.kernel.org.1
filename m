@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-57078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47170925B1C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56906925DAA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA51029F06B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88F891C2324F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C00179654;
-	Wed,  3 Jul 2024 10:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC0A188CBF;
+	Wed,  3 Jul 2024 11:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODtZiKe4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LvpiH+Bb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544EF178CCD;
-	Wed,  3 Jul 2024 10:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C12C45945;
+	Wed,  3 Jul 2024 11:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003777; cv=none; b=u/o6grDtl0MjKMn80DjpBZ2vDFstdDwWd0VqxktppS7LMR5sQeAUK1TvPWyU+NcdmfIHTJdrJIvgqCEjJQkjkXrux1G1EL6IP2v8ksBv1AqE2VHDVA0JxEmuqcOSydjklhO/iBzXaKpzrUdMNcPtJk/6ZzpHcKtgHEc32VpA4H0=
+	t=1720005715; cv=none; b=Er7ePu9D7eRNCZhHV7M+QFnX+Jjb+HKYRcOx4wwMNWykwbcdEvOnE5lRel/VcQC+fAbDgk13bm8QgzfY1XzcZMwxG4QgkcdOQs3rYn9WohD/4tm3FWpZ+AnVxL2/m+vqgDaM4EJQXk2vb0WtAxg9C/KxpAMX2o/CvGrtX9CYZtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003777; c=relaxed/simple;
-	bh=kjNJpNIeMfybktMuZGUpUqhCACURi6nwGeuSwTsT+m0=;
+	s=arc-20240116; t=1720005715; c=relaxed/simple;
+	bh=21cRvdAxzQbrbsjKApOWFcBSDrBC1TN5JWXUG5HlIxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CnKyaABXznPDySLCgKVV9ME21UlZAKoIp05BSqkXm7NTAGKY9pQy5KGjjrWCVCvnM5h1YQp+jl6BAzdLWYOYK5IC0pAtp2ZjCYjgQUQU5eeBWtyhRSNHMT2FFgZRb+atIo+4W0REurPYTY4rcv6gh4miS1+qA/wGgN9RENqua7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODtZiKe4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF84C2BD10;
-	Wed,  3 Jul 2024 10:49:36 +0000 (UTC)
+	 MIME-Version; b=LatDEw7uq6spRg3SF51aNDf+/pVw6Gj8jvxIl1NSJDAcG5CN9ptET6CzrWklJId43985q8y2IqxI9LssND9d2BPav/vE6FO5EWIGo7Mtjv97nlQe/Y3XEryu4WvP7+49Dv3jim9Cq7oheK9Mu/odyJPQ/6ZmkT2FgV3q4rRVFKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LvpiH+Bb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBDCC2BD10;
+	Wed,  3 Jul 2024 11:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003777;
-	bh=kjNJpNIeMfybktMuZGUpUqhCACURi6nwGeuSwTsT+m0=;
+	s=korg; t=1720005715;
+	bh=21cRvdAxzQbrbsjKApOWFcBSDrBC1TN5JWXUG5HlIxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ODtZiKe4m9x2lBABb/jeLu/bpbxkw/zkWRoAW2qCAlrJWiw0s1eWqPU7KDv4eFu7m
-	 b7607MtKEritXVlURxFPkZJiiWHNnxMWCy1scAV5Z/M8L6dInYk0nVlX57HP4PmItL
-	 Cd7B3efjb2MCKGq4aacYRZ8QinLAtz2tvb2H/5O0=
+	b=LvpiH+BbkUbSXC41T0RmBPGt6CWpTvcDDB/Eq1EUaK/82wKi+jvJRee8ZU+b0IDal
+	 d/4CbHrV/crn+IlGXJwWsae4A3sArCO72Shx+bNE21S2cs7is97aHE0LxvgcYYYx/m
+	 LiwJE1vsUe+gI1+RBsIjDWwWI/zBUy3TVQJZuZws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jean Delvare <jdelvare@suse.de>,
+	Juergen Fitschen <me@jue.yt>,
+	Ludovic Desroches <ludovic.desroches@microchip.com>,
+	Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 019/189] af_unix: Use unix_recvq_full_lockless() in unix_stream_connect().
-Date: Wed,  3 Jul 2024 12:38:00 +0200
-Message-ID: <20240703102842.229606095@linuxfoundation.org>
+Subject: [PATCH 5.15 145/356] i2c: at91: Fix the functionality flags of the slave-only interface
+Date: Wed,  3 Jul 2024 12:38:01 +0200
+Message-ID: <20240703102918.588444970@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +68,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Jean Delvare <jdelvare@suse.de>
 
-[ Upstream commit 45d872f0e65593176d880ec148f41ad7c02e40a7 ]
+[ Upstream commit d6d5645e5fc1233a7ba950de4a72981c394a2557 ]
 
-Once sk->sk_state is changed to TCP_LISTEN, it never changes.
+When an I2C adapter acts only as a slave, it should not claim to
+support I2C master capabilities.
 
-unix_accept() takes advantage of this characteristics; it does not
-hold the listener's unix_state_lock() and only acquires recvq lock
-to pop one skb.
-
-It means unix_state_lock() does not prevent the queue length from
-changing in unix_stream_connect().
-
-Thus, we need to use unix_recvq_full_lockless() to avoid data-race.
-
-Now we remove unix_recvq_full() as no one uses it.
-
-Note that we can remove READ_ONCE() for sk->sk_max_ack_backlog in
-unix_recvq_full_lockless() because of the following reasons:
-
-  (1) For SOCK_DGRAM, it is a written-once field in unix_create1()
-
-  (2) For SOCK_STREAM and SOCK_SEQPACKET, it is changed under the
-      listener's unix_state_lock() in unix_listen(), and we hold
-      the lock in unix_stream_connect()
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 9d3ca54b550c ("i2c: at91: added slave mode support")
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+Cc: Juergen Fitschen <me@jue.yt>
+Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
+Cc: Codrin Ciubotariu <codrin.ciubotariu@microchip.com>
+Cc: Andi Shyti <andi.shyti@kernel.org>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/i2c/busses/i2c-at91-slave.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index ec4c462a87f06..ae6aae983b8cb 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -189,15 +189,9 @@ static inline int unix_may_send(struct sock *sk, struct sock *osk)
- 	return unix_peer(osk) == NULL || unix_our_peer(sk, osk);
- }
+diff --git a/drivers/i2c/busses/i2c-at91-slave.c b/drivers/i2c/busses/i2c-at91-slave.c
+index d6eeea5166c04..131a67d9d4a68 100644
+--- a/drivers/i2c/busses/i2c-at91-slave.c
++++ b/drivers/i2c/busses/i2c-at91-slave.c
+@@ -106,8 +106,7 @@ static int at91_unreg_slave(struct i2c_client *slave)
  
--static inline int unix_recvq_full(const struct sock *sk)
--{
--	return skb_queue_len(&sk->sk_receive_queue) > sk->sk_max_ack_backlog;
--}
--
- static inline int unix_recvq_full_lockless(const struct sock *sk)
+ static u32 at91_twi_func(struct i2c_adapter *adapter)
  {
--	return skb_queue_len_lockless(&sk->sk_receive_queue) >
--		READ_ONCE(sk->sk_max_ack_backlog);
-+	return skb_queue_len_lockless(&sk->sk_receive_queue) > sk->sk_max_ack_backlog;
+-	return I2C_FUNC_SLAVE | I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL
+-		| I2C_FUNC_SMBUS_READ_BLOCK_DATA;
++	return I2C_FUNC_SLAVE;
  }
  
- struct sock *unix_peer_get(struct sock *s)
-@@ -1301,7 +1295,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 	if (other->sk_shutdown & RCV_SHUTDOWN)
- 		goto out_unlock;
- 
--	if (unix_recvq_full(other)) {
-+	if (unix_recvq_full_lockless(other)) {
- 		err = -EAGAIN;
- 		if (!timeo)
- 			goto out_unlock;
+ static const struct i2c_algorithm at91_twi_algorithm_slave = {
 -- 
 2.43.0
 
