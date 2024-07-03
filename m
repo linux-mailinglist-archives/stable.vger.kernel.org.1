@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81353925DEF
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 860DF925C85
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:19:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36F311F24511
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:32:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B9E21F26C7A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08C8C18F2F1;
-	Wed,  3 Jul 2024 11:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E13521836EE;
+	Wed,  3 Jul 2024 11:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPNCezJl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDXN4hy5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB36918FC87;
-	Wed,  3 Jul 2024 11:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBFD17B4FF;
+	Wed,  3 Jul 2024 11:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005883; cv=none; b=NWySvZdK5sXmEF6JbtR5tULuwGTuC8mXzAnlyd3YPEmENexMxg/MgGoCx2EthGi1fHArIj+h9tZ8ClhBEGjfqkoglrpubmH9CwHoSGsZ5kPfX9O8Qss1N5fFO7rkTy1a0Iez93wpSrhRyl99l/8Yc+H5T/+zjYIxvMRQRdeYda4=
+	t=1720004873; cv=none; b=q1ja/H8svH51LkfeiEX8oigJz7dMUAXNURKTj6UsX1f6ApUT2PKQWkdcl+UQ8l2U4IpKAthmCCUBjqU4/oFpxWWZ6KSHdw6VpZNRFRIf1SmMD1BSkM3IJ4fSJ1qjlbqrMwvucu/ZaMjCs3bfmmNLEy2gtsjW3Tsq/YsgOCmp2ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005883; c=relaxed/simple;
-	bh=WSahMg6e1LlV3Jqc9B7IA91dK9lJNoarwWZkNgLbcT4=;
+	s=arc-20240116; t=1720004873; c=relaxed/simple;
+	bh=nZinGYq71OO1im5OxhMBZiHghAYrr+PNApAKzscaRYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ofnqi3OBNOdtXfjNAEtIB72DFHJIeKJqnJbQ0dVQDMArVG1ogAZHLLK2GNES1Pq+4utKlUb5xfZ6fVergLmVpsURicWPmuGbqwxpVO9c2FvAPXLrRHWa9wzs/YvSUogqZJXXYQp5zp5Db5p7QH8ZM6i4ckjYF+r+w09E/ggf3/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPNCezJl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42865C32781;
-	Wed,  3 Jul 2024 11:24:43 +0000 (UTC)
+	 MIME-Version; b=JtqcnbDa3dF+GuEivnCdzl7Lcn8hRBtryLugWkxDClDUxQJkIwkv2V3vDS4qbfi7sUSjSA72Iwu/tWU7O627WgwCe//tSdWU0wmduPsxIicoB1XfakG1mV4YI8E64oI2aSOcP4jz5YwfOBceTCFJULvGyEyRZrISY33B3ZzjSI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDXN4hy5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B51DC2BD10;
+	Wed,  3 Jul 2024 11:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005883;
-	bh=WSahMg6e1LlV3Jqc9B7IA91dK9lJNoarwWZkNgLbcT4=;
+	s=korg; t=1720004873;
+	bh=nZinGYq71OO1im5OxhMBZiHghAYrr+PNApAKzscaRYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CPNCezJlsV4aiUrHC6+cQfmUTjcBsccHC0H8Mu1cmoavNcgXCSDgmWgnMFajQYPm3
-	 G5QVfucaqkppJbfpii/GNPmliU5pHxGZYNskPQkkPDIRcB/8KXsiF3z9wSqbkH0sml
-	 YFOf1uEbtUfVRmXel17yMEg3xefjU1ISjtzKnpyY=
+	b=FDXN4hy5culKGc92lihzXEzoIcqzpOBYmNNwQwrc6WO85hfuVQgKHxAQBCZvEMqJ3
+	 KkCaAOo/Vbyd3hLQfwwPF8m/3viPwtZBP19btw1a44BJvLinRNy/ir0COl3+VjNqgR
+	 7GdPZgW9N+5hRH3QXxKVfCJj0aOHypHQmeEH3Jis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 5.15 229/356] dt-bindings: i2c: google,cros-ec-i2c-tunnel: correct path to i2c-controller schema
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 184/290] r8169: remove unneeded memory barrier in rtl_tx
 Date: Wed,  3 Jul 2024 12:39:25 +0200
-Message-ID: <20240703102921.776385635@linuxfoundation.org>
+Message-ID: <20240703102911.121316346@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit 5c8cfd592bb7632200b4edac8f2c7ec892ed9d81 upstream.
+[ Upstream commit 3a689e34973e8717cd57991c6fcf527dc56062b5 ]
 
-The referenced i2c-controller.yaml schema is provided by dtschema
-package (outside of Linux kernel), so use full path to reference it.
+tp->dirty_tx isn't changed outside rtl_tx(). Therefore I see no need
+to guarantee a specific order of reading tp->dirty_tx and tp->cur_tx.
+Having said that we can remove the memory barrier.
+In addition use READ_ONCE() when reading tp->cur_tx because it can
+change in parallel to rtl_tx().
 
-Cc: stable@vger.kernel.org
-Fixes: 1acd4577a66f ("dt-bindings: i2c: convert i2c-cros-ec-tunnel to json-schema")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/2264563a-fa9e-11b0-2c42-31bc6b8e2790@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: c71e3a5cffd5 ("r8169: Fix possible ring buffer corruption on fragmented Tx packets.")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/i2c/google,cros-ec-i2c-tunnel.yaml |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/Documentation/devicetree/bindings/i2c/google,cros-ec-i2c-tunnel.yaml
-+++ b/Documentation/devicetree/bindings/i2c/google,cros-ec-i2c-tunnel.yaml
-@@ -22,7 +22,7 @@ description: |
-   google,cros-ec-spi or google,cros-ec-i2c.
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index c29d43c5f4504..84c8362a65cd1 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4472,9 +4472,8 @@ static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp,
+ 	unsigned int dirty_tx, tx_left, bytes_compl = 0, pkts_compl = 0;
  
- allOf:
--  - $ref: i2c-controller.yaml#
-+  - $ref: /schemas/i2c/i2c-controller.yaml#
+ 	dirty_tx = tp->dirty_tx;
+-	smp_rmb();
  
- properties:
-   compatible:
+-	for (tx_left = tp->cur_tx - dirty_tx; tx_left > 0; tx_left--) {
++	for (tx_left = READ_ONCE(tp->cur_tx) - dirty_tx; tx_left; tx_left--) {
+ 		unsigned int entry = dirty_tx % NUM_TX_DESC;
+ 		struct sk_buff *skb = tp->tx_skb[entry].skb;
+ 		u32 status;
+-- 
+2.43.0
+
 
 
 
