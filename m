@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-57225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5053925BBC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:11:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B11D925A26
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:55:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE797288535
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:09:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 432591F21BEF
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268B8191F8E;
-	Wed,  3 Jul 2024 10:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2FF1849DC;
+	Wed,  3 Jul 2024 10:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x00B8Pu7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INlml/rl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82F9191F7E;
-	Wed,  3 Jul 2024 10:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886E7136E2A;
+	Wed,  3 Jul 2024 10:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004237; cv=none; b=WWT9qTCQurtx3QVrenFnAlNEKo21p8rgTdDM2X+Nb8oAfnJnAyZa24SUI2ec0ErdhCNCpIrl8Fm6MtdR3RzMLIgvEs/pAHKuXaHEovxbhGQE+pv3YybCN6BrbdKJ7VZaQb2san+46449znjfh2ivn+7DDpnRNBDkYhuTQhBW6e4=
+	t=1720003559; cv=none; b=Tos2e82GUC/zG6mqxOukBQku5xdm4vDPOqMlukIxv7s63yCVGp/mq3H1u1oxaDgf1F5z1+PlSjVqxuJ3vv7vAfA16rOsJ1/2/lUiSiUeFnNUwWowulVosEr1DAcLgX+E/ipjeEhMs5cJgTE6kghZEvhMVxVO3x02nlRjFwpDzu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004237; c=relaxed/simple;
-	bh=iuCdST0O5AN9ApqG9wn9KWbplOY137wM8xi0lxVwOFI=;
+	s=arc-20240116; t=1720003559; c=relaxed/simple;
+	bh=aj0vHtKKmiKLdMe6D6fTufXhB+PydcN/a0NGUBHeUvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OimeJ/qJgbV6gGe/M88XHZFGL9CQyr96Rf74D0rSyHx+EJ/KlX5i2FYXz0bKlS6UuLS6HDQA72SgbJYIDfwtBZnTUQU8wCZfWMgerwvbuo910XJyk5WNNfEuTpk5SPlPtMwr77Kloju6xcz2s87lZQMGO7olRnWgB1cmEloTAyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x00B8Pu7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 519BEC2BD10;
-	Wed,  3 Jul 2024 10:57:17 +0000 (UTC)
+	 MIME-Version; b=cWo1kUHRxeUEbjPNrz0xpeKNa1xVMJEQjthT1C4izSGgsxP73yZsYRA2iQoOQa/RcPLgy8UMH29JfyQJcwiYFpsMqeeRdWcKo5z+CZJR5UJBHwvKU6W8eLMGM41/RgjIPH0sO0QtYGMvUJl8If7nRT/Pe980RsAnyentqRrZnNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INlml/rl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37BBC2BD10;
+	Wed,  3 Jul 2024 10:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004237;
-	bh=iuCdST0O5AN9ApqG9wn9KWbplOY137wM8xi0lxVwOFI=;
+	s=korg; t=1720003559;
+	bh=aj0vHtKKmiKLdMe6D6fTufXhB+PydcN/a0NGUBHeUvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x00B8Pu7lRloHu7lOd7v6fa9jvaC+UhkabxD53ATQGQepC0RbBrFdVN8lwgFVYMg/
-	 fmgEvKBwRqDuh4CwqcuzhaBhsSNvoTSUd+lR8BB5RQEh77yQOHyJf3cJDCxiv6Wl1+
-	 +yeNFryiu0RJVdmjob9YDColVEeBW9pzVj5eaqzE=
+	b=INlml/rlN2jexztyTe6o9lFEPOCw4qhpg8cVLlVMDOBrVRpWWaN6aSBd+M+FBa1p/
+	 6LWejgPCYms845pmkKHRxM7O+DQa2fOyHFkcfUmu8B5T/dC5e1J4FJSi48Obbm87K9
+	 2hjkBz7DFX7CV8u+7XGfsyV1eiC1DquWFQC6q29s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Haifeng Xu <haifeng.xu@shopee.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 123/189] arm64: dts: qcom: qcs404: fix bluetooth device address
+Subject: [PATCH 4.19 087/139] perf/core: Fix missing wakeup when waiting for context reference
 Date: Wed,  3 Jul 2024 12:39:44 +0200
-Message-ID: <20240703102846.137217319@linuxfoundation.org>
+Message-ID: <20240703102833.725608934@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Haifeng Xu <haifeng.xu@shopee.com>
 
-[ Upstream commit f5f390a77f18eaeb2c93211a1b7c5e66b5acd423 ]
+[ Upstream commit 74751ef5c1912ebd3e65c3b65f45587e05ce5d36 ]
 
-The 'local-bd-address' property is used to pass a unique Bluetooth
-device address from the boot firmware to the kernel and should otherwise
-be left unset so that the OS can prevent the controller from being used
-until a valid address has been provided through some other means (e.g.
-using btmgmt).
+In our production environment, we found many hung tasks which are
+blocked for more than 18 hours. Their call traces are like this:
 
-Fixes: 60f77ae7d1c1 ("arm64: dts: qcom: qcs404-evb: Enable uart3 and add Bluetooth")
-Cc: stable@vger.kernel.org	# 5.10
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Link: https://lore.kernel.org/r/20240501075201.4732-1-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+[346278.191038] __schedule+0x2d8/0x890
+[346278.191046] schedule+0x4e/0xb0
+[346278.191049] perf_event_free_task+0x220/0x270
+[346278.191056] ? init_wait_var_entry+0x50/0x50
+[346278.191060] copy_process+0x663/0x18d0
+[346278.191068] kernel_clone+0x9d/0x3d0
+[346278.191072] __do_sys_clone+0x5d/0x80
+[346278.191076] __x64_sys_clone+0x25/0x30
+[346278.191079] do_syscall_64+0x5c/0xc0
+[346278.191083] ? syscall_exit_to_user_mode+0x27/0x50
+[346278.191086] ? do_syscall_64+0x69/0xc0
+[346278.191088] ? irqentry_exit_to_user_mode+0x9/0x20
+[346278.191092] ? irqentry_exit+0x19/0x30
+[346278.191095] ? exc_page_fault+0x89/0x160
+[346278.191097] ? asm_exc_page_fault+0x8/0x30
+[346278.191102] entry_SYSCALL_64_after_hwframe+0x44/0xae
+
+The task was waiting for the refcount become to 1, but from the vmcore,
+we found the refcount has already been 1. It seems that the task didn't
+get woken up by perf_event_release_kernel() and got stuck forever. The
+below scenario may cause the problem.
+
+Thread A					Thread B
+...						...
+perf_event_free_task				perf_event_release_kernel
+						   ...
+						   acquire event->child_mutex
+						   ...
+						   get_ctx
+   ...						   release event->child_mutex
+   acquire ctx->mutex
+   ...
+   perf_free_event (acquire/release event->child_mutex)
+   ...
+   release ctx->mutex
+   wait_var_event
+						   acquire ctx->mutex
+						   acquire event->child_mutex
+						   # move existing events to free_list
+						   release event->child_mutex
+						   release ctx->mutex
+						   put_ctx
+...						...
+
+In this case, all events of the ctx have been freed, so we couldn't
+find the ctx in free_list and Thread A will miss the wakeup. It's thus
+necessary to add a wakeup after dropping the reference.
+
+Fixes: 1cf8dfe8a661 ("perf/core: Fix race between close() and fork()")
+Signed-off-by: Haifeng Xu <haifeng.xu@shopee.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20240513103948.33570-1-haifeng.xu@shopee.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qcs404-evb.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/events/core.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/qcs404-evb.dtsi b/arch/arm64/boot/dts/qcom/qcs404-evb.dtsi
-index 522d3ef72df5e..03244871474e2 100644
---- a/arch/arm64/boot/dts/qcom/qcs404-evb.dtsi
-+++ b/arch/arm64/boot/dts/qcom/qcs404-evb.dtsi
-@@ -43,7 +43,7 @@ bluetooth {
- 		vddrf-supply = <&vreg_l1_1p3>;
- 		vddch0-supply = <&vdd_ch0_3p3>;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index ef422d1326a8a..c7651c30eaabf 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -4661,6 +4661,7 @@ int perf_event_release_kernel(struct perf_event *event)
+ again:
+ 	mutex_lock(&event->child_mutex);
+ 	list_for_each_entry(child, &event->child_list, child_list) {
++		void *var = NULL;
  
--		local-bd-address = [ 02 00 00 00 5a ad ];
-+		local-bd-address = [ 00 00 00 00 00 00 ];
+ 		/*
+ 		 * Cannot change, child events are not migrated, see the
+@@ -4701,11 +4702,23 @@ int perf_event_release_kernel(struct perf_event *event)
+ 			 * this can't be the last reference.
+ 			 */
+ 			put_event(event);
++		} else {
++			var = &ctx->refcount;
+ 		}
  
- 		max-speed = <3200000>;
- 	};
+ 		mutex_unlock(&event->child_mutex);
+ 		mutex_unlock(&ctx->mutex);
+ 		put_ctx(ctx);
++
++		if (var) {
++			/*
++			 * If perf_event_free_task() has deleted all events from the
++			 * ctx while the child_mutex got released above, make sure to
++			 * notify about the preceding put_ctx().
++			 */
++			smp_mb(); /* pairs with wait_var_event() */
++			wake_up_var(var);
++		}
+ 		goto again;
+ 	}
+ 	mutex_unlock(&event->child_mutex);
 -- 
 2.43.0
 
