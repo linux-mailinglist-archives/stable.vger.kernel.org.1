@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-57542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2360C925CEA
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:24:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B643D925BAE
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:10:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C40FF1F25AD6
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:24:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8BB51C25795
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82AA9194C8C;
-	Wed,  3 Jul 2024 11:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291971946B0;
+	Wed,  3 Jul 2024 10:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ct66juEn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOXqEYYw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CC7173352;
-	Wed,  3 Jul 2024 11:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8C81946A2;
+	Wed,  3 Jul 2024 10:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005200; cv=none; b=umOZticaGEngnYAGL9VBwvxGj9P5a06A4SErf+v4dIcTjSc9/783gJjcSkbGkLyGrVoPL93w3iPEmBCmZS+KNmjqjDja2wNXY7UpHI7+RGwrdQKYyrtEPfRoPeYf9hPPfGBweu7eF43sa4jPP39jY4M5wyHOpV3l0VovC1fcaFs=
+	t=1720004284; cv=none; b=uSpZPXhg3QfJj5R2Q2KTZIMoIfhf4+hhdcICFEtB1rMY9lEqxuIL58y7bMKT9Yam/IF2ylNrwGveoYzcR8t8rGoiFfSJvLiUnZyyPWTkck38bZfcPOnJrkF+z3lhVa/AeiMkUHD+yIjA2DzVins/9zzGIIwx6w+IQyPhQyeb5+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005200; c=relaxed/simple;
-	bh=Xsk5/7V/eIf7LARsTt0goozh+K93hSPDOEMJ/s54YW0=;
+	s=arc-20240116; t=1720004284; c=relaxed/simple;
+	bh=EncP1jqPX5EW3x5c69Yj4O4FQDBYbYLATIznxk5CtBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=unV+FaJKVUOOg+5G0FBLoMKZ1jStD5RzoV/hrhT3XviFfEAhvaeUs2W/DACSI3RlYy2MO3z0/dw/gwCvb9N0IEfqpn9SYWpEnFrh5HS0lwv1D9k8q3El6U4MXzy8ro7B1yjj7i5eMMksVRGvrFr6eNNu1F8DMMGvjQu3HgPd6/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ct66juEn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD7B2C2BD10;
-	Wed,  3 Jul 2024 11:13:19 +0000 (UTC)
+	 MIME-Version; b=smtrr88fWU2kZgprHzvqtaII+H8zApxFs2I3hRoUZx6XDehOlanskoJTEwsLMUBq3FXGDdm1jAGruG1BYG23hBSYuNxBCTJ4THn752eHsDLCZt1j6yJ1HvP5rrBWcl4IWeBnyA9jaxUQIl1jmC+PW3NktoQ0Jc0T8IMaqv+wl6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOXqEYYw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A335C32781;
+	Wed,  3 Jul 2024 10:58:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005200;
-	bh=Xsk5/7V/eIf7LARsTt0goozh+K93hSPDOEMJ/s54YW0=;
+	s=korg; t=1720004284;
+	bh=EncP1jqPX5EW3x5c69Yj4O4FQDBYbYLATIznxk5CtBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ct66juEnLeJ1kjh4dJNDcsFZVX9wfHeK/L0KL6drBLmTQZYA2J8WzNvPJRnBCEd3B
-	 L8/+aIurOO6yVl5xCtKnKcvjCe1bTajTfY8afh+09WAj5xbxpXDzOl5YXsfrvKYdrQ
-	 LcIhngEVtUB4/yKMnFJWglUeJPMOblweqNL8gLGk=
+	b=sOXqEYYwHfqQxb+b70uvfzBv0s/XW0uZ01u5IQN0bbU2s6s15dELIDq/Csloyodvq
+	 3umlHTCA0Cd0WQDSK/lmTkHaViDQoRcmyXoAZf6Zs9T9x3uBMO39CJoXFOl05XE8bt
+	 p0XKSoyaV0rDPX7ukoyN1NOTsc6BzU1q5rOYSUro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.10 260/290] tty: mcf: MCF54418 has 10 UARTS
-Date: Wed,  3 Jul 2024 12:40:41 +0200
-Message-ID: <20240703102913.965387201@linuxfoundation.org>
+	Christian Brauner <brauner@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.4 181/189] ftruncate: pass a signed offset
+Date: Wed,  3 Jul 2024 12:40:42 +0200
+Message-ID: <20240703102848.302557831@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 7c92a8bd53f24d50c8cf4aba53bb75505b382fed upstream.
+commit 4b8e88e563b5f666446d002ad0dc1e6e8e7102b0 upstream.
 
-Most of the colfires have up to 5 UARTs but MCF54418 has up-to 10 !
-Change the maximum value authorized.
+The old ftruncate() syscall, using the 32-bit off_t misses a sign
+extension when called in compat mode on 64-bit architectures.  As a
+result, passing a negative length accidentally succeeds in truncating
+to file size between 2GiB and 4GiB.
 
-Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-Cc: stable <stable@kernel.org>
-Fixes: 2545cf6e94b4 ("m68knommu: allow 4 coldfire serial ports")
-Link: https://lore.kernel.org/r/20240620-upstream-uart-v1-1-a9d0d95fb19e@yoseli.org
+Changing the type of the compat syscall to the signed compat_off_t
+changes the behavior so it instead returns -EINVAL.
+
+The native entry point, the truncate() syscall and the corresponding
+loff_t based variants are all correct already and do not suffer
+from this mistake.
+
+Fixes: 3f6d078d4acc ("fix compat truncate/ftruncate")
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/mcf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/open.c                |    4 ++--
+ include/linux/compat.h   |    2 +-
+ include/linux/syscalls.h |    2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/tty/serial/mcf.c
-+++ b/drivers/tty/serial/mcf.c
-@@ -479,7 +479,7 @@ static const struct uart_ops mcf_uart_op
- 	.verify_port	= mcf_verify_port,
- };
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -200,13 +200,13 @@ out:
+ 	return error;
+ }
  
--static struct mcf_uart mcf_ports[4];
-+static struct mcf_uart mcf_ports[10];
+-SYSCALL_DEFINE2(ftruncate, unsigned int, fd, unsigned long, length)
++SYSCALL_DEFINE2(ftruncate, unsigned int, fd, off_t, length)
+ {
+ 	return do_sys_ftruncate(fd, length, 1);
+ }
  
- #define	MCF_MAXPORTS	ARRAY_SIZE(mcf_ports)
- 
+ #ifdef CONFIG_COMPAT
+-COMPAT_SYSCALL_DEFINE2(ftruncate, unsigned int, fd, compat_ulong_t, length)
++COMPAT_SYSCALL_DEFINE2(ftruncate, unsigned int, fd, compat_off_t, length)
+ {
+ 	return do_sys_ftruncate(fd, length, 1);
+ }
+--- a/include/linux/compat.h
++++ b/include/linux/compat.h
+@@ -567,7 +567,7 @@ asmlinkage long compat_sys_fstatfs(unsig
+ asmlinkage long compat_sys_fstatfs64(unsigned int fd, compat_size_t sz,
+ 				     struct compat_statfs64 __user *buf);
+ asmlinkage long compat_sys_truncate(const char __user *, compat_off_t);
+-asmlinkage long compat_sys_ftruncate(unsigned int, compat_ulong_t);
++asmlinkage long compat_sys_ftruncate(unsigned int, compat_off_t);
+ /* No generic prototype for truncate64, ftruncate64, fallocate */
+ asmlinkage long compat_sys_openat(int dfd, const char __user *filename,
+ 				  int flags, umode_t mode);
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -422,7 +422,7 @@ asmlinkage long sys_fstatfs(unsigned int
+ asmlinkage long sys_fstatfs64(unsigned int fd, size_t sz,
+ 				struct statfs64 __user *buf);
+ asmlinkage long sys_truncate(const char __user *path, long length);
+-asmlinkage long sys_ftruncate(unsigned int fd, unsigned long length);
++asmlinkage long sys_ftruncate(unsigned int fd, off_t length);
+ #if BITS_PER_LONG == 32
+ asmlinkage long sys_truncate64(const char __user *path, loff_t length);
+ asmlinkage long sys_ftruncate64(unsigned int fd, loff_t length);
 
 
 
