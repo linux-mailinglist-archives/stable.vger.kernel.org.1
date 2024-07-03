@@ -1,54 +1,63 @@
-Return-Path: <stable+bounces-57525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA8EB925FC5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:10:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C43A925FCF
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:11:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAD30B3C6F1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:23:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E68F7B2BA46
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE7018C340;
-	Wed,  3 Jul 2024 11:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB25517DA00;
+	Wed,  3 Jul 2024 11:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrfSHPSX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsIk4T5y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4B417DA3A;
-	Wed,  3 Jul 2024 11:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9856E137910;
+	Wed,  3 Jul 2024 11:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005144; cv=none; b=aWi/RtoxXAZsq3kocFPvxzi8Zq84eQT9v+gLXX1EcU2g/OA0pPSSvwz3J4QB7JVOERGfYVj2VH3B4X/B+atiSYmPgv+36vu5CjBXA6PLhoiMTv7Fp+ieKzjsp5jqM1sgVHTc2CgvPXfZ281abvzTL7AuO34YRM9bLV6scF9FP7s=
+	t=1720006111; cv=none; b=MnpyzTqaMHqaBJXJmOHAzN7Qn4hcGXiz8pCdoXmH1DLfSpDaeNzBivPLAXN8OM3rdf6wYRt0ZkhNzXU7saWM9YYzhs9giwncFfVftM/aSPkxKcOwKc7Q91ecs8W8ZONrMz995bmpkwmpNw93TV6vmySSws+nDkKVDrZy4eDMdCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005144; c=relaxed/simple;
-	bh=4eNpIL0iCS6CjnaVPXMpuWY0eUHwHm0VtIZ00tgsRNU=;
+	s=arc-20240116; t=1720006111; c=relaxed/simple;
+	bh=OtBLmt0FwkL9+k4mNKB2ddR1h1acyz103dFTyM/1tA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T0Te1i1DB51cZs49FqdgeKVQP1/LCENGjQeV9qTOzB7arNdh2e4/bGHjsPMl/eCRkTXMSZvuGWINP3Mktt82zoqlLi6VZCTQmTq5EM4ApWDpaluRJr2PczWL5ReI1I+n1nkughnazhrLLrq2bNWy11A5MFsDEJdWrU9XMeDFiRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrfSHPSX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77CF7C2BD10;
-	Wed,  3 Jul 2024 11:12:23 +0000 (UTC)
+	 MIME-Version; b=gYJ0zDbh8eiwm8m3msHBN77+/ld01AdEywjtc57kdT//aQ9fFdkZy2JLGfMS5fluiZ1wZJvBP72bThcX09XAIIlZ1WWC3+m2WFsD3MUVwbaXETst/nsl0eEcBveh8wE5ZdDt7n8xrZ0nnMjdKzNLT7CpqK+XlHsiiXAFKukR9fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsIk4T5y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CCEBC2BD10;
+	Wed,  3 Jul 2024 11:28:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005143;
-	bh=4eNpIL0iCS6CjnaVPXMpuWY0eUHwHm0VtIZ00tgsRNU=;
+	s=korg; t=1720006111;
+	bh=OtBLmt0FwkL9+k4mNKB2ddR1h1acyz103dFTyM/1tA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UrfSHPSXVJniTm+TSmAJDVBirhXjxyvjn+nE788qg8wRf8lvJNjcPEQY8iSNG0/Un
-	 /nNlpDDbVAAws/u3IktS5wdMGKAjM7I1chX5GpIP8NJQYx5KfR7lQxhw7003oqNrDy
-	 oCwQHbKFP2kWn19Iigz8LRwHAFJhhCxPZdD9Epo4=
+	b=jsIk4T5yZvW8mm0VOsojY80/jqJgrmNR9z2SJqpmgUw23Ey8hcSI+zbQ+l33FHNC4
+	 JBssKpEPuFcmPB/JDWXWRqSb7E9TpV1POc7Mwr3gcqv587lrdyVBw8oF9GcoztoIf5
+	 lYbibf3PAMpTwNpY7vVvw/kwvHkFaLHMkkRU4fnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Udit Kumar <u-kumar1@ti.com>
-Subject: [PATCH 5.10 258/290] serial: 8250_omap: Implementation of Errata i2310
-Date: Wed,  3 Jul 2024 12:40:39 +0200
-Message-ID: <20240703102913.891232751@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 304/356] ocfs2: fix DIO failure due to insufficient transaction credits
+Date: Wed,  3 Jul 2024 12:40:40 +0200
+Message-ID: <20240703102924.614697261@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,72 +69,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Udit Kumar <u-kumar1@ti.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 9d141c1e615795eeb93cd35501ad144ee997a826 upstream.
+commit be346c1a6eeb49d8fda827d2a9522124c2f72f36 upstream.
 
-As per Errata i2310[0], Erroneous timeout can be triggered,
-if this Erroneous interrupt is not cleared then it may leads
-to storm of interrupts, therefore apply Errata i2310 solution.
+The code in ocfs2_dio_end_io_write() estimates number of necessary
+transaction credits using ocfs2_calc_extend_credits().  This however does
+not take into account that the IO could be arbitrarily large and can
+contain arbitrary number of extents.
 
-[0] https://www.ti.com/lit/pdf/sprz536 page 23
+Extent tree manipulations do often extend the current transaction but not
+in all of the cases.  For example if we have only single block extents in
+the tree, ocfs2_mark_extent_written() will end up calling
+ocfs2_replace_extent_rec() all the time and we will never extend the
+current transaction and eventually exhaust all the transaction credits if
+the IO contains many single block extents.  Once that happens a
+WARN_ON(jbd2_handle_buffer_credits(handle) <= 0) is triggered in
+jbd2_journal_dirty_metadata() and subsequently OCFS2 aborts in response to
+this error.  This was actually triggered by one of our customers on a
+heavily fragmented OCFS2 filesystem.
 
-Fixes: b67e830d38fa ("serial: 8250: 8250_omap: Fix possible interrupt storm on K3 SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Udit Kumar <u-kumar1@ti.com>
-Link: https://lore.kernel.org/r/20240619105903.165434-1-u-kumar1@ti.com
+To fix the issue make sure the transaction always has enough credits for
+one extent insert before each call of ocfs2_mark_extent_written().
+
+Heming Zhao said:
+
+------
+PANIC: "Kernel panic - not syncing: OCFS2: (device dm-1): panic forced after error"
+
+PID: xxx  TASK: xxxx  CPU: 5  COMMAND: "SubmitThread-CA"
+  #0 machine_kexec at ffffffff8c069932
+  #1 __crash_kexec at ffffffff8c1338fa
+  #2 panic at ffffffff8c1d69b9
+  #3 ocfs2_handle_error at ffffffffc0c86c0c [ocfs2]
+  #4 __ocfs2_abort at ffffffffc0c88387 [ocfs2]
+  #5 ocfs2_journal_dirty at ffffffffc0c51e98 [ocfs2]
+  #6 ocfs2_split_extent at ffffffffc0c27ea3 [ocfs2]
+  #7 ocfs2_change_extent_flag at ffffffffc0c28053 [ocfs2]
+  #8 ocfs2_mark_extent_written at ffffffffc0c28347 [ocfs2]
+  #9 ocfs2_dio_end_io_write at ffffffffc0c2bef9 [ocfs2]
+#10 ocfs2_dio_end_io at ffffffffc0c2c0f5 [ocfs2]
+#11 dio_complete at ffffffff8c2b9fa7
+#12 do_blockdev_direct_IO at ffffffff8c2bc09f
+#13 ocfs2_direct_IO at ffffffffc0c2b653 [ocfs2]
+#14 generic_file_direct_write at ffffffff8c1dcf14
+#15 __generic_file_write_iter at ffffffff8c1dd07b
+#16 ocfs2_file_write_iter at ffffffffc0c49f1f [ocfs2]
+#17 aio_write at ffffffff8c2cc72e
+#18 kmem_cache_alloc at ffffffff8c248dde
+#19 do_io_submit at ffffffff8c2ccada
+#20 do_syscall_64 at ffffffff8c004984
+#21 entry_SYSCALL_64_after_hwframe at ffffffff8c8000ba
+
+Link: https://lkml.kernel.org/r/20240617095543.6971-1-jack@suse.cz
+Link: https://lkml.kernel.org/r/20240614145243.8837-1-jack@suse.cz
+Fixes: c15471f79506 ("ocfs2: fix sparse file & data ordering issue in direct io")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_omap.c |   25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ fs/ocfs2/aops.c        |    5 +++++
+ fs/ocfs2/journal.c     |   17 +++++++++++++++++
+ fs/ocfs2/journal.h     |    2 ++
+ fs/ocfs2/ocfs2_trace.h |    2 ++
+ 4 files changed, 26 insertions(+)
 
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -164,6 +164,10 @@ static void uart_write(struct omap8250_p
- 	writel(val, priv->membase + (reg << OMAP_UART_REGSHIFT));
- }
- 
-+/* Timeout low and High */
-+#define UART_OMAP_TO_L                 0x26
-+#define UART_OMAP_TO_H                 0x27
-+
- /*
-  * Called on runtime PM resume path from omap8250_restore_regs(), and
-  * omap8250_set_mctrl().
-@@ -647,13 +651,24 @@ static irqreturn_t omap8250_irq(int irq,
- 
- 	/*
- 	 * On K3 SoCs, it is observed that RX TIMEOUT is signalled after
--	 * FIFO has been drained, in which case a dummy read of RX FIFO
--	 * is required to clear RX TIMEOUT condition.
-+	 * FIFO has been drained or erroneously.
-+	 * So apply solution of Errata i2310 as mentioned in
-+	 * https://www.ti.com/lit/pdf/sprz536
- 	 */
- 	if (priv->habit & UART_RX_TIMEOUT_QUIRK &&
--	    (iir & UART_IIR_RX_TIMEOUT) == UART_IIR_RX_TIMEOUT &&
--	    serial_port_in(port, UART_OMAP_RX_LVL) == 0) {
--		serial_port_in(port, UART_RX);
-+		(iir & UART_IIR_RX_TIMEOUT) == UART_IIR_RX_TIMEOUT) {
-+		unsigned char efr2, timeout_h, timeout_l;
-+
-+		efr2 = serial_in(up, UART_OMAP_EFR2);
-+		timeout_h = serial_in(up, UART_OMAP_TO_H);
-+		timeout_l = serial_in(up, UART_OMAP_TO_L);
-+		serial_out(up, UART_OMAP_TO_H, 0xFF);
-+		serial_out(up, UART_OMAP_TO_L, 0xFF);
-+		serial_out(up, UART_OMAP_EFR2, UART_OMAP_EFR2_TIMEOUT_BEHAVE);
-+		serial_in(up, UART_IIR);
-+		serial_out(up, UART_OMAP_EFR2, efr2);
-+		serial_out(up, UART_OMAP_TO_H, timeout_h);
-+		serial_out(up, UART_OMAP_TO_L, timeout_l);
+--- a/fs/ocfs2/aops.c
++++ b/fs/ocfs2/aops.c
+@@ -2370,6 +2370,11 @@ static int ocfs2_dio_end_io_write(struct
  	}
  
- 	/* Stop processing interrupts on input overrun */
+ 	list_for_each_entry(ue, &dwc->dw_zero_list, ue_node) {
++		ret = ocfs2_assure_trans_credits(handle, credits);
++		if (ret < 0) {
++			mlog_errno(ret);
++			break;
++		}
+ 		ret = ocfs2_mark_extent_written(inode, &et, handle,
+ 						ue->ue_cpos, 1,
+ 						ue->ue_phys,
+--- a/fs/ocfs2/journal.c
++++ b/fs/ocfs2/journal.c
+@@ -448,6 +448,23 @@ bail:
+ }
+ 
+ /*
++ * Make sure handle has at least 'nblocks' credits available. If it does not
++ * have that many credits available, we will try to extend the handle to have
++ * enough credits. If that fails, we will restart transaction to have enough
++ * credits. Similar notes regarding data consistency and locking implications
++ * as for ocfs2_extend_trans() apply here.
++ */
++int ocfs2_assure_trans_credits(handle_t *handle, int nblocks)
++{
++	int old_nblks = jbd2_handle_buffer_credits(handle);
++
++	trace_ocfs2_assure_trans_credits(old_nblks);
++	if (old_nblks >= nblocks)
++		return 0;
++	return ocfs2_extend_trans(handle, nblocks - old_nblks);
++}
++
++/*
+  * If we have fewer than thresh credits, extend by OCFS2_MAX_TRANS_DATA.
+  * If that fails, restart the transaction & regain write access for the
+  * buffer head which is used for metadata modifications.
+--- a/fs/ocfs2/journal.h
++++ b/fs/ocfs2/journal.h
+@@ -242,6 +242,8 @@ handle_t		    *ocfs2_start_trans(struct
+ int			     ocfs2_commit_trans(struct ocfs2_super *osb,
+ 						handle_t *handle);
+ int			     ocfs2_extend_trans(handle_t *handle, int nblocks);
++int			     ocfs2_assure_trans_credits(handle_t *handle,
++						int nblocks);
+ int			     ocfs2_allocate_extend_trans(handle_t *handle,
+ 						int thresh);
+ 
+--- a/fs/ocfs2/ocfs2_trace.h
++++ b/fs/ocfs2/ocfs2_trace.h
+@@ -2578,6 +2578,8 @@ DEFINE_OCFS2_ULL_UINT_EVENT(ocfs2_commit
+ 
+ DEFINE_OCFS2_INT_INT_EVENT(ocfs2_extend_trans);
+ 
++DEFINE_OCFS2_INT_EVENT(ocfs2_assure_trans_credits);
++
+ DEFINE_OCFS2_INT_EVENT(ocfs2_extend_trans_restart);
+ 
+ DEFINE_OCFS2_INT_INT_EVENT(ocfs2_allocate_extend_trans);
 
 
 
