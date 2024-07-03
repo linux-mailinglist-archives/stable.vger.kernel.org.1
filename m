@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C65A925E84
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:37:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42AF5925CD4
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:23:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D7C31C249BF
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:37:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1E7F1F218D1
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8FC183094;
-	Wed,  3 Jul 2024 11:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A533E194A69;
+	Wed,  3 Jul 2024 11:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="reA3tJuU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rBsdY/Ae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0797418308C;
-	Wed,  3 Jul 2024 11:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655E9186E5E;
+	Wed,  3 Jul 2024 11:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006247; cv=none; b=iFERctdwWk/+NDz+891lb5Zatq9acbJ2JrDzQIKAGT0ywGIkDvQyaT7EnDJ6TXHdO+K0Idq27+sikITJwaBPUTg++hxE4GE1jc186SpjpFbN3b2svYrgGcKbvTBGeyj7q0HRTnbJ8k/Go+thx1j62YwYJ93mDJpo4MfkH2poCZ8=
+	t=1720005135; cv=none; b=RKHLqlgJWFuvDXtiy8DRAt1mNti3BPbi0w12jFHT+8Tlvc0LjChUeR3kqO6JXk2f9Kfd37sZ85DBYVyTlmbjeRfwbJhnXqdM+7l5BGg6+2WfQ5oFPV+jMVLjkEPPt/BmIqlRRmEZJCWt8Te2ig/zvZ8IG9JQFzeFeg8uDszJ2uI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006247; c=relaxed/simple;
-	bh=+aQWIQftChmJdY6o6roHDIE1RweJphCDL0pUt3gEyDg=;
+	s=arc-20240116; t=1720005135; c=relaxed/simple;
+	bh=ROb5QmpEscqg0iJQUyX2t/280lAjN0aM6BJptAKpAsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OJvxXjZ3boZKhPj7K0LsHL/iOXMLeZOWYDTBa9QnvboKbTPkcpqCx+H4RWm21t1Hoi6wwLkxwdRvhwG1wbZn4EzLmZDSd403/wsvi5PWlirK9ADRgv1RG1+DTK7gENQ5VAg5RUzuw7pK4TLOY7xxbxSbe8mCi8plr3JdizL9ISM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=reA3tJuU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3AEC2BD10;
-	Wed,  3 Jul 2024 11:30:46 +0000 (UTC)
+	 MIME-Version; b=qkOYJFONYM/A2Lbs+VLTz6b8ltsNeftg5g7AAxaWbrvQBjhyoBlm8XrCSH4bNFjiFrYrOYmMbEjOxA0QHYKMVFJ0MvSC+FSq7fhj3nCmEFFvyonMTQRjW0mOYRdrteFQz/xdTJAlPqyCjH/KhxqlZlA/wBZOxZaVzLnwfgKEaCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rBsdY/Ae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A39A1C2BD10;
+	Wed,  3 Jul 2024 11:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006246;
-	bh=+aQWIQftChmJdY6o6roHDIE1RweJphCDL0pUt3gEyDg=;
+	s=korg; t=1720005135;
+	bh=ROb5QmpEscqg0iJQUyX2t/280lAjN0aM6BJptAKpAsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=reA3tJuU9VkIvHRNUC22IlngmjCCtjr2/GbrUhRrmASiVOB+yql4MK/pd1mmKqfMa
-	 VS9n4OxWMCV6BCSI0PdfKvOxVqqKA1I+4EnFbQx2eeiBvyb+OCcwZLHShm30MWh88m
-	 lX/gy9oJ13kE0KJG+uevxM0yGsqczV2/49Frqars=
+	b=rBsdY/AeaAJBI+cesaZKIubjy9t0j86hAXBoQnqc3zGpU/DkpcMoQD4GRf+YsTjCZ
+	 owF3QqVN1jy62XfxhsmwAwkKdFGpnGKt0UxPW6QeRlrJup6bdifwJPAIIUgdFPOLNR
+	 YTijLQ9sA/w0p6+Ois1Ijta3Uc4/zAOIt1QfJydw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 5.15 318/356] usb: gadget: printer: fix races against disable
+	Damien Le Moal <dlemoal@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 5.10 273/290] ata: libata-core: Fix double free on error
 Date: Wed,  3 Jul 2024 12:40:54 +0200
-Message-ID: <20240703102925.147718177@linuxfoundation.org>
+Message-ID: <20240703102914.461764406@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,145 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit e587a7633dfee8987a999cf253f7c52a8e09276c upstream.
+commit ab9e0c529eb7cafebdd31fe1644524e80a48b05d upstream.
 
-printer_read() and printer_write() guard against the race
-against disable() by checking the dev->interface flag,
-which in turn is guarded by a spinlock.
-These functions, however, drop the lock on multiple occasions.
-This means that the test has to be redone after reacquiring
-the lock and before doing IO.
+If e.g. the ata_port_alloc() call in ata_host_alloc() fails, we will jump
+to the err_out label, which will call devres_release_group().
+devres_release_group() will trigger a call to ata_host_release().
+ata_host_release() calls kfree(host), so executing the kfree(host) in
+ata_host_alloc() will lead to a double free:
 
-Add the tests.
+kernel BUG at mm/slub.c:553!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 11 PID: 599 Comm: (udev-worker) Not tainted 6.10.0-rc5 #47
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
+RIP: 0010:kfree+0x2cf/0x2f0
+Code: 5d 41 5e 41 5f 5d e9 80 d6 ff ff 4d 89 f1 41 b8 01 00 00 00 48 89 d9 48 89 da
+RSP: 0018:ffffc90000f377f0 EFLAGS: 00010246
+RAX: ffff888112b1f2c0 RBX: ffff888112b1f2c0 RCX: ffff888112b1f320
+RDX: 000000000000400b RSI: ffffffffc02c9de5 RDI: ffff888112b1f2c0
+RBP: ffffc90000f37830 R08: 0000000000000000 R09: 0000000000000000
+R10: ffffc90000f37610 R11: 617461203a736b6e R12: ffffea00044ac780
+R13: ffff888100046400 R14: ffffffffc02c9de5 R15: 0000000000000006
+FS:  00007f2f1cabe980(0000) GS:ffff88813b380000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f2f1c3acf75 CR3: 0000000111724000 CR4: 0000000000750ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? __die_body.cold+0x19/0x27
+ ? die+0x2e/0x50
+ ? do_trap+0xca/0x110
+ ? do_error_trap+0x6a/0x90
+ ? kfree+0x2cf/0x2f0
+ ? exc_invalid_op+0x50/0x70
+ ? kfree+0x2cf/0x2f0
+ ? asm_exc_invalid_op+0x1a/0x20
+ ? ata_host_alloc+0xf5/0x120 [libata]
+ ? ata_host_alloc+0xf5/0x120 [libata]
+ ? kfree+0x2cf/0x2f0
+ ata_host_alloc+0xf5/0x120 [libata]
+ ata_host_alloc_pinfo+0x14/0xa0 [libata]
+ ahci_init_one+0x6c9/0xd20 [ahci]
 
-This also addresses CVE-2024-25741
+Ensure that we will not call kfree(host) twice, by performing the kfree()
+only if the devres_open_group() call failed.
 
-Fixes: 7f2ca14d2f9b9 ("usb: gadget: function: printer: Interface is disabled and returns error")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20240620114039.5767-1-oneukum@suse.com
+Fixes: dafd6c496381 ("libata: ensure host is free'd on error exit paths")
+Cc: stable@vger.kernel.org
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Link: https://lore.kernel.org/r/20240629124210.181537-9-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_printer.c |   39 +++++++++++++++++++++++---------
- 1 file changed, 29 insertions(+), 10 deletions(-)
+ drivers/ata/libata-core.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/gadget/function/f_printer.c
-+++ b/drivers/usb/gadget/function/f_printer.c
-@@ -448,11 +448,8 @@ printer_read(struct file *fd, char __use
- 	mutex_lock(&dev->lock_printer_io);
- 	spin_lock_irqsave(&dev->lock, flags);
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -5420,8 +5420,10 @@ struct ata_host *ata_host_alloc(struct d
+ 	if (!host)
+ 		return NULL;
  
--	if (dev->interface < 0) {
--		spin_unlock_irqrestore(&dev->lock, flags);
--		mutex_unlock(&dev->lock_printer_io);
--		return -ENODEV;
--	}
-+	if (dev->interface < 0)
-+		goto out_disabled;
+-	if (!devres_open_group(dev, NULL, GFP_KERNEL))
+-		goto err_free;
++	if (!devres_open_group(dev, NULL, GFP_KERNEL)) {
++		kfree(host);
++		return NULL;
++	}
  
- 	/* We will use this flag later to check if a printer reset happened
- 	 * after we turn interrupts back on.
-@@ -460,6 +457,9 @@ printer_read(struct file *fd, char __use
- 	dev->reset_printer = 0;
+ 	dr = devres_alloc(ata_devres_release, 0, GFP_KERNEL);
+ 	if (!dr)
+@@ -5453,8 +5455,6 @@ struct ata_host *ata_host_alloc(struct d
  
- 	setup_rx_reqs(dev);
-+	/* this dropped the lock - need to retest */
-+	if (dev->interface < 0)
-+		goto out_disabled;
- 
- 	bytes_copied = 0;
- 	current_rx_req = dev->current_rx_req;
-@@ -493,6 +493,8 @@ printer_read(struct file *fd, char __use
- 		wait_event_interruptible(dev->rx_wait,
- 				(likely(!list_empty(&dev->rx_buffers))));
- 		spin_lock_irqsave(&dev->lock, flags);
-+		if (dev->interface < 0)
-+			goto out_disabled;
- 	}
- 
- 	/* We have data to return then copy it to the caller's buffer.*/
-@@ -536,6 +538,9 @@ printer_read(struct file *fd, char __use
- 			return -EAGAIN;
- 		}
- 
-+		if (dev->interface < 0)
-+			goto out_disabled;
-+
- 		/* If we not returning all the data left in this RX request
- 		 * buffer then adjust the amount of data left in the buffer.
- 		 * Othewise if we are done with this RX request buffer then
-@@ -565,6 +570,11 @@ printer_read(struct file *fd, char __use
- 		return bytes_copied;
- 	else
- 		return -EAGAIN;
-+
-+out_disabled:
-+	spin_unlock_irqrestore(&dev->lock, flags);
-+	mutex_unlock(&dev->lock_printer_io);
-+	return -ENODEV;
+  err_out:
+ 	devres_release_group(dev, NULL);
+- err_free:
+-	kfree(host);
+ 	return NULL;
  }
- 
- static ssize_t
-@@ -585,11 +595,8 @@ printer_write(struct file *fd, const cha
- 	mutex_lock(&dev->lock_printer_io);
- 	spin_lock_irqsave(&dev->lock, flags);
- 
--	if (dev->interface < 0) {
--		spin_unlock_irqrestore(&dev->lock, flags);
--		mutex_unlock(&dev->lock_printer_io);
--		return -ENODEV;
--	}
-+	if (dev->interface < 0)
-+		goto out_disabled;
- 
- 	/* Check if a printer reset happens while we have interrupts on */
- 	dev->reset_printer = 0;
-@@ -612,6 +619,8 @@ printer_write(struct file *fd, const cha
- 		wait_event_interruptible(dev->tx_wait,
- 				(likely(!list_empty(&dev->tx_reqs))));
- 		spin_lock_irqsave(&dev->lock, flags);
-+		if (dev->interface < 0)
-+			goto out_disabled;
- 	}
- 
- 	while (likely(!list_empty(&dev->tx_reqs)) && len) {
-@@ -661,6 +670,9 @@ printer_write(struct file *fd, const cha
- 			return -EAGAIN;
- 		}
- 
-+		if (dev->interface < 0)
-+			goto out_disabled;
-+
- 		list_add(&req->list, &dev->tx_reqs_active);
- 
- 		/* here, we unlock, and only unlock, to avoid deadlock. */
-@@ -673,6 +685,8 @@ printer_write(struct file *fd, const cha
- 			mutex_unlock(&dev->lock_printer_io);
- 			return -EAGAIN;
- 		}
-+		if (dev->interface < 0)
-+			goto out_disabled;
- 	}
- 
- 	spin_unlock_irqrestore(&dev->lock, flags);
-@@ -684,6 +698,11 @@ printer_write(struct file *fd, const cha
- 		return bytes_copied;
- 	else
- 		return -EAGAIN;
-+
-+out_disabled:
-+	spin_unlock_irqrestore(&dev->lock, flags);
-+	mutex_unlock(&dev->lock_printer_io);
-+	return -ENODEV;
- }
- 
- static int
+ EXPORT_SYMBOL_GPL(ata_host_alloc);
 
 
 
