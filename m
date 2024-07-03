@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-57499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 463C2925F9A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA8EB925FC5
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:10:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6802BB3BCAA
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAD30B3C6F1
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF7E18C32F;
-	Wed,  3 Jul 2024 11:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE7018C340;
+	Wed,  3 Jul 2024 11:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vd04y0xU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrfSHPSX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7FE1849D3;
-	Wed,  3 Jul 2024 11:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4B417DA3A;
+	Wed,  3 Jul 2024 11:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005067; cv=none; b=nTA/cFQzY0vs7VYb5vc9AzSTmUaAquZk2ld1BfYNhY7mwFCHKrHgaPRldpL/d0AlwSrZoI9nXWM1PkJ29Vn2n+hmkPAbfNdjmDMYLRSPLQnS1Uib0ezdx9XHNg8qqHiOxnuJMbGnlzliK7qI+XGnAMeeSDGrs4LNVCiXb+QtrZ0=
+	t=1720005144; cv=none; b=aWi/RtoxXAZsq3kocFPvxzi8Zq84eQT9v+gLXX1EcU2g/OA0pPSSvwz3J4QB7JVOERGfYVj2VH3B4X/B+atiSYmPgv+36vu5CjBXA6PLhoiMTv7Fp+ieKzjsp5jqM1sgVHTc2CgvPXfZ281abvzTL7AuO34YRM9bLV6scF9FP7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005067; c=relaxed/simple;
-	bh=j7deTUEGXwiDxZ3iHvSHnA8sPnv0tYGkhzCujdRLwIM=;
+	s=arc-20240116; t=1720005144; c=relaxed/simple;
+	bh=4eNpIL0iCS6CjnaVPXMpuWY0eUHwHm0VtIZ00tgsRNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b4ZsGxU73jp4c+e2gZPSfN5Sms8A+488h02lw5pG6330c8YDIKaOVG6nNvCNfsOlRHY222e3e88ln7A7wANfPZmL1xWjE2L7HH2mqv3qIxc5plHSnCpncDDm7PfXwaK6mAzuu5+2TS2Wv016MjL+nf5GLu+55Nx74NIyFtTwqxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vd04y0xU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 455BFC2BD10;
-	Wed,  3 Jul 2024 11:11:06 +0000 (UTC)
+	 MIME-Version; b=T0Te1i1DB51cZs49FqdgeKVQP1/LCENGjQeV9qTOzB7arNdh2e4/bGHjsPMl/eCRkTXMSZvuGWINP3Mktt82zoqlLi6VZCTQmTq5EM4ApWDpaluRJr2PczWL5ReI1I+n1nkughnazhrLLrq2bNWy11A5MFsDEJdWrU9XMeDFiRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrfSHPSX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77CF7C2BD10;
+	Wed,  3 Jul 2024 11:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005066;
-	bh=j7deTUEGXwiDxZ3iHvSHnA8sPnv0tYGkhzCujdRLwIM=;
+	s=korg; t=1720005143;
+	bh=4eNpIL0iCS6CjnaVPXMpuWY0eUHwHm0VtIZ00tgsRNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vd04y0xUBqY7ylXKfxEk9BxTJlPXoNyR1G4fFQxKIUgdrH9tCmL9yATCfxbqadzfY
-	 3UjhAItp8mwSSnAlv9GDsfYpm48/zCYYZ5GTyI4BslgLrQHjQnDzrV2iGW2Bn3HF3G
-	 /k+pEqrTm7k2Sg30bW8xweVhn9AqLiUMaq6c+k5E=
+	b=UrfSHPSXVJniTm+TSmAJDVBirhXjxyvjn+nE788qg8wRf8lvJNjcPEQY8iSNG0/Un
+	 /nNlpDDbVAAws/u3IktS5wdMGKAjM7I1chX5GpIP8NJQYx5KfR7lQxhw7003oqNrDy
+	 oCwQHbKFP2kWn19Iigz8LRwHAFJhhCxPZdD9Epo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 249/290] iio: chemical: bme680: Fix pressure value output
-Date: Wed,  3 Jul 2024 12:40:30 +0200
-Message-ID: <20240703102913.555954708@linuxfoundation.org>
+	Udit Kumar <u-kumar1@ti.com>
+Subject: [PATCH 5.10 258/290] serial: 8250_omap: Implementation of Errata i2310
+Date: Wed,  3 Jul 2024 12:40:39 +0200
+Message-ID: <20240703102913.891232751@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
 References: <20240703102904.170852981@linuxfoundation.org>
@@ -66,39 +64,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
+From: Udit Kumar <u-kumar1@ti.com>
 
-commit ae1f7b93b52095be6776d0f34957b4f35dda44d9 upstream.
+commit 9d141c1e615795eeb93cd35501ad144ee997a826 upstream.
 
-The IIO standard units are measured in kPa while the driver
-is using hPa.
+As per Errata i2310[0], Erroneous timeout can be triggered,
+if this Erroneous interrupt is not cleared then it may leads
+to storm of interrupts, therefore apply Errata i2310 solution.
 
-Apart from checking the userspace value itself, it is mentioned also
-in the Bosch API [1] that the pressure value is in Pascal.
+[0] https://www.ti.com/lit/pdf/sprz536 page 23
 
-[1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x_defs.h#L742
-
-Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Link: https://lore.kernel.org/r/20240606212313.207550-2-vassilisamir@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: b67e830d38fa ("serial: 8250: 8250_omap: Fix possible interrupt storm on K3 SoCs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Udit Kumar <u-kumar1@ti.com>
+Link: https://lore.kernel.org/r/20240619105903.165434-1-u-kumar1@ti.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/chemical/bme680_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_omap.c |   25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -678,7 +678,7 @@ static int bme680_read_press(struct bme6
- 	}
- 
- 	*val = bme680_compensate_press(data, adc_press);
--	*val2 = 100;
-+	*val2 = 1000;
- 	return IIO_VAL_FRACTIONAL;
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -164,6 +164,10 @@ static void uart_write(struct omap8250_p
+ 	writel(val, priv->membase + (reg << OMAP_UART_REGSHIFT));
  }
  
++/* Timeout low and High */
++#define UART_OMAP_TO_L                 0x26
++#define UART_OMAP_TO_H                 0x27
++
+ /*
+  * Called on runtime PM resume path from omap8250_restore_regs(), and
+  * omap8250_set_mctrl().
+@@ -647,13 +651,24 @@ static irqreturn_t omap8250_irq(int irq,
+ 
+ 	/*
+ 	 * On K3 SoCs, it is observed that RX TIMEOUT is signalled after
+-	 * FIFO has been drained, in which case a dummy read of RX FIFO
+-	 * is required to clear RX TIMEOUT condition.
++	 * FIFO has been drained or erroneously.
++	 * So apply solution of Errata i2310 as mentioned in
++	 * https://www.ti.com/lit/pdf/sprz536
+ 	 */
+ 	if (priv->habit & UART_RX_TIMEOUT_QUIRK &&
+-	    (iir & UART_IIR_RX_TIMEOUT) == UART_IIR_RX_TIMEOUT &&
+-	    serial_port_in(port, UART_OMAP_RX_LVL) == 0) {
+-		serial_port_in(port, UART_RX);
++		(iir & UART_IIR_RX_TIMEOUT) == UART_IIR_RX_TIMEOUT) {
++		unsigned char efr2, timeout_h, timeout_l;
++
++		efr2 = serial_in(up, UART_OMAP_EFR2);
++		timeout_h = serial_in(up, UART_OMAP_TO_H);
++		timeout_l = serial_in(up, UART_OMAP_TO_L);
++		serial_out(up, UART_OMAP_TO_H, 0xFF);
++		serial_out(up, UART_OMAP_TO_L, 0xFF);
++		serial_out(up, UART_OMAP_EFR2, UART_OMAP_EFR2_TIMEOUT_BEHAVE);
++		serial_in(up, UART_IIR);
++		serial_out(up, UART_OMAP_EFR2, efr2);
++		serial_out(up, UART_OMAP_TO_H, timeout_h);
++		serial_out(up, UART_OMAP_TO_L, timeout_l);
+ 	}
+ 
+ 	/* Stop processing interrupts on input overrun */
 
 
 
