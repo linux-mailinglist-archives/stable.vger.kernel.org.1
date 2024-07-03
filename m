@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9452E925F3B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:53:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D84925BCA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:12:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3B8EB2645D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:36:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B37DC1C21F9C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFA1181301;
-	Wed,  3 Jul 2024 11:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33A11194A74;
+	Wed,  3 Jul 2024 10:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MvABRRZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftcQDZ07"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9BE180A8A;
-	Wed,  3 Jul 2024 11:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6444194A6F;
+	Wed,  3 Jul 2024 10:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006161; cv=none; b=Ojx6kR1x4OmYQOB0Zbncu9QoeeDAIfXbsxfHXTYwVAmVgZN4y7hV3W1xHP7iG1qUMN8mekbqTbmILSPcoIsxDPOrqntay4/N3sNjq00K2V4/ZIbN6pyyNmbbJ8cmT2Ys08da5INg6ZJFQU4VwIoaKo8l43L0D9lHvL70G4c3/bA=
+	t=1720004310; cv=none; b=YT9qEf7idXC7aJ1+8SJetpRiTjo9uRvLzm2W+zMZwLmTwZXRdN7OSaZTacQPZCs2SsfWSSjn/lwIHyBu3i3in+U/5yPZFmPERSfJMWDDVWLthj8TsiUx8JnYCIfyE9F43yCRHqEbT6LeFH0JHwchCsoZjWwc/92WbJG6e7kvo+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006161; c=relaxed/simple;
-	bh=nuK8weqUxYTo3zFg16N0p144Y3awmflVBXOXCkk8JLk=;
+	s=arc-20240116; t=1720004310; c=relaxed/simple;
+	bh=5SM6DP9uAp2JT09avHlRr8j5zYnrcCO3v7RLmpEJ+Bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jx9sjfZKN52NzmOZNzaktjxm9o76TFa8JdBo7yd0neH63+ce/9+92GCOpfRvwYI9L+B18xBajeK0fq/m+hIFbMlMcX68tJ/maCpaSGMholU6IicpYUBQnfeJ2gk2RlPFosf3ieVQUSgceTW4OeZqbYx6XSxSIsEJ6oYMOZE3308=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MvABRRZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9640FC2BD10;
-	Wed,  3 Jul 2024 11:29:20 +0000 (UTC)
+	 MIME-Version; b=fcaMXGX6RM3b+goCT5kmbDrN/vZlFyxrVgqn6YVaIqro1VBHIsiwNPwIqMbXRUSI0PYQzEDF1B7HsGETBRUfQFkCyhDv90Uie047Td4fLV0NZkWA2l2fStZIIzlFb2Hf2phSXf+p041eei7Tkvm/F62be1+72ZKVPIRfkAr5Cdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftcQDZ07; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C10AC4AF0B;
+	Wed,  3 Jul 2024 10:58:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006161;
-	bh=nuK8weqUxYTo3zFg16N0p144Y3awmflVBXOXCkk8JLk=;
+	s=korg; t=1720004309;
+	bh=5SM6DP9uAp2JT09avHlRr8j5zYnrcCO3v7RLmpEJ+Bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0MvABRRZuAipT6axMW+kJmowSFynyJM4Gc69zjJPEIk6oN/5P+zeKJ85h5oBDCrjS
-	 POUXjMMx4FQKakPOqKW0lU7WGcE2o3Luu5KXx5xr3Zq9dNac8hjfccjhdiGT13aGz0
-	 AE+3/w7qcPGSJCyQDQhvvdeeCYtzx2NhfUnOA8TU=
+	b=ftcQDZ07zf+rrtyRCZTsWjBjr5vyXcdfYlsxmjVmP2ZXVjb20TRXwBW892bKMKl15
+	 /J4FOGXMcnBJnGfuDl1Xx0Tnrip9D1y81FMP2f7RsErTqdTHnA3L6aBL7XPv0odRYy
+	 v5UsNNq6ZKMFT9/VUh0gmRv/47366fgvajwoPYUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 313/356] iio: chemical: bme680: Fix calibration data variable
+	Johan Jonker <jbx6244@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 188/189] ARM: dts: rockchip: rk3066a: add #sound-dai-cells to hdmi node
 Date: Wed,  3 Jul 2024 12:40:49 +0200
-Message-ID: <20240703102924.956449892@linuxfoundation.org>
+Message-ID: <20240703102848.569429520@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
+From: Johan Jonker <jbx6244@gmail.com>
 
-commit b47c0fee73a810c4503c4a94ea34858a1d865bba upstream.
+[ Upstream commit cca46f811d0000c1522a5e18ea48c27a15e45c05 ]
 
-According to the BME68x Sensor API [1], the h6 calibration
-data variable should be an unsigned integer of size 8.
+'#sound-dai-cells' is required to properly interpret
+the list of DAI specified in the 'sound-dai' property,
+so add them to the 'hdmi' node for 'rk3066a.dtsi'.
 
-[1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x_defs.h#L789
-
-Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Link: https://lore.kernel.org/r/20240606212313.207550-3-vassilisamir@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fadc78062477 ("ARM: dts: rockchip: add rk3066 hdmi nodes")
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Link: https://lore.kernel.org/r/8b229dcc-94e4-4bbc-9efc-9d5ddd694532@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/chemical/bme680_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/rk3066a.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -38,7 +38,7 @@ struct bme680_calib {
- 	s8  par_h3;
- 	s8  par_h4;
- 	s8  par_h5;
--	s8  par_h6;
-+	u8  par_h6;
- 	s8  par_h7;
- 	s8  par_gh1;
- 	s16 par_gh2;
+diff --git a/arch/arm/boot/dts/rk3066a.dtsi b/arch/arm/boot/dts/rk3066a.dtsi
+index 1ac9deb3bd39a..055687d3153fb 100644
+--- a/arch/arm/boot/dts/rk3066a.dtsi
++++ b/arch/arm/boot/dts/rk3066a.dtsi
+@@ -124,6 +124,7 @@
+ 		pinctrl-0 = <&hdmii2c_xfer>, <&hdmi_hpd>;
+ 		power-domains = <&power RK3066_PD_VIO>;
+ 		rockchip,grf = <&grf>;
++		#sound-dai-cells = <0>;
+ 		status = "disabled";
+ 
+ 		ports {
+-- 
+2.43.0
+
 
 
 
