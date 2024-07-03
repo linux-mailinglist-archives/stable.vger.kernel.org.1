@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-57322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62D42925C0B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:14:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B5A9925DB9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F14411F2115E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BDEBFB31A36
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D41178CC1;
-	Wed,  3 Jul 2024 11:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B361850A8;
+	Wed,  3 Jul 2024 11:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zb40VYr6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/j7x5fX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E98F17838B;
-	Wed,  3 Jul 2024 11:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EDC1741F3;
+	Wed,  3 Jul 2024 11:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004530; cv=none; b=PLMspckHkPrJoFt8XpnlUQJXs0L9r4jhtrtXD0S+iQEtTzay781ozruIG4ylU6Pva4y0YRBMfHhlJBHPKmXKRj1/+y0IgwZHfqUy/EuY1WCshRsjc6rDZkQLxxq3bq7bC4FEoYm2OAv3ghHEUbZKE+SY+0WPdcqf/aBXgnWKNpU=
+	t=1720005644; cv=none; b=IMgBvU/Zqo4WGrqtWqUpTpXQqp6IB12BOUVQD/GJCT0h4waeEfY1nh7gpBk3JSUung7VxRMrXxAVI8FXdPfZBm1z1oB6WVDFe/KlJAbILnH4h8zWcUOXZvAoM2jZWU3Cj+Hj/Z0r207JctCePzjpB26SnHHQocXzfbyoh5BWoIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004530; c=relaxed/simple;
-	bh=cB2Htv1kNxlziT6qZzxCkoIQ7t7hU28q9jbnn8WzV/4=;
+	s=arc-20240116; t=1720005644; c=relaxed/simple;
+	bh=atT19JFPkrvUnKQI82ZNXfaRfS29BaNZmf8Jh6ZuYAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jC1cYI5LnEh8k2yBW/fsddaVEEWGrzb0hAUP5OmKWp4m35C22KEdpTav4AJsg3NhOM+qbnoBmJrSYN/mKrTHcjXeVC6LRtYQno3uOuzBJWHyJXJ396UfH5fT2UFAFq4udGSGocSl5Syr5jOuvA5ijsaGdjp9AmeI5W5VXggl8tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zb40VYr6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E5FC2BD10;
-	Wed,  3 Jul 2024 11:02:09 +0000 (UTC)
+	 MIME-Version; b=RWeNIygrt4Viu+P1W47govfLrYoY6xmwSTZjmCFZ15P/zwXLi4+BnasMFtMw6JVi89U3qfG8lvAC8dguKISLJkWST/uG6HiFqIB9eF0Ia13G0h/KAGResjOcjJuOv0mnlsOQsQc2S4Mkpkpk37h8ILH7WtOS3Y53OsdWpvcttVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/j7x5fX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE10EC2BD10;
+	Wed,  3 Jul 2024 11:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004530;
-	bh=cB2Htv1kNxlziT6qZzxCkoIQ7t7hU28q9jbnn8WzV/4=;
+	s=korg; t=1720005644;
+	bh=atT19JFPkrvUnKQI82ZNXfaRfS29BaNZmf8Jh6ZuYAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zb40VYr6QYwAXNrAig5onG4VowGDwC5ktKElmHxOXmCdunKECNvk8C2kob8NuLfje
-	 0Rna1BRAp2fISzkU66adbRBsD8YzMOQH2utVVSWpzGKGfv3oLGBNLNH0OgN1qOhY9N
-	 0WZrFTdutXbNiZBPKGRLgpJS6zWux97x26SnXuwo=
+	b=n/j7x5fX24d+ocwpqb6WZsz/v5orGHHtd37x2aiMkLWe0TEXZqT8P8ayDR12HttQe
+	 moVwPgXTLwaXuT2WIwrO6zK3i0Iw3TJqLWRCzbO2C60/Dxe64q8ZXVr/5HiQBQSVkk
+	 CjNP3gm2N73PZm2PHkg9d2v5kFZ/5+I+6DWjnxLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 072/290] net/ipv6: Fix the RT cache flush via sysctl using a previous delay
+	Mat Martineau <martineau@kernel.org>,
+	Christoph Paasch <cpaasch@apple.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 117/356] mptcp: ensure snd_una is properly initialized on connect
 Date: Wed,  3 Jul 2024 12:37:33 +0200
-Message-ID: <20240703102906.919380587@linuxfoundation.org>
+Message-ID: <20240703102917.522995615@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 14a20e5b4ad998793c5f43b0330d9e1388446cf3 ]
+commit 8031b58c3a9b1db3ef68b3bd749fbee2e1e1aaa3 upstream.
 
-The net.ipv6.route.flush system parameter takes a value which specifies
-a delay used during the flush operation for aging exception routes. The
-written value is however not used in the currently requested flush and
-instead utilized only in the next one.
+This is strictly related to commit fb7a0d334894 ("mptcp: ensure snd_nxt
+is properly initialized on connect"). It turns out that syzkaller can
+trigger the retransmit after fallback and before processing any other
+incoming packet - so that snd_una is still left uninitialized.
 
-A problem is that ipv6_sysctl_rtcache_flush() first reads the old value
-of net->ipv6.sysctl.flush_delay into a local delay variable and then
-calls proc_dointvec() which actually updates the sysctl based on the
-provided input.
+Address the issue explicitly initializing snd_una together with snd_nxt
+and write_seq.
 
-Fix the problem by switching the order of the two operations.
-
-Fixes: 4990509f19e8 ("[NETNS][IPV6]: Make sysctls route per namespace.")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240607112828.30285-1-petr.pavlu@suse.com
+Suggested-by: Mat Martineau <martineau@kernel.org>
+Fixes: 8fd738049ac3 ("mptcp: fallback in case of simultaneous connect")
+Cc: stable@vger.kernel.org
+Reported-by: Christoph Paasch <cpaasch@apple.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/485
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240607-upstream-net-20240607-misc-fixes-v1-1-1ab9ddfa3d00@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mptcp/protocol.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 62eaaf9532e1c..00e3daaafed82 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -6181,12 +6181,12 @@ static int ipv6_sysctl_rtcache_flush(struct ctl_table *ctl, int write,
- 	if (!write)
- 		return -EINVAL;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3398,6 +3398,7 @@ static int mptcp_stream_connect(struct s
  
--	net = (struct net *)ctl->extra1;
--	delay = net->ipv6.sysctl.flush_delay;
- 	ret = proc_dointvec(ctl, write, buffer, lenp, ppos);
- 	if (ret)
- 		return ret;
+ 	WRITE_ONCE(msk->write_seq, subflow->idsn);
+ 	WRITE_ONCE(msk->snd_nxt, subflow->idsn);
++	WRITE_ONCE(msk->snd_una, subflow->idsn);
+ 	if (likely(!__mptcp_check_fallback(msk)))
+ 		MPTCP_INC_STATS(sock_net(sock->sk), MPTCP_MIB_MPCAPABLEACTIVE);
  
-+	net = (struct net *)ctl->extra1;
-+	delay = net->ipv6.sysctl.flush_delay;
- 	fib6_run_gc(delay <= 0 ? 0 : (unsigned long)delay, net, delay > 0);
- 	return 0;
- }
--- 
-2.43.0
-
 
 
 
