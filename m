@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 225B8925ADB
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:04:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D79925F75
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:00:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD65229ACF2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B6E1B33425
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3429C185E7A;
-	Wed,  3 Jul 2024 10:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D967174EDE;
+	Wed,  3 Jul 2024 10:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WiJonDGJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LmSwwVn2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DD2185E71;
-	Wed,  3 Jul 2024 10:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A60D186E22;
+	Wed,  3 Jul 2024 10:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003623; cv=none; b=orXhi6z7yzkJcRiMJHfeqG7wcni/uyfwNJg/vocyIcQ0ksXILHj4ap/aAkPdpa7VWs2J3buTDZUTt3Y8adNdMKtUMk1mpgv4HG1+Rz/mx/rjtat4oAEW8Frjxr+mfzJRDgTxeG+C9gvSP/v3ZQytcjdjVs+/Y5S2MIk+4i6xFmk=
+	t=1720004175; cv=none; b=JnKiYN8NqXXIEHF+DqQdgV5PLdVAIERy7ZysTxokd9W6rA8CE7Yp6BiXU1hUWXZXYClDAkEXQ0wxkZzZU7S6yYvh305e1E1YcaSJEAAmyABn7854bU8lDfdlwh+Kp1xV+eiLpDxdJkZAad4cnrR3/7gKjHAUuEA0n7LVr17sZ+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003623; c=relaxed/simple;
-	bh=OABvjchr7e7G1ERV3JIcKs+bp5KjxF3CbKIUnIcsDhY=;
+	s=arc-20240116; t=1720004175; c=relaxed/simple;
+	bh=5D3yNb16yv4oMnb5w9byOgmjWDFrtYapzjVzIhWTRME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otH6UKm29m7jEq+mRysvwojEoE526DVai3iGlI8rrnCSp10o32jFlr9gpw/twKcRdQ0V04L/nDzUsvTDp3QEOczB2Eeyj5Z8CuXtov/34AW4hMAf4iF00LcDx5IJi7Sx4kCU6Bc3lzZ2DXH3CBKi5um48Zf02c7X2xqceFRfEAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WiJonDGJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F91BC2BD10;
-	Wed,  3 Jul 2024 10:47:02 +0000 (UTC)
+	 MIME-Version; b=lrEDrKzoKDKPc4Kz6D4Z5jQ9TPmRimiYkfEhSndnwsjmf2veQYH2D19AG6JcfLu7TVHHvXqtQ5D3hp9epnLYKzSsSfyQfUc2dTpYKpfFsSVWGMMkst7+bpS2jq7UcwPG7BAOgoRO9sHdIKmSlZmOKtHQYgQ3bJuA7V81CrpqDxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LmSwwVn2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEB92C32781;
+	Wed,  3 Jul 2024 10:56:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003622;
-	bh=OABvjchr7e7G1ERV3JIcKs+bp5KjxF3CbKIUnIcsDhY=;
+	s=korg; t=1720004175;
+	bh=5D3yNb16yv4oMnb5w9byOgmjWDFrtYapzjVzIhWTRME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WiJonDGJrxCdRWfQtRlnWgSUiTX8wlmXtImCf2/D/JL6jJ2f7cV8qJ2Akkokx4nEg
-	 FyoO8BFM5kDJ8dTxXTZn1+ZoLVboSK/U7b9xVb0wxLcDYjmei+y2ygRyAzK+5Ogdwk
-	 lHfKqOf6vpa1MdS4TeUjISq1xLsh2AVWqvBrxjUY=
+	b=LmSwwVn2+Co38qbPbNJoIGnadYbW15uQtSIkL/9+nHKHBOB7dnn7BepNZSFiO/BDn
+	 TlBWLy41D6o9Cv+MQ+XjbQ2+TfnqKGPjwFkHJP3cQ/L4XyNOtOuGqaIYBkxfFzxM8l
+	 NqISUj7Ngpq6GHL8WEk2An8ww/nuQ/f1lFyKwRss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oswald Buddenhagen <oswald.buddenhagen@gmx.de>,
-	Takashi Iwai <tiwai@suse.de>,
+	Helge Deller <deller@gmx.de>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 109/139] ALSA: emux: improve patch ioctl data validation
+Subject: [PATCH 5.4 145/189] parisc: use correct compat recv/recvfrom syscalls
 Date: Wed,  3 Jul 2024 12:40:06 +0200
-Message-ID: <20240703102834.557094901@linuxfoundation.org>
+Message-ID: <20240703102846.950429826@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 89b32ccb12ae67e630c6453d778ec30a592a212f ]
+[ Upstream commit 20a50787349fadf66ac5c48f62e58d753878d2bb ]
 
-In load_data(), make the validation of and skipping over the main info
-block match that in load_guspatch().
+Johannes missed parisc back when he introduced the compat version
+of these syscalls, so receiving cmsg messages that require a compat
+conversion is still broken.
 
-In load_guspatch(), add checking that the specified patch length matches
-the actually supplied data, like load_data() already did.
+Use the correct calls like the other architectures do.
 
-Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
-Message-ID: <20240406064830.1029573-8-oswald.buddenhagen@gmx.de>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 1dacc76d0014 ("net/compat/wext: send different messages to compat tasks")
+Acked-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/synth/emux/soundfont.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ arch/parisc/kernel/syscalls/syscall.tbl | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/synth/emux/soundfont.c b/sound/synth/emux/soundfont.c
-index 31a4ea94830e0..235b16af6083d 100644
---- a/sound/synth/emux/soundfont.c
-+++ b/sound/synth/emux/soundfont.c
-@@ -710,7 +710,6 @@ load_data(struct snd_sf_list *sflist, const void __user *data, long count)
- 	struct snd_soundfont *sf;
- 	struct soundfont_sample_info sample_info;
- 	struct snd_sf_sample *sp;
--	long off;
- 
- 	/* patch must be opened */
- 	if ((sf = sflist->currsf) == NULL)
-@@ -719,12 +718,16 @@ load_data(struct snd_sf_list *sflist, const void __user *data, long count)
- 	if (is_special_type(sf->type))
- 		return -EINVAL;
- 
-+	if (count < (long)sizeof(sample_info)) {
-+		return -EINVAL;
-+	}
- 	if (copy_from_user(&sample_info, data, sizeof(sample_info)))
- 		return -EFAULT;
-+	data += sizeof(sample_info);
-+	count -= sizeof(sample_info);
- 
--	off = sizeof(sample_info);
--
--	if (sample_info.size != (count-off)/2)
-+	// SoundFont uses S16LE samples.
-+	if (sample_info.size * 2 != count)
- 		return -EINVAL;
- 
- 	/* Check for dup */
-@@ -751,7 +754,7 @@ load_data(struct snd_sf_list *sflist, const void __user *data, long count)
- 		int  rc;
- 		rc = sflist->callback.sample_new
- 			(sflist->callback.private_data, sp, sflist->memhdr,
--			 data + off, count - off);
-+			 data, count);
- 		if (rc < 0) {
- 			sf_sample_delete(sflist, sf, sp);
- 			return rc;
-@@ -962,10 +965,12 @@ load_guspatch(struct snd_sf_list *sflist, const char __user *data,
- 	}
- 	if (copy_from_user(&patch, data, sizeof(patch)))
- 		return -EFAULT;
--	
- 	count -= sizeof(patch);
- 	data += sizeof(patch);
- 
-+	if ((patch.len << (patch.mode & WAVE_16_BITS ? 1 : 0)) != count)
-+		return -EINVAL;
-+
- 	sf = newsf(sflist, SNDRV_SFNT_PAT_TYPE_GUS|SNDRV_SFNT_PAT_SHARED, NULL);
- 	if (sf == NULL)
- 		return -ENOMEM;
+diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
+index e016bf6fae1e6..eb84763062ee1 100644
+--- a/arch/parisc/kernel/syscalls/syscall.tbl
++++ b/arch/parisc/kernel/syscalls/syscall.tbl
+@@ -108,7 +108,7 @@
+ 95	common	fchown			sys_fchown
+ 96	common	getpriority		sys_getpriority
+ 97	common	setpriority		sys_setpriority
+-98	common	recv			sys_recv
++98	common	recv			sys_recv			compat_sys_recv
+ 99	common	statfs			sys_statfs			compat_sys_statfs
+ 100	common	fstatfs			sys_fstatfs			compat_sys_fstatfs
+ 101	common	stat64			sys_stat64
+@@ -135,7 +135,7 @@
+ 120	common	clone			sys_clone_wrapper
+ 121	common	setdomainname		sys_setdomainname
+ 122	common	sendfile		sys_sendfile			compat_sys_sendfile
+-123	common	recvfrom		sys_recvfrom
++123	common	recvfrom		sys_recvfrom			compat_sys_recvfrom
+ 124	32	adjtimex		sys_adjtimex_time32
+ 124	64	adjtimex		sys_adjtimex
+ 125	common	mprotect		sys_mprotect
 -- 
 2.43.0
 
