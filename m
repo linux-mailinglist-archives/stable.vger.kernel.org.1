@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283E8925B0E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFCD7925C88
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:19:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E183B29995E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:54:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DFA91C22167
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40341822ED;
-	Wed,  3 Jul 2024 10:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA484184103;
+	Wed,  3 Jul 2024 11:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jTC+YRkq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKITz3+D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E291822F5;
-	Wed,  3 Jul 2024 10:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E0217966F;
+	Wed,  3 Jul 2024 11:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003505; cv=none; b=DbTFDtviEv1niGjMSucONh8JeH4WGHq363AIO/T2hg7JZuvK02M3fl04sx9b3dIAPLLMdlbruwhUXVydI9FHBoqr+lab2hqNNPl10gZTN1TWdQOW1DYCUK7iAM6Re/WCdN1lkd3jcC5fRxs47U4VKYdgYr9xrThU8NpTRaSXRd4=
+	t=1720004882; cv=none; b=huVmbW0dUhm41vJSgaxHx7Pbo4mGewPal8fr7Bo2eOe2JgDR961Y7SQAzRAhRxHX86RR2i+Fz6PIKUWTc9u9tgkSDP62myRHTNPFY24YVCK5Msi/yPlRnavGDUN6vBU+BHbTutsdNOLCvvETHCoZhiYuD0mi7uR3reJj1S2VgAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003505; c=relaxed/simple;
-	bh=5TpIzepsR4c5q79rJttlhZdhd/1Dg2++z6Sd/y3OmQs=;
+	s=arc-20240116; t=1720004882; c=relaxed/simple;
+	bh=yuAdcLpJCuuIcfHksCD5BcdjELYcx9rGWd7RQPJlewc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dSANxaPH766LX3CpED8LILLNGbJuGNHA3b7otB3E1jSSYVjz/6CKtKrnLEgFPQDfmme5VH8HMSP/8oDFz02OMwB8YqfefnrCh4Er1Wi78K1N+LJoO3iv+WZulwqv9DbuC+gg34Pl7SnYeQ6HfiMfwRfXOOG25Suwt/xGPY6L1SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jTC+YRkq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297F3C2BD10;
-	Wed,  3 Jul 2024 10:45:04 +0000 (UTC)
+	 MIME-Version; b=J0bNOOFuczibdXldmBHu9NZ4ejmdBAH3NVmw34R0RvuCXems3xQGuGcP8ruQSVPKjSnqSLEzzHMrt66f/9lTtH8vETJSQ30dOI0008m1BZ4gFr9GpX2MzIP11kF+31RZ8dedWRJSJ4Qfy4/68r8Isq5mWfYk3FSfXxIt22TAbIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKITz3+D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0C9BC2BD10;
+	Wed,  3 Jul 2024 11:08:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003505;
-	bh=5TpIzepsR4c5q79rJttlhZdhd/1Dg2++z6Sd/y3OmQs=;
+	s=korg; t=1720004882;
+	bh=yuAdcLpJCuuIcfHksCD5BcdjELYcx9rGWd7RQPJlewc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jTC+YRkqhPWkdbRgHsojRIAvfJ3jEIt7j8MqouxNWELXUcCUrMMjS0VVbUTWTAQjl
-	 8ErjS0RaYURbleIokzGNvr/4mJXYYHNOob/9xyIvsYnk6Nu46N3Ad0sxIubrk0M0GR
-	 lYGfszT+aI1dVeLY8tMZsoJZ+S10NRbLmKyEToAs=
+	b=PKITz3+D8+PnBV30k2EmFMU2MY+fUOYmXm9J+ljpLWo7dFmJu6LjjMDh5t6U/XY3n
+	 eagOEPbLppUcLffFyvLjMT3VjW1LaRJrFN2JfGhfZb5r+fUvWXwwxJvCdyUiyT3JId
+	 fnKgZgYJB3dWbukk1ltc0Hk6HLVgV/1Adm4zAudk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 071/139] cipso: fix total option length computation
+Subject: [PATCH 5.10 187/290] r8169: remove nr_frags argument from rtl_tx_slots_avail
 Date: Wed,  3 Jul 2024 12:39:28 +0200
-Message-ID: <20240703102833.123133649@linuxfoundation.org>
+Message-ID: <20240703102911.233944382@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 9f36169912331fa035d7b73a91252d7c2512eb1a ]
+[ Upstream commit 83c317d7b36bb3858cf1cb86d2635ec3f3bd6ea3 ]
 
-As evident from the definition of ip_options_get(), the IP option
-IPOPT_END is used to pad the IP option data array, not IPOPT_NOP. Yet
-the loop that walks the IP options to determine the total IP options
-length in cipso_v4_delopt() doesn't take IPOPT_END into account.
+The only time when nr_frags isn't SKB_MAX_FRAGS is when entering
+rtl8169_start_xmit(). However we can use SKB_MAX_FRAGS also here
+because when queue isn't stopped there should always be room for
+MAX_SKB_FRAGS + 1 descriptors.
 
-Fix it by recognizing the IPOPT_END value as the end of actual options.
-
-Fixes: 014ab19a69c3 ("selinux: Set socket NetLabel based on connection endpoint")
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/3d1f2ad7-31d5-2cac-4f4a-394f8a3cab63@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: c71e3a5cffd5 ("r8169: Fix possible ring buffer corruption on fragmented Tx packets.")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/cipso_ipv4.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/net/ipv4/cipso_ipv4.c b/net/ipv4/cipso_ipv4.c
-index 8dcf9aec7b77d..4a86cf05a3480 100644
---- a/net/ipv4/cipso_ipv4.c
-+++ b/net/ipv4/cipso_ipv4.c
-@@ -2029,12 +2029,16 @@ static int cipso_v4_delopt(struct ip_options_rcu __rcu **opt_ptr)
- 		 * from there we can determine the new total option length */
- 		iter = 0;
- 		optlen_new = 0;
--		while (iter < opt->opt.optlen)
--			if (opt->opt.__data[iter] != IPOPT_NOP) {
-+		while (iter < opt->opt.optlen) {
-+			if (opt->opt.__data[iter] == IPOPT_END) {
-+				break;
-+			} else if (opt->opt.__data[iter] == IPOPT_NOP) {
-+				iter++;
-+			} else {
- 				iter += opt->opt.__data[iter + 1];
- 				optlen_new = iter;
--			} else
--				iter++;
-+			}
-+		}
- 		hdr_delta = opt->opt.optlen;
- 		opt->opt.optlen = (optlen_new + 3) & ~3;
- 		hdr_delta -= opt->opt.optlen;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index b678fd1436a4c..dbf885f4dd01d 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4247,13 +4247,12 @@ static bool rtl8169_tso_csum_v2(struct rtl8169_private *tp,
+ 	return true;
+ }
+ 
+-static bool rtl_tx_slots_avail(struct rtl8169_private *tp,
+-			       unsigned int nr_frags)
++static bool rtl_tx_slots_avail(struct rtl8169_private *tp)
+ {
+ 	unsigned int slots_avail = tp->dirty_tx + NUM_TX_DESC - tp->cur_tx;
+ 
+ 	/* A skbuff with nr_frags needs nr_frags+1 entries in the tx queue */
+-	return slots_avail > nr_frags;
++	return slots_avail > MAX_SKB_FRAGS;
+ }
+ 
+ /* Versions RTL8102e and from RTL8168c onwards support csum_v2 */
+@@ -4288,7 +4287,7 @@ static netdev_tx_t rtl8169_start_xmit(struct sk_buff *skb,
+ 
+ 	txd_first = tp->TxDescArray + entry;
+ 
+-	if (unlikely(!rtl_tx_slots_avail(tp, frags))) {
++	if (unlikely(!rtl_tx_slots_avail(tp))) {
+ 		if (net_ratelimit())
+ 			netdev_err(dev, "BUG! Tx Ring full when queue awake!\n");
+ 		goto err_stop_0;
+@@ -4333,7 +4332,7 @@ static netdev_tx_t rtl8169_start_xmit(struct sk_buff *skb,
+ 
+ 	WRITE_ONCE(tp->cur_tx, tp->cur_tx + frags + 1);
+ 
+-	stop_queue = !rtl_tx_slots_avail(tp, MAX_SKB_FRAGS);
++	stop_queue = !rtl_tx_slots_avail(tp);
+ 	if (unlikely(stop_queue)) {
+ 		/* Avoid wrongly optimistic queue wake-up: rtl_tx thread must
+ 		 * not miss a ring update when it notices a stopped queue.
+@@ -4348,7 +4347,7 @@ static netdev_tx_t rtl8169_start_xmit(struct sk_buff *skb,
+ 		 * can't.
+ 		 */
+ 		smp_mb__after_atomic();
+-		if (rtl_tx_slots_avail(tp, MAX_SKB_FRAGS))
++		if (rtl_tx_slots_avail(tp))
+ 			netif_start_queue(dev);
+ 		door_bell = true;
+ 	}
+@@ -4502,10 +4501,8 @@ static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp,
+ 		 * ring status.
+ 		 */
+ 		smp_store_mb(tp->dirty_tx, dirty_tx);
+-		if (netif_queue_stopped(dev) &&
+-		    rtl_tx_slots_avail(tp, MAX_SKB_FRAGS)) {
++		if (netif_queue_stopped(dev) && rtl_tx_slots_avail(tp))
+ 			netif_wake_queue(dev);
+-		}
+ 		/*
+ 		 * 8168 hack: TxPoll requests are lost when the Tx packets are
+ 		 * too close. Let's kick an extra TxPoll request when a burst
 -- 
 2.43.0
 
