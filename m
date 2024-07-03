@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89B21925DB8
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF019259D2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:50:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32D1B1F21D8F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D4B41C20E12
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:50:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B816191F77;
-	Wed,  3 Jul 2024 11:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD0417B501;
+	Wed,  3 Jul 2024 10:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUPB8P/o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZO14p3M+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A18B1849DD;
-	Wed,  3 Jul 2024 11:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14671DFC7;
+	Wed,  3 Jul 2024 10:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005751; cv=none; b=b+GOwZvaL4VICYoXHvHfZSvdIX9hWYyusADAi1lyP82fthX4lR7nQ9ulEYxNknr2Eaoj5TRxvCs4RWfCRxtmj/w3jR1MQ9l3fjsGTPrlY/Wq/kgvC+gW9TGsHbWFHGW4ybo8KpwVyh/xguixwlAkV6ERTdPO3Pr/zpLwsD/Esi8=
+	t=1720003340; cv=none; b=bN4ivWDaRRS/URlWF8IdxSrfgR+69u0hXKymksLzm8bf0vagVieC4szaoKxa3UpppZpr26VhH0rRFc+TJV9KSBySh/r4QzK1xXYaBkBFr71R65+k6DQAV9LR2wckQkY/8ussSZLI+GXVDPN3dq5eJRu3RmCa3TqM3bzrfvFjWP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005751; c=relaxed/simple;
-	bh=8JeZz9flsRfJyLVlHgOgObtzIxH4lYhY0gzPgexdjOU=;
+	s=arc-20240116; t=1720003340; c=relaxed/simple;
+	bh=qNzulG/q5qdA8Km+p3RPkMv3W2F0AKrLYHZmdtk/ock=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aVZ5A8CL7Yzv3sKve7g7HN7Z+pl4LijM15p4411iczMLR0Odko2VK/UE12Z+C5J5O+1ubdw+3jFItjpY2BpvFYFlsSitTR6x65wSZzSRgqU10BmuSAOGRErsL8aB0sFuJU6L/HX0XaMbu/iUD7XRCgIroa9nKXBTMT12YGqxUKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUPB8P/o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95631C4AF0B;
-	Wed,  3 Jul 2024 11:22:30 +0000 (UTC)
+	 MIME-Version; b=fpZU3oG2zGDxDtuVR0JRsPRgYAUh/K1h4OXAPZoT3qdJvHt7d4DDQ9osg5BySpRqrai3AGoAJCI0YyctMylQwoZyH5iiFcnvcjtU1u4myxgla5SS4QTMk4wkVpE77rGmK0s1Nu+U4u7+sKjb2BJWBbnie/AWkul4aKkzR3qodVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZO14p3M+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48418C2BD10;
+	Wed,  3 Jul 2024 10:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005751;
-	bh=8JeZz9flsRfJyLVlHgOgObtzIxH4lYhY0gzPgexdjOU=;
+	s=korg; t=1720003340;
+	bh=qNzulG/q5qdA8Km+p3RPkMv3W2F0AKrLYHZmdtk/ock=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AUPB8P/ozl6Nfme1yGzbL5MD+PIzFVhOmaVE7YT4j4UQydVbyTDtjSJ3Hufxu6ahM
-	 5MIEWihhD96/xZnq9hxYdY84aYfP6Ss0VhUOrz4Cdcd2p2d6pp8ImR14vR7AC6zz3W
-	 RybZR2JT2hlAjHN4LFNx3xdqSXtdEAJj8/DCTeyw=
+	b=ZO14p3M+dNUic3myJZsjNA0A++/aNajwV3ZRQKSi/pJkmEHtYkA6SMqsLvR//9lZh
+	 zmfTYcY2GHENzs9GN0ncjZ2wbYppekb6IT7BYmy48/PbFv8TYVSAimS0rBNFTyoeuk
+	 X1xqc0kucSnCeLcrZPLc+oJ1q1tYD6o54MYgs82w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joao Pinto <jpinto@synopsys.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 177/356] Avoid hw_desc array overrun in dw-axi-dmac
-Date: Wed,  3 Jul 2024 12:38:33 +0200
-Message-ID: <20240703102919.800625080@linuxfoundation.org>
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>,
+	stable <stable@kernel.org>
+Subject: [PATCH 4.19 017/139] usb: gadget: f_fs: Fix race between aio_cancel() and AIO request complete
+Date: Wed,  3 Jul 2024 12:38:34 +0200
+Message-ID: <20240703102831.089275794@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joao Pinto <Joao.Pinto@synopsys.com>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-[ Upstream commit 333e11bf47fa8d477db90e2900b1ed3c9ae9b697 ]
+[ Upstream commit 24729b307eefcd7c476065cd7351c1a018082c19 ]
 
-I have a use case where nr_buffers = 3 and in which each descriptor is composed by 3
-segments, resulting in the DMA channel descs_allocated to be 9. Since axi_desc_put()
-handles the hw_desc considering the descs_allocated, this scenario would result in a
-kernel panic (hw_desc array will be overrun).
+FFS based applications can utilize the aio_cancel() callback to dequeue
+pending USB requests submitted to the UDC.  There is a scenario where the
+FFS application issues an AIO cancel call, while the UDC is handling a
+soft disconnect.  For a DWC3 based implementation, the callstack looks
+like the following:
 
-To fix this, the proposal is to add a new member to the axi_dma_desc structure,
-where we keep the number of allocated hw_descs (axi_desc_alloc()) and use it in
-axi_desc_put() to handle the hw_desc array correctly.
+    DWC3 Gadget                               FFS Application
+dwc3_gadget_soft_disconnect()              ...
+  --> dwc3_stop_active_transfers()
+    --> dwc3_gadget_giveback(-ESHUTDOWN)
+      --> ffs_epfile_async_io_complete()   ffs_aio_cancel()
+        --> usb_ep_free_request()            --> usb_ep_dequeue()
 
-Additionally I propose to remove the axi_chan_start_first_queued() call after completing
-the transfer, since it was identified that unbalance can occur (started descriptors can
-be interrupted and transfer ignored due to DMA channel not being enabled).
+There is currently no locking implemented between the AIO completion
+handler and AIO cancel, so the issue occurs if the completion routine is
+running in parallel to an AIO cancel call coming from the FFS application.
+As the completion call frees the USB request (io_data->req) the FFS
+application is also referencing it for the usb_ep_dequeue() call.  This can
+lead to accessing a stale/hanging pointer.
 
-Signed-off-by: Joao Pinto <jpinto@synopsys.com>
-Link: https://lore.kernel.org/r/1711536564-12919-1-git-send-email-jpinto@synopsys.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+commit b566d38857fc ("usb: gadget: f_fs: use io_data->status consistently")
+relocated the usb_ep_free_request() into ffs_epfile_async_io_complete().
+However, in order to properly implement locking to mitigate this issue, the
+spinlock can't be added to ffs_epfile_async_io_complete(), as
+usb_ep_dequeue() (if successfully dequeuing a USB request) will call the
+function driver's completion handler in the same context.  Hence, leading
+into a deadlock.
+
+Fix this issue by moving the usb_ep_free_request() back to
+ffs_user_copy_worker(), and ensuring that it explicitly sets io_data->req
+to NULL after freeing it within the ffs->eps_lock.  This resolves the race
+condition above, as the ffs_aio_cancel() routine will not continue
+attempting to dequeue a request that has already been freed, or the
+ffs_user_copy_work() not freeing the USB request until the AIO cancel is
+done referencing it.
+
+This fix depends on
+  commit b566d38857fc ("usb: gadget: f_fs: use io_data->status
+  consistently")
+
+Fixes: 2e4c7553cd6f ("usb: gadget: f_fs: add aio support")
+Cc: stable <stable@kernel.org>	# b566d38857fc ("usb: gadget: f_fs: use io_data->status consistently")
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20240409014059.6740-1-quic_wcheng@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c | 6 ++----
- drivers/dma/dw-axi-dmac/dw-axi-dmac.h          | 1 +
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ drivers/usb/gadget/function/f_fs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-index cfc47efcb5d93..6715ade391aa1 100644
---- a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-+++ b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-@@ -213,6 +213,7 @@ static struct axi_dma_desc *axi_desc_alloc(u32 num)
- 		kfree(desc);
- 		return NULL;
- 	}
-+	desc->nr_hw_descs = num;
+diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+index 7294586b08dc0..0d8dae1797a97 100644
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -761,6 +761,7 @@ static void ffs_user_copy_worker(struct work_struct *work)
+ 	int ret = io_data->req->status ? io_data->req->status :
+ 					 io_data->req->actual;
+ 	bool kiocb_has_eventfd = io_data->kiocb->ki_flags & IOCB_EVENTFD;
++	unsigned long flags;
  
- 	return desc;
- }
-@@ -239,7 +240,7 @@ static struct axi_dma_lli *axi_desc_get(struct axi_dma_chan *chan,
- static void axi_desc_put(struct axi_dma_desc *desc)
- {
- 	struct axi_dma_chan *chan = desc->chan;
--	int count = atomic_read(&chan->descs_allocated);
-+	int count = desc->nr_hw_descs;
- 	struct axi_dma_hw_desc *hw_desc;
- 	int descs_put;
+ 	if (io_data->read && ret > 0) {
+ 		mm_segment_t oldfs = get_fs();
+@@ -777,7 +778,10 @@ static void ffs_user_copy_worker(struct work_struct *work)
+ 	if (io_data->ffs->ffs_eventfd && !kiocb_has_eventfd)
+ 		eventfd_signal(io_data->ffs->ffs_eventfd, 1);
  
-@@ -1049,9 +1050,6 @@ static void axi_chan_block_xfer_complete(struct axi_dma_chan *chan)
- 		/* Remove the completed descriptor from issued list before completing */
- 		list_del(&vd->node);
- 		vchan_cookie_complete(vd);
--
--		/* Submit queued descriptors after processing the completed ones */
--		axi_chan_start_first_queued(chan);
- 	}
++	spin_lock_irqsave(&io_data->ffs->eps_lock, flags);
+ 	usb_ep_free_request(io_data->ep, io_data->req);
++	io_data->req = NULL;
++	spin_unlock_irqrestore(&io_data->ffs->eps_lock, flags);
  
- out:
-diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac.h b/drivers/dma/dw-axi-dmac/dw-axi-dmac.h
-index 380005afde160..58fc6310ee364 100644
---- a/drivers/dma/dw-axi-dmac/dw-axi-dmac.h
-+++ b/drivers/dma/dw-axi-dmac/dw-axi-dmac.h
-@@ -101,6 +101,7 @@ struct axi_dma_desc {
- 	u32				completed_blocks;
- 	u32				length;
- 	u32				period_len;
-+	u32				nr_hw_descs;
- };
- 
- static inline struct device *dchan2dev(struct dma_chan *dchan)
+ 	if (io_data->read)
+ 		kfree(io_data->to_free);
 -- 
 2.43.0
 
