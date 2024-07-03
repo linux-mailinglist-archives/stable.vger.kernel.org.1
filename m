@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-57860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2A1925E58
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:36:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36494925BEB
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:13:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84F9D1F25B4D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:36:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D4BB295C56
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70DD180A7D;
-	Wed,  3 Jul 2024 11:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92B019E83E;
+	Wed,  3 Jul 2024 10:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXTGLiqO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wD5aKq1C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75ECB13A27E;
-	Wed,  3 Jul 2024 11:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78E819D8A7;
+	Wed,  3 Jul 2024 10:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006152; cv=none; b=leOhhrWB9q4er2RKaspbGAGh6SGQq10dw3kRPD+rpOgy52StJZ3giXpnFxJt0iQFVtrRSm4Z9n2NnI4yfi1V+hnfV+fvdaBnClGTItwNy+tqjtmA5SkaMS+AiLB7/W5Wykrn2eIY1i1d9KEYPetP9087zcDAC2ASLJmSKxDI9FQ=
+	t=1720004306; cv=none; b=bx0jLwJEhZANjj8eX1Onhuf5qKHVEsq2Tg8M+X1uVMpafy/az3kahjBr/XX4NrEt6bA4BAL7zQ5wYvfrcMW6wskgyRTdx4cYPsVwvLUbreSrRaeLkwhBCg7hfasDVWmx1+DCz8lVlx5caXNABZIhrLG17lx5cV+tl3sylXA7Ko0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006152; c=relaxed/simple;
-	bh=ux+lMOLih3FWGlz9VBro7IBUEv7OK/Bt5pbUeMHfgiM=;
+	s=arc-20240116; t=1720004306; c=relaxed/simple;
+	bh=Tj4P4PHWq1UiCZW13NbFhT1Nc4355B9h0yu68b7005Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CAo4N2sZ2Nr2EhD/7nJ6FEjriMa71alfCg+Wc1vh95CUfe3Cy4Aq/MfS45T4IY8ySe3zx2lt7dyOHsTlZc7Ms0CFnjfdsxyleSLdPff1Zn4aHxuOF7+BSJUuZPV8gEw44q7H9E+nsZmr9CgetyX6JGKL4HZLTgDzQ8sGRgMh5Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXTGLiqO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4EAC2BD10;
-	Wed,  3 Jul 2024 11:29:11 +0000 (UTC)
+	 MIME-Version; b=jNDH5xR5nsyDdK8BzjKA6FBprGQh9T5k7oH3nY0oJGg4hva42DmWXPqJiu/uMojelpbEKz4a13iGPAKGkShExjRBBsS3M6M0kF2k52np70pjZIDuH/S0U5MTfKKpET0BtM39I9XbmotZjwfxqZOiPpDtbO4JdOLmKgPqnRA7NcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wD5aKq1C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CECCC2BD10;
+	Wed,  3 Jul 2024 10:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006152;
-	bh=ux+lMOLih3FWGlz9VBro7IBUEv7OK/Bt5pbUeMHfgiM=;
+	s=korg; t=1720004306;
+	bh=Tj4P4PHWq1UiCZW13NbFhT1Nc4355B9h0yu68b7005Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XXTGLiqO+wyXF87IxcdIDEAtt3r0r+0LAiYxcKyo+NnVAct8znl8N1vZyRy9KwC6n
-	 tY7KOc9Do8ve3WvW8l+929MYLySMf+B3iJTuHRKXFvYXNFvpeRCHdo0nun2VcvAiAZ
-	 6jPbpWyyJ5T1O2j+c0xicp9P8xSePWpL1JUBRddg=
+	b=wD5aKq1C7eaA0+z4HR8g9OT26TyuVM36gPLdpH7OxkZQR957yU2U1hC5G75gE5GPS
+	 9QgcjaZJSemMGDMSomDrdEG+yU9vPU++ovdozF8rwe/jCgaZUsRHIEStVI72kaOB/X
+	 5jReVJztIPNRvaFG5lpYqVELwLSSvFgGiruqVeGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Coquelin <maxime.coquelin@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Xie Yongji <xieyongji@bytedance.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 286/356] vduse: Temporarily fail if control queue feature requested
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.4 161/189] iio: chemical: bme680: Fix pressure value output
 Date: Wed,  3 Jul 2024 12:40:22 +0200
-Message-ID: <20240703102923.934305914@linuxfoundation.org>
+Message-ID: <20240703102847.545183664@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Coquelin <maxime.coquelin@redhat.com>
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-[ Upstream commit 56e71885b0349241c07631a7b979b61e81afab6a ]
+commit ae1f7b93b52095be6776d0f34957b4f35dda44d9 upstream.
 
-Virtio-net driver control queue implementation is not safe
-when used with VDUSE. If the VDUSE application does not
-reply to control queue messages, it currently ends up
-hanging the kernel thread sending this command.
+The IIO standard units are measured in kPa while the driver
+is using hPa.
 
-Some work is on-going to make the control queue
-implementation robust with VDUSE. Until it is completed,
-let's fail features check if control-queue feature is
-requested.
+Apart from checking the userspace value itself, it is mentioned also
+in the Bosch API [1] that the pressure value is in Pascal.
 
-Signed-off-by: Maxime Coquelin <maxime.coquelin@redhat.com>
-Message-Id: <20240109111025.1320976-3-maxime.coquelin@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x_defs.h#L742
+
+Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://lore.kernel.org/r/20240606212313.207550-2-vassilisamir@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vdpa/vdpa_user/vduse_dev.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/iio/chemical/bme680_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
-index 898ef597338a2..4684d4756b427 100644
---- a/drivers/vdpa/vdpa_user/vduse_dev.c
-+++ b/drivers/vdpa/vdpa_user/vduse_dev.c
-@@ -8,6 +8,7 @@
-  *
-  */
+--- a/drivers/iio/chemical/bme680_core.c
++++ b/drivers/iio/chemical/bme680_core.c
+@@ -670,7 +670,7 @@ static int bme680_read_press(struct bme6
+ 	}
  
-+#include "linux/virtio_net.h"
- #include <linux/init.h>
- #include <linux/module.h>
- #include <linux/cdev.h>
-@@ -26,6 +27,7 @@
- #include <uapi/linux/virtio_config.h>
- #include <uapi/linux/virtio_ids.h>
- #include <uapi/linux/virtio_blk.h>
-+#include <uapi/linux/virtio_ring.h>
- #include <linux/mod_devicetable.h>
- 
- #include "iova_domain.h"
-@@ -1236,6 +1238,9 @@ static bool features_is_valid(struct vduse_dev_config *config)
- 	if ((config->device_id == VIRTIO_ID_BLOCK) &&
- 			(config->features & BIT_ULL(VIRTIO_BLK_F_CONFIG_WCE)))
- 		return false;
-+	else if ((config->device_id == VIRTIO_ID_NET) &&
-+			(config->features & BIT_ULL(VIRTIO_NET_F_CTRL_VQ)))
-+		return false;
- 
- 	return true;
+ 	*val = bme680_compensate_press(data, adc_press);
+-	*val2 = 100;
++	*val2 = 1000;
+ 	return IIO_VAL_FRACTIONAL;
  }
--- 
-2.43.0
-
+ 
 
 
 
