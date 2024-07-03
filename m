@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B381925B7E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:09:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2347A925CCA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:22:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEA5A1C22BBA
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:09:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF8D41F21375
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12129187549;
-	Wed,  3 Jul 2024 10:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E451946CB;
+	Wed,  3 Jul 2024 11:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZfmssTRR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCU+FhTC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33EA142649;
-	Wed,  3 Jul 2024 10:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1591B192B70;
+	Wed,  3 Jul 2024 11:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004187; cv=none; b=PbnVCJIEqf+2ORRW0R544AS5f7m+704LCSo6regZXIeKiqr/QN+j34p8UTuv76fRapUvKbak5Xhl1nulXcEugt5lGb/Ypyp54ok0Iudx+GhI/B6nxt1hbp9iE+L/pJY6zw0Rk6QF7T8i3Hrw1hkppSYvUDTiPCsc7j3G5gPnwxs=
+	t=1720005100; cv=none; b=ghhdfZEbDE8JpfKRucL44D9aBgIxdaS9jG9u6p1A4V/8hzCZNKus+XLyKuAy/4/0jYy8efmwnoWlsTl1dUKbZP/GbrXY60axNyOaXqet4HL39z4viVjPUNQTQvL6o1mZSUQ+fktBCfWmBDWMLfA7EGxY0n+rRYne+HaKrMtSavs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004187; c=relaxed/simple;
-	bh=84C5rkV4lPSxXpOEh2p5zm/sZaLyYuxmn1qXY55Glwk=;
+	s=arc-20240116; t=1720005100; c=relaxed/simple;
+	bh=Tq57JePRPGw2Zj0ObJCQqQqSCv9MUVeo8JrgE9MDCZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RpYlTM9C5Fh4kgwVwgbu45iQPSYprOqtVfA1wSUM5jjtyCyYS+M/Zm9v1Ak08r9Mipkm+aKrHTkoEuYr9yQCun01jLiRdcx4X1316uywWuij8rgMVIbHXo6vGta84IOD+7MvJdnIOHOxau7XIsAFEVGejhUneUX1bQ6GM9h0Hgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZfmssTRR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A267C32781;
-	Wed,  3 Jul 2024 10:56:26 +0000 (UTC)
+	 MIME-Version; b=RYu9E/3Je1Suv1RjFQEDwVgMICYIKjKO5gvdJRSxRO0fz0h/WkwzN/Ylr5zK/o9vspYnbkUxQtV/gvZ0wmnt3K97xAP395QGc9x0rjiIOHkHWyvk2niqIRz1QlewtrVSYzQ3kcPe8zLpw+XkGwwssHwBF7U4cFwE4lBTJa2tjz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCU+FhTC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B4DC2BD10;
+	Wed,  3 Jul 2024 11:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004187;
-	bh=84C5rkV4lPSxXpOEh2p5zm/sZaLyYuxmn1qXY55Glwk=;
+	s=korg; t=1720005099;
+	bh=Tq57JePRPGw2Zj0ObJCQqQqSCv9MUVeo8JrgE9MDCZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZfmssTRRFyaIudYkEhneHdU0Qt98jpez8CD69qrVr/P17jv/Q4MOtF7sSlodfqZAa
-	 9YkQkHTeTFCH2SMhHIJ82eZVglpuhCtcvyAi+c/QCMP6DvTnz7SRgQB6lYX++Hw2+j
-	 w2F1BXOAp+8p6g1T8KnrycBFiM3UjpmcKvflMP4M=
+	b=rCU+FhTCocq+dtWXE7OygzoRQFAYJNeCM3KGcIum965+OkSlY2ySEjEukj1VQcbTv
+	 fCCuddEQq0hrgtXU5OavyXBpJo5YcG8Fd9sZaW3hWDuPBbqacnSGMo2WASfaDnqF+A
+	 vu2UEr+k81uUdusMAaFQC6aNXVEOmZ4x5RdSZ5jQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dawei Li <dawei.li@shingroup.cn>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 149/189] net/iucv: Avoid explicit cpumask var allocation on stack
+Subject: [PATCH 5.10 229/290] drm/panel: ilitek-ili9881c: Fix warning with GPIO controllers that sleep
 Date: Wed,  3 Jul 2024 12:40:10 +0200
-Message-ID: <20240703102847.097983365@linuxfoundation.org>
+Message-ID: <20240703102912.804853931@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dawei Li <dawei.li@shingroup.cn>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-[ Upstream commit be4e1304419c99a164b4c0e101c7c2a756b635b9 ]
+[ Upstream commit ee7860cd8b5763017f8dc785c2851fecb7a0c565 ]
 
-For CONFIG_CPUMASK_OFFSTACK=y kernel, explicit allocation of cpumask
-variable on stack is not recommended since it can cause potential stack
-overflow.
+The ilitek-ili9881c controls the reset GPIO using the non-sleeping
+gpiod_set_value() function. This complains loudly when the GPIO
+controller needs to sleep. As the caller can sleep, use
+gpiod_set_value_cansleep() to fix the issue.
 
-Instead, kernel code should always use *cpumask_var API(s) to allocate
-cpumask var in config-neutral way, leaving allocation strategy to
-CONFIG_CPUMASK_OFFSTACK.
-
-Use *cpumask_var API(s) to address it.
-
-Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240331053441.1276826-2-dawei.li@shingroup.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240317154839.21260-1-laurent.pinchart@ideasonboard.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240317154839.21260-1-laurent.pinchart@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/iucv/iucv.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/panel/panel-ilitek-ili9881c.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/iucv/iucv.c b/net/iucv/iucv.c
-index 8b5b8cc93ff8b..f0364649186b9 100644
---- a/net/iucv/iucv.c
-+++ b/net/iucv/iucv.c
-@@ -565,7 +565,7 @@ static void iucv_setmask_mp(void)
-  */
- static void iucv_setmask_up(void)
- {
--	cpumask_t cpumask;
-+	static cpumask_t cpumask;
- 	int cpu;
+diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c b/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
+index 534dd7414d428..917cb322bab1a 100644
+--- a/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
++++ b/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
+@@ -506,10 +506,10 @@ static int ili9881c_prepare(struct drm_panel *panel)
+ 	msleep(5);
  
- 	/* Disable all cpu but the first in cpu_irq_cpumask. */
-@@ -673,23 +673,33 @@ static int iucv_cpu_online(unsigned int cpu)
+ 	/* And reset it */
+-	gpiod_set_value(ctx->reset, 1);
++	gpiod_set_value_cansleep(ctx->reset, 1);
+ 	msleep(20);
  
- static int iucv_cpu_down_prep(unsigned int cpu)
- {
--	cpumask_t cpumask;
-+	cpumask_var_t cpumask;
-+	int ret = 0;
+-	gpiod_set_value(ctx->reset, 0);
++	gpiod_set_value_cansleep(ctx->reset, 0);
+ 	msleep(20);
  
- 	if (!iucv_path_table)
- 		return 0;
+ 	for (i = 0; i < ctx->desc->init_length; i++) {
+@@ -564,7 +564,7 @@ static int ili9881c_unprepare(struct drm_panel *panel)
  
--	cpumask_copy(&cpumask, &iucv_buffer_cpumask);
--	cpumask_clear_cpu(cpu, &cpumask);
--	if (cpumask_empty(&cpumask))
-+	if (!alloc_cpumask_var(&cpumask, GFP_KERNEL))
-+		return -ENOMEM;
-+
-+	cpumask_copy(cpumask, &iucv_buffer_cpumask);
-+	cpumask_clear_cpu(cpu, cpumask);
-+	if (cpumask_empty(cpumask)) {
- 		/* Can't offline last IUCV enabled cpu. */
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto __free_cpumask;
-+	}
+ 	mipi_dsi_dcs_enter_sleep_mode(ctx->dsi);
+ 	regulator_disable(ctx->power);
+-	gpiod_set_value(ctx->reset, 1);
++	gpiod_set_value_cansleep(ctx->reset, 1);
  
- 	iucv_retrieve_cpu(NULL);
- 	if (!cpumask_empty(&iucv_irq_cpumask))
--		return 0;
-+		goto __free_cpumask;
-+
- 	smp_call_function_single(cpumask_first(&iucv_buffer_cpumask),
- 				 iucv_allow_cpu, NULL, 1);
--	return 0;
-+
-+__free_cpumask:
-+	free_cpumask_var(cpumask);
-+	return ret;
+ 	return 0;
  }
- 
- /**
 -- 
 2.43.0
 
