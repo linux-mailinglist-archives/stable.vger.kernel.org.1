@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEDF6925A8E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FFA3925D84
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CA561F214DA
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 371831F2217D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCF1C178CEA;
-	Wed,  3 Jul 2024 10:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC19E1849CA;
+	Wed,  3 Jul 2024 11:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEKzdDFL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QB6YwYOR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99365176AB0;
-	Wed,  3 Jul 2024 10:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6671849EB;
+	Wed,  3 Jul 2024 11:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003764; cv=none; b=R1uxAPBltMNLXWN7v+XaCKF9NBY7Ru+3xLzg/UlZXJ7jIUnkI5zoyIkmbv0MTp1mnN35nMxuHEEXmIhUk44Vev/xlwng5RivV4xyOFdgdDz7h/SWPMXaXn3mKxV1dF/QDWgjkf3ohywiQnMIoPh/X+M9njhrSZijlo8FUl7b0TI=
+	t=1720005626; cv=none; b=rf1mlmba0W4tlf2fJf16lPGyDAEtv/iWDkQWzaBjmmDchmu+epWPgE82Z6ogXuWlYE9IoIIu9zMWXS8t7xaOkuyNevA5vRu2VSyH6S8vMoAwY5XfpyyeEYmGPWwlcAfsNhHSZijAnTT2VvtCRXr/6TUw5QJg7Qsbkmu7OiBaB/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003764; c=relaxed/simple;
-	bh=HQZ8pu5C/+mo3pwHhpK8EGdA9NrTbROFoBN+ZhaCN/M=;
+	s=arc-20240116; t=1720005626; c=relaxed/simple;
+	bh=c0o5gd0i8m8I/XEE2a9FJClmjRGiV4wcK3K3gavON4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MLG2KR/x6xQP0N595qbkj8HQfOFWk7ZI1jqAATW1wcGrEpvAF32HabVaw/W2ii3Dc0Qj3RuQhJYB5zGvoIHfWJP7Mv1AREhfoVfkhjZTzXSY7znMDoF+wYGNww92jGURHT231ZztpWEgpUvFJLfD/CJ25sPUnC0MqMnLq3LVvJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEKzdDFL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE2DC2BD10;
-	Wed,  3 Jul 2024 10:49:23 +0000 (UTC)
+	 MIME-Version; b=tqcQKVCuFK8zbv6d6WRzWLWfBEqe5iAyntonc5UkG8gT9ag4Isqc23KAK6tt+uwRuhA5Rqqv3ivBBwxGyj/Mh8IxprMhS9lBFaW38euk4Vk4VP3GMG+b3G1pIX+MoXSk1vuKFbFpnk05ZAri4dVnWcLO4zFzimiQ+wlYkcc9q2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QB6YwYOR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 308F5C2BD10;
+	Wed,  3 Jul 2024 11:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003764;
-	bh=HQZ8pu5C/+mo3pwHhpK8EGdA9NrTbROFoBN+ZhaCN/M=;
+	s=korg; t=1720005626;
+	bh=c0o5gd0i8m8I/XEE2a9FJClmjRGiV4wcK3K3gavON4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oEKzdDFLFuQAD8V35B0CwjIwxpkzR4PIB7aWIcos6muryh2GzcIBeVRzJawOSTRtJ
-	 EQ4z2/7CCh5cePZnAFrMnwuZo1JUX/YHqUhRTYmtrFjZRrAYNT5HtkG/qZi4RGblKG
-	 iPcLm53W2dRY5fSJbP0vZNKVqf14ZHw7mSUCSgbQ=
+	b=QB6YwYORx49Acx2h1Ef9PK6CyIP2N0TRdjoNx0eqxt5T/fxQQF0vae+8tJL7pufxg
+	 Y59fYXWd3lVZ8ttVrN6nSNq9+qfhGYhfmSntJkhEpM19Bzrr2nY/KIBxlufaWGMwP4
+	 Vc4EySLYhrBL9pcZD09/NaugeFE5Y5ufHxB+DWQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 015/189] af_unix: Annotate data-races around sk->sk_state in unix_write_space() and poll().
-Date: Wed,  3 Jul 2024 12:37:56 +0200
-Message-ID: <20240703102842.079406072@linuxfoundation.org>
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	YonglongLi <liyonglong@chinatelecom.cn>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 141/356] mptcp: pm: update add_addr counters after connect
+Date: Wed,  3 Jul 2024 12:37:57 +0200
+Message-ID: <20240703102918.434934083@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,132 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: YonglongLi <liyonglong@chinatelecom.cn>
 
-[ Upstream commit eb0718fb3e97ad0d6f4529b810103451c90adf94 ]
+commit 40eec1795cc27b076d49236649a29507c7ed8c2d upstream.
 
-unix_poll() and unix_dgram_poll() read sk->sk_state locklessly and
-calls unix_writable() which also reads sk->sk_state without holding
-unix_state_lock().
+The creation of new subflows can fail for different reasons. If no
+subflow have been created using the received ADD_ADDR, the related
+counters should not be updated, otherwise they will never be decremented
+for events related to this ID later on.
 
-Let's use READ_ONCE() in unix_poll() and unix_dgram_poll() and pass
-it to unix_writable().
+For the moment, the number of accepted ADD_ADDR is only decremented upon
+the reception of a related RM_ADDR, and only if the remote address ID is
+currently being used by at least one subflow. In other words, if no
+subflow can be created with the received address, the counter will not
+be decremented. In this case, it is then important not to increment
+pm.add_addr_accepted counter, and not to modify pm.accept_addr bit.
 
-While at it, we remove TCP_SYN_SENT check in unix_dgram_poll() as
-that state does not exist for AF_UNIX socket since the code was added.
+Note that this patch does not modify the behaviour in case of failures
+later on, e.g. if the MP Join is dropped or rejected.
 
-Fixes: 1586a5877db9 ("af_unix: do not report POLLOUT on listeners")
-Fixes: 3c73419c09a5 ("af_unix: fix 'poll for write'/ connected DGRAM sockets")
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The "remove invalid addresses" MP Join subtest has been modified to
+validate this case. The broadcast IP address is added before the "valid"
+address that will be used to successfully create a subflow, and the
+limit is decreased by one: without this patch, it was not possible to
+create the last subflow, because:
+
+- the broadcast address would have been accepted even if it was not
+  usable: the creation of a subflow to this address results in an error,
+
+- the limit of 2 accepted ADD_ADDR would have then been reached.
+
+Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
+Cc: stable@vger.kernel.org
+Co-developed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: YonglongLi <liyonglong@chinatelecom.cn>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240607-upstream-net-20240607-misc-fixes-v1-3-1ab9ddfa3d00@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in pm_netlink.c because commit 12a18341b5c3 ("mptcp: send
+  ADD_ADDR echo before create subflows") is not present in this version,
+  and it changes the context, but not the block that needs to be moved.
+  Conflicts in the selftests, because many features modifying the whole
+  file have been added later, e.g. commit ae7bd9ccecc3 ("selftests:
+  mptcp: join: option to execute specific tests"). The same
+  modifications have been reported to the old code: simply moving one
+  line, and changing the limits. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ net/mptcp/pm_netlink.c                          |   16 ++++++++++------
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    4 ++--
+ 2 files changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 8ab1e2a781195..73cc992bed880 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -449,9 +449,9 @@ static int unix_dgram_peer_wake_me(struct sock *sk, struct sock *other)
- 	return 0;
- }
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -608,6 +608,7 @@ static void mptcp_pm_nl_add_addr_receive
+ 	struct mptcp_addr_info remote;
+ 	unsigned int subflows_max;
+ 	bool reset_port = false;
++	bool sf_created = false;
+ 	int i, nr;
  
--static int unix_writable(const struct sock *sk)
-+static int unix_writable(const struct sock *sk, unsigned char state)
- {
--	return sk->sk_state != TCP_LISTEN &&
-+	return state != TCP_LISTEN &&
- 	       (refcount_read(&sk->sk_wmem_alloc) << 2) <= sk->sk_sndbuf;
- }
- 
-@@ -460,7 +460,7 @@ static void unix_write_space(struct sock *sk)
- 	struct socket_wq *wq;
- 
- 	rcu_read_lock();
--	if (unix_writable(sk)) {
-+	if (unix_writable(sk, READ_ONCE(sk->sk_state))) {
- 		wq = rcu_dereference(sk->sk_wq);
- 		if (skwq_has_sleeper(wq))
- 			wake_up_interruptible_sync_poll(&wq->wait,
-@@ -2678,12 +2678,14 @@ static int unix_compat_ioctl(struct socket *sock, unsigned int cmd, unsigned lon
- static __poll_t unix_poll(struct file *file, struct socket *sock, poll_table *wait)
- {
- 	struct sock *sk = sock->sk;
-+	unsigned char state;
- 	__poll_t mask;
- 	u8 shutdown;
- 
- 	sock_poll_wait(file, sock, wait);
- 	mask = 0;
- 	shutdown = READ_ONCE(sk->sk_shutdown);
-+	state = READ_ONCE(sk->sk_state);
- 
- 	/* exceptional events? */
- 	if (sk->sk_err)
-@@ -2699,14 +2701,14 @@ static __poll_t unix_poll(struct file *file, struct socket *sock, poll_table *wa
- 
- 	/* Connection-based need to check for termination and startup */
- 	if ((sk->sk_type == SOCK_STREAM || sk->sk_type == SOCK_SEQPACKET) &&
--	    sk->sk_state == TCP_CLOSE)
-+	    state == TCP_CLOSE)
- 		mask |= EPOLLHUP;
- 
- 	/*
- 	 * we set writable also when the other side has shut down the
- 	 * connection. This prevents stuck sockets.
+ 	add_addr_accept_max = mptcp_pm_get_add_addr_accept_max(msk);
+@@ -632,16 +633,19 @@ static void mptcp_pm_nl_add_addr_receive
  	 */
--	if (unix_writable(sk))
-+	if (unix_writable(sk, state))
- 		mask |= EPOLLOUT | EPOLLWRNORM | EPOLLWRBAND;
+ 	nr = fill_local_addresses_vec(msk, addrs);
  
- 	return mask;
-@@ -2717,12 +2719,14 @@ static __poll_t unix_dgram_poll(struct file *file, struct socket *sock,
- {
- 	struct sock *sk = sock->sk, *other;
- 	unsigned int writable;
-+	unsigned char state;
- 	__poll_t mask;
- 	u8 shutdown;
+-	msk->pm.add_addr_accepted++;
+-	if (msk->pm.add_addr_accepted >= add_addr_accept_max ||
+-	    msk->pm.subflows >= subflows_max)
+-		WRITE_ONCE(msk->pm.accept_addr, false);
+-
+ 	spin_unlock_bh(&msk->pm.lock);
+ 	for (i = 0; i < nr; i++)
+-		__mptcp_subflow_connect(sk, &addrs[i], &remote);
++		if (__mptcp_subflow_connect(sk, &addrs[i], &remote) == 0)
++			sf_created = true;
+ 	spin_lock_bh(&msk->pm.lock);
  
- 	sock_poll_wait(file, sock, wait);
- 	mask = 0;
- 	shutdown = READ_ONCE(sk->sk_shutdown);
-+	state = READ_ONCE(sk->sk_state);
- 
- 	/* exceptional events? */
- 	if (sk->sk_err || !skb_queue_empty_lockless(&sk->sk_error_queue))
-@@ -2739,19 +2743,14 @@ static __poll_t unix_dgram_poll(struct file *file, struct socket *sock,
- 		mask |= EPOLLIN | EPOLLRDNORM;
- 
- 	/* Connection-based need to check for termination and startup */
--	if (sk->sk_type == SOCK_SEQPACKET) {
--		if (sk->sk_state == TCP_CLOSE)
--			mask |= EPOLLHUP;
--		/* connection hasn't started yet? */
--		if (sk->sk_state == TCP_SYN_SENT)
--			return mask;
--	}
-+	if (sk->sk_type == SOCK_SEQPACKET && state == TCP_CLOSE)
-+		mask |= EPOLLHUP;
- 
- 	/* No write status requested, avoid expensive OUT tests. */
- 	if (!(poll_requested_events(wait) & (EPOLLWRBAND|EPOLLWRNORM|EPOLLOUT)))
- 		return mask;
- 
--	writable = unix_writable(sk);
-+	writable = unix_writable(sk, state);
- 	if (writable) {
- 		unix_state_lock(sk);
- 
--- 
-2.43.0
-
++	if (sf_created) {
++		msk->pm.add_addr_accepted++;
++		if (msk->pm.add_addr_accepted >= add_addr_accept_max ||
++		    msk->pm.subflows >= subflows_max)
++			WRITE_ONCE(msk->pm.accept_addr, false);
++	}
++
+ 	/* be sure to echo exactly the received address */
+ 	if (reset_port)
+ 		remote.port = 0;
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -1306,10 +1306,10 @@ remove_tests()
+ 	reset
+ 	ip netns exec $ns1 ./pm_nl_ctl limits 3 3
+ 	ip netns exec $ns1 ./pm_nl_ctl add 10.0.12.1 flags signal
+-	ip netns exec $ns1 ./pm_nl_ctl add 10.0.3.1 flags signal
+ 	# broadcast IP: no packet for this address will be received on ns1
+ 	ip netns exec $ns1 ./pm_nl_ctl add 224.0.0.1 flags signal
+-	ip netns exec $ns2 ./pm_nl_ctl limits 3 3
++	ip netns exec $ns1 ./pm_nl_ctl add 10.0.3.1 flags signal
++	ip netns exec $ns2 ./pm_nl_ctl limits 2 2
+ 	run_tests $ns1 $ns2 10.0.1.1 0 -3 0 slow
+ 	chk_join_nr "remove invalid addresses" 1 1 1
+ 	chk_add_nr 3 3
 
 
 
