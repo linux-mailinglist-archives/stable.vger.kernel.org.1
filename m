@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-57478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E152B925F4B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:56:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 421CB925B3F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:07:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF307B26910
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0FE1288110
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBFE7187549;
-	Wed,  3 Jul 2024 11:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E9219B58C;
+	Wed,  3 Jul 2024 10:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTdSWOYY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0uBvAW2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995F718734B;
-	Wed,  3 Jul 2024 11:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7955D19B3DA;
+	Wed,  3 Jul 2024 10:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005004; cv=none; b=ZUamH7YaSYMDeS9bAvlqCr9aALP1JyHRVBjTvCZdvD5B4Olefj0cs5xLuyXVLKEv0wfMrcRESs/+SIRPz6k6x60M4lFEc21MMeTIk0ACKesCUPkAaTJ6er2SRayu9gwEkPslGOPOQFwdOeXLsZ/XNjLJ6WpCLGsktuouJ/scOzg=
+	t=1720004086; cv=none; b=TRGaNqeU/5uCMnMoTclxJQ41gsg3iPgPD14VG4Xju8GWLM9SYw6ApZMdbXjfDO0YQo4QGIszdQ0MMu/lIWynGq/etPxN760qRZdL409CZwSp1TdkjzOpyr0HQ+htJb52ddKUSnvMjFQJ4jgfyOX0mnFfybz7sgzmde5f7Sa9upw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005004; c=relaxed/simple;
-	bh=8FC4T1zGKa6MRljfpcd3w81HdyPOaQV1kvoV+SJWh8c=;
+	s=arc-20240116; t=1720004086; c=relaxed/simple;
+	bh=mxZzCTONHVGpgF1pVhqHbKIiFLaIvGBFH6HUfuumbRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RvOwp/LS0sLVrzp1kA0oafMv/t0dS5pE5jNKoHAVH1LI8CJJpfuimgpJoDsjMUMx2HLBnYaYuouBH8fL+i+TVUaCDJFblhlFxpwVhYzMupfu+iLBP8bS6sSEHxsHzS6pDW7fSEVsgzbWPguWskXIErxWjhn/0IdAN+3aQxpWrwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTdSWOYY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 213ECC2BD10;
-	Wed,  3 Jul 2024 11:10:03 +0000 (UTC)
+	 MIME-Version; b=MLJpOa6Yq3VG24MWaSTlDWTXlS0SQejnstbAbx4VW8KOLX+Ekzln1CEVlyNBvbI5k2YW5uEEgxegnR0gMHNpPlxQ7zH1TGVGxj+1Y3jx4lIdXuhpt0cLbQry62vAlxl/jdN7cruClFQDZH2+p/lAiE93U7Ags/94ZGXlHjaLD40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0uBvAW2t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00EFDC2BD10;
+	Wed,  3 Jul 2024 10:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005004;
-	bh=8FC4T1zGKa6MRljfpcd3w81HdyPOaQV1kvoV+SJWh8c=;
+	s=korg; t=1720004086;
+	bh=mxZzCTONHVGpgF1pVhqHbKIiFLaIvGBFH6HUfuumbRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hTdSWOYYAchU843eXnh78Q3mKqDDoXdGLiHpXTioXuA5Wgm4+BQGdwDIm7EOqmi0K
-	 nqDGV3OMUoigC38pwEEh8q1GLYDWvc5+Jz9vzuvBqOqCVV261/MvZEiEUy7gRL+a1g
-	 dU8FrxPqvg8Nou3X11tSGXeU9pR7eWoUD+ildXrQ=
+	b=0uBvAW2tFtX80C261eRBzwz1/Jpuf4fS39WtYJjPan2vCp7rwkKfWRcficLrO/87Z
+	 kpGNz4NumbszunD06W/zIPMXczRnizdCkwomgmrj+WoRtwAfBUgFSkrFXh1Vo0r6j8
+	 7raPxY5WhkWxrBEuOMR71/DPM54kBbxa/+vMpD8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Narasimhan V <Narasimhan.V@amd.com>,
-	Jan Beulich <jbeulich@suse.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 197/290] x86/mm/numa: Use NUMA_NO_NODE when calling memblock_set_node()
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.4 117/189] drm/radeon: fix UBSAN warning in kv_dpm.c
 Date: Wed,  3 Jul 2024 12:39:38 +0200
-Message-ID: <20240703102911.605304317@linuxfoundation.org>
+Message-ID: <20240703102845.913606540@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Beulich <jbeulich@suse.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 3ac36aa7307363b7247ccb6f6a804e11496b2b36 ]
+commit a498df5421fd737d11bfd152428ba6b1c8538321 upstream.
 
-memblock_set_node() warns about using MAX_NUMNODES, see
+Adds bounds check for sumo_vid_mapping_entry.
 
-  e0eec24e2e19 ("memblock: make memblock_set_node() also warn about use of MAX_NUMNODES")
-
-for details.
-
-Reported-by: Narasimhan V <Narasimhan.V@amd.com>
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-[bp: commit message]
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/r/20240603141005.23261-1-bp@kernel.org
-Link: https://lore.kernel.org/r/abadb736-a239-49e4-ab42-ace7acdd4278@suse.com
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/numa.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/radeon/sumo_dpm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index 62a119170376b..74a117cbbd3c9 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -523,7 +523,7 @@ static void __init numa_clear_kernel_node_hotplug(void)
- 	for_each_reserved_mem_region(mb_region) {
- 		int nid = memblock_get_region_node(mb_region);
+--- a/drivers/gpu/drm/radeon/sumo_dpm.c
++++ b/drivers/gpu/drm/radeon/sumo_dpm.c
+@@ -1621,6 +1621,8 @@ void sumo_construct_vid_mapping_table(st
  
--		if (nid != MAX_NUMNODES)
-+		if (nid != NUMA_NO_NODE)
- 			node_set(nid, reserved_nodemask);
- 	}
- 
-@@ -643,9 +643,9 @@ static int __init numa_init(int (*init_func)(void))
- 	nodes_clear(node_online_map);
- 	memset(&numa_meminfo, 0, sizeof(numa_meminfo));
- 	WARN_ON(memblock_set_node(0, ULLONG_MAX, &memblock.memory,
--				  MAX_NUMNODES));
-+				  NUMA_NO_NODE));
- 	WARN_ON(memblock_set_node(0, ULLONG_MAX, &memblock.reserved,
--				  MAX_NUMNODES));
-+				  NUMA_NO_NODE));
- 	/* In case that parsing SRAT failed. */
- 	WARN_ON(memblock_clear_hotplug(0, ULLONG_MAX));
- 	numa_reset_distance();
--- 
-2.43.0
-
+ 	for (i = 0; i < SUMO_MAX_HARDWARE_POWERLEVELS; i++) {
+ 		if (table[i].ulSupportedSCLK != 0) {
++			if (table[i].usVoltageIndex >= SUMO_MAX_NUMBER_VOLTAGES)
++				continue;
+ 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_7bit =
+ 				table[i].usVoltageID;
+ 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_2bit =
 
 
 
