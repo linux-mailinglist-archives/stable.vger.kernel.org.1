@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-57011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E60925A29
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:55:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D021C925DE5
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 554E11F21BFA
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 870761F2332A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D341849F2;
-	Wed,  3 Jul 2024 10:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D5A143747;
+	Wed,  3 Jul 2024 11:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0B4J3Wm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMlir9ZK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649D51836EF;
-	Wed,  3 Jul 2024 10:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A609F13247D;
+	Wed,  3 Jul 2024 11:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003568; cv=none; b=sPIjEbZQ9qaHQgH7s8bVcKe9Bi1jfNMJcDC/P01IhwWeHLINRxmZMi2y4VngvC9/VYjBnO1byDJ0jzUkXb5YkA7yrR2J3cwzwQR8vN+JRS3SCNlfpZUTVoCWtBohUHqf8CEcxo4ykOpMnHoD4asagYLntJAq/Fhz7IWMR4U/2xg=
+	t=1720005859; cv=none; b=btLiBgXKr2Wax4bBQCNZaNoeEE3I63KGGDSJ9O+vdrw2AkdTZ0xO02Ou1A/edBRVpOr4RPL8bd87MHFZaGe2MkRW6SYZvTxqefGg5YPuKBMUF8D8azhBkMTgXFRbttTqOj9gVqTaTNthxBtnxY5USL9PSsKbVWFzAVFMVmZTNEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003568; c=relaxed/simple;
-	bh=3xocDTI4JJckmLZmArufjlOHaqFUiGBeLwQmsIEfwyE=;
+	s=arc-20240116; t=1720005859; c=relaxed/simple;
+	bh=nAvLPGrTlLRqcfLx/eCxRoeb4+dDrEPA9SQ1y8Nlunk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cFMJNVHEcI9BjUHcY5Rm+FY7nvZ1nsYdUoS/P9G/7AphSGaQnbKIR0LLNpDTXYaXtz6YVzH1cDhRGn+A1+I8ds/is9mDe+RxPZRnpgyQ4JKe/8ZJoz7r1eSxlO9FXZCKtY1oKxpuYP6I1B2nY9MydUCJy78be9uBdes2cci5mKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0B4J3Wm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD12C2BD10;
-	Wed,  3 Jul 2024 10:46:07 +0000 (UTC)
+	 MIME-Version; b=RkvIkEtX42etnzHtG0oKY8G4RAJNeqi+XU1yyn0ncJVtsMjFigiuRjlG+SNPXVa7PzRuCdpRXBNYHEIlxd5XOWTkXndWG2X8NopuKlMJS1VbQiS3SBhExLUxzDKncExZ0Cv/uZeHgTkml1vGl/frDYbBUvf6WS2obJpKhXxAJrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMlir9ZK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B488C2BD10;
+	Wed,  3 Jul 2024 11:24:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003568;
-	bh=3xocDTI4JJckmLZmArufjlOHaqFUiGBeLwQmsIEfwyE=;
+	s=korg; t=1720005859;
+	bh=nAvLPGrTlLRqcfLx/eCxRoeb4+dDrEPA9SQ1y8Nlunk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I0B4J3WmSqyne2kH7znWpaywIJWcUKNkA/V/WIZk/uSwVED2mVlNrZSStdAHP2Jfk
-	 xiimxnS2l6+jwK5HuOBTgfhfptPWsDY/HtgRni/EERZf2r+KtL0ILAz6Dk10Q7vLqd
-	 q0oU/cGAQnXaJ3GKQchMXPULaSNhmaQxkFl0fzTk=
+	b=mMlir9ZK1kH20WKnI6F8Z1ZdHA4j0uGL5/2fSCofYsZJo5ja69lTelBCyEjZPHZ94
+	 /0GGDem6zyGD1dBkIr0jGQUttGZGcXrUVkXvQud+My/XJpx/u8lnjfG5LjMza1K1J/
+	 Skvuo1vtPMW8no+FUTl7KqPhU0tQhEIUX75/AbVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xingwei lee <xrivendell7@gmail.com>,
-	yue sun <samsun1006219@gmail.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Shichao Lai <shichaorai@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 060/139] usb-storage: alauda: Check whether the media is initialized
+	Adamos Ttofari <attofari@amazon.de>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Jim Mattson <jmattson@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 5.15 221/356] KVM: x86: Always sync PIR to IRR prior to scanning I/O APIC routes
 Date: Wed,  3 Jul 2024 12:39:17 +0200
-Message-ID: <20240703102832.706570165@linuxfoundation.org>
+Message-ID: <20240703102921.473101020@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shichao Lai <shichaorai@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 16637fea001ab3c8df528a8995b3211906165a30 ]
+commit f3ced000a2df53f4b12849e121769045a81a3b22 upstream.
 
-The member "uzonesize" of struct alauda_info will remain 0
-if alauda_init_media() fails, potentially causing divide errors
-in alauda_read_data() and alauda_write_lba().
-- Add a member "media_initialized" to struct alauda_info.
-- Change a condition in alauda_check_media() to ensure the
-  first initialization.
-- Add an error check for the return value of alauda_init_media().
+Sync pending posted interrupts to the IRR prior to re-scanning I/O APIC
+routes, irrespective of whether the I/O APIC is emulated by userspace or
+by KVM.  If a level-triggered interrupt routed through the I/O APIC is
+pending or in-service for a vCPU, KVM needs to intercept EOIs on said
+vCPU even if the vCPU isn't the destination for the new routing, e.g. if
+servicing an interrupt using the old routing races with I/O APIC
+reconfiguration.
 
-Fixes: e80b0fade09e ("[PATCH] USB Storage: add alauda support")
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Reported-by: yue sun <samsun1006219@gmail.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Shichao Lai <shichaorai@gmail.com>
-Link: https://lore.kernel.org/r/20240526012745.2852061-1-shichaorai@gmail.com
+Commit fceb3a36c29a ("KVM: x86: ioapic: Fix level-triggered EOI and
+userspace I/OAPIC reconfigure race") fixed the common cases, but
+kvm_apic_pending_eoi() only checks if an interrupt is in the local
+APIC's IRR or ISR, i.e. misses the uncommon case where an interrupt is
+pending in the PIR.
+
+Failure to intercept EOI can manifest as guest hangs with Windows 11 if
+the guest uses the RTC as its timekeeping source, e.g. if the VMM doesn't
+expose a more modern form of time to the guest.
+
+Cc: stable@vger.kernel.org
+Cc: Adamos Ttofari <attofari@amazon.de>
+Cc: Raghavendra Rao Ananta <rananta@google.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20240611014845.82795-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/alauda.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/x86/kvm/x86.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/storage/alauda.c b/drivers/usb/storage/alauda.c
-index 50c8bd7cbfddb..f29784fb908e6 100644
---- a/drivers/usb/storage/alauda.c
-+++ b/drivers/usb/storage/alauda.c
-@@ -104,6 +104,8 @@ struct alauda_info {
- 	unsigned char sense_key;
- 	unsigned long sense_asc;	/* additional sense code */
- 	unsigned long sense_ascq;	/* additional sense code qualifier */
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -9654,13 +9654,12 @@ static void vcpu_scan_ioapic(struct kvm_
+ 
+ 	bitmap_zero(vcpu->arch.ioapic_handled_vectors, 256);
+ 
++	static_call_cond(kvm_x86_sync_pir_to_irr)(vcpu);
 +
-+	bool media_initialized;
- };
+ 	if (irqchip_split(vcpu->kvm))
+ 		kvm_scan_ioapic_routes(vcpu, vcpu->arch.ioapic_handled_vectors);
+-	else {
+-		static_call_cond(kvm_x86_sync_pir_to_irr)(vcpu);
+-		if (ioapic_in_kernel(vcpu->kvm))
+-			kvm_ioapic_scan_entry(vcpu, vcpu->arch.ioapic_handled_vectors);
+-	}
++	else if (ioapic_in_kernel(vcpu->kvm))
++		kvm_ioapic_scan_entry(vcpu, vcpu->arch.ioapic_handled_vectors);
  
- #define short_pack(lsb,msb) ( ((u16)(lsb)) | ( ((u16)(msb))<<8 ) )
-@@ -475,11 +477,12 @@ static int alauda_check_media(struct us_data *us)
- 	}
- 
- 	/* Check for media change */
--	if (status[0] & 0x08) {
-+	if (status[0] & 0x08 || !info->media_initialized) {
- 		usb_stor_dbg(us, "Media change detected\n");
- 		alauda_free_maps(&MEDIA_INFO(us));
--		alauda_init_media(us);
--
-+		rc = alauda_init_media(us);
-+		if (rc == USB_STOR_TRANSPORT_GOOD)
-+			info->media_initialized = true;
- 		info->sense_key = UNIT_ATTENTION;
- 		info->sense_asc = 0x28;
- 		info->sense_ascq = 0x00;
--- 
-2.43.0
-
+ 	if (is_guest_mode(vcpu))
+ 		vcpu->arch.load_eoi_exitmap_pending = true;
 
 
 
