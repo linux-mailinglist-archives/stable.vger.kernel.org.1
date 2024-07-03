@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2FC2925D62
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:28:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F64925C4A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:16:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 699C51F2586E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BCAD298111
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3351181CF8;
-	Wed,  3 Jul 2024 11:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A95A197A9F;
+	Wed,  3 Jul 2024 11:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmnGRpId"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGpociG4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8121C173339;
-	Wed,  3 Jul 2024 11:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2C318EFE1;
+	Wed,  3 Jul 2024 11:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005535; cv=none; b=l5UTbv37QwRUqxSQwybDdPLE4B7Rvze9eo4Clpm2tmeYmweySxY27MxsZKa1Z/iszfxpoYWIekSn4IVuGxnruk7X34XJ5qdYBjBTIqJK2pYzURf8Yo74JcclSrPjz1M+GxFnGbSCU5LzUrl10yVY/vPe7WnCImlsAVgRcl11exE=
+	t=1720004428; cv=none; b=AAxDy4FSkzQHXABm6Vs0ftsjMc5BIYyVWThHP2kZ83FfnqsJNSXD0MoHzj5YUkwovGQS3dkpWkCTY5QRLqn8QZOEo2EtZNFl/s/FVR1t7tLc9xCXQcHt4YLZsLFj79f/nsnw8HrR9tnhrRV1g8MVFCJiLf8rOdRNfzGWkeeBMTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005535; c=relaxed/simple;
-	bh=NsO2J6rO6oAmdDBIhsN5Pg1KYYi2zpvUHmQyCsR6vH8=;
+	s=arc-20240116; t=1720004428; c=relaxed/simple;
+	bh=U5Wk3C9IFdNb6ps/n/zM2oQnMV1tNoLw1JPzhJvPaSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VyGy4Oiu8nNqRK0YifX5mRgtlu7GzqSinFyLajq5B1XavvhXl1N4qgvZK+ghK4MCPLA2MakiCq7h+kpp1qWx+YjHcwYxMP9SPH62dMRORqrpJkEQjdMNyiqd0JjcNgKtuX4lb6QkIuHzI1kbJ7jOYc674m/hHhS3gi7Q48oSg8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmnGRpId; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A48C2BD10;
-	Wed,  3 Jul 2024 11:18:54 +0000 (UTC)
+	 MIME-Version; b=bGy4Ryq/T4VyPCpSmqYGtzuhDm7PjmosbiQGif5lElkjHaLFDT+zroDmaAg8esmJDU/NXuM8DeKetayi/OI0jIUftwRFT7PNxNjjrT8b3/C+Ujd1cMeYb5Opmo5uAQyBYNhxl2Kg6OIRuAG1FhTcqoAUYWhI7ds+knovUhQV1kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGpociG4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09612C4AF0B;
+	Wed,  3 Jul 2024 11:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005535;
-	bh=NsO2J6rO6oAmdDBIhsN5Pg1KYYi2zpvUHmQyCsR6vH8=;
+	s=korg; t=1720004428;
+	bh=U5Wk3C9IFdNb6ps/n/zM2oQnMV1tNoLw1JPzhJvPaSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dmnGRpIdQujPKGT/uiMqQhnYqxkgf4kLxsLpXiNQx/UTez1N/r7jgFQBHa+pUMs+d
-	 mWBl8t6qrOeHwyzmdBZloso+BE5Cvxkd5WS1gRZ9i0xWqKcaCvsTEe+EEAxuz6rVJs
-	 VZMH0QJLkwKl3072fSjFrUmvJMdQAFinJGfXZKW8=
+	b=CGpociG4DT3Vs2VQdobTWV2lwqemKOgDo13Q9JduuSAvFXHLDGzsYgA5QvaiA94Q2
+	 InMcbJ8WfCiFwR7/GXvYheU5PBEmlJlNSsYsBz+nXuvA+pxQxRKdvyfm6sjbBCW79q
+	 nFpZISqqlj6jvkKPbAPUzfNy+i3nuzi/guBxiqOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kewen Lin <linkw@gcc.gnu.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 5.15 083/356] powerpc/uaccess: Fix build errors seen with GCC 13/14
+	Patrick Steuer <patrick.steuer@de.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 038/290] s390/cpacf: get rid of register asm
 Date: Wed,  3 Jul 2024 12:36:59 +0200
-Message-ID: <20240703102916.243619273@linuxfoundation.org>
+Message-ID: <20240703102905.636975483@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +62,380 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit 2d43cc701b96f910f50915ac4c2a0cae5deb734c upstream.
+[ Upstream commit b84d0c417a5ac1eb820c8114c0c7cf1fcbf6f017 ]
 
-Building ppc64le_defconfig with GCC 14 fails with assembler errors:
+Using register asm statements has been proven to be very error prone,
+especially when using code instrumentation where gcc may add function
+calls, which clobbers register contents in an unexpected way.
 
-    CC      fs/readdir.o
-  /tmp/ccdQn0mD.s: Assembler messages:
-  /tmp/ccdQn0mD.s:212: Error: operand out of domain (18 is not a multiple of 4)
-  /tmp/ccdQn0mD.s:226: Error: operand out of domain (18 is not a multiple of 4)
-  ... [6 lines]
-  /tmp/ccdQn0mD.s:1699: Error: operand out of domain (18 is not a multiple of 4)
+Therefore get rid of register asm statements in cpacf code, and make
+sure this bug class cannot happen.
 
-A snippet of the asm shows:
-
-  # ../fs/readdir.c:210:         unsafe_copy_dirent_name(dirent->d_name, name, namlen, efault_end);
-         ld 9,0(29)       # MEM[(u64 *)name_38(D) + _88 * 1], MEM[(u64 *)name_38(D) + _88 * 1]
-  # 210 "../fs/readdir.c" 1
-         1:      std 9,18(8)     # put_user       # *__pus_addr_52, MEM[(u64 *)name_38(D) + _88 * 1]
-
-The 'std' instruction requires a 4-byte aligned displacement because
-it is a DS-form instruction, and as the assembler says, 18 is not a
-multiple of 4.
-
-A similar error is seen with GCC 13 and CONFIG_UBSAN_SIGNED_WRAP=y.
-
-The fix is to change the constraint on the memory operand to put_user(),
-from "m" which is a general memory reference to "YZ".
-
-The "Z" constraint is documented in the GCC manual PowerPC machine
-constraints, and specifies a "memory operand accessed with indexed or
-indirect addressing". "Y" is not documented in the manual but specifies
-a "memory operand for a DS-form instruction". Using both allows the
-compiler to generate a DS-form "std" or X-form "stdx" as appropriate.
-
-The change has to be conditional on CONFIG_PPC_KERNEL_PREFIXED because
-the "Y" constraint does not guarantee 4-byte alignment when prefixed
-instructions are enabled.
-
-Unfortunately clang doesn't support the "Y" constraint so that has to be
-behind an ifdef.
-
-Although the build error is only seen with GCC 13/14, that appears
-to just be luck. The constraint has been incorrect since it was first
-added.
-
-Fixes: c20beffeec3c ("powerpc/uaccess: Use flexible addressing with __put_user()/__get_user()")
-Cc: stable@vger.kernel.org # v5.10+
-Suggested-by: Kewen Lin <linkw@gcc.gnu.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240529123029.146953-1-mpe@ellerman.id.au
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Patrick Steuer <patrick.steuer@de.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Stable-dep-of: 830999bd7e72 ("s390/cpacf: Split and rework cpacf query functions")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/uaccess.h |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ arch/s390/include/asm/cpacf.h | 208 ++++++++++++++++++----------------
+ 1 file changed, 111 insertions(+), 97 deletions(-)
 
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -90,9 +90,20 @@ __pu_failed:							\
- 		:						\
- 		: label)
+diff --git a/arch/s390/include/asm/cpacf.h b/arch/s390/include/asm/cpacf.h
+index c0f3bfeddcbeb..646b12981f208 100644
+--- a/arch/s390/include/asm/cpacf.h
++++ b/arch/s390/include/asm/cpacf.h
+@@ -173,17 +173,16 @@ typedef struct { unsigned char bytes[16]; } cpacf_mask_t;
+  */
+ static __always_inline void __cpacf_query(unsigned int opcode, cpacf_mask_t *mask)
+ {
+-	register unsigned long r0 asm("0") = 0;	/* query function */
+-	register unsigned long r1 asm("1") = (unsigned long) mask;
+-
+ 	asm volatile(
+-		"	spm 0\n" /* pckmo doesn't change the cc */
++		"	lghi	0,0\n" /* query function */
++		"	lgr	1,%[mask]\n"
++		"	spm	0\n" /* pckmo doesn't change the cc */
+ 		/* Parameter regs are ignored, but must be nonzero and unique */
+ 		"0:	.insn	rrf,%[opc] << 16,2,4,6,0\n"
+ 		"	brc	1,0b\n"	/* handle partial completion */
+ 		: "=m" (*mask)
+-		: [fc] "d" (r0), [pba] "a" (r1), [opc] "i" (opcode)
+-		: "cc");
++		: [mask] "d" ((unsigned long)mask), [opc] "i" (opcode)
++		: "cc", "0", "1");
+ }
  
-+#ifdef CONFIG_CC_IS_CLANG
-+#define DS_FORM_CONSTRAINT "Z<>"
-+#else
-+#define DS_FORM_CONSTRAINT "YZ<>"
-+#endif
-+
- #ifdef __powerpc64__
--#define __put_user_asm2_goto(x, ptr, label)			\
--	__put_user_asm_goto(x, ptr, label, "std")
-+#define __put_user_asm2_goto(x, addr, label)			\
-+	asm goto ("1: std%U1%X1 %0,%1	# put_user\n"		\
-+		EX_TABLE(1b, %l2)				\
-+		:						\
-+		: "r" (x), DS_FORM_CONSTRAINT (*addr)		\
-+		:						\
-+		: label)
- #else /* __powerpc64__ */
- #define __put_user_asm2_goto(x, addr, label)			\
- 	asm_volatile_goto(					\
+ static __always_inline int __cpacf_check_opcode(unsigned int opcode)
+@@ -249,20 +248,22 @@ static __always_inline int cpacf_query_func(unsigned int opcode, unsigned int fu
+ static inline int cpacf_km(unsigned long func, void *param,
+ 			   u8 *dest, const u8 *src, long src_len)
+ {
+-	register unsigned long r0 asm("0") = (unsigned long) func;
+-	register unsigned long r1 asm("1") = (unsigned long) param;
+-	register unsigned long r2 asm("2") = (unsigned long) src;
+-	register unsigned long r3 asm("3") = (unsigned long) src_len;
+-	register unsigned long r4 asm("4") = (unsigned long) dest;
++	union register_pair d, s;
+ 
++	d.even = (unsigned long)dest;
++	s.even = (unsigned long)src;
++	s.odd  = (unsigned long)src_len;
+ 	asm volatile(
++		"	lgr	0,%[fc]\n"
++		"	lgr	1,%[pba]\n"
+ 		"0:	.insn	rre,%[opc] << 16,%[dst],%[src]\n"
+ 		"	brc	1,0b\n" /* handle partial completion */
+-		: [src] "+a" (r2), [len] "+d" (r3), [dst] "+a" (r4)
+-		: [fc] "d" (r0), [pba] "a" (r1), [opc] "i" (CPACF_KM)
+-		: "cc", "memory");
++		: [src] "+&d" (s.pair), [dst] "+&d" (d.pair)
++		: [fc] "d" (func), [pba] "d" ((unsigned long)param),
++		  [opc] "i" (CPACF_KM)
++		: "cc", "memory", "0", "1");
+ 
+-	return src_len - r3;
++	return src_len - s.odd;
+ }
+ 
+ /**
+@@ -279,20 +280,22 @@ static inline int cpacf_km(unsigned long func, void *param,
+ static inline int cpacf_kmc(unsigned long func, void *param,
+ 			    u8 *dest, const u8 *src, long src_len)
+ {
+-	register unsigned long r0 asm("0") = (unsigned long) func;
+-	register unsigned long r1 asm("1") = (unsigned long) param;
+-	register unsigned long r2 asm("2") = (unsigned long) src;
+-	register unsigned long r3 asm("3") = (unsigned long) src_len;
+-	register unsigned long r4 asm("4") = (unsigned long) dest;
++	union register_pair d, s;
+ 
++	d.even = (unsigned long)dest;
++	s.even = (unsigned long)src;
++	s.odd  = (unsigned long)src_len;
+ 	asm volatile(
++		"	lgr	0,%[fc]\n"
++		"	lgr	1,%[pba]\n"
+ 		"0:	.insn	rre,%[opc] << 16,%[dst],%[src]\n"
+ 		"	brc	1,0b\n" /* handle partial completion */
+-		: [src] "+a" (r2), [len] "+d" (r3), [dst] "+a" (r4)
+-		: [fc] "d" (r0), [pba] "a" (r1), [opc] "i" (CPACF_KMC)
+-		: "cc", "memory");
++		: [src] "+&d" (s.pair), [dst] "+&d" (d.pair)
++		: [fc] "d" (func), [pba] "d" ((unsigned long)param),
++		  [opc] "i" (CPACF_KMC)
++		: "cc", "memory", "0", "1");
+ 
+-	return src_len - r3;
++	return src_len - s.odd;
+ }
+ 
+ /**
+@@ -306,17 +309,19 @@ static inline int cpacf_kmc(unsigned long func, void *param,
+ static inline void cpacf_kimd(unsigned long func, void *param,
+ 			      const u8 *src, long src_len)
+ {
+-	register unsigned long r0 asm("0") = (unsigned long) func;
+-	register unsigned long r1 asm("1") = (unsigned long) param;
+-	register unsigned long r2 asm("2") = (unsigned long) src;
+-	register unsigned long r3 asm("3") = (unsigned long) src_len;
++	union register_pair s;
+ 
++	s.even = (unsigned long)src;
++	s.odd  = (unsigned long)src_len;
+ 	asm volatile(
++		"	lgr	0,%[fc]\n"
++		"	lgr	1,%[pba]\n"
+ 		"0:	.insn	rre,%[opc] << 16,0,%[src]\n"
+ 		"	brc	1,0b\n" /* handle partial completion */
+-		: [src] "+a" (r2), [len] "+d" (r3)
+-		: [fc] "d" (r0), [pba] "a" (r1), [opc] "i" (CPACF_KIMD)
+-		: "cc", "memory");
++		: [src] "+&d" (s.pair)
++		: [fc] "d" (func), [pba] "d" ((unsigned long)(param)),
++		  [opc] "i" (CPACF_KIMD)
++		: "cc", "memory", "0", "1");
+ }
+ 
+ /**
+@@ -329,17 +334,19 @@ static inline void cpacf_kimd(unsigned long func, void *param,
+ static inline void cpacf_klmd(unsigned long func, void *param,
+ 			      const u8 *src, long src_len)
+ {
+-	register unsigned long r0 asm("0") = (unsigned long) func;
+-	register unsigned long r1 asm("1") = (unsigned long) param;
+-	register unsigned long r2 asm("2") = (unsigned long) src;
+-	register unsigned long r3 asm("3") = (unsigned long) src_len;
++	union register_pair s;
+ 
++	s.even = (unsigned long)src;
++	s.odd  = (unsigned long)src_len;
+ 	asm volatile(
++		"	lgr	0,%[fc]\n"
++		"	lgr	1,%[pba]\n"
+ 		"0:	.insn	rre,%[opc] << 16,0,%[src]\n"
+ 		"	brc	1,0b\n" /* handle partial completion */
+-		: [src] "+a" (r2), [len] "+d" (r3)
+-		: [fc] "d" (r0), [pba] "a" (r1), [opc] "i" (CPACF_KLMD)
+-		: "cc", "memory");
++		: [src] "+&d" (s.pair)
++		: [fc] "d" (func), [pba] "d" ((unsigned long)param),
++		  [opc] "i" (CPACF_KLMD)
++		: "cc", "memory", "0", "1");
+ }
+ 
+ /**
+@@ -355,19 +362,21 @@ static inline void cpacf_klmd(unsigned long func, void *param,
+ static inline int cpacf_kmac(unsigned long func, void *param,
+ 			     const u8 *src, long src_len)
+ {
+-	register unsigned long r0 asm("0") = (unsigned long) func;
+-	register unsigned long r1 asm("1") = (unsigned long) param;
+-	register unsigned long r2 asm("2") = (unsigned long) src;
+-	register unsigned long r3 asm("3") = (unsigned long) src_len;
++	union register_pair s;
+ 
++	s.even = (unsigned long)src;
++	s.odd  = (unsigned long)src_len;
+ 	asm volatile(
++		"	lgr	0,%[fc]\n"
++		"	lgr	1,%[pba]\n"
+ 		"0:	.insn	rre,%[opc] << 16,0,%[src]\n"
+ 		"	brc	1,0b\n" /* handle partial completion */
+-		: [src] "+a" (r2), [len] "+d" (r3)
+-		: [fc] "d" (r0), [pba] "a" (r1), [opc] "i" (CPACF_KMAC)
+-		: "cc", "memory");
++		: [src] "+&d" (s.pair)
++		: [fc] "d" (func), [pba] "d" ((unsigned long)param),
++		  [opc] "i" (CPACF_KMAC)
++		: "cc", "memory", "0", "1");
+ 
+-	return src_len - r3;
++	return src_len - s.odd;
+ }
+ 
+ /**
+@@ -385,22 +394,24 @@ static inline int cpacf_kmac(unsigned long func, void *param,
+ static inline int cpacf_kmctr(unsigned long func, void *param, u8 *dest,
+ 			      const u8 *src, long src_len, u8 *counter)
+ {
+-	register unsigned long r0 asm("0") = (unsigned long) func;
+-	register unsigned long r1 asm("1") = (unsigned long) param;
+-	register unsigned long r2 asm("2") = (unsigned long) src;
+-	register unsigned long r3 asm("3") = (unsigned long) src_len;
+-	register unsigned long r4 asm("4") = (unsigned long) dest;
+-	register unsigned long r6 asm("6") = (unsigned long) counter;
++	union register_pair d, s, c;
+ 
++	d.even = (unsigned long)dest;
++	s.even = (unsigned long)src;
++	s.odd  = (unsigned long)src_len;
++	c.even = (unsigned long)counter;
+ 	asm volatile(
++		"	lgr	0,%[fc]\n"
++		"	lgr	1,%[pba]\n"
+ 		"0:	.insn	rrf,%[opc] << 16,%[dst],%[src],%[ctr],0\n"
+ 		"	brc	1,0b\n" /* handle partial completion */
+-		: [src] "+a" (r2), [len] "+d" (r3),
+-		  [dst] "+a" (r4), [ctr] "+a" (r6)
+-		: [fc] "d" (r0), [pba] "a" (r1), [opc] "i" (CPACF_KMCTR)
+-		: "cc", "memory");
++		: [src] "+&d" (s.pair), [dst] "+&d" (d.pair),
++		  [ctr] "+&d" (c.pair)
++		: [fc] "d" (func), [pba] "d" ((unsigned long)param),
++		  [opc] "i" (CPACF_KMCTR)
++		: "cc", "memory", "0", "1");
+ 
+-	return src_len - r3;
++	return src_len - s.odd;
+ }
+ 
+ /**
+@@ -417,20 +428,21 @@ static inline void cpacf_prno(unsigned long func, void *param,
+ 			      u8 *dest, unsigned long dest_len,
+ 			      const u8 *seed, unsigned long seed_len)
+ {
+-	register unsigned long r0 asm("0") = (unsigned long) func;
+-	register unsigned long r1 asm("1") = (unsigned long) param;
+-	register unsigned long r2 asm("2") = (unsigned long) dest;
+-	register unsigned long r3 asm("3") = (unsigned long) dest_len;
+-	register unsigned long r4 asm("4") = (unsigned long) seed;
+-	register unsigned long r5 asm("5") = (unsigned long) seed_len;
++	union register_pair d, s;
+ 
++	d.even = (unsigned long)dest;
++	d.odd  = (unsigned long)dest_len;
++	s.even = (unsigned long)seed;
++	s.odd  = (unsigned long)seed_len;
+ 	asm volatile (
++		"	lgr	0,%[fc]\n"
++		"	lgr	1,%[pba]\n"
+ 		"0:	.insn	rre,%[opc] << 16,%[dst],%[seed]\n"
+ 		"	brc	1,0b\n"	  /* handle partial completion */
+-		: [dst] "+a" (r2), [dlen] "+d" (r3)
+-		: [fc] "d" (r0), [pba] "a" (r1),
+-		  [seed] "a" (r4), [slen] "d" (r5), [opc] "i" (CPACF_PRNO)
+-		: "cc", "memory");
++		: [dst] "+&d" (d.pair)
++		: [fc] "d" (func), [pba] "d" ((unsigned long)param),
++		  [seed] "d" (s.pair), [opc] "i" (CPACF_PRNO)
++		: "cc", "memory", "0", "1");
+ }
+ 
+ /**
+@@ -443,19 +455,19 @@ static inline void cpacf_prno(unsigned long func, void *param,
+ static inline void cpacf_trng(u8 *ucbuf, unsigned long ucbuf_len,
+ 			      u8 *cbuf, unsigned long cbuf_len)
+ {
+-	register unsigned long r0 asm("0") = (unsigned long) CPACF_PRNO_TRNG;
+-	register unsigned long r2 asm("2") = (unsigned long) ucbuf;
+-	register unsigned long r3 asm("3") = (unsigned long) ucbuf_len;
+-	register unsigned long r4 asm("4") = (unsigned long) cbuf;
+-	register unsigned long r5 asm("5") = (unsigned long) cbuf_len;
++	union register_pair u, c;
+ 
++	u.even = (unsigned long)ucbuf;
++	u.odd  = (unsigned long)ucbuf_len;
++	c.even = (unsigned long)cbuf;
++	c.odd  = (unsigned long)cbuf_len;
+ 	asm volatile (
++		"	lghi	0,%[fc]\n"
+ 		"0:	.insn	rre,%[opc] << 16,%[ucbuf],%[cbuf]\n"
+ 		"	brc	1,0b\n"	  /* handle partial completion */
+-		: [ucbuf] "+a" (r2), [ucbuflen] "+d" (r3),
+-		  [cbuf] "+a" (r4), [cbuflen] "+d" (r5)
+-		: [fc] "d" (r0), [opc] "i" (CPACF_PRNO)
+-		: "cc", "memory");
++		: [ucbuf] "+&d" (u.pair), [cbuf] "+&d" (c.pair)
++		: [fc] "K" (CPACF_PRNO_TRNG), [opc] "i" (CPACF_PRNO)
++		: "cc", "memory", "0");
+ }
+ 
+ /**
+@@ -466,15 +478,15 @@ static inline void cpacf_trng(u8 *ucbuf, unsigned long ucbuf_len,
+  */
+ static inline void cpacf_pcc(unsigned long func, void *param)
+ {
+-	register unsigned long r0 asm("0") = (unsigned long) func;
+-	register unsigned long r1 asm("1") = (unsigned long) param;
+-
+ 	asm volatile(
++		"	lgr	0,%[fc]\n"
++		"	lgr	1,%[pba]\n"
+ 		"0:	.insn	rre,%[opc] << 16,0,0\n" /* PCC opcode */
+ 		"	brc	1,0b\n" /* handle partial completion */
+ 		:
+-		: [fc] "d" (r0), [pba] "a" (r1), [opc] "i" (CPACF_PCC)
+-		: "cc", "memory");
++		: [fc] "d" (func), [pba] "d" ((unsigned long)param),
++		  [opc] "i" (CPACF_PCC)
++		: "cc", "memory", "0", "1");
+ }
+ 
+ /**
+@@ -487,14 +499,14 @@ static inline void cpacf_pcc(unsigned long func, void *param)
+  */
+ static inline void cpacf_pckmo(long func, void *param)
+ {
+-	register unsigned long r0 asm("0") = (unsigned long) func;
+-	register unsigned long r1 asm("1") = (unsigned long) param;
+-
+ 	asm volatile(
++		"	lgr	0,%[fc]\n"
++		"	lgr	1,%[pba]\n"
+ 		"       .insn   rre,%[opc] << 16,0,0\n" /* PCKMO opcode */
+ 		:
+-		: [fc] "d" (r0), [pba] "a" (r1), [opc] "i" (CPACF_PCKMO)
+-		: "cc", "memory");
++		: [fc] "d" (func), [pba] "d" ((unsigned long)param),
++		  [opc] "i" (CPACF_PCKMO)
++		: "cc", "memory", "0", "1");
+ }
+ 
+ /**
+@@ -512,21 +524,23 @@ static inline void cpacf_kma(unsigned long func, void *param, u8 *dest,
+ 			     const u8 *src, unsigned long src_len,
+ 			     const u8 *aad, unsigned long aad_len)
+ {
+-	register unsigned long r0 asm("0") = (unsigned long) func;
+-	register unsigned long r1 asm("1") = (unsigned long) param;
+-	register unsigned long r2 asm("2") = (unsigned long) src;
+-	register unsigned long r3 asm("3") = (unsigned long) src_len;
+-	register unsigned long r4 asm("4") = (unsigned long) aad;
+-	register unsigned long r5 asm("5") = (unsigned long) aad_len;
+-	register unsigned long r6 asm("6") = (unsigned long) dest;
++	union register_pair d, s, a;
+ 
++	d.even = (unsigned long)dest;
++	s.even = (unsigned long)src;
++	s.odd  = (unsigned long)src_len;
++	a.even = (unsigned long)aad;
++	a.odd  = (unsigned long)aad_len;
+ 	asm volatile(
++		"	lgr	0,%[fc]\n"
++		"	lgr	1,%[pba]\n"
+ 		"0:	.insn	rrf,%[opc] << 16,%[dst],%[src],%[aad],0\n"
+ 		"	brc	1,0b\n"	/* handle partial completion */
+-		: [dst] "+a" (r6), [src] "+a" (r2), [slen] "+d" (r3),
+-		  [aad] "+a" (r4), [alen] "+d" (r5)
+-		: [fc] "d" (r0), [pba] "a" (r1), [opc] "i" (CPACF_KMA)
+-		: "cc", "memory");
++		: [dst] "+&d" (d.pair), [src] "+&d" (s.pair),
++		  [aad] "+&d" (a.pair)
++		: [fc] "d" (func), [pba] "d" ((unsigned long)param),
++		  [opc] "i" (CPACF_KMA)
++		: "cc", "memory", "0", "1");
+ }
+ 
+ #endif	/* _ASM_S390_CPACF_H */
+-- 
+2.43.0
+
 
 
 
