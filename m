@@ -1,223 +1,118 @@
-Return-Path: <stable+bounces-57982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C011926950
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 22:09:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A86A926961
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 22:11:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 906291C257C2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 20:09:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF39B1F21BA6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 20:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49EE1891C6;
-	Wed,  3 Jul 2024 20:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A33818C32F;
+	Wed,  3 Jul 2024 20:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="aPnTg+dS"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="S/IWTZMS";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="S/IWTZMS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3411836D0;
-	Wed,  3 Jul 2024 20:08:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F29213DBB1;
+	Wed,  3 Jul 2024 20:11:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720037334; cv=none; b=BXEOHaiP5dqe+B/lBj8PxrDovIZtUqjoX8sOn7dp8/ZOVfXTCuNQ3+VvBWecWvK/ajTGzeUS2uAcDIHl6kQm6uq/AHdNAQ8cAzew9Ymc4DljZgjMTU01e8HoJIR0jBC41nHXj47f2Bg+bvO2gEUR+O6HYQyfhLioEeLTmcpGgMI=
+	t=1720037477; cv=none; b=aHcuVxFxFrg7qSPkGdoekuKjH3pKfQ1QHjl8CN3n6a+bkZLjRBXtQPVgMot8PcZrakKD1Wo5kgNTxyMN42/gR/mQ7srqCy9yYWfuPxuaz/klIQko8oRAw+LQs9Ee4n1vs1cWIjKEyK5if0H6Wgp4CbypPL+B881yT6oCHpWUYw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720037334; c=relaxed/simple;
-	bh=DVox1BhYmlVSGINFvKZZZongePGMtgf0FVx0De/8DsA=;
-	h=Date:To:From:Subject:Message-Id; b=sa2t+iJ/uhKwoaFOnoSnUCByJobw2gv1x4NOyluvf2ATfmm5SYs3SN57v8MFFCDLWbji1tHNGBqCB+629n9TToX6KIilQ3WBmRYnHVD26/YmnZkgO1BqH7XU14Qtdlz16haEOdjpNYYAvztpA7aJMYpR2tCfncYko0VmqAybtm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=aPnTg+dS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C015AC2BD10;
-	Wed,  3 Jul 2024 20:08:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1720037333;
-	bh=DVox1BhYmlVSGINFvKZZZongePGMtgf0FVx0De/8DsA=;
-	h=Date:To:From:Subject:From;
-	b=aPnTg+dSCrzxfRtuNW3ZwuhTWQnZrn+db6w2fLc6s+eOp8yyQUqPhooAkg19L75ep
-	 9xgytRvdm0BzTeu2Z7LfUrZpsgajrd5aeOYi/IgrhZHtwcfhzqpJ8U8s2E25RviSMy
-	 dVMPHHhbdX2YKW44mpQgChPeDYJfMHDUpT5USDUw=
-Date: Wed, 03 Jul 2024 13:08:53 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,david@redhat.com,baolin.wang@linux.alibaba.com,aneesh.kumar@linux.ibm.com,21cnbao@gmail.com,yangge1116@126.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-gup-clear-the-lru-flag-of-a-page-before-adding-to-lru-batch.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240703200853.C015AC2BD10@smtp.kernel.org>
+	s=arc-20240116; t=1720037477; c=relaxed/simple;
+	bh=SQpiK44TEPrFruykt3kBmYo9BZX1HZl2Svyj+QKUNEE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=B2SYkt/R9te9r1hr6V1zv0KaGMwwVg14XPTnQQj5Og1tiOkBSBIccpCjxg3Bv5h6tdsFfJMDMnmJSzIJKHNbVEskCIZOGoMgvp39zti/tx6+EmbBHRR0UOpp7Ti8MqFO5xUasll/DP8Vivo30Hz4nx6d3FRYDvlXmnThRGLaM1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=S/IWTZMS; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=S/IWTZMS; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1720037474;
+	bh=SQpiK44TEPrFruykt3kBmYo9BZX1HZl2Svyj+QKUNEE=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=S/IWTZMSUy7AlGM8LAvIJ1znS98TFW8MYgZ+lnih8uqo+wvwlsXGtJxDon0o3Qgx4
+	 mraPuBhnou3LjQkTluGrNKL0R41q0hQtjFKLD36bLTby1x+giv/y7E744381INRMqh
+	 GvJGEDsMIkq99Ge+BOq0I+rE6peXevvzcQDowb5E=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 64A7F1286C78;
+	Wed, 03 Jul 2024 16:11:14 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id 4ndU80lSrPBQ; Wed,  3 Jul 2024 16:11:14 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1720037474;
+	bh=SQpiK44TEPrFruykt3kBmYo9BZX1HZl2Svyj+QKUNEE=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=S/IWTZMSUy7AlGM8LAvIJ1znS98TFW8MYgZ+lnih8uqo+wvwlsXGtJxDon0o3Qgx4
+	 mraPuBhnou3LjQkTluGrNKL0R41q0hQtjFKLD36bLTby1x+giv/y7E744381INRMqh
+	 GvJGEDsMIkq99Ge+BOq0I+rE6peXevvzcQDowb5E=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id C1EE3128607E;
+	Wed, 03 Jul 2024 16:11:12 -0400 (EDT)
+Message-ID: <922603265d61011dbb23f18a04525ae973b83ffd.camel@HansenPartnership.com>
+Subject: Re: [PATCH v2 2/3] tpm: Address !chip->auth in tpm_buf_append_name()
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>, Linus Torvalds
+	 <torvalds@linux-foundation.org>, stable@vger.kernel.org, Stefan Berger
+	 <stefanb@linux.ibm.com>, Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe
+	 <jgg@ziepe.ca>, Mimi Zohar <zohar@linux.ibm.com>, David Howells
+	 <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>, James Morris
+	 <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Ard Biesheuvel
+	 <ardb@kernel.org>, Mario Limonciello <mario.limonciello@amd.com>, 
+	linux-kernel@vger.kernel.org, keyrings@vger.kernel.org, 
+	linux-security-module@vger.kernel.org
+Date: Wed, 03 Jul 2024 16:11:10 -0400
+In-Reply-To: <20240703182453.1580888-3-jarkko@kernel.org>
+References: <20240703182453.1580888-1-jarkko@kernel.org>
+	 <20240703182453.1580888-3-jarkko@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+On Wed, 2024-07-03 at 21:24 +0300, Jarkko Sakkinen wrote:
+[...]
+> diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+> index 21a67dc9efe8..2844fea4a12a 100644
+> --- a/include/linux/tpm.h
+> +++ b/include/linux/tpm.h
+> @@ -211,8 +211,8 @@ struct tpm_chip {
+>         u8 null_key_name[TPM2_NAME_SIZE];
+>         u8 null_ec_key_x[EC_PT_SZ];
+>         u8 null_ec_key_y[EC_PT_SZ];
+> -       struct tpm2_auth *auth;
+>  #endif
+> +       struct tpm2_auth *auth;
+>  };
 
-The patch titled
-     Subject: mm/gup: clear the LRU flag of a page before adding to LRU batch
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-gup-clear-the-lru-flag-of-a-page-before-adding-to-lru-batch.patch
+Since auth should only be present if CONFIG_TCG_TPM2_HMAC this is
+clearly an undesirable thing to do.  I think you did it because in a
+later patch you want to collapse the hmac sessions to use a single
+routine, but you can make that check with the preprocessor __and
+function defined in kconfig.h:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-gup-clear-the-lru-flag-of-a-page-before-adding-to-lru-batch.patch
+if (__and(IS_ENABLED(CONFIG_TCG_TPM2_HMAC), chip->auth))
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Which will become 0 if the config is not enabled and chip->auth if it
+is, thus eliminating the code in the former case while not causing the
+compiler to complain about chip->auth not being defined even if it's
+under the config parameter.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: yangge <yangge1116@126.com>
-Subject: mm/gup: clear the LRU flag of a page before adding to LRU batch
-Date: Wed, 3 Jul 2024 20:02:33 +0800
-
-If a large number of CMA memory are configured in system (for example, the
-CMA memory accounts for 50% of the system memory), starting a virtual
-virtual machine with device passthrough, it will call
-pin_user_pages_remote(..., FOLL_LONGTERM, ...) to pin memory.  Normally if
-a page is present and in CMA area, pin_user_pages_remote() will migrate
-the page from CMA area to non-CMA area because of FOLL_LONGTERM flag.  But
-the current code will cause the migration failure due to unexpected page
-refcounts, and will eventually cause the virtual machine to fail to start.
-
-If a page is added in LRU batch, its refcount increases one, remove the
-page from LRU batch decreases one.  Page migration requires the page is
-not referenced by others except page mapping.  Before migrating a page, we
-should try to drain the page from LRU batch in case the page is in it,
-however, folio_test_lru() is not sufficient to tell whether the page is in
-LRU batch or not, if the page is in LRU batch, the migration will fail.
-
-To solve the problem above, we modify the logic of adding to LRU batch. 
-Before adding a page to LRU batch, we clear the LRU flag of the page so
-that we can check whether the page is in LRU batch with
-folio_test_lru(page).  Seems making the LRU flag of the page invisible a
-long time is no problem, because a new page is allocated from buddy and
-added to the lru batch, its LRU flag is also not visible for a long time.
-
-Link: https://lkml.kernel.org/r/1720008153-16035-1-git-send-email-yangge1116@126.com
-Fixes: 9a4e9f3b2d73 ("mm: update get_user_pages_longterm to migrate pages allocated from CMA region")
-Signed-off-by: yangge <yangge1116@126.com>
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Barry Song <21cnbao@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/swap.c |   43 +++++++++++++++++++++++++++++++------------
- 1 file changed, 31 insertions(+), 12 deletions(-)
-
---- a/mm/swap.c~mm-gup-clear-the-lru-flag-of-a-page-before-adding-to-lru-batch
-+++ a/mm/swap.c
-@@ -212,10 +212,6 @@ static void folio_batch_move_lru(struct
- 	for (i = 0; i < folio_batch_count(fbatch); i++) {
- 		struct folio *folio = fbatch->folios[i];
- 
--		/* block memcg migration while the folio moves between lru */
--		if (move_fn != lru_add_fn && !folio_test_clear_lru(folio))
--			continue;
--
- 		folio_lruvec_relock_irqsave(folio, &lruvec, &flags);
- 		move_fn(lruvec, folio);
- 
-@@ -256,11 +252,16 @@ static void lru_move_tail_fn(struct lruv
- void folio_rotate_reclaimable(struct folio *folio)
- {
- 	if (!folio_test_locked(folio) && !folio_test_dirty(folio) &&
--	    !folio_test_unevictable(folio) && folio_test_lru(folio)) {
-+	    !folio_test_unevictable(folio)) {
- 		struct folio_batch *fbatch;
- 		unsigned long flags;
- 
- 		folio_get(folio);
-+		if (!folio_test_clear_lru(folio)) {
-+			folio_put(folio);
-+			return;
-+		}
-+
- 		local_lock_irqsave(&lru_rotate.lock, flags);
- 		fbatch = this_cpu_ptr(&lru_rotate.fbatch);
- 		folio_batch_add_and_move(fbatch, folio, lru_move_tail_fn);
-@@ -353,11 +354,15 @@ static void folio_activate_drain(int cpu
- 
- void folio_activate(struct folio *folio)
- {
--	if (folio_test_lru(folio) && !folio_test_active(folio) &&
--	    !folio_test_unevictable(folio)) {
-+	if (!folio_test_active(folio) && !folio_test_unevictable(folio)) {
- 		struct folio_batch *fbatch;
- 
- 		folio_get(folio);
-+		if (!folio_test_clear_lru(folio)) {
-+			folio_put(folio);
-+			return;
-+		}
-+
- 		local_lock(&cpu_fbatches.lock);
- 		fbatch = this_cpu_ptr(&cpu_fbatches.activate);
- 		folio_batch_add_and_move(fbatch, folio, folio_activate_fn);
-@@ -701,6 +706,11 @@ void deactivate_file_folio(struct folio
- 		return;
- 
- 	folio_get(folio);
-+	if (!folio_test_clear_lru(folio)) {
-+		folio_put(folio);
-+		return;
-+	}
-+
- 	local_lock(&cpu_fbatches.lock);
- 	fbatch = this_cpu_ptr(&cpu_fbatches.lru_deactivate_file);
- 	folio_batch_add_and_move(fbatch, folio, lru_deactivate_file_fn);
-@@ -717,11 +727,16 @@ void deactivate_file_folio(struct folio
-  */
- void folio_deactivate(struct folio *folio)
- {
--	if (folio_test_lru(folio) && !folio_test_unevictable(folio) &&
--	    (folio_test_active(folio) || lru_gen_enabled())) {
-+	if (!folio_test_unevictable(folio) && (folio_test_active(folio) ||
-+	    lru_gen_enabled())) {
- 		struct folio_batch *fbatch;
- 
- 		folio_get(folio);
-+		if (!folio_test_clear_lru(folio)) {
-+			folio_put(folio);
-+			return;
-+		}
-+
- 		local_lock(&cpu_fbatches.lock);
- 		fbatch = this_cpu_ptr(&cpu_fbatches.lru_deactivate);
- 		folio_batch_add_and_move(fbatch, folio, lru_deactivate_fn);
-@@ -738,12 +753,16 @@ void folio_deactivate(struct folio *foli
-  */
- void folio_mark_lazyfree(struct folio *folio)
- {
--	if (folio_test_lru(folio) && folio_test_anon(folio) &&
--	    folio_test_swapbacked(folio) && !folio_test_swapcache(folio) &&
--	    !folio_test_unevictable(folio)) {
-+	if (folio_test_anon(folio) && folio_test_swapbacked(folio) &&
-+	    !folio_test_swapcache(folio) && !folio_test_unevictable(folio)) {
- 		struct folio_batch *fbatch;
- 
- 		folio_get(folio);
-+		if (!folio_test_clear_lru(folio)) {
-+			folio_put(folio);
-+			return;
-+		}
-+
- 		local_lock(&cpu_fbatches.lock);
- 		fbatch = this_cpu_ptr(&cpu_fbatches.lru_lazyfree);
- 		folio_batch_add_and_move(fbatch, folio, lru_lazyfree_fn);
-_
-
-Patches currently in -mm which might be from yangge1116@126.com are
-
-mm-gup-clear-the-lru-flag-of-a-page-before-adding-to-lru-batch.patch
+James
 
 
