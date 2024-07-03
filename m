@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-57761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E43925DE3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B9D8925A01
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:53:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 015321F24078
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:32:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8EA71F24EF2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E59183092;
-	Wed,  3 Jul 2024 11:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0320173355;
+	Wed,  3 Jul 2024 10:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JT0eyiEz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2eIdvj8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2096143747;
-	Wed,  3 Jul 2024 11:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC94173335;
+	Wed,  3 Jul 2024 10:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005853; cv=none; b=t0F5id0bDtwG9PjPntdiB6jvvrST4z+eUnzuSALdVXdK0uuFxozN/X+umVTU1Cg0Oevz2RXgNf0iwwbQJN7oUYAtTn8tPP9DHLGp4O9C/ddUf0fGsKonZHGEUIbBr77kWhKfZSTZ2U9LXpb2Yzns1rUPQ1wkLUa7xmEcaCnza6Q=
+	t=1720003444; cv=none; b=WlX9UygP27LgT+FlRBaFFBFsV8n3iGTwp5RpumUEqr8TnUjCVY0aAiPdAMXZyg/vwoI48Sf2zpQ8k/ex95gJL9/hsSzLalxx8eCXkhF+fiQ1KNgoB3K4i/XLixpDdhuPRH2b/ibOgqPAiLwTs+Ahs2j7T5R+oNCfNcmO9o2exZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005853; c=relaxed/simple;
-	bh=m3Iiw+eFEvRQZMDS2FLmuJXq0xYUK7Vn/hrq1GOrSGk=;
+	s=arc-20240116; t=1720003444; c=relaxed/simple;
+	bh=TvvRUbZl5Va76HI1a6PQRiTz4QPwDceBeQSLMIHsZFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6BCr0aDO0fiHTRx77Wi2DRBkcoJuXC5/8QP4XBdxYF245zDdfY0vmljs43CL2MZig9Bau0ikD3l9l1dF359sCFHiPDW+cSTM+OU0C8ApZzIFlW3f89s7GbUnYAS/qtli4ELx4ofSb2jSlpqNKCdmPRrz0ehQlSXPQ0U0SCzLeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JT0eyiEz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26564C2BD10;
-	Wed,  3 Jul 2024 11:24:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=H4YdnIWIf9EEUX/s1fHwMWpIm4jad1C7bPtfOpjJxYKAgNGADlEGUWFH+9ZOBd4seGREOGJoktv6TyJ7FmKzfQdnkqoPgE/90GphPmWjVddEdOHtWcjuZqkwW6cYeffKc2sUU86DbcmHe9mg2ifl++RE6YgbB1yautheSqno6Xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2eIdvj8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3593EC2BD10;
+	Wed,  3 Jul 2024 10:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005853;
-	bh=m3Iiw+eFEvRQZMDS2FLmuJXq0xYUK7Vn/hrq1GOrSGk=;
+	s=korg; t=1720003444;
+	bh=TvvRUbZl5Va76HI1a6PQRiTz4QPwDceBeQSLMIHsZFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JT0eyiEzrcyYK/n6fa4Ugucz1xK+bmaKKnVXXjp8qvNjt/3pSZGqIWOg7xMAWP8cx
-	 6uE16wa9UKgJtns/APJj1DeRI6gqt5/OL5mqx9wlqVI3h9MzB3nI5vISChmBxkMIgT
-	 227kdkTSzTFbuRkuIsG7mZcp3bU3UJAMXiiW4JvU=
+	b=N2eIdvj8Ei49b3StTdAlYdAMsrDlxZmBVKe8rGVzWvmawJ/UtdFJjDwYxgvKO61wc
+	 OylSJ3pmn5XRHtnZeA2iwCPhxC7Lb7EA0pPVrKwuxbpK8jK+a/R2f2QXoplMNPVo0x
+	 iVmosr3q9K5AqBl7CkkkP8cpAuhxwxFW/4YAkCC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Rick Wertenbroek <rick.wertenbroek@gmail.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Bjorn Helgaas <bhelgaas@google.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 211/356] dmaengine: ioat: use PCI core macros for PCIe Capability
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 4.19 050/139] PCI: rockchip-ep: Remove wrong mask on subsys_vendor_id
 Date: Wed,  3 Jul 2024 12:39:07 +0200
-Message-ID: <20240703102921.090908204@linuxfoundation.org>
+Message-ID: <20240703102832.325800924@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
 
-[ Upstream commit 8f6707d0773be31972768abd6e0bf7b8515b5b1a ]
+commit 2dba285caba53f309d6060fca911b43d63f41697 upstream.
 
-The PCIe Capability is defined by the PCIe spec, so use the PCI_EXP_DEVCTL
-macros defined by the PCI core instead of defining copies in IOAT.  This
-makes it easier to find all uses of the PCIe Device Control register.  No
-functional change intended.
+Remove wrong mask on subsys_vendor_id. Both the Vendor ID and Subsystem
+Vendor ID are u16 variables and are written to a u32 register of the
+controller. The Subsystem Vendor ID was always 0 because the u16 value
+was masked incorrectly with GENMASK(31,16) resulting in all lower 16
+bits being set to 0 prior to the shift.
 
+Remove both masks as they are unnecessary and set the register correctly
+i.e., the lower 16-bits are the Vendor ID and the upper 16-bits are the
+Subsystem Vendor ID.
+
+This is documented in the RK3399 TRM section 17.6.7.1.17
+
+[kwilczynski: removed unnecesary newline]
+Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
+Link: https://lore.kernel.org/linux-pci/20240403144508.489835-1-rick.wertenbroek@gmail.com
+Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20230307214615.887354-1-helgaas@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: f0dc9fda2e0e ("dmaengine: ioatdma: Fix error path in ioat3_dma_probe()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ioat/init.c      | 6 +++---
- drivers/dma/ioat/registers.h | 7 -------
- 2 files changed, 3 insertions(+), 10 deletions(-)
+ drivers/pci/controller/pcie-rockchip-ep.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
-index 6c27980a5ec8f..ed4910e3bc2ac 100644
---- a/drivers/dma/ioat/init.c
-+++ b/drivers/dma/ioat/init.c
-@@ -1190,13 +1190,13 @@ static int ioat3_dma_probe(struct ioatdma_device *ioat_dma, int dca)
- 		ioat_dma->dca = ioat_dca_init(pdev, ioat_dma->reg_base);
+--- a/drivers/pci/controller/pcie-rockchip-ep.c
++++ b/drivers/pci/controller/pcie-rockchip-ep.c
+@@ -130,10 +130,8 @@ static int rockchip_pcie_ep_write_header
  
- 	/* disable relaxed ordering */
--	err = pcie_capability_read_word(pdev, IOAT_DEVCTRL_OFFSET, &val16);
-+	err = pcie_capability_read_word(pdev, PCI_EXP_DEVCTL, &val16);
- 	if (err)
- 		return pcibios_err_to_errno(err);
- 
- 	/* clear relaxed ordering enable */
--	val16 &= ~IOAT_DEVCTRL_ROE;
--	err = pcie_capability_write_word(pdev, IOAT_DEVCTRL_OFFSET, val16);
-+	val16 &= ~PCI_EXP_DEVCTL_RELAX_EN;
-+	err = pcie_capability_write_word(pdev, PCI_EXP_DEVCTL, val16);
- 	if (err)
- 		return pcibios_err_to_errno(err);
- 
-diff --git a/drivers/dma/ioat/registers.h b/drivers/dma/ioat/registers.h
-index f55a5f92f1857..54cf0ad39887b 100644
---- a/drivers/dma/ioat/registers.h
-+++ b/drivers/dma/ioat/registers.h
-@@ -14,13 +14,6 @@
- #define IOAT_PCI_CHANERR_INT_OFFSET		0x180
- #define IOAT_PCI_CHANERRMASK_INT_OFFSET		0x184
- 
--/* PCIe config registers */
+ 	/* All functions share the same vendor ID with function 0 */
+ 	if (fn == 0) {
+-		u32 vid_regs = (hdr->vendorid & GENMASK(15, 0)) |
+-			       (hdr->subsys_vendor_id & GENMASK(31, 16)) << 16;
 -
--/* EXPCAPID + N */
--#define IOAT_DEVCTRL_OFFSET			0x8
--/* relaxed ordering enable */
--#define IOAT_DEVCTRL_ROE			0x10
--
- /* MMIO Device Registers */
- #define IOAT_CHANCNT_OFFSET			0x00	/*  8-bit */
+-		rockchip_pcie_write(rockchip, vid_regs,
++		rockchip_pcie_write(rockchip,
++				    hdr->vendorid | hdr->subsys_vendor_id << 16,
+ 				    PCIE_CORE_CONFIG_VENDOR);
+ 	}
  
--- 
-2.43.0
-
 
 
 
