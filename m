@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-57686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14448925D8C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87004925C07
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:14:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85432280FCB
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CB1E1F21684
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E281849FF;
-	Wed,  3 Jul 2024 11:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D108D178360;
+	Wed,  3 Jul 2024 11:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pz3VAgld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+YBLK9H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F08143C6E;
-	Wed,  3 Jul 2024 11:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919B917084B;
+	Wed,  3 Jul 2024 11:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005632; cv=none; b=M+FgadybYryUJqk9mEGLMWuj0ghryVVEhXHTay2URrYd60/t+5GrbK3oecoay6gKTW24dqAhxFpPrqdIMLha5hKvjunb1aTRsRXqT8LOVRoNazZlTcnM9cvkXvkmalCSA5o57VtkqTk6NLbcBila82QnO+5eVkHIRRNB0kW+6XY=
+	t=1720004515; cv=none; b=rcxhYBWm/oyoH/b5FR33ay/uUCp0zu90lJzSFcyfamzw4oBB6q4FphUUUNtr+Qb4SOr5JNRaoo+tbbP5DYfqTTPfxkXdQDs3N/rFFMdD5W3d9mYzTNpJH+Xx5BtbfOhaDi9LfH1wgD9R/uXKwbPZ5Jydn1qdRa3T93qrPpyqAno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005632; c=relaxed/simple;
-	bh=DV8iUdKTOUS9t2cmkez1nV9y6hhFsaOlyvYfscComl0=;
+	s=arc-20240116; t=1720004515; c=relaxed/simple;
+	bh=W+sTicut/MwiOWXCLWVy7z8c/rMo5bWSj2JE2xI9Z/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hIytpZNL0m/4gRmtgzhCh7JnoKmYXsG9snVVYDp6Zwiqrud1Iy/Rdzwjelinxz35oBAbmRNXZQ3Ogmszej1fVehPe8FxUXhpiPpcbToL4iS06I+NdArU8H9lkMJbnzpcZDq9O8MuCRQmgjcXZ0JzQ1CakyZ1PJt7lTrQ3JOJycY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pz3VAgld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BFEDC2BD10;
-	Wed,  3 Jul 2024 11:20:31 +0000 (UTC)
+	 MIME-Version; b=UAZOQTESp28ERS1ojdGj8cb7xrkScKpboRKkmX47EayqXDlOXVx5mSmVL8VjDKJKrN/TCHuS6lbvBG3WwSEPnHhC0WXf9QtThPCeJ56Mu2pdszBf02GhqoabwloiAyQqtKWHyFsrBTtvNUA98XWT190GKiCQoQudiwFuPE+dNyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+YBLK9H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1847EC2BD10;
+	Wed,  3 Jul 2024 11:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005632;
-	bh=DV8iUdKTOUS9t2cmkez1nV9y6hhFsaOlyvYfscComl0=;
+	s=korg; t=1720004515;
+	bh=W+sTicut/MwiOWXCLWVy7z8c/rMo5bWSj2JE2xI9Z/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pz3VAgldeXWU9nHRUN24CQZ+tkeDK+H295bDJ+WtqFEz3paf5F9wVP6Itfn/lSsYY
-	 Nxn49ltNHdeLeriEpGivlNdYBE7gmx33MyiZlO02fhsiKYQpEIMf+i0hrS5RQjOj9+
-	 S7zVjso9DMvhxG9BJUkvdH3WEa8slFB9IFgCudfM=
+	b=m+YBLK9H8Hs6iIz1dvaRqC919fiUjp+Ydbh1gC5Ioji0QHIs0Gw1OATfqTbo+4006
+	 8LEJMugHxGLhHnwPwWc1y3MZBzxWnoGbx6EYHDyFjmqG+oC2NR1ezkIHqKqKvkXWMX
+	 ZgvP5dORGLoZIlLkSxrxSgLKmtkern2YxeLdpoOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 113/356] iio: imu: inv_icm42600: delete unneeded update watermark call
+	Gal Pressman <gal@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 068/290] net/mlx5e: Fix features validation check for tunneled UDP (non-VXLAN) packets
 Date: Wed,  3 Jul 2024 12:37:29 +0200
-Message-ID: <20240703102917.372933247@linuxfoundation.org>
+Message-ID: <20240703102906.767443378@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +65,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Gal Pressman <gal@nvidia.com>
 
-commit 245f3b149e6cc3ac6ee612cdb7042263bfc9e73c upstream.
+[ Upstream commit 791b4089e326271424b78f2fae778b20e53d071b ]
 
-Update watermark will be done inside the hwfifo_set_watermark callback
-just after the update_scan_mode. It is useless to do it here.
+Move the vxlan_features_check() call to after we verified the packet is
+a tunneled VXLAN packet.
 
-Fixes: 7f85e42a6c54 ("iio: imu: inv_icm42600: add buffer support in iio devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Link: https://lore.kernel.org/r/20240527210008.612932-1-inv.git-commit@tdk.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Without this, tunneled UDP non-VXLAN packets (for ex. GENENVE) might
+wrongly not get offloaded.
+In some cases, it worked by chance as GENEVE header is the same size as
+VXLAN, but it is obviously incorrect.
+
+Fixes: e3cfc7e6b7bd ("net/mlx5e: TX, Add geneve tunnel stateless offload support")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c |    4 ----
- drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  |    4 ----
- 2 files changed, 8 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-@@ -128,10 +128,6 @@ static int inv_icm42600_accel_update_sca
- 	/* update data FIFO write */
- 	inv_icm42600_timestamp_apply_odr(ts, 0, 0, 0);
- 	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
--	if (ret)
--		goto out_unlock;
--
--	ret = inv_icm42600_buffer_update_watermark(st);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index f1834853872da..aeb8bb3c549a1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -4393,7 +4393,7 @@ static netdev_features_t mlx5e_tunnel_features_check(struct mlx5e_priv *priv,
  
- out_unlock:
- 	mutex_unlock(&st->lock);
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-@@ -128,10 +128,6 @@ static int inv_icm42600_gyro_update_scan
- 	/* update data FIFO write */
- 	inv_icm42600_timestamp_apply_odr(ts, 0, 0, 0);
- 	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
--	if (ret)
--		goto out_unlock;
--
--	ret = inv_icm42600_buffer_update_watermark(st);
+ 		/* Verify if UDP port is being offloaded by HW */
+ 		if (mlx5_vxlan_lookup_port(priv->mdev->vxlan, port))
+-			return features;
++			return vxlan_features_check(skb, features);
  
- out_unlock:
- 	mutex_unlock(&st->lock);
+ #if IS_ENABLED(CONFIG_GENEVE)
+ 		/* Support Geneve offload for default UDP port */
+@@ -4414,7 +4414,6 @@ netdev_features_t mlx5e_features_check(struct sk_buff *skb,
+ 	struct mlx5e_priv *priv = netdev_priv(netdev);
+ 
+ 	features = vlan_features_check(skb, features);
+-	features = vxlan_features_check(skb, features);
+ 
+ #ifdef CONFIG_MLX5_EN_IPSEC
+ 	if (mlx5e_ipsec_feature_check(skb, netdev, features))
+-- 
+2.43.0
+
 
 
 
