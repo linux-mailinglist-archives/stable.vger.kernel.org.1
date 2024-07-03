@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 187B4925E65
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC97925BC9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:11:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B72F8295CE7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14FA1292C5A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F220A17DA0B;
-	Wed,  3 Jul 2024 11:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5F819415F;
+	Wed,  3 Jul 2024 10:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uT7VY1Ma"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqgHeILc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD57F137910;
-	Wed,  3 Jul 2024 11:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C49174EFF;
+	Wed,  3 Jul 2024 10:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006108; cv=none; b=T+hflVS6HD3l7x8MvJmAW1x1TklYWBGet+1LxVTB93r08BF3KYCvWTd7NsC7BztQcPO14+2KXosFhb9pUqdbr6yrAe+cMRtZJBoAzbsZZkA11txgsl3DmcpLb4f0v9YwdAnjVDNTj87IEgrdr2Y4Xu6r5DJUA6eZcG6XHN8IA/0=
+	t=1720004279; cv=none; b=rfPK4YK0xPjdt+10dMreLkAO1kumNfMJWdAil8DT79SwJ5gWWXx40vusK2esN39O1ZSEbNeQjpeG2AJpJ6t5iFH819A/bqFXPAzvjRuiym8pTOXZIR0//nEmgh2dE2D5w2oz6pdM0IYT5TWnQ0K5BkyLNeoC7pPs6769dz2VSj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006108; c=relaxed/simple;
-	bh=4VeLpQ1X/lWZzBR80nHN3hAYmE7SwN95b3Yx5L1uksQ=;
+	s=arc-20240116; t=1720004279; c=relaxed/simple;
+	bh=Mh7D+ZdVncV00V1vrrGdkYxpYHmO5z55Y+Bq5QbXdMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Itr4pVo9vdqGjxZkAYZo0giWA5ZkcWkrX5fxi/M2iD8nhr07BrraZ8r9fihHQOQBPoXi4HS38hA1RM4OxwhIHdxoFFDdfIvyQ0gRZr1c42gvmBzWrP4EPmCEuQNE4TQQvgHgKIMAoZ0Zl4dhf4TuJm/Y+NxlTejaRNJWfBuRtqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uT7VY1Ma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 318D1C2BD10;
-	Wed,  3 Jul 2024 11:28:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uFpcLICvljUTcm/pnCW9Z6mncV0S0MF2dX3YlzGF31/DIzn1JWb9ZN5LMQ3bRzPEcT0gcwQgrZy39lPmVwWL1OcOk1/guVO2cKajmq+AS0cCjqRrYtzT6XP5/joVmUddd1eVc3r8G3k/EbySnUHH1QujdAjGimNTqdhXoFcdXUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqgHeILc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77880C4AF0C;
+	Wed,  3 Jul 2024 10:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006108;
-	bh=4VeLpQ1X/lWZzBR80nHN3hAYmE7SwN95b3Yx5L1uksQ=;
+	s=korg; t=1720004278;
+	bh=Mh7D+ZdVncV00V1vrrGdkYxpYHmO5z55Y+Bq5QbXdMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uT7VY1MaxqO51ldQHIf4zSGOPz92NvyC8j16sZU+2dvIaouMguUfM+KwSZPYb7MG0
-	 r4bgqWXQ2hCz3+BcE3W1rw6VU8pOzDGBTbyQYSyjvBEMkx1az7+p9i73PpTnjg52Y1
-	 dXrfR+AQJqQ3/hs6SErz/8q17KerAPYtJYO4FNr8=
+	b=iqgHeILc8D9ZOHQ2+ZtSufiyYZNsP/RI5LmVduSJzR7pfdiG+ss8Rq9PBOunod6DD
+	 uIEsdHGe013nt/Pj2uGQBnqAQE8mrCNWvNEnF4fBAah/Pr4ngu+EsJioNe2VqtFsku
+	 MXrjTcxWuQhUE49kr1W5wctEdIqOqbkBW7Yi8kYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adhemerval Zanella <adhemerval.zanella@linaro.org>,
-	Helge Deller <deller@gmx.de>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 303/356] parisc: use generic sys_fanotify_mark implementation
-Date: Wed,  3 Jul 2024 12:40:39 +0200
-Message-ID: <20240703102924.577331210@linuxfoundation.org>
+	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 5.4 179/189] batman-adv: Dont accept TT entries for out-of-spec VIDs
+Date: Wed,  3 Jul 2024 12:40:40 +0200
+Message-ID: <20240703102848.227543844@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,106 +60,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 403f17a330732a666ae793f3b15bc75bb5540524 ]
+commit 537a350d14321c8cca5efbf0a33a404fec3a9f9e upstream.
 
-The sys_fanotify_mark() syscall on parisc uses the reverse word order
-for the two halves of the 64-bit argument compared to all syscalls on
-all 32-bit architectures. As far as I can tell, the problem is that
-the function arguments on parisc are sorted backwards (26, 25, 24, 23,
-...) compared to everyone else, so the calling conventions of using an
-even/odd register pair in native word order result in the lower word
-coming first in function arguments, matching the expected behavior
-on little-endian architectures. The system call conventions however
-ended up matching what the other 32-bit architectures do.
+The internal handling of VLAN IDs in batman-adv is only specified for
+following encodings:
 
-A glibc cleanup in 2020 changed the userspace behavior in a way that
-handles all architectures consistently, but this inadvertently broke
-parisc32 by changing to the same method as everyone else.
+* VLAN is used
+  - bit 15 is 1
+  - bit 11 - bit 0 is the VLAN ID (0-4095)
+  - remaining bits are 0
+* No VLAN is used
+  - bit 15 is 0
+  - remaining bits are 0
 
-The change made it into glibc-2.35 and subsequently into debian 12
-(bookworm), which is the latest stable release. This means we
-need to choose between reverting the glibc change or changing the
-kernel to match it again, but either hange will leave some systems
-broken.
+batman-adv was only preparing new translation table entries (based on its
+soft interface information) using this encoding format. But the receive
+path was never checking if entries in the roam or TT TVLVs were also
+following this encoding.
 
-Pick the option that is more likely to help current and future
-users and change the kernel to match current glibc. This also
-means the behavior is now consistent across architectures, but
-it breaks running new kernels with old glibc builds before 2.35.
+It was therefore possible to create more than the expected maximum of 4096
++ 1 entries in the originator VLAN list. Simply by setting the "remaining
+bits" to "random" values in corresponding TVLV.
 
-Link: https://sourceware.org/git/?p=glibc.git;a=commitdiff;h=d150181d73d9
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/commit/arch/parisc/kernel/sys_parisc.c?h=57b1dfbd5b4a39d
-Cc: Adhemerval Zanella <adhemerval.zanella@linaro.org>
-Tested-by: Helge Deller <deller@gmx.de>
-Acked-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Cc: stable@vger.kernel.org
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+Reported-by: Linus Lüssing <linus.luessing@c0d3.blue>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
-I found this through code inspection, please double-check to make
-sure I got the bug and the fix right.
+ net/batman-adv/originator.c |   27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-The alternative is to fix this by reverting glibc back to the
-unusual behavior.
-
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/parisc/Kconfig                     | 1 +
- arch/parisc/kernel/sys_parisc32.c       | 9 ---------
- arch/parisc/kernel/syscalls/syscall.tbl | 2 +-
- 3 files changed, 2 insertions(+), 10 deletions(-)
-
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 117b0f882750a..6ac0c4b98e281 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -12,6 +12,7 @@ config PARISC
- 	select ARCH_HAS_STRICT_MODULE_RWX
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
- 	select ARCH_NO_SG_CHAIN
-+	select ARCH_SPLIT_ARG64 if !64BIT
- 	select ARCH_SUPPORTS_HUGETLBFS if PA20
- 	select ARCH_SUPPORTS_MEMORY_FAILURE
- 	select DMA_OPS
-diff --git a/arch/parisc/kernel/sys_parisc32.c b/arch/parisc/kernel/sys_parisc32.c
-index 2a12a547b447b..826c8e51b5853 100644
---- a/arch/parisc/kernel/sys_parisc32.c
-+++ b/arch/parisc/kernel/sys_parisc32.c
-@@ -23,12 +23,3 @@ asmlinkage long sys32_unimplemented(int r26, int r25, int r24, int r23,
-     	current->comm, current->pid, r20);
-     return -ENOSYS;
+--- a/net/batman-adv/originator.c
++++ b/net/batman-adv/originator.c
+@@ -11,6 +11,7 @@
+ #include <linux/errno.h>
+ #include <linux/etherdevice.h>
+ #include <linux/gfp.h>
++#include <linux/if_vlan.h>
+ #include <linux/jiffies.h>
+ #include <linux/kernel.h>
+ #include <linux/kref.h>
+@@ -133,6 +134,29 @@ batadv_orig_node_vlan_get(struct batadv_
  }
--
--asmlinkage long sys32_fanotify_mark(compat_int_t fanotify_fd, compat_uint_t flags,
--	compat_uint_t mask0, compat_uint_t mask1, compat_int_t dfd,
--	const char  __user * pathname)
--{
--	return sys_fanotify_mark(fanotify_fd, flags,
--			((__u64)mask1 << 32) | mask0,
--			 dfd, pathname);
--}
-diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
-index 3e7ded09e00a5..5774509ea4a3b 100644
---- a/arch/parisc/kernel/syscalls/syscall.tbl
-+++ b/arch/parisc/kernel/syscalls/syscall.tbl
-@@ -364,7 +364,7 @@
- 320	common	accept4			sys_accept4
- 321	common	prlimit64		sys_prlimit64
- 322	common	fanotify_init		sys_fanotify_init
--323	common	fanotify_mark		sys_fanotify_mark		sys32_fanotify_mark
-+323	common	fanotify_mark		sys_fanotify_mark		compat_sys_fanotify_mark
- 324	32	clock_adjtime		sys_clock_adjtime32
- 324	64	clock_adjtime		sys_clock_adjtime
- 325	common	name_to_handle_at	sys_name_to_handle_at
--- 
-2.43.0
-
+ 
+ /**
++ * batadv_vlan_id_valid() - check if vlan id is in valid batman-adv encoding
++ * @vid: the VLAN identifier
++ *
++ * Return: true when either no vlan is set or if VLAN is in correct range,
++ *  false otherwise
++ */
++static bool batadv_vlan_id_valid(unsigned short vid)
++{
++	unsigned short non_vlan = vid & ~(BATADV_VLAN_HAS_TAG | VLAN_VID_MASK);
++
++	if (vid == 0)
++		return true;
++
++	if (!(vid & BATADV_VLAN_HAS_TAG))
++		return false;
++
++	if (non_vlan)
++		return false;
++
++	return true;
++}
++
++/**
+  * batadv_orig_node_vlan_new() - search and possibly create an orig_node_vlan
+  *  object
+  * @orig_node: the originator serving the VLAN
+@@ -150,6 +174,9 @@ batadv_orig_node_vlan_new(struct batadv_
+ {
+ 	struct batadv_orig_node_vlan *vlan;
+ 
++	if (!batadv_vlan_id_valid(vid))
++		return NULL;
++
+ 	spin_lock_bh(&orig_node->vlan_list_lock);
+ 
+ 	/* first look if an object for this vid already exists */
 
 
 
