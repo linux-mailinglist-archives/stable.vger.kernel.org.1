@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-57378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D4B925E0D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:34:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6182A925D9C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EC5AB386C3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9357C1C22B2A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5949F176255;
-	Wed,  3 Jul 2024 11:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C191862BE;
+	Wed,  3 Jul 2024 11:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUXY6L15"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ttjK61O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158C261FDF;
-	Wed,  3 Jul 2024 11:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A7245945;
+	Wed,  3 Jul 2024 11:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004697; cv=none; b=mxHZjbfRDl26UNvQxHJabgvf24q4S39YA8QU5n2FCSMGVmr13pMWJ/z/mvoC6Kof0OHyWkM+repa4SnFmtWf8l9BIi1RDyAv26feVif+Eh8Fmnu2szB8XhvvaY29m4Ow8HrC41Gs3EolPSDnhjlKoIqj2McJ3mcN05P4AhjNqUg=
+	t=1720005697; cv=none; b=acnXBhImj07TXi9w6VtipjIHd/wrhFUKuab7ScljFtKOxsQN0RIo3bO7rwtfFUgvT0V/3Dkp5w0tGpMmBEgYQlCvZb3ywv6a59eWcv0kfg19tr0oO48X66HENJhfTeUxthWghMJKxvagIA+SLN5Sf6k8X3VpW5TOBrOYwju4iFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004697; c=relaxed/simple;
-	bh=glfdY6aTCSnt1OWTMlMDrqUbIxFV2DlXm5Tn5Yy+RLg=;
+	s=arc-20240116; t=1720005697; c=relaxed/simple;
+	bh=nchOhLu6Rp70ae6SpCC5IYQYBbk76aRr1yqF1HPnnYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h770rDSuuXHztlFUEhZo5vg+kLF6PsPHwnQy2WxW7eNQ1U1En8TNVzCKj1LL3brDejBLv/e5N+siRJP+XtFXY6r9IA8isEjOkyTbDwgDsk7ddnKmhDE7GXuFtLCygtNQJVVM65HnWdOsFHj4gO4DOLP7MImfKzvjecL9tKR8Ly4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUXY6L15; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B806C4AF0E;
-	Wed,  3 Jul 2024 11:04:56 +0000 (UTC)
+	 MIME-Version; b=SlVB0Llu1WxW1yAHVyn2zcKypqH1I/cyxWgIf106KRMSjMV6bOyNgP3DHLiWlaYzRd5YDnsPh+ZrTHc3whN5skeDFY26tkGOrix48G9IkPHaeSZU6jbbONs5pHsJ6Sd3ANcrn4ie1s+wB4hEzFIpCIeaHhxVudGVWXWgJYz+/Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ttjK61O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4708AC2BD10;
+	Wed,  3 Jul 2024 11:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004696;
-	bh=glfdY6aTCSnt1OWTMlMDrqUbIxFV2DlXm5Tn5Yy+RLg=;
+	s=korg; t=1720005697;
+	bh=nchOhLu6Rp70ae6SpCC5IYQYBbk76aRr1yqF1HPnnYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sUXY6L15T2iQpZCU7J3xMBUKkUF7hi2h+lR+uAA5uAZiRmCnYQL9tLw7b8DQufTrV
-	 wQ9921HR7PEwCZzz3WL1j3oTILoIPKEsSwprMojVWD/GDRtg8r6IkchhZj5eCZTubu
-	 DQzHC6/cW1GFK372fzoFE7MEHa97hsPUx6YKF2h4=
+	b=0ttjK61OqhTq5sLtu1cNrFOAqGZrlcWaUmLxoDyUMFJTfxWJKFbQrvUTCR13AE8Bi
+	 IHCV8rBdFfd9en98uAZW9Be9DibRb+hhKGIxnqYCKQNMG2vcRvJYeBzfOSNxuMAUNi
+	 zJcX1lxq6ox7jyD7IFPsyu3B01zE7JHtB6UsSezI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Charlene Liu <charlene.liu@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 121/290] drm/amd/display: Exit idle optimizations before HDCP execution
+Subject: [PATCH 5.15 166/356] ACPI: video: Add backlight=native quirk for Lenovo Slim 7 16ARH7
 Date: Wed,  3 Jul 2024 12:38:22 +0200
-Message-ID: <20240703102908.761106184@linuxfoundation.org>
+Message-ID: <20240703102919.385328656@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,90 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit f30a3bea92bdab398531129d187629fb1d28f598 ]
+[ Upstream commit c901f63dc142c48326931f164f787dfff69273d9 ]
 
-[WHY]
-PSP can access DCN registers during command submission and we need
-to ensure that DCN is not in PG before doing so.
+Lenovo Slim 7 16ARH7 is a machine with switchable graphics between AMD
+and Nvidia, and the backlight can't be adjusted properly unless
+acpi_backlight=native is passed.  Although nvidia-wmi-backlight is
+present and loaded, this doesn't work as expected at all.
 
-[HOW]
-Add a callback to DM to lock and notify DC for idle optimization exit.
-It can't be DC directly because of a potential race condition with the
-link protection thread and the rest of DM operation.
+For making it working as default, add the corresponding quirk entry
+with a DMI matching "LENOVO" "82UX".
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1217750
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c    | 10 ++++++++++
- drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h |  8 ++++++++
- 2 files changed, 18 insertions(+)
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
-index fa8aeec304ef4..c39cb4b6767cf 100644
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
-@@ -86,6 +86,14 @@ static uint8_t is_cp_desired_hdcp2(struct mod_hdcp *hdcp)
- 			!hdcp->connection.is_hdcp2_revoked;
- }
- 
-+static void exit_idle_optimizations(struct mod_hdcp *hdcp)
-+{
-+	struct mod_hdcp_dm *dm = &hdcp->config.dm;
-+
-+	if (dm->funcs.exit_idle_optimizations)
-+		dm->funcs.exit_idle_optimizations(dm->handle);
-+}
-+
- static enum mod_hdcp_status execution(struct mod_hdcp *hdcp,
- 		struct mod_hdcp_event_context *event_ctx,
- 		union mod_hdcp_transition_input *input)
-@@ -448,6 +456,8 @@ enum mod_hdcp_status mod_hdcp_process_event(struct mod_hdcp *hdcp,
- 	memset(&event_ctx, 0, sizeof(struct mod_hdcp_event_context));
- 	event_ctx.event = event;
- 
-+	exit_idle_optimizations(hdcp);
-+
- 	/* execute and transition */
- 	exec_status = execution(hdcp, &event_ctx, &hdcp->auth.trans_input);
- 	trans_status = transition(
-diff --git a/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h b/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
-index eed560eecbab4..fb195276fb704 100644
---- a/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
-+++ b/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
-@@ -143,6 +143,13 @@ struct mod_hdcp_ddc {
- 	} funcs;
- };
- 
-+struct mod_hdcp_dm {
-+	void *handle;
-+	struct {
-+		void (*exit_idle_optimizations)(void *handle);
-+	} funcs;
-+};
-+
- struct mod_hdcp_psp {
- 	void *handle;
- 	void *funcs;
-@@ -252,6 +259,7 @@ struct mod_hdcp_display_query {
- struct mod_hdcp_config {
- 	struct mod_hdcp_psp psp;
- 	struct mod_hdcp_ddc ddc;
-+	struct mod_hdcp_dm dm;
- 	uint8_t index;
- };
- 
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index a5cb9e1d48bcc..338e1f44906a9 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -341,6 +341,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "82BK"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_native,
++	 /* Lenovo Slim 7 16ARH7 */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "82UX"),
++		},
++	},
+ 	{
+ 	 .callback = video_detect_force_native,
+ 	 /* Lenovo ThinkPad X131e (3371 AMD version) */
 -- 
 2.43.0
 
