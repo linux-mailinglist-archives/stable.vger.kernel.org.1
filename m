@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-57331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04BD0925C12
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:14:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82F4A925D6F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:28:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3723A1C22309
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A67D1F21557
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D786178CEA;
-	Wed,  3 Jul 2024 11:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF691822ED;
+	Wed,  3 Jul 2024 11:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4f129fq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S6YjnPGS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA9616DECF;
-	Wed,  3 Jul 2024 11:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FE217B4FF;
+	Wed,  3 Jul 2024 11:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004558; cv=none; b=bwj0aLYYph4G6JNUua7FkJJPXG03jczzaaDiCDy01LU2nZHjrjw/D/eMv4nBwdXQv6VhsxPvOxUzmNpNxjHB4mdspb0/0bC1XfsVXG5EqbaRwF9BWtRYjcrJoLaQw7phGfk1beNknQULQELbSx7fKsHGn4z6wXIzlkNrT7+sq7I=
+	t=1720005571; cv=none; b=s9U3FYC2idQJs2F8t2cumRfrK9uAMAlbMt3KNQ7T8bxFdyW1Lz70tYAmAOn40oVpn7rgCCXML83+pD+BesWWx06pubwHT24JV/Bf/FxnAz4yVi2Q7liceofjuyCgoY78UQgv947TRToSKtUSMX0oEHVaNglZjhQF8obWnX4YJao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004558; c=relaxed/simple;
-	bh=ONXEDvZaH3oHxQDR/o6j04DlR7eazmBAkLx5KWzVGgg=;
+	s=arc-20240116; t=1720005571; c=relaxed/simple;
+	bh=qga/6QlYvAVlqFJTRp9PUJxWZ3nl6k7DKVfkIOCBxDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ONhiMdHxjND+ii8kJqTuK80n6KT8CsOQs5xxQKEHCHxxN+A3Bw5GkxKtFtIHn9jzOwC3L86sNTfXHq9lVyJnWLNzTDghUSWsi5DAJ0rwuPwv3HU7/mYXauNpjVP4b0K/Foo3G1nm5Imqb9XL3Cs1nV4+H+KNBd6ZMDshqv5x9SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4f129fq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A686FC2BD10;
-	Wed,  3 Jul 2024 11:02:37 +0000 (UTC)
+	 MIME-Version; b=TyLUpxzQMKmcR7Lw5NQj9jbkjhC0Om4j2Jx7D7KDfIxH/6u5qn1iiXMPDoJldWTIzBlhLFqvz/Q4qxs75Pf7AHyRp+VQ+pD2+QfZyszNYecyJpBQO60BqOW+UMWcQCpS4w/JEnzp5F6cJjJAM7riuSIgGhspVI39MgZFU3/45D4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S6YjnPGS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC27C4AF10;
+	Wed,  3 Jul 2024 11:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004558;
-	bh=ONXEDvZaH3oHxQDR/o6j04DlR7eazmBAkLx5KWzVGgg=;
+	s=korg; t=1720005571;
+	bh=qga/6QlYvAVlqFJTRp9PUJxWZ3nl6k7DKVfkIOCBxDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e4f129fq5Lav9O/Itmr01Fq6N4mZ68YbHrwSenbZe1/J9kmh4OPU/RSbi9qRXHMZo
-	 c8IVOxybHVJsO0FIZeVtlVXU7/HYyv13Y9qSNebK7WIaeNT7LEjDvbDrQRaEzcntGP
-	 YO9t+l0T/SoxFUw5l5Bj/1SIZDKK3ynE5+yxSXDU=
+	b=S6YjnPGSZwjDUGoQ7r9sfLTfq9Iu32p7pQZoWkQtzTWfibscxfk7r6ypcBUrSbGJr
+	 0RURYZ2RyX+Injb4RLzNbDBXTZtheyD2N/oshdsHmyiBI4xlXQbZwJce7pN0MK2UG6
+	 5EjzpGS95+pKFUQuYiDI9BLL/fubJ3O/jelxr5tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rik van Riel <riel@surriel.com>,
-	Baoquan He <bhe@redhat.com>,
-	Dave Young <dyoung@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
+	Su Yue <glass.su@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Jun Piao <piaojun@huawei.com>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Mark Fasheh <mark@fasheh.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 081/290] fs/proc: fix softlockup in __read_vmcore
+Subject: [PATCH 5.15 126/356] ocfs2: fix races between hole punching and AIO+DIO
 Date: Wed,  3 Jul 2024 12:37:42 +0200
-Message-ID: <20240703102907.255758616@linuxfoundation.org>
+Message-ID: <20240703102917.864163132@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +68,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Su Yue <glass.su@suse.com>
 
-commit 5cbcb62dddf5346077feb82b7b0c9254222d3445 upstream.
+commit 952b023f06a24b2ad6ba67304c4c84d45bea2f18 upstream.
 
-While taking a kernel core dump with makedumpfile on a larger system,
-softlockup messages often appear.
+After commit "ocfs2: return real error code in ocfs2_dio_wr_get_block",
+fstests/generic/300 become from always failed to sometimes failed:
 
-While softlockup warnings can be harmless, they can also interfere with
-things like RCU freeing memory, which can be problematic when the kdump
-kexec image is configured with as little memory as possible.
+========================================================================
+[  473.293420 ] run fstests generic/300
 
-Avoid the softlockup, and give things like work items and RCU a chance to
-do their thing during __read_vmcore by adding a cond_resched.
+[  475.296983 ] JBD2: Ignoring recovery information on journal
+[  475.302473 ] ocfs2: Mounting device (253,1) on (node local, slot 0) with ordered data mode.
+[  494.290998 ] OCFS2: ERROR (device dm-1): ocfs2_change_extent_flag: Owner 5668 has an extent at cpos 78723 which can no longer be found
+[  494.291609 ] On-disk corruption discovered. Please run fsck.ocfs2 once the filesystem is unmounted.
+[  494.292018 ] OCFS2: File system is now read-only.
+[  494.292224 ] (kworker/19:11,2628,19):ocfs2_mark_extent_written:5272 ERROR: status = -30
+[  494.292602 ] (kworker/19:11,2628,19):ocfs2_dio_end_io_write:2374 ERROR: status = -3
+fio: io_u error on file /mnt/scratch/racer: Read-only file system: write offset=460849152, buflen=131072
+=========================================================================
 
-Link: https://lkml.kernel.org/r/20240507091858.36ff767f@imladris.surriel.com
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Acked-by: Baoquan He <bhe@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
+In __blockdev_direct_IO, ocfs2_dio_wr_get_block is called to add unwritten
+extents to a list.  extents are also inserted into extent tree in
+ocfs2_write_begin_nolock.  Then another thread call fallocate to puch a
+hole at one of the unwritten extent.  The extent at cpos was removed by
+ocfs2_remove_extent().  At end io worker thread, ocfs2_search_extent_list
+found there is no such extent at the cpos.
+
+    T1                        T2                T3
+                              inode lock
+                                ...
+                                insert extents
+                                ...
+                              inode unlock
+ocfs2_fallocate
+ __ocfs2_change_file_space
+  inode lock
+  lock ip_alloc_sem
+  ocfs2_remove_inode_range inode
+   ocfs2_remove_btree_range
+    ocfs2_remove_extent
+    ^---remove the extent at cpos 78723
+  ...
+  unlock ip_alloc_sem
+  inode unlock
+                                       ocfs2_dio_end_io
+                                        ocfs2_dio_end_io_write
+                                         lock ip_alloc_sem
+                                         ocfs2_mark_extent_written
+                                          ocfs2_change_extent_flag
+                                           ocfs2_search_extent_list
+                                           ^---failed to find extent
+                                          ...
+                                          unlock ip_alloc_sem
+
+In most filesystems, fallocate is not compatible with racing with AIO+DIO,
+so fix it by adding to wait for all dio before fallocate/punch_hole like
+ext4.
+
+Link: https://lkml.kernel.org/r/20240408082041.20925-3-glass.su@suse.com
+Fixes: b25801038da5 ("ocfs2: Support xfs style space reservation ioctls")
+Signed-off-by: Su Yue <glass.su@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/vmcore.c |    2 ++
+ fs/ocfs2/file.c |    2 ++
  1 file changed, 2 insertions(+)
 
---- a/fs/proc/vmcore.c
-+++ b/fs/proc/vmcore.c
-@@ -373,6 +373,8 @@ static ssize_t __read_vmcore(char *buffe
- 		/* leave now if filled buffer already */
- 		if (buflen == 0)
- 			return acc;
-+
-+		cond_resched();
- 	}
+--- a/fs/ocfs2/file.c
++++ b/fs/ocfs2/file.c
+@@ -1940,6 +1940,8 @@ static int __ocfs2_change_file_space(str
  
- 	list_for_each_entry(m, &vmcore_list, list) {
+ 	inode_lock(inode);
+ 
++	/* Wait all existing dio workers, newcomers will block on i_rwsem */
++	inode_dio_wait(inode);
+ 	/*
+ 	 * This prevents concurrent writes on other nodes
+ 	 */
 
 
 
