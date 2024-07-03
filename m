@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-57007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45AE3925A25
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:55:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B04C925E32
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1A3C1F222A2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75FB41C2337E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8A41849D8;
-	Wed,  3 Jul 2024 10:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8170E173345;
+	Wed,  3 Jul 2024 11:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFLTtI3B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D35nsL0G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F78F1849CF;
-	Wed,  3 Jul 2024 10:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E08313B280;
+	Wed,  3 Jul 2024 11:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003556; cv=none; b=Cbv+CrcgT6NkUZ/MvpN51/MujmAcMJt0jbhENdpc0ne1be4fDT37esRAg63AE91AvJfJ+V0bNmJi8VMs17yJx8IUs0XSiavWF+x9Zh3yGNXLY9PLuf3sBV0Rf1bhn9L5XUv8Tb4epWM7bRJb+RWWc1kOpPBwMU0GxoXqVEhMOO4=
+	t=1720006037; cv=none; b=hztavizj2+KHlGZXovMpABoN1RRTN+k1wsfiD3EKLBlwETM9cdFDr29VThQLl4lIt+umrN/blG0J2depkyVVuViyjKRNdkyuleF+i3f0VvjiOVu2tzEJWYd4sQKLbXtxGYVzpm22xgTKGUeFWwVLiBnBdztckCG7DvEsYRwxJ2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003556; c=relaxed/simple;
-	bh=SKRuPrun2IlBumS4bNYFuaul5Ou3wDhYeD7zET5xyOs=;
+	s=arc-20240116; t=1720006037; c=relaxed/simple;
+	bh=C1pIbqHC1intFVSYAl9r+dZ385p3hqfrzZF7o9m9lhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aR89VrqRzeSUEPEFwWZNcWG4icE7dDicmajAIgIDzxIO3z6eScBVdv6mFQAaMHvIzJ3BMuU56E5TtaC9jrE3OTaRdh/l1e4mO61YmtVOkqnw6jyf5qCjwA8waSAYcYATR5aoJqU1zsvoYsZ3BO78zpmmfnHzV0WPBX2gGhKbd0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pFLTtI3B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF4B2C2BD10;
-	Wed,  3 Jul 2024 10:45:55 +0000 (UTC)
+	 MIME-Version; b=Ub8I2GDaigstLevj0hNYjW1FzB9pNLT/pL5JoFlllrT8SFe/Zy+WKVEeSIjckJ93iBY3IvkrIO2aXO+F3EjXg317CUBUU8jCN8vvj3BeYAU6OOhaZWkMV7utUhlozfuYo85j3QxwPjbvMLYALU5S3zM8YEIXkl+bbR+YBjk39Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D35nsL0G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74250C2BD10;
+	Wed,  3 Jul 2024 11:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003556;
-	bh=SKRuPrun2IlBumS4bNYFuaul5Ou3wDhYeD7zET5xyOs=;
+	s=korg; t=1720006036;
+	bh=C1pIbqHC1intFVSYAl9r+dZ385p3hqfrzZF7o9m9lhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pFLTtI3BLgtjOZ84RlvvpRdmZrT4jWQi5TczhZaB3h4yF1pf+BEIopxuhzFZ/u1p4
-	 Npfbu58p8Bg6vO721cer8CR3qLWAFvDLp3A9SpMp9Vx5rsvMLkvqSQI5czuJMxbWYe
-	 8Ev4CMK2xmI1UJd+PrtsBaBqxumyEjA9gp2bPNEY=
+	b=D35nsL0GbHD2ieKneN+fy3KT1YgGRYAHTVT2sAoUYZobcnJAzBJdfnnReMIpd2W9l
+	 prbXm94PUGLmKT5crtYXPb2WrboRFEebD4jg/Fc0JKTh8PfvN5J0O1EhP/twj3OM/V
+	 2beIVMsvZE43DSH4p08iDlkOTz/Vjt51JRR15if0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Matthias Maennich <maennich@google.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 086/139] tracing: Add MODULE_DESCRIPTION() to preemptirq_delay_test
-Date: Wed,  3 Jul 2024 12:39:43 +0200
-Message-ID: <20240703102833.688485967@linuxfoundation.org>
+Subject: [PATCH 5.15 248/356] kheaders: explicitly define file modes for archived headers
+Date: Wed,  3 Jul 2024 12:39:44 +0200
+Message-ID: <20240703102922.500399351@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+From: Matthias Maennich <maennich@google.com>
 
-[ Upstream commit 23748e3e0fbfe471eff5ce439921629f6a427828 ]
+[ Upstream commit 3bd27a847a3a4827a948387cc8f0dbc9fa5931d5 ]
 
-Fix the 'make W=1' warning:
+Build environments might be running with different umask settings
+resulting in indeterministic file modes for the files contained in
+kheaders.tar.xz. The file itself is served with 444, i.e. world
+readable. Archive the files explicitly with 744,a+X to improve
+reproducibility across build environments.
 
-WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/trace/preemptirq_delay_test.o
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240518-md-preemptirq_delay_test-v1-1-387d11b30d85@quicinc.com
+--mode=0444 is not suitable as directories need to be executable. Also,
+444 makes it hard to delete all the readonly files after extraction.
 
 Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: f96e8577da10 ("lib: Add module for testing preemptoff/irqsoff latency tracers")
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Matthias Maennich <maennich@google.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/preemptirq_delay_test.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/gen_kheaders.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/preemptirq_delay_test.c b/kernel/trace/preemptirq_delay_test.c
-index d8765c952fab3..4692c87d4b69c 100644
---- a/kernel/trace/preemptirq_delay_test.c
-+++ b/kernel/trace/preemptirq_delay_test.c
-@@ -69,4 +69,5 @@ static void __exit preemptirq_delay_exit(void)
+diff --git a/kernel/gen_kheaders.sh b/kernel/gen_kheaders.sh
+index 5ab483a3ee5a5..c618e37ccea98 100755
+--- a/kernel/gen_kheaders.sh
++++ b/kernel/gen_kheaders.sh
+@@ -82,7 +82,7 @@ find $cpio_dir -type f -print0 |
  
- module_init(preemptirq_delay_init)
- module_exit(preemptirq_delay_exit)
-+MODULE_DESCRIPTION("Preempt / IRQ disable delay thread to test latency tracers");
- MODULE_LICENSE("GPL v2");
+ # Create archive and try to normalize metadata for reproducibility.
+ tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
+-    --owner=0 --group=0 --sort=name --numeric-owner \
++    --owner=0 --group=0 --sort=name --numeric-owner --mode=u=rw,go=r,a+X \
+     -I $XZ -cf $tarfile -C $cpio_dir/ . > /dev/null
+ 
+ echo $headers_md5 > kernel/kheaders.md5
 -- 
 2.43.0
 
