@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-57787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A7B5925E07
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:33:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D932B925F91
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:03:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F22B1F24ACA
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:33:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2E48B33069
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:07:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF47A178CEC;
-	Wed,  3 Jul 2024 11:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C325319B591;
+	Wed,  3 Jul 2024 10:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uw5ZrDUo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqgh+7ZM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD35176ADB;
-	Wed,  3 Jul 2024 11:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810DD19B3CA;
+	Wed,  3 Jul 2024 10:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005933; cv=none; b=ttRBrvRzlDRByl/0FfLDEXXZWQZkMnA2LexHsyBgkJg4xu1yQnNJUX4JKVuIEXsGF2xNgz+/k6mB4aDM0vCVAKTDmlfPi44RYBkYgKzLkP2tqH1kFxLuhOVPrtZknvye49C6bVKe626uG4qsSFYJpQ10tKkOR+8irRzaZck1exI=
+	t=1720004089; cv=none; b=uzffIT3w0hBiUbMpySfaaggtw/j6+uQ+RuIeLrx16LP/D5l5Ka93iIWY9zAiRsTSlyy9k7GOBPbHt1mOAjveOe5H5sAivHUVg713KhWwihqmoxuSM5/fVrPZu5GUlN9EIwpcuXEaARervC1S6Vg7bhT14vnMoSIlT2GXVrDomvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005933; c=relaxed/simple;
-	bh=dfYO/zW7jeZiHF3veyIN8bot78shSLWm2DCODA/xsgA=;
+	s=arc-20240116; t=1720004089; c=relaxed/simple;
+	bh=67eTawJCE3zOOtEHK8SIFpXbPrWxS5pKVEzp86cHxM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8ZZ7tyBYXEWgDt1MkLxr2aigOaAOLMODVOXFnGLEqCKkBxcWmzbIXdzKUJ8AUGsLz+N9fG68lT6o7GwGMwCVzfEyjO7A2LTlX1+3/Cc9DPQF+3INUVFmwnZBTxY/e3SENeD87eb21db2yEu2s3jbaIuMGlh/HKmZGnaZx96tiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uw5ZrDUo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2995C2BD10;
-	Wed,  3 Jul 2024 11:25:32 +0000 (UTC)
+	 MIME-Version; b=VR0J6i6l2Btg7zrRrO2aimzvMlgJ949oxJKoFuK4Fq1SdMpl87aqOQDUKIeflH2pg9RZnvL7Wz/TPoxHabJ9HrAvgdu6QKvxD8e1cNXHFU0uArJmMW6btg1Y+fQJe+xrkzuGVG3p8Aqs5BUWsBk0jjIn/BOCduyRsMHr0iJcfl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqgh+7ZM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3501C2BD10;
+	Wed,  3 Jul 2024 10:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005933;
-	bh=dfYO/zW7jeZiHF3veyIN8bot78shSLWm2DCODA/xsgA=;
+	s=korg; t=1720004089;
+	bh=67eTawJCE3zOOtEHK8SIFpXbPrWxS5pKVEzp86cHxM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uw5ZrDUoE1QO6LM2WerWQxI9xJ9VbF3v7Z5dx2DjfzT+SryJcE5nFiPrFyg7LCrUi
-	 cr9zPVaox8laNVtp6hG2TwGVXfdZ6B6MN2hmjmYc4k5nXtEHbTzdpVy3p0dQBI8X/a
-	 HYQT8zmjLZ3JvIcn8exufwHQFPUYQyrIqYqXZzFk=
+	b=dqgh+7ZMAIFWFTuj2L3jb/Y6NdWTbUPx3m5HsDPtQIDZR8rbtaO0lYLrtWnIECg9u
+	 T/2HzLDmcerZFFndaA1lARm2vL5gNEBLYvJTkNfi2hXcmQ48yRTbi5cSaE74o01qXt
+	 fZP0IehY7dyIdw9lurruyz8694be4B1WJdJPcy1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Tony Luck <tony.luck@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	stable+noautosel@kernel.org
-Subject: [PATCH 5.15 243/356] x86/cpu: Fix x86_match_cpu() to match just X86_VENDOR_INTEL
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Allison Henderson <allison.henderson@oracle.com>,
+	Chuck Lever III <chuck.lever@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 118/189] gcov: add support for GCC 14
 Date: Wed,  3 Jul 2024 12:39:39 +0200
-Message-ID: <20240703102922.306727728@linuxfoundation.org>
+Message-ID: <20240703102845.950455137@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,180 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Luck <tony.luck@intel.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 93022482b2948a9a7e9b5a2bb685f2e1cb4c3348 ]
+commit c1558bc57b8e5b4da5d821537cd30e2e660861d8 upstream.
 
-Code in v6.9 arch/x86/kernel/smpboot.c was changed by commit
+Using gcov on kernels compiled with GCC 14 results in truncated 16-byte
+long .gcda files with no usable data.  To fix this, update GCOV_COUNTERS
+to match the value defined by GCC 14.
 
-  4db64279bc2b ("x86/cpu: Switch to new Intel CPU model defines") from:
+Tested with GCC versions 14.1.0 and 13.2.0.
 
-  static const struct x86_cpu_id intel_cod_cpu[] = {
-          X86_MATCH_INTEL_FAM6_MODEL(HASWELL_X, 0),       /* COD */
-          X86_MATCH_INTEL_FAM6_MODEL(BROADWELL_X, 0),     /* COD */
-          X86_MATCH_INTEL_FAM6_MODEL(ANY, 1),             /* SNC */	<--- 443
-          {}
-  };
-
-  static bool match_llc(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
-  {
-          const struct x86_cpu_id *id = x86_match_cpu(intel_cod_cpu);
-
-to:
-
-  static const struct x86_cpu_id intel_cod_cpu[] = {
-           X86_MATCH_VFM(INTEL_HASWELL_X,   0),    /* COD */
-           X86_MATCH_VFM(INTEL_BROADWELL_X, 0),    /* COD */
-           X86_MATCH_VFM(INTEL_ANY,         1),    /* SNC */
-           {}
-   };
-
-  static bool match_llc(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
-  {
-          const struct x86_cpu_id *id = x86_match_cpu(intel_cod_cpu);
-
-On an Intel CPU with SNC enabled this code previously matched the rule on line
-443 to avoid printing messages about insane cache configuration.  The new code
-did not match any rules.
-
-Expanding the macros for the intel_cod_cpu[] array shows that the old is
-equivalent to:
-
-  static const struct x86_cpu_id intel_cod_cpu[] = {
-  [0] = { .vendor = 0, .family = 6, .model = 0x3F, .steppings = 0, .feature = 0, .driver_data = 0 },
-  [1] = { .vendor = 0, .family = 6, .model = 0x4F, .steppings = 0, .feature = 0, .driver_data = 0 },
-  [2] = { .vendor = 0, .family = 6, .model = 0x00, .steppings = 0, .feature = 0, .driver_data = 1 },
-  [3] = { .vendor = 0, .family = 0, .model = 0x00, .steppings = 0, .feature = 0, .driver_data = 0 }
-  }
-
-while the new code expands to:
-
-  static const struct x86_cpu_id intel_cod_cpu[] = {
-  [0] = { .vendor = 0, .family = 6, .model = 0x3F, .steppings = 0, .feature = 0, .driver_data = 0 },
-  [1] = { .vendor = 0, .family = 6, .model = 0x4F, .steppings = 0, .feature = 0, .driver_data = 0 },
-  [2] = { .vendor = 0, .family = 0, .model = 0x00, .steppings = 0, .feature = 0, .driver_data = 1 },
-  [3] = { .vendor = 0, .family = 0, .model = 0x00, .steppings = 0, .feature = 0, .driver_data = 0 }
-  }
-
-Looking at the code for x86_match_cpu():
-
-  const struct x86_cpu_id *x86_match_cpu(const struct x86_cpu_id *match)
-  {
-           const struct x86_cpu_id *m;
-           struct cpuinfo_x86 *c = &boot_cpu_data;
-
-           for (m = match;
-                m->vendor | m->family | m->model | m->steppings | m->feature;
-                m++) {
-       		...
-           }
-           return NULL;
-
-it is clear that there was no match because the ANY entry in the table (array
-index 2) is now the loop termination condition (all of vendor, family, model,
-steppings, and feature are zero).
-
-So this code was working before because the "ANY" check was looking for any
-Intel CPU in family 6. But fails now because the family is a wild card. So the
-root cause is that x86_match_cpu() has never been able to match on a rule with
-just X86_VENDOR_INTEL and all other fields set to wildcards.
-
-Add a new flags field to struct x86_cpu_id that has a bit set to indicate that
-this entry in the array is valid. Update X86_MATCH*() macros to set that bit.
-Change the end-marker check in x86_match_cpu() to just check the flags field
-for this bit.
-
-Backporter notes: The commit in Fixes is really the one that is broken:
-you can't have m->vendor as part of the loop termination conditional in
-x86_match_cpu() because it can happen - as it has happened above
-- that that whole conditional is 0 albeit vendor == 0 is a valid case
-- X86_VENDOR_INTEL is 0.
-
-However, the only case where the above happens is the SNC check added by
-4db64279bc2b1 so you only need this fix if you have backported that
-other commit
-
-  4db64279bc2b ("x86/cpu: Switch to new Intel CPU model defines")
-
-Fixes: 644e9cbbe3fc ("Add driver auto probing for x86 features v4")
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Suggested-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable+noautosel@kernel.org> # see above
-Link: https://lore.kernel.org/r/20240517144312.GBZkdtAOuJZCvxhFbJ@fat_crate.local
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240610092743.1609845-1-oberpar@linux.ibm.com
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Reported-by: Allison Henderson <allison.henderson@oracle.com>
+Reported-by: Chuck Lever III <chuck.lever@oracle.com>
+Tested-by: Chuck Lever <chuck.lever@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/cpu_device_id.h | 5 +++++
- arch/x86/kernel/cpu/match.c          | 4 +---
- include/linux/mod_devicetable.h      | 2 ++
- 3 files changed, 8 insertions(+), 3 deletions(-)
+ kernel/gcov/gcc_4_7.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/cpu_device_id.h b/arch/x86/include/asm/cpu_device_id.h
-index dd7b9463696f5..e8e3dbe7f1730 100644
---- a/arch/x86/include/asm/cpu_device_id.h
-+++ b/arch/x86/include/asm/cpu_device_id.h
-@@ -53,6 +53,9 @@
- #define X86_CENTAUR_FAM6_C7_D		0xd
- #define X86_CENTAUR_FAM6_NANO		0xf
+--- a/kernel/gcov/gcc_4_7.c
++++ b/kernel/gcov/gcc_4_7.c
+@@ -19,7 +19,9 @@
+ #include <linux/vmalloc.h>
+ #include "gcov.h"
  
-+/* x86_cpu_id::flags */
-+#define X86_CPU_ID_FLAG_ENTRY_VALID	BIT(0)
-+
- #define X86_STEPPINGS(mins, maxs)    GENMASK(maxs, mins)
- /**
-  * X86_MATCH_VENDOR_FAM_MODEL_STEPPINGS_FEATURE - Base macro for CPU matching
-@@ -79,6 +82,7 @@
- 	.model		= _model,					\
- 	.steppings	= _steppings,					\
- 	.feature	= _feature,					\
-+	.flags		= X86_CPU_ID_FLAG_ENTRY_VALID,			\
- 	.driver_data	= (unsigned long) _data				\
- }
- 
-@@ -89,6 +93,7 @@
- 	.model		= _model,					\
- 	.steppings	= _steppings,					\
- 	.feature	= _feature,					\
-+	.flags		= X86_CPU_ID_FLAG_ENTRY_VALID,			\
- 	.driver_data	= (unsigned long) _data				\
- }
- 
-diff --git a/arch/x86/kernel/cpu/match.c b/arch/x86/kernel/cpu/match.c
-index ad6776081e60d..ae71b8ef909c9 100644
---- a/arch/x86/kernel/cpu/match.c
-+++ b/arch/x86/kernel/cpu/match.c
-@@ -39,9 +39,7 @@ const struct x86_cpu_id *x86_match_cpu(const struct x86_cpu_id *match)
- 	const struct x86_cpu_id *m;
- 	struct cpuinfo_x86 *c = &boot_cpu_data;
- 
--	for (m = match;
--	     m->vendor | m->family | m->model | m->steppings | m->feature;
--	     m++) {
-+	for (m = match; m->flags & X86_CPU_ID_FLAG_ENTRY_VALID; m++) {
- 		if (m->vendor != X86_VENDOR_ANY && c->x86_vendor != m->vendor)
- 			continue;
- 		if (m->family != X86_FAMILY_ANY && c->x86 != m->family)
-diff --git a/include/linux/mod_devicetable.h b/include/linux/mod_devicetable.h
-index ae2e75d15b219..63f804574c4e9 100644
---- a/include/linux/mod_devicetable.h
-+++ b/include/linux/mod_devicetable.h
-@@ -676,6 +676,8 @@ struct x86_cpu_id {
- 	__u16 model;
- 	__u16 steppings;
- 	__u16 feature;	/* bit index */
-+	/* Solely for kernel-internal use: DO NOT EXPORT to userspace! */
-+	__u16 flags;
- 	kernel_ulong_t driver_data;
- };
- 
--- 
-2.43.0
-
+-#if (__GNUC__ >= 10)
++#if (__GNUC__ >= 14)
++#define GCOV_COUNTERS			9
++#elif (__GNUC__ >= 10)
+ #define GCOV_COUNTERS			8
+ #elif (__GNUC__ >= 7)
+ #define GCOV_COUNTERS			9
 
 
 
