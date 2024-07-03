@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-57071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1361925AC6
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09CA3925D8A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B16D929EBC7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BF1AB38531
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C142D16F0FB;
-	Wed,  3 Jul 2024 10:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9F017C22B;
+	Wed,  3 Jul 2024 11:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmH3J0km"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AK4V0+Wf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8047C13D61B;
-	Wed,  3 Jul 2024 10:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CB861FDF;
+	Wed,  3 Jul 2024 11:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003755; cv=none; b=qjpfm22HAIuxQKmW4nQD6PRMn1zrTG5qIEBdu3LKPCONoBmLyCVHigGttxKeWmOsDFR/cQlWSdGfMjQsujjpDthgj2U1y88asxRGuuB0G1FyapdBqjA8RfBrSoxj8lZ+Z4GFr6Z9Bh8XZBYoau7SlN9L0uUdD3FckqAMb55hUMw=
+	t=1720004682; cv=none; b=I2kk1sxHFP1BfgVDTYsY+XCfUMzNU3qdQEMdbBekmXeEcqL/WbNIiUizibXofP3WOKLqDZQ13l1a0Ajmc+Piu8eF2eFUFJGUvme0ppmo1OTf45s7ImNLm4OqsiiDELQtlO+Olt3XSM9hZ11VTzMfWQdhLiDNbI10pkWM2EW/xZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003755; c=relaxed/simple;
-	bh=OB8ltOrF2bGfiVz7A5tXhfR8/mlnf6sb9U9w2IzQcgQ=;
+	s=arc-20240116; t=1720004682; c=relaxed/simple;
+	bh=FWQlCJATcCRHLXyjERkuwiPy20XWvOL875rU4Wmt1eE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W9jAa9rGb9p7/7L66tt77pNl4wx0IRg6oQJyiH2ysnkMRGjzRFMLSJS/EpcF0N+pxIlE5gfS2Ki0+2/hCIB6J9GObqGPzBiRc5eYJl6jDsI/unDK2IoudBvX0Eyq1gX+u54rOiMC12QnyV4Sr9z7CcM6GzB2p2lQ7hqj+j8iF6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmH3J0km; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B484C32781;
-	Wed,  3 Jul 2024 10:49:14 +0000 (UTC)
+	 MIME-Version; b=JlTvHR6plE9VOBJqLr9zKGMKQpmWHJQb5Tm4efym9tzc5Y61Tq9WmZLAy5vkuGjbgwCdNoFKArDDflWWF2RXUhuXWnb/wl7GG2wzlilQq+WfjKcYw75/JvwjQeBecrwx1CJlJthZN0L6vpJ+WQMtSZnfj2khg493nr/0Ad7KaAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AK4V0+Wf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83153C2BD10;
+	Wed,  3 Jul 2024 11:04:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003755;
-	bh=OB8ltOrF2bGfiVz7A5tXhfR8/mlnf6sb9U9w2IzQcgQ=;
+	s=korg; t=1720004681;
+	bh=FWQlCJATcCRHLXyjERkuwiPy20XWvOL875rU4Wmt1eE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VmH3J0kmfDrdqWXv5Mi7rosnVPloa01mVaOR+91Td9srxMByLMcnJocDYoP/MzUjm
-	 JAR1eoHw/sH9idGh27WufARyt84ihqnrZgCvObT5ovEBe4arcqd42tZlg9e2mUXz0x
-	 y54JkaFqOPLJNcjvzivJiFQJJzQwzlB/CO52kbIY=
+	b=AK4V0+WfsiCjs3HA21YBC4lzAzi/Bgv5WQxYScp6N5Z1bdzVHgErh/7nGeqVJ8+9P
+	 tmp+Tx5Vm83ZTGxfXmK8y6Ste+3bkn+iO17nuHWr/PEYUo+p9znfQMLjVo2X2XaJXI
+	 vcloPslX3sJaXoGGDLgF7y/abO2B2D8WNIl9kU5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Noam Rathaus <noamr@ssd-disclosure.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 012/189] net/sched: taprio: always validate TCA_TAPRIO_ATTR_PRIOMAP
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 092/290] nilfs2: fix potential kernel bug due to lack of writeback flag waiting
 Date: Wed,  3 Jul 2024 12:37:53 +0200
-Message-ID: <20240703102841.966388192@linuxfoundation.org>
+Message-ID: <20240703102907.664922693@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit f921a58ae20852d188f70842431ce6519c4fdc36 ]
+commit a4ca369ca221bb7e06c725792ac107f0e48e82e7 upstream.
 
-If one TCA_TAPRIO_ATTR_PRIOMAP attribute has been provided,
-taprio_parse_mqprio_opt() must validate it, or userspace
-can inject arbitrary data to the kernel, the second time
-taprio_change() is called.
+Destructive writes to a block device on which nilfs2 is mounted can cause
+a kernel bug in the folio/page writeback start routine or writeback end
+routine (__folio_start_writeback in the log below):
 
-First call (with valid attributes) sets dev->num_tc
-to a non zero value.
+ kernel BUG at mm/page-writeback.c:3070!
+ Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+ ...
+ RIP: 0010:__folio_start_writeback+0xbaa/0x10e0
+ Code: 25 ff 0f 00 00 0f 84 18 01 00 00 e8 40 ca c6 ff e9 17 f6 ff ff
+  e8 36 ca c6 ff 4c 89 f7 48 c7 c6 80 c0 12 84 e8 e7 b3 0f 00 90 <0f>
+  0b e8 1f ca c6 ff 4c 89 f7 48 c7 c6 a0 c6 12 84 e8 d0 b3 0f 00
+ ...
+ Call Trace:
+  <TASK>
+  nilfs_segctor_do_construct+0x4654/0x69d0 [nilfs2]
+  nilfs_segctor_construct+0x181/0x6b0 [nilfs2]
+  nilfs_segctor_thread+0x548/0x11c0 [nilfs2]
+  kthread+0x2f0/0x390
+  ret_from_fork+0x4b/0x80
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
 
-Second call (with arbitrary mqprio attributes)
-returns early from taprio_parse_mqprio_opt()
-and bad things can happen.
+This is because when the log writer starts a writeback for segment summary
+blocks or a super root block that use the backing device's page cache, it
+does not wait for the ongoing folio/page writeback, resulting in an
+inconsistent writeback state.
 
-Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
-Reported-by: Noam Rathaus <noamr@ssd-disclosure.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://lore.kernel.org/r/20240604181511.769870-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this issue by waiting for ongoing writebacks when putting
+folios/pages on the backing device into writeback state.
+
+Link: https://lkml.kernel.org/r/20240530141556.4411-1-konishi.ryusuke@gmail.com
+Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_taprio.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ fs/nilfs2/segment.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index e4c4d23a1b535..7b896be009d55 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -925,16 +925,13 @@ static int taprio_parse_mqprio_opt(struct net_device *dev,
- {
- 	int i, j;
- 
--	if (!qopt && !dev->num_tc) {
--		NL_SET_ERR_MSG(extack, "'mqprio' configuration is necessary");
--		return -EINVAL;
--	}
--
--	/* If num_tc is already set, it means that the user already
--	 * configured the mqprio part
--	 */
--	if (dev->num_tc)
-+	if (!qopt) {
-+		if (!dev->num_tc) {
-+			NL_SET_ERR_MSG(extack, "'mqprio' configuration is necessary");
-+			return -EINVAL;
-+		}
- 		return 0;
-+	}
- 
- 	/* Verify num_tc is not out of max range */
- 	if (qopt->num_tc > TC_MAX_QUEUE) {
--- 
-2.43.0
-
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -1697,6 +1697,7 @@ static void nilfs_segctor_prepare_write(
+ 			if (bh->b_page != bd_page) {
+ 				if (bd_page) {
+ 					lock_page(bd_page);
++					wait_on_page_writeback(bd_page);
+ 					clear_page_dirty_for_io(bd_page);
+ 					set_page_writeback(bd_page);
+ 					unlock_page(bd_page);
+@@ -1710,6 +1711,7 @@ static void nilfs_segctor_prepare_write(
+ 			if (bh == segbuf->sb_super_root) {
+ 				if (bh->b_page != bd_page) {
+ 					lock_page(bd_page);
++					wait_on_page_writeback(bd_page);
+ 					clear_page_dirty_for_io(bd_page);
+ 					set_page_writeback(bd_page);
+ 					unlock_page(bd_page);
+@@ -1726,6 +1728,7 @@ static void nilfs_segctor_prepare_write(
+ 	}
+ 	if (bd_page) {
+ 		lock_page(bd_page);
++		wait_on_page_writeback(bd_page);
+ 		clear_page_dirty_for_io(bd_page);
+ 		set_page_writeback(bd_page);
+ 		unlock_page(bd_page);
 
 
 
