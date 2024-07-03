@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-57606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 784E4925D32
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA9AA925C38
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:16:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3050C1F21B01
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68089282156
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A4317C9F8;
-	Wed,  3 Jul 2024 11:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD52E18F2E6;
+	Wed,  3 Jul 2024 11:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMNNhKjo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcTgH3Pe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C08A173334;
-	Wed,  3 Jul 2024 11:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C911157E62;
+	Wed,  3 Jul 2024 11:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005388; cv=none; b=ikQtrexSN87SXo05O1Uhr6bDTatm2ehLTmITdd9MYZHnzyzZEoLZF9bJxLdl0tgUX3mU9V6cNz3r4sP1SeqjwjaZL4Dl29UIvCcZB8EuCCwLjKRrc+wTDZiWoJlwOf/IDe0nVWw1o9gcn5QI5DTlCCUsJPUcOSRfdaNxMhi0Jtk=
+	t=1720004425; cv=none; b=rtB39O6CmBxjTUR4l5beG/keqXzYYdIzHwSDGbgquyUQlKgqEwzJvPl+iZUa0XK7Ya48QRUEFCAxhCU+lR2GOxRFZfzNmQUNMmOP6JNWQDidOiPA1ltJTZYK2sp2zvZn5hTe5OwLywzvwHoc48xb0u1r3K+HmKtuKJjeeBXqqXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005388; c=relaxed/simple;
-	bh=d4/cFBEAK2LH77jBc0HPQKLv/Hf4rt/4UjtPXjANk70=;
+	s=arc-20240116; t=1720004425; c=relaxed/simple;
+	bh=KKzjblYYinsoxFmV5/qDldKqE6oXsyIccq58GzC0keQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EI80UY0qMqZeGWRiP9Xp7WuHNZGv2IgTfE/kfwZhE/oGOSEqbvXFq7SziGxV9gW6t7c71ba8j0Z4DpO6CngLS3kqeFdIArmhlr2mxy4CiX3BbNCJWfKDIOYu7eYHhNDzOGWxzZo2vdz8OUe4PU07SahDI7kc661fOlvPqWJj3yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMNNhKjo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF191C2BD10;
-	Wed,  3 Jul 2024 11:16:27 +0000 (UTC)
+	 MIME-Version; b=cdnNi8/w56qU9XDkDEW4B3vOXCILuzBtNC2DeUMQY4oelaxXil3IUXAUPS08/Pf111WGckcAPbb3r4ePQzY9zcfhL06rnx/4L9gUjhiHitH+JjNc4juEDWk7KZaCFv3Y99sDCX5hF/ykupJdeOqeO/Y960+vn+Oei7GHlhPz0NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcTgH3Pe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2042BC2BD10;
+	Wed,  3 Jul 2024 11:00:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005388;
-	bh=d4/cFBEAK2LH77jBc0HPQKLv/Hf4rt/4UjtPXjANk70=;
+	s=korg; t=1720004425;
+	bh=KKzjblYYinsoxFmV5/qDldKqE6oXsyIccq58GzC0keQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eMNNhKjoEwv4tmmMVslBMpCOyHukJbIWjqUYN6L+QO5WWm7+PzEAVow7RWxrpCZAN
-	 CXmcRvTG6n5JHxKyR3ANQ5a7l9FkKNcuSi+S8M8r/oDI8NKoj8yO+S62JipLxdhwZF
-	 YrJi7Bxz02lO6fy4kkBxYSv7g8a9p/0Q97OpxI8A=
+	b=kcTgH3PehlnVwwsnv+WltPs0koOOS0TSaqp8/9DrsrdzYSlr4ii+8E/jGbrvzCrdu
+	 SRxG0a3coniHRXQRQxoC9Mo+MF9tz3Lt9eWE3YfA6NKseqN29eobT0BRSfSnZZqn3+
+	 jBgQ7vZXwdVhMjXB+wZ75jVftVsvvh/DHHh2fhBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank van der Linden <fvdl@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 064/356] mm/cma: drop incorrect alignment check in cma_init_reserved_mem
-Date: Wed,  3 Jul 2024 12:36:40 +0200
-Message-ID: <20240703102915.522157395@linuxfoundation.org>
+Subject: [PATCH 5.10 020/290] af_unix: Annotate data-race of sk->sk_state in unix_inq_len().
+Date: Wed,  3 Jul 2024 12:36:41 +0200
+Message-ID: <20240703102904.955112396@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,53 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank van der Linden <fvdl@google.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit b174f139bdc8aaaf72f5b67ad1bd512c4868a87e ]
+[ Upstream commit 3a0f38eb285c8c2eead4b3230c7ac2983707599d ]
 
-cma_init_reserved_mem uses IS_ALIGNED to check if the size represented by
-one bit in the cma allocation bitmask is aligned with
-CMA_MIN_ALIGNMENT_BYTES (pageblock size).
+ioctl(SIOCINQ) calls unix_inq_len() that checks sk->sk_state first
+and returns -EINVAL if it's TCP_LISTEN.
 
-However, this is too strict, as this will fail if order_per_bit >
-pageblock_order, which is a valid configuration.
+Then, for SOCK_STREAM sockets, unix_inq_len() returns the number of
+bytes in recvq.
 
-We could check IS_ALIGNED both ways, but since both numbers are powers of
-two, no check is needed at all.
+However, unix_inq_len() does not hold unix_state_lock(), and the
+concurrent listen() might change the state after checking sk->sk_state.
 
-Link: https://lkml.kernel.org/r/20240404162515.527802-1-fvdl@google.com
-Fixes: de9e14eebf33 ("drivers: dma-contiguous: add initialization from device tree")
-Signed-off-by: Frank van der Linden <fvdl@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+If the race occurs, 0 is returned for the listener, instead of -EINVAL,
+because the length of skb with embryo is 0.
+
+We could hold unix_state_lock() in unix_inq_len(), but it's overkill
+given the result is true for pre-listen() TCP_CLOSE state.
+
+So, let's use READ_ONCE() for sk->sk_state in unix_inq_len().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/cma.c | 4 ----
- 1 file changed, 4 deletions(-)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/cma.c b/mm/cma.c
-index 5208aee4f45ad..88fbd4f8124d3 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -179,10 +179,6 @@ int __init cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
- 	if (!size || !memblock_is_region_reserved(base, size))
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 3ab726a668e8a..c2aaf4b832c65 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2614,7 +2614,7 @@ long unix_inq_len(struct sock *sk)
+ 	struct sk_buff *skb;
+ 	long amount = 0;
+ 
+-	if (sk->sk_state == TCP_LISTEN)
++	if (READ_ONCE(sk->sk_state) == TCP_LISTEN)
  		return -EINVAL;
  
--	/* alignment should be aligned with order_per_bit */
--	if (!IS_ALIGNED(CMA_MIN_ALIGNMENT_PAGES, 1 << order_per_bit))
--		return -EINVAL;
--
- 	/* ensure minimal alignment required by mm core */
- 	if (!IS_ALIGNED(base | size, CMA_MIN_ALIGNMENT_BYTES))
- 		return -EINVAL;
+ 	spin_lock(&sk->sk_receive_queue.lock);
 -- 
 2.43.0
 
