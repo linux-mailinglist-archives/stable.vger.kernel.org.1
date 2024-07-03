@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-57441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C8F925C8C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:19:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A07F69259F9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:53:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C74B1C22525
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:19:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 575701F22C82
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4FC190679;
-	Wed,  3 Jul 2024 11:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9A518133B;
+	Wed,  3 Jul 2024 10:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xo9qWqm6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uUN+JfbV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B05419005D;
-	Wed,  3 Jul 2024 11:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEEC173336;
+	Wed,  3 Jul 2024 10:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004892; cv=none; b=nt6gkIS0jIj29rsog0vJ3HzpIu5JlLrjn5HHV3kfYya4qVj2LHmLGTQ3OsM3opfO2bF4WRCAwi2va5Wqxn82IOZjL6G6BMv579g07A1VLZa2TriGYw32c2mjaJhs5nyyXYAe3dhS/8ClLCAnmiIHDkBs3jLA17A3w80kAcW415s=
+	t=1720003423; cv=none; b=YEPbijRv0I7fpLiBqS7ToUL9+u2aFgKXKte7KWsKpSXGpuSx7+Xb+d/iIqpxRFMS73dAnHagWiQOSo6eSism0Q+iVVSqplDHoH49WWSiwxXdJAe7xn1w9I+xkFzKwyqIdOes4kubitJWYj1GQa9IPivr0euN86rX0IxHlcbwQr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004892; c=relaxed/simple;
-	bh=bwSEjrkYMZyfhEhZTr5YEIbAxPVVCXC/nLhrOpSBYsM=;
+	s=arc-20240116; t=1720003423; c=relaxed/simple;
+	bh=9TTnwpuU1Ld7JaqUarvzkeGasXHPZ0YABeeqiIVcFfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sf9R2nJQulfsRFI+21S90ozQfB3Sc+rkP30lfpEJZcl3QLBZ5B+IZtiqtgVSPyeDyA2L/cmRrR/irYuqmF03UeAk7/g3qtS6plWQj9W6IWorNdq/OLK8IpkzxicbakooyrNcNcyBjsd+sXICu91mHjBlrFv+amFedbgNgmsgK3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xo9qWqm6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2005FC32781;
-	Wed,  3 Jul 2024 11:08:11 +0000 (UTC)
+	 MIME-Version; b=Z8lOsnk/9HjKQxchddN64HL3tjB6QmDh7BGgyYSpeeNJMJaP95Gy8DhedYanFuNtjvfwpKdnCUug1jk8hJCGMRx4t4OmtE/wnmjO6aYIVNZ1KxsSA6TbiqGp+karxOmDjRk5iskyqfgz6dwB3TRPZ3M3VZf/WLEwFMA/sJnV1qU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUN+JfbV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D76C2BD10;
+	Wed,  3 Jul 2024 10:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004892;
-	bh=bwSEjrkYMZyfhEhZTr5YEIbAxPVVCXC/nLhrOpSBYsM=;
+	s=korg; t=1720003423;
+	bh=9TTnwpuU1Ld7JaqUarvzkeGasXHPZ0YABeeqiIVcFfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xo9qWqm6zSUbX7SQerXzRAMYDQEl/7Y06/rQ1H3hWhl99xyDuKm9mK+qSim2+F+FT
-	 MjHDOcSZkTsEzYbZQ5d9aGpJZlO9LgZWKNXrByF/gn0xJSJghCL8ZV/rboKmYTTXHd
-	 AuHM1dIhk5vM81TfQFA50sVLF+yxVPwC1AkWUJyI=
+	b=uUN+JfbV9ggbYMakcDcTdSuzWadGBr3OXze3YySUkngkRxmP1R+3JgrCTlO0zIxjM
+	 xKA7MgFIBxol3PbeDLjhJmcgVyNDeT5ixZtbnIZA+gFgc0unMRCO6Jw/klxTgEJD1c
+	 VlbCAk9I+wvqaAqhz7dmmzdO2WPINoIjeIPbN73w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Shubin <n.shubin@yadro.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 160/290] dmaengine: ioatdma: Fix kmemleak in ioat_pci_probe()
+	stable <stable@kernel.org>,
+	syzbot+ffa8143439596313a85a@syzkaller.appspotmail.com,
+	Ashish Sangwan <a.sangwan@samsung.com>,
+	Namjae Jeon <namjae.jeon@samsung.com>,
+	Dirk Behme <dirk.behme@de.bosch.com>
+Subject: [PATCH 4.19 044/139] drivers: core: synchronize really_probe() and dev_uevent()
 Date: Wed,  3 Jul 2024 12:39:01 +0200
-Message-ID: <20240703102910.222854351@linuxfoundation.org>
+Message-ID: <20240703102832.101542524@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Shubin <n.shubin@yadro.com>
+From: Dirk Behme <dirk.behme@de.bosch.com>
 
-[ Upstream commit 29b7cd255f3628e0d65be33a939d8b5bba10aa62 ]
+commit c0a40097f0bc81deafc15f9195d1fb54595cd6d0 upstream.
 
-If probing fails we end up with leaking ioatdma_device and each
-allocated channel.
+Synchronize the dev->driver usage in really_probe() and dev_uevent().
+These can run in different threads, what can result in the following
+race condition for dev->driver uninitialization:
 
-Following kmemleak easy to reproduce by injecting an error in
-ioat_alloc_chan_resources() when doing ioat_dma_self_test().
+Thread #1:
+==========
 
-unreferenced object 0xffff888014ad5800 (size 1024): [..]
-    [<ffffffff827692ca>] kmemleak_alloc+0x4a/0x80
-    [<ffffffff81430600>] kmalloc_trace+0x270/0x2f0
-    [<ffffffffa000b7d1>] ioat_pci_probe+0xc1/0x1c0 [ioatdma]
-[..]
+really_probe() {
+...
+probe_failed:
+...
+device_unbind_cleanup(dev) {
+    ...
+    dev->driver = NULL;   // <= Failed probe sets dev->driver to NULL
+    ...
+    }
+...
+}
 
-repeated for each ioatdma channel:
+Thread #2:
+==========
 
-unreferenced object 0xffff8880148e5c00 (size 512): [..]
-    [<ffffffff827692ca>] kmemleak_alloc+0x4a/0x80
-    [<ffffffff81430600>] kmalloc_trace+0x270/0x2f0
-    [<ffffffffa0009641>] ioat_enumerate_channels+0x101/0x2d0 [ioatdma]
-    [<ffffffffa000b266>] ioat3_dma_probe+0x4d6/0x970 [ioatdma]
-    [<ffffffffa000b891>] ioat_pci_probe+0x181/0x1c0 [ioatdma]
-[..]
+dev_uevent() {
+...
+if (dev->driver)
+      // If dev->driver is NULLed from really_probe() from here on,
+      // after above check, the system crashes
+      add_uevent_var(env, "DRIVER=%s", dev->driver->name);
+...
+}
 
-Fixes: bf453a0a18b2 ("dmaengine: ioat: Support in-use unbind")
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20240528-ioatdma-fixes-v2-3-a9f2fbe26ab1@yadro.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+really_probe() holds the lock, already. So nothing needs to be done
+there. dev_uevent() is called with lock held, often, too. But not
+always. What implies that we can't add any locking in dev_uevent()
+itself. So fix this race by adding the lock to the non-protected
+path. This is the path where above race is observed:
+
+ dev_uevent+0x235/0x380
+ uevent_show+0x10c/0x1f0  <= Add lock here
+ dev_attr_show+0x3a/0xa0
+ sysfs_kf_seq_show+0x17c/0x250
+ kernfs_seq_show+0x7c/0x90
+ seq_read_iter+0x2d7/0x940
+ kernfs_fop_read_iter+0xc6/0x310
+ vfs_read+0x5bc/0x6b0
+ ksys_read+0xeb/0x1b0
+ __x64_sys_read+0x42/0x50
+ x64_sys_call+0x27ad/0x2d30
+ do_syscall_64+0xcd/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Similar cases are reported by syzkaller in
+
+https://syzkaller.appspot.com/bug?extid=ffa8143439596313a85a
+
+But these are regarding the *initialization* of dev->driver
+
+dev->driver = drv;
+
+As this switches dev->driver to non-NULL these reports can be considered
+to be false-positives (which should be "fixed" by this commit, as well,
+though).
+
+The same issue was reported and tried to be fixed back in 2015 in
+
+https://lore.kernel.org/lkml/1421259054-2574-1-git-send-email-a.sangwan@samsung.com/
+
+already.
+
+Fixes: 239378f16aa1 ("Driver core: add uevent vars for devices of a class")
+Cc: stable <stable@kernel.org>
+Cc: syzbot+ffa8143439596313a85a@syzkaller.appspotmail.com
+Cc: Ashish Sangwan <a.sangwan@samsung.com>
+Cc: Namjae Jeon <namjae.jeon@samsung.com>
+Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+Link: https://lore.kernel.org/r/20240513050634.3964461-1-dirk.behme@de.bosch.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ioat/init.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/base/core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
-index ceba1b4083a9d..8a115bafab6ab 100644
---- a/drivers/dma/ioat/init.c
-+++ b/drivers/dma/ioat/init.c
-@@ -1346,6 +1346,7 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	void __iomem * const *iomap;
- 	struct device *dev = &pdev->dev;
- 	struct ioatdma_device *device;
-+	unsigned int i;
- 	u8 version;
- 	int err;
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -1236,8 +1236,11 @@ static ssize_t uevent_show(struct device
+ 	if (!env)
+ 		return -ENOMEM;
  
-@@ -1385,6 +1386,9 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++	/* Synchronize with really_probe() */
++	device_lock(dev);
+ 	/* let the kset specific function add its keys */
+ 	retval = kset->uevent_ops->uevent(kset, &dev->kobj, env);
++	device_unlock(dev);
+ 	if (retval)
+ 		goto out;
  
- 	err = ioat3_dma_probe(device, ioat_dca_enabled);
- 	if (err) {
-+		for (i = 0; i < IOAT_MAX_CHANS; i++)
-+			kfree(device->idx[i]);
-+		kfree(device);
- 		dev_err(dev, "Intel(R) I/OAT DMA Engine init failed\n");
- 		return -ENODEV;
- 	}
--- 
-2.43.0
-
 
 
 
