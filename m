@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-57146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47C64925AF5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49E43925DE3
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78A571C221C4
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:05:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 015321F24078
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB3218130D;
-	Wed,  3 Jul 2024 10:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E59183092;
+	Wed,  3 Jul 2024 11:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpc1M73/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JT0eyiEz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9758F17332B;
-	Wed,  3 Jul 2024 10:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2096143747;
+	Wed,  3 Jul 2024 11:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003987; cv=none; b=i0IzcC69FuR7pYBKb3ejcApC8cKWzUnnMFtpMuR4OQv2EMBpYixoiZm4ecctgh3+x3xF+JIoG6d2FwLsV4bfj1YM4MMUpxs6tEkyqGeOmmLvUovWJfNwyMvAQjs+OktPgdxVkSp1hVVkR2dXx6+F7JX66tE2g6HouvxH5YW7ZwE=
+	t=1720005853; cv=none; b=t0F5id0bDtwG9PjPntdiB6jvvrST4z+eUnzuSALdVXdK0uuFxozN/X+umVTU1Cg0Oevz2RXgNf0iwwbQJN7oUYAtTn8tPP9DHLGp4O9C/ddUf0fGsKonZHGEUIbBr77kWhKfZSTZ2U9LXpb2Yzns1rUPQ1wkLUa7xmEcaCnza6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003987; c=relaxed/simple;
-	bh=oLUA3HFChwyZeEnrXFe/6zE+OCuTQwOuOaODR1ycWIg=;
+	s=arc-20240116; t=1720005853; c=relaxed/simple;
+	bh=m3Iiw+eFEvRQZMDS2FLmuJXq0xYUK7Vn/hrq1GOrSGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OCQTvEHG+nZekogxVjloJYmW+uzX7rKMRw9WbR2K/1Je9zAVUFhgUUDPUY0E3z2B6mT3Y/MG3NH8E2HlfjN+UChfYQuX3aAplyG2njOevtF+S2ZgTNMW3vcie/+IbMHnEgasHdN/2s4hG2hOjOt6lbFHz0Nec5XcIlz1+xR+1vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpc1M73/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18131C2BD10;
-	Wed,  3 Jul 2024 10:53:06 +0000 (UTC)
+	 MIME-Version; b=O6BCr0aDO0fiHTRx77Wi2DRBkcoJuXC5/8QP4XBdxYF245zDdfY0vmljs43CL2MZig9Bau0ikD3l9l1dF359sCFHiPDW+cSTM+OU0C8ApZzIFlW3f89s7GbUnYAS/qtli4ELx4ofSb2jSlpqNKCdmPRrz0ehQlSXPQ0U0SCzLeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JT0eyiEz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26564C2BD10;
+	Wed,  3 Jul 2024 11:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003987;
-	bh=oLUA3HFChwyZeEnrXFe/6zE+OCuTQwOuOaODR1ycWIg=;
+	s=korg; t=1720005853;
+	bh=m3Iiw+eFEvRQZMDS2FLmuJXq0xYUK7Vn/hrq1GOrSGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jpc1M73/Ykjc87CIwkmgDIS5bgZabFsbPbFiJkNZ5zbOr5XQTxUpaCfPSfBCc49r5
-	 kco/sYsUmT91Ub0YvOQVzpi0PNtt6oUoS+VPy0dqLpb/7hcOP7zzze59Pj6yEihogA
-	 d2cpkMBEjKPtAMCpZVipZuKU3UMzy4uiTWoYZWvs=
+	b=JT0eyiEzrcyYK/n6fa4Ugucz1xK+bmaKKnVXXjp8qvNjt/3pSZGqIWOg7xMAWP8cx
+	 6uE16wa9UKgJtns/APJj1DeRI6gqt5/OL5mqx9wlqVI3h9MzB3nI5vISChmBxkMIgT
+	 227kdkTSzTFbuRkuIsG7mZcp3bU3UJAMXiiW4JvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.4 085/189] netfilter: nftables: exthdr: fix 4-byte stack OOB write
-Date: Wed,  3 Jul 2024 12:39:06 +0200
-Message-ID: <20240703102844.709345926@linuxfoundation.org>
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 211/356] dmaengine: ioat: use PCI core macros for PCIe Capability
+Date: Wed,  3 Jul 2024 12:39:07 +0200
+Message-ID: <20240703102921.090908204@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-commit fd94d9dadee58e09b49075240fe83423eb1dcd36 upstream.
+[ Upstream commit 8f6707d0773be31972768abd6e0bf7b8515b5b1a ]
 
-If priv->len is a multiple of 4, then dst[len / 4] can write past
-the destination array which leads to stack corruption.
+The PCIe Capability is defined by the PCIe spec, so use the PCI_EXP_DEVCTL
+macros defined by the PCI core instead of defining copies in IOAT.  This
+makes it easier to find all uses of the PCIe Device Control register.  No
+functional change intended.
 
-This construct is necessary to clean the remainder of the register
-in case ->len is NOT a multiple of the register size, so make it
-conditional just like nft_payload.c does.
-
-The bug was added in 4.1 cycle and then copied/inherited when
-tcp/sctp and ip option support was added.
-
-Bug reported by Zero Day Initiative project (ZDI-CAN-21950,
-ZDI-CAN-21951, ZDI-CAN-21961).
-
-Fixes: 49499c3e6e18 ("netfilter: nf_tables: switch registers to 32 bit addressing")
-Fixes: 935b7f643018 ("netfilter: nft_exthdr: add TCP option matching")
-Fixes: 133dc203d77d ("netfilter: nft_exthdr: Support SCTP chunks")
-Fixes: dbb5281a1f84 ("netfilter: nf_tables: add support for matching IPv4 options")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20230307214615.887354-1-helgaas@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: f0dc9fda2e0e ("dmaengine: ioatdma: Fix error path in ioat3_dma_probe()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_exthdr.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/dma/ioat/init.c      | 6 +++---
+ drivers/dma/ioat/registers.h | 7 -------
+ 2 files changed, 3 insertions(+), 10 deletions(-)
 
---- a/net/netfilter/nft_exthdr.c
-+++ b/net/netfilter/nft_exthdr.c
-@@ -33,6 +33,14 @@ static unsigned int optlen(const u8 *opt
- 		return opt[offset + 1];
- }
+diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
+index 6c27980a5ec8f..ed4910e3bc2ac 100644
+--- a/drivers/dma/ioat/init.c
++++ b/drivers/dma/ioat/init.c
+@@ -1190,13 +1190,13 @@ static int ioat3_dma_probe(struct ioatdma_device *ioat_dma, int dca)
+ 		ioat_dma->dca = ioat_dca_init(pdev, ioat_dma->reg_base);
  
-+static int nft_skb_copy_to_reg(const struct sk_buff *skb, int offset, u32 *dest, unsigned int len)
-+{
-+	if (len % NFT_REG32_SIZE)
-+		dest[len / NFT_REG32_SIZE] = 0;
-+
-+	return skb_copy_bits(skb, offset, dest, len);
-+}
-+
- static void nft_exthdr_ipv6_eval(const struct nft_expr *expr,
- 				 struct nft_regs *regs,
- 				 const struct nft_pktinfo *pkt)
-@@ -54,8 +62,7 @@ static void nft_exthdr_ipv6_eval(const s
- 	}
- 	offset += priv->offset;
+ 	/* disable relaxed ordering */
+-	err = pcie_capability_read_word(pdev, IOAT_DEVCTRL_OFFSET, &val16);
++	err = pcie_capability_read_word(pdev, PCI_EXP_DEVCTL, &val16);
+ 	if (err)
+ 		return pcibios_err_to_errno(err);
  
--	dest[priv->len / NFT_REG32_SIZE] = 0;
--	if (skb_copy_bits(pkt->skb, offset, dest, priv->len) < 0)
-+	if (nft_skb_copy_to_reg(pkt->skb, offset, dest, priv->len) < 0)
- 		goto err;
- 	return;
- err:
-@@ -151,8 +158,7 @@ static void nft_exthdr_ipv4_eval(const s
- 	}
- 	offset += priv->offset;
+ 	/* clear relaxed ordering enable */
+-	val16 &= ~IOAT_DEVCTRL_ROE;
+-	err = pcie_capability_write_word(pdev, IOAT_DEVCTRL_OFFSET, val16);
++	val16 &= ~PCI_EXP_DEVCTL_RELAX_EN;
++	err = pcie_capability_write_word(pdev, PCI_EXP_DEVCTL, val16);
+ 	if (err)
+ 		return pcibios_err_to_errno(err);
  
--	dest[priv->len / NFT_REG32_SIZE] = 0;
--	if (skb_copy_bits(pkt->skb, offset, dest, priv->len) < 0)
-+	if (nft_skb_copy_to_reg(pkt->skb, offset, dest, priv->len) < 0)
- 		goto err;
- 	return;
- err:
-@@ -208,7 +214,8 @@ static void nft_exthdr_tcp_eval(const st
- 		if (priv->flags & NFT_EXTHDR_F_PRESENT) {
- 			*dest = 1;
- 		} else {
--			dest[priv->len / NFT_REG32_SIZE] = 0;
-+			if (priv->len % NFT_REG32_SIZE)
-+				dest[priv->len / NFT_REG32_SIZE] = 0;
- 			memcpy(dest, opt + offset, priv->len);
- 		}
+diff --git a/drivers/dma/ioat/registers.h b/drivers/dma/ioat/registers.h
+index f55a5f92f1857..54cf0ad39887b 100644
+--- a/drivers/dma/ioat/registers.h
++++ b/drivers/dma/ioat/registers.h
+@@ -14,13 +14,6 @@
+ #define IOAT_PCI_CHANERR_INT_OFFSET		0x180
+ #define IOAT_PCI_CHANERRMASK_INT_OFFSET		0x184
  
+-/* PCIe config registers */
+-
+-/* EXPCAPID + N */
+-#define IOAT_DEVCTRL_OFFSET			0x8
+-/* relaxed ordering enable */
+-#define IOAT_DEVCTRL_ROE			0x10
+-
+ /* MMIO Device Registers */
+ #define IOAT_CHANCNT_OFFSET			0x00	/*  8-bit */
+ 
+-- 
+2.43.0
+
 
 
 
