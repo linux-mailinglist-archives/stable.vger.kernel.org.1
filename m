@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-57652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97CE6925D64
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:28:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF85A925E47
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFC6A29A64C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86F92B36309
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B29B181CE2;
-	Wed,  3 Jul 2024 11:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE58196D80;
+	Wed,  3 Jul 2024 11:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AepCiB4N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PpzBxeHJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58865173339;
-	Wed,  3 Jul 2024 11:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF5D18F2DF;
+	Wed,  3 Jul 2024 11:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005526; cv=none; b=otgoc1u5n528s1PTJaw9VLtj6+kiO1vcUtHKRWvaYEdPgSTTDeQdSrLbiSrN1dsb22XXGYJGatpZPwsdXyq9/jO1FtsMn5jFAbblTCCrlZ2nlTwDy1nEd87ThcOZNXRuHlG93cuCGJrYoZiaQYiB05025lDgjO8E/vmBvc8rhy4=
+	t=1720004416; cv=none; b=NTJDEShm/8D1q3csRJf12szqr6qpYoY0AW0IDtmv1pa+xyZ/wGUoJj1oAgJTZ0iQN6FfrHNlNwjERQv/tJpSRIkphfsxYayKXMSoqDB8/ib5mfu3xXzg1r2/HLfZ5Zuc8TlJcEyFnZtD2B/fCjHMJFToKp8Z1WCjdd4Ms1fVz68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005526; c=relaxed/simple;
-	bh=74rpIIVQRv/mILSeQ94iHrmxRlBMjHL28JldLQABsuw=;
+	s=arc-20240116; t=1720004416; c=relaxed/simple;
+	bh=XrNGAzd6uJpNYsPaX7YusNUX/KV0eKtvYoSTwC4AjjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mJ+cyqUZAByiReQYzvwBngqigORD6HlqqDhCwNlHB4uqPPYrJJZ4f1h0klmIZQlizUYQbjSK5i/0iASQWmuywCpaDONa0MyFqHMJ+uJF2MO1zD+xgGh68xknabsw7duHJCITFNXLutpr1Fxbd6eCTMryypiY4Zt6xuxUa5qY8XE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AepCiB4N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D28E7C2BD10;
-	Wed,  3 Jul 2024 11:18:45 +0000 (UTC)
+	 MIME-Version; b=UrS1WVwlHCV+wVC9VUfRRjhOOLyyswaZWhupBZdyc3DXB4VMFPc8yWOU0XjGsHdCZsVE5HfugEnP3fjv5/BCZTFpM5D+dZtLj8Gh2sYmi/DoBWLygR9EtwcdfsU4CdxZQgQJxIxkkCQ5Bc70e/sVwsPXN9IRJg6xuq/0+UaaRSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PpzBxeHJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FCFDC32781;
+	Wed,  3 Jul 2024 11:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005526;
-	bh=74rpIIVQRv/mILSeQ94iHrmxRlBMjHL28JldLQABsuw=;
+	s=korg; t=1720004416;
+	bh=XrNGAzd6uJpNYsPaX7YusNUX/KV0eKtvYoSTwC4AjjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AepCiB4NZhRCAod3YAMeJf1nGFXmvpY1IGVweR4DrthJgRt0zBJ23l4MafzI1gw38
-	 e7K0xHTNzGanYp1JAA2RsWSVADZcz5S3aypz85JxQFI6AauDOcZbJJvy6pgRVdRuZk
-	 nL4ygyuyUCqxeOIik2uxtAkVauUMyg9+yeXT0HtA=
+	b=PpzBxeHJPvSHRviuxVF0uWwmH7i2qG2NUs/ZXAGNJa59j/Wr+CqrbY9WJ5IIRgzJV
+	 es+1Pks8tQq4gIXt2pCK0EDVSv2fjwDkMlcAC9MSEA4gSHFELjYwq4KE5xXhulg81Y
+	 tiiw5hk6X9SfZ8Y9+Ttwih8/UBP9wtZy7szhHTO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	security@kernel.org,
-	Neal Gompa <neal@gompa.dev>,
-	Hector Martin <marcan@marcan.st>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 5.15 080/356] xhci: Handle TD clearing for multiple streams case
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 035/290] selftests/mm: conform test to TAP format output
 Date: Wed,  3 Jul 2024 12:36:56 +0200
-Message-ID: <20240703102916.131777402@linuxfoundation.org>
+Message-ID: <20240703102905.523903258@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,210 +63,234 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-commit 5ceac4402f5d975e5a01c806438eb4e554771577 upstream.
+[ Upstream commit 9a21701edc41465de56f97914741bfb7bfc2517d ]
 
-When multiple streams are in use, multiple TDs might be in flight when
-an endpoint is stopped. We need to issue a Set TR Dequeue Pointer for
-each, to ensure everything is reset properly and the caches cleared.
-Change the logic so that any N>1 TDs found active for different streams
-are deferred until after the first one is processed, calling
-xhci_invalidate_cancelled_tds() again from xhci_handle_cmd_set_deq() to
-queue another command until we are done with all of them. Also change
-the error/"should never happen" paths to ensure we at least clear any
-affected TDs, even if we can't issue a command to clear the hardware
-cache, and complain loudly with an xhci_warn() if this ever happens.
+Conform the layout, informational and status messages to TAP.  No
+functional change is intended other than the layout of output messages.
 
-This problem case dates back to commit e9df17eb1408 ("USB: xhci: Correct
-assumptions about number of rings per endpoint.") early on in the XHCI
-driver's life, when stream support was first added.
-It was then identified but not fixed nor made into a warning in commit
-674f8438c121 ("xhci: split handling halted endpoints into two steps"),
-which added a FIXME comment for the problem case (without materially
-changing the behavior as far as I can tell, though the new logic made
-the problem more obvious).
-
-Then later, in commit 94f339147fc3 ("xhci: Fix failure to give back some
-cached cancelled URBs."), it was acknowledged again.
-
-[Mathias: commit 94f339147fc3 ("xhci: Fix failure to give back some cached
-cancelled URBs.") was a targeted regression fix to the previously mentioned
-patch. Users reported issues with usb stuck after unmounting/disconnecting
-UAS devices. This rolled back the TD clearing of multiple streams to its
-original state.]
-
-Apparently the commit author was aware of the problem (yet still chose
-to submit it): It was still mentioned as a FIXME, an xhci_dbg() was
-added to log the problem condition, and the remaining issue was mentioned
-in the commit description. The choice of making the log type xhci_dbg()
-for what is, at this point, a completely unhandled and known broken
-condition is puzzling and unfortunate, as it guarantees that no actual
-users would see the log in production, thereby making it nigh
-undebuggable (indeed, even if you turn on DEBUG, the message doesn't
-really hint at there being a problem at all).
-
-It took me *months* of random xHC crashes to finally find a reliable
-repro and be able to do a deep dive debug session, which could all have
-been avoided had this unhandled, broken condition been actually reported
-with a warning, as it should have been as a bug intentionally left in
-unfixed (never mind that it shouldn't have been left in at all).
-
-> Another fix to solve clearing the caches of all stream rings with
-> cancelled TDs is needed, but not as urgent.
-
-3 years after that statement and 14 years after the original bug was
-introduced, I think it's finally time to fix it. And maybe next time
-let's not leave bugs unfixed (that are actually worse than the original
-bug), and let's actually get people to review kernel commits please.
-
-Fixes xHC crashes and IOMMU faults with UAS devices when handling
-errors/faults. Easiest repro is to use `hdparm` to mark an early sector
-(e.g. 1024) on a disk as bad, then `cat /dev/sdX > /dev/null` in a loop.
-At least in the case of JMicron controllers, the read errors end up
-having to cancel two TDs (for two queued requests to different streams)
-and the one that didn't get cleared properly ends up faulting the xHC
-entirely when it tries to access DMA pages that have since been unmapped,
-referred to by the stale TDs. This normally happens quickly (after two
-or three loops). After this fix, I left the `cat` in a loop running
-overnight and experienced no xHC failures, with all read errors
-recovered properly. Repro'd and tested on an Apple M1 Mac Mini
-(dwc3 host).
-
-On systems without an IOMMU, this bug would instead silently corrupt
-freed memory, making this a security bug (even on systems with IOMMUs
-this could silently corrupt memory belonging to other USB devices on the
-same controller, so it's still a security bug). Given that the kernel
-autoprobes partition tables, I'm pretty sure a malicious USB device
-pretending to be a UAS device and reporting an error with the right
-timing could deliberately trigger a UAF and write to freed memory, with
-no user action.
-
-[Mathias: Commit message and code comment edit, original at:]
-https://lore.kernel.org/linux-usb/20240524-xhci-streams-v1-1-6b1f13819bea@marcan.st/
-
-Fixes: e9df17eb1408 ("USB: xhci: Correct assumptions about number of rings per endpoint.")
-Fixes: 94f339147fc3 ("xhci: Fix failure to give back some cached cancelled URBs.")
-Fixes: 674f8438c121 ("xhci: split handling halted endpoints into two steps")
-Cc: stable@vger.kernel.org
-Cc: security@kernel.org
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240611120610.3264502-5-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20240101083614.1076768-1-usama.anjum@collabora.com
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: d4202e66a4b1 ("selftests/mm: compaction_test: fix bogus test success on Aarch64")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c |   54 ++++++++++++++++++++++++++++++++++---------
- drivers/usb/host/xhci.h      |    1 
- 2 files changed, 44 insertions(+), 11 deletions(-)
+ tools/testing/selftests/vm/compaction_test.c | 91 ++++++++++----------
+ 1 file changed, 44 insertions(+), 47 deletions(-)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -994,13 +994,27 @@ static int xhci_invalidate_cancelled_tds
- 				break;
- 			case TD_DIRTY: /* TD is cached, clear it */
- 			case TD_HALTED:
-+			case TD_CLEARING_CACHE_DEFERRED:
-+				if (cached_td) {
-+					if (cached_td->urb->stream_id != td->urb->stream_id) {
-+						/* Multiple streams case, defer move dq */
-+						xhci_dbg(xhci,
-+							 "Move dq deferred: stream %u URB %p\n",
-+							 td->urb->stream_id, td->urb);
-+						td->cancel_status = TD_CLEARING_CACHE_DEFERRED;
-+						break;
-+					}
-+
-+					/* Should never happen, but clear the TD if it does */
-+					xhci_warn(xhci,
-+						  "Found multiple active URBs %p and %p in stream %u?\n",
-+						  td->urb, cached_td->urb,
-+						  td->urb->stream_id);
-+					td_to_noop(xhci, ring, cached_td, false);
-+					cached_td->cancel_status = TD_CLEARED;
-+				}
-+
- 				td->cancel_status = TD_CLEARING_CACHE;
--				if (cached_td)
--					/* FIXME  stream case, several stopped rings */
--					xhci_dbg(xhci,
--						 "Move dq past stream %u URB %p instead of stream %u URB %p\n",
--						 td->urb->stream_id, td->urb,
--						 cached_td->urb->stream_id, cached_td->urb);
- 				cached_td = td;
- 				break;
- 			}
-@@ -1020,10 +1034,16 @@ static int xhci_invalidate_cancelled_tds
- 	if (err) {
- 		/* Failed to move past cached td, just set cached TDs to no-op */
- 		list_for_each_entry_safe(td, tmp_td, &ep->cancelled_td_list, cancelled_td_list) {
--			if (td->cancel_status != TD_CLEARING_CACHE)
-+			/*
-+			 * Deferred TDs need to have the deq pointer set after the above command
-+			 * completes, so if that failed we just give up on all of them (and
-+			 * complain loudly since this could cause issues due to caching).
-+			 */
-+			if (td->cancel_status != TD_CLEARING_CACHE &&
-+			    td->cancel_status != TD_CLEARING_CACHE_DEFERRED)
- 				continue;
--			xhci_dbg(xhci, "Failed to clear cancelled cached URB %p, mark clear anyway\n",
--				 td->urb);
-+			xhci_warn(xhci, "Failed to clear cancelled cached URB %p, mark clear anyway\n",
-+				  td->urb);
- 			td_to_noop(xhci, ring, td, false);
- 			td->cancel_status = TD_CLEARED;
- 		}
-@@ -1366,6 +1386,7 @@ static void xhci_handle_cmd_set_deq(stru
- 	struct xhci_ep_ctx *ep_ctx;
- 	struct xhci_slot_ctx *slot_ctx;
- 	struct xhci_td *td, *tmp_td;
-+	bool deferred = false;
+diff --git a/tools/testing/selftests/vm/compaction_test.c b/tools/testing/selftests/vm/compaction_test.c
+index 55dec92e1e58c..f81931c1f8386 100644
+--- a/tools/testing/selftests/vm/compaction_test.c
++++ b/tools/testing/selftests/vm/compaction_test.c
+@@ -33,7 +33,7 @@ int read_memory_info(unsigned long *memfree, unsigned long *hugepagesize)
+ 	FILE *cmdfile = popen(cmd, "r");
  
- 	ep_index = TRB_TO_EP_INDEX(le32_to_cpu(trb->generic.field[3]));
- 	stream_id = TRB_TO_STREAM_ID(le32_to_cpu(trb->generic.field[2]));
-@@ -1452,6 +1473,8 @@ static void xhci_handle_cmd_set_deq(stru
- 			xhci_dbg(ep->xhci, "%s: Giveback cancelled URB %p TD\n",
- 				 __func__, td->urb);
- 			xhci_td_cleanup(ep->xhci, td, ep_ring, td->status);
-+		} else if (td->cancel_status == TD_CLEARING_CACHE_DEFERRED) {
-+			deferred = true;
- 		} else {
- 			xhci_dbg(ep->xhci, "%s: Keep cancelled URB %p TD as cancel_status is %d\n",
- 				 __func__, td->urb, td->cancel_status);
-@@ -1461,8 +1484,17 @@ cleanup:
- 	ep->ep_state &= ~SET_DEQ_PENDING;
- 	ep->queued_deq_seg = NULL;
- 	ep->queued_deq_ptr = NULL;
--	/* Restart any rings with pending URBs */
--	ring_doorbell_for_active_rings(xhci, slot_id, ep_index);
-+
-+	if (deferred) {
-+		/* We have more streams to clear */
-+		xhci_dbg(ep->xhci, "%s: Pending TDs to clear, continuing with invalidation\n",
-+			 __func__);
-+		xhci_invalidate_cancelled_tds(ep);
-+	} else {
-+		/* Restart any rings with pending URBs */
-+		xhci_dbg(ep->xhci, "%s: All TDs cleared, ring doorbell\n", __func__);
-+		ring_doorbell_for_active_rings(xhci, slot_id, ep_index);
-+	}
+ 	if (!(fgets(buffer, sizeof(buffer), cmdfile))) {
+-		perror("Failed to read meminfo\n");
++		ksft_print_msg("Failed to read meminfo: %s\n", strerror(errno));
+ 		return -1;
+ 	}
+ 
+@@ -44,7 +44,7 @@ int read_memory_info(unsigned long *memfree, unsigned long *hugepagesize)
+ 	cmdfile = popen(cmd, "r");
+ 
+ 	if (!(fgets(buffer, sizeof(buffer), cmdfile))) {
+-		perror("Failed to read meminfo\n");
++		ksft_print_msg("Failed to read meminfo: %s\n", strerror(errno));
+ 		return -1;
+ 	}
+ 
+@@ -62,14 +62,14 @@ int prereq(void)
+ 	fd = open("/proc/sys/vm/compact_unevictable_allowed",
+ 		  O_RDONLY | O_NONBLOCK);
+ 	if (fd < 0) {
+-		perror("Failed to open\n"
+-		       "/proc/sys/vm/compact_unevictable_allowed\n");
++		ksft_print_msg("Failed to open /proc/sys/vm/compact_unevictable_allowed: %s\n",
++			       strerror(errno));
+ 		return -1;
+ 	}
+ 
+ 	if (read(fd, &allowed, sizeof(char)) != sizeof(char)) {
+-		perror("Failed to read from\n"
+-		       "/proc/sys/vm/compact_unevictable_allowed\n");
++		ksft_print_msg("Failed to read from /proc/sys/vm/compact_unevictable_allowed: %s\n",
++			       strerror(errno));
+ 		close(fd);
+ 		return -1;
+ 	}
+@@ -78,12 +78,13 @@ int prereq(void)
+ 	if (allowed == '1')
+ 		return 0;
+ 
++	ksft_print_msg("Compaction isn't allowed\n");
+ 	return -1;
  }
  
- static void xhci_handle_cmd_reset_ep(struct xhci_hcd *xhci, int slot_id,
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1556,6 +1556,7 @@ enum xhci_cancelled_td_status {
- 	TD_DIRTY = 0,
- 	TD_HALTED,
- 	TD_CLEARING_CACHE,
-+	TD_CLEARING_CACHE_DEFERRED,
- 	TD_CLEARED,
- };
+ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ {
+-	int fd;
++	int fd, ret = -1;
+ 	int compaction_index = 0;
+ 	char initial_nr_hugepages[10] = {0};
+ 	char nr_hugepages[10] = {0};
+@@ -94,12 +95,14 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
  
+ 	fd = open("/proc/sys/vm/nr_hugepages", O_RDWR | O_NONBLOCK);
+ 	if (fd < 0) {
+-		perror("Failed to open /proc/sys/vm/nr_hugepages");
++		ksft_test_result_fail("Failed to open /proc/sys/vm/nr_hugepages: %s\n",
++				      strerror(errno));
+ 		return -1;
+ 	}
+ 
+ 	if (read(fd, initial_nr_hugepages, sizeof(initial_nr_hugepages)) <= 0) {
+-		perror("Failed to read from /proc/sys/vm/nr_hugepages");
++		ksft_test_result_fail("Failed to read from /proc/sys/vm/nr_hugepages: %s\n",
++				      strerror(errno));
+ 		goto close_fd;
+ 	}
+ 
+@@ -107,7 +110,8 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 
+ 	/* Start with the initial condition of 0 huge pages*/
+ 	if (write(fd, "0", sizeof(char)) != sizeof(char)) {
+-		perror("Failed to write 0 to /proc/sys/vm/nr_hugepages\n");
++		ksft_test_result_fail("Failed to write 0 to /proc/sys/vm/nr_hugepages: %s\n",
++				      strerror(errno));
+ 		goto close_fd;
+ 	}
+ 
+@@ -116,14 +120,16 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 	/* Request a large number of huge pages. The Kernel will allocate
+ 	   as much as it can */
+ 	if (write(fd, "100000", (6*sizeof(char))) != (6*sizeof(char))) {
+-		perror("Failed to write 100000 to /proc/sys/vm/nr_hugepages\n");
++		ksft_test_result_fail("Failed to write 100000 to /proc/sys/vm/nr_hugepages: %s\n",
++				      strerror(errno));
+ 		goto close_fd;
+ 	}
+ 
+ 	lseek(fd, 0, SEEK_SET);
+ 
+ 	if (read(fd, nr_hugepages, sizeof(nr_hugepages)) <= 0) {
+-		perror("Failed to re-read from /proc/sys/vm/nr_hugepages\n");
++		ksft_test_result_fail("Failed to re-read from /proc/sys/vm/nr_hugepages: %s\n",
++				      strerror(errno));
+ 		goto close_fd;
+ 	}
+ 
+@@ -131,67 +137,58 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 	   huge pages */
+ 	compaction_index = mem_free/(atoi(nr_hugepages) * hugepage_size);
+ 
+-	if (compaction_index > 3) {
+-		printf("No of huge pages allocated = %d\n",
+-		       (atoi(nr_hugepages)));
+-		fprintf(stderr, "ERROR: Less that 1/%d of memory is available\n"
+-			"as huge pages\n", compaction_index);
+-		goto close_fd;
+-	}
+-
+-	printf("No of huge pages allocated = %d\n",
+-	       (atoi(nr_hugepages)));
+-
+ 	lseek(fd, 0, SEEK_SET);
+ 
+ 	if (write(fd, initial_nr_hugepages, strlen(initial_nr_hugepages))
+ 	    != strlen(initial_nr_hugepages)) {
+-		perror("Failed to write value to /proc/sys/vm/nr_hugepages\n");
++		ksft_test_result_fail("Failed to write value to /proc/sys/vm/nr_hugepages: %s\n",
++				      strerror(errno));
+ 		goto close_fd;
+ 	}
+ 
+-	close(fd);
+-	return 0;
++	if (compaction_index > 3) {
++		ksft_print_msg("ERROR: Less that 1/%d of memory is available\n"
++			       "as huge pages\n", compaction_index);
++		ksft_test_result_fail("No of huge pages allocated = %d\n", (atoi(nr_hugepages)));
++		goto close_fd;
++	}
++
++	ksft_test_result_pass("Memory compaction succeeded. No of huge pages allocated = %d\n",
++			      (atoi(nr_hugepages)));
++	ret = 0;
+ 
+  close_fd:
+ 	close(fd);
+-	printf("Not OK. Compaction test failed.");
+-	return -1;
++	return ret;
+ }
+ 
+ 
+ int main(int argc, char **argv)
+ {
+ 	struct rlimit lim;
+-	struct map_list *list, *entry;
++	struct map_list *list = NULL, *entry;
+ 	size_t page_size, i;
+ 	void *map = NULL;
+ 	unsigned long mem_free = 0;
+ 	unsigned long hugepage_size = 0;
+ 	long mem_fragmentable_MB = 0;
+ 
+-	if (prereq() != 0) {
+-		printf("Either the sysctl compact_unevictable_allowed is not\n"
+-		       "set to 1 or couldn't read the proc file.\n"
+-		       "Skipping the test\n");
+-		return KSFT_SKIP;
+-	}
++	ksft_print_header();
++
++	if (prereq() != 0)
++		return ksft_exit_pass();
++
++	ksft_set_plan(1);
+ 
+ 	lim.rlim_cur = RLIM_INFINITY;
+ 	lim.rlim_max = RLIM_INFINITY;
+-	if (setrlimit(RLIMIT_MEMLOCK, &lim)) {
+-		perror("Failed to set rlimit:\n");
+-		return -1;
+-	}
++	if (setrlimit(RLIMIT_MEMLOCK, &lim))
++		ksft_exit_fail_msg("Failed to set rlimit: %s\n", strerror(errno));
+ 
+ 	page_size = getpagesize();
+ 
+-	list = NULL;
+-
+-	if (read_memory_info(&mem_free, &hugepage_size) != 0) {
+-		printf("ERROR: Cannot read meminfo\n");
+-		return -1;
+-	}
++	if (read_memory_info(&mem_free, &hugepage_size) != 0)
++		ksft_exit_fail_msg("Failed to get meminfo\n");
+ 
+ 	mem_fragmentable_MB = mem_free * 0.8 / 1024;
+ 
+@@ -227,7 +224,7 @@ int main(int argc, char **argv)
+ 	}
+ 
+ 	if (check_compaction(mem_free, hugepage_size) == 0)
+-		return 0;
++		return ksft_exit_pass();
+ 
+-	return -1;
++	return ksft_exit_fail();
+ }
+-- 
+2.43.0
+
 
 
 
