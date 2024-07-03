@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-57440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02A47925C8A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:19:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A52F4925DD1
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2983B1C20E81
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:19:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4657F1F21649
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B9618412F;
-	Wed,  3 Jul 2024 11:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DD7194A50;
+	Wed,  3 Jul 2024 11:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NiInmWIz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6g5mGlw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6799617966F;
-	Wed,  3 Jul 2024 11:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61439194A49;
+	Wed,  3 Jul 2024 11:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004888; cv=none; b=kEMql5DN2J90w9BZO28CharUjlcyGe7X6DYQC6VzDbtKHF6ON88JqzpoL+/+flyKcjg2IRg/HCqxb6cU9oXRxy5TG7TGH897sxARVPfqVSRfEyeuwQB6pw+6a9D3SxLBu/3ogTp/X/LJkkCy4RFjC6klR0pSI1M4PBJwqw9s0bM=
+	t=1720005811; cv=none; b=kNTAU5YPClsXUxA9oav01L9k3eRcs6hSXUOtwsK0PERJmMrn8kYwHay9l0pjlGrDyin3rYHQtyeBsuL29SfitPxJqVNXrtXRq4vpGssApHIuYRjk7s93KnIzWluv6YE2I89UOl+3xSdIeqYs3qBxuHanlCgAIaX3gnjZY5zUjjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004888; c=relaxed/simple;
-	bh=M7O83ZF/4HVwtdeEhpmkTkTljhPpOXYImpzwO5rD7Ws=;
+	s=arc-20240116; t=1720005811; c=relaxed/simple;
+	bh=ZaElN8XuWLTS+2iBiw8JUwxC9oB7RwP1BHbGqla2UJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ao43TC6j71b5l1HKnjFHBSxmicEAgBZcCqfUM7OLh5nERJVB295OmOAgaqoKgG2HzAKbWE2vMBp18h7mbS7WLwylHFaptb2O09lF3+KVpro9oA/L0uMPdbWa7AF9NJD0JuoiDmaTP6w/etSAwhkL/M1K0lz1TA/5qvs/fF5EVD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NiInmWIz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A5DC2BD10;
-	Wed,  3 Jul 2024 11:08:07 +0000 (UTC)
+	 MIME-Version; b=HdNhC7D812q4HU3TuzXk8SFaTlFj0rsC/n5ZXCMX1Cq/7Y5OX8jd1BdLMjDt3+zMIU5JRD2D2zH01USDlOSoPdK5J6biYolXmpoPAIP/9Ef/4zyXV8R1vdaal9WYG5vZbJ6xHrkJagWXY0dH9D6vmVSc5Lv8VR2gv4dj86RbEYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6g5mGlw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2BAAC2BD10;
+	Wed,  3 Jul 2024 11:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004888;
-	bh=M7O83ZF/4HVwtdeEhpmkTkTljhPpOXYImpzwO5rD7Ws=;
+	s=korg; t=1720005811;
+	bh=ZaElN8XuWLTS+2iBiw8JUwxC9oB7RwP1BHbGqla2UJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NiInmWIzPN4sRfbLfQ6TpBhwLErKsUXx3GNmgSaBaz6ZyzrG2hKPzuAKD/Jw+AIqn
-	 QpoLLwD46ptEyFsErG3BN0k3Ygtruy0vz5CirG/hC7i1pEGffj7wQjaJgsk4rdz5Bx
-	 CMYgd10gdSmbZLq2oZHOdJ/fHg4kZLR4FinMcUXk=
+	b=R6g5mGlwtp6+ilOElT9HZR3OnCPQCabP8E/HZthNa1YlLDXUheiDLPKpYnQxVRJJk
+	 yRW5zfUXRjxZriHzf62P16k9HTqdBeE/fj/vA+J61gzWwkG/UD0aKA0qWIGDR6eHWc
+	 IPfQKyVCPD6hzCM1O9exF8NjRln5e5LZj0kiHzpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Shubin <n.shubin@yadro.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 159/290] dmaengine: ioatdma: Fix error path in ioat3_dma_probe()
+Subject: [PATCH 5.15 204/356] bnxt_en: Restore PTP tx_avail count in case of skb_pad() error
 Date: Wed,  3 Jul 2024 12:39:00 +0200
-Message-ID: <20240703102910.185504958@linuxfoundation.org>
+Message-ID: <20240703102920.822399096@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Shubin <n.shubin@yadro.com>
+From: Pavan Chebbi <pavan.chebbi@broadcom.com>
 
-[ Upstream commit f0dc9fda2e0ee9e01496c2f5aca3a831131fad79 ]
+[ Upstream commit 1e7962114c10957fe4d10a15eb714578a394e90b ]
 
-Make sure we are disabling interrupts and destroying DMA pool if
-pcie_capability_read/write_word() call failed.
+The current code only restores PTP tx_avail count when we get DMA
+mapping errors.  Fix it so that the PTP tx_avail count will be
+restored for both DMA mapping errors and skb_pad() errors.
+Otherwise PTP TX timestamp will not be available after a PTP
+packet hits the skb_pad() error.
 
-Fixes: 511deae0261c ("dmaengine: ioatdma: disable relaxed ordering for ioatdma")
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20240528-ioatdma-fixes-v2-2-a9f2fbe26ab1@yadro.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 83bb623c968e ("bnxt_en: Transmit and retrieve packet timestamps")
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240618215313.29631-4-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ioat/init.c | 33 +++++++++++++++------------------
- 1 file changed, 15 insertions(+), 18 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
-index ed4910e3bc2ac..ceba1b4083a9d 100644
---- a/drivers/dma/ioat/init.c
-+++ b/drivers/dma/ioat/init.c
-@@ -534,18 +534,6 @@ static int ioat_probe(struct ioatdma_device *ioat_dma)
- 	return err;
- }
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 3888561a5cc8f..f3c6a122a079a 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -667,9 +667,6 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	return NETDEV_TX_OK;
  
--static int ioat_register(struct ioatdma_device *ioat_dma)
--{
--	int err = dma_async_device_register(&ioat_dma->dma_dev);
+ tx_dma_error:
+-	if (BNXT_TX_PTP_IS_SET(lflags))
+-		atomic_inc(&bp->ptp_cfg->tx_avail);
 -
--	if (err) {
--		ioat_disable_interrupts(ioat_dma);
--		dma_pool_destroy(ioat_dma->completion_pool);
--	}
--
--	return err;
--}
--
- static void ioat_dma_remove(struct ioatdma_device *ioat_dma)
- {
- 	struct dma_device *dma = &ioat_dma->dma_dev;
-@@ -1180,9 +1168,9 @@ static int ioat3_dma_probe(struct ioatdma_device *ioat_dma, int dca)
- 		       ioat_chan->reg_base + IOAT_DCACTRL_OFFSET);
- 	}
+ 	last_frag = i;
  
--	err = ioat_register(ioat_dma);
-+	err = dma_async_device_register(&ioat_dma->dma_dev);
- 	if (err)
--		return err;
-+		goto err_disable_interrupts;
- 
- 	ioat_kobject_add(ioat_dma, &ioat_ktype);
- 
-@@ -1191,20 +1179,29 @@ static int ioat3_dma_probe(struct ioatdma_device *ioat_dma, int dca)
- 
- 	/* disable relaxed ordering */
- 	err = pcie_capability_read_word(pdev, PCI_EXP_DEVCTL, &val16);
--	if (err)
--		return pcibios_err_to_errno(err);
-+	if (err) {
-+		err = pcibios_err_to_errno(err);
-+		goto err_disable_interrupts;
-+	}
- 
- 	/* clear relaxed ordering enable */
- 	val16 &= ~PCI_EXP_DEVCTL_RELAX_EN;
- 	err = pcie_capability_write_word(pdev, PCI_EXP_DEVCTL, val16);
--	if (err)
--		return pcibios_err_to_errno(err);
-+	if (err) {
-+		err = pcibios_err_to_errno(err);
-+		goto err_disable_interrupts;
-+	}
- 
- 	if (ioat_dma->cap & IOAT_CAP_DPS)
- 		writeb(ioat_pending_level + 1,
- 		       ioat_dma->reg_base + IOAT_PREFETCH_LIMIT_OFFSET);
- 
- 	return 0;
-+
-+err_disable_interrupts:
-+	ioat_disable_interrupts(ioat_dma);
-+	dma_pool_destroy(ioat_dma->completion_pool);
-+	return err;
- }
- 
- static void ioat_shutdown(struct pci_dev *pdev)
+ 	/* start back at beginning and unmap skb */
+@@ -691,6 +688,8 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ tx_free:
+ 	dev_kfree_skb_any(skb);
+ tx_kick_pending:
++	if (BNXT_TX_PTP_IS_SET(lflags))
++		atomic_inc(&bp->ptp_cfg->tx_avail);
+ 	if (txr->kick_pending)
+ 		bnxt_txr_db_kick(bp, txr, txr->tx_prod);
+ 	txr->tx_buf_ring[txr->tx_prod].skb = NULL;
 -- 
 2.43.0
 
