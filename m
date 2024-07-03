@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D98925E6B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:36:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CDF1925CE9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:24:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F42311F25B42
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:36:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B88FA287D98
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA769181D0B;
-	Wed,  3 Jul 2024 11:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC72191F92;
+	Wed,  3 Jul 2024 11:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEZX12E3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lf2tImcD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8724C16F0D0;
-	Wed,  3 Jul 2024 11:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4F513247D;
+	Wed,  3 Jul 2024 11:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006202; cv=none; b=CEmgmmBoJp+YqJh0N6b8x7UCygfmPhz0x0SivhdrMwneEnDieJJ/XCPs0PxEn8vFnTlYDbdvZUcV4U3PTkIy0s3Rc6R9DlOe1w0b/uPU52TRYKZ/oBtpOoJRZrrWLduiNg3l7XwqCutnyNK1bOU76tqfLbzcHv7TthzzN53ZScA=
+	t=1720005194; cv=none; b=V+Ll+mi3kFyjWKrRsi0u7HN1ga/K7iORSEPirLT1ecPewRh2k2BikiT8SYfFay87Fy8K+OXZMSjp40EJ1XnNpFyYm6mw9UI6YAbts+PXS/FfoYCFw1mQhR/yTLtOUhvGazWyG+zTeZI2oP2ilj2peJggnUHD7G7Ep7NxB4I1W/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006202; c=relaxed/simple;
-	bh=HZJ12c7BPz4lJfV7G6DnmZmNdZeahnMpeSkKi1qRWSw=;
+	s=arc-20240116; t=1720005194; c=relaxed/simple;
+	bh=HDxen3Ndnr7Eh8dFvEkKhSzq7OCliTiT4AE8kfBYwuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nhzxBC0uj2vXNcUQS5EZ3EI6JT68T5vVmL0J5RPNhbHec3MZSSH3+vqmAhWDnH5bc9xznRBhrocNh4k65eYZachDkqPMe/3G7Y3XtiKnv5IVxA56tJkkCQVS5xemZEOaJb5gWNiRdgO/pdGTKuAJpvkndj4hSN9R2IJGzfa9Pdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEZX12E3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07400C2BD10;
-	Wed,  3 Jul 2024 11:30:01 +0000 (UTC)
+	 MIME-Version; b=Ju4FED1q97/6KmjeVbdfyM+nKOIJgtfbMMCYTVF8P5UJ/vPZRqrqBX80vmv8wNvf7eqUHiyOlGCsZRDBkWSvbbHIFRBFLLXXRn+ivPcfRz6y5/5tW/CH7LBzC4dvG8XNMpN7seye8CZIpBsUNBTxAKKWK6hvH9nuIupzYi/gbEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lf2tImcD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61C6C2BD10;
+	Wed,  3 Jul 2024 11:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006202;
-	bh=HZJ12c7BPz4lJfV7G6DnmZmNdZeahnMpeSkKi1qRWSw=;
+	s=korg; t=1720005194;
+	bh=HDxen3Ndnr7Eh8dFvEkKhSzq7OCliTiT4AE8kfBYwuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mEZX12E3J6alDC1Z0pnEBtCq/iyebsTK4OSaZUK47mEjSLOxx/tVThwlZ21v3nUoz
-	 SSX2v1j6Bo6HpZ7lC4CcekjK27s2bUAfP0iv0Wa+p3j37f3eExgWT5Tr6dLbiQlU5c
-	 /R1u8cZmM2EofJVfQoo1JIqNpDtk6sjwGymNam70=
+	b=lf2tImcDLWc4P1y75o3UxE4BSj6fOOt9lBE/7KSzVgbZ3qdhmRVyDGP/uhmricitG
+	 1mz1RjVR6Cv5I5Y4LMlZsXwPzEiDr/EitryROQPdgkPrs21aL4Y+yo+fRMZ1tBDCO7
+	 yanCT0ulIUBuC8ZjUlY2PVhn78ri4Eob8a7ggF24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fusheng Huang <fusheng.huang@ecarxgroup.com>,
-	Julia Zhang <Julia.Zhang@amd.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 334/356] drm/amdgpu: avoid using null object of framebuffer
+	Alex Bee <knaerzche@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 289/290] arm64: dts: rockchip: Add sound-dai-cells for RK3368
 Date: Wed,  3 Jul 2024 12:41:10 +0200
-Message-ID: <20240703102925.745964252@linuxfoundation.org>
+Message-ID: <20240703102915.063340172@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julia Zhang <julia.zhang@amd.com>
+From: Alex Bee <knaerzche@gmail.com>
 
-commit bcfa48ff785bd121316592b131ff6531e3e696bb upstream.
+[ Upstream commit 8d7ec44aa5d1eb94a30319074762a1740440cdc8 ]
 
-Instead of using state->fb->obj[0] directly, get object from framebuffer
-by calling drm_gem_fb_get_obj() and return error code when object is
-null to avoid using null object of framebuffer.
+Add the missing #sound-dai-cells for RK3368's I2S and S/PDIF controllers.
 
-Reported-by: Fusheng Huang <fusheng.huang@ecarxgroup.com>
-Signed-off-by: Julia Zhang <Julia.Zhang@amd.com>
-Reviewed-by: Huang Rui <ray.huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f7d89dfe1e31 ("arm64: dts: rockchip: add i2s nodes support for RK3368 SoCs")
+Fixes: 0328d68ea76d ("arm64: dts: rockchip: add rk3368 spdif node")
+Signed-off-by: Alex Bee <knaerzche@gmail.com>
+Link: https://lore.kernel.org/r/20240623090116.670607-4-knaerzche@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3368.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c
-@@ -2,6 +2,7 @@
+diff --git a/arch/arm64/boot/dts/rockchip/rk3368.dtsi b/arch/arm64/boot/dts/rockchip/rk3368.dtsi
+index 3746f23dc3df4..bc4df59df3f1e 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3368.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3368.dtsi
+@@ -687,6 +687,7 @@
+ 		dma-names = "tx";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&spdif_tx>;
++		#sound-dai-cells = <0>;
+ 		status = "disabled";
+ 	};
  
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_simple_kms_helper.h>
-+#include <drm/drm_gem_framebuffer_helper.h>
- #include <drm/drm_vblank.h>
+@@ -698,6 +699,7 @@
+ 		clocks = <&cru SCLK_I2S_2CH>, <&cru HCLK_I2S_2CH>;
+ 		dmas = <&dmac_bus 6>, <&dmac_bus 7>;
+ 		dma-names = "tx", "rx";
++		#sound-dai-cells = <0>;
+ 		status = "disabled";
+ 	};
  
- #include "amdgpu.h"
-@@ -315,7 +316,13 @@ static int amdgpu_vkms_prepare_fb(struct
- 		return 0;
- 	}
- 	afb = to_amdgpu_framebuffer(new_state->fb);
--	obj = new_state->fb->obj[0];
-+
-+	obj = drm_gem_fb_get_obj(new_state->fb, 0);
-+	if (!obj) {
-+		DRM_ERROR("Failed to get obj from framebuffer\n");
-+		return -EINVAL;
-+	}
-+
- 	rbo = gem_to_amdgpu_bo(obj);
- 	adev = amdgpu_ttm_adev(rbo->tbo.bdev);
- 	INIT_LIST_HEAD(&list);
-@@ -364,12 +371,19 @@ static void amdgpu_vkms_cleanup_fb(struc
- 				   struct drm_plane_state *old_state)
- {
- 	struct amdgpu_bo *rbo;
-+	struct drm_gem_object *obj;
- 	int r;
+@@ -711,6 +713,7 @@
+ 		dma-names = "tx", "rx";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&i2s_8ch_bus>;
++		#sound-dai-cells = <0>;
+ 		status = "disabled";
+ 	};
  
- 	if (!old_state->fb)
- 		return;
- 
--	rbo = gem_to_amdgpu_bo(old_state->fb->obj[0]);
-+	obj = drm_gem_fb_get_obj(old_state->fb, 0);
-+	if (!obj) {
-+		DRM_ERROR("Failed to get obj from framebuffer\n");
-+		return;
-+	}
-+
-+	rbo = gem_to_amdgpu_bo(obj);
- 	r = amdgpu_bo_reserve(rbo, false);
- 	if (unlikely(r)) {
- 		DRM_ERROR("failed to reserve rbo before unpin\n");
+-- 
+2.43.0
+
 
 
 
