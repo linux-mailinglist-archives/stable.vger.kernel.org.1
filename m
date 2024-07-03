@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81E41925F24
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:51:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB78F925BE8
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:12:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F627B3611B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 825E31F213DF
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9221017DA2B;
-	Wed,  3 Jul 2024 11:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5211318E75D;
+	Wed,  3 Jul 2024 11:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AuBouhL+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJaNh7MC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5157413F432;
-	Wed,  3 Jul 2024 11:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DD71957E4;
+	Wed,  3 Jul 2024 11:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005446; cv=none; b=sSvl35no39CedKMr8Z1hxFIGknpUyBdK/YT4lBkgipzokRyN2LOGUs5cplPTPNAzE0ewh13u+KFPNH+sRTvonBAErHDtSUl3hbKJmy2hFx38DhGGfRffp3LIo3xaOMVpochm2o2cq3lclPEjGN3Axndpu7aGAW9N0K1lip4HIAE=
+	t=1720004404; cv=none; b=Oh8+7zJv/icLmV/RVFOPS8SfNZcTe75piAUMS5/GO5721C2M2UAtHvSoW+4C/KfJlhNXXbxcqtTwy2p0+OhSQtF62BM1XDw4MHIecbCML2+H9+Xi/CgNtrNhwYRrKlfuLVDGBzCQJtoc+SmXgHHf8Zkl7ZpywvbTlkvKqeqp3+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005446; c=relaxed/simple;
-	bh=5VP7xz/yNeBw2roqY97oap5h8BtDVnCtJsvRcUfih/M=;
+	s=arc-20240116; t=1720004404; c=relaxed/simple;
+	bh=TuItk1MdMaFg6X0EO4tEIdkXHiAtlacJyPIS7t8Li5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L9KSj61JKNtyeKpShnVJHgYSP/Krik4fgAEJgMiiD307QFyLbsbG8wNComfuu/GFtKvaWhpxti2H+EH+8iBkcCcO1eOCt+PhJya6ErFwe1B/OYPht4FDkGGJz4PsbsRDaPQ5K5ZDKkeN9tDC8bTvl2txcwx5iklvSTT0YQbQyq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AuBouhL+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC3AC2BD10;
-	Wed,  3 Jul 2024 11:17:25 +0000 (UTC)
+	 MIME-Version; b=erdUVk9244/+Z9JXIpIqv3Gn3M2mJNrIcKY4h8LaKMhHpIqxFHyuUI/sqPlrCWzP4SOZfdYY9uKvvqhGt3WP+6Vzovy2p7MD+UBUyPYMkWZ+KRJelcxP/Dtsf/ZSohGACCUMMWBOzehcEcLjLK6QyDAuZ1CTxJbaJNBMFwntNpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJaNh7MC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A64C4AF0B;
+	Wed,  3 Jul 2024 11:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005446;
-	bh=5VP7xz/yNeBw2roqY97oap5h8BtDVnCtJsvRcUfih/M=;
+	s=korg; t=1720004403;
+	bh=TuItk1MdMaFg6X0EO4tEIdkXHiAtlacJyPIS7t8Li5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AuBouhL+csOFRJPgVFkdlBKrUwrH44VjnS7Q4hPDWsurRIVFG+7UBIaXUQJk37UIu
-	 mX3LEwG4VULT3p/jLxXsCX72Xs3ecf9oZ64a//OYyM4HUcQbbWDzxT4kNJQY22zF6C
-	 gJPLsNX3SBXtAryjWfF/VPDcdAlql/PdoM1L8rz8=
+	b=WJaNh7MCEQv7n7AWa9HTmqG4Mdk7e4P3lX9Y9RScshQtKdlRWiCGHDxAz5AI92Qo/
+	 FkMgU/SPsRvQA0L5fNUYiQYkMQbxVEvCgiHwqmgOs30oj04hxmey6Zx9bkfL+I/5Lq
+	 DAQqV3bRdSoxnk1kbqr0RV3JgRe9qBACjxSt4Me4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Tomas Winkler <tomas.winkler@intel.com>
-Subject: [PATCH 5.15 076/356] mei: me: release irq in mei_me_pci_resume error path
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 031/290] serial: sc16is7xx: replace hardcoded divisor value with BIT() macro
 Date: Wed,  3 Jul 2024 12:36:52 +0200
-Message-ID: <20240703102915.978957471@linuxfoundation.org>
+Message-ID: <20240703102905.372660875@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Winkler <tomas.winkler@intel.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit 283cb234ef95d94c61f59e1cd070cd9499b51292 upstream.
+[ Upstream commit 2e57cefc4477659527f7adab1f87cdbf60ef1ae6 ]
 
-The mei_me_pci_resume doesn't release irq on the error path,
-in case mei_start() fails.
+To better show why the limit is what it is, since we have only 16 bits for
+the divisor.
 
-Cc: <stable@kernel.org>
-Fixes: 33ec08263147 ("mei: revamp mei reset state machine")
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
-Link: https://lore.kernel.org/r/20240604090728.1027307-1-tomas.winkler@intel.com
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231221231823.2327894-13-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 8492bd91aa05 ("serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when using prescaler")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/pci-me.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/tty/serial/sc16is7xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -400,8 +400,10 @@ static int mei_me_pci_resume(struct devi
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index d751f8ce5cf6d..88b84d43c2d62 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -497,7 +497,7 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ 	u8 prescaler = 0;
+ 	unsigned long clk = port->uartclk, div = clk / 16 / baud;
+ 
+-	if (div > 0xffff) {
++	if (div >= BIT(16)) {
+ 		prescaler = SC16IS7XX_MCR_CLKSEL_BIT;
+ 		div /= 4;
  	}
- 
- 	err = mei_restart(dev);
--	if (err)
-+	if (err) {
-+		free_irq(pdev->irq, dev);
- 		return err;
-+	}
- 
- 	/* Start timer if stopped in suspend */
- 	schedule_delayed_work(&dev->timer_work, HZ);
+-- 
+2.43.0
+
 
 
 
