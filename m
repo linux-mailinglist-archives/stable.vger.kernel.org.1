@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-57842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8E2E925EA5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:38:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62D09925B02
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 627CC2A3369
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00EBE2918F1
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3034317DA10;
-	Wed,  3 Jul 2024 11:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4371F19146E;
+	Wed,  3 Jul 2024 10:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j70kmsM9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QsSOecNP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E184A17DA00;
-	Wed,  3 Jul 2024 11:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A63175555;
+	Wed,  3 Jul 2024 10:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006097; cv=none; b=UVwO+v0uxEUH0GtH9NoBUIEF32RYMaI2g0MlF+pUJJmcfdhJikyKJ55O03OWGuV2bGkDI480TzLQaYBBPHIsviDNpX0Gp//Cemw6DPASq/JfT2tjElfEhPILSUL3UjMcKw0Oz1o4v0ZDsjYCIspmWd7E6PsOAkavMX+XahNqeRo=
+	t=1720003713; cv=none; b=Nh9/2cB9SNiL80FuhOh3vRTrFAIYA5q8dy7RH3b4eb0Zt2E02oe+dzj2QIzEJdhBUmLzaEzJ093Hw377rroOwteHeJGYi9ldO1NWwV2x+Nbavyq1Y3t2BBQgM7bmyh+DfV2oE3GRPtwpbZpzRrbHlUk+C/sH1tSGdLNMzRnbkdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006097; c=relaxed/simple;
-	bh=7Y3FwAn9RZ6+/mdQVX2VXYYZ38Q9d5xjoPB0QwXAWL8=;
+	s=arc-20240116; t=1720003713; c=relaxed/simple;
+	bh=ErwsmybxkJ9jMtVxHIUfhSK1zYrGCEuhJvATRNBBLfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NMKVhq+/gV8zkr1vRcaOUTSXNTl4pQWrmErp0lP0OsrWKtu/gnDivdM5elL4YmFxrTBKlWBV4pa/iubQOFxx5uZrJv5jIDjGFO0aSar9sfGn+xP28NBKtzylOmrFDKxTO/2pZ0jj/b0005Rb9YJO2s9eGEijyISAQtc0PXujWc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j70kmsM9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C30C32781;
-	Wed,  3 Jul 2024 11:28:16 +0000 (UTC)
+	 MIME-Version; b=Er6UMRCHfuypqhvXkiUyjgQo1YYuw70hw7AjhT4bUaBJ2l7N6OQx1hKGFLCOCOFT/NZfyD/7oZTLkZoyKOSoOe5amjYola+cUdCO8Su7h996bGwqZaGsJ+4LqjKx03Ca9aq3pPF9D1wl+7eDnbaPqTR1UwhrTbPm8BxRImU7MEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QsSOecNP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74EFFC2BD10;
+	Wed,  3 Jul 2024 10:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006096;
-	bh=7Y3FwAn9RZ6+/mdQVX2VXYYZ38Q9d5xjoPB0QwXAWL8=;
+	s=korg; t=1720003712;
+	bh=ErwsmybxkJ9jMtVxHIUfhSK1zYrGCEuhJvATRNBBLfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j70kmsM9tDAJfIkD3zIN3dpJY2lCisxojjKhCofW8VdBQX2gvh2+JcdWsL+V1cFri
-	 CsGjTctvziu3pQbQ9oe8PJubw7KkNtvG9byXJweyErzdoTtmAxWSWS0v5d8Ybs39rl
-	 pVrrT/BPF4+9Te3etZtnhOh1aI3ytiv1yLemFw5A=
+	b=QsSOecNPXtDnZ8uy4INvKTmFmQ0Zzi156xnWAkeIsd7l6Tu6gE+0hMKHbMACrfC5y
+	 PN3agrPAaBINhHGu06J/fXN4t4lmQi7jG72NdELxTonL9FYfSmeFruMGMYkG/oGVUb
+	 dO5Xo66wDqV2l0gf4SrP3eHH/S47k25YU/fhWNQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netdev@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Ying <victor.liu@nxp.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 299/356] drm/panel: simple: Add missing display timing flags for KOE TX26D202VM0BWA
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
+Subject: [PATCH 4.19 138/139] tcp: Fix data races around icsk->icsk_af_ops.
 Date: Wed,  3 Jul 2024 12:40:35 +0200
-Message-ID: <20240703102924.426764066@linuxfoundation.org>
+Message-ID: <20240703102835.646068565@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +65,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Ying <victor.liu@nxp.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 37ce99b77762256ec9fda58d58fd613230151456 ]
+commit f49cd2f4d6170d27a2c61f1fecb03d8a70c91f57 upstream.
 
-KOE TX26D202VM0BWA panel spec indicates the DE signal is active high in
-timing chart, so add DISPLAY_FLAGS_DE_HIGH flag in display timing flags.
-This aligns display_timing with panel_desc.
+setsockopt(IPV6_ADDRFORM) and tcp_v6_connect() change icsk->icsk_af_ops
+under lock_sock(), but tcp_(get|set)sockopt() read it locklessly.  To
+avoid load/store tearing, we need to add READ_ONCE() and WRITE_ONCE()
+for the reads and writes.
 
-Fixes: 8a07052440c2 ("drm/panel: simple: Add support for KOE TX26D202VM0BWA panel")
-Signed-off-by: Liu Ying <victor.liu@nxp.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20240624015612.341983-1-victor.liu@nxp.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240624015612.341983-1-victor.liu@nxp.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Thanks to Eric Dumazet for providing the syzbot report:
+
+BUG: KCSAN: data-race in tcp_setsockopt / tcp_v6_connect
+
+write to 0xffff88813c624518 of 8 bytes by task 23936 on cpu 0:
+tcp_v6_connect+0x5b3/0xce0 net/ipv6/tcp_ipv6.c:240
+__inet_stream_connect+0x159/0x6d0 net/ipv4/af_inet.c:660
+inet_stream_connect+0x44/0x70 net/ipv4/af_inet.c:724
+__sys_connect_file net/socket.c:1976 [inline]
+__sys_connect+0x197/0x1b0 net/socket.c:1993
+__do_sys_connect net/socket.c:2003 [inline]
+__se_sys_connect net/socket.c:2000 [inline]
+__x64_sys_connect+0x3d/0x50 net/socket.c:2000
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x2b/0x70 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+read to 0xffff88813c624518 of 8 bytes by task 23937 on cpu 1:
+tcp_setsockopt+0x147/0x1c80 net/ipv4/tcp.c:3789
+sock_common_setsockopt+0x5d/0x70 net/core/sock.c:3585
+__sys_setsockopt+0x212/0x2b0 net/socket.c:2252
+__do_sys_setsockopt net/socket.c:2263 [inline]
+__se_sys_setsockopt net/socket.c:2260 [inline]
+__x64_sys_setsockopt+0x62/0x70 net/socket.c:2260
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x2b/0x70 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+value changed: 0xffffffff8539af68 -> 0xffffffff8539aff8
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 23937 Comm: syz-executor.5 Not tainted
+6.0.0-rc4-syzkaller-00331-g4ed9c1e971b1-dirty #0
+
+Hardware name: Google Google Compute Engine/Google Compute Engine,
+BIOS Google 08/26/2022
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Reported-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/tcp.c           |   10 ++++++----
+ net/ipv6/ipv6_sockglue.c |    3 ++-
+ net/ipv6/tcp_ipv6.c      |    6 ++++--
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 0dc4d891fedc2..26c99ffe787cd 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -2873,6 +2873,7 @@ static const struct display_timing koe_tx26d202vm0bwa_timing = {
- 	.vfront_porch = { 3, 5, 10 },
- 	.vback_porch = { 2, 5, 10 },
- 	.vsync_len = { 5, 5, 5 },
-+	.flags = DISPLAY_FLAGS_DE_HIGH,
- };
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3130,8 +3130,9 @@ int tcp_setsockopt(struct sock *sk, int
+ 	const struct inet_connection_sock *icsk = inet_csk(sk);
  
- static const struct panel_desc koe_tx26d202vm0bwa = {
--- 
-2.43.0
-
+ 	if (level != SOL_TCP)
+-		return icsk->icsk_af_ops->setsockopt(sk, level, optname,
+-						     optval, optlen);
++		/* Paired with WRITE_ONCE() in do_ipv6_setsockopt() and tcp_v6_connect() */
++		return READ_ONCE(icsk->icsk_af_ops)->setsockopt(sk, level, optname,
++								optval, optlen);
+ 	return do_tcp_setsockopt(sk, level, optname, optval, optlen);
+ }
+ EXPORT_SYMBOL(tcp_setsockopt);
+@@ -3653,8 +3654,9 @@ int tcp_getsockopt(struct sock *sk, int
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
+ 
+ 	if (level != SOL_TCP)
+-		return icsk->icsk_af_ops->getsockopt(sk, level, optname,
+-						     optval, optlen);
++		/* Paired with WRITE_ONCE() in do_ipv6_setsockopt() and tcp_v6_connect() */
++		return READ_ONCE(icsk->icsk_af_ops)->getsockopt(sk, level, optname,
++								optval, optlen);
+ 	return do_tcp_getsockopt(sk, level, optname, optval, optlen);
+ }
+ EXPORT_SYMBOL(tcp_getsockopt);
+--- a/net/ipv6/ipv6_sockglue.c
++++ b/net/ipv6/ipv6_sockglue.c
+@@ -226,7 +226,8 @@ static int do_ipv6_setsockopt(struct soc
+ 				local_bh_enable();
+ 				/* Paired with READ_ONCE(sk->sk_prot) in inet6_stream_ops */
+ 				WRITE_ONCE(sk->sk_prot, &tcp_prot);
+-				icsk->icsk_af_ops = &ipv4_specific;
++				/* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
++				WRITE_ONCE(icsk->icsk_af_ops, &ipv4_specific);
+ 				sk->sk_socket->ops = &inet_stream_ops;
+ 				sk->sk_family = PF_INET;
+ 				tcp_sync_mss(sk, icsk->icsk_pmtu_cookie);
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -229,7 +229,8 @@ static int tcp_v6_connect(struct sock *s
+ 		sin.sin_port = usin->sin6_port;
+ 		sin.sin_addr.s_addr = usin->sin6_addr.s6_addr32[3];
+ 
+-		icsk->icsk_af_ops = &ipv6_mapped;
++		/* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
++		WRITE_ONCE(icsk->icsk_af_ops, &ipv6_mapped);
+ 		sk->sk_backlog_rcv = tcp_v4_do_rcv;
+ #ifdef CONFIG_TCP_MD5SIG
+ 		tp->af_specific = &tcp_sock_ipv6_mapped_specific;
+@@ -239,7 +240,8 @@ static int tcp_v6_connect(struct sock *s
+ 
+ 		if (err) {
+ 			icsk->icsk_ext_hdr_len = exthdrlen;
+-			icsk->icsk_af_ops = &ipv6_specific;
++			/* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
++			WRITE_ONCE(icsk->icsk_af_ops, &ipv6_specific);
+ 			sk->sk_backlog_rcv = tcp_v6_do_rcv;
+ #ifdef CONFIG_TCP_MD5SIG
+ 			tp->af_specific = &tcp_sock_ipv6_specific;
 
 
 
