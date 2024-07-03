@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-57213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97F9A925B97
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:09:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1397B925E36
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63A912911F5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:09:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B26A81F25955
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3453919D88A;
-	Wed,  3 Jul 2024 10:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E60917C23F;
+	Wed,  3 Jul 2024 11:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0I89fcW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/xTgrCu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85B41428E4;
-	Wed,  3 Jul 2024 10:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADFF13B280;
+	Wed,  3 Jul 2024 11:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004200; cv=none; b=sGZiNAHXwiSh9PP86KM/Dyssh6wCWj0y8V/W6/FCmi7XCSxTw9xFO6U8fNhiMRFQ3fdbeWMK8mrX/3QmcSbDFyEyCMRZS+6y6DA4KmM9CTLPBmmgKAzvymMzAISHMItZiB28ZQmfWvzI7i629FaAjnJ58dv4Js0OBemwGKHcWfA=
+	t=1720006046; cv=none; b=A6HAQZVIZq15baU3Z1te/qDBvwgz01RYSxtkEi8HcvAspChVKRTkRsHfAaaAFVAzYyQaKPK3sp9KGh9OX2PjQ69BhrIWWS7zHOx6XhWzCrg9l4cbreAwU0G40npFraTa4DDhtresZEJ5jx///NkxbcSeED83FKS8+xQlJn8LTk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004200; c=relaxed/simple;
-	bh=/7QvhKu2H4VLlAP4bp+85G0/KRi5M2/4tcvBDeBkvKI=;
+	s=arc-20240116; t=1720006046; c=relaxed/simple;
+	bh=IS+4eVeHcZLuubTbdpJDTvsXaMFK7uWppf/TYT59kJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/vFMQ7CzhTQCWgvDk0CUjK1lvl1fnUfQmxVy7zn5yyOsYZZJdKQNTjktqF4q8TNQi5b8eUmt52aN0m6/J+DEA+n/aG8nXzmQ5gmRmIi7KHofAMwC51iHXwBCstY0VCJoCr/vxCz9FbIzv0+b7gNsULPbtB4FJQnb1Dd7jehAUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0I89fcW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D39CC2BD10;
-	Wed,  3 Jul 2024 10:56:39 +0000 (UTC)
+	 MIME-Version; b=JnGd6LYDEDtBEvEZvLAfbtJI5E8gDaFcf19898pRwvL24hBY7+/K0L2aGIdp+aJdSNkJkOPqaxKeBPLb8glKdTrpdZ6oKyXlDnrp5G74VWNPPVHmgUFSsVJt+kGrTCoCDiDIfJwWliAJA8uoi2A+z4Vbu/NRvdbZdDL2RAR6aak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/xTgrCu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8975C2BD10;
+	Wed,  3 Jul 2024 11:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004199;
-	bh=/7QvhKu2H4VLlAP4bp+85G0/KRi5M2/4tcvBDeBkvKI=;
+	s=korg; t=1720006046;
+	bh=IS+4eVeHcZLuubTbdpJDTvsXaMFK7uWppf/TYT59kJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l0I89fcWmImNUk7HYiewuAlGwrIWyZxP6IXIfLDSJqwpZp2Cg6EGN5P83HQjmWSTM
-	 NzJSO5GMms1ZbccPbX7AngA+K7LYOqq1ac4hjw1X0RV3Idz+vhk2HXPjRViAlFtDaO
-	 TJgQjKgdJpnXpJQRGnQf098/MjfzP8PBlkttYF4w=
+	b=B/xTgrCu/aFG7OStz0ZvUuN7AHI8cfardArcfA0XIuNTUiaCxFgopdQtVS4hu7EVm
+	 tDFbyNrw782cvLzBTW6WypE6iGKBtn7hfTN+W71gKGgOBJMULX3663zacfJ103wvoA
+	 ZeXySNaZnZTYxhhrz/zG8Wp2msaEkkqCYczHaq0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
+	Haifeng Xu <haifeng.xu@shopee.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 126/189] Revert "kheaders: substituting --sort in archive creation"
+Subject: [PATCH 5.15 251/356] perf/core: Fix missing wakeup when waiting for context reference
 Date: Wed,  3 Jul 2024 12:39:47 +0200
-Message-ID: <20240703102846.248750886@linuxfoundation.org>
+Message-ID: <20240703102922.614832994@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Haifeng Xu <haifeng.xu@shopee.com>
 
-[ Upstream commit 49c386ebbb43394ff4773ce24f726f6afc4c30c8 ]
+[ Upstream commit 74751ef5c1912ebd3e65c3b65f45587e05ce5d36 ]
 
-This reverts commit 700dea5a0bea9f64eba89fae7cb2540326fdfdc1.
+In our production environment, we found many hung tasks which are
+blocked for more than 18 hours. Their call traces are like this:
 
-The reason for that commit was --sort=ORDER introduced in
-tar 1.28 (2014). More than 3 years have passed since then.
+[346278.191038] __schedule+0x2d8/0x890
+[346278.191046] schedule+0x4e/0xb0
+[346278.191049] perf_event_free_task+0x220/0x270
+[346278.191056] ? init_wait_var_entry+0x50/0x50
+[346278.191060] copy_process+0x663/0x18d0
+[346278.191068] kernel_clone+0x9d/0x3d0
+[346278.191072] __do_sys_clone+0x5d/0x80
+[346278.191076] __x64_sys_clone+0x25/0x30
+[346278.191079] do_syscall_64+0x5c/0xc0
+[346278.191083] ? syscall_exit_to_user_mode+0x27/0x50
+[346278.191086] ? do_syscall_64+0x69/0xc0
+[346278.191088] ? irqentry_exit_to_user_mode+0x9/0x20
+[346278.191092] ? irqentry_exit+0x19/0x30
+[346278.191095] ? exc_page_fault+0x89/0x160
+[346278.191097] ? asm_exc_page_fault+0x8/0x30
+[346278.191102] entry_SYSCALL_64_after_hwframe+0x44/0xae
 
-Requiring GNU tar 1.28 should be fine now because we require
-GCC 5.1 (2015).
+The task was waiting for the refcount become to 1, but from the vmcore,
+we found the refcount has already been 1. It seems that the task didn't
+get woken up by perf_event_release_kernel() and got stuck forever. The
+below scenario may cause the problem.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-Stable-dep-of: 3bd27a847a3a ("kheaders: explicitly define file modes for archived headers")
+Thread A					Thread B
+...						...
+perf_event_free_task				perf_event_release_kernel
+						   ...
+						   acquire event->child_mutex
+						   ...
+						   get_ctx
+   ...						   release event->child_mutex
+   acquire ctx->mutex
+   ...
+   perf_free_event (acquire/release event->child_mutex)
+   ...
+   release ctx->mutex
+   wait_var_event
+						   acquire ctx->mutex
+						   acquire event->child_mutex
+						   # move existing events to free_list
+						   release event->child_mutex
+						   release ctx->mutex
+						   put_ctx
+...						...
+
+In this case, all events of the ctx have been freed, so we couldn't
+find the ctx in free_list and Thread A will miss the wakeup. It's thus
+necessary to add a wakeup after dropping the reference.
+
+Fixes: 1cf8dfe8a661 ("perf/core: Fix race between close() and fork()")
+Signed-off-by: Haifeng Xu <haifeng.xu@shopee.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20240513103948.33570-1-haifeng.xu@shopee.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/gen_kheaders.sh | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ kernel/events/core.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/kernel/gen_kheaders.sh b/kernel/gen_kheaders.sh
-index c1510f0ab3ea5..d7e827c6cd2d2 100755
---- a/kernel/gen_kheaders.sh
-+++ b/kernel/gen_kheaders.sh
-@@ -83,12 +83,9 @@ find $cpio_dir -type f -print0 |
- 	xargs -0 -P8 -n1 perl -pi -e 'BEGIN {undef $/;}; s/\/\*((?!SPDX).)*?\*\///smg;'
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index e79cd0fd1d2b7..80d9c8fcc30a6 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -5276,6 +5276,7 @@ int perf_event_release_kernel(struct perf_event *event)
+ again:
+ 	mutex_lock(&event->child_mutex);
+ 	list_for_each_entry(child, &event->child_list, child_list) {
++		void *var = NULL;
  
- # Create archive and try to normalize metadata for reproducibility.
--# For compatibility with older versions of tar, files are fed to tar
--# pre-sorted, as --sort=name might not be available.
--find $cpio_dir -printf "./%P\n" | LC_ALL=C sort | \
--    tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
--    --owner=0 --group=0 --numeric-owner --no-recursion \
--    -I $XZ -cf $tarfile -C $cpio_dir/ -T - > /dev/null
-+tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
-+    --owner=0 --group=0 --sort=name --numeric-owner \
-+    -I $XZ -cf $tarfile -C $cpio_dir/ . > /dev/null
+ 		/*
+ 		 * Cannot change, child events are not migrated, see the
+@@ -5316,11 +5317,23 @@ int perf_event_release_kernel(struct perf_event *event)
+ 			 * this can't be the last reference.
+ 			 */
+ 			put_event(event);
++		} else {
++			var = &ctx->refcount;
+ 		}
  
- echo $headers_md5 > kernel/kheaders.md5
- echo "$this_file_md5" >> kernel/kheaders.md5
+ 		mutex_unlock(&event->child_mutex);
+ 		mutex_unlock(&ctx->mutex);
+ 		put_ctx(ctx);
++
++		if (var) {
++			/*
++			 * If perf_event_free_task() has deleted all events from the
++			 * ctx while the child_mutex got released above, make sure to
++			 * notify about the preceding put_ctx().
++			 */
++			smp_mb(); /* pairs with wait_var_event() */
++			wake_up_var(var);
++		}
+ 		goto again;
+ 	}
+ 	mutex_unlock(&event->child_mutex);
 -- 
 2.43.0
 
