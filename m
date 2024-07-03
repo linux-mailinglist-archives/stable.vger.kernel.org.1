@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69298925D4D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68B9A925C56
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:17:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C3A81C2217A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04ED7292581
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0AC13DBBD;
-	Wed,  3 Jul 2024 11:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0A418FC90;
+	Wed,  3 Jul 2024 11:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSkQuRpV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lklr9WbS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7811741C4;
-	Wed,  3 Jul 2024 11:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EDA176226;
+	Wed,  3 Jul 2024 11:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005469; cv=none; b=TnnJ3GWJJ6M8YLjrbmdtTAKSd6iaCfuuAHV8KKJ7fmdYGULk8eXS/wC/3BN6CiEIidr/VaGUUFia07pZS0PayYHbSYN/JpthKMqtjkasVZY3ipsN1W3eK6hk7RqFTmh5pJoohzD8C7gTTSSwgYier/lLBT4hUELC48kcml1IUzg=
+	t=1720004456; cv=none; b=L9/iyjvf/bJJ25kMQy+Yl8VcdypuZYcdMsbSNvw5haSZNtjl7mNyybvz5TIYhyyir3N2Eul7/qhaFV4zPQRNgGscBJJl0dFK4HaUn8eX3lGYf5LOLFADcJbDAfvH2lzLfh0BduGU7y0uvxGjyBq2em1m9IqKJLJVDZjbY0CBI6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005469; c=relaxed/simple;
-	bh=uifLeWNBfbutW/333WF7dm0yeu1M9FkyaEWP9Nci0L4=;
+	s=arc-20240116; t=1720004456; c=relaxed/simple;
+	bh=8II0VpQWFoSixNDi1HAJvwJv6swNZrRsDEirl2rzIW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VfKrA30J62a98QSryDzv2kEYNkeAYGiG/9KyJD5vWdgTUGiczERu6rKlRV1YZ02wBEUvITDrguV9qtkwonFxjaXMEN1BFzH65fA8VjFP8Z3ToXQEqkvMVbrPo2vT+7cE323TaG2k7TyYYM7nLHTkPwAyAagjg8v51LhGl4L4WSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSkQuRpV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54807C2BD10;
-	Wed,  3 Jul 2024 11:17:49 +0000 (UTC)
+	 MIME-Version; b=mnllGls+HX83KFQUQcls8W8XIYc/tBsYro8wgf64RQL0OJhjVCAhVX/k3RZU3HFY29I+KTZb0xptrFUtPyuvH7Sqwkl/8fxjzkprUv680inJSzKfTEb325YV2T2Psl4QzKGW7UFNEwJrWHySPPFpviHH8zvtoukSR01ZBBjRHu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lklr9WbS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A06DC2BD10;
+	Wed,  3 Jul 2024 11:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005469;
-	bh=uifLeWNBfbutW/333WF7dm0yeu1M9FkyaEWP9Nci0L4=;
+	s=korg; t=1720004455;
+	bh=8II0VpQWFoSixNDi1HAJvwJv6swNZrRsDEirl2rzIW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NSkQuRpV1PLRnD43yuPsJBZP3+a4MTm1BdvSEld+eFi+MVSgaSit5EB/otY1+K5KX
-	 TYhgJ09X3W27XIGLztbPdszm76cXfALLXqSk4N1c48Y+hgrSkG7zmD50NPBxd7g40i
-	 xPxyTByhSv+AX9cTT0hrYpnJDvOnfimbVRO+gLgA=
+	b=lklr9WbSwikz6UFdQ0nFvFXLHtmFI1QaBDjhqNLSAiY979DN7tJcMS7XZADRSIEs4
+	 sOdiCELF5sivryjvwfTFZ1TJjb0hllrqhJXRGfioWPri9eL/IQVBf7y4Fpuf8WApzb
+	 3pRwsGknh0Yjm+Re0GRIy/uTIx+psRLZ3PU3Kdgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 092/356] iommu/amd: Introduce pci segment structure
+	Pierre Tomon <pierretom+12@ik.me>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.10 047/290] xhci: Set correct transferred length for cancelled bulk transfers
 Date: Wed,  3 Jul 2024 12:37:08 +0200
-Message-ID: <20240703102916.580785233@linuxfoundation.org>
+Message-ID: <20240703102905.979057630@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,187 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasant Hegde <vasant.hegde@amd.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 404ec4e4c169fb64da6b2a38b471c13ac0897c76 ]
+commit f0260589b439e2637ad54a2b25f00a516ef28a57 upstream.
 
-Newer AMD systems can support multiple PCI segments, where each segment
-contains one or more IOMMU instances. However, an IOMMU instance can only
-support a single PCI segment.
+The transferred length is set incorrectly for cancelled bulk
+transfer TDs in case the bulk transfer ring stops on the last transfer
+block with a 'Stop - Length Invalid' completion code.
 
-Current code assumes that system contains only one pci segment (segment 0)
-and creates global data structures such as device table, rlookup table,
-etc.
+length essentially ends up being set to the requested length:
+urb->actual_length = urb->transfer_buffer_length
 
-Introducing per PCI segment data structure, which contains segment
-specific data structures. This will eventually replace the global
-data structures.
+Length for 'Stop - Length Invalid' cases should be the sum of all
+TRB transfer block lengths up to the one the ring stopped on,
+_excluding_ the one stopped on.
 
-Also update `amd_iommu->pci_seg` variable to point to PCI segment
-structure instead of PCI segment ID.
+Fix this by always summing up TRB lengths for 'Stop - Length Invalid'
+bulk cases.
 
-Co-developed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-Link: https://lore.kernel.org/r/20220706113825.25582-3-vasant.hegde@amd.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Stable-dep-of: a295ec52c862 ("iommu/amd: Fix sysfs leak in iommu init")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This issue was discovered by Alan Stern while debugging
+https://bugzilla.kernel.org/show_bug.cgi?id=218890, but does not
+solve that bug. Issue is older than 4.10 kernel but fix won't apply
+to those due to major reworks in that area.
+
+Tested-by: Pierre Tomon <pierretom+12@ik.me>
+Cc: stable@vger.kernel.org # v4.10+
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240611120610.3264502-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/amd_iommu_types.h | 24 ++++++++++++++-
- drivers/iommu/amd/init.c            | 46 ++++++++++++++++++++++++++++-
- 2 files changed, 68 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-ring.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iommu/amd/amd_iommu_types.h b/drivers/iommu/amd/amd_iommu_types.h
-index 390f10060c82b..2dc025acad4ce 100644
---- a/drivers/iommu/amd/amd_iommu_types.h
-+++ b/drivers/iommu/amd/amd_iommu_types.h
-@@ -450,6 +450,11 @@ extern bool amd_iommu_irq_remap;
- /* kmem_cache to get tables with 128 byte alignement */
- extern struct kmem_cache *amd_iommu_irq_cache;
- 
-+/* Make iterating over all pci segment easier */
-+#define for_each_pci_segment(pci_seg) \
-+	list_for_each_entry((pci_seg), &amd_iommu_pci_seg_list, list)
-+#define for_each_pci_segment_safe(pci_seg, next) \
-+	list_for_each_entry_safe((pci_seg), (next), &amd_iommu_pci_seg_list, list)
- /*
-  * Make iterating over all IOMMUs easier
-  */
-@@ -524,6 +529,17 @@ struct protection_domain {
- 	unsigned dev_iommu[MAX_IOMMUS]; /* per-IOMMU reference count */
- };
- 
-+/*
-+ * This structure contains information about one PCI segment in the system.
-+ */
-+struct amd_iommu_pci_seg {
-+	/* List with all PCI segments in the system */
-+	struct list_head list;
-+
-+	/* PCI segment number */
-+	u16 id;
-+};
-+
- /*
-  * Structure where we save information about one hardware AMD IOMMU in the
-  * system.
-@@ -575,7 +591,7 @@ struct amd_iommu {
- 	u16 cap_ptr;
- 
- 	/* pci domain of this IOMMU */
--	u16 pci_seg;
-+	struct amd_iommu_pci_seg *pci_seg;
- 
- 	/* start of exclusion range of that IOMMU */
- 	u64 exclusion_start;
-@@ -703,6 +719,12 @@ extern struct list_head ioapic_map;
- extern struct list_head hpet_map;
- extern struct list_head acpihid_map;
- 
-+/*
-+ * List with all PCI segments in the system. This list is not locked because
-+ * it is only written at driver initialization time
-+ */
-+extern struct list_head amd_iommu_pci_seg_list;
-+
- /*
-  * List with all IOMMUs in the system. This list is not locked because it is
-  * only written and read at driver initialization or suspend time
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index ef855495c210e..724874ad0b2a8 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -167,6 +167,7 @@ u16 amd_iommu_last_bdf;			/* largest PCI device id we have
- LIST_HEAD(amd_iommu_unity_map);		/* a list of required unity mappings
- 					   we find in ACPI */
- 
-+LIST_HEAD(amd_iommu_pci_seg_list);	/* list of all PCI segments */
- LIST_HEAD(amd_iommu_list);		/* list of all AMD IOMMUs in the
- 					   system */
- 
-@@ -1455,6 +1456,43 @@ static int __init init_iommu_from_acpi(struct amd_iommu *iommu,
- 	return 0;
- }
- 
-+/* Allocate PCI segment data structure */
-+static struct amd_iommu_pci_seg *__init alloc_pci_segment(u16 id)
-+{
-+	struct amd_iommu_pci_seg *pci_seg;
-+
-+	pci_seg = kzalloc(sizeof(struct amd_iommu_pci_seg), GFP_KERNEL);
-+	if (pci_seg == NULL)
-+		return NULL;
-+
-+	pci_seg->id = id;
-+	list_add_tail(&pci_seg->list, &amd_iommu_pci_seg_list);
-+
-+	return pci_seg;
-+}
-+
-+static struct amd_iommu_pci_seg *__init get_pci_segment(u16 id)
-+{
-+	struct amd_iommu_pci_seg *pci_seg;
-+
-+	for_each_pci_segment(pci_seg) {
-+		if (pci_seg->id == id)
-+			return pci_seg;
-+	}
-+
-+	return alloc_pci_segment(id);
-+}
-+
-+static void __init free_pci_segments(void)
-+{
-+	struct amd_iommu_pci_seg *pci_seg, *next;
-+
-+	for_each_pci_segment_safe(pci_seg, next) {
-+		list_del(&pci_seg->list);
-+		kfree(pci_seg);
-+	}
-+}
-+
- static void __init free_iommu_one(struct amd_iommu *iommu)
- {
- 	free_cwwb_sem(iommu);
-@@ -1541,8 +1579,14 @@ static void amd_iommu_ats_write_check_workaround(struct amd_iommu *iommu)
-  */
- static int __init init_iommu_one(struct amd_iommu *iommu, struct ivhd_header *h)
- {
-+	struct amd_iommu_pci_seg *pci_seg;
- 	int ret;
- 
-+	pci_seg = get_pci_segment(h->pci_seg);
-+	if (pci_seg == NULL)
-+		return -ENOMEM;
-+	iommu->pci_seg = pci_seg;
-+
- 	raw_spin_lock_init(&iommu->lock);
- 	iommu->cmd_sem_val = 0;
- 
-@@ -1563,7 +1607,6 @@ static int __init init_iommu_one(struct amd_iommu *iommu, struct ivhd_header *h)
- 	 */
- 	iommu->devid   = h->devid;
- 	iommu->cap_ptr = h->cap_ptr;
--	iommu->pci_seg = h->pci_seg;
- 	iommu->mmio_phys = h->mmio_phys;
- 
- 	switch (h->type) {
-@@ -2604,6 +2647,7 @@ static void __init free_iommu_resources(void)
- 	amd_iommu_dev_table = NULL;
- 
- 	free_iommu_all();
-+	free_pci_segments();
- }
- 
- /* SB IOAPIC is always on this device in AMD systems */
--- 
-2.43.0
-
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -2386,9 +2386,8 @@ static int process_bulk_intr_td(struct x
+ 		goto finish_td;
+ 	case COMP_STOPPED_LENGTH_INVALID:
+ 		/* stopped on ep trb with invalid length, exclude it */
+-		ep_trb_len	= 0;
+-		remaining	= 0;
+-		break;
++		td->urb->actual_length = sum_trb_lengths(xhci, ep_ring, ep_trb);
++		goto finish_td;
+ 	case COMP_USB_TRANSACTION_ERROR:
+ 		if (xhci->quirks & XHCI_NO_SOFT_RETRY ||
+ 		    (ep->err_count++ > MAX_SOFT_RETRY) ||
 
 
 
