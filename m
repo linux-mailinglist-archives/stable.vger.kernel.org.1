@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-57345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DD6E925C22
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:15:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5227F925A8F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:01:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 095161F212D0
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:15:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02EB61F21615
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFE317B40E;
-	Wed,  3 Jul 2024 11:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFBF178CEE;
+	Wed,  3 Jul 2024 10:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+Kbyo9+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KMFHnf7l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CFF171E72;
-	Wed,  3 Jul 2024 11:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C778178CCD;
+	Wed,  3 Jul 2024 10:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004599; cv=none; b=JMGpN2GAHfQcpnOkD4T+poEtJPlaTFzCTvAQku8ch+gDRBG7h7+f3RVAxItOygORuG18z0nh/ceBcY1TApLbvnxCcuQT5quHok05lfGvVCK8bVgvoK9JKxZqTILKtNRudRzof8vXulljCWqcONTNrC871l+MBq/DX+YDNYASemc=
+	t=1720003767; cv=none; b=EpfY1zHe+KtfF7BAvHcEclMj/41gsGYy3kNq3Q1hS+nkf7jgBXluOQO5uE6ESRwEHuISEkfjDtAqInyy4LTi7JDxS2uO1hCp2mg8JLCWx3FBbiZ+lskPt67HkCnny6DMHVVgHxHyu1ooVzC33B1w6nZT+jJgNpyL78XskqewiFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004599; c=relaxed/simple;
-	bh=pSDAPyYxgRZf2pTuVuFvCzIfA+zlKBbqVXVB77IO2L8=;
+	s=arc-20240116; t=1720003767; c=relaxed/simple;
+	bh=D5FIhWTdfYtd4XF6XYCuVHz1tOmSqKXdrkC91DPQGkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hpcD1uDvXJCOFKC6GPiQkjIyhUlkUjqIIfoN34n914sY8T3nkxE4gs+HlQXvsFJtNR9ck3BijelpIwJRF1mARQhKvYzKx1Kc9pKXzvzWcYasaILpvbOtsvXEf7BfJqhVxzd4UJcUMgQPxnr8dUjwCVQCe9cx328FbIXs8zX5Muc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+Kbyo9+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC6BC2BD10;
-	Wed,  3 Jul 2024 11:03:18 +0000 (UTC)
+	 MIME-Version; b=I7v+3cSwBbpmS/58gQGLMZa3vqFaZa1TlOcNWlpXcimOORwCOTG7mfQFOBGOjYLoL8ke8iOoz+E82fyZKdwwl2KkHF3leKByYU7sngbd3iRNG20EFfas5OVN2YgYVmb+fojPPR/3rIDJL9/0aMzEDMpARmPKnrMVmjyMjE78Ipo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KMFHnf7l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C53BC2BD10;
+	Wed,  3 Jul 2024 10:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004599;
-	bh=pSDAPyYxgRZf2pTuVuFvCzIfA+zlKBbqVXVB77IO2L8=;
+	s=korg; t=1720003767;
+	bh=D5FIhWTdfYtd4XF6XYCuVHz1tOmSqKXdrkC91DPQGkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X+Kbyo9+QutiXeFguThDZi29WpY1Kom0hdFefHZ1ZBmyT9pOFAqZLONOucY/IZDCZ
-	 mfwkoG06xRy1aP6sDVTI6Lgwfjq8P7iJWZ6UJ2vnUkZiuQgT+25OfIqnsSfGRC7p0H
-	 qfiVpDV1fQMyU47KEg6VVCjvk3S4j/fvFXttqrZ0=
+	b=KMFHnf7ltju023yfK2LU9lOUuN1hlxkYHMxTGrjZlrmSdmCQyj1VHrX/+N+5aULAt
+	 t3P/llIfq1iGvkAFXocXEkIQgVABF/p/wl3eyMq9Aqc76EnCRBR3sr2Y99jej3109p
+	 Xnr85sqcNZmJydh0mDz0ajgxOvR4K8QLoaNDB054=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	Christoph Paasch <cpaasch@apple.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 096/290] mptcp: ensure snd_una is properly initialized on connect
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 016/189] af_unix: Annotate data-races around sk->sk_state in sendmsg() and recvmsg().
 Date: Wed,  3 Jul 2024 12:37:57 +0200
-Message-ID: <20240703102907.817618578@linuxfoundation.org>
+Message-ID: <20240703102842.116905355@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 8031b58c3a9b1db3ef68b3bd749fbee2e1e1aaa3 upstream.
+[ Upstream commit 8a34d4e8d9742a24f74998f45a6a98edd923319b ]
 
-This is strictly related to commit fb7a0d334894 ("mptcp: ensure snd_nxt
-is properly initialized on connect"). It turns out that syzkaller can
-trigger the retransmit after fallback and before processing any other
-incoming packet - so that snd_una is still left uninitialized.
+The following functions read sk->sk_state locklessly and proceed only if
+the state is TCP_ESTABLISHED.
 
-Address the issue explicitly initializing snd_una together with snd_nxt
-and write_seq.
+  * unix_stream_sendmsg
+  * unix_stream_read_generic
+  * unix_seqpacket_sendmsg
+  * unix_seqpacket_recvmsg
 
-Suggested-by: Mat Martineau <martineau@kernel.org>
-Fixes: 8fd738049ac3 ("mptcp: fallback in case of simultaneous connect")
-Cc: stable@vger.kernel.org
-Reported-by: Christoph Paasch <cpaasch@apple.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/485
+Let's use READ_ONCE() there.
+
+Fixes: a05d2ad1c1f3 ("af_unix: Only allow recv on connected seqpacket sockets.")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240607-upstream-net-20240607-misc-fixes-v1-1-1ab9ddfa3d00@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in protocol.c, similar to the ones from commit 99951b62bf20
-  ("mptcp: ensure snd_nxt is properly initialized on connect"), with the
-  same resolution. Note that in this version, 'snd_una' is an atomic64
-  type, so use atomic64_set() instead, as it is done everywhere else. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/unix/af_unix.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2646,6 +2646,7 @@ static int mptcp_stream_connect(struct s
- 		mptcp_subflow_early_fallback(msk, subflow);
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 73cc992bed880..0611ff921421e 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1881,7 +1881,7 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
+ 		goto out_err;
  
- 	WRITE_ONCE(msk->write_seq, subflow->idsn);
-+	atomic64_set(&msk->snd_una, msk->write_seq);
+ 	if (msg->msg_namelen) {
+-		err = sk->sk_state == TCP_ESTABLISHED ? -EISCONN : -EOPNOTSUPP;
++		err = READ_ONCE(sk->sk_state) == TCP_ESTABLISHED ? -EISCONN : -EOPNOTSUPP;
+ 		goto out_err;
+ 	} else {
+ 		err = -ENOTCONN;
+@@ -2083,7 +2083,7 @@ static int unix_seqpacket_sendmsg(struct socket *sock, struct msghdr *msg,
+ 	if (err)
+ 		return err;
  
- do_connect:
- 	err = ssock->ops->connect(ssock, uaddr, addr_len, flags);
+-	if (sk->sk_state != TCP_ESTABLISHED)
++	if (READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)
+ 		return -ENOTCONN;
+ 
+ 	if (msg->msg_namelen)
+@@ -2097,7 +2097,7 @@ static int unix_seqpacket_recvmsg(struct socket *sock, struct msghdr *msg,
+ {
+ 	struct sock *sk = sock->sk;
+ 
+-	if (sk->sk_state != TCP_ESTABLISHED)
++	if (READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)
+ 		return -ENOTCONN;
+ 
+ 	return unix_dgram_recvmsg(sock, msg, size, flags);
+@@ -2293,7 +2293,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 	size_t size = state->size;
+ 	unsigned int last_len;
+ 
+-	if (unlikely(sk->sk_state != TCP_ESTABLISHED)) {
++	if (unlikely(READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)) {
+ 		err = -EINVAL;
+ 		goto out;
+ 	}
+-- 
+2.43.0
+
 
 
 
