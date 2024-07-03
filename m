@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE6D4925AB7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0134A9259CD
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:50:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 745221F22E53
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABE951F22138
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E0A1DFC7;
-	Wed,  3 Jul 2024 10:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FEA17B425;
+	Wed,  3 Jul 2024 10:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVBvt9Dd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aw+4JRho"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B5417BB05;
-	Wed,  3 Jul 2024 10:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505FF17B421;
+	Wed,  3 Jul 2024 10:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003872; cv=none; b=HhMvV8UFinudHWFS1ZqoX8BBrJ2a/wokdjbWx+jaj8TKeeP5fWfX+xVswM2ZzC6UlrCyF/Zk6elnX9/ID16uEcTTSD9dRmNy5rumYpOVJ0zP47jqOv3BP/d4DhHitxXg6ngWJFsN9DKcVFCkvAIiuB+oltj5ba590VX6mkajzQ4=
+	t=1720003326; cv=none; b=Lz7Tl+H9dkIPRL3v0KxI4renZYudtawHJv/evHW56wzZ/O8orvCoa1+jBQqj1aulg0ivTBtSAa7GbF7lRBUiOgj0vMHmViVf54JYCgN1sfy7ipGaEk9bNbTdsGGwRtrUzZQS84jW31i6CDBLtDqwIYnEekUtwUfbkD36Kw4pE00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003872; c=relaxed/simple;
-	bh=AJyeJ0qIF1jAy40BOOLvQj028gmvc3OJ4x87ykchBgE=;
+	s=arc-20240116; t=1720003326; c=relaxed/simple;
+	bh=TKrqwjrNB6IRJW2lCsb0yowVEymfGlVBEUUNWrs2cMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GcMaXIXKPBQU2e5PnMMp7yCHZTUtIPSfDxPcV6h9g+gMU+aF1wA1xU8WAPJQ3K7hSJCgRkr3gUlAWU6/CBqiYNvRIPMbF6MU6Ek4DCPDcpbHT49llSDySvhoa/iFhKAJy3kkxmlPRaK5PGiWz0bUkk7C60HRAtozbXd63ym6DL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVBvt9Dd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC774C2BD10;
-	Wed,  3 Jul 2024 10:51:11 +0000 (UTC)
+	 MIME-Version; b=FZnk0qrKTFkGnDUPnAstCRSyN5eT5N/w7s0VLFiy3HN8BDhQ+W3fu4T7B40OPFC1n4SZEz9bi/tZYAd9rNrQkfEtuxDZelgGlpd5zu2lCeCrOC6TVWe64AKF54A1MgFBjTozRJnlKm8rYRHvCVicx/PLOu7qt6czE1LJyxsTR8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aw+4JRho; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C277C2BD10;
+	Wed,  3 Jul 2024 10:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003872;
-	bh=AJyeJ0qIF1jAy40BOOLvQj028gmvc3OJ4x87ykchBgE=;
+	s=korg; t=1720003325;
+	bh=TKrqwjrNB6IRJW2lCsb0yowVEymfGlVBEUUNWrs2cMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oVBvt9DdAHTxkxw2t1qjasKmdF3qeC8YWGUoRc9rVFqKsQKxmulJP13yD4sAsEOkQ
-	 aPlg7MUWpD0inissbfKFz9Ehe81/awYw6bbEdUDTt60+q82iV2sUYRrZ7pp7B29zx0
-	 PfcpzyUhOkG0JxfCVeRKsR3pb7Rm5NHggcpv+ucM=
+	b=Aw+4JRho42McF8916kjjYzoHOf9Kga3IFQHB4gdtoCG725j6zHXWfpBh7cz9NBT75
+	 x6ubTGaRjuA4c+JT3DPeICuk8gQhAF+ArT6vIT84RS8jQqE/Wk75FD9b/2FQXBZDDg
+	 LnHD/DsaFlo43z6vuPWcYV4Q8bk6tHeEY33zclcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuangyi Chiang <ki.chiang65@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 5.4 048/189] xhci: Apply broken streams quirk to Etron EJ188 xHCI host
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 012/139] af_unix: Annotate data-races around sk->sk_state in UNIX_DIAG.
 Date: Wed,  3 Jul 2024 12:38:29 +0200
-Message-ID: <20240703102843.329042367@linuxfoundation.org>
+Message-ID: <20240703102830.902885065@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuangyi Chiang <ki.chiang65@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 91f7a1524a92c70ffe264db8bdfa075f15bbbeb9 upstream.
+[ Upstream commit 0aa3be7b3e1f8f997312cc4705f8165e02806f8f ]
 
-As described in commit 8f873c1ff4ca ("xhci: Blacklist using streams on the
-Etron EJ168 controller"), EJ188 have the same issue as EJ168, where Streams
-do not work reliable on EJ188. So apply XHCI_BROKEN_STREAMS quirk to EJ188
-as well.
+While dumping AF_UNIX sockets via UNIX_DIAG, sk->sk_state is read
+locklessly.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240611120610.3264502-4-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Let's use READ_ONCE() there.
+
+Note that the result could be inconsistent if the socket is dumped
+during the state change.  This is common for other SOCK_DIAG and
+similar interfaces.
+
+Fixes: c9da99e6475f ("unix_diag: Fixup RQLEN extension report")
+Fixes: 2aac7a2cb0d9 ("unix_diag: Pending connections IDs NLA")
+Fixes: 45a96b9be6ec ("unix_diag: Dumping all sockets core")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-pci.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/unix/diag.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -258,8 +258,10 @@ static void xhci_pci_quirks(struct devic
- 		xhci->quirks |= XHCI_BROKEN_STREAMS;
- 	}
- 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
--			pdev->device == PCI_DEVICE_ID_EJ188)
-+			pdev->device == PCI_DEVICE_ID_EJ188) {
- 		xhci->quirks |= XHCI_RESET_ON_RESUME;
-+		xhci->quirks |= XHCI_BROKEN_STREAMS;
-+	}
+diff --git a/net/unix/diag.c b/net/unix/diag.c
+index d6ceac688defc..f27b4e55da0e8 100644
+--- a/net/unix/diag.c
++++ b/net/unix/diag.c
+@@ -61,7 +61,7 @@ static int sk_diag_dump_icons(struct sock *sk, struct sk_buff *nlskb)
+ 	u32 *buf;
+ 	int i;
  
- 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
- 	    pdev->device == 0x0014) {
+-	if (sk->sk_state == TCP_LISTEN) {
++	if (READ_ONCE(sk->sk_state) == TCP_LISTEN) {
+ 		spin_lock(&sk->sk_receive_queue.lock);
+ 
+ 		attr = nla_reserve(nlskb, UNIX_DIAG_ICONS,
+@@ -99,7 +99,7 @@ static int sk_diag_show_rqlen(struct sock *sk, struct sk_buff *nlskb)
+ {
+ 	struct unix_diag_rqlen rql;
+ 
+-	if (sk->sk_state == TCP_LISTEN) {
++	if (READ_ONCE(sk->sk_state) == TCP_LISTEN) {
+ 		rql.udiag_rqueue = sk->sk_receive_queue.qlen;
+ 		rql.udiag_wqueue = sk->sk_max_ack_backlog;
+ 	} else {
+@@ -124,7 +124,7 @@ static int sk_diag_fill(struct sock *sk, struct sk_buff *skb, struct unix_diag_r
+ 	rep = nlmsg_data(nlh);
+ 	rep->udiag_family = AF_UNIX;
+ 	rep->udiag_type = sk->sk_type;
+-	rep->udiag_state = sk->sk_state;
++	rep->udiag_state = READ_ONCE(sk->sk_state);
+ 	rep->pad = 0;
+ 	rep->udiag_ino = sk_ino;
+ 	sock_diag_save_cookie(sk, rep->udiag_cookie);
+@@ -202,7 +202,7 @@ static int unix_diag_dump(struct sk_buff *skb, struct netlink_callback *cb)
+ 				continue;
+ 			if (num < s_num)
+ 				goto next;
+-			if (!(req->udiag_states & (1 << sk->sk_state)))
++			if (!(req->udiag_states & (1 << READ_ONCE(sk->sk_state))))
+ 				goto next;
+ 			if (sk_diag_dump(sk, skb, req,
+ 					 NETLINK_CB(cb->skb).portid,
+-- 
+2.43.0
+
 
 
 
