@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-57516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C7F925F07
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9452E925F3B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:53:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BDF2EB3C426
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:22:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3B8EB2645D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEDE8194A59;
-	Wed,  3 Jul 2024 11:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFA1181301;
+	Wed,  3 Jul 2024 11:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RmNCwVS9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MvABRRZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD88194A54;
-	Wed,  3 Jul 2024 11:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9BE180A8A;
+	Wed,  3 Jul 2024 11:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005117; cv=none; b=YQ7ILbQEZqKeRdT5Ri+aAqV51yUls68OpHJms6S3eaBmx7FypVH6kEe5Xd769dFwwS1sITyatcBBZ9yUM8faOvW91N7JPpS+afRWDxmlqLl7/pQoLgjBXjh9EpLGdNqK0SlRlDLszMO6hREMQUST6gmqgUKKdz3KA9ldfEECWXs=
+	t=1720006161; cv=none; b=Ojx6kR1x4OmYQOB0Zbncu9QoeeDAIfXbsxfHXTYwVAmVgZN4y7hV3W1xHP7iG1qUMN8mekbqTbmILSPcoIsxDPOrqntay4/N3sNjq00K2V4/ZIbN6pyyNmbbJ8cmT2Ys08da5INg6ZJFQU4VwIoaKo8l43L0D9lHvL70G4c3/bA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005117; c=relaxed/simple;
-	bh=1+lEzGqHGb939x/MMYimyBe3780pz31YayPHXaKBrBo=;
+	s=arc-20240116; t=1720006161; c=relaxed/simple;
+	bh=nuK8weqUxYTo3zFg16N0p144Y3awmflVBXOXCkk8JLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HJi4YEBmN6seg2Agej2XQORYccP94JdXP3HvjNFplAoB8PMdKbjV+pc/TYEedfrrv1mMIKnDth5h+mNChD1nbYapIpIJbpjxKro9eqxO5fZHp2uKhYdC8MCGKznm9dgm0U8hObzRJUO/XlqTuOxcXkk4+z5q+Jv6yY8scBAekb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmNCwVS9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6652C2BD10;
-	Wed,  3 Jul 2024 11:11:56 +0000 (UTC)
+	 MIME-Version; b=jx9sjfZKN52NzmOZNzaktjxm9o76TFa8JdBo7yd0neH63+ce/9+92GCOpfRvwYI9L+B18xBajeK0fq/m+hIFbMlMcX68tJ/maCpaSGMholU6IicpYUBQnfeJ2gk2RlPFosf3ieVQUSgceTW4OeZqbYx6XSxSIsEJ6oYMOZE3308=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MvABRRZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9640FC2BD10;
+	Wed,  3 Jul 2024 11:29:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005117;
-	bh=1+lEzGqHGb939x/MMYimyBe3780pz31YayPHXaKBrBo=;
+	s=korg; t=1720006161;
+	bh=nuK8weqUxYTo3zFg16N0p144Y3awmflVBXOXCkk8JLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RmNCwVS9gq7ZgiLP7HNCG873NwvfpaDdurZYiDlsZesPCVue7bw/UHcMY4qK+MsXY
-	 AjANKpBtZ7bMWnjVsXnYXZ5dE3mSodS7Wx+oRAvl60B7hQ0+ISUC6pe1OFtQFrNt+6
-	 MOmpeo64d3zi/Bet3RUeb1wcQunpmwS7iRVYng0w=
+	b=0MvABRRZuAipT6axMW+kJmowSFynyJM4Gc69zjJPEIk6oN/5P+zeKJ85h5oBDCrjS
+	 POUXjMMx4FQKakPOqKW0lU7WGcE2o3Luu5KXx5xr3Zq9dNac8hjfccjhdiGT13aGz0
+	 AE+3/w7qcPGSJCyQDQhvvdeeCYtzx2NhfUnOA8TU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 5.10 267/290] hexagon: fix fadvise64_64 calling conventions
-Date: Wed,  3 Jul 2024 12:40:48 +0200
-Message-ID: <20240703102914.237219541@linuxfoundation.org>
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 313/356] iio: chemical: bme680: Fix calibration data variable
+Date: Wed,  3 Jul 2024 12:40:49 +0200
+Message-ID: <20240703102924.956449892@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-commit 896842284c6ccba25ec9d78b7b6e62cdd507c083 upstream.
+commit b47c0fee73a810c4503c4a94ea34858a1d865bba upstream.
 
-fadvise64_64() has two 64-bit arguments at the wrong alignment
-for hexagon, which turns them into a 7-argument syscall that is
-not supported by Linux.
+According to the BME68x Sensor API [1], the h6 calibration
+data variable should be an unsigned integer of size 8.
 
-The downstream musl port for hexagon actually asks for a 6-argument
-version the same way we do it on arm, csky, powerpc, so make the
-kernel do it the same way to avoid having to change both.
+[1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x_defs.h#L789
 
-Link: https://github.com/quic/musl/blob/hexagon/arch/hexagon/syscall_arch.h#L78
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://lore.kernel.org/r/20240606212313.207550-3-vassilisamir@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/hexagon/include/asm/syscalls.h |    6 ++++++
- arch/hexagon/kernel/syscalltab.c    |    7 +++++++
- 2 files changed, 13 insertions(+)
- create mode 100644 arch/hexagon/include/asm/syscalls.h
+ drivers/iio/chemical/bme680_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- /dev/null
-+++ b/arch/hexagon/include/asm/syscalls.h
-@@ -0,0 +1,6 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#include <asm-generic/syscalls.h>
-+
-+asmlinkage long sys_hexagon_fadvise64_64(int fd, int advice,
-+	                                  u32 a2, u32 a3, u32 a4, u32 a5);
---- a/arch/hexagon/kernel/syscalltab.c
-+++ b/arch/hexagon/kernel/syscalltab.c
-@@ -14,6 +14,13 @@
- #undef __SYSCALL
- #define __SYSCALL(nr, call) [nr] = (call),
- 
-+SYSCALL_DEFINE6(hexagon_fadvise64_64, int, fd, int, advice,
-+		SC_ARG64(offset), SC_ARG64(len))
-+{
-+	return ksys_fadvise64_64(fd, SC_VAL64(loff_t, offset), SC_VAL64(loff_t, len), advice);
-+}
-+#define sys_fadvise64_64 sys_hexagon_fadvise64_64
-+
- void *sys_call_table[__NR_syscalls] = {
- #include <asm/unistd.h>
- };
+--- a/drivers/iio/chemical/bme680_core.c
++++ b/drivers/iio/chemical/bme680_core.c
+@@ -38,7 +38,7 @@ struct bme680_calib {
+ 	s8  par_h3;
+ 	s8  par_h4;
+ 	s8  par_h5;
+-	s8  par_h6;
++	u8  par_h6;
+ 	s8  par_h7;
+ 	s8  par_gh1;
+ 	s16 par_gh2;
 
 
 
