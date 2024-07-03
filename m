@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53B0B925C3C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:16:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE6C925B0D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA65528516F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0598E29EB27
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7058D17C21D;
-	Wed,  3 Jul 2024 11:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138CA176FB4;
+	Wed,  3 Jul 2024 10:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgiAFlbj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hLPC0iI/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFCC142904;
-	Wed,  3 Jul 2024 11:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C575B13D61B;
+	Wed,  3 Jul 2024 10:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004676; cv=none; b=AlV8d0BU+qaQ0AjnqagXye4nYc0xanLKo4XaO6QeBgoFlIAtj1NHb6Lb2KVpFdWTEHvHOmAGslvI863OmDKCdectfajesc0bAu8nrP1W7Xgd+k482wLcVX7MFsQ62zsiNynFbZB3rlgqtQ5jfciKyc/NOGPyCfphuVSlIPY+IRc=
+	t=1720003749; cv=none; b=t9xOGly/Ib20yZX0HTZu0WPnEnBN3WxjjS9pCUlkyGKVO+T3CiNeF+mJLkm88VGTNvBW/XFl+Z9bjrPjWwbOCeortT2FppCtp+kEHhzDyo/xCIWA8gMbjjwM7WNnJ8xXXltPNRTLifZ1m5YHkwJlZDDLYqwhZraVZdGHH7E/Tsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004676; c=relaxed/simple;
-	bh=KU/csz1QvPjkupSF2ggRoTUO3UdpzlXRkZLn0rplIbQ=;
+	s=arc-20240116; t=1720003749; c=relaxed/simple;
+	bh=DkK9vtBLuK1sr2aG20oQRm/9ZvIj2+7curhUCq5xO7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XRByTJfR6pXXfE+1DZvdLE64rSnfd/c6GBcFL9tQQ+66URf8ItKKHBgZxhFotlbzggF+cUHhNT7HPvwQEjiiO6VCNLIiTrG68hjtSYT4yYi30pnNzvGllcek6hzIvktm3TqyDeEH4gxlwFOchv2zPicXvK1yV0FoWVqKzvIDcmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgiAFlbj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4377C2BD10;
-	Wed,  3 Jul 2024 11:04:35 +0000 (UTC)
+	 MIME-Version; b=D5TbrFgvKu6vfiLxRd2W/9W4QKJQKcTVMhFcMWUzGhv3vu1gwCCEmOnE5Kkd0KoH/7u/EM85QbniUNKKMIZfrbuktD1ZKnxCs1nlVjX6mfJE0WPq6pkyC5miJ/Nc4UHv+d1T3NTejc76hOMEPZILf6MxbbGa9JF8sGhxpj0IG4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hLPC0iI/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088D0C2BD10;
+	Wed,  3 Jul 2024 10:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004676;
-	bh=KU/csz1QvPjkupSF2ggRoTUO3UdpzlXRkZLn0rplIbQ=;
+	s=korg; t=1720003749;
+	bh=DkK9vtBLuK1sr2aG20oQRm/9ZvIj2+7curhUCq5xO7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VgiAFlbjZBFxlxyGkRDtDnsGxQrtePFm76WEqWM52C7L0uCRexRQ2FUjME5PDhWLv
-	 +di31bb0NzGEm2gwqhkiJuIF9CMfMjn8n9UgCR63H4R+LUr1YI15+w0CSJbsL5Kr9s
-	 xeVthqi+Jf8I1nyM8HEbQV0+/UNLkahOKNj8AgoU=
+	b=hLPC0iI/zNXvV5AANBC+r1FvvezEECOXsH1LgU7TOPjdDLxU1I/PjdOqaTaoVS4KW
+	 yNbS70ln5BhuOW8npgAoJZKV6fpkcVE9tjzVZK3HiX4XBXsMToZvlRDJip6Ip2nBfa
+	 /JIjHaPXMy0YeukKXIKHENtXydTWdKz7RaF+O5q8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	stable@kernel.org
-Subject: [PATCH 5.10 090/290] intel_th: pci: Add Meteor Lake-S support
+	Jason Xing <kernelxing@tencent.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 010/189] tcp: count CLOSE-WAIT sockets for TCP_MIB_CURRESTAB
 Date: Wed,  3 Jul 2024 12:37:51 +0200
-Message-ID: <20240703102907.591141371@linuxfoundation.org>
+Message-ID: <20240703102841.891950262@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+From: Jason Xing <kernelxing@tencent.com>
 
-commit c4a30def564d75e84718b059d1a62cc79b137cf9 upstream.
+[ Upstream commit a46d0ea5c94205f40ecf912d1bb7806a8a64704f ]
 
-Add support for the Trace Hub in Meteor Lake-S.
+According to RFC 1213, we should also take CLOSE-WAIT sockets into
+consideration:
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20240429130119.1518073-14-alexander.shishkin@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  "tcpCurrEstab OBJECT-TYPE
+   ...
+   The number of TCP connections for which the current state
+   is either ESTABLISHED or CLOSE- WAIT."
+
+After this, CurrEstab counter will display the total number of
+ESTABLISHED and CLOSE-WAIT sockets.
+
+The logic of counting
+When we increment the counter?
+a) if we change the state to ESTABLISHED.
+b) if we change the state from SYN-RECEIVED to CLOSE-WAIT.
+
+When we decrement the counter?
+a) if the socket leaves ESTABLISHED and will never go into CLOSE-WAIT,
+say, on the client side, changing from ESTABLISHED to FIN-WAIT-1.
+b) if the socket leaves CLOSE-WAIT, say, on the server side, changing
+from CLOSE-WAIT to LAST-ACK.
+
+Please note: there are two chances that old state of socket can be changed
+to CLOSE-WAIT in tcp_fin(). One is SYN-RECV, the other is ESTABLISHED.
+So we have to take care of the former case.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/intel_th/pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/ipv4/tcp.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/hwtracing/intel_th/pci.c
-+++ b/drivers/hwtracing/intel_th/pci.c
-@@ -295,6 +295,11 @@ static const struct pci_device_id intel_
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
- 	},
- 	{
-+		/* Meteor Lake-S */
-+		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x7f26),
-+		.driver_data = (kernel_ulong_t)&intel_th_2x,
-+	},
-+	{
- 		/* Raptor Lake-S */
- 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x7a26),
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 9a4a3f6d9cb06..a181eb7d6d438 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2258,6 +2258,10 @@ void tcp_set_state(struct sock *sk, int state)
+ 		if (oldstate != TCP_ESTABLISHED)
+ 			TCP_INC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
+ 		break;
++	case TCP_CLOSE_WAIT:
++		if (oldstate == TCP_SYN_RECV)
++			TCP_INC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
++		break;
+ 
+ 	case TCP_CLOSE:
+ 		if (oldstate == TCP_CLOSE_WAIT || oldstate == TCP_ESTABLISHED)
+@@ -2269,7 +2273,7 @@ void tcp_set_state(struct sock *sk, int state)
+ 			inet_put_port(sk);
+ 		/* fall through */
+ 	default:
+-		if (oldstate == TCP_ESTABLISHED)
++		if (oldstate == TCP_ESTABLISHED || oldstate == TCP_CLOSE_WAIT)
+ 			TCP_DEC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
+ 	}
+ 
+-- 
+2.43.0
+
 
 
 
