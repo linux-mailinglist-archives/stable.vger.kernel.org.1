@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1878925BAD
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:10:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17795925E48
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BDD01F293F6
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:10:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B7D71C2032D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3955A1946B1;
-	Wed,  3 Jul 2024 10:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C781E17DA22;
+	Wed,  3 Jul 2024 11:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMsrQd43"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XI/swj1/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FE81946A2;
-	Wed,  3 Jul 2024 10:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85ADD137910;
+	Wed,  3 Jul 2024 11:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004282; cv=none; b=N6ayraTIMiS/u++F+f9c8mjVj8rnyXVvnrAuABjooNq8HoZgdBM6axs7O2614BuzAzyYd9XfknxTP0/pD++4g6HMmb3XH043JrggC+47EQZZRvJOKmdKNW4YAcdFVYD95kGtpqyZNW9JXf7+HqlV+w2y4ZsGtE7/xrNezBzGR1c=
+	t=1720006114; cv=none; b=Pf8ytZ/cFnXRshV5aEVqps3kfJW1PfLMT9VGjWJcX4IeYdjquhMk5I+9vNBIwk1hrpG99Ms7KzH87tDTFQUrj6PwXB5WxfEJO1WmoDsm9KymjWDwL0khpPocvTRztvrC0m3xs9OtNy8/Yo/eSCYAPdSHrEHvl3nWidCsaoPNYxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004282; c=relaxed/simple;
-	bh=9oPXAuecFJ8VE4K6C0MycnENn4D6kjk+22F4+M/uFkg=;
+	s=arc-20240116; t=1720006114; c=relaxed/simple;
+	bh=apq4u+EispFhCD6lw2lytIIeMZtXNFVBYVOQjkXHsUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mRBqKsYTHmf6+LDprptDcmLP7FErbKKTqGuTIkq2B3aegJgtRCv/4s4S/KkVLvOuKwi5m40zSxQfftEjQJwywS5z9AsiSrryJZ7pGqGGhHueqcrQKpoqTd+eqgal9yiuQKflziBLpgqd0AanVhnINSiMPJOP8YXjZaF4AExcwSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMsrQd43; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6EDC32781;
-	Wed,  3 Jul 2024 10:58:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eIAxzGDdpCx5+QyAfvnZgNEJP/GjIrn2kY9pYPz3SbBl6Ck9K5VnxMxCDu88q4GEJy8I0ieSacGrTcz9lcH6ekWKukwkfsC4AG/Gh6wa/wh2LiV6hdXdcB7nRxUUaEJIxV3shBACpz2Rl8dWwEREd9UbiDc85jlre1PGDIk71Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XI/swj1/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC8CC2BD10;
+	Wed,  3 Jul 2024 11:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004281;
-	bh=9oPXAuecFJ8VE4K6C0MycnENn4D6kjk+22F4+M/uFkg=;
+	s=korg; t=1720006114;
+	bh=apq4u+EispFhCD6lw2lytIIeMZtXNFVBYVOQjkXHsUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CMsrQd43u43kYNj8JloJ72H+aXDjsV3Y2d9nT3iBCXkn9BXR4wHiNHIydHnuhKFaS
-	 8EVXq/p0E4c2QCIlDJb7TTijUGTZ7PTwwQpGbzL62QhgkphTuJqQultKvGhXuBjkdK
-	 QCdFcWWkFQjS6h7hjjFcBe9Uk57yFLAt+PEGvLJs=
+	b=XI/swj1/5h0Up8IsEGRTwMU8VA0bBQMUH7wzVapa8bhYU3AKHIXmKAiw9Bqb7cC4K
+	 wuIAzYtg46uifFpScoWDau2jlhBGUYtpq/OWTqdUZq7wf9qf/JsoWZ+8vSSTw4JDHP
+	 LuxGIBCIM8Nk+TkRDhiVVBbP8vk255BzQmjqZJmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 5.4 180/189] ata: libata-core: Fix double free on error
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 305/356] mmc: sdhci-pci: Convert PCIBIOS_* return codes to errnos
 Date: Wed,  3 Jul 2024 12:40:41 +0200
-Message-ID: <20240703102848.264872399@linuxfoundation.org>
+Message-ID: <20240703102924.651921155@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,92 +60,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit ab9e0c529eb7cafebdd31fe1644524e80a48b05d upstream.
+commit ebc4fc34eae8ddfbef49f2bdaced1bf4167ef80d upstream.
 
-If e.g. the ata_port_alloc() call in ata_host_alloc() fails, we will jump
-to the err_out label, which will call devres_release_group().
-devres_release_group() will trigger a call to ata_host_release().
-ata_host_release() calls kfree(host), so executing the kfree(host) in
-ata_host_alloc() will lead to a double free:
+jmicron_pmos() and sdhci_pci_probe() use pci_{read,write}_config_byte()
+that return PCIBIOS_* codes. The return code is then returned as is by
+jmicron_probe() and sdhci_pci_probe(). Similarly, the return code is
+also returned as is from jmicron_resume(). Both probe and resume
+functions should return normal errnos.
 
-kernel BUG at mm/slub.c:553!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 11 PID: 599 Comm: (udev-worker) Not tainted 6.10.0-rc5 #47
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
-RIP: 0010:kfree+0x2cf/0x2f0
-Code: 5d 41 5e 41 5f 5d e9 80 d6 ff ff 4d 89 f1 41 b8 01 00 00 00 48 89 d9 48 89 da
-RSP: 0018:ffffc90000f377f0 EFLAGS: 00010246
-RAX: ffff888112b1f2c0 RBX: ffff888112b1f2c0 RCX: ffff888112b1f320
-RDX: 000000000000400b RSI: ffffffffc02c9de5 RDI: ffff888112b1f2c0
-RBP: ffffc90000f37830 R08: 0000000000000000 R09: 0000000000000000
-R10: ffffc90000f37610 R11: 617461203a736b6e R12: ffffea00044ac780
-R13: ffff888100046400 R14: ffffffffc02c9de5 R15: 0000000000000006
-FS:  00007f2f1cabe980(0000) GS:ffff88813b380000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f2f1c3acf75 CR3: 0000000111724000 CR4: 0000000000750ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __die_body.cold+0x19/0x27
- ? die+0x2e/0x50
- ? do_trap+0xca/0x110
- ? do_error_trap+0x6a/0x90
- ? kfree+0x2cf/0x2f0
- ? exc_invalid_op+0x50/0x70
- ? kfree+0x2cf/0x2f0
- ? asm_exc_invalid_op+0x1a/0x20
- ? ata_host_alloc+0xf5/0x120 [libata]
- ? ata_host_alloc+0xf5/0x120 [libata]
- ? kfree+0x2cf/0x2f0
- ata_host_alloc+0xf5/0x120 [libata]
- ata_host_alloc_pinfo+0x14/0xa0 [libata]
- ahci_init_one+0x6c9/0xd20 [ahci]
+Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
+errno before returning them the fix these issues.
 
-Ensure that we will not call kfree(host) twice, by performing the kfree()
-only if the devres_open_group() call failed.
-
-Fixes: dafd6c496381 ("libata: ensure host is free'd on error exit paths")
+Fixes: 7582041ff3d4 ("mmc: sdhci-pci: fix simple_return.cocci warnings")
+Fixes: 45211e215984 ("sdhci: toggle JMicron PMOS setting")
 Cc: stable@vger.kernel.org
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20240629124210.181537-9-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240527132443.14038-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-core.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mmc/host/sdhci-pci-core.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -6194,8 +6194,10 @@ struct ata_host *ata_host_alloc(struct d
- 	if (!host)
- 		return NULL;
+--- a/drivers/mmc/host/sdhci-pci-core.c
++++ b/drivers/mmc/host/sdhci-pci-core.c
+@@ -1399,7 +1399,7 @@ static int jmicron_pmos(struct sdhci_pci
  
--	if (!devres_open_group(dev, NULL, GFP_KERNEL))
--		goto err_free;
-+	if (!devres_open_group(dev, NULL, GFP_KERNEL)) {
-+		kfree(host);
-+		return NULL;
-+	}
+ 	ret = pci_read_config_byte(chip->pdev, 0xAE, &scratch);
+ 	if (ret)
+-		return ret;
++		goto fail;
  
- 	dr = devres_alloc(ata_devres_release, 0, GFP_KERNEL);
- 	if (!dr)
-@@ -6227,8 +6229,6 @@ struct ata_host *ata_host_alloc(struct d
+ 	/*
+ 	 * Turn PMOS on [bit 0], set over current detection to 2.4 V
+@@ -1410,7 +1410,10 @@ static int jmicron_pmos(struct sdhci_pci
+ 	else
+ 		scratch &= ~0x47;
  
-  err_out:
- 	devres_release_group(dev, NULL);
-- err_free:
--	kfree(host);
- 	return NULL;
+-	return pci_write_config_byte(chip->pdev, 0xAE, scratch);
++	ret = pci_write_config_byte(chip->pdev, 0xAE, scratch);
++
++fail:
++	return pcibios_err_to_errno(ret);
  }
+ 
+ static int jmicron_probe(struct sdhci_pci_chip *chip)
+@@ -2327,7 +2330,7 @@ static int sdhci_pci_probe(struct pci_de
+ 
+ 	ret = pci_read_config_byte(pdev, PCI_SLOT_INFO, &slots);
+ 	if (ret)
+-		return ret;
++		return pcibios_err_to_errno(ret);
+ 
+ 	slots = PCI_SLOT_INFO_SLOTS(slots) + 1;
+ 	dev_dbg(&pdev->dev, "found %d slot(s)\n", slots);
+@@ -2336,7 +2339,7 @@ static int sdhci_pci_probe(struct pci_de
+ 
+ 	ret = pci_read_config_byte(pdev, PCI_SLOT_INFO, &first_bar);
+ 	if (ret)
+-		return ret;
++		return pcibios_err_to_errno(ret);
+ 
+ 	first_bar &= PCI_SLOT_INFO_FIRST_BAR_MASK;
  
 
 
