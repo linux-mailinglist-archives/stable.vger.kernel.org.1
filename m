@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-57523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A31925CD5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:23:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5213D925EBB
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:39:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A9E82C46D9
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:23:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE6D929519D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF311946A0;
-	Wed,  3 Jul 2024 11:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376A51836EF;
+	Wed,  3 Jul 2024 11:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRFCEqGX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NiDBOPRF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C75F17DA3A;
-	Wed,  3 Jul 2024 11:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E803B16DEAC;
+	Wed,  3 Jul 2024 11:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005138; cv=none; b=mp0S0PsVVX985PzGRk19p4yB/OBtSxoTOqgOzJHdgTvlBYa+i4IvPbAkodEtcVEqLbidYI8tFjr2IXDsMAecY0bqvuurBPeIOjv7Yu8+rSmwbIorEW3nyc5b0fhbVSSFDijFlK5x3Fh/wtRa5G4AoU3KJWQF4mIBrcYwnD4JjcE=
+	t=1720006250; cv=none; b=RPZ+o/H2nLdXctloaDUplSHpxAbAyC3wTTtHXeol2I1w2oBLDN3saGrq4XedSmWkc9BUP9fgMeAa6U9L3yAh8sr0qYqgCqhQKbj0hFG1AzeWKwjRA2EV+aom8/9JXFiUhDjeCFjVrACSZhUZyzW2P8z7hfnhuSoYb3/41untfbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005138; c=relaxed/simple;
-	bh=MrQQe9BBX1hRZKI/pShzIpcV5F+WRBLohGtT6s7CHts=;
+	s=arc-20240116; t=1720006250; c=relaxed/simple;
+	bh=WIGakxGbpz913DlNwoAn6g8kVWimoFnx9TVwlqWw/7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NzOaz8ay+GPxK8PIWxFTi/2E2MzM9djnlBOfpUyiIgkGUS45/ysmCyEIXQb2c00XqkLLbBEB/EMFUs1gJrYHNwK4jUScZceCQajhek+ni9lKf2Cd7w5lrFOrpp2SswyWKAzcgt+sUate/coBHXl6aY2zKOBkbaT8jRt64Yrpf3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRFCEqGX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 987FBC2BD10;
-	Wed,  3 Jul 2024 11:12:17 +0000 (UTC)
+	 MIME-Version; b=MHU/2xi+TH+QTK5fj9QVCFaQ8579NI4sAruL9n9rfttrOH89+AnOYsfrydGyx3/1UKHcFEFcZ4B3iMJAhHTrQSXEHO+V05z4uGqKaMALvY6txC1C/iF5X+o1B4rOLPP70t8DQTTzGZFu7IjhgVBQM+SudoLd6GxiYhza/sGTor0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NiDBOPRF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C5F5C2BD10;
+	Wed,  3 Jul 2024 11:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005138;
-	bh=MrQQe9BBX1hRZKI/pShzIpcV5F+WRBLohGtT6s7CHts=;
+	s=korg; t=1720006249;
+	bh=WIGakxGbpz913DlNwoAn6g8kVWimoFnx9TVwlqWw/7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rRFCEqGXP5jZF9mTLpUpTXQpaIxtPdsQvSV4kI+N1UhJz0VbKo2lahkhWLRtP+11b
-	 cHiYRE7e9HZ9PblEQt/895gdY7mK6L+Cryh9d3Fr+1QnmAFATa+CQil5tcBhUmOUdD
-	 uyJg7q4JI09Mtf4T09vd6/HTgjwUcTDUs2Hj6CWw=
+	b=NiDBOPRFC4jOiZJ/KEtpLS4FK54UKUDqr6SnK2ra0XclNv1/9nd71FMbD/7DAea11
+	 3fN0amq4/C+L4znqd1KDgoiyBZuL+oGk/+YT4AWiA9/niTDUP8S3grE80XAWzJuurV
+	 tyTLfLAQQNGBNKw9Mw2aN1zCu0XBe+2kSHsyCHAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 5.10 274/290] ftruncate: pass a signed offset
+	stable <stable@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH 5.15 319/356] usb: musb: da8xx: fix a resource leak in probe()
 Date: Wed,  3 Jul 2024 12:40:55 +0200
-Message-ID: <20240703102914.499482567@linuxfoundation.org>
+Message-ID: <20240703102925.184989041@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 4b8e88e563b5f666446d002ad0dc1e6e8e7102b0 upstream.
+commit de644a4a86be04ed8a43ef8267d0f7d021941c5e upstream.
 
-The old ftruncate() syscall, using the 32-bit off_t misses a sign
-extension when called in compat mode on 64-bit architectures.  As a
-result, passing a negative length accidentally succeeds in truncating
-to file size between 2GiB and 4GiB.
+Call usb_phy_generic_unregister() if of_platform_populate() fails.
 
-Changing the type of the compat syscall to the signed compat_off_t
-changes the behavior so it instead returns -EINVAL.
-
-The native entry point, the truncate() syscall and the corresponding
-loff_t based variants are all correct already and do not suffer
-from this mistake.
-
-Fixes: 3f6d078d4acc ("fix compat truncate/ftruncate")
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: d6299b6efbf6 ("usb: musb: Add support of CPPI 4.1 DMA controller to DA8xx")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/69af1b1d-d3f4-492b-bcea-359ca5949f30@moroto.mountain
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/open.c                |    4 ++--
- include/linux/compat.h   |    2 +-
- include/linux/syscalls.h |    2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/musb/da8xx.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/fs/open.c
-+++ b/fs/open.c
-@@ -200,13 +200,13 @@ out:
- 	return error;
+--- a/drivers/usb/musb/da8xx.c
++++ b/drivers/usb/musb/da8xx.c
+@@ -556,7 +556,7 @@ static int da8xx_probe(struct platform_d
+ 	ret = of_platform_populate(pdev->dev.of_node, NULL,
+ 				   da8xx_auxdata_lookup, &pdev->dev);
+ 	if (ret)
+-		return ret;
++		goto err_unregister_phy;
+ 
+ 	memset(musb_resources, 0x00, sizeof(*musb_resources) *
+ 			ARRAY_SIZE(musb_resources));
+@@ -582,9 +582,13 @@ static int da8xx_probe(struct platform_d
+ 	ret = PTR_ERR_OR_ZERO(glue->musb);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to register musb device: %d\n", ret);
+-		usb_phy_generic_unregister(glue->usb_phy);
++		goto err_unregister_phy;
+ 	}
+ 
++	return 0;
++
++err_unregister_phy:
++	usb_phy_generic_unregister(glue->usb_phy);
+ 	return ret;
  }
  
--SYSCALL_DEFINE2(ftruncate, unsigned int, fd, unsigned long, length)
-+SYSCALL_DEFINE2(ftruncate, unsigned int, fd, off_t, length)
- {
- 	return do_sys_ftruncate(fd, length, 1);
- }
- 
- #ifdef CONFIG_COMPAT
--COMPAT_SYSCALL_DEFINE2(ftruncate, unsigned int, fd, compat_ulong_t, length)
-+COMPAT_SYSCALL_DEFINE2(ftruncate, unsigned int, fd, compat_off_t, length)
- {
- 	return do_sys_ftruncate(fd, length, 1);
- }
---- a/include/linux/compat.h
-+++ b/include/linux/compat.h
-@@ -527,7 +527,7 @@ asmlinkage long compat_sys_fstatfs(unsig
- asmlinkage long compat_sys_fstatfs64(unsigned int fd, compat_size_t sz,
- 				     struct compat_statfs64 __user *buf);
- asmlinkage long compat_sys_truncate(const char __user *, compat_off_t);
--asmlinkage long compat_sys_ftruncate(unsigned int, compat_ulong_t);
-+asmlinkage long compat_sys_ftruncate(unsigned int, compat_off_t);
- /* No generic prototype for truncate64, ftruncate64, fallocate */
- asmlinkage long compat_sys_openat(int dfd, const char __user *filename,
- 				  int flags, umode_t mode);
---- a/include/linux/syscalls.h
-+++ b/include/linux/syscalls.h
-@@ -445,7 +445,7 @@ asmlinkage long sys_fstatfs(unsigned int
- asmlinkage long sys_fstatfs64(unsigned int fd, size_t sz,
- 				struct statfs64 __user *buf);
- asmlinkage long sys_truncate(const char __user *path, long length);
--asmlinkage long sys_ftruncate(unsigned int fd, unsigned long length);
-+asmlinkage long sys_ftruncate(unsigned int fd, off_t length);
- #if BITS_PER_LONG == 32
- asmlinkage long sys_truncate64(const char __user *path, loff_t length);
- asmlinkage long sys_ftruncate64(unsigned int fd, loff_t length);
 
 
 
