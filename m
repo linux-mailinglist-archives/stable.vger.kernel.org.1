@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-57795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5064E925E60
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:36:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C04925A22
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:54:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8678B2957D3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:34:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8FB61C260D6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3352F17967A;
-	Wed,  3 Jul 2024 11:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34027CF1F;
+	Wed,  3 Jul 2024 10:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTSoUYXq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rC8jRsCS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7041428F8;
-	Wed,  3 Jul 2024 11:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D0316DC2C;
+	Wed,  3 Jul 2024 10:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005957; cv=none; b=Ig3vyI/R79aXOaHDc7rULf4GLpDRhXt/JDDbnnU54rHdTaeX+PwN97oZWV5Wt1skRHcrmxht1/KAScQx2c2VgffKkUSs5jf9brzM3oNds31o3Jpi0b/jd/YYYs2BT+4XcEfwukPsNOb8TK1+dh6vJ8pIMR2wnT3iMR16MpywbPo=
+	t=1720003550; cv=none; b=Q1TCafHjfrKGwjfA+F5n8hJzQE2XF77NHBO41tN/tHCaGhqLTz70UFmNTKEQW5bIuBo3Gmv6n7sWxPMI5FKPhMutAmI8jcEz47oHK96FYlYAL3ZJUgDS0/nZTM4Dg8W5xQdEWCFgboYK3i6rBSfO2/fPKxu2o1kzDfNcYqNWd34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005957; c=relaxed/simple;
-	bh=FIrxTOfiYlbexu1AG+veljIrvF72t2xIfNBGAYJ14VE=;
+	s=arc-20240116; t=1720003550; c=relaxed/simple;
+	bh=3ItHE7g27YBgUsVHOyMUDF+Gb9/CSU9hj8pn91u2cWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cixiBXhMFifhvKQBHxbu7fgEgodEcSvB8mMBryDrYj5fyz6XrHv1S6NLFlBSfasucM0jqu0kmKwRFfNQQBuCYrv2CUCcIxbXmcLyPwsNJr78X/vmurvL7Mpoo+uIIHbf5joEgNSuTCwoaZN16eTe6fxCOJirgxkVc7E/oAGKzoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTSoUYXq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6317FC2BD10;
-	Wed,  3 Jul 2024 11:25:56 +0000 (UTC)
+	 MIME-Version; b=IYKOKyOzLAm5cCE9gK0jHqn1iWf0m4g3KjA5XCn1B9LYM3GyhXlSqhB60ccewfFv9cb887lVY0GDlYFbt3mgWnqBEfSd+Mlx696eX/T4c/GNlksSUfnAGXjLzYRnakDjmrAsWbhHdCjO9YYFcjF7C5q9n98pvjbjZPRlNjfYovQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rC8jRsCS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 151BEC2BD10;
+	Wed,  3 Jul 2024 10:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005956;
-	bh=FIrxTOfiYlbexu1AG+veljIrvF72t2xIfNBGAYJ14VE=;
+	s=korg; t=1720003550;
+	bh=3ItHE7g27YBgUsVHOyMUDF+Gb9/CSU9hj8pn91u2cWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YTSoUYXqkSatceycIfqk0rt6IX2h20r8W/0px32AeWSOPUoyYwR/UO1otWwoKX4DM
-	 PaOu1xyUVLGP4CEW0C/AexSvG5yawOu3urfNxK8VgXCnymKh4VifkU7JH11OyuBeco
-	 77Z5ec4PcR0105oMdp5ocGTnUICP6vvvo3jOQbB4=
+	b=rC8jRsCSqNNMSUQEW31ld3n8jqQfJf26GWNhG1ZmB4rRPSIKk2FSdJL2WUk8OGqjD
+	 F3BbglBg0PI+LxSELJ6tXW56cvylF5UoR9gpGqE0g+NdcDTesW7oBkY2ZUeZuv/yZd
+	 k55hoX/VKc0RyLrsv2+efCZh622yr+6BVME7Q3nA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Wilson <chris@chris-wilson.co.uk>,
-	Karolina Drobnik <karolina.drobnik@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 245/356] drm/i915/gt: Only kick the signal worker if theres been an update
+Subject: [PATCH 4.19 084/139] ARM: dts: samsung: smdk4412: fix keypad no-autorepeat
 Date: Wed,  3 Jul 2024 12:39:41 +0200
-Message-ID: <20240703102922.383032303@linuxfoundation.org>
+Message-ID: <20240703102833.613183900@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Wilson <chris@chris-wilson.co.uk>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit c877bed82e1017c102c137d432933ccbba92c119 ]
+[ Upstream commit 4ac4c1d794e7ff454d191bbdab7585ed8dbf3758 ]
 
-One impact of commit 047a1b877ed4 ("dma-buf & drm/amdgpu: remove
-dma_resv workaround") is that it stores many, many more fences. Whereas
-adding an exclusive fence used to remove the shared fence list, that
-list is now preserved and the write fences included into the list. Not
-just a single write fence, but now a write/read fence per context. That
-causes us to have to track more fences than before (albeit half of those
-are redundant), and we trigger more interrupts for multi-engine
-workloads.
+Although the Samsung SoC keypad binding defined
+linux,keypad-no-autorepeat property, Linux driver never implemented it
+and always used linux,input-no-autorepeat.  Correct the DTS to use
+property actually implemented.
 
-As part of reducing the impact from handling more signaling, we observe
-we only need to kick the signal worker after adding a fence iff we have
-good cause to believe that there is work to be done in processing the
-fence i.e. we either need to enable the interrupt or the request is
-already complete but we don't know if we saw the interrupt and so need
-to check signaling.
+This also fixes dtbs_check errors like:
 
-References: 047a1b877ed4 ("dma-buf & drm/amdgpu: remove dma_resv workaround")
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/d7b953c7a4ba747c8196a164e2f8c5aef468d048.1657289332.git.karolina.drobnik@intel.com
-Stable-dep-of: 70cb9188ffc7 ("drm/i915/gt: Disarm breadcrumbs if engines are already idle")
+  exynos4412-smdk4412.dtb: keypad@100a0000: 'key-A', 'key-B', 'key-C', 'key-D', 'key-E', 'linux,keypad-no-autorepeat' do not match any of the regexes: '^key-[0-9a-z]+$', 'pinctrl-[0-9]+'
+
+Cc: <stable@vger.kernel.org>
+Fixes: c9b92dd70107 ("ARM: dts: Add keypad entries to SMDK4412")
+Link: https://lore.kernel.org/r/20240312183105.715735-3-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_breadcrumbs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/exynos4412-smdk4412.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c b/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c
-index 209cf265bf746..e8cd7effea2b0 100644
---- a/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c
-+++ b/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c
-@@ -398,7 +398,8 @@ static void insert_breadcrumb(struct i915_request *rq)
- 	 * the request as it may have completed and raised the interrupt as
- 	 * we were attaching it into the lists.
- 	 */
--	irq_work_queue(&b->irq_work);
-+	if (!b->irq_armed || __i915_request_is_complete(rq))
-+		irq_work_queue(&b->irq_work);
- }
- 
- bool i915_request_enable_breadcrumb(struct i915_request *rq)
+diff --git a/arch/arm/boot/dts/exynos4412-smdk4412.dts b/arch/arm/boot/dts/exynos4412-smdk4412.dts
+index 5c5c2887c14fb..9a1f609d36d01 100644
+--- a/arch/arm/boot/dts/exynos4412-smdk4412.dts
++++ b/arch/arm/boot/dts/exynos4412-smdk4412.dts
+@@ -43,7 +43,7 @@ xusbxti {
+ &keypad {
+ 	samsung,keypad-num-rows = <3>;
+ 	samsung,keypad-num-columns = <8>;
+-	linux,keypad-no-autorepeat;
++	linux,input-no-autorepeat;
+ 	wakeup-source;
+ 	pinctrl-0 = <&keypad_rows &keypad_cols>;
+ 	pinctrl-names = "default";
 -- 
 2.43.0
 
