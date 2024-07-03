@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B25B925F57
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:57:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3825B925EFF
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:46:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61F25B30CDB
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:32:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE9D5B3888F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBC0194A5E;
-	Wed,  3 Jul 2024 11:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3DA173345;
+	Wed,  3 Jul 2024 11:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dim8UMND"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JM0EA1q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3805213AA2C;
-	Wed,  3 Jul 2024 11:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE30944D;
+	Wed,  3 Jul 2024 11:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005835; cv=none; b=bMrhoresrlGQ/XsWlv2XACVVX5kIiXMF/zW03irU/xTszXei5+X0nq9uWhnQ6AOvpcwbH18Rv7WNOmXAXV28cGNZ0nl6VjrFC2Z+LxcVGP3o3wTfp5NR8NpjKepO6OxTKh/mEY1/Z/pRDmygF6hFx7ejBDDfPW9NcQF35YhKHqk=
+	t=1720004717; cv=none; b=jL5mW238vU/B2WYItDL2Qx+dpyUMe8i3zWVWKs7vwtI4+6BST8Bm4rm7Muwrmb6D+eNf20KneHSca7+GJU8OlsqZOQDumtA7srHUm+1Jjii4MxSchyA3ANGAtbQkXSzNDx+Oow8/EWBB1mjSXlhTkjATRpyu0Uh0mjYWp75k9Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005835; c=relaxed/simple;
-	bh=6bmeTJkxAlYsMC/OupvPsXe+gSBhw7FPLY1RNu46P4I=;
+	s=arc-20240116; t=1720004717; c=relaxed/simple;
+	bh=a8T9cbF7LIQSGqkYpT1m3IzKNTe+zLqzauPsdxb5+eA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e4dVKeYX1b7+9obG7+PiA/TGABIwpGdwFYEFRCxeha4zMEjRamRFZ2Hu0e32J1ZXSwEk8c9bbiMUu6WF8afhSOif1usPbxBseR/YFLogb+tuvcPQmQVACsauGCCr8xwShcSBqC0a6UObSvQCS62geErcQkteZCXi3Df83+JTUBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dim8UMND; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20A2C2BD10;
-	Wed,  3 Jul 2024 11:23:54 +0000 (UTC)
+	 MIME-Version; b=oaZvJJp4tV56l9b0NOUvQwQx8XLO++Em8QjOovf6EX2LhKvRJObv8N6towZritp87XKFctyMfS0pqiywk/yoWZzJedXEJsMEJwlg2kG9yUldhT113OCeiHwyS2EVdTM2mN86qWw6gKVZt7+W/7/LUpvZd3RoRz7rQpXiIaLCSls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JM0EA1q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDED2C32781;
+	Wed,  3 Jul 2024 11:05:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005835;
-	bh=6bmeTJkxAlYsMC/OupvPsXe+gSBhw7FPLY1RNu46P4I=;
+	s=korg; t=1720004717;
+	bh=a8T9cbF7LIQSGqkYpT1m3IzKNTe+zLqzauPsdxb5+eA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dim8UMNDz7O6oytopI6iOXqNNk6wkfOjGu4N5qutT4SWlZf8N9eA5yqYalt/XNaHm
-	 SDV81Mn2BQxru3qlUova7DrM8w1rblPdQ2Jj9fqsaix0sTn9MZzJjoZ3XAPBlgTfK+
-	 tZQnbtfrPl3HPxj7epNRNj/vj/rzPOaPxbmc/MWc=
+	b=0JM0EA1qEaVYm7bQed/qs1FtpJx04NRmcaxG/murv5OEYsJlQzro2mHjMJlhJpQ7+
+	 rQ89YyppzzO1vFDkCBKcws+eazKwYwLeCop175GMOjGkYpAD3okesll4l6kwkweJtY
+	 tSG0GqRrDQZ8kasKCB4JiJ5xKZY8EvsLaZhdQrkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Esben Haabendal <esben@geanix.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 181/356] serial: imx: Introduce timeout when waiting on transmitter empty
+Subject: [PATCH 5.10 136/290] mips: bmips: BCM6358: make sure CBR is correctly set
 Date: Wed,  3 Jul 2024 12:38:37 +0200
-Message-ID: <20240703102919.953833679@linuxfoundation.org>
+Message-ID: <20240703102909.323515230@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Esben Haabendal <esben@geanix.com>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit e533e4c62e9993e62e947ae9bbec34e4c7ae81c2 ]
+[ Upstream commit ce5cdd3b05216b704a704f466fb4c2dff3778caf ]
 
-By waiting at most 1 second for USR2_TXDC to be set, we avoid a potential
-deadlock.
+It was discovered that some device have CBR address set to 0 causing
+kernel panic when arch_sync_dma_for_cpu_all is called.
 
-In case of the timeout, there is not much we can do, so we simply ignore
-the transmitter state and optimistically try to continue.
+This was notice in situation where the system is booted from TP1 and
+BMIPS_GET_CBR() returns 0 instead of a valid address and
+!!(read_c0_brcm_cmt_local() & (1 << 31)); not failing.
 
-Signed-off-by: Esben Haabendal <esben@geanix.com>
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Link: https://lore.kernel.org/r/919647898c337a46604edcabaf13d42d80c0915d.1712837613.git.esben@geanix.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The current check whether RAC flush should be disabled or not are not
+enough hence lets check if CBR is a valid address or not.
+
+Fixes: ab327f8acdf8 ("mips: bmips: BCM6358: disable RAC flush for TP1")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/imx.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/mips/bmips/setup.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 0587beaaea08d..b9ef426d5aae3 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -27,6 +27,7 @@
- #include <linux/of.h>
- #include <linux/of_device.h>
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <linux/dma-mapping.h>
- 
- #include <asm/irq.h>
-@@ -2024,7 +2025,7 @@ imx_uart_console_write(struct console *co, const char *s, unsigned int count)
- 	struct imx_port *sport = imx_uart_ports[co->index];
- 	struct imx_port_ucrs old_ucr;
- 	unsigned long flags;
--	unsigned int ucr1;
-+	unsigned int ucr1, usr2;
- 	int locked = 1;
- 
- 	if (sport->port.sysrq)
-@@ -2055,8 +2056,8 @@ imx_uart_console_write(struct console *co, const char *s, unsigned int count)
- 	 *	Finally, wait for transmitter to become empty
- 	 *	and restore UCR1/2/3
+diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
+index 16063081d61ec..ac75797739d22 100644
+--- a/arch/mips/bmips/setup.c
++++ b/arch/mips/bmips/setup.c
+@@ -110,7 +110,8 @@ static void bcm6358_quirks(void)
+ 	 * RAC flush causes kernel panics on BCM6358 when booting from TP1
+ 	 * because the bootloader is not initializing it properly.
  	 */
--	while (!(imx_uart_readl(sport, USR2) & USR2_TXDC));
--
-+	read_poll_timeout_atomic(imx_uart_readl, usr2, usr2 & USR2_TXDC,
-+				 0, USEC_PER_SEC, false, sport, USR2);
- 	imx_uart_ucrs_restore(sport, &old_ucr);
+-	bmips_rac_flush_disable = !!(read_c0_brcm_cmt_local() & (1 << 31));
++	bmips_rac_flush_disable = !!(read_c0_brcm_cmt_local() & (1 << 31)) ||
++				  !!BMIPS_GET_CBR();
+ }
  
- 	if (locked)
+ static void bcm6368_quirks(void)
 -- 
 2.43.0
 
