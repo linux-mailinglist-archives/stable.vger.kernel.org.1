@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF47925BDE
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:12:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 771DE925C65
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:18:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B7D1B33390
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AB471F214BD
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F0417B51B;
-	Wed,  3 Jul 2024 10:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C5B181B9E;
+	Wed,  3 Jul 2024 11:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gP9iT/Jf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ht9HtG4q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846CC1DFC7;
-	Wed,  3 Jul 2024 10:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E29D16C6A8;
+	Wed,  3 Jul 2024 11:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003857; cv=none; b=qpGzJg/IRhLqcByowPv5QTcgYiBIki/4fjwem373hIyBZvKCogYcvTnIBY/xDFl2ZiuVtT4/Zg2ROzVCD0i8tVOYDZiGygptrv8+4rIITOusDxxmeZagw083RTYiPdBjs1U0nD+FOD0JJ+BkVJn4IAJQrVgyv1E0daC8a8gnVTs=
+	t=1720004779; cv=none; b=A+fRGNUSAX+uAkURximIy8tQ+/urRqoQJrlZsvzl8Bb3EMzZTvMeMPR6GX3H328NG2ZriUpZvimlN0WDcl+26KFpWI3O5Ab1cTTXBphnxPvcgK90SYM2c9ZTNI/fkviAHBtljIQerfDovhop+OFEgDaSHL9YOob42uxUbBQEols=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003857; c=relaxed/simple;
-	bh=echtK/omhsJNAs1pLns0HApeSIt002M52kaMkUYqwrc=;
+	s=arc-20240116; t=1720004779; c=relaxed/simple;
+	bh=4EyCENxsh+I1qQXpXvsB5tOk4NjyvVXEtgm/Zanjb6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o/xHCJmSZ1hhVt5piZzzXq4tod29CGeNz5vJX/A8tR6PAz1LIkm89d0M+sSD2KXIEFclHOBhnGIG1L52IRKOcWaiWB5vUPaJq4OUclwIN9PAk2STGqhLEjqo1w/4ElOH1CBrN2CNDZIPfo0cGNeUpmUX4TeXKK4G7kFfKjJcPys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gP9iT/Jf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000FEC2BD10;
-	Wed,  3 Jul 2024 10:50:56 +0000 (UTC)
+	 MIME-Version; b=ETGqLBriuMM10UM0YlOLNqmN9yusrR1FCnKFscCFgWdCTMx81bQRb+xd42UL5VEMWod/OkaIMJ7fHwRaV8Tt8zlyWXlQI6D5EoAnbRzzpZQ4nWkl67YM1x+oDRhyAFRyADFgLyGawi4L9Kx22z61Sg3rPwUJp5SKdoD+Q6nWTgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ht9HtG4q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B3CC2BD10;
+	Wed,  3 Jul 2024 11:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003857;
-	bh=echtK/omhsJNAs1pLns0HApeSIt002M52kaMkUYqwrc=;
+	s=korg; t=1720004777;
+	bh=4EyCENxsh+I1qQXpXvsB5tOk4NjyvVXEtgm/Zanjb6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gP9iT/JfijYKq0rzpZpl4HuK4IH+OmAj7oz8v8gPQKEu/u5aIlW1bAECnW3v6gUVM
-	 deG3uOMbCBsntY5y+2t+pwW1HbbYNnlPFAXjVOtAsmSis4X8xlz5YynpcYgTSABnMm
-	 qm92vBk9c1u5QWVAOnDXWxyna+0X1rh9zqrEDU0g=
+	b=Ht9HtG4q7/UhUBwiYS6X3MvrTpNaDzrL2VFE+CfAMOTGZdTAcqYdxwUSVkTYheU+V
+	 x6kUf8tO98Un73CPm3CLOZ1Nu1e1Bv2wLSHT0LCVyQ/0WkWpxvZrEA+K+9ogp1VmNc
+	 AN9bg5K7zlqv6PWY6456/tEPro8E0pancDU+m+ko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	syzbot+5f996b83575ef4058638@syzkaller.appspotmail.com,
-	syzbot+1b2abad17596ad03dcff@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 043/189] USB: class: cdc-wdm: Fix CPU lockup caused by excessive log messages
-Date: Wed,  3 Jul 2024 12:38:24 +0200
-Message-ID: <20240703102843.139152692@linuxfoundation.org>
+	Erico Nunes <nunes.erico@gmail.com>,
+	Qiang Yu <yuq825@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 124/290] drm/lima: mask irqs in timeout path before hard reset
+Date: Wed,  3 Jul 2024 12:38:25 +0200
+Message-ID: <20240703102908.873195394@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Erico Nunes <nunes.erico@gmail.com>
 
-commit 22f00812862564b314784167a89f27b444f82a46 upstream.
+[ Upstream commit a421cc7a6a001b70415aa4f66024fa6178885a14 ]
 
-The syzbot fuzzer found that the interrupt-URB completion callback in
-the cdc-wdm driver was taking too long, and the driver's immediate
-resubmission of interrupt URBs with -EPROTO status combined with the
-dummy-hcd emulation to cause a CPU lockup:
+There is a race condition in which a rendering job might take just long
+enough to trigger the drm sched job timeout handler but also still
+complete before the hard reset is done by the timeout handler.
+This runs into race conditions not expected by the timeout handler.
+In some very specific cases it currently may result in a refcount
+imbalance on lima_pm_idle, with a stack dump such as:
 
-cdc_wdm 1-1:1.0: nonzero urb status received: -71
-cdc_wdm 1-1:1.0: wdm_int_callback - 0 bytes
-watchdog: BUG: soft lockup - CPU#0 stuck for 26s! [syz-executor782:6625]
-CPU#0 Utilization every 4s during lockup:
-	#1:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
-	#2:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
-	#3:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
-	#4:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
-	#5:  98% system,	  1% softirq,	  3% hardirq,	  0% idle
-Modules linked in:
-irq event stamp: 73096
-hardirqs last  enabled at (73095): [<ffff80008037bc00>] console_emit_next_record kernel/printk/printk.c:2935 [inline]
-hardirqs last  enabled at (73095): [<ffff80008037bc00>] console_flush_all+0x650/0xb74 kernel/printk/printk.c:2994
-hardirqs last disabled at (73096): [<ffff80008af10b00>] __el1_irq arch/arm64/kernel/entry-common.c:533 [inline]
-hardirqs last disabled at (73096): [<ffff80008af10b00>] el1_interrupt+0x24/0x68 arch/arm64/kernel/entry-common.c:551
-softirqs last  enabled at (73048): [<ffff8000801ea530>] softirq_handle_end kernel/softirq.c:400 [inline]
-softirqs last  enabled at (73048): [<ffff8000801ea530>] handle_softirqs+0xa60/0xc34 kernel/softirq.c:582
-softirqs last disabled at (73043): [<ffff800080020de8>] __do_softirq+0x14/0x20 kernel/softirq.c:588
-CPU: 0 PID: 6625 Comm: syz-executor782 Tainted: G        W          6.10.0-rc2-syzkaller-g8867bbd4a056 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
+[10136.669170] WARNING: CPU: 0 PID: 0 at drivers/gpu/drm/lima/lima_devfreq.c:205 lima_devfreq_record_idle+0xa0/0xb0
+...
+[10136.669459] pc : lima_devfreq_record_idle+0xa0/0xb0
+...
+[10136.669628] Call trace:
+[10136.669634]  lima_devfreq_record_idle+0xa0/0xb0
+[10136.669646]  lima_sched_pipe_task_done+0x5c/0xb0
+[10136.669656]  lima_gp_irq_handler+0xa8/0x120
+[10136.669666]  __handle_irq_event_percpu+0x48/0x160
+[10136.669679]  handle_irq_event+0x4c/0xc0
 
-Testing showed that the problem did not occur if the two error
-messages -- the first two lines above -- were removed; apparently adding
-material to the kernel log takes a surprisingly large amount of time.
+We can prevent that race condition entirely by masking the irqs at the
+beginning of the timeout handler, at which point we give up on waiting
+for that job entirely.
+The irqs will be enabled again at the next hard reset which is already
+done as a recovery by the timeout handler.
 
-In any case, the best approach for preventing these lockups and to
-avoid spamming the log with thousands of error messages per second is
-to ratelimit the two dev_err() calls.  Therefore we replace them with
-dev_err_ratelimited().
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Suggested-by: Greg KH <gregkh@linuxfoundation.org>
-Reported-and-tested-by: syzbot+5f996b83575ef4058638@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/00000000000073d54b061a6a1c65@google.com/
-Reported-and-tested-by: syzbot+1b2abad17596ad03dcff@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/000000000000f45085061aa9b37e@google.com/
-Fixes: 9908a32e94de ("USB: remove err() macro from usb class drivers")
-Link: https://lore.kernel.org/linux-usb/40dfa45b-5f21-4eef-a8c1-51a2f320e267@rowland.harvard.edu/
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/29855215-52f5-4385-b058-91f42c2bee18@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
+Reviewed-by: Qiang Yu <yuq825@gmail.com>
+Signed-off-by: Qiang Yu <yuq825@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240405152951.1531555-4-nunes.erico@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/cdc-wdm.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/lima/lima_sched.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -252,14 +252,14 @@ static void wdm_int_callback(struct urb
- 			dev_err(&desc->intf->dev, "Stall on int endpoint\n");
- 			goto sw; /* halt is cleared in work */
- 		default:
--			dev_err(&desc->intf->dev,
-+			dev_err_ratelimited(&desc->intf->dev,
- 				"nonzero urb status received: %d\n", status);
- 			break;
- 		}
- 	}
+diff --git a/drivers/gpu/drm/lima/lima_sched.c b/drivers/gpu/drm/lima/lima_sched.c
+index f6e7a88a56f1b..290f875c28598 100644
+--- a/drivers/gpu/drm/lima/lima_sched.c
++++ b/drivers/gpu/drm/lima/lima_sched.c
+@@ -419,6 +419,13 @@ static void lima_sched_timedout_job(struct drm_sched_job *job)
+ 	struct lima_sched_task *task = to_lima_task(job);
+ 	struct lima_device *ldev = pipe->ldev;
  
- 	if (urb->actual_length < sizeof(struct usb_cdc_notification)) {
--		dev_err(&desc->intf->dev, "wdm_int_callback - %d bytes\n",
-+		dev_err_ratelimited(&desc->intf->dev, "wdm_int_callback - %d bytes\n",
- 			urb->actual_length);
- 		goto exit;
- 	}
++	/*
++	 * The task might still finish while this timeout handler runs.
++	 * To prevent a race condition on its completion, mask all irqs
++	 * on the running core until the next hard reset completes.
++	 */
++	pipe->task_mask_irq(pipe);
++
+ 	if (!pipe->error)
+ 		DRM_ERROR("lima job timeout\n");
+ 
+-- 
+2.43.0
+
 
 
 
