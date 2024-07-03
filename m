@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71528925E52
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:36:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5A7E925D2C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:26:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4806DB26B13
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 678DE297326
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA3C194C6A;
-	Wed,  3 Jul 2024 10:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F9F17C218;
+	Wed,  3 Jul 2024 11:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQ71c01S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyCk6iHO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E00D194A6F;
-	Wed,  3 Jul 2024 10:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902E0173334;
+	Wed,  3 Jul 2024 11:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004354; cv=none; b=TW6bxUyw8WaqLCt0o31w1o3cFTYEpLOJhVWdF8+VnSJBUh1tPzPDlN21y6rytFxaKFvbYMEVQfXoPF63QTNfYDsZlrdHOi2tCqhQtqsv/d4a8BmHEPhMgpq5wSF4a5Tu48RykJ57VPUzNMndmH5FaTst73CQ3Dxu4o6sbi8aOaI=
+	t=1720005373; cv=none; b=HbPszsctTSi5WfbFMZD1ilUlJ+wZo8mveoHxpHxe83vjd2fLdW70OOi33t852uPUgZ61fixC/3/l3NGQ1z8sUWJYrlv7U7aAXS3uaF5DTh8Z7EV70jBOAjO2GKd5ObXc85Oa20JXydv/VaGc7C0vbz70WvEgji4D1w2BLW7SmL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004354; c=relaxed/simple;
-	bh=KxIXb5F2vcDpAlkeBYm3nvowampcyNG9r9jAD7rGBh0=;
+	s=arc-20240116; t=1720005373; c=relaxed/simple;
+	bh=PAc2veNbE88avpDEVuYUQcv+/o7UQoszUeVX0tLaTnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rnvIQ7AG/WZ1W9phIj7BAoPh3zbdmfOUaRB4uJDembAaCL6HfbYNBqWP6nl2FjzKt50wHd9AmDwJB0BFbgqVHSfYSKrzzbYg+baVoz6N5I6TB377vEaVqXR4ZWNFSpYRKW6hzi+UQC/inZGPv1CncDHV7BEMFmRmqSjLPQMr9NQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQ71c01S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF08C4AF0B;
-	Wed,  3 Jul 2024 10:59:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EpZA5spxoXcOPksdxLF0gGXkmsDcMTEBeLyvz7/VVYEtyrZsxOIeJIDh6ZBGqVdPe2avHAwb/HfgVOmpLq43wT/QSTfr5u+yOe+fyndU12hBO/BwIjZ7adOJthEtLsoQuu+j9UeFXq2scY3XP/y09S34cVzeu/vNFgk445Txaq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyCk6iHO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3738C2BD10;
+	Wed,  3 Jul 2024 11:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004354;
-	bh=KxIXb5F2vcDpAlkeBYm3nvowampcyNG9r9jAD7rGBh0=;
+	s=korg; t=1720005373;
+	bh=PAc2veNbE88avpDEVuYUQcv+/o7UQoszUeVX0tLaTnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XQ71c01SzkxtEkus0qLomnGjAPaFsctO7/F9QXoYNL/J90ixXks1DiD0WLY7EJNS+
-	 AtB1WQB+Hi6LEKLtjCkW1YeISVk5FuPCX/ar4JXXH8mygPslyL42QwziXxD6iJJDTo
-	 rZtry953pwdUSwoGcjXcvKNsNtRld/1eeWwL0dCs=
+	b=zyCk6iHOKwtOpA3DWkPL/Mt+Y3UZR+coCV1tLgpXaLS7bYNaNgyby9WS9/Y/CevYk
+	 kyVIAOnz+fPE3lLWGtAYCGl9gunGMQ6UKJD7+1Q5ZSfLrH8Kf4fd8p097YT4uOV9KO
+	 HW56XaXhjel1gX/IC4zbQy2aKb7EqtraTE/6a5Kk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangyu Hua <hbh25y@gmail.com>,
-	Cong Wang <cong.wang@bytedance.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 015/290] net: sched: sch_multiq: fix possible OOB write in multiq_tune()
+Subject: [PATCH 5.15 060/356] mmc: davinci: Dont strip remove function when driver is builtin
 Date: Wed,  3 Jul 2024 12:36:36 +0200
-Message-ID: <20240703102904.767697672@linuxfoundation.org>
+Message-ID: <20240703102915.365468766@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangyu Hua <hbh25y@gmail.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit affc18fdc694190ca7575b9a86632a73b9fe043d ]
+[ Upstream commit 55c421b364482b61c4c45313a535e61ed5ae4ea3 ]
 
-q->bands will be assigned to qopt->bands to execute subsequent code logic
-after kmalloc. So the old q->bands should not be used in kmalloc.
-Otherwise, an out-of-bounds write will occur.
+Using __exit for the remove function results in the remove callback being
+discarded with CONFIG_MMC_DAVINCI=y. When such a device gets unbound (e.g.
+using sysfs or hotplug), the driver is just removed without the cleanup
+being performed. This results in resource leaks. Fix it by compiling in the
+remove callback unconditionally.
 
-Fixes: c2999f7fb05b ("net: sched: multiq: don't call qdisc_put() while holding tree lock")
-Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
-Acked-by: Cong Wang <cong.wang@bytedance.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This also fixes a W=1 modpost warning:
+
+WARNING: modpost: drivers/mmc/host/davinci_mmc: section mismatch in
+reference: davinci_mmcsd_driver+0x10 (section: .data) ->
+davinci_mmcsd_remove (section: .exit.text)
+
+Fixes: b4cff4549b7a ("DaVinci: MMC: MMC/SD controller driver for DaVinci family")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240324114017.231936-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_multiq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/davinci_mmc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_multiq.c b/net/sched/sch_multiq.c
-index 1c6dbcfa89b87..77fd7be3a9cd1 100644
---- a/net/sched/sch_multiq.c
-+++ b/net/sched/sch_multiq.c
-@@ -185,7 +185,7 @@ static int multiq_tune(struct Qdisc *sch, struct nlattr *opt,
+diff --git a/drivers/mmc/host/davinci_mmc.c b/drivers/mmc/host/davinci_mmc.c
+index 36c45867eb643..e0175808c3b0d 100644
+--- a/drivers/mmc/host/davinci_mmc.c
++++ b/drivers/mmc/host/davinci_mmc.c
+@@ -1347,7 +1347,7 @@ static int davinci_mmcsd_probe(struct platform_device *pdev)
+ 	return ret;
+ }
  
- 	qopt->bands = qdisc_dev(sch)->real_num_tx_queues;
+-static void __exit davinci_mmcsd_remove(struct platform_device *pdev)
++static void davinci_mmcsd_remove(struct platform_device *pdev)
+ {
+ 	struct mmc_davinci_host *host = platform_get_drvdata(pdev);
  
--	removed = kmalloc(sizeof(*removed) * (q->max_bands - q->bands),
-+	removed = kmalloc(sizeof(*removed) * (q->max_bands - qopt->bands),
- 			  GFP_KERNEL);
- 	if (!removed)
- 		return -ENOMEM;
+@@ -1402,7 +1402,7 @@ static struct platform_driver davinci_mmcsd_driver = {
+ 		.of_match_table = davinci_mmc_dt_ids,
+ 	},
+ 	.probe		= davinci_mmcsd_probe,
+-	.remove_new	= __exit_p(davinci_mmcsd_remove),
++	.remove_new	= davinci_mmcsd_remove,
+ 	.id_table	= davinci_mmc_devtype,
+ };
+ 
 -- 
 2.43.0
 
