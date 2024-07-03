@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-56976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16879925AD7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:04:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5B93925C59
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:17:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8374B29091F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BB7029C0D6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA388181CE6;
-	Wed,  3 Jul 2024 10:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665EA17DA12;
+	Wed,  3 Jul 2024 11:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N35N30rJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1R523Jg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A736E181BB3;
-	Wed,  3 Jul 2024 10:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C3817DA0B;
+	Wed,  3 Jul 2024 11:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003464; cv=none; b=o3iYXkLlgWyOE6Sl5tNc83x5RuOXbddg1A/dtJ1RSgmP0vXFsbgrIobrYHP6ONwt4Wf7ALF1yBD1t0Mha2n0gJuvqUl1pXvkpvU0QqkW3RUtbe6CUS+U2yuI6FvLLNax0JnuqASuHINPBSq1BFNZaQ/xW0IZx5hKcX8WxtuhgLk=
+	t=1720004738; cv=none; b=aJxrYIVRRxvC3ItJiGLMo8fC+nmK9jV6gursZpfDXmFSLTnqe1ubg2s0xXkrRMrxar2cIBI4rCJvEFM/SISLHEoudXfrLNjRVB60Rj+UDr9Ak7sexr6qg3KLyXW5iTWfHDOKomHA7hNikKbngDTODTg3VKqC9v5n2UiWTviSw5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003464; c=relaxed/simple;
-	bh=uT82IlP6bIhGuKNrauNr86bqaJsptlQt/BQTbkkfam4=;
+	s=arc-20240116; t=1720004738; c=relaxed/simple;
+	bh=EadK4rNFT8p8yG3fA2Jci/6iwH3nSbfKRxRYE51of1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AUTEsloW6BBPjB4hCL3jxdL35aXHBEJ8cxuHDJdtv81A67hebXljJh0kp6GoQ9dlaosBpHY7QRBp4qzp3rbGN50+Z62+YGmtaSEVwB86OFEjPIOXAmALM1XSdNd9PGH65qi7ts63Cg1Iamvw+5GHM2/JNiP3iCSSQtFNwblbLcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N35N30rJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3866C2BD10;
-	Wed,  3 Jul 2024 10:44:23 +0000 (UTC)
+	 MIME-Version; b=iAiP/MOz3EoiAcZ8yD18eyQIjQ3M63iQFZp0+7ZuT/MUOiQRF5C7U4ATx5QYjCUAprByif93a4XUZNodJXChh1rR1VCtfaqod2KlNrMsg77MQwgmXX0oUs4a3rYzyAR+LdSlEZpRWWEn0cwwITJzxO6QabsThUWZj3kGF+yln1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1R523Jg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC21C2BD10;
+	Wed,  3 Jul 2024 11:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003464;
-	bh=uT82IlP6bIhGuKNrauNr86bqaJsptlQt/BQTbkkfam4=;
+	s=korg; t=1720004738;
+	bh=EadK4rNFT8p8yG3fA2Jci/6iwH3nSbfKRxRYE51of1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N35N30rJlj4iY7gCotvMtYqE6wtfdYa003t8ClcGiVL3LFnDaTbb3XuA9h7K0hS/O
-	 IuvlR+7Vtt81uxWIS1kBXALmMpQ6hwEK4oLcHm9B479F3RtT8+gBgCbp1TUcHRaYoZ
-	 JnoQ6NpEGSWFvyIGBCHXC96xQ2U037N7osAUAmsE=
+	b=e1R523Jg6INZ6OkzMY2LU67l0b52LVIvaOaMtyQ4Nao02+H0Ly1J5qFbL62zSEF/G
+	 mKhO0CizcwJqw0S53/8ZT9VPsO9r4GrksS7RY/qaa2AdGrGQnDSeqY3NAMK3Sblo5N
+	 ECaDsTFBpDYnjZlinxIZmZKZPHfGXW274rB29SQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dev Jain <dev.jain@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Sri Jayaramappa <sjayaram@akamai.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 025/139] selftests/mm: compaction_test: fix bogus test success on Aarch64
-Date: Wed,  3 Jul 2024 12:38:42 +0200
-Message-ID: <20240703102831.390269043@linuxfoundation.org>
+Subject: [PATCH 5.10 142/290] xfrm6: check ip6_dst_idev() return value in xfrm6_get_saddr()
+Date: Wed,  3 Jul 2024 12:38:43 +0200
+Message-ID: <20240703102909.548626804@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,111 +64,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dev Jain <dev.jain@arm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d4202e66a4b1fe6968f17f9f09bbc30d08f028a1 ]
+[ Upstream commit d46401052c2d5614da8efea5788532f0401cb164 ]
 
-Patch series "Fixes for compaction_test", v2.
+ip6_dst_idev() can return NULL, xfrm6_get_saddr() must act accordingly.
 
-The compaction_test memory selftest introduces fragmentation in memory
-and then tries to allocate as many hugepages as possible. This series
-addresses some problems.
+syzbot reported:
 
-On Aarch64, if nr_hugepages == 0, then the test trivially succeeds since
-compaction_index becomes 0, which is less than 3, due to no division by
-zero exception being raised. We fix that by checking for division by
-zero.
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 1 PID: 12 Comm: kworker/u8:1 Not tainted 6.10.0-rc2-syzkaller-00383-gb8481381d4e2 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
+Workqueue: wg-kex-wg1 wg_packet_handshake_send_worker
+ RIP: 0010:xfrm6_get_saddr+0x93/0x130 net/ipv6/xfrm6_policy.c:64
+Code: df 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 97 00 00 00 4c 8b ab d8 00 00 00 48 b8 00 00 00 00 00 fc ff df 4c 89 ea 48 c1 ea 03 <80> 3c 02 00 0f 85 86 00 00 00 4d 8b 6d 00 e8 ca 13 47 01 48 b8 00
+RSP: 0018:ffffc90000117378 EFLAGS: 00010246
+RAX: dffffc0000000000 RBX: ffff88807b079dc0 RCX: ffffffff89a0d6d7
+RDX: 0000000000000000 RSI: ffffffff89a0d6e9 RDI: ffff88807b079e98
+RBP: ffff88807ad73248 R08: 0000000000000007 R09: fffffffffffff000
+R10: ffff88807b079dc0 R11: 0000000000000007 R12: ffffc90000117480
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff8880b9300000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f4586d00440 CR3: 0000000079042000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  xfrm_get_saddr net/xfrm/xfrm_policy.c:2452 [inline]
+  xfrm_tmpl_resolve_one net/xfrm/xfrm_policy.c:2481 [inline]
+  xfrm_tmpl_resolve+0xa26/0xf10 net/xfrm/xfrm_policy.c:2541
+  xfrm_resolve_and_create_bundle+0x140/0x2570 net/xfrm/xfrm_policy.c:2835
+  xfrm_bundle_lookup net/xfrm/xfrm_policy.c:3070 [inline]
+  xfrm_lookup_with_ifid+0x4d1/0x1e60 net/xfrm/xfrm_policy.c:3201
+  xfrm_lookup net/xfrm/xfrm_policy.c:3298 [inline]
+  xfrm_lookup_route+0x3b/0x200 net/xfrm/xfrm_policy.c:3309
+  ip6_dst_lookup_flow+0x15c/0x1d0 net/ipv6/ip6_output.c:1256
+  send6+0x611/0xd20 drivers/net/wireguard/socket.c:139
+  wg_socket_send_skb_to_peer+0xf9/0x220 drivers/net/wireguard/socket.c:178
+  wg_socket_send_buffer_to_peer+0x12b/0x190 drivers/net/wireguard/socket.c:200
+  wg_packet_send_handshake_initiation+0x227/0x360 drivers/net/wireguard/send.c:40
+  wg_packet_handshake_send_worker+0x1c/0x30 drivers/net/wireguard/send.c:51
+  process_one_work+0x9fb/0x1b60 kernel/workqueue.c:3231
+  process_scheduled_works kernel/workqueue.c:3312 [inline]
+  worker_thread+0x6c8/0xf70 kernel/workqueue.c:3393
+  kthread+0x2c1/0x3a0 kernel/kthread.c:389
+  ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
-Secondly, correctly set the number of hugepages to zero before trying
-to set a large number of them.
-
-Now, consider a situation in which, at the start of the test, a non-zero
-number of hugepages have been already set (while running the entire
-selftests/mm suite, or manually by the admin). The test operates on 80%
-of memory to avoid OOM-killer invocation, and because some memory is
-already blocked by hugepages, it would increase the chance of OOM-killing.
-Also, since mem_free used in check_compaction() is the value before we
-set nr_hugepages to zero, the chance that the compaction_index will
-be small is very high if the preset nr_hugepages was high, leading to a
-bogus test success.
-
-This patch (of 3):
-
-Currently, if at runtime we are not able to allocate a huge page, the test
-will trivially pass on Aarch64 due to no exception being raised on
-division by zero while computing compaction_index.  Fix that by checking
-for nr_hugepages == 0.  Anyways, in general, avoid a division by zero by
-exiting the program beforehand.  While at it, fix a typo, and handle the
-case where the number of hugepages may overflow an integer.
-
-Link: https://lkml.kernel.org/r/20240521074358.675031-1-dev.jain@arm.com
-Link: https://lkml.kernel.org/r/20240521074358.675031-2-dev.jain@arm.com
-Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Sri Jayaramappa <sjayaram@akamai.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240615154231.234442-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vm/compaction_test.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ net/ipv6/xfrm6_policy.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/vm/compaction_test.c b/tools/testing/selftests/vm/compaction_test.c
-index 6be4b70a26592..b5587a751664a 100644
---- a/tools/testing/selftests/vm/compaction_test.c
-+++ b/tools/testing/selftests/vm/compaction_test.c
-@@ -81,12 +81,13 @@ int prereq(void)
- 	return -1;
- }
- 
--int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
-+int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
+diff --git a/net/ipv6/xfrm6_policy.c b/net/ipv6/xfrm6_policy.c
+index 4c3aa97f23faa..7c903e0e446cb 100644
+--- a/net/ipv6/xfrm6_policy.c
++++ b/net/ipv6/xfrm6_policy.c
+@@ -57,12 +57,18 @@ static int xfrm6_get_saddr(struct net *net, int oif,
  {
-+	unsigned long nr_hugepages_ul;
- 	int fd, ret = -1;
- 	int compaction_index = 0;
--	char initial_nr_hugepages[10] = {0};
--	char nr_hugepages[10] = {0};
-+	char initial_nr_hugepages[20] = {0};
-+	char nr_hugepages[20] = {0};
+ 	struct dst_entry *dst;
+ 	struct net_device *dev;
++	struct inet6_dev *idev;
  
- 	/* We want to test with 80% of available memory. Else, OOM killer comes
- 	   in to play */
-@@ -135,7 +136,12 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 	dst = xfrm6_dst_lookup(net, 0, oif, NULL, daddr, mark);
+ 	if (IS_ERR(dst))
+ 		return -EHOSTUNREACH;
  
- 	/* We should have been able to request at least 1/3 rd of the memory in
- 	   huge pages */
--	compaction_index = mem_free/(atoi(nr_hugepages) * hugepage_size);
-+	nr_hugepages_ul = strtoul(nr_hugepages, NULL, 10);
-+	if (!nr_hugepages_ul) {
-+		ksft_print_msg("ERROR: No memory is available as huge pages\n");
-+		goto close_fd;
+-	dev = ip6_dst_idev(dst)->dev;
++	idev = ip6_dst_idev(dst);
++	if (!idev) {
++		dst_release(dst);
++		return -EHOSTUNREACH;
 +	}
-+	compaction_index = mem_free/(nr_hugepages_ul * hugepage_size);
- 
- 	lseek(fd, 0, SEEK_SET);
- 
-@@ -146,11 +152,11 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
- 		goto close_fd;
- 	}
- 
--	ksft_print_msg("Number of huge pages allocated = %d\n",
--		       atoi(nr_hugepages));
-+	ksft_print_msg("Number of huge pages allocated = %lu\n",
-+		       nr_hugepages_ul);
- 
- 	if (compaction_index > 3) {
--		ksft_print_msg("ERROR: Less that 1/%d of memory is available\n"
-+		ksft_print_msg("ERROR: Less than 1/%d of memory is available\n"
- 			       "as huge pages\n", compaction_index);
- 		goto close_fd;
- 	}
++	dev = idev->dev;
+ 	ipv6_dev_get_saddr(dev_net(dev), dev, &daddr->in6, 0, &saddr->in6);
+ 	dst_release(dst);
+ 	return 0;
 -- 
 2.43.0
 
