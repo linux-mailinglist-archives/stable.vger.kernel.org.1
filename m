@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-56968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A429C925AF7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0E3D925E1A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:34:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 277D0293DCD
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 689E42A29F7
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ABA1181B97;
-	Wed,  3 Jul 2024 10:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0A4174EFB;
+	Wed,  3 Jul 2024 11:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfPOq5W8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efQOBaub"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5DD173335;
-	Wed,  3 Jul 2024 10:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22B11DA327;
+	Wed,  3 Jul 2024 11:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003436; cv=none; b=p6Ncmw9xSe7ot0G4YP2N7HFWfMYY7n5zVxGkqe+MGX+XcNnOj2cDJwOf0fzP8q4Yvuh5Swwfm4/jqvbz+U8ryxinnpBQRXJ/XCeZLS5InuDECwbbek0QrUPdcsW/FhJd28PqMel/i2jvT8smA4+X4TPBMB9fYaMtn1gw6cUIYjU=
+	t=1720005954; cv=none; b=ugCS2+HZVV96rcY0yy2gB8hMqHBlBlmAfLHyoh2I9VZbZKQ8JfbsR0/aiBM+64XFDKmpPZ7+bMi1h0wQQ2jWuZV08Odwmx+ErCSoYq7NgjAQuH5OLvSFxNj8uFakkc9DmWlBOznLNBwe8caYRpn743Tb8Oi7hXqYXCrZyFuKr/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003436; c=relaxed/simple;
-	bh=QJhcmpcYWXW+RjxsHOjZD2chY6+1x2nxgtpcutskJIs=;
+	s=arc-20240116; t=1720005954; c=relaxed/simple;
+	bh=7qhzSk0sCxM45ljBPT9Rtd0CggGjaJSamHgC5JPib3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H2oYpmIUVnceGcei7J8eW1XePMEkQqT+Jqqkda7hU+1d0tSS1zJSw1LvdG3tTNWfvtHpv1nPA2F3IBwVvIPhvH2yK9JcY0bKXvBkyVl08WHlTkfAIHLXWquVRNucx4B7C2WHdOJB+TSoLNpXQ93PD3N2vP7r1s5aozTfyJOQ6Ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfPOq5W8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60212C2BD10;
-	Wed,  3 Jul 2024 10:43:55 +0000 (UTC)
+	 MIME-Version; b=ithAp7cx25KeJX72j4fGtq+5RVoo4QJHPDnIY0B/3UqgF+k3eRE2T+4KSf2mjqwE4KOwYJiBNdfUgBBi45kZTtz4CCzLFoGxOWKpuZsfhkDgY7bSVTWnlGB04iqjxqzbedTMcSPOYjE4qdpEzjPXIGwMn75y3LBe3EZJ/Ksjsk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efQOBaub; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E2F9C2BD10;
+	Wed,  3 Jul 2024 11:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003435;
-	bh=QJhcmpcYWXW+RjxsHOjZD2chY6+1x2nxgtpcutskJIs=;
+	s=korg; t=1720005953;
+	bh=7qhzSk0sCxM45ljBPT9Rtd0CggGjaJSamHgC5JPib3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wfPOq5W8EWL5NFAqdzVlpt+sm2ORuHn5lOvsFDW2imYeVS+oI0FEnyigAzVfA9p22
-	 AA2VUsZKVAhNC4YE4HJOfFjdBfNRT0eblUi/STFDjMq2v0cVKjVNTzSbwCheKCTyLE
-	 N8lI09WW6hv36GE4RHeljms5Kx6T5HIrbBkmFskA=
+	b=efQOBaubwLw9uYjDk1AZ7l7GoN1nmghRcl6k6iUriWB8sIUdd9CxDd+hXjxQFaYLD
+	 wiRO5E0/r5eUA9dVVuTqKjwZVfGP8WyIb6fYNDTzuC30Zss6nUNA2ECD1neB8GIZV/
+	 1iRZdBPN2ZTgEN5CrZ/fAIGWEu2VeQ42PyJ+6ygk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Yue <glass.su@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 048/139] ocfs2: use coarse time for new created files
-Date: Wed,  3 Jul 2024 12:39:05 +0200
-Message-ID: <20240703102832.251415943@linuxfoundation.org>
+	Nikita Shubin <n.shubin@yadro.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 210/356] dmaengine: ioatdma: Fix leaking on version mismatch
+Date: Wed,  3 Jul 2024 12:39:06 +0200
+Message-ID: <20240703102921.053375152@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,92 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Yue <glass.su@suse.com>
+From: Nikita Shubin <n.shubin@yadro.com>
 
-commit b8cb324277ee16f3eca3055b96fce4735a5a41c6 upstream.
+[ Upstream commit 1b11b4ef6bd68591dcaf8423c7d05e794e6aec6f ]
 
-The default atime related mount option is '-o realtime' which means file
-atime should be updated if atime <= ctime or atime <= mtime.  atime should
-be updated in the following scenario, but it is not:
-==========================================================
-$ rm /mnt/testfile;
-$ echo test > /mnt/testfile
-$ stat -c "%X %Y %Z" /mnt/testfile
-1711881646 1711881646 1711881646
-$ sleep 5
-$ cat /mnt/testfile > /dev/null
-$ stat -c "%X %Y %Z" /mnt/testfile
-1711881646 1711881646 1711881646
-==========================================================
+Fix leaking ioatdma_device if I/OAT version is less than IOAT_VER_3_0.
 
-And the reason the atime in the test is not updated is that ocfs2 calls
-ktime_get_real_ts64() in __ocfs2_mknod_locked during file creation.  Then
-inode_set_ctime_current() is called in inode_set_ctime_current() calls
-ktime_get_coarse_real_ts64() to get current time.
-
-ktime_get_real_ts64() is more accurate than ktime_get_coarse_real_ts64().
-In my test box, I saw ctime set by ktime_get_coarse_real_ts64() is less
-than ktime_get_real_ts64() even ctime is set later.  The ctime of the new
-inode is smaller than atime.
-
-The call trace is like:
-
-ocfs2_create
-  ocfs2_mknod
-    __ocfs2_mknod_locked
-    ....
-
-      ktime_get_real_ts64 <------- set atime,ctime,mtime, more accurate
-      ocfs2_populate_inode
-    ...
-    ocfs2_init_acl
-      ocfs2_acl_set_mode
-        inode_set_ctime_current
-          current_time
-            ktime_get_coarse_real_ts64 <-------less accurate
-
-ocfs2_file_read_iter
-  ocfs2_inode_lock_atime
-    ocfs2_should_update_atime
-      atime <= ctime ? <-------- false, ctime < atime due to accuracy
-
-So here call ktime_get_coarse_real_ts64 to set inode time coarser while
-creating new files.  It may lower the accuracy of file times.  But it's
-not a big deal since we already use coarse time in other places like
-ocfs2_update_inode_atime and inode_set_ctime_current.
-
-Link: https://lkml.kernel.org/r/20240408082041.20925-5-glass.su@suse.com
-Fixes: c62c38f6b91b ("ocfs2: replace CURRENT_TIME macro")
-Signed-off-by: Su Yue <glass.su@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bf453a0a18b2 ("dmaengine: ioat: Support in-use unbind")
+Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20240528-ioatdma-fixes-v2-1-a9f2fbe26ab1@yadro.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/namei.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/ioat/init.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
---- a/fs/ocfs2/namei.c
-+++ b/fs/ocfs2/namei.c
-@@ -571,7 +571,7 @@ static int __ocfs2_mknod_locked(struct i
- 	fe->i_last_eb_blk = 0;
- 	strcpy(fe->i_signature, OCFS2_INODE_SIGNATURE);
- 	fe->i_flags |= cpu_to_le32(OCFS2_VALID_FL);
--	ktime_get_real_ts64(&ts);
-+	ktime_get_coarse_real_ts64(&ts);
- 	fe->i_atime = fe->i_ctime = fe->i_mtime =
- 		cpu_to_le64(ts.tv_sec);
- 	fe->i_mtime_nsec = fe->i_ctime_nsec = fe->i_atime_nsec =
+diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
+index 783d4e740f115..6c27980a5ec8f 100644
+--- a/drivers/dma/ioat/init.c
++++ b/drivers/dma/ioat/init.c
+@@ -1349,6 +1349,7 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	void __iomem * const *iomap;
+ 	struct device *dev = &pdev->dev;
+ 	struct ioatdma_device *device;
++	u8 version;
+ 	int err;
+ 
+ 	err = pcim_enable_device(pdev);
+@@ -1362,6 +1363,10 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	if (!iomap)
+ 		return -ENOMEM;
+ 
++	version = readb(iomap[IOAT_MMIO_BAR] + IOAT_VER_OFFSET);
++	if (version < IOAT_VER_3_0)
++		return -ENODEV;
++
+ 	err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
+ 	if (err)
+ 		err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
+@@ -1374,16 +1379,14 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	pci_set_master(pdev);
+ 	pci_set_drvdata(pdev, device);
+ 
+-	device->version = readb(device->reg_base + IOAT_VER_OFFSET);
++	device->version = version;
+ 	if (device->version >= IOAT_VER_3_4)
+ 		ioat_dca_enabled = 0;
+-	if (device->version >= IOAT_VER_3_0) {
+-		if (is_skx_ioat(pdev))
+-			device->version = IOAT_VER_3_2;
+-		err = ioat3_dma_probe(device, ioat_dca_enabled);
+-	} else
+-		return -ENODEV;
+ 
++	if (is_skx_ioat(pdev))
++		device->version = IOAT_VER_3_2;
++
++	err = ioat3_dma_probe(device, ioat_dca_enabled);
+ 	if (err) {
+ 		dev_err(dev, "Intel(R) I/OAT DMA Engine init failed\n");
+ 		return -ENODEV;
+-- 
+2.43.0
+
 
 
 
