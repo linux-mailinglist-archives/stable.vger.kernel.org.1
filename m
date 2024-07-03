@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E9E4925F3A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:53:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E3FD925E8B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:37:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C3E2B3C3DC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:22:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0562D1F25B49
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:37:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80301922DF;
-	Wed,  3 Jul 2024 11:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC9D18412E;
+	Wed,  3 Jul 2024 11:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IrA2pNaZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdfRi5wr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755BB194A50;
-	Wed,  3 Jul 2024 11:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5E91836F0;
+	Wed,  3 Jul 2024 11:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005114; cv=none; b=hRO7w2ZWQh9HosytLkThJQafoAVg2L8L0L2Z+WsBsV7Vp8/98+RTfq/AG9rkxw1oaDFZf0LUUQWlfMfUmMsOVUCS3EafpJpAHn8/lRVFugzof0/sfLhyo8iqiTn7QF+1tmZKaBMia2CBfXYk4XqbtfEEE5qhdNO5sJJWt4YmNHk=
+	t=1720006258; cv=none; b=eLCX11K9ORDKxgyqXkEqSRInmFYyzhkzsa3ayiFXWEJucljvtZQABQZYHAextMeISo7uEgxN2A3WVadYi3sn+juFA3eyLM6pGLN778Gz+TVt3/XLRJa40FdmCWZwoXp1Cb0YKoPrC5OWRrEzxSlj+XRHg+OAxuWANIFfV5Lssfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005114; c=relaxed/simple;
-	bh=CnyfphxRfkrQKMsc5FxcvGPkFWjcbOFFE4ClLDtzpJc=;
+	s=arc-20240116; t=1720006258; c=relaxed/simple;
+	bh=KUTeuM7mZxp/nxbAUAgit0TOL0Ha6cVCofDGWxzsMXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KgFZwWL0VfiqDBmBxAMGPSeIRTim1oyiNNfWLmqR62kqriV9Ar8xDVUCM5+4FAkmSTHpcHFT0JPGzGBE5xVu1BQ8QA2zcc22yoh/6xzEk1jOM4b+bBg0m1EkU8zDHR3XfSWO7b7eRfNT3DVO04WmFS+TkdM7NOj0eTB4bsSPENw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IrA2pNaZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11C0C2BD10;
-	Wed,  3 Jul 2024 11:11:53 +0000 (UTC)
+	 MIME-Version; b=Biv7J8wln/axRTux8I9rpiTNBkzhjo3OkTPC9y+kZK9JB13poplQNtupqzCRvnGtDjznSt9NzWbK/QNMX9PWymr5yP+Rm/usUChAdkQsUh4Lt5DchvJ/+JKVUqgYz/idi8b4cK32N/8Txt/NAcH1B5MNuRx0gbNF4pVfQSP6ZQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdfRi5wr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42903C32781;
+	Wed,  3 Jul 2024 11:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005114;
-	bh=CnyfphxRfkrQKMsc5FxcvGPkFWjcbOFFE4ClLDtzpJc=;
+	s=korg; t=1720006258;
+	bh=KUTeuM7mZxp/nxbAUAgit0TOL0Ha6cVCofDGWxzsMXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IrA2pNaZNMgvg/vtup14X9qUoAAWHpWj1FdYCI9QLjSimvfPJAYuhrXg5rcoFHmKh
-	 36jW9rwrE+M+Lv7Q7vd0YkOw2uLlo410Dtf1dsL/dzl7o5+Hm8uzrzakvKyT763uLv
-	 JDBR76EiNFq+bwDOt6n8E5ZFuTg0lfbdx0zeU6QE=
+	b=xdfRi5wrsPMleFiFz3OVa8QahA5NT/Y1hA5kUdzgMC2d5F0p1JQZxiHuhR8bxbmrb
+	 Hgjrgkl33EdyrzU8Y0KiKjSHn6My6Vdh2Kig9LCD7K5JPGPLh33o4WZBguHHtC16v3
+	 tOEKlu4mCbLR7/ciN/nrEWPWO3I9NJ3vG2nnYzg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guo Ren <guoren@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 5.10 266/290] csky, hexagon: fix broken sys_sync_file_range
-Date: Wed,  3 Jul 2024 12:40:47 +0200
-Message-ID: <20240703102914.190476503@linuxfoundation.org>
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 312/356] iio: chemical: bme680: Fix pressure value output
+Date: Wed,  3 Jul 2024 12:40:48 +0200
+Message-ID: <20240703102924.917319969@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-commit 3339b99ef6fe38dac43b534cba3a8a0e29fb2eff upstream.
+commit ae1f7b93b52095be6776d0f34957b4f35dda44d9 upstream.
 
-Both of these architectures require u64 function arguments to be
-passed in even/odd pairs of registers or stack slots, which in case of
-sync_file_range would result in a seven-argument system call that is
-not currently possible. The system call is therefore incompatible with
-all existing binaries.
+The IIO standard units are measured in kPa while the driver
+is using hPa.
 
-While it would be possible to implement support for seven arguments
-like on mips, it seems better to use a six-argument version, either
-with the normal argument order but misaligned as on most architectures
-or with the reordered sync_file_range2() calling conventions as on
-arm and powerpc.
+Apart from checking the userspace value itself, it is mentioned also
+in the Bosch API [1] that the pressure value is in Pascal.
 
-Cc: stable@vger.kernel.org
-Acked-by: Guo Ren <guoren@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+[1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x_defs.h#L742
+
+Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://lore.kernel.org/r/20240606212313.207550-2-vassilisamir@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/csky/include/uapi/asm/unistd.h    |    1 +
- arch/hexagon/include/uapi/asm/unistd.h |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/iio/chemical/bme680_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/csky/include/uapi/asm/unistd.h
-+++ b/arch/csky/include/uapi/asm/unistd.h
-@@ -7,6 +7,7 @@
- #define __ARCH_WANT_SYS_CLONE3
- #define __ARCH_WANT_SET_GET_RLIMIT
- #define __ARCH_WANT_TIME32_SYSCALLS
-+#define __ARCH_WANT_SYNC_FILE_RANGE2
- #include <asm-generic/unistd.h>
+--- a/drivers/iio/chemical/bme680_core.c
++++ b/drivers/iio/chemical/bme680_core.c
+@@ -678,7 +678,7 @@ static int bme680_read_press(struct bme6
+ 	}
  
- #define __NR_set_thread_area	(__NR_arch_specific_syscall + 0)
---- a/arch/hexagon/include/uapi/asm/unistd.h
-+++ b/arch/hexagon/include/uapi/asm/unistd.h
-@@ -36,5 +36,6 @@
- #define __ARCH_WANT_SYS_VFORK
- #define __ARCH_WANT_SYS_FORK
- #define __ARCH_WANT_TIME32_SYSCALLS
-+#define __ARCH_WANT_SYNC_FILE_RANGE2
+ 	*val = bme680_compensate_press(data, adc_press);
+-	*val2 = 100;
++	*val2 = 1000;
+ 	return IIO_VAL_FRACTIONAL;
+ }
  
- #include <asm-generic/unistd.h>
 
 
 
