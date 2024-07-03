@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-57717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB4B925DAC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 797889259FB
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:53:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 956631F21FAE
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6877297A4E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5286188CD3;
-	Wed,  3 Jul 2024 11:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C73917B43F;
+	Wed,  3 Jul 2024 10:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ak9an7r/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xyREQMxn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52042EB02;
-	Wed,  3 Jul 2024 11:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089CE17B434;
+	Wed,  3 Jul 2024 10:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005721; cv=none; b=ZWDsOEhQdtDO1wwP2bhjhMeUkr/4Ul6qjVyQ7stJa2Izwn367RYq8OmXwQ+2JgTlaBPghLCu97SFIiRp2r0KfxC/0txx4KI+iVzLjTHJPkIIJ1/NeQG33WCVcMF4FLpC/nFPUrz+9aWyE6vhsz6HoLk63Jo3mDu/gRxnKjmUyhI=
+	t=1720003329; cv=none; b=KycRir39OsKAreEtjuzM8LPxqGxazQtG2GZXoxXtx5HJILp3n0dOYxhGJrQgaiT9Y6L5tM9rYAB9F873KkwexNF8i9KfhX7tPpMcY+Df4NRUmJ4OdzZ58vbDxQstFxk86pSdybgQy4k10/gXxd4P6Gua4KdyufNg+YRZGsPwwb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005721; c=relaxed/simple;
-	bh=xiP2MhZsPKcmYfAggfqu5sQPzApPZax6f64+RT2hr1s=;
+	s=arc-20240116; t=1720003329; c=relaxed/simple;
+	bh=KIn2TKbwkmzjC6+485EYr3UkQC4wfuCEvdUtoviGw2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cc5Z2u3BnvB7RRD+5LFriiKGofXuWc2SIy14nVRcfOPTzt+NcZ0oPYMQpzU4R6ENyWug6emlfM2r3hMbffZJyR1ZQy21RlDr5a1VSuYoLw9aIJSFgZ3EzwzYeGlHCF2rO7a4qyyFLmVEUZEwYsm8OT1gxyoLBbJ8Vs8rPxjgCiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ak9an7r/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0247AC2BD10;
-	Wed,  3 Jul 2024 11:22:00 +0000 (UTC)
+	 MIME-Version; b=csfV5yZKIRbPOWlMHzRVho46JeYqp21F7vJeFNYVh+LkhcSelzzyVrSv9S7JbfnCW6XoQ2Bol9DzEJjPNdzgmXWGF8Gz73pTYT7YGTK8wfu4MW7Q807fhHI1GxTrPo7RWTKiDrlfkUsAY10Gtox+JYTJtMXJEGmDnvlvKBaT7OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xyREQMxn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809B6C4AF0A;
+	Wed,  3 Jul 2024 10:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005721;
-	bh=xiP2MhZsPKcmYfAggfqu5sQPzApPZax6f64+RT2hr1s=;
+	s=korg; t=1720003328;
+	bh=KIn2TKbwkmzjC6+485EYr3UkQC4wfuCEvdUtoviGw2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ak9an7r/EOSS4BwZd7HUSnP08kIhrFFo1Kypvl5UNQLa5PmrrtagOjXTrf9r2MlKX
-	 PlysrPOC9+NBVvBWrhYiPgKxn8r9238U2uXpgOH/0382hMZob7rF0sf2YlJNVS43Ck
-	 lJar7+CrJH/LEHYMV2LUG5UmkLG0Hnejk83M+74E=
+	b=xyREQMxnNe48COVJZSBQR39wADy3jFvsRestTqnab9BVWInuXZ+JVLH3iZ0YH3Hu3
+	 FNPYbb6WKAQV8IzFbfFaWPBT915fRmvhT2MEskxNUixVFxxF/0ekcsc9SIi/ltFwxS
+	 uFnUer6+22AqCwimqNjP6/sgr7xWEUzazdOoDVv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benson Leung <bleung@chromium.org>,
-	Prashant Malani <pmalani@chromium.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 173/356] power: supply: cros_usbpd: provide ID table for avoiding fallback match
-Date: Wed,  3 Jul 2024 12:38:29 +0200
-Message-ID: <20240703102919.650631743@linuxfoundation.org>
+Subject: [PATCH 4.19 013/139] af_unix: Annotate data-race of net->unx.sysctl_max_dgram_qlen.
+Date: Wed,  3 Jul 2024 12:38:30 +0200
+Message-ID: <20240703102830.939687264@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 0f8678c34cbfdc63569a9b0ede1fe235ec6ec693 ]
+[ Upstream commit bd9f2d05731f6a112d0c7391a0d537bfc588dbe6 ]
 
-Instead of using fallback driver name match, provide ID table[1] for the
-primary match.
+net->unx.sysctl_max_dgram_qlen is exposed as a sysctl knob and can be
+changed concurrently.
 
-[1]: https://elixir.bootlin.com/linux/v6.8/source/drivers/base/platform.c#L1353
+Let's use READ_ONCE() in unix_create1().
 
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Reviewed-by: Prashant Malani <pmalani@chromium.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Link: https://lore.kernel.org/r/20240401030052.2887845-4-tzungbi@kernel.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/cros_usbpd-charger.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/cros_usbpd-charger.c b/drivers/power/supply/cros_usbpd-charger.c
-index 0a4f02e4ae7ba..d7ee1eb9ca880 100644
---- a/drivers/power/supply/cros_usbpd-charger.c
-+++ b/drivers/power/supply/cros_usbpd-charger.c
-@@ -5,6 +5,7 @@
-  * Copyright (c) 2014 - 2018 Google, Inc
-  */
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index c01955ccf6b39..4a4b6d2544534 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -812,7 +812,7 @@ static struct sock *unix_create1(struct net *net, struct socket *sock, int kern)
  
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/platform_data/cros_ec_commands.h>
- #include <linux/platform_data/cros_ec_proto.h>
-@@ -711,16 +712,22 @@ static int cros_usbpd_charger_resume(struct device *dev)
- static SIMPLE_DEV_PM_OPS(cros_usbpd_charger_pm_ops, NULL,
- 			 cros_usbpd_charger_resume);
- 
-+static const struct platform_device_id cros_usbpd_charger_id[] = {
-+	{ DRV_NAME, 0 },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(platform, cros_usbpd_charger_id);
-+
- static struct platform_driver cros_usbpd_charger_driver = {
- 	.driver = {
- 		.name = DRV_NAME,
- 		.pm = &cros_usbpd_charger_pm_ops,
- 	},
--	.probe = cros_usbpd_charger_probe
-+	.probe = cros_usbpd_charger_probe,
-+	.id_table = cros_usbpd_charger_id,
- };
- 
- module_platform_driver(cros_usbpd_charger_driver);
- 
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("ChromeOS EC USBPD charger");
--MODULE_ALIAS("platform:" DRV_NAME);
+ 	sk->sk_allocation	= GFP_KERNEL_ACCOUNT;
+ 	sk->sk_write_space	= unix_write_space;
+-	sk->sk_max_ack_backlog	= net->unx.sysctl_max_dgram_qlen;
++	sk->sk_max_ack_backlog	= READ_ONCE(net->unx.sysctl_max_dgram_qlen);
+ 	sk->sk_destruct		= unix_sock_destructor;
+ 	u = unix_sk(sk);
+ 	u->inflight = 0;
 -- 
 2.43.0
 
