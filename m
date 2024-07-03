@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-57000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED951925A88
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:01:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA08925B39
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:06:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C6E0299EE0
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:54:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A131B1C20909
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895C81836C2;
-	Wed,  3 Jul 2024 10:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C531741D1;
+	Wed,  3 Jul 2024 10:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnMdWUjD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U7z4NJN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46496136E2A;
-	Wed,  3 Jul 2024 10:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C8719B3D6;
+	Wed,  3 Jul 2024 10:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003535; cv=none; b=fbYaO9V9XQd0UXYfns9hBtItnKXiQLhUFTIAbR1R553CHTyZizI8gFOFdtsqYv+g1z0Gy4Jyc7xFWlw1uu17rqH00SsuCGCohN9M5Dgxp8YJcLgvFY4fbp92vW6XsWokmLyDAqRmaS0JBbEXRJ1bw8lfv4EIRvlHopbRMprMB1w=
+	t=1720004083; cv=none; b=IFhDYrxTeA28/X40NhSU5oaFRDJN3sqix/PH4RlvuFOh2YhCvvixgV51yQKJG4GP1+WfOxhfUwxdLhVP3JIIohy+mYLoDYWdaK5uyIKn2l08XiI3eAl5rAB0ZuLEax51jlDI7fIUf6105FOPWgnJ2jl1Ii0r00jjch/Mkcm/88w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003535; c=relaxed/simple;
-	bh=/Zpc29smSb9LjcLTuKi6pLVqS9wmKvnjrRhfmc+dh5Y=;
+	s=arc-20240116; t=1720004083; c=relaxed/simple;
+	bh=6zqpn6I1wnq7JvO5nTqje77vW/d8TV0Wr2t4nn1BH98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XOQghAF5tLju4HeLtHlm5pvvXBlDZszepeFv3M1tScWv+pLuoXfiDACLuWFZ7F+L4cc35kpsB3Q3HkDE2fnBC52g05tWCQHuCQJBM8V+0hKt35DzgJ3fgVcJHp4D01H/8OK5KXxbgzTNIFNEpGE51AC7ItjNPyWTge/kvfOrAGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnMdWUjD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C269EC2BD10;
-	Wed,  3 Jul 2024 10:45:34 +0000 (UTC)
+	 MIME-Version; b=XDJ4Ms8a92YHvO7lCJlxdJh74ap4xKMtHXRShC6iUrOJ0eHyhoCTuEGQN7bMqcqPdWt1LkxvWiODuwoxsoNphxum3eTICtS/1sHGzwjuGi/d3O1ACeKtnKjFeEtnk2DwY9zn/bBkkMafwoKEC5em9h8hYWo67DVPMl1LEdh/eTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7z4NJN0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AAF3C4AF0E;
+	Wed,  3 Jul 2024 10:54:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003535;
-	bh=/Zpc29smSb9LjcLTuKi6pLVqS9wmKvnjrRhfmc+dh5Y=;
+	s=korg; t=1720004083;
+	bh=6zqpn6I1wnq7JvO5nTqje77vW/d8TV0Wr2t4nn1BH98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hnMdWUjDTV4VUxxoHCwspMRU2KOIYmbkBk4pd2Iaahv8+NVWB3z2aQoPuCYdjsM9g
-	 1yLwTdSbBg+Sa4JmMt76Re/uV04JgyVNTl5egHo6NFwhL3FK0OEwUlyZXo22wuVRIl
-	 hVd4vBXgOIMbJu858lX/C5vJkQozbitpVB3S3y04=
+	b=U7z4NJN04IqSQHQI2nLMedWpqnNrarPIqkD2lh2isYZ884IvNjsER0Xy9f8gBwlAr
+	 YxgF9wVMWXbNqpY2He5t6Aht9WgLJxUGosUvYP8w4T5m2rU/Xn+7bL1KBa0ze8Sjvs
+	 IR/BjUzxs9G/t7WRdnADkG289iKPI2qdf3QJIutg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 4.19 080/139] drm/radeon: fix UBSAN warning in kv_dpm.c
+	Sanath S <Sanath.S@amd.com>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 116/189] ACPICA: Revert "ACPICA: avoid Info: mapping multiple BARs. Your kernel is fine."
 Date: Wed,  3 Jul 2024 12:39:37 +0200
-Message-ID: <20240703102833.462116119@linuxfoundation.org>
+Message-ID: <20240703102845.876677803@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-commit a498df5421fd737d11bfd152428ba6b1c8538321 upstream.
+[ Upstream commit a83e1385b780d41307433ddbc86e3c528db031f0 ]
 
-Adds bounds check for sumo_vid_mapping_entry.
+Undo the modifications made in commit d410ee5109a1 ("ACPICA: avoid
+"Info: mapping multiple BARs. Your kernel is fine.""). The initial
+purpose of this commit was to stop memory mappings for operation
+regions from overlapping page boundaries, as it can trigger warnings
+if different page attributes are present.
 
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, it was found that when this situation arises, mapping
+continues until the boundary's end, but there is still an attempt to
+read/write the entire length of the map, leading to a NULL pointer
+deference. For example, if a four-byte mapping request is made but
+only one byte is mapped because it hits the current page boundary's
+end, a four-byte read/write attempt is still made, resulting in a NULL
+pointer deference.
+
+Instead, map the entire length, as the ACPI specification does not
+mandate that it must be within the same page boundary. It is
+permissible for it to be mapped across different regions.
+
+Link: https://github.com/acpica/acpica/pull/954
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218849
+Fixes: d410ee5109a1 ("ACPICA: avoid "Info: mapping multiple BARs. Your kernel is fine."")
+Co-developed-by: Sanath S <Sanath.S@amd.com>
+Signed-off-by: Sanath S <Sanath.S@amd.com>
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/sumo_dpm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/acpica/exregion.c | 23 ++---------------------
+ 1 file changed, 2 insertions(+), 21 deletions(-)
 
---- a/drivers/gpu/drm/radeon/sumo_dpm.c
-+++ b/drivers/gpu/drm/radeon/sumo_dpm.c
-@@ -1622,6 +1622,8 @@ void sumo_construct_vid_mapping_table(st
+diff --git a/drivers/acpi/acpica/exregion.c b/drivers/acpi/acpica/exregion.c
+index c08521194b297..817e4c9445729 100644
+--- a/drivers/acpi/acpica/exregion.c
++++ b/drivers/acpi/acpica/exregion.c
+@@ -43,7 +43,6 @@ acpi_ex_system_memory_space_handler(u32 function,
+ 	struct acpi_mem_space_context *mem_info = region_context;
+ 	u32 length;
+ 	acpi_size map_length;
+-	acpi_size page_boundary_map_length;
+ #ifdef ACPI_MISALIGNMENT_NOT_SUPPORTED
+ 	u32 remainder;
+ #endif
+@@ -120,26 +119,8 @@ acpi_ex_system_memory_space_handler(u32 function,
+ 		map_length = (acpi_size)
+ 		    ((mem_info->address + mem_info->length) - address);
  
- 	for (i = 0; i < SUMO_MAX_HARDWARE_POWERLEVELS; i++) {
- 		if (table[i].ulSupportedSCLK != 0) {
-+			if (table[i].usVoltageIndex >= SUMO_MAX_NUMBER_VOLTAGES)
-+				continue;
- 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_7bit =
- 				table[i].usVoltageID;
- 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_2bit =
+-		/*
+-		 * If mapping the entire remaining portion of the region will cross
+-		 * a page boundary, just map up to the page boundary, do not cross.
+-		 * On some systems, crossing a page boundary while mapping regions
+-		 * can cause warnings if the pages have different attributes
+-		 * due to resource management.
+-		 *
+-		 * This has the added benefit of constraining a single mapping to
+-		 * one page, which is similar to the original code that used a 4k
+-		 * maximum window.
+-		 */
+-		page_boundary_map_length = (acpi_size)
+-		    (ACPI_ROUND_UP(address, ACPI_DEFAULT_PAGE_SIZE) - address);
+-		if (page_boundary_map_length == 0) {
+-			page_boundary_map_length = ACPI_DEFAULT_PAGE_SIZE;
+-		}
+-
+-		if (map_length > page_boundary_map_length) {
+-			map_length = page_boundary_map_length;
+-		}
++		if (map_length > ACPI_DEFAULT_PAGE_SIZE)
++			map_length = ACPI_DEFAULT_PAGE_SIZE;
+ 
+ 		/* Create a new mapping starting at the address given */
+ 
+-- 
+2.43.0
+
 
 
 
