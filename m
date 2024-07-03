@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2915A925E3B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 676CF925B55
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:08:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D40B01F25B07
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E31C928884B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:07:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE1E173348;
-	Wed,  3 Jul 2024 11:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EACE919CCF5;
+	Wed,  3 Jul 2024 10:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yA5eTdV0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rGYxhygh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12AB6E5ED;
-	Wed,  3 Jul 2024 11:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A948A19B5A3;
+	Wed,  3 Jul 2024 10:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006055; cv=none; b=o83XJsQ6GKfZ59Tn6rSjMZms0V2zR6NMiNBvQW0HO9d7D711wcRZx9x9SMeCY8K2D7Q/7bKQ00DUCwSz4sZDw6IEc4tEX9B5ljyRFkC9eMvxMxLIfF+cudW99XMctqB6gBfmn/y1vezVL5OncI3eui9nHavtDRFo026IZYcVRLI=
+	t=1720004095; cv=none; b=jTJ3CBUdBm2WI0xxHqC6n9rAd4DTHY8/oX4NfNc5Nil4Ua3cLnyI9HWHS7dFoLwU99VnpTsFutAOssNhocgejzeaPs7uuwf7ZkgLEujnR+t8IUvFdfdXpth98bYeApblnIUeE1Aitps+LJKJy3USc8N6IKQu9yuyeYXRpwkEC5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006055; c=relaxed/simple;
-	bh=cEPMXoJFTpMTXXZa1FPcsO4fLOPeXTx2SCCK29FBI3w=;
+	s=arc-20240116; t=1720004095; c=relaxed/simple;
+	bh=hh/OdoEMIfuwLROH5Y8FDWzNc1ucT7aBrG5WEfzTAkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C6xmqUzN/luJYwtJBDu2FuwwW5YcVHMlRhPizNvFen5a+p/GAyy1kz4RkuOPFYKYx7rlVZhJiH5ypK/2zi8cbg7WT0oBNXJY8dGT28xPFGlGn8swPs1aMbg0irFl64EhuLAa/fsDeUdmh+hWjAZKV19mEYTs7Gp2QARf2pSATH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yA5eTdV0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6629AC2BD10;
-	Wed,  3 Jul 2024 11:27:34 +0000 (UTC)
+	 MIME-Version; b=rIpwtkhN1hrLWEkhzwP8iEx5XCZLORL+8KTABCQU4zHALQVpnCkbie4dejC/LoJMd1paoiXLs5iimFwzDbrZDCG88rXUDkCGs6hWvRuyfdUR4CBakKKR0ARnC4UT0v47c7Kku+X3slLMfBBTAvlIPUN8IQK6xQgx9++O5XdaNLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rGYxhygh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC47DC2BD10;
+	Wed,  3 Jul 2024 10:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006054;
-	bh=cEPMXoJFTpMTXXZa1FPcsO4fLOPeXTx2SCCK29FBI3w=;
+	s=korg; t=1720004095;
+	bh=hh/OdoEMIfuwLROH5Y8FDWzNc1ucT7aBrG5WEfzTAkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yA5eTdV0oKYf74Hpvw0ObxgwiSruDEN/uKr6mOB7ShZBPEYkr8HU3Z60xmPBwOuFZ
-	 kBl0im/9sbrxMV30orusMCZhnI79jzjXisWmgsBC63ivCProKi9DkKi9oYhhfYlomy
-	 fbikC/8eTDmiXkt7wOsG/LvMCuZm/yuWrI9ph+Uk=
+	b=rGYxhyghXNBu8WnwghJfS2EoGfZxhYK03a54MHNaSlPdV+6c6muXOVQWQMhvK6gwr
+	 YUB4WPGvbo2FvWKO8gsGAwbSsvRO7jWGG8shsRJEDPCkTNoDcE2yaK0qsiIJ4MFNep
+	 vPqYNV8ZCzJIj+RwipBx6ptEjdLakJTe82I4hJkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nandor Kracser <bonifaido@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 244/356] ksmbd: ignore trailing slashes in share paths
+	Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 5.4 119/189] i2c: ocores: set IACK bit after core is enabled
 Date: Wed,  3 Jul 2024 12:39:40 +0200
-Message-ID: <20240703102922.345195455@linuxfoundation.org>
+Message-ID: <20240703102845.988985085@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nandor Kracser <bonifaido@gmail.com>
+From: Grygorii Tertychnyi <grembeter@gmail.com>
 
-[ Upstream commit 405ee4097c4bc3e70556520aed5ba52a511c2266 ]
+commit 5a72477273066b5b357801ab2d315ef14949d402 upstream.
 
-Trailing slashes in share paths (like: /home/me/Share/) caused permission
-issues with shares for clients on iOS and on Android TV for me,
-but otherwise they work fine with plain old Samba.
+Setting IACK bit when core is disabled does not clear the "Interrupt Flag"
+bit in the status register, and the interrupt remains pending.
 
+Sometimes it causes failure for the very first message transfer, that is
+usually a device probe.
+
+Hence, set IACK bit after core is enabled to clear pending interrupt.
+
+Fixes: 18f98b1e3147 ("[PATCH] i2c: New bus driver for the OpenCores I2C controller")
+Signed-off-by: Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>
+Acked-by: Peter Korsgaard <peter@korsgaard.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Nandor Kracser <bonifaido@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/mgmt/share_config.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-ocores.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ksmbd/mgmt/share_config.c b/fs/ksmbd/mgmt/share_config.c
-index a2f0a2edceb8a..e0a6b758094fc 100644
---- a/fs/ksmbd/mgmt/share_config.c
-+++ b/fs/ksmbd/mgmt/share_config.c
-@@ -165,8 +165,12 @@ static struct ksmbd_share_config *share_config_request(struct unicode_map *um,
+--- a/drivers/i2c/busses/i2c-ocores.c
++++ b/drivers/i2c/busses/i2c-ocores.c
+@@ -443,8 +443,8 @@ static int ocores_init(struct device *de
+ 	oc_setreg(i2c, OCI2C_PREHIGH, prescale >> 8);
  
- 		share->path = kstrndup(ksmbd_share_config_path(resp), path_len,
- 				      GFP_KERNEL);
--		if (share->path)
-+		if (share->path) {
- 			share->path_sz = strlen(share->path);
-+			while (share->path_sz > 1 &&
-+			       share->path[share->path_sz - 1] == '/')
-+				share->path[--share->path_sz] = '\0';
-+		}
- 		share->create_mask = resp->create_mask;
- 		share->directory_mask = resp->directory_mask;
- 		share->force_create_mode = resp->force_create_mode;
--- 
-2.43.0
-
+ 	/* Init the device */
+-	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
+ 	oc_setreg(i2c, OCI2C_CONTROL, ctrl | OCI2C_CTRL_EN);
++	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
+ 
+ 	return 0;
+ }
 
 
 
