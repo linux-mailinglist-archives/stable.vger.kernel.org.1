@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-56983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87EB6925AD8
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:04:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE6D925C7E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:19:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2626299755
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2BEB1C21270
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271951822C3;
-	Wed,  3 Jul 2024 10:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6956A183097;
+	Wed,  3 Jul 2024 11:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SqgiPIoq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5g0pwZJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA18B173347;
-	Wed,  3 Jul 2024 10:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D62183093;
+	Wed,  3 Jul 2024 11:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003484; cv=none; b=HfhmSniy1x2nf0JG09ZY2lYWy5nv//XqpjQqia9esbdeygzmd4tzsynj3JaqYuueaKgbOI8S3J7zLy7Hp5ZYgmA3pvZleBOhnA9lvPqc3plEIuYhiWCI4eOftthSFXrCsXSJhujZlZ3w3jBHCdfZVpscX92ed7DERaAOlBHm6Ug=
+	t=1720004853; cv=none; b=ohkXhi57mvusqa/PsfVh82Yoa5psvxQdBmySl4mId4MXk69VLj3MAKpBetVYMHtQ6Bt+0qUYoI2Dl+nRYfM+h0Q8GuVysxHtBpLA5RjCdp1eXNcJ5LfXV2q7c/5wZD0eIvG0YO27iCYWNm+JWQtZGrRe5DwvBu86wT492yeMv1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003484; c=relaxed/simple;
-	bh=D4aWFdTjtIW/2nEVom8v39q/XpIFaKA12By1dlqu25c=;
+	s=arc-20240116; t=1720004853; c=relaxed/simple;
+	bh=1O+r/6Un7zIPqbvoU0pzm2rrtuXRO8mEvdE8RssG164=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DkfCpd3RGx0ARYOKZSyzAMWXBSwUoANni5xqfMN5p3vyINVPCG6yt/tngR7grOqm/XDZP0YjNQDO+KFMyc4UvEa7lX32axR2LF8WVYw2TQ0aH3tuKc5PjB0uMH9Obzcd99k0iW43siSVvtOz4y6V1RQTmLgtX/mW3hM/8TZ+lZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqgiPIoq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC63C2BD10;
-	Wed,  3 Jul 2024 10:44:44 +0000 (UTC)
+	 MIME-Version; b=oVliqC+/tUoRtp4JcfDWIg3j8oUkrHheUNs0d0H8cAkP+Yg73HsFhfYfzlmKS7LUdYCi0JqcQfP4Vpg33Zk8oJaDmdNg25+eFm+RdCAv4Y6/7RN8eYPBr/sGfrt6Frrjc1RgeZutU1pzrHbzoEZjeVsj3At/XufrYU2YBRWk4U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5g0pwZJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E09AC2BD10;
+	Wed,  3 Jul 2024 11:07:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003484;
-	bh=D4aWFdTjtIW/2nEVom8v39q/XpIFaKA12By1dlqu25c=;
+	s=korg; t=1720004853;
+	bh=1O+r/6Un7zIPqbvoU0pzm2rrtuXRO8mEvdE8RssG164=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SqgiPIoqmYNhdGRhb/qu5MBjuVjhdOIaR1dX4p/xAR1B87vED+atxJG77IvdSCJNL
-	 tjIjzHXN6ihZEkR2RArXOl8IU8CGwL9rzVt5N9Psv9SrHUJxbnYOykv0+kBfwIzgmg
-	 Tseb0DsS1Ss3add7czTJQEG2QRTB3nrSeEPBxcRg=
+	b=Y5g0pwZJmkvGRHr0LEZ5a3px+yVVVcCP4nsVoHBr2lzrNAHflrzRwJOHNUSKjeE8r
+	 lJVq2LEX/3VbGom3fzeW9OCO18iMeUnbn3g8zWaIOMti88h5JpJKm61gHZJxp3JGRv
+	 hM56gX9kfu7EfxcJ8wjwQabCEPBRCVHKBo5dMcDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathanl@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Juergen Christ <jchrist@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 064/139] powerpc/pseries: Enforce hcall result buffer validity and size
+Subject: [PATCH 5.10 180/290] s390/cpacf: Make use of invalid opcode produce a link error
 Date: Wed,  3 Jul 2024 12:39:21 +0200
-Message-ID: <20240703102832.858749810@linuxfoundation.org>
+Message-ID: <20240703102910.971417907@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Harald Freudenberger <freude@linux.ibm.com>
 
-[ Upstream commit ff2e185cf73df480ec69675936c4ee75a445c3e4 ]
+[ Upstream commit 32e8bd6423fc127d2b37bdcf804fd76af3bbec79 ]
 
-plpar_hcall(), plpar_hcall9(), and related functions expect callers to
-provide valid result buffers of certain minimum size. Currently this
-is communicated only through comments in the code and the compiler has
-no idea.
+Instead of calling BUG() at runtime introduce and use a prototype for a
+non-existing function to produce a link error during compile when a not
+supported opcode is used with the __cpacf_query() or __cpacf_check_opcode()
+inline functions.
 
-For example, if I write a bug like this:
-
-  long retbuf[PLPAR_HCALL_BUFSIZE]; // should be PLPAR_HCALL9_BUFSIZE
-  plpar_hcall9(H_ALLOCATE_VAS_WINDOW, retbuf, ...);
-
-This compiles with no diagnostics emitted, but likely results in stack
-corruption at runtime when plpar_hcall9() stores results past the end
-of the array. (To be clear this is a contrived example and I have not
-found a real instance yet.)
-
-To make this class of error less likely, we can use explicitly-sized
-array parameters instead of pointers in the declarations for the hcall
-APIs. When compiled with -Warray-bounds[1], the code above now
-provokes a diagnostic like this:
-
-error: array argument is too small;
-is of size 32, callee requires at least 72 [-Werror,-Warray-bounds]
-   60 |                 plpar_hcall9(H_ALLOCATE_VAS_WINDOW, retbuf,
-      |                 ^                                   ~~~~~~
-
-[1] Enabled for LLVM builds but not GCC for now. See commit
-    0da6e5fd6c37 ("gcc: disable '-Warray-bounds' for gcc-13 too") and
-    related changes.
-
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240408-pseries-hvcall-retbuf-v1-1-ebc73d7253cf@linux.ibm.com
+Suggested-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
+Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
+Reviewed-by: Juergen Christ <jchrist@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/hvcall.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/s390/include/asm/cpacf.h | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index 2bbf6c01a13d7..1fb2c4a3eb54b 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -383,7 +383,7 @@ long plpar_hcall_norets(unsigned long opcode, ...);
-  * Used for all but the craziest of phyp interfaces (see plpar_hcall9)
-  */
- #define PLPAR_HCALL_BUFSIZE 4
--long plpar_hcall(unsigned long opcode, unsigned long *retbuf, ...);
-+long plpar_hcall(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL_BUFSIZE], ...);
+diff --git a/arch/s390/include/asm/cpacf.h b/arch/s390/include/asm/cpacf.h
+index fa31f71cf5746..0f6ff2008a159 100644
+--- a/arch/s390/include/asm/cpacf.h
++++ b/arch/s390/include/asm/cpacf.h
+@@ -161,6 +161,13 @@
  
- /**
-  * plpar_hcall_raw: - Make a hypervisor call without calculating hcall stats
-@@ -397,7 +397,7 @@ long plpar_hcall(unsigned long opcode, unsigned long *retbuf, ...);
-  * plpar_hcall, but plpar_hcall_raw works in real mode and does not
-  * calculate hypervisor call statistics.
-  */
--long plpar_hcall_raw(unsigned long opcode, unsigned long *retbuf, ...);
-+long plpar_hcall_raw(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL_BUFSIZE], ...);
+ typedef struct { unsigned char bytes[16]; } cpacf_mask_t;
  
- /**
-  * plpar_hcall9: - Make a pseries hypervisor call with up to 9 return arguments
-@@ -408,8 +408,8 @@ long plpar_hcall_raw(unsigned long opcode, unsigned long *retbuf, ...);
-  * PLPAR_HCALL9_BUFSIZE to size the return argument buffer.
-  */
- #define PLPAR_HCALL9_BUFSIZE 9
--long plpar_hcall9(unsigned long opcode, unsigned long *retbuf, ...);
--long plpar_hcall9_raw(unsigned long opcode, unsigned long *retbuf, ...);
-+long plpar_hcall9(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL9_BUFSIZE], ...);
-+long plpar_hcall9_raw(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL9_BUFSIZE], ...);
++/*
++ * Prototype for a not existing function to produce a link
++ * error if __cpacf_query() or __cpacf_check_opcode() is used
++ * with an invalid compile time const opcode.
++ */
++void __cpacf_bad_opcode(void);
++
+ static __always_inline void __cpacf_query_rre(u32 opc, u8 r1, u8 r2,
+ 					      cpacf_mask_t *mask)
+ {
+@@ -232,7 +239,7 @@ static __always_inline void __cpacf_query(unsigned int opcode,
+ 		__cpacf_query_rre(CPACF_PRNO, 2, 4, mask);
+ 		break;
+ 	default:
+-		BUG();
++		__cpacf_bad_opcode();
+ 	}
+ }
  
- struct hvcall_mpp_data {
- 	unsigned long entitled_mem;
+@@ -257,7 +264,8 @@ static __always_inline int __cpacf_check_opcode(unsigned int opcode)
+ 	case CPACF_KMA:
+ 		return test_facility(146);	/* check for MSA8 */
+ 	default:
+-		BUG();
++		__cpacf_bad_opcode();
++		return 0;
+ 	}
+ }
+ 
 -- 
 2.43.0
 
