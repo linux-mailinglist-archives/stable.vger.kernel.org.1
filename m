@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-57626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73623925D47
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD52925C0A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:14:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EE881F21655
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3BD328DD15
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8111513F432;
-	Wed,  3 Jul 2024 11:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B420E18F2F6;
+	Wed,  3 Jul 2024 11:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E90vYuek"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OA/tTV5E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401D413776F;
-	Wed,  3 Jul 2024 11:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704BC18EFCE;
+	Wed,  3 Jul 2024 11:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005449; cv=none; b=CvxD6id4lpsEA8Fxh1tBxHSQmrHNjIUMYmDF96uDbiliwCu0Kzverc0pX8+wuPDoxyIY1xFovEeWnXSh0C9sUMNShpcTRMuxxw68G0JBrSzqS16Bw8jC5VgoKv8pJIcxicjqAQLCi+s3j31tJiSbE3EsHm3Iyk7l24284vIBZ50=
+	t=1720004434; cv=none; b=Z3WxthLWLQfwD2ZARUnynt5/okzrKO166soCjptc7jgI4gUEVw4cPk3dbh6fG81Opr8cjRwcICoMbYGxmTY4hYF1KTlgH375L1dKoaoNbp/C/ml+tVkYYa9aZA//E0YxTYMoVZ3xyzcm7hkFD3E1/nUpKs6zQI7Na5Fh3xoqiGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005449; c=relaxed/simple;
-	bh=fCwr3lEevsBT3kdMhDRikrtpKriz4CQ0KHfXAKmorTY=;
+	s=arc-20240116; t=1720004434; c=relaxed/simple;
+	bh=GLYss6FNn4HHBkyM/BVmvk+xFoOV3CLK7pw7Z5dEy+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fz6fRceyVfKQJu9rCw4yxEBcmvj7+YCDbQYYUIURDLZ131RXPGPCEY/5F+XGHwuxHFbl5yEBjHpSJTPOFj8dMrPJFMjIHvp6j4ST1SMPWrJ7P7PQce/EWEYZaD/i8cF2+y2xAzVErjY1TzjMHdpV8bG8JLGN4NqYtvUi+PmGpc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E90vYuek; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DBAC2BD10;
-	Wed,  3 Jul 2024 11:17:28 +0000 (UTC)
+	 MIME-Version; b=TTJqda7Oiy0Ji3d4yGoG0/44YoSE/8DDm0FZpimKj2S5dfY9HHF3dYtpZHT96wn7rB0LqtZWuK7Bk1wR/x8pHV+OKeNONe581bGpUp+IXaauqOrrdrj2ahzjZUH1OqdOM4sbzYCky4XzIdO06Enf3fYsaA0DAL5lHiil5UvlBbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OA/tTV5E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7181C2BD10;
+	Wed,  3 Jul 2024 11:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005449;
-	bh=fCwr3lEevsBT3kdMhDRikrtpKriz4CQ0KHfXAKmorTY=;
+	s=korg; t=1720004434;
+	bh=GLYss6FNn4HHBkyM/BVmvk+xFoOV3CLK7pw7Z5dEy+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E90vYuekDbGH1o66rm7mq7tbI5/eGlbL+93HauziaVIrsfKjcFCqia3tvwSkykZHH
-	 y5HAx/7z/xBN8r9bSFlmuOklvaxxtr+WiFbtwlLl4rbm5PNtH+HmLM5yb0CU60KCGR
-	 ADMf5EdBp+lkAERcp1xmG/XgfzyBB5CnHGVWV6Cw=
+	b=OA/tTV5EWxS+n+jr34cTh+AGQvgbxOoHj5FKx4wTAxUq0xCt/pAQB9XEILGrEUGuO
+	 afLbzyFdVOYZj5JPqflqPAZgF75WrV36uDQZ7rUaz242P3CCBBlMbsJcu5BxUgFq+c
+	 UlIWffgwn34DkzgPDit8phqDiIm6qbCW877QdP5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Russell King <linux@armlinux.org.uk>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	syzbot+0fecc032fa134afd49df@syzkaller.appspotmail.com,
+	Josef Bacik <josef@toxicpanda.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 085/356] clk: sifive: Do not register clkdevs for PRCI clocks
+Subject: [PATCH 5.10 040/290] btrfs: fix leak of qgroup extent records after transaction abort
 Date: Wed,  3 Jul 2024 12:37:01 +0200
-Message-ID: <20240703102916.319554571@linuxfoundation.org>
+Message-ID: <20240703102905.711430741@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 2607133196c35f31892ee199ce7ffa717bea4ad1 ]
+[ Upstream commit fb33eb2ef0d88e75564983ef057b44c5b7e4fded ]
 
-These clkdevs were unnecessary, because systems using this driver always
-look up clocks using the devicetree. And as Russell King points out[1],
-since the provided device name was truncated, lookups via clkdev would
-never match.
+Qgroup extent records are created when delayed ref heads are created and
+then released after accounting extents at btrfs_qgroup_account_extents(),
+called during the transaction commit path.
 
-Recently, commit 8d532528ff6a ("clkdev: report over-sized strings when
-creating clkdev entries") caused clkdev registration to fail due to the
-truncation, and this now prevents the driver from probing. Fix the
-driver by removing the clkdev registration.
+If a transaction is aborted we free the qgroup records by calling
+btrfs_qgroup_destroy_extent_records() at btrfs_destroy_delayed_refs(),
+unless we don't have delayed references. We are incorrectly assuming
+that no delayed references means we don't have qgroup extents records.
 
-Link: https://lore.kernel.org/linux-clk/ZkfYqj+OcAxd9O2t@shell.armlinux.org.uk/ [1]
-Fixes: 30b8e27e3b58 ("clk: sifive: add a driver for the SiFive FU540 PRCI IP block")
-Fixes: 8d532528ff6a ("clkdev: report over-sized strings when creating clkdev entries")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/linux-clk/7eda7621-0dde-4153-89e4-172e4c095d01@roeck-us.net/
-Suggested-by: Russell King <linux@armlinux.org.uk>
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Link: https://lore.kernel.org/r/20240528001432.1200403-1-samuel.holland@sifive.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+We can currently have no delayed references because we ran them all
+during a transaction commit and the transaction was aborted after that
+due to some error in the commit path.
+
+So fix this by ensuring we btrfs_qgroup_destroy_extent_records() at
+btrfs_destroy_delayed_refs() even if we don't have any delayed references.
+
+Reported-by: syzbot+0fecc032fa134afd49df@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-btrfs/0000000000004e7f980619f91835@google.com/
+Fixes: 81f7eb00ff5b ("btrfs: destroy qgroup extent records on transaction abort")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sifive/sifive-prci.c | 8 --------
- 1 file changed, 8 deletions(-)
+ fs/btrfs/disk-io.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/drivers/clk/sifive/sifive-prci.c b/drivers/clk/sifive/sifive-prci.c
-index 80a288c59e56d..8b573ff646f65 100644
---- a/drivers/clk/sifive/sifive-prci.c
-+++ b/drivers/clk/sifive/sifive-prci.c
-@@ -4,7 +4,6 @@
-  * Copyright (C) 2020 Zong Li
-  */
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 019f0925fa73c..c484c145c5d05 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -4442,19 +4442,11 @@ static int btrfs_destroy_delayed_refs(struct btrfs_transaction *trans,
+ 				      struct btrfs_fs_info *fs_info)
+ {
+ 	struct rb_node *node;
+-	struct btrfs_delayed_ref_root *delayed_refs;
++	struct btrfs_delayed_ref_root *delayed_refs = &trans->delayed_refs;
+ 	struct btrfs_delayed_ref_node *ref;
+ 	int ret = 0;
  
--#include <linux/clkdev.h>
- #include <linux/delay.h>
- #include <linux/io.h>
- #include <linux/of_device.h>
-@@ -541,13 +540,6 @@ static int __prci_register_clocks(struct device *dev, struct __prci_data *pd,
- 			return r;
- 		}
- 
--		r = clk_hw_register_clkdev(&pic->hw, pic->name, dev_name(dev));
--		if (r) {
--			dev_warn(dev, "Failed to register clkdev for %s: %d\n",
--				 init.name, r);
--			return r;
--		}
+-	delayed_refs = &trans->delayed_refs;
 -
- 		pd->hw_clks.hws[i] = &pic->hw;
- 	}
- 
+ 	spin_lock(&delayed_refs->lock);
+-	if (atomic_read(&delayed_refs->num_entries) == 0) {
+-		spin_unlock(&delayed_refs->lock);
+-		btrfs_debug(fs_info, "delayed_refs has NO entry");
+-		return ret;
+-	}
+-
+ 	while ((node = rb_first_cached(&delayed_refs->href_root)) != NULL) {
+ 		struct btrfs_delayed_ref_head *head;
+ 		struct rb_node *n;
 -- 
 2.43.0
 
