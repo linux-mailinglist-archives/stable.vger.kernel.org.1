@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF04A925ABC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A48925D97
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FA291C21449
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 244F22949C2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E1F17C204;
-	Wed,  3 Jul 2024 10:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA90185E52;
+	Wed,  3 Jul 2024 11:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXEByKiw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gucM85+X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48777142E8E;
-	Wed,  3 Jul 2024 10:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE2713E024;
+	Wed,  3 Jul 2024 11:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003908; cv=none; b=EYTj2q60qCDUp53ljiMC0RXhFBv47dSvnI7a8CD7PXPabHcWlIRkEeSOV6svwrUTUYlYLOylbMlfKfn5t4V67cCazlb7endcrp9T0bVFp7G3UfEtrLIXIgR2NPHoABNP6g1HARalIpgOEOku9stSGZUX9GFFfvSOSWtJw+bb8no=
+	t=1720005659; cv=none; b=LUCodgeWaO23c8aklX1ocJD7dtaSnpwjdebP7w8+qWY5EnnrGlixl6hKfa2iL1FvP9N8Dq83GPm0xwm1CbCLp4Ex091/Vvfb6un9aFr8ib/3hfwZmceJjzlqFoutDvRbr3E8ZOCd32A0fNhxI9bdCGR9s0d/ueLVGkDS93U0Yjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003908; c=relaxed/simple;
-	bh=ejpKI254iS63CXCCUdPEvgSzFl5KBwKaiCKziIkKYZc=;
+	s=arc-20240116; t=1720005659; c=relaxed/simple;
+	bh=XsPH2Jj2NXH/0XmyY/LrbSr3GTAXb4IsmKRfZdz+QNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hAzdd5i80Zv56SPgLyWulBnbDFOrb9w1Pq8HH64t5nPeY71CunqkgQ5VZ2THSfsPJxwFDZxWV/uuV9I6PY/ajU04GA8kMIjEoSH0XKPFavVWJRvwBKbx/sKzA2j30ZBQKivZ+csTPICQTCAzabslCV6zrybyG9asqS9+K9uIVRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXEByKiw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8974C2BD10;
-	Wed,  3 Jul 2024 10:51:47 +0000 (UTC)
+	 MIME-Version; b=NIe4gFWDf8xBUCOf2jlVAiKBT1veO23DSMPoQ8Uz47D4dfCfLuUYMEaq4iG9frfztNKKK4S2tyIS6wFjKkx8mRzvN4WwEm4uj3BzyIdESyWl9SbF502GOb++ACorJAGg1x0aAkiibBYrst2nlp6YglCPv2D46kMveELYfU08+KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gucM85+X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7B7C2BD10;
+	Wed,  3 Jul 2024 11:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003908;
-	bh=ejpKI254iS63CXCCUdPEvgSzFl5KBwKaiCKziIkKYZc=;
+	s=korg; t=1720005659;
+	bh=XsPH2Jj2NXH/0XmyY/LrbSr3GTAXb4IsmKRfZdz+QNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nXEByKiw0cd3P/kWq3FarnF70jwggGcPpT2s0v8bHRqu8hC3hN+Il33LufnXd3r9V
-	 xMGC6wZI74AUUedf9KiGyLi/l2f/I8e6qBG3Uy9VgxfAJI7LR26LfebptmKIqSYhVz
-	 UMnWfhXyoOQ28gX+f4kLihtl28Ocqw51Poex+fTs=
+	b=gucM85+X7evlYl1szY8Oc9p9PvEOvSbET4quHdOCEVRUeO6syr/J6yzAYkBflzwbr
+	 w5LX1vaBU/G97H0dvvQuiX5dK0hKOy1Y1cmBqk7EFIyAgRDNXkhKM0AyqfJHs4enCH
+	 Z0ZJkZtPe7Jy2FYAY9IwJbpkai9p4gBUzhzlgwTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@ti.com>,
-	Mark Brown <broonie@kernel.org>,
+	Zqiang <qiang.zhang1211@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 029/189] ASoC: ti: davinci-mcasp: Handle missing required DT properties
+Subject: [PATCH 5.15 154/356] rcutorture: Fix invalid context warning when enable srcu barrier testing
 Date: Wed,  3 Jul 2024 12:38:10 +0200
-Message-ID: <20240703102842.607094279@linuxfoundation.org>
+Message-ID: <20240703102918.928597372@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,198 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@ti.com>
+From: Zqiang <qiang.zhang1211@gmail.com>
 
-[ Upstream commit 1b4fb70e5b28a477478417a7958e0228460ffe68 ]
+[ Upstream commit 668c0406d887467d53f8fe79261dda1d22d5b671 ]
 
-McASP needs three required properties to be usable for audio:
-op-mode, tdm-slots and the serial-dir array.
+When the torture_type is set srcu or srcud and cb_barrier is
+non-zero, running the rcutorture test will trigger the
+following warning:
 
-Instead of probing the driver even without the needed information we should
-make sure that all the parameters are provided for operation.
+[  163.910989][    C1] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+[  163.910994][    C1] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
+[  163.910999][    C1] preempt_count: 10001, expected: 0
+[  163.911002][    C1] RCU nest depth: 0, expected: 0
+[  163.911005][    C1] INFO: lockdep is turned off.
+[  163.911007][    C1] irq event stamp: 30964
+[  163.911010][    C1] hardirqs last  enabled at (30963): [<ffffffffabc7df52>] do_idle+0x362/0x500
+[  163.911018][    C1] hardirqs last disabled at (30964): [<ffffffffae616eff>] sysvec_call_function_single+0xf/0xd0
+[  163.911025][    C1] softirqs last  enabled at (0): [<ffffffffabb6475f>] copy_process+0x16ff/0x6580
+[  163.911033][    C1] softirqs last disabled at (0): [<0000000000000000>] 0x0
+[  163.911038][    C1] Preemption disabled at:
+[  163.911039][    C1] [<ffffffffacf1964b>] stack_depot_save_flags+0x24b/0x6c0
+[  163.911063][    C1] CPU: 1 PID: 0 Comm: swapper/1 Tainted: G        W          6.8.0-rc4-rt4-yocto-preempt-rt+ #3 1e39aa9a737dd024a3275c4f835a872f673a7d3a
+[  163.911071][    C1] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+[  163.911075][    C1] Call Trace:
+[  163.911078][    C1]  <IRQ>
+[  163.911080][    C1]  dump_stack_lvl+0x88/0xd0
+[  163.911089][    C1]  dump_stack+0x10/0x20
+[  163.911095][    C1]  __might_resched+0x36f/0x530
+[  163.911105][    C1]  rt_spin_lock+0x82/0x1c0
+[  163.911112][    C1]  spin_lock_irqsave_ssp_contention+0xb8/0x100
+[  163.911121][    C1]  srcu_gp_start_if_needed+0x782/0xf00
+[  163.911128][    C1]  ? _raw_spin_unlock_irqrestore+0x46/0x70
+[  163.911136][    C1]  ? debug_object_active_state+0x336/0x470
+[  163.911148][    C1]  ? __pfx_srcu_gp_start_if_needed+0x10/0x10
+[  163.911156][    C1]  ? __pfx_lock_release+0x10/0x10
+[  163.911165][    C1]  ? __pfx_rcu_torture_barrier_cbf+0x10/0x10
+[  163.911188][    C1]  __call_srcu+0x9f/0xe0
+[  163.911196][    C1]  call_srcu+0x13/0x20
+[  163.911201][    C1]  srcu_torture_call+0x1b/0x30
+[  163.911224][    C1]  rcu_torture_barrier1cb+0x4a/0x60
+[  163.911247][    C1]  __flush_smp_call_function_queue+0x267/0xca0
+[  163.911256][    C1]  ? __pfx_rcu_torture_barrier1cb+0x10/0x10
+[  163.911281][    C1]  generic_smp_call_function_single_interrupt+0x13/0x20
+[  163.911288][    C1]  __sysvec_call_function_single+0x7d/0x280
+[  163.911295][    C1]  sysvec_call_function_single+0x93/0xd0
+[  163.911302][    C1]  </IRQ>
+[  163.911304][    C1]  <TASK>
+[  163.911308][    C1]  asm_sysvec_call_function_single+0x1b/0x20
+[  163.911313][    C1] RIP: 0010:default_idle+0x17/0x20
+[  163.911326][    C1] RSP: 0018:ffff888001997dc8 EFLAGS: 00000246
+[  163.911333][    C1] RAX: 0000000000000000 RBX: dffffc0000000000 RCX: ffffffffae618b51
+[  163.911337][    C1] RDX: 0000000000000000 RSI: ffffffffaea80920 RDI: ffffffffaec2de80
+[  163.911342][    C1] RBP: ffff888001997dc8 R08: 0000000000000001 R09: ffffed100d740cad
+[  163.911346][    C1] R10: ffffed100d740cac R11: ffff88806ba06563 R12: 0000000000000001
+[  163.911350][    C1] R13: ffffffffafe460c0 R14: ffffffffafe460c0 R15: 0000000000000000
+[  163.911358][    C1]  ? ct_kernel_exit.constprop.3+0x121/0x160
+[  163.911369][    C1]  ? lockdep_hardirqs_on+0xc4/0x150
+[  163.911376][    C1]  arch_cpu_idle+0x9/0x10
+[  163.911383][    C1]  default_idle_call+0x7a/0xb0
+[  163.911390][    C1]  do_idle+0x362/0x500
+[  163.911398][    C1]  ? __pfx_do_idle+0x10/0x10
+[  163.911404][    C1]  ? complete_with_flags+0x8b/0xb0
+[  163.911416][    C1]  cpu_startup_entry+0x58/0x70
+[  163.911423][    C1]  start_secondary+0x221/0x280
+[  163.911430][    C1]  ? __pfx_start_secondary+0x10/0x10
+[  163.911440][    C1]  secondary_startup_64_no_verify+0x17f/0x18b
+[  163.911455][    C1]  </TASK>
 
-The fact that McASP can act as a GPIO controller for it's pins complicates
-this a bit, but as a general rule we can:
-- we fail the probe if McASP is not configured to be used as gpiochip
-- we will not register the DAI (and PCM) if gpiochip is defined
+This commit therefore use smp_call_on_cpu() instead of
+smp_call_function_single(), make rcu_torture_barrier1cb() invoked
+happens on task-context.
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Link: https://lore.kernel.org/r/20201106072551.689-5-peter.ujfalusi@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: d18ca8635db2 ("ASoC: ti: davinci-mcasp: Fix race condition during probe")
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/ti/davinci-mcasp.c | 77 +++++++++++++++++++++++++++---------
- 1 file changed, 58 insertions(+), 19 deletions(-)
+ kernel/rcu/rcutorture.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
-index 637c26cad2e6e..633cd7fd3dcf3 100644
---- a/sound/soc/ti/davinci-mcasp.c
-+++ b/sound/soc/ti/davinci-mcasp.c
-@@ -82,6 +82,9 @@ struct davinci_mcasp {
- 	struct snd_pcm_substream *substreams[2];
- 	unsigned int dai_fmt;
- 
-+	/* Audio can not be enabled due to missing parameter(s) */
-+	bool	missing_audio_param;
-+
- 	/* McASP specific data */
- 	int	tdm_slots;
- 	u32	tdm_mask[2];
-@@ -1723,6 +1726,17 @@ static int mcasp_reparent_fck(struct platform_device *pdev)
- 	return ret;
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index e9323cc5da73b..9d8d1f233d7bd 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -2533,11 +2533,12 @@ static void rcu_torture_barrier_cbf(struct rcu_head *rcu)
  }
  
-+static bool davinci_mcasp_have_gpiochip(struct davinci_mcasp *mcasp)
-+{
-+#ifdef CONFIG_OF_GPIO
-+	if (mcasp->dev->of_node &&
-+	    of_property_read_bool(mcasp->dev->of_node, "gpio-controller"))
-+		return true;
-+#endif
-+
-+	return false;
-+}
-+
- static int davinci_mcasp_get_config(struct davinci_mcasp *mcasp,
- 				    struct platform_device *pdev)
+ /* IPI handler to get callback posted on desired CPU, if online. */
+-static void rcu_torture_barrier1cb(void *rcu_void)
++static int rcu_torture_barrier1cb(void *rcu_void)
  {
-@@ -1747,8 +1761,12 @@ static int davinci_mcasp_get_config(struct davinci_mcasp *mcasp,
- 		return -EINVAL;
- 	}
+ 	struct rcu_head *rhp = rcu_void;
  
--	if (of_property_read_u32(np, "op-mode", &val) == 0)
-+	if (of_property_read_u32(np, "op-mode", &val) == 0) {
- 		pdata->op_mode = val;
-+	} else {
-+		mcasp->missing_audio_param = true;
-+		goto out;
-+	}
- 
- 	if (of_property_read_u32(np, "tdm-slots", &val) == 0) {
- 		if (val < 2 || val > 32) {
-@@ -1757,6 +1775,9 @@ static int davinci_mcasp_get_config(struct davinci_mcasp *mcasp,
- 		}
- 
- 		pdata->tdm_slots = val;
-+	} else if (pdata->op_mode == DAVINCI_MCASP_IIS_MODE) {
-+		mcasp->missing_audio_param = true;
-+		goto out;
- 	}
- 
- 	of_serial_dir32 = of_get_property(np, "serial-dir", &val);
-@@ -1773,6 +1794,9 @@ static int davinci_mcasp_get_config(struct davinci_mcasp *mcasp,
- 
- 		pdata->num_serializer = val;
- 		pdata->serial_dir = of_serial_dir;
-+	} else {
-+		mcasp->missing_audio_param = true;
-+		goto out;
- 	}
- 
- 	if (of_property_read_u32(np, "tx-num-evt", &val) == 0)
-@@ -1798,6 +1822,16 @@ static int davinci_mcasp_get_config(struct davinci_mcasp *mcasp,
- out:
- 	mcasp->pdata = pdata;
- 
-+	if (mcasp->missing_audio_param) {
-+		if (davinci_mcasp_have_gpiochip(mcasp)) {
-+			dev_dbg(&pdev->dev, "Missing DT parameter(s) for audio\n");
-+			return 0;
-+		}
-+
-+		dev_err(&pdev->dev, "Insufficient DT parameter(s)\n");
-+		return -ENODEV;
-+	}
-+
- 	mcasp->op_mode = pdata->op_mode;
- 	/* sanity check for tdm slots parameter */
- 	if (mcasp->op_mode == DAVINCI_MCASP_IIS_MODE) {
-@@ -2044,7 +2078,7 @@ static const struct gpio_chip davinci_mcasp_template_chip = {
- 
- static int davinci_mcasp_init_gpiochip(struct davinci_mcasp *mcasp)
- {
--	if (!of_property_read_bool(mcasp->dev->of_node, "gpio-controller"))
-+	if (!davinci_mcasp_have_gpiochip(mcasp))
- 		return 0;
- 
- 	mcasp->gpio_chip = davinci_mcasp_template_chip;
-@@ -2083,11 +2117,6 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
- 	if (!mcasp)
- 		return	-ENOMEM;
- 
--	mcasp->dev = &pdev->dev;
--	ret = davinci_mcasp_get_config(mcasp, pdev);
--	if (ret)
--		return ret;
--
- 	mem = platform_get_resource_byname(pdev, IORESOURCE_MEM, "mpu");
- 	if (!mem) {
- 		dev_warn(mcasp->dev,
-@@ -2103,8 +2132,23 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
- 	if (IS_ERR(mcasp->base))
- 		return PTR_ERR(mcasp->base);
- 
-+	dev_set_drvdata(&pdev->dev, mcasp);
- 	pm_runtime_enable(&pdev->dev);
- 
-+	mcasp->dev = &pdev->dev;
-+	ret = davinci_mcasp_get_config(mcasp, pdev);
-+	if (ret)
-+		goto err;
-+
-+	/* All PINS as McASP */
-+	pm_runtime_get_sync(mcasp->dev);
-+	mcasp_set_reg(mcasp, DAVINCI_MCASP_PFUNC_REG, 0x00000000);
-+	pm_runtime_put(mcasp->dev);
-+
-+	/* Skip audio related setup code if the configuration is not adequat */
-+	if (mcasp->missing_audio_param)
-+		goto no_audio;
-+
- 	irq = platform_get_irq_byname_optional(pdev, "common");
- 	if (irq > 0) {
- 		irq_name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s_common",
-@@ -2224,19 +2268,8 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err;
- 
--	dev_set_drvdata(&pdev->dev, mcasp);
--
- 	mcasp_reparent_fck(pdev);
- 
--	/* All PINS as McASP */
--	pm_runtime_get_sync(mcasp->dev);
--	mcasp_set_reg(mcasp, DAVINCI_MCASP_PFUNC_REG, 0x00000000);
--	pm_runtime_put(mcasp->dev);
--
--	ret = davinci_mcasp_init_gpiochip(mcasp);
--	if (ret)
--		goto err;
--
- 	ret = devm_snd_soc_register_component(&pdev->dev, &davinci_mcasp_component,
- 					      &davinci_mcasp_dai[mcasp->op_mode], 1);
- 
-@@ -2263,8 +2296,14 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
- 		goto err;
- 	}
- 
--	return 0;
-+no_audio:
-+	ret = davinci_mcasp_init_gpiochip(mcasp);
-+	if (ret) {
-+		dev_err(&pdev->dev, "gpiochip registration failed: %d\n", ret);
-+		goto err;
-+	}
- 
+ 	cur_ops->call(rhp, rcu_torture_barrier_cbf);
 +	return 0;
- err:
- 	pm_runtime_disable(&pdev->dev);
- 	return ret;
+ }
+ 
+ /* kthread function to register callbacks used to test RCU barriers. */
+@@ -2563,11 +2564,9 @@ static int rcu_torture_barrier_cbs(void *arg)
+ 		 * The above smp_load_acquire() ensures barrier_phase load
+ 		 * is ordered before the following ->call().
+ 		 */
+-		if (smp_call_function_single(myid, rcu_torture_barrier1cb,
+-					     &rcu, 1)) {
+-			// IPI failed, so use direct call from current CPU.
++		if (smp_call_on_cpu(myid, rcu_torture_barrier1cb, &rcu, 1))
+ 			cur_ops->call(&rcu, rcu_torture_barrier_cbf);
+-		}
++
+ 		if (atomic_dec_and_test(&barrier_cbs_count))
+ 			wake_up(&barrier_wq);
+ 	} while (!torture_must_stop());
 -- 
 2.43.0
 
