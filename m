@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-57306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E5E925C00
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:13:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58679925D3B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B38F1C22362
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A2E31C21B3F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B48C16DEC3;
-	Wed,  3 Jul 2024 11:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B87417D889;
+	Wed,  3 Jul 2024 11:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZKZ40T3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1k0wE4vN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2890513D61B;
-	Wed,  3 Jul 2024 11:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0F5173334;
+	Wed,  3 Jul 2024 11:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004483; cv=none; b=EWj7mSRONcnBa2cEwYoujwKsVH4NUYcM6hwbz3ZKf6W5WtA1Xa++E0KQRRTWI06+SQq+GrjZz3HKBwOdG4VKSdvngCzjYAehIQSbugw7KvvrjM7JTCPlSEAsq07gEZ7iV5yf4e2UVuzMdOx/HKV8oWRQsW6rR0eGeoN3nhHSaFw=
+	t=1720005411; cv=none; b=HBQt2QBXazscxaNSzZkQnbvgazuL/z/u7m0r2OKgeb5+uf5ZtTozvpohWHg9nUirqFdYyOa6qRuJHQOgfFRn+Av6PKix7r8jnxTK0xiciw30Of1bjBrEfXkJ3w+9OZB82Wvcb8DIlQMv1fjnYfpNYL5qdMfg0pyLOOEt0T9LsDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004483; c=relaxed/simple;
-	bh=t/JoExFEz64BisJjCnD9ZLnnXqPCwWcfaQ/iiBlo4ew=;
+	s=arc-20240116; t=1720005411; c=relaxed/simple;
+	bh=flabiqIXBRcEocleJ+kFx2Hn9U9rdkACWWhdDMzwdBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kxDYGkHRSPu58yBiFckpFZi4RCW/m6Exr2bnvXPMTS1RUkjjJukKfE8gloqDLr3qCSkAflZiGzOjxArM0wdtbRYGZPBEcnuKsnumIQ0lYZRF4co4bcj6Mo0DX8mFSYCkNIvnuXnlTt8XAxwsqiUsplEBMTfOHV6rX+KFCkKn0Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZKZ40T3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E88C2BD10;
-	Wed,  3 Jul 2024 11:01:22 +0000 (UTC)
+	 MIME-Version; b=AJyLG8nQ+CKXRa+qbaL5sX/N/nFVi9gZygKrBpTjGsVCOntkDMtMrwXlcnvkrxsAKg+fh5t/7HD+K7ZOuc0Uw6g1/vXJrN7/p9jxGkr0NlbMkN4bM8GxfpmZtDg1ns3v621mLd30d36ehucmhd8Of15Zq+5f1pSg055ujhXqrm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1k0wE4vN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B927C2BD10;
+	Wed,  3 Jul 2024 11:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004483;
-	bh=t/JoExFEz64BisJjCnD9ZLnnXqPCwWcfaQ/iiBlo4ew=;
+	s=korg; t=1720005411;
+	bh=flabiqIXBRcEocleJ+kFx2Hn9U9rdkACWWhdDMzwdBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cZKZ40T3CyWmxP0USwtH1qm847pz7F6EEQss9M2KGgZ41GXhtH3ujLxEtGdpcszqZ
-	 IZLUOBpY6XHFPTUPR102if1/xUsUuitZ3BZQ6tzqCRaG9CFWRuGcB0FHwAoZh8aBmp
-	 ymAtNYsUDlSuC6FOqrAARevSFYrqIuNE3qiIbPKM=
+	b=1k0wE4vN/BZGDnwScsn7IfbvVhL2DqhrlrI9g1tilE8R0EjkmE7APGC32zCLWP/Wr
+	 T9Rkr1o45m52J92x3JSyAq/wX8RTzsAkCDFXw7FpRZYE6+WFzNNYdFg6bECINXyMP3
+	 jJYpruSDTxcIDqdBE2gEeTUUyTCuAIvn/sBB/pdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 025/290] af_unix: Use unix_recvq_full_lockless() in unix_stream_connect().
-Date: Wed,  3 Jul 2024 12:36:46 +0200
-Message-ID: <20240703102905.143015357@linuxfoundation.org>
+Subject: [PATCH 5.15 071/356] nilfs2: Remove check for PageError
+Date: Wed,  3 Jul 2024 12:36:47 +0200
+Message-ID: <20240703102915.786318080@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 45d872f0e65593176d880ec148f41ad7c02e40a7 ]
+[ Upstream commit 79ea65563ad8aaab309d61eeb4d5019dd6cf5fa0 ]
 
-Once sk->sk_state is changed to TCP_LISTEN, it never changes.
+If read_mapping_page() encounters an error, it returns an errno, not a
+page with PageError set, so this test is not needed.
 
-unix_accept() takes advantage of this characteristics; it does not
-hold the listener's unix_state_lock() and only acquires recvq lock
-to pop one skb.
-
-It means unix_state_lock() does not prevent the queue length from
-changing in unix_stream_connect().
-
-Thus, we need to use unix_recvq_full_lockless() to avoid data-race.
-
-Now we remove unix_recvq_full() as no one uses it.
-
-Note that we can remove READ_ONCE() for sk->sk_max_ack_backlog in
-unix_recvq_full_lockless() because of the following reasons:
-
-  (1) For SOCK_DGRAM, it is a written-once field in unix_create1()
-
-  (2) For SOCK_STREAM and SOCK_SEQPACKET, it is changed under the
-      listener's unix_state_lock() in unix_listen(), and we hold
-      the lock in unix_stream_connect()
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Stable-dep-of: 7373a51e7998 ("nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ fs/nilfs2/dir.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index f1a9b3759d462..dff75de9de7de 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -189,15 +189,9 @@ static inline int unix_may_send(struct sock *sk, struct sock *osk)
- 	return unix_peer(osk) == NULL || unix_our_peer(sk, osk);
- }
- 
--static inline int unix_recvq_full(const struct sock *sk)
--{
--	return skb_queue_len(&sk->sk_receive_queue) > sk->sk_max_ack_backlog;
--}
--
- static inline int unix_recvq_full_lockless(const struct sock *sk)
- {
--	return skb_queue_len_lockless(&sk->sk_receive_queue) >
--		READ_ONCE(sk->sk_max_ack_backlog);
-+	return skb_queue_len_lockless(&sk->sk_receive_queue) > sk->sk_max_ack_backlog;
- }
- 
- struct sock *unix_peer_get(struct sock *s)
-@@ -1310,7 +1304,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 	if (other->sk_shutdown & RCV_SHUTDOWN)
- 		goto out_unlock;
- 
--	if (unix_recvq_full(other)) {
-+	if (unix_recvq_full_lockless(other)) {
- 		err = -EAGAIN;
- 		if (!timeo)
- 			goto out_unlock;
+diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
+index eb7de9e2a384e..24cfe9db66e02 100644
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -194,7 +194,7 @@ static struct page *nilfs_get_page(struct inode *dir, unsigned long n)
+ 	if (!IS_ERR(page)) {
+ 		kmap(page);
+ 		if (unlikely(!PageChecked(page))) {
+-			if (PageError(page) || !nilfs_check_page(page))
++			if (!nilfs_check_page(page))
+ 				goto fail;
+ 		}
+ 	}
 -- 
 2.43.0
 
