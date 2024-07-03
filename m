@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-57701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A73925D96
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3539925B23
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 121331C21ABD
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C06FD298640
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B62185E75;
-	Wed,  3 Jul 2024 11:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947C019A29B;
+	Wed,  3 Jul 2024 10:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0sGx0H1Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p539OSqs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E35913E024;
-	Wed,  3 Jul 2024 11:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B3319A28F;
+	Wed,  3 Jul 2024 10:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005674; cv=none; b=qqVc7P9pvMwGEv+WCRdIeR2pCuQ7+xaOL17v84NkOD3XKfwXLpk97LcJLuUftNour2u2yKzX0+hnUpwi8tgW5SZNZRBCPRKYTS2alrrDTo1hrv1QeO4nkgy5yuozpdGd3+nd/sWMJmWgfH+rQaRXIB1qdmh5nm3kbkU18cL/v7s=
+	t=1720003830; cv=none; b=kusTuAwlqUbW6ICwIPd7smvxFGDlE2pRcJSzXcNy6PuJ5cZA0ATEvh0cffXNOJGrDiOYjhn5yFsNC/pwyQqRY8ppeMreNsje9/D9b1SidB2qi0MN75dPIzk8/n8G8uWx8hIRv6zl+Cl+QDcjyXhv8M9hXpq8Xx+33EwT+DQ6x2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005674; c=relaxed/simple;
-	bh=Aj5MKPgt14R4T5sqVr+cGT0me3IyQOgK7CioYiGcGrU=;
+	s=arc-20240116; t=1720003830; c=relaxed/simple;
+	bh=ccLFJACD6y6VhGSYZfAg+OGui1tSvkFJJn5tFVAGJ54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cGT3TByT6ljXlm/IP6N2ZietWd/mL0PtoEv5z0yfLSHl3QHLN8L7suyZtEcQUAm2sCGRBkboTK8wIIM8NWvKrB3rPDizJbzwy69oZvPZoaUdmiuvOHbaW9zZuZ5FvI5GlLHYBn6SGyZ4QWdNaHsuRhvjkZBv1c880YXExMZ7Wt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0sGx0H1Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B54DC32781;
-	Wed,  3 Jul 2024 11:21:13 +0000 (UTC)
+	 MIME-Version; b=ke3ExYNWFUtNlXM6WA/nnOg8zzP5iFAobR8gf03eHGeFWPPWJlKtFFmMSTSogotwqB8YYv6ouyZoyPYH7OCGqa6LR/06xzPSq3YfK2Mrep4sbamBTHmGYf9IpYdlSEvnX0KyIhFm61+Q5bzMga/AJ+IOWyQZtPmAGK4Al+kxpsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p539OSqs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA257C2BD10;
+	Wed,  3 Jul 2024 10:50:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005673;
-	bh=Aj5MKPgt14R4T5sqVr+cGT0me3IyQOgK7CioYiGcGrU=;
+	s=korg; t=1720003830;
+	bh=ccLFJACD6y6VhGSYZfAg+OGui1tSvkFJJn5tFVAGJ54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0sGx0H1QBhI7Sz8lWP2gmZJgFVYsiikVID4Gy5yKMCaR47+cjfenmdjbKkFfm9wVD
-	 9EkppVXPB+flrEo6Qb8pmSlDT7mnwSy8byWwbqX/ptNP/NGpucJoLWGskkalQpiyep
-	 9LOhD0aq4UcC1GCv7dp/ci5FbegXJsWtictsfHZ8=
+	b=p539OSqsEdyGO9GiquI0IgeDjfeIjsdDurrJbyNgiCqWKZEE6VIsZebt1bFIqU+Kr
+	 G3okECzd+NViNBrvY6MtjpHYPJ9gkYvub3HIBL3bB0vuBLApGHYAkEbe5cZl9MlbNC
+	 7YpyQ6ZDNUQjo7GhZJ27Cec6Seq+DgwQjqqNsrc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kees Cook <keescook@chromium.org>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 159/356] wifi: ath9k: work around memset overflow warning
-Date: Wed,  3 Jul 2024 12:38:15 +0200
-Message-ID: <20240703102919.118453177@linuxfoundation.org>
+Subject: [PATCH 5.4 035/189] selftests/mm: conform test to TAP format output
+Date: Wed,  3 Jul 2024 12:38:16 +0200
+Message-ID: <20240703102842.834692217@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,233 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-[ Upstream commit 61752ac69b69ed2e04444d090f6917c77ab36d42 ]
+[ Upstream commit 9a21701edc41465de56f97914741bfb7bfc2517d ]
 
-gcc-9 and some other older versions produce a false-positive warning
-for zeroing two fields
+Conform the layout, informational and status messages to TAP.  No
+functional change is intended other than the layout of output messages.
 
-In file included from include/linux/string.h:369,
-                 from drivers/net/wireless/ath/ath9k/main.c:18:
-In function 'fortify_memset_chk',
-    inlined from 'ath9k_ps_wakeup' at drivers/net/wireless/ath/ath9k/main.c:140:3:
-include/linux/fortify-string.h:462:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
-  462 |                         __write_overflow_field(p_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Using a struct_group seems to reliably avoid the warning and
-not make the code much uglier. The combined memset() should even
-save a couple of cpu cycles.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240328135509.3755090-3-arnd@kernel.org
+Link: https://lkml.kernel.org/r/20240101083614.1076768-1-usama.anjum@collabora.com
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: d4202e66a4b1 ("selftests/mm: compaction_test: fix bogus test success on Aarch64")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath.h        | 6 ++++--
- drivers/net/wireless/ath/ath9k/main.c | 3 +--
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ tools/testing/selftests/vm/compaction_test.c | 91 ++++++++++----------
+ 1 file changed, 44 insertions(+), 47 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath.h b/drivers/net/wireless/ath/ath.h
-index f02a308a9ffc5..34654f710d8a1 100644
---- a/drivers/net/wireless/ath/ath.h
-+++ b/drivers/net/wireless/ath/ath.h
-@@ -171,8 +171,10 @@ struct ath_common {
- 	unsigned int clockrate;
+diff --git a/tools/testing/selftests/vm/compaction_test.c b/tools/testing/selftests/vm/compaction_test.c
+index cb2db2102dd26..43f5044b23c57 100644
+--- a/tools/testing/selftests/vm/compaction_test.c
++++ b/tools/testing/selftests/vm/compaction_test.c
+@@ -32,7 +32,7 @@ int read_memory_info(unsigned long *memfree, unsigned long *hugepagesize)
+ 	FILE *cmdfile = popen(cmd, "r");
  
- 	spinlock_t cc_lock;
--	struct ath_cycle_counters cc_ani;
--	struct ath_cycle_counters cc_survey;
-+	struct_group(cc,
-+		struct ath_cycle_counters cc_ani;
-+		struct ath_cycle_counters cc_survey;
-+	);
- 
- 	struct ath_regulatory regulatory;
- 	struct ath_regulatory reg_world_copy;
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index 9e6d088bd2818..1b71fb1d04719 100644
---- a/drivers/net/wireless/ath/ath9k/main.c
-+++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -135,8 +135,7 @@ void ath9k_ps_wakeup(struct ath_softc *sc)
- 	if (power_mode != ATH9K_PM_AWAKE) {
- 		spin_lock(&common->cc_lock);
- 		ath_hw_cycle_counters_update(common);
--		memset(&common->cc_survey, 0, sizeof(common->cc_survey));
--		memset(&common->cc_ani, 0, sizeof(common->cc_ani));
-+		memset(&common->cc, 0, sizeof(common->cc));
- 		spin_unlock(&common->cc_lock);
+ 	if (!(fgets(buffer, sizeof(buffer), cmdfile))) {
+-		perror("Failed to read meminfo\n");
++		ksft_print_msg("Failed to read meminfo: %s\n", strerror(errno));
+ 		return -1;
  	}
  
+@@ -43,7 +43,7 @@ int read_memory_info(unsigned long *memfree, unsigned long *hugepagesize)
+ 	cmdfile = popen(cmd, "r");
+ 
+ 	if (!(fgets(buffer, sizeof(buffer), cmdfile))) {
+-		perror("Failed to read meminfo\n");
++		ksft_print_msg("Failed to read meminfo: %s\n", strerror(errno));
+ 		return -1;
+ 	}
+ 
+@@ -61,14 +61,14 @@ int prereq(void)
+ 	fd = open("/proc/sys/vm/compact_unevictable_allowed",
+ 		  O_RDONLY | O_NONBLOCK);
+ 	if (fd < 0) {
+-		perror("Failed to open\n"
+-		       "/proc/sys/vm/compact_unevictable_allowed\n");
++		ksft_print_msg("Failed to open /proc/sys/vm/compact_unevictable_allowed: %s\n",
++			       strerror(errno));
+ 		return -1;
+ 	}
+ 
+ 	if (read(fd, &allowed, sizeof(char)) != sizeof(char)) {
+-		perror("Failed to read from\n"
+-		       "/proc/sys/vm/compact_unevictable_allowed\n");
++		ksft_print_msg("Failed to read from /proc/sys/vm/compact_unevictable_allowed: %s\n",
++			       strerror(errno));
+ 		close(fd);
+ 		return -1;
+ 	}
+@@ -77,12 +77,13 @@ int prereq(void)
+ 	if (allowed == '1')
+ 		return 0;
+ 
++	ksft_print_msg("Compaction isn't allowed\n");
+ 	return -1;
+ }
+ 
+ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ {
+-	int fd;
++	int fd, ret = -1;
+ 	int compaction_index = 0;
+ 	char initial_nr_hugepages[10] = {0};
+ 	char nr_hugepages[10] = {0};
+@@ -93,12 +94,14 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 
+ 	fd = open("/proc/sys/vm/nr_hugepages", O_RDWR | O_NONBLOCK);
+ 	if (fd < 0) {
+-		perror("Failed to open /proc/sys/vm/nr_hugepages");
++		ksft_test_result_fail("Failed to open /proc/sys/vm/nr_hugepages: %s\n",
++				      strerror(errno));
+ 		return -1;
+ 	}
+ 
+ 	if (read(fd, initial_nr_hugepages, sizeof(initial_nr_hugepages)) <= 0) {
+-		perror("Failed to read from /proc/sys/vm/nr_hugepages");
++		ksft_test_result_fail("Failed to read from /proc/sys/vm/nr_hugepages: %s\n",
++				      strerror(errno));
+ 		goto close_fd;
+ 	}
+ 
+@@ -106,7 +109,8 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 
+ 	/* Start with the initial condition of 0 huge pages*/
+ 	if (write(fd, "0", sizeof(char)) != sizeof(char)) {
+-		perror("Failed to write 0 to /proc/sys/vm/nr_hugepages\n");
++		ksft_test_result_fail("Failed to write 0 to /proc/sys/vm/nr_hugepages: %s\n",
++				      strerror(errno));
+ 		goto close_fd;
+ 	}
+ 
+@@ -115,14 +119,16 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 	/* Request a large number of huge pages. The Kernel will allocate
+ 	   as much as it can */
+ 	if (write(fd, "100000", (6*sizeof(char))) != (6*sizeof(char))) {
+-		perror("Failed to write 100000 to /proc/sys/vm/nr_hugepages\n");
++		ksft_test_result_fail("Failed to write 100000 to /proc/sys/vm/nr_hugepages: %s\n",
++				      strerror(errno));
+ 		goto close_fd;
+ 	}
+ 
+ 	lseek(fd, 0, SEEK_SET);
+ 
+ 	if (read(fd, nr_hugepages, sizeof(nr_hugepages)) <= 0) {
+-		perror("Failed to re-read from /proc/sys/vm/nr_hugepages\n");
++		ksft_test_result_fail("Failed to re-read from /proc/sys/vm/nr_hugepages: %s\n",
++				      strerror(errno));
+ 		goto close_fd;
+ 	}
+ 
+@@ -130,67 +136,58 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 	   huge pages */
+ 	compaction_index = mem_free/(atoi(nr_hugepages) * hugepage_size);
+ 
+-	if (compaction_index > 3) {
+-		printf("No of huge pages allocated = %d\n",
+-		       (atoi(nr_hugepages)));
+-		fprintf(stderr, "ERROR: Less that 1/%d of memory is available\n"
+-			"as huge pages\n", compaction_index);
+-		goto close_fd;
+-	}
+-
+-	printf("No of huge pages allocated = %d\n",
+-	       (atoi(nr_hugepages)));
+-
+ 	lseek(fd, 0, SEEK_SET);
+ 
+ 	if (write(fd, initial_nr_hugepages, strlen(initial_nr_hugepages))
+ 	    != strlen(initial_nr_hugepages)) {
+-		perror("Failed to write value to /proc/sys/vm/nr_hugepages\n");
++		ksft_test_result_fail("Failed to write value to /proc/sys/vm/nr_hugepages: %s\n",
++				      strerror(errno));
+ 		goto close_fd;
+ 	}
+ 
+-	close(fd);
+-	return 0;
++	if (compaction_index > 3) {
++		ksft_print_msg("ERROR: Less that 1/%d of memory is available\n"
++			       "as huge pages\n", compaction_index);
++		ksft_test_result_fail("No of huge pages allocated = %d\n", (atoi(nr_hugepages)));
++		goto close_fd;
++	}
++
++	ksft_test_result_pass("Memory compaction succeeded. No of huge pages allocated = %d\n",
++			      (atoi(nr_hugepages)));
++	ret = 0;
+ 
+  close_fd:
+ 	close(fd);
+-	printf("Not OK. Compaction test failed.");
+-	return -1;
++	return ret;
+ }
+ 
+ 
+ int main(int argc, char **argv)
+ {
+ 	struct rlimit lim;
+-	struct map_list *list, *entry;
++	struct map_list *list = NULL, *entry;
+ 	size_t page_size, i;
+ 	void *map = NULL;
+ 	unsigned long mem_free = 0;
+ 	unsigned long hugepage_size = 0;
+ 	unsigned long mem_fragmentable = 0;
+ 
+-	if (prereq() != 0) {
+-		printf("Either the sysctl compact_unevictable_allowed is not\n"
+-		       "set to 1 or couldn't read the proc file.\n"
+-		       "Skipping the test\n");
+-		return KSFT_SKIP;
+-	}
++	ksft_print_header();
++
++	if (prereq() != 0)
++		return ksft_exit_pass();
++
++	ksft_set_plan(1);
+ 
+ 	lim.rlim_cur = RLIM_INFINITY;
+ 	lim.rlim_max = RLIM_INFINITY;
+-	if (setrlimit(RLIMIT_MEMLOCK, &lim)) {
+-		perror("Failed to set rlimit:\n");
+-		return -1;
+-	}
++	if (setrlimit(RLIMIT_MEMLOCK, &lim))
++		ksft_exit_fail_msg("Failed to set rlimit: %s\n", strerror(errno));
+ 
+ 	page_size = getpagesize();
+ 
+-	list = NULL;
+-
+-	if (read_memory_info(&mem_free, &hugepage_size) != 0) {
+-		printf("ERROR: Cannot read meminfo\n");
+-		return -1;
+-	}
++	if (read_memory_info(&mem_free, &hugepage_size) != 0)
++		ksft_exit_fail_msg("Failed to get meminfo\n");
+ 
+ 	mem_fragmentable = mem_free * 0.8 / 1024;
+ 
+@@ -226,7 +223,7 @@ int main(int argc, char **argv)
+ 	}
+ 
+ 	if (check_compaction(mem_free, hugepage_size) == 0)
+-		return 0;
++		return ksft_exit_pass();
+ 
+-	return -1;
++	return ksft_exit_fail();
+ }
 -- 
 2.43.0
 
