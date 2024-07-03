@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D0D2925E15
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:34:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82DBA925ABA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87B68B2E907
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:15:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F9671F21DC2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBEB173323;
-	Wed,  3 Jul 2024 11:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B1B17BB20;
+	Wed,  3 Jul 2024 10:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cEmv3xTE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrmLGr+f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3825061FDF;
-	Wed,  3 Jul 2024 11:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DA8142E8E;
+	Wed,  3 Jul 2024 10:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004626; cv=none; b=X1lgOvlDiWdzCZFCUzQpHFpboYJhv+knkXMXecnuvB7G8JbgaaK1dEiiF1cji51SJea9g4Z1I8b/rruwiWHrbxpIghczzUOkZekb+ZfuyBifLuZDOgCWCaqbmvcwUk7ZgHwn1zBdXj6S+UTUNuCh7H2lsayALI1uk2DUCd6u3Q4=
+	t=1720003899; cv=none; b=Rd3baZzvjPch+x5g7N69vJ8KvskjTBoB+ZuavlWM2Nk54nvwv8wzGwD1lXu6ALFao+yNNYRatjpPNeBTolFC9rJH01FH9L9d78ZjryzSWNbdZQPA16P4ZThuEp80PmnH4maI7t9E+u0stPW4JruWNhpfax5DIKIrUeZpLREbA2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004626; c=relaxed/simple;
-	bh=dvAoAgdHNcfsR6OJ/nwCkbjowitMxhcwF3fj6FLnubI=;
+	s=arc-20240116; t=1720003899; c=relaxed/simple;
+	bh=7/rv+dD1xS8VdjnrCxxy8DBCZN3z33Np6ox65AXV2Vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GUcC1zxqeIA0LpuVlvEfmozHZcZVfg2gQKuwtyjdFUlMbRXc/WA2Z8Od/xQQizkNkPTVysH5M9kEbcS8w0UKwAlw7mff0PDKEikPbn6WjH1Ifh1Xx7QO+gSsb1S4X4xvfeS9+AVK4H3N9vdhvAsgpWYbj6+CK2aPG90o6CD95Z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cEmv3xTE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD8DC2BD10;
-	Wed,  3 Jul 2024 11:03:45 +0000 (UTC)
+	 MIME-Version; b=BFuTGQ7UP+s/Ie3i0WjgTAQNIRsOdiOOGy+aDtaRt6w45UBBn1+LGDjRgBKGVz+0VSRMZ+2dXT7r0LCSZQ2ZuddnzCUzk1pR3To6bXGRWtgAXhh06g54JRSZy/5EgypEKw83izC7WtzNsph8zvqbknj7LI7S9t0LOuuQL8f93UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrmLGr+f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1D3C2BD10;
+	Wed,  3 Jul 2024 10:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004626;
-	bh=dvAoAgdHNcfsR6OJ/nwCkbjowitMxhcwF3fj6FLnubI=;
+	s=korg; t=1720003899;
+	bh=7/rv+dD1xS8VdjnrCxxy8DBCZN3z33Np6ox65AXV2Vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cEmv3xTEN3Qnb9wlBHObYMnxX5HH1Dgwo6AjIhBhMTv4iP+ue4jKWRZYjAh3jy5Q4
-	 wa+nPvJUS+hpCJT7ZDIqR5UFd9cXerspy4e9ghM88CRvbxLHBuBDGVAqKLwl4r8jyF
-	 BEOs5AetlV/fMgg0SpcphauzlHilG/3w9lvmSi40=
+	b=RrmLGr+fg7olNT9z2mQKvp+wVNJSPUXBsWkmZ0jVK4cWcqLd1Ma8dfQbJL8zESbhK
+	 V66jL1mjZdaO9KNUIv3lX6L2bCzzhploqS+ht18Y3dEu9AtzzZyJJGtEvgYXQpO4DZ
+	 W+UEQgtrzHZPsIlui/VgLfmHJjef81w9QYHHqsN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0cb5bb0f4bf9e79db3b3@syzkaller.appspotmail.com,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
+	Peter Ujfalusi <peter.ujfalusi@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 105/290] padata: Disable BH when taking works lock on MT path
-Date: Wed,  3 Jul 2024 12:38:06 +0200
-Message-ID: <20240703102908.162062039@linuxfoundation.org>
+Subject: [PATCH 5.4 026/189] ASoC: ti: davinci-mcasp: Use platform_get_irq_byname_optional
+Date: Wed,  3 Jul 2024 12:38:07 +0200
+Message-ID: <20240703102842.494412669@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Peter Ujfalusi <peter.ujfalusi@ti.com>
 
-[ Upstream commit 58329c4312031603bb1786b44265c26d5065fe72 ]
+[ Upstream commit 372c4bd11de1793667e11d19c29fffc80495eeca ]
 
-As the old padata code can execute in softirq context, disable
-softirqs for the new padata_do_mutithreaded code too as otherwise
-lockdep will get antsy.
+Depending on the integration of McASP either the 'common' or the
+'rx' and 'tx' or only the 'tx' interrupt number is valid, provided.
 
-Reported-by: syzbot+0cb5bb0f4bf9e79db3b3@syzkaller.appspotmail.com
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+By switching to platform_get_irq_byname_optional() we can clean up the
+bootlog from messages like:
+
+davinci-mcasp 2ba0000.mcasp: IRQ common not found
+
+The irq number == 0 is not valid, fix the check at the same time.
+
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Link: https://lore.kernel.org/r/20201106072551.689-2-peter.ujfalusi@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: d18ca8635db2 ("ASoC: ti: davinci-mcasp: Fix race condition during probe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/padata.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/ti/davinci-mcasp.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/padata.c b/kernel/padata.c
-index fdcd78302cd72..471ccbc44541d 100644
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -111,7 +111,7 @@ static int __init padata_work_alloc_mt(int nworks, void *data,
- {
- 	int i;
+diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
+index b08948ffc61d0..7860382a17a28 100644
+--- a/sound/soc/ti/davinci-mcasp.c
++++ b/sound/soc/ti/davinci-mcasp.c
+@@ -2174,8 +2174,8 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
  
--	spin_lock(&padata_works_lock);
-+	spin_lock_bh(&padata_works_lock);
- 	/* Start at 1 because the current task participates in the job. */
- 	for (i = 1; i < nworks; ++i) {
- 		struct padata_work *pw = padata_work_alloc();
-@@ -121,7 +121,7 @@ static int __init padata_work_alloc_mt(int nworks, void *data,
- 		padata_work_init(pw, padata_mt_helper, data, 0);
- 		list_add(&pw->pw_list, head);
+ 	mcasp->dev = &pdev->dev;
+ 
+-	irq = platform_get_irq_byname(pdev, "common");
+-	if (irq >= 0) {
++	irq = platform_get_irq_byname_optional(pdev, "common");
++	if (irq > 0) {
+ 		irq_name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s_common",
+ 					  dev_name(&pdev->dev));
+ 		if (!irq_name) {
+@@ -2195,8 +2195,8 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
+ 		mcasp->irq_request[SNDRV_PCM_STREAM_CAPTURE] = ROVRN;
  	}
--	spin_unlock(&padata_works_lock);
-+	spin_unlock_bh(&padata_works_lock);
  
- 	return i;
- }
-@@ -139,12 +139,12 @@ static void __init padata_works_free(struct list_head *works)
- 	if (list_empty(works))
- 		return;
- 
--	spin_lock(&padata_works_lock);
-+	spin_lock_bh(&padata_works_lock);
- 	list_for_each_entry_safe(cur, next, works, pw_list) {
- 		list_del(&cur->pw_list);
- 		padata_work_free(cur);
+-	irq = platform_get_irq_byname(pdev, "rx");
+-	if (irq >= 0) {
++	irq = platform_get_irq_byname_optional(pdev, "rx");
++	if (irq > 0) {
+ 		irq_name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s_rx",
+ 					  dev_name(&pdev->dev));
+ 		if (!irq_name) {
+@@ -2214,8 +2214,8 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
+ 		mcasp->irq_request[SNDRV_PCM_STREAM_CAPTURE] = ROVRN;
  	}
--	spin_unlock(&padata_works_lock);
-+	spin_unlock_bh(&padata_works_lock);
- }
  
- static void padata_parallel_worker(struct work_struct *parallel_work)
+-	irq = platform_get_irq_byname(pdev, "tx");
+-	if (irq >= 0) {
++	irq = platform_get_irq_byname_optional(pdev, "tx");
++	if (irq > 0) {
+ 		irq_name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s_tx",
+ 					  dev_name(&pdev->dev));
+ 		if (!irq_name) {
 -- 
 2.43.0
 
