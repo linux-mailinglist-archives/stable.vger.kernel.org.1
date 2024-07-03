@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-56950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BE609259EC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:52:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FE0C925AC2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F1FD1C22643
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:52:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE01F1F25148
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E084C17DA00;
-	Wed,  3 Jul 2024 10:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7294917C222;
+	Wed,  3 Jul 2024 10:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xvIA1M/v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9eaDuUT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E89117E918;
-	Wed,  3 Jul 2024 10:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3014A17279B;
+	Wed,  3 Jul 2024 10:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003382; cv=none; b=aDov4dq7o183MseYSyRO6PjLl8OrIocXZW376Kl7Afl+tTiDEeijBtQPMap8SjkeD1qfRNPolP0gp+jtGZxMd4ePWZ4KqhrM16rh8Joe/KwOKkTJs+4oefu9g7x4gXi8rdp4wnuUBnzAHZg9KX7YfPx2kM4mdQMcmS27C7plzwo=
+	t=1720003926; cv=none; b=at+GVjWEDLVXseuGpiArYDEde7sxb7HE5GpMpDxk5gYKYVj7vYLJwNBjoV2pPrd400eWoAqpvhv55bQsoxrIh74MlH5fCiN/1BXKzAaQcUz+0o/fggCBaujxg4g09UvxHlmYKlcp7fRAXNPEdjay+IsN0mj1dKW9gj00kZ+1NLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003382; c=relaxed/simple;
-	bh=8giYXFnlPUDd7KIqMP7JUgOouqhHssnyvWDvUfd9WuU=;
+	s=arc-20240116; t=1720003926; c=relaxed/simple;
+	bh=2cN6raZijs+7Qr6em/UXjBUEZ7Jmf4nvArlVBjvq73g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmy/wszGB/SWxlgDg71UvLe2QxevX6PdhEP+G7KBYZLclkxy7WhBMT7FulK83nIC7ckBI3XDJ17IjLJ7luYI30RumiHWlENFzVzgHxn3CQdPgbhQ76WltSBLdSZENUuNzFEf33u6KvCVB7SuZL7FZn0bcQ+VjjivJhbmxoLbcrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xvIA1M/v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D49C4AF0D;
-	Wed,  3 Jul 2024 10:43:01 +0000 (UTC)
+	 MIME-Version; b=TEIlaaaAkchAUIG1odjjNnG9pwvzxHdL+hX9FaZKP0Lj4FVpPysjs7z7jAhkf1b80Frb+UPE6fIRKEEOsiKcl7KN37DNVfDF6Zaibl5kI+mrMUVg04VaS9tbkJ783mmreL/7iNBnttA5zFqDppOLHQC+tFP9OJBfGDHYTtIEqKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9eaDuUT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A94C2BD10;
+	Wed,  3 Jul 2024 10:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003382;
-	bh=8giYXFnlPUDd7KIqMP7JUgOouqhHssnyvWDvUfd9WuU=;
+	s=korg; t=1720003926;
+	bh=2cN6raZijs+7Qr6em/UXjBUEZ7Jmf4nvArlVBjvq73g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xvIA1M/vMwOKf+zfPnJQmL3IxANP6YBi/hR6wlAn73IS05/NvO2WZO3G96KkFPaj2
-	 DOV6tOEkpCW41/LwOmlXUDZtcoMZbQtogTfM0bk6cSCmPPIEew+DCJK7g6Hz2eJkqv
-	 mDXWRl7fWLd8PzEQtc/GtIRzwyNe3z15co3qzmk8=
+	b=V9eaDuUTPV+8WRAmiQMyBvQ/dIQz6oY0YwlydjDOFiufH1aqs8zvRXW9RUAfYEBFD
+	 0ELiZffy6ODiIgAbWdKCSmYl4GbPH5w9iWF4xbH72JZWciAaswjXYxwD3eMSsVjF5G
+	 7b3kmxrnfWCDvEDBX5z0yMUTsMtHXZmnA1sfcyCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9dfe490c8176301c1d06@syzkaller.appspotmail.com,
-	Dave Kleikamp <shaggy@kernel.org>
-Subject: [PATCH 4.19 031/139] jfs: xattr: fix buffer overflow for invalid xattr
+	Jani Nikula <jani.nikula@intel.com>,
+	Inki Dae <inki.dae@samsung.com>
+Subject: [PATCH 5.4 067/189] drm/exynos/vidi: fix memory leak in .get_modes()
 Date: Wed,  3 Jul 2024 12:38:48 +0200
-Message-ID: <20240703102831.617036379@linuxfoundation.org>
+Message-ID: <20240703102844.036535207@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit 7c55b78818cfb732680c4a72ab270cc2d2ee3d0f upstream.
+commit 38e3825631b1f314b21e3ade00b5a4d737eb054e upstream.
 
-When an xattr size is not what is expected, it is printed out to the
-kernel log in hex format as a form of debugging.  But when that xattr
-size is bigger than the expected size, printing it out can cause an
-access off the end of the buffer.
+The duplicated EDID is never freed. Fix it.
 
-Fix this all up by properly restricting the size of the debug hex dump
-in the kernel log.
-
-Reported-by: syzbot+9dfe490c8176301c1d06@syzkaller.appspotmail.com
-Cc: Dave Kleikamp <shaggy@kernel.org>
-Link: https://lore.kernel.org/r/2024051433-slider-cloning-98f9@gregkh
+Cc: stable@vger.kernel.org
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/xattr.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/fs/jfs/xattr.c
-+++ b/fs/jfs/xattr.c
-@@ -570,9 +570,11 @@ static int ea_get(struct inode *inode, s
+--- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+@@ -301,6 +301,7 @@ static int vidi_get_modes(struct drm_con
+ 	struct vidi_context *ctx = ctx_from_connector(connector);
+ 	struct edid *edid;
+ 	int edid_len;
++	int count;
  
-       size_check:
- 	if (EALIST_SIZE(ea_buf->xattr) != ea_size) {
-+		int size = min_t(int, EALIST_SIZE(ea_buf->xattr), ea_size);
+ 	/*
+ 	 * the edid data comes from user side and it would be set
+@@ -320,7 +321,11 @@ static int vidi_get_modes(struct drm_con
+ 
+ 	drm_connector_update_edid_property(connector, edid);
+ 
+-	return drm_add_edid_modes(connector, edid);
++	count = drm_add_edid_modes(connector, edid);
 +
- 		printk(KERN_ERR "ea_get: invalid extended attribute\n");
- 		print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
--				     ea_buf->xattr, ea_size, 1);
-+				     ea_buf->xattr, size, 1);
- 		ea_release(inode, ea_buf);
- 		rc = -EIO;
- 		goto clean_up;
++	kfree(edid);
++
++	return count;
+ }
+ 
+ static const struct drm_connector_helper_funcs vidi_connector_helper_funcs = {
 
 
 
