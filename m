@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E1A0925C66
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:18:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62E59925B85
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:09:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBA54B3210A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:59:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 196D11F2933E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184681957E8;
-	Wed,  3 Jul 2024 10:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D13188CD3;
+	Wed,  3 Jul 2024 10:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cCMHhMK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAmWliqk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F361953A3;
-	Wed,  3 Jul 2024 10:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BAB188CCB;
+	Wed,  3 Jul 2024 10:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003652; cv=none; b=HfWUeGpubyVR5166z/Hs2dpTTQzcoOqp4s815alT9Q84Tf5+8j/VzILpGlohjr5mHX9uorS1rQh4YXcjEw/+Dy321v/kbTehu9G91y1FW2Nymra6laQHIbObXWp9UUvYN9zU1yRr/ixP1x5juOB3jAlB6wbamLbzqbmj9I4tOws=
+	t=1720004205; cv=none; b=HEgQXxLUEZCEzycmhtGnJKLjaf6i16eZm1EMLalO/0LN2DjQ0b8R4CcJ+9Ux8XtEvAdNCXAZqBcws+D8VJmguPy5SLq97KIR+DA6qMji0mCh3RFPOkbVlQh/xOKP+I7FU8y/9YhsBxmPDl/R6cjkx+ztrXe97OtxXhmceD1hi6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003652; c=relaxed/simple;
-	bh=htDmqfy3FrRftAXW45gc/LF/yhndeGg00QDUDN0+VUI=;
+	s=arc-20240116; t=1720004205; c=relaxed/simple;
+	bh=0n+w6JRHLAUjb1WQMrBNzUlAXQ0jK2PbFlOYwl7IVWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aacqUUT0DmRQKdvnRZtPwOhz1x1PBqRhEu9g4ZsRUg9hdGzMJ1/jnnV1gEyKYZnuPVc2nPwiiyZLUfOi/XUBTsPpbrS4q+tWbRPeLctXI/puaO04y1rtWXKIrKdQg62it8RSyYTVDGXWOGUSx37bZDJhGbARd04nijRZpQkgrLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cCMHhMK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE49C2BD10;
-	Wed,  3 Jul 2024 10:47:32 +0000 (UTC)
+	 MIME-Version; b=ktONUhxUhHZqJz4bJZuEdRTgxEQxX7c17yIXVVPXGotJ6SkoGpSN8jMKeP6XfZ1Q7FtKn3+4OvZTreZSe3nWuMDjYs5yvSHOAottVXEdlQocWJdEC6Hd8nhko5Fvb1G5y5Hy9Anmel2FqEf5APINsiGIwZqgw0hvs23qeXz4Ewg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAmWliqk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ACEBC2BD10;
+	Wed,  3 Jul 2024 10:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003652;
-	bh=htDmqfy3FrRftAXW45gc/LF/yhndeGg00QDUDN0+VUI=;
+	s=korg; t=1720004205;
+	bh=0n+w6JRHLAUjb1WQMrBNzUlAXQ0jK2PbFlOYwl7IVWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0cCMHhMK5hMkqv3ESVPDr3TX0bLZWZY58nJkadoXzwg+YnU47OMpJ6F8EdE2HU0Ew
-	 tA5lfeqQQygRxABWQu/q30GFT2gD8W3Z12MaEHKi3gMeoGwaX/Ao9eghtTxJXZfjpx
-	 GsGRwWMa6pLsOCLiNhzU7F/p3voVPD9amaUrvxJQ=
+	b=gAmWliqkkqkFEG+m3RdU1+5DwOZ3GMfLVMWaDsuLMnPAvokksBqmZw4dW7RG8qQhV
+	 cRVa/2gKZAdTfasb+SRdJzMup7oYvFPu0idCIR6VwYIxSEjJzaydwI+dMP336rQOqO
+	 maDHErCHABcEKCCNKZJ7/JoMmYmvuJt0/mLl2eIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Yang <hagisf@usp.br>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 4.19 118/139] iio: adc: ad7266: Fix variable checking bug
+	Hannes Reinecke <hare@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 154/189] nvme: fixup comment for nvme RDMA Provider Type
 Date: Wed,  3 Jul 2024 12:40:15 +0200
-Message-ID: <20240703102834.896210990@linuxfoundation.org>
+Message-ID: <20240703102847.283339715@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Yang <hagisf@usp.br>
+From: Hannes Reinecke <hare@suse.de>
 
-commit a2b86132955268b2a1703082fbc2d4832fc001b8 upstream.
+[ Upstream commit f80a55fa90fa76d01e3fffaa5d0413e522ab9a00 ]
 
-The ret variable was not checked after iio_device_release_direct_mode(),
-which could possibly cause errors
+PRTYPE is the provider type, not the QP service type.
 
-Fixes: c70df20e3159 ("iio: adc: ad7266: claim direct mode during sensor read")
-Signed-off-by: Fernando Yang <hagisf@usp.br>
-Link: https://lore.kernel.org/r/20240603180757.8560-1-hagisf@usp.br
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: eb793e2c9286 ("nvme.h: add NVMe over Fabrics definitions")
+Signed-off-by: Hannes Reinecke <hare@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7266.c |    2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/nvme.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/adc/ad7266.c
-+++ b/drivers/iio/adc/ad7266.c
-@@ -160,6 +160,8 @@ static int ad7266_read_raw(struct iio_de
- 		ret = ad7266_read_single(st, val, chan->address);
- 		iio_device_release_direct_mode(indio_dev);
+diff --git a/include/linux/nvme.h b/include/linux/nvme.h
+index dd2801c28b99c..bdd628c8182fd 100644
+--- a/include/linux/nvme.h
++++ b/include/linux/nvme.h
+@@ -69,8 +69,8 @@ enum {
+ 	NVMF_RDMA_QPTYPE_DATAGRAM	= 2, /* Reliable Datagram */
+ };
  
-+		if (ret < 0)
-+			return ret;
- 		*val = (*val >> 2) & 0xfff;
- 		if (chan->scan_type.sign == 's')
- 			*val = sign_extend32(*val, 11);
+-/* RDMA QP Service Type codes for Discovery Log Page entry TSAS
+- * RDMA_QPTYPE field
++/* RDMA Provider Type codes for Discovery Log Page entry TSAS
++ * RDMA_PRTYPE field
+  */
+ enum {
+ 	NVMF_RDMA_PRTYPE_NOT_SPECIFIED	= 1, /* No Provider Specified */
+-- 
+2.43.0
+
 
 
 
