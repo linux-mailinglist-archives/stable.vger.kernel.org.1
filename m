@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D62F4925BD0
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:12:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C29925E53
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:36:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13DC91C20B8E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3046D287939
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FE71946A0;
-	Wed,  3 Jul 2024 10:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFD9176AC4;
+	Wed,  3 Jul 2024 11:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P10iDnPx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vC8jIokU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC3C186E31;
-	Wed,  3 Jul 2024 10:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E7D13776F;
+	Wed,  3 Jul 2024 11:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004327; cv=none; b=LdDqnlmhsa2joyHbDIT859iyhKGZKVKnMStwlhnuhM3judSVqn5D7/eXVjgmfZ4XCZ44/hlCQeA7dU0/VdOfxmeQWimzzyg0OKJJafs8Qw5iNH1uFMf/GzqAG9UHtq9U9Jn8qtwv91CxQBeJOBgQFUGDXLN55jnEaQkjJd6VMX0=
+	t=1720006073; cv=none; b=QHw11WSDzWrTTjob7dnMCWtaYfFMpqaz8NMh81a3BC/l7uri4Dy4HjBv0pNvi4dfFs/pKAY/nkGIKgnk+wTAZx3dPXFuEkufkT8/xwTihpyKlm9T4cKSgB64X+XwVKYOmRe0Qht2KjXTZyHWvg9Aw/ImezT3YgLGS/Vk5q93lWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004327; c=relaxed/simple;
-	bh=pUY6hBXWi/rB2Kdx2AKpswWRingC8h7JiINV1Jg6y2s=;
+	s=arc-20240116; t=1720006073; c=relaxed/simple;
+	bh=CvbU7bOzSJGkJjZPQVUAjvqrkEzUvak+owxaa07n5ac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=omLa03HQ2oIPimc7C9vHRlCuoZaeOaoUBPDZeyKDsYxz13woEFiqJku5bIfHas7z04Z2oEVTe9Vhah3LCemTHY9mOTnIfiDYs8QB97P8HGxTZHPyKKeBAyd1Qs/P/f+KlClJkhIQwQEQDkKXnJG1EyzjtAYstGNuAcpRgAA0rk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P10iDnPx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8287C2BD10;
-	Wed,  3 Jul 2024 10:58:46 +0000 (UTC)
+	 MIME-Version; b=YsITYVzB1NJ10e8dVUEuPK0v0+3CzBlPbKcgx3D6K8qnsVO1QTIDECMSAeCVPutH6435EZJbZuZnthem44+NXk0O94wKqOD3RTM/7cdyqZg1hloa/bq206+Ah1yV2n7JZV7T/3oa/hVyjMUmxZAjtIAjx+qTkgErcT6DxoYiX9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vC8jIokU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4933C2BD10;
+	Wed,  3 Jul 2024 11:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004327;
-	bh=pUY6hBXWi/rB2Kdx2AKpswWRingC8h7JiINV1Jg6y2s=;
+	s=korg; t=1720006073;
+	bh=CvbU7bOzSJGkJjZPQVUAjvqrkEzUvak+owxaa07n5ac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P10iDnPxZwu+ICXQmaWUWtpmlfIAdBa4iAeNe9bKI+6A5is8obocfhdwzlyMZB5lD
-	 iOBtMfPH3B5oM1S1COhrHJaf4RnMVHxX0FrRHKhMyXLbg/DXzJiM3x5jl7f8wIHO1I
-	 E9Kf41DkR5nZXRtXLJ8pY8DYCu9N/ubdhfXCK5cg=
+	b=vC8jIokUSFk7G4LgssvssUrfJ7XkSMJ7vnRnSi1VPCCXXCjxcjJHcD+xYBL5s7bFp
+	 mD25c9Cu5kIROJlGv1Ga6wYDy+VuKNQpNJWzHTe/piHIWISxY833cS5TMSBT4rk5VG
+	 XMBSzUd0nwGf7Hr/fTTWznTUv01Fts+XEo2gQvl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.4 166/189] usb: gadget: printer: SS+ support
-Date: Wed,  3 Jul 2024 12:40:27 +0200
-Message-ID: <20240703102847.733172818@linuxfoundation.org>
+	Dawei Li <dawei.li@shingroup.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 292/356] net/dpaa2: Avoid explicit cpumask var allocation on stack
+Date: Wed,  3 Jul 2024 12:40:28 +0200
+Message-ID: <20240703102924.165071229@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Dawei Li <dawei.li@shingroup.cn>
 
-commit fd80731e5e9d1402cb2f85022a6abf9b1982ec5f upstream.
+[ Upstream commit d33fe1714a44ff540629b149d8fab4ac6967585c ]
 
-We need to treat super speed plus as super speed, not the default,
-which is full speed.
+For CONFIG_CPUMASK_OFFSTACK=y kernel, explicit allocation of cpumask
+variable on stack is not recommended since it can cause potential stack
+overflow.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240620093800.28901-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Instead, kernel code should always use *cpumask_var API(s) to allocate
+cpumask var in config-neutral way, leaving allocation strategy to
+CONFIG_CPUMASK_OFFSTACK.
+
+Use *cpumask_var API(s) to address it.
+
+Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
+Link: https://lore.kernel.org/r/20240331053441.1276826-3-dawei.li@shingroup.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_printer.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/gadget/function/f_printer.c
-+++ b/drivers/usb/gadget/function/f_printer.c
-@@ -208,6 +208,7 @@ static inline struct usb_endpoint_descri
- 					struct usb_endpoint_descriptor *ss)
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+index 78040a09313ef..fa1b1b7dd8a06 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+@@ -2468,11 +2468,14 @@ static int dpaa2_eth_xdp_xmit(struct net_device *net_dev, int n,
+ static int update_xps(struct dpaa2_eth_priv *priv)
  {
- 	switch (gadget->speed) {
-+	case USB_SPEED_SUPER_PLUS:
- 	case USB_SPEED_SUPER:
- 		return ss;
- 	case USB_SPEED_HIGH:
+ 	struct net_device *net_dev = priv->net_dev;
+-	struct cpumask xps_mask;
+-	struct dpaa2_eth_fq *fq;
+ 	int i, num_queues, netdev_queues;
++	struct dpaa2_eth_fq *fq;
++	cpumask_var_t xps_mask;
+ 	int err = 0;
+ 
++	if (!alloc_cpumask_var(&xps_mask, GFP_KERNEL))
++		return -ENOMEM;
++
+ 	num_queues = dpaa2_eth_queue_count(priv);
+ 	netdev_queues = (net_dev->num_tc ? : 1) * num_queues;
+ 
+@@ -2482,16 +2485,17 @@ static int update_xps(struct dpaa2_eth_priv *priv)
+ 	for (i = 0; i < netdev_queues; i++) {
+ 		fq = &priv->fq[i % num_queues];
+ 
+-		cpumask_clear(&xps_mask);
+-		cpumask_set_cpu(fq->target_cpu, &xps_mask);
++		cpumask_clear(xps_mask);
++		cpumask_set_cpu(fq->target_cpu, xps_mask);
+ 
+-		err = netif_set_xps_queue(net_dev, &xps_mask, i);
++		err = netif_set_xps_queue(net_dev, xps_mask, i);
+ 		if (err) {
+ 			netdev_warn_once(net_dev, "Error setting XPS queue\n");
+ 			break;
+ 		}
+ 	}
+ 
++	free_cpumask_var(xps_mask);
+ 	return err;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
