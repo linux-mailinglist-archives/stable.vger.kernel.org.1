@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-57859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4547C925E55
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:36:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DCC9925BAB
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:10:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 692731C23F40
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:36:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B2D11C2160B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:10:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E254A17FADC;
-	Wed,  3 Jul 2024 11:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61CED194123;
+	Wed,  3 Jul 2024 10:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bClSfVR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yG50d+yn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4B113A27E;
-	Wed,  3 Jul 2024 11:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E04174EFF;
+	Wed,  3 Jul 2024 10:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006149; cv=none; b=nBGf9vNIQ9xI78853ij0TxrKERufmMlhpx8bRYm8VdNKhQ10nx+AocLEo22+PEWY55bOxDf/YNFVNJfcljNhcO81P7t9qga5L41qBGbARGOuTtfRib6OxBQ9QB+2gkSKTSdvu7K5GWg8pbWB75Vb6J1hbKextqkPvaaJ+AzW+88=
+	t=1720004273; cv=none; b=fF6pWnXHHRW5sDuSjeDaCyyBcRNhRjQOLypQq++fJas83ud5b2q4zc1XGJd5LmDQu5v6VlVGG0q1ZYHFPskF0UTJYHN1pkWEfKsCLXp2EWfnWC3jZCQsbm2Ilc8SrvNfRI6ZOsChS3wWa7CDqBXsrU3N5y5Ov5PmyL8AxZfDC1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006149; c=relaxed/simple;
-	bh=cDkRzQkSa1y7gpb91KkRLX2+dSYvwUdo9gE3oH/hXAU=;
+	s=arc-20240116; t=1720004273; c=relaxed/simple;
+	bh=ijMBnOcDz+qcS7AC9DucLFxg9+KNZEZVoow9YQmqEcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GLJ+0SXfJYSBe4uSLnEJ0nSAc0YeUjhGkAEzK2HoWfKjoMwnX/CLBliBLXxOeOYc4/vc6s68kiRnZxieocQFSRl6iSJIwmn+hxtE5VQ9e85ptEJHNaAUV4esb5S7uLL+G2NJyXeh2xaPPxqZqrtsSHrIzQw6Wufqc6jHXlHi5jE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bClSfVR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCAF6C2BD10;
-	Wed,  3 Jul 2024 11:29:08 +0000 (UTC)
+	 MIME-Version; b=IjaCAwbiIn5ZgxicA84vgm7odIUDEEtk+JPhBBy/MXFjxwGUAGfVCNae1jMN2AIraf07OlEm1f2qmEJ9jlXM97o4weDNYKNrTgY3aFvRYA//zGjxLfOPTzfF2szQBmIL1E7mG6uUk1EUkBEX0gWJgea1Sxu3zo+lKY//lz9OK7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yG50d+yn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AB9C2BD10;
+	Wed,  3 Jul 2024 10:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006149;
-	bh=cDkRzQkSa1y7gpb91KkRLX2+dSYvwUdo9gE3oH/hXAU=;
+	s=korg; t=1720004273;
+	bh=ijMBnOcDz+qcS7AC9DucLFxg9+KNZEZVoow9YQmqEcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2bClSfVRV9B23h+WynZ8isVrDgnZxDULoMsQzryP5nEE8JzqnMoPQeaKCFYoOHqpC
-	 jSaO82F0Pqhs009ozS0YqjnAzuRqHd/1tmUuCKA46ILE1+8lwiTipIKqVHywNccRkd
-	 vUO5KcNAM3baa8Mua+keqMf1UUWxQ5gzIvQjZmZk=
+	b=yG50d+ynyNP7f6+G5RKFa8CID6G8aalA8CymtV95xVGmiE9A1tw8BZWWepIoOqxZm
+	 m8YB/zm+lifSZSt/NWp3Mc2TEOvAvcTuSQWWzI12gz0ZXVcFRosRuclYXwzLbaf6Cs
+	 mwLQbwBihzIVu57dnYvhmWZsmtzEKxM23Ke/AeZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>,
-	Xie Yongji <xieyongji@bytedance.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Maxime Coquelin <maxime.coquelin@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 285/356] vduse: validate block features only with block devices
+	Fernando Yang <hagisf@usp.br>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.4 160/189] iio: adc: ad7266: Fix variable checking bug
 Date: Wed,  3 Jul 2024 12:40:21 +0200
-Message-ID: <20240703102923.896470164@linuxfoundation.org>
+Message-ID: <20240703102847.508406336@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Coquelin <maxime.coquelin@redhat.com>
+From: Fernando Yang <hagisf@usp.br>
 
-[ Upstream commit a115b5716fc9a64652aa9cb332070087178ffafa ]
+commit a2b86132955268b2a1703082fbc2d4832fc001b8 upstream.
 
-This patch is preliminary work to enable network device
-type support to VDUSE.
+The ret variable was not checked after iio_device_release_direct_mode(),
+which could possibly cause errors
 
-As VIRTIO_BLK_F_CONFIG_WCE shares the same value as
-VIRTIO_NET_F_HOST_TSO4, we need to restrict its check
-to Virtio-blk device type.
-
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
-Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
-Signed-off-by: Maxime Coquelin <maxime.coquelin@redhat.com>
-Message-Id: <20240109111025.1320976-2-maxime.coquelin@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c70df20e3159 ("iio: adc: ad7266: claim direct mode during sensor read")
+Signed-off-by: Fernando Yang <hagisf@usp.br>
+Link: https://lore.kernel.org/r/20240603180757.8560-1-hagisf@usp.br
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vdpa/vdpa_user/vduse_dev.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/iio/adc/ad7266.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
-index 564864f039d20..898ef597338a2 100644
---- a/drivers/vdpa/vdpa_user/vduse_dev.c
-+++ b/drivers/vdpa/vdpa_user/vduse_dev.c
-@@ -1227,13 +1227,14 @@ static bool device_is_allowed(u32 device_id)
- 	return false;
- }
+--- a/drivers/iio/adc/ad7266.c
++++ b/drivers/iio/adc/ad7266.c
+@@ -159,6 +159,8 @@ static int ad7266_read_raw(struct iio_de
+ 		ret = ad7266_read_single(st, val, chan->address);
+ 		iio_device_release_direct_mode(indio_dev);
  
--static bool features_is_valid(u64 features)
-+static bool features_is_valid(struct vduse_dev_config *config)
- {
--	if (!(features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)))
-+	if (!(config->features & BIT_ULL(VIRTIO_F_ACCESS_PLATFORM)))
- 		return false;
- 
- 	/* Now we only support read-only configuration space */
--	if (features & (1ULL << VIRTIO_BLK_F_CONFIG_WCE))
-+	if ((config->device_id == VIRTIO_ID_BLOCK) &&
-+			(config->features & BIT_ULL(VIRTIO_BLK_F_CONFIG_WCE)))
- 		return false;
- 
- 	return true;
-@@ -1260,7 +1261,7 @@ static bool vduse_validate_config(struct vduse_dev_config *config)
- 	if (!device_is_allowed(config->device_id))
- 		return false;
- 
--	if (!features_is_valid(config->features))
-+	if (!features_is_valid(config))
- 		return false;
- 
- 	return true;
--- 
-2.43.0
-
++		if (ret < 0)
++			return ret;
+ 		*val = (*val >> 2) & 0xfff;
+ 		if (chan->scan_type.sign == 's')
+ 			*val = sign_extend32(*val, 11);
 
 
 
