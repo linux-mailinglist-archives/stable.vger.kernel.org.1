@@ -1,127 +1,101 @@
-Return-Path: <stable+bounces-57983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F0A792695B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 22:09:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F7F992694E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 22:08:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5FD428C21F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 20:09:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3494B25FD4
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 20:08:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AAE618F2DF;
-	Wed,  3 Jul 2024 20:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA11186E32;
+	Wed,  3 Jul 2024 20:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OHF0m6/g"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="UoW7V4S/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FC218FDC8;
-	Wed,  3 Jul 2024 20:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4154613DBB1;
+	Wed,  3 Jul 2024 20:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720037374; cv=none; b=J+/vBnGvH83PcKhzYv4MuzPFKoySsO/OmCWhAU1lIW4HitUhzLPKhi/TKA6viuTDTRSGHYsiRjqdi6HgPYALNFmqD9FeSXWO+yw66ugJA6ke0VKthmdSfKu2cj9L2KRUe3gk1oYXEyNj/gjnT8RUozO+qMxrhnPwwrn8knrbfRg=
+	t=1720037325; cv=none; b=R5EISxwv9fTpUs77PhHeYPW8BZO50qHMp40h+EYvGTODFlQ8DJJCMd3+zmbK3uNkIyF9lWgt+2bCILHCzG7NXZeR8UMBnd/0W6rKFpI1PhyvmkwYcKBls+/SKG5LUKnwExJquQSnWWQ77xO1FuO3FNLKGDdb6Pse+HiHcUQPVz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720037374; c=relaxed/simple;
-	bh=Wnd3o8k1qpgOfPgnkTw0f/86KjmhH34TRGl5E7XRXIw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hT6vQYI3XSIslqlu2jXL91majwU9IB1f0B62CB3IWiH37m2pFfo+X4ZQyGjT550IaCsn4EUFNRioL3s2LvjpEY9c2PgJYT1uGIfbctcFy6zqGKEMH7t33vFUJs8vssnV1Xnyg+pbFWQ9Oq59ImkJgXLdEo4qp0wlpoHvdfiA4XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OHF0m6/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0497CC2BD10;
-	Wed,  3 Jul 2024 20:09:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720037374;
-	bh=Wnd3o8k1qpgOfPgnkTw0f/86KjmhH34TRGl5E7XRXIw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=OHF0m6/gf0FO74XTNMVbkzvMC5tPZ0F9b2WrUWqcXUvT6MTfiNRScZdkD19jNerIO
-	 fDzTQrIYSVKhWYX5omZ6dqwRY9Ohz9uDcvEQ+JDiL/x6lXiq3Z5dlJLnHklTGuBNWa
-	 OENRbiAA5oi9U2WHEGjzVEyIwA+1GBgpWH1Nasq1vZOMHOx0tjhPjC7bkG2bw1iXSq
-	 LoMOmkXUWQxrsqdLm4oaLR9NTC/oCl3a/eIIeiyYpSP5hCcWRSbe+msufoceV1FpqQ
-	 bVgv6DZT/uk/xbXywPLwNmaN4WAXahJVP5CSFxEQxI0pAgbselnFsePXgEc2M1NStP
-	 paztPvpMgCVaA==
-From: Eric Biggers <ebiggers@kernel.org>
-To: dm-devel@lists.linux.dev,
-	Alasdair Kergon <agk@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Cc: linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Matthias Kaehlcke <mka@chromium.org>,
-	Kees Cook <keescook@chromium.org>
-Subject: [PATCH] dm-verity: fix dm_is_verity_target() when dm-verity is builtin
-Date: Wed,  3 Jul 2024 13:08:13 -0700
-Message-ID: <20240703200813.64802-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1720037325; c=relaxed/simple;
+	bh=/nseoorglFV3LVGoTmjXsLh5khxwk400OmG3i+R4mhM=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=HKkG2KpWeWHwRCrteqig3Lpp9Yarh4wu/fgFlz3WrkJg/GYSvpoSgHIH5dj7LmQpf67X9F5ceUgZJmwfTK2Q+FOzSyqnSCsuj0j4O5Z4P42ssBzTcgL9zRfQXh2MQ+DmDxvQAFWDs/99l6XeuQdp62qnPVFxa2UYeAb3FMZY2zM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=UoW7V4S/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 745B1C4AF0A;
+	Wed,  3 Jul 2024 20:08:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1720037324;
+	bh=/nseoorglFV3LVGoTmjXsLh5khxwk400OmG3i+R4mhM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=UoW7V4S/nCaVBYgHOxvfMlrMwvWOGPfTLT+WOrNnDWySJZyr7vx3w5NV04RWylcMV
+	 YuZFg17gdN6R3mN2irJOIoMeNNtPBPsKXAZKd7aM8GkhNr2hra/pYSaVGFjVG7jLKk
+	 Mk9FTPNWl9BM0shtiiooAW0jUQfWePyQWKfjGgL4=
+Date: Wed, 3 Jul 2024 13:08:43 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: yangge1116@126.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, 21cnbao@gmail.com, david@redhat.com,
+ baolin.wang@linux.alibaba.com, aneesh.kumar@linux.ibm.com,
+ liuzixing@hygon.cn
+Subject: Re: [PATCH V3] mm/gup: Clear the LRU flag of a page before adding
+ to LRU batch
+Message-Id: <20240703130843.ad421344a0f3f05564a7f706@linux-foundation.org>
+In-Reply-To: <1720008153-16035-1-git-send-email-yangge1116@126.com>
+References: <1720008153-16035-1-git-send-email-yangge1116@126.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Eric Biggers <ebiggers@google.com>
+On Wed,  3 Jul 2024 20:02:33 +0800 yangge1116@126.com wrote:
 
-When CONFIG_DM_VERITY=y, dm_is_verity_target() returned true for any
-builtin dm target, not just dm-verity.  Fix this by checking for
-verity_target instead of THIS_MODULE (which is NULL for builtin code).
+> From: yangge <yangge1116@126.com>
+> 
+> If a large number of CMA memory are configured in system (for example, the
+> CMA memory accounts for 50% of the system memory), starting a virtual
+> virtual machine with device passthrough, it will
+> call pin_user_pages_remote(..., FOLL_LONGTERM, ...) to pin memory.
+> Normally if a page is present and in CMA area, pin_user_pages_remote()
+> will migrate the page from CMA area to non-CMA area because of
+> FOLL_LONGTERM flag. But the current code will cause the migration failure
+> due to unexpected page refcounts, and eventually cause the virtual machine
+> fail to start.
+> 
+> If a page is added in LRU batch, its refcount increases one, remove the
+> page from LRU batch decreases one. Page migration requires the page is not
+> referenced by others except page mapping. Before migrating a page, we
+> should try to drain the page from LRU batch in case the page is in it,
+> however, folio_test_lru() is not sufficient to tell whether the page is
+> in LRU batch or not, if the page is in LRU batch, the migration will fail.
+> 
+> To solve the problem above, we modify the logic of adding to LRU batch.
+> Before adding a page to LRU batch, we clear the LRU flag of the page so
+> that we can check whether the page is in LRU batch by folio_test_lru(page).
+> Seems making the LRU flag of the page invisible a long time is no problem,
+> because a new page is allocated from buddy and added to the lru batch,
+> its LRU flag is also not visible for a long time.
+> 
 
-Fixes: b6c1c5745ccc ("dm: Add verity helpers for LoadPin")
-Cc: stable@vger.kernel.org
-Cc: Matthias Kaehlcke <mka@chromium.org>
-Cc: Kees Cook <keescook@chromium.org>
-Signed-off-by: Eric Biggers <ebiggers@google.com>
----
- drivers/md/dm-verity-target.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+Thanks.
 
-diff --git a/drivers/md/dm-verity-target.c b/drivers/md/dm-verity-target.c
-index 0a2399d958b7..cf659c8feb29 100644
---- a/drivers/md/dm-verity-target.c
-+++ b/drivers/md/dm-verity-target.c
-@@ -1519,18 +1519,10 @@ static int verity_ctr(struct dm_target *ti, unsigned int argc, char **argv)
- 	verity_dtr(ti);
- 
- 	return r;
- }
- 
--/*
-- * Check whether a DM target is a verity target.
-- */
--bool dm_is_verity_target(struct dm_target *ti)
--{
--	return ti->type->module == THIS_MODULE;
--}
--
- /*
-  * Get the verity mode (error behavior) of a verity target.
-  *
-  * Returns the verity mode of the target, or -EINVAL if 'ti' is not a verity
-  * target.
-@@ -1580,10 +1572,18 @@ static struct target_type verity_target = {
- 	.iterate_devices = verity_iterate_devices,
- 	.io_hints	= verity_io_hints,
- };
- module_dm(verity);
- 
-+/*
-+ * Check whether a DM target is a verity target.
-+ */
-+bool dm_is_verity_target(struct dm_target *ti)
-+{
-+	return ti->type == &verity_target;
-+}
-+
- MODULE_AUTHOR("Mikulas Patocka <mpatocka@redhat.com>");
- MODULE_AUTHOR("Mandeep Baines <msb@chromium.org>");
- MODULE_AUTHOR("Will Drewry <wad@chromium.org>");
- MODULE_DESCRIPTION(DM_NAME " target for transparent disk integrity checking");
- MODULE_LICENSE("GPL");
+I'll add this to the mm-hotfixes branch for additional testing.  Please
+continue to work with David on the changelog enhancements.
 
-base-commit: ed28fe59c042e9b5bf3b15050aa6ee67834dc852
--- 
-2.45.2
-
+In mm-hotfixes I'd expect to send it to Linus next week.  I could move
+it into mm-unstable (then mm-stable) for merging into 6.11-rc1.  This
+is for additional testing time - it will still be backported into
+earlier kernels.  We can do this with any patch.
 
