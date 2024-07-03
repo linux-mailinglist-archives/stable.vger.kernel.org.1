@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-57855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24B7925E4F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E9E4925F3A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:53:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E23F71C23B1C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C3E2B3C3DC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7DC17DE0E;
-	Wed,  3 Jul 2024 11:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80301922DF;
+	Wed,  3 Jul 2024 11:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JtKIKoKq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IrA2pNaZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3E817DA3C;
-	Wed,  3 Jul 2024 11:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755BB194A50;
+	Wed,  3 Jul 2024 11:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006136; cv=none; b=aPrE79tQ+UZ9IyRGbf5MiNFonsoozK8yqg8wY61bWNl9l9yQHba49vfUgqnR/GTf+pSSLu1QJ+vPtzJJjbYo5sykOR5b4tkKJBYU0IB2a5FmrFIDmQGzIwrHOgUYaEjkUlIPwxA0G+z2uofLZ8gFhDtryRlN+kOrU2+2CD9lKkw=
+	t=1720005114; cv=none; b=hRO7w2ZWQh9HosytLkThJQafoAVg2L8L0L2Z+WsBsV7Vp8/98+RTfq/AG9rkxw1oaDFZf0LUUQWlfMfUmMsOVUCS3EafpJpAHn8/lRVFugzof0/sfLhyo8iqiTn7QF+1tmZKaBMia2CBfXYk4XqbtfEEE5qhdNO5sJJWt4YmNHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006136; c=relaxed/simple;
-	bh=mkDBXsSiYVgU+Sa5fX/n7rCy9dZ2JOkINK9PlWH/RJI=;
+	s=arc-20240116; t=1720005114; c=relaxed/simple;
+	bh=CnyfphxRfkrQKMsc5FxcvGPkFWjcbOFFE4ClLDtzpJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lx4VYHyWHsFAXSArB5hfqINh9NB8V1m62g7wB2pJZAK8qZs7U0W02GacPCeWmCkQmokeF1ebh6H0S7Rz4LArI5ADKqJtoByRl1IzAPI2xlMmJoP0C13lDAkXCJ83K5i1SU9Fji8mdHmtFXxmVlomUD1CtnJfMoLy0gkbDC0c4To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JtKIKoKq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E9EAC2BD10;
-	Wed,  3 Jul 2024 11:28:55 +0000 (UTC)
+	 MIME-Version; b=KgFZwWL0VfiqDBmBxAMGPSeIRTim1oyiNNfWLmqR62kqriV9Ar8xDVUCM5+4FAkmSTHpcHFT0JPGzGBE5xVu1BQ8QA2zcc22yoh/6xzEk1jOM4b+bBg0m1EkU8zDHR3XfSWO7b7eRfNT3DVO04WmFS+TkdM7NOj0eTB4bsSPENw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IrA2pNaZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11C0C2BD10;
+	Wed,  3 Jul 2024 11:11:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006136;
-	bh=mkDBXsSiYVgU+Sa5fX/n7rCy9dZ2JOkINK9PlWH/RJI=;
+	s=korg; t=1720005114;
+	bh=CnyfphxRfkrQKMsc5FxcvGPkFWjcbOFFE4ClLDtzpJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JtKIKoKqu6Xb+45G/wAP2RuyDV4XRNc/h0aEk3z9M7g/K9zyFOzqoBQztBeke+pAT
-	 6zMdKmihDAoH1N2wTBUXt2Tn3F9fDN9reMHKalmW1gONOIlItYnPv7rPKt+isn6fj6
-	 9wUaLGLqIO2GcFx+C7MurzuPI3YStMtHh9kqL25E=
+	b=IrA2pNaZNMgvg/vtup14X9qUoAAWHpWj1FdYCI9QLjSimvfPJAYuhrXg5rcoFHmKh
+	 36jW9rwrE+M+Lv7Q7vd0YkOw2uLlo410Dtf1dsL/dzl7o5+Hm8uzrzakvKyT763uLv
+	 JDBR76EiNFq+bwDOt6n8E5ZFuTg0lfbdx0zeU6QE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 311/356] iio: accel: fxls8962af: select IIO_BUFFER & IIO_KFIFO_BUF
+	Guo Ren <guoren@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.10 266/290] csky, hexagon: fix broken sys_sync_file_range
 Date: Wed,  3 Jul 2024 12:40:47 +0200
-Message-ID: <20240703102924.878380346@linuxfoundation.org>
+Message-ID: <20240703102914.190476503@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit a821d7111e3f7c8869961b606714a299bfe20014 upstream.
+commit 3339b99ef6fe38dac43b534cba3a8a0e29fb2eff upstream.
 
-Provide missing symbols to the module:
-ERROR: modpost: iio_push_to_buffers [drivers/iio/accel/fxls8962af-core.ko] undefined!
-ERROR: modpost: devm_iio_kfifo_buffer_setup_ext [drivers/iio/accel/fxls8962af-core.ko] undefined!
+Both of these architectures require u64 function arguments to be
+passed in even/odd pairs of registers or stack slots, which in case of
+sync_file_range would result in a seven-argument system call that is
+not currently possible. The system call is therefore incompatible with
+all existing binaries.
+
+While it would be possible to implement support for seven arguments
+like on mips, it seems better to use a six-argument version, either
+with the normal argument order but misaligned as on most architectures
+or with the reordered sync_file_range2() calling conventions as on
+arm and powerpc.
 
 Cc: stable@vger.kernel.org
-Fixes: 79e3a5bdd9ef ("iio: accel: fxls8962af: add hw buffered sampling")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Reviewed-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://lore.kernel.org/r/20240605203810.2908980-2-alexander.sverdlin@siemens.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Guo Ren <guoren@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/Kconfig |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/csky/include/uapi/asm/unistd.h    |    1 +
+ arch/hexagon/include/uapi/asm/unistd.h |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/iio/accel/Kconfig
-+++ b/drivers/iio/accel/Kconfig
-@@ -235,6 +235,8 @@ config DMARD10
- config FXLS8962AF
- 	tristate
- 	depends on I2C || !I2C # cannot be built-in for modular I2C
-+	select IIO_BUFFER
-+	select IIO_KFIFO_BUF
+--- a/arch/csky/include/uapi/asm/unistd.h
++++ b/arch/csky/include/uapi/asm/unistd.h
+@@ -7,6 +7,7 @@
+ #define __ARCH_WANT_SYS_CLONE3
+ #define __ARCH_WANT_SET_GET_RLIMIT
+ #define __ARCH_WANT_TIME32_SYSCALLS
++#define __ARCH_WANT_SYNC_FILE_RANGE2
+ #include <asm-generic/unistd.h>
  
- config FXLS8962AF_I2C
- 	tristate "NXP FXLS8962AF/FXLS8964AF Accelerometer I2C Driver"
+ #define __NR_set_thread_area	(__NR_arch_specific_syscall + 0)
+--- a/arch/hexagon/include/uapi/asm/unistd.h
++++ b/arch/hexagon/include/uapi/asm/unistd.h
+@@ -36,5 +36,6 @@
+ #define __ARCH_WANT_SYS_VFORK
+ #define __ARCH_WANT_SYS_FORK
+ #define __ARCH_WANT_TIME32_SYSCALLS
++#define __ARCH_WANT_SYNC_FILE_RANGE2
+ 
+ #include <asm-generic/unistd.h>
 
 
 
