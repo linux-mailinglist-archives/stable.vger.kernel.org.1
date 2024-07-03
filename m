@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7BAF925E6A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:36:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4777925CE7
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:23:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 153A71C20A25
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:36:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 703801F24220
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC541143C6E;
-	Wed,  3 Jul 2024 11:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA86718E778;
+	Wed,  3 Jul 2024 11:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrOVUFLT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S37RYB3s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894AE1487CE;
-	Wed,  3 Jul 2024 11:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7815314D44E;
+	Wed,  3 Jul 2024 11:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006199; cv=none; b=ndRqF0AJfIzIf0mjObiU8f5PoYA8+lEUnUoONKzBrsWtjLkox0GcyXN9KeqHuT7+hKQHJ30C6tPKmZNDY3GeNLqaURwkCBH7pBpwaSux84E8DChatTMy6kW/5TedEBtU1Xez+hvS0+ZlKG+euIkTI7SxAL7F5yHIhDdme26SCFc=
+	t=1720005186; cv=none; b=AgaCH7Ci4NLGgNd0W8UgB8tQzSIG5v5QJTW+M1cj7meKmBok/AOshIr4izE25J00hOuU/SmllN/rM1WoFa08YM7L5OYJyx42z/hTCdCcWKLro32klfJkWXejhyuTiuMANU5qAB4nbZRX0PzTcFOewCrXV4ukPSHkN0p7ZyvJqz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006199; c=relaxed/simple;
-	bh=2EAMCMIEOIMpQtbQYRy2Z4GNSRh1v6Pi+P6Hgm7DV+M=;
+	s=arc-20240116; t=1720005186; c=relaxed/simple;
+	bh=EP66ACYWZ90a5+jEp12uu8bQripZW27+F7aYar++3oA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TJoP5Xf7EvofHOzdsPo8ojLvbDFmnTVXO205f5+VURcZBkwvDsbBnfEqDDGARZbYKKv0dVPDCoFIiQEGDQTLIOpIMA9aPG/z8/G/iWt61q0cSQW1APsI1+JHlXC3rZlwFgg+Uxe1l5xdIqn2rfZrc4xZM51iw/fuwio3tBoVE6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrOVUFLT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F73DC2BD10;
-	Wed,  3 Jul 2024 11:29:58 +0000 (UTC)
+	 MIME-Version; b=XEi+Q1golvkQov48m905MrbTG1XhK/WtF7K2TtQGQ+YPLFH2EXC4Svm/9ahQQmQIp9XPq1VEEYPkly3ypotX6tv4xbAllSkGX6a2zei775iRLdZlsk9tfMmwWyxdOX76q9CV5gVCZwb+YMwHQblqPnwT0sO85Rr+cx6cMcgpipA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S37RYB3s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4499C2BD10;
+	Wed,  3 Jul 2024 11:13:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006199;
-	bh=2EAMCMIEOIMpQtbQYRy2Z4GNSRh1v6Pi+P6Hgm7DV+M=;
+	s=korg; t=1720005186;
+	bh=EP66ACYWZ90a5+jEp12uu8bQripZW27+F7aYar++3oA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UrOVUFLTyWXze4C9hkFLaC6hrlLJKV1X+OvsQM9dDWvLVll1VELWrR3TpXPr28I/l
-	 suPJYU1/5YLV5Et5KPMJjTckU+AQinSdhpxPMr69I+b6RSa6y4zP9wwlSyldpj5/BH
-	 YdC8FQh+XGd3aEwZt0OWteSbHxQt0vjINf7/9RYg=
+	b=S37RYB3s+eS//m6Bt30L9kBxF3vS6n1TIF+rJD/Za+WBt6UHdMZb+kvVAXVQcF2Xb
+	 EfvIMA3WHHQ+ieLieGjGZNwWYPY3YJttU3b8NGoejfP8aFBhL8FaGxTTdXN1Ke9OGB
+	 Sn0Ki9qA91zAGV8uP/pVMJhX2jJw0qZO7owmpHHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Lyude Paul <lyude@redhat.com>
-Subject: [PATCH 5.15 333/356] drm/nouveau/dispnv04: fix null pointer dereference in nv17_tv_get_ld_modes
+	Johan Jonker <jbx6244@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 288/290] ARM: dts: rockchip: rk3066a: add #sound-dai-cells to hdmi node
 Date: Wed,  3 Jul 2024 12:41:09 +0200
-Message-ID: <20240703102925.708716950@linuxfoundation.org>
+Message-ID: <20240703102915.026915914@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Johan Jonker <jbx6244@gmail.com>
 
-commit 66edf3fb331b6c55439b10f9862987b0916b3726 upstream.
+[ Upstream commit cca46f811d0000c1522a5e18ea48c27a15e45c05 ]
 
-In nv17_tv_get_ld_modes(), the return value of drm_mode_duplicate() is
-assigned to mode, which will lead to a possible NULL pointer dereference
-on failure of drm_mode_duplicate(). Add a check to avoid npd.
+'#sound-dai-cells' is required to properly interpret
+the list of DAI specified in the 'sound-dai' property,
+so add them to the 'hdmi' node for 'rk3066a.dtsi'.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240625081828.2620794-1-make24@iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fadc78062477 ("ARM: dts: rockchip: add rk3066 hdmi nodes")
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Link: https://lore.kernel.org/r/8b229dcc-94e4-4bbc-9efc-9d5ddd694532@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/dispnv04/tvnv17.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boot/dts/rk3066a.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
-+++ b/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
-@@ -208,6 +208,8 @@ static int nv17_tv_get_ld_modes(struct d
- 		struct drm_display_mode *mode;
+diff --git a/arch/arm/boot/dts/rk3066a.dtsi b/arch/arm/boot/dts/rk3066a.dtsi
+index bbc3bff508560..75ea8e03bef0a 100644
+--- a/arch/arm/boot/dts/rk3066a.dtsi
++++ b/arch/arm/boot/dts/rk3066a.dtsi
+@@ -124,6 +124,7 @@
+ 		pinctrl-0 = <&hdmii2c_xfer>, <&hdmi_hpd>;
+ 		power-domains = <&power RK3066_PD_VIO>;
+ 		rockchip,grf = <&grf>;
++		#sound-dai-cells = <0>;
+ 		status = "disabled";
  
- 		mode = drm_mode_duplicate(encoder->dev, tv_mode);
-+		if (!mode)
-+			continue;
- 
- 		mode->clock = tv_norm->tv_enc_mode.vrefresh *
- 			mode->htotal / 1000 *
+ 		ports {
+-- 
+2.43.0
+
 
 
 
