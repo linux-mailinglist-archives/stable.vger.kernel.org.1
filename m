@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-56945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A832F925A6F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:58:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48716925D9F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA761298196
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:51:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E97681F21A0D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6A317C20A;
-	Wed,  3 Jul 2024 10:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D96186E34;
+	Wed,  3 Jul 2024 11:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dboH5ffg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTmT1b40"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D003172798;
-	Wed,  3 Jul 2024 10:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD3645945;
+	Wed,  3 Jul 2024 11:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003367; cv=none; b=mmhUeA1B0EYn2UxinLu2DniCMpCNEKCScVDkfmCmf+4S2vCgk5QEMHIQCe1fGwCW0sNBW7yO1OVmInzVkgdbN058QbISwVysgxjQqyhHejzpv8GGp2WXDi6ZRDVuZ8tAA7HSNLSx4lKKyvW5og/hywK513S3Th5KPbfhW+UQTm0=
+	t=1720005706; cv=none; b=eykeVUXlNalPf0rGFSzFhaJPxsw5BRoPxfF/quBb+hRHJtvsxdm2bTmSZLFZ4Dy2JvW6VlbIiP+g9hAxzNgehKbVnfrpgDOr+o4npxG/4ALUHJFn6smFX6KyJOZN/+HCj7p0Jj/CGwII+B6k4kRGeXRPQOYyLZQbyKuTaNEAbos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003367; c=relaxed/simple;
-	bh=wKRAB4svr5YmmQSx81gGIABQ0rMiYnADKqh90TTPwlc=;
+	s=arc-20240116; t=1720005706; c=relaxed/simple;
+	bh=Ws40ZBZZo9iNg+k8v188bzDnnuxq1yVqcr5kRzyIp2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WHR0RBOmXUuuzZF8bBKqVH/jJyNvq0No/jTC/5S9HGnmhYDpppD3zrbRJ4z1Paf6QywuLRsq5gXDkDpNHrQIsn5vHHkII0nhWS5f4HB+CUTz+D7AQmvIQTst27VIDUFFrY9NXRy4pmr0frC1Wi0noanzR3q6i3FbhEs07pJHgaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dboH5ffg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3ED0C2BD10;
-	Wed,  3 Jul 2024 10:42:46 +0000 (UTC)
+	 MIME-Version; b=C994JMWWj0dPOilr5XpBSRYUMBoe97pIlFSSnlCEynS8a9nirwVWOjlA5ZuXVUYpbdoBuQ4KN45PSWX50ppjQKadFxTjr7lNfbYr2oINuxZOYHiJ4CO+FkTJfJrCRCJao7z3zwbeX5DQ7VQg5Aw+CqaJYwTHkJ42aqQ0H+xSh6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTmT1b40; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24BD8C2BD10;
+	Wed,  3 Jul 2024 11:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003367;
-	bh=wKRAB4svr5YmmQSx81gGIABQ0rMiYnADKqh90TTPwlc=;
+	s=korg; t=1720005706;
+	bh=Ws40ZBZZo9iNg+k8v188bzDnnuxq1yVqcr5kRzyIp2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dboH5ffgEqe0JgpRiJslVpUU7zEq4mALt97/b9Uo8AP7KwlVrlcMBMEFQH1y3aCcz
-	 Co0v7rZhLZzs74J7/jiVV9SOS11zki3Nn7PypDGA/PIyP0ZB6tpoff5aZM2udzdNxd
-	 zX7ox+CmV1uyhAw2crGuKHIxXQgx6zPG08dAJck0=
+	b=mTmT1b40He9a23EX+zqbCH8iHugjXv1qB8/9lsgZKN2bPNLIekXCNTr28LTWLdKfH
+	 7PtccHJCR35z7g3dkbpw1MDCJMlF5XD4ShqVUQ93ho40kfIphl8EpZf7+c6VjIVVLr
+	 sjnLDqowAv7h5Z7tFu07wwNtzvZWcwosD+PyLQ+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karol Kolacinski <karol.kolacinski@intel.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Erico Nunes <nunes.erico@gmail.com>,
+	Qiang Yu <yuq825@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 008/139] ptp: Fix error message on failed pin verification
+Subject: [PATCH 5.15 169/356] drm/lima: add mask irq callback to gp and pp
 Date: Wed,  3 Jul 2024 12:38:25 +0200
-Message-ID: <20240703102830.751911643@linuxfoundation.org>
+Message-ID: <20240703102919.497558693@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karol Kolacinski <karol.kolacinski@intel.com>
+From: Erico Nunes <nunes.erico@gmail.com>
 
-[ Upstream commit 323a359f9b077f382f4483023d096a4d316fd135 ]
+[ Upstream commit 49c13b4d2dd4a831225746e758893673f6ae961c ]
 
-On failed verification of PTP clock pin, error message prints channel
-number instead of pin index after "pin", which is incorrect.
+This is needed because we want to reset those devices in device-agnostic
+code such as lima_sched.
+In particular, masking irqs will be useful before a hard reset to
+prevent race conditions.
 
-Fix error message by adding channel number to the message and printing
-pin number instead of channel number.
-
-Fixes: 6092315dfdec ("ptp: introduce programmable pins.")
-Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Link: https://lore.kernel.org/r/20240604120555.16643-1-karol.kolacinski@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
+Signed-off-by: Qiang Yu <yuq825@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240405152951.1531555-2-nunes.erico@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_chardev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/lima/lima_bcast.c | 12 ++++++++++++
+ drivers/gpu/drm/lima/lima_bcast.h |  3 +++
+ drivers/gpu/drm/lima/lima_gp.c    |  8 ++++++++
+ drivers/gpu/drm/lima/lima_pp.c    | 18 ++++++++++++++++++
+ drivers/gpu/drm/lima/lima_sched.h |  1 +
+ 5 files changed, 42 insertions(+)
 
-diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
-index 8ff2dd5c52e64..f66ce68f42379 100644
---- a/drivers/ptp/ptp_chardev.c
-+++ b/drivers/ptp/ptp_chardev.c
-@@ -97,7 +97,8 @@ int ptp_set_pinfunc(struct ptp_clock *ptp, unsigned int pin,
- 	}
+diff --git a/drivers/gpu/drm/lima/lima_bcast.c b/drivers/gpu/drm/lima/lima_bcast.c
+index fbc43f243c54d..6d000504e1a4e 100644
+--- a/drivers/gpu/drm/lima/lima_bcast.c
++++ b/drivers/gpu/drm/lima/lima_bcast.c
+@@ -43,6 +43,18 @@ void lima_bcast_suspend(struct lima_ip *ip)
  
- 	if (info->verify(info, pin, func, chan)) {
--		pr_err("driver cannot use function %u on pin %u\n", func, chan);
-+		pr_err("driver cannot use function %u and channel %u on pin %u\n",
-+		       func, chan, pin);
- 		return -EOPNOTSUPP;
- 	}
+ }
  
++int lima_bcast_mask_irq(struct lima_ip *ip)
++{
++	bcast_write(LIMA_BCAST_BROADCAST_MASK, 0);
++	bcast_write(LIMA_BCAST_INTERRUPT_MASK, 0);
++	return 0;
++}
++
++int lima_bcast_reset(struct lima_ip *ip)
++{
++	return lima_bcast_hw_init(ip);
++}
++
+ int lima_bcast_init(struct lima_ip *ip)
+ {
+ 	int i;
+diff --git a/drivers/gpu/drm/lima/lima_bcast.h b/drivers/gpu/drm/lima/lima_bcast.h
+index 465ee587bceb2..cd08841e47879 100644
+--- a/drivers/gpu/drm/lima/lima_bcast.h
++++ b/drivers/gpu/drm/lima/lima_bcast.h
+@@ -13,4 +13,7 @@ void lima_bcast_fini(struct lima_ip *ip);
+ 
+ void lima_bcast_enable(struct lima_device *dev, int num_pp);
+ 
++int lima_bcast_mask_irq(struct lima_ip *ip);
++int lima_bcast_reset(struct lima_ip *ip);
++
+ #endif
+diff --git a/drivers/gpu/drm/lima/lima_gp.c b/drivers/gpu/drm/lima/lima_gp.c
+index 8dd501b7a3d0d..6cf46b653e810 100644
+--- a/drivers/gpu/drm/lima/lima_gp.c
++++ b/drivers/gpu/drm/lima/lima_gp.c
+@@ -212,6 +212,13 @@ static void lima_gp_task_mmu_error(struct lima_sched_pipe *pipe)
+ 	lima_sched_pipe_task_done(pipe);
+ }
+ 
++static void lima_gp_task_mask_irq(struct lima_sched_pipe *pipe)
++{
++	struct lima_ip *ip = pipe->processor[0];
++
++	gp_write(LIMA_GP_INT_MASK, 0);
++}
++
+ static int lima_gp_task_recover(struct lima_sched_pipe *pipe)
+ {
+ 	struct lima_ip *ip = pipe->processor[0];
+@@ -344,6 +351,7 @@ int lima_gp_pipe_init(struct lima_device *dev)
+ 	pipe->task_error = lima_gp_task_error;
+ 	pipe->task_mmu_error = lima_gp_task_mmu_error;
+ 	pipe->task_recover = lima_gp_task_recover;
++	pipe->task_mask_irq = lima_gp_task_mask_irq;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/gpu/drm/lima/lima_pp.c b/drivers/gpu/drm/lima/lima_pp.c
+index a5c95bed08c09..54b208a4a768e 100644
+--- a/drivers/gpu/drm/lima/lima_pp.c
++++ b/drivers/gpu/drm/lima/lima_pp.c
+@@ -408,6 +408,9 @@ static void lima_pp_task_error(struct lima_sched_pipe *pipe)
+ 
+ 		lima_pp_hard_reset(ip);
+ 	}
++
++	if (pipe->bcast_processor)
++		lima_bcast_reset(pipe->bcast_processor);
+ }
+ 
+ static void lima_pp_task_mmu_error(struct lima_sched_pipe *pipe)
+@@ -416,6 +419,20 @@ static void lima_pp_task_mmu_error(struct lima_sched_pipe *pipe)
+ 		lima_sched_pipe_task_done(pipe);
+ }
+ 
++static void lima_pp_task_mask_irq(struct lima_sched_pipe *pipe)
++{
++	int i;
++
++	for (i = 0; i < pipe->num_processor; i++) {
++		struct lima_ip *ip = pipe->processor[i];
++
++		pp_write(LIMA_PP_INT_MASK, 0);
++	}
++
++	if (pipe->bcast_processor)
++		lima_bcast_mask_irq(pipe->bcast_processor);
++}
++
+ static struct kmem_cache *lima_pp_task_slab;
+ static int lima_pp_task_slab_refcnt;
+ 
+@@ -447,6 +464,7 @@ int lima_pp_pipe_init(struct lima_device *dev)
+ 	pipe->task_fini = lima_pp_task_fini;
+ 	pipe->task_error = lima_pp_task_error;
+ 	pipe->task_mmu_error = lima_pp_task_mmu_error;
++	pipe->task_mask_irq = lima_pp_task_mask_irq;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/gpu/drm/lima/lima_sched.h b/drivers/gpu/drm/lima/lima_sched.h
+index 90f03c48ef4a8..f8bbfa69baea6 100644
+--- a/drivers/gpu/drm/lima/lima_sched.h
++++ b/drivers/gpu/drm/lima/lima_sched.h
+@@ -83,6 +83,7 @@ struct lima_sched_pipe {
+ 	void (*task_error)(struct lima_sched_pipe *pipe);
+ 	void (*task_mmu_error)(struct lima_sched_pipe *pipe);
+ 	int (*task_recover)(struct lima_sched_pipe *pipe);
++	void (*task_mask_irq)(struct lima_sched_pipe *pipe);
+ 
+ 	struct work_struct recover_work;
+ };
 -- 
 2.43.0
 
