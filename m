@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 568D7925BD1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:12:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80358925A73
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:00:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 891371C20B60
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E19B1F23BBF
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75B2194ADF;
-	Wed,  3 Jul 2024 10:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF57198A3D;
+	Wed,  3 Jul 2024 10:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xvCZ6JV2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kbQdd5Of"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9465D187551;
-	Wed,  3 Jul 2024 10:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9347918E775;
+	Wed,  3 Jul 2024 10:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004333; cv=none; b=qt7Da8t41TcWdjfi01DWR2rtvYbu9u4YoGxs72K8O74oeBg2qPruUNG0q6Cue0EbdoEzlyHzF2fYdF5OdtTTN0LpYOeFRi1bHaqyzzcdqHh2+e8zoy0v+mpXSaQCSp+wzULzI5MUn2+e7VuZed4j+PpcibN1i9fH5uYmH6KkFcU=
+	t=1720003664; cv=none; b=VA6HwUU2vRGmglI1BKhEKrVAB3RuznqlH3uyNXVJZL6+HRRmh/i7C1QxrfG7GpY+mGaYAxPY/WoO0+S7ER5P/6c6Yw45An3jFy47uu9++8LHRibzW3QY0Bt78Nn8Bfz4Pm4SRm+hMQSf6KX2hGjhg8T3v7UFStiYGrQL62Gku0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004333; c=relaxed/simple;
-	bh=PzSDheUfUBoetb2Ncqk3c6vYA5RsW71MTteZk1EQMVE=;
+	s=arc-20240116; t=1720003664; c=relaxed/simple;
+	bh=lliNuZsRp6Hpl3mkYS7m7JVX9qthGG8Caaercn6g4jQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NcYPwyIM/w4DOUPi3rXI3tnivl8DwWJzosXKgYZ2uNBsTjnyqG/mMBw7PlN9InqmcqWDZHu1qHPG00nuCgAaZKuNSCCYDNYYw6s5QH11h5vTOZmeqSwql8cIFa1scsRRlBvXFXNPiJOb45o6oV8bGM4OykFoMchqSZGYCygDpns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xvCZ6JV2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179C2C2BD10;
-	Wed,  3 Jul 2024 10:58:52 +0000 (UTC)
+	 MIME-Version; b=NwAv4Zmc1Sxga9mswlznFrbJGgNtVt7fZ0GbkeD1KZUqQ4BmKHL7Z4Y4/PC8FNBpIt7Rg/cKNgBjzezMeTDlhy+0uppAK6ShY4E7JeF1l83DDJFMhcQwwK/BT78uS8zpQYIXqgPiHL3NzJJGdl0z4wP4jepbnAsJZleTLPh+30k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kbQdd5Of; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7B9C2BD10;
+	Wed,  3 Jul 2024 10:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004333;
-	bh=PzSDheUfUBoetb2Ncqk3c6vYA5RsW71MTteZk1EQMVE=;
+	s=korg; t=1720003664;
+	bh=lliNuZsRp6Hpl3mkYS7m7JVX9qthGG8Caaercn6g4jQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xvCZ6JV2cEzR51eltF+sxwJ+/W6MmkTFiXcrYGqsbFM2qKFLGwmBslwMjNPbsc3Rh
-	 D3uzeoGkPbpDaruOTqQrsuQcHlNNfi+mHi3JNPKJk1UpJ/J49iUlTh5DfOx6sl2q8B
-	 fAYn5tH5m4KWDT6I+pJ78RbrILweibkSbew2v0aE=
+	b=kbQdd5OfO/9MALHfzBDCkGJEfwmbFUme3ApzO9zJumgUxUHT6DUBlTwgUKr1CT1UQ
+	 c/Iz19ZK4eIy4vEvyqV6wA3MWYsHZvWzQ9mmYsS+/zyZZus6rWTqO+XYBaaSauWMrg
+	 aub7RBiuCDpZzeDb8Auim4bOPInqZ/5l159CWIN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.4 158/189] mmc: sdhci: Do not invert write-protect twice
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 4.19 122/139] iio: chemical: bme680: Fix sensor data read operation
 Date: Wed,  3 Jul 2024 12:40:19 +0200
-Message-ID: <20240703102847.432674243@linuxfoundation.org>
+Message-ID: <20240703102835.043657432@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-commit fbd64f902b93fe9658b855b9892ae59ef6ea22b9 upstream.
+commit 4241665e6ea063a9c1d734de790121a71db763fc upstream.
 
-mmc_of_parse() reads device property "wp-inverted" and sets
-MMC_CAP2_RO_ACTIVE_HIGH if it is true. MMC_CAP2_RO_ACTIVE_HIGH is used
-to invert a write-protect (AKA read-only) GPIO value.
+A read operation is happening as follows:
 
-sdhci_get_property() also reads "wp-inverted" and sets
-SDHCI_QUIRK_INVERTED_WRITE_PROTECT which is used to invert the
-write-protect value as well but also acts upon a value read out from the
-SDHCI_PRESENT_STATE register.
+a) Set sensor to forced mode
+b) Sensor measures values and update data registers and sleeps again
+c) Read data registers
 
-Many drivers call both mmc_of_parse() and sdhci_get_property(),
-so that both MMC_CAP2_RO_ACTIVE_HIGH and
-SDHCI_QUIRK_INVERTED_WRITE_PROTECT will be set if the controller has
-device property "wp-inverted".
+In the current implementation the read operation happens immediately
+after the sensor is set to forced mode so the sensor does not have
+the time to update properly the registers. This leads to the following
+2 problems:
 
-Amend the logic in sdhci_check_ro() to allow for that possibility,
-so that the write-protect value is not inverted twice.
+1) The first ever value which is read by the register is always wrong
+2) Every read operation, puts the register into forced mode and reads
+the data that were calculated in the previous conversion.
 
-Also do not invert the value if it is a negative error value. Note that
-callers treat an error the same as not-write-protected, so the result is
-functionally the same in that case.
+This behaviour was tested in 2 ways:
 
-Also do not invert the value if sdhci host operation ->get_ro() is used.
-None of the users of that callback set SDHCI_QUIRK_INVERTED_WRITE_PROTECT
-directly or indirectly, but two do call mmc_gpio_get_ro(), so leave it to
-them to deal with that if they ever set SDHCI_QUIRK_INVERTED_WRITE_PROTECT
-in the future.
+1) The internal meas_status_0 register was read before and after every
+read operation in order to verify that the data were ready even before
+the register was set to forced mode and also to check that after the
+forced mode was set the new data were not yet ready.
 
-Fixes: 6d5cd068ee59 ("mmc: sdhci: use WP GPIO in sdhci_check_ro()")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240614080051.4005-2-adrian.hunter@intel.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+2) Physically changing the temperature and measuring the temperature
+
+This commit adds the waiting time in between the set of the forced mode
+and the read of the data. The function is taken from the Bosch BME68x
+Sensor API [1].
+
+[1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L490
+
+Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://lore.kernel.org/r/20240606212313.207550-5-vassilisamir@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci.c |   22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+ drivers/iio/chemical/bme680.h      |    2 +
+ drivers/iio/chemical/bme680_core.c |   46 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 48 insertions(+)
 
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -2141,26 +2141,34 @@ static int sdhci_get_cd(struct mmc_host
+--- a/drivers/iio/chemical/bme680.h
++++ b/drivers/iio/chemical/bme680.h
+@@ -57,7 +57,9 @@
+ #define     BME680_NB_CONV_0_VAL		0
  
- static int sdhci_check_ro(struct sdhci_host *host)
- {
-+	bool allow_invert = false;
- 	unsigned long flags;
- 	int is_readonly;
+ #define BME680_REG_MEAS_STAT_0			0x1D
++#define   BME680_NEW_DATA_BIT			BIT(7)
+ #define   BME680_GAS_MEAS_BIT			BIT(6)
++#define   BME680_MEAS_BIT			BIT(5)
  
- 	spin_lock_irqsave(&host->lock, flags);
- 
--	if (host->flags & SDHCI_DEVICE_DEAD)
-+	if (host->flags & SDHCI_DEVICE_DEAD) {
- 		is_readonly = 0;
--	else if (host->ops->get_ro)
-+	} else if (host->ops->get_ro) {
- 		is_readonly = host->ops->get_ro(host);
--	else if (mmc_can_gpio_ro(host->mmc))
-+	} else if (mmc_can_gpio_ro(host->mmc)) {
- 		is_readonly = mmc_gpio_get_ro(host->mmc);
--	else
-+		/* Do not invert twice */
-+		allow_invert = !(host->mmc->caps2 & MMC_CAP2_RO_ACTIVE_HIGH);
-+	} else {
- 		is_readonly = !(sdhci_readl(host, SDHCI_PRESENT_STATE)
- 				& SDHCI_WRITE_PROTECT);
-+		allow_invert = true;
-+	}
- 
- 	spin_unlock_irqrestore(&host->lock, flags);
- 
--	/* This quirk needs to be replaced by a callback-function later */
--	return host->quirks & SDHCI_QUIRK_INVERTED_WRITE_PROTECT ?
--		!is_readonly : is_readonly;
-+	if (is_readonly >= 0 &&
-+	    allow_invert &&
-+	    (host->quirks & SDHCI_QUIRK_INVERTED_WRITE_PROTECT))
-+		is_readonly = !is_readonly;
-+
-+	return is_readonly;
+ /* Calibration Parameters */
+ #define BME680_T2_LSB_REG	0x8A
+--- a/drivers/iio/chemical/bme680_core.c
++++ b/drivers/iio/chemical/bme680_core.c
+@@ -10,6 +10,7 @@
+  */
+ #include <linux/acpi.h>
+ #include <linux/bitfield.h>
++#include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/module.h>
+ #include <linux/log2.h>
+@@ -536,6 +537,43 @@ static int bme680_set_mode(struct bme680
+ 	return ret;
  }
  
- #define SAMPLE_COUNT	5
++/*
++ * Taken from Bosch BME680 API:
++ * https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L490
++ */
++static int bme680_wait_for_eoc(struct bme680_data *data)
++{
++	struct device *dev = regmap_get_device(data->regmap);
++	unsigned int check;
++	int ret;
++	/*
++	 * (Sum of oversampling ratios * time per oversampling) +
++	 * TPH measurement + gas measurement + wait transition from forced mode
++	 * + heater duration
++	 */
++	int wait_eoc_us = ((data->oversampling_temp + data->oversampling_press +
++			   data->oversampling_humid) * 1936) + (477 * 4) +
++			   (477 * 5) + 1000 + (data->heater_dur * 1000);
++
++	usleep_range(wait_eoc_us, wait_eoc_us + 100);
++
++	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &check);
++	if (ret) {
++		dev_err(dev, "failed to read measurement status register.\n");
++		return ret;
++	}
++	if (check & BME680_MEAS_BIT) {
++		dev_err(dev, "Device measurement cycle incomplete.\n");
++		return -EBUSY;
++	}
++	if (!(check & BME680_NEW_DATA_BIT)) {
++		dev_err(dev, "No new data available from the device.\n");
++		return -ENODATA;
++	}
++
++	return 0;
++}
++
+ static int bme680_chip_config(struct bme680_data *data)
+ {
+ 	struct device *dev = regmap_get_device(data->regmap);
+@@ -622,6 +660,10 @@ static int bme680_read_temp(struct bme68
+ 	if (ret < 0)
+ 		return ret;
+ 
++	ret = bme680_wait_for_eoc(data);
++	if (ret)
++		return ret;
++
+ 	ret = regmap_bulk_read(data->regmap, BME680_REG_TEMP_MSB,
+ 			       (u8 *) &tmp, 3);
+ 	if (ret < 0) {
+@@ -738,6 +780,10 @@ static int bme680_read_gas(struct bme680
+ 	if (ret < 0)
+ 		return ret;
+ 
++	ret = bme680_wait_for_eoc(data);
++	if (ret)
++		return ret;
++
+ 	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &check);
+ 	if (check & BME680_GAS_MEAS_BIT) {
+ 		dev_err(dev, "gas measurement incomplete\n");
 
 
 
