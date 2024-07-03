@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-57434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5714D925C82
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:19:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F25925C89
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:19:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3DEF1F25A6E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:19:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7397D2C31FB
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4621F1836D0;
-	Wed,  3 Jul 2024 11:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21F0171E67;
+	Wed,  3 Jul 2024 11:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofGc0yRm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4nrJZAV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036041836CB;
-	Wed,  3 Jul 2024 11:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709C618410F;
+	Wed,  3 Jul 2024 11:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004871; cv=none; b=LTaycgwiatI7/KCPk2ZF1LWcEiO2Yj35PzwTZofmVZjX4CeZ8Li3GjJj287y3OrHH4pPl0TYsLQq2+B6Rw4n8ydZELP2w5LUnv1rJV5G39Le1wvfzWzr2Wbt3h2xU0cjv5KJXuC7hOTrDdoZ2AA0ExaF/Qj/Zvu6A13ldKpcAhs=
+	t=1720004885; cv=none; b=FxdqIb/BfjXSKhlAbGqW0f1fogtPy6k1JSBbdSnrPi7v73Y9/yixWXdJY6mw6PsYwttXvIVbwbv6XZ2hR/YGz8C3TPKBLOVi4X9nxyvpoiZBJHv48srRDByllWFTWT/ByjIK0v4fGjuVIb1pJGAllixCzQo7zX+Kku61HTYWemI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004871; c=relaxed/simple;
-	bh=AccEMUwPELmxY7z1EBYbbwfdNhkyRUrdwgPXLRCjF58=;
+	s=arc-20240116; t=1720004885; c=relaxed/simple;
+	bh=VwDSSdP3g0SZM1MZQk29wsrIrBen3kQ+SoSgBKyyW9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BuoAzdCd2+QZufSwJ+y/so+xJWyAf3qL5z8jI51Azqkn/l0vALwCkAtO+KzZWEm9kasoHdbu5TePsoOKEKFi9QUTzLqBpemJcQ0Bkct2QEg3KZ0MqDa7CfvMKx9BtSqgYJeq7tamaCe0RtkrHTXzsjq7OlpY/1F/OYVHJVh961k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofGc0yRm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C63AC2BD10;
-	Wed,  3 Jul 2024 11:07:49 +0000 (UTC)
+	 MIME-Version; b=hfEbWcD9fOseJYxEkaJ79UKQXp/B5C8pzvNPqb+n3HB3cCp07WMjbpsnAbCN2fVyJbJ8pDyQTmiZwqirqT2rFcz51CnerlonnUtHSBm6xlEIInuxBY5AkUSqZczW0XGyalguy0DkemsLphSg1uQKfrvJs+UpUkUXCtOluElU3hY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4nrJZAV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E412AC2BD10;
+	Wed,  3 Jul 2024 11:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004870;
-	bh=AccEMUwPELmxY7z1EBYbbwfdNhkyRUrdwgPXLRCjF58=;
+	s=korg; t=1720004885;
+	bh=VwDSSdP3g0SZM1MZQk29wsrIrBen3kQ+SoSgBKyyW9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ofGc0yRm4cKSaQhd6AHIphnuVymiKuGcZa55kVDW3IUpGrIJ7a8XXXAJsBxmlQlgk
-	 Tt6lUXoxp1NTbxJN+g0Kxib5EfN/jAprm1zIwneehRBs3xUKySNfGV5sah1fzHsWO2
-	 bGdxlbHGcby3qnzv/rEOOG/cK0vn/+Wh0Fw1w1Js=
+	b=C4nrJZAV2CbcQnZ2Gg7TN8M3ySdC8XlCNmmuafh8mMCWUWhaCu/i6DNQapHl9VMn2
+	 YtmtrBVqUTAztv7y8/rStN3ezIAhSzSvfBRT0bbUdQRpfnXDaPGKZW+Zt8NlyG7tiS
+	 xuthUQUwt/yA/ZmH2hd/3ox6PQTJp4kQVMd2qROw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Shubin <n.shubin@yadro.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Dave Jiang <dave.jiang@intel.com>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 157/290] dmaengine: ioatdma: Fix leaking on version mismatch
-Date: Wed,  3 Jul 2024 12:38:58 +0200
-Message-ID: <20240703102910.109774598@linuxfoundation.org>
+Subject: [PATCH 5.10 158/290] dmaengine: ioat: use PCI core macros for PCIe Capability
+Date: Wed,  3 Jul 2024 12:38:59 +0200
+Message-ID: <20240703102910.148506092@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
 References: <20240703102904.170852981@linuxfoundation.org>
@@ -67,67 +67,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nikita Shubin <n.shubin@yadro.com>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit 1b11b4ef6bd68591dcaf8423c7d05e794e6aec6f ]
+[ Upstream commit 8f6707d0773be31972768abd6e0bf7b8515b5b1a ]
 
-Fix leaking ioatdma_device if I/OAT version is less than IOAT_VER_3_0.
+The PCIe Capability is defined by the PCIe spec, so use the PCI_EXP_DEVCTL
+macros defined by the PCI core instead of defining copies in IOAT.  This
+makes it easier to find all uses of the PCIe Device Control register.  No
+functional change intended.
 
-Fixes: bf453a0a18b2 ("dmaengine: ioat: Support in-use unbind")
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20240528-ioatdma-fixes-v2-1-a9f2fbe26ab1@yadro.com
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20230307214615.887354-1-helgaas@kernel.org
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: f0dc9fda2e0e ("dmaengine: ioatdma: Fix error path in ioat3_dma_probe()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ioat/init.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ drivers/dma/ioat/init.c      | 6 +++---
+ drivers/dma/ioat/registers.h | 7 -------
+ 2 files changed, 3 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
-index 783d4e740f115..6c27980a5ec8f 100644
+index 6c27980a5ec8f..ed4910e3bc2ac 100644
 --- a/drivers/dma/ioat/init.c
 +++ b/drivers/dma/ioat/init.c
-@@ -1349,6 +1349,7 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	void __iomem * const *iomap;
- 	struct device *dev = &pdev->dev;
- 	struct ioatdma_device *device;
-+	u8 version;
- 	int err;
+@@ -1190,13 +1190,13 @@ static int ioat3_dma_probe(struct ioatdma_device *ioat_dma, int dca)
+ 		ioat_dma->dca = ioat_dca_init(pdev, ioat_dma->reg_base);
  
- 	err = pcim_enable_device(pdev);
-@@ -1362,6 +1363,10 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (!iomap)
- 		return -ENOMEM;
- 
-+	version = readb(iomap[IOAT_MMIO_BAR] + IOAT_VER_OFFSET);
-+	if (version < IOAT_VER_3_0)
-+		return -ENODEV;
-+
- 	err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
+ 	/* disable relaxed ordering */
+-	err = pcie_capability_read_word(pdev, IOAT_DEVCTRL_OFFSET, &val16);
++	err = pcie_capability_read_word(pdev, PCI_EXP_DEVCTL, &val16);
  	if (err)
- 		err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
-@@ -1374,16 +1379,14 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	pci_set_master(pdev);
- 	pci_set_drvdata(pdev, device);
+ 		return pcibios_err_to_errno(err);
  
--	device->version = readb(device->reg_base + IOAT_VER_OFFSET);
-+	device->version = version;
- 	if (device->version >= IOAT_VER_3_4)
- 		ioat_dca_enabled = 0;
--	if (device->version >= IOAT_VER_3_0) {
--		if (is_skx_ioat(pdev))
--			device->version = IOAT_VER_3_2;
--		err = ioat3_dma_probe(device, ioat_dca_enabled);
--	} else
--		return -ENODEV;
+ 	/* clear relaxed ordering enable */
+-	val16 &= ~IOAT_DEVCTRL_ROE;
+-	err = pcie_capability_write_word(pdev, IOAT_DEVCTRL_OFFSET, val16);
++	val16 &= ~PCI_EXP_DEVCTL_RELAX_EN;
++	err = pcie_capability_write_word(pdev, PCI_EXP_DEVCTL, val16);
+ 	if (err)
+ 		return pcibios_err_to_errno(err);
  
-+	if (is_skx_ioat(pdev))
-+		device->version = IOAT_VER_3_2;
-+
-+	err = ioat3_dma_probe(device, ioat_dca_enabled);
- 	if (err) {
- 		dev_err(dev, "Intel(R) I/OAT DMA Engine init failed\n");
- 		return -ENODEV;
+diff --git a/drivers/dma/ioat/registers.h b/drivers/dma/ioat/registers.h
+index f55a5f92f1857..54cf0ad39887b 100644
+--- a/drivers/dma/ioat/registers.h
++++ b/drivers/dma/ioat/registers.h
+@@ -14,13 +14,6 @@
+ #define IOAT_PCI_CHANERR_INT_OFFSET		0x180
+ #define IOAT_PCI_CHANERRMASK_INT_OFFSET		0x184
+ 
+-/* PCIe config registers */
+-
+-/* EXPCAPID + N */
+-#define IOAT_DEVCTRL_OFFSET			0x8
+-/* relaxed ordering enable */
+-#define IOAT_DEVCTRL_ROE			0x10
+-
+ /* MMIO Device Registers */
+ #define IOAT_CHANCNT_OFFSET			0x00	/*  8-bit */
+ 
 -- 
 2.43.0
 
