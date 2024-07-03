@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-57653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 477E0925EEE
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:44:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18423925BEE
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:13:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CCFDB2463A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49C311C210B2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BCF181CEF;
-	Wed,  3 Jul 2024 11:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A35819580A;
+	Wed,  3 Jul 2024 11:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oS5I+jsJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPL2eDix"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A5E180A99;
-	Wed,  3 Jul 2024 11:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076ED6E5ED;
+	Wed,  3 Jul 2024 11:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005529; cv=none; b=jgfpArvYZkD6evK8ssyxCur7NZc1pIdz4avAcRPmqc76vc3OJtJHtZoxJy7yQLX30Jyt/ReOtxQ0Ho7h5CP+X7kUrT5qwo3qt76NewDj7Rqr8tnz7ACOU6eya1jbSev1OdLKo/PPQ9+PtWUYC9N2bVR3hr7bN/Fqtd2XYH+wo/8=
+	t=1720004423; cv=none; b=LgI48kugaPM5Mse0eZMF4v+Y5Ph/Q1eYj6bscJ8kU7xxRSMfYQhHurYqQvD49mrf9xXxw0uxtjZdWBiYXtwGV1tjUfjJVerIis3yvzcSOrz+deNVLYWmoftTE4iRUmNxNI/FgXh7kYU7VGPPU6STpyVu0LQe57WeP8v1xin9FgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005529; c=relaxed/simple;
-	bh=NN+J4Jewik0wS1N5jUUNEwxZ3z6Cr6thK4lcOnaQASc=;
+	s=arc-20240116; t=1720004423; c=relaxed/simple;
+	bh=26H1J4Ck0yGMBhzhE9GZXyp5tgdLdBfl8/7qOTaPOSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=phLQT6qhDPKghNqZaXsnag77oL7C0KouPb47kwu4/zn4ugw4G7MgDGfHTFtt2e13V7D7By53kATOfz1682XqjH6MLbonLfi7U15W012IOdCmFrzdXLNfJyvf82JVJ5kOHxT7CL2UHVlLDZjrirxg+EwBB/bP8kyAOtGGToZSyaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oS5I+jsJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC9B7C2BD10;
-	Wed,  3 Jul 2024 11:18:48 +0000 (UTC)
+	 MIME-Version; b=M9LmqNxlZCotI6Uye5Y89WF7aH65Q+55imudzWRF2rKftIQeqlFUZre5ut7gLxpV/vPx6fE39P1gjxz/sHlyoTwsw0Zy7uWD/AxZYKupmN3WGpejkUMVtfrKfqOsUojg9QCn21IaNqzksS8d2flHyWGzcFhS1BhTyClvgvBqPy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPL2eDix; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0178EC32781;
+	Wed,  3 Jul 2024 11:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005529;
-	bh=NN+J4Jewik0wS1N5jUUNEwxZ3z6Cr6thK4lcOnaQASc=;
+	s=korg; t=1720004422;
+	bh=26H1J4Ck0yGMBhzhE9GZXyp5tgdLdBfl8/7qOTaPOSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oS5I+jsJbRgtjTHH1wXbkWL19eEtU+awO1IN7+7YHgMFR2f4Iu0QoHNClHrSmfOw1
-	 XIKGb0EHO7qF+pidszVIfycKBmjkr2Lmpvw191HN5MN627ghvvZQ7XGl2luHtSXQwd
-	 Ive4bvsR5mA3ZVuhczX220k/Ap+9SChsShdNoZ1I=
+	b=bPL2eDix2xn2w670C2K7CX7iB8t8RVanylK/gQjXjImgIFaADsnrSK2UOwjMjVbD6
+	 lN5T2C3h/qppObUBmT6eAmuXnuu3CmcyBagRCeDL3VMOidxXSI60VvDmH63rHCWyzB
+	 /UNyubGjpluw6RDNNXp3IPxbDVM3NzU9RfMt9ueM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuangyi Chiang <ki.chiang65@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 5.15 081/356] xhci: Apply broken streams quirk to Etron EJ188 xHCI host
-Date: Wed,  3 Jul 2024 12:36:57 +0200
-Message-ID: <20240703102916.168209301@linuxfoundation.org>
+	Dev Jain <dev.jain@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Sri Jayaramappa <sjayaram@akamai.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 037/290] selftests/mm: compaction_test: fix bogus test success on Aarch64
+Date: Wed,  3 Jul 2024 12:36:58 +0200
+Message-ID: <20240703102905.599411411@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +65,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuangyi Chiang <ki.chiang65@gmail.com>
+From: Dev Jain <dev.jain@arm.com>
 
-commit 91f7a1524a92c70ffe264db8bdfa075f15bbbeb9 upstream.
+[ Upstream commit d4202e66a4b1fe6968f17f9f09bbc30d08f028a1 ]
 
-As described in commit 8f873c1ff4ca ("xhci: Blacklist using streams on the
-Etron EJ168 controller"), EJ188 have the same issue as EJ168, where Streams
-do not work reliable on EJ188. So apply XHCI_BROKEN_STREAMS quirk to EJ188
-as well.
+Patch series "Fixes for compaction_test", v2.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240611120610.3264502-4-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The compaction_test memory selftest introduces fragmentation in memory
+and then tries to allocate as many hugepages as possible. This series
+addresses some problems.
+
+On Aarch64, if nr_hugepages == 0, then the test trivially succeeds since
+compaction_index becomes 0, which is less than 3, due to no division by
+zero exception being raised. We fix that by checking for division by
+zero.
+
+Secondly, correctly set the number of hugepages to zero before trying
+to set a large number of them.
+
+Now, consider a situation in which, at the start of the test, a non-zero
+number of hugepages have been already set (while running the entire
+selftests/mm suite, or manually by the admin). The test operates on 80%
+of memory to avoid OOM-killer invocation, and because some memory is
+already blocked by hugepages, it would increase the chance of OOM-killing.
+Also, since mem_free used in check_compaction() is the value before we
+set nr_hugepages to zero, the chance that the compaction_index will
+be small is very high if the preset nr_hugepages was high, leading to a
+bogus test success.
+
+This patch (of 3):
+
+Currently, if at runtime we are not able to allocate a huge page, the test
+will trivially pass on Aarch64 due to no exception being raised on
+division by zero while computing compaction_index.  Fix that by checking
+for nr_hugepages == 0.  Anyways, in general, avoid a division by zero by
+exiting the program beforehand.  While at it, fix a typo, and handle the
+case where the number of hugepages may overflow an integer.
+
+Link: https://lkml.kernel.org/r/20240521074358.675031-1-dev.jain@arm.com
+Link: https://lkml.kernel.org/r/20240521074358.675031-2-dev.jain@arm.com
+Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Sri Jayaramappa <sjayaram@akamai.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-pci.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/vm/compaction_test.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -278,8 +278,10 @@ static void xhci_pci_quirks(struct devic
- 		xhci->quirks |= XHCI_BROKEN_STREAMS;
- 	}
- 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
--			pdev->device == PCI_DEVICE_ID_EJ188)
-+			pdev->device == PCI_DEVICE_ID_EJ188) {
- 		xhci->quirks |= XHCI_RESET_ON_RESUME;
-+		xhci->quirks |= XHCI_BROKEN_STREAMS;
-+	}
+diff --git a/tools/testing/selftests/vm/compaction_test.c b/tools/testing/selftests/vm/compaction_test.c
+index 6aa6460b854ea..309b3750e57e1 100644
+--- a/tools/testing/selftests/vm/compaction_test.c
++++ b/tools/testing/selftests/vm/compaction_test.c
+@@ -82,12 +82,13 @@ int prereq(void)
+ 	return -1;
+ }
  
- 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
- 	    pdev->device == 0x0014) {
+-int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
++int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
+ {
++	unsigned long nr_hugepages_ul;
+ 	int fd, ret = -1;
+ 	int compaction_index = 0;
+-	char initial_nr_hugepages[10] = {0};
+-	char nr_hugepages[10] = {0};
++	char initial_nr_hugepages[20] = {0};
++	char nr_hugepages[20] = {0};
+ 
+ 	/* We want to test with 80% of available memory. Else, OOM killer comes
+ 	   in to play */
+@@ -136,7 +137,12 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 
+ 	/* We should have been able to request at least 1/3 rd of the memory in
+ 	   huge pages */
+-	compaction_index = mem_free/(atoi(nr_hugepages) * hugepage_size);
++	nr_hugepages_ul = strtoul(nr_hugepages, NULL, 10);
++	if (!nr_hugepages_ul) {
++		ksft_print_msg("ERROR: No memory is available as huge pages\n");
++		goto close_fd;
++	}
++	compaction_index = mem_free/(nr_hugepages_ul * hugepage_size);
+ 
+ 	lseek(fd, 0, SEEK_SET);
+ 
+@@ -147,11 +153,11 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 		goto close_fd;
+ 	}
+ 
+-	ksft_print_msg("Number of huge pages allocated = %d\n",
+-		       atoi(nr_hugepages));
++	ksft_print_msg("Number of huge pages allocated = %lu\n",
++		       nr_hugepages_ul);
+ 
+ 	if (compaction_index > 3) {
+-		ksft_print_msg("ERROR: Less that 1/%d of memory is available\n"
++		ksft_print_msg("ERROR: Less than 1/%d of memory is available\n"
+ 			       "as huge pages\n", compaction_index);
+ 		goto close_fd;
+ 	}
+-- 
+2.43.0
+
 
 
 
