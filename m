@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-57312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6531B925C05
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:14:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1795C925D90
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 977F81C204F8
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3F4E1F217E9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F39B176FB4;
-	Wed,  3 Jul 2024 11:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A29A1185E4B;
+	Wed,  3 Jul 2024 11:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLTqRVWZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZF5PERyI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E784176AC8;
-	Wed,  3 Jul 2024 11:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DEE1849EE;
+	Wed,  3 Jul 2024 11:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004501; cv=none; b=G7Ek88DsO/utvilc4chPTOPKpF2HvMWHsuaQiNMPWQ5PcUc9oBdE2WslrOUK3Vlg/mAa06rHmU0mcW4uW2IlqkBIYyxTpaGYZmOceY2VhSnmRHrGDlxgURX+fAqQetelhunLdLYSEo+hcDJbnblLdWm/A+t63R3urvmVx582S20=
+	t=1720005647; cv=none; b=t0FZAVvPGox8Do5vZr2hubpusnkBfE9vppA5tCguKEEFJh0EeFLtTDC2EYtKmHc9IzNJvPus8AaXP/ju+7G1vLhkMYVRVA7PRE4ygvjGpKpyXKufcJKylppKzDqY9tjrOrSkH9txDor8pZ2eTf+j7NTn9pJrS9DytKvdRFzk1vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004501; c=relaxed/simple;
-	bh=IEjjIJsrgueaTjaep/OUh3GNMSaQ6HtpgJ8y8qJRmyU=;
+	s=arc-20240116; t=1720005647; c=relaxed/simple;
+	bh=RwxZS8c5yOuJ2qG3MOF4twBNNFjkrz/yLIyYYfUFts8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oeMkTS3ZgjGBm1ejNclI9YuVLHZ67KyS6o9YxriNfk4jFHsqtqNtC2nVGXNcRUeQi0MNSr34DHm9HERfl48JtoxJWG9osE5VTl5hCj76+QpsRDsps+IHF5NJ13LJuGqdW66qHhdlAa/38B9fbN2t1p3JChizXZ2b566W0JklLy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLTqRVWZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533A6C2BD10;
-	Wed,  3 Jul 2024 11:01:40 +0000 (UTC)
+	 MIME-Version; b=Kg7zs17o1cVchreKgXhAJvpMzUuXjZ38UqLuHXBlqDhfNUa6ZXAyyEDsM85FPxFlZojjDjuLf/fFNnMofe1iBbX/TgRVQakwdkHGLkB7FZ3/JjC+ldDmkozzo8vqPrFZowLfQc3e91d0fQ7Q5i1IsD8SURoOR+zE3jgkV3TEobw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZF5PERyI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD607C2BD10;
+	Wed,  3 Jul 2024 11:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004500;
-	bh=IEjjIJsrgueaTjaep/OUh3GNMSaQ6HtpgJ8y8qJRmyU=;
+	s=korg; t=1720005647;
+	bh=RwxZS8c5yOuJ2qG3MOF4twBNNFjkrz/yLIyYYfUFts8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wLTqRVWZqDT7kAPUoTy7Ke234Z+6NFI5IZmPMHI8c3wwjVjDfXdYr9Sixm8qJ8+Oo
-	 o+lWNZsXSMqBJgSxidggqh4jVAGY7na5btPjJLbg+lrsumxkeRKPjPqrjy+Kr1u86q
-	 X8vm0HzyX4D+M4dtnPoSCsSs9Kihr/7RImFAJMyY=
+	b=ZF5PERyIJTf9sjRV+jbnxanGQTUNx4CPk1O7D+7dKpLGbKMKAg/yhNWj29eiQBced
+	 gOJzuraGVkS6jaUc0qtU/fBgo5TeEI3sGbFYfz/E6gEpKyirxT9pnWMO6gJERL78sT
+	 8FXay7RmqUENOWXQpEVTBFBBxwTvHymkvcYEYC7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jie Wang <wangjie125@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 063/290] net: hns3: add cond_resched() to hns3 ring buffer init process
+Subject: [PATCH 5.15 108/356] net/ipv6: Fix the RT cache flush via sysctl using a previous delay
 Date: Wed,  3 Jul 2024 12:37:24 +0200
-Message-ID: <20240703102906.581279098@linuxfoundation.org>
+Message-ID: <20240703102917.186084544@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Wang <wangjie125@huawei.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit 968fde83841a8c23558dfbd0a0c69d636db52b55 ]
+[ Upstream commit 14a20e5b4ad998793c5f43b0330d9e1388446cf3 ]
 
-Currently hns3 ring buffer init process would hold cpu too long with big
-Tx/Rx ring depth. This could cause soft lockup.
+The net.ipv6.route.flush system parameter takes a value which specifies
+a delay used during the flush operation for aging exception routes. The
+written value is however not used in the currently requested flush and
+instead utilized only in the next one.
 
-So this patch adds cond_resched() to the process. Then cpu can break to
-run other tasks instead of busy looping.
+A problem is that ipv6_sysctl_rtcache_flush() first reads the old value
+of net->ipv6.sysctl.flush_delay into a local delay variable and then
+calls proc_dointvec() which actually updates the sysctl based on the
+provided input.
 
-Fixes: a723fb8efe29 ("net: hns3: refine for set ring parameters")
-Signed-off-by: Jie Wang <wangjie125@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fix the problem by switching the order of the two operations.
+
+Fixes: 4990509f19e8 ("[NETNS][IPV6]: Make sysctls route per namespace.")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240607112828.30285-1-petr.pavlu@suse.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 4 ++++
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.h | 2 ++
- 2 files changed, 6 insertions(+)
+ net/ipv6/route.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index a4ab3e7efa5e4..f8275534205a7 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -2513,6 +2513,9 @@ static int hns3_alloc_ring_buffers(struct hns3_enet_ring *ring)
- 		ret = hns3_alloc_and_attach_buffer(ring, i);
- 		if (ret)
- 			goto out_buffer_fail;
-+
-+		if (!(i % HNS3_RESCHED_BD_NUM))
-+			cond_resched();
- 	}
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 2c60270c5798b..0ca3da0999c6a 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -6346,12 +6346,12 @@ static int ipv6_sysctl_rtcache_flush(struct ctl_table *ctl, int write,
+ 	if (!write)
+ 		return -EINVAL;
  
+-	net = (struct net *)ctl->extra1;
+-	delay = net->ipv6.sysctl.flush_delay;
+ 	ret = proc_dointvec(ctl, write, buffer, lenp, ppos);
+ 	if (ret)
+ 		return ret;
+ 
++	net = (struct net *)ctl->extra1;
++	delay = net->ipv6.sysctl.flush_delay;
+ 	fib6_run_gc(delay <= 0 ? 0 : (unsigned long)delay, net, delay > 0);
  	return 0;
-@@ -3946,6 +3949,7 @@ int hns3_init_all_ring(struct hns3_nic_priv *priv)
- 		}
- 
- 		u64_stats_init(&priv->ring[i].syncp);
-+		cond_resched();
- 	}
- 
- 	return 0;
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-index 54d02ea4aaa7c..669cd30b9871b 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-@@ -182,6 +182,8 @@ enum hns3_nic_state {
- 
- #define HNS3_RING_EN_B				0
- 
-+#define HNS3_RESCHED_BD_NUM			1024
-+
- enum hns3_pkt_l2t_type {
- 	HNS3_L2_TYPE_UNICAST,
- 	HNS3_L2_TYPE_MULTICAST,
+ }
 -- 
 2.43.0
 
