@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F25925C89
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:19:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0193C925B3D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:07:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7397D2C31FB
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:19:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82DA3B2C7E2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21F0171E67;
-	Wed,  3 Jul 2024 11:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0378318132A;
+	Wed,  3 Jul 2024 10:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4nrJZAV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4SGSPCo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709C618410F;
-	Wed,  3 Jul 2024 11:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B718717E900;
+	Wed,  3 Jul 2024 10:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004885; cv=none; b=FxdqIb/BfjXSKhlAbGqW0f1fogtPy6k1JSBbdSnrPi7v73Y9/yixWXdJY6mw6PsYwttXvIVbwbv6XZ2hR/YGz8C3TPKBLOVi4X9nxyvpoiZBJHv48srRDByllWFTWT/ByjIK0v4fGjuVIb1pJGAllixCzQo7zX+Kku61HTYWemI=
+	t=1720003417; cv=none; b=MSnJ2Mhpq7DdWACAI3Njaw9YXASWQZTAvPP3O34Zvvw21f7w6eNyP+LOpt3eLmt39hAfR11M3qZNWqp6K+nvK+/UjGHhFQ7SZxKRAx7MC7dCDDFvSlgWuH67upQLvthxkYypxPczTvgw/imveH6n4fLlliNOsXSA+EJPTnkjkic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004885; c=relaxed/simple;
-	bh=VwDSSdP3g0SZM1MZQk29wsrIrBen3kQ+SoSgBKyyW9g=;
+	s=arc-20240116; t=1720003417; c=relaxed/simple;
+	bh=rljJlgN5IuEie2NTbNyDFELSarIqqi4kFdXGECQsQpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hfEbWcD9fOseJYxEkaJ79UKQXp/B5C8pzvNPqb+n3HB3cCp07WMjbpsnAbCN2fVyJbJ8pDyQTmiZwqirqT2rFcz51CnerlonnUtHSBm6xlEIInuxBY5AkUSqZczW0XGyalguy0DkemsLphSg1uQKfrvJs+UpUkUXCtOluElU3hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4nrJZAV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E412AC2BD10;
-	Wed,  3 Jul 2024 11:08:04 +0000 (UTC)
+	 MIME-Version; b=lONBtTLddyvkC252UikkJue7IPH9L1V27wVHk70GFrf4XFIHv1cfq9mgD8ejNQR6gRuQt+VC/eey93A1lVlAt4lBa1gdYUN9sq6XeSZ6cJFwAVk4fFGCEMQAzMmhwNWImKZi/Sg/KnrwHrsNLZJltSZGlMUJ5QXCCeABVZWWmBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4SGSPCo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C4DC2BD10;
+	Wed,  3 Jul 2024 10:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004885;
-	bh=VwDSSdP3g0SZM1MZQk29wsrIrBen3kQ+SoSgBKyyW9g=;
+	s=korg; t=1720003417;
+	bh=rljJlgN5IuEie2NTbNyDFELSarIqqi4kFdXGECQsQpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C4nrJZAV2CbcQnZ2Gg7TN8M3ySdC8XlCNmmuafh8mMCWUWhaCu/i6DNQapHl9VMn2
-	 YtmtrBVqUTAztv7y8/rStN3ezIAhSzSvfBRT0bbUdQRpfnXDaPGKZW+Zt8NlyG7tiS
-	 xuthUQUwt/yA/ZmH2hd/3ox6PQTJp4kQVMd2qROw=
+	b=d4SGSPComUwBRP4VhVU4zg1OFeumBl5+qFQpidCOhdW8fERn3pyizKI2E8WPX0iQa
+	 HobmKJZeKPIf1B83dYtIvbnhKVeJ7zMpmYOS9JTk3YXGQrCrqtrIzDwqFHJhPRMalf
+	 PjsGOSZz4pA/iSx28M5GHDqD9Pn6lSPgtFjjmE34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Aditya Pakki <pakki001@umn.edu>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 158/290] dmaengine: ioat: use PCI core macros for PCIe Capability
+Subject: [PATCH 4.19 042/139] ipv6/route: Add a missing check on proc_dointvec
 Date: Wed,  3 Jul 2024 12:38:59 +0200
-Message-ID: <20240703102910.148506092@linuxfoundation.org>
+Message-ID: <20240703102832.027031602@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Aditya Pakki <pakki001@umn.edu>
 
-[ Upstream commit 8f6707d0773be31972768abd6e0bf7b8515b5b1a ]
+[ Upstream commit f0fb9b288d0a7e9cc324ae362e2dfd2cc2217ded ]
 
-The PCIe Capability is defined by the PCIe spec, so use the PCI_EXP_DEVCTL
-macros defined by the PCI core instead of defining copies in IOAT.  This
-makes it easier to find all uses of the PCIe Device Control register.  No
-functional change intended.
+While flushing the cache via  ipv6_sysctl_rtcache_flush(), the call
+to proc_dointvec() may fail. The fix adds a check that returns the
+error, on failure.
 
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20230307214615.887354-1-helgaas@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: f0dc9fda2e0e ("dmaengine: ioatdma: Fix error path in ioat3_dma_probe()")
+Signed-off-by: Aditya Pakki <pakki001@umn.edu>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 14a20e5b4ad9 ("net/ipv6: Fix the RT cache flush via sysctl using a previous delay")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ioat/init.c      | 6 +++---
- drivers/dma/ioat/registers.h | 7 -------
- 2 files changed, 3 insertions(+), 10 deletions(-)
+ net/ipv6/route.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
-index 6c27980a5ec8f..ed4910e3bc2ac 100644
---- a/drivers/dma/ioat/init.c
-+++ b/drivers/dma/ioat/init.c
-@@ -1190,13 +1190,13 @@ static int ioat3_dma_probe(struct ioatdma_device *ioat_dma, int dca)
- 		ioat_dma->dca = ioat_dca_init(pdev, ioat_dma->reg_base);
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index db349679b1127..50bf2ffe1f2a5 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -5166,12 +5166,16 @@ int ipv6_sysctl_rtcache_flush(struct ctl_table *ctl, int write,
+ {
+ 	struct net *net;
+ 	int delay;
++	int ret;
+ 	if (!write)
+ 		return -EINVAL;
  
- 	/* disable relaxed ordering */
--	err = pcie_capability_read_word(pdev, IOAT_DEVCTRL_OFFSET, &val16);
-+	err = pcie_capability_read_word(pdev, PCI_EXP_DEVCTL, &val16);
- 	if (err)
- 		return pcibios_err_to_errno(err);
- 
- 	/* clear relaxed ordering enable */
--	val16 &= ~IOAT_DEVCTRL_ROE;
--	err = pcie_capability_write_word(pdev, IOAT_DEVCTRL_OFFSET, val16);
-+	val16 &= ~PCI_EXP_DEVCTL_RELAX_EN;
-+	err = pcie_capability_write_word(pdev, PCI_EXP_DEVCTL, val16);
- 	if (err)
- 		return pcibios_err_to_errno(err);
- 
-diff --git a/drivers/dma/ioat/registers.h b/drivers/dma/ioat/registers.h
-index f55a5f92f1857..54cf0ad39887b 100644
---- a/drivers/dma/ioat/registers.h
-+++ b/drivers/dma/ioat/registers.h
-@@ -14,13 +14,6 @@
- #define IOAT_PCI_CHANERR_INT_OFFSET		0x180
- #define IOAT_PCI_CHANERRMASK_INT_OFFSET		0x184
- 
--/* PCIe config registers */
--
--/* EXPCAPID + N */
--#define IOAT_DEVCTRL_OFFSET			0x8
--/* relaxed ordering enable */
--#define IOAT_DEVCTRL_ROE			0x10
--
- /* MMIO Device Registers */
- #define IOAT_CHANCNT_OFFSET			0x00	/*  8-bit */
- 
+ 	net = (struct net *)ctl->extra1;
+ 	delay = net->ipv6.sysctl.flush_delay;
+-	proc_dointvec(ctl, write, buffer, lenp, ppos);
++	ret = proc_dointvec(ctl, write, buffer, lenp, ppos);
++	if (ret)
++		return ret;
++
+ 	fib6_run_gc(delay <= 0 ? 0 : (unsigned long)delay, net, delay > 0);
+ 	return 0;
+ }
 -- 
 2.43.0
 
