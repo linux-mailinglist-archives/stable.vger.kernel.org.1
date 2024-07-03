@@ -1,99 +1,108 @@
-Return-Path: <stable+bounces-57910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F6F4925F83
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:01:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D6EB925F8B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:02:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30C43291FE6
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:01:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B74491F2299B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03801741C9;
-	Wed,  3 Jul 2024 11:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE11915D5B3;
+	Wed,  3 Jul 2024 12:02:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="duvB6pxB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E440173348;
-	Wed,  3 Jul 2024 11:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB10B13C3D3;
+	Wed,  3 Jul 2024 12:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720007961; cv=none; b=ImHSVraRQcivg9VwW4M+CS4VY0THNzSEMelUsTKwmqh22de1HvIaEiWUTzkAvvG3LbF8kUuz7lXzgdXpk7LPkSB3tDm6H0pacPaV98H9nfEBpcxLOmq1fRPtmbWBX8NrkARC/Ju/Y+owuDF6xI5LOlK8qwIxCUst+dHiWqBgsP4=
+	t=1720008143; cv=none; b=GRfoVDyIj22MM06V0iGT6S/qd7AdA5duWCSS1PhMs/hXvImbH2XuJhdfuVJ55S4OJbKQK8Pr92ENZuxTiclpoIGtmp5wxhCj9DK5IzJn8omkRq97w4Ry+6V6F+Bt6/1UUaWy9JZPrwjEMhcVtXzC+WaoiCv2AyjBgr1OqaWdiTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720007961; c=relaxed/simple;
-	bh=Je7wS9RpqxSacD0i2REqoriVrEW8W9Ly+p/tTqcEIE0=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=MqcIsuXgechAjgM7KgQpsgTKdPEkBrp4WDlH6/OqheYEKiYH4okBGj55IFtK0V14ag/wnmN3tx3U3M2zo9QGqAOKMVDeFDYDzJsMHbv/m+BUG9FZoy9DA5rUTrLXO7FZdKbQ8YHLzVo2vIH8Iz9qOqKK9JqVu0nQ/eYQeXpD/kE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33501C2BD10;
-	Wed,  3 Jul 2024 11:59:18 +0000 (UTC)
-Message-ID: <2dea6faf-53f6-461a-809b-ec572357ad07@xs4all.nl>
-Date: Wed, 3 Jul 2024 13:59:16 +0200
+	s=arc-20240116; t=1720008143; c=relaxed/simple;
+	bh=Al8/JsQVoiEny9JlYrmZkCUw5uitD7yQhpfmW2ScTIA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gbhm+vnVq1iK4bxwsy3vtejSJzpSYeQPP3jLVN4LsvSogVXNz4xYg1eOzd/Dgl//6qF0G7HA9BoJztOsK7qUaZGHajYGI+S5PF1eXskw7rkmT6ePLCSuJJMOuiC68ylcl4Pafle+R/8Xb9QtgYRWLdR036XkeP/fzIoodJazSW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=duvB6pxB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C082C2BD10;
+	Wed,  3 Jul 2024 12:02:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720008143;
+	bh=Al8/JsQVoiEny9JlYrmZkCUw5uitD7yQhpfmW2ScTIA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=duvB6pxBu7z/aLGhPfQxOuDkxa6JBMQiRAX6Td1fyEQwaHEBV+qnKpmiCFuLT69aD
+	 pi9i1f0BfnSZdSuQj0ynFPeTgLykh0Ea30cWGxOAEHTiOfC9Mua8H6xTP09U35g/Dz
+	 v9m+jxX16zgzXFIuLns4GQA7Sz2WHUjFwraqUtClC4+CfnAD1Xu9AjB+18MkWWENY3
+	 ORCK4shVzdbp78FOzZK7UAbt9H48FANXtvrJaJud3i+qUMY7EpQkKZc5In2eQ5fBCq
+	 Id9Hrxb8pgaHrfY/xPPrynp5xrGdzRvc3FZPlhtIAsB180vquzcXht5sZ8jzG5y8Be
+	 A/77zOXEl/dAw==
+Date: Wed, 3 Jul 2024 13:02:18 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15 067/356] selftests/mm: log a consistent test name
+ for check_compaction
+Message-ID: <416ea8e5-f3e0-47b3-93c2-34a67c474d8f@sirena.org.uk>
+References: <20240703102913.093882413@linuxfoundation.org>
+ <20240703102915.636328702@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US, nl
-To: Linux Media Mailing List <linux-media@vger.kernel.org>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Alain Volmat <alain.volmat@foss.st.com>,
- Hugues Fruchet <hugues.fruchet@st.com>, Linux Stable
- <stable@vger.kernel.org>,
- "linux-stm32@st-md-mailman.stormreply.com"
- <linux-stm32@st-md-mailman.stormreply.com>,
- linux-arm-kernel@lists.infradead.org,
- Linux Kernel <linux-kernel@vger.kernel.org>
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH] media: stm32: dcmipp: correct error handling in,
- dcmipp_create_subdevs
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="RIHx1C9vyBB2MOnu"
+Content-Disposition: inline
+In-Reply-To: <20240703102915.636328702@linuxfoundation.org>
+X-Cookie: There is a fly on your nose.
 
-From: Alain Volmat <alain.volmat@foss.st.com>
 
-Correct error handling within the dcmipp_create_subdevs by properly
-decrementing the i counter when releasing the subdevs.
+--RIHx1C9vyBB2MOnu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 28e0f3772296 ("media: stm32-dcmipp: STM32 DCMIPP camera interface driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-[hverkuil: correct the indices: it's [i], not [i - 1].]
----
-The original patch would cause a crash due to the incorrect indices in the
-statement after the while. Since 'i' can now become 0, so i - 1 would be a
-negative index access, which was obviously not the intention.
+On Wed, Jul 03, 2024 at 12:36:43PM +0200, Greg Kroah-Hartman wrote:
 
-I reverted the patch once I noticed this (better to hang in an infinite
-loop than to crash), but I want to get a proper fix in. Rather than
-waiting for that, I decided to just take the original patch from Alain, with
-just the indices fixed.
----
- drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> Every test result report in the compaction test prints a distinct log
+> messae, and some of the reports print a name that varies at runtime.  This
+> causes problems for automation since a lot of automation software uses the
+> printed string as the name of the test, if the name varies from run to run
+> and from pass to fail then the automation software can't identify that a
+> test changed result or that the same tests are being run.
+>=20
+> Refactor the logging to use a consistent name when printing the result of
+> the test, printing the existing messages as diagnostic information instead
+> so they are still available for people trying to interpret the results.
 
-diff --git a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c
-index 4acc3b90d03a..7f771ea49b78 100644
---- a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c
-+++ b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c
-@@ -202,8 +202,8 @@ static int dcmipp_create_subdevs(struct dcmipp_device *dcmipp)
- 	return 0;
+I'm not convinced that this is a good stable candidate, it will change
+the output people are seeing in their test environment which might be an
+undesirable change.
 
- err_init_entity:
--	while (i > 0)
--		dcmipp->pipe_cfg->ents[i - 1].release(dcmipp->entity[i - 1]);
-+	while (i-- > 0)
-+		dcmipp->pipe_cfg->ents[i].release(dcmipp->entity[i]);
- 	return ret;
- }
+--RIHx1C9vyBB2MOnu
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-2.43.0
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmaFPckACgkQJNaLcl1U
+h9AhSgf/aap702qY059NOepY37zjg/l9QiyMxcSHLyLE+vGJbnBOVHRKME3uT0nA
+t99OH/u0QM+kw5932QAU1KqE/IYxH+QVYaPBGRPR/YwmmLCYIhoFkGDzKagziMwh
+PxouO1u8VPgV2DdA00xNPIKil+MFzKa0fASfmy8PUnKIoccGB6pLMev5WJkjo4/V
+/AASkds9vc+/8lQ6umpT5NPcGmAZPuPclluH0l/vj4udCPKpSXRuqDlqEySgLwPB
++n9i/9R6I+VuCjzOCxQOc8aXsYvIcq9BqBuikZDwDQYGr9LMnaJ6gi7mnKmsvfTk
+ZdELaY2Rx6dNdblVXeXzpkWaXKT6KA==
+=5sUY
+-----END PGP SIGNATURE-----
+
+--RIHx1C9vyBB2MOnu--
 
