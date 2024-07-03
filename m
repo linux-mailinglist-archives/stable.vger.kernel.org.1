@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-57453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9337A925FB8
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:08:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 808E3925FAB
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:06:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C25D6B3B004
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:20:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60295B3B1D6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B501850BF;
-	Wed,  3 Jul 2024 11:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09E5185E4F;
+	Wed,  3 Jul 2024 11:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U4rqE+5E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0h1Znbk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92C4136E2A;
-	Wed,  3 Jul 2024 11:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF4A17335C;
+	Wed,  3 Jul 2024 11:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004929; cv=none; b=K/qGXvqaqVuKdHCakTqq8qkM13CD4QDRuukgKqXj+fc+00RclaN3xrdCZk8kuXNeUHfTdu6dohR5K6Z5pqy+Zmml7jNBFeYx86w2lcJ2nQgEhci4ouv3AvzCLhTWX8rz+HDTo958EiwV3b8LoKWLJrHEO08ukn4s+ojOg2ovULw=
+	t=1720004953; cv=none; b=GRGQF+4PcseHUxKuuFySIbwPv1cauFjB/wDKnFLCK8gVe7dvTfdd5mXAfVMWasQrYGu4bxlWKBeI3RhBKTIocMZGoI2kgruqPDra31cy27wobBKemCC2ijuU2XkSX4aSX+evJ8gLq0tgE8A4Aw12ASZ5YJgFBVU9U0gixv4n3i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004929; c=relaxed/simple;
-	bh=aydpzet7+5dXrnjW7HPdxTL+UaWyQmgmKQEMdHjxhc4=;
+	s=arc-20240116; t=1720004953; c=relaxed/simple;
+	bh=CyT0TI0z3mGwONgpRtzfYdj2zGIorbhct3c1+h/dyCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kvKYsV6HEqIz1RjFRmQDRQkvQWtm8RsWay2lf6Gvu0hOD+9e3bC87qVqA71PdG5gz7eAEQuiCSVmBK5YFlaug7sUmD45h5RO+0e7+uOhmttaEyqP1DyifMuo+lmVH1K3LRHgO/1wVtWua28I5Q6Wml4ULSHxNFyYSoAQOo4o8JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U4rqE+5E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E73EC2BD10;
-	Wed,  3 Jul 2024 11:08:48 +0000 (UTC)
+	 MIME-Version; b=YxPk80MLJYMWgZIpWvWJeHa5ca0EnV0WxOyLgfKNs7s/o3FmAYgNTUKQtm1gA+FSBrut1TMg0vWn1D+RDieN++SN+DPqugwlgsO3T6P/vznbkRiRJpBIReSTbB3MFWNNx9oLia9Nufojt0WDZxLt4TiaQ7ESHwKutxduibWpIHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0h1Znbk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16953C2BD10;
+	Wed,  3 Jul 2024 11:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004928;
-	bh=aydpzet7+5dXrnjW7HPdxTL+UaWyQmgmKQEMdHjxhc4=;
+	s=korg; t=1720004953;
+	bh=CyT0TI0z3mGwONgpRtzfYdj2zGIorbhct3c1+h/dyCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U4rqE+5EYk4WRTC0fKH9PKjhisPglz4ATHiQP9ESh0cqcAKiu59WwEvRfRWHku76R
-	 lGtNuYwmjary/l3au4SYk7iY4qN/vq2qGvLKg5wbFcF1EjwlxNlCXJtR/U1f0Ndvnv
-	 ZI56roSjB3N3KWTgcm+iUDWGb629Zt/RieE3IQjA=
+	b=M0h1Znbkbog+mHvFrncb143UVF0Pn8h7D3eDI3J3CEfk+ioK8jr7wTeGHSpVWJb8e
+	 QgrnsMRilUGtNvfroYwGWHBuw3MjDzy/ZyjTIEID5nsNg7awlnu0+D/qImMQoSZ24O
+	 6VsBLqkp5V95D826Px09cGkkJkKqCq/2Vz1RVsNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Keeping <jkeeping@inmusicbrands.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 204/290] Input: ili210x - fix ili251x_read_touch_data() return value
-Date: Wed,  3 Jul 2024 12:39:45 +0200
-Message-ID: <20240703102911.868422598@linuxfoundation.org>
+Subject: [PATCH 5.10 211/290] drm/amdgpu: fix UBSAN warning in kv_dpm.c
+Date: Wed,  3 Jul 2024 12:39:52 +0200
+Message-ID: <20240703102912.130526447@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
 References: <20240703102904.170852981@linuxfoundation.org>
@@ -66,39 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 9f0fad0382124e7e23b3c730fa78818c22c89c0a ]
+[ Upstream commit f0d576f840153392d04b2d52cf3adab8f62e8cb6 ]
 
-The caller of this function treats all non-zero values as an error, so
-the return value of i2c_master_recv() cannot be returned directly.
+Adds bounds check for sumo_vid_mapping_entry.
 
-This fixes touch reporting when there are more than 6 active touches.
-
-Fixes: ef536abd3afd1 ("Input: ili210x - define and use chip operations structure")
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Link: https://lore.kernel.org/r/20240523085624.2295988-1-jkeeping@inmusicbrands.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3392
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/touchscreen/ili210x.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/input/touchscreen/ili210x.c b/drivers/input/touchscreen/ili210x.c
-index f437eefec94ad..9452a12ddb096 100644
---- a/drivers/input/touchscreen/ili210x.c
-+++ b/drivers/input/touchscreen/ili210x.c
-@@ -231,8 +231,8 @@ static int ili251x_read_touch_data(struct i2c_client *client, u8 *data)
- 	if (!error && data[0] == 2) {
- 		error = i2c_master_recv(client, data + ILI251X_DATA_SIZE1,
- 					ILI251X_DATA_SIZE2);
--		if (error >= 0 && error != ILI251X_DATA_SIZE2)
--			error = -EIO;
-+		if (error >= 0)
-+			error = error == ILI251X_DATA_SIZE2 ? 0 : -EIO;
- 	}
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c b/drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c
+index 6eb6f05c11367..56e15f5bc8225 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c
+@@ -163,6 +163,8 @@ static void sumo_construct_vid_mapping_table(struct amdgpu_device *adev,
  
- 	return error;
+ 	for (i = 0; i < SUMO_MAX_HARDWARE_POWERLEVELS; i++) {
+ 		if (table[i].ulSupportedSCLK != 0) {
++			if (table[i].usVoltageIndex >= SUMO_MAX_NUMBER_VOLTAGES)
++				continue;
+ 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_7bit =
+ 				table[i].usVoltageID;
+ 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_2bit =
 -- 
 2.43.0
 
