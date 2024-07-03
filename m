@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99899925A33
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:55:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60ABA925D55
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBF401C25F53
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D498BB355C2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019341741FB;
-	Wed,  3 Jul 2024 10:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7152185E6B;
+	Wed,  3 Jul 2024 10:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0bKZiUt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LX18YVBh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DE21741FC;
-	Wed,  3 Jul 2024 10:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8662A174ED1;
+	Wed,  3 Jul 2024 10:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003604; cv=none; b=rH3yCu/5o80zn1VPnFTj8nwJy/FOrDeq14nrH+/LvdwT9qlx9acjeWXtZSXl0YfSsYwtYZAh1UppTw91w927y06IJNjTnTP71IoG3tXP1KhUoeg31bNvQbHJyTV6UrtnMV30IPrJmwLPKZeR57DQzKqb1Kx8otn1XB+35Hg8Kxw=
+	t=1720004157; cv=none; b=ciXaDkBwIfjdJVYxKsuJEMyhb6UhwEwxJRozDnQDasjjxnQN7tZYXHnTOs2mpuhv+pPQwycNVWpyGMx0fg4hFwTxvkXUmK1UbkcGtrgfS0nbWaxRx/BsLKHYY6Xn2MbtJmc8SiVgSxxJXY6GZdNLaHMvFwhdgf/nAPc9ddYxwco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003604; c=relaxed/simple;
-	bh=+5nrnRPEeMwDgx+CyuYYqiT7T9XRr9l1pB3t5e4EVu8=;
+	s=arc-20240116; t=1720004157; c=relaxed/simple;
+	bh=PDwgDYeEEsUYnxQnwBg3/jSjPEnKhhzBSpf5BrAWMRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N8A2lGDIQCPGfLMp8AjIWhAmYlXLa6hDonKm1rijgHGUt2/PzouFgBh2qbtZ9XMZrZ02bC2Znoyak/oTlp1bYjTNO8L5H3pxD6cbJlUB0m0wBTv+Y5qRUffQ7d5NXLJyTcJsii/vYNVK6lPqsGNGEe6yDAp7IxqFhkuxV0tc2Mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0bKZiUt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA90C2BD10;
-	Wed,  3 Jul 2024 10:46:44 +0000 (UTC)
+	 MIME-Version; b=kelcMcWCpTIa+IQoWReOlgLbfeD/HZiTJntVVdGXYRB5ACMeg+2LSsUnb/W5Gv2iZFYpJBUxF8fz2cDLx8jjvHP5M8vDVskKB03DAykxA4wqlAjWw9lx4Fz60DCYsIrnPqYaJJl9fzNJjZbQ23G3rZmrdd1Yvbk6ly/tPIZT+vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LX18YVBh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B49C2BD10;
+	Wed,  3 Jul 2024 10:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003604;
-	bh=+5nrnRPEeMwDgx+CyuYYqiT7T9XRr9l1pB3t5e4EVu8=;
+	s=korg; t=1720004157;
+	bh=PDwgDYeEEsUYnxQnwBg3/jSjPEnKhhzBSpf5BrAWMRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C0bKZiUtErLC1kg5SJhwU5Pm3X3efv3zDfhIlhsRQgWkEO0Kp2voD0R3o0tK/vPz5
-	 h8amYlylowZ3Gtlls+K5IiVv9g+cU7jHMceRmPH2Zh95OdB0c6RkDr8gpWqF0EukH+
-	 6B355BnZgXHYGjob34sPk+WhqwlywW6ygraAJbiU=
+	b=LX18YVBhvdyBCwWmH87mCqyhX7lzAdZWl5NNHSkGCEHcduxs9iHQXkUhfluvYJ43u
+	 PXm3b8C327axauSYbbnpMH1via2YnfOC6yfXdN/KNbcuLC83wrVXn4bBfcMmiQIZPc
+	 EsuCqozHQQZNZB9Ms6swGFNacllegdDoKYFrLfEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingyuan Mo <hdthky0@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 104/139] netfilter: nf_tables: validate family when identifying table via handle
+Subject: [PATCH 5.4 140/189] ASoC: fsl-asoc-card: set priv->pdev before using it
 Date: Wed,  3 Jul 2024 12:40:01 +0200
-Message-ID: <20240703102834.369840428@linuxfoundation.org>
+Message-ID: <20240703102846.765293824@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
 
-[ Upstream commit f6e1532a2697b81da00bfb184e99d15e01e9d98c ]
+[ Upstream commit 90f3feb24172185f1832636264943e8b5e289245 ]
 
-Validate table family when looking up for it via NFTA_TABLE_HANDLE.
+priv->pdev pointer was set after being used in
+fsl_asoc_card_audmux_init().
+Move this assignment at the start of the probe function, so
+sub-functions can correctly use pdev through priv.
 
-Fixes: 3ecbfd65f50e ("netfilter: nf_tables: allocate handle and delete objects via handle")
-Reported-by: Xingyuan Mo <hdthky0@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+fsl_asoc_card_audmux_init() dereferences priv->pdev to get access to the
+dev struct, used with dev_err macros.
+As priv is zero-initialised, there would be a NULL pointer dereference.
+Note that if priv->dev is dereferenced before assignment but never used,
+for example if there is no error to be printed, the driver won't crash
+probably due to compiler optimisations.
+
+Fixes: 708b4351f08c ("ASoC: fsl: Add Freescale Generic ASoC Sound Card with ASRC support")
+Signed-off-by: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+Link: https://patch.msgid.link/20240620132511.4291-2-elinor.montmasson@savoirfairelinux.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/soc/fsl/fsl-asoc-card.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 198e4a89df481..2c31470dd61f5 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -536,7 +536,7 @@ static struct nft_table *nft_table_lookup(const struct net *net,
+diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
+index db663e7d17a42..c7f7335bbf863 100644
+--- a/sound/soc/fsl/fsl-asoc-card.c
++++ b/sound/soc/fsl/fsl-asoc-card.c
+@@ -494,6 +494,8 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+ 	if (!priv)
+ 		return -ENOMEM;
  
- static struct nft_table *nft_table_lookup_byhandle(const struct net *net,
- 						   const struct nlattr *nla,
--						   u8 genmask)
-+						   int family, u8 genmask)
- {
- 	struct nftables_pernet *nft_net;
- 	struct nft_table *table;
-@@ -544,6 +544,7 @@ static struct nft_table *nft_table_lookup_byhandle(const struct net *net,
- 	nft_net = net_generic(net, nf_tables_net_id);
- 	list_for_each_entry(table, &nft_net->tables, list) {
- 		if (be64_to_cpu(nla_get_be64(nla)) == table->handle &&
-+		    table->family == family &&
- 		    nft_active_genmask(table, genmask))
- 			return table;
- 	}
-@@ -1189,7 +1190,7 @@ static int nf_tables_deltable(struct net *net, struct sock *nlsk,
++	priv->pdev = pdev;
++
+ 	cpu_np = of_parse_phandle(np, "audio-cpu", 0);
+ 	/* Give a chance to old DT binding */
+ 	if (!cpu_np)
+@@ -606,7 +608,6 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+ 		 codec_dev->name);
  
- 	if (nla[NFTA_TABLE_HANDLE]) {
- 		attr = nla[NFTA_TABLE_HANDLE];
--		table = nft_table_lookup_byhandle(net, attr, genmask);
-+		table = nft_table_lookup_byhandle(net, attr, family, genmask);
- 	} else {
- 		attr = nla[NFTA_TABLE_NAME];
- 		table = nft_table_lookup(net, attr, family, genmask);
+ 	/* Initialize sound card */
+-	priv->pdev = pdev;
+ 	priv->card.dev = &pdev->dev;
+ 	priv->card.name = priv->name;
+ 	priv->card.dai_link = priv->dai_link;
 -- 
 2.43.0
 
