@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 510C4925F2C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:52:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 571C6925E40
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89DE4B3AF72
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:20:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AA1E2A3040
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E03194A71;
-	Wed,  3 Jul 2024 11:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E01817C21D;
+	Wed,  3 Jul 2024 11:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4F2uUcp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vr99wkUo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932DC1850A8;
-	Wed,  3 Jul 2024 11:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF20713B280;
+	Wed,  3 Jul 2024 11:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004922; cv=none; b=OCrgmPzS+Ilsri43SzeSmQZJG1+2lcUTy/1II2E2HLX55x1duBXB+XhTJJuVGTB8yZ/2+tth/dcgARBVLagPwl6D0BN6lYQ7Sbg47ayraKx4+ngEPuQho9iqD0F46DzYYodpN3A0zalf7lDzh/HAv2lrOTbdzx/mDDMdrYVT6Cc=
+	t=1720006022; cv=none; b=YeRYAx70G7qWoQVkgjxkv3ve2p8pANMqDh70YWZUQ3f/Pme95wi/b/F8ejA93QgUuTZk0QEBwAvj3cQ506IPX8AFAq6AqSX321pZx2uO2eNKepJRK6Ejn1gl8NwUJCiro2pOScAPX7HGqTV2cT9SDxCS53fD3qbIXmITZmusISE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004922; c=relaxed/simple;
-	bh=s7oTOKZlbOg+vOrqKjyv3KwCF6cSUUkauFfjmUj/fgE=;
+	s=arc-20240116; t=1720006022; c=relaxed/simple;
+	bh=mx+M/kBojnvjrnv/YHzWPKH5cbGl6hKSbYxqG41VEHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DXoVSU3XLGFxwC7/HBL/BTxoUkQ0Wix5S/6nTgTBsj2dBoR4ZgrRBlWR9xsKf6GzMjeilT9ILalfiCs59XXWumNSJ3EwJX+3UL9NytSxT/xq2X56YIf7oycu1VLBVY/GgYXOmaPVtDWZUmVZnL1zFL0u+0bFKvp1lZcitklB3hE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4F2uUcp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A02DC2BD10;
-	Wed,  3 Jul 2024 11:08:41 +0000 (UTC)
+	 MIME-Version; b=pQFbEmyZsfcMGXAdpNEbQw8W8q2fn8PyRNHFZ1yBUW2yh4jA7KvDcAH7PfI1LKl+r6DaIJ9aNBb67bDQOCgGB7yHZf7dMzku5GlwKGbUkYvC5u3/5VGVsGObi1hpKKI2OIstgas6ViiZ7mm2NkpMBKU6agIaNCVm7aOpFlX2Oc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vr99wkUo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D42C2BD10;
+	Wed,  3 Jul 2024 11:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004922;
-	bh=s7oTOKZlbOg+vOrqKjyv3KwCF6cSUUkauFfjmUj/fgE=;
+	s=korg; t=1720006021;
+	bh=mx+M/kBojnvjrnv/YHzWPKH5cbGl6hKSbYxqG41VEHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S4F2uUcpPOAvydrhNO6M7t1yS5amv5qbVTbdh7lRY6l8hYawYsku6gY+iFVmbNTAw
-	 cJZwxOAiKPLZaydWIqM7zqBOUcfoX6vQmS3uKEHcgBV3LRyoctFpqBH+zEWEd04Fwc
-	 3QjyLN1K/yNe7XLITzBR57ioZnpGtFE50/ro1gHY=
+	b=Vr99wkUoN9krE2tIfeBGxoaZGS0NdzxoSa0UhrR8vy1kDqqe/8tmaKtJM1Fom85zm
+	 /taWTDjzu9KsXONJTmnVsvKg/U+BLuNFyVTU7lzs+pze6qLPIgpr+KMb7mqs+sxieM
+	 5Ye3WWjUfwND7Y2JDw30/hM7BdXqFvZ5UIzsBvW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stuart Axon <stuaxo2@yahoo.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 202/290] ACPI: x86: utils: Add Picasso to the list for forcing StorageD3Enable
+Subject: [PATCH 5.15 247/356] Revert "kheaders: substituting --sort in archive creation"
 Date: Wed,  3 Jul 2024 12:39:43 +0200
-Message-ID: <20240703102911.792649818@linuxfoundation.org>
+Message-ID: <20240703102922.460597152@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 10b6b4a8ac6120ec36555fd286eed577f7632e3b ]
+[ Upstream commit 49c386ebbb43394ff4773ce24f726f6afc4c30c8 ]
 
-Picasso was the first APU that introduced s2idle support from AMD,
-and it was predating before vendors started to use `StorageD3Enable`
-in their firmware.
+This reverts commit 700dea5a0bea9f64eba89fae7cb2540326fdfdc1.
 
-Windows doesn't have problems with this hardware and NVME so it was
-likely on the list of hardcoded CPUs to use this behavior in Windows.
+The reason for that commit was --sort=ORDER introduced in
+tar 1.28 (2014). More than 3 years have passed since then.
 
-Add it to the list for Linux to avoid NVME resume issues.
+Requiring GNU tar 1.28 should be fine now because we require
+GCC 5.1 (2015).
 
-Reported-by: Stuart Axon <stuaxo2@yahoo.com>
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2449
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: e79a10652bbd ("ACPI: x86: Force StorageD3Enable on more products")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+Stable-dep-of: 3bd27a847a3a ("kheaders: explicitly define file modes for archived headers")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/gen_kheaders.sh | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index f1dd086d0b87d..7d6083d40bf6b 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -204,6 +204,7 @@ bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *s
-       disk in the system.
-  */
- static const struct x86_cpu_id storage_d3_cpu_ids[] = {
-+	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 24, NULL),  /* Picasso */
- 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),	/* Renoir */
- 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL),	/* Lucienne */
- 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 25, 80, NULL),	/* Cezanne */
+diff --git a/kernel/gen_kheaders.sh b/kernel/gen_kheaders.sh
+index 1966a749e0d96..5ab483a3ee5a5 100755
+--- a/kernel/gen_kheaders.sh
++++ b/kernel/gen_kheaders.sh
+@@ -81,12 +81,9 @@ find $cpio_dir -type f -print0 |
+ 	xargs -0 -P8 -n1 perl -pi -e 'BEGIN {undef $/;}; s/\/\*((?!SPDX).)*?\*\///smg;'
+ 
+ # Create archive and try to normalize metadata for reproducibility.
+-# For compatibility with older versions of tar, files are fed to tar
+-# pre-sorted, as --sort=name might not be available.
+-find $cpio_dir -printf "./%P\n" | LC_ALL=C sort | \
+-    tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
+-    --owner=0 --group=0 --numeric-owner --no-recursion \
+-    -I $XZ -cf $tarfile -C $cpio_dir/ -T - > /dev/null
++tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
++    --owner=0 --group=0 --sort=name --numeric-owner \
++    -I $XZ -cf $tarfile -C $cpio_dir/ . > /dev/null
+ 
+ echo $headers_md5 > kernel/kheaders.md5
+ echo "$this_file_md5" >> kernel/kheaders.md5
 -- 
 2.43.0
 
