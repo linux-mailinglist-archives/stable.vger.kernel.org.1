@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-57527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B248925CD8
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:23:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0355C925E5D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:36:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10197280B41
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:23:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF5541F25F67
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170A2194ACA;
-	Wed,  3 Jul 2024 11:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F3718133B;
+	Wed,  3 Jul 2024 11:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="McM0F/ly"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epYKVQur"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB3F617DA3A;
-	Wed,  3 Jul 2024 11:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0557A18132A;
+	Wed,  3 Jul 2024 11:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005149; cv=none; b=j510Wc1gW5rK3ijV/2+uH/3kSDAVhb7WSFPNo8/rWAVodvWLF4/eixIV6f0HBBBD68lin38bdVAutggRVSQTHlUYmbUZbixpbV44mhpbomrI0LdT8YUXUuBeM5MnmrrMXAWJQ7WpzyLJahqxAHFnvU9fSF5QqBs0y5ycOnWL3qw=
+	t=1720006167; cv=none; b=FsRVxyoHa4pXtsNixIpKSuwSDjWIgSPfJgP8AwfJXv0G8R3PHXchOkEibB24M3hdo3lM6lmyvTxP2TkKGiB/Hzz4+M+onnYmY8zb+Ycyj4ZjUcvu34j1k8P8XryEVAjxoksfTZQXWH1XFe9VDTw9BRCPMJiWrSJyrR2k0bI2K1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005149; c=relaxed/simple;
-	bh=6hF5HMxdwmf5NdWFJh17Jms3Rr8ycG4RGQiQKdAQ03o=;
+	s=arc-20240116; t=1720006167; c=relaxed/simple;
+	bh=GJ0HDf+RDyBQ+5s7fQiYm4mvLHLGBFEUjmrcsx/evII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JJbhzctyiKFmkhRq5/PZmaNpCncijyy/uSPmkTblCIFFekUblOwJDIQAtjmapeYCfNcZEPAiBeh1RDyds/0eVl/xl3O0NI9meOVfFd4GseVpe6I8rSjIorw0V3X+/f1CVEOiYJ1AhYtlTM0b/XJLp8l+8cED9E8r07ACdyqTEDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=McM0F/ly; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5576FC2BD10;
-	Wed,  3 Jul 2024 11:12:29 +0000 (UTC)
+	 MIME-Version; b=X42yQCIHCSvFCuI5TaCNM6wQJBv5IeqjzG4kGmPTKWBhHdrMmOTFOykjf0ZswNY6Hp5bm+aCZGvUu7MaNn3D9IK8Mx7d/xPwEUR/KlSDWEPLzFSEUnEuDoIsvbv6lokNBc6VZQBm+F72QVnHTzeNXISNxthxaZAZuGEdWM58bGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epYKVQur; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C186C2BD10;
+	Wed,  3 Jul 2024 11:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005149;
-	bh=6hF5HMxdwmf5NdWFJh17Jms3Rr8ycG4RGQiQKdAQ03o=;
+	s=korg; t=1720006166;
+	bh=GJ0HDf+RDyBQ+5s7fQiYm4mvLHLGBFEUjmrcsx/evII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=McM0F/lyvMGkmRb8v8errcCkfQ6YTE3Bh7as6dKhwWv5foCrWYY/tjXUdI+xo6x8X
-	 uQPbyFLFXd+I4K6cK+TD9D35n5AVk3KvtORWgluGbyuU8DdkUblhN9wh09wSeIdL1a
-	 IZnpJRQDTyNwwZ+8YL9ozC+gTNwDwk3Q9sDMG4kU=
+	b=epYKVQurmXsEdoCnUB3lrpqTyqtwCfFhgJ7l+XxB/0RU4aTdJVqs9KIkLzQ3FTgeg
+	 j+FhH1qzu22pspJG6ceOSMn1MjBXnou9B2rhd05B07f3TLyzq10l0EP2vn0FUFji4W
+	 HkNGRK94M4I243bInoAdEfUZHv71dVZSQ04PuXBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 5.10 277/290] pwm: stm32: Refuse too small period requests
-Date: Wed,  3 Jul 2024 12:40:58 +0200
-Message-ID: <20240703102914.612127162@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: [PATCH 5.15 323/356] serial: imx: set receiver level before starting uart
+Date: Wed,  3 Jul 2024 12:40:59 +0200
+Message-ID: <20240703102925.335798101@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +59,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-commit c45fcf46ca2368dafe7e5c513a711a6f0f974308 upstream.
+commit a81dbd0463eca317eee44985a66aa6cc2ce5c101 upstream.
 
-If period_ns is small, prd might well become 0. Catch that case because
-otherwise with
+Set the receiver level to something > 0 before calling imx_uart_start_rx
+in rs485_config. This is necessary to avoid an interrupt storm that
+might prevent the system from booting. This was seen on an i.MX7 device
+when the rs485-rts-active-low property was active in the device tree.
 
-	regmap_write(priv->regmap, TIM_ARR, prd - 1);
-
-a few lines down quite a big period is configured.
-
-Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
-Cc: stable@vger.kernel.org
-Reviewed-by: Trevor Gamblin <tgamblin@baylibre.com>
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/b86f62f099983646f97eeb6bfc0117bb2d0c340d.1718979150.git.u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Fixes: 6d215f83e5fc ("serial: imx: warn user when using unsupported configuration")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Link: https://lore.kernel.org/r/20240621153829.183780-1-eichest@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-stm32.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/tty/serial/imx.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -340,6 +340,9 @@ static int stm32_pwm_config(struct stm32
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -1972,8 +1972,10 @@ static int imx_uart_rs485_config(struct
  
- 	prd = div;
+ 	/* Make sure Rx is enabled in case Tx is active with Rx disabled */
+ 	if (!(rs485conf->flags & SER_RS485_ENABLED) ||
+-	    rs485conf->flags & SER_RS485_RX_DURING_TX)
++	    rs485conf->flags & SER_RS485_RX_DURING_TX) {
++		imx_uart_setup_ufcr(sport, TXTL_DEFAULT, RXTL_DEFAULT);
+ 		imx_uart_start_rx(port);
++	}
  
-+	if (!prd)
-+		return -EINVAL;
-+
- 	if (prescaler > MAX_TIM_PSC)
- 		return -EINVAL;
+ 	port->rs485 = *rs485conf;
  
 
 
