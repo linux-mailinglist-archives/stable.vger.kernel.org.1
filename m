@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-57047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 379A4925A75
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:00:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 713E4925E2E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BE261C26310
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:00:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D258928D568
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2AE1990BC;
-	Wed,  3 Jul 2024 10:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784531DA327;
+	Wed,  3 Jul 2024 11:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nj4vsIgh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUNPE3fA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5A21990C0;
-	Wed,  3 Jul 2024 10:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A40142903;
+	Wed,  3 Jul 2024 11:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003677; cv=none; b=Xkued3HVp+H4AZBqxfbbdJvXaAio8Bt5nTpw6GEnPIP8g/40ATfjyM/pvIxLcTNy1YlcB7oJ18bX3NLjr1W5/Lh6SEoGcZbJyxitL6gt8bC8u7UtjE+y1aaNcWfxX1e9CAY/52qbA6bbtqEHX7N7qN1YhAgRcTDLmEVP6R++5TU=
+	t=1720005966; cv=none; b=MLd689eTy8rViRr99w+u6kqaswmnaAf88oleBtcXIv8l3AHe92E/+9ciiKzMQKiwn47JQU1dYZDtDM0HPgZGtY7y9ebHIoYWVYm6yfrKH4NpeD0SmVLanqlRaa1rBIRdMGsBMPW8DQOseGhgCB2/9YlKQ3FDENEQNj8q/tyMszY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003677; c=relaxed/simple;
-	bh=1aRS70xYiQXbfS6bv0hST/WOaD6Q1dp6Efo+g4g3moM=;
+	s=arc-20240116; t=1720005966; c=relaxed/simple;
+	bh=PiDuluqTftUnIBgIy9gZs4c2SY5EBoRxskiSg/3oCb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=folhtHMuWBiNutsUxe4cb/wSMS7u4yrsRhGlX4VJbpVmFa8eEFAuKH/vgF3qaDViCGu9nOgWU5YUlKoskfrWmGmTugXtyU1lkaILPsDg20fWUpWQy62KMHsGjH8kVsCkY9dcDBV1yTGA7Eg66xm9tHQvDxXWsr8HjLAyTtwOytA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nj4vsIgh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5616AC2BD10;
-	Wed,  3 Jul 2024 10:47:56 +0000 (UTC)
+	 MIME-Version; b=o33WadSZsZ1y1hpcLlqkjfKRS8UcipSUFyeq+TmpmwHW/oOGkImcI2d0wjurFYunvTEiUE7r7J25n3coCCVtK7vEc0Frkl/YbPYHw35Rl4fkKsIhm9CdVEFgsyR+2mYHlnD6ucbGh6FdbRtFaQch8/0XyhbwMaNFSouQMJ+dqb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUNPE3fA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60029C2BD10;
+	Wed,  3 Jul 2024 11:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003676;
-	bh=1aRS70xYiQXbfS6bv0hST/WOaD6Q1dp6Efo+g4g3moM=;
+	s=korg; t=1720005965;
+	bh=PiDuluqTftUnIBgIy9gZs4c2SY5EBoRxskiSg/3oCb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nj4vsIghyHsoZHY3PVOZiBlRDV4+RS7x8mfJsKoHTKVqbB6SR2w+ytnwYOCXEZk/K
-	 109mJWfLGnyB8663rn2bAp+da/iN6eHWjgNTeOx4hXJuW+PJOhf7wVXZh0o14QPjzT
-	 JxyDT7iuikVHxVYdB0Cr51Exo3T67XHWQgUeUNxE=
+	b=ZUNPE3fA6wbtU7jzWIw7Pl+FTEVQiXrzdKu0Ka/I4ZulT/dmeR7lK1GlClSFBDGLc
+	 BBJW2pKa+ruI4P7ev16ZM/bKh+aV/0+ZmBkvUE5LCNfKhmYqjfiFQbDNkFGHqg02uY
+	 rXXQo3uJuGu4pmL/RsWjbKYgemsZ4QgSDhpyo+78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Stuart Axon <stuaxo2@yahoo.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 095/139] scsi: mpt3sas: Avoid test/set_bit() operating in non-allocated memory
+Subject: [PATCH 5.15 256/356] ACPI: x86: utils: Add Picasso to the list for forcing StorageD3Enable
 Date: Wed,  3 Jul 2024 12:39:52 +0200
-Message-ID: <20240703102834.027330689@linuxfoundation.org>
+Message-ID: <20240703102922.801598278@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 4254dfeda82f20844299dca6c38cbffcfd499f41 ]
+[ Upstream commit 10b6b4a8ac6120ec36555fd286eed577f7632e3b ]
 
-There is a potential out-of-bounds access when using test_bit() on a single
-word. The test_bit() and set_bit() functions operate on long values, and
-when testing or setting a single word, they can exceed the word
-boundary. KASAN detects this issue and produces a dump:
+Picasso was the first APU that introduced s2idle support from AMD,
+and it was predating before vendors started to use `StorageD3Enable`
+in their firmware.
 
-	 BUG: KASAN: slab-out-of-bounds in _scsih_add_device.constprop.0 (./arch/x86/include/asm/bitops.h:60 ./include/asm-generic/bitops/instrumented-atomic.h:29 drivers/scsi/mpt3sas/mpt3sas_scsih.c:7331) mpt3sas
+Windows doesn't have problems with this hardware and NVME so it was
+likely on the list of hardcoded CPUs to use this behavior in Windows.
 
-	 Write of size 8 at addr ffff8881d26e3c60 by task kworker/u1536:2/2965
+Add it to the list for Linux to avoid NVME resume issues.
 
-For full log, please look at [1].
-
-Make the allocation at least the size of sizeof(unsigned long) so that
-set_bit() and test_bit() have sufficient room for read/write operations
-without overwriting unallocated memory.
-
-[1] Link: https://lore.kernel.org/all/ZkNcALr3W3KGYYJG@gmail.com/
-
-Fixes: c696f7b83ede ("scsi: mpt3sas: Implement device_remove_in_progress check in IOCTL path")
-Cc: stable@vger.kernel.org
-Suggested-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/r/20240605085530.499432-1-leitao@debian.org
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reported-by: Stuart Axon <stuaxo2@yahoo.com>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2449
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: e79a10652bbd ("ACPI: x86: Force StorageD3Enable on more products")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_base.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/acpi/x86/utils.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
-index 54faddb637c46..b4495023edb71 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_base.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
-@@ -6612,6 +6612,12 @@ mpt3sas_base_attach(struct MPT3SAS_ADAPTER *ioc)
- 	ioc->pd_handles_sz = (ioc->facts.MaxDevHandle / 8);
- 	if (ioc->facts.MaxDevHandle % 8)
- 		ioc->pd_handles_sz++;
-+	/*
-+	 * pd_handles_sz should have, at least, the minimal room for
-+	 * set_bit()/test_bit(), otherwise out-of-memory touch may occur.
-+	 */
-+	ioc->pd_handles_sz = ALIGN(ioc->pd_handles_sz, sizeof(unsigned long));
-+
- 	ioc->pd_handles = kzalloc(ioc->pd_handles_sz,
- 	    GFP_KERNEL);
- 	if (!ioc->pd_handles) {
-@@ -6629,6 +6635,13 @@ mpt3sas_base_attach(struct MPT3SAS_ADAPTER *ioc)
- 	ioc->pend_os_device_add_sz = (ioc->facts.MaxDevHandle / 8);
- 	if (ioc->facts.MaxDevHandle % 8)
- 		ioc->pend_os_device_add_sz++;
-+
-+	/*
-+	 * pend_os_device_add_sz should have, at least, the minimal room for
-+	 * set_bit()/test_bit(), otherwise out-of-memory may occur.
-+	 */
-+	ioc->pend_os_device_add_sz = ALIGN(ioc->pend_os_device_add_sz,
-+					   sizeof(unsigned long));
- 	ioc->pend_os_device_add = kzalloc(ioc->pend_os_device_add_sz,
- 	    GFP_KERNEL);
- 	if (!ioc->pend_os_device_add) {
-@@ -6911,6 +6924,12 @@ _base_check_ioc_facts_changes(struct MPT3SAS_ADAPTER *ioc)
- 		if (ioc->facts.MaxDevHandle % 8)
- 			pd_handles_sz++;
- 
-+		/*
-+		 * pd_handles should have, at least, the minimal room for
-+		 * set_bit()/test_bit(), otherwise out-of-memory touch may
-+		 * occur.
-+		 */
-+		pd_handles_sz = ALIGN(pd_handles_sz, sizeof(unsigned long));
- 		pd_handles = krealloc(ioc->pd_handles, pd_handles_sz,
- 		    GFP_KERNEL);
- 		if (!pd_handles) {
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index f1dd086d0b87d..7d6083d40bf6b 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -204,6 +204,7 @@ bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *s
+       disk in the system.
+  */
+ static const struct x86_cpu_id storage_d3_cpu_ids[] = {
++	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 24, NULL),  /* Picasso */
+ 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),	/* Renoir */
+ 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL),	/* Lucienne */
+ 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 25, 80, NULL),	/* Cezanne */
 -- 
 2.43.0
 
