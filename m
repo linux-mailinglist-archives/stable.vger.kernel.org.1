@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03783925E14
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23DBC925A2F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:55:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35A4E1C23DAD
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:34:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 563381C25E6E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCDAC17B417;
-	Wed,  3 Jul 2024 11:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5411E185095;
+	Wed,  3 Jul 2024 10:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J92nDyjK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Os0R1JQG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6FE17B404;
-	Wed,  3 Jul 2024 11:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119D2181CE4;
+	Wed,  3 Jul 2024 10:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005977; cv=none; b=quS3MADlXm7kGW/FIXqqeQjXlaTa5W2QOQHvSTealFC5NK57R4peB5vDqfAaI810KkkWx97M+ckdrKlxysPvU8ZnE9iJDQMzJ1J7DkDd1vwq9XNDB7I8dS6VEvbEQet8MUtUbX+zhc1Ccwy6xOYxrrLdqBa5LVD5or1ZREyorCQ=
+	t=1720003593; cv=none; b=LWXlyvwL+Yvk8hn4jqbfKH+rL+B/vRJw9QumMbAou+xGuYcYrFBNYyz/e9m3eMUCyeP16EHRZveUxOjytMjUusVA/kvocohAv4CglBobnIr3L6Y7zjlVERaHwXgNdv+NHiPp7dzCTCZifajNdZ5Xd63Ug+s3r0ltoHBf022lnfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005977; c=relaxed/simple;
-	bh=ZIV7o5NpZujEKKDF0MBMzK1HSU3uUxXpIv479/qu/yY=;
+	s=arc-20240116; t=1720003593; c=relaxed/simple;
+	bh=YnJdVWdk8uUgzmp0/xG0y6P/0jRxollt/2aLo/ZaYbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KgRpsEovJRtdeuirp5bbGYPeg/eCnF+q+3tBWtsDCP4iN5sMPA3bX7WZNzm4lHh62DPRLHDyVoFdPZsj2xGI48qNwOzdV30VTejnKjqVh4Xs2kMHxeCTGOrK94W6mdTEIR279JPcrtapYFWVYa173zSkCKjpCR8hI27OojcEUzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J92nDyjK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BF3C32781;
-	Wed,  3 Jul 2024 11:26:16 +0000 (UTC)
+	 MIME-Version; b=MZa9wvCrlFL187jgogYM8Z29MwBAUgcX8XU/lPsdirv5TQbebS4sjFdlkn0fXDOAZAfGDlz5HF3dARv8q97+1TuoDvZkLu/2RlWdmdTcdnbILKTRzJdtZjGeQQbJqe/Zw9l7m4D+zX6n8QLyJaQPaI/Q1YmTYFKyfh4ION0yUpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Os0R1JQG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DDB4C2BD10;
+	Wed,  3 Jul 2024 10:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005977;
-	bh=ZIV7o5NpZujEKKDF0MBMzK1HSU3uUxXpIv479/qu/yY=;
+	s=korg; t=1720003593;
+	bh=YnJdVWdk8uUgzmp0/xG0y6P/0jRxollt/2aLo/ZaYbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J92nDyjKnJ6+eG1m3JWc/CDBhmAKBTrcmar0WsSsEY+Hl6TaJtKt6A+ZK+eXCoS21
-	 PvoqjOkCGIzUOe0EPHbRVnPjpYlHlvEnIXbdHPNH/+leYhxzvMgP9eJ646qRF0LWTD
-	 zcVTpZUblxZjIHlWexnlFnvgK1+4puuFbFjY+KHc=
+	b=Os0R1JQGK3aIqRS8I/2eQbLnfGXXX9gPbR1kQZfqkyLSC1SvCxmfJPHQotR1fQXoD
+	 jdp5ZB+Q6KOG9Ddz02dBEAkowmm3Q+pVc9igCuJpC0nZiU8bUIrnQnkONIxpcN4IRR
+	 /3LdUTgHTx0Sl2dep7RPxkzGvDrGmEXTRABNotAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Keeping <jkeeping@inmusicbrands.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Huang-Huang Bao <i@eh5.me>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 260/356] Input: ili210x - fix ili251x_read_touch_data() return value
-Date: Wed,  3 Jul 2024 12:39:56 +0200
-Message-ID: <20240703102922.954080610@linuxfoundation.org>
+Subject: [PATCH 4.19 100/139] pinctrl: rockchip: fix pinmux bits for RK3328 GPIO2-B pins
+Date: Wed,  3 Jul 2024 12:39:57 +0200
+Message-ID: <20240703102834.217127957@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Huang-Huang Bao <i@eh5.me>
 
-[ Upstream commit 9f0fad0382124e7e23b3c730fa78818c22c89c0a ]
+[ Upstream commit e8448a6c817c2aa6c6af785b1d45678bd5977e8d ]
 
-The caller of this function treats all non-zero values as an error, so
-the return value of i2c_master_recv() cannot be returned directly.
+The pinmux bits for GPIO2-B0 to GPIO2-B6 actually have 2 bits width,
+correct the bank flag for GPIO2-B. The pinmux bits for GPIO2-B7 is
+recalculated so it remain unchanged.
 
-This fixes touch reporting when there are more than 6 active touches.
+The pinmux bits for those pins are not explicitly specified in RK3328
+TRM, however we can get hint from pad name and its correspinding IOMUX
+setting for pins in interface descriptions. The correspinding IOMIX
+settings for GPIO2-B0 to GPIO2-B6 can be found in the same row next to
+occurrences of following pad names in RK3328 TRM.
 
-Fixes: ef536abd3afd1 ("Input: ili210x - define and use chip operations structure")
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Link: https://lore.kernel.org/r/20240523085624.2295988-1-jkeeping@inmusicbrands.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+GPIO2-B0: IO_SPIclkm0_GPIO2B0vccio5
+GPIO2-B1: IO_SPItxdm0_GPIO2B1vccio5
+GPIO2-B2: IO_SPIrxdm0_GPIO2B2vccio5
+GPIO2-B3: IO_SPIcsn0m0_GPIO2B3vccio5
+GPIO2-B4: IO_SPIcsn1m0_FLASHvol_sel_GPIO2B4vccio5
+GPIO2-B5: IO_ I2C2sda_TSADCshut_GPIO2B5vccio5
+GPIO2-B6: IO_ I2C2scl_GPIO2B6vccio5
+
+This fix has been tested on NanoPi R2S for fixing confliting pinmux bits
+between GPIO2-B7 with GPIO2-B5.
+
+Signed-off-by: Huang-Huang Bao <i@eh5.me>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 3818e4a7678e ("pinctrl: rockchip: Add rk3328 pinctrl support")
+Link: https://lore.kernel.org/r/20240606125755.53778-2-i@eh5.me
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/touchscreen/ili210x.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pinctrl/pinctrl-rockchip.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/input/touchscreen/ili210x.c b/drivers/input/touchscreen/ili210x.c
-index f437eefec94ad..9452a12ddb096 100644
---- a/drivers/input/touchscreen/ili210x.c
-+++ b/drivers/input/touchscreen/ili210x.c
-@@ -231,8 +231,8 @@ static int ili251x_read_touch_data(struct i2c_client *client, u8 *data)
- 	if (!error && data[0] == 2) {
- 		error = i2c_master_recv(client, data + ILI251X_DATA_SIZE1,
- 					ILI251X_DATA_SIZE2);
--		if (error >= 0 && error != ILI251X_DATA_SIZE2)
--			error = -EIO;
-+		if (error >= 0)
-+			error = error == ILI251X_DATA_SIZE2 ? 0 : -EIO;
- 	}
+diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
+index fb7f2282635e8..5d14b77d65285 100644
+--- a/drivers/pinctrl/pinctrl-rockchip.c
++++ b/drivers/pinctrl/pinctrl-rockchip.c
+@@ -662,12 +662,6 @@ static  struct rockchip_mux_recalced_data rk3128_mux_recalced_data[] = {
  
- 	return error;
+ static struct rockchip_mux_recalced_data rk3328_mux_recalced_data[] = {
+ 	{
+-		.num = 2,
+-		.pin = 12,
+-		.reg = 0x24,
+-		.bit = 8,
+-		.mask = 0x3
+-	}, {
+ 		.num = 2,
+ 		.pin = 15,
+ 		.reg = 0x28,
+@@ -3689,7 +3683,7 @@ static struct rockchip_pin_bank rk3328_pin_banks[] = {
+ 	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", 0, 0, 0, 0),
+ 	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", 0, 0, 0, 0),
+ 	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", 0,
+-			     IOMUX_WIDTH_3BIT,
++			     0,
+ 			     IOMUX_WIDTH_3BIT,
+ 			     0),
+ 	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3",
 -- 
 2.43.0
 
