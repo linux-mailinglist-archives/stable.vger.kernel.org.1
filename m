@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E41925B01
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9415925DAD
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A74BE285F7C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAB321C20F19
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20C517BB0D;
-	Wed,  3 Jul 2024 10:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7E3188CDB;
+	Wed,  3 Jul 2024 11:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MFjvt9es"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZON7GehS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA8B17BB01;
-	Wed,  3 Jul 2024 10:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3162EB02;
+	Wed,  3 Jul 2024 11:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003875; cv=none; b=bvUWtOhR4VeoqnES9ioSw82CgWHyruPTRA/p2A5fFQ6fZ7SS+B8nVYQ7Uwcz84I9E7WJWoc9j9zQy76HfZVIrSkHuplQ3S+vQvJ0VH1ft651o+8URO0fS/Q3DOgDpvDFuN58KeDwVUVpIVCyT8cdcntGqQFDvT0PPG37MNhHJwI=
+	t=1720005725; cv=none; b=THItn1V2s7R/LE9sQZKMhdYAW0CIGuCmp0G1s5rFspNtO/vlb/HpQBa6B8NxTkIQMH5RqgF/4+Hl3y44iUyjanngzX4e6y39YEnXNKcp0Wgs3jxzezJsMuS3rCOGYB+2D+DR4sgudh/4gk71eRGN1IY/M3SRa1J/tn9YL8l/bnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003875; c=relaxed/simple;
-	bh=EO+Tv5mCplnvMZvf8L9rBr1lBSt26zrnJrKGQOJXJYY=;
+	s=arc-20240116; t=1720005725; c=relaxed/simple;
+	bh=lPaJnp47JVSuF4ZXMYoEu63u9Iwi013AyXtN0ltcrts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+uqB01RizVG5SakRvFvqaL4naxT+5DpVYk/jPUCBsbJqncrSBIsDqYStZA+qzFA6n5mc42snvod7daUbHGGCWNbcWGuwsif06DBZH0Y4P15H2T9ZrvVkXQV/3N5SFuR7ZG/wkadNc2Vi4ZGjcTBWlP/ozm4mzBVj/rPgHxnu0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFjvt9es; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5CECC4AF0B;
-	Wed,  3 Jul 2024 10:51:14 +0000 (UTC)
+	 MIME-Version; b=B6PiRN9nTdzb2dCmzLdLF8fvi9Vkm2RVmKK3K0jVSTpDX/p9Imfe4VUOM9BWSZF+TgqhprUesbPbrqvNMuEyW1Mjx+EVtL3ozHLL5LFT2q5UakgnJFRFvZE9GsNwBFhWPkq6hHSSyj44CvIKJmqA6kXTaQSTmHmKb9VhrAM5KRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZON7GehS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13601C2BD10;
+	Wed,  3 Jul 2024 11:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003875;
-	bh=EO+Tv5mCplnvMZvf8L9rBr1lBSt26zrnJrKGQOJXJYY=;
+	s=korg; t=1720005724;
+	bh=lPaJnp47JVSuF4ZXMYoEu63u9Iwi013AyXtN0ltcrts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MFjvt9eskBFnFnuVllJ0iILxA1jx+wcf6a9w8L+bMmfQagjDR4pPnkr3UwbPdIbnZ
-	 ovQjJipi29Z2wPibj0l66xFpiwBU5Ta+usO+lHwfj8Xs3aPP2AOpprieuXn9zuoE57
-	 Lktn37AWm54pJ1JVFA0gj5oLiCthYJ6IakcpNbnE=
+	b=ZON7GehSSFMXgxYqn1cWPXhbU7Q56fR2P81HYHtEq8rBtiYUNBuxaTIdPPjhTqlig
+	 KQlQHN7w8BswTxT+Z7zZ6hZHIwOeOS5/QGCg0uQ6/PDr/eoQabuPG7VucUOGDLqAwK
+	 YqpUMos7yUYrfsnZWKf4GKS9MrqebaXNRJiNIwsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.4 049/189] scsi: mpt3sas: Avoid test/set_bit() operating in non-allocated memory
+	Aleksandr Aprelkov <aaprelkov@usergate.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 174/356] iommu/arm-smmu-v3: Free MSIs in case of ENOMEM
 Date: Wed,  3 Jul 2024 12:38:30 +0200
-Message-ID: <20240703102843.366005924@linuxfoundation.org>
+Message-ID: <20240703102919.688332154@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Aleksandr Aprelkov <aaprelkov@usergate.com>
 
-commit 4254dfeda82f20844299dca6c38cbffcfd499f41 upstream.
+[ Upstream commit 80fea979dd9d48d67c5b48d2f690c5da3e543ebd ]
 
-There is a potential out-of-bounds access when using test_bit() on a single
-word. The test_bit() and set_bit() functions operate on long values, and
-when testing or setting a single word, they can exceed the word
-boundary. KASAN detects this issue and produces a dump:
+If devm_add_action() returns -ENOMEM, then MSIs are allocated but not
+not freed on teardown. Use devm_add_action_or_reset() instead to keep
+the static analyser happy.
 
-	 BUG: KASAN: slab-out-of-bounds in _scsih_add_device.constprop.0 (./arch/x86/include/asm/bitops.h:60 ./include/asm-generic/bitops/instrumented-atomic.h:29 drivers/scsi/mpt3sas/mpt3sas_scsih.c:7331) mpt3sas
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-	 Write of size 8 at addr ffff8881d26e3c60 by task kworker/u1536:2/2965
-
-For full log, please look at [1].
-
-Make the allocation at least the size of sizeof(unsigned long) so that
-set_bit() and test_bit() have sufficient room for read/write operations
-without overwriting unallocated memory.
-
-[1] Link: https://lore.kernel.org/all/ZkNcALr3W3KGYYJG@gmail.com/
-
-Fixes: c696f7b83ede ("scsi: mpt3sas: Implement device_remove_in_progress check in IOCTL path")
-Cc: stable@vger.kernel.org
-Suggested-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/r/20240605085530.499432-1-leitao@debian.org
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Aleksandr Aprelkov <aaprelkov@usergate.com>
+Link: https://lore.kernel.org/r/20240403053759.643164-1-aaprelkov@usergate.com
+[will: Tweak commit message, remove warning message]
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_base.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/mpt3sas/mpt3sas_base.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
-@@ -7089,6 +7089,12 @@ mpt3sas_base_attach(struct MPT3SAS_ADAPT
- 	ioc->pd_handles_sz = (ioc->facts.MaxDevHandle / 8);
- 	if (ioc->facts.MaxDevHandle % 8)
- 		ioc->pd_handles_sz++;
-+	/*
-+	 * pd_handles_sz should have, at least, the minimal room for
-+	 * set_bit()/test_bit(), otherwise out-of-memory touch may occur.
-+	 */
-+	ioc->pd_handles_sz = ALIGN(ioc->pd_handles_sz, sizeof(unsigned long));
-+
- 	ioc->pd_handles = kzalloc(ioc->pd_handles_sz,
- 	    GFP_KERNEL);
- 	if (!ioc->pd_handles) {
-@@ -7106,6 +7112,13 @@ mpt3sas_base_attach(struct MPT3SAS_ADAPT
- 	ioc->pend_os_device_add_sz = (ioc->facts.MaxDevHandle / 8);
- 	if (ioc->facts.MaxDevHandle % 8)
- 		ioc->pend_os_device_add_sz++;
-+
-+	/*
-+	 * pend_os_device_add_sz should have, at least, the minimal room for
-+	 * set_bit()/test_bit(), otherwise out-of-memory may occur.
-+	 */
-+	ioc->pend_os_device_add_sz = ALIGN(ioc->pend_os_device_add_sz,
-+					   sizeof(unsigned long));
- 	ioc->pend_os_device_add = kzalloc(ioc->pend_os_device_add_sz,
- 	    GFP_KERNEL);
- 	if (!ioc->pend_os_device_add) {
-@@ -7384,6 +7397,12 @@ _base_check_ioc_facts_changes(struct MPT
- 		if (ioc->facts.MaxDevHandle % 8)
- 			pd_handles_sz++;
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+index 761cb657f2561..ec4c87095c6cd 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -3239,7 +3239,7 @@ static void arm_smmu_setup_msis(struct arm_smmu_device *smmu)
+ 	}
  
-+		/*
-+		 * pd_handles should have, at least, the minimal room for
-+		 * set_bit()/test_bit(), otherwise out-of-memory touch may
-+		 * occur.
-+		 */
-+		pd_handles_sz = ALIGN(pd_handles_sz, sizeof(unsigned long));
- 		pd_handles = krealloc(ioc->pd_handles, pd_handles_sz,
- 		    GFP_KERNEL);
- 		if (!pd_handles) {
+ 	/* Add callback to free MSIs on teardown */
+-	devm_add_action(dev, arm_smmu_free_msis, dev);
++	devm_add_action_or_reset(dev, arm_smmu_free_msis, dev);
+ }
+ 
+ static void arm_smmu_setup_unique_irqs(struct arm_smmu_device *smmu)
+-- 
+2.43.0
+
 
 
 
