@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-57398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 866DF925F1C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:50:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 245B19259ED
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:52:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 027EDB39480
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:17:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B00941F21F55
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0AFB18131A;
-	Wed,  3 Jul 2024 11:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE86217F51E;
+	Wed,  3 Jul 2024 10:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2R3aTC1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0vjjnObO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A515181311;
-	Wed,  3 Jul 2024 11:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE4917E459;
+	Wed,  3 Jul 2024 10:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004756; cv=none; b=ELyujbnnN+MzQ3swCzaraJMCo9qwI7ptrhq/oFKFGe6ZTRWDaKGtDCEhagHXK22vZ9ZUEF/t46dSOLJQXWd6iTjpmSglPEqKy1iz0mNP88dYoeKs+gMRKTdfAU2j+8hoGZaaJXBPNcQohGbEw5MHB4XaUrQZ3gEe1+hHewtKGaM=
+	t=1720003385; cv=none; b=dOjFbvax93RF0vF+TGSLRKIgtxbra546R6D3unW9iaIOpSCe2N3lQwYmOJcSPMAQh1bsLqjuMoMBSzurmnEq8Cb1AgJH71H5Nw9XJuv9H8erdLrMPGbJLj4j1MLgbeIUD/MgcJcRBv3sfItOZIWvw0nxxyf+T5hF754RyuLF52E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004756; c=relaxed/simple;
-	bh=6hlsm7OXjB/EigtCB3COzUGW/W+rehQ2+xlcqHzCCa8=;
+	s=arc-20240116; t=1720003385; c=relaxed/simple;
+	bh=jsLZcq4zycgNPJxi2uWxVJGIP/vGidxfQfmMZoe5zp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EOCe8VKQgsS+Q4zlcyjpXMjGV8F59co9um0ZHOvSKBf8DqB0WNOMCtRmoDStlulWwBkXs9SvbkwDUuU5d2aX6ZcCRJMZMM2flleYPgd803wZBXAIQOvSdxAtNn3R90MwE6RgaUVvm4AYj3LdqTKMAn4cG6cROI73Fm4TxPsWHW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2R3aTC1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98A6C4AF0B;
-	Wed,  3 Jul 2024 11:05:55 +0000 (UTC)
+	 MIME-Version; b=I//Q9TqVfTOqsXmyYHeuQ68mGrMdofiyBMOeTlweMMyQl3JLscqMOsBuTDGk2znd8GLxKO67Mm6DCqktO2xGZdu+oSRGM5V9kdXkVr7i5i1FukaKy5lyBnlNEOO6xI08BMIKL1VEwye2HLwxYI9Y+bAdeED2hCxK2Hfc8D74hNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0vjjnObO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF6BC2BD10;
+	Wed,  3 Jul 2024 10:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004756;
-	bh=6hlsm7OXjB/EigtCB3COzUGW/W+rehQ2+xlcqHzCCa8=;
+	s=korg; t=1720003385;
+	bh=jsLZcq4zycgNPJxi2uWxVJGIP/vGidxfQfmMZoe5zp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S2R3aTC19fwaYMGi7XbnKrOrOTAo9vJ4TRA2+CUEmD3CsSmbxusvRokiF4+NkM8DM
-	 P3VnpcHUvGAf+2GSpPvqD7CfAqPh9CreX6O2Fg9QVaAGe486gpGm+0S/7yVd62L97K
-	 aJxKtMZzV9NtgeD0ridzeFtmd6H23lO/4gLfcy2o=
+	b=0vjjnObOgFcKR4aK3hlHnGSpA/tqQZe9BUMQZK3G3X+E8XFeVl1ZZ+4oXws+fqswV
+	 lccSNRPO+DWlJ9hBvH1yocc3PjKvqQY4FoQ9uaf87/EU9zbpa8+STBKhIMlV4hZypU
+	 K/+JzjXowVylHnJhWoWuzK8LM2trgnojCem2FM5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlad Buslov <vladbu@nvidia.com>,
-	Oz Shlomo <ozsh@nvidia.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 148/290] net/sched: act_ct: set net pointer when creating new nf_flow_table
+	Kuangyi Chiang <ki.chiang65@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 4.19 032/139] xhci: Apply reset resume quirk to Etron EJ188 xHCI host
 Date: Wed,  3 Jul 2024 12:38:49 +0200
-Message-ID: <20240703102909.773245610@linuxfoundation.org>
+Message-ID: <20240703102831.654210016@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlad Buslov <vladbu@nvidia.com>
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
 
-[ Upstream commit fc54d9065f90dd25063883f404e6ff9a76913e73 ]
+commit 17bd54555c2aaecfdb38e2734149f684a73fa584 upstream.
 
-Following patches in series use the pointer to access flow table offload
-debug variables.
+As described in commit c877b3b2ad5c ("xhci: Add reset on resume quirk for
+asrock p67 host"), EJ188 have the same issue as EJ168, where completely
+dies on resume. So apply XHCI_RESET_ON_RESUME quirk to EJ188 as well.
 
-Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
-Signed-off-by: Oz Shlomo <ozsh@nvidia.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 88c67aeb1407 ("sched: act_ct: add netns into the key of tcf_ct_flow_table")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240611120610.3264502-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_ct.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
-index 2d41d866de3e3..155426d5a48f6 100644
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -275,7 +275,7 @@ static struct nf_flowtable_type flowtable_ct = {
- 	.owner		= THIS_MODULE,
- };
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -33,6 +33,7 @@
  
--static int tcf_ct_flow_table_get(struct tcf_ct_params *params)
-+static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
- {
- 	struct tcf_ct_flow_table *ct_ft;
- 	int err = -ENOMEM;
-@@ -300,6 +300,7 @@ static int tcf_ct_flow_table_get(struct tcf_ct_params *params)
- 	err = nf_flow_table_init(&ct_ft->nf_ft);
- 	if (err)
- 		goto err_init;
-+	write_pnet(&ct_ft->nf_ft.net, net);
+ #define PCI_VENDOR_ID_ETRON		0x1b6f
+ #define PCI_DEVICE_ID_EJ168		0x7023
++#define PCI_DEVICE_ID_EJ188		0x7052
  
- 	__module_get(THIS_MODULE);
- out_unlock:
-@@ -1291,7 +1292,7 @@ static int tcf_ct_init(struct net *net, struct nlattr *nla,
- 	if (err)
- 		goto cleanup;
- 
--	err = tcf_ct_flow_table_get(params);
-+	err = tcf_ct_flow_table_get(net, params);
- 	if (err)
- 		goto cleanup_params;
- 
--- 
-2.43.0
-
+ #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI	0x8c31
+ #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI	0x9c31
+@@ -223,6 +224,10 @@ static void xhci_pci_quirks(struct devic
+ 		xhci->quirks |= XHCI_TRUST_TX_LENGTH;
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+ 	}
++	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
++			pdev->device == PCI_DEVICE_ID_EJ188)
++		xhci->quirks |= XHCI_RESET_ON_RESUME;
++
+ 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
+ 	    pdev->device == 0x0014) {
+ 		xhci->quirks |= XHCI_TRUST_TX_LENGTH;
 
 
 
