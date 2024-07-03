@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC207925C02
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:13:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 886DC925D3D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92C021F20F5A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB3021C22350
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665B21741D2;
-	Wed,  3 Jul 2024 11:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F2317DA0C;
+	Wed,  3 Jul 2024 11:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yH8Y5hrz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TTToKPWe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241A313BC0B;
-	Wed,  3 Jul 2024 11:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5D813776F;
+	Wed,  3 Jul 2024 11:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004486; cv=none; b=R9LAPCyKB7C0muYjqOjr6mcdmnDk1RFoIBIjgMWjRuqaMXCrTiUdmiQJQyzq7yhxlsmsJKRzOuKdqblxxnoJcgE092cDl0ZM3nnDDPqInbScNYHqwlBIPoEX4x6odTkBUPsmDssvE/3KKDtSB/MU3YVguTgRCVkhfei8JVd+U8Y=
+	t=1720005414; cv=none; b=bwwjD+GHT768vukaS8Rmdy+mn4hs2pmhlF0LdisF8rTaB6k0q1bz5OCMSCo/7OZOG5O9RLoeSgYgMfwK31Ih1WUxi+7qycPjQSTrRauqJKU0QLM6EREfAU2kP19qsEtI+p7KnH8Vqjwi723aYf7TKxgrUwOzB0XJnzeIqCHE/zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004486; c=relaxed/simple;
-	bh=JmE+kPtdSJLE4jP2YCzrBk9O2IQAczbPgMzFVkJHuxo=;
+	s=arc-20240116; t=1720005414; c=relaxed/simple;
+	bh=A6nEwCAQt8+hAEXoHMYS3S/AMt4NcOPA3DacuTmvvhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pfc6xK+miyRX2cZkXFF//eAXvz8y1e9W1HxTJBsTosjtIHQfiHp6dV39b7JsHQoXa7/59iM/a4tC/7R6MMmSfju35wNYdQZ/+7tMNQrNfEoeS1tEp0vT0u7MKyhEINyq6NKftVQ8bRUSF5VrLPmSAkoAB5TfU3i978xP8cpyRoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yH8Y5hrz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1484C2BD10;
-	Wed,  3 Jul 2024 11:01:25 +0000 (UTC)
+	 MIME-Version; b=jzKOvhq+LtJjHzfoQdILKwkrBuUXli8Iyoh/KE6bXmz3DeFORyj10eg9jBMlJx7ZWcmvnFD6q7I6YIWN15BstF+LoNTYCgdj0qzM+c45erZvj79BwTwC6FeFJ1QGgSQguutAksLYVv/CQFUuj756I9If2UHxSrGJXpBHguGKRh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTToKPWe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53872C2BD10;
+	Wed,  3 Jul 2024 11:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004486;
-	bh=JmE+kPtdSJLE4jP2YCzrBk9O2IQAczbPgMzFVkJHuxo=;
+	s=korg; t=1720005414;
+	bh=A6nEwCAQt8+hAEXoHMYS3S/AMt4NcOPA3DacuTmvvhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yH8Y5hrzFzO2mENqw7fHwjOE+YuWXiUewr7ML1IBc9yyhd3GVYgE+OBDEhHpi1Pbv
-	 urJ3mYGYCjBH5PXTxUErFhKXnDoiDkmfk4IRnTcYLd1WML90ew9j50AAQKwc88D84Y
-	 lLhr6x/tdEDJBBlfi11cY3OL8B7+yJGPvIiNbB7c=
+	b=TTToKPWe/9T2AhII1kGsBIhBlDWM3RPQuc9Gxo55bB9FdnR8N41tfF11RSf/WSp3v
+	 5XP1dz8r7ktzTbdtULRL/jf/lTlTqz0/1DqbH994JpswqcBV0FxvBwo+KR4LsXtX4I
+	 HAhb7dXQ6FovHiNczoNbDVP9JI8tRLeSsZvVz/Ho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 026/290] af_unix: Use skb_queue_len_lockless() in sk_diag_show_rqlen().
-Date: Wed,  3 Jul 2024 12:36:47 +0200
-Message-ID: <20240703102905.182173659@linuxfoundation.org>
+Subject: [PATCH 5.15 072/356] nilfs2: return the mapped address from nilfs_get_page()
+Date: Wed,  3 Jul 2024 12:36:48 +0200
+Message-ID: <20240703102915.824948876@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 5d915e584d8408211d4567c22685aae8820bfc55 ]
+[ Upstream commit 09a46acb3697e50548bb265afa1d79163659dd85 ]
 
-We can dump the socket queue length via UNIX_DIAG by specifying
-UDIAG_SHOW_RQLEN.
+In prepartion for switching from kmap() to kmap_local(), return the kmap
+address from nilfs_get_page() instead of having the caller look up
+page_address().
 
-If sk->sk_state is TCP_LISTEN, we return the recv queue length,
-but here we do not hold recvq lock.
-
-Let's use skb_queue_len_lockless() in sk_diag_show_rqlen().
-
-Fixes: c9da99e6475f ("unix_diag: Fixup RQLEN extension report")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[konishi.ryusuke: fixed a missing blank line after declaration]
+Link: https://lkml.kernel.org/r/20231127143036.2425-7-konishi.ryusuke@gmail.com
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 7373a51e7998 ("nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/diag.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/dir.c | 57 +++++++++++++++++++++++--------------------------
+ 1 file changed, 27 insertions(+), 30 deletions(-)
 
-diff --git a/net/unix/diag.c b/net/unix/diag.c
-index 4666fabb04933..5bc5cb83cc6e4 100644
---- a/net/unix/diag.c
-+++ b/net/unix/diag.c
-@@ -103,7 +103,7 @@ static int sk_diag_show_rqlen(struct sock *sk, struct sk_buff *nlskb)
- 	struct unix_diag_rqlen rql;
+diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
+index 24cfe9db66e02..22f1f75a90c1a 100644
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -186,19 +186,24 @@ static bool nilfs_check_page(struct page *page)
+ 	return false;
+ }
  
- 	if (READ_ONCE(sk->sk_state) == TCP_LISTEN) {
--		rql.udiag_rqueue = sk->sk_receive_queue.qlen;
-+		rql.udiag_rqueue = skb_queue_len_lockless(&sk->sk_receive_queue);
- 		rql.udiag_wqueue = sk->sk_max_ack_backlog;
- 	} else {
- 		rql.udiag_rqueue = (u32) unix_inq_len(sk);
+-static struct page *nilfs_get_page(struct inode *dir, unsigned long n)
++static void *nilfs_get_page(struct inode *dir, unsigned long n,
++		struct page **pagep)
+ {
+ 	struct address_space *mapping = dir->i_mapping;
+ 	struct page *page = read_mapping_page(mapping, n, NULL);
++	void *kaddr;
+ 
+-	if (!IS_ERR(page)) {
+-		kmap(page);
+-		if (unlikely(!PageChecked(page))) {
+-			if (!nilfs_check_page(page))
+-				goto fail;
+-		}
++	if (IS_ERR(page))
++		return page;
++
++	kaddr = kmap(page);
++	if (unlikely(!PageChecked(page))) {
++		if (!nilfs_check_page(page))
++			goto fail;
+ 	}
+-	return page;
++
++	*pagep = page;
++	return kaddr;
+ 
+ fail:
+ 	nilfs_put_page(page);
+@@ -275,14 +280,14 @@ static int nilfs_readdir(struct file *file, struct dir_context *ctx)
+ 	for ( ; n < npages; n++, offset = 0) {
+ 		char *kaddr, *limit;
+ 		struct nilfs_dir_entry *de;
+-		struct page *page = nilfs_get_page(inode, n);
++		struct page *page;
+ 
+-		if (IS_ERR(page)) {
++		kaddr = nilfs_get_page(inode, n, &page);
++		if (IS_ERR(kaddr)) {
+ 			nilfs_error(sb, "bad page in #%lu", inode->i_ino);
+ 			ctx->pos += PAGE_SIZE - offset;
+ 			return -EIO;
+ 		}
+-		kaddr = page_address(page);
+ 		de = (struct nilfs_dir_entry *)(kaddr + offset);
+ 		limit = kaddr + nilfs_last_byte(inode, n) -
+ 			NILFS_DIR_REC_LEN(1);
+@@ -345,11 +350,9 @@ nilfs_find_entry(struct inode *dir, const struct qstr *qstr,
+ 		start = 0;
+ 	n = start;
+ 	do {
+-		char *kaddr;
++		char *kaddr = nilfs_get_page(dir, n, &page);
+ 
+-		page = nilfs_get_page(dir, n);
+-		if (!IS_ERR(page)) {
+-			kaddr = page_address(page);
++		if (!IS_ERR(kaddr)) {
+ 			de = (struct nilfs_dir_entry *)kaddr;
+ 			kaddr += nilfs_last_byte(dir, n) - reclen;
+ 			while ((char *) de <= kaddr) {
+@@ -387,15 +390,11 @@ nilfs_find_entry(struct inode *dir, const struct qstr *qstr,
+ 
+ struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct page **p)
+ {
+-	struct page *page = nilfs_get_page(dir, 0);
+-	struct nilfs_dir_entry *de = NULL;
++	struct nilfs_dir_entry *de = nilfs_get_page(dir, 0, p);
+ 
+-	if (!IS_ERR(page)) {
+-		de = nilfs_next_entry(
+-			(struct nilfs_dir_entry *)page_address(page));
+-		*p = page;
+-	}
+-	return de;
++	if (IS_ERR(de))
++		return NULL;
++	return nilfs_next_entry(de);
+ }
+ 
+ ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
+@@ -459,12 +458,11 @@ int nilfs_add_link(struct dentry *dentry, struct inode *inode)
+ 	for (n = 0; n <= npages; n++) {
+ 		char *dir_end;
+ 
+-		page = nilfs_get_page(dir, n);
+-		err = PTR_ERR(page);
+-		if (IS_ERR(page))
++		kaddr = nilfs_get_page(dir, n, &page);
++		err = PTR_ERR(kaddr);
++		if (IS_ERR(kaddr))
+ 			goto out;
+ 		lock_page(page);
+-		kaddr = page_address(page);
+ 		dir_end = kaddr + nilfs_last_byte(dir, n);
+ 		de = (struct nilfs_dir_entry *)kaddr;
+ 		kaddr += PAGE_SIZE - reclen;
+@@ -627,11 +625,10 @@ int nilfs_empty_dir(struct inode *inode)
+ 		char *kaddr;
+ 		struct nilfs_dir_entry *de;
+ 
+-		page = nilfs_get_page(inode, i);
+-		if (IS_ERR(page))
++		kaddr = nilfs_get_page(inode, i, &page);
++		if (IS_ERR(kaddr))
+ 			continue;
+ 
+-		kaddr = page_address(page);
+ 		de = (struct nilfs_dir_entry *)kaddr;
+ 		kaddr += nilfs_last_byte(inode, i) - NILFS_DIR_REC_LEN(1);
+ 
 -- 
 2.43.0
 
