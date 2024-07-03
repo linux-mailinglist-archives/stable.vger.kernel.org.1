@@ -1,212 +1,128 @@
-Return-Path: <stable+bounces-56911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC0C924FF2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 05:49:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3357A925242
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 06:29:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F10361F25510
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 03:49:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 625A51C20316
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 04:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC561799F;
-	Wed,  3 Jul 2024 03:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F1C1C6A5;
+	Wed,  3 Jul 2024 04:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Tv3+gpJY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EGpd7bj7"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39990179BC
-	for <stable@vger.kernel.org>; Wed,  3 Jul 2024 03:48:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F132F61FE0;
+	Wed,  3 Jul 2024 04:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719978542; cv=none; b=iINPKLPYCf4KQ67NsoDjwVWbg2NMQDbeH2DECU3MDtiCu6KAAESFjiz2YcN3qpV+IhMnZIRiP5bvDlv7zpqoePP9YwJvuyjW1g7hD681KeDxCaUjphf5R2z1e2yggBmsPOggZSrz+wpkofAPFQNGv1CEJK1VNUIs8VbN1Yv2cEQ=
+	t=1719980761; cv=none; b=Uytod4oNkd3XIU1AOkVHVOv3p9iCNq60EStZFziSP1SNCZbHumttsz8H53mAu5w0rDp+DYL47RDHTQOkiyv1NQGLgsNOsI8C13vS2arm1LsZhL3qIiECxQm+CKFaY+YWOxTehJWCMwnx+zZUE/0bpPjBFe5EBUY72hkd56En9uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719978542; c=relaxed/simple;
-	bh=YwcFYNpk66isl3FP+bRI53s9Vql50/KEDdlceaPIWws=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GLANb2OUO0WKNwPzr7aVUuQkcm1pStngfLFOnXbkIaw3Ri6MYhTJH5H4uUL6mNK1/B/lhPCJxc0o3r7OnhElSK8XuUgiKeXQmF8IDExBN9+sxwFSqXqIZJTiPb55yeVRs7lVorNDtRAEixd1hnr4xI2d5Uk1NpEcHWRCR967FQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Tv3+gpJY; arc=none smtp.client-ip=115.124.30.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1719978530; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=PjUcqEuyqkJL/QmLybXP6RbM9rH1es9q8dt4o5hl1hE=;
-	b=Tv3+gpJYkzG1DeVwviWPnh3mlmDghIdibbhbF93cdslu2z4FKC7Lpy9jmQ8+7e4IOlqpmSNYT8bUxNTiNZHKZFwiAkVIr5zNNT5fTcl/1JPfrx6sbB5t049YbhI3pKWQaTEtOkMPNc+d8BN2tdu86Gi29sBmidDQwHETx8LqP9c=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R421e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037067111;MF=guwen@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0W9kcqC3_1719978466;
-Received: from localhost(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0W9kcqC3_1719978466)
-          by smtp.aliyun-inc.com;
-          Wed, 03 Jul 2024 11:48:50 +0800
-From: Wen Gu <guwen@linux.alibaba.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: wangyufen@huawei.com,
-	mqaio@linux.alibaba.com,
-	dtcccc@linux.alibaba.com,
-	tonylu@linux.alibaba.com,
-	alibuda@linux.alibaba.com,
-	dust.li@linux.alibaba.com
-Subject: [PATCH backport 5.10.y] bpf, sockmap: Fix sk->sk_forward_alloc warn_on in sk_stream_kill_queues
-Date: Wed,  3 Jul 2024 11:47:46 +0800
-Message-Id: <20240703034746.57537-1-guwen@linux.alibaba.com>
-X-Mailer: git-send-email 2.32.0.3.g01195cf9f
+	s=arc-20240116; t=1719980761; c=relaxed/simple;
+	bh=CTqwihBOux67otfyvZtz70kvvZA4Vo/MhZfFROMw1yw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=udfbtSnqYVxnu+2CBP53o2UAFi5TXTZWIvNrS0YSJ+KYUOSq0FWcz9YBBxFrFJJgLGSBTvJu9lMiGZFOaFyK4hpKnA5h8VcDj1Wb2vwp23vLOAhPpZXH0Gu6sGKxtNzSJRzezMWQIGSMgidaxZ/+OQtAb29Gxk/pG6sBQlym/5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EGpd7bj7; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1fafc9e07f8so9468315ad.0;
+        Tue, 02 Jul 2024 21:25:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719980759; x=1720585559; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cBnaqUZYK96vUrgWPYxgC+5OHY9C7ZJqIA02ClmSNCQ=;
+        b=EGpd7bj7ErSyMJ3X3h4ine+6143TfgdZOLopzdCg9Za2v9D2XgWtKWvzg36sAzKtd8
+         Hh+wZ6po5d60Y/KvMlEImfwrn7n3E+Esn00OEYsVhzm6XC9SE1U6k0GoW/ZD7MX1icKr
+         /VZZ1SwaGtfvnW9zDuzixDDVgnX3LG8V33qF5H1g8Q1TbjeJvdanq1qHNqREH9HzewgZ
+         KszMt2DsMXjY1yEDDtiRBCQ0KgXgeSTXzfwVS4Ub3ovf2oyrZ2NE0juiKnUQFQM2ChAd
+         PJe1kycdaLDaxZlLGom8+t91wvL9mqvubi9zVFp3uWZnBEv8hb48OWWlwYsEXJXXu4Qs
+         2CzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719980759; x=1720585559;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cBnaqUZYK96vUrgWPYxgC+5OHY9C7ZJqIA02ClmSNCQ=;
+        b=LWdmCwX2hs9uaNqLps4UTctsKkPcI8lgr43UTeJm+8iyB/pwbhI4UHI38Zby9faDoz
+         lyZYTB9xWg3ctVTonxk1S7TDOJSaVxohJn0fD+1SHu0KbpnkJMqPI2xfjoYq7BonNX21
+         x9k1N19d6OsKMZ3OCFdxtxlKmXz2brIc/sQn8VndgDRveE32JPivCAgTPpEoT56hmbgd
+         x7BdecBRseLhu0VsfNXm2kSoVxj1tQ2Q1wjFI9MLAYKSvUT7jFNpQia1zlMRLTCF6+q7
+         NNlmZHjLuQrM/FPvCOLtBa2SmDYTEPnW2fm6YOxMDbLsskpDFZs6iGlPf4cxLf/tjW1D
+         597A==
+X-Forwarded-Encrypted: i=1; AJvYcCXY+GDzVVdvTFLfn9v4SlLgax1qIbhIY7H2Cf5wg2xBW1QJsaDdDGlPL4n5x824gE5LXRJHgYhK8Vn9jsr6bp0ojC+ML5KgSUlmrY9Pl64iy0VZELGLd/GZ2CklghDkfrM7hcFQ
+X-Gm-Message-State: AOJu0YxcctFzygX4DkBAa4gFYzpoa3McsGACQP0kWM5EH/yC9M/xgM0f
+	Mq9xDqiJKk08egN3rC2BForIP+el4r3ydoCCOzEin6EwVnrKo+YS
+X-Google-Smtp-Source: AGHT+IHUeV3QCOeOWx1/Vbhxgd3leWzYw8PWTNlqtzJ85bI+P6YvI5aKH2cmkg1+QJ/JlB4oC5AlvA==
+X-Received: by 2002:a17:902:f611:b0:1f7:1a31:fae8 with SMTP id d9443c01a7336-1fadbc85fc7mr122403305ad.26.1719980759067;
+        Tue, 02 Jul 2024 21:25:59 -0700 (PDT)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fac10e2197sm92898705ad.63.2024.07.02.21.25.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jul 2024 21:25:58 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id A567A185B99C8; Wed, 03 Jul 2024 11:25:56 +0700 (WIB)
+Date: Wed, 3 Jul 2024 11:25:56 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.9 000/222] 6.9.8-rc1 review
+Message-ID: <ZoTS1NEjgv1FoVfC@archie.me>
+References: <20240702170243.963426416@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="y20GA+L+N+D68gra"
+Content-Disposition: inline
+In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
 
-From: Wang Yufen <wangyufen@huawei.com>
 
-[ Upstream commit d8616ee2affcff37c5d315310da557a694a3303d ]
+--y20GA+L+N+D68gra
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-During TCP sockmap redirect pressure test, the following warning is triggered:
+On Tue, Jul 02, 2024 at 07:00:38PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.9.8 release.
+> There are 222 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
-WARNING: CPU: 3 PID: 2145 at net/core/stream.c:205 sk_stream_kill_queues+0xbc/0xd0
-CPU: 3 PID: 2145 Comm: iperf Kdump: loaded Tainted: G        W         5.10.0+ #9
-Call Trace:
- inet_csk_destroy_sock+0x55/0x110
- inet_csk_listen_stop+0xbb/0x380
- tcp_close+0x41b/0x480
- inet_release+0x42/0x80
- __sock_release+0x3d/0xa0
- sock_close+0x11/0x20
- __fput+0x9d/0x240
- task_work_run+0x62/0x90
- exit_to_user_mode_prepare+0x110/0x120
- syscall_exit_to_user_mode+0x27/0x190
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
+Successfully compiled and installed the kernel on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
 
-The reason we observed is that:
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
-When the listener is closing, a connection may have completed the three-way
-handshake but not accepted, and the client has sent some packets. The child
-sks in accept queue release by inet_child_forget()->inet_csk_destroy_sock(),
-but psocks of child sks have not released.
+--=20
+An old man doll... just what I always wanted! - Clara
 
-To fix, add sock_map_destroy to release psocks.
+--y20GA+L+N+D68gra
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Signed-off-by: Wang Yufen <wangyufen@huawei.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Jakub Sitnicki <jakub@cloudflare.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20220524075311.649153-1-wangyufen@huawei.com
-Stable-dep-of: 8bbabb3fddcd ("bpf, sock_map: Move cancel_work_sync() out of sock lock")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[Conflict in include/linux/bpf.h due to function declaration position
-and remove non-existed sk_psock_stop helper from sock_map_destroy.]
-Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
----
-background:
-Link: https://lore.kernel.org/stable/d11bc7e6-a2c7-445a-8561-3599eafb07b0@linux.alibaba.com/
+-----BEGIN PGP SIGNATURE-----
 
-@stable team:
-This backport has 2 changes compared to the original patch:
-- fix conflict due to sock_map_destroy declaration position in include/linux/bpf.h;
-- remove the non-existed sk_psock_stop helper from sock_map_destroy. This helper is
-  introduced by 799aa7f98d53 ("skmsg: Avoid lock_sock() in sk_psock_backlog()") after
-  v5.10, it is not a fix and hard to backport. Considering that what did in
-  sk_psock_stop is done in sk_psock_drop and neither sock_map_close nor sock_map_unhash
-  in v5.10 introduces sk_psock_stop, I removed it from sock_map_destroy too.
-I tested it in my environment, the regression was gone.
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZoTSzwAKCRD2uYlJVVFO
+oyEHAQCNKXYyjiaXYt1QH1Hl7jD8dw00fbeEs3uPj+bf7HmoWQEA0jcs3111Kssk
+96nRJRvfR2+2ZJa6T5eSZ4TMzMD7LAc=
+=lKUP
+-----END PGP SIGNATURE-----
 
-Cc:  Wang Yufen <wangyufen@huawei.com>
-@Yufen, if I missed anything, please point it out, thanks!
----
- include/linux/bpf.h   |  1 +
- include/linux/skmsg.h |  1 +
- net/core/skmsg.c      |  1 +
- net/core/sock_map.c   | 22 ++++++++++++++++++++++
- net/ipv4/tcp_bpf.c    |  1 +
- 5 files changed, 26 insertions(+)
-
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index a75faf437e75..340f4fef5b5a 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -1800,6 +1800,7 @@ int sock_map_get_from_fd(const union bpf_attr *attr, struct bpf_prog *prog);
- int sock_map_prog_detach(const union bpf_attr *attr, enum bpf_prog_type ptype);
- int sock_map_update_elem_sys(struct bpf_map *map, void *key, void *value, u64 flags);
- void sock_map_unhash(struct sock *sk);
-+void sock_map_destroy(struct sock *sk);
- void sock_map_close(struct sock *sk, long timeout);
- #else
- static inline int sock_map_prog_update(struct bpf_map *map,
-diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
-index 1138dd3071db..e2af013ec05f 100644
---- a/include/linux/skmsg.h
-+++ b/include/linux/skmsg.h
-@@ -98,6 +98,7 @@ struct sk_psock {
- 	spinlock_t			link_lock;
- 	refcount_t			refcnt;
- 	void (*saved_unhash)(struct sock *sk);
-+	void (*saved_destroy)(struct sock *sk);
- 	void (*saved_close)(struct sock *sk, long timeout);
- 	void (*saved_write_space)(struct sock *sk);
- 	struct proto			*sk_proto;
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index bb4fbc60b272..51792dda1b73 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -599,6 +599,7 @@ struct sk_psock *sk_psock_init(struct sock *sk, int node)
- 	psock->eval = __SK_NONE;
- 	psock->sk_proto = prot;
- 	psock->saved_unhash = prot->unhash;
-+	psock->saved_destroy = prot->destroy;
- 	psock->saved_close = prot->close;
- 	psock->saved_write_space = sk->sk_write_space;
- 
-diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-index 52e395a189df..d1d0ee2dbfaa 100644
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -1566,6 +1566,28 @@ void sock_map_unhash(struct sock *sk)
- 	saved_unhash(sk);
- }
- 
-+void sock_map_destroy(struct sock *sk)
-+{
-+	void (*saved_destroy)(struct sock *sk);
-+	struct sk_psock *psock;
-+
-+	rcu_read_lock();
-+	psock = sk_psock_get(sk);
-+	if (unlikely(!psock)) {
-+		rcu_read_unlock();
-+		if (sk->sk_prot->destroy)
-+			sk->sk_prot->destroy(sk);
-+		return;
-+	}
-+
-+	saved_destroy = psock->saved_destroy;
-+	sock_map_remove_links(sk, psock);
-+	rcu_read_unlock();
-+	sk_psock_put(sk, psock);
-+	saved_destroy(sk);
-+}
-+EXPORT_SYMBOL_GPL(sock_map_destroy);
-+
- void sock_map_close(struct sock *sk, long timeout)
- {
- 	void (*saved_close)(struct sock *sk, long timeout);
-diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-index d0ca1fc325cd..f909e440bb22 100644
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -582,6 +582,7 @@ static void tcp_bpf_rebuild_protos(struct proto prot[TCP_BPF_NUM_CFGS],
- 				   struct proto *base)
- {
- 	prot[TCP_BPF_BASE]			= *base;
-+	prot[TCP_BPF_BASE].destroy		= sock_map_destroy;
- 	prot[TCP_BPF_BASE].close		= sock_map_close;
- 	prot[TCP_BPF_BASE].recvmsg		= tcp_bpf_recvmsg;
- 	prot[TCP_BPF_BASE].stream_memory_read	= tcp_bpf_stream_read;
--- 
-2.32.0.3.g01195cf9f
-
+--y20GA+L+N+D68gra--
 
