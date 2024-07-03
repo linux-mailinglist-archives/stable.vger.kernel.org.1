@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94DC0925DCB
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC40F925CA8
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9C09B34718
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:06:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A0C21C2242B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B4A183097;
-	Wed,  3 Jul 2024 10:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98CA018734D;
+	Wed,  3 Jul 2024 11:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNQx6f9f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cr116/zV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB58157E8B;
-	Wed,  3 Jul 2024 10:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5624545945;
+	Wed,  3 Jul 2024 11:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004078; cv=none; b=ZPUM4ZYITg9c/6CzgWsBujf3gHVwKlvY201V5Xkl4QKGr4bx5wtIm51Ksts7+CFcIitD7uZfvUf38v3wi3QzjtC3ncjJcj5JGPIEFb7WTwz/66obZrP1du8bg2Y2m4kmYKfuSDGLDmeiVoirXRTDelWVr0K/l/75qjdsZYqxiU4=
+	t=1720004995; cv=none; b=mLLU7IkySPbsiw9zEB7nQIcmZOtvNigOdUue22ilGjCl/eBvh9o5zvf9G87QF28lkitjy1I4oBPI7WI6bSvNQO00MzHjLD1Cb4OW8RMOmFc2HESqsNywVIChoLpy2pa9MpalUw7R7KEtwO/gfM2fibRWweUTBcMUsnxAyOUVW5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004078; c=relaxed/simple;
-	bh=95d/C0eQMR88frAvyGiXSb3eNpz8WKfNG165HpDgFNM=;
+	s=arc-20240116; t=1720004995; c=relaxed/simple;
+	bh=GVT8TmjC3TG48MFekijPiD8qGRxOknXKJ+4qUy/kun4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mlBzaR6qoxOsPlEWNaogVhmJv343ayBzD7/tYC9RyVGIK1eXxW4XnjRsj6ndf06DaEMMTOSZwEt4apZtlzCIC999n/ZIPNbAOAXYkhOLhxRR8z6P0TsQrMSRI6mhXPZgNU1t6DFVzti1jCAm6qxFJ1P4VgecwCIomRCHX76mDnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNQx6f9f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ECFFC2BD10;
-	Wed,  3 Jul 2024 10:54:36 +0000 (UTC)
+	 MIME-Version; b=Ym2GpC1zjwaX2RQvXOF6QYZpHN+MNXkRWjJx+VKzaAGsplRhxV8KwJQjIKw3wcJQJsW9QMgM37sfPiF8mNLYPcPVrxNrojFPgAMDGgBB62Z+PtPLjJ2jUYU6b1zqsoNtbTqnFC4S03eYQPoPFUYAKuFjFoKf3HW11/6x/BZsK6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cr116/zV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27F4C2BD10;
+	Wed,  3 Jul 2024 11:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004077;
-	bh=95d/C0eQMR88frAvyGiXSb3eNpz8WKfNG165HpDgFNM=;
+	s=korg; t=1720004995;
+	bh=GVT8TmjC3TG48MFekijPiD8qGRxOknXKJ+4qUy/kun4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LNQx6f9fK5Jpokq1eqygheDPVWjCTN3qFiiZY0jc5M2ObuGDn1hNckU53JbZ/LqFj
-	 CYs7iQsCEQ9wFDBmPouxSlfTNs/HPIC4ZapbvcdNo1l08IaP/ooqqg3bNe4pHUXPvS
-	 iowyeLymt009Djopq4aqbqB2wIyEAfW0XDd6BaVI=
+	b=cr116/zVCrNnRRb/FeVskAI8SW2VFmFgrKAAbLU2OBtUmA9Wd+Zpfl+n4CLpuE/hA
+	 D88uFwGQFJ1h39Y8Xi1XYU1hcv5weOPmu8FcCs6fwNaPtUMCZc6kxIt6KnMySZDecE
+	 AmrhN4RxWuwISuxeoyHhm3zaiaphLXtXBS1v3UCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 114/189] regulator: core: Fix modpost error "regulator_get_regmap" undefined
+Subject: [PATCH 5.10 194/290] x86/amd_nb: Check for invalid SMN reads
 Date: Wed,  3 Jul 2024 12:39:35 +0200
-Message-ID: <20240703102845.802014653@linuxfoundation.org>
+Message-ID: <20240703102911.493825383@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-[ Upstream commit 3f60497c658d2072714d097a177612d34b34aa3d ]
+[ Upstream commit c625dabbf1c4a8e77e4734014f2fde7aa9071a1f ]
 
-Fix the modpost error "regulator_get_regmap" undefined by adding export
-symbol.
+AMD Zen-based systems use a System Management Network (SMN) that
+provides access to implementation-specific registers.
 
-Fixes: 04eca28cde52 ("regulator: Add helpers for low-level register access")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202406110117.mk5UR3VZ-lkp@intel.com
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://lore.kernel.org/r/20240610195532.175942-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+SMN accesses are done indirectly through an index/data pair in PCI
+config space. The PCI config access may fail and return an error code.
+This would prevent the "read" value from being updated.
+
+However, the PCI config access may succeed, but the return value may be
+invalid. This is in similar fashion to PCI bad reads, i.e. return all
+bits set.
+
+Most systems will return 0 for SMN addresses that are not accessible.
+This is in line with AMD convention that unavailable registers are
+Read-as-Zero/Writes-Ignored.
+
+However, some systems will return a "PCI Error Response" instead. This
+value, along with an error code of 0 from the PCI config access, will
+confuse callers of the amd_smn_read() function.
+
+Check for this condition, clear the return value, and set a proper error
+code.
+
+Fixes: ddfe43cdc0da ("x86/amd_nb: Add SMN and Indirect Data Fabric access for AMD Fam17h")
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230403164244.471141-1-yazen.ghannam@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/amd_nb.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 5c50e7add5779..a01a769b2f2d1 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -3074,6 +3074,7 @@ struct regmap *regulator_get_regmap(struct regulator *regulator)
+diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
+index 18f6b7c4bd79f..16cd56627574d 100644
+--- a/arch/x86/kernel/amd_nb.c
++++ b/arch/x86/kernel/amd_nb.c
+@@ -164,7 +164,14 @@ static int __amd_smn_rw(u16 node, u32 address, u32 *value, bool write)
  
- 	return map ? map : ERR_PTR(-EOPNOTSUPP);
+ int amd_smn_read(u16 node, u32 address, u32 *value)
+ {
+-	return __amd_smn_rw(node, address, value, false);
++	int err = __amd_smn_rw(node, address, value, false);
++
++	if (PCI_POSSIBLE_ERROR(*value)) {
++		err = -ENODEV;
++		*value = 0;
++	}
++
++	return err;
  }
-+EXPORT_SYMBOL_GPL(regulator_get_regmap);
+ EXPORT_SYMBOL_GPL(amd_smn_read);
  
- /**
-  * regulator_get_hardware_vsel_register - get the HW voltage selector register
 -- 
 2.43.0
 
