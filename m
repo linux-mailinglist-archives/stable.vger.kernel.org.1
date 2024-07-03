@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-57276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C2AE925C1C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:14:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 784E4925D32
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA3B028802B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3050C1F21B01
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50FD918E748;
-	Wed,  3 Jul 2024 10:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A4317C9F8;
+	Wed,  3 Jul 2024 11:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mY3c9f6J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMNNhKjo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F32918E74A;
-	Wed,  3 Jul 2024 10:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C08A173334;
+	Wed,  3 Jul 2024 11:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004391; cv=none; b=F/+ch5XFqYhgPsbRB2SZLsY5OT9xW24dK30488SQnA0OOjmis2+IRJvHu85DWz4tqt50d5Y3qkgk18mbhQ3FUm1pQnDR8AZ0EqcbTp4GhxTwXsCC/AJXMFrLxp0QrbuEhzI6m+HzGy1WTQeJhtAi+LFdEpySS7dnXqKs7O58hQ4=
+	t=1720005388; cv=none; b=ikQtrexSN87SXo05O1Uhr6bDTatm2ehLTmITdd9MYZHnzyzZEoLZF9bJxLdl0tgUX3mU9V6cNz3r4sP1SeqjwjaZL4Dl29UIvCcZB8EuCCwLjKRrc+wTDZiWoJlwOf/IDe0nVWw1o9gcn5QI5DTlCCUsJPUcOSRfdaNxMhi0Jtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004391; c=relaxed/simple;
-	bh=NfEWPVS/XNZPbdG69u3X83kdOLoLKCUpmQT7Z/OoDkI=;
+	s=arc-20240116; t=1720005388; c=relaxed/simple;
+	bh=d4/cFBEAK2LH77jBc0HPQKLv/Hf4rt/4UjtPXjANk70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fYD7T+7QolxnVlyXwVAPCZXqjOL4UjB729FcxtLp0SsmutB12+ufbOKAUKHLlB7oVxxQZTPqlqZuPe1tNUn1rTZfeVQyvaGihQLpTIEtSJ6rqCRRF/5a03OgZRb9jWn7+frwCgXL9JTLM7b4K2wFAUg6Dp2ilBDjx9NNVPjubuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mY3c9f6J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C9E6C4AF0B;
-	Wed,  3 Jul 2024 10:59:50 +0000 (UTC)
+	 MIME-Version; b=EI80UY0qMqZeGWRiP9Xp7WuHNZGv2IgTfE/kfwZhE/oGOSEqbvXFq7SziGxV9gW6t7c71ba8j0Z4DpO6CngLS3kqeFdIArmhlr2mxy4CiX3BbNCJWfKDIOYu7eYHhNDzOGWxzZo2vdz8OUe4PU07SahDI7kc661fOlvPqWJj3yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMNNhKjo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF191C2BD10;
+	Wed,  3 Jul 2024 11:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004390;
-	bh=NfEWPVS/XNZPbdG69u3X83kdOLoLKCUpmQT7Z/OoDkI=;
+	s=korg; t=1720005388;
+	bh=d4/cFBEAK2LH77jBc0HPQKLv/Hf4rt/4UjtPXjANk70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mY3c9f6J/kU7SswUJ79s1TfcCqExEljafIGyuknUhMGgld73RuZNY91nJ4lOCXna6
-	 Kd/49sVKHhEkHsHOmsxtbgNriCI8/7J+QJCljzHch9+zvxHbxSI8GS44X15b2aodm7
-	 eLo5VFZ9BkKantuvahoUHLcAxcO1prZ21du+FybU=
+	b=eMNNhKjoEwv4tmmMVslBMpCOyHukJbIWjqUYN6L+QO5WWm7+PzEAVow7RWxrpCZAN
+	 CXmcRvTG6n5JHxKyR3ANQ5a7l9FkKNcuSi+S8M8r/oDI8NKoj8yO+S62JipLxdhwZF
+	 YrJi7Bxz02lO6fy4kkBxYSv7g8a9p/0Q97OpxI8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karol Kolacinski <karol.kolacinski@intel.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Frank van der Linden <fvdl@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 019/290] ptp: Fix error message on failed pin verification
+Subject: [PATCH 5.15 064/356] mm/cma: drop incorrect alignment check in cma_init_reserved_mem
 Date: Wed,  3 Jul 2024 12:36:40 +0200
-Message-ID: <20240703102904.918241140@linuxfoundation.org>
+Message-ID: <20240703102915.522157395@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +66,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karol Kolacinski <karol.kolacinski@intel.com>
+From: Frank van der Linden <fvdl@google.com>
 
-[ Upstream commit 323a359f9b077f382f4483023d096a4d316fd135 ]
+[ Upstream commit b174f139bdc8aaaf72f5b67ad1bd512c4868a87e ]
 
-On failed verification of PTP clock pin, error message prints channel
-number instead of pin index after "pin", which is incorrect.
+cma_init_reserved_mem uses IS_ALIGNED to check if the size represented by
+one bit in the cma allocation bitmask is aligned with
+CMA_MIN_ALIGNMENT_BYTES (pageblock size).
 
-Fix error message by adding channel number to the message and printing
-pin number instead of channel number.
+However, this is too strict, as this will fail if order_per_bit >
+pageblock_order, which is a valid configuration.
 
-Fixes: 6092315dfdec ("ptp: introduce programmable pins.")
-Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Link: https://lore.kernel.org/r/20240604120555.16643-1-karol.kolacinski@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+We could check IS_ALIGNED both ways, but since both numbers are powers of
+two, no check is needed at all.
+
+Link: https://lkml.kernel.org/r/20240404162515.527802-1-fvdl@google.com
+Fixes: de9e14eebf33 ("drivers: dma-contiguous: add initialization from device tree")
+Signed-off-by: Frank van der Linden <fvdl@google.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_chardev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/cma.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
-index 9311f3d09c8fc..8eb902fe73a98 100644
---- a/drivers/ptp/ptp_chardev.c
-+++ b/drivers/ptp/ptp_chardev.c
-@@ -84,7 +84,8 @@ int ptp_set_pinfunc(struct ptp_clock *ptp, unsigned int pin,
- 	}
+diff --git a/mm/cma.c b/mm/cma.c
+index 5208aee4f45ad..88fbd4f8124d3 100644
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -179,10 +179,6 @@ int __init cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
+ 	if (!size || !memblock_is_region_reserved(base, size))
+ 		return -EINVAL;
  
- 	if (info->verify(info, pin, func, chan)) {
--		pr_err("driver cannot use function %u on pin %u\n", func, chan);
-+		pr_err("driver cannot use function %u and channel %u on pin %u\n",
-+		       func, chan, pin);
- 		return -EOPNOTSUPP;
- 	}
- 
+-	/* alignment should be aligned with order_per_bit */
+-	if (!IS_ALIGNED(CMA_MIN_ALIGNMENT_PAGES, 1 << order_per_bit))
+-		return -EINVAL;
+-
+ 	/* ensure minimal alignment required by mm core */
+ 	if (!IS_ALIGNED(base | size, CMA_MIN_ALIGNMENT_BYTES))
+ 		return -EINVAL;
 -- 
 2.43.0
 
