@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-56961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5651925F21
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:51:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99ED8925B22
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9143B2FD6B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79C54299FB9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192A1181329;
-	Wed,  3 Jul 2024 10:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1B217DA3F;
+	Wed,  3 Jul 2024 10:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJr/AYpQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifKWG/y3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55A818131D;
-	Wed,  3 Jul 2024 10:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA4F17C238;
+	Wed,  3 Jul 2024 10:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003414; cv=none; b=G+ytqNcROoUvySIxEflcvhrWiPPdpVwOjYgXTs44la4L3ulOGO08MP6F5WJRw0bFumI2j+Wzl54luqRGOkbxaQsYlsakPlPY5bFY19iz3eUtFB/V73OTlCCBUxmyC7+s+uYWJqu9NAtU3V8t1jTBpYoP3YguleGcPZM9gtaIG8s=
+	t=1720003960; cv=none; b=ubrQVov9bJkZ6H5ORT9xGfEGETacK44VF4F6Jif7g5ACQ+xsDzGwr/mzhAHgEyiQrQGXjMkNC0d151yMlakyrXAgm/lEswFMx5x5bkIleTU3/zipVoDXJxbFbSGE+NozWcDhOyjcAZoAaKmGP7O00E8V+q1rsyKxD76jNns8BL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003414; c=relaxed/simple;
-	bh=b1Qg/vRW3VWNgvArkD6jXHRH3OGGiZokysspEE0jWBY=;
+	s=arc-20240116; t=1720003960; c=relaxed/simple;
+	bh=b0xeKa+5DR5pgSAUQOT4zKUXutidM19fx1KehpfSzaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UmmexVDY6hRF5o/1+UlV/hsHetLxdpfNx7LcW6bxH5s9BUTF8Yv3yxKRd7v8RVokI0Qw6U0IQPOZNMUvCvYCvZC3twJLdGgia5jCzIbefEeVmGLSn4bc8bWiVUXcfn8liGoeNd0zTRc5dNxMD7+blJ9SHdT5FFZwiEAu4NfAb1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJr/AYpQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B58BC2BD10;
-	Wed,  3 Jul 2024 10:43:34 +0000 (UTC)
+	 MIME-Version; b=dIcUgpIBP33LHxpPki1jNnCKM913deDgQvJwFfzhh5I/Rv/KMi6H4dPMCAMCdIM65H0QUasi9paRwsxbzUhDnaJqMcia8vb2jrKMSK/HnEY8/n8lTuj4XMw9ils9tAhdfvsncwJBlRy4FQFOkR6JZDJBUk9qPT1j0jFtjpKpFBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifKWG/y3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5315CC2BD10;
+	Wed,  3 Jul 2024 10:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003414;
-	bh=b1Qg/vRW3VWNgvArkD6jXHRH3OGGiZokysspEE0jWBY=;
+	s=korg; t=1720003959;
+	bh=b0xeKa+5DR5pgSAUQOT4zKUXutidM19fx1KehpfSzaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XJr/AYpQk6L8aCoWG+Td78mrz/B8bATbY199PxtVBIIBO0umLDXb/CQWRtalJT/A9
-	 BuNjW4HR7bE7HDpg9oLMOs6eX5odBHRWZkLAn5VrY6Rmlx+Icn9Jc2qfUHxp3wKpPo
-	 7GY2XfOjPQ/RgWfXJE81/I0Qb8gpvz6fTb+8G3es=
+	b=ifKWG/y3VF/K5gECSOyqeakobq2iD2EzJCsNIQ9MF7VySWGCLQFxBqKe282RfJsLQ
+	 4P0lw2oDD3Xh+UrGFntu+dn2iBYZ3gWyMnIquSTbeX5fWhQnorZLFV/NRLBFW5Gbgo
+	 k4l3HtMDpvAy+xQP5FfJMWxksOGzxkLKR4M52oHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 041/139] Bluetooth: L2CAP: Fix rejecting L2CAP_CONN_PARAM_UPDATE_REQ
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 5.4 077/189] intel_th: pci: Add Granite Rapids SOC support
 Date: Wed,  3 Jul 2024 12:38:58 +0200
-Message-ID: <20240703102831.990107025@linuxfoundation.org>
+Message-ID: <20240703102844.411275736@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,113 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-[ Upstream commit 806a5198c05987b748b50f3d0c0cfb3d417381a4 ]
+commit 854afe461b009801a171b3a49c5f75ea43e4c04c upstream.
 
-This removes the bogus check for max > hcon->le_conn_max_interval since
-the later is just the initial maximum conn interval not the maximum the
-stack could support which is really 3200=4000ms.
+Add support for the Trace Hub in Granite Rapids SOC.
 
-In order to pass GAP/CONN/CPUP/BV-05-C one shall probably enter values
-of the following fields in IXIT that would cause hci_check_conn_params
-to fail:
-
-TSPX_conn_update_int_min
-TSPX_conn_update_int_max
-TSPX_conn_update_peripheral_latency
-TSPX_conn_update_supervision_timeout
-
-Link: https://github.com/bluez/bluez/issues/847
-Fixes: e4b019515f95 ("Bluetooth: Enforce validation on max value of connection interval")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20240429130119.1518073-12-alexander.shishkin@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/hci_core.h | 36 ++++++++++++++++++++++++++++----
- net/bluetooth/l2cap_core.c       |  8 +------
- 2 files changed, 33 insertions(+), 11 deletions(-)
+ drivers/hwtracing/intel_th/pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 878e7e92d8efd..7aa8e8e615812 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -1430,18 +1430,46 @@ static inline int hci_check_conn_params(u16 min, u16 max, u16 latency,
- {
- 	u16 max_latency;
- 
--	if (min > max || min < 6 || max > 3200)
-+	if (min > max) {
-+		BT_WARN("min %d > max %d", min, max);
- 		return -EINVAL;
-+	}
-+
-+	if (min < 6) {
-+		BT_WARN("min %d < 6", min);
-+		return -EINVAL;
-+	}
-+
-+	if (max > 3200) {
-+		BT_WARN("max %d > 3200", max);
-+		return -EINVAL;
-+	}
-+
-+	if (to_multiplier < 10) {
-+		BT_WARN("to_multiplier %d < 10", to_multiplier);
-+		return -EINVAL;
-+	}
- 
--	if (to_multiplier < 10 || to_multiplier > 3200)
-+	if (to_multiplier > 3200) {
-+		BT_WARN("to_multiplier %d > 3200", to_multiplier);
- 		return -EINVAL;
-+	}
- 
--	if (max >= to_multiplier * 8)
-+	if (max >= to_multiplier * 8) {
-+		BT_WARN("max %d >= to_multiplier %d * 8", max, to_multiplier);
- 		return -EINVAL;
-+	}
- 
- 	max_latency = (to_multiplier * 4 / max) - 1;
--	if (latency > 499 || latency > max_latency)
-+	if (latency > 499) {
-+		BT_WARN("latency %d > 499", latency);
- 		return -EINVAL;
-+	}
-+
-+	if (latency > max_latency) {
-+		BT_WARN("latency %d > max_latency %d", latency, max_latency);
-+		return -EINVAL;
-+	}
- 
- 	return 0;
- }
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 3c6e72c4fdde3..3f9b2b4a62ffd 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -5316,13 +5316,7 @@ static inline int l2cap_conn_param_update_req(struct l2cap_conn *conn,
- 
- 	memset(&rsp, 0, sizeof(rsp));
- 
--	if (max > hcon->le_conn_max_interval) {
--		BT_DBG("requested connection interval exceeds current bounds.");
--		err = -EINVAL;
--	} else {
--		err = hci_check_conn_params(min, max, latency, to_multiplier);
--	}
--
-+	err = hci_check_conn_params(min, max, latency, to_multiplier);
- 	if (err)
- 		rsp.result = cpu_to_le16(L2CAP_CONN_PARAM_REJECTED);
- 	else
--- 
-2.43.0
-
+--- a/drivers/hwtracing/intel_th/pci.c
++++ b/drivers/hwtracing/intel_th/pci.c
+@@ -305,6 +305,11 @@ static const struct pci_device_id intel_
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+ 	},
+ 	{
++		/* Granite Rapids SOC */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x3256),
++		.driver_data = (kernel_ulong_t)&intel_th_2x,
++	},
++	{
+ 		/* Rocket Lake CPU */
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x4c19),
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 
 
 
