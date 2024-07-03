@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-57316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A4D5925C06
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:14:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14448925D8C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D66841F2094E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85432280FCB
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E429F176AB0;
-	Wed,  3 Jul 2024 11:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E281849FF;
+	Wed,  3 Jul 2024 11:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uTwC1h1p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pz3VAgld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A345F13D61B;
-	Wed,  3 Jul 2024 11:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F08143C6E;
+	Wed,  3 Jul 2024 11:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004512; cv=none; b=uZRGjkoMgMdaGr3yLwfZj6W+mHT4/JXJQFf4Mg17+P3r16XbOdRbyKq0aoXB7uAM1fxZa4dLrKPOdpcJfgICxGwpPAy1CpiIvgg34cL5FGomRLJ29EEu0QEg7L9PFwW/MvwFKCmfnccz1D3AWABES7IcE/KuDQyJYf25iXv3mV4=
+	t=1720005632; cv=none; b=M+FgadybYryUJqk9mEGLMWuj0ghryVVEhXHTay2URrYd60/t+5GrbK3oecoay6gKTW24dqAhxFpPrqdIMLha5hKvjunb1aTRsRXqT8LOVRoNazZlTcnM9cvkXvkmalCSA5o57VtkqTk6NLbcBila82QnO+5eVkHIRRNB0kW+6XY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004512; c=relaxed/simple;
-	bh=Mp0B5Bh5SuVu4+lItSsIOsZrHLYd01EpBQ7th6MTBAw=;
+	s=arc-20240116; t=1720005632; c=relaxed/simple;
+	bh=DV8iUdKTOUS9t2cmkez1nV9y6hhFsaOlyvYfscComl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tiueu2DPqQ33+6odQIlFsW5L5kD8FSFgxGSPXExsBnLP5OmkZJSDDGoZwa1KbmSKTNTU46s6+9DPVvz80eKPP6ITiZtK1TJJMjPrjTJFTYfjJ9lw7jnc9N0dmaYDRwQBI3VrDe2ykrcxa6oWIrqwnHHhf87J/7+ZBEi3/40HLgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uTwC1h1p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270BFC2BD10;
-	Wed,  3 Jul 2024 11:01:51 +0000 (UTC)
+	 MIME-Version; b=hIytpZNL0m/4gRmtgzhCh7JnoKmYXsG9snVVYDp6Zwiqrud1Iy/Rdzwjelinxz35oBAbmRNXZQ3Ogmszej1fVehPe8FxUXhpiPpcbToL4iS06I+NdArU8H9lkMJbnzpcZDq9O8MuCRQmgjcXZ0JzQ1CakyZ1PJt7lTrQ3JOJycY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pz3VAgld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BFEDC2BD10;
+	Wed,  3 Jul 2024 11:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004512;
-	bh=Mp0B5Bh5SuVu4+lItSsIOsZrHLYd01EpBQ7th6MTBAw=;
+	s=korg; t=1720005632;
+	bh=DV8iUdKTOUS9t2cmkez1nV9y6hhFsaOlyvYfscComl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uTwC1h1pGtstddrQxnGcNhWnH5Z3hiAc7DRnYuAfjcUbD9ZmqZpYevBnNQDq0OZ8g
-	 L7wmKuf3DklVImx3iIilkHKYR5F0KZjhYimuOGSjrI+TNaUvupkhuI6JUvyE+djQ9P
-	 787tBjDhVsOzBQ3PRMkOWqg8Rrn7l4v2C9q9D8ko=
+	b=pz3VAgldeXWU9nHRUN24CQZ+tkeDK+H295bDJ+WtqFEz3paf5F9wVP6Itfn/lSsYY
+	 Nxn49ltNHdeLeriEpGivlNdYBE7gmx33MyiZlO02fhsiKYQpEIMf+i0hrS5RQjOj9+
+	 S7zVjso9DMvhxG9BJUkvdH3WEa8slFB9IFgCudfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 067/290] tcp: fix race in tcp_v6_syn_recv_sock()
-Date: Wed,  3 Jul 2024 12:37:28 +0200
-Message-ID: <20240703102906.730007665@linuxfoundation.org>
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 113/356] iio: imu: inv_icm42600: delete unneeded update watermark call
+Date: Wed,  3 Jul 2024 12:37:29 +0200
+Message-ID: <20240703102917.372933247@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-[ Upstream commit d37fe4255abe8e7b419b90c5847e8ec2b8debb08 ]
+commit 245f3b149e6cc3ac6ee612cdb7042263bfc9e73c upstream.
 
-tcp_v6_syn_recv_sock() calls ip6_dst_store() before
-inet_sk(newsk)->pinet6 has been set up.
+Update watermark will be done inside the hwfifo_set_watermark callback
+just after the update_scan_mode. It is useless to do it here.
 
-This means ip6_dst_store() writes over the parent (listener)
-np->dst_cookie.
-
-This is racy because multiple threads could share the same
-parent and their final np->dst_cookie could be wrong.
-
-Move ip6_dst_store() call after inet_sk(newsk)->pinet6
-has been changed and after the copy of parent ipv6_pinfo.
-
-Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7f85e42a6c54 ("iio: imu: inv_icm42600: add buffer support in iio devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Link: https://lore.kernel.org/r/20240527210008.612932-1-inv.git-commit@tdk.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/tcp_ipv6.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c |    4 ----
+ drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  |    4 ----
+ 2 files changed, 8 deletions(-)
 
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index 79d6f6ea3c546..003221d6f52e9 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1311,7 +1311,6 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
- 	 */
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+@@ -128,10 +128,6 @@ static int inv_icm42600_accel_update_sca
+ 	/* update data FIFO write */
+ 	inv_icm42600_timestamp_apply_odr(ts, 0, 0, 0);
+ 	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
+-	if (ret)
+-		goto out_unlock;
+-
+-	ret = inv_icm42600_buffer_update_watermark(st);
  
- 	newsk->sk_gso_type = SKB_GSO_TCPV6;
--	ip6_dst_store(newsk, dst, NULL, NULL);
- 	inet6_sk_rx_dst_set(newsk, skb);
+ out_unlock:
+ 	mutex_unlock(&st->lock);
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+@@ -128,10 +128,6 @@ static int inv_icm42600_gyro_update_scan
+ 	/* update data FIFO write */
+ 	inv_icm42600_timestamp_apply_odr(ts, 0, 0, 0);
+ 	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
+-	if (ret)
+-		goto out_unlock;
+-
+-	ret = inv_icm42600_buffer_update_watermark(st);
  
- 	inet_sk(newsk)->pinet6 = tcp_inet6_sk(newsk);
-@@ -1322,6 +1321,8 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
- 
- 	memcpy(newnp, np, sizeof(struct ipv6_pinfo));
- 
-+	ip6_dst_store(newsk, dst, NULL, NULL);
-+
- 	newsk->sk_v6_daddr = ireq->ir_v6_rmt_addr;
- 	newnp->saddr = ireq->ir_v6_loc_addr;
- 	newsk->sk_v6_rcv_saddr = ireq->ir_v6_loc_addr;
--- 
-2.43.0
-
+ out_unlock:
+ 	mutex_unlock(&st->lock);
 
 
 
