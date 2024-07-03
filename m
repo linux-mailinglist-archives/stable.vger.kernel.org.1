@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-57825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1397B925E36
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD765925F6B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:59:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B26A81F25955
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1281CB3B081
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E60917C23F;
-	Wed,  3 Jul 2024 11:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274AD185E4B;
+	Wed,  3 Jul 2024 11:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/xTgrCu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GcCtwU6r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADFF13B280;
-	Wed,  3 Jul 2024 11:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC14173348;
+	Wed,  3 Jul 2024 11:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006046; cv=none; b=A6HAQZVIZq15baU3Z1te/qDBvwgz01RYSxtkEi8HcvAspChVKRTkRsHfAaaAFVAzYyQaKPK3sp9KGh9OX2PjQ69BhrIWWS7zHOx6XhWzCrg9l4cbreAwU0G40npFraTa4DDhtresZEJ5jx///NkxbcSeED83FKS8+xQlJn8LTk8=
+	t=1720004934; cv=none; b=C8IYQ9ig9s7YjI91+epUy7ZvBbQVX2yOZtMK2Sewmsm2DVgQwFukGUEmKRA6usc/urZwqX1KHTOUAQ4qpQPQGFaQ9ONRb1/53yFe1UYoQreSyqUv9qdEvPEo+B+Ip31aVDfjfocfkfT78eRFPkOFSXcnK+DUnYR6P37UfXXA0gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006046; c=relaxed/simple;
-	bh=IS+4eVeHcZLuubTbdpJDTvsXaMFK7uWppf/TYT59kJY=;
+	s=arc-20240116; t=1720004934; c=relaxed/simple;
+	bh=dBrYCfh9okwNswCjcWdGVhA9GxtykWRQc0vX+P33yao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JnGd6LYDEDtBEvEZvLAfbtJI5E8gDaFcf19898pRwvL24hBY7+/K0L2aGIdp+aJdSNkJkOPqaxKeBPLb8glKdTrpdZ6oKyXlDnrp5G74VWNPPVHmgUFSsVJt+kGrTCoCDiDIfJwWliAJA8uoi2A+z4Vbu/NRvdbZdDL2RAR6aak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/xTgrCu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8975C2BD10;
-	Wed,  3 Jul 2024 11:27:25 +0000 (UTC)
+	 MIME-Version; b=UrcUY+fIJPhdaruhDpVsgYNn69V4386q9h6uMmU7GwMnJnSVJtvTxVtheB8kr8rZD1sQG8fH28jE5wbSaxt57rlhczSk9f/Y3enRdN1fotipsn27Lb+m+y0bgmDE1aDPYomF+Njth8AjhFnZDnOUH5TFIafJbAmwF5Pqj1hsNWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcCtwU6r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528E8C4AF0E;
+	Wed,  3 Jul 2024 11:08:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006046;
-	bh=IS+4eVeHcZLuubTbdpJDTvsXaMFK7uWppf/TYT59kJY=;
+	s=korg; t=1720004934;
+	bh=dBrYCfh9okwNswCjcWdGVhA9GxtykWRQc0vX+P33yao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B/xTgrCu/aFG7OStz0ZvUuN7AHI8cfardArcfA0XIuNTUiaCxFgopdQtVS4hu7EVm
-	 tDFbyNrw782cvLzBTW6WypE6iGKBtn7hfTN+W71gKGgOBJMULX3663zacfJ103wvoA
-	 ZeXySNaZnZTYxhhrz/zG8Wp2msaEkkqCYczHaq0Q=
+	b=GcCtwU6r0r4FSxzu8CX/BqjCvMcpLUsh1XTV1Zv75z3QAs1ezSUX7yYd/LX7UKC6n
+	 5wXv71W1qF9N0rYuHbI+R/wy1oobPN8vnEP9hPKznNPVYJ99BMo6lJ/GQq+1KHIqtc
+	 b8a4tgwiXua0cb3yvwQHQKYw6Sw6/dUQzhWacabA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haifeng Xu <haifeng.xu@shopee.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
+	Huang-Huang Bao <i@eh5.me>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 251/356] perf/core: Fix missing wakeup when waiting for context reference
+Subject: [PATCH 5.10 206/290] pinctrl: rockchip: fix pinmux bits for RK3328 GPIO2-B pins
 Date: Wed,  3 Jul 2024 12:39:47 +0200
-Message-ID: <20240703102922.614832994@linuxfoundation.org>
+Message-ID: <20240703102911.942955546@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,113 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haifeng Xu <haifeng.xu@shopee.com>
+From: Huang-Huang Bao <i@eh5.me>
 
-[ Upstream commit 74751ef5c1912ebd3e65c3b65f45587e05ce5d36 ]
+[ Upstream commit e8448a6c817c2aa6c6af785b1d45678bd5977e8d ]
 
-In our production environment, we found many hung tasks which are
-blocked for more than 18 hours. Their call traces are like this:
+The pinmux bits for GPIO2-B0 to GPIO2-B6 actually have 2 bits width,
+correct the bank flag for GPIO2-B. The pinmux bits for GPIO2-B7 is
+recalculated so it remain unchanged.
 
-[346278.191038] __schedule+0x2d8/0x890
-[346278.191046] schedule+0x4e/0xb0
-[346278.191049] perf_event_free_task+0x220/0x270
-[346278.191056] ? init_wait_var_entry+0x50/0x50
-[346278.191060] copy_process+0x663/0x18d0
-[346278.191068] kernel_clone+0x9d/0x3d0
-[346278.191072] __do_sys_clone+0x5d/0x80
-[346278.191076] __x64_sys_clone+0x25/0x30
-[346278.191079] do_syscall_64+0x5c/0xc0
-[346278.191083] ? syscall_exit_to_user_mode+0x27/0x50
-[346278.191086] ? do_syscall_64+0x69/0xc0
-[346278.191088] ? irqentry_exit_to_user_mode+0x9/0x20
-[346278.191092] ? irqentry_exit+0x19/0x30
-[346278.191095] ? exc_page_fault+0x89/0x160
-[346278.191097] ? asm_exc_page_fault+0x8/0x30
-[346278.191102] entry_SYSCALL_64_after_hwframe+0x44/0xae
+The pinmux bits for those pins are not explicitly specified in RK3328
+TRM, however we can get hint from pad name and its correspinding IOMUX
+setting for pins in interface descriptions. The correspinding IOMIX
+settings for GPIO2-B0 to GPIO2-B6 can be found in the same row next to
+occurrences of following pad names in RK3328 TRM.
 
-The task was waiting for the refcount become to 1, but from the vmcore,
-we found the refcount has already been 1. It seems that the task didn't
-get woken up by perf_event_release_kernel() and got stuck forever. The
-below scenario may cause the problem.
+GPIO2-B0: IO_SPIclkm0_GPIO2B0vccio5
+GPIO2-B1: IO_SPItxdm0_GPIO2B1vccio5
+GPIO2-B2: IO_SPIrxdm0_GPIO2B2vccio5
+GPIO2-B3: IO_SPIcsn0m0_GPIO2B3vccio5
+GPIO2-B4: IO_SPIcsn1m0_FLASHvol_sel_GPIO2B4vccio5
+GPIO2-B5: IO_ I2C2sda_TSADCshut_GPIO2B5vccio5
+GPIO2-B6: IO_ I2C2scl_GPIO2B6vccio5
 
-Thread A					Thread B
-...						...
-perf_event_free_task				perf_event_release_kernel
-						   ...
-						   acquire event->child_mutex
-						   ...
-						   get_ctx
-   ...						   release event->child_mutex
-   acquire ctx->mutex
-   ...
-   perf_free_event (acquire/release event->child_mutex)
-   ...
-   release ctx->mutex
-   wait_var_event
-						   acquire ctx->mutex
-						   acquire event->child_mutex
-						   # move existing events to free_list
-						   release event->child_mutex
-						   release ctx->mutex
-						   put_ctx
-...						...
+This fix has been tested on NanoPi R2S for fixing confliting pinmux bits
+between GPIO2-B7 with GPIO2-B5.
 
-In this case, all events of the ctx have been freed, so we couldn't
-find the ctx in free_list and Thread A will miss the wakeup. It's thus
-necessary to add a wakeup after dropping the reference.
-
-Fixes: 1cf8dfe8a661 ("perf/core: Fix race between close() and fork()")
-Signed-off-by: Haifeng Xu <haifeng.xu@shopee.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20240513103948.33570-1-haifeng.xu@shopee.com
+Signed-off-by: Huang-Huang Bao <i@eh5.me>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 3818e4a7678e ("pinctrl: rockchip: Add rk3328 pinctrl support")
+Link: https://lore.kernel.org/r/20240606125755.53778-2-i@eh5.me
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/pinctrl/pinctrl-rockchip.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index e79cd0fd1d2b7..80d9c8fcc30a6 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -5276,6 +5276,7 @@ int perf_event_release_kernel(struct perf_event *event)
- again:
- 	mutex_lock(&event->child_mutex);
- 	list_for_each_entry(child, &event->child_list, child_list) {
-+		void *var = NULL;
+diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
+index 2a454098eaaa5..afa7055114370 100644
+--- a/drivers/pinctrl/pinctrl-rockchip.c
++++ b/drivers/pinctrl/pinctrl-rockchip.c
+@@ -800,12 +800,6 @@ static struct rockchip_mux_recalced_data rk3308_mux_recalced_data[] = {
  
- 		/*
- 		 * Cannot change, child events are not migrated, see the
-@@ -5316,11 +5317,23 @@ int perf_event_release_kernel(struct perf_event *event)
- 			 * this can't be the last reference.
- 			 */
- 			put_event(event);
-+		} else {
-+			var = &ctx->refcount;
- 		}
- 
- 		mutex_unlock(&event->child_mutex);
- 		mutex_unlock(&ctx->mutex);
- 		put_ctx(ctx);
-+
-+		if (var) {
-+			/*
-+			 * If perf_event_free_task() has deleted all events from the
-+			 * ctx while the child_mutex got released above, make sure to
-+			 * notify about the preceding put_ctx().
-+			 */
-+			smp_mb(); /* pairs with wait_var_event() */
-+			wake_up_var(var);
-+		}
- 		goto again;
- 	}
- 	mutex_unlock(&event->child_mutex);
+ static struct rockchip_mux_recalced_data rk3328_mux_recalced_data[] = {
+ 	{
+-		.num = 2,
+-		.pin = 12,
+-		.reg = 0x24,
+-		.bit = 8,
+-		.mask = 0x3
+-	}, {
+ 		.num = 2,
+ 		.pin = 15,
+ 		.reg = 0x28,
+@@ -3882,7 +3876,7 @@ static struct rockchip_pin_bank rk3328_pin_banks[] = {
+ 	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", 0, 0, 0, 0),
+ 	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", 0, 0, 0, 0),
+ 	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", 0,
+-			     IOMUX_WIDTH_3BIT,
++			     0,
+ 			     IOMUX_WIDTH_3BIT,
+ 			     0),
+ 	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3",
 -- 
 2.43.0
 
