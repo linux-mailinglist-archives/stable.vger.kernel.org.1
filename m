@@ -1,56 +1,75 @@
-Return-Path: <stable+bounces-57100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 838B4925AB1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C9CC925EDB
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:42:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B59C01C2601E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E055CB37CC1
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307C519AD54;
-	Wed,  3 Jul 2024 10:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F8D17B436;
+	Wed,  3 Jul 2024 11:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBfRkkkA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wF5m1Qu7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1EFC17B40C;
-	Wed,  3 Jul 2024 10:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C971DFC7;
+	Wed,  3 Jul 2024 11:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003849; cv=none; b=MJGBK8bu2UE4LcSEe9Ynh0sBTY29ZUyDa/ZEgIQ8nHvOnfOpWKbgPGH9Cltz7qLSaldX1fDeHStXd1PHb6WHzVmIPqT0F3TOMBgpMt5Nl1hM9VM2xozONaJzQ+Q/vFJpO+s8yAH6Wtnk69NcPbO7ycLY8OUlwgFVBv7d/KBqBxA=
+	t=1720004623; cv=none; b=Wko5+ZMGDBMx94VPcoHpKDZ6NmDR2LNsuP4pbRGwG3O0nGpNszi9IOxhXwDaWA2ish5NxjQ5jn1zrN047aP6feEyzW3PK+d5SpAdZOyUpIt/UrdCUoynYXjO9utGChGnqz1bCR5kt8Xr1adoOZM4ZCNOOLx8mL43WfKBAMuulBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003849; c=relaxed/simple;
-	bh=qrrQyF7oCUeI3h76FhuECRt04XjLLiqRXRW7pA6T6TM=;
+	s=arc-20240116; t=1720004623; c=relaxed/simple;
+	bh=DmrdjEoU7lVDDK17DvsjHEPjH5oonKwxdbbKPxxJyIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DL/leIhK0Vk87tbsiwm8uX8qhmIYbxss74brkIVZqrfzQ8BQ5Ao/yamEYy1sEzdyT/HYRGscyom3yA9PKeQ+/mpnOn6JNs0KMnBg3zKdTfawOh73agtBJDQRhBucshzUyuUFkM2oP5f+2av1+S01b5X7AqX4LVFt7WZTHN6N1RE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBfRkkkA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1DFC2BD10;
-	Wed,  3 Jul 2024 10:50:47 +0000 (UTC)
+	 MIME-Version; b=ZkW4qQl4LthcSAqFIkm4M7Rofpr0iQmP5y9QEAoFTwwbT+Io7KbrJNChhMCurkpG8RgsXnuiXdbjb0DcSyEvL5otspOXdtLRIVkpRiMyax7XS9VKCDvczQ9P/kSs1u77dZBJAD1UKskxXD+3IN13evPZAKkqtaqZJRNOi1jNAUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wF5m1Qu7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8291DC2BD10;
+	Wed,  3 Jul 2024 11:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003848;
-	bh=qrrQyF7oCUeI3h76FhuECRt04XjLLiqRXRW7pA6T6TM=;
+	s=korg; t=1720004623;
+	bh=DmrdjEoU7lVDDK17DvsjHEPjH5oonKwxdbbKPxxJyIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VBfRkkkA8kfVA6Kf1DnScBgxWrPO/fMQMNu9iYYLaLPpEjgxHBdFoTCYp42li+UpR
-	 6VxcO/EpXn59eZVS+B0H+QFPDc6yC93kdqOhp3r2MXJG5czimLhoAbuP+7mpvHp4Eu
-	 IAQJU04a4yLu6Oyz4GiohHNT0ShsK5rKfgmHGSEU=
+	b=wF5m1Qu729coCkjD32DHSC8O5pSxDc8UacuxVVesBOgNbQ6RuYkXckVWjekdtXoxV
+	 HkZo0DQc8ifCUDtSxgbx9MujieebCmAQ4Wc+4lO0Yk5XB6MSA/kWchoK68bHsMWrqv
+	 fiOjTWDnPJCmcislDClmYHSmXLTzz5aEUhL0YfTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wesley Cheng <quic_wcheng@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.4 023/189] usb: gadget: f_fs: Fix race between aio_cancel() and AIO request complete
-Date: Wed,  3 Jul 2024 12:38:04 +0200
-Message-ID: <20240703102842.381400890@linuxfoundation.org>
+	Oleg Nesterov <oleg@redhat.com>,
+	Rachel Menge <rachelmenge@linux.microsoft.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Wei Fu <fuweid89@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Allen Pais <apais@linux.microsoft.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
+	Joel Granados <j.granados@samsung.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Zqiang <qiang.zhang1211@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 104/290] zap_pid_ns_processes: clear TIF_NOTIFY_SIGNAL along with TIF_SIGPENDING
+Date: Wed,  3 Jul 2024 12:38:05 +0200
+Message-ID: <20240703102908.124468497@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +81,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wesley Cheng <quic_wcheng@quicinc.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 24729b307eefcd7c476065cd7351c1a018082c19 ]
+[ Upstream commit 7fea700e04bd3f424c2d836e98425782f97b494e ]
 
-FFS based applications can utilize the aio_cancel() callback to dequeue
-pending USB requests submitted to the UDC.  There is a scenario where the
-FFS application issues an AIO cancel call, while the UDC is handling a
-soft disconnect.  For a DWC3 based implementation, the callstack looks
-like the following:
+kernel_wait4() doesn't sleep and returns -EINTR if there is no
+eligible child and signal_pending() is true.
 
-    DWC3 Gadget                               FFS Application
-dwc3_gadget_soft_disconnect()              ...
-  --> dwc3_stop_active_transfers()
-    --> dwc3_gadget_giveback(-ESHUTDOWN)
-      --> ffs_epfile_async_io_complete()   ffs_aio_cancel()
-        --> usb_ep_free_request()            --> usb_ep_dequeue()
+That is why zap_pid_ns_processes() clears TIF_SIGPENDING but this is not
+enough, it should also clear TIF_NOTIFY_SIGNAL to make signal_pending()
+return false and avoid a busy-wait loop.
 
-There is currently no locking implemented between the AIO completion
-handler and AIO cancel, so the issue occurs if the completion routine is
-running in parallel to an AIO cancel call coming from the FFS application.
-As the completion call frees the USB request (io_data->req) the FFS
-application is also referencing it for the usb_ep_dequeue() call.  This can
-lead to accessing a stale/hanging pointer.
-
-commit b566d38857fc ("usb: gadget: f_fs: use io_data->status consistently")
-relocated the usb_ep_free_request() into ffs_epfile_async_io_complete().
-However, in order to properly implement locking to mitigate this issue, the
-spinlock can't be added to ffs_epfile_async_io_complete(), as
-usb_ep_dequeue() (if successfully dequeuing a USB request) will call the
-function driver's completion handler in the same context.  Hence, leading
-into a deadlock.
-
-Fix this issue by moving the usb_ep_free_request() back to
-ffs_user_copy_worker(), and ensuring that it explicitly sets io_data->req
-to NULL after freeing it within the ffs->eps_lock.  This resolves the race
-condition above, as the ffs_aio_cancel() routine will not continue
-attempting to dequeue a request that has already been freed, or the
-ffs_user_copy_work() not freeing the USB request until the AIO cancel is
-done referencing it.
-
-This fix depends on
-  commit b566d38857fc ("usb: gadget: f_fs: use io_data->status
-  consistently")
-
-Fixes: 2e4c7553cd6f ("usb: gadget: f_fs: add aio support")
-Cc: stable <stable@kernel.org>	# b566d38857fc ("usb: gadget: f_fs: use io_data->status consistently")
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Link: https://lore.kernel.org/r/20240409014059.6740-1-quic_wcheng@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20240608120616.GB7947@redhat.com
+Fixes: 12db8b690010 ("entry: Add support for TIF_NOTIFY_SIGNAL")
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Reported-by: Rachel Menge <rachelmenge@linux.microsoft.com>
+Closes: https://lore.kernel.org/all/1386cd49-36d0-4a5c-85e9-bc42056a5a38@linux.microsoft.com/
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Tested-by: Wei Fu <fuweid89@gmail.com>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Cc: Allen Pais <apais@linux.microsoft.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Frederic Weisbecker <frederic@kernel.org>
+Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
+Cc: Joel Granados <j.granados@samsung.com>
+Cc: Josh Triplett <josh@joshtriplett.org>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Mike Christie <michael.christie@oracle.com>
+Cc: Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Zqiang <qiang.zhang1211@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_fs.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/pid_namespace.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -827,6 +827,7 @@ static void ffs_user_copy_worker(struct
- 	int ret = io_data->req->status ? io_data->req->status :
- 					 io_data->req->actual;
- 	bool kiocb_has_eventfd = io_data->kiocb->ki_flags & IOCB_EVENTFD;
-+	unsigned long flags;
+diff --git a/kernel/pid_namespace.c b/kernel/pid_namespace.c
+index 20243682e6056..e032b1ce79649 100644
+--- a/kernel/pid_namespace.c
++++ b/kernel/pid_namespace.c
+@@ -221,6 +221,7 @@ void zap_pid_ns_processes(struct pid_namespace *pid_ns)
+ 	 */
+ 	do {
+ 		clear_thread_flag(TIF_SIGPENDING);
++		clear_thread_flag(TIF_NOTIFY_SIGNAL);
+ 		rc = kernel_wait4(-1, NULL, __WALL, NULL);
+ 	} while (rc != -ECHILD);
  
- 	if (io_data->read && ret > 0) {
- 		mm_segment_t oldfs = get_fs();
-@@ -843,7 +844,10 @@ static void ffs_user_copy_worker(struct
- 	if (io_data->ffs->ffs_eventfd && !kiocb_has_eventfd)
- 		eventfd_signal(io_data->ffs->ffs_eventfd, 1);
- 
-+	spin_lock_irqsave(&io_data->ffs->eps_lock, flags);
- 	usb_ep_free_request(io_data->ep, io_data->req);
-+	io_data->req = NULL;
-+	spin_unlock_irqrestore(&io_data->ffs->eps_lock, flags);
- 
- 	if (io_data->read)
- 		kfree(io_data->to_free);
+-- 
+2.43.0
+
 
 
 
