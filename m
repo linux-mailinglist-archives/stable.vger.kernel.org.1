@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-57736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 643E4925FE2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:14:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C36FA925FA7
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:06:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 595CDB2B281
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D929B35B06
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DDA41940AA;
-	Wed,  3 Jul 2024 11:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02C5181B9C;
+	Wed,  3 Jul 2024 11:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvfcLFx+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mr+fuYzF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12011940A1;
-	Wed,  3 Jul 2024 11:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F15F18133B;
+	Wed,  3 Jul 2024 11:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005778; cv=none; b=ISnpebCNOWn4A3p/+xv1RLuwAMZjJNFVotJ37rz7WTHIa67jQwPfPWbSObIgsHT6sBj1TRPd+mB0PnKNWD/Rn047fwKkdMBnSOFip6s+peRd9q+0lXnY55z4BFQIt31lCU76ZL0O3v8neSGjByVk/ARGQjUFWmUaJqv4xZzcIM4=
+	t=1720004768; cv=none; b=YFqMmXXkJTUPRyer3v0DYTJc9PDSQUpUFZfGKsQyXC/D/l2W99GesJpeRXY95A7QDWSz5H0SdYdCvYDNDx1/8lWbuT3nQQaSlOz0d9AlSs3hU6oOzh8xqFuGPM7lNL9DxJvBUvLRuUQptLPbwYnGln1zhtuAVRtzH04ojWXnAhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005778; c=relaxed/simple;
-	bh=RaxyoBjj54OI6BIKosTlXf3+AjneCTk31P3rlB/3aho=;
+	s=arc-20240116; t=1720004768; c=relaxed/simple;
+	bh=cWXTUDnIOpScoksmZWYM+AeRomocNtg1a03BNXKUO0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n/m8Cv5FcG630MzFIU9AJjRVUGYnbhRLuOnzYEgXvmUOw8QlZjK+PVVO33FREVAQUjD8yOdogjszwTp+RRER7njFHoTm3W1PQLPLD/+m2WGlrscIbFnzJlpcZooMzklDi8xQVzY/gCLS5C+pF5YI16j01M+QFOKCYHQDjbTd6dM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvfcLFx+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78B94C2BD10;
-	Wed,  3 Jul 2024 11:22:57 +0000 (UTC)
+	 MIME-Version; b=iJIQRGnBfMxbRWbDLFE++PiMiyGRDDEbf+chiiiUmdRtFnPm2X+bj8a4tNl2I6pJGKcxaYCZLxQdIgB9AUXWo+VgeVDWMdgL3ZZyKIF1T/0Ph67gKbpGDweXSG3rlbwB434Z0i1WtcqrQylPNQtuzlAoI1baruIDl8qwLuMitFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mr+fuYzF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09389C2BD10;
+	Wed,  3 Jul 2024 11:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005777;
-	bh=RaxyoBjj54OI6BIKosTlXf3+AjneCTk31P3rlB/3aho=;
+	s=korg; t=1720004768;
+	bh=cWXTUDnIOpScoksmZWYM+AeRomocNtg1a03BNXKUO0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qvfcLFx+R0t649eA8gl0Lxm8t4JoJMG03ygFUejTy9XQMwzebOJs2SsUFNLOdwiOp
-	 di7rHk0XjVVihFRam4OS/fLvm4bULWNW3uuvednn0pUk/z9N/ESrx3TH4moD8hACyU
-	 ndjK8IxbPgE+Vdb0b4iD3V8HQet5jwVWH1KelF6o=
+	b=mr+fuYzF3yi4MwhDZBi3WgNmILoCUdVE0VKc44N1OApDEoNfxUETCkZB3n5W4b82O
+	 xQ/uuCOusl2CvTrCFkBD1iSSmSlJpQrJmDLcj+QNqsZr7JCucdML3mZo6KOU9oBOvr
+	 2dAtYznnG//uAD1Vgt46I/w/LLz5ngE48cJy5bTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b87c222546179f4513a7@syzkaller.appspotmail.com,
-	David Ruth <druth@chromium.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Heng Qi <hengqi@linux.alibaba.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 194/356] net/sched: act_api: fix possible infinite loop in tcf_idr_check_alloc()
-Date: Wed,  3 Jul 2024 12:38:50 +0200
-Message-ID: <20240703102920.444706983@linuxfoundation.org>
+Subject: [PATCH 5.10 151/290] virtio_net: checksum offloading handling fix
+Date: Wed,  3 Jul 2024 12:38:52 +0200
+Message-ID: <20240703102909.885015772@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Ruth <druth@chromium.org>
+From: Heng Qi <hengqi@linux.alibaba.com>
 
-[ Upstream commit d864319871b05fadd153e0aede4811ca7008f5d6 ]
+[ Upstream commit 604141c036e1b636e2a71cf6e1aa09d1e45f40c2 ]
 
-syzbot found hanging tasks waiting on rtnl_lock [1]
+In virtio spec 0.95, VIRTIO_NET_F_GUEST_CSUM was designed to handle
+partially checksummed packets, and the validation of fully checksummed
+packets by the device is independent of VIRTIO_NET_F_GUEST_CSUM
+negotiation. However, the specification erroneously stated:
 
-A reproducer is available in the syzbot bug.
+  "If VIRTIO_NET_F_GUEST_CSUM is not negotiated, the device MUST set flags
+   to zero and SHOULD supply a fully checksummed packet to the driver."
 
-When a request to add multiple actions with the same index is sent, the
-second request will block forever on the first request. This holds
-rtnl_lock, and causes tasks to hang.
+This statement is inaccurate because even without VIRTIO_NET_F_GUEST_CSUM
+negotiation, the device can still set the VIRTIO_NET_HDR_F_DATA_VALID flag.
+Essentially, the device can facilitate the validation of these packets'
+checksums - a process known as RX checksum offloading - removing the need
+for the driver to do so.
 
-Return -EAGAIN to prevent infinite looping, while keeping documented
-behavior.
+This scenario is currently not implemented in the driver and requires
+correction. The necessary specification correction[1] has been made and
+approved in the virtio TC vote.
+[1] https://lists.oasis-open.org/archives/virtio-comment/202401/msg00011.html
 
-[1]
-
-INFO: task kworker/1:0:5088 blocked for more than 143 seconds.
-Not tainted 6.9.0-rc4-syzkaller-00173-g3cdb45594619 #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kworker/1:0 state:D stack:23744 pid:5088 tgid:5088 ppid:2 flags:0x00004000
-Workqueue: events_power_efficient reg_check_chans_work
-Call Trace:
-<TASK>
-context_switch kernel/sched/core.c:5409 [inline]
-__schedule+0xf15/0x5d00 kernel/sched/core.c:6746
-__schedule_loop kernel/sched/core.c:6823 [inline]
-schedule+0xe7/0x350 kernel/sched/core.c:6838
-schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:6895
-__mutex_lock_common kernel/locking/mutex.c:684 [inline]
-__mutex_lock+0x5b8/0x9c0 kernel/locking/mutex.c:752
-wiphy_lock include/net/cfg80211.h:5953 [inline]
-reg_leave_invalid_chans net/wireless/reg.c:2466 [inline]
-reg_check_chans_work+0x10a/0x10e0 net/wireless/reg.c:2481
-
-Fixes: 0190c1d452a9 ("net: sched: atomically check-allocate action")
-Reported-by: syzbot+b87c222546179f4513a7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b87c222546179f4513a7
-Signed-off-by: David Ruth <druth@chromium.org>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20240614190326.1349786-1-druth@chromium.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 4f49129be6fa ("virtio-net: Set RXCSUM feature if GUEST_CSUM is available")
+Signed-off-by: Heng Qi <hengqi@linux.alibaba.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_api.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/virtio_net.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-index c029ffd491c1a..0b4deb33bdf7a 100644
---- a/net/sched/act_api.c
-+++ b/net/sched/act_api.c
-@@ -569,7 +569,6 @@ int tcf_idr_check_alloc(struct tc_action_net *tn, u32 *index,
- 	u32 max;
- 
- 	if (*index) {
--again:
- 		rcu_read_lock();
- 		p = idr_find(&idrinfo->action_idr, *index);
- 
-@@ -578,7 +577,7 @@ int tcf_idr_check_alloc(struct tc_action_net *tn, u32 *index,
- 			 * index but did not assign the pointer yet.
- 			 */
- 			rcu_read_unlock();
--			goto again;
-+			return -EAGAIN;
- 		}
- 
- 		if (!p) {
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 4029c56dfcf0f..f7ed99561c192 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3112,8 +3112,16 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 			dev->features |= dev->hw_features & NETIF_F_ALL_TSO;
+ 		/* (!csum && gso) case will be fixed by register_netdev() */
+ 	}
+-	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_CSUM))
+-		dev->features |= NETIF_F_RXCSUM;
++
++	/* 1. With VIRTIO_NET_F_GUEST_CSUM negotiation, the driver doesn't
++	 * need to calculate checksums for partially checksummed packets,
++	 * as they're considered valid by the upper layer.
++	 * 2. Without VIRTIO_NET_F_GUEST_CSUM negotiation, the driver only
++	 * receives fully checksummed packets. The device may assist in
++	 * validating these packets' checksums, so the driver won't have to.
++	 */
++	dev->features |= NETIF_F_RXCSUM;
++
+ 	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_TSO4) ||
+ 	    virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_TSO6))
+ 		dev->features |= NETIF_F_GRO_HW;
 -- 
 2.43.0
 
