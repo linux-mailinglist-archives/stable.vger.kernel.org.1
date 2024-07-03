@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CCF2925DDF
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84058925AF4
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BC801C23094
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:32:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EEE41F2179A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E354194A6F;
-	Wed,  3 Jul 2024 11:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0822C181309;
+	Wed,  3 Jul 2024 10:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPjfGvzo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RcxaKzdT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B749175549;
-	Wed,  3 Jul 2024 11:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AA817E8EE;
+	Wed,  3 Jul 2024 10:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005841; cv=none; b=O/Cy5GcDeGe1ICPNDVpuWOpe8RXSya2zQy4nhcDrjkFCVret7+DKkZjlHmI8ovBeP1XWk4fGeD4aafPluspOQQC/5deQ1VBL07KBl+9MdZRGBmcglYDzg9tFH0ThsKi+DNfhVsGIjwVmVNSjlrM9R0VqgpIwu+KxXTwBAIcG/vE=
+	t=1720003983; cv=none; b=nrv/3W/4zTGRrhUBiKc1tIIvc168aj4VDBZEJ+8TD69iIEzmIZYWtlKMy1ZIuTYGNLcgfvyZTkkdBBwZILzk3oEqrCdi4g9O7ssoURjW8mKbpPwTpvdYUe38/1+W3o0l8x0zZhJOutjMAXsZ56G590gpic4cn0btA19/VDdXmE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005841; c=relaxed/simple;
-	bh=iNyz110a99kzD2uR5s15iaYWWPG6359c3R8YO4yVUMw=;
+	s=arc-20240116; t=1720003983; c=relaxed/simple;
+	bh=RpMRYQeD+wuWqA+mguKW9lvbqxBsGkTYXghCUl2QXuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gLejO6GSBgh8yaFppnVUmW1DgNZqviZrxe6g2pKkUOk8NxXSXuCGr/h73I1izGsLfo6aNrKkRvep5BCkW0TmEiogDdpoUhH8NiHt032A7+1t1+Nf5TXfSY7tJU3y75DWFWJ+0ax1bH7F3FQanDK1pWzpCnaQ088ODwnT9RBqZYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPjfGvzo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FAE3C2BD10;
-	Wed,  3 Jul 2024 11:24:00 +0000 (UTC)
+	 MIME-Version; b=WxMpVT6CO82i42ax3pVHRCJAGYvwSOKWAypJSleXt/Io2sBySyrTV2jeMdMiE8FciAnJFZ7T6LzL5Z8wLC9x3ARTo/Q7usGQjn9l0/I04Sy4evdKnJQTPR8My8g7dj9o+jqWyomC+ZoGBBVTE2dF0TRBPdD9z3s7XxJsTKOlgog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RcxaKzdT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D01AC4AF0B;
+	Wed,  3 Jul 2024 10:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005841;
-	bh=iNyz110a99kzD2uR5s15iaYWWPG6359c3R8YO4yVUMw=;
+	s=korg; t=1720003983;
+	bh=RpMRYQeD+wuWqA+mguKW9lvbqxBsGkTYXghCUl2QXuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CPjfGvzoxg5VmY+L+h41n5dxjMdAjfGoVgaJ0SJr52BszcGFJ9jVRE3La624K0aig
-	 Pj0Bvt56pnAnBWJIDiL1xZe198CiU3zwkudetu+fqdWZZpC1LF7Ki5aeWeCMXxqVYW
-	 hft/vbZythdMZak6UVaq9umsyZwnacYW6THhxQ0I=
+	b=RcxaKzdTxuCw5rWGFjDaZjlX69uMLtATID40Rwc9OmpY6t+UByvwTYdcL0nYnzr9I
+	 6zjpFgfOLf2m+a7hY8Zt6kRRpl3kpG5AuWF3QEKAuJUVUrfr0dsr6gSNUGHAS6u/t/
+	 4CoM+IO4gfoJGgTn5LPZzG/2GeVBjZCe19kvShC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Amjad Ouled-Ameur <amjad.ouled-ameur@arm.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 183/356] MIPS: Routerboard 532: Fix vendor retry check code
+Subject: [PATCH 5.4 058/189] drm/komeda: check for error-valued pointer
 Date: Wed,  3 Jul 2024 12:38:39 +0200
-Message-ID: <20240703102920.028593814@linuxfoundation.org>
+Message-ID: <20240703102843.700113377@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Amjad Ouled-Ameur <amjad.ouled-ameur@arm.com>
 
-[ Upstream commit ae9daffd9028f2500c9ac1517e46d4f2b57efb80 ]
+[ Upstream commit b880018edd3a577e50366338194dee9b899947e0 ]
 
-read_config_dword() contains strange condition checking ret for a
-number of values. The ret variable, however, is always zero because
-config_access() never returns anything else. Thus, the retry is always
-taken until number of tries is exceeded.
+komeda_pipeline_get_state() may return an error-valued pointer, thus
+check the pointer for negative or null value before dereferencing.
 
-The code looks like it wants to check *val instead of ret to see if the
-read gave an error response.
-
-Fixes: 73b4390fb234 ("[MIPS] Routerboard 532: Support for base system")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 502932a03fce ("drm/komeda: Add the initial scaler support for CORE")
+Signed-off-by: Amjad Ouled-Ameur <amjad.ouled-ameur@arm.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240610102056.40406-1-amjad.ouled-ameur@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/pci/ops-rc32434.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/pci/ops-rc32434.c b/arch/mips/pci/ops-rc32434.c
-index 874ed6df97683..34b9323bdabb0 100644
---- a/arch/mips/pci/ops-rc32434.c
-+++ b/arch/mips/pci/ops-rc32434.c
-@@ -112,8 +112,8 @@ static int read_config_dword(struct pci_bus *bus, unsigned int devfn,
- 	 * gives them time to settle
- 	 */
- 	if (where == PCI_VENDOR_ID) {
--		if (ret == 0xffffffff || ret == 0x00000000 ||
--		    ret == 0x0000ffff || ret == 0xffff0000) {
-+		if (*val == 0xffffffff || *val == 0x00000000 ||
-+		    *val == 0x0000ffff || *val == 0xffff0000) {
- 			if (delay > 4)
- 				return 0;
- 			delay *= 2;
+diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c b/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
+index 31527fb66b5c5..c6c4847c6904c 100644
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
+@@ -259,7 +259,7 @@ komeda_component_get_avail_scaler(struct komeda_component *c,
+ 	u32 avail_scalers;
+ 
+ 	pipe_st = komeda_pipeline_get_state(c->pipeline, state);
+-	if (!pipe_st)
++	if (IS_ERR_OR_NULL(pipe_st))
+ 		return NULL;
+ 
+ 	avail_scalers = (pipe_st->active_comps & KOMEDA_PIPELINE_SCALERS) ^
 -- 
 2.43.0
 
