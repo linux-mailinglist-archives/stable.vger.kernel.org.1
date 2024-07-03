@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-57206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B841925B7A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:09:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3799925CC2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:22:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47EB91F28EAB
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:09:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E10F2C4577
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE4A918732E;
-	Wed,  3 Jul 2024 10:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752CC1922EA;
+	Wed,  3 Jul 2024 11:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZtDDwL4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqFoDnb6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0F81741F4;
-	Wed,  3 Jul 2024 10:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DEB1849D3;
+	Wed,  3 Jul 2024 11:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004178; cv=none; b=DNDX++rDHdn7p4SPNdKYIsq7TfIRhIX1YOBHt62sofaSSw7cDr3xIq3f19F2XNtRnq97GtkiFDBXlNqC3k0/S+xenh5LKhaadYRN0ASdpJFu8ym1Z33kft24R1msgqqP1g2kYvqtkD3iMT0AZMV2ZbYoDmBkjrih6iLhrasEeTM=
+	t=1720005094; cv=none; b=bLaelwUR4U8vd2E7GMIf+QEo6+0GY1Iy6oTuDoTlfiSi0LSnjBdSNeeXgwfQesWxufaRtRmrfByBkMb496qblt5pvDNRf4StDeadMyE1lLvQ7pJNjHohj/CJJCDPc65H7koEi1ZnWwnG/gWt48Bvf5r6ysMwQkq9F+SNXqP34AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004178; c=relaxed/simple;
-	bh=R8gYwrHaJu4laAu+eJwIrX6XeOo7R7j4Gu/GYmC9Fgs=;
+	s=arc-20240116; t=1720005094; c=relaxed/simple;
+	bh=CNal1dkC/wD0K4wc7y9LTDLTm23Fcxo+Ji0mJoZWgXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XWMoxmX17QF/IzpgYd/6LHKZGhDj9sckY+vhmJKKc/saH5s0/GyEdKsgYSJOlF8DhFrDy31Ib8OO6tvq090OIIdcPq50Uzyb8NpcxBu3OLwacPg4hWASPJ8c3+sTt+pjuXfR0/hSmeko2LpOOlJvqNwEDh38x0MQ60t5ZKW/EAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZtDDwL4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F17FDC32781;
-	Wed,  3 Jul 2024 10:56:17 +0000 (UTC)
+	 MIME-Version; b=dNM8FHGq1za+ULA1QnKko9gfMI55ivkK8fFalP8VSzL8yCzuV9pIcQfinDGaWJ/WEv8wBLNpc8jrA7z2QSEAAvnzP+Qaod9tfrGuqV3hZYnOK15Mo7tck7rFkFLVaEAJ6QV8U3PBuRTtVWrnKwBtJ9Ngy5dLk9gbmpnaT1Vgukw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqFoDnb6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65789C2BD10;
+	Wed,  3 Jul 2024 11:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004178;
-	bh=R8gYwrHaJu4laAu+eJwIrX6XeOo7R7j4Gu/GYmC9Fgs=;
+	s=korg; t=1720005093;
+	bh=CNal1dkC/wD0K4wc7y9LTDLTm23Fcxo+Ji0mJoZWgXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZtDDwL48+HMB3KiCMIsrEQ5tnGh671YS8vTNOvbINBBO98F/37E293fa/rluiHVA
-	 2wqaGd1+TAvkRUTXVAeKVBljz6E9UXZcODtukWACzL2+cW6foQTbDIKIIT9i4Yt5j9
-	 NYvLtYLdxT/6w+sGpXD8eMyPYKeyuMZzKB4L7k84=
+	b=FqFoDnb60W9tFYL+tO7jcWdzGEPYzktg/2LOJDcN05yIP1oVme/ZwsJyK4QzF5ObY
+	 1ItbSaufiJ5Bb2vbbxOX3eadkdUQHt6syBQW7BAc28+a9ps4uvK0i5LxZyR6a3kaXM
+	 Rx13t6Fh423mtbmkGTHxV+G1zcNS2vtLb5+0K6mI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Linus Torvalds <torvalds@linuxfoundation.org>,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 146/189] netfilter: nf_tables: fully validate NFT_DATA_VALUE on store to data registers
-Date: Wed,  3 Jul 2024 12:40:07 +0200
-Message-ID: <20240703102846.987050895@linuxfoundation.org>
+Subject: [PATCH 5.10 227/290] netfilter: nf_tables: fully validate NFT_DATA_VALUE on store to data registers
+Date: Wed,  3 Jul 2024 12:40:08 +0200
+Message-ID: <20240703102912.730097936@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -87,10 +87,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 11 insertions(+), 5 deletions(-)
 
 diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index cf314ce2fd178..4f77e2f8e1ca8 100644
+index ab8d84775ca87..2b99ee1303d92 100644
 --- a/include/net/netfilter/nf_tables.h
 +++ b/include/net/netfilter/nf_tables.h
-@@ -467,6 +467,11 @@ static inline void *nft_set_priv(const struct nft_set *set)
+@@ -490,6 +490,11 @@ static inline void *nft_set_priv(const struct nft_set *set)
  	return (void *)set->data;
  }
  
@@ -103,10 +103,10 @@ index cf314ce2fd178..4f77e2f8e1ca8 100644
  {
  	return refcount_read(&s->refs) != 1;
 diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 44d4d97b45d13..ddbb0f4bff427 100644
+index 754278b857068..f4bbddfbbc247 100644
 --- a/net/netfilter/nf_tables_api.c
 +++ b/net/netfilter/nf_tables_api.c
-@@ -4301,8 +4301,7 @@ static int nf_tables_fill_setelem(struct sk_buff *skb,
+@@ -4990,8 +4990,7 @@ static int nf_tables_fill_setelem(struct sk_buff *skb,
  
  	if (nft_set_ext_exists(ext, NFT_SET_EXT_DATA) &&
  	    nft_data_dump(skb, NFTA_SET_ELEM_DATA, nft_set_ext_data(ext),
@@ -116,7 +116,7 @@ index 44d4d97b45d13..ddbb0f4bff427 100644
  		goto nla_put_failure;
  
  	if (nft_set_ext_exists(ext, NFT_SET_EXT_EXPR) &&
-@@ -8048,6 +8047,9 @@ static int nft_validate_register_store(const struct nft_ctx *ctx,
+@@ -9337,6 +9336,9 @@ static int nft_validate_register_store(const struct nft_ctx *ctx,
  
  		return 0;
  	default:
@@ -126,8 +126,8 @@ index 44d4d97b45d13..ddbb0f4bff427 100644
  		if (reg < NFT_REG_1 * NFT_REG_SIZE / NFT_REG32_SIZE)
  			return -EINVAL;
  		if (len == 0)
-@@ -8056,8 +8058,6 @@ static int nft_validate_register_store(const struct nft_ctx *ctx,
- 		    FIELD_SIZEOF(struct nft_regs, data))
+@@ -9345,8 +9347,6 @@ static int nft_validate_register_store(const struct nft_ctx *ctx,
+ 		    sizeof_field(struct nft_regs, data))
  			return -ERANGE;
  
 -		if (data != NULL && type != NFT_DATA_VALUE)
@@ -136,10 +136,10 @@ index 44d4d97b45d13..ddbb0f4bff427 100644
  	}
  }
 diff --git a/net/netfilter/nft_lookup.c b/net/netfilter/nft_lookup.c
-index e0ffd463a1320..6d49b82d598ae 100644
+index 8bc008ff00cb7..d2f8131edaf14 100644
 --- a/net/netfilter/nft_lookup.c
 +++ b/net/netfilter/nft_lookup.c
-@@ -98,7 +98,8 @@ static int nft_lookup_init(const struct nft_ctx *ctx,
+@@ -101,7 +101,8 @@ static int nft_lookup_init(const struct nft_ctx *ctx,
  			return -EINVAL;
  
  		err = nft_parse_register_store(ctx, tb[NFTA_LOOKUP_DREG],
