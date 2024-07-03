@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-57028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599B2925A38
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:55:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21D46925F61
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:58:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C0D91C22423
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F915B3BA7C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA53185E4D;
-	Wed,  3 Jul 2024 10:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A74C188CDD;
+	Wed,  3 Jul 2024 11:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KCQlTXvi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RePdMdjG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A454185E42;
-	Wed,  3 Jul 2024 10:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD43B16DEAC;
+	Wed,  3 Jul 2024 11:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003620; cv=none; b=cbpGD8ZKTWRCrrs+ep4jPldcRwQzJTuP67Bq8mpOnu2Ay+TS2wTNypIY4ssib4DzPUuYzKh5QTzJiFeFiVfbxtNE/xuQyM/aTiIFgicLRSw610yQVoc3HeEOH4mB7f0YmlgGqGf+Gzpqh2CaajursBoTEBrzbHSHzA37LwO8DLE=
+	t=1720005043; cv=none; b=jkfbZnXWHgixjRh6pkzKM8+hSDSod4j3V7DRBURi1QGi8Td9fG8bthEFpCa0XCNrE3F6vxtNinbvAd4uk3bnJDaZ/uGe7rHKdBv96kIB/wFmZnIAc/6zh9BC6pd3yjfwB7M/BeCwKhvCu3Xuf1t6/H6BJzKztax8N7al/JlKzxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003620; c=relaxed/simple;
-	bh=sx61Rs6ng2K2kigNADBOQIDItXw7akqU29JC6Z+Izlc=;
+	s=arc-20240116; t=1720005043; c=relaxed/simple;
+	bh=Bm4mg30AGVTav0JGa2QGMCMAHDqjfGCP5qDm+8+RpgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ifi1Udm6Fp08GdR0s28nFw/+52Q7HVulTpRhLZrrvwhyjuy5Kw51wWj9EaT11jHMQgkeL24Lva0vnYiQXU41TCwP2e+wtlgSULAFV+gDJx9PhjbcB3SmbVYgUwIKV57VTbqa6innZgE3A+jADU3GqYuaUPwHcVMJ9e8VoKSgSVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KCQlTXvi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F221C2BD10;
-	Wed,  3 Jul 2024 10:46:59 +0000 (UTC)
+	 MIME-Version; b=GHFqqk3VZ1kjmbfkbZeUP9Oz9D+wtMLtXDLaktdYaheDt+TXK/9IxbyIZn14HWJ7rH+UNHZFHIkGS8kM/t7KUyS4VOCyN6LyMqnToqlN9S2sv5d4/GZt9xFLglhtUhNFeMNigI3551PeItewJWcD9fmvv5BEiyGjw3KCq1Gj0s4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RePdMdjG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A34C2BD10;
+	Wed,  3 Jul 2024 11:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003619;
-	bh=sx61Rs6ng2K2kigNADBOQIDItXw7akqU29JC6Z+Izlc=;
+	s=korg; t=1720005042;
+	bh=Bm4mg30AGVTav0JGa2QGMCMAHDqjfGCP5qDm+8+RpgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KCQlTXviePVLJ8MyXQ+U4n0irSwEbzPLtf+2lHEmSVF8pHsLD/wsAn61LzCihk+MW
-	 RDHbUgSz/2I/KaECp5WgzHzj8qcsO8WaRJTja7zgSV3601WMyXddD/iSNJfWR4u8e0
-	 o0Q1QyzfSybINX+6TuF6DxLExJSnsDduBFyM+tyU=
+	b=RePdMdjGMqgV1JGAl14jmE6A/+iHZSq1f92qXS5ZpzR6xrut9ODHyLjlpqiVfNq83
+	 eumDXD8FKCcyNqpM/y0md7wgw0CgnN75fKZF1O9Qfd81SmKyi4zDT/7YhXfehUujYr
+	 Ijjyzwp7EVAyXxHQWp4UrVpHntPr0dJ0Fzz2imVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dawei Li <dawei.li@shingroup.cn>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 108/139] net/iucv: Avoid explicit cpumask var allocation on stack
+Subject: [PATCH 5.10 224/290] sparc: fix old compat_sys_select()
 Date: Wed,  3 Jul 2024 12:40:05 +0200
-Message-ID: <20240703102834.520286893@linuxfoundation.org>
+Message-ID: <20240703102912.617783667@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dawei Li <dawei.li@shingroup.cn>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit be4e1304419c99a164b4c0e101c7c2a756b635b9 ]
+[ Upstream commit bae6428a9fffb2023191b0723e276cf1377a7c9f ]
 
-For CONFIG_CPUMASK_OFFSTACK=y kernel, explicit allocation of cpumask
-variable on stack is not recommended since it can cause potential stack
-overflow.
+sparc has two identical select syscalls at numbers 93 and 230, respectively.
+During the conversion to the modern syscall.tbl format, the older one of the
+two broke in compat mode, and now refers to the native 64-bit syscall.
 
-Instead, kernel code should always use *cpumask_var API(s) to allocate
-cpumask var in config-neutral way, leaving allocation strategy to
-CONFIG_CPUMASK_OFFSTACK.
+Restore the correct behavior. This has very little effect, as glibc has
+been using the newer number anyway.
 
-Use *cpumask_var API(s) to address it.
-
-Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240331053441.1276826-2-dawei.li@shingroup.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 6ff645dd683a ("sparc: add system call table generation support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/iucv/iucv.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ arch/sparc/kernel/syscalls/syscall.tbl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/iucv/iucv.c b/net/iucv/iucv.c
-index da4cee91fc63d..2f82a6f0992e4 100644
---- a/net/iucv/iucv.c
-+++ b/net/iucv/iucv.c
-@@ -578,7 +578,7 @@ static void iucv_setmask_mp(void)
-  */
- static void iucv_setmask_up(void)
- {
--	cpumask_t cpumask;
-+	static cpumask_t cpumask;
- 	int cpu;
- 
- 	/* Disable all cpu but the first in cpu_irq_cpumask. */
-@@ -686,23 +686,33 @@ static int iucv_cpu_online(unsigned int cpu)
- 
- static int iucv_cpu_down_prep(unsigned int cpu)
- {
--	cpumask_t cpumask;
-+	cpumask_var_t cpumask;
-+	int ret = 0;
- 
- 	if (!iucv_path_table)
- 		return 0;
- 
--	cpumask_copy(&cpumask, &iucv_buffer_cpumask);
--	cpumask_clear_cpu(cpu, &cpumask);
--	if (cpumask_empty(&cpumask))
-+	if (!alloc_cpumask_var(&cpumask, GFP_KERNEL))
-+		return -ENOMEM;
-+
-+	cpumask_copy(cpumask, &iucv_buffer_cpumask);
-+	cpumask_clear_cpu(cpu, cpumask);
-+	if (cpumask_empty(cpumask)) {
- 		/* Can't offline last IUCV enabled cpu. */
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto __free_cpumask;
-+	}
- 
- 	iucv_retrieve_cpu(NULL);
- 	if (!cpumask_empty(&iucv_irq_cpumask))
--		return 0;
-+		goto __free_cpumask;
-+
- 	smp_call_function_single(cpumask_first(&iucv_buffer_cpumask),
- 				 iucv_allow_cpu, NULL, 1);
--	return 0;
-+
-+__free_cpumask:
-+	free_cpumask_var(cpumask);
-+	return ret;
- }
- 
- /**
+diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
+index 78160260991be..6869c7c71ebaf 100644
+--- a/arch/sparc/kernel/syscalls/syscall.tbl
++++ b/arch/sparc/kernel/syscalls/syscall.tbl
+@@ -117,7 +117,7 @@
+ 90	common	dup2			sys_dup2
+ 91	32	setfsuid32		sys_setfsuid
+ 92	common	fcntl			sys_fcntl			compat_sys_fcntl
+-93	common	select			sys_select
++93	common	select			sys_select			compat_sys_select
+ 94	32	setfsgid32		sys_setfsgid
+ 95	common	fsync			sys_fsync
+ 96	common	setpriority		sys_setpriority
 -- 
 2.43.0
 
