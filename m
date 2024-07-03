@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-57897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B42A925E98
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:38:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF89925E8E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:37:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F307D295D6E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:37:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 133741F263CF
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:37:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4EF218412A;
-	Wed,  3 Jul 2024 11:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C803A184132;
+	Wed,  3 Jul 2024 11:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9T/mA8c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFmweItY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15561836EE;
-	Wed,  3 Jul 2024 11:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C8518412F;
+	Wed,  3 Jul 2024 11:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006261; cv=none; b=VO3L/RlGMDIIqhavJO55lIk7MO+MngZg82ARavXpawy47IFSY/JjiZNphQmtb6VBcvvPyyoa2NXljLt1lUkdskh+AKxrKG8Asn4TlHL8UeGn76iPFzaP6H0jwCf8dGEAaopQIvKujdEMeiFB9BL7eq7pu7rxJ7McQ+7Rm1gzJks=
+	t=1720006267; cv=none; b=Bd8yASb7bRPz9Sk01598X8ldeTTmMExN3bScbPNAC1tOCO7Z+A4tMmcQdbtDp6nRbpAEHejJVW03lusSC0xk0/jTz+tK3lgG6T2LAlQ5DzHB7sg8VH/6Sty7ik6FGA2SckBpGvdaFGOyKwSPim20aF5bBIyl/ZRtD5jyY+fJqg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006261; c=relaxed/simple;
-	bh=5CFuCFK4XfOn5pyIOORHB41ExYj941tD5VibrqzjaI0=;
+	s=arc-20240116; t=1720006267; c=relaxed/simple;
+	bh=ZGZTABnV+CAJf44JZ7ALP/c0LGyKyvhXQ0KJR7IV2O4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kH54qmqyUbH5GdbqmuUxkhRcNoTsuzvsDpYshcHZfwyGRMUJfEuPcudm2Sb7uyRz+NKtpN2tgeC25LJo7kfUCOFBtsPPsQuFiL7MY8D0r/e3LxeRcoAFRvAUYOLLxeDi/3JYjWaB3ebBcbVYq/XUm9EsVLNDSymiThWx0VIeo4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9T/mA8c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF74C2BD10;
-	Wed,  3 Jul 2024 11:31:00 +0000 (UTC)
+	 MIME-Version; b=LeozmF5wbwkwlWyThxxhj1G5rqJ2Qx6POe9tQ2ahCGbRTE2N07Nl9Ps5YurQ8CrpimxMlOF1rcda34lBAp71SOMafL1Qm6rAyWyUNmagde4JrW98hfCExETXhtH6xHznkLvc34ERdAPp91/s0jSkC4Y9ocEs2oeunyeW/Ov+kPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFmweItY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E926C2BD10;
+	Wed,  3 Jul 2024 11:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006261;
-	bh=5CFuCFK4XfOn5pyIOORHB41ExYj941tD5VibrqzjaI0=;
+	s=korg; t=1720006267;
+	bh=ZGZTABnV+CAJf44JZ7ALP/c0LGyKyvhXQ0KJR7IV2O4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9T/mA8cFBU4LuiWC2QBvzfvLb58BQgygPwuTuzrJpOS+ENsMf1wbr7YNobyq27QA
-	 XHtWzdLQnDMQc7Plmomj5ybuQI30KbPxkrgixeMs9e4Qj3m25ZMAHl+b07i7mHv5dG
-	 yXRWtqN+E54aNXSifW0lcXT+fdXaauxC57+GvZAI=
+	b=UFmweItYOIq9+4JqA9dVKN91rY1du8BKCcEMMrBZeh0/oz1PStb3SWtGSAuT+Ydlr
+	 nDJ+HJAxd+93Cm0fDvcdfQ0kcBR7Bu3a98a0wxdQ7P7jVPQxXACRHjX/W9QdvROgoS
+	 /rCEkZc58CxrlnbFGdyBPoZjLU4xfsiw0sDqOKTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
-Subject: [PATCH 5.15 347/356] tcp: Fix data races around icsk->icsk_af_ops.
-Date: Wed,  3 Jul 2024 12:41:23 +0200
-Message-ID: <20240703102926.239363639@linuxfoundation.org>
+	Zheng Zhi Yuan <kevinjone25@g.ncu.edu.tw>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 5.15 348/356] drivers: fix typo in firmware/efi/memmap.c
+Date: Wed,  3 Jul 2024 12:41:24 +0200
+Message-ID: <20240703102926.276343343@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
 References: <20240703102913.093882413@linuxfoundation.org>
@@ -68,125 +65,31 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Zheng Zhi Yuan <kevinjone25@g.ncu.edu.tw>
 
-commit f49cd2f4d6170d27a2c61f1fecb03d8a70c91f57 upstream.
+[ Commit 1df4d1724baafa55e9803414ebcdf1ca702bc958 upstream ]
 
-setsockopt(IPV6_ADDRFORM) and tcp_v6_connect() change icsk->icsk_af_ops
-under lock_sock(), but tcp_(get|set)sockopt() read it locklessly.  To
-avoid load/store tearing, we need to add READ_ONCE() and WRITE_ONCE()
-for the reads and writes.
+This patch fixes the spelling error in firmware/efi/memmap.c, changing
+it to the correct word.
 
-Thanks to Eric Dumazet for providing the syzbot report:
-
-BUG: KCSAN: data-race in tcp_setsockopt / tcp_v6_connect
-
-write to 0xffff88813c624518 of 8 bytes by task 23936 on cpu 0:
-tcp_v6_connect+0x5b3/0xce0 net/ipv6/tcp_ipv6.c:240
-__inet_stream_connect+0x159/0x6d0 net/ipv4/af_inet.c:660
-inet_stream_connect+0x44/0x70 net/ipv4/af_inet.c:724
-__sys_connect_file net/socket.c:1976 [inline]
-__sys_connect+0x197/0x1b0 net/socket.c:1993
-__do_sys_connect net/socket.c:2003 [inline]
-__se_sys_connect net/socket.c:2000 [inline]
-__x64_sys_connect+0x3d/0x50 net/socket.c:2000
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x2b/0x70 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-read to 0xffff88813c624518 of 8 bytes by task 23937 on cpu 1:
-tcp_setsockopt+0x147/0x1c80 net/ipv4/tcp.c:3789
-sock_common_setsockopt+0x5d/0x70 net/core/sock.c:3585
-__sys_setsockopt+0x212/0x2b0 net/socket.c:2252
-__do_sys_setsockopt net/socket.c:2263 [inline]
-__se_sys_setsockopt net/socket.c:2260 [inline]
-__x64_sys_setsockopt+0x62/0x70 net/socket.c:2260
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x2b/0x70 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-value changed: 0xffffffff8539af68 -> 0xffffffff8539aff8
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 23937 Comm: syz-executor.5 Not tainted
-6.0.0-rc4-syzkaller-00331-g4ed9c1e971b1-dirty #0
-
-Hardware name: Google Google Compute Engine/Google Compute Engine,
-BIOS Google 08/26/2022
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Reported-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
+Signed-off-by: Zheng Zhi Yuan <kevinjone25@g.ncu.edu.tw>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp.c           |   10 ++++++----
- net/ipv6/ipv6_sockglue.c |    3 ++-
- net/ipv6/tcp_ipv6.c      |    6 ++++--
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/firmware/efi/memmap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3708,8 +3708,9 @@ int tcp_setsockopt(struct sock *sk, int
- 	const struct inet_connection_sock *icsk = inet_csk(sk);
- 
- 	if (level != SOL_TCP)
--		return icsk->icsk_af_ops->setsockopt(sk, level, optname,
--						     optval, optlen);
-+		/* Paired with WRITE_ONCE() in do_ipv6_setsockopt() and tcp_v6_connect() */
-+		return READ_ONCE(icsk->icsk_af_ops)->setsockopt(sk, level, optname,
-+								optval, optlen);
- 	return do_tcp_setsockopt(sk, level, optname, optval, optlen);
- }
- EXPORT_SYMBOL(tcp_setsockopt);
-@@ -4307,8 +4308,9 @@ int tcp_getsockopt(struct sock *sk, int
- 	struct inet_connection_sock *icsk = inet_csk(sk);
- 
- 	if (level != SOL_TCP)
--		return icsk->icsk_af_ops->getsockopt(sk, level, optname,
--						     optval, optlen);
-+		/* Paired with WRITE_ONCE() in do_ipv6_setsockopt() and tcp_v6_connect() */
-+		return READ_ONCE(icsk->icsk_af_ops)->getsockopt(sk, level, optname,
-+								optval, optlen);
- 	return do_tcp_getsockopt(sk, level, optname, optval, optlen);
- }
- EXPORT_SYMBOL(tcp_getsockopt);
---- a/net/ipv6/ipv6_sockglue.c
-+++ b/net/ipv6/ipv6_sockglue.c
-@@ -477,7 +477,8 @@ static int do_ipv6_setsockopt(struct soc
- 
- 				/* Paired with READ_ONCE(sk->sk_prot) in inet6_stream_ops */
- 				WRITE_ONCE(sk->sk_prot, &tcp_prot);
--				icsk->icsk_af_ops = &ipv4_specific;
-+				/* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
-+				WRITE_ONCE(icsk->icsk_af_ops, &ipv4_specific);
- 				sk->sk_socket->ops = &inet_stream_ops;
- 				sk->sk_family = PF_INET;
- 				tcp_sync_mss(sk, icsk->icsk_pmtu_cookie);
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -237,7 +237,8 @@ static int tcp_v6_connect(struct sock *s
- 		sin.sin_port = usin->sin6_port;
- 		sin.sin_addr.s_addr = usin->sin6_addr.s6_addr32[3];
- 
--		icsk->icsk_af_ops = &ipv6_mapped;
-+		/* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
-+		WRITE_ONCE(icsk->icsk_af_ops, &ipv6_mapped);
- 		if (sk_is_mptcp(sk))
- 			mptcpv6_handle_mapped(sk, true);
- 		sk->sk_backlog_rcv = tcp_v4_do_rcv;
-@@ -249,7 +250,8 @@ static int tcp_v6_connect(struct sock *s
- 
- 		if (err) {
- 			icsk->icsk_ext_hdr_len = exthdrlen;
--			icsk->icsk_af_ops = &ipv6_specific;
-+			/* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
-+			WRITE_ONCE(icsk->icsk_af_ops, &ipv6_specific);
- 			if (sk_is_mptcp(sk))
- 				mptcpv6_handle_mapped(sk, false);
- 			sk->sk_backlog_rcv = tcp_v6_do_rcv;
+--- a/drivers/firmware/efi/memmap.c
++++ b/drivers/firmware/efi/memmap.c
+@@ -245,7 +245,7 @@ int __init efi_memmap_install(struct efi
+  * @range: Address range (start, end) to split around
+  *
+  * Returns the number of additional EFI memmap entries required to
+- * accomodate @range.
++ * accommodate @range.
+  */
+ int __init efi_memmap_split_count(efi_memory_desc_t *md, struct range *range)
+ {
 
 
 
