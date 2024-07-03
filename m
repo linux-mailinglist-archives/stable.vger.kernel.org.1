@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-57293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16F3925BF3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:13:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCFD925D49
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2014F1C21BBC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3E991C203E4
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFDB18FC7E;
-	Wed,  3 Jul 2024 11:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D12117DE04;
+	Wed,  3 Jul 2024 11:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kXNNIaqj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/gMXEx1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF8C17556B;
-	Wed,  3 Jul 2024 11:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C12A17DA30;
+	Wed,  3 Jul 2024 11:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004444; cv=none; b=YXDXHNZc/M65C1VKfdntOl5NQW1libyjXwqmAKbsIA7ME1RTVXoeMfHH/Ttt76E9O1MZ79d4iACu9A1xr/ztNWnTy0XQm7SL4KRExIWvgI0HuMFkVQk9rEP0nHytxDI9miWBSePNpsr/CnGW1rEb9TzMkgObGzHZcjnbo0X42kU=
+	t=1720005458; cv=none; b=WjgdZuSNS6qmJn9M7aSstozGaMMT8jDPKe8YUxcXxxvG9eT6qwuzR8b6GxtvqROiuaeobt5PfpqEJw0n/IzH534AiHsjdaEVSGO0ehXQgHTIqTZVcP46N7p9w0pPaEJhPwDU0qQ60h2xWCsqLBU5NHDYaKOwFFCUG9qZy99PYl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004444; c=relaxed/simple;
-	bh=i46t74DeNgifrWc6Sqy618fUXhvbQWgJhGTox6f+u8A=;
+	s=arc-20240116; t=1720005458; c=relaxed/simple;
+	bh=gtshXvGM7doGJwpph6VxoQfbSUbGxBpUt+pVY4mVfwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KoFlr4Sge9vgL/O1tDPqQ7eGryXl6vRsMQI4WE2Xo3RJTndxGtm9QxshdyF4KmqhjPU6Da6sNpCAa8B6RJDy07B9mN1lU+Wc2Jaudh2SGZM6Dt6MpBD9/T5M4+KatkkAulnGV8ib+P1PQpBfYIeeR8OaBA5xZkv/qMJJsjYIhYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kXNNIaqj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377CBC2BD10;
-	Wed,  3 Jul 2024 11:00:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JLz9/Bv0HCV2btwfqZF8rnSAU6eGCQqTe38XPz4EmT+97SWGeeGWupD6Ur2Xxc51RIWBxJNGtY9cljA0kd7ek1r6CvrgtUYZixyHoPGtvjUYrEyKYb5C6CoY0Lyb88YyrkLTgSWXZ2KORWjfiJGOsiPLOeng+4VyZrB6b6eC+m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/gMXEx1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98441C2BD10;
+	Wed,  3 Jul 2024 11:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004443;
-	bh=i46t74DeNgifrWc6Sqy618fUXhvbQWgJhGTox6f+u8A=;
+	s=korg; t=1720005458;
+	bh=gtshXvGM7doGJwpph6VxoQfbSUbGxBpUt+pVY4mVfwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kXNNIaqjy2Ur0WsMhQp3GKMgjhMnTTkaqfrg81KhaNHysHSCgaNd6OlK69HEH0pcZ
-	 hpY90T7Nxkv4CatPKStvesp8ir6GPoNJOM7T0b0x9aSrg+wgNjehtQhZNtMZAH8/Dv
-	 cfq+YYasV1Yg6Qf56wGMjGCzzvWDchZRcP5XqCYY=
+	b=u/gMXEx1/hM89qo/su6ChPOl8TqRk5D91cdvivYPYbyw/ErLFrU6adpT/hP2KSv0I
+	 gMYG0mHMkIqdkvIbZYv6DAEQKI/HuEnt4iMqzXJmHr34yPefKT91fpKjnx5VJFRIc8
+	 MDgucxSMkK50Df8Nz/2VPIEd2bmxGShoLLh3gfbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+c8166c541d3971bf6c87@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 043/290] nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors
+Subject: [PATCH 5.15 088/356] platform/x86: dell-smbios: Fix wrong token data in sysfs
 Date: Wed,  3 Jul 2024 12:37:04 +0200
-Message-ID: <20240703102905.825509850@linuxfoundation.org>
+Message-ID: <20240703102916.431353672@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +61,218 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 7373a51e7998b508af7136530f3a997b286ce81c ]
+[ Upstream commit 1981b296f858010eae409548fd297659b2cc570e ]
 
-The error handling in nilfs_empty_dir() when a directory folio/page read
-fails is incorrect, as in the old ext2 implementation, and if the
-folio/page cannot be read or nilfs_check_folio() fails, it will falsely
-determine the directory as empty and corrupt the file system.
+When reading token data from sysfs on my Inspiron 3505, the token
+locations and values are wrong. This happens because match_attribute()
+blindly assumes that all entries in da_tokens have an associated
+entry in token_attrs.
 
-In addition, since nilfs_empty_dir() does not immediately return on a
-failed folio/page read, but continues to loop, this can cause a long loop
-with I/O if i_size of the directory's inode is also corrupted, causing the
-log writer thread to wait and hang, as reported by syzbot.
+This however is not true as soon as da_tokens[] contains zeroed
+token entries. Those entries are being skipped when initialising
+token_attrs, breaking the core assumption of match_attribute().
 
-Fix these issues by making nilfs_empty_dir() immediately return a false
-value (0) if it fails to get a directory folio/page.
+Fix this by defining an extra struct for each pair of token attributes
+and use container_of() to retrieve token information.
 
-Link: https://lkml.kernel.org/r/20240604134255.7165-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+c8166c541d3971bf6c87@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c8166c541d3971bf6c87
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Tested on a Dell Inspiron 3050.
+
+Fixes: 33b9ca1e53b4 ("platform/x86: dell-smbios: Add a sysfs interface for SMBIOS tokens")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240528204903.445546-1-W_Armin@gmx.de
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/dir.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/dell/dell-smbios-base.c |   91 ++++++++++-----------------
+ 1 file changed, 35 insertions(+), 56 deletions(-)
 
-diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
-index 22f1f75a90c1a..552234ef22fe7 100644
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -627,7 +627,7 @@ int nilfs_empty_dir(struct inode *inode)
+--- a/drivers/platform/x86/dell/dell-smbios-base.c
++++ b/drivers/platform/x86/dell/dell-smbios-base.c
+@@ -25,11 +25,16 @@ static u32 da_supported_commands;
+ static int da_num_tokens;
+ static struct platform_device *platform_device;
+ static struct calling_interface_token *da_tokens;
+-static struct device_attribute *token_location_attrs;
+-static struct device_attribute *token_value_attrs;
++static struct token_sysfs_data *token_entries;
+ static struct attribute **token_attrs;
+ static DEFINE_MUTEX(smbios_mutex);
  
- 		kaddr = nilfs_get_page(inode, i, &page);
- 		if (IS_ERR(kaddr))
++struct token_sysfs_data {
++	struct device_attribute location_attr;
++	struct device_attribute value_attr;
++	struct calling_interface_token *token;
++};
++
+ struct smbios_device {
+ 	struct list_head list;
+ 	struct device *device;
+@@ -416,47 +421,26 @@ static void __init find_tokens(const str
+ 	}
+ }
+ 
+-static int match_attribute(struct device *dev,
+-			   struct device_attribute *attr)
+-{
+-	int i;
+-
+-	for (i = 0; i < da_num_tokens * 2; i++) {
+-		if (!token_attrs[i])
 -			continue;
-+			return 0;
+-		if (strcmp(token_attrs[i]->name, attr->attr.name) == 0)
+-			return i/2;
+-	}
+-	dev_dbg(dev, "couldn't match: %s\n", attr->attr.name);
+-	return -EINVAL;
+-}
+-
+ static ssize_t location_show(struct device *dev,
+ 			     struct device_attribute *attr, char *buf)
+ {
+-	int i;
++	struct token_sysfs_data *data = container_of(attr, struct token_sysfs_data, location_attr);
  
- 		de = (struct nilfs_dir_entry *)kaddr;
- 		kaddr += nilfs_last_byte(inode, i) - NILFS_DIR_REC_LEN(1);
--- 
-2.43.0
-
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EPERM;
+ 
+-	i = match_attribute(dev, attr);
+-	if (i > 0)
+-		return sysfs_emit(buf, "%08x", da_tokens[i].location);
+-	return 0;
++	return sysfs_emit(buf, "%08x", data->token->location);
+ }
+ 
+ static ssize_t value_show(struct device *dev,
+ 			  struct device_attribute *attr, char *buf)
+ {
+-	int i;
++	struct token_sysfs_data *data = container_of(attr, struct token_sysfs_data, value_attr);
+ 
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EPERM;
+ 
+-	i = match_attribute(dev, attr);
+-	if (i > 0)
+-		return sysfs_emit(buf, "%08x", da_tokens[i].value);
+-	return 0;
++	return sysfs_emit(buf, "%08x", data->token->value);
+ }
+ 
+ static struct attribute_group smbios_attribute_group = {
+@@ -473,22 +457,15 @@ static int build_tokens_sysfs(struct pla
+ {
+ 	char *location_name;
+ 	char *value_name;
+-	size_t size;
+ 	int ret;
+ 	int i, j;
+ 
+-	/* (number of tokens  + 1 for null terminated */
+-	size = sizeof(struct device_attribute) * (da_num_tokens + 1);
+-	token_location_attrs = kzalloc(size, GFP_KERNEL);
+-	if (!token_location_attrs)
++	token_entries = kcalloc(da_num_tokens, sizeof(*token_entries), GFP_KERNEL);
++	if (!token_entries)
+ 		return -ENOMEM;
+-	token_value_attrs = kzalloc(size, GFP_KERNEL);
+-	if (!token_value_attrs)
+-		goto out_allocate_value;
+ 
+ 	/* need to store both location and value + terminator*/
+-	size = sizeof(struct attribute *) * ((2 * da_num_tokens) + 1);
+-	token_attrs = kzalloc(size, GFP_KERNEL);
++	token_attrs = kcalloc((2 * da_num_tokens) + 1, sizeof(*token_attrs), GFP_KERNEL);
+ 	if (!token_attrs)
+ 		goto out_allocate_attrs;
+ 
+@@ -496,27 +473,32 @@ static int build_tokens_sysfs(struct pla
+ 		/* skip empty */
+ 		if (da_tokens[i].tokenID == 0)
+ 			continue;
++
++		token_entries[i].token = &da_tokens[i];
++
+ 		/* add location */
+ 		location_name = kasprintf(GFP_KERNEL, "%04x_location",
+ 					  da_tokens[i].tokenID);
+ 		if (location_name == NULL)
+ 			goto out_unwind_strings;
+-		sysfs_attr_init(&token_location_attrs[i].attr);
+-		token_location_attrs[i].attr.name = location_name;
+-		token_location_attrs[i].attr.mode = 0444;
+-		token_location_attrs[i].show = location_show;
+-		token_attrs[j++] = &token_location_attrs[i].attr;
++
++		sysfs_attr_init(&token_entries[i].location_attr.attr);
++		token_entries[i].location_attr.attr.name = location_name;
++		token_entries[i].location_attr.attr.mode = 0444;
++		token_entries[i].location_attr.show = location_show;
++		token_attrs[j++] = &token_entries[i].location_attr.attr;
+ 
+ 		/* add value */
+ 		value_name = kasprintf(GFP_KERNEL, "%04x_value",
+ 				       da_tokens[i].tokenID);
+ 		if (value_name == NULL)
+ 			goto loop_fail_create_value;
+-		sysfs_attr_init(&token_value_attrs[i].attr);
+-		token_value_attrs[i].attr.name = value_name;
+-		token_value_attrs[i].attr.mode = 0444;
+-		token_value_attrs[i].show = value_show;
+-		token_attrs[j++] = &token_value_attrs[i].attr;
++
++		sysfs_attr_init(&token_entries[i].value_attr.attr);
++		token_entries[i].value_attr.attr.name = value_name;
++		token_entries[i].value_attr.attr.mode = 0444;
++		token_entries[i].value_attr.show = value_show;
++		token_attrs[j++] = &token_entries[i].value_attr.attr;
+ 		continue;
+ 
+ loop_fail_create_value:
+@@ -532,14 +514,12 @@ loop_fail_create_value:
+ 
+ out_unwind_strings:
+ 	while (i--) {
+-		kfree(token_location_attrs[i].attr.name);
+-		kfree(token_value_attrs[i].attr.name);
++		kfree(token_entries[i].location_attr.attr.name);
++		kfree(token_entries[i].value_attr.attr.name);
+ 	}
+ 	kfree(token_attrs);
+ out_allocate_attrs:
+-	kfree(token_value_attrs);
+-out_allocate_value:
+-	kfree(token_location_attrs);
++	kfree(token_entries);
+ 
+ 	return -ENOMEM;
+ }
+@@ -551,12 +531,11 @@ static void free_group(struct platform_d
+ 	sysfs_remove_group(&pdev->dev.kobj,
+ 				&smbios_attribute_group);
+ 	for (i = 0; i < da_num_tokens; i++) {
+-		kfree(token_location_attrs[i].attr.name);
+-		kfree(token_value_attrs[i].attr.name);
++		kfree(token_entries[i].location_attr.attr.name);
++		kfree(token_entries[i].value_attr.attr.name);
+ 	}
+ 	kfree(token_attrs);
+-	kfree(token_value_attrs);
+-	kfree(token_location_attrs);
++	kfree(token_entries);
+ }
+ 
+ static int __init dell_smbios_init(void)
 
 
 
