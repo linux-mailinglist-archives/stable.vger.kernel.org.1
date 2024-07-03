@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7776E925E1C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:34:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEE01925CD7
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:23:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A045C1C24ABD
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:34:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51222B35548
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A836617B4F9;
-	Wed,  3 Jul 2024 11:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E02185E5D;
+	Wed,  3 Jul 2024 10:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uo/uktA8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2c7I18lj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C1A17B4E9;
-	Wed,  3 Jul 2024 11:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C5E174ED1;
+	Wed,  3 Jul 2024 10:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005986; cv=none; b=Ol2E/o43B/h0+qUjxg08SFmqDQdocrPXI/1prV/yInbQ0ELtwuGwONZ9VhpS8qDPto+HaYHtKJ9FuJOGAv54uw0TrjUnoV6v35SOBwNR9eaji/TYTGAGtXXcObHnJ902HwXaPl5AYUDbqmaNQNIHeQe2iQopHmlCMmNvUyY730Y=
+	t=1720004151; cv=none; b=TgGvOMAHcUlZKCTEWxnoFky723bR1930tKj28YBPlOMQ1ZeQqheQRkrlByXDPHmDiR+rgc2H5OxBHtxdRYVI3BVCZ1nKtjuDArXlQx+/mpFyrJzqfr4JJ2YCky1+D3t9BOJU84xuzwoOBRuIvId1As/UplxHGQnCgvQJiloS/ZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005986; c=relaxed/simple;
-	bh=GmlWmJdOktrFzu6OsdjB3JAxZLlQXI2YzVGc8LbqA7M=;
+	s=arc-20240116; t=1720004151; c=relaxed/simple;
+	bh=mv4T47r0Ybfy8eJxLTbo65WYTahyaZfv9wipe8jsvLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OcSPe3Bj3NXPrPSsMlOW8gMXbARZ5XHUtZw6zxV9RGZLa8kHeDJuTo+zchfHSfoHBu0wlC1EbSac+XUXe84aakrNTDiBePEdgyTx81JEbi84hucqc9HDzFGOnplqzfVYj+lKOHB5oWLNI9C1OFY57AnlgbUZEWZVIE/k1B5TVAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uo/uktA8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA51C2BD10;
-	Wed,  3 Jul 2024 11:26:25 +0000 (UTC)
+	 MIME-Version; b=B4l1UZ9FLfGrpnIOhZc9tzC0E7BvbS3hr/jRYqF1q6EymJLuocjwPtzHC0aod+XZyM4ojKPB01eZCxRAXd2nK8THvzA3lovMO1KGOON0Wr5wa0aA7kPFCcDjzZGa15rseeAFQs0y5+Eouj2B80tVOa7tjQunfnYxbEkKSVJKnng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2c7I18lj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C34C2BD10;
+	Wed,  3 Jul 2024 10:55:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005986;
-	bh=GmlWmJdOktrFzu6OsdjB3JAxZLlQXI2YzVGc8LbqA7M=;
+	s=korg; t=1720004151;
+	bh=mv4T47r0Ybfy8eJxLTbo65WYTahyaZfv9wipe8jsvLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uo/uktA8LgLAwdpvRjkf6VxummaJJXw8vAlvQNjnWQaySKqJ0s8Ydvh6P1OZJhFl5
-	 ZWEepf6qkmn6Ki0wThlVcrrtBtGYyI94d5ao0NpbvBsHZ4CW7oLINe20kKA/hkLA8W
-	 nWKfMmzWfDVHrasEsD8nT9tm9CKfNkMZavgBzsvs=
+	b=2c7I18ljGcyvFQYjp8S31zJuZus36uICW2CRnmfaajwvCuEdmideSnXJZVLdyKjZ8
+	 ialMzrkQRLaEUiW8PVUG7z/Ue/Mmvznp0/2zBXl/Ygm3AoX7UXV/IhDYpgWqbXW0ks
+	 +kfB9KkYh09000hwpmgI3loWHLmbGN/TSw/6n0y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huang-Huang Bao <i@eh5.me>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 263/356] pinctrl: rockchip: fix pinmux bits for RK3328 GPIO3-B pins
+Subject: [PATCH 5.4 138/189] drm/amdgpu: fix UBSAN warning in kv_dpm.c
 Date: Wed,  3 Jul 2024 12:39:59 +0200
-Message-ID: <20240703102923.067724298@linuxfoundation.org>
+Message-ID: <20240703102846.690866284@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang-Huang Bao <i@eh5.me>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 5ef6914e0bf578357b4c906ffe6b26e7eedb8ccf ]
+[ Upstream commit f0d576f840153392d04b2d52cf3adab8f62e8cb6 ]
 
-The pinmux bits for GPIO3-B1 to GPIO3-B6 pins are not explicitly
-specified in RK3328 TRM, however we can get hint from pad name and its
-correspinding IOMUX setting for pins in interface descriptions. The
-correspinding IOMIX settings for these pins can be found in the same
-row next to occurrences of following pad names in RK3328 TRM.
+Adds bounds check for sumo_vid_mapping_entry.
 
-GPIO3-B1:  IO_TSPd5m0_CIFdata5m0_GPIO3B1vccio6
-GPIO3-B2: IO_TSPd6m0_CIFdata6m0_GPIO3B2vccio6
-GPIO3-B3: IO_TSPd7m0_CIFdata7m0_GPIO3B3vccio6
-GPIO3-B4: IO_CARDclkm0_GPIO3B4vccio6
-GPIO3-B5: IO_CARDrstm0_GPIO3B5vccio6
-GPIO3-B6: IO_CARDdetm0_GPIO3B6vccio6
-
-Add pinmux data to rk3328_mux_recalced_data as mux register offset for
-these pins does not follow rockchip convention.
-
-Signed-off-by: Huang-Huang Bao <i@eh5.me>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Fixes: 3818e4a7678e ("pinctrl: rockchip: Add rk3328 pinctrl support")
-Link: https://lore.kernel.org/r/20240606125755.53778-3-i@eh5.me
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3392
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-rockchip.c | 51 ++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/kv_dpm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
-index 693a24eac9892..965482872646f 100644
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -564,17 +564,68 @@ static struct rockchip_mux_recalced_data rk3308_mux_recalced_data[] = {
+diff --git a/drivers/gpu/drm/amd/amdgpu/kv_dpm.c b/drivers/gpu/drm/amd/amdgpu/kv_dpm.c
+index 6eb6f05c11367..56e15f5bc8225 100644
+--- a/drivers/gpu/drm/amd/amdgpu/kv_dpm.c
++++ b/drivers/gpu/drm/amd/amdgpu/kv_dpm.c
+@@ -163,6 +163,8 @@ static void sumo_construct_vid_mapping_table(struct amdgpu_device *adev,
  
- static struct rockchip_mux_recalced_data rk3328_mux_recalced_data[] = {
- 	{
-+		/* gpio2_b7_sel */
- 		.num = 2,
- 		.pin = 15,
- 		.reg = 0x28,
- 		.bit = 0,
- 		.mask = 0x7
- 	}, {
-+		/* gpio2_c7_sel */
- 		.num = 2,
- 		.pin = 23,
- 		.reg = 0x30,
- 		.bit = 14,
- 		.mask = 0x3
-+	}, {
-+		/* gpio3_b1_sel */
-+		.num = 3,
-+		.pin = 9,
-+		.reg = 0x44,
-+		.bit = 2,
-+		.mask = 0x3
-+	}, {
-+		/* gpio3_b2_sel */
-+		.num = 3,
-+		.pin = 10,
-+		.reg = 0x44,
-+		.bit = 4,
-+		.mask = 0x3
-+	}, {
-+		/* gpio3_b3_sel */
-+		.num = 3,
-+		.pin = 11,
-+		.reg = 0x44,
-+		.bit = 6,
-+		.mask = 0x3
-+	}, {
-+		/* gpio3_b4_sel */
-+		.num = 3,
-+		.pin = 12,
-+		.reg = 0x44,
-+		.bit = 8,
-+		.mask = 0x3
-+	}, {
-+		/* gpio3_b5_sel */
-+		.num = 3,
-+		.pin = 13,
-+		.reg = 0x44,
-+		.bit = 10,
-+		.mask = 0x3
-+	}, {
-+		/* gpio3_b6_sel */
-+		.num = 3,
-+		.pin = 14,
-+		.reg = 0x44,
-+		.bit = 12,
-+		.mask = 0x3
-+	}, {
-+		/* gpio3_b7_sel */
-+		.num = 3,
-+		.pin = 15,
-+		.reg = 0x44,
-+		.bit = 14,
-+		.mask = 0x3
- 	},
- };
- 
+ 	for (i = 0; i < SUMO_MAX_HARDWARE_POWERLEVELS; i++) {
+ 		if (table[i].ulSupportedSCLK != 0) {
++			if (table[i].usVoltageIndex >= SUMO_MAX_NUMBER_VOLTAGES)
++				continue;
+ 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_7bit =
+ 				table[i].usVoltageID;
+ 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_2bit =
 -- 
 2.43.0
 
