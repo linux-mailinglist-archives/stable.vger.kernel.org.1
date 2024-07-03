@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-57730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04FDF925DBC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A10BB925C44
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:16:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FE3C1F225AA
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2AC21C20AAC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B800191F8E;
-	Wed,  3 Jul 2024 11:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79EC17DA1A;
+	Wed,  3 Jul 2024 11:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1g5g81x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vFYYvQB0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB3D191F8A;
-	Wed,  3 Jul 2024 11:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D9817D8BB;
+	Wed,  3 Jul 2024 11:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005760; cv=none; b=MBeJMDXAsuqFPpdzNVemfRCBhsCeG7K0ieCne8BkQaqkZw1q1/6co7EtaBLJK8IPsmx63zE0iWVjONSzEGlC25ini51SNVwEyinS3FtqXTN6rYVfnMKhPw0sW/CgOJYJ9u3OwMoBpKUtVZ1ks5n63ngwE1pj7oZLN5w3P02gzn8=
+	t=1720004741; cv=none; b=uBXP5XnMaxatvMHV+VpCZk0frQQQ6dgiMJP5j2erRzhzpZtnBDvqDprrgE0VYhZaL/Ex9SEn7GuXRsW/YdP5ZHDu0cPRiOLp9QobZTJiTBBkOlAgXCmuu6GGrufisbQAmgUY1LE+V5ZhMU5asrdjGo5RAqeUAJt4xwxIe9n4mXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005760; c=relaxed/simple;
-	bh=ffjeupH7ENI4Y+eLTVqLtN5Bi3dNpMZce/SoB1k+AZU=;
+	s=arc-20240116; t=1720004741; c=relaxed/simple;
+	bh=0SBtgVFiLMGbNdkL+erujBxRl1Q1laBcFYeRSrlE4vI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PM9Qk6XulzV0qH7wO7JgjtQhWSSb8XqaKmQtys9SM0cdWX3HABvwxQK/uteimn3Kf2oajQIDeGzkCLInirth78cqaFIhyw75Cmi33djAquCJZT6OUduaOcERQ/OrzTfPTJcuqoRc2Gww4h+cJvabxPNpxq86/wFJRAljL29l4N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X1g5g81x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64000C2BD10;
-	Wed,  3 Jul 2024 11:22:39 +0000 (UTC)
+	 MIME-Version; b=mrfX8JmMLFQxdwkGXZasj9doTKnUkUO+GzbUCwBDwgIIDd464j989fsGTIKFw2YehQDpcQtUdIIqB2lhJ3zQBtXvpPE3eQihopnjCnMEi+C6QV4l6+xxJaATd2hCYACvJuD24ZrR0jzCYBE7toSmwy78w1xyqyzbatOlMt9DAnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vFYYvQB0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A1EC2BD10;
+	Wed,  3 Jul 2024 11:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005759;
-	bh=ffjeupH7ENI4Y+eLTVqLtN5Bi3dNpMZce/SoB1k+AZU=;
+	s=korg; t=1720004741;
+	bh=0SBtgVFiLMGbNdkL+erujBxRl1Q1laBcFYeRSrlE4vI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X1g5g81xmqGrDfWYg0K1kMF0Hx8xeJ2w3/wc1Pgs/+yBJXVNLOc70k/bRywi9hh+Q
-	 YbCjew+oOwIvN4ROjU1QgOSqTpZjhvCCmfG6GhwygRj8Abtaem21mzQyV8wwaERkDW
-	 bLwkl9fYgElwr0VKg3xfmvCQvwNw1vd0YbBLqm2w=
+	b=vFYYvQB0R3IYYW9NX8ycuIAI1oy82S1lm2481KxhHQgGquLGpeEexwPXe/6jnfU8g
+	 Q8X3/as1glZtma9hnLlGFoQJopLsFPls3tQYXz10O1ZuvCwqGNJgsvgoO3Q42hTbG6
+	 /AuK0dh1MJNnQE23p0RCYU6by/WXzRIFCH8AZFiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yue Haibing <yuehaibing@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 188/356] ipv6: prevent possible NULL deref in fib6_nh_init()
+Subject: [PATCH 5.10 143/290] netns: Make get_net_ns() handle zero refcount net
 Date: Wed,  3 Jul 2024 12:38:44 +0200
-Message-ID: <20240703102920.219635222@linuxfoundation.org>
+Message-ID: <20240703102909.586130186@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yue Haibing <yuehaibing@huawei.com>
 
-[ Upstream commit 2eab4543a2204092c3a7af81d7d6c506e59a03a6 ]
+[ Upstream commit ff960f9d3edbe08a736b5a224d91a305ccc946b0 ]
 
-syzbot reminds us that in6_dev_get() can return NULL.
-
-fib6_nh_init()
-    ip6_validate_gw(  &idev  )
-        ip6_route_check_nh(  idev  )
-            *idev = in6_dev_get(dev); // can be NULL
-
-Oops: general protection fault, probably for non-canonical address 0xdffffc00000000bc: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x00000000000005e0-0x00000000000005e7]
-CPU: 0 PID: 11237 Comm: syz-executor.3 Not tainted 6.10.0-rc2-syzkaller-00249-gbe27b8965297 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/07/2024
- RIP: 0010:fib6_nh_init+0x640/0x2160 net/ipv6/route.c:3606
-Code: 00 00 fc ff df 4c 8b 64 24 58 48 8b 44 24 28 4c 8b 74 24 30 48 89 c1 48 89 44 24 28 48 8d 98 e0 05 00 00 48 89 d8 48 c1 e8 03 <42> 0f b6 04 38 84 c0 0f 85 b3 17 00 00 8b 1b 31 ff 89 de e8 b8 8b
-RSP: 0018:ffffc900032775a0 EFLAGS: 00010202
-RAX: 00000000000000bc RBX: 00000000000005e0 RCX: 0000000000000000
-RDX: 0000000000000010 RSI: ffffc90003277a54 RDI: ffff88802b3a08d8
-RBP: ffffc900032778b0 R08: 00000000000002fc R09: 0000000000000000
-R10: 00000000000002fc R11: 0000000000000000 R12: ffff88802b3a08b8
-R13: 1ffff9200064eec8 R14: ffffc90003277a00 R15: dffffc0000000000
-FS:  00007f940feb06c0(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
+Syzkaller hit a warning:
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 3 PID: 7890 at lib/refcount.c:25 refcount_warn_saturate+0xdf/0x1d0
+Modules linked in:
+CPU: 3 PID: 7890 Comm: tun Not tainted 6.10.0-rc3-00100-gcaa4f9578aba-dirty #310
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:refcount_warn_saturate+0xdf/0x1d0
+Code: 41 49 04 31 ff 89 de e8 9f 1e cd fe 84 db 75 9c e8 76 26 cd fe c6 05 b6 41 49 04 01 90 48 c7 c7 b8 8e 25 86 e8 d2 05 b5 fe 90 <0f> 0b 90 90 e9 79 ff ff ff e8 53 26 cd fe 0f b6 1
+RSP: 0018:ffff8881067b7da0 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff811c72ac
+RDX: ffff8881026a2140 RSI: ffffffff811c72b5 RDI: 0000000000000001
+RBP: ffff8881067b7db0 R08: 0000000000000000 R09: 205b5d3730353139
+R10: 0000000000000000 R11: 205d303938375420 R12: ffff8881086500c4
+R13: ffff8881086500c4 R14: ffff8881086500b0 R15: ffff888108650040
+FS:  00007f5b2961a4c0(0000) GS:ffff88823bd00000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 00000000245e8000 CR4: 00000000003506f0
+CR2: 000055d7ed36fd18 CR3: 00000001482f6000 CR4: 00000000000006f0
 DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
  <TASK>
-  ip6_route_info_create+0x99e/0x12b0 net/ipv6/route.c:3809
-  ip6_route_add+0x28/0x160 net/ipv6/route.c:3853
-  ipv6_route_ioctl+0x588/0x870 net/ipv6/route.c:4483
-  inet6_ioctl+0x21a/0x280 net/ipv6/af_inet6.c:579
-  sock_do_ioctl+0x158/0x460 net/socket.c:1222
-  sock_ioctl+0x629/0x8e0 net/socket.c:1341
-  vfs_ioctl fs/ioctl.c:51 [inline]
-  __do_sys_ioctl fs/ioctl.c:907 [inline]
-  __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ ? show_regs+0xa3/0xc0
+ ? __warn+0xa5/0x1c0
+ ? refcount_warn_saturate+0xdf/0x1d0
+ ? report_bug+0x1fc/0x2d0
+ ? refcount_warn_saturate+0xdf/0x1d0
+ ? handle_bug+0xa1/0x110
+ ? exc_invalid_op+0x3c/0xb0
+ ? asm_exc_invalid_op+0x1f/0x30
+ ? __warn_printk+0xcc/0x140
+ ? __warn_printk+0xd5/0x140
+ ? refcount_warn_saturate+0xdf/0x1d0
+ get_net_ns+0xa4/0xc0
+ ? __pfx_get_net_ns+0x10/0x10
+ open_related_ns+0x5a/0x130
+ __tun_chr_ioctl+0x1616/0x2370
+ ? __sanitizer_cov_trace_switch+0x58/0xa0
+ ? __sanitizer_cov_trace_const_cmp2+0x1c/0x30
+ ? __pfx_tun_chr_ioctl+0x10/0x10
+ tun_chr_ioctl+0x2f/0x40
+ __x64_sys_ioctl+0x11b/0x160
+ x64_sys_call+0x1211/0x20d0
+ do_syscall_64+0x9e/0x1d0
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f940f07cea9
+RIP: 0033:0x7f5b28f165d7
+Code: b3 66 90 48 8b 05 b1 48 2d 00 64 c7 00 26 00 00 00 48 c7 c0 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 81 48 2d 00 8
+RSP: 002b:00007ffc2b59c5e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f5b28f165d7
+RDX: 0000000000000000 RSI: 00000000000054e3 RDI: 0000000000000003
+RBP: 00007ffc2b59c650 R08: 00007f5b291ed8c0 R09: 00007f5b2961a4c0
+R10: 0000000029690010 R11: 0000000000000246 R12: 0000000000400730
+R13: 00007ffc2b59cf40 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+Kernel panic - not syncing: kernel: panic_on_warn set ...
 
-Fixes: 428604fb118f ("ipv6: do not set routes if disable_ipv6 has been enabled")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240614082002.26407-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This is trigger as below:
+          ns0                                    ns1
+tun_set_iff() //dev is tun0
+   tun->dev = dev
+//ip link set tun0 netns ns1
+                                       put_net() //ref is 0
+__tun_chr_ioctl() //TUNGETDEVNETNS
+   net = dev_net(tun->dev);
+   open_related_ns(&net->ns, get_net_ns); //ns1
+     get_net_ns()
+        get_net() //addition on 0
+
+Use maybe_get_net() in get_net_ns in case net's ref is zero to fix this
+
+Fixes: 0c3e0e3bb623 ("tun: Add ioctl() TUNGETDEVNETNS cmd to allow obtaining real net ns of tun device")
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Link: https://lore.kernel.org/r/20240614131302.2698509-1-yuehaibing@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/net_namespace.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 0ca3da0999c6a..c7ebb46d803c3 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -3599,7 +3599,7 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
- 	if (!dev)
- 		goto out;
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index 72cfe5248b764..6192a05ebcce2 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -670,11 +670,16 @@ EXPORT_SYMBOL_GPL(__put_net);
+  * get_net_ns - increment the refcount of the network namespace
+  * @ns: common namespace (net)
+  *
+- * Returns the net's common namespace.
++ * Returns the net's common namespace or ERR_PTR() if ref is zero.
+  */
+ struct ns_common *get_net_ns(struct ns_common *ns)
+ {
+-	return &get_net(container_of(ns, struct net, ns))->ns;
++	struct net *net;
++
++	net = maybe_get_net(container_of(ns, struct net, ns));
++	if (net)
++		return &net->ns;
++	return ERR_PTR(-EINVAL);
+ }
+ EXPORT_SYMBOL_GPL(get_net_ns);
  
--	if (idev->cnf.disable_ipv6) {
-+	if (!idev || idev->cnf.disable_ipv6) {
- 		NL_SET_ERR_MSG(extack, "IPv6 is disabled on nexthop device");
- 		err = -EACCES;
- 		goto out;
 -- 
 2.43.0
 
