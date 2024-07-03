@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-57232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 895DF925BA3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:10:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C61D8925F29
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:52:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E3DD1F25196
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:10:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA9E9B29452
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B243C1940A1;
-	Wed,  3 Jul 2024 10:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87C2191F95;
+	Wed,  3 Jul 2024 11:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/moG1/B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GERMp19W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8F6194083;
-	Wed,  3 Jul 2024 10:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D321849D3;
+	Wed,  3 Jul 2024 11:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004258; cv=none; b=apnSB7Qhyk3VztEmxB6BXiCGLWngRp95sTpjk2XwJ0S5KfX5y5FnF6BrRg8n0a6A0aGbM6C3TcEqevTt11VP5fVJyeAqqBdJL4G8UdsR1yrqBR6H8kkt9DGQ7UCejhwo4elR0sM955ZeSl9kzdS7U8gnXdjJpy47aTBFRcNgcyU=
+	t=1720005085; cv=none; b=LSLJdToM4wl3u8UXuA4+PKze9Pz4H1PGZJzYs5t4AP0V2ddLNcikSBGua9pM6dy4UjDC3coHd75FISwVsgWZDjGYiCQeFQhObQmRML6t8uNnVdg+w1zaFtQ9tpp+7FgahLc2sQk9thtF7zQmIvA7Rw4C0H2OOyNxspeKF5YsblA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004258; c=relaxed/simple;
-	bh=COAaLQio1SHvo0o7LxOrgTS8dgRbXmGbcRExLXOz0fI=;
+	s=arc-20240116; t=1720005085; c=relaxed/simple;
+	bh=yUdhOO0MBoHyByiVixXn6eDcLK2MbKy91joRw2sZxQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y5H0KN8oVZ+pMHdjmZz4oCKc8GdlmaL/DRa0xbytBzUIjT89R97MvhpnnV7KWMOqcMvh6iN/0LSk4T0OXStY6cRZ1h9WAmFAn91BhSAIHCcKnBHVYdJqbm0wIk4M2tWDL/ht+wkto7+rbb1EEQdZNDAfujdTRtMCda5xa077hLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/moG1/B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E35CAC32781;
-	Wed,  3 Jul 2024 10:57:37 +0000 (UTC)
+	 MIME-Version; b=vDxaTtuYXaslDfGzkQiG2GXUxNUmZb2y0p0IIWAh00wxZtR+/1mKHY/M4N17fwoYetKekdbD7IreIeCGpC+Z3de/HNRW2No295QLuIbqPHqecGoanHdzNM/T9PstE5H5J8PstZj5z+7UFHRrY8O2slyOZ95uxLpBBmV4yrjdqwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GERMp19W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56C0C2BD10;
+	Wed,  3 Jul 2024 11:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004258;
-	bh=COAaLQio1SHvo0o7LxOrgTS8dgRbXmGbcRExLXOz0fI=;
+	s=korg; t=1720005085;
+	bh=yUdhOO0MBoHyByiVixXn6eDcLK2MbKy91joRw2sZxQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t/moG1/BItxaR28ywKMWX9b6yR1P3vuwpbPXgfc/p/e3WqseHoh+1RoZKVCCY3xQ9
-	 fxrcwo7dM4ohCmPc10hcRPqq3Nvf7wA4vXg4cG3DfFBPbKvXRQ/SSkEZY2+bc0b0pc
-	 k8o86ykHFSn0yHohebEWi2UkFzjPQE8+49ya3AhM=
+	b=GERMp19W2PAs/Mt85qointa6NYFmAfYqs2896h+hMm3RKB/5DQVGHrTsYj5Yn5/O9
+	 h9E5PAepaoRBEzO+7KNyJForuuZPLM/sS+11soKX2Kc5/NBwttHpY+/3tneUwDTFB5
+	 hLzZan7JaMA6wtomdydFdMVW1FaxuYGAv/Ep5xpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+daa36413a5cedf799ae4@syzkaller.appspotmail.com,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.4 173/189] net: can: j1939: enhanced error handling for tightly received RTS messages in xtp_rx_rts_session_new
-Date: Wed,  3 Jul 2024 12:40:34 +0200
-Message-ID: <20240703102848.001794738@linuxfoundation.org>
+	Oliver Neukum <oneukum@suse.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.10 254/290] usb: gadget: printer: SS+ support
+Date: Wed,  3 Jul 2024 12:40:35 +0200
+Message-ID: <20240703102913.741231002@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit d3e2904f71ea0fe7eaff1d68a2b0363c888ea0fb upstream.
+commit fd80731e5e9d1402cb2f85022a6abf9b1982ec5f upstream.
 
-This patch enhances error handling in scenarios with RTS (Request to
-Send) messages arriving closely. It replaces the less informative WARN_ON_ONCE
-backtraces with a new error handling method. This provides clearer error
-messages and allows for the early termination of problematic sessions.
-Previously, sessions were only released at the end of j1939_xtp_rx_rts().
+We need to treat super speed plus as super speed, not the default,
+which is full speed.
 
-Potentially this could be reproduced with something like:
-testj1939 -r vcan0:0x80 &
-while true; do
-	# send first RTS
-	cansend vcan0 18EC8090#1014000303002301;
-	# send second RTS
-	cansend vcan0 18EC8090#1014000303002301;
-	# send abort
-	cansend vcan0 18EC8090#ff00000000002301;
-done
-
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Reported-by: syzbot+daa36413a5cedf799ae4@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/all/20231117124959.961171-1-o.rempel@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20240620093800.28901-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/j1939/transport.c |   19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/f_printer.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/can/j1939/transport.c
-+++ b/net/can/j1939/transport.c
-@@ -1577,8 +1577,8 @@ j1939_session *j1939_xtp_rx_rts_session_
- 	struct j1939_sk_buff_cb skcb = *j1939_skb_to_cb(skb);
- 	struct j1939_session *session;
- 	const u8 *dat;
-+	int len, ret;
- 	pgn_t pgn;
--	int len;
- 
- 	netdev_dbg(priv->ndev, "%s\n", __func__);
- 
-@@ -1634,7 +1634,22 @@ j1939_session *j1939_xtp_rx_rts_session_
- 	session->pkt.rx = 0;
- 	session->pkt.tx = 0;
- 
--	WARN_ON_ONCE(j1939_session_activate(session));
-+	ret = j1939_session_activate(session);
-+	if (ret) {
-+		/* Entering this scope indicates an issue with the J1939 bus.
-+		 * Possible scenarios include:
-+		 * - A time lapse occurred, and a new session was initiated
-+		 *   due to another packet being sent correctly. This could
-+		 *   have been caused by too long interrupt, debugger, or being
-+		 *   out-scheduled by another task.
-+		 * - The bus is receiving numerous erroneous packets, either
-+		 *   from a malfunctioning device or during a test scenario.
-+		 */
-+		netdev_alert(priv->ndev, "%s: 0x%p: concurrent session with same addr (%02x %02x) is already active.\n",
-+			     __func__, session, skcb.addr.sa, skcb.addr.da);
-+		j1939_session_put(session);
-+		return NULL;
-+	}
- 
- 	return session;
- }
+--- a/drivers/usb/gadget/function/f_printer.c
++++ b/drivers/usb/gadget/function/f_printer.c
+@@ -208,6 +208,7 @@ static inline struct usb_endpoint_descri
+ 					struct usb_endpoint_descriptor *ss)
+ {
+ 	switch (gadget->speed) {
++	case USB_SPEED_SUPER_PLUS:
+ 	case USB_SPEED_SUPER:
+ 		return ss;
+ 	case USB_SPEED_HIGH:
 
 
 
