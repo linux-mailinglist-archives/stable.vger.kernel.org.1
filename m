@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48DBA925F46
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:55:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4D51925DED
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF3BCB33F67
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:05:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02C351C224F5
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D34181B8C;
-	Wed,  3 Jul 2024 10:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B0418FC8E;
+	Wed,  3 Jul 2024 11:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BtNIxKNy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K879pY+9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9739E173336;
-	Wed,  3 Jul 2024 10:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C877718FC8F;
+	Wed,  3 Jul 2024 11:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004029; cv=none; b=pt2ZkXbhZQHaQnZ2iYASWNeix62/O0lQhhON2rP9f8yK85PMIbiawE7+YB0oPXqL0Sa/dpdQLLJJurbFtxGK3J+ARZmWtE7YmkniaNudMlNHxzZLUOJ2JknGB8W7YZoqktwsNcFcxmcLKjH6v15cNntrKOKZBqpRa6XylHjxpPs=
+	t=1720005877; cv=none; b=npRzlE0ljbJ7/8/X5qjmsURBLsRLhK8IeSFPYb3+q9GlrBQhdOBU6VGoaLLsymNwowIjmtNEEbbR0CYAtqkh+INCgpA0DxpWksQWWRYM/U0G640x+4YoSvXvuQzA2KxMHB4uGWXn92erFu2VF9OkoH1WxMUljvrPUtD333NrCGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004029; c=relaxed/simple;
-	bh=BbOTqd4YTSS7qFAFp3yhnuAyDh6imN04rkrXQIS8lPQ=;
+	s=arc-20240116; t=1720005877; c=relaxed/simple;
+	bh=g8nivP6HH+AAm6eGCRmV0Wmv+6rfpPx2sPwdPRhX4DA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MXGZuyVHoX6+nRIUY3K2cvuD0nrkxRu/xMH6zvN5z8QfCIHGthIKKh2tIxPpa+SzbGNuZeyvYFbjk1VbzcJ3kz29sz4DLMpwMDGgAAHsaQ1PqsyfRUeqim6jLf+SNuSVqlIKyP0zR4yiX4TmHboDbzU0lAy/GKYzuvWEH8o+Ad0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BtNIxKNy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C00DC2BD10;
-	Wed,  3 Jul 2024 10:53:48 +0000 (UTC)
+	 MIME-Version; b=TNOEBWrJjrBdhFuS7UFS3bpF7CXRPCjLlReNNxJDN7KsnNFQq305WjDZ81GncJrYZPnf6o75X66MAtKzqRzTQEirlIjwlgaKKkFRDy6VtQHLo+Jsasqu7HtVWltoiNyFAP7YtmnUHmJeOT/xaZr5ltwubbymrJAiwQKIZymhde0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K879pY+9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A3AC4AF0C;
+	Wed,  3 Jul 2024 11:24:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004029;
-	bh=BbOTqd4YTSS7qFAFp3yhnuAyDh6imN04rkrXQIS8lPQ=;
+	s=korg; t=1720005877;
+	bh=g8nivP6HH+AAm6eGCRmV0Wmv+6rfpPx2sPwdPRhX4DA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BtNIxKNyrbrDSLUS+Do48jGIcilFDDJYkueX3VfkNTopWXtMiUkoFcYpMphOnHxcc
-	 n7dwb5eQfWuTDBkqLt3hPzfdELx7a8Zbg7Aw3oDVz8M5YUKIqdIp+Yyw652QYihEo/
-	 0eYjw24757AZv1/3RKVp2DcHw7tcD7Y+rLL4yWz4=
+	b=K879pY+9Ty6bBhYmeJ1C08iuy+yLHC/56pJiFSoNp/YqETRTVtsMRG5Oa4YcG0lNA
+	 CPlm3mBSZ/Cl0t5eW0UwjGwd9i2KHIPRQ37qppzWRMEQrUVhZQH094kJEzO09w3X1D
+	 ymgTEvuTeeOU4ctd3Nsldi6ZUPkC+Kem+PjrFMCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 101/189] MIPS: Routerboard 532: Fix vendor retry check code
-Date: Wed,  3 Jul 2024 12:39:22 +0200
-Message-ID: <20240703102845.313518181@linuxfoundation.org>
+	Neal Cardwell <ncardwell@google.com>,
+	Yuchung Cheng <ycheng@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 227/356] tcp: clear tp->retrans_stamp in tcp_rcv_fastopen_synack()
+Date: Wed,  3 Jul 2024 12:39:23 +0200
+Message-ID: <20240703102921.702005708@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ae9daffd9028f2500c9ac1517e46d4f2b57efb80 ]
+commit 9e046bb111f13461d3f9331e24e974324245140e upstream.
 
-read_config_dword() contains strange condition checking ret for a
-number of values. The ret variable, however, is always zero because
-config_access() never returns anything else. Thus, the retry is always
-taken until number of tries is exceeded.
+Some applications were reporting ETIMEDOUT errors on apparently
+good looking flows, according to packet dumps.
 
-The code looks like it wants to check *val instead of ret to see if the
-read gave an error response.
+We were able to root cause the issue to an accidental setting
+of tp->retrans_stamp in the following scenario:
 
-Fixes: 73b4390fb234 ("[MIPS] Routerboard 532: Support for base system")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- client sends TFO SYN with data.
+- server has TFO disabled, ACKs only SYN but not payload.
+- client receives SYNACK covering only SYN.
+- tcp_ack() eats SYN and sets tp->retrans_stamp to 0.
+- tcp_rcv_fastopen_synack() calls tcp_xmit_retransmit_queue()
+  to retransmit TFO payload w/o SYN, sets tp->retrans_stamp to "now",
+  but we are not in any loss recovery state.
+- TFO payload is ACKed.
+- we are not in any loss recovery state, and don't see any dupacks,
+  so we don't get to any code path that clears tp->retrans_stamp.
+- tp->retrans_stamp stays non-zero for the lifetime of the connection.
+- after first RTO, tcp_clamp_rto_to_user_timeout() clamps second RTO
+  to 1 jiffy due to bogus tp->retrans_stamp.
+- on clamped RTO with non-zero icsk_retransmits, retransmits_timed_out()
+  sets start_ts from tp->retrans_stamp from TFO payload retransmit
+  hours/days ago, and computes bogus long elapsed time for loss recovery,
+  and suffers ETIMEDOUT early.
+
+Fixes: a7abf3cd76e1 ("tcp: consider using standard rtx logic in tcp_rcv_fastopen_synack()")
+CC: stable@vger.kernel.org
+Co-developed-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Co-developed-by: Yuchung Cheng <ycheng@google.com>
+Signed-off-by: Yuchung Cheng <ycheng@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240614130615.396837-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/pci/ops-rc32434.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/tcp_input.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/pci/ops-rc32434.c b/arch/mips/pci/ops-rc32434.c
-index 874ed6df97683..34b9323bdabb0 100644
---- a/arch/mips/pci/ops-rc32434.c
-+++ b/arch/mips/pci/ops-rc32434.c
-@@ -112,8 +112,8 @@ static int read_config_dword(struct pci_bus *bus, unsigned int devfn,
- 	 * gives them time to settle
- 	 */
- 	if (where == PCI_VENDOR_ID) {
--		if (ret == 0xffffffff || ret == 0x00000000 ||
--		    ret == 0x0000ffff || ret == 0xffff0000) {
-+		if (*val == 0xffffffff || *val == 0x00000000 ||
-+		    *val == 0x0000ffff || *val == 0xffff0000) {
- 			if (delay > 4)
- 				return 0;
- 			delay *= 2;
--- 
-2.43.0
-
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -6104,6 +6104,7 @@ static bool tcp_rcv_fastopen_synack(stru
+ 		skb_rbtree_walk_from(data)
+ 			 tcp_mark_skb_lost(sk, data);
+ 		tcp_xmit_retransmit_queue(sk);
++		tp->retrans_stamp = 0;
+ 		NET_INC_STATS(sock_net(sk),
+ 				LINUX_MIB_TCPFASTOPENACTIVEFAIL);
+ 		return true;
 
 
 
