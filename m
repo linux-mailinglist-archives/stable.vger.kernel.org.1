@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-57344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BEB4925C21
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:15:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0690D925A98
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:02:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB68D1F210E2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:15:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37CCD1C260CD
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2FA117B423;
-	Wed,  3 Jul 2024 11:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86AF117A5BF;
+	Wed,  3 Jul 2024 10:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOEsK5Vm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoqAs1qD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A254717B40E;
-	Wed,  3 Jul 2024 11:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45885179953;
+	Wed,  3 Jul 2024 10:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004596; cv=none; b=kOwTHPQOUXrAvHk4YtM8jmfdcn37yjEt7JG/7A61ueMG68WIgTLx+a9z6EQLpxKDzPUa8msqCIlgMJSQnKF/v8L2orFx8l9O8ACh2epHuEHmLGiZOaG6n9lHVBAPqqEB8SQMXNRc6QiPIzs9u6aQMhl/GrG7Di89BSx2XEPa96c=
+	t=1720003798; cv=none; b=JncL+zcDR119hXZu2dUOYMfze69uO2UIyEJUpkY0kwpSenHtJeKF4+0ItEjvXkd9/E1iYmOH49xawCSP+dzXzflNv7UUwDyhE2saT/b0VIjrvpIyOKRIp+/ARvv+Sxl67Qyt73+utYMjY257XpSnooZSkAuaD8pAFDAS6CbAbQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004596; c=relaxed/simple;
-	bh=qvMg7vcZjMX3HnFj0HqONEmUq6RSsZXYcD+2+EGNebI=;
+	s=arc-20240116; t=1720003798; c=relaxed/simple;
+	bh=ZtbF7NE+qEQ44uNg81fy31nHcHZbIe6qkKTepDCRXcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h1QU1hu+A0ZcKjnUa9bQdIoanV8sJLkXxR2HWiCeKIYeKaNhqVArh//sszpaGXMtFiw4pT7/DgzQ1rs1qFOkk/SbSgGp6J8qp7ZEnZvF0MLanOZ07rtJplKMSoq0q2MN1m0a/PllsPE/D1vJgQ+wFg3iooYN+CCGSF8SszU5T1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOEsK5Vm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277A9C2BD10;
-	Wed,  3 Jul 2024 11:03:15 +0000 (UTC)
+	 MIME-Version; b=UJHnIiGH3GRDPn7TnlnjK3uUkq3ye2RkKJDSOvxPb7dDgWbJJvGxFPwD+aNDBLID3RptpyFI65RpYLlz9fbw94fvuAmKMRt63/q34xi8IXd2JMyqdU7zwsbN6Ll7dgssLZZov7d5DljfxdjZr8iWbl9zEv08FQFPkm4IM+d5BwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoqAs1qD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1650C2BD10;
+	Wed,  3 Jul 2024 10:49:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004596;
-	bh=qvMg7vcZjMX3HnFj0HqONEmUq6RSsZXYcD+2+EGNebI=;
+	s=korg; t=1720003798;
+	bh=ZtbF7NE+qEQ44uNg81fy31nHcHZbIe6qkKTepDCRXcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KOEsK5VmMCHYezfC/RTwP7RcBG+5wIb+9Hf7ldNA2dPxtQ8Bd4SqQXNrioWg8HxGi
-	 pBZ2D1ZCNa2BhQAJvSrHzIgweVlexVuHkES8V3b0e4BC6n4WIksKAcDhDDxzef+Uiv
-	 ukRV6a7t8rFYLAJsjwsoA6zhQc0CrDUyJHzoFILw=
+	b=CoqAs1qDStrfzc7KMNVJXP/iwqvtE/VEtYJeuih5ZCqexANF1Wt2ANW3J1Py8VQXY
+	 RlIKqw4vV3Z74kBqVbhCkEVecT2DvSsGc72dY2EkFSj9y3Sr1A7K6AO6zt5RiYrx1d
+	 ci+gomqQ8mSfkrsfLfswE4sTupvTT2fFuG9WYSfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	stable@kernel.org
-Subject: [PATCH 5.10 087/290] intel_th: pci: Add Granite Rapids support
+	Eric Dumazet <edumazet@google.com>,
+	David Lebrun <dlebrun@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 007/189] ipv6: sr: block BH in seg6_output_core() and seg6_input_core()
 Date: Wed,  3 Jul 2024 12:37:48 +0200
-Message-ID: <20240703102907.479924735@linuxfoundation.org>
+Message-ID: <20240703102841.778842863@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit e44937889bdf4ecd1f0c25762b7226406b9b7a69 upstream.
+[ Upstream commit c0b98ac1cc104f48763cdb27b1e9ac25fd81fc90 ]
 
-Add support for the Trace Hub in Granite Rapids.
+As explained in commit 1378817486d6 ("tipc: block BH
+before using dst_cache"), net/core/dst_cache.c
+helpers need to be called with BH disabled.
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20240429130119.1518073-11-alexander.shishkin@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Disabling preemption in seg6_output_core() is not good enough,
+because seg6_output_core() is called from process context,
+lwtunnel_output() only uses rcu_read_lock().
+
+We might be interrupted by a softirq, re-enter seg6_output_core()
+and corrupt dst_cache data structures.
+
+Fix the race by using local_bh_disable() instead of
+preempt_disable().
+
+Apply a similar change in seg6_input_core().
+
+Fixes: fa79581ea66c ("ipv6: sr: fix several BUGs when preemption is enabled")
+Fixes: 6c8702c60b88 ("ipv6: sr: add support for SRH encapsulation and injection with lwtunnels")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: David Lebrun <dlebrun@google.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240531132636.2637995-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/intel_th/pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/ipv6/seg6_iptunnel.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
---- a/drivers/hwtracing/intel_th/pci.c
-+++ b/drivers/hwtracing/intel_th/pci.c
-@@ -305,6 +305,11 @@ static const struct pci_device_id intel_
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
- 	},
- 	{
-+		/* Granite Rapids */
-+		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x0963),
-+		.driver_data = (kernel_ulong_t)&intel_th_2x,
-+	},
-+	{
- 		/* Alder Lake CPU */
- 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+index b626e0b62a549..185b9db0b575e 100644
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -308,9 +308,8 @@ static int seg6_input(struct sk_buff *skb)
+ 
+ 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
+ 
+-	preempt_disable();
++	local_bh_disable();
+ 	dst = dst_cache_get(&slwt->cache);
+-	preempt_enable();
+ 
+ 	skb_dst_drop(skb);
+ 
+@@ -318,14 +317,13 @@ static int seg6_input(struct sk_buff *skb)
+ 		ip6_route_input(skb);
+ 		dst = skb_dst(skb);
+ 		if (!dst->error) {
+-			preempt_disable();
+ 			dst_cache_set_ip6(&slwt->cache, dst,
+ 					  &ipv6_hdr(skb)->saddr);
+-			preempt_enable();
+ 		}
+ 	} else {
+ 		skb_dst_set(skb, dst);
+ 	}
++	local_bh_enable();
+ 
+ 	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+ 	if (unlikely(err))
+@@ -347,9 +345,9 @@ static int seg6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 
+ 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
+ 
+-	preempt_disable();
++	local_bh_disable();
+ 	dst = dst_cache_get(&slwt->cache);
+-	preempt_enable();
++	local_bh_enable();
+ 
+ 	if (unlikely(!dst)) {
+ 		struct ipv6hdr *hdr = ipv6_hdr(skb);
+@@ -369,9 +367,9 @@ static int seg6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			goto drop;
+ 		}
+ 
+-		preempt_disable();
++		local_bh_disable();
+ 		dst_cache_set_ip6(&slwt->cache, dst, &fl6.saddr);
+-		preempt_enable();
++		local_bh_enable();
+ 	}
+ 
+ 	skb_dst_drop(skb);
+-- 
+2.43.0
+
 
 
 
