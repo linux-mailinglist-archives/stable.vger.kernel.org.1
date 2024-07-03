@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95113925D74
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:28:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC86B925CD3
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:23:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C712E1C2273B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 750F7B37538
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65963183086;
-	Wed,  3 Jul 2024 11:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0508F177983;
+	Wed,  3 Jul 2024 11:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4hs8Frk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgUVsHPn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CEE1822DB;
-	Wed,  3 Jul 2024 11:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6DCF176AB0;
+	Wed,  3 Jul 2024 11:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005577; cv=none; b=R20wcUDfnf0u5phRpdUchgElD3F03jG1qyfKPgnQVyhzQbqncvPnOMMuWq2gXqRrWZUfx+8/VWJzat1rGOtyUj9IMXk0gU5FZY5L0VfEkxR/gw77OMmSeeGoEiuxsCMgv0cCsLTfR1LelCIFPUU+mp+fJqbLI9cMEW0eDap9i1g=
+	t=1720004509; cv=none; b=fZq7wdpkgfqMqqyZgsvUrSN7QPWTgky2EikzFTCPRCsjH/qkylWE3x04rgYAWMSFLj6BfF+Hs+OSP0B3CFcCE04SLBzjILgqNU8L/XVg9z8J+iQWQ6xuQet4KIb2edPo1fjKm+V5B5HDV4QfGSMDe8wmYF5/fqPKORdYwYaDMM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005577; c=relaxed/simple;
-	bh=yG9FFlz50Zenedz4NvXEEsisqVgvTYGQnENp3QTGReA=;
+	s=arc-20240116; t=1720004509; c=relaxed/simple;
+	bh=/NpKifaek+7WedkD7/fwy2lzTptMbj4C/gRz7cfIb7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k42MOfV93cItEp2v9SvE63tAeoxfqqknFtX05pF05Mc8kWV4ItaF/UCbluH01gSmS9stUdsPOyE3fhzMEg9u7tAAdipM7Eays+m88M+xHLiPkKkjvAbDFJIHQUGdu+oQFJEJGm6ZgZarTwcO4WyBJCig1jCufCcI3XSSHB4uI3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4hs8Frk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED43C2BD10;
-	Wed,  3 Jul 2024 11:19:36 +0000 (UTC)
+	 MIME-Version; b=rTUaNvGGAIAm7Y6E9P4EEy7zE7P7D/vidOvYbCmbUx7f9TfbxZYbgNk3/ISxb2YOF/ExdsdnHhvZIuiDaTIISz4ZyYtMtA9ivAv/VyT5hAt3vlKZwtkTmG1N0oIz2gxkKHiYWvAERLrg6UIaxTQtv0iv8hDy0CSHOgte2zFNlyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgUVsHPn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A5B3C2BD10;
+	Wed,  3 Jul 2024 11:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005577;
-	bh=yG9FFlz50Zenedz4NvXEEsisqVgvTYGQnENp3QTGReA=;
+	s=korg; t=1720004509;
+	bh=/NpKifaek+7WedkD7/fwy2lzTptMbj4C/gRz7cfIb7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b4hs8FrkNgEtdglWW322G3QbPIlxjUOZ6DUZcS1htiqXRuDT7sVyU0MrUM3cgtDHo
-	 X5w62lMoJOuit71mXTTv8TuoGMTffklFNDaszq2OYEOhKes1f8h7aGCC8k157gkaBf
-	 yCbtMtBrS5mNm42kG9M+LHK0MqaGdlsTZ/VEEPrY=
+	b=rgUVsHPnRaXuO/Gwof6G7ay1qfvFB54+HbO0Ngpu31eTm4fv+c5ArxxQB8b1gACjX
+	 zkvAGE5ZRxxgVSat+Y5910uo0ttBh+f+jAMQgIhAHfXTjFsrSIF9G//d9if+2WXy3+
+	 lBnTqXQKN5aDbutTGF6jcVgDkib+ceI5UaHIIurg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rao Shoaib <Rao.Shoaib@oracle.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Adam Miotk <adam.miotk@arm.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 110/356] af_unix: Read with MSG_PEEK loops if the first unread byte is OOB
-Date: Wed,  3 Jul 2024 12:37:26 +0200
-Message-ID: <20240703102917.262429961@linuxfoundation.org>
+Subject: [PATCH 5.10 066/290] drm/bridge/panel: Fix runtime warning on panel bridge release
+Date: Wed,  3 Jul 2024 12:37:27 +0200
+Message-ID: <20240703102906.693002929@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rao Shoaib <Rao.Shoaib@oracle.com>
+From: Adam Miotk <adam.miotk@arm.com>
 
-[ Upstream commit a6736a0addd60fccc3a3508461d72314cc609772 ]
+[ Upstream commit ce62600c4dbee8d43b02277669dd91785a9b81d9 ]
 
-Read with MSG_PEEK flag loops if the first byte to read is an OOB byte.
-commit 22dd70eb2c3d ("af_unix: Don't peek OOB data without MSG_OOB.")
-addresses the loop issue but does not address the issue that no data
-beyond OOB byte can be read.
+Device managed panel bridge wrappers are created by calling to
+drm_panel_bridge_add_typed() and registering a release handler for
+clean-up when the device gets unbound.
 
->>> from socket import *
->>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
->>> c1.send(b'a', MSG_OOB)
-1
->>> c1.send(b'b')
-1
->>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
-b'b'
+Since the memory for this bridge is also managed and linked to the panel
+device, the release function should not try to free that memory.
+Moreover, the call to devm_kfree() inside drm_panel_bridge_remove() will
+fail in this case and emit a warning because the panel bridge resource
+is no longer on the device resources list (it has been removed from
+there before the call to release handlers).
 
->>> from socket import *
->>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
->>> c2.setsockopt(SOL_SOCKET, SO_OOBINLINE, 1)
->>> c1.send(b'a', MSG_OOB)
-1
->>> c1.send(b'b')
-1
->>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
-b'a'
->>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
-b'a'
->>> c2.recv(1, MSG_DONTWAIT)
-b'a'
->>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
-b'b'
->>>
-
-Fixes: 314001f0bf92 ("af_unix: Add OOB support")
-Signed-off-by: Rao Shoaib <Rao.Shoaib@oracle.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240611084639.2248934-1-Rao.Shoaib@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 67022227ffb1 ("drm/bridge: Add a devm_ allocator for panel bridge.")
+Signed-off-by: Adam Miotk <adam.miotk@arm.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240610102739.139852-1-adam.miotk@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/bridge/panel.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2565,18 +2565,18 @@ static struct sk_buff *manage_oob(struct
- 		if (skb == u->oob_skb) {
- 			if (copied) {
- 				skb = NULL;
--			} else if (sock_flag(sk, SOCK_URGINLINE)) {
--				if (!(flags & MSG_PEEK)) {
-+			} else if (!(flags & MSG_PEEK)) {
-+				if (sock_flag(sk, SOCK_URGINLINE)) {
- 					WRITE_ONCE(u->oob_skb, NULL);
- 					consume_skb(skb);
-+				} else {
-+					__skb_unlink(skb, &sk->sk_receive_queue);
-+					WRITE_ONCE(u->oob_skb, NULL);
-+					unlinked_skb = skb;
-+					skb = skb_peek(&sk->sk_receive_queue);
- 				}
--			} else if (flags & MSG_PEEK) {
--				skb = NULL;
--			} else {
--				__skb_unlink(skb, &sk->sk_receive_queue);
--				WRITE_ONCE(u->oob_skb, NULL);
--				unlinked_skb = skb;
--				skb = skb_peek(&sk->sk_receive_queue);
-+			} else if (!sock_flag(sk, SOCK_URGINLINE)) {
-+				skb = skb_peek_next(skb, &sk->sk_receive_queue);
- 			}
- 		}
+diff --git a/drivers/gpu/drm/bridge/panel.c b/drivers/gpu/drm/bridge/panel.c
+index c916f4b8907ef..35a6d9c4e081e 100644
+--- a/drivers/gpu/drm/bridge/panel.c
++++ b/drivers/gpu/drm/bridge/panel.c
+@@ -252,9 +252,12 @@ EXPORT_SYMBOL(drm_panel_bridge_remove);
  
+ static void devm_drm_panel_bridge_release(struct device *dev, void *res)
+ {
+-	struct drm_bridge **bridge = res;
++	struct drm_bridge *bridge = *(struct drm_bridge **)res;
+ 
+-	drm_panel_bridge_remove(*bridge);
++	if (!bridge)
++		return;
++
++	drm_bridge_remove(bridge);
+ }
+ 
+ /**
+-- 
+2.43.0
+
 
 
 
