@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-57588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C756A925EF5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:44:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA332925CFC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:25:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56A42B3DBF0
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:26:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 756E11F20EC6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C9617B501;
-	Wed,  3 Jul 2024 11:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74082176AB6;
+	Wed,  3 Jul 2024 11:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fCI24eAn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkPfttqb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C6217279B;
-	Wed,  3 Jul 2024 11:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32144176AAF;
+	Wed,  3 Jul 2024 11:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005337; cv=none; b=jw+221lwShA9V82WYpQl6Tv4fLvqJOOvinM75lreLoL15YP6I8frCcA7jtg9P6N8l0yvkcSPTzNnADseD2KpTZl3YxuGGHo9DurUjI7dTso9qBh2nc7IyI1W4HWo1AkhBvtRdYW+lz/EMeAWBzjeE4pY8asiO58+S4UOlG/EXew=
+	t=1720005248; cv=none; b=JRNtgYNPJ+nBlp9xEqOnRZDuYbItnARE1bkYGkA1HMiBhcdqJg9mq33NTBzl+SfdcHf9qRcp2rw82+Rm+UOnX82NZvoQdhUsGkpmoI23smS9wasq+P4vcD/fKBHYIjW9vUvHjoX+SRtst6zOSWoz9VACtOjzFjPeYMzVN2dU15U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005337; c=relaxed/simple;
-	bh=OSV4yaTq8dd/OdAfzwGeM2erZkeCVVR/GyAYDSbKTMY=;
+	s=arc-20240116; t=1720005248; c=relaxed/simple;
+	bh=S7Gm3OwtFgK9f8h3UgZ0vkis5D4P7mfs/IxjbE7SFcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZU/35L5vWvpoKNG+wJE/IrTw8zMJvm4RI01lSp16ZnZXRmsoiCF8t8DYzQOUURgOyRwKKbidGoqXimTFxzYCcMZ3xkZKiOzaKDhqQHNeBSkPs2AegRGluFYCq/+EBJBWNVb3+JJJkMmj/yI48N5aNlYWw7jBtwNLcYVqBCkgFLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fCI24eAn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C96C2BD10;
-	Wed,  3 Jul 2024 11:15:36 +0000 (UTC)
+	 MIME-Version; b=iX5KBsoV5x3CFBC5IZgTpIWaHztQnwxFA/JzH1rSdiYKO8nu6Lrcub4KX9NRHeyjeQSucX6fZmcCUFfeCcZVvdmAeV428H6Q5ghd0nfAYUq5RdzgenfT8i0GrBpV9f1kPwNdo4KnermdRdkMNN6Oetj40vEefFbpwBRxfZgws2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkPfttqb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA881C32781;
+	Wed,  3 Jul 2024 11:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005337;
-	bh=OSV4yaTq8dd/OdAfzwGeM2erZkeCVVR/GyAYDSbKTMY=;
+	s=korg; t=1720005248;
+	bh=S7Gm3OwtFgK9f8h3UgZ0vkis5D4P7mfs/IxjbE7SFcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fCI24eAn9tnIskEq206lX3l81bKt/88gUz/7vOTFMs/zFP1SLl7/5Hpg2cpjeYTVG
-	 NJgrx5lfeKDlnhrejLKARXUtwg0XNRL2rP6QmJbYkmiy8TI3Ueyqb336f+ZqcYEDt2
-	 zcp7wwAX955vcVzMyBpjlfMPFvbPajAFF6UisE8Y=
+	b=EkPfttqbyGI1KTpKEiBwc0pcgl4Zg8KwM8MghX+S1G8kTXFDHNhUvfCxPPL8StE/+
+	 ICxYGmEFVyxA7M+/JSm5R3FirzDOVeJA58+Y5BHtXP7gD5qk76JfzG7LTMh+1ab00T
+	 9tl6btyU/QJE2x8e40Dcete47G5qZHT6dk9ZK2qY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
+	Noam Rathaus <noamr@ssd-disclosure.com>,
 	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 017/356] tcp: count CLOSE-WAIT sockets for TCP_MIB_CURRESTAB
-Date: Wed,  3 Jul 2024 12:35:53 +0200
-Message-ID: <20240703102913.751963530@linuxfoundation.org>
+Subject: [PATCH 5.15 018/356] net/sched: taprio: always validate TCA_TAPRIO_ATTR_PRIOMAP
+Date: Wed,  3 Jul 2024 12:35:54 +0200
+Message-ID: <20240703102913.789349453@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
 References: <20240703102913.093882413@linuxfoundation.org>
@@ -67,69 +69,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a46d0ea5c94205f40ecf912d1bb7806a8a64704f ]
+[ Upstream commit f921a58ae20852d188f70842431ce6519c4fdc36 ]
 
-According to RFC 1213, we should also take CLOSE-WAIT sockets into
-consideration:
+If one TCA_TAPRIO_ATTR_PRIOMAP attribute has been provided,
+taprio_parse_mqprio_opt() must validate it, or userspace
+can inject arbitrary data to the kernel, the second time
+taprio_change() is called.
 
-  "tcpCurrEstab OBJECT-TYPE
-   ...
-   The number of TCP connections for which the current state
-   is either ESTABLISHED or CLOSE- WAIT."
+First call (with valid attributes) sets dev->num_tc
+to a non zero value.
 
-After this, CurrEstab counter will display the total number of
-ESTABLISHED and CLOSE-WAIT sockets.
+Second call (with arbitrary mqprio attributes)
+returns early from taprio_parse_mqprio_opt()
+and bad things can happen.
 
-The logic of counting
-When we increment the counter?
-a) if we change the state to ESTABLISHED.
-b) if we change the state from SYN-RECEIVED to CLOSE-WAIT.
-
-When we decrement the counter?
-a) if the socket leaves ESTABLISHED and will never go into CLOSE-WAIT,
-say, on the client side, changing from ESTABLISHED to FIN-WAIT-1.
-b) if the socket leaves CLOSE-WAIT, say, on the server side, changing
-from CLOSE-WAIT to LAST-ACK.
-
-Please note: there are two chances that old state of socket can be changed
-to CLOSE-WAIT in tcp_fin(). One is SYN-RECV, the other is ESTABLISHED.
-So we have to take care of the former case.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
+Reported-by: Noam Rathaus <noamr@ssd-disclosure.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://lore.kernel.org/r/20240604181511.769870-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/sched/sch_taprio.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 9c7998377d6bd..31c572882b41f 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2619,6 +2619,10 @@ void tcp_set_state(struct sock *sk, int state)
- 		if (oldstate != TCP_ESTABLISHED)
- 			TCP_INC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
- 		break;
-+	case TCP_CLOSE_WAIT:
-+		if (oldstate == TCP_SYN_RECV)
-+			TCP_INC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
-+		break;
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index e40b4425eb6b5..4a0986843fb5d 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -947,16 +947,13 @@ static int taprio_parse_mqprio_opt(struct net_device *dev,
+ {
+ 	int i, j;
  
- 	case TCP_CLOSE:
- 		if (oldstate == TCP_CLOSE_WAIT || oldstate == TCP_ESTABLISHED)
-@@ -2630,7 +2634,7 @@ void tcp_set_state(struct sock *sk, int state)
- 			inet_put_port(sk);
- 		fallthrough;
- 	default:
--		if (oldstate == TCP_ESTABLISHED)
-+		if (oldstate == TCP_ESTABLISHED || oldstate == TCP_CLOSE_WAIT)
- 			TCP_DEC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
- 	}
+-	if (!qopt && !dev->num_tc) {
+-		NL_SET_ERR_MSG(extack, "'mqprio' configuration is necessary");
+-		return -EINVAL;
+-	}
+-
+-	/* If num_tc is already set, it means that the user already
+-	 * configured the mqprio part
+-	 */
+-	if (dev->num_tc)
++	if (!qopt) {
++		if (!dev->num_tc) {
++			NL_SET_ERR_MSG(extack, "'mqprio' configuration is necessary");
++			return -EINVAL;
++		}
+ 		return 0;
++	}
  
+ 	/* Verify num_tc is not out of max range */
+ 	if (qopt->num_tc > TC_MAX_QUEUE) {
 -- 
 2.43.0
 
