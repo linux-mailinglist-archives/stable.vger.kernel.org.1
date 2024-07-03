@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 591B2925BFF
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:13:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35418925D38
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 043921F21B2A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67C1C1C20D93
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F2916F0FB;
-	Wed,  3 Jul 2024 11:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF7214E2E6;
+	Wed,  3 Jul 2024 11:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aOcTSLRI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGsAY2TD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333A416B384;
-	Wed,  3 Jul 2024 11:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA5E17C7A2;
+	Wed,  3 Jul 2024 11:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004480; cv=none; b=kWKtdP24sJ5YqLx/py7S7iar7nO5ZvgTFBri1QYF7b8ybFH4v1Xz/GkzBAyE73p/Mte8vwYcZ8+RX2dRHAtgBUDBeTPg9WS9qXRHA6XFBmfUtfh7DwdBqVGXRimTR1zVg5v7xhMt1Hxog+hhVV7zCapVFrVj8dOyv+yP8yZVgbs=
+	t=1720005403; cv=none; b=CvlxVwz+9n3lbAz1o86QmulJTdZQm+jaUI0tu9vy1FcGMQroAPoXo91H8FJoO5G1KMdkaNbLluQTtdyDGgv2w7EjdTJD+a5qFae/MXMW0NidTw34+1rCjDGfqvRKEHlJQtYzjUmACRRa0m7+hfo3RxjQIExKN0ibAKuVmapN6gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004480; c=relaxed/simple;
-	bh=O2DO8Kj6wTea+6hg7Mvpcf0h+iHO9gU1P9LwnE5ivDk=;
+	s=arc-20240116; t=1720005403; c=relaxed/simple;
+	bh=islndp2AaKR0P+l9DNOqk8RtEqxZJqq7DRneqxQQQhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MTInvKLEUvtujkbu/nRqD9pN0pnUI3RmWF5VRDdhkyqIf0TJuRHjaI7zyHtum0LTHSA9xe/0pLJqnobdp3grcUC65KG+foaeWs5PZIeSLHQMFLGz73Vk+h6YlnOSTdhHRHb8h9mpjPt1ogaOPDe8SWQHitfGC9a221udiA7X9Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aOcTSLRI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADDE7C2BD10;
-	Wed,  3 Jul 2024 11:01:19 +0000 (UTC)
+	 MIME-Version; b=OTMqgsLxGgLzk0HxDBW+KqWF6hmwS6u8l3D5wHXpCTYvKf3F+Xhj9Qiq3NebhjeKNb80cm3e9jm77RS9prWuw7vO3zhXlpC1yAMmz9OGuZ8eHWhGVZwyYZia84p8I0geZIvJ1Nrw61XtTdvpSbkZWLGa/TyUlj8Wzf55KYYCfPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGsAY2TD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88998C2BD10;
+	Wed,  3 Jul 2024 11:16:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004480;
-	bh=O2DO8Kj6wTea+6hg7Mvpcf0h+iHO9gU1P9LwnE5ivDk=;
+	s=korg; t=1720005402;
+	bh=islndp2AaKR0P+l9DNOqk8RtEqxZJqq7DRneqxQQQhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aOcTSLRIsmGUHwFFFDINYnfgWWW835+UItvGrNVGULpDX2HZtHCT57WZ1w53XEa9l
-	 q0ARPl2AUIjYROFj0K3Wf//YGM/bIWAMuebMmkIqNkZhI/Uuhg7WE6C/Ti39p5Jz4l
-	 j0H6JRzwjmSn+6pGAc8oWV31XeC4yyUOJPhOz9As=
+	b=kGsAY2TDPjz/Myz3Diym7s3X8eQBd8EEFIANAgh+W0FlzVX4OGmfgGW7+/fM78Myk
+	 d/zG8wHunsGbY1mZZLRD6HW3cpnV2l2FdVd23hivgr2JFfodlzRmofNNxKLe9LGKvY
+	 7T5q4zCFuRVs5h/kXIclQ8JK7DVXUvOOfk2EHx7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 024/290] af_unix: Annotate data-race of net->unx.sysctl_max_dgram_qlen.
+Subject: [PATCH 5.15 069/356] wifi: ath10k: fix QCOM_RPROC_COMMON dependency
 Date: Wed,  3 Jul 2024 12:36:45 +0200
-Message-ID: <20240703102905.104793028@linuxfoundation.org>
+Message-ID: <20240703102915.710931308@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit bd9f2d05731f6a112d0c7391a0d537bfc588dbe6 ]
+[ Upstream commit 21ae74e1bf18331ae5e279bd96304b3630828009 ]
 
-net->unx.sysctl_max_dgram_qlen is exposed as a sysctl knob and can be
-changed concurrently.
+If ath10k_snoc is built-in, while Qualcomm remoteprocs are built as
+modules, compilation fails with:
 
-Let's use READ_ONCE() in unix_create1().
+/usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_init':
+drivers/net/wireless/ath/ath10k/snoc.c:1534: undefined reference to `qcom_register_ssr_notifier'
+/usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_deinit':
+drivers/net/wireless/ath/ath10k/snoc.c:1551: undefined reference to `qcom_unregister_ssr_notifier'
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Add corresponding dependency to ATH10K_SNOC Kconfig entry so that it's
+built as module if QCOM_RPROC_COMMON is built as module too.
+
+Fixes: 747ff7d3d742 ("ath10k: Don't always treat modem stop events as crashes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240511-ath10k-snoc-dep-v1-1-9666e3af5c27@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 2456170c9ddc4..f1a9b3759d462 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -815,7 +815,7 @@ static struct sock *unix_create1(struct net *net, struct socket *sock, int kern)
- 
- 	sk->sk_allocation	= GFP_KERNEL_ACCOUNT;
- 	sk->sk_write_space	= unix_write_space;
--	sk->sk_max_ack_backlog	= net->unx.sysctl_max_dgram_qlen;
-+	sk->sk_max_ack_backlog	= READ_ONCE(net->unx.sysctl_max_dgram_qlen);
- 	sk->sk_destruct		= unix_sock_destructor;
- 	u = unix_sk(sk);
- 	u->inflight = 0;
--- 
-2.43.0
-
+--- a/drivers/net/wireless/ath/ath10k/Kconfig
++++ b/drivers/net/wireless/ath/ath10k/Kconfig
+@@ -44,6 +44,7 @@ config ATH10K_SNOC
+ 	tristate "Qualcomm ath10k SNOC support"
+ 	depends on ATH10K
+ 	depends on ARCH_QCOM || COMPILE_TEST
++	depends on QCOM_RPROC_COMMON || QCOM_RPROC_COMMON=n
+ 	select QCOM_SCM
+ 	select QCOM_QMI_HELPERS
+ 	help
 
 
 
