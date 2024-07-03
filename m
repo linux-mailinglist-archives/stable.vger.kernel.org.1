@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-57448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFEDB925C98
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:20:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5064E925E60
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:36:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81B432C39BC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:20:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8678B2957D3
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E591174ECD;
-	Wed,  3 Jul 2024 11:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3352F17967A;
+	Wed,  3 Jul 2024 11:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gfym+0lx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTSoUYXq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C135B136E2A;
-	Wed,  3 Jul 2024 11:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7041428F8;
+	Wed,  3 Jul 2024 11:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004913; cv=none; b=HyGI1SA7G6TJssh3rlDnGSFuLvkhDNV23MK8XA6cF1J48FBCEs1zT0brBoDbhM7hh9N6jCf0I3QKB2UdCUrpzVncEL09Y0nn1/XWO16VJ2xaDNzfkqQuoXCpt0fM2ZvMqpnaxAGoEY4unaUhFnGs24akW5BPe/VjXGqai6gLV1U=
+	t=1720005957; cv=none; b=Ig3vyI/R79aXOaHDc7rULf4GLpDRhXt/JDDbnnU54rHdTaeX+PwN97oZWV5Wt1skRHcrmxht1/KAScQx2c2VgffKkUSs5jf9brzM3oNds31o3Jpi0b/jd/YYYs2BT+4XcEfwukPsNOb8TK1+dh6vJ8pIMR2wnT3iMR16MpywbPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004913; c=relaxed/simple;
-	bh=dq88UPTgs37jU4Y0kwRNi9Xfw5uTN9dMt8B6ieJCYYo=;
+	s=arc-20240116; t=1720005957; c=relaxed/simple;
+	bh=FIrxTOfiYlbexu1AG+veljIrvF72t2xIfNBGAYJ14VE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fqs3zpjdF2jhWx4PQuRw5VKXUM/WBdvhkUQ406bw7MXdqBC32sS1CVlMFSNmtmYtdZQwm8GHHiMTM8W6Qu228qJSKV+rKz03lKqtuBLoSkdchlyQcPRpOOxNycMoLfWqGzbILQMTTnw27s8Bad+FAwlidvGg2oamlD9L9NAbWyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gfym+0lx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46AA0C2BD10;
-	Wed,  3 Jul 2024 11:08:33 +0000 (UTC)
+	 MIME-Version; b=cixiBXhMFifhvKQBHxbu7fgEgodEcSvB8mMBryDrYj5fyz6XrHv1S6NLFlBSfasucM0jqu0kmKwRFfNQQBuCYrv2CUCcIxbXmcLyPwsNJr78X/vmurvL7Mpoo+uIIHbf5joEgNSuTCwoaZN16eTe6fxCOJirgxkVc7E/oAGKzoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTSoUYXq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6317FC2BD10;
+	Wed,  3 Jul 2024 11:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004913;
-	bh=dq88UPTgs37jU4Y0kwRNi9Xfw5uTN9dMt8B6ieJCYYo=;
+	s=korg; t=1720005956;
+	bh=FIrxTOfiYlbexu1AG+veljIrvF72t2xIfNBGAYJ14VE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gfym+0lxH8oKcTPkquQWoG777VGmAljizAKUmjTWlTgtHf0hhNrJMBkEB19vXRKDO
-	 Tqc/Z1De4DqzZ+WY7eT4i6pEf+Ix2f75BMfGCe/4e1j+TUmMOpPkBuThDVFa+VLore
-	 ZEXk2R4SSXvUIEWJptcUkzz83/85QBsvUkJa7/KA=
+	b=YTSoUYXqkSatceycIfqk0rt6IX2h20r8W/0px32AeWSOPUoyYwR/UO1otWwoKX4DM
+	 PaOu1xyUVLGP4CEW0C/AexSvG5yawOu3urfNxK8VgXCnymKh4VifkU7JH11OyuBeco
+	 77Z5ec4PcR0105oMdp5ocGTnUICP6vvvo3jOQbB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Luya Tshimbalanga <luya@fedoraproject.org>
-Subject: [PATCH 5.10 199/290] ACPI: x86: Add a quirk for Dell Inspiron 14 2-in-1 for StorageD3Enable
-Date: Wed,  3 Jul 2024 12:39:40 +0200
-Message-ID: <20240703102911.680694639@linuxfoundation.org>
+	Chris Wilson <chris@chris-wilson.co.uk>,
+	Karolina Drobnik <karolina.drobnik@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 245/356] drm/i915/gt: Only kick the signal worker if theres been an update
+Date: Wed,  3 Jul 2024 12:39:41 +0200
+Message-ID: <20240703102922.383032303@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
 
-[ Upstream commit 018d6711c26e4bd26e20a819fcc7f8ab902608f3 ]
+[ Upstream commit c877bed82e1017c102c137d432933ccbba92c119 ]
 
-Dell Inspiron 14 2-in-1 has two ACPI nodes under GPP1 both with _ADR of
-0, both without _HID.  It's ambiguous which the kernel should take, but
-it seems to take "DEV0".  Unfortunately "DEV0" is missing the device
-property `StorageD3Enable` which is present on "NVME".
+One impact of commit 047a1b877ed4 ("dma-buf & drm/amdgpu: remove
+dma_resv workaround") is that it stores many, many more fences. Whereas
+adding an exclusive fence used to remove the shared fence list, that
+list is now preserved and the write fences included into the list. Not
+just a single write fence, but now a write/read fence per context. That
+causes us to have to track more fences than before (albeit half of those
+are redundant), and we trigger more interrupts for multi-engine
+workloads.
 
-To avoid this causing problems for suspend, add a quirk for this system
-to behave like `StorageD3Enable` property was found.
+As part of reducing the impact from handling more signaling, we observe
+we only need to kick the signal worker after adding a fence iff we have
+good cause to believe that there is work to be done in processing the
+fence i.e. we either need to enable the interrupt or the request is
+already complete but we don't know if we saw the interrupt and so need
+to check signaling.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216440
-Reported-and-tested-by: Luya Tshimbalanga <luya@fedoraproject.org>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: e79a10652bbd ("ACPI: x86: Force StorageD3Enable on more products")
+References: 047a1b877ed4 ("dma-buf & drm/amdgpu: remove dma_resv workaround")
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/d7b953c7a4ba747c8196a164e2f8c5aef468d048.1657289332.git.karolina.drobnik@intel.com
+Stable-dep-of: 70cb9188ffc7 ("drm/i915/gt: Disarm breadcrumbs if engines are already idle")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/gt/intel_breadcrumbs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index b3fb428461c6f..3a3f09b6cbfc9 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -198,7 +198,24 @@ static const struct x86_cpu_id storage_d3_cpu_ids[] = {
- 	{}
- };
- 
-+static const struct dmi_system_id force_storage_d3_dmi[] = {
-+	{
-+		/*
-+		 * _ADR is ambiguous between GPP1.DEV0 and GPP1.NVME
-+		 * but .NVME is needed to get StorageD3Enable node
-+		 * https://bugzilla.kernel.org/show_bug.cgi?id=216440
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 14 7425 2-in-1"),
-+		}
-+	},
-+	{}
-+};
-+
- bool force_storage_d3(void)
- {
--	return x86_match_cpu(storage_d3_cpu_ids);
-+	const struct dmi_system_id *dmi_id = dmi_first_match(force_storage_d3_dmi);
-+
-+	return dmi_id || x86_match_cpu(storage_d3_cpu_ids);
+diff --git a/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c b/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c
+index 209cf265bf746..e8cd7effea2b0 100644
+--- a/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c
++++ b/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c
+@@ -398,7 +398,8 @@ static void insert_breadcrumb(struct i915_request *rq)
+ 	 * the request as it may have completed and raised the interrupt as
+ 	 * we were attaching it into the lists.
+ 	 */
+-	irq_work_queue(&b->irq_work);
++	if (!b->irq_armed || __i915_request_is_complete(rq))
++		irq_work_queue(&b->irq_work);
  }
+ 
+ bool i915_request_enable_breadcrumb(struct i915_request *rq)
 -- 
 2.43.0
 
