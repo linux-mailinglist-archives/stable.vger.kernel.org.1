@@ -1,200 +1,197 @@
-Return-Path: <stable+bounces-57943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 344FB9263E1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 16:52:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAB34926438
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 17:03:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 584F61C20A69
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:52:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BEB72832E3
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 15:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A5F17E459;
-	Wed,  3 Jul 2024 14:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D6517BB3B;
+	Wed,  3 Jul 2024 15:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="vKlkUWrY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NcJTnO6n"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B4A17DE01;
-	Wed,  3 Jul 2024 14:52:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AC617967F;
+	Wed,  3 Jul 2024 15:03:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720018359; cv=none; b=KOsYcHAwtGylaK6y6XYhA8Z3tv2DzqeNbpRH2Ue9Rttij4IaLM2XjMb2cVvxDtEGZQMEWXBq74q5DNIhvzpWWR3ysG9cXSAg728tkEMcv9HEKTHzo+Xi09TdJ5o8OjypEZ/owEDCK3moTkHIa3Z6jHvH17yYQdut/aBjvHmZhQE=
+	t=1720019004; cv=none; b=qBxcHAjk8Lybjd6O0HUsRzxSQzRtquEFC65oLj9+BDW8ch0djz/1mNsE3ccnKiAyTZ9SODAIj4DRWn+prO1a2IZCuNX4j8RMFUrXlBuGcShJ2bRq7S9lujOo4Rs6IPxm9wJaRnEjf71761k8WLhywuxwB7e+01lULvp28ZGn/cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720018359; c=relaxed/simple;
-	bh=HvGp07wavk1JrZaCJOVO3Zvyms04mXkjTItY8TJVo4I=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=C6K+LbAMFHQ/KfkEbuOPZ7Dtp+djWmWQUK6vmB0cms1CUozEUjP25wLtT8GLsoHrtITLhZ/9g15I6TXVx9n+Qk4h3ogiAZN12DtODZyi1PcwI5vAGRd1S0um4mYoFJyWYPpbfPm5dFXb0WVFXcsSZJLOVEV0uElXefQD49Iup9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=vKlkUWrY; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1720019004; c=relaxed/simple;
+	bh=FoeiMXNWygQHXGa/435t5CfC/zmEoNiICB+QwCj3c/E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OT+UX7Ipewgt1ldfAUayQHifHvYRojQx7sP0ZHANp6kF62Wv7azKLx+O6DyZ+uDRhwvVpjqpnJq0vaePSAZsCP6jITrgHH7beIijrt8/i03XkHE8tex43n1mRsi+UGYbTcCsiaBgTxabvwI316PgwZ3a5V3QP03L+ljPxEw45yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NcJTnO6n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BCD9C32781;
+	Wed,  3 Jul 2024 15:03:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720019003;
+	bh=FoeiMXNWygQHXGa/435t5CfC/zmEoNiICB+QwCj3c/E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NcJTnO6nmkVfC0ALn0oTGFLCMNHrRvb6GNLJW75ya9R2xkUGZvDawJi9SFlHKG0Sx
+	 aCXF2Sltzp8fBmUhkWlBVYni3OKaW5WqhaPLP2IaS6f+9Zo4NIPaxiEIjK6bmnTHmF
+	 IxsXgUsjfnKTZ/by4PY8qZbn/aoqNZUNsGZT943/Ta9EBKoORh7CFqAL8LDDjVOSmq
+	 AV4PXOljdV4Q4kmmJ5vPMryNExBmkhJoJYC/rxGT0tgcs7oYluk23dRSElR6kVaCsm
+	 qL8913WAiI6zDqk+1+ieA7zYqs8N0gLycgPp4PWiWvLardPjuBY+4o/8UOzDXzh8bU
+	 JWSWGuvVvUkSg==
+Date: Wed, 3 Jul 2024 16:03:18 +0100
+From: Simon Horman <horms@kernel.org>
+To: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH iwl-net v1 2/4] igc: Fix reset adapter logics when tx
+ mode change
+Message-ID: <20240703150318.GN598357@kernel.org>
+References: <20240702040926.3327530-1-faizal.abdul.rahim@linux.intel.com>
+ <20240702040926.3327530-3-faizal.abdul.rahim@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1720018355;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lVm5E6swsesJb06uFJCAcatfBLzXL+iYie8HScXx3cM=;
-	b=vKlkUWrYQaoJmbPXXISLT74VRiQWv32r99RgM5O1kWtx5Mv2m477cvHj8gp52amczXkFah
-	lx14wum+G/sArou9KFA3+cv371EGwBCAmUEbc7uGCfknM7jGvRlwEAjPGFc4IrdvzJNmwp
-	by2CJ9iD6+7gbLSo943NFtO6/yUQyokBdNrdTtrMbyiOeV1cEDWKrhATxJVU9u3psQgXa5
-	q4mhkEI3lbpPvdZsBUkCpIRRL/o8TcmdkhlwvxHH31VT0BVokeBCuwvWO3/4/BHaa4rG53
-	y0GwOh8sDu3UJSWTqbFCZpdTlOt8zc5G3urs03TVeET4/Womq/UcsF6Pn1yOlg==
-Date: Wed, 03 Jul 2024 16:52:35 +0200
-From: Dragan Simic <dsimic@manjaro.org>
-To: Steven Price <steven.price@arm.com>
-Cc: dri-devel@lists.freedesktop.org, boris.brezillon@collabora.com,
- robh@kernel.org, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch,
- linux-kernel@vger.kernel.org, Diederik de Haas <didi.debian@cknow.org>,
- Furkan Kardame <f.kardame@manjaro.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/panfrost: Mark simple_ondemand governor as softdep
-In-Reply-To: <e42a55ba-cbb5-47a4-bec6-9c3067040970@arm.com>
-References: <4e1e00422a14db4e2a80870afb704405da16fd1b.1718655077.git.dsimic@manjaro.org>
- <f672e7460c92bc9e0c195804f7e99d0b@manjaro.org>
- <e42a55ba-cbb5-47a4-bec6-9c3067040970@arm.com>
-Message-ID: <192dbcd968dfebf825a3a759701bf381@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240702040926.3327530-3-faizal.abdul.rahim@linux.intel.com>
 
-On 2024-07-03 15:20, Steven Price wrote:
-> On 03/07/2024 13:42, Dragan Simic wrote:
->> On 2024-06-17 22:17, Dragan Simic wrote:
->>> Panfrost DRM driver uses devfreq to perform DVFS, while using
->>> simple_ondemand
->>> devfreq governor by default.  This causes driver initialization to
->>> fail on
->>> boot when simple_ondemand governor isn't built into the kernel
->>> statically,
->>> as a result of the missing module dependency and, consequently, the
->>> required
->>> governor module not being included in the initial ramdisk.  Thus,
->>> let's mark
->>> simple_ondemand governor as a softdep for Panfrost, to have its 
->>> kernel
->>> module
->>> included in the initial ramdisk.
->>> 
->>> This is a rather longstanding issue that has forced distributions to
->>> build
->>> devfreq governors statically into their kernels, [1][2] or has forced
->>> users
->>> to introduce some unnecessary workarounds. [3]
->>> 
->>> For future reference, not having support for the simple_ondemand
->>> governor in
->>> the initial ramdisk produces errors in the kernel log similar to 
->>> these
->>> below,
->>> which were taken from a Pine64 RockPro64:
->>> 
->>>   panfrost ff9a0000.gpu: [drm:panfrost_devfreq_init [panfrost]]
->>> *ERROR* Couldn't initialize GPU devfreq
->>>   panfrost ff9a0000.gpu: Fatal error during GPU init
->>>   panfrost: probe of ff9a0000.gpu failed with error -22
->>> 
->>> Having simple_ondemand marked as a softdep for Panfrost may not
->>> resolve this
->>> issue for all Linux distributions.  In particular, it will remain
->>> unresolved
->>> for the distributions whose utilities for the initial ramdisk
->>> generation do
->>> not handle the available softdep information [4] properly yet. 
->>> However, some
->>> Linux distributions already handle softdeps properly while generating
->>> their
->>> initial ramdisks, [5] and this is a prerequisite step in the right
->>> direction
->>> for the distributions that don't handle them properly yet.
->>> 
->>> [1]
->>> https://gitlab.manjaro.org/manjaro-arm/packages/core/linux/-/blob/linux61/config?ref_type=heads#L8180
->>> [2] https://salsa.debian.org/kernel-team/linux/-/merge_requests/1066
->>> [3] https://forum.pine64.org/showthread.php?tid=15458
->>> [4]
->>> https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git/commit/?id=49d8e0b59052999de577ab732b719cfbeb89504d
->>> [5]
->>> https://github.com/archlinux/mkinitcpio/commit/97ac4d37aae084a050be512f6d8f4489054668ad
->>> 
->>> Cc: Diederik de Haas <didi.debian@cknow.org>
->>> Cc: Furkan Kardame <f.kardame@manjaro.org>
->>> Cc: stable@vger.kernel.org
->>> Fixes: f3ba91228e8e ("drm/panfrost: Add initial panfrost driver")
->>> Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+On Tue, Jul 02, 2024 at 12:09:24AM -0400, Faizal Rahim wrote:
+> Following the "igc: Fix TX Hang issue when QBV Gate is close" changes,
+> remaining issues with the reset adapter logic in igc_tsn_offload_apply()
+> have been observed:
 > 
-> Reviewed-by: Steven Price <steven.price@arm.com>
-
-Thanks!
-
->> Just checking, could this patch be accepted, please?  The Lima 
->> counterpart
->> has already been accepted. [6]
+> 1. The reset adapter logics for i225 and i226 differ, although they should
+>    be the same according to the guidelines in I225/6 HW Design Section
+>    7.5.2.1 on software initialization during tx mode changes.
+> 2. The i225 resets adapter every time, even though tx mode doesn't change.
+>    This occurs solely based on the condition  igc_is_device_id_i225() when
+>    calling schedule_work().
+> 3. i226 doesn't reset adapter for tsn->legacy tx mode changes. It only
+>    resets adapter for legacy->tsn tx mode transitions.
+> 4. qbv_count introduced in the patch is actually not needed; in this
+>    context, a non-zero value of qbv_count is used to indicate if tx mode
+>    was unconditionally set to tsn in igc_tsn_enable_offload(). This could
+>    be replaced by checking the existing register
+>    IGC_TQAVCTRL_TRANSMIT_MODE_TSN bit.
 > 
-> Thanks for the prod - I have to admit I saw there was discussion about
-> the Lima patch and so just put this on my list to look again later 
-> after
-> the discussion had reached a conclusion.
+> This patch resolves all issues and enters schedule_work() to reset the
+> adapter only when changing tx mode. It also removes reliance on qbv_count.
 > 
->> The approach in this patch is far from perfect, but it's still fine 
->> until
->> there's a better solution, such as harddeps.  I'll continue my 
->> research
->> about the possibility for introducing harddeps, which would hopefully
->> replace quite a few instances of the softdep (ab)use that already 
->> extend
->> rather far.  For example, have a look at the commit d5178578bcd4 
->> (btrfs:
->> directly call into crypto framework for checksumming) [7] and the 
->> lines
->> containing MODULE_SOFTDEP() at the very end of fs/btrfs/super.c. [8]
+> qbv_count field will be removed in a future patch.
 > 
-> I agree - it's not perfect, but it's the best we have for now. I hope
-> sometime we'll have a cleaner solution to express dependencies like 
-> this
-> (good luck! ;) ).
+> Test ran:
+> 
+> 1. Verify reset adapter behaviour in i225/6:
+>    a) Enrol a new GCL
+>       Reset adapter observed (tx mode change legacy->tsn)
+>    b) Enrol a new GCL without deleting qdisc
+>       No reset adapter observed (tx mode remain tsn->tsn)
+>    c) Delete qdisc
+>       Reset adapter observed (tx mode change tsn->legacy)
+> 
+> 2. Tested scenario from "igc: Fix TX Hang issue when QBV Gate is closed"
+>    to confirm it remains resolved.
+> 
+> Fixes: 175c241288c0 ("igc: Fix TX Hang issue when QBV Gate is closed")
+> Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
 
-Thanks. :)  Implementing harddeps is _relatively_ straightforward, but
-getting full support for harddeps reach various Linux distributions is
-going to be an uphill battle without doubt. :)
+Hi Faizal,
 
->> If a filesystem driver can rely on the (ab)use of softdeps, which may 
->> be
->> fragile or seen as a bit wrong, I think we can follow the same 
->> approach,
->> at least until a better solution is available.
->> 
->> [6]
->> https://cgit.freedesktop.org/drm/drm-misc/commit/?id=0c94f58cef319ad054fd909b3bf4b7d09c03e11c
->> [7]
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d5178578bcd4
->> [8]
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/btrfs/super.c#n2593
->> 
->>> ---
->>>  drivers/gpu/drm/panfrost/panfrost_drv.c | 1 +
->>>  1 file changed, 1 insertion(+)
->>> 
->>> diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.c
->>> b/drivers/gpu/drm/panfrost/panfrost_drv.c
->>> index ef9f6c0716d5..149737d7a07e 100644
->>> --- a/drivers/gpu/drm/panfrost/panfrost_drv.c
->>> +++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
->>> @@ -828,3 +828,4 @@ module_platform_driver(panfrost_driver);
->>>  MODULE_AUTHOR("Panfrost Project Developers");
->>>  MODULE_DESCRIPTION("Panfrost DRM Driver");
->>>  MODULE_LICENSE("GPL v2");
->>> +MODULE_SOFTDEP("pre: governor_simpleondemand");
+Nits below not withstahdning, this looks good to me.
+
+Reviewed-by: Simon Horman <horms@kernel.org>
+
+> ---
+>  drivers/net/ethernet/intel/igc/igc_tsn.c | 26 +++++++++++++++++++++---
+>  1 file changed, 23 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
+> index 02dd41aff634..61f047ebf34d 100644
+> --- a/drivers/net/ethernet/intel/igc/igc_tsn.c
+> +++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
+> @@ -49,6 +49,13 @@ static unsigned int igc_tsn_new_flags(struct igc_adapter *adapter)
+>  	return new_flags;
+>  }
+>  
+> +static bool igc_tsn_is_tx_mode_in_tsn(struct igc_adapter *adapter)
+> +{
+> +	struct igc_hw *hw = &adapter->hw;
+> +
+> +	return (bool)(rd32(IGC_TQAVCTRL) & IGC_TQAVCTRL_TRANSMIT_MODE_TSN);
+
+Perhaps it is more a question of taste than anything else.
+But my preference, FIIW, is to avoid casts.
+And I think in this case using !! is a common pattern.
+
+(Completely untested!)
+
+	return !!(rd32(IGC_TQAVCTRL) & IGC_TQAVCTRL_TRANSMIT_MODE_TSN);
+
+> +}
+> +
+>  void igc_tsn_adjust_txtime_offset(struct igc_adapter *adapter)
+>  {
+>  	struct igc_hw *hw = &adapter->hw;
+> @@ -334,15 +341,28 @@ int igc_tsn_reset(struct igc_adapter *adapter)
+>  	return err;
+>  }
+>  
+> +static bool igc_tsn_will_tx_mode_change(struct igc_adapter *adapter)
+> +{
+> +	bool any_tsn_enabled = (bool)(igc_tsn_new_flags(adapter) &
+> +			       IGC_FLAG_TSN_ANY_ENABLED);
+
+Ditto.
+
+> +
+> +	if ((any_tsn_enabled && !igc_tsn_is_tx_mode_in_tsn(adapter)) ||
+> +	    (!any_tsn_enabled && igc_tsn_is_tx_mode_in_tsn(adapter)))
+> +		return true;
+> +	else
+> +		return false;
+
+Likewise, this is probably more a matter of taste than anything else.
+But I think this could be expressed as:
+
+(Completely untested!)
+
+	return (any_tsn_enabled && !igc_tsn_is_tx_mode_in_tsn(adapter)) ||
+		(!any_tsn_enabled && igc_tsn_is_tx_mode_in_tsn(adapter));
+
+Similarly in the previous patch of this series.
+
+> +}
+> +
+>  int igc_tsn_offload_apply(struct igc_adapter *adapter)
+>  {
+>  	struct igc_hw *hw = &adapter->hw;
+>  
+> -	/* Per I225/6 HW Design Section 7.5.2.1, transmit mode
+> -	 * cannot be changed dynamically. Require reset the adapter.
+> +	/* Per I225/6 HW Design Section 7.5.2.1 guideline, if tx mode change
+> +	 * from legacy->tsn or tsn->legacy, then reset adapter is needed.
+>  	 */
+>  	if (netif_running(adapter->netdev) &&
+> -	    (igc_is_device_id_i225(hw) || !adapter->qbv_count)) {
+> +	    (igc_is_device_id_i225(hw) || igc_is_device_id_i226(hw)) &&
+> +	     igc_tsn_will_tx_mode_change(adapter)) {
+>  		schedule_work(&adapter->reset_task);
+>  		return 0;
+>  	}
+> -- 
+> 2.25.1
+> 
+> 
 
