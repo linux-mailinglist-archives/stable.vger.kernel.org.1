@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D410925A34
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:55:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A615925CA7
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED5BB1F22373
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D92B2C3F03
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378851850A8;
-	Wed,  3 Jul 2024 10:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC168186E3B;
+	Wed,  3 Jul 2024 11:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TD+Dg4/j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJKZGGyP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA393174ED1;
-	Wed,  3 Jul 2024 10:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0B845945;
+	Wed,  3 Jul 2024 11:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003608; cv=none; b=jufIWY01YqigZcjULZejpKOk/+95QQtdfNAFpdaYCYz1q2LLM9K13pEk6GeD4oiNrJn57xcSOqGbSV9to/9BXiQr68101kBwOvu1gqIYwBY1dt1cqISWmqW5EtGs7K4VoREKEMxEH3HNdtnum20EA/pZFulsmTjMcNA7keba0dk=
+	t=1720004986; cv=none; b=gNF+8Gi2qNImlxZympqEQBH7jthRjIDx6e9op4CICOuKTCvyk58emhAp3QKbdIIz5C3wZXQl7Euo7sLi82w4xuToFrrzu0TJulfFEwazadCgaI96YSCr33b2E+YkO+iypJ7zqKRoZoo9ShphvZP51uNjFm0jt5zFabGdIMN0YcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003608; c=relaxed/simple;
-	bh=zH5cIJAHrsUx9+zGn7tnUigtoRq90hGBJ6SUQlOfZsA=;
+	s=arc-20240116; t=1720004986; c=relaxed/simple;
+	bh=RfhwJpzppGHaV4lVUrC55x54u5kLR7x+fyIEebCV7fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f7fJDFJT4/tvxdmpr2W42IqMxJ8w973xUmAXQBtQwTKV3ofCAcUwaNOXgQPEDwWQusUCFxSa4HhU5z2aqwE+xk8zJUpEib9DuiOdwKqrwT2dMku+3bsRAW7QjYlmOjEjyf4zymKvNmjyDf7Ywwi/myN4lRYL4mGcGX46Nyo2DF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TD+Dg4/j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688A8C2BD10;
-	Wed,  3 Jul 2024 10:46:47 +0000 (UTC)
+	 MIME-Version; b=cEKat3tLQvCFX+DDxcICuE6nzxgPXtseEamEj1+2gNnYwjoBtJ2UUG4qC2YFvmkuJjM5L0BmmtecnYQQn6QnZ1B3WNfkkGPDpSIiC8spPZon6PukxQVn/8R2MDKbzE3HR7fTtr33UnQrxUkO0/ZjnwJzPUBEAdo2J7Ph0ffcAhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJKZGGyP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20ECCC2BD10;
+	Wed,  3 Jul 2024 11:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003607;
-	bh=zH5cIJAHrsUx9+zGn7tnUigtoRq90hGBJ6SUQlOfZsA=;
+	s=korg; t=1720004986;
+	bh=RfhwJpzppGHaV4lVUrC55x54u5kLR7x+fyIEebCV7fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TD+Dg4/jeWuFRDyiRNqDKiFVJX/eCgpcyIEa0Gbr2K6gGtmJlu2zyfxAUsv0/LX04
-	 VMPYWOjjhzTzRi4i92Aindk3vxDYNoxeZaVt3XXySpgLvzGevc3zoKkKaYMqgy9IgF
-	 6I3XeonjNVv6HieC6iOTFcLO9N2P53XuJQB6lVB0=
+	b=SJKZGGyPklXT6rSx0bLiqKiPhViaCtgRH4Vn8LBvLSj6u6Fh+31R0K7SbvtEhflOw
+	 8xBsztevCoH1IX0lLDyll/OxidaBeWfV2gl7cF8KAgLO4WZvTCuXCnpcii1FKsXkJ0
+	 gXi83m1i5mkZpQD30D4kuCUWKITpcZS+H9MKWe4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 105/139] ASoC: fsl-asoc-card: set priv->pdev before using it
+Subject: [PATCH 5.10 221/290] xdp: Move the rxq_info.mem clearing to unreg_mem_model()
 Date: Wed,  3 Jul 2024 12:40:02 +0200
-Message-ID: <20240703102834.406579317@linuxfoundation.org>
+Message-ID: <20240703102912.506007356@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 90f3feb24172185f1832636264943e8b5e289245 ]
+[ Upstream commit a78cae2476812cecaa4a33d0086bbb53986906bc ]
 
-priv->pdev pointer was set after being used in
-fsl_asoc_card_audmux_init().
-Move this assignment at the start of the probe function, so
-sub-functions can correctly use pdev through priv.
+xdp_rxq_info_unreg() implicitly calls xdp_rxq_info_unreg_mem_model().
+This may well be confusing to the driver authors, and lead to double free
+if they call xdp_rxq_info_unreg_mem_model() before xdp_rxq_info_unreg()
+(when mem model type == MEM_TYPE_PAGE_POOL).
 
-fsl_asoc_card_audmux_init() dereferences priv->pdev to get access to the
-dev struct, used with dev_err macros.
-As priv is zero-initialised, there would be a NULL pointer dereference.
-Note that if priv->dev is dereferenced before assignment but never used,
-for example if there is no error to be printed, the driver won't crash
-probably due to compiler optimisations.
+In fact error path of mvpp2_rxq_init() seems to currently do exactly that.
 
-Fixes: 708b4351f08c ("ASoC: fsl: Add Freescale Generic ASoC Sound Card with ASRC support")
-Signed-off-by: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
-Link: https://patch.msgid.link/20240620132511.4291-2-elinor.montmasson@savoirfairelinux.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The double free will result in refcount underflow in page_pool_destroy().
+Make the interface a little more programmer friendly by clearing type and
+id so that xdp_rxq_info_unreg_mem_model() can be called multiple times.
+
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20210625221612.2637086-1-kuba@kernel.org
+Stable-dep-of: 7e9f79428372 ("xdp: Remove WARN() from __xdp_reg_mem_model()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl-asoc-card.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/core/xdp.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-index 600d9be9706ef..b2929c31c0011 100644
---- a/sound/soc/fsl/fsl-asoc-card.c
-+++ b/sound/soc/fsl/fsl-asoc-card.c
-@@ -479,6 +479,8 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 	if (!priv)
- 		return -ENOMEM;
+diff --git a/net/core/xdp.c b/net/core/xdp.c
+index b8d7fa47d293c..0f0b65981614b 100644
+--- a/net/core/xdp.c
++++ b/net/core/xdp.c
+@@ -113,8 +113,13 @@ static void mem_allocator_disconnect(void *allocator)
+ void xdp_rxq_info_unreg_mem_model(struct xdp_rxq_info *xdp_rxq)
+ {
+ 	struct xdp_mem_allocator *xa;
++	int type = xdp_rxq->mem.type;
+ 	int id = xdp_rxq->mem.id;
  
-+	priv->pdev = pdev;
++	/* Reset mem info to defaults */
++	xdp_rxq->mem.id = 0;
++	xdp_rxq->mem.type = 0;
 +
- 	cpu_np = of_parse_phandle(np, "audio-cpu", 0);
- 	/* Give a chance to old DT binding */
- 	if (!cpu_np)
-@@ -591,7 +593,6 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 		 codec_dev->name);
+ 	if (xdp_rxq->reg_state != REG_STATE_REGISTERED) {
+ 		WARN(1, "Missing register, driver bug");
+ 		return;
+@@ -123,7 +128,7 @@ void xdp_rxq_info_unreg_mem_model(struct xdp_rxq_info *xdp_rxq)
+ 	if (id == 0)
+ 		return;
  
- 	/* Initialize sound card */
--	priv->pdev = pdev;
- 	priv->card.dev = &pdev->dev;
- 	priv->card.name = priv->name;
- 	priv->card.dai_link = priv->dai_link;
+-	if (xdp_rxq->mem.type == MEM_TYPE_PAGE_POOL) {
++	if (type == MEM_TYPE_PAGE_POOL) {
+ 		rcu_read_lock();
+ 		xa = rhashtable_lookup(mem_id_ht, &id, mem_id_rht_params);
+ 		page_pool_destroy(xa->page_pool);
+@@ -144,10 +149,6 @@ void xdp_rxq_info_unreg(struct xdp_rxq_info *xdp_rxq)
+ 
+ 	xdp_rxq->reg_state = REG_STATE_UNREGISTERED;
+ 	xdp_rxq->dev = NULL;
+-
+-	/* Reset mem info to defaults */
+-	xdp_rxq->mem.id = 0;
+-	xdp_rxq->mem.type = 0;
+ }
+ EXPORT_SYMBOL_GPL(xdp_rxq_info_unreg);
+ 
 -- 
 2.43.0
 
