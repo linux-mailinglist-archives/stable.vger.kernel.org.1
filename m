@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-57463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C21925FB7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:08:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A42D9925FC9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:11:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35E07B3B38C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BE75B3B454
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED0B1862A4;
-	Wed,  3 Jul 2024 11:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733F41862A5;
+	Wed,  3 Jul 2024 11:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aqu3yzF0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uf8cAF14"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB6B18628F;
-	Wed,  3 Jul 2024 11:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A82142649;
+	Wed,  3 Jul 2024 11:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004959; cv=none; b=QuGHMnfzm3NYh8YdH6owJoVwzqmOE22ibfsIZPSfyvg/qVwoeIg4iI1m8G1IoNEJNLm25v4lInNvP6p2ftCZf4Ly5cqZarMe/FK1uGZIbaJAShZuuxw9g+vVIH1yVtY1xy/fRY9uSvOlr2434fpWF9Fi6v85Qyvd7c1FSnoX6/w=
+	t=1720004968; cv=none; b=LTJkLF+r6Fipl7s9fDsRNQAtI3q4BYklAAJrQA6mrk9ERMJT5tiqdbIls4wkORQNPhG0gMOWKIaiw87aR7zt6hoQfAhNTzDNewdQG5IPFmAe/huM26/2oB7IuOsNB6ixnuDV1YLk2Ui8xQEpfMzzaJgSI40bhHxRb2zK8UdxsO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004959; c=relaxed/simple;
-	bh=T9MyIWion/8FwmppxqNJU/jFVXBDAlBtPdhghZRMslk=;
+	s=arc-20240116; t=1720004968; c=relaxed/simple;
+	bh=UsX8lIttw7rAQ0FIOQUUysP6Zch16Emc+B5l9nmbMGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a3SGRympf3Sxxbn6dzScCALgIx5w24AnCH/X8nm9lzoLp5TcQ0gc9W0zKf6C1bDh2SrJ1yhDNeP7VF5xbHxASaqtK0M/tPWTO6l3lU0HatuOpcx3egOoiuzLGHDdaCICNFIUpTpnygT6m4nGWmTQZ+peZcTCPQpbuN8v2X+f2Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aqu3yzF0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CEFC2BD10;
-	Wed,  3 Jul 2024 11:09:18 +0000 (UTC)
+	 MIME-Version; b=YSBSkuBzQecHAHvHSNLMl+SGdzOxKyyoCUFftA8t0h1+kNMrLUXin2PYot6kGbCw82QWTBVLbu+ELZAZ1Wilu6kKgdWykwKPyOmvE+o9fl2bXZbfro7r5Sp4D5I4vVVRmgvt20QuFEIDaGzJPeCSBqEPkgzm5Cm82MXJyZZYhLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uf8cAF14; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B128DC2BD10;
+	Wed,  3 Jul 2024 11:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004959;
-	bh=T9MyIWion/8FwmppxqNJU/jFVXBDAlBtPdhghZRMslk=;
+	s=korg; t=1720004968;
+	bh=UsX8lIttw7rAQ0FIOQUUysP6Zch16Emc+B5l9nmbMGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aqu3yzF02oJV1EBmSrAb1fJnLhNrGslpwHrug6HeO4/GQ+rF1cpQty/rJOGLX+KuJ
-	 JoyuNHynkTMgbC5tfViflxNEUcBlFs7qAHdFxDd2j4zcGuQ7/v0x/72gbnd5BeFcOP
-	 fWnA/m25Ohl/SUhfg/Q9sLMNkz2vks7+Rh6Mf6vA=
+	b=uf8cAF144yg86U8Kx3U7C6hoVgpVSeH+Jx5TJ5i2ztGH12inZEJOCH6RhUK3YiNPg
+	 Z6eM4s5efHxDTP+60f6e8Y/Fu279PmSuQfD2WhWLOgytwx8FR1irmZN5wYlpcU7CeD
+	 d/ZOvNq5yJt6RnKrHorkjjURng3UMAxZVoqFnDjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunjian Wang <wangyunjian@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 213/290] SUNRPC: Fix null pointer dereference in svc_rqst_free()
-Date: Wed,  3 Jul 2024 12:39:54 +0200
-Message-ID: <20240703102912.204786275@linuxfoundation.org>
+Subject: [PATCH 5.10 216/290] SUNRPC: Fix svcxdr_init_encodes buflen calculation
+Date: Wed,  3 Jul 2024 12:39:57 +0200
+Message-ID: <20240703102912.317258252@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
 References: <20240703102904.170852981@linuxfoundation.org>
@@ -66,37 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yunjian Wang <wangyunjian@huawei.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit b9f83ffaa0c096b4c832a43964fe6bff3acffe10 ]
+[ Upstream commit 1242a87da0d8cd2a428e96ca68e7ea899b0f4624 ]
 
-When alloc_pages_node() returns null in svc_rqst_alloc(), the
-null rq_scratch_page pointer will be dereferenced when calling
-put_page() in svc_rqst_free(). Fix it by adding a null check.
+Commit 2825a7f90753 ("nfsd4: allow encoding across page boundaries")
+added an explicit computation of the remaining length in the rq_res
+XDR buffer.
 
-Addresses-Coverity: ("Dereference after null check")
-Fixes: 5191955d6fc6 ("SUNRPC: Prepare for xdr_stream-style decoding on the server-side")
-Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
+The computation appears to suffer from an "off-by-one" bug. Because
+buflen is too large by one page, XDR encoding can run off the end of
+the send buffer by eventually trying to use the struct page address
+in rq_page_end, which always contains NULL.
+
+Fixes: bddfdbcddbe2 ("NFSD: Extract the svcxdr_init_encode() helper")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/svc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/sunrpc/svc.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
-index 26d972c54a593..ac7b3a93d9920 100644
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -845,7 +845,8 @@ void
- svc_rqst_free(struct svc_rqst *rqstp)
- {
- 	svc_release_buffer(rqstp);
--	put_page(rqstp->rq_scratch_page);
-+	if (rqstp->rq_scratch_page)
-+		put_page(rqstp->rq_scratch_page);
- 	kfree(rqstp->rq_resp);
- 	kfree(rqstp->rq_argp);
- 	kfree(rqstp->rq_auth_data);
+diff --git a/include/linux/sunrpc/svc.h b/include/linux/sunrpc/svc.h
+index f0e09427070cd..00303c636a89d 100644
+--- a/include/linux/sunrpc/svc.h
++++ b/include/linux/sunrpc/svc.h
+@@ -579,7 +579,7 @@ static inline void svcxdr_init_encode(struct svc_rqst *rqstp)
+ 	xdr->end = resv->iov_base + PAGE_SIZE - rqstp->rq_auth_slack;
+ 	buf->len = resv->iov_len;
+ 	xdr->page_ptr = buf->pages - 1;
+-	buf->buflen = PAGE_SIZE * (1 + rqstp->rq_page_end - buf->pages);
++	buf->buflen = PAGE_SIZE * (rqstp->rq_page_end - buf->pages);
+ 	buf->buflen -= rqstp->rq_auth_slack;
+ 	xdr->rqst = NULL;
+ }
 -- 
 2.43.0
 
