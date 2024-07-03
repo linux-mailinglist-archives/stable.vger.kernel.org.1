@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-57676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98DC3925D78
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49DF4925A9B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:02:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB45C1C21F48
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CE9B1C260BE
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099851836C2;
-	Wed,  3 Jul 2024 11:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EA3171069;
+	Wed,  3 Jul 2024 10:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8YQfO/g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJDdgdOz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA21A17966F;
-	Wed,  3 Jul 2024 11:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36ECB16DECF;
+	Wed,  3 Jul 2024 10:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005602; cv=none; b=UDiSa1hJMqlfZd8LB4Tn+8JdW06VWL3ZSRxk2rNewgWa/tJ2infSu5emdHyf4WhymgsD7GBQixUhlrkKTo1u4z2fFdEjyBjf90gGK31RN4Zz/BXBDxeuP3ah/oJKBP/5iRRMHmav86lhKtRzplPMUI63sC1Fiyb+k+DRNBVdrtA=
+	t=1720003804; cv=none; b=V1zje5e799rKAHn9JJqOtjxvYATBG3+sgUUWL47AORBZ+3TMtsEy/wq/ir3MVqr8smYlHC/+lvhRXrBDVFRXR3jRAp6OZpkUe3JA+8T2pYc9GC6vCqe1qCf3TNa1FTKQ7Qwdy/eL9A2KcbfmEzF/hFNzlEOWXsqzxFW0cZe2S4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005602; c=relaxed/simple;
-	bh=tvF1vvilwRxLzu0YV71ptFq1LQLS85r0kK/G1bGaZtQ=;
+	s=arc-20240116; t=1720003804; c=relaxed/simple;
+	bh=7z85FPJMX9V8l3BTGj0/3uChZUZCUVtDkUtdgrMDriQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mvacxqmNbw//gfOWTGNxcBX7bVZ5Qibs1Eiaeip9ZC9P3x0FlLmO5bfD+dnvzSiMqSyzKxyGXCzXjNkScsKMSvda+nTsccZOTKRK9c7UE4gY+SWtasTJ+TFqzbt9kwoQ4lSmJQNTrZ94RYHhFipxhI1oyIIIGzqjZoPwBFlhq3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8YQfO/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F453C2BD10;
-	Wed,  3 Jul 2024 11:20:02 +0000 (UTC)
+	 MIME-Version; b=kuOFE4wE3nZejzVFOc2PGKU0b/rvQ1M4Opgc6UjNAUT4AelJFW3X19SOfRkcqWI7ORSMl8c/n/Cs1EzcAPPzEfBM0pHGQOvIt+5/OhQE8uGXvWZ8mBQgrmbISIJa9vV9u73VFCVoUAvQJeMswlbJU7HkOZhD2iUE/Zc5klLCvwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJDdgdOz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC121C32781;
+	Wed,  3 Jul 2024 10:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005602;
-	bh=tvF1vvilwRxLzu0YV71ptFq1LQLS85r0kK/G1bGaZtQ=;
+	s=korg; t=1720003804;
+	bh=7z85FPJMX9V8l3BTGj0/3uChZUZCUVtDkUtdgrMDriQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B8YQfO/gXsKJFy9BMKyJ0MGkqp4SMGjIM8CywWo90kokK0AMmkPFGfvFzq478q17X
-	 yzDbc0G+TDfBAn00VQAEo8pR1mUAdfJNR7XBx9Rdp/IVR52J2VxT+TX5qaS3Sojdxs
-	 nS7zMm93ATkW/XEj7RLAIl3wKvOFM+I4ZRxIz2sA=
+	b=oJDdgdOziVSLQarOtisMxtYB9OARX9phN1xzgSeAcORW96UNVDjvGFHn8D0NWyKOW
+	 HPj+f2HSg/zhzbDKEhEmYHQmnD4c6g/8aGWv6lSXJ4hoU/PeL8tkWOzJEG6I4lME06
+	 nScqNnC9AW7hjQzEznl2ch0RsVW7urh/YyrC9wp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 134/356] nilfs2: fix potential kernel bug due to lack of writeback flag waiting
+	Daniel Borkmann <daniel@iogearbox.net>,
+	David Bauer <mail@david-bauer.net>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 009/189] vxlan: Fix regression when dropping packets due to invalid src addresses
 Date: Wed,  3 Jul 2024 12:37:50 +0200
-Message-ID: <20240703102918.167613298@linuxfoundation.org>
+Message-ID: <20240703102841.854249439@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +66,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit a4ca369ca221bb7e06c725792ac107f0e48e82e7 upstream.
+[ Upstream commit 1cd4bc987abb2823836cbb8f887026011ccddc8a ]
 
-Destructive writes to a block device on which nilfs2 is mounted can cause
-a kernel bug in the folio/page writeback start routine or writeback end
-routine (__folio_start_writeback in the log below):
+Commit f58f45c1e5b9 ("vxlan: drop packets from invalid src-address")
+has recently been added to vxlan mainly in the context of source
+address snooping/learning so that when it is enabled, an entry in the
+FDB is not being created for an invalid address for the corresponding
+tunnel endpoint.
 
- kernel BUG at mm/page-writeback.c:3070!
- Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
- ...
- RIP: 0010:__folio_start_writeback+0xbaa/0x10e0
- Code: 25 ff 0f 00 00 0f 84 18 01 00 00 e8 40 ca c6 ff e9 17 f6 ff ff
-  e8 36 ca c6 ff 4c 89 f7 48 c7 c6 80 c0 12 84 e8 e7 b3 0f 00 90 <0f>
-  0b e8 1f ca c6 ff 4c 89 f7 48 c7 c6 a0 c6 12 84 e8 d0 b3 0f 00
- ...
- Call Trace:
-  <TASK>
-  nilfs_segctor_do_construct+0x4654/0x69d0 [nilfs2]
-  nilfs_segctor_construct+0x181/0x6b0 [nilfs2]
-  nilfs_segctor_thread+0x548/0x11c0 [nilfs2]
-  kthread+0x2f0/0x390
-  ret_from_fork+0x4b/0x80
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
+Before commit f58f45c1e5b9 vxlan was similarly behaving as geneve in
+that it passed through whichever macs were set in the L2 header. It
+turns out that this change in behavior breaks setups, for example,
+Cilium with netkit in L3 mode for Pods as well as tunnel mode has been
+passing before the change in f58f45c1e5b9 for both vxlan and geneve.
+After mentioned change it is only passing for geneve as in case of
+vxlan packets are dropped due to vxlan_set_mac() returning false as
+source and destination macs are zero which for E/W traffic via tunnel
+is totally fine.
 
-This is because when the log writer starts a writeback for segment summary
-blocks or a super root block that use the backing device's page cache, it
-does not wait for the ongoing folio/page writeback, resulting in an
-inconsistent writeback state.
+Fix it by only opting into the is_valid_ether_addr() check in
+vxlan_set_mac() when in fact source address snooping/learning is
+actually enabled in vxlan. This is done by moving the check into
+vxlan_snoop(). With this change, the Cilium connectivity test suite
+passes again for both tunnel flavors.
 
-Fix this issue by waiting for ongoing writebacks when putting
-folios/pages on the backing device into writeback state.
-
-Link: https://lkml.kernel.org/r/20240530141556.4411-1-konishi.ryusuke@gmail.com
-Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f58f45c1e5b9 ("vxlan: drop packets from invalid src-address")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: David Bauer <mail@david-bauer.net>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: David Bauer <mail@david-bauer.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/segment.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/vxlan.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -1692,6 +1692,7 @@ static void nilfs_segctor_prepare_write(
- 			if (bh->b_page != bd_page) {
- 				if (bd_page) {
- 					lock_page(bd_page);
-+					wait_on_page_writeback(bd_page);
- 					clear_page_dirty_for_io(bd_page);
- 					set_page_writeback(bd_page);
- 					unlock_page(bd_page);
-@@ -1705,6 +1706,7 @@ static void nilfs_segctor_prepare_write(
- 			if (bh == segbuf->sb_super_root) {
- 				if (bh->b_page != bd_page) {
- 					lock_page(bd_page);
-+					wait_on_page_writeback(bd_page);
- 					clear_page_dirty_for_io(bd_page);
- 					set_page_writeback(bd_page);
- 					unlock_page(bd_page);
-@@ -1721,6 +1723,7 @@ static void nilfs_segctor_prepare_write(
- 	}
- 	if (bd_page) {
- 		lock_page(bd_page);
-+		wait_on_page_writeback(bd_page);
- 		clear_page_dirty_for_io(bd_page);
- 		set_page_writeback(bd_page);
- 		unlock_page(bd_page);
+diff --git a/drivers/net/vxlan.c b/drivers/net/vxlan.c
+index 8808a6540b190..ce11fb2b05561 100644
+--- a/drivers/net/vxlan.c
++++ b/drivers/net/vxlan.c
+@@ -1323,6 +1323,10 @@ static bool vxlan_snoop(struct net_device *dev,
+ 	struct vxlan_fdb *f;
+ 	u32 ifindex = 0;
+ 
++	/* Ignore packets from invalid src-address */
++	if (!is_valid_ether_addr(src_mac))
++		return true;
++
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	if (src_ip->sa.sa_family == AF_INET6 &&
+ 	    (ipv6_addr_type(&src_ip->sin6.sin6_addr) & IPV6_ADDR_LINKLOCAL))
+-- 
+2.43.0
+
 
 
 
