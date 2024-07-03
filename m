@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-57059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93894925ACC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:04:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF2A1925E58
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:36:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56F5CB3293A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84F9D1F25B4D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94520191460;
-	Wed,  3 Jul 2024 10:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70DD180A7D;
+	Wed,  3 Jul 2024 11:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/wzPOM9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXTGLiqO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50471175555;
-	Wed,  3 Jul 2024 10:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75ECB13A27E;
+	Wed,  3 Jul 2024 11:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003719; cv=none; b=qI4SvrfZcfeCSdegvAZsHhJfFMHYW3yIJoCAwm8GjW0xdWAcjHLibEpP5WRayyOa7rbk3hUoMK0SlBFKra3sN2vXqlzqHleUJcG5oSTFOUoL4TtdQLONLTxP4jsOr+xfkDXxjYjxMuk/PAr4SMGW9EZ+pQU7eA7rrvE+s8/t8kU=
+	t=1720006152; cv=none; b=leOhhrWB9q4er2RKaspbGAGh6SGQq10dw3kRPD+rpOgy52StJZ3giXpnFxJt0iQFVtrRSm4Z9n2NnI4yfi1V+hnfV+fvdaBnClGTItwNy+tqjtmA5SkaMS+AiLB7/W5Wykrn2eIY1i1d9KEYPetP9087zcDAC2ASLJmSKxDI9FQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003719; c=relaxed/simple;
-	bh=HA+nT+fZXbqImXhijAbXeRL9OHB/8w4B+BqSwVgZ2TM=;
+	s=arc-20240116; t=1720006152; c=relaxed/simple;
+	bh=ux+lMOLih3FWGlz9VBro7IBUEv7OK/Bt5pbUeMHfgiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jz6hDFPrXZbjo2VtNf7Lm43OLsP+GZbSSmcs1gS/LDs/FEJknTC6SV1PNhwlvXjjb1Wjc8loHjwROW20MgQo8Y0tdD6/Bi67vvtO7yqtpsDZoFBy6jfi+fvLQoj+8KkGnF0pGVtemhshxNSp7Uv28rzzDoK6ebsgFj8q5QV48I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/wzPOM9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B9EC2BD10;
-	Wed,  3 Jul 2024 10:48:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CAo4N2sZ2Nr2EhD/7nJ6FEjriMa71alfCg+Wc1vh95CUfe3Cy4Aq/MfS45T4IY8ySe3zx2lt7dyOHsTlZc7Ms0CFnjfdsxyleSLdPff1Zn4aHxuOF7+BSJUuZPV8gEw44q7H9E+nsZmr9CgetyX6JGKL4HZLTgDzQ8sGRgMh5Ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXTGLiqO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4EAC2BD10;
+	Wed,  3 Jul 2024 11:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003719;
-	bh=HA+nT+fZXbqImXhijAbXeRL9OHB/8w4B+BqSwVgZ2TM=;
+	s=korg; t=1720006152;
+	bh=ux+lMOLih3FWGlz9VBro7IBUEv7OK/Bt5pbUeMHfgiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/wzPOM9+QOfEHoQ5lgBf4M+67wQHhFeoZtsNIn0AHrJImBL8dzrzaKS5UP2okuqx
-	 T0QCSYFlHtLWfWKsuu/41svfAEZ+NrXKS5O0EmOiTPwoKqHC7pGAPKeB8VzAwAySLV
-	 aqQskCVx02pCkFJ+Ctmfb4oYN8bGW+Us1z00AxEY=
+	b=XXTGLiqO+wyXF87IxcdIDEAtt3r0r+0LAiYxcKyo+NnVAct8znl8N1vZyRy9KwC6n
+	 tY7KOc9Do8ve3WvW8l+929MYLySMf+B3iJTuHRKXFvYXNFvpeRCHdo0nun2VcvAiAZ
+	 6jPbpWyyJ5T1O2j+c0xicp9P8xSePWpL1JUBRddg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 4.19 125/139] usb: musb: da8xx: fix a resource leak in probe()
+	Maxime Coquelin <maxime.coquelin@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Xie Yongji <xieyongji@bytedance.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 286/356] vduse: Temporarily fail if control queue feature requested
 Date: Wed,  3 Jul 2024 12:40:22 +0200
-Message-ID: <20240703102835.156313093@linuxfoundation.org>
+Message-ID: <20240703102923.934305914@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +63,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Maxime Coquelin <maxime.coquelin@redhat.com>
 
-commit de644a4a86be04ed8a43ef8267d0f7d021941c5e upstream.
+[ Upstream commit 56e71885b0349241c07631a7b979b61e81afab6a ]
 
-Call usb_phy_generic_unregister() if of_platform_populate() fails.
+Virtio-net driver control queue implementation is not safe
+when used with VDUSE. If the VDUSE application does not
+reply to control queue messages, it currently ends up
+hanging the kernel thread sending this command.
 
-Fixes: d6299b6efbf6 ("usb: musb: Add support of CPPI 4.1 DMA controller to DA8xx")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/69af1b1d-d3f4-492b-bcea-359ca5949f30@moroto.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Some work is on-going to make the control queue
+implementation robust with VDUSE. Until it is completed,
+let's fail features check if control-queue feature is
+requested.
+
+Signed-off-by: Maxime Coquelin <maxime.coquelin@redhat.com>
+Message-Id: <20240109111025.1320976-3-maxime.coquelin@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/musb/da8xx.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/vdpa/vdpa_user/vduse_dev.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/musb/da8xx.c
-+++ b/drivers/usb/musb/da8xx.c
-@@ -556,7 +556,7 @@ static int da8xx_probe(struct platform_d
- 	ret = of_platform_populate(pdev->dev.of_node, NULL,
- 				   da8xx_auxdata_lookup, &pdev->dev);
- 	if (ret)
--		return ret;
-+		goto err_unregister_phy;
+diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
+index 898ef597338a2..4684d4756b427 100644
+--- a/drivers/vdpa/vdpa_user/vduse_dev.c
++++ b/drivers/vdpa/vdpa_user/vduse_dev.c
+@@ -8,6 +8,7 @@
+  *
+  */
  
- 	memset(musb_resources, 0x00, sizeof(*musb_resources) *
- 			ARRAY_SIZE(musb_resources));
-@@ -582,9 +582,13 @@ static int da8xx_probe(struct platform_d
- 	ret = PTR_ERR_OR_ZERO(glue->musb);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register musb device: %d\n", ret);
--		usb_phy_generic_unregister(glue->usb_phy);
-+		goto err_unregister_phy;
- 	}
++#include "linux/virtio_net.h"
+ #include <linux/init.h>
+ #include <linux/module.h>
+ #include <linux/cdev.h>
+@@ -26,6 +27,7 @@
+ #include <uapi/linux/virtio_config.h>
+ #include <uapi/linux/virtio_ids.h>
+ #include <uapi/linux/virtio_blk.h>
++#include <uapi/linux/virtio_ring.h>
+ #include <linux/mod_devicetable.h>
  
-+	return 0;
-+
-+err_unregister_phy:
-+	usb_phy_generic_unregister(glue->usb_phy);
- 	return ret;
+ #include "iova_domain.h"
+@@ -1236,6 +1238,9 @@ static bool features_is_valid(struct vduse_dev_config *config)
+ 	if ((config->device_id == VIRTIO_ID_BLOCK) &&
+ 			(config->features & BIT_ULL(VIRTIO_BLK_F_CONFIG_WCE)))
+ 		return false;
++	else if ((config->device_id == VIRTIO_ID_NET) &&
++			(config->features & BIT_ULL(VIRTIO_NET_F_CTRL_VQ)))
++		return false;
+ 
+ 	return true;
  }
- 
+-- 
+2.43.0
+
 
 
 
