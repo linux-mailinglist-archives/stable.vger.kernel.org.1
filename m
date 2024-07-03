@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E33A925BCE
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:12:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22AE5925E3E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C08AA1C21481
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 526261C2219C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F74194AD5;
-	Wed,  3 Jul 2024 10:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CAF17C7BA;
+	Wed,  3 Jul 2024 11:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5Ktgeye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuNCMUt0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CC4194A76;
-	Wed,  3 Jul 2024 10:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B6B6E5ED;
+	Wed,  3 Jul 2024 11:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004324; cv=none; b=VxG/YjCkFCPBJKP2hyBohjO0SJW/oYRGx6xpF/i32juXjXLrY9rW2FDZM/qqEQi7+W8rR0LFJgRjG9qlUyE83iIo3TshMMDgf+kj2t0x05i1YAOv2q98Fd41cIovmVQt1ucuXVP4j0M6YWTG/V/dxa/YA5sbZEuY76HrOPlra0M=
+	t=1720006066; cv=none; b=IT87d/fb5E1B+5bwLZMquaEHxIt1QHYKQVS813n2wEFP8HTzBTDX/w2DS6BhEa0UTZlJ2yqmuYQfRwm1yDgKNl9RfAWnuo9xMUExxal3TOz1HsmC4uVD+UpO9Jm3VwC0so0e76Tyvej8tMYqQjktya0tFUWYkQZx/0Qf27oeL4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004324; c=relaxed/simple;
-	bh=s1i48l2kFAxbHGFkBfxkKj6WEqnwF1jYryIawp0RCNc=;
+	s=arc-20240116; t=1720006066; c=relaxed/simple;
+	bh=iO3gQu/8k3epDqhKEZ2dOksj8CINph2E4wUgqOcwhNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N7kRINZOn1XL/8jEtF4BFnWhkczDC7EvlueoXS8Ia3fHlaLwGD1y0WXt8cTi63aH5y3oTFRjyGEWF6TXAlG7NhfQeFtvWVC3HAd4KLIjcCC3Vfb+ecoUtI72zf6LlTfU0hJz8oZ9diUzt6w1eHnGDEutE8vcDAMyzuORp1T6Jb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5Ktgeye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28B4C32781;
-	Wed,  3 Jul 2024 10:58:43 +0000 (UTC)
+	 MIME-Version; b=EgYi0NAiMuwp9t3istLRc9jZVxlUWxFW4ucplxqBb4QMUZV50W5+fZ02NG9pu591t0C5mjOkwk990QnY1Se9cOgSnmxHPnhi3Ouvunrat9VJ5egyFjnuXd6y2bxIgqTxYw0F+xIgiLEJzw305xlT0WWSfp0L0nHI8M21RHPt/zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuNCMUt0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EBF6C2BD10;
+	Wed,  3 Jul 2024 11:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004324;
-	bh=s1i48l2kFAxbHGFkBfxkKj6WEqnwF1jYryIawp0RCNc=;
+	s=korg; t=1720006066;
+	bh=iO3gQu/8k3epDqhKEZ2dOksj8CINph2E4wUgqOcwhNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A5KtgeyeMOrZ/tuSZyBf8/SPvyIDGaGaRH3qUJ5i9NH8EsZDRuo3WF18DBaQ5jSKE
-	 XlL4XQyKGGTx+gEbkMGnjAJqmmBereEr4pxqyVgfklp5Efp+dFKhot8gl3HyDzDY+U
-	 e5vMZUhkXn1GcNpa5ynbjH0Qta4Z8WdfWrg2sadk=
+	b=zuNCMUt0w9yEtCoQh/Sokd+akoEOZrpHBTSduEG/Ir14qT02nRUZN3xfXM8utT85d
+	 mDGS7sNfCn7KFAuyZE0VU33wu6SYHM2IVKmjH5Si6BiiadcgtUUXKk7bNG/urMLg7f
+	 tKGWkcf+8oV7PZ9hCtkmpQkm2/k9wScQ9DP/Ee3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 165/189] net: usb: ax88179_178a: improve link status logs
+	Wenchao Hao <haowenchao2@huawei.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 290/356] RDMA/restrack: Fix potential invalid address access
 Date: Wed,  3 Jul 2024 12:40:26 +0200
-Message-ID: <20240703102847.695811465@linuxfoundation.org>
+Message-ID: <20240703102924.091282889@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Wenchao Hao <haowenchao2@huawei.com>
 
-commit 058722ee350c0bdd664e467156feb2bf5d9cc271 upstream.
+[ Upstream commit ca537a34775c103f7b14d7bbd976403f1d1525d8 ]
 
-Avoid spurious link status logs that may ultimately be wrong; for example,
-if the link is set to down with the cable plugged, then the cable is
-unplugged and after this the link is set to up, the last new log that is
-appearing is incorrectly telling that the link is up.
+struct rdma_restrack_entry's kern_name was set to KBUILD_MODNAME
+in ib_create_cq(), while if the module exited but forgot del this
+rdma_restrack_entry, it would cause a invalid address access in
+rdma_restrack_clean() when print the owner of this rdma_restrack_entry.
 
-In order to avoid errors, show link status logs after link_reset
-processing, and in order to avoid spurious as much as possible, only show
-the link loss when some link status change is detected.
+These code is used to help find one forgotten PD release in one of the
+ULPs. But it is not needed anymore, so delete them.
 
-cc: stable@vger.kernel.org
-Fixes: e2ca90c276e1 ("ax88179_178a: ASIX AX88179_178A USB 3.0/2.0 to gigabit ethernet adapter driver")
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Wenchao Hao <haowenchao2@huawei.com>
+Link: https://lore.kernel.org/r/20240318092320.1215235-1-haowenchao2@huawei.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ax88179_178a.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/infiniband/core/restrack.c | 51 +-----------------------------
+ 1 file changed, 1 insertion(+), 50 deletions(-)
 
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -345,7 +345,8 @@ static void ax88179_status(struct usbnet
- 
- 	if (netif_carrier_ok(dev->net) != link) {
- 		usbnet_link_change(dev, link, 1);
--		netdev_info(dev->net, "ax88179 - Link status is: %d\n", link);
-+		if (!link)
-+			netdev_info(dev->net, "ax88179 - Link status is: 0\n");
- 	}
- }
- 
-@@ -1532,6 +1533,7 @@ static int ax88179_link_reset(struct usb
- 			 GMII_PHY_PHYSR, 2, &tmp16);
- 
- 	if (!(tmp16 & GMII_PHY_PHYSR_LINK)) {
-+		netdev_info(dev->net, "ax88179 - Link status is: 0\n");
- 		return 0;
- 	} else if (GMII_PHY_PHYSR_GIGA == (tmp16 & GMII_PHY_PHYSR_SMASK)) {
- 		mode |= AX_MEDIUM_GIGAMODE | AX_MEDIUM_EN_125MHZ;
-@@ -1569,6 +1571,8 @@ static int ax88179_link_reset(struct usb
- 
- 	netif_carrier_on(dev->net);
- 
-+	netdev_info(dev->net, "ax88179 - Link status is: 1\n");
-+
+diff --git a/drivers/infiniband/core/restrack.c b/drivers/infiniband/core/restrack.c
+index 01a499a8b88db..438ed35881752 100644
+--- a/drivers/infiniband/core/restrack.c
++++ b/drivers/infiniband/core/restrack.c
+@@ -37,22 +37,6 @@ int rdma_restrack_init(struct ib_device *dev)
  	return 0;
  }
  
+-static const char *type2str(enum rdma_restrack_type type)
+-{
+-	static const char * const names[RDMA_RESTRACK_MAX] = {
+-		[RDMA_RESTRACK_PD] = "PD",
+-		[RDMA_RESTRACK_CQ] = "CQ",
+-		[RDMA_RESTRACK_QP] = "QP",
+-		[RDMA_RESTRACK_CM_ID] = "CM_ID",
+-		[RDMA_RESTRACK_MR] = "MR",
+-		[RDMA_RESTRACK_CTX] = "CTX",
+-		[RDMA_RESTRACK_COUNTER] = "COUNTER",
+-		[RDMA_RESTRACK_SRQ] = "SRQ",
+-	};
+-
+-	return names[type];
+-};
+-
+ /**
+  * rdma_restrack_clean() - clean resource tracking
+  * @dev:  IB device
+@@ -60,47 +44,14 @@ static const char *type2str(enum rdma_restrack_type type)
+ void rdma_restrack_clean(struct ib_device *dev)
+ {
+ 	struct rdma_restrack_root *rt = dev->res;
+-	struct rdma_restrack_entry *e;
+-	char buf[TASK_COMM_LEN];
+-	bool found = false;
+-	const char *owner;
+ 	int i;
+ 
+ 	for (i = 0 ; i < RDMA_RESTRACK_MAX; i++) {
+ 		struct xarray *xa = &dev->res[i].xa;
+ 
+-		if (!xa_empty(xa)) {
+-			unsigned long index;
+-
+-			if (!found) {
+-				pr_err("restrack: %s", CUT_HERE);
+-				dev_err(&dev->dev, "BUG: RESTRACK detected leak of resources\n");
+-			}
+-			xa_for_each(xa, index, e) {
+-				if (rdma_is_kernel_res(e)) {
+-					owner = e->kern_name;
+-				} else {
+-					/*
+-					 * There is no need to call get_task_struct here,
+-					 * because we can be here only if there are more
+-					 * get_task_struct() call than put_task_struct().
+-					 */
+-					get_task_comm(buf, e->task);
+-					owner = buf;
+-				}
+-
+-				pr_err("restrack: %s %s object allocated by %s is not freed\n",
+-				       rdma_is_kernel_res(e) ? "Kernel" :
+-							       "User",
+-				       type2str(e->type), owner);
+-			}
+-			found = true;
+-		}
++		WARN_ON(!xa_empty(xa));
+ 		xa_destroy(xa);
+ 	}
+-	if (found)
+-		pr_err("restrack: %s", CUT_HERE);
+-
+ 	kfree(rt);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
