@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D34E925EED
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:44:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B120925EDD
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:42:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 805C3B2C397
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D650B3BA20
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40B1176FA0;
-	Wed,  3 Jul 2024 10:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E04188CD5;
+	Wed,  3 Jul 2024 11:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHwsqePK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hhwSmfFf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9324617625B;
-	Wed,  3 Jul 2024 10:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DBE16DEAC;
+	Wed,  3 Jul 2024 11:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003743; cv=none; b=bkTk6hMBORwSu216HY5DKkf9jH4RseBz6Lf+VK57obi975/mruFAz46gLukikavc0gblojI9qfE6F7nro2vCKLtteeEgTkwje/U7ZIM14VxKYUt1RFHfq95PXP9fZ7MCbCxhfb15rkJJ4cG1W6qFiX5PnsU30AATelmTux1GZ5w=
+	t=1720005037; cv=none; b=oUYgMnLgchJr/qKxcMTgEUaX+W7fpS5GgsQhmqeEelnCtJtPq1xnexckbCB6B/oMoTJUDlIvN8Wr2DuC/MBW0ljPjABT/18E5ge4MoK2jSYsRD7BAot1ojm9jvHjmcYtV2spwMIjzeNAP6FfejCicmsQq0ji18F+Xy0v+sAtlt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003743; c=relaxed/simple;
-	bh=uJeYq4LmJr+WCZFDDKptGkxdxrBYohGQRZBiGDjqh5Y=;
+	s=arc-20240116; t=1720005037; c=relaxed/simple;
+	bh=uPjGE1XqOZB523C3woCWSNXAjaZ9rnA1TqZtXUf+wnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gKbYmqd86rFxCdfniJ+846Td+QZZ9FaGcgURid5Ck5lpOeQxcLfovEBqLgf13zk4hcVR3AVV0VZzBLkomryJIMBN9HKdVkSaYWjAKyfDujEBBRShEfwNVhFMi7MnwNg3x8K49ESgpqyC3CME3z6CulbvO5B4g7mtmweqinHDV2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHwsqePK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F73C2BD10;
-	Wed,  3 Jul 2024 10:49:02 +0000 (UTC)
+	 MIME-Version; b=tIEEH7k9YPSDBO1ubUNyMNh9y5aouCR5TtTY6uMQ7uBGEFH/dSOv3j0JiNuomdDvG04oaJJEwxoOvii6+jh1jDoAPopUCyt4ydlp0dECWOpDC5RkGGReWHd843bZYCqVczY/3bpgkCzo6q8jsWMz0Ztj0knWQn8MFBVIEyqC/Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hhwSmfFf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D348C32781;
+	Wed,  3 Jul 2024 11:10:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003743;
-	bh=uJeYq4LmJr+WCZFDDKptGkxdxrBYohGQRZBiGDjqh5Y=;
+	s=korg; t=1720005036;
+	bh=uPjGE1XqOZB523C3woCWSNXAjaZ9rnA1TqZtXUf+wnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NHwsqePKuNbxIu3CMv01rwmKZ1qa6UUK7x79LibrlfCYIgGauZF7J5Tj+Kk+UDqgI
-	 p9YXcISrRIDjebC9LY345MkQrWFOgdzVVBMA8wsovLFNSDO6oxNfsJXtPeumDNOPek
-	 4WZY5XIel+LbxUIJi4v7CRvoG6hih4zXcpC1xzpU=
+	b=hhwSmfFfXu/XzBcbKNyKOD9YcT++rCJanyYLYYATwuDQOVZQZCyiDMAmdxIGnrFhN
+	 wIa416Cjga6h7JMbj/IfmXaT9u/NVJ365Tkb9QfnjUXJa0g60IUGK0ZXVuVASu0rAr
+	 OE4Lrt9d7CrEMm6323ESjgfaRzNrbgt72UX6WGCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 4.19 123/139] net: usb: ax88179_178a: improve link status logs
-Date: Wed,  3 Jul 2024 12:40:20 +0200
-Message-ID: <20240703102835.080724528@linuxfoundation.org>
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 240/290] gpio: davinci: Validate the obtained number of IRQs
+Date: Wed,  3 Jul 2024 12:40:21 +0200
+Message-ID: <20240703102913.216014443@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-commit 058722ee350c0bdd664e467156feb2bf5d9cc271 upstream.
+[ Upstream commit 7aa9b96e9a73e4ec1771492d0527bd5fc5ef9164 ]
 
-Avoid spurious link status logs that may ultimately be wrong; for example,
-if the link is set to down with the cable plugged, then the cable is
-unplugged and after this the link is set to up, the last new log that is
-appearing is incorrectly telling that the link is up.
+Value of pdata->gpio_unbanked is taken from Device Tree. In case of broken
+DT due to any error this value can be any. Without this value validation
+there can be out of chips->irqs array boundaries access in
+davinci_gpio_probe().
 
-In order to avoid errors, show link status logs after link_reset
-processing, and in order to avoid spurious as much as possible, only show
-the link loss when some link status change is detected.
+Validate the obtained nirq value so that it won't exceed the maximum
+number of IRQs per bank.
 
-cc: stable@vger.kernel.org
-Fixes: e2ca90c276e1 ("ax88179_178a: ASIX AX88179_178A USB 3.0/2.0 to gigabit ethernet adapter driver")
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: eb3744a2dd01 ("gpio: davinci: Do not assume continuous IRQ numbering")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Link: https://lore.kernel.org/r/20240618144344.16943-1-amishin@t-argos.ru
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ax88179_178a.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-davinci.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -357,7 +357,8 @@ static void ax88179_status(struct usbnet
+diff --git a/drivers/gpio/gpio-davinci.c b/drivers/gpio/gpio-davinci.c
+index 80597e90de9c6..33623bcfc886c 100644
+--- a/drivers/gpio/gpio-davinci.c
++++ b/drivers/gpio/gpio-davinci.c
+@@ -227,6 +227,11 @@ static int davinci_gpio_probe(struct platform_device *pdev)
+ 	else
+ 		nirq = DIV_ROUND_UP(ngpio, 16);
  
- 	if (netif_carrier_ok(dev->net) != link) {
- 		usbnet_link_change(dev, link, 1);
--		netdev_info(dev->net, "ax88179 - Link status is: %d\n", link);
-+		if (!link)
-+			netdev_info(dev->net, "ax88179 - Link status is: 0\n");
- 	}
- }
- 
-@@ -1548,6 +1549,7 @@ static int ax88179_link_reset(struct usb
- 			 GMII_PHY_PHYSR, 2, &tmp16);
- 
- 	if (!(tmp16 & GMII_PHY_PHYSR_LINK)) {
-+		netdev_info(dev->net, "ax88179 - Link status is: 0\n");
- 		return 0;
- 	} else if (GMII_PHY_PHYSR_GIGA == (tmp16 & GMII_PHY_PHYSR_SMASK)) {
- 		mode |= AX_MEDIUM_GIGAMODE | AX_MEDIUM_EN_125MHZ;
-@@ -1585,6 +1587,8 @@ static int ax88179_link_reset(struct usb
- 
- 	netif_carrier_on(dev->net);
- 
-+	netdev_info(dev->net, "ax88179 - Link status is: 1\n");
++	if (nirq > MAX_INT_PER_BANK) {
++		dev_err(dev, "Too many IRQs!\n");
++		return -EINVAL;
++	}
 +
- 	return 0;
- }
- 
+ 	chips = devm_kzalloc(dev, sizeof(*chips), GFP_KERNEL);
+ 	if (!chips)
+ 		return -ENOMEM;
+-- 
+2.43.0
+
 
 
 
