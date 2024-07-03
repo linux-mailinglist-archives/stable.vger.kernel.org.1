@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF888925D24
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:26:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75754925BED
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:13:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E14E61C20E6E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:26:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3073B284E39
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E8217BB01;
-	Wed,  3 Jul 2024 11:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713DF194AFC;
+	Wed,  3 Jul 2024 10:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Of34cf6l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fM1oC2G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732EB17B51A;
-	Wed,  3 Jul 2024 11:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDE61891C9;
+	Wed,  3 Jul 2024 10:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005355; cv=none; b=Dy5Go4tRFFfch5/baGiGzRFiCINHU38HYcsvuFjb0zwF2qZcnim+f0E53ahPrgYXo4n0O+ZPa9AVgqBhBLY2eopeQl799HKgYUW+gWs/GMndPwGsxlFJ1JiQ8eov/YWYA5xt9A53lAbvTs2Qz/nWxGD9La729zahS6sNUyzmpD8=
+	t=1720004384; cv=none; b=cknOGgxmae11jaz8zZ77510ewUq6T3R0ZE7Oh8sQg1pjfCUZqOMSc6tHHcvRFUFOweBwV+rke4CwrvrQlUGFPIZEl+TzfQtvpNk6EC1Ff7tBCmQOifzG7KlGSyog2DI8Ie70LXuMCnbmrulq8tUxUlhjJA03gnPM+Yy6t9/PU+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005355; c=relaxed/simple;
-	bh=mWWCT2D4WxnkCKgVff3ieu5Fkno2bPvn9M0w/F4+0Ts=;
+	s=arc-20240116; t=1720004384; c=relaxed/simple;
+	bh=RTVJl61j3/41AExT0sXGKK9ccLqYWIzqZNDyfZoY4Fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQN3ZQAqSUoqdqEvZDrrC8EhOBafB8zdOMb0qzxzcAKc7Dxr7mto6ACl5EPkZCYCPW7xwHIvKFXoUehj4lqCYx7zBSwUwJJ4CJLMXedKBrRkvoxyZN4+eZDRVn3j6cSb4ozGX7Mt+XBoZAKbsVldVmAE9JD1ZuXkoJmYI4rYJKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Of34cf6l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC5CC2BD10;
-	Wed,  3 Jul 2024 11:15:54 +0000 (UTC)
+	 MIME-Version; b=NGvKgJUfdpNm7oo1QDXISMsxZnJwS5KUcGw/2p8sabIG7uX0D11A9anVtm5wMnW6A/m3peP63r16uc9+NersyJM7benUdb4gcbaE7JRpDLdxjaHgkxTpNmV3lZN4OwKxFTZTAMfrH7ho4hUASLHagupzauc0PQeADfa7nqAzWjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fM1oC2G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79E1C32781;
+	Wed,  3 Jul 2024 10:59:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005355;
-	bh=mWWCT2D4WxnkCKgVff3ieu5Fkno2bPvn9M0w/F4+0Ts=;
+	s=korg; t=1720004384;
+	bh=RTVJl61j3/41AExT0sXGKK9ccLqYWIzqZNDyfZoY4Fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Of34cf6lbkykbzO36r8upjqXWn8ha3y4hTBxRYTofD7JUw709cR4Psz8mFuQmAekl
-	 xYX1ToLy7mXroUV9oOJwb7/9qgGouzu3/vObD6RyL79btpixe+dP3VbPL2DLtLBnur
-	 XG+tUvlwBhAlzqJHPQ6EtuGefsx9cPcsNJJeKMMk=
+	b=0fM1oC2Guou9uGZG7fuyVp4xNmcvpeMQctRpi+U5D/Hdk1Wb9v0Uq54zZ7bPNCCEg
+	 Ut6+CzyogMuTMyhbs518WaM2IETrZqb6uXpSFmsLf5bYC1vuVoaDvKpiZhKRzmWYBg
+	 i71xuvB7ACeP8Q6yIym490k/QV18nVp/igYWFuYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 054/356] Bluetooth: qca: fix info leak when fetching fw build id
+Subject: [PATCH 5.10 009/290] wifi: iwlwifi: mvm: dont read past the mfuart notifcation
 Date: Wed,  3 Jul 2024 12:36:30 +0200
-Message-ID: <20240703102915.139298901@linuxfoundation.org>
+Message-ID: <20240703102904.534626743@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit cda0d6a198e2a7ec6f176c36173a57bdd8af7af2 ]
+[ Upstream commit 4bb95f4535489ed830cf9b34b0a891e384d1aee4 ]
 
-Add the missing sanity checks and move the 255-byte build-id buffer off
-the stack to avoid leaking stack data through debugfs in case the
-build-info reply is malformed.
+In case the firmware sends a notification that claims it has more data
+than it has, we will read past that was allocated for the notification.
+Remove the print of the buffer, we won't see it by default. If needed,
+we can see the content with tracing.
 
-Fixes: c0187b0bd3e9 ("Bluetooth: btqca: Add support to read FW build version for WCN3991 BTSoC")
-Cc: stable@vger.kernel.org	# 5.12
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+This was reported by KFENCE.
+
+Fixes: bdccdb854f2f ("iwlwifi: mvm: support MFUART dump in case of MFUART assert")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240513132416.ba82a01a559e.Ia91dd20f5e1ca1ad380b95e68aebf2794f553d9b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btqca.c | 25 +++++++++++++++++++++----
- drivers/bluetooth/btqca.h |  1 -
- 2 files changed, 21 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index abd621d224667..7011151420e48 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -98,7 +98,8 @@ static int qca_read_fw_build_info(struct hci_dev *hdev)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 54b28f0932e25..793208d99b5f9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -196,20 +196,10 @@ void iwl_mvm_mfu_assert_dump_notif(struct iwl_mvm *mvm,
  {
- 	struct sk_buff *skb;
- 	struct edl_event_hdr *edl;
--	char cmd, build_label[QCA_FW_BUILD_VER_LEN];
-+	char *build_label;
-+	char cmd;
- 	int build_lbl_len, err = 0;
+ 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
+ 	struct iwl_mfu_assert_dump_notif *mfu_dump_notif = (void *)pkt->data;
+-	__le32 *dump_data = mfu_dump_notif->data;
+-	int n_words = le32_to_cpu(mfu_dump_notif->data_size) / sizeof(__le32);
+-	int i;
  
- 	bt_dev_dbg(hdev, "QCA read fw build info");
-@@ -113,6 +114,11 @@ static int qca_read_fw_build_info(struct hci_dev *hdev)
- 		return err;
- 	}
+ 	if (mfu_dump_notif->index_num == 0)
+ 		IWL_INFO(mvm, "MFUART assert id 0x%x occurred\n",
+ 			 le32_to_cpu(mfu_dump_notif->assert_id));
+-
+-	for (i = 0; i < n_words; i++)
+-		IWL_DEBUG_INFO(mvm,
+-			       "MFUART assert dump, dword %u: 0x%08x\n",
+-			       le16_to_cpu(mfu_dump_notif->index_num) *
+-			       n_words + i,
+-			       le32_to_cpu(dump_data[i]));
+ }
  
-+	if (skb->len < sizeof(*edl)) {
-+		err = -EILSEQ;
-+		goto out;
-+	}
-+
- 	edl = (struct edl_event_hdr *)(skb->data);
- 	if (!edl) {
- 		bt_dev_err(hdev, "QCA read fw build info with no header");
-@@ -128,14 +134,25 @@ static int qca_read_fw_build_info(struct hci_dev *hdev)
- 		goto out;
- 	}
- 
-+	if (skb->len < sizeof(*edl) + 1) {
-+		err = -EILSEQ;
-+		goto out;
-+	}
-+
- 	build_lbl_len = edl->data[0];
--	if (build_lbl_len <= QCA_FW_BUILD_VER_LEN - 1) {
--		memcpy(build_label, edl->data + 1, build_lbl_len);
--		*(build_label + build_lbl_len) = '\0';
-+
-+	if (skb->len < sizeof(*edl) + 1 + build_lbl_len) {
-+		err = -EILSEQ;
-+		goto out;
- 	}
- 
-+	build_label = kstrndup(&edl->data[1], build_lbl_len, GFP_KERNEL);
-+	if (!build_label)
-+		goto out;
-+
- 	hci_set_fw_info(hdev, "%s", build_label);
- 
-+	kfree(build_label);
- out:
- 	kfree_skb(skb);
- 	return err;
-diff --git a/drivers/bluetooth/btqca.h b/drivers/bluetooth/btqca.h
-index d69ecfdef2a20..6a6a286bc8547 100644
---- a/drivers/bluetooth/btqca.h
-+++ b/drivers/bluetooth/btqca.h
-@@ -45,7 +45,6 @@
- #define get_soc_ver(soc_id, rom_ver)	\
- 	((le32_to_cpu(soc_id) << 16) | (le16_to_cpu(rom_ver)))
- 
--#define QCA_FW_BUILD_VER_LEN		255
- #define QCA_HSP_GF_SOC_ID			0x1200
- #define QCA_HSP_GF_SOC_MASK			0x0000ff00
- 
+ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
 -- 
 2.43.0
 
