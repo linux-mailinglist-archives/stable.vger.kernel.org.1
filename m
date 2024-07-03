@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32658925F5C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:58:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E970B925E69
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:36:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E111B3C484
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:22:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A19FB1F258CC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BA2194A5B;
-	Wed,  3 Jul 2024 11:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6321741DD;
+	Wed,  3 Jul 2024 11:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hA2xQd5I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LvqK/8e1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6573F194A50;
-	Wed,  3 Jul 2024 11:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F3D143C6E;
+	Wed,  3 Jul 2024 11:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005120; cv=none; b=GwCQzy7aEj007FU7+reVxTbyVuHflRskuQvqpYXm0Y8z1HYN+kuhRWcprvipf+hAPkbVcebv5LYnxOQXnX38rwX9mOG7f+t0UCqt1iEEEEsDp6T83VWG4yHsqMMzyhWhAfb805D1Hckv9P8ylol1Nhw+euO/DXlcXT8RgWbnBAQ=
+	t=1720006193; cv=none; b=sIStvmHDqQY2Tb4F5xx/F9rMzARqoq4ZGO4RYPeebsEMCJueKwdepyHkFlUgmcQuUYeixNSz3TA/ZapGqF5yULZQpynWNyEQWhg4FHhGxkd9eu36XYsRrRp4x9H6+lucTT6MMt+aQo4VJvE3krJAI9BSOPF7WFvU8DaK1q8Bt2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005120; c=relaxed/simple;
-	bh=jYr7wptOsm70e6gXGiPdvdu87fPuxIgA7SalYFplyIo=;
+	s=arc-20240116; t=1720006193; c=relaxed/simple;
+	bh=6WdEuak2SuQ4nJdffpaCfjkr37G//7JbqadvQj8CO3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ns6WddMqmLfP3MpDhveBfPfcyERjuyB9jXyY6NRsgRaVBtw/4IUEBZ2JY8uZUy9bL5LGaSEHrW5TO9DTE0CYCCKvIgXrvupyd1LaWn84GKk8IPCtrKsPuX6bMdRphc1OcOi2oL4prNPQgOsOo+S+WPPPUMZuQ2byLHYxvyIbEt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hA2xQd5I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF606C2BD10;
-	Wed,  3 Jul 2024 11:11:59 +0000 (UTC)
+	 MIME-Version; b=FYJLJU6X22ZihyYFJQIrtbi5ckT+tZuNDyGn0hkZ4WEgeSEmN2sbZVyZH1U4KI9adrGydUPorKyGoHKxy7IdGig3wsU5Bi/9E1vzkOKCewglJFs5l3NA+qv/TD2znIkS//FRDRV7P/kiIKFKMKOoK/rUVUnqHLL+n/Gtw8Jbi4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LvqK/8e1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D358C2BD10;
+	Wed,  3 Jul 2024 11:29:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005120;
-	bh=jYr7wptOsm70e6gXGiPdvdu87fPuxIgA7SalYFplyIo=;
+	s=korg; t=1720006193;
+	bh=6WdEuak2SuQ4nJdffpaCfjkr37G//7JbqadvQj8CO3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hA2xQd5IaaTKHCYYKSF6u4Y5NXJ6T7yogbF77EWBnqgoIlkJn9raTCXbOzuYSifXx
-	 M+H6JvApyGIvO0/f2Isw7azdMMX+a/b2QBoVdxD2d1F4VgUVAzNTyY55gj94z7Dtjq
-	 G2brcOG3NzPo3R8zxApklCPu0cdylYiOyIka5dus=
+	b=LvqK/8e1ZQ2bUpon1Q60fpopBXBvyi5an9YPA5C2Rpap3oOLT+Foreck84I1wXdoI
+	 nuOfCRDS6K3egyjNQrt+ylsKWJJ36wD0zQ1Jigj2m9d7doWCBTRSg47hfxNsunuVKr
+	 b1t2pJXm/Mqu8f+eQCv404ceDm+97i8REsHZX+n0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Lyude Paul <lyude@redhat.com>
-Subject: [PATCH 5.10 268/290] drm/nouveau/dispnv04: fix null pointer dereference in nv17_tv_get_ld_modes
-Date: Wed,  3 Jul 2024 12:40:49 +0200
-Message-ID: <20240703102914.274516184@linuxfoundation.org>
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 314/356] iio: chemical: bme680: Fix overflows in compensate() functions
+Date: Wed,  3 Jul 2024 12:40:50 +0200
+Message-ID: <20240703102924.994223881@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-commit 66edf3fb331b6c55439b10f9862987b0916b3726 upstream.
+commit fdd478c3ae98c3f13628e110dce9b6cfb0d9b3c8 upstream.
 
-In nv17_tv_get_ld_modes(), the return value of drm_mode_duplicate() is
-assigned to mode, which will lead to a possible NULL pointer dereference
-on failure of drm_mode_duplicate(). Add a check to avoid npd.
+There are cases in the compensate functions of the driver that
+there could be overflows of variables due to bit shifting ops.
+These implications were initially discussed here [1] and they
+were mentioned in log message of Commit 1b3bd8592780 ("iio:
+chemical: Add support for Bosch BME680 sensor").
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240625081828.2620794-1-make24@iscas.ac.cn
+[1]: https://lore.kernel.org/linux-iio/20180728114028.3c1bbe81@archlinux/
+
+Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://lore.kernel.org/r/20240606212313.207550-4-vassilisamir@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/dispnv04/tvnv17.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/chemical/bme680_core.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
-+++ b/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
-@@ -208,6 +208,8 @@ static int nv17_tv_get_ld_modes(struct d
- 		struct drm_display_mode *mode;
+--- a/drivers/iio/chemical/bme680_core.c
++++ b/drivers/iio/chemical/bme680_core.c
+@@ -342,10 +342,10 @@ static s16 bme680_compensate_temp(struct
+ 	if (!calib->par_t2)
+ 		bme680_read_calib(data, calib);
  
- 		mode = drm_mode_duplicate(encoder->dev, tv_mode);
-+		if (!mode)
-+			continue;
+-	var1 = (adc_temp >> 3) - (calib->par_t1 << 1);
++	var1 = (adc_temp >> 3) - ((s32)calib->par_t1 << 1);
+ 	var2 = (var1 * calib->par_t2) >> 11;
+ 	var3 = ((var1 >> 1) * (var1 >> 1)) >> 12;
+-	var3 = (var3 * (calib->par_t3 << 4)) >> 14;
++	var3 = (var3 * ((s32)calib->par_t3 << 4)) >> 14;
+ 	data->t_fine = var2 + var3;
+ 	calc_temp = (data->t_fine * 5 + 128) >> 8;
  
- 		mode->clock = tv_norm->tv_enc_mode.vrefresh *
- 			mode->htotal / 1000 *
+@@ -368,9 +368,9 @@ static u32 bme680_compensate_press(struc
+ 	var1 = (data->t_fine >> 1) - 64000;
+ 	var2 = ((((var1 >> 2) * (var1 >> 2)) >> 11) * calib->par_p6) >> 2;
+ 	var2 = var2 + (var1 * calib->par_p5 << 1);
+-	var2 = (var2 >> 2) + (calib->par_p4 << 16);
++	var2 = (var2 >> 2) + ((s32)calib->par_p4 << 16);
+ 	var1 = (((((var1 >> 2) * (var1 >> 2)) >> 13) *
+-			(calib->par_p3 << 5)) >> 3) +
++			((s32)calib->par_p3 << 5)) >> 3) +
+ 			((calib->par_p2 * var1) >> 1);
+ 	var1 = var1 >> 18;
+ 	var1 = ((32768 + var1) * calib->par_p1) >> 15;
+@@ -388,7 +388,7 @@ static u32 bme680_compensate_press(struc
+ 	var3 = ((press_comp >> 8) * (press_comp >> 8) *
+ 			(press_comp >> 8) * calib->par_p10) >> 17;
+ 
+-	press_comp += (var1 + var2 + var3 + (calib->par_p7 << 7)) >> 4;
++	press_comp += (var1 + var2 + var3 + ((s32)calib->par_p7 << 7)) >> 4;
+ 
+ 	return press_comp;
+ }
+@@ -414,7 +414,7 @@ static u32 bme680_compensate_humid(struc
+ 		 (((temp_scaled * ((temp_scaled * calib->par_h5) / 100))
+ 		   >> 6) / 100) + (1 << 14))) >> 10;
+ 	var3 = var1 * var2;
+-	var4 = calib->par_h6 << 7;
++	var4 = (s32)calib->par_h6 << 7;
+ 	var4 = (var4 + ((temp_scaled * calib->par_h7) / 100)) >> 4;
+ 	var5 = ((var3 >> 14) * (var3 >> 14)) >> 10;
+ 	var6 = (var4 * var5) >> 1;
 
 
 
