@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-57740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 462F5925DDB
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 817D0925F33
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:53:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFCD02962F7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 064D7B33775
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4248619412C;
-	Wed,  3 Jul 2024 11:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE83117C9F3;
+	Wed,  3 Jul 2024 10:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="007C835W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FA4bGthe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0149E13BAFA;
-	Wed,  3 Jul 2024 11:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3DB61FE7;
+	Wed,  3 Jul 2024 10:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005790; cv=none; b=cLV5CCfEk2siqA+1k1rLmt5szZbsWO9D28gsj97jokWhb2ehMF5QUmz0pCpj0vECREpWHG/uTXpSVx+zYjG94WoOBpmDly9yrTX/UBfV+YA7CbiGcktwN49JAoWpj2gw34TIX7b2E5K7fBQlFEz93EZR7oj4gjtLtS3NJFEx9uw=
+	t=1720003941; cv=none; b=lWcmCS+nykn+dw/PkDkCA8yfp6nQQVS1LR9BhH/JTXqsfMyv+7yh6x8sMuRqZDOBvaQm0aFA604rN2/Eph+PeoRjadRdjh0FWzrE8wBhNUGMGgBNcZ7lKQEQg9WtEei9pWM/ZsCuAMSH0p5DVICChZBaoor+WXEk6uYnNmu+0iQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005790; c=relaxed/simple;
-	bh=K+2DfE0gHLqQ5WJKAQHUhv5ijIaAzQ4ARAr/hsx8tqQ=;
+	s=arc-20240116; t=1720003941; c=relaxed/simple;
+	bh=LklP16jw2Mkla9bjvvOUVvb7GD4vX5Mn0cQAsS2wTR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2clqeP3A26ntnDn7U14IeTuBCT1zdR81a6T6OHvSeW37lGCJaengziiSyCDvrIAxl9eG8fVuYV9D1YymB5aaxycOuOKFafkUwpwbLEzhuZkfZIF/FqjP/ZJ2J51OMscR6dwFG0MKZv8sAlE+OCgOmgXhd4Gt6UPrdV3KDWZRvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=007C835W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8C7C2BD10;
-	Wed,  3 Jul 2024 11:23:09 +0000 (UTC)
+	 MIME-Version; b=NsdimGi0Uwuy5DzQ2AcOa0rBn+oViu8b2GDPrYGrUoYUFJxO0HYT127DN+AbgZsPbRR+hgA6pG16DEssy1705ywW8ntKltnhl5qCcZMXpQyHmAflwNImiq4SDwuFhKl718ZoK0y0fjU0Fmr7uI0LnqCX+vt2DisuDN0yDgwBSaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FA4bGthe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0779EC2BD10;
+	Wed,  3 Jul 2024 10:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005789;
-	bh=K+2DfE0gHLqQ5WJKAQHUhv5ijIaAzQ4ARAr/hsx8tqQ=;
+	s=korg; t=1720003941;
+	bh=LklP16jw2Mkla9bjvvOUVvb7GD4vX5Mn0cQAsS2wTR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=007C835WvJNG60nDzMJUk+0RvnWQFo0FtoJcjNhwTr5HqPJdfwh+gCutaZwtSdQ7U
-	 Lui1iV4d6hBq1pMXGaKQH9z3jEWOMK8ZCWpoBrr5VhCFkN7MKdlLoryKgBy8W8MFHc
-	 fBTWl4JEpjC/KC7NUj9rgI2BpCONkDL0SRZGBFgI=
+	b=FA4bGtheuHFWn/pJjWDjsmqbeI3C/lWneiQHQ6sQbgEToiQTR+Z/SPsMqvbgCnTwZ
+	 2nkMj1KKB3iO2F16BU7pLMY5HyI9qfX50xigmoVA0mD9XJYZr0SDRZAeGlDt9dkKAB
+	 jkCiOELCG1OlYkohZDkvSULGgIi3IEzx35YNsXig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuang Li <shuali@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 197/356] sched: act_ct: add netns into the key of tcf_ct_flow_table
+	Su Yue <glass.su@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 072/189] ocfs2: use coarse time for new created files
 Date: Wed,  3 Jul 2024 12:38:53 +0200
-Message-ID: <20240703102920.557328538@linuxfoundation.org>
+Message-ID: <20240703102844.225166658@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,108 +68,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Su Yue <glass.su@suse.com>
 
-[ Upstream commit 88c67aeb14070bab61d3dd8be96c8b42ebcaf53a ]
+commit b8cb324277ee16f3eca3055b96fce4735a5a41c6 upstream.
 
-zones_ht is a global hashtable for flow_table with zone as key. However,
-it does not consider netns when getting a flow_table from zones_ht in
-tcf_ct_init(), and it means an act_ct action in netns A may get a
-flow_table that belongs to netns B if it has the same zone value.
+The default atime related mount option is '-o realtime' which means file
+atime should be updated if atime <= ctime or atime <= mtime.  atime should
+be updated in the following scenario, but it is not:
+==========================================================
+$ rm /mnt/testfile;
+$ echo test > /mnt/testfile
+$ stat -c "%X %Y %Z" /mnt/testfile
+1711881646 1711881646 1711881646
+$ sleep 5
+$ cat /mnt/testfile > /dev/null
+$ stat -c "%X %Y %Z" /mnt/testfile
+1711881646 1711881646 1711881646
+==========================================================
 
-In Shuang's test with the TOPO:
+And the reason the atime in the test is not updated is that ocfs2 calls
+ktime_get_real_ts64() in __ocfs2_mknod_locked during file creation.  Then
+inode_set_ctime_current() is called in inode_set_ctime_current() calls
+ktime_get_coarse_real_ts64() to get current time.
 
-  tcf2_c <---> tcf2_sw1 <---> tcf2_sw2 <---> tcf2_s
+ktime_get_real_ts64() is more accurate than ktime_get_coarse_real_ts64().
+In my test box, I saw ctime set by ktime_get_coarse_real_ts64() is less
+than ktime_get_real_ts64() even ctime is set later.  The ctime of the new
+inode is smaller than atime.
 
-tcf2_sw1 and tcf2_sw2 saw the same flow and used the same flow table,
-which caused their ct entries entering unexpected states and the
-TCP connection not able to end normally.
+The call trace is like:
 
-This patch fixes the issue simply by adding netns into the key of
-tcf_ct_flow_table so that an act_ct action gets a flow_table that
-belongs to its own netns in tcf_ct_init().
+ocfs2_create
+  ocfs2_mknod
+    __ocfs2_mknod_locked
+    ....
 
-Note that for easy coding we don't use tcf_ct_flow_table.nf_ft.net,
-as the ct_ft is initialized after inserting it to the hashtable in
-tcf_ct_flow_table_get() and also it requires to implement several
-functions in rhashtable_params including hashfn, obj_hashfn and
-obj_cmpfn.
+      ktime_get_real_ts64 <------- set atime,ctime,mtime, more accurate
+      ocfs2_populate_inode
+    ...
+    ocfs2_init_acl
+      ocfs2_acl_set_mode
+        inode_set_ctime_current
+          current_time
+            ktime_get_coarse_real_ts64 <-------less accurate
 
-Fixes: 64ff70b80fd4 ("net/sched: act_ct: Offload established connections to flow table")
-Reported-by: Shuang Li <shuali@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/1db5b6cc6902c5fc6f8c6cbd85494a2008087be5.1718488050.git.lucien.xin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ocfs2_file_read_iter
+  ocfs2_inode_lock_atime
+    ocfs2_should_update_atime
+      atime <= ctime ? <-------- false, ctime < atime due to accuracy
+
+So here call ktime_get_coarse_real_ts64 to set inode time coarser while
+creating new files.  It may lower the accuracy of file times.  But it's
+not a big deal since we already use coarse time in other places like
+ocfs2_update_inode_atime and inode_set_ctime_current.
+
+Link: https://lkml.kernel.org/r/20240408082041.20925-5-glass.su@suse.com
+Fixes: c62c38f6b91b ("ocfs2: replace CURRENT_TIME macro")
+Signed-off-by: Su Yue <glass.su@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_ct.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ fs/ocfs2/namei.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
-index 0307b4366db10..5319de38cc6df 100644
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -38,21 +38,26 @@ static struct workqueue_struct *act_ct_wq;
- static struct rhashtable zones_ht;
- static DEFINE_MUTEX(zones_mutex);
- 
-+struct zones_ht_key {
-+	struct net *net;
-+	u16 zone;
-+};
-+
- struct tcf_ct_flow_table {
- 	struct rhash_head node; /* In zones tables */
- 
- 	struct rcu_work rwork;
- 	struct nf_flowtable nf_ft;
- 	refcount_t ref;
--	u16 zone;
-+	struct zones_ht_key key;
- 
- 	bool dying;
- };
- 
- static const struct rhashtable_params zones_params = {
- 	.head_offset = offsetof(struct tcf_ct_flow_table, node),
--	.key_offset = offsetof(struct tcf_ct_flow_table, zone),
--	.key_len = sizeof_field(struct tcf_ct_flow_table, zone),
-+	.key_offset = offsetof(struct tcf_ct_flow_table, key),
-+	.key_len = sizeof_field(struct tcf_ct_flow_table, key),
- 	.automatic_shrinking = true,
- };
- 
-@@ -278,11 +283,12 @@ static struct nf_flowtable_type flowtable_ct = {
- 
- static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
- {
-+	struct zones_ht_key key = { .net = net, .zone = params->zone };
- 	struct tcf_ct_flow_table *ct_ft;
- 	int err = -ENOMEM;
- 
- 	mutex_lock(&zones_mutex);
--	ct_ft = rhashtable_lookup_fast(&zones_ht, &params->zone, zones_params);
-+	ct_ft = rhashtable_lookup_fast(&zones_ht, &key, zones_params);
- 	if (ct_ft && refcount_inc_not_zero(&ct_ft->ref))
- 		goto out_unlock;
- 
-@@ -291,7 +297,7 @@ static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
- 		goto err_alloc;
- 	refcount_set(&ct_ft->ref, 1);
- 
--	ct_ft->zone = params->zone;
-+	ct_ft->key = key;
- 	err = rhashtable_insert_fast(&zones_ht, &ct_ft->node, zones_params);
- 	if (err)
- 		goto err_insert;
--- 
-2.43.0
-
+--- a/fs/ocfs2/namei.c
++++ b/fs/ocfs2/namei.c
+@@ -558,7 +558,7 @@ static int __ocfs2_mknod_locked(struct i
+ 	fe->i_last_eb_blk = 0;
+ 	strcpy(fe->i_signature, OCFS2_INODE_SIGNATURE);
+ 	fe->i_flags |= cpu_to_le32(OCFS2_VALID_FL);
+-	ktime_get_real_ts64(&ts);
++	ktime_get_coarse_real_ts64(&ts);
+ 	fe->i_atime = fe->i_ctime = fe->i_mtime =
+ 		cpu_to_le64(ts.tv_sec);
+ 	fe->i_mtime_nsec = fe->i_ctime_nsec = fe->i_atime_nsec =
 
 
 
