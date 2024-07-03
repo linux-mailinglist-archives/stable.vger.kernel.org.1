@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-57548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7213925CF2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:24:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0132925BA9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:10:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62F7D28EC66
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:24:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F29B91C21350
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F5317556B;
-	Wed,  3 Jul 2024 11:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91EF194136;
+	Wed,  3 Jul 2024 10:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mg2OJNDA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLffMWVf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B6318EFE6;
-	Wed,  3 Jul 2024 11:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A71194123;
+	Wed,  3 Jul 2024 10:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005218; cv=none; b=uXd4/y038SmdNKzU7ZKObk3/aM6yUuvRiPGDCvf65ePVNTGmRue7V/00YjlbRyc1sF8DvaorvXJPWaa43dOvjD+4qxmxbiJiluYoxP7UWaMK9aeQC0zIdHLH53mszsKmPTgudT6YPFSWyrMyJIhO2m+xf+KHxiiYFsK1neaj5Dk=
+	t=1720004267; cv=none; b=DITp/x7Dm5mlEJEJ//+EerQgaVFjPhevNjEvyzYEW2nc9jn0HY5KpTUH4RQ9r/WSg64jYFiyD/su62+E1FlLe6ejcPq5rCA1MjCVKK6/tdt0NreLItJDrYCWWCN/6QZ3fh/EB48x+YEHNd/6ig9XrUNT13+a7kuRRX59ivYIzlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005218; c=relaxed/simple;
-	bh=KzDac/n0yBwL0ktXaefKT2KE0AkI2sxpPy4jS26obLw=;
+	s=arc-20240116; t=1720004267; c=relaxed/simple;
+	bh=P5bOG7NvJwiwbrYWgkBx++g16JyqRQNxcB+DuPrFgUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k01uSzL0B5PeDUOcEYuePb8SXrpTs8s8pNRZgah403QzQ4j3juWGm8ijZtlA59kkpx25fEWf5IpRMX7bq7e1F6spRT8NMqSdHf/ZHUbejWo8PvP/S5kK8UJAz2iwPQyH5XlHmuydCOuofKueGQY8RMO2nXvthHwEhpVXWaSkjVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mg2OJNDA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2150C2BD10;
-	Wed,  3 Jul 2024 11:13:37 +0000 (UTC)
+	 MIME-Version; b=JPgUXRiW27STIioMVX/JnsG3N37h32UDVVHBUpBXYyn1lvd6Rqp5QCuV7XbxDc1LSdlktXPtxtirT3v85oAAg8BS3bNKsSMDfJKc0Xk76q0uLve9+pmbmOIXwNm3BcTpFK/oo8DZ1/zUviFqZVKDzlLSbK/dF/udWqJFT6ffJBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLffMWVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7332C2BD10;
+	Wed,  3 Jul 2024 10:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005218;
-	bh=KzDac/n0yBwL0ktXaefKT2KE0AkI2sxpPy4jS26obLw=;
+	s=korg; t=1720004267;
+	bh=P5bOG7NvJwiwbrYWgkBx++g16JyqRQNxcB+DuPrFgUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mg2OJNDAIf2sYK13twS+WGKwFu9OCHcgoXbAYsvXEW2XHRBO982NwO5vlVOWf9EEK
-	 mEz8Q9mSl6m/NNLWD7hfsoh7Evuyr5AZ3cKj7WZzAJWwqxg0sELK+dbwhdMY/JP/nI
-	 AcQBeVqAt5QC49B0mt+5i2YfA61VEaLZsds5Q6jo=
+	b=VLffMWVfeMo+Yf4ZoNuOak1j0pFK4VNpmmP+yQVLD3z9/CY3qc+UyJQcLvxWPUPcS
+	 E3f9+pO0QRH+PrWjokW2LHZ1PNbcKcfTfCOkIb9bGwUYb0uzbIk9ct5rjkVOnpOPXn
+	 Arxrn68go+A297ijNUmg1YCcT0xSVldYgEVDUo1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 5.10 256/290] usb: musb: da8xx: fix a resource leak in probe()
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.4 176/189] hexagon: fix fadvise64_64 calling conventions
 Date: Wed,  3 Jul 2024 12:40:37 +0200
-Message-ID: <20240703102913.815826629@linuxfoundation.org>
+Message-ID: <20240703102848.114648007@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +60,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit de644a4a86be04ed8a43ef8267d0f7d021941c5e upstream.
+commit 896842284c6ccba25ec9d78b7b6e62cdd507c083 upstream.
 
-Call usb_phy_generic_unregister() if of_platform_populate() fails.
+fadvise64_64() has two 64-bit arguments at the wrong alignment
+for hexagon, which turns them into a 7-argument syscall that is
+not supported by Linux.
 
-Fixes: d6299b6efbf6 ("usb: musb: Add support of CPPI 4.1 DMA controller to DA8xx")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/69af1b1d-d3f4-492b-bcea-359ca5949f30@moroto.mountain
+The downstream musl port for hexagon actually asks for a 6-argument
+version the same way we do it on arm, csky, powerpc, so make the
+kernel do it the same way to avoid having to change both.
+
+Link: https://github.com/quic/musl/blob/hexagon/arch/hexagon/syscall_arch.h#L78
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/musb/da8xx.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/hexagon/include/asm/syscalls.h |    6 ++++++
+ arch/hexagon/kernel/syscalltab.c    |    7 +++++++
+ 2 files changed, 13 insertions(+)
+ create mode 100644 arch/hexagon/include/asm/syscalls.h
 
---- a/drivers/usb/musb/da8xx.c
-+++ b/drivers/usb/musb/da8xx.c
-@@ -556,7 +556,7 @@ static int da8xx_probe(struct platform_d
- 	ret = of_platform_populate(pdev->dev.of_node, NULL,
- 				   da8xx_auxdata_lookup, &pdev->dev);
- 	if (ret)
--		return ret;
-+		goto err_unregister_phy;
- 
- 	memset(musb_resources, 0x00, sizeof(*musb_resources) *
- 			ARRAY_SIZE(musb_resources));
-@@ -582,9 +582,13 @@ static int da8xx_probe(struct platform_d
- 	ret = PTR_ERR_OR_ZERO(glue->musb);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register musb device: %d\n", ret);
--		usb_phy_generic_unregister(glue->usb_phy);
-+		goto err_unregister_phy;
- 	}
- 
-+	return 0;
+--- /dev/null
++++ b/arch/hexagon/include/asm/syscalls.h
+@@ -0,0 +1,6 @@
++/* SPDX-License-Identifier: GPL-2.0 */
 +
-+err_unregister_phy:
-+	usb_phy_generic_unregister(glue->usb_phy);
- 	return ret;
- }
++#include <asm-generic/syscalls.h>
++
++asmlinkage long sys_hexagon_fadvise64_64(int fd, int advice,
++	                                  u32 a2, u32 a3, u32 a4, u32 a5);
+--- a/arch/hexagon/kernel/syscalltab.c
++++ b/arch/hexagon/kernel/syscalltab.c
+@@ -14,6 +14,13 @@
+ #undef __SYSCALL
+ #define __SYSCALL(nr, call) [nr] = (call),
  
++SYSCALL_DEFINE6(hexagon_fadvise64_64, int, fd, int, advice,
++		SC_ARG64(offset), SC_ARG64(len))
++{
++	return ksys_fadvise64_64(fd, SC_VAL64(loff_t, offset), SC_VAL64(loff_t, len), advice);
++}
++#define sys_fadvise64_64 sys_hexagon_fadvise64_64
++
+ void *sys_call_table[__NR_syscalls] = {
+ #include <asm/unistd.h>
+ };
 
 
 
