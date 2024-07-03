@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D9D925C25
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:15:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C437925A90
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:01:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D5001F20EE6
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:15:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D93D1C24E2A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B7317B42A;
-	Wed,  3 Jul 2024 11:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE84176AB0;
+	Wed,  3 Jul 2024 10:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ojYmpnPe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YWg6Ld5J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739DB17277F;
-	Wed,  3 Jul 2024 11:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9980917083F;
+	Wed,  3 Jul 2024 10:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004605; cv=none; b=laz9WDfI5lzI9n7djjzTv/qe/w4/B0BASYm4/RugUyBLerfmgxrEg4gkldGeAbYxxId5RRiC+SUOB4BwWOZ4VhcekVYH1/iNoMVaQdEwv2xWwBcBOiYVb6B4F7HNOACRxVxMYamkIVbz209U+Sb/Kv+TTeVF5nKFGN2QIAH+/0M=
+	t=1720003773; cv=none; b=QLYEEotfGSRKoKzFQhaT2ybJ94UcVMjoKBv1/kaOwiG8VPHKFCIDsqCbUkXEyzj3pfJawAHu6PCQ5jaRimKWmrPgRKk+qD1oeQCaESIsj4Qh9dbPyVSwH13nEpDYYk58eSePDXPaW8esjSPjAQbo1eoPLj+rw56eVrdSqYF1N00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004605; c=relaxed/simple;
-	bh=N4IO3xpKbzuEHCFzVZmOJgJWJOuPUn+V6XLkrqqyRtk=;
+	s=arc-20240116; t=1720003773; c=relaxed/simple;
+	bh=JrCxKKUVYzURNTgCyP1TEYrrhoIeiiBG4df8M3FbyMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NJxZiBrp1qECZstATHWpHLwelXcC2HU6K11YUQQ0FpLUpmufxtiSvUKoxy5zoowqKxZOmIOLRKjsz9EP1TRmb1w9MHTnrv/GNN/+FL88tfRf14pdfhh/r5leLD+3nvOrLKiztkutzhPHaIQXwBZKBmG8SMAsXl11P1cstaVdTe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ojYmpnPe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA271C2BD10;
-	Wed,  3 Jul 2024 11:03:24 +0000 (UTC)
+	 MIME-Version; b=YuK6rtmgZIa5cTXIIf0JODBclZ8NAVulUzBDctPNtMyMjQTM5UyXw/EFL+DnYhnkS/TwHLRfURgNV5J3wfba6X3Q9OImD5Hbg7FMEAbssfHKQG4JcxMKfHEdVRckDgRIVL3MS1HCglaEgUfR2UNkPyyWm3crzkeOvclWTg0zsXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YWg6Ld5J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C40FC2BD10;
+	Wed,  3 Jul 2024 10:49:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004605;
-	bh=N4IO3xpKbzuEHCFzVZmOJgJWJOuPUn+V6XLkrqqyRtk=;
+	s=korg; t=1720003773;
+	bh=JrCxKKUVYzURNTgCyP1TEYrrhoIeiiBG4df8M3FbyMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ojYmpnPeNIl1hboQ1akYYNOP7SL0I7ZmzqUlWmddNECfUcGtSM/25KtKTiBS/MR1f
-	 jPtQMpn4uME6KW+RvG2LbdDEyOHRT04upUUP7w8qQnTMAFTnEIFObiqEK4fO7XWgN+
-	 7I7gmfSrGqs2mrPzjpJ+Kq1r/ngg8KgTgPkDUOpw=
+	b=YWg6Ld5JKM9YVYzR4/kHpzxm5DJXwZhhAjLruBLIHq0gtRU+D8OwE+fegiYZCJmv1
+	 dV34OIK1dquxCCB8D+HuF+TqadluLajIMUWztEiqnAOXOWcmWM7bxJg24raYqWRaS9
+	 5/1ifBSI1VAH9FG9YQpjefn+iU+f7+dZFLPgfnco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	YonglongLi <liyonglong@chinatelecom.cn>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 098/290] mptcp: pm: update add_addr counters after connect
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 018/189] af_unix: Annotate data-race of net->unx.sysctl_max_dgram_qlen.
 Date: Wed,  3 Jul 2024 12:37:59 +0200
-Message-ID: <20240703102907.895371276@linuxfoundation.org>
+Message-ID: <20240703102842.190998488@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YonglongLi <liyonglong@chinatelecom.cn>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 40eec1795cc27b076d49236649a29507c7ed8c2d upstream.
+[ Upstream commit bd9f2d05731f6a112d0c7391a0d537bfc588dbe6 ]
 
-The creation of new subflows can fail for different reasons. If no
-subflow have been created using the received ADD_ADDR, the related
-counters should not be updated, otherwise they will never be decremented
-for events related to this ID later on.
+net->unx.sysctl_max_dgram_qlen is exposed as a sysctl knob and can be
+changed concurrently.
 
-For the moment, the number of accepted ADD_ADDR is only decremented upon
-the reception of a related RM_ADDR, and only if the remote address ID is
-currently being used by at least one subflow. In other words, if no
-subflow can be created with the received address, the counter will not
-be decremented. In this case, it is then important not to increment
-pm.add_addr_accepted counter, and not to modify pm.accept_addr bit.
+Let's use READ_ONCE() in unix_create1().
 
-Note that this patch does not modify the behaviour in case of failures
-later on, e.g. if the MP Join is dropped or rejected.
-
-The "remove invalid addresses" MP Join subtest has been modified to
-validate this case. The broadcast IP address is added before the "valid"
-address that will be used to successfully create a subflow, and the
-limit is decreased by one: without this patch, it was not possible to
-create the last subflow, because:
-
-- the broadcast address would have been accepted even if it was not
-  usable: the creation of a subflow to this address results in an error,
-
-- the limit of 2 accepted ADD_ADDR would have then been reached.
-
-Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
-Cc: stable@vger.kernel.org
-Co-developed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: YonglongLi <liyonglong@chinatelecom.cn>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240607-upstream-net-20240607-misc-fixes-v1-3-1ab9ddfa3d00@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in pm_netlink.c because commit 1a0d6136c5f0 ("mptcp: local
-  addresses fullmesh") is not present in this version (+ others changing
-  the context). To resolve the conflicts, the same block is moved later,
-  and under the condition that the call to __mptcp_subflow_connect()
-  didn't fail.
-  The selftest modification has been dropped, because the modified test
-  is not in this version. That's fine, we can test with selftests from a
-  newer version. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -371,15 +371,12 @@ void mptcp_pm_nl_add_addr_received(struc
- 	struct sock *sk = (struct sock *)msk;
- 	struct mptcp_addr_info remote;
- 	struct mptcp_addr_info local;
-+	int err;
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 0611ff921421e..ec4c462a87f06 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -807,7 +807,7 @@ static struct sock *unix_create1(struct net *net, struct socket *sock, int kern)
  
- 	pr_debug("accepted %d:%d remote family %d",
- 		 msk->pm.add_addr_accepted, msk->pm.add_addr_accept_max,
- 		 msk->pm.remote.family);
--	msk->pm.add_addr_accepted++;
- 	msk->pm.subflows++;
--	if (msk->pm.add_addr_accepted >= msk->pm.add_addr_accept_max ||
--	    msk->pm.subflows >= msk->pm.subflows_max)
--		WRITE_ONCE(msk->pm.accept_addr, false);
- 
- 	/* connect to the specified remote address, using whatever
- 	 * local address the routing configuration will pick.
-@@ -391,9 +388,16 @@ void mptcp_pm_nl_add_addr_received(struc
- 	local.family = remote.family;
- 
- 	spin_unlock_bh(&msk->pm.lock);
--	__mptcp_subflow_connect((struct sock *)msk, &local, &remote);
-+	err = __mptcp_subflow_connect((struct sock *)msk, &local, &remote);
- 	spin_lock_bh(&msk->pm.lock);
- 
-+	if (!err) {
-+		msk->pm.add_addr_accepted++;
-+		if (msk->pm.add_addr_accepted >= msk->pm.add_addr_accept_max ||
-+		    msk->pm.subflows >= msk->pm.subflows_max)
-+			WRITE_ONCE(msk->pm.accept_addr, false);
-+	}
-+
- 	mptcp_pm_announce_addr(msk, &remote, true);
- }
- 
+ 	sk->sk_allocation	= GFP_KERNEL_ACCOUNT;
+ 	sk->sk_write_space	= unix_write_space;
+-	sk->sk_max_ack_backlog	= net->unx.sysctl_max_dgram_qlen;
++	sk->sk_max_ack_backlog	= READ_ONCE(net->unx.sysctl_max_dgram_qlen);
+ 	sk->sk_destruct		= unix_sock_destructor;
+ 	u = unix_sk(sk);
+ 	u->inflight = 0;
+-- 
+2.43.0
+
 
 
 
