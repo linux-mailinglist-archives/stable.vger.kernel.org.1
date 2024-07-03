@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-57480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D888925DEB
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B7AD925E20
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:34:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04FB7B3B7E2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 575D61C23171
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:34:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22D2187554;
-	Wed,  3 Jul 2024 11:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BDA317BB02;
+	Wed,  3 Jul 2024 11:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xfv1p+UF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Olz3DqUl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8085518734B;
-	Wed,  3 Jul 2024 11:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA0D17B51F;
+	Wed,  3 Jul 2024 11:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005010; cv=none; b=nYTEunFf67wJkmw3tVeeMLbGpi2C0aDpxLbkqeJNc7+HLXlb3AWrx8q0slYKxymTOzX7fKK2ZzJaxxvTFPsnJV65Uoh+kqr3e9mh7o3tRFW5Vl8nYXZKmoRHhwwb8cTDfv00DYv6bVoW+SMxyDPd0dj76EDR8kK5LoVWQLJDaiw=
+	t=1720006004; cv=none; b=nHi98iLOpWKxMJjeAXcwUvUMlDFTARJG95IBNph5KVtNZCMnkdse9DnKiLy4+Jrey6iPTIBSUCwoNsHUxHh02KZdm/uqFu5sFe5i/AbmgocpNlKsFOcIJp08tKEEaqHCpsStzM68k9PjlDkgqfyY+DuOns6WnaOrlKU5Dka6fe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005010; c=relaxed/simple;
-	bh=gnzCW8ln0l+a17CW9ctEZEc6VUZoxeGhKf/1CjKoZuU=;
+	s=arc-20240116; t=1720006004; c=relaxed/simple;
+	bh=r5bLIATfS70mNEf5PUJVZHNiCcAqzhy/0OJ1X5AQoNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R7Utw9tp8HkslqC4tuQixMwvjP4K4Hyk4ra5WgYgVpe2YtuKbG2QaMjH+cMSgcewFA10VkL2IxRWVf8c8CXy0aqwMKKfq5qW8ixqVSFfJ1ODgpRERmpPZ+7cKETx9nD7109eVU+mKrC8aBZF6gKwfYSZ4J9479ywlFHaxm7r3TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xfv1p+UF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06385C2BD10;
-	Wed,  3 Jul 2024 11:10:09 +0000 (UTC)
+	 MIME-Version; b=mwJyzEuy08sIxVOsGffzoKeO1uTAmbEEAhaaJjRPwJLlu71cEOVWsinqOOHkTzEz2rWeuwf7Sub/iCWJUmSTuTAPYwHq/5wbrvzhn4O3Tv8WUEt1dvarZrqkBjXzoKqoLptquEkw9INfc8S1mXNZnAzmRG9dJXpcp+5aVROrZX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Olz3DqUl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69409C2BD10;
+	Wed,  3 Jul 2024 11:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005010;
-	bh=gnzCW8ln0l+a17CW9ctEZEc6VUZoxeGhKf/1CjKoZuU=;
+	s=korg; t=1720006003;
+	bh=r5bLIATfS70mNEf5PUJVZHNiCcAqzhy/0OJ1X5AQoNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xfv1p+UF0nwuTYAipmwrQCI4RIHaQ8I+LmoBoH5SFXjKHXSEX4LYkPcSyLEoYRXWN
-	 jBcN0dy4mPcR98gpLblNt7JEhuUKaqCQNUSC1LlMUpXn+YiblIil8Ip/ckJVMPli2z
-	 WIjDPV/40GdlHGiOHocYnFNRM051kH0zijyHOBQU=
+	b=Olz3DqUlUKYFXG1rq/OKltuBAcX/S2EtHjJoxfbM/2fZgl3Vz937CG/xheM6GTVeK
+	 HWJpV0sMYq4VpTpfC2W0rK0ccJjf5VN4D/26pQOECYxEAGy8uFNmVsJpgWwff5+G87
+	 VwS6CzTKxFQlsjappg/Qf9BSIjV3PxTfmIcPtJ3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Dulov <d.dulov@aladdin.ru>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 223/290] xdp: Remove WARN() from __xdp_reg_mem_model()
+Subject: [PATCH 5.15 268/356] net: mdio: add helpers to extract clause 45 regad and devad fields
 Date: Wed,  3 Jul 2024 12:40:04 +0200
-Message-ID: <20240703102912.580587183@linuxfoundation.org>
+Message-ID: <20240703102923.255373706@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-[ Upstream commit 7e9f79428372c6eab92271390851be34ab26bfb4 ]
+[ Upstream commit c6af53f038aa32cec12e8a305ba07c7ef168f1b0 ]
 
-syzkaller reports a warning in __xdp_reg_mem_model().
+Add a couple of helpers and definitions to extract the clause 45 regad
+and devad fields from the regnum passed into MDIO drivers.
 
-The warning occurs only if __mem_id_init_hash_table() returns an error. It
-returns the error in two cases:
-
-  1. memory allocation fails;
-  2. rhashtable_init() fails when some fields of rhashtable_params
-     struct are not initialized properly.
-
-The second case cannot happen since there is a static const rhashtable_params
-struct with valid fields. So, warning is only triggered when there is a
-problem with memory allocation.
-
-Thus, there is no sense in using WARN() to handle this error and it can be
-safely removed.
-
-WARNING: CPU: 0 PID: 5065 at net/core/xdp.c:299 __xdp_reg_mem_model+0x2d9/0x650 net/core/xdp.c:299
-
-CPU: 0 PID: 5065 Comm: syz-executor883 Not tainted 6.8.0-syzkaller-05271-gf99c5f563c17 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
-RIP: 0010:__xdp_reg_mem_model+0x2d9/0x650 net/core/xdp.c:299
-
-Call Trace:
- xdp_reg_mem_model+0x22/0x40 net/core/xdp.c:344
- xdp_test_run_setup net/bpf/test_run.c:188 [inline]
- bpf_test_run_xdp_live+0x365/0x1e90 net/bpf/test_run.c:377
- bpf_prog_test_run_xdp+0x813/0x11b0 net/bpf/test_run.c:1267
- bpf_prog_test_run+0x33a/0x3b0 kernel/bpf/syscall.c:4240
- __sys_bpf+0x48d/0x810 kernel/bpf/syscall.c:5649
- __do_sys_bpf kernel/bpf/syscall.c:5738 [inline]
- __se_sys_bpf kernel/bpf/syscall.c:5736 [inline]
- __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:5736
- do_syscall_64+0xfb/0x240
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-Found by Linux Verification Center (linuxtesting.org) with syzkaller.
-
-Fixes: 8d5d88527587 ("xdp: rhashtable with allocator ID to pointer mapping")
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Link: https://lore.kernel.org/all/20240617162708.492159-1-d.dulov@aladdin.ru
-Link: https://lore.kernel.org/bpf/20240624080747.36858-1-d.dulov@aladdin.ru
+Tested-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 8851346912a1 ("net: stmmac: Assign configured channel value to EXTTS event")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/xdp.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ include/linux/mdio.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/net/core/xdp.c b/net/core/xdp.c
-index 6e6b89d5f77ed..eb5045924efaa 100644
---- a/net/core/xdp.c
-+++ b/net/core/xdp.c
-@@ -291,10 +291,8 @@ static struct xdp_mem_allocator *__xdp_reg_mem_model(struct xdp_mem_info *mem,
- 		mutex_lock(&mem_id_lock);
- 		ret = __mem_id_init_hash_table();
- 		mutex_unlock(&mem_id_lock);
--		if (ret < 0) {
--			WARN_ON(1);
-+		if (ret < 0)
- 			return ERR_PTR(ret);
--		}
- 	}
+diff --git a/include/linux/mdio.h b/include/linux/mdio.h
+index 5e6dc38f418e4..3a6ff4e7284a8 100644
+--- a/include/linux/mdio.h
++++ b/include/linux/mdio.h
+@@ -7,6 +7,7 @@
+ #define __LINUX_MDIO_H__
  
- 	xdp_alloc = kzalloc(sizeof(*xdp_alloc), gfp);
+ #include <uapi/linux/mdio.h>
++#include <linux/bitfield.h>
+ #include <linux/mod_devicetable.h>
+ 
+ /* Or MII_ADDR_C45 into regnum for read/write on mii_bus to enable the 21 bit
+@@ -14,6 +15,7 @@
+  */
+ #define MII_ADDR_C45		(1<<30)
+ #define MII_DEVADDR_C45_SHIFT	16
++#define MII_DEVADDR_C45_MASK	GENMASK(20, 16)
+ #define MII_REGADDR_C45_MASK	GENMASK(15, 0)
+ 
+ struct gpio_desc;
+@@ -355,6 +357,16 @@ static inline u32 mdiobus_c45_addr(int devad, u16 regnum)
+ 	return MII_ADDR_C45 | devad << MII_DEVADDR_C45_SHIFT | regnum;
+ }
+ 
++static inline u16 mdiobus_c45_regad(u32 regnum)
++{
++	return FIELD_GET(MII_REGADDR_C45_MASK, regnum);
++}
++
++static inline u16 mdiobus_c45_devad(u32 regnum)
++{
++	return FIELD_GET(MII_DEVADDR_C45_MASK, regnum);
++}
++
+ static inline int __mdiobus_c45_read(struct mii_bus *bus, int prtad, int devad,
+ 				     u16 regnum)
+ {
 -- 
 2.43.0
 
