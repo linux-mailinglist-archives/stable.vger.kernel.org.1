@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-57133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 465E9925F11
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:48:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20DD1925ACF
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1C8DB339B4
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:04:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52FAD1C25FB6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 266A817DA3B;
-	Wed,  3 Jul 2024 10:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82C117DE04;
+	Wed,  3 Jul 2024 10:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hGN1vkZ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9W4MIaR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA3E17C238;
-	Wed,  3 Jul 2024 10:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8503817C238;
+	Wed,  3 Jul 2024 10:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003947; cv=none; b=u+8/HsVZJTP5ECVMazQ5yYzpLMgbQUtpTANotbKZDtkMUsc9HYn4h2GRfS3Kuc4yu7JPFr/9NTadRG+mXkkJw71h72Xhva82NwPWa/QAJLjczZ7J58dqDAbYWaFMc6ghWttk0V386r6InyKlArbs+tqfx+g2TJ1/gqJGNC9gbro=
+	t=1720003953; cv=none; b=dEa3uYc3X0YAp68azQ8S2dZTn2/1tMsa/zIuFbxwoqGC4zGP1ehx74Ledc2mQeZL++Zj7GZk9ZB7pyNnOGd0X/zqgrRHpwGytEe78W2u87KJDtgzorAEj6KliY85k1Lj/cbFoQ7Jbd63HG3lbsoY2rkDJtvrJAEmi18tBsyx8rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003947; c=relaxed/simple;
-	bh=XA5+m9nEUgSCW74yVVmTlpVZIy9+dDyppK+z2jwXzFM=;
+	s=arc-20240116; t=1720003953; c=relaxed/simple;
+	bh=bOvs7WkpEC6DI1KWgMyabWOdO8ZAPf2cfLKXLcxoY3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JhV41mXz96noh2vTuRDcKwUWesS6FyaeyB6XU5IgmtbbdJC0nI0oXGV1CZk9kvt4nKswcc5l2f6mAgyLYSUtVNCE4VlF3r7kQ/fpvGUVVBW+p0MEqye3DJ4GKDn0hLavep/sHlsbfxTjP20q02uv/V1gq7aws3xmClebqaLajLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hGN1vkZ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E51C2BD10;
-	Wed,  3 Jul 2024 10:52:26 +0000 (UTC)
+	 MIME-Version; b=H/nc/nrWJQ2Pkv2JwnPD+yqmja60HwvKr9Yy1W2gsRZ3Gq5DisBEK/qrxNH38v8F9Jw1L4eCqO7HH/fN7+XWYJb9wMsTnXHGtBli99qQ5bZjgMVXEQ++h8voaeKmOhvpc8FlXW4O+xYf903bAJRsh8RPn5g06ENT/IOs8Kbib0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9W4MIaR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E980CC2BD10;
+	Wed,  3 Jul 2024 10:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003947;
-	bh=XA5+m9nEUgSCW74yVVmTlpVZIy9+dDyppK+z2jwXzFM=;
+	s=korg; t=1720003953;
+	bh=bOvs7WkpEC6DI1KWgMyabWOdO8ZAPf2cfLKXLcxoY3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hGN1vkZ4NN+1R1JpvCEiyYmBCxkwEH/24jxGlaD4f1ljXkyURNad0SP8o6NwSzsGR
-	 1AEPRkA7nHZSx0/eU93FIXTKOV32tI3aC2IrXbJebeGKw8zpxbYgE3vtwNiauhFJ8n
-	 av9FzKNuZ9+S9jAeozMqEiCrOMcMvLWYH7I3j5BA=
+	b=k9W4MIaRcj/EAda+SmC+Q5qW7Y2L9cOQQD+Fs2Ys/+bmfpeg2u6SWHc08w9AqfQUl
+	 czWkZMM0mxAkMEdG860G64VECnJSxAGGcZ3pB0SVKGHpA04AiKWRzkd1T8XIgr1RRi
+	 W/tfl87igD3Mu3g8hsbm5o5HfHy0syUIJCeWDfSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rick Wertenbroek <rick.wertenbroek@gmail.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 5.4 074/189] PCI: rockchip-ep: Remove wrong mask on subsys_vendor_id
-Date: Wed,  3 Jul 2024 12:38:55 +0200
-Message-ID: <20240703102844.300569795@linuxfoundation.org>
+	stable@kernel.org,
+	Nuno Sa <nuno.sa@analog.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.4 075/189] dmaengine: axi-dmac: fix possible race in remove()
+Date: Wed,  3 Jul 2024 12:38:56 +0200
+Message-ID: <20240703102844.337844200@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
 References: <20240703102841.492044697@linuxfoundation.org>
@@ -61,57 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-commit 2dba285caba53f309d6060fca911b43d63f41697 upstream.
+commit 1bc31444209c8efae98cb78818131950d9a6f4d6 upstream.
 
-Remove wrong mask on subsys_vendor_id. Both the Vendor ID and Subsystem
-Vendor ID are u16 variables and are written to a u32 register of the
-controller. The Subsystem Vendor ID was always 0 because the u16 value
-was masked incorrectly with GENMASK(31,16) resulting in all lower 16
-bits being set to 0 prior to the shift.
+We need to first free the IRQ before calling of_dma_controller_free().
+Otherwise we could get an interrupt and schedule a tasklet while
+removing the DMA controller.
 
-Remove both masks as they are unnecessary and set the register correctly
-i.e., the lower 16-bits are the Vendor ID and the upper 16-bits are the
-Subsystem Vendor ID.
-
-This is documented in the RK3399 TRM section 17.6.7.1.17
-
-[kwilczynski: removed unnecesary newline]
-Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
-Link: https://lore.kernel.org/linux-pci/20240403144508.489835-1-rick.wertenbroek@gmail.com
-Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Cc: stable@vger.kernel.org
+Fixes: 0e3b67b348b8 ("dmaengine: Add support for the Analog Devices AXI-DMAC DMA controller")
+Cc: stable@kernel.org
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240328-axi-dmac-devm-probe-v3-1-523c0176df70@analog.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rockchip-ep.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/dma/dma-axi-dmac.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/controller/pcie-rockchip-ep.c
-+++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -130,10 +130,8 @@ static int rockchip_pcie_ep_write_header
+--- a/drivers/dma/dma-axi-dmac.c
++++ b/drivers/dma/dma-axi-dmac.c
+@@ -947,8 +947,8 @@ static int axi_dmac_remove(struct platfo
+ {
+ 	struct axi_dmac *dmac = platform_get_drvdata(pdev);
  
- 	/* All functions share the same vendor ID with function 0 */
- 	if (fn == 0) {
--		u32 vid_regs = (hdr->vendorid & GENMASK(15, 0)) |
--			       (hdr->subsys_vendor_id & GENMASK(31, 16)) << 16;
--
--		rockchip_pcie_write(rockchip, vid_regs,
-+		rockchip_pcie_write(rockchip,
-+				    hdr->vendorid | hdr->subsys_vendor_id << 16,
- 				    PCIE_CORE_CONFIG_VENDOR);
- 	}
- 
+-	of_dma_controller_free(pdev->dev.of_node);
+ 	free_irq(dmac->irq, dmac);
++	of_dma_controller_free(pdev->dev.of_node);
+ 	tasklet_kill(&dmac->chan.vchan.task);
+ 	dma_async_device_unregister(&dmac->dma_dev);
+ 	clk_disable_unprepare(dmac->clk);
 
 
 
