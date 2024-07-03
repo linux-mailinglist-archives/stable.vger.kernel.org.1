@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36CB5925E25
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1A7925D76
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A05FB29B9C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA4B91F22A63
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F6B17965E;
-	Wed,  3 Jul 2024 11:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4ED18308D;
+	Wed,  3 Jul 2024 11:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBD1vyK7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHAIM/Lm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7028178CFA;
-	Wed,  3 Jul 2024 11:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5A213A27E;
+	Wed,  3 Jul 2024 11:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004570; cv=none; b=HJmuTpcYGe1VZrDSk3lytcINIc4dsy3KsGWchreddV2/De7Qc9papnuv7Brg4D+LiLrYJ4vRqanrpTsN9IYOKgUQ2on89wRZgfwzKO6iu+rY7p8EDyOXGN7XYx/efSH7gF13SC3zhJhA97khLtWvSACI6vsZXcamOUnods5qFKY=
+	t=1720005583; cv=none; b=lSUoYJedc4iSN9vLThLkoU+XxidZQjyvEg8ItZYNIdXJTXGWuuCX8qn8ertM6Ljen99VO77RtufDiQjjBIuFHYvSAuC3P8cJRHmbxrq6y52PAMukDqBKPTq4EqxVmJD9ezXxTT1GSTk7UysYS8PtASdYzGXQjvWcIKqDiHoxlL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004570; c=relaxed/simple;
-	bh=gO/YlqrocMUmf5rNtSNBd5BmiWTdPQmm+LF08CvAwWA=;
+	s=arc-20240116; t=1720005583; c=relaxed/simple;
+	bh=BC/p8zZzAm9Q2CmXVNoNGIOoiuq+s7pRJHF7LbWWBqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q1OdhdcVylh0Nx9SweOi5o6zVPazg9uo410kt9QEIcqMEwoyWWF7D8CGofoiVk9/nxsqewzFbhetuHXmjoiwM5f7FOK07Bu/gi7DZui4uRR3DyW8wbONiwYBGLg2OfdS1X6t7XLqMC0Qk54lQUfOrX38Ofnm30zwci5K/ELPi7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBD1vyK7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E2B9C2BD10;
-	Wed,  3 Jul 2024 11:02:49 +0000 (UTC)
+	 MIME-Version; b=CmY5fRrnuwHA+tiERPgcsxjjBVchb3ybbsAydgcWny6WhsBmoziuVUHoccs8Ux9xVJXX6ziDgIOnTHXzH1FQHaLUk+l6YfCQFo7W1+1QXk8EUMpINw1KANF4yqlbbGksCtgnst16w/igFsTlmrMUteBvnuWWaTLe5Z9REwnYXM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHAIM/Lm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88170C32781;
+	Wed,  3 Jul 2024 11:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004569;
-	bh=gO/YlqrocMUmf5rNtSNBd5BmiWTdPQmm+LF08CvAwWA=;
+	s=korg; t=1720005582;
+	bh=BC/p8zZzAm9Q2CmXVNoNGIOoiuq+s7pRJHF7LbWWBqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mBD1vyK7wzarJdxHLAYiV98W0VkJGOJ0rzTQw4ILOl3LKjFSLZIC3DQd+hxSq80KI
-	 omLxpsVr3N2IrHcn3/WEwFKPn0OeVUO+9eqwVdAU7CsqaqlqT1kznTmK0Qv/+4cKYr
-	 gLCNcc4OMerIF+eh55U27wWqk+wow+pCKp8lN+jM=
+	b=mHAIM/LmSL/AePWUIJjBzzQsh86vQxjQHBVyf5Lz+w7P314QqY0qY/Hy2wRfbTUmO
+	 QQUIqvy7zniwnlhFzMfALMT2N1gJ041GOUvg7PDIPSFMrZUE8lgmh1aYd2EGJf8znF
+	 QxpgT9kvi0jldOLa/UsNEZU2gGkiv6gud3qOGuNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rick Wertenbroek <rick.wertenbroek@gmail.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 5.10 084/290] PCI: rockchip-ep: Remove wrong mask on subsys_vendor_id
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 5.15 129/356] intel_th: pci: Add Granite Rapids support
 Date: Wed,  3 Jul 2024 12:37:45 +0200
-Message-ID: <20240703102907.367588957@linuxfoundation.org>
+Message-ID: <20240703102917.980125917@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-commit 2dba285caba53f309d6060fca911b43d63f41697 upstream.
+commit e44937889bdf4ecd1f0c25762b7226406b9b7a69 upstream.
 
-Remove wrong mask on subsys_vendor_id. Both the Vendor ID and Subsystem
-Vendor ID are u16 variables and are written to a u32 register of the
-controller. The Subsystem Vendor ID was always 0 because the u16 value
-was masked incorrectly with GENMASK(31,16) resulting in all lower 16
-bits being set to 0 prior to the shift.
+Add support for the Trace Hub in Granite Rapids.
 
-Remove both masks as they are unnecessary and set the register correctly
-i.e., the lower 16-bits are the Vendor ID and the upper 16-bits are the
-Subsystem Vendor ID.
-
-This is documented in the RK3399 TRM section 17.6.7.1.17
-
-[kwilczynski: removed unnecesary newline]
-Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
-Link: https://lore.kernel.org/linux-pci/20240403144508.489835-1-rick.wertenbroek@gmail.com
-Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20240429130119.1518073-11-alexander.shishkin@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rockchip-ep.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/hwtracing/intel_th/pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/pci/controller/pcie-rockchip-ep.c
-+++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -131,10 +131,8 @@ static int rockchip_pcie_ep_write_header
- 
- 	/* All functions share the same vendor ID with function 0 */
- 	if (fn == 0) {
--		u32 vid_regs = (hdr->vendorid & GENMASK(15, 0)) |
--			       (hdr->subsys_vendor_id & GENMASK(31, 16)) << 16;
--
--		rockchip_pcie_write(rockchip, vid_regs,
-+		rockchip_pcie_write(rockchip,
-+				    hdr->vendorid | hdr->subsys_vendor_id << 16,
- 				    PCIE_CORE_CONFIG_VENDOR);
- 	}
- 
+--- a/drivers/hwtracing/intel_th/pci.c
++++ b/drivers/hwtracing/intel_th/pci.c
+@@ -305,6 +305,11 @@ static const struct pci_device_id intel_
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+ 	},
+ 	{
++		/* Granite Rapids */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x0963),
++		.driver_data = (kernel_ulong_t)&intel_th_2x,
++	},
++	{
+ 		/* Alder Lake CPU */
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 
 
 
