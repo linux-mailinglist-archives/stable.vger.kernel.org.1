@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89617925E00
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:33:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33CD3925C53
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:17:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C2B629578E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:32:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15F442874C6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C22B194AC2;
-	Wed,  3 Jul 2024 11:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB27A17C7BE;
+	Wed,  3 Jul 2024 11:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQodPF3n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjkmK2Yq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C8B18A95F;
-	Wed,  3 Jul 2024 11:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F221741C0;
+	Wed,  3 Jul 2024 11:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005838; cv=none; b=WEcFIWOmTp+3WgQINSA5Fn+xj89yPg6C0+fh2f/FdS1k2nwiwdwjgwciaAFZA+5MxvAR0gEhVKMmZroR0jL7FjQGkPIf9jrWq5vFY9b62ntEx5S+/j765qkrvznR7FsHJ5BdFBXIZzWndjF4qQU1r7kyfivEX6tNqkMbsoVN/10=
+	t=1720004720; cv=none; b=Iazbb8YcTXAI3KyBfEuuM97wqPt4h0HWSY9xNRdyjW8LbYx6pRgvWNl9ilbQIEsWGKE8byhRvcq13D4fSc496wLpB9n7A/FnvSFoOweIkDvyJy67HEs2ko21yo1or2ymJ9octW6Of0FDVYJ6YDWpTlIap21FRU9Ozq1EV62cCQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005838; c=relaxed/simple;
-	bh=dPvAnVqimDzyB9/OHG/nI/To9OH/yAo1B7oakQ196no=;
+	s=arc-20240116; t=1720004720; c=relaxed/simple;
+	bh=hOpgg7kN7FqVw6L3fYbFn4K74IuxsAKBElh9FPiKWgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BU3VxAun+RaGoCbt8wmgB15mC+izwBlLz5N1kjMCc2xNi4R4VgS4ZOkMExFpnA12wUhBmYsILY5llQjSBvwEMSf1s6QgjKncsHcI0rvHjjo9lvPr2qzThyt2ayoQ9bPIPbX4kop14koR+LgWic66xHQt6+FvMvSkb5TXgJVYMHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQodPF3n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5747C2BD10;
-	Wed,  3 Jul 2024 11:23:57 +0000 (UTC)
+	 MIME-Version; b=NwW0pWzHfAvNoEg8Mqgpp1v2MY3w+M1ydBm+67exrxle3pa4lsrcGdPJ3hd4VQSCbc1NbvuR7D9aiu/DwxsVy1a6gBSXADgTP+ETKUVdNSAEQSPKIfa/PNkK0QrMX0GQk0zm1iBeMjSAwf45G7KfbNVfhxx/w0bIYg6k8aTEOZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjkmK2Yq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D75C2BD10;
+	Wed,  3 Jul 2024 11:05:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005838;
-	bh=dPvAnVqimDzyB9/OHG/nI/To9OH/yAo1B7oakQ196no=;
+	s=korg; t=1720004720;
+	bh=hOpgg7kN7FqVw6L3fYbFn4K74IuxsAKBElh9FPiKWgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQodPF3ns9kF86RLgxGWcogtmeiv7x2sUUuotsuLLkfqxD6oysYzzX2LBKrtp0Fs6
-	 9EAabBEvEDqc7r0zrDxBAb5KtfZUaXgSejmT0QJ/hSXzZXZG3HedxBxV+cKNG5N1Gl
-	 BVWR28jSVfO5J6ESQDWONYefKgszqCc0g+KKjT6w=
+	b=zjkmK2Yqz1lPaM92kc8WC6yiep0X02TfuJ6rMf8eQfdblOAP1SaE40vwG4CHNa/c2
+	 10bniH/M1bnluPS34xiGgVOBcJbGeJfDIBNd1stchIbZ1y9zk+bvFkjYSxf6jLn0SJ
+	 alEm/zLx05TNFz49lHzadbj6P1eCgx3gL6g2jW4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parker Newman <pnewman@connecttech.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 182/356] serial: exar: adding missing CTI and Exar PCI ids
+Subject: [PATCH 5.10 137/290] tracing: Build event generation tests only as modules
 Date: Wed,  3 Jul 2024 12:38:38 +0200
-Message-ID: <20240703102919.991010112@linuxfoundation.org>
+Message-ID: <20240703102909.361176381@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parker Newman <pnewman@connecttech.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit b86ae40ffcf5a16b9569b1016da4a08c4f352ca2 ]
+[ Upstream commit 3572bd5689b0812b161b40279e39ca5b66d73e88 ]
 
-- Added Connect Tech and Exar IDs not already in pci_ids.h
+The kprobes and synth event generation test modules add events and lock
+(get a reference) those event file reference in module init function,
+and unlock and delete it in module exit function. This is because those
+are designed for playing as modules.
 
-Signed-off-by: Parker Newman <pnewman@connecttech.com>
-Link: https://lore.kernel.org/r/7c3d8e795a864dd9b0a00353b722060dc27c4e09.1713270624.git.pnewman@connecttech.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If we make those modules as built-in, those events are left locked in the
+kernel, and never be removed. This causes kprobe event self-test failure
+as below.
+
+[   97.349708] ------------[ cut here ]------------
+[   97.353453] WARNING: CPU: 3 PID: 1 at kernel/trace/trace_kprobe.c:2133 kprobe_trace_self_tests_init+0x3f1/0x480
+[   97.357106] Modules linked in:
+[   97.358488] CPU: 3 PID: 1 Comm: swapper/0 Not tainted 6.9.0-g699646734ab5-dirty #14
+[   97.361556] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+[   97.363880] RIP: 0010:kprobe_trace_self_tests_init+0x3f1/0x480
+[   97.365538] Code: a8 24 08 82 e9 ae fd ff ff 90 0f 0b 90 48 c7 c7 e5 aa 0b 82 e9 ee fc ff ff 90 0f 0b 90 48 c7 c7 2d 61 06 82 e9 8e fd ff ff 90 <0f> 0b 90 48 c7 c7 33 0b 0c 82 89 c6 e8 6e 03 1f ff 41 ff c7 e9 90
+[   97.370429] RSP: 0000:ffffc90000013b50 EFLAGS: 00010286
+[   97.371852] RAX: 00000000fffffff0 RBX: ffff888005919c00 RCX: 0000000000000000
+[   97.373829] RDX: ffff888003f40000 RSI: ffffffff8236a598 RDI: ffff888003f40a68
+[   97.375715] RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
+[   97.377675] R10: ffffffff811c9ae5 R11: ffffffff8120c4e0 R12: 0000000000000000
+[   97.379591] R13: 0000000000000001 R14: 0000000000000015 R15: 0000000000000000
+[   97.381536] FS:  0000000000000000(0000) GS:ffff88807dcc0000(0000) knlGS:0000000000000000
+[   97.383813] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   97.385449] CR2: 0000000000000000 CR3: 0000000002244000 CR4: 00000000000006b0
+[   97.387347] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[   97.389277] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[   97.391196] Call Trace:
+[   97.391967]  <TASK>
+[   97.392647]  ? __warn+0xcc/0x180
+[   97.393640]  ? kprobe_trace_self_tests_init+0x3f1/0x480
+[   97.395181]  ? report_bug+0xbd/0x150
+[   97.396234]  ? handle_bug+0x3e/0x60
+[   97.397311]  ? exc_invalid_op+0x1a/0x50
+[   97.398434]  ? asm_exc_invalid_op+0x1a/0x20
+[   97.399652]  ? trace_kprobe_is_busy+0x20/0x20
+[   97.400904]  ? tracing_reset_all_online_cpus+0x15/0x90
+[   97.402304]  ? kprobe_trace_self_tests_init+0x3f1/0x480
+[   97.403773]  ? init_kprobe_trace+0x50/0x50
+[   97.404972]  do_one_initcall+0x112/0x240
+[   97.406113]  do_initcall_level+0x95/0xb0
+[   97.407286]  ? kernel_init+0x1a/0x1a0
+[   97.408401]  do_initcalls+0x3f/0x70
+[   97.409452]  kernel_init_freeable+0x16f/0x1e0
+[   97.410662]  ? rest_init+0x1f0/0x1f0
+[   97.411738]  kernel_init+0x1a/0x1a0
+[   97.412788]  ret_from_fork+0x39/0x50
+[   97.413817]  ? rest_init+0x1f0/0x1f0
+[   97.414844]  ret_from_fork_asm+0x11/0x20
+[   97.416285]  </TASK>
+[   97.417134] irq event stamp: 13437323
+[   97.418376] hardirqs last  enabled at (13437337): [<ffffffff8110bc0c>] console_unlock+0x11c/0x150
+[   97.421285] hardirqs last disabled at (13437370): [<ffffffff8110bbf1>] console_unlock+0x101/0x150
+[   97.423838] softirqs last  enabled at (13437366): [<ffffffff8108e17f>] handle_softirqs+0x23f/0x2a0
+[   97.426450] softirqs last disabled at (13437393): [<ffffffff8108e346>] __irq_exit_rcu+0x66/0xd0
+[   97.428850] ---[ end trace 0000000000000000 ]---
+
+And also, since we can not cleanup dynamic_event file, ftracetest are
+failed too.
+
+To avoid these issues, build these tests only as modules.
+
+Link: https://lore.kernel.org/all/171811263754.85078.5877446624311852525.stgit@devnote2/
+
+Fixes: 9fe41efaca08 ("tracing: Add synth event generation test module")
+Fixes: 64836248dda2 ("tracing: Add kprobe event command generation test module")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_exar.c | 42 +++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ kernel/trace/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250_exar.c b/drivers/tty/serial/8250/8250_exar.c
-index 48769e059772a..a38820a1c5cd2 100644
---- a/drivers/tty/serial/8250/8250_exar.c
-+++ b/drivers/tty/serial/8250/8250_exar.c
-@@ -41,8 +41,50 @@
- #define PCI_DEVICE_ID_COMMTECH_4228PCIE		0x0021
- #define PCI_DEVICE_ID_COMMTECH_4222PCIE		0x0022
+diff --git a/kernel/trace/Kconfig b/kernel/trace/Kconfig
+index 29db703f68806..467975300ddd5 100644
+--- a/kernel/trace/Kconfig
++++ b/kernel/trace/Kconfig
+@@ -824,7 +824,7 @@ config PREEMPTIRQ_DELAY_TEST
  
-+#define PCI_VENDOR_ID_CONNECT_TECH				0x12c4
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_SP_OPTO        0x0340
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_SP_OPTO_A      0x0341
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_SP_OPTO_B      0x0342
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XPRS           0x0350
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_A         0x0351
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_B         0x0352
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS           0x0353
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_16_XPRS_A        0x0354
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_16_XPRS_B        0x0355
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XPRS_OPTO      0x0360
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_OPTO_A    0x0361
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_OPTO_B    0x0362
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP             0x0370
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP_232         0x0371
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP_485         0x0372
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_4_SP           0x0373
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_6_2_SP           0x0374
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_6_SP           0x0375
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP_232_NS      0x0376
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XP_OPTO_LEFT   0x0380
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XP_OPTO_RIGHT  0x0381
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XP_OPTO        0x0382
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_4_XPRS_OPTO    0x0392
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP        0x03A0
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP_232    0x03A1
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP_485    0x03A2
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP_232_NS 0x03A3
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XEG001               0x0602
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_BASE           0x1000
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_2              0x1002
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_4              0x1004
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_8              0x1008
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_12             0x100C
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_16             0x1010
-+#define PCI_DEVICE_ID_CONNECT_TECH_PCI_XR79X_12_XIG00X          0x110c
-+#define PCI_DEVICE_ID_CONNECT_TECH_PCI_XR79X_12_XIG01X          0x110d
-+#define PCI_DEVICE_ID_CONNECT_TECH_PCI_XR79X_16                 0x1110
-+
- #define PCI_DEVICE_ID_EXAR_XR17V4358		0x4358
- #define PCI_DEVICE_ID_EXAR_XR17V8358		0x8358
-+#define PCI_DEVICE_ID_EXAR_XR17V252		0x0252
-+#define PCI_DEVICE_ID_EXAR_XR17V254		0x0254
-+#define PCI_DEVICE_ID_EXAR_XR17V258		0x0258
+ config SYNTH_EVENT_GEN_TEST
+ 	tristate "Test module for in-kernel synthetic event generation"
+-	depends on SYNTH_EVENTS
++	depends on SYNTH_EVENTS && m
+ 	help
+           This option creates a test module to check the base
+           functionality of in-kernel synthetic event definition and
+@@ -837,7 +837,7 @@ config SYNTH_EVENT_GEN_TEST
  
- #define PCI_SUBDEVICE_ID_USR_2980		0x0128
- #define PCI_SUBDEVICE_ID_USR_2981		0x0129
+ config KPROBE_EVENT_GEN_TEST
+ 	tristate "Test module for in-kernel kprobe event generation"
+-	depends on KPROBE_EVENTS
++	depends on KPROBE_EVENTS && m
+ 	help
+           This option creates a test module to check the base
+           functionality of in-kernel kprobe event definition.
 -- 
 2.43.0
 
