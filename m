@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-57156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A9FD925B2A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF37925C3D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:16:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 901DE28F3B4
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:05:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E6241C20D9E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A3C181330;
-	Wed,  3 Jul 2024 10:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47D117CA1B;
+	Wed,  3 Jul 2024 11:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7Efgxyn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCFfuDie"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100E4173336;
-	Wed,  3 Jul 2024 10:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7332661FDF;
+	Wed,  3 Jul 2024 11:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004018; cv=none; b=KQ9cOx/hZ6YXK3cI/j7/YnrKt6dpuYhQQU8FGJ4QtAdaoqzXX4uBh3DvhltZuhUg65dcfgMZWpvqo/mby86Zw6/tfcJgX+ZeRjU0yuXVHaWycYn5WFUgWrp5i2IwVv2RrLmi/27riMA3HlrkWi0GE/M/oiQO6HhVBoiu9YEs4mc=
+	t=1720004714; cv=none; b=F2Kceg8spY+X6TXuzQ1wIphBu2qLWIQux0xjThPgnXElW9D33xi8z6DmXW4vmfLnSTpPO6VSOQFl5f0dwJ95TLxtqB22R1sgpoUNIDjlBGMI++AU/Lo8lgUs3fwJm/jTnHV7YbvPU/4Qs5Ulk9IVtZtqWpUU8p3cRrYiS4CTkZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004018; c=relaxed/simple;
-	bh=FQsRUDpSFj8n+vvJdxmq971k0rlWufiQ6wgNQXBxuWM=;
+	s=arc-20240116; t=1720004714; c=relaxed/simple;
+	bh=+8wCniffQK5AMjyS9HfK9eABFvo91e0iw5knNmvO0TU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BDO1AfPCvh0MlVt/wl9zrL9jzT9wkyUnEMviYt3gJD6RNW3B8C63fHyiqPHISuE/iap3Bx+VlMgIsTyWYLiD/5AN2wqqIhXeYqb8FRrN0bGn29ZpW4sILQoYqQb+7fkHzLz8V5eKZ+sv4eiqK4HBE317X7d/j1gCKyii3ISX3i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7Efgxyn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4603BC2BD10;
-	Wed,  3 Jul 2024 10:53:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CBkG8c/IHvB7JxB8phQ3VKltYthufnqggSquFminhBzVcP3QHY7vm+3/tVDVSvmtldky4Hqg6NIvU1pwByyFtFsLZ3LJSSM8tPT0F2vEAEi3Yzanh9WrTkrz1hOv5exRmX82qDjWArIz9PT6sYoGY5nWnOTq8FSjNDU4EJ+NaXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QCFfuDie; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA35C2BD10;
+	Wed,  3 Jul 2024 11:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004017;
-	bh=FQsRUDpSFj8n+vvJdxmq971k0rlWufiQ6wgNQXBxuWM=;
+	s=korg; t=1720004714;
+	bh=+8wCniffQK5AMjyS9HfK9eABFvo91e0iw5knNmvO0TU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j7EfgxynQ3eENh+Ug/Zrj3Vo6/bNbooYbDRjajkpUJBlWiTvN1qRQtzuK8oKsZcBD
-	 3ncRn4cBjlc6G95a23hrmbznKpsvIJb34UthEgJdF6ygOaJDuBIMmMFlwXQl6j7m1i
-	 0/d0c5T5MPrge7OezuSs3ajvetoS1Ciz9hYfo/oI=
+	b=QCFfuDietjNowJqzcSiYVC3yZma9hD9hTaQ0BfFOM864ylBwE50guL4H2+q3uRvDQ
+	 iTi5814rtFLSKmIsS/4mavM9HuRg3vqeo57numZnUhDP0WSKokH0zAHlJ5w4+qx5FP
+	 8Z9WWoXI1noqL6TARgBXnM638MWknTPaeNLQgOFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 055/189] iommu: Return right value in iommu_sva_bind_device()
+Subject: [PATCH 5.10 135/290] MIPS: Routerboard 532: Fix vendor retry check code
 Date: Wed,  3 Jul 2024 12:38:36 +0200
-Message-ID: <20240703102843.589811494@linuxfoundation.org>
+Message-ID: <20240703102909.286329856@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 89e8a2366e3bce584b6c01549d5019c5cda1205e ]
+[ Upstream commit ae9daffd9028f2500c9ac1517e46d4f2b57efb80 ]
 
-iommu_sva_bind_device() should return either a sva bond handle or an
-ERR_PTR value in error cases. Existing drivers (idxd and uacce) only
-check the return value with IS_ERR(). This could potentially lead to
-a kernel NULL pointer dereference issue if the function returns NULL
-instead of an error pointer.
+read_config_dword() contains strange condition checking ret for a
+number of values. The ret variable, however, is always zero because
+config_access() never returns anything else. Thus, the retry is always
+taken until number of tries is exceeded.
 
-In reality, this doesn't cause any problems because iommu_sva_bind_device()
-only returns NULL when the kernel is not configured with CONFIG_IOMMU_SVA.
-In this case, iommu_dev_enable_feature(dev, IOMMU_DEV_FEAT_SVA) will
-return an error, and the device drivers won't call iommu_sva_bind_device()
-at all.
+The code looks like it wants to check *val instead of ret to see if the
+read gave an error response.
 
-Fixes: 26b25a2b98e4 ("iommu: Bind process address spaces to devices")
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Link: https://lore.kernel.org/r/20240528042528.71396-1-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: 73b4390fb234 ("[MIPS] Routerboard 532: Support for base system")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/iommu.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/pci/ops-rc32434.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-index 6ca3fb2873d7d..9246521bd627f 100644
---- a/include/linux/iommu.h
-+++ b/include/linux/iommu.h
-@@ -1006,7 +1006,7 @@ iommu_aux_get_pasid(struct iommu_domain *domain, struct device *dev)
- static inline struct iommu_sva *
- iommu_sva_bind_device(struct device *dev, struct mm_struct *mm, void *drvdata)
- {
--	return NULL;
-+	return ERR_PTR(-ENODEV);
- }
- 
- static inline void iommu_sva_unbind_device(struct iommu_sva *handle)
+diff --git a/arch/mips/pci/ops-rc32434.c b/arch/mips/pci/ops-rc32434.c
+index 874ed6df97683..34b9323bdabb0 100644
+--- a/arch/mips/pci/ops-rc32434.c
++++ b/arch/mips/pci/ops-rc32434.c
+@@ -112,8 +112,8 @@ static int read_config_dword(struct pci_bus *bus, unsigned int devfn,
+ 	 * gives them time to settle
+ 	 */
+ 	if (where == PCI_VENDOR_ID) {
+-		if (ret == 0xffffffff || ret == 0x00000000 ||
+-		    ret == 0x0000ffff || ret == 0xffff0000) {
++		if (*val == 0xffffffff || *val == 0x00000000 ||
++		    *val == 0x0000ffff || *val == 0xffff0000) {
+ 			if (delay > 4)
+ 				return 0;
+ 			delay *= 2;
 -- 
 2.43.0
 
