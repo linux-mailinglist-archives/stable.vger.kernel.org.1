@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-56940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE759259D9
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:51:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07546925F62
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:58:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9762D1F21EF9
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:51:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B28EB2C3AC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E124F17BB2A;
-	Wed,  3 Jul 2024 10:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30DC31862A8;
+	Wed,  3 Jul 2024 11:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5D5ATAc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lL3+lCZL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CD9142E73;
-	Wed,  3 Jul 2024 10:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32C645945;
+	Wed,  3 Jul 2024 11:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003352; cv=none; b=U030Z9MH4AEOBrMSQcMjgzM96SvslDcGypeRVDGMR5ypr13vccb2E6FJ6VA/Wj7Nm9tbhXqDvZ07dk66ul/m8+irMIyeNpdJ0L7je7Rvzyt1tltRAHYL4SHA60I3zDY5zM1+UfYgwCwO1jA6+suwuqZnG9wlh+4ne1YCjX6uOBg=
+	t=1720005692; cv=none; b=CWhDmRS0ydmaG45SpRCWjrHTbFI8cjq2AxGXXS5hGc0doZqio/4WABfa11Y5Kn68Sg/wr7+IJbtXRBYn6Gr5ZaRuFDj8m+BlMf39wpC1lSpBDN5KEYGlqNAmM34XJstZ81TbOTVDW+xgx2NsGv/01FZcx/uXbB7EYelsCA0ye4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003352; c=relaxed/simple;
-	bh=CFeWUrrLuQf24cIAt8wtjuVD5Yx/CeSyjqv6lxFmYmc=;
+	s=arc-20240116; t=1720005692; c=relaxed/simple;
+	bh=KCqwNK/pGJmDSMY2Bq9BBGSlbQYtk36VZiG7V+R8xlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ULFbNCADq7Kbw92S49yYKm1oWbpFI5mHylUx/J6Bibgj7Zra5BTBAoxDWnvl8yM7719kwVzwMI5gQFYRYT48nNgFhMjYvzksDx60O6M1CN081VD43krtr4GG0OVFUvbp3RBpwoe03ofs91m6wHDWlyUiYYYV4I730C8RRFMLpns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5D5ATAc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E34C2BD10;
-	Wed,  3 Jul 2024 10:42:31 +0000 (UTC)
+	 MIME-Version; b=EP3ZiUa3FaH/bYmveoV/v/Ev6lFb4Jk4PWCVBHZ/0oXfSuaJrd3DTZNj1qq6wjPvaiXjaGBNICPnTWbX8VlXpvdiv7NVScSAnmA3TyOsmaPCvt4tIOwrSMgd/8D/oQJSk95ePH7G5zQ8s99oZV5LSIwC/Cb3m9CDP+EMyD37oag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lL3+lCZL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B17FC2BD10;
+	Wed,  3 Jul 2024 11:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003352;
-	bh=CFeWUrrLuQf24cIAt8wtjuVD5Yx/CeSyjqv6lxFmYmc=;
+	s=korg; t=1720005691;
+	bh=KCqwNK/pGJmDSMY2Bq9BBGSlbQYtk36VZiG7V+R8xlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q5D5ATAcFAS9wgeYH2v4CyZM7j7LXgd6VbINgwpqL8g+G9MfOgL8eTcVgYLzhABKU
-	 QP6Pg4/W5q6ZrNMpei0gjt7VyvCgu2pRiH8FEzaUV9uQ3lYp36Qn7bj0fFOGKPphf9
-	 Vaef4+boOMZj2ia8590l5AVmFV5WgESxQ6moChCw=
+	b=lL3+lCZL5itt2/qi77rPrW+fPQL2u/BoBthMp+mjHoawUw4KhVnVsZL18sQuqJhiq
+	 tcVT8LQdpbKXFKKoeAf40mlfDlKRUgSSPpeLTK8147c6y2zGarus2lgHjJi+SAaIFP
+	 evf9UuzqwI8h02P/pzm/3x6rDCp5mykN3Ns/H1GM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Liad Kaufman <liad.kaufman@intel.com>,
-	Luciano Coelho <luciano.coelho@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 003/139] wifi: iwlwifi: mvm: revert gen2 TX A-MPDU size to 64
+Subject: [PATCH 5.15 164/356] netpoll: Fix race condition in netpoll_owner_active
 Date: Wed,  3 Jul 2024 12:38:20 +0200
-Message-ID: <20240703102830.564905798@linuxfoundation.org>
+Message-ID: <20240703102919.310126473@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 4a7aace2899711592327463c1a29ffee44fcc66e ]
+[ Upstream commit c2e6a872bde9912f1a7579639c5ca3adf1003916 ]
 
-We don't actually support >64 even for HE devices, so revert
-back to 64. This fixes an issue where the session is refused
-because the queue is configured differently from the actual
-session later.
+KCSAN detected a race condition in netpoll:
 
-Fixes: 514c30696fbc ("iwlwifi: add support for IEEE802.11ax")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Liad Kaufman <liad.kaufman@intel.com>
-Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240510170500.52f7b4cf83aa.If47e43adddf7fe250ed7f5571fbb35d8221c7c47@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+	BUG: KCSAN: data-race in net_rx_action / netpoll_send_skb
+	write (marked) to 0xffff8881164168b0 of 4 bytes by interrupt on cpu 10:
+	net_rx_action (./include/linux/netpoll.h:90 net/core/dev.c:6712 net/core/dev.c:6822)
+<snip>
+	read to 0xffff8881164168b0 of 4 bytes by task 1 on cpu 2:
+	netpoll_send_skb (net/core/netpoll.c:319 net/core/netpoll.c:345 net/core/netpoll.c:393)
+	netpoll_send_udp (net/core/netpoll.c:?)
+<snip>
+	value changed: 0x0000000a -> 0xffffffff
+
+This happens because netpoll_owner_active() needs to check if the
+current CPU is the owner of the lock, touching napi->poll_owner
+non atomically. The ->poll_owner field contains the current CPU holding
+the lock.
+
+Use an atomic read to check if the poll owner is the current CPU.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://lore.kernel.org/r/20240429100437.3487432-1-leitao@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rs.h | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ net/core/netpoll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.h b/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
-index d0f47899f2849..f76f708ea98c9 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
-@@ -144,13 +144,8 @@ enum {
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 47a86da6ab980..2a9d95368d5a2 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -316,7 +316,7 @@ static int netpoll_owner_active(struct net_device *dev)
+ 	struct napi_struct *napi;
  
- #define LINK_QUAL_AGG_FRAME_LIMIT_DEF	(63)
- #define LINK_QUAL_AGG_FRAME_LIMIT_MAX	(63)
--/*
-- * FIXME - various places in firmware API still use u8,
-- * e.g. LQ command and SCD config command.
-- * This should be 256 instead.
-- */
--#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_DEF	(255)
--#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_MAX	(255)
-+#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_DEF	(64)
-+#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_MAX	(64)
- #define LINK_QUAL_AGG_FRAME_LIMIT_MIN	(0)
- 
- #define LQ_SIZE		2	/* 2 mode tables:  "Active" and "Search" */
+ 	list_for_each_entry_rcu(napi, &dev->napi_list, dev_list) {
+-		if (napi->poll_owner == smp_processor_id())
++		if (READ_ONCE(napi->poll_owner) == smp_processor_id())
+ 			return 1;
+ 	}
+ 	return 0;
 -- 
 2.43.0
 
