@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FC22925C49
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:16:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70CDC925A07
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 520D71C20A75
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25F831F21905
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A984A173328;
-	Wed,  3 Jul 2024 11:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7113E1741C0;
+	Wed,  3 Jul 2024 10:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gLIx+5xk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjQAnSdz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645EE173355;
-	Wed,  3 Jul 2024 11:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E88B173351;
+	Wed,  3 Jul 2024 10:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004744; cv=none; b=AQf5e3PhRk/IiDZk9My0bwdWCImbPG6A6eKJ85JXDyRRzmdSWB8PCgxgeA5HfNYxY0Jf8vpNSdcIIYmE6WI+ii/FbfTnjv/QR6aza6hos85o9zpk25m8vYjieA1bZLkmbzR3CRDi/PeNO19BJBxVColky5iD+Gu0FRGHbeJBuCI=
+	t=1720003473; cv=none; b=ghtpEbjZnuy82MGpxDjde7ZA+SmA79MOc3xysaZ1sKAv0yBgE3Y01SbAbJZ8sImH4OlPNN4riVd8WjC/p+xU26ZqU+mJUlY6LUBlCpDWRqfFuAt3KPiKUH78Uv66xB6O31RHhD5hkw2c2auL5nE/KTMoAbRHMo7IIXCigLQcxrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004744; c=relaxed/simple;
-	bh=aPdjMLTU6cVAq3mODHy94ZOoUb2VV7ehS1LTcg0aXMc=;
+	s=arc-20240116; t=1720003473; c=relaxed/simple;
+	bh=SQBYaZOICsExscVN3KcNq7FxTblhZs9seOT8ldBbwyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E87OxNTW5Yzac8wVatFfB6C4prZYncMyUHq8rXuZHRsHFWTPG7kplTMeUGKlOpBtlCkFli/qoxqru5t3YrrfTHqDvduFXQaR7hnnj/kRTxvJNMZmDY45xBIS5XKT0R6nAkMIipVP7hXXricS+Pf7QC02H4wGQY/zQyeQmW/pG7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gLIx+5xk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D425AC4AF0C;
-	Wed,  3 Jul 2024 11:05:43 +0000 (UTC)
+	 MIME-Version; b=Q0BmDiyJGHGfLawDp/ogWvlm6FAlQo1yqNilO/KPqIFdd5Ruq9gWrD3ASkuJ+p7CgjkIcH0KoxEyxnjTD/xpGS92rPvRM+GJKOYNSpqcN2Ves3XGdUiy+f0MkcN4UA23o7NRmRX9QNtjVMDpDi0tSY6nT9lZ0lZvE5rjrTnFT+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjQAnSdz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE7FC2BD10;
+	Wed,  3 Jul 2024 10:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004744;
-	bh=aPdjMLTU6cVAq3mODHy94ZOoUb2VV7ehS1LTcg0aXMc=;
+	s=korg; t=1720003473;
+	bh=SQBYaZOICsExscVN3KcNq7FxTblhZs9seOT8ldBbwyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gLIx+5xkMCSV9oSGoEcB5g/L7ysMs4sGX0bk5YJEQplFjW/o0lM0sXHU2uFXOmH7v
-	 cin119dAm/PE/ynzsuAY3fhC8PhP+ZIr8j1zVMW3jX/7fug+TtqxOVoUFpntkQU5tS
-	 jf5p2VFix41y/LwIHbx8MBaKhZFGPLg50wv/2QjA=
+	b=rjQAnSdzN6xmlxyU6f7Ub0YVeBl7yfOopwaPUeuP8K9JcNja7eVAPPpJZ9mc+Wclf
+	 /QsswK6mAgy6eYOkO/nvkHl0B0qziPkn0oCB4FLMCEz0T3ENKsz0mYtG745o7s4/4x
+	 Ho1bbNqEbA4xMRysgJC3/Dlc5RBRX2O43tCE50Dg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+c8166c541d3971bf6c87@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 144/290] qca_spi: Make interrupt remembering atomic
+Subject: [PATCH 4.19 028/139] nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors
 Date: Wed,  3 Jul 2024 12:38:45 +0200
-Message-ID: <20240703102909.623088483@linuxfoundation.org>
+Message-ID: <20240703102831.503022125@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 2d7198278ece01818cd95a3beffbdf8b2a353fa0 ]
+[ Upstream commit 7373a51e7998b508af7136530f3a997b286ce81c ]
 
-The whole mechanism to remember occurred SPI interrupts is not atomic,
-which could lead to unexpected behavior. So fix this by using atomic bit
-operations instead.
+The error handling in nilfs_empty_dir() when a directory folio/page read
+fails is incorrect, as in the old ext2 implementation, and if the
+folio/page cannot be read or nilfs_check_folio() fails, it will falsely
+determine the directory as empty and corrupt the file system.
 
-Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20240614145030.7781-1-wahrenst@gmx.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+In addition, since nilfs_empty_dir() does not immediately return on a
+failed folio/page read, but continues to loop, this can cause a long loop
+with I/O if i_size of the directory's inode is also corrupted, causing the
+log writer thread to wait and hang, as reported by syzbot.
+
+Fix these issues by making nilfs_empty_dir() immediately return a false
+value (0) if it fails to get a directory folio/page.
+
+Link: https://lkml.kernel.org/r/20240604134255.7165-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+c8166c541d3971bf6c87@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c8166c541d3971bf6c87
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qualcomm/qca_debug.c |    6 ++----
- drivers/net/ethernet/qualcomm/qca_spi.c   |   16 ++++++++--------
- drivers/net/ethernet/qualcomm/qca_spi.h   |    3 +--
- 3 files changed, 11 insertions(+), 14 deletions(-)
+ fs/nilfs2/dir.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/qualcomm/qca_debug.c
-+++ b/drivers/net/ethernet/qualcomm/qca_debug.c
-@@ -110,10 +110,8 @@ qcaspi_info_show(struct seq_file *s, voi
+diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
+index 22f1f75a90c1a..552234ef22fe7 100644
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -627,7 +627,7 @@ int nilfs_empty_dir(struct inode *inode)
  
- 	seq_printf(s, "IRQ              : %d\n",
- 		   qca->spi_dev->irq);
--	seq_printf(s, "INTR REQ         : %u\n",
--		   qca->intr_req);
--	seq_printf(s, "INTR SVC         : %u\n",
--		   qca->intr_svc);
-+	seq_printf(s, "INTR             : %lx\n",
-+		   qca->intr);
+ 		kaddr = nilfs_get_page(inode, i, &page);
+ 		if (IS_ERR(kaddr))
+-			continue;
++			return 0;
  
- 	seq_printf(s, "SPI max speed    : %lu\n",
- 		   (unsigned long)qca->spi_dev->max_speed_hz);
---- a/drivers/net/ethernet/qualcomm/qca_spi.c
-+++ b/drivers/net/ethernet/qualcomm/qca_spi.c
-@@ -49,6 +49,8 @@
- 
- #define MAX_DMA_BURST_LEN 5000
- 
-+#define SPI_INTR 0
-+
- /*   Modules parameters     */
- #define QCASPI_CLK_SPEED_MIN 1000000
- #define QCASPI_CLK_SPEED_MAX 16000000
-@@ -585,14 +587,14 @@ qcaspi_spi_thread(void *data)
- 			continue;
- 		}
- 
--		if ((qca->intr_req == qca->intr_svc) &&
-+		if (!test_bit(SPI_INTR, &qca->intr) &&
- 		    !qca->txr.skb[qca->txr.head])
- 			schedule();
- 
- 		set_current_state(TASK_RUNNING);
- 
--		netdev_dbg(qca->net_dev, "have work to do. int: %d, tx_skb: %p\n",
--			   qca->intr_req - qca->intr_svc,
-+		netdev_dbg(qca->net_dev, "have work to do. int: %lu, tx_skb: %p\n",
-+			   qca->intr,
- 			   qca->txr.skb[qca->txr.head]);
- 
- 		qcaspi_qca7k_sync(qca, QCASPI_EVENT_UPDATE);
-@@ -606,8 +608,7 @@ qcaspi_spi_thread(void *data)
- 			msleep(QCASPI_QCA7K_REBOOT_TIME_MS);
- 		}
- 
--		if (qca->intr_svc != qca->intr_req) {
--			qca->intr_svc = qca->intr_req;
-+		if (test_and_clear_bit(SPI_INTR, &qca->intr)) {
- 			start_spi_intr_handling(qca, &intr_cause);
- 
- 			if (intr_cause & SPI_INT_CPU_ON) {
-@@ -669,7 +670,7 @@ qcaspi_intr_handler(int irq, void *data)
- {
- 	struct qcaspi *qca = data;
- 
--	qca->intr_req++;
-+	set_bit(SPI_INTR, &qca->intr);
- 	if (qca->spi_thread &&
- 	    qca->spi_thread->state != TASK_RUNNING)
- 		wake_up_process(qca->spi_thread);
-@@ -686,8 +687,7 @@ qcaspi_netdev_open(struct net_device *de
- 	if (!qca)
- 		return -EINVAL;
- 
--	qca->intr_req = 1;
--	qca->intr_svc = 0;
-+	set_bit(SPI_INTR, &qca->intr);
- 	qca->sync = QCASPI_SYNC_UNKNOWN;
- 	qcafrm_fsm_init_spi(&qca->frm_handle);
- 
---- a/drivers/net/ethernet/qualcomm/qca_spi.h
-+++ b/drivers/net/ethernet/qualcomm/qca_spi.h
-@@ -92,8 +92,7 @@ struct qcaspi {
- 	struct qcafrm_handle frm_handle;
- 	struct sk_buff *rx_skb;
- 
--	unsigned int intr_req;
--	unsigned int intr_svc;
-+	unsigned long intr;
- 	u16 reset_count;
- 
- #ifdef CONFIG_DEBUG_FS
+ 		de = (struct nilfs_dir_entry *)kaddr;
+ 		kaddr += nilfs_last_byte(inode, i) - NILFS_DIR_REC_LEN(1);
+-- 
+2.43.0
+
 
 
 
