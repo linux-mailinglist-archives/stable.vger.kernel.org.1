@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-57163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 997AF925B0B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81213925A96
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:02:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 522051F2147F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:05:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9821B30463
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324AA181B9E;
-	Wed,  3 Jul 2024 10:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112821822DE;
+	Wed,  3 Jul 2024 10:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PkSu5Rx5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hdpu/4VK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3973173336;
-	Wed,  3 Jul 2024 10:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FC8181D1A;
+	Wed,  3 Jul 2024 10:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004039; cv=none; b=ofOSq/Ytr3HGUgH0I+eij/UEujPCvvX392f42HKoJ7QhSrffxLQkK1jybKL521BtZ0RCqBURhHcWar8C1YLTqtUO75oHAR7Sq0twh9hJelz3KX6l7/oYjP+w63/fJu7q30wPVU3Baw3kpv6VzzHqGLzOUHh1HFNGUXeynRzdxto=
+	t=1720003496; cv=none; b=LKN7bkiJiTiCKacg3TS6yr/eYA9pWzt2nFmnAxzCsS6OTxy3ixvhQjCBuMJKbEcI5Z94Oflh6hHwbBt0Qapr6rB9jeC0YKbBbstDpzAHzogca8nmneY5JAg9avAy0j4gB1yjdhk2pflxOXa/3wm/JQhuvfV5kqggZNWbZ2kGDFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004039; c=relaxed/simple;
-	bh=YwIcw2hFws2N+2nG7kY1n2oyv7SleyoyV/toWEAjNZ8=;
+	s=arc-20240116; t=1720003496; c=relaxed/simple;
+	bh=NgMJlnSNeqHTbNm07CAUI/wfCRd4Vqm2wXRBfxXXwdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MI1Ioxd5kp7i71mCUn16/gtXAqN/dTu7OtC8ez++9V35t/RCo7Ke4ThwEW71PudBDitnFYQX7zK3RVrtTVixdEOmA0M8jJoPikoA2KUpBsBWiBPkyCcUyKBQfJylKhahQHJI7CzYsfDq06i6niWCXRyNUL5vMTNClzxVhpYsPlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PkSu5Rx5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65455C2BD10;
-	Wed,  3 Jul 2024 10:53:58 +0000 (UTC)
+	 MIME-Version; b=hEQ0VY0rLiriOYCZvN9PH9FgAxg6AYJsj0u8/8Oufvggn0hJJAiz/iYob4XPaaBQqi2B+Hs1fktZShXUe/Vee9uaqNMyXgydyt4vmuHLT+OM5eEDK3z2q20ULEhpk3IgDIACQoXE//OXK1m/awy27GAqmWTao4b79Qi7JK1xSeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hdpu/4VK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF54C2BD10;
+	Wed,  3 Jul 2024 10:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004038;
-	bh=YwIcw2hFws2N+2nG7kY1n2oyv7SleyoyV/toWEAjNZ8=;
+	s=korg; t=1720003496;
+	bh=NgMJlnSNeqHTbNm07CAUI/wfCRd4Vqm2wXRBfxXXwdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PkSu5Rx5j/sgqW5a6VSjRQtSo5x2NrW2qTz1/n5zV5mHOIfg3vIS171AD1AbPCwKG
-	 eLT3GMWYdU7+rQd2HNPts6ez4+XQ+KUKewhbwNMQn544MphZCU6tq2RE5T4i1e0p7X
-	 rH2CbcqJrCHo/fnn5OwnJQyRNJrhaZ+uiVvXGFBw=
+	b=hdpu/4VKroQ9cbMqz+hJM8nI4Gx3V+I1o8VJ6stshMe8TEnYG+6P30y3PG0BvHrCB
+	 BRJrXUjutonK6CVzSyYIPeorXvlTn67bICBxoaw/6zYwnLxllK7ysTDfo2jako0hfJ
+	 aHvQ57wRw+R8Zhv1B6GwNY0yv8eqFT1AxpmjnaoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d327a1f3b12e1e206c16@syzkaller.appspotmail.com,
-	Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
-	"David S. Miller" <davem@davemloft.net>,
+	Eric Heintzmann <heintzmann.eric@free.fr>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 104/189] netrom: Fix a memory leak in nr_heartbeat_expiry()
+Subject: [PATCH 4.19 068/139] PCI/PM: Avoid D3cold for HP Pavilion 17 PC/1972 PCIe Ports
 Date: Wed,  3 Jul 2024 12:39:25 +0200
-Message-ID: <20240703102845.429156524@linuxfoundation.org>
+Message-ID: <20240703102833.010003320@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 0b9130247f3b6a1122478471ff0e014ea96bb735 ]
+[ Upstream commit 256df20c590bf0e4d63ac69330cf23faddac3e08 ]
 
-syzbot reported a memory leak in nr_create() [0].
+Hewlett-Packard HP Pavilion 17 Notebook PC/1972 is an Intel Ivy Bridge
+system with a muxless AMD Radeon dGPU.  Attempting to use the dGPU fails
+with the following sequence:
 
-Commit 409db27e3a2e ("netrom: Fix use-after-free of a listening socket.")
-added sock_hold() to the nr_heartbeat_expiry() function, where
-a) a socket has a SOCK_DESTROY flag or
-b) a listening socket has a SOCK_DEAD flag.
+  ACPI Error: Aborting method \AMD3._ON due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
+  radeon 0000:01:00.0: not ready 1023ms after resume; waiting
+  radeon 0000:01:00.0: not ready 2047ms after resume; waiting
+  radeon 0000:01:00.0: not ready 4095ms after resume; waiting
+  radeon 0000:01:00.0: not ready 8191ms after resume; waiting
+  radeon 0000:01:00.0: not ready 16383ms after resume; waiting
+  radeon 0000:01:00.0: not ready 32767ms after resume; waiting
+  radeon 0000:01:00.0: not ready 65535ms after resume; giving up
+  radeon 0000:01:00.0: Unable to change power state from D3cold to D0, device inaccessible
 
-But in the case "a," when the SOCK_DESTROY flag is set, the file descriptor
-has already been closed and the nr_release() function has been called.
-So it makes no sense to hold the reference count because no one will
-call another nr_destroy_socket() and put it as in the case "b."
+The issue is that the Root Port the dGPU is connected to can't handle the
+transition from D3cold to D0 so the dGPU can't properly exit runtime PM.
 
-nr_connect
-  nr_establish_data_link
-    nr_start_heartbeat
+The existing logic in pci_bridge_d3_possible() checks for systems that are
+newer than 2015 to decide that D3 is safe.  This would nominally work for
+an Ivy Bridge system (which was discontinued in 2015), but this system
+appears to have continued to receive BIOS updates until 2017 and so this
+existing logic doesn't appropriately capture it.
 
-nr_release
-  switch (nr->state)
-  case NR_STATE_3
-    nr->state = NR_STATE_2
-    sock_set_flag(sk, SOCK_DESTROY);
+Add the system to bridge_d3_blacklist to prevent D3cold from being used.
 
-                        nr_rx_frame
-                          nr_process_rx_frame
-                            switch (nr->state)
-                            case NR_STATE_2
-                              nr_state2_machine()
-                                nr_disconnect()
-                                  nr_sk(sk)->state = NR_STATE_0
-                                  sock_set_flag(sk, SOCK_DEAD)
-
-                        nr_heartbeat_expiry
-                          switch (nr->state)
-                          case NR_STATE_0
-                            if (sock_flag(sk, SOCK_DESTROY) ||
-                               (sk->sk_state == TCP_LISTEN
-                                 && sock_flag(sk, SOCK_DEAD)))
-                               sock_hold()  // ( !!! )
-                               nr_destroy_socket()
-
-To fix the memory leak, let's call sock_hold() only for a listening socket.
-
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with Syzkaller.
-
-[0]: https://syzkaller.appspot.com/bug?extid=d327a1f3b12e1e206c16
-
-Reported-by: syzbot+d327a1f3b12e1e206c16@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d327a1f3b12e1e206c16
-Fixes: 409db27e3a2e ("netrom: Fix use-after-free of a listening socket.")
-Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lore.kernel.org/r/20240307163709.323-1-mario.limonciello@amd.com
+Reported-by: Eric Heintzmann <heintzmann.eric@free.fr>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3229
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Eric Heintzmann <heintzmann.eric@free.fr>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netrom/nr_timer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/pci.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/net/netrom/nr_timer.c b/net/netrom/nr_timer.c
-index 4e7c968cde2dc..5e3ca068f04e0 100644
---- a/net/netrom/nr_timer.c
-+++ b/net/netrom/nr_timer.c
-@@ -121,7 +121,8 @@ static void nr_heartbeat_expiry(struct timer_list *t)
- 		   is accepted() it isn't 'dead' so doesn't get removed. */
- 		if (sock_flag(sk, SOCK_DESTROY) ||
- 		    (sk->sk_state == TCP_LISTEN && sock_flag(sk, SOCK_DEAD))) {
--			sock_hold(sk);
-+			if (sk->sk_state == TCP_LISTEN)
-+				sock_hold(sk);
- 			bh_unlock_sock(sk);
- 			nr_destroy_socket(sk);
- 			goto out;
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 2ac400adaee11..4f229cb5d2a9f 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -2530,6 +2530,18 @@ static const struct dmi_system_id bridge_d3_blacklist[] = {
+ 			DMI_MATCH(DMI_BOARD_VERSION, "Continental Z2"),
+ 		},
+ 	},
++	{
++		/*
++		 * Changing power state of root port dGPU is connected fails
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/3229
++		 */
++		.ident = "Hewlett-Packard HP Pavilion 17 Notebook PC/1972",
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "Hewlett-Packard"),
++			DMI_MATCH(DMI_BOARD_NAME, "1972"),
++			DMI_MATCH(DMI_BOARD_VERSION, "95.33"),
++		},
++	},
+ #endif
+ 	{ }
+ };
 -- 
 2.43.0
 
