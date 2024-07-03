@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-57036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA6F925AAD
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 772FA925E30
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4D9829B0EC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:56:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D04B1F259B6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620AF186E56;
-	Wed,  3 Jul 2024 10:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B1217334F;
+	Wed,  3 Jul 2024 11:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIpo4F1U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1MNFYrGI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17703175545;
-	Wed,  3 Jul 2024 10:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0210613B280;
+	Wed,  3 Jul 2024 11:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003644; cv=none; b=YczxJwueqEaPHWge+gwe9q5goGz3GppVQpjRPIiJfIccIrSjLwrNbyqcYtW+Z/McoIM3ywdF2qvw9SyJNMdw/ZgOG21WEye3xAHMcEBdIUtoVBXr6bOgUEBfwtWmvbJjUbwc+jjY6w90TxdozfVbM+K52SSx0V+9d2PSBZcHNi4=
+	t=1720006034; cv=none; b=kT30MgaWiWP81PCbzQSUcIA3lmqNKJBCSnA+E/oltd3Zmxy/kqjaSSI/l1hai6IvmzxcouZybVU96e1T1lC53zhNlvvSHisVrwhvICa9fziao+u3aYDSikCGnv61Ut4pq8SLg9xauZnBgkFivup65btbOpocbP1r4plo5132SkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003644; c=relaxed/simple;
-	bh=0aaYNGZGZe3j2pN8mWrWWNaNMqkRh0V3S+JChQgLM24=;
+	s=arc-20240116; t=1720006034; c=relaxed/simple;
+	bh=tUVUW6ur5pi5Ck78zmCGGDl9bpv7rLPsAfNP7QM22q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NqNluL8Bs41CgE0ekCHgzUt+3twDmTPxVe3tBIaQAFWkMt0KVRYRuR3hAsddBvh7aDbk0c25AofH3Zwpii4FrryzJjvuRl5xR/aScMQkcILsKx8Qs1EJAKeYZjM8l0CYZRvRw8LYSbM1l+zpg6lk0IKRK3wOrOMMD//5YnMUwbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qIpo4F1U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFCFC2BD10;
-	Wed,  3 Jul 2024 10:47:23 +0000 (UTC)
+	 MIME-Version; b=OZY8mA5CW7KUeGybkdrMPnJhNE4qSFbn31P0EsYWX5FXrtwlHus0lO/uVZvmF+0SUSZsv3zhtcmqEMjAnnaQ9UfCy9ho9l9OlWLnpgR69V6pMEgIgHI9AHGvhx2AMq+TITXyBVd3kSNuXJvuCQRRhpoFoH6dEHzahq+NtMu//Ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1MNFYrGI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77BDBC2BD10;
+	Wed,  3 Jul 2024 11:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003643;
-	bh=0aaYNGZGZe3j2pN8mWrWWNaNMqkRh0V3S+JChQgLM24=;
+	s=korg; t=1720006033;
+	bh=tUVUW6ur5pi5Ck78zmCGGDl9bpv7rLPsAfNP7QM22q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qIpo4F1UGoA0//UkVrQoe8FESEdLQQYGCbsM7G+pMQ/BsrDfEfGzX7GC1hswHHir2
-	 OR6taGRLMklmPJ+WLxzpYs6QvEmMKW4LJdTAw1jQvOIEvkhGoLu3d2qEA8sRmIYhKL
-	 CvXBGTsVouKTKLP8xILV/ofkRKGNu+KNi2nzTDmI=
+	b=1MNFYrGI4t3Y1OBhJyGy0yaSBP++HQ8zkGE2IlZlt1grpfdiSmoC/bzoCrTjY7syt
+	 fWKZLQPNqmnIdaF1Tw29btVPrH2Nj4hArtlpbQuWgfKZFCKj/6TVcuHq6FXpLyPfrC
+	 yvqDWRNVuZB3CZGhFWo1yT2o6RU011wFOrtJ/UK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 116/139] x86: stop playing stack games in profile_pc()
+Subject: [PATCH 5.15 277/356] sparc: fix old compat_sys_select()
 Date: Wed,  3 Jul 2024 12:40:13 +0200
-Message-ID: <20240703102834.820327776@linuxfoundation.org>
+Message-ID: <20240703102923.593155419@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 093d9603b60093a9aaae942db56107f6432a5dca ]
+[ Upstream commit bae6428a9fffb2023191b0723e276cf1377a7c9f ]
 
-The 'profile_pc()' function is used for timer-based profiling, which
-isn't really all that relevant any more to begin with, but it also ends
-up making assumptions based on the stack layout that aren't necessarily
-valid.
+sparc has two identical select syscalls at numbers 93 and 230, respectively.
+During the conversion to the modern syscall.tbl format, the older one of the
+two broke in compat mode, and now refers to the native 64-bit syscall.
 
-Basically, the code tries to account the time spent in spinlocks to the
-caller rather than the spinlock, and while I support that as a concept,
-it's not worth the code complexity or the KASAN warnings when no serious
-profiling is done using timers anyway these days.
+Restore the correct behavior. This has very little effect, as glibc has
+been using the newer number anyway.
 
-And the code really does depend on stack layout that is only true in the
-simplest of cases.  We've lost the comment at some point (I think when
-the 32-bit and 64-bit code was unified), but it used to say:
-
-	Assume the lock function has either no stack frame or a copy
-	of eflags from PUSHF.
-
-which explains why it just blindly loads a word or two straight off the
-stack pointer and then takes a minimal look at the values to just check
-if they might be eflags or the return pc:
-
-	Eflags always has bits 22 and up cleared unlike kernel addresses
-
-but that basic stack layout assumption assumes that there isn't any lock
-debugging etc going on that would complicate the code and cause a stack
-frame.
-
-It causes KASAN unhappiness reported for years by syzkaller [1] and
-others [2].
-
-With no real practical reason for this any more, just remove the code.
-
-Just for historical interest, here's some background commits relating to
-this code from 2006:
-
-  0cb91a229364 ("i386: Account spinlocks to the caller during profiling for !FP kernels")
-  31679f38d886 ("Simplify profile_pc on x86-64")
-
-and a code unification from 2009:
-
-  ef4512882dbe ("x86: time_32/64.c unify profile_pc")
-
-but the basics of this thing actually goes back to before the git tree.
-
-Link: https://syzkaller.appspot.com/bug?extid=84fe685c02cd112a2ac3 [1]
-Link: https://lore.kernel.org/all/CAK55_s7Xyq=nh97=K=G1sxueOFrJDAvPOJAL4TPTCAYvmxO9_A@mail.gmail.com/ [2]
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 6ff645dd683a ("sparc: add system call table generation support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/time.c | 21 +--------------------
- 1 file changed, 1 insertion(+), 20 deletions(-)
+ arch/sparc/kernel/syscalls/syscall.tbl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/time.c b/arch/x86/kernel/time.c
-index 0680a2e9e06bb..b52ba6962325c 100644
---- a/arch/x86/kernel/time.c
-+++ b/arch/x86/kernel/time.c
-@@ -26,26 +26,7 @@
- 
- unsigned long profile_pc(struct pt_regs *regs)
- {
--	unsigned long pc = instruction_pointer(regs);
--
--	if (!user_mode(regs) && in_lock_functions(pc)) {
--#ifdef CONFIG_FRAME_POINTER
--		return *(unsigned long *)(regs->bp + sizeof(long));
--#else
--		unsigned long *sp =
--			(unsigned long *)kernel_stack_pointer(regs);
--		/*
--		 * Return address is either directly at stack pointer
--		 * or above a saved flags. Eflags has bits 22-31 zero,
--		 * kernel addresses don't.
--		 */
--		if (sp[0] >> 22)
--			return sp[0];
--		if (sp[1] >> 22)
--			return sp[1];
--#endif
--	}
--	return pc;
-+	return instruction_pointer(regs);
- }
- EXPORT_SYMBOL(profile_pc);
- 
+diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
+index c37764dc764d1..7925e762e7b7e 100644
+--- a/arch/sparc/kernel/syscalls/syscall.tbl
++++ b/arch/sparc/kernel/syscalls/syscall.tbl
+@@ -117,7 +117,7 @@
+ 90	common	dup2			sys_dup2
+ 91	32	setfsuid32		sys_setfsuid
+ 92	common	fcntl			sys_fcntl			compat_sys_fcntl
+-93	common	select			sys_select
++93	common	select			sys_select			compat_sys_select
+ 94	32	setfsgid32		sys_setfsgid
+ 95	common	fsync			sys_fsync
+ 96	common	setpriority		sys_setpriority
 -- 
 2.43.0
 
