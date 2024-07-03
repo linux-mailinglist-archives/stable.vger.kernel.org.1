@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33CD3925C53
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:17:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 096EB925ACD
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:04:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15F442874C6
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BB4C1C25EE6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB27A17C7BE;
-	Wed,  3 Jul 2024 11:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA28417DA36;
+	Wed,  3 Jul 2024 10:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjkmK2Yq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJVgjjr9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F221741C0;
-	Wed,  3 Jul 2024 11:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7850717C238;
+	Wed,  3 Jul 2024 10:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004720; cv=none; b=Iazbb8YcTXAI3KyBfEuuM97wqPt4h0HWSY9xNRdyjW8LbYx6pRgvWNl9ilbQIEsWGKE8byhRvcq13D4fSc496wLpB9n7A/FnvSFoOweIkDvyJy67HEs2ko21yo1or2ymJ9octW6Of0FDVYJ6YDWpTlIap21FRU9Ozq1EV62cCQw=
+	t=1720003950; cv=none; b=CUbl+IBVxyNunhsS079CclOb1hksGM2x/duNf+shvpwXP9LL4fT1u3ugHG/ddpF24PztMq6VlxbFGlVtro4w1OfEyx250DjYGCFBiSp4d9XegFa90lIjqhBtxYOmqbBz6AxElOBXtGUuTwl/JPcexGZDKk6CGYMNxXg8oM0WJhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004720; c=relaxed/simple;
-	bh=hOpgg7kN7FqVw6L3fYbFn4K74IuxsAKBElh9FPiKWgU=;
+	s=arc-20240116; t=1720003950; c=relaxed/simple;
+	bh=mJLc6JwVjbS5GTeHQPWg9VQLYIR3yyAEdkI6iq20p40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NwW0pWzHfAvNoEg8Mqgpp1v2MY3w+M1ydBm+67exrxle3pa4lsrcGdPJ3hd4VQSCbc1NbvuR7D9aiu/DwxsVy1a6gBSXADgTP+ETKUVdNSAEQSPKIfa/PNkK0QrMX0GQk0zm1iBeMjSAwf45G7KfbNVfhxx/w0bIYg6k8aTEOZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjkmK2Yq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D75C2BD10;
-	Wed,  3 Jul 2024 11:05:19 +0000 (UTC)
+	 MIME-Version; b=kWXz925m4xZQG0wHED/WgNbBZSaXP6cLD5KB5IvTDgBlNTFGA0AX8ErnPLnsAZfJFdSzO0tEU4AEk1XmJtPBGpgY0+n0uO4Cq0S96wCAezB/yzxmTXrAVlhSQlcbhkJbIWco0B7rNZpwBRKhzvi84mpLXAX7bVjL9gOril6mVBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJVgjjr9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE961C2BD10;
+	Wed,  3 Jul 2024 10:52:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004720;
-	bh=hOpgg7kN7FqVw6L3fYbFn4K74IuxsAKBElh9FPiKWgU=;
+	s=korg; t=1720003950;
+	bh=mJLc6JwVjbS5GTeHQPWg9VQLYIR3yyAEdkI6iq20p40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zjkmK2Yqz1lPaM92kc8WC6yiep0X02TfuJ6rMf8eQfdblOAP1SaE40vwG4CHNa/c2
-	 10bniH/M1bnluPS34xiGgVOBcJbGeJfDIBNd1stchIbZ1y9zk+bvFkjYSxf6jLn0SJ
-	 alEm/zLx05TNFz49lHzadbj6P1eCgx3gL6g2jW4g=
+	b=hJVgjjr9otJ5rnUKf+5KkIFtG3ac6IOoYXcZ5FHqlXT6q3mPrmA3ihypNXZCatRQ6
+	 dGvURmNJROGyAG4SDMpqTFPX4MhV7dOlhGaNIigEpva0LJiENBT4OImo3U5vPqvkxM
+	 U6/PkQ7FzDTfyAr10wcDdchQN+wt5qUZTEg4adkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 137/290] tracing: Build event generation tests only as modules
+Subject: [PATCH 5.4 057/189] liquidio: Adjust a NULL pointer handling path in lio_vf_rep_copy_packet
 Date: Wed,  3 Jul 2024 12:38:38 +0200
-Message-ID: <20240703102909.361176381@linuxfoundation.org>
+Message-ID: <20240703102843.662828002@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 3572bd5689b0812b161b40279e39ca5b66d73e88 ]
+[ Upstream commit c44711b78608c98a3e6b49ce91678cd0917d5349 ]
 
-The kprobes and synth event generation test modules add events and lock
-(get a reference) those event file reference in module init function,
-and unlock and delete it in module exit function. This is because those
-are designed for playing as modules.
+In lio_vf_rep_copy_packet() pg_info->page is compared to a NULL value,
+but then it is unconditionally passed to skb_add_rx_frag() which looks
+strange and could lead to null pointer dereference.
 
-If we make those modules as built-in, those events are left locked in the
-kernel, and never be removed. This causes kprobe event self-test failure
-as below.
+lio_vf_rep_copy_packet() call trace looks like:
+	octeon_droq_process_packets
+	 octeon_droq_fast_process_packets
+	  octeon_droq_dispatch_pkt
+	   octeon_create_recv_info
+	    ...search in the dispatch_list...
+	     ->disp_fn(rdisp->rinfo, ...)
+	      lio_vf_rep_pkt_recv(struct octeon_recv_info *recv_info, ...)
+In this path there is no code which sets pg_info->page to NULL.
+So this check looks unneeded and doesn't solve potential problem.
+But I guess the author had reason to add a check and I have no such card
+and can't do real test.
+In addition, the code in the function liquidio_push_packet() in
+liquidio/lio_core.c does exactly the same.
 
-[   97.349708] ------------[ cut here ]------------
-[   97.353453] WARNING: CPU: 3 PID: 1 at kernel/trace/trace_kprobe.c:2133 kprobe_trace_self_tests_init+0x3f1/0x480
-[   97.357106] Modules linked in:
-[   97.358488] CPU: 3 PID: 1 Comm: swapper/0 Not tainted 6.9.0-g699646734ab5-dirty #14
-[   97.361556] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-[   97.363880] RIP: 0010:kprobe_trace_self_tests_init+0x3f1/0x480
-[   97.365538] Code: a8 24 08 82 e9 ae fd ff ff 90 0f 0b 90 48 c7 c7 e5 aa 0b 82 e9 ee fc ff ff 90 0f 0b 90 48 c7 c7 2d 61 06 82 e9 8e fd ff ff 90 <0f> 0b 90 48 c7 c7 33 0b 0c 82 89 c6 e8 6e 03 1f ff 41 ff c7 e9 90
-[   97.370429] RSP: 0000:ffffc90000013b50 EFLAGS: 00010286
-[   97.371852] RAX: 00000000fffffff0 RBX: ffff888005919c00 RCX: 0000000000000000
-[   97.373829] RDX: ffff888003f40000 RSI: ffffffff8236a598 RDI: ffff888003f40a68
-[   97.375715] RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
-[   97.377675] R10: ffffffff811c9ae5 R11: ffffffff8120c4e0 R12: 0000000000000000
-[   97.379591] R13: 0000000000000001 R14: 0000000000000015 R15: 0000000000000000
-[   97.381536] FS:  0000000000000000(0000) GS:ffff88807dcc0000(0000) knlGS:0000000000000000
-[   97.383813] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   97.385449] CR2: 0000000000000000 CR3: 0000000002244000 CR4: 00000000000006b0
-[   97.387347] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[   97.389277] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[   97.391196] Call Trace:
-[   97.391967]  <TASK>
-[   97.392647]  ? __warn+0xcc/0x180
-[   97.393640]  ? kprobe_trace_self_tests_init+0x3f1/0x480
-[   97.395181]  ? report_bug+0xbd/0x150
-[   97.396234]  ? handle_bug+0x3e/0x60
-[   97.397311]  ? exc_invalid_op+0x1a/0x50
-[   97.398434]  ? asm_exc_invalid_op+0x1a/0x20
-[   97.399652]  ? trace_kprobe_is_busy+0x20/0x20
-[   97.400904]  ? tracing_reset_all_online_cpus+0x15/0x90
-[   97.402304]  ? kprobe_trace_self_tests_init+0x3f1/0x480
-[   97.403773]  ? init_kprobe_trace+0x50/0x50
-[   97.404972]  do_one_initcall+0x112/0x240
-[   97.406113]  do_initcall_level+0x95/0xb0
-[   97.407286]  ? kernel_init+0x1a/0x1a0
-[   97.408401]  do_initcalls+0x3f/0x70
-[   97.409452]  kernel_init_freeable+0x16f/0x1e0
-[   97.410662]  ? rest_init+0x1f0/0x1f0
-[   97.411738]  kernel_init+0x1a/0x1a0
-[   97.412788]  ret_from_fork+0x39/0x50
-[   97.413817]  ? rest_init+0x1f0/0x1f0
-[   97.414844]  ret_from_fork_asm+0x11/0x20
-[   97.416285]  </TASK>
-[   97.417134] irq event stamp: 13437323
-[   97.418376] hardirqs last  enabled at (13437337): [<ffffffff8110bc0c>] console_unlock+0x11c/0x150
-[   97.421285] hardirqs last disabled at (13437370): [<ffffffff8110bbf1>] console_unlock+0x101/0x150
-[   97.423838] softirqs last  enabled at (13437366): [<ffffffff8108e17f>] handle_softirqs+0x23f/0x2a0
-[   97.426450] softirqs last disabled at (13437393): [<ffffffff8108e346>] __irq_exit_rcu+0x66/0xd0
-[   97.428850] ---[ end trace 0000000000000000 ]---
+Based on this, I consider the most acceptable compromise solution to
+adjust this issue by moving skb_add_rx_frag() into conditional scope.
 
-And also, since we can not cleanup dynamic_event file, ftracetest are
-failed too.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-To avoid these issues, build these tests only as modules.
-
-Link: https://lore.kernel.org/all/171811263754.85078.5877446624311852525.stgit@devnote2/
-
-Fixes: 9fe41efaca08 ("tracing: Add synth event generation test module")
-Fixes: 64836248dda2 ("tracing: Add kprobe event command generation test module")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 1f233f327913 ("liquidio: switchdev support for LiquidIO NIC")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/trace/Kconfig b/kernel/trace/Kconfig
-index 29db703f68806..467975300ddd5 100644
---- a/kernel/trace/Kconfig
-+++ b/kernel/trace/Kconfig
-@@ -824,7 +824,7 @@ config PREEMPTIRQ_DELAY_TEST
- 
- config SYNTH_EVENT_GEN_TEST
- 	tristate "Test module for in-kernel synthetic event generation"
--	depends on SYNTH_EVENTS
-+	depends on SYNTH_EVENTS && m
- 	help
-           This option creates a test module to check the base
-           functionality of in-kernel synthetic event definition and
-@@ -837,7 +837,7 @@ config SYNTH_EVENT_GEN_TEST
- 
- config KPROBE_EVENT_GEN_TEST
- 	tristate "Test module for in-kernel kprobe event generation"
--	depends on KPROBE_EVENTS
-+	depends on KPROBE_EVENTS && m
- 	help
-           This option creates a test module to check the base
-           functionality of in-kernel kprobe event definition.
+diff --git a/drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c b/drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c
+index f3f2e71431acb..07334f83ccfe3 100644
+--- a/drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c
++++ b/drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c
+@@ -272,13 +272,12 @@ lio_vf_rep_copy_packet(struct octeon_device *oct,
+ 				pg_info->page_offset;
+ 			memcpy(skb->data, va, MIN_SKB_SIZE);
+ 			skb_put(skb, MIN_SKB_SIZE);
++			skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
++					pg_info->page,
++					pg_info->page_offset + MIN_SKB_SIZE,
++					len - MIN_SKB_SIZE,
++					LIO_RXBUFFER_SZ);
+ 		}
+-
+-		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
+-				pg_info->page,
+-				pg_info->page_offset + MIN_SKB_SIZE,
+-				len - MIN_SKB_SIZE,
+-				LIO_RXBUFFER_SZ);
+ 	} else {
+ 		struct octeon_skb_page_info *pg_info =
+ 			((struct octeon_skb_page_info *)(skb->cb));
 -- 
 2.43.0
 
