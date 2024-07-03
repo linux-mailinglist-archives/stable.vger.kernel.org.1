@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E930925C6E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:18:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 612299259F7
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:53:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B0591F24389
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:18:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 944B71C21A3B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66758181D17;
-	Wed,  3 Jul 2024 11:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E1DB18131A;
+	Wed,  3 Jul 2024 10:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L4sweUDG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3wEOAPK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C96181BAC;
-	Wed,  3 Jul 2024 11:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0B018131D;
+	Wed,  3 Jul 2024 10:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004798; cv=none; b=psECArrlkOR0Llhqc3vgqlzGFtUlUZoLlK1MeOdTq+jqPG7X97yoE4fyEAMNqnMO0pY3aVDFQvRPdkovkJSf5pPHAJxWHSk0ZfmcgB8Jx49KpExWZBFvBDhyapM3MXmtVPvtIwhfT/7F2PPd+avVp2tckMyFUey2L9czjO+VZZc=
+	t=1720003412; cv=none; b=dj3qBhihBUGstz7vSEiXlGawFMXOKcRW9m5Yu2XCkwLDSe+Rj6HZgY8Xzrv85uyfigPdrye+vOfmz9lldhH9h1F+91gxtoYP8FVrNgTOr0+qAAbGedytEqs77KwvNqd3eei/U2QyP40qI9rfjFSkysY/8zIJtc2/3aMUYgywHfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004798; c=relaxed/simple;
-	bh=FTDiQ0v26DJto1mzqAoujB8E5ZRhVNb/TY11YE6nfWE=;
+	s=arc-20240116; t=1720003412; c=relaxed/simple;
+	bh=runSFBJaOtucObIqHsKrLE3xEPIwdv9ZPrOraF7ycmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u2z2HTqDapd7mq21hvK7egCrBKgWtsG5kflT3nezhHsAWtCo9VZeS+ze1cN62uovYrGMLoJFkg6LwGQz1Vs3hdMY8Y/N1pfDMBUntCoRfHOe+PUs+GbXQWZqSvXMRL7vFyl9eJfiECu+9DoAqC+SZiL2bumJOHvJn0QeyZlsUW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L4sweUDG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21A6C2BD10;
-	Wed,  3 Jul 2024 11:06:37 +0000 (UTC)
+	 MIME-Version; b=q/LhbGelU1CLeZb2SmFLM+sJqVQKVP+OsoJYS+JyZyXOJ6e3AMOiwOF++HGADNwrnvvNuXu1I6/ppuNvk3hV5o80+3+hLuKoxKi7aTRbeA5hvRuRbjLQezrHKVno1B+QDQAntJGod3EVPqYgmG+1KNnA64DHEXGQdH2fbjfHN1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3wEOAPK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EC9C2BD10;
+	Wed,  3 Jul 2024 10:43:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004798;
-	bh=FTDiQ0v26DJto1mzqAoujB8E5ZRhVNb/TY11YE6nfWE=;
+	s=korg; t=1720003411;
+	bh=runSFBJaOtucObIqHsKrLE3xEPIwdv9ZPrOraF7ycmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L4sweUDGmj8loZfKP9R7CARkbUn5G6KeyBA1M1q0SGrVluiicnAJJ0KF5TsbgEBSb
-	 8FfnBqqKd/tMAglRY8Y2YLJ5gpF6e20rRnt0ITLeHQE25lR1tHiUKT+wTfFEq6916j
-	 9AzpnWx/vgMtpaWXjFLHtatFNMzbOkcDkIZUOgF0=
+	b=i3wEOAPKrLIowrEg1gPIpNYYCCoK2Xsf03PH6ia8zVZaALmDcKIuACRliU6BpmGxC
+	 sdQVSdsx8FtLMjLIVix6Y+mXqVSCM7mxr+ro2AID6cA+ODnKP1WBO9QS+Tx+n4YOHr
+	 kJuOgBxoPN+HNtUdf7LcEewit5uRIOA+hLBW8Bh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qing Wang <wangqing@vivo.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 155/290] dmaengine: ioat: switch from pci_ to dma_ API
-Date: Wed,  3 Jul 2024 12:38:56 +0200
-Message-ID: <20240703102910.034480155@linuxfoundation.org>
+Subject: [PATCH 4.19 040/139] tcp: fix race in tcp_v6_syn_recv_sock()
+Date: Wed,  3 Jul 2024 12:38:57 +0200
+Message-ID: <20240703102831.952764869@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qing Wang <wangqing@vivo.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0c5afef7bf1fbda7e7883dc4b93f64f90003706f ]
+[ Upstream commit d37fe4255abe8e7b419b90c5847e8ec2b8debb08 ]
 
-The wrappers in include/linux/pci-dma-compat.h should go away.
+tcp_v6_syn_recv_sock() calls ip6_dst_store() before
+inet_sk(newsk)->pinet6 has been set up.
 
-pci_set_dma_mask()/pci_set_consistent_dma_mask() should be
-replaced with dma_set_mask()/dma_set_coherent_mask(),
-and use dma_set_mask_and_coherent() for both.
+This means ip6_dst_store() writes over the parent (listener)
+np->dst_cookie.
 
-Signed-off-by: Qing Wang <wangqing@vivo.com>
-Link: https://lore.kernel.org/r/1633663733-47199-3-git-send-email-wangqing@vivo.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 1b11b4ef6bd6 ("dmaengine: ioatdma: Fix leaking on version mismatch")
+This is racy because multiple threads could share the same
+parent and their final np->dst_cookie could be wrong.
+
+Move ip6_dst_store() call after inet_sk(newsk)->pinet6
+has been changed and after the copy of parent ipv6_pinfo.
+
+Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ioat/init.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ net/ipv6/tcp_ipv6.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
-index 191b592790073..373b8dac6c9ba 100644
---- a/drivers/dma/ioat/init.c
-+++ b/drivers/dma/ioat/init.c
-@@ -1363,15 +1363,9 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (!iomap)
- 		return -ENOMEM;
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index 033cf81f34837..fca1b95d86a97 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -1177,7 +1177,6 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
+ 	 */
  
--	err = pci_set_dma_mask(pdev, DMA_BIT_MASK(64));
-+	err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
- 	if (err)
--		err = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
--	if (err)
--		return err;
--
--	err = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(64));
--	if (err)
--		err = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(32));
-+		err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
- 	if (err)
- 		return err;
+ 	newsk->sk_gso_type = SKB_GSO_TCPV6;
+-	ip6_dst_store(newsk, dst, NULL, NULL);
+ 	inet6_sk_rx_dst_set(newsk, skb);
  
+ 	newtcp6sk = (struct tcp6_sock *)newsk;
+@@ -1189,6 +1188,8 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
+ 
+ 	memcpy(newnp, np, sizeof(struct ipv6_pinfo));
+ 
++	ip6_dst_store(newsk, dst, NULL, NULL);
++
+ 	newsk->sk_v6_daddr = ireq->ir_v6_rmt_addr;
+ 	newnp->saddr = ireq->ir_v6_loc_addr;
+ 	newsk->sk_v6_rcv_saddr = ireq->ir_v6_loc_addr;
 -- 
 2.43.0
 
