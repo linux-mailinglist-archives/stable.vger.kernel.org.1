@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 495ED925CAD
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 312D0925B84
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:09:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA3EB1F21727
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF90E1F292D1
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:09:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09A3187558;
-	Wed,  3 Jul 2024 11:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68FC2188CBE;
+	Wed,  3 Jul 2024 10:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTNeyq1Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yg6xyurE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFE916F8F5;
-	Wed,  3 Jul 2024 11:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E7A1428E4;
+	Wed,  3 Jul 2024 10:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005016; cv=none; b=Dwfqmeyn5EzkQCfxw8k/eHoQpb3imoUlcB9lOvB+qPuUG5+hCZL1Az6hre58ifwbPCdKVFOs7YCE7m8TaprF4g1XsydfurC87FiWTswOGjfXWnLoXwS1lg/+ihWtu8faz94mhsT0PvyjNMtsAJLn890c2c+04BN+kwKar0T6Ork=
+	t=1720004203; cv=none; b=JwJaRD22L3W6VZT21DObPW6T8uuy9llGl6ERkuyBLfyVQHQg39R23Nb4i10+E0OuueSsSlvAgaKLXANBjl6vMui1syB2QyqluwdeJbaFi1+EpuISDq1Qsxf4iP20iRg8x7/Jlwz3lIPaDDxAJV/AOYMut36trl67RDEjNgiPWZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005016; c=relaxed/simple;
-	bh=6nMEmELLFMzylBR2wTEyxLP6wj9GCTM4T5YvoTgOd+o=;
+	s=arc-20240116; t=1720004203; c=relaxed/simple;
+	bh=yuKXtjYbrI5x9YhJ7AyI7pzC40EGnbkF/ooYq1Sx44s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CKuALn6b+ET91u9hazI9KyCVXCICe5bnM/FzA88vtQBd/S5qDySbuFdzI31GUjT7e6QlQ0xU6RkrZUISjhZQDMhawnI4Q+Wpg0fWp6/BjEWxshvQfWF1/x8+gpUOaNvlhlGAZq/cOafMpJjVeJJH6/zUfvkip6wzmqYWkqMX6kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTNeyq1Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF4E0C2BD10;
-	Wed,  3 Jul 2024 11:10:15 +0000 (UTC)
+	 MIME-Version; b=Wma1kiEcheHJ456hzZBxoYSrJyX0fdhNzVHCes0OoGvBHqIsLnCCTUIZVRxFFpbbRADGcDznvetOqsJB6ly7vETiSkG/EtElpB/Bt//wG4r5SnhetNza/gfLXF1iTCMBEvYTJro7SoYuHsdTWQEsmTaEZVtYnAvM0UoEaqZTX4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yg6xyurE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B14BC2BD10;
+	Wed,  3 Jul 2024 10:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005016;
-	bh=6nMEmELLFMzylBR2wTEyxLP6wj9GCTM4T5YvoTgOd+o=;
+	s=korg; t=1720004202;
+	bh=yuKXtjYbrI5x9YhJ7AyI7pzC40EGnbkF/ooYq1Sx44s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fTNeyq1YdlwgNIYMbgzyiVNTK9bYjOKZXt3A7eYf0ILfqro3/x+/5x5RHuCM8WofD
-	 gg79N3Qg7XiwVseW3bS53WNDXC0k6SzKbFmePVD8vR7JioArBJq38ZzyxJPYY8yjxi
-	 Bj/M0rIZTOMNIh1J0BdV+d2y08/VORlsZ7nkisVM=
+	b=Yg6xyurERw5oFXm8Qgb5nhzKOhc7SiuYM9RysIhS/6XFOsOukgBG1Af0+ftcW9l0V
+	 NC4CWS3+JT4JMOqRrRPIdfdhPF3bSofAyGFKcXjg818gR3JHCE9Iq0fUY6+mZoVHge
+	 XQGTfGlqVg4aDFtWSBRWaJNWLcthU3rKxCD3D7ZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dawei Li <dawei.li@shingroup.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andrew Davis <afd@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 233/290] net/dpaa2: Avoid explicit cpumask var allocation on stack
+Subject: [PATCH 5.4 153/189] soc: ti: wkup_m3_ipc: Send NULL dummy message instead of pointer message
 Date: Wed,  3 Jul 2024 12:40:14 +0200
-Message-ID: <20240703102912.954233363@linuxfoundation.org>
+Message-ID: <20240703102847.246164000@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dawei Li <dawei.li@shingroup.cn>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit d33fe1714a44ff540629b149d8fab4ac6967585c ]
+[ Upstream commit ddbf3204f600a4d1f153498f618369fca352ae00 ]
 
-For CONFIG_CPUMASK_OFFSTACK=y kernel, explicit allocation of cpumask
-variable on stack is not recommended since it can cause potential stack
-overflow.
+mbox_send_message() sends a u32 bit message, not a pointer to a message.
+We only convert to a pointer type as a generic type. If we want to send
+a dummy message of 0, then simply send 0 (NULL).
 
-Instead, kernel code should always use *cpumask_var API(s) to allocate
-cpumask var in config-neutral way, leaving allocation strategy to
-CONFIG_CPUMASK_OFFSTACK.
-
-Use *cpumask_var API(s) to address it.
-
-Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
-Link: https://lore.kernel.org/r/20240331053441.1276826-3-dawei.li@shingroup.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20240325165507.30323-1-afd@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/soc/ti/wkup_m3_ipc.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-index 07ba0438f9655..fa202fea537f8 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-@@ -2383,11 +2383,14 @@ static int dpaa2_eth_xdp_xmit(struct net_device *net_dev, int n,
- static int update_xps(struct dpaa2_eth_priv *priv)
+diff --git a/drivers/soc/ti/wkup_m3_ipc.c b/drivers/soc/ti/wkup_m3_ipc.c
+index ef3f95fefab58..6634709e646c4 100644
+--- a/drivers/soc/ti/wkup_m3_ipc.c
++++ b/drivers/soc/ti/wkup_m3_ipc.c
+@@ -14,7 +14,6 @@
+ #include <linux/irq.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/omap-mailbox.h>
+ #include <linux/platform_device.h>
+ #include <linux/remoteproc.h>
+ #include <linux/suspend.h>
+@@ -151,7 +150,6 @@ static irqreturn_t wkup_m3_txev_handler(int irq, void *ipc_data)
+ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
  {
- 	struct net_device *net_dev = priv->net_dev;
--	struct cpumask xps_mask;
--	struct dpaa2_eth_fq *fq;
- 	int i, num_queues, netdev_queues;
-+	struct dpaa2_eth_fq *fq;
-+	cpumask_var_t xps_mask;
- 	int err = 0;
+ 	struct device *dev = m3_ipc->dev;
+-	mbox_msg_t dummy_msg = 0;
+ 	int ret;
  
-+	if (!alloc_cpumask_var(&xps_mask, GFP_KERNEL))
-+		return -ENOMEM;
-+
- 	num_queues = dpaa2_eth_queue_count(priv);
- 	netdev_queues = (net_dev->num_tc ? : 1) * num_queues;
+ 	if (!m3_ipc->mbox) {
+@@ -167,7 +165,7 @@ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
+ 	 * the RX callback to avoid multiple interrupts being received
+ 	 * by the CM3.
+ 	 */
+-	ret = mbox_send_message(m3_ipc->mbox, &dummy_msg);
++	ret = mbox_send_message(m3_ipc->mbox, NULL);
+ 	if (ret < 0) {
+ 		dev_err(dev, "%s: mbox_send_message() failed: %d\n",
+ 			__func__, ret);
+@@ -189,7 +187,6 @@ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
+ static int wkup_m3_ping_noirq(struct wkup_m3_ipc *m3_ipc)
+ {
+ 	struct device *dev = m3_ipc->dev;
+-	mbox_msg_t dummy_msg = 0;
+ 	int ret;
  
-@@ -2397,16 +2400,17 @@ static int update_xps(struct dpaa2_eth_priv *priv)
- 	for (i = 0; i < netdev_queues; i++) {
- 		fq = &priv->fq[i % num_queues];
- 
--		cpumask_clear(&xps_mask);
--		cpumask_set_cpu(fq->target_cpu, &xps_mask);
-+		cpumask_clear(xps_mask);
-+		cpumask_set_cpu(fq->target_cpu, xps_mask);
- 
--		err = netif_set_xps_queue(net_dev, &xps_mask, i);
-+		err = netif_set_xps_queue(net_dev, xps_mask, i);
- 		if (err) {
- 			netdev_warn_once(net_dev, "Error setting XPS queue\n");
- 			break;
- 		}
+ 	if (!m3_ipc->mbox) {
+@@ -198,7 +195,7 @@ static int wkup_m3_ping_noirq(struct wkup_m3_ipc *m3_ipc)
+ 		return -EIO;
  	}
  
-+	free_cpumask_var(xps_mask);
- 	return err;
- }
- 
+-	ret = mbox_send_message(m3_ipc->mbox, &dummy_msg);
++	ret = mbox_send_message(m3_ipc->mbox, NULL);
+ 	if (ret < 0) {
+ 		dev_err(dev, "%s: mbox_send_message() failed: %d\n",
+ 			__func__, ret);
 -- 
 2.43.0
 
