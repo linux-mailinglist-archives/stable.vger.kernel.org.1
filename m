@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-57391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2250F925C42
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:16:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16879925AD7
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:04:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBC1B1F210C1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8374B29091F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D6417DA0E;
-	Wed,  3 Jul 2024 11:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA388181CE6;
+	Wed,  3 Jul 2024 10:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krmxnSDJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N35N30rJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0D81741C4;
-	Wed,  3 Jul 2024 11:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A736E181BB3;
+	Wed,  3 Jul 2024 10:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004735; cv=none; b=TKc+UofjSeJFUaLejtpui02MREJ5RkuXM1OMq0UAx/pj+2v1A1HANAWq/joNJKe1rarDsu54NhJHQorOpICNOw+GFq/TYRk0b4cRqqUvbXv82J1J0J1b/bxRRh9EqEziVLN+6YMp119LdSAK3i3ADREuOG67FvvIVjHVQdyREN8=
+	t=1720003464; cv=none; b=o3iYXkLlgWyOE6Sl5tNc83x5RuOXbddg1A/dtJ1RSgmP0vXFsbgrIobrYHP6ONwt4Wf7ALF1yBD1t0Mha2n0gJuvqUl1pXvkpvU0QqkW3RUtbe6CUS+U2yuI6FvLLNax0JnuqASuHINPBSq1BFNZaQ/xW0IZx5hKcX8WxtuhgLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004735; c=relaxed/simple;
-	bh=SClvq+yd+91Dat5VmeFe5jbnGfd/iZDsoLBUQaHTjf4=;
+	s=arc-20240116; t=1720003464; c=relaxed/simple;
+	bh=uT82IlP6bIhGuKNrauNr86bqaJsptlQt/BQTbkkfam4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kv3C+uPiqStTtt76D02ptabNPKSECjpIBOZBrkOUUAJNmqHRY35/Rdoq/gLTHF8UGJD/RHXUd5tZtoHBE4sNkomqYUM+iHUCr9VimGH0R9mZFy+aGOvpk3X5dxJs5+8X2NxJD7kP4CQwYO8OpE8YXjPArk6Amyu4HZgEQhl8oCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krmxnSDJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF77C4AF0C;
-	Wed,  3 Jul 2024 11:05:34 +0000 (UTC)
+	 MIME-Version; b=AUTEsloW6BBPjB4hCL3jxdL35aXHBEJ8cxuHDJdtv81A67hebXljJh0kp6GoQ9dlaosBpHY7QRBp4qzp3rbGN50+Z62+YGmtaSEVwB86OFEjPIOXAmALM1XSdNd9PGH65qi7ts63Cg1Iamvw+5GHM2/JNiP3iCSSQtFNwblbLcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N35N30rJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3866C2BD10;
+	Wed,  3 Jul 2024 10:44:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004735;
-	bh=SClvq+yd+91Dat5VmeFe5jbnGfd/iZDsoLBUQaHTjf4=;
+	s=korg; t=1720003464;
+	bh=uT82IlP6bIhGuKNrauNr86bqaJsptlQt/BQTbkkfam4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=krmxnSDJPRd1UMO/IjiZ9FADw0zHcSdWmtKoslxu4jH1+i0YU8TlhjQQg+yd6MbR3
-	 nZr6oJdjLQ61QBqoRJO3liGkYTsq7CQDU5VEDTHjRx1vBEUPCSnykimkPTXUYIuI/9
-	 gm7G/BcNnrKfzBvFjYrBOa6gjGr9LSZDXTRAIi0Y=
+	b=N35N30rJlj4iY7gCotvMtYqE6wtfdYa003t8ClcGiVL3LFnDaTbb3XuA9h7K0hS/O
+	 IuvlR+7Vtt81uxWIS1kBXALmMpQ6hwEK4oLcHm9B479F3RtT8+gBgCbp1TUcHRaYoZ
+	 JnoQ6NpEGSWFvyIGBCHXC96xQ2U037N7osAUAmsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Sri Jayaramappa <sjayaram@akamai.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 141/290] ipv6: prevent possible NULL dereference in rt6_probe()
+Subject: [PATCH 4.19 025/139] selftests/mm: compaction_test: fix bogus test success on Aarch64
 Date: Wed,  3 Jul 2024 12:38:42 +0200
-Message-ID: <20240703102909.511418810@linuxfoundation.org>
+Message-ID: <20240703102831.390269043@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +65,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Dev Jain <dev.jain@arm.com>
 
-[ Upstream commit b86762dbe19a62e785c189f313cda5b989931f37 ]
+[ Upstream commit d4202e66a4b1fe6968f17f9f09bbc30d08f028a1 ]
 
-syzbot caught a NULL dereference in rt6_probe() [1]
+Patch series "Fixes for compaction_test", v2.
 
-Bail out if  __in6_dev_get() returns NULL.
+The compaction_test memory selftest introduces fragmentation in memory
+and then tries to allocate as many hugepages as possible. This series
+addresses some problems.
 
-[1]
-Oops: general protection fault, probably for non-canonical address 0xdffffc00000000cb: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000658-0x000000000000065f]
-CPU: 1 PID: 22444 Comm: syz-executor.0 Not tainted 6.10.0-rc2-syzkaller-00383-gb8481381d4e2 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
- RIP: 0010:rt6_probe net/ipv6/route.c:656 [inline]
- RIP: 0010:find_match+0x8c4/0xf50 net/ipv6/route.c:758
-Code: 14 fd f7 48 8b 85 38 ff ff ff 48 c7 45 b0 00 00 00 00 48 8d b8 5c 06 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 14 02 48 89 f8 83 e0 07 83 c0 03 38 d0 7c 08 84 d2 0f 85 19
-RSP: 0018:ffffc900034af070 EFLAGS: 00010203
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffc90004521000
-RDX: 00000000000000cb RSI: ffffffff8990d0cd RDI: 000000000000065c
-RBP: ffffc900034af150 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000002 R12: 000000000000000a
-R13: 1ffff92000695e18 R14: ffff8880244a1d20 R15: 0000000000000000
-FS:  00007f4844a5a6c0(0000) GS:ffff8880b9300000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b31b27000 CR3: 000000002d42c000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  rt6_nh_find_match+0xfa/0x1a0 net/ipv6/route.c:784
-  nexthop_for_each_fib6_nh+0x26d/0x4a0 net/ipv4/nexthop.c:1496
-  __find_rr_leaf+0x6e7/0xe00 net/ipv6/route.c:825
-  find_rr_leaf net/ipv6/route.c:853 [inline]
-  rt6_select net/ipv6/route.c:897 [inline]
-  fib6_table_lookup+0x57e/0xa30 net/ipv6/route.c:2195
-  ip6_pol_route+0x1cd/0x1150 net/ipv6/route.c:2231
-  pol_lookup_func include/net/ip6_fib.h:616 [inline]
-  fib6_rule_lookup+0x386/0x720 net/ipv6/fib6_rules.c:121
-  ip6_route_output_flags_noref net/ipv6/route.c:2639 [inline]
-  ip6_route_output_flags+0x1d0/0x640 net/ipv6/route.c:2651
-  ip6_dst_lookup_tail.constprop.0+0x961/0x1760 net/ipv6/ip6_output.c:1147
-  ip6_dst_lookup_flow+0x99/0x1d0 net/ipv6/ip6_output.c:1250
-  rawv6_sendmsg+0xdab/0x4340 net/ipv6/raw.c:898
-  inet_sendmsg+0x119/0x140 net/ipv4/af_inet.c:853
-  sock_sendmsg_nosec net/socket.c:730 [inline]
-  __sock_sendmsg net/socket.c:745 [inline]
-  sock_write_iter+0x4b8/0x5c0 net/socket.c:1160
-  new_sync_write fs/read_write.c:497 [inline]
-  vfs_write+0x6b6/0x1140 fs/read_write.c:590
-  ksys_write+0x1f8/0x260 fs/read_write.c:643
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+On Aarch64, if nr_hugepages == 0, then the test trivially succeeds since
+compaction_index becomes 0, which is less than 3, due to no division by
+zero exception being raised. We fix that by checking for division by
+zero.
 
-Fixes: 52e1635631b3 ("[IPV6]: ROUTE: Add router_probe_interval sysctl.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240615151454.166404-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Secondly, correctly set the number of hugepages to zero before trying
+to set a large number of them.
+
+Now, consider a situation in which, at the start of the test, a non-zero
+number of hugepages have been already set (while running the entire
+selftests/mm suite, or manually by the admin). The test operates on 80%
+of memory to avoid OOM-killer invocation, and because some memory is
+already blocked by hugepages, it would increase the chance of OOM-killing.
+Also, since mem_free used in check_compaction() is the value before we
+set nr_hugepages to zero, the chance that the compaction_index will
+be small is very high if the preset nr_hugepages was high, leading to a
+bogus test success.
+
+This patch (of 3):
+
+Currently, if at runtime we are not able to allocate a huge page, the test
+will trivially pass on Aarch64 due to no exception being raised on
+division by zero while computing compaction_index.  Fix that by checking
+for nr_hugepages == 0.  Anyways, in general, avoid a division by zero by
+exiting the program beforehand.  While at it, fix a typo, and handle the
+case where the number of hugepages may overflow an integer.
+
+Link: https://lkml.kernel.org/r/20240521074358.675031-1-dev.jain@arm.com
+Link: https://lkml.kernel.org/r/20240521074358.675031-2-dev.jain@arm.com
+Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Sri Jayaramappa <sjayaram@akamai.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/vm/compaction_test.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 9ea865f22c790..799779475c7de 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -632,6 +632,8 @@ static void rt6_probe(struct fib6_nh *fib6_nh)
- 	rcu_read_lock_bh();
- 	last_probe = READ_ONCE(fib6_nh->last_probe);
- 	idev = __in6_dev_get(dev);
-+	if (!idev)
-+		goto out;
- 	neigh = __ipv6_neigh_lookup_noref(dev, nh_gw);
- 	if (neigh) {
- 		if (neigh->nud_state & NUD_VALID)
+diff --git a/tools/testing/selftests/vm/compaction_test.c b/tools/testing/selftests/vm/compaction_test.c
+index 6be4b70a26592..b5587a751664a 100644
+--- a/tools/testing/selftests/vm/compaction_test.c
++++ b/tools/testing/selftests/vm/compaction_test.c
+@@ -81,12 +81,13 @@ int prereq(void)
+ 	return -1;
+ }
+ 
+-int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
++int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
+ {
++	unsigned long nr_hugepages_ul;
+ 	int fd, ret = -1;
+ 	int compaction_index = 0;
+-	char initial_nr_hugepages[10] = {0};
+-	char nr_hugepages[10] = {0};
++	char initial_nr_hugepages[20] = {0};
++	char nr_hugepages[20] = {0};
+ 
+ 	/* We want to test with 80% of available memory. Else, OOM killer comes
+ 	   in to play */
+@@ -135,7 +136,12 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 
+ 	/* We should have been able to request at least 1/3 rd of the memory in
+ 	   huge pages */
+-	compaction_index = mem_free/(atoi(nr_hugepages) * hugepage_size);
++	nr_hugepages_ul = strtoul(nr_hugepages, NULL, 10);
++	if (!nr_hugepages_ul) {
++		ksft_print_msg("ERROR: No memory is available as huge pages\n");
++		goto close_fd;
++	}
++	compaction_index = mem_free/(nr_hugepages_ul * hugepage_size);
+ 
+ 	lseek(fd, 0, SEEK_SET);
+ 
+@@ -146,11 +152,11 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 		goto close_fd;
+ 	}
+ 
+-	ksft_print_msg("Number of huge pages allocated = %d\n",
+-		       atoi(nr_hugepages));
++	ksft_print_msg("Number of huge pages allocated = %lu\n",
++		       nr_hugepages_ul);
+ 
+ 	if (compaction_index > 3) {
+-		ksft_print_msg("ERROR: Less that 1/%d of memory is available\n"
++		ksft_print_msg("ERROR: Less than 1/%d of memory is available\n"
+ 			       "as huge pages\n", compaction_index);
+ 		goto close_fd;
+ 	}
 -- 
 2.43.0
 
