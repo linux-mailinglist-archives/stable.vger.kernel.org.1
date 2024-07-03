@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-57711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0823925D9E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B98D925C62
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:17:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E5861C21119
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E2B01C21285
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0D89186E32;
-	Wed,  3 Jul 2024 11:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72CE917E907;
+	Wed,  3 Jul 2024 11:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tu8EriRz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6GOgqFK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD91245945;
-	Wed,  3 Jul 2024 11:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314D5181B80;
+	Wed,  3 Jul 2024 11:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005703; cv=none; b=PzvOiThvHCx4yIjneXVxnYWsbzx1IRDqpg9qu25JREQxvKvyA5jXVbYTfF6K2Ne9ZCRiPg+JZsnzzRsuL2B31UM7yCmNdi9AsJDQbJG/KzKRnWBi6n8Z2nozTm3ic5uRpX+VD+BXf6jUVLQ04HDCOhr3oTjHM5oMUIDpOfX4Zfg=
+	t=1720004762; cv=none; b=i4UEdNRewdsY4LJkatiRryEQbJ2Rm//h85hJh8ul4cVFPIfNS3P2pWipVKSBflaF/Qcmqojf3bzXoyF4FMRQVJm6AnIgETNmGohZC8qbczcOih+mcKp6yrIfMwEmSXXmYEFQyrUjbJV9X37A0ijyjP5CCf4K/SgL62NuiAXPWzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005703; c=relaxed/simple;
-	bh=Xt7SnP01WmMRmZubeBfFGp2o0+qncHA+SotrobE6OSo=;
+	s=arc-20240116; t=1720004762; c=relaxed/simple;
+	bh=06eq7T2jCPg6WHEKbdVjdTFmDLsRwfW+3sdq8SsB2l4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jTKtdEi2pm6pRkq0AHw0XUAVJQv6OZwbpRbSbwi5o5h/+t9ri1+Kvd+c+sh1CPGCV8aa3R4IxUsW6OPQCIzj0HZWWmCw6H5eQASkL1cwc5wFOestXxr9BID7xBIgLiWPOSt0z3En4kTKsNyWamjNleGwNA8awX15jQlkN31M+bY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tu8EriRz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36014C2BD10;
-	Wed,  3 Jul 2024 11:21:43 +0000 (UTC)
+	 MIME-Version; b=VPG+8qjMj480Bb3QoysaowY5oQJX0bslCaYMHZpHv3fkrdmCsq2ZoVywjgJ/w01hwSn26uC0JO4Z/yWrI+505v03l2W3ikkKPmFzDqO5uk+7Q4HqtPgPeoqU+xtKsV2XKqXG1eYuklyZv3MFL8X48yQ2FchBf5TpSAZRCJU7V0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6GOgqFK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9E8C4AF0C;
+	Wed,  3 Jul 2024 11:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005703;
-	bh=Xt7SnP01WmMRmZubeBfFGp2o0+qncHA+SotrobE6OSo=;
+	s=korg; t=1720004762;
+	bh=06eq7T2jCPg6WHEKbdVjdTFmDLsRwfW+3sdq8SsB2l4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tu8EriRzxPCtYE/rCwg28u0PH8IxCij9MP08bVkNV0oPygpBEvOCxiylLHnu3+O54
-	 eOUglp8DKcYHDrbZlzYU367bZGRy3rR7fDDaJ5jXtdoBeZAc6TCDpBmmB7rh4CVVoO
-	 z5h2p5jijcwJL241fGkNXqVBGbbdyeJuLVI9gH9Y=
+	b=k6GOgqFKAFtM86oDRk++JDF1OUuIyIjuH2QQd7OJ8+iUaMAumpCFkh98Z/oV7TA4t
+	 qtMqjhY8d+WlWtRmAbQKRYQ7Yd94xIHpOBIaupG3k1usuNmpIJQ3DtrrNuW0NwvmKh
+	 T1IJ2qFCg76QOQ+ZeXbi08oWjGUEIom18uk62SdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Charlene Liu <charlene.liu@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Erico Nunes <nunes.erico@gmail.com>,
+	Qiang Yu <yuq825@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 168/356] drm/amd/display: Exit idle optimizations before HDCP execution
+Subject: [PATCH 5.10 123/290] drm/lima: add mask irq callback to gp and pp
 Date: Wed,  3 Jul 2024 12:38:24 +0200
-Message-ID: <20240703102919.460674497@linuxfoundation.org>
+Message-ID: <20240703102908.835847060@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,90 +62,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Erico Nunes <nunes.erico@gmail.com>
 
-[ Upstream commit f30a3bea92bdab398531129d187629fb1d28f598 ]
+[ Upstream commit 49c13b4d2dd4a831225746e758893673f6ae961c ]
 
-[WHY]
-PSP can access DCN registers during command submission and we need
-to ensure that DCN is not in PG before doing so.
+This is needed because we want to reset those devices in device-agnostic
+code such as lima_sched.
+In particular, masking irqs will be useful before a hard reset to
+prevent race conditions.
 
-[HOW]
-Add a callback to DM to lock and notify DC for idle optimization exit.
-It can't be DC directly because of a potential race condition with the
-link protection thread and the rest of DM operation.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
+Signed-off-by: Qiang Yu <yuq825@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240405152951.1531555-2-nunes.erico@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c    | 10 ++++++++++
- drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h |  8 ++++++++
- 2 files changed, 18 insertions(+)
+ drivers/gpu/drm/lima/lima_bcast.c | 12 ++++++++++++
+ drivers/gpu/drm/lima/lima_bcast.h |  3 +++
+ drivers/gpu/drm/lima/lima_gp.c    |  8 ++++++++
+ drivers/gpu/drm/lima/lima_pp.c    | 18 ++++++++++++++++++
+ drivers/gpu/drm/lima/lima_sched.h |  1 +
+ 5 files changed, 42 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
-index 3e81850a7ffe3..47bb973669d85 100644
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
-@@ -88,6 +88,14 @@ static uint8_t is_cp_desired_hdcp2(struct mod_hdcp *hdcp)
- 			!hdcp->connection.is_hdcp2_revoked;
+diff --git a/drivers/gpu/drm/lima/lima_bcast.c b/drivers/gpu/drm/lima/lima_bcast.c
+index fbc43f243c54d..6d000504e1a4e 100644
+--- a/drivers/gpu/drm/lima/lima_bcast.c
++++ b/drivers/gpu/drm/lima/lima_bcast.c
+@@ -43,6 +43,18 @@ void lima_bcast_suspend(struct lima_ip *ip)
+ 
  }
  
-+static void exit_idle_optimizations(struct mod_hdcp *hdcp)
++int lima_bcast_mask_irq(struct lima_ip *ip)
 +{
-+	struct mod_hdcp_dm *dm = &hdcp->config.dm;
-+
-+	if (dm->funcs.exit_idle_optimizations)
-+		dm->funcs.exit_idle_optimizations(dm->handle);
++	bcast_write(LIMA_BCAST_BROADCAST_MASK, 0);
++	bcast_write(LIMA_BCAST_INTERRUPT_MASK, 0);
++	return 0;
 +}
 +
- static enum mod_hdcp_status execution(struct mod_hdcp *hdcp,
- 		struct mod_hdcp_event_context *event_ctx,
- 		union mod_hdcp_transition_input *input)
-@@ -507,6 +515,8 @@ enum mod_hdcp_status mod_hdcp_process_event(struct mod_hdcp *hdcp,
- 	memset(&event_ctx, 0, sizeof(struct mod_hdcp_event_context));
- 	event_ctx.event = event;
- 
-+	exit_idle_optimizations(hdcp);
++int lima_bcast_reset(struct lima_ip *ip)
++{
++	return lima_bcast_hw_init(ip);
++}
 +
- 	/* execute and transition */
- 	exec_status = execution(hdcp, &event_ctx, &hdcp->auth.trans_input);
- 	trans_status = transition(
-diff --git a/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h b/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
-index f37101f5a7777..8a620c34396c7 100644
---- a/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
-+++ b/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
-@@ -154,6 +154,13 @@ struct mod_hdcp_ddc {
- 	} funcs;
- };
+ int lima_bcast_init(struct lima_ip *ip)
+ {
+ 	int i;
+diff --git a/drivers/gpu/drm/lima/lima_bcast.h b/drivers/gpu/drm/lima/lima_bcast.h
+index 465ee587bceb2..cd08841e47879 100644
+--- a/drivers/gpu/drm/lima/lima_bcast.h
++++ b/drivers/gpu/drm/lima/lima_bcast.h
+@@ -13,4 +13,7 @@ void lima_bcast_fini(struct lima_ip *ip);
  
-+struct mod_hdcp_dm {
-+	void *handle;
-+	struct {
-+		void (*exit_idle_optimizations)(void *handle);
-+	} funcs;
-+};
+ void lima_bcast_enable(struct lima_device *dev, int num_pp);
+ 
++int lima_bcast_mask_irq(struct lima_ip *ip);
++int lima_bcast_reset(struct lima_ip *ip);
 +
- struct mod_hdcp_psp {
- 	void *handle;
- 	void *funcs;
-@@ -269,6 +276,7 @@ struct mod_hdcp_display_query {
- struct mod_hdcp_config {
- 	struct mod_hdcp_psp psp;
- 	struct mod_hdcp_ddc ddc;
-+	struct mod_hdcp_dm dm;
- 	uint8_t index;
- };
+ #endif
+diff --git a/drivers/gpu/drm/lima/lima_gp.c b/drivers/gpu/drm/lima/lima_gp.c
+index 8dd501b7a3d0d..6cf46b653e810 100644
+--- a/drivers/gpu/drm/lima/lima_gp.c
++++ b/drivers/gpu/drm/lima/lima_gp.c
+@@ -212,6 +212,13 @@ static void lima_gp_task_mmu_error(struct lima_sched_pipe *pipe)
+ 	lima_sched_pipe_task_done(pipe);
+ }
  
++static void lima_gp_task_mask_irq(struct lima_sched_pipe *pipe)
++{
++	struct lima_ip *ip = pipe->processor[0];
++
++	gp_write(LIMA_GP_INT_MASK, 0);
++}
++
+ static int lima_gp_task_recover(struct lima_sched_pipe *pipe)
+ {
+ 	struct lima_ip *ip = pipe->processor[0];
+@@ -344,6 +351,7 @@ int lima_gp_pipe_init(struct lima_device *dev)
+ 	pipe->task_error = lima_gp_task_error;
+ 	pipe->task_mmu_error = lima_gp_task_mmu_error;
+ 	pipe->task_recover = lima_gp_task_recover;
++	pipe->task_mask_irq = lima_gp_task_mask_irq;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/gpu/drm/lima/lima_pp.c b/drivers/gpu/drm/lima/lima_pp.c
+index a5c95bed08c09..54b208a4a768e 100644
+--- a/drivers/gpu/drm/lima/lima_pp.c
++++ b/drivers/gpu/drm/lima/lima_pp.c
+@@ -408,6 +408,9 @@ static void lima_pp_task_error(struct lima_sched_pipe *pipe)
+ 
+ 		lima_pp_hard_reset(ip);
+ 	}
++
++	if (pipe->bcast_processor)
++		lima_bcast_reset(pipe->bcast_processor);
+ }
+ 
+ static void lima_pp_task_mmu_error(struct lima_sched_pipe *pipe)
+@@ -416,6 +419,20 @@ static void lima_pp_task_mmu_error(struct lima_sched_pipe *pipe)
+ 		lima_sched_pipe_task_done(pipe);
+ }
+ 
++static void lima_pp_task_mask_irq(struct lima_sched_pipe *pipe)
++{
++	int i;
++
++	for (i = 0; i < pipe->num_processor; i++) {
++		struct lima_ip *ip = pipe->processor[i];
++
++		pp_write(LIMA_PP_INT_MASK, 0);
++	}
++
++	if (pipe->bcast_processor)
++		lima_bcast_mask_irq(pipe->bcast_processor);
++}
++
+ static struct kmem_cache *lima_pp_task_slab;
+ static int lima_pp_task_slab_refcnt;
+ 
+@@ -447,6 +464,7 @@ int lima_pp_pipe_init(struct lima_device *dev)
+ 	pipe->task_fini = lima_pp_task_fini;
+ 	pipe->task_error = lima_pp_task_error;
+ 	pipe->task_mmu_error = lima_pp_task_mmu_error;
++	pipe->task_mask_irq = lima_pp_task_mask_irq;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/gpu/drm/lima/lima_sched.h b/drivers/gpu/drm/lima/lima_sched.h
+index 90f03c48ef4a8..f8bbfa69baea6 100644
+--- a/drivers/gpu/drm/lima/lima_sched.h
++++ b/drivers/gpu/drm/lima/lima_sched.h
+@@ -83,6 +83,7 @@ struct lima_sched_pipe {
+ 	void (*task_error)(struct lima_sched_pipe *pipe);
+ 	void (*task_mmu_error)(struct lima_sched_pipe *pipe);
+ 	int (*task_recover)(struct lima_sched_pipe *pipe);
++	void (*task_mask_irq)(struct lima_sched_pipe *pipe);
+ 
+ 	struct work_struct recover_work;
+ };
 -- 
 2.43.0
 
