@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-57370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59649925C33
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:16:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE759259D9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:51:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C3A11C20AEC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9762D1F21EF9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:51:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798A917C207;
-	Wed,  3 Jul 2024 11:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E124F17BB2A;
+	Wed,  3 Jul 2024 10:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIIJWVJV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5D5ATAc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356E713B280;
-	Wed,  3 Jul 2024 11:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CD9142E73;
+	Wed,  3 Jul 2024 10:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004673; cv=none; b=kL2qLae4cCg8S2yLOKPdQBwbKFXyA7ef2KoLU5GZMyi7kmrC1oUgn6jvm8hGp2NwOwUMmqsMoU/P4bYz+HweMwdlN1JlYd7DcIsCugeE5uJOvTNn0w57ZyQZctE9ZuLidfHSaX0sAmxrH2Qtl3DgNB8YfvnC49hd5pMl/XRjYWY=
+	t=1720003352; cv=none; b=U030Z9MH4AEOBrMSQcMjgzM96SvslDcGypeRVDGMR5ypr13vccb2E6FJ6VA/Wj7Nm9tbhXqDvZ07dk66ul/m8+irMIyeNpdJ0L7je7Rvzyt1tltRAHYL4SHA60I3zDY5zM1+UfYgwCwO1jA6+suwuqZnG9wlh+4ne1YCjX6uOBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004673; c=relaxed/simple;
-	bh=KKj+AIItvLYyxDPKqI3KnMsOhjdM8/G9xTHrJyPvzhY=;
+	s=arc-20240116; t=1720003352; c=relaxed/simple;
+	bh=CFeWUrrLuQf24cIAt8wtjuVD5Yx/CeSyjqv6lxFmYmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O63LK/ghRzWzs9nua82fM80i9KlL+x9to4j8wYbRL3alyaplNoma5M9Te2xR21tz0mFutpsNVgghZIvdEkO94Hgb7MkuVe/8sr5SZir9GOcn0wMXb0NBqGV1tanvKFoMYUjWDjn/sNiMQwB1Dj2lbhVRJNQKJHW7dqbqiDepsWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIIJWVJV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF37AC2BD10;
-	Wed,  3 Jul 2024 11:04:32 +0000 (UTC)
+	 MIME-Version; b=ULFbNCADq7Kbw92S49yYKm1oWbpFI5mHylUx/J6Bibgj7Zra5BTBAoxDWnvl8yM7719kwVzwMI5gQFYRYT48nNgFhMjYvzksDx60O6M1CN081VD43krtr4GG0OVFUvbp3RBpwoe03ofs91m6wHDWlyUiYYYV4I730C8RRFMLpns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5D5ATAc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E34C2BD10;
+	Wed,  3 Jul 2024 10:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004673;
-	bh=KKj+AIItvLYyxDPKqI3KnMsOhjdM8/G9xTHrJyPvzhY=;
+	s=korg; t=1720003352;
+	bh=CFeWUrrLuQf24cIAt8wtjuVD5Yx/CeSyjqv6lxFmYmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YIIJWVJVoNAPDpEUIQx3jYC1ahy+XO8WPLHrQ4kGILSxich3B1ZV+WRW0cUP/zg8P
-	 UYaWisTU5Yqtl9c+9s+FhsTO8KGHJQlMKMUdvvaxAqxtdDSkuAIB2DXUUOoa6/E4mk
-	 JwzEvSW3G4who6b1UboovjZH4QfUtHNxl3wv/zYE=
+	b=Q5D5ATAcFAS9wgeYH2v4CyZM7j7LXgd6VbINgwpqL8g+G9MfOgL8eTcVgYLzhABKU
+	 QP6Pg4/W5q6ZrNMpei0gjt7VyvCgu2pRiH8FEzaUV9uQ3lYp36Qn7bj0fFOGKPphf9
+	 Vaef4+boOMZj2ia8590l5AVmFV5WgESxQ6moChCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Liad Kaufman <liad.kaufman@intel.com>,
+	Luciano Coelho <luciano.coelho@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 119/290] ACPI: video: Add backlight=native quirk for Lenovo Slim 7 16ARH7
+Subject: [PATCH 4.19 003/139] wifi: iwlwifi: mvm: revert gen2 TX A-MPDU size to 64
 Date: Wed,  3 Jul 2024 12:38:20 +0200
-Message-ID: <20240703102908.685890539@linuxfoundation.org>
+Message-ID: <20240703102830.564905798@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit c901f63dc142c48326931f164f787dfff69273d9 ]
+[ Upstream commit 4a7aace2899711592327463c1a29ffee44fcc66e ]
 
-Lenovo Slim 7 16ARH7 is a machine with switchable graphics between AMD
-and Nvidia, and the backlight can't be adjusted properly unless
-acpi_backlight=native is passed.  Although nvidia-wmi-backlight is
-present and loaded, this doesn't work as expected at all.
+We don't actually support >64 even for HE devices, so revert
+back to 64. This fixes an issue where the session is refused
+because the queue is configured differently from the actual
+session later.
 
-For making it working as default, add the corresponding quirk entry
-with a DMI matching "LENOVO" "82UX".
-
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1217750
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 514c30696fbc ("iwlwifi: add support for IEEE802.11ax")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Liad Kaufman <liad.kaufman@intel.com>
+Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240510170500.52f7b4cf83aa.If47e43adddf7fe250ed7f5571fbb35d8221c7c47@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.h | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index a5cb9e1d48bcc..338e1f44906a9 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -341,6 +341,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "82BK"),
- 		},
- 	},
-+	{
-+	 .callback = video_detect_force_native,
-+	 /* Lenovo Slim 7 16ARH7 */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "82UX"),
-+		},
-+	},
- 	{
- 	 .callback = video_detect_force_native,
- 	 /* Lenovo ThinkPad X131e (3371 AMD version) */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.h b/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
+index d0f47899f2849..f76f708ea98c9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
+@@ -144,13 +144,8 @@ enum {
+ 
+ #define LINK_QUAL_AGG_FRAME_LIMIT_DEF	(63)
+ #define LINK_QUAL_AGG_FRAME_LIMIT_MAX	(63)
+-/*
+- * FIXME - various places in firmware API still use u8,
+- * e.g. LQ command and SCD config command.
+- * This should be 256 instead.
+- */
+-#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_DEF	(255)
+-#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_MAX	(255)
++#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_DEF	(64)
++#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_MAX	(64)
+ #define LINK_QUAL_AGG_FRAME_LIMIT_MIN	(0)
+ 
+ #define LQ_SIZE		2	/* 2 mode tables:  "Active" and "Search" */
 -- 
 2.43.0
 
