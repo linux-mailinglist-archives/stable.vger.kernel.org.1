@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-57775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31473925E26
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C557D925DEA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFAF328B52F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:33:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75126B30518
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777E3194C7D;
-	Wed,  3 Jul 2024 11:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE91C14E2E6;
+	Wed,  3 Jul 2024 10:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iYbKTa3X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HFGEwiom"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D06194C73;
-	Wed,  3 Jul 2024 11:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B185136E2A;
+	Wed,  3 Jul 2024 10:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005896; cv=none; b=mlJyO/8rB8hIZ6qvCeop8/PztNgR45CoBzVYLNLwE5owVNGlT1llbANavfz/EokQvgGfAkMO1t4C/idRQMpfSwXC1pfia10Sx/fWPgAXoCgNiuVNvrM8h9+hD4g8RAcymZDJgN/ZCwutvitGv8lh9YO6XAuX3K5iiLIsyRXddD4=
+	t=1720003508; cv=none; b=EQIC2Ki0PyiYQqvgE7TWq9n4+Wj6gcb/vr3bLPJdRm6Fe8EuMq8xOONdLVe7Qr61Kr1UsOHmN2+dDo6bdsmHnWPt7aGsDkB/jXH+jfsI4ScPHuEa0VFn5scbw8bdVAxF46ufIY/QGjkbjJ/U/dhmDjSAgSAndsIIS6hDV01inwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005896; c=relaxed/simple;
-	bh=XTgbpdBPNZ81Qgs1gzO3inOPwnWaTpvJlfJluBaYDFI=;
+	s=arc-20240116; t=1720003508; c=relaxed/simple;
+	bh=+OCF0g0hDXd8xbmmeA2Sw4BAcYbgv/ffejJ+zSmaYBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=grd9DMVvxZgzShIW2OqwjBMd15/2O4IArumPn3qVzkpq0MudG1Mu7vZ4qzdJBLJ2qRnmoT72HIeQ9F3gNXEmtgN7DoAMMX3MzT5qI7JHcUeb2PmEhNMgAbdsbskh7RwUjVqr4QT4GNQuh6yZc0nbb9rpXqk0LMtR8cnvfVjOqBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iYbKTa3X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F34AC4AF0C;
-	Wed,  3 Jul 2024 11:24:55 +0000 (UTC)
+	 MIME-Version; b=DTJHZndQkVcc7TWojHGTimjweX1kHm17yIn/bvi6lZDKu0nxhQfqQm6bNgTuhKR/Vnzzj6huAu3q86kKOYCJiIRFxKfcA/2O59K6mD8bAV0ZI9ItFdvXVCrdJF+8FMgkJ2Rf1li+iD4oDMAVye89hsMv7FBw+fFs6gBShCky8cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HFGEwiom; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21AFDC2BD10;
+	Wed,  3 Jul 2024 10:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005895;
-	bh=XTgbpdBPNZ81Qgs1gzO3inOPwnWaTpvJlfJluBaYDFI=;
+	s=korg; t=1720003508;
+	bh=+OCF0g0hDXd8xbmmeA2Sw4BAcYbgv/ffejJ+zSmaYBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iYbKTa3XxeKLxck47bArXhvtXUOZVnW/dQevJxdOZWP0+kFqQXhlLMnNngdYCFhlL
-	 yBsh1ceeNU7jfbPO+dDyn4Xo0UM3qk1tZyryGWTzA8S1xNaML5Ro0KTJR0guZnOuAE
-	 zj7/53dVlADXv6wYHox4zAlf2sOIyKJcrDcB77GQ=
+	b=HFGEwiom139jwfd0zq3adU2RCtTAdU3xJ9WcwiB+uEtVTCEQcx/FTPVjHYpQjBWi9
+	 OpnT9Hk25GGdcT6payF3SWE0PnIov2dbJ4/Jw00PEegJ0PBJjg5lxNGQdHjMN3QvlC
+	 7vF0+fZbgNyGKCAroRL5MMkgGNyRXP1bK/K/w5zE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Changbin Du <changbin.du@huawei.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	changbin.du@gmail.com,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	syzbot+d327a1f3b12e1e206c16@syzkaller.appspotmail.com,
+	Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 232/356] perf: script: add raw|disasm arguments to --insn-trace option
-Date: Wed,  3 Jul 2024 12:39:28 +0200
-Message-ID: <20240703102921.892397290@linuxfoundation.org>
+Subject: [PATCH 4.19 072/139] netrom: Fix a memory leak in nr_heartbeat_expiry()
+Date: Wed,  3 Jul 2024 12:39:29 +0200
+Message-ID: <20240703102833.160418875@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,104 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Changbin Du <changbin.du@huawei.com>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-[ Upstream commit 6750ba4b6442fa5ea4bf5c0e4b4ff8b0249ef71d ]
+[ Upstream commit 0b9130247f3b6a1122478471ff0e014ea96bb735 ]
 
-Now '--insn-trace' accept a argument to specify the output format:
-  - raw: display raw instructions.
-  - disasm: display mnemonic instructions (if capstone is installed).
+syzbot reported a memory leak in nr_create() [0].
 
-$ sudo perf script --insn-trace=raw
-              ls 1443864 [006] 2275506.209908875:      7f216b426100 _start+0x0 (/usr/lib/x86_64-linux-gnu/ld-2.31.so) insn: 48 89 e7
-              ls 1443864 [006] 2275506.209908875:      7f216b426103 _start+0x3 (/usr/lib/x86_64-linux-gnu/ld-2.31.so) insn: e8 e8 0c 00 00
-              ls 1443864 [006] 2275506.209908875:      7f216b426df0 _dl_start+0x0 (/usr/lib/x86_64-linux-gnu/ld-2.31.so) insn: f3 0f 1e fa
+Commit 409db27e3a2e ("netrom: Fix use-after-free of a listening socket.")
+added sock_hold() to the nr_heartbeat_expiry() function, where
+a) a socket has a SOCK_DESTROY flag or
+b) a listening socket has a SOCK_DEAD flag.
 
-$ sudo perf script --insn-trace=disasm
-              ls 1443864 [006] 2275506.209908875:      7f216b426100 _start+0x0 (/usr/lib/x86_64-linux-gnu/ld-2.31.so)		movq %rsp, %rdi
-              ls 1443864 [006] 2275506.209908875:      7f216b426103 _start+0x3 (/usr/lib/x86_64-linux-gnu/ld-2.31.so)		callq _dl_start+0x0
-              ls 1443864 [006] 2275506.209908875:      7f216b426df0 _dl_start+0x0 (/usr/lib/x86_64-linux-gnu/ld-2.31.so)	illegal instruction
-              ls 1443864 [006] 2275506.209908875:      7f216b426df4 _dl_start+0x4 (/usr/lib/x86_64-linux-gnu/ld-2.31.so)	pushq %rbp
-              ls 1443864 [006] 2275506.209908875:      7f216b426df5 _dl_start+0x5 (/usr/lib/x86_64-linux-gnu/ld-2.31.so)	movq %rsp, %rbp
-              ls 1443864 [006] 2275506.209908875:      7f216b426df8 _dl_start+0x8 (/usr/lib/x86_64-linux-gnu/ld-2.31.so)	pushq %r15
+But in the case "a," when the SOCK_DESTROY flag is set, the file descriptor
+has already been closed and the nr_release() function has been called.
+So it makes no sense to hold the reference count because no one will
+call another nr_destroy_socket() and put it as in the case "b."
 
-Signed-off-by: Changbin Du <changbin.du@huawei.com>
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: changbin.du@gmail.com
-Cc: Thomas Richter <tmricht@linux.ibm.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240217074046.4100789-5-changbin.du@huawei.com
-Stable-dep-of: d4a98b45fbe6 ("perf script: Show also errors for --insn-trace option")
+nr_connect
+  nr_establish_data_link
+    nr_start_heartbeat
+
+nr_release
+  switch (nr->state)
+  case NR_STATE_3
+    nr->state = NR_STATE_2
+    sock_set_flag(sk, SOCK_DESTROY);
+
+                        nr_rx_frame
+                          nr_process_rx_frame
+                            switch (nr->state)
+                            case NR_STATE_2
+                              nr_state2_machine()
+                                nr_disconnect()
+                                  nr_sk(sk)->state = NR_STATE_0
+                                  sock_set_flag(sk, SOCK_DEAD)
+
+                        nr_heartbeat_expiry
+                          switch (nr->state)
+                          case NR_STATE_0
+                            if (sock_flag(sk, SOCK_DESTROY) ||
+                               (sk->sk_state == TCP_LISTEN
+                                 && sock_flag(sk, SOCK_DEAD)))
+                               sock_hold()  // ( !!! )
+                               nr_destroy_socket()
+
+To fix the memory leak, let's call sock_hold() only for a listening socket.
+
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with Syzkaller.
+
+[0]: https://syzkaller.appspot.com/bug?extid=d327a1f3b12e1e206c16
+
+Reported-by: syzbot+d327a1f3b12e1e206c16@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d327a1f3b12e1e206c16
+Fixes: 409db27e3a2e ("netrom: Fix use-after-free of a listening socket.")
+Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/Documentation/perf-script.txt |  7 ++++---
- tools/perf/builtin-script.c              | 22 ++++++++++++++++++----
- 2 files changed, 22 insertions(+), 7 deletions(-)
+ net/netrom/nr_timer.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/Documentation/perf-script.txt b/tools/perf/Documentation/perf-script.txt
-index c80515243560c..fa6a78c472bc1 100644
---- a/tools/perf/Documentation/perf-script.txt
-+++ b/tools/perf/Documentation/perf-script.txt
-@@ -423,9 +423,10 @@ include::itrace.txt[]
- 	will be printed. Each entry has function name and file/line. Enabled by
- 	default, disable with --no-inline.
- 
----insn-trace::
--	Show instruction stream for intel_pt traces. Combine with --xed to
--	show disassembly.
-+--insn-trace[=<raw|disasm>]::
-+	Show instruction stream in bytes (raw) or disassembled (disasm)
-+	for intel_pt traces. The default is 'raw'. To use xed, combine
-+	'raw' with --xed to show disassembly done by xed.
- 
- --xed::
- 	Run xed disassembler on output. Requires installing the xed disassembler.
-diff --git a/tools/perf/builtin-script.c b/tools/perf/builtin-script.c
-index 34e809c934d72..45ccce87d1223 100644
---- a/tools/perf/builtin-script.c
-+++ b/tools/perf/builtin-script.c
-@@ -3585,10 +3585,24 @@ static int perf_script__process_auxtrace_info(struct perf_session *session,
- #endif
- 
- static int parse_insn_trace(const struct option *opt __maybe_unused,
--			    const char *str __maybe_unused,
--			    int unset __maybe_unused)
-+			    const char *str, int unset __maybe_unused)
- {
--	parse_output_fields(NULL, "+insn,-event,-period", 0);
-+	const char *fields = "+insn,-event,-period";
-+	int ret;
-+
-+	if (str) {
-+		if (strcmp(str, "disasm") == 0)
-+			fields = "+disasm,-event,-period";
-+		else if (strlen(str) != 0 && strcmp(str, "raw") != 0) {
-+			fprintf(stderr, "Only accept raw|disasm\n");
-+			return -EINVAL;
-+		}
-+	}
-+
-+	ret = parse_output_fields(NULL, fields, 0);
-+	if (ret < 0)
-+		return ret;
-+
- 	itrace_parse_synth_opts(opt, "i0ns", 0);
- 	symbol_conf.nanosecs = true;
- 	return 0;
-@@ -3728,7 +3742,7 @@ int cmd_script(int argc, const char **argv)
- 		   "only consider these symbols"),
- 	OPT_INTEGER(0, "addr-range", &symbol_conf.addr_range,
- 		    "Use with -S to list traced records within address range"),
--	OPT_CALLBACK_OPTARG(0, "insn-trace", &itrace_synth_opts, NULL, NULL,
-+	OPT_CALLBACK_OPTARG(0, "insn-trace", &itrace_synth_opts, NULL, "raw|disasm",
- 			"Decode instructions from itrace", parse_insn_trace),
- 	OPT_CALLBACK_OPTARG(0, "xed", NULL, NULL, NULL,
- 			"Run xed disassembler on output", parse_xed),
+diff --git a/net/netrom/nr_timer.c b/net/netrom/nr_timer.c
+index 2bf99bd5be58c..67d012e0badeb 100644
+--- a/net/netrom/nr_timer.c
++++ b/net/netrom/nr_timer.c
+@@ -124,7 +124,8 @@ static void nr_heartbeat_expiry(struct timer_list *t)
+ 		   is accepted() it isn't 'dead' so doesn't get removed. */
+ 		if (sock_flag(sk, SOCK_DESTROY) ||
+ 		    (sk->sk_state == TCP_LISTEN && sock_flag(sk, SOCK_DEAD))) {
+-			sock_hold(sk);
++			if (sk->sk_state == TCP_LISTEN)
++				sock_hold(sk);
+ 			bh_unlock_sock(sk);
+ 			nr_destroy_socket(sk);
+ 			goto out;
 -- 
 2.43.0
 
