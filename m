@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96969925E2A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D96E925AC0
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CC121F2583C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2D2329AF77
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:56:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C00B17C21A;
-	Wed,  3 Jul 2024 11:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261C5186286;
+	Wed,  3 Jul 2024 10:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyywgSzZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x3BD9JOf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185CC17BB1F;
-	Wed,  3 Jul 2024 11:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82CA1862B6;
+	Wed,  3 Jul 2024 10:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006016; cv=none; b=O7ve59sjH7zRtGTFVfrCIhk0CPB8dMyI48bgBH1U3YfN1X9oA3SLVXQumDzUJh/kI6/1ciZQOk2df9CeZKbg1SAzH8cPrBEkeQ+ohv7D7xK3EfujgOgRZO9meGENZkj9Zb6Yts1GO4DeoJ5mwC0oDVJUzw8hu1Lz9UnwUF9G+Vo=
+	t=1720003628; cv=none; b=g9c2sPImAj8ytfQ1Im3ekJ0YodSEQINZsVhKAZ+lm4fhslc2QKapmth8YDeWSfsNMRfuMfnYt85HrZpfPwycWqZeC5kkMyCInLl/gIiLSZjHjBvhijYleGFmoaJFXb264raRSMeolfzT6K8GoTlAAWZlcEZse6V33SgrPQkj2Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006016; c=relaxed/simple;
-	bh=yXYXNsn67TCeySGpJKRqqqTigct9CoCM2zYGSaxhUe8=;
+	s=arc-20240116; t=1720003628; c=relaxed/simple;
+	bh=PT3EIngWRlQNCk2o/CcDfqjdNM+l1oIdmOSWEroVgfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CFabFclGQUokq1IZhVfRKCdg424aAPexH+wxYREaiPyDp13+UKcba8SOAA7SsCMs8WixmUVMOLINLNRs5uNRrBNQvfGFSf4TEdwPwSYd2BlOgB0dmJvtweTydyzEDz6E/cbrASDP90ZAF+Lzj/7Oq8Y9f5T6i8IO2kcP8mte8hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyywgSzZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C40C2BD10;
-	Wed,  3 Jul 2024 11:26:55 +0000 (UTC)
+	 MIME-Version; b=b0RZ4o4KG5iuyXLckTI60c2TYIdFRnZzpca/84KlSlfLuqv9B6HWSwrNvVhjiqgR2H+Brb03RA0HSPdbaiUCXtSdJGV5F5tVcKmGnGBfxF/ll7E0fvai4JQnv2WcjcAiFgpF3P9Rf+xK0KSy/RCnFePQT379CT3GInTaIlhfC2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x3BD9JOf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560B3C2BD10;
+	Wed,  3 Jul 2024 10:47:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006016;
-	bh=yXYXNsn67TCeySGpJKRqqqTigct9CoCM2zYGSaxhUe8=;
+	s=korg; t=1720003628;
+	bh=PT3EIngWRlQNCk2o/CcDfqjdNM+l1oIdmOSWEroVgfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KyywgSzZ46VSAKHzRhjlf7bC+NIbPXYSxHyRVxinhGguwv5L5kVYksnnMWxxOVI1B
-	 QPOYCCmCvrKF1rhftg0DcwCJskhZJ4kcAf5DN+UpBUluGBcsKN7BV6naZvLe86bn9u
-	 Bv2/hmv3wN5pH8ZApDfta+rY71dSxJiQfzU3A1sk=
+	b=x3BD9JOfDGPzGajKhcObW8DNoXyvs8Rfu9cYyVv3adSMCvWOJJ9CB+KPTPoSH0leH
+	 mUCWtA1bSyKxTZpEvNFk51ygv5DGxOOkNOA1PmuOQu4qP1vavlI65vwKtC1FsBd0U1
+	 5qgb4ZZqfmDAlJSsdifxT7FTDX/9cGjKOpVEa5tY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Child <nnac123@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Andrew Davis <afd@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 272/356] ibmvnic: Free any outstanding tx skbs during scrq reset
+Subject: [PATCH 4.19 111/139] soc: ti: wkup_m3_ipc: Send NULL dummy message instead of pointer message
 Date: Wed,  3 Jul 2024 12:40:08 +0200
-Message-ID: <20240703102923.405314024@linuxfoundation.org>
+Message-ID: <20240703102834.632932155@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit 49bbeb5719c2f56907d3a9623b47c6c15c2c431d ]
+[ Upstream commit ddbf3204f600a4d1f153498f618369fca352ae00 ]
 
-There are 2 types of outstanding tx skb's:
-Type 1: Packets that are sitting in the drivers ind_buff that are
-waiting to be batch sent to the NIC. During a device reset, these are
-freed with a call to ibmvnic_tx_scrq_clean_buffer()
-Type 2: Packets that have been sent to the NIC and are awaiting a TX
-completion IRQ. These are free'd during a reset with a call to
-clean_tx_pools()
+mbox_send_message() sends a u32 bit message, not a pointer to a message.
+We only convert to a pointer type as a generic type. If we want to send
+a dummy message of 0, then simply send 0 (NULL).
 
-During any reset which requires us to free the tx irq, ensure that the
-Type 2 skb references are freed. Since the irq is released, it is
-impossible for the NIC to inform of any completions.
-
-Furthermore, later in the reset process is a call to init_tx_pools()
-which marks every entry in the tx pool as free (ie not outstanding).
-So if the driver is to make a call to init_tx_pools(), it must first
-be sure that the tx pool is empty of skb references.
-
-This issue was discovered by observing the following in the logs during
-EEH testing:
-	TX free map points to untracked skb (tso_pool 0 idx=4)
-	TX free map points to untracked skb (tso_pool 0 idx=5)
-	TX free map points to untracked skb (tso_pool 1 idx=36)
-
-Fixes: 65d6470d139a ("ibmvnic: clean pending indirect buffs during reset")
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20240325165507.30323-1-afd@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/soc/ti/wkup_m3_ipc.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 890e27b986e2a..7f4539a2e5517 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -3409,6 +3409,12 @@ static void release_sub_crqs(struct ibmvnic_adapter *adapter, bool do_h_free)
- 		adapter->num_active_tx_scrqs = 0;
+diff --git a/drivers/soc/ti/wkup_m3_ipc.c b/drivers/soc/ti/wkup_m3_ipc.c
+index 8358b97505db2..e3a58588547a6 100644
+--- a/drivers/soc/ti/wkup_m3_ipc.c
++++ b/drivers/soc/ti/wkup_m3_ipc.c
+@@ -22,7 +22,6 @@
+ #include <linux/irq.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/omap-mailbox.h>
+ #include <linux/platform_device.h>
+ #include <linux/remoteproc.h>
+ #include <linux/suspend.h>
+@@ -158,7 +157,6 @@ static irqreturn_t wkup_m3_txev_handler(int irq, void *ipc_data)
+ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
+ {
+ 	struct device *dev = m3_ipc->dev;
+-	mbox_msg_t dummy_msg = 0;
+ 	int ret;
+ 
+ 	if (!m3_ipc->mbox) {
+@@ -174,7 +172,7 @@ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
+ 	 * the RX callback to avoid multiple interrupts being received
+ 	 * by the CM3.
+ 	 */
+-	ret = mbox_send_message(m3_ipc->mbox, &dummy_msg);
++	ret = mbox_send_message(m3_ipc->mbox, NULL);
+ 	if (ret < 0) {
+ 		dev_err(dev, "%s: mbox_send_message() failed: %d\n",
+ 			__func__, ret);
+@@ -196,7 +194,6 @@ static int wkup_m3_ping(struct wkup_m3_ipc *m3_ipc)
+ static int wkup_m3_ping_noirq(struct wkup_m3_ipc *m3_ipc)
+ {
+ 	struct device *dev = m3_ipc->dev;
+-	mbox_msg_t dummy_msg = 0;
+ 	int ret;
+ 
+ 	if (!m3_ipc->mbox) {
+@@ -205,7 +202,7 @@ static int wkup_m3_ping_noirq(struct wkup_m3_ipc *m3_ipc)
+ 		return -EIO;
  	}
  
-+	/* Clean any remaining outstanding SKBs
-+	 * we freed the irq so we won't be hearing
-+	 * from them
-+	 */
-+	clean_tx_pools(adapter);
-+
- 	if (adapter->rx_scrq) {
- 		for (i = 0; i < adapter->num_active_rx_scrqs; i++) {
- 			if (!adapter->rx_scrq[i])
+-	ret = mbox_send_message(m3_ipc->mbox, &dummy_msg);
++	ret = mbox_send_message(m3_ipc->mbox, NULL);
+ 	if (ret < 0) {
+ 		dev_err(dev, "%s: mbox_send_message() failed: %d\n",
+ 			__func__, ret);
 -- 
 2.43.0
 
