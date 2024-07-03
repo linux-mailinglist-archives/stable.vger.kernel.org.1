@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-57068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEAA1925A87
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:01:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0E0F925C14
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:14:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CBB81C25FDD
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0F541C2449F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CB117625B;
-	Wed,  3 Jul 2024 10:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6948316DECF;
+	Wed,  3 Jul 2024 11:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2d/lfCJx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZBh9LCu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BCD175560;
-	Wed,  3 Jul 2024 10:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E6B178CEC;
+	Wed,  3 Jul 2024 11:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003746; cv=none; b=ArBUKwljWR+VgCFrnxQbMv3GWpHn6c6hvFsfCHbLGK2CT9zBlc/BH/NaRSqlZAUwSu9W/vmeRvPX43YDQr8U3iK2LEMwZY/EJGndvMh7Jw7ULayRw1c5Ngls+tQrcVgCnP8qqDAARAandX1psYn1wnFeZuI/rkcUZEHCXm/FeBg=
+	t=1720004564; cv=none; b=RTDJXyto8f0RcFSl1hzQpfbH7TdMmu+6RFcRVBsKWJPvISAJKB2TW+d8wPPnfwgANvqRWrDudoKxkiJCd4FbEM8n0YMa05k/cW5fqyVJCxgkMNcnt+CYYnvz9MCGR+6ueGLiLGjnpGEWH36gf6+E+KcoiH5rUcsY0oDz7RUL+48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003746; c=relaxed/simple;
-	bh=XKh5372wV7MXpG3LnbGcWQgMh6rIzxop5z3MpD9P0lQ=;
+	s=arc-20240116; t=1720004564; c=relaxed/simple;
+	bh=lipJfWMxBN6521bdQ0mDA1OxupzigejDB70ezhg6YZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tXf0z+qdkoUdKOL7CUmcA7pxMogSCHhSfflKLnw8hCG5RxeCEDH9pFArRyanMPe11bpvi9cP85Br7a1jS4j4I/my9Xpw4Sy6w/LaqBHAfQIu9O2gXXC3GIaMXTtuapSG/SmJCV/Yjb1j9DNNxTFq7rs90APU01a0XgI0G9UgDMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2d/lfCJx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D52C2BD10;
-	Wed,  3 Jul 2024 10:49:05 +0000 (UTC)
+	 MIME-Version; b=TokygB5nJ/AOt4ulz9v2EWe6R4GcN0FXAzF5AYo9ZeYEXc46UoORkaiqCBdovx7jvSH67lutvQOGsPL11ssIKxqobAcapCsmU3XxTAC0C73M1CM756PxnsCFtnQZqPkJLGXwXNCbn+mrAKKx17i2B0xKksXqRIq53dSe6PcfRuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZBh9LCu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91BE4C2BD10;
+	Wed,  3 Jul 2024 11:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003746;
-	bh=XKh5372wV7MXpG3LnbGcWQgMh6rIzxop5z3MpD9P0lQ=;
+	s=korg; t=1720004564;
+	bh=lipJfWMxBN6521bdQ0mDA1OxupzigejDB70ezhg6YZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2d/lfCJxd1SQVJKYNpk52fBezuhNFZqkUDnRoR/yAEh7/bBSAp3WDMZufX+mjlsfx
-	 40g+J2ZThdqm3MVpqqXR8tGgixBwfuMx8LQeI1VuFP/Jam1vgCzJL4OSJyOgVQNbHf
-	 xo5FOqTX0Yd7CLgG/X8at5tEAEix5qe+OUCzvc7k=
+	b=XZBh9LCubcxxKoOkA+9MjSy+Y1s7DQl+dSwfraX67zPMrC4U6WhoIRf/21KfWqRy2
+	 bQU0R0wD6Jrbmogq/V4znfmfXadK+VosB5K0Jn9v3dECB/vEWka9CV+nwSoqclnGnP
+	 3XamjDwQaiVFy4h8WtTi4uvZVaKkMNNFab5QFPj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Escande <nico.escande@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 001/189] wifi: mac80211: mesh: Fix leak of mesh_preq_queue objects
-Date: Wed,  3 Jul 2024 12:37:42 +0200
-Message-ID: <20240703102841.551392375@linuxfoundation.org>
+	Su Yue <glass.su@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 082/290] ocfs2: use coarse time for new created files
+Date: Wed,  3 Jul 2024 12:37:43 +0200
+Message-ID: <20240703102907.292500263@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +68,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Escande <nico.escande@gmail.com>
+From: Su Yue <glass.su@suse.com>
 
-[ Upstream commit b7d7f11a291830fdf69d3301075dd0fb347ced84 ]
+commit b8cb324277ee16f3eca3055b96fce4735a5a41c6 upstream.
 
-The hwmp code use objects of type mesh_preq_queue, added to a list in
-ieee80211_if_mesh, to keep track of mpath we need to resolve. If the mpath
-gets deleted, ex mesh interface is removed, the entries in that list will
-never get cleaned. Fix this by flushing all corresponding items of the
-preq_queue in mesh_path_flush_pending().
+The default atime related mount option is '-o realtime' which means file
+atime should be updated if atime <= ctime or atime <= mtime.  atime should
+be updated in the following scenario, but it is not:
+==========================================================
+$ rm /mnt/testfile;
+$ echo test > /mnt/testfile
+$ stat -c "%X %Y %Z" /mnt/testfile
+1711881646 1711881646 1711881646
+$ sleep 5
+$ cat /mnt/testfile > /dev/null
+$ stat -c "%X %Y %Z" /mnt/testfile
+1711881646 1711881646 1711881646
+==========================================================
 
-This should take care of KASAN reports like this:
+And the reason the atime in the test is not updated is that ocfs2 calls
+ktime_get_real_ts64() in __ocfs2_mknod_locked during file creation.  Then
+inode_set_ctime_current() is called in inode_set_ctime_current() calls
+ktime_get_coarse_real_ts64() to get current time.
 
-unreferenced object 0xffff00000668d800 (size 128):
-  comm "kworker/u8:4", pid 67, jiffies 4295419552 (age 1836.444s)
-  hex dump (first 32 bytes):
-    00 1f 05 09 00 00 ff ff 00 d5 68 06 00 00 ff ff  ..........h.....
-    8e 97 ea eb 3e b8 01 00 00 00 00 00 00 00 00 00  ....>...........
-  backtrace:
-    [<000000007302a0b6>] __kmem_cache_alloc_node+0x1e0/0x35c
-    [<00000000049bd418>] kmalloc_trace+0x34/0x80
-    [<0000000000d792bb>] mesh_queue_preq+0x44/0x2a8
-    [<00000000c99c3696>] mesh_nexthop_resolve+0x198/0x19c
-    [<00000000926bf598>] ieee80211_xmit+0x1d0/0x1f4
-    [<00000000fc8c2284>] __ieee80211_subif_start_xmit+0x30c/0x764
-    [<000000005926ee38>] ieee80211_subif_start_xmit+0x9c/0x7a4
-    [<000000004c86e916>] dev_hard_start_xmit+0x174/0x440
-    [<0000000023495647>] __dev_queue_xmit+0xe24/0x111c
-    [<00000000cfe9ca78>] batadv_send_skb_packet+0x180/0x1e4
-    [<000000007bacc5d5>] batadv_v_elp_periodic_work+0x2f4/0x508
-    [<00000000adc3cd94>] process_one_work+0x4b8/0xa1c
-    [<00000000b36425d1>] worker_thread+0x9c/0x634
-    [<0000000005852dd5>] kthread+0x1bc/0x1c4
-    [<000000005fccd770>] ret_from_fork+0x10/0x20
-unreferenced object 0xffff000009051f00 (size 128):
-  comm "kworker/u8:4", pid 67, jiffies 4295419553 (age 1836.440s)
-  hex dump (first 32 bytes):
-    90 d6 92 0d 00 00 ff ff 00 d8 68 06 00 00 ff ff  ..........h.....
-    36 27 92 e4 02 e0 01 00 00 58 79 06 00 00 ff ff  6'.......Xy.....
-  backtrace:
-    [<000000007302a0b6>] __kmem_cache_alloc_node+0x1e0/0x35c
-    [<00000000049bd418>] kmalloc_trace+0x34/0x80
-    [<0000000000d792bb>] mesh_queue_preq+0x44/0x2a8
-    [<00000000c99c3696>] mesh_nexthop_resolve+0x198/0x19c
-    [<00000000926bf598>] ieee80211_xmit+0x1d0/0x1f4
-    [<00000000fc8c2284>] __ieee80211_subif_start_xmit+0x30c/0x764
-    [<000000005926ee38>] ieee80211_subif_start_xmit+0x9c/0x7a4
-    [<000000004c86e916>] dev_hard_start_xmit+0x174/0x440
-    [<0000000023495647>] __dev_queue_xmit+0xe24/0x111c
-    [<00000000cfe9ca78>] batadv_send_skb_packet+0x180/0x1e4
-    [<000000007bacc5d5>] batadv_v_elp_periodic_work+0x2f4/0x508
-    [<00000000adc3cd94>] process_one_work+0x4b8/0xa1c
-    [<00000000b36425d1>] worker_thread+0x9c/0x634
-    [<0000000005852dd5>] kthread+0x1bc/0x1c4
-    [<000000005fccd770>] ret_from_fork+0x10/0x20
+ktime_get_real_ts64() is more accurate than ktime_get_coarse_real_ts64().
+In my test box, I saw ctime set by ktime_get_coarse_real_ts64() is less
+than ktime_get_real_ts64() even ctime is set later.  The ctime of the new
+inode is smaller than atime.
 
-Fixes: 050ac52cbe1f ("mac80211: code for on-demand Hybrid Wireless Mesh Protocol")
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-Link: https://msgid.link/20240528142605.1060566-1-nico.escande@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The call trace is like:
+
+ocfs2_create
+  ocfs2_mknod
+    __ocfs2_mknod_locked
+    ....
+
+      ktime_get_real_ts64 <------- set atime,ctime,mtime, more accurate
+      ocfs2_populate_inode
+    ...
+    ocfs2_init_acl
+      ocfs2_acl_set_mode
+        inode_set_ctime_current
+          current_time
+            ktime_get_coarse_real_ts64 <-------less accurate
+
+ocfs2_file_read_iter
+  ocfs2_inode_lock_atime
+    ocfs2_should_update_atime
+      atime <= ctime ? <-------- false, ctime < atime due to accuracy
+
+So here call ktime_get_coarse_real_ts64 to set inode time coarser while
+creating new files.  It may lower the accuracy of file times.  But it's
+not a big deal since we already use coarse time in other places like
+ocfs2_update_inode_atime and inode_set_ctime_current.
+
+Link: https://lkml.kernel.org/r/20240408082041.20925-5-glass.su@suse.com
+Fixes: c62c38f6b91b ("ocfs2: replace CURRENT_TIME macro")
+Signed-off-by: Su Yue <glass.su@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/mesh_pathtbl.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ fs/ocfs2/namei.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mesh_pathtbl.c b/net/mac80211/mesh_pathtbl.c
-index 7e27e5201c54c..55926927c2975 100644
---- a/net/mac80211/mesh_pathtbl.c
-+++ b/net/mac80211/mesh_pathtbl.c
-@@ -725,10 +725,23 @@ void mesh_path_discard_frame(struct ieee80211_sub_if_data *sdata,
-  */
- void mesh_path_flush_pending(struct mesh_path *mpath)
- {
-+	struct ieee80211_sub_if_data *sdata = mpath->sdata;
-+	struct ieee80211_if_mesh *ifmsh = &sdata->u.mesh;
-+	struct mesh_preq_queue *preq, *tmp;
- 	struct sk_buff *skb;
- 
- 	while ((skb = skb_dequeue(&mpath->frame_queue)) != NULL)
- 		mesh_path_discard_frame(mpath->sdata, skb);
-+
-+	spin_lock_bh(&ifmsh->mesh_preq_queue_lock);
-+	list_for_each_entry_safe(preq, tmp, &ifmsh->preq_queue.list, list) {
-+		if (ether_addr_equal(mpath->dst, preq->dst)) {
-+			list_del(&preq->list);
-+			kfree(preq);
-+			--ifmsh->preq_queue_len;
-+		}
-+	}
-+	spin_unlock_bh(&ifmsh->mesh_preq_queue_lock);
- }
- 
- /**
--- 
-2.43.0
-
+--- a/fs/ocfs2/namei.c
++++ b/fs/ocfs2/namei.c
+@@ -566,7 +566,7 @@ static int __ocfs2_mknod_locked(struct i
+ 	fe->i_last_eb_blk = 0;
+ 	strcpy(fe->i_signature, OCFS2_INODE_SIGNATURE);
+ 	fe->i_flags |= cpu_to_le32(OCFS2_VALID_FL);
+-	ktime_get_real_ts64(&ts);
++	ktime_get_coarse_real_ts64(&ts);
+ 	fe->i_atime = fe->i_ctime = fe->i_mtime =
+ 		cpu_to_le64(ts.tv_sec);
+ 	fe->i_mtime_nsec = fe->i_ctime_nsec = fe->i_atime_nsec =
 
 
 
