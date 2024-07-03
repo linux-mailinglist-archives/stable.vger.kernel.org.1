@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-57362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BCF7925C2B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:15:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29891925AA5
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:02:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 152641F2138E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:15:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BCAF1C23041
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:02:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0578317B50C;
-	Wed,  3 Jul 2024 11:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57E21993A5;
+	Wed,  3 Jul 2024 10:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tfY/xUyK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqhmJjPD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B679916F84E;
-	Wed,  3 Jul 2024 11:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7562317B40C;
+	Wed,  3 Jul 2024 10:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004649; cv=none; b=ECnIrBtcAcLcDIba7FahyRlMvTX+TRrEnpEzimYU9cIjg9ltdxIBTzX8yHme3ff1jCMdavsMIUDIbd+o+xTR0dnSJgm5KHDNskoSTXzXkxp9AmjhTEEoEFMkCSJRCyJmDWKGapjWJqcFBNQc6dcS+ROPY7Jj2QlAN1z4fDoaV+Q=
+	t=1720003821; cv=none; b=g4eq758mKTGrEf26el+0Or9230FzCvPOHcLkwxBysDeNgwXS+4Pj/9wMhYvL3dk7oLHJgUXoeRD+p1217CxuT9Soq/FXvIrqD5Y2ZZ4ssXk+uSFZebeVkWBjp8cQJ+wJq0++nYMXGsMdidn5BxVzdjObyF2IgBsLQFtcEbKfFeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004649; c=relaxed/simple;
-	bh=8XLYJ09PkyQnhlnAofCYUj6t1MEQLdrLEqmh5xqmm/I=;
+	s=arc-20240116; t=1720003821; c=relaxed/simple;
+	bh=uaDHIXqz4FyPOzIrRL1gvDBGx+Vt/tlQeqjGzYdomiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kCr/4Rqj8XNw6A2Baj059JoeU84V6j3KG4dPFV0VI1n8chEYT3ncgKqoCg0qjKelSO66CMt2FASxqqwWitBUv7rfF1+eVuwQXIdY44SSA7PxaEn8sV4rh2ITg7XPkFWJyAFiJyT9CcXiyQgmKd6FbtRkc11gs6FMhs0axG6JWAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tfY/xUyK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6C9C2BD10;
-	Wed,  3 Jul 2024 11:04:09 +0000 (UTC)
+	 MIME-Version; b=GAo1PtnLHifW43rbAynp+zJPkQOQ1jEYatOtPqFmu5ZU/B8F6HykgEf9t724V3SroHumnB6RUPoB4/+ouswFOqj+uuvY8cocF0OrZIPpZDaL/7pIEz0jIv70vKJn1ovzFjb9Hmed6cL1ki3WN/Rp3n4Q0KueCvj3dA2vW3hYLmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqhmJjPD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F74C2BD10;
+	Wed,  3 Jul 2024 10:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004649;
-	bh=8XLYJ09PkyQnhlnAofCYUj6t1MEQLdrLEqmh5xqmm/I=;
+	s=korg; t=1720003821;
+	bh=uaDHIXqz4FyPOzIrRL1gvDBGx+Vt/tlQeqjGzYdomiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tfY/xUyKRJdzHcpsJ4rn6KXumOKd689Fv++LeBeZCwlTDXfsVOjEiAARfagNXbFD6
-	 EFT5TnjZtsCghsokP2FyQITAbnVjDTlwxG/v2stQ2Z8EEU9nFlB0FggqVUGbbtDW8h
-	 UUxQ66NiEJGise+WEtcyqwdCXdPSlABvCwCaC4s8=
+	b=kqhmJjPDVL2NqmRT/OLvlDgQfTeTbQk0gv5UnCpccsTidfyAW8+b7v9RJAx1xdgdw
+	 rO5a6E+skDjKchwo90d2e/pSAXylU4pUq1BgJkGk/XMORPHbmmo1MNBXAQoxCIil5c
+	 ZEvfs5EQw/W0jtvagIUvY8jAnDh3CxEmSC0dunK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kees Cook <keescook@chromium.org>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 112/290] wifi: ath9k: work around memset overflow warning
+Subject: [PATCH 5.4 032/189] serial: sc16is7xx: replace hardcoded divisor value with BIT() macro
 Date: Wed,  3 Jul 2024 12:38:13 +0200
-Message-ID: <20240703102908.423812971@linuxfoundation.org>
+Message-ID: <20240703102842.720510876@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 61752ac69b69ed2e04444d090f6917c77ab36d42 ]
+[ Upstream commit 2e57cefc4477659527f7adab1f87cdbf60ef1ae6 ]
 
-gcc-9 and some other older versions produce a false-positive warning
-for zeroing two fields
+To better show why the limit is what it is, since we have only 16 bits for
+the divisor.
 
-In file included from include/linux/string.h:369,
-                 from drivers/net/wireless/ath/ath9k/main.c:18:
-In function 'fortify_memset_chk',
-    inlined from 'ath9k_ps_wakeup' at drivers/net/wireless/ath/ath9k/main.c:140:3:
-include/linux/fortify-string.h:462:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
-  462 |                         __write_overflow_field(p_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Using a struct_group seems to reliably avoid the warning and
-not make the code much uglier. The combined memset() should even
-save a couple of cpu cycles.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240328135509.3755090-3-arnd@kernel.org
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231221231823.2327894-13-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 8492bd91aa05 ("serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when using prescaler")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath.h        | 6 ++++--
- drivers/net/wireless/ath/ath9k/main.c | 3 +--
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/tty/serial/sc16is7xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath.h b/drivers/net/wireless/ath/ath.h
-index f02a308a9ffc5..34654f710d8a1 100644
---- a/drivers/net/wireless/ath/ath.h
-+++ b/drivers/net/wireless/ath/ath.h
-@@ -171,8 +171,10 @@ struct ath_common {
- 	unsigned int clockrate;
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index 892e27cddb0ff..fad8d1f744466 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -496,7 +496,7 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ 	u8 prescaler = 0;
+ 	unsigned long clk = port->uartclk, div = clk / 16 / baud;
  
- 	spinlock_t cc_lock;
--	struct ath_cycle_counters cc_ani;
--	struct ath_cycle_counters cc_survey;
-+	struct_group(cc,
-+		struct ath_cycle_counters cc_ani;
-+		struct ath_cycle_counters cc_survey;
-+	);
- 
- 	struct ath_regulatory regulatory;
- 	struct ath_regulatory reg_world_copy;
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index b2cfc483515c0..c5904d81d0006 100644
---- a/drivers/net/wireless/ath/ath9k/main.c
-+++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -135,8 +135,7 @@ void ath9k_ps_wakeup(struct ath_softc *sc)
- 	if (power_mode != ATH9K_PM_AWAKE) {
- 		spin_lock(&common->cc_lock);
- 		ath_hw_cycle_counters_update(common);
--		memset(&common->cc_survey, 0, sizeof(common->cc_survey));
--		memset(&common->cc_ani, 0, sizeof(common->cc_ani));
-+		memset(&common->cc, 0, sizeof(common->cc));
- 		spin_unlock(&common->cc_lock);
+-	if (div > 0xffff) {
++	if (div >= BIT(16)) {
+ 		prescaler = SC16IS7XX_MCR_CLKSEL_BIT;
+ 		div /= 4;
  	}
- 
 -- 
 2.43.0
 
