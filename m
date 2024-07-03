@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11CC8925B2B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BA73925A2C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:55:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC02A28F530
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:05:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD9A91F22348
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0425118133C;
-	Wed,  3 Jul 2024 10:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418651741E4;
+	Wed,  3 Jul 2024 10:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1M+7fm7I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbqgoCZA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5979173336;
-	Wed,  3 Jul 2024 10:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01194173352;
+	Wed,  3 Jul 2024 10:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004020; cv=none; b=VrtHln8k7nUmcCtBWSNOvX8qizC78b/vBjhY6NkvNwrt69A0JovzuaJ2M0A7Ov2Q7uoy/BZhd61T2DFKOvv2sPKltzxrmNIwFIyPCZga/ZvSN0Xn/O8Ss1lnPsqoGZAiV0SPUri/2JGG0z7ulhGpA+1r8gMBtKM8zKwUaJVUiLY=
+	t=1720003581; cv=none; b=N8iumvpAa1eOXQ3KVtrf75aBeTuXpfELLZendLALdmVVnK1vbdMxKlCSh3reCH7iokjhpjmLBLmw6pnrAS98vF9qhuTR0S4jLZ7+b/ZH0eGJ67l+V2P6sri+LsNldZ1keCgJxofT+u1vbapjj+Dv1B6JGcDBq7DD2HrJxLV5ag0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004020; c=relaxed/simple;
-	bh=irObsscxo2AkFfAmKgQ6qMYBcDctXHZil0FoB0+zLLs=;
+	s=arc-20240116; t=1720003581; c=relaxed/simple;
+	bh=04CnYoP6ixZsNryeOcKsDeSL1VvdSZJJ6EjMEBTyz+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WVHP72VGxfQvgwSP+LB4ZUQ8g+DeAMFd8YoZHNURq+3/2mQFp8YjGPq80IkSywary1dvYGhq7zZS5sw6AikXH3T4T+HegDfNUhUIXGX0b9Ai5mMrO/3b5/3TBDHCOQDDidKivyw8cxt+m7mue4fPI/2NgT0XViKCsILJtNLrplQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1M+7fm7I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38AA0C2BD10;
-	Wed,  3 Jul 2024 10:53:40 +0000 (UTC)
+	 MIME-Version; b=C/BI8eLRi0bF+miuy2Hb20BOlnAkd262BRqx5pi1/+5nmOIanPvA5RBO/2JE3JTn6tMS03Cgj/Ili252kdvwuiPlbpS4ClWZ/8gY6BMErQrvdmw7e1bMi+5QEAXexzGrk6e7tPPhthcApkrk9oGvQsVxHhNVvYzac5E8G2RNUBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbqgoCZA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199A4C2BD10;
+	Wed,  3 Jul 2024 10:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004020;
-	bh=irObsscxo2AkFfAmKgQ6qMYBcDctXHZil0FoB0+zLLs=;
+	s=korg; t=1720003580;
+	bh=04CnYoP6ixZsNryeOcKsDeSL1VvdSZJJ6EjMEBTyz+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1M+7fm7IZeSp6QRv3WUFI6nKA6VN4RjzWuq6ibKo/BzyTOMJFXWn1TBCiq8N3xNuN
-	 wCFCuLmMtdKiOxJeDUb9P1hexuKaM5ga2c52HXl5FyIGbRYZiq8tNi4oCSfRylZhPn
-	 QW0es8ILiCz+O6OMJajcrOGIyfDMH+FkB9uxJ9+w=
+	b=AbqgoCZAZhQTH4oRkh9OJQTLAf1OZtBWiKbQ2AeNCVpHhw05dYQxIpt5dYbenmNo9
+	 ydYib9s7AaJEyOWorwrLVdkFs0cZVKd7yTMRyIPnQ2MA3RqkIIJJJY2tbqESXMDYD4
+	 kewRLYlBXIG1GOuXDwGQh31yT1VMSUgauiAK68qw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Alessandro Carminati (Red Hat)" <alessandro.carminati@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 090/189] selftests/bpf: Prevent client connect before server bind in test_tc_tunnel.sh
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 4.19 054/139] intel_th: pci: Add Sapphire Rapids SOC support
 Date: Wed,  3 Jul 2024 12:39:11 +0200
-Message-ID: <20240703102844.898388286@linuxfoundation.org>
+Message-ID: <20240703102832.480097037@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessandro Carminati (Red Hat) <alessandro.carminati@gmail.com>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-[ Upstream commit f803bcf9208a2540acb4c32bdc3616673169f490 ]
+commit 2e1da7efabe05cb0cf0b358883b2bc89080ed0eb upstream.
 
-In some systems, the netcat server can incur in delay to start listening.
-When this happens, the test can randomly fail in various points.
-This is an example error message:
+Add support for the Trace Hub in Sapphire Rapids SOC.
 
-   # ip gre none gso
-   # encap 192.168.1.1 to 192.168.1.2, type gre, mac none len 2000
-   # test basic connectivity
-   # Ncat: Connection refused.
-
-The issue stems from a race condition between the netcat client and server.
-The test author had addressed this problem by implementing a sleep, which
-I have removed in this patch.
-This patch introduces a function capable of sleeping for up to two seconds.
-However, it can terminate the waiting period early if the port is reported
-to be listening.
-
-Signed-off-by: Alessandro Carminati (Red Hat) <alessandro.carminati@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240314105911.213411-1-alessandro.carminati@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20240429130119.1518073-13-alexander.shishkin@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/test_tc_tunnel.sh | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/hwtracing/intel_th/pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/test_tc_tunnel.sh b/tools/testing/selftests/bpf/test_tc_tunnel.sh
-index 7c76b841b17bb..21bde60c95230 100755
---- a/tools/testing/selftests/bpf/test_tc_tunnel.sh
-+++ b/tools/testing/selftests/bpf/test_tc_tunnel.sh
-@@ -71,7 +71,6 @@ cleanup() {
- server_listen() {
- 	ip netns exec "${ns2}" nc "${netcat_opt}" -l -p "${port}" > "${outfile}" &
- 	server_pid=$!
--	sleep 0.2
- }
- 
- client_connect() {
-@@ -92,6 +91,16 @@ verify_data() {
- 	fi
- }
- 
-+wait_for_port() {
-+	for i in $(seq 20); do
-+		if ip netns exec "${ns2}" ss ${2:--4}OHntl | grep -q "$1"; then
-+			return 0
-+		fi
-+		sleep 0.1
-+	done
-+	return 1
-+}
-+
- set -e
- 
- # no arguments: automated test, run all
-@@ -183,6 +192,7 @@ setup
- # basic communication works
- echo "test basic connectivity"
- server_listen
-+wait_for_port ${port} ${netcat_opt}
- client_connect
- verify_data
- 
-@@ -194,6 +204,7 @@ ip netns exec "${ns1}" tc filter add dev veth1 egress \
- 	section "encap_${tuntype}_${mac}"
- echo "test bpf encap without decap (expect failure)"
- server_listen
-+wait_for_port ${port} ${netcat_opt}
- ! client_connect
- 
- if [[ "$tuntype" =~ "udp" ]]; then
--- 
-2.43.0
-
+--- a/drivers/hwtracing/intel_th/pci.c
++++ b/drivers/hwtracing/intel_th/pci.c
+@@ -276,6 +276,11 @@ static const struct pci_device_id intel_
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+ 	},
+ 	{
++		/* Sapphire Rapids SOC */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x3456),
++		.driver_data = (kernel_ulong_t)&intel_th_2x,
++	},
++	{
+ 		/* Rocket Lake CPU */
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x4c19),
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 
 
 
