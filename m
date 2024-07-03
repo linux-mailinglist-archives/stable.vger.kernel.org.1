@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4493C925E11
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:34:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD6F5925BAA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF93E1F23684
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:34:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E67E929159B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1822117A5A4;
-	Wed,  3 Jul 2024 11:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2CD191F84;
+	Wed,  3 Jul 2024 10:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zuxfp1dt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BS7IOdRC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89F417A599;
-	Wed,  3 Jul 2024 11:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CA6191F7A;
+	Wed,  3 Jul 2024 10:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005968; cv=none; b=daeH5XUlgAdKaHJxdhAiO15YR4HYd8C6Kht4/LhdE0FOdX1LtjggX8T8Tq3UQLbCxS3phaEJsbJrRoTHRVulX9QoXBbLci6UCGjkqW7BBBIxyUVNwuO9+PrV4s+VV4VZSenzQPL+s6UuB/AVJ59BZLBV3j9SsI42kT2nB1Ybavk=
+	t=1720004235; cv=none; b=ZNoEu+ZnRq0kJPGo6EybEdh7uss9zZaYkyooM421+mfKYNBwNz/rRxYRTqvVTqnP+yRhEfIt0QiHqeoqndwoajVgdGT+NPOn1A9TTc3/4RN3Fi1xiC63IYZZk/GlqZDJU6lll1A8KqMdlYV0o0iN7hqTf+RaKyFDaj85Mml5Q3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005968; c=relaxed/simple;
-	bh=Y/kOx0PB2RzkCtg8imDkCspa6eYBdHfkqQIJgHA75lo=;
+	s=arc-20240116; t=1720004235; c=relaxed/simple;
+	bh=U1UcC/hgv0y/j00xYbFFNSN7jC56ug4HWWCDDGkQ9s0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/bkfyVD3c5d+EDzZXawPvbN0Yal7bfI3f/ucgKxVVfJ6aKuGfkrF4Tc+DlfVaxf6qHZ92skuJEKmi9jWEKVy45+bxkRLyx5qYZMuPzGQoSlocG8Wj2zHGJkpYiLIbhI9Z3Nvrg3V7t22EMRghSzfZZt9/oFPEyvutclXZg7oPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zuxfp1dt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F7C7C32781;
-	Wed,  3 Jul 2024 11:26:08 +0000 (UTC)
+	 MIME-Version; b=ULYxLTYmDvrsM8ilWMRyRdTU+23tRMx59xg2n5HrgojVpYYAQEmHpZRITTMatsdPVPo7D/Li844SBWrDJI44by448rp3F5W8sQXHVznuKoy7Z8AlqhY+Jn/WmbaC0Gq5tIGbvHZFjFAhhLKD59L4YhR4mt6H+9Pg8vpfLDPCL1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BS7IOdRC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52FB6C2BD10;
+	Wed,  3 Jul 2024 10:57:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005968;
-	bh=Y/kOx0PB2RzkCtg8imDkCspa6eYBdHfkqQIJgHA75lo=;
+	s=korg; t=1720004234;
+	bh=U1UcC/hgv0y/j00xYbFFNSN7jC56ug4HWWCDDGkQ9s0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zuxfp1dtsSpUqigJ6R8HViXQzzCiDl3yKvHeRUc5qrwaMM6mfZ5eMuHJJqmAifMGJ
-	 xeiC+dvhn1Mr6aNxkhNtgB38970zFD5/m4AGs6IYgrIbCYfaIXJjiauIYa9RHT5j+0
-	 4vBlgtTBAzlp3EqjcqIadnWDsOOjuSXk1fKyZfa8=
+	b=BS7IOdRCwspfNuVmUTcSVV79ecFcN3JJczdsx5Fo4X4LRtPUy/aEZs2FD4r9RBBGt
+	 rhOFG6siufIgUhuSPe9CqVhLWwINiQPMHa1SxM/RrW/2nVp2+No6E0C6LXDoOx314K
+	 u1q1JBl2IgUpyTCfMB97rBO6/CmAvAUVrhJqLNKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Alexandru Ardelean <alexandru.ardelean@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 257/356] ACPI: x86: Force StorageD3Enable on more products
+Subject: [PATCH 5.4 132/189] iio: dac: ad5592r: un-indent code-block for scale read
 Date: Wed,  3 Jul 2024 12:39:53 +0200
-Message-ID: <20240703102922.838655332@linuxfoundation.org>
+Message-ID: <20240703102846.468876314@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
-[ Upstream commit e79a10652bbd320649da705ca1ea0c04351af403 ]
+[ Upstream commit b004fe33034cc64f72c20923be71cf1e6c9a624c ]
 
-A Rembrandt-based HP thin client is reported to have problems where
-the NVME disk isn't present after resume from s2idle.
+The next rework may require an unindentation of a code block in
+ad5592r_read_raw(), which would make review a bit more difficult.
 
-This is because the NVME disk wasn't put into D3 at suspend, and
-that happened because the StorageD3Enable _DSD was missing in the BIOS.
+This change unindents the code block for reading the scale of the
+non-temperature channels.
 
-As AMD's architecture requires that the NVME is in D3 for s2idle, adjust
-the criteria for force_storage_d3 to match *all* Zen SoCs when the FADT
-advertises low power idle support.
-
-This will ensure that any future products with this BIOS deficiency don't
-need to be added to the allow list of overrides.
-
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Link: https://lore.kernel.org/r/20200706110259.23947-2-alexandru.ardelean@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 279428df8883 ("iio: dac: ad5592r: fix temperature channel scaling value")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c | 24 ++++++++++--------------
- 1 file changed, 10 insertions(+), 14 deletions(-)
+ drivers/iio/dac/ad5592r-base.c | 26 ++++++++++++--------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index 7d6083d40bf6b..aa4f233373afc 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -179,16 +179,16 @@ bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *s
- }
- 
- /*
-- * AMD systems from Renoir and Lucienne *require* that the NVME controller
-+ * AMD systems from Renoir onwards *require* that the NVME controller
-  * is put into D3 over a Modern Standby / suspend-to-idle cycle.
-  *
-  * This is "typically" accomplished using the `StorageD3Enable`
-  * property in the _DSD that is checked via the `acpi_storage_d3` function
-- * but this property was introduced after many of these systems launched
-- * and most OEM systems don't have it in their BIOS.
-+ * but some OEM systems still don't have it in their BIOS.
-  *
-  * The Microsoft documentation for StorageD3Enable mentioned that Windows has
-- * a hardcoded allowlist for D3 support, which was used for these platforms.
-+ * a hardcoded allowlist for D3 support as well as a registry key to override
-+ * the BIOS, which has been used for these cases.
-  *
-  * This allows quirking on Linux in a similar fashion.
-  *
-@@ -201,17 +201,13 @@ bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *s
-  *    https://bugzilla.kernel.org/show_bug.cgi?id=216773
-  *    https://bugzilla.kernel.org/show_bug.cgi?id=217003
-  * 2) On at least one HP system StorageD3Enable is missing on the second NVME
--      disk in the system.
-+ *    disk in the system.
-+ * 3) On at least one HP Rembrandt system StorageD3Enable is missing on the only
-+ *    NVME device.
-  */
--static const struct x86_cpu_id storage_d3_cpu_ids[] = {
--	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 24, NULL),  /* Picasso */
--	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),	/* Renoir */
--	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL),	/* Lucienne */
--	X86_MATCH_VENDOR_FAM_MODEL(AMD, 25, 80, NULL),	/* Cezanne */
--	{}
--};
--
- bool force_storage_d3(void)
+diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
+index d9c1242db99f1..5c242479bb811 100644
+--- a/drivers/iio/dac/ad5592r-base.c
++++ b/drivers/iio/dac/ad5592r-base.c
+@@ -377,7 +377,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
  {
--	return x86_match_cpu(storage_d3_cpu_ids);
-+	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
-+		return false;
-+	return acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0;
- }
+ 	struct ad5592r_state *st = iio_priv(iio_dev);
+ 	u16 read_val;
+-	int ret;
++	int ret, mult;
+ 
+ 	switch (m) {
+ 	case IIO_CHAN_INFO_RAW:
+@@ -415,23 +415,21 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
+ 			*val = div_s64_rem(tmp, 1000000000LL, val2);
+ 
+ 			return IIO_VAL_INT_PLUS_MICRO;
+-		} else {
+-			int mult;
++		}
+ 
+-			mutex_lock(&st->lock);
++		mutex_lock(&st->lock);
+ 
+-			if (chan->output)
+-				mult = !!(st->cached_gp_ctrl &
+-					AD5592R_REG_CTRL_DAC_RANGE);
+-			else
+-				mult = !!(st->cached_gp_ctrl &
+-					AD5592R_REG_CTRL_ADC_RANGE);
++		if (chan->output)
++			mult = !!(st->cached_gp_ctrl &
++				AD5592R_REG_CTRL_DAC_RANGE);
++		else
++			mult = !!(st->cached_gp_ctrl &
++				AD5592R_REG_CTRL_ADC_RANGE);
+ 
+-			*val *= ++mult;
++		*val *= ++mult;
+ 
+-			*val2 = chan->scan_type.realbits;
+-			ret = IIO_VAL_FRACTIONAL_LOG2;
+-		}
++		*val2 = chan->scan_type.realbits;
++		ret = IIO_VAL_FRACTIONAL_LOG2;
+ 		break;
+ 	case IIO_CHAN_INFO_OFFSET:
+ 		ret = ad5592r_get_vref(st);
 -- 
 2.43.0
 
