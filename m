@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-57720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 393B3925DB0
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD4E1925ABE
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AFF21C22CD7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 782DB1F22A39
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F051891B9;
-	Wed,  3 Jul 2024 11:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB2417C212;
+	Wed,  3 Jul 2024 10:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iEVlTr/v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="psnyKMyc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FD82EB02;
-	Wed,  3 Jul 2024 11:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38571171E70;
+	Wed,  3 Jul 2024 10:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005730; cv=none; b=iz9pjxpf/f8ytBnruUrizzOe4llXmSHjQGYWyRZgK7KQOuli2M0wSWqMQahOZrbJ0vImtvAHctsyM9ztmsx5AzN0ERCdhmyY6anMXHKXmXqBd0hW1jyN4Wa6A7YzTHQeMKLviU7kYAl7QUAjr6N+xs4OkD6/KhOD/keyiIJsT18=
+	t=1720003914; cv=none; b=S/wm6Kt6kstXAycnxGCnealkaoMIPVyygdqaZn7mg6Nv80qhbdIx3B+cZET2eOT9MozKZlcOWinIgza2mM+37PZZP/dbbvAlTEcn0BHEI+e2CyJoAqrJqENx6OPuAg1j2cnjfNEXFRxovRVedIN+loUgQDhvkGYsPIv6x6OBNtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005730; c=relaxed/simple;
-	bh=ejOp5jgr/H8jTyKvv/wbOTaegijkBE6aeyW+hwk3y7E=;
+	s=arc-20240116; t=1720003914; c=relaxed/simple;
+	bh=2D1MVleHWMbDJZqwQfvE3Ako3D1PU5jiV2/jzh/weTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oDmyJ+b6PIlIbl4RNyFKITlMWwZnrNnqWjFPkZqydmNHC8nlqi6TqRgxH+jq8VHkWgrpsx6V7hYWXLyPQ+7wRcdoUQzGiuosa2620BkEGf2br5Ys+RBobj4UH04/OdLlguRA2RGGEI7kMu9964EoWE8NChoPlEryO7rFK5kK/C0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iEVlTr/v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2719C2BD10;
-	Wed,  3 Jul 2024 11:22:09 +0000 (UTC)
+	 MIME-Version; b=ru/mp2C3tmdByqz6YUCT5PMnDD73k8b2gSzsJQ4zosZqFxUK8Pz9shR9W1uKGnHxj/0YO+kiJmal5TqK1/wcGAjfeKyXHA7QpdblxU01Nyyb3JAgeKbBULseDr9NZ/CfzxAv0JBXTYXQ2HCCvzpZdUtRLxkRoKj+x5mCMP2IWm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=psnyKMyc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB0B4C2BD10;
+	Wed,  3 Jul 2024 10:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005730;
-	bh=ejOp5jgr/H8jTyKvv/wbOTaegijkBE6aeyW+hwk3y7E=;
+	s=korg; t=1720003914;
+	bh=2D1MVleHWMbDJZqwQfvE3Ako3D1PU5jiV2/jzh/weTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iEVlTr/vgk2IEU61T5gxDbIEAn5khm9f1uQki2MZrh6Ycm8s1iLKMmaqgSVdx2XqE
-	 /zRVXW7X7GS94RgCBbX/Q6ZcG/nloSSADnBKUsDfaTR3BUrjEJA4tImEBvSX7Dn4Q8
-	 RR06R4TTJ7DOYJKRqvCOKqXA6a/VymxFiIotQ2+A=
+	b=psnyKMyc1bGYVCQAXaVKyaqtfOilCh15Mq6XFCqG34uwD8MuLiNHRLLGh4FfLLVyg
+	 YUzrhmT0iQxWv1nj9BPuJvc5s01dhsyrvzrlEvtYVul8PHvENVMr6Sq9Ons6DjIvNb
+	 vH+9VoAO/W+BpoMfsPKb/x6aca90CU7JHTLEnPoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean Delvare <jdelvare@suse.de>,
-	Luis Oliveira <lolivei@synopsys.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Jan Dabros <jsd@semihalf.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 146/356] i2c: designware: Fix the functionality flags of the slave-only interface
+Subject: [PATCH 5.4 021/189] af_unix: Annotate data-race of sk->sk_shutdown in sk_diag_fill().
 Date: Wed,  3 Jul 2024 12:38:02 +0200
-Message-ID: <20240703102918.625514315@linuxfoundation.org>
+Message-ID: <20240703102842.305029611@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,47 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean Delvare <jdelvare@suse.de>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit cbf3fb5b29e99e3689d63a88c3cddbffa1b8de99 ]
+[ Upstream commit efaf24e30ec39ebbea9112227485805a48b0ceb1 ]
 
-When an I2C adapter acts only as a slave, it should not claim to
-support I2C master capabilities.
+While dumping sockets via UNIX_DIAG, we do not hold unix_state_lock().
 
-Fixes: 5b6d721b266a ("i2c: designware: enable SLAVE in platform module")
-Signed-off-by: Jean Delvare <jdelvare@suse.de>
-Cc: Luis Oliveira <lolivei@synopsys.com>
-Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Jan Dabros <jsd@semihalf.com>
-Cc: Andi Shyti <andi.shyti@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Let's use READ_ONCE() to read sk->sk_shutdown.
+
+Fixes: e4e541a84863 ("sock-diag: Report shutdown for inet and unix sockets (v2)")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-designware-slave.c | 2 +-
+ net/unix/diag.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-designware-slave.c b/drivers/i2c/busses/i2c-designware-slave.c
-index 0d15f4c1e9f7e..5b54a9b9ed1a3 100644
---- a/drivers/i2c/busses/i2c-designware-slave.c
-+++ b/drivers/i2c/busses/i2c-designware-slave.c
-@@ -232,7 +232,7 @@ static const struct i2c_algorithm i2c_dw_algo = {
+diff --git a/net/unix/diag.c b/net/unix/diag.c
+index 5bc5cb83cc6e4..7066a36234106 100644
+--- a/net/unix/diag.c
++++ b/net/unix/diag.c
+@@ -164,7 +164,7 @@ static int sk_diag_fill(struct sock *sk, struct sk_buff *skb, struct unix_diag_r
+ 	    sock_diag_put_meminfo(sk, skb, UNIX_DIAG_MEMINFO))
+ 		goto out_nlmsg_trim;
  
- void i2c_dw_configure_slave(struct dw_i2c_dev *dev)
- {
--	dev->functionality = I2C_FUNC_SLAVE | DW_IC_DEFAULT_FUNCTIONALITY;
-+	dev->functionality = I2C_FUNC_SLAVE;
+-	if (nla_put_u8(skb, UNIX_DIAG_SHUTDOWN, sk->sk_shutdown))
++	if (nla_put_u8(skb, UNIX_DIAG_SHUTDOWN, READ_ONCE(sk->sk_shutdown)))
+ 		goto out_nlmsg_trim;
  
- 	dev->slave_cfg = DW_IC_CON_RX_FIFO_FULL_HLD_CTRL |
- 			 DW_IC_CON_RESTART_EN | DW_IC_CON_STOP_DET_IFADDRESSED;
+ 	if ((req->udiag_show & UDIAG_SHOW_UID) &&
 -- 
 2.43.0
 
