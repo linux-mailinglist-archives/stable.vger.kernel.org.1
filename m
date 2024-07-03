@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B69A925C03
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:13:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 141AA925D3E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0444D1F22167
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1CBE1F21102
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58EA0175560;
-	Wed,  3 Jul 2024 11:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1214117DA10;
+	Wed,  3 Jul 2024 11:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYIyZevW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/UbgDcu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C3413BC0B;
-	Wed,  3 Jul 2024 11:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C4D17C7AB;
+	Wed,  3 Jul 2024 11:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004489; cv=none; b=NbQv2JGL6sN3DvLLJJL6nWnCp8VWYejJ3qzvcy/ATmZU314LtaxiFHJUVT9MMVM28G1QqKrU7/ZBzHGWREWTiXgZtRuPKhtov8S10XdBaKr36oHcLRIegLLjQcNjyw+mcfFkbvzECnZ1SLxJz8wLslg5n+E/z8JpmoWbeaMYfkg=
+	t=1720005417; cv=none; b=GOefeL5pOnyJp/rJZHnxYCrZepZpK99C12SkwZ6pb1vhb0BcEwS/is0SQqlj/fcyoTedrW9WB2QNhBxCJ5rCv/LcYnFeObbdZEVlEfWcfbVVHWN2F2dkxh3ohXArouHYCkUDrQHfzfpEd/UhyvI99JKePNHVLKQ/VG7RgDlq+lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004489; c=relaxed/simple;
-	bh=5u3hfL92p46r6mB0Pb8ZVcIPQb/mqYPCaEmoysAZjFE=;
+	s=arc-20240116; t=1720005417; c=relaxed/simple;
+	bh=unQXsFke/mh/0wh4YVFtdn1s10nuGWUnY1Av0qApqDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LI4fraU+F26usf8R8N7z04auHoHrUUcRiYaGjHJyBr8WtVwvRWaQWFDHrD3NThw8SOWN5jAPN71hLWiFxm1arP5KY/MZMDs8VGQAbfx9bygW7+6DIf3hBxtWwcFVqDum29bBMwxlOsRXjmJjQy+5mG1cqLcnbfrIJ165gPNli2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lYIyZevW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F5FCC2BD10;
-	Wed,  3 Jul 2024 11:01:28 +0000 (UTC)
+	 MIME-Version; b=sMpAa8dLByNGwdHiaO5xVRFR6KKHUWON8cvUVGbelJZOfs/edGivfjxygiasvLjtQt2ruADJZmIAOOxZon3VdxnK0bR4HePhS5iDSULlGLUzvb27pYcBfR9GBjTVIlYg1RwHkKNPvvRQJ5ikav1sqMnMgHHidu6MsKAsIBHkU20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/UbgDcu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49FA5C2BD10;
+	Wed,  3 Jul 2024 11:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004489;
-	bh=5u3hfL92p46r6mB0Pb8ZVcIPQb/mqYPCaEmoysAZjFE=;
+	s=korg; t=1720005417;
+	bh=unQXsFke/mh/0wh4YVFtdn1s10nuGWUnY1Av0qApqDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lYIyZevW+3brxbXpmluZmSKw7ETGcARhKk2MFa1xiSTR9SHH0pyWX7X7IxD6+qfoW
-	 c/5kgzvh26y1fkr5nfsEv0d3h/2iJIwmzLZujmvZiE70BzIii3G+0eWPtQFAESFINo
-	 v2OQCdQMfupgD8dBZvqPXL/ea7rM3l3k8r9DXJWA=
+	b=J/UbgDcu+w3kUqZv4t60Bg2oFMyEbzf0Fip5oZVNVsWpC6T9vxcp4n2VoYJieHcej
+	 resFITLIykem3Cc4t9rCeFZnBYwa+/2bvpcheZszZ9/OTOMnuejx0a+2+UrZC9tnyt
+	 XN0z0/W/IopazfwFK3mFfinHqaLbi5UfV8Jk23xU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+c8166c541d3971bf6c87@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 027/290] af_unix: Annotate data-race of sk->sk_shutdown in sk_diag_fill().
-Date: Wed,  3 Jul 2024 12:36:48 +0200
-Message-ID: <20240703102905.219871511@linuxfoundation.org>
+Subject: [PATCH 5.15 073/356] nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors
+Date: Wed,  3 Jul 2024 12:36:49 +0200
+Message-ID: <20240703102915.864794134@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit efaf24e30ec39ebbea9112227485805a48b0ceb1 ]
+[ Upstream commit 7373a51e7998b508af7136530f3a997b286ce81c ]
 
-While dumping sockets via UNIX_DIAG, we do not hold unix_state_lock().
+The error handling in nilfs_empty_dir() when a directory folio/page read
+fails is incorrect, as in the old ext2 implementation, and if the
+folio/page cannot be read or nilfs_check_folio() fails, it will falsely
+determine the directory as empty and corrupt the file system.
 
-Let's use READ_ONCE() to read sk->sk_shutdown.
+In addition, since nilfs_empty_dir() does not immediately return on a
+failed folio/page read, but continues to loop, this can cause a long loop
+with I/O if i_size of the directory's inode is also corrupted, causing the
+log writer thread to wait and hang, as reported by syzbot.
 
-Fixes: e4e541a84863 ("sock-diag: Report shutdown for inet and unix sockets (v2)")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fix these issues by making nilfs_empty_dir() immediately return a false
+value (0) if it fails to get a directory folio/page.
+
+Link: https://lkml.kernel.org/r/20240604134255.7165-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+c8166c541d3971bf6c87@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c8166c541d3971bf6c87
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/diag.c | 2 +-
+ fs/nilfs2/dir.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/unix/diag.c b/net/unix/diag.c
-index 5bc5cb83cc6e4..7066a36234106 100644
---- a/net/unix/diag.c
-+++ b/net/unix/diag.c
-@@ -164,7 +164,7 @@ static int sk_diag_fill(struct sock *sk, struct sk_buff *skb, struct unix_diag_r
- 	    sock_diag_put_meminfo(sk, skb, UNIX_DIAG_MEMINFO))
- 		goto out_nlmsg_trim;
+diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
+index 22f1f75a90c1a..552234ef22fe7 100644
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -627,7 +627,7 @@ int nilfs_empty_dir(struct inode *inode)
  
--	if (nla_put_u8(skb, UNIX_DIAG_SHUTDOWN, sk->sk_shutdown))
-+	if (nla_put_u8(skb, UNIX_DIAG_SHUTDOWN, READ_ONCE(sk->sk_shutdown)))
- 		goto out_nlmsg_trim;
+ 		kaddr = nilfs_get_page(inode, i, &page);
+ 		if (IS_ERR(kaddr))
+-			continue;
++			return 0;
  
- 	if ((req->udiag_show & UDIAG_SHOW_UID) &&
+ 		de = (struct nilfs_dir_entry *)kaddr;
+ 		kaddr += nilfs_last_byte(inode, i) - NILFS_DIR_REC_LEN(1);
 -- 
 2.43.0
 
