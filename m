@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24784925C26
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:15:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47170925B1C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 575821C205BC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:15:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA51029F06B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8C7172793;
-	Wed,  3 Jul 2024 11:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C00179654;
+	Wed,  3 Jul 2024 10:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxroMoME"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODtZiKe4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1AF142903;
-	Wed,  3 Jul 2024 11:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544EF178CCD;
+	Wed,  3 Jul 2024 10:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004608; cv=none; b=kbRzqTSsyq+0WKpRc9dZXWAfDPLVU1xqPeIjBuZGNtBKRmW/NxGHrNhDaa3yW/0MHRAfExmWk4xCxdiHjWgP2SXwYtJAPNoiqlX0hmVTchLG3RHyDImNDjQ+iAtYOI7fFn+QzpQaBqjCp/CQXcfXiJ+qdUrmQkE5thkmKuOjL9w=
+	t=1720003777; cv=none; b=u/o6grDtl0MjKMn80DjpBZ2vDFstdDwWd0VqxktppS7LMR5sQeAUK1TvPWyU+NcdmfIHTJdrJIvgqCEjJQkjkXrux1G1EL6IP2v8ksBv1AqE2VHDVA0JxEmuqcOSydjklhO/iBzXaKpzrUdMNcPtJk/6ZzpHcKtgHEc32VpA4H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004608; c=relaxed/simple;
-	bh=WxPTdxX3Vnoc6Omhyru6eQQ/50V1p6S88FDaHUac9/I=;
+	s=arc-20240116; t=1720003777; c=relaxed/simple;
+	bh=kjNJpNIeMfybktMuZGUpUqhCACURi6nwGeuSwTsT+m0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ckEggiHTQrw3QvIwuPJtl848w69VQdOcE2Uwau7iqcyp0Oej2sBeUkEqidcb/SzpQ4g48r6EzQXBpPboKDioJeVZzja4dn65nMgIwjmuQzorP1ARIBMfXHinxrujttGfZRQ34qcDYIUyORpT8TC7U4XMZKw6rsiGlU2n4sTVi6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxroMoME; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36B3C2BD10;
-	Wed,  3 Jul 2024 11:03:27 +0000 (UTC)
+	 MIME-Version; b=CnKyaABXznPDySLCgKVV9ME21UlZAKoIp05BSqkXm7NTAGKY9pQy5KGjjrWCVCvnM5h1YQp+jl6BAzdLWYOYK5IC0pAtp2ZjCYjgQUQU5eeBWtyhRSNHMT2FFgZRb+atIo+4W0REurPYTY4rcv6gh4miS1+qA/wGgN9RENqua7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODtZiKe4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF84C2BD10;
+	Wed,  3 Jul 2024 10:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004608;
-	bh=WxPTdxX3Vnoc6Omhyru6eQQ/50V1p6S88FDaHUac9/I=;
+	s=korg; t=1720003777;
+	bh=kjNJpNIeMfybktMuZGUpUqhCACURi6nwGeuSwTsT+m0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxroMoMEar+S0ztI9kPdGr+HOIYsQrgbaUgsPUV2R7fIJYomxIT7FvZAgOu8SW367
-	 sESHOhfE0lWt8RMPL1YNPv+WwYpSb+IkiFV8aKuL1iOpzkqfFznvkoZQv8fpQ5RGrE
-	 /95b22lOOvuwzANOklgukq0KGp9hU+YvLYa1Mifg=
+	b=ODtZiKe4m9x2lBABb/jeLu/bpbxkw/zkWRoAW2qCAlrJWiw0s1eWqPU7KDv4eFu7m
+	 b7607MtKEritXVlURxFPkZJiiWHNnxMWCy1scAV5Z/M8L6dInYk0nVlX57HP4PmItL
+	 Cd7B3efjb2MCKGq4aacYRZ8QinLAtz2tvb2H/5O0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Beleswar Padhi <b-padhi@ti.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 5.10 099/290] remoteproc: k3-r5: Jump to error handling labels in start/stop errors
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 019/189] af_unix: Use unix_recvq_full_lockless() in unix_stream_connect().
 Date: Wed,  3 Jul 2024 12:38:00 +0200
-Message-ID: <20240703102907.933084498@linuxfoundation.org>
+Message-ID: <20240703102842.229606095@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Beleswar Padhi <b-padhi@ti.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 1dc7242f6ee0c99852cb90676d7fe201cf5de422 upstream.
+[ Upstream commit 45d872f0e65593176d880ec148f41ad7c02e40a7 ]
 
-In case of errors during core start operation from sysfs, the driver
-directly returns with the -EPERM error code. Fix this to ensure that
-mailbox channels are freed on error before returning by jumping to the
-'put_mbox' error handling label. Similarly, jump to the 'out' error
-handling label to return with required -EPERM error code during the
-core stop operation from sysfs.
+Once sk->sk_state is changed to TCP_LISTEN, it never changes.
 
-Fixes: 3c8a9066d584 ("remoteproc: k3-r5: Do not allow core1 to power up before core0 via sysfs")
-Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
-Link: https://lore.kernel.org/r/20240506141849.1735679-1-b-padhi@ti.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+unix_accept() takes advantage of this characteristics; it does not
+hold the listener's unix_state_lock() and only acquires recvq lock
+to pop one skb.
+
+It means unix_state_lock() does not prevent the queue length from
+changing in unix_stream_connect().
+
+Thus, we need to use unix_recvq_full_lockless() to avoid data-race.
+
+Now we remove unix_recvq_full() as no one uses it.
+
+Note that we can remove READ_ONCE() for sk->sk_max_ack_backlog in
+unix_recvq_full_lockless() because of the following reasons:
+
+  (1) For SOCK_DGRAM, it is a written-once field in unix_create1()
+
+  (2) For SOCK_STREAM and SOCK_SEQPACKET, it is changed under the
+      listener's unix_state_lock() in unix_listen(), and we hold
+      the lock in unix_stream_connect()
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/ti_k3_r5_remoteproc.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/unix/af_unix.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
---- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
-+++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
-@@ -484,7 +484,8 @@ static int k3_r5_rproc_start(struct rpro
- 		if (core != core0 && core0->rproc->state == RPROC_OFFLINE) {
- 			dev_err(dev, "%s: can not start core 1 before core 0\n",
- 				__func__);
--			return -EPERM;
-+			ret = -EPERM;
-+			goto put_mbox;
- 		}
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index ec4c462a87f06..ae6aae983b8cb 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -189,15 +189,9 @@ static inline int unix_may_send(struct sock *sk, struct sock *osk)
+ 	return unix_peer(osk) == NULL || unix_our_peer(sk, osk);
+ }
  
- 		ret = k3_r5_core_run(core);
-@@ -547,7 +548,8 @@ static int k3_r5_rproc_stop(struct rproc
- 		if (core != core1 && core1->rproc->state != RPROC_OFFLINE) {
- 			dev_err(dev, "%s: can not stop core 0 before core 1\n",
- 				__func__);
--			return -EPERM;
-+			ret = -EPERM;
-+			goto out;
- 		}
+-static inline int unix_recvq_full(const struct sock *sk)
+-{
+-	return skb_queue_len(&sk->sk_receive_queue) > sk->sk_max_ack_backlog;
+-}
+-
+ static inline int unix_recvq_full_lockless(const struct sock *sk)
+ {
+-	return skb_queue_len_lockless(&sk->sk_receive_queue) >
+-		READ_ONCE(sk->sk_max_ack_backlog);
++	return skb_queue_len_lockless(&sk->sk_receive_queue) > sk->sk_max_ack_backlog;
+ }
  
- 		ret = k3_r5_core_halt(core);
+ struct sock *unix_peer_get(struct sock *s)
+@@ -1301,7 +1295,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 	if (other->sk_shutdown & RCV_SHUTDOWN)
+ 		goto out_unlock;
+ 
+-	if (unix_recvq_full(other)) {
++	if (unix_recvq_full_lockless(other)) {
+ 		err = -EAGAIN;
+ 		if (!timeo)
+ 			goto out_unlock;
+-- 
+2.43.0
+
 
 
 
