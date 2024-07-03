@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C254925CCF
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:22:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2A09925E80
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:37:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EC372C44CE
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:22:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 109FD1C23F12
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901A4194A50;
-	Wed,  3 Jul 2024 11:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2EB18307C;
+	Wed,  3 Jul 2024 11:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rIkX88r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQBUJnj0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFC3188CDA;
-	Wed,  3 Jul 2024 11:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA24183076;
+	Wed,  3 Jul 2024 11:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005126; cv=none; b=FkbP+bbj6hNFIMBfyYu9zxnCDCuZqzelLkEzAi8pDguTkapaR3Sa+QGxw521VhPvbTOPdDajcQJcoAo6Xx+IdxwVu9xl2yTOqswR4CcjYuX4EhHlBdpdhf+iThXMisdZ2Dz8x2ZGGQB0qlQrg+dJpDdOqgaMujoLWtum6LxOR50=
+	t=1720006241; cv=none; b=KhaAHEEZtH4ial5ck+qm+Xb4f53HuLpvbj164gn0DHySDWm2jrJWMaHFbkPoyQKRFzZ+G+baYme9FJUTfw5462yRSLWBAJm0KQvO6aj4m6PVsIlvAOh5y8/eUPp2TuS9NlHN1UV7niO28LHVyAWwVSugon8InLE0BOcggO2Z/IQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005126; c=relaxed/simple;
-	bh=yRG5W8gWPbMcQjo48IMyYuI3otWWOTenPODn121SGKA=;
+	s=arc-20240116; t=1720006241; c=relaxed/simple;
+	bh=hj9+RgJqKZcZaXd30CWq1q7WpLdKu6L2QNT+QXfMzxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Izm26xYijbC2pGWluQ7UeuWEJnEIselnJN9gY/3LGbG6YBdZs4O3kOngKOl4Z0zoxWWKiWsl8rV0Wqhlzh5FAwWJjExlqQPCvZim8QU3EYnn4auz1mBZqq79rWawXhmNQegKwEEroSPDDPZKfoyL85wcPIJTvTxY81eTauzPO+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rIkX88r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F20C2BD10;
-	Wed,  3 Jul 2024 11:12:05 +0000 (UTC)
+	 MIME-Version; b=h0o5T2qZZF5hSGi4rH45dbN87vVxjSk4JTgDmHHdu2o7b7Rd7OgkzxAfRkFH5OaLj7YrZEljuYUCe7Fb12a/wdgha4F+wukKFwshXCWy0EGbq89Ns3CLB36vSnRt8JTet1ntZbJtMCn29cs1mYem3kvEHlkRaGkRhRFcle1H5to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQBUJnj0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B63C2BD10;
+	Wed,  3 Jul 2024 11:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005126;
-	bh=yRG5W8gWPbMcQjo48IMyYuI3otWWOTenPODn121SGKA=;
+	s=korg; t=1720006241;
+	bh=hj9+RgJqKZcZaXd30CWq1q7WpLdKu6L2QNT+QXfMzxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0rIkX88r937+tviYXeS2R65Id8lbBG9VbszuBTkhKcPc8BsVFOD9ukSxWqV+cxIhj
-	 2sLMU+3WZXe6pu+U3wqLAgzIgcWADxFw6lQWQzeC2WcuE8IP0mTWxKKWMYUp5c5eJ0
-	 3zxRy5ZHiC1WYUHat87VvtgFBaYL3BfKAR8NyWK4=
+	b=EQBUJnj0N3Lakj0h+cP4tBGsSHglwVhlgpoHJSKU+tF9ktNxewAWcM230k8pw2QVv
+	 XXZvqMfweXFJhauIfHCm0bVUuGXUbBOIpjJ25oC+0WJVt4UwXAb5g+seXjOcShChyN
+	 Zg1bktH3YEd7nMwAGT05/klgJGF3P8ilNoyW7bhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Lyude Paul <lyude@redhat.com>
-Subject: [PATCH 5.10 270/290] drm/nouveau/dispnv04: fix null pointer dereference in nv17_tv_get_hd_modes
-Date: Wed,  3 Jul 2024 12:40:51 +0200
-Message-ID: <20240703102914.350070455@linuxfoundation.org>
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 316/356] net: usb: ax88179_178a: improve link status logs
+Date: Wed,  3 Jul 2024 12:40:52 +0200
+Message-ID: <20240703102925.071562001@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-commit 6d411c8ccc0137a612e0044489030a194ff5c843 upstream.
+commit 058722ee350c0bdd664e467156feb2bf5d9cc271 upstream.
 
-In nv17_tv_get_hd_modes(), the return value of drm_mode_duplicate() is
-assigned to mode, which will lead to a possible NULL pointer dereference
-on failure of drm_mode_duplicate(). The same applies to drm_cvt_mode().
-Add a check to avoid null pointer dereference.
+Avoid spurious link status logs that may ultimately be wrong; for example,
+if the link is set to down with the cable plugged, then the cable is
+unplugged and after this the link is set to up, the last new log that is
+appearing is incorrectly telling that the link is up.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240625081029.2619437-1-make24@iscas.ac.cn
+In order to avoid errors, show link status logs after link_reset
+processing, and in order to avoid spurious as much as possible, only show
+the link loss when some link status change is detected.
+
+cc: stable@vger.kernel.org
+Fixes: e2ca90c276e1 ("ax88179_178a: ASIX AX88179_178A USB 3.0/2.0 to gigabit ethernet adapter driver")
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/dispnv04/tvnv17.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/usb/ax88179_178a.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
-+++ b/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
-@@ -259,6 +259,8 @@ static int nv17_tv_get_hd_modes(struct d
- 		if (modes[i].hdisplay == output_mode->hdisplay &&
- 		    modes[i].vdisplay == output_mode->vdisplay) {
- 			mode = drm_mode_duplicate(encoder->dev, output_mode);
-+			if (!mode)
-+				continue;
- 			mode->type |= DRM_MODE_TYPE_PREFERRED;
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -326,7 +326,8 @@ static void ax88179_status(struct usbnet
  
- 		} else {
-@@ -266,6 +268,8 @@ static int nv17_tv_get_hd_modes(struct d
- 					    modes[i].vdisplay, 60, false,
- 					    (output_mode->flags &
- 					     DRM_MODE_FLAG_INTERLACE), false);
-+			if (!mode)
-+				continue;
- 		}
+ 	if (netif_carrier_ok(dev->net) != link) {
+ 		usbnet_link_change(dev, link, 1);
+-		netdev_info(dev->net, "ax88179 - Link status is: %d\n", link);
++		if (!link)
++			netdev_info(dev->net, "ax88179 - Link status is: 0\n");
+ 	}
+ }
  
- 		/* CVT modes are sometimes unsuitable... */
+@@ -1558,6 +1559,7 @@ static int ax88179_link_reset(struct usb
+ 			 GMII_PHY_PHYSR, 2, &tmp16);
+ 
+ 	if (!(tmp16 & GMII_PHY_PHYSR_LINK)) {
++		netdev_info(dev->net, "ax88179 - Link status is: 0\n");
+ 		return 0;
+ 	} else if (GMII_PHY_PHYSR_GIGA == (tmp16 & GMII_PHY_PHYSR_SMASK)) {
+ 		mode |= AX_MEDIUM_GIGAMODE | AX_MEDIUM_EN_125MHZ;
+@@ -1595,6 +1597,8 @@ static int ax88179_link_reset(struct usb
+ 
+ 	netif_carrier_on(dev->net);
+ 
++	netdev_info(dev->net, "ax88179 - Link status is: 1\n");
++
+ 	return 0;
+ }
+ 
 
 
 
