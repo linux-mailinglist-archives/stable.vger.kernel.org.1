@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0156A925E70
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:36:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D018925F80
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:01:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1BEF1F258A7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:36:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59705B3CE4A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C001822E7;
-	Wed,  3 Jul 2024 11:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91D0513247D;
+	Wed,  3 Jul 2024 11:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8fsuQ6E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eu3mbMFM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717C51822C6;
-	Wed,  3 Jul 2024 11:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F47A143879;
+	Wed,  3 Jul 2024 11:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006205; cv=none; b=BUNtCZXvV5qJM3tahPv5Fw3FMQ+Fsf7lo8DBENcXeV/fX97mft0DMsCRdX9/Cbit56uWw3XDgJxQNp/WTZZHWvn/fwU2J7aIxfVbATgYuIWvPepseWeSy1eF1+ps/4ZvQWX/7GEJQUCEybsmL11Cn5RvCv7OEukSIKYvox/87Ek=
+	t=1720005197; cv=none; b=NODIO+hLxeQORuvSqg+tmAJg2gznKA2qFX5PWMBUCjGOV11tydZXROAhvzN8py5JWYAIgp2i1Y147gQMjB0WhkHMyEwtOdOP6k4Q3ad20CyYVgIZYfILymKnXGz9GKIUKa4x2ghOiva7Zy7eirK5CnhovsoGUmwgCmQtVmlHEQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006205; c=relaxed/simple;
-	bh=nE92TkNVtfHe3H06sM/RT2hXoRtd/RWUyxF/QgXW1HA=;
+	s=arc-20240116; t=1720005197; c=relaxed/simple;
+	bh=4ZI6HhbZr4UaLZCItFFTUD9tENwmgJ+/IBFGXPgPdQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NsGqxjY96I+lJzVymnqqv8N9UlYHuVugpEEIVHrS7p2prMVCKFFOA8TiyEU/XP0d9ucWEWLQnrN22k5Yo2TinHBSWydEHKfQedototai7YU+5puCIBiI3h+317w5HauU7qNV9CshOoCtvsPFHGRGA97y/pciksIvj1lLL1ekU3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8fsuQ6E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB0EC2BD10;
-	Wed,  3 Jul 2024 11:30:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CQt681uPaUl4gjKt9U2kJovVnMGzF0MOU78dKGrlYIV8fJbVV42lZk8Z48HiWwhagl+EWQgY2TCIG6WkHCheINIyxdwI5B+a5I38RBpOl7yMwkhPlwd0R0Q0v8XuzHxk2gWZCdJ8Ji8foR9PqwsvNgCz1Q5/p0oume1ZAeOmdYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eu3mbMFM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2681C2BD10;
+	Wed,  3 Jul 2024 11:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006205;
-	bh=nE92TkNVtfHe3H06sM/RT2hXoRtd/RWUyxF/QgXW1HA=;
+	s=korg; t=1720005197;
+	bh=4ZI6HhbZr4UaLZCItFFTUD9tENwmgJ+/IBFGXPgPdQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m8fsuQ6EPk/eh3WDm9+T/F4veOwT2H1SaBeuq0MECcss4EOeKM4p5OTNB4aakRzaB
-	 Ti1dpVetXextgmXQJZ3JXJHBdOXpVlNXpJb9ETSYcjM7HWdzz74cdwgw4YAwsFBQvA
-	 7WCkTCYyBWuY16Z6sivOHxktV0zjuaD19qLPFxlM=
+	b=Eu3mbMFM8R3NMq0dH69wWj3/6Nh2Z2ZnMzWYSSKPZPr6sefEbboIqGr75mYtU/W6Z
+	 0C2+IkmzeCvdDitG94c4d1MAmbqweUyvWckvnxxP5B8tYu9BIZAyNPoHnl0+WIA4t7
+	 tE0zl2BAycs53eFw44Vu0Iqw8BbYPdAq5u6Du7Qw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 5.15 335/356] drm/i915/gt: Fix potential UAF by revoke of fence registers
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 290/290] xdp: xdp_mem_allocator can be NULL in trace_mem_connect().
 Date: Wed,  3 Jul 2024 12:41:11 +0200
-Message-ID: <20240703102925.783848282@linuxfoundation.org>
+Message-ID: <20240703102915.100475736@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,90 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit 996c3412a06578e9d779a16b9e79ace18125ab50 upstream.
+commit e0ae713023a9d09d6e1b454bdc8e8c1dd32c586e upstream.
 
-CI has been sporadically reporting the following issue triggered by
-igt@i915_selftest@live@hangcheck on ADL-P and similar machines:
+Since the commit mentioned below __xdp_reg_mem_model() can return a NULL
+pointer. This pointer is dereferenced in trace_mem_connect() which leads
+to segfault.
 
-<6> [414.049203] i915: Running intel_hangcheck_live_selftests/igt_reset_evict_fence
-...
-<6> [414.068804] i915 0000:00:02.0: [drm] GT0: GUC: submission enabled
-<6> [414.068812] i915 0000:00:02.0: [drm] GT0: GUC: SLPC enabled
-<3> [414.070354] Unable to pin Y-tiled fence; err:-4
-<3> [414.071282] i915_vma_revoke_fence:301 GEM_BUG_ON(!i915_active_is_idle(&fence->active))
-...
-<4>[  609.603992] ------------[ cut here ]------------
-<2>[  609.603995] kernel BUG at drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c:301!
-<4>[  609.604003] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-<4>[  609.604006] CPU: 0 PID: 268 Comm: kworker/u64:3 Tainted: G     U  W          6.9.0-CI_DRM_14785-g1ba62f8cea9c+ #1
-<4>[  609.604008] Hardware name: Intel Corporation Alder Lake Client Platform/AlderLake-P DDR4 RVP, BIOS RPLPFWI1.R00.4035.A00.2301200723 01/20/2023
-<4>[  609.604010] Workqueue: i915 __i915_gem_free_work [i915]
-<4>[  609.604149] RIP: 0010:i915_vma_revoke_fence+0x187/0x1f0 [i915]
-...
-<4>[  609.604271] Call Trace:
-<4>[  609.604273]  <TASK>
-...
-<4>[  609.604716]  __i915_vma_evict+0x2e9/0x550 [i915]
-<4>[  609.604852]  __i915_vma_unbind+0x7c/0x160 [i915]
-<4>[  609.604977]  force_unbind+0x24/0xa0 [i915]
-<4>[  609.605098]  i915_vma_destroy+0x2f/0xa0 [i915]
-<4>[  609.605210]  __i915_gem_object_pages_fini+0x51/0x2f0 [i915]
-<4>[  609.605330]  __i915_gem_free_objects.isra.0+0x6a/0xc0 [i915]
-<4>[  609.605440]  process_scheduled_works+0x351/0x690
-...
+The trace points (mem_connect + mem_disconnect) were put in place to
+pair connect/disconnect using the IDs. The ID is only assigned if
+__xdp_reg_mem_model() does not return NULL. That connect trace point is
+of no use if there is no ID.
 
-In the past, there were similar failures reported by CI from other IGT
-tests, observed on other platforms.
+Skip that connect trace point if xdp_alloc is NULL.
 
-Before commit 63baf4f3d587 ("drm/i915/gt: Only wait for GPU activity
-before unbinding a GGTT fence"), i915_vma_revoke_fence() was waiting for
-idleness of vma->active via fence_update().   That commit introduced
-vma->fence->active in order for the fence_update() to be able to wait
-selectively on that one instead of vma->active since only idleness of
-fence registers was needed.  But then, another commit 0d86ee35097a
-("drm/i915/gt: Make fence revocation unequivocal") replaced the call to
-fence_update() in i915_vma_revoke_fence() with only fence_write(), and
-also added that GEM_BUG_ON(!i915_active_is_idle(&fence->active)) in front.
-No justification was provided on why we might then expect idleness of
-vma->fence->active without first waiting on it.
+[ Toke Høiland-Jørgensen delivered the reasoning for skipping the trace
+  point ]
 
-The issue can be potentially caused by a race among revocation of fence
-registers on one side and sequential execution of signal callbacks invoked
-on completion of a request that was using them on the other, still
-processed in parallel to revocation of those fence registers.  Fix it by
-waiting for idleness of vma->fence->active in i915_vma_revoke_fence().
-
-Fixes: 0d86ee35097a ("drm/i915/gt: Make fence revocation unequivocal")
-Closes: https://gitlab.freedesktop.org/drm/intel/issues/10021
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: stable@vger.kernel.org # v5.8+
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240603195446.297690-2-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit 24bb052d3dd499c5956abad5f7d8e4fd07da7fb1)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Fixes: 4a48ef70b93b8 ("xdp: Allow registering memory model without rxq reference")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Acked-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Link: https://lore.kernel.org/r/YikmmXsffE+QajTB@linutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/core/xdp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c
-+++ b/drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c
-@@ -291,6 +291,7 @@ void i915_vma_revoke_fence(struct i915_v
- 		return;
+--- a/net/core/xdp.c
++++ b/net/core/xdp.c
+@@ -356,7 +356,8 @@ int xdp_rxq_info_reg_mem_model(struct xd
+ 	if (IS_ERR(xdp_alloc))
+ 		return PTR_ERR(xdp_alloc);
  
- 	GEM_BUG_ON(fence->vma != vma);
-+	i915_active_wait(&fence->active);
- 	GEM_BUG_ON(!i915_active_is_idle(&fence->active));
- 	GEM_BUG_ON(atomic_read(&fence->pin_count));
+-	trace_mem_connect(xdp_alloc, xdp_rxq);
++	if (trace_mem_connect_enabled() && xdp_alloc)
++		trace_mem_connect(xdp_alloc, xdp_rxq);
+ 	return 0;
+ }
  
 
 
