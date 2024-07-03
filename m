@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-57640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8380D925D53
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 928F0925E6E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:36:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 455BD299DF2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C46CCB37608
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91211741CE;
-	Wed,  3 Jul 2024 11:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3EE17838C;
+	Wed,  3 Jul 2024 11:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qliu2KSx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fb4923I6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7725117FAB8;
-	Wed,  3 Jul 2024 11:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AEEF16FF2A;
+	Wed,  3 Jul 2024 11:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005490; cv=none; b=Wj+KlDRs+/CSnP5uFJS718k2Uh3DgO0r42RmjrV8jUHmTAiJSLlzcW+XaGTCTCpF7iPkOIL/aZauR8etaOMHmGLO9RvO3P9HMhlF62wc2RVB/hQ3ieiSgxXDvetpfWa2osoMwgTPZhefgmr2yT8tiAqFVuYFHAgujco/a+oRDtg=
+	t=1720004527; cv=none; b=B8XcjfDCGkXHY3eKBqcI4zcOimyryzkV99zrueXHkH8HLPMpt0jBLfAeuzVK3zakquiaHrzXAxB9pLK8JJI7z4R7DRfcwyOHD0Yzj+VCdoAwxrGt7JsHjCbduPLN+6BNNZ8+39ImZhK48rcQX/oVlTl3pFMMPejjWbhsjHwNQEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005490; c=relaxed/simple;
-	bh=ITxDh+r0KIvQDfPbfLRSX5sPjtxzXqkLIv1WF5s4Yfo=;
+	s=arc-20240116; t=1720004527; c=relaxed/simple;
+	bh=wzZpszZU7hIzujAaX8EEqcq/u8gqWGixPTYf/OkAVzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EveuBgS+Leq+5OOpGRUHyEDYBMeHeLCAr3uFfGxpTTjd26R3Eie0QCjkdrvboVVUsXQ4xiqBRhMyegQjPKjA6iOyDuHWGgItcPOZl6A5c55Rl+3nLuW0lxU+nxQkViRXhczNhHBEWfMOD0SQ17ZvoN7zD08/r+dsAO/9/KLPmSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qliu2KSx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF3EC2BD10;
-	Wed,  3 Jul 2024 11:18:09 +0000 (UTC)
+	 MIME-Version; b=TebbJ9TOPUPGdW0tvxI/VumLSi+Uwhh4jFKqjbGQ3jh9ktp97NYEZbSm5r9L8NMxBDONEmMADsPM6bKzn3cFyXaEh6kLy+HDKnMnC1IaMK+UcXre2P3Z1pU8+A8+8lCDyCY2bUdRbu6G4sCJEBoEQdg5OUGzqjmAdswebXLqx3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fb4923I6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F2AC2BD10;
+	Wed,  3 Jul 2024 11:02:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005490;
-	bh=ITxDh+r0KIvQDfPbfLRSX5sPjtxzXqkLIv1WF5s4Yfo=;
+	s=korg; t=1720004527;
+	bh=wzZpszZU7hIzujAaX8EEqcq/u8gqWGixPTYf/OkAVzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qliu2KSxdyWpass5JVDjSVPzrHhKF2Rmay9wiEIx/VuyBCMlfgxbknzV+UdDLidUc
-	 IoDKybguVJ+sgDKlhM4RRtOgDgK/6uNQ0TXKBEB4XLozIyLEEkbsKW5dbimBJ+lTDo
-	 +BAOucpzUgZw0Qpgodz/KL7N5/4e7dufz05MtNlY=
+	b=Fb4923I6NBJ/z1wTnJh25VAYeUHwNj6SqHZgGtTyx7lNqMcAr9sFIMPpv27e6QamS
+	 GmKzXAhnlzHbrxSi0yPDRyuAz2BaWBZUt2Xy2qevQdPWgKZCV7mEJhNYWgNZp/4f30
+	 wQK2+QgVJxkYtfs3YdGzG1W1w8pmTXVF+DvaBs0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Gregor Herburger <gregor.herburger@tq-group.com>,
+	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 098/356] net: hns3: fix kernel crash problem in concurrent scenario
-Date: Wed,  3 Jul 2024 12:37:14 +0200
-Message-ID: <20240703102916.811787440@linuxfoundation.org>
+Subject: [PATCH 5.10 054/290] gpio: tqmx86: fix typo in Kconfig label
+Date: Wed,  3 Jul 2024 12:37:15 +0200
+Message-ID: <20240703102906.243373347@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Gregor Herburger <gregor.herburger@tq-group.com>
 
-[ Upstream commit 12cda920212a49fa22d9e8b9492ac4ea013310a4 ]
+[ Upstream commit 8c219e52ca4d9a67cd6a7074e91bf29b55edc075 ]
 
-When link status change, the nic driver need to notify the roce
-driver to handle this event, but at this time, the roce driver
-may uninit, then cause kernel crash.
+Fix description for GPIO_TQMX86 from QTMX86 to TQMx86.
 
-To fix the problem, when link status change, need to check
-whether the roce registered, and when uninit, need to wait link
-update finish.
-
-Fixes: 45e92b7e4e27 ("net: hns3: add calling roce callback function when link status change")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: b868db94a6a7 ("gpio: tqmx86: Add GPIO from for this IO controller")
+Signed-off-by: Gregor Herburger <gregor.herburger@tq-group.com>
+Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/e0e38c9944ad6d281d9a662a45d289b88edc808e.1717063994.git.matthias.schiffer@ew.tq-group.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../hisilicon/hns3/hns3pf/hclge_main.c        | 21 ++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ drivers/gpio/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index d58048b056781..c3690e49c3d95 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -2948,9 +2948,7 @@ static void hclge_push_link_status(struct hclge_dev *hdev)
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index 39f3e13664099..b7811dbe0ec28 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -1335,7 +1335,7 @@ config GPIO_TPS68470
+ 	  drivers are loaded.
  
- static void hclge_update_link_status(struct hclge_dev *hdev)
- {
--	struct hnae3_handle *rhandle = &hdev->vport[0].roce;
- 	struct hnae3_handle *handle = &hdev->vport[0].nic;
--	struct hnae3_client *rclient = hdev->roce_client;
- 	struct hnae3_client *client = hdev->nic_client;
- 	int state;
- 	int ret;
-@@ -2974,8 +2972,15 @@ static void hclge_update_link_status(struct hclge_dev *hdev)
- 
- 		client->ops->link_status_change(handle, state);
- 		hclge_config_mac_tnl_int(hdev, state);
--		if (rclient && rclient->ops->link_status_change)
--			rclient->ops->link_status_change(rhandle, state);
-+
-+		if (test_bit(HCLGE_STATE_ROCE_REGISTERED, &hdev->state)) {
-+			struct hnae3_handle *rhandle = &hdev->vport[0].roce;
-+			struct hnae3_client *rclient = hdev->roce_client;
-+
-+			if (rclient && rclient->ops->link_status_change)
-+				rclient->ops->link_status_change(rhandle,
-+								 state);
-+		}
- 
- 		hclge_push_link_status(hdev);
- 	}
-@@ -11431,6 +11436,12 @@ static int hclge_init_client_instance(struct hnae3_client *client,
- 	return ret;
- }
- 
-+static bool hclge_uninit_need_wait(struct hclge_dev *hdev)
-+{
-+	return test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state) ||
-+	       test_bit(HCLGE_STATE_LINK_UPDATING, &hdev->state);
-+}
-+
- static void hclge_uninit_client_instance(struct hnae3_client *client,
- 					 struct hnae3_ae_dev *ae_dev)
- {
-@@ -11439,7 +11450,7 @@ static void hclge_uninit_client_instance(struct hnae3_client *client,
- 
- 	if (hdev->roce_client) {
- 		clear_bit(HCLGE_STATE_ROCE_REGISTERED, &hdev->state);
--		while (test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state))
-+		while (hclge_uninit_need_wait(hdev))
- 			msleep(HCLGE_WAIT_RESET_DONE);
- 
- 		hdev->roce_client->ops->uninit_instance(&vport->roce, 0);
+ config GPIO_TQMX86
+-	tristate "TQ-Systems QTMX86 GPIO"
++	tristate "TQ-Systems TQMx86 GPIO"
+ 	depends on MFD_TQMX86 || COMPILE_TEST
+ 	depends on HAS_IOPORT_MAP
+ 	select GPIOLIB_IRQCHIP
 -- 
 2.43.0
 
