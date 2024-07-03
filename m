@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-57476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C703E925CA9
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F984925A1E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:54:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8456B2C3F74
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 256F31F2141A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91ADB45945;
-	Wed,  3 Jul 2024 11:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C680137910;
+	Wed,  3 Jul 2024 10:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzM1lDJ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcDDhkjA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D65918734B;
-	Wed,  3 Jul 2024 11:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B115136E2A;
+	Wed,  3 Jul 2024 10:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004998; cv=none; b=JDk67t9Dg5wDSoEK1OFCS+2dVCVWCr15rdZUefahoSvcTjZI8ku1tGoOv5DsHHLiqh9oitwS23HAR8h5XxZLwF2Dag+uJ0nSixT8XYJ2+LoSh9kEyenlc8sCgoxC23753q48MKl2WkdIkvysjr2H4CHx5uXXi7kPHtom2/uULdA=
+	t=1720003532; cv=none; b=KjeoM5CIKJ4lOXYOEZhWkS6hugrrxkzpLq9bUEFG76VSSUSX35CNC6FYHnAODuUsn0jAabCx44TfjZzEThGKiIWrCLC7f2VOrLFiph8Pce/gks1X/vOOxDpnvxUGolxxgYZBOGTxe6jfyvMqJqt2/V4YD6g5HGC6a1bonoFPbWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004998; c=relaxed/simple;
-	bh=K7co3tV1KZ/JDkY7NzJ8vFWs9Akxij3jx0SvD5D07wc=;
+	s=arc-20240116; t=1720003532; c=relaxed/simple;
+	bh=Eaz7h0NtLN8mM66q3EnSIP9M+lWxqI2qgUNrLFa3Acg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VlODFHgJqu88iYKeEh2/UN9FYg8rEBLHllFszk/CMOKHDVP92HAAcpoO3g+PUDJ7nX+JPsejJ55YmisSfrsdO38WQNIFVmoiihzbgX+ICA6+3/9xG6SNGwXpkjf16vnMe83MIFaf0x1asugq8AiEWcl6CijNKGxi5Ayitz7LHAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzM1lDJ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53A0C2BD10;
-	Wed,  3 Jul 2024 11:09:57 +0000 (UTC)
+	 MIME-Version; b=O9LKA/5/H/v18fwj3mfhhwYnuwE2JJ67qtcE01A62e6O9dRVrp4QgGBb1l3sDaA72nRw2r2o9umw997rlJ4g5UKB8noavJN8bQO7WfdOUvqxwF7W2STHDj96vVcqrNmHXZB0XI9r/G1ax2aL6IQEdCQ5aHZjp6+E4tD2woLmtsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcDDhkjA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C36FCC2BD10;
+	Wed,  3 Jul 2024 10:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004998;
-	bh=K7co3tV1KZ/JDkY7NzJ8vFWs9Akxij3jx0SvD5D07wc=;
+	s=korg; t=1720003532;
+	bh=Eaz7h0NtLN8mM66q3EnSIP9M+lWxqI2qgUNrLFa3Acg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tzM1lDJ3U/9RlPsv+tm+M0KBI34G1jwaU42MpHhaashs6VJdFXCphsRTV1d7XbHdV
-	 DxHYoHAG2Q6ml6YE4+Tu5LOzi/j0SeE86LEfcpD4TYvX3OrCBM4SaZYrPtt1UdkD7O
-	 CIL1zUv0kwmdcotGEemuELugQTwZBMN8SS1/+tGA=
+	b=HcDDhkjAXyA3Pj6xoDjm9LW5TRzcmtQMx8kRlbBVk81WqB5YvYvlIAvB1dcxa2Eiu
+	 CBCYNxD3B/NfLkY5r1+qxTVt0lZs4Y0rXLAIGX6P/jkKoms1mCOFB53O3/xPRK3c1a
+	 wUUrMle87Pt66gRHaI8FDdbbhKWRtYCUzC9iaIhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Aurelien Aptel <aaptel@suse.com>,
-	"Paulo Alcantara (SUSE)" <pc@cjr.nz>,
-	Steve French <stfrench@microsoft.com>,
+	Sanath S <Sanath.S@amd.com>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 195/290] cifs: missed ref-counting smb session in find
+Subject: [PATCH 4.19 079/139] ACPICA: Revert "ACPICA: avoid Info: mapping multiple BARs. Your kernel is fine."
 Date: Wed,  3 Jul 2024 12:39:36 +0200
-Message-ID: <20240703102911.531065387@linuxfoundation.org>
+Message-ID: <20240703102833.423855849@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit e695a9ad0305af6e8b0cbc24a54976ac2120cbb3 ]
+[ Upstream commit a83e1385b780d41307433ddbc86e3c528db031f0 ]
 
-When we lookup an smb session based on session id,
-we did not up the ref-count for the session. This can
-potentially cause issues if the session is freed from under us.
+Undo the modifications made in commit d410ee5109a1 ("ACPICA: avoid
+"Info: mapping multiple BARs. Your kernel is fine.""). The initial
+purpose of this commit was to stop memory mappings for operation
+regions from overlapping page boundaries, as it can trigger warnings
+if different page attributes are present.
 
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Reviewed-by: Aurelien Aptel <aaptel@suse.com>
-Reviewed-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 02c418774f76 ("smb: client: fix deadlock in smb2_find_smb_tcon()")
+However, it was found that when this situation arises, mapping
+continues until the boundary's end, but there is still an attempt to
+read/write the entire length of the map, leading to a NULL pointer
+deference. For example, if a four-byte mapping request is made but
+only one byte is mapped because it hits the current page boundary's
+end, a four-byte read/write attempt is still made, resulting in a NULL
+pointer deference.
+
+Instead, map the entire length, as the ACPI specification does not
+mandate that it must be within the same page boundary. It is
+permissible for it to be mapped across different regions.
+
+Link: https://github.com/acpica/acpica/pull/954
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218849
+Fixes: d410ee5109a1 ("ACPICA: avoid "Info: mapping multiple BARs. Your kernel is fine."")
+Co-developed-by: Sanath S <Sanath.S@amd.com>
+Signed-off-by: Sanath S <Sanath.S@amd.com>
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/smb2transport.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/acpi/acpica/exregion.c | 23 ++---------------------
+ 1 file changed, 2 insertions(+), 21 deletions(-)
 
-diff --git a/fs/cifs/smb2transport.c b/fs/cifs/smb2transport.c
-index d659eb70df76d..f40b8de2aeeb3 100644
---- a/fs/cifs/smb2transport.c
-+++ b/fs/cifs/smb2transport.c
-@@ -154,6 +154,7 @@ smb2_find_smb_ses_unlocked(struct TCP_Server_Info *server, __u64 ses_id)
- 	list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
- 		if (ses->Suid != ses_id)
- 			continue;
-+		++ses->ses_count;
- 		return ses;
- 	}
+diff --git a/drivers/acpi/acpica/exregion.c b/drivers/acpi/acpica/exregion.c
+index 97bbfd07fcf75..2d99cbbf82d10 100644
+--- a/drivers/acpi/acpica/exregion.c
++++ b/drivers/acpi/acpica/exregion.c
+@@ -43,7 +43,6 @@ acpi_ex_system_memory_space_handler(u32 function,
+ 	struct acpi_mem_space_context *mem_info = region_context;
+ 	u32 length;
+ 	acpi_size map_length;
+-	acpi_size page_boundary_map_length;
+ #ifdef ACPI_MISALIGNMENT_NOT_SUPPORTED
+ 	u32 remainder;
+ #endif
+@@ -120,26 +119,8 @@ acpi_ex_system_memory_space_handler(u32 function,
+ 		map_length = (acpi_size)
+ 		    ((mem_info->address + mem_info->length) - address);
  
-@@ -205,7 +206,14 @@ smb2_find_smb_tcon(struct TCP_Server_Info *server, __u64 ses_id, __u32  tid)
- 		return NULL;
- 	}
- 	tcon = smb2_find_smb_sess_tcon_unlocked(ses, tid);
-+	if (!tcon) {
-+		cifs_put_smb_ses(ses);
-+		spin_unlock(&cifs_tcp_ses_lock);
-+		return NULL;
-+	}
- 	spin_unlock(&cifs_tcp_ses_lock);
-+	/* tcon already has a ref to ses, so we don't need ses anymore */
-+	cifs_put_smb_ses(ses);
+-		/*
+-		 * If mapping the entire remaining portion of the region will cross
+-		 * a page boundary, just map up to the page boundary, do not cross.
+-		 * On some systems, crossing a page boundary while mapping regions
+-		 * can cause warnings if the pages have different attributes
+-		 * due to resource management.
+-		 *
+-		 * This has the added benefit of constraining a single mapping to
+-		 * one page, which is similar to the original code that used a 4k
+-		 * maximum window.
+-		 */
+-		page_boundary_map_length = (acpi_size)
+-		    (ACPI_ROUND_UP(address, ACPI_DEFAULT_PAGE_SIZE) - address);
+-		if (page_boundary_map_length == 0) {
+-			page_boundary_map_length = ACPI_DEFAULT_PAGE_SIZE;
+-		}
+-
+-		if (map_length > page_boundary_map_length) {
+-			map_length = page_boundary_map_length;
+-		}
++		if (map_length > ACPI_DEFAULT_PAGE_SIZE)
++			map_length = ACPI_DEFAULT_PAGE_SIZE;
  
- 	return tcon;
- }
-@@ -239,7 +247,7 @@ smb2_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server,
- 		if (rc) {
- 			cifs_server_dbg(VFS,
- 					"%s: sha256 alloc failed\n", __func__);
--			return rc;
-+			goto out;
- 		}
- 		shash = &sdesc->shash;
- 	} else {
-@@ -290,6 +298,8 @@ smb2_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server,
- out:
- 	if (allocate_crypto)
- 		cifs_free_hash(&hash, &sdesc);
-+	if (ses)
-+		cifs_put_smb_ses(ses);
- 	return rc;
- }
+ 		/* Create a new mapping starting at the address given */
  
 -- 
 2.43.0
