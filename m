@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 152DB925AB4
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC7219259CB
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:50:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 479CF1C20910
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF2E61C22F2F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C221D17BB03;
-	Wed,  3 Jul 2024 10:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4451799F;
+	Wed,  3 Jul 2024 10:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSJZdcB7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXG0lYiO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D2517B518;
-	Wed,  3 Jul 2024 10:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5608F13A27E;
+	Wed,  3 Jul 2024 10:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003863; cv=none; b=BO6GpyyUZTh3kR24ZYz7kaeUCydgw4oQUPAuFYQOZmrs/Obgv9rA7t01KL8rjeOk4fagFuiH2A6pLavH1Kq9W+wl26SxSeHMOFWnNi1ZrssqwT6Gn5+NlxYIuiLXQFQHBcKxPCgdF2K7dgbht6/ZdS83D6XIxg6kz7GwiFXSBys=
+	t=1720003320; cv=none; b=EG6D1cc5L/DCXsKjWzkn1D1p9O8KALS23YkY2qEjgIjI7C+LMUcWdhOCzk8zyabGXW9gRmvWWea0y6KANVjmP/0uGYTwWYYnZ9jlr0yMWmw2Z8BwULyOnGCd+KcquWQ2Zy/XZ7pbzTd6Oj6+u3Ci9W03zwVSdXTAQr56wHvejMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003863; c=relaxed/simple;
-	bh=wxLnhTI+QEb+ds6Rb8/gJrGeJ47OlnAoSLjvtfZvOZ0=;
+	s=arc-20240116; t=1720003320; c=relaxed/simple;
+	bh=kRocdW16zqNHR7246yFwvh9pHA70SEpkB+sRmvkPN80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sWdF0gzgOn0t2sgtdcb2kMR/4Thw0huWSTTumw845w8TXJzhblmzNTRanntYwwn77ijXk2T/fAOupiMAgp+KL+M9mzdC5UlrUrUw4EZ+sV82MAJNH9nXp0rssyDnYv/tI9zMWLCdNkwzmit8aTgYhg595joWazn9DaNABduq0nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSJZdcB7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D54C2BD10;
-	Wed,  3 Jul 2024 10:51:02 +0000 (UTC)
+	 MIME-Version; b=DpLZtAsDchF6FZLKy7gVXQzJqWpDC6A+uQheJrvjAfFmg3QQw4zTpfwmuDHqT8SGz+k2iku9YX374ujUk3o1va1KUL82tZ2Is18rwknlmxVy0l+VuFy8Hqo/tOhr28EAKcn3XBTAWeW1JeqhX+xlyRI8gA6A6V0KbLbWoR+xnaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXG0lYiO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E78BC2BD10;
+	Wed,  3 Jul 2024 10:41:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003863;
-	bh=wxLnhTI+QEb+ds6Rb8/gJrGeJ47OlnAoSLjvtfZvOZ0=;
+	s=korg; t=1720003319;
+	bh=kRocdW16zqNHR7246yFwvh9pHA70SEpkB+sRmvkPN80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LSJZdcB7tSOt376nrMtWhaD4pIWNxT7f0n3zFrqn3G4/rkQsdqvitGhi8X45qj1RO
-	 E+CfsCic/eBQF5C3ccrtmeS6ttej4k6uIlaDkUGOA98yakWZ2RYmsHMNeOgeSnhMiu
-	 YuDMoJMj7usTvvuaoG/pw20V+7rFAW71Iy2Sxgy0=
+	b=uXG0lYiOQ3ssH19MSAxXOzS4lbUIgLFnMZFeaEmIWT9IDLyGHNDTvQB5wvOhZ8PBb
+	 Uf3w7DiZgS9U7WnnabQCVx9So25R1D5M6oI2uny8bx9zP20NT6UK4mNAmBOgtXNnd/
+	 6/agM3Vdq/sbXsBBkWxXr0F7zONUg0RYWkri35iM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9dfe490c8176301c1d06@syzkaller.appspotmail.com,
-	Dave Kleikamp <shaggy@kernel.org>
-Subject: [PATCH 5.4 045/189] jfs: xattr: fix buffer overflow for invalid xattr
-Date: Wed,  3 Jul 2024 12:38:26 +0200
-Message-ID: <20240703102843.212847276@linuxfoundation.org>
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 010/139] af_unix: Annotate data-races around sk->sk_state in unix_write_space() and poll().
+Date: Wed,  3 Jul 2024 12:38:27 +0200
+Message-ID: <20240703102830.827749927@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 7c55b78818cfb732680c4a72ab270cc2d2ee3d0f upstream.
+[ Upstream commit eb0718fb3e97ad0d6f4529b810103451c90adf94 ]
 
-When an xattr size is not what is expected, it is printed out to the
-kernel log in hex format as a form of debugging.  But when that xattr
-size is bigger than the expected size, printing it out can cause an
-access off the end of the buffer.
+unix_poll() and unix_dgram_poll() read sk->sk_state locklessly and
+calls unix_writable() which also reads sk->sk_state without holding
+unix_state_lock().
 
-Fix this all up by properly restricting the size of the debug hex dump
-in the kernel log.
+Let's use READ_ONCE() in unix_poll() and unix_dgram_poll() and pass
+it to unix_writable().
 
-Reported-by: syzbot+9dfe490c8176301c1d06@syzkaller.appspotmail.com
-Cc: Dave Kleikamp <shaggy@kernel.org>
-Link: https://lore.kernel.org/r/2024051433-slider-cloning-98f9@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+While at it, we remove TCP_SYN_SENT check in unix_dgram_poll() as
+that state does not exist for AF_UNIX socket since the code was added.
+
+Fixes: 1586a5877db9 ("af_unix: do not report POLLOUT on listeners")
+Fixes: 3c73419c09a5 ("af_unix: fix 'poll for write'/ connected DGRAM sockets")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/xattr.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/unix/af_unix.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
---- a/fs/jfs/xattr.c
-+++ b/fs/jfs/xattr.c
-@@ -557,9 +557,11 @@ static int ea_get(struct inode *inode, s
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index d363a268f272e..5266908c65ec4 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -454,9 +454,9 @@ static int unix_dgram_peer_wake_me(struct sock *sk, struct sock *other)
+ 	return 0;
+ }
  
-       size_check:
- 	if (EALIST_SIZE(ea_buf->xattr) != ea_size) {
-+		int size = min_t(int, EALIST_SIZE(ea_buf->xattr), ea_size);
-+
- 		printk(KERN_ERR "ea_get: invalid extended attribute\n");
- 		print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
--				     ea_buf->xattr, ea_size, 1);
-+				     ea_buf->xattr, size, 1);
- 		ea_release(inode, ea_buf);
- 		rc = -EIO;
- 		goto clean_up;
+-static int unix_writable(const struct sock *sk)
++static int unix_writable(const struct sock *sk, unsigned char state)
+ {
+-	return sk->sk_state != TCP_LISTEN &&
++	return state != TCP_LISTEN &&
+ 	       (refcount_read(&sk->sk_wmem_alloc) << 2) <= sk->sk_sndbuf;
+ }
+ 
+@@ -465,7 +465,7 @@ static void unix_write_space(struct sock *sk)
+ 	struct socket_wq *wq;
+ 
+ 	rcu_read_lock();
+-	if (unix_writable(sk)) {
++	if (unix_writable(sk, READ_ONCE(sk->sk_state))) {
+ 		wq = rcu_dereference(sk->sk_wq);
+ 		if (skwq_has_sleeper(wq))
+ 			wake_up_interruptible_sync_poll(&wq->wait,
+@@ -2683,12 +2683,14 @@ static int unix_compat_ioctl(struct socket *sock, unsigned int cmd, unsigned lon
+ static __poll_t unix_poll(struct file *file, struct socket *sock, poll_table *wait)
+ {
+ 	struct sock *sk = sock->sk;
++	unsigned char state;
+ 	__poll_t mask;
+ 	u8 shutdown;
+ 
+ 	sock_poll_wait(file, sock, wait);
+ 	mask = 0;
+ 	shutdown = READ_ONCE(sk->sk_shutdown);
++	state = READ_ONCE(sk->sk_state);
+ 
+ 	/* exceptional events? */
+ 	if (sk->sk_err)
+@@ -2704,14 +2706,14 @@ static __poll_t unix_poll(struct file *file, struct socket *sock, poll_table *wa
+ 
+ 	/* Connection-based need to check for termination and startup */
+ 	if ((sk->sk_type == SOCK_STREAM || sk->sk_type == SOCK_SEQPACKET) &&
+-	    sk->sk_state == TCP_CLOSE)
++	    state == TCP_CLOSE)
+ 		mask |= EPOLLHUP;
+ 
+ 	/*
+ 	 * we set writable also when the other side has shut down the
+ 	 * connection. This prevents stuck sockets.
+ 	 */
+-	if (unix_writable(sk))
++	if (unix_writable(sk, state))
+ 		mask |= EPOLLOUT | EPOLLWRNORM | EPOLLWRBAND;
+ 
+ 	return mask;
+@@ -2722,12 +2724,14 @@ static __poll_t unix_dgram_poll(struct file *file, struct socket *sock,
+ {
+ 	struct sock *sk = sock->sk, *other;
+ 	unsigned int writable;
++	unsigned char state;
+ 	__poll_t mask;
+ 	u8 shutdown;
+ 
+ 	sock_poll_wait(file, sock, wait);
+ 	mask = 0;
+ 	shutdown = READ_ONCE(sk->sk_shutdown);
++	state = READ_ONCE(sk->sk_state);
+ 
+ 	/* exceptional events? */
+ 	if (sk->sk_err || !skb_queue_empty_lockless(&sk->sk_error_queue))
+@@ -2744,19 +2748,14 @@ static __poll_t unix_dgram_poll(struct file *file, struct socket *sock,
+ 		mask |= EPOLLIN | EPOLLRDNORM;
+ 
+ 	/* Connection-based need to check for termination and startup */
+-	if (sk->sk_type == SOCK_SEQPACKET) {
+-		if (sk->sk_state == TCP_CLOSE)
+-			mask |= EPOLLHUP;
+-		/* connection hasn't started yet? */
+-		if (sk->sk_state == TCP_SYN_SENT)
+-			return mask;
+-	}
++	if (sk->sk_type == SOCK_SEQPACKET && state == TCP_CLOSE)
++		mask |= EPOLLHUP;
+ 
+ 	/* No write status requested, avoid expensive OUT tests. */
+ 	if (!(poll_requested_events(wait) & (EPOLLWRBAND|EPOLLWRNORM|EPOLLOUT)))
+ 		return mask;
+ 
+-	writable = unix_writable(sk);
++	writable = unix_writable(sk, state);
+ 	if (writable) {
+ 		unix_state_lock(sk);
+ 
+-- 
+2.43.0
+
 
 
 
