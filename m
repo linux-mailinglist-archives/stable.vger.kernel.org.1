@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BEBB925F0A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:48:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59068925A7F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:00:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0171AB2D72C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:10:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 040611F211D8
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:00:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0458192B67;
-	Wed,  3 Jul 2024 10:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B6018FC90;
+	Wed,  3 Jul 2024 10:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KIAh3uP3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YL94piCP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8091922C4;
-	Wed,  3 Jul 2024 10:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5243E175555;
+	Wed,  3 Jul 2024 10:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004249; cv=none; b=B7zehIPX3anpWQ121HdT+ZsyqswglLL865dFDy5vaSlUSfiub5agCxRMTjh1QlxSV/39czsbIZ0HA+VTjvX7iMei+eDLDf66cba3mTMbJM9zCPVgPfPZMabmq+c8kCq6CbnfZHkEtaDrfXDNed3kanPacWsBgKsPsft0l8v1nAI=
+	t=1720003698; cv=none; b=OJVHzOzwp75HfNQMJ1cnRYPIvVTAEBr9ZzrzSrXUFjetMKQlEI7l/dYRzAH0YjciIiGv8+oyf29c0filOFcvETMRlas6u0DHBeGrnlWmyZPD4XXWNryVazz5RbrTPyrmF8dx1Fynlq+Ge1vfr2SutNU8nSche33domVPNrSsKNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004249; c=relaxed/simple;
-	bh=ZqM91dZhzYCsLQmh8gE9aNmNb3kcj3P1EKlztoHF3Ng=;
+	s=arc-20240116; t=1720003698; c=relaxed/simple;
+	bh=u232e3M6800SFe793uI/+SMWFZIJhMQh/aJ1yR139tY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZsa0dvVZo5luVc/S1O9S1BX5yCElPOswq81OL9esELxVU3xhW9nf1pkfF8RAIxApcCF1hPv/jAHXTrJEDxispUuIpLds3h2nGGAPYGrSPXkdPlGlu6cU1FPp1qqcZO6V23ZCcGlwJPvyZ5piJdqd32Clha0t50px/mjBdu6afk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KIAh3uP3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11EE9C4AF0B;
-	Wed,  3 Jul 2024 10:57:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CuK67icPv0sN/NBnfj/DZ1L+EMjswY4ohdKm/VwVjdxcadFdvsmsAxpIV/il19c3AQC/X3m2Qr+QAk5fuUV/O/0Ks/wmgHex8+FpLDQNPHIAFOo3UAywWwo2ARan3nWmz7sUCIuyHw0xuD/AZOzxJYrbmI7IJiiOZJ+W3htBraQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YL94piCP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897ABC32781;
+	Wed,  3 Jul 2024 10:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004249;
-	bh=ZqM91dZhzYCsLQmh8gE9aNmNb3kcj3P1EKlztoHF3Ng=;
+	s=korg; t=1720003697;
+	bh=u232e3M6800SFe793uI/+SMWFZIJhMQh/aJ1yR139tY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KIAh3uP3R3T7MktxG5slk3Exu5dt18mWzC8FnxKa+2vUEjunipFZgo+tTBV755UB7
-	 25zxGdRFD/Lx6lOCzx5RbpASLi+FmLfvOwWeaaVX8kYMILJzjYxJlkYelbeKAJDQjy
-	 S6TqYW3cvkDOSiUlrv8y2cYbMzYXv2ZBoh2an0/k=
+	b=YL94piCPxvap1PrQFq/NrCGZ3ZLTqFw1WPIp1LQGAbcl59ZRoRXLjgdrtZjUGIUbW
+	 7T/j3vtchHgHYj6xEMuGrnvYVenPFQ9gpkQFk7S3zRWIzhD+hE0jfjPq+S422EbQaQ
+	 YmFcy3JwtdH/WDGHpvCAjBdBx+5XB3V4OY5hepKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.4 170/189] tty: mcf: MCF54418 has 10 UARTS
-Date: Wed,  3 Jul 2024 12:40:31 +0200
-Message-ID: <20240703102847.884236126@linuxfoundation.org>
+	Trevor Gamblin <tgamblin@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 4.19 135/139] pwm: stm32: Refuse too small period requests
+Date: Wed,  3 Jul 2024 12:40:32 +0200
+Message-ID: <20240703102835.531449444@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,38 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-commit 7c92a8bd53f24d50c8cf4aba53bb75505b382fed upstream.
+commit c45fcf46ca2368dafe7e5c513a711a6f0f974308 upstream.
 
-Most of the colfires have up to 5 UARTs but MCF54418 has up-to 10 !
-Change the maximum value authorized.
+If period_ns is small, prd might well become 0. Catch that case because
+otherwise with
 
-Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-Cc: stable <stable@kernel.org>
-Fixes: 2545cf6e94b4 ("m68knommu: allow 4 coldfire serial ports")
-Link: https://lore.kernel.org/r/20240620-upstream-uart-v1-1-a9d0d95fb19e@yoseli.org
+	regmap_write(priv->regmap, TIM_ARR, prd - 1);
+
+a few lines down quite a big period is configured.
+
+Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
+Cc: stable@vger.kernel.org
+Reviewed-by: Trevor Gamblin <tgamblin@baylibre.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/b86f62f099983646f97eeb6bfc0117bb2d0c340d.1718979150.git.u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/mcf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pwm/pwm-stm32.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/tty/serial/mcf.c
-+++ b/drivers/tty/serial/mcf.c
-@@ -479,7 +479,7 @@ static const struct uart_ops mcf_uart_op
- 	.verify_port	= mcf_verify_port,
- };
+--- a/drivers/pwm/pwm-stm32.c
++++ b/drivers/pwm/pwm-stm32.c
+@@ -337,6 +337,9 @@ static int stm32_pwm_config(struct stm32
  
--static struct mcf_uart mcf_ports[4];
-+static struct mcf_uart mcf_ports[10];
+ 	prd = div;
  
- #define	MCF_MAXPORTS	ARRAY_SIZE(mcf_ports)
++	if (!prd)
++		return -EINVAL;
++
+ 	if (prescaler > MAX_TIM_PSC)
+ 		return -EINVAL;
  
 
 
