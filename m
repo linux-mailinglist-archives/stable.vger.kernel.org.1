@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEBA9925E1E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:34:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2668A925B9A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:09:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 078DF1C2146E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:34:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F0FA2901B3
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7227817B505;
-	Wed,  3 Jul 2024 11:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBA919D881;
+	Wed,  3 Jul 2024 10:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j3MnzGHA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfKoTik3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A9817B4F7;
-	Wed,  3 Jul 2024 11:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692E8185E6B;
+	Wed,  3 Jul 2024 10:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005992; cv=none; b=sZOy5/lLhPdqTR7OLu5Nb3P8kmwPmMkp8LQK/t+eTk+KEtteXZEnQK3gmcEgaXcmE+WIOSMeOYIhLo6K0JNTNO92hw1DDLkBdeTQwCL5xsKOFbk0iBkIkrW+OsnTy+tIiwLQISfakjqEfTLF/3qLURxz/RzO87byenRE9AVbm6A=
+	t=1720004154; cv=none; b=s145L1u8FHd+QhyN014zT8gqA1kwsavkzcmzDafT27yYrXd4LfyxnURkkGpUO16EPGoPRw3TkJmHUvLw/DFKGxeHQo4wN5jwHW25/Na+1J3z2F9N4eZ1mwm10TNlX8Ps2N9xMcHRjzlsYRBwCzvE7GzME6JbNfNkr0gThTkEF+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005992; c=relaxed/simple;
-	bh=zFyA+ohifRjPso+UuP9NX+DowtFlbSsql/fUOBB0ISk=;
+	s=arc-20240116; t=1720004154; c=relaxed/simple;
+	bh=F+xidPXdWG8VPnGE1s5zI4EW6VyJIH3ntJIumqLsqkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MquhDGoXwDFd5osdvI7kVmoRVYZ/CsZ/p0MRFyp722WYBsRdvJA7uptpscuKfKTWfV1ZTZburr1zVHfFRVZpzaj9Fv3/IA5AF0crAr8QvRSH+eIfK2grXPTplcHqOVQuLgGGF7kNCLWEqOU5NkrbOxgc8m2LKti1tgFrLYwlCPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j3MnzGHA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC99CC2BD10;
-	Wed,  3 Jul 2024 11:26:31 +0000 (UTC)
+	 MIME-Version; b=RrKaC2fqPvD+PCOoAMHOjSlF8d6TZBmavhL7AK43wDoLMWJl080GsL0H/VLJ+6/gqS4V1XlW7xbra261bGAefatR/24bUxp3fSLPJdicEpcU0le+Oo3ucSsavQcs126YJgsiu9IbURhiZ4OFa7qduXzl66+0BjbNeedWeS/U1XY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfKoTik3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95A1EC32781;
+	Wed,  3 Jul 2024 10:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005992;
-	bh=zFyA+ohifRjPso+UuP9NX+DowtFlbSsql/fUOBB0ISk=;
+	s=korg; t=1720004154;
+	bh=F+xidPXdWG8VPnGE1s5zI4EW6VyJIH3ntJIumqLsqkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j3MnzGHAs8oLWnZyVlRAgnKs73hB9ME9QSltl3JEeu+kNwTBiTDEra9/a2n8cVYOu
-	 gMfBm/3wvKoNIOmmfFkb8I2JnASwOaWML6oAqoEdJCwpMJsruCPE/SsQeg6BprRAm5
-	 nA4R48qNhuJWZzSKWstZCdkDLUMXG/X8JCv2IXnk=
+	b=lfKoTik3XOwc3mHtwZGkNFFXzKYhp7SldUXU1plci9jgq4/Lix1BkacDHeJW4owuu
+	 VOT1pAmhtefmMh770WnrM407q2O9eGOlfopCMwGxMYe7w/fzVz92u+OFTu0HMTVZ4U
+	 sgEq1YjhsVeh9ywUWi1p4s5dIg9+pZzuI/p3WttA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
-	Huang-Huang Bao <i@eh5.me>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Xingyuan Mo <hdthky0@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 264/356] pinctrl: rockchip: use dedicated pinctrl type for RK3328
+Subject: [PATCH 5.4 139/189] netfilter: nf_tables: validate family when identifying table via handle
 Date: Wed,  3 Jul 2024 12:40:00 +0200
-Message-ID: <20240703102923.105218620@linuxfoundation.org>
+Message-ID: <20240703102846.728503416@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang-Huang Bao <i@eh5.me>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 01b4b1d1cec48ef4c26616c2fc4600b2c9fec05a ]
+[ Upstream commit f6e1532a2697b81da00bfb184e99d15e01e9d98c ]
 
-rk3328_pin_ctrl uses type of RK3288 which has a hack in
-rockchip_pinctrl_suspend and rockchip_pinctrl_resume to restore GPIO6-C6
-at assume, the hack is not applicable to RK3328 as GPIO6 is not even
-exist in it. So use a dedicated pinctrl type to skip this hack.
+Validate table family when looking up for it via NFTA_TABLE_HANDLE.
 
-Fixes: 3818e4a7678e ("pinctrl: rockchip: Add rk3328 pinctrl support")
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Huang-Huang Bao <i@eh5.me>
-Link: https://lore.kernel.org/r/20240606125755.53778-4-i@eh5.me
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 3ecbfd65f50e ("netfilter: nf_tables: allocate handle and delete objects via handle")
+Reported-by: Xingyuan Mo <hdthky0@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-rockchip.c | 5 ++++-
- drivers/pinctrl/pinctrl-rockchip.h | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
-index 965482872646f..30e1dec1e2f68 100644
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -1936,6 +1936,7 @@ static int rockchip_get_pull(struct rockchip_pin_bank *bank, int pin_num)
- 	case RK3188:
- 	case RK3288:
- 	case RK3308:
-+	case RK3328:
- 	case RK3368:
- 	case RK3399:
- 	case RK3568:
-@@ -1992,6 +1993,7 @@ static int rockchip_set_pull(struct rockchip_pin_bank *bank,
- 	case RK3188:
- 	case RK3288:
- 	case RK3308:
-+	case RK3328:
- 	case RK3368:
- 	case RK3399:
- 	case RK3568:
-@@ -2252,6 +2254,7 @@ static bool rockchip_pinconf_pull_valid(struct rockchip_pin_ctrl *ctrl,
- 	case RK3188:
- 	case RK3288:
- 	case RK3308:
-+	case RK3328:
- 	case RK3368:
- 	case RK3399:
- 	case RK3568:
-@@ -3240,7 +3243,7 @@ static struct rockchip_pin_ctrl rk3328_pin_ctrl = {
- 		.pin_banks		= rk3328_pin_banks,
- 		.nr_banks		= ARRAY_SIZE(rk3328_pin_banks),
- 		.label			= "RK3328-GPIO",
--		.type			= RK3288,
-+		.type			= RK3328,
- 		.grf_mux_offset		= 0x0,
- 		.iomux_recalced		= rk3328_mux_recalced_data,
- 		.niomux_recalced	= ARRAY_SIZE(rk3328_mux_recalced_data),
-diff --git a/drivers/pinctrl/pinctrl-rockchip.h b/drivers/pinctrl/pinctrl-rockchip.h
-index 59116e13758d0..d4a6e1276bab3 100644
---- a/drivers/pinctrl/pinctrl-rockchip.h
-+++ b/drivers/pinctrl/pinctrl-rockchip.h
-@@ -27,6 +27,7 @@ enum rockchip_pinctrl_type {
- 	RK3188,
- 	RK3288,
- 	RK3308,
-+	RK3328,
- 	RK3368,
- 	RK3399,
- 	RK3568,
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 8131d858f38d9..44d4d97b45d13 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -553,7 +553,7 @@ static struct nft_table *nft_table_lookup(const struct net *net,
+ 
+ static struct nft_table *nft_table_lookup_byhandle(const struct net *net,
+ 						   const struct nlattr *nla,
+-						   u8 genmask)
++						   int family, u8 genmask)
+ {
+ 	struct nftables_pernet *nft_net;
+ 	struct nft_table *table;
+@@ -561,6 +561,7 @@ static struct nft_table *nft_table_lookup_byhandle(const struct net *net,
+ 	nft_net = net_generic(net, nf_tables_net_id);
+ 	list_for_each_entry(table, &nft_net->tables, list) {
+ 		if (be64_to_cpu(nla_get_be64(nla)) == table->handle &&
++		    table->family == family &&
+ 		    nft_active_genmask(table, genmask))
+ 			return table;
+ 	}
+@@ -1243,7 +1244,7 @@ static int nf_tables_deltable(struct net *net, struct sock *nlsk,
+ 
+ 	if (nla[NFTA_TABLE_HANDLE]) {
+ 		attr = nla[NFTA_TABLE_HANDLE];
+-		table = nft_table_lookup_byhandle(net, attr, genmask);
++		table = nft_table_lookup_byhandle(net, attr, family, genmask);
+ 	} else {
+ 		attr = nla[NFTA_TABLE_NAME];
+ 		table = nft_table_lookup(net, attr, family, genmask);
 -- 
 2.43.0
 
