@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-57154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08B02925B27
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04FDF925DBC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2E9728DFB5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:05:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FE3C1F225AA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25DFD17334E;
-	Wed,  3 Jul 2024 10:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B800191F8E;
+	Wed,  3 Jul 2024 11:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EyL/D94i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1g5g81x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8029173345;
-	Wed,  3 Jul 2024 10:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB3D191F8A;
+	Wed,  3 Jul 2024 11:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004011; cv=none; b=Ow0lVUt0oYFKJJ4V+N++nvQX1RBFkv5Fa6GDOaQcCvDWwURHIeu7Y2BGFkrqYUn7tGYJ1wfDWGvTXhgckTGsFn1R4JvEi1ZFLb8Zkgja49xt4ESXbZxmHh/BlSfyeIrVwRDIefGEK2d0QPgwJ04dBrPJmy5FAJSsYRXL/ey1sV8=
+	t=1720005760; cv=none; b=MBeJMDXAsuqFPpdzNVemfRCBhsCeG7K0ieCne8BkQaqkZw1q1/6co7EtaBLJK8IPsmx63zE0iWVjONSzEGlC25ini51SNVwEyinS3FtqXTN6rYVfnMKhPw0sW/CgOJYJ9u3OwMoBpKUtVZ1ks5n63ngwE1pj7oZLN5w3P02gzn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004011; c=relaxed/simple;
-	bh=5WaHCS9viqunhNPYJgg1n0ismauHkqPEabxxNqMpf58=;
+	s=arc-20240116; t=1720005760; c=relaxed/simple;
+	bh=ffjeupH7ENI4Y+eLTVqLtN5Bi3dNpMZce/SoB1k+AZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MWUCWbBrqcZ4P4KsmdUHwLuc93GkI/haSohkCfIfJ9ux/QTQTOBbbSdveaC/amqQNZ496pSte6G9dx6yOUHawzfF8Nd2y/1XcQf6KnnoGGmb3hlqCtQbFtgjTP6LRmGsZR1IpWXT1dU59bj74jkb8cJtCPqqfM8dCpBuxzEkTKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EyL/D94i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538A7C2BD10;
-	Wed,  3 Jul 2024 10:53:31 +0000 (UTC)
+	 MIME-Version; b=PM9Qk6XulzV0qH7wO7JgjtQhWSSb8XqaKmQtys9SM0cdWX3HABvwxQK/uteimn3Kf2oajQIDeGzkCLInirth78cqaFIhyw75Cmi33djAquCJZT6OUduaOcERQ/OrzTfPTJcuqoRc2Gww4h+cJvabxPNpxq86/wFJRAljL29l4N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X1g5g81x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64000C2BD10;
+	Wed,  3 Jul 2024 11:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004011;
-	bh=5WaHCS9viqunhNPYJgg1n0ismauHkqPEabxxNqMpf58=;
+	s=korg; t=1720005759;
+	bh=ffjeupH7ENI4Y+eLTVqLtN5Bi3dNpMZce/SoB1k+AZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EyL/D94iUF4ZabfvK0GH7M4Ct+BP4zisG86SF2pIM62ZtDdO/w/8MzCXoolAIOKyd
-	 siS3rOWOmdD2unuOPsXcifXK2dklcZfcvXETtTTLkSwybZD9A01dyxHR4Dl8EiZsFJ
-	 YcVUHbDdDGsQ94oFZWk8TOq07RIESxL+juhdkWWU=
+	b=X1g5g81xmqGrDfWYg0K1kMF0Hx8xeJ2w3/wc1Pgs/+yBJXVNLOc70k/bRywi9hh+Q
+	 YbCjew+oOwIvN4ROjU1QgOSqTpZjhvCCmfG6GhwygRj8Abtaem21mzQyV8wwaERkDW
+	 bLwkl9fYgElwr0VKg3xfmvCQvwNw1vd0YbBLqm2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lion Ackermann <nnamrec@gmail.com>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 063/189] netfilter: ipset: Fix race between namespace cleanup and gc in the list:set type
+Subject: [PATCH 5.15 188/356] ipv6: prevent possible NULL deref in fib6_nh_init()
 Date: Wed,  3 Jul 2024 12:38:44 +0200
-Message-ID: <20240703102843.886726261@linuxfoundation.org>
+Message-ID: <20240703102920.219635222@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,290 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jozsef Kadlecsik <kadlec@netfilter.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 4e7aaa6b82d63e8ddcbfb56b4fd3d014ca586f10 ]
+[ Upstream commit 2eab4543a2204092c3a7af81d7d6c506e59a03a6 ]
 
-Lion Ackermann reported that there is a race condition between namespace cleanup
-in ipset and the garbage collection of the list:set type. The namespace
-cleanup can destroy the list:set type of sets while the gc of the set type is
-waiting to run in rcu cleanup. The latter uses data from the destroyed set which
-thus leads use after free. The patch contains the following parts:
+syzbot reminds us that in6_dev_get() can return NULL.
 
-- When destroying all sets, first remove the garbage collectors, then wait
-  if needed and then destroy the sets.
-- Fix the badly ordered "wait then remove gc" for the destroy a single set
-  case.
-- Fix the missing rcu locking in the list:set type in the userspace test
-  case.
-- Use proper RCU list handlings in the list:set type.
+fib6_nh_init()
+    ip6_validate_gw(  &idev  )
+        ip6_route_check_nh(  idev  )
+            *idev = in6_dev_get(dev); // can be NULL
 
-The patch depends on c1193d9bbbd3 (netfilter: ipset: Add list flush to cancel_gc).
+Oops: general protection fault, probably for non-canonical address 0xdffffc00000000bc: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x00000000000005e0-0x00000000000005e7]
+CPU: 0 PID: 11237 Comm: syz-executor.3 Not tainted 6.10.0-rc2-syzkaller-00249-gbe27b8965297 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/07/2024
+ RIP: 0010:fib6_nh_init+0x640/0x2160 net/ipv6/route.c:3606
+Code: 00 00 fc ff df 4c 8b 64 24 58 48 8b 44 24 28 4c 8b 74 24 30 48 89 c1 48 89 44 24 28 48 8d 98 e0 05 00 00 48 89 d8 48 c1 e8 03 <42> 0f b6 04 38 84 c0 0f 85 b3 17 00 00 8b 1b 31 ff 89 de e8 b8 8b
+RSP: 0018:ffffc900032775a0 EFLAGS: 00010202
+RAX: 00000000000000bc RBX: 00000000000005e0 RCX: 0000000000000000
+RDX: 0000000000000010 RSI: ffffc90003277a54 RDI: ffff88802b3a08d8
+RBP: ffffc900032778b0 R08: 00000000000002fc R09: 0000000000000000
+R10: 00000000000002fc R11: 0000000000000000 R12: ffff88802b3a08b8
+R13: 1ffff9200064eec8 R14: ffffc90003277a00 R15: dffffc0000000000
+FS:  00007f940feb06c0(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 00000000245e8000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  ip6_route_info_create+0x99e/0x12b0 net/ipv6/route.c:3809
+  ip6_route_add+0x28/0x160 net/ipv6/route.c:3853
+  ipv6_route_ioctl+0x588/0x870 net/ipv6/route.c:4483
+  inet6_ioctl+0x21a/0x280 net/ipv6/af_inet6.c:579
+  sock_do_ioctl+0x158/0x460 net/socket.c:1222
+  sock_ioctl+0x629/0x8e0 net/socket.c:1341
+  vfs_ioctl fs/ioctl.c:51 [inline]
+  __do_sys_ioctl fs/ioctl.c:907 [inline]
+  __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f940f07cea9
 
-Fixes: 97f7cf1cd80e (netfilter: ipset: fix performance regression in swap operation)
-Reported-by: Lion Ackermann <nnamrec@gmail.com>
-Tested-by: Lion Ackermann <nnamrec@gmail.com>
-Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 428604fb118f ("ipv6: do not set routes if disable_ipv6 has been enabled")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240614082002.26407-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipset/ip_set_core.c     | 81 +++++++++++++++------------
- net/netfilter/ipset/ip_set_list_set.c | 30 +++++-----
- 2 files changed, 60 insertions(+), 51 deletions(-)
+ net/ipv6/route.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-index 544106475d4f6..04273f94504fb 100644
---- a/net/netfilter/ipset/ip_set_core.c
-+++ b/net/netfilter/ipset/ip_set_core.c
-@@ -1024,23 +1024,50 @@ ip_set_setname_policy[IPSET_ATTR_CMD_MAX + 1] = {
- 				    .len = IPSET_MAXNAMELEN - 1 },
- };
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 0ca3da0999c6a..c7ebb46d803c3 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -3599,7 +3599,7 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
+ 	if (!dev)
+ 		goto out;
  
-+/* In order to return quickly when destroying a single set, it is split
-+ * into two stages:
-+ * - Cancel garbage collector
-+ * - Destroy the set itself via call_rcu()
-+ */
-+
- static void
--ip_set_destroy_set(struct ip_set *set)
-+ip_set_destroy_set_rcu(struct rcu_head *head)
- {
--	pr_debug("set: %s\n",  set->name);
-+	struct ip_set *set = container_of(head, struct ip_set, rcu);
- 
--	/* Must call it without holding any lock */
- 	set->variant->destroy(set);
- 	module_put(set->type->me);
- 	kfree(set);
- }
- 
- static void
--ip_set_destroy_set_rcu(struct rcu_head *head)
-+_destroy_all_sets(struct ip_set_net *inst)
- {
--	struct ip_set *set = container_of(head, struct ip_set, rcu);
-+	struct ip_set *set;
-+	ip_set_id_t i;
-+	bool need_wait = false;
- 
--	ip_set_destroy_set(set);
-+	/* First cancel gc's: set:list sets are flushed as well */
-+	for (i = 0; i < inst->ip_set_max; i++) {
-+		set = ip_set(inst, i);
-+		if (set) {
-+			set->variant->cancel_gc(set);
-+			if (set->type->features & IPSET_TYPE_NAME)
-+				need_wait = true;
-+		}
-+	}
-+	/* Must wait for flush to be really finished  */
-+	if (need_wait)
-+		rcu_barrier();
-+	for (i = 0; i < inst->ip_set_max; i++) {
-+		set = ip_set(inst, i);
-+		if (set) {
-+			ip_set(inst, i) = NULL;
-+			set->variant->destroy(set);
-+			module_put(set->type->me);
-+			kfree(set);
-+		}
-+	}
- }
- 
- static int ip_set_destroy(struct net *net, struct sock *ctnl,
-@@ -1056,11 +1083,10 @@ static int ip_set_destroy(struct net *net, struct sock *ctnl,
- 	if (unlikely(protocol_min_failed(attr)))
- 		return -IPSET_ERR_PROTOCOL;
- 
--
- 	/* Commands are serialized and references are
- 	 * protected by the ip_set_ref_lock.
- 	 * External systems (i.e. xt_set) must call
--	 * ip_set_put|get_nfnl_* functions, that way we
-+	 * ip_set_nfnl_get_* functions, that way we
- 	 * can safely check references here.
- 	 *
- 	 * list:set timer can only decrement the reference
-@@ -1068,8 +1094,6 @@ static int ip_set_destroy(struct net *net, struct sock *ctnl,
- 	 * without holding the lock.
- 	 */
- 	if (!attr[IPSET_ATTR_SETNAME]) {
--		/* Must wait for flush to be really finished in list:set */
--		rcu_barrier();
- 		read_lock_bh(&ip_set_ref_lock);
- 		for (i = 0; i < inst->ip_set_max; i++) {
- 			s = ip_set(inst, i);
-@@ -1080,15 +1104,7 @@ static int ip_set_destroy(struct net *net, struct sock *ctnl,
- 		}
- 		inst->is_destroyed = true;
- 		read_unlock_bh(&ip_set_ref_lock);
--		for (i = 0; i < inst->ip_set_max; i++) {
--			s = ip_set(inst, i);
--			if (s) {
--				ip_set(inst, i) = NULL;
--				/* Must cancel garbage collectors */
--				s->variant->cancel_gc(s);
--				ip_set_destroy_set(s);
--			}
--		}
-+		_destroy_all_sets(inst);
- 		/* Modified by ip_set_destroy() only, which is serialized */
- 		inst->is_destroyed = false;
- 	} else {
-@@ -1107,12 +1123,12 @@ static int ip_set_destroy(struct net *net, struct sock *ctnl,
- 		features = s->type->features;
- 		ip_set(inst, i) = NULL;
- 		read_unlock_bh(&ip_set_ref_lock);
-+		/* Must cancel garbage collectors */
-+		s->variant->cancel_gc(s);
- 		if (features & IPSET_TYPE_NAME) {
- 			/* Must wait for flush to be really finished  */
- 			rcu_barrier();
- 		}
--		/* Must cancel garbage collectors */
--		s->variant->cancel_gc(s);
- 		call_rcu(&s->rcu, ip_set_destroy_set_rcu);
- 	}
- 	return 0;
-@@ -2223,30 +2239,25 @@ ip_set_net_init(struct net *net)
- }
- 
- static void __net_exit
--ip_set_net_exit(struct net *net)
-+ip_set_net_pre_exit(struct net *net)
- {
- 	struct ip_set_net *inst = ip_set_pernet(net);
- 
--	struct ip_set *set = NULL;
--	ip_set_id_t i;
--
- 	inst->is_deleted = true; /* flag for ip_set_nfnl_put */
-+}
- 
--	nfnl_lock(NFNL_SUBSYS_IPSET);
--	for (i = 0; i < inst->ip_set_max; i++) {
--		set = ip_set(inst, i);
--		if (set) {
--			ip_set(inst, i) = NULL;
--			set->variant->cancel_gc(set);
--			ip_set_destroy_set(set);
--		}
--	}
--	nfnl_unlock(NFNL_SUBSYS_IPSET);
-+static void __net_exit
-+ip_set_net_exit(struct net *net)
-+{
-+	struct ip_set_net *inst = ip_set_pernet(net);
-+
-+	_destroy_all_sets(inst);
- 	kvfree(rcu_dereference_protected(inst->ip_set_list, 1));
- }
- 
- static struct pernet_operations ip_set_net_ops = {
- 	.init	= ip_set_net_init,
-+	.pre_exit = ip_set_net_pre_exit,
- 	.exit   = ip_set_net_exit,
- 	.id	= &ip_set_net_id,
- 	.size	= sizeof(struct ip_set_net),
-diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
-index 64cc3e2131f3f..9f4f0126d6ed5 100644
---- a/net/netfilter/ipset/ip_set_list_set.c
-+++ b/net/netfilter/ipset/ip_set_list_set.c
-@@ -79,7 +79,7 @@ list_set_kadd(struct ip_set *set, const struct sk_buff *skb,
- 	struct set_elem *e;
- 	int ret;
- 
--	list_for_each_entry(e, &map->members, list) {
-+	list_for_each_entry_rcu(e, &map->members, list) {
- 		if (SET_WITH_TIMEOUT(set) &&
- 		    ip_set_timeout_expired(ext_timeout(e, set)))
- 			continue;
-@@ -99,7 +99,7 @@ list_set_kdel(struct ip_set *set, const struct sk_buff *skb,
- 	struct set_elem *e;
- 	int ret;
- 
--	list_for_each_entry(e, &map->members, list) {
-+	list_for_each_entry_rcu(e, &map->members, list) {
- 		if (SET_WITH_TIMEOUT(set) &&
- 		    ip_set_timeout_expired(ext_timeout(e, set)))
- 			continue;
-@@ -188,9 +188,10 @@ list_set_utest(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 	struct list_set *map = set->data;
- 	struct set_adt_elem *d = value;
- 	struct set_elem *e, *next, *prev = NULL;
--	int ret;
-+	int ret = 0;
- 
--	list_for_each_entry(e, &map->members, list) {
-+	rcu_read_lock();
-+	list_for_each_entry_rcu(e, &map->members, list) {
- 		if (SET_WITH_TIMEOUT(set) &&
- 		    ip_set_timeout_expired(ext_timeout(e, set)))
- 			continue;
-@@ -201,6 +202,7 @@ list_set_utest(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 
- 		if (d->before == 0) {
- 			ret = 1;
-+			goto out;
- 		} else if (d->before > 0) {
- 			next = list_next_entry(e, list);
- 			ret = !list_is_last(&e->list, &map->members) &&
-@@ -208,9 +210,11 @@ list_set_utest(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 		} else {
- 			ret = prev && prev->id == d->refid;
- 		}
--		return ret;
-+		goto out;
- 	}
--	return 0;
-+out:
-+	rcu_read_unlock();
-+	return ret;
- }
- 
- static void
-@@ -239,7 +243,7 @@ list_set_uadd(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- 
- 	/* Find where to add the new entry */
- 	n = prev = next = NULL;
--	list_for_each_entry(e, &map->members, list) {
-+	list_for_each_entry_rcu(e, &map->members, list) {
- 		if (SET_WITH_TIMEOUT(set) &&
- 		    ip_set_timeout_expired(ext_timeout(e, set)))
- 			continue;
-@@ -316,9 +320,9 @@ list_set_udel(struct ip_set *set, void *value, const struct ip_set_ext *ext,
- {
- 	struct list_set *map = set->data;
- 	struct set_adt_elem *d = value;
--	struct set_elem *e, *next, *prev = NULL;
-+	struct set_elem *e, *n, *next, *prev = NULL;
- 
--	list_for_each_entry(e, &map->members, list) {
-+	list_for_each_entry_safe(e, n, &map->members, list) {
- 		if (SET_WITH_TIMEOUT(set) &&
- 		    ip_set_timeout_expired(ext_timeout(e, set)))
- 			continue;
-@@ -424,14 +428,8 @@ static void
- list_set_destroy(struct ip_set *set)
- {
- 	struct list_set *map = set->data;
--	struct set_elem *e, *n;
- 
--	list_for_each_entry_safe(e, n, &map->members, list) {
--		list_del(&e->list);
--		ip_set_put_byindex(map->net, e->id);
--		ip_set_ext_destroy(set, e);
--		kfree(e);
--	}
-+	WARN_ON_ONCE(!list_empty(&map->members));
- 	kfree(map);
- 
- 	set->data = NULL;
+-	if (idev->cnf.disable_ipv6) {
++	if (!idev || idev->cnf.disable_ipv6) {
+ 		NL_SET_ERR_MSG(extack, "IPv6 is disabled on nexthop device");
+ 		err = -EACCES;
+ 		goto out;
 -- 
 2.43.0
 
