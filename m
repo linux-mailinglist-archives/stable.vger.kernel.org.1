@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F997925F19
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:50:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C815925E08
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:33:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30FE5B39DA1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:18:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD8D31F210B8
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1CC173339;
-	Wed,  3 Jul 2024 11:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03CEE178CEA;
+	Wed,  3 Jul 2024 11:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B5jJlSfg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0YOM0aA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5900A1741D1;
-	Wed,  3 Jul 2024 11:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5964176ADB;
+	Wed,  3 Jul 2024 11:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004813; cv=none; b=oiz44uZXz7ONc9YiXNpmSofL2Y3xKsV+/qvSnYatkGTEopP53omZVNERYCaZhJcDiDCP9XC6m9SKeQfLbTWp9oCh1atT2OMcQroSLyp0LcJTFYWB0fqReCpqHKm/Iyihr1t30r+OFTH7oYGqgVQ5bbDwJ/WIxoqi2307RDxGzd8=
+	t=1720005936; cv=none; b=F/jeuceT6Q/QIfBx8N8HPJCGsL2HpJqjGT8IMpSUw5uz38ShjWpRAi2Oodm0MbCs2bVoFjZPGHVaSB2bzezt2O+j45O1Ak6IH219fFMn1eAwYGnJ9/VwBl/hWEMwnfSYUmwuNuXTQzMaRaKAnDD2OOaB0InQAKaC8fxBxXaipPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004813; c=relaxed/simple;
-	bh=SuYC1QjaU1I0RFxIQFsPuqmdlZREJ/YXqMeEjNCJYiU=;
+	s=arc-20240116; t=1720005936; c=relaxed/simple;
+	bh=VWDRoMvDDvZN1xfhOsUvzDkvuSWI6h6SLnIhUdtr+4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FltJStJT86vrDMUOzt1Z9VlskbkXyfvXZ32C2BR8YaJ0K9CDzc1mrBtv7pSqFgL1bxPh62odI3/4YjFdygyMGeij+znamMGxcc7nrLu+rGb64yPDiundXf0CWa3spZp4RMmTHSbnKpigdkK3lp4JJ8QBsDg3Im1s1IDQp8QRFfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B5jJlSfg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D11D2C2BD10;
-	Wed,  3 Jul 2024 11:06:52 +0000 (UTC)
+	 MIME-Version; b=bTVeuEAXQCPAY8pS4JFy6U/hqs3fNO/DdQgDJb52/wWEzLrFNHa1BTdBPB9ZiSPJWKNjUxi1/6aetjUcr9fYjbPHpVHmK6bLMJGjACVmjbyUV1+uqg6bIDJexjt529JOpcsVhiXQRFFWZZ7i+BpVx3L1i6tl3fbr52lbFGSPoFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0YOM0aA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32B5C2BD10;
+	Wed,  3 Jul 2024 11:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004813;
-	bh=SuYC1QjaU1I0RFxIQFsPuqmdlZREJ/YXqMeEjNCJYiU=;
+	s=korg; t=1720005936;
+	bh=VWDRoMvDDvZN1xfhOsUvzDkvuSWI6h6SLnIhUdtr+4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B5jJlSfga6u0WYZTI/g3HqC7Y8gRksH1vrCAyESj1q9+GszZpWmC3Jk+15ICQTYWB
-	 SrJInMxZcbH0slAiUNBIdoKCINcfmd9sEf8O/pVlHg3NR5cj2D1l6i+wEM0qgj84HQ
-	 BZsMNMsi6JHaY4QbejKDXRETCXIYZR4LkXHohZ34=
+	b=k0YOM0aAf3K7wnk6adwor5/Xz9VLG9r5WwGTUwbVJZgVuBCIrB9K7Y/NpAbTknf6b
+	 ndS9HKfYLTUI0ce+C7pEDbhcWDevIeba46imuZIVOEI16Y0SSBWuBuNDo6awKY1nE/
+	 lVUBe56YHAjpSOh/9n4LgRlywkmcBLOuY9MIflBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 5.10 168/290] i2c: ocores: set IACK bit after core is enabled
-Date: Wed,  3 Jul 2024 12:39:09 +0200
-Message-ID: <20240703102910.521810956@linuxfoundation.org>
+	Nikita Shubin <n.shubin@yadro.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 214/356] dmaengine: ioatdma: Fix missing kmem_cache_destroy()
+Date: Wed,  3 Jul 2024 12:39:10 +0200
+Message-ID: <20240703102921.208628698@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Grygorii Tertychnyi <grembeter@gmail.com>
+From: Nikita Shubin <n.shubin@yadro.com>
 
-commit 5a72477273066b5b357801ab2d315ef14949d402 upstream.
+[ Upstream commit 5422145d0b749ad554ada772133b9b20f9fb0ec8 ]
 
-Setting IACK bit when core is disabled does not clear the "Interrupt Flag"
-bit in the status register, and the interrupt remains pending.
+Fix missing kmem_cache_destroy() for ioat_sed_cache in
+ioat_exit_module().
 
-Sometimes it causes failure for the very first message transfer, that is
-usually a device probe.
+Noticed via:
 
-Hence, set IACK bit after core is enabled to clear pending interrupt.
+```
+modprobe ioatdma
+rmmod ioatdma
+modprobe ioatdma
+debugfs: Directory 'ioat_sed_ent' with parent 'slab' already present!
+```
 
-Fixes: 18f98b1e3147 ("[PATCH] i2c: New bus driver for the OpenCores I2C controller")
-Signed-off-by: Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>
-Acked-by: Peter Korsgaard <peter@korsgaard.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c0f28ce66ecf ("dmaengine: ioatdma: move all the init routines")
+Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
+Acked-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20240514-ioatdma_fixes-v1-1-2776a0913254@yadro.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-ocores.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/ioat/init.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/i2c/busses/i2c-ocores.c
-+++ b/drivers/i2c/busses/i2c-ocores.c
-@@ -443,8 +443,8 @@ static int ocores_init(struct device *de
- 	oc_setreg(i2c, OCI2C_PREHIGH, prescale >> 8);
- 
- 	/* Init the device */
--	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
- 	oc_setreg(i2c, OCI2C_CONTROL, ctrl | OCI2C_CTRL_EN);
-+	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
- 
- 	return 0;
+diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
+index 8a115bafab6ab..2a47b9053bad8 100644
+--- a/drivers/dma/ioat/init.c
++++ b/drivers/dma/ioat/init.c
+@@ -1450,6 +1450,7 @@ module_init(ioat_init_module);
+ static void __exit ioat_exit_module(void)
+ {
+ 	pci_unregister_driver(&ioat_pci_driver);
++	kmem_cache_destroy(ioat_sed_cache);
+ 	kmem_cache_destroy(ioat_cache);
  }
+ module_exit(ioat_exit_module);
+-- 
+2.43.0
+
 
 
 
