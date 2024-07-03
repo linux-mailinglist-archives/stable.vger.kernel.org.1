@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-57332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DADF925C51
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:17:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53038925D56
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:28:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40E1F29A1D4
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0A921F21D3D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66E4F1799F;
-	Wed,  3 Jul 2024 11:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4932180A9D;
+	Wed,  3 Jul 2024 11:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BnE4v82K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCZHaQWU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AA1171679;
-	Wed,  3 Jul 2024 11:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832BC17FAB8;
+	Wed,  3 Jul 2024 11:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004561; cv=none; b=Rj58GRF/i6j0d1b0I6cg0r+cxXYNHzuSb0azGLRleo7J8tUZiZxXG1WgMv0SNTcq7+mjUGkq1c+PjpIN2qLC0iQ+QyU5azN3v/Zu+hLzANdAem6wpbJN8b4UgZzhhYTSEgOJMoyx6mb5jsksxkRwJAdUAkMty758SC/Hfw1UMts=
+	t=1720005496; cv=none; b=HdDEBiNemVYN338x68mAwUl9cMJ7r9iKSV8pwTiJ0vH9SpmPSt1fSulY081yonW8rxLayXXRriLMXJo5i4thfkLqDfPdAn3boGSCJnVJVYtezS9dvVyDwZSqw2WADwQ4/P2BDqr/BEXJZHbX7acRFl/IzYtB/Pg0r3XbeQ6oyl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004561; c=relaxed/simple;
-	bh=pH6HUGY+akqkECqJvAFhDT5mPnEB0jiXFM01G6bwSng=;
+	s=arc-20240116; t=1720005496; c=relaxed/simple;
+	bh=anx8VRZQTa3ja4KC5vlhF0GisHlFkdIrWG3Omg2hpKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HqZpRUZ6gnyOgZLerfGTKx30q9mo1JO7y7LbJ1J1Vc97hS+XnzQNqUGi0ye3/a2lezBIW6UhlUuwKqr8aBmxf9S6Nf8zAHSJUyTi6TCSPKXBry2/8bXTaxsj+Ureo8Kaztssn4tbbAViGxGD/U6PXqSMKM69158Ht5ZPiOsymig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BnE4v82K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C0EDC2BD10;
-	Wed,  3 Jul 2024 11:02:40 +0000 (UTC)
+	 MIME-Version; b=ncSKQB+/zjCybMGXMGsv1+7uxFPMEJ2ViDNykvXZMB8Aaj/qf8FipPZDY80JY6wn7Gj3Tk7MVPXjjOdd2Hd80tyPOo7x5ifZeC07Iha54vskPrFeHg+pFe0rvUfa7FrM1N1GFVtnQmi4o2a18Fxe4YsdKABEpwcSZ5xwEBMwWUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCZHaQWU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0581DC2BD10;
+	Wed,  3 Jul 2024 11:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004561;
-	bh=pH6HUGY+akqkECqJvAFhDT5mPnEB0jiXFM01G6bwSng=;
+	s=korg; t=1720005496;
+	bh=anx8VRZQTa3ja4KC5vlhF0GisHlFkdIrWG3Omg2hpKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BnE4v82KFA6IWv795UVuxZm/ilkkLGiExsKnAmngn9WkCL4GojSQ4ekD7DS1eeucQ
-	 E6wqGwUo/u41ujN7AcNwWD53DIa1z82wmPVVu919e9VyS7RWa7DzErTD3KNgdDcwP8
-	 LlpRChYxGFXXbA+lzZ9rzPPu5b+D/bYM4f1txnh8=
+	b=pCZHaQWUoypI4jOemJo0EzqQKGtmeaZfzDofM9j5/tU3UIxa58xhVHwyKYnaTWeje
+	 cvYSVoHc9yr+jaDmRxlHJ0iB7+txnBuq4lsP6FA5EOiH74EpeVj9K73WIm3L2pzjWQ
+	 0XUXxGZ8SCn3+XKF8Oj8lKqfH64PUOKjOf0fgo44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Jiri Kosina <jkosina@suse.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 055/290] HID: core: remove unnecessary WARN_ON() in implement()
+Subject: [PATCH 5.15 100/356] liquidio: Adjust a NULL pointer handling path in lio_vf_rep_copy_packet
 Date: Wed,  3 Jul 2024 12:37:16 +0200
-Message-ID: <20240703102906.280592931@linuxfoundation.org>
+Message-ID: <20240703102916.886201117@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 4aa2dcfbad538adf7becd0034a3754e1bd01b2b5 ]
+[ Upstream commit c44711b78608c98a3e6b49ce91678cd0917d5349 ]
 
-Syzkaller hit a warning [1] in a call to implement() when trying
-to write a value into a field of smaller size in an output report.
+In lio_vf_rep_copy_packet() pg_info->page is compared to a NULL value,
+but then it is unconditionally passed to skb_add_rx_frag() which looks
+strange and could lead to null pointer dereference.
 
-Since implement() already has a warn message printed out with the
-help of hid_warn() and value in question gets trimmed with:
-	...
-	value &= m;
-	...
-WARN_ON may be considered superfluous. Remove it to suppress future
-syzkaller triggers.
+lio_vf_rep_copy_packet() call trace looks like:
+	octeon_droq_process_packets
+	 octeon_droq_fast_process_packets
+	  octeon_droq_dispatch_pkt
+	   octeon_create_recv_info
+	    ...search in the dispatch_list...
+	     ->disp_fn(rdisp->rinfo, ...)
+	      lio_vf_rep_pkt_recv(struct octeon_recv_info *recv_info, ...)
+In this path there is no code which sets pg_info->page to NULL.
+So this check looks unneeded and doesn't solve potential problem.
+But I guess the author had reason to add a check and I have no such card
+and can't do real test.
+In addition, the code in the function liquidio_push_packet() in
+liquidio/lio_core.c does exactly the same.
 
-[1]
-WARNING: CPU: 0 PID: 5084 at drivers/hid/hid-core.c:1451 implement drivers/hid/hid-core.c:1451 [inline]
-WARNING: CPU: 0 PID: 5084 at drivers/hid/hid-core.c:1451 hid_output_report+0x548/0x760 drivers/hid/hid-core.c:1863
-Modules linked in:
-CPU: 0 PID: 5084 Comm: syz-executor424 Not tainted 6.9.0-rc7-syzkaller-00183-gcf87f46fd34d #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
-RIP: 0010:implement drivers/hid/hid-core.c:1451 [inline]
-RIP: 0010:hid_output_report+0x548/0x760 drivers/hid/hid-core.c:1863
-...
-Call Trace:
- <TASK>
- __usbhid_submit_report drivers/hid/usbhid/hid-core.c:591 [inline]
- usbhid_submit_report+0x43d/0x9e0 drivers/hid/usbhid/hid-core.c:636
- hiddev_ioctl+0x138b/0x1f00 drivers/hid/usbhid/hiddev.c:726
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:904 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:890
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-...
+Based on this, I consider the most acceptable compromise solution to
+adjust this issue by moving skb_add_rx_frag() into conditional scope.
 
-Fixes: 95d1c8951e5b ("HID: simplify implement() a bit")
-Reported-by: <syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com>
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 1f233f327913 ("liquidio: switchdev support for LiquidIO NIC")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index 476967ab6294c..5281d693b32d2 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -1446,7 +1446,6 @@ static void implement(const struct hid_device *hid, u8 *report,
- 			hid_warn(hid,
- 				 "%s() called with too large value %d (n: %d)! (%s)\n",
- 				 __func__, value, n, current->comm);
--			WARN_ON(1);
- 			value &= m;
+diff --git a/drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c b/drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c
+index 600de587d7a98..e70b9ccca380e 100644
+--- a/drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c
++++ b/drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c
+@@ -272,13 +272,12 @@ lio_vf_rep_copy_packet(struct octeon_device *oct,
+ 				pg_info->page_offset;
+ 			memcpy(skb->data, va, MIN_SKB_SIZE);
+ 			skb_put(skb, MIN_SKB_SIZE);
++			skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
++					pg_info->page,
++					pg_info->page_offset + MIN_SKB_SIZE,
++					len - MIN_SKB_SIZE,
++					LIO_RXBUFFER_SZ);
  		}
- 	}
+-
+-		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
+-				pg_info->page,
+-				pg_info->page_offset + MIN_SKB_SIZE,
+-				len - MIN_SKB_SIZE,
+-				LIO_RXBUFFER_SZ);
+ 	} else {
+ 		struct octeon_skb_page_info *pg_info =
+ 			((struct octeon_skb_page_info *)(skb->cb));
 -- 
 2.43.0
 
