@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33A1A925E09
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:33:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 497E1925C9C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:20:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00057295CF8
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:33:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 046F12C3B76
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F84176242;
-	Wed,  3 Jul 2024 11:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4FE185E43;
+	Wed,  3 Jul 2024 11:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFYu/kRk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQYHXVoy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7DF16C688;
-	Wed,  3 Jul 2024 11:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0EB136E2A;
+	Wed,  3 Jul 2024 11:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005906; cv=none; b=tibv4ZUnJKVdxFSMHdV2Re6pIfJFB+aawskJggwgSTj+fO8RvNoLenURtGAnHIEWGnvcNZZ/pxEyUK1UkdgI+LW9/4DSdjlq4wZm6YC0TVsb2eowVt9Zld7z4diI91Q9SQ7kd1EUreKJekxXrI3oQKZqn3fdBgcVzvkiUED8ljY=
+	t=1720004940; cv=none; b=pg9+GPpGscNRiHjBzst7qr0tIIW8Dz9ZNaMaMQq8XdIRz6xphQelf+yZnvDgqzID7kSmGdaQwQahJUCpzh7GXFbFGE20ijR/qoFfrahiMz7H6m0U2jw4ugkqSmK5SKhVCOZAp9lSCaptFucrvPuNWsrTBbdvwd78QDdvt4sCjnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005906; c=relaxed/simple;
-	bh=N0fqH0e3mG5sptZpHhBS+3K3wn9t7WggAgCdl3/QvOo=;
+	s=arc-20240116; t=1720004940; c=relaxed/simple;
+	bh=tkAqyeX6YcaO4ExMKKa2irPPhG7/+M3qO4HvsdYbal8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=srphsdooFe783CrJwEQUYIozPVznlF1OYcOPo1K/74BzBkexpcg3yYEjjzQYWZDlIwXsFZfHYzd+JEYEuYXokzf3mOc0NE6UT/uKlPRR+BXQfgyi1uBCZIYvcoIXCP6eLqZUZu5YoxHJ+45WdBU5tT2Dj22lSSwP70zx+TAhf24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFYu/kRk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F19C2BD10;
-	Wed,  3 Jul 2024 11:25:05 +0000 (UTC)
+	 MIME-Version; b=ApJlkLZ/tLoGyiaWfyi1DXfraQXF2qp4djVCpGcCPUcngeej4/qeodNHukBLavZCSqQI70oV58jt/fFb21QsUR9qpFwN+v0uymQgthkC7b+1ijni0XrAI4/QlBONjEKoq2Q2cEhTrtIIWuf+ZnXk0bY07urhWucIdyL1zYljT80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQYHXVoy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 415E0C4AF0D;
+	Wed,  3 Jul 2024 11:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005905;
-	bh=N0fqH0e3mG5sptZpHhBS+3K3wn9t7WggAgCdl3/QvOo=;
+	s=korg; t=1720004940;
+	bh=tkAqyeX6YcaO4ExMKKa2irPPhG7/+M3qO4HvsdYbal8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lFYu/kRkZupcuXD8M93a7UN4B95DsF+za0I3wCRCeqDPx348rOCkfBBTRA4cfuvkk
-	 iJxpxRSFuVQHW/w2foNvEn9DKIYEasGiKUIAhmFDDakJEAwc9vZl1kDWhUtbYfbJu3
-	 X4Gk+krQLSKl4EXmlPvJKUMTKFLOu7twRaNtvaew=
+	b=uQYHXVoyuFy5uiYDkpV49XOiyTHsQokbHKXT15m9LAh9OwG52Jb20Y5jqd/367mZt
+	 V7y9j4WShChfKGaGryRNtyOCU9gaNX53quBcJ7GBxEicxpG3xPc63ogsXYcZ2Gk22F
+	 dtJidJDe2hSZcfjYz6ZuEmpdK37Yb5S196QC7pcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 235/356] ARM: dts: samsung: exynos4412-origen: fix keypad no-autorepeat
+Subject: [PATCH 5.10 190/290] Revert "kheaders: substituting --sort in archive creation"
 Date: Wed,  3 Jul 2024 12:39:31 +0200
-Message-ID: <20240703102922.005963749@linuxfoundation.org>
+Message-ID: <20240703102911.344769619@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 88208d3cd79821117fd3fb80d9bcab618467d37b ]
+[ Upstream commit 49c386ebbb43394ff4773ce24f726f6afc4c30c8 ]
 
-Although the Samsung SoC keypad binding defined
-linux,keypad-no-autorepeat property, Linux driver never implemented it
-and always used linux,input-no-autorepeat.  Correct the DTS to use
-property actually implemented.
+This reverts commit 700dea5a0bea9f64eba89fae7cb2540326fdfdc1.
 
-This also fixes dtbs_check errors like:
+The reason for that commit was --sort=ORDER introduced in
+tar 1.28 (2014). More than 3 years have passed since then.
 
-  exynos4412-origen.dtb: keypad@100a0000: 'linux,keypad-no-autorepeat' does not match any of the regexes: '^key-[0-9a-z]+$', 'pinctrl-[0-9]+'
+Requiring GNU tar 1.28 should be fine now because we require
+GCC 5.1 (2015).
 
-Cc: <stable@vger.kernel.org>
-Fixes: bd08f6277e44 ("ARM: dts: Add keypad entries to Exynos4412 based Origen")
-Link: https://lore.kernel.org/r/20240312183105.715735-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+Stable-dep-of: 3bd27a847a3a ("kheaders: explicitly define file modes for archived headers")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/exynos4412-origen.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/gen_kheaders.sh | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boot/dts/exynos4412-origen.dts b/arch/arm/boot/dts/exynos4412-origen.dts
-index 0acb05f0a2b7c..68ed31821a282 100644
---- a/arch/arm/boot/dts/exynos4412-origen.dts
-+++ b/arch/arm/boot/dts/exynos4412-origen.dts
-@@ -448,7 +448,7 @@
- &keypad {
- 	samsung,keypad-num-rows = <3>;
- 	samsung,keypad-num-columns = <2>;
--	linux,keypad-no-autorepeat;
-+	linux,input-no-autorepeat;
- 	wakeup-source;
- 	pinctrl-0 = <&keypad_rows &keypad_cols>;
- 	pinctrl-names = "default";
+diff --git a/kernel/gen_kheaders.sh b/kernel/gen_kheaders.sh
+index c1510f0ab3ea5..d7e827c6cd2d2 100755
+--- a/kernel/gen_kheaders.sh
++++ b/kernel/gen_kheaders.sh
+@@ -83,12 +83,9 @@ find $cpio_dir -type f -print0 |
+ 	xargs -0 -P8 -n1 perl -pi -e 'BEGIN {undef $/;}; s/\/\*((?!SPDX).)*?\*\///smg;'
+ 
+ # Create archive and try to normalize metadata for reproducibility.
+-# For compatibility with older versions of tar, files are fed to tar
+-# pre-sorted, as --sort=name might not be available.
+-find $cpio_dir -printf "./%P\n" | LC_ALL=C sort | \
+-    tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
+-    --owner=0 --group=0 --numeric-owner --no-recursion \
+-    -I $XZ -cf $tarfile -C $cpio_dir/ -T - > /dev/null
++tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
++    --owner=0 --group=0 --sort=name --numeric-owner \
++    -I $XZ -cf $tarfile -C $cpio_dir/ . > /dev/null
+ 
+ echo $headers_md5 > kernel/kheaders.md5
+ echo "$this_file_md5" >> kernel/kheaders.md5
 -- 
 2.43.0
 
