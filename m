@@ -1,117 +1,176 @@
-Return-Path: <stable+bounces-56909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE5D8924D68
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 04:01:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1296D924D96
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 04:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89F72284DED
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 02:01:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41D1FB23E2D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 02:14:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A510C20E6;
-	Wed,  3 Jul 2024 02:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0FA5228;
+	Wed,  3 Jul 2024 02:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="nEF6TY86"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="fYq6RcCN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC71E4A2D;
-	Wed,  3 Jul 2024 02:01:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B220946B5;
+	Wed,  3 Jul 2024 02:12:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719972112; cv=none; b=lkZ5TFO9VOQcl5hGITWSvVTq8iEh3m8Wb0DF3q0ljR2oP29yaYP2ufmYP2UH6J8k1TWuFO3jJNZIKNoHwP+xtOw1rPp50oliy/ux4k05ukJiURacXYnnC5O4ce8v5DSLr20hkAxcJ4l0p2XIC0PmNYn43uiggHk0rOQz/HnCDOc=
+	t=1719972764; cv=none; b=rYzNV5dOT0J/cYZO5I9leVTXnGLj9dQ4yLzbOv/y0sg2EDK9/GmB8qLrpQY0fj1bhVzEhl9u/QWcVNB+JLg+ukB94G1hxjcQTrCEQ2kjccZt8rJzhFgoiCKrYt8fmv6zEcwPkfVcY2w8mCBVaxUMEWnoaIeF6NHfXjgd+K7sJP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719972112; c=relaxed/simple;
-	bh=GyxW1LSGZfvU4XebzR5XrdIfOtKNClSFJWryvQ2oIUw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WgWrdY1yxR7eHRwVNDZvayPEvIM4bj+Cn5WkHypdwRYGYzMUO1jBVwWVn0q5ogI6DtsPRQFIqEqeU5R8GajFlhxra2h3nLTdcxBqVUMsucNEoL1XJxwtj+NBqMc9if/pdB0USXqPo58V/lKhAeCX2ppPPpnGioJIHDLzHyvZ57E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=nEF6TY86; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5295e488248so6309787e87.2;
-        Tue, 02 Jul 2024 19:01:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1719972109; x=1720576909; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZimzjAy3hV40iaFntS7nCwCZ/3PORpa1R7y0lBfvhK4=;
-        b=nEF6TY86X84ogUM/bx+52YwZ4Mu4Xit4XSs+rWqmhpRVLfZzG9MCPhyDH1D0bLP9WX
-         o3eUWX/vqTgMPnw8vtHmzFWD+mB1e6MRAv/pEuqJgMuKjy5qktMaHefXCcg0C86MKfiu
-         s+4pPxO5WBfmTMzJ6QVe38cChVeTeQSk5xsq5PxuV97hfqadUWXjc92irzjG5UQhNoV6
-         vBjudI1PAYDvFcZq6IMxtETPGNFkWozXgcPXRQsFckhj7WJ6CMdMhPb0dNRorPRLQafo
-         2raEfwruBdQ2WFcK0N499YMI9x3d/6yfR3dx3bFnu2Y4Jvrak54e6Jt0bz36MzyRxwvy
-         P5OQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719972109; x=1720576909;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZimzjAy3hV40iaFntS7nCwCZ/3PORpa1R7y0lBfvhK4=;
-        b=Xd8w+9mxwPKGIN9Y+cv6b/r3R8IxVlQIOANhnkWVdnbdAb3uJI4vuCRMyRBO/P6eFW
-         ScP2+ul1C6pfhdftAcihbumk2MLTtLBggin73moPASQmkQLA5kzReHHWxtsMRPcYAVJy
-         yDaKXzTO0vifAaTT3PLVaPVraqr0ERDK69HL9GeTbhwK3/pgVwZxwgauHTS3DzE/5IlA
-         8f+vBDoxdqM/iVq5oRkHA3qALFPl0Ngnpkrx+NTg2qKkBTIf6ESlg/rnOzPZA4lEZj/Q
-         k+nS2u1fzE8gP+PUPSk/f2rq37vjx9BFmwGxljVZcwHxGJn/aMj4htKM6IR/k221TMWV
-         gNhg==
-X-Forwarded-Encrypted: i=1; AJvYcCUbR9ptK2U0WxDCL951gTvjd7MU7BOlSD35gKVWAYduD5mgRX7/2BWDF9CaW8aJS4f6a7lu2TNjtH8JIt/DpIPlvSrexQSGhUTknSR+t1bqr+sgYvqbJuh1Osmyl4oxzfbPXqRc
-X-Gm-Message-State: AOJu0YwZwmDx2dAcrQTsnNoMVlCXVBAqm0NklTkyMpOAnLtHgiz6O0u9
-	FOePXAIap8fvMXg1eC02GklGxRAcMsJdXSuvR4kXofqhn4WyH1WIlia8Hok=
-X-Google-Smtp-Source: AGHT+IHfhfrPY8oWGWypTj48byXcQCaGINoKBU+zHiwUjmYNFr9TAJEGGv8pRIRMNDJg2zzJWLUbmQ==
-X-Received: by 2002:a05:6512:3b81:b0:52c:dc25:d706 with SMTP id 2adb3069b0e04-52e8270172cmr6797187e87.52.1719972108756;
-        Tue, 02 Jul 2024 19:01:48 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2b4fd5.dip0.t-ipconnect.de. [91.43.79.213])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4256b061095sm207739955e9.23.2024.07.02.19.01.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jul 2024 19:01:47 -0700 (PDT)
-Message-ID: <c88b2b98-a1a7-4397-b646-cd75b112dba1@googlemail.com>
-Date: Wed, 3 Jul 2024 04:01:46 +0200
+	s=arc-20240116; t=1719972764; c=relaxed/simple;
+	bh=WMOGJM/eIvbSlzNXfRxZCrAPHE9Qou+Pouy5o1n7a5M=;
+	h=Date:To:From:Subject:Message-Id; b=N11r8CIsnDaVKYp2bM8dDOAUpeSZEhE3++AMaLPHeZ00D3EN3n9Ps0h7T9s7QquCo0cFTvnM0DLGL+8+22NUda4PYhA6QVQpkLBV0U9UMVFElU/zrL93SdBV8jrhA2BFqdmedrQpEfXB70F0tzRSNlfFzYE9aoTFIFxKaCI/6b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=fYq6RcCN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394BFC116B1;
+	Wed,  3 Jul 2024 02:12:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1719972764;
+	bh=WMOGJM/eIvbSlzNXfRxZCrAPHE9Qou+Pouy5o1n7a5M=;
+	h=Date:To:From:Subject:From;
+	b=fYq6RcCNfTEIneJMUHvHnUFOSobHgMUcuejTgfkF1pRW+aho2luCrFgQiSU4Ndr5A
+	 ahAl/o64XIVY4yplTkKvBZgxkH4KZymXJ93Y5l80BjzT6COqbb+tkvRZeakR+bTMKK
+	 ZBkHISuyq8v4GfQ9IAMCQIek1oUVXr5qqElZ6XQs=
+Date: Tue, 02 Jul 2024 19:12:43 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,willy@infradead.org,wangkefeng.wang@huawei.com,stable@vger.kernel.org,shy828301@gmail.com,nphamcs@gmail.com,david@redhat.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,hughd@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-fix-crashes-from-deferred-split-racing-folio-migration.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240703021244.394BFC116B1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.1 000/128] 6.1.97-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240702170226.231899085@linuxfoundation.org>
-Content-Language: de-DE
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20240702170226.231899085@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-Am 02.07.2024 um 19:03 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.1.97 release.
-> There are 128 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+The patch titled
+     Subject: mm: fix crashes from deferred split racing folio migration
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-fix-crashes-from-deferred-split-racing-folio-migration.patch
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-fix-crashes-from-deferred-split-racing-folio-migration.patch
 
-Beste Grüße,
-Peter Schneider
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Hugh Dickins <hughd@google.com>
+Subject: mm: fix crashes from deferred split racing folio migration
+Date: Tue, 2 Jul 2024 00:40:55 -0700 (PDT)
+
+Even on 6.10-rc6, I've been seeing elusive "Bad page state"s (often on
+flags when freeing, yet the flags shown are not bad: PG_locked had been
+set and cleared??), and VM_BUG_ON_PAGE(page_ref_count(page) == 0)s from
+deferred_split_scan()'s folio_put(), and a variety of other BUG and WARN
+symptoms implying double free by deferred split and large folio migration.
+
+6.7 commit 9bcef5973e31 ("mm: memcg: fix split queue list crash when large
+folio migration") was right to fix the memcg-dependent locking broken in
+85ce2c517ade ("memcontrol: only transfer the memcg data for migration"),
+but missed a subtlety of deferred_split_scan(): it moves folios to its own
+local list to work on them without split_queue_lock, during which time
+folio->_deferred_list is not empty, but even the "right" lock does nothing
+to secure the folio and the list it is on.
+
+Fortunately, deferred_split_scan() is careful to use folio_try_get(): so
+folio_migrate_mapping() can avoid the race by folio_undo_large_rmappable()
+while the old folio's reference count is temporarily frozen to 0 - adding
+such a freeze in the !mapping case too (originally, folio lock and
+unmapping and no swap cache left an anon folio unreachable, so no freezing
+was needed there: but the deferred split queue offers a way to reach it).
+
+Link: https://lkml.kernel.org/r/29c83d1a-11ca-b6c9-f92e-6ccb322af510@google.com
+Fixes: 9bcef5973e31 ("mm: memcg: fix split queue list crash when large folio migration")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memcontrol.c |   11 -----------
+ mm/migrate.c    |   13 +++++++++++++
+ 2 files changed, 13 insertions(+), 11 deletions(-)
+
+--- a/mm/memcontrol.c~mm-fix-crashes-from-deferred-split-racing-folio-migration
++++ a/mm/memcontrol.c
+@@ -7823,17 +7823,6 @@ void mem_cgroup_migrate(struct folio *ol
+ 
+ 	/* Transfer the charge and the css ref */
+ 	commit_charge(new, memcg);
+-	/*
+-	 * If the old folio is a large folio and is in the split queue, it needs
+-	 * to be removed from the split queue now, in case getting an incorrect
+-	 * split queue in destroy_large_folio() after the memcg of the old folio
+-	 * is cleared.
+-	 *
+-	 * In addition, the old folio is about to be freed after migration, so
+-	 * removing from the split queue a bit earlier seems reasonable.
+-	 */
+-	if (folio_test_large(old) && folio_test_large_rmappable(old))
+-		folio_undo_large_rmappable(old);
+ 	old->memcg_data = 0;
+ }
+ 
+--- a/mm/migrate.c~mm-fix-crashes-from-deferred-split-racing-folio-migration
++++ a/mm/migrate.c
+@@ -415,6 +415,15 @@ int folio_migrate_mapping(struct address
+ 		if (folio_ref_count(folio) != expected_count)
+ 			return -EAGAIN;
+ 
++		/* Take off deferred split queue while frozen and memcg set */
++		if (folio_test_large(folio) &&
++		    folio_test_large_rmappable(folio)) {
++			if (!folio_ref_freeze(folio, expected_count))
++				return -EAGAIN;
++			folio_undo_large_rmappable(folio);
++			folio_ref_unfreeze(folio, expected_count);
++		}
++
+ 		/* No turning back from here */
+ 		newfolio->index = folio->index;
+ 		newfolio->mapping = folio->mapping;
+@@ -433,6 +442,10 @@ int folio_migrate_mapping(struct address
+ 		return -EAGAIN;
+ 	}
+ 
++	/* Take off deferred split queue while frozen and memcg set */
++	if (folio_test_large(folio) && folio_test_large_rmappable(folio))
++		folio_undo_large_rmappable(folio);
++
+ 	/*
+ 	 * Now we know that no one else is looking at the folio:
+ 	 * no turning back from here.
+_
+
+Patches currently in -mm which might be from hughd@google.com are
+
+mm-fix-crashes-from-deferred-split-racing-folio-migration.patch
+
 
