@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-57783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF9E925DFC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:33:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E74F925AFA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9105B1F25994
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:33:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA23D1F2129D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:05:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB14177983;
-	Wed,  3 Jul 2024 11:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A303181318;
+	Wed,  3 Jul 2024 10:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0EZKcmU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pqr8S/AL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17CD5176FBD;
-	Wed,  3 Jul 2024 11:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2969E17E8EE;
+	Wed,  3 Jul 2024 10:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005921; cv=none; b=gtwwzwdvrxSyfqKzc7lWRzC2v0aDnH+tqvjWudAb+jyCt8fu8hqVoIV38rgVYlXBVSHgLnsXVQgDbAqMN7y+lgxxAUNQP/WtR3CZkDQyGNedAlFljubDEXPB+hcbkcY9OIUmbJkx+If1fD/7Ad7U8OXFcKQZy+mVepOwdLl2HzU=
+	t=1720003997; cv=none; b=sQOCeYHuGe51VYrdb+TnU9cQ/xYQ+IMN8s3y0o7ZzLNwR0NBJ6u1UTSz0gVkTyeOOIyapD/46iY8FVvJ1N74kqTGxTS3EzYuUidBhbxOjaxZqCZuj/UJV9oVPsp0+V8q6w03pDrlJArHu+oYfgK/P/JG1B521C9uNzEqtZpeNWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005921; c=relaxed/simple;
-	bh=yrI4bomtuAJDzklCO5pANTq+T6IgN/ZW6LcaOdvEB8U=;
+	s=arc-20240116; t=1720003997; c=relaxed/simple;
+	bh=pAp+/O7PaI2omsuc56hr8IpuQagb8XJeZH3Je3gFtrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fDLMRg3PSepDAtnLk1gN4+kr2fJLv4Vc/HEvBc6rbPsxcPnBZfrZ85BcSeC6KztIQBfn8SSiMO/7IqFhbLLLLJnKPpcA9RZD9XJb7B6LZEyGeuP30Eyo4jLriQhZWxOtVEF+DDD/3QQf2Geb4IYlPj19Nn6/LPJ+pCo4iVcpiWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0EZKcmU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91034C32781;
-	Wed,  3 Jul 2024 11:25:20 +0000 (UTC)
+	 MIME-Version; b=u0cRJK/wXXTg/wT7R0IJdC3Wue/bUcCceX3TpD4SOima0qiGH9kpmFpEHAktUQ605SGqrweF624Rzxr3D7OEfR9EuWWX4kBR98TRQ9Bv4AGIsrmIp6ZOYalj6HYD0hr9tkRmLdyxWgoC9UiWJ4jOTCvIsfpTDAaHo3erN/4u4uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pqr8S/AL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC18C2BD10;
+	Wed,  3 Jul 2024 10:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005921;
-	bh=yrI4bomtuAJDzklCO5pANTq+T6IgN/ZW6LcaOdvEB8U=;
+	s=korg; t=1720003996;
+	bh=pAp+/O7PaI2omsuc56hr8IpuQagb8XJeZH3Je3gFtrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l0EZKcmU+6jVWWluIPTWu7sYv4XiiKKae6dQzOpWlXUraXhc6hhvkZy8JCvUpeOlj
-	 F4+41f8HJCvfmoGQsnRBy61r5bOWVRBKhUensUNSGiFkpN0uCEFO8btD1sDzd/Xvjh
-	 Z2zW/GTNp/2a5r7CmDoG1x8IjmplaDAI3wWzJeK0=
+	b=Pqr8S/ALtY0dOZ9noKi0HgZ4uhRymAZQV1kiUmlR2obhIEmR2CO8hcwp4Tx0dIE1m
+	 BTFuRqoclEsZGszC8W1yHiZs+NsjShDchW70DRIpFZWco+rv+7iXZAe/DLu3oPwWwV
+	 PQ+Rb25kmAdVkvc2cjqfG/lJ4jWW/+Mdz1ur/HkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Shubin <n.shubin@yadro.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Jean Delvare <jdelvare@suse.de>,
+	Juergen Fitschen <me@jue.yt>,
+	Ludovic Desroches <ludovic.desroches@microchip.com>,
+	Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 213/356] dmaengine: ioatdma: Fix kmemleak in ioat_pci_probe()
+Subject: [PATCH 5.4 088/189] i2c: at91: Fix the functionality flags of the slave-only interface
 Date: Wed,  3 Jul 2024 12:39:09 +0200
-Message-ID: <20240703102921.170286741@linuxfoundation.org>
+Message-ID: <20240703102844.822953172@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +68,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Shubin <n.shubin@yadro.com>
+From: Jean Delvare <jdelvare@suse.de>
 
-[ Upstream commit 29b7cd255f3628e0d65be33a939d8b5bba10aa62 ]
+[ Upstream commit d6d5645e5fc1233a7ba950de4a72981c394a2557 ]
 
-If probing fails we end up with leaking ioatdma_device and each
-allocated channel.
+When an I2C adapter acts only as a slave, it should not claim to
+support I2C master capabilities.
 
-Following kmemleak easy to reproduce by injecting an error in
-ioat_alloc_chan_resources() when doing ioat_dma_self_test().
-
-unreferenced object 0xffff888014ad5800 (size 1024): [..]
-    [<ffffffff827692ca>] kmemleak_alloc+0x4a/0x80
-    [<ffffffff81430600>] kmalloc_trace+0x270/0x2f0
-    [<ffffffffa000b7d1>] ioat_pci_probe+0xc1/0x1c0 [ioatdma]
-[..]
-
-repeated for each ioatdma channel:
-
-unreferenced object 0xffff8880148e5c00 (size 512): [..]
-    [<ffffffff827692ca>] kmemleak_alloc+0x4a/0x80
-    [<ffffffff81430600>] kmalloc_trace+0x270/0x2f0
-    [<ffffffffa0009641>] ioat_enumerate_channels+0x101/0x2d0 [ioatdma]
-    [<ffffffffa000b266>] ioat3_dma_probe+0x4d6/0x970 [ioatdma]
-    [<ffffffffa000b891>] ioat_pci_probe+0x181/0x1c0 [ioatdma]
-[..]
-
-Fixes: bf453a0a18b2 ("dmaengine: ioat: Support in-use unbind")
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20240528-ioatdma-fixes-v2-3-a9f2fbe26ab1@yadro.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 9d3ca54b550c ("i2c: at91: added slave mode support")
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+Cc: Juergen Fitschen <me@jue.yt>
+Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
+Cc: Codrin Ciubotariu <codrin.ciubotariu@microchip.com>
+Cc: Andi Shyti <andi.shyti@kernel.org>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ioat/init.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/i2c/busses/i2c-at91-slave.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
-index ceba1b4083a9d..8a115bafab6ab 100644
---- a/drivers/dma/ioat/init.c
-+++ b/drivers/dma/ioat/init.c
-@@ -1346,6 +1346,7 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	void __iomem * const *iomap;
- 	struct device *dev = &pdev->dev;
- 	struct ioatdma_device *device;
-+	unsigned int i;
- 	u8 version;
- 	int err;
+diff --git a/drivers/i2c/busses/i2c-at91-slave.c b/drivers/i2c/busses/i2c-at91-slave.c
+index d6eeea5166c04..131a67d9d4a68 100644
+--- a/drivers/i2c/busses/i2c-at91-slave.c
++++ b/drivers/i2c/busses/i2c-at91-slave.c
+@@ -106,8 +106,7 @@ static int at91_unreg_slave(struct i2c_client *slave)
  
-@@ -1385,6 +1386,9 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ static u32 at91_twi_func(struct i2c_adapter *adapter)
+ {
+-	return I2C_FUNC_SLAVE | I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL
+-		| I2C_FUNC_SMBUS_READ_BLOCK_DATA;
++	return I2C_FUNC_SLAVE;
+ }
  
- 	err = ioat3_dma_probe(device, ioat_dca_enabled);
- 	if (err) {
-+		for (i = 0; i < IOAT_MAX_CHANS; i++)
-+			kfree(device->idx[i]);
-+		kfree(device);
- 		dev_err(dev, "Intel(R) I/OAT DMA Engine init failed\n");
- 		return -ENODEV;
- 	}
+ static const struct i2c_algorithm at91_twi_algorithm_slave = {
 -- 
 2.43.0
 
