@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-57295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B1E925C24
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:15:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 274AF925D4B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 650D328DAB4
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7A2A2999EA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC5618FC86;
-	Wed,  3 Jul 2024 11:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F7BD17DE27;
+	Wed,  3 Jul 2024 11:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHZZvVcL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JitgHFAQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B99913BC0B;
-	Wed,  3 Jul 2024 11:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C50D1741C4;
+	Wed,  3 Jul 2024 11:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004450; cv=none; b=u8h4wyXhN76QB6o7xkOea+BtmxY8/ebHlwwk6puShukfwrCYZBE2bfVaWt1HcT+wUmIsTsLYd2rMgOl/DiViJXXdYcH46aeZ7avOMBwZ/qLvlw24w0fJbtDCcwuo3nhUDa2h3vT6kad8H9n/I7aGo2GfOuW382IyBPVhShOc0zM=
+	t=1720005464; cv=none; b=tSE6y/25dTxxjsaLpSvHjOuTEHExtRjp6OqgScIG1qbMftSgwlyIPOTX6dJ9EIIFXIoazoxcviJX0lqIbrt+7YDw+kRixlxRT11maLEsnf3PsMQRgaUkYHP9C9YKpXwN1NN5g84wMwBIusDbizn2etptipcCgfL805ayFwmf+Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004450; c=relaxed/simple;
-	bh=AR43VykcEoDxSsJlSAZO48mY140wDLZwSPvb2L5kx0s=;
+	s=arc-20240116; t=1720005464; c=relaxed/simple;
+	bh=6LUeoDXcc4OTmM/vbbRHsky/rUGJKELS1oUL9NXvkJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W9dVZGcIQnmV+xCmwjzwzQ5VI7sYyJtxYb/3BSScalI1Qupjjp6s6v3X0lO9QTsfs+yB+RediAPYMXKSMgM7oQDR85gyJVvntD+PCcL9ldqN96ILL6Wgq+1EhHaxy9vrtxmiT9ODeJLW73e+JxEB0g1Et+fL6lWb/oFPD52LCsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHZZvVcL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45076C2BD10;
-	Wed,  3 Jul 2024 11:00:49 +0000 (UTC)
+	 MIME-Version; b=WPSa9rGa/VW0v7tOuclD+w8zxhFl7oKuiZIeWc8VC+B93/4ehkskRiAuyRdU/JZE2BpTehpuzZ+wGg3ZvKmi5dALGZUmmelY8X+1+xVkzk962x7teWEWLuozal7vsjibywQLbunXtQ0j/gTz05A17oxdYzCwGIksdI1hKamFyow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JitgHFAQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F077C2BD10;
+	Wed,  3 Jul 2024 11:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004449;
-	bh=AR43VykcEoDxSsJlSAZO48mY140wDLZwSPvb2L5kx0s=;
+	s=korg; t=1720005463;
+	bh=6LUeoDXcc4OTmM/vbbRHsky/rUGJKELS1oUL9NXvkJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bHZZvVcLtnoPN5NzQHnC6s3jtO714vGaXp+AGKf5xcRJdD5ztEHshFBoDZsZ3mQRQ
-	 ReZpc3hrtWMSUSd80Ig+q0m1MsMt8dJAbEMFyy0N7Lj1x/tAgGUCl0EwY859dow1mx
-	 ferBj6aOMjN01qNslsf1m/GxZmTCI+R8j+jbLMLM=
+	b=JitgHFAQf/YM9myfMQ7rzOoym63Sxd5LQKPOOy2+MhQmvH2qF4zDitIVkCrCw6X7n
+	 KTuYc3yhP7Vfsi4PyYiMaAvIUF38MZApUycC1b4H+DyVYwoLtyfKZowia5d0dpPEbR
+	 ig77BrCY5C9If6kfCO0i12fkwtTsvP3XRMHGKe4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Tomas Winkler <tomas.winkler@intel.com>
-Subject: [PATCH 5.10 045/290] mei: me: release irq in mei_me_pci_resume error path
+	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 5.15 090/356] gpio: tqmx86: store IRQ trigger type and unmask status separately
 Date: Wed,  3 Jul 2024 12:37:06 +0200
-Message-ID: <20240703102905.903348399@linuxfoundation.org>
+Message-ID: <20240703102916.505960728@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Winkler <tomas.winkler@intel.com>
+From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 
-commit 283cb234ef95d94c61f59e1cd070cd9499b51292 upstream.
+commit 08af509efdf8dad08e972b48de0e2c2a7919ea8b upstream.
 
-The mei_me_pci_resume doesn't release irq on the error path,
-in case mei_start() fails.
+irq_set_type() should not implicitly unmask the IRQ.
 
-Cc: <stable@kernel.org>
-Fixes: 33ec08263147 ("mei: revamp mei reset state machine")
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
-Link: https://lore.kernel.org/r/20240604090728.1027307-1-tomas.winkler@intel.com
+All accesses to the interrupt configuration register are moved to a new
+helper tqmx86_gpio_irq_config(). We also introduce the new rule that
+accessing irq_type must happen while locked, which will become
+significant for fixing EDGE_BOTH handling.
+
+Fixes: b868db94a6a7 ("gpio: tqmx86: Add GPIO from for this IO controller")
+Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Link: https://lore.kernel.org/r/6aa4f207f77cb58ef64ffb947e91949b0f753ccd.1717063994.git.matthias.schiffer@ew.tq-group.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mei/pci-me.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-tqmx86.c |   46 +++++++++++++++++++++++++--------------------
+ 1 file changed, 26 insertions(+), 20 deletions(-)
 
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -400,8 +400,10 @@ static int mei_me_pci_resume(struct devi
+--- a/drivers/gpio/gpio-tqmx86.c
++++ b/drivers/gpio/gpio-tqmx86.c
+@@ -27,16 +27,20 @@
+ #define TQMX86_GPIIC	3	/* GPI Interrupt Configuration Register */
+ #define TQMX86_GPIIS	4	/* GPI Interrupt Status Register */
+ 
++#define TQMX86_GPII_NONE	0
+ #define TQMX86_GPII_FALLING	BIT(0)
+ #define TQMX86_GPII_RISING	BIT(1)
+ #define TQMX86_GPII_MASK	(BIT(0) | BIT(1))
+ #define TQMX86_GPII_BITS	2
++/* Stored in irq_type with GPII bits */
++#define TQMX86_INT_UNMASKED	BIT(2)
+ 
+ struct tqmx86_gpio_data {
+ 	struct gpio_chip	chip;
+ 	struct irq_chip		irq_chip;
+ 	void __iomem		*io_base;
+ 	int			irq;
++	/* Lock must be held for accessing output and irq_type fields */
+ 	raw_spinlock_t		spinlock;
+ 	u8			irq_type[TQMX86_NGPI];
+ };
+@@ -107,20 +111,30 @@ static int tqmx86_gpio_get_direction(str
+ 	return GPIO_LINE_DIRECTION_OUT;
+ }
+ 
++static void tqmx86_gpio_irq_config(struct tqmx86_gpio_data *gpio, int offset)
++	__must_hold(&gpio->spinlock)
++{
++	u8 type = TQMX86_GPII_NONE, gpiic;
++
++	if (gpio->irq_type[offset] & TQMX86_INT_UNMASKED)
++		type = gpio->irq_type[offset] & TQMX86_GPII_MASK;
++
++	gpiic = tqmx86_gpio_read(gpio, TQMX86_GPIIC);
++	gpiic &= ~(TQMX86_GPII_MASK << (offset * TQMX86_GPII_BITS));
++	gpiic |= type << (offset * TQMX86_GPII_BITS);
++	tqmx86_gpio_write(gpio, gpiic, TQMX86_GPIIC);
++}
++
+ static void tqmx86_gpio_irq_mask(struct irq_data *data)
+ {
+ 	unsigned int offset = (data->hwirq - TQMX86_NGPO);
+ 	struct tqmx86_gpio_data *gpio = gpiochip_get_data(
+ 		irq_data_get_irq_chip_data(data));
+ 	unsigned long flags;
+-	u8 gpiic, mask;
+-
+-	mask = TQMX86_GPII_MASK << (offset * TQMX86_GPII_BITS);
+ 
+ 	raw_spin_lock_irqsave(&gpio->spinlock, flags);
+-	gpiic = tqmx86_gpio_read(gpio, TQMX86_GPIIC);
+-	gpiic &= ~mask;
+-	tqmx86_gpio_write(gpio, gpiic, TQMX86_GPIIC);
++	gpio->irq_type[offset] &= ~TQMX86_INT_UNMASKED;
++	tqmx86_gpio_irq_config(gpio, offset);
+ 	raw_spin_unlock_irqrestore(&gpio->spinlock, flags);
+ }
+ 
+@@ -130,15 +144,10 @@ static void tqmx86_gpio_irq_unmask(struc
+ 	struct tqmx86_gpio_data *gpio = gpiochip_get_data(
+ 		irq_data_get_irq_chip_data(data));
+ 	unsigned long flags;
+-	u8 gpiic, mask;
+-
+-	mask = TQMX86_GPII_MASK << (offset * TQMX86_GPII_BITS);
+ 
+ 	raw_spin_lock_irqsave(&gpio->spinlock, flags);
+-	gpiic = tqmx86_gpio_read(gpio, TQMX86_GPIIC);
+-	gpiic &= ~mask;
+-	gpiic |= gpio->irq_type[offset] << (offset * TQMX86_GPII_BITS);
+-	tqmx86_gpio_write(gpio, gpiic, TQMX86_GPIIC);
++	gpio->irq_type[offset] |= TQMX86_INT_UNMASKED;
++	tqmx86_gpio_irq_config(gpio, offset);
+ 	raw_spin_unlock_irqrestore(&gpio->spinlock, flags);
+ }
+ 
+@@ -149,7 +158,7 @@ static int tqmx86_gpio_irq_set_type(stru
+ 	unsigned int offset = (data->hwirq - TQMX86_NGPO);
+ 	unsigned int edge_type = type & IRQF_TRIGGER_MASK;
+ 	unsigned long flags;
+-	u8 new_type, gpiic;
++	u8 new_type;
+ 
+ 	switch (edge_type) {
+ 	case IRQ_TYPE_EDGE_RISING:
+@@ -165,13 +174,10 @@ static int tqmx86_gpio_irq_set_type(stru
+ 		return -EINVAL; /* not supported */
  	}
  
- 	err = mei_restart(dev);
--	if (err)
-+	if (err) {
-+		free_irq(pdev->irq, dev);
- 		return err;
-+	}
+-	gpio->irq_type[offset] = new_type;
+-
+ 	raw_spin_lock_irqsave(&gpio->spinlock, flags);
+-	gpiic = tqmx86_gpio_read(gpio, TQMX86_GPIIC);
+-	gpiic &= ~((TQMX86_GPII_MASK) << (offset * TQMX86_GPII_BITS));
+-	gpiic |= new_type << (offset * TQMX86_GPII_BITS);
+-	tqmx86_gpio_write(gpio, gpiic, TQMX86_GPIIC);
++	gpio->irq_type[offset] &= ~TQMX86_GPII_MASK;
++	gpio->irq_type[offset] |= new_type;
++	tqmx86_gpio_irq_config(gpio, offset);
+ 	raw_spin_unlock_irqrestore(&gpio->spinlock, flags);
  
- 	/* Start timer if stopped in suspend */
- 	schedule_delayed_work(&dev->timer_work, HZ);
+ 	return 0;
 
 
 
