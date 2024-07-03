@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20950925E82
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:37:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B841925B7A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:09:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05C27299716
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47EB91F28EAB
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2A317B50A;
-	Wed,  3 Jul 2024 11:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE4A918732E;
+	Wed,  3 Jul 2024 10:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zAfP6tqH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZtDDwL4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E2113B280;
-	Wed,  3 Jul 2024 11:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0F81741F4;
+	Wed,  3 Jul 2024 10:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006013; cv=none; b=AeYwJDTtLznZbsfaQXlTpYAygESb82TogK4jvHfxD7TsERys3lXLACQpS++yLUDdhKhgin4gxb5aeYby2hhQEuhR9bLacxptNGVxE8fKAa4J3Ny9STqsgkT+CoQD29MtVtrN63H6o907M0rDCP5+tMdSsO3kHMpyJ93a4G4kAQE=
+	t=1720004178; cv=none; b=DNDX++rDHdn7p4SPNdKYIsq7TfIRhIX1YOBHt62sofaSSw7cDr3xIq3f19F2XNtRnq97GtkiFDBXlNqC3k0/S+xenh5LKhaadYRN0ASdpJFu8ym1Z33kft24R1msgqqP1g2kYvqtkD3iMT0AZMV2ZbYoDmBkjrih6iLhrasEeTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006013; c=relaxed/simple;
-	bh=uZrcq+Ch/nbcI2raLdCPMMouU4fEH6qNxJnrBDNPoHg=;
+	s=arc-20240116; t=1720004178; c=relaxed/simple;
+	bh=R8gYwrHaJu4laAu+eJwIrX6XeOo7R7j4Gu/GYmC9Fgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=foQERtu7k01633j8E90Ww7kh4QDaas01l3B26zO5MuoBFyl5JXlhcbj33gcuu0ti4arB8G2/n+QfNFhPJ2ePK+7iJB0O4scBG66rYMvoOxmoNcyZ7Mz1aHvV4YMwiwLC1dhyzcEeuUq5tRYOalq0wUNwcwAzKSGgZ9rOr6X9SxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zAfP6tqH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A03C2BD10;
-	Wed,  3 Jul 2024 11:26:52 +0000 (UTC)
+	 MIME-Version; b=XWMoxmX17QF/IzpgYd/6LHKZGhDj9sckY+vhmJKKc/saH5s0/GyEdKsgYSJOlF8DhFrDy31Ib8OO6tvq090OIIdcPq50Uzyb8NpcxBu3OLwacPg4hWASPJ8c3+sTt+pjuXfR0/hSmeko2LpOOlJvqNwEDh38x0MQ60t5ZKW/EAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZtDDwL4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F17FDC32781;
+	Wed,  3 Jul 2024 10:56:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006013;
-	bh=uZrcq+Ch/nbcI2raLdCPMMouU4fEH6qNxJnrBDNPoHg=;
+	s=korg; t=1720004178;
+	bh=R8gYwrHaJu4laAu+eJwIrX6XeOo7R7j4Gu/GYmC9Fgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zAfP6tqHLmMTKoRJaAR80+7LSr0jPsjpemxS0GeyicqChhXpm2WWYCQgKWbrURt65
-	 LaFC8ols/ry0lBHGV8EZN7ls2CgV/lLx71oZ4BTUViw7T6rvgndD7z3pzXVEO04LHw
-	 PndK7ZM4fQDAHQaFGQTORtNzCOaQNzo9qTZdSGMM=
+	b=YZtDDwL48+HMB3KiCMIsrEQ5tnGh671YS8vTNOvbINBBO98F/37E293fa/rluiHVA
+	 2wqaGd1+TAvkRUTXVAeKVBljz6E9UXZcODtukWACzL2+cW6foQTbDIKIIT9i4Yt5j9
+	 NYvLtYLdxT/6w+sGpXD8eMyPYKeyuMZzKB4L7k84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristram Ha <tristram.ha@microchip.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Linus Torvalds <torvalds@linuxfoundation.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 271/356] net: dsa: microchip: fix initial port flush problem
+Subject: [PATCH 5.4 146/189] netfilter: nf_tables: fully validate NFT_DATA_VALUE on store to data registers
 Date: Wed,  3 Jul 2024 12:40:07 +0200
-Message-ID: <20240703102923.368095040@linuxfoundation.org>
+Message-ID: <20240703102846.987050895@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristram Ha <tristram.ha@microchip.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit ad53f5f54f351e967128edbc431f0f26427172cf ]
+[ Upstream commit 7931d32955e09d0a11b1fe0b6aac1bfa061c005c ]
 
-The very first flush in any port will flush all learned addresses in all
-ports.  This can be observed by unplugging the cable from one port while
-additional ports are connected and dumping the fdb entries.
+register store validation for NFT_DATA_VALUE is conditional, however,
+the datatype is always either NFT_DATA_VALUE or NFT_DATA_VERDICT. This
+only requires a new helper function to infer the register type from the
+set datatype so this conditional check can be removed. Otherwise,
+pointer to chain object can be leaked through the registers.
 
-This problem is caused by the initially wrong value programmed to the
-REG_SW_LUE_CTRL_1 register.  Setting SW_FLUSH_STP_TABLE and
-SW_FLUSH_MSTP_TABLE bits does not have an immediate effect.  It is when
-ksz9477_flush_dyn_mac_table() is called then the SW_FLUSH_STP_TABLE bit
-takes effect and flushes all learned entries.  After that call both bits
-are reset and so the next port flush will not cause such problem again.
-
-Fixes: b987e98e50ab ("dsa: add DSA switch driver for Microchip KSZ9477")
-Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
-Link: https://patch.msgid.link/1718756202-2731-1-git-send-email-Tristram.Ha@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 96518518cc41 ("netfilter: add nftables")
+Reported-by: Linus Torvalds <torvalds@linuxfoundation.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/microchip/ksz9477.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ include/net/netfilter/nf_tables.h | 5 +++++
+ net/netfilter/nf_tables_api.c     | 8 ++++----
+ net/netfilter/nft_lookup.c        | 3 ++-
+ 3 files changed, 11 insertions(+), 5 deletions(-)
 
---- a/drivers/net/dsa/microchip/ksz9477.c
-+++ b/drivers/net/dsa/microchip/ksz9477.c
-@@ -195,7 +195,6 @@ static int ksz9477_wait_alu_sta_ready(st
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index cf314ce2fd178..4f77e2f8e1ca8 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -467,6 +467,11 @@ static inline void *nft_set_priv(const struct nft_set *set)
+ 	return (void *)set->data;
+ }
  
- static int ksz9477_reset_switch(struct ksz_device *dev)
++static inline enum nft_data_types nft_set_datatype(const struct nft_set *set)
++{
++	return set->dtype == NFT_DATA_VERDICT ? NFT_DATA_VERDICT : NFT_DATA_VALUE;
++}
++
+ static inline bool nft_set_gc_is_pending(const struct nft_set *s)
  {
--	u8 data8;
- 	u32 data32;
+ 	return refcount_read(&s->refs) != 1;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 44d4d97b45d13..ddbb0f4bff427 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4301,8 +4301,7 @@ static int nf_tables_fill_setelem(struct sk_buff *skb,
  
- 	/* reset switch */
-@@ -206,10 +205,8 @@ static int ksz9477_reset_switch(struct k
- 			   SPI_AUTO_EDGE_DETECTION, 0);
+ 	if (nft_set_ext_exists(ext, NFT_SET_EXT_DATA) &&
+ 	    nft_data_dump(skb, NFTA_SET_ELEM_DATA, nft_set_ext_data(ext),
+-			  set->dtype == NFT_DATA_VERDICT ? NFT_DATA_VERDICT : NFT_DATA_VALUE,
+-			  set->dlen) < 0)
++			  nft_set_datatype(set), set->dlen) < 0)
+ 		goto nla_put_failure;
  
- 	/* default configuration */
--	ksz_read8(dev, REG_SW_LUE_CTRL_1, &data8);
--	data8 = SW_AGING_ENABLE | SW_LINK_AUTO_AGING |
--	      SW_SRC_ADDR_FILTER | SW_FLUSH_STP_TABLE | SW_FLUSH_MSTP_TABLE;
--	ksz_write8(dev, REG_SW_LUE_CTRL_1, data8);
-+	ksz_write8(dev, REG_SW_LUE_CTRL_1,
-+		   SW_AGING_ENABLE | SW_LINK_AUTO_AGING | SW_SRC_ADDR_FILTER);
+ 	if (nft_set_ext_exists(ext, NFT_SET_EXT_EXPR) &&
+@@ -8048,6 +8047,9 @@ static int nft_validate_register_store(const struct nft_ctx *ctx,
  
- 	/* disable interrupts */
- 	ksz_write32(dev, REG_SW_INT_MASK__4, SWITCH_INT_MASK);
+ 		return 0;
+ 	default:
++		if (type != NFT_DATA_VALUE)
++			return -EINVAL;
++
+ 		if (reg < NFT_REG_1 * NFT_REG_SIZE / NFT_REG32_SIZE)
+ 			return -EINVAL;
+ 		if (len == 0)
+@@ -8056,8 +8058,6 @@ static int nft_validate_register_store(const struct nft_ctx *ctx,
+ 		    FIELD_SIZEOF(struct nft_regs, data))
+ 			return -ERANGE;
+ 
+-		if (data != NULL && type != NFT_DATA_VALUE)
+-			return -EINVAL;
+ 		return 0;
+ 	}
+ }
+diff --git a/net/netfilter/nft_lookup.c b/net/netfilter/nft_lookup.c
+index e0ffd463a1320..6d49b82d598ae 100644
+--- a/net/netfilter/nft_lookup.c
++++ b/net/netfilter/nft_lookup.c
+@@ -98,7 +98,8 @@ static int nft_lookup_init(const struct nft_ctx *ctx,
+ 			return -EINVAL;
+ 
+ 		err = nft_parse_register_store(ctx, tb[NFTA_LOOKUP_DREG],
+-					       &priv->dreg, NULL, set->dtype,
++					       &priv->dreg, NULL,
++					       nft_set_datatype(set),
+ 					       set->dlen);
+ 		if (err < 0)
+ 			return err;
+-- 
+2.43.0
+
 
 
 
