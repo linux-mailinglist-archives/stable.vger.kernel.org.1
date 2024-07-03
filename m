@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-57590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D73DD925D21
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:26:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4F5925F00
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:46:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CB69293ACA
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:26:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9417B3DE2B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A8D17B50A;
-	Wed,  3 Jul 2024 11:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC39F176224;
+	Wed,  3 Jul 2024 11:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cz+wFS5J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NupwJvWb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7597C171083;
-	Wed,  3 Jul 2024 11:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5306F17C202;
+	Wed,  3 Jul 2024 11:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005343; cv=none; b=mQgRtQxl0N2ET/8a41lWGygs0cTowzlCJa1WlYAey2n7sENl0WNc+9JI2kiQc39h1geCrkCqutqp0NB65d0vdVJVkzNI8OlkPEzqe5hyDnHL79HIjq6wxsdQPTo/Am3TDKp6yjzRJ2N2O5xu4whuJYpv0UCM8+eN4qcekeA4p0w=
+	t=1720005376; cv=none; b=bcZzH+a3c4mOTEjuiNDOl1oWVh3UoVBHeh9MdIqo+Xx6SLLdsAIj8tM1rBnbnA/u1xEZqa8gs08cuOZ0+NDWJGCle+C+IAXY0BKqrxzJZ2xRLB7xQfGE40P+LjS4ep5FBdkIB43bTc90wRqmkxxHwuljhceYBnv+6zQspryKkWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005343; c=relaxed/simple;
-	bh=Vk6YvqEMhaKXyjikk/6SSdJEWuWz46vRh3O1nwzY7lE=;
+	s=arc-20240116; t=1720005376; c=relaxed/simple;
+	bh=iUtxXvXylXZAZja85P931xCVe6sof7ruSIK7Kd0Y49I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eoya/LaQ75hyY6h65QFG5zUg/OJZtiav6pHlqsrWoo+KcP/j5mF5fbjLq3S9QshTKPNRpmkOgr0H/tchImyUY91tJY3UQQ47Nac9b23IFdNXNXHbtl99nxbpKPAE7pxI1w0i8xWA/EaY0pBEgnG0Cfmc/DZn0jTUKixo+abSLA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cz+wFS5J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A529C2BD10;
-	Wed,  3 Jul 2024 11:15:42 +0000 (UTC)
+	 MIME-Version; b=KUXQ0Vx/B6YF6EhtK7qIsmCrZyoVlpG1XD3/6UMnlfxyiYKt8DvZOim8m7FBSOIXviPChk6nr2ZJM8K+db2gf0EEnfKxDONzLmO99epZCZ5QxcjbF1XagLSe+lvvC4azBV5YqmSsN8g3jFJoOxgdCTD3Us3PBDQKykZGgBWBtBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NupwJvWb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC45C2BD10;
+	Wed,  3 Jul 2024 11:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005343;
-	bh=Vk6YvqEMhaKXyjikk/6SSdJEWuWz46vRh3O1nwzY7lE=;
+	s=korg; t=1720005376;
+	bh=iUtxXvXylXZAZja85P931xCVe6sof7ruSIK7Kd0Y49I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cz+wFS5JoA8K9cmbnoT+MWuFfLcHELkyLNqpargqN+Ui+4x1Kbo2I5KsqXFFqvdNX
-	 LoDVF5CI4nsvkAdq8pZIwEZFQxcYiYpZJ6Khw+XivsCSVvQhT8FDkhu8Ndw+zB5lUh
-	 bGz9cX2+36zVRBaWyN4uII3H/38+w5xvzLs2nrvo=
+	b=NupwJvWbqz2mimX4nqKudVgQvQ+jIwBjF3jjy6YTgmnprIW3o0Ty1+zIc4ozPj/3w
+	 FYEkKWZ7N0tURf1tKr3JIyfJliSqLEibDKrTHH37h9bi5MkbrtNymA0jZQKcXrC4cU
+	 3+vOz+K4y+v9andFU8T41arABlG3v7sJqBECS1+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 042/356] drm/amd/display: drop unnecessary NULL checks in debugfs
-Date: Wed,  3 Jul 2024 12:36:18 +0200
-Message-ID: <20240703102914.687838203@linuxfoundation.org>
+Subject: [PATCH 5.15 043/356] drm/amd/display: Fix incorrect DSC instance for MST
+Date: Wed,  3 Jul 2024 12:36:19 +0200
+Message-ID: <20240703102914.725404376@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
 References: <20240703102913.093882413@linuxfoundation.org>
@@ -67,233 +68,164 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit f8e12e770e8049917f82387033b3cf44bc43b915 ]
+[ Upstream commit 892b41b16f6163e6556545835abba668fcab4eea ]
 
-pipe_ctx pointer cannot be NULL when getting the address of
-an element of the pipe_ctx array. Moreover, the MAX_PIPES is
-defined as 6, so pipe_ctx is not NULL after the loop either.
+[Why] DSC debugfs, such as dp_dsc_clock_en_read,
+use aconnector->dc_link to find pipe_ctx for display.
+Displays connected to MST hub share the same dc_link.
+DSC instance is from pipe_ctx. This causes incorrect
+DSC instance for display connected to MST hub.
 
-Detected using the static analysis tool - Svace.
+[How] Add aconnector->sink check to find pipe_ctx.
 
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+CC: stable@vger.kernel.org
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 892b41b16f61 ("drm/amd/display: Fix incorrect DSC instance for MST")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/amdgpu_dm/amdgpu_dm_debugfs.c | 72 +++++--------------
- 1 file changed, 16 insertions(+), 56 deletions(-)
+ .../amd/display/amdgpu_dm/amdgpu_dm_debugfs.c | 48 ++++++++++++++-----
+ 1 file changed, 36 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-index fc0f6b0089ba0..939734eecf709 100644
+index 939734eecf709..8ccd43ec68829 100644
 --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
 +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-@@ -1315,16 +1315,11 @@ static ssize_t dp_dsc_clock_en_read(struct file *f, char __user *buf,
- 
+@@ -1316,7 +1316,9 @@ static ssize_t dp_dsc_clock_en_read(struct file *f, char __user *buf,
  	for (i = 0; i < MAX_PIPES; i++) {
  		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
--		if (pipe_ctx && pipe_ctx->stream &&
-+		if (pipe_ctx->stream &&
- 		    pipe_ctx->stream->link == aconnector->dc_link)
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
  			break;
  	}
  
--	if (!pipe_ctx) {
--		kfree(rd_buf);
--		return -ENXIO;
--	}
--
- 	dsc = pipe_ctx->stream_res.dsc;
- 	if (dsc)
- 		dsc->funcs->dsc_read_state(dsc, &dsc_state);
-@@ -1421,12 +1416,12 @@ static ssize_t dp_dsc_clock_en_write(struct file *f, const char __user *buf,
- 
+@@ -1417,7 +1419,9 @@ static ssize_t dp_dsc_clock_en_write(struct file *f, const char __user *buf,
  	for (i = 0; i < MAX_PIPES; i++) {
  		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
--		if (pipe_ctx && pipe_ctx->stream &&
-+		if (pipe_ctx->stream &&
- 		    pipe_ctx->stream->link == aconnector->dc_link)
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
  			break;
  	}
  
--	if (!pipe_ctx || !pipe_ctx->stream)
-+	if (!pipe_ctx->stream)
- 		goto done;
- 
- 	// Get CRTC state
-@@ -1506,16 +1501,11 @@ static ssize_t dp_dsc_slice_width_read(struct file *f, char __user *buf,
- 
+@@ -1502,7 +1506,9 @@ static ssize_t dp_dsc_slice_width_read(struct file *f, char __user *buf,
  	for (i = 0; i < MAX_PIPES; i++) {
  		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
--		if (pipe_ctx && pipe_ctx->stream &&
-+		if (pipe_ctx->stream &&
- 		    pipe_ctx->stream->link == aconnector->dc_link)
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
  			break;
  	}
  
--	if (!pipe_ctx) {
--		kfree(rd_buf);
--		return -ENXIO;
--	}
--
- 	dsc = pipe_ctx->stream_res.dsc;
- 	if (dsc)
- 		dsc->funcs->dsc_read_state(dsc, &dsc_state);
-@@ -1610,12 +1600,12 @@ static ssize_t dp_dsc_slice_width_write(struct file *f, const char __user *buf,
- 
+@@ -1601,7 +1607,9 @@ static ssize_t dp_dsc_slice_width_write(struct file *f, const char __user *buf,
  	for (i = 0; i < MAX_PIPES; i++) {
  		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
--		if (pipe_ctx && pipe_ctx->stream &&
-+		if (pipe_ctx->stream &&
- 		    pipe_ctx->stream->link == aconnector->dc_link)
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
  			break;
  	}
  
--	if (!pipe_ctx || !pipe_ctx->stream)
-+	if (!pipe_ctx->stream)
- 		goto done;
- 
- 	// Safely get CRTC state
-@@ -1695,16 +1685,11 @@ static ssize_t dp_dsc_slice_height_read(struct file *f, char __user *buf,
- 
+@@ -1686,7 +1694,9 @@ static ssize_t dp_dsc_slice_height_read(struct file *f, char __user *buf,
  	for (i = 0; i < MAX_PIPES; i++) {
  		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
--		if (pipe_ctx && pipe_ctx->stream &&
-+		if (pipe_ctx->stream &&
- 		    pipe_ctx->stream->link == aconnector->dc_link)
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
  			break;
  	}
  
--	if (!pipe_ctx) {
--		kfree(rd_buf);
--		return -ENXIO;
--	}
--
- 	dsc = pipe_ctx->stream_res.dsc;
- 	if (dsc)
- 		dsc->funcs->dsc_read_state(dsc, &dsc_state);
-@@ -1799,12 +1784,12 @@ static ssize_t dp_dsc_slice_height_write(struct file *f, const char __user *buf,
- 
+@@ -1785,7 +1795,9 @@ static ssize_t dp_dsc_slice_height_write(struct file *f, const char __user *buf,
  	for (i = 0; i < MAX_PIPES; i++) {
  		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
--		if (pipe_ctx && pipe_ctx->stream &&
-+		if (pipe_ctx->stream &&
- 		    pipe_ctx->stream->link == aconnector->dc_link)
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
  			break;
  	}
  
--	if (!pipe_ctx || !pipe_ctx->stream)
-+	if (!pipe_ctx->stream)
- 		goto done;
- 
- 	// Get CRTC state
-@@ -1880,16 +1865,11 @@ static ssize_t dp_dsc_bits_per_pixel_read(struct file *f, char __user *buf,
- 
+@@ -1866,7 +1878,9 @@ static ssize_t dp_dsc_bits_per_pixel_read(struct file *f, char __user *buf,
  	for (i = 0; i < MAX_PIPES; i++) {
  		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
--		if (pipe_ctx && pipe_ctx->stream &&
-+		if (pipe_ctx->stream &&
- 		    pipe_ctx->stream->link == aconnector->dc_link)
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
  			break;
  	}
  
--	if (!pipe_ctx) {
--		kfree(rd_buf);
--		return -ENXIO;
--	}
--
- 	dsc = pipe_ctx->stream_res.dsc;
- 	if (dsc)
- 		dsc->funcs->dsc_read_state(dsc, &dsc_state);
-@@ -1981,12 +1961,12 @@ static ssize_t dp_dsc_bits_per_pixel_write(struct file *f, const char __user *bu
- 
+@@ -1962,7 +1976,9 @@ static ssize_t dp_dsc_bits_per_pixel_write(struct file *f, const char __user *bu
  	for (i = 0; i < MAX_PIPES; i++) {
  		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
--		if (pipe_ctx && pipe_ctx->stream &&
-+		if (pipe_ctx->stream &&
- 		    pipe_ctx->stream->link == aconnector->dc_link)
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
  			break;
  	}
  
--	if (!pipe_ctx || !pipe_ctx->stream)
-+	if (!pipe_ctx->stream)
- 		goto done;
- 
- 	// Get CRTC state
-@@ -2060,16 +2040,11 @@ static ssize_t dp_dsc_pic_width_read(struct file *f, char __user *buf,
- 
+@@ -2041,7 +2057,9 @@ static ssize_t dp_dsc_pic_width_read(struct file *f, char __user *buf,
  	for (i = 0; i < MAX_PIPES; i++) {
  		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
--		if (pipe_ctx && pipe_ctx->stream &&
-+		if (pipe_ctx->stream &&
- 		    pipe_ctx->stream->link == aconnector->dc_link)
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
  			break;
  	}
  
--	if (!pipe_ctx) {
--		kfree(rd_buf);
--		return -ENXIO;
--	}
--
- 	dsc = pipe_ctx->stream_res.dsc;
- 	if (dsc)
- 		dsc->funcs->dsc_read_state(dsc, &dsc_state);
-@@ -2121,16 +2096,11 @@ static ssize_t dp_dsc_pic_height_read(struct file *f, char __user *buf,
- 
+@@ -2097,7 +2115,9 @@ static ssize_t dp_dsc_pic_height_read(struct file *f, char __user *buf,
  	for (i = 0; i < MAX_PIPES; i++) {
  		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
--		if (pipe_ctx && pipe_ctx->stream &&
-+		if (pipe_ctx->stream &&
- 		    pipe_ctx->stream->link == aconnector->dc_link)
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
  			break;
  	}
  
--	if (!pipe_ctx) {
--		kfree(rd_buf);
--		return -ENXIO;
--	}
--
- 	dsc = pipe_ctx->stream_res.dsc;
- 	if (dsc)
- 		dsc->funcs->dsc_read_state(dsc, &dsc_state);
-@@ -2197,16 +2167,11 @@ static ssize_t dp_dsc_chunk_size_read(struct file *f, char __user *buf,
- 
+@@ -2168,7 +2188,9 @@ static ssize_t dp_dsc_chunk_size_read(struct file *f, char __user *buf,
  	for (i = 0; i < MAX_PIPES; i++) {
  		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
--		if (pipe_ctx && pipe_ctx->stream &&
-+		if (pipe_ctx->stream &&
- 		    pipe_ctx->stream->link == aconnector->dc_link)
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
  			break;
  	}
  
--	if (!pipe_ctx) {
--		kfree(rd_buf);
--		return -ENXIO;
--	}
--
- 	dsc = pipe_ctx->stream_res.dsc;
- 	if (dsc)
- 		dsc->funcs->dsc_read_state(dsc, &dsc_state);
-@@ -2273,16 +2238,11 @@ static ssize_t dp_dsc_slice_bpg_offset_read(struct file *f, char __user *buf,
- 
+@@ -2239,7 +2261,9 @@ static ssize_t dp_dsc_slice_bpg_offset_read(struct file *f, char __user *buf,
  	for (i = 0; i < MAX_PIPES; i++) {
  		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
--		if (pipe_ctx && pipe_ctx->stream &&
-+		if (pipe_ctx->stream &&
- 		    pipe_ctx->stream->link == aconnector->dc_link)
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
  			break;
  	}
  
--	if (!pipe_ctx) {
--		kfree(rd_buf);
--		return -ENXIO;
--	}
--
- 	dsc = pipe_ctx->stream_res.dsc;
- 	if (dsc)
- 		dsc->funcs->dsc_read_state(dsc, &dsc_state);
 -- 
 2.43.0
 
