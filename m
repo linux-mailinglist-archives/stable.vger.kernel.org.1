@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-57729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C58E3925DC9
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D57925A06
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:53:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A9D229E5B7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABFDC1C24287
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38710191F88;
-	Wed,  3 Jul 2024 11:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D88C181BB3;
+	Wed,  3 Jul 2024 10:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EUowGUfq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k4bynEY1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBEA51849DD;
-	Wed,  3 Jul 2024 11:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC6C173347;
+	Wed,  3 Jul 2024 10:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005757; cv=none; b=uj+JK+/10za8fdxVyH/nQqXOtUEa6KSGUOMiUCJuYWCY8vc+KR0e7WM0uOeSsD630qUvJ9Ighi47ZAOYmkU427lDcV+oe4hPJnKgT6F8OfAzIY2dMkq58XXg3RAg3EtqeijXnCFZvV/47fRslZEwHOUT/pXUUJH2hRWd53L8FzU=
+	t=1720003470; cv=none; b=crvEGUz6cD+Vu61ELoCf0SIYgUcS8xjRwSB5ujqYTZJy33534cvaMQGTMTBAkphX06x1KvQ7euCz3Wb0DNYgQDoJ/n3dYMvhkyHABiPD7PJSC1t3Yt2roqeH6NmKPLD6dUmUGd3qe4rWMnBaq8ia/fmY0H0AOM/6wcUOnpa/dDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005757; c=relaxed/simple;
-	bh=1/p90SED+Y+wqxWE1aJE3YCHlkm4N48xOjwlDhzyW8U=;
+	s=arc-20240116; t=1720003470; c=relaxed/simple;
+	bh=Lh6wPGYs7VwXCFwIfQpixs+Kvmd1XuEYGfBYymRpjGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZbcItEWk53LmeB7eHQ3CEJ9+k8yMO87Xglcn8o3Phyefivsk94z+/N/CxYfD3GVkeSuB0v02CKWyv/SRWZaNOYsBe/m766+WPMDbvGOp56ryUYVibZkYvXhBZ2zjt60ZzTXXsO83xcUOffEb+eNoHMCK0xGIlkdKW35H9T8Xvnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EUowGUfq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DF3C2BD10;
-	Wed,  3 Jul 2024 11:22:36 +0000 (UTC)
+	 MIME-Version; b=eIcFAXmKJyaOag8mG8uxXMX3IPko0ilR5e0ltXHQiWEONXWeEqn7/0KUXkcLjtAZNWLa24I+8NR6atYc4kMtlRD3+WUyrCe4CACufecex+cnivfJwWx8dqPnqhnunMi3iuCBqo8H888p+aw4z6dwMnVID3igjsEDWjyZ2T1Br2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k4bynEY1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4ADCC2BD10;
+	Wed,  3 Jul 2024 10:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005756;
-	bh=1/p90SED+Y+wqxWE1aJE3YCHlkm4N48xOjwlDhzyW8U=;
+	s=korg; t=1720003470;
+	bh=Lh6wPGYs7VwXCFwIfQpixs+Kvmd1XuEYGfBYymRpjGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EUowGUfqxTjoG9wj/gWCU6ic2rTOBUSlBDuGJQUWUsVpmaXTXYD6wnOVziRQqn/k8
-	 JkbAYkUrTXGy+B1BDkO0pvqh3ytesgiUDfuTkoJtlb0LCNAH/v0EtHE75KrVJmLnbG
-	 u7auVpoCbksYRGSboypkkX5XJfAEwfWYNNURlF4M=
+	b=k4bynEY1SQ0rVkWE/PYv3OmnJqvvp+TPfJNiIS28Bo1ujB2w9z7zGUwx+eIZqvCGM
+	 AXfsrSmlvfsd9fgTg0xLWqgJrb3Np/D+NBBzkbDV9vHr2EbLUMrBb+KXJph7juSnEo
+	 qG2S2lSK80gbMElz55WtaEMyX51AS/Yo+0JLIdVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d327a1f3b12e1e206c16@syzkaller.appspotmail.com,
-	Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
-	"David S. Miller" <davem@davemloft.net>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 187/356] netrom: Fix a memory leak in nr_heartbeat_expiry()
-Date: Wed,  3 Jul 2024 12:38:43 +0200
-Message-ID: <20240703102920.181652914@linuxfoundation.org>
+Subject: [PATCH 4.19 027/139] nilfs2: return the mapped address from nilfs_get_page()
+Date: Wed,  3 Jul 2024 12:38:44 +0200
+Message-ID: <20240703102831.465093093@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 0b9130247f3b6a1122478471ff0e014ea96bb735 ]
+[ Upstream commit 09a46acb3697e50548bb265afa1d79163659dd85 ]
 
-syzbot reported a memory leak in nr_create() [0].
+In prepartion for switching from kmap() to kmap_local(), return the kmap
+address from nilfs_get_page() instead of having the caller look up
+page_address().
 
-Commit 409db27e3a2e ("netrom: Fix use-after-free of a listening socket.")
-added sock_hold() to the nr_heartbeat_expiry() function, where
-a) a socket has a SOCK_DESTROY flag or
-b) a listening socket has a SOCK_DEAD flag.
-
-But in the case "a," when the SOCK_DESTROY flag is set, the file descriptor
-has already been closed and the nr_release() function has been called.
-So it makes no sense to hold the reference count because no one will
-call another nr_destroy_socket() and put it as in the case "b."
-
-nr_connect
-  nr_establish_data_link
-    nr_start_heartbeat
-
-nr_release
-  switch (nr->state)
-  case NR_STATE_3
-    nr->state = NR_STATE_2
-    sock_set_flag(sk, SOCK_DESTROY);
-
-                        nr_rx_frame
-                          nr_process_rx_frame
-                            switch (nr->state)
-                            case NR_STATE_2
-                              nr_state2_machine()
-                                nr_disconnect()
-                                  nr_sk(sk)->state = NR_STATE_0
-                                  sock_set_flag(sk, SOCK_DEAD)
-
-                        nr_heartbeat_expiry
-                          switch (nr->state)
-                          case NR_STATE_0
-                            if (sock_flag(sk, SOCK_DESTROY) ||
-                               (sk->sk_state == TCP_LISTEN
-                                 && sock_flag(sk, SOCK_DEAD)))
-                               sock_hold()  // ( !!! )
-                               nr_destroy_socket()
-
-To fix the memory leak, let's call sock_hold() only for a listening socket.
-
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with Syzkaller.
-
-[0]: https://syzkaller.appspot.com/bug?extid=d327a1f3b12e1e206c16
-
-Reported-by: syzbot+d327a1f3b12e1e206c16@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d327a1f3b12e1e206c16
-Fixes: 409db27e3a2e ("netrom: Fix use-after-free of a listening socket.")
-Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+[konishi.ryusuke: fixed a missing blank line after declaration]
+Link: https://lkml.kernel.org/r/20231127143036.2425-7-konishi.ryusuke@gmail.com
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 7373a51e7998 ("nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netrom/nr_timer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nilfs2/dir.c | 57 +++++++++++++++++++++++--------------------------
+ 1 file changed, 27 insertions(+), 30 deletions(-)
 
-diff --git a/net/netrom/nr_timer.c b/net/netrom/nr_timer.c
-index 4e7c968cde2dc..5e3ca068f04e0 100644
---- a/net/netrom/nr_timer.c
-+++ b/net/netrom/nr_timer.c
-@@ -121,7 +121,8 @@ static void nr_heartbeat_expiry(struct timer_list *t)
- 		   is accepted() it isn't 'dead' so doesn't get removed. */
- 		if (sock_flag(sk, SOCK_DESTROY) ||
- 		    (sk->sk_state == TCP_LISTEN && sock_flag(sk, SOCK_DEAD))) {
--			sock_hold(sk);
-+			if (sk->sk_state == TCP_LISTEN)
-+				sock_hold(sk);
- 			bh_unlock_sock(sk);
- 			nr_destroy_socket(sk);
+diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
+index 24cfe9db66e02..22f1f75a90c1a 100644
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -186,19 +186,24 @@ static bool nilfs_check_page(struct page *page)
+ 	return false;
+ }
+ 
+-static struct page *nilfs_get_page(struct inode *dir, unsigned long n)
++static void *nilfs_get_page(struct inode *dir, unsigned long n,
++		struct page **pagep)
+ {
+ 	struct address_space *mapping = dir->i_mapping;
+ 	struct page *page = read_mapping_page(mapping, n, NULL);
++	void *kaddr;
+ 
+-	if (!IS_ERR(page)) {
+-		kmap(page);
+-		if (unlikely(!PageChecked(page))) {
+-			if (!nilfs_check_page(page))
+-				goto fail;
+-		}
++	if (IS_ERR(page))
++		return page;
++
++	kaddr = kmap(page);
++	if (unlikely(!PageChecked(page))) {
++		if (!nilfs_check_page(page))
++			goto fail;
+ 	}
+-	return page;
++
++	*pagep = page;
++	return kaddr;
+ 
+ fail:
+ 	nilfs_put_page(page);
+@@ -275,14 +280,14 @@ static int nilfs_readdir(struct file *file, struct dir_context *ctx)
+ 	for ( ; n < npages; n++, offset = 0) {
+ 		char *kaddr, *limit;
+ 		struct nilfs_dir_entry *de;
+-		struct page *page = nilfs_get_page(inode, n);
++		struct page *page;
+ 
+-		if (IS_ERR(page)) {
++		kaddr = nilfs_get_page(inode, n, &page);
++		if (IS_ERR(kaddr)) {
+ 			nilfs_error(sb, "bad page in #%lu", inode->i_ino);
+ 			ctx->pos += PAGE_SIZE - offset;
+ 			return -EIO;
+ 		}
+-		kaddr = page_address(page);
+ 		de = (struct nilfs_dir_entry *)(kaddr + offset);
+ 		limit = kaddr + nilfs_last_byte(inode, n) -
+ 			NILFS_DIR_REC_LEN(1);
+@@ -345,11 +350,9 @@ nilfs_find_entry(struct inode *dir, const struct qstr *qstr,
+ 		start = 0;
+ 	n = start;
+ 	do {
+-		char *kaddr;
++		char *kaddr = nilfs_get_page(dir, n, &page);
+ 
+-		page = nilfs_get_page(dir, n);
+-		if (!IS_ERR(page)) {
+-			kaddr = page_address(page);
++		if (!IS_ERR(kaddr)) {
+ 			de = (struct nilfs_dir_entry *)kaddr;
+ 			kaddr += nilfs_last_byte(dir, n) - reclen;
+ 			while ((char *) de <= kaddr) {
+@@ -387,15 +390,11 @@ nilfs_find_entry(struct inode *dir, const struct qstr *qstr,
+ 
+ struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct page **p)
+ {
+-	struct page *page = nilfs_get_page(dir, 0);
+-	struct nilfs_dir_entry *de = NULL;
++	struct nilfs_dir_entry *de = nilfs_get_page(dir, 0, p);
+ 
+-	if (!IS_ERR(page)) {
+-		de = nilfs_next_entry(
+-			(struct nilfs_dir_entry *)page_address(page));
+-		*p = page;
+-	}
+-	return de;
++	if (IS_ERR(de))
++		return NULL;
++	return nilfs_next_entry(de);
+ }
+ 
+ ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
+@@ -459,12 +458,11 @@ int nilfs_add_link(struct dentry *dentry, struct inode *inode)
+ 	for (n = 0; n <= npages; n++) {
+ 		char *dir_end;
+ 
+-		page = nilfs_get_page(dir, n);
+-		err = PTR_ERR(page);
+-		if (IS_ERR(page))
++		kaddr = nilfs_get_page(dir, n, &page);
++		err = PTR_ERR(kaddr);
++		if (IS_ERR(kaddr))
  			goto out;
+ 		lock_page(page);
+-		kaddr = page_address(page);
+ 		dir_end = kaddr + nilfs_last_byte(dir, n);
+ 		de = (struct nilfs_dir_entry *)kaddr;
+ 		kaddr += PAGE_SIZE - reclen;
+@@ -627,11 +625,10 @@ int nilfs_empty_dir(struct inode *inode)
+ 		char *kaddr;
+ 		struct nilfs_dir_entry *de;
+ 
+-		page = nilfs_get_page(inode, i);
+-		if (IS_ERR(page))
++		kaddr = nilfs_get_page(inode, i, &page);
++		if (IS_ERR(kaddr))
+ 			continue;
+ 
+-		kaddr = page_address(page);
+ 		de = (struct nilfs_dir_entry *)kaddr;
+ 		kaddr += nilfs_last_byte(inode, i) - NILFS_DIR_REC_LEN(1);
+ 
 -- 
 2.43.0
 
