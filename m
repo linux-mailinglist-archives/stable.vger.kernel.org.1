@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-57376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707CE925C36
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:16:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEDF6925A8E
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:01:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D90B1F20F7F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CA561F214DA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC9317C7A9;
-	Wed,  3 Jul 2024 11:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCF1C178CEA;
+	Wed,  3 Jul 2024 10:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FuGNMCVw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEKzdDFL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2728461FDF;
-	Wed,  3 Jul 2024 11:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99365176AB0;
+	Wed,  3 Jul 2024 10:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004691; cv=none; b=t51xkgv7sTMhgoR0tWqzatUW0R/X66F8tYW9jM/+oYsfCrGtxyRlgwvE2j99ZmQs0wdOkpbHBcNxEOkCQCY1qg8DQne0ndrXnrZ5n69CZzsa/NGizOcfJ3asg146SlUk0mH7jy2Rf63wqcu/PBGSREIRu2D6pZChPI3h0mkJEOk=
+	t=1720003764; cv=none; b=R1uxAPBltMNLXWN7v+XaCKF9NBY7Ru+3xLzg/UlZXJ7jIUnkI5zoyIkmbv0MTp1mnN35nMxuHEEXmIhUk44Vev/xlwng5RivV4xyOFdgdDz7h/SWPMXaXn3mKxV1dF/QDWgjkf3ohywiQnMIoPh/X+M9njhrSZijlo8FUl7b0TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004691; c=relaxed/simple;
-	bh=2vhhxmDyK5Xs0PWTWAyXQU2d5ofUo30sCICbn6VpN24=;
+	s=arc-20240116; t=1720003764; c=relaxed/simple;
+	bh=HQZ8pu5C/+mo3pwHhpK8EGdA9NrTbROFoBN+ZhaCN/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A7EKNRi624KSziL9E6vX//jRj6GKgLv0ODzW0QXzVroSzDOovEiGTOiUC6rOL3jg63Nni/0ilsVIUm3ykl/rlu/KKuuYRPYxMgCq1r4A3eo1tfbtq3FXwzACbe/CMY7MgSWXw0JgUHxak2ObjVjNd8lJhB7YUyx6s5KOeXGqDRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FuGNMCVw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62278C2BD10;
-	Wed,  3 Jul 2024 11:04:50 +0000 (UTC)
+	 MIME-Version; b=MLG2KR/x6xQP0N595qbkj8HQfOFWk7ZI1jqAATW1wcGrEpvAF32HabVaw/W2ii3Dc0Qj3RuQhJYB5zGvoIHfWJP7Mv1AREhfoVfkhjZTzXSY7znMDoF+wYGNww92jGURHT231ZztpWEgpUvFJLfD/CJ25sPUnC0MqMnLq3LVvJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEKzdDFL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE2DC2BD10;
+	Wed,  3 Jul 2024 10:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004690;
-	bh=2vhhxmDyK5Xs0PWTWAyXQU2d5ofUo30sCICbn6VpN24=;
+	s=korg; t=1720003764;
+	bh=HQZ8pu5C/+mo3pwHhpK8EGdA9NrTbROFoBN+ZhaCN/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FuGNMCVweRTo3P501k9lvypGTT+hHNQDi0Iuzyu+rQoxUuqhgyYSkssCKJqW69/cT
-	 PXT6gxD9ZdigjBjCEg3wtqXdn4OPKuYYHr5+e+Jrv7++GcrHPqgSL3m1iVTIzORdK6
-	 W/w/5/ogecL1SefGGL5Kjjn5yjyNj1PUDlwRX2xo=
+	b=oEKzdDFLFuQAD8V35B0CwjIwxpkzR4PIB7aWIcos6muryh2GzcIBeVRzJawOSTRtJ
+	 EQ4z2/7CCh5cePZnAFrMnwuZo1JUX/YHqUhRTYmtrFjZRrAYNT5HtkG/qZi4RGblKG
+	 iPcLm53W2dRY5fSJbP0vZNKVqf14ZHw7mSUCSgbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Goergens <matthias.goergens@gmail.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 5.10 095/290] hugetlb_encode.h: fix undefined behaviour (34 << 26)
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 015/189] af_unix: Annotate data-races around sk->sk_state in unix_write_space() and poll().
 Date: Wed,  3 Jul 2024 12:37:56 +0200
-Message-ID: <20240703102907.778397034@linuxfoundation.org>
+Message-ID: <20240703102842.079406072@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +62,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Goergens <matthias.goergens@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 710bb68c2e3a24512e2d2bae470960d7488e97b1 upstream.
+[ Upstream commit eb0718fb3e97ad0d6f4529b810103451c90adf94 ]
 
-Left-shifting past the size of your datatype is undefined behaviour in C.
-The literal 34 gets the type `int`, and that one is not big enough to be
-left shifted by 26 bits.
+unix_poll() and unix_dgram_poll() read sk->sk_state locklessly and
+calls unix_writable() which also reads sk->sk_state without holding
+unix_state_lock().
 
-An `unsigned` is long enough (on any machine that has at least 32 bits for
-their ints.)
+Let's use READ_ONCE() in unix_poll() and unix_dgram_poll() and pass
+it to unix_writable().
 
-For uniformity, we mark all the literals as unsigned.  But it's only
-really needed for HUGETLB_FLAG_ENCODE_16GB.
+While at it, we remove TCP_SYN_SENT check in unix_dgram_poll() as
+that state does not exist for AF_UNIX socket since the code was added.
 
-Thanks to Randy Dunlap for an initial review and suggestion.
-
-Link: https://lkml.kernel.org/r/20220905031904.150925-1-matthias.goergens@gmail.com
-Signed-off-by: Matthias Goergens <matthias.goergens@gmail.com>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Muchun Song <songmuchun@bytedance.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[cmllamas: fix trivial conflict due to missing page encondigs]
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1586a5877db9 ("af_unix: do not report POLLOUT on listeners")
+Fixes: 3c73419c09a5 ("af_unix: fix 'poll for write'/ connected DGRAM sockets")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/asm-generic/hugetlb_encode.h  |   26 +++++++++++++-------------
- tools/include/asm-generic/hugetlb_encode.h |   20 ++++++++++----------
- 2 files changed, 23 insertions(+), 23 deletions(-)
+ net/unix/af_unix.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
---- a/include/uapi/asm-generic/hugetlb_encode.h
-+++ b/include/uapi/asm-generic/hugetlb_encode.h
-@@ -20,18 +20,18 @@
- #define HUGETLB_FLAG_ENCODE_SHIFT	26
- #define HUGETLB_FLAG_ENCODE_MASK	0x3f
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 8ab1e2a781195..73cc992bed880 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -449,9 +449,9 @@ static int unix_dgram_peer_wake_me(struct sock *sk, struct sock *other)
+ 	return 0;
+ }
  
--#define HUGETLB_FLAG_ENCODE_16KB	(14 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_64KB	(16 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_512KB	(19 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_1MB		(20 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_2MB		(21 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_8MB		(23 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_16MB	(24 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_32MB	(25 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_256MB	(28 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_512MB	(29 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_1GB		(30 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_2GB		(31 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_16GB	(34 << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_16KB	(14U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_64KB	(16U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_512KB	(19U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_1MB		(20U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_2MB		(21U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_8MB		(23U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_16MB	(24U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_32MB	(25U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_256MB	(28U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_512MB	(29U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_1GB		(30U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_2GB		(31U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_16GB	(34U << HUGETLB_FLAG_ENCODE_SHIFT)
+-static int unix_writable(const struct sock *sk)
++static int unix_writable(const struct sock *sk, unsigned char state)
+ {
+-	return sk->sk_state != TCP_LISTEN &&
++	return state != TCP_LISTEN &&
+ 	       (refcount_read(&sk->sk_wmem_alloc) << 2) <= sk->sk_sndbuf;
+ }
  
- #endif /* _ASM_GENERIC_HUGETLB_ENCODE_H_ */
---- a/tools/include/asm-generic/hugetlb_encode.h
-+++ b/tools/include/asm-generic/hugetlb_encode.h
-@@ -20,15 +20,15 @@
- #define HUGETLB_FLAG_ENCODE_SHIFT	26
- #define HUGETLB_FLAG_ENCODE_MASK	0x3f
+@@ -460,7 +460,7 @@ static void unix_write_space(struct sock *sk)
+ 	struct socket_wq *wq;
  
--#define HUGETLB_FLAG_ENCODE_64KB	(16 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_512KB	(19 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_1MB		(20 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_2MB		(21 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_8MB		(23 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_16MB	(24 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_256MB	(28 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_1GB		(30 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_2GB		(31 << HUGETLB_FLAG_ENCODE_SHIFT)
--#define HUGETLB_FLAG_ENCODE_16GB	(34 << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_64KB	(16U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_512KB	(19U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_1MB		(20U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_2MB		(21U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_8MB		(23U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_16MB	(24U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_256MB	(28U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_1GB		(30U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_2GB		(31U << HUGETLB_FLAG_ENCODE_SHIFT)
-+#define HUGETLB_FLAG_ENCODE_16GB	(34U << HUGETLB_FLAG_ENCODE_SHIFT)
+ 	rcu_read_lock();
+-	if (unix_writable(sk)) {
++	if (unix_writable(sk, READ_ONCE(sk->sk_state))) {
+ 		wq = rcu_dereference(sk->sk_wq);
+ 		if (skwq_has_sleeper(wq))
+ 			wake_up_interruptible_sync_poll(&wq->wait,
+@@ -2678,12 +2678,14 @@ static int unix_compat_ioctl(struct socket *sock, unsigned int cmd, unsigned lon
+ static __poll_t unix_poll(struct file *file, struct socket *sock, poll_table *wait)
+ {
+ 	struct sock *sk = sock->sk;
++	unsigned char state;
+ 	__poll_t mask;
+ 	u8 shutdown;
  
- #endif /* _ASM_GENERIC_HUGETLB_ENCODE_H_ */
+ 	sock_poll_wait(file, sock, wait);
+ 	mask = 0;
+ 	shutdown = READ_ONCE(sk->sk_shutdown);
++	state = READ_ONCE(sk->sk_state);
+ 
+ 	/* exceptional events? */
+ 	if (sk->sk_err)
+@@ -2699,14 +2701,14 @@ static __poll_t unix_poll(struct file *file, struct socket *sock, poll_table *wa
+ 
+ 	/* Connection-based need to check for termination and startup */
+ 	if ((sk->sk_type == SOCK_STREAM || sk->sk_type == SOCK_SEQPACKET) &&
+-	    sk->sk_state == TCP_CLOSE)
++	    state == TCP_CLOSE)
+ 		mask |= EPOLLHUP;
+ 
+ 	/*
+ 	 * we set writable also when the other side has shut down the
+ 	 * connection. This prevents stuck sockets.
+ 	 */
+-	if (unix_writable(sk))
++	if (unix_writable(sk, state))
+ 		mask |= EPOLLOUT | EPOLLWRNORM | EPOLLWRBAND;
+ 
+ 	return mask;
+@@ -2717,12 +2719,14 @@ static __poll_t unix_dgram_poll(struct file *file, struct socket *sock,
+ {
+ 	struct sock *sk = sock->sk, *other;
+ 	unsigned int writable;
++	unsigned char state;
+ 	__poll_t mask;
+ 	u8 shutdown;
+ 
+ 	sock_poll_wait(file, sock, wait);
+ 	mask = 0;
+ 	shutdown = READ_ONCE(sk->sk_shutdown);
++	state = READ_ONCE(sk->sk_state);
+ 
+ 	/* exceptional events? */
+ 	if (sk->sk_err || !skb_queue_empty_lockless(&sk->sk_error_queue))
+@@ -2739,19 +2743,14 @@ static __poll_t unix_dgram_poll(struct file *file, struct socket *sock,
+ 		mask |= EPOLLIN | EPOLLRDNORM;
+ 
+ 	/* Connection-based need to check for termination and startup */
+-	if (sk->sk_type == SOCK_SEQPACKET) {
+-		if (sk->sk_state == TCP_CLOSE)
+-			mask |= EPOLLHUP;
+-		/* connection hasn't started yet? */
+-		if (sk->sk_state == TCP_SYN_SENT)
+-			return mask;
+-	}
++	if (sk->sk_type == SOCK_SEQPACKET && state == TCP_CLOSE)
++		mask |= EPOLLHUP;
+ 
+ 	/* No write status requested, avoid expensive OUT tests. */
+ 	if (!(poll_requested_events(wait) & (EPOLLWRBAND|EPOLLWRNORM|EPOLLOUT)))
+ 		return mask;
+ 
+-	writable = unix_writable(sk);
++	writable = unix_writable(sk, state);
+ 	if (writable) {
+ 		unix_state_lock(sk);
+ 
+-- 
+2.43.0
+
 
 
 
