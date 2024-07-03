@@ -1,112 +1,128 @@
-Return-Path: <stable+bounces-57979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCCDE926869
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 20:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3069268DD
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 21:11:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 979BA28FFED
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 18:42:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98C0D281886
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 19:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB532188CB4;
-	Wed,  3 Jul 2024 18:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8DF61891B6;
+	Wed,  3 Jul 2024 19:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="FMY1lUHY"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="u8sAIh0k"
 X-Original-To: stable@vger.kernel.org
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890701DA313;
-	Wed,  3 Jul 2024 18:42:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B602187570;
+	Wed,  3 Jul 2024 19:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720032171; cv=none; b=AIfcDtKf8KSl4ndKhkTnZWDMTwio46ywqG6uDhkQPqjxIoXVg5quXqsFJfzUlwKxBv/DrYfvyPtqEs2opbmrB3Nl8q/MxDu4lg5OZMT+Am2/kl5vvNlUbcfKU+NkmBUuJfpMQfkMCJvZEU4gk4FJgI5y1i6K2wf7gsV44fuzuao=
+	t=1720033906; cv=none; b=IFKfX/XbMebltPfkBGd3Y8y+GnnCkO2UEnD2CASeor85mw3g2G6HWOd9ezgKHNhskfZIfkDgBSz+YBPa6nbaxMcwTdt795Tzg3ntNqqO6cjnvPu778+0eiZ5VrFomrI7tUFI9nqmWSYYpai/FFq6TSVFxUwGRpOptI5tbBRKRSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720032171; c=relaxed/simple;
-	bh=OEcfoHYg331SnTSBIr49/Lcvpui+wt3h6L8IrnhUas0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YIlqSB68LvMxJ7mNrrnIQQsCMWFmT8fD5rr5tokzDM49xshXpq8lZFh+pDZE4G45jC2TJeefvXIokkdtJO/MMuA+6f9fjaEs+hoxh0//faniVrMaglv1lI4Bq3lBthv46VXmuYcQraD907f2PwikDQ997hrSJFoWlKmF0kTlFi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=FMY1lUHY; arc=none smtp.client-ip=130.133.4.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=hlu2sr8vi+BtevOGugMkazgCQNpMIBu84AwosKjyodE=; t=1720032167; x=1720636967; 
-	b=FMY1lUHYO7l6EjS5UFPxqbKvnkELtNGHRRoLjzTOsLz9ssTiHrfIUZJXcuL9JvvX+/TJEDQsk6S
-	VNOoQo7Sk6hFqD1QkJu53/c4EbL9NrGSDVF80lgcXU1EicwDM8nJpIzbQgzSYoSJ/SId3uDfEYH/s
-	Y8LunTOGjSRS/IZFTJgKslWm5391mcFR3KeVQf03pe2AwRdkw6BJ3ZdlCFj+Gub09Ai79PRMFctXO
-	e8tGngaGE2y6boO5glZEF+AQTB4BKUyslodrr7j4Y/EHIbwNstSDlaSJvq16Sc6rx9U5fZb9kxlXc
-	G5QYJK8FJqvyo6aqFQGPjHJLT4Ch1MlTKC6w==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.97)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1sP4wF-000000039OK-3g9K; Wed, 03 Jul 2024 20:42:43 +0200
-Received: from p5b13a475.dip0.t-ipconnect.de ([91.19.164.117] helo=suse-laptop.fritz.box)
-          by inpost2.zedat.fu-berlin.de (Exim 4.97)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1sP4wF-0000000070P-2WuS; Wed, 03 Jul 2024 20:42:43 +0200
-Message-ID: <c497d1abee4bf37663488c3a80e042a25303c0c4.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH 5.4 000/189] 5.4.279-rc1 review
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Arnd Bergmann <arnd@arndb.de>, Naresh Kamboju
- <naresh.kamboju@linaro.org>,  Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
- linux-kernel@vger.kernel.org, Linus Torvalds
- <torvalds@linux-foundation.org>,  Andrew Morton
- <akpm@linux-foundation.org>, Guenter Roeck <linux@roeck-us.net>, shuah
- <shuah@kernel.org>,  patches@kernelci.org, lkft-triage@lists.linaro.org,
- Pavel Machek <pavel@denx.de>,  Jon Hunter <jonathanh@nvidia.com>, Florian
- Fainelli <f.fainelli@gmail.com>, Sudip Mukherjee
- <sudipm.mukherjee@gmail.com>, srw@sladewatkins.net, rwarsow@gmx.de, Conor
- Dooley <conor@kernel.org>, Allen <allen.lkml@gmail.com>, Mark Brown
- <broonie@kernel.org>,  Dan Carpenter <dan.carpenter@linaro.org>, Anders
- Roxell <anders.roxell@linaro.org>, Linux-sh list
- <linux-sh@vger.kernel.org>, Rich Felker <dalias@libc.org>
-Date: Wed, 03 Jul 2024 20:42:42 +0200
-In-Reply-To: <72ddde27-e2e2-4a46-a2ab-4d20a7a9424f@app.fastmail.com>
-References: <20240703102841.492044697@linuxfoundation.org>
-	 <CA+G9fYvAkELSdWF1EYyjS=d_jvCJD0O=aPnZFHUGnhYy6c1VCg@mail.gmail.com>
-	 <72ddde27-e2e2-4a46-a2ab-4d20a7a9424f@app.fastmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 
+	s=arc-20240116; t=1720033906; c=relaxed/simple;
+	bh=3E3xPWB6kiGiSy2QWa5qKXmQoyeUU4QTQ749wteyoL8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B00P7OrrqV0CFeBOvuR8YSUKMqPjcpQZ4c9zAIUuYcuCvt0geTepA2YVCboBBGxrIA1RNhQA17DOi2IVjBAnFgeYG3A0zkna4fupflKTmjIFL3wYq9F/SzQZCG4oPmk4pEGA3JfK32ExLAe1iZVi/P4cR4Wznt7IocY30Og99P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=u8sAIh0k; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4WDqC3677jz6CmQyM;
+	Wed,  3 Jul 2024 19:11:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1720033898; x=1722625899; bh=6m7fScHfvSHfw4I4vLfsawbF
+	PucKc6EUzaqYNkps4vk=; b=u8sAIh0kNsdEUfY3MOrGoAaI0TvCnPmXQIvsm6OL
+	9lo1D2nPKU78UC38EZODq5CQOs72rsYWTiZ34GJHD/NZSo5kHfAoxLqvUd1FxkQf
+	pzlLd7q2g8l0EhAnZU5ZEdoNbWcnoGNL9abkOrBFNyVJI2n0dHvX4bogQ3U/ZYL1
+	lbpMsdd1GFrcet6GTtD1RTelariLEJ5bY5Pg24GFooW7dQEwEFYFe/Ya0qVnecC3
+	5WwGEzGbhNfUGfiAqEM2NqMWJJhjyxNWxhQrWCD8evKYrm11Zi6/rHgre+AsG/dk
+	rZ6Z4v4Ovq4TYoRvnaGAkqsRstdtEFlj6ajkzgNN3xt4aw==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id Ot4i4DB33GKA; Wed,  3 Jul 2024 19:11:38 +0000 (UTC)
+Received: from [192.168.50.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4WDqBw15YRz6Cnv3Q;
+	Wed,  3 Jul 2024 19:11:35 +0000 (UTC)
+Message-ID: <64d7746e-4751-4f46-a603-ce07f586b2d2@acm.org>
+Date: Wed, 3 Jul 2024 12:11:36 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-ZEDAT-Hint: PO
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1] scsi: ufs: ufshpb: Fix NULL deallocation in
+ ufshpb_pre_req_mempool_destroy()
+To: Aleksandr Mishin <amishin@t-argos.ru>,
+ Daejun Park <daejun7.park@samsung.com>, stable@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Can Guo <cang@codeaurora.org>, Bean Huo <beanhuo@micron.com>,
+ linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ lvc-project@linuxtesting.org
+References: <20240703111751.23377-1-amishin@t-argos.ru>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20240703111751.23377-1-amishin@t-argos.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Arnd,
+On 7/3/24 4:17 AM, Aleksandr Mishin wrote:
+> No upstream commit exists for this commit.
+> 
+> The issue was introduced with commit 41d8a9333cc9 ("scsi: ufs: ufshpb:
+> Add HPB 2.0 support").
+> 
+> In ufshpb_pre_req_mempool_destroy() __free_page() is called only if pointer
+> contains NULL value.
+> Fix this bug by modifying check condition.
+> 
+> Upstream branch code has been significantly refactored and can't be
+> backported directly.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> Fixes: 41d8a9333cc9 ("scsi: ufs: ufshpb: Add HPB 2.0 support")
+> Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+> ---
+>   drivers/ufs/core/ufshpb.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/ufs/core/ufshpb.c b/drivers/ufs/core/ufshpb.c
+> index b7f412d0f301..c649e8a10a23 100644
+> --- a/drivers/ufs/core/ufshpb.c
+> +++ b/drivers/ufs/core/ufshpb.c
+> @@ -2120,7 +2120,7 @@ static void ufshpb_pre_req_mempool_destroy(struct ufshpb_lu *hpb)
+>   	for (i = 0; i < hpb->throttle_pre_req; i++) {
+>   		pre_req = hpb->pre_req + i;
+>   		bio_put(hpb->pre_req[i].bio);
+> -		if (!pre_req->wb.m_page)
+> +		if (pre_req->wb.m_page)
+>   			__free_page(hpb->pre_req[i].wb.m_page);
+>   		list_del_init(&pre_req->list_req);
+>   	}
 
-On Wed, 2024-07-03 at 20:34 +0200, Arnd Bergmann wrote:
-> Rich and Adrian, let me know if you would submit a
-> tested backport stable@vger.kernel.org yourself, if you
-> want help backporting my patch, or if we should just
-> leave the existing state in the LTS kernels.
-
-I think it's safe to keep the existing state in the old LTS kernels
-as most SH users will be on the latest kernel anyway.
+Are any users of the 6.1 kernel using UFS HPB support? If not, another
+possibility is to backport commit 7e9609d2daea ("scsi: ufs: core: Remove
+HPB support").
 
 Thanks,
-Adrian
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+Bart.
 
