@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36746925EE1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:42:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61BD5925B5B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:08:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50080B39F86
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:18:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEE381F22836
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E20A183078;
-	Wed,  3 Jul 2024 11:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DE821849C5;
+	Wed,  3 Jul 2024 10:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBh8gtqy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnt7toQe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4FF16F8FA;
-	Wed,  3 Jul 2024 11:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B674184133;
+	Wed,  3 Jul 2024 10:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004835; cv=none; b=a7c2xF79ONB7BuwwYJufDUB4bpEXjgmC0xUUcllJfTkqEX7DKQuFf1grJ+vTqo05pB6FzHdis1rRVfjj3cw8plhqSsfQ1JVGhbmCth/lluD2wOiybVHSDPl4atLuyMlVZp7F0HGQ4J+vn6wU05Ph989XoXZWMujEsnYvPdqfyE0=
+	t=1720004110; cv=none; b=iIUq/ZkCrnp/W1zxRfnGDZVKzren+Ot15h0gwIYVz2zjdVNOSkueTSHxwWDGm281flpH4MHSFcFWDT7eok2h3gdt58W+UGs4GNMRsMje6p6LnoPXVFx7nz4MY7uxwlbB1u9IES5f7wiqOTFyrQ5SLF9jGVEIQOqSTozt+FqxThM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004835; c=relaxed/simple;
-	bh=oubAPQA/Tma3aZRmxvnx4Ool5T62BG3KgBaWAmyPLMg=;
+	s=arc-20240116; t=1720004110; c=relaxed/simple;
+	bh=Hco9e2SIjEXacUukv+Ev1O63BZTTnQ31EeAl7lsK7WQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WbUaExHCEtNULocXlfUleYsTWxjtWnNwyvWFPmtRGrDNnss9M6586CXBcnwFHL44uT0rse3SsarzHlwMzpeGghqn5OuPQKSVFBOF01x7PKtkRyZuGN9O7eR9XAPnKv40uK0ZthpzzlzXCVOsguMjKVlJmGTS8izkelBCDBLmv+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBh8gtqy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5916EC2BD10;
-	Wed,  3 Jul 2024 11:07:14 +0000 (UTC)
+	 MIME-Version; b=IPwsuec3Y2mckcBgM8ErZdUBnpAv+YE3EzsAdKVVwrQ7R9rKUG9rJOgJfCVkjJWndMuk0EkPfnzXXFLa01XXROJp0CfaQwjeV+XpnqT9i7dEXYDkKD5nge6rOnBplHznWqrpa02lymL4NboOENEU7ghK3tCdq2faaZGAl1rJJlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnt7toQe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8A0C2BD10;
+	Wed,  3 Jul 2024 10:55:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004834;
-	bh=oubAPQA/Tma3aZRmxvnx4Ool5T62BG3KgBaWAmyPLMg=;
+	s=korg; t=1720004110;
+	bh=Hco9e2SIjEXacUukv+Ev1O63BZTTnQ31EeAl7lsK7WQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SBh8gtqykJE5cq4QiHMTX3uRS7CMJbbNDTzihcNdL2GfoaP8drlNYy0taF4sl2lXd
-	 3uCJTLqJdfVVeo6e/U2mZoiRM4t5WUR0cta1urx1FN4OT0F1llibzo3QXQyhPptQei
-	 aAyW1NFBcZ2xZx+Jf8/fJYi9XA/X+YgL2YhxANlA=
+	b=hnt7toQeZLBRFmsqGkBRGb80lwWlmXf1WK+9c3RY/77HvkUTfvI7IsmYHt5KURI2X
+	 9SIREcLMbK1Qb4m5fmQGwEg+H9oc6cvAIS9xTUR92ULvfsRZEcJPHMoluRyxo275sQ
+	 4hIZPXFic8RDMr5WnfX8kGc7OK9rxxLYkuCR3Vp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Kees Cook <keescook@chromium.org>,
-	Kalle Valo <kvalo@codeaurora.org>,
+	Uri Arev <me@wantyapps.xyz>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 174/290] rtlwifi: rtl8192de: Style clean-ups
+Subject: [PATCH 5.4 094/189] Bluetooth: ath3k: Fix multiple issues reported by checkpatch.pl
 Date: Wed,  3 Jul 2024 12:39:15 +0200
-Message-ID: <20240703102910.746484662@linuxfoundation.org>
+Message-ID: <20240703102845.049768403@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +62,192 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Uri Arev <me@wantyapps.xyz>
 
-[ Upstream commit 69831173fcbbfebb7aa2d76523deaf0b87b8eddd ]
+[ Upstream commit 68aa21054ec3a1a313af90a5f95ade16c3326d20 ]
 
-Clean up some style issues:
-- Use ARRAY_SIZE() even though it's a u8 array.
-- Remove redundant CHANNEL_MAX_NUMBER_2G define.
-Additionally fix some dead code WARNs.
+This fixes some CHECKs reported by the checkpatch script.
 
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://lore.kernel.org/lkml/57d0d1b6064342309f680f692192556c@realtek.com/
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20211119192233.1021063-1-keescook@chromium.org
-Stable-dep-of: de4d4be4fa64 ("wifi: rtlwifi: rtl8192de: Fix 5 GHz TX power")
+Issues reported in ath3k.c:
+-------
+ath3k.c
+-------
+CHECK: Please don't use multiple blank lines
++
++
+
+CHECK: Blank lines aren't necessary after an open brace '{'
++static const struct usb_device_id ath3k_blist_tbl[] = {
++
+
+CHECK: Alignment should match open parenthesis
++static int ath3k_load_firmware(struct usb_device *udev,
++                               const struct firmware *firmware)
+
+CHECK: Alignment should match open parenthesis
++               err = usb_bulk_msg(udev, pipe, send_buf, size,
++                                       &len, 3000);
+
+CHECK: Unnecessary parentheses around 'len != size'
++               if (err || (len != size)) {
+
+CHECK: Alignment should match open parenthesis
++static int ath3k_get_version(struct usb_device *udev,
++                       struct ath3k_version *version)
+
+CHECK: Alignment should match open parenthesis
++static int ath3k_load_fwfile(struct usb_device *udev,
++               const struct firmware *firmware)
+
+CHECK: Alignment should match open parenthesis
++               err = usb_bulk_msg(udev, pipe, send_buf, size,
++                                       &len, 3000);
+
+CHECK: Unnecessary parentheses around 'len != size'
++               if (err || (len != size)) {
+
+CHECK: Blank lines aren't necessary after an open brace '{'
++       switch (fw_version.ref_clock) {
++
+
+CHECK: Alignment should match open parenthesis
++       snprintf(filename, ATH3K_NAME_LEN, "ar3k/ramps_0x%08x_%d%s",
++               le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
+
+CHECK: Alignment should match open parenthesis
++static int ath3k_probe(struct usb_interface *intf,
++                       const struct usb_device_id *id)
+
+CHECK: Alignment should match open parenthesis
++                       BT_ERR("Firmware file \"%s\" not found",
++                                                       ATH3K_FIRMWARE);
+
+CHECK: Alignment should match open parenthesis
++               BT_ERR("Firmware file \"%s\" request failed (err=%d)",
++                                               ATH3K_FIRMWARE, ret);
+
+total: 0 errors, 0 warnings, 14 checks, 540 lines checked
+
+Signed-off-by: Uri Arev <me@wantyapps.xyz>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/realtek/rtlwifi/rtl8192de/phy.c    | 17 +++++++----------
- drivers/net/wireless/realtek/rtlwifi/wifi.h     |  1 -
- 2 files changed, 7 insertions(+), 11 deletions(-)
+ drivers/bluetooth/ath3k.c | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-index af0c7d74b3f5a..da9acebbe237a 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-@@ -892,7 +892,7 @@ static u8 _rtl92c_phy_get_rightchnlplace(u8 chnl)
- 	u8 place = chnl;
+diff --git a/drivers/bluetooth/ath3k.c b/drivers/bluetooth/ath3k.c
+index 4ce2705136952..d108202d2ec19 100644
+--- a/drivers/bluetooth/ath3k.c
++++ b/drivers/bluetooth/ath3k.c
+@@ -3,7 +3,6 @@
+  * Copyright (c) 2008-2009 Atheros Communications Inc.
+  */
  
- 	if (chnl > 14) {
--		for (place = 14; place < sizeof(channel5g); place++) {
-+		for (place = 14; place < ARRAY_SIZE(channel5g); place++) {
- 			if (channel5g[place] == chnl) {
- 				place++;
- 				break;
-@@ -1359,7 +1359,7 @@ u8 rtl92d_get_rightchnlplace_for_iqk(u8 chnl)
- 	u8 place = chnl;
+-
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+@@ -129,7 +128,6 @@ MODULE_DEVICE_TABLE(usb, ath3k_table);
+  * for AR3012
+  */
+ static const struct usb_device_id ath3k_blist_tbl[] = {
+-
+ 	/* Atheros AR3012 with sflash firmware*/
+ 	{ USB_DEVICE(0x0489, 0xe04e), .driver_info = BTUSB_ATH3012 },
+ 	{ USB_DEVICE(0x0489, 0xe04d), .driver_info = BTUSB_ATH3012 },
+@@ -203,7 +201,7 @@ static inline void ath3k_log_failed_loading(int err, int len, int size,
+ #define TIMEGAP_USEC_MAX	100
  
- 	if (chnl > 14) {
--		for (place = 14; place < sizeof(channel_all); place++) {
-+		for (place = 14; place < ARRAY_SIZE(channel_all); place++) {
- 			if (channel_all[place] == chnl)
- 				return place - 13;
+ static int ath3k_load_firmware(struct usb_device *udev,
+-				const struct firmware *firmware)
++			       const struct firmware *firmware)
+ {
+ 	u8 *send_buf;
+ 	int len = 0;
+@@ -241,9 +239,9 @@ static int ath3k_load_firmware(struct usb_device *udev,
+ 		memcpy(send_buf, firmware->data + sent, size);
+ 
+ 		err = usb_bulk_msg(udev, pipe, send_buf, size,
+-					&len, 3000);
++				   &len, 3000);
+ 
+-		if (err || (len != size)) {
++		if (err || len != size) {
+ 			ath3k_log_failed_loading(err, len, size, count);
+ 			goto error;
  		}
-@@ -2417,7 +2417,7 @@ static bool _rtl92d_is_legal_5g_channel(struct ieee80211_hw *hw, u8 channel)
+@@ -278,7 +276,7 @@ static int ath3k_get_state(struct usb_device *udev, unsigned char *state)
+ }
  
- 	int i;
+ static int ath3k_get_version(struct usb_device *udev,
+-			struct ath3k_version *version)
++			     struct ath3k_version *version)
+ {
+ 	int ret, pipe = 0;
+ 	struct ath3k_version *buf;
+@@ -300,7 +298,7 @@ static int ath3k_get_version(struct usb_device *udev,
+ }
  
--	for (i = 0; i < sizeof(channel5g); i++)
-+	for (i = 0; i < ARRAY_SIZE(channel5g); i++)
- 		if (channel == channel5g[i])
- 			return true;
- 	return false;
-@@ -2681,9 +2681,8 @@ void rtl92d_phy_reset_iqk_result(struct ieee80211_hw *hw)
- 	u8 i;
+ static int ath3k_load_fwfile(struct usb_device *udev,
+-		const struct firmware *firmware)
++			     const struct firmware *firmware)
+ {
+ 	u8 *send_buf;
+ 	int len = 0;
+@@ -341,8 +339,8 @@ static int ath3k_load_fwfile(struct usb_device *udev,
+ 		memcpy(send_buf, firmware->data + sent, size);
  
- 	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
--		"settings regs %d default regs %d\n",
--		(int)(sizeof(rtlphy->iqk_matrix) /
--		      sizeof(struct iqk_matrix_regs)),
-+		"settings regs %zu default regs %d\n",
-+		ARRAY_SIZE(rtlphy->iqk_matrix),
- 		IQK_MATRIX_REG_NUM);
- 	/* 0xe94, 0xe9c, 0xea4, 0xeac, 0xeb4, 0xebc, 0xec4, 0xecc */
- 	for (i = 0; i < IQK_MATRIX_SETTINGS_NUM; i++) {
-@@ -2850,16 +2849,14 @@ u8 rtl92d_phy_sw_chnl(struct ieee80211_hw *hw)
- 	case BAND_ON_5G:
- 		/* Get first channel error when change between
- 		 * 5G and 2.4G band. */
--		if (channel <= 14)
-+		if (WARN_ONCE(channel <= 14, "rtl8192de: 5G but channel<=14\n"))
- 			return 0;
--		WARN_ONCE((channel <= 14), "rtl8192de: 5G but channel<=14\n");
+ 		err = usb_bulk_msg(udev, pipe, send_buf, size,
+-					&len, 3000);
+-		if (err || (len != size)) {
++				   &len, 3000);
++		if (err || len != size) {
+ 			ath3k_log_failed_loading(err, len, size, count);
+ 			kfree(send_buf);
+ 			return err;
+@@ -461,7 +459,6 @@ static int ath3k_load_syscfg(struct usb_device *udev)
+ 	}
+ 
+ 	switch (fw_version.ref_clock) {
+-
+ 	case ATH3K_XTAL_FREQ_26M:
+ 		clk_value = 26;
  		break;
- 	case BAND_ON_2_4G:
- 		/* Get first channel error when change between
- 		 * 5G and 2.4G band. */
--		if (channel > 14)
-+		if (WARN_ONCE(channel > 14, "rtl8192de: 2G but channel>14\n"))
- 			return 0;
--		WARN_ONCE((channel > 14), "rtl8192de: 2G but channel>14\n");
- 		break;
- 	default:
- 		WARN_ONCE(true, "rtl8192de: Invalid WirelessMode(%#x)!!\n",
-diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-index a89e232d6963f..c997d8bfda975 100644
---- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-@@ -108,7 +108,6 @@
- #define	CHANNEL_GROUP_IDX_5GM		6
- #define	CHANNEL_GROUP_IDX_5GH		9
- #define	CHANNEL_GROUP_MAX_5G		9
--#define CHANNEL_MAX_NUMBER_2G		14
- #define AVG_THERMAL_NUM			8
- #define AVG_THERMAL_NUM_88E		4
- #define AVG_THERMAL_NUM_8723BE		4
+@@ -477,7 +474,7 @@ static int ath3k_load_syscfg(struct usb_device *udev)
+ 	}
+ 
+ 	snprintf(filename, ATH3K_NAME_LEN, "ar3k/ramps_0x%08x_%d%s",
+-		le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
++		 le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
+ 
+ 	ret = request_firmware(&firmware, filename, &udev->dev);
+ 	if (ret < 0) {
+@@ -492,7 +489,7 @@ static int ath3k_load_syscfg(struct usb_device *udev)
+ }
+ 
+ static int ath3k_probe(struct usb_interface *intf,
+-			const struct usb_device_id *id)
++		       const struct usb_device_id *id)
+ {
+ 	const struct firmware *firmware;
+ 	struct usb_device *udev = interface_to_usbdev(intf);
+@@ -541,10 +538,10 @@ static int ath3k_probe(struct usb_interface *intf,
+ 	if (ret < 0) {
+ 		if (ret == -ENOENT)
+ 			BT_ERR("Firmware file \"%s\" not found",
+-							ATH3K_FIRMWARE);
++			       ATH3K_FIRMWARE);
+ 		else
+ 			BT_ERR("Firmware file \"%s\" request failed (err=%d)",
+-							ATH3K_FIRMWARE, ret);
++			       ATH3K_FIRMWARE, ret);
+ 		return ret;
+ 	}
+ 
 -- 
 2.43.0
 
