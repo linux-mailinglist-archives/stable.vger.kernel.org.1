@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-57385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3825B925EFF
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:46:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F480925D75
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:28:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE9D5B3888F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:16:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84E30B24DEA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3DA173345;
-	Wed,  3 Jul 2024 11:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCC717D889;
+	Wed,  3 Jul 2024 10:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JM0EA1q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOfpUh1o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE30944D;
-	Wed,  3 Jul 2024 11:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E1917D349;
+	Wed,  3 Jul 2024 10:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004717; cv=none; b=jL5mW238vU/B2WYItDL2Qx+dpyUMe8i3zWVWKs7vwtI4+6BST8Bm4rm7Muwrmb6D+eNf20KneHSca7+GJU8OlsqZOQDumtA7srHUm+1Jjii4MxSchyA3ANGAtbQkXSzNDx+Oow8/EWBB1mjSXlhTkjATRpyu0Uh0mjYWp75k9Fg=
+	t=1720003376; cv=none; b=foYItuoVywZ4ltyW1Frkx9NwQ0Mp8uxgWQ78Kq805TqLHfMUSglvvD9DupQS26PQkuBAc3fwBBSC4tcQ1+lmMfogb3Wq+6vNNudGmIex6eT3nFnInWYB4MHbASjvXa6YO45a/HsMpz2OHs6UZBTDawyGK2z/23bO3my6bMm2C9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004717; c=relaxed/simple;
-	bh=a8T9cbF7LIQSGqkYpT1m3IzKNTe+zLqzauPsdxb5+eA=;
+	s=arc-20240116; t=1720003376; c=relaxed/simple;
+	bh=p+lDYXD7orzJ43kvQTPhaZWFk+rZ8gZl5grA89Ri5WU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oaZvJJp4tV56l9b0NOUvQwQx8XLO++Em8QjOovf6EX2LhKvRJObv8N6towZritp87XKFctyMfS0pqiywk/yoWZzJedXEJsMEJwlg2kG9yUldhT113OCeiHwyS2EVdTM2mN86qWw6gKVZt7+W/7/LUpvZd3RoRz7rQpXiIaLCSls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JM0EA1q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDED2C32781;
-	Wed,  3 Jul 2024 11:05:16 +0000 (UTC)
+	 MIME-Version; b=s808gkOVbImYEwjZss0MsrXqq6+jnHN0C8Oc39M8kOYNjigu6YzwO//k+pQr31OtRaBNeIZt91YO345bOWx0TL7hNEeXrMOjNYc3ryeVj3BoKRBVnLipfBCK8L5jcrEW8O9x+UpwJhk1TD8GLn8/m9gfemXjNAX1nfBhkB9zvV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOfpUh1o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F29C2BD10;
+	Wed,  3 Jul 2024 10:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004717;
-	bh=a8T9cbF7LIQSGqkYpT1m3IzKNTe+zLqzauPsdxb5+eA=;
+	s=korg; t=1720003376;
+	bh=p+lDYXD7orzJ43kvQTPhaZWFk+rZ8gZl5grA89Ri5WU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0JM0EA1qEaVYm7bQed/qs1FtpJx04NRmcaxG/murv5OEYsJlQzro2mHjMJlhJpQ7+
-	 rQ89YyppzzO1vFDkCBKcws+eazKwYwLeCop175GMOjGkYpAD3okesll4l6kwkweJtY
-	 tSG0GqRrDQZ8kasKCB4JiJ5xKZY8EvsLaZhdQrkk=
+	b=tOfpUh1oe0BFQTHMT+hdh+jaKILVcg0yKZzbJakynTaEEexHZR/9qlo2O/zgZDhpn
+	 5JyggVSG4ohMGzGROszufLvaBkR5PAifcciYgnx55HLPjT1jOIkjSCszqnYw0K5Wa8
+	 cBuR2aNerhYwk36kHVyMqFOPEkfJOURaD+YYt7Jg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 136/290] mips: bmips: BCM6358: make sure CBR is correctly set
-Date: Wed,  3 Jul 2024 12:38:37 +0200
-Message-ID: <20240703102909.323515230@linuxfoundation.org>
+Subject: [PATCH 4.19 021/139] media: mc: mark the media devnode as registered from the, start
+Date: Wed,  3 Jul 2024 12:38:38 +0200
+Message-ID: <20240703102831.241055820@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit ce5cdd3b05216b704a704f466fb4c2dff3778caf ]
+[ Upstream commit 4bc60736154bc9e0e39d3b88918f5d3762ebe5e0 ]
 
-It was discovered that some device have CBR address set to 0 causing
-kernel panic when arch_sync_dma_for_cpu_all is called.
+First the media device node was created, and if successful it was
+marked as 'registered'. This leaves a small race condition where
+an application can open the device node and get an error back
+because the 'registered' flag was not yet set.
 
-This was notice in situation where the system is booted from TP1 and
-BMIPS_GET_CBR() returns 0 instead of a valid address and
-!!(read_c0_brcm_cmt_local() & (1 << 31)); not failing.
+Change the order: first set the 'registered' flag, then actually
+register the media device node. If that fails, then clear the flag.
 
-The current check whether RAC flush should be disabled or not are not
-enough hence lets check if CBR is a valid address or not.
-
-Fixes: ab327f8acdf8 ("mips: bmips: BCM6358: disable RAC flush for TP1")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Fixes: cf4b9211b568 ("[media] media: Media device node support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/bmips/setup.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/media-devnode.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
-index 16063081d61ec..ac75797739d22 100644
---- a/arch/mips/bmips/setup.c
-+++ b/arch/mips/bmips/setup.c
-@@ -110,7 +110,8 @@ static void bcm6358_quirks(void)
- 	 * RAC flush causes kernel panics on BCM6358 when booting from TP1
- 	 * because the bootloader is not initializing it properly.
- 	 */
--	bmips_rac_flush_disable = !!(read_c0_brcm_cmt_local() & (1 << 31));
-+	bmips_rac_flush_disable = !!(read_c0_brcm_cmt_local() & (1 << 31)) ||
-+				  !!BMIPS_GET_CBR();
- }
+diff --git a/drivers/media/media-devnode.c b/drivers/media/media-devnode.c
+index 6b87a721dc499..b4a62b3172e3d 100644
+--- a/drivers/media/media-devnode.c
++++ b/drivers/media/media-devnode.c
+@@ -253,15 +253,14 @@ int __must_check media_devnode_register(struct media_device *mdev,
+ 	devnode->cdev.owner = owner;
  
- static void bcm6368_quirks(void)
+ 	/* Part 3: Add the media and char device */
++	set_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
+ 	ret = cdev_device_add(&devnode->cdev, &devnode->dev);
+ 	if (ret < 0) {
++		clear_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
+ 		pr_err("%s: cdev_device_add failed\n", __func__);
+ 		goto cdev_add_error;
+ 	}
+ 
+-	/* Part 4: Activate this minor. The char device can now be used. */
+-	set_bit(MEDIA_FLAG_REGISTERED, &devnode->flags);
+-
+ 	return 0;
+ 
+ cdev_add_error:
 -- 
 2.43.0
 
