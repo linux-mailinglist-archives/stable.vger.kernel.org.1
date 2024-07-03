@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-57743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-56958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AFC0925DC7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:31:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DCDF9259F2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:52:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40C4F1F22EC1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:31:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D031F1C238B5
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81FD813BAFA;
-	Wed,  3 Jul 2024 11:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C03E180A77;
+	Wed,  3 Jul 2024 10:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yyAnqqu1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oegmIWHS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4AC175549;
-	Wed,  3 Jul 2024 11:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07920180A64;
+	Wed,  3 Jul 2024 10:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005799; cv=none; b=FRddofzcGn96fnY2wjL/wgYfaea91S8jWSYaW7qJqc5BcDftJQTKUT7b6Sd4ZmYK42OXUgUqAEeZu00NfmdPG7zVnZzh880reW+ZQCAh03Cfjtkkl0c+VsZ4so0m3fjZY++8pyjuMt7NtOzhXE3tVdadI/d0saIwiakEzIMQUUM=
+	t=1720003406; cv=none; b=jIEvryTkNIWiEzCsh19WpkWZZ5kJXkyVA/RZ5VKeLWbrisgjfRlLTbEeUNz3GcpuIjRHAgnPqTk2y/ivVWyhbm6wDjAGAUZUTj6eRdlY2jmRL+E4XK7D9SqiTrTX4KtBJfy3UlmRKogjUkMwy4J83mGhGzgjTZBC8xgWg2Ta7hM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005799; c=relaxed/simple;
-	bh=ENvyvNuf8i8KzOa4fOhjgEpYHjLD0/JmZSAKpQyOt3Y=;
+	s=arc-20240116; t=1720003406; c=relaxed/simple;
+	bh=9/OAxhQhvzm/02wtr5grrOuLvHzwjkzD69BUF5prtA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YjUhaZtwoqnVLZc5C69OiuJZLawZxQQRlzk7vWVuEEa6JRqiN1SvPnWgAh46f230+2+zhUwNR8S09GOyWGCtnodtAZYWhODWNJA+YIEUqe4Q3Twnpplwl6aPNT8mGOUN5LxpQC4zYkNz03nnH6S6+mgRCf1iVichteJGSMq/hy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yyAnqqu1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33E1C2BD10;
-	Wed,  3 Jul 2024 11:23:18 +0000 (UTC)
+	 MIME-Version; b=bO62all0fimz6ucIrMAMj6Zhrwzk7LhtI5hRz7qCVHNIZEoWrUPHNJAeNC35IXrEtuDTEyU2CM9M4npFYav0JikvyeyZiNd2dk021dxz8LKdvvAqD2PAZv3aV0tlzymtJFJz+MmZsSjUyiowZnQSXcPxxnnYiqIAQaicPAqUjUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oegmIWHS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64BADC4AF0D;
+	Wed,  3 Jul 2024 10:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005799;
-	bh=ENvyvNuf8i8KzOa4fOhjgEpYHjLD0/JmZSAKpQyOt3Y=;
+	s=korg; t=1720003405;
+	bh=9/OAxhQhvzm/02wtr5grrOuLvHzwjkzD69BUF5prtA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yyAnqqu1mxRSaCwQdBCeCSpu+FRaSzS/q6UkaM0itgIeRNpICyk9MGD9RFJectP14
-	 sAJtdBqasTZmnqxJbEWWk21k6ZpJMEUGlyfljEN9OUeao6JOklAWsQvl9YmkPh7e5j
-	 PHGwo/meEWKcWyEhfmfcUmFXTx0p0EzoprcGAiJI=
+	b=oegmIWHS8j05KrpSB9mhuLEfZPfXbVp8mKE8iOvaFfAKNSj949IbeGIrJqZyYctak
+	 KXdvful+EDueU+MJ/t4dWfifjl3E3erQ/b/fmI5J4oTrNfuzsW80KqdHvxhsTGSLF5
+	 Vivkci2JQKPmEE1HOTqAzgznDQuX+HaTxE5L1tfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heng Qi <hengqi@linux.alibaba.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Adam Miotk <adam.miotk@arm.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 200/356] virtio_net: checksum offloading handling fix
+Subject: [PATCH 4.19 039/139] drm/bridge/panel: Fix runtime warning on panel bridge release
 Date: Wed,  3 Jul 2024 12:38:56 +0200
-Message-ID: <20240703102920.671241025@linuxfoundation.org>
+Message-ID: <20240703102831.915091826@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heng Qi <hengqi@linux.alibaba.com>
+From: Adam Miotk <adam.miotk@arm.com>
 
-[ Upstream commit 604141c036e1b636e2a71cf6e1aa09d1e45f40c2 ]
+[ Upstream commit ce62600c4dbee8d43b02277669dd91785a9b81d9 ]
 
-In virtio spec 0.95, VIRTIO_NET_F_GUEST_CSUM was designed to handle
-partially checksummed packets, and the validation of fully checksummed
-packets by the device is independent of VIRTIO_NET_F_GUEST_CSUM
-negotiation. However, the specification erroneously stated:
+Device managed panel bridge wrappers are created by calling to
+drm_panel_bridge_add_typed() and registering a release handler for
+clean-up when the device gets unbound.
 
-  "If VIRTIO_NET_F_GUEST_CSUM is not negotiated, the device MUST set flags
-   to zero and SHOULD supply a fully checksummed packet to the driver."
+Since the memory for this bridge is also managed and linked to the panel
+device, the release function should not try to free that memory.
+Moreover, the call to devm_kfree() inside drm_panel_bridge_remove() will
+fail in this case and emit a warning because the panel bridge resource
+is no longer on the device resources list (it has been removed from
+there before the call to release handlers).
 
-This statement is inaccurate because even without VIRTIO_NET_F_GUEST_CSUM
-negotiation, the device can still set the VIRTIO_NET_HDR_F_DATA_VALID flag.
-Essentially, the device can facilitate the validation of these packets'
-checksums - a process known as RX checksum offloading - removing the need
-for the driver to do so.
-
-This scenario is currently not implemented in the driver and requires
-correction. The necessary specification correction[1] has been made and
-approved in the virtio TC vote.
-[1] https://lists.oasis-open.org/archives/virtio-comment/202401/msg00011.html
-
-Fixes: 4f49129be6fa ("virtio-net: Set RXCSUM feature if GUEST_CSUM is available")
-Signed-off-by: Heng Qi <hengqi@linux.alibaba.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 67022227ffb1 ("drm/bridge: Add a devm_ allocator for panel bridge.")
+Signed-off-by: Adam Miotk <adam.miotk@arm.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240610102739.139852-1-adam.miotk@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/panel.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 6a655bd442fe3..bd0cb3a03b7b2 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3211,8 +3211,16 @@ static int virtnet_probe(struct virtio_device *vdev)
- 			dev->features |= dev->hw_features & NETIF_F_ALL_TSO;
- 		/* (!csum && gso) case will be fixed by register_netdev() */
- 	}
--	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_CSUM))
--		dev->features |= NETIF_F_RXCSUM;
+diff --git a/drivers/gpu/drm/bridge/panel.c b/drivers/gpu/drm/bridge/panel.c
+index 7cbaba213ef69..2d6f8280fc712 100644
+--- a/drivers/gpu/drm/bridge/panel.c
++++ b/drivers/gpu/drm/bridge/panel.c
+@@ -205,9 +205,12 @@ EXPORT_SYMBOL(drm_panel_bridge_remove);
+ 
+ static void devm_drm_panel_bridge_release(struct device *dev, void *res)
+ {
+-	struct drm_bridge **bridge = res;
++	struct drm_bridge *bridge = *(struct drm_bridge **)res;
+ 
+-	drm_panel_bridge_remove(*bridge);
++	if (!bridge)
++		return;
 +
-+	/* 1. With VIRTIO_NET_F_GUEST_CSUM negotiation, the driver doesn't
-+	 * need to calculate checksums for partially checksummed packets,
-+	 * as they're considered valid by the upper layer.
-+	 * 2. Without VIRTIO_NET_F_GUEST_CSUM negotiation, the driver only
-+	 * receives fully checksummed packets. The device may assist in
-+	 * validating these packets' checksums, so the driver won't have to.
-+	 */
-+	dev->features |= NETIF_F_RXCSUM;
-+
- 	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_TSO4) ||
- 	    virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_TSO6))
- 		dev->features |= NETIF_F_GRO_HW;
++	drm_bridge_remove(bridge);
+ }
+ 
+ struct drm_bridge *devm_drm_panel_bridge_add(struct device *dev,
 -- 
 2.43.0
 
