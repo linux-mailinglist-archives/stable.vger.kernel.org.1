@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-57247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04546925BD3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:12:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34C7F925F07
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:47:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20A722948C0
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:11:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BDF2EB3C426
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC55194A68;
-	Wed,  3 Jul 2024 10:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEDE8194A59;
+	Wed,  3 Jul 2024 11:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GY+V8yEo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RmNCwVS9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5CA19DF71;
-	Wed,  3 Jul 2024 10:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD88194A54;
+	Wed,  3 Jul 2024 11:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004303; cv=none; b=oGWC7dqm+YZ1pETdJFdtfGJtOTMNmP1VLVQucjzrL231EpHrnMu8eH2kI/Ca9yplnU9j4PKQWS7KI4HYJ+g77GqUYd28AzGlI6s+sY2SzNDltFd40zqGPP04gkZAYYxAuM4S1rBgDijXoRE7T/iMIlsMuiIUZpplXLs2ffKn6js=
+	t=1720005117; cv=none; b=YQ7ILbQEZqKeRdT5Ri+aAqV51yUls68OpHJms6S3eaBmx7FypVH6kEe5Xd769dFwwS1sITyatcBBZ9yUM8faOvW91N7JPpS+afRWDxmlqLl7/pQoLgjBXjh9EpLGdNqK0SlRlDLszMO6hREMQUST6gmqgUKKdz3KA9ldfEECWXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004303; c=relaxed/simple;
-	bh=3ADJls7lJDw9+fOsix3CLG5kvm4f4MjiTTACgNWq4hw=;
+	s=arc-20240116; t=1720005117; c=relaxed/simple;
+	bh=1+lEzGqHGb939x/MMYimyBe3780pz31YayPHXaKBrBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R1yFucUydoTnVoLUMXrf3bG8Nnkl6zYQcbTktOZmDI2WzEPNgJM7b3Rs3hf06LY3D4GkiNajhVwXD6IfC2u1htHMX9WMIcen+/jGtf79xu8LmGZIwaJG2ZNSEjj5cdJywpuKs96HLYFtvEnSIV1V4R4aLrsqWQeqWDZIBTaA1j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GY+V8yEo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA45C32781;
-	Wed,  3 Jul 2024 10:58:23 +0000 (UTC)
+	 MIME-Version; b=HJi4YEBmN6seg2Agej2XQORYccP94JdXP3HvjNFplAoB8PMdKbjV+pc/TYEedfrrv1mMIKnDth5h+mNChD1nbYapIpIJbpjxKro9eqxO5fZHp2uKhYdC8MCGKznm9dgm0U8hObzRJUO/XlqTuOxcXkk4+z5q+Jv6yY8scBAekb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmNCwVS9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6652C2BD10;
+	Wed,  3 Jul 2024 11:11:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004303;
-	bh=3ADJls7lJDw9+fOsix3CLG5kvm4f4MjiTTACgNWq4hw=;
+	s=korg; t=1720005117;
+	bh=1+lEzGqHGb939x/MMYimyBe3780pz31YayPHXaKBrBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GY+V8yEo4A53RvfrJ2cKbPS3EefwDmGmDj+3j3Rn0jFZNkUUjfNzYyBh96tTRJqdW
-	 dt3k/w3ncnZ6oXdkQTIP6MqwjGe1buK0+ROhtf0LAFHsM3nqBp4orhgwAW/yj60ms5
-	 PcG/JiSxWRE0eFBCo6rTuoWC8omh0NDBsy1VASD0=
+	b=RmNCwVS9gq7ZgiLP7HNCG873NwvfpaDdurZYiDlsZesPCVue7bw/UHcMY4qK+MsXY
+	 AjANKpBtZ7bMWnjVsXnYXZ5dE3mSodS7Wx+oRAvl60B7hQ0+ISUC6pe1OFtQFrNt+6
+	 MOmpeo64d3zi/Bet3RUeb1wcQunpmwS7iRVYng0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netdev@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
-Subject: [PATCH 5.4 187/189] tcp: Fix data races around icsk->icsk_af_ops.
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.10 267/290] hexagon: fix fadvise64_64 calling conventions
 Date: Wed,  3 Jul 2024 12:40:48 +0200
-Message-ID: <20240703102848.531637499@linuxfoundation.org>
+Message-ID: <20240703102914.237219541@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,129 +60,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit f49cd2f4d6170d27a2c61f1fecb03d8a70c91f57 upstream.
+commit 896842284c6ccba25ec9d78b7b6e62cdd507c083 upstream.
 
-setsockopt(IPV6_ADDRFORM) and tcp_v6_connect() change icsk->icsk_af_ops
-under lock_sock(), but tcp_(get|set)sockopt() read it locklessly.  To
-avoid load/store tearing, we need to add READ_ONCE() and WRITE_ONCE()
-for the reads and writes.
+fadvise64_64() has two 64-bit arguments at the wrong alignment
+for hexagon, which turns them into a 7-argument syscall that is
+not supported by Linux.
 
-Thanks to Eric Dumazet for providing the syzbot report:
+The downstream musl port for hexagon actually asks for a 6-argument
+version the same way we do it on arm, csky, powerpc, so make the
+kernel do it the same way to avoid having to change both.
 
-BUG: KCSAN: data-race in tcp_setsockopt / tcp_v6_connect
-
-write to 0xffff88813c624518 of 8 bytes by task 23936 on cpu 0:
-tcp_v6_connect+0x5b3/0xce0 net/ipv6/tcp_ipv6.c:240
-__inet_stream_connect+0x159/0x6d0 net/ipv4/af_inet.c:660
-inet_stream_connect+0x44/0x70 net/ipv4/af_inet.c:724
-__sys_connect_file net/socket.c:1976 [inline]
-__sys_connect+0x197/0x1b0 net/socket.c:1993
-__do_sys_connect net/socket.c:2003 [inline]
-__se_sys_connect net/socket.c:2000 [inline]
-__x64_sys_connect+0x3d/0x50 net/socket.c:2000
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x2b/0x70 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-read to 0xffff88813c624518 of 8 bytes by task 23937 on cpu 1:
-tcp_setsockopt+0x147/0x1c80 net/ipv4/tcp.c:3789
-sock_common_setsockopt+0x5d/0x70 net/core/sock.c:3585
-__sys_setsockopt+0x212/0x2b0 net/socket.c:2252
-__do_sys_setsockopt net/socket.c:2263 [inline]
-__se_sys_setsockopt net/socket.c:2260 [inline]
-__x64_sys_setsockopt+0x62/0x70 net/socket.c:2260
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x2b/0x70 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-value changed: 0xffffffff8539af68 -> 0xffffffff8539aff8
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 23937 Comm: syz-executor.5 Not tainted
-6.0.0-rc4-syzkaller-00331-g4ed9c1e971b1-dirty #0
-
-Hardware name: Google Google Compute Engine/Google Compute Engine,
-BIOS Google 08/26/2022
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Reported-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
+Link: https://github.com/quic/musl/blob/hexagon/arch/hexagon/syscall_arch.h#L78
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp.c           |   10 ++++++----
- net/ipv6/ipv6_sockglue.c |    3 ++-
- net/ipv6/tcp_ipv6.c      |    6 ++++--
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ arch/hexagon/include/asm/syscalls.h |    6 ++++++
+ arch/hexagon/kernel/syscalltab.c    |    7 +++++++
+ 2 files changed, 13 insertions(+)
+ create mode 100644 arch/hexagon/include/asm/syscalls.h
 
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3208,8 +3208,9 @@ int tcp_setsockopt(struct sock *sk, int
- 	const struct inet_connection_sock *icsk = inet_csk(sk);
+--- /dev/null
++++ b/arch/hexagon/include/asm/syscalls.h
+@@ -0,0 +1,6 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#include <asm-generic/syscalls.h>
++
++asmlinkage long sys_hexagon_fadvise64_64(int fd, int advice,
++	                                  u32 a2, u32 a3, u32 a4, u32 a5);
+--- a/arch/hexagon/kernel/syscalltab.c
++++ b/arch/hexagon/kernel/syscalltab.c
+@@ -14,6 +14,13 @@
+ #undef __SYSCALL
+ #define __SYSCALL(nr, call) [nr] = (call),
  
- 	if (level != SOL_TCP)
--		return icsk->icsk_af_ops->setsockopt(sk, level, optname,
--						     optval, optlen);
-+		/* Paired with WRITE_ONCE() in do_ipv6_setsockopt() and tcp_v6_connect() */
-+		return READ_ONCE(icsk->icsk_af_ops)->setsockopt(sk, level, optname,
-+								optval, optlen);
- 	return do_tcp_setsockopt(sk, level, optname, optval, optlen);
- }
- EXPORT_SYMBOL(tcp_setsockopt);
-@@ -3733,8 +3734,9 @@ int tcp_getsockopt(struct sock *sk, int
- 	struct inet_connection_sock *icsk = inet_csk(sk);
- 
- 	if (level != SOL_TCP)
--		return icsk->icsk_af_ops->getsockopt(sk, level, optname,
--						     optval, optlen);
-+		/* Paired with WRITE_ONCE() in do_ipv6_setsockopt() and tcp_v6_connect() */
-+		return READ_ONCE(icsk->icsk_af_ops)->getsockopt(sk, level, optname,
-+								optval, optlen);
- 	return do_tcp_getsockopt(sk, level, optname, optval, optlen);
- }
- EXPORT_SYMBOL(tcp_getsockopt);
---- a/net/ipv6/ipv6_sockglue.c
-+++ b/net/ipv6/ipv6_sockglue.c
-@@ -224,7 +224,8 @@ static int do_ipv6_setsockopt(struct soc
- 				local_bh_enable();
- 				/* Paired with READ_ONCE(sk->sk_prot) in inet6_stream_ops */
- 				WRITE_ONCE(sk->sk_prot, &tcp_prot);
--				icsk->icsk_af_ops = &ipv4_specific;
-+				/* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
-+				WRITE_ONCE(icsk->icsk_af_ops, &ipv4_specific);
- 				sk->sk_socket->ops = &inet_stream_ops;
- 				sk->sk_family = PF_INET;
- 				tcp_sync_mss(sk, icsk->icsk_pmtu_cookie);
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -236,7 +236,8 @@ static int tcp_v6_connect(struct sock *s
- 		sin.sin_port = usin->sin6_port;
- 		sin.sin_addr.s_addr = usin->sin6_addr.s6_addr32[3];
- 
--		icsk->icsk_af_ops = &ipv6_mapped;
-+		/* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
-+		WRITE_ONCE(icsk->icsk_af_ops, &ipv6_mapped);
- 		sk->sk_backlog_rcv = tcp_v4_do_rcv;
- #ifdef CONFIG_TCP_MD5SIG
- 		tp->af_specific = &tcp_sock_ipv6_mapped_specific;
-@@ -246,7 +247,8 @@ static int tcp_v6_connect(struct sock *s
- 
- 		if (err) {
- 			icsk->icsk_ext_hdr_len = exthdrlen;
--			icsk->icsk_af_ops = &ipv6_specific;
-+			/* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
-+			WRITE_ONCE(icsk->icsk_af_ops, &ipv6_specific);
- 			sk->sk_backlog_rcv = tcp_v6_do_rcv;
- #ifdef CONFIG_TCP_MD5SIG
- 			tp->af_specific = &tcp_sock_ipv6_specific;
++SYSCALL_DEFINE6(hexagon_fadvise64_64, int, fd, int, advice,
++		SC_ARG64(offset), SC_ARG64(len))
++{
++	return ksys_fadvise64_64(fd, SC_VAL64(loff_t, offset), SC_VAL64(loff_t, len), advice);
++}
++#define sys_fadvise64_64 sys_hexagon_fadvise64_64
++
+ void *sys_call_table[__NR_syscalls] = {
+ #include <asm/unistd.h>
+ };
 
 
 
