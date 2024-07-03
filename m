@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-57885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FE8D925E97
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:37:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C254925CCF
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:22:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B81FB292D95
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:37:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EC372C44CE
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:22:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C2A818306D;
-	Wed,  3 Jul 2024 11:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901A4194A50;
+	Wed,  3 Jul 2024 11:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jiTDhxOj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rIkX88r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CE2174EFA;
-	Wed,  3 Jul 2024 11:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFC3188CDA;
+	Wed,  3 Jul 2024 11:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006226; cv=none; b=OLn2gi9bjQQiZ9brzMMxETpxpXlaIWXV4VCFDbPXeZv9w7oMeOOHmTqZaVBhr4+4GKgDrfFpL9qoGncI77On8nLQzePRfjZU/oAOQOs8GfHRZkT+eS43QU0gj4smPEJ86YY0UYStkysTIKXS1EI4Ntqe1c8tPCqN9XQRljRw8kc=
+	t=1720005126; cv=none; b=FkbP+bbj6hNFIMBfyYu9zxnCDCuZqzelLkEzAi8pDguTkapaR3Sa+QGxw521VhPvbTOPdDajcQJcoAo6Xx+IdxwVu9xl2yTOqswR4CcjYuX4EhHlBdpdhf+iThXMisdZ2Dz8x2ZGGQB0qlQrg+dJpDdOqgaMujoLWtum6LxOR50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006226; c=relaxed/simple;
-	bh=zb4sreSkoCD+pIpCH7Q5UkUmCKhxIC7YfRGX65hh+LU=;
+	s=arc-20240116; t=1720005126; c=relaxed/simple;
+	bh=yRG5W8gWPbMcQjo48IMyYuI3otWWOTenPODn121SGKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MihAiE3aRXOLhDxsGWzOzCeDZtKp2lg5oFHjl86wX2L9cDKx2T1wEQ8LLsrEQpT/FpNZUnRTsBf9OjWbGmHnHKwMnxuAkwH5E+SGBjVeeDaXiJ0QTQPe1Up+uIHDPPXC2lg38Uyyoxfyglnbe+o1QikZPcV3KGewYicB2pJwI5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiTDhxOj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B64FBC2BD10;
-	Wed,  3 Jul 2024 11:30:25 +0000 (UTC)
+	 MIME-Version; b=Izm26xYijbC2pGWluQ7UeuWEJnEIselnJN9gY/3LGbG6YBdZs4O3kOngKOl4Z0zoxWWKiWsl8rV0Wqhlzh5FAwWJjExlqQPCvZim8QU3EYnn4auz1mBZqq79rWawXhmNQegKwEEroSPDDPZKfoyL85wcPIJTvTxY81eTauzPO+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rIkX88r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F20C2BD10;
+	Wed,  3 Jul 2024 11:12:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006226;
-	bh=zb4sreSkoCD+pIpCH7Q5UkUmCKhxIC7YfRGX65hh+LU=;
+	s=korg; t=1720005126;
+	bh=yRG5W8gWPbMcQjo48IMyYuI3otWWOTenPODn121SGKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jiTDhxOjDJ+YRlGQA3HRJ7p2nSfkjdIE3l1w4MwYKIBoNLQR2Su1sPC8sNNfaFhf3
-	 OC0LRb6FAHQ4ScDphJNV4o66/7kp0tqRh4CrIEuIkvtoc9nVMLPc9BWDT/m/CtGVlP
-	 tXDe7Ls27IxoIyklfO1qYWRythAi4qfqQ0tKOZao=
+	b=0rIkX88r937+tviYXeS2R65Id8lbBG9VbszuBTkhKcPc8BsVFOD9ukSxWqV+cxIhj
+	 2sLMU+3WZXe6pu+U3wqLAgzIgcWADxFw6lQWQzeC2WcuE8IP0mTWxKKWMYUp5c5eJ0
+	 3zxRy5ZHiC1WYUHat87VvtgFBaYL3BfKAR8NyWK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 315/356] iio: chemical: bme680: Fix sensor data read operation
+	Ma Ke <make24@iscas.ac.cn>,
+	Lyude Paul <lyude@redhat.com>
+Subject: [PATCH 5.10 270/290] drm/nouveau/dispnv04: fix null pointer dereference in nv17_tv_get_hd_modes
 Date: Wed,  3 Jul 2024 12:40:51 +0200
-Message-ID: <20240703102925.032063791@linuxfoundation.org>
+Message-ID: <20240703102914.350070455@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,143 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 4241665e6ea063a9c1d734de790121a71db763fc upstream.
+commit 6d411c8ccc0137a612e0044489030a194ff5c843 upstream.
 
-A read operation is happening as follows:
+In nv17_tv_get_hd_modes(), the return value of drm_mode_duplicate() is
+assigned to mode, which will lead to a possible NULL pointer dereference
+on failure of drm_mode_duplicate(). The same applies to drm_cvt_mode().
+Add a check to avoid null pointer dereference.
 
-a) Set sensor to forced mode
-b) Sensor measures values and update data registers and sleeps again
-c) Read data registers
-
-In the current implementation the read operation happens immediately
-after the sensor is set to forced mode so the sensor does not have
-the time to update properly the registers. This leads to the following
-2 problems:
-
-1) The first ever value which is read by the register is always wrong
-2) Every read operation, puts the register into forced mode and reads
-the data that were calculated in the previous conversion.
-
-This behaviour was tested in 2 ways:
-
-1) The internal meas_status_0 register was read before and after every
-read operation in order to verify that the data were ready even before
-the register was set to forced mode and also to check that after the
-forced mode was set the new data were not yet ready.
-
-2) Physically changing the temperature and measuring the temperature
-
-This commit adds the waiting time in between the set of the forced mode
-and the read of the data. The function is taken from the Bosch BME68x
-Sensor API [1].
-
-[1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L490
-
-Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Link: https://lore.kernel.org/r/20240606212313.207550-5-vassilisamir@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240625081029.2619437-1-make24@iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/chemical/bme680.h      |    2 +
- drivers/iio/chemical/bme680_core.c |   46 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 48 insertions(+)
+ drivers/gpu/drm/nouveau/dispnv04/tvnv17.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/iio/chemical/bme680.h
-+++ b/drivers/iio/chemical/bme680.h
-@@ -54,7 +54,9 @@
- #define   BME680_NB_CONV_MASK			GENMASK(3, 0)
+--- a/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
++++ b/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
+@@ -259,6 +259,8 @@ static int nv17_tv_get_hd_modes(struct d
+ 		if (modes[i].hdisplay == output_mode->hdisplay &&
+ 		    modes[i].vdisplay == output_mode->vdisplay) {
+ 			mode = drm_mode_duplicate(encoder->dev, output_mode);
++			if (!mode)
++				continue;
+ 			mode->type |= DRM_MODE_TYPE_PREFERRED;
  
- #define BME680_REG_MEAS_STAT_0			0x1D
-+#define   BME680_NEW_DATA_BIT			BIT(7)
- #define   BME680_GAS_MEAS_BIT			BIT(6)
-+#define   BME680_MEAS_BIT			BIT(5)
+ 		} else {
+@@ -266,6 +268,8 @@ static int nv17_tv_get_hd_modes(struct d
+ 					    modes[i].vdisplay, 60, false,
+ 					    (output_mode->flags &
+ 					     DRM_MODE_FLAG_INTERLACE), false);
++			if (!mode)
++				continue;
+ 		}
  
- /* Calibration Parameters */
- #define BME680_T2_LSB_REG	0x8A
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -10,6 +10,7 @@
-  */
- #include <linux/acpi.h>
- #include <linux/bitfield.h>
-+#include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/module.h>
- #include <linux/log2.h>
-@@ -532,6 +533,43 @@ static u8 bme680_oversampling_to_reg(u8
- 	return ilog2(val) + 1;
- }
- 
-+/*
-+ * Taken from Bosch BME680 API:
-+ * https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L490
-+ */
-+static int bme680_wait_for_eoc(struct bme680_data *data)
-+{
-+	struct device *dev = regmap_get_device(data->regmap);
-+	unsigned int check;
-+	int ret;
-+	/*
-+	 * (Sum of oversampling ratios * time per oversampling) +
-+	 * TPH measurement + gas measurement + wait transition from forced mode
-+	 * + heater duration
-+	 */
-+	int wait_eoc_us = ((data->oversampling_temp + data->oversampling_press +
-+			   data->oversampling_humid) * 1936) + (477 * 4) +
-+			   (477 * 5) + 1000 + (data->heater_dur * 1000);
-+
-+	usleep_range(wait_eoc_us, wait_eoc_us + 100);
-+
-+	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &check);
-+	if (ret) {
-+		dev_err(dev, "failed to read measurement status register.\n");
-+		return ret;
-+	}
-+	if (check & BME680_MEAS_BIT) {
-+		dev_err(dev, "Device measurement cycle incomplete.\n");
-+		return -EBUSY;
-+	}
-+	if (!(check & BME680_NEW_DATA_BIT)) {
-+		dev_err(dev, "No new data available from the device.\n");
-+		return -ENODATA;
-+	}
-+
-+	return 0;
-+}
-+
- static int bme680_chip_config(struct bme680_data *data)
- {
- 	struct device *dev = regmap_get_device(data->regmap);
-@@ -622,6 +660,10 @@ static int bme680_read_temp(struct bme68
- 	if (ret < 0)
- 		return ret;
- 
-+	ret = bme680_wait_for_eoc(data);
-+	if (ret)
-+		return ret;
-+
- 	ret = regmap_bulk_read(data->regmap, BME680_REG_TEMP_MSB,
- 			       &tmp, 3);
- 	if (ret < 0) {
-@@ -738,6 +780,10 @@ static int bme680_read_gas(struct bme680
- 	if (ret < 0)
- 		return ret;
- 
-+	ret = bme680_wait_for_eoc(data);
-+	if (ret)
-+		return ret;
-+
- 	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &check);
- 	if (check & BME680_GAS_MEAS_BIT) {
- 		dev_err(dev, "gas measurement incomplete\n");
+ 		/* CVT modes are sometimes unsuitable... */
 
 
 
