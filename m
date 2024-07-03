@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-56938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F3539259D6
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:51:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77443925ABF
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1D9B1F2202C
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:51:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23F0F1F26F37
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C36017BB2D;
-	Wed,  3 Jul 2024 10:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B7617C213;
+	Wed,  3 Jul 2024 10:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZR1ncHIs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulfr8eCl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C9117BB06;
-	Wed,  3 Jul 2024 10:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285EA17279B;
+	Wed,  3 Jul 2024 10:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003347; cv=none; b=Ux4dVX8LDuu535RBpQ46mi204lt89BNpXAl/ZANbVnJp2Ze5rcyXtJT3gRRZv8RS8Wy9dWninvCq4kfQaN75eYp4WC9hap635EdyGk+pyYzofHDvtNtXYM+RdYCODqfYBU/CgPoFbWnazS+7UYYbX8VeGpHvx5AIQinsd7+3y3o=
+	t=1720003917; cv=none; b=NlNmK/FnkZ942jh2VuY+4luxO8o1Gr4JBnDsyUseLpjzvZQZVZNRmnrOzQyamc68w5xRBW7DNwG7MTz5xKZpuDw84LwT10bFg4x3F0KL1bHB1rg7YDZrFY9WJlxY5VMwrIIwbmhinHGQ3GGS/H2wulx5zeHx6lcxPXhewxhOc8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003347; c=relaxed/simple;
-	bh=t1368XCGfD8T/I/Jjmoc0I0ALjV5Tm99iEPgnQHoqLM=;
+	s=arc-20240116; t=1720003917; c=relaxed/simple;
+	bh=PqFR/4uDl8jwtr5GpxhnY8nbX/yeeqrBDDzI/hSYjwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lHbbMwcUyk+/Wftutih5+OuJLbLukem6z5/MGEucPyvymSbR9h9mKsyHPkb0T0hP4w+x0+nwqj4TKDYYtK2U4vCtu4tIiHVFfqrneB+/dHIbPDnNi7DuzdnSO/hzzLcwn4xE/ZMciosNZWDYyoYy7m36oLtsSKVUHwqZPG+umMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZR1ncHIs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E49C2BD10;
-	Wed,  3 Jul 2024 10:42:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uzPbALguicO7kLP1yTbeCM7VTnHHTqQby+IEvT5sxBnQqMHa9DxauFKO9TbJkfccd8gRew/UUYiJOq5TXaNSGqzdhf091DBu/fJYewam2Z50m/LaAPAX8GSpmcL4cYxLTOVi8xqQlMUfNTgGQdzurPsEZabz5uh3Prva+3x5Vrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulfr8eCl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0688C2BD10;
+	Wed,  3 Jul 2024 10:51:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003346;
-	bh=t1368XCGfD8T/I/Jjmoc0I0ALjV5Tm99iEPgnQHoqLM=;
+	s=korg; t=1720003917;
+	bh=PqFR/4uDl8jwtr5GpxhnY8nbX/yeeqrBDDzI/hSYjwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZR1ncHIscEwmRFSj7hFECwnxJQ2Dbf7Ku5nftqJt/VLkkQp+Fcw5wD49BqjHAmpSB
-	 T50OGOoyrMFLJbAOLkoWT8zvTQyGp9WrEp1764jTcpo55kZ3ZApHatz51VBalNpFZU
-	 8EmHa2AEZezJ/zkvitRPTE2ihTtNj3guZqngU90M=
+	b=ulfr8eClU5jfR0IcE4SosUwL9j0T6ccFCfBlMcf/ntcxyh6TBhP3Ahn5P/HajIq9s
+	 SAk+F7jMN1ZDpCJCE9BSBEe7rhEAgNii6wlSPL5OwvwQgJgBTRb1glSZwcmXtvueAe
+	 Tnp4WOY0EDC2BeKzVPYGzSQSap9HfjzCZLnVzIRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 019/139] serial: sc16is7xx: replace hardcoded divisor value with BIT() macro
-Date: Wed,  3 Jul 2024 12:38:36 +0200
-Message-ID: <20240703102831.166761528@linuxfoundation.org>
+Subject: [PATCH 5.4 056/189] HID: logitech-dj: Fix memory leak in logi_dj_recv_switch_to_dj_mode()
+Date: Wed,  3 Jul 2024 12:38:37 +0200
+Message-ID: <20240703102843.625881426@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: José Expósito <jose.exposito89@gmail.com>
 
-[ Upstream commit 2e57cefc4477659527f7adab1f87cdbf60ef1ae6 ]
+[ Upstream commit ce3af2ee95170b7d9e15fff6e500d67deab1e7b3 ]
 
-To better show why the limit is what it is, since we have only 16 bits for
-the divisor.
+Fix a memory leak on logi_dj_recv_send_report() error path.
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-13-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 8492bd91aa05 ("serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when using prescaler")
+Fixes: 6f20d3261265 ("HID: logitech-dj: Fix error handling in logi_dj_recv_switch_to_dj_mode()")
+Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-logitech-dj.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 800cb94e4b912..a1331225cdc21 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -496,7 +496,7 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 	u8 prescaler = 0;
- 	unsigned long clk = port->uartclk, div = clk / 16 / baud;
+diff --git a/drivers/hid/hid-logitech-dj.c b/drivers/hid/hid-logitech-dj.c
+index 0c2aa9024b878..be19f299f9ec8 100644
+--- a/drivers/hid/hid-logitech-dj.c
++++ b/drivers/hid/hid-logitech-dj.c
+@@ -1213,8 +1213,10 @@ static int logi_dj_recv_switch_to_dj_mode(struct dj_receiver_dev *djrcv_dev,
+ 		 */
+ 		msleep(50);
  
--	if (div > 0xffff) {
-+	if (div >= BIT(16)) {
- 		prescaler = SC16IS7XX_MCR_CLKSEL_BIT;
- 		div /= 4;
+-		if (retval)
++		if (retval) {
++			kfree(dj_report);
+ 			return retval;
++		}
  	}
+ 
+ 	/*
 -- 
 2.43.0
 
