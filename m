@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-57098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7FA2925D6D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:28:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB648925C6D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:18:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D633DB331AC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:02:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8248F2C2C13
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:18:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B5717B4EA;
-	Wed,  3 Jul 2024 10:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D67137910;
+	Wed,  3 Jul 2024 11:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFcPnHrY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzCAuR0f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D7317B4E8;
-	Wed,  3 Jul 2024 10:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419F7181BAC;
+	Wed,  3 Jul 2024 11:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003842; cv=none; b=s6TjzK9iVuYaW1c2bIOEddv4FxuKotoK6H4JP7trOaKNThUPIt0qGIq6OeXFnX91oJt4St0iQeYXraMiwoOQGv+NTj2WiXBSfrGUx2eePpTr+tByyNLu5pvnRbi0zZDsHAByYuDVKEt4G0xVykxnoiqHMJmw3fjbVvhUtfX1NGs=
+	t=1720004795; cv=none; b=lnTIbegSLmXNRZQwOWdASicwmLLZ1UWYSzeJQ7b48PaTH1B+BZX5a45MzlH8g8F9PUvYu/E/AOwvUODKFqc2CQOPTZ7Zv8ZkHSTYQ5QZmGsznqfMeeJC9ie8/LpxtjhwRnRlbpI+Nrgq6un3ny7lGr4rPwYcWX+HAHKZlzo1arQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003842; c=relaxed/simple;
-	bh=AqJ5fq1YhrOimkhWvbLs823pa0Gq8zzQP1dO0MFeG7A=;
+	s=arc-20240116; t=1720004795; c=relaxed/simple;
+	bh=L0DrZGEuB8RqBJeIotlN9aw9rl8GxwoOekSupNwnyUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JjQAVSExU79QfzK8GOkzAhQMkT9huLJPkdEzinFKYG5vOuXkqsjWiL4AKp0NVvANw2q4hbwGgTAlKhNBwHIKANts05zpp6iD55og74KTiClNA9c8YDdF/lg3PkzV0+z9dQn4YEv+nNhV8C3g2dv5J4h3erRO38cD6JvW44AVE5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFcPnHrY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DD0C4AF0C;
-	Wed,  3 Jul 2024 10:50:42 +0000 (UTC)
+	 MIME-Version; b=ZbX2ZJ+G+MY2dN7iEFc1PkmxYIIj8zU5IYPoz9uwWlCgYx4o6Sqs953X1NMNt5AycMrXyohsoaMEGPoAp6vSbS1YeFkizBxpaX2rM0f0Q5dYi9AEnosB7rV+H41mpIxeIpjk2LeLq8YKm7r+iVQhSuI0+izdbYK/33dalUcWi2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzCAuR0f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA167C2BD10;
+	Wed,  3 Jul 2024 11:06:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003842;
-	bh=AqJ5fq1YhrOimkhWvbLs823pa0Gq8zzQP1dO0MFeG7A=;
+	s=korg; t=1720004795;
+	bh=L0DrZGEuB8RqBJeIotlN9aw9rl8GxwoOekSupNwnyUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CFcPnHrY0ikgZtoBUkvEoDwrqStuKFYB/RTdtgqjCBEJFVOFFkJuoodnvAL/SfibL
-	 dG6d6MVew7U8t04dcTHtBcw3MtOYQJI4uzcgZUU8ENQzgQzRkq6efxnf+vJyy+bg9d
-	 H2xwVeqKlPbijWavMWCPruhhmoDhbsvD3GGT71Ls=
+	b=bzCAuR0fCHQV9s2Vt5t9Akq2U/75/BXQ05Vgg81LKEBvVJnYhyJ1cpIBlY4VGooZV
+	 /GWvvPMbZscivYzItQO1mho+/24R1Latwy3skSaRiYe031Wc4z50JNjeQRg7Xfg/mA
+	 80DcpSNkgWngw2PcBMXbfS/3TFydL4Bi+vAblGFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Juergen Christ <jchrist@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>,
+	Uri Arev <me@wantyapps.xyz>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 039/189] s390/cpacf: Split and rework cpacf query functions
-Date: Wed,  3 Jul 2024 12:38:20 +0200
-Message-ID: <20240703102842.986519842@linuxfoundation.org>
+Subject: [PATCH 5.10 120/290] Bluetooth: ath3k: Fix multiple issues reported by checkpatch.pl
+Date: Wed,  3 Jul 2024 12:38:21 +0200
+Message-ID: <20240703102908.723471882@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,154 +62,192 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harald Freudenberger <freude@linux.ibm.com>
+From: Uri Arev <me@wantyapps.xyz>
 
-[ Upstream commit 830999bd7e72f4128b9dfa37090d9fa8120ce323 ]
+[ Upstream commit 68aa21054ec3a1a313af90a5f95ade16c3326d20 ]
 
-Rework the cpacf query functions to use the correct RRE
-or RRF instruction formats and set register fields within
-instructions correctly.
+This fixes some CHECKs reported by the checkpatch script.
 
-Fixes: 1afd43e0fbba ("s390/crypto: allow to query all known cpacf functions")
-Reported-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Suggested-by: Heiko Carstens <hca@linux.ibm.com>
-Suggested-by: Juergen Christ <jchrist@linux.ibm.com>
-Suggested-by: Holger Dengler <dengler@linux.ibm.com>
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
-Reviewed-by: Juergen Christ <jchrist@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Issues reported in ath3k.c:
+-------
+ath3k.c
+-------
+CHECK: Please don't use multiple blank lines
++
++
+
+CHECK: Blank lines aren't necessary after an open brace '{'
++static const struct usb_device_id ath3k_blist_tbl[] = {
++
+
+CHECK: Alignment should match open parenthesis
++static int ath3k_load_firmware(struct usb_device *udev,
++                               const struct firmware *firmware)
+
+CHECK: Alignment should match open parenthesis
++               err = usb_bulk_msg(udev, pipe, send_buf, size,
++                                       &len, 3000);
+
+CHECK: Unnecessary parentheses around 'len != size'
++               if (err || (len != size)) {
+
+CHECK: Alignment should match open parenthesis
++static int ath3k_get_version(struct usb_device *udev,
++                       struct ath3k_version *version)
+
+CHECK: Alignment should match open parenthesis
++static int ath3k_load_fwfile(struct usb_device *udev,
++               const struct firmware *firmware)
+
+CHECK: Alignment should match open parenthesis
++               err = usb_bulk_msg(udev, pipe, send_buf, size,
++                                       &len, 3000);
+
+CHECK: Unnecessary parentheses around 'len != size'
++               if (err || (len != size)) {
+
+CHECK: Blank lines aren't necessary after an open brace '{'
++       switch (fw_version.ref_clock) {
++
+
+CHECK: Alignment should match open parenthesis
++       snprintf(filename, ATH3K_NAME_LEN, "ar3k/ramps_0x%08x_%d%s",
++               le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
+
+CHECK: Alignment should match open parenthesis
++static int ath3k_probe(struct usb_interface *intf,
++                       const struct usb_device_id *id)
+
+CHECK: Alignment should match open parenthesis
++                       BT_ERR("Firmware file \"%s\" not found",
++                                                       ATH3K_FIRMWARE);
+
+CHECK: Alignment should match open parenthesis
++               BT_ERR("Firmware file \"%s\" request failed (err=%d)",
++                                               ATH3K_FIRMWARE, ret);
+
+total: 0 errors, 0 warnings, 14 checks, 540 lines checked
+
+Signed-off-by: Uri Arev <me@wantyapps.xyz>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/cpacf.h | 101 +++++++++++++++++++++++++++-------
- 1 file changed, 81 insertions(+), 20 deletions(-)
+ drivers/bluetooth/ath3k.c | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/arch/s390/include/asm/cpacf.h b/arch/s390/include/asm/cpacf.h
-index 646b12981f208..fa31f71cf5746 100644
---- a/arch/s390/include/asm/cpacf.h
-+++ b/arch/s390/include/asm/cpacf.h
-@@ -161,28 +161,79 @@
+diff --git a/drivers/bluetooth/ath3k.c b/drivers/bluetooth/ath3k.c
+index 759d7828931d9..56ada48104f0e 100644
+--- a/drivers/bluetooth/ath3k.c
++++ b/drivers/bluetooth/ath3k.c
+@@ -3,7 +3,6 @@
+  * Copyright (c) 2008-2009 Atheros Communications Inc.
+  */
  
- typedef struct { unsigned char bytes[16]; } cpacf_mask_t;
+-
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+@@ -129,7 +128,6 @@ MODULE_DEVICE_TABLE(usb, ath3k_table);
+  * for AR3012
+  */
+ static const struct usb_device_id ath3k_blist_tbl[] = {
+-
+ 	/* Atheros AR3012 with sflash firmware*/
+ 	{ USB_DEVICE(0x0489, 0xe04e), .driver_info = BTUSB_ATH3012 },
+ 	{ USB_DEVICE(0x0489, 0xe04d), .driver_info = BTUSB_ATH3012 },
+@@ -203,7 +201,7 @@ static inline void ath3k_log_failed_loading(int err, int len, int size,
+ #define TIMEGAP_USEC_MAX	100
  
--/**
-- * cpacf_query() - check if a specific CPACF function is available
-- * @opcode: the opcode of the crypto instruction
-- * @func: the function code to test for
-- *
-- * Executes the query function for the given crypto instruction @opcode
-- * and checks if @func is available
-- *
-- * Returns 1 if @func is available for @opcode, 0 otherwise
-- */
--static __always_inline void __cpacf_query(unsigned int opcode, cpacf_mask_t *mask)
-+static __always_inline void __cpacf_query_rre(u32 opc, u8 r1, u8 r2,
-+					      cpacf_mask_t *mask)
+ static int ath3k_load_firmware(struct usb_device *udev,
+-				const struct firmware *firmware)
++			       const struct firmware *firmware)
  {
- 	asm volatile(
--		"	lghi	0,0\n" /* query function */
--		"	lgr	1,%[mask]\n"
--		"	spm	0\n" /* pckmo doesn't change the cc */
--		/* Parameter regs are ignored, but must be nonzero and unique */
--		"0:	.insn	rrf,%[opc] << 16,2,4,6,0\n"
--		"	brc	1,0b\n"	/* handle partial completion */
--		: "=m" (*mask)
--		: [mask] "d" ((unsigned long)mask), [opc] "i" (opcode)
--		: "cc", "0", "1");
-+		"	la	%%r1,%[mask]\n"
-+		"	xgr	%%r0,%%r0\n"
-+		"	.insn	rre,%[opc] << 16,%[r1],%[r2]\n"
-+		: [mask] "=R" (*mask)
-+		: [opc] "i" (opc),
-+		  [r1] "i" (r1), [r2] "i" (r2)
-+		: "cc", "r0", "r1");
-+}
-+
-+static __always_inline void __cpacf_query_rrf(u32 opc,
-+					      u8 r1, u8 r2, u8 r3, u8 m4,
-+					      cpacf_mask_t *mask)
-+{
-+	asm volatile(
-+		"	la	%%r1,%[mask]\n"
-+		"	xgr	%%r0,%%r0\n"
-+		"	.insn	rrf,%[opc] << 16,%[r1],%[r2],%[r3],%[m4]\n"
-+		: [mask] "=R" (*mask)
-+		: [opc] "i" (opc), [r1] "i" (r1), [r2] "i" (r2),
-+		  [r3] "i" (r3), [m4] "i" (m4)
-+		: "cc", "r0", "r1");
-+}
-+
-+static __always_inline void __cpacf_query(unsigned int opcode,
-+					  cpacf_mask_t *mask)
-+{
-+	switch (opcode) {
-+	case CPACF_KDSA:
-+		__cpacf_query_rre(CPACF_KDSA, 0, 2, mask);
-+		break;
-+	case CPACF_KIMD:
-+		__cpacf_query_rre(CPACF_KIMD, 0, 2, mask);
-+		break;
-+	case CPACF_KLMD:
-+		__cpacf_query_rre(CPACF_KLMD, 0, 2, mask);
-+		break;
-+	case CPACF_KM:
-+		__cpacf_query_rre(CPACF_KM, 2, 4, mask);
-+		break;
-+	case CPACF_KMA:
-+		__cpacf_query_rrf(CPACF_KMA, 2, 4, 6, 0, mask);
-+		break;
-+	case CPACF_KMAC:
-+		__cpacf_query_rre(CPACF_KMAC, 0, 2, mask);
-+		break;
-+	case CPACF_KMC:
-+		__cpacf_query_rre(CPACF_KMC, 2, 4, mask);
-+		break;
-+	case CPACF_KMCTR:
-+		__cpacf_query_rrf(CPACF_KMCTR, 2, 4, 6, 0, mask);
-+		break;
-+	case CPACF_KMF:
-+		__cpacf_query_rre(CPACF_KMF, 2, 4, mask);
-+		break;
-+	case CPACF_KMO:
-+		__cpacf_query_rre(CPACF_KMO, 2, 4, mask);
-+		break;
-+	case CPACF_PCC:
-+		__cpacf_query_rre(CPACF_PCC, 0, 0, mask);
-+		break;
-+	case CPACF_PCKMO:
-+		__cpacf_query_rre(CPACF_PCKMO, 0, 0, mask);
-+		break;
-+	case CPACF_PRNO:
-+		__cpacf_query_rre(CPACF_PRNO, 2, 4, mask);
-+		break;
-+	default:
-+		BUG();
-+	}
+ 	u8 *send_buf;
+ 	int len = 0;
+@@ -238,9 +236,9 @@ static int ath3k_load_firmware(struct usb_device *udev,
+ 		memcpy(send_buf, firmware->data + sent, size);
+ 
+ 		err = usb_bulk_msg(udev, pipe, send_buf, size,
+-					&len, 3000);
++				   &len, 3000);
+ 
+-		if (err || (len != size)) {
++		if (err || len != size) {
+ 			ath3k_log_failed_loading(err, len, size, count);
+ 			goto error;
+ 		}
+@@ -263,7 +261,7 @@ static int ath3k_get_state(struct usb_device *udev, unsigned char *state)
  }
  
- static __always_inline int __cpacf_check_opcode(unsigned int opcode)
-@@ -210,6 +261,16 @@ static __always_inline int __cpacf_check_opcode(unsigned int opcode)
+ static int ath3k_get_version(struct usb_device *udev,
+-			struct ath3k_version *version)
++			     struct ath3k_version *version)
+ {
+ 	return usb_control_msg_recv(udev, 0, ATH3K_GETVERSION,
+ 				    USB_TYPE_VENDOR | USB_DIR_IN, 0, 0,
+@@ -272,7 +270,7 @@ static int ath3k_get_version(struct usb_device *udev,
+ }
+ 
+ static int ath3k_load_fwfile(struct usb_device *udev,
+-		const struct firmware *firmware)
++			     const struct firmware *firmware)
+ {
+ 	u8 *send_buf;
+ 	int len = 0;
+@@ -311,8 +309,8 @@ static int ath3k_load_fwfile(struct usb_device *udev,
+ 		memcpy(send_buf, firmware->data + sent, size);
+ 
+ 		err = usb_bulk_msg(udev, pipe, send_buf, size,
+-					&len, 3000);
+-		if (err || (len != size)) {
++				   &len, 3000);
++		if (err || len != size) {
+ 			ath3k_log_failed_loading(err, len, size, count);
+ 			kfree(send_buf);
+ 			return err;
+@@ -426,7 +424,6 @@ static int ath3k_load_syscfg(struct usb_device *udev)
  	}
+ 
+ 	switch (fw_version.ref_clock) {
+-
+ 	case ATH3K_XTAL_FREQ_26M:
+ 		clk_value = 26;
+ 		break;
+@@ -442,7 +439,7 @@ static int ath3k_load_syscfg(struct usb_device *udev)
+ 	}
+ 
+ 	snprintf(filename, ATH3K_NAME_LEN, "ar3k/ramps_0x%08x_%d%s",
+-		le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
++		 le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
+ 
+ 	ret = request_firmware(&firmware, filename, &udev->dev);
+ 	if (ret < 0) {
+@@ -457,7 +454,7 @@ static int ath3k_load_syscfg(struct usb_device *udev)
  }
  
-+/**
-+ * cpacf_query() - check if a specific CPACF function is available
-+ * @opcode: the opcode of the crypto instruction
-+ * @func: the function code to test for
-+ *
-+ * Executes the query function for the given crypto instruction @opcode
-+ * and checks if @func is available
-+ *
-+ * Returns 1 if @func is available for @opcode, 0 otherwise
-+ */
- static __always_inline int cpacf_query(unsigned int opcode, cpacf_mask_t *mask)
+ static int ath3k_probe(struct usb_interface *intf,
+-			const struct usb_device_id *id)
++		       const struct usb_device_id *id)
  {
- 	if (__cpacf_check_opcode(opcode)) {
+ 	const struct firmware *firmware;
+ 	struct usb_device *udev = interface_to_usbdev(intf);
+@@ -506,10 +503,10 @@ static int ath3k_probe(struct usb_interface *intf,
+ 	if (ret < 0) {
+ 		if (ret == -ENOENT)
+ 			BT_ERR("Firmware file \"%s\" not found",
+-							ATH3K_FIRMWARE);
++			       ATH3K_FIRMWARE);
+ 		else
+ 			BT_ERR("Firmware file \"%s\" request failed (err=%d)",
+-							ATH3K_FIRMWARE, ret);
++			       ATH3K_FIRMWARE, ret);
+ 		return ret;
+ 	}
+ 
 -- 
 2.43.0
 
