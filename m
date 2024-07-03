@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-57045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D60925B03
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4EDD925E31
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22B4629DF2A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:00:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89E4229529C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:34:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3B118E777;
-	Wed,  3 Jul 2024 10:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D26E172793;
+	Wed,  3 Jul 2024 11:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uUpzKIRx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ghf65vTr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC4E173352;
-	Wed,  3 Jul 2024 10:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDEFB1DA327;
+	Wed,  3 Jul 2024 11:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003670; cv=none; b=gtouxFGCujmEUD7YfneuyxLzEBsqO1i2JoyZasONbVppo0UopdGlMoovf1IEesdAglfcUlxiK33EMUGjmDshw+rAum2z3o7ll7ifiKqygCgLf0gw/sjSybjun0KWuPDzrl3BTys9ILQmttmPMb2JT0cntZj11HMpN3b7FYOTafw=
+	t=1720005960; cv=none; b=l+dZLRuT9+y3tbPuuARuO6q2aAU2fCUhLPdZi2FR1esV7SXHUusAo5ER1ZAaQR6Yo6d7QWzi00j0Xkfsgn/KI0rYK6Y64QCyJz7XKTJsjMCsOkGPSWgdgWpbdt1+2YHiMuys1CI0AocPkMiChxAtSCPo/MaT6kuDvT8iYbVdHp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003670; c=relaxed/simple;
-	bh=uAs7w6EovLHfjyFs9sUCLwPwyKDHyGEIxFbr5C8rfh4=;
+	s=arc-20240116; t=1720005960; c=relaxed/simple;
+	bh=5Et5hwzlAkGXBEURLttI2o7OUupuWvUe7cLnNIcDYd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qHDqRkE252XgpF+x378QnoBmLt8xnWy6m5l6BJGGw0bQ3weUMth6f+g/bRzmjBc+HBPEV1dSuvjUD4rzSZjdpCJaIfxiiWM0SPGDJ5xED3sPnRHHgiubrQfki9y0/u5g3ag8L6RrjPI6A+0zhjZs8V0jY980gRVM4yMpXQXbpxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUpzKIRx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1993C2BD10;
-	Wed,  3 Jul 2024 10:47:49 +0000 (UTC)
+	 MIME-Version; b=TvFNywmkkMgDDE1KUbUHL3d9qR7QYM0JG0o8NFu/o7GRkp3U3mfYfIG7ZlHb2UXGcd4a1aZ30eTGsKhWljaV9MW+PrdI6uni4zCF3ZgZfZjeKkDp34FrYbx7SQ/zSdFX4UzgX2bilSbQsVMYIIbGaJPpAT6Ql2+bIm7wQQrC0JU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ghf65vTr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64CE5C2BD10;
+	Wed,  3 Jul 2024 11:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003670;
-	bh=uAs7w6EovLHfjyFs9sUCLwPwyKDHyGEIxFbr5C8rfh4=;
+	s=korg; t=1720005959;
+	bh=5Et5hwzlAkGXBEURLttI2o7OUupuWvUe7cLnNIcDYd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uUpzKIRxkwn7kOJS8qqAf54jInQje9O02UkToENbz3FC/pP+ztCDQnQN28pulDIb0
-	 XN4YnNi2QUi5EIRtTuOFxK/mvT+k0+1BZRTgBQ0ctRBea5Ag38+VfUhgGvs6xvOjhy
-	 s5DFMTXLHzKZzA6sHWXy10EEpVVVSHINI0hpchGM=
+	b=Ghf65vTrk5Rt9EjexwwzUnNYh4OwKs4B9A+vDY25MF5OhUcpf39Ja/b/GODDCxBv2
+	 /I9L5scX+cdEv7hRSXxuTARrqQDJY9iqjoB07BDnzWHPhHWpwF23U+W3XMpSUL7TiE
+	 +9E+FUuLQHqv0uoaZ3dOtODAZJuCQrCXGwidJ5FU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Perches <joe@perches.com>,
-	Suganath Prabu <suganath-prabu.subramani@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 093/139] scsi: mpt3sas: Add ioc_<level> logging macros
+Subject: [PATCH 5.15 254/356] smb: client: fix deadlock in smb2_find_smb_tcon()
 Date: Wed,  3 Jul 2024 12:39:50 +0200
-Message-ID: <20240703102833.952003952@linuxfoundation.org>
+Message-ID: <20240703102922.726381965@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Perches <joe@perches.com>
+From: Enzo Matsumiya <ematsumiya@suse.de>
 
-[ Upstream commit 645a20c6821cd1ab58af8a1f99659e619c216efd ]
+[ Upstream commit 02c418774f76a0a36a6195c9dbf8971eb4130a15 ]
 
-These macros can help identify specific logging uses and eventually perhaps
-reduce object sizes.
+Unlock cifs_tcp_ses_lock before calling cifs_put_smb_ses() to avoid such
+deadlock.
 
-Signed-off-by: Joe Perches <joe@perches.com>
-Acked-by: Suganath Prabu <suganath-prabu.subramani@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 4254dfeda82f ("scsi: mpt3sas: Avoid test/set_bit() operating in non-allocated memory")
+Cc: stable@vger.kernel.org
+Signed-off-by: Enzo Matsumiya <ematsumiya@suse.de>
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_base.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/cifs/smb2transport.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.h b/drivers/scsi/mpt3sas/mpt3sas_base.h
-index 96dc15e90bd83..941a4faf20be0 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_base.h
-+++ b/drivers/scsi/mpt3sas/mpt3sas_base.h
-@@ -160,6 +160,15 @@ struct mpt3sas_nvme_cmd {
-  */
- #define MPT3SAS_FMT			"%s: "
- 
-+#define ioc_err(ioc, fmt, ...)						\
-+	pr_err("%s: " fmt, (ioc)->name, ##__VA_ARGS__)
-+#define ioc_notice(ioc, fmt, ...)					\
-+	pr_notice("%s: " fmt, (ioc)->name, ##__VA_ARGS__)
-+#define ioc_warn(ioc, fmt, ...)						\
-+	pr_warn("%s: " fmt, (ioc)->name, ##__VA_ARGS__)
-+#define ioc_info(ioc, fmt, ...)						\
-+	pr_info("%s: " fmt, (ioc)->name, ##__VA_ARGS__)
-+
- /*
-  *  WarpDrive Specific Log codes
-  */
+diff --git a/fs/cifs/smb2transport.c b/fs/cifs/smb2transport.c
+index 0f2e0ce84a03f..ffae3a7f46ce4 100644
+--- a/fs/cifs/smb2transport.c
++++ b/fs/cifs/smb2transport.c
+@@ -194,8 +194,8 @@ smb2_find_smb_tcon(struct TCP_Server_Info *server, __u64 ses_id, __u32  tid)
+ 	}
+ 	tcon = smb2_find_smb_sess_tcon_unlocked(ses, tid);
+ 	if (!tcon) {
+-		cifs_put_smb_ses(ses);
+ 		spin_unlock(&cifs_tcp_ses_lock);
++		cifs_put_smb_ses(ses);
+ 		return NULL;
+ 	}
+ 	spin_unlock(&cifs_tcp_ses_lock);
 -- 
 2.43.0
 
