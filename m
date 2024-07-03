@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-57282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEF16925F99
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:04:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29AFF925FB3
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:07:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4F4BB36EC7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 522C8B263D2
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75B414D44E;
-	Wed,  3 Jul 2024 11:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C0FF17622C;
+	Wed,  3 Jul 2024 11:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ha4C3uAA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/Qmbe8l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BA913AA2C;
-	Wed,  3 Jul 2024 11:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4833613BC0B;
+	Wed,  3 Jul 2024 11:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004409; cv=none; b=gvYcSIDvXd4gmbfCkaWe/fzHxqFBQJHlPwf3SH6U/QQ5rcrQex+pSLi5MqVUHSS/vxZsKuYKR6fFE0SDWp0akplX8xNtqKWFdcB9CoO8/oA1KGSiCXiUAMOyNIUtVdYmtsYvETQIIjyZvrI6mHhCXmIGiwhuNDrtzSvQvtDHAf8=
+	t=1720004465; cv=none; b=m+BBKN+Hg0ZLLT7wSgVZxHb8Oq7SNI0hH0tHXhWezvNAq6ur8QNLhapkX3v5ioBhbXzTtTevJ1HyosZX/zXbYFCGYBo2NXnUyuT6J9hSdhATLu5uzVdQC/XUNUBBkGegzXiMCeFAIfrNBS56HsgRMy6tnSuhuD2AW6jQdlGgrKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004409; c=relaxed/simple;
-	bh=c9ffZNxpPa0fJqM6WfU9I/RHtd3NDMP5m1xKnC+ouR8=;
+	s=arc-20240116; t=1720004465; c=relaxed/simple;
+	bh=UpTWxdpq1Z9EvnQ39mQaZWGdmGLP0ZNzbkuqAOv9pH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H+oQ/pgV66M+I/BBHy9KxNIt4BZ21KMzhrRdcEKmniKK9+S2TX+20gLKTgD+vRwiDvLIOkTGalsk03TLqNpBi00NHnE39lw6R8SsMelnwilrF1OEjNgbRRRCGgAnVCqhodvaA0ajvgwamTxs0PB34I/RcYwiGBUvMqC0Ayhxw78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ha4C3uAA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D698C2BD10;
-	Wed,  3 Jul 2024 11:00:09 +0000 (UTC)
+	 MIME-Version; b=UNphG5VQeLSiCHMcAon/ZTwrVcrTm+N5R8JEd81jXTpgT66N8mNHLtNH/bU6m1u1dZgIBSUoBnouG3b75I4hCmTfpX8EeiLWCbeuohPxWY8hGiWpvW6KE4yB8zCucdPsKBmAyI1a8EuAp3YAia9bKiltY1dfIVjTaTnwRZuwYKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/Qmbe8l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20F5C2BD10;
+	Wed,  3 Jul 2024 11:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004409;
-	bh=c9ffZNxpPa0fJqM6WfU9I/RHtd3NDMP5m1xKnC+ouR8=;
+	s=korg; t=1720004465;
+	bh=UpTWxdpq1Z9EvnQ39mQaZWGdmGLP0ZNzbkuqAOv9pH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ha4C3uAATie2V/UAADvv4hdnOvQfOiOYM0089ZQrG8WKod0YeDV9cf2R+fuevsWRw
-	 xLao/P6ELw+Fd4HDdR5+Q2vHnkd73tZ76xLam1U+VAe2TJBybPESTt5ei9g9cuouIC
-	 91OQygZ1UsfvF3E2240lYu0w8xdxSgo9X1G9ZEeY=
+	b=s/Qmbe8l5ytzXiBZPzkA+BWUeLTwxPcIy3Gl+/1K380IZlGrfzgMVlys7bBXcxFjN
+	 bQTal6GSF9OfZsnjVCUt3FckZGS4vtI5w+yKSGyoH6BKBrkRTqxye9Euj3daVQA9Mq
+	 kSZIk72XiQu1e9ZmfyZV9jmD8BEosB9aI338q/NE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 033/290] mmc: davinci: Dont strip remove function when driver is builtin
-Date: Wed,  3 Jul 2024 12:36:54 +0200
-Message-ID: <20240703102905.449411011@linuxfoundation.org>
+	Kuangyi Chiang <ki.chiang65@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.10 049/290] xhci: Apply broken streams quirk to Etron EJ188 xHCI host
+Date: Wed,  3 Jul 2024 12:37:10 +0200
+Message-ID: <20240703102906.055104008@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
 References: <20240703102904.170852981@linuxfoundation.org>
@@ -60,59 +59,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
 
-[ Upstream commit 55c421b364482b61c4c45313a535e61ed5ae4ea3 ]
+commit 91f7a1524a92c70ffe264db8bdfa075f15bbbeb9 upstream.
 
-Using __exit for the remove function results in the remove callback being
-discarded with CONFIG_MMC_DAVINCI=y. When such a device gets unbound (e.g.
-using sysfs or hotplug), the driver is just removed without the cleanup
-being performed. This results in resource leaks. Fix it by compiling in the
-remove callback unconditionally.
+As described in commit 8f873c1ff4ca ("xhci: Blacklist using streams on the
+Etron EJ168 controller"), EJ188 have the same issue as EJ168, where Streams
+do not work reliable on EJ188. So apply XHCI_BROKEN_STREAMS quirk to EJ188
+as well.
 
-This also fixes a W=1 modpost warning:
-
-WARNING: modpost: drivers/mmc/host/davinci_mmc: section mismatch in
-reference: davinci_mmcsd_driver+0x10 (section: .data) ->
-davinci_mmcsd_remove (section: .exit.text)
-
-Fixes: b4cff4549b7a ("DaVinci: MMC: MMC/SD controller driver for DaVinci family")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240324114017.231936-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240611120610.3264502-4-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/davinci_mmc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-pci.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/davinci_mmc.c
-+++ b/drivers/mmc/host/davinci_mmc.c
-@@ -1347,7 +1347,7 @@ ioremap_fail:
- 	return ret;
- }
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -272,8 +272,10 @@ static void xhci_pci_quirks(struct devic
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+ 	}
+ 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
+-			pdev->device == PCI_DEVICE_ID_EJ188)
++			pdev->device == PCI_DEVICE_ID_EJ188) {
+ 		xhci->quirks |= XHCI_RESET_ON_RESUME;
++		xhci->quirks |= XHCI_BROKEN_STREAMS;
++	}
  
--static int __exit davinci_mmcsd_remove(struct platform_device *pdev)
-+static int davinci_mmcsd_remove(struct platform_device *pdev)
- {
- 	struct mmc_davinci_host *host = platform_get_drvdata(pdev);
- 
-@@ -1404,7 +1404,7 @@ static struct platform_driver davinci_mm
- 		.of_match_table = davinci_mmc_dt_ids,
- 	},
- 	.probe		= davinci_mmcsd_probe,
--	.remove		= __exit_p(davinci_mmcsd_remove),
-+	.remove		= davinci_mmcsd_remove,
- 	.id_table	= davinci_mmc_devtype,
- };
- 
+ 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
+ 	    pdev->device == 0x0014) {
 
 
 
