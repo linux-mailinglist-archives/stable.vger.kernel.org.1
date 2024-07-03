@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-57693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D360B925D91
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7D9D925C25
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:15:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 112BC1C210E7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:29:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D5001F20EE6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:15:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 975E1174EDE;
-	Wed,  3 Jul 2024 11:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B7317B42A;
+	Wed,  3 Jul 2024 11:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkML8DmF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ojYmpnPe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576981487CE;
-	Wed,  3 Jul 2024 11:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739DB17277F;
+	Wed,  3 Jul 2024 11:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005650; cv=none; b=p/DjGTj/3Shk7a8qiRCRAL12+hY3PtjMCAc0R1qHaVJcKkqUekpCnqt0jIkJXiyv0RlM0/jcMPNxsHFBoxOgga0EpGFCb33T3CHkDAZweHLZMPz+J6m/0276qyfzvnF/8rQI4oR15hGjnY4aHf8dFsi5JWI3tFeEEKQLMamy8rg=
+	t=1720004605; cv=none; b=laz9WDfI5lzI9n7djjzTv/qe/w4/B0BASYm4/RugUyBLerfmgxrEg4gkldGeAbYxxId5RRiC+SUOB4BwWOZ4VhcekVYH1/iNoMVaQdEwv2xWwBcBOiYVb6B4F7HNOACRxVxMYamkIVbz209U+Sb/Kv+TTeVF5nKFGN2QIAH+/0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005650; c=relaxed/simple;
-	bh=pbWyZYqPGrqIuQlgA3Og0MzdBsG/NvGVEHGz/BY0KHo=;
+	s=arc-20240116; t=1720004605; c=relaxed/simple;
+	bh=N4IO3xpKbzuEHCFzVZmOJgJWJOuPUn+V6XLkrqqyRtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B96annewOqRNSO4wmFeAx4q/ggB5dMULN1gKBmu7evksvO7mlsu9DbR0VcOS87YDTigmF0tELVQOoBqA5KR2ZnaDJ5uNJVyr+oeuadQkQLYJD12FlWP1w1gSY92mGpgYpNgG1OBt8IjV3PvXNxHDUHpFzxKQqk+/z6t/OIqhg1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkML8DmF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A1CC2BD10;
-	Wed,  3 Jul 2024 11:20:49 +0000 (UTC)
+	 MIME-Version; b=NJxZiBrp1qECZstATHWpHLwelXcC2HU6K11YUQQ0FpLUpmufxtiSvUKoxy5zoowqKxZOmIOLRKjsz9EP1TRmb1w9MHTnrv/GNN/+FL88tfRf14pdfhh/r5leLD+3nvOrLKiztkutzhPHaIQXwBZKBmG8SMAsXl11P1cstaVdTe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ojYmpnPe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA271C2BD10;
+	Wed,  3 Jul 2024 11:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005650;
-	bh=pbWyZYqPGrqIuQlgA3Og0MzdBsG/NvGVEHGz/BY0KHo=;
+	s=korg; t=1720004605;
+	bh=N4IO3xpKbzuEHCFzVZmOJgJWJOuPUn+V6XLkrqqyRtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QkML8DmFhmUbnnMVEZ7ZdJG+j2AR+6HJBbSJojHxzmhlheWHoa7Ki54gS0kmLREmq
-	 MM9s7RPW+sG082oPUYDlf+KOZ5Jl93kVuWXSXyU2C0zQ9dE00tzoZqAvJzPNhKL1Tw
-	 IExTtlJ5D/JkiDphl1f6OAEJGNNJVGT8rLz6MDwA=
+	b=ojYmpnPeNIl1hboQ1akYYNOP7SL0I7ZmzqUlWmddNECfUcGtSM/25KtKTiBS/MR1f
+	 jPtQMpn4uME6KW+RvG2LbdDEyOHRT04upUUP7w8qQnTMAFTnEIFObiqEK4fO7XWgN+
+	 7I7gmfSrGqs2mrPzjpJ+Kq1r/ngg8KgTgPkDUOpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sicong Huang <congei42@163.com>,
-	Ronnie Sahlberg <rsahlberg@ciq.com>
-Subject: [PATCH 5.15 143/356] greybus: Fix use-after-free bug in gb_interface_release due to race condition.
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	YonglongLi <liyonglong@chinatelecom.cn>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 098/290] mptcp: pm: update add_addr counters after connect
 Date: Wed,  3 Jul 2024 12:37:59 +0200
-Message-ID: <20240703102918.513282017@linuxfoundation.org>
+Message-ID: <20240703102907.895371276@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sicong Huang <congei42@163.com>
+From: YonglongLi <liyonglong@chinatelecom.cn>
 
-commit 5c9c5d7f26acc2c669c1dcf57d1bb43ee99220ce upstream.
+commit 40eec1795cc27b076d49236649a29507c7ed8c2d upstream.
 
-In gb_interface_create, &intf->mode_switch_completion is bound with
-gb_interface_mode_switch_work. Then it will be started by
-gb_interface_request_mode_switch. Here is the relevant code.
-if (!queue_work(system_long_wq, &intf->mode_switch_work)) {
-	...
-}
+The creation of new subflows can fail for different reasons. If no
+subflow have been created using the received ADD_ADDR, the related
+counters should not be updated, otherwise they will never be decremented
+for events related to this ID later on.
 
-If we call gb_interface_release to make cleanup, there may be an
-unfinished work. This function will call kfree to free the object
-"intf". However, if gb_interface_mode_switch_work is scheduled to
-run after kfree, it may cause use-after-free error as
-gb_interface_mode_switch_work will use the object "intf".
-The possible execution flow that may lead to the issue is as follows:
+For the moment, the number of accepted ADD_ADDR is only decremented upon
+the reception of a related RM_ADDR, and only if the remote address ID is
+currently being used by at least one subflow. In other words, if no
+subflow can be created with the received address, the counter will not
+be decremented. In this case, it is then important not to increment
+pm.add_addr_accepted counter, and not to modify pm.accept_addr bit.
 
-CPU0                            CPU1
+Note that this patch does not modify the behaviour in case of failures
+later on, e.g. if the MP Join is dropped or rejected.
 
-                            |   gb_interface_create
-                            |   gb_interface_request_mode_switch
-gb_interface_release        |
-kfree(intf) (free)          |
-                            |   gb_interface_mode_switch_work
-                            |   mutex_lock(&intf->mutex) (use)
+The "remove invalid addresses" MP Join subtest has been modified to
+validate this case. The broadcast IP address is added before the "valid"
+address that will be used to successfully create a subflow, and the
+limit is decreased by one: without this patch, it was not possible to
+create the last subflow, because:
 
-Fix it by canceling the work before kfree.
+- the broadcast address would have been accepted even if it was not
+  usable: the creation of a subflow to this address results in an error,
 
-Signed-off-by: Sicong Huang <congei42@163.com>
-Link: https://lore.kernel.org/r/20240416080313.92306-1-congei42@163.com
-Cc: Ronnie Sahlberg <rsahlberg@ciq.com>
+- the limit of 2 accepted ADD_ADDR would have then been reached.
+
+Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
+Cc: stable@vger.kernel.org
+Co-developed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: YonglongLi <liyonglong@chinatelecom.cn>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240607-upstream-net-20240607-misc-fixes-v1-3-1ab9ddfa3d00@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in pm_netlink.c because commit 1a0d6136c5f0 ("mptcp: local
+  addresses fullmesh") is not present in this version (+ others changing
+  the context). To resolve the conflicts, the same block is moved later,
+  and under the condition that the call to __mptcp_subflow_connect()
+  didn't fail.
+  The selftest modification has been dropped, because the modified test
+  is not in this version. That's fine, we can test with selftests from a
+  newer version. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/greybus/interface.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/mptcp/pm_netlink.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/greybus/interface.c
-+++ b/drivers/greybus/interface.c
-@@ -694,6 +694,7 @@ static void gb_interface_release(struct
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -371,15 +371,12 @@ void mptcp_pm_nl_add_addr_received(struc
+ 	struct sock *sk = (struct sock *)msk;
+ 	struct mptcp_addr_info remote;
+ 	struct mptcp_addr_info local;
++	int err;
  
- 	trace_gb_interface_release(intf);
+ 	pr_debug("accepted %d:%d remote family %d",
+ 		 msk->pm.add_addr_accepted, msk->pm.add_addr_accept_max,
+ 		 msk->pm.remote.family);
+-	msk->pm.add_addr_accepted++;
+ 	msk->pm.subflows++;
+-	if (msk->pm.add_addr_accepted >= msk->pm.add_addr_accept_max ||
+-	    msk->pm.subflows >= msk->pm.subflows_max)
+-		WRITE_ONCE(msk->pm.accept_addr, false);
  
-+	cancel_work_sync(&intf->mode_switch_work);
- 	kfree(intf);
+ 	/* connect to the specified remote address, using whatever
+ 	 * local address the routing configuration will pick.
+@@ -391,9 +388,16 @@ void mptcp_pm_nl_add_addr_received(struc
+ 	local.family = remote.family;
+ 
+ 	spin_unlock_bh(&msk->pm.lock);
+-	__mptcp_subflow_connect((struct sock *)msk, &local, &remote);
++	err = __mptcp_subflow_connect((struct sock *)msk, &local, &remote);
+ 	spin_lock_bh(&msk->pm.lock);
+ 
++	if (!err) {
++		msk->pm.add_addr_accepted++;
++		if (msk->pm.add_addr_accepted >= msk->pm.add_addr_accept_max ||
++		    msk->pm.subflows >= msk->pm.subflows_max)
++			WRITE_ONCE(msk->pm.accept_addr, false);
++	}
++
+ 	mptcp_pm_announce_addr(msk, &remote, true);
  }
  
 
