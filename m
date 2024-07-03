@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-57256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71041925F43
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:54:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31543925AFB
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:05:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37E15B36A10
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCE0829EA56
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:01:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65736194A69;
-	Wed,  3 Jul 2024 10:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA4FA16EC0C;
+	Wed,  3 Jul 2024 10:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UV9ZkTCy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ieh0xkC/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A78174EF3;
-	Wed,  3 Jul 2024 10:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3EF13D61B;
+	Wed,  3 Jul 2024 10:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004330; cv=none; b=lgUnHZfyKUioma/8c7YjaeF3GjMBHwUghp/W2dd9HCYK+Y7hsyz5/GCgoNMj4qBwV7Gxt9UtLWezaxJp4XAaoRa0FL15swWzwHapWHdiC6P57VkRK985h6BuIvS8hwrz57qjhQLH0cr+/il/t68Ag0k13i5JuMH/QRNRITLqBBg=
+	t=1720003737; cv=none; b=jTjKhTHtENVPnMCWQbnrMQ7e4pj9aIemwKeytonU/L4aWdEcsAmn10ZGa384ltbZXt+QxyPaHQMxO1Amx98uKm+vQDBHDnsIwzR7DwWUOAK4+wjgMdLh0ops1ComKw05hIpwhEN2yerf+BkMyVFDZS0T8TVPAFwpXoKothbIjqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004330; c=relaxed/simple;
-	bh=vKZoFLo98YZQdYGwGUIcQdkQjaXRXbY9fl10wEgnJSA=;
+	s=arc-20240116; t=1720003737; c=relaxed/simple;
+	bh=Q9P+tM1KaPwIqsBGhjGMISpuuRNgggEu2umHTtGtzD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uMBfaObgD9VrbV8dz3i9Vwf5lC8mNW/DVj0pmlry2a6lpi9CY/BxH/UdQKqQtbVtWa6+ReSTCpbrrAsm2HI9/I8JNyMdVV7LkgiNjTSitif2T0sdzu/oVGVw4k/0NQF82kwdhoOYUlpQ3YGlJm7UJT+iMWktu37Lt80Xfcd6i3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UV9ZkTCy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A43FC32781;
-	Wed,  3 Jul 2024 10:58:49 +0000 (UTC)
+	 MIME-Version; b=q0iLz5plYrDIvDyEdMxgrUbObD59tg57YZ7zcaDjgt7j9S/nlUfWpGiDr2NBcBZhNjNip4SxisewXFqWFt9N8H5jIpQZgz1Q2RAJDdGCni7e06AhsZnkmktlDqMCDkLCj7vr9LBHAkfaARp+i8QvX5Of7i8Hsc3HcEJQh2TvBD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ieh0xkC/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E307C2BD10;
+	Wed,  3 Jul 2024 10:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004330;
-	bh=vKZoFLo98YZQdYGwGUIcQdkQjaXRXbY9fl10wEgnJSA=;
+	s=korg; t=1720003737;
+	bh=Q9P+tM1KaPwIqsBGhjGMISpuuRNgggEu2umHTtGtzD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UV9ZkTCyL99eYNiE9Gi8yWxVPYzmQFh5VwyGXtri8W0oZ4dl1nNQ//mQ3/clnCZQT
-	 Cz6lSrXfCppnpDg6UmuduPLvQwHd7fWi24Qg2zcZ2Vj4JXDHhevToLxI/lt8Prpw3V
-	 Wu4Pk2506L1B+x0Gg648RyBT57hr4P1pP60J1Xwc=
+	b=Ieh0xkC/BLHq1FZXEE8MMt4Ktzw5AJCFAGmiixmkJRvKale3gklIna8vek8rXZ91E
+	 eqhKfFZPbUEeZLEt0/kiincijFGhlvRFABhWWFzEsaviuro6aIqNFKAdp5Vqk4OhyC
+	 +6uVGJi9bwxc2Z11gTKGqozUW0KRtZtPhPzfFL6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 5.4 167/189] usb: musb: da8xx: fix a resource leak in probe()
+	Ma Ke <make24@iscas.ac.cn>,
+	Lyude Paul <lyude@redhat.com>
+Subject: [PATCH 4.19 131/139] drm/nouveau/dispnv04: fix null pointer dereference in nv17_tv_get_hd_modes
 Date: Wed,  3 Jul 2024 12:40:28 +0200
-Message-ID: <20240703102847.770869601@linuxfoundation.org>
+Message-ID: <20240703102835.383193918@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit de644a4a86be04ed8a43ef8267d0f7d021941c5e upstream.
+commit 6d411c8ccc0137a612e0044489030a194ff5c843 upstream.
 
-Call usb_phy_generic_unregister() if of_platform_populate() fails.
+In nv17_tv_get_hd_modes(), the return value of drm_mode_duplicate() is
+assigned to mode, which will lead to a possible NULL pointer dereference
+on failure of drm_mode_duplicate(). The same applies to drm_cvt_mode().
+Add a check to avoid null pointer dereference.
 
-Fixes: d6299b6efbf6 ("usb: musb: Add support of CPPI 4.1 DMA controller to DA8xx")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/69af1b1d-d3f4-492b-bcea-359ca5949f30@moroto.mountain
+Cc: stable@vger.kernel.org
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240625081029.2619437-1-make24@iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/musb/da8xx.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/nouveau/dispnv04/tvnv17.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/musb/da8xx.c
-+++ b/drivers/usb/musb/da8xx.c
-@@ -556,7 +556,7 @@ static int da8xx_probe(struct platform_d
- 	ret = of_platform_populate(pdev->dev.of_node, NULL,
- 				   da8xx_auxdata_lookup, &pdev->dev);
- 	if (ret)
--		return ret;
-+		goto err_unregister_phy;
+--- a/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
++++ b/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
+@@ -259,6 +259,8 @@ static int nv17_tv_get_hd_modes(struct d
+ 		if (modes[i].hdisplay == output_mode->hdisplay &&
+ 		    modes[i].vdisplay == output_mode->vdisplay) {
+ 			mode = drm_mode_duplicate(encoder->dev, output_mode);
++			if (!mode)
++				continue;
+ 			mode->type |= DRM_MODE_TYPE_PREFERRED;
  
- 	memset(musb_resources, 0x00, sizeof(*musb_resources) *
- 			ARRAY_SIZE(musb_resources));
-@@ -582,9 +582,13 @@ static int da8xx_probe(struct platform_d
- 	ret = PTR_ERR_OR_ZERO(glue->musb);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register musb device: %d\n", ret);
--		usb_phy_generic_unregister(glue->usb_phy);
-+		goto err_unregister_phy;
- 	}
+ 		} else {
+@@ -266,6 +268,8 @@ static int nv17_tv_get_hd_modes(struct d
+ 					    modes[i].vdisplay, 60, false,
+ 					    (output_mode->flags &
+ 					     DRM_MODE_FLAG_INTERLACE), false);
++			if (!mode)
++				continue;
+ 		}
  
-+	return 0;
-+
-+err_unregister_phy:
-+	usb_phy_generic_unregister(glue->usb_phy);
- 	return ret;
- }
- 
+ 		/* CVT modes are sometimes unsuitable... */
 
 
 
