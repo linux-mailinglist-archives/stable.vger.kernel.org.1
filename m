@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-57177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 421CB925B3F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:07:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F3F3925D80
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:29:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0FE1288110
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:07:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 097B4B308AA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:54:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E9219B58C;
-	Wed,  3 Jul 2024 10:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024621836CC;
+	Wed,  3 Jul 2024 10:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0uBvAW2t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exiTi7t9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7955D19B3DA;
-	Wed,  3 Jul 2024 10:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45037CF1F;
+	Wed,  3 Jul 2024 10:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004086; cv=none; b=TRGaNqeU/5uCMnMoTclxJQ41gsg3iPgPD14VG4Xju8GWLM9SYw6ApZMdbXjfDO0YQo4QGIszdQ0MMu/lIWynGq/etPxN760qRZdL409CZwSp1TdkjzOpyr0HQ+htJb52ddKUSnvMjFQJ4jgfyOX0mnFfybz7sgzmde5f7Sa9upw=
+	t=1720003538; cv=none; b=W8owOuXdlx5eIQnsf+Q4a84MO/cypz55Jg4mAOzEH1SL3c4fzE/Duh1iOs1zLS4mtFAMJKEwXxsDUldnOBjJPU0zZe6yNbjhRdBVrmosuS9AdxRutaIfgAeujy+BpQO1DKrjC9balnY8KktPuQroG0vaH1YPjw19cHV/lf6n07c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004086; c=relaxed/simple;
-	bh=mxZzCTONHVGpgF1pVhqHbKIiFLaIvGBFH6HUfuumbRA=;
+	s=arc-20240116; t=1720003538; c=relaxed/simple;
+	bh=uGgHVPfM3dKtq0FsW7t3haBT24Z65YalC0mB/2sMYXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MLJpOa6Yq3VG24MWaSTlDWTXlS0SQejnstbAbx4VW8KOLX+Ekzln1CEVlyNBvbI5k2YW5uEEgxegnR0gMHNpPlxQ7zH1TGVGxj+1Y3jx4lIdXuhpt0cLbQry62vAlxl/jdN7cruClFQDZH2+p/lAiE93U7Ags/94ZGXlHjaLD40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0uBvAW2t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00EFDC2BD10;
-	Wed,  3 Jul 2024 10:54:45 +0000 (UTC)
+	 MIME-Version; b=to91aZjWstwd5HwT5uKzX1ynsewh/4yfPEMYCnk9YEeyTUykPaxUUSignXEt7DmWEwHI8OrUABv6HsKW0MZ3RXWqkxoBp5uO8hC7dG2znDKscLV/RE0O3Sd2J4iIAv+fanIGy4FAKM5uUsIq/XcoXF1cPcGbjZAqfVuHH90wSAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exiTi7t9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38843C2BD10;
+	Wed,  3 Jul 2024 10:45:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004086;
-	bh=mxZzCTONHVGpgF1pVhqHbKIiFLaIvGBFH6HUfuumbRA=;
+	s=korg; t=1720003538;
+	bh=uGgHVPfM3dKtq0FsW7t3haBT24Z65YalC0mB/2sMYXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0uBvAW2tFtX80C261eRBzwz1/Jpuf4fS39WtYJjPan2vCp7rwkKfWRcficLrO/87Z
-	 kpGNz4NumbszunD06W/zIPMXczRnizdCkwomgmrj+WoRtwAfBUgFSkrFXh1Vo0r6j8
-	 7raPxY5WhkWxrBEuOMR71/DPM54kBbxa/+vMpD8w=
+	b=exiTi7t9CtecSN51I5w6Rm0u6hzzYR2Id4gP+OBhkCYTWh4zwlWBMNg+BQKq8oIso
+	 S1/FFHXkG+OlJXy7TardPxeZ/CPZH1W2pYaQQZUEqGPvNWYtxEfFLfYXIFQ9zfVQxJ
+	 uKaKUWhuGKNOAjONDd/BN7xGrOJfY/c2+NhkBtFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.4 117/189] drm/radeon: fix UBSAN warning in kv_dpm.c
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Allison Henderson <allison.henderson@oracle.com>,
+	Chuck Lever III <chuck.lever@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 081/139] gcov: add support for GCC 14
 Date: Wed,  3 Jul 2024 12:39:38 +0200
-Message-ID: <20240703102845.913606540@linuxfoundation.org>
+Message-ID: <20240703102833.500179771@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-commit a498df5421fd737d11bfd152428ba6b1c8538321 upstream.
+commit c1558bc57b8e5b4da5d821537cd30e2e660861d8 upstream.
 
-Adds bounds check for sumo_vid_mapping_entry.
+Using gcov on kernels compiled with GCC 14 results in truncated 16-byte
+long .gcda files with no usable data.  To fix this, update GCOV_COUNTERS
+to match the value defined by GCC 14.
 
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Tested with GCC versions 14.1.0 and 13.2.0.
+
+Link: https://lkml.kernel.org/r/20240610092743.1609845-1-oberpar@linux.ibm.com
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Reported-by: Allison Henderson <allison.henderson@oracle.com>
+Reported-by: Chuck Lever III <chuck.lever@oracle.com>
+Tested-by: Chuck Lever <chuck.lever@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/sumo_dpm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/gcov/gcc_4_7.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/radeon/sumo_dpm.c
-+++ b/drivers/gpu/drm/radeon/sumo_dpm.c
-@@ -1621,6 +1621,8 @@ void sumo_construct_vid_mapping_table(st
+--- a/kernel/gcov/gcc_4_7.c
++++ b/kernel/gcov/gcc_4_7.c
+@@ -19,7 +19,9 @@
+ #include <linux/vmalloc.h>
+ #include "gcov.h"
  
- 	for (i = 0; i < SUMO_MAX_HARDWARE_POWERLEVELS; i++) {
- 		if (table[i].ulSupportedSCLK != 0) {
-+			if (table[i].usVoltageIndex >= SUMO_MAX_NUMBER_VOLTAGES)
-+				continue;
- 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_7bit =
- 				table[i].usVoltageID;
- 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_2bit =
+-#if (__GNUC__ >= 10)
++#if (__GNUC__ >= 14)
++#define GCOV_COUNTERS			9
++#elif (__GNUC__ >= 10)
+ #define GCOV_COUNTERS			8
+ #elif (__GNUC__ >= 7)
+ #define GCOV_COUNTERS			9
 
 
 
