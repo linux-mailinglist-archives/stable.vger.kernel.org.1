@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4932F925CF1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:24:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B24B7925E4F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6324BB360B9
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:10:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E23F71C23B1C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43D2194A57;
-	Wed,  3 Jul 2024 10:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7DC17DE0E;
+	Wed,  3 Jul 2024 11:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDWumdo6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JtKIKoKq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2E31891B6;
-	Wed,  3 Jul 2024 10:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3E817DA3C;
+	Wed,  3 Jul 2024 11:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004300; cv=none; b=ahvALEWghXanMExFnTfRTtP/i5U+IoX6f1K5X3DQdYUFBSYkNmTE993H9+4egU/yhL2vHCEOTDqmdAGnmrI6eSuCH55QT20HTK74uAifLw7Pnc8QhOtBZH+LH+ADdjNGg2sNzTI2z21UKgbAXqhQX+PZqJ9rjVLMPpus9z1lu8M=
+	t=1720006136; cv=none; b=aPrE79tQ+UZ9IyRGbf5MiNFonsoozK8yqg8wY61bWNl9l9yQHba49vfUgqnR/GTf+pSSLu1QJ+vPtzJJjbYo5sykOR5b4tkKJBYU0IB2a5FmrFIDmQGzIwrHOgUYaEjkUlIPwxA0G+z2uofLZ8gFhDtryRlN+kOrU2+2CD9lKkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004300; c=relaxed/simple;
-	bh=CjYwkpMyuCyp3K3M/ANdQK31XthczZFlnBw9oHS6i5A=;
+	s=arc-20240116; t=1720006136; c=relaxed/simple;
+	bh=mkDBXsSiYVgU+Sa5fX/n7rCy9dZ2JOkINK9PlWH/RJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PD5o0EQR2nryt3SnbVhyLkPW9fDlc5tkNYF15cXvomdVVEBCIS3oTFqUK+LefxL/i6iKBlMdYKqWtnq6Zo2QilqjbXgJk3hksxPYCSdwIyZ/kEydkM/zyUCGa+lZ1aMR367Zw1mIzOI6BpRuxAD8JIju2KVRIozR5gf5ccyvUDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDWumdo6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C07C4AF0B;
-	Wed,  3 Jul 2024 10:58:19 +0000 (UTC)
+	 MIME-Version; b=Lx4VYHyWHsFAXSArB5hfqINh9NB8V1m62g7wB2pJZAK8qZs7U0W02GacPCeWmCkQmokeF1ebh6H0S7Rz4LArI5ADKqJtoByRl1IzAPI2xlMmJoP0C13lDAkXCJ83K5i1SU9Fji8mdHmtFXxmVlomUD1CtnJfMoLy0gkbDC0c4To=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JtKIKoKq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E9EAC2BD10;
+	Wed,  3 Jul 2024 11:28:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004300;
-	bh=CjYwkpMyuCyp3K3M/ANdQK31XthczZFlnBw9oHS6i5A=;
+	s=korg; t=1720006136;
+	bh=mkDBXsSiYVgU+Sa5fX/n7rCy9dZ2JOkINK9PlWH/RJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QDWumdo6l2orsll0rTMyIw3zMqgav841Hk+kyg+AtK/xAmvlMVFTJohNuRBZCn1NC
-	 PJyo/G0RxkRlBamOjUHsOU3d3hJOyWGOKwAn6aPUkGB4FoJmMU5U4CmzXXeSdacZYP
-	 S52VavLtCJWJjIQOqI/n72/IL8ACEGYSaxq778Zg=
+	b=JtKIKoKqu6Xb+45G/wAP2RuyDV4XRNc/h0aEk3z9M7g/K9zyFOzqoBQztBeke+pAT
+	 6zMdKmihDAoH1N2wTBUXt2Tn3F9fDN9reMHKalmW1gONOIlItYnPv7rPKt+isn6fj6
+	 9wUaLGLqIO2GcFx+C7MurzuPI3YStMtHh9kqL25E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netdev@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
-Subject: [PATCH 5.4 186/189] ipv6: Fix data races around sk->sk_prot.
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 311/356] iio: accel: fxls8962af: select IIO_BUFFER & IIO_KFIFO_BUF
 Date: Wed,  3 Jul 2024 12:40:47 +0200
-Message-ID: <20240703102848.492659343@linuxfoundation.org>
+Message-ID: <20240703102924.878380346@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,139 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-commit 364f997b5cfe1db0d63a390fe7c801fa2b3115f6 upstream.
+commit a821d7111e3f7c8869961b606714a299bfe20014 upstream.
 
-Commit 086d49058cd8 ("ipv6: annotate some data-races around sk->sk_prot")
-fixed some data-races around sk->sk_prot but it was not enough.
+Provide missing symbols to the module:
+ERROR: modpost: iio_push_to_buffers [drivers/iio/accel/fxls8962af-core.ko] undefined!
+ERROR: modpost: devm_iio_kfifo_buffer_setup_ext [drivers/iio/accel/fxls8962af-core.ko] undefined!
 
-Some functions in inet6_(stream|dgram)_ops still access sk->sk_prot
-without lock_sock() or rtnl_lock(), so they need READ_ONCE() to avoid
-load tearing.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
+Cc: stable@vger.kernel.org
+Fixes: 79e3a5bdd9ef ("iio: accel: fxls8962af: add hw buffered sampling")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://lore.kernel.org/r/20240605203810.2908980-2-alexander.sverdlin@siemens.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock.c          |    6 ++++--
- net/ipv4/af_inet.c       |   23 ++++++++++++++++-------
- net/ipv6/ipv6_sockglue.c |    4 ++--
- 3 files changed, 22 insertions(+), 11 deletions(-)
+ drivers/iio/accel/Kconfig |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -3172,7 +3172,8 @@ int sock_common_getsockopt(struct socket
- {
- 	struct sock *sk = sock->sk;
+--- a/drivers/iio/accel/Kconfig
++++ b/drivers/iio/accel/Kconfig
+@@ -235,6 +235,8 @@ config DMARD10
+ config FXLS8962AF
+ 	tristate
+ 	depends on I2C || !I2C # cannot be built-in for modular I2C
++	select IIO_BUFFER
++	select IIO_KFIFO_BUF
  
--	return sk->sk_prot->getsockopt(sk, level, optname, optval, optlen);
-+	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
-+	return READ_ONCE(sk->sk_prot)->getsockopt(sk, level, optname, optval, optlen);
- }
- EXPORT_SYMBOL(sock_common_getsockopt);
- 
-@@ -3213,7 +3214,8 @@ int sock_common_setsockopt(struct socket
- {
- 	struct sock *sk = sock->sk;
- 
--	return sk->sk_prot->setsockopt(sk, level, optname, optval, optlen);
-+	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
-+	return READ_ONCE(sk->sk_prot)->setsockopt(sk, level, optname, optval, optlen);
- }
- EXPORT_SYMBOL(sock_common_setsockopt);
- 
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -553,22 +553,27 @@ int inet_dgram_connect(struct socket *so
- 		       int addr_len, int flags)
- {
- 	struct sock *sk = sock->sk;
-+	const struct proto *prot;
- 	int err;
- 
- 	if (addr_len < sizeof(uaddr->sa_family))
- 		return -EINVAL;
-+
-+	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
-+	prot = READ_ONCE(sk->sk_prot);
-+
- 	if (uaddr->sa_family == AF_UNSPEC)
--		return sk->sk_prot->disconnect(sk, flags);
-+		return prot->disconnect(sk, flags);
- 
- 	if (BPF_CGROUP_PRE_CONNECT_ENABLED(sk)) {
--		err = sk->sk_prot->pre_connect(sk, uaddr, addr_len);
-+		err = prot->pre_connect(sk, uaddr, addr_len);
- 		if (err)
- 			return err;
- 	}
- 
- 	if (!inet_sk(sk)->inet_num && inet_autobind(sk))
- 		return -EAGAIN;
--	return sk->sk_prot->connect(sk, uaddr, addr_len);
-+	return prot->connect(sk, uaddr, addr_len);
- }
- EXPORT_SYMBOL(inet_dgram_connect);
- 
-@@ -731,10 +736,11 @@ EXPORT_SYMBOL(inet_stream_connect);
- int inet_accept(struct socket *sock, struct socket *newsock, int flags,
- 		bool kern)
- {
--	struct sock *sk1 = sock->sk;
-+	struct sock *sk1 = sock->sk, *sk2;
- 	int err = -EINVAL;
--	struct sock *sk2 = sk1->sk_prot->accept(sk1, flags, &err, kern);
- 
-+	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
-+	sk2 = READ_ONCE(sk1->sk_prot)->accept(sk1, flags, &err, kern);
- 	if (!sk2)
- 		goto do_err;
- 
-@@ -815,12 +821,15 @@ ssize_t inet_sendpage(struct socket *soc
- 		      size_t size, int flags)
- {
- 	struct sock *sk = sock->sk;
-+	const struct proto *prot;
- 
- 	if (unlikely(inet_send_prepare(sk)))
- 		return -EAGAIN;
- 
--	if (sk->sk_prot->sendpage)
--		return sk->sk_prot->sendpage(sk, page, offset, size, flags);
-+	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
-+	prot = READ_ONCE(sk->sk_prot);
-+	if (prot->sendpage)
-+		return prot->sendpage(sk, page, offset, size, flags);
- 	return sock_no_sendpage(sock, page, offset, size, flags);
- }
- EXPORT_SYMBOL(inet_sendpage);
---- a/net/ipv6/ipv6_sockglue.c
-+++ b/net/ipv6/ipv6_sockglue.c
-@@ -222,7 +222,7 @@ static int do_ipv6_setsockopt(struct soc
- 				sock_prot_inuse_add(net, sk->sk_prot, -1);
- 				sock_prot_inuse_add(net, &tcp_prot, 1);
- 				local_bh_enable();
--				/* Paired with READ_ONCE(sk->sk_prot) in net/ipv6/af_inet6.c */
-+				/* Paired with READ_ONCE(sk->sk_prot) in inet6_stream_ops */
- 				WRITE_ONCE(sk->sk_prot, &tcp_prot);
- 				icsk->icsk_af_ops = &ipv4_specific;
- 				sk->sk_socket->ops = &inet_stream_ops;
-@@ -237,7 +237,7 @@ static int do_ipv6_setsockopt(struct soc
- 				sock_prot_inuse_add(net, sk->sk_prot, -1);
- 				sock_prot_inuse_add(net, prot, 1);
- 				local_bh_enable();
--				/* Paired with READ_ONCE(sk->sk_prot) in net/ipv6/af_inet6.c */
-+				/* Paired with READ_ONCE(sk->sk_prot) in inet6_dgram_ops */
- 				WRITE_ONCE(sk->sk_prot, prot);
- 				sk->sk_socket->ops = &inet_dgram_ops;
- 				sk->sk_family = PF_INET;
+ config FXLS8962AF_I2C
+ 	tristate "NXP FXLS8962AF/FXLS8964AF Accelerometer I2C Driver"
 
 
 
