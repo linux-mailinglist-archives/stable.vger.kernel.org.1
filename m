@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-56971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9D8925A01
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:53:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70712925C71
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:18:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8EA71F24EF2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2701A1F24731
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0320173355;
-	Wed,  3 Jul 2024 10:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493BB1822DF;
+	Wed,  3 Jul 2024 11:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2eIdvj8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbsOt7u1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC94173335;
-	Wed,  3 Jul 2024 10:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F4A16F8FA;
+	Wed,  3 Jul 2024 11:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003444; cv=none; b=WlX9UygP27LgT+FlRBaFFBFsV8n3iGTwp5RpumUEqr8TnUjCVY0aAiPdAMXZyg/vwoI48Sf2zpQ8k/ex95gJL9/hsSzLalxx8eCXkhF+fiQ1KNgoB3K4i/XLixpDdhuPRH2b/ibOgqPAiLwTs+Ahs2j7T5R+oNCfNcmO9o2exZs=
+	t=1720004807; cv=none; b=CRc1WGIGDtX96/yS3F9S/P03xqHMwVm3LAatrRkaJMyKkR20KIovc0viUU5yyYBFjoMcE1p+FGhWjFHNZsIKuaFmH1YoD5aDe+7zLZiqGTzqPmBOiTmtEHcToxImUDBW8NV0fnl0aof69jCMP/3daJJvZ1/6/vr/lf/kUBF5bmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003444; c=relaxed/simple;
-	bh=TvvRUbZl5Va76HI1a6PQRiTz4QPwDceBeQSLMIHsZFg=;
+	s=arc-20240116; t=1720004807; c=relaxed/simple;
+	bh=HhipZ0arZ2j3eBD3H3PdgCy7x+1Hy2GT588SHOy7y6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H4YdnIWIf9EEUX/s1fHwMWpIm4jad1C7bPtfOpjJxYKAgNGADlEGUWFH+9ZOBd4seGREOGJoktv6TyJ7FmKzfQdnkqoPgE/90GphPmWjVddEdOHtWcjuZqkwW6cYeffKc2sUU86DbcmHe9mg2ifl++RE6YgbB1yautheSqno6Xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2eIdvj8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3593EC2BD10;
-	Wed,  3 Jul 2024 10:44:04 +0000 (UTC)
+	 MIME-Version; b=rMkhq3X584U7QAZnu+qj9+SYj51ZpVWHQSopcuM+W/LceIl7o4MYYTC+PIiB2kfbAQscBDu+/d3aJDVedzgH/1Z6DRt4N0zcpTKv7MPGPSe6o7VJlQu/+qKvabo3FHEqjEBb/cO6qkBQE5nzPpBaNMI3fMxhLhyystTRSi1XClY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbsOt7u1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830D8C2BD10;
+	Wed,  3 Jul 2024 11:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003444;
-	bh=TvvRUbZl5Va76HI1a6PQRiTz4QPwDceBeQSLMIHsZFg=;
+	s=korg; t=1720004806;
+	bh=HhipZ0arZ2j3eBD3H3PdgCy7x+1Hy2GT588SHOy7y6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N2eIdvj8Ei49b3StTdAlYdAMsrDlxZmBVKe8rGVzWvmawJ/UtdFJjDwYxgvKO61wc
-	 OylSJ3pmn5XRHtnZeA2iwCPhxC7Lb7EA0pPVrKwuxbpK8jK+a/R2f2QXoplMNPVo0x
-	 iVmosr3q9K5AqBl7CkkkP8cpAuhxwxFW/4YAkCC8=
+	b=RbsOt7u182U5O1nQ3OHeSyo2B9suhcyHHqlUHhXEqWvdOcPDZpPJ3Cln4+tuVKfdh
+	 /azdTKPtQNZvpYysd6p5nUqK5uNW2r29s45lUM7QWMMgVxRiFrE5hHLmm251D1GqRh
+	 WNDdY3m2G6s/R/W5MADRf0daIGwbGXJV6WyTA7fY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rick Wertenbroek <rick.wertenbroek@gmail.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 4.19 050/139] PCI: rockchip-ep: Remove wrong mask on subsys_vendor_id
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Allison Henderson <allison.henderson@oracle.com>,
+	Chuck Lever III <chuck.lever@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 166/290] gcov: add support for GCC 14
 Date: Wed,  3 Jul 2024 12:39:07 +0200
-Message-ID: <20240703102832.325800924@linuxfoundation.org>
+Message-ID: <20240703102910.447155949@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-commit 2dba285caba53f309d6060fca911b43d63f41697 upstream.
+commit c1558bc57b8e5b4da5d821537cd30e2e660861d8 upstream.
 
-Remove wrong mask on subsys_vendor_id. Both the Vendor ID and Subsystem
-Vendor ID are u16 variables and are written to a u32 register of the
-controller. The Subsystem Vendor ID was always 0 because the u16 value
-was masked incorrectly with GENMASK(31,16) resulting in all lower 16
-bits being set to 0 prior to the shift.
+Using gcov on kernels compiled with GCC 14 results in truncated 16-byte
+long .gcda files with no usable data.  To fix this, update GCOV_COUNTERS
+to match the value defined by GCC 14.
 
-Remove both masks as they are unnecessary and set the register correctly
-i.e., the lower 16-bits are the Vendor ID and the upper 16-bits are the
-Subsystem Vendor ID.
+Tested with GCC versions 14.1.0 and 13.2.0.
 
-This is documented in the RK3399 TRM section 17.6.7.1.17
-
-[kwilczynski: removed unnecesary newline]
-Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
-Link: https://lore.kernel.org/linux-pci/20240403144508.489835-1-rick.wertenbroek@gmail.com
-Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20240610092743.1609845-1-oberpar@linux.ibm.com
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Reported-by: Allison Henderson <allison.henderson@oracle.com>
+Reported-by: Chuck Lever III <chuck.lever@oracle.com>
+Tested-by: Chuck Lever <chuck.lever@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rockchip-ep.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ kernel/gcov/gcc_4_7.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/controller/pcie-rockchip-ep.c
-+++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -130,10 +130,8 @@ static int rockchip_pcie_ep_write_header
+--- a/kernel/gcov/gcc_4_7.c
++++ b/kernel/gcov/gcc_4_7.c
+@@ -19,7 +19,9 @@
+ #include <linux/vmalloc.h>
+ #include "gcov.h"
  
- 	/* All functions share the same vendor ID with function 0 */
- 	if (fn == 0) {
--		u32 vid_regs = (hdr->vendorid & GENMASK(15, 0)) |
--			       (hdr->subsys_vendor_id & GENMASK(31, 16)) << 16;
--
--		rockchip_pcie_write(rockchip, vid_regs,
-+		rockchip_pcie_write(rockchip,
-+				    hdr->vendorid | hdr->subsys_vendor_id << 16,
- 				    PCIE_CORE_CONFIG_VENDOR);
- 	}
- 
+-#if (__GNUC__ >= 10)
++#if (__GNUC__ >= 14)
++#define GCOV_COUNTERS			9
++#elif (__GNUC__ >= 10)
+ #define GCOV_COUNTERS			8
+ #elif (__GNUC__ >= 7)
+ #define GCOV_COUNTERS			9
 
 
 
