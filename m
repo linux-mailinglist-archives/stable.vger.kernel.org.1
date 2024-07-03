@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-57017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3124925AA3
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:02:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D94CE925E13
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:34:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56E0C29A72D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 170541C24B10
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4D1C18508F;
-	Wed,  3 Jul 2024 10:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD18A17B409;
+	Wed,  3 Jul 2024 11:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlYObcmG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DBhI8tpY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A3E1741D8;
-	Wed,  3 Jul 2024 10:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB8617B404;
+	Wed,  3 Jul 2024 11:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003586; cv=none; b=VoMNjdSGsF/4MzuETAlidECguoLBBAyI96UP7PbEeDSIJmMOC0VUrEo58iLPZBbWsx9zOxPHA2bQCC+EfCT9w/Xfc5w11SaQu5Feuq/9vfO44n5lZUw8QTiHujRnDx0R9loC+8jM3Z8muN3X7awa7gkcGspxYl6Gr1YaNLPP8pQ=
+	t=1720005974; cv=none; b=jG0FnfPZiwO68sQcy2q0gRXrbTmE2eFMU5pSe1v4ySpBLPIF/I75JwTjxPuciSoc2W6wo/WzPyhifgoWaG3JpIhIv1y17O+lVsEmZ+IT7fWAjMI9MENZ8J8qvFrCQCUJ9V33Jj6bKam4PSgwgCUp26SoBp8Zy09G8xA+SFWjgII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003586; c=relaxed/simple;
-	bh=optgjZAkQpmcLmllpEd/GguJcV7faTXEiqbm/FvAfos=;
+	s=arc-20240116; t=1720005974; c=relaxed/simple;
+	bh=W4qNDTKHAOF140uf3BpTYvmDc9PV5KOlzkln9Tmbu0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FusHFuyMnUahVVVn0s96ZQQPUQrgiOn+Pl0ICCZg4z49s2jJIZJP3ZOt5ipksSe7JqXNHIX+8oyHhoPvcIzl7Qswnb+u0SEpSN2w/EscSOLVLcj6BpcTs/CVw4b4lfF54YZzNofIw9Lhj+Kzc9z9JzoDwC9+irvJDah85JqEcao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlYObcmG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC717C2BD10;
-	Wed,  3 Jul 2024 10:46:25 +0000 (UTC)
+	 MIME-Version; b=pGTrSZ71Bf6coMmioW0VKfyfsEhlkTVahuWGOmV7k/Gv/jw5ib6i2Y3tDlWWrrBxKD6Bii6+t9fuqPAV8JryxoeM4EX1G3GEpJqjWRTCbMiIGSul4KIfEKdEoI3OaY33PneCWrzEMt8Ja/Uh7N82YAvkBEV/UcE0aAXyJCBD79g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DBhI8tpY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A75C2BD10;
+	Wed,  3 Jul 2024 11:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003586;
-	bh=optgjZAkQpmcLmllpEd/GguJcV7faTXEiqbm/FvAfos=;
+	s=korg; t=1720005974;
+	bh=W4qNDTKHAOF140uf3BpTYvmDc9PV5KOlzkln9Tmbu0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UlYObcmGUqvj0aZBBkL1zHT4WcKj9igunl4vB/sGc5eMgVDqFWXHr4rVWJQYfMsJH
-	 tehN77ItcMo9216OWF9CViRaVZkYosqn5kJ7DotrXpqZzW0jGKPfmxpCNUGZl8xdbA
-	 7ZCIkcpM060oAVZfuUs53UG0pRWHEVcHGwAFDZAk=
+	b=DBhI8tpY5LLBQw6YWth66K3r5LaYPS0oF3WkbDq5F7pTvuCuM8R0HCRTJc5udWi0I
+	 TmRnai3PZ8GxOxCKECSyARxT2ZVrFMiOB9sgxKaMqvR3k1+shGaD4tdVnzKV/4SYkE
+	 0en1R7p7GIgVoPhEVhHDDPvkxpcKVUQAgvHWaUsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernhard <bernhard.gebetsberger@gmx.at>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 4.19 098/139] usb: xhci: do not perform Soft Retry for some xHCI hosts
+	Shailend Chand <shailend@google.com>,
+	Ziwei Xiao <ziweixiao@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 259/356] gve: Clear napi->skb before dev_kfree_skb_any()
 Date: Wed,  3 Jul 2024 12:39:55 +0200
-Message-ID: <20240703102834.141077004@linuxfoundation.org>
+Message-ID: <20240703102922.915220386@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +65,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislaw Gruszka <stf_xl@wp.pl>
+From: Ziwei Xiao <ziweixiao@google.com>
 
-commit a4a251f8c23518899d2078c320cf9ce2fa459c9f upstream.
+[ Upstream commit 6f4d93b78ade0a4c2cafd587f7b429ce95abb02e ]
 
-On some systems rt2800usb and mt7601u devices are unable to operate since
-commit f8f80be501aa ("xhci: Use soft retry to recover faster from
-transaction errors")
+gve_rx_free_skb incorrectly leaves napi->skb referencing an skb after it
+is freed with dev_kfree_skb_any(). This can result in a subsequent call
+to napi_get_frags returning a dangling pointer.
 
-Seems that some xHCI controllers can not perform Soft Retry correctly,
-affecting those devices.
+Fix this by clearing napi->skb before the skb is freed.
 
-To avoid the problem add xhci->quirks flag that restore pre soft retry
-xhci behaviour for affected xHCI controllers. Currently those are
-AMD_PROMONTORYA_4 and AMD_PROMONTORYA_2, since it was confirmed
-by the users: on those xHCI hosts issue happen and is gone after
-disabling Soft Retry.
-
-[minor commit message rewording for checkpatch -Mathias]
-
-Fixes: f8f80be501aa ("xhci: Use soft retry to recover faster from transaction errors")
-Cc: <stable@vger.kernel.org> # 4.20+
-Reported-by: Bernhard <bernhard.gebetsberger@gmx.at>
-Tested-by: Bernhard <bernhard.gebetsberger@gmx.at>
-Signed-off-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=202541
-Link: https://lore.kernel.org/r/20210311115353.2137560-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9b8dd5e5ea48 ("gve: DQO: Add RX path")
+Cc: stable@vger.kernel.org
+Reported-by: Shailend Chand <shailend@google.com>
+Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
+Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Reviewed-by: Shailend Chand <shailend@google.com>
+Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Link: https://lore.kernel.org/r/20240612001654.923887-1-ziweixiao@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-pci.c  |    5 +++++
- drivers/usb/host/xhci-ring.c |    3 ++-
- drivers/usb/host/xhci.h      |    1 +
- 3 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/google/gve/gve_rx_dqo.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -280,6 +280,11 @@ static void xhci_pci_quirks(struct devic
- 	     pdev->device == 0x9026)
- 		xhci->quirks |= XHCI_RESET_PLL_ON_DISCONNECT;
+diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+index 630f42a3037b0..8756f9cbd631e 100644
+--- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+@@ -465,11 +465,13 @@ static void gve_rx_skb_hash(struct sk_buff *skb,
+ 	skb_set_hash(skb, le32_to_cpu(compl_desc->hash), hash_type);
+ }
  
-+	if (pdev->vendor == PCI_VENDOR_ID_AMD &&
-+	    (pdev->device == PCI_DEVICE_ID_AMD_PROMONTORYA_2 ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_PROMONTORYA_4))
-+		xhci->quirks |= XHCI_NO_SOFT_RETRY;
-+
- 	if (xhci->quirks & XHCI_RESET_ON_RESUME)
- 		xhci_dbg_trace(xhci, trace_xhci_dbg_quirks,
- 				"QUIRK: Resetting on resume");
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2291,7 +2291,8 @@ static int process_bulk_intr_td(struct x
- 		td->urb->actual_length = sum_trb_lengths(xhci, ep_ring, ep_trb);
- 		goto finish_td;
- 	case COMP_USB_TRANSACTION_ERROR:
--		if ((ep_ring->err_count++ > MAX_SOFT_RETRY) ||
-+		if (xhci->quirks & XHCI_NO_SOFT_RETRY ||
-+		    (ep_ring->err_count++ > MAX_SOFT_RETRY) ||
- 		    le32_to_cpu(slot_ctx->tt_info) & TT_SLOT)
- 			break;
- 		*status = 0;
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1880,6 +1880,7 @@ struct xhci_hcd {
- #define XHCI_RESET_PLL_ON_DISCONNECT	BIT_ULL(34)
- #define XHCI_SNPS_BROKEN_SUSPEND    BIT_ULL(35)
- #define XHCI_DISABLE_SPARSE	BIT_ULL(38)
-+#define XHCI_NO_SOFT_RETRY	BIT_ULL(40)
+-static void gve_rx_free_skb(struct gve_rx_ring *rx)
++static void gve_rx_free_skb(struct napi_struct *napi, struct gve_rx_ring *rx)
+ {
+ 	if (!rx->ctx.skb_head)
+ 		return;
  
- 	unsigned int		num_active_eps;
- 	unsigned int		limit_active_eps;
++	if (rx->ctx.skb_head == napi->skb)
++		napi->skb = NULL;
+ 	dev_kfree_skb_any(rx->ctx.skb_head);
+ 	rx->ctx.skb_head = NULL;
+ 	rx->ctx.skb_tail = NULL;
+@@ -690,7 +692,7 @@ int gve_rx_poll_dqo(struct gve_notify_block *block, int budget)
+ 
+ 		err = gve_rx_dqo(napi, rx, compl_desc, rx->q_num);
+ 		if (err < 0) {
+-			gve_rx_free_skb(rx);
++			gve_rx_free_skb(napi, rx);
+ 			u64_stats_update_begin(&rx->statss);
+ 			if (err == -ENOMEM)
+ 				rx->rx_skb_alloc_fail++;
+@@ -733,7 +735,7 @@ int gve_rx_poll_dqo(struct gve_notify_block *block, int budget)
+ 
+ 		/* gve_rx_complete_skb() will consume skb if successful */
+ 		if (gve_rx_complete_skb(rx, napi, compl_desc, feat) != 0) {
+-			gve_rx_free_skb(rx);
++			gve_rx_free_skb(napi, rx);
+ 			u64_stats_update_begin(&rx->statss);
+ 			rx->rx_desc_err_dropped_pkt++;
+ 			u64_stats_update_end(&rx->statss);
+-- 
+2.43.0
+
 
 
 
