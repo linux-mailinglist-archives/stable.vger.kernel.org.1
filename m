@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A458925B98
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:09:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03031925A37
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:55:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A57AC28FAE1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:09:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3F091F20FB4
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADEEB17335C;
-	Wed,  3 Jul 2024 10:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E94B1850B8;
+	Wed,  3 Jul 2024 10:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VB9vl9zc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eo5boKAw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D85D185E4F;
-	Wed,  3 Jul 2024 10:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E70B174ED1;
+	Wed,  3 Jul 2024 10:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004169; cv=none; b=mX++lao3nBi2xp+X5epASCeejyC3HaA1HoS9Laxsk0UhZIucQscHJmKMB3blS4mEobbrpvgoekDmRkr7Wx09DFyGIrBRE5PZMcb9caUDEwe9odYMyGOktW3XIUAngKkO10boWNWgv+GPK+nz53wHmXAvsIJVh0CnuTrE4pT3q64=
+	t=1720003614; cv=none; b=S/g9MgxMCNkikNNe/7knvBCp1GnFs648xJJCNRs9Mo2v5NGuFQM0UoU71CoXzAhEpgAPX35iKJ/gt3OcTkzGeK2x1izrRuYIbZvhetRTD5E7po4tUQDUKJEMN5zFXdZuV/+RkmJHsgkroHYeI5p40g8TdQE7gELc5/NllCEj1Kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004169; c=relaxed/simple;
-	bh=CGPa+ilyXfEqHwmafR6PGEYhRwU4DxplZsvLc2zBDQo=;
+	s=arc-20240116; t=1720003614; c=relaxed/simple;
+	bh=4XfUdrJ/vkbYK+i5LWFTPDX4SlV/uA2RSVayQWbI81w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RhpxgxLKLdqDic8riOCRpKyNba2tSIvwo4yi5JuuVyvfUu73/+G2OWBw0PDhWu2l6msAzJ4Orsd4W4lLT5cvk086haVHD0ye22qLBelxEMXqSJmlAy5NpeA3GTTeTds8a9jhSJzmxSo5bd2PWG3ilYFdXWRNgwPqa2NkfiGUuWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VB9vl9zc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD49C2BD10;
-	Wed,  3 Jul 2024 10:56:08 +0000 (UTC)
+	 MIME-Version; b=ERwaaSL3vY6V39xUKh4Aazqt9zjlhBXbWcqd6Rob6R2KzA4f4BLjJeexQX5/SVkUhD9XmlDLFzzOwP66jslBRw3UA9S487Vc0Z7Gv0CwDKKo3ZCzwZqdvgwWbD0/StsnwZr+bcUUstyD+pbgR/nF2GpvnPw4cqfu4nRtiQOzp44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eo5boKAw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47909C2BD10;
+	Wed,  3 Jul 2024 10:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004169;
-	bh=CGPa+ilyXfEqHwmafR6PGEYhRwU4DxplZsvLc2zBDQo=;
+	s=korg; t=1720003613;
+	bh=4XfUdrJ/vkbYK+i5LWFTPDX4SlV/uA2RSVayQWbI81w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VB9vl9zcYgMPNlQeUGSVj/qeNP9qzfhKoKR8WOMwDtKmJFaM8uu8JP4tcYSEYK83f
-	 nNor7WYaznxpVljesupLnvTBEso2zNgH9AODjAeYKcD/v3dqboYACrD5bMNmRtH8e6
-	 iYyMMMhTMDaztkDX5mAJ9uNPxS0wrdC68k+O0yOI=
+	b=eo5boKAws9KfhImT49k1ZBYOtW5IvZ0PevwnlSZ0G8sS7CmAmMY6YIXAMJkuQSceK
+	 ZphYiwvHLTJTRe8qPAdGV8LfpgQOy54j0SCd5iu0yS3bFK6/4Dg8iijdWBZwyXi3TD
+	 BzdyQhjsgTlY81BfmFsZxW8LPJiG40WrOGhfQwKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Enguerrand de Ribaucourt <enguerrand.de-ribaucourt@savoirfairelinux.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 143/189] net: phy: micrel: add Microchip KSZ 9477 to the device table
+Subject: [PATCH 4.19 107/139] drm/panel: ilitek-ili9881c: Fix warning with GPIO controllers that sleep
 Date: Wed,  3 Jul 2024 12:40:04 +0200
-Message-ID: <20240703102846.876927520@linuxfoundation.org>
+Message-ID: <20240703102834.483004457@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Enguerrand de Ribaucourt <enguerrand.de-ribaucourt@savoirfairelinux.com>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-[ Upstream commit 54a4e5c16382e871c01dd82b47e930fdce30406b ]
+[ Upstream commit ee7860cd8b5763017f8dc785c2851fecb7a0c565 ]
 
-PHY_ID_KSZ9477 was supported but not added to the device table passed to
-MODULE_DEVICE_TABLE.
+The ilitek-ili9881c controls the reset GPIO using the non-sleeping
+gpiod_set_value() function. This complains loudly when the GPIO
+controller needs to sleep. As the caller can sleep, use
+gpiod_set_value_cansleep() to fix the issue.
 
-Fixes: fc3973a1fa09 ("phy: micrel: add Microchip KSZ 9477 Switch PHY support")
-Signed-off-by: Enguerrand de Ribaucourt <enguerrand.de-ribaucourt@savoirfairelinux.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240317154839.21260-1-laurent.pinchart@ideasonboard.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240317154839.21260-1-laurent.pinchart@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/micrel.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/panel/panel-ilitek-ili9881c.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 2cd812c097baf..d46c2ae817be9 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -1234,6 +1234,7 @@ static struct mdio_device_id __maybe_unused micrel_tbl[] = {
- 	{ PHY_ID_KSZ8081, MICREL_PHY_ID_MASK },
- 	{ PHY_ID_KSZ8873MLL, MICREL_PHY_ID_MASK },
- 	{ PHY_ID_KSZ886X, MICREL_PHY_ID_MASK },
-+	{ PHY_ID_KSZ9477, MICREL_PHY_ID_MASK },
- 	{ PHY_ID_LAN8814, MICREL_PHY_ID_MASK },
- 	{ }
- };
+diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c b/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
+index 3ad4a46c4e945..cc11cf41d392c 100644
+--- a/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
++++ b/drivers/gpu/drm/panel/panel-ilitek-ili9881c.c
+@@ -307,10 +307,10 @@ static int ili9881c_prepare(struct drm_panel *panel)
+ 	msleep(5);
+ 
+ 	/* And reset it */
+-	gpiod_set_value(ctx->reset, 1);
++	gpiod_set_value_cansleep(ctx->reset, 1);
+ 	msleep(20);
+ 
+-	gpiod_set_value(ctx->reset, 0);
++	gpiod_set_value_cansleep(ctx->reset, 0);
+ 	msleep(20);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(ili9881c_init); i++) {
+@@ -367,7 +367,7 @@ static int ili9881c_unprepare(struct drm_panel *panel)
+ 
+ 	mipi_dsi_dcs_enter_sleep_mode(ctx->dsi);
+ 	regulator_disable(ctx->power);
+-	gpiod_set_value(ctx->reset, 1);
++	gpiod_set_value_cansleep(ctx->reset, 1);
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
