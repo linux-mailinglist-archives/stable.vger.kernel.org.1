@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E77D5925C3A
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:16:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4BFB925D5B
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:28:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63213298256
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:15:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D572B3354D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF6917B4E7;
-	Wed,  3 Jul 2024 11:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33C917BB3E;
+	Wed,  3 Jul 2024 10:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+8rgBBi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RX5eA+t0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F13E16F84E;
-	Wed,  3 Jul 2024 11:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60945172BCD;
+	Wed,  3 Jul 2024 10:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004632; cv=none; b=OhdG6Ncb/YX0CgwWK4ZyfyL2l1OT65E0SxobD4/VvrvqwGgzAQeiG/8WnaWRibF9UGQebq7BdqaYLJiNa7HlfmUks+J/soeQtidkzP4fm7At6My9wpq4NUYG3trX61FdBTkq+rPKxooaWlix4oONMdOOS6MNqOKUujlDv4PL4h4=
+	t=1720003902; cv=none; b=ZtV0auJ1IqjJlj2kgvoVlK2wWZbWx0M21NahtLsbxJPYttb+ibAa/NzBvG5hubAIsiT9orABV2a9t2i8S7W1A0ioILln8cQqQRGZsEU2TqVCEIN98ysTijRRyMntp67Q5fFxirr8zrCOKNkLMBKlKTLW0dsrh7OE4hniVshxyag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004632; c=relaxed/simple;
-	bh=rH9gVUj8+1oBU9kqShoXHJJXKhzHaHmKtUZG3yBVQRA=;
+	s=arc-20240116; t=1720003902; c=relaxed/simple;
+	bh=E2+JhFJ6O1+0ptFu9R/OeSRYCDPIDS8frp6xnZlJVes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KiD3p6orZmnmSLYyKWTewTfZKmIkPNPg0cwwgV+Pg6ySc1CXpuoGxJfjt08kSdG5PXLVwSrn3czxHuOHsnX2QNeM34KJTiti7Xn4gwmW+tdhGA06KmEGioFrldBLXqnvpqjDnO0IXJceg9PmXPoroOa96B9O3YU+lxgFphMqDK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+8rgBBi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97213C4AF0C;
-	Wed,  3 Jul 2024 11:03:51 +0000 (UTC)
+	 MIME-Version; b=part3DT8JqwmY7XcOTXFP/aRyWz+aktS04NmAy+++mlKS/xsL8DLlkR3lBno6bvyHH5iywV5F7WbgT2UfFchgoy7bOioNKZOhnemD0u7dYh+cjXd9OxBHOWD6Pzw643DnTVsXXaniw+nIgsLioxqfIugt1w3rOvPrcooLuvE5Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RX5eA+t0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFCABC2BD10;
+	Wed,  3 Jul 2024 10:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004632;
-	bh=rH9gVUj8+1oBU9kqShoXHJJXKhzHaHmKtUZG3yBVQRA=;
+	s=korg; t=1720003902;
+	bh=E2+JhFJ6O1+0ptFu9R/OeSRYCDPIDS8frp6xnZlJVes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W+8rgBBiq0KT5BM4/y75q9MRtzKSdwmoSgA2qKurK/Elq4jB22vFyrgQajW3exkNc
-	 buHO07Q/vQJjrdGQcHtpX05v+2XLzwN35NA44wQQsw79OWkdjyfZ/41knivqT5zUBq
-	 xXwob8erH/CUMlKs4wPYDwUeLZxjde4ZCLo6oynE=
+	b=RX5eA+t0NT42Xm9RjMNR3bFykLxbtguf9IdpJH2SqMEJgm1/lUSnH1pkP2V6mA+Wq
+	 Mhi/pzbAEvJkfCGBitTgtKPs+aXAt8Fc+cBcCD57LOxIjF11AbPpo2EWJtUze8/KPO
+	 9Z7wZFYKt6bSV9WoMp3Y/IijCYVgKGapn4wFwmic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Peter Ujfalusi <peter.ujfalusi@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 106/290] rcutorture: Fix rcu_torture_one_read() pipe_count overflow comment
-Date: Wed,  3 Jul 2024 12:38:07 +0200
-Message-ID: <20240703102908.199928190@linuxfoundation.org>
+Subject: [PATCH 5.4 027/189] ASoC: ti: davinci-mcasp: Remove legacy dma_request parsing
+Date: Wed,  3 Jul 2024 12:38:08 +0200
+Message-ID: <20240703102842.532430500@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Peter Ujfalusi <peter.ujfalusi@ti.com>
 
-[ Upstream commit 8b9b443fa860276822b25057cb3ff3b28734dec0 ]
+[ Upstream commit db8793a39b293d5a8983e1713a70a76cb039c2fe ]
 
-The "pipe_count > RCU_TORTURE_PIPE_LEN" check has a comment saying "Should
-not happen, but...".  This is only true when testing an RCU whose grace
-periods are always long enough.  This commit therefore fixes this comment.
+The legacy dma_request (which was holding the DMA request number) is no
+longer in use for a long time.
+All legacy platforms has been converted to dma_slave_map.
 
-Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
-Closes: https://lore.kernel.org/lkml/CAHk-=wi7rJ-eGq+xaxVfzFEgbL9tdf6Kc8Z89rCpfcQOKm74Tw@mail.gmail.com/
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Remove it along with the DT parsing to get tx_dma_channel and
+rx_dma_channel.
+
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Link: https://lore.kernel.org/r/20201106072551.689-3-peter.ujfalusi@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: d18ca8635db2 ("ASoC: ti: davinci-mcasp: Fix race condition during probe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/ti/davinci-mcasp.c | 57 ++----------------------------------
+ 1 file changed, 3 insertions(+), 54 deletions(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 6c1aea48a79a1..c413eb4a95667 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -1407,7 +1407,8 @@ static bool rcu_torture_one_read(struct torture_random_state *trsp)
- 	preempt_disable();
- 	pipe_count = READ_ONCE(p->rtort_pipe_count);
- 	if (pipe_count > RCU_TORTURE_PIPE_LEN) {
--		/* Should not happen, but... */
-+		// Should not happen in a correct RCU implementation,
-+		// happens quite often for torture_type=busted.
- 		pipe_count = RCU_TORTURE_PIPE_LEN;
+diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
+index 7860382a17a28..e2e272d653480 100644
+--- a/sound/soc/ti/davinci-mcasp.c
++++ b/sound/soc/ti/davinci-mcasp.c
+@@ -93,7 +93,6 @@ struct davinci_mcasp {
+ 	u8	bclk_div;
+ 	int	streams;
+ 	u32	irq_request[2];
+-	int	dma_request[2];
+ 
+ 	int	sysclk_freq;
+ 	bool	bclk_master;
+@@ -1730,7 +1729,6 @@ static struct davinci_mcasp_pdata *davinci_mcasp_set_pdata_from_of(
+ 	struct davinci_mcasp_pdata *pdata = NULL;
+ 	const struct of_device_id *match =
+ 			of_match_device(mcasp_dt_ids, &pdev->dev);
+-	struct of_phandle_args dma_spec;
+ 
+ 	const u32 *of_serial_dir32;
+ 	u32 val;
+@@ -1785,31 +1783,6 @@ static struct davinci_mcasp_pdata *davinci_mcasp_set_pdata_from_of(
+ 		pdata->serial_dir = of_serial_dir;
  	}
- 	completed = cur_ops->get_gp_seq();
+ 
+-	ret = of_property_match_string(np, "dma-names", "tx");
+-	if (ret < 0)
+-		goto nodata;
+-
+-	ret = of_parse_phandle_with_args(np, "dmas", "#dma-cells", ret,
+-					 &dma_spec);
+-	if (ret < 0)
+-		goto nodata;
+-
+-	pdata->tx_dma_channel = dma_spec.args[0];
+-
+-	/* RX is not valid in DIT mode */
+-	if (pdata->op_mode != DAVINCI_MCASP_DIT_MODE) {
+-		ret = of_property_match_string(np, "dma-names", "rx");
+-		if (ret < 0)
+-			goto nodata;
+-
+-		ret = of_parse_phandle_with_args(np, "dmas", "#dma-cells", ret,
+-						 &dma_spec);
+-		if (ret < 0)
+-			goto nodata;
+-
+-		pdata->rx_dma_channel = dma_spec.args[0];
+-	}
+-
+ 	ret = of_property_read_u32(np, "tx-num-evt", &val);
+ 	if (ret >= 0)
+ 		pdata->txnumevt = val;
+@@ -2099,11 +2072,10 @@ static void davinci_mcasp_get_dt_params(struct davinci_mcasp *mcasp)
+ static int davinci_mcasp_probe(struct platform_device *pdev)
+ {
+ 	struct snd_dmaengine_dai_dma_data *dma_data;
+-	struct resource *mem, *res, *dat;
++	struct resource *mem, *dat;
+ 	struct davinci_mcasp_pdata *pdata;
+ 	struct davinci_mcasp *mcasp;
+ 	char *irq_name;
+-	int *dma;
+ 	int irq;
+ 	int ret;
+ 
+@@ -2238,45 +2210,22 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
+ 		mcasp->dat_port = true;
+ 
+ 	dma_data = &mcasp->dma_data[SNDRV_PCM_STREAM_PLAYBACK];
++	dma_data->filter_data = "tx";
+ 	if (dat)
+ 		dma_data->addr = dat->start;
+ 	else
+ 		dma_data->addr = mem->start + davinci_mcasp_txdma_offset(pdata);
+ 
+-	dma = &mcasp->dma_request[SNDRV_PCM_STREAM_PLAYBACK];
+-	res = platform_get_resource(pdev, IORESOURCE_DMA, 0);
+-	if (res)
+-		*dma = res->start;
+-	else
+-		*dma = pdata->tx_dma_channel;
+-
+-	/* dmaengine filter data for DT and non-DT boot */
+-	if (pdev->dev.of_node)
+-		dma_data->filter_data = "tx";
+-	else
+-		dma_data->filter_data = dma;
+ 
+ 	/* RX is not valid in DIT mode */
+ 	if (mcasp->op_mode != DAVINCI_MCASP_DIT_MODE) {
+ 		dma_data = &mcasp->dma_data[SNDRV_PCM_STREAM_CAPTURE];
++		dma_data->filter_data = "rx";
+ 		if (dat)
+ 			dma_data->addr = dat->start;
+ 		else
+ 			dma_data->addr =
+ 				mem->start + davinci_mcasp_rxdma_offset(pdata);
+-
+-		dma = &mcasp->dma_request[SNDRV_PCM_STREAM_CAPTURE];
+-		res = platform_get_resource(pdev, IORESOURCE_DMA, 1);
+-		if (res)
+-			*dma = res->start;
+-		else
+-			*dma = pdata->rx_dma_channel;
+-
+-		/* dmaengine filter data for DT and non-DT boot */
+-		if (pdev->dev.of_node)
+-			dma_data->filter_data = "rx";
+-		else
+-			dma_data->filter_data = dma;
+ 	}
+ 
+ 	if (mcasp->version < MCASP_VERSION_3) {
 -- 
 2.43.0
 
