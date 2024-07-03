@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-57465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60024925CA1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53BCA925EE9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:43:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92E951C20BBD
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFE49B309BF
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9731862A6;
-	Wed,  3 Jul 2024 11:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B42185093;
+	Wed,  3 Jul 2024 10:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPEATTdP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0eUi+RH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D063186280;
-	Wed,  3 Jul 2024 11:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78ADB173352;
+	Wed,  3 Jul 2024 10:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004965; cv=none; b=S3aR4yuS/qpIb02Y95xSSeW3IDjxZAwMfbPBcN8ogbru5BmtcX4JQWA0mSlP0RJG0tSgB4u/IMsgi1leAWQyHqMf+V1DElusb0E2X+94s0XDzWGvrHS2rvx4n390hH1F1X1aoi/GshPYdMYShiPXs10MyxNB2eeRmk/mLaDdObo=
+	t=1720003589; cv=none; b=pUK4EgZmLFIsrcBNONKfQMAm0kcDsFhJ7N2qyb22Ja8dsXr2FuRKkF9sc02thJaA96ceypxRVlnkbWbJLwKz5l2HG87eokmU271W40REfOKPaTVEktzCZ7tVx3VISjDiyah/9mU1E3L5f1oQGfoUWgQUQ+DWh/I/O4vrC3uxbXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004965; c=relaxed/simple;
-	bh=1Qh9g3zC+bKEGaSkgkNo7K9fHN2cqwfAVNUsJUHWoXk=;
+	s=arc-20240116; t=1720003589; c=relaxed/simple;
+	bh=x6tmNgTs9rX2om8Loty7Uvra1t1Aw7GIrYheB/JLBr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=StqfLphgWXpqrZr882k1qf5z9NVhwSSuGp/ewR5sNCAkOvm1gd9o7H/UQx8bSJ5ph0KmXN2t3k7qRZgTKCYm0RsaNttfNUxys+N7D10Cx+XxGZMrhu4ZTfCFn1qIjssqBvMuKeYm9EcEj0seKu/k5KTiUDuKOYg3U5oT5K/uIqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPEATTdP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B826BC2BD10;
-	Wed,  3 Jul 2024 11:09:24 +0000 (UTC)
+	 MIME-Version; b=VLkDWoBk2784NqR0J41MIhOtsZ59vqS+WEuue0yOQzzMc6d0dmOj6q7tilj8AVAWhYoG5ZHrkiouMAMcW3Zq6VOesX/cRzZ3eQc8bK9+JgsU7MQosb1UTBg5RdQwCi+1oc06Cd8vzatHeYANObH0tTxcH4xZPZFehxNzrl0vA6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0eUi+RH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B54C2BD10;
+	Wed,  3 Jul 2024 10:46:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004965;
-	bh=1Qh9g3zC+bKEGaSkgkNo7K9fHN2cqwfAVNUsJUHWoXk=;
+	s=korg; t=1720003589;
+	bh=x6tmNgTs9rX2om8Loty7Uvra1t1Aw7GIrYheB/JLBr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cPEATTdPV+WxGSAJd0iF4gpkX6zolPVQDv6yolpMSujCKURVejx84OUu+cyDDADGs
-	 krSTq1gsG+57hIHa8IkD5IQLohveUouaC3oxGLrxbqZ0wiNJJe+UoFtynuAjErl9I7
-	 LPFQYptyUWfQAGcRuCzdPjMeXljyBt6NqG4FK/ew=
+	b=o0eUi+RHvXXsQtDBgndmxVQ7WvIU3k5vdqzxAgU4kMZylQU1CAclACsB/vgZC2VbR
+	 YwRV7++ii39lZ56vWXinQDOgaSXBQTjyfD/QeE1SHpfLMwYK2SBACoB3YvRwmR6ljl
+	 yFKqj2Z3NclvwouA7OuGisP2Cpffd/Rn9MncpltE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Maximilian Heyne <mheyne@amazon.de>,
+	Hagar Hemdan <hagarhem@amazon.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 215/290] SUNRPC: Fix svcxdr_init_decodes end-of-buffer calculation
+Subject: [PATCH 4.19 099/139] pinctrl: fix deadlock in create_pinctrl() when handling -EPROBE_DEFER
 Date: Wed,  3 Jul 2024 12:39:56 +0200
-Message-ID: <20240703102912.280022118@linuxfoundation.org>
+Message-ID: <20240703102834.180012410@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Hagar Hemdan <hagarhem@amazon.com>
 
-[ Upstream commit 90bfc37b5ab91c1a6165e3e5cfc49bf04571b762 ]
+[ Upstream commit adec57ff8e66aee632f3dd1f93787c13d112b7a1 ]
 
-Ensure that stream-based argument decoding can't go past the actual
-end of the receive buffer. xdr_init_decode's calculation of the
-value of xdr->end over-estimates the end of the buffer because the
-Linux kernel RPC server code does not remove the size of the RPC
-header from rqstp->rq_arg before calling the upper layer's
-dispatcher.
+In create_pinctrl(), pinctrl_maps_mutex is acquired before calling
+add_setting(). If add_setting() returns -EPROBE_DEFER, create_pinctrl()
+calls pinctrl_free(). However, pinctrl_free() attempts to acquire
+pinctrl_maps_mutex, which is already held by create_pinctrl(), leading to
+a potential deadlock.
 
-The server-side still uses the svc_getnl() macros to decode the
-RPC call header. These macros reduce the length of the head iov
-but do not update the total length of the message in the buffer
-(buf->len).
+This patch resolves the issue by releasing pinctrl_maps_mutex before
+calling pinctrl_free(), preventing the deadlock.
 
-A proper fix for this would be to replace the use of svc_getnl() and
-friends in the RPC header decoder, but that would be a large and
-invasive change that would be difficult to backport.
+This bug was discovered and resolved using Coverity Static Analysis
+Security Testing (SAST) by Synopsys, Inc.
 
-Fixes: 5191955d6fc6 ("SUNRPC: Prepare for xdr_stream-style decoding on the server-side")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 42fed7ba44e4 ("pinctrl: move subsystem mutex to pinctrl_dev struct")
+Suggested-by: Maximilian Heyne <mheyne@amazon.de>
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Link: https://lore.kernel.org/r/20240604085838.3344-1-hagarhem@amazon.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/svc.h | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/pinctrl/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/sunrpc/svc.h b/include/linux/sunrpc/svc.h
-index 8583825c4aea2..f0e09427070cd 100644
---- a/include/linux/sunrpc/svc.h
-+++ b/include/linux/sunrpc/svc.h
-@@ -536,16 +536,27 @@ static inline void svc_reserve_auth(struct svc_rqst *rqstp, int space)
- }
- 
- /**
-- * svcxdr_init_decode - Prepare an xdr_stream for svc Call decoding
-+ * svcxdr_init_decode - Prepare an xdr_stream for Call decoding
-  * @rqstp: controlling server RPC transaction context
-  *
-+ * This function currently assumes the RPC header in rq_arg has
-+ * already been decoded. Upon return, xdr->p points to the
-+ * location of the upper layer header.
-  */
- static inline void svcxdr_init_decode(struct svc_rqst *rqstp)
- {
- 	struct xdr_stream *xdr = &rqstp->rq_arg_stream;
--	struct kvec *argv = rqstp->rq_arg.head;
-+	struct xdr_buf *buf = &rqstp->rq_arg;
-+	struct kvec *argv = buf->head;
- 
--	xdr_init_decode(xdr, &rqstp->rq_arg, argv->iov_base, NULL);
-+	/*
-+	 * svc_getnl() and friends do not keep the xdr_buf's ::len
-+	 * field up to date. Refresh that field before initializing
-+	 * the argument decoding stream.
-+	 */
-+	buf->len = buf->head->iov_len + buf->page_len + buf->tail->iov_len;
-+
-+	xdr_init_decode(xdr, buf, argv->iov_base, NULL);
- 	xdr_set_scratch_page(xdr, rqstp->rq_scratch_page);
- }
- 
+diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
+index 052894d3a2047..97b1fa3a5e78d 100644
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -1078,8 +1078,8 @@ static struct pinctrl *create_pinctrl(struct device *dev,
+ 		 * an -EPROBE_DEFER later, as that is the worst case.
+ 		 */
+ 		if (ret == -EPROBE_DEFER) {
+-			pinctrl_free(p, false);
+ 			mutex_unlock(&pinctrl_maps_mutex);
++			pinctrl_free(p, false);
+ 			return ERR_PTR(ret);
+ 		}
+ 	}
 -- 
 2.43.0
 
