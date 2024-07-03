@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 023B4925D26
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:26:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C73C925BDC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:12:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B14C2296FC1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:26:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 002E5291730
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39A217BB05;
-	Wed,  3 Jul 2024 11:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2A7194AF6;
+	Wed,  3 Jul 2024 10:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bEwGpa5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itFK/98N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9206261FE7;
-	Wed,  3 Jul 2024 11:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6996F194A6F;
+	Wed,  3 Jul 2024 10:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005358; cv=none; b=oCYrnbqH9NyOBN6EdZBi1Nns0O48Tz6J22h5jDOzf+2F/ztwbUeDWyqFK2yx3Rf5K4rGWuaRRql8n96oJjabwUyj7Jk9Pf6JtG0r3q76d1aQannoq6EdJOycriCArDSiUnFMNP0S01CknSDDm+M8Ngvi5dn6Tw5KiY+zLKB2ds0=
+	t=1720004342; cv=none; b=On2dRKHsZCJyRLCiVrT3y1cUuq7A87avibw2lmlXs2NibZOOV7wA7RRopJZf3OAyXyQ60hzCKqiTzxfDLjEKw1t6J3ZhYwPxd0fg8jtWe0P6q7h/EZOXoEYr3agNz3am748iGQ+tec1/hV8oj5VgqkMZzPO8VWBjuNMxyQONt1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005358; c=relaxed/simple;
-	bh=fcmXZcNdVo9MqC+qNg1HgdLwnLJGVRmf6Quh/2WWvdM=;
+	s=arc-20240116; t=1720004342; c=relaxed/simple;
+	bh=n76BBZwRAF9+6EarIUOx0T58/fy0g68xH0F68EQRlVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=trMqungfj12uSI8Ua6hcCoCof6fyUcWyZ2zlVJEM0OsMAOusF9jmSw6aV9Cp7M/fkFO2XHw4Xxrpd39R0fth+leBlWomc2tTveqcjMhI2nZX+8u9Gw2zC8/+/j0GuI639yAKskKBvjwTU+ipYN/fogw1vkFKFq6FMvwiHifCxyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bEwGpa5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04E1C2BD10;
-	Wed,  3 Jul 2024 11:15:57 +0000 (UTC)
+	 MIME-Version; b=ap6tW1tV7muTI8ISW1OQBVJUeFNI/PfI6QRCB+x9sBf3r4FcuULmHe9x1Zj94gIyLgWt34FomoI4tL1lkz5oEZosjkV8gDft4gqgT8mrEupxnJ6cAMKn9DXDmzjhIvjCYN2iKGGdFdNhB0FFeNmlsivjB8EBJUc0OlLrKJI2130=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itFK/98N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3809C32781;
+	Wed,  3 Jul 2024 10:59:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005358;
-	bh=fcmXZcNdVo9MqC+qNg1HgdLwnLJGVRmf6Quh/2WWvdM=;
+	s=korg; t=1720004342;
+	bh=n76BBZwRAF9+6EarIUOx0T58/fy0g68xH0F68EQRlVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2bEwGpa5+tSV7dNxqfSF4flwds4Ggb106FfEecWwid/R8beHvs3zalVPVZwC8LSv8
-	 B8iOqzwti59KvE26aDRe/ORKS0iBsbvGmE1wRRsFEAwaKXKkWTkrHbNnjKi5TfHiME
-	 KnYVQAuT2i7rhv47sLfvzOiNvZETIkEmW2NaY/c4=
+	b=itFK/98NZNN3rqzKPDC6xIJYVFUwSIwAgjw9BzjcjOodc2c+cDihTbGKghuAtDBEM
+	 LS1zL4UQAzklVA8t6pyu3HXFnnff8JDM1PGhXzRZYVTISXUP/vJreQkBJp2lBnjURC
+	 AQmtu3xwbUxipxmIXWZ1XiLAhSUu/y/1t2MRnpl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Ivan Mikhaylov <i.mikhaylov@yadro.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 055/356] serial: sc16is7xx: replace hardcoded divisor value with BIT() macro
-Date: Wed,  3 Jul 2024 12:36:31 +0200
-Message-ID: <20240703102915.177084071@linuxfoundation.org>
+Subject: [PATCH 5.10 011/290] net/ncsi: add NCSI Intel OEM command to keep PHY up
+Date: Wed,  3 Jul 2024 12:36:32 +0200
+Message-ID: <20240703102904.613394176@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Ivan Mikhaylov <i.mikhaylov@yadro.com>
 
-[ Upstream commit 2e57cefc4477659527f7adab1f87cdbf60ef1ae6 ]
+[ Upstream commit abd2fddc94a619b96bf41c60429d4c32bd118e17 ]
 
-To better show why the limit is what it is, since we have only 16 bits for
-the divisor.
+This allows to keep PHY link up and prevents any channel resets during
+the host load.
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-13-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 8492bd91aa05 ("serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when using prescaler")
+It is KEEP_PHY_LINK_UP option(Veto bit) in i210 datasheet which
+block PHY reset and power state changes.
+
+Signed-off-by: Ivan Mikhaylov <i.mikhaylov@yadro.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: e85e271dec02 ("net/ncsi: Fix the multi thread manner of NCSI driver")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ncsi/Kconfig       |  6 ++++++
+ net/ncsi/internal.h    |  5 +++++
+ net/ncsi/ncsi-manage.c | 45 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 56 insertions(+)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 35f8675db1d89..25e625c2ee74b 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -497,7 +497,7 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 	u8 prescaler = 0;
- 	unsigned long clk = port->uartclk, div = clk / 16 / baud;
+diff --git a/net/ncsi/Kconfig b/net/ncsi/Kconfig
+index 93309081f5a40..ea1dd32b6b1f6 100644
+--- a/net/ncsi/Kconfig
++++ b/net/ncsi/Kconfig
+@@ -17,3 +17,9 @@ config NCSI_OEM_CMD_GET_MAC
+ 	help
+ 	  This allows to get MAC address from NCSI firmware and set them back to
+ 		controller.
++config NCSI_OEM_CMD_KEEP_PHY
++	bool "Keep PHY Link up"
++	depends on NET_NCSI
++	help
++	  This allows to keep PHY link up and prevents any channel resets during
++	  the host load.
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index ec765f2a75691..1e3e587d04d39 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -78,6 +78,9 @@ enum {
+ /* OEM Vendor Manufacture ID */
+ #define NCSI_OEM_MFR_MLX_ID             0x8119
+ #define NCSI_OEM_MFR_BCM_ID             0x113d
++#define NCSI_OEM_MFR_INTEL_ID           0x157
++/* Intel specific OEM command */
++#define NCSI_OEM_INTEL_CMD_KEEP_PHY     0x20   /* CMD ID for Keep PHY up */
+ /* Broadcom specific OEM Command */
+ #define NCSI_OEM_BCM_CMD_GMA            0x01   /* CMD ID for Get MAC */
+ /* Mellanox specific OEM Command */
+@@ -86,6 +89,7 @@ enum {
+ #define NCSI_OEM_MLX_CMD_SMAF           0x01   /* CMD ID for Set MC Affinity */
+ #define NCSI_OEM_MLX_CMD_SMAF_PARAM     0x07   /* Parameter for SMAF         */
+ /* OEM Command payload lengths*/
++#define NCSI_OEM_INTEL_CMD_KEEP_PHY_LEN 7
+ #define NCSI_OEM_BCM_CMD_GMA_LEN        12
+ #define NCSI_OEM_MLX_CMD_GMA_LEN        8
+ #define NCSI_OEM_MLX_CMD_SMAF_LEN        60
+@@ -274,6 +278,7 @@ enum {
+ 	ncsi_dev_state_probe_mlx_gma,
+ 	ncsi_dev_state_probe_mlx_smaf,
+ 	ncsi_dev_state_probe_cis,
++	ncsi_dev_state_probe_keep_phy,
+ 	ncsi_dev_state_probe_gvi,
+ 	ncsi_dev_state_probe_gc,
+ 	ncsi_dev_state_probe_gls,
+diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+index ffff8da707b8c..06ad7db553fb5 100644
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -689,6 +689,35 @@ static int set_one_vid(struct ncsi_dev_priv *ndp, struct ncsi_channel *nc,
+ 	return 0;
+ }
  
--	if (div > 0xffff) {
-+	if (div >= BIT(16)) {
- 		prescaler = SC16IS7XX_MCR_CLKSEL_BIT;
- 		div /= 4;
- 	}
++#if IS_ENABLED(CONFIG_NCSI_OEM_CMD_KEEP_PHY)
++
++static int ncsi_oem_keep_phy_intel(struct ncsi_cmd_arg *nca)
++{
++	unsigned char data[NCSI_OEM_INTEL_CMD_KEEP_PHY_LEN];
++	int ret = 0;
++
++	nca->payload = NCSI_OEM_INTEL_CMD_KEEP_PHY_LEN;
++
++	memset(data, 0, NCSI_OEM_INTEL_CMD_KEEP_PHY_LEN);
++	*(unsigned int *)data = ntohl((__force __be32)NCSI_OEM_MFR_INTEL_ID);
++
++	data[4] = NCSI_OEM_INTEL_CMD_KEEP_PHY;
++
++	/* PHY Link up attribute */
++	data[6] = 0x1;
++
++	nca->data = data;
++
++	ret = ncsi_xmit_cmd(nca);
++	if (ret)
++		netdev_err(nca->ndp->ndev.dev,
++			   "NCSI: Failed to transmit cmd 0x%x during configure\n",
++			   nca->type);
++	return ret;
++}
++
++#endif
++
+ #if IS_ENABLED(CONFIG_NCSI_OEM_CMD_GET_MAC)
+ 
+ /* NCSI OEM Command APIs */
+@@ -1391,8 +1420,24 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
+ 				goto error;
+ 		}
+ 
++		nd->state = ncsi_dev_state_probe_gvi;
++		if (IS_ENABLED(CONFIG_NCSI_OEM_CMD_KEEP_PHY))
++			nd->state = ncsi_dev_state_probe_keep_phy;
++		break;
++#if IS_ENABLED(CONFIG_NCSI_OEM_CMD_KEEP_PHY)
++	case ncsi_dev_state_probe_keep_phy:
++		ndp->pending_req_num = 1;
++
++		nca.type = NCSI_PKT_CMD_OEM;
++		nca.package = ndp->active_package->id;
++		nca.channel = 0;
++		ret = ncsi_oem_keep_phy_intel(&nca);
++		if (ret)
++			goto error;
++
+ 		nd->state = ncsi_dev_state_probe_gvi;
+ 		break;
++#endif /* CONFIG_NCSI_OEM_CMD_KEEP_PHY */
+ 	case ncsi_dev_state_probe_gvi:
+ 	case ncsi_dev_state_probe_gc:
+ 	case ncsi_dev_state_probe_gls:
 -- 
 2.43.0
 
