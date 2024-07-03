@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-57786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBB32925FFB
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:16:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4B69925FA1
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 14:06:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92C92B2C1F2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:33:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E67CB3AD1A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:20:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9701957E1;
-	Wed,  3 Jul 2024 11:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D6B1849FF;
+	Wed,  3 Jul 2024 11:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsR24h8/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSSvoyPE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3931953BA;
-	Wed,  3 Jul 2024 11:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4A01741D8;
+	Wed,  3 Jul 2024 11:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005930; cv=none; b=tHuWiAHhftCfRws6awDrt3PyNE6lBkFyNcGLJ7Gc4lnITaNm43i3/kizZh+lHrtGBGkjrE5RI0aoSPupwOpmhG8l2niMn7VFcttdg8X3DtE4biOyf92dVUgZLTBSP26fiCNR8ik9vWeAObWjFtZPCdVB4rq9ntBo6Yfjqol9vcY=
+	t=1720004910; cv=none; b=UD2SP9TVSMDQc35uvRBzv9gcNTRGaOb3r/W5BkXKkpGz9VihJhGzQYzfc34bUaQqKbUvcWUdj9Hpi969a1yrKi5l9n0TMsrD0rSCbl2UtIynuJCZGdHdyR8/bSnfvuI5/Pov/4yNsXH0PjbNqOPkBfrYDM2uGPB4n3wIuwWuSfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005930; c=relaxed/simple;
-	bh=oinZmi/8dd8P/ks9eX7N/ZxeU0OpYtyaYXKR4Qlk6FY=;
+	s=arc-20240116; t=1720004910; c=relaxed/simple;
+	bh=wvQmGPYeTvamABULpIMyV12LdH6FgQUzPRp7Ytqc+ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h5Rw7v5HrnnycV7TUobNGXsJ77su1GmGMZIXzw2ayJLQIsqvtCdlAa6qy8Mh5D2Yo31SG3ofdFVddta+JzWVa5wm3EJVK4wqrCP31EgnFapj8GjR5bPzDitfVc6g1onNMqTcoF56ZkhPSybuzYSsaI3aJw85XfaZLY5rFOHoejk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsR24h8/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0F9C2BD10;
-	Wed,  3 Jul 2024 11:25:29 +0000 (UTC)
+	 MIME-Version; b=MZ9RRkBpiii2a4apLM7tvpstAjEOd989gTTs8LP0eknA3btAiKesOriOT71bMJVynGOxphLj2WmwcoelfcbsqE49YD4OB6m1Kd6PxbrTdeuj+7rF2cjg5SeU0whWaMgrI4MIGpx1VWW41HgyB2noRa6LuSrjwBi2u0urCdc687s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSSvoyPE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C5FC4AF0B;
+	Wed,  3 Jul 2024 11:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005930;
-	bh=oinZmi/8dd8P/ks9eX7N/ZxeU0OpYtyaYXKR4Qlk6FY=;
+	s=korg; t=1720004910;
+	bh=wvQmGPYeTvamABULpIMyV12LdH6FgQUzPRp7Ytqc+ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qsR24h8/eOt5KiSlt+joO+Y/+dNffqBLuo4we5pLReDAiliGtgad3ubPstOx9RvfX
-	 t0t5uT3jiYj69+MkLuJTV1w8dhusKDjKn4LqXco1VAT81h5WuoZMZ661pehXpxLfQN
-	 uv/WVgEsaFTv36v1jr5II/wHFe5YehTwzNsHj3W8=
+	b=bSSvoyPEHGM8+E6lPxrpTCFxZDxqy+h39IUwniqbzOO4ELGGwYGbS4r3mbF5rV1Mp
+	 TFjU2IDWOu17Qh6wJohoW3NlCD8LvI+ur6iZ9N+wxWAR2zR6ETTjJAYabg/A6Z8VdG
+	 5/gG8+H/fHwG2i3z9x5GMILXvUqU5BZ010t/yKcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Luck <tony.luck@intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>,
+	Alexander Deucher <Alexander.Deucher@amd.com>,
+	Prike Liang <prike.liang@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Julian Sikorski <belegdol@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 242/356] x86/cpu/vfm: Add new macros to work with (vendor/family/model) values
-Date: Wed,  3 Jul 2024 12:39:38 +0200
-Message-ID: <20240703102922.268948038@linuxfoundation.org>
+Subject: [PATCH 5.10 198/290] ACPI: Add quirks for AMD Renoir/Lucienne CPUs to force the D3 hint
+Date: Wed,  3 Jul 2024 12:39:39 +0200
+Message-ID: <20240703102911.643064967@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,148 +67,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Luck <tony.luck@intel.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit e6dfdc2e89a0adedf455814c91b977d6a584cc88 ]
+[ Upstream commit 6485fc18faa01e8845b1e5bb55118e633f84d1f2 ]
 
-To avoid adding a slew of new macros for each new Intel CPU family
-switch over from providing CPU model number #defines to a new
-scheme that encodes vendor, family, and model in a single number.
+AMD systems from Renoir and Lucienne require that the NVME controller
+is put into D3 over a Modern Standby / suspend-to-idle
+cycle.  This is "typically" accomplished using the `StorageD3Enable`
+property in the _DSD, but this property was introduced after many
+of these systems launched and most OEM systems don't have it in
+their BIOS.
 
-  [ bp: s/casted/cast/g ]
+On AMD Renoir without these drives going into D3 over suspend-to-idle
+the resume will fail with the NVME controller being reset and a trace
+like this in the kernel logs:
+```
+[   83.556118] nvme nvme0: I/O 161 QID 2 timeout, aborting
+[   83.556178] nvme nvme0: I/O 162 QID 2 timeout, aborting
+[   83.556187] nvme nvme0: I/O 163 QID 2 timeout, aborting
+[   83.556196] nvme nvme0: I/O 164 QID 2 timeout, aborting
+[   95.332114] nvme nvme0: I/O 25 QID 0 timeout, reset controller
+[   95.332843] nvme nvme0: Abort status: 0x371
+[   95.332852] nvme nvme0: Abort status: 0x371
+[   95.332856] nvme nvme0: Abort status: 0x371
+[   95.332859] nvme nvme0: Abort status: 0x371
+[   95.332909] PM: dpm_run_callback(): pci_pm_resume+0x0/0xe0 returns -16
+[   95.332936] nvme 0000:03:00.0: PM: failed to resume async: error -16
+```
 
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240416211941.9369-3-tony.luck@intel.com
-Stable-dep-of: 93022482b294 ("x86/cpu: Fix x86_match_cpu() to match just X86_VENDOR_INTEL")
+The Microsoft documentation for StorageD3Enable mentioned that Windows has
+a hardcoded allowlist for D3 support, which was used for these platforms.
+Introduce quirks to hardcode them for Linux as well.
+
+As this property is now "standardized", OEM systems using AMD Cezanne and
+newer APU's have adopted this property, and quirks like this should not be
+necessary.
+
+CC: Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
+CC: Alexander Deucher <Alexander.Deucher@amd.com>
+CC: Prike Liang <prike.liang@amd.com>
+Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Julian Sikorski <belegdol@gmail.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Stable-dep-of: e79a10652bbd ("ACPI: x86: Force StorageD3Enable on more products")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/cpu_device_id.h | 93 ++++++++++++++++++++++++++++
- 1 file changed, 93 insertions(+)
+ drivers/acpi/device_pm.c |  3 +++
+ drivers/acpi/internal.h  |  9 +++++++++
+ drivers/acpi/x86/utils.c | 25 +++++++++++++++++++++++++
+ 3 files changed, 37 insertions(+)
 
-diff --git a/arch/x86/include/asm/cpu_device_id.h b/arch/x86/include/asm/cpu_device_id.h
-index eb8fcede9e3bf..dd7b9463696f5 100644
---- a/arch/x86/include/asm/cpu_device_id.h
-+++ b/arch/x86/include/asm/cpu_device_id.h
-@@ -2,6 +2,39 @@
- #ifndef _ASM_X86_CPU_DEVICE_ID
- #define _ASM_X86_CPU_DEVICE_ID
+diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
+index 66e53df758655..4c38846fea966 100644
+--- a/drivers/acpi/device_pm.c
++++ b/drivers/acpi/device_pm.c
+@@ -1346,6 +1346,9 @@ bool acpi_storage_d3(struct device *dev)
+ 	struct acpi_device *adev = ACPI_COMPANION(dev);
+ 	u8 val;
  
-+/*
-+ * Can't use <linux/bitfield.h> because it generates expressions that
-+ * cannot be used in structure initializers. Bitfield construction
-+ * here must match the union in struct cpuinfo_86:
-+ *	union {
-+ *		struct {
-+ *			__u8	x86_model;
-+ *			__u8	x86;
-+ *			__u8	x86_vendor;
-+ *			__u8	x86_reserved;
-+ *		};
-+ *		__u32		x86_vfm;
-+ *	};
-+ */
-+#define VFM_MODEL_BIT	0
-+#define VFM_FAMILY_BIT	8
-+#define VFM_VENDOR_BIT	16
-+#define VFM_RSVD_BIT	24
++	if (force_storage_d3())
++		return true;
 +
-+#define	VFM_MODEL_MASK	GENMASK(VFM_FAMILY_BIT - 1, VFM_MODEL_BIT)
-+#define	VFM_FAMILY_MASK	GENMASK(VFM_VENDOR_BIT - 1, VFM_FAMILY_BIT)
-+#define	VFM_VENDOR_MASK	GENMASK(VFM_RSVD_BIT - 1, VFM_VENDOR_BIT)
-+
-+#define VFM_MODEL(vfm)	(((vfm) & VFM_MODEL_MASK) >> VFM_MODEL_BIT)
-+#define VFM_FAMILY(vfm)	(((vfm) & VFM_FAMILY_MASK) >> VFM_FAMILY_BIT)
-+#define VFM_VENDOR(vfm)	(((vfm) & VFM_VENDOR_MASK) >> VFM_VENDOR_BIT)
-+
-+#define	VFM_MAKE(_vendor, _family, _model) (	\
-+	((_model) << VFM_MODEL_BIT) |		\
-+	((_family) << VFM_FAMILY_BIT) |		\
-+	((_vendor) << VFM_VENDOR_BIT)		\
-+)
-+
- /*
-  * Declare drivers belonging to specific x86 CPUs
-  * Similar in spirit to pci_device_id and related PCI functions
-@@ -49,6 +82,16 @@
- 	.driver_data	= (unsigned long) _data				\
- }
+ 	if (!adev)
+ 		return false;
+ 	if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
+diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+index 125e4901c9b47..f6c929787c9e6 100644
+--- a/drivers/acpi/internal.h
++++ b/drivers/acpi/internal.h
+@@ -237,6 +237,15 @@ static inline int suspend_nvs_save(void) { return 0; }
+ static inline void suspend_nvs_restore(void) {}
+ #endif
  
-+#define X86_MATCH_VENDORID_FAM_MODEL_STEPPINGS_FEATURE(_vendor, _family, _model, \
-+						    _steppings, _feature, _data) { \
-+	.vendor		= _vendor,					\
-+	.family		= _family,					\
-+	.model		= _model,					\
-+	.steppings	= _steppings,					\
-+	.feature	= _feature,					\
-+	.driver_data	= (unsigned long) _data				\
++#ifdef CONFIG_X86
++bool force_storage_d3(void);
++#else
++static inline bool force_storage_d3(void)
++{
++	return false;
 +}
++#endif
 +
- /**
-  * X86_MATCH_VENDOR_FAM_MODEL_FEATURE - Macro for CPU matching
-  * @_vendor:	The vendor name, e.g. INTEL, AMD, HYGON, ..., ANY
-@@ -164,6 +207,56 @@
- 	X86_MATCH_VENDOR_FAM_MODEL_STEPPINGS_FEATURE(INTEL, 6, INTEL_FAM6_##model, \
- 						     steppings, X86_FEATURE_ANY, data)
+ /*--------------------------------------------------------------------------
+ 				Device properties
+   -------------------------------------------------------------------------- */
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index 3f9a162be84e3..b3fb428461c6f 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -177,3 +177,28 @@ bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *s
  
-+/**
-+ * X86_MATCH_VFM - Match encoded vendor/family/model
-+ * @vfm:	Encoded 8-bits each for vendor, family, model
-+ * @data:	Driver specific data or NULL. The internal storage
-+ *		format is unsigned long. The supplied value, pointer
-+ *		etc. is cast to unsigned long internally.
-+ *
-+ * Stepping and feature are set to wildcards
-+ */
-+#define X86_MATCH_VFM(vfm, data)			\
-+	X86_MATCH_VENDORID_FAM_MODEL_STEPPINGS_FEATURE(	\
-+		VFM_VENDOR(vfm),			\
-+		VFM_FAMILY(vfm),			\
-+		VFM_MODEL(vfm),				\
-+		X86_STEPPING_ANY, X86_FEATURE_ANY, data)
+ 	return ret;
+ }
 +
-+/**
-+ * X86_MATCH_VFM_STEPPINGS - Match encoded vendor/family/model/stepping
-+ * @vfm:	Encoded 8-bits each for vendor, family, model
-+ * @steppings:	Bitmask of steppings to match
-+ * @data:	Driver specific data or NULL. The internal storage
-+ *		format is unsigned long. The supplied value, pointer
-+ *		etc. is cast to unsigned long internally.
++/*
++ * AMD systems from Renoir and Lucienne *require* that the NVME controller
++ * is put into D3 over a Modern Standby / suspend-to-idle cycle.
 + *
-+ * feature is set to wildcard
-+ */
-+#define X86_MATCH_VFM_STEPPINGS(vfm, steppings, data)	\
-+	X86_MATCH_VENDORID_FAM_MODEL_STEPPINGS_FEATURE(	\
-+		VFM_VENDOR(vfm),			\
-+		VFM_FAMILY(vfm),			\
-+		VFM_MODEL(vfm),				\
-+		steppings, X86_FEATURE_ANY, data)
-+
-+/**
-+ * X86_MATCH_VFM_FEATURE - Match encoded vendor/family/model/feature
-+ * @vfm:	Encoded 8-bits each for vendor, family, model
-+ * @feature:	A X86_FEATURE bit
-+ * @data:	Driver specific data or NULL. The internal storage
-+ *		format is unsigned long. The supplied value, pointer
-+ *		etc. is cast to unsigned long internally.
++ * This is "typically" accomplished using the `StorageD3Enable`
++ * property in the _DSD that is checked via the `acpi_storage_d3` function
++ * but this property was introduced after many of these systems launched
++ * and most OEM systems don't have it in their BIOS.
 + *
-+ * Steppings is set to wildcard
++ * The Microsoft documentation for StorageD3Enable mentioned that Windows has
++ * a hardcoded allowlist for D3 support, which was used for these platforms.
++ *
++ * This allows quirking on Linux in a similar fashion.
 + */
-+#define X86_MATCH_VFM_FEATURE(vfm, feature, data)	\
-+	X86_MATCH_VENDORID_FAM_MODEL_STEPPINGS_FEATURE(	\
-+		VFM_VENDOR(vfm),			\
-+		VFM_FAMILY(vfm),			\
-+		VFM_MODEL(vfm),				\
-+		X86_STEPPING_ANY, feature, data)
++static const struct x86_cpu_id storage_d3_cpu_ids[] = {
++	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),	/* Renoir */
++	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL),	/* Lucienne */
++	{}
++};
 +
- /*
-  * Match specific microcode revisions.
-  *
++bool force_storage_d3(void)
++{
++	return x86_match_cpu(storage_d3_cpu_ids);
++}
 -- 
 2.43.0
 
