@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-56985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97F21925A0B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:53:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02EB3925DEE
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:32:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C58241C249E2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:53:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34BD51C239DD
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD991822D7;
-	Wed,  3 Jul 2024 10:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03146194AF8;
+	Wed,  3 Jul 2024 11:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4GC/6nk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsMCJ3ac"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD08C1822CB;
-	Wed,  3 Jul 2024 10:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C4518FC8F;
+	Wed,  3 Jul 2024 11:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003490; cv=none; b=QK59Ld42WQvZmJveZBj3E6RRREsgXudR8AOD1QG7ROWyCazEuz1lLRbIpvuingejs2pEyyj75sk4nCJYs1QjUQGZ7RGswx7WY7YWPqXgf/D/8U9HB4wpkBW9TpXGbYm/xcGG3fCqqVXpMMqPXnHIBP5ym16s/EtTq8Ak31BaIG4=
+	t=1720005880; cv=none; b=deHmJfQXx36BlVgvegMVYWxdPSsguqcD+LikXU/nF0zYRLzIRmnFg0Jw7r2HblVmoBtDAD9Mu1jGHTQvv2P0mYkHuXbf1xmzhXwmz1VRu8AyZ1ceHv2T+3sXly+4e8gjriarZ1xE4AvqDKXPnhjhL6GWnnVkRjg6GP34f0LHSvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003490; c=relaxed/simple;
-	bh=gkKzw4aKQeLR5oiWkcpGqcphP3KcQmrdfrzYwnKB1jM=;
+	s=arc-20240116; t=1720005880; c=relaxed/simple;
+	bh=SADyX61874o3SQgdW/MTBr9oQ53w2fMhFyLF8WchG5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QLIs2YQYv0eNaD6xvBlmd3OZOjk3ijQH/1FTGKSJPqYaGEUM3/yODUfh1mBOi/8tLSxsG5X/m6D7JepbZdz6LmkD3v0kStszdgxXNUT5GFmgCzm+vA8SBOt/5hng+bYGu0oYYtw8BkMf36o30z2YTESp63CcdBbE1YQwpFOygB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4GC/6nk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AED5C2BD10;
-	Wed,  3 Jul 2024 10:44:50 +0000 (UTC)
+	 MIME-Version; b=Ujv0QLSdHO4ajbEa1NGaRkIOFiGjrGGqTN/CaQdkZKwweaCW+aG0p8caV/Hr7xwLN77tAhZF8ALzm872b+LA7cQDjrKlaE0qEBoTAJj7fnY//no5Qmh7gNw6ViQMZxFwQgOVXSfWxncYvQdIuNPPznO8DZ+rv1hXpMO7EzcGwi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lsMCJ3ac; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C152C2BD10;
+	Wed,  3 Jul 2024 11:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003490;
-	bh=gkKzw4aKQeLR5oiWkcpGqcphP3KcQmrdfrzYwnKB1jM=;
+	s=korg; t=1720005880;
+	bh=SADyX61874o3SQgdW/MTBr9oQ53w2fMhFyLF8WchG5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D4GC/6nkvimpsIewBD2KI8AXgqLSjyXROnOj+Kbz3UDysXQ05BcvuR24C1d2FUYrv
-	 /54spxkIEj5p3Gvm998taiz1VcqGYWkGw+4scOHkNJmYe0CQJmLQ2+ztiIdibagVlR
-	 BT3qhBqfR6exfSJOn3Y/RUFVJ5jaD4xMSacrmtGo=
+	b=lsMCJ3acsOWyRg0eX5qw1GYXCUwzUTdwxgCiJ28ihGxqsOfAXZJ1u/O6kyaPpuc4c
+	 /iGkvwvX3w0pvWcJJW5XbhXDjSmIovypFdRXGoGx5C3fBB86iOh/BodMhoe+3M36td
+	 HKO6CAq3n+XKQB/KyuVeE7wOZuHohChifOtwRJA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Henrie <alexhenrie24@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 066/139] usb: misc: uss720: check for incompatible versions of the Belkin F5U002
-Date: Wed,  3 Jul 2024 12:39:23 +0200
-Message-ID: <20240703102832.934437195@linuxfoundation.org>
+	Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 5.15 228/356] i2c: ocores: set IACK bit after core is enabled
+Date: Wed,  3 Jul 2024 12:39:24 +0200
+Message-ID: <20240703102921.738941752@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: Grygorii Tertychnyi <grembeter@gmail.com>
 
-[ Upstream commit 3295f1b866bfbcabd625511968e8a5c541f9ab32 ]
+commit 5a72477273066b5b357801ab2d315ef14949d402 upstream.
 
-The incompatible device in my possession has a sticker that says
-"F5U002 Rev 2" and "P80453-B", and lsusb identifies it as
-"050d:0002 Belkin Components IEEE-1284 Controller". There is a bug
-report from 2007 from Michael Trausch who was seeing the exact same
-errors that I saw in 2024 trying to use this cable.
+Setting IACK bit when core is disabled does not clear the "Interrupt Flag"
+bit in the status register, and the interrupt remains pending.
 
-Link: https://lore.kernel.org/all/46DE5830.9060401@trausch.us/
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Link: https://lore.kernel.org/r/20240326150723.99939-5-alexhenrie24@gmail.com
+Sometimes it causes failure for the very first message transfer, that is
+usually a device probe.
+
+Hence, set IACK bit after core is enabled to clear pending interrupt.
+
+Fixes: 18f98b1e3147 ("[PATCH] i2c: New bus driver for the OpenCores I2C controller")
+Signed-off-by: Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>
+Acked-by: Peter Korsgaard <peter@korsgaard.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/uss720.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ drivers/i2c/busses/i2c-ocores.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/misc/uss720.c b/drivers/usb/misc/uss720.c
-index 0be8efcda15d5..d972c09629397 100644
---- a/drivers/usb/misc/uss720.c
-+++ b/drivers/usb/misc/uss720.c
-@@ -677,7 +677,7 @@ static int uss720_probe(struct usb_interface *intf,
- 	struct parport_uss720_private *priv;
- 	struct parport *pp;
- 	unsigned char reg;
--	int i;
-+	int ret;
+--- a/drivers/i2c/busses/i2c-ocores.c
++++ b/drivers/i2c/busses/i2c-ocores.c
+@@ -442,8 +442,8 @@ static int ocores_init(struct device *de
+ 	oc_setreg(i2c, OCI2C_PREHIGH, prescale >> 8);
  
- 	dev_dbg(&intf->dev, "probe: vendor id 0x%x, device id 0x%x\n",
- 		le16_to_cpu(usbdev->descriptor.idVendor),
-@@ -688,8 +688,8 @@ static int uss720_probe(struct usb_interface *intf,
- 		usb_put_dev(usbdev);
- 		return -ENODEV;
- 	}
--	i = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
--	dev_dbg(&intf->dev, "set interface result %d\n", i);
-+	ret = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
-+	dev_dbg(&intf->dev, "set interface result %d\n", ret);
+ 	/* Init the device */
+-	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
+ 	oc_setreg(i2c, OCI2C_CONTROL, ctrl | OCI2C_CTRL_EN);
++	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
  
- 	interface = intf->cur_altsetting;
- 
-@@ -725,12 +725,18 @@ static int uss720_probe(struct usb_interface *intf,
- 	set_1284_register(pp, 7, 0x00, GFP_KERNEL);
- 	set_1284_register(pp, 6, 0x30, GFP_KERNEL);  /* PS/2 mode */
- 	set_1284_register(pp, 2, 0x0c, GFP_KERNEL);
--	/* debugging */
--	get_1284_register(pp, 0, &reg, GFP_KERNEL);
-+
-+	/* The Belkin F5U002 Rev 2 P80453-B USB parallel port adapter shares the
-+	 * device ID 050d:0002 with some other device that works with this
-+	 * driver, but it itself does not. Detect and handle the bad cable
-+	 * here. */
-+	ret = get_1284_register(pp, 0, &reg, GFP_KERNEL);
- 	dev_dbg(&intf->dev, "reg: %7ph\n", priv->reg);
-+	if (ret < 0)
-+		return ret;
- 
--	i = usb_find_last_int_in_endpoint(interface, &epd);
--	if (!i) {
-+	ret = usb_find_last_int_in_endpoint(interface, &epd);
-+	if (!ret) {
- 		dev_dbg(&intf->dev, "epaddr %d interval %d\n",
- 				epd->bEndpointAddress, epd->bInterval);
- 	}
--- 
-2.43.0
-
+ 	return 0;
+ }
 
 
 
