@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206E8925EA4
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:38:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B025925A4C
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:56:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89ACD287801
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:36:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7B871F2167F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:56:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F21180A94;
-	Wed,  3 Jul 2024 11:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5071D186E3A;
+	Wed,  3 Jul 2024 10:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqvPDcwd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hyQ9mvI7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4BD180A8A;
-	Wed,  3 Jul 2024 11:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025E9187349;
+	Wed,  3 Jul 2024 10:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006158; cv=none; b=r6yYnlEwVM1m3JeCiLtJeBaI8yW6vCKZvTE4G81Hp3gLXYHQWFe/uDcWvyanxaf1pCG/4g9DjzpncmWSOswUlFEhlRpyWkQOSO39U09R12JJWGO5we38c5qIRdwKgJYjJZygZ8HoYPXu28unlMYYunuB52zKcBbuhH5MKeNpXSs=
+	t=1720003647; cv=none; b=h2SA82fEV0LXPj9PsNg3S5Pv1b8szT61xAHZRqwdzBImtMicieLzoaVvtI91RINYb0w/+e4NcC2cD+OvYK2mFFhR0c3rNEkOUwRac+OM4/p+8h3KoMIyPrFVEe0NJMOM9FkV5BSkyIomgBjTeK/uyQ0L+dKzowYOVF/Z5j4+dlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006158; c=relaxed/simple;
-	bh=Bhv7vUYh+8aM4CxPYOUeL7lOkG5w8KGIlRiNSmfYVpE=;
+	s=arc-20240116; t=1720003647; c=relaxed/simple;
+	bh=nEmyQBoUvAfb2x4sEWR3QMYlf+yYn765byfLNyP7OVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qUIjGhsMw9IKWfbBvI3A/4VOO4Z/qpcb6mxq2N8hRJJ1E0/mXjm/paL31XnwSYtVjd3shQ1MFougvl/Smu0odFhF2a5EZRguQj3qlmcvIS26tywdTmLzYXY4fpBS44zCD1tLBm6J6WTK+lkeg27DDPoGfhcTRWXwEQPw63POLfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WqvPDcwd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F81C2BD10;
-	Wed,  3 Jul 2024 11:29:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HzV7vhtNjZX99aI6n5QwprMsFTvL2tDCg0hwKAiiPbeYOouJQTHDFs3NfcT0NRWhZ5xcPz4p20CE99FEJdg+8Zxx1Jaqno4I7a/h3X+rGeyvf9b6bZRr5F+qaR0Ep/kLWhE+vW/O1NDcgGR4HGGLopJcY/aupZP9TlRhvoc74PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hyQ9mvI7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5DAC2BD10;
+	Wed,  3 Jul 2024 10:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006158;
-	bh=Bhv7vUYh+8aM4CxPYOUeL7lOkG5w8KGIlRiNSmfYVpE=;
+	s=korg; t=1720003646;
+	bh=nEmyQBoUvAfb2x4sEWR3QMYlf+yYn765byfLNyP7OVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WqvPDcwd4pPUenoUXhkrn9AXDoXRyL5kYioDptkNUj4TMAZFzEr2kM8PGdgpRue9a
-	 dUSVP1+d6pLaUGetpjgSzgYzy6v9Bxv0a/jHYYvQaFOD9b2aGyJX4sdnpimAwv0DzL
-	 Q6HUUIVtII3qT5WSrAnSyCQg7zeK0N+H9BoIbpc4=
+	b=hyQ9mvI7n2tWNL64aKyKWy6FRKkNANWGHe9IMMCYM2/TGydHGaLfpemMvuXF0dQi8
+	 5RmLGfn8z7aDfe8fyqez/KxJ32mu1pFMtajDNhiiu+L4lQkbSAiJU1Kk3ub/t7rP5+
+	 SAoLW9GQYhBjyOAra6B3OLVMzJeMPwFvDVjV9tC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 278/356] sparc: fix compat recv/recvfrom syscalls
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 4.19 117/139] mmc: sdhci-pci: Convert PCIBIOS_* return codes to errnos
 Date: Wed,  3 Jul 2024 12:40:14 +0200
-Message-ID: <20240703102923.630385353@linuxfoundation.org>
+Message-ID: <20240703102834.858246998@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,286 +60,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit d6fbd26fb872ec518d25433a12e8ce8163e20909 ]
+commit ebc4fc34eae8ddfbef49f2bdaced1bf4167ef80d upstream.
 
-sparc has the wrong compat version of recv() and recvfrom() for both the
-direct syscalls and socketcall().
+jmicron_pmos() and sdhci_pci_probe() use pci_{read,write}_config_byte()
+that return PCIBIOS_* codes. The return code is then returned as is by
+jmicron_probe() and sdhci_pci_probe(). Similarly, the return code is
+also returned as is from jmicron_resume(). Both probe and resume
+functions should return normal errnos.
 
-The direct syscalls just need to use the compat version. For socketcall,
-the same thing could be done, but it seems better to completely remove
-the custom assembler code for it and just use the same implementation that
-everyone else has.
+Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
+errno before returning them the fix these issues.
 
-Fixes: 1dacc76d0014 ("net/compat/wext: send different messages to compat tasks")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7582041ff3d4 ("mmc: sdhci-pci: fix simple_return.cocci warnings")
+Fixes: 45211e215984 ("sdhci: toggle JMicron PMOS setting")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240527132443.14038-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sparc/kernel/sys32.S              | 221 -------------------------
- arch/sparc/kernel/syscalls/syscall.tbl |   4 +-
- 2 files changed, 2 insertions(+), 223 deletions(-)
+ drivers/mmc/host/sdhci-pci-core.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/arch/sparc/kernel/sys32.S b/arch/sparc/kernel/sys32.S
-index a45f0f31fe51a..a3d308f2043e5 100644
---- a/arch/sparc/kernel/sys32.S
-+++ b/arch/sparc/kernel/sys32.S
-@@ -18,224 +18,3 @@ sys32_mmap2:
- 	sethi		%hi(sys_mmap), %g1
- 	jmpl		%g1 + %lo(sys_mmap), %g0
- 	 sllx		%o5, 12, %o5
--
--	.align		32
--	.globl		sys32_socketcall
--sys32_socketcall:	/* %o0=call, %o1=args */
--	cmp		%o0, 1
--	bl,pn		%xcc, do_einval
--	 cmp		%o0, 18
--	bg,pn		%xcc, do_einval
--	 sub		%o0, 1, %o0
--	sllx		%o0, 5, %o0
--	sethi		%hi(__socketcall_table_begin), %g2
--	or		%g2, %lo(__socketcall_table_begin), %g2
--	jmpl		%g2 + %o0, %g0
--	 nop
--do_einval:
--	retl
--	 mov		-EINVAL, %o0
--
--	.align		32
--__socketcall_table_begin:
--
--	/* Each entry is exactly 32 bytes. */
--do_sys_socket: /* sys_socket(int, int, int) */
--1:	ldswa		[%o1 + 0x0] %asi, %o0
--	sethi		%hi(sys_socket), %g1
--2:	ldswa		[%o1 + 0x8] %asi, %o2
--	jmpl		%g1 + %lo(sys_socket), %g0
--3:	 ldswa		[%o1 + 0x4] %asi, %o1
--	nop
--	nop
--	nop
--do_sys_bind: /* sys_bind(int fd, struct sockaddr *, int) */
--4:	ldswa		[%o1 + 0x0] %asi, %o0
--	sethi		%hi(sys_bind), %g1
--5:	ldswa		[%o1 + 0x8] %asi, %o2
--	jmpl		%g1 + %lo(sys_bind), %g0
--6:	 lduwa		[%o1 + 0x4] %asi, %o1
--	nop
--	nop
--	nop
--do_sys_connect: /* sys_connect(int, struct sockaddr *, int) */
--7:	ldswa		[%o1 + 0x0] %asi, %o0
--	sethi		%hi(sys_connect), %g1
--8:	ldswa		[%o1 + 0x8] %asi, %o2
--	jmpl		%g1 + %lo(sys_connect), %g0
--9:	 lduwa		[%o1 + 0x4] %asi, %o1
--	nop
--	nop
--	nop
--do_sys_listen: /* sys_listen(int, int) */
--10:	ldswa		[%o1 + 0x0] %asi, %o0
--	sethi		%hi(sys_listen), %g1
--	jmpl		%g1 + %lo(sys_listen), %g0
--11:	 ldswa		[%o1 + 0x4] %asi, %o1
--	nop
--	nop
--	nop
--	nop
--do_sys_accept: /* sys_accept(int, struct sockaddr *, int *) */
--12:	ldswa		[%o1 + 0x0] %asi, %o0
--	sethi		%hi(sys_accept), %g1
--13:	lduwa		[%o1 + 0x8] %asi, %o2
--	jmpl		%g1 + %lo(sys_accept), %g0
--14:	 lduwa		[%o1 + 0x4] %asi, %o1
--	nop
--	nop
--	nop
--do_sys_getsockname: /* sys_getsockname(int, struct sockaddr *, int *) */
--15:	ldswa		[%o1 + 0x0] %asi, %o0
--	sethi		%hi(sys_getsockname), %g1
--16:	lduwa		[%o1 + 0x8] %asi, %o2
--	jmpl		%g1 + %lo(sys_getsockname), %g0
--17:	 lduwa		[%o1 + 0x4] %asi, %o1
--	nop
--	nop
--	nop
--do_sys_getpeername: /* sys_getpeername(int, struct sockaddr *, int *) */
--18:	ldswa		[%o1 + 0x0] %asi, %o0
--	sethi		%hi(sys_getpeername), %g1
--19:	lduwa		[%o1 + 0x8] %asi, %o2
--	jmpl		%g1 + %lo(sys_getpeername), %g0
--20:	 lduwa		[%o1 + 0x4] %asi, %o1
--	nop
--	nop
--	nop
--do_sys_socketpair: /* sys_socketpair(int, int, int, int *) */
--21:	ldswa		[%o1 + 0x0] %asi, %o0
--	sethi		%hi(sys_socketpair), %g1
--22:	ldswa		[%o1 + 0x8] %asi, %o2
--23:	lduwa		[%o1 + 0xc] %asi, %o3
--	jmpl		%g1 + %lo(sys_socketpair), %g0
--24:	 ldswa		[%o1 + 0x4] %asi, %o1
--	nop
--	nop
--do_sys_send: /* sys_send(int, void *, size_t, unsigned int) */
--25:	ldswa		[%o1 + 0x0] %asi, %o0
--	sethi		%hi(sys_send), %g1
--26:	lduwa		[%o1 + 0x8] %asi, %o2
--27:	lduwa		[%o1 + 0xc] %asi, %o3
--	jmpl		%g1 + %lo(sys_send), %g0
--28:	 lduwa		[%o1 + 0x4] %asi, %o1
--	nop
--	nop
--do_sys_recv: /* sys_recv(int, void *, size_t, unsigned int) */
--29:	ldswa		[%o1 + 0x0] %asi, %o0
--	sethi		%hi(sys_recv), %g1
--30:	lduwa		[%o1 + 0x8] %asi, %o2
--31:	lduwa		[%o1 + 0xc] %asi, %o3
--	jmpl		%g1 + %lo(sys_recv), %g0
--32:	 lduwa		[%o1 + 0x4] %asi, %o1
--	nop
--	nop
--do_sys_sendto: /* sys_sendto(int, u32, compat_size_t, unsigned int, u32, int) */
--33:	ldswa		[%o1 + 0x0] %asi, %o0
--	sethi		%hi(sys_sendto), %g1
--34:	lduwa		[%o1 + 0x8] %asi, %o2
--35:	lduwa		[%o1 + 0xc] %asi, %o3
--36:	lduwa		[%o1 + 0x10] %asi, %o4
--37:	ldswa		[%o1 + 0x14] %asi, %o5
--	jmpl		%g1 + %lo(sys_sendto), %g0
--38:	 lduwa		[%o1 + 0x4] %asi, %o1
--do_sys_recvfrom: /* sys_recvfrom(int, u32, compat_size_t, unsigned int, u32, u32) */
--39:	ldswa		[%o1 + 0x0] %asi, %o0
--	sethi		%hi(sys_recvfrom), %g1
--40:	lduwa		[%o1 + 0x8] %asi, %o2
--41:	lduwa		[%o1 + 0xc] %asi, %o3
--42:	lduwa		[%o1 + 0x10] %asi, %o4
--43:	lduwa		[%o1 + 0x14] %asi, %o5
--	jmpl		%g1 + %lo(sys_recvfrom), %g0
--44:	 lduwa		[%o1 + 0x4] %asi, %o1
--do_sys_shutdown: /* sys_shutdown(int, int) */
--45:	ldswa		[%o1 + 0x0] %asi, %o0
--	sethi		%hi(sys_shutdown), %g1
--	jmpl		%g1 + %lo(sys_shutdown), %g0
--46:	 ldswa		[%o1 + 0x4] %asi, %o1
--	nop
--	nop
--	nop
--	nop
--do_sys_setsockopt: /* sys_setsockopt(int, int, int, char *, int) */
--47:	ldswa		[%o1 + 0x0] %asi, %o0
--	sethi		%hi(sys_setsockopt), %g1
--48:	ldswa		[%o1 + 0x8] %asi, %o2
--49:	lduwa		[%o1 + 0xc] %asi, %o3
--50:	ldswa		[%o1 + 0x10] %asi, %o4
--	jmpl		%g1 + %lo(sys_setsockopt), %g0
--51:	 ldswa		[%o1 + 0x4] %asi, %o1
--	nop
--do_sys_getsockopt: /* sys_getsockopt(int, int, int, u32, u32) */
--52:	ldswa		[%o1 + 0x0] %asi, %o0
--	sethi		%hi(sys_getsockopt), %g1
--53:	ldswa		[%o1 + 0x8] %asi, %o2
--54:	lduwa		[%o1 + 0xc] %asi, %o3
--55:	lduwa		[%o1 + 0x10] %asi, %o4
--	jmpl		%g1 + %lo(sys_getsockopt), %g0
--56:	 ldswa		[%o1 + 0x4] %asi, %o1
--	nop
--do_sys_sendmsg: /* compat_sys_sendmsg(int, struct compat_msghdr *, unsigned int) */
--57:	ldswa		[%o1 + 0x0] %asi, %o0
--	sethi		%hi(compat_sys_sendmsg), %g1
--58:	lduwa		[%o1 + 0x8] %asi, %o2
--	jmpl		%g1 + %lo(compat_sys_sendmsg), %g0
--59:	 lduwa		[%o1 + 0x4] %asi, %o1
--	nop
--	nop
--	nop
--do_sys_recvmsg: /* compat_sys_recvmsg(int, struct compat_msghdr *, unsigned int) */
--60:	ldswa		[%o1 + 0x0] %asi, %o0
--	sethi		%hi(compat_sys_recvmsg), %g1
--61:	lduwa		[%o1 + 0x8] %asi, %o2
--	jmpl		%g1 + %lo(compat_sys_recvmsg), %g0
--62:	 lduwa		[%o1 + 0x4] %asi, %o1
--	nop
--	nop
--	nop
--do_sys_accept4: /* sys_accept4(int, struct sockaddr *, int *, int) */
--63:	ldswa		[%o1 + 0x0] %asi, %o0
--	sethi		%hi(sys_accept4), %g1
--64:	lduwa		[%o1 + 0x8] %asi, %o2
--65:	ldswa		[%o1 + 0xc] %asi, %o3
--	jmpl		%g1 + %lo(sys_accept4), %g0
--66:	 lduwa		[%o1 + 0x4] %asi, %o1
--	nop
--	nop
--
--	.section	__ex_table,"a"
--	.align		4
--	.word		1b, __retl_efault, 2b, __retl_efault
--	.word		3b, __retl_efault, 4b, __retl_efault
--	.word		5b, __retl_efault, 6b, __retl_efault
--	.word		7b, __retl_efault, 8b, __retl_efault
--	.word		9b, __retl_efault, 10b, __retl_efault
--	.word		11b, __retl_efault, 12b, __retl_efault
--	.word		13b, __retl_efault, 14b, __retl_efault
--	.word		15b, __retl_efault, 16b, __retl_efault
--	.word		17b, __retl_efault, 18b, __retl_efault
--	.word		19b, __retl_efault, 20b, __retl_efault
--	.word		21b, __retl_efault, 22b, __retl_efault
--	.word		23b, __retl_efault, 24b, __retl_efault
--	.word		25b, __retl_efault, 26b, __retl_efault
--	.word		27b, __retl_efault, 28b, __retl_efault
--	.word		29b, __retl_efault, 30b, __retl_efault
--	.word		31b, __retl_efault, 32b, __retl_efault
--	.word		33b, __retl_efault, 34b, __retl_efault
--	.word		35b, __retl_efault, 36b, __retl_efault
--	.word		37b, __retl_efault, 38b, __retl_efault
--	.word		39b, __retl_efault, 40b, __retl_efault
--	.word		41b, __retl_efault, 42b, __retl_efault
--	.word		43b, __retl_efault, 44b, __retl_efault
--	.word		45b, __retl_efault, 46b, __retl_efault
--	.word		47b, __retl_efault, 48b, __retl_efault
--	.word		49b, __retl_efault, 50b, __retl_efault
--	.word		51b, __retl_efault, 52b, __retl_efault
--	.word		53b, __retl_efault, 54b, __retl_efault
--	.word		55b, __retl_efault, 56b, __retl_efault
--	.word		57b, __retl_efault, 58b, __retl_efault
--	.word		59b, __retl_efault, 60b, __retl_efault
--	.word		61b, __retl_efault, 62b, __retl_efault
--	.word		63b, __retl_efault, 64b, __retl_efault
--	.word		65b, __retl_efault, 66b, __retl_efault
--	.previous
-diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
-index 7925e762e7b7e..4c3ee869ea46d 100644
---- a/arch/sparc/kernel/syscalls/syscall.tbl
-+++ b/arch/sparc/kernel/syscalls/syscall.tbl
-@@ -155,7 +155,7 @@
- 123	32	fchown			sys_fchown16
- 123	64	fchown			sys_fchown
- 124	common	fchmod			sys_fchmod
--125	common	recvfrom		sys_recvfrom
-+125	common	recvfrom		sys_recvfrom			compat_sys_recvfrom
- 126	32	setreuid		sys_setreuid16
- 126	64	setreuid		sys_setreuid
- 127	32	setregid		sys_setregid16
-@@ -247,7 +247,7 @@
- 204	32	readdir			sys_old_readdir			compat_sys_old_readdir
- 204	64	readdir			sys_nis_syscall
- 205	common	readahead		sys_readahead			compat_sys_readahead
--206	common	socketcall		sys_socketcall			sys32_socketcall
-+206	common	socketcall		sys_socketcall			compat_sys_socketcall
- 207	common	syslog			sys_syslog
- 208	common	lookup_dcookie		sys_lookup_dcookie		compat_sys_lookup_dcookie
- 209	common	fadvise64		sys_fadvise64			compat_sys_fadvise64
--- 
-2.43.0
-
+--- a/drivers/mmc/host/sdhci-pci-core.c
++++ b/drivers/mmc/host/sdhci-pci-core.c
+@@ -1103,7 +1103,7 @@ static int jmicron_pmos(struct sdhci_pci
+ 
+ 	ret = pci_read_config_byte(chip->pdev, 0xAE, &scratch);
+ 	if (ret)
+-		return ret;
++		goto fail;
+ 
+ 	/*
+ 	 * Turn PMOS on [bit 0], set over current detection to 2.4 V
+@@ -1114,7 +1114,10 @@ static int jmicron_pmos(struct sdhci_pci
+ 	else
+ 		scratch &= ~0x47;
+ 
+-	return pci_write_config_byte(chip->pdev, 0xAE, scratch);
++	ret = pci_write_config_byte(chip->pdev, 0xAE, scratch);
++
++fail:
++	return pcibios_err_to_errno(ret);
+ }
+ 
+ static int jmicron_probe(struct sdhci_pci_chip *chip)
+@@ -1986,7 +1989,7 @@ static int sdhci_pci_probe(struct pci_de
+ 
+ 	ret = pci_read_config_byte(pdev, PCI_SLOT_INFO, &slots);
+ 	if (ret)
+-		return ret;
++		return pcibios_err_to_errno(ret);
+ 
+ 	slots = PCI_SLOT_INFO_SLOTS(slots) + 1;
+ 	dev_dbg(&pdev->dev, "found %d slot(s)\n", slots);
+@@ -1997,7 +2000,7 @@ static int sdhci_pci_probe(struct pci_de
+ 
+ 	ret = pci_read_config_byte(pdev, PCI_SLOT_INFO, &first_bar);
+ 	if (ret)
+-		return ret;
++		return pcibios_err_to_errno(ret);
+ 
+ 	first_bar &= PCI_SLOT_INFO_FIRST_BAR_MASK;
+ 
 
 
 
