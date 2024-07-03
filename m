@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-57512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C39E3925CCC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:22:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CA6F925AAD
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7742C1F2175D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:22:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4D9829B0EC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D438D194A42;
-	Wed,  3 Jul 2024 11:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620AF186E56;
+	Wed,  3 Jul 2024 10:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MF95j1m1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIpo4F1U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924911946D3;
-	Wed,  3 Jul 2024 11:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17703175545;
+	Wed,  3 Jul 2024 10:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005105; cv=none; b=JFrkrTZMYzWC1i7ViIGLb2pGXC+DLDhNixBkmjX+B/Fgl/jqMzY6GkhXjiAlv14MzKAAzkzU8rSM50axaFtCQdrb93+0vElWbWRPIBFNhQOJFTNvMoXdEvqRbQj8lCwRdKXw/03CHbdhJZnh9NEIssP8dBvqmyfubQLE+tx+0ws=
+	t=1720003644; cv=none; b=YczxJwueqEaPHWge+gwe9q5goGz3GppVQpjRPIiJfIccIrSjLwrNbyqcYtW+Z/McoIM3ywdF2qvw9SyJNMdw/ZgOG21WEye3xAHMcEBdIUtoVBXr6bOgUEBfwtWmvbJjUbwc+jjY6w90TxdozfVbM+K52SSx0V+9d2PSBZcHNi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005105; c=relaxed/simple;
-	bh=fO/9u5WMvuo086QSxbGqIPPfysZ9iYLd1JwqqETV0Ss=;
+	s=arc-20240116; t=1720003644; c=relaxed/simple;
+	bh=0aaYNGZGZe3j2pN8mWrWWNaNMqkRh0V3S+JChQgLM24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQX5raRKEBna1ZHU9ctAiLiiEahaP1GJJTPvZZ1M8UonUUwgpkOF2+zCvOCU6n4n/VZo88Zpx8DZc33z98F51SPV4Om3Eim6rebla2dVBpdRc/fVjDyf0xRadC865dCZdYiex7k/tn1+AuUqbWfkjxQwInKSqhtIN4Hy4hW6KBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MF95j1m1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ADFCC2BD10;
-	Wed,  3 Jul 2024 11:11:44 +0000 (UTC)
+	 MIME-Version; b=NqNluL8Bs41CgE0ekCHgzUt+3twDmTPxVe3tBIaQAFWkMt0KVRYRuR3hAsddBvh7aDbk0c25AofH3Zwpii4FrryzJjvuRl5xR/aScMQkcILsKx8Qs1EJAKeYZjM8l0CYZRvRw8LYSbM1l+zpg6lk0IKRK3wOrOMMD//5YnMUwbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qIpo4F1U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFCFC2BD10;
+	Wed,  3 Jul 2024 10:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005105;
-	bh=fO/9u5WMvuo086QSxbGqIPPfysZ9iYLd1JwqqETV0Ss=;
+	s=korg; t=1720003643;
+	bh=0aaYNGZGZe3j2pN8mWrWWNaNMqkRh0V3S+JChQgLM24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MF95j1m1aBc/iEKcjABXoJ5HAn8mCNCDF+xV9DsiwbzI8/vpDYriPkL8Le1fgc2Gw
-	 wbi3XpHZzWfl+bzAKhL2zJ3AHuKI4YXIgyoDGJoPCx+jFZqfBqtL9whFkV7A6LFJNd
-	 +YiNIwIh8zQ0sN/U4tqne02a7FTn+zGdz8OLiuXs=
+	b=qIpo4F1UGoA0//UkVrQoe8FESEdLQQYGCbsM7G+pMQ/BsrDfEfGzX7GC1hswHHir2
+	 OR6taGRLMklmPJ+WLxzpYs6QvEmMKW4LJdTAw1jQvOIEvkhGoLu3d2qEA8sRmIYhKL
+	 CvXBGTsVouKTKLP8xILV/ofkRKGNu+KNi2nzTDmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Anton Protopopov <aspsk@isovalent.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 231/290] bpf: Add a check for struct bpf_fib_lookup size
-Date: Wed,  3 Jul 2024 12:40:12 +0200
-Message-ID: <20240703102912.879552417@linuxfoundation.org>
+Subject: [PATCH 4.19 116/139] x86: stop playing stack games in profile_pc()
+Date: Wed,  3 Jul 2024 12:40:13 +0200
+Message-ID: <20240703102834.820327776@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
+References: <20240703102830.432293640@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Protopopov <aspsk@isovalent.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 59b418c7063d30e0a3e1f592d47df096db83185c ]
+[ Upstream commit 093d9603b60093a9aaae942db56107f6432a5dca ]
 
-The struct bpf_fib_lookup should not grow outside of its 64 bytes.
-Add a static assert to validate this.
+The 'profile_pc()' function is used for timer-based profiling, which
+isn't really all that relevant any more to begin with, but it also ends
+up making assumptions based on the stack layout that aren't necessarily
+valid.
 
-Suggested-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240326101742.17421-4-aspsk@isovalent.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Basically, the code tries to account the time spent in spinlocks to the
+caller rather than the spinlock, and while I support that as a concept,
+it's not worth the code complexity or the KASAN warnings when no serious
+profiling is done using timers anyway these days.
+
+And the code really does depend on stack layout that is only true in the
+simplest of cases.  We've lost the comment at some point (I think when
+the 32-bit and 64-bit code was unified), but it used to say:
+
+	Assume the lock function has either no stack frame or a copy
+	of eflags from PUSHF.
+
+which explains why it just blindly loads a word or two straight off the
+stack pointer and then takes a minimal look at the values to just check
+if they might be eflags or the return pc:
+
+	Eflags always has bits 22 and up cleared unlike kernel addresses
+
+but that basic stack layout assumption assumes that there isn't any lock
+debugging etc going on that would complicate the code and cause a stack
+frame.
+
+It causes KASAN unhappiness reported for years by syzkaller [1] and
+others [2].
+
+With no real practical reason for this any more, just remove the code.
+
+Just for historical interest, here's some background commits relating to
+this code from 2006:
+
+  0cb91a229364 ("i386: Account spinlocks to the caller during profiling for !FP kernels")
+  31679f38d886 ("Simplify profile_pc on x86-64")
+
+and a code unification from 2009:
+
+  ef4512882dbe ("x86: time_32/64.c unify profile_pc")
+
+but the basics of this thing actually goes back to before the git tree.
+
+Link: https://syzkaller.appspot.com/bug?extid=84fe685c02cd112a2ac3 [1]
+Link: https://lore.kernel.org/all/CAK55_s7Xyq=nh97=K=G1sxueOFrJDAvPOJAL4TPTCAYvmxO9_A@mail.gmail.com/ [2]
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kernel/time.c | 21 +--------------------
+ 1 file changed, 1 insertion(+), 20 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 49e4d1535cc82..a3101cdfd47b9 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -78,6 +78,9 @@
- #include <linux/btf_ids.h>
- #include <net/tls.h>
+diff --git a/arch/x86/kernel/time.c b/arch/x86/kernel/time.c
+index 0680a2e9e06bb..b52ba6962325c 100644
+--- a/arch/x86/kernel/time.c
++++ b/arch/x86/kernel/time.c
+@@ -26,26 +26,7 @@
  
-+/* Keep the struct bpf_fib_lookup small so that it fits into a cacheline */
-+static_assert(sizeof(struct bpf_fib_lookup) == 64, "struct bpf_fib_lookup size check");
-+
- static const struct bpf_func_proto *
- bpf_sk_base_func_proto(enum bpf_func_id func_id);
+ unsigned long profile_pc(struct pt_regs *regs)
+ {
+-	unsigned long pc = instruction_pointer(regs);
+-
+-	if (!user_mode(regs) && in_lock_functions(pc)) {
+-#ifdef CONFIG_FRAME_POINTER
+-		return *(unsigned long *)(regs->bp + sizeof(long));
+-#else
+-		unsigned long *sp =
+-			(unsigned long *)kernel_stack_pointer(regs);
+-		/*
+-		 * Return address is either directly at stack pointer
+-		 * or above a saved flags. Eflags has bits 22-31 zero,
+-		 * kernel addresses don't.
+-		 */
+-		if (sp[0] >> 22)
+-			return sp[0];
+-		if (sp[1] >> 22)
+-			return sp[1];
+-#endif
+-	}
+-	return pc;
++	return instruction_pointer(regs);
+ }
+ EXPORT_SYMBOL(profile_pc);
  
 -- 
 2.43.0
