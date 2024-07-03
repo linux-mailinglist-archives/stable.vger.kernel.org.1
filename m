@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-57870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68AED925E64
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:36:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA42925CE1
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:23:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A0861C23DB7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:36:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 178371F24861
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A386181BB8;
-	Wed,  3 Jul 2024 11:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B83194C77;
+	Wed,  3 Jul 2024 11:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXlP4Hrl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GC89Rfw+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC03C1741DD;
-	Wed,  3 Jul 2024 11:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B299C1891C9;
+	Wed,  3 Jul 2024 11:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720006182; cv=none; b=b7doLSftOh4YcyVih0YSYFX0AgLGn5kV3LJIrxzQn6qgd6jSAWG1JFwnIeD42NgF/iSObHSwG33vOqBHC9L6sk9P1FkuG+NOZLgwnls24cKHdl5UMPNUgAKIUH+sBodi/8JAl25xNIs++a4Zt3Bbo9yoRk0ZlQ0L4+kgxzZeb+0=
+	t=1720005167; cv=none; b=TyTAQsMkrV0jyxDqmN+oK0BDwEz+ZwynarHqgrlYdT3DXeody3fRWOAwo0+TszwtJiSFuthjyhlE1EEyP8/qqR9AziBYt+MfOa7OCKe9FHpmwLvosXZ0Z8+53nBdqGxIQGT9/Eg5fwcwZ2CdUj0NXnKEPY0ahIJcTJtBjKjpJk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720006182; c=relaxed/simple;
-	bh=8wjxkTt7BznNUi7fJmmHdi/WFt/yjtOi7b0ABbHabMg=;
+	s=arc-20240116; t=1720005167; c=relaxed/simple;
+	bh=ehUTJggruZep4io4KsacGHYbsEO8aLfPUjjw4qXzPTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rk+a5hmwFZ1xMclE7NLQjkCIjzN25Ec58vALsGeeTaTs/XNgJzjiSbqJP2EnlFbvQ3QlQi+35wfCulpusodgVrnR1jrP2QbI8QUN6fmtjoSJAhwDRRjQfxYrOBqOzapwzolgHhVV8brqeB/Um0M+r4IeE4UXs79n/N6a8liF9cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXlP4Hrl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D039C2BD10;
-	Wed,  3 Jul 2024 11:29:40 +0000 (UTC)
+	 MIME-Version; b=TJMq5y033wDohbztxne4Hikt7iV7+SLq2Y+6EksYWz9Z/foHdfMG2yiAP+XtCYA9xOJF82QpDZ7AoiHWDl0o7VPBrQiXTa8ZGTlCjmtxmbibfjZRWGywHvFwcQYiLW79I4w1NFN8lT+g4sP2U2o5lsgHvQaEHL+gPeY1QBsWpXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GC89Rfw+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC84C2BD10;
+	Wed,  3 Jul 2024 11:12:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720006181;
-	bh=8wjxkTt7BznNUi7fJmmHdi/WFt/yjtOi7b0ABbHabMg=;
+	s=korg; t=1720005167;
+	bh=ehUTJggruZep4io4KsacGHYbsEO8aLfPUjjw4qXzPTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AXlP4HrlwmsoQBMewj/cqDujTt9IzbuPnqIkYe6jETU5Rc52kk1nwUzj8PKPYmYYx
-	 rI2CZ0mv19Yr0HTsnZGAbvQj6qwAHBH+p56d3guvfjZO1EJM2uW7si3h25OyalgImy
-	 5YEM6MSqjrTgdjB78U0OQWwOAq6K7YLrBGlVocT8=
+	b=GC89Rfw+HihcW7H8STyfB8E0M/+DhMVoi7F66TjMBdFJSK1HJstot2V5Vu1FRPDTf
+	 1D3FDc0NZZzLcuN7y1TwtoqJEdUuRyB4F4hv0THCdZDrmJ7+2MdQRnyzLLgoSIk8oB
+	 XvyR4aByWZaKRvID3Co20gH73PoRfz1itfvCn4pM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuntao Wang <ytcoode@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.15 328/356] cpu/hotplug: Fix dynstate assignment in __cpuhp_setup_state_cpuslocked()
+	Liu Zixian <liuzixian4@huawei.com>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 5.10 283/290] efi: Correct comment on efi_memmap_alloc
 Date: Wed,  3 Jul 2024 12:41:04 +0200
-Message-ID: <20240703102925.521518629@linuxfoundation.org>
+Message-ID: <20240703102914.839610252@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuntao Wang <ytcoode@gmail.com>
+From: Liu Zixian <liuzixian4@huawei.com>
 
-commit 932d8476399f622aa0767a4a0a9e78e5341dc0e1 upstream.
+[ Commit db01ea882bf601252dad57242655da17fd9ad2f5 upstream ]
 
-Commit 4205e4786d0b ("cpu/hotplug: Provide dynamic range for prepare
-stage") added a dynamic range for the prepare states, but did not handle
-the assignment of the dynstate variable in __cpuhp_setup_state_cpuslocked().
+Returning zero means success now.
 
-This causes the corresponding startup callback not to be invoked when
-calling __cpuhp_setup_state_cpuslocked() with the CPUHP_BP_PREPARE_DYN
-parameter, even though it should be.
-
-Currently, the users of __cpuhp_setup_state_cpuslocked(), for one reason or
-another, have not triggered this bug.
-
-Fixes: 4205e4786d0b ("cpu/hotplug: Provide dynamic range for prepare stage")
-Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240515134554.427071-1-ytcoode@gmail.com
+Signed-off-by: Liu Zixian <liuzixian4@huawei.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cpu.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/firmware/efi/memmap.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -2058,7 +2058,7 @@ EXPORT_SYMBOL_GPL(__cpuhp_state_add_inst
-  * The caller needs to hold cpus read locked while calling this function.
-  * Return:
-  *   On success:
-- *      Positive state number if @state is CPUHP_AP_ONLINE_DYN;
-+ *      Positive state number if @state is CPUHP_AP_ONLINE_DYN or CPUHP_BP_PREPARE_DYN;
-  *      0 for all other states
-  *   On failure: proper (negative) error code
+--- a/drivers/firmware/efi/memmap.c
++++ b/drivers/firmware/efi/memmap.c
+@@ -59,8 +59,7 @@ static void __init efi_memmap_free(void)
+  * Depending on whether mm_init() has already been invoked or not,
+  * either memblock or "normal" page allocation is used.
+  *
+- * Returns the physical address of the allocated memory map on
+- * success, zero on failure.
++ * Returns zero on success, a negative error code on failure.
   */
-@@ -2081,7 +2081,7 @@ int __cpuhp_setup_state_cpuslocked(enum
- 	ret = cpuhp_store_callbacks(state, name, startup, teardown,
- 				    multi_instance);
- 
--	dynstate = state == CPUHP_AP_ONLINE_DYN;
-+	dynstate = state == CPUHP_AP_ONLINE_DYN || state == CPUHP_BP_PREPARE_DYN;
- 	if (ret > 0 && dynstate) {
- 		state = ret;
- 		ret = 0;
-@@ -2112,8 +2112,8 @@ int __cpuhp_setup_state_cpuslocked(enum
- out:
- 	mutex_unlock(&cpuhp_state_mutex);
- 	/*
--	 * If the requested state is CPUHP_AP_ONLINE_DYN, return the
--	 * dynamically allocated state in case of success.
-+	 * If the requested state is CPUHP_AP_ONLINE_DYN or CPUHP_BP_PREPARE_DYN,
-+	 * return the dynamically allocated state in case of success.
- 	 */
- 	if (!ret && dynstate)
- 		return state;
+ int __init efi_memmap_alloc(unsigned int num_entries,
+ 		struct efi_memory_map_data *data)
 
 
 
