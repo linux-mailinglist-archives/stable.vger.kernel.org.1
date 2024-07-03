@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-57645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF21925F08
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:47:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34FAB925CC6
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52157B3E2A9
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E73DDB377F1
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6DB21741CF;
-	Wed,  3 Jul 2024 11:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E645C17A580;
+	Wed,  3 Jul 2024 11:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uHauJ237"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0Ggt/Fq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A1E180A99;
-	Wed,  3 Jul 2024 11:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3519178CFA;
+	Wed,  3 Jul 2024 11:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005505; cv=none; b=mmKuTDTCavFshWjj67Om5vVz1zDqDA8M0uN/uR+3XzbUduFGR0tCVqSrMLZyaUd5bI0Tbp0wco0WepZRzovALtHzpCZ37uekHyNEgf9EdMaOtYKRLbCq/wWuIhcEzcXZhqhvCU6ftB/LjSnamlszfcYPrqBSNqrJvzwcTjzm/jI=
+	t=1720004581; cv=none; b=JAxRtAoMTMg+wcFN5oxSuO8UjweCbKb2oRuPVxZ7De8LaoJACaNCB7ehN9EERy7cX6mMMuntY3wjmL7gdT5sM2J1f89c6VWMfpDU5jgErCK5dU3rwO88O+NL5pMAwMqvjsSMOFPvvGF46tCqR41oiKvb4Iwgnwmkz6REIAh7IGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005505; c=relaxed/simple;
-	bh=BMZXlhuxYT6Zr8qvJY1cFalk/Fe+6TtFvP4aYyWk2xE=;
+	s=arc-20240116; t=1720004581; c=relaxed/simple;
+	bh=vY7R03sCBw1Hu03yY+Iapvltf2VN0MMOSDbEAmAN3HI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=blkOzOxnUw1WGS+qtRcSaolDZnZgILOpQ98hcimjAdEIf8Bsc8Xtc3H87H7IDVJY8mzJhcRVSl5Fza8GQnk81tNAcIr++0wGGp8lV8GkmCSPzX8tJx2hK/rEwvYnP7sEAvfDy3NtW3/cBl/tiguOXK+agqSTN+AD0TY6fwwPd4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uHauJ237; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4799C2BD10;
-	Wed,  3 Jul 2024 11:18:24 +0000 (UTC)
+	 MIME-Version; b=r5vPS17s1mDAokB5s1T8/EFCyaQkr69FYSEbuTIfxenZ7jYWJV2atl6V2igATRkdKjyGdYql0pgw2HKTC3bm0d+0+uUjtxbmTwN7UNusOHVqJIHwUBw29TtfpPkXecZIeeyLt9kh4Athvo7y50oIzIWAamnwXeynTT0eqgJZwVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0Ggt/Fq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B949C4AF12;
+	Wed,  3 Jul 2024 11:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005505;
-	bh=BMZXlhuxYT6Zr8qvJY1cFalk/Fe+6TtFvP4aYyWk2xE=;
+	s=korg; t=1720004581;
+	bh=vY7R03sCBw1Hu03yY+Iapvltf2VN0MMOSDbEAmAN3HI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uHauJ2377XzKxRJzoCrYvRn5LWBQwsNgtsjUuX6yxyytdnJGCKMXsNPqQhaZY26wH
-	 Z/Gyq2nb4yBnWhsKaRibT1amR/hzghB6m3Ry7hz6+N1Jpb58AMgGWjpFWZtvKR/LQt
-	 z9BBHlFtKmhreYCvFlqS7zOS3sHw2DxBvBIhB4MU=
+	b=B0Ggt/FqtdkfexUy2HKzCUAWAzCPaqQailZn7+MG4ODN3++iDR1Tft++xrrFYmNTw
+	 WdTgLRF631/ozVoRH2rkZSvENF86AdquxDV5I4APJeA+CbmPnpTrBvMOebjfm21oHd
+	 ATy6ZSvGKK51LxLzJ2LcYaq6Fh1YEq3OXfYXZ9Fw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	"Kun(llfl)" <llfl@linux.alibaba.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 103/356] tcp: fix race in tcp_v6_syn_recv_sock()
+Subject: [PATCH 5.10 058/290] iommu/amd: Fix sysfs leak in iommu init
 Date: Wed,  3 Jul 2024 12:37:19 +0200
-Message-ID: <20240703102916.997217362@linuxfoundation.org>
+Message-ID: <20240703102906.392841170@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kun(llfl) <llfl@linux.alibaba.com>
 
-[ Upstream commit d37fe4255abe8e7b419b90c5847e8ec2b8debb08 ]
+[ Upstream commit a295ec52c8624883885396fde7b4df1a179627c3 ]
 
-tcp_v6_syn_recv_sock() calls ip6_dst_store() before
-inet_sk(newsk)->pinet6 has been set up.
+During the iommu initialization, iommu_init_pci() adds sysfs nodes.
+However, these nodes aren't remove in free_iommu_resources() subsequently.
 
-This means ip6_dst_store() writes over the parent (listener)
-np->dst_cookie.
-
-This is racy because multiple threads could share the same
-parent and their final np->dst_cookie could be wrong.
-
-Move ip6_dst_store() call after inet_sk(newsk)->pinet6
-has been changed and after the copy of parent ipv6_pinfo.
-
-Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 39ab9555c241 ("iommu: Add sysfs bindings for struct iommu_device")
+Signed-off-by: Kun(llfl) <llfl@linux.alibaba.com>
+Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Link: https://lore.kernel.org/r/c8e0d11c6ab1ee48299c288009cf9c5dae07b42d.1715215003.git.llfl@linux.alibaba.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/tcp_ipv6.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iommu/amd/init.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index c18fdddbfa09d..c1f1fa6e33161 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1331,7 +1331,6 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
- 	 */
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index 22d28dbe092ee..917ee5a67e787 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -1494,8 +1494,17 @@ static void __init free_pci_segments(void)
+ 	}
+ }
  
- 	newsk->sk_gso_type = SKB_GSO_TCPV6;
--	ip6_dst_store(newsk, dst, NULL, NULL);
- 	inet6_sk_rx_dst_set(newsk, skb);
- 
- 	inet_sk(newsk)->pinet6 = tcp_inet6_sk(newsk);
-@@ -1342,6 +1341,8 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
- 
- 	memcpy(newnp, np, sizeof(struct ipv6_pinfo));
- 
-+	ip6_dst_store(newsk, dst, NULL, NULL);
++static void __init free_sysfs(struct amd_iommu *iommu)
++{
++	if (iommu->iommu.dev) {
++		iommu_device_unregister(&iommu->iommu);
++		iommu_device_sysfs_remove(&iommu->iommu);
++	}
++}
 +
- 	newsk->sk_v6_daddr = ireq->ir_v6_rmt_addr;
- 	newnp->saddr = ireq->ir_v6_loc_addr;
- 	newsk->sk_v6_rcv_saddr = ireq->ir_v6_loc_addr;
+ static void __init free_iommu_one(struct amd_iommu *iommu)
+ {
++	free_sysfs(iommu);
+ 	free_cwwb_sem(iommu);
+ 	free_command_buffer(iommu);
+ 	free_event_buffer(iommu);
 -- 
 2.43.0
 
