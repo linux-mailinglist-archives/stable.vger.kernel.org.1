@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-57266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16F4C925DB2
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 557A6925D2F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:26:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94634B36B54
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:12:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 797871C20DB1
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65917194C69;
-	Wed,  3 Jul 2024 10:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1061317C23E;
+	Wed,  3 Jul 2024 11:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXXiRukb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJlos+H6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24609194AFB;
-	Wed,  3 Jul 2024 10:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20E316FF2A;
+	Wed,  3 Jul 2024 11:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004360; cv=none; b=SV2YP9Tt9RU3QMnlvdv0hMqEIfMRg+uei5w45xCZVs71w+1CsPU57JXYeZds1u7IodohsJpjDRT/tJpcTBS0oiuGQtBmVyGLfsBibTKh9R+oVOFxGhHIDlhLhF1WPwR60oMKi+rquB8bNpCZyB8Z2+COcgQp7m3jTD/zfRam85U=
+	t=1720005382; cv=none; b=ic0iMejVz8k+BfYW/Cv0ZVZsyn/1VlMSBfJmml4hFnIZqfi1jrQ84DzFvFQjFY3URqGQSqwL61iLhqjIdDPvAAxi2iV9/ALKWQ4U+6W3A7QP2ALDZRj+br9WrJDet68yHwRDCBxakHG0EMPcA6uBN0bxGkMr0GqVUSZHLjcpZU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004360; c=relaxed/simple;
-	bh=tOZv03VLaMG2lh7uDflGA0iEIUBzIfRnQXHSfLZVUhU=;
+	s=arc-20240116; t=1720005382; c=relaxed/simple;
+	bh=3bCxVDFYSC/8k6E1zGF34g5FisC2DeZNodIRjQMKWIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hs/uJWCSdGOXE87F7i08vRtfUJcdm5eVzmLXy95+vd4U6MSdZXP/dUlVxno+BgjVBWjtNEJPmLyMkX64Eeo46YkWB9ZinBZCPkNh9TltC7d2H5o/xCjzf1SwBa4AxA8My7j4UNY1zl5Tz0/EszFS+TbXW2NtVBw2VFQ5n8FxAd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXXiRukb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE9EC32781;
-	Wed,  3 Jul 2024 10:59:19 +0000 (UTC)
+	 MIME-Version; b=Ka38vBbJNFpdJ0IhKrh+D7NhFQtcwpy6nZMWAu43LeOQXHbZX+ngrgxCqTMQN/zfm6USDboWbwWIw0E4muipA5K082DkVtHPrv5OOZxkMsDdOEr8m+ptnZR/ILt7XNVbiarW3pMPWvOM8vhzPcYAgq2kyjyeq+fGcujGmJ1lgB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJlos+H6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF932C2BD10;
+	Wed,  3 Jul 2024 11:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004360;
-	bh=tOZv03VLaMG2lh7uDflGA0iEIUBzIfRnQXHSfLZVUhU=;
+	s=korg; t=1720005382;
+	bh=3bCxVDFYSC/8k6E1zGF34g5FisC2DeZNodIRjQMKWIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YXXiRukbbf9QgVyXGKt2XhCUWSvtjPw2zacSAc2dWazyh0L/Vj+qIimookQlruSZ+
-	 4u8xeC0C0uqdUBwHvoZo2WwgBPfwZ86cuE0oTCTKCa/rwTtBzUw/XOUCe461z6E6eQ
-	 6TQo2cXam2hZ/EaaYIyKXQ2bTujsLzNk/4SH3ChQ=
+	b=lJlos+H6qJawQoKq/ekTakfn7gmrBRj/zWUPI4HOvlhyu7r7uI6eX3pDGJDTfOYeG
+	 f8gQTLLhoyEVAzZu6tYZEpW9LfKAmZwHrB9dU19/4/i3TMr++JLZbw/7r9mTcZ9znz
+	 ixLu//CYrhPh5vGSilEVrZK++YAkaz6a2lyClvJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 017/290] tcp: count CLOSE-WAIT sockets for TCP_MIB_CURRESTAB
+Subject: [PATCH 5.15 062/356] i2c: acpi: Unbind mux adapters before delete
 Date: Wed,  3 Jul 2024 12:36:38 +0200
-Message-ID: <20240703102904.843126385@linuxfoundation.org>
+Message-ID: <20240703102915.440835268@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +64,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
 
-[ Upstream commit a46d0ea5c94205f40ecf912d1bb7806a8a64704f ]
+[ Upstream commit 3f858bbf04dbac934ac279aaee05d49eb9910051 ]
 
-According to RFC 1213, we should also take CLOSE-WAIT sockets into
-consideration:
+There is an issue with ACPI overlay table removal specifically related
+to I2C multiplexers.
 
-  "tcpCurrEstab OBJECT-TYPE
-   ...
-   The number of TCP connections for which the current state
-   is either ESTABLISHED or CLOSE- WAIT."
+Consider an ACPI SSDT Overlay that defines a PCA9548 I2C mux on an
+existing I2C bus. When this table is loaded we see the creation of a
+device for the overall PCA9548 chip and 8 further devices - one
+i2c_adapter each for the mux channels. These are all bound to their
+ACPI equivalents via an eventual invocation of acpi_bind_one().
 
-After this, CurrEstab counter will display the total number of
-ESTABLISHED and CLOSE-WAIT sockets.
+When we unload the SSDT overlay we run into the problem. The ACPI
+devices are deleted as normal via acpi_device_del_work_fn() and the
+acpi_device_del_list.
 
-The logic of counting
-When we increment the counter?
-a) if we change the state to ESTABLISHED.
-b) if we change the state from SYN-RECEIVED to CLOSE-WAIT.
+However, the following warning and stack trace is output as the
+deletion does not go smoothly:
+------------[ cut here ]------------
+kernfs: can not remove 'physical_node', no directory
+WARNING: CPU: 1 PID: 11 at fs/kernfs/dir.c:1674 kernfs_remove_by_name_ns+0xb9/0xc0
+Modules linked in:
+CPU: 1 PID: 11 Comm: kworker/u128:0 Not tainted 6.8.0-rc6+ #1
+Hardware name: congatec AG conga-B7E3/conga-B7E3, BIOS 5.13 05/16/2023
+Workqueue: kacpi_hotplug acpi_device_del_work_fn
+RIP: 0010:kernfs_remove_by_name_ns+0xb9/0xc0
+Code: e4 00 48 89 ef e8 07 71 db ff 5b b8 fe ff ff ff 5d 41 5c 41 5d e9 a7 55 e4 00 0f 0b eb a6 48 c7 c7 f0 38 0d 9d e8 97 0a d5 ff <0f> 0b eb dc 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
+RSP: 0018:ffff9f864008fb28 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: ffff8ef90a8d4940 RCX: 0000000000000000
+RDX: ffff8f000e267d10 RSI: ffff8f000e25c780 RDI: ffff8f000e25c780
+RBP: ffff8ef9186f9870 R08: 0000000000013ffb R09: 00000000ffffbfff
+R10: 00000000ffffbfff R11: ffff8f000e0a0000 R12: ffff9f864008fb50
+R13: ffff8ef90c93dd60 R14: ffff8ef9010d0958 R15: ffff8ef9186f98c8
+FS:  0000000000000000(0000) GS:ffff8f000e240000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f48f5253a08 CR3: 00000003cb82e000 CR4: 00000000003506f0
+Call Trace:
+ <TASK>
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? __warn+0x7c/0x130
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? report_bug+0x171/0x1a0
+ ? handle_bug+0x3c/0x70
+ ? exc_invalid_op+0x17/0x70
+ ? asm_exc_invalid_op+0x1a/0x20
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ acpi_unbind_one+0x108/0x180
+ device_del+0x18b/0x490
+ ? srso_return_thunk+0x5/0x5f
+ ? srso_return_thunk+0x5/0x5f
+ device_unregister+0xd/0x30
+ i2c_del_adapter.part.0+0x1bf/0x250
+ i2c_mux_del_adapters+0xa1/0xe0
+ i2c_device_remove+0x1e/0x80
+ device_release_driver_internal+0x19a/0x200
+ bus_remove_device+0xbf/0x100
+ device_del+0x157/0x490
+ ? __pfx_device_match_fwnode+0x10/0x10
+ ? srso_return_thunk+0x5/0x5f
+ device_unregister+0xd/0x30
+ i2c_acpi_notify+0x10f/0x140
+ notifier_call_chain+0x58/0xd0
+ blocking_notifier_call_chain+0x3a/0x60
+ acpi_device_del_work_fn+0x85/0x1d0
+ process_one_work+0x134/0x2f0
+ worker_thread+0x2f0/0x410
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0xe3/0x110
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x2f/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1b/0x30
+ </TASK>
+---[ end trace 0000000000000000 ]---
+...
+repeated 7 more times, 1 for each channel of the mux
+...
 
-When we decrement the counter?
-a) if the socket leaves ESTABLISHED and will never go into CLOSE-WAIT,
-say, on the client side, changing from ESTABLISHED to FIN-WAIT-1.
-b) if the socket leaves CLOSE-WAIT, say, on the server side, changing
-from CLOSE-WAIT to LAST-ACK.
+The issue is that the binding of the ACPI devices to their peer I2C
+adapters is not correctly cleaned up. Digging deeper into the issue we
+see that the deletion order is such that the ACPI devices matching the
+mux channel i2c adapters are deleted first during the SSDT overlay
+removal. For each of the channels we see a call to i2c_acpi_notify()
+with ACPI_RECONFIG_DEVICE_REMOVE but, because these devices are not
+actually i2c_clients, nothing is done for them.
 
-Please note: there are two chances that old state of socket can be changed
-to CLOSE-WAIT in tcp_fin(). One is SYN-RECV, the other is ESTABLISHED.
-So we have to take care of the former case.
+Later on, after each of the mux channels has been dealt with, we come
+to delete the i2c_client representing the PCA9548 device. This is the
+call stack we see above, whereby the kernel cleans up the i2c_client
+including destruction of the mux and its channel adapters. At this
+point we do attempt to unbind from the ACPI peers but those peers no
+longer exist and so we hit the kernfs errors.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The fix is to augment i2c_acpi_notify() to handle i2c_adapters. But,
+given that the life cycle of the adapters is linked to the i2c_client,
+instead of deleting the i2c_adapters during the i2c_acpi_notify(), we
+just trigger unbinding of the ACPI device from the adapter device, and
+allow the clean up of the adapter to continue in the way it always has.
+
+Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 525e6fabeae2 ("i2c / ACPI: add support for ACPI reconfigure notifications")
+Cc: <stable@vger.kernel.org> # v4.8+
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/i2c/i2c-core-acpi.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 4ed0d303791a1..0a495b6edbc4b 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2420,6 +2420,10 @@ void tcp_set_state(struct sock *sk, int state)
- 		if (oldstate != TCP_ESTABLISHED)
- 			TCP_INC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
- 		break;
-+	case TCP_CLOSE_WAIT:
-+		if (oldstate == TCP_SYN_RECV)
-+			TCP_INC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
-+		break;
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index 29a482abf1eed..6ce05441178a3 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -424,6 +424,11 @@ static struct i2c_client *i2c_acpi_find_client_by_adev(struct acpi_device *adev)
+ 	return i2c_find_device_by_fwnode(acpi_fwnode_handle(adev));
+ }
  
- 	case TCP_CLOSE:
- 		if (oldstate == TCP_CLOSE_WAIT || oldstate == TCP_ESTABLISHED)
-@@ -2431,7 +2435,7 @@ void tcp_set_state(struct sock *sk, int state)
- 			inet_put_port(sk);
- 		fallthrough;
- 	default:
--		if (oldstate == TCP_ESTABLISHED)
-+		if (oldstate == TCP_ESTABLISHED || oldstate == TCP_CLOSE_WAIT)
- 			TCP_DEC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
++static struct i2c_adapter *i2c_acpi_find_adapter_by_adev(struct acpi_device *adev)
++{
++	return i2c_find_adapter_by_fwnode(acpi_fwnode_handle(adev));
++}
++
+ static int i2c_acpi_notify(struct notifier_block *nb, unsigned long value,
+ 			   void *arg)
+ {
+@@ -450,11 +455,17 @@ static int i2c_acpi_notify(struct notifier_block *nb, unsigned long value,
+ 			break;
+ 
+ 		client = i2c_acpi_find_client_by_adev(adev);
+-		if (!client)
+-			break;
++		if (client) {
++			i2c_unregister_device(client);
++			put_device(&client->dev);
++		}
++
++		adapter = i2c_acpi_find_adapter_by_adev(adev);
++		if (adapter) {
++			acpi_unbind_one(&adapter->dev);
++			put_device(&adapter->dev);
++		}
+ 
+-		i2c_unregister_device(client);
+-		put_device(&client->dev);
+ 		break;
  	}
  
 -- 
