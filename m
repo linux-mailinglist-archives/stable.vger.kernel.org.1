@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-57479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E7DE925CAB
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:21:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C69FE925DF7
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:33:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5ABB72C3F17
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:21:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 059EA1C22BC5
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFFE118754E;
-	Wed,  3 Jul 2024 11:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A35517623A;
+	Wed,  3 Jul 2024 11:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nR895ikF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u05+5S9O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA1818734B;
-	Wed,  3 Jul 2024 11:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4801516C688;
+	Wed,  3 Jul 2024 11:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005007; cv=none; b=Bg2XCqDgNuin+dCpVuPDCEz6aCQPFujtEEvSYiIQYrZ2jKaBLmRwKC6Utnpg96kHPkFM1NT6AaW8VnqxO1IIZiCzP/Xcq9EVn8K3kfDTDpeVCx5RkMeSYRAvfz8k6Xyz/OWijoeRYRVP0N4dyVauEIZs8p/L/lJMngsU+VPI5Ls=
+	t=1720005900; cv=none; b=XFzYi3kbyPM1go6Zz4Mg5XWWd2J1gWSSmBwjtgvT265NPpwaW8XFkV1gcgW6LJhH8m6gWvKpHBCdwgx+Jw2zPonDVdVg559IO9J/ypfxpZxXa/3UQnEXNspHv10TXH8YFTa4mx3FtchyaZvCa4eImnZKlL2El/40/VtnDw+bLYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005007; c=relaxed/simple;
-	bh=i1Nx+60tmJqITCPMB56MEW5qKIdkI8yQW8ofGQTA7w8=;
+	s=arc-20240116; t=1720005900; c=relaxed/simple;
+	bh=AcRDbfIO9XL9QBVk6GbCg9r2x5FyYhd4fZ0qB149Lkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bSB0/dQWDctuHMOmFQ6oeP1EaCcTUhqV5YfDxdGI5EvyhLhcBKVzj9/grAL9ATlITBJ6yYf5rZaBvJ0DmiDEABvV1sawwl8H6GO4uwnI61sK0OnxefRP1p06xpRc5gKkD0DVzFgTaFStc/UALk4b/eX0gr7pDuHGIpM9vU5OYwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nR895ikF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A766C32781;
-	Wed,  3 Jul 2024 11:10:06 +0000 (UTC)
+	 MIME-Version; b=WY040ktMIYWDGSmDsNdzfXJJ03h5UYyn/8tfoo4wo+4dBNzOgXqzosEdyFdNN4rouUHg5TT4cxkDsrO0rd+zyONuR2ex4hWNJLYJmjghNVoLnRMhdZxz3HLdtMQlNvn+HAPADc6NkmO0SmtkvqI3Vm06JDE0uTlNiny5oU1OFNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u05+5S9O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 750D7C2BD10;
+	Wed,  3 Jul 2024 11:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005007;
-	bh=i1Nx+60tmJqITCPMB56MEW5qKIdkI8yQW8ofGQTA7w8=;
+	s=korg; t=1720005899;
+	bh=AcRDbfIO9XL9QBVk6GbCg9r2x5FyYhd4fZ0qB149Lkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nR895ikFOLzGlZT1fsIzOE82MZL5BE/zMq1+jqXxT102otEFddrvG1ytSgeM/3bHS
-	 gNVzEHD5Kl7nMG0QdDIAYu1LyfoFSKrmCjruSoQT2vvQichhytDgRBwuXzFWLaCohj
-	 w8c2BNXim60XQd/UCuaQI1fZUz+zoQn6JrH+k2gk=
+	b=u05+5S9ON7Jf17hUn2pxvn+ovAI+uy4F89YyXbf+YpceKbIuHbt5YZjWmtURJMaaO
+	 vKxvDx3HLpb1qYLzVJ6pDXExNQyHNGxo4hRpVTsc428s3luy6s7yeBaxthHc4hwNsl
+	 HlICDv/ON6xj1cR5nejnjBR4C+MVUTsBqMr1Nzik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 188/290] r8169: remove not needed check in rtl8169_start_xmit
+Subject: [PATCH 5.15 233/356] perf script: Show also errors for --insn-trace option
 Date: Wed,  3 Jul 2024 12:39:29 +0200
-Message-ID: <20240703102911.271070787@linuxfoundation.org>
+Message-ID: <20240703102921.930931355@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +66,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit bd4bdeb4f29027199c68104fbdfa07ad45390cc1 ]
+[ Upstream commit d4a98b45fbe6d06f4b79ed90d0bb05ced8674c23 ]
 
-In rtl_tx() the released descriptors are zero'ed by
-rtl8169_unmap_tx_skb(). And in the beginning of rtl8169_start_xmit()
-we check that enough descriptors are free, therefore there's no way
-the DescOwn bit can be set here.
+The trace could be misleading if trace errors are not taken into
+account, so display them also by adding the itrace "e" option.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/6965d665-6c50-90c5-70e6-0bb335d4ea47@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: c71e3a5cffd5 ("r8169: Fix possible ring buffer corruption on fragmented Tx packets.")
+Note --call-trace and --call-ret-trace already add the itrace "e"
+option.
+
+Fixes: b585ebdb5912cf14 ("perf script: Add --insn-trace for instruction decoding")
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240315071334.3478-1-adrian.hunter@intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ tools/perf/builtin-script.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index dbf885f4dd01d..dd4404efdb8d6 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4285,17 +4285,12 @@ static netdev_tx_t rtl8169_start_xmit(struct sk_buff *skb,
- 	bool stop_queue, door_bell;
- 	u32 opts[2];
+diff --git a/tools/perf/builtin-script.c b/tools/perf/builtin-script.c
+index 45ccce87d1223..78ee2c2978ac3 100644
+--- a/tools/perf/builtin-script.c
++++ b/tools/perf/builtin-script.c
+@@ -3603,7 +3603,7 @@ static int parse_insn_trace(const struct option *opt __maybe_unused,
+ 	if (ret < 0)
+ 		return ret;
  
--	txd_first = tp->TxDescArray + entry;
--
- 	if (unlikely(!rtl_tx_slots_avail(tp))) {
- 		if (net_ratelimit())
- 			netdev_err(dev, "BUG! Tx Ring full when queue awake!\n");
- 		goto err_stop_0;
- 	}
- 
--	if (unlikely(le32_to_cpu(txd_first->opts1) & DescOwn))
--		goto err_stop_0;
--
- 	opts[1] = rtl8169_tx_vlan_tag(skb);
- 	opts[0] = 0;
- 
-@@ -4308,6 +4303,8 @@ static netdev_tx_t rtl8169_start_xmit(struct sk_buff *skb,
- 				    entry, false)))
- 		goto err_dma_0;
- 
-+	txd_first = tp->TxDescArray + entry;
-+
- 	if (frags) {
- 		if (rtl8169_xmit_frags(tp, skb, opts, entry))
- 			goto err_dma_1;
+-	itrace_parse_synth_opts(opt, "i0ns", 0);
++	itrace_parse_synth_opts(opt, "i0nse", 0);
+ 	symbol_conf.nanosecs = true;
+ 	return 0;
+ }
 -- 
 2.43.0
 
