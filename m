@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F34925D50
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF61925BFA
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:13:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13612299BCC
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 917931F21D3D
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468F917F51A;
-	Wed,  3 Jul 2024 11:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C75D176237;
+	Wed,  3 Jul 2024 11:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NcdsC2s4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziM9j8Ha"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037161741C4;
-	Wed,  3 Jul 2024 11:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389B7175562;
+	Wed,  3 Jul 2024 11:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005482; cv=none; b=KId1VEweCosqayEe2kaCJJb3DeaxChuPsFH03v8aIorKSsHTOJUzxhkC4XZcWpoODDvseiU6kreGZv3HjwN83S98UQIGboi8INiwAZGLdsxpsGn/dVlcf+/G4Qhfb+gesybOM0HWGXdigxSugEiWoaZYwygWqcZ4CIycq79yVas=
+	t=1720004468; cv=none; b=W++xHqdSLh+rMtQjEJUfL8DP4j/QIDpsLcMtxis5C3yasQyn6Cs0vx79Gn8IiBD0QbpccWrcmGNH4uzXaQdwkaA6OkFSQMqrITUSPDl+UBor/3UtsYs8vPi56urS3TRU76x7oKHg/odPMk9G0XMC8k9YWa4Y6H2RZbeaSnRN1kM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005482; c=relaxed/simple;
-	bh=v1tLD4EfvZ+OED0w8Wh15p6y5ULoyxvjQtYgI3FsdsU=;
+	s=arc-20240116; t=1720004468; c=relaxed/simple;
+	bh=c03AoiZZyQXZdjN8zd3nGGvs/0HibusblmeJJ1uGnl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WI/lxV0opQi1xbHW5w4ONsNWJOqRhfx9w/0U3BH4EGxCvKOupL/7UM0QOlESxAzl4rEvvggIqLDdAij5OKkfC/fCJDFygR121R0nJdc3AHNrL/q7AEGzCvQCRjtrZcyWZar//RlNsb0VUllFFq75b1SdyJWHXydTY0YbbN8bB+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NcdsC2s4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256B7C2BD10;
-	Wed,  3 Jul 2024 11:18:00 +0000 (UTC)
+	 MIME-Version; b=Ne9pR980464v5kcy5+BlpV4m8/hne+VNqEDzNPf4fqPUQwzuCuHft1hiC/krwxPj3YssORkcVLwqttqHijnpcYd3ngGCtK7Rl6fcSX//VL+ruER9U814Y+DFkz5s+Zau2xJU3FXCXbGbH7bcudoLf/6T8BmBmkFQq6q+A9Z9B4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziM9j8Ha; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B390DC32781;
+	Wed,  3 Jul 2024 11:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005481;
-	bh=v1tLD4EfvZ+OED0w8Wh15p6y5ULoyxvjQtYgI3FsdsU=;
+	s=korg; t=1720004468;
+	bh=c03AoiZZyQXZdjN8zd3nGGvs/0HibusblmeJJ1uGnl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NcdsC2s4nfnw4KlMwgdCs77J/O5B9c+ZgzyTG81v6YhRIR065aQGP+tmkEi1UxUa5
-	 3u4pcEJF8E521r3sKN0FV269pUaR+HRP7QNLcMadliVGpH6sHYZPc/3pFkn1Frry2y
-	 oNne8VBG4PAOijRqW9HCLuEGIBZOudI5k0SSMDO4=
+	b=ziM9j8Ha/SaDZVWCzO7LzKirIzHKQZ9pE2wJic+xmJoe4oglDjEtxrG/1UobbA0ph
+	 44DFpcYLZd7QJ0nedJbrKvCmEJFlWuJ4LfaFPOlMHfze1x1cEMvnUnpqqp74m45cYW
+	 DsjnUI5t3MksjFVYbsU6mab8lSrbElbRR66mJ2Ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 095/356] HID: logitech-dj: Fix memory leak in logi_dj_recv_switch_to_dj_mode()
+	Keith Busch <kbusch@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 050/290] scsi: mpt3sas: Avoid test/set_bit() operating in non-allocated memory
 Date: Wed,  3 Jul 2024 12:37:11 +0200
-Message-ID: <20240703102916.697951272@linuxfoundation.org>
+Message-ID: <20240703102906.092564762@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Expósito <jose.exposito89@gmail.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit ce3af2ee95170b7d9e15fff6e500d67deab1e7b3 ]
+commit 4254dfeda82f20844299dca6c38cbffcfd499f41 upstream.
 
-Fix a memory leak on logi_dj_recv_send_report() error path.
+There is a potential out-of-bounds access when using test_bit() on a single
+word. The test_bit() and set_bit() functions operate on long values, and
+when testing or setting a single word, they can exceed the word
+boundary. KASAN detects this issue and produces a dump:
 
-Fixes: 6f20d3261265 ("HID: logitech-dj: Fix error handling in logi_dj_recv_switch_to_dj_mode()")
-Signed-off-by: José Expósito <jose.exposito89@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	 BUG: KASAN: slab-out-of-bounds in _scsih_add_device.constprop.0 (./arch/x86/include/asm/bitops.h:60 ./include/asm-generic/bitops/instrumented-atomic.h:29 drivers/scsi/mpt3sas/mpt3sas_scsih.c:7331) mpt3sas
+
+	 Write of size 8 at addr ffff8881d26e3c60 by task kworker/u1536:2/2965
+
+For full log, please look at [1].
+
+Make the allocation at least the size of sizeof(unsigned long) so that
+set_bit() and test_bit() have sufficient room for read/write operations
+without overwriting unallocated memory.
+
+[1] Link: https://lore.kernel.org/all/ZkNcALr3W3KGYYJG@gmail.com/
+
+Fixes: c696f7b83ede ("scsi: mpt3sas: Implement device_remove_in_progress check in IOCTL path")
+Cc: stable@vger.kernel.org
+Suggested-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://lore.kernel.org/r/20240605085530.499432-1-leitao@debian.org
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-logitech-dj.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/mpt3sas/mpt3sas_base.c |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/hid/hid-logitech-dj.c b/drivers/hid/hid-logitech-dj.c
-index 57697605b2e24..dc7b0fe83478e 100644
---- a/drivers/hid/hid-logitech-dj.c
-+++ b/drivers/hid/hid-logitech-dj.c
-@@ -1284,8 +1284,10 @@ static int logi_dj_recv_switch_to_dj_mode(struct dj_receiver_dev *djrcv_dev,
- 		 */
- 		msleep(50);
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -7440,6 +7440,12 @@ mpt3sas_base_attach(struct MPT3SAS_ADAPT
+ 	ioc->pd_handles_sz = (ioc->facts.MaxDevHandle / 8);
+ 	if (ioc->facts.MaxDevHandle % 8)
+ 		ioc->pd_handles_sz++;
++	/*
++	 * pd_handles_sz should have, at least, the minimal room for
++	 * set_bit()/test_bit(), otherwise out-of-memory touch may occur.
++	 */
++	ioc->pd_handles_sz = ALIGN(ioc->pd_handles_sz, sizeof(unsigned long));
++
+ 	ioc->pd_handles = kzalloc(ioc->pd_handles_sz,
+ 	    GFP_KERNEL);
+ 	if (!ioc->pd_handles) {
+@@ -7457,6 +7463,13 @@ mpt3sas_base_attach(struct MPT3SAS_ADAPT
+ 	ioc->pend_os_device_add_sz = (ioc->facts.MaxDevHandle / 8);
+ 	if (ioc->facts.MaxDevHandle % 8)
+ 		ioc->pend_os_device_add_sz++;
++
++	/*
++	 * pend_os_device_add_sz should have, at least, the minimal room for
++	 * set_bit()/test_bit(), otherwise out-of-memory may occur.
++	 */
++	ioc->pend_os_device_add_sz = ALIGN(ioc->pend_os_device_add_sz,
++					   sizeof(unsigned long));
+ 	ioc->pend_os_device_add = kzalloc(ioc->pend_os_device_add_sz,
+ 	    GFP_KERNEL);
+ 	if (!ioc->pend_os_device_add) {
+@@ -7747,6 +7760,12 @@ _base_check_ioc_facts_changes(struct MPT
+ 		if (ioc->facts.MaxDevHandle % 8)
+ 			pd_handles_sz++;
  
--		if (retval)
-+		if (retval) {
-+			kfree(dj_report);
- 			return retval;
-+		}
- 	}
- 
- 	/*
--- 
-2.43.0
-
++		/*
++		 * pd_handles should have, at least, the minimal room for
++		 * set_bit()/test_bit(), otherwise out-of-memory touch may
++		 * occur.
++		 */
++		pd_handles_sz = ALIGN(pd_handles_sz, sizeof(unsigned long));
+ 		pd_handles = krealloc(ioc->pd_handles, pd_handles_sz,
+ 		    GFP_KERNEL);
+ 		if (!pd_handles) {
 
 
 
