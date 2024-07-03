@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-57091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29891925AA5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:02:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF288925D95
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BCAF1C23041
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:02:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 857A81F21557
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57E21993A5;
-	Wed,  3 Jul 2024 10:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85CF6185E6B;
+	Wed,  3 Jul 2024 11:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqhmJjPD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUAg0Gux"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7562317B40C;
-	Wed,  3 Jul 2024 10:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4561A171E70;
+	Wed,  3 Jul 2024 11:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003821; cv=none; b=g4eq758mKTGrEf26el+0Or9230FzCvPOHcLkwxBysDeNgwXS+4Pj/9wMhYvL3dk7oLHJgUXoeRD+p1217CxuT9Soq/FXvIrqD5Y2ZZ4ssXk+uSFZebeVkWBjp8cQJ+wJq0++nYMXGsMdidn5BxVzdjObyF2IgBsLQFtcEbKfFeA=
+	t=1720005668; cv=none; b=GjJDanzlCKSZS7gnR4ElI+JS8gV9M46Y7OBe+Ml3uZvDQDEyxNRXsaAk8b5lVLGK1nZRSeKdgOSOothYG/k6fLR+8pHaNlY88rmmSVIYA3hpYxV2/7NLu6pdQ7Evl9cp+PexAWVPdkLXJ9YZhaGMLbtMbHk3iWoiFh9EkV7CsHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003821; c=relaxed/simple;
-	bh=uaDHIXqz4FyPOzIrRL1gvDBGx+Vt/tlQeqjGzYdomiU=;
+	s=arc-20240116; t=1720005668; c=relaxed/simple;
+	bh=BnYT32GPZrCyzO1P46RDr2tt8pDKm4NX+7tGxIRivrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GAo1PtnLHifW43rbAynp+zJPkQOQ1jEYatOtPqFmu5ZU/B8F6HykgEf9t724V3SroHumnB6RUPoB4/+ouswFOqj+uuvY8cocF0OrZIPpZDaL/7pIEz0jIv70vKJn1ovzFjb9Hmed6cL1ki3WN/Rp3n4Q0KueCvj3dA2vW3hYLmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqhmJjPD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F74C2BD10;
-	Wed,  3 Jul 2024 10:50:20 +0000 (UTC)
+	 MIME-Version; b=ntRrOe62DG78qg1Yxg8OudY4+muQZhixlLrvKGl2p+CUv3iYG63FJmCGs1PbviY5MNa46nwgE7f8jwIdvKWbQNMJJEweKoYOKDNMcnU6ZNgI+05NhyfPZ1RRYWsRm1Wrf4ih22ZAUduYjDhQgbXhTUlEifqejp3tfgG0d4N6WQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUAg0Gux; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637F8C2BD10;
+	Wed,  3 Jul 2024 11:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003821;
-	bh=uaDHIXqz4FyPOzIrRL1gvDBGx+Vt/tlQeqjGzYdomiU=;
+	s=korg; t=1720005667;
+	bh=BnYT32GPZrCyzO1P46RDr2tt8pDKm4NX+7tGxIRivrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kqhmJjPDVL2NqmRT/OLvlDgQfTeTbQk0gv5UnCpccsTidfyAW8+b7v9RJAx1xdgdw
-	 rO5a6E+skDjKchwo90d2e/pSAXylU4pUq1BgJkGk/XMORPHbmmo1MNBXAQoxCIil5c
-	 ZEvfs5EQw/W0jtvagIUvY8jAnDh3CxEmSC0dunK4=
+	b=dUAg0GuxrM2ZZbB5xxLp93xxdD0x547H2KBPZPf8ebImT9sN9FEvgCV/YAaxQS1KE
+	 IULOQOPXYn7NsUyOJxlpqia12Dc6TXpJbiB5gqe6+5HByF1jV2OCteP77LL2KacQ5k
+	 qO2RRIyJiWvJ0ZXWFF/HPMXh/PALSi6j/FmjZKoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 032/189] serial: sc16is7xx: replace hardcoded divisor value with BIT() macro
+Subject: [PATCH 5.15 157/356] selftests/bpf: Fix flaky test btf_map_in_map/lookup_update
 Date: Wed,  3 Jul 2024 12:38:13 +0200
-Message-ID: <20240703102842.720510876@linuxfoundation.org>
+Message-ID: <20240703102919.041842994@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
-References: <20240703102841.492044697@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Yonghong Song <yonghong.song@linux.dev>
 
-[ Upstream commit 2e57cefc4477659527f7adab1f87cdbf60ef1ae6 ]
+[ Upstream commit 14bb1e8c8d4ad5d9d2febb7d19c70a3cf536e1e5 ]
 
-To better show why the limit is what it is, since we have only 16 bits for
-the divisor.
+Recently, I frequently hit the following test failure:
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-13-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 8492bd91aa05 ("serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when using prescaler")
+  [root@arch-fb-vm1 bpf]# ./test_progs -n 33/1
+  test_lookup_update:PASS:skel_open 0 nsec
+  [...]
+  test_lookup_update:PASS:sync_rcu 0 nsec
+  test_lookup_update:FAIL:map1_leak inner_map1 leaked!
+  #33/1    btf_map_in_map/lookup_update:FAIL
+  #33      btf_map_in_map:FAIL
+
+In the test, after map is closed and then after two rcu grace periods,
+it is assumed that map_id is not available to user space.
+
+But the above assumption cannot be guaranteed. After zero or one
+or two rcu grace periods in different siturations, the actual
+freeing-map-work is put into a workqueue. Later on, when the work
+is dequeued, the map will be actually freed.
+See bpf_map_put() in kernel/bpf/syscall.c.
+
+By using workqueue, there is no ganrantee that map will be actually
+freed after a couple of rcu grace periods. This patch removed
+such map leak detection and then the test can pass consistently.
+
+Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240322061353.632136-1-yonghong.song@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../selftests/bpf/prog_tests/btf_map_in_map.c | 26 +------------------
+ 1 file changed, 1 insertion(+), 25 deletions(-)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 892e27cddb0ff..fad8d1f744466 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -496,7 +496,7 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 	u8 prescaler = 0;
- 	unsigned long clk = port->uartclk, div = clk / 16 / baud;
+diff --git a/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c b/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c
+index eb90a6b8850d2..f4d753185001a 100644
+--- a/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c
++++ b/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c
+@@ -25,7 +25,7 @@ static void test_lookup_update(void)
+ 	int map1_fd, map2_fd, map3_fd, map4_fd, map5_fd, map1_id, map2_id;
+ 	int outer_arr_fd, outer_hash_fd, outer_arr_dyn_fd;
+ 	struct test_btf_map_in_map *skel;
+-	int err, key = 0, val, i, fd;
++	int err, key = 0, val, i;
  
--	if (div > 0xffff) {
-+	if (div >= BIT(16)) {
- 		prescaler = SC16IS7XX_MCR_CLKSEL_BIT;
- 		div /= 4;
- 	}
+ 	skel = test_btf_map_in_map__open_and_load();
+ 	if (CHECK(!skel, "skel_open", "failed to open&load skeleton\n"))
+@@ -102,30 +102,6 @@ static void test_lookup_update(void)
+ 	CHECK(map1_id == 0, "map1_id", "failed to get ID 1\n");
+ 	CHECK(map2_id == 0, "map2_id", "failed to get ID 2\n");
+ 
+-	test_btf_map_in_map__destroy(skel);
+-	skel = NULL;
+-
+-	/* we need to either wait for or force synchronize_rcu(), before
+-	 * checking for "still exists" condition, otherwise map could still be
+-	 * resolvable by ID, causing false positives.
+-	 *
+-	 * Older kernels (5.8 and earlier) freed map only after two
+-	 * synchronize_rcu()s, so trigger two, to be entirely sure.
+-	 */
+-	CHECK(kern_sync_rcu(), "sync_rcu", "failed\n");
+-	CHECK(kern_sync_rcu(), "sync_rcu", "failed\n");
+-
+-	fd = bpf_map_get_fd_by_id(map1_id);
+-	if (CHECK(fd >= 0, "map1_leak", "inner_map1 leaked!\n")) {
+-		close(fd);
+-		goto cleanup;
+-	}
+-	fd = bpf_map_get_fd_by_id(map2_id);
+-	if (CHECK(fd >= 0, "map2_leak", "inner_map2 leaked!\n")) {
+-		close(fd);
+-		goto cleanup;
+-	}
+-
+ cleanup:
+ 	test_btf_map_in_map__destroy(skel);
+ }
 -- 
 2.43.0
 
