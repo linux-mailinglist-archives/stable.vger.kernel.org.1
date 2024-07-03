@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-57408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A5FF925C69
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:18:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE6D4925AB7
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:03:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B48851F21A38
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:18:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 745221F22E53
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:03:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF15181BB6;
-	Wed,  3 Jul 2024 11:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E0A1DFC7;
+	Wed,  3 Jul 2024 10:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ehgJD15J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVBvt9Dd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFBF181BAE;
-	Wed,  3 Jul 2024 11:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B5417BB05;
+	Wed,  3 Jul 2024 10:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004786; cv=none; b=AzvKGkvt7MFKyhmIaIg7HH73v8u0O6EvjWEj7QU5+fbv3f3llvQ+f+Dd7XNSUg5bT+Zh+I5Hdz2LOzJzPRVi/GlEKgqjDV5veCQbpJ2v3j26so6T4oxBU6gqzF6Z4Hz+WPYmopljgcquRDnTroXUFG6OlqZ4PPms6amHl/+apjY=
+	t=1720003872; cv=none; b=HhMvV8UFinudHWFS1ZqoX8BBrJ2a/wokdjbWx+jaj8TKeeP5fWfX+xVswM2ZzC6UlrCyF/Zk6elnX9/ID16uEcTTSD9dRmNy5rumYpOVJ0zP47jqOv3BP/d4DhHitxXg6ngWJFsN9DKcVFCkvAIiuB+oltj5ba590VX6mkajzQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004786; c=relaxed/simple;
-	bh=DHNSAV+2Fs5PYlOMJhC7zectC3ggM2ZgJU5C6LGCqzY=;
+	s=arc-20240116; t=1720003872; c=relaxed/simple;
+	bh=AJyeJ0qIF1jAy40BOOLvQj028gmvc3OJ4x87ykchBgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DasObj73IRUSUxGYqweM5SUP5yQCq4d4P2R8ed9Latp7YvnLnfxRxjibDs6Ta63m9bwzSqgM1eEGhmjEifkWonU/oYywwRZBXA1rFvBKkzFl/p1QvK2/UOKVXRomWqxM+YQymfcOkxQgrHUVb6/EyJdkNzGChTHFZL5H+Gblmgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ehgJD15J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B09C2BD10;
-	Wed,  3 Jul 2024 11:06:25 +0000 (UTC)
+	 MIME-Version; b=GcMaXIXKPBQU2e5PnMMp7yCHZTUtIPSfDxPcV6h9g+gMU+aF1wA1xU8WAPJQ3K7hSJCgRkr3gUlAWU6/CBqiYNvRIPMbF6MU6Ek4DCPDcpbHT49llSDySvhoa/iFhKAJy3kkxmlPRaK5PGiWz0bUkk7C60HRAtozbXd63ym6DL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVBvt9Dd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC774C2BD10;
+	Wed,  3 Jul 2024 10:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720004786;
-	bh=DHNSAV+2Fs5PYlOMJhC7zectC3ggM2ZgJU5C6LGCqzY=;
+	s=korg; t=1720003872;
+	bh=AJyeJ0qIF1jAy40BOOLvQj028gmvc3OJ4x87ykchBgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ehgJD15Jvsb6ZJccpLBVv2q/YmLx55ez7toLS7vgPuM93mwG0nY9UhoEugTOP8wnf
-	 fVI/cJ6lHvYU3RfY1tU88xbR9IZfSfTmyDONGhO7Z6er1XTgCKQQx6RBwlJe3An703
-	 YE8QeO5gFUZWwWwRGmqwMtf6TWibn7fJmXPphCFg=
+	b=oVBvt9DdAHTxkxw2t1qjasKmdF3qeC8YWGUoRc9rVFqKsQKxmulJP13yD4sAsEOkQ
+	 aPlg7MUWpD0inissbfKFz9Ehe81/awYw6bbEdUDTt60+q82iV2sUYRrZ7pp7B29zx0
+	 PfcpzyUhOkG0JxfCVeRKsR3pb7Rm5NHggcpv+ucM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benson Leung <bleung@chromium.org>,
-	Prashant Malani <pmalani@chromium.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 127/290] power: supply: cros_usbpd: provide ID table for avoiding fallback match
-Date: Wed,  3 Jul 2024 12:38:28 +0200
-Message-ID: <20240703102908.984549387@linuxfoundation.org>
+	Kuangyi Chiang <ki.chiang65@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.4 048/189] xhci: Apply broken streams quirk to Etron EJ188 xHCI host
+Date: Wed,  3 Jul 2024 12:38:29 +0200
+Message-ID: <20240703102843.329042367@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
-References: <20240703102904.170852981@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
 
-[ Upstream commit 0f8678c34cbfdc63569a9b0ede1fe235ec6ec693 ]
+commit 91f7a1524a92c70ffe264db8bdfa075f15bbbeb9 upstream.
 
-Instead of using fallback driver name match, provide ID table[1] for the
-primary match.
+As described in commit 8f873c1ff4ca ("xhci: Blacklist using streams on the
+Etron EJ168 controller"), EJ188 have the same issue as EJ168, where Streams
+do not work reliable on EJ188. So apply XHCI_BROKEN_STREAMS quirk to EJ188
+as well.
 
-[1]: https://elixir.bootlin.com/linux/v6.8/source/drivers/base/platform.c#L1353
-
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Reviewed-by: Prashant Malani <pmalani@chromium.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Link: https://lore.kernel.org/r/20240401030052.2887845-4-tzungbi@kernel.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240611120610.3264502-4-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/cros_usbpd-charger.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-pci.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/cros_usbpd-charger.c b/drivers/power/supply/cros_usbpd-charger.c
-index 0a4f02e4ae7ba..d7ee1eb9ca880 100644
---- a/drivers/power/supply/cros_usbpd-charger.c
-+++ b/drivers/power/supply/cros_usbpd-charger.c
-@@ -5,6 +5,7 @@
-  * Copyright (c) 2014 - 2018 Google, Inc
-  */
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -258,8 +258,10 @@ static void xhci_pci_quirks(struct devic
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+ 	}
+ 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
+-			pdev->device == PCI_DEVICE_ID_EJ188)
++			pdev->device == PCI_DEVICE_ID_EJ188) {
+ 		xhci->quirks |= XHCI_RESET_ON_RESUME;
++		xhci->quirks |= XHCI_BROKEN_STREAMS;
++	}
  
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/platform_data/cros_ec_commands.h>
- #include <linux/platform_data/cros_ec_proto.h>
-@@ -711,16 +712,22 @@ static int cros_usbpd_charger_resume(struct device *dev)
- static SIMPLE_DEV_PM_OPS(cros_usbpd_charger_pm_ops, NULL,
- 			 cros_usbpd_charger_resume);
- 
-+static const struct platform_device_id cros_usbpd_charger_id[] = {
-+	{ DRV_NAME, 0 },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(platform, cros_usbpd_charger_id);
-+
- static struct platform_driver cros_usbpd_charger_driver = {
- 	.driver = {
- 		.name = DRV_NAME,
- 		.pm = &cros_usbpd_charger_pm_ops,
- 	},
--	.probe = cros_usbpd_charger_probe
-+	.probe = cros_usbpd_charger_probe,
-+	.id_table = cros_usbpd_charger_id,
- };
- 
- module_platform_driver(cros_usbpd_charger_driver);
- 
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("ChromeOS EC USBPD charger");
--MODULE_ALIAS("platform:" DRV_NAME);
--- 
-2.43.0
-
+ 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
+ 	    pdev->device == 0x0014) {
 
 
 
