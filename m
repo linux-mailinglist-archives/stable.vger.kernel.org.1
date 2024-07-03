@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-57798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 713E4925E2E
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:35:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9A16925C9F
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:20:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D258928D568
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:34:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 975482C3CEC
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784531DA327;
-	Wed,  3 Jul 2024 11:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5D6185E62;
+	Wed,  3 Jul 2024 11:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUNPE3fA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9dl1/Xi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A40142903;
-	Wed,  3 Jul 2024 11:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D23B136E2A;
+	Wed,  3 Jul 2024 11:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005966; cv=none; b=MLd689eTy8rViRr99w+u6kqaswmnaAf88oleBtcXIv8l3AHe92E/+9ciiKzMQKiwn47JQU1dYZDtDM0HPgZGtY7y9ebHIoYWVYm6yfrKH4NpeD0SmVLanqlRaa1rBIRdMGsBMPW8DQOseGhgCB2/9YlKQ3FDENEQNj8q/tyMszY=
+	t=1720004956; cv=none; b=b2UnhFOX+eqvmUn8Xc3SnTYb/gWNGnMghodYtYKfxJujSWbiewQbZg2XP6A+svI4066YVw9CpO0hLhEZzrZCOZB1HI2Hs7qVUZGjlXhleovuGoggixpaFcllVAT9BoK1u5DDx1ZVBCdvskh0ksFCEPCJSiNHzNVEnNQKR5mZHFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005966; c=relaxed/simple;
-	bh=PiDuluqTftUnIBgIy9gZs4c2SY5EBoRxskiSg/3oCb0=;
+	s=arc-20240116; t=1720004956; c=relaxed/simple;
+	bh=GRMM4e+qv2SU1d3RKdU5eEi0yTDPjv8Oe3h8deJX0hE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o33WadSZsZ1y1hpcLlqkjfKRS8UcipSUFyeq+TmpmwHW/oOGkImcI2d0wjurFYunvTEiUE7r7J25n3coCCVtK7vEc0Frkl/YbPYHw35Rl4fkKsIhm9CdVEFgsyR+2mYHlnD6ucbGh6FdbRtFaQch8/0XyhbwMaNFSouQMJ+dqb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUNPE3fA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60029C2BD10;
-	Wed,  3 Jul 2024 11:26:05 +0000 (UTC)
+	 MIME-Version; b=IoukReTeEB0u9pkm+DpXfGNIPLRG6CQCqeXHgnT2RJJc2uilrgP7N9NgMLhokJgWob1HbsARrmLcFPL20nBDJ8z7kekzcXKgU63A2jO2Miig+0KDC1aRUZ41qCkgKGs2DL2KSmk5RchcyVQ23fEFTEYnOzfY29+ADmB9VB6AwNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9dl1/Xi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0300DC32781;
+	Wed,  3 Jul 2024 11:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005965;
-	bh=PiDuluqTftUnIBgIy9gZs4c2SY5EBoRxskiSg/3oCb0=;
+	s=korg; t=1720004956;
+	bh=GRMM4e+qv2SU1d3RKdU5eEi0yTDPjv8Oe3h8deJX0hE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZUNPE3fA6wbtU7jzWIw7Pl+FTEVQiXrzdKu0Ka/I4ZulT/dmeR7lK1GlClSFBDGLc
-	 BBJW2pKa+ruI4P7ev16ZM/bKh+aV/0+ZmBkvUE5LCNfKhmYqjfiFQbDNkFGHqg02uY
-	 rXXQo3uJuGu4pmL/RsWjbKYgemsZ4QgSDhpyo+78=
+	b=G9dl1/Xi5/C/w3MxPSq9eUkQ87aVdg+skf/ygBGEXk7CRP3tNAuyfAu1DFc0Tnctn
+	 egQ6EVN8XwWDReHEtDpZ53gqlhOGorA6HBaT2sRiFDb4SIGXR1ZGEPgdb61kftyZPM
+	 Q5bxuC/29yW2vVNJxmvIjLDW+Ug8vMUsDsluzCtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stuart Axon <stuaxo2@yahoo.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Xingyuan Mo <hdthky0@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 256/356] ACPI: x86: utils: Add Picasso to the list for forcing StorageD3Enable
-Date: Wed,  3 Jul 2024 12:39:52 +0200
-Message-ID: <20240703102922.801598278@linuxfoundation.org>
+Subject: [PATCH 5.10 212/290] netfilter: nf_tables: validate family when identifying table via handle
+Date: Wed,  3 Jul 2024 12:39:53 +0200
+Message-ID: <20240703102912.167268653@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 10b6b4a8ac6120ec36555fd286eed577f7632e3b ]
+[ Upstream commit f6e1532a2697b81da00bfb184e99d15e01e9d98c ]
 
-Picasso was the first APU that introduced s2idle support from AMD,
-and it was predating before vendors started to use `StorageD3Enable`
-in their firmware.
+Validate table family when looking up for it via NFTA_TABLE_HANDLE.
 
-Windows doesn't have problems with this hardware and NVME so it was
-likely on the list of hardcoded CPUs to use this behavior in Windows.
-
-Add it to the list for Linux to avoid NVME resume issues.
-
-Reported-by: Stuart Axon <stuaxo2@yahoo.com>
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2449
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: e79a10652bbd ("ACPI: x86: Force StorageD3Enable on more products")
+Fixes: 3ecbfd65f50e ("netfilter: nf_tables: allocate handle and delete objects via handle")
+Reported-by: Xingyuan Mo <hdthky0@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nf_tables_api.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index f1dd086d0b87d..7d6083d40bf6b 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -204,6 +204,7 @@ bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *s
-       disk in the system.
-  */
- static const struct x86_cpu_id storage_d3_cpu_ids[] = {
-+	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 24, NULL),  /* Picasso */
- 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),	/* Renoir */
- 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL),	/* Lucienne */
- 	X86_MATCH_VENDOR_FAM_MODEL(AMD, 25, 80, NULL),	/* Cezanne */
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index f3cb5c9202760..754278b857068 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -713,7 +713,7 @@ static struct nft_table *nft_table_lookup(const struct net *net,
+ 
+ static struct nft_table *nft_table_lookup_byhandle(const struct net *net,
+ 						   const struct nlattr *nla,
+-						   u8 genmask)
++						   int family, u8 genmask)
+ {
+ 	struct nftables_pernet *nft_net;
+ 	struct nft_table *table;
+@@ -721,6 +721,7 @@ static struct nft_table *nft_table_lookup_byhandle(const struct net *net,
+ 	nft_net = net_generic(net, nf_tables_net_id);
+ 	list_for_each_entry(table, &nft_net->tables, list) {
+ 		if (be64_to_cpu(nla_get_be64(nla)) == table->handle &&
++		    table->family == family &&
+ 		    nft_active_genmask(table, genmask))
+ 			return table;
+ 	}
+@@ -1440,7 +1441,7 @@ static int nf_tables_deltable(struct net *net, struct sock *nlsk,
+ 
+ 	if (nla[NFTA_TABLE_HANDLE]) {
+ 		attr = nla[NFTA_TABLE_HANDLE];
+-		table = nft_table_lookup_byhandle(net, attr, genmask);
++		table = nft_table_lookup_byhandle(net, attr, family, genmask);
+ 	} else {
+ 		attr = nla[NFTA_TABLE_NAME];
+ 		table = nft_table_lookup(net, attr, family, genmask);
 -- 
 2.43.0
 
