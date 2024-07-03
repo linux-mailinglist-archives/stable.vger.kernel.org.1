@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-56939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5C09259D7
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 12:51:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9E9B925DA9
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C5931C22306
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 10:51:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D33F429BA9A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4329617BB34;
-	Wed,  3 Jul 2024 10:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443581862A5;
+	Wed,  3 Jul 2024 11:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eHdfWtM0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ozbYmfWm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21CD61FDF;
-	Wed,  3 Jul 2024 10:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031CF45945;
+	Wed,  3 Jul 2024 11:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003350; cv=none; b=Vz1QovVERTxuP4i6IOIxiS61oyBtDZywLyY4aTO/Vv1z64ETZgBTeAzrD45U2iXcllw5hXXkCzEDUA0T70x+l2LdfEAcWuWi8m63aZNR70eb47uwQNb0qW8mfuMke99ICsgE9Jiic/acoMhI/PAzmwLVJgEgwXxC4uICz/SiOAg=
+	t=1720005689; cv=none; b=GlOwy0r2Z+9bc5pWMhMJykHHNwiTAtb2gW4pmEll6X2L+VhT9e6MFBThKFVCeXCSxXQuueeAn41Xadzn1g5BXRkOsukrIUzjSFMVZ2r3ANpgBv8jQj07VjPilhguWzzaY/KyHG/QvKpmfNfgEWErno6bWcy7KPq/W3zMDQe/KAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003350; c=relaxed/simple;
-	bh=UJReLNKmDMY8sN3qKrBfbd681A90TzuYjammPoSakyg=;
+	s=arc-20240116; t=1720005689; c=relaxed/simple;
+	bh=6P3JrjM49CsJcxhQzY/Lu073p3YtBql82b09Qi1LX2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+rUp53RLgTX1LYwmVDvI0aV0EBMfTelWmlWepk4zHwB4YyPhGvpmP6ZoP2h/GmtwTm6+WLg/yNya/hBXhMQX/0gfIJrj7DUVOtDxDXeoKcTLHb0s0hYmf4Ph5eMPDAAz8DgbHKaDoAioo/Nnm6D/OVjRsgdOC01AW6+pNeE16o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eHdfWtM0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3056FC2BD10;
-	Wed,  3 Jul 2024 10:42:29 +0000 (UTC)
+	 MIME-Version; b=k15jmLLBnnKy0nthl1cxsnzvZAVE0eZ2FJFYDASkBFL7pUtDQSnLrrG6QIpMTf3/+QmDpQzHRXhhD0NfGK/js3iCLYJNC6Q2SiJITHGwgYl31fvK+VnVDL4BGqr2Z8lXyZOa3A3tYiOOn/2chHaCZtNr43STV6iNScoM9wVqvY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ozbYmfWm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F58FC2BD10;
+	Wed,  3 Jul 2024 11:21:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720003349;
-	bh=UJReLNKmDMY8sN3qKrBfbd681A90TzuYjammPoSakyg=;
+	s=korg; t=1720005688;
+	bh=6P3JrjM49CsJcxhQzY/Lu073p3YtBql82b09Qi1LX2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eHdfWtM0lh73qJ15SOFwXOtyQWQq89Ur1ElSTBH4yH3UN+QAMbCX7vnOtsdxDgaXm
-	 SNCgQMD+ya1YSrpaS8tcuADv5PEdZBbO6dlaBPPAvdrqTd75YOeuDTqOR82LZ2eEkd
-	 KePK+aMhRw0k24FDURI9PvgW7QYlx1Y+dhvPq3zw=
+	b=ozbYmfWmRf9snIY+t6YHhoCxAu9PF4Ak7YzOLwXfyDqYJBMCPqZECEFmVxobOs8kg
+	 yprLSlnTH9gUluhNigYH0rJKz6jveNxgWxU47rKlKAnRDB5YfhCnf13slYp0b7Yyb+
+	 lpyEkSN2HyfikJlFxlN0uQbVQHslhABEKxvHxip0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 002/139] wifi: mac80211: Fix deadlock in ieee80211_sta_ps_deliver_wakeup()
+Subject: [PATCH 5.15 163/356] kselftest: arm64: Add a null pointer check
 Date: Wed,  3 Jul 2024 12:38:19 +0200
-Message-ID: <20240703102830.526914326@linuxfoundation.org>
+Message-ID: <20240703102919.272193644@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102830.432293640@linuxfoundation.org>
-References: <20240703102830.432293640@linuxfoundation.org>
+In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
+References: <20240703102913.093882413@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 44c06bbde6443de206b30f513100b5670b23fc5e ]
+[ Upstream commit 80164282b3620a3cb73de6ffda5592743e448d0e ]
 
-The ieee80211_sta_ps_deliver_wakeup() function takes sta->ps_lock to
-synchronizes with ieee80211_tx_h_unicast_ps_buf() which is called from
-softirq context. However using only spin_lock() to get sta->ps_lock in
-ieee80211_sta_ps_deliver_wakeup() does not prevent softirq to execute
-on this same CPU, to run ieee80211_tx_h_unicast_ps_buf() and try to
-take this same lock ending in deadlock. Below is an example of rcu stall
-that arises in such situation.
+There is a 'malloc' call, which can be unsuccessful.
+This patch will add the malloc failure checking
+to avoid possible null dereference and give more information
+about test fail reasons.
 
- rcu: INFO: rcu_sched self-detected stall on CPU
- rcu:    2-....: (42413413 ticks this GP) idle=b154/1/0x4000000000000000 softirq=1763/1765 fqs=21206996
- rcu:    (t=42586894 jiffies g=2057 q=362405 ncpus=4)
- CPU: 2 PID: 719 Comm: wpa_supplicant Tainted: G        W          6.4.0-02158-g1b062f552873 #742
- Hardware name: RPT (r1) (DT)
- pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : queued_spin_lock_slowpath+0x58/0x2d0
- lr : invoke_tx_handlers_early+0x5b4/0x5c0
- sp : ffff00001ef64660
- x29: ffff00001ef64660 x28: ffff000009bc1070 x27: ffff000009bc0ad8
- x26: ffff000009bc0900 x25: ffff00001ef647a8 x24: 0000000000000000
- x23: ffff000009bc0900 x22: ffff000009bc0900 x21: ffff00000ac0e000
- x20: ffff00000a279e00 x19: ffff00001ef646e8 x18: 0000000000000000
- x17: ffff800016468000 x16: ffff00001ef608c0 x15: 0010533c93f64f80
- x14: 0010395c9faa3946 x13: 0000000000000000 x12: 00000000fa83b2da
- x11: 000000012edeceea x10: ffff0000010fbe00 x9 : 0000000000895440
- x8 : 000000000010533c x7 : ffff00000ad8b740 x6 : ffff00000c350880
- x5 : 0000000000000007 x4 : 0000000000000001 x3 : 0000000000000000
- x2 : 0000000000000000 x1 : 0000000000000001 x0 : ffff00000ac0e0e8
- Call trace:
-  queued_spin_lock_slowpath+0x58/0x2d0
-  ieee80211_tx+0x80/0x12c
-  ieee80211_tx_pending+0x110/0x278
-  tasklet_action_common.constprop.0+0x10c/0x144
-  tasklet_action+0x20/0x28
-  _stext+0x11c/0x284
-  ____do_softirq+0xc/0x14
-  call_on_irq_stack+0x24/0x34
-  do_softirq_own_stack+0x18/0x20
-  do_softirq+0x74/0x7c
-  __local_bh_enable_ip+0xa0/0xa4
-  _ieee80211_wake_txqs+0x3b0/0x4b8
-  __ieee80211_wake_queue+0x12c/0x168
-  ieee80211_add_pending_skbs+0xec/0x138
-  ieee80211_sta_ps_deliver_wakeup+0x2a4/0x480
-  ieee80211_mps_sta_status_update.part.0+0xd8/0x11c
-  ieee80211_mps_sta_status_update+0x18/0x24
-  sta_apply_parameters+0x3bc/0x4c0
-  ieee80211_change_station+0x1b8/0x2dc
-  nl80211_set_station+0x444/0x49c
-  genl_family_rcv_msg_doit.isra.0+0xa4/0xfc
-  genl_rcv_msg+0x1b0/0x244
-  netlink_rcv_skb+0x38/0x10c
-  genl_rcv+0x34/0x48
-  netlink_unicast+0x254/0x2bc
-  netlink_sendmsg+0x190/0x3b4
-  ____sys_sendmsg+0x1e8/0x218
-  ___sys_sendmsg+0x68/0x8c
-  __sys_sendmsg+0x44/0x84
-  __arm64_sys_sendmsg+0x20/0x28
-  do_el0_svc+0x6c/0xe8
-  el0_svc+0x14/0x48
-  el0t_64_sync_handler+0xb0/0xb4
-  el0t_64_sync+0x14c/0x150
-
-Using spin_lock_bh()/spin_unlock_bh() instead prevents softirq to raise
-on the same CPU that is holding the lock.
-
-Fixes: 1d147bfa6429 ("mac80211: fix AP powersave TX vs. wakeup race")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Link: https://msgid.link/8e36fe07d0fbc146f89196cd47a53c8a0afe84aa.1716910344.git.repk@triplefau.lt
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lore.kernel.org/r/20240423082102.2018886-1-chentao@kylinos.cn
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/sta_info.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/arm64/tags/tags_test.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 714d0b01ea629..5dfbfeb8201b8 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -1275,7 +1275,7 @@ void ieee80211_sta_ps_deliver_wakeup(struct sta_info *sta)
- 	skb_queue_head_init(&pending);
+diff --git a/tools/testing/selftests/arm64/tags/tags_test.c b/tools/testing/selftests/arm64/tags/tags_test.c
+index 5701163460ef7..955f87c1170d7 100644
+--- a/tools/testing/selftests/arm64/tags/tags_test.c
++++ b/tools/testing/selftests/arm64/tags/tags_test.c
+@@ -6,6 +6,7 @@
+ #include <stdint.h>
+ #include <sys/prctl.h>
+ #include <sys/utsname.h>
++#include "../../kselftest.h"
  
- 	/* sync with ieee80211_tx_h_unicast_ps_buf */
--	spin_lock(&sta->ps_lock);
-+	spin_lock_bh(&sta->ps_lock);
- 	/* Send all buffered frames to the station */
- 	for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
- 		int count = skb_queue_len(&pending), tmp;
-@@ -1304,7 +1304,7 @@ void ieee80211_sta_ps_deliver_wakeup(struct sta_info *sta)
- 	 */
- 	clear_sta_flag(sta, WLAN_STA_PSPOLL);
- 	clear_sta_flag(sta, WLAN_STA_UAPSD);
--	spin_unlock(&sta->ps_lock);
-+	spin_unlock_bh(&sta->ps_lock);
- 
- 	atomic_dec(&ps->num_sta_ps);
- 
+ #define SHIFT_TAG(tag)		((uint64_t)(tag) << 56)
+ #define SET_TAG(ptr, tag)	(((uint64_t)(ptr) & ~SHIFT_TAG(0xff)) | \
+@@ -21,6 +22,9 @@ int main(void)
+ 	if (prctl(PR_SET_TAGGED_ADDR_CTRL, PR_TAGGED_ADDR_ENABLE, 0, 0, 0) == 0)
+ 		tbi_enabled = 1;
+ 	ptr = (struct utsname *)malloc(sizeof(*ptr));
++	if (!ptr)
++		ksft_exit_fail_msg("Failed to allocate utsname buffer\n");
++
+ 	if (tbi_enabled)
+ 		tag = 0x42;
+ 	ptr = (struct utsname *)SET_TAG(ptr, tag);
 -- 
 2.43.0
 
