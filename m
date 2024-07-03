@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-57614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58679925D3B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:27:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC207925C02
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:13:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A2E31C21B3F
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:27:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92C021F20F5A
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B87417D889;
-	Wed,  3 Jul 2024 11:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665B21741D2;
+	Wed,  3 Jul 2024 11:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1k0wE4vN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yH8Y5hrz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0F5173334;
-	Wed,  3 Jul 2024 11:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241A313BC0B;
+	Wed,  3 Jul 2024 11:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005411; cv=none; b=HBQt2QBXazscxaNSzZkQnbvgazuL/z/u7m0r2OKgeb5+uf5ZtTozvpohWHg9nUirqFdYyOa6qRuJHQOgfFRn+Av6PKix7r8jnxTK0xiciw30Of1bjBrEfXkJ3w+9OZB82Wvcb8DIlQMv1fjnYfpNYL5qdMfg0pyLOOEt0T9LsDo=
+	t=1720004486; cv=none; b=R9LAPCyKB7C0muYjqOjr6mcdmnDk1RFoIBIjgMWjRuqaMXCrTiUdmiQJQyzq7yhxlsmsJKRzOuKdqblxxnoJcgE092cDl0ZM3nnDDPqInbScNYHqwlBIPoEX4x6odTkBUPsmDssvE/3KKDtSB/MU3YVguTgRCVkhfei8JVd+U8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005411; c=relaxed/simple;
-	bh=flabiqIXBRcEocleJ+kFx2Hn9U9rdkACWWhdDMzwdBk=;
+	s=arc-20240116; t=1720004486; c=relaxed/simple;
+	bh=JmE+kPtdSJLE4jP2YCzrBk9O2IQAczbPgMzFVkJHuxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJyLG8nQ+CKXRa+qbaL5sX/N/nFVi9gZygKrBpTjGsVCOntkDMtMrwXlcnvkrxsAKg+fh5t/7HD+K7ZOuc0Uw6g1/vXJrN7/p9jxGkr0NlbMkN4bM8GxfpmZtDg1ns3v621mLd30d36ehucmhd8Of15Zq+5f1pSg055ujhXqrm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1k0wE4vN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B927C2BD10;
-	Wed,  3 Jul 2024 11:16:51 +0000 (UTC)
+	 MIME-Version; b=Pfc6xK+miyRX2cZkXFF//eAXvz8y1e9W1HxTJBsTosjtIHQfiHp6dV39b7JsHQoXa7/59iM/a4tC/7R6MMmSfju35wNYdQZ/+7tMNQrNfEoeS1tEp0vT0u7MKyhEINyq6NKftVQ8bRUSF5VrLPmSAkoAB5TfU3i978xP8cpyRoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yH8Y5hrz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1484C2BD10;
+	Wed,  3 Jul 2024 11:01:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005411;
-	bh=flabiqIXBRcEocleJ+kFx2Hn9U9rdkACWWhdDMzwdBk=;
+	s=korg; t=1720004486;
+	bh=JmE+kPtdSJLE4jP2YCzrBk9O2IQAczbPgMzFVkJHuxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1k0wE4vN/BZGDnwScsn7IfbvVhL2DqhrlrI9g1tilE8R0EjkmE7APGC32zCLWP/Wr
-	 T9Rkr1o45m52J92x3JSyAq/wX8RTzsAkCDFXw7FpRZYE6+WFzNNYdFg6bECINXyMP3
-	 jJYpruSDTxcIDqdBE2gEeTUUyTCuAIvn/sBB/pdA=
+	b=yH8Y5hrzFzO2mENqw7fHwjOE+YuWXiUewr7ML1IBc9yyhd3GVYgE+OBDEhHpi1Pbv
+	 urJ3mYGYCjBH5PXTxUErFhKXnDoiDkmfk4IRnTcYLd1WML90ew9j50AAQKwc88D84Y
+	 lLhr6x/tdEDJBBlfi11cY3OL8B7+yJGPvIiNbB7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 071/356] nilfs2: Remove check for PageError
+Subject: [PATCH 5.10 026/290] af_unix: Use skb_queue_len_lockless() in sk_diag_show_rqlen().
 Date: Wed,  3 Jul 2024 12:36:47 +0200
-Message-ID: <20240703102915.786318080@linuxfoundation.org>
+Message-ID: <20240703102905.182173659@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 79ea65563ad8aaab309d61eeb4d5019dd6cf5fa0 ]
+[ Upstream commit 5d915e584d8408211d4567c22685aae8820bfc55 ]
 
-If read_mapping_page() encounters an error, it returns an errno, not a
-page with PageError set, so this test is not needed.
+We can dump the socket queue length via UNIX_DIAG by specifying
+UDIAG_SHOW_RQLEN.
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Stable-dep-of: 7373a51e7998 ("nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors")
+If sk->sk_state is TCP_LISTEN, we return the recv queue length,
+but here we do not hold recvq lock.
+
+Let's use skb_queue_len_lockless() in sk_diag_show_rqlen().
+
+Fixes: c9da99e6475f ("unix_diag: Fixup RQLEN extension report")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/dir.c | 2 +-
+ net/unix/diag.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
-index eb7de9e2a384e..24cfe9db66e02 100644
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -194,7 +194,7 @@ static struct page *nilfs_get_page(struct inode *dir, unsigned long n)
- 	if (!IS_ERR(page)) {
- 		kmap(page);
- 		if (unlikely(!PageChecked(page))) {
--			if (PageError(page) || !nilfs_check_page(page))
-+			if (!nilfs_check_page(page))
- 				goto fail;
- 		}
- 	}
+diff --git a/net/unix/diag.c b/net/unix/diag.c
+index 4666fabb04933..5bc5cb83cc6e4 100644
+--- a/net/unix/diag.c
++++ b/net/unix/diag.c
+@@ -103,7 +103,7 @@ static int sk_diag_show_rqlen(struct sock *sk, struct sk_buff *nlskb)
+ 	struct unix_diag_rqlen rql;
+ 
+ 	if (READ_ONCE(sk->sk_state) == TCP_LISTEN) {
+-		rql.udiag_rqueue = sk->sk_receive_queue.qlen;
++		rql.udiag_rqueue = skb_queue_len_lockless(&sk->sk_receive_queue);
+ 		rql.udiag_wqueue = sk->sk_max_ack_backlog;
+ 	} else {
+ 		rql.udiag_rqueue = (u32) unix_inq_len(sk);
 -- 
 2.43.0
 
