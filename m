@@ -1,75 +1,57 @@
-Return-Path: <stable+bounces-57721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4AD925DB1
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:30:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D70E7925AA0
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:02:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD9D91C2341D
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:30:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 666011F21013
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:02:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CEE21891D8;
-	Wed,  3 Jul 2024 11:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F9617A93F;
+	Wed,  3 Jul 2024 10:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNLLTVSu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wsqbe9RD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CF417FAB6;
-	Wed,  3 Jul 2024 11:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F18717A926;
+	Wed,  3 Jul 2024 10:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005733; cv=none; b=ZoYYadIT4gfi513qZvhUy/YSjHqPASlI7f2F+tW5A2vx/rd4jiYyLHW7p/yguEitlqm4fMpAlgutK8VrTW5V7wtLu0+haQ51953zefpr3qVgDAskfhOv7QPj9CWEiUKInjYTq1Ds43QJXo7ROhKAUHqxq6UJ56gTbKO+rndF7bk=
+	t=1720003815; cv=none; b=WDGg2j45DRN63JYQOv5hKEQ0xtKBtvtVEie4o0ZMo3A9Bj/gHYNib6OF+oEqKIOa0+PZmS67vi0CPWlSFvaki9UM+IPB4hyA9QfjeKYNdyv2zmhgTqCKmeOlo6By5pydW0/SgR9d+Zhb+rcomS79DMtVBW7u1PFiRVRhns/dr90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005733; c=relaxed/simple;
-	bh=6l+6sCR/DZ77R+Ta+d82ZVd9TXL1hP0ScEcxRob9pRI=;
+	s=arc-20240116; t=1720003815; c=relaxed/simple;
+	bh=2eqGONPsRaHFfwHVIWIsp/vyXMBfi08SU8dyljV92Mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GPBqqpQcyWVH8JEuH9z4NMsEDbyzxMgGLD7FGNefyiMs0on91CMp9YJmjqHL8r/74HG1ifqtewvRsKZvl1lgtJ37DGDx4mJdn7iZC0+qdVWJefaW66QI+WM7z6BAF1JV+Gxyvkxkku+bNlvQDDpPOCXtLivyX8AeQDxLUfxZ16c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNLLTVSu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A54A4C4AF0C;
-	Wed,  3 Jul 2024 11:22:12 +0000 (UTC)
+	 MIME-Version; b=T7XJ+BK8DaNQ1mK9cFgn2pWRH7RworNr1VTY85UAMKkYFWvqqM/tBDRu11gvB6WR5uoyaLOrpeEXM21ZVFzb+OG+QouqbRQNqp1MdJG2UokJIxB95s0z8vmOVncRBIqaSIgWgeQ7XU3e2SB/NpYMI9833hfBItTuijf2tLKIBfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wsqbe9RD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C952C4AF0C;
+	Wed,  3 Jul 2024 10:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005733;
-	bh=6l+6sCR/DZ77R+Ta+d82ZVd9TXL1hP0ScEcxRob9pRI=;
+	s=korg; t=1720003815;
+	bh=2eqGONPsRaHFfwHVIWIsp/vyXMBfi08SU8dyljV92Mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nNLLTVSuMWMaLqZXiqzSVrlcxSjQC1ViNpXt0f1n4K/finwaeeXKmMoCumYyRcKL2
-	 N1ydpV3KjYLnS7qJXESzUD7Edgf20KXumDN2QETLfiHreiLSy+9j/8Qe+FAMKPXSRi
-	 rOTBBBgjjeI34+oN1KiLRvokNDv1AXDRFjlguC5k=
+	b=Wsqbe9RD9r/ibTVV5psPBqmhRnPMfpX6cVnNYNWx3m1izSR4ULuHM8UtzugAIMuKg
+	 DG8B2s7HsYGsFORerLZz25f56oibu1Gg2oT8gUbcrrQvimqoN2DZ9s0DhQ6KSrHN8X
+	 86S2a1hssOmoipp8ItFbWWS4f6H9Ms9MPxlK22KE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	Rachel Menge <rachelmenge@linux.microsoft.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Wei Fu <fuweid89@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Allen Pais <apais@linux.microsoft.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
-	Joel Granados <j.granados@samsung.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Martin KaFai Lau <kafai@fb.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 147/356] zap_pid_ns_processes: clear TIF_NOTIFY_SIGNAL along with TIF_SIGPENDING
+Subject: [PATCH 5.4 022/189] ipv6: fix possible race in __fib6_drop_pcpu_from()
 Date: Wed,  3 Jul 2024 12:38:03 +0200
-Message-ID: <20240703102918.663840332@linuxfoundation.org>
+Message-ID: <20240703102842.343268680@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102841.492044697@linuxfoundation.org>
+References: <20240703102841.492044697@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,62 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 7fea700e04bd3f424c2d836e98425782f97b494e ]
+[ Upstream commit b01e1c030770ff3b4fe37fc7cc6bca03f594133f ]
 
-kernel_wait4() doesn't sleep and returns -EINTR if there is no
-eligible child and signal_pending() is true.
+syzbot found a race in __fib6_drop_pcpu_from() [1]
 
-That is why zap_pid_ns_processes() clears TIF_SIGPENDING but this is not
-enough, it should also clear TIF_NOTIFY_SIGNAL to make signal_pending()
-return false and avoid a busy-wait loop.
+If compiler reads more than once (*ppcpu_rt),
+second read could read NULL, if another cpu clears
+the value in rt6_get_pcpu_route().
 
-Link: https://lkml.kernel.org/r/20240608120616.GB7947@redhat.com
-Fixes: 12db8b690010 ("entry: Add support for TIF_NOTIFY_SIGNAL")
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Reported-by: Rachel Menge <rachelmenge@linux.microsoft.com>
-Closes: https://lore.kernel.org/all/1386cd49-36d0-4a5c-85e9-bc42056a5a38@linux.microsoft.com/
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Tested-by: Wei Fu <fuweid89@gmail.com>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Cc: Allen Pais <apais@linux.microsoft.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>
-Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
-Cc: Joel Granados <j.granados@samsung.com>
-Cc: Josh Triplett <josh@joshtriplett.org>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Mike Christie <michael.christie@oracle.com>
-Cc: Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
-Cc: Zqiang <qiang.zhang1211@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Add a READ_ONCE() to prevent this race.
+
+Also add rcu_read_lock()/rcu_read_unlock() because
+we rely on RCU protection while dereferencing pcpu_rt.
+
+[1]
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000012: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000090-0x0000000000000097]
+CPU: 0 PID: 7543 Comm: kworker/u8:17 Not tainted 6.10.0-rc1-syzkaller-00013-g2bfcfd584ff5 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
+Workqueue: netns cleanup_net
+ RIP: 0010:__fib6_drop_pcpu_from.part.0+0x10a/0x370 net/ipv6/ip6_fib.c:984
+Code: f8 48 c1 e8 03 80 3c 28 00 0f 85 16 02 00 00 4d 8b 3f 4d 85 ff 74 31 e8 74 a7 fa f7 49 8d bf 90 00 00 00 48 89 f8 48 c1 e8 03 <80> 3c 28 00 0f 85 1e 02 00 00 49 8b 87 90 00 00 00 48 8b 0c 24 48
+RSP: 0018:ffffc900040df070 EFLAGS: 00010206
+RAX: 0000000000000012 RBX: 0000000000000001 RCX: ffffffff89932e16
+RDX: ffff888049dd1e00 RSI: ffffffff89932d7c RDI: 0000000000000091
+RBP: dffffc0000000000 R08: 0000000000000005 R09: 0000000000000007
+R10: 0000000000000001 R11: 0000000000000006 R12: ffff88807fa080b8
+R13: fffffbfff1a9a07d R14: ffffed100ff41022 R15: 0000000000000001
+FS:  0000000000000000(0000) GS:ffff8880b9200000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b32c26000 CR3: 000000005d56e000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  __fib6_drop_pcpu_from net/ipv6/ip6_fib.c:966 [inline]
+  fib6_drop_pcpu_from net/ipv6/ip6_fib.c:1027 [inline]
+  fib6_purge_rt+0x7f2/0x9f0 net/ipv6/ip6_fib.c:1038
+  fib6_del_route net/ipv6/ip6_fib.c:1998 [inline]
+  fib6_del+0xa70/0x17b0 net/ipv6/ip6_fib.c:2043
+  fib6_clean_node+0x426/0x5b0 net/ipv6/ip6_fib.c:2205
+  fib6_walk_continue+0x44f/0x8d0 net/ipv6/ip6_fib.c:2127
+  fib6_walk+0x182/0x370 net/ipv6/ip6_fib.c:2175
+  fib6_clean_tree+0xd7/0x120 net/ipv6/ip6_fib.c:2255
+  __fib6_clean_all+0x100/0x2d0 net/ipv6/ip6_fib.c:2271
+  rt6_sync_down_dev net/ipv6/route.c:4906 [inline]
+  rt6_disable_ip+0x7ed/0xa00 net/ipv6/route.c:4911
+  addrconf_ifdown.isra.0+0x117/0x1b40 net/ipv6/addrconf.c:3855
+  addrconf_notify+0x223/0x19e0 net/ipv6/addrconf.c:3778
+  notifier_call_chain+0xb9/0x410 kernel/notifier.c:93
+  call_netdevice_notifiers_info+0xbe/0x140 net/core/dev.c:1992
+  call_netdevice_notifiers_extack net/core/dev.c:2030 [inline]
+  call_netdevice_notifiers net/core/dev.c:2044 [inline]
+  dev_close_many+0x333/0x6a0 net/core/dev.c:1585
+  unregister_netdevice_many_notify+0x46d/0x19f0 net/core/dev.c:11193
+  unregister_netdevice_many net/core/dev.c:11276 [inline]
+  default_device_exit_batch+0x85b/0xae0 net/core/dev.c:11759
+  ops_exit_list+0x128/0x180 net/core/net_namespace.c:178
+  cleanup_net+0x5b7/0xbf0 net/core/net_namespace.c:640
+  process_one_work+0x9fb/0x1b60 kernel/workqueue.c:3231
+  process_scheduled_works kernel/workqueue.c:3312 [inline]
+  worker_thread+0x6c8/0xf70 kernel/workqueue.c:3393
+  kthread+0x2c1/0x3a0 kernel/kthread.c:389
+  ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+Fixes: d52d3997f843 ("ipv6: Create percpu rt6_info")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Martin KaFai Lau <kafai@fb.com>
+Link: https://lore.kernel.org/r/20240604193549.981839-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/pid_namespace.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv6/ip6_fib.c | 6 +++++-
+ net/ipv6/route.c   | 1 +
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/pid_namespace.c b/kernel/pid_namespace.c
-index 259fc4ca0d9cc..40b011f880675 100644
---- a/kernel/pid_namespace.c
-+++ b/kernel/pid_namespace.c
-@@ -214,6 +214,7 @@ void zap_pid_ns_processes(struct pid_namespace *pid_ns)
- 	 */
- 	do {
- 		clear_thread_flag(TIF_SIGPENDING);
-+		clear_thread_flag(TIF_NOTIFY_SIGNAL);
- 		rc = kernel_wait4(-1, NULL, __WALL, NULL);
- 	} while (rc != -ECHILD);
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index 3afc32fe9b07b..ef1df9d662d62 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -907,6 +907,7 @@ static void __fib6_drop_pcpu_from(struct fib6_nh *fib6_nh,
+ 	if (!fib6_nh->rt6i_pcpu)
+ 		return;
  
++	rcu_read_lock();
+ 	/* release the reference to this fib entry from
+ 	 * all of its cached pcpu routes
+ 	 */
+@@ -915,7 +916,9 @@ static void __fib6_drop_pcpu_from(struct fib6_nh *fib6_nh,
+ 		struct rt6_info *pcpu_rt;
+ 
+ 		ppcpu_rt = per_cpu_ptr(fib6_nh->rt6i_pcpu, cpu);
+-		pcpu_rt = *ppcpu_rt;
++
++		/* Paired with xchg() in rt6_get_pcpu_route() */
++		pcpu_rt = READ_ONCE(*ppcpu_rt);
+ 
+ 		/* only dropping the 'from' reference if the cached route
+ 		 * is using 'match'. The cached pcpu_rt->from only changes
+@@ -929,6 +932,7 @@ static void __fib6_drop_pcpu_from(struct fib6_nh *fib6_nh,
+ 			fib6_info_release(from);
+ 		}
+ 	}
++	rcu_read_unlock();
+ }
+ 
+ struct fib6_nh_pcpu_arg {
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 3917755351ad9..65772800d0d33 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -1416,6 +1416,7 @@ static struct rt6_info *rt6_get_pcpu_route(const struct fib6_result *res)
+ 		struct rt6_info *prev, **p;
+ 
+ 		p = this_cpu_ptr(res->nh->rt6i_pcpu);
++		/* Paired with READ_ONCE() in __fib6_drop_pcpu_from() */
+ 		prev = xchg(p, NULL);
+ 		if (prev) {
+ 			dst_dev_put(&prev->dst);
 -- 
 2.43.0
 
