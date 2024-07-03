@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-57663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-57327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53C76925D6B
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:28:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4A80925C10
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 13:14:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 618A52917B5
-	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:28:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D74921C21748
+	for <lists+stable@lfdr.de>; Wed,  3 Jul 2024 11:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EFF1822D0;
-	Wed,  3 Jul 2024 11:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07330171671;
+	Wed,  3 Jul 2024 11:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqpZlkhe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uc7qTkhy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7838416F8FA;
-	Wed,  3 Jul 2024 11:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96A616FF2A;
+	Wed,  3 Jul 2024 11:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720005559; cv=none; b=XulGzVqGji67TFZRbdvNC+//qB6w0HmETU8SNrfWOpoyULMDU3N0ilg2CVv+mI5Uaistgx0R1Mzms8t/VFSDD7rTu9A3IyEszNcUocSeeU59DfjoOPqlpYiiQ/QJWdBJRN01+rDVRcUxmtlRZ0BI6hyhXqPCW4GJQWQkHeaB3xs=
+	t=1720004545; cv=none; b=JlOUDOQl9fsbquZacF6V9pwM2MJv9ZDSsPqVi2oJgAE2NeFiM+hfZRC3qzlPP5g6I18+hv6PjyGNoXG09lL+iMkJbn89Or1wIpcdo0RF7w+HDQ8le790ruQG0T+oauMWrVBDIx9ZjTit5MTZhVNA4q1NYpNkwu4FR0VSim53HhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720005559; c=relaxed/simple;
-	bh=zDx7H0XpdU1kZQQlWcmMqR4XiNqwxE7sH0iKeJNhCPY=;
+	s=arc-20240116; t=1720004545; c=relaxed/simple;
+	bh=uKUWR1SMiemcMwgvDVFLvJ745jeg2bUeYSr2Rp1kCuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s5nHE3AtVrwpamCnLGb8US0FzqznpyCePqZMmcN1r3nuci6VybEa/oItZR9gXE5mo2Evwa7dvZV34HqPbmINFfT7J6WJpb71Rffwv0B662dkdTxlPbaL4G69uqT2jDiTYLaEmjoykOXeSTlaqxgOXoi3ptSyanwDNf8BKUK0pXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AqpZlkhe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F187CC2BD10;
-	Wed,  3 Jul 2024 11:19:18 +0000 (UTC)
+	 MIME-Version; b=RF2qaa0ypTlVKd5PZRiiqMmRxwCl6TH4myGWjcw69TcTrxUOEGp9bqVMjvfXkCG+E5N/eQrDT8ngEIhxNP/RDQrtWRF7l7826bEQmEFYLdIgKCRmdGIxl/5PtfceDDPixHiMKRxIJd1oH79+hWVbgLRvxJ50jnknGIPvLfOslM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uc7qTkhy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F94C32781;
+	Wed,  3 Jul 2024 11:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720005559;
-	bh=zDx7H0XpdU1kZQQlWcmMqR4XiNqwxE7sH0iKeJNhCPY=;
+	s=korg; t=1720004545;
+	bh=uKUWR1SMiemcMwgvDVFLvJ745jeg2bUeYSr2Rp1kCuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AqpZlkheJL3U/uKjF9buOUhpXj1GoUc1sJ1xWytcUwLNnLobNinKknVtF/taGvBIB
-	 b5qZKfOiE9oj5ozGOidnrnlfWaJEPUp5/+iwBOkQAqNwq9w+Vv4cLDxP3wZxWu7BmE
-	 Lo/qO5pG3ZCTx2J5tmb+9PLiPbF4zNGEmSyzOFYs=
+	b=uc7qTkhyk9/hosfKrkoCyzB2WJuF8txqKbJsxA4fYL381kECfOLm5JwXTERiFbr9g
+	 iW+c+0AXQhw3E7gcQJTFCGiMdxS9qRTo5pBmEkC/lUaHPAmvB1CdJ2tt9yErbssWPg
+	 l+odF3uhzrMkrNi2xdqbgx8rEvt5ttsMMpqgMxSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vamshi Gajjela <vamshigajjela@google.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 5.15 122/356] spmi: hisi-spmi-controller: Do not override device identifier
+	stable <stable@kernel.org>,
+	syzbot+ffa8143439596313a85a@syzkaller.appspotmail.com,
+	Ashish Sangwan <a.sangwan@samsung.com>,
+	Namjae Jeon <namjae.jeon@samsung.com>,
+	Dirk Behme <dirk.behme@de.bosch.com>
+Subject: [PATCH 5.10 077/290] drivers: core: synchronize really_probe() and dev_uevent()
 Date: Wed,  3 Jul 2024 12:37:38 +0200
-Message-ID: <20240703102917.711404171@linuxfoundation.org>
+Message-ID: <20240703102907.104873902@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703102913.093882413@linuxfoundation.org>
-References: <20240703102913.093882413@linuxfoundation.org>
+In-Reply-To: <20240703102904.170852981@linuxfoundation.org>
+References: <20240703102904.170852981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vamshi Gajjela <vamshigajjela@google.com>
+From: Dirk Behme <dirk.behme@de.bosch.com>
 
-commit eda4923d78d634482227c0b189d9b7ca18824146 upstream.
+commit c0a40097f0bc81deafc15f9195d1fb54595cd6d0 upstream.
 
-'nr' member of struct spmi_controller, which serves as an identifier
-for the controller/bus. This value is a dynamic ID assigned in
-spmi_controller_alloc, and overriding it from the driver results in an
-ida_free error "ida_free called for id=xx which is not allocated".
+Synchronize the dev->driver usage in really_probe() and dev_uevent().
+These can run in different threads, what can result in the following
+race condition for dev->driver uninitialization:
 
-Signed-off-by: Vamshi Gajjela <vamshigajjela@google.com>
-Fixes: 70f59c90c819 ("staging: spmi: add Hikey 970 SPMI controller driver")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240228185116.1269-1-vamshigajjela@google.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20240507210809.3479953-5-sboyd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thread #1:
+==========
+
+really_probe() {
+...
+probe_failed:
+...
+device_unbind_cleanup(dev) {
+    ...
+    dev->driver = NULL;   // <= Failed probe sets dev->driver to NULL
+    ...
+    }
+...
+}
+
+Thread #2:
+==========
+
+dev_uevent() {
+...
+if (dev->driver)
+      // If dev->driver is NULLed from really_probe() from here on,
+      // after above check, the system crashes
+      add_uevent_var(env, "DRIVER=%s", dev->driver->name);
+...
+}
+
+really_probe() holds the lock, already. So nothing needs to be done
+there. dev_uevent() is called with lock held, often, too. But not
+always. What implies that we can't add any locking in dev_uevent()
+itself. So fix this race by adding the lock to the non-protected
+path. This is the path where above race is observed:
+
+ dev_uevent+0x235/0x380
+ uevent_show+0x10c/0x1f0  <= Add lock here
+ dev_attr_show+0x3a/0xa0
+ sysfs_kf_seq_show+0x17c/0x250
+ kernfs_seq_show+0x7c/0x90
+ seq_read_iter+0x2d7/0x940
+ kernfs_fop_read_iter+0xc6/0x310
+ vfs_read+0x5bc/0x6b0
+ ksys_read+0xeb/0x1b0
+ __x64_sys_read+0x42/0x50
+ x64_sys_call+0x27ad/0x2d30
+ do_syscall_64+0xcd/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Similar cases are reported by syzkaller in
+
+https://syzkaller.appspot.com/bug?extid=ffa8143439596313a85a
+
+But these are regarding the *initialization* of dev->driver
+
+dev->driver = drv;
+
+As this switches dev->driver to non-NULL these reports can be considered
+to be false-positives (which should be "fixed" by this commit, as well,
+though).
+
+The same issue was reported and tried to be fixed back in 2015 in
+
+https://lore.kernel.org/lkml/1421259054-2574-1-git-send-email-a.sangwan@samsung.com/
+
+already.
+
+Fixes: 239378f16aa1 ("Driver core: add uevent vars for devices of a class")
+Cc: stable <stable@kernel.org>
+Cc: syzbot+ffa8143439596313a85a@syzkaller.appspotmail.com
+Cc: Ashish Sangwan <a.sangwan@samsung.com>
+Cc: Namjae Jeon <namjae.jeon@samsung.com>
+Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+Link: https://lore.kernel.org/r/20240513050634.3964461-1-dirk.behme@de.bosch.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spmi/hisi-spmi-controller.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/base/core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/spmi/hisi-spmi-controller.c
-+++ b/drivers/spmi/hisi-spmi-controller.c
-@@ -303,7 +303,6 @@ static int spmi_controller_probe(struct
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2008,8 +2008,11 @@ static ssize_t uevent_show(struct device
+ 	if (!env)
+ 		return -ENOMEM;
  
- 	spin_lock_init(&spmi_controller->lock);
- 
--	ctrl->nr = spmi_controller->channel;
- 	ctrl->dev.parent = pdev->dev.parent;
- 	ctrl->dev.of_node = of_node_get(pdev->dev.of_node);
++	/* Synchronize with really_probe() */
++	device_lock(dev);
+ 	/* let the kset specific function add its keys */
+ 	retval = kset->uevent_ops->uevent(kset, &dev->kobj, env);
++	device_unlock(dev);
+ 	if (retval)
+ 		goto out;
  
 
 
