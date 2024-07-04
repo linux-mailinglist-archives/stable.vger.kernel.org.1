@@ -1,142 +1,142 @@
-Return-Path: <stable+bounces-58081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50080927B96
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 19:08:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC50927BD9
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 19:21:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0CD11F255AC
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 17:08:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2FFCB216D8
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 17:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D2A1B3742;
-	Thu,  4 Jul 2024 17:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 037FB39FC1;
+	Thu,  4 Jul 2024 17:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="gx5oiL5b"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="Fl/0hM+d";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="oolnUM2r"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20381B0139
-	for <stable@vger.kernel.org>; Thu,  4 Jul 2024 17:08:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24EF523746;
+	Thu,  4 Jul 2024 17:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720112897; cv=none; b=GPXcOxIDPH71kQp0oHbPqkD8uVzmEU+Y7ldwO7G54Wypl6aeYd0jHxuCUFieQzTbS5B9FZLMyahOUg72MYJYh9Rs1ByINGBAbYDz9NFyvszS2559IwMqYURT8Bqns2Y+Eyqd0Dzugi2ebnalvT/cyDCpJOrNAdg6dRBYGIXXFvo=
+	t=1720113685; cv=none; b=i/nxVi+/0dE6WiuPGzrUVb+vHghfUiyPF8k2p9Irl2z76BQY4N64W6tUWdtcKCN8+UfxREbzY9MhqUgHEWyWx+nr6DfU1qkeQgBKbApt9pqNGulgQqZpi+Vowr108fsP9n6j2HFwUDb/BV0BRnK80Z0o01DlOwgZvGsxLHDBrck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720112897; c=relaxed/simple;
-	bh=QguQgLZBBttmrru34w9QMLWo5wJFt+WRZM0wpZpr6UY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A/z//t3S/Wyn2oTNhA8fg88xmCtb0YoxmR4/+qkaxuetSodIx93azTBEyKjtymCs87Vt5rFZOXNt7a1TKpZiOhDrEYvk2c+/LrcarMRjlI+aWg6RcCBcWf2iNXt6rF0vI/vEETF66jH0Z4PbLhSDxXur2fTpe8JRKgkE7Pf9lXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=gx5oiL5b; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2ee77db6f97so11647151fa.2
-        for <stable@vger.kernel.org>; Thu, 04 Jul 2024 10:08:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1720112893; x=1720717693; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=UlrKQa45wt6qlKqqrZr7W5l7lANNYZzO1+mSmOq7i9c=;
-        b=gx5oiL5bsb/6Fpg5sY0pBKn4MJJVD0R+ICfKDUkbAcQNL79nHbSEAEk6WPLvISjj/O
-         JfsCbm6ZrSSup1K7bylzSmV3IK/uCF+2Fplf3dolGlQ20uQgNH4SoyLOdW8XPQbiCllJ
-         xAUZvMT1ntAIhvWyNuRrDNUt7/JUOFYGf6jto=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720112893; x=1720717693;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UlrKQa45wt6qlKqqrZr7W5l7lANNYZzO1+mSmOq7i9c=;
-        b=j7V0RK8Ug5A+c3hOxbWM+1OP9doXTFKeORB/ddVtdIKKyhSEr6+2T55Pq6uJXeFCoS
-         XcoGrRioTRT2omR18to2fLKC4T3BaXMHqord5OpTz+pA4dJHn1R7n+xgKgPqlLg8P/vK
-         fT/qizP5Mjn6IPbWIoqHyiGR4dMDr3BwMJSBtt+OGq+9Qh2I9XcmsBsR6FdgcHX7HvXw
-         cxn7qbZA7ClDP4Go54gXid8rmDJf1RUc440TE4Z77Uoh3JXRtG7Un4k4it0FNjjHp409
-         x8adAog64IhLGrBoXKlhsyrooinuB9dTwdgATXRxU0FiHUmMwJ0CPCvBXyyMZyR+x0yW
-         jzPw==
-X-Forwarded-Encrypted: i=1; AJvYcCWNxcyHxg3jVYk8OBFov1R1bPY5CQAJbE+n9oz9Raf/6MWLG0xEYeZl9hr/A8M+I/c2c0A9JJYU2mfoGaCqz0I2rB7HwQLo
-X-Gm-Message-State: AOJu0Yyv3M8b96zmI6W0gtHNRQ74X4Ytq5JPF2hf/ZVuovfTIQ8EM9qY
-	PF0J/e9WIaOFYyz3rI4uolJvuUVsOj3ALlTaZkTHEjwk1YEwWK3Gl/qfvXn0c5GtxgIK5EPWRWQ
-	ezhFddw==
-X-Google-Smtp-Source: AGHT+IEgai4CTMF4ZMhrOzjJj60mOQlcevXeclLlgJE22pN/YNhxJINV9XY118+2mifimsSzNFMblQ==
-X-Received: by 2002:a2e:2205:0:b0:2ec:165a:224d with SMTP id 38308e7fff4ca-2ee8ee0e7a1mr19110481fa.38.1720112893664;
-        Thu, 04 Jul 2024 10:08:13 -0700 (PDT)
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com. [209.85.167.49])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ee81c79a73sm5963971fa.45.2024.07.04.10.08.12
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jul 2024 10:08:12 -0700 (PDT)
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-52e97e5a84bso1204074e87.2
-        for <stable@vger.kernel.org>; Thu, 04 Jul 2024 10:08:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVJkQ3Z4D910R2u07QpK48ZW5YVDcAeZH48n9NbjCHcifqu66d6OXRH9WeDAH1FvSUCyTkgVY30MRrKqNTwf5Hna32Id3iK
-X-Received: by 2002:a05:6512:204:b0:52c:8075:4f3 with SMTP id
- 2adb3069b0e04-52ea0632781mr2063767e87.36.1720112891664; Thu, 04 Jul 2024
- 10:08:11 -0700 (PDT)
+	s=arc-20240116; t=1720113685; c=relaxed/simple;
+	bh=vJQzy0Q8OJqhIkEv+KaZBm3Uu+AYIen7ID7ZraKwjrw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=RU/Sb7NgHaQ+UDsxbJjKRb2/WOnjzjeu3FEbINIjTYRfAnpftIhfyLfqRkzIWfzRQuvhqJ711giAl3BsfNUwQ33bsZF9l4bmFU5R/LwVxnayA8WV2mrjzBBwwy6lhZ1EID85QfsyPv6ch+6C2KLZ6FUA+Is92Qm20OA4jF5cynA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=Fl/0hM+d; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=oolnUM2r; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1720113682;
+	bh=vJQzy0Q8OJqhIkEv+KaZBm3Uu+AYIen7ID7ZraKwjrw=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=Fl/0hM+dyGxr2Yx8FXgJfkWl0SRN6cXS3oFKNuikyK98zMSF6ym+UWILzwqixD+6I
+	 goE892ezUMpVuy7scQW7C+21UgoIlnb/4LIB/y7fC3bJuNbcUZLIUzz3UEbc0yYQLh
+	 XuPKtfhYITQ2rWcfZTO2gZrYDHIrYbw9Q+OB5PZs=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 4E4581285E26;
+	Thu, 04 Jul 2024 13:21:22 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id L7KcQKRYgeQI; Thu,  4 Jul 2024 13:21:22 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1720113681;
+	bh=vJQzy0Q8OJqhIkEv+KaZBm3Uu+AYIen7ID7ZraKwjrw=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=oolnUM2rI+9SFsFDREg7z10HYlvicWDoBXwbBZmtyyrOblh5z8GoLfD3JPxhH1eoN
+	 YbtH0EezP7acAQ6kWzE8vy+D5f7UAi7fp4o0TGZqWiomfPggJsk3e5yoho3m5ktAJo
+	 WuRsG6GMPF9VVf7iZx/y/IErMiRPQ+sso8YsULsU=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 53BF51285E10;
+	Thu, 04 Jul 2024 13:21:20 -0400 (EDT)
+Message-ID: <91ccd10c3098782d540a3e9f5c70c5034f867928.camel@HansenPartnership.com>
+Subject: Re: [PATCH v2 2/3] tpm: Address !chip->auth in tpm_buf_append_name()
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org, 
+ Thorsten Leemhuis <regressions@leemhuis.info>, stable@vger.kernel.org,
+ Stefan Berger <stefanb@linux.ibm.com>, Peter Huewe <peterhuewe@gmx.de>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Mimi Zohar <zohar@linux.ibm.com>,  David
+ Howells <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>, James
+ Morris <jmorris@namei.org>,  "Serge E. Hallyn" <serge@hallyn.com>, Ard
+ Biesheuvel <ardb@kernel.org>, Mario Limonciello
+ <mario.limonciello@amd.com>, linux-kernel@vger.kernel.org, 
+ keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
+Date: Thu, 04 Jul 2024 13:21:18 -0400
+In-Reply-To: <CAHk-=wiM=Cyw-07EkbAH66pE50VzJiT3bVHv9CS=kYR6zz5mTQ@mail.gmail.com>
+References: <20240703182453.1580888-1-jarkko@kernel.org>
+	 <20240703182453.1580888-3-jarkko@kernel.org>
+	 <922603265d61011dbb23f18a04525ae973b83ffd.camel@HansenPartnership.com>
+	 <CAHk-=wiM=Cyw-07EkbAH66pE50VzJiT3bVHv9CS=kYR6zz5mTQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240703182453.1580888-1-jarkko@kernel.org> <20240703182453.1580888-3-jarkko@kernel.org>
- <922603265d61011dbb23f18a04525ae973b83ffd.camel@HansenPartnership.com>
-In-Reply-To: <922603265d61011dbb23f18a04525ae973b83ffd.camel@HansenPartnership.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 4 Jul 2024 10:07:54 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiM=Cyw-07EkbAH66pE50VzJiT3bVHv9CS=kYR6zz5mTQ@mail.gmail.com>
-Message-ID: <CAHk-=wiM=Cyw-07EkbAH66pE50VzJiT3bVHv9CS=kYR6zz5mTQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] tpm: Address !chip->auth in tpm_buf_append_name()
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org, 
-	Thorsten Leemhuis <regressions@leemhuis.info>, stable@vger.kernel.org, 
-	Stefan Berger <stefanb@linux.ibm.com>, Peter Huewe <peterhuewe@gmx.de>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Mario Limonciello <mario.limonciello@amd.com>, linux-kernel@vger.kernel.org, 
-	keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Wed, 3 Jul 2024 at 13:11, James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
->
-> if (__and(IS_ENABLED(CONFIG_TCG_TPM2_HMAC), chip->auth))
+On Thu, 2024-07-04 at 10:07 -0700, Linus Torvalds wrote:
+> On Wed, 3 Jul 2024 at 13:11, James Bottomley
+> <James.Bottomley@hansenpartnership.com> wrote:
+> > 
+> > if (__and(IS_ENABLED(CONFIG_TCG_TPM2_HMAC), chip->auth))
+> 
+> Augh. Please don't do this.
+> 
+> That "__and()" thing may work, but it's entirely accidental that it
+> does.
+> 
+> It's designed for config options _only_, and the fact that it then
+> happens to work for "first argument is config option, second argument
+> is C conditional".
+> 
+> The comment says that it's implementing "&&" using preprocessor
+> expansion only, but it's a *really* limited form of it. The arguments
+> are *not* arbitrary.
+> 
+> So no. Don't do this.
+> 
+> Just create a helper inline like
+> 
+>     static inline struct tpm2_auth *chip_auth(struct tpm_chip *chip)
+>     {
+>     #ifdef CONFIG_TCG_TPM2_HMAC
+>         return chip->auth;
+>     #else
+>         return NULL;
+>     #endif
+>     }
+> 
+> and if we really want to have some kind of automatic way of doing
+> this, we will *NOT* be using __and(), we'd do something like
+> 
+>         /* Return zero or 'value' depending on whether OPTION is
+> enabled or not */
+>         #define IF_ENABLED(option, value) __and(IS_ENABLED(option),
+> value)
+> 
+> that actually would be documented and meaningful.
+> 
+> Not this internal random __and() implementation that is purely a
+> kconfig.h helper macro and SHOULD NOT be used anywhere else.
 
-Augh. Please don't do this.
+I actually like the latter version, but instinct tells me that if this
+is the first time the kernel has ever needed something like this then
+perhaps we should go with the former because that's how everyone must
+have handled it in the past.
 
-That "__and()" thing may work, but it's entirely accidental that it does.
+James
 
-It's designed for config options _only_, and the fact that it then
-happens to work for "first argument is config option, second argument
-is C conditional".
-
-The comment says that it's implementing "&&" using preprocessor
-expansion only, but it's a *really* limited form of it. The arguments
-are *not* arbitrary.
-
-So no. Don't do this.
-
-Just create a helper inline like
-
-    static inline struct tpm2_auth *chip_auth(struct tpm_chip *chip)
-    {
-    #ifdef CONFIG_TCG_TPM2_HMAC
-        return chip->auth;
-    #else
-        return NULL;
-    #endif
-    }
-
-and if we really want to have some kind of automatic way of doing
-this, we will *NOT* be using __and(), we'd do something like
-
-        /* Return zero or 'value' depending on whether OPTION is
-enabled or not */
-        #define IF_ENABLED(option, value) __and(IS_ENABLED(option), value)
-
-that actually would be documented and meaningful.
-
-Not this internal random __and() implementation that is purely a
-kconfig.h helper macro and SHOULD NOT be used anywhere else.
-
-             Linus
 
