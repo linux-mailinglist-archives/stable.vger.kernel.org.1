@@ -1,143 +1,135 @@
-Return-Path: <stable+bounces-58078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6144927A6A
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 17:46:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61DF5927B0C
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 18:19:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62374B26385
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 15:46:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DB4D2819A9
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 16:19:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4F61B1401;
-	Thu,  4 Jul 2024 15:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CE61B29C5;
+	Thu,  4 Jul 2024 16:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="e9WtA3S/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pc1loxFy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459221BC23;
-	Thu,  4 Jul 2024 15:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB2B1AEFFF;
+	Thu,  4 Jul 2024 16:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720107947; cv=none; b=Wwr5nhyVGtk9lEHVvYt9NonbtHogJ6h7hf6Omg25qooSamlw3ECR20WsJ4F5PQy5sQLN9EdOAMoKZ1KlvpxDk+kU7ZZLcLum3I8lWauLRlTGKlDP0BNZE5fGnuc6NhduhH2+tze346CKortsXl8ll7x1zicNobmvk7a1MZw7+IU=
+	t=1720109944; cv=none; b=De5wOfZY88xG7YQXzuDslJs6NbwT+S8HLiFS9uizdT/KIYMiirMmFwsFvMGuTd0QVVEp33v6Acw9ma8kmOGCftnVyhpXJbumcSHax9VfAxkEFlfp8iHerck3TSoYN00/lmC008ciWaYU+YPpXlVbiOK1aPLexpWevdID//o/V7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720107947; c=relaxed/simple;
-	bh=N5AkLMKAj0SpjYMWLW+TY358kBxOwj9aAQ2DTIVzOWY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WBehUHK8UPE0gvixkErmJviFnPtnLYV1aLGFS876OPyxIgU/OYV8+Yo/sdhgEdC21ZdUfYlIyG/ZHHJSQpYeu3iga31PfIAUaNMMRh/CYcCdcAzt1GSHyNKkR4hu9GKt9gBGN8n+T7eePbXlgdR5DvNoR88nUuQBOnoj+m5hnL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=e9WtA3S/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA14C4AF0C;
-	Thu,  4 Jul 2024 15:45:46 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="e9WtA3S/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1720107945;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q2UjGiL+UGoWpQUK5mIzDE+VPqWH2b/EH1cM5yf2OCQ=;
-	b=e9WtA3S/rQ0zTi+DCGL23euj1kVtBz5jB5pAw9P/DM8pfR6t39hkw4kSM3RRAX3qYKrQQY
-	GP0Y+S7Fj1P6hxKdBlfu6mPlFaPYDo4B+u2dPVvAOf0F3iygVB94evjyBxSAYPNKq0nfuL
-	KxdWJEEaVdz38oFBsgUUIJpQI4Gu/5M=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id d2486546 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Thu, 4 Jul 2024 15:45:45 +0000 (UTC)
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: netdev@vger.kernel.org,
-	davem@davemloft.net,
-	kuba@kernel.org
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net 4/4] wireguard: send: annotate intentional data race in checking empty queue
-Date: Thu,  4 Jul 2024 17:45:17 +0200
-Message-ID: <20240704154517.1572127-5-Jason@zx2c4.com>
-In-Reply-To: <20240704154517.1572127-1-Jason@zx2c4.com>
-References: <20240704154517.1572127-1-Jason@zx2c4.com>
+	s=arc-20240116; t=1720109944; c=relaxed/simple;
+	bh=FK7xagcryPXQhWjVE09ZqleC0sW1mp/6aeRQYGumgKc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=nBo3/dnpo4F1IW6xWXq/ggg5yH8+xMlkHq9jD1I13p4/J0dp0IckjVXfBqOVjnqtohV9TRsbdXEJ15ezWYOU0uTmtD4cftYJ7x9bwjMl7F8vk75HkdMcTfphfF/AWgenfGzROVv/DUadRKRRuwuWDIt3fBpSsItx6kkOc//4sA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pc1loxFy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A719C3277B;
+	Thu,  4 Jul 2024 16:19:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720109943;
+	bh=FK7xagcryPXQhWjVE09ZqleC0sW1mp/6aeRQYGumgKc=;
+	h=From:Date:Subject:To:Cc:From;
+	b=pc1loxFy2lAtGe0Tq1t9A3ew7QLklxg3n7Pia68N/7imKeB/FHQaJ5tRa3yXi0KlH
+	 HAdfND9Fa7ATHQH1O9N2vZvD6vll8Vd2wOxXKPH7QJJoch0KUDd90jhMlTY2mMV590
+	 3DCtOVQiPY6x/zNZ4Ywt2PaSthNmvCLujhOULv/P/EiKMxir4FEvS5NmA1D79KbECh
+	 YsdJltEvoDuirGmoOXKNa5ICC8PMGneMpaP/YQ/qRbCRRjqcsiCXoiuDmtJ+2GTSxG
+	 eBvsNCKYN1w/IxZI+BwvtwI07HfyYD5zWskwYuce2k5rwkfcdhzayro+y6HCVc51Ax
+	 1eGp+WWp7xyog==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Thu, 04 Jul 2024 09:18:56 -0700
+Subject: [PATCH] kbuild: Update ld-version.sh for change in LLD version
+ output
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240704-update-ld-version-for-new-lld-ver-str-v1-1-91bccc020a93@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAG/LhmYC/yWN0QqDMBAEf0XuuQtRIkJ/RXxIzKU9kCgXq4L47
+ 03t4yzDzkmZVTjTszpJeZMscypQPyoa3y69GBIKU2Maazpj8VmCWxlTwMb6sxFnReId039DXhW
+ +c9ZF70Mbaypfi3KU4+70w3V9AT/38BZ3AAAA
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>, Fangrui Song <maskray@google.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev, 
+ stable@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2008; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=FK7xagcryPXQhWjVE09ZqleC0sW1mp/6aeRQYGumgKc=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDGltp8sYuePmmG9RvdRlsUIySsakbYOxwdumk9bbnA5fX
+ ntg3pRzHaUsDGJcDLJiiizVj1WPGxrOOct449QkmDmsTCBDGLg4BWAiKZcZ/qc8WfdJ1n6+g+Xi
+ h3t379y3Za/9NqGQp3Fvt0VdV5R+eIuR4a9EmcnrGHH7T95vvud8bNq9T0qXyYu11VVu690bFZz
+ PJ7ADAA==
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-KCSAN reports a race in wg_packet_send_keepalive, which is intentional:
+After [1] in upstream LLVM, ld.lld's version output is slightly
+different when the cmake configuration option LLVM_APPEND_VC_REV is
+disabled.
 
-    BUG: KCSAN: data-race in wg_packet_send_keepalive / wg_packet_send_staged_packets
+Before:
 
-    write to 0xffff88814cd91280 of 8 bytes by task 3194 on cpu 0:
-     __skb_queue_head_init include/linux/skbuff.h:2162 [inline]
-     skb_queue_splice_init include/linux/skbuff.h:2248 [inline]
-     wg_packet_send_staged_packets+0xe5/0xad0 drivers/net/wireguard/send.c:351
-     wg_xmit+0x5b8/0x660 drivers/net/wireguard/device.c:218
-     __netdev_start_xmit include/linux/netdevice.h:4940 [inline]
-     netdev_start_xmit include/linux/netdevice.h:4954 [inline]
-     xmit_one net/core/dev.c:3548 [inline]
-     dev_hard_start_xmit+0x11b/0x3f0 net/core/dev.c:3564
-     __dev_queue_xmit+0xeff/0x1d80 net/core/dev.c:4349
-     dev_queue_xmit include/linux/netdevice.h:3134 [inline]
-     neigh_connected_output+0x231/0x2a0 net/core/neighbour.c:1592
-     neigh_output include/net/neighbour.h:542 [inline]
-     ip6_finish_output2+0xa66/0xce0 net/ipv6/ip6_output.c:137
-     ip6_finish_output+0x1a5/0x490 net/ipv6/ip6_output.c:222
-     NF_HOOK_COND include/linux/netfilter.h:303 [inline]
-     ip6_output+0xeb/0x220 net/ipv6/ip6_output.c:243
-     dst_output include/net/dst.h:451 [inline]
-     NF_HOOK include/linux/netfilter.h:314 [inline]
-     ndisc_send_skb+0x4a2/0x670 net/ipv6/ndisc.c:509
-     ndisc_send_rs+0x3ab/0x3e0 net/ipv6/ndisc.c:719
-     addrconf_dad_completed+0x640/0x8e0 net/ipv6/addrconf.c:4295
-     addrconf_dad_work+0x891/0xbc0
-     process_one_work kernel/workqueue.c:2633 [inline]
-     process_scheduled_works+0x5b8/0xa30 kernel/workqueue.c:2706
-     worker_thread+0x525/0x730 kernel/workqueue.c:2787
-     kthread+0x1d7/0x210 kernel/kthread.c:388
-     ret_from_fork+0x48/0x60 arch/x86/kernel/process.c:147
-     ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
+  Debian LLD 19.0.0 (compatible with GNU linkers)
 
-    read to 0xffff88814cd91280 of 8 bytes by task 3202 on cpu 1:
-     skb_queue_empty include/linux/skbuff.h:1798 [inline]
-     wg_packet_send_keepalive+0x20/0x100 drivers/net/wireguard/send.c:225
-     wg_receive_handshake_packet drivers/net/wireguard/receive.c:186 [inline]
-     wg_packet_handshake_receive_worker+0x445/0x5e0 drivers/net/wireguard/receive.c:213
-     process_one_work kernel/workqueue.c:2633 [inline]
-     process_scheduled_works+0x5b8/0xa30 kernel/workqueue.c:2706
-     worker_thread+0x525/0x730 kernel/workqueue.c:2787
-     kthread+0x1d7/0x210 kernel/kthread.c:388
-     ret_from_fork+0x48/0x60 arch/x86/kernel/process.c:147
-     ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
+After:
 
-    value changed: 0xffff888148fef200 -> 0xffff88814cd91280
+  Debian LLD 19.0.0, compatible with GNU linkers
 
-Mark this race as intentional by using the skb_queue_empty_lockless()
-function rather than skb_queue_empty(), which uses READ_ONCE()
-internally to annotate the race.
+This results in ld-version.sh failing with
+
+  scripts/ld-version.sh: 19: arithmetic expression: expecting EOF: "10000 * 19 + 100 * 0 + 0,"
+
+because the trailing comma is included in the patch level part of the
+expression. Remove the trailing comma when assigning the version
+variable in the LLD block to resolve the error, resulting in the proper
+output:
+
+  LLD 190000
+
+With LLVM_APPEND_VC_REV enabled, there is no issue with the new output
+because it is treated the same as the prior LLVM_APPEND_VC_REV=OFF
+version string was.
+
+  ClangBuiltLinux LLD 19.0.0 (https://github.com/llvm/llvm-project a3c5c83273358a85a4e02f5f76379b1a276e7714), compatible with GNU linkers
 
 Cc: stable@vger.kernel.org
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Fixes: 02aff8592204 ("kbuild: check the minimum linker version in Kconfig")
+Link: https://github.com/llvm/llvm-project/commit/0f9fbbb63cfcd2069441aa2ebef622c9716f8dbb [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
- drivers/net/wireguard/send.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/ld-version.sh | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireguard/send.c b/drivers/net/wireguard/send.c
-index 0d48e0f4a1ba..26e09c30d596 100644
---- a/drivers/net/wireguard/send.c
-+++ b/drivers/net/wireguard/send.c
-@@ -222,7 +222,7 @@ void wg_packet_send_keepalive(struct wg_peer *peer)
- {
- 	struct sk_buff *skb;
+diff --git a/scripts/ld-version.sh b/scripts/ld-version.sh
+index a78b804b680c..f2f425322524 100755
+--- a/scripts/ld-version.sh
++++ b/scripts/ld-version.sh
+@@ -47,7 +47,9 @@ else
+ 	done
  
--	if (skb_queue_empty(&peer->staged_packet_queue)) {
-+	if (skb_queue_empty_lockless(&peer->staged_packet_queue)) {
- 		skb = alloc_skb(DATA_PACKET_HEAD_ROOM + MESSAGE_MINIMUM_LENGTH,
- 				GFP_ATOMIC);
- 		if (unlikely(!skb))
+ 	if [ "$1" = LLD ]; then
+-		version=$2
++		# LLD after https://github.com/llvm/llvm-project/commit/0f9fbbb63cfcd2069441aa2ebef622c9716f8dbb
++		# may have a trailing comma on the patch version with LLVM_APPEND_VC_REV=off.
++		version=${2%,}
+ 		min_version=$($min_tool_version llvm)
+ 		name=LLD
+ 		disp_name=LLD
+
+---
+base-commit: 22a40d14b572deb80c0648557f4bd502d7e83826
+change-id: 20240704-update-ld-version-for-new-lld-ver-str-b7a4afbbd5f1
+
+Best regards,
 -- 
-2.45.2
+Nathan Chancellor <nathan@kernel.org>
 
 
