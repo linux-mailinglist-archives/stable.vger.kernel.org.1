@@ -1,79 +1,81 @@
-Return-Path: <stable+bounces-58049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 181DA92771D
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 15:25:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E6592771F
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 15:25:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A2BC1C2321A
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 13:25:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F3071C23206
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 13:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76E57E9;
-	Thu,  4 Jul 2024 13:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2771AED3F;
+	Thu,  4 Jul 2024 13:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s8wF2OBM"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DOPN89Zo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A387846F
-	for <stable@vger.kernel.org>; Thu,  4 Jul 2024 13:25:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4831AE86C
+	for <stable@vger.kernel.org>; Thu,  4 Jul 2024 13:25:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720099512; cv=none; b=JCKCm3DIHlTUJUpRdSBUVx/pmuceOI03BdElanL0miVS3jvUGjBbJ5Rqm8aK6KfCWvgxdfAvQgennlAnBMSbfM4ETytPn1/nuzrjaDc2y+jbmcL4VShhshHDSvqa8C5GnS9yVpFz2v8rqHkuCHd73XZTFK9d51OC8l6HCkWzDcc=
+	t=1720099514; cv=none; b=sXkEtgqEDJn5SKpBJVRDKVX+Wh8unh8x5KbTI9tDryZI0AJaA4tVELcjrxkylTX45mme75HDFDjBLWi+NLK0DHNLQka5zpX5d0URL0uvntBkepjh7jUFRF9NG/Fop1+CfRDDjdcA3Yc4XEPGe3NlHj4b/BjlqwlLeMte5eALjDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720099512; c=relaxed/simple;
-	bh=Voll2Yc8WG6/v4LxvG2CK3/mC5XTekANdrTvNMMKUiQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=pzYlF0tFY/dYVENzZj3FdhS3tKf1IsqUefgY7pVBmWz5gSpxBnNCLvPw9z4Q1JM8ydVJiuiOVLHF+dVf4UANqNdOTeIegUhkUIA6DKPeCIMIyASFgYIRnHLzdui+B6hha5alT92Eq5vTN/vdgmJjfUEYgGY6FvPGtKLOpEVtyGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s8wF2OBM; arc=none smtp.client-ip=209.85.219.201
+	s=arc-20240116; t=1720099514; c=relaxed/simple;
+	bh=rz54NGF1bYly34WveKHk2peLwqlRS1cXKLNWYTQUgeE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Pg6quzY6EgOpbH/DELCHutqr9d+P6MhvW68j+2io76qRvTQvDjZeCxmYZD3dget8LknHynowTsu5pzvf95aPxJ9cvIwmimqTxfjHK3E0qODB/ARtJSl7bELlfVoWGr90ss7Ui5+7nfKM2yHd5otDg/jC6fxpz1Eb2pZwc5tWs3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DOPN89Zo; arc=none smtp.client-ip=209.85.219.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dfa73db88dcso1225648276.0
-        for <stable@vger.kernel.org>; Thu, 04 Jul 2024 06:25:10 -0700 (PDT)
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e02a4de4f4eso1187889276.1
+        for <stable@vger.kernel.org>; Thu, 04 Jul 2024 06:25:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1720099510; x=1720704310; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=w/z5eWgjSAssnhVs5ruBEIfE2gZpUKEUPXtdY5HP8ZQ=;
-        b=s8wF2OBMeZPvBVS/PI738kZWEdoxBiGBKdad8Mz9nhIaEKFmI3K5BaLylQU7LNBMEk
-         zWHYAtSRjhmVv7IFXhGYyE2cpRkhRaS+LYeIR0Y+fGH0dNbWP5CFx3loKr5/Nj6neKGM
-         +K3DJ4Pfunx5Um32bzqwe8G0tjc7WIwautPIf62KgXOOzIsqU+8WatBr/OIqeZSUHf7q
-         DbT2CbxYgeCl3V4HD7UHeh4EFaGAsBgTn9F3Hz+JYEj8ncXs5vp2K4U2u/zBwJ+f1C35
-         KfXHgo4TFAqoOiqNlXCIa96QiiXXjZBdxFXMHciK+bXj5N3dWyvoFN8vtS7yTeSA72Zl
-         bWOg==
+        d=google.com; s=20230601; t=1720099512; x=1720704312; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DCULsBZpZETCDZFlOLFmzNWxtcrrOK/eNeDc8GruTOI=;
+        b=DOPN89ZoFr2RIqVGAP/ok4qefRbZAoor0hRBEydGbgenu5EVLwqUN4CR/H+xCjced6
+         elSKJwkcYyuxyzBk+Ui1Viml4fomi+voHB1Tpg3aGDMZU3GEQXbTZyVIh8u2/Gha3ncl
+         hoqFf2+12os8ciex61ZyZ7hhFMshGsqPb4cekadRuuEJ7g3IMTi+HdeXOJdkEcfAuYpn
+         wGk3oEK4gxP0Vq7ITVXGLiGc8YczlsIv8QyP+8pscRnyh18ZhyR8Ha7zoXYyQL+1bhTd
+         q+NGKK3P5Kib8ffa7o/5vSih5FIVxWSvxbVxQ+/tQsvRsULaheNLpekJ4tXwLsms1L9o
+         ZdjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720099510; x=1720704310;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=w/z5eWgjSAssnhVs5ruBEIfE2gZpUKEUPXtdY5HP8ZQ=;
-        b=Qn7PJPV4gfjPBSfF1xOYg6NjyByV6VAw5ZjGz9FoF3GyUcc+8hNCDgm96vAUzB5lhj
-         xG51yLjH1tKHX8dHbpP/v5RUP+jA/131uIz7DJ8CvZ4v18IOsg+dRqQRCM4vljGvuo1P
-         KO5uVhfACKn8ho+X8BGIEJ97uxGNPXGS0QK0178M5XHKuApxkv0vcoGCW2vcmrnYtHRS
-         B3XC0AdIqRZToPVGBaHKN1CRelXkE4+lQ7osw3gZJBIKseGF/qP7PJrhDlZ5WSFA8AuQ
-         SV4EtA2BuoNNP8PXD1rEyAgl4BHh7qw7eT0yqjNYGi3vKu2TBIpsl7oPJftogyzPW4+H
-         CiCA==
-X-Forwarded-Encrypted: i=1; AJvYcCWP2Knz1UfMk6Zy4k2QJBuhuojhTlI7rCIU2srp1DIwauA15INgwRX4rHF+o9RXnMi2ZhI1Wp0sBQXmbWyiqA6SQE7u839v
-X-Gm-Message-State: AOJu0YxL1TiFH6DofRKQe2NQtfy1ErNCrrqd+y4ERFXvNOPY7xo56cI6
-	2SJYMhO/knTM+TquDbA5RBT8XmIDkeJJSIWGnMoeYh3g/OXYvbQljiNNkaX7T4jAwLeXoJQbvoR
-	81Q==
-X-Google-Smtp-Source: AGHT+IE3xCGxuoDABW3/KZUt4f7AaMn1Bp0SuK/C64OmLq4UAu763ExpBjweZKFQcIPU9hCc1uGSO1MbM30=
+        d=1e100.net; s=20230601; t=1720099512; x=1720704312;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DCULsBZpZETCDZFlOLFmzNWxtcrrOK/eNeDc8GruTOI=;
+        b=pFaGArXzO12nwlYJHtDcxyHIE4oQmXSlGazwNilzc38d6J3847qvrvR1yciW3rhTbt
+         UKJnASEYCeG+lqlPXb9VT/8Jdw1FE4CHJAvZPp72ji9k7t+ADqpqKJYBAKKc+WUiySoG
+         YLQgwXrhkFcQbLV/ITW1M40T0VxeoNAK27OVl16xE8sBMwOj+7RcoWIVVI7x2xf/YsD3
+         MMGO5DhA59WvYUG2G+WKRr2V/hk4OFDbsIgb1bBV4igsXLW+bHvCnf7DenuWTQ4011Ye
+         3kDuZ+59XIsmG8vUEC6rfaNAqEdsx2nqNOPtNDjfhP+80Skt6EZ6Y6hsR7eWxJL2cxYI
+         Wc1g==
+X-Forwarded-Encrypted: i=1; AJvYcCXOefONiVz7RJpGkrCxqczrq2oXaJt2iCjaBg0NiqIn2HeL7K8CDZ7dNvRjib78htDD+URWt8woOvxk4pagdi5FVe75A6p7
+X-Gm-Message-State: AOJu0Ywilu5IL+EwEPfm2BsR7EpfBxsT1pZ7Gb5JMcm3c5YsR07k12it
+	yvD/lj0keZz/QIoUpnS0uYLgH14Fmy/8FEfp+Unr91B5qbI5XDpwCV6uQTAsDIRSe7euIGR+A2b
+	5HQ==
+X-Google-Smtp-Source: AGHT+IH712XNHqxVjIXgyKpHUY30OYbj94B4bParp2Lp62lZbaqFWNHfdegPRUB0gjfHglxawcMbPXrXPzI=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:201:f773:f667:425:1c44])
- (user=surenb job=sendgmr) by 2002:a05:6902:2c07:b0:e02:e1c7:6943 with SMTP id
- 3f1490d57ef6-e03c1b6806emr2887276.12.1720099510027; Thu, 04 Jul 2024 06:25:10
+ (user=surenb job=sendgmr) by 2002:a05:6902:18d2:b0:e02:5b08:d3a with SMTP id
+ 3f1490d57ef6-e03c15dc5e8mr4473276.0.1720099511838; Thu, 04 Jul 2024 06:25:11
  -0700 (PDT)
-Date: Thu,  4 Jul 2024 06:25:05 -0700
+Date: Thu,  4 Jul 2024 06:25:06 -0700
+In-Reply-To: <20240704132506.1011978-1-surenb@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20240704132506.1011978-1-surenb@google.com>
 X-Mailer: git-send-email 2.45.2.803.g4e1b14247a-goog
-Message-ID: <20240704132506.1011978-1-surenb@google.com>
-Subject: [PATCH v2 1/2] sched.h: always_inline alloc_tag_{save|restore} to fix
- modpost warnings
+Message-ID: <20240704132506.1011978-2-surenb@google.com>
+Subject: [PATCH v2 2/2] arch/xtensa: always_inline get_current() and current_thread_info()
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, 
@@ -82,60 +84,53 @@ Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
 	surenb@google.com, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Mark alloc_tag_{save|restore} as always_inline to fix the following
-modpost warnings:
+Mark get_current() and current_thread_info() functions as always_inline
+to fix the following modpost warning:
 
-WARNING: modpost: vmlinux: section mismatch in reference: alloc_tag_save+0x1c (section: .text.unlikely) -> initcall_level_names (section: .init.data)
-WARNING: modpost: vmlinux: section mismatch in reference: alloc_tag_restore+0x3c (section: .text.unlikely) -> initcall_level_names (section: .init.data)
+WARNING: modpost: vmlinux: section mismatch in reference: get_current+0xc (section: .text.unlikely) -> initcall_level_names (section: .init.data)
 
-The warnings happen when these functions are called from an __init
+The warning happens when these functions are called from an __init
 function and they don't get inlined (remain in the .text section) while
-the value returned by get_current() points into .init.data section.
-Assuming get_current() always returns a valid address, this situation can
-happen only during init stage and accessing .init.data from .text section
-during that stage should pose no issues.
+the value they return points into .init.data section. Assuming
+get_current() always returns a valid address, this situation can happen
+only during init stage and accessing .init.data from .text section during
+that stage should pose no issues.
 
 Fixes: 22d407b164ff ("lib: add allocation tagging support for memory allocation profiling")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202407032306.gi9nZsBi-lkp@intel.com/
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 Cc: Kent Overstreet <kent.overstreet@linux.dev>
 Cc: <stable@vger.kernel.org>
 ---
+ arch/xtensa/include/asm/current.h     | 2 +-
+ arch/xtensa/include/asm/thread_info.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Changes since v1 [1]:
-- Added the second patch to resolve follow-up warnings
-- Expanded changelog description, per Andrew Morton
-- CC'ed stable, per Andrew Morton
-- Added Fixes tag, per Andrew Morton
-
-[1] https://lore.kernel.org/all/20240703221520.4108464-1-surenb@google.com/
-
- include/linux/sched.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 61591ac6eab6..a5f4b48fca18 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -2192,13 +2192,13 @@ static inline int sched_core_idle_cpu(int cpu) { return idle_cpu(cpu); }
- extern void sched_set_stop_task(int cpu, struct task_struct *stop);
+diff --git a/arch/xtensa/include/asm/current.h b/arch/xtensa/include/asm/current.h
+index 08010dbf5e09..df275d554788 100644
+--- a/arch/xtensa/include/asm/current.h
++++ b/arch/xtensa/include/asm/current.h
+@@ -19,7 +19,7 @@
  
- #ifdef CONFIG_MEM_ALLOC_PROFILING
--static inline struct alloc_tag *alloc_tag_save(struct alloc_tag *tag)
-+static __always_inline struct alloc_tag *alloc_tag_save(struct alloc_tag *tag)
+ struct task_struct;
+ 
+-static inline struct task_struct *get_current(void)
++static __always_inline struct task_struct *get_current(void)
  {
- 	swap(current->alloc_tag, tag);
- 	return tag;
+ 	return current_thread_info()->task;
+ }
+diff --git a/arch/xtensa/include/asm/thread_info.h b/arch/xtensa/include/asm/thread_info.h
+index 326db1c1d5d8..e0dffcc43b9e 100644
+--- a/arch/xtensa/include/asm/thread_info.h
++++ b/arch/xtensa/include/asm/thread_info.h
+@@ -91,7 +91,7 @@ struct thread_info {
  }
  
--static inline void alloc_tag_restore(struct alloc_tag *tag, struct alloc_tag *old)
-+static __always_inline void alloc_tag_restore(struct alloc_tag *tag, struct alloc_tag *old)
+ /* how to get the thread information struct from C */
+-static inline struct thread_info *current_thread_info(void)
++static __always_inline struct thread_info *current_thread_info(void)
  {
- #ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
- 	WARN(current->alloc_tag != tag, "current->alloc_tag was changed:\n");
-
-base-commit: 795c58e4c7fc6163d8fb9f2baa86cfe898fa4b19
+ 	struct thread_info *ti;
+ 	 __asm__("extui %0, a1, 0, "__stringify(CURRENT_SHIFT)"\n\t"
 -- 
 2.45.2.803.g4e1b14247a-goog
 
