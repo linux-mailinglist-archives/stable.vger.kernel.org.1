@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-58076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A396927A65
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 17:45:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65955927A67
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 17:46:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2751328252D
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 15:45:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FB801F22F7E
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 15:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A6B1B14E2;
-	Thu,  4 Jul 2024 15:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68AA81B14FB;
+	Thu,  4 Jul 2024 15:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="oQ2x3qwm"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Zp1Q88pS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21F91E861;
-	Thu,  4 Jul 2024 15:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DCA1BC23;
+	Thu,  4 Jul 2024 15:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720107942; cv=none; b=JYf/mUStkLO5LfV4fSZ9Y/PV19DV/Jce42l3UFw93/RXTppJvPHudORb+KTqTuUrCzSYebnl05pBhPbSPJg8R5D9LwPyaz7AxSoLChydLtj9IE98tZFjGt6+/Ykv9i+QYSAmaRC31B/75n/iVfRuUqoZT/zTL12HbdGtHyt0d6M=
+	t=1720107945; cv=none; b=lw7o8OpdfcUrvxMJl2jKSa9prFycYfxp313vPCdJi+2p2DBcmQykNdC361D4kRMeUzRm17zt/dmoJFMNeV9HOyFGABm/7dUBWZimfisQzWmrXgqgwiVRz1SLzeBKl1EkcdbqDrUmiX3jw4oubbC88hnQxV9IuzPo/1/0zAHdAxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720107942; c=relaxed/simple;
-	bh=egf/NogojxYlVhbIl36DFaMxrtmn9gD2oDV/ECsv8+M=;
+	s=arc-20240116; t=1720107945; c=relaxed/simple;
+	bh=oJBlWbPqZo8nujkVn1QJfVZCnw4HNFGE9kS3+dueDfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=StNWviyFAimRClvAYMmTjymlwt1DQppLZNteV8aUjBbnauHLYV/ZaQ2gHOLzR6YzYwC1sMJfg4Rt7h+TihGBuz61OLCXstQ9qzVbXoYMW0dQ0ynPYX2w4JKUDDgKhu39bFOCyjPLZ1sbHR5p4bfpW5wGuh/nUkZFeXMtNvp7Yto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=oQ2x3qwm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98762C3277B;
-	Thu,  4 Jul 2024 15:45:41 +0000 (UTC)
+	 MIME-Version; b=bfCnA1tYBpkQVBJ+Qta68JUBZUCkTAsIy/XVwkd3DOOFLGlpocefEcg+xvMLWFefzvDVzGHlWBC8dH9E9GAZEf45vJ6Kwk1Cq6NyK+jMge0AwI/QbLyojCdCpc5SJYUr6kT5z6hC6ye/CqBF0LSfLWJQ3HkUC0gsRHVNRrKR1MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=Zp1Q88pS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78B19C3277B;
+	Thu,  4 Jul 2024 15:45:44 +0000 (UTC)
 Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="oQ2x3qwm"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Zp1Q88pS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1720107941;
+	t=1720107943;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yKo+ZyGaQ2EoSeO4/oIDVU7iVMp8bIw2iMxwxEC2mbI=;
-	b=oQ2x3qwm1WACbQg8j0p1vcmrlVqYZx2Fp7ILKojgUgtX8nWj++ozTUF0fO50JkyT4xSVOa
-	8MreIRzXF5i87DjeU1Zn8jseSm8YpKeTF3lqiNclBAwyTPy6tCMVR43HS0aeiOjwo+Lk4F
-	mNC/KFlzLUXeKffqWn91j+8QOvm0pVM=
+	bh=7byKffxEApbn+yt6bUXHpSYmYpStI6tw/7/MBTMtZ28=;
+	b=Zp1Q88pSBmynJxy+NV2xE97GYwRUQReEwdTL15lyZzxSqTX7en+vRaWNOgHzsn0REDEdmk
+	ocV8xYOAZt7smSlaMiXhQqSmoULI/mrwET0lCJ771bu/a+zbm3p2Zt7N5qJtk4rhjNarcp
+	xKD4ZxuYO/VZWtbPbQWg1tu5BHtcpk4=
 Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 66ec19bf (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Thu, 4 Jul 2024 15:45:40 +0000 (UTC)
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 5cb51d87 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Thu, 4 Jul 2024 15:45:43 +0000 (UTC)
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 To: netdev@vger.kernel.org,
 	davem@davemloft.net,
 	kuba@kernel.org
-Cc: Helge Deller <deller@kernel.org>,
-	Helge Deller <deller@gmx.de>,
-	stable@vger.kernel.org,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>
-Subject: [PATCH net 2/4] wireguard: allowedips: avoid unaligned 64-bit memory accesses
-Date: Thu,  4 Jul 2024 17:45:15 +0200
-Message-ID: <20240704154517.1572127-3-Jason@zx2c4.com>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net 3/4] wireguard: queueing: annotate intentional data race in cpu round robin
+Date: Thu,  4 Jul 2024 17:45:16 +0200
+Message-ID: <20240704154517.1572127-4-Jason@zx2c4.com>
 In-Reply-To: <20240704154517.1572127-1-Jason@zx2c4.com>
 References: <20240704154517.1572127-1-Jason@zx2c4.com>
 Precedence: bulk
@@ -67,40 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Helge Deller <deller@kernel.org>
+KCSAN reports a race in the CPU round robin function, which, as the
+comment points out, is intentional:
 
-On the parisc platform, the kernel issues kernel warnings because
-swap_endian() tries to load a 128-bit IPv6 address from an unaligned
-memory location:
+    BUG: KCSAN: data-race in wg_packet_send_staged_packets / wg_packet_send_staged_packets
 
- Kernel: unaligned access to 0x55f4688c in wg_allowedips_insert_v6+0x2c/0x80 [wireguard] (iir 0xf3010df)
- Kernel: unaligned access to 0x55f46884 in wg_allowedips_insert_v6+0x38/0x80 [wireguard] (iir 0xf2010dc)
+    read to 0xffff88811254eb28 of 4 bytes by task 3160 on cpu 1:
+     wg_cpumask_next_online drivers/net/wireguard/queueing.h:127 [inline]
+     wg_queue_enqueue_per_device_and_peer drivers/net/wireguard/queueing.h:173 [inline]
+     wg_packet_create_data drivers/net/wireguard/send.c:320 [inline]
+     wg_packet_send_staged_packets+0x60e/0xac0 drivers/net/wireguard/send.c:388
+     wg_packet_send_keepalive+0xe2/0x100 drivers/net/wireguard/send.c:239
+     wg_receive_handshake_packet drivers/net/wireguard/receive.c:186 [inline]
+     wg_packet_handshake_receive_worker+0x449/0x5f0 drivers/net/wireguard/receive.c:213
+     process_one_work kernel/workqueue.c:3248 [inline]
+     process_scheduled_works+0x483/0x9a0 kernel/workqueue.c:3329
+     worker_thread+0x526/0x720 kernel/workqueue.c:3409
+     kthread+0x1d1/0x210 kernel/kthread.c:389
+     ret_from_fork+0x4b/0x60 arch/x86/kernel/process.c:147
+     ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
-Avoid such unaligned memory accesses by instead using the
-get_unaligned_be64() helper macro.
+    write to 0xffff88811254eb28 of 4 bytes by task 3158 on cpu 0:
+     wg_cpumask_next_online drivers/net/wireguard/queueing.h:130 [inline]
+     wg_queue_enqueue_per_device_and_peer drivers/net/wireguard/queueing.h:173 [inline]
+     wg_packet_create_data drivers/net/wireguard/send.c:320 [inline]
+     wg_packet_send_staged_packets+0x6e5/0xac0 drivers/net/wireguard/send.c:388
+     wg_packet_send_keepalive+0xe2/0x100 drivers/net/wireguard/send.c:239
+     wg_receive_handshake_packet drivers/net/wireguard/receive.c:186 [inline]
+     wg_packet_handshake_receive_worker+0x449/0x5f0 drivers/net/wireguard/receive.c:213
+     process_one_work kernel/workqueue.c:3248 [inline]
+     process_scheduled_works+0x483/0x9a0 kernel/workqueue.c:3329
+     worker_thread+0x526/0x720 kernel/workqueue.c:3409
+     kthread+0x1d1/0x210 kernel/kthread.c:389
+     ret_from_fork+0x4b/0x60 arch/x86/kernel/process.c:147
+     ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-[Jason: replace src[8] in original patch with src+8]
+    value changed: 0xffffffff -> 0x00000000
+
+Mark this race as intentional by using READ/WRITE_ONCE().
+
 Cc: stable@vger.kernel.org
 Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
 Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 ---
- drivers/net/wireguard/allowedips.c | 4 ++--
+ drivers/net/wireguard/queueing.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireguard/allowedips.c b/drivers/net/wireguard/allowedips.c
-index 0ba714ca5185..4b8528206cc8 100644
---- a/drivers/net/wireguard/allowedips.c
-+++ b/drivers/net/wireguard/allowedips.c
-@@ -15,8 +15,8 @@ static void swap_endian(u8 *dst, const u8 *src, u8 bits)
- 	if (bits == 32) {
- 		*(u32 *)dst = be32_to_cpu(*(const __be32 *)src);
- 	} else if (bits == 128) {
--		((u64 *)dst)[0] = be64_to_cpu(((const __be64 *)src)[0]);
--		((u64 *)dst)[1] = be64_to_cpu(((const __be64 *)src)[1]);
-+		((u64 *)dst)[0] = get_unaligned_be64(src);
-+		((u64 *)dst)[1] = get_unaligned_be64(src + 8);
- 	}
+diff --git a/drivers/net/wireguard/queueing.h b/drivers/net/wireguard/queueing.h
+index 1ea4f874e367..7eb76724b3ed 100644
+--- a/drivers/net/wireguard/queueing.h
++++ b/drivers/net/wireguard/queueing.h
+@@ -124,10 +124,10 @@ static inline int wg_cpumask_choose_online(int *stored_cpu, unsigned int id)
+  */
+ static inline int wg_cpumask_next_online(int *last_cpu)
+ {
+-	int cpu = cpumask_next(*last_cpu, cpu_online_mask);
++	int cpu = cpumask_next(READ_ONCE(*last_cpu), cpu_online_mask);
+ 	if (cpu >= nr_cpu_ids)
+ 		cpu = cpumask_first(cpu_online_mask);
+-	*last_cpu = cpu;
++	WRITE_ONCE(*last_cpu, cpu);
+ 	return cpu;
  }
  
 -- 
