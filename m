@@ -1,135 +1,152 @@
-Return-Path: <stable+bounces-58079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61DF5927B0C
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 18:19:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77BBC927B67
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 18:45:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DB4D2819A9
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 16:19:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A92441C20FAC
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 16:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CE61B29C5;
-	Thu,  4 Jul 2024 16:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83D41B29DA;
+	Thu,  4 Jul 2024 16:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pc1loxFy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/8Qk5IF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB2B1AEFFF;
-	Thu,  4 Jul 2024 16:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B54A1BC57;
+	Thu,  4 Jul 2024 16:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720109944; cv=none; b=De5wOfZY88xG7YQXzuDslJs6NbwT+S8HLiFS9uizdT/KIYMiirMmFwsFvMGuTd0QVVEp33v6Acw9ma8kmOGCftnVyhpXJbumcSHax9VfAxkEFlfp8iHerck3TSoYN00/lmC008ciWaYU+YPpXlVbiOK1aPLexpWevdID//o/V7I=
+	t=1720111551; cv=none; b=gkTdqAjkvifN3hIcDhTvoxQQAH10CUgPbRBM47ordBp0k+JMOvVKLx07zr5gptI7oiyCrgE4KFhnMfj3c758vX5hPqI/kESywdZtSkCSaDw9I+KZluzfQ2mW+2dYyMdEuBIV1h7hWh5ok6vXBfJrfYCG+uFCmi7iauaf2smuRMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720109944; c=relaxed/simple;
-	bh=FK7xagcryPXQhWjVE09ZqleC0sW1mp/6aeRQYGumgKc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=nBo3/dnpo4F1IW6xWXq/ggg5yH8+xMlkHq9jD1I13p4/J0dp0IckjVXfBqOVjnqtohV9TRsbdXEJ15ezWYOU0uTmtD4cftYJ7x9bwjMl7F8vk75HkdMcTfphfF/AWgenfGzROVv/DUadRKRRuwuWDIt3fBpSsItx6kkOc//4sA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pc1loxFy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A719C3277B;
-	Thu,  4 Jul 2024 16:19:03 +0000 (UTC)
+	s=arc-20240116; t=1720111551; c=relaxed/simple;
+	bh=WheJjgM7xwoYDL2h9KMuA8Uv+Mr1sZiDhbDrO6nNij0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pbv3iBDP3JF9Miv5uFZL9Pvy5CC29mIjDqT18q++cyuZcX2X/anOkG1d/yvKGGb+5i4wAq4pr39m/ROTUOZj1X/JG3oJwSkPKn1hpOPqu5UrHnCG7D/507Mv19QWmxQXUP5Tg156fbZuUJQZxNTcVui1bcRJCh4YGWv5PoLiXWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/8Qk5IF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D042C3277B;
+	Thu,  4 Jul 2024 16:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720109943;
-	bh=FK7xagcryPXQhWjVE09ZqleC0sW1mp/6aeRQYGumgKc=;
-	h=From:Date:Subject:To:Cc:From;
-	b=pc1loxFy2lAtGe0Tq1t9A3ew7QLklxg3n7Pia68N/7imKeB/FHQaJ5tRa3yXi0KlH
-	 HAdfND9Fa7ATHQH1O9N2vZvD6vll8Vd2wOxXKPH7QJJoch0KUDd90jhMlTY2mMV590
-	 3DCtOVQiPY6x/zNZ4Ywt2PaSthNmvCLujhOULv/P/EiKMxir4FEvS5NmA1D79KbECh
-	 YsdJltEvoDuirGmoOXKNa5ICC8PMGneMpaP/YQ/qRbCRRjqcsiCXoiuDmtJ+2GTSxG
-	 eBvsNCKYN1w/IxZI+BwvtwI07HfyYD5zWskwYuce2k5rwkfcdhzayro+y6HCVc51Ax
-	 1eGp+WWp7xyog==
+	s=k20201202; t=1720111551;
+	bh=WheJjgM7xwoYDL2h9KMuA8Uv+Mr1sZiDhbDrO6nNij0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=N/8Qk5IFaMOxhwedoQRRXvwxJ7aRBZtVyf1mVXOzpkF9wog9F4dXJ2mHn+ROUdue0
+	 yZNdABnYecO8PZLjZ6DY5oZLAhV6bGO5W72583Hkh95G3iu9m5CGvUjcmdwH1B9pQA
+	 m2lWQUbTD5ZF0y08aUnTgpzpa0KK9CXJivtY6SJD1kpCNnzsNkSapldCHUVW3H0778
+	 c3Tcqc4eP8/jNB0b3ihZWSRQ/plFmkAnkHRwvBc3LyDr3lEzRKLtM+495jjSccaz8b
+	 9mqZumxHPEjoWJYugOu6AS2QcZozZ5GmiNch3Qtrwoozq6/u3YwAOH1zCZ/6dBa1Cm
+	 H0JPrHAv76+bQ==
+Date: Thu, 4 Jul 2024 09:45:48 -0700
 From: Nathan Chancellor <nathan@kernel.org>
-Date: Thu, 04 Jul 2024 09:18:56 -0700
-Subject: [PATCH] kbuild: Update ld-version.sh for change in LLD version
- output
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Kees Cook <keescook@chromium.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Valentin Obst <kernel@valentinobst.de>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] rust: SHADOW_CALL_STACK is incompatible with Rust
+Message-ID: <20240704164548.GB1394865@thelio-3990X>
+References: <20240704-shadow-call-stack-v3-0-d11c7a6ebe30@google.com>
+ <20240704-shadow-call-stack-v3-1-d11c7a6ebe30@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240704-update-ld-version-for-new-lld-ver-str-v1-1-91bccc020a93@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAG/LhmYC/yWN0QqDMBAEf0XuuQtRIkJ/RXxIzKU9kCgXq4L47
- 03t4yzDzkmZVTjTszpJeZMscypQPyoa3y69GBIKU2Maazpj8VmCWxlTwMb6sxFnReId039DXhW
- +c9ZF70Mbaypfi3KU4+70w3V9AT/38BZ3AAAA
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>, Fangrui Song <maskray@google.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev, 
- stable@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2008; i=nathan@kernel.org;
- h=from:subject:message-id; bh=FK7xagcryPXQhWjVE09ZqleC0sW1mp/6aeRQYGumgKc=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDGltp8sYuePmmG9RvdRlsUIySsakbYOxwdumk9bbnA5fX
- ntg3pRzHaUsDGJcDLJiiizVj1WPGxrOOct449QkmDmsTCBDGLg4BWAiKZcZ/qc8WfdJ1n6+g+Xi
- h3t379y3Za/9NqGQp3Fvt0VdV5R+eIuR4a9EmcnrGHH7T95vvud8bNq9T0qXyYu11VVu690bFZz
- PJ7ADAA==
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240704-shadow-call-stack-v3-1-d11c7a6ebe30@google.com>
 
-After [1] in upstream LLVM, ld.lld's version output is slightly
-different when the cmake configuration option LLVM_APPEND_VC_REV is
-disabled.
+On Thu, Jul 04, 2024 at 03:07:57PM +0000, Alice Ryhl wrote:
+> When using the shadow call stack sanitizer, all code must be compiled
+> with the -ffixed-x18 flag, but this flag is not currently being passed
+> to Rust. This results in crashes that are extremely difficult to debug.
+> 
+> To ensure that nobody else has to go through the same debugging session
+> that I had to, prevent configurations that enable both SHADOW_CALL_STACK
+> and RUST.
+> 
+> It is rather common for people to backport 724a75ac9542 ("arm64: rust:
+> Enable Rust support for AArch64"), so I recommend applying this fix all
+> the way back to 6.1.
+> 
+> Cc: <stable@vger.kernel.org> # 6.1 and later
+> Fixes: 724a75ac9542 ("arm64: rust: Enable Rust support for AArch64")
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Before:
+Would it be better to move this to arch/arm64/Kconfig?
 
-  Debian LLD 19.0.0 (compatible with GNU linkers)
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 167e51067508..080907776db9 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -90,7 +90,7 @@ config ARM64
+ 	select ARCH_SUPPORTS_DEBUG_PAGEALLOC
+ 	select ARCH_SUPPORTS_HUGETLBFS
+ 	select ARCH_SUPPORTS_MEMORY_FAILURE
+-	select ARCH_SUPPORTS_SHADOW_CALL_STACK if CC_HAVE_SHADOW_CALL_STACK
++	select ARCH_SUPPORTS_SHADOW_CALL_STACK if CC_HAVE_SHADOW_CALL_STACK && !RUST
+ 	select ARCH_SUPPORTS_LTO_CLANG if CPU_LITTLE_ENDIAN
+ 	select ARCH_SUPPORTS_LTO_CLANG_THIN
+ 	select ARCH_SUPPORTS_CFI_CLANG
 
-After:
+RISC-V probably needs the same change, which further leads me to believe
+that this workaround should be architecture specific, as they may be
+fixed and enabled at different rates.
 
-  Debian LLD 19.0.0, compatible with GNU linkers
-
-This results in ld-version.sh failing with
-
-  scripts/ld-version.sh: 19: arithmetic expression: expecting EOF: "10000 * 19 + 100 * 0 + 0,"
-
-because the trailing comma is included in the patch level part of the
-expression. Remove the trailing comma when assigning the version
-variable in the LLD block to resolve the error, resulting in the proper
-output:
-
-  LLD 190000
-
-With LLVM_APPEND_VC_REV enabled, there is no issue with the new output
-because it is treated the same as the prior LLVM_APPEND_VC_REV=OFF
-version string was.
-
-  ClangBuiltLinux LLD 19.0.0 (https://github.com/llvm/llvm-project a3c5c83273358a85a4e02f5f76379b1a276e7714), compatible with GNU linkers
-
-Cc: stable@vger.kernel.org
-Fixes: 02aff8592204 ("kbuild: check the minimum linker version in Kconfig")
-Link: https://github.com/llvm/llvm-project/commit/0f9fbbb63cfcd2069441aa2ebef622c9716f8dbb [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- scripts/ld-version.sh | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/scripts/ld-version.sh b/scripts/ld-version.sh
-index a78b804b680c..f2f425322524 100755
---- a/scripts/ld-version.sh
-+++ b/scripts/ld-version.sh
-@@ -47,7 +47,9 @@ else
- 	done
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 6b4d71aa9bed..4d89afdd385d 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -213,6 +213,7 @@ config HAVE_SHADOW_CALL_STACK
+ 	def_bool $(cc-option,-fsanitize=shadow-call-stack)
+ 	# https://github.com/riscv-non-isa/riscv-elf-psabi-doc/commit/a484e843e6eeb51f0cb7b8819e50da6d2444d769
+ 	depends on $(ld-option,--no-relax-gp)
++	depends on !RUST
  
- 	if [ "$1" = LLD ]; then
--		version=$2
-+		# LLD after https://github.com/llvm/llvm-project/commit/0f9fbbb63cfcd2069441aa2ebef622c9716f8dbb
-+		# may have a trailing comma on the patch version with LLVM_APPEND_VC_REV=off.
-+		version=${2%,}
- 		min_version=$($min_tool_version llvm)
- 		name=LLD
- 		disp_name=LLD
+ config RISCV_USE_LINKER_RELAXATION
+ 	def_bool y
 
----
-base-commit: 22a40d14b572deb80c0648557f4bd502d7e83826
-change-id: 20240704-update-ld-version-for-new-lld-ver-str-b7a4afbbd5f1
-
-Best regards,
--- 
-Nathan Chancellor <nathan@kernel.org>
-
+> ---
+>  arch/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/Kconfig b/arch/Kconfig
+> index 975dd22a2dbd..238448a9cb71 100644
+> --- a/arch/Kconfig
+> +++ b/arch/Kconfig
+> @@ -690,6 +690,7 @@ config SHADOW_CALL_STACK
+>  	bool "Shadow Call Stack"
+>  	depends on ARCH_SUPPORTS_SHADOW_CALL_STACK
+>  	depends on DYNAMIC_FTRACE_WITH_ARGS || DYNAMIC_FTRACE_WITH_REGS || !FUNCTION_GRAPH_TRACER
+> +	depends on !RUST
+>  	depends on MMU
+>  	help
+>  	  This option enables the compiler's Shadow Call Stack, which
+> 
+> -- 
+> 2.45.2.803.g4e1b14247a-goog
+> 
 
