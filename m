@@ -1,131 +1,140 @@
-Return-Path: <stable+bounces-58009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22CD5926F73
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 08:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C060926FC8
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 08:41:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8E1E2841D9
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 06:25:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8F4B281175
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 06:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D8D1A00F5;
-	Thu,  4 Jul 2024 06:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5191A08D2;
+	Thu,  4 Jul 2024 06:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="BOfhcVi8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tWzOgCP/"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077511BDCF;
-	Thu,  4 Jul 2024 06:25:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.6
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC27C1A08C5;
+	Thu,  4 Jul 2024 06:41:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720074337; cv=none; b=rWyTLhm4DD4u5GIHJLI0kUr0hnAVWCeMn17Tz9RH0XFufFo+41mlMPDTlkPvgZZHyYd/QeSl7rHy2caCLciK7PrcOZpuCRKXKRKVRinJ7gjGM+o0a0udMcVW0HF31PYHYY33HYfSFuq9JNEG6GJA0RB0yMnAKhrkB7rrMsaGWwM=
+	t=1720075275; cv=none; b=K6i/ORGagmiLmrnRarx/w2MRsITTWkUyb1WdSHhJjLPrVggoTcCYgfSQGtH7mYIcL08xAYtP6tLqiRCgc1S8+62x1ambRPgBRScAo0957Kg3rf8iOHbREe2rPxSm7ku//SdF0op0edjW8CONoi0eNEF3Xpvs7wLiH9Ztv46mhQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720074337; c=relaxed/simple;
-	bh=T2BXVPG0Xciyi6KtfRni/IEp7xhSTzvD3uma1vOVg90=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gnmPHsxOFDF6QGAUnR8Qy+cEekXH25aJCDJVrHbXnpwQ+vxBLwMKkjsx0/yeXp396JGwmvuFcMv79a3gSqHgyt9e+zTjpv5czUqL3frQFK7R3I69plWoAwLbCNcwMPdsVwP1q1ScDJu+c3Oh0vAYKH3rKz4S/M6sOcLpr+M3p5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=BOfhcVi8; arc=none smtp.client-ip=220.197.31.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
-	Content-Type; bh=/AKERoNUk3QOspjtoJsYJHGJH3MzhEmNn77tnVZjOls=;
-	b=BOfhcVi8iWK8aFiViJYt4G9BC6pASMp8AFGgf4Bp6m/VWeZu+8Dzp1sjCZYUpA
-	2UWjo+FI+O0h8TGOSchnGjmfY9YPLl3fxxoRDMTge7DTifnBkFhjegFd0eeAJib4
-	XOz8G0V3CNHrRWx68NDaHoMV/bQSrZ/a9JiKW9wxqOk84=
-Received: from [172.21.22.210] (unknown [118.242.3.34])
-	by gzga-smtp-mta-g0-2 (Coremail) with SMTP id _____wD3P+YOQIZm42A0AQ--.856S2;
-	Thu, 04 Jul 2024 14:24:16 +0800 (CST)
-Message-ID: <ef7eee42-ebee-477c-83f5-d2103886ccd5@126.com>
-Date: Thu, 4 Jul 2024 14:24:14 +0800
+	s=arc-20240116; t=1720075275; c=relaxed/simple;
+	bh=+bWi1+if3WErd1/KnsdGciJEtBFRJDW87a6ElQhCzz8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=K3YHKaU5P2t37EW4OF7Jn3Tq8hgTokvrQVThEi5Mt5sjGC5ihe9uCOkKQkOnvPluXvXh1uowW8qtWcv4GcHdC9E6cUM3e1ajtiwJHFV2sg5xTbBNjTJR5f0mUogYU/G/BsrtS5w2At0LcMDZ7I8DLYPuENyB6DoUWnDoYgo+edQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tWzOgCP/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E51C32781;
+	Thu,  4 Jul 2024 06:41:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720075275;
+	bh=+bWi1+if3WErd1/KnsdGciJEtBFRJDW87a6ElQhCzz8=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=tWzOgCP/EY25airxSQYJHCskq3zPKTdAWsRYJtzuTtc9khjy++FWX4h8GHPI3mflO
+	 LYgUCUgPvjeQcUF4+qkBTLIBmG7e6IWgD0Am2KngPakPJWA51tYv3gLPm/qgSN22Q1
+	 46MjU+0SCzJgJWGOlcq1e+fi5opQGcEVCZsknvtYlZUKjRyP9Jyh0cR4hNxmSZJlHM
+	 pykWqKay0aReMRchPSwqgk0uQqXSGc3enLT0QnjPJXBVV6YvOXVIOIxS5YIia9WHDP
+	 w/apUz0Nd7mCkdvUdKlZReK4V6Z5Idu10Uy2RHYoIZvO6VfDjAHKrMIWMI4Q0T0G4X
+	 62KRI7TjeGgHw==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2] mm/gup: Clear the LRU flag of a page before adding to
- LRU batch
-To: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- 21cnbao@gmail.com, baolin.wang@linux.alibaba.com, liuzixing@hygon.cn
-References: <1719038884-1903-1-git-send-email-yangge1116@126.com>
- <26efe5f2-0cad-404c-82ca-a556469ba9c7@redhat.com>
-From: Ge Yang <yangge1116@126.com>
-In-Reply-To: <26efe5f2-0cad-404c-82ca-a556469ba9c7@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3P+YOQIZm42A0AQ--.856S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxuF1rCryxAr4UuF45CF1xXwb_yoW5XryrpF
-	Wft3WakrWDXFZa9rn7J3yDCr1SyrZ2yw45Ar1fJr18Cws8WFya9rW5K3WDWa45CrWYga1a
-	vr409rn5uF4DZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j5WrXUUUUU=
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiGBUSG2VLcMptdgAAsL
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 04 Jul 2024 09:41:08 +0300
+Message-Id: <D2GJSLLC0LSF.2RP57L3ALBW38@kernel.org>
+Cc: "Thorsten Leemhuis" <regressions@leemhuis.info>, "Linus Torvalds"
+ <torvalds@linux-foundation.org>, <stable@vger.kernel.org>, "Peter Huewe"
+ <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>, "James Bottomley"
+ <James.Bottomley@HansenPartnership.com>, "Mimi Zohar"
+ <zohar@linux.ibm.com>, "David Howells" <dhowells@redhat.com>, "Paul Moore"
+ <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
+ Hallyn" <serge@hallyn.com>, "Ard Biesheuvel" <ardb@kernel.org>, "Mario
+ Limonciello" <mario.limonciello@amd.com>, <linux-kernel@vger.kernel.org>,
+ <keyrings@vger.kernel.org>, <linux-security-module@vger.kernel.org>
+Subject: Re: [PATCH v2 3/3] tpm: Address !chip->auth in
+ tpm_buf_append_hmac_session*()
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Stefan Berger" <stefanb@linux.ibm.com>,
+ <linux-integrity@vger.kernel.org>
+X-Mailer: aerc 0.17.0
+References: <20240703182453.1580888-1-jarkko@kernel.org>
+ <20240703182453.1580888-4-jarkko@kernel.org>
+ <c90ce151-c6e5-40c6-8d3d-ccec5a97d10f@linux.ibm.com>
+In-Reply-To: <c90ce151-c6e5-40c6-8d3d-ccec5a97d10f@linux.ibm.com>
+
+On Thu Jul 4, 2024 at 4:56 AM EEST, Stefan Berger wrote:
+>
+>
+> On 7/3/24 14:24, Jarkko Sakkinen wrote:
+> > Unless tpm_chip_bootstrap() was called by the driver, !chip->auth can
+>
+> Doesn't tpm_chip_register() need to be called by all drivers? This=20
+> function then calls tpm_chip_bootstrap().
+>
+> > cause a null derefence in tpm_buf_hmac_session*().  Thus, address
+> > !chip->auth in tpm_buf_hmac_session*() and remove the fallback
+> > implementation for !TCG_TPM2_HMAC.
+> >=20
+> > Cc: stable@vger.kernel.org # v6.9+
+> > Reported-by: Stefan Berger <stefanb@linux.ibm.com>
+> > Closes: https://lore.kernel.org/linux-integrity/20240617193408.1234365-=
+1-stefanb@linux.ibm.com/
+> > Fixes: 1085b8276bb4 ("tpm: Add the rest of the session HMAC API")
+> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+>
+> I applied this series now but it doesn't solve the reported problem. The=
+=20
+
+It fixes the issues of which symptoms was shown by your transcript:
+
+[    2.987131] tpm tpm0: tpm2_load_context: failed with a TPM error 0x01C4
+[    2.987140] ima: Error Communicating to TPM chip, result: -14
+
+Your original thread identified zero problems, so thus your claim here
+is plain untrue.
+
+Before the null derefence is fixed all other patches related are
+blocked, including ibm_tpmvtpm patches, because it would be insane
+to accept them when there is known memory corruption bug, which
+this patch set fixes.
+
+What is so difficult to understand in this?
+
+> error message is gone but the feature can still be enabled=20
+> (CONFIG_TCG_TPM2_HMAC=3Dy) but is unlikely actually doing what it is=20
+> promising to do with this config option. So you either still have to=20
+> apply my patch, James's patch, or your intended "depends on=20
+> !TCG_IBMVTPM" patch.
+
+Well this somewhat misleading imho...
+
+None of the previous patches, including your, do nothing to fix the null
+derefence bug and that is the *only* bug we care about ATM. With these
+fixes drivers that do not call tpm_chip_bootstrap() will be fully
+working still but without encryption.
+
+There's five drivers which would require update for that:
+
+drivers/char/tpm/tpm_ftpm_tee.c:        pvt_data->chip->flags |=3D TPM_CHIP=
+_FLAG_TPM2;
+drivers/char/tpm/tpm_i2c_nuvoton.c:             chip->flags |=3D TPM_CHIP_F=
+LAG_TPM2;
+drivers/char/tpm/tpm_ibmvtpm.c:         chip->flags |=3D TPM_CHIP_FLAG_TPM2=
+;
+drivers/char/tpm/tpm_tis_i2c_cr50.c:    chip->flags |=3D TPM_CHIP_FLAG_TPM2=
+;
+drivers/char/tpm/tpm_vtpm_proxy.c:              proxy_dev->chip->flags |=3D=
+ TPM_CHIP_FLAG_TPM2;
 
 
-
-在 2024/7/3 20:02, David Hildenbrand 写道:
-> On 22.06.24 08:48, yangge1116@126.com wrote:
->> From: yangge <yangge1116@126.com>
->>
->> If a large number of CMA memory are configured in system (for example, 
->> the
->> CMA memory accounts for 50% of the system memory), starting a virtual
->> virtual machine, it will call pin_user_pages_remote(..., FOLL_LONGTERM,
->> ...) to pin memory.  Normally if a page is present and in CMA area,
->> pin_user_pages_remote() will migrate the page from CMA area to non-CMA
->> area because of FOLL_LONGTERM flag. But the current code will cause the
->> migration failure due to unexpected page refcounts, and eventually cause
->> the virtual machine fail to start.
->>
->> If a page is added in LRU batch, its refcount increases one, remove the
->> page from LRU batch decreases one. Page migration requires the page is 
->> not
->> referenced by others except page mapping. Before migrating a page, we
->> should try to drain the page from LRU batch in case the page is in it,
->> however, folio_test_lru() is not sufficient to tell whether the page is
->> in LRU batch or not, if the page is in LRU batch, the migration will 
->> fail.
->>
->> To solve the problem above, we modify the logic of adding to LRU batch.
->> Before adding a page to LRU batch, we clear the LRU flag of the page so
->> that we can check whether the page is in LRU batch by 
->> folio_test_lru(page).
->> Seems making the LRU flag of the page invisible a long time is no 
->> problem,
->> because a new page is allocated from buddy and added to the lru batch,
->> its LRU flag is also not visible for a long time.
->>
-> 
-> I think we need to describe the impact of this change in a better way. 
-> This example here is certainly interesting, but if pages are new they 
-> are also not candidate for immediate reclaim (tail of the LRU).
-> 
-> The positive thing is that we can more reliably identify pages that are 
-> on an LRU batch.
-> 
-> Further, a page can now only be on exactly one LRU batch.
-> 
-> But, as long as a page is on a LRU batch, we cannot isolate it, and we 
-> cannot check if it's an LRU page. The latter can currently already 
-> happen for a shorter time when moving LRU pages, and temporarily 
-> clearing the flag.
-> 
-> I shared some examples where we don't care, because we'd check for 
-> additional folio references either way (and the one from the LRU batch).
-> 
-> But I think we have to identify if there are any LRU folio/page checks 
-> that could now be impacted "more". At least we should document it 
-> properly to better understand the possible impact (do we maybe have to 
-> flush more often?).
-> 
-
-Thanks.
-I have reviewed a lot of paths using LRU folio/page checks and haven't 
-seen more impact. I will documnt possible impact in next version, thanks.
-
-
+BR, Jarkko
 
