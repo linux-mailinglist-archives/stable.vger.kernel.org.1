@@ -1,441 +1,210 @@
-Return-Path: <stable+bounces-58040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8753292747A
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 12:58:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B489274AA
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 13:11:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DA63283FBA
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 10:58:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EADDC1F22F1F
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 11:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78131AC224;
-	Thu,  4 Jul 2024 10:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C38151AC42B;
+	Thu,  4 Jul 2024 11:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="Cu+0HQY8"
 X-Original-To: stable@vger.kernel.org
-Received: from frasgout11.his.huawei.com (frasgout11.his.huawei.com [14.137.139.23])
+Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazolkn19010013.outbound.protection.outlook.com [52.103.43.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7418D1A0B10
-	for <stable@vger.kernel.org>; Thu,  4 Jul 2024 10:58:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.23
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720090730; cv=none; b=YNXmFqz5W77mMRk7K3mzXww7jdGQMTG7YK2Fe/lFW/A3iFpYOzpnq6OXiyBfFvq8b2F863zgLXu8in7CMEFH7w1/2pvNeJrXqmPgLVM1WJWXq8tOzctPCBGzMOSX3wrn7jzcfvXrsGxX1iaEeuCv6F6a8w9A9+6kSE89QxTI8Y8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720090730; c=relaxed/simple;
-	bh=k0AAKHVdO5w6qWOAon98TO6xnGpFAf/RjEIuoAptC8s=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kGuotiDPWTR/b5etRcJqYyMjh3z35wzAqy+bPlUEY29Zvalsg/faVWiQ4CATdfcqjuM4+SWc2r4k5dv9h22bg97qmuzCS8GBiwT787dL3Ucn0sLhT1SX2HH7UtcXbRh4K9MlB9eKYDC2Rcx6mVQnSjmYhHzwC5nMg0M2k1qJkKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.186.29])
-	by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4WFCTD1C5rz9v7Hk
-	for <stable@vger.kernel.org>; Thu,  4 Jul 2024 18:25:20 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.27])
-	by mail.maildlp.com (Postfix) with ESMTP id 0FB7A1404C5
-	for <stable@vger.kernel.org>; Thu,  4 Jul 2024 18:43:18 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.204.63.22])
-	by APP2 (Coremail) with SMTP id GxC2BwA3jd6_fIZmZlXLAA--.20488S2;
-	Thu, 04 Jul 2024 11:43:17 +0100 (CET)
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: stable@vger.kernel.org
-Cc: zohar@linux.ibm.com,
-	GUO Zihua <guozihua@huawei.com>,
-	John Johansen <john.johansen@canonical.com>,
-	Casey Schaufler <casey@schaufler-ca.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>
-Subject: [PATCH] ima: Avoid blocking in RCU read-side critical section
-Date: Thu,  4 Jul 2024 12:43:03 +0200
-Message-Id: <20240704104303.3330331-1-roberto.sassu@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9759F1AC23F;
+	Thu,  4 Jul 2024 11:11:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.43.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720091495; cv=fail; b=PPhw1TOSY//AHrV6/roFSJzZcTJC1k9ROiIRFqZxfqh2lfYIEhHM8nA1+wJwkbRhbUrEETqKwHw+0b8n41QuDA+xCOVAnjyce/AoMLjtlqI8M6kmvI2efIJrpxE2MYKt7C2iXRES5JHcPpeH/z3xsa0fhNsmJUFcBAORRswQ2Qg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720091495; c=relaxed/simple;
+	bh=DNRy4iJ16rVzpdWXTb10ET7+NaUo/594e2vyqjsYkOo=;
+	h=Message-ID:Date:Cc:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=MivRIFmD5HakIQFAaX5sMf3brK/WfoiPELWVhxcgYlNnDocFxEnu40NaeVeAPaYbmhkU0jM+fZxW+XzzADILNSi9sxEk6BTMcs9jQT4wIVnKMVHdOHiyLAEIwYfwpqN3qjnt9Lq6GiJ3SXh4VepQ4+pIGcvLrOaMuO1kQN9gOVs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=Cu+0HQY8; arc=fail smtp.client-ip=52.103.43.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SKaSNUrJNWq9aTzxGsmjHxmBIv629XGlFgA0mjOtm9vOJsHWoGllSMpjsPEBGg4BXCi7g0txZnyV5KDTKH1wNzbBWqQbIRjEmLflDVm1G8fme0Lm3Mzpmu9gNNXiIgIGXZFnBaIUEH/0EI1eHPpcLZqcKktOKh55/VPQS7n3Gjc4RyxSImUsxc9KY03YlR1Jqnm88HAbdofYppZ8qTsezhv8HS2CMHMVJ7gkIXr1l2+6rwyxtLC9sO1oSAYBgod7SfOiWxYVYf8eYooYUWgbzforbG52tfCoMdcK/6dBSinmO87dLoNHdyAFqbMWo0Hd9ZgkUfemldVLIqKItiMgww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=w1tkJAh8DqqS2r8otToyTzLNaNek4ZrpGUpjDJgOdns=;
+ b=hJWQ2DvL2M1fQJSkbrmF3gkZfTwG3bTAPcfTBtDDUCBpSzXCIIjedGD/higRDNoETDDn1ifIwtgHzX4f3lrIV2tmJ3VK4p9fsnnRanXBv4HC1FNiRI3rtntJ5eRa/ALxJY+/XEzgbUbcj+tkDHfticf57Z6Brcp+o5ELQ41mvUg4nDu64SBU9ntuRImcNptUEv1SM3fEtFMsyAZqhxtrLtIBBhdfBaqXaMHpfyip7R4YCgg9phr3xK8Wp2FT+FOsRb/XYhV5fzBau7UdNvif6+YhuAJMuF06ptifBEqhEbB9RE1915f9EI/yn/tFYSlLf54OmNvCNjjbHU92yeU3fw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=w1tkJAh8DqqS2r8otToyTzLNaNek4ZrpGUpjDJgOdns=;
+ b=Cu+0HQY8j/x5XIAyG5K8zYFRFZO0SAVQHEIUM1sXtGAoPoku+7isblJYcKMu5p9kObN9Cle+NjsJEpZBLb8gQxiRZQkVJqR9s9HWqgBtthCvBPtFdIVBH4t9NFJv3cC7dyAwG4M+SePq93bzK/Myl3pOPHGLQneHTlITJk4Yk8k+wNuzBWHIbxiDDYAF6sTH/W7UKwQeEyabqjmTWFfVgGEpV4QXkPGGmw70FG71ETf37kr8LFxBXxv8nFDfnhHUxZrSgX+JEzseWdL4jKX4wETx53lU71gtBMLlludGGLCGw0LacRqc4wOwR09RpKnX5rsUFik+M4VPGGDwbszzjQ==
+Received: from TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:23e::10)
+ by TYWP286MB2777.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:248::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.33; Thu, 4 Jul
+ 2024 11:11:29 +0000
+Received: from TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::85b8:3d49:3d3e:2b3]) by TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::85b8:3d49:3d3e:2b3%5]) with mapi id 15.20.7719.029; Thu, 4 Jul 2024
+ 11:11:29 +0000
+Message-ID:
+ <TY3P286MB261180E580D838704E6123B598DE2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+Date: Thu, 4 Jul 2024 19:06:29 +0800
+User-Agent: Mozilla Thunderbird
+Cc: wiagn233@outlook.com, nbd@nbd.name, sean.wang@mediatek.com,
+ Mark-MC.Lee@mediatek.com, lorenzo@kernel.org, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, pablo@netfilter.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ stable@vger.kernel.org, Elad Yifee <eladwf@gmail.com>
+Subject: Re: [PATCH v2] net: ethernet: mtk_ppe: Change PPE entries number to
+ 16K
+To: Jakub Kicinski <kuba@kernel.org>
+References: <TY3P286MB2611AD036755E0BC411847FC98D52@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+ <20240702110224.74abfcea@kernel.org>
+ <TY3P286MB26119C0A14621AD8D411466A98DD2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+ <20240703164818.13e1d33c@kernel.org>
+From: Shengyu Qu <wiagn233@outlook.com>
+Autocrypt: addr=wiagn233@outlook.com; keydata=
+ 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
+In-Reply-To: <20240703164818.13e1d33c@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TMN: [VjWDQoItHKPzoOr1QNrajdFhJLET1UrQ2TpucUIf0flIlzx+nyfiStupp90yw33p]
+X-ClientProxiedBy: TYCP286CA0065.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:31a::6) To TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:23e::10)
+X-Microsoft-Original-Message-ID:
+ <9ef43904-d60d-459e-a39d-1554413b056c@outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:GxC2BwA3jd6_fIZmZlXLAA--.20488S2
-X-Coremail-Antispam: 1UD129KBjvAXoWfJrW5CFy7tF48GFykZF48Xrb_yoW8Gw1DGo
-	WxJ34xJF4xGF13AFWjkFsrJrWxXas3XF47Ar4vqFZ8J3WavrnrKryUJF1fXay5XrW8XF47
-	C3s7A3y8Za18t3s5n29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UjIYCTnIWjp_UUU5l7kC6x804xWl14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK
-	8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4
-	AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF
-	7I0E14v26r1j6r4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCj
-	c4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4
-	CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1x
-	MIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_WFyUJV
-	Cq3wCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBI
-	daVFxhVjvjDU0xZFpf9x07UQzVbUUUUU=
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQAOBF1jj6CNgQAAsW
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY3P286MB2611:EE_|TYWP286MB2777:EE_
+X-MS-Office365-Filtering-Correlation-Id: e2109164-ea5e-4905-7d17-08dc9c1a0cb0
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|461199028|8060799006|4302099013|3412199025|440099028|1602099012|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	FMaxJW3w4EwsyrA6+nj028v7g4C5gxyBKsGWDF4PuA4GHLTibskrWRpIohYvHAf3H0sm3sLnO9trnjIOkTXbjeMTJKqZpopv5DxG5vZ437ugJi3/LJzv7q+vppvsZDlY5Sv49fRJLiuOVb+PQLe5AcC0LqhYw22m1/TCMoczUcLSoiFR2Fi10eM7gUam10Y5IriES3bMa0WGdNXEzuoEjDCld8DfaZJsJEYOqy9kk6nCT/WZGtzIiM3tgBMDckycpyLvhqDciciIMMValTmxHyWdYudz/x7lo9QEAo5K8Ocoe3hDi5l/RpmVtMwIxxqjDJOv56yyC+NU+HZwqL2yLzsKnAoIXhu3L10DYOoMRtX2vwHjPuMmMyX4cQtO5eMl/QUDKwszoZFNK/j0K+42UjtvZ1wo8KeIXLcvN2V3Z4+RYE7mGMM4aryeq5Pf/TV+7QzlSGw9XN0UeOqhMPDXUqc84nDTRYeKfs7qmg3G9/SU3cFoDYLhhwlyot1wdk09tCZZTcv4TyblngFFJQ6SvCSFrRd9xrzqT+78tb8LBSzzbr7FhOj+TP9Z8A8ybuA+79rCQPpXlPMiC7Fo0BEcVV/l2x0hLNQQWWavKnQg5nAIKgmlWfoHcatxQYTh2t8Lt/oi4i1b8GZOnxlmzCGx7PJaOWmxMUhYJjf689t1EaAM0/xFhxvvZh3lUc27+HkUTu+Yak0vROTfnZUXNfsL1wezODwdZr1952wik+aW25mvM2mEsFMBKpnHwFOFmnfe6kMyT3vMgRlREf2vOA8Sfw==
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cVUrYmlKdG9ZVWc0OFZKUWJCZmw4VHVSZHhBWTg3RGtiZm9rZE8wQ295R1g3?=
+ =?utf-8?B?NHFSelYyeXRORWhYYUc0a3pnWWUwS3ZmVXBDdEx4a0dnT2JpNkVsMnFzOEZF?=
+ =?utf-8?B?WlU2Rk5hNzNYckFJTEE3VjdWL1pWd0U2bkRtSGZZbGRJeWdkcms3MlE4Z3ZO?=
+ =?utf-8?B?MVVYbGJ3MHhjTnJBTHZkS0tLS0hHVDZVZVhFR3JmSU1RNENFUDkzUnBxazVa?=
+ =?utf-8?B?WEdiVGUwY2FUY0xOd3QxdFVBRlNiaE9hVzh0bEFnQi9LVDVCZGxxR24rOGYv?=
+ =?utf-8?B?eVNHcUtJKzY5Z1FTYXBqZFA5dUZxMloxUmtSZmRWYk9Tbk1qd092VnBvWmJG?=
+ =?utf-8?B?VG54cnFhZEFzY05VNlV1K0g2b3c0N1g5citYbTRZRVFTb0h2MWhVZEZqSk1M?=
+ =?utf-8?B?WUpDWkxOYU1SelE2UUVUeGpoSHlvczJOZjEzeHdzTmxndGhSYXBYdEl1dHN0?=
+ =?utf-8?B?N2NoMmxwekF0VDVKSzJuSFBwOG5neldiUU8ybDUvV2dDR3NmTTRZeGhUemh6?=
+ =?utf-8?B?V3EwbDZjek5lRVovdWg5aDBCZ042d2xkWXFyN24yN2dTRzkyUm4vUmlrUDRu?=
+ =?utf-8?B?ZnZXMFpLanlrdWhueElZRU5WVjI4OXZIUG9xd3RjU01aeWxWR0ZVVHVzZ2l1?=
+ =?utf-8?B?bm5KeDJFQkdlb05ubFRqcmpQdElWNUkwa1VXaHkyclZvSUEydXMvL0hMUVBE?=
+ =?utf-8?B?Qm90Tm5HRWtFQXl1NUt2K280dnFuMWphTCt3WS9PdmRNL2NmakJpYTJTUVFi?=
+ =?utf-8?B?c1lhSGdRcWx1OTYyQ2ZGS2E3b2ZqbDBQMDFWOStNby85dWNhakVQMW9SK2FY?=
+ =?utf-8?B?Y2FyNk82cmFQTjY5L21XZndIR1MvcWp2TFNJVHIyY3FJRXN1amN1bmtyUStP?=
+ =?utf-8?B?WTRERG05L0cxYXBqRjZvdWprSE1ScTQvcXlIdng4SWVWejltenBmSE11N3U5?=
+ =?utf-8?B?ZFNQdmxmNTNCSW5JZ09aRTY1T0R5MERXT2hJS2ZMWm41ZVpEMkJ5T0U5YkY5?=
+ =?utf-8?B?Q0RORytvKzdhZ1E2K1pnS3NoOXRHdDhpMnZ4bGFiMHRxelpOQW5Qcmx3UE1n?=
+ =?utf-8?B?VzNsY0dBWkRvaHEzY1pVZDFGOEhsQTlhT3F5Tzhicnl4dUVENEJYWURhZ1dw?=
+ =?utf-8?B?a3p4b1o4WUdQKzhKTUh5c3ZkS2k4TG83ZnFobnhMN2ZxZ1BFbkNMMEJ6cllZ?=
+ =?utf-8?B?Tk1FTW4rSWRqRHlEd3RNUHBtRC9SSnYyTHFhNzJKRFpMNk9Na0s5MVRrbkJT?=
+ =?utf-8?B?c1czU2JlUnFGQnZCZzF2V3lvMG9kQ1VCRS9BODBRZGQvUWJ0ZUFvTE5QekRp?=
+ =?utf-8?B?dlM4TzlUai9Ncmc1MHVFeU9RS3FvYmpkN1VsN1JCWlJQRW9pRnhHM2dSU2lr?=
+ =?utf-8?B?enB0VHVwRFBuWjU5YkppTm1qemltbVl3MFdUcXZpK05FaTJOcGVIdEFYODVT?=
+ =?utf-8?B?MWZPUVpPQVdRZXErMVRXampCaXlyOC93dS95WWVaZ0dKVXVJQ05kM0IrS0FE?=
+ =?utf-8?B?S3M4NXpNMzZoTEJDNzJFL3FVRXJ0NndISUoxQWNiMUIrWFpUOXhsbCtiTFc5?=
+ =?utf-8?B?aWY4Wk9RTlQrVitORHlXbStGRGhBa2JTbGU0WFVZVUM3NlBkLy8yeDgrSUxO?=
+ =?utf-8?B?S3JnbXlYSFQybEQrVEJmWnQ1Zy9XbVR3NVA5NFJNYXJ4aFdkSU1ZOEJhQjlQ?=
+ =?utf-8?B?ZTFEMjgzS2lCdzJJRlRvNHlXRXlWUVpDSk1FWEpQckIxZzc3eUhxTHprdHE2?=
+ =?utf-8?Q?Hg7KWIAmkSHcVzxoUI=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e2109164-ea5e-4905-7d17-08dc9c1a0cb0
+X-MS-Exchange-CrossTenant-AuthSource: TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2024 11:11:27.7556
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWP286MB2777
 
-From: GUO Zihua <guozihua@huawei.com>
+Hi,
 
-A panic happens in ima_match_policy:
+PCDN means P2P CDN[1]; This modification already exists in a heavily
+modified openwrt fork here[2] for over 2 years so it should be working
+with to regression. Although a higher limit would be better for PCDN use
+case, but only newer devices like MT7986 supports 32768 max entries.
+Setting to 16384 would keep old devices working.
 
-BUG: unable to handle kernel NULL pointer dereference at 0000000000000010
-PGD 42f873067 P4D 0
-Oops: 0000 [#1] SMP NOPTI
-CPU: 5 PID: 1286325 Comm: kubeletmonit.sh
-Kdump: loaded Tainted: P
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-               BIOS 0.0.0 02/06/2015
-RIP: 0010:ima_match_policy+0x84/0x450
-Code: 49 89 fc 41 89 cf 31 ed 89 44 24 14 eb 1c 44 39
-      7b 18 74 26 41 83 ff 05 74 20 48 8b 1b 48 3b 1d
-      f2 b9 f4 00 0f 84 9c 01 00 00 <44> 85 73 10 74 ea
-      44 8b 6b 14 41 f6 c5 01 75 d4 41 f6 c5 02 74 0f
-RSP: 0018:ff71570009e07a80 EFLAGS: 00010207
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000200
-RDX: ffffffffad8dc7c0 RSI: 0000000024924925 RDI: ff3e27850dea2000
-RBP: 0000000000000000 R08: 0000000000000000 R09: ffffffffabfce739
-R10: ff3e27810cc42400 R11: 0000000000000000 R12: ff3e2781825ef970
-R13: 00000000ff3e2785 R14: 000000000000000c R15: 0000000000000001
-FS:  00007f5195b51740(0000)
-GS:ff3e278b12d40000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000010 CR3: 0000000626d24002 CR4: 0000000000361ee0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- ima_get_action+0x22/0x30
- process_measurement+0xb0/0x830
- ? page_add_file_rmap+0x15/0x170
- ? alloc_set_pte+0x269/0x4c0
- ? prep_new_page+0x81/0x140
- ? simple_xattr_get+0x75/0xa0
- ? selinux_file_open+0x9d/0xf0
- ima_file_check+0x64/0x90
- path_openat+0x571/0x1720
- do_filp_open+0x9b/0x110
- ? page_counter_try_charge+0x57/0xc0
- ? files_cgroup_alloc_fd+0x38/0x60
- ? __alloc_fd+0xd4/0x250
- ? do_sys_open+0x1bd/0x250
- do_sys_open+0x1bd/0x250
- do_syscall_64+0x5d/0x1d0
- entry_SYSCALL_64_after_hwframe+0x65/0xca
+[1] https://www.w3.org/wiki/Networks/P2P_CDN
+[2] https://github.com/coolsnowwolf/lede/blob/2ef8b6a6142798b5e58501fe12ffd10b0961947f/target/linux/ramips/files/drivers/net/ethernet/mtk/mtk_hnat/hnat.h#L604
 
-Commit c7423dbdbc9e ("ima: Handle -ESTALE returned by
-ima_filter_rule_match()") introduced call to ima_lsm_copy_rule within a
-RCU read-side critical section which contains kmalloc with GFP_KERNEL.
-This implies a possible sleep and violates limitations of RCU read-side
-critical sections on non-PREEMPT systems.
-
-Sleeping within RCU read-side critical section might cause
-synchronize_rcu() returning early and break RCU protection, allowing a
-UAF to happen.
-
-The root cause of this issue could be described as follows:
-|	Thread A	|	Thread B	|
-|			|ima_match_policy	|
-|			|  rcu_read_lock	|
-|ima_lsm_update_rule	|			|
-|  synchronize_rcu	|			|
-|			|    kmalloc(GFP_KERNEL)|
-|			|      sleep		|
-==> synchronize_rcu returns early
-|  kfree(entry)		|			|
-|			|    entry = entry->next|
-==> UAF happens and entry now becomes NULL (or could be anything).
-|			|    entry->action	|
-==> Accessing entry might cause panic.
-
-To fix this issue, we are converting all kmalloc that is called within
-RCU read-side critical section to use GFP_ATOMIC.
-
-Fixes: c7423dbdbc9e ("ima: Handle -ESTALE returned by ima_filter_rule_match()")
-Cc: stable@vger.kernel.org
-Signed-off-by: GUO Zihua <guozihua@huawei.com>
-Acked-by: John Johansen <john.johansen@canonical.com>
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
-[PM: fixed missing comment, long lines, !CONFIG_IMA_LSM_RULES case]
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-(cherry picked from commit 9a95c5bfbf02a0a7f5983280fe284a0ff0836c34)
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
----
-Backporting notes:
-- Remove security_audit_rule_init() documentation changes
-- Add default return value parameter to call_int_hook()
-  in security_audit_rule_init()
-- Can be backported to 6.1.x, 5.15.x, 5.10.x
-
- include/linux/lsm_hook_defs.h       |  2 +-
- include/linux/security.h            |  5 +++--
- kernel/auditfilter.c                |  5 +++--
- security/apparmor/audit.c           |  6 +++---
- security/apparmor/include/audit.h   |  2 +-
- security/integrity/ima/ima.h        |  2 +-
- security/integrity/ima/ima_policy.c | 15 +++++++++------
- security/security.c                 |  6 ++++--
- security/selinux/include/audit.h    |  4 +++-
- security/selinux/ss/services.c      |  5 +++--
- security/smack/smack_lsm.c          |  4 +++-
- 11 files changed, 34 insertions(+), 22 deletions(-)
-
-diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-index 6239a378c0ea..0b4f7289951a 100644
---- a/include/linux/lsm_hook_defs.h
-+++ b/include/linux/lsm_hook_defs.h
-@@ -382,7 +382,7 @@ LSM_HOOK(int, 0, key_getsecurity, struct key *key, char **_buffer)
- 
- #ifdef CONFIG_AUDIT
- LSM_HOOK(int, 0, audit_rule_init, u32 field, u32 op, char *rulestr,
--	 void **lsmrule)
-+	 void **lsmrule, gfp_t gfp)
- LSM_HOOK(int, 0, audit_rule_known, struct audit_krule *krule)
- LSM_HOOK(int, 0, audit_rule_match, u32 secid, u32 field, u32 op, void *lsmrule)
- LSM_HOOK(void, LSM_RET_VOID, audit_rule_free, void *lsmrule)
-diff --git a/include/linux/security.h b/include/linux/security.h
-index 2772f6375f14..c33c95f409eb 100644
---- a/include/linux/security.h
-+++ b/include/linux/security.h
-@@ -1921,7 +1921,8 @@ static inline int security_key_getsecurity(struct key *key, char **_buffer)
- 
- #ifdef CONFIG_AUDIT
- #ifdef CONFIG_SECURITY
--int security_audit_rule_init(u32 field, u32 op, char *rulestr, void **lsmrule);
-+int security_audit_rule_init(u32 field, u32 op, char *rulestr, void **lsmrule,
-+			     gfp_t gfp);
- int security_audit_rule_known(struct audit_krule *krule);
- int security_audit_rule_match(u32 secid, u32 field, u32 op, void *lsmrule);
- void security_audit_rule_free(void *lsmrule);
-@@ -1929,7 +1930,7 @@ void security_audit_rule_free(void *lsmrule);
- #else
- 
- static inline int security_audit_rule_init(u32 field, u32 op, char *rulestr,
--					   void **lsmrule)
-+					   void **lsmrule, gfp_t gfp)
- {
- 	return 0;
- }
-diff --git a/kernel/auditfilter.c b/kernel/auditfilter.c
-index 42d99896e7a6..6c9a4d322309 100644
---- a/kernel/auditfilter.c
-+++ b/kernel/auditfilter.c
-@@ -529,7 +529,8 @@ static struct audit_entry *audit_data_to_entry(struct audit_rule_data *data,
- 			entry->rule.buflen += f_val;
- 			f->lsm_str = str;
- 			err = security_audit_rule_init(f->type, f->op, str,
--						       (void **)&f->lsm_rule);
-+						       (void **)&f->lsm_rule,
-+						       GFP_KERNEL);
- 			/* Keep currently invalid fields around in case they
- 			 * become valid after a policy reload. */
- 			if (err == -EINVAL) {
-@@ -798,7 +799,7 @@ static inline int audit_dupe_lsm_field(struct audit_field *df,
- 
- 	/* our own (refreshed) copy of lsm_rule */
- 	ret = security_audit_rule_init(df->type, df->op, df->lsm_str,
--				       (void **)&df->lsm_rule);
-+				       (void **)&df->lsm_rule, GFP_KERNEL);
- 	/* Keep currently invalid fields around in case they
- 	 * become valid after a policy reload. */
- 	if (ret == -EINVAL) {
-diff --git a/security/apparmor/audit.c b/security/apparmor/audit.c
-index 704b0c895605..963df28584ee 100644
---- a/security/apparmor/audit.c
-+++ b/security/apparmor/audit.c
-@@ -173,7 +173,7 @@ void aa_audit_rule_free(void *vrule)
- 	}
- }
- 
--int aa_audit_rule_init(u32 field, u32 op, char *rulestr, void **vrule)
-+int aa_audit_rule_init(u32 field, u32 op, char *rulestr, void **vrule, gfp_t gfp)
- {
- 	struct aa_audit_rule *rule;
- 
-@@ -186,14 +186,14 @@ int aa_audit_rule_init(u32 field, u32 op, char *rulestr, void **vrule)
- 		return -EINVAL;
- 	}
- 
--	rule = kzalloc(sizeof(struct aa_audit_rule), GFP_KERNEL);
-+	rule = kzalloc(sizeof(struct aa_audit_rule), gfp);
- 
- 	if (!rule)
- 		return -ENOMEM;
- 
- 	/* Currently rules are treated as coming from the root ns */
- 	rule->label = aa_label_parse(&root_ns->unconfined->label, rulestr,
--				     GFP_KERNEL, true, false);
-+				     gfp, true, false);
- 	if (IS_ERR(rule->label)) {
- 		int err = PTR_ERR(rule->label);
- 		aa_audit_rule_free(rule);
-diff --git a/security/apparmor/include/audit.h b/security/apparmor/include/audit.h
-index 18519a4eb67e..f325f1bef8d6 100644
---- a/security/apparmor/include/audit.h
-+++ b/security/apparmor/include/audit.h
-@@ -186,7 +186,7 @@ static inline int complain_error(int error)
- }
- 
- void aa_audit_rule_free(void *vrule);
--int aa_audit_rule_init(u32 field, u32 op, char *rulestr, void **vrule);
-+int aa_audit_rule_init(u32 field, u32 op, char *rulestr, void **vrule, gfp_t gfp);
- int aa_audit_rule_known(struct audit_krule *rule);
- int aa_audit_rule_match(u32 sid, u32 field, u32 op, void *vrule);
- 
-diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
-index be965a8715e4..c80bc15b4486 100644
---- a/security/integrity/ima/ima.h
-+++ b/security/integrity/ima/ima.h
-@@ -428,7 +428,7 @@ static inline void ima_free_modsig(struct modsig *modsig)
- #else
- 
- static inline int ima_filter_rule_init(u32 field, u32 op, char *rulestr,
--				       void **lsmrule)
-+				       void **lsmrule, gfp_t gfp)
- {
- 	return -EINVAL;
- }
-diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
-index bdc40535ff48..1f930711db76 100644
---- a/security/integrity/ima/ima_policy.c
-+++ b/security/integrity/ima/ima_policy.c
-@@ -377,7 +377,8 @@ static void ima_free_rule(struct ima_rule_entry *entry)
- 	kfree(entry);
- }
- 
--static struct ima_rule_entry *ima_lsm_copy_rule(struct ima_rule_entry *entry)
-+static struct ima_rule_entry *ima_lsm_copy_rule(struct ima_rule_entry *entry,
-+						gfp_t gfp)
- {
- 	struct ima_rule_entry *nentry;
- 	int i;
-@@ -386,7 +387,7 @@ static struct ima_rule_entry *ima_lsm_copy_rule(struct ima_rule_entry *entry)
- 	 * Immutable elements are copied over as pointers and data; only
- 	 * lsm rules can change
- 	 */
--	nentry = kmemdup(entry, sizeof(*nentry), GFP_KERNEL);
-+	nentry = kmemdup(entry, sizeof(*nentry), gfp);
- 	if (!nentry)
- 		return NULL;
- 
-@@ -401,7 +402,8 @@ static struct ima_rule_entry *ima_lsm_copy_rule(struct ima_rule_entry *entry)
- 
- 		ima_filter_rule_init(nentry->lsm[i].type, Audit_equal,
- 				     nentry->lsm[i].args_p,
--				     &nentry->lsm[i].rule);
-+				     &nentry->lsm[i].rule,
-+				     gfp);
- 		if (!nentry->lsm[i].rule)
- 			pr_warn("rule for LSM \'%s\' is undefined\n",
- 				nentry->lsm[i].args_p);
-@@ -414,7 +416,7 @@ static int ima_lsm_update_rule(struct ima_rule_entry *entry)
- 	int i;
- 	struct ima_rule_entry *nentry;
- 
--	nentry = ima_lsm_copy_rule(entry);
-+	nentry = ima_lsm_copy_rule(entry, GFP_KERNEL);
- 	if (!nentry)
- 		return -ENOMEM;
- 
-@@ -638,7 +640,7 @@ static bool ima_match_rules(struct ima_rule_entry *rule,
- 		}
- 
- 		if (rc == -ESTALE && !rule_reinitialized) {
--			lsm_rule = ima_lsm_copy_rule(rule);
-+			lsm_rule = ima_lsm_copy_rule(rule, GFP_ATOMIC);
- 			if (lsm_rule) {
- 				rule_reinitialized = true;
- 				goto retry;
-@@ -1113,7 +1115,8 @@ static int ima_lsm_rule_init(struct ima_rule_entry *entry,
- 	entry->lsm[lsm_rule].type = audit_type;
- 	result = ima_filter_rule_init(entry->lsm[lsm_rule].type, Audit_equal,
- 				      entry->lsm[lsm_rule].args_p,
--				      &entry->lsm[lsm_rule].rule);
-+				      &entry->lsm[lsm_rule].rule,
-+				      GFP_KERNEL);
- 	if (!entry->lsm[lsm_rule].rule) {
- 		pr_warn("rule for LSM \'%s\' is undefined\n",
- 			entry->lsm[lsm_rule].args_p);
-diff --git a/security/security.c b/security/security.c
-index 1b504c296551..fb1692254851 100644
---- a/security/security.c
-+++ b/security/security.c
-@@ -2617,9 +2617,11 @@ int security_key_getsecurity(struct key *key, char **_buffer)
- 
- #ifdef CONFIG_AUDIT
- 
--int security_audit_rule_init(u32 field, u32 op, char *rulestr, void **lsmrule)
-+int security_audit_rule_init(u32 field, u32 op, char *rulestr, void **lsmrule,
-+			     gfp_t gfp)
- {
--	return call_int_hook(audit_rule_init, 0, field, op, rulestr, lsmrule);
-+	return call_int_hook(audit_rule_init, 0, field, op, rulestr, lsmrule,
-+			     gfp);
- }
- 
- int security_audit_rule_known(struct audit_krule *krule)
-diff --git a/security/selinux/include/audit.h b/security/selinux/include/audit.h
-index 406bceb90c6c..ef54f61a3066 100644
---- a/security/selinux/include/audit.h
-+++ b/security/selinux/include/audit.h
-@@ -21,12 +21,14 @@
-  *	@op: the operator the rule uses
-  *	@rulestr: the text "target" of the rule
-  *	@rule: pointer to the new rule structure returned via this
-+ *	@gfp: GFP flag used for kmalloc
-  *
-  *	Returns 0 if successful, -errno if not.  On success, the rule structure
-  *	will be allocated internally.  The caller must free this structure with
-  *	selinux_audit_rule_free() after use.
-  */
--int selinux_audit_rule_init(u32 field, u32 op, char *rulestr, void **rule);
-+int selinux_audit_rule_init(u32 field, u32 op, char *rulestr, void **rule,
-+			    gfp_t gfp);
- 
- /**
-  *	selinux_audit_rule_free - free an selinux audit rule structure.
-diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.c
-index 64a6a37dc36d..2b8ebd390e37 100644
---- a/security/selinux/ss/services.c
-+++ b/security/selinux/ss/services.c
-@@ -3563,7 +3563,8 @@ void selinux_audit_rule_free(void *vrule)
- 	}
- }
- 
--int selinux_audit_rule_init(u32 field, u32 op, char *rulestr, void **vrule)
-+int selinux_audit_rule_init(u32 field, u32 op, char *rulestr, void **vrule,
-+			    gfp_t gfp)
- {
- 	struct selinux_state *state = &selinux_state;
- 	struct selinux_policy *policy;
-@@ -3604,7 +3605,7 @@ int selinux_audit_rule_init(u32 field, u32 op, char *rulestr, void **vrule)
- 		return -EINVAL;
- 	}
- 
--	tmprule = kzalloc(sizeof(struct selinux_audit_rule), GFP_KERNEL);
-+	tmprule = kzalloc(sizeof(struct selinux_audit_rule), gfp);
- 	if (!tmprule)
- 		return -ENOMEM;
- 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index feba69549d08..b0a483e40c82 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -4552,11 +4552,13 @@ static int smack_post_notification(const struct cred *w_cred,
-  * @op: required testing operator (=, !=, >, <, ...)
-  * @rulestr: smack label to be audited
-  * @vrule: pointer to save our own audit rule representation
-+ * @gfp: type of the memory for the allocation
-  *
-  * Prepare to audit cases where (@field @op @rulestr) is true.
-  * The label to be audited is created if necessay.
-  */
--static int smack_audit_rule_init(u32 field, u32 op, char *rulestr, void **vrule)
-+static int smack_audit_rule_init(u32 field, u32 op, char *rulestr, void **vrule,
-+				 gfp_t gfp)
- {
- 	struct smack_known *skp;
- 	char **rule = (char **)vrule;
--- 
-2.34.1
-
+在 2024/7/4 7:48, Jakub Kicinski 写道:
+> On Thu, 4 Jul 2024 01:38:50 +0800 Shengyu Qu wrote:
+>> BT download and PCDN would create tons of connections, and might be
+>> easily to reach the 8192 limit, one of my friend sees 50000+ links when
+>> hosting PCDN.
+> 
+> I don't know what PCDN is, but what we care about in Linux is whether
+> the change under Fixes introduced a regression. Optimizations, and 
+> improvements no matter how trivial in terms of code are not fixes.
+> So did ba37b7caf1ed ("net: ethernet: mtk_eth_soc: add support for
+> initializing the PPE") make things worse. And if you're saying there
+> are 50k "links" in real world why is 16k a major win? it's 1/3rd of
+> the total.
 
