@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-58007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47DCB926EF7
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 07:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 039A4926EF8
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 07:42:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78AD01C2188B
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 05:42:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 267A21C21979
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 05:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E781A01CF;
-	Thu,  4 Jul 2024 05:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076A21A01D8;
+	Thu,  4 Jul 2024 05:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0gy+DB28"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="1bgJEYSQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F909FBF6;
-	Thu,  4 Jul 2024 05:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C7DFBF6;
+	Thu,  4 Jul 2024 05:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720071731; cv=none; b=Y0d0knAhIhzgr7if7Ck7fJMPVEEbfeI/HTGX/9VCFK04OLHDXtacF5nyWy7Ibc9CNowGmedM4YS4bvBRpAdLHMfOXUz58c6XLiSs9ZvuV2uXXjGQoPqc753bOPKmsDlX7zdnLkq8e3KPrWSajaystfF1ELsGD0TCle4/EaPcg4o=
+	t=1720071734; cv=none; b=iEH7pTkmD4D6i4nolLNAxbISiod6FVaxFF61cpPVGoXMrhbzYq1KR4rYZeg5JWYpfJrI5yhRaO6TnoGHMTtJfFZeCvBkMTM59T5WW/g0VwkBlwRm21REcWACkBYmDBUWMr9QL25e3cWQZQ8PQ6dGe0YuqHqGb1SGg/FSIoljsnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720071731; c=relaxed/simple;
-	bh=yCVkiqBIvvD7x3aR3gPvzqz05WW34JMZ4aMO5kr8Lg8=;
-	h=Date:To:From:Subject:Message-Id; b=Z9IUBDMT4BvrlJykG6P80d3v04lGLOJQGNhQj7EhKTFpHUrE2+xJsS0X9hMo4kbXhdKVbmFSWsIIakkzKYBp5eA5+kW51oNLhZQ2fU1lRsVRUN5fE4wQM+VSk0hZupPGd32kq+yvgZgCcP36mbY/fG57lwhaJCo56Fpc7fh7Vwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=0gy+DB28; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31922C3277B;
-	Thu,  4 Jul 2024 05:42:11 +0000 (UTC)
+	s=arc-20240116; t=1720071734; c=relaxed/simple;
+	bh=7kjEx0DKcnNhUxxFPLN32w4htzHLUMZTSaHSSI1m6U8=;
+	h=Date:To:From:Subject:Message-Id; b=rJo9MGQIuWzL9WVkftSmbQA3Q8U6ZghPxc49N1EdeDruulJQir0kT9JL7I3R8UTpQMA63nsXP5RwXXP69vD2xoXSKVr/trw5XC+v/4xy2eAiOY3i47/ZIR2MiXg3GdwlmyP5z/hVT7cBpTI72Z7WkHASKlWSaeueWpPjntZj1aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=1bgJEYSQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F13AC3277B;
+	Thu,  4 Jul 2024 05:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1720071731;
-	bh=yCVkiqBIvvD7x3aR3gPvzqz05WW34JMZ4aMO5kr8Lg8=;
+	s=korg; t=1720071734;
+	bh=7kjEx0DKcnNhUxxFPLN32w4htzHLUMZTSaHSSI1m6U8=;
 	h=Date:To:From:Subject:From;
-	b=0gy+DB28c5rWCo58cBB/dHG8Xr4wlFA6hzxV2oQ4tthuv8IIfKWxT4SYAiAv0lrEA
-	 vLP1iZB8YW4iHg4kmMv6cLgl+fckDRUw7vWzHk0+Laky2rCgPgFNLjhfXXafUxqMAK
-	 d81D827aLWIo2wgZCVcepGfzgrYc1GYaEJ1s5qIo=
-Date: Wed, 03 Jul 2024 22:42:10 -0700
-To: mm-commits@vger.kernel.org,yosryahmed@google.com,ying.huang@intel.com,willy@infradead.org,viro@zeniv.linux.org.uk,stable@vger.kernel.org,shakeel.butt@linux.dev,ryan.roberts@arm.com,kasong@tencent.com,hannes@cmpxchg.org,david@redhat.com,nphamcs@gmail.com,akpm@linux-foundation.org
+	b=1bgJEYSQPYVU1MSBmC6lHMReE0dixRar51LJwonRzpaUm3IYQ4AYGvbeHL2zjYh3x
+	 rbvJkUUW/2P1bXwU3otyfyGUUEm1IgMv0OrOl4VBhBKOGCD/xqr/NffJ/N/KMABqI4
+	 ItLZJUIRm2WLgRc/pTLMfBnYWncmZwWecSsv3IpQ=
+Date: Wed, 03 Jul 2024 22:42:14 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] cachestat-do-not-flush-stats-in-recency-check.patch removed from -mm tree
-Message-Id: <20240704054211.31922C3277B@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] nilfs2-fix-kernel-bug-on-rename-operation-of-broken-directory.patch removed from -mm tree
+Message-Id: <20240704054214.8F13AC3277B@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,131 +50,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: cachestat: do not flush stats in recency check
+     Subject: nilfs2: fix kernel bug on rename operation of broken directory
 has been removed from the -mm tree.  Its filename was
-     cachestat-do-not-flush-stats-in-recency-check.patch
+     nilfs2-fix-kernel-bug-on-rename-operation-of-broken-directory.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Nhat Pham <nphamcs@gmail.com>
-Subject: cachestat: do not flush stats in recency check
-Date: Thu, 27 Jun 2024 13:17:37 -0700
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Subject: nilfs2: fix kernel bug on rename operation of broken directory
+Date: Sat, 29 Jun 2024 01:51:07 +0900
 
-syzbot detects that cachestat() is flushing stats, which can sleep, in its
-RCU read section (see [1]).  This is done in the workingset_test_recent()
-step (which checks if the folio's eviction is recent).
+Syzbot reported that in rename directory operation on broken directory on
+nilfs2, __block_write_begin_int() called to prepare block write may fail
+BUG_ON check for access exceeding the folio/page size.
 
-Move the stat flushing step to before the RCU read section of cachestat,
-and skip stat flushing during the recency check.
+This is because nilfs_dotdot(), which gets parent directory reference
+entry ("..") of the directory to be moved or renamed, does not check
+consistency enough, and may return location exceeding folio/page size for
+broken directories.
 
-[1]: https://lore.kernel.org/cgroups/000000000000f71227061bdf97e0@google.com/
+Fix this issue by checking required directory entries ("." and "..") in
+the first chunk of the directory in nilfs_dotdot().
 
-Link: https://lkml.kernel.org/r/20240627201737.3506959-1-nphamcs@gmail.com
-Fixes: b00684722262 ("mm: workingset: move the stats flush into workingset_test_recent()")
-Signed-off-by: Nhat Pham <nphamcs@gmail.com>
-Reported-by: syzbot+b7f13b2d0cc156edf61a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/cgroups/000000000000f71227061bdf97e0@google.com/
-Debugged-by: Johannes Weiner <hannes@cmpxchg.org>
-Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: "Huang, Ying" <ying.huang@intel.com>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Yosry Ahmed <yosryahmed@google.com>
-Cc: <stable@vger.kernel.org>	[6.8+]
+Link: https://lkml.kernel.org/r/20240628165107.9006-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+d3abed1ad3d367fa2627@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d3abed1ad3d367fa2627
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/swap.h |    3 ++-
- mm/filemap.c         |    5 ++++-
- mm/workingset.c      |   14 +++++++++++---
- 3 files changed, 17 insertions(+), 5 deletions(-)
+ fs/nilfs2/dir.c |   32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
---- a/include/linux/swap.h~cachestat-do-not-flush-stats-in-recency-check
-+++ a/include/linux/swap.h
-@@ -354,7 +354,8 @@ static inline swp_entry_t page_swap_entr
+--- a/fs/nilfs2/dir.c~nilfs2-fix-kernel-bug-on-rename-operation-of-broken-directory
++++ a/fs/nilfs2/dir.c
+@@ -383,11 +383,39 @@ found:
+ 
+ struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct folio **foliop)
+ {
+-	struct nilfs_dir_entry *de = nilfs_get_folio(dir, 0, foliop);
++	struct folio *folio;
++	struct nilfs_dir_entry *de, *next_de;
++	size_t limit;
++	char *msg;
+ 
++	de = nilfs_get_folio(dir, 0, &folio);
+ 	if (IS_ERR(de))
+ 		return NULL;
+-	return nilfs_next_entry(de);
++
++	limit = nilfs_last_byte(dir, 0);  /* is a multiple of chunk size */
++	if (unlikely(!limit || le64_to_cpu(de->inode) != dir->i_ino ||
++		     !nilfs_match(1, ".", de))) {
++		msg = "missing '.'";
++		goto fail;
++	}
++
++	next_de = nilfs_next_entry(de);
++	/*
++	 * If "next_de" has not reached the end of the chunk, there is
++	 * at least one more record.  Check whether it matches "..".
++	 */
++	if (unlikely((char *)next_de == (char *)de + nilfs_chunk_size(dir) ||
++		     !nilfs_match(2, "..", next_de))) {
++		msg = "missing '..'";
++		goto fail;
++	}
++	*foliop = folio;
++	return next_de;
++
++fail:
++	nilfs_error(dir->i_sb, "directory #%lu %s", dir->i_ino, msg);
++	folio_release_kmap(folio, de);
++	return NULL;
  }
  
- /* linux/mm/workingset.c */
--bool workingset_test_recent(void *shadow, bool file, bool *workingset);
-+bool workingset_test_recent(void *shadow, bool file, bool *workingset,
-+				bool flush);
- void workingset_age_nonresident(struct lruvec *lruvec, unsigned long nr_pages);
- void *workingset_eviction(struct folio *folio, struct mem_cgroup *target_memcg);
- void workingset_refault(struct folio *folio, void *shadow);
---- a/mm/filemap.c~cachestat-do-not-flush-stats-in-recency-check
-+++ a/mm/filemap.c
-@@ -4248,6 +4248,9 @@ static void filemap_cachestat(struct add
- 	XA_STATE(xas, &mapping->i_pages, first_index);
- 	struct folio *folio;
- 
-+	/* Flush stats (and potentially sleep) outside the RCU read section. */
-+	mem_cgroup_flush_stats_ratelimited(NULL);
-+
- 	rcu_read_lock();
- 	xas_for_each(&xas, folio, last_index) {
- 		int order;
-@@ -4311,7 +4314,7 @@ static void filemap_cachestat(struct add
- 					goto resched;
- 			}
- #endif
--			if (workingset_test_recent(shadow, true, &workingset))
-+			if (workingset_test_recent(shadow, true, &workingset, false))
- 				cs->nr_recently_evicted += nr_pages;
- 
- 			goto resched;
---- a/mm/workingset.c~cachestat-do-not-flush-stats-in-recency-check
-+++ a/mm/workingset.c
-@@ -412,10 +412,12 @@ void *workingset_eviction(struct folio *
-  * @file: whether the corresponding folio is from the file lru.
-  * @workingset: where the workingset value unpacked from shadow should
-  * be stored.
-+ * @flush: whether to flush cgroup rstat.
-  *
-  * Return: true if the shadow is for a recently evicted folio; false otherwise.
-  */
--bool workingset_test_recent(void *shadow, bool file, bool *workingset)
-+bool workingset_test_recent(void *shadow, bool file, bool *workingset,
-+				bool flush)
- {
- 	struct mem_cgroup *eviction_memcg;
- 	struct lruvec *eviction_lruvec;
-@@ -467,10 +469,16 @@ bool workingset_test_recent(void *shadow
- 
- 	/*
- 	 * Flush stats (and potentially sleep) outside the RCU read section.
-+	 *
-+	 * Note that workingset_test_recent() itself might be called in RCU read
-+	 * section (for e.g, in cachestat) - these callers need to skip flushing
-+	 * stats (via the flush argument).
-+	 *
- 	 * XXX: With per-memcg flushing and thresholding, is ratelimiting
- 	 * still needed here?
- 	 */
--	mem_cgroup_flush_stats_ratelimited(eviction_memcg);
-+	if (flush)
-+		mem_cgroup_flush_stats_ratelimited(eviction_memcg);
- 
- 	eviction_lruvec = mem_cgroup_lruvec(eviction_memcg, pgdat);
- 	refault = atomic_long_read(&eviction_lruvec->nonresident_age);
-@@ -558,7 +566,7 @@ void workingset_refault(struct folio *fo
- 
- 	mod_lruvec_state(lruvec, WORKINGSET_REFAULT_BASE + file, nr);
- 
--	if (!workingset_test_recent(shadow, file, &workingset))
-+	if (!workingset_test_recent(shadow, file, &workingset, true))
- 		return;
- 
- 	folio_set_active(folio);
+ ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
 _
 
-Patches currently in -mm which might be from nphamcs@gmail.com are
+Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
 
+nilfs2-avoid-undefined-behavior-in-nilfs_cnt32_ge-macro.patch
 
 
