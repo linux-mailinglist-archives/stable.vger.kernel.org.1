@@ -1,127 +1,134 @@
-Return-Path: <stable+bounces-58046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590F5927625
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 14:39:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35FBE9276B3
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 15:03:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 022131F22F34
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 12:39:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFC9F1F24F8A
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 13:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F391AE84E;
-	Thu,  4 Jul 2024 12:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BF81AC221;
+	Thu,  4 Jul 2024 13:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="v5xkoXT9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MSxntTHM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-8fa8.mail.infomaniak.ch (smtp-8fa8.mail.infomaniak.ch [83.166.143.168])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660921E494
-	for <stable@vger.kernel.org>; Thu,  4 Jul 2024 12:38:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.166.143.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACBE13BADF;
+	Thu,  4 Jul 2024 13:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720096733; cv=none; b=pDarNdZ4VYatx53KKgXp08e4heDXGzF+/5/zZZKBtv/h5+LaScD8SYM2divm+3VtvjWO2lnsozc+DcAKDXwORqs95eq/SIew1wuKrch7Ml7PgF2xm+UwaU5faXu58kt6WSVqYUksjVGUEReKPlY+GvYp8oA7Y+PoFyWjNPzqvfg=
+	t=1720098222; cv=none; b=L4DqS9eF01OSRrFkjuIRBbOJ9XcxUWXMfEm0tnZ1Z0niiP4CicwRXI7MZNQPZ/UCZi7UeXbOfLDd4WZvo8AwGRMXTFNtNSyJyGWlDOmDoUFEQAq9Vh9Hh2zs7wD15ZLxQ5z47r2YmvC5yHcXfdqUPP2IIN6JstPxd+OlfrZQ450=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720096733; c=relaxed/simple;
-	bh=bqLxJ3KS7JelbDmZbufg+3QXF9H7AsCpHI8xNEyWlAI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=vB3R9NWTRXIi5hp2j5zObmo5g953Q6AHBSyJOwkIaSpkwDGEG6QCQV8L1oDspXEsMFuLUqY0a59CKk1lLafAuaNrKYXz9/+pdHLuZwQqwqVd9s426fasYICeKkP3YADYFD8qGEnh2vFxEK7DVg/XhUjNdGQma6K+HTqWV5S0BC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=v5xkoXT9; arc=none smtp.client-ip=83.166.143.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
-Received: from smtp-4-0000.mail.infomaniak.ch (smtp-4-0000.mail.infomaniak.ch [10.7.10.107])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4WFGR31j82zGlt;
-	Thu,  4 Jul 2024 14:38:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1720096718;
-	bh=oswOPQ88LI9ZZ4dLvGzzNSGgsrVZFJ4bTKOLf0jSje0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=v5xkoXT9pt4oLWpOuURpdCIOvi1n0uymB7k3u96ouDEmBvC0lD8MqV90lJsEHNyxb
-	 9LLj8NgKnPtojW0nAYAXI0k6VeBhNqPxWqzsReKLhg7KTFIRy0m7YhBk+U7Lzlswft
-	 y8jT8CBMTr2/BYwxKDDCRKEfmdIRJHlyzwNZgOZo=
-Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4WFGQy0YxQz14Q;
-	Thu,  4 Jul 2024 14:38:33 +0200 (CEST)
-From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-To: Linus Torvalds <torvalds@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Bagas Sanjaya <bagasdotme@gmail.com>,
-	Brendan Higgins <brendanhiggins@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	David Gow <davidgow@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Kees Cook <keescook@chromium.org>,
-	Mark Brown <broonie@kernel.org>,
-	Richard Weinberger <richard@nod.at>,
-	Ron Economos <re@w6rz.net>,
-	Ronald Warsow <rwarsow@gmx.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Shengyu Li <shengyu.li.evgeny@gmail.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Will Drewry <wad@chromium.org>,
-	kernel test robot <oliver.sang@intel.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	netdev@vger.kernel.org,
+	s=arc-20240116; t=1720098222; c=relaxed/simple;
+	bh=uZ9UsEweFbXbxOBABtQ/dWLo0fnez7wNxhKZkX2xznc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UzW3XlHPHfAuTimZ/Vv3gsbeQHAM2yDa5U4l7d/+oJxZT9p6JHdOd5fHCvdhhI9GN4JwEcvkWUcroM3fACATHW27o1BrUdXFP8/KYREW0LiTTUAr/VWcjWw2m6g+6fcR5PAa3CaHbv3BqgMJkZLkHQL6eO5T1nGADIKRX+gk9tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MSxntTHM; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720098221; x=1751634221;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=uZ9UsEweFbXbxOBABtQ/dWLo0fnez7wNxhKZkX2xznc=;
+  b=MSxntTHM4MELE4RbKvYvSglpUEN9MrOPcNAL9NEbUO6A65+V5Gqy11ev
+   EijSvw44DysoEwiFzlXVMqlsd9CQWYl8GrZ3hcrZtkavYtdlGJSZhRUXa
+   uU3gHaMOWGdq01YIBdlkOCxmbD+pr87g9s8wLHun1Y7H72myWsYbqhHoR
+   uQtLX/5JQK93RmnHUXOmwTlg28iT5yvceF6WoY8Fwr+AMJibjCr8C+gJB
+   qd1iUrMg4YC3PaQaQPTzzChKWejWMaFf81ieQTK6hLFSpH8uHDgiadfUP
+   ZByIJNAZk3Bws8Rrdh5yvT1LrLVQ6QV8CoIeCISTOeUIjsIxcuhmblluw
+   g==;
+X-CSE-ConnectionGUID: 4E6mSGVsQyyDkSgXutWh0w==
+X-CSE-MsgGUID: NRCPQEdKS52+yNXiO971IA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="27980951"
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; 
+   d="scan'208";a="27980951"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2024 06:03:40 -0700
+X-CSE-ConnectionGUID: o/YWOEYtTSOuRT37J1hNvw==
+X-CSE-MsgGUID: +XbghcdiQr67hCyYBw/pcw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; 
+   d="scan'208";a="77335407"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa002.jf.intel.com with ESMTP; 04 Jul 2024 06:03:38 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 783F522B; Thu, 04 Jul 2024 16:03:36 +0300 (EEST)
+Date: Thu, 4 Jul 2024 16:03:36 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Nikolay Borisov <nik.borisov@suse.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
-Subject: [GIT PULL] Kselftest fixes for v6.10
-Date: Thu,  4 Jul 2024 14:38:16 +0200
-Message-ID: <20240704123816.669022-1-mic@digikod.net>
+Subject: Re: [PATCHv5 3/4] x86/tdx: Dynamically disable SEPT violations from
+ causing #VEs
+Message-ID: <4sqvd3zghwp5o23r2s47i56qg34obammtggbtneof26ghbwrxv@rskezsmaqgim>
+References: <20240624114149.377492-1-kirill.shutemov@linux.intel.com>
+ <20240624114149.377492-4-kirill.shutemov@linux.intel.com>
+ <05d0b24a-2e21-48c0-85b7-a9dd935ac449@suse.com>
+ <oujihwk2ghwpobsuivxlgflalwxigctjp6nld2jdtz4cbwoqnp@7v3s7ap4ul6u>
+ <3b164525-f797-478a-a75c-1c2bd83086af@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3b164525-f797-478a-a75c-1c2bd83086af@intel.com>
 
-Hi Linus,
+On Wed, Jul 03, 2024 at 07:49:48AM -0700, Dave Hansen wrote:
+> On 7/3/24 06:04, Kirill A. Shutemov wrote:
+> >>> -/* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
+> >>> +/* TDX TD-Scope Metadata. To be used by TDG.VM.WR and TDG.VM.RD */
+> >>> +#define TDCS_CONFIG_FLAGS		0x1110000300000016
+> >> 0x9110000300000016
+> >>> +#define TDCS_TD_CTLS			0x11104800000017
+> >> 0x9110000300000017
+> > Setting bit 63 in these field id is regression in new TDX spec and TDX
+> > module. It is going to be fixed in next version. Both versions of field
+> > ids are going to be valid.
+> 
+> I kinda never liked the big ol' magic numbers approach here.  But could
+> we please introduce some helpers here?
+> 
+> Then we'll end up with something like this (if the 0x111 can't be
+> decomposed):
+> 
+> #define _TDCS_CMD(c)	((0x1110UL << 48) | (c))
+> 
+> #define TDCS_CONFIG_FLAGS _TDCS_CMD(0x16)
+> #define TDCS_TD_CTLS	  _TDCS_CMD(0x17)
+> 
+> Then when folks change their mind about what should be in the TDX spec,
+> we have one place to go fix it up in addition to making this all more
+> readable.
 
-This PR fixes a few kselftests [1].  This has been in linux-next for a week and
-rebased to add Mark Brown's Tested-by.  The race condition found while writing
-this fix is not new and seems specific to UML's hostfs (I also tested against
-ext4 and btrfs without being able to trigger this issue).
+Hm. I am not sure about this. It can be tedious if we want to encode all
+info this way. Like, size of the field, number of elements in the
+field, number of elements in the sequence, etc. It is going to be macro on
+the macro on the macro. I don't think it would improve readability.
 
-Feel free to take this PR if you see fit.
+On related note, I think the TDX 1.5 definitions of field ids are more
+useful as you can infer more info from them. I consider to switching all
+definitions to the new format. It effectively drops TDX 1.0 support as the
+newly used bits are reserved in 1.0.
 
-Regards,
- Mickaël
+TDX module 1.0 is no longer supported, but kernel haven't broken anything
+from the guest side yet. I don't think anybody actually uses it and I need
+to jump hoops to get it running for validation.
 
-[1] https://lore.kernel.org/r/9341d4db-5e21-418c-bf9e-9ae2da7877e1@sirena.org.uk
+Any objections for dropping TDX 1.0 support?
 
---
-The following changes since commit f2661062f16b2de5d7b6a5c42a9a5c96326b8454:
-
-  Linux 6.10-rc5 (2024-06-23 17:08:54 -0400)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/mic/linux.git tags/kselftest-fix-2024-07-04
-
-for you to fetch changes up to 130e42806773013e9cf32d211922c935ae2df86c:
-
-  selftests/harness: Fix tests timeout and race condition (2024-06-28 16:06:03 +0200)
-
-----------------------------------------------------------------
-Fix Kselftests timeout and race condition
-
-----------------------------------------------------------------
-Mickaël Salaün (1):
-      selftests/harness: Fix tests timeout and race condition
-
- tools/testing/selftests/kselftest_harness.h | 43 ++++++++++++++++-------------
- 1 file changed, 24 insertions(+), 19 deletions(-)
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
