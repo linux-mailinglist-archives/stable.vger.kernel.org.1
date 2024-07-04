@@ -1,68 +1,53 @@
-Return-Path: <stable+bounces-58025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C15D92725C
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 10:58:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4B179272BA
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 11:11:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F2E21F252DB
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 08:58:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60DED28B6AD
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 09:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ADEC1AB52F;
-	Thu,  4 Jul 2024 08:57:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f9VZUILx"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3174E172764;
+	Thu,  4 Jul 2024 09:11:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E817F1AB521;
-	Thu,  4 Jul 2024 08:57:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCEC9748F;
+	Thu,  4 Jul 2024 09:11:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720083459; cv=none; b=AxIued+2zkiM+9tYCs+OKNO0jwcVEuB8lD/4GzfwtenVWNiVnjfA/jHKxWkTvOc0svaIELnUUGo0vDVh7Ub9uUG8j6GPm7Le2YTbnRYpjc/QXga8VldGJSb5Esa8zbtyuN9HJbnlMjkqHeh4934OwOOsLxGh/FhoqK8xgqsCiOw=
+	t=1720084264; cv=none; b=ZaT4puvWo92Bfp5B83fm/J6nVmacmbzZTqsCTHsw+/OW+2kJYfO3z69zJZdKURbt2ElSBaGtRE4KN7vkDpJFwg71dkELgVct9X6nMZpjTJGakDWT/hhl09WmZF3+8sd8QXM6J0NcsHvEWy9EDjP1fclbEGHnKzhDFoHv3XjdGMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720083459; c=relaxed/simple;
-	bh=1R1l/jh/2sVbYXEuHFTT6vinE3yiZu+gRxbg7eWhc4w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z/rhxM6TW6SP8jWrgQ8TjZonLk8KdTBhqQXQM0aQaYZcweeM6fQ0DkWRz8kKM/vEqrZXt6f/wGYoMELTjVaT6Giph53lLd1yO1uHUMg5R/FVRx0cBRoOh+DOaSIVf/HSJCALF1F18pmFQ/fDNBhc5oCqFbTYd8eYxG6WGKma9XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f9VZUILx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296B0C4AF0B;
-	Thu,  4 Jul 2024 08:57:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720083458;
-	bh=1R1l/jh/2sVbYXEuHFTT6vinE3yiZu+gRxbg7eWhc4w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f9VZUILxFQlQsYkDK5sjS4MXCR40r/4MWt6lsSedyN2b573OFxRYKCDROoxC7pO48
-	 iyfM6g/OjzHZXu73ERxx4BFtQSG8cUjGrTGQJp9LU8iPUfhzxmXlCidQv6G6rHynYE
-	 sUhfp1x5m42Jkj62+x6M5JLiIlohItWprZA/FXhk/rlLlccD1ZOxfduKNE3NQPb3xo
-	 nZJiHdk7PUH1kbOGTQEeeKtyJX1tFXZN0UPjGv88yR4vvBETFJgq7EJIFpD6yK84EP
-	 SkJqLLCFUvkfBe7B5hxunEmjHcLroAhkuCYGdi68C7gXEOXnu6FPUCjtqxnmYqdQgZ
-	 iMcWadP/GJppA==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	stable@vger.kernel.org,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/3] tpm: Address !chip->auth in tpm_buf_append_hmac_session*()
-Date: Thu,  4 Jul 2024 11:57:04 +0300
-Message-ID: <20240704085708.661142-4-jarkko@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240704085708.661142-1-jarkko@kernel.org>
-References: <20240704085708.661142-1-jarkko@kernel.org>
+	s=arc-20240116; t=1720084264; c=relaxed/simple;
+	bh=2C4nJli9jjkTSqsqCp+4oprA8/Ggyz23HV53vwQzczc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RLOIbzw/sZk+3TO/WFHwOGz+5w+Zk4/330qSQy79zJnzdM1Y8AP9fgCOZ6PF1A7Ku/Rokyszzun/JJL4jfFbUj7c9e5jaQE/adpcUQRn08AXPghKvFQsve4fJ1V2Em+XH90O0Y/mLHYMk7W4XPJFKo4IO10XmtOT+fs1M3ItK7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E3570367;
+	Thu,  4 Jul 2024 02:11:24 -0700 (PDT)
+Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7C89E3F766;
+	Thu,  4 Jul 2024 02:10:58 -0700 (PDT)
+From: Ryan Roberts <ryan.roberts@arm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	David Hildenbrand <david@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Lance Yang <ioworker0@gmail.com>,
+	Yang Shi <shy828301@gmail.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mm: Fix khugepaged activation policy
+Date: Thu,  4 Jul 2024 10:10:50 +0100
+Message-ID: <20240704091051.2411934-1-ryan.roberts@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,338 +56,192 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Unless tpm_chip_bootstrap() was called by the driver, !chip->auth can
-cause a null derefence in tpm_buf_hmac_session*().  Thus, address
-!chip->auth in tpm_buf_hmac_session*() and remove the fallback
-implementation for !TCG_TPM2_HMAC.
+Since the introduction of mTHP, the docuementation has stated that
+khugepaged would be enabled when any mTHP size is enabled, and disabled
+when all mTHP sizes are disabled. There are 2 problems with this; 1.
+this is not what was implemented by the code and 2. this is not the
+desirable behavior.
 
-Cc: stable@vger.kernel.org # v6.9+
-Reported-by: Stefan Berger <stefanb@linux.ibm.com>
-Closes: https://lore.kernel.org/linux-integrity/20240617193408.1234365-1-stefanb@linux.ibm.com/
-Fixes: 1085b8276bb4 ("tpm: Add the rest of the session HMAC API")
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
-v3:
-* Address:
-  https://lore.kernel.org/linux-integrity/922603265d61011dbb23f18a04525ae973b83ffd.camel@HansenPartnership.com/
-v2:
-* Use auth in place of chip->auth.
----
- drivers/char/tpm/tpm2-sessions.c | 184 ++++++++++++++++++-------------
- include/linux/tpm.h              |  68 ++++--------
- 2 files changed, 128 insertions(+), 124 deletions(-)
+Desirable behavior is for khugepaged to be enabled when any PMD-sized
+THP is enabled, anon or file. (Note that file THP is still controlled by
+the top-level control so we must always consider that, as well as the
+PMD-size mTHP control for anon). khugepaged only supports collapsing to
+PMD-sized THP so there is no value in enabling it when PMD-sized THP is
+disabled. So let's change the code and documentation to reflect this
+policy.
 
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index 179bcaac06ce..e0be22b8ae70 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -270,6 +270,108 @@ void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
+Further, per-size enabled control modification events were not
+previously forwarded to khugepaged to give it an opportunity to start or
+stop. Consequently the following was resulting in khugepaged eroneously
+not being activated:
+
+  echo never > /sys/kernel/mm/transparent_hugepage/enabled
+  echo always > /sys/kernel/mm/transparent_hugepage/hugepages-2048kB/enabled
+
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Fixes: 3485b88390b0 ("mm: thp: introduce multi-size THP sysfs interface")
+Closes: https://lore.kernel.org/linux-mm/7a0bbe69-1e3d-4263-b206-da007791a5c4@redhat.com/
+Cc: stable@vger.kernel.org
+---
+
+Hi All,
+
+Applies on top of mm-unstable from a couple of days ago (9bb8753acdd8). No
+regressions observed in mm selftests.
+
+When fixing this I also noticed that khugepaged doesn't get (and never has been)
+activated/deactivated by `shmem_enabled=`. I've concluded that this is
+definitely a (separate) bug. But I'm waiting for the conclusion of the
+conversation at [2] before fixing, so will send separately.
+
+Changes since v1 [1]
+====================
+
+  - hugepage_pmd_enabled() now considers CONFIG_READ_ONLY_THP_FOR_FS as part of
+    decision; means that for kernels without this config, khugepaged will not be
+    started when only the top-level control is enabled.
+
+[1] https://lore.kernel.org/linux-mm/20240702144617.2291480-1-ryan.roberts@arm.com/
+[2] https://lore.kernel.org/linux-mm/65c37315-2741-481f-b433-cec35ef1af35@arm.com/
+
+Thanks,
+Ryan
+
+ Documentation/admin-guide/mm/transhuge.rst | 11 +++++------
+ include/linux/huge_mm.h                    | 15 ++++++++-------
+ mm/huge_memory.c                           |  7 +++++++
+ mm/khugepaged.c                            | 13 ++++++-------
+ 4 files changed, 26 insertions(+), 20 deletions(-)
+
+diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+index 709fe10b60f4..fc321d40b8ac 100644
+--- a/Documentation/admin-guide/mm/transhuge.rst
++++ b/Documentation/admin-guide/mm/transhuge.rst
+@@ -202,12 +202,11 @@ PMD-mappable transparent hugepage::
+
+ 	cat /sys/kernel/mm/transparent_hugepage/hpage_pmd_size
+
+-khugepaged will be automatically started when one or more hugepage
+-sizes are enabled (either by directly setting "always" or "madvise",
+-or by setting "inherit" while the top-level enabled is set to "always"
+-or "madvise"), and it'll be automatically shutdown when the last
+-hugepage size is disabled (either by directly setting "never", or by
+-setting "inherit" while the top-level enabled is set to "never").
++khugepaged will be automatically started when PMD-sized THP is enabled
++(either of the per-size anon control or the top-level control are set
++to "always" or "madvise"), and it'll be automatically shutdown when
++PMD-sized THP is disabled (when both the per-size anon control and the
++top-level control are "never")
+
+ Khugepaged controls
+ -------------------
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index 4d155c7a4792..6debd8b6fd7d 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -128,16 +128,17 @@ static inline bool hugepage_global_always(void)
+ 			(1<<TRANSPARENT_HUGEPAGE_FLAG);
  }
- EXPORT_SYMBOL_GPL(tpm_buf_append_name);
- 
-+/**
-+ * tpm_buf_append_hmac_session() - Append a TPM session element
-+ * @chip: the TPM chip structure
-+ * @buf: The buffer to be appended
-+ * @attributes: The session attributes
-+ * @passphrase: The session authority (NULL if none)
-+ * @passphrase_len: The length of the session authority (0 if none)
-+ *
-+ * This fills in a session structure in the TPM command buffer, except
-+ * for the HMAC which cannot be computed until the command buffer is
-+ * complete.  The type of session is controlled by the @attributes,
-+ * the main ones of which are TPM2_SA_CONTINUE_SESSION which means the
-+ * session won't terminate after tpm_buf_check_hmac_response(),
-+ * TPM2_SA_DECRYPT which means this buffers first parameter should be
-+ * encrypted with a session key and TPM2_SA_ENCRYPT, which means the
-+ * response buffer's first parameter needs to be decrypted (confusing,
-+ * but the defines are written from the point of view of the TPM).
-+ *
-+ * Any session appended by this command must be finalized by calling
-+ * tpm_buf_fill_hmac_session() otherwise the HMAC will be incorrect
-+ * and the TPM will reject the command.
-+ *
-+ * As with most tpm_buf operations, success is assumed because failure
-+ * will be caused by an incorrect programming model and indicated by a
-+ * kernel message.
-+ */
-+void tpm_buf_append_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf,
-+				 u8 attributes, u8 *passphrase,
-+				 int passphrase_len)
-+{
-+	u8 __maybe_unused nonce[SHA256_DIGEST_SIZE];
-+	struct tpm2_auth __maybe_unused *auth;
-+	u32 __maybe_unused len;
-+
-+	if (!__and(IS_ENABLED(CONFIG_TCG_TPM2_HMAC), chip->auth)) {
-+		/* offset tells us where the sessions area begins */
-+		int offset = buf->handles * 4 + TPM_HEADER_SIZE;
-+		u32 len = 9 + passphrase_len;
-+
-+		if (tpm_buf_length(buf) != offset) {
-+			/* not the first session so update the existing length */
-+			len += get_unaligned_be32(&buf->data[offset]);
-+			put_unaligned_be32(len, &buf->data[offset]);
-+		} else {
-+			tpm_buf_append_u32(buf, len);
-+		}
-+		/* auth handle */
-+		tpm_buf_append_u32(buf, TPM2_RS_PW);
-+		/* nonce */
-+		tpm_buf_append_u16(buf, 0);
-+		/* attributes */
-+		tpm_buf_append_u8(buf, 0);
-+		/* passphrase */
-+		tpm_buf_append_u16(buf, passphrase_len);
-+		tpm_buf_append(buf, passphrase, passphrase_len);
-+		return;
-+	}
-+
-+#ifdef CONFIG_TCG_TPM2_HMAC
-+	/*
-+	 * The Architecture Guide requires us to strip trailing zeros
-+	 * before computing the HMAC
-+	 */
-+	while (passphrase && passphrase_len > 0 && passphrase[passphrase_len - 1] == '\0')
-+		passphrase_len--;
-+
-+	auth = chip->auth;
-+	auth->attrs = attributes;
-+	auth->passphrase_len = passphrase_len;
-+	if (passphrase_len)
-+		memcpy(auth->passphrase, passphrase, passphrase_len);
-+
-+	if (auth->session != tpm_buf_length(buf)) {
-+		/* we're not the first session */
-+		len = get_unaligned_be32(&buf->data[auth->session]);
-+		if (4 + len + auth->session != tpm_buf_length(buf)) {
-+			WARN(1, "session length mismatch, cannot append");
-+			return;
-+		}
-+
-+		/* add our new session */
-+		len += 9 + 2 * SHA256_DIGEST_SIZE;
-+		put_unaligned_be32(len, &buf->data[auth->session]);
-+	} else {
-+		tpm_buf_append_u32(buf, 9 + 2 * SHA256_DIGEST_SIZE);
-+	}
-+
-+	/* random number for our nonce */
-+	get_random_bytes(nonce, sizeof(nonce));
-+	memcpy(auth->our_nonce, nonce, sizeof(nonce));
-+	tpm_buf_append_u32(buf, auth->handle);
-+	/* our new nonce */
-+	tpm_buf_append_u16(buf, SHA256_DIGEST_SIZE);
-+	tpm_buf_append(buf, nonce, SHA256_DIGEST_SIZE);
-+	tpm_buf_append_u8(buf, auth->attrs);
-+	/* and put a placeholder for the hmac */
-+	tpm_buf_append_u16(buf, SHA256_DIGEST_SIZE);
-+	tpm_buf_append(buf, nonce, SHA256_DIGEST_SIZE);
-+#endif /* CONFIG_TCG_TPM2_HMAC */
-+}
-+EXPORT_SYMBOL_GPL(tpm_buf_append_hmac_session);
-+
- #ifdef CONFIG_TCG_TPM2_HMAC
- 
- static int tpm2_create_primary(struct tpm_chip *chip, u32 hierarchy,
-@@ -455,82 +557,6 @@ static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip)
- 	crypto_free_kpp(kpp);
- }
- 
--/**
-- * tpm_buf_append_hmac_session() - Append a TPM session element
-- * @chip: the TPM chip structure
-- * @buf: The buffer to be appended
-- * @attributes: The session attributes
-- * @passphrase: The session authority (NULL if none)
-- * @passphrase_len: The length of the session authority (0 if none)
-- *
-- * This fills in a session structure in the TPM command buffer, except
-- * for the HMAC which cannot be computed until the command buffer is
-- * complete.  The type of session is controlled by the @attributes,
-- * the main ones of which are TPM2_SA_CONTINUE_SESSION which means the
-- * session won't terminate after tpm_buf_check_hmac_response(),
-- * TPM2_SA_DECRYPT which means this buffers first parameter should be
-- * encrypted with a session key and TPM2_SA_ENCRYPT, which means the
-- * response buffer's first parameter needs to be decrypted (confusing,
-- * but the defines are written from the point of view of the TPM).
-- *
-- * Any session appended by this command must be finalized by calling
-- * tpm_buf_fill_hmac_session() otherwise the HMAC will be incorrect
-- * and the TPM will reject the command.
-- *
-- * As with most tpm_buf operations, success is assumed because failure
-- * will be caused by an incorrect programming model and indicated by a
-- * kernel message.
-- */
--void tpm_buf_append_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf,
--				 u8 attributes, u8 *passphrase,
--				 int passphrase_len)
--{
--	u8 nonce[SHA256_DIGEST_SIZE];
--	u32 len;
--	struct tpm2_auth *auth = chip->auth;
--
--	/*
--	 * The Architecture Guide requires us to strip trailing zeros
--	 * before computing the HMAC
--	 */
--	while (passphrase && passphrase_len > 0
--	       && passphrase[passphrase_len - 1] == '\0')
--		passphrase_len--;
--
--	auth->attrs = attributes;
--	auth->passphrase_len = passphrase_len;
--	if (passphrase_len)
--		memcpy(auth->passphrase, passphrase, passphrase_len);
--
--	if (auth->session != tpm_buf_length(buf)) {
--		/* we're not the first session */
--		len = get_unaligned_be32(&buf->data[auth->session]);
--		if (4 + len + auth->session != tpm_buf_length(buf)) {
--			WARN(1, "session length mismatch, cannot append");
--			return;
--		}
--
--		/* add our new session */
--		len += 9 + 2 * SHA256_DIGEST_SIZE;
--		put_unaligned_be32(len, &buf->data[auth->session]);
--	} else {
--		tpm_buf_append_u32(buf, 9 + 2 * SHA256_DIGEST_SIZE);
--	}
--
--	/* random number for our nonce */
--	get_random_bytes(nonce, sizeof(nonce));
--	memcpy(auth->our_nonce, nonce, sizeof(nonce));
--	tpm_buf_append_u32(buf, auth->handle);
--	/* our new nonce */
--	tpm_buf_append_u16(buf, SHA256_DIGEST_SIZE);
--	tpm_buf_append(buf, nonce, SHA256_DIGEST_SIZE);
--	tpm_buf_append_u8(buf, auth->attrs);
--	/* and put a placeholder for the hmac */
--	tpm_buf_append_u16(buf, SHA256_DIGEST_SIZE);
--	tpm_buf_append(buf, nonce, SHA256_DIGEST_SIZE);
--}
--EXPORT_SYMBOL(tpm_buf_append_hmac_session);
--
- /**
-  * tpm_buf_fill_hmac_session() - finalize the session HMAC
-  * @chip: the TPM chip structure
-@@ -561,6 +587,9 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
- 	u8 cphash[SHA256_DIGEST_SIZE];
- 	struct sha256_state sctx;
- 
-+	if (!auth)
-+		return;
-+
- 	/* save the command code in BE format */
- 	auth->ordinal = head->ordinal;
- 
-@@ -719,6 +748,9 @@ int tpm_buf_check_hmac_response(struct tpm_chip *chip, struct tpm_buf *buf,
- 	u32 cc = be32_to_cpu(auth->ordinal);
- 	int parm_len, len, i, handles;
- 
-+	if (!auth)
-+		return rc;
-+
- 	if (auth->session >= TPM_HEADER_SIZE) {
- 		WARN(1, "tpm session not filled correctly\n");
- 		goto out;
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index d9a6991b247d..e47f5d65935e 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -493,10 +493,6 @@ static inline void tpm_buf_append_empty_auth(struct tpm_buf *buf, u32 handle)
- 
- void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
- 			 u32 handle, u8 *name);
--
--#ifdef CONFIG_TCG_TPM2_HMAC
--
--int tpm2_start_auth_session(struct tpm_chip *chip);
- void tpm_buf_append_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf,
- 				 u8 attributes, u8 *passphrase,
- 				 int passphraselen);
-@@ -506,9 +502,27 @@ static inline void tpm_buf_append_hmac_session_opt(struct tpm_chip *chip,
- 						   u8 *passphrase,
- 						   int passphraselen)
+
+-static inline bool hugepage_flags_enabled(void)
++static inline bool hugepage_pmd_enabled(void)
  {
--	tpm_buf_append_hmac_session(chip, buf, attributes, passphrase,
--				    passphraselen);
-+	struct tpm_header *head;
-+	int offset;
+ 	/*
+-	 * We cover both the anon and the file-backed case here; we must return
+-	 * true if globally enabled, even when all anon sizes are set to never.
+-	 * So we don't need to look at huge_anon_orders_inherit.
++	 * We cover both the anon and the file-backed case here; file-backed
++	 * hugepages, when configured in, are determined by the global control.
++	 * Anon pmd-sized hugepages are determined by the pmd-size control.
+ 	 */
+-	return hugepage_global_enabled() ||
+-	       READ_ONCE(huge_anon_orders_always) ||
+-	       READ_ONCE(huge_anon_orders_madvise);
++	return (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && hugepage_global_enabled()) ||
++	       test_bit(PMD_ORDER, &huge_anon_orders_always) ||
++	       test_bit(PMD_ORDER, &huge_anon_orders_madvise) ||
++	       (test_bit(PMD_ORDER, &huge_anon_orders_inherit) && hugepage_global_enabled());
+ }
+
+ static inline int highest_order(unsigned long orders)
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 251d6932130f..085f5e973231 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -502,6 +502,13 @@ static ssize_t thpsize_enabled_store(struct kobject *kobj,
+ 	} else
+ 		ret = -EINVAL;
+
++	if (ret > 0) {
++		int err;
 +
-+	if (__and(IS_ENABLED(CONFIG_TCG_TPM2_HMAC), chip->auth)) {
-+		tpm_buf_append_hmac_session(chip, buf, attributes, passphrase, passphraselen);
-+	} else  {
-+		offset = buf->handles * 4 + TPM_HEADER_SIZE;
-+		head = (struct tpm_header *)buf->data;
-+
-+		/*
-+		 * If the only sessions are optional, the command tag must change to
-+		 * TPM2_ST_NO_SESSIONS.
-+		 */
-+		if (tpm_buf_length(buf) == offset)
-+			head->tag = cpu_to_be16(TPM2_ST_NO_SESSIONS);
++		err = start_stop_khugepaged();
++		if (err)
++			ret = err;
 +	}
+ 	return ret;
  }
-+
-+#ifdef CONFIG_TCG_TPM2_HMAC
-+
-+int tpm2_start_auth_session(struct tpm_chip *chip);
- void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf);
- int tpm_buf_check_hmac_response(struct tpm_chip *chip, struct tpm_buf *buf,
- 				int rc);
-@@ -523,48 +537,6 @@ static inline int tpm2_start_auth_session(struct tpm_chip *chip)
- static inline void tpm2_end_auth_session(struct tpm_chip *chip)
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 409f67a817f1..708d0e74b61f 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -449,7 +449,7 @@ void khugepaged_enter_vma(struct vm_area_struct *vma,
+ 			  unsigned long vm_flags)
  {
+ 	if (!test_bit(MMF_VM_HUGEPAGE, &vma->vm_mm->flags) &&
+-	    hugepage_flags_enabled()) {
++	    hugepage_pmd_enabled()) {
+ 		if (thp_vma_allowable_order(vma, vm_flags, TVA_ENFORCE_SYSFS,
+ 					    PMD_ORDER))
+ 			__khugepaged_enter(vma->vm_mm);
+@@ -2462,8 +2462,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+
+ static int khugepaged_has_work(void)
+ {
+-	return !list_empty(&khugepaged_scan.mm_head) &&
+-		hugepage_flags_enabled();
++	return !list_empty(&khugepaged_scan.mm_head) && hugepage_pmd_enabled();
  }
--static inline void tpm_buf_append_hmac_session(struct tpm_chip *chip,
--					       struct tpm_buf *buf,
--					       u8 attributes, u8 *passphrase,
--					       int passphraselen)
--{
--	/* offset tells us where the sessions area begins */
--	int offset = buf->handles * 4 + TPM_HEADER_SIZE;
--	u32 len = 9 + passphraselen;
--
--	if (tpm_buf_length(buf) != offset) {
--		/* not the first session so update the existing length */
--		len += get_unaligned_be32(&buf->data[offset]);
--		put_unaligned_be32(len, &buf->data[offset]);
--	} else {
--		tpm_buf_append_u32(buf, len);
--	}
--	/* auth handle */
--	tpm_buf_append_u32(buf, TPM2_RS_PW);
--	/* nonce */
--	tpm_buf_append_u16(buf, 0);
--	/* attributes */
--	tpm_buf_append_u8(buf, 0);
--	/* passphrase */
--	tpm_buf_append_u16(buf, passphraselen);
--	tpm_buf_append(buf, passphrase, passphraselen);
--}
--static inline void tpm_buf_append_hmac_session_opt(struct tpm_chip *chip,
--						   struct tpm_buf *buf,
--						   u8 attributes,
--						   u8 *passphrase,
--						   int passphraselen)
--{
--	int offset = buf->handles * 4 + TPM_HEADER_SIZE;
--	struct tpm_header *head = (struct tpm_header *) buf->data;
--
--	/*
--	 * if the only sessions are optional, the command tag
--	 * must change to TPM2_ST_NO_SESSIONS
--	 */
--	if (tpm_buf_length(buf) == offset)
--		head->tag = cpu_to_be16(TPM2_ST_NO_SESSIONS);
--}
- static inline void tpm_buf_fill_hmac_session(struct tpm_chip *chip,
- 					     struct tpm_buf *buf)
+
+ static int khugepaged_wait_event(void)
+@@ -2536,7 +2535,7 @@ static void khugepaged_wait_work(void)
+ 		return;
+ 	}
+
+-	if (hugepage_flags_enabled())
++	if (hugepage_pmd_enabled())
+ 		wait_event_freezable(khugepaged_wait, khugepaged_wait_event());
+ }
+
+@@ -2567,7 +2566,7 @@ static void set_recommended_min_free_kbytes(void)
+ 	int nr_zones = 0;
+ 	unsigned long recommended_min;
+
+-	if (!hugepage_flags_enabled()) {
++	if (!hugepage_pmd_enabled()) {
+ 		calculate_min_free_kbytes();
+ 		goto update_wmarks;
+ 	}
+@@ -2617,7 +2616,7 @@ int start_stop_khugepaged(void)
+ 	int err = 0;
+
+ 	mutex_lock(&khugepaged_mutex);
+-	if (hugepage_flags_enabled()) {
++	if (hugepage_pmd_enabled()) {
+ 		if (!khugepaged_thread)
+ 			khugepaged_thread = kthread_run(khugepaged, NULL,
+ 							"khugepaged");
+@@ -2643,7 +2642,7 @@ int start_stop_khugepaged(void)
+ void khugepaged_min_free_kbytes_update(void)
  {
--- 
-2.45.2
+ 	mutex_lock(&khugepaged_mutex);
+-	if (hugepage_flags_enabled() && khugepaged_thread)
++	if (hugepage_pmd_enabled() && khugepaged_thread)
+ 		set_recommended_min_free_kbytes();
+ 	mutex_unlock(&khugepaged_mutex);
+ }
+--
+2.43.0
 
 
