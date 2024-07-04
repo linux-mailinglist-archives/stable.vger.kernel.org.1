@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-58033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CBDF927319
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 11:32:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DEAD92732F
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 11:38:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6768F1C20922
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 09:32:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF5111C22E27
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 09:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DFE1A070E;
-	Thu,  4 Jul 2024 09:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE411AB8E8;
+	Thu,  4 Jul 2024 09:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BNAqwIcf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oulloxkq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294C013B29D;
-	Thu,  4 Jul 2024 09:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B702D1AB53E;
+	Thu,  4 Jul 2024 09:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720085547; cv=none; b=hXO2yWLRzvi+eixKryHURq4L16408dqDRlIHDeAE4gbj8jayM+61aV8VBgnWNp2uEW/0ukE3/KY65I4RDkxsmmKyStnUNVAl8v1VTzRbPZ+yPJIVfsdFlO3mePi/71xnHZjjC+WEtoAy1kOzClCyJYW+dkP7wf0su5K10CiKq1M=
+	t=1720085892; cv=none; b=DFHU5CMzeBsRTTxR1z7B3UkydkipCp2gyLQdqWjERdTBx9TrqQJHS/UdPYloRcB/jwsPHUdzozyOt2Stw1KU2fuw/LKP0YN+73/8jmzF0UdvxwQU9w3pnxyP85S5AePLRC8egrdlNUgrYnzniwUfjKeC2wPxG7P8f9maJ2NLBFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720085547; c=relaxed/simple;
-	bh=w19DchiW/7C37L4MuQM+qfzoS3IEIWVbJxorCmkgc9I=;
+	s=arc-20240116; t=1720085892; c=relaxed/simple;
+	bh=2AF9R27GPR4mjRKVTRDK0U53lPFG2NVTk4UwvfBSw/U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M64ITIAVeV/nywuhNjoPfesBcdfCZ9Ivjp+CLp/eAlif62nBxmGgkWnjjaSWkH5GPgJSrPrzlAfcyNm5ZFAm6iDZHzbsLvR/p0f3seP5rFexSZ0/hu9Mu7YM4DvteiuCajTsTdYd0kcBcNgAg/ZQjIsGgh74zQQRIvdpRPll6Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BNAqwIcf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C3DC32786;
-	Thu,  4 Jul 2024 09:32:26 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Oma9RqU8I64c2KdQ3g9ICj91sa/9+t+Uc9Clg8DuAWKXC32rLS9mTnczc2WIObHXPxkXhme33oDtaJcD64u+PV1v7GDCNHuOnjUgAEcUbRvLLKEn5amzm01bQwwROK+mYBsLyVHuDQeeWQNEbIUUUjBLJoAVYoEEf2+H1dG2Gt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oulloxkq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E671BC4AF0A;
+	Thu,  4 Jul 2024 09:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720085546;
-	bh=w19DchiW/7C37L4MuQM+qfzoS3IEIWVbJxorCmkgc9I=;
+	s=korg; t=1720085892;
+	bh=2AF9R27GPR4mjRKVTRDK0U53lPFG2NVTk4UwvfBSw/U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BNAqwIcfUM2oyPOu+N0omQ/Aw48pvHWGoHOgMqmb5UR/G0e4vgIkVFYvqx0iZDSOr
-	 9t/ejfmTQYtXZniUGFqg8BDScdTYtrChTtBeGk24je6r2xBdutolp7FTElPJcm36lH
-	 v09x0CK3UNja4i6Jbm9A34j6eGriKxcgbWG9I3Vw=
-Date: Thu, 4 Jul 2024 11:32:24 +0200
+	b=OulloxkqYmbeB3pLFV7nMiqckYQPiiHdJTUpcXlqSeE4NljCEoPmIfaacE1fv84wm
+	 52z8Luv2MLT0Iq4IK56fWQEDhx6g0wXt+Z3MHSTn3/fmuFrmgWhYVTNYmFEvy5ueHr
+	 hlQyKSYq+E/BX9eQU7hFBO9sp8p7lNYyrmpw5VyQ=
+Date: Thu, 4 Jul 2024 11:38:09 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Yunseong Kim <yskelg@gmail.com>, stable@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Sasha Levin <sashal@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Taehee Yoo <ap420073@gmail.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Austin Kim <austindh.kim@gmail.com>,
-	MichelleJin <shjy180909@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	ppbuk5246@gmail.com, Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: Re: [PATCH] tracing/net_sched: NULL pointer dereference in
- perf_trace_qdisc_reset()
-Message-ID: <2024070400-slideshow-professor-af80@gregkh>
-References: <20240702180146.5126-2-yskelg@gmail.com>
- <20240703191835.2cc2606f@kernel.org>
+To: Joe Perches <joe@perches.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Suganath Prabu <suganath-prabu.subramani@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 4.19 093/139] scsi: mpt3sas: Add ioc_<level> logging
+ macros
+Message-ID: <2024070449-tarantula-unwieldy-9b51@gregkh>
+References: <20240703102830.432293640@linuxfoundation.org>
+ <20240703102833.952003952@linuxfoundation.org>
+ <f054ce9050f20e99afbed174c07f67efc61ef906.camel@perches.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,25 +59,21 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240703191835.2cc2606f@kernel.org>
+In-Reply-To: <f054ce9050f20e99afbed174c07f67efc61ef906.camel@perches.com>
 
-On Wed, Jul 03, 2024 at 07:18:35PM -0700, Jakub Kicinski wrote:
-> On Wed,  3 Jul 2024 03:01:47 +0900 Yunseong Kim wrote:
-> > Support backports for stable version. There are two places where null
-> > deref could happen before
-> > commit 2c92ca849fcc ("tracing/treewide: Remove second parameter of __assign_str()")
-> > Link: https://lore.kernel.org/linux-trace-kernel/20240516133454.681ba6a0@rorschach.local.home/
-> > 
-> > I've checked +v6.1.82 +v6.6.22 +v6.7.10, +v6.8, +6.9, this version need
-> > to be applied, So, I applied the patch, tested it again, and confirmed
-> > working fine.
+On Wed, Jul 03, 2024 at 04:10:43AM -0700, Joe Perches wrote:
+> On Wed, 2024-07-03 at 12:39 +0200, Greg Kroah-Hartman wrote:
+> > 4.19-stable review patch.  If anyone has any objections, please let me know.
 > 
-> You're missing the customary "[ Upstream commit <upstream commit> ]"
-> line, not sure Greg will pick this up.
+> Still think this isn't necessary.
 > 
+> see: https://lore.kernel.org/stable/Zn25eTIrGAKneEm_@sashalap/
 
-Yeah, I missed this, needs to be very obvious what is happening here.
-I'll replace the version in the queues with this one now, thanks.
+It's needed due to commit ffedeae1fa54 ("scsi: mpt3sas: Gracefully
+handle online firmware update") which is in this series and uses the
+io_info() macro.
+
+thanks,
 
 greg k-h
 
