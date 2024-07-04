@@ -1,234 +1,131 @@
-Return-Path: <stable+bounces-58090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07055927D43
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 20:44:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A24927D51
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 20:53:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CD931F24840
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 18:44:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42EA61C22371
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 18:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15313131E2D;
-	Thu,  4 Jul 2024 18:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF7A13AD03;
+	Thu,  4 Jul 2024 18:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="C4gU441C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SxpYjMPL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB11173448;
-	Thu,  4 Jul 2024 18:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B0A54660;
+	Thu,  4 Jul 2024 18:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720118645; cv=none; b=JCmwO5vmK9gpGILSyEIfjUsezP2IE8k7x8ZSdypkPXCgy7ot7iMRbv7OXpf8l29DlzkNedWc9RwKdukHYyPNG82/9jEfHKttlTWJ0V2PXXVx8639/6Kat1cmjV74jR0uOGXwnV+Pd5lCrDOUYn54gofKb1qFLqlvDWZaBz931uM=
+	t=1720119206; cv=none; b=YvbBP9Lx6WY4nCAsc2uicg3Delux3unpsPCGTYJXK8LWKNx3axWa+3Mr9Dk+lT8oIq9DEzEmkOY/bhlDQ484O5b55jI9Pce2fDm5UUzehajLhrxBKAWAgjvtbqbmA/L4LQC0tq2uwbpUDhLtzZUbS8KlBBo+nafvLwabPHjaQB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720118645; c=relaxed/simple;
-	bh=r49hmGx633SdpXbLnwpR2+M1sg4c4srNN+hBIO7Ucd4=;
-	h=Date:To:From:Subject:Message-Id; b=mCX7WDOmLeZaeX5N3CcZW30EGaB/zdVBdu0WVV+1m3oUR+55CU7SdSkgCrCm3RAlSJHihlTzrjT+C7JSY1LOQ3DFr7zXJ0byTcoBxAsY2U4AEouW32UldVLaNth1RSOuVEjunHdb85ZgVa3EztuiRkuzekPzYmfDeOkdP4WFA0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=C4gU441C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED03C4AF0A;
-	Thu,  4 Jul 2024 18:44:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1720118645;
-	bh=r49hmGx633SdpXbLnwpR2+M1sg4c4srNN+hBIO7Ucd4=;
-	h=Date:To:From:Subject:From;
-	b=C4gU441CRVHX6PxMC7r3BJ1jl7y35zBBByOmCQU+VrEdpkPuN5/gHVk0V7mA3mXcq
-	 J/disUcETMa95oAvAR7PUt7IhLNdimNGDVkXngBSs2p/HF18WZnz0ElsWg9XZ8ntOE
-	 3V7b8C7Vwsp0sVoRovMZc2hYddX0+rrDf0hnQYa8=
-Date: Thu, 04 Jul 2024 11:44:04 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,david@redhat.com,baolin.wang@linux.alibaba.com,aneesh.kumar@linux.ibm.com,21cnbao@gmail.com,yangge1116@126.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-gup-clear-the-lru-flag-of-a-page-before-adding-to-lru-batch.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240704184405.4ED03C4AF0A@smtp.kernel.org>
+	s=arc-20240116; t=1720119206; c=relaxed/simple;
+	bh=ozB6sXxoZjPGE+obe6yHmAPktZE1u9uWHV2bB0LM1Ic=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mJW7GZTjgLJePAdynKASZGYpgCheBrcH2mWQAcMFFx9JCv1rXTQY7dx6aGXss4pxZ69WgqGbRyPV/+QPnrqQZwF8xCrmnLWKeXArzHUuc/fKfaVblp2acPHi4LHj4QRf9/6n7Jphu2CzVvKy5MjibgTtompO2nWRiGwqlhf6RN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SxpYjMPL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D968C3277B;
+	Thu,  4 Jul 2024 18:53:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720119205;
+	bh=ozB6sXxoZjPGE+obe6yHmAPktZE1u9uWHV2bB0LM1Ic=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SxpYjMPL90kk5BfTb8v/F776y8N3oYo133wDOgEGHMsg7oVJ1r9rkbeGMyQgrNg0N
+	 rkwMKKqiCIIdvo5EvTtdlxg87Q1zFuPlF279GkMnfawAo5bW2iZv4jBEsboUz2EnPU
+	 nBg1yPFyMhRqYxS4CdHUtUlAssKrOKHWWNJHMac4fm/gP7N5zOGEm0tV3fRwPntVVs
+	 /G/UEqIeoMUytJPw08YhXA/tmBpeCJgU50k5vTe22n+QR/x3ee2/fd+7mQJooBOdh2
+	 UzLs7sisM6s/l7lcLoJgYSifWL8x1B/eEeHh61YuHEWZn/9QjpUYUHnboYFctz4ldH
+	 2yX1q3tK5GecQ==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-integrity@vger.kernel.org
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	stable@vger.kernel.org,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	keyrings@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 1/3] tpm: Address !chip->auth in tpm2_*_auth_session()
+Date: Thu,  4 Jul 2024 21:53:06 +0300
+Message-ID: <20240704185313.224318-2-jarkko@kernel.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240704185313.224318-1-jarkko@kernel.org>
+References: <20240704185313.224318-1-jarkko@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+Unless tpm_chip_bootstrap() was called by the driver, !chip->auth can cause
+a null derefence in tpm2_*_auth_session(). Thus, address !chip->auth in
+tpm2_*_auth_session().
 
-The patch titled
-     Subject: mm/gup: clear the LRU flag of a page before adding to LRU batch
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-gup-clear-the-lru-flag-of-a-page-before-adding-to-lru-batch.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-gup-clear-the-lru-flag-of-a-page-before-adding-to-lru-batch.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: yangge <yangge1116@126.com>
-Subject: mm/gup: clear the LRU flag of a page before adding to LRU batch
-Date: Wed, 3 Jul 2024 20:02:33 +0800
-
-If a large number of CMA memory are configured in system (for example,
-the CMA memory accounts for 50% of the system memory), starting a
-virtual virtual machine with device passthrough, it will call
-pin_user_pages_remote(..., FOLL_LONGTERM, ...) to pin memory.  Normally
-if a page is present and in CMA area, pin_user_pages_remote() will
-migrate the page from CMA area to non-CMA area because of FOLL_LONGTERM
-flag.  But the current code will cause the migration failure due to
-unexpected page refcounts, and eventually cause the virtual machine
-fail to start.
-
-If a page is added in LRU batch, its refcount increases one, remove the
-page from LRU batch decreases one.  Page migration requires the page is
-not referenced by others except page mapping.  Before migrating a page,
-we should try to drain the page from LRU batch in case the page is in
-it, however, folio_test_lru() is not sufficient to tell whether the
-page is in LRU batch or not, if the page is in LRU batch, the migration
-will fail.
-
-To solve the problem above, we modify the logic of adding to LRU batch.
-Before adding a page to LRU batch, we clear the LRU flag of the page
-so that we can check whether the page is in LRU batch by
-folio_test_lru(page).  It's quite valuable, because likely we don't
-want to blindly drain the LRU batch simply because there is some
-unexpected reference on a page, as described above.
-
-This change makes the LRU flag of a page invisible for longer, which
-may impact some programs.  For example, as long as a page is on a LRU
-batch, we cannot isolate it, and we cannot check if it's an LRU page. 
-Further, a page can now only be on exactly one LRU batch.  This doesn't
-seem to matter much, because a new page is allocated from buddy and
-added to the lru batch, or be isolated, it's LRU flag may also be
-invisible for a long time.
-
-Link: https://lkml.kernel.org/r/1720075944-27201-1-git-send-email-yangge1116@126.com
-Link: https://lkml.kernel.org/r/1720008153-16035-1-git-send-email-yangge1116@126.com
-Fixes: 9a4e9f3b2d73 ("mm: update get_user_pages_longterm to migrate pages allocated from CMA region")
-Signed-off-by: yangge <yangge1116@126.com>
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Barry Song <21cnbao@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org # v6.9+
+Reported-by: Stefan Berger <stefanb@linux.ibm.com>
+Closes: https://lore.kernel.org/linux-integrity/20240617193408.1234365-1-stefanb@linux.ibm.com/
+Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
+Tested-by: Michael Ellerman <mpe@ellerman.id.au> # ppc
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
+v4:
+* Added tested-by from Michael Ellerman.
+v3:
+* No changes.
+v2:
+* Use dev_warn_once() instead of pr_warn_once().
+---
+ drivers/char/tpm/tpm2-sessions.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
- mm/swap.c |   43 +++++++++++++++++++++++++++++++------------
- 1 file changed, 31 insertions(+), 12 deletions(-)
-
---- a/mm/swap.c~mm-gup-clear-the-lru-flag-of-a-page-before-adding-to-lru-batch
-+++ a/mm/swap.c
-@@ -212,10 +212,6 @@ static void folio_batch_move_lru(struct
- 	for (i = 0; i < folio_batch_count(fbatch); i++) {
- 		struct folio *folio = fbatch->folios[i];
- 
--		/* block memcg migration while the folio moves between lru */
--		if (move_fn != lru_add_fn && !folio_test_clear_lru(folio))
--			continue;
--
- 		folio_lruvec_relock_irqsave(folio, &lruvec, &flags);
- 		move_fn(lruvec, folio);
- 
-@@ -256,11 +252,16 @@ static void lru_move_tail_fn(struct lruv
- void folio_rotate_reclaimable(struct folio *folio)
+diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+index 907ac9956a78..2f1d96a5a5a7 100644
+--- a/drivers/char/tpm/tpm2-sessions.c
++++ b/drivers/char/tpm/tpm2-sessions.c
+@@ -824,8 +824,13 @@ EXPORT_SYMBOL(tpm_buf_check_hmac_response);
+  */
+ void tpm2_end_auth_session(struct tpm_chip *chip)
  {
- 	if (!folio_test_locked(folio) && !folio_test_dirty(folio) &&
--	    !folio_test_unevictable(folio) && folio_test_lru(folio)) {
-+	    !folio_test_unevictable(folio)) {
- 		struct folio_batch *fbatch;
- 		unsigned long flags;
- 
- 		folio_get(folio);
-+		if (!folio_test_clear_lru(folio)) {
-+			folio_put(folio);
-+			return;
-+		}
+-	tpm2_flush_context(chip, chip->auth->handle);
+-	memzero_explicit(chip->auth, sizeof(*chip->auth));
++	struct tpm2_auth *auth = chip->auth;
 +
- 		local_lock_irqsave(&lru_rotate.lock, flags);
- 		fbatch = this_cpu_ptr(&lru_rotate.fbatch);
- 		folio_batch_add_and_move(fbatch, folio, lru_move_tail_fn);
-@@ -353,11 +354,15 @@ static void folio_activate_drain(int cpu
- 
- void folio_activate(struct folio *folio)
- {
--	if (folio_test_lru(folio) && !folio_test_active(folio) &&
--	    !folio_test_unevictable(folio)) {
-+	if (!folio_test_active(folio) && !folio_test_unevictable(folio)) {
- 		struct folio_batch *fbatch;
- 
- 		folio_get(folio);
-+		if (!folio_test_clear_lru(folio)) {
-+			folio_put(folio);
-+			return;
-+		}
-+
- 		local_lock(&cpu_fbatches.lock);
- 		fbatch = this_cpu_ptr(&cpu_fbatches.activate);
- 		folio_batch_add_and_move(fbatch, folio, folio_activate_fn);
-@@ -701,6 +706,11 @@ void deactivate_file_folio(struct folio
- 		return;
- 
- 	folio_get(folio);
-+	if (!folio_test_clear_lru(folio)) {
-+		folio_put(folio);
++	if (!auth)
 +		return;
++
++	tpm2_flush_context(chip, auth->handle);
++	memzero_explicit(auth, sizeof(*auth));
+ }
+ EXPORT_SYMBOL(tpm2_end_auth_session);
+ 
+@@ -907,6 +912,11 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
+ 	int rc;
+ 	u32 null_key;
+ 
++	if (!auth) {
++		dev_warn_once(&chip->dev, "auth session is not active\n");
++		return 0;
 +	}
 +
- 	local_lock(&cpu_fbatches.lock);
- 	fbatch = this_cpu_ptr(&cpu_fbatches.lru_deactivate_file);
- 	folio_batch_add_and_move(fbatch, folio, lru_deactivate_file_fn);
-@@ -717,11 +727,16 @@ void deactivate_file_folio(struct folio
-  */
- void folio_deactivate(struct folio *folio)
- {
--	if (folio_test_lru(folio) && !folio_test_unevictable(folio) &&
--	    (folio_test_active(folio) || lru_gen_enabled())) {
-+	if (!folio_test_unevictable(folio) && (folio_test_active(folio) ||
-+	    lru_gen_enabled())) {
- 		struct folio_batch *fbatch;
- 
- 		folio_get(folio);
-+		if (!folio_test_clear_lru(folio)) {
-+			folio_put(folio);
-+			return;
-+		}
-+
- 		local_lock(&cpu_fbatches.lock);
- 		fbatch = this_cpu_ptr(&cpu_fbatches.lru_deactivate);
- 		folio_batch_add_and_move(fbatch, folio, lru_deactivate_fn);
-@@ -738,12 +753,16 @@ void folio_deactivate(struct folio *foli
-  */
- void folio_mark_lazyfree(struct folio *folio)
- {
--	if (folio_test_lru(folio) && folio_test_anon(folio) &&
--	    folio_test_swapbacked(folio) && !folio_test_swapcache(folio) &&
--	    !folio_test_unevictable(folio)) {
-+	if (folio_test_anon(folio) && folio_test_swapbacked(folio) &&
-+	    !folio_test_swapcache(folio) && !folio_test_unevictable(folio)) {
- 		struct folio_batch *fbatch;
- 
- 		folio_get(folio);
-+		if (!folio_test_clear_lru(folio)) {
-+			folio_put(folio);
-+			return;
-+		}
-+
- 		local_lock(&cpu_fbatches.lock);
- 		fbatch = this_cpu_ptr(&cpu_fbatches.lru_lazyfree);
- 		folio_batch_add_and_move(fbatch, folio, lru_lazyfree_fn);
-_
-
-Patches currently in -mm which might be from yangge1116@126.com are
-
-mm-gup-clear-the-lru-flag-of-a-page-before-adding-to-lru-batch.patch
+ 	rc = tpm2_load_null(chip, &null_key);
+ 	if (rc)
+ 		goto out;
+-- 
+2.45.2
 
 
