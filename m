@@ -1,111 +1,127 @@
-Return-Path: <stable+bounces-58045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AAD2927619
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 14:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 590F5927625
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 14:39:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14F801F23CB4
-	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 12:33:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 022131F22F34
+	for <lists+stable@lfdr.de>; Thu,  4 Jul 2024 12:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE9B1AE0BD;
-	Thu,  4 Jul 2024 12:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F391AE84E;
+	Thu,  4 Jul 2024 12:38:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="v5xkoXT9"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp-8fa8.mail.infomaniak.ch (smtp-8fa8.mail.infomaniak.ch [83.166.143.168])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67041AD9DE;
-	Thu,  4 Jul 2024 12:32:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660921E494
+	for <stable@vger.kernel.org>; Thu,  4 Jul 2024 12:38:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.166.143.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720096367; cv=none; b=YcVkRL8DgYyG4fcss7EWAMDN5VNJ/Y6bO+km/f/hEB9PaordPDnlYsBr2BZmJAQ60CpNGT3vVyiofrkindZp2rZ3PqrbvTKjSjwsaHwFtrFkpSeNllesiXviKGB9J9tbcS1D/92AoNH0u39fpt9PG4/H550elQUg4TxCtK/cin0=
+	t=1720096733; cv=none; b=pDarNdZ4VYatx53KKgXp08e4heDXGzF+/5/zZZKBtv/h5+LaScD8SYM2divm+3VtvjWO2lnsozc+DcAKDXwORqs95eq/SIew1wuKrch7Ml7PgF2xm+UwaU5faXu58kt6WSVqYUksjVGUEReKPlY+GvYp8oA7Y+PoFyWjNPzqvfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720096367; c=relaxed/simple;
-	bh=ad13uWHtYL/MVj0k81LHiOGU3vJiYjag66b7jIf1asc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mIeQj7dQ+y2dA8OWCaGgIX4pQVLTujUKEAjhs/69qHD/nJ6OvDqCM0xMfbukFL4St6miixZohRLOrK2dRHbwV9vHADyEGDcMB66AT3lQ/6UjX/wfWUXESR2bvTIhfbzXePpkliOiHzFvi4mv+H7G4pWBIrV7YZt436QfcBiUEKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-01 (Coremail) with SMTP id qwCowAAX+ExXloZm+2KMAQ--.18813S2;
-	Thu, 04 Jul 2024 20:32:31 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: patrik.r.jakobsson@gmail.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	airlied@redhat.com,
-	alan@linux.intel.com
-Cc: dri-devel@lists.freedesktop.org,
+	s=arc-20240116; t=1720096733; c=relaxed/simple;
+	bh=bqLxJ3KS7JelbDmZbufg+3QXF9H7AsCpHI8xNEyWlAI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=vB3R9NWTRXIi5hp2j5zObmo5g953Q6AHBSyJOwkIaSpkwDGEG6QCQV8L1oDspXEsMFuLUqY0a59CKk1lLafAuaNrKYXz9/+pdHLuZwQqwqVd9s426fasYICeKkP3YADYFD8qGEnh2vFxEK7DVg/XhUjNdGQma6K+HTqWV5S0BC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=v5xkoXT9; arc=none smtp.client-ip=83.166.143.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+Received: from smtp-4-0000.mail.infomaniak.ch (smtp-4-0000.mail.infomaniak.ch [10.7.10.107])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4WFGR31j82zGlt;
+	Thu,  4 Jul 2024 14:38:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1720096718;
+	bh=oswOPQ88LI9ZZ4dLvGzzNSGgsrVZFJ4bTKOLf0jSje0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=v5xkoXT9pt4oLWpOuURpdCIOvi1n0uymB7k3u96ouDEmBvC0lD8MqV90lJsEHNyxb
+	 9LLj8NgKnPtojW0nAYAXI0k6VeBhNqPxWqzsReKLhg7KTFIRy0m7YhBk+U7Lzlswft
+	 y8jT8CBMTr2/BYwxKDDCRKEfmdIRJHlyzwNZgOZo=
+Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4WFGQy0YxQz14Q;
+	Thu,  4 Jul 2024 14:38:33 +0200 (CEST)
+From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Brendan Higgins <brendanhiggins@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Gow <davidgow@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Kees Cook <keescook@chromium.org>,
+	Mark Brown <broonie@kernel.org>,
+	Richard Weinberger <richard@nod.at>,
+	Ron Economos <re@w6rz.net>,
+	Ronald Warsow <rwarsow@gmx.de>,
+	Sasha Levin <sashal@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Shengyu Li <shengyu.li.evgeny@gmail.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Will Drewry <wad@chromium.org>,
+	kernel test robot <oliver.sang@intel.com>,
+	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
+	linux-kselftest@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	netdev@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v2 RESEND] drm/gma500: fix null pointer dereference in cdv_intel_lvds_get_modes
-Date: Thu,  4 Jul 2024 20:32:21 +0800
-Message-Id: <20240704123221.291438-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+Subject: [GIT PULL] Kselftest fixes for v6.10
+Date: Thu,  4 Jul 2024 14:38:16 +0200
+Message-ID: <20240704123816.669022-1-mic@digikod.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAAX+ExXloZm+2KMAQ--.18813S2
-X-Coremail-Antispam: 1UD129KBjvJXoWrtF1rCw4fWFWDtFWkWr13XFb_yoW8Jryfpr
-	47GFyjyr4FqFZFgFW8C3WvgF4Yqa43KFn7KryDZws3uFn0yF1UXryru3yfWrW3CFZxGrZY
-	yrnxtay5Ga10kF7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9j14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
-	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
-	C2KfnxnUUI43ZEXa7VUbHa0DUUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+X-Infomaniak-Routing: alpha
 
-In cdv_intel_lvds_get_modes(), the return value of drm_mode_duplicate()
-is assigned to mode, which will lead to a NULL pointer dereference on
-failure of drm_mode_duplicate(). Add a check to avoid npd.
+Hi Linus,
 
-Cc: stable@vger.kernel.org
-Fixes: 6a227d5fd6c4 ("gma500: Add support for Cedarview")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
-Changes in v2:
-- modified the patch according to suggestions from other patchs;
-- added Fixes line;
-- added Cc stable;
-- Link: https://lore.kernel.org/lkml/20240622072514.1867582-1-make24@iscas.ac.cn/T/
----
- drivers/gpu/drm/gma500/cdv_intel_lvds.c | 3 +++
- 1 file changed, 3 insertions(+)
+This PR fixes a few kselftests [1].  This has been in linux-next for a week and
+rebased to add Mark Brown's Tested-by.  The race condition found while writing
+this fix is not new and seems specific to UML's hostfs (I also tested against
+ext4 and btrfs without being able to trigger this issue).
 
-diff --git a/drivers/gpu/drm/gma500/cdv_intel_lvds.c b/drivers/gpu/drm/gma500/cdv_intel_lvds.c
-index f08a6803dc18..3adc2c9ab72d 100644
---- a/drivers/gpu/drm/gma500/cdv_intel_lvds.c
-+++ b/drivers/gpu/drm/gma500/cdv_intel_lvds.c
-@@ -311,6 +311,9 @@ static int cdv_intel_lvds_get_modes(struct drm_connector *connector)
- 	if (mode_dev->panel_fixed_mode != NULL) {
- 		struct drm_display_mode *mode =
- 		    drm_mode_duplicate(dev, mode_dev->panel_fixed_mode);
-+		if (!mode)
-+			return 0;
-+
- 		drm_mode_probed_add(connector, mode);
- 		return 1;
- 	}
--- 
-2.25.1
+Feel free to take this PR if you see fit.
 
+Regards,
+ Mickaël
+
+[1] https://lore.kernel.org/r/9341d4db-5e21-418c-bf9e-9ae2da7877e1@sirena.org.uk
+
+--
+The following changes since commit f2661062f16b2de5d7b6a5c42a9a5c96326b8454:
+
+  Linux 6.10-rc5 (2024-06-23 17:08:54 -0400)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/mic/linux.git tags/kselftest-fix-2024-07-04
+
+for you to fetch changes up to 130e42806773013e9cf32d211922c935ae2df86c:
+
+  selftests/harness: Fix tests timeout and race condition (2024-06-28 16:06:03 +0200)
+
+----------------------------------------------------------------
+Fix Kselftests timeout and race condition
+
+----------------------------------------------------------------
+Mickaël Salaün (1):
+      selftests/harness: Fix tests timeout and race condition
+
+ tools/testing/selftests/kselftest_harness.h | 43 ++++++++++++++++-------------
+ 1 file changed, 24 insertions(+), 19 deletions(-)
 
