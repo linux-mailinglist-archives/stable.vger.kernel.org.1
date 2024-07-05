@@ -1,122 +1,92 @@
-Return-Path: <stable+bounces-58138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C656928ACA
-	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 16:35:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D7E928AD7
+	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 16:44:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC7501C22947
-	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 14:35:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11992B21367
+	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 14:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A085716C688;
-	Fri,  5 Jul 2024 14:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A597216A94A;
+	Fri,  5 Jul 2024 14:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="edn+Xqdj"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="YliE/fNc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C16716C444;
-	Fri,  5 Jul 2024 14:35:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41AE1465B3;
+	Fri,  5 Jul 2024 14:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720190113; cv=none; b=L/vAGw4Dq7GBkRZbjdV7HEQl9WL0o0aksApKhGWIHmK8dXQcri9woRS0/e6DBkTqSn/x4204FuO8tTOMnqXwX5tO+XkOlrDhFcQ/84LHrS3EpilwY/ALLOt2LDBSCbZTyTTeFKPqVH2ow4FDdH/Piz1twRwiN18KUAbMJp3C+PA=
+	t=1720190632; cv=none; b=e/JJE63Q7zwM/9f4yNwGmRXp3b5ESaZ4dVhANh5NBIE9B8r4/RvaMWJ5ZXC6/aiPHYg+wAuxI3d/Bb0hY+Vfx62DakmpqX/c2CTffnQKM7K1bngpG4SEMobNhEZ2+bEjlvpHyfD8yznPVgrm7YmPXLDdPnhFdPKX3A1igTPMlDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720190113; c=relaxed/simple;
-	bh=VlgJjr/VJ8dDWRH6EvR9EdtJ5JA7lCef8hi6JrtfQS8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=VrgX+lcJrFc5u46wnhSBWPMcZkk0di5eVjst8heZJAp2jshHKpTaSl3AOBaBESbdLz+MWIE0mwGsILk8WoBd8JC/C3iYcZkn2kMN5KOspNeEkDhzJYwOc6VzQ6CQynLSW8hgSr8kZAspQ7JHBd54y+68LfLJ7oM9b7E40wMqaU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=edn+Xqdj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 372DFC116B1;
-	Fri,  5 Jul 2024 14:35:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720190112;
-	bh=VlgJjr/VJ8dDWRH6EvR9EdtJ5JA7lCef8hi6JrtfQS8=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=edn+XqdjyRhZIT10+kvJqkewRhmj36TYqAUa7hBTubTpeLGRKMVjxvUOfz29hTQNj
-	 NsZysK0UETcD4CyLM203NsBKWl1fG0Xuu/F9eOxz5rDJ2t+38GPYtCfwq4ZqHEmNkD
-	 RF18SHslTejZvy2p5Q3gIWZCaXtQZX8XhQuMZwOKprhb5n/t2/kuLKm4I6TMbLaSz/
-	 HkrHjG6H+NrlwrDJFsQOzqE1oCUfUNyT5vmA2z5G22wUg0/NB6ILqERnyXianUEPZY
-	 MNsrhzzsIo5bgf5yuPp4zHd1TUPjNg9jOf7vOGjue/UpHIQhU+uh0iQI7uViNvTOQe
-	 rnliuSEqqEW1A==
+	s=arc-20240116; t=1720190632; c=relaxed/simple;
+	bh=Vhntci0wzGkw+gduQ/JT/972+ITFydSC0rXzJYt6SD0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i/wT7Q1AElX6ItrC0ZQ5s6XNzP5yZK/GeVtN3WYleTYn7MppjQeSy9+Aqj8V88A8pOA322FbktguXl1ZOUMNFYJ/YoHwV3CphJua/MjL+O5d+spNjTT5FYbcP+/oiZrv+HNAiDxgejRfZbKG1cQO7MMOKAsbUQ2upvvoAULMWoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=YliE/fNc; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=j0SJsEEP11U4Vk7UXdQukCdPjJQfadC3871Fcu4WmXw=; b=YliE/fNcZFURKz25OvdBvqgnuf
+	+1PmeQN/O1v6WBIJ+Gv+jojfC/8t3vkeTLZYoSn/auGiQgisQAkSqGDwla2AXCLDSikU4RoVMVIBd
+	hWK2horQVBCMKv75MM/NUwlC/rY46ZaHjfKZTGe4IIdpwj7at//b6yeNX1+9dpuir3Gq1UlKhgiTx
+	mZwFQO3KOpWy3j02EhgCJY/8hqPdV1kIHfs8ZMnvhXe5dbYZBtjUy7rZpk6JDXCgC3IJ/QlwqDetr
+	8HuGC0hEY02EYq5rWDwyY0lnE+Yw7d5dbaphF8MvvQjtGF1iwHWMoCzJteMpydff6sj/IMMNZBBSt
+	NHh3YJvw==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sPk9y-0000000447K-1T2F;
+	Fri, 05 Jul 2024 14:43:38 +0000
+Date: Fri, 5 Jul 2024 15:43:38 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Tvrtko Ursulin <tursulin@igalia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-dev@igalia.com,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Huang Ying <ying.huang@intel.com>, Mel Gorman <mgorman@suse.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Rik van Riel <riel@surriel.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Andi Kleen <ak@linux.intel.com>, Michal Hocko <mhocko@suse.com>,
+	David Rientjes <rientjes@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] mm/numa_balancing: Teach mpol_to_str about the
+ balancing mode
+Message-ID: <ZogGmvTfOXqUtyz6@casper.infradead.org>
+References: <20240705143218.21258-1-tursulin@igalia.com>
+ <20240705143218.21258-2-tursulin@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 05 Jul 2024 17:35:05 +0300
-Message-Id: <D2HOI1829XOO.3ERITAWX9N5IC@kernel.org>
-Subject: Re: [PATCH v2 3/3] tpm: Address !chip->auth in
- tpm_buf_append_hmac_session*()
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Stefan Berger" <stefanb@linux.ibm.com>,
- <linux-integrity@vger.kernel.org>
-Cc: "Thorsten Leemhuis" <regressions@leemhuis.info>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, <stable@vger.kernel.org>, "Peter Huewe"
- <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>, "James Bottomley"
- <James.Bottomley@HansenPartnership.com>, "Mimi Zohar"
- <zohar@linux.ibm.com>, "David Howells" <dhowells@redhat.com>, "Paul Moore"
- <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
- Hallyn" <serge@hallyn.com>, "Ard Biesheuvel" <ardb@kernel.org>, "Mario
- Limonciello" <mario.limonciello@amd.com>, <linux-kernel@vger.kernel.org>,
- <keyrings@vger.kernel.org>, <linux-security-module@vger.kernel.org>
-X-Mailer: aerc 0.17.0
-References: <20240703182453.1580888-1-jarkko@kernel.org>
- <20240703182453.1580888-4-jarkko@kernel.org>
- <c90ce151-c6e5-40c6-8d3d-ccec5a97d10f@linux.ibm.com>
- <D2GJSLLC0LSF.2RP57L3ALBW38@kernel.org>
- <bffebaaa-4831-459f-939d-adf531e4c78b@linux.ibm.com>
-In-Reply-To: <bffebaaa-4831-459f-939d-adf531e4c78b@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240705143218.21258-2-tursulin@igalia.com>
 
-On Fri Jul 5, 2024 at 5:05 PM EEST, Stefan Berger wrote:
-> The original thread here
->
-> https://lore.kernel.org/linux-integrity/656b319fc58683e399323b88072243446=
-7cf20f2.camel@kernel.org/T/#t
->
-> identified the fact that tpm2_session_init() was missing for the ibmvtpm=
-=20
-> driver. It is a non-zero problem for the respective platforms where this=
-=20
-> driver is being used. The patched fixed the reported issue.
+On Fri, Jul 05, 2024 at 03:32:16PM +0100, Tvrtko Ursulin wrote:
+> +		if (flags & MPOL_F_NUMA_BALANCING) {
+> +			if (hweight16(flags & MPOL_MODE_FLAGS) > 1)
 
-All bugs needs to be fixed always before features are added. You are
-free now to submit your change as a feature patch, which will be
-reviewed and applied later on.
+hweight() > 1 seems somewhat inefficient.
+!is_power_of_2() would be better.  Or clear off the bits as they're
+printed and print the bar if the remaining flags are not 0.
 
-> Now that you fixed it in v4 are you going to accept my original patch=20
-> with the Fixes tag since we will (likely) have an enabled feature in=20
-> 6.10 that is not actually working when the ibmvtpm driver is being used?
-
-There's no bug in tpm_ibmvtpm driver as it functions as well as in 6.9.
-
-I can review it earliest in the week 31, as feature patch. This was my
-holiday week, and I came back only to fix the bug in the authentication
-session patch set.
-
-> I do no think that this is true and its only tpm_ibmvtpm.c that need the=
-=20
-> call to tpm2_session_init. All drivers that use TPM_OPS_AUTO_STARTUP=20
-> will run tpm_chip_register -> tpm_chip_bootstrap -> tpm_auto_startup ->=
-=20
-> tpm2_auto_startup -> tpm2_sessions_init
-
-Right my bad. I overlooked the call sites and you're correct in that
-for anything with that flag on, it will be called.
-
-It still changes nothing, as the commit you were pointing out in the
-fixes tag does not implement initialization code, and we would not have
-that flag in the first place, if it was mandatory [1].
-
-[1] It could be that it is mandatory perhaps, but that is a different
-story. Then we would render the whole flag out. I think this was anyway
-good insight, even if by unintentionally, and we can reconsider removing
-it some day.
-
-BR, Jarkko
+> +				p += snprintf(p, buffer + maxlen - p, "|");
+> +			p += snprintf(p, buffer + maxlen - p, "balancing");
+> +		}
+>  	}
+>  
+>  	if (!nodes_empty(nodes))
+> -- 
+> 2.44.0
+> 
+> 
 
