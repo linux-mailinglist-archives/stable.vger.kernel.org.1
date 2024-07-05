@@ -1,138 +1,236 @@
-Return-Path: <stable+bounces-58133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D74292883B
-	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 13:52:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B0C29289B0
+	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 15:32:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D01121F24EDC
-	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 11:52:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A09C11F23431
+	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 13:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4525B14A09C;
-	Fri,  5 Jul 2024 11:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2BF154C11;
+	Fri,  5 Jul 2024 13:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.b="trWeqCj9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mbcch/GG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BCC149C42
-	for <stable@vger.kernel.org>; Fri,  5 Jul 2024 11:51:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FB0153506
+	for <stable@vger.kernel.org>; Fri,  5 Jul 2024 13:28:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720180312; cv=none; b=cQYo0zhSZHrpWdYKf4pTRX0gSKdUO6rRazt/dGxm4bDN9Rt40Aogu6Yn3aDhMaZ4yasqrwc3qqbfLEnpbTBWISqrwWIUUuAgK4Ul9EwlpDzhNFgRkOYc7ffswC8UR7m7FDevxBR/7a0dN1BuMEdpi0nDzK0LZqwu92ONk0VhhIM=
+	t=1720186136; cv=none; b=p/FuJ7BVom1GFakO5MZspO27rMq7uUpKEOi2n0HSEBDmoRY2JCx2J4iUL/QAaknOhahdctIcymnQPLIF79bQ+Yy5AaDL4hB+rRbJRflyCM6fTl6IDWQ0VAJDzOLFzcOF4DFB4nNGb8E9Mo5XWiFL3KV+t/duXWnjBfx9cy3SM6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720180312; c=relaxed/simple;
-	bh=87QADRvjWpwITWkhJ6ZCRxkd06/1fowLe9WbEwgHq+g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lQYfT2uqis9wafZHDNmqC0PyRJxClehGydYFz87FeHcQvtE3SIyRHgOC7KvGYs4YqNPUrffFIDnuuNOrgu0oRbArx0ZJpHyhBvrdmw8R6c3R5IWsWQCECYsGdhorZ54Txsm0j1IUW5c4AxHE2C45D+SrJocpHbVsRyz6TVYF0lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=timesys.com; spf=pass smtp.mailfrom=timesys.com; dkim=pass (2048-bit key) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.b=trWeqCj9; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=timesys.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=timesys.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5854ac817afso1936909a12.2
-        for <stable@vger.kernel.org>; Fri, 05 Jul 2024 04:51:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1720180306; x=1720785106; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+QojLwX8k68lmn9KlieWzohao5qbJAQQ4QJADw03ISo=;
-        b=trWeqCj9K7y5dEAnrYDLyNztiU8Soo8sF0P3U/aGaXrHzYLs7smY+HwYtIrgvlifzs
-         2MooXhSNWElAK81uJCSoCwEswq8RD/LUiK+t0/oW5Us9cV4ivFLdpS/zZeZSoXFGNdMM
-         mB7dhXamkaDcUMLVoqm6xNyj2pt3jPxVB3+xKyqrlbayu7rKJboeNB8MOZTHYrQduuh4
-         YuZktNt5yZZNCaISS/SOXkC0lUi4kPdIO+qC/fDBCVBGVd9Tv5v9cpqjO9bOQZeM+nlk
-         7nt2JlnRouQmWaXiP619ZiKKa2C8/0Md+Q+E+ejaGkjLaSTLKg8GI1/ishgYbdwctzqN
-         JpBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720180306; x=1720785106;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+QojLwX8k68lmn9KlieWzohao5qbJAQQ4QJADw03ISo=;
-        b=gmiX9QVk/nl90/RW86ITYXynPR1zAcZkpNp8XzmhlFcIonZP8J6GDW6Xg4JuQX765h
-         E0HyAOJ+L6EtWhbNipYpHhIU8GrAPKS96JZi+uOGuxdlOMP2I3cojL9l03/fO3fZHvbU
-         RWXJ5sB94oC1Qwz1rgQYjtt0kCr++5VkHO4frQkwED08s8MZ+CE1w6YgIp+ol2Fg/SQN
-         FeEXQOXBFwhw0JBBAwgIeYX145Ti2C786ahnCfdFy8wvHKgNxqirGAPuDBSXX+yz5zZn
-         Un6+p8lrNdaZUh0K6vMajbQIZP+48U2kk80CE2IENpHMCgGsdyi3y9UVobM4tkoZ59Zv
-         WXBg==
-X-Forwarded-Encrypted: i=1; AJvYcCW8ehdRWAxw03wxyC8WeXZEDRijkCDYXkdlcAZ36cvQf4QVsl/5NkgifDjd+DoUmeKYW+yepdjdviSEEsJ5XZLd73vBzffk
-X-Gm-Message-State: AOJu0Ywp6C3sGXpY0dVrcilZw6bD3ozCPveH9g1jNfAPZUaZRKHSZg7I
-	T6th4IjFiQTCuPxIRSvZ5KFDta0OJxhP4z4oBspH7PZINm3QbVfqVN4yYPGxKoM=
-X-Google-Smtp-Source: AGHT+IFHA1gnQKRQ18iPmWbS0NPjG9TbNdQHs95PiwC+5AeAhU74MhAe3PLIFlm88Q5NStc5UX6U7A==
-X-Received: by 2002:a17:906:4751:b0:a74:e717:4259 with SMTP id a640c23a62f3a-a77ba48db88mr281324166b.41.1720180306439;
-        Fri, 05 Jul 2024 04:51:46 -0700 (PDT)
-Received: from localhost.localdomain ([91.216.213.152])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a72ab06531fsm674762866b.100.2024.07.05.04.51.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jul 2024 04:51:46 -0700 (PDT)
-From: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-To: miquel.raynal@bootlin.com
-Cc: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+	s=arc-20240116; t=1720186136; c=relaxed/simple;
+	bh=IXCShkJkHmSpR+YhW53DnG/dJjgU3CqWPEEiFkbNVfs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PcxwKgeWJdt0E2zqoE1YbSzXUCxy5UibUIMtKg3/Ado16ToIeJ0OqJI7L5a5+hB2bZUkbeaUzXwGy1dEk7FGGIqkTyfymnp6ELB2/WnKFboVPkxD18esYalBYkLkY6948NmnO8pg5rehPFSkdPzPkJNYNAuKM6T1IYm3uNxOCjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mbcch/GG; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720186135; x=1751722135;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=IXCShkJkHmSpR+YhW53DnG/dJjgU3CqWPEEiFkbNVfs=;
+  b=mbcch/GG8k5hSMAKsSSZqZOwN4HuH+U7f2tyOvloQvXAj6B+ly+weytT
+   XU2/mFjisdD7ZqC356vAiX9+gzdWDD7A9iKRnaOismDBdj0ze0EKpdQas
+   DQNrTQrc6/Me6zQxwK3Hv7Mm1L1IKtn+Qx06UwGESWQvMMGxT4MaTKZjY
+   DiEJ2fXk4n58RlAT1GZnTNldBVNCihobLwVTCcw2Uft6I0IVji5iFhEee
+   O9zDocHsc9zZoO5lMTLNjn5fC7iwNT+9xLBqRqLvFgSoTKWPkPkqwi1Or
+   nyo/PBK2OTjAC8knAMM/S/3HWrD09y3ltRUSYOvcAVkJsJY5mnmX4SbQ9
+   A==;
+X-CSE-ConnectionGUID: Ukc9Yj8kRvKqzjbU9ZfD1Q==
+X-CSE-MsgGUID: qQy2mjfrTmGk7ujH1XRjkg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="21292852"
+X-IronPort-AV: E=Sophos;i="6.09,184,1716274800"; 
+   d="scan'208";a="21292852"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2024 06:28:54 -0700
+X-CSE-ConnectionGUID: 2cFNoZ0ZR/+mOWEZupQEoQ==
+X-CSE-MsgGUID: mK4aBrDKQFqCbikLtVRgYA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,184,1716274800"; 
+   d="scan'208";a="46850312"
+Received: from maurocar-mobl2.ger.corp.intel.com (HELO fedora..) ([10.245.245.166])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2024 06:28:50 -0700
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Pallavi Mishra <pallavi.mishra@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	dri-devel@lists.freedesktop.org,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Effie Yu <effie.yu@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Jose Souza <jose.souza@intel.com>,
+	Michal Mrozek <michal.mrozek@intel.com>,
 	stable@vger.kernel.org,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Yangtao Li <frank.li@vivo.com>,
-	Li Zetao <lizetao1@huawei.com>,
-	linux-mtd@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [Patch v2] mtd: rawnand: lpx32xx: Fix dma_request_chan() error checks
-Date: Fri,  5 Jul 2024 13:51:35 +0200
-Message-Id: <20240705115139.126522-1-piotr.wojtaszczyk@timesys.com>
-X-Mailer: git-send-email 2.25.1
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH v3] drm/xe: Use write-back caching mode for system memory on DGFX
+Date: Fri,  5 Jul 2024 15:28:28 +0200
+Message-ID: <20240705132828.27714-1-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The dma_request_chan() returns error pointer in case of error, while
-dma_request_channel() returns NULL in case of error therefore different
-error checks are needed for the two.
+The caching mode for buffer objects with VRAM as a possible
+placement was forced to write-combined, regardless of placement.
 
-Fixes: 7326d3fb1ee3 ("mtd: rawnand: lpx32xx: Request DMA channels using DT entries")
-Signed-off-by: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-Cc: stable@vger.kernel.org
+However, write-combined system memory is expensive to allocate and
+even though it is pooled, the pool is expensive to shrink, since
+it involves global CPU TLB flushes.
+
+Moreover write-combined system memory from TTM is only reliably
+available on x86 and DGFX doesn't have an x86 restriction.
+
+So regardless of the cpu caching mode selected for a bo,
+internally use write-back caching mode for system memory on DGFX.
+
+Coherency is maintained, but user-space clients may perceive a
+difference in cpu access speeds.
+
+v2:
+- Update RB- and Ack tags.
+- Rephrase wording in xe_drm.h (Matt Roper)
+v3:
+- Really rephrase wording.
+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: 622f709ca629 ("drm/xe/uapi: Add support for CPU caching mode")
+Cc: Pallavi Mishra <pallavi.mishra@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Effie Yu <effie.yu@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Jose Souza <jose.souza@intel.com>
+Cc: Michal Mrozek <michal.mrozek@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Acked-by: Matthew Auld <matthew.auld@intel.com>
+Acked-by: José Roberto de Souza <jose.souza@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 622f709ca629 ("drm/xe/uapi: Add support for CPU caching mode")
+Acked-by: Michal Mrozek <michal.mrozek@intel.com>
+Acked-by: Effie Yu <effie.yu@intel.com> #On chat
 ---
-Changes v2:
- - Corrected 'Fixes' tag
- - add Cc: stable 
+ drivers/gpu/drm/xe/xe_bo.c       | 47 +++++++++++++++++++-------------
+ drivers/gpu/drm/xe/xe_bo_types.h |  3 +-
+ include/uapi/drm/xe_drm.h        |  8 +++++-
+ 3 files changed, 37 insertions(+), 21 deletions(-)
 
- drivers/mtd/nand/raw/lpc32xx_mlc.c | 2 +-
- drivers/mtd/nand/raw/lpc32xx_slc.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/mtd/nand/raw/lpc32xx_mlc.c b/drivers/mtd/nand/raw/lpc32xx_mlc.c
-index 92cebe871bb4..b9c3adc54c01 100644
---- a/drivers/mtd/nand/raw/lpc32xx_mlc.c
-+++ b/drivers/mtd/nand/raw/lpc32xx_mlc.c
-@@ -575,7 +575,7 @@ static int lpc32xx_dma_setup(struct lpc32xx_nand_host *host)
- 	dma_cap_mask_t mask;
+diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+index 65c696966e96..31192d983d9e 100644
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -343,7 +343,7 @@ static struct ttm_tt *xe_ttm_tt_create(struct ttm_buffer_object *ttm_bo,
+ 	struct xe_device *xe = xe_bo_device(bo);
+ 	struct xe_ttm_tt *tt;
+ 	unsigned long extra_pages;
+-	enum ttm_caching caching;
++	enum ttm_caching caching = ttm_cached;
+ 	int err;
  
- 	host->dma_chan = dma_request_chan(mtd->dev.parent, "rx-tx");
--	if (!host->dma_chan) {
-+	if (IS_ERR(host->dma_chan)) {
- 		/* fallback to request using platform data */
- 		if (!host->pdata || !host->pdata->dma_filter) {
- 			dev_err(mtd->dev.parent, "no DMA platform data\n");
-diff --git a/drivers/mtd/nand/raw/lpc32xx_slc.c b/drivers/mtd/nand/raw/lpc32xx_slc.c
-index 3b7e3d259785..ade971e4cc3b 100644
---- a/drivers/mtd/nand/raw/lpc32xx_slc.c
-+++ b/drivers/mtd/nand/raw/lpc32xx_slc.c
-@@ -722,7 +722,7 @@ static int lpc32xx_nand_dma_setup(struct lpc32xx_nand_host *host)
- 	dma_cap_mask_t mask;
+ 	tt = kzalloc(sizeof(*tt), GFP_KERNEL);
+@@ -357,26 +357,35 @@ static struct ttm_tt *xe_ttm_tt_create(struct ttm_buffer_object *ttm_bo,
+ 		extra_pages = DIV_ROUND_UP(xe_device_ccs_bytes(xe, bo->size),
+ 					   PAGE_SIZE);
  
- 	host->dma_chan = dma_request_chan(mtd->dev.parent, "rx-tx");
--	if (!host->dma_chan) {
-+	if (IS_ERR(host->dma_chan)) {
- 		/* fallback to request using platform data */
- 		if (!host->pdata || !host->pdata->dma_filter) {
- 			dev_err(mtd->dev.parent, "no DMA platform data\n");
+-	switch (bo->cpu_caching) {
+-	case DRM_XE_GEM_CPU_CACHING_WC:
+-		caching = ttm_write_combined;
+-		break;
+-	default:
+-		caching = ttm_cached;
+-		break;
+-	}
+-
+-	WARN_ON((bo->flags & XE_BO_FLAG_USER) && !bo->cpu_caching);
+-
+ 	/*
+-	 * Display scanout is always non-coherent with the CPU cache.
+-	 *
+-	 * For Xe_LPG and beyond, PPGTT PTE lookups are also non-coherent and
+-	 * require a CPU:WC mapping.
++	 * DGFX system memory is always WB / ttm_cached, since
++	 * other caching modes are only supported on x86. DGFX
++	 * GPU system memory accesses are always coherent with the
++	 * CPU.
+ 	 */
+-	if ((!bo->cpu_caching && bo->flags & XE_BO_FLAG_SCANOUT) ||
+-	    (xe->info.graphics_verx100 >= 1270 && bo->flags & XE_BO_FLAG_PAGETABLE))
+-		caching = ttm_write_combined;
++	if (!IS_DGFX(xe)) {
++		switch (bo->cpu_caching) {
++		case DRM_XE_GEM_CPU_CACHING_WC:
++			caching = ttm_write_combined;
++			break;
++		default:
++			caching = ttm_cached;
++			break;
++		}
++
++		WARN_ON((bo->flags & XE_BO_FLAG_USER) && !bo->cpu_caching);
++
++		/*
++		 * Display scanout is always non-coherent with the CPU cache.
++		 *
++		 * For Xe_LPG and beyond, PPGTT PTE lookups are also
++		 * non-coherent and require a CPU:WC mapping.
++		 */
++		if ((!bo->cpu_caching && bo->flags & XE_BO_FLAG_SCANOUT) ||
++		    (xe->info.graphics_verx100 >= 1270 &&
++		     bo->flags & XE_BO_FLAG_PAGETABLE))
++			caching = ttm_write_combined;
++	}
+ 
+ 	if (bo->flags & XE_BO_FLAG_NEEDS_UC) {
+ 		/*
+diff --git a/drivers/gpu/drm/xe/xe_bo_types.h b/drivers/gpu/drm/xe/xe_bo_types.h
+index 02d68873558a..ebc8abf7930a 100644
+--- a/drivers/gpu/drm/xe/xe_bo_types.h
++++ b/drivers/gpu/drm/xe/xe_bo_types.h
+@@ -68,7 +68,8 @@ struct xe_bo {
+ 
+ 	/**
+ 	 * @cpu_caching: CPU caching mode. Currently only used for userspace
+-	 * objects.
++	 * objects. Exceptions are system memory on DGFX, which is always
++	 * WB.
+ 	 */
+ 	u16 cpu_caching;
+ 
+diff --git a/include/uapi/drm/xe_drm.h b/include/uapi/drm/xe_drm.h
+index 33544ef78d3e..19619d4952a8 100644
+--- a/include/uapi/drm/xe_drm.h
++++ b/include/uapi/drm/xe_drm.h
+@@ -783,7 +783,13 @@ struct drm_xe_gem_create {
+ #define DRM_XE_GEM_CPU_CACHING_WC                      2
+ 	/**
+ 	 * @cpu_caching: The CPU caching mode to select for this object. If
+-	 * mmaping the object the mode selected here will also be used.
++	 * mmaping the object the mode selected here will also be used. The
++	 * exception is when mapping system memory (including data evicted
++	 * to system) on discrete GPUs. The caching mode selected will
++	 * then be overridden to DRM_XE_GEM_CPU_CACHING_WB, and coherency
++	 * between GPU- and CPU is guaranteed. The caching mode of
++	 * existing CPU-mappings will be updated transparently to
++	 * user-space clients.
+ 	 */
+ 	__u16 cpu_caching;
+ 	/** @pad: MBZ */
 -- 
-2.25.1
+2.44.0
 
 
