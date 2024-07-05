@@ -1,203 +1,175 @@
-Return-Path: <stable+bounces-58144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D610928B76
-	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 17:18:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A62E928C08
+	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 18:00:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C85002828F6
-	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 15:17:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD71AB22EA7
+	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 16:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71EFE16B72D;
-	Fri,  5 Jul 2024 15:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E7416A93F;
+	Fri,  5 Jul 2024 16:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aWuqC7pp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PR1CYE+0"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334F71487D8
-	for <stable@vger.kernel.org>; Fri,  5 Jul 2024 15:16:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B709216B399;
+	Fri,  5 Jul 2024 16:00:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720192611; cv=none; b=F/AkbV8xVB8VRwG/UhSxV1GcnRQkF2cMD/mupBuDk5aJVrI/WSAQGZh1uuKeKk71eGJbYQwuAuEIfdpqKMrBL7uvtl+pvfIiwTcredLf2/Fy1Mu3NAjGtEWTO4ZHPTKEBnKRzqOXkRlT+ilSP3ykVoW7hOE5gyRdxNmSmogvJig=
+	t=1720195209; cv=none; b=BYyA1uQ0rh9PmOcJz1mpL/1MXhgcsHMb9/kGZM7wrEjnznJ5B1lOBCZ5i9xizdA+29gTIHKjDc0FsCbdJB1JmRz9LJ+nWuUOH9HtI/yyqi0/oc+/j23H7ySM3iqIigHgEAdbRuWnuY0JdN38lPgqBrZ2tszBrPISx7b3FHoGIbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720192611; c=relaxed/simple;
-	bh=ulFGnZkUqan+tJw+L9tWJw227NKsEDMDRBXxumF8L0c=;
+	s=arc-20240116; t=1720195209; c=relaxed/simple;
+	bh=zRMFc06JqnsUH0rvj+tjrAcuUW7C/dq82RLtokdkPDM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KPPE6K0slhvIp3OYkVqgYSZQYQ92VjV1YwjumKIAzdONoIUaEkDLMc6u57c1RPoIYDblv+JNxvaM6v7LrP7XR+4jybZkwLt4+0FqQix+GrpnrrtzkzdhlBpfzbWMlxS9FpaOQGqjFAdxqjfdqtPriYlPHpVqD5DlyKpkqxRnNEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aWuqC7pp; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720192609; x=1751728609;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=ulFGnZkUqan+tJw+L9tWJw227NKsEDMDRBXxumF8L0c=;
-  b=aWuqC7ppK8k7EeLMjYb6MyJk57xbM5cRMnrh3KnkJrPBWgrHlHs9SsVn
-   golxsXKQK8qs8xQyxoGs2WcGRkftfWSwwP2jVontba8Q45kXDT4hEcwYO
-   9temmN7pa2no8x6nCNph7DyIWk+dveV2sfpiVQakVqrWsH4nbpXYkVaqI
-   nU8BmTBV3S9rG7yiq1fls7ntCZWALVVjDqnZTn0d+LdCa32uZ19kx4iia
-   b7lkrU1fRlj8VErWhKYBQ097V+saWWkCdeptBRW/69esxuRFrFxamoZx6
-   dxIgbC4NhX4HW43GLm9HPICWsy8S9jPVdA0/T4Q5pfD1aJxgRljq9CY3t
-   w==;
-X-CSE-ConnectionGUID: BHeWdFb9Q0WArMR0c70lgg==
-X-CSE-MsgGUID: mX7w+P6lSOWsBURoQZMWDw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="28879247"
-X-IronPort-AV: E=Sophos;i="6.09,185,1716274800"; 
-   d="scan'208";a="28879247"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2024 08:16:48 -0700
-X-CSE-ConnectionGUID: 4aFSfx62SMmPolgWWfIAwA==
-X-CSE-MsgGUID: 6gYSpmimSBaVp1W2u4pS7g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,185,1716274800"; 
-   d="scan'208";a="46870229"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by fmviesa008.fm.intel.com with SMTP; 05 Jul 2024 08:16:46 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Fri, 05 Jul 2024 18:16:45 +0300
-Date: Fri, 5 Jul 2024 18:16:45 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Imre Deak <imre.deak@intel.com>
-Cc: intel-gfx@lists.freedesktop.org, Gareth Yu <gareth.yu@intel.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=IVOKlBaIZhJPOlbP1WN6krs4GmoIM0gyBVkSwW0H3xSzj9WwXxNmFHHHYl6oayJm8+sZCY8k0KlGxYNbEU2IblIt2/DqYtlv2SwVDULkHlvThe4ny70Nff1ykG2mEibulSMyow8dUm8M9X4GddWvccsvYZNgIiVPi+R2mcSR2Dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PR1CYE+0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E11C116B1;
+	Fri,  5 Jul 2024 16:00:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720195209;
+	bh=zRMFc06JqnsUH0rvj+tjrAcuUW7C/dq82RLtokdkPDM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PR1CYE+0lZ15urLcwQA28waF/LqIMt0+hCQzMIEyOquNtjepLIFpJQw04EsVTUTgY
+	 iRXBdUpQFAjW0qL93a8csADQ/QVzo6Yau//24oUU3dRI6wQtkg1L+Zsuy9bb3gLPv7
+	 xQYNCpZXQ1lkqrEOAMm1zAalKn13RQXtEbQtz7SA+dt5n2noEgewPvMt9qrWAYJOv9
+	 pNDZWo/g35FQ1bFPdgRDy0rQ0KD1O6ppny600BznXsb56/VCZDaL4UY3wv1ikP3T/s
+	 hEviXZ7gAeRCWQbJFwziVTlreOrNCb9MTePC3FFHMP9qiXHQx4jrvCVKCFpblDzuSD
+	 Zkwh/m1ZI4Jvw==
+Date: Fri, 5 Jul 2024 09:00:07 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Fangrui Song <maskray@google.com>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>, Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, linux-kbuild@vger.kernel.org,
+	llvm@lists.linux.dev, patches@lists.linux.dev,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 1/5] drm/i915/dp: Don't switch the LTTPR mode on an
- active link
-Message-ID: <ZogOXbUb9pL6Zmg6@intel.com>
-References: <20240703155937.1674856-1-imre.deak@intel.com>
- <20240703155937.1674856-2-imre.deak@intel.com>
+Subject: Re: [PATCH] kbuild: Update ld-version.sh for change in LLD version
+ output
+Message-ID: <20240705160007.GA875035@thelio-3990X>
+References: <20240704-update-ld-version-for-new-lld-ver-str-v1-1-91bccc020a93@kernel.org>
+ <CAFP8O3JUgH-tBJtqO-QS0HmO4mrFBE6Dz+tnrBcse=gw_Q_4vQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240703155937.1674856-2-imre.deak@intel.com>
-X-Patchwork-Hint: comment
+In-Reply-To: <CAFP8O3JUgH-tBJtqO-QS0HmO4mrFBE6Dz+tnrBcse=gw_Q_4vQ@mail.gmail.com>
 
-On Wed, Jul 03, 2024 at 06:59:33PM +0300, Imre Deak wrote:
-> Switching to transparent mode leads to a loss of link synchronization,
-> so prevent doing this on an active link. This happened at least on an
-> Intel N100 system / DELL UD22 dock, the LTTPR residing either on the
-> host or the dock. To fix the issue, keep the current mode on an active
-> link, adjusting the LTTPR count accordingly (resetting it to 0 in
-> transparent mode).
+On Thu, Jul 04, 2024 at 02:23:46PM -0700, Fangrui Song wrote:
+> On Thu, Jul 4, 2024 at 9:19â€¯AM Nathan Chancellor <nathan@kernel.org> wrote:
+> >
+> > After [1] in upstream LLVM, ld.lld's version output is slightly
+> > different when the cmake configuration option LLVM_APPEND_VC_REV is
+> > disabled.
+> >
+> > Before:
+> >
+> >   Debian LLD 19.0.0 (compatible with GNU linkers)
+> >
+> > After:
+> >
+> >   Debian LLD 19.0.0, compatible with GNU linkers
+> >
+> > This results in ld-version.sh failing with
+> >
+> >   scripts/ld-version.sh: 19: arithmetic expression: expecting EOF: "10000 * 19 + 100 * 0 + 0,"
+> >
+> > because the trailing comma is included in the patch level part of the
+> > expression. Remove the trailing comma when assigning the version
+> > variable in the LLD block to resolve the error, resulting in the proper
+> > output:
+> >
+> >   LLD 190000
+> >
+> > With LLVM_APPEND_VC_REV enabled, there is no issue with the new output
+> > because it is treated the same as the prior LLVM_APPEND_VC_REV=OFF
+> > version string was.
+> >
+> >   ClangBuiltLinux LLD 19.0.0 (https://github.com/llvm/llvm-project a3c5c83273358a85a4e02f5f76379b1a276e7714), compatible with GNU linkers
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 02aff8592204 ("kbuild: check the minimum linker version in Kconfig")
+> > Link: https://github.com/llvm/llvm-project/commit/0f9fbbb63cfcd2069441aa2ebef622c9716f8dbb [1]
+> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> > ---
+> >  scripts/ld-version.sh | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/scripts/ld-version.sh b/scripts/ld-version.sh
+> > index a78b804b680c..f2f425322524 100755
+> > --- a/scripts/ld-version.sh
+> > +++ b/scripts/ld-version.sh
+> > @@ -47,7 +47,9 @@ else
+> >         done
+> >
+> >         if [ "$1" = LLD ]; then
+> > -               version=$2
+> > +               # LLD after https://github.com/llvm/llvm-project/commit/0f9fbbb63cfcd2069441aa2ebef622c9716f8dbb
+> > +               # may have a trailing comma on the patch version with LLVM_APPEND_VC_REV=off.
+> > +               version=${2%,}
+> >                 min_version=$($min_tool_version llvm)
+> >                 name=LLD
+> >                 disp_name=LLD
+> >
+> > ---
+> > base-commit: 22a40d14b572deb80c0648557f4bd502d7e83826
+> > change-id: 20240704-update-ld-version-for-new-lld-ver-str-b7a4afbbd5f1
+> >
+> > Best regards,
+> > --
+> > Nathan Chancellor <nathan@kernel.org>
+> >
 > 
-> Fixes: 7b2a4ab8b0ef ("drm/i915: Switch to LTTPR transparent mode link training")
-> Reported-and-tested-by: Gareth Yu <gareth.yu@intel.com>
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10902
-> Cc: <stable@vger.kernel.org> # v5.15+
-> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Signed-off-by: Imre Deak <imre.deak@intel.com>
-> ---
->  .../drm/i915/display/intel_dp_link_training.c | 49 +++++++++++++++++--
->  1 file changed, 45 insertions(+), 4 deletions(-)
+> Thanks for catching the issue.
+> If we want to minimize the number of special cases, perhaps we can
+> adjust `version=${version%-*}` below to
 > 
-> diff --git a/drivers/gpu/drm/i915/display/intel_dp_link_training.c b/drivers/gpu/drm/i915/display/intel_dp_link_training.c
-> index 1bc4ef84ff3bc..08a27fe077917 100644
-> --- a/drivers/gpu/drm/i915/display/intel_dp_link_training.c
-> +++ b/drivers/gpu/drm/i915/display/intel_dp_link_training.c
-> @@ -117,10 +117,24 @@ intel_dp_set_lttpr_transparent_mode(struct intel_dp *intel_dp, bool enable)
->  	return drm_dp_dpcd_write(&intel_dp->aux, DP_PHY_REPEATER_MODE, &val, 1) == 1;
->  }
->  
-> -static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEIVER_CAP_SIZE])
-> +static bool intel_dp_lttpr_transparent_mode_enabled(struct intel_dp *intel_dp)
-> +{
-> +	return intel_dp->lttpr_common_caps[DP_PHY_REPEATER_MODE -
-> +					   DP_LT_TUNABLE_PHY_REPEATER_FIELD_DATA_STRUCTURE_REV] ==
-> +		DP_PHY_REPEATER_MODE_TRANSPARENT;
-> +}
-> +
-> +/*
-> + * Read the LTTPR common capabilities and switch the LTTPR PHYs to
-> + * non-transparent mode if this is supported. Preserve the
-> + * transparent/non-transparent mode on an active link.
-> + *
-> + * Return the number of detected LTTPRs in non-transparent mode or 0 if the
-> + * LTTPRs are in transparent mode or the detection failed.
-> + */
-> +static int intel_dp_init_lttpr_phys(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEIVER_CAP_SIZE])
->  {
->  	int lttpr_count;
-> -	int i;
->  
->  	if (!intel_dp_read_lttpr_common_caps(intel_dp, dpcd))
->  		return 0;
-> @@ -134,6 +148,19 @@ static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEI
->  	if (lttpr_count == 0)
->  		return 0;
->  
-> +	/*
-> +	 * Don't change the mode on an active link, to prevent a loss of link
-> +	 * synchronization. See DP Standard v2.0 3.6.7. about the LTTPR
-> +	 * resetting its internal state when the mode is changed from
-> +	 * non-transparent to transparent.
-> +	 */
-> +	if (intel_dp->link_trained) {
-> +		if (lttpr_count < 0 || intel_dp_lttpr_transparent_mode_enabled(intel_dp))
-> +			goto out_reset_lttpr_count;
+> version=${version%%[^0-9.]*}
 
-I was pondering whether we should flag this for LTTPR reinit
-on the next link training, but looks like we already do that
-unconditionally. So the TODO in intel_dp_start_link_train()
-should perhaps be removed if it's the behaviour we now want?
+Thanks for the suggestion! I think this wants to be
 
-However, it looks like we leave link_trained==true when
-using the non-modeset link retrain path. So that will again
-skip the LTTPR mode change, whereas the modeset based path
-will do the mode change. Doesn't really matter I suppose,
-but probably good to keep that change in behaviour in mind
-when we get rid of the non-modeset retrain path for good.
+  version=${version%%[!0-9.]*}
 
-Series is
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+because of "If an open bracket introduces a bracket expression as in XBD
+RE Bracket Expression, except that the <exclamation-mark> character
+('!') shall replace the <circumflex> character ('^') in its role in a
+non-matching list in the regular expression notation, it shall introduce
+a pattern bracket expression." from the link that you have below.
 
-> +
-> +		return lttpr_count;
-> +	}
-> +
->  	/*
->  	 * See DP Standard v2.0 3.6.6.1. about the explicit disabling of
->  	 * non-transparent mode and the disable->enable non-transparent mode
-> @@ -154,11 +181,25 @@ static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEI
->  		       "Switching to LTTPR non-transparent LT mode failed, fall-back to transparent mode\n");
->  
->  		intel_dp_set_lttpr_transparent_mode(intel_dp, true);
-> -		intel_dp_reset_lttpr_count(intel_dp);
->  
-> -		return 0;
-> +		goto out_reset_lttpr_count;
->  	}
->  
-> +	return lttpr_count;
-> +
-> +out_reset_lttpr_count:
-> +	intel_dp_reset_lttpr_count(intel_dp);
-> +
-> +	return 0;
-> +}
-> +
-> +static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEIVER_CAP_SIZE])
-> +{
-> +	int lttpr_count;
-> +	int i;
-> +
-> +	lttpr_count = intel_dp_init_lttpr_phys(intel_dp, dpcd);
-> +
->  	for (i = 0; i < lttpr_count; i++)
->  		intel_dp_read_lttpr_phy_caps(intel_dp, dpcd, DP_PHY_LTTPR(i));
->  
-> -- 
-> 2.43.3
+That does work for me with all the different linker versions that I can
+easily access (Arch, Debian, Fedora) along with my own self built
+toolchains, so it seems like it should be pretty robust.
 
--- 
-Ville Syrjälä
-Intel
+Masahiro, would you be okay with me sending a v2 with that change or do
+you foresee any issues where it would not be sufficient? I would
+probably change the comment to:
+
+  # There may be something after the version, such as a distribution's
+  # package release number (2.34-4.fc32) or a comma (like LLD adds
+  # before the "compatible with GNU linkers" string), so remove anything
+  # that is not a number or a period.
+
+> (POSIX shell doc:
+> https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#:~:text=Remove%20Largest)
+> 
+> ${version%%[^0-9.]*} is a simpler form than what glibc uses:
+> 
+>   "LLD"*)
+>   # Accept LLD 13.0.0 or higher
+>     AC_CHECK_PROG_VER(LD, $LD, --version,
+>                     [LLD.* \([0-9][0-9]*\.[0-9.]*\)],
+>                     [1[3-9].*|[2-9][0-9].*],
+
+Cheers,
+Nathan
 
