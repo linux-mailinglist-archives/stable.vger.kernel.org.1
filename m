@@ -1,220 +1,118 @@
-Return-Path: <stable+bounces-58147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508A3928C6E
-	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 18:46:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 939F5928C72
+	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 18:47:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 748711C214C9
-	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 16:46:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F483B235AA
+	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 16:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D2A15FA75;
-	Fri,  5 Jul 2024 16:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D122716ABC6;
+	Fri,  5 Jul 2024 16:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kkDavcAN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MuXPKUUe"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B371C2AF
-	for <stable@vger.kernel.org>; Fri,  5 Jul 2024 16:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09851C2AF;
+	Fri,  5 Jul 2024 16:47:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720197974; cv=none; b=m5Fl4z4ivZh8si9PfYQERq29kTe0BXKNUKpsU3hUxdrXw43YR/FlfE4jFmMS4Dg/nYRswrUkDrEEFDvGlO1spHcr6C3ss6idnoL7epuLrcq7BoyiZZkW4TzJjiIfnoYbaMx2JfE3iSNdWasn+cY/374vrjiqWPfnLnDyg7qSmCQ=
+	t=1720198061; cv=none; b=ZcaOfZNtzPKeHFD83pGuSxDkH8+ToL43abzna8x7C6nbsDu29YhYrhfiStMicWn0HliZm9vjGjuEvLX9Kh4RgjAqXFt1BlPlXilFvi5I/AyfWTSjd6YbtoMstvY7PcmV+XxUAnLbWUxzNvQq1v92WKoywNFktT+fEbPH9abjZIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720197974; c=relaxed/simple;
-	bh=vBLKZzCHB9lFfRZbZM78tX1PwKD+f061erUIn0crYTA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KDXifd0nmcA9/8sYA9VOFoIRF2Hz2UWWt/Jmlu8qycXD8ck+4NbVG6GCASHbGBudtutHHaczEJQVxXH5xCPx/gMaMJTfA0vnlloW3ey62kjaOHu3rCohqyq3CZ2SzSq5o0aKkZduqSPsUyNafRur99qwCdPjWYVii5wKKhFiMAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kkDavcAN; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1720198061; c=relaxed/simple;
+	bh=OsQBIcaZV6hpTwnvHv8LU4FRqNY5U0nNux6t1Y82xgs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tHA5+F+2loMuDUhoGZhYBruEPsxI+dygVSXiIx5GXleVAOIg/eyiXHitoPjGoljJq59jqqRDzu32rylqFRajGbdXrf6z3rXPVUil9xQ1bYOgiV3xQAFCaO9cUUz5pxDOdqNo40jBdbwB3IQweshJbtOlioy29dX/wp4zWay2Ruc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MuXPKUUe; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720197973; x=1751733973;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=vBLKZzCHB9lFfRZbZM78tX1PwKD+f061erUIn0crYTA=;
-  b=kkDavcANPE+Ldk3EDA17cD/z4LuvBfX/ox3GQLPXuuLzJjf26V0uH2d/
-   tj/Kb0W138/aGjSVKIC1AUhaMkT3QDtt4uqmz2EHapqw9kxUEoalf6jnY
-   ZJMFz/dfsdCioLectYLLcJ8lKlqAKKBYQSBCm0QXeNFDtYya6+15+EETw
-   CZ9DSOBXktUQy3YG8vRCnT+I21C0XtDuE0YPaBpcJzJDb98eXJlk/QXa3
-   TIwI5syeh3zpIDtLs4gqAGnqN/nqQFzF42wohVRszpd0MHZtjh6OYzP0A
-   zGjJIfTrrBoUyGZ/oCPjGStf0XD3srr5jNA+7reO+i3rLJhcCJzkORrcu
-   g==;
-X-CSE-ConnectionGUID: GHXlnfE/SOW0MqQaGOqr2w==
-X-CSE-MsgGUID: 3xpiirEcQkuvVOqglACGyQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="17364251"
+  t=1720198060; x=1751734060;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=OsQBIcaZV6hpTwnvHv8LU4FRqNY5U0nNux6t1Y82xgs=;
+  b=MuXPKUUeKh/oE3BT2xNkFJ+ufW5ElrvUYqrT5651QgiPht0U+T9dbIe/
+   aYIRxpoMV5m3DPb/Nzd6k9xVwJQYWyDU6KwZN2rshEy4p2MWVX6sJVB8r
+   rndssuUfoPCvkS5FEL/H1aZXcD3Es4DbYGDBlL6WLl2YbSxXNBxfC10jt
+   p93Vr1wbDLLCT71jhcDr5ZTUYy5JCHCax7Q4ehO/Zl4AZ08zgCZNLeQTF
+   pxvLUqxpWe85dsmVT3GzFx+gK+MMpLxxV9znMwtb+sZ02eVtLrCsmZNwu
+   CSjxmw/dOeHwYC15c3k66QLUFNp4iVnE8mbjwgi326GtNgcwyL3K6HAOF
+   Q==;
+X-CSE-ConnectionGUID: 9xRrBFTbTgWW6icyBUWiQg==
+X-CSE-MsgGUID: Qm4maWsqQuWhwUvIcYw6OA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="17628106"
 X-IronPort-AV: E=Sophos;i="6.09,185,1716274800"; 
-   d="scan'208";a="17364251"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2024 09:46:12 -0700
-X-CSE-ConnectionGUID: +x9PSqcSRoabsQ7gTt0a5g==
-X-CSE-MsgGUID: B9Ib/JhLT0ydXdjPrNYBXg==
+   d="scan'208";a="17628106"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2024 09:47:39 -0700
+X-CSE-ConnectionGUID: UkTg0KnjTTuxoPQWrXhqUA==
+X-CSE-MsgGUID: fEMJnxKyRw6GT8EREbUC1g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,185,1716274800"; 
-   d="scan'208";a="78060932"
-Received: from ideak-desk.fi.intel.com ([10.237.72.78])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2024 09:46:10 -0700
-Date: Fri, 5 Jul 2024 19:46:23 +0300
-From: Imre Deak <imre.deak@intel.com>
-To: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Cc: intel-gfx@lists.freedesktop.org, Gareth Yu <gareth.yu@intel.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/5] drm/i915/dp: Don't switch the LTTPR mode on an
- active link
-Message-ID: <ZogjX9BMD13xLydT@ideak-desk.fi.intel.com>
-Reply-To: imre.deak@intel.com
-References: <20240703155937.1674856-1-imre.deak@intel.com>
- <20240703155937.1674856-2-imre.deak@intel.com>
- <ZogOXbUb9pL6Zmg6@intel.com>
+   d="scan'208";a="47570619"
+Received: from mohdfai2-mobl.gar.corp.intel.com (HELO [10.247.38.162]) ([10.247.38.162])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2024 09:47:35 -0700
+Message-ID: <faabc72b-b421-48c7-93cb-b2fe65655989@linux.intel.com>
+Date: Sat, 6 Jul 2024 00:47:20 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZogOXbUb9pL6Zmg6@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-net v1 3/4] igc: Remove unused qbv_count
+To: Simon Horman <horms@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Jesse Brandeburg <jesse.brandeburg@intel.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+ intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240702040926.3327530-1-faizal.abdul.rahim@linux.intel.com>
+ <20240702040926.3327530-4-faizal.abdul.rahim@linux.intel.com>
+ <20240703151008.GP598357@kernel.org>
+Content-Language: en-US
+From: "Abdul Rahim, Faizal" <faizal.abdul.rahim@linux.intel.com>
+In-Reply-To: <20240703151008.GP598357@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jul 05, 2024 at 06:16:45PM +0300, Ville Syrjälä wrote:
-> On Wed, Jul 03, 2024 at 06:59:33PM +0300, Imre Deak wrote:
-> > Switching to transparent mode leads to a loss of link synchronization,
-> > so prevent doing this on an active link. This happened at least on an
-> > Intel N100 system / DELL UD22 dock, the LTTPR residing either on the
-> > host or the dock. To fix the issue, keep the current mode on an active
-> > link, adjusting the LTTPR count accordingly (resetting it to 0 in
-> > transparent mode).
-> > 
-> > Fixes: 7b2a4ab8b0ef ("drm/i915: Switch to LTTPR transparent mode link training")
-> > Reported-and-tested-by: Gareth Yu <gareth.yu@intel.com>
-> > Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10902
-> > Cc: <stable@vger.kernel.org> # v5.15+
-> > Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > Signed-off-by: Imre Deak <imre.deak@intel.com>
-> > ---
-> >  .../drm/i915/display/intel_dp_link_training.c | 49 +++++++++++++++++--
-> >  1 file changed, 45 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/gpu/drm/i915/display/intel_dp_link_training.c b/drivers/gpu/drm/i915/display/intel_dp_link_training.c
-> > index 1bc4ef84ff3bc..08a27fe077917 100644
-> > --- a/drivers/gpu/drm/i915/display/intel_dp_link_training.c
-> > +++ b/drivers/gpu/drm/i915/display/intel_dp_link_training.c
-> > @@ -117,10 +117,24 @@ intel_dp_set_lttpr_transparent_mode(struct intel_dp *intel_dp, bool enable)
-> >  	return drm_dp_dpcd_write(&intel_dp->aux, DP_PHY_REPEATER_MODE, &val, 1) == 1;
-> >  }
-> >  
-> > -static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEIVER_CAP_SIZE])
-> > +static bool intel_dp_lttpr_transparent_mode_enabled(struct intel_dp *intel_dp)
-> > +{
-> > +	return intel_dp->lttpr_common_caps[DP_PHY_REPEATER_MODE -
-> > +					   DP_LT_TUNABLE_PHY_REPEATER_FIELD_DATA_STRUCTURE_REV] ==
-> > +		DP_PHY_REPEATER_MODE_TRANSPARENT;
-> > +}
-> > +
-> > +/*
-> > + * Read the LTTPR common capabilities and switch the LTTPR PHYs to
-> > + * non-transparent mode if this is supported. Preserve the
-> > + * transparent/non-transparent mode on an active link.
-> > + *
-> > + * Return the number of detected LTTPRs in non-transparent mode or 0 if the
-> > + * LTTPRs are in transparent mode or the detection failed.
-> > + */
-> > +static int intel_dp_init_lttpr_phys(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEIVER_CAP_SIZE])
-> >  {
-> >  	int lttpr_count;
-> > -	int i;
-> >  
-> >  	if (!intel_dp_read_lttpr_common_caps(intel_dp, dpcd))
-> >  		return 0;
-> > @@ -134,6 +148,19 @@ static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEI
-> >  	if (lttpr_count == 0)
-> >  		return 0;
-> >  
-> > +	/*
-> > +	 * Don't change the mode on an active link, to prevent a loss of link
-> > +	 * synchronization. See DP Standard v2.0 3.6.7. about the LTTPR
-> > +	 * resetting its internal state when the mode is changed from
-> > +	 * non-transparent to transparent.
-> > +	 */
-> > +	if (intel_dp->link_trained) {
-> > +		if (lttpr_count < 0 || intel_dp_lttpr_transparent_mode_enabled(intel_dp))
-> > +			goto out_reset_lttpr_count;
+
+
+On 3/7/2024 11:10 pm, Simon Horman wrote:
+> On Tue, Jul 02, 2024 at 12:09:25AM -0400, Faizal Rahim wrote:
+>> Removing qbv_count which is now obsolete after these 2 patches:
+>> "igc: Fix reset adapter logics when tx mode change"
+>> "igc: Fix qbv_config_change_errors logics"
+>>
+>> The variable qbv_count serves to indicate whether Taprio is active or if
+>> the tx mode is in TSN (IGC_TQAVCTRL_TRANSMIT_MODE_TSN). This is due to its
+>> unconditional increment within igc_tsn_enable_offload(), which both runs
+>> Taprio and sets the tx mode to TSN.
+>>
+>> Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
 > 
-> I was pondering whether we should flag this for LTTPR reinit
-> on the next link training, but looks like we already do that
-> unconditionally. So the TODO in intel_dp_start_link_train()
-> should perhaps be removed if it's the behaviour we now want?
+> Hi Faizal,
+> 
+> This change looks good to me.
+> However, it seems more appropriate as a clean-up for iwl-next
+> once the previous to patches make it there via iwl-net.
+> 
+> That notwithstanding,
+> 
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> 
+> ...
 
-Yes missed that. With this constraint the mode can be changed only
-when the link is not active and that's only guaranteed during link
-training. I'll update the TODO comment there.
-
-> However, it looks like we leave link_trained==true when
-> using the non-modeset link retrain path. So that will again
-> skip the LTTPR mode change, whereas the modeset based path
-> will do the mode change. Doesn't really matter I suppose,
-> but probably good to keep that change in behaviour in mind
-> when we get rid of the non-modeset retrain path for good.
-
-Yes, the non-modeset SST link retrain will happen now without changing
-to non-transparent LTTPR mode, didn't think of that. This should matter
-only for an enabled link taken over from BIOS if it didn't switch to
-non-transparent mode already. Yes, imo it's probably ok to retrain in
-transparent mode in that case (until the next modeset) and this won't
-matter after switching to a modeset retrain for SST as well. However for
-stable it's still better to keep the current behavior, so I could follow
-up with a change disabling link_trained in intel_dp_retrain_link()
-(along with initing link_trained during HW readout which I also missed).
-
-> Series is
-> Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-
+Got it, will do that.
 Thanks.
-
-> > +
-> > +		return lttpr_count;
-> > +	}
-> > +
-> >  	/*
-> >  	 * See DP Standard v2.0 3.6.6.1. about the explicit disabling of
-> >  	 * non-transparent mode and the disable->enable non-transparent mode
-> > @@ -154,11 +181,25 @@ static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEI
-> >  		       "Switching to LTTPR non-transparent LT mode failed, fall-back to transparent mode\n");
-> >  
-> >  		intel_dp_set_lttpr_transparent_mode(intel_dp, true);
-> > -		intel_dp_reset_lttpr_count(intel_dp);
-> >  
-> > -		return 0;
-> > +		goto out_reset_lttpr_count;
-> >  	}
-> >  
-> > +	return lttpr_count;
-> > +
-> > +out_reset_lttpr_count:
-> > +	intel_dp_reset_lttpr_count(intel_dp);
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEIVER_CAP_SIZE])
-> > +{
-> > +	int lttpr_count;
-> > +	int i;
-> > +
-> > +	lttpr_count = intel_dp_init_lttpr_phys(intel_dp, dpcd);
-> > +
-> >  	for (i = 0; i < lttpr_count; i++)
-> >  		intel_dp_read_lttpr_phy_caps(intel_dp, dpcd, DP_PHY_LTTPR(i));
-> >  
-> > -- 
-> > 2.43.3
-> 
-> -- 
-> Ville Syrjälä
-> Intel
 
