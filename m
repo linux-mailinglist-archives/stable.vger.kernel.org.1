@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-58125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD1009283A1
-	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 10:25:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C599283A3
+	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 10:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 645902828F3
-	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 08:25:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB8FD1C2438F
+	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 08:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C6F145B20;
-	Fri,  5 Jul 2024 08:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C5E8145A16;
+	Fri,  5 Jul 2024 08:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="jfxm1gKk"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="Jxi04vmT"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CFE145B05
-	for <stable@vger.kernel.org>; Fri,  5 Jul 2024 08:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133D9145A03
+	for <stable@vger.kernel.org>; Fri,  5 Jul 2024 08:25:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720167899; cv=none; b=DDl6fgaSJXJPh0SUghtEjJWbIZ/bBcGF+NeTqVn4czwc9Fp/J+7JgOM5B75SJmnoG9QJY/nlI+6F6WSTd9zwfDjJqP49uOG+TBb5xdg0Maqx35ce7Ysg9Rv0WYwj5Eu6M0saxdIsgSX5Ihxb2EQpRzn8DhJnMfNmaRYY2Mwnpas=
+	t=1720167916; cv=none; b=AM4vd4zdAagJq+oS4TnBlEDFT3yRmFcyRbU7UD2aBhybIVAysDXAVIwGRG7oLuvDFrzSY0oBwRx95b94qsLLYVWJi+K+3TciknU8Z3U/f/zz57E8JfFxHStvPjqCTUFL5n77kDNjZOn2MudEgc3kzDRDfsj3JJQis0bRlX3tpW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720167899; c=relaxed/simple;
-	bh=PjPG27toN1TRxKNx0Q+uytK+NguwMCy2ZnvAr6tWqLg=;
+	s=arc-20240116; t=1720167916; c=relaxed/simple;
+	bh=NR/1D+BcRV/TsLKrMtyxlQAtAuDdLOC2Gn95KDoEHJY=;
 	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 References; b=M2CfGbLHFLRwbQdF4XARLCdZ1jdE+ESPPMkRuDPR9ESbumCNEj9WkDUBYO6GlucRNjbwpzymdPAETBKv6RWKL1k5n8crTQELqQDk9M9z8pqAqoSdQiGOpptmjUWwIlEiz3C7ooiUQIxNfqAsFcEAxj7IMyRAhvhD1HPGmNSGduU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=jfxm1gKk; arc=none smtp.client-ip=203.254.224.24
+	 References; b=hjd2ZK/95n8fPHqlV1kGHn4CKLQBbe+PLUm3NsbiOkXq8JgzPskFNizPn8AfZWj3FjSs2HzPUacJRouo6vX5F6a4Ol4R+qPvLevcQxrsRTaJj9Wzg23AIUtaGC4bWkf17hwOsSR7eYc1m4Gi7B5LuRslUYbG/iRWJu8Ahc400oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=Jxi04vmT; arc=none smtp.client-ip=203.254.224.33
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas1p2.samsung.com (unknown [182.195.41.46])
-	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20240705082454epoutp01afe51006de263bfcc83b63be29a367b5~fQ5YZ1OyY2574125741epoutp01H
-	for <stable@vger.kernel.org>; Fri,  5 Jul 2024 08:24:54 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20240705082454epoutp01afe51006de263bfcc83b63be29a367b5~fQ5YZ1OyY2574125741epoutp01H
+Received: from epcas1p1.samsung.com (unknown [182.195.41.45])
+	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20240705082512epoutp03abb35c71f0bf44b4b99a349621deca70~fQ5o0HN7A2207122071epoutp03J
+	for <stable@vger.kernel.org>; Fri,  5 Jul 2024 08:25:12 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20240705082512epoutp03abb35c71f0bf44b4b99a349621deca70~fQ5o0HN7A2207122071epoutp03J
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1720167894;
-	bh=EZMIak11ctTq1N1qAlNXt95/3pwyphaqWwTzqm39iiA=;
+	s=mail20170921; t=1720167912;
+	bh=yjiQRI88LrEgQXuAT2KgD2ughIWt1fQ1A7RP58k7J2c=;
 	h=From:To:Cc:Subject:Date:References:From;
-	b=jfxm1gKkkCYMT8VXEllfuVOobVs/NCTxHmuIC+8x05wiWwvpA2yzemmESM5hSDxvt
-	 Ir/RFUOzwrncfZT5mBZp+bWTSS2Q1p27PcCx7OPTGt0/9BTJiYySTttyE4SLaEmvQA
-	 D5DChLzhJTrTC950CJk9N/lSQ4ezAAT88NFyAMSc=
-Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+	b=Jxi04vmTYWHQisaGxNAO70Q2M6JX7mljei6uRTxJtWEUM4R23uC0fagtvJ0UmSuyD
+	 um3blOlRqxt+ekkc/0lysq5wtPhVexIoStdVWJl8P5g5Ty1/POTsMrjv/hHGmNCK/O
+	 YIBLw+VAmLS3oRSGW2xSbZ3kZ9ty32AiSlAQA2+s=
+Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
 	epcas1p1.samsung.com (KnoxPortal) with ESMTP id
-	20240705082454epcas1p1f383b9db1d0296e9aea5bcc24944d545~fQ5X3YuQ40068200682epcas1p1f;
-	Fri,  5 Jul 2024 08:24:54 +0000 (GMT)
-Received: from epsmges1p5.samsung.com (unknown [182.195.38.249]) by
-	epsnrtp2.localdomain (Postfix) with ESMTP id 4WFmln4TwKz4x9Q9; Fri,  5 Jul
-	2024 08:24:53 +0000 (GMT)
-Received: from epcas1p2.samsung.com ( [182.195.41.46]) by
-	epsmges1p5.samsung.com (Symantec Messaging Gateway) with SMTP id
-	86.2C.09561.5DDA7866; Fri,  5 Jul 2024 17:24:53 +0900 (KST)
+	20240705082511epcas1p10cdb1a06d4257b48d6db75d1968c2e44~fQ5oinNMn1756817568epcas1p1U;
+	Fri,  5 Jul 2024 08:25:11 +0000 (GMT)
+Received: from epsmges1p4.samsung.com (unknown [182.195.38.240]) by
+	epsnrtp3.localdomain (Postfix) with ESMTP id 4WFmm7488Nz4x9Pt; Fri,  5 Jul
+	2024 08:25:11 +0000 (GMT)
+Received: from epcas1p4.samsung.com ( [182.195.41.48]) by
+	epsmges1p4.samsung.com (Symantec Messaging Gateway) with SMTP id
+	03.06.09910.7EDA7866; Fri,  5 Jul 2024 17:25:11 +0900 (KST)
 Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-	epcas1p3.samsung.com (KnoxPortal) with ESMTPA id
-	20240705082453epcas1p3b42790db4a6df77c14b1f8a2bae39435~fQ5XDwya_2808628086epcas1p3r;
-	Fri,  5 Jul 2024 08:24:53 +0000 (GMT)
-Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
+	epcas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20240705082511epcas1p24b7b63d5e714a25213dbe07affa52f69~fQ5n6U0hh1315913159epcas1p23;
+	Fri,  5 Jul 2024 08:25:11 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
 	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20240705082453epsmtrp2c31e59cd46e78bd4826cc539b0ba8e63~fQ5XDDWWO2748127481epsmtrp2T;
-	Fri,  5 Jul 2024 08:24:53 +0000 (GMT)
-X-AuditID: b6c32a39-b63ff70000002559-77-6687add5bce7
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-	epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	AF.02.19057.5DDA7866; Fri,  5 Jul 2024 17:24:53 +0900 (KST)
+	20240705082511epsmtrp23c1de109b1ef9173de99959af431a8d5~fQ5n5ubAW2780227802epsmtrp2d;
+	Fri,  5 Jul 2024 08:25:11 +0000 (GMT)
+X-AuditID: b6c32a38-c9ffa700000226b6-97-6687ade7a06e
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+	epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	6A.40.29940.7EDA7866; Fri,  5 Jul 2024 17:25:11 +0900 (KST)
 Received: from localhost.localdomain (unknown [10.253.98.34]) by
-	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20240705082453epsmtip14391ff7c3ae59486e485789af8af85bd~fQ5W5hg7t1057310573epsmtip1h;
-	Fri,  5 Jul 2024 08:24:53 +0000 (GMT)
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20240705082511epsmtip2df6cc542e7a1643d3f4e762addc5c5e8~fQ5nu0crb2772627726epsmtip2X;
+	Fri,  5 Jul 2024 08:25:11 +0000 (GMT)
 From: Sunmin Jeong <s_min.jeong@samsung.com>
 To: jaegeuk@kernel.org, chao@kernel.org
 Cc: daehojeong@google.com, linux-f2fs-devel@lists.sourceforge.net, Sunmin
 	Jeong <s_min.jeong@samsung.com>, stable@vger.kernel.org, Sungjong Seo
 	<sj1557.seo@samsung.com>, Yeongjin Gil <youngjin.gil@samsung.com>
-Subject: [PATCH v2 1/2] f2fs: use meta inode for GC of atomic file
-Date: Fri,  5 Jul 2024 17:24:48 +0900
-Message-Id: <20240705082448.805306-1-s_min.jeong@samsung.com>
+Subject: [PATCH v2 2/2] f2fs: use meta inode for GC of COW file
+Date: Fri,  5 Jul 2024 17:25:03 +0900
+Message-Id: <20240705082503.805358-1-s_min.jeong@samsung.com>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -84,68 +84,59 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrBKsWRmVeSWpSXmKPExsWy7bCmnu7Vte1pBjOWyVmcnnqWyWJq+15G
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrKKsWRmVeSWpSXmKPExsWy7bCmge7zte1pBn/+yFucnnqWyWJq+15G
 	iyfrZzFbXFrkbrGg9TeLxZZ/R1gtFmx8xGgxY/9TdgcOjwWbSj02repk89i94DOTR9+WVYwe
 	nzfJBbBGZdtkpCampBYppOYl56dk5qXbKnkHxzvHm5oZGOoaWlqYKynkJeam2iq5+AToumXm
 	AF2ipFCWmFMKFApILC5W0rezKcovLUlVyMgvLrFVSi1IySkwK9ArTswtLs1L18tLLbEyNDAw
-	MgUqTMjOmDxlEXPBL42K/W//sTcw/lDoYuTkkBAwkTg8oZupi5GLQ0hgB6NE473/UM4nRon1
-	mzeyQTjfGCX23r7PDtNyaMVUFhBbSGAvo8S20xVwHSubfoIVsQnoSDycehusSERAXeLUpKUs
-	IEXMAlcZJdr3PQdLCAs4SdxY/RbMZhFQlfgxey8TiM0rYCsx6+hnJoht8hIzL31nh4gLSpyc
-	+QSsnhko3rx1NjPIUAmBS+wSEx/9ZoNocJH4cQmiSEJAWOLV8S1QZ0tJfH63F6qmWOLo/A3s
-	EM0NjBI3vt6EKrKXaG5tBiriANqgKbF+lz7EMj6Jd197WEHCEgK8Eh1tQhDVqhLdj5YwQ9jS
-	EsuOHYSa4iExddFyNkgIxUqsuniSaQKj3CwkL8xC8sIshGULGJlXMYqlFhTnpqcWGxaYwqMy
-	OT93EyM4CWpZ7mCc/vaD3iFGJg7GQ4wSHMxKIrxS75vThHhTEiurUovy44tKc1KLDzGaAgN1
-	IrOUaHI+MA3nlcQbmlgamJgZmVgYWxqbKYnznrlSliokkJ5YkpqdmlqQWgTTx8TBKdXAxH6V
-	/XrxRpeoWzk/5ntPi3sgtrg5Usk126Wp5OTxTI+8s++DHlYpPWA+MOtpXX/e6uQGFukNR7Zz
-	7LOve3j+D7vclfMFH0uL/OY7Ltr19YFGxTM+u6+/Jx2p9/lpLuEYkdNwxff/3TlelzYcuauz
-	5vWyv+uWFTPOvx1+R18iM3122sn/Zqd3zp74KTVr7TblFWsLn4fvm+IeoKBRG5aw0fr4U/kk
-	ieNsJSKCCc9eCJqZyFWe+LUscr/zw7xzBz5dnnrxf8GDViu/RyGhCta10/qbGW9N3mq1nGVP
-	1rkrzXwPE5SFQiY/f3hs399e8T+BdnxJO1P3JH8ITFHWKlXkmXeh1uXQTKkOCeHfuyNPTFBi
-	Kc5INNRiLipOBABu4kpaCwQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrILMWRmVeSWpSXmKPExsWy7bCSnO7Vte1pBq0H2S1OTz3LZDG1fS+j
-	xZP1s5gtLi1yt1jQ+pvFYsu/I6wWCzY+YrSYsf8puwOHx4JNpR6bVnWyeexe8JnJo2/LKkaP
-	z5vkAlijuGxSUnMyy1KL9O0SuDImT1nEXPBLo2L/23/sDYw/FLoYOTkkBEwkDq2YytLFyMUh
-	JLCbUWL+i7/sXYwcQAlpiWN/iiBMYYnDh4shSj4wSnRP/84E0ssmoCPxcOptFhBbREBT4kjn
-	THaQImaB24wS31e0gyWEBZwkbqx+C2azCKhK/Ji9F6yZV8BWYtbRz0wQR8hLzLz0nR0iLihx
-	cuYTsHpmoHjz1tnMExj5ZiFJzUKSWsDItIpRMrWgODc9t9iwwCgvtVyvODG3uDQvXS85P3cT
-	IzhUtbR2MO5Z9UHvECMTB+MhRgkOZiURXqn3zWlCvCmJlVWpRfnxRaU5qcWHGKU5WJTEeb+9
-	7k0REkhPLEnNTk0tSC2CyTJxcEo1MLHNc6oxyUiNPNTJGrHvGLclm6NcwsJzrhy+FRUXz7n5
-	HG/bt7tsS9pl4T/5ZyV9Vl2157ldtPqAQzFjePJyucNLtRx27fEWO54TVHL9TPv6lvOsH8JO
-	x/2SPditdmNhfdnyyU2/V1aFi6TIFjG/fK1+I3L766bzh54Y24foq9X9ufjmjEZZk+ethNcV
-	Dqwu+iHCO2uv2B/6yCwecWvyS/btLxnm8z/xsVqvI2/t3hd5f846Hs+tfYVNB/W7OSr+lue+
-	nslz43KBaJyC8fPpgoZiB1hbZ0/fcDf2trBVtf3PDb1bQjVclhy6mdD1z6hTXsVQd1FVkIba
-	f8tZS2K8I7d8Xfmv68CM0ogTWUZ3lViKMxINtZiLihMBdyKVy8QCAAA=
-X-CMS-MailID: 20240705082453epcas1p3b42790db4a6df77c14b1f8a2bae39435
+	MgUqTMjOmLLqFGtBq1bFr09pDYzXlLoYOTkkBEwkLm9oY+ti5OIQEtjBKHFoxTQo5xOjxLp7
+	TxghnG+MErM27WGBaTm/4DArRGIvUEvjZVaQBFhL8/EyEJtNQEfi4dTbYA0iAuoSpyYtZQFp
+	YBa4yijRvu85WEJYwF7iy6TzzCA2i4CqxNwnO8DivAK2EkeOvGOC2CYvMfPSd3aIuKDEyZlP
+	wGqYgeLNW2czgwyVELjELnFp430ghwPIcZE4tUEOoldY4tXxLewQtpTE53d72SDsYomj8zew
+	Q/Q2MErc+HoTqsheorm1mQ1kDrOApsT6XfoQu/gk3n3tYYUYzyvR0SYEUa0q0f1oCTOELS2x
+	7NhBdogSD4mXPy0gQRIr8WRvC/sERrlZSB6YheSBWQi7FjAyr2IUSy0ozk1PLTYsMIHHY3J+
+	7iZGcPrTstjBOPftB71DjEwcjIcYJTiYlUR4pd43pwnxpiRWVqUW5ccXleakFh9iNAUG6URm
+	KdHkfGACziuJNzSxNDAxMzKxMLY0NlMS5z1zpSxVSCA9sSQ1OzW1ILUIpo+Jg1OqgUlcsK56
+	FWdSdRtn08Zp2o0Tee5t8Ld9U2i2I0PrtIi31YWvVs1GOTJunCtzX+dJfGCb9mP60mk/6nor
+	LrQ0+CS95j2xMU9YyW3nYb814nobdzkuMVR0lr285IP8xbUC4kscrq/6c+r1sbPqPMsUVi32
+	TJwx10x94aY+nTUsib3O3u+Nj+4S/JexeV5aSqn6P80JJ30uZ+lM61V/5HJjrbZcwbmJrz94
+	6B9+tUhP3lLlkFaSClPpenPVv2f3Ofdud1+hoKhicMjjom9nuaROh8Gj1Qpa371lnBW8J6lm
+	bys4uPxwSJrFTo0dexbLWE5vm7vsGcce13SV/W1zRZ9VW/uv/cmUOWdF/sQHMwx3pimxFGck
+	GmoxFxUnAgA8oXEeCAQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrALMWRmVeSWpSXmKPExsWy7bCSvO7zte1pBv/Pc1ucnnqWyWJq+15G
+	iyfrZzFbXFrkbrGg9TeLxZZ/R1gtFmx8xGgxY/9TdgcOjwWbSj02repk89i94DOTR9+WVYwe
+	nzfJBbBGcdmkpOZklqUW6dslcGVMWXWKtaBVq+LXp7QGxmtKXYycHBICJhLnFxxm7WLk4hAS
+	2M0ocWXWfPYuRg6ghLTEsT9FEKawxOHDxRAlHxgl5m25zgTSyyagI/Fw6m0WEFtEQFPiSOdM
+	dpAiZoHbjBLfV7SDJYQF7CW+TDrPDGKzCKhKzH2yAyzOK2ArceTIOyaII+QlZl76zg4RF5Q4
+	OfMJWA0zULx562zmCYx8s5CkZiFJLWBkWsUomVpQnJueW2xYYJiXWq5XnJhbXJqXrpecn7uJ
+	ERyoWpo7GLev+qB3iJGJg/EQowQHs5IIr9T75jQh3pTEyqrUovz4otKc1OJDjNIcLErivOIv
+	elOEBNITS1KzU1MLUotgskwcnFINTK4WbpHHIz/fc1wnsUrPoWz+CqYSW51255fRnGKLLh11
+	veOmxsmR+tfspHJwp9TC5bwLX53ilPYNtp2/cV0979yvhrJi+1/2/0rzZywS19TbV7r2uIe/
+	5Oq4us45WVWOvU9Yur/c67jqxqV8b39L3+oCj+VainWsYS/Pz8xn92zO/KL79Jv79INGc/7e
+	8r1XKvDuRrOrc6zYxx1Z+/ecfnPZrFA7vbssYqLtZ7vVV7YrVWz4dpRHQ1RucaXspNkTgn+x
+	PVkXxs2stK7U41XwxMAuh6MpBfXaGQIzUm7v0rftbZ/f5sRztvBOp8RzL+tQibPzDVY8+6Vp
+	ZnnAUzP4vvkCVr1zc5gFv1wIKDujxFKckWioxVxUnAgAhOw/HMMCAAA=
+X-CMS-MailID: 20240705082511epcas1p24b7b63d5e714a25213dbe07affa52f69
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
 CMS-TYPE: 101P
 DLP-Filter: Pass
 X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20240705082453epcas1p3b42790db4a6df77c14b1f8a2bae39435
-References: <CGME20240705082453epcas1p3b42790db4a6df77c14b1f8a2bae39435@epcas1p3.samsung.com>
+X-CMS-RootMailID: 20240705082511epcas1p24b7b63d5e714a25213dbe07affa52f69
+References: <CGME20240705082511epcas1p24b7b63d5e714a25213dbe07affa52f69@epcas1p2.samsung.com>
 
-The page cache of the atomic file keeps new data pages which will be
-stored in the COW file. It can also keep old data pages when GCing the
-atomic file. In this case, new data can be overwritten by old data if a
-GC thread sets the old data page as dirty after new data page was
-evicted.
+In case of the COW file, new updates and GC writes are already
+separated to page caches of the atomic file and COW file. As some cases
+that use the meta inode for GC, there are some race issues between a
+foreground thread and GC thread.
 
-Also, since all writes to the atomic file are redirected to COW inodes,
-GC for the atomic file is not working well as below.
+To handle them, we need to take care when to invalidate and wait
+writeback of GC pages in COW files as the case of using the meta inode.
+Also, a pointer from the COW inode to the original inode is required to
+check the state of original pages.
 
-f2fs_gc(gc_type=FG_GC)
-  - select A as a victim segment
-  do_garbage_collect
-    - iget atomic file's inode for block B
-    move_data_page
-      f2fs_do_write_data_page
-        - use dn of cow inode
-        - set fio->old_blkaddr from cow inode
-    - seg_freed is 0 since block B is still valid
-  - goto gc_more and A is selected as victim again
-
-To solve the problem, let's separate GC writes and updates in the atomic
-file by using the meta inode for GC writes.
+For the former, we can solve the problem by using the meta inode for GC
+of COW files. Then let's get a page from the original inode in
+move_data_block when GCing the COW file to avoid race condition.
 
 Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
 Cc: stable@vger.kernel.org #v5.19+
@@ -154,122 +145,133 @@ Reviewed-by: Yeongjin Gil <youngjin.gil@samsung.com>
 Signed-off-by: Sunmin Jeong <s_min.jeong@samsung.com>
 ---
 v2:
-- replace post_read to meta_gc
- fs/f2fs/data.c    | 4 ++--
- fs/f2fs/f2fs.h    | 7 ++++++-
- fs/f2fs/gc.c      | 6 +++---
- fs/f2fs/segment.c | 6 +++---
- 4 files changed, 14 insertions(+), 9 deletions(-)
+- use union for cow inode to point to atomic inode
+ fs/f2fs/data.c   |  2 +-
+ fs/f2fs/f2fs.h   | 13 +++++++++++--
+ fs/f2fs/file.c   |  3 +++
+ fs/f2fs/gc.c     | 12 ++++++++++--
+ fs/f2fs/inline.c |  2 +-
+ fs/f2fs/inode.c  |  3 ++-
+ 6 files changed, 28 insertions(+), 7 deletions(-)
 
 diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index b6dcb3bcaef7..9a213d03005d 100644
+index 9a213d03005d..f6b1782f965a 100644
 --- a/fs/f2fs/data.c
 +++ b/fs/f2fs/data.c
-@@ -2693,7 +2693,7 @@ int f2fs_do_write_data_page(struct f2fs_io_info *fio)
- 	}
- 
- 	/* wait for GCed page writeback via META_MAPPING */
--	if (fio->post_read)
-+	if (fio->meta_gc)
- 		f2fs_wait_on_block_writeback(inode, fio->old_blkaddr);
- 
- 	/*
-@@ -2788,7 +2788,7 @@ int f2fs_write_single_data_page(struct page *page, int *submitted,
- 		.submitted = 0,
- 		.compr_blocks = compr_blocks,
- 		.need_lock = compr_blocks ? LOCK_DONE : LOCK_RETRY,
--		.post_read = f2fs_post_read_required(inode) ? 1 : 0,
-+		.meta_gc = f2fs_meta_inode_gc_required(inode) ? 1 : 0,
- 		.io_type = io_type,
- 		.io_wbc = wbc,
- 		.bio = bio,
+@@ -2606,7 +2606,7 @@ bool f2fs_should_update_outplace(struct inode *inode, struct f2fs_io_info *fio)
+ 		return true;
+ 	if (IS_NOQUOTA(inode))
+ 		return true;
+-	if (f2fs_is_atomic_file(inode))
++	if (f2fs_used_in_atomic_write(inode))
+ 		return true;
+ 	/* rewrite low ratio compress data w/ OPU mode to avoid fragmentation */
+ 	if (f2fs_compressed_file(inode) &&
 diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index f7ee6c5e371e..796ae11c0fa3 100644
+index 796ae11c0fa3..4a8621e4a33a 100644
 --- a/fs/f2fs/f2fs.h
 +++ b/fs/f2fs/f2fs.h
-@@ -1211,7 +1211,7 @@ struct f2fs_io_info {
- 	unsigned int in_list:1;		/* indicate fio is in io_list */
- 	unsigned int is_por:1;		/* indicate IO is from recovery or not */
- 	unsigned int encrypted:1;	/* indicate file is encrypted */
--	unsigned int post_read:1;	/* require post read */
-+	unsigned int meta_gc:1;		/* require meta inode GC */
- 	enum iostat_type io_type;	/* io type */
- 	struct writeback_control *io_wbc; /* writeback control */
- 	struct bio **bio;		/* bio for ipu */
-@@ -4263,6 +4263,11 @@ static inline bool f2fs_post_read_required(struct inode *inode)
+@@ -843,7 +843,11 @@ struct f2fs_inode_info {
+ 	struct task_struct *atomic_write_task;	/* store atomic write task */
+ 	struct extent_tree *extent_tree[NR_EXTENT_CACHES];
+ 					/* cached extent_tree entry */
+-	struct inode *cow_inode;	/* copy-on-write inode for atomic write */
++	union {
++		struct inode *cow_inode;	/* copy-on-write inode for atomic write */
++		struct inode *atomic_inode;
++					/* point to atomic_inode, available only for cow_inode */
++	};
+ 
+ 	/* avoid racing between foreground op and gc */
+ 	struct f2fs_rwsem i_gc_rwsem[2];
+@@ -4263,9 +4267,14 @@ static inline bool f2fs_post_read_required(struct inode *inode)
  		f2fs_compressed_file(inode);
  }
  
-+static inline bool f2fs_meta_inode_gc_required(struct inode *inode)
++static inline bool f2fs_used_in_atomic_write(struct inode *inode)
 +{
-+	return f2fs_post_read_required(inode) || f2fs_is_atomic_file(inode);
++	return f2fs_is_atomic_file(inode) || f2fs_is_cow_file(inode);
 +}
 +
+ static inline bool f2fs_meta_inode_gc_required(struct inode *inode)
+ {
+-	return f2fs_post_read_required(inode) || f2fs_is_atomic_file(inode);
++	return f2fs_post_read_required(inode) || f2fs_used_in_atomic_write(inode);
+ }
+ 
  /*
-  * compress.c
-  */
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index e4a7cff00796..547e7ec32b1f 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -2183,6 +2183,9 @@ static int f2fs_ioc_start_atomic_write(struct file *filp, bool truncate)
+ 
+ 		set_inode_flag(fi->cow_inode, FI_COW_FILE);
+ 		clear_inode_flag(fi->cow_inode, FI_INLINE_DATA);
++
++		/* Set the COW inode's atomic_inode to the atomic inode */
++		F2FS_I(fi->cow_inode)->atomic_inode = inode;
+ 	} else {
+ 		/* Reuse the already created COW inode */
+ 		ret = f2fs_do_truncate_blocks(fi->cow_inode, 0, true);
 diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index ef667fec9a12..cb3006551ab5 100644
+index cb3006551ab5..61913fcefd9e 100644
 --- a/fs/f2fs/gc.c
 +++ b/fs/f2fs/gc.c
-@@ -1589,7 +1589,7 @@ static int gc_data_segment(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
- 			start_bidx = f2fs_start_bidx_of_node(nofs, inode) +
- 								ofs_in_node;
+@@ -1186,7 +1186,11 @@ static int ra_data_block(struct inode *inode, pgoff_t index)
+ 	};
+ 	int err;
  
--			if (f2fs_post_read_required(inode)) {
-+			if (f2fs_meta_inode_gc_required(inode)) {
- 				int err = ra_data_block(inode, start_bidx);
+-	page = f2fs_grab_cache_page(mapping, index, true);
++	if (f2fs_is_cow_file(inode))
++		page = f2fs_grab_cache_page(F2FS_I(inode)->atomic_inode->i_mapping,
++						index, true);
++	else
++		page = f2fs_grab_cache_page(mapping, index, true);
+ 	if (!page)
+ 		return -ENOMEM;
  
- 				f2fs_up_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
-@@ -1640,7 +1640,7 @@ static int gc_data_segment(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
+@@ -1282,7 +1286,11 @@ static int move_data_block(struct inode *inode, block_t bidx,
+ 				CURSEG_ALL_DATA_ATGC : CURSEG_COLD_DATA;
  
- 			start_bidx = f2fs_start_bidx_of_node(nofs, inode)
- 								+ ofs_in_node;
--			if (f2fs_post_read_required(inode))
-+			if (f2fs_meta_inode_gc_required(inode))
- 				err = move_data_block(inode, start_bidx,
- 							gc_type, segno, off);
- 			else
-@@ -1648,7 +1648,7 @@ static int gc_data_segment(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
- 								segno, off);
+ 	/* do not read out */
+-	page = f2fs_grab_cache_page(inode->i_mapping, bidx, false);
++	if (f2fs_is_cow_file(inode))
++		page = f2fs_grab_cache_page(F2FS_I(inode)->atomic_inode->i_mapping,
++						bidx, false);
++	else
++		page = f2fs_grab_cache_page(inode->i_mapping, bidx, false);
+ 	if (!page)
+ 		return -ENOMEM;
  
- 			if (!err && (gc_type == FG_GC ||
--					f2fs_post_read_required(inode)))
-+					f2fs_meta_inode_gc_required(inode)))
- 				submitted++;
+diff --git a/fs/f2fs/inline.c b/fs/f2fs/inline.c
+index 1fba5728be70..cca7d448e55c 100644
+--- a/fs/f2fs/inline.c
++++ b/fs/f2fs/inline.c
+@@ -16,7 +16,7 @@
  
- 			if (locked) {
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 4db1add43e36..77ef46b384b4 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -3851,7 +3851,7 @@ int f2fs_inplace_write_data(struct f2fs_io_info *fio)
- 		goto drop_bio;
+ static bool support_inline_data(struct inode *inode)
+ {
+-	if (f2fs_is_atomic_file(inode))
++	if (f2fs_used_in_atomic_write(inode))
+ 		return false;
+ 	if (!S_ISREG(inode->i_mode) && !S_ISLNK(inode->i_mode))
+ 		return false;
+diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
+index 7a3e2458b2d9..18dea43e694b 100644
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -804,8 +804,9 @@ void f2fs_evict_inode(struct inode *inode)
+ 
+ 	f2fs_abort_atomic_write(inode, true);
+ 
+-	if (fi->cow_inode) {
++	if (fi->cow_inode && f2fs_is_cow_file(fi->cow_inode)) {
+ 		clear_inode_flag(fi->cow_inode, FI_COW_FILE);
++		F2FS_I(fi->cow_inode)->atomic_inode = NULL;
+ 		iput(fi->cow_inode);
+ 		fi->cow_inode = NULL;
  	}
- 
--	if (fio->post_read)
-+	if (fio->meta_gc)
- 		f2fs_truncate_meta_inode_pages(sbi, fio->new_blkaddr, 1);
- 
- 	stat_inc_inplace_blocks(fio->sbi);
-@@ -4021,7 +4021,7 @@ void f2fs_wait_on_block_writeback(struct inode *inode, block_t blkaddr)
- 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
- 	struct page *cpage;
- 
--	if (!f2fs_post_read_required(inode))
-+	if (!f2fs_meta_inode_gc_required(inode))
- 		return;
- 
- 	if (!__is_valid_data_blkaddr(blkaddr))
-@@ -4040,7 +4040,7 @@ void f2fs_wait_on_block_writeback_range(struct inode *inode, block_t blkaddr,
- 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
- 	block_t i;
- 
--	if (!f2fs_post_read_required(inode))
-+	if (!f2fs_meta_inode_gc_required(inode))
- 		return;
- 
- 	for (i = 0; i < len; i++)
 -- 
 2.25.1
 
