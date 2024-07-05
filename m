@@ -1,165 +1,203 @@
-Return-Path: <stable+bounces-58143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1103D928B4A
-	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 17:08:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D610928B76
+	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 17:18:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B37702826BA
-	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 15:08:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C85002828F6
+	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 15:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97C316D9D7;
-	Fri,  5 Jul 2024 15:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71EFE16B72D;
+	Fri,  5 Jul 2024 15:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="tz+hmpXt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aWuqC7pp"
 X-Original-To: stable@vger.kernel.org
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4EA16C685;
-	Fri,  5 Jul 2024 15:05:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720191907; cv=pass; b=AHqA1P7dJkk2r0JUz4YsHcZnGMPkdqzy2+jeQpnly2ricjHlDP2Zou7jW7z7Ybwd+aGoNpYYAzTfoPOHXrkpkJAyk5ko5QbjXwfZuvussNp/yS1kwl+zdC8R3brli9wMXrwPz3HM86AJBa24eEy7y8mQoUArp4gktn93wLP52g0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720191907; c=relaxed/simple;
-	bh=HKSqxvF3CxgL10ACjEGWckPH1vvYFkiWNx3iwMo7AA8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=qknMxEf6Zdul1Fh6tOKtR0bKIUBhJLL76Kgky14PS0sFSKd1pPTjPjf/wvQEQN4KXtRziGJsss8K2RSVBfeTgExiKxa2ubxwPq4SVMJXBLO1+ecGW5F9i63/8ymYdsQraYGu50lfmbzMVVgcgHRerJD5TPY1pk7Yfd0niaTuKTI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=tz+hmpXt; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
-Received: from localhost (83-245-197-232.elisa-laajakaista.fi [83.245.197.232])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sakkinen)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4WFxdK1ljHz49PwY;
-	Fri,  5 Jul 2024 18:04:52 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1720191896;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I1T+P8FyFyyO/m0YF8++lEjDIL2XJa3WTUGx4ue/aE0=;
-	b=tz+hmpXtF1An88gQr0KIJGScQpFm9ckn28+DNI1w3j6Szh4QE25ZaWuBdev/21V5xPKvYv
-	9zZFbc9MLE1XhHARcQI6MRa9BLLXCFUglXSSiJFV7BjUUEJ8xZZ9q2eL8AbnB/Glgwsdjz
-	uBCE/xpB06MqFgvHhvr33FvOFMrYmrPfb9XGAOLb0FoUku+tzqGgZ678BTb5TjLvGh/07B
-	tJmDtzy/oXp+CjjLWvXth/WmIO14ScQsuZ4ooFE+OBqlLYZ7FnumaE+g0OodSt/Hvmenvy
-	RPUtuADcZcTiKCE2uZ7o1KEqmT9/r9APUxyNp6adyE48aV0IrMf9yLT6Iv54Tw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1720191896;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I1T+P8FyFyyO/m0YF8++lEjDIL2XJa3WTUGx4ue/aE0=;
-	b=vaXREb1LYrwVwE0h3MpNdszwKsXTcSaLnu4TdlVWLAcLEkOn/g5LgkKvolcVHh/hzz4auC
-	F+TbRHJln7ORldVNDcQ7Yq7a3kjInW+T6K7kP2xxqnz7zMhH6m+8/k0Hu8gg4eMCwH+ofJ
-	gDCy1swxqWthMbedsKeUooVDg25SiUgpn6RZSq/alr8bixgSpvVuXf/yrxZimEv0haMk3H
-	JiZLddFit1tdH5EQA4QTPO0cVKegJ4mZiEP54wh1cW3y57Njy7Sl2srSruc+EXBV6MiNFU
-	ZWVYPtMs4Ubg6qnnR2NCiy5RbfJV03e27YwtQbw5n8Qi/n6AqAKrZKB6qn8N3w==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=sakkinen smtp.mailfrom=jarkko.sakkinen@iki.fi
-ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1720191896; a=rsa-sha256;
-	cv=none;
-	b=T1mf1NkKLBvs1+EKIb8wizUNhUGJMm0UWU9rHP/XzyLr1iLHEEAL3v8xormQWi5kqTiKmN
-	cil9l5+OnPLreYdwbSjUdz1awdQozS84jb8YGru6VUtfrUjjSOg5HAimV3LXK9TZ7jV3++
-	qEcGaTGW86Rp9P6UfML7sGHAPrVPGTAozVpueotKdr7EU8lFzUop3XSrbm98cY3YB/galj
-	DJZYeQZtSXPnIS7zrLo3FrQdmbW3N49CqtQwgWlEokXNzaouaYLa/4czsHYlVc57cxVkIE
-	dAgxN4WiGIodm3JAcfJ383jzhx0T6eZQ6tnkusBxzdXQpnUwLJMpVlcqlNoCYA==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334F71487D8
+	for <stable@vger.kernel.org>; Fri,  5 Jul 2024 15:16:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720192611; cv=none; b=F/AkbV8xVB8VRwG/UhSxV1GcnRQkF2cMD/mupBuDk5aJVrI/WSAQGZh1uuKeKk71eGJbYQwuAuEIfdpqKMrBL7uvtl+pvfIiwTcredLf2/Fy1Mu3NAjGtEWTO4ZHPTKEBnKRzqOXkRlT+ilSP3ykVoW7hOE5gyRdxNmSmogvJig=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720192611; c=relaxed/simple;
+	bh=ulFGnZkUqan+tJw+L9tWJw227NKsEDMDRBXxumF8L0c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KPPE6K0slhvIp3OYkVqgYSZQYQ92VjV1YwjumKIAzdONoIUaEkDLMc6u57c1RPoIYDblv+JNxvaM6v7LrP7XR+4jybZkwLt4+0FqQix+GrpnrrtzkzdhlBpfzbWMlxS9FpaOQGqjFAdxqjfdqtPriYlPHpVqD5DlyKpkqxRnNEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aWuqC7pp; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720192609; x=1751728609;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=ulFGnZkUqan+tJw+L9tWJw227NKsEDMDRBXxumF8L0c=;
+  b=aWuqC7ppK8k7EeLMjYb6MyJk57xbM5cRMnrh3KnkJrPBWgrHlHs9SsVn
+   golxsXKQK8qs8xQyxoGs2WcGRkftfWSwwP2jVontba8Q45kXDT4hEcwYO
+   9temmN7pa2no8x6nCNph7DyIWk+dveV2sfpiVQakVqrWsH4nbpXYkVaqI
+   nU8BmTBV3S9rG7yiq1fls7ntCZWALVVjDqnZTn0d+LdCa32uZ19kx4iia
+   b7lkrU1fRlj8VErWhKYBQ097V+saWWkCdeptBRW/69esxuRFrFxamoZx6
+   dxIgbC4NhX4HW43GLm9HPICWsy8S9jPVdA0/T4Q5pfD1aJxgRljq9CY3t
+   w==;
+X-CSE-ConnectionGUID: BHeWdFb9Q0WArMR0c70lgg==
+X-CSE-MsgGUID: mX7w+P6lSOWsBURoQZMWDw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="28879247"
+X-IronPort-AV: E=Sophos;i="6.09,185,1716274800"; 
+   d="scan'208";a="28879247"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2024 08:16:48 -0700
+X-CSE-ConnectionGUID: 4aFSfx62SMmPolgWWfIAwA==
+X-CSE-MsgGUID: 6gYSpmimSBaVp1W2u4pS7g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,185,1716274800"; 
+   d="scan'208";a="46870229"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by fmviesa008.fm.intel.com with SMTP; 05 Jul 2024 08:16:46 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Fri, 05 Jul 2024 18:16:45 +0300
+Date: Fri, 5 Jul 2024 18:16:45 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Imre Deak <imre.deak@intel.com>
+Cc: intel-gfx@lists.freedesktop.org, Gareth Yu <gareth.yu@intel.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/5] drm/i915/dp: Don't switch the LTTPR mode on an
+ active link
+Message-ID: <ZogOXbUb9pL6Zmg6@intel.com>
+References: <20240703155937.1674856-1-imre.deak@intel.com>
+ <20240703155937.1674856-2-imre.deak@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 05 Jul 2024 18:04:52 +0300
-Message-Id: <D2HP4TX4S873.2OS2LXAWT58C4@iki.fi>
-Cc: "Thorsten Leemhuis" <regressions@leemhuis.info>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, <stable@vger.kernel.org>, "Peter Huewe"
- <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>, "James Bottomley"
- <James.Bottomley@HansenPartnership.com>, "Mimi Zohar"
- <zohar@linux.ibm.com>, "David Howells" <dhowells@redhat.com>, "Paul Moore"
- <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
- Hallyn" <serge@hallyn.com>, "Ard Biesheuvel" <ardb@kernel.org>, "Mario
- Limonciello" <mario.limonciello@amd.com>, <linux-kernel@vger.kernel.org>,
- <keyrings@vger.kernel.org>, <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH v2 3/3] tpm: Address !chip->auth in
- tpm_buf_append_hmac_session*()
-From: "Jarkko Sakkinen" <jarkko.sakkinen@iki.fi>
-To: "Jarkko Sakkinen" <jarkko@kernel.org>, "Stefan Berger"
- <stefanb@linux.ibm.com>, <linux-integrity@vger.kernel.org>
-X-Mailer: aerc 0.17.0
-References: <20240703182453.1580888-1-jarkko@kernel.org>
- <20240703182453.1580888-4-jarkko@kernel.org>
- <c90ce151-c6e5-40c6-8d3d-ccec5a97d10f@linux.ibm.com>
- <D2GJSLLC0LSF.2RP57L3ALBW38@kernel.org>
- <bffebaaa-4831-459f-939d-adf531e4c78b@linux.ibm.com>
- <D2HOI1829XOO.3ERITAWX9N5IC@kernel.org>
-In-Reply-To: <D2HOI1829XOO.3ERITAWX9N5IC@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240703155937.1674856-2-imre.deak@intel.com>
+X-Patchwork-Hint: comment
 
-On Fri Jul 5, 2024 at 5:35 PM EEST, Jarkko Sakkinen wrote:
-> On Fri Jul 5, 2024 at 5:05 PM EEST, Stefan Berger wrote:
-> > The original thread here
-> >
-> > https://lore.kernel.org/linux-integrity/656b319fc58683e399323b880722434=
-467cf20f2.camel@kernel.org/T/#t
-> >
-> > identified the fact that tpm2_session_init() was missing for the ibmvtp=
-m=20
-> > driver. It is a non-zero problem for the respective platforms where thi=
-s=20
-> > driver is being used. The patched fixed the reported issue.
->
-> All bugs needs to be fixed always before features are added. You are
-> free now to submit your change as a feature patch, which will be
-> reviewed and applied later on.
->
-> > Now that you fixed it in v4 are you going to accept my original patch=
-=20
-> > with the Fixes tag since we will (likely) have an enabled feature in=20
-> > 6.10 that is not actually working when the ibmvtpm driver is being used=
-?
->
-> There's no bug in tpm_ibmvtpm driver as it functions as well as in 6.9.
->
-> I can review it earliest in the week 31, as feature patch. This was my
-> holiday week, and I came back only to fix the bug in the authentication
-> session patch set.
->
-> > I do no think that this is true and its only tpm_ibmvtpm.c that need th=
-e=20
-> > call to tpm2_session_init. All drivers that use TPM_OPS_AUTO_STARTUP=20
-> > will run tpm_chip_register -> tpm_chip_bootstrap -> tpm_auto_startup ->=
-=20
-> > tpm2_auto_startup -> tpm2_sessions_init
->
-> Right my bad. I overlooked the call sites and you're correct in that
-> for anything with that flag on, it will be called.
->
-> It still changes nothing, as the commit you were pointing out in the
-> fixes tag does not implement initialization code, and we would not have
-> that flag in the first place, if it was mandatory [1].
->
-> [1] It could be that it is mandatory perhaps, but that is a different
-> story. Then we would render the whole flag out. I think this was anyway
-> good insight, even if by unintentionally, and we can reconsider removing
-> it some day.
+On Wed, Jul 03, 2024 at 06:59:33PM +0300, Imre Deak wrote:
+> Switching to transparent mode leads to a loss of link synchronization,
+> so prevent doing this on an active link. This happened at least on an
+> Intel N100 system / DELL UD22 dock, the LTTPR residing either on the
+> host or the dock. To fix the issue, keep the current mode on an active
+> link, adjusting the LTTPR count accordingly (resetting it to 0 in
+> transparent mode).
+> 
+> Fixes: 7b2a4ab8b0ef ("drm/i915: Switch to LTTPR transparent mode link training")
+> Reported-and-tested-by: Gareth Yu <gareth.yu@intel.com>
+> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10902
+> Cc: <stable@vger.kernel.org> # v5.15+
+> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> Signed-off-by: Imre Deak <imre.deak@intel.com>
+> ---
+>  .../drm/i915/display/intel_dp_link_training.c | 49 +++++++++++++++++--
+>  1 file changed, 45 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/i915/display/intel_dp_link_training.c b/drivers/gpu/drm/i915/display/intel_dp_link_training.c
+> index 1bc4ef84ff3bc..08a27fe077917 100644
+> --- a/drivers/gpu/drm/i915/display/intel_dp_link_training.c
+> +++ b/drivers/gpu/drm/i915/display/intel_dp_link_training.c
+> @@ -117,10 +117,24 @@ intel_dp_set_lttpr_transparent_mode(struct intel_dp *intel_dp, bool enable)
+>  	return drm_dp_dpcd_write(&intel_dp->aux, DP_PHY_REPEATER_MODE, &val, 1) == 1;
+>  }
+>  
+> -static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEIVER_CAP_SIZE])
+> +static bool intel_dp_lttpr_transparent_mode_enabled(struct intel_dp *intel_dp)
+> +{
+> +	return intel_dp->lttpr_common_caps[DP_PHY_REPEATER_MODE -
+> +					   DP_LT_TUNABLE_PHY_REPEATER_FIELD_DATA_STRUCTURE_REV] ==
+> +		DP_PHY_REPEATER_MODE_TRANSPARENT;
+> +}
+> +
+> +/*
+> + * Read the LTTPR common capabilities and switch the LTTPR PHYs to
+> + * non-transparent mode if this is supported. Preserve the
+> + * transparent/non-transparent mode on an active link.
+> + *
+> + * Return the number of detected LTTPRs in non-transparent mode or 0 if the
+> + * LTTPRs are in transparent mode or the detection failed.
+> + */
+> +static int intel_dp_init_lttpr_phys(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEIVER_CAP_SIZE])
+>  {
+>  	int lttpr_count;
+> -	int i;
+>  
+>  	if (!intel_dp_read_lttpr_common_caps(intel_dp, dpcd))
+>  		return 0;
+> @@ -134,6 +148,19 @@ static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEI
+>  	if (lttpr_count == 0)
+>  		return 0;
+>  
+> +	/*
+> +	 * Don't change the mode on an active link, to prevent a loss of link
+> +	 * synchronization. See DP Standard v2.0 3.6.7. about the LTTPR
+> +	 * resetting its internal state when the mode is changed from
+> +	 * non-transparent to transparent.
+> +	 */
+> +	if (intel_dp->link_trained) {
+> +		if (lttpr_count < 0 || intel_dp_lttpr_transparent_mode_enabled(intel_dp))
+> +			goto out_reset_lttpr_count;
 
-I should have rejected the patch set based on not validating chip->auth
-in opaque API that tpm2-sessions is, and it should not fail caller like
-that no matter how world outside of it is structured. It's a time-bomb
-like it is in the mainline because of this.  I missed that detail
-and your transcript exposed the bug.
+I was pondering whether we should flag this for LTTPR reinit
+on the next link training, but looks like we already do that
+unconditionally. So the TODO in intel_dp_start_link_train()
+should perhaps be removed if it's the behaviour we now want?
 
-Working around an *identified* bug in the caller *is not* a bug fix.
+However, it looks like we leave link_trained==true when
+using the non-modeset link retrain path. So that will again
+skip the LTTPR mode change, whereas the modeset based path
+will do the mode change. Doesn't really matter I suppose,
+but probably good to keep that change in behaviour in mind
+when we get rid of the non-modeset retrain path for good.
 
-BR, Jarkko
+Series is
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+
+> +
+> +		return lttpr_count;
+> +	}
+> +
+>  	/*
+>  	 * See DP Standard v2.0 3.6.6.1. about the explicit disabling of
+>  	 * non-transparent mode and the disable->enable non-transparent mode
+> @@ -154,11 +181,25 @@ static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEI
+>  		       "Switching to LTTPR non-transparent LT mode failed, fall-back to transparent mode\n");
+>  
+>  		intel_dp_set_lttpr_transparent_mode(intel_dp, true);
+> -		intel_dp_reset_lttpr_count(intel_dp);
+>  
+> -		return 0;
+> +		goto out_reset_lttpr_count;
+>  	}
+>  
+> +	return lttpr_count;
+> +
+> +out_reset_lttpr_count:
+> +	intel_dp_reset_lttpr_count(intel_dp);
+> +
+> +	return 0;
+> +}
+> +
+> +static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEIVER_CAP_SIZE])
+> +{
+> +	int lttpr_count;
+> +	int i;
+> +
+> +	lttpr_count = intel_dp_init_lttpr_phys(intel_dp, dpcd);
+> +
+>  	for (i = 0; i < lttpr_count; i++)
+>  		intel_dp_read_lttpr_phy_caps(intel_dp, dpcd, DP_PHY_LTTPR(i));
+>  
+> -- 
+> 2.43.3
+
+-- 
+Ville Syrjälä
+Intel
 
