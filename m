@@ -1,278 +1,234 @@
-Return-Path: <stable+bounces-58126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C599283A3
-	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 10:25:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 571399283B4
+	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 10:32:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB8FD1C2438F
-	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 08:25:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB2A01F22DC0
+	for <lists+stable@lfdr.de>; Fri,  5 Jul 2024 08:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C5E8145A16;
-	Fri,  5 Jul 2024 08:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B175145000;
+	Fri,  5 Jul 2024 08:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="Jxi04vmT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j4SVip75"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133D9145A03
-	for <stable@vger.kernel.org>; Fri,  5 Jul 2024 08:25:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94AAA48
+	for <stable@vger.kernel.org>; Fri,  5 Jul 2024 08:32:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720167916; cv=none; b=AM4vd4zdAagJq+oS4TnBlEDFT3yRmFcyRbU7UD2aBhybIVAysDXAVIwGRG7oLuvDFrzSY0oBwRx95b94qsLLYVWJi+K+3TciknU8Z3U/f/zz57E8JfFxHStvPjqCTUFL5n77kDNjZOn2MudEgc3kzDRDfsj3JJQis0bRlX3tpW8=
+	t=1720168350; cv=none; b=gT+aeKueLcNkBeiEUpGSpU4Bs1cJE4hDen7X5EvmFtpZPoavsFu3EeT6FiCeMJsXIP06nhgWEkeOPcSsalOzcmX4BauJGNJCF6Z9lRo0vag2nA+1d0JOh2M6YxoE9NTXuC7eFwJwKNbkBbtxe5X5aPeB1YMXpKrL3W7DG5znODc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720167916; c=relaxed/simple;
-	bh=NR/1D+BcRV/TsLKrMtyxlQAtAuDdLOC2Gn95KDoEHJY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 References; b=hjd2ZK/95n8fPHqlV1kGHn4CKLQBbe+PLUm3NsbiOkXq8JgzPskFNizPn8AfZWj3FjSs2HzPUacJRouo6vX5F6a4Ol4R+qPvLevcQxrsRTaJj9Wzg23AIUtaGC4bWkf17hwOsSR7eYc1m4Gi7B5LuRslUYbG/iRWJu8Ahc400oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=Jxi04vmT; arc=none smtp.client-ip=203.254.224.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas1p1.samsung.com (unknown [182.195.41.45])
-	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20240705082512epoutp03abb35c71f0bf44b4b99a349621deca70~fQ5o0HN7A2207122071epoutp03J
-	for <stable@vger.kernel.org>; Fri,  5 Jul 2024 08:25:12 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20240705082512epoutp03abb35c71f0bf44b4b99a349621deca70~fQ5o0HN7A2207122071epoutp03J
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1720167912;
-	bh=yjiQRI88LrEgQXuAT2KgD2ughIWt1fQ1A7RP58k7J2c=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=Jxi04vmTYWHQisaGxNAO70Q2M6JX7mljei6uRTxJtWEUM4R23uC0fagtvJ0UmSuyD
-	 um3blOlRqxt+ekkc/0lysq5wtPhVexIoStdVWJl8P5g5Ty1/POTsMrjv/hHGmNCK/O
-	 YIBLw+VAmLS3oRSGW2xSbZ3kZ9ty32AiSlAQA2+s=
-Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
-	epcas1p1.samsung.com (KnoxPortal) with ESMTP id
-	20240705082511epcas1p10cdb1a06d4257b48d6db75d1968c2e44~fQ5oinNMn1756817568epcas1p1U;
-	Fri,  5 Jul 2024 08:25:11 +0000 (GMT)
-Received: from epsmges1p4.samsung.com (unknown [182.195.38.240]) by
-	epsnrtp3.localdomain (Postfix) with ESMTP id 4WFmm7488Nz4x9Pt; Fri,  5 Jul
-	2024 08:25:11 +0000 (GMT)
-Received: from epcas1p4.samsung.com ( [182.195.41.48]) by
-	epsmges1p4.samsung.com (Symantec Messaging Gateway) with SMTP id
-	03.06.09910.7EDA7866; Fri,  5 Jul 2024 17:25:11 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-	epcas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20240705082511epcas1p24b7b63d5e714a25213dbe07affa52f69~fQ5n6U0hh1315913159epcas1p23;
-	Fri,  5 Jul 2024 08:25:11 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20240705082511epsmtrp23c1de109b1ef9173de99959af431a8d5~fQ5n5ubAW2780227802epsmtrp2d;
-	Fri,  5 Jul 2024 08:25:11 +0000 (GMT)
-X-AuditID: b6c32a38-c9ffa700000226b6-97-6687ade7a06e
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-	epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	6A.40.29940.7EDA7866; Fri,  5 Jul 2024 17:25:11 +0900 (KST)
-Received: from localhost.localdomain (unknown [10.253.98.34]) by
-	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20240705082511epsmtip2df6cc542e7a1643d3f4e762addc5c5e8~fQ5nu0crb2772627726epsmtip2X;
-	Fri,  5 Jul 2024 08:25:11 +0000 (GMT)
-From: Sunmin Jeong <s_min.jeong@samsung.com>
-To: jaegeuk@kernel.org, chao@kernel.org
-Cc: daehojeong@google.com, linux-f2fs-devel@lists.sourceforge.net, Sunmin
-	Jeong <s_min.jeong@samsung.com>, stable@vger.kernel.org, Sungjong Seo
-	<sj1557.seo@samsung.com>, Yeongjin Gil <youngjin.gil@samsung.com>
-Subject: [PATCH v2 2/2] f2fs: use meta inode for GC of COW file
-Date: Fri,  5 Jul 2024 17:25:03 +0900
-Message-Id: <20240705082503.805358-1-s_min.jeong@samsung.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1720168350; c=relaxed/simple;
+	bh=mqLRPh53x9W+uD0JW3Eqwkg1JtY32i/PPHv1dQBflH4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BAa/m/yce/ql4cvJan2Y9ch/9yaKq0GiCMMp8p87DlpvWRVuJjKzz+n46DMKhhpao8CvwxEq19KdOUGLsHZhwcfoCcc6XKRyd/UMqxApif0Mu9ru0mRlDy5FuctMUj4QdAfIQjOYPY3jJdWktcv4/uUZtNjKI+losttVdPNoQzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j4SVip75; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720168348; x=1751704348;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=mqLRPh53x9W+uD0JW3Eqwkg1JtY32i/PPHv1dQBflH4=;
+  b=j4SVip75Fx0TV5LHwE/YWOUOz77912SwCQ3hLEtCqrm+0KnstLoWGbs8
+   yI+QP2aanmZj3HqlBuagx6AVLerxgB1yVfBizH8VM6KaKtmNpEw5av5nw
+   geDUynLvDa9+HbrRIpK3uUJQlHw2FEm73c2o8ndiDNlUrmRvz7IPbT4ah
+   QHTB/mevPsP2Q63CL0kJART+0yQLYYYCu0IFFc+JcOWSp3MW7/wmEeH3O
+   wpmsfE9/CIsqtPTHl2t5ZPSwb/hzCtwjOqYMLiXfkx5/l9IbHZ5oERWhJ
+   F378HK0huGuJ4RB1637830gtIvSLr+YV1TM6GEwV/pP2NNwUYku7YJwIM
+   Q==;
+X-CSE-ConnectionGUID: n6kMyLc1TwuksI6ZdhyLdw==
+X-CSE-MsgGUID: 5zHaUcOUSy6hJ29SJO1ZWQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="17272222"
+X-IronPort-AV: E=Sophos;i="6.09,184,1716274800"; 
+   d="scan'208";a="17272222"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2024 01:32:28 -0700
+X-CSE-ConnectionGUID: 6LVlaDtqTq+gqddt/CTvGA==
+X-CSE-MsgGUID: hGq/FCZDS5Sta886KSqOGw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,184,1716274800"; 
+   d="scan'208";a="51768616"
+Received: from maurocar-mobl2.ger.corp.intel.com (HELO fedora..) ([10.245.245.166])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2024 01:32:25 -0700
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Pallavi Mishra <pallavi.mishra@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	dri-devel@lists.freedesktop.org,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Effie Yu <effie.yu@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Jose Souza <jose.souza@intel.com>,
+	Michal Mrozek <michal.mrozek@intel.com>,
+	stable@vger.kernel.org,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH v2] drm/xe: Use write-back caching mode for system memory on DGFX
+Date: Fri,  5 Jul 2024 10:32:14 +0200
+Message-ID: <20240705083214.307860-1-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrKKsWRmVeSWpSXmKPExsWy7bCmge7zte1pBn/+yFucnnqWyWJq+15G
-	iyfrZzFbXFrkbrGg9TeLxZZ/R1gtFmx8xGgxY/9TdgcOjwWbSj02repk89i94DOTR9+WVYwe
-	nzfJBbBGZdtkpCampBYppOYl56dk5qXbKnkHxzvHm5oZGOoaWlqYKynkJeam2iq5+AToumXm
-	AF2ipFCWmFMKFApILC5W0rezKcovLUlVyMgvLrFVSi1IySkwK9ArTswtLs1L18tLLbEyNDAw
-	MgUqTMjOmLLqFGtBq1bFr09pDYzXlLoYOTkkBEwkLm9oY+ti5OIQEtjBKHFoxTQo5xOjxLp7
-	TxghnG+MErM27WGBaTm/4DArRGIvUEvjZVaQBFhL8/EyEJtNQEfi4dTbYA0iAuoSpyYtZQFp
-	YBa4yijRvu85WEJYwF7iy6TzzCA2i4CqxNwnO8DivAK2EkeOvGOC2CYvMfPSd3aIuKDEyZlP
-	wGqYgeLNW2czgwyVELjELnFp430ghwPIcZE4tUEOoldY4tXxLewQtpTE53d72SDsYomj8zew
-	Q/Q2MErc+HoTqsheorm1mQ1kDrOApsT6XfoQu/gk3n3tYYUYzyvR0SYEUa0q0f1oCTOELS2x
-	7NhBdogSD4mXPy0gQRIr8WRvC/sERrlZSB6YheSBWQi7FjAyr2IUSy0ozk1PLTYsMIHHY3J+
-	7iZGcPrTstjBOPftB71DjEwcjIcYJTiYlUR4pd43pwnxpiRWVqUW5ccXleakFh9iNAUG6URm
-	KdHkfGACziuJNzSxNDAxMzKxMLY0NlMS5z1zpSxVSCA9sSQ1OzW1ILUIpo+Jg1OqgUlcsK56
-	FWdSdRtn08Zp2o0Tee5t8Ld9U2i2I0PrtIi31YWvVs1GOTJunCtzX+dJfGCb9mP60mk/6nor
-	LrQ0+CS95j2xMU9YyW3nYb814nobdzkuMVR0lr285IP8xbUC4kscrq/6c+r1sbPqPMsUVi32
-	TJwx10x94aY+nTUsib3O3u+Nj+4S/JexeV5aSqn6P80JJ30uZ+lM61V/5HJjrbZcwbmJrz94
-	6B9+tUhP3lLlkFaSClPpenPVv2f3Ofdud1+hoKhicMjjom9nuaROh8Gj1Qpa371lnBW8J6lm
-	bys4uPxwSJrFTo0dexbLWE5vm7vsGcce13SV/W1zRZ9VW/uv/cmUOWdF/sQHMwx3pimxFGck
-	GmoxFxUnAgA8oXEeCAQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrALMWRmVeSWpSXmKPExsWy7bCSvO7zte1pBv/Pc1ucnnqWyWJq+15G
-	iyfrZzFbXFrkbrGg9TeLxZZ/R1gtFmx8xGgxY/9TdgcOjwWbSj02repk89i94DOTR9+WVYwe
-	nzfJBbBGcdmkpOZklqUW6dslcGVMWXWKtaBVq+LXp7QGxmtKXYycHBICJhLnFxxm7WLk4hAS
-	2M0ocWXWfPYuRg6ghLTEsT9FEKawxOHDxRAlHxgl5m25zgTSyyagI/Fw6m0WEFtEQFPiSOdM
-	dpAiZoHbjBLfV7SDJYQF7CW+TDrPDGKzCKhKzH2yAyzOK2ArceTIOyaII+QlZl76zg4RF5Q4
-	OfMJWA0zULx562zmCYx8s5CkZiFJLWBkWsUomVpQnJueW2xYYJiXWq5XnJhbXJqXrpecn7uJ
-	ERyoWpo7GLev+qB3iJGJg/EQowQHs5IIr9T75jQh3pTEyqrUovz4otKc1OJDjNIcLErivOIv
-	elOEBNITS1KzU1MLUotgskwcnFINTK4WbpHHIz/fc1wnsUrPoWz+CqYSW51255fRnGKLLh11
-	veOmxsmR+tfspHJwp9TC5bwLX53ilPYNtp2/cV0979yvhrJi+1/2/0rzZywS19TbV7r2uIe/
-	5Oq4us45WVWOvU9Yur/c67jqxqV8b39L3+oCj+VainWsYS/Pz8xn92zO/KL79Jv79INGc/7e
-	8r1XKvDuRrOrc6zYxx1Z+/ecfnPZrFA7vbssYqLtZ7vVV7YrVWz4dpRHQ1RucaXspNkTgn+x
-	PVkXxs2stK7U41XwxMAuh6MpBfXaGQIzUm7v0rftbZ/f5sRztvBOp8RzL+tQibPzDVY8+6Vp
-	ZnnAUzP4vvkCVr1zc5gFv1wIKDujxFKckWioxVxUnAgAhOw/HMMCAAA=
-X-CMS-MailID: 20240705082511epcas1p24b7b63d5e714a25213dbe07affa52f69
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 101P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20240705082511epcas1p24b7b63d5e714a25213dbe07affa52f69
-References: <CGME20240705082511epcas1p24b7b63d5e714a25213dbe07affa52f69@epcas1p2.samsung.com>
 
-In case of the COW file, new updates and GC writes are already
-separated to page caches of the atomic file and COW file. As some cases
-that use the meta inode for GC, there are some race issues between a
-foreground thread and GC thread.
+The caching mode for buffer objects with VRAM as a possible
+placement was forced to write-combined, regardless of placement.
 
-To handle them, we need to take care when to invalidate and wait
-writeback of GC pages in COW files as the case of using the meta inode.
-Also, a pointer from the COW inode to the original inode is required to
-check the state of original pages.
+However, write-combined system memory is expensive to allocate and
+even though it is pooled, the pool is expensive to shrink, since
+it involves global CPU TLB flushes.
 
-For the former, we can solve the problem by using the meta inode for GC
-of COW files. Then let's get a page from the original inode in
-move_data_block when GCing the COW file to avoid race condition.
+Moreover write-combined system memory from TTM is only reliably
+available on x86 and DGFX doesn't have an x86 restriction.
 
-Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
-Cc: stable@vger.kernel.org #v5.19+
-Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-Reviewed-by: Yeongjin Gil <youngjin.gil@samsung.com>
-Signed-off-by: Sunmin Jeong <s_min.jeong@samsung.com>
----
+So regardless of the cpu caching mode selected for a bo,
+internally use write-back caching mode for system memory on DGFX.
+
+Coherency is maintained, but user-space clients may perceive a
+difference in cpu access speeds.
+
 v2:
-- use union for cow inode to point to atomic inode
- fs/f2fs/data.c   |  2 +-
- fs/f2fs/f2fs.h   | 13 +++++++++++--
- fs/f2fs/file.c   |  3 +++
- fs/f2fs/gc.c     | 12 ++++++++++--
- fs/f2fs/inline.c |  2 +-
- fs/f2fs/inode.c  |  3 ++-
- 6 files changed, 28 insertions(+), 7 deletions(-)
+- Update RB- and Ack tags.
+- Rephrase wording in xe_drm.h (Matt Roper)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index 9a213d03005d..f6b1782f965a 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -2606,7 +2606,7 @@ bool f2fs_should_update_outplace(struct inode *inode, struct f2fs_io_info *fio)
- 		return true;
- 	if (IS_NOQUOTA(inode))
- 		return true;
--	if (f2fs_is_atomic_file(inode))
-+	if (f2fs_used_in_atomic_write(inode))
- 		return true;
- 	/* rewrite low ratio compress data w/ OPU mode to avoid fragmentation */
- 	if (f2fs_compressed_file(inode) &&
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 796ae11c0fa3..4a8621e4a33a 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -843,7 +843,11 @@ struct f2fs_inode_info {
- 	struct task_struct *atomic_write_task;	/* store atomic write task */
- 	struct extent_tree *extent_tree[NR_EXTENT_CACHES];
- 					/* cached extent_tree entry */
--	struct inode *cow_inode;	/* copy-on-write inode for atomic write */
-+	union {
-+		struct inode *cow_inode;	/* copy-on-write inode for atomic write */
-+		struct inode *atomic_inode;
-+					/* point to atomic_inode, available only for cow_inode */
-+	};
- 
- 	/* avoid racing between foreground op and gc */
- 	struct f2fs_rwsem i_gc_rwsem[2];
-@@ -4263,9 +4267,14 @@ static inline bool f2fs_post_read_required(struct inode *inode)
- 		f2fs_compressed_file(inode);
- }
- 
-+static inline bool f2fs_used_in_atomic_write(struct inode *inode)
-+{
-+	return f2fs_is_atomic_file(inode) || f2fs_is_cow_file(inode);
-+}
-+
- static inline bool f2fs_meta_inode_gc_required(struct inode *inode)
- {
--	return f2fs_post_read_required(inode) || f2fs_is_atomic_file(inode);
-+	return f2fs_post_read_required(inode) || f2fs_used_in_atomic_write(inode);
- }
- 
- /*
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index e4a7cff00796..547e7ec32b1f 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -2183,6 +2183,9 @@ static int f2fs_ioc_start_atomic_write(struct file *filp, bool truncate)
- 
- 		set_inode_flag(fi->cow_inode, FI_COW_FILE);
- 		clear_inode_flag(fi->cow_inode, FI_INLINE_DATA);
-+
-+		/* Set the COW inode's atomic_inode to the atomic inode */
-+		F2FS_I(fi->cow_inode)->atomic_inode = inode;
- 	} else {
- 		/* Reuse the already created COW inode */
- 		ret = f2fs_do_truncate_blocks(fi->cow_inode, 0, true);
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index cb3006551ab5..61913fcefd9e 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -1186,7 +1186,11 @@ static int ra_data_block(struct inode *inode, pgoff_t index)
- 	};
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: 622f709ca629 ("drm/xe/uapi: Add support for CPU caching mode")
+Cc: Pallavi Mishra <pallavi.mishra@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Effie Yu <effie.yu@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Jose Souza <jose.souza@intel.com>
+Cc: Michal Mrozek <michal.mrozek@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Acked-by: Matthew Auld <matthew.auld@intel.com>
+Acked-by: José Roberto de Souza <jose.souza@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 622f709ca629 ("drm/xe/uapi: Add support for CPU caching mode")
+Acked-by: Michal Mrozek <michal.mrozek@intel.com>
+Acked-by: Effie Yu <effie.yu@intel.com> #On chat
+---
+ drivers/gpu/drm/xe/xe_bo.c       | 47 +++++++++++++++++++-------------
+ drivers/gpu/drm/xe/xe_bo_types.h |  3 +-
+ include/uapi/drm/xe_drm.h        |  8 +++++-
+ 3 files changed, 37 insertions(+), 21 deletions(-)
+
+diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+index 65c696966e96..31192d983d9e 100644
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -343,7 +343,7 @@ static struct ttm_tt *xe_ttm_tt_create(struct ttm_buffer_object *ttm_bo,
+ 	struct xe_device *xe = xe_bo_device(bo);
+ 	struct xe_ttm_tt *tt;
+ 	unsigned long extra_pages;
+-	enum ttm_caching caching;
++	enum ttm_caching caching = ttm_cached;
  	int err;
  
--	page = f2fs_grab_cache_page(mapping, index, true);
-+	if (f2fs_is_cow_file(inode))
-+		page = f2fs_grab_cache_page(F2FS_I(inode)->atomic_inode->i_mapping,
-+						index, true);
-+	else
-+		page = f2fs_grab_cache_page(mapping, index, true);
- 	if (!page)
- 		return -ENOMEM;
+ 	tt = kzalloc(sizeof(*tt), GFP_KERNEL);
+@@ -357,26 +357,35 @@ static struct ttm_tt *xe_ttm_tt_create(struct ttm_buffer_object *ttm_bo,
+ 		extra_pages = DIV_ROUND_UP(xe_device_ccs_bytes(xe, bo->size),
+ 					   PAGE_SIZE);
  
-@@ -1282,7 +1286,11 @@ static int move_data_block(struct inode *inode, block_t bidx,
- 				CURSEG_ALL_DATA_ATGC : CURSEG_COLD_DATA;
+-	switch (bo->cpu_caching) {
+-	case DRM_XE_GEM_CPU_CACHING_WC:
+-		caching = ttm_write_combined;
+-		break;
+-	default:
+-		caching = ttm_cached;
+-		break;
+-	}
+-
+-	WARN_ON((bo->flags & XE_BO_FLAG_USER) && !bo->cpu_caching);
+-
+ 	/*
+-	 * Display scanout is always non-coherent with the CPU cache.
+-	 *
+-	 * For Xe_LPG and beyond, PPGTT PTE lookups are also non-coherent and
+-	 * require a CPU:WC mapping.
++	 * DGFX system memory is always WB / ttm_cached, since
++	 * other caching modes are only supported on x86. DGFX
++	 * GPU system memory accesses are always coherent with the
++	 * CPU.
+ 	 */
+-	if ((!bo->cpu_caching && bo->flags & XE_BO_FLAG_SCANOUT) ||
+-	    (xe->info.graphics_verx100 >= 1270 && bo->flags & XE_BO_FLAG_PAGETABLE))
+-		caching = ttm_write_combined;
++	if (!IS_DGFX(xe)) {
++		switch (bo->cpu_caching) {
++		case DRM_XE_GEM_CPU_CACHING_WC:
++			caching = ttm_write_combined;
++			break;
++		default:
++			caching = ttm_cached;
++			break;
++		}
++
++		WARN_ON((bo->flags & XE_BO_FLAG_USER) && !bo->cpu_caching);
++
++		/*
++		 * Display scanout is always non-coherent with the CPU cache.
++		 *
++		 * For Xe_LPG and beyond, PPGTT PTE lookups are also
++		 * non-coherent and require a CPU:WC mapping.
++		 */
++		if ((!bo->cpu_caching && bo->flags & XE_BO_FLAG_SCANOUT) ||
++		    (xe->info.graphics_verx100 >= 1270 &&
++		     bo->flags & XE_BO_FLAG_PAGETABLE))
++			caching = ttm_write_combined;
++	}
  
- 	/* do not read out */
--	page = f2fs_grab_cache_page(inode->i_mapping, bidx, false);
-+	if (f2fs_is_cow_file(inode))
-+		page = f2fs_grab_cache_page(F2FS_I(inode)->atomic_inode->i_mapping,
-+						bidx, false);
-+	else
-+		page = f2fs_grab_cache_page(inode->i_mapping, bidx, false);
- 	if (!page)
- 		return -ENOMEM;
+ 	if (bo->flags & XE_BO_FLAG_NEEDS_UC) {
+ 		/*
+diff --git a/drivers/gpu/drm/xe/xe_bo_types.h b/drivers/gpu/drm/xe/xe_bo_types.h
+index 02d68873558a..ebc8abf7930a 100644
+--- a/drivers/gpu/drm/xe/xe_bo_types.h
++++ b/drivers/gpu/drm/xe/xe_bo_types.h
+@@ -68,7 +68,8 @@ struct xe_bo {
  
-diff --git a/fs/f2fs/inline.c b/fs/f2fs/inline.c
-index 1fba5728be70..cca7d448e55c 100644
---- a/fs/f2fs/inline.c
-+++ b/fs/f2fs/inline.c
-@@ -16,7 +16,7 @@
+ 	/**
+ 	 * @cpu_caching: CPU caching mode. Currently only used for userspace
+-	 * objects.
++	 * objects. Exceptions are system memory on DGFX, which is always
++	 * WB.
+ 	 */
+ 	u16 cpu_caching;
  
- static bool support_inline_data(struct inode *inode)
- {
--	if (f2fs_is_atomic_file(inode))
-+	if (f2fs_used_in_atomic_write(inode))
- 		return false;
- 	if (!S_ISREG(inode->i_mode) && !S_ISLNK(inode->i_mode))
- 		return false;
-diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-index 7a3e2458b2d9..18dea43e694b 100644
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -804,8 +804,9 @@ void f2fs_evict_inode(struct inode *inode)
- 
- 	f2fs_abort_atomic_write(inode, true);
- 
--	if (fi->cow_inode) {
-+	if (fi->cow_inode && f2fs_is_cow_file(fi->cow_inode)) {
- 		clear_inode_flag(fi->cow_inode, FI_COW_FILE);
-+		F2FS_I(fi->cow_inode)->atomic_inode = NULL;
- 		iput(fi->cow_inode);
- 		fi->cow_inode = NULL;
- 	}
+diff --git a/include/uapi/drm/xe_drm.h b/include/uapi/drm/xe_drm.h
+index 33544ef78d3e..83474125f3db 100644
+--- a/include/uapi/drm/xe_drm.h
++++ b/include/uapi/drm/xe_drm.h
+@@ -783,7 +783,13 @@ struct drm_xe_gem_create {
+ #define DRM_XE_GEM_CPU_CACHING_WC                      2
+ 	/**
+ 	 * @cpu_caching: The CPU caching mode to select for this object. If
+-	 * mmaping the object the mode selected here will also be used.
++	 * mmaping the object the mode selected here will also be used. The
++	 * exception is when mapping system memory (including evicted
++	 * system memory) on discrete GPUs. The caching mode selected will
++	 * then be overridden to DRM_XE_GEM_CPU_CACHING_WB, and coherency
++	 * between GPU- and CPU is guaranteed. The caching mode of
++	 * existing CPU-mappings will be updated transparently to
++	 * user-space clients.
+ 	 */
+ 	__u16 cpu_caching;
+ 	/** @pad: MBZ */
 -- 
-2.25.1
+2.44.0
 
 
