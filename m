@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-58166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CDED92922D
-	for <lists+stable@lfdr.de>; Sat,  6 Jul 2024 11:17:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA90A929230
+	for <lists+stable@lfdr.de>; Sat,  6 Jul 2024 11:18:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCA0B282F0E
-	for <lists+stable@lfdr.de>; Sat,  6 Jul 2024 09:17:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93E38282E00
+	for <lists+stable@lfdr.de>; Sat,  6 Jul 2024 09:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA144120B;
-	Sat,  6 Jul 2024 09:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAEB3487A7;
+	Sat,  6 Jul 2024 09:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LD/XDaGo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OAqjsA1m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C659C28F0
-	for <stable@vger.kernel.org>; Sat,  6 Jul 2024 09:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99DC28F0
+	for <stable@vger.kernel.org>; Sat,  6 Jul 2024 09:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720257442; cv=none; b=Klv+YoMRzBK80rcANFmGO16n4gV6Bt+bUau39IiKMmjE37TRHvbaNt4PRGR2HYT9+WXewaC3hsf2ramWVJh5rkqe5HS9tgSuUL2W//ZAYLIpkYTEfwNlLAOAgs6PCesCynf8R1TYZYu3AWSplq+1rgjklRDmJOSNqobEL31dp44=
+	t=1720257478; cv=none; b=rW5MycFqW21yDdldS2AktqTJctbixjcrKHbHnx2XNuQsO2Is8cPq1I6CHJuxswJMZdeD+bvMFsIjBjHKUerf3fJbFYhmUv43udi7/8Ja1MKyvvFwpEC+6XX0NcBSZPBdvfMMZV5uwlzr6Zk0tXP6N56ykZVisVF3bI/zCD/0xD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720257442; c=relaxed/simple;
-	bh=E4Rq0KEHo6es9ElRo20G9FO2Kjx+qPcNwr9RIH9y7bQ=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=ps+KEk9Qm4kolcIo+hz+yeluOqzj/M6W5O7LAcob0l29mS/3OUk67mqyLcA4t4WjRBWYwSfccjbwXueBDVBLvyhmh6894NHxZJ93NiDEQPcGqK+adDGPfDXorLSKJFdr30zLkN9vHoHcct4QCh4YsVcgjmgbEo7qveJB++pfXfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LD/XDaGo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B73C2BD10;
-	Sat,  6 Jul 2024 09:17:21 +0000 (UTC)
+	s=arc-20240116; t=1720257478; c=relaxed/simple;
+	bh=/fjsW+A9Q9fHKjMJRefYiLOHZcjIKEWhJhBjgAPi+Sg=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=TvMoqXpBdKHQRNmTsAFAD2VittJgy6qI8cj9UtRAefyge4U8Creh6AokAfcQOQZZELJ4UniC/EH+4YoKGT9ojAwfvjq+1E1+iVCXOhEVK5SGmSo/sadOPHPMLu+1b0A6Uv4HVGqjgOLeWe8KM5A8uucHYwCc4UPneOSkB74AXxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OAqjsA1m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E79C2BD10;
+	Sat,  6 Jul 2024 09:17:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720257442;
-	bh=E4Rq0KEHo6es9ElRo20G9FO2Kjx+qPcNwr9RIH9y7bQ=;
+	s=korg; t=1720257478;
+	bh=/fjsW+A9Q9fHKjMJRefYiLOHZcjIKEWhJhBjgAPi+Sg=;
 	h=Subject:To:From:Date:From;
-	b=LD/XDaGo0EooWeoNh4tiC3hm6JdfeoLzsCZkdi5FtY3tfKpfGgJHpNfEC7w+qWZGO
-	 THCSc5YjFOmYrl1NeQJz/j7zIQs5katEGLhupPbwzrJMYNbVYYxPg8oAUVb04QGjUT
-	 cLhL+2rJ2Nm9XcCjeMxYa3AgpIA0IiZkrII5L8dQ=
-Subject: patch "bus: mhi: ep: Do not allocate memory for MHI objects from DMA zone" added to char-misc-testing
+	b=OAqjsA1mK8E/J1WU8SL7cCEUQwUDmEdgeFOraxJEGJ5qdBWpJje3BD209EtVeFfII
+	 acNkM5MTWRDEDj7WeApwbsqV3UDB72D71tLWUPRNCV5zKyPu7tLE1yPJ/HjRSb0NCc
+	 RqSqC7F1RPBK1LvHrZX82ssUnrcshR2jPrwwo7ZA=
+Subject: patch "bus: mhi: ep: Do not allocate memory for MHI objects from DMA zone" added to char-misc-next
 To: manivannan.sadhasivam@linaro.org,quic_mrana@quicinc.com,stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 06 Jul 2024 11:17:19 +0200
-Message-ID: <2024070619-dividend-manicotti-3467@gregkh>
+Date: Sat, 06 Jul 2024 11:17:55 +0200
+Message-ID: <2024070655-fondness-salon-33a5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,13 +58,13 @@ This is a note to let you know that I've just added the patch titled
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-testing branch.
+in the char-misc-next branch.
 
 The patch will show up in the next release of the linux-next tree
 (usually sometime within the next 24 hours during the week.)
 
-The patch will be merged to the char-misc-next branch sometime soon,
-after it passes testing, and the merge window is open.
+The patch will also be merged in the next major kernel release
+during the merge window.
 
 If you have any questions about this process, please let me know.
 
