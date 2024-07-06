@@ -1,337 +1,220 @@
-Return-Path: <stable+bounces-58160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D1292903B
-	for <lists+stable@lfdr.de>; Sat,  6 Jul 2024 05:13:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB69192904D
+	for <lists+stable@lfdr.de>; Sat,  6 Jul 2024 05:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 514F71C210A3
-	for <lists+stable@lfdr.de>; Sat,  6 Jul 2024 03:13:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF2BE1C21064
+	for <lists+stable@lfdr.de>; Sat,  6 Jul 2024 03:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01350F4F1;
-	Sat,  6 Jul 2024 03:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53BEBE556;
+	Sat,  6 Jul 2024 03:24:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BGaLa2cQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D8FD2EE;
-	Sat,  6 Jul 2024 03:13:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7772717E9
+	for <stable@vger.kernel.org>; Sat,  6 Jul 2024 03:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720235592; cv=none; b=uGpPW0fFU+ImDS0oe8g3eerubGO/96GskxyC92+GX7GJFRoUxo0vveH9Yjz4bLJzTrh+PFstI5Vh8/wG93a9W+yc7g6qqO1mGXZgwX/kVpd0FFiIIJScUb2F3DbgyPLsmbkp0ren4KJPsN5RJMksIazXhzM8BkuYJZSXdCR3w/U=
+	t=1720236253; cv=none; b=gkrSQKPJY+s4iaOAUeKnEpLnZO91y7UwIgxrhooEevJTUY5l+ssKG0O/i2sejDGLHw4THO4OczRQQnLBdzvgNd6Strw8h+0Jz9dW73H6XDaOk87u1KAZEO6aFc8GlvlI0zBPkOMAkz1+o60WQMnFIvZNv+e5JP1Nfw2iN6INRmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720235592; c=relaxed/simple;
-	bh=MyjTGk6VuWMYFBl8e5jB9YOcHh8boZQO8NlWjQrIp6U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=puY+nOED9A92+tO3Ux/wQ1mmjILvb1hCPRqSqkGoIgIk8D96oPiG5pH+3LxlJMM4NtF0t199tksgbYUaV+DRnSUlYHpFqLL3xcJwrl9QPd/cpzF/yfBaDJ1uqVJkZ9fneQMA2A9Jc4Pz9RQaDVRSCUdpPFRtwgifgIj4Cl2XEBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; arc=none smtp.client-ip=54.207.19.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-X-QQ-mid: bizesmtpip1t1720235489tei2m50
-X-QQ-Originating-IP: T9voozigEMbvKQqLmyXHyvJvu/Sgt2Ax2xFLqZOUFw0=
-Received: from avenger-OMEN-by-HP-Gaming-Lapto ( [255.251.210.2])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sat, 06 Jul 2024 11:11:23 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 1222939419050242368
-From: WangYuli <wangyuli@uniontech.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	sashal@kernel.org
-Cc: ast@kernel.org,
-	keescook@chromium.org,
-	linux-hardening@vger.kernel.org,
-	christophe.leroy@csgroup.eu,
-	catalin.marinas@arm.com,
-	song@kernel.org,
-	puranjay12@gmail.com,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	martin.lau@linux.dev,
-	yonghong.song@linux.dev,
-	john.fastabend@gmail.com,
-	kpsingh@kernel.org,
-	sdf@google.com,
-	haoluo@google.com,
-	jolsa@kernel.org,
-	illusionist.neo@gmail.com,
-	linux@armlinux.org.uk,
-	bpf@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	chenhuacai@kernel.org,
-	kernel@xen0n.name,
-	loongarch@lists.linux.dev,
-	johan.almbladh@anyfinetworks.com,
-	paulburton@kernel.org,
-	tsbogend@alpha.franken.de,
-	linux-mips@vger.kernel.org,
-	deller@gmx.de,
-	linux-parisc@vger.kernel.org,
-	iii@linux.ibm.com,
-	hca@linux.ibm.com,
-	gor@linux.ibm.com,
-	agordeev@linux.ibm.com,
-	borntraeger@linux.ibm.com,
-	svens@linux.ibm.com,
-	linux-s390@vger.kernel.org,
-	davem@davemloft.net,
-	sparclinux@vger.kernel.org,
-	kuba@kernel.org,
-	hawk@kernel.org,
-	netdev@vger.kernel.org,
-	dsahern@kernel.org,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	guanwentao@uniontech.com,
-	baimingcong@uniontech.com,
-	WangYuli <wangyuli@uniontech.com>
-Subject: [PATCH] Revert "bpf: Take return from set_memory_rox() into account with bpf_jit_binary_lock_ro()" for linux-6.6.37
-Date: Sat,  6 Jul 2024 11:11:01 +0800
-Message-ID: <5A29E00D83AB84E3+20240706031101.637601-1-wangyuli@uniontech.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1720236253; c=relaxed/simple;
+	bh=Zf7fegEOz88S+uefNQgGk7kN64iUyK0nqei1SbhANDY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Lic2oFRjqX4fUJvTmQAXDLIwCZwPuHcf/BDtWIro6kM3YuFqXDXJUFCFstskyz1XGwJrTDfu8/BPlTSYR/z2fFwMl5Nc4kmQmzUYXhOLMZ73SnqtWjormIgBE5MkJUkdJHkv6HAvietAf+nZkD2/JeqU743MBU45slNweEeJPHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BGaLa2cQ; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-57a16f4b8bfso26779a12.0
+        for <stable@vger.kernel.org>; Fri, 05 Jul 2024 20:24:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1720236250; x=1720841050; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EeOWn8Dcpi/0Zne7XKezGHMzmpPhwxsGnD8ugnUza50=;
+        b=BGaLa2cQQFmM0AaO8KvAhvMYAmEgh4weii2RHxAkxKZCO/nia1S1NXm2b6Y+YP0dqO
+         bNTwO8aOpWswJf4ZRWgNur5rUUKavfJizyHjQbbK6UBm7AVzlFmbKICyFyYgUP6Evlz2
+         EVebT93LKbIUvPPQe4cPekxcdFtRaECUNz/BL1NP6ESKCBn+dBC5cM/TTpprpVo+js9X
+         U0v6rHj1FOuWFkaPDhWOi4lM0ZF1IjvOIj9COqSsiuN8E5jOKGhZeags2/dnYtUGgf0W
+         rdNcBdLd43+PyA1LhGOkuOUT00Fkz4BTBluGWAVzY75vGzAaV5oBnpUiMoACtv6whMkZ
+         rdHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720236250; x=1720841050;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EeOWn8Dcpi/0Zne7XKezGHMzmpPhwxsGnD8ugnUza50=;
+        b=sjhezXvV9l/0H1xjnBsmmg6lkHP2O91MCoSRqEG8oZvA8qhGYUqJJHiY3ovgVa0uv9
+         Pewtc0UAVnKiVdqPIzGeikjY2wHExwixgle7P+C7RM8x734a/KIoba8sYEP9sYXw7YeI
+         Wx35AGyMDeLYYLB9bbbkfbcmfcsUeGDyNq3SZTckzWmwaDhxQzTX/Vw7yVogrLDae0f7
+         46RO90e7V0i2My8+oM/J9umTY62/Y3I09T2nGotivbh1mkLHEpQFuL8dNBGSuCHIam8h
+         4rYqwkuV9PEnWVU7EyC1zRW9YlDjtEIwd/CcYDXqC0XiUDdUG9mNXlFsuHOJ8JHxW+q3
+         wvWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWaFlhNFoXRBCPD9bfziE5YSrNJszj6hYsjTWTF1MkECESm5vMGeix1MvzNjyCLiYIFBtek342WEZM0ziPJQyRcnygGrxLM
+X-Gm-Message-State: AOJu0YwBMLHA1/3FtILTet6VKBVOnIG9ugoRwPtsa2OfvPbccsLzFdpD
+	CCD53fAM8InI6qOG1QL5e/GMI7iuDn71Fxb7FVxCfn0ASmkPZFBs8sGhJDCbcumILlGsAPPeMzC
+	6N8G0w6MQRLec2MnZilTM88PaGtrckzt1HXJ/
+X-Google-Smtp-Source: AGHT+IExJJ+2hSaxJtRHZGJ4Ox4OzW4oFndkiki9VhxYJFTQsxkQqN4Vpb3uXzUPWyQhWCVip8yKpWFGS+CMtG1GfTA=
+X-Received: by 2002:a50:8ad3:0:b0:57c:bb0d:5e48 with SMTP id
+ 4fb4d7f45d1cf-58e00933a13mr316161a12.2.1720236249500; Fri, 05 Jul 2024
+ 20:24:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+References: <20240704-update-ld-version-for-new-lld-ver-str-v1-1-91bccc020a93@kernel.org>
+ <CAFP8O3JUgH-tBJtqO-QS0HmO4mrFBE6Dz+tnrBcse=gw_Q_4vQ@mail.gmail.com> <20240705160007.GA875035@thelio-3990X>
+In-Reply-To: <20240705160007.GA875035@thelio-3990X>
+From: Fangrui Song <maskray@google.com>
+Date: Fri, 5 Jul 2024 20:23:58 -0700
+Message-ID: <CAFP8O3+X4iT1OPoMdTTa_Y1WKjK4f6ownE0tBYZD_a-ngSNufg@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: Update ld-version.sh for change in LLD version output
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, linux-kbuild@vger.kernel.org, 
+	llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This reverts commit 08f6c05feb1db21653e98ca84ea04ca032d014c7.
+On Fri, Jul 5, 2024 at 9:00=E2=80=AFAM Nathan Chancellor <nathan@kernel.org=
+> wrote:
+>
+> On Thu, Jul 04, 2024 at 02:23:46PM -0700, Fangrui Song wrote:
+> > On Thu, Jul 4, 2024 at 9:19=E2=80=AFAM Nathan Chancellor <nathan@kernel=
+.org> wrote:
+> > >
+> > > After [1] in upstream LLVM, ld.lld's version output is slightly
+> > > different when the cmake configuration option LLVM_APPEND_VC_REV is
+> > > disabled.
+> > >
+> > > Before:
+> > >
+> > >   Debian LLD 19.0.0 (compatible with GNU linkers)
+> > >
+> > > After:
+> > >
+> > >   Debian LLD 19.0.0, compatible with GNU linkers
+> > >
+> > > This results in ld-version.sh failing with
+> > >
+> > >   scripts/ld-version.sh: 19: arithmetic expression: expecting EOF: "1=
+0000 * 19 + 100 * 0 + 0,"
+> > >
+> > > because the trailing comma is included in the patch level part of the
+> > > expression. Remove the trailing comma when assigning the version
+> > > variable in the LLD block to resolve the error, resulting in the prop=
+er
+> > > output:
+> > >
+> > >   LLD 190000
+> > >
+> > > With LLVM_APPEND_VC_REV enabled, there is no issue with the new outpu=
+t
+> > > because it is treated the same as the prior LLVM_APPEND_VC_REV=3DOFF
+> > > version string was.
+> > >
+> > >   ClangBuiltLinux LLD 19.0.0 (https://github.com/llvm/llvm-project a3=
+c5c83273358a85a4e02f5f76379b1a276e7714), compatible with GNU linkers
+> > >
+> > > Cc: stable@vger.kernel.org
+> > > Fixes: 02aff8592204 ("kbuild: check the minimum linker version in Kco=
+nfig")
+> > > Link: https://github.com/llvm/llvm-project/commit/0f9fbbb63cfcd206944=
+1aa2ebef622c9716f8dbb [1]
+> > > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> > > ---
+> > >  scripts/ld-version.sh | 4 +++-
+> > >  1 file changed, 3 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/scripts/ld-version.sh b/scripts/ld-version.sh
+> > > index a78b804b680c..f2f425322524 100755
+> > > --- a/scripts/ld-version.sh
+> > > +++ b/scripts/ld-version.sh
+> > > @@ -47,7 +47,9 @@ else
+> > >         done
+> > >
+> > >         if [ "$1" =3D LLD ]; then
+> > > -               version=3D$2
+> > > +               # LLD after https://github.com/llvm/llvm-project/comm=
+it/0f9fbbb63cfcd2069441aa2ebef622c9716f8dbb
+> > > +               # may have a trailing comma on the patch version with=
+ LLVM_APPEND_VC_REV=3Doff.
+> > > +               version=3D${2%,}
+> > >                 min_version=3D$($min_tool_version llvm)
+> > >                 name=3DLLD
+> > >                 disp_name=3DLLD
+> > >
+> > > ---
+> > > base-commit: 22a40d14b572deb80c0648557f4bd502d7e83826
+> > > change-id: 20240704-update-ld-version-for-new-lld-ver-str-b7a4afbbd5f=
+1
+> > >
+> > > Best regards,
+> > > --
+> > > Nathan Chancellor <nathan@kernel.org>
+> > >
+> >
+> > Thanks for catching the issue.
+> > If we want to minimize the number of special cases, perhaps we can
+> > adjust `version=3D${version%-*}` below to
+> >
+> > version=3D${version%%[^0-9.]*}
+>
+> Thanks for the suggestion! I think this wants to be
+>
+>   version=3D${version%%[!0-9.]*}
+>
+> because of "If an open bracket introduces a bracket expression as in XBD
+> RE Bracket Expression, except that the <exclamation-mark> character
+> ('!') shall replace the <circumflex> character ('^') in its role in a
+> non-matching list in the regular expression notation, it shall introduce
+> a pattern bracket expression." from the link that you have below.
 
-Upstream commit e60adf513275 ("bpf: Take return from set_memory_rox() into account with bpf_jit_binary_lock_ro()")
-depends on
-upstream commit 1dad391daef1 ("bpf, arm64: use bpf_prog_pack for memory management").
+Yes! ! should be used instead.
 
-It will cause a compilation warning on the arm64 if it's not merged:
-  arch/arm64/net/bpf_jit_comp.c: In function ‘bpf_int_jit_compile’:
-  arch/arm64/net/bpf_jit_comp.c:1651:17: warning: ignoring return value of ‘bpf_jit_binary_lock_ro’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
-   1651 |                 bpf_jit_binary_lock_ro(header);
-        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> That does work for me with all the different linker versions that I can
+> easily access (Arch, Debian, Fedora) along with my own self built
+> toolchains, so it seems like it should be pretty robust.
+>
+> Masahiro, would you be okay with me sending a v2 with that change or do
+> you foresee any issues where it would not be sufficient? I would
+> probably change the comment to:
+>
+>   # There may be something after the version, such as a distribution's
+>   # package release number (2.34-4.fc32) or a comma (like LLD adds
+>   # before the "compatible with GNU linkers" string), so remove anything
+>   # that is not a number or a period.
 
-This will prevent the kernel with the '-Werror' compile option from
-being compiled successfully.
+The v2 change LGTM :)
 
-We might as well revert this commit in linux-6.6.37 to solve the
-problem in a simple way.
+Reviewed-by: Fangrui Song <maskray@google.com>
 
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
----
- arch/arm/net/bpf_jit_32.c        | 25 +++++++++++++------------
- arch/loongarch/net/bpf_jit.c     | 22 ++++++----------------
- arch/mips/net/bpf_jit_comp.c     |  3 +--
- arch/parisc/net/bpf_jit_core.c   |  8 +-------
- arch/s390/net/bpf_jit_comp.c     |  6 +-----
- arch/sparc/net/bpf_jit_comp_64.c |  6 +-----
- arch/x86/net/bpf_jit_comp32.c    |  3 ++-
- include/linux/filter.h           |  5 ++---
- 8 files changed, 27 insertions(+), 51 deletions(-)
+> > (POSIX shell doc:
+> > https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.ht=
+ml#:~:text=3DRemove%20Largest)
+> >
+> > ${version%%[^0-9.]*} is a simpler form than what glibc uses:
+> >
+> >   "LLD"*)
+> >   # Accept LLD 13.0.0 or higher
+> >     AC_CHECK_PROG_VER(LD, $LD, --version,
+> >                     [LLD.* \([0-9][0-9]*\.[0-9.]*\)],
+> >                     [1[3-9].*|[2-9][0-9].*],
+>
+> Cheers,
+> Nathan
+>
 
-diff --git a/arch/arm/net/bpf_jit_32.c b/arch/arm/net/bpf_jit_32.c
-index ac8e4d9bf954..6a1c9fca5260 100644
---- a/arch/arm/net/bpf_jit_32.c
-+++ b/arch/arm/net/bpf_jit_32.c
-@@ -1982,21 +1982,28 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- 	/* If building the body of the JITed code fails somehow,
- 	 * we fall back to the interpretation.
- 	 */
--	if (build_body(&ctx) < 0)
--		goto out_free;
-+	if (build_body(&ctx) < 0) {
-+		image_ptr = NULL;
-+		bpf_jit_binary_free(header);
-+		prog = orig_prog;
-+		goto out_imms;
-+	}
- 	build_epilogue(&ctx);
- 
- 	/* 3.) Extra pass to validate JITed Code */
--	if (validate_code(&ctx))
--		goto out_free;
-+	if (validate_code(&ctx)) {
-+		image_ptr = NULL;
-+		bpf_jit_binary_free(header);
-+		prog = orig_prog;
-+		goto out_imms;
-+	}
- 	flush_icache_range((u32)header, (u32)(ctx.target + ctx.idx));
- 
- 	if (bpf_jit_enable > 1)
- 		/* there are 2 passes here */
- 		bpf_jit_dump(prog->len, image_size, 2, ctx.target);
- 
--	if (bpf_jit_binary_lock_ro(header))
--		goto out_free;
-+	bpf_jit_binary_lock_ro(header);
- 	prog->bpf_func = (void *)ctx.target;
- 	prog->jited = 1;
- 	prog->jited_len = image_size;
-@@ -2013,11 +2020,5 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- 		bpf_jit_prog_release_other(prog, prog == orig_prog ?
- 					   tmp : orig_prog);
- 	return prog;
--
--out_free:
--	image_ptr = NULL;
--	bpf_jit_binary_free(header);
--	prog = orig_prog;
--	goto out_imms;
- }
- 
-diff --git a/arch/loongarch/net/bpf_jit.c b/arch/loongarch/net/bpf_jit.c
-index 13cd480385ca..9eb7753d117d 100644
---- a/arch/loongarch/net/bpf_jit.c
-+++ b/arch/loongarch/net/bpf_jit.c
-@@ -1206,19 +1206,16 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- 	flush_icache_range((unsigned long)header, (unsigned long)(ctx.image + ctx.idx));
- 
- 	if (!prog->is_func || extra_pass) {
--		int err;
--
- 		if (extra_pass && ctx.idx != jit_data->ctx.idx) {
- 			pr_err_once("multi-func JIT bug %d != %d\n",
- 				    ctx.idx, jit_data->ctx.idx);
--			goto out_free;
--		}
--		err = bpf_jit_binary_lock_ro(header);
--		if (err) {
--			pr_err_once("bpf_jit_binary_lock_ro() returned %d\n",
--				    err);
--			goto out_free;
-+			bpf_jit_binary_free(header);
-+			prog->bpf_func = NULL;
-+			prog->jited = 0;
-+			prog->jited_len = 0;
-+			goto out_offset;
- 		}
-+		bpf_jit_binary_lock_ro(header);
- 	} else {
- 		jit_data->ctx = ctx;
- 		jit_data->image = image_ptr;
-@@ -1249,13 +1246,6 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- 	out_offset = -1;
- 
- 	return prog;
--
--out_free:
--	bpf_jit_binary_free(header);
--	prog->bpf_func = NULL;
--	prog->jited = 0;
--	prog->jited_len = 0;
--	goto out_offset;
- }
- 
- /* Indicate the JIT backend supports mixing bpf2bpf and tailcalls. */
-diff --git a/arch/mips/net/bpf_jit_comp.c b/arch/mips/net/bpf_jit_comp.c
-index e355dfca4400..a40d926b6513 100644
---- a/arch/mips/net/bpf_jit_comp.c
-+++ b/arch/mips/net/bpf_jit_comp.c
-@@ -1012,8 +1012,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- 	bpf_prog_fill_jited_linfo(prog, &ctx.descriptors[1]);
- 
- 	/* Set as read-only exec and flush instruction cache */
--	if (bpf_jit_binary_lock_ro(header))
--		goto out_err;
-+	bpf_jit_binary_lock_ro(header);
- 	flush_icache_range((unsigned long)header,
- 			   (unsigned long)&ctx.target[ctx.jit_index]);
- 
-diff --git a/arch/parisc/net/bpf_jit_core.c b/arch/parisc/net/bpf_jit_core.c
-index 979f45d4d1fb..d6ee2fd45550 100644
---- a/arch/parisc/net/bpf_jit_core.c
-+++ b/arch/parisc/net/bpf_jit_core.c
-@@ -167,13 +167,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- 	bpf_flush_icache(jit_data->header, ctx->insns + ctx->ninsns);
- 
- 	if (!prog->is_func || extra_pass) {
--		if (bpf_jit_binary_lock_ro(jit_data->header)) {
--			bpf_jit_binary_free(jit_data->header);
--			prog->bpf_func = NULL;
--			prog->jited = 0;
--			prog->jited_len = 0;
--			goto out_offset;
--		}
-+		bpf_jit_binary_lock_ro(jit_data->header);
- 		prologue_len = ctx->epilogue_offset - ctx->body_len;
- 		for (i = 0; i < prog->len; i++)
- 			ctx->offset[i] += prologue_len;
-diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
-index 05746e22fe79..62ee557d4b49 100644
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -1973,11 +1973,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 		print_fn_code(jit.prg_buf, jit.size_prg);
- 	}
- 	if (!fp->is_func || extra_pass) {
--		if (bpf_jit_binary_lock_ro(header)) {
--			bpf_jit_binary_free(header);
--			fp = orig_fp;
--			goto free_addrs;
--		}
-+		bpf_jit_binary_lock_ro(header);
- 	} else {
- 		jit_data->header = header;
- 		jit_data->ctx = jit;
-diff --git a/arch/sparc/net/bpf_jit_comp_64.c b/arch/sparc/net/bpf_jit_comp_64.c
-index 73bf0aea8baf..fa0759bfe498 100644
---- a/arch/sparc/net/bpf_jit_comp_64.c
-+++ b/arch/sparc/net/bpf_jit_comp_64.c
-@@ -1602,11 +1602,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- 	bpf_flush_icache(header, (u8 *)header + header->size);
- 
- 	if (!prog->is_func || extra_pass) {
--		if (bpf_jit_binary_lock_ro(header)) {
--			bpf_jit_binary_free(header);
--			prog = orig_prog;
--			goto out_off;
--		}
-+		bpf_jit_binary_lock_ro(header);
- 	} else {
- 		jit_data->ctx = ctx;
- 		jit_data->image = image_ptr;
-diff --git a/arch/x86/net/bpf_jit_comp32.c b/arch/x86/net/bpf_jit_comp32.c
-index f2fc8c38629b..429a89c5468b 100644
---- a/arch/x86/net/bpf_jit_comp32.c
-+++ b/arch/x86/net/bpf_jit_comp32.c
-@@ -2600,7 +2600,8 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- 	if (bpf_jit_enable > 1)
- 		bpf_jit_dump(prog->len, proglen, pass + 1, image);
- 
--	if (image && !bpf_jit_binary_lock_ro(header)) {
-+	if (image) {
-+		bpf_jit_binary_lock_ro(header);
- 		prog->bpf_func = (void *)image;
- 		prog->jited = 1;
- 		prog->jited_len = proglen;
-diff --git a/include/linux/filter.h b/include/linux/filter.h
-index a74d97114a54..5a2800ec94ea 100644
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -853,11 +853,10 @@ static inline int __must_check bpf_prog_lock_ro(struct bpf_prog *fp)
- 	return 0;
- }
- 
--static inline int __must_check
--bpf_jit_binary_lock_ro(struct bpf_binary_header *hdr)
-+static inline void bpf_jit_binary_lock_ro(struct bpf_binary_header *hdr)
- {
- 	set_vm_flush_reset_perms(hdr);
--	return set_memory_rox((unsigned long)hdr, hdr->size >> PAGE_SHIFT);
-+	set_memory_rox((unsigned long)hdr, hdr->size >> PAGE_SHIFT);
- }
- 
- int sk_filter_trim_cap(struct sock *sk, struct sk_buff *skb, unsigned int cap);
--- 
-2.43.0
 
+--=20
+=E5=AE=8B=E6=96=B9=E7=9D=BF
 
