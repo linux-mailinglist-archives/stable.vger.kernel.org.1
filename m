@@ -1,70 +1,56 @@
-Return-Path: <stable+bounces-58161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB69192904D
-	for <lists+stable@lfdr.de>; Sat,  6 Jul 2024 05:24:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02FB2929116
+	for <lists+stable@lfdr.de>; Sat,  6 Jul 2024 07:10:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF2BE1C21064
-	for <lists+stable@lfdr.de>; Sat,  6 Jul 2024 03:24:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84E641F2332B
+	for <lists+stable@lfdr.de>; Sat,  6 Jul 2024 05:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53BEBE556;
-	Sat,  6 Jul 2024 03:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E641BDDB;
+	Sat,  6 Jul 2024 05:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BGaLa2cQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QIqknfjk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7772717E9
-	for <stable@vger.kernel.org>; Sat,  6 Jul 2024 03:24:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72B81C698;
+	Sat,  6 Jul 2024 05:08:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720236253; cv=none; b=gkrSQKPJY+s4iaOAUeKnEpLnZO91y7UwIgxrhooEevJTUY5l+ssKG0O/i2sejDGLHw4THO4OczRQQnLBdzvgNd6Strw8h+0Jz9dW73H6XDaOk87u1KAZEO6aFc8GlvlI0zBPkOMAkz1+o60WQMnFIvZNv+e5JP1Nfw2iN6INRmM=
+	t=1720242526; cv=none; b=En0LFulQOSsZnTIzLYfoWRJKaYcTg6ZqFPIxkHub/3HoM+pocsxmegVo6XLRq8ofptlVFrnJspZQ+tXPUasG2/Nqo6w4/mwAw36ZaMCX4dVUPvm+AtQ3q+ykpaNcq3piilhbGoxSZJIapNRwk4xJAfsrtOlL5nY4L0Blzgmh8zA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720236253; c=relaxed/simple;
-	bh=Zf7fegEOz88S+uefNQgGk7kN64iUyK0nqei1SbhANDY=;
+	s=arc-20240116; t=1720242526; c=relaxed/simple;
+	bh=zgH/M+SgbCYYqLZrK1bBrCCIYhVHv7m7Hl5FLTrI+hk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Lic2oFRjqX4fUJvTmQAXDLIwCZwPuHcf/BDtWIro6kM3YuFqXDXJUFCFstskyz1XGwJrTDfu8/BPlTSYR/z2fFwMl5Nc4kmQmzUYXhOLMZ73SnqtWjormIgBE5MkJUkdJHkv6HAvietAf+nZkD2/JeqU743MBU45slNweEeJPHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BGaLa2cQ; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-57a16f4b8bfso26779a12.0
-        for <stable@vger.kernel.org>; Fri, 05 Jul 2024 20:24:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1720236250; x=1720841050; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EeOWn8Dcpi/0Zne7XKezGHMzmpPhwxsGnD8ugnUza50=;
-        b=BGaLa2cQQFmM0AaO8KvAhvMYAmEgh4weii2RHxAkxKZCO/nia1S1NXm2b6Y+YP0dqO
-         bNTwO8aOpWswJf4ZRWgNur5rUUKavfJizyHjQbbK6UBm7AVzlFmbKICyFyYgUP6Evlz2
-         EVebT93LKbIUvPPQe4cPekxcdFtRaECUNz/BL1NP6ESKCBn+dBC5cM/TTpprpVo+js9X
-         U0v6rHj1FOuWFkaPDhWOi4lM0ZF1IjvOIj9COqSsiuN8E5jOKGhZeags2/dnYtUGgf0W
-         rdNcBdLd43+PyA1LhGOkuOUT00Fkz4BTBluGWAVzY75vGzAaV5oBnpUiMoACtv6whMkZ
-         rdHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720236250; x=1720841050;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EeOWn8Dcpi/0Zne7XKezGHMzmpPhwxsGnD8ugnUza50=;
-        b=sjhezXvV9l/0H1xjnBsmmg6lkHP2O91MCoSRqEG8oZvA8qhGYUqJJHiY3ovgVa0uv9
-         Pewtc0UAVnKiVdqPIzGeikjY2wHExwixgle7P+C7RM8x734a/KIoba8sYEP9sYXw7YeI
-         Wx35AGyMDeLYYLB9bbbkfbcmfcsUeGDyNq3SZTckzWmwaDhxQzTX/Vw7yVogrLDae0f7
-         46RO90e7V0i2My8+oM/J9umTY62/Y3I09T2nGotivbh1mkLHEpQFuL8dNBGSuCHIam8h
-         4rYqwkuV9PEnWVU7EyC1zRW9YlDjtEIwd/CcYDXqC0XiUDdUG9mNXlFsuHOJ8JHxW+q3
-         wvWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWaFlhNFoXRBCPD9bfziE5YSrNJszj6hYsjTWTF1MkECESm5vMGeix1MvzNjyCLiYIFBtek342WEZM0ziPJQyRcnygGrxLM
-X-Gm-Message-State: AOJu0YwBMLHA1/3FtILTet6VKBVOnIG9ugoRwPtsa2OfvPbccsLzFdpD
-	CCD53fAM8InI6qOG1QL5e/GMI7iuDn71Fxb7FVxCfn0ASmkPZFBs8sGhJDCbcumILlGsAPPeMzC
-	6N8G0w6MQRLec2MnZilTM88PaGtrckzt1HXJ/
-X-Google-Smtp-Source: AGHT+IExJJ+2hSaxJtRHZGJ4Ox4OzW4oFndkiki9VhxYJFTQsxkQqN4Vpb3uXzUPWyQhWCVip8yKpWFGS+CMtG1GfTA=
-X-Received: by 2002:a50:8ad3:0:b0:57c:bb0d:5e48 with SMTP id
- 4fb4d7f45d1cf-58e00933a13mr316161a12.2.1720236249500; Fri, 05 Jul 2024
- 20:24:09 -0700 (PDT)
+	 To:Cc:Content-Type; b=jD0few8/vYEOqZyJC/DsVdXodNMDdgqcYSmDnO36A+jN/wGl+wBPiX2raSJxPClFSwpqfCcyG/UYxlGZZJs2KLkPTRu5JinhbE58i37dFFbmEzLR4DnS7pKhJt6jHAmIKu/rapq6yMfSRZxeGsNr8u946V2D1ds2DCRdVmxJ4jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QIqknfjk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE19C2BD10;
+	Sat,  6 Jul 2024 05:08:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720242526;
+	bh=zgH/M+SgbCYYqLZrK1bBrCCIYhVHv7m7Hl5FLTrI+hk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=QIqknfjkSVtVSg4NGQtVdVWogDKObZsuaYOD5cn8HJn8+Up0LAPHXMd9WqqQeZb8T
+	 y53MtNI6QMXnEC5VHvMfGtit2C+ajG3NnezI6ezOxkH8jlNbUpzn3Tcj/kir8iyfPS
+	 DtYER5wnKIs3b1tridciDTh1XzuBK2r8rIFNtgl1fz4iB0uyweusLPLauZIl95Q6fI
+	 rxnfl+kLq8B2w61l9M2+HnNmqDZyWLMi31RKQd7jyhzad+21ipuvCZ1OyEozh475m/
+	 1qxQ7j4npgQHea0zBoMihUhZG27t4tOZq64aN2RxXjc6caljLhzkO21Q415cvwumow
+	 xinYVOCH1+LNg==
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2ebe40673d8so28437231fa.3;
+        Fri, 05 Jul 2024 22:08:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW5BcVbMfTtjAUVGLXHaGFAg8NEnzQDQ59uVXZ9Xac3IDd8DGDbQ3z30wy6LrRe9EksCLok5UCTJr55JyTrKd2DSXrbHWogc1i4fOiZEBb24h89Vro4gcmguI72iOmRNpQxyj9C
+X-Gm-Message-State: AOJu0YwxdcO6NXFxglDQPioHXd996PwSuhmgsWsECk2WPeThDF7bik3n
+	A8ijAMljePDI10vgxgoeBUMOL8J/Qnlzk7pNkcXgHxPdhwV4cVD0IMzcF+S4smbbQuwSVBM1jrX
+	99UAP8m01t100RY7Dr+mVJHuzir8=
+X-Google-Smtp-Source: AGHT+IF+bjFqkKo1FutL799t8aduhDZQ1qJi+ES9lDEid9QJoTyI2zeh9MzBBODHsCwO1mRhS/8SE6THWmTW6Vvqlig=
+X-Received: by 2002:a19:ac45:0:b0:52d:b1c9:34e with SMTP id
+ 2adb3069b0e04-52ea062e361mr4144684e87.21.1720242525092; Fri, 05 Jul 2024
+ 22:08:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,18 +60,19 @@ MIME-Version: 1.0
 References: <20240704-update-ld-version-for-new-lld-ver-str-v1-1-91bccc020a93@kernel.org>
  <CAFP8O3JUgH-tBJtqO-QS0HmO4mrFBE6Dz+tnrBcse=gw_Q_4vQ@mail.gmail.com> <20240705160007.GA875035@thelio-3990X>
 In-Reply-To: <20240705160007.GA875035@thelio-3990X>
-From: Fangrui Song <maskray@google.com>
-Date: Fri, 5 Jul 2024 20:23:58 -0700
-Message-ID: <CAFP8O3+X4iT1OPoMdTTa_Y1WKjK4f6ownE0tBYZD_a-ngSNufg@mail.gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat, 6 Jul 2024 14:08:08 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASjHQVJoZVR6G6HUgoyFyS87-o0RZVQSO3XZgbxMWCLCQ@mail.gmail.com>
+Message-ID: <CAK7LNASjHQVJoZVR6G6HUgoyFyS87-o0RZVQSO3XZgbxMWCLCQ@mail.gmail.com>
 Subject: Re: [PATCH] kbuild: Update ld-version.sh for change in LLD version output
 To: Nathan Chancellor <nathan@kernel.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+Cc: Fangrui Song <maskray@google.com>, Nicolas Schier <nicolas@fjasle.eu>, 
 	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, linux-kbuild@vger.kernel.org, 
 	llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 5, 2024 at 9:00=E2=80=AFAM Nathan Chancellor <nathan@kernel.org=
+On Sat, Jul 6, 2024 at 1:00=E2=80=AFAM Nathan Chancellor <nathan@kernel.org=
 > wrote:
 >
 > On Thu, Jul 04, 2024 at 02:23:46PM -0700, Fangrui Song wrote:
@@ -178,9 +165,7 @@ it/0f9fbbb63cfcd2069441aa2ebef622c9716f8dbb
 > ('!') shall replace the <circumflex> character ('^') in its role in a
 > non-matching list in the regular expression notation, it shall introduce
 > a pattern bracket expression." from the link that you have below.
-
-Yes! ! should be used instead.
-
+>
 > That does work for me with all the different linker versions that I can
 > easily access (Arch, Debian, Fedora) along with my own self built
 > toolchains, so it seems like it should be pretty robust.
@@ -194,27 +179,17 @@ Yes! ! should be used instead.
 >   # before the "compatible with GNU linkers" string), so remove anything
 >   # that is not a number or a period.
 
-The v2 change LGTM :)
 
-Reviewed-by: Fangrui Song <maskray@google.com>
 
-> > (POSIX shell doc:
-> > https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.ht=
-ml#:~:text=3DRemove%20Largest)
-> >
-> > ${version%%[^0-9.]*} is a simpler form than what glibc uses:
-> >
-> >   "LLD"*)
-> >   # Accept LLD 13.0.0 or higher
-> >     AC_CHECK_PROG_VER(LD, $LD, --version,
-> >                     [LLD.* \([0-9][0-9]*\.[0-9.]*\)],
-> >                     [1[3-9].*|[2-9][0-9].*],
->
-> Cheers,
-> Nathan
->
+Thanks. V2 seems much cleaner.
+
+
+
+
+
 
 
 --=20
-=E5=AE=8B=E6=96=B9=E7=9D=BF
+Best Regards
+Masahiro Yamada
 
