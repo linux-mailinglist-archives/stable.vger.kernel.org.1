@@ -1,90 +1,175 @@
-Return-Path: <stable+bounces-58193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 861F8929CAA
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 09:02:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B363929D6A
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 09:44:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41617280C59
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 07:02:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BDE71C21ACE
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 07:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C6DE1CAA6;
-	Mon,  8 Jul 2024 07:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668A528E0F;
+	Mon,  8 Jul 2024 07:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="csnDubFD"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d2BSkbJ0"
 X-Original-To: stable@vger.kernel.org
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95780182AE;
-	Mon,  8 Jul 2024 07:01:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763F723774
+	for <stable@vger.kernel.org>; Mon,  8 Jul 2024 07:44:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720422115; cv=none; b=ad5CLmSLrlmKpAUSQipYzeagSkOEOggZqnS2YDJJ605vxOZAPg9jqP87GyFc4ocIs8uoVBjeQ0udqtBGSnnNhzKNYbMezC/e6Gj25+XLJ6EVkF+hKRpis9RBRdn91top5h4uaITPHPa2CPLKeopZYWwkxd80kPgpdJPxJpMm+RM=
+	t=1720424696; cv=none; b=iBYYjdjlR8Bm1eqQ24sA1aKgwk8cMEKqTJqwmDRCt7JKe6KT3nRZHdYWgiqbwSPC9f24DJChaz3Q0wpOXS4x1O8gCW31libnNBr6jeSpGw1U59dpFTyx/dNoM4EBf01kUUdhR2ZjHlHl/f2EthBOBJH926WDuev8Q50rR7qEH7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720422115; c=relaxed/simple;
-	bh=UwwuUSuo2D6/dt6MqiW1z0OObhU6shNIC63QWSIFu7E=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IWIv3A9/I4QhAi4H5bNmzlBwW6eiNrfbFfJPaHf2XIiJdkWQshDrIuvI+3GKSEazHbLbUJ7t2+EIE1qSCjVhcHSj8tph7t3gmScGFbdW/3MY8tOHh32sKC+KTuhT8lbyl+jrb2n9k6FN3DtmjJgY831I9ha/IZ11LchMRR7l1RE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=csnDubFD; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 68E841C0002;
-	Mon,  8 Jul 2024 07:01:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1720422106;
+	s=arc-20240116; t=1720424696; c=relaxed/simple;
+	bh=JtXonjQxfBbCHGzmeuOND8Qr4JxegSBH8TInwbZXnrM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mXsHgXZBP7h87ymYA5qaADEZdJpy/9d4cE2WGqERZR9QXpAYG5+V+TlpHJCsmsAwYqdaG+w9ZaYm+Epqsy0tmIXR8TcQVZRGyy7q62HEQESVlMq38+0cOgyqR6eNth+FKDu4D3DBaMY5XwhBhIM98LQtiIrhh7UrUbR69V0f2ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d2BSkbJ0; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1720424693;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UFyhUQfDWH2BkI3PZl+BB8bptYesbh+J9oIuRZIQ3+Y=;
-	b=csnDubFDvkPISyceGvrqdlxbuax7LfjnBvSwBCZIVZ2Bxzx1nbRCMLzV2cfRFTcvcgoMoS
-	160VjK8L2pogbqOcIoH0+rZvjxx/z70M36+8OWVwh6ivxior4c7pEnySrkrvSz7RnPbeRk
-	a1LKS2zVqAGX/eTJU93s5cv9nHVsjHnGMMl318U/tWVu9Ak6GLx9qvgbRrmk9eiH0Q4+4B
-	X8Z0VqjFKuAFq2zt3P4B2xglPp/FfNB/dfxLDEOvpwwr7gO6+cwuVlCKaxlTjj3+cIxTZv
-	qTbrBXbZFRXl2IbKTCT8wsVqZ7oBfY4OggevI9HURM4Zo4B+shwE78DqIqRCBg==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
-	miquel.raynal@bootlin.com
-Cc: stable@vger.kernel.org,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Yangtao Li <frank.li@vivo.com>,
-	Li Zetao <lizetao1@huawei.com>,
-	linux-mtd@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [Patch v2] mtd: rawnand: lpx32xx: Fix dma_request_chan() error checks
-Date: Mon,  8 Jul 2024 09:01:44 +0200
-Message-Id: <20240708070144.12186-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20240705115139.126522-1-piotr.wojtaszczyk@timesys.com>
-References: 
+	bh=+aNJhKQ2AAmu/LKR1gLjPNlzCwSmcKQsAKuld4iwdng=;
+	b=d2BSkbJ0WirixWkmy1qIXOkLzcCayOM8drOI6+SM34jOXDxi3PcGTxNiIobBGJAbTPSx9h
+	PWZNVPenvGZA9/l6ne1wJf82XIGunM5NmsbTyxhmSKfSEUYW20/9424Smva/56bFhXbGKF
+	83VCJwQYduQcE16MrDpCg4WtpHA9VsE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-567-_UiPyZRPNxqXVIpBKCCv4w-1; Mon,
+ 08 Jul 2024 03:44:47 -0400
+X-MC-Unique: _UiPyZRPNxqXVIpBKCCv4w-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ACE841955F56;
+	Mon,  8 Jul 2024 07:44:45 +0000 (UTC)
+Received: from calimero.vinschen.de (unknown [10.39.192.86])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2993919560AE;
+	Mon,  8 Jul 2024 07:44:45 +0000 (UTC)
+Received: by calimero.vinschen.de (Postfix, from userid 500)
+	id 9757BA80B8A; Mon,  8 Jul 2024 09:44:42 +0200 (CEST)
+Date: Mon, 8 Jul 2024 09:44:42 +0200
+From: Corinna Vinschen <vinschen@redhat.com>
+To: stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org,
+	Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>
+Subject: Re: Patch "igc: fix a log entry using uninitialized netdev" has been
+ added to the 6.9-stable tree
+Message-ID: <ZouY6i1Oz77wGC77@calimero.vinschen.de>
+References: <20240705192937.3519731-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-linux-mtd-patch-notification: thanks
-X-linux-mtd-patch-commit: b'5f713030117a12b0239e604c163e69af58bb0b63'
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240705192937.3519731-1-sashal@kernel.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Fri, 2024-07-05 at 11:51:35 UTC, Piotr Wojtaszczyk wrote:
-> The dma_request_chan() returns error pointer in case of error, while
-> dma_request_channel() returns NULL in case of error therefore different
-> error checks are needed for the two.
+Hi Sasha,
+
+my patch should not go into the stable branches.  Under certain
+circumstances it triggered kernel crashes.
+
+Consequentially this patch has been reverted in the main
+development branch:
+
+  8eef5c3cea65 Revert "igc: fix a log entry using uninitialized netdev"
+
+So I suggest to remove my patch 86167183a17e from the stable branches or
+apply 8eef5c3cea65 as well.
+
+
+Sorry and thanks,
+Corinna
+
+
+On Jul  5 15:29, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
 > 
-> Fixes: 7326d3fb1ee3 ("mtd: rawnand: lpx32xx: Request DMA channels using DT entries")
-> Signed-off-by: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-> Cc: stable@vger.kernel.org
+>     igc: fix a log entry using uninitialized netdev
+> 
+> to the 6.9-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      igc-fix-a-log-entry-using-uninitialized-netdev.patch
+> and it can be found in the queue-6.9 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+> 
+> 
+> 
+> commit ee112b3c8929ec718b444134db87e1c585eb7d70
+> Author: Corinna Vinschen <vinschen@redhat.com>
+> Date:   Tue Apr 23 12:24:54 2024 +0200
+> 
+>     igc: fix a log entry using uninitialized netdev
+>     
+>     [ Upstream commit 86167183a17e03ec77198897975e9fdfbd53cb0b ]
+>     
+>     During successful probe, igc logs this:
+>     
+>     [    5.133667] igc 0000:01:00.0 (unnamed net_device) (uninitialized): PHC added
+>                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>     The reason is that igc_ptp_init() is called very early, even before
+>     register_netdev() has been called. So the netdev_info() call works
+>     on a partially uninitialized netdev.
+>     
+>     Fix this by calling igc_ptp_init() after register_netdev(), right
+>     after the media autosense check, just as in igb.  Add a comment,
+>     just as in igb.
+>     
+>     Now the log message is fine:
+>     
+>     [    5.200987] igc 0000:01:00.0 eth0: PHC added
+>     
+>     Signed-off-by: Corinna Vinschen <vinschen@redhat.com>
+>     Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
+>     Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+>     Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+>     Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+> index 58bc96021bb4c..07feb951be749 100644
+> --- a/drivers/net/ethernet/intel/igc/igc_main.c
+> +++ b/drivers/net/ethernet/intel/igc/igc_main.c
+> @@ -6932,8 +6932,6 @@ static int igc_probe(struct pci_dev *pdev,
+>  	device_set_wakeup_enable(&adapter->pdev->dev,
+>  				 adapter->flags & IGC_FLAG_WOL_SUPPORTED);
+>  
+> -	igc_ptp_init(adapter);
+> -
+>  	igc_tsn_clear_schedule(adapter);
+>  
+>  	/* reset the hardware with the new settings */
+> @@ -6955,6 +6953,9 @@ static int igc_probe(struct pci_dev *pdev,
+>  	/* Check if Media Autosense is enabled */
+>  	adapter->ei = *ei;
+>  
+> +	/* do hw tstamp init after resetting */
+> +	igc_ptp_init(adapter);
+> +
+>  	/* print pcie link status and MAC address */
+>  	pcie_print_link_status(pdev);
+>  	netdev_info(netdev, "MAC: %pM\n", netdev->dev_addr);
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git nand/next, thanks.
-
-Miquel
 
