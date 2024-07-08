@@ -1,135 +1,140 @@
-Return-Path: <stable+bounces-58240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D51F892A8D3
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 20:15:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DDF392A8DB
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 20:16:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A91981F22273
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 18:15:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0A2B1F2222F
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 18:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF0014900B;
-	Mon,  8 Jul 2024 18:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B179B14C581;
+	Mon,  8 Jul 2024 18:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="Jyrcd/L2"
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="MAmAPM5Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-lj1-f227.google.com (mail-lj1-f227.google.com [209.85.208.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB79514A619
-	for <stable@vger.kernel.org>; Mon,  8 Jul 2024 18:15:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A24D146A63
+	for <stable@vger.kernel.org>; Mon,  8 Jul 2024 18:15:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720462510; cv=none; b=LFf4K7I9mTzBEd9F3zmYqLGybkI5Tdy2By+HKnNIY7lyIcA9n0soD1FsEO6TEtKdQ6soIctlPHi1pZUf1TV1uR+ijsqJPLX3pRHgYeM05UuiDXst04A3HK8E1pHJe8yXQcJKROL01v0mVHFl721wHL+HE+TjXSaYjQ+Kqm3FA4k=
+	t=1720462561; cv=none; b=svRqBl4g7PeWUDlg6wz6tUPUJwbLdDMOlcXDNzoSg8HROo+UXafmoXmUxfXaWbqnaCF9b+sVIoJ7bT43U3MHzrKbwruYOoWtsMY+QFqkNVkk6fwIu7YUQANZUNtcPUwD3JASLxxFtRoDHwXP3asSlu5KFT4ziJLrgNC6wqV9o2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720462510; c=relaxed/simple;
-	bh=JbmYYJSvqhViRVzIx4K5YGWEU8GuuzB8tWKxdU5508w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ibg4DBGBsPt1cWM3KDTKcSRfkJaw+RwGLnz0lqeT1zEo3nY1JLL5gdserLms1nIU4LRcOTZ78DLkWAOPCzUa8WBR2UXr+hVSCLxN/ILmqwhgPz7xGGGM8kWHbxPgLnhInEDs1nMIyCrdZfGXMmEpgPgUQsKhoSN9IuI0B2CnKvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=Jyrcd/L2; arc=none smtp.client-ip=209.85.208.169
+	s=arc-20240116; t=1720462561; c=relaxed/simple;
+	bh=zQwyXlH5ZVF5TCm9+O1XVJlW7UMrvHWYI4dVKxhljRQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FpL+J8Weo7lstakKBZr4X8A6S6rTH+sYm3yVi87ipwqynzehlwD/BLaYgmYiCNlwcQl9FGvgnH1zBUlyxYOssydxMmpdr3lz+d6XobUUTecjczaHhCyQztTOtyvlR7vaEmvivpRhl5x0LTDn5O+QHQejzxKd1KRu2KmaVHP3cJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=MAmAPM5Q; arc=none smtp.client-ip=209.85.208.227
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2eeb1ba0481so7160191fa.2
-        for <stable@vger.kernel.org>; Mon, 08 Jul 2024 11:15:08 -0700 (PDT)
+Received: by mail-lj1-f227.google.com with SMTP id 38308e7fff4ca-2eea8ea8bb0so21853041fa.1
+        for <stable@vger.kernel.org>; Mon, 08 Jul 2024 11:15:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1720462507; x=1721067307; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:content-language
-         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=TGUQI4/4DcjCZH9utAokt3+b2pLoBeJNGqzMWE1DmXk=;
-        b=Jyrcd/L20FPLZA6+/mBsQ/SYtT3ams074HDOlS9sWkak11RznSnISSQ2q9n5emkgqe
-         /YDW4wL8UQ+84rvoKmU77vAedIKRGR8lw3BkHnvShNpjiFQjUENTHR+0m59D2qFdqBzr
-         ULHVYUeCfVQ5EFjAr6wZWla2xZ5tMbp52I/R99eWXJQtU10kTNGfveS1L+y4VoyCo58N
-         Pv8gxlvoAalA7++bVpUD00z9NSakf1Zqe0ve5Alm3BnFPVHzfap9gvmyMZ9ADzU/bY7V
-         xtunExy4KR/dxvkbwiBsLjThW9td4yu8ItdlP5t/zOGwN1OOCQVt+eQsjGO8pXDuGE1S
-         PWxw==
+        d=6wind.com; s=google; t=1720462557; x=1721067357; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dV6Uuuc+7CMJHWF96ycy0YXjsqaz4AJvsOhj3qX4WxM=;
+        b=MAmAPM5QfEHe9avUBi6+goCNXPKYf+5BVDkj21WpxGXT6HaRQuNdIHDfGCtkS4LNMr
+         eaUBrXkiwr7B4BbKBtpIxL6fCyBQuKDyXKbZ0VY7A3J3Lbtrz8TS9lUqAbGIHpC/q4Yx
+         vugI2d/YFTIcoRjZmUbXVtnDma4NB2c5x585OQZhpi7efTyncH5zTTbIjyTESa4lgHPq
+         KnIqk5QIuXGR5HgSOWxJC3zJRNn9erSGL4+wYrMS0dNpoe9UBuw4ss4jgxtGfNMpteFf
+         3TWr5SAywOgtvQWBjFKVPOvTCBqUXlUKm9jgtH8XzuzrfN+RWBQAz4W8AWh6aVChYMFR
+         IV5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720462507; x=1721067307;
-        h=content-transfer-encoding:in-reply-to:organization:content-language
-         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TGUQI4/4DcjCZH9utAokt3+b2pLoBeJNGqzMWE1DmXk=;
-        b=ZoJrPSBNlRlxAGlMXdVohETbB9fjDpJZJbNcFZ4zeY9bnf+5i6TM/q8GS2hAi5nw8y
-         7mAr1IFKlAjNvroHk9TkqTIVC70uRXLz2ERFrcW7oIScPCM5FmEm0yrANUW10N17AA2L
-         pC/zPW04yK+QZ+lfiQbuFNOCejviegk7qOImn9gXNjce3O/rDPA9bWa75qz8g8IWgU+G
-         CFq+ASA4dYTTVFE2vFHoO8aWjvtLLwGokgUJbuF1ousZ6JaTBU9RqOoAtbZUpst8ccXC
-         oJ4NyrXZ9FUmiIUnkAnRYkwlDpgyikD2pJEfE/bgLeecy7zsYMFnksjzTwJWqBGRJ5Sf
-         ICaA==
-X-Forwarded-Encrypted: i=1; AJvYcCU374FoQS8QoAnaABNsHFHr8iSVTs/y8uw8B4fxRedCi+nO8/OTnB9JN1wcSqbeDwgK3qLjMWhJ2a5/O/nfh0HHYuCupYAr
-X-Gm-Message-State: AOJu0YzuD2Ev753WBBV4cbAX8M3RACbwRWAenZOHPeZmXFEZRMQrWVmg
-	c80kCp3yOWsvwAhhI9tH7F40kX9yW8KYBfK71e/SMpWjXWI/TgBH80zqUQK3YsU=
-X-Google-Smtp-Source: AGHT+IFXM+0acYNWm3lR/O9kcynvIrBbhLvz33mMD2fL1P3DSzRZj5k/M5es6jBhOsbokuIqddq+Dw==
-X-Received: by 2002:a2e:8558:0:b0:2ee:4e67:85e9 with SMTP id 38308e7fff4ca-2eeb31986b4mr2622431fa.47.1720462507072;
-        Mon, 08 Jul 2024 11:15:07 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:b41:c160:f03c:44cd:8f8d:23c? ([2a01:e0a:b41:c160:f03c:44cd:8f8d:23c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4266f74159csm7297875e9.42.2024.07.08.11.15.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Jul 2024 11:15:06 -0700 (PDT)
-Message-ID: <10327c0a-acf8-4aa5-a994-3049a7cb5abd@6wind.com>
-Date: Mon, 8 Jul 2024 20:15:05 +0200
+        d=1e100.net; s=20230601; t=1720462557; x=1721067357;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dV6Uuuc+7CMJHWF96ycy0YXjsqaz4AJvsOhj3qX4WxM=;
+        b=uYMTxYTK20/KZ7npWwgbkbBVJLCBm8cPkxWANgRVIrRr1YaMJC5SzupKs/YrapwX6A
+         6dKNmYFUIY4IogqbcYg7MNuG2Py8NC1CuISHF/tT5LsG/XGtHLs2KO2babybtJxXDuD6
+         V8PXHXv/WHedSUqm5Z+mbh+H+DidqwJDYpVw6nBCHUvNk+vzIK2W4Qf88G7Pc8LIrlzR
+         mcyt+hhnDKOwvy9ZNE6BZH3xUF3fm0O9ZnedE542CVn8vt3sJjcISZk15o65OQI263EE
+         kGrTvlxf73mrKHzK9ufuWAn3es/QOGmNTFqdBoWzjC+K7oXuw3bPUB1E+y6O8shyt9mk
+         sWTw==
+X-Forwarded-Encrypted: i=1; AJvYcCU1/24JyfYaRCOCj5AJWGqiIbrwGgFUbhYwPAsoyTOpKmP+a2i5rn7JxBKItYMyMg4PXn2DiN5GVRJ76t6qu777nnnTLtrW
+X-Gm-Message-State: AOJu0Yy+tFPDrVLT1WbEnk2n+d5LXojSNSsuL7gUqJyKogzXxBp2FbHf
+	afWlgGRBDlVXYMCtFL9Gn5zEbsEuLQZGi1qTKzkw9Ifgc1Rqe+38YB76S0eI5AiWHN54Q+XXStN
+	lGn+NpHJUvXiEVey7/SqPYcWDO03+UkUv
+X-Google-Smtp-Source: AGHT+IF64yl9851lVilnVXaQ+AdD7M4I2+bnbnXS9xoAOv5flEQNX8j2ts7iI74lanVnsU5A9aw4NR3O9yhI
+X-Received: by 2002:a2e:3306:0:b0:2ee:8454:1c25 with SMTP id 38308e7fff4ca-2eeb316b020mr3937671fa.34.1720462556722;
+        Mon, 08 Jul 2024 11:15:56 -0700 (PDT)
+Received: from smtpservice.6wind.com ([185.13.181.2])
+        by smtp-relay.gmail.com with ESMTP id 38308e7fff4ca-2eeb342d71dsm49451fa.20.2024.07.08.11.15.56;
+        Mon, 08 Jul 2024 11:15:56 -0700 (PDT)
+X-Relaying-Domain: 6wind.com
+Received: from bretzel (bretzel.dev.6wind.com [10.17.1.57])
+	by smtpservice.6wind.com (Postfix) with ESMTPS id 21AC760310;
+	Mon,  8 Jul 2024 20:15:56 +0200 (CEST)
+Received: from dichtel by bretzel with local (Exim 4.94.2)
+	(envelope-from <nicolas.dichtel@6wind.com>)
+	id 1sQsu3-00HP8v-PE; Mon, 08 Jul 2024 20:15:55 +0200
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>
+Cc: David Ahern <dsahern@kernel.org>,
+	netdev@vger.kernel.org,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v3 1/4] ipv4: fix source address selection with route leak
+Date: Mon,  8 Jul 2024 20:15:07 +0200
+Message-ID: <20240708181554.4134673-2-nicolas.dichtel@6wind.com>
+X-Mailer: git-send-email 2.43.1
+In-Reply-To: <20240708181554.4134673-1-nicolas.dichtel@6wind.com>
+References: <20240708181554.4134673-1-nicolas.dichtel@6wind.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: nicolas.dichtel@6wind.com
-Subject: Re: [PATCH net v2 2/4] ipv6: fix source address selection with route
- leak
-To: David Ahern <dsahern@kernel.org>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org
-References: <20240705145302.1717632-1-nicolas.dichtel@6wind.com>
- <20240705145302.1717632-3-nicolas.dichtel@6wind.com>
- <35638894-254f-4e30-98ee-5a3d6886d87a@kernel.org>
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Content-Language: en-US
-Organization: 6WIND
-In-Reply-To: <35638894-254f-4e30-98ee-5a3d6886d87a@kernel.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Le 07/07/2024 à 18:58, David Ahern a écrit :
-> On 7/5/24 8:52 AM, Nicolas Dichtel wrote:
->> diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
->> index a18ed24fed94..a7c27f0c6bce 100644
->> --- a/include/net/ip6_route.h
->> +++ b/include/net/ip6_route.h
->> @@ -127,18 +127,23 @@ void rt6_age_exceptions(struct fib6_info *f6i, struct fib6_gc_args *gc_args,
->>  
->>  static inline int ip6_route_get_saddr(struct net *net, struct fib6_info *f6i,
->>  				      const struct in6_addr *daddr,
->> -				      unsigned int prefs,
->> +				      unsigned int prefs, int l3mdev_index,
->>  				      struct in6_addr *saddr)
->>  {
->> +	struct net_device *l3mdev;
->> +	struct net_device *dev;
->> +	bool same_vrf;
->>  	int err = 0;
->>  
->> -	if (f6i && f6i->fib6_prefsrc.plen) {
->> +	rcu_read_lock();
->> +	l3mdev = dev_get_by_index_rcu(net, l3mdev_index);
->> +	dev = f6i ? fib6_info_nh_dev(f6i) : NULL;
->> +	same_vrf = l3mdev == NULL || l3mdev_master_dev_rcu(dev) == l3mdev;
-> 
-> !l3mdev; checkpatch should complain
-No. I was unaware of this preference, is there a rule written somewhere about this?
+By default, an address assigned to the output interface is selected when
+the source address is not specified. This is problematic when a route,
+configured in a vrf, uses an interface from another vrf (aka route leak).
+The original vrf does not own the selected source address.
 
-$ git grep '(![a-zA-Z])' net/ipv6/ | wc -l
-43
-$ git grep '== NULL' net/ipv6/ | wc -l
-44
+Let's add a check against the output interface and call the appropriate
+function to select the source address.
 
-It seems both are used.
+CC: stable@vger.kernel.org
+Fixes: 8cbb512c923d ("net: Add source address lookup op for VRF")
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+---
+ net/ipv4/fib_semantics.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
+diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+index f669da98d11d..8956026bc0a2 100644
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -2270,6 +2270,15 @@ void fib_select_path(struct net *net, struct fib_result *res,
+ 		fib_select_default(fl4, res);
+ 
+ check_saddr:
+-	if (!fl4->saddr)
+-		fl4->saddr = fib_result_prefsrc(net, res);
++	if (!fl4->saddr) {
++		struct net_device *l3mdev;
++
++		l3mdev = dev_get_by_index_rcu(net, fl4->flowi4_l3mdev);
++
++		if (!l3mdev ||
++		    l3mdev_master_dev_rcu(FIB_RES_DEV(*res)) == l3mdev)
++			fl4->saddr = fib_result_prefsrc(net, res);
++		else
++			fl4->saddr = inet_select_addr(l3mdev, 0, RT_SCOPE_LINK);
++	}
+ }
+-- 
+2.43.1
 
-Regards,
-Nicolas
 
