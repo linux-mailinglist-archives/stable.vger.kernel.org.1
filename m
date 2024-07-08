@@ -1,137 +1,148 @@
-Return-Path: <stable+bounces-58250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD20492A9AF
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 21:17:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C249692A9DA
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 21:33:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 775D11F22700
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 19:17:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C56BB21CDB
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 19:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516A514BFB4;
-	Mon,  8 Jul 2024 19:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C3814BFB4;
+	Mon,  8 Jul 2024 19:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="YzW+5sAM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nRMJ59C4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87683148833;
-	Mon,  8 Jul 2024 19:17:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5971CFAF;
+	Mon,  8 Jul 2024 19:32:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720466246; cv=none; b=UxSGw6uWQeg1JMEbt1AHVBidSZ53KhrJd1jHVGuwcPt/FP9w2vS0n6NINeerrvY/fjlUFj5CoF3ea1U+Fdjf/timpNaAYPHqmBHjm3szQfc6J28EmyX91TOcMBrNEFRC9cKMEO42wChWeDeBXp5+lXNt0r2FCvdS3oGbRkDqkzk=
+	t=1720467166; cv=none; b=iZg6hk0V9UKM/Na9h6Wj+Y/eBAi7OESAu1T5eeYbtk94gCDlJ56o4nf8rvuH4jj2fB4c9nborVQAcChp9/2I/SKuZZrmpcxC2RJ0iHgWqKUOVZjZIrIZycDtLqWnCJjMOkuUO/6B3mZqY4jAoED9+PylKCsiHuEZUaXSFREtHgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720466246; c=relaxed/simple;
-	bh=jfjaeLNh4I5mGiVYqVP5eL/KmwkIqLSdjDlPg+iogdY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Klo7DkdyoPkurpUZC+6CmrtLugvtZMEuU3ioLYMn+mXpE9Bj0srZl0075gcyB1+4Nit/hnht9OUOTgfw38itptTIp8/quIn6sbODFdEoXZ39+MeUjYMm0f57Qi6Oak6IyUXeXq0IzKv2BDBRu6sWi9JwCxlrxLfNO8hBgByp/mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=YzW+5sAM; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6CBAA40E019D;
-	Mon,  8 Jul 2024 19:17:22 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id n4K8qAoRIsLN; Mon,  8 Jul 2024 19:17:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1720466238; bh=0e5ovUUtXQgTZyUAr4S3+sI3n7TZtAlcadWL7hRqI1k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YzW+5sAMamOZiL8yNdR/hQFmbo22zTgrAXM8OsmEA/zNrujp4f9zcy+mnU6dLBV/V
-	 SGjEZZN9THps7N+qw0Lk2JHPyeD2q9ndRC+7ggi4kR32mtGHqc1bojdX0paV2VdX4E
-	 xCWfOm1E9t4DkFkKcuKhENagRTD5twr+SGCvL/wen874TkZUQBqjelhd4zpL0mIVOU
-	 Wln0zQWgrmqswHtsFKNuctmBfpY8SUcDtmHREo5+Cwb30A5vXoa61DRTggnWEzeP+x
-	 vBwTzAFfELbbhEPpIz5zNGbm0gSJOW6JN90q4pTKvqEMKBuhvEw0F6h9fSwf9Hi3Y6
-	 7ikmJbMGoljdYdfEGmWL2J9HOMfvc7MSYJ8XyBBcePnWbT9YSb12Go6vnOFeyu7vXi
-	 nFRoJLLjAhy9ZOYgWhJTsrjwHsEAdNO8BGg4xkAsjkciaxNIcRNDacRIw3ftTzpVWl
-	 1tMBqNV+d+uSyLxqipxOWe6TyLLJJuNpSj2+aCn7Xp2MJJDn8ZWW+ojHRhjcCSy0RA
-	 Rl/BivVYVQASwkdPbU38bE6xkLyD2mHExybZF2a6ajLqEFl8Hkg8JyYo6Xk3uvfADy
-	 O7fIaPisUoZ5A2YH5IjScRUIsm7L1Mj8udaPuraQVSjFp1bTPaEsGCRlLp1o8WKe3l
-	 vJHDYjwTC1Vbd1Ay9XUXtp+8=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 454FA40E0192;
-	Mon,  8 Jul 2024 19:17:04 +0000 (UTC)
-Date: Mon, 8 Jul 2024 21:17:03 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Dexuan Cui <decui@microsoft.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"open list:X86 TRUST DOMAIN EXTENSIONS (TDX)" <linux-coco@lists.linux.dev>,
-	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>,
-	Michael Kelley <mikelley@microsoft.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Kai Huang <kai.huang@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/tdx: Support vmalloc() for tdx_enc_status_changed()
-Message-ID: <20240708191703.GJZow7L9DBNZVBXE95@fat_crate.local>
-References: <20240708183946.3991-1-decui@microsoft.com>
+	s=arc-20240116; t=1720467166; c=relaxed/simple;
+	bh=9azAPtHQWpCrAcC4hsFvD58GfVAqXFENVg14P/0VMTw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ImpFgB8SZ5VuC3HR307Bn+e2Mvy0sTsCBZYPLPhCMzJTopb1JHz+qp8a8r2TKmo8IHZQnmjSTAC7nejqlyp0REbl7r1WIgWqwBgETTZbVRWnC+mBtvsIe96BVwhueIjWalipZLnkgP6IBL4T6RxClsAWtTXHSVA9uG3PzSlYaGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nRMJ59C4; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720467165; x=1752003165;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=9azAPtHQWpCrAcC4hsFvD58GfVAqXFENVg14P/0VMTw=;
+  b=nRMJ59C4oFaKJwcss+I8DHqIw7Gm/UwvJVz1fFfQFTAYqqief3C6+inc
+   60dc8V7LSh221aNbNyyZIsYSyGhyGekTlqR2BhGGdopDcCLG0mG2N71l9
+   aNJwtJv/k63Xr3JgL3+Bi5Q/KUoXWJcUky8J/OfODH3r/wPHRgYmm8J+p
+   ndtJz0t5tNqGiNQu9j1AsnmuOVKsmJQLs7lun5yccD/09PMeK+s0X9Tmw
+   R7/LJWZ74GRbuOZGfEXjLGDNVcu62dZ52/2WVqkIp4qE+AXojyqbLjeP8
+   dCnRR8A4Hbhctdc+n3hTxciJn33Kq7EkPm9wSr2Ep55rtKN9OiQ9uivRh
+   Q==;
+X-CSE-ConnectionGUID: fc1b70G3Rfe1ZeXglMy0NA==
+X-CSE-MsgGUID: FIZRcosYRVS1CV+dDNJrRw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11127"; a="17520493"
+X-IronPort-AV: E=Sophos;i="6.09,192,1716274800"; 
+   d="scan'208";a="17520493"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2024 12:32:42 -0700
+X-CSE-ConnectionGUID: 6WwrchycRtSTQilbKLfyEg==
+X-CSE-MsgGUID: xWuTnf5kQvuR6i/rdnWOWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,192,1716274800"; 
+   d="scan'208";a="48265598"
+Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
+  by orviesa007.jf.intel.com with ESMTP; 08 Jul 2024 12:32:42 -0700
+From: kan.liang@linux.intel.com
+To: peterz@infradead.org,
+	mingo@kernel.org,
+	acme@kernel.org,
+	namhyung@kernel.org,
+	irogers@google.com,
+	adrian.hunter@intel.com,
+	alexander.shishkin@linux.intel.com,
+	linux-kernel@vger.kernel.org
+Cc: ak@linux.intel.com,
+	eranian@google.com,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Ahmad Yasin <ahmad.yasin@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 2/3] perf/x86/intel: Add a distinct name for Granite Rapids
+Date: Mon,  8 Jul 2024 12:33:35 -0700
+Message-Id: <20240708193336.1192217-3-kan.liang@linux.intel.com>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20240708193336.1192217-1-kan.liang@linux.intel.com>
+References: <20240708193336.1192217-1-kan.liang@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240708183946.3991-1-decui@microsoft.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 08, 2024 at 06:39:45PM +0000, Dexuan Cui wrote:
-> When a TDX guest runs on Hyper-V, the hv_netvsc driver's netvsc_init_buf()
-> allocates buffers using vzalloc(), and needs to share the buffers with the
-> host OS by calling set_memory_decrypted(), which is not working for
-> vmalloc() yet. Add the support by handling the pages one by one.
+From: Kan Liang <kan.liang@linux.intel.com>
 
-"Add support..." and the patch is cc:stable?
+Currently, the Sapphire Rapids and Granite Rapids share the same PMU
+name, sapphire_rapids. Because from the kernel’s perspective, GNR is
+similar to SPR. The only key difference is that they support different
+extra MSRs. The code path and the PMU name are shared.
 
-This looks like it is fixing something and considering how you're rushing
-this, I'd let this cook for a whole round and queue it after 6.11-rc1. So that
-it gets tested properly.
+However, from end users' perspective, they are quite different. Besides
+the extra MSRs, GNR has a newer PEBS format, supports Retire Latency,
+supports new CPUID enumeration architecture, doesn't required the
+load-latency AUX event, has additional TMA Level 1 Architectural Events,
+etc. The differences can be enumerated by CPUID or the PERF_CAPABILITIES
+MSR. They weren't reflected in the model-specific kernel setup.
+But it is worth to have a distinct PMU name for GNR.
 
-> Co-developed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Signed-off-by: Dexuan Cui <decui@microsoft.com>
-> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Acked-by: Kai Huang <kai.huang@intel.com>
+Fixes: a6742cb90b56 ("perf/x86/intel: Fix the FRONTEND encoding on GNR and MTL")
+Suggested-by: Ahmad Yasin <ahmad.yasin@intel.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: stable@vger.kernel.org
+---
+ arch/x86/events/intel/core.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-When were you able to collect all those tags on a newly submitted patch?
-
-Do you even know what the meaning of those tags is or you just slap them
-willy-nilly, just for fun?
-
-> Cc: stable@vger.kernel.org
-
-Why?
-
-Fixes: what?
-
-From reading this, it seems to me you need to brush up on
-
-https://kernel.org/doc/html/latest/process/submitting-patches.html
-
-while waiting.
-
-Thx.
-
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index b61367991a16..7a9f931a1f48 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -6943,12 +6943,17 @@ __init int intel_pmu_init(void)
+ 	case INTEL_EMERALDRAPIDS_X:
+ 		x86_pmu.flags |= PMU_FL_MEM_LOADS_AUX;
+ 		x86_pmu.extra_regs = intel_glc_extra_regs;
++		pr_cont("Sapphire Rapids events, ");
++		name = "sapphire_rapids";
+ 		fallthrough;
+ 	case INTEL_GRANITERAPIDS_X:
+ 	case INTEL_GRANITERAPIDS_D:
+ 		intel_pmu_init_glc(NULL);
+-		if (!x86_pmu.extra_regs)
++		if (!x86_pmu.extra_regs) {
+ 			x86_pmu.extra_regs = intel_rwc_extra_regs;
++			pr_cont("Granite Rapids events, ");
++			name = "granite_rapids";
++		}
+ 		x86_pmu.pebs_ept = 1;
+ 		x86_pmu.hw_config = hsw_hw_config;
+ 		x86_pmu.get_event_constraints = glc_get_event_constraints;
+@@ -6959,8 +6964,6 @@ __init int intel_pmu_init(void)
+ 		td_attr = glc_td_events_attrs;
+ 		tsx_attr = glc_tsx_events_attrs;
+ 		intel_pmu_pebs_data_source_skl(true);
+-		pr_cont("Sapphire Rapids events, ");
+-		name = "sapphire_rapids";
+ 		break;
+ 
+ 	case INTEL_ALDERLAKE:
 -- 
-Regards/Gruss,
-    Boris.
+2.38.1
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
