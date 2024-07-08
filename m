@@ -1,52 +1,96 @@
-Return-Path: <stable+bounces-58233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19A6192A363
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 15:01:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A18EC92A371
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 15:06:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9246281A92
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 13:01:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BDD31F224FA
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 13:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C86E446AE;
-	Mon,  8 Jul 2024 13:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCAA136653;
+	Mon,  8 Jul 2024 13:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xAVVLQo"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="cHZdbewp";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="R/gEt/IL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh6-smtp.messagingengine.com (fhigh6-smtp.messagingengine.com [103.168.172.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB9D1E487
-	for <stable@vger.kernel.org>; Mon,  8 Jul 2024 13:01:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8761A3FB94
+	for <stable@vger.kernel.org>; Mon,  8 Jul 2024 13:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720443705; cv=none; b=As5klDO5wa0QjFdRkfxevNEVuQoscibR++8haDInZGBulpKhmTwJi0z54M4bXCImDRD4RtGe8A12XfDZztdJsD0sByVeOonhgry+yO9Yoxgy6aRL8YVH7TxxF4dLWoXg8Kd9bSI2VpbNdXE862UpA+XTqO0A5J2Zvhnys+Rx3hM=
+	t=1720443972; cv=none; b=ig7OHzLxoBdfpjxb22onpBYOzIaLZcDiNociPAqITrcYvK+IRK02xaqQuNTVrQFpkhI7c+GIWkT1NHYZpbBZ5QCTdggRziGEx0mOEgGu+xDUMXVqwJcbb6wl0+wrsL5I9xswns0zv4tE4ml6FIwZVIusHs5Ps8XtFmjglf74vSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720443705; c=relaxed/simple;
-	bh=/4WCjZczKccBGWquuYp3g0s4W+onyG2WoVqLhFIsgiU=;
+	s=arc-20240116; t=1720443972; c=relaxed/simple;
+	bh=wmlQlEjfvU0upTUltYjtMZhhx4tjODYQEOWVs4pNx7E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IHDSRzgQHZ3+vsVCgcWSO5oZqo1Bap9luhRclsmoy9H0ru0EZ8U5PO7oc6jy8FwqlWXyz0qK6YZdNh9dhaA92jWMNBHY19hqA/4UE0DWgTx8hs2aCymXnVm33+I3BinzQplfxtqGfYnQaz+MXCbUW5ozpMV24E/g6jyy+5q2I7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xAVVLQo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C7CC32786;
-	Mon,  8 Jul 2024 13:01:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720443704;
-	bh=/4WCjZczKccBGWquuYp3g0s4W+onyG2WoVqLhFIsgiU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0xAVVLQozQ6RNJNxteXn3BRCT3JeFXjPnTfO54lvgceX1rkddbIXisztfHAW5K2VM
-	 6oCIsw3HzGQcRX4zy8u71RLaDB9NgpRyK8UerNhNCKFYwnyH+X3UA2nEXyuI9AWQGl
-	 dGnU17IcHf6yV7xaGg6urn69XsZ1sHD2AD6kibmk=
-Date: Mon, 8 Jul 2024 15:01:41 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Mimi Zohar <zohar@linux.ibm.com>
-Cc: stable@vger.kernel.org, GUO Zihua <guozihua@huawei.com>,
-	casey@schaufler-ca.com, john.johansen@canonical.com,
-	paul@paul-moore.com, Roberto Sassu <roberto.sassu@huaweicloud.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=gOsV7IWsuA6JBZBjcRoprNHIk5XuzCzp4rVwi0d+hhLDK/wiBg3T4iCXw6YGzBcAOtgbEfzEVofj15+lqxKaBGLavKl/ghtd5sdJJNtxmdjH36HKCkUh4SaaJH8VRKC8QfNIRx+cWnqN67nnzcKx2SDbi3u+AQNidKfAR2uqqkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=cHZdbewp; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=R/gEt/IL; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id 716781140094;
+	Mon,  8 Jul 2024 09:06:09 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute5.internal (MEProxy); Mon, 08 Jul 2024 09:06:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1720443969; x=1720530369; bh=0SdS1gVeus
+	EW5yio1Y8gYWXdzaFHasJ/BlKtWZGx4kI=; b=cHZdbewpg+ViuSQAtycyE5h5Jo
+	c21qzFKSX61u/208aYlY2t8BMXOooj2UONpgyGTsqZSyyXtQp6mZBJt0SsH5BHJ+
+	JR5hlUqEJn4HbmmpBFcaS7vEsGoBtG3XvBaaoJpCx8aBVJYicMHTt8D+6Gg9PMPY
+	nIFUV59IlXZuG1YllMunLWhk7S8yhcCjVsbWnywlHrB6OsfU+czoYjTLh9ao/M7X
+	MNjfV0eybFH85NWpGjAf+3kjISkX3I9ybA/VgrFEdMRFMTM5aba5ThtZzPjsQTem
+	hkNDpfXS2Gwe8gc50AwGBa93HYSeea2/D5oncKeAk3xxO0K9li98rRcJaU+Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1720443969; x=1720530369; bh=0SdS1gVeusEW5yio1Y8gYWXdzaFH
+	asJ/BlKtWZGx4kI=; b=R/gEt/ILT2PDanPuenJaiEvRh12JcAjEJMdN85lZZIcG
+	TaRErGIDx0Qd4+E3wpF5ZhxpidVoJ6E6mFm6PGl68KECngGVjaDNUojFHsE8+faw
+	1XiwH2mXCmCQJgVSX7JZXLHzCbVfVXEXlaNGhMbYujXmN3OvF9Nu5omm8q3y/12B
+	JUDZj8v35XfaUxFpjoIY/1kS0ofRGqteG5sSN10cHs+7KeX3gGMM6uI73bVJUB/e
+	S+APa742tHUnZdLwSXWsWcbzYVioxqXRTaJc0c9rRfitSpoXA4lGEwD3s8OHQgL7
+	6HSCPASfp9w+qjh+OHwr9zfdrXaiUSQ2UXTH1xBh9Q==
+X-ME-Sender: <xms:P-SLZsrZgjYrLRlmOAZRShUUh_x2n6IOF2X56qyICg-jiMJE73mPow>
+    <xme:P-SLZipTkP924wWGqLy_7VEmraLuYkdCSBK5IDVthEa-iVZtAIFSPWdRHOVBAGDQp
+    UAVS_cp-IOqVg>
+X-ME-Received: <xmr:P-SLZhN9Q4lnqGyOtW6y2Z3-ZxKu3pjbrN5y-MUhTndHaEYYvMH3UIj0hhZmJnIHdamv5stE1kibkCv1BaaYjwhxk8P3BqHTJZln5w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejgdehlecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehgedvve
+    dvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhushht
+    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
+    drtghomh
+X-ME-Proxy: <xmx:P-SLZj6_giCJIvXRuXJrRZt_UzW2Pm0Y1HCQ63q1P2y2aUUsjbaj5g>
+    <xmx:P-SLZr7l6Jy6j8vGGJ8xEx9W8gybR81JbAw1qojyLyoGjD_fguA_Mw>
+    <xmx:P-SLZjgioR2C8V7mO-uqZv8G0K62aqgBWUj1Gx9zqDc2gm4aJNXEaw>
+    <xmx:P-SLZl5zl_Cfo9JkaFlreyW-ED_Agj4QCDlg_mlLNVAsp91xFFkj7w>
+    <xmx:QeSLZvrKl5CxC_3mCwMuS0pAYOtn8ayW_V9I-OVdVkMPvwcTKlY7bGCY>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 8 Jul 2024 09:06:06 -0400 (EDT)
+Date: Mon, 8 Jul 2024 15:06:01 +0200
+From: Greg KH <greg@kroah.com>
+To: Roberto Sassu <roberto.sassu@huaweicloud.com>
+Cc: stable@vger.kernel.org, zohar@linux.ibm.com,
+	GUO Zihua <guozihua@huawei.com>,
+	John Johansen <john.johansen@canonical.com>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>
 Subject: Re: [PATCH] ima: Avoid blocking in RCU read-side critical section
-Message-ID: <2024070828-untaken-depletion-4e4a@gregkh>
-References: <20240707120439.34700-1-zohar@linux.ibm.com>
+Message-ID: <2024070852-kelp-cuddly-1f0c@gregkh>
+References: <20240704104303.3330331-1-roberto.sassu@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,9 +99,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240707120439.34700-1-zohar@linux.ibm.com>
+In-Reply-To: <20240704104303.3330331-1-roberto.sassu@huaweicloud.com>
 
-On Sun, Jul 07, 2024 at 08:04:39AM -0400, Mimi Zohar wrote:
+On Thu, Jul 04, 2024 at 12:43:03PM +0200, Roberto Sassu wrote:
 > From: GUO Zihua <guozihua@huawei.com>
 > 
 > A panic happens in ima_match_policy:
@@ -142,15 +186,15 @@ On Sun, Jul 07, 2024 at 08:04:39AM -0400, Mimi Zohar wrote:
 > [PM: fixed missing comment, long lines, !CONFIG_IMA_LSM_RULES case]
 > Signed-off-by: Paul Moore <paul@paul-moore.com>
 > (cherry picked from commit 9a95c5bfbf02a0a7f5983280fe284a0ff0836c34)
-> Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
 > ---
-> Backport notes:
-> - Restore default return value parameter to call_int_hook() in
-> security_audit_rule_init() in lieu of backporting commit 260017f31a8c
-> ("lsm: use default hook return value in call_int_hook()").
-> - Applies to linux-6.8.y -> linux-6.4.y
+> Backporting notes:
+> - Remove security_audit_rule_init() documentation changes
+> - Add default return value parameter to call_int_hook()
+>   in security_audit_rule_init()
+> - Can be backported to 6.1.x, 5.15.x, 5.10.x
 
-Now applied to 6.6.y, thanks.
+Now queued up, thanks.
 
 greg k-h
 
