@@ -1,139 +1,80 @@
-Return-Path: <stable+bounces-58252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5094492A9DD
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 21:33:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6EE992AAA3
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 22:32:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1248B21EE2
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 19:33:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E4D8B218C2
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 20:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E3014EC40;
-	Mon,  8 Jul 2024 19:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD6114D717;
+	Mon,  8 Jul 2024 20:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OCJG12EX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X6llRMhU"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C3C14900C;
-	Mon,  8 Jul 2024 19:32:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2900A29;
+	Mon,  8 Jul 2024 20:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720467168; cv=none; b=sN8kTPLPj/eS9Xp7Fc3Tcj2X4RfJeG1n2iG9tjORaD936VpWKYJ85FbW2ZnAkw0WBTlUaHCVggvQdW6bSDKo7TowDLEGNbh61Sw4GRJdg6NwqqpivvOS5VlhLWMLoStqS7m7EyDuxuHLQYAKVhPIA2WPP3xMVwCkmERcQoK7zvU=
+	t=1720470754; cv=none; b=eWz1u0KR3HRb2HQDtLWkHRhWOWoxDRSBDq9HxnVcvp6odTS2BSw00Cr5hrdXPoAgEMgae+x0HxhdpyJpXmdUqTCtxBDh1LDi3AB+FEoy3u3P5Px/sgy8nw753pVmwGqjKv+iInl4kE9fx4zhvgssOOmq9qdYelSYhIstolKtqJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720467168; c=relaxed/simple;
-	bh=PQRWnOx82i3fG2doBPseySJto3zDK3NV4Mn8e9GyrTY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qkDpp3E/6bGhMTOt4dG4rovUQKvcpBpfYoJ/JfNUMb3aXkPtztR4AoeztUnBa+pP37+XQkE9L2ky7nNZ6TvvdbYcSbSupq5Q59FS9+jF1qexnjQMTKnMKgKprcnGvtapScCuGUuKmZ1ZJu+D7Rk1gkPftncTq1uObXsJCF4a1VI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OCJG12EX; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720467166; x=1752003166;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=PQRWnOx82i3fG2doBPseySJto3zDK3NV4Mn8e9GyrTY=;
-  b=OCJG12EX5DwJd+SSDwV/7QWN8uUNzKdAA8BJuz3Y5ZLPtqlpMmD0ZQR2
-   88KEHflkFHz+yAaRO53c41BjpBBUxpy8FUXdECMQYhbR3uteusWLgkz3R
-   eAUks8223hJ3zAmoKPgtqEo9ZAUfPQ89e9tQmUT7Hnw8X8ah46JtNoeM7
-   HAzVh8qYbXDwef9GxKtBrF+9JnjUp4C4nGiT3UimUWPxeteyEXaWboHfh
-   m27duOLj1I7mkGvRhilpO78OwIWkLlylSa2nkmimNUbmjYkKdAshWTW1n
-   WNQCOOONSz+44EJp9EN5oMlpt5QHxV6SlKtbCnxB5RO6y+pAJI1PLWlJI
-   w==;
-X-CSE-ConnectionGUID: MXhKG6/iT9a9ZUweaPEI5A==
-X-CSE-MsgGUID: aT+sJGZwQs+D14kctfAd9A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11127"; a="17520497"
-X-IronPort-AV: E=Sophos;i="6.09,192,1716274800"; 
-   d="scan'208";a="17520497"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2024 12:32:42 -0700
-X-CSE-ConnectionGUID: TRnwzIJdTVOWbRO8PJilvg==
-X-CSE-MsgGUID: aK+CzMhgQU2ZUlCUsjL8ZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,192,1716274800"; 
-   d="scan'208";a="48265602"
-Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
-  by orviesa007.jf.intel.com with ESMTP; 08 Jul 2024 12:32:42 -0700
-From: kan.liang@linux.intel.com
-To: peterz@infradead.org,
-	mingo@kernel.org,
-	acme@kernel.org,
-	namhyung@kernel.org,
-	irogers@google.com,
-	adrian.hunter@intel.com,
-	alexander.shishkin@linux.intel.com,
-	linux-kernel@vger.kernel.org
-Cc: ak@linux.intel.com,
-	eranian@google.com,
-	Kan Liang <kan.liang@linux.intel.com>,
-	"Bayduraev, Alexey V" <alexey.v.bayduraev@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 3/3] perf/x86/intel/ds: Fix non 0 retire latency on Raptorlake
-Date: Mon,  8 Jul 2024 12:33:36 -0700
-Message-Id: <20240708193336.1192217-4-kan.liang@linux.intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20240708193336.1192217-1-kan.liang@linux.intel.com>
-References: <20240708193336.1192217-1-kan.liang@linux.intel.com>
+	s=arc-20240116; t=1720470754; c=relaxed/simple;
+	bh=uFwukNnK2jqoknq4ATZonWIBp7WJXBvW0eK/AgTdmb8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gLVbT8i8CEteN0zJIuI1o/hsBtAG+rBzbSg0EPSx8WUGIXBawL2gIXPz4diC0My25BddqHJMpsqvHzo90E/So8nV7alt6Cv/aPzqVRi2eql5G8G9TbQW2BjQMpEX+989+T+jfSPfsdwO9sD7emYp0x3l2CsQ5gFYkakX+5V5RKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X6llRMhU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D44C116B1;
+	Mon,  8 Jul 2024 20:32:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720470754;
+	bh=uFwukNnK2jqoknq4ATZonWIBp7WJXBvW0eK/AgTdmb8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=X6llRMhUKp1Ux75UbOYvGX/omU5506ePF4g1DZRithEnyhtQ3Kl2D9dLL/B7j4unA
+	 QHAdPJ29oeK8MA8EG0bbrWb0c9XyNGH775ybD1/9dDdVQsIFiRxmZ4r21+Xu1Q2SOf
+	 7QgolDIlbJlkGSc0hpRyF7Ii95JHReZhB9ffR2eIhtGpHxxEFjZ92PMlA6y58kyme0
+	 RghvtIuuKmXdfVQicYNZaZ1Ver2Ny07qB5WFbrHCt4xA0DbwnqlkzxAr/iWN5Nly9V
+	 1RDlYaBjQG2jqNrjpkgWPWkbWY1huXTueDJNdWUlabyMyv2A1+dmkQOH7z5/I40KbY
+	 wTEK6Qo2b/ulQ==
+Date: Mon, 8 Jul 2024 13:32:33 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Cc: David Ahern <dsahern@kernel.org>, "David S . Miller"
+ <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
+ <edumazet@google.com>, netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v2 1/4] ipv4: fix source address selection with
+ route leak
+Message-ID: <20240708133233.732e2f0c@kernel.org>
+In-Reply-To: <cc29ed8c-f0b2-4e6d-8347-21bb13d0bbbc@6wind.com>
+References: <20240705145302.1717632-1-nicolas.dichtel@6wind.com>
+	<20240705145302.1717632-2-nicolas.dichtel@6wind.com>
+	<339873c4-1c6c-4d9c-873c-75a007d4b162@kernel.org>
+	<cc29ed8c-f0b2-4e6d-8347-21bb13d0bbbc@6wind.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Kan Liang <kan.liang@linux.intel.com>
+On Mon, 8 Jul 2024 20:13:56 +0200 Nicolas Dichtel wrote:
+> > long line length. separate setting the value:
+> > 
+> > 		struct net_device *l3mdev;
+> > 
+> > 		l3mdev = dev_get_by_index_rcu(net, fl4->flowi4_l3mdev);  
+> The checkpatch limit is 100-column.
+> If the 80-column limit needs to be enforced in net/, maybe a special case should
+> be added in checkpatch.
 
-A non-0 retire latency can be observed on a Raptorlake which doesn't
-support the retire latency feature.
-By design, the retire latency shares the PERF_SAMPLE_WEIGHT_STRUCT
-sample type with other types of latency. That could avoid adding too
-many different sample types to support all kinds of latency. For the
-machine which doesn't support some kind of latency, 0 should be
-returned.
-
-Perf doesn’t clear/init all the fields of a sample data for the sake
-of performance. It expects the later perf_{prepare,output}_sample() to
-update the uninitialized field. However, the current implementation
-doesn't touch the field of the retire latency if the feature is not
-supported. The memory garbage is dumped into the perf data.
-
-Clear the retire latency if the feature is not supported.
-
-Fixes: c87a31093c70 ("perf/x86: Support Retire Latency")
-Reported-by: "Bayduraev, Alexey V" <alexey.v.bayduraev@intel.com>
-Tested-by: "Bayduraev, Alexey V" <alexey.v.bayduraev@intel.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: stable@vger.kernel.org
----
- arch/x86/events/intel/ds.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
-index b9cc520b2942..fa5ea65de0d0 100644
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -1944,8 +1944,12 @@ static void setup_pebs_adaptive_sample_data(struct perf_event *event,
- 	set_linear_ip(regs, basic->ip);
- 	regs->flags = PERF_EFLAGS_EXACT;
- 
--	if ((sample_type & PERF_SAMPLE_WEIGHT_STRUCT) && (x86_pmu.flags & PMU_FL_RETIRE_LATENCY))
--		data->weight.var3_w = format_size >> PEBS_RETIRE_LATENCY_OFFSET & PEBS_LATENCY_MASK;
-+	if (sample_type & PERF_SAMPLE_WEIGHT_STRUCT) {
-+		if (x86_pmu.flags & PMU_FL_RETIRE_LATENCY)
-+			data->weight.var3_w = format_size >> PEBS_RETIRE_LATENCY_OFFSET & PEBS_LATENCY_MASK;
-+		else
-+			data->weight.var3_w = 0;
-+	}
- 
- 	/*
- 	 * The record for MEMINFO is in front of GP
--- 
-2.38.1
-
+That'd be great. I'm pretty unsuccessful to at getting my patches
+accepted to checkpatch and get_maintainers so I gave up.
+But I never tried with the line length limit.
 
