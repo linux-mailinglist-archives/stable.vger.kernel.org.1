@@ -1,198 +1,130 @@
-Return-Path: <stable+bounces-58195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81BD1929DC8
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 09:56:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B99929EB6
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 11:12:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4AF81C22253
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 07:56:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 944CE280EB2
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 09:12:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F8E38FA1;
-	Mon,  8 Jul 2024 07:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965854DA00;
+	Mon,  8 Jul 2024 09:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="nlspGfP4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jwPFU+0x"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B112D638;
-	Mon,  8 Jul 2024 07:56:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52BA0AD31;
+	Mon,  8 Jul 2024 09:12:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720425409; cv=none; b=r8FLSBVmhAaBZcgDB0MIXSFxUmZxdp2Oz+LxI28OV953LbDQhu60VUKYnfoVymBPdmu7liqRguTcnBjqfAfDHu9CCnp+glexRes4gzvZLgWGytRKsMxS+/YLV71sQ561++66MmqmxT5ErBw30Av5yN5EzwUrDJZ7vG4jb56MB34=
+	t=1720429920; cv=none; b=hgRDkwm+Ppv3LHzWasQzUYLDDSQVttrlTWuEK2YqEHlxHOms0u/j/FE/Y33ToXiDdqwOiWMQbQHjIqtNe8iAOBFFY++UT27Q66U6R3i0ckIYALpqN47kbA5XjEiuKzMG7sqIUnP9VTISJVWq6ZRVlV7jb7b0B4SDqO5V7ez7sDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720425409; c=relaxed/simple;
-	bh=a3Eu5o4OYY5c8wyupf0NyYJSM4qQ3YVK9pDqmRZWaSs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fgWqbV370+t07//yJiT9wFidjFNXwguP6ngGfve/zdVWFVmK3HsKQzneQXNjDSYrhIbShV1zmW5OFEfl97CYlgqa7Y1H8iHXl9Rqj3UCYcVmOqFMF/SxBi3yzbp5//bvTRyua2Jyp/u2yOisnoGWpL6KpmQskEqBWbje//lgXis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=nlspGfP4; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=o1jN8VRyIcfHumRP1KvLwsjLLnt/lHRWuKN52gcpPx4=; b=nlspGfP4A0tMOtPh4zYnRtT+SI
-	Aj+aSVhrWD2EsHdlmEcTf56+gI+RHP1Pw7kPB/9wGSxS8GBF8rIhDogIfYBnCrB/MSplddEdMSZwK
-	Afmw4YGMHEQ+x4e/Ywx6fPYkn+Rc2vqludS+1MKVYX8U3vkG07sZMNhq/ZBvZUsC7aBFezu821AT2
-	5Xo75ff7lUw71Bj31K64ognlgrY6qBjjidvVRcNt8Iiu/PpUCaNPWPwDqrqx9IYKTsU40fPVQbtFw
-	Z6mrjJD75z/wUyn90OF2X9J/90XFbcDT1Z3ZiPWTN6bh4ZiPgG0gz4SMrbq9JUZIeSC8Jfrb2yK67
-	5PcGrOWw==;
-Received: from [84.69.19.168] (helo=localhost)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1sQjEi-00CNGq-2K; Mon, 08 Jul 2024 09:56:36 +0200
-From: Tvrtko Ursulin <tursulin@igalia.com>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel-dev@igalia.com,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Huang Ying <ying.huang@intel.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Rik van Riel <riel@surriel.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Michal Hocko <mhocko@suse.com>,
-	David Rientjes <rientjes@google.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v4] mm/numa_balancing: Teach mpol_to_str about the balancing mode
-Date: Mon,  8 Jul 2024 08:56:32 +0100
-Message-ID: <20240708075632.95857-1-tursulin@igalia.com>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1720429920; c=relaxed/simple;
+	bh=pT2sgtwPB+Rrdne7/SbeMYcVkvH7SkEAyY48lsxW8ds=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M7x4s40A76lrreGiZlnri3JsIlD1QJwajXW6iXG3npjymbHu3pDzoQ/MK0knxH4PifjMFc9hzT1z39yq0PNH8HcNF6pqk77rhMkIz8xo8qvUF6tfCPyp9tW5xNr7oYrGp1WnG6z7wOupWTafDqwZqITGmI0Pmnsji9O2CEtE2Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jwPFU+0x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420DFC4AF0A;
+	Mon,  8 Jul 2024 09:11:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720429919;
+	bh=pT2sgtwPB+Rrdne7/SbeMYcVkvH7SkEAyY48lsxW8ds=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jwPFU+0xi4bvGCirmq/hSMW6Fq3xMw5aXktER/ZZA1J/W1njpVKQouBMKZtsyg6ee
+	 vD6SUXAeYbEHeM3+iLM/D5OrQnLa+CajPf8g6Xf7Ux1CzvJNv7yBUOFPpuyGIrZ4Mh
+	 6Du3RGQOh04xgOcz3GIipuyjHCq16c7pmV6Fi9Hw+Gdqmq+WtBl61eAneTtAIUHVP6
+	 intYC9sgoxZtj/4iB4vqv3uivs4dRUoiZ/dWnRJkPMOe5PKW8p0Ap4qd3OfSCEa5a+
+	 gvNehP2MKRX3sik+Rfl8ZqdkbgDsodaIAgDmPWsWKCg0Z6j8EtkzzLL6FdtQAbq2+9
+	 Aq4RgPwvpXC/A==
+Date: Mon, 8 Jul 2024 10:11:55 +0100
+From: Simon Horman <horms@kernel.org>
+To: Ronald Wahl <rwahl@gmx.de>
+Cc: Ronald Wahl <ronald.wahl@raritan.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] net: ks8851: Fix deadlock with the SPI chip variant
+Message-ID: <20240708091155.GI1481495@kernel.org>
+References: <20240706101337.854474-1-rwahl@gmx.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240706101337.854474-1-rwahl@gmx.de>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+On Sat, Jul 06, 2024 at 12:13:37PM +0200, Ronald Wahl wrote:
+> From: Ronald Wahl <ronald.wahl@raritan.com>
+> 
+> When SMP is enabled and spinlocks are actually functional then there is
+> a deadlock with the 'statelock' spinlock between ks8851_start_xmit_spi
+> and ks8851_irq:
+> 
+>     watchdog: BUG: soft lockup - CPU#0 stuck for 27s!
+>     call trace:
+>       queued_spin_lock_slowpath+0x100/0x284
+>       do_raw_spin_lock+0x34/0x44
+>       ks8851_start_xmit_spi+0x30/0xb8
+>       ks8851_start_xmit+0x14/0x20
+>       netdev_start_xmit+0x40/0x6c
+>       dev_hard_start_xmit+0x6c/0xbc
+>       sch_direct_xmit+0xa4/0x22c
+>       __qdisc_run+0x138/0x3fc
+>       qdisc_run+0x24/0x3c
+>       net_tx_action+0xf8/0x130
+>       handle_softirqs+0x1ac/0x1f0
+>       __do_softirq+0x14/0x20
+>       ____do_softirq+0x10/0x1c
+>       call_on_irq_stack+0x3c/0x58
+>       do_softirq_own_stack+0x1c/0x28
+>       __irq_exit_rcu+0x54/0x9c
+>       irq_exit_rcu+0x10/0x1c
+>       el1_interrupt+0x38/0x50
+>       el1h_64_irq_handler+0x18/0x24
+>       el1h_64_irq+0x64/0x68
+>       __netif_schedule+0x6c/0x80
+>       netif_tx_wake_queue+0x38/0x48
+>       ks8851_irq+0xb8/0x2c8
+>       irq_thread_fn+0x2c/0x74
+>       irq_thread+0x10c/0x1b0
+>       kthread+0xc8/0xd8
+>       ret_from_fork+0x10/0x20
+> 
+> This issue has not been identified earlier because tests were done on
+> a device with SMP disabled and so spinlocks were actually NOPs.
+> 
+> Now use spin_(un)lock_bh for TX queue related locking to avoid execution
+> of softirq work synchronously that would lead to a deadlock.
+> 
+> Fixes: 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX buffer overrun")
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Simon Horman <horms@kernel.org>
+> Cc: netdev@vger.kernel.org
+> Cc: stable@vger.kernel.org # 5.10+
+> Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+> ---
+> V2: - use spin_lock_bh instead of moving netif_wake_queue outside of
+>       locked region (doing the same in the start_xmit function)
+>     - add missing net: tag
+> 
+> V3: - spin_lock_bh(ks->statelock) always except in xmit which is in BH
+>       already
 
-Since balancing mode was added in
-bda420b98505 ("numa balancing: migrate on fault among multiple bound nodes"),
-it was possible to set this mode but it wouldn't be shown in
-/proc/<pid>/numa_maps since there was no support for it in the
-mpol_to_str() helper.
+I agree that this lock is now always either taken _bh,
+or in the xmit path which is executed in BH context.
 
-Furthermore, because the balancing mode sets the MPOL_F_MORON flag, it
-would be displayed as 'default' due a workaround introduced a few years
-earlier in
-8790c71a18e5 ("mm/mempolicy.c: fix mempolicy printing in numa_maps").
-
-To tidy this up we implement two changes:
-
-Replace the MPOL_F_MORON check by pointer comparison against the
-preferred_node_policy array. By doing this we generalise the current
-special casing and replace the incorrect 'default' with the correct
-'bind' for the mode.
-
-Secondly, we add a string representation and corresponding handling for
-the MPOL_F_NUMA_BALANCING flag.
-
-With the two changes together we start showing the balancing flag when it
-is set and therefore complete the fix.
-
-Representation format chosen is to separate multiple flags with vertical
-bars, following what existed long time ago in kernel 2.6.25. But as
-between then and now there wasn't a way to display multiple flags, this
-patch does not change the format in practice.
-
-Some /proc/<pid>/numa_maps output examples:
-
- 555559580000 bind=balancing:0-1,3 file=...
- 555585800000 bind=balancing|static:0,2 file=...
- 555635240000 prefer=relative:0 file=
-
-v2:
- * Fully fix by introducing MPOL_F_KERNEL.
-
-v3:
- * Abandoned the MPOL_F_KERNEL approach in favour of pointer comparisons.
- * Removed lookup generalisation for easier backporting.
- * Replaced commas as separator with vertical bars.
- * Added a few more words about the string format in the commit message.
-
-v4:
- * Use is_power_of_2.
- * Use ARRAY_SIZE and update recommended buffer size for two flags.
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Fixes: bda420b98505 ("numa balancing: migrate on fault among multiple bound nodes")
-References: 8790c71a18e5 ("mm/mempolicy.c: fix mempolicy printing in numa_maps")
-Cc: Huang Ying <ying.huang@intel.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: <stable@vger.kernel.org> # v5.12+
----
- mm/mempolicy.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
-
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index aec756ae5637..a1bf9aa15c33 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -3293,8 +3293,9 @@ int mpol_parse_str(char *str, struct mempolicy **mpol)
-  * @pol:  pointer to mempolicy to be formatted
-  *
-  * Convert @pol into a string.  If @buffer is too short, truncate the string.
-- * Recommend a @maxlen of at least 32 for the longest mode, "interleave", the
-- * longest flag, "relative", and to display at least a few node ids.
-+ * Recommend a @maxlen of at least 51 for the longest mode, "weighted
-+ * interleave", plus the longest flag flags, "relative|balancing", and to
-+ * display at least a few node ids.
-  */
- void mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol)
- {
-@@ -3303,7 +3304,10 @@ void mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol)
- 	unsigned short mode = MPOL_DEFAULT;
- 	unsigned short flags = 0;
- 
--	if (pol && pol != &default_policy && !(pol->flags & MPOL_F_MORON)) {
-+	if (pol &&
-+	    pol != &default_policy &&
-+	    !(pol >= &preferred_node_policy[0] &&
-+	      pol <= &preferred_node_policy[ARRAY_SIZE(preferred_node_policy) - 1])) {
- 		mode = pol->mode;
- 		flags = pol->flags;
- 	}
-@@ -3331,12 +3335,18 @@ void mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol)
- 		p += snprintf(p, buffer + maxlen - p, "=");
- 
- 		/*
--		 * Currently, the only defined flags are mutually exclusive
-+		 * Static and relative are mutually exclusive.
- 		 */
- 		if (flags & MPOL_F_STATIC_NODES)
- 			p += snprintf(p, buffer + maxlen - p, "static");
- 		else if (flags & MPOL_F_RELATIVE_NODES)
- 			p += snprintf(p, buffer + maxlen - p, "relative");
-+
-+		if (flags & MPOL_F_NUMA_BALANCING) {
-+			if (!is_power_of_2(flags & MPOL_MODE_FLAGS))
-+				p += snprintf(p, buffer + maxlen - p, "|");
-+			p += snprintf(p, buffer + maxlen - p, "balancing");
-+		}
- 	}
- 
- 	if (!nodes_empty(nodes))
--- 
-2.44.0
+Reviewed-by: Simon Horman <horms@kernel.org>
 
 
