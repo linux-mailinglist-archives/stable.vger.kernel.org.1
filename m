@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-58251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C249692A9DA
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 21:33:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5094492A9DD
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 21:33:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C56BB21CDB
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 19:32:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1248B21EE2
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 19:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C3814BFB4;
-	Mon,  8 Jul 2024 19:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E3014EC40;
+	Mon,  8 Jul 2024 19:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nRMJ59C4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OCJG12EX"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5971CFAF;
-	Mon,  8 Jul 2024 19:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C3C14900C;
+	Mon,  8 Jul 2024 19:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720467166; cv=none; b=iZg6hk0V9UKM/Na9h6Wj+Y/eBAi7OESAu1T5eeYbtk94gCDlJ56o4nf8rvuH4jj2fB4c9nborVQAcChp9/2I/SKuZZrmpcxC2RJ0iHgWqKUOVZjZIrIZycDtLqWnCJjMOkuUO/6B3mZqY4jAoED9+PylKCsiHuEZUaXSFREtHgI=
+	t=1720467168; cv=none; b=sN8kTPLPj/eS9Xp7Fc3Tcj2X4RfJeG1n2iG9tjORaD936VpWKYJ85FbW2ZnAkw0WBTlUaHCVggvQdW6bSDKo7TowDLEGNbh61Sw4GRJdg6NwqqpivvOS5VlhLWMLoStqS7m7EyDuxuHLQYAKVhPIA2WPP3xMVwCkmERcQoK7zvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720467166; c=relaxed/simple;
-	bh=9azAPtHQWpCrAcC4hsFvD58GfVAqXFENVg14P/0VMTw=;
+	s=arc-20240116; t=1720467168; c=relaxed/simple;
+	bh=PQRWnOx82i3fG2doBPseySJto3zDK3NV4Mn8e9GyrTY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ImpFgB8SZ5VuC3HR307Bn+e2Mvy0sTsCBZYPLPhCMzJTopb1JHz+qp8a8r2TKmo8IHZQnmjSTAC7nejqlyp0REbl7r1WIgWqwBgETTZbVRWnC+mBtvsIe96BVwhueIjWalipZLnkgP6IBL4T6RxClsAWtTXHSVA9uG3PzSlYaGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nRMJ59C4; arc=none smtp.client-ip=198.175.65.19
+	 MIME-Version:Content-Type; b=qkDpp3E/6bGhMTOt4dG4rovUQKvcpBpfYoJ/JfNUMb3aXkPtztR4AoeztUnBa+pP37+XQkE9L2ky7nNZ6TvvdbYcSbSupq5Q59FS9+jF1qexnjQMTKnMKgKprcnGvtapScCuGUuKmZ1ZJu+D7Rk1gkPftncTq1uObXsJCF4a1VI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OCJG12EX; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720467165; x=1752003165;
+  t=1720467166; x=1752003166;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=9azAPtHQWpCrAcC4hsFvD58GfVAqXFENVg14P/0VMTw=;
-  b=nRMJ59C4oFaKJwcss+I8DHqIw7Gm/UwvJVz1fFfQFTAYqqief3C6+inc
-   60dc8V7LSh221aNbNyyZIsYSyGhyGekTlqR2BhGGdopDcCLG0mG2N71l9
-   aNJwtJv/k63Xr3JgL3+Bi5Q/KUoXWJcUky8J/OfODH3r/wPHRgYmm8J+p
-   ndtJz0t5tNqGiNQu9j1AsnmuOVKsmJQLs7lun5yccD/09PMeK+s0X9Tmw
-   R7/LJWZ74GRbuOZGfEXjLGDNVcu62dZ52/2WVqkIp4qE+AXojyqbLjeP8
-   dCnRR8A4Hbhctdc+n3hTxciJn33Kq7EkPm9wSr2Ep55rtKN9OiQ9uivRh
-   Q==;
-X-CSE-ConnectionGUID: fc1b70G3Rfe1ZeXglMy0NA==
-X-CSE-MsgGUID: FIZRcosYRVS1CV+dDNJrRw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11127"; a="17520493"
+  bh=PQRWnOx82i3fG2doBPseySJto3zDK3NV4Mn8e9GyrTY=;
+  b=OCJG12EX5DwJd+SSDwV/7QWN8uUNzKdAA8BJuz3Y5ZLPtqlpMmD0ZQR2
+   88KEHflkFHz+yAaRO53c41BjpBBUxpy8FUXdECMQYhbR3uteusWLgkz3R
+   eAUks8223hJ3zAmoKPgtqEo9ZAUfPQ89e9tQmUT7Hnw8X8ah46JtNoeM7
+   HAzVh8qYbXDwef9GxKtBrF+9JnjUp4C4nGiT3UimUWPxeteyEXaWboHfh
+   m27duOLj1I7mkGvRhilpO78OwIWkLlylSa2nkmimNUbmjYkKdAshWTW1n
+   WNQCOOONSz+44EJp9EN5oMlpt5QHxV6SlKtbCnxB5RO6y+pAJI1PLWlJI
+   w==;
+X-CSE-ConnectionGUID: MXhKG6/iT9a9ZUweaPEI5A==
+X-CSE-MsgGUID: aT+sJGZwQs+D14kctfAd9A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11127"; a="17520497"
 X-IronPort-AV: E=Sophos;i="6.09,192,1716274800"; 
-   d="scan'208";a="17520493"
+   d="scan'208";a="17520497"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
   by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2024 12:32:42 -0700
-X-CSE-ConnectionGUID: 6WwrchycRtSTQilbKLfyEg==
-X-CSE-MsgGUID: xWuTnf5kQvuR6i/rdnWOWg==
+X-CSE-ConnectionGUID: TRnwzIJdTVOWbRO8PJilvg==
+X-CSE-MsgGUID: aK+CzMhgQU2ZUlCUsjL8ZA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,192,1716274800"; 
-   d="scan'208";a="48265598"
+   d="scan'208";a="48265602"
 Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
   by orviesa007.jf.intel.com with ESMTP; 08 Jul 2024 12:32:42 -0700
 From: kan.liang@linux.intel.com
@@ -70,11 +70,11 @@ To: peterz@infradead.org,
 Cc: ak@linux.intel.com,
 	eranian@google.com,
 	Kan Liang <kan.liang@linux.intel.com>,
-	Ahmad Yasin <ahmad.yasin@intel.com>,
+	"Bayduraev, Alexey V" <alexey.v.bayduraev@intel.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 2/3] perf/x86/intel: Add a distinct name for Granite Rapids
-Date: Mon,  8 Jul 2024 12:33:35 -0700
-Message-Id: <20240708193336.1192217-3-kan.liang@linux.intel.com>
+Subject: [PATCH 3/3] perf/x86/intel/ds: Fix non 0 retire latency on Raptorlake
+Date: Mon,  8 Jul 2024 12:33:36 -0700
+Message-Id: <20240708193336.1192217-4-kan.liang@linux.intel.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20240708193336.1192217-1-kan.liang@linux.intel.com>
 References: <20240708193336.1192217-1-kan.liang@linux.intel.com>
@@ -89,59 +89,50 @@ Content-Transfer-Encoding: 8bit
 
 From: Kan Liang <kan.liang@linux.intel.com>
 
-Currently, the Sapphire Rapids and Granite Rapids share the same PMU
-name, sapphire_rapids. Because from the kernel’s perspective, GNR is
-similar to SPR. The only key difference is that they support different
-extra MSRs. The code path and the PMU name are shared.
+A non-0 retire latency can be observed on a Raptorlake which doesn't
+support the retire latency feature.
+By design, the retire latency shares the PERF_SAMPLE_WEIGHT_STRUCT
+sample type with other types of latency. That could avoid adding too
+many different sample types to support all kinds of latency. For the
+machine which doesn't support some kind of latency, 0 should be
+returned.
 
-However, from end users' perspective, they are quite different. Besides
-the extra MSRs, GNR has a newer PEBS format, supports Retire Latency,
-supports new CPUID enumeration architecture, doesn't required the
-load-latency AUX event, has additional TMA Level 1 Architectural Events,
-etc. The differences can be enumerated by CPUID or the PERF_CAPABILITIES
-MSR. They weren't reflected in the model-specific kernel setup.
-But it is worth to have a distinct PMU name for GNR.
+Perf doesn’t clear/init all the fields of a sample data for the sake
+of performance. It expects the later perf_{prepare,output}_sample() to
+update the uninitialized field. However, the current implementation
+doesn't touch the field of the retire latency if the feature is not
+supported. The memory garbage is dumped into the perf data.
 
-Fixes: a6742cb90b56 ("perf/x86/intel: Fix the FRONTEND encoding on GNR and MTL")
-Suggested-by: Ahmad Yasin <ahmad.yasin@intel.com>
+Clear the retire latency if the feature is not supported.
+
+Fixes: c87a31093c70 ("perf/x86: Support Retire Latency")
+Reported-by: "Bayduraev, Alexey V" <alexey.v.bayduraev@intel.com>
+Tested-by: "Bayduraev, Alexey V" <alexey.v.bayduraev@intel.com>
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Cc: stable@vger.kernel.org
 ---
- arch/x86/events/intel/core.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/x86/events/intel/ds.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index b61367991a16..7a9f931a1f48 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -6943,12 +6943,17 @@ __init int intel_pmu_init(void)
- 	case INTEL_EMERALDRAPIDS_X:
- 		x86_pmu.flags |= PMU_FL_MEM_LOADS_AUX;
- 		x86_pmu.extra_regs = intel_glc_extra_regs;
-+		pr_cont("Sapphire Rapids events, ");
-+		name = "sapphire_rapids";
- 		fallthrough;
- 	case INTEL_GRANITERAPIDS_X:
- 	case INTEL_GRANITERAPIDS_D:
- 		intel_pmu_init_glc(NULL);
--		if (!x86_pmu.extra_regs)
-+		if (!x86_pmu.extra_regs) {
- 			x86_pmu.extra_regs = intel_rwc_extra_regs;
-+			pr_cont("Granite Rapids events, ");
-+			name = "granite_rapids";
-+		}
- 		x86_pmu.pebs_ept = 1;
- 		x86_pmu.hw_config = hsw_hw_config;
- 		x86_pmu.get_event_constraints = glc_get_event_constraints;
-@@ -6959,8 +6964,6 @@ __init int intel_pmu_init(void)
- 		td_attr = glc_td_events_attrs;
- 		tsx_attr = glc_tsx_events_attrs;
- 		intel_pmu_pebs_data_source_skl(true);
--		pr_cont("Sapphire Rapids events, ");
--		name = "sapphire_rapids";
- 		break;
+diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
+index b9cc520b2942..fa5ea65de0d0 100644
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -1944,8 +1944,12 @@ static void setup_pebs_adaptive_sample_data(struct perf_event *event,
+ 	set_linear_ip(regs, basic->ip);
+ 	regs->flags = PERF_EFLAGS_EXACT;
  
- 	case INTEL_ALDERLAKE:
+-	if ((sample_type & PERF_SAMPLE_WEIGHT_STRUCT) && (x86_pmu.flags & PMU_FL_RETIRE_LATENCY))
+-		data->weight.var3_w = format_size >> PEBS_RETIRE_LATENCY_OFFSET & PEBS_LATENCY_MASK;
++	if (sample_type & PERF_SAMPLE_WEIGHT_STRUCT) {
++		if (x86_pmu.flags & PMU_FL_RETIRE_LATENCY)
++			data->weight.var3_w = format_size >> PEBS_RETIRE_LATENCY_OFFSET & PEBS_LATENCY_MASK;
++		else
++			data->weight.var3_w = 0;
++	}
+ 
+ 	/*
+ 	 * The record for MEMINFO is in front of GP
 -- 
 2.38.1
 
