@@ -1,226 +1,90 @@
-Return-Path: <stable+bounces-58192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D905A929B35
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 06:02:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 861F8929CAA
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 09:02:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B02FB20DD0
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 04:02:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41617280C59
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 07:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6939F6FC5;
-	Mon,  8 Jul 2024 04:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C6DE1CAA6;
+	Mon,  8 Jul 2024 07:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="buCTH80h";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="ue5Lz4L6";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="buCTH80h";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="ue5Lz4L6"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="csnDubFD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F20AD21;
-	Mon,  8 Jul 2024 04:02:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95780182AE;
+	Mon,  8 Jul 2024 07:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720411368; cv=none; b=gwPLZ/++UI1LAM+NVRftOjP6jqjXeXBbFPe3+bzYc9khMDQ6PnrS3J9JyKoJyIlJ1ruhKglux+uku5SkiDp7NHTlZUrCpKBWngijvMKiELzfYlnrWpoa7j8hmY25/O8qcMn6kENveNVLBdJhcMjfBpt5CGZ0VaOyEZxjTUb0v1I=
+	t=1720422115; cv=none; b=ad5CLmSLrlmKpAUSQipYzeagSkOEOggZqnS2YDJJ605vxOZAPg9jqP87GyFc4ocIs8uoVBjeQ0udqtBGSnnNhzKNYbMezC/e6Gj25+XLJ6EVkF+hKRpis9RBRdn91top5h4uaITPHPa2CPLKeopZYWwkxd80kPgpdJPxJpMm+RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720411368; c=relaxed/simple;
-	bh=CKtVEJDeXjpBPTY4afSaL5c+FvnCh0fg4jOYNeCWwgg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eeX3enqc2fHY+7Yge+gtB7EIersY//UDxazl611Vui8DrYEoWyUR+142UYiK5WaHrWf7IehD+Ezw3YtBxFOdreBd9Mz9zbnzWucea0Od/rPlnjE4vCymx4f303uvyKuyzXQ/1Y7IFJ0CSSSDtkNmIXv1x7RA7hk8qh+DCZHjPW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=buCTH80h; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=ue5Lz4L6; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=buCTH80h; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=ue5Lz4L6; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 564431FBBC;
-	Mon,  8 Jul 2024 04:02:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1720411364;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
+	s=arc-20240116; t=1720422115; c=relaxed/simple;
+	bh=UwwuUSuo2D6/dt6MqiW1z0OObhU6shNIC63QWSIFu7E=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=IWIv3A9/I4QhAi4H5bNmzlBwW6eiNrfbFfJPaHf2XIiJdkWQshDrIuvI+3GKSEazHbLbUJ7t2+EIE1qSCjVhcHSj8tph7t3gmScGFbdW/3MY8tOHh32sKC+KTuhT8lbyl+jrb2n9k6FN3DtmjJgY831I9ha/IZ11LchMRR7l1RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=csnDubFD; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 68E841C0002;
+	Mon,  8 Jul 2024 07:01:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1720422106;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CKtVEJDeXjpBPTY4afSaL5c+FvnCh0fg4jOYNeCWwgg=;
-	b=buCTH80h+E6ZFcF72pZ5XVCbgNmfCJUCMXEEWyBorYrzMsEkbi7iakJZkpVQIh+70wwkTh
-	7RscC0Mpxszng6CCkgGgy/ZMc4byAnp5PDPiuAQYYvhfqDGGFuypqudPtC0s9+ZfepO3fP
-	FITPRaMN7CLexi5XftWFuqOcucxT9NM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1720411364;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CKtVEJDeXjpBPTY4afSaL5c+FvnCh0fg4jOYNeCWwgg=;
-	b=ue5Lz4L6dMTYN8hRQSV2zDkClpO2nTs0q2JMU/NPj021xgPssfsMr9ixuOUFELiOGd3vSt
-	ynpcMEgMuYz8RbDg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1720411364;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CKtVEJDeXjpBPTY4afSaL5c+FvnCh0fg4jOYNeCWwgg=;
-	b=buCTH80h+E6ZFcF72pZ5XVCbgNmfCJUCMXEEWyBorYrzMsEkbi7iakJZkpVQIh+70wwkTh
-	7RscC0Mpxszng6CCkgGgy/ZMc4byAnp5PDPiuAQYYvhfqDGGFuypqudPtC0s9+ZfepO3fP
-	FITPRaMN7CLexi5XftWFuqOcucxT9NM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1720411364;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CKtVEJDeXjpBPTY4afSaL5c+FvnCh0fg4jOYNeCWwgg=;
-	b=ue5Lz4L6dMTYN8hRQSV2zDkClpO2nTs0q2JMU/NPj021xgPssfsMr9ixuOUFELiOGd3vSt
-	ynpcMEgMuYz8RbDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1759112FF6;
-	Mon,  8 Jul 2024 04:02:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id AdbfBORki2ZAVQAAD6G6ig
-	(envelope-from <pvorel@suse.cz>); Mon, 08 Jul 2024 04:02:44 +0000
-Date: Mon, 8 Jul 2024 06:02:38 +0200
-From: Petr Vorel <pvorel@suse.cz>
-To: Chuck Lever III <chuck.lever@oracle.com>
-Cc: Calum Mackay <calum.mackay@oracle.com>,
-	linux-stable <stable@vger.kernel.org>,
-	Trond Myklebust <trondmy@hammerspace.com>,
-	Anna Schumaker <anna@kernel.org>,
-	Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
-	"kernel-team@fb.com" <kernel-team@fb.com>,
-	"ltp@lists.linux.it" <ltp@lists.linux.it>,
-	Avinesh Kumar <akumar@suse.de>, Neil Brown <neilb@suse.de>,
-	Sherry Yang <sherry.yang@oracle.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: Re: [LTP] [PATCH 1/1] nfsstat01: Update client RPC calls for kernel
- 6.9
-Message-ID: <20240708040238.GA117694@pevik>
-Reply-To: Petr Vorel <pvorel@suse.cz>
-References: <d4b235df-4ee5-4824-9d48-e3b3c1f1f4d1@oracle.com>
- <2fc3a3fd-7433-45ba-b281-578355dca64c@oracle.com>
- <296EA0E6-0E72-4EA1-8B31-B025EB531F9B@oracle.com>
+	bh=UFyhUQfDWH2BkI3PZl+BB8bptYesbh+J9oIuRZIQ3+Y=;
+	b=csnDubFDvkPISyceGvrqdlxbuax7LfjnBvSwBCZIVZ2Bxzx1nbRCMLzV2cfRFTcvcgoMoS
+	160VjK8L2pogbqOcIoH0+rZvjxx/z70M36+8OWVwh6ivxior4c7pEnySrkrvSz7RnPbeRk
+	a1LKS2zVqAGX/eTJU93s5cv9nHVsjHnGMMl318U/tWVu9Ak6GLx9qvgbRrmk9eiH0Q4+4B
+	X8Z0VqjFKuAFq2zt3P4B2xglPp/FfNB/dfxLDEOvpwwr7gO6+cwuVlCKaxlTjj3+cIxTZv
+	qTbrBXbZFRXl2IbKTCT8wsVqZ7oBfY4OggevI9HURM4Zo4B+shwE78DqIqRCBg==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+	miquel.raynal@bootlin.com
+Cc: stable@vger.kernel.org,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	Li Zetao <lizetao1@huawei.com>,
+	linux-mtd@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [Patch v2] mtd: rawnand: lpx32xx: Fix dma_request_chan() error checks
+Date: Mon,  8 Jul 2024 09:01:44 +0200
+Message-Id: <20240708070144.12186-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20240705115139.126522-1-piotr.wojtaszczyk@timesys.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-linux-mtd-patch-notification: thanks
+X-linux-mtd-patch-commit: b'5f713030117a12b0239e604c163e69af58bb0b63'
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <296EA0E6-0E72-4EA1-8B31-B025EB531F9B@oracle.com>
-X-Spamd-Result: default: False [-3.50 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	HAS_REPLYTO(0.30)[pvorel@suse.cz];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.cz:replyto];
-	REPLYTO_EQ_FROM(0.00)[]
-X-Spam-Flag: NO
-X-Spam-Score: -3.50
-X-Spam-Level: 
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-Hi all,
+On Fri, 2024-07-05 at 11:51:35 UTC, Piotr Wojtaszczyk wrote:
+> The dma_request_chan() returns error pointer in case of error, while
+> dma_request_channel() returns NULL in case of error therefore different
+> error checks are needed for the two.
+> 
+> Fixes: 7326d3fb1ee3 ("mtd: rawnand: lpx32xx: Request DMA channels using DT entries")
+> Signed-off-by: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
+> Cc: stable@vger.kernel.org
 
+Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git nand/next, thanks.
 
-> > On Jul 2, 2024, at 6:55 PM, Calum Mackay <calum.mackay@oracle.com> wrote:
-
-> > To clarify…
-
-> > On 02/07/2024 5:54 pm, Calum Mackay wrote:
-> >> hi Petr,
-> >> I noticed your LTP patch [1][2] which adjusts the nfsstat01 test on v6.9 kernels, to account for Josef's changes [3], which restrict the NFS/RPC stats per-namespace.
-> >> I see that Josef's changes were backported, as far back as longterm v5.4,
-
-> > Sorry, that's not quite accurate.
-
-> > Josef's NFS client changes were all backported from v6.9, as far as longterm v5.4.y:
-
-> > 2057a48d0dd0 sunrpc: add a struct rpc_stats arg to rpc_create_args
-> > d47151b79e32 nfs: expose /proc/net/sunrpc/nfs in net namespaces
-> > 1548036ef120 nfs: make the rpc_stat per net namespace
-
-
-> > Of Josef's NFS server changes, four were backported from v6.9 to v6.8:
-
-> > 418b9687dece sunrpc: use the struct net as the svc proc private
-> > d98416cc2154 nfsd: rename NFSD_NET_* to NFSD_STATS_*
-> > 93483ac5fec6 nfsd: expose /proc/net/sunrpc/nfsd in net namespaces
-> > 4b14885411f7 nfsd: make all of the nfsd stats per-network namespace
-
-> > and the others remained only in v6.9:
-
-> > ab42f4d9a26f sunrpc: don't change ->sv_stats if it doesn't exist
-> > a2214ed588fb nfsd: stop setting ->pg_stats for unused stats
-> > f09432386766 sunrpc: pass in the sv_stats struct through svc_create_pooled
-> > 3f6ef182f144 sunrpc: remove ->pg_stats from svc_program
-> > e41ee44cc6a4 nfsd: remove nfsd_stats, make th_cnt a global counter
-> > 16fb9808ab2c nfsd: make svc_stat per-network namespace instead of global
-
-
-
-> > I'm wondering if this difference between NFS client, and NFS server, stat behaviour, across kernel versions, may perhaps cause some user confusion?
-
-> As a refresher for the stable folken, Josef's changes make
-> nfsstats silo'd, so they no longer show counts from the whole
-> system, but only for NFS operations relating to the local net
-> namespace. That is a surprising change for some users, tools,
-> and testing.
-
-> I'm not clear on whether there are any rules/guidelines around
-> LTS backports causing behavior changes that user tools, like
-> nfsstat, might be impacted by.
-
-> The client-side nfsstat changes are fully backported to all
-> TS kernels. But should they have been?
-
-> The server-side nfsstat changes appear in only v6.9. Should
-> they be backported to the other LTS kernels, or not?
-
-First, thanks a lot for having a look into the issue.
-
-It looks to me as a functional change, thus I would not backport
-changes unless changes they are needed to be backported (part some larger fix).
-Thus maybe revert?
-
-And if backported, I would expect changes on both sides (client and server)
-would be backported (not just server side).
-
-Kind regards,
-Petr
-
-> >> so your check for kernel version "6.9" in the test may need to be adjusted, if LTP is intended to be run on stable kernels?
-> >> best wishes,
-> >> calum.
-> >> [1] https://lore.kernel.org/ltp/20240620111129.594449-1-pvorel@suse.cz/
-> >> [2] https://patchwork.ozlabs.org/project/ltp/ patch/20240620111129.594449-1-pvorel@suse.cz/
-> >> [3] https://lore.kernel.org/linux-nfs/ cover.1708026931.git.josef@toxicpanda.com/
+Miquel
 
