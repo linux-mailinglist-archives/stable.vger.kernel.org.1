@@ -1,136 +1,79 @@
-Return-Path: <stable+bounces-58210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 721A092A1AB
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 13:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C708C92A1B4
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 13:55:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A36A41C2124F
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 11:52:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0432F1C21009
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 11:55:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA4C56773;
-	Mon,  8 Jul 2024 11:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA7080024;
+	Mon,  8 Jul 2024 11:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCw9W0ax"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TuSDhghI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FD93BBE8
-	for <stable@vger.kernel.org>; Mon,  8 Jul 2024 11:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCD37FBDA
+	for <stable@vger.kernel.org>; Mon,  8 Jul 2024 11:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720439572; cv=none; b=kQFUqAB70J/oK8sxOh9DFM795SYxQfe+nTkkzSJ5pyeb4se3Ii9HKY+Zfi9aiVcg3eLWnPLj9AC6w/PB9c8yp02RYCUhvObvMXSlVADxUv/98Y/9TS2ysl2ZFDMd+TvAgbvvC6+SjhKsrLrfEG2LLBzka6rc+QGFt5ppx8r51dA=
+	t=1720439748; cv=none; b=DmM7mY+KEZc2qHakhQoNYuztxeX6v0GQ2Hj3oG23eAOyBnsio/N3wYl2/PR6Hfn7YNv51EUtTolEVX7I9Ps6CcH0VoqiM8OpQHfGvGwEiRPtH9kvWycE5lmlMcWjAC8XCJWXmHMLjrEROikOnaqHfd6Iakaec111SGZTOZM+WYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720439572; c=relaxed/simple;
-	bh=BlvgaaKcLgvm4ZhDrKZYxQ9mO/1j9IEiXez3u6Qmfe0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=q1nmShoy1jgI9JbqNyab9ws7XWkqp0OeZP899HkjYX2+VcUOXo9npDWo42NytQt9nnriwj/BDgBJ32OnkX472vXkf0P4cvYB98pvhJ5uCqsqeq9xmbga+CVx64v3V2l4gv2JzlhAB6TNMdijSomt3epfMHgWo9aGrMJiF/sr8OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCw9W0ax; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753C7C116B1;
-	Mon,  8 Jul 2024 11:52:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720439571;
-	bh=BlvgaaKcLgvm4ZhDrKZYxQ9mO/1j9IEiXez3u6Qmfe0=;
-	h=Subject:To:Cc:From:Date:From;
-	b=iCw9W0axY1XKFeQdI/JDo/OANI4GQ76aSd0mXV5mlBI4D+Mv4ljhrxdXlGthXVfr5
-	 qbWvOKrY3mbt1BlF86MX8jW32aDWo1epGfaiJesb9Up06po2RPwBVeUA/4F5pBF+H/
-	 JtGuQhw775a69+h1pHA9EOGKd1L4d78mPpIou8AY=
-Subject: FAILED: patch "[PATCH] tpm: Address !chip->auth in tpm2_*_auth_session()" failed to apply to 6.9-stable tree
-To: jarkko@kernel.org,mpe@ellerman.id.au,stefanb@linux.ibm.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 08 Jul 2024 13:52:49 +0200
-Message-ID: <2024070848-graveness-probiotic-9eb0@gregkh>
+	s=arc-20240116; t=1720439748; c=relaxed/simple;
+	bh=zRyQlimr+9aMoGmjCRWbzlO/wRqMO3DLfUzOzx5X2Ag=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=InIsOKTv3pp9URSxVAJ73Tex0rBcuHH49xz/oY23wj+x+vAC0WKjKyhKT26jM5FrGhNI+54zrpJAagVA5pC93k4MdiDTzWh7DYDqxDNptrY7uBY07W2zuR4Z8/ysG/1rfEFMoOza2qAC+PZPjzXVVLMnRYJ7aaz8Rdu3ChjZ4Mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TuSDhghI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7BFFC116B1;
+	Mon,  8 Jul 2024 11:55:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720439747;
+	bh=zRyQlimr+9aMoGmjCRWbzlO/wRqMO3DLfUzOzx5X2Ag=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TuSDhghIibaLSdgTPjd+GQIeCTkTdZIMz22w1LZfP7T8RrbFSk5WVSVIIyFW6n5r8
+	 K6fM4eDBIH+nVu5q9e3v0T/yH9kNgDyfETJEFsdxELLxih+BCEQpigwgF1g3azTgja
+	 VsytiOk+kOfIyZ/YSGr0ORVaH3KHNb9GOFmyZzKC2/7UKKV1Qr9QbuTuwBJmJdZmOs
+	 P+2utGPwjujt4uS2VZnM/S/HJ3o5fhK27HleH2w+LqscmgV5DQdRIsK/TZNRiogl1m
+	 8g9F04/kZJe0QNdV4bZf0bKLzvhur/BVWUw3NOIWTOlOrxwfgkjFEhqS0hpgyrI4Lq
+	 ufv3wtbX9CO6w==
+Date: Mon, 8 Jul 2024 07:55:46 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: =?iso-8859-1?Q?Fran=E7ois?= Valenduc <francoisvalenduc@gmail.com>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.6 18/18] null_blk: Do not allow runt zone with
+ zone capacity smaller then zone size
+Message-ID: <ZovTwvP1XFbjv70W@sashalap>
+References: <20240605120409.2967044-1-sashal@kernel.org>
+ <20240605120409.2967044-18-sashal@kernel.org>
+ <aef09490-f8bd-46e9-abbf-a4cc9acc49aa@gmail.com>
+ <7fcbb3c6-ae1a-460d-be2b-e2eca88151c9@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <7fcbb3c6-ae1a-460d-be2b-e2eca88151c9@gmail.com>
 
+On Wed, Jun 05, 2024 at 05:04:25PM +0200, François Valenduc wrote:
+>>
+>>Is not 6.8 supposed to be end-of-life ?
+>>
+>>François Valenduc
+>Sorry, I replied to the wrong message. But there is also an autosel 
+>series for 6.8 posted today. So is 6.8 really end-of-life ?
 
-The patch below does not apply to the 6.9-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Yup, it is!
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.9.y
-git checkout FETCH_HEAD
-git cherry-pick -x 25ee48a55fd59c72e0bd46dd9160c2d406b5a497
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070848-graveness-probiotic-9eb0@gregkh' --subject-prefix 'PATCH 6.9.y' HEAD^..
-
-Possible dependencies:
-
-25ee48a55fd5 ("tpm: Address !chip->auth in tpm2_*_auth_session()")
-eb24c9788cd9 ("tpm: disable the TPM if NULL name changes")
-d0a25bb961e6 ("tpm: Add HMAC session name/handle append")
-699e3efd6c64 ("tpm: Add HMAC session start and end functions")
-033ee84e5f01 ("tpm: Add TCG mandated Key Derivation Functions (KDFs)")
-d2add27cf2b8 ("tpm: Add NULL primary creation")
-17d89b2e2f76 ("tpm: Move buffer handling from static inlines to real functions")
-cf792e903aff ("tpm: Remove unused tpm_buf_tag()")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 25ee48a55fd59c72e0bd46dd9160c2d406b5a497 Mon Sep 17 00:00:00 2001
-From: Jarkko Sakkinen <jarkko@kernel.org>
-Date: Wed, 3 Jul 2024 19:39:27 +0300
-Subject: [PATCH] tpm: Address !chip->auth in tpm2_*_auth_session()
-
-Unless tpm_chip_bootstrap() was called by the driver, !chip->auth can cause
-a null derefence in tpm2_*_auth_session(). Thus, address !chip->auth in
-tpm2_*_auth_session().
-
-Cc: stable@vger.kernel.org # v6.9+
-Reported-by: Stefan Berger <stefanb@linux.ibm.com>
-Closes: https://lore.kernel.org/linux-integrity/20240617193408.1234365-1-stefanb@linux.ibm.com/
-Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
-Tested-by: Michael Ellerman <mpe@ellerman.id.au> # ppc
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index 907ac9956a78..2f1d96a5a5a7 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -824,8 +824,13 @@ EXPORT_SYMBOL(tpm_buf_check_hmac_response);
-  */
- void tpm2_end_auth_session(struct tpm_chip *chip)
- {
--	tpm2_flush_context(chip, chip->auth->handle);
--	memzero_explicit(chip->auth, sizeof(*chip->auth));
-+	struct tpm2_auth *auth = chip->auth;
-+
-+	if (!auth)
-+		return;
-+
-+	tpm2_flush_context(chip, auth->handle);
-+	memzero_explicit(auth, sizeof(*auth));
- }
- EXPORT_SYMBOL(tpm2_end_auth_session);
- 
-@@ -907,6 +912,11 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
- 	int rc;
- 	u32 null_key;
- 
-+	if (!auth) {
-+		dev_warn_once(&chip->dev, "auth session is not active\n");
-+		return 0;
-+	}
-+
- 	rc = tpm2_load_null(chip, &null_key);
- 	if (rc)
- 		goto out;
-
+-- 
+Thanks,
+Sasha
 
