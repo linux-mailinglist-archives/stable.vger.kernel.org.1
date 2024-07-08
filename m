@@ -1,217 +1,226 @@
-Return-Path: <stable+bounces-58191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 910C6929AAF
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 04:10:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D905A929B35
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 06:02:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFED5B20BF7
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 02:10:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B02FB20DD0
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 04:02:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B1A1C06;
-	Mon,  8 Jul 2024 02:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6939F6FC5;
+	Mon,  8 Jul 2024 04:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VTJFDE6/"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="buCTH80h";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="ue5Lz4L6";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="buCTH80h";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="ue5Lz4L6"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E641878;
-	Mon,  8 Jul 2024 02:10:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F20AD21;
+	Mon,  8 Jul 2024 04:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720404604; cv=none; b=l0so1/eET2t7/vk9S8Yvb9muYMAPXWdnpa1UqGlZuDRgS7dfxtz/bUZX25HKqL+ngvfF45PBetFrk8YQHk2LuFxPuo1M2SGFgoMlBrRYqiC8baylf5pgVT7b/uhKz/GgxxzfJzN/29jPY1xMlOWJPrkelCqBbKeoFqjZEj7l9Sg=
+	t=1720411368; cv=none; b=gwPLZ/++UI1LAM+NVRftOjP6jqjXeXBbFPe3+bzYc9khMDQ6PnrS3J9JyKoJyIlJ1ruhKglux+uku5SkiDp7NHTlZUrCpKBWngijvMKiELzfYlnrWpoa7j8hmY25/O8qcMn6kENveNVLBdJhcMjfBpt5CGZ0VaOyEZxjTUb0v1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720404604; c=relaxed/simple;
-	bh=bielFRYZBuFDdZGgB2itutKTB4UtPntaiyjVKayA8mY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Y1K28lHmHjjWZQuoW/RnqPRfFjCN8zVgcnd6vZLzur8nCQFpCscjuyTCZm0UyPvB+VbI4uq/RTrlHHHHHQPG4bzwgJdo8VQs7ejjl9Ny6Xu61OCZ1kfxJX5ms0oJSBrDnx3S9CJL4qCSrantGWCDBn254iZFh0zVPIaNwqc0cgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VTJFDE6/; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720404600; x=1751940600;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=bielFRYZBuFDdZGgB2itutKTB4UtPntaiyjVKayA8mY=;
-  b=VTJFDE6/uW6T5GmC52nx8e6LcLywwRfX+MfkRfqP/bJMNSlcTyvW/bYG
-   Zp7qdNhQd+e9H99QA7OOvAPKVTW/25PgrfSMS8f/fXDsuWx3/LyRclKDq
-   HpjWoNv4agrMyCfEb4gGJNzaUdVzQAenbQDQ2mXlUVrP5Eik05M8MMXPD
-   fz1xQ0J/0VwimyGCtrbHwSnUfnfv2QEiK1XE/VXlK6x+JvHpdSJ4TAPAK
-   k/kxlvQd1kcofWaNNvjnyVDJ7LIBcVtZaB/Nzv/rDZsu/MhxYbekzL/Bc
-   a1tgw3A5IjqvuDXyLQTXprPbstcoXL4tSAyXz0CFVotqNuVw3+fkvg9B4
-   g==;
-X-CSE-ConnectionGUID: arA34LLDQk6ywJ4diid2jg==
-X-CSE-MsgGUID: 6TEmoAgCSimqb9+rlzdyfw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11126"; a="17234112"
-X-IronPort-AV: E=Sophos;i="6.09,191,1716274800"; 
-   d="scan'208";a="17234112"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2024 19:09:59 -0700
-X-CSE-ConnectionGUID: lD7LPvPlQcSO5Z3geuux7w==
-X-CSE-MsgGUID: Q1fUjy21TCWmG69T/QD65A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,191,1716274800"; 
-   d="scan'208";a="52181108"
-Received: from unknown (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2024 19:09:56 -0700
-From: "Huang, Ying" <ying.huang@intel.com>
-To: Tvrtko Ursulin <tursulin@igalia.com>
-Cc: linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
-  kernel-dev@igalia.com,  Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,  Mel
- Gorman <mgorman@suse.de>,  Peter Zijlstra <peterz@infradead.org>,  Ingo
- Molnar <mingo@redhat.com>,  Rik van Riel <riel@surriel.com>,  Johannes
- Weiner <hannes@cmpxchg.org>,  "Matthew Wilcox (Oracle)"
- <willy@infradead.org>,  Dave Hansen <dave.hansen@intel.com>,  Andi Kleen
- <ak@linux.intel.com>,  Michal Hocko <mhocko@suse.com>,  David Rientjes
- <rientjes@google.com>,  stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] mm/numa_balancing: Teach mpol_to_str about the
- balancing mode
-In-Reply-To: <20240705143218.21258-2-tursulin@igalia.com> (Tvrtko Ursulin's
-	message of "Fri, 5 Jul 2024 15:32:16 +0100")
-References: <20240705143218.21258-1-tursulin@igalia.com>
-	<20240705143218.21258-2-tursulin@igalia.com>
-Date: Mon, 08 Jul 2024 10:08:05 +0800
-Message-ID: <874j90eiuy.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1720411368; c=relaxed/simple;
+	bh=CKtVEJDeXjpBPTY4afSaL5c+FvnCh0fg4jOYNeCWwgg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eeX3enqc2fHY+7Yge+gtB7EIersY//UDxazl611Vui8DrYEoWyUR+142UYiK5WaHrWf7IehD+Ezw3YtBxFOdreBd9Mz9zbnzWucea0Od/rPlnjE4vCymx4f303uvyKuyzXQ/1Y7IFJ0CSSSDtkNmIXv1x7RA7hk8qh+DCZHjPW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=buCTH80h; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=ue5Lz4L6; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=buCTH80h; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=ue5Lz4L6; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 564431FBBC;
+	Mon,  8 Jul 2024 04:02:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1720411364;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CKtVEJDeXjpBPTY4afSaL5c+FvnCh0fg4jOYNeCWwgg=;
+	b=buCTH80h+E6ZFcF72pZ5XVCbgNmfCJUCMXEEWyBorYrzMsEkbi7iakJZkpVQIh+70wwkTh
+	7RscC0Mpxszng6CCkgGgy/ZMc4byAnp5PDPiuAQYYvhfqDGGFuypqudPtC0s9+ZfepO3fP
+	FITPRaMN7CLexi5XftWFuqOcucxT9NM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1720411364;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CKtVEJDeXjpBPTY4afSaL5c+FvnCh0fg4jOYNeCWwgg=;
+	b=ue5Lz4L6dMTYN8hRQSV2zDkClpO2nTs0q2JMU/NPj021xgPssfsMr9ixuOUFELiOGd3vSt
+	ynpcMEgMuYz8RbDg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1720411364;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CKtVEJDeXjpBPTY4afSaL5c+FvnCh0fg4jOYNeCWwgg=;
+	b=buCTH80h+E6ZFcF72pZ5XVCbgNmfCJUCMXEEWyBorYrzMsEkbi7iakJZkpVQIh+70wwkTh
+	7RscC0Mpxszng6CCkgGgy/ZMc4byAnp5PDPiuAQYYvhfqDGGFuypqudPtC0s9+ZfepO3fP
+	FITPRaMN7CLexi5XftWFuqOcucxT9NM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1720411364;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CKtVEJDeXjpBPTY4afSaL5c+FvnCh0fg4jOYNeCWwgg=;
+	b=ue5Lz4L6dMTYN8hRQSV2zDkClpO2nTs0q2JMU/NPj021xgPssfsMr9ixuOUFELiOGd3vSt
+	ynpcMEgMuYz8RbDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1759112FF6;
+	Mon,  8 Jul 2024 04:02:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id AdbfBORki2ZAVQAAD6G6ig
+	(envelope-from <pvorel@suse.cz>); Mon, 08 Jul 2024 04:02:44 +0000
+Date: Mon, 8 Jul 2024 06:02:38 +0200
+From: Petr Vorel <pvorel@suse.cz>
+To: Chuck Lever III <chuck.lever@oracle.com>
+Cc: Calum Mackay <calum.mackay@oracle.com>,
+	linux-stable <stable@vger.kernel.org>,
+	Trond Myklebust <trondmy@hammerspace.com>,
+	Anna Schumaker <anna@kernel.org>,
+	Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
+	"kernel-team@fb.com" <kernel-team@fb.com>,
+	"ltp@lists.linux.it" <ltp@lists.linux.it>,
+	Avinesh Kumar <akumar@suse.de>, Neil Brown <neilb@suse.de>,
+	Sherry Yang <sherry.yang@oracle.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: Re: [LTP] [PATCH 1/1] nfsstat01: Update client RPC calls for kernel
+ 6.9
+Message-ID: <20240708040238.GA117694@pevik>
+Reply-To: Petr Vorel <pvorel@suse.cz>
+References: <d4b235df-4ee5-4824-9d48-e3b3c1f1f4d1@oracle.com>
+ <2fc3a3fd-7433-45ba-b281-578355dca64c@oracle.com>
+ <296EA0E6-0E72-4EA1-8B31-B025EB531F9B@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <296EA0E6-0E72-4EA1-8B31-B025EB531F9B@oracle.com>
+X-Spamd-Result: default: False [-3.50 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	HAS_REPLYTO(0.30)[pvorel@suse.cz];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.cz:replyto];
+	REPLYTO_EQ_FROM(0.00)[]
+X-Spam-Flag: NO
+X-Spam-Score: -3.50
+X-Spam-Level: 
 
-Tvrtko Ursulin <tursulin@igalia.com> writes:
+Hi all,
 
-> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->
-> Since balancing mode was added in
-> bda420b98505 ("numa balancing: migrate on fault among multiple bound nodes"),
-> it was possible to set this mode but it wouldn't be shown in
-> /proc/<pid>/numa_maps since there was no support for it in the
-> mpol_to_str() helper.
->
-> Furthermore, because the balancing mode sets the MPOL_F_MORON flag, it
-> would be displayed as 'default' due a workaround introduced a few years
-> earlier in
-> 8790c71a18e5 ("mm/mempolicy.c: fix mempolicy printing in numa_maps").
->
-> To tidy this up we implement two changes:
->
-> Replace the MPOL_F_MORON check by pointer comparison against the
-> preferred_node_policy array. By doing this we generalise the current
-> special casing and replace the incorrect 'default' with the correct
-> 'bind' for the mode.
->
-> Secondly, we add a string representation and corresponding handling for
-> the MPOL_F_NUMA_BALANCING flag.
->
-> With the two changes together we start showing the balancing flag when it
-> is set and therefore complete the fix.
->
-> Representation format chosen is to separate multiple flags with vertical
-> bars, following what existed long time ago in kernel 2.6.25. But as
-> between then and now there wasn't a way to display multiple flags, this
-> patch does not change the format in practice.
->
-> Some /proc/<pid>/numa_maps output examples:
->
->  555559580000 bind=balancing:0-1,3 file=...
->  555585800000 bind=balancing|static:0,2 file=...
->  555635240000 prefer=relative:0 file=
->
-> v2:
->  * Fully fix by introducing MPOL_F_KERNEL.
->
-> v3:
->  * Abandoned the MPOL_F_KERNEL approach in favour of pointer comparisons.
->  * Removed lookup generalisation for easier backporting.
->  * Replaced commas as separator with vertical bars.
->  * Added a few more words about the string format in the commit message.
->
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> Fixes: bda420b98505 ("numa balancing: migrate on fault among multiple bound nodes")
-> References: 8790c71a18e5 ("mm/mempolicy.c: fix mempolicy printing in numa_maps")
-> Cc: Huang Ying <ying.huang@intel.com>
-> Cc: Mel Gorman <mgorman@suse.de>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Rik van Riel <riel@surriel.com>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-> Cc: Dave Hansen <dave.hansen@intel.com>
-> Cc: Andi Kleen <ak@linux.intel.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: David Rientjes <rientjes@google.com>
-> Cc: <stable@vger.kernel.org> # v5.12+
-> ---
->  mm/mempolicy.c | 18 ++++++++++++++----
->  1 file changed, 14 insertions(+), 4 deletions(-)
->
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index aec756ae5637..1bfb6c73a39c 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -3293,8 +3293,9 @@ int mpol_parse_str(char *str, struct mempolicy **mpol)
->   * @pol:  pointer to mempolicy to be formatted
->   *
->   * Convert @pol into a string.  If @buffer is too short, truncate the string.
-> - * Recommend a @maxlen of at least 32 for the longest mode, "interleave", the
-> - * longest flag, "relative", and to display at least a few node ids.
-> + * Recommend a @maxlen of at least 42 for the longest mode, "weighted
-> + * interleave", the longest flag, "balancing", and to display at least a few
 
-And we may display 2 flags now, +9 further?
+> > On Jul 2, 2024, at 6:55 PM, Calum Mackay <calum.mackay@oracle.com> wrote:
 
-> + * node ids.
->   */
->  void mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol)
->  {
-> @@ -3303,7 +3304,10 @@ void mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol)
->  	unsigned short mode = MPOL_DEFAULT;
->  	unsigned short flags = 0;
->  
-> -	if (pol && pol != &default_policy && !(pol->flags & MPOL_F_MORON)) {
-> +	if (pol &&
-> +	    pol != &default_policy &&
-> +	    !(pol >= &preferred_node_policy[0] &&
-> +	      pol <= &preferred_node_policy[MAX_NUMNODES - 1])) {
+> > To clarify…
 
-Better to replace MAX_NUMNODES with ARRAY_SIZE() here.
+> > On 02/07/2024 5:54 pm, Calum Mackay wrote:
+> >> hi Petr,
+> >> I noticed your LTP patch [1][2] which adjusts the nfsstat01 test on v6.9 kernels, to account for Josef's changes [3], which restrict the NFS/RPC stats per-namespace.
+> >> I see that Josef's changes were backported, as far back as longterm v5.4,
 
->  		mode = pol->mode;
->  		flags = pol->flags;
->  	}
-> @@ -3331,12 +3335,18 @@ void mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol)
->  		p += snprintf(p, buffer + maxlen - p, "=");
->  
->  		/*
-> -		 * Currently, the only defined flags are mutually exclusive
-> +		 * Static and relative are mutually exclusive.
->  		 */
->  		if (flags & MPOL_F_STATIC_NODES)
->  			p += snprintf(p, buffer + maxlen - p, "static");
->  		else if (flags & MPOL_F_RELATIVE_NODES)
->  			p += snprintf(p, buffer + maxlen - p, "relative");
-> +
-> +		if (flags & MPOL_F_NUMA_BALANCING) {
-> +			if (hweight16(flags & MPOL_MODE_FLAGS) > 1)
-> +				p += snprintf(p, buffer + maxlen - p, "|");
-> +			p += snprintf(p, buffer + maxlen - p, "balancing");
-> +		}
+> > Sorry, that's not quite accurate.
 
-Still think that it's better to move this part to [2/3].  Unless you can
-make the change small and the resulting code looks good.
+> > Josef's NFS client changes were all backported from v6.9, as far as longterm v5.4.y:
 
->  	}
->  
->  	if (!nodes_empty(nodes))
+> > 2057a48d0dd0 sunrpc: add a struct rpc_stats arg to rpc_create_args
+> > d47151b79e32 nfs: expose /proc/net/sunrpc/nfs in net namespaces
+> > 1548036ef120 nfs: make the rpc_stat per net namespace
 
---
-Best Regards,
-Huang, Ying
+
+> > Of Josef's NFS server changes, four were backported from v6.9 to v6.8:
+
+> > 418b9687dece sunrpc: use the struct net as the svc proc private
+> > d98416cc2154 nfsd: rename NFSD_NET_* to NFSD_STATS_*
+> > 93483ac5fec6 nfsd: expose /proc/net/sunrpc/nfsd in net namespaces
+> > 4b14885411f7 nfsd: make all of the nfsd stats per-network namespace
+
+> > and the others remained only in v6.9:
+
+> > ab42f4d9a26f sunrpc: don't change ->sv_stats if it doesn't exist
+> > a2214ed588fb nfsd: stop setting ->pg_stats for unused stats
+> > f09432386766 sunrpc: pass in the sv_stats struct through svc_create_pooled
+> > 3f6ef182f144 sunrpc: remove ->pg_stats from svc_program
+> > e41ee44cc6a4 nfsd: remove nfsd_stats, make th_cnt a global counter
+> > 16fb9808ab2c nfsd: make svc_stat per-network namespace instead of global
+
+
+
+> > I'm wondering if this difference between NFS client, and NFS server, stat behaviour, across kernel versions, may perhaps cause some user confusion?
+
+> As a refresher for the stable folken, Josef's changes make
+> nfsstats silo'd, so they no longer show counts from the whole
+> system, but only for NFS operations relating to the local net
+> namespace. That is a surprising change for some users, tools,
+> and testing.
+
+> I'm not clear on whether there are any rules/guidelines around
+> LTS backports causing behavior changes that user tools, like
+> nfsstat, might be impacted by.
+
+> The client-side nfsstat changes are fully backported to all
+> TS kernels. But should they have been?
+
+> The server-side nfsstat changes appear in only v6.9. Should
+> they be backported to the other LTS kernels, or not?
+
+First, thanks a lot for having a look into the issue.
+
+It looks to me as a functional change, thus I would not backport
+changes unless changes they are needed to be backported (part some larger fix).
+Thus maybe revert?
+
+And if backported, I would expect changes on both sides (client and server)
+would be backported (not just server side).
+
+Kind regards,
+Petr
+
+> >> so your check for kernel version "6.9" in the test may need to be adjusted, if LTP is intended to be run on stable kernels?
+> >> best wishes,
+> >> calum.
+> >> [1] https://lore.kernel.org/ltp/20240620111129.594449-1-pvorel@suse.cz/
+> >> [2] https://patchwork.ozlabs.org/project/ltp/ patch/20240620111129.594449-1-pvorel@suse.cz/
+> >> [3] https://lore.kernel.org/linux-nfs/ cover.1708026931.git.josef@toxicpanda.com/
 
