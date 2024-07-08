@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-58223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECBDA92A340
-	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 14:52:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0179C92A341
+	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 14:52:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CDBA1C20DBA
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0B4D281011
 	for <lists+stable@lfdr.de>; Mon,  8 Jul 2024 12:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45724824A3;
-	Mon,  8 Jul 2024 12:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 563E1824A1;
+	Mon,  8 Jul 2024 12:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ek4jbJt/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHPRp32T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E27824A1
-	for <stable@vger.kernel.org>; Mon,  8 Jul 2024 12:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171E081AD2
+	for <stable@vger.kernel.org>; Mon,  8 Jul 2024 12:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720443122; cv=none; b=UB2DvOfbMGkXdL9slKYv+DDam8IKmvYcMSrkl+BQeqIe35yZrK79kwwheS3jwHLMGVuThGZGxJHAoDAS1g7dE1+b73i9NMUhOQrXBYCz0KDynDqYzjHtwzO4M+OTISAydy7ZKPrePa+t2+AKQxD+WZeiGLdEkTDBS1FfAf6pbAI=
+	t=1720443125; cv=none; b=hMp09Ke6r9S26NqhbUQ0Jo0CCgiiMcB7CjO9uJPTqy0CshO30eZXwNWfn0ec3VFwe9q/6p3HU2wI/eQ96ZL5mYNy2xKxcHo8kYYP7h8aYQ3omiLm0NKF/8Gwm9HaSk2mfzAkANGwoeDwwbgBVFxQEnvzjiyzE2F5CgGymyKVAeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720443122; c=relaxed/simple;
-	bh=yrUoK9s98tFxWsLnG0pYgiJMA5TMCSGe6SJvsRKYFng=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qdYQPR0+1jLSUyhPFVFXq3qH44bZCBU5pT8SLczXkRWNCEG8yk2QiSKwlepK8Wm2oVwBIZ2jQzYDYa/wSqCw+sda1W9qx5UMW1DO3sIrjp4VRBL9Q3nUxRpHrr0pBCqcVm1daMXSv4RBObt7eqTuAoaP7RpdsSMMbsdPJ5mvMcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ek4jbJt/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D3AC116B1;
-	Mon,  8 Jul 2024 12:52:00 +0000 (UTC)
+	s=arc-20240116; t=1720443125; c=relaxed/simple;
+	bh=MlWAef71KRfNo5YehGPXEHOZCRtHa9usHAy4i2l4ors=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qELEMtbQvogGoiYn1T5vHaeVEPKk4Ls5f2gHfNxQIyqeKn7Q8yqTDi71t6pc4qRNIubWHH2h+Vd+t5e8adV/3FyTaC7R/TyObSHpedsPP0I0vMdd+G9knpZ2q0oVNmqOAOSIUT57Fsy1gii2I90kl454ZqoVrYdX4yGgtpuL+GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHPRp32T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 366B3C116B1;
+	Mon,  8 Jul 2024 12:52:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720443121;
-	bh=yrUoK9s98tFxWsLnG0pYgiJMA5TMCSGe6SJvsRKYFng=;
+	s=korg; t=1720443124;
+	bh=MlWAef71KRfNo5YehGPXEHOZCRtHa9usHAy4i2l4ors=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ek4jbJt/NAW+MPudRLCGqFe9BTuOORywGvpjqYM7fqH/pEnbImlQzRtGMOK42vNIC
-	 S0u0sTpRd4KxStEiimKNawvUtZir+Pjvf6AOLO+PUtSTJa6953Xst5SBD/gLhqbW6J
-	 SG+jYuqnY4Wp0e6e8585YIBOoDiU+8Vcy9ubPkUE=
-Subject: FAILED: patch "[PATCH] filelock: Remove locks reliably when fcntl/close race is" failed to apply to 6.6-stable tree
+	b=SHPRp32ThlFKY7rjW6c1xzylpvcN+INd8fzJC8blihzpuESnvUqKUYjgW6Yq0Rshk
+	 V0S7kNp6/KCbbpcx8hQi/z1hypZxQRCRnuMCruQkhGEiGhyEuJrQxFAJ8Fu1ZJxC7V
+	 5p7EbzF/mw1G4Jqo5kxl1pAbnXFgSH3I1fquzGTk=
+Subject: FAILED: patch "[PATCH] filelock: Remove locks reliably when fcntl/close race is" failed to apply to 6.1-stable tree
 To: jannh@google.com,brauner@kernel.org,jlayton@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 08 Jul 2024 14:51:58 +0200
-Message-ID: <2024070858-anew-deuce-98ab@gregkh>
+Date: Mon, 08 Jul 2024 14:51:59 +0200
+Message-ID: <2024070859-celibacy-goldsmith-46fd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3cad1bc010416c6dd780643476bc59ed742436b9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070858-anew-deuce-98ab@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024070859-celibacy-goldsmith-46fd@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -76,6 +76,9 @@ a69ce85ec9af ("filelock: split common fields into struct file_lock_core")
 75cabec0111b ("filelock: add some new helper functions")
 587a67b6830b ("filelock: rename some fields in tracepoints")
 0e9876d8e88d ("filelock: fl_pid field should be signed int")
+6c9007f65d14 ("fs/locks: F_UNLCK extension for F_OFD_GETLK")
+dc592190a554 ("fs/locks: Remove redundant assignment to cmd")
+3822a7c40997 ("Merge tag 'mm-stable-2023-02-20-13-37' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm")
 
 thanks,
 
