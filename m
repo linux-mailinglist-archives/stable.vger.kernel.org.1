@@ -1,160 +1,118 @@
-Return-Path: <stable+bounces-58944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1822D92C54A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 23:25:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB76092C55B
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 23:35:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C50EA2828AF
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 21:25:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AD48B2195E
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 21:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34FDB182A58;
-	Tue,  9 Jul 2024 21:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86AF8182A5B;
+	Tue,  9 Jul 2024 21:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="psS0O6x+"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="IpEKGhbS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF58153505;
-	Tue,  9 Jul 2024 21:24:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B6F1B86D4;
+	Tue,  9 Jul 2024 21:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720560299; cv=none; b=lUnymXG8vnLYC5Na4/1PdLWvftZdHZk1tZLvglfcP/diYGNXCV/grUOs9UP5YUs/EwyHOyR27NuQ43k+zYSsnGMTF6BSsaYcmxtJ/0Mff4IURMaESUncuABlP4K+nd8NsfvAtmZFYUBoLp5jLRwb9GkXRLfPF3wTUN9HbUC/SN0=
+	t=1720560920; cv=none; b=c9WAZ3GCXEp3xhwNBZOmKKmzy5Qk5+qHFjfwQRQof8j2Th4+AwG9qwuR1UcWbX0nrAQAuMy95DuI3oQ0Fv1TzQ62TXHsG/NGqgjIuZV6F8Xdy7yDs5zdKqHMCWt7q6+UzdsCtuWbAqRccgYum+EHRZ51WJK7R8cMjhdF667KtTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720560299; c=relaxed/simple;
-	bh=PIqq3LEc7NRihJ60b4Nkq//Xt1rREK5EJrbcVX8FAxA=;
-	h=Date:To:From:Subject:Message-Id; b=uOLixTpdmtcPn118WVN4HoqjtQVE2kWitd3kKyxghNGh782Xh+2WyAkoMTK9Aj64pbB5vB61htAyeUtZ0jXUd88GnJ/1JDllY2PvBCEkdshJjFsAEhhUALEE9uy1eGMF3E8TAA+KapmAAmn0o7uOnvJDMA0tVAdB7+7FWZffTgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=psS0O6x+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B09C3C3277B;
-	Tue,  9 Jul 2024 21:24:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1720560298;
-	bh=PIqq3LEc7NRihJ60b4Nkq//Xt1rREK5EJrbcVX8FAxA=;
-	h=Date:To:From:Subject:From;
-	b=psS0O6x+xWe09DsDsDCI6MWZZtC/eGRc2Dcqby/H/0YtEO05Lvzb79oRx+lpgkOsT
-	 Jwko8IdHmmTagQYvvINsI99Pu8pCxgZxFQxFsnRQ7kbz9MpMsXuMyuC6NjUXXg3Grx
-	 Q28YizYF8e40k8eZXcgOwwbJXN6mdhjIm0gUuiPM=
-Date: Tue, 09 Jul 2024 14:24:58 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,muchun.song@linux.dev,hughd@google.com,linmiaohe@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-hugetlb-fix-kernel-null-pointer-dereference-when-migrating-hugetlb-folio.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240709212458.B09C3C3277B@smtp.kernel.org>
+	s=arc-20240116; t=1720560920; c=relaxed/simple;
+	bh=ZetbC7TE4JO9QBtAGo9CeTU1BeEzOd/4ss6yzko0CUQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JxpA8rtHs839LL6VCr8CjXJsE7CszkEIumUqywagG2qQacm34Uy/HV1DLeqzMw1d3B6HLjpJq7pshB8iYJx1fGQ3BOmqBI6pgxBANofgWCRhDPO1HrTGPYLnvkn16ZtAVRu4eWOr+Dsg5O/Ish9qnNhm1bQTFIUvNTcl6ne5vQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=IpEKGhbS; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-42579b60af1so39075915e9.2;
+        Tue, 09 Jul 2024 14:35:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1720560917; x=1721165717; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3M5Fvu/U+spfWTBwhlOd4QQV8BmMooOznPRXHtmfW+s=;
+        b=IpEKGhbS+3kiU/tnoHydH9iK/n3H5CZUnKkGnLe7s10RD8i1gbUKqcJs3Cg6q8Sqx0
+         a6N8kVY8H/dAwcUkxXOeWy7puyUYvNkpYNjlM05xFtCH8quc2eKdV4TH6crEyxQaxxRs
+         vOuB3THOJiRK6FWuNaLs5e4wD4jx7OxAoz6m0ptT2QQEN+6YynRQUwAesi3wkBgaQIZC
+         jQyvIP24oaK8F2/G66J0Gm7HhTAxF4hDdDaxBW5LmZk68HMroI1W5459ep391K1EVCF9
+         JqpB4Ru4mlarPzXRFXFE/ztPH/NJGTQ9vvkwdrrPgKQsJu9rltZQt8HaMMw4rSy1jGme
+         tqFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720560917; x=1721165717;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3M5Fvu/U+spfWTBwhlOd4QQV8BmMooOznPRXHtmfW+s=;
+        b=QHZvegiqoFDyn2Olf97E3MgZXbja4uLv0yoU8w5x8DuMcntHXaDw9qCRmlDW8sifWI
+         xnH1TeUiLuSs076KHWuoI+idftFmhkUXlBRt2zJPQHpFnX0Muh5nYi02W7fgqN1BoC4S
+         v9+KRd/IQabCUd/u4JIJTb2x0MaXLfoGcHp83YrZpSM9VMmuX6e7EjHZa74AeeiZC9cQ
+         kFZ9nARf1/G8wjzEaP/aJhmBA+45+THuqxRf3ui6byjlKJDW7yfamIqv9MyeKGX9+yR3
+         2e+5TrtM8tFzL2E0WWfl2uRQywoTqYEhn9MdSsSyc9PZ0Cl0fayyi4AJm5217M8+Mawu
+         1rwA==
+X-Forwarded-Encrypted: i=1; AJvYcCW8/v+BcFLAcRiFvowoMeqznMFOC1/mB++vqbXR11RYpltVo03xjP3OPmnPcSq1doxvQB4LvaMrgMR2D6sTLQVxz/5pkNJkHgnvazYRT+7SwNOGJC5AD0EyyPFJYhchb73vWifv
+X-Gm-Message-State: AOJu0Yw+F3hMs47Mk9UGf0+aWYAg+0lgbei3oJVnKNWcI/Tbw2YSR+7r
+	xac5cps+AUSR79HtLehod3h9ElGpL5YiPQ0/hUaoPx7Xy9/+VDU=
+X-Google-Smtp-Source: AGHT+IG1hi5P+S1pSgVCL9mWAifazaPt5ItydrKvszdcF+cs4/YQ4T1bNJv67r/1jRKKNpKhwuhk/w==
+X-Received: by 2002:a7b:ca4b:0:b0:426:6c7a:3a61 with SMTP id 5b1f17b1804b1-426707cf194mr22888825e9.3.1720560916890;
+        Tue, 09 Jul 2024 14:35:16 -0700 (PDT)
+Received: from [192.168.1.3] (p5b0577f1.dip0.t-ipconnect.de. [91.5.119.241])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a1d165bsm223537125e9.4.2024.07.09.14.35.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Jul 2024 14:35:16 -0700 (PDT)
+Message-ID: <07de625c-c504-4e12-830e-1f68e923aacc@googlemail.com>
+Date: Tue, 9 Jul 2024 23:35:14 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.6 000/139] 6.6.39-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240709110658.146853929@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
+Am 09.07.2024 um 13:08 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.6.39 release.
+> There are 139 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-The patch titled
-     Subject: mm/hugetlb: fix kernel NULL pointer dereference when migrating hugetlb folio
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-hugetlb-fix-kernel-null-pointer-dereference-when-migrating-hugetlb-folio.patch
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found. It ran for an hour now, and I built 6.9.9-rc1 
+with it, which I will boot-test next.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-fix-kernel-null-pointer-dereference-when-migrating-hugetlb-folio.patch
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Beste Grüße,
+Peter Schneider
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Miaohe Lin <linmiaohe@huawei.com>
-Subject: mm/hugetlb: fix kernel NULL pointer dereference when migrating hugetlb folio
-Date: Tue, 9 Jul 2024 20:04:33 +0800
-
-A kernel crash was observed when migrating hugetlb folio:
-
-BUG: kernel NULL pointer dereference, address: 0000000000000008
-PGD 0 P4D 0
-Oops: Oops: 0002 [#1] PREEMPT SMP NOPTI
-CPU: 0 PID: 3435 Comm: bash Not tainted 6.10.0-rc6-00450-g8578ca01f21f #66
-RIP: 0010:__folio_undo_large_rmappable+0x70/0xb0
-RSP: 0018:ffffb165c98a7b38 EFLAGS: 00000097
-RAX: fffffbbc44528090 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: ffffa30e000a2800 RSI: 0000000000000246 RDI: ffffa3153ffffcc0
-RBP: fffffbbc44528000 R08: 0000000000002371 R09: ffffffffbe4e5868
-R10: 0000000000000001 R11: 0000000000000001 R12: ffffa3153ffffcc0
-R13: fffffbbc44468000 R14: 0000000000000001 R15: 0000000000000001
-FS:  00007f5b3a716740(0000) GS:ffffa3151fc00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000008 CR3: 000000010959a000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- __folio_migrate_mapping+0x59e/0x950
- __migrate_folio.constprop.0+0x5f/0x120
- move_to_new_folio+0xfd/0x250
- migrate_pages+0x383/0xd70
- soft_offline_page+0x2ab/0x7f0
- soft_offline_page_store+0x52/0x90
- kernfs_fop_write_iter+0x12c/0x1d0
- vfs_write+0x380/0x540
- ksys_write+0x64/0xe0
- do_syscall_64+0xb9/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f5b3a514887
-RSP: 002b:00007ffe138fce68 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 000000000000000c RCX: 00007f5b3a514887
-RDX: 000000000000000c RSI: 0000556ab809ee10 RDI: 0000000000000001
-RBP: 0000556ab809ee10 R08: 00007f5b3a5d1460 R09: 000000007fffffff
-R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000000c
-R13: 00007f5b3a61b780 R14: 00007f5b3a617600 R15: 00007f5b3a616a00
-
-It's because hugetlb folio is passed to __folio_undo_large_rmappable()
-unexpectedly.  large_rmappable flag is imperceptibly set to hugetlb folio
-since commit f6a8dd98a2ce ("hugetlb: convert alloc_buddy_hugetlb_folio to
-use a folio").  Then commit be9581ea8c05 ("mm: fix crashes from deferred
-split racing folio migration") makes folio_migrate_mapping() call
-folio_undo_large_rmappable() triggering the bug.  Fix this issue by
-clearing large_rmappable flag for hugetlb folios.  They don't need that
-flag set anyway.
-
-Link: https://lkml.kernel.org/r/20240709120433.4136700-1-linmiaohe@huawei.com
-Fixes: f6a8dd98a2ce ("hugetlb: convert alloc_buddy_hugetlb_folio to use a folio")
-Fixes: be9581ea8c05 ("mm: fix crashes from deferred split racing folio migration")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/hugetlb.c |    3 +++
- 1 file changed, 3 insertions(+)
-
---- a/mm/hugetlb.c~mm-hugetlb-fix-kernel-null-pointer-dereference-when-migrating-hugetlb-folio
-+++ a/mm/hugetlb.c
-@@ -2162,6 +2162,9 @@ static struct folio *alloc_buddy_hugetlb
- 		nid = numa_mem_id();
- retry:
- 	folio = __folio_alloc(gfp_mask, order, nid, nmask);
-+	/* Ensure hugetlb folio won't have large_rmappable flag set. */
-+	if (folio)
-+		folio_clear_large_rmappable(folio);
- 
- 	if (folio && !folio_ref_freeze(folio, 1)) {
- 		folio_put(folio);
-_
-
-Patches currently in -mm which might be from linmiaohe@huawei.com are
-
-mm-hugetlb-fix-potential-race-in-__update_and_free_hugetlb_folio.patch
-mm-hugetlb-fix-kernel-null-pointer-dereference-when-migrating-hugetlb-folio.patch
-mm-memory-failure-remove-obsolete-mf_msg_different_compound.patch
-
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
