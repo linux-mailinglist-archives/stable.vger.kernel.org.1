@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-58385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9A892B6C0
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C0592B7AB
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:25:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B8B11C21B60
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AF701F243A7
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB1B158DB5;
-	Tue,  9 Jul 2024 11:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D18F157485;
+	Tue,  9 Jul 2024 11:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtheiXHM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dGkmMhgJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF76158D91;
-	Tue,  9 Jul 2024 11:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D34A27713;
+	Tue,  9 Jul 2024 11:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523775; cv=none; b=EIhl5NgbbPZKtspDCAJb0tqeC8dJAL/iVPs3Vzb03lALjRM1P+npQk2zfP9GrZLlW7vbYYnn8nQw1EnGE5CdmB9EaiD3KFFW8r9XWkORCC0Fm0DGJ1d7QvYmQBMdKpFG/swxOJlZKHQiq+ykRzmIaUzDsU4GXD5tv56VUYJB8xI=
+	t=1720524342; cv=none; b=SwL9TtFICpXRzmAC4VHuughmg5ueko+lAM13P2gzWNSaqEKEGGnX55uJAaRAxpeSoHKRnnqO+a4+gqepzTsSPL8O+ve2q2YG7k6+Yiks0txNACCilnP+zHt5YpHZyKZLozUDurzV7map1Nfv6z28MdW6V1MFUq6yPYmt+s02h7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523775; c=relaxed/simple;
-	bh=2Bwc0t2jEkU9E5799WwD/IRD+I3pahNE795MGHlO4ME=;
+	s=arc-20240116; t=1720524342; c=relaxed/simple;
+	bh=LjubLiAT+BXWaqtfJSBed1h+oa+YHPYtS4S4VUWY16g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A/95F6ZXcRfI5nhs2unGZVW8JZJ4/mkOrodWdA3ZohZv2xrZs/qfuU82rwj3Aji67KpHPRApAU6XUyv/jrBJHx1KJos+sALl9d+t+yXymAkZTXdJfktTyA/KqCCSfOakW5Nv3n3BV70388b8yWTbA2pcRivTDM3usNknCp9dKuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtheiXHM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8A6C4AF0A;
-	Tue,  9 Jul 2024 11:16:14 +0000 (UTC)
+	 MIME-Version; b=vGQjs0BSee40y7RR0jS4QdfxnMc3y+byObAp0p/tHPpTI0qEKdWSeI68VcNv98L+ZZKPT5b4lc1B7MvnCzNNTfi/6bCY+inAhHjjWjBsDk5/hhCpd5DjnSmzZuXqsW0uRuiYckWfaOjUQRysnyL6vRwT9Ztbmx3cq1/vRC0MrM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dGkmMhgJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8514C3277B;
+	Tue,  9 Jul 2024 11:25:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523775;
-	bh=2Bwc0t2jEkU9E5799WwD/IRD+I3pahNE795MGHlO4ME=;
+	s=korg; t=1720524342;
+	bh=LjubLiAT+BXWaqtfJSBed1h+oa+YHPYtS4S4VUWY16g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtheiXHMAHnyhfhk+A65aqoC7hqd9OwFx5K+r54YRZBjorBhHhlC4pX1GOF0410we
-	 a/xBk5B9VY77WbfpVVSbnJYf15vNKhe7wIMpnDbIfto9cHaE3TCS3juPYX2sh70sug
-	 2Ydxs8zs+fb2OXDWYvP6sFTT1Mt64acQv5OUxlbM=
+	b=dGkmMhgJMLs9+j+VXktfHjbzyQVy/E5U+NRiI93gvkwVj7NGxoQZ2I+ar8vpHRmuZ
+	 vWu671Sbeijhhiq2QjJCEb9/zVi9q3lgGXuNBfxZ5WQVWGb9sAAcjTJThqflytm5ct
+	 ldI6KZc58yN4Lbng9XChTTqXb/G8pMSsddKiR9s8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Schoenick <johns@valvesoftware.com>,
-	Matthew Schwartz <mattschwartz@gwu.edu>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>
-Subject: [PATCH 6.6 104/139] drm: panel-orientation-quirks: Add quirk for Valve Galileo
-Date: Tue,  9 Jul 2024 13:10:04 +0200
-Message-ID: <20240709110702.195639200@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Lyude Paul <lyude@redhat.com>
+Subject: [PATCH 6.9 151/197] drm/nouveau: fix null pointer dereference in nouveau_connector_get_modes
+Date: Tue,  9 Jul 2024 13:10:05 +0200
+Message-ID: <20240709110714.796016736@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Schoenick <johns@valvesoftware.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 26746ed40bb0e4ebe2b2bd61c04eaaa54e263c14 upstream.
+commit 80bec6825b19d95ccdfd3393cf8ec15ff2a749b4 upstream.
 
-Valve's Steam Deck Galileo revision has a 800x1280 OLED panel
+In nouveau_connector_get_modes(), the return value of drm_mode_duplicate()
+is assigned to mode, which will lead to a possible NULL pointer
+dereference on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-Cc: stable@vger.kernel.org # 6.1+
-Signed-off-by: John Schoenick <johns@valvesoftware.com>
-Signed-off-by: Matthew Schwartz <mattschwartz@gwu.edu>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240628205822.348402-2-mattschwartz@gwu.edu
+Cc: stable@vger.kernel.org
+Fixes: 6ee738610f41 ("drm/nouveau: Add DRM driver for NVIDIA GPUs")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240627074204.3023776-1-make24@iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/nouveau/nouveau_connector.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -421,6 +421,13 @@ static const struct dmi_system_id orient
- 		  DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "1"),
- 		},
- 		.driver_data = (void *)&lcd800x1280_rightside_up,
-+	}, {	/* Valve Steam Deck */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Valve"),
-+		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Galileo"),
-+		  DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "1"),
-+		},
-+		.driver_data = (void *)&lcd800x1280_rightside_up,
- 	}, {	/* VIOS LTH17 */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "VIOS"),
+--- a/drivers/gpu/drm/nouveau/nouveau_connector.c
++++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
+@@ -1001,6 +1001,9 @@ nouveau_connector_get_modes(struct drm_c
+ 		struct drm_display_mode *mode;
+ 
+ 		mode = drm_mode_duplicate(dev, nv_connector->native_mode);
++		if (!mode)
++			return 0;
++
+ 		drm_mode_probed_add(connector, mode);
+ 		ret = 1;
+ 	}
 
 
 
