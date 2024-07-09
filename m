@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D43C92B64F
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:12:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 865C192B745
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:22:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08C09283AA0
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:12:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7AFE1C22AF6
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E89315884E;
-	Tue,  9 Jul 2024 11:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7376C158219;
+	Tue,  9 Jul 2024 11:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpS6yh5s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhI0WlmB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF04158202;
-	Tue,  9 Jul 2024 11:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0B915B138;
+	Tue,  9 Jul 2024 11:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523523; cv=none; b=axbnG7pRsxv9UrCjdLGz/8DgZiLa/OYLZvNrQsQbc3oL7Zl9QVg41ty8s44GdlU8OfkTnM1tN9L4vYsOzWPqea7So+vG7CsAc46VzTMrcISmVtzgDMQPxzHG+gAFTz9AJYieFGBbg9GrwaZzwVwyzCoHddSS52qHdqUvvwsaHjY=
+	t=1720524067; cv=none; b=eEmfGH2YLB2maVjmdGRZWAzuKE3aTKhI0NWwF37j8dbJVXx3onQUMmpy2bmc3iDeur4NuN/Fbuo82bad/QEzX674e4SEazhlQenjzKWhN07TRVpUgKwBlCiTeqQPBG3peQpAN5GSUNt4sKT5Lb1Sh8vQ/ogDeEvmJPirBku198Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523523; c=relaxed/simple;
-	bh=6yiptGZng3J0opL28yFxxmxTuBYwbfKDxLbaarUlBMU=;
+	s=arc-20240116; t=1720524067; c=relaxed/simple;
+	bh=YujurhwuE8/UBmyT1ykaEU7eLWMIRRIzZgo6FNhcKVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lm6geQI533LHKHNuWoigKg124QWADDYiy5vB7slS1TZHkEA0wlmLedK121KsseS+7zrPu4t5MItH8/PJFU5oA4pnYjKBKO95C5+a8J/KY0mRdGf6VcvMz6Cml6QQ5fZPWcEnQe9GWV2RdWP+kqLvt+xya5lXp7iwnPDpRCnncnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpS6yh5s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C582C3277B;
-	Tue,  9 Jul 2024 11:12:02 +0000 (UTC)
+	 MIME-Version; b=FP2ccZSSHxSlOWvjRLBUIdpvPr42ll6qCiga9G3opbPB0etfejgkzHjIGgYnqJ6t0FCm1S2KQKkTx/Kqv2y4j4ZWG4uX3hrBgM+tvSo7FGEWRa9fLrvGo6WWjWmTl+/sg0rxqMnIywyyVDX9jS+SqYqFg+hqxt+sOYpINua7kWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhI0WlmB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5AC6C3277B;
+	Tue,  9 Jul 2024 11:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523522;
-	bh=6yiptGZng3J0opL28yFxxmxTuBYwbfKDxLbaarUlBMU=;
+	s=korg; t=1720524067;
+	bh=YujurhwuE8/UBmyT1ykaEU7eLWMIRRIzZgo6FNhcKVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kpS6yh5sUMleEtaYQANdV6t5WLl4dyPvU9AkBTWdGXhA7w1QxmN8emYKzelhwOZAQ
-	 aac49Zad4GMn1NaMCyC9PuS555/M9617jmDDGaf5p/5HAOWA+SAaCRIB5HyOihhMCC
-	 bqr96Cgh6hqOs5qHTAfhuxai6lPgI/XpwgYgd7cY=
+	b=zhI0WlmBNJKFOr3pjzeEDOpi8M4Ichq3JJi9858dZMmtF5o/tQqioFIt4TJQOQif4
+	 IxQnAxIfn837UlGcYHxp5TXnPXlll24p7LoROPT3xW72h6mGQqrHD8kAz4tNouifqy
+	 /ghNkJYYiuhPrlR5GZdBxHEe52Ry+A/jhmX2ZeDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/139] selftests/bpf: dummy_st_ops should reject 0 for non-nullable params
+Subject: [PATCH 6.9 059/197] i2c: i801: Annotate apanel_addr as __ro_after_init
 Date: Tue,  9 Jul 2024 13:08:33 +0200
-Message-ID: <20240709110658.669580608@linuxfoundation.org>
+Message-ID: <20240709110711.248001154@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 6a2d30d3c5bf9f088dcfd5f3746b04d84f2fab83 ]
+[ Upstream commit 355b1513b1e97b6cef84b786c6480325dfd3753d ]
 
-Check if BPF_PROG_TEST_RUN for bpf_dummy_struct_ops programs
-rejects execution if NULL is passed for non-nullable parameter.
+Annotate this variable as __ro_after_init to protect it from being
+overwritten later.
 
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20240424012821.595216-6-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/prog_tests/dummy_st_ops.c   | 27 +++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ drivers/i2c/busses/i2c-i801.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/dummy_st_ops.c b/tools/testing/selftests/bpf/prog_tests/dummy_st_ops.c
-index dd926c00f4146..d3d94596ab79c 100644
---- a/tools/testing/selftests/bpf/prog_tests/dummy_st_ops.c
-+++ b/tools/testing/selftests/bpf/prog_tests/dummy_st_ops.c
-@@ -147,6 +147,31 @@ static void test_dummy_sleepable(void)
- 	dummy_st_ops_success__destroy(skel);
- }
+diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
+index 79870dd7a0146..fafd999b4bcb2 100644
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -1059,7 +1059,7 @@ static const struct pci_device_id i801_ids[] = {
+ MODULE_DEVICE_TABLE(pci, i801_ids);
  
-+/* dummy_st_ops.test_sleepable() parameter is not marked as nullable,
-+ * thus bpf_prog_test_run_opts() below should be rejected as it tries
-+ * to pass NULL for this parameter.
-+ */
-+static void test_dummy_sleepable_reject_null(void)
-+{
-+	__u64 args[1] = {0};
-+	LIBBPF_OPTS(bpf_test_run_opts, attr,
-+		.ctx_in = args,
-+		.ctx_size_in = sizeof(args),
-+	);
-+	struct dummy_st_ops_success *skel;
-+	int fd, err;
-+
-+	skel = dummy_st_ops_success__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "dummy_st_ops_load"))
-+		return;
-+
-+	fd = bpf_program__fd(skel->progs.test_sleepable);
-+	err = bpf_prog_test_run_opts(fd, &attr);
-+	ASSERT_EQ(err, -EINVAL, "test_run");
-+
-+	dummy_st_ops_success__destroy(skel);
-+}
-+
- void test_dummy_st_ops(void)
- {
- 	if (test__start_subtest("dummy_st_ops_attach"))
-@@ -159,6 +184,8 @@ void test_dummy_st_ops(void)
- 		test_dummy_multiple_args();
- 	if (test__start_subtest("dummy_sleepable"))
- 		test_dummy_sleepable();
-+	if (test__start_subtest("dummy_sleepable_reject_null"))
-+		test_dummy_sleepable_reject_null();
+ #if defined CONFIG_X86 && defined CONFIG_DMI
+-static unsigned char apanel_addr;
++static unsigned char apanel_addr __ro_after_init;
  
- 	RUN_TESTS(dummy_st_ops_fail);
- }
+ /* Scan the system ROM for the signature "FJKEYINF" */
+ static __init const void __iomem *bios_signature(const void __iomem *bios)
 -- 
 2.43.0
 
