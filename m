@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93A8A92B7CE
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C1EF92B6E0
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:18:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A7131F244B5
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB3F01F24224
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA5FB156C73;
-	Tue,  9 Jul 2024 11:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7FF11586C1;
+	Tue,  9 Jul 2024 11:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wtnyGnlD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fz4j0/RA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8926927713;
-	Tue,  9 Jul 2024 11:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C2214EC4D;
+	Tue,  9 Jul 2024 11:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524436; cv=none; b=bsiTivCUjz3W5Yf+pyi+YwxGZHM6IE6wQK4TABGKg/LyT39Ed6tJLZjoEuHing8i3pFSk479SnjTQBof1YyGTv1onWQPr4Fype99OGbsNleTShl1kGJgtwejl/fQlBpb34oeoqfzaWsRmJDIpYlg2zG99Nb0xAIg9+RR81ZTWvQ=
+	t=1720523871; cv=none; b=lRZYiV0un3L55zUuFo7RrmY0HzM4NH76D7d4gfDsPdx3w0Ztsyyeb5m8X5F5QVHIv+OhVreFPyvPNYyFVruG0knc6/aBmwYgXtVvXhoeHWir3Ery9NRUGR1jS2aVD2F4kr4lZqpN8MrxKRaS+qfMXO44e/xMgAgCxV9VsgI0pM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524436; c=relaxed/simple;
-	bh=Fh6ZiXksQwOTzX6ruQZQBQgp3xm6aT9XJu68/EM/Gd4=;
+	s=arc-20240116; t=1720523871; c=relaxed/simple;
+	bh=GvDSyb4zcaP/7gKqNu/P1cN6gUKyl6LQvCDAJu4Rt2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OGsgvJ9LGiIpZJgQtQ1x2vlqk9AXwpCL9C78IJqxIK6omIAM4ac9gE6fResF54TdmynapbZUXyZyOGSfMCFpH8WNPGb7raCPEnr6brPwmF+l2q6DwEegM9PRYAaMKRvRgRjTYgdpAG/2e0pgRXI2t631098lOqDNVLbfObtqG34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wtnyGnlD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04503C3277B;
-	Tue,  9 Jul 2024 11:27:15 +0000 (UTC)
+	 MIME-Version; b=k7G6fBcOLThb5X7Fw3KgKgyKApw/qTrk4VSQyB9z9WPVvuJ28Omk/3LBwaKENJwc6nli67iohfo8tc4wxOE6FvSb4B/pWQD0uyW+5iyke5XNBeLVYBVzrjRZ0XTXYisR5mrcWF+aWidJHvbT3eL/aXunAo2rIfiYMCXMDz1fEp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fz4j0/RA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD1DC4AF0A;
+	Tue,  9 Jul 2024 11:17:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524436;
-	bh=Fh6ZiXksQwOTzX6ruQZQBQgp3xm6aT9XJu68/EM/Gd4=;
+	s=korg; t=1720523871;
+	bh=GvDSyb4zcaP/7gKqNu/P1cN6gUKyl6LQvCDAJu4Rt2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wtnyGnlDBGSQi6qklLlM+mYfURLPIZo9WWoTHMggvo9B6ENegMzxFO6J1v+4b9tu/
-	 YjzuqOZ3/wQbV5+luRNNUf3HxxRyYsZ3ITplp3mvIcAkMBfFOSIwF1V/pnTNJmTTFI
-	 UiYryCaoTREIlMqK937j+sjQCMJxKwKx2XSBrcSY=
+	b=fz4j0/RAoYvdR7HaoVz2OG7O6auqKJvbDNzqo9s8f7+9fab+bZwnE1nnNwjb2xNfI
+	 5rFmzSzmi8CcG9Tm/CmYOq+wpv5Ajlqx8FKhxA90JZ3kr3aSptJSwnNYVDDST0X3OT
+	 rO0X18q5fv5pDG2qHtR97S5XDZ8s27oTGfW5Qn+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Jan <zoo868e@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Witold Sadowski <wsadowski@marvell.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 181/197] connector: Fix invalid conversion in cn_proc.h
+Subject: [PATCH 6.6 135/139] spi: cadence: Ensure data lines set to low during dummy-cycle period
 Date: Tue,  9 Jul 2024 13:10:35 +0200
-Message-ID: <20240709110715.948539202@linuxfoundation.org>
+Message-ID: <20240709110703.385678895@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Jan <zoo868e@gmail.com>
+From: Witold Sadowski <wsadowski@marvell.com>
 
-[ Upstream commit 06e785aeb9ea8a43d0a3967c1ba6e69d758e82d4 ]
+[ Upstream commit 4a69c1264ff41bc5bf7c03101ada0454fbf08868 ]
 
-The implicit conversion from unsigned int to enum
-proc_cn_event is invalid, so explicitly cast it
-for compilation in a C++ compiler.
-/usr/include/linux/cn_proc.h: In function 'proc_cn_event valid_event(proc_cn_event)':
-/usr/include/linux/cn_proc.h:72:17: error: invalid conversion from 'unsigned int' to 'proc_cn_event' [-fpermissive]
-   72 |         ev_type &= PROC_EVENT_ALL;
-      |                 ^
-      |                 |
-      |                 unsigned int
+During dummy-cycles xSPI will switch GPIO into Hi-Z mode. In that dummy
+period voltage on data lines will slowly drop, what can cause
+unintentional modebyte transmission. Value send to SPI memory chip will
+depend on last address, and clock frequency.
+To prevent unforeseen consequences of that behaviour, force send
+single modebyte(0x00).
+Modebyte will be send only if number of dummy-cycles is not equal
+to 0. Code must also reduce dummycycle byte count by one - as one byte
+is send as modebyte.
 
-Signed-off-by: Matt Jan <zoo868e@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Witold Sadowski <wsadowski@marvell.com>
+Link: https://msgid.link/r/20240529074037.1345882-2-wsadowski@marvell.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/cn_proc.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/spi/spi-cadence-xspi.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/include/uapi/linux/cn_proc.h b/include/uapi/linux/cn_proc.h
-index f2afb7cc4926c..18e3745b86cd4 100644
---- a/include/uapi/linux/cn_proc.h
-+++ b/include/uapi/linux/cn_proc.h
-@@ -69,8 +69,7 @@ struct proc_input {
+diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
+index b7e04b03be58e..ee342501b759f 100644
+--- a/drivers/spi/spi-cadence-xspi.c
++++ b/drivers/spi/spi-cadence-xspi.c
+@@ -145,6 +145,9 @@
+ #define CDNS_XSPI_STIG_DONE_FLAG		BIT(0)
+ #define CDNS_XSPI_TRD_STATUS			0x0104
  
- static inline enum proc_cn_event valid_event(enum proc_cn_event ev_type)
- {
--	ev_type &= PROC_EVENT_ALL;
--	return ev_type;
-+	return (enum proc_cn_event)(ev_type & PROC_EVENT_ALL);
- }
++#define MODE_NO_OF_BYTES			GENMASK(25, 24)
++#define MODEBYTES_COUNT			1
++
+ /* Helper macros for filling command registers */
+ #define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_1(op, data_phase) ( \
+ 	FIELD_PREP(CDNS_XSPI_CMD_INSTR_TYPE, (data_phase) ? \
+@@ -157,9 +160,10 @@
+ 	FIELD_PREP(CDNS_XSPI_CMD_P1_R2_ADDR3, ((op)->addr.val >> 24) & 0xFF) | \
+ 	FIELD_PREP(CDNS_XSPI_CMD_P1_R2_ADDR4, ((op)->addr.val >> 32) & 0xFF))
  
- /*
+-#define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op) ( \
++#define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op, modebytes) ( \
+ 	FIELD_PREP(CDNS_XSPI_CMD_P1_R3_ADDR5, ((op)->addr.val >> 40) & 0xFF) | \
+ 	FIELD_PREP(CDNS_XSPI_CMD_P1_R3_CMD, (op)->cmd.opcode) | \
++	FIELD_PREP(MODE_NO_OF_BYTES, modebytes) | \
+ 	FIELD_PREP(CDNS_XSPI_CMD_P1_R3_NUM_ADDR_BYTES, (op)->addr.nbytes))
+ 
+ #define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_4(op, chipsel) ( \
+@@ -173,12 +177,12 @@
+ #define CDNS_XSPI_CMD_FLD_DSEQ_CMD_2(op) \
+ 	FIELD_PREP(CDNS_XSPI_CMD_DSEQ_R2_DCNT_L, (op)->data.nbytes & 0xFFFF)
+ 
+-#define CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op) ( \
++#define CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op, dummybytes) ( \
+ 	FIELD_PREP(CDNS_XSPI_CMD_DSEQ_R3_DCNT_H, \
+ 		((op)->data.nbytes >> 16) & 0xffff) | \
+ 	FIELD_PREP(CDNS_XSPI_CMD_DSEQ_R3_NUM_OF_DUMMY, \
+ 		  (op)->dummy.buswidth != 0 ? \
+-		  (((op)->dummy.nbytes * 8) / (op)->dummy.buswidth) : \
++		  (((dummybytes) * 8) / (op)->dummy.buswidth) : \
+ 		  0))
+ 
+ #define CDNS_XSPI_CMD_FLD_DSEQ_CMD_4(op, chipsel) ( \
+@@ -351,6 +355,7 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
+ 	u32 cmd_regs[6];
+ 	u32 cmd_status;
+ 	int ret;
++	int dummybytes = op->dummy.nbytes;
+ 
+ 	ret = cdns_xspi_wait_for_controller_idle(cdns_xspi);
+ 	if (ret < 0)
+@@ -365,7 +370,12 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
+ 	memset(cmd_regs, 0, sizeof(cmd_regs));
+ 	cmd_regs[1] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_1(op, data_phase);
+ 	cmd_regs[2] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_2(op);
+-	cmd_regs[3] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op);
++	if (dummybytes != 0) {
++		cmd_regs[3] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op, 1);
++		dummybytes--;
++	} else {
++		cmd_regs[3] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op, 0);
++	}
+ 	cmd_regs[4] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_4(op,
+ 						       cdns_xspi->cur_cs);
+ 
+@@ -375,7 +385,7 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
+ 		cmd_regs[0] = CDNS_XSPI_STIG_DONE_FLAG;
+ 		cmd_regs[1] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_1(op);
+ 		cmd_regs[2] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_2(op);
+-		cmd_regs[3] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op);
++		cmd_regs[3] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op, dummybytes);
+ 		cmd_regs[4] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_4(op,
+ 							   cdns_xspi->cur_cs);
+ 
 -- 
 2.43.0
 
