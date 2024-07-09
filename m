@@ -1,216 +1,103 @@
-Return-Path: <stable+bounces-58747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08B7592BA34
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 15:00:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A4892BAD3
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 15:18:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E0B0B27802
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:00:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00B0B287ADC
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:18:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081C215ECE5;
-	Tue,  9 Jul 2024 12:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="r3p18c5+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C18158D92;
+	Tue,  9 Jul 2024 13:18:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBC615ADB2
-	for <stable@vger.kernel.org>; Tue,  9 Jul 2024 12:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82AC382;
+	Tue,  9 Jul 2024 13:18:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720529998; cv=none; b=pH0kmLT6QbvcBmRJA20dfKJMvnr0e3C3jtTyeH2r+G/Ofxafv53zYKpPO0y+dSjNc71rEn+iUSqepTF7ooWolCHcOVCVWAaftjnl6dPPzuCYHvRgOrgyEpcHCyPTRGQpfHwexvRkERL36p3Ptf/2HrLoNcsLhFNGs/vyS49eIR0=
+	t=1720531110; cv=none; b=QkNGfolJGrunn7hf7XaRUYXorZBGhuGKDylAvGZ7Xnm5Ors1SAoVlVH+ZO86zb5Yk4AfEW66FVaWV4lmTuixPaoOe0ULWsZqG1efU1IyKssYAlXOojrwhxVH04kAekBO0P3vTi5/BoshrByOShCf3ftm3R7cK33H+FKchWwq2F8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720529998; c=relaxed/simple;
-	bh=iOmmg+031BO+zTgqj4Da5Rimz0tYxzcZBtos8xp+M6k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HPGl1oVHl/cZ6fQlquqqivtoZlhZWy0LwxUFUIN14iBBDJi2yBrB1kymuT7uC3PljqLfJNA1ZCImT33ZVLrzFq2FFQOC6LkiVfyED8kSTUUjjk5FYoU7s+7Qe4YyimVIpjcSxodRorzkC9eKehjCbW4YvzWnEVOMLpVgfQQqbmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=r3p18c5+; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-58b3fee65d8so5694107a12.3
-        for <stable@vger.kernel.org>; Tue, 09 Jul 2024 05:59:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720529995; x=1721134795; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Hpq15xCFbtYALDYFY4KDY3RIliIQDLzZlDT5dVHuf9o=;
-        b=r3p18c5+wh7LfWBepgVgu2EyR5nasCnEG41JkyIj/nzLfBc5hXwJPb6oOv5Vnh4tMA
-         zTOJu8NPoV0apuCbvClJgOSZIdz/yOQXg9R+Cnu0/6Y6CrGKiLB7OBzVr9bv3m1PUZF1
-         ejclrxDBfNcTLO4B/53B1sjR2WlgrAyJE8SIiCZLI5IYpbgwQ/ylLLGphyJyEp4Y4MEo
-         tJCp6WG76IrNlN9HmdCJ9bOGeOiFyXotqXbYPvFp7ekmbo4EUNsxqSepPEqpV0pROAKH
-         9hHdWlDylFRK7ib62APSaAD/pTTG2GtumSBBqLQzUcv0jhnIznXA/9xyF48Dw9JaUNIh
-         YdjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720529995; x=1721134795;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Hpq15xCFbtYALDYFY4KDY3RIliIQDLzZlDT5dVHuf9o=;
-        b=Ac7p7RPa22mohTO84ieZoP3I9X1wZY1f0Muh4jWBvmaUVfSkAKPG3touVGewc9Odk1
-         O3FI78SnzNxCDsCffZegxG1f0epnkQzix3UOI19qaU6/TPez09Ccucp+emKarU4D05xz
-         v4VmglQSU3LbRQ+5uubcRcu8rJOFN1UwOP3yiTlXm0LBtzoKBcH6dArJsoRfiCUw6o1S
-         73uIRNqxGK9YncYCgf2ztJoQCEvh4uxUCDbOPo+DtUU3mKXICGl+qgs7K3El6xlIYe8H
-         6sEFXeOvlX7JtgujKdkCzgiAaiB5aPZnyE/bVnADMUzLw16hMJGJuCNbHmEknbnyjSuC
-         wnug==
-X-Forwarded-Encrypted: i=1; AJvYcCU2qQ7vwCvEkIlP/c1rdrtLVJkDLskz88t1sRhoPDj3UGM3NhVx8CTJYzbqnX/CPs4Yvgqqw4aTtMzFDJIYxkF8/qdhEbDw
-X-Gm-Message-State: AOJu0YypVKRMpyKa34n8x9fsONzRHvvB/gJ0iSXir7bjpmi15C3Y9YGD
-	NOOPXb0ZYKj8r0B7vEdPe+PM900dv+a+aeYNOwtkQi2vn7VgYD4khn7evhKFL4Y=
-X-Google-Smtp-Source: AGHT+IEnBykQHOg72vb+3a+PwqhhC6nKKTeE5KfSm0UJxuh/0+T6xpvhz21MgJnNUb9TuX3+w8AJwQ==
-X-Received: by 2002:a05:6402:5256:b0:58d:eca:b9bf with SMTP id 4fb4d7f45d1cf-594bcab156emr1744682a12.37.1720529995591;
-        Tue, 09 Jul 2024 05:59:55 -0700 (PDT)
-Received: from [127.0.1.1] ([178.197.219.137])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a780a6e157bsm76643166b.80.2024.07.09.05.59.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jul 2024 05:59:55 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Tue, 09 Jul 2024 14:59:31 +0200
-Subject: [PATCH 01/12] thermal/drivers/broadcom: fix race between removal
- and clock disable
+	s=arc-20240116; t=1720531110; c=relaxed/simple;
+	bh=uRqSv2EgEs82nXjT4mnoIzvAPWG9RwZrzwafVBscE1A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WAkNfFRqtuVw5iU/uQ4/ASl6Lem9U2be2K+Yr4B492djNSlWXE6do7vLQD0/mQPKIofiJLSBqPGQ8z9HmT1i8FGzRKGi6Pk8k7achvCgwvcqsHJrWRdWdA4WLUeyvSogDKcMYD24setPAhuSJHkka7XFZjtGy3Xmk9Bnybcrtpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-05 (Coremail) with SMTP id zQCowADHz+eEOI1m3nhgAg--.39722S2;
+	Tue, 09 Jul 2024 21:18:05 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: fbarrat@linux.ibm.com,
+	ajd@linux.ibm.com,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org,
+	manoj@linux.vnet.ibm.com,
+	mpe@ellerman.id.au,
+	clombard@linux.vnet.ibm.com,
+	imunsie@au1.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] cxl: Fix possible null pointer dereference in read_handle()
+Date: Tue,  9 Jul 2024 21:17:54 +0800
+Message-Id: <20240709131754.855144-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240709-thermal-probe-v1-1-241644e2b6e0@linaro.org>
-References: <20240709-thermal-probe-v1-0-241644e2b6e0@linaro.org>
-In-Reply-To: <20240709-thermal-probe-v1-0-241644e2b6e0@linaro.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>, 
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
- Lukasz Luba <lukasz.luba@arm.com>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
- Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Alim Akhtar <alim.akhtar@samsung.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Amit Kucheria <amitk@kernel.org>, 
- Thara Gopinath <thara.gopinath@gmail.com>
-Cc: linux-pm@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-msm@vger.kernel.org, stable@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3012;
- i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=iOmmg+031BO+zTgqj4Da5Rimz0tYxzcZBtos8xp+M6k=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmjTQ83IPlStNA8YpS9fGSEe7VT+gKCvXpGdAfJ
- 5hWjtkURB6JAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZo00PAAKCRDBN2bmhouD
- 117aEACEcxeLvNx+Ph7F3Sf3xCVkyz8ERxrRXQXccTRTOYxedP0TJzaaKHlqyz+OlCmtcu9wKpm
- WRjmQxWKqPDDFmWgr4Y04n4SFXB05HI6p/7z3w+Qythc9voHFnPIezcyDwyr0H0DR+jZ1HLki57
- pixbSiu1Oh7tFR6L/Za/4zrtmS0BDmJqfKOyUciOuKmucNdB5o2lOEIG5pGuaTP95+3pVvbGYoO
- ECPivYLlIIgzh4JRpRQdSKVewxs5TqSOc7Fjq9LI/I9XylD0k3GwhSVwvYdKAPJ6fhQcCIyeagv
- uX+tI+vwiGKZIXEGskAnZfwjacFGXNFY8hQKwXSiBooGOi5Bmdqh7FwGlomD0+XPFzSqUkyLJ4u
- qqUQ13wRtzhsc7FhtAlIHw2yrME7IeTNrORvMj9NSD1BEixkbPEN6uc22OqcVS/+bF+PyFVIL4j
- NEJbL+MzL5fhn176g4N+LyG+L7fpLqJvjWwgHOOmOZk0CTwie+3BOocSd40x7giMK+RhpOJPiDQ
- v0SF1Cy6EIdDlduw+X5sl681DnxfiPWMg3FZ1Sy2OGhh7M0UKc20QG3ecnPvMZys7AmalVQY14E
- 8ywJEmETlZS04IXHms1rYHSYGBL2DP4tNxOGJNNE4Prn+GgvrOltn4hs5agcW27LEZSHJsj9d7N
- 8KUwp2YTb4FzNfQ==
-X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
- fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowADHz+eEOI1m3nhgAg--.39722S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrKFWDGrWDAw4xAr4UWry8Krg_yoW3Awc_CF
+	4UZr1xXryjgr9rGr1Y9r47Zr92yrW8uF95Zr4ftFW7K3y5CF1aqr1I9rs3ZrnrWr4DXFyD
+	Aw1qy3sY9r42gjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb3xFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
+	C2KfnxnUUI43ZEXa7VUbHa0DUUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-During the probe, driver enables clocks necessary to access registers
-(in get_temp()) and then registers thermal zone with managed-resources
-(devm) interface.  Removal of device is not done in reversed order,
-because:
-1. Clock will be disabled in driver remove() callback - thermal zone is
-   still registered and accessible to users,
-2. devm interface will unregister thermal zone.
+In read_handle() of_get_address() may return NULL which is later
+dereferenced. Fix this bug by adding NULL check.
 
-This leaves short window between (1) and (2) for accessing the
-get_temp() callback with disabled clock.
-
-Fix this by enabling clock also via devm-interface, so entire cleanup
-path will be in proper, reversed order.
-
-Fixes: 8454c8c09c77 ("thermal/drivers/bcm2835: Remove buggy call to thermal_of_zone_unregister")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: stable@vger.kernel.org
+Fixes: 14baf4d9c739 ("cxl: Add guest-specific code")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- drivers/thermal/broadcom/bcm2835_thermal.c | 19 ++++---------------
- 1 file changed, 4 insertions(+), 15 deletions(-)
+ drivers/misc/cxl/of.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/broadcom/bcm2835_thermal.c b/drivers/thermal/broadcom/bcm2835_thermal.c
-index 5c1cebe07580..3b1030fc4fbf 100644
---- a/drivers/thermal/broadcom/bcm2835_thermal.c
-+++ b/drivers/thermal/broadcom/bcm2835_thermal.c
-@@ -185,7 +185,7 @@ static int bcm2835_thermal_probe(struct platform_device *pdev)
- 		return err;
- 	}
+diff --git a/drivers/misc/cxl/of.c b/drivers/misc/cxl/of.c
+index bcc005dff1c0..d8dbb3723951 100644
+--- a/drivers/misc/cxl/of.c
++++ b/drivers/misc/cxl/of.c
+@@ -58,7 +58,7 @@ static int read_handle(struct device_node *np, u64 *handle)
  
--	data->clk = devm_clk_get(&pdev->dev, NULL);
-+	data->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(data->clk)) {
- 		err = PTR_ERR(data->clk);
- 		if (err != -EPROBE_DEFER)
-@@ -193,10 +193,6 @@ static int bcm2835_thermal_probe(struct platform_device *pdev)
- 		return err;
- 	}
+ 	/* Get address and size of the node */
+ 	prop = of_get_address(np, 0, &size, NULL);
+-	if (size)
++	if (!prop || size)
+ 		return -EINVAL;
  
--	err = clk_prepare_enable(data->clk);
--	if (err)
--		return err;
--
- 	rate = clk_get_rate(data->clk);
- 	if ((rate < 1920000) || (rate > 5000000))
- 		dev_warn(&pdev->dev,
-@@ -211,7 +207,7 @@ static int bcm2835_thermal_probe(struct platform_device *pdev)
- 		dev_err(&pdev->dev,
- 			"Failed to register the thermal device: %d\n",
- 			err);
--		goto err_clk;
-+		return err;
- 	}
- 
- 	/*
-@@ -236,7 +232,7 @@ static int bcm2835_thermal_probe(struct platform_device *pdev)
- 			dev_err(&pdev->dev,
- 				"Not able to read trip_temp: %d\n",
- 				err);
--			goto err_tz;
-+			return err;
- 		}
- 
- 		/* set bandgap reference voltage and enable voltage regulator */
-@@ -269,17 +265,11 @@ static int bcm2835_thermal_probe(struct platform_device *pdev)
- 	 */
- 	err = thermal_add_hwmon_sysfs(tz);
- 	if (err)
--		goto err_tz;
-+		return err;
- 
- 	bcm2835_thermal_debugfs(pdev);
- 
- 	return 0;
--err_tz:
--	devm_thermal_of_zone_unregister(&pdev->dev, tz);
--err_clk:
--	clk_disable_unprepare(data->clk);
--
--	return err;
- }
- 
- static void bcm2835_thermal_remove(struct platform_device *pdev)
-@@ -287,7 +277,6 @@ static void bcm2835_thermal_remove(struct platform_device *pdev)
- 	struct bcm2835_thermal_data *data = platform_get_drvdata(pdev);
- 
- 	debugfs_remove_recursive(data->debugfsdir);
--	clk_disable_unprepare(data->clk);
- }
- 
- static struct platform_driver bcm2835_thermal_driver = {
-
+ 	/* Helper to read a big number; size is in cells (not bytes) */
 -- 
-2.43.0
+2.25.1
 
 
