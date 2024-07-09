@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-58842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD31492C0D9
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:45:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A5992C0A4
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:41:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CEF7B26A45
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:41:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80425287F7D
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:41:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CA320FA80;
-	Tue,  9 Jul 2024 16:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D2220FA9A;
+	Tue,  9 Jul 2024 16:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cerlJpNm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZEygT3MS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B0B1A2558;
-	Tue,  9 Jul 2024 16:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D26720FA93;
+	Tue,  9 Jul 2024 16:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542257; cv=none; b=e4NSgn0hrYzfJVFS81gN7pIQy3l8ZZpYVn+463jnX2JSboWseVUOk1XB9Rrg+fbTEj9GfdFdtIUUZyZVwgZMYXLiM0skDMUpUpIdHTSrNgv/2GlPf8BhF9OREkL0pSlTgSHmVGi3PQqZzcoLQyY68mN6pTGkpPr0so266gmPFpY=
+	t=1720542259; cv=none; b=TMscvArciS3t2WjLCjfONvsMfOLJVWELbGxoAv1MvQwKPzPekIci3Q8GdcP3ves5DjdJDqwHmvcp1opEjQw32c6lPxjHdBSRH9y5hdva6TMu0k6LyovAX1CxyBrtwx68XvIPdouH2FpGJKWSa2gQp25onyK0t0L1i/tJCHDiZEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542257; c=relaxed/simple;
-	bh=ZiOMPvsnuJyADR1GmLGCgcrErB5lAGdo96qXhyvyPF0=;
+	s=arc-20240116; t=1720542259; c=relaxed/simple;
+	bh=IsHmVPzLjPkAVsbqXgHAlk8fnDVQz3z3/FukJoWyMR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WSfpzIxbc0ka38cz5SzwIvVofK5FXnbuKknaG0DaAnAPf1Z/Dd88/jN/69rKUnFzCShaJiMtfhUixbrEusf6+muA5D98IBVc3wLA+UuVaG13pVVJ3/hTHzOsrzM4PwCAU2Oj3Aq026g9gO+CSA9WbH9NV0gUUyPkLEY3vq4mlmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cerlJpNm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C66C4AF07;
-	Tue,  9 Jul 2024 16:24:15 +0000 (UTC)
+	 MIME-Version; b=rQkBgsW9TaV7O2RcDYWeBDQulWmf4oyy8QVvwdig7Zxx8ITophC4Pe1+Fd2w2C72q/Cu+6Lxvc6ZqGIX71mkbsmph/gdjKBZoqIJ4SKqIydmdGUsriNc9HiTs6SsIHPlFxVPJ5Z+OxV1ADaaHrG3nwOLlBUX/16J2YSudE1aB7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZEygT3MS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B10DEC4AF0B;
+	Tue,  9 Jul 2024 16:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542257;
-	bh=ZiOMPvsnuJyADR1GmLGCgcrErB5lAGdo96qXhyvyPF0=;
+	s=k20201202; t=1720542258;
+	bh=IsHmVPzLjPkAVsbqXgHAlk8fnDVQz3z3/FukJoWyMR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cerlJpNmRFG/Ax8xZdxHpXEeHVINsMWiQfTTLmO2znO2cxN6dbNc7nF+0aFWaMNSK
-	 haUYCPDtIRPASpASQKYU2AwTprAdgjjmR3kgUP9cxzluXTIrxc7dXYq9i+Gw+/MFYc
-	 76Bakt3zErbYrwJPSt3ljotRE7J+SgN2xXLeUOjCI3d8/3TQqhXrGb29kwgg2u8Gsg
-	 e/X1Tcav1A4vy4OdT8Hj8U1Rm2ngW+4mE1IzZGLAVbNUcfFb/vtCF/Mjn0BOfzUeG4
-	 RswBJ2pck9khxoMkeKL8Th4I9+ADzabgTX6KkhQbUciISjs2OqBAi7rHB7wa3bK4vz
-	 1D0PlR9UrCb/A==
+	b=ZEygT3MS8/nNy8BR1hXf3nmKZmXxKC8J3SMiYsQ6q/QeiteQ7JUvPaxqBATlbUNNT
+	 KaCgr7caIayia/lE/vBDXllraqMCf3vvn8G6dh7gRMic3nP19YWrxlr/y39uNPU2Wf
+	 scjdTzTNxUzKkoAT0UcUTDsKrk/Vp51NCu94igmGl4G1hmjKJB/u7oTCQrGeGNlAlT
+	 bmuB95Z42nOmnF5+yrjwfvjMQo3cpwsyqLYQBwaphYIbJ9DLttPAkWhyirHPHwbbJk
+	 KIwRvmMu+mVHAuBoZBdFQzHZnCG4zX9BDpILPERf6Gv+EJ3cfWuba553/KJO3eNDcp
+	 eEAeEzaNRtTjQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -48,14 +48,14 @@ Cc: Jai Luthra <j-luthra@ti.com>,
 	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	lars@metafoo.de,
+	lgirdwood@gmail.com,
 	perex@perex.cz,
 	tiwai@suse.com,
-	lgirdwood@gmail.com,
+	alsa-devel@alsa-project.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 07/27] ALSA: dmaengine: Synchronize dma channel after drop()
-Date: Tue,  9 Jul 2024 12:23:21 -0400
-Message-ID: <20240709162401.31946-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 08/27] ASoC: ti: davinci-mcasp: Set min period size using FIFO config
+Date: Tue,  9 Jul 2024 12:23:22 -0400
+Message-ID: <20240709162401.31946-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162401.31946-1-sashal@kernel.org>
 References: <20240709162401.31946-1-sashal@kernel.org>
@@ -72,94 +72,65 @@ Content-Transfer-Encoding: 8bit
 
 From: Jai Luthra <j-luthra@ti.com>
 
-[ Upstream commit e8343410ddf08fc36a9b9cc7c51a4e53a262d4c6 ]
+[ Upstream commit c5dcf8ab10606e76c1d8a0ec77f27d84a392e874 ]
 
-Sometimes the stream may be stopped due to XRUN events, in which case
-the userspace can call snd_pcm_drop() and snd_pcm_prepare() to stop and
-start the stream again.
+The minimum period size was enforced to 64 as older devices integrating
+McASP with EDMA used an internal FIFO of 64 samples.
 
-In these cases, we must wait for the DMA channel to synchronize before
-marking the stream as prepared for playback, as the DMA channel gets
-stopped by drop() without any synchronization. Make sure the ALSA core
-synchronizes the DMA channel by adding a sync_stop() hook.
+With UDMA based platforms this internal McASP FIFO is optional, as the
+DMA engine internally does some buffering which is already accounted for
+when registering the platform. So we should read the actual FIFO
+configuration (txnumevt/rxnumevt) instead of hardcoding frames.min to
+64.
 
-Reviewed-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
 Signed-off-by: Jai Luthra <j-luthra@ti.com>
-Link: https://lore.kernel.org/r/20240611-asoc_next-v3-1-fcfd84b12164@ti.com
+Link: https://lore.kernel.org/r/20240611-asoc_next-v3-2-fcfd84b12164@ti.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/dmaengine_pcm.h         |  1 +
- sound/core/pcm_dmaengine.c            | 10 ++++++++++
- sound/soc/soc-generic-dmaengine-pcm.c |  8 ++++++++
- 3 files changed, 19 insertions(+)
+ sound/soc/ti/davinci-mcasp.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/sound/dmaengine_pcm.h b/include/sound/dmaengine_pcm.h
-index 2df54cf02cb33..74b8ef419d4fa 100644
---- a/include/sound/dmaengine_pcm.h
-+++ b/include/sound/dmaengine_pcm.h
-@@ -36,6 +36,7 @@ snd_pcm_uframes_t snd_dmaengine_pcm_pointer_no_residue(struct snd_pcm_substream
- int snd_dmaengine_pcm_open(struct snd_pcm_substream *substream,
- 	struct dma_chan *chan);
- int snd_dmaengine_pcm_close(struct snd_pcm_substream *substream);
-+int snd_dmaengine_pcm_sync_stop(struct snd_pcm_substream *substream);
+diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
+index 4edf5b27e136b..c6ef8f92b25f1 100644
+--- a/sound/soc/ti/davinci-mcasp.c
++++ b/sound/soc/ti/davinci-mcasp.c
+@@ -1472,10 +1472,11 @@ static int davinci_mcasp_hw_rule_min_periodsize(
+ {
+ 	struct snd_interval *period_size = hw_param_interval(params,
+ 						SNDRV_PCM_HW_PARAM_PERIOD_SIZE);
++	u8 numevt = *((u8 *)rule->private);
+ 	struct snd_interval frames;
  
- int snd_dmaengine_pcm_open_request_chan(struct snd_pcm_substream *substream,
- 	dma_filter_fn filter_fn, void *filter_data);
-diff --git a/sound/core/pcm_dmaengine.c b/sound/core/pcm_dmaengine.c
-index 494ec0c207fad..d142609570347 100644
---- a/sound/core/pcm_dmaengine.c
-+++ b/sound/core/pcm_dmaengine.c
-@@ -349,6 +349,16 @@ int snd_dmaengine_pcm_open_request_chan(struct snd_pcm_substream *substream,
- }
- EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_open_request_chan);
+ 	snd_interval_any(&frames);
+-	frames.min = 64;
++	frames.min = numevt;
+ 	frames.integer = 1;
  
-+int snd_dmaengine_pcm_sync_stop(struct snd_pcm_substream *substream)
-+{
-+	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
-+
-+	dmaengine_synchronize(prtd->dma_chan);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_sync_stop);
-+
- /**
-  * snd_dmaengine_pcm_close - Close a dmaengine based PCM substream
-  * @substream: PCM substream
-diff --git a/sound/soc/soc-generic-dmaengine-pcm.c b/sound/soc/soc-generic-dmaengine-pcm.c
-index 3b99f619e37eb..bece8927b056c 100644
---- a/sound/soc/soc-generic-dmaengine-pcm.c
-+++ b/sound/soc/soc-generic-dmaengine-pcm.c
-@@ -318,6 +318,12 @@ static int dmaengine_copy_user(struct snd_soc_component *component,
+ 	return snd_interval_refine(period_size, &frames);
+@@ -1490,6 +1491,7 @@ static int davinci_mcasp_startup(struct snd_pcm_substream *substream,
+ 	u32 max_channels = 0;
+ 	int i, dir, ret;
+ 	int tdm_slots = mcasp->tdm_slots;
++	u8 *numevt;
+ 
+ 	/* Do not allow more then one stream per direction */
+ 	if (mcasp->substreams[substream->stream])
+@@ -1589,9 +1591,12 @@ static int davinci_mcasp_startup(struct snd_pcm_substream *substream,
+ 			return ret;
+ 	}
+ 
++	numevt = (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) ?
++			 &mcasp->txnumevt :
++			 &mcasp->rxnumevt;
+ 	snd_pcm_hw_rule_add(substream->runtime, 0,
+ 			    SNDRV_PCM_HW_PARAM_PERIOD_SIZE,
+-			    davinci_mcasp_hw_rule_min_periodsize, NULL,
++			    davinci_mcasp_hw_rule_min_periodsize, numevt,
+ 			    SNDRV_PCM_HW_PARAM_PERIOD_SIZE, -1);
+ 
  	return 0;
- }
- 
-+static int dmaengine_pcm_sync_stop(struct snd_soc_component *component,
-+				   struct snd_pcm_substream *substream)
-+{
-+	return snd_dmaengine_pcm_sync_stop(substream);
-+}
-+
- static const struct snd_soc_component_driver dmaengine_pcm_component = {
- 	.name		= SND_DMAENGINE_PCM_DRV_NAME,
- 	.probe_order	= SND_SOC_COMP_ORDER_LATE,
-@@ -327,6 +333,7 @@ static const struct snd_soc_component_driver dmaengine_pcm_component = {
- 	.trigger	= dmaengine_pcm_trigger,
- 	.pointer	= dmaengine_pcm_pointer,
- 	.pcm_construct	= dmaengine_pcm_new,
-+	.sync_stop	= dmaengine_pcm_sync_stop,
- };
- 
- static const struct snd_soc_component_driver dmaengine_pcm_component_process = {
-@@ -339,6 +346,7 @@ static const struct snd_soc_component_driver dmaengine_pcm_component_process = {
- 	.pointer	= dmaengine_pcm_pointer,
- 	.copy_user	= dmaengine_copy_user,
- 	.pcm_construct	= dmaengine_pcm_new,
-+	.sync_stop	= dmaengine_pcm_sync_stop,
- };
- 
- static const char * const dmaengine_pcm_dma_channel_names[] = {
 -- 
 2.43.0
 
