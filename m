@@ -1,86 +1,118 @@
-Return-Path: <stable+bounces-58751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCB9C92BB6E
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 15:36:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3750092BB90
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 15:39:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66F0E1F27D78
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:36:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61C211C24103
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC3015F403;
-	Tue,  9 Jul 2024 13:33:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQiAJhjg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1FC2B9D4;
+	Tue,  9 Jul 2024 13:38:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5E515EFBD;
-	Tue,  9 Jul 2024 13:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E60D145325;
+	Tue,  9 Jul 2024 13:38:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720532038; cv=none; b=pM85jX/55NboITPT6FFpm8HNPkNR4OYx6y1GTQbzt6zgW4r6Zog729S6ZrK0Dh3/0QTxSwCKOH82agtQSrhId95VyrzWcFXri2B6Mx35snFCbSRVntoVRxBQtbxAiCNUU1IvWZSntYLIiGUKAgpNNYNIfPmynxZRrsvd5ceJTxI=
+	t=1720532303; cv=none; b=aN55/o7/yEm5wegqqUnU8tigezg4ysWgKXn2fbWJH2p/ecy9RY56YbpD36gjZA01HqULRFYo4AaALwRvhvWz6LjjZlkFoTkJLHUxdbCZM/qDKiApOKT7dFCzMe0efYlgVXHFq6Kru0RWmC4KrxUNpqACq0Dr+OuHmnSLeGQzmAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720532038; c=relaxed/simple;
-	bh=YpBr01fXSLRNi+/28zE/N5hTvft6w2xxp4+1RXcmi3M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QoURPci6JoBFOEibUtq99o46Wwyh/yH354inQeZHaA7X6J1yKbv+tieQkU9XWZkjFl1c6aYVxNYqxXeqKRZCqCh8JZITptk/rweno4zCPuvKYRoqLqbw5cKHjIKjaNcUymEiiu7OzB2zWIuJlb1TMHhD9HvTQqiZx4Cj78AiVwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQiAJhjg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05CE2C4AF07;
-	Tue,  9 Jul 2024 13:33:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720532037;
-	bh=YpBr01fXSLRNi+/28zE/N5hTvft6w2xxp4+1RXcmi3M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OQiAJhjgxAiqBufHRFuE+EC9RdkbjjcI6Da55YoSJZqi97L6mw1WttHv4042GTFxh
-	 yWSfrSF3402my+Flxx/jSfQtDLLzT64P1RLRCyj2MGmMGQppSNOQK/HuNVqUr8XR9r
-	 rPqezDDM3WCadU3JPWAJig/KkTZjG/w8gdPBwTzM=
-Date: Tue, 9 Jul 2024 15:33:54 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jim Mattson <jmattson@google.com>
-Cc: "Borislav Petkov (AMD)" <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>,
-	x86@kernel.org, linux-kernel@vger.kernel.org,
-	Greg Thelen <gthelen@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 5.10 RESEND] x86/retpoline: Move a NOENDBR annotation to
- the SRSO dummy return thunk
-Message-ID: <2024070930-monument-cola-a36e@gregkh>
-References: <20240709132058.227930-1-jmattson@google.com>
+	s=arc-20240116; t=1720532303; c=relaxed/simple;
+	bh=+Npn2ARSeScntu6PPTnz0FNM0maOuRq69uO3r2huVj4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JqzsDAmMigYxJa5xDQowBzWw9xheDbgw7nwF0GfQfQ07Br/uUtmGKEfDcbTUaWbDNsLtYhDgD8wCKb2Nr1hmsMbXXAfNi9jWEiReCLkm+X21xdosZy0UxWUwltL1KBRC7W1CwLSjfuktt15pObmCelxZ6jJnBZvfUr9BWkLsEhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-05 (Coremail) with SMTP id zQCowAA3PeU5PY1mLFdhAg--.39231S2;
+	Tue, 09 Jul 2024 21:38:09 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: dinguyen@kernel.org,
+	bp@alien8.de,
+	tony.luck@intel.com,
+	james.morse@arm.com,
+	mchehab@kernel.org,
+	rric@kernel.org,
+	niravkumar.l.rabara@intel.com
+Cc: linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] EDAC/altera: Fix possible null pointer dereference
+Date: Tue,  9 Jul 2024 21:37:59 +0800
+Message-Id: <20240709133759.1012350-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240709132058.227930-1-jmattson@google.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAA3PeU5PY1mLFdhAg--.39231S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7WF47GF13XF1kCr48Xr1DKFg_yoW8GFyrpF
+	47W34YyFyUKa48Gr4qvwn5XFy5Cwn3XayxWrWIya4Y93y3X345JryUZFWjya4jqrW8Cay3
+	tr45tw45Aay8JaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0JUQZ23UUUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On Tue, Jul 09, 2024 at 06:20:46AM -0700, Jim Mattson wrote:
-> The linux-5.10-y backport of commit b377c66ae350 ("x86/retpoline: Add
-> NOENDBR annotation to the SRSO dummy return thunk") misplaced the new
-> NOENDBR annotation, repeating the annotation on __x86_return_thunk,
-> rather than adding the annotation to the !CONFIG_CPU_SRSO version of
-> srso_alias_untrain_ret, as intended.
-> 
-> Move the annotation to the right place.
-> 
-> Fixes: 0bdc64e9e716 ("x86/retpoline: Add NOENDBR annotation to the SRSO dummy return thunk")
-> Reported-by: Greg Thelen <gthelen@google.com>
-> Signed-off-by: Jim Mattson <jmattson@google.com>
-> Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-> Cc: stable@vger.kernel.org
-> ---
->  arch/x86/lib/retpoline.S | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+In altr_s10_sdram_check_ecc_deps(), of_get_address() may return NULL which
+is later dereferenced. Fix this bug by adding NULL check.
 
-Why is this a RESEND?
+Cc: stable@vger.kernel.org
+Fixes: e1bca853dddc ("EDAC/altera: Add SDRAM ECC check for U-Boot")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/edac/altera_edac.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-And is this only needed in this one stable branch or in any others?
+diff --git a/drivers/edac/altera_edac.c b/drivers/edac/altera_edac.c
+index fe89f5c4837f..d6bf0eebeb41 100644
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -1086,6 +1086,7 @@ static int altr_s10_sdram_check_ecc_deps(struct altr_edac_device_dev *device)
+ 	struct arm_smccc_res result;
+ 	struct device_node *np;
+ 	phys_addr_t sdram_addr;
++	const __be32 *sdram_addrp;
+ 	u32 read_reg;
+ 	int ret;
+ 
+@@ -1093,8 +1094,14 @@ static int altr_s10_sdram_check_ecc_deps(struct altr_edac_device_dev *device)
+ 	if (!np)
+ 		goto sdram_err;
+ 
+-	sdram_addr = of_translate_address(np, of_get_address(np, 0,
+-							     NULL, NULL));
++	sdram_addrp = of_get_address(np, 0, NULL, NULL);
++	if (!sdram_addrp)
++		return -EINVAL;
++
++	sdram_addr = of_translate_address(np, sdram_addrp);
++	if (!sdram_addr)
++		return -EINVAL;
++
+ 	of_node_put(np);
+ 	sdram_ecc_addr = (unsigned long)sdram_addr + prv->ecc_en_ofst;
+ 	arm_smccc_smc(INTEL_SIP_SMC_REG_READ, sdram_ecc_addr,
+-- 
+2.25.1
 
-thanks,
-
-greg k-h
 
