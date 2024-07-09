@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-58311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3169B92B65E
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:12:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6069592B668
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:13:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFB982838C5
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:12:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9055D1C21B08
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B0F158218;
-	Tue,  9 Jul 2024 11:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF69B157A72;
+	Tue,  9 Jul 2024 11:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQ/lcG9i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsjbSfj4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A45157A72;
-	Tue,  9 Jul 2024 11:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4E0155389;
+	Tue,  9 Jul 2024 11:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523555; cv=none; b=Ps2ArlLDFZSWj2369gg5jTgL5Xzr7QYyAskVxhEARAJ5PCB7zmiRmYS6ykhB66ziwHe4Bqov93pbFUSUmpDuN7dsfc/bWINk0j+l/pdmyCnmCLAeWDVijxA6Vm8A6Rh4tZwh6Q9HUUX69HeDDvHH4JzRU49k6PSCsnxnNaH/Vig=
+	t=1720523587; cv=none; b=P1eE4iRz/sHSf7hOOFZMtze+LOHwDdXv9e4mVpILMnvSNiJihHlcWzTNU7K6JB6pBsfbaITfPCu0XSAbwpuqJJDw2I0hYjlknkGYG1LRVmEnJS3ch65CIPQGsH6DaI/gMTIvCbTqIIi6Y3EksZ4G698IYYDutz5hunXzIdHxoyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523555; c=relaxed/simple;
-	bh=qZ3c5IIjDmjFq9DnCfckAGECeb4rqWfQWJvtPC4aYvg=;
+	s=arc-20240116; t=1720523587; c=relaxed/simple;
+	bh=20bRCnxHG2XHA99mrA3m3WN4AEU2pmUKCqnZjawqzT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X1OHFJGSvwiT6dEQ8IODNIy8VQqWSuRpADj4luhyO9U/bqvcnMfl6PSP6PlwU+X4gQiVoZGJzTifTRj4jUHxKXk0F2c0oWRrdNMts97PW+ML+aXqkVgikVQEQyuy21lRsyOI22wK8at21/qV16SWg7Y8lxYKowtHPJK4Fa8ouns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQ/lcG9i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0222C3277B;
-	Tue,  9 Jul 2024 11:12:34 +0000 (UTC)
+	 MIME-Version; b=tUHbnQQ0noSRZTs0lsWhgxO3lrBS479IeHGLTdNpBlURpOqwZzmfjOSZUFCI5ULOfq8jAqWzhexRpyyjuBhbqZbiimHPVrrmv6kH25lzsPPrzD+mDLJGjwOpI3E4zLhGrwwFppkAl7rABHLLWRqPM8G3sGZSTZI21dory77tb0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsjbSfj4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25778C3277B;
+	Tue,  9 Jul 2024 11:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523555;
-	bh=qZ3c5IIjDmjFq9DnCfckAGECeb4rqWfQWJvtPC4aYvg=;
+	s=korg; t=1720523587;
+	bh=20bRCnxHG2XHA99mrA3m3WN4AEU2pmUKCqnZjawqzT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CQ/lcG9iMJJr2wSq9yyKR84mefZ/nV6r97K8D8t8pZOyY3v+oSW3hYzHqYHYwJw45
-	 wY3Hy0GEWdOSd4owWAsSIl1Mj9nlDo9XB/YSqGGeE9yjj58pPuh3fvlYoDaB9cCeuA
-	 cedRQF4ImU4/fFAw7m8vKotvTLEkUTVrdxG/ZRZI=
+	b=SsjbSfj4lh4FgLfrBA92RtELfUnbMe8qX47e8iiRtXJB3BOnIS3DZMXDGg0bi+lgQ
+	 1JnsWJ1DFQPqdCM8MbVZFdbf356aGFIgkI0MNSTJROqD7/9mWn5Kcovxdq84qJujhA
+	 J+qN2OOc3/LlkWnkKiur6mMbFdqy6nOFyfr+Xtjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Atish Patra <atishp@rivosinc.com>,
-	Anup Patel <anup@brainfault.org>,
+	Hailey Mothershead <hailmo@amazon.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/139] RISC-V: KVM: Fix the initial sample period value
-Date: Tue,  9 Jul 2024 13:08:34 +0200
-Message-ID: <20240709110658.708703097@linuxfoundation.org>
+Subject: [PATCH 6.6 015/139] crypto: aead,cipher - zeroize key buffer after use
+Date: Tue,  9 Jul 2024 13:08:35 +0200
+Message-ID: <20240709110658.749551333@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
 References: <20240709110658.146853929@linuxfoundation.org>
@@ -67,37 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Atish Patra <atishp@rivosinc.com>
+From: Hailey Mothershead <hailmo@amazon.com>
 
-[ Upstream commit 57990ab90ce31aadac0d5a6293f5582e24ff7521 ]
+[ Upstream commit 23e4099bdc3c8381992f9eb975c79196d6755210 ]
 
-The initial sample period value when counter value is not assigned
-should be set to maximum value supported by the counter width.
-Otherwise, it may result in spurious interrupts.
+I.G 9.7.B for FIPS 140-3 specifies that variables temporarily holding
+cryptographic information should be zeroized once they are no longer
+needed. Accomplish this by using kfree_sensitive for buffers that
+previously held the private key.
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Signed-off-by: Atish Patra <atishp@rivosinc.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20240420151741.962500-11-atishp@rivosinc.com
-Signed-off-by: Anup Patel <anup@brainfault.org>
+Signed-off-by: Hailey Mothershead <hailmo@amazon.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kvm/vcpu_pmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ crypto/aead.c   | 3 +--
+ crypto/cipher.c | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
-index 86391a5061dda..cee1b9ca4ec48 100644
---- a/arch/riscv/kvm/vcpu_pmu.c
-+++ b/arch/riscv/kvm/vcpu_pmu.c
-@@ -39,7 +39,7 @@ static u64 kvm_pmu_get_sample_period(struct kvm_pmc *pmc)
- 	u64 sample_period;
+diff --git a/crypto/aead.c b/crypto/aead.c
+index d5ba204ebdbfa..ecab683016b7d 100644
+--- a/crypto/aead.c
++++ b/crypto/aead.c
+@@ -45,8 +45,7 @@ static int setkey_unaligned(struct crypto_aead *tfm, const u8 *key,
+ 	alignbuffer = (u8 *)ALIGN((unsigned long)buffer, alignmask + 1);
+ 	memcpy(alignbuffer, key, keylen);
+ 	ret = crypto_aead_alg(tfm)->setkey(tfm, alignbuffer, keylen);
+-	memset(alignbuffer, 0, keylen);
+-	kfree(buffer);
++	kfree_sensitive(buffer);
+ 	return ret;
+ }
  
- 	if (!pmc->counter_val)
--		sample_period = counter_val_mask + 1;
-+		sample_period = counter_val_mask;
- 	else
- 		sample_period = (-pmc->counter_val) & counter_val_mask;
+diff --git a/crypto/cipher.c b/crypto/cipher.c
+index 47c77a3e59783..40cae908788ec 100644
+--- a/crypto/cipher.c
++++ b/crypto/cipher.c
+@@ -34,8 +34,7 @@ static int setkey_unaligned(struct crypto_cipher *tfm, const u8 *key,
+ 	alignbuffer = (u8 *)ALIGN((unsigned long)buffer, alignmask + 1);
+ 	memcpy(alignbuffer, key, keylen);
+ 	ret = cia->cia_setkey(crypto_cipher_tfm(tfm), alignbuffer, keylen);
+-	memset(alignbuffer, 0, keylen);
+-	kfree(buffer);
++	kfree_sensitive(buffer);
+ 	return ret;
  
+ }
 -- 
 2.43.0
 
