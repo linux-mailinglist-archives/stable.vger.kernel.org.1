@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE8092B775
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6437092B679
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:13:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 378D2284103
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9550B1C21CFE
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:13:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C814158A06;
-	Tue,  9 Jul 2024 11:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C462A157A72;
+	Tue,  9 Jul 2024 11:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BgJqOt2P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdnA2rCC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A15C14E2F4;
-	Tue,  9 Jul 2024 11:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A21155389;
+	Tue,  9 Jul 2024 11:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524202; cv=none; b=lW1NQFNgkFbyDUZzYhvHhu5yuLlgXR7U+h0fI35crQDHFSoWhS0iOd2Jy8kQYsVi+ufrIaCFaDiyxJ7yMTvgETA7CgrwgV0Dugy8xwsCu2+nw4LzodtMZx8g95lvP98qVQrWfCDHazWwEANdvp1/3oZOBHDdciVjP0LjeQaFx34=
+	t=1720523634; cv=none; b=Pab6hkET+QuFmNN6TNVVWlbpHCt8xyVtZiA6kzM8vVMeRTwJqa3j/DfH6B6J6U+eVDupoTERX8Kzwnv+wVkQllhqhjnEfZmPd9GZ7KIYAOEjE5/m9kEQlSgP6jHOLCWrqIfYcUqqy2GVSDEY+2w33zwbeAoH0/gHPRq+YXghTts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524202; c=relaxed/simple;
-	bh=6eViaCiX1MnGOsTAxw9PySMg7LmlAqdyuG/XwCjaxdE=;
+	s=arc-20240116; t=1720523634; c=relaxed/simple;
+	bh=kw8bExwCuuFc79CKkIHFNybv1+PvYHTL2DmOSHlUjQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GFUYfKP4K80Yb2kVaH2cjohW+4qbMR8wBiwAFeDHRuC8HTtb/h3WOL/kvyclGk4ByeEdKViXkNL/RWyZ5Nd2WoF3cEyKj+9tcXavwhP9Wa1CR2H3iVSu7A8qB0Dxbp2I560ImNzIzuxWKpR7ixo8Kk/z6u9sdlFWOtBV4KAsgEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BgJqOt2P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87110C3277B;
-	Tue,  9 Jul 2024 11:23:21 +0000 (UTC)
+	 MIME-Version; b=I0H7Llo8YbQr5niY/zLf/4uqsXxW08kFCJvv1NJCFTlkkE1j1ug61tPx3f6f2Zq31B6QH3116VP/NWAhSRmvBHgRvyyYT6+WpEZ5lYgxlQs1dqICOjyRyWPuH+MVdgp3Ox2TFwdbkyRGQIqbbDKvmQ8Yk6GirW2SR/Ot4M7FPJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdnA2rCC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C60C3277B;
+	Tue,  9 Jul 2024 11:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524201;
-	bh=6eViaCiX1MnGOsTAxw9PySMg7LmlAqdyuG/XwCjaxdE=;
+	s=korg; t=1720523634;
+	bh=kw8bExwCuuFc79CKkIHFNybv1+PvYHTL2DmOSHlUjQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BgJqOt2P4oEOsuyn3DZJGT9BQ7p80sd9l6UDjMR5ivdTR1RZdzskvIRNeIehJI9pT
-	 s9KokfCk6Y0UT0BZQoSlaBpay719/W7yV28kdT67zRBf0/JpQ2YRAB4maeZDTJk2RJ
-	 uKle0CZg+khdt6uDfrJJI1yyo2TSjrz1nVE0EfKM=
+	b=mdnA2rCC+aZs730rBklHLyO1FGBb9HTZCvmDR9ZVKCJa1BXM382vIEvuG/7hrQJJc
+	 tRO1X6rbBXdeTXi+3J8UIp6pYm9G59UV+zfZffpDXMH8pb/OUA7ZsNpHGyr732nw9A
+	 bqLd/hArtyokOkCC1nvbIu3hCbBj/mQrfXCwHlfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 105/197] net: txgbe: add extra handle for MSI/INTx into thread irq handle
+Subject: [PATCH 6.6 059/139] vhost: Release worker mutex during flushes
 Date: Tue,  9 Jul 2024 13:09:19 +0200
-Message-ID: <20240709110713.023365375@linuxfoundation.org>
+Message-ID: <20240709110700.452554456@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +62,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit 1e1fa1723eb3a293d7d0b1c1a9ad8774c1ef0aa0 ]
+[ Upstream commit ba704ff4e142fd3cfaf3379dd3b3b946754e06e3 ]
 
-Rename original txgbe_misc_irq_handle() to txgbe_misc_irq_thread_fn()
-since it is the handle thread to wake up. And add the primary handler
-to deal the case of MSI/INTx, because there is a schedule NAPI poll.
+In the next patches where the worker can be killed while in use, we
+need to be able to take the worker mutex and kill queued works for
+new IO and flushes, and set some new flags to prevent new
+__vhost_vq_attach_worker calls from swapping in/out killed workers.
 
-Fixes: aefd013624a1 ("net: txgbe: use irq_domain for interrupt controller")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+If we are holding the worker mutex during a flush and the flush's work
+is still in the queue, the worker code that will handle the SIGKILL
+cleanup won't be able to take the mutex and perform it's cleanup. So
+this patch has us drop the worker mutex while waiting for the flush
+to complete.
+
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Message-Id: <20240316004707.45557-8-michael.christie@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/wangxun/txgbe/txgbe_irq.c    | 44 ++++++++++++++++---
- 1 file changed, 39 insertions(+), 5 deletions(-)
+ drivers/vhost/vhost.c | 44 +++++++++++++++++++++++++++++--------------
+ 1 file changed, 30 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-index 1490fd6ddbdf9..a4cf682dca650 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-@@ -111,6 +111,36 @@ static const struct irq_domain_ops txgbe_misc_irq_domain_ops = {
- };
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 67bd947cc556d..069c8a23bff9e 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -276,21 +276,36 @@ void vhost_vq_flush(struct vhost_virtqueue *vq)
+ EXPORT_SYMBOL_GPL(vhost_vq_flush);
  
- static irqreturn_t txgbe_misc_irq_handle(int irq, void *data)
-+{
-+	struct wx_q_vector *q_vector;
-+	struct txgbe *txgbe = data;
-+	struct wx *wx = txgbe->wx;
-+	u32 eicr;
+ /**
+- * vhost_worker_flush - flush a worker
++ * __vhost_worker_flush - flush a worker
+  * @worker: worker to flush
+  *
+- * This does not use RCU to protect the worker, so the device or worker
+- * mutex must be held.
++ * The worker's flush_mutex must be held.
+  */
+-static void vhost_worker_flush(struct vhost_worker *worker)
++static void __vhost_worker_flush(struct vhost_worker *worker)
+ {
+ 	struct vhost_flush_struct flush;
+ 
++	if (!worker->attachment_cnt)
++		return;
 +
-+	if (wx->pdev->msix_enabled)
-+		return IRQ_WAKE_THREAD;
-+
-+	eicr = wx_misc_isb(wx, WX_ISB_VEC0);
-+	if (!eicr) {
-+		/* shared interrupt alert!
-+		 * the interrupt that we masked before the ICR read.
-+		 */
-+		if (netif_running(wx->netdev))
-+			txgbe_irq_enable(wx, true);
-+		return IRQ_NONE;        /* Not our interrupt */
-+	}
-+	wx->isb_mem[WX_ISB_VEC0] = 0;
-+	if (!(wx->pdev->msi_enabled))
-+		wr32(wx, WX_PX_INTA, 1);
-+
-+	/* would disable interrupts here but it is auto disabled */
-+	q_vector = wx->q_vector[0];
-+	napi_schedule_irqoff(&q_vector->napi);
-+
-+	return IRQ_WAKE_THREAD;
+ 	init_completion(&flush.wait_event);
+ 	vhost_work_init(&flush.work, vhost_flush_work);
+ 
+ 	vhost_worker_queue(worker, &flush.work);
++	/*
++	 * Drop mutex in case our worker is killed and it needs to take the
++	 * mutex to force cleanup.
++	 */
++	mutex_unlock(&worker->mutex);
+ 	wait_for_completion(&flush.wait_event);
++	mutex_lock(&worker->mutex);
 +}
 +
-+static irqreturn_t txgbe_misc_irq_thread_fn(int irq, void *data)
- {
- 	struct txgbe *txgbe = data;
- 	struct wx *wx = txgbe->wx;
-@@ -157,6 +187,7 @@ void txgbe_free_misc_irq(struct txgbe *txgbe)
++static void vhost_worker_flush(struct vhost_worker *worker)
++{
++	mutex_lock(&worker->mutex);
++	__vhost_worker_flush(worker);
++	mutex_unlock(&worker->mutex);
+ }
  
- int txgbe_setup_misc_irq(struct txgbe *txgbe)
- {
-+	unsigned long flags = IRQF_ONESHOT;
- 	struct wx *wx = txgbe->wx;
- 	int hwirq, err;
+ void vhost_dev_flush(struct vhost_dev *dev)
+@@ -298,15 +313,8 @@ void vhost_dev_flush(struct vhost_dev *dev)
+ 	struct vhost_worker *worker;
+ 	unsigned long i;
  
-@@ -170,14 +201,17 @@ int txgbe_setup_misc_irq(struct txgbe *txgbe)
- 		irq_create_mapping(txgbe->misc.domain, hwirq);
+-	xa_for_each(&dev->worker_xa, i, worker) {
+-		mutex_lock(&worker->mutex);
+-		if (!worker->attachment_cnt) {
+-			mutex_unlock(&worker->mutex);
+-			continue;
+-		}
++	xa_for_each(&dev->worker_xa, i, worker)
+ 		vhost_worker_flush(worker);
+-		mutex_unlock(&worker->mutex);
+-	}
+ }
+ EXPORT_SYMBOL_GPL(vhost_dev_flush);
  
- 	txgbe->misc.chip = txgbe_irq_chip;
--	if (wx->pdev->msix_enabled)
-+	if (wx->pdev->msix_enabled) {
- 		txgbe->misc.irq = wx->msix_entry->vector;
--	else
-+	} else {
- 		txgbe->misc.irq = wx->pdev->irq;
-+		if (!wx->pdev->msi_enabled)
-+			flags |= IRQF_SHARED;
-+	}
+@@ -685,7 +693,6 @@ static void __vhost_vq_attach_worker(struct vhost_virtqueue *vq,
+ 	 * device wide flushes which doesn't use RCU for execution.
+ 	 */
+ 	mutex_lock(&old_worker->mutex);
+-	old_worker->attachment_cnt--;
+ 	/*
+ 	 * We don't want to call synchronize_rcu for every vq during setup
+ 	 * because it will slow down VM startup. If we haven't done
+@@ -696,6 +703,8 @@ static void __vhost_vq_attach_worker(struct vhost_virtqueue *vq,
+ 	mutex_lock(&vq->mutex);
+ 	if (!vhost_vq_get_backend(vq) && !vq->kick) {
+ 		mutex_unlock(&vq->mutex);
++
++		old_worker->attachment_cnt--;
+ 		mutex_unlock(&old_worker->mutex);
+ 		/*
+ 		 * vsock can queue anytime after VHOST_VSOCK_SET_GUEST_CID.
+@@ -711,7 +720,8 @@ static void __vhost_vq_attach_worker(struct vhost_virtqueue *vq,
+ 	/* Make sure new vq queue/flush/poll calls see the new worker */
+ 	synchronize_rcu();
+ 	/* Make sure whatever was queued gets run */
+-	vhost_worker_flush(old_worker);
++	__vhost_worker_flush(old_worker);
++	old_worker->attachment_cnt--;
+ 	mutex_unlock(&old_worker->mutex);
+ }
  
--	err = request_threaded_irq(txgbe->misc.irq, NULL,
--				   txgbe_misc_irq_handle,
--				   IRQF_ONESHOT,
-+	err = request_threaded_irq(txgbe->misc.irq, txgbe_misc_irq_handle,
-+				   txgbe_misc_irq_thread_fn,
-+				   flags,
- 				   wx->netdev->name, txgbe);
- 	if (err)
- 		goto del_misc_irq;
+@@ -764,6 +774,12 @@ static int vhost_free_worker(struct vhost_dev *dev,
+ 		mutex_unlock(&worker->mutex);
+ 		return -EBUSY;
+ 	}
++	/*
++	 * A flush might have raced and snuck in before attachment_cnt was set
++	 * to zero. Make sure flushes are flushed from the queue before
++	 * freeing.
++	 */
++	__vhost_worker_flush(worker);
+ 	mutex_unlock(&worker->mutex);
+ 
+ 	vhost_worker_destroy(dev, worker);
 -- 
 2.43.0
 
