@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-58596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3087A92B7C8
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7072D92B82E
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:31:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 624101C23559
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1991B22198
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB77156C73;
-	Tue,  9 Jul 2024 11:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D6014E2C4;
+	Tue,  9 Jul 2024 11:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SltF9VtV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YGdV0sT0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864D127713;
-	Tue,  9 Jul 2024 11:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91A755E4C;
+	Tue,  9 Jul 2024 11:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524418; cv=none; b=rffTvhkUNoBgCibalPP183H+ldfScRsEJjTVHwNqmFjyFGTkP4p1soC+xrDywVFIaOWCq/qAjDTgl31IixyqvSt9q7jR3FG1pod6NV61MMbcVF9YQpP9VgDtyTuVt72rlsQJqNQUPUHTOJ25+eX02tgLWCkV0WOJLn+pERyivsg=
+	t=1720524685; cv=none; b=mGmr0aOUINq3cg7kJKY+24jKkxJSF9mC2ySm6iN7dCNZzBCoaBXgZMxZBPLcT2vNMDCaEo7uMx2wTyYKZlCIo+77VNBoRmh1aV0nu9srnt66gqwHpMHxXEJ1/lKJS1iVv+vRcA4KqWy0DBopg2HqQvoZs36lKuHxhCNmddmejXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524418; c=relaxed/simple;
-	bh=Jv1eG//8koTusrXg6vDKCu533q6BYiBJGNKzQL6UM/c=;
+	s=arc-20240116; t=1720524685; c=relaxed/simple;
+	bh=9rV/l0Y1ClMlfHUeG51+pv+1KX9XZEvRT+5hgO62+DE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDsBdl6aCFymBFv/Y3sLIKKQhSBqqSOkpbpX/sMYlzJ9q5IgXzLrpf8vYFOAieLPZfjwSlXx6LPRbeJw8UlxzgEeXqPHhAKhxiCjEQXPfg5d0LQvdtIZQQACx12NMiO/U/LMmp6yuJWPGaFP9s0OPTuAiPaFjkFkYBfEnjc9Eoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SltF9VtV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02BA6C32786;
-	Tue,  9 Jul 2024 11:26:57 +0000 (UTC)
+	 MIME-Version; b=smBW4u0lf1g8X0eNElpOfha8sCPFlSc4GJZQT3wzGLVtrXRGnvCRu/MaIYOhJ0wOJvlQSGzX21RRSMhSRI0M23ydmfjw5gGvmy1FtdCWX8bhvHzenmn8NMUODKBSaLiEnUrZXmW40P7gREPmutTX0vOU7hKWRXbDGb2EZgPzx68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YGdV0sT0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420B5C3277B;
+	Tue,  9 Jul 2024 11:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524418;
-	bh=Jv1eG//8koTusrXg6vDKCu533q6BYiBJGNKzQL6UM/c=;
+	s=korg; t=1720524685;
+	bh=9rV/l0Y1ClMlfHUeG51+pv+1KX9XZEvRT+5hgO62+DE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SltF9VtVFD1o/I7FoMsncvu0vSFZFJRzksW1gxdu2kP2Gynur7I2QXYn4E9taFdaH
-	 GRFTc3vcxmwZxbAOGBOIp6Poz+NaLia4HEQ4FfKunSUSK+toEZ2tNgvINWucLJPuhK
-	 veR4WCDNujLEN2IC5PSxUNxCnEsAkuUI1J+ngbak=
+	b=YGdV0sT0iJJTmW3skhtTOLfHZ7eqd5JlEZr91zddO5i8rBb0ZauMlo9IXnwRKac+m
+	 t0dp3ziHs/n1SFH+JQNrR+f17jNGs0R6Nn+ga7G9Pj3/BvZ0SFSX9VvnPjksbrlw+0
+	 S024p4u1nyRlUVz2tmIcfHqbPokfGHpYULKnjidc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian-Hong Pan <jhp@endlessos.org>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 176/197] ALSA: hda/realtek: Enable headset mic of JP-IK LEAP W502 with ALC897
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 067/102] btrfs: fix adding block group to a reclaim list and the unused list during reclaim
 Date: Tue,  9 Jul 2024 13:10:30 +0200
-Message-ID: <20240709110715.757608868@linuxfoundation.org>
+Message-ID: <20240709110653.987438539@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +66,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian-Hong Pan <jhp@endlessos.org>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit 45e37f9ce28d248470bab4376df2687a215d1b22 ]
+commit 48f091fd50b2eb33ae5eaea9ed3c4f81603acf38 upstream.
 
-JP-IK LEAP W502 laptop's headset mic is not enabled until
-ALC897_FIXUP_HEADSET_MIC_PIN3 quirk is applied.
+There is a potential parallel list adding for retrying in
+btrfs_reclaim_bgs_work and adding to the unused list. Since the block
+group is removed from the reclaim list and it is on a relocation work,
+it can be added into the unused list in parallel. When that happens,
+adding it to the reclaim list will corrupt the list head and trigger
+list corruption like below.
 
-Here is the original pin node values:
+Fix it by taking fs_info->unused_bgs_lock.
 
-0x11 0x40000000
-0x12 0xb7a60130
-0x14 0x90170110
-0x15 0x411111f0
-0x16 0x411111f0
-0x17 0x411111f0
-0x18 0x411111f0
-0x19 0x411111f0
-0x1a 0x411111f0
-0x1b 0x03211020
-0x1c 0x411111f0
-0x1d 0x4026892d
-0x1e 0x411111f0
-0x1f 0x411111f0
+  [177.504][T2585409] BTRFS error (device nullb1): error relocating ch= unk 2415919104
+  [177.514][T2585409] list_del corruption. next->prev should be ff1100= 0344b119c0, but was ff11000377e87c70. (next=3Dff110002390cd9c0)
+  [177.529][T2585409] ------------[ cut here ]------------
+  [177.537][T2585409] kernel BUG at lib/list_debug.c:65!
+  [177.545][T2585409] Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
+  [177.555][T2585409] CPU: 9 PID: 2585409 Comm: kworker/u128:2 Tainted: G        W          6.10.0-rc5-kts #1
+  [177.568][T2585409] Hardware name: Supermicro SYS-520P-WTR/X12SPW-TF, BIOS 1.2 02/14/2022
+  [177.579][T2585409] Workqueue: events_unbound btrfs_reclaim_bgs_work[btrfs]
+  [177.589][T2585409] RIP: 0010:__list_del_entry_valid_or_report.cold+0x70/0x72
+  [177.624][T2585409] RSP: 0018:ff11000377e87a70 EFLAGS: 00010286
+  [177.633][T2585409] RAX: 000000000000006d RBX: ff11000344b119c0 RCX:0000000000000000
+  [177.644][T2585409] RDX: 000000000000006d RSI: 0000000000000008 RDI:ffe21c006efd0f40
+  [177.655][T2585409] RBP: ff110002e0509f78 R08: 0000000000000001 R09:ffe21c006efd0f08
+  [177.665][T2585409] R10: ff11000377e87847 R11: 0000000000000000 R12:ff110002390cd9c0
+  [177.676][T2585409] R13: ff11000344b119c0 R14: ff110002e0508000 R15:dffffc0000000000
+  [177.687][T2585409] FS:  0000000000000000(0000) GS:ff11000fec880000(0000) knlGS:0000000000000000
+  [177.700][T2585409] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [177.709][T2585409] CR2: 00007f06bc7b1978 CR3: 0000001021e86005 CR4:0000000000771ef0
+  [177.720][T2585409] DR0: 0000000000000000 DR1: 0000000000000000 DR2:0000000000000000
+  [177.731][T2585409] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7:0000000000000400
+  [177.742][T2585409] PKRU: 55555554
+  [177.748][T2585409] Call Trace:
+  [177.753][T2585409]  <TASK>
+  [177.759][T2585409]  ? __die_body.cold+0x19/0x27
+  [177.766][T2585409]  ? die+0x2e/0x50
+  [177.772][T2585409]  ? do_trap+0x1ea/0x2d0
+  [177.779][T2585409]  ? __list_del_entry_valid_or_report.cold+0x70/0x72
+  [177.788][T2585409]  ? do_error_trap+0xa3/0x160
+  [177.795][T2585409]  ? __list_del_entry_valid_or_report.cold+0x70/0x72
+  [177.805][T2585409]  ? handle_invalid_op+0x2c/0x40
+  [177.812][T2585409]  ? __list_del_entry_valid_or_report.cold+0x70/0x72
+  [177.820][T2585409]  ? exc_invalid_op+0x2d/0x40
+  [177.827][T2585409]  ? asm_exc_invalid_op+0x1a/0x20
+  [177.834][T2585409]  ? __list_del_entry_valid_or_report.cold+0x70/0x72
+  [177.843][T2585409]  btrfs_delete_unused_bgs+0x3d9/0x14c0 [btrfs]
 
-Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
-Link: https://lore.kernel.org/r/20240520055008.7083-2-jhp@endlessos.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+There is a similar retry_list code in btrfs_delete_unused_bgs(), but it is
+safe, AFAICS. Since the block group was in the unused list, the used bytes
+should be 0 when it was added to the unused list. Then, it checks
+block_group->{used,reserved,pinned} are still 0 under the
+block_group->lock. So, they should be still eligible for the unused list,
+not the reclaim list.
+
+The reason it is safe there it's because because we're holding
+space_info->groups_sem in write mode.
+
+That means no other task can allocate from the block group, so while we
+are at deleted_unused_bgs() it's not possible for other tasks to
+allocate and deallocate extents from the block group, so it can't be
+added to the unused list or the reclaim list by anyone else.
+
+The bug can be reproduced by btrfs/166 after a few rounds. In practice
+this can be hit when relocation cannot find more chunk space and ends
+with ENOSPC.
+
+Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Suggested-by: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
+Fixes: 4eb4e85c4f81 ("btrfs: retry block group reclaim without infinite loop")
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/btrfs/block-group.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 3a56434c86bd9..c0530d4aa3fc3 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -12029,6 +12029,7 @@ enum {
- 	ALC897_FIXUP_LENOVO_HEADSET_MODE,
- 	ALC897_FIXUP_HEADSET_MIC_PIN2,
- 	ALC897_FIXUP_UNIS_H3C_X500S,
-+	ALC897_FIXUP_HEADSET_MIC_PIN3,
- };
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -1720,8 +1720,17 @@ void btrfs_reclaim_bgs_work(struct work_
+ next:
+ 		if (ret) {
+ 			/* Refcount held by the reclaim_bgs list after splice. */
+-			btrfs_get_block_group(bg);
+-			list_add_tail(&bg->bg_list, &retry_list);
++			spin_lock(&fs_info->unused_bgs_lock);
++			/*
++			 * This block group might be added to the unused list
++			 * during the above process. Move it back to the
++			 * reclaim list otherwise.
++			 */
++			if (list_empty(&bg->bg_list)) {
++				btrfs_get_block_group(bg);
++				list_add_tail(&bg->bg_list, &retry_list);
++			}
++			spin_unlock(&fs_info->unused_bgs_lock);
+ 		}
+ 		btrfs_put_block_group(bg);
  
- static const struct hda_fixup alc662_fixups[] = {
-@@ -12475,10 +12476,18 @@ static const struct hda_fixup alc662_fixups[] = {
- 			{}
- 		},
- 	},
-+	[ALC897_FIXUP_HEADSET_MIC_PIN3] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x19, 0x03a11050 }, /* use as headset mic */
-+			{ }
-+		},
-+	},
- };
- 
- static const struct snd_pci_quirk alc662_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1019, 0x9087, "ECS", ALC662_FIXUP_ASUS_MODE2),
-+	SND_PCI_QUIRK(0x1019, 0x9859, "JP-IK LEAP W502", ALC897_FIXUP_HEADSET_MIC_PIN3),
- 	SND_PCI_QUIRK(0x1025, 0x022f, "Acer Aspire One", ALC662_FIXUP_INV_DMIC),
- 	SND_PCI_QUIRK(0x1025, 0x0241, "Packard Bell DOTS", ALC662_FIXUP_INV_DMIC),
- 	SND_PCI_QUIRK(0x1025, 0x0308, "Acer Aspire 8942G", ALC662_FIXUP_ASPIRE),
--- 
-2.43.0
-
 
 
 
