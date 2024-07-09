@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D88FF92B839
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:31:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A1C792B7D2
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FF28282179
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 444232855DC
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A447154C07;
-	Tue,  9 Jul 2024 11:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 934FE156238;
+	Tue,  9 Jul 2024 11:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCvcfQUr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G8Jdv9k5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD06655E4C;
-	Tue,  9 Jul 2024 11:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B1627713;
+	Tue,  9 Jul 2024 11:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524715; cv=none; b=ttUT3CkI+nlpwjGL9JQN2YVdwBMRq8p62UXpFVHwTBL40wRH6odYA/QLZnQzVi1R3JyJeN1kCJW/Wl6zVU8/8L+EmnhCMYN+3H1pXaD1wIgMCdTKrQaOM/sreenpKo+3eqTnqtjyW6TC/VgLBPkS4Ojqozt2T1tx3iRYzeqiZfg=
+	t=1720524453; cv=none; b=MORmtHu7gPaGZRilguUsmaAD0Zipg6VWOI7SneN66Di/2FbRg+2DCxyjxxthEGrJIvYmTtH90anaEWSP1G2rZFgUGMsMZFJse2z+QbEs802YQ0Y55Vx9klkAx0BOjLGhtjMCduZh7LZ+Xdw/77fohBKgM7J6zFZ87e03mcdjk7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524715; c=relaxed/simple;
-	bh=g+eTw1sspSCrVQkNpH/CoJiq9Rsc8y9dYtyCpNL3cfM=;
+	s=arc-20240116; t=1720524453; c=relaxed/simple;
+	bh=8iVUYOd+7oeneKgFuIbu/QBxgGU78d3hbo1H8VITdbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JlzJBdrMU0Vv3oLMRr7ra8M4GtaYpIBxx+iuvASQqf71ABkg3Cl4oeEMkuZYtiGPgSQ7VCJkP3gK7wc+XSFPiDWUwmFYoLamKFumiZfWKc7tPHfzfYvqOK4c63oHlCR6CvLVsmqk9v9aFFt/e/NhEY0L8t+vsQFM0Gq5uQoeRU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCvcfQUr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F13C3277B;
-	Tue,  9 Jul 2024 11:31:54 +0000 (UTC)
+	 MIME-Version; b=uBs63mkM6miFhT+NH34VBm3PMBUWBH/rPbw+QzNQDgcgW//astLDvwbKA7zDdeAp2x9CdNg2fTOVY/4zyyHXwwDZM81xp4tngx3JcnDJsjdcAxyTevNijJzYezRCWuGtxHq03UpS0OJVxQRPeUzJqVg+RXy+VaBap7/IuEO+Xf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8Jdv9k5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD06AC3277B;
+	Tue,  9 Jul 2024 11:27:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524714;
-	bh=g+eTw1sspSCrVQkNpH/CoJiq9Rsc8y9dYtyCpNL3cfM=;
+	s=korg; t=1720524453;
+	bh=8iVUYOd+7oeneKgFuIbu/QBxgGU78d3hbo1H8VITdbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MCvcfQUryDAfTdBxW5NOX4LB1obJteexJPSyJTHf13VBFKuMoODMaSR4AXic24M3z
-	 +Z2D87haxhNIB5O+Rf/eoM8we0AnEOMM458zRQAIDjg/KGu1zKWorWc7VXHglItECv
-	 3iVaFdP5szVKEzjmVAJfGs4sSUe8IrnYWoK4snMg=
+	b=G8Jdv9k5FZgpjDbRpSYUB6aZNb56Q9sscniNFcT51c3rEb4tUupnbPBr5TRVKabaY
+	 IDBlE34TtdRNsDNf+Tr320FboAjo5HlqEFwQCYA+LDA6R/QOUTVHgAueJYfXHfBJBW
+	 dYtBaTec5lj+iBGqYM/kJNPRAai4N/cCkPrD1wwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Schoenick <johns@valvesoftware.com>,
-	Matthew Schwartz <mattschwartz@gwu.edu>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>
-Subject: [PATCH 6.1 076/102] drm: panel-orientation-quirks: Add quirk for Valve Galileo
+	Jim Wylder <jwylder@google.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 185/197] regmap-i2c: Subtract reg size from max_write
 Date: Tue,  9 Jul 2024 13:10:39 +0200
-Message-ID: <20240709110654.330410686@linuxfoundation.org>
+Message-ID: <20240709110716.099996580@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Schoenick <johns@valvesoftware.com>
+From: Jim Wylder <jwylder@google.com>
 
-commit 26746ed40bb0e4ebe2b2bd61c04eaaa54e263c14 upstream.
+[ Upstream commit 611b7eb19d0a305d4de00280e4a71a1b15c507fc ]
 
-Valve's Steam Deck Galileo revision has a 800x1280 OLED panel
+Currently, when an adapter defines a max_write_len quirk,
+the data will be chunked into data sizes equal to the
+max_write_len quirk value.  But the payload will be increased by
+the size of the register address before transmission.  The
+resulting value always ends up larger than the limit set
+by the quirk.
 
-Cc: stable@vger.kernel.org # 6.1+
-Signed-off-by: John Schoenick <johns@valvesoftware.com>
-Signed-off-by: Matthew Schwartz <mattschwartz@gwu.edu>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240628205822.348402-2-mattschwartz@gwu.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Avoid this error by setting regmap's max_write to the quirk's
+max_write_len minus the number of bytes for the register and
+padding.  This allows the chunking to work correctly for this
+limited case without impacting other use-cases.
+
+Signed-off-by: Jim Wylder <jwylder@google.com>
+Link: https://msgid.link/r/20240523211437.2839942-1-jwylder@google.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/base/regmap/regmap-i2c.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -421,6 +421,13 @@ static const struct dmi_system_id orient
- 		  DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "1"),
- 		},
- 		.driver_data = (void *)&lcd800x1280_rightside_up,
-+	}, {	/* Valve Steam Deck */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Valve"),
-+		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Galileo"),
-+		  DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "1"),
-+		},
-+		.driver_data = (void *)&lcd800x1280_rightside_up,
- 	}, {	/* VIOS LTH17 */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "VIOS"),
+diff --git a/drivers/base/regmap/regmap-i2c.c b/drivers/base/regmap/regmap-i2c.c
+index 3ec611dc0c09f..a905e955bbfc7 100644
+--- a/drivers/base/regmap/regmap-i2c.c
++++ b/drivers/base/regmap/regmap-i2c.c
+@@ -350,7 +350,8 @@ static const struct regmap_bus *regmap_get_i2c_bus(struct i2c_client *i2c,
+ 
+ 		if (quirks->max_write_len &&
+ 		    (bus->max_raw_write == 0 || bus->max_raw_write > quirks->max_write_len))
+-			max_write = quirks->max_write_len;
++			max_write = quirks->max_write_len -
++				(config->reg_bits + config->pad_bits) / BITS_PER_BYTE;
+ 
+ 		if (max_read || max_write) {
+ 			ret_bus = kmemdup(bus, sizeof(*bus), GFP_KERNEL);
+-- 
+2.43.0
+
 
 
 
