@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-58693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C4292B837
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:31:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B2292B6E3
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:18:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0FC528114C
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 842161C220BD
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4410C152787;
-	Tue,  9 Jul 2024 11:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 850CF156F2B;
+	Tue,  9 Jul 2024 11:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTY3YLY7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNxAoxTJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04AA255E4C;
-	Tue,  9 Jul 2024 11:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431F41487F6;
+	Tue,  9 Jul 2024 11:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524709; cv=none; b=YH6c0/mIhbqU/nfuXC+GH6DNCCQLj3W+P7/dWWWCFF4aDIvTLwNmf9j3eWi9ZOw3ruzhqfHeFxHifJyQJ92XVO7xfljL3DJHw9/M2N+gHpElCO1tmeLcrIGhC1LBoyfO6sothlEdy2oIpKExsJdQc66DMOgEYbf4lHp0fyZxY+M=
+	t=1720523880; cv=none; b=HMIIzI9snaF4FFI9qp0YPeGSMmCErNkW3kmEt9DCd5MzHGw6UZh146WWpcApE7+s6/fdd9NnYROoSmtsRvE5AccM22Th4YEzwGhJj5NCy9SVSNiikEteUKgTisiZPfRRtSwMfOD19IQA2YUGG/VLTo14SLVsluNtSGphCNH+x6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524709; c=relaxed/simple;
-	bh=jm04+2Uj1qhlIMJIjYHj94I0kcCIabFHP6Dqp+2fL3Q=;
+	s=arc-20240116; t=1720523880; c=relaxed/simple;
+	bh=Y26g0gTR4HfeRwjUd3DIw9drW38ynKKIGVXHuq8jJEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dt5dwb+ny3Y0EQ8g/wjt8t8QU3qT/GV1ah6cvq6oFiIeycBiB+bFShuX5ZvEWy2kXBcuygf2vZ+IZ56kECKEaeEs9Xlikc9n3fXmOv2jz0DwLRf1rhDM+DQf725gr+tWaJjBBUzFGcI/RTON+tFvAS6hxXxpaRpnWdlrrKwFeDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTY3YLY7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8325EC3277B;
-	Tue,  9 Jul 2024 11:31:48 +0000 (UTC)
+	 MIME-Version; b=VSAZ7UTjv/06wG8RB3GJQoAz2eDzQtQbjwoXcW3MBwqwsPFLSaX8TggAOuREs8qqbFkfqtjeKyu3SEJ+m/xdzHn6f2NyWN7wjYM8P0EgbBQDlZNhjy2WuQpDbj1FNlWlSwhquTF/U0z3I9TNoCPYAFVQmiMC6d7uwkeCnXKpWIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNxAoxTJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4E4C3277B;
+	Tue,  9 Jul 2024 11:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524708;
-	bh=jm04+2Uj1qhlIMJIjYHj94I0kcCIabFHP6Dqp+2fL3Q=;
+	s=korg; t=1720523880;
+	bh=Y26g0gTR4HfeRwjUd3DIw9drW38ynKKIGVXHuq8jJEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QTY3YLY7Ermobr7CNra1fOgmQYKmvVeDKatIbcaxJ9p68gPmNlSbr8Pc9THQ0tXZh
-	 wEgFatdZINQYovOuMO+X1JmBjPfuVqh0Qa8/tvEVU9SOaDFvFDWITnLGIpTjlQYWCJ
-	 00MTkpMZJrN1PFjeuz/UO/TtvIV0+r8ud1OH9kDA=
+	b=CNxAoxTJAjP+YkrhbnwS6l7TKxEQVCLylkt1iBwL9TtlrtHzHFp5Gau6vL+ED3S2g
+	 dpO2x0zP9yjkwTQ290uHLhtm5UwPfZbF5GwKCEqCyRLihp2eJBSqngDwIc4cTHeJSF
+	 anJSgeowPsQZMzH/PhhsV6mAq1o4J++hivypsXNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Lyude Paul <lyude@redhat.com>
-Subject: [PATCH 6.1 074/102] drm/nouveau: fix null pointer dereference in nouveau_connector_get_modes
-Date: Tue,  9 Jul 2024 13:10:37 +0200
-Message-ID: <20240709110654.254981050@linuxfoundation.org>
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 138/139] null_blk: Do not allow runt zone with zone capacity smaller then zone size
+Date: Tue,  9 Jul 2024 13:10:38 +0200
+Message-ID: <20240709110703.499329116@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 80bec6825b19d95ccdfd3393cf8ec15ff2a749b4 upstream.
+[ Upstream commit b164316808ec5de391c3e7b0148ec937d32d280d ]
 
-In nouveau_connector_get_modes(), the return value of drm_mode_duplicate()
-is assigned to mode, which will lead to a possible NULL pointer
-dereference on failure of drm_mode_duplicate(). Add a check to avoid npd.
+A zoned device with a smaller last zone together with a zone capacity
+smaller than the zone size does make any sense as that does not
+correspond to any possible setup for a real device:
+1) For ZNS and zoned UFS devices, all zones are always the same size.
+2) For SMR HDDs, all zones always have the same capacity.
+In other words, if we have a smaller last runt zone, then this zone
+capacity should always be equal to the zone size.
 
-Cc: stable@vger.kernel.org
-Fixes: 6ee738610f41 ("drm/nouveau: Add DRM driver for NVIDIA GPUs")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240627074204.3023776-1-make24@iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a check in null_init_zoned_dev() to prevent a configuration to have
+both a smaller zone size and a zone capacity smaller than the zone size.
+
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240530054035.491497-2-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_connector.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/block/null_blk/zoned.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/gpu/drm/nouveau/nouveau_connector.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
-@@ -980,6 +980,9 @@ nouveau_connector_get_modes(struct drm_c
- 		struct drm_display_mode *mode;
- 
- 		mode = drm_mode_duplicate(dev, nv_connector->native_mode);
-+		if (!mode)
-+			return 0;
-+
- 		drm_mode_probed_add(connector, mode);
- 		ret = 1;
+diff --git a/drivers/block/null_blk/zoned.c b/drivers/block/null_blk/zoned.c
+index 36bd191998375..d057f7099e7f7 100644
+--- a/drivers/block/null_blk/zoned.c
++++ b/drivers/block/null_blk/zoned.c
+@@ -83,6 +83,17 @@ int null_init_zoned_dev(struct nullb_device *dev, struct request_queue *q)
+ 		return -EINVAL;
  	}
+ 
++	/*
++	 * If a smaller zone capacity was requested, do not allow a smaller last
++	 * zone at the same time as such zone configuration does not correspond
++	 * to any real zoned device.
++	 */
++	if (dev->zone_capacity != dev->zone_size &&
++	    dev->size & (dev->zone_size - 1)) {
++		pr_err("A smaller last zone is not allowed with zone capacity smaller than zone size.\n");
++		return -EINVAL;
++	}
++
+ 	zone_capacity_sects = mb_to_sects(dev->zone_capacity);
+ 	dev_capacity_sects = mb_to_sects(dev->size);
+ 	dev->zone_size_sects = mb_to_sects(dev->zone_size);
+-- 
+2.43.0
+
 
 
 
