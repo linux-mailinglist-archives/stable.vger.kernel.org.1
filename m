@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-58600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E002892B7CC
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A5B92B832
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:31:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69A51B21F2D
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E51772846CA
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9025156C73;
-	Tue,  9 Jul 2024 11:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB7D154C07;
+	Tue,  9 Jul 2024 11:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4wv3bqh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGea0vCS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979FF27713;
-	Tue,  9 Jul 2024 11:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8DA55E4C;
+	Tue,  9 Jul 2024 11:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524430; cv=none; b=pFjw8usuwgRtmWI+TVk31lDmbYgJ8/ePHY6QQXg46K4mkfihFrNAKRdFXIm5TYVORehioxIcqNrLmvLf2gdy0azGMfVIamdz21P8LFhcUgIjZrg+JJIJVHJoSYylkHODMI8iTvA6xetmdm092iaUvN/ts6AzRBmj4HLr5oMnVMA=
+	t=1720524697; cv=none; b=pjb45hQ07SIPyYqA1aRBMENKr1Bjjx+wx1jVDoKGsX8KNcI6FHlljm/Il6xZ+aK0Aj9vh4ajawfUD+df7Yqq9iAIsCbYZSghGUF4FkWQlKdauI3wcPHRs6+bXI9ImlSgG77jOSXEIRq4fzhtIT2IyxGe077ozYqAQBSjD+FsWAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524430; c=relaxed/simple;
-	bh=cW+UjECEgX9c1nyEvZW+TcB2NGkFUCh3K8D6m95OY5A=;
+	s=arc-20240116; t=1720524697; c=relaxed/simple;
+	bh=zYjBZK7/sGfRRVj4pRIzSsjSEEjcJq0ZGNoOxJu5mYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iyEIeMD5A0FFwGaksBAp7DBTEsqK7HzO2/atURz5INX/gjM/IipBH2QyBr+WB0f7KBSkCK6K7Uh4IVrbb1mqeYaIIusSx9gepXBiBPjBxHI137oSIZUPInq97RuCixCYhWYMDwzdk7j6hAor+UBKV6yoeeIc/9bJTiaxJz/64MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4wv3bqh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A059C3277B;
-	Tue,  9 Jul 2024 11:27:09 +0000 (UTC)
+	 MIME-Version; b=DiCXmUBWJgBwAGAmjbO44oO6m7v7vV/iRv0IORxgCmxVxlQF8NdQo1wHKXRp6qb7OzCXllWcXhNLQxNC4apsjvl96EmPhCjzDS58Cojkx4udtnsox08R6Dy8fT7oCMviPyL/HzcO5h5XH979QMEZg10YEswSr+haOpe6wwg9N/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGea0vCS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D683FC3277B;
+	Tue,  9 Jul 2024 11:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524430;
-	bh=cW+UjECEgX9c1nyEvZW+TcB2NGkFUCh3K8D6m95OY5A=;
+	s=korg; t=1720524697;
+	bh=zYjBZK7/sGfRRVj4pRIzSsjSEEjcJq0ZGNoOxJu5mYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M4wv3bqh2WuHL/n+tyB8RHdQLjDz8CcVBJmLdjeq5mSgqUDPUGirFJYLZLeBBRZHT
-	 l+z0Ub+KT8XtzsqgHM+caT4an1hxGPoSjY0Q5IskOxb5+2/SxK/0+/KDPry9bpmHRc
-	 h76C3Ud+sj6/djFqlF7ZlKd0RhSkrkPx9Ud32zc8=
+	b=wGea0vCSUICYyeeurluW+Pi4+F3gUB7tKLXDBQxJqfaju4TTOH2RjfhDFn4xVl0bQ
+	 0GPhuMonqZYb0jpKUvU8i5vyBcJ7ZTagIrnEKUiJmQoiII1r9AbfcBv3WSFoC4NX0D
+	 csLgZy2WCQPElwFrbOYGGEx2MeCUxVqpbtfBWlpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 180/197] drm/amdgpu: correct hbm field in boot status
+	Jimmy Assarsson <extja@kvaser.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.1 071/102] can: kvaser_usb: Explicitly initialize family in leafimx driver_info struct
 Date: Tue,  9 Jul 2024 13:10:34 +0200
-Message-ID: <20240709110715.910561207@linuxfoundation.org>
+Message-ID: <20240709110654.141453408@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hawking Zhang <Hawking.Zhang@amd.com>
+From: Jimmy Assarsson <extja@kvaser.com>
 
-[ Upstream commit ec58991054e899c9d86f7e3c8a96cb602d4b5938 ]
+commit 19d5b2698c35b2132a355c67b4d429053804f8cc upstream.
 
-hbm filed takes bit 13 and bit 14 in boot status.
+Explicitly set the 'family' driver_info struct member for leafimx.
+Previously, the correct operation relied on KVASER_LEAF being the first
+defined value in enum kvaser_usb_leaf_family.
 
-Signed-off-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e6c80e601053 ("can: kvaser_usb: kvaser_usb_leaf: fix CAN clock frequency regression")
+Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://lore.kernel.org/all/20240628194529.312968-1-extja@kvaser.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
-index e0f8ce9d84406..db9cb2b4e9823 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
-@@ -43,7 +43,7 @@ struct amdgpu_iv_entry;
- #define AMDGPU_RAS_GPU_ERR_HBM_BIST_TEST(x)		AMDGPU_GET_REG_FIELD(x, 7, 7)
- #define AMDGPU_RAS_GPU_ERR_SOCKET_ID(x)			AMDGPU_GET_REG_FIELD(x, 10, 8)
- #define AMDGPU_RAS_GPU_ERR_AID_ID(x)			AMDGPU_GET_REG_FIELD(x, 12, 11)
--#define AMDGPU_RAS_GPU_ERR_HBM_ID(x)			AMDGPU_GET_REG_FIELD(x, 13, 13)
-+#define AMDGPU_RAS_GPU_ERR_HBM_ID(x)			AMDGPU_GET_REG_FIELD(x, 14, 13)
- #define AMDGPU_RAS_GPU_ERR_BOOT_STATUS(x)		AMDGPU_GET_REG_FIELD(x, 31, 31)
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+@@ -124,6 +124,7 @@ static const struct kvaser_usb_driver_in
  
- #define AMDGPU_RAS_BOOT_STATUS_POLLING_LIMIT	1000
--- 
-2.43.0
-
+ static const struct kvaser_usb_driver_info kvaser_usb_driver_info_leafimx = {
+ 	.quirks = 0,
++	.family = KVASER_LEAF,
+ 	.ops = &kvaser_usb_leaf_dev_ops,
+ };
+ 
 
 
 
