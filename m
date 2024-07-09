@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-58365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C748592B69D
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:15:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B0492B794
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87FAE284D06
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:15:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DAD4284606
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73522158A19;
-	Tue,  9 Jul 2024 11:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9FBB153812;
+	Tue,  9 Jul 2024 11:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OW12hqvb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PaKStcfK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314D8158876;
-	Tue,  9 Jul 2024 11:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8710627713;
+	Tue,  9 Jul 2024 11:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523716; cv=none; b=o9zFC0O3vY9SpYeA7GvbZQQWV3C8gsRjOmsPkd4ogdoZiuRg65CKqbK9OyNb3JWbed9TMWYd/5FFnwmBu96U3r0sl8hrJ3WIOm879+HMQIiUf/sbo1bXyTKEz4NQLI5HlPk/AN9VGNMC4Zr3duDnjgUJ1O37f1PK19wz7jVxbVg=
+	t=1720524275; cv=none; b=rbJOwNASmTo2KspzRgx0Suao3ugtDwSa5RFXW+YX5AdzQ4aNvg6AeriswQSrqT6jTUcShpISLJv2DG5Bd95qREw7xNAEHJJ+xJX08csmxIT36Mohu7Jyr+GxOT8iaL7Ywt9EMeVaiE27pBp4+9YGbwnA8qfjVTnLaI6ePKbjjJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523716; c=relaxed/simple;
-	bh=jS9Hd6Zloh0rwzp4Qlbr6WV3KqDmmMCR8Ll6UDiUIqo=;
+	s=arc-20240116; t=1720524275; c=relaxed/simple;
+	bh=THk6NrVeSmNnEQAZZnYwS5YGxcMbfmpCJX1PbCeh3pY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LW2NGvYs5Tq2C3vh54J0JgH0LARBQ2Maol1pLU25izjqB3S31D/aNBl6/eAoe3W8xzfSAyrRuaSA35/ujOqHOdYJT6pkm8/6DZgZVoFwxiTI2AgS1iYnp7PL6Pd2kM6FfkJ9P1wHUIGhzB/xV+Byvbc/aoqBBqxrxcSgutC/Qjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OW12hqvb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B64C4AF0A;
-	Tue,  9 Jul 2024 11:15:15 +0000 (UTC)
+	 MIME-Version; b=ZvBj4Qn9iUcaYx1/IsprrG3x0uhGLldBMZTfZ+XceIaVXqZVvZ4fqopB/cQ8CH7VrGVb4qWFbbwtgG4iGp58uvFpOrsJngWLVCHHHYpHsYFIcPWWhoLfgXxoPb975WYnF073EfASD78LMQdzvoV0qpyk0EYX5IaGKkHa+kpFTuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PaKStcfK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3E7C32786;
+	Tue,  9 Jul 2024 11:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523715;
-	bh=jS9Hd6Zloh0rwzp4Qlbr6WV3KqDmmMCR8Ll6UDiUIqo=;
+	s=korg; t=1720524275;
+	bh=THk6NrVeSmNnEQAZZnYwS5YGxcMbfmpCJX1PbCeh3pY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OW12hqvbdcW5I5/gr4iRyz0DhSc5wmifxuWPTYLeayBGQoL5CHAziLo5L8BtzZycV
-	 l/LkMk0C47VG5HY5EbvjJpQGqviQZ4kkTOH7xyLgJdh7cFalh+WpTssMbv336MKCI4
-	 RSgsfNwfp8HF7wWrHqTDrtJUo5eI6u59KW5tT0UE=
+	b=PaKStcfK/togPspoi+vrbvT77OFAX5Lt8cv6g29z06yFMownpqD92iBZstSppOumT
+	 ht75JozacJOyFNCpTuE0Cab/pOGGPC5gSU6Do9H29eayYLkFIurDkjmVea1Mf1o2/9
+	 QdlRFpaI4Zw+jrUxp2boCfoPVrdyY7Q7DyLlDeco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Marc Hartmayer <mhartmay@linux.ibm.com>,
 	Sven Schnelle <svens@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/139] s390: Mark psw in __load_psw_mask() as __unitialized
+Subject: [PATCH 6.9 099/197] KVM: s390: fix LPSWEY handling
 Date: Tue,  9 Jul 2024 13:09:13 +0200
-Message-ID: <20240709110700.219787792@linuxfoundation.org>
+Message-ID: <20240709110712.792237440@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
 
-[ Upstream commit 7278a8fb8d032dfdc03d9b5d17e0bc451cdc1492 ]
+[ Upstream commit 4c6abb7f7b349f00c0f7ed5045bf67759c012892 ]
 
-Without __unitialized, the following code is generated when
-INIT_STACK_ALL_ZERO is enabled:
+in rare cases, e.g. for injecting a machine check we do intercept all
+load PSW instructions via ICTL_LPSW. With facility 193 a new variant
+LPSWEY was added. KVM needs to handle that as well.
 
-86: d7 0f f0 a0 f0 a0     xc      160(16,%r15), 160(%r15)
-8c: e3 40 f0 a0 00 24     stg     %r4, 160(%r15)
-92: c0 10 00 00 00 08     larl    %r1, 0xa2
-98: e3 10 f0 a8 00 24     stg     %r1, 168(%r15)
-9e: b2 b2 f0 a0           lpswe   160(%r15)
-
-The xc is not adding any security because psw is fully initialized
-with the following instructions. Add __unitialized to the psw
-definitiation to avoid the superfluous clearing of psw.
-
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: a3efa8429266 ("KVM: s390: gen_facilities: allow facilities 165, 193, 194 and 196")
+Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Message-ID: <20240628163547.2314-1-borntraeger@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/processor.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/include/asm/kvm_host.h |  1 +
+ arch/s390/kvm/kvm-s390.c         |  1 +
+ arch/s390/kvm/kvm-s390.h         | 15 +++++++++++++++
+ arch/s390/kvm/priv.c             | 32 ++++++++++++++++++++++++++++++++
+ 4 files changed, 49 insertions(+)
 
-diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
-index dc17896a001a9..e7338ed540d8f 100644
---- a/arch/s390/include/asm/processor.h
-+++ b/arch/s390/include/asm/processor.h
-@@ -308,8 +308,8 @@ static inline void __load_psw(psw_t psw)
-  */
- static __always_inline void __load_psw_mask(unsigned long mask)
+diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
+index 95990461888fc..9281063636a73 100644
+--- a/arch/s390/include/asm/kvm_host.h
++++ b/arch/s390/include/asm/kvm_host.h
+@@ -427,6 +427,7 @@ struct kvm_vcpu_stat {
+ 	u64 instruction_io_other;
+ 	u64 instruction_lpsw;
+ 	u64 instruction_lpswe;
++	u64 instruction_lpswey;
+ 	u64 instruction_pfmf;
+ 	u64 instruction_ptff;
+ 	u64 instruction_sck;
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index 82e9631cd9efb..54b5b2565df8d 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -132,6 +132,7 @@ const struct _kvm_stats_desc kvm_vcpu_stats_desc[] = {
+ 	STATS_DESC_COUNTER(VCPU, instruction_io_other),
+ 	STATS_DESC_COUNTER(VCPU, instruction_lpsw),
+ 	STATS_DESC_COUNTER(VCPU, instruction_lpswe),
++	STATS_DESC_COUNTER(VCPU, instruction_lpswey),
+ 	STATS_DESC_COUNTER(VCPU, instruction_pfmf),
+ 	STATS_DESC_COUNTER(VCPU, instruction_ptff),
+ 	STATS_DESC_COUNTER(VCPU, instruction_sck),
+diff --git a/arch/s390/kvm/kvm-s390.h b/arch/s390/kvm/kvm-s390.h
+index 111eb5c747840..bf8534218af3d 100644
+--- a/arch/s390/kvm/kvm-s390.h
++++ b/arch/s390/kvm/kvm-s390.h
+@@ -138,6 +138,21 @@ static inline u64 kvm_s390_get_base_disp_s(struct kvm_vcpu *vcpu, u8 *ar)
+ 	return (base2 ? vcpu->run->s.regs.gprs[base2] : 0) + disp2;
+ }
+ 
++static inline u64 kvm_s390_get_base_disp_siy(struct kvm_vcpu *vcpu, u8 *ar)
++{
++	u32 base1 = vcpu->arch.sie_block->ipb >> 28;
++	s64 disp1;
++
++	/* The displacement is a 20bit _SIGNED_ value */
++	disp1 = sign_extend64(((vcpu->arch.sie_block->ipb & 0x0fff0000) >> 16) +
++			      ((vcpu->arch.sie_block->ipb & 0xff00) << 4), 19);
++
++	if (ar)
++		*ar = base1;
++
++	return (base1 ? vcpu->run->s.regs.gprs[base1] : 0) + disp1;
++}
++
+ static inline void kvm_s390_get_base_disp_sse(struct kvm_vcpu *vcpu,
+ 					      u64 *address1, u64 *address2,
+ 					      u8 *ar_b1, u8 *ar_b2)
+diff --git a/arch/s390/kvm/priv.c b/arch/s390/kvm/priv.c
+index 1be19cc9d73c1..1a49b89706f86 100644
+--- a/arch/s390/kvm/priv.c
++++ b/arch/s390/kvm/priv.c
+@@ -797,6 +797,36 @@ static int handle_lpswe(struct kvm_vcpu *vcpu)
+ 	return 0;
+ }
+ 
++static int handle_lpswey(struct kvm_vcpu *vcpu)
++{
++	psw_t new_psw;
++	u64 addr;
++	int rc;
++	u8 ar;
++
++	vcpu->stat.instruction_lpswey++;
++
++	if (!test_kvm_facility(vcpu->kvm, 193))
++		return kvm_s390_inject_program_int(vcpu, PGM_OPERATION);
++
++	if (vcpu->arch.sie_block->gpsw.mask & PSW_MASK_PSTATE)
++		return kvm_s390_inject_program_int(vcpu, PGM_PRIVILEGED_OP);
++
++	addr = kvm_s390_get_base_disp_siy(vcpu, &ar);
++	if (addr & 7)
++		return kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
++
++	rc = read_guest(vcpu, addr, ar, &new_psw, sizeof(new_psw));
++	if (rc)
++		return kvm_s390_inject_prog_cond(vcpu, rc);
++
++	vcpu->arch.sie_block->gpsw = new_psw;
++	if (!is_valid_psw(&vcpu->arch.sie_block->gpsw))
++		return kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
++
++	return 0;
++}
++
+ static int handle_stidp(struct kvm_vcpu *vcpu)
  {
-+	psw_t psw __uninitialized;
- 	unsigned long addr;
--	psw_t psw;
- 
- 	psw.mask = mask;
- 
+ 	u64 stidp_data = vcpu->kvm->arch.model.cpuid;
+@@ -1462,6 +1492,8 @@ int kvm_s390_handle_eb(struct kvm_vcpu *vcpu)
+ 	case 0x61:
+ 	case 0x62:
+ 		return handle_ri(vcpu);
++	case 0x71:
++		return handle_lpswey(vcpu);
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
 -- 
 2.43.0
 
