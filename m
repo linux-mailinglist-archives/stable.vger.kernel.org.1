@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-58447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D60492B70A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:19:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF4A92B74E
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:22:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5EF02853B2
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:19:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0ABC1B23F31
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF5E4158219;
-	Tue,  9 Jul 2024 11:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4D71586D0;
+	Tue,  9 Jul 2024 11:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qlsFK1sH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7KqRuVG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B617156F57;
-	Tue,  9 Jul 2024 11:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF44158211;
+	Tue,  9 Jul 2024 11:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523962; cv=none; b=V0QyIwWq+jAKMwss/cUWxYQLR0f90s4rPbG4pmdBM9we6kEWf5q/kLAAC34jYWeSb3UZKqyOrn8CiVWYgdNSYIS8mo7YLDazGkOCb19Y6ZEbH5pUeNLLxy4dreAwwtj22PyOqsGcnLaRvZhmisnrhRIYq4hjtZuMNca9MGrxKMM=
+	t=1720524095; cv=none; b=XEZm0zEU8dmwwCGo7eNVbCm6N3epJspeJTpKY7lbr3prqEW9zVE08k/fRsNz6NjrzVPJCSUwpWeOdt/+IzEvkGNE5wYJ5QmX/0rjYe6S5cgZ2J41zNBKGJVjdCEUqcHQzjkBmMLacQcSGeXOTe2iV3OSFk2SHqvX47qlTqETjWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523962; c=relaxed/simple;
-	bh=T2oMMU4tK13DYhYxdsLwRcO0V4rjJbNfYe3gQBJ6IBs=;
+	s=arc-20240116; t=1720524095; c=relaxed/simple;
+	bh=IjmwyOGTIdKTPKS/aQXWzCMFsdraYI2nznAZEphCN2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e90RhlsdUQaUkyw9jgKQSsZ1Gn5es3wsjbs3XEk61Iy/za4V6YTgYNpKK3ykEneDQUvQ6vn1/fimSv0p4o8RknVdhWFOUiyhglCZzu44f+5pn6D7sF9Cadw5ziW6+0Fe/3oDrWEIDrZnYAmJPmCE/G58ZdBmTBQ5hjgzkjRUzT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qlsFK1sH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1F4C3277B;
-	Tue,  9 Jul 2024 11:19:21 +0000 (UTC)
+	 MIME-Version; b=jfNaZh2bUuwFpdTQy/QqV3s72kUI76skijYAhir++yMn82U/RAH5ntt7WhGBBlvYj7T+hZ6BPTqk6ZACFs5Pq1hjSi1kVEWbKBh3S1Dwcq7MdSDM7o6D7RJmJEPuCTDRbgygcLlKrtAQIcVamcRoBOuAJZvmNY8rmBfJdYDJ0Ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7KqRuVG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31318C3277B;
+	Tue,  9 Jul 2024 11:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523962;
-	bh=T2oMMU4tK13DYhYxdsLwRcO0V4rjJbNfYe3gQBJ6IBs=;
+	s=korg; t=1720524095;
+	bh=IjmwyOGTIdKTPKS/aQXWzCMFsdraYI2nznAZEphCN2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qlsFK1sHwyUn8zbZ464I4rX1ktPwu5Qnr3N7MFA4AqQQH1EdeQ6DBLQYlDdWIlV6i
-	 C2MBy72q8RNzJQwmE1uIipUXQ3NHe+hQBL81Q4l5101jVmKwW3WkP9ycDkLyNfaSAR
-	 tFE6Tf0KQhUYOOVigiRetoyn4jni7zLixRwhIm4I=
+	b=o7KqRuVGTxC2+yiqQDNHgTszIDQgVyNqOXQWECGZoM0BBt7aOutoock2nx/8TttDo
+	 X/jOxlAZCbmb+puFnsI5cxNHZg+x1s2OdrfJhbduQxuzwuqwtNQMgPggmGLPWNGU5y
+	 BtJiiunLeSbSwmOLpI4M/1NlAVShAphdKei3C8b0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Bob Zhou <bob.zhou@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 026/197] drm/amdgpu: Initialize timestamp for some legacy SOCs
-Date: Tue,  9 Jul 2024 13:08:00 +0200
-Message-ID: <20240709110709.929930567@linuxfoundation.org>
+Subject: [PATCH 6.9 027/197] drm/amdgpu: fix double free err_addr pointer warnings
+Date: Tue,  9 Jul 2024 13:08:01 +0200
+Message-ID: <20240709110709.968157432@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
 References: <20240709110708.903245467@linuxfoundation.org>
@@ -61,48 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Bob Zhou <bob.zhou@amd.com>
 
-[ Upstream commit 2e55bcf3d742a4946d862b86e39e75a95cc6f1c0 ]
+[ Upstream commit 506c245f3f1cd989cb89811a7f06e04ff8813a0d ]
 
-Initialize the interrupt timestamp for some legacy SOCs
-to fix the coverity issue "Uninitialized scalar variable"
+In amdgpu_umc_bad_page_polling_timeout, the amdgpu_umc_handle_bad_pages
+will be run many times so that double free err_addr in some special case.
+So set the err_addr to NULL to avoid the warnings.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Bob Zhou <bob.zhou@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_umc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c
-index 7e6d09730e6d3..665c63f552787 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c
-@@ -445,6 +445,14 @@ void amdgpu_irq_dispatch(struct amdgpu_device *adev,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_umc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_umc.c
+index 20436f81856ad..6f7451e3ee87e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_umc.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_umc.c
+@@ -170,6 +170,7 @@ static void amdgpu_umc_handle_bad_pages(struct amdgpu_device *adev,
+ 	}
  
- 	entry.ih = ih;
- 	entry.iv_entry = (const uint32_t *)&ih->ring[ring_index];
-+
-+	/*
-+	 * timestamp is not supported on some legacy SOCs (cik, cz, iceland,
-+	 * si and tonga), so initialize timestamp and timestamp_src to 0
-+	 */
-+	entry.timestamp = 0;
-+	entry.timestamp_src = 0;
-+
- 	amdgpu_ih_decode_iv(adev, &entry);
+ 	kfree(err_data->err_addr);
++	err_data->err_addr = NULL;
  
- 	trace_amdgpu_iv(ih - &adev->irq.ih, &entry);
+ 	mutex_unlock(&con->page_retirement_lock);
+ }
 -- 
 2.43.0
 
