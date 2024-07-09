@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-58510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D72792B767
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8394B92B66A
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:13:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD307B24966
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 353012838B0
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:13:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43CB81586C4;
-	Tue,  9 Jul 2024 11:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0C61581E4;
+	Tue,  9 Jul 2024 11:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ztXuimAE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qxRC2+f/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C0F158208;
-	Tue,  9 Jul 2024 11:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAD1155389;
+	Tue,  9 Jul 2024 11:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524158; cv=none; b=lmo9oKgUjsMMe/Ul9qbsqnL6nifvE8o5uE1gDMa2PjptqbZ7X7pWGp60vqDDnqN52iddJ5qWX3wIX1Tl/y7o3wCF2eWkD3VCjBVQ++ni7HjvEx2VSaIiUzI/RuXsAoh4VTr08rOx92PzNzajZ0KTeLedLDr5KAjav9QNKoTQ6sQ=
+	t=1720523593; cv=none; b=JIDxGNm8s0ycVbnUHPMOMz3xTnSXxR3JxirppNpFhkmDO5XkTafgJZLyb0TrwyeWW+Q7Cy7YBM0Ws0UAuzCNCHzU1T6TNFvqchrY5rI8XOfGDNVuv9O0HtXYBVbR4mLn9MSnWslrII4AeSEwwFb6L4+S3oTB6C3TYw5IRL5ai+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524158; c=relaxed/simple;
-	bh=+xo/bblR2R2ENm7tnv9TnLZSknSbhaSO8ocEbv43WEk=;
+	s=arc-20240116; t=1720523593; c=relaxed/simple;
+	bh=wUZnMv7e35BDW1RrpTR12II+6u6BnnsfUioD3NBN02A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mFFDBsMqDk300Ul2od4KTAH5NWS7UrpHbNeP5DbRmWEV41talpr/LDz5AOYlh+HJTma4kZuwjqgBqR2fvRbtltVu6PqjVCADGXkO9U4kA23UWDXlC9AwciPI4ZveIav+5XBb7J9CYiElEpeC9UDoopi355EOt4SNKZ+ZVLdcXFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ztXuimAE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75538C3277B;
-	Tue,  9 Jul 2024 11:22:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HokgEI1M/Gz/F9SRTZc6FfOVjtKECLvBddwsiMujY97VQIBvrFEQdMTu03JvNDzRibc+WZuxMHadoiyT2hhdfDJ5fUx0jMYQcVf0xfuo98meGwptKysl+RYeo77ysazL3HryGX2FihLaVXe3olpB0ITlpFfIyGrh7KY6j9gQDcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qxRC2+f/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04DFFC3277B;
+	Tue,  9 Jul 2024 11:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524157;
-	bh=+xo/bblR2R2ENm7tnv9TnLZSknSbhaSO8ocEbv43WEk=;
+	s=korg; t=1720523593;
+	bh=wUZnMv7e35BDW1RrpTR12II+6u6BnnsfUioD3NBN02A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ztXuimAETekU9wWG4VqaMOtl9V6SUXRJ5Jl80PqSxgNdiRvZxe0cqQFEddd+cyCNI
-	 vpe/eu2KyPer21wI4WN1oJDjrifTbtN78VahvDaUGPRfwttawz6qEAK3yqlEbWJxpe
-	 gKaFYdilUhfc+16GfzxE5BMPuFIk37gyaiwm7WNU=
+	b=qxRC2+f/W1IB2PFx+jK4U9HI5G/n3Z820p/80nKUW7LNuPo1Yjz2wRZoIQnnUa1po
+	 vawJRcrfEZJZDIvH2D66gzjuA0OvNZSoOgG4pe/iFQ5sdcJDjsSgBXrcdw72TJL7bg
+	 PG+iYSTkanDE1jgjlcS2fKJHwwh8NCZEmZJWZh38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Cardwell <ncardwell@google.com>,
-	Yuchung Cheng <ycheng@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Brendan Higgins <brendanhiggins@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Kees Cook <keescook@chromium.org>,
+	David Gow <davidgow@google.com>,
+	Rae Moar <rmoar@google.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 089/197] UPSTREAM: tcp: fix DSACK undo in fast recovery to call tcp_try_to_open()
+Subject: [PATCH 6.6 043/139] kunit: Fix timeout message
 Date: Tue,  9 Jul 2024 13:09:03 +0200
-Message-ID: <20240709110712.410069115@linuxfoundation.org>
+Message-ID: <20240709110659.831890017@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +64,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit a6458ab7fd4f427d4f6f54380453ad255b7fde83 ]
+[ Upstream commit 53026ff63bb07c04a0e962a74723eb10ff6f9dc7 ]
 
-In some production workloads we noticed that connections could
-sometimes close extremely prematurely with ETIMEDOUT after
-transmitting only 1 TLP and RTO retransmission (when we would normally
-expect roughly tcp_retries2 = TCP_RETR2 = 15 RTOs before a connection
-closes with ETIMEDOUT).
+The exit code is always checked, so let's properly handle the -ETIMEDOUT
+error code.
 
->From tracing we determined that these workloads can suffer from a
-scenario where in fast recovery, after some retransmits, a DSACK undo
-can happen at a point where the scoreboard is totally clear (we have
-retrans_out == sacked_out == lost_out == 0). In such cases, calling
-tcp_try_keep_open() means that we do not execute any code path that
-clears tp->retrans_stamp to 0. That means that tp->retrans_stamp can
-remain erroneously set to the start time of the undone fast recovery,
-even after the fast recovery is undone. If minutes or hours elapse,
-and then a TLP/RTO/RTO sequence occurs, then the start_ts value in
-retransmits_timed_out() (which is from tp->retrans_stamp) will be
-erroneously ancient (left over from the fast recovery undone via
-DSACKs). Thus this ancient tp->retrans_stamp value can cause the
-connection to die very prematurely with ETIMEDOUT via
-tcp_write_err().
-
-The fix: we change DSACK undo in fast recovery (TCP_CA_Recovery) to
-call tcp_try_to_open() instead of tcp_try_keep_open(). This ensures
-that if no retransmits are in flight at the time of DSACK undo in fast
-recovery then we properly zero retrans_stamp. Note that calling
-tcp_try_to_open() is more consistent with other loss recovery
-behavior, since normal fast recovery (CA_Recovery) and RTO recovery
-(CA_Loss) both normally end when tp->snd_una meets or exceeds
-tp->high_seq and then in tcp_fastretrans_alert() the "default" switch
-case executes tcp_try_to_open(). Also note that by inspection this
-change to call tcp_try_to_open() implies at least one other nice bug
-fix, where now an ECE-marked DSACK that causes an undo will properly
-invoke tcp_enter_cwr() rather than ignoring the ECE mark.
-
-Fixes: c7d9d6a185a7 ("tcp: undo on DSACK during recovery")
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Yuchung Cheng <ycheng@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: Brendan Higgins <brendanhiggins@google.com>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: Rae Moar <rmoar@google.com>
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Link: https://lore.kernel.org/r/20240408074625.65017-4-mic@digikod.net
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/kunit/try-catch.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 0953c915bb4de..77109976fe836 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -3074,7 +3074,7 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
- 			return;
+diff --git a/lib/kunit/try-catch.c b/lib/kunit/try-catch.c
+index d9d1df28cc52e..9c9e4dcf06d96 100644
+--- a/lib/kunit/try-catch.c
++++ b/lib/kunit/try-catch.c
+@@ -78,7 +78,6 @@ void kunit_try_catch_run(struct kunit_try_catch *try_catch, void *context)
+ 	time_remaining = wait_for_completion_timeout(&try_completion,
+ 						     kunit_test_timeout());
+ 	if (time_remaining == 0) {
+-		kunit_err(test, "try timed out\n");
+ 		try_catch->try_result = -ETIMEDOUT;
+ 		kthread_stop(task_struct);
+ 	}
+@@ -93,6 +92,8 @@ void kunit_try_catch_run(struct kunit_try_catch *try_catch, void *context)
+ 		try_catch->try_result = 0;
+ 	else if (exit_code == -EINTR)
+ 		kunit_err(test, "wake_up_process() was never called\n");
++	else if (exit_code == -ETIMEDOUT)
++		kunit_err(test, "try timed out\n");
+ 	else if (exit_code)
+ 		kunit_err(test, "Unknown error: %d\n", exit_code);
  
- 		if (tcp_try_undo_dsack(sk))
--			tcp_try_keep_open(sk);
-+			tcp_try_to_open(sk, flag);
- 
- 		tcp_identify_packet_loss(sk, ack_flag);
- 		if (icsk->icsk_ca_state != TCP_CA_Recovery) {
 -- 
 2.43.0
 
