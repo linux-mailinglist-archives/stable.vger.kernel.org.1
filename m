@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-58652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A29EC92B80A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E7592B7A1
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:25:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D46EB1C22398
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CED31F241A2
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A371586C0;
-	Tue,  9 Jul 2024 11:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045A9155A25;
+	Tue,  9 Jul 2024 11:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PpWcpNVK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hm04OB4t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127041586C3;
-	Tue,  9 Jul 2024 11:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B719327713;
+	Tue,  9 Jul 2024 11:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524589; cv=none; b=B1Edyjrt0ZPw+FK+toAv5bWngK2jnoJZmAtG2P45aWEDDyaXMHnrBwZjYzQjzwv4xPX4WCFYUvSidLHC5fLL7XKQMR8eyXli7r+oLKsBYibiDJjQXmlccFmwzHuyuVY8etOMvB+VCw0Ui/iWL/pVGBF0z2DpeiiFf14cY1PuH0k=
+	t=1720524315; cv=none; b=pxQqXXNFgyVAyVdC1mjny0Q6DrfGO6ZiGXsSa6qPTEYryvkd5tsFw+GVDahTJjhWtakNumPKHAarJj8kSsut3yDZ+IT7CioAYyqJq0uXovdq2Xu+P6mjSFUQnr102DHCQSW1dNvjG8dwJev49X9i9NQdnGKsk29HphQshYZYyz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524589; c=relaxed/simple;
-	bh=BRy/Sqwe+5kQjm80cKdZKjqSDlZGP/naLJKgJLhmvgU=;
+	s=arc-20240116; t=1720524315; c=relaxed/simple;
+	bh=3DWWkFtqYDogTiy2SLQ2Q517nIeKk3sK1cypIKDiKVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3doEoCxRCocS8bNV/ov5sQJfnvfktvQI12Y43Vig3qh/EL3w1BQ/d09gOPYmIGRIofBiWgEpkFXYs99u+iutuuajBX0BgpJrY/BAT/xNEHbJtmZLyNV3MhFHDo1tXgv3Vxy5yoD/HZkk8b9Miiu120BmAAluAvWyLsxb3uLnJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PpWcpNVK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5B3C3277B;
-	Tue,  9 Jul 2024 11:29:48 +0000 (UTC)
+	 MIME-Version; b=JAL7kGqhClWT5Y42d+BFgdzAcYMda+dwWwJCqa4ASOy/7OTb0IWTmPxrBqksBXA8YCOJjLbWpGlFC+uH5kaiCGk6ZtFKgeX/4+8w6PQtMkuQNJUbx9mHk2SLNtu5uu2yb9VDKmAABRFUEEc3Mc2h44NyouGsqlpCbnMoFsuUwQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hm04OB4t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC13C3277B;
+	Tue,  9 Jul 2024 11:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524589;
-	bh=BRy/Sqwe+5kQjm80cKdZKjqSDlZGP/naLJKgJLhmvgU=;
+	s=korg; t=1720524315;
+	bh=3DWWkFtqYDogTiy2SLQ2Q517nIeKk3sK1cypIKDiKVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PpWcpNVK6qdqQDPmENmBMV86VJTX3QmN1otRuGIS/w8HorBt0hAMy4d971UaUNd5k
-	 QPlp0Gbl6wTY8Pjb0xyahfHw/lHKm5UoiWDwgvZ+wWfkvlwQWiINBbkjM4IG61yNoS
-	 zLhu8yS2L0uznSvPYE4c1KjUgsMIqK3NL0UbcpRA=
+	b=Hm04OB4tlgKYavQ6J27sVRPfhr8m4fU9rqxSqsKEE54zH2vXXgpwXXOqIY0Z9uMwq
+	 DQlorURw3yKNUCX6VSAo6ydDyPTjAYN8o8CAw0Q7YTFUUqKDvpcYpbiFoNfsbV+Dy5
+	 GZ8XV7vlxQTIY+LZVmJSxY+44Cct59nfXZTe+r6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jose E. Marchesi" <jose.marchesi@oracle.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 034/102] bpf: Avoid uninitialized value in BPF_CORE_READ_BITFIELD
+	Hector Martin <marcan@marcan.st>,
+	Sven Peter <sven@svenpeter.dev>,
+	Neal Gompa <neal@gompa.dev>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.9 143/197] Bluetooth: hci_bcm4377: Fix msgid release
 Date: Tue,  9 Jul 2024 13:09:57 +0200
-Message-ID: <20240709110652.699952430@linuxfoundation.org>
+Message-ID: <20240709110714.486888062@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose E. Marchesi <jose.marchesi@oracle.com>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit 009367099eb61a4fc2af44d4eb06b6b4de7de6db ]
+commit 897e6120566f1c108b85fefe78d1c1bddfbd5988 upstream.
 
-[Changes from V1:
- - Use a default branch in the switch statement to initialize `val'.]
+We are releasing a single msgid, so the order argument to
+bitmap_release_region must be zero.
 
-GCC warns that `val' may be used uninitialized in the
-BPF_CRE_READ_BITFIELD macro, defined in bpf_core_read.h as:
-
-	[...]
-	unsigned long long val;						      \
-	[...]								      \
-	switch (__CORE_RELO(s, field, BYTE_SIZE)) {			      \
-	case 1: val = *(const unsigned char *)p; break;			      \
-	case 2: val = *(const unsigned short *)p; break;		      \
-	case 4: val = *(const unsigned int *)p; break;			      \
-	case 8: val = *(const unsigned long long *)p; break;		      \
-        }       							      \
-	[...]
-	val;								      \
-	}								      \
-
-This patch adds a default entry in the switch statement that sets
-`val' to zero in order to avoid the warning, and random values to be
-used in case __builtin_preserve_field_info returns unexpected values
-for BPF_FIELD_BYTE_SIZE.
-
-Tested in bpf-next master.
-No regressions.
-
-Signed-off-by: Jose E. Marchesi <jose.marchesi@oracle.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240508101313.16662-1-jose.marchesi@oracle.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8a06127602de ("Bluetooth: hci_bcm4377: Add new driver for BCM4377 PCIe boards")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Reviewed-by: Sven Peter <sven@svenpeter.dev>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Sven Peter <sven@svenpeter.dev>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/bpf/bpf_core_read.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/bluetooth/hci_bcm4377.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/bpf_core_read.h b/tools/lib/bpf/bpf_core_read.h
-index 496e6a8ee0dc9..41740ae8aad73 100644
---- a/tools/lib/bpf/bpf_core_read.h
-+++ b/tools/lib/bpf/bpf_core_read.h
-@@ -102,6 +102,7 @@ enum bpf_enum_value_kind {
- 	case 2: val = *(const unsigned short *)p; break;		      \
- 	case 4: val = *(const unsigned int *)p; break;			      \
- 	case 8: val = *(const unsigned long long *)p; break;		      \
-+	default: val = 0; break;					      \
- 	}								      \
- 	val <<= __CORE_RELO(s, field, LSHIFT_U64);			      \
- 	if (__CORE_RELO(s, field, SIGNED))				      \
--- 
-2.43.0
-
+--- a/drivers/bluetooth/hci_bcm4377.c
++++ b/drivers/bluetooth/hci_bcm4377.c
+@@ -716,7 +716,7 @@ static void bcm4377_handle_ack(struct bc
+ 		ring->events[msgid] = NULL;
+ 	}
+ 
+-	bitmap_release_region(ring->msgids, msgid, ring->n_entries);
++	bitmap_release_region(ring->msgids, msgid, 0);
+ 
+ unlock:
+ 	spin_unlock_irqrestore(&ring->lock, flags);
 
 
 
