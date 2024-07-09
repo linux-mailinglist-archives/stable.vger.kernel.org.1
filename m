@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-58467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1660C92B732
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:21:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5DD392B742
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:22:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 475F71C22395
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:21:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEFD7281F26
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E6E1586F6;
-	Tue,  9 Jul 2024 11:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2A415B14D;
+	Tue,  9 Jul 2024 11:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NWtBfKWf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxZtIxTm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942AE15886A;
-	Tue,  9 Jul 2024 11:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBC515F308;
+	Tue,  9 Jul 2024 11:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524026; cv=none; b=oSmDDreHyvspT4cza0sxB9WTuJoj75S4dQeULqM7HGGv+BH6eHxojDhthtz5oM0Qg1qITR39JjDydjyQn6Z7cxlop8IovhKehJgUwb5XJsj6T2mfI1/SFvj7lLrL0xe2b1vbynXXmSIQL6R+O6uFyHkKRIkkBkD76bFm6uBOrU0=
+	t=1720524058; cv=none; b=dFwlVSledsqfSjf+pmEmkLKGpisPY4ca9OyELetvz+x8maXzvuhGV29mM+ScbsZBEtrbpyf6RVv0Zh9XBE1py3Uaf/G5zxHGNybGkszeFAGWodQpl95hIehXxcTnMnsFcvu3iO3iA8hzWAGrD2bsQXem/doJs8JB5wwMSeU48O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524026; c=relaxed/simple;
-	bh=Ft72WYgnb4rJfkKhxo71ZJEkKSbdmCELaFqZbnMO8bs=;
+	s=arc-20240116; t=1720524058; c=relaxed/simple;
+	bh=Uep2HgvJpboR+/2n+FoWW1zXrHojJ/mHcjCLTCDIriw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qrw3oRx/ts7nZShYJ7U/xwejKJGsb8xdzcSuP5mBVBSjIDLzD97vk2FewdYLNqPxFtpWcnRTxVmd+qsGkKr2vH0Bt6Y9HX68YDQ4UKa6ntnaE+zrz9BHZAfJAygSbd9+Kj6j6nuTOH/AeXTSn3dFNu0HVWU4ILzGHMsUgZPphNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NWtBfKWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9FA4C3277B;
-	Tue,  9 Jul 2024 11:20:25 +0000 (UTC)
+	 MIME-Version; b=WfYb5aY0o/fpy3HQwcwAFx8ih1ODRsLUys4bIb67s7DvQOexnME0V0s3f6XEKxsTx4Ssi7T+0YRzaREL8oX2ouCfSsPmRD8HEMe7UxkTsUMKtbYJ2yIluEMUbebFrnEHHYsKBZ0QPbpbiLx3L68sZll7MO8KvanJKb8K8LaL7XE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxZtIxTm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9176C32786;
+	Tue,  9 Jul 2024 11:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524026;
-	bh=Ft72WYgnb4rJfkKhxo71ZJEkKSbdmCELaFqZbnMO8bs=;
+	s=korg; t=1720524058;
+	bh=Uep2HgvJpboR+/2n+FoWW1zXrHojJ/mHcjCLTCDIriw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NWtBfKWfNYrfWo8A3c+rnb/fnkCrQri4xx+JpOsOUZ9lfcgjqyvjBDkhzdwdzP+Mb
-	 E63w2DejyJ+Hd3KhaquzG9XhYj3ikL6ax6eTeSCiebWnRKFOae3rtlC0YV4D4RmcUy
-	 i9xZee9dkZrdqAUIUxyHCMmBGatuU5tYceE8ojsc=
+	b=MxZtIxTmEJ8NqFR+TwLFak+spa4IEKyW21hMX8z59sIpzF0RXSOmc1jO++A1LCexr
+	 ifFQW2Y/ZO99I43hxXOy4u82PexcRRuzKcsQNOfKv39lLRwBhHmtnKNDwu47+rV9OQ
+	 kVBF7nyq4rMrsCksbkGBCAA6C8YQ7gCQGrhJH2zQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alex Hung <alex.hung@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 029/197] drm/amd/display: Check index msg_id before read or write
-Date: Tue,  9 Jul 2024 13:08:03 +0200
-Message-ID: <20240709110710.044869819@linuxfoundation.org>
+Subject: [PATCH 6.9 030/197] drm/amd/display: Check pipe offset before setting vblank
+Date: Tue,  9 Jul 2024 13:08:04 +0200
+Message-ID: <20240709110710.084038917@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
 References: <20240709110708.903245467@linuxfoundation.org>
@@ -70,16 +70,12 @@ Content-Transfer-Encoding: 8bit
 
 From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 59d99deb330af206a4541db0c4da8f73880fba03 ]
+[ Upstream commit 5396a70e8cf462ec5ccf2dc8de103c79de9489e6 ]
 
-[WHAT]
-msg_id is used as an array index and it cannot be a negative value, and
-therefore cannot be equal to MOD_HDCP_MESSAGE_ID_INVALID (-1).
+pipe_ctx has a size of MAX_PIPES so checking its index before accessing
+the array.
 
-[HOW]
-Check whether msg_id is valid before reading and setting.
-
-This fixes 4 OVERRUN issues reported by Coverity.
+This fixes an OVERRUN issue reported by Coverity.
 
 Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
 Acked-by: Wayne Lin <wayne.lin@amd.com>
@@ -87,35 +83,28 @@ Signed-off-by: Alex Hung <alex.hung@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ .../drm/amd/display/dc/irq/dce110/irq_service_dce110.c    | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-index f7b5583ee609a..8e9caae7c9559 100644
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-@@ -156,6 +156,10 @@ static enum mod_hdcp_status read(struct mod_hdcp *hdcp,
- 	uint32_t cur_size = 0;
- 	uint32_t data_offset = 0;
+diff --git a/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c b/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c
+index 1c0d89e675da5..bb576a9c5fdbd 100644
+--- a/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c
++++ b/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c
+@@ -211,8 +211,12 @@ bool dce110_vblank_set(struct irq_service *irq_service,
+ 						   info->ext_id);
+ 	uint8_t pipe_offset = dal_irq_src - IRQ_TYPE_VBLANK;
  
-+	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID) {
-+		return MOD_HDCP_STATUS_DDC_FAILURE;
-+	}
+-	struct timing_generator *tg =
+-			dc->current_state->res_ctx.pipe_ctx[pipe_offset].stream_res.tg;
++	struct timing_generator *tg;
 +
- 	if (is_dp_hdcp(hdcp)) {
- 		while (buf_len > 0) {
- 			cur_size = MIN(buf_len, HDCP_MAX_AUX_TRANSACTION_SIZE);
-@@ -215,6 +219,10 @@ static enum mod_hdcp_status write(struct mod_hdcp *hdcp,
- 	uint32_t cur_size = 0;
- 	uint32_t data_offset = 0;
++	if (pipe_offset >= MAX_PIPES)
++		return false;
++
++	tg = dc->current_state->res_ctx.pipe_ctx[pipe_offset].stream_res.tg;
  
-+	if (msg_id == MOD_HDCP_MESSAGE_ID_INVALID) {
-+		return MOD_HDCP_STATUS_DDC_FAILURE;
-+	}
-+
- 	if (is_dp_hdcp(hdcp)) {
- 		while (buf_len > 0) {
- 			cur_size = MIN(buf_len, HDCP_MAX_AUX_TRANSACTION_SIZE);
+ 	if (enable) {
+ 		if (!tg || !tg->funcs->arm_vert_intr(tg, 2)) {
 -- 
 2.43.0
 
