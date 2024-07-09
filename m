@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-58671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B39592B820
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D6492B7B9
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C37B1C21D5E
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2925B1F24591
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0515134545;
-	Tue,  9 Jul 2024 11:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3410F156C73;
+	Tue,  9 Jul 2024 11:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KiFZqRGC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBM+zBVX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F3A12CDB6;
-	Tue,  9 Jul 2024 11:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC98146D53;
+	Tue,  9 Jul 2024 11:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524644; cv=none; b=jCPx3ZyG4f9JM5z/3lY6etsRWfFZlQBlyRhkHXtet0Vq6BZNIH7mBc0xdTzNlYld+K91oWML2zc2uqFe3CxU7Iyb2L7CnspbmS+WczeevVVRKOZAyivNfxhRXKgQLXtwe4WCxvgno2GhaCL4hlX6HF27PmcNtMZ9P2oQH0olLSA=
+	t=1720524376; cv=none; b=rNtnA/gmMGaMb1du50YIEzVT3xcc1SWpiqWQpJEt5sr14s5EYfPPmqDkLutxsXbFFzRbPpn3ASMAw3vIiCt9NMgPi+3dEenTA+WjistclDlq9sqrYsq5bejnKNCKbnsAyZM0+6dKrkP66H6h3m7OFTxeDnS6h4EoC089h7k/FAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524644; c=relaxed/simple;
-	bh=DflMp2wkhCF3LFr15T0FXPONPbTggblVNmYBVPMGQq8=;
+	s=arc-20240116; t=1720524376; c=relaxed/simple;
+	bh=su7Oyh25EwRcmBauXO2ZVh1h225Moso3vMk3pQVIBXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BqZ1ulVr5M0fEV7RY0McDQX4Z5VS1y8mjFEtYjV8pteS8M7Q94l+4y0/fXc9yfBLq4SvNaut+JO20a//xrtkWqNB9heFdBN/+TIIWVxHCtIMJzEurTWiOT7kkgStmIhwnwDh46QCEZUw9VIrTC796BB4ItnEAgfTMmYJP/M4z1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KiFZqRGC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C586C3277B;
-	Tue,  9 Jul 2024 11:30:44 +0000 (UTC)
+	 MIME-Version; b=JngR40MoPPm25r4CSrMNMZzaSlAvsBBPf41V2SsYyTmfKxfrDnR//UwGCpcZpTGB4giUCPscS63Hel+/8EbdAN77JtlghzOW26fG31TygORLPVGIF1QuH13FUcsNE0SeXkWyiWKlMqMPgywqFmjpuDLznEHwaXPLmjXaDlhEoXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBM+zBVX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F1EC3277B;
+	Tue,  9 Jul 2024 11:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524644;
-	bh=DflMp2wkhCF3LFr15T0FXPONPbTggblVNmYBVPMGQq8=;
+	s=korg; t=1720524376;
+	bh=su7Oyh25EwRcmBauXO2ZVh1h225Moso3vMk3pQVIBXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KiFZqRGCL4BeRZK5bgEQwizhUjfF8vHIwa9YphgByP/zC9gGIIeV5satIpdi5H1tV
-	 bAkYM6R+bsI9na+Arp6GIeefbjygcUqQtb39E134nyF1BQ/nKBFh68hKpSRPmn8E1D
-	 sBYGI7NYevtYGYp939Fpf3lTVppcNKvcelXdecyo=
+	b=xBM+zBVXQ+ftBlp1kCw53twZHsxg0b1+uLGr6IffwyrCd4cQFRfY8+pb6Ng7QBPgO
+	 WFae2jUJ+2/TXbUz5hEF7TyrEzyieuinqCHc76jkDYONjr4ATmRdOmKJHwfs27oKM7
+	 MsHKMFS7fR3wN7or2LoxirTWPObDrZ/N/SrSHrYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/102] net: allow skb_datagram_iter to be called from any context
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.9 160/197] mtd: rawnand: Ensure ECC configuration is propagated to upper layers
 Date: Tue,  9 Jul 2024 13:10:14 +0200
-Message-ID: <20240709110653.366618110@linuxfoundation.org>
+Message-ID: <20240709110715.146869149@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit d2d30a376d9cc94c6fb730c58b3e5b7426ecb6de ]
+commit 3a1b777eb9fb75d09c45ae5dd1d007eddcbebf1f upstream.
 
-We only use the mapping in a single context, so kmap_local is sufficient
-and cheaper. Make sure to use skb_frag_foreach_page as skb frags may
-contain compound pages and we need to map page by page.
+Until recently the "upper layer" was MTD. But following incremental
+reworks to bring spi-nand support and more recently generic ECC support,
+there is now an intermediate "generic NAND" layer that also needs to get
+access to some values. When using "converted" ECC engines, like the
+software ones, these values are already propagated correctly. But
+otherwise when using good old raw NAND controller drivers, we need to
+manually set these values ourselves at the end of the "scan" operation,
+once these values have been negotiated.
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202406161539.b5ff7b20-oliver.sang@intel.com
-Fixes: 950fcaecd5cc ("datagram: consolidate datagram copy to iter helpers")
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Link: https://patch.msgid.link/20240626100008.831849-1-sagi@grimberg.me
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Without this propagation, later (generic) checks like the one warning
+users that the ECC strength is not high enough might simply no longer
+work.
+
+Fixes: 8c126720fe10 ("mtd: rawnand: Use the ECC framework nand_ecc_is_strong_enough() helper")
+Cc: stable@vger.kernel.org
+Reported-by: Sascha Hauer <s.hauer@pengutronix.de>
+Closes: https://lore.kernel.org/all/Zhe2JtvvN1M4Ompw@pengutronix.de/
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Tested-by: Sascha Hauer <s.hauer@pengutronix.de>
+Link: https://lore.kernel.org/linux-mtd/20240507085842.108844-1-miquel.raynal@bootlin.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/datagram.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/mtd/nand/raw/nand_base.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/datagram.c b/net/core/datagram.c
-index 8dabb9a74cb17..cdd65ca3124a4 100644
---- a/net/core/datagram.c
-+++ b/net/core/datagram.c
-@@ -434,15 +434,22 @@ static int __skb_datagram_iter(const struct sk_buff *skb, int offset,
+--- a/drivers/mtd/nand/raw/nand_base.c
++++ b/drivers/mtd/nand/raw/nand_base.c
+@@ -6301,6 +6301,7 @@ static const struct nand_ops rawnand_ops
+ static int nand_scan_tail(struct nand_chip *chip)
+ {
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
++	struct nand_device *base = &chip->base;
+ 	struct nand_ecc_ctrl *ecc = &chip->ecc;
+ 	int ret, i;
  
- 		end = start + skb_frag_size(frag);
- 		if ((copy = end - offset) > 0) {
--			struct page *page = skb_frag_page(frag);
--			u8 *vaddr = kmap(page);
-+			u32 p_off, p_len, copied;
-+			struct page *p;
-+			u8 *vaddr;
+@@ -6445,9 +6446,13 @@ static int nand_scan_tail(struct nand_ch
+ 	if (!ecc->write_oob_raw)
+ 		ecc->write_oob_raw = ecc->write_oob;
  
- 			if (copy > len)
- 				copy = len;
--			n = INDIRECT_CALL_1(cb, simple_copy_to_iter,
--					vaddr + skb_frag_off(frag) + offset - start,
--					copy, data, to);
--			kunmap(page);
-+
-+			skb_frag_foreach_page(frag,
-+					      skb_frag_off(frag) + offset - start,
-+					      copy, p, p_off, p_len, copied) {
-+				vaddr = kmap_local_page(p);
-+				n = INDIRECT_CALL_1(cb, simple_copy_to_iter,
-+					vaddr + p_off, p_len, data, to);
-+				kunmap_local(vaddr);
-+			}
-+
- 			offset += n;
- 			if (n != copy)
- 				goto short_copy;
--- 
-2.43.0
-
+-	/* propagate ecc info to mtd_info */
++	/* Propagate ECC info to the generic NAND and MTD layers */
+ 	mtd->ecc_strength = ecc->strength;
++	if (!base->ecc.ctx.conf.strength)
++		base->ecc.ctx.conf.strength = ecc->strength;
+ 	mtd->ecc_step_size = ecc->size;
++	if (!base->ecc.ctx.conf.step_size)
++		base->ecc.ctx.conf.step_size = ecc->size;
+ 
+ 	/*
+ 	 * Set the number of read / write steps for one page depending on ECC
+@@ -6455,6 +6460,8 @@ static int nand_scan_tail(struct nand_ch
+ 	 */
+ 	if (!ecc->steps)
+ 		ecc->steps = mtd->writesize / ecc->size;
++	if (!base->ecc.ctx.nsteps)
++		base->ecc.ctx.nsteps = ecc->steps;
+ 	if (ecc->steps * ecc->size != mtd->writesize) {
+ 		WARN(1, "Invalid ECC parameters\n");
+ 		ret = -EINVAL;
 
 
 
