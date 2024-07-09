@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-58570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D7C992B7AA
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:25:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 123C992B811
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD3C5B233F9
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:25:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC677284899
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F38A14E2F4;
-	Tue,  9 Jul 2024 11:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2080F1586D0;
+	Tue,  9 Jul 2024 11:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1nbYTpj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZufCS3y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBAE13A25F;
-	Tue,  9 Jul 2024 11:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19BE156238;
+	Tue,  9 Jul 2024 11:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524336; cv=none; b=uY8vMX+fhCSYI29ObMBAfYDpd+1Snbg1co/LdOrUuzhfIhoMXGqq6VY6Tjp+MHsTPXuXZqFuKq60LFng4I5HIxeRnICwDK2DKPlNQMJjpzD0txFnDDpMOCgGATAM9xdc2e3tu2uFTDcnath82YumC6RuzuJiw9FpB5D5ZTvBri4=
+	t=1720524609; cv=none; b=Vx43gbKbpVzXDEvWylsPHUGgt2Xxh1Y2SmHaiePGO7HdApfHj0sVF8xfJStBcyiMl/Ko1MqpH74pzYjwhU9K6vS+8M2N3LWvv3K6eUkt0cyyBR/0FWEhu8juFObJQ7L6E+gS/JEF+nA5200tj3G26dTh688VVzX7Z3qYV/SpzWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524336; c=relaxed/simple;
-	bh=LONeglKDTXK4n2p3rhAUT4p9066IK/w+0h0X5iyS/HI=;
+	s=arc-20240116; t=1720524609; c=relaxed/simple;
+	bh=oW8I041gOQhC2HME2emUUfI5P108Qo3qTtozo8vV8qE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Db1g5a+UHPEPm+NFwnuH1+E3Fq1RxydeyTWPW6q/eF6caBRMB8xwn2BX8/hbzfzqxxLtZ8IylXZ9HdzF2E6Tqlni0Rt4JADXqdlWCBmhfNPmo+SEDg/PtlK5LAu8NFKSb/N5kYxuwZWf2rEeAAP7gzbHGd6aUcpDsmV+XQrPisc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1nbYTpj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB099C3277B;
-	Tue,  9 Jul 2024 11:25:35 +0000 (UTC)
+	 MIME-Version; b=WJzu8qjBRG45C8kaFV7nVl3s6UYs3kfUyYS/AhuB79cETzaG+ZZwdsyzJCVUA7LZC29sfu+BJgkWWl9Cf93nT0eZiW4V/rY50IThqoP6k2cJZwtYCCmFBLbQMC0xjGTh6tJ8kl+lQxGT4/fTfD120LaNr1RQdx5uGFQXGyOngFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZufCS3y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B53C3277B;
+	Tue,  9 Jul 2024 11:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524336;
-	bh=LONeglKDTXK4n2p3rhAUT4p9066IK/w+0h0X5iyS/HI=;
+	s=korg; t=1720524609;
+	bh=oW8I041gOQhC2HME2emUUfI5P108Qo3qTtozo8vV8qE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U1nbYTpjNKjYt3Z+gQhzwh29HzvfyW7Meo8HCvKbL8DwjCBif2Ue/FIlSvP/l2KZr
-	 n4uanjR6rHMjoJt500j0Ac6rOwN7gLegGh/4acz6oHli0WGfkB0QLei5GWsl9msq/p
-	 gwKy95RSXktzoBPHoTyTUJD8q5fU+e5tSmJ6IZZw=
+	b=VZufCS3yxa1oU55FBJf7i2z4oMqqN4ywXiWSPXgC5MrCMwz3zZ6kyQhwBrAcPEqiW
+	 Vg38x12N7k7ZXVJEjzWNzQ/3fFEUr5ANg7PZY+JRvm6P0swFb+jtqeuymypOwiHC1i
+	 wfSEpsel4t+Y060XDQn1Wfr6u3NX4yqRENDCKC48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: [PATCH 6.9 149/197] drm/xe: fix error handling in xe_migrate_update_pgtables
+	Heiko Carstens <hca@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Ingo Franzki <ifranzki@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 040/102] s390/pkey: Wipe sensitive data on failure
 Date: Tue,  9 Jul 2024 13:10:03 +0200
-Message-ID: <20240709110714.714957798@linuxfoundation.org>
+Message-ID: <20240709110652.934440452@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +63,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Holger Dengler <dengler@linux.ibm.com>
 
-commit fc932f51926698488f874ddf7d8f18483ca10271 upstream.
+[ Upstream commit 1d8c270de5eb74245d72325d285894a577a945d9 ]
 
-Don't call drm_suballoc_free with sa_bo pointing to PTR_ERR.
+Wipe sensitive data from stack also if the copy_to_user() fails.
 
-References: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2120
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240620102025.127699-2-matthew.auld@intel.com
-(cherry picked from commit ce6b63336f79ec5f3996de65f452330e395f99ae)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
+Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_migrate.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/s390/crypto/pkey_api.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_migrate.c
-+++ b/drivers/gpu/drm/xe/xe_migrate.c
-@@ -1336,7 +1336,7 @@ xe_migrate_update_pgtables(struct xe_mig
- 						 GFP_KERNEL, true, 0);
- 			if (IS_ERR(sa_bo)) {
- 				err = PTR_ERR(sa_bo);
--				goto err;
-+				goto err_bb;
- 			}
- 
- 			ppgtt_ofs = NUM_KERNEL_PDE +
-@@ -1387,7 +1387,7 @@ xe_migrate_update_pgtables(struct xe_mig
- 					 update_idx);
- 	if (IS_ERR(job)) {
- 		err = PTR_ERR(job);
--		goto err_bb;
-+		goto err_sa;
+diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api.c
+index df0f19e6d9235..17885c9f55cb2 100644
+--- a/drivers/s390/crypto/pkey_api.c
++++ b/drivers/s390/crypto/pkey_api.c
+@@ -1191,7 +1191,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
+ 		if (rc)
+ 			break;
+ 		if (copy_to_user(ucs, &kcs, sizeof(kcs)))
+-			return -EFAULT;
++			rc = -EFAULT;
+ 		memzero_explicit(&kcs, sizeof(kcs));
+ 		break;
  	}
- 
- 	/* Wait on BO move */
-@@ -1436,12 +1436,12 @@ xe_migrate_update_pgtables(struct xe_mig
- 
- err_job:
- 	xe_sched_job_put(job);
-+err_sa:
-+	drm_suballoc_free(sa_bo, NULL);
- err_bb:
- 	if (!q)
- 		mutex_unlock(&m->job_mutex);
- 	xe_bb_free(bb, NULL);
--err:
--	drm_suballoc_free(sa_bo, NULL);
- 	return ERR_PTR(err);
- }
- 
+@@ -1223,7 +1223,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
+ 		if (rc)
+ 			break;
+ 		if (copy_to_user(ucp, &kcp, sizeof(kcp)))
+-			return -EFAULT;
++			rc = -EFAULT;
+ 		memzero_explicit(&kcp, sizeof(kcp));
+ 		break;
+ 	}
+-- 
+2.43.0
+
 
 
 
