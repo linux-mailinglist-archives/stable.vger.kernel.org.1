@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-58356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B1092B68E
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:15:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0008F92B78D
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9B841F2392E
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:15:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72007B24FE9
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FDB71581E3;
-	Tue,  9 Jul 2024 11:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DA915887F;
+	Tue,  9 Jul 2024 11:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JWb2VILn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPCBtAPP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79EB1581EB;
-	Tue,  9 Jul 2024 11:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4273C1581E4;
+	Tue,  9 Jul 2024 11:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523693; cv=none; b=jaGR12T+sSNvC2qbYvRkmfpH5/cOiKdgBgwSeOXb8z1e349Ytp+D0pi5LkxIEyHTTQBO4hOFFmmc2mYoIEzfoazp+h2AjEXB2uLU498oXaYB8Ie2PViUCA7ZydHEDPSippfhJg0fILqMfNCgwo+fjEteDjTF1rPUZoESDGuzHoA=
+	t=1720524255; cv=none; b=GlDbZTKkEF3QpeHpj4IhtLMlUsuZ5vgCvlBiLVQO0hfBgyAFR0LFgbYt0FnBNY//QkYkbaQYtNse0OLF7qQ1XB6VKFVThNp+pEavqICitmM5Yh0FcHDAw7izRInQkv0AKEpdNQsfio1OGzpf1ABjzGGIXZUR8JU6e7c25a1Vc1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523693; c=relaxed/simple;
-	bh=s+RDvs3DZHtfqTXunkn4azV1+4G/Wy9y7AlNzBofH+U=;
+	s=arc-20240116; t=1720524255; c=relaxed/simple;
+	bh=t8cGxOOArMbe5H2kIYdUZZwYwbbndiNRHLrq3mc52PY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+Ye7OBh3FYGRIGC5mot8Qxxgk70/edwV5eSF0Mp2NGUOrS1A+N/mjV7GxF/yh7o4GJPoRG4fleyW8da6x4QNmiLzoIbODGRpvvFz9JTkD3Nkm8xBbGBPsp1HOdiyKf/Zx4b0pwdXiQC5sxNzxBWm6T2Cu/txd8M3u7hYy7LBls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JWb2VILn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02141C3277B;
-	Tue,  9 Jul 2024 11:14:51 +0000 (UTC)
+	 MIME-Version; b=HQPMkAUaj8tzvKNJssMX/OM+3uZnNGGBrpqQdR6bpTxscJE0RVQT9/OnZlDnr+Tr5H87oAhMI78s/D9lAPxZVb1QoTtO9GTp3ir++uPqPIvbdtNhAr5egyMpqDRROpb/XOiIXgKg8gmJbl8IqQ0C1bAXCX6AmJm9y/Nq3NRM4T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPCBtAPP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C3CC4AF0C;
+	Tue,  9 Jul 2024 11:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523692;
-	bh=s+RDvs3DZHtfqTXunkn4azV1+4G/Wy9y7AlNzBofH+U=;
+	s=korg; t=1720524254;
+	bh=t8cGxOOArMbe5H2kIYdUZZwYwbbndiNRHLrq3mc52PY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JWb2VILn0of2x/FCcExWnjt19UqsTVAmzht2wnIbASkghUktUipDYUfrTDsI34App
-	 sYBGD5fx9mg2UxOADiarCE5fu/37uLvhajfZvFWN4r8hhPnyL228LMOt3/wmOOGu7w
-	 EQ/xzts6ALa5aO4bHkFzklO/vskuMNopPAkT936c=
+	b=CPCBtAPPl1XQcbsg1NZ7RRtOR5Sb8seHgVKNN+LZjVocoA8svHhrjuGaIAWFlQXQR
+	 5LeD2YsvDCPluf6yY4jZrJI738FmuBQe1ajgBaNpaOu1Wo9FnvaIVC/YfefXq007WU
+	 AqGQiIpWP3pCqy7hmuUnm6Y0x9P8cIMSaKrz8ZsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 075/139] net: txgbe: initialize num_q_vectors for MSI/INTx interrupts
-Date: Tue,  9 Jul 2024 13:09:35 +0200
-Message-ID: <20240709110701.074047620@linuxfoundation.org>
+	Ivan Vecera <ivecera@redhat.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Petr Oros <poros@redhat.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.9 122/197] ice: use proper macro for testing bit
+Date: Tue,  9 Jul 2024 13:09:36 +0200
+Message-ID: <20240709110713.674762062@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +67,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit 7c36711a2cd8059c2d24f5e5c1d76e8ea2d5613c ]
+[ Upstream commit 7829ee78490ddb29993cc7893384a04b8cc7436c ]
 
-When using MSI/INTx interrupts, wx->num_q_vectors is uninitialized.
-Thus there will be kernel panic in wx_alloc_q_vectors() to allocate
-queue vectors.
+Do not use _test_bit() macro for testing bit. The proper macro for this
+is one without underline.
 
-Fixes: 3f703186113f ("net: libwx: Add irq flow functions")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+_test_bit() is what test_bit() was prior to const-optimization. It
+directly calls arch_test_bit(), i.e. the arch-specific implementation
+(or the generic one). It's strictly _internal_ and shouldn't be used
+anywhere outside the actual test_bit() macro.
+
+test_bit() is a wrapper which checks whether the bitmap and the bit
+number are compile-time constants and if so, it calls the optimized
+function which evaluates this call to a compile-time constant as well.
+If either of them is not a compile-time constant, it just calls _test_bit().
+test_bit() is the actual function to use anywhere in the kernel.
+
+IOW, calling _test_bit() avoids potential compile-time optimizations.
+
+The sensors is not a compile-time constant, thus most probably there
+are no object code changes before and after the patch.
+But anyway, we shouldn't call internal wrappers instead of
+the actual API.
+
+Fixes: 4da71a77fc3b ("ice: read internal temperature sensor")
+Acked-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20240702171459.2606611-5-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_lib.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/ice/ice_hwmon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index e9310d9ca67c9..bba44ff0e2872 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -1657,6 +1657,7 @@ static int wx_set_interrupt_capability(struct wx *wx)
- 	}
+diff --git a/drivers/net/ethernet/intel/ice/ice_hwmon.c b/drivers/net/ethernet/intel/ice/ice_hwmon.c
+index e4c2c1bff6c08..b7aa6812510a4 100644
+--- a/drivers/net/ethernet/intel/ice/ice_hwmon.c
++++ b/drivers/net/ethernet/intel/ice/ice_hwmon.c
+@@ -96,7 +96,7 @@ static bool ice_is_internal_reading_supported(struct ice_pf *pf)
  
- 	pdev->irq = pci_irq_vector(pdev, 0);
-+	wx->num_q_vectors = 1;
+ 	unsigned long sensors = pf->hw.dev_caps.supported_sensors;
  
- 	return 0;
- }
+-	return _test_bit(ICE_SENSOR_SUPPORT_E810_INT_TEMP_BIT, &sensors);
++	return test_bit(ICE_SENSOR_SUPPORT_E810_INT_TEMP_BIT, &sensors);
+ };
+ 
+ void ice_hwmon_init(struct ice_pf *pf)
 -- 
 2.43.0
 
