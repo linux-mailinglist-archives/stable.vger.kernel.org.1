@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-58878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37C3F92C10A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:50:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5A1692C10E
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:50:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E11371F21D3F
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:50:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F3941F227FF
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A589B19345C;
-	Tue,  9 Jul 2024 16:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40DE9193475;
+	Tue,  9 Jul 2024 16:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gD0A4CgY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bH+ZqLSJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC9219345B;
-	Tue,  9 Jul 2024 16:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F86193469;
+	Tue,  9 Jul 2024 16:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542356; cv=none; b=UqzBLygcNdCFxkag/Befa6FAD+tA8VLIJmYA54BAm5+XMsDsjJFXSCejAOG6kozwvb4Aq3me384AEwiEo2YrSUwsH2C4qgyMHvnoZNEp1wv0nnGSi3KWOFPEv2bA6+tIseoXxeULTn2EWLpHHVk7PbFAXDt+Mq14NL1SZfAWSRg=
+	t=1720542358; cv=none; b=BmUnT++AylNI1RwadyhKlWcxYJpBCXW8+3+5+oDjzZRZqpyCHgDnuLBNsiRe+KhNdXDswCB6Q5xLpbNe4PwlgLPpo/SLFzQ1Rhyugw4SuHS93P0bXqC6e15UlJXPZebC8ZWwe4OYxjnPgGKj+ARzZ/KZqdOYrPOHLrThfX4sK5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542356; c=relaxed/simple;
-	bh=7+REd7TLLDWI7/+BAEjcZ2XC1OXTaggmxl8DSrYZ1ZQ=;
+	s=arc-20240116; t=1720542358; c=relaxed/simple;
+	bh=i8IsKyXwm7IP3wI40Tk7QW5F3dm2CunHoiMRxtOLZpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fTPZrU7wfmH2uMUz8yf5dYQ4vV5biRznKdq4zmuSxUpyIwuFMUNeDNupL9DfFIvPlPIFIN+nHHEZcBdmez8kLn9je9978P98uWXD54s7/9khorh6oHVzCogxteZGaU9vnG4LigO4N/tc39PwTGg4o2ctSlTY04h1hQVa9pB9HQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gD0A4CgY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47313C3277B;
-	Tue,  9 Jul 2024 16:25:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PdvvBTGslTD2UAMtBlBnv478KJ+d7ly4IKYqHfdFHdNokgX00wh6j4dksySjBR8l+VoTA9j6Gm4X20QeY0eruTF7rhnMqrKkx2Y1y8AzgI1DY8L7w0eL4us64/vSLKIiOr4AW51qQOxl+shUeuc9Y5LR43ORVwlxHIL1YURYh7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bH+ZqLSJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545D6C32786;
+	Tue,  9 Jul 2024 16:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542355;
-	bh=7+REd7TLLDWI7/+BAEjcZ2XC1OXTaggmxl8DSrYZ1ZQ=;
+	s=k20201202; t=1720542357;
+	bh=i8IsKyXwm7IP3wI40Tk7QW5F3dm2CunHoiMRxtOLZpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gD0A4CgY6H1crwAYf9+s58PrQu1TWKntjvpQksS8p+fmcodwf10/M40ZOysaDXQFS
-	 KM0QK4QYxskumURz5+McOHDoLCwGMRacqwhVxdJsP/sHhZLvIwnjgBHXojD7J4RFdS
-	 Md/JOZqJ1LYjQBQNuiZEl2ykridE6U+I1mC/NeHc58Jp+pEgSBeuAveeWipsdnLSVy
-	 t6Ph2SxmBzAKCc8CHOw5WFdnvsKjo5cWiXkptyiKLEwjBohir+MGELLQDW9QfDCsQp
-	 HgxQGbjfIyIg2GJnTLUgZheTxTBaOYJoclrulQxlDvGIjSYT7hPPGd0ZtjopIczkt1
-	 yQZ7YrmM33ypA==
+	b=bH+ZqLSJe3cTwPddme/y7UPEtCEeilCCi9im/wsPnj4+yQwI/W/yPbT4q9yAK4eHT
+	 0HnAVkybRBdUii5WKbeXR0s3I0U8lRpxFXJ1l4gPCnEtfItGTy4i7olBYY21nBQxV3
+	 Gl4NHGZf07GGmZUM2usGdqdPkRgYU/rQ9+Za5nWMiMlLDt7Ms6tx1JHmmFn7H57Z/Y
+	 zLvbJEXerZE+ftGBpLiuBHBMgot2x2oQPcA13nqc5Pxfqhe31Ympsgy5juBkBZaf1S
+	 zTkptvbi0Lo+Yex32YmSTEtMjUDMhe+9n/AoZyy1icxaT8sZKv55VlRY312qxHaChW
+	 mLCJvh7z6I4hQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Adhemerval Zanella <adhemerval.zanella@linaro.org>,
-	Helge Deller <deller@gmx.de>,
+Cc: Daniele Palmas <dnlplm@gmail.com>,
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	geert@linux-m68k.org,
-	tglx@linutronix.de,
-	peterz@infradead.org,
-	sohil.mehta@intel.com,
-	casey@schaufler-ca.com,
-	jeffxu@chromium.org,
-	mszeredi@redhat.com,
-	linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 16/17] parisc: use generic sys_fanotify_mark implementation
-Date: Tue,  9 Jul 2024 12:25:00 -0400
-Message-ID: <20240709162517.32584-16-sashal@kernel.org>
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 17/17] net: usb: qmi_wwan: add Telit FN912 compositions
+Date: Tue,  9 Jul 2024 12:25:01 -0400
+Message-ID: <20240709162517.32584-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162517.32584-1-sashal@kernel.org>
 References: <20240709162517.32584-1-sashal@kernel.org>
@@ -69,102 +65,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.162
 Content-Transfer-Encoding: 8bit
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-[ Upstream commit 403f17a330732a666ae793f3b15bc75bb5540524 ]
+[ Upstream commit 77453e2b015b5ced5b3f45364dd5a72dfc3bdecb ]
 
-The sys_fanotify_mark() syscall on parisc uses the reverse word order
-for the two halves of the 64-bit argument compared to all syscalls on
-all 32-bit architectures. As far as I can tell, the problem is that
-the function arguments on parisc are sorted backwards (26, 25, 24, 23,
-...) compared to everyone else, so the calling conventions of using an
-even/odd register pair in native word order result in the lower word
-coming first in function arguments, matching the expected behavior
-on little-endian architectures. The system call conventions however
-ended up matching what the other 32-bit architectures do.
+Add the following Telit FN912 compositions:
 
-A glibc cleanup in 2020 changed the userspace behavior in a way that
-handles all architectures consistently, but this inadvertently broke
-parisc32 by changing to the same method as everyone else.
+0x3000: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
+T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=3000 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN912
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-The change made it into glibc-2.35 and subsequently into debian 12
-(bookworm), which is the latest stable release. This means we
-need to choose between reverting the glibc change or changing the
-kernel to match it again, but either hange will leave some systems
-broken.
+0x3001: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
+T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=3001 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN912
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Pick the option that is more likely to help current and future
-users and change the kernel to match current glibc. This also
-means the behavior is now consistent across architectures, but
-it breaks running new kernels with old glibc builds before 2.35.
-
-Link: https://sourceware.org/git/?p=glibc.git;a=commitdiff;h=d150181d73d9
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/commit/arch/parisc/kernel/sys_parisc.c?h=57b1dfbd5b4a39d
-Cc: Adhemerval Zanella <adhemerval.zanella@linaro.org>
-Tested-by: Helge Deller <deller@gmx.de>
-Acked-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-I found this through code inspection, please double-check to make
-sure I got the bug and the fix right.
-
-The alternative is to fix this by reverting glibc back to the
-unusual behavior.
-
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Acked-by: Bjørn Mork <bjorn@mork.no>
+Link: https://patch.msgid.link/20240625102236.69539-1-dnlplm@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/Kconfig                     | 1 +
- arch/parisc/kernel/sys_parisc32.c       | 9 ---------
- arch/parisc/kernel/syscalls/syscall.tbl | 2 +-
- 3 files changed, 2 insertions(+), 10 deletions(-)
+ drivers/net/usb/qmi_wwan.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 117b0f882750a..6ac0c4b98e281 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -12,6 +12,7 @@ config PARISC
- 	select ARCH_HAS_STRICT_MODULE_RWX
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
- 	select ARCH_NO_SG_CHAIN
-+	select ARCH_SPLIT_ARG64 if !64BIT
- 	select ARCH_SUPPORTS_HUGETLBFS if PA20
- 	select ARCH_SUPPORTS_MEMORY_FAILURE
- 	select DMA_OPS
-diff --git a/arch/parisc/kernel/sys_parisc32.c b/arch/parisc/kernel/sys_parisc32.c
-index 2a12a547b447b..826c8e51b5853 100644
---- a/arch/parisc/kernel/sys_parisc32.c
-+++ b/arch/parisc/kernel/sys_parisc32.c
-@@ -23,12 +23,3 @@ asmlinkage long sys32_unimplemented(int r26, int r25, int r24, int r23,
-     	current->comm, current->pid, r20);
-     return -ENOSYS;
- }
--
--asmlinkage long sys32_fanotify_mark(compat_int_t fanotify_fd, compat_uint_t flags,
--	compat_uint_t mask0, compat_uint_t mask1, compat_int_t dfd,
--	const char  __user * pathname)
--{
--	return sys_fanotify_mark(fanotify_fd, flags,
--			((__u64)mask1 << 32) | mask0,
--			 dfd, pathname);
--}
-diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
-index 50c759f11c25d..d47f7f8accaf5 100644
---- a/arch/parisc/kernel/syscalls/syscall.tbl
-+++ b/arch/parisc/kernel/syscalls/syscall.tbl
-@@ -364,7 +364,7 @@
- 320	common	accept4			sys_accept4
- 321	common	prlimit64		sys_prlimit64
- 322	common	fanotify_init		sys_fanotify_init
--323	common	fanotify_mark		sys_fanotify_mark		sys32_fanotify_mark
-+323	common	fanotify_mark		sys_fanotify_mark		compat_sys_fanotify_mark
- 324	32	clock_adjtime		sys_clock_adjtime32
- 324	64	clock_adjtime		sys_clock_adjtime
- 325	common	name_to_handle_at	sys_name_to_handle_at
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 9bd145732e58b..fb09e95cbc258 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1373,6 +1373,8 @@ static const struct usb_device_id products[] = {
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1260, 2)},	/* Telit LE910Cx */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1261, 2)},	/* Telit LE910Cx */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1900, 1)},	/* Telit LN940 series */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x3000, 0)},	/* Telit FN912 series */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x3001, 0)},	/* Telit FN912 series */
+ 	{QMI_FIXED_INTF(0x1c9e, 0x9801, 3)},	/* Telewell TW-3G HSPA+ */
+ 	{QMI_FIXED_INTF(0x1c9e, 0x9803, 4)},	/* Telewell TW-3G HSPA+ */
+ 	{QMI_FIXED_INTF(0x1c9e, 0x9b01, 3)},	/* XS Stick W100-2 from 4G Systems */
 -- 
 2.43.0
 
