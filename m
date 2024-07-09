@@ -1,183 +1,134 @@
-Return-Path: <stable+bounces-58757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBF0492BC6C
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:02:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F7AF92BC8A
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:13:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A3721C20A4A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 14:02:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B3491C20E0A
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 14:13:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E3017C203;
-	Tue,  9 Jul 2024 14:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C641918FC60;
+	Tue,  9 Jul 2024 14:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b="Wgqq+CvL"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="N0n0Yu/w"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD3519B581
-	for <stable@vger.kernel.org>; Tue,  9 Jul 2024 14:02:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D100E1591F1;
+	Tue,  9 Jul 2024 14:13:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720533775; cv=none; b=i7oP2ZRJZ73N+fpHB+eKh89/1qnUhoDq+Z5CYnJ3bX/2nf/fzzA0pcTs1MNrpFSKRJpOBB9zRXgkuFnjAlwcI1ILK+6cmeWEtSrAQ0LC51u1Xj1fhe1LeknqBgRctbAEB4UQ0cEdta4LRaZcG/ZT5MOM3wtyVEnLEdr7r9biG8o=
+	t=1720534382; cv=none; b=AcnI/supfoGv97qvlvuK2fpZmHt4kMba/cmdLxRU1m5TLGFB38pYNnOmcwuekN1C7Juodx6T84b0IrZFq+qoCClAcjMlBOTgsILLEZLySXnTpej1fAJTU1KPdiya+nKkbonoJwmQ/umBqDEtMkr6A8bVIyOOR1DdbGJR/YjBg7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720533775; c=relaxed/simple;
-	bh=lYk3ekzkam8PnWHJocgZDp+w8y7ZITlPKgxfDCSmsLI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p/NO6UDlFwUla//FhAAZf6EeUhvEMt2UrG0z0H0Nn0J+Yt4aUZ4b94E/A+rRDdsVsMwmglzX1MORGKmRbnlMwyqMSL6nqX4SpfIdkBPyTu6pLq/uDiuFypBfO2yYPuIYQNpMPn588V9J9F7tNr2yUsCNsaE6uxeR0+yAG/fNJFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ursulin.net; spf=none smtp.mailfrom=ursulin.net; dkim=pass (2048-bit key) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b=Wgqq+CvL; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ursulin.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ursulin.net
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-367ac08f80fso2274223f8f.1
-        for <stable@vger.kernel.org>; Tue, 09 Jul 2024 07:02:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1720533772; x=1721138572; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uu9OJhTofwP0VwGCWg6NqwdVMvMXhiTMagbsBjbyLLo=;
-        b=Wgqq+CvLTn0SN8TfSWBlrEjbDd6VO+pqVya/JgcGnq4vPTABmVREpVmIqV+rF5HqFk
-         +ddZqPQ1XmXa0lG88YGa7ii+KUpaN13NMzyjNCSoGtWYL+5yYw0hxNO/6ehYlY3ZD1ox
-         4a/vn/m3kkvTGYuch8Ekju9DBTYkYD9G/DKNUvtZckurIBpBWmNzbMXZsPDVAe/LYtgW
-         Lby0YRsz4RuOnunMP6CmVZYjDvC1NJUYxjncrOnncu/A2D9oFOe5+eWLVTK9g428u6CA
-         VvVvSsEdVGD3J4Sys23ub7/28GgaZlSZM3X0wf6JAnQXJlfdKfny8zBwsG+IDLJeRxpw
-         Fe8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720533772; x=1721138572;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uu9OJhTofwP0VwGCWg6NqwdVMvMXhiTMagbsBjbyLLo=;
-        b=MHV8Jn5SuPO1jdzqIUh6QsQSl+QJZYq7BF3QXZL0YJjx9ZZUHfRxaEWj+Mdhw9bAXn
-         FxrJCxDf2PsPuTCCMHctQcxMXQJVKHt/NdmXPGQV7eIK13/aOHKQVU/WYDGusVDjoAf7
-         9XcNbZbNArlbofuny7hPKKw+J8jhcawKCpRczKO64S0epVufJ+eo3V3Mb2pfhwYufgSl
-         rDt9C5kLXiHrNf5SBx8wro9s/Hksvi0qflU16/ySQwc+b7B55JCa3Yu9NQnaeH+y6SBu
-         I3vQfqhanyL9GDFITBCOiyyKfpAmzbB6Dj3241UdVTIHH1/sunnlm88YEAKupUoLskTC
-         SnMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWUCxn7YPnLUOG81N6X/F2VAn74gj7vDnv81zZ4B6fJCacRXt4v6o7cMV7AXNRj0JwNjs5SDjdV7hnI/LbtAqzGY6mPQ3JH
-X-Gm-Message-State: AOJu0YwGMWm+vVtEmNzrDqM66/vKoVeX3QKB6WlXWQK3FXUAM+slqDEf
-	RjWqPBF0CT+281KYfkKgOq+FMJHPxr6OvNrtIemkNV3N01e4Pr/r0rJQN5DWjmI=
-X-Google-Smtp-Source: AGHT+IFtT5ee2t3crvq4ZNBz+KhMcZm7i0t9xadFlUz5eVRkiHO6Bw0KLJ9RPYcYHiCfNac1dtmlnQ==
-X-Received: by 2002:adf:a3d9:0:b0:367:958e:9832 with SMTP id ffacd0b85a97d-367cea46060mr1876324f8f.14.1720533772204;
-        Tue, 09 Jul 2024 07:02:52 -0700 (PDT)
-Received: from [192.168.0.101] ([84.69.19.168])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a2fca8bsm209640155e9.47.2024.07.09.07.02.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Jul 2024 07:02:51 -0700 (PDT)
-Message-ID: <51d17145-39bd-4ba5-a703-10725a1d3bc1@ursulin.net>
-Date: Tue, 9 Jul 2024 15:02:50 +0100
+	s=arc-20240116; t=1720534382; c=relaxed/simple;
+	bh=GxCbFSpRXr64YpzKYWZI94Ttfcr28x+E1SDBHeAOR+E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rrjpxLkRzUktOR7aSQMJBDsPfJDKZlXz0XmEe+/tf6UGn+TR3j8dXsVhOXQKBrdTfoOk30ThPPd4bGBnfQFaQ6KLjxSvg+orkv9ZkphyRRmVUIN6a+EdI7mI9mxMgVHKT+GGc4fPp7IK2NXV+pmyxApyEj29OniPNsKCYFVt8j0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=N0n0Yu/w; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D601340E019D;
+	Tue,  9 Jul 2024 14:12:58 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id RmGZsl2mVGvi; Tue,  9 Jul 2024 14:12:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1720534370; bh=d6Y0klRaJpMwWQ/ZJWm/uK8e91UNmkVpoE3tOQ0KROI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=N0n0Yu/wx44luhZ60gTCJ9YsMWqFT8zATOMCpfYpDGpuTXM9s2/gKSSDFPzxEHOoJ
+	 TZ7Wq0ONcVgET4UY0ClKYaQBdRMOzr3ISeuXpczYpFtwsEUX9pP0JNRQCLI/1bc0fl
+	 m2Zpaxrj2TL4YrVnkKDLY8TsAIS2TBHBLjwlAcPcS/xfEWjBuVUy9Zk94RYPNQ97Qb
+	 2J0Kp89kol2NQpEE/Qpf91g2TDrugnnCYhThZ+pxq5XLdj0uvlRdSE2/Cddds0A+Zb
+	 EaS2aVD7+vAWZBIn7g9PPQMS1esvsaT6OjwUFg3eqxWJPVZa0tbL92mQ1QTmcwPXdI
+	 wwOoFAGlLOA6w9IZeRxQO7AqbRHy04QQeHNT7291BayJRbr+yJghZWxSnwZ/lMgV4Z
+	 hw+VRBFP4EVhbogH3kD/aekZJQfMjeucfDb7zd0P6YU5BWUncTu+QYGLdDvwiA+WIg
+	 fH33fJFBMoJCDhxCgTSAdE8Ufe6z+/lERMza0op64D9F27/Cd1dMxfy04ze1NiOVF1
+	 dIKw/p2THA2GIKfvu7JcYVC2hoM1At5anFU2TjBYQL7Omr5hWPE4L36VEnyBgtl0Bs
+	 wL1CBRBJ8CrL5F5d3FCNsKgNGyMPRwcx0W/NPiu1vBRZgz4KDon7ApIhZDcistYNfV
+	 LiLcNcxhYMJNldaV1aBLgNHE=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 79DFE40E0185;
+	Tue,  9 Jul 2024 14:12:43 +0000 (UTC)
+Date: Tue, 9 Jul 2024 16:12:38 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jim Mattson <jmattson@google.com>, Ingo Molnar <mingo@kernel.org>,
+	x86@kernel.org, linux-kernel@vger.kernel.org,
+	Greg Thelen <gthelen@google.com>, stable@vger.kernel.org
+Subject: [PATCH 6.1] x86/retpoline: Move a NOENDBR annotation to the SRSO
+ dummy return thunk
+Message-ID: <20240709141238.GJZo1FVpZU0jRganFu@fat_crate.local>
+References: <20240709132058.227930-1-jmattson@google.com>
+ <2024070930-monument-cola-a36e@gregkh>
+ <20240709135545.GIZo1BYUeDD6UrvZNd@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/i915/gt: Do not consider preemption during
- execlists_dequeue for gen8
-To: Nitin Gote <nitin.r.gote@intel.com>, intel-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org, andi.shyti@intel.com,
- chris.p.wilson@linux.intel.com, nirmoy.das@intel.com,
- janusz.krzysztofik@linux.intel.com, stable@vger.kernel.org
-References: <20240709125302.861319-1-nitin.r.gote@intel.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tursulin@ursulin.net>
-In-Reply-To: <20240709125302.861319-1-nitin.r.gote@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240709135545.GIZo1BYUeDD6UrvZNd@fat_crate.local>
 
+From: Jim Mattson <jmattson@google.com>
+Subject: [PATCH] x86/retpoline: Move a NOENDBR annotation to the SRSO dummy return thunk
 
-On 09/07/2024 13:53, Nitin Gote wrote:
-> We're seeing a GPU HANG issue on a CHV platform, which was caused by
-> bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries for gen8").
-> 
-> Gen8 platform has only timeslice and doesn't support a preemption mechanism
-> as engines do not have a preemption timer and doesn't send an irq if the
-> preemption timeout expires. So, add a fix to not consider preemption
-> during dequeuing for gen8 platforms.
-> 
-> Also move can_preemt() above need_preempt() function to resolve implicit
-> declaration of function ‘can_preempt' error and make can_preempt()
-> function param as const to resolve error: passing argument 1 of
-> ‘can_preempt’ discards ‘const’ qualifier from the pointer target type.
-> 
-> Fixes: bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries for gen8")
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11396
-> Suggested-by: Andi Shyti <andi.shyti@intel.com>
-> Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
-> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-> CC: <stable@vger.kernel.org> # v5.2+
-> ---
->   .../drm/i915/gt/intel_execlists_submission.c  | 24 ++++++++++++-------
->   1 file changed, 15 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-> index 21829439e686..30631cc690f2 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-> +++ b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-> @@ -294,11 +294,26 @@ static int virtual_prio(const struct intel_engine_execlists *el)
->   	return rb ? rb_entry(rb, struct ve_node, rb)->prio : INT_MIN;
->   }
->   
-> +static bool can_preempt(const struct intel_engine_cs *engine)
-> +{
-> +	if (GRAPHICS_VER(engine->i915) > 8)
-> +		return true;
-> +
-> +	if (IS_CHERRYVIEW(engine->i915) || IS_BROADWELL(engine->i915))
-> +		return false;
-> +
-> +	/* GPGPU on bdw requires extra w/a; not implemented */
-> +	return engine->class != RENDER_CLASS;
+The linux-6.1-y backport of commit b377c66ae350 ("x86/retpoline: Add
+NOENDBR annotation to the SRSO dummy return thunk") misplaced the new
+NOENDBR annotation, repeating the annotation on __x86_return_thunk,
+rather than adding the annotation to the !CONFIG_CPU_SRSO version of
+srso_alias_untrain_ret, as intended.
 
-Aren't BDW and CHV the only Gen8 platforms, in which case this function 
-can be simplifies as:
+Move the annotation to the right place.
 
-...
-{
-	return GRAPHICS_VER(engine->i915) > 8;
-}
+Fixes: 0bdc64e9e716 ("x86/retpoline: Add NOENDBR annotation to the SRSO dummy return thunk")
+Reported-by: Greg Thelen <gthelen@google.com>
+Signed-off-by: Jim Mattson <jmattson@google.com>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+---
+ arch/x86/lib/retpoline.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-?
+diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
+index 055955c9bfcb..7880e2a7ec6a 100644
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -107,6 +107,7 @@ __EXPORT_THUNK(srso_alias_untrain_ret)
+ /* dummy definition for alternatives */
+ SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
+ 	ANNOTATE_UNRET_SAFE
++	ANNOTATE_NOENDBR
+ 	ret
+ 	int3
+ SYM_FUNC_END(srso_alias_untrain_ret)
+@@ -261,7 +262,6 @@ SYM_CODE_START(__x86_return_thunk)
+ 	UNWIND_HINT_FUNC
+ 	ANNOTATE_NOENDBR
+ 	ANNOTATE_UNRET_SAFE
+-	ANNOTATE_NOENDBR
+ 	ret
+ 	int3
+ SYM_CODE_END(__x86_return_thunk)
+-- 
+2.43.0
 
-> +}
-> +
->   static bool need_preempt(const struct intel_engine_cs *engine,
->   			 const struct i915_request *rq)
->   {
->   	int last_prio;
->   
-> +	if ((GRAPHICS_VER(engine->i915) <= 8) && can_preempt(engine))
+-- 
+Regards/Gruss,
+    Boris.
 
-The GRAPHICS_VER check here looks redundant with the one inside 
-can_preempt().
-
-Regards,
-
-Tvrtko
-
-> +		return false;
-> +
->   	if (!intel_engine_has_semaphores(engine))
->   		return false;
->   
-> @@ -3313,15 +3328,6 @@ static void remove_from_engine(struct i915_request *rq)
->   	i915_request_notify_execute_cb_imm(rq);
->   }
->   
-> -static bool can_preempt(struct intel_engine_cs *engine)
-> -{
-> -	if (GRAPHICS_VER(engine->i915) > 8)
-> -		return true;
-> -
-> -	/* GPGPU on bdw requires extra w/a; not implemented */
-> -	return engine->class != RENDER_CLASS;
-> -}
-> -
->   static void kick_execlists(const struct i915_request *rq, int prio)
->   {
->   	struct intel_engine_cs *engine = rq->engine;
+https://people.kernel.org/tglx/notes-about-netiquette
 
