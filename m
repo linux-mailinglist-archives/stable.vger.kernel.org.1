@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-58499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D7D492B75B
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A81A92B660
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:12:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A4D3B2458B
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BF581C21BB2
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA31D158D91;
-	Tue,  9 Jul 2024 11:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1EB1586C0;
+	Tue,  9 Jul 2024 11:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjmRKIXX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HO0iA6yT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8099158A30;
-	Tue,  9 Jul 2024 11:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5BC157E61;
+	Tue,  9 Jul 2024 11:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524125; cv=none; b=pHGEmNVT89+8Q4DsFO82mU8WZMOfjhr88rjux1tAI2rluUUxUrDHd3z04YXIqUI4XCOzvGFR1iv3bh9RkWroZ/ZT9yKO1wGAAARy2o/KNyzxIPOdWbw9aMtXiUibV/DrTA1jCZ1zsADaJy0hmMP3Yuz72QlUdrKptWC6f5EcIZE=
+	t=1720523561; cv=none; b=JL8y/Zd8kGco1NrZFl0nZCDU2PuNArR4SQa6vSJzLcP2Yklh59dia6JyYVLIES8if519IkPjNVvvZ+47i6x3ns/bh7P62Y6uz4P2YqI0uRhTu5CegkFk5nlBy+PY8MAsSo22QIkg4Z8zFEBsJjdLjntgVqt3FGhU67m0p8MWSoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524125; c=relaxed/simple;
-	bh=A2/Nc4rRg+QUDA6nm0x/tD/yk3s4v2fcGiOIBJSJI+8=;
+	s=arc-20240116; t=1720523561; c=relaxed/simple;
+	bh=3a8/ybVDGA+sdlJH04V6lo0dXA32Xkk8QrJdiVle5DQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L8ypbHXTADsMn78EKk/mcMR3fn2Rt+9bGAqBXhnn3xo+B/HOdJG52mFtnfRctNv6MfMDVjrDhY389s55PtBmrEn6J3OrsRmb5i0tMeobbBtueKdTo7KI7mbbIJ0XvC6amm7pBzxBUGuePVV1qKnDq9R+yzK6xlN+XFcT1XUerKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjmRKIXX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D337C32786;
-	Tue,  9 Jul 2024 11:22:04 +0000 (UTC)
+	 MIME-Version; b=r1icP83pKKbldT6XInRz/qaBMoH7xB2sfVZyR5I+iM4V7Hrcyarnxw/tflX9Xq8t58jdke3RwVBJJ/FZxcjDcNUydKZBcz+zhRVIemhVv5q4dKSrD3K9bJrHZAkapvdBjoZe6qmAmrwnsDFCo60T8/cPnk5lt1DAgrNyoaTDrAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HO0iA6yT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69E1C3277B;
+	Tue,  9 Jul 2024 11:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524125;
-	bh=A2/Nc4rRg+QUDA6nm0x/tD/yk3s4v2fcGiOIBJSJI+8=;
+	s=korg; t=1720523561;
+	bh=3a8/ybVDGA+sdlJH04V6lo0dXA32Xkk8QrJdiVle5DQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjmRKIXXhUCUlYTSiDkfhnxGyfRiIj92gw+MxKeTmFSR1iERp7czZDxmxJATiWFY+
-	 YZS57X7oJI/9ZGVCL0wo0g0e6D6vFaAQOb6taEmWATvrW6BDm5ku3q2foDswdQ+Tj6
-	 u0/7EV5ZQfzow40jXqw6lL9ftCXLwCY0TnLlJwE8=
+	b=HO0iA6yTdXmW8pGGch12nddJKJY7W+caktjmQZyp+tr4eIxoUWqxJshehvESdwLUk
+	 gkLCFNW3QTQIdbziHBAgf8EJSC692CgI/gpYte2uwXlJF44j8CC5KxxHKzytAihjok
+	 c17c3a2Kv9NSw7FkRUplT4WIwGXAjCnzo8b/O8uo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Len Brown <len.brown@intel.com>,
+	StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 079/197] tools/power turbostat: Remember global max_die_id
+Subject: [PATCH 6.6 033/139] wifi: mt76: mt7996: add sanity checks for background radar trigger
 Date: Tue,  9 Jul 2024 13:08:53 +0200
-Message-ID: <20240709110712.025995101@linuxfoundation.org>
+Message-ID: <20240709110659.445091273@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Len Brown <len.brown@intel.com>
+From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
 
-[ Upstream commit cda203388687aa075db6f8996c3c4549fa518ea8 ]
+[ Upstream commit ec55d8e7dfea92daff87f5c01689633f8c4e6a62 ]
 
-This is necessary to gracefully handle sparse die_id's.
+Check if background radar is enabled or not before manually triggering it,
+and also add more checks in radar detected event.
 
-no functional change
-
-Signed-off-by: Len Brown <len.brown@intel.com>
-Stable-dep-of: 3559ea813ad3 ("tools/power turbostat: Avoid possible memory corruption due to sparse topology IDs")
+Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c | 5 +++++
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c     | 5 ++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 8071a3ef2a2e8..25417c3a47ab6 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -1415,6 +1415,7 @@ struct topo_params {
- 	int allowed_cpus;
- 	int allowed_cores;
- 	int max_cpu_num;
-+	int max_die_id;
- 	int max_node_num;
- 	int nodes_per_pkg;
- 	int cores_per_node;
-@@ -6967,7 +6968,6 @@ void topology_probe(bool startup)
- 	int i;
- 	int max_core_id = 0;
- 	int max_package_id = 0;
--	int max_die_id = 0;
- 	int max_siblings = 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
+index 4d40ec7ff57f5..630520c21a47f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
+@@ -225,6 +225,11 @@ mt7996_radar_trigger(void *data, u64 val)
+ 	if (val > MT_RX_SEL2)
+ 		return -EINVAL;
  
- 	/* Initialize num_cpus, max_cpu_num */
-@@ -7084,8 +7084,8 @@ void topology_probe(bool startup)
++	if (val == MT_RX_SEL2 && !dev->rdd2_phy) {
++		dev_err(dev->mt76.dev, "Background radar is not enabled\n");
++		return -EINVAL;
++	}
++
+ 	return mt7996_mcu_rdd_cmd(dev, RDD_RADAR_EMULATE,
+ 				  val, 0, 0);
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index b4ea7d0a7f5a0..b66f712e1b17b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -339,7 +339,10 @@ mt7996_mcu_rx_radar_detected(struct mt7996_dev *dev, struct sk_buff *skb)
+ 	if (r->band_idx >= ARRAY_SIZE(dev->mt76.phys))
+ 		return;
  
- 		/* get die information */
- 		cpus[i].die_id = get_die_id(i);
--		if (cpus[i].die_id > max_die_id)
--			max_die_id = cpus[i].die_id;
-+		if (cpus[i].die_id > topo.max_die_id)
-+			topo.max_die_id = cpus[i].die_id;
- 
- 		/* get numa node information */
- 		cpus[i].physical_node_id = get_physical_node_id(&cpus[i]);
-@@ -7111,9 +7111,9 @@ void topology_probe(bool startup)
- 	if (!summary_only && topo.cores_per_node > 1)
- 		BIC_PRESENT(BIC_Core);
- 
--	topo.num_die = max_die_id + 1;
-+	topo.num_die = topo.max_die_id + 1;
- 	if (debug > 1)
--		fprintf(outf, "max_die_id %d, sizing for %d die\n", max_die_id, topo.num_die);
-+		fprintf(outf, "max_die_id %d, sizing for %d die\n", topo.max_die_id, topo.num_die);
- 	if (!summary_only && topo.num_die > 1)
- 		BIC_PRESENT(BIC_Die);
- 
+-	if (dev->rdd2_phy && r->band_idx == MT_RX_SEL2)
++	if (r->band_idx == MT_RX_SEL2 && !dev->rdd2_phy)
++		return;
++
++	if (r->band_idx == MT_RX_SEL2)
+ 		mphy = dev->rdd2_phy->mt76;
+ 	else
+ 		mphy = dev->mt76.phys[r->band_idx];
 -- 
 2.43.0
 
