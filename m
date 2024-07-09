@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9EF492B6F0
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:18:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B23092B7DE
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:28:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FDD22814E9
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:18:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 792D5B21C06
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C5B81586D0;
-	Tue,  9 Jul 2024 11:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2945015749B;
+	Tue,  9 Jul 2024 11:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blDy4bzB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQL+sqXx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD97A158219;
-	Tue,  9 Jul 2024 11:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2BB27713;
+	Tue,  9 Jul 2024 11:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523897; cv=none; b=hD/A2pjh0NMt+++ayXokBcjaD+CzCSfMYgdPuSPtgtDo+6AzEjKBGnY2uMdfG/IKTFLCs9jvWSz9JvhGwbHxqiWWzfAlHkDdVgfqpWFmHdP/fuEUYH3Ss32jESoAEWmsgndhw1MMAytoHI3XFe6hZbTyz7OmwaA5q7kx+GHokwo=
+	t=1720524485; cv=none; b=AMmF2J3zF+gXEg/ZqLyrU1BTNeWjAbJ5x4Ttw0pSWWrZ/HEMH7HjfPoLx/SW/BA/roT05c8zkIOxsmo9cbnjZxZBafQiPrFecICv23UkTREOg1+leCjBXZaQOx9M1YOM13rRlkMzoHMwf+0xwD9Ag0a+lekzZIgs0wzR8mqb9+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523897; c=relaxed/simple;
-	bh=jEBkeyDUBYGQpQRIOk4MtS9Qnon83NXLuL2xf6aO7NY=;
+	s=arc-20240116; t=1720524485; c=relaxed/simple;
+	bh=wdThse/X7ANx0CJgBxmMMA/lX9wAJzjhmQ0KBr7iD6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D7J0knSwUAeneryGTdcq8IPa/i+fL7TRO/RArQ+8t85+m40u6mJEi9L0FiNEfeT+t2MobO962TWODsxlM+1yOzvDTIxOX12W9Mw1e3rs8XJyb3su5s+4W1fIfezTvS1e4lpl9YkLXJNuwAQ9ydUK2B/N4OSMP/M0f8RvlO4JXOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blDy4bzB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB1AC3277B;
-	Tue,  9 Jul 2024 11:18:17 +0000 (UTC)
+	 MIME-Version; b=NUEEkO6pORNYsvEYidkiUCQJVC81unxU73Vmx1sJDPs9q2/CCC4J2dl2NrE8yKSbxkB4ejULxgEhh+kD7kqsy3W5cFAx7ZzgKS3LfSfwBNCINbs3JeGvzyt71nzQY8fNUlTnTxabSlWsOE1pxbKS074wr7QHSDZ3+px+d/gWqGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQL+sqXx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637D5C4AF0A;
+	Tue,  9 Jul 2024 11:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523897;
-	bh=jEBkeyDUBYGQpQRIOk4MtS9Qnon83NXLuL2xf6aO7NY=;
+	s=korg; t=1720524485;
+	bh=wdThse/X7ANx0CJgBxmMMA/lX9wAJzjhmQ0KBr7iD6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=blDy4bzBpa5S52vEVyufuUaRlzlP+4HLjC+nsugUiVpFM2j6Bfm4Tgsaiq9e1CwfD
-	 6Fb39GJ1L40b9G6U1mbUncIXxVtw6waxWVKmKlNVUchhlJ649wCkUKA5k9Cjuiahi8
-	 OZ30+MRgeS97vP2LvXJjT82fnnqOoesd6C/2/l54=
+	b=VQL+sqXxW5VlSQci0Om4fTZiQ9EKX4fv2zBawJwM3IsGVLZsdw1FLznv3tvukatQf
+	 s5UPnE5bQHk49DYnPPZYv43batR5JGviMg7gPaEgJ/ebD7WLXPtDU1lv7WVazMz5/x
+	 ibsQVVgLdBypZ+rSWvPXU22TBbm/WpD4BQQHE53w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 119/139] clk: qcom: clk-alpha-pll: set ALPHA_EN bit for Stromer Plus PLLs
+	Yijie Yang <quic_yijiyang@quicinc.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.9 165/197] net: stmmac: dwmac-qcom-ethqos: fix error array size
 Date: Tue,  9 Jul 2024 13:10:19 +0200
-Message-ID: <20240709110702.772163026@linuxfoundation.org>
+Message-ID: <20240709110715.337471056@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Yijie Yang <quic_yijiyang@quicinc.com>
 
-[ Upstream commit 5a33a64524e6381c399e5e42571d9363ffc0bed4 ]
+commit b698ab56837bc9e666b7e7e12e9c28fe1d6a763c upstream.
 
-The clk_alpha_pll_stromer_plus_set_rate() function does not
-sets the ALPHA_EN bit in the USER_CTL register, so setting
-rates which requires using alpha mode works only if the bit
-gets set already prior calling the function.
+Correct member @num_por with size of right array @emac_v4_0_0_por for
+struct ethqos_emac_driver_data @emac_v4_0_0_data.
 
-Extend the function to set the ALPHA_EN bit in order to allow
-using fractional rates regardless whether the bit gets set
-previously or not.
-
-Fixes: 84da48921a97 ("clk: qcom: clk-alpha-pll: introduce stromer plus ops")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/r/20240508-stromer-plus-alpha-en-v1-1-6639ce01ca5b@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 8c4d92e82d50 ("net: stmmac: dwmac-qcom-ethqos: add support for emac4 on sa8775p platforms")
+Signed-off-by: Yijie Yang <quic_yijiyang@quicinc.com>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://patch.msgid.link/20240701014720.2547856-1-quic_yijiyang@quicinc.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/clk-alpha-pll.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
-index 5cf862b0bb62a..85aa089650eaa 100644
---- a/drivers/clk/qcom/clk-alpha-pll.c
-+++ b/drivers/clk/qcom/clk-alpha-pll.c
-@@ -2510,6 +2510,9 @@ static int clk_alpha_pll_stromer_plus_set_rate(struct clk_hw *hw,
- 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
- 					a >> ALPHA_BITWIDTH);
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+@@ -272,7 +272,7 @@ static const struct ethqos_emac_por emac
  
-+	regmap_update_bits(pll->clkr.regmap, PLL_USER_CTL(pll),
-+			   PLL_ALPHA_EN, PLL_ALPHA_EN);
-+
- 	regmap_write(pll->clkr.regmap, PLL_MODE(pll), PLL_BYPASSNL);
- 
- 	/* Wait five micro seconds or more */
--- 
-2.43.0
-
+ static const struct ethqos_emac_driver_data emac_v4_0_0_data = {
+ 	.por = emac_v4_0_0_por,
+-	.num_por = ARRAY_SIZE(emac_v3_0_0_por),
++	.num_por = ARRAY_SIZE(emac_v4_0_0_por),
+ 	.rgmii_config_loopback_en = false,
+ 	.has_emac_ge_3 = true,
+ 	.link_clk_name = "phyaux",
 
 
 
