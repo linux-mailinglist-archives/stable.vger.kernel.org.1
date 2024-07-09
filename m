@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-58551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D773992B795
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA09592B675
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:13:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C27D284896
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DF231F21C1F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F45158851;
-	Tue,  9 Jul 2024 11:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE5F157A72;
+	Tue,  9 Jul 2024 11:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A6Zg/rNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/9LwFp6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E891581E4;
-	Tue,  9 Jul 2024 11:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAB8155389;
+	Tue,  9 Jul 2024 11:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524278; cv=none; b=Ma3Y/xc/7UlrRiDiDQOL+49AKMc/SXGsryDIlItlSZ6s72W1UB19gRDiRu13TzSxy+iS8NIlSKelrrTIQUNWo0Dm4r/xPo2KUz86Ml7ZAByNsmfFVF+VYVixwP+grhDEG9pCzpyrZyh+XXZO4ScQ8eU18ceCYEkruvRcpHucs8Q=
+	t=1720523622; cv=none; b=Iu9VEjRioKLaIsvzPmkbfcg8i7SJUs0gk68uceCBpPg58NKuHl2uf/MsZkOtGuXc7GUDYzSiUKW2Fc02yv5cBebNTcm4JN7+R9ifRvzwlUuZSOal2O2gv355VRvIhf/QX44xdQ5q8oLgbmZj15dKSgVKAGUgABVMjFIwUIY0bIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524278; c=relaxed/simple;
-	bh=5rEYKv0AtavkpUff6dM4bl+NJVi0eZnihfjP3dkFryc=;
+	s=arc-20240116; t=1720523622; c=relaxed/simple;
+	bh=alg29UIv2mHmkPNDgTStbx428aqtM/oPlphXlMGnLx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6O9DWPihwObVYibgKLXvAESlrnNmLephTuddYyk/gOtoWMwp5F7Rj5rZEKGaYpdaaYANiSVHeBvxJOL/srEu+hZn4pYmsdar6lblGcgmWmTL77lwtjRfnU5iMbQ+uOd3NpFizshYio0lQOea2gEUXkyDszePndUcmZjNwuGq70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A6Zg/rNW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02951C3277B;
-	Tue,  9 Jul 2024 11:24:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SGJVOL6lPaGUqZuqODei/HFXcjTC8NdqYky9oTvJQjhJRa/Ica9zK63rYusAUr3PEB8WolIHHTLyTXpDP+/KU70iXdi26dQkh0dBBHU9BUnC1GGruBr8kEjhOiLNdEI6TfzLruwcIn0DNqRajLHn+ZU49U0/MHF1KjYkeh+tqAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/9LwFp6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450F9C3277B;
+	Tue,  9 Jul 2024 11:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524278;
-	bh=5rEYKv0AtavkpUff6dM4bl+NJVi0eZnihfjP3dkFryc=;
+	s=korg; t=1720523622;
+	bh=alg29UIv2mHmkPNDgTStbx428aqtM/oPlphXlMGnLx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A6Zg/rNWPh8tHWlpf0TvcO7irJf10h3ge91GQHmXVBqNTdgdybiYBtoBshsnH8Vev
-	 Sigimi54GVBq5EP/FjWOgN+JnWA/pTCtX44voRzclEcy7XsRFtrxFTTfAEys6q0j3u
-	 +ps3JVRerqCcanxE5WedZhFwBU0FIOsEvV4faXpY=
+	b=H/9LwFp6V44UG2lMQqzC0Lk9XJ89SzNO9zhZL7Pk0iKwoq6SSzrI3Jt2bkazXCBF8
+	 tQxjTTddVVkp4GdIVw+OQsFzZpbT5BAzkP7jq0BFnKKENctHRlHs6A+HPn8hNzIC+R
+	 /g5ByzfR0gWF2yBsfl/jNpiNHVoHe5d9aQF0JBfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dima Ruinskiy <dima.ruinskiy@intel.com>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Boris Burkov <boris@bur.io>,
+	Lu Yao <yaolu@kylinos.cn>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 100/197] e1000e: Fix S0ix residency on corporate systems
-Date: Tue,  9 Jul 2024 13:09:14 +0200
-Message-ID: <20240709110712.829987248@linuxfoundation.org>
+Subject: [PATCH 6.6 055/139] btrfs: scrub: initialize ret in scrub_simple_mirror() to fix compilation warning
+Date: Tue,  9 Jul 2024 13:09:15 +0200
+Message-ID: <20240709110700.296416140@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,215 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dima Ruinskiy <dima.ruinskiy@intel.com>
+From: Lu Yao <yaolu@kylinos.cn>
 
-[ Upstream commit c93a6f62cb1bd097aef2e4588648a420d175eee2 ]
+[ Upstream commit b4e585fffc1cf877112ed231a91f089e85688c2a ]
 
-On vPro systems, the configuration of the I219-LM to achieve power
-gating and S0ix residency is split between the driver and the CSME FW.
-It was discovered that in some scenarios, where the network cable is
-connected and then disconnected, S0ix residency is not always reached.
-This was root-caused to a subset of I219-LM register writes that are not
-performed by the CSME FW. Therefore, the driver should perform these
-register writes on corporate setups, regardless of the CSME FW state.
+The following error message is displayed:
+  ../fs/btrfs/scrub.c:2152:9: error: ‘ret’ may be used uninitialized
+  in this function [-Werror=maybe-uninitialized]"
 
-This was discovered on Meteor Lake systems; however it is likely to
-appear on other platforms as well.
+Compiler version: gcc version: (Debian 10.2.1-6) 10.2.1 20210110
 
-Fixes: cc23f4f0b6b9 ("e1000e: Add support for Meteor Lake")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218589
-Signed-off-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240628201754.2744221-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Lu Yao <yaolu@kylinos.cn>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/netdev.c | 132 ++++++++++-----------
- 1 file changed, 66 insertions(+), 66 deletions(-)
+ fs/btrfs/scrub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 3692fce201959..334f652c60601 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -6363,49 +6363,49 @@ static void e1000e_s0ix_entry_flow(struct e1000_adapter *adapter)
- 		mac_data |= E1000_EXTCNF_CTRL_GATE_PHY_CFG;
- 		ew32(EXTCNF_CTRL, mac_data);
+diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
+index 819973c37a148..a2d91d9f8a109 100644
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -2020,7 +2020,7 @@ static int scrub_simple_mirror(struct scrub_ctx *sctx,
+ 	struct btrfs_fs_info *fs_info = sctx->fs_info;
+ 	const u64 logical_end = logical_start + logical_length;
+ 	u64 cur_logical = logical_start;
+-	int ret;
++	int ret = 0;
  
--		/* Enable the Dynamic Power Gating in the MAC */
--		mac_data = er32(FEXTNVM7);
--		mac_data |= BIT(22);
--		ew32(FEXTNVM7, mac_data);
--
- 		/* Disable disconnected cable conditioning for Power Gating */
- 		mac_data = er32(DPGFR);
- 		mac_data |= BIT(2);
- 		ew32(DPGFR, mac_data);
- 
--		/* Don't wake from dynamic Power Gating with clock request */
--		mac_data = er32(FEXTNVM12);
--		mac_data |= BIT(12);
--		ew32(FEXTNVM12, mac_data);
--
--		/* Ungate PGCB clock */
--		mac_data = er32(FEXTNVM9);
--		mac_data &= ~BIT(28);
--		ew32(FEXTNVM9, mac_data);
--
--		/* Enable K1 off to enable mPHY Power Gating */
--		mac_data = er32(FEXTNVM6);
--		mac_data |= BIT(31);
--		ew32(FEXTNVM6, mac_data);
--
--		/* Enable mPHY power gating for any link and speed */
--		mac_data = er32(FEXTNVM8);
--		mac_data |= BIT(9);
--		ew32(FEXTNVM8, mac_data);
--
- 		/* Enable the Dynamic Clock Gating in the DMA and MAC */
- 		mac_data = er32(CTRL_EXT);
- 		mac_data |= E1000_CTRL_EXT_DMA_DYN_CLK_EN;
- 		ew32(CTRL_EXT, mac_data);
--
--		/* No MAC DPG gating SLP_S0 in modern standby
--		 * Switch the logic of the lanphypc to use PMC counter
--		 */
--		mac_data = er32(FEXTNVM5);
--		mac_data |= BIT(7);
--		ew32(FEXTNVM5, mac_data);
- 	}
- 
-+	/* Enable the Dynamic Power Gating in the MAC */
-+	mac_data = er32(FEXTNVM7);
-+	mac_data |= BIT(22);
-+	ew32(FEXTNVM7, mac_data);
-+
-+	/* Don't wake from dynamic Power Gating with clock request */
-+	mac_data = er32(FEXTNVM12);
-+	mac_data |= BIT(12);
-+	ew32(FEXTNVM12, mac_data);
-+
-+	/* Ungate PGCB clock */
-+	mac_data = er32(FEXTNVM9);
-+	mac_data &= ~BIT(28);
-+	ew32(FEXTNVM9, mac_data);
-+
-+	/* Enable K1 off to enable mPHY Power Gating */
-+	mac_data = er32(FEXTNVM6);
-+	mac_data |= BIT(31);
-+	ew32(FEXTNVM6, mac_data);
-+
-+	/* Enable mPHY power gating for any link and speed */
-+	mac_data = er32(FEXTNVM8);
-+	mac_data |= BIT(9);
-+	ew32(FEXTNVM8, mac_data);
-+
-+	/* No MAC DPG gating SLP_S0 in modern standby
-+	 * Switch the logic of the lanphypc to use PMC counter
-+	 */
-+	mac_data = er32(FEXTNVM5);
-+	mac_data |= BIT(7);
-+	ew32(FEXTNVM5, mac_data);
-+
- 	/* Disable the time synchronization clock */
- 	mac_data = er32(FEXTNVM7);
- 	mac_data |= BIT(31);
-@@ -6498,33 +6498,6 @@ static void e1000e_s0ix_exit_flow(struct e1000_adapter *adapter)
- 	} else {
- 		/* Request driver unconfigure the device from S0ix */
- 
--		/* Disable the Dynamic Power Gating in the MAC */
--		mac_data = er32(FEXTNVM7);
--		mac_data &= 0xFFBFFFFF;
--		ew32(FEXTNVM7, mac_data);
--
--		/* Disable mPHY power gating for any link and speed */
--		mac_data = er32(FEXTNVM8);
--		mac_data &= ~BIT(9);
--		ew32(FEXTNVM8, mac_data);
--
--		/* Disable K1 off */
--		mac_data = er32(FEXTNVM6);
--		mac_data &= ~BIT(31);
--		ew32(FEXTNVM6, mac_data);
--
--		/* Disable Ungate PGCB clock */
--		mac_data = er32(FEXTNVM9);
--		mac_data |= BIT(28);
--		ew32(FEXTNVM9, mac_data);
--
--		/* Cancel not waking from dynamic
--		 * Power Gating with clock request
--		 */
--		mac_data = er32(FEXTNVM12);
--		mac_data &= ~BIT(12);
--		ew32(FEXTNVM12, mac_data);
--
- 		/* Cancel disable disconnected cable conditioning
- 		 * for Power Gating
- 		 */
-@@ -6537,13 +6510,6 @@ static void e1000e_s0ix_exit_flow(struct e1000_adapter *adapter)
- 		mac_data &= 0xFFF7FFFF;
- 		ew32(CTRL_EXT, mac_data);
- 
--		/* Revert the lanphypc logic to use the internal Gbe counter
--		 * and not the PMC counter
--		 */
--		mac_data = er32(FEXTNVM5);
--		mac_data &= 0xFFFFFF7F;
--		ew32(FEXTNVM5, mac_data);
--
- 		/* Enable the periodic inband message,
- 		 * Request PCIe clock in K1 page770_17[10:9] =01b
- 		 */
-@@ -6581,6 +6547,40 @@ static void e1000e_s0ix_exit_flow(struct e1000_adapter *adapter)
- 	mac_data &= ~BIT(31);
- 	mac_data |= BIT(0);
- 	ew32(FEXTNVM7, mac_data);
-+
-+	/* Disable the Dynamic Power Gating in the MAC */
-+	mac_data = er32(FEXTNVM7);
-+	mac_data &= 0xFFBFFFFF;
-+	ew32(FEXTNVM7, mac_data);
-+
-+	/* Disable mPHY power gating for any link and speed */
-+	mac_data = er32(FEXTNVM8);
-+	mac_data &= ~BIT(9);
-+	ew32(FEXTNVM8, mac_data);
-+
-+	/* Disable K1 off */
-+	mac_data = er32(FEXTNVM6);
-+	mac_data &= ~BIT(31);
-+	ew32(FEXTNVM6, mac_data);
-+
-+	/* Disable Ungate PGCB clock */
-+	mac_data = er32(FEXTNVM9);
-+	mac_data |= BIT(28);
-+	ew32(FEXTNVM9, mac_data);
-+
-+	/* Cancel not waking from dynamic
-+	 * Power Gating with clock request
-+	 */
-+	mac_data = er32(FEXTNVM12);
-+	mac_data &= ~BIT(12);
-+	ew32(FEXTNVM12, mac_data);
-+
-+	/* Revert the lanphypc logic to use the internal Gbe counter
-+	 * and not the PMC counter
-+	 */
-+	mac_data = er32(FEXTNVM5);
-+	mac_data &= 0xFFFFFF7F;
-+	ew32(FEXTNVM5, mac_data);
- }
- 
- static int e1000e_pm_freeze(struct device *dev)
+ 	/* The range must be inside the bg */
+ 	ASSERT(logical_start >= bg->start && logical_end <= bg->start + bg->length);
 -- 
 2.43.0
 
