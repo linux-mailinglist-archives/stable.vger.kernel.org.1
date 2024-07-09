@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-58552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 506F692B796
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D2C92B676
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:13:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE0131F2428B
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D29931C20DF5
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:13:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A9E158219;
-	Tue,  9 Jul 2024 11:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F9D158201;
+	Tue,  9 Jul 2024 11:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMpqE+hY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hg4RuTuw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6761D13A25F;
-	Tue,  9 Jul 2024 11:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7954155389;
+	Tue,  9 Jul 2024 11:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524281; cv=none; b=kWl0Af7Mcf6lFLrOX1y225tyX49yP7dqoJqJiO6QQLQiQbaylZJDanRIVK2GIwcLxQy0uj8KIXDtMq37PHS4DmKcqY7J44nSeDVk2iObZgVv+cNUB99J6JiNQem1DqTXiqrrZzjnMonqOukCl6/YgZXCu4kYEs4LGjKcS2mbJ08=
+	t=1720523625; cv=none; b=o3a+6w7qyNzghqd8RYMNirSAObFmBw7PSluFqcwVu7umH87S4KmGjyXqzuD/U2k81nZLXER1viqFg6ZfCKMuO19YP8pzbGVAEipOzaLOPqShEyhBuANjtc2GO7EbxlnNpzJGo4H1ywagLI2EPytYYBhEh7LmTCuAwGM9NF0eHU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524281; c=relaxed/simple;
-	bh=PUnMPZIvY5aVc8yrwG0SrJ7buAek+aHM0wGSI+pf5C4=;
+	s=arc-20240116; t=1720523625; c=relaxed/simple;
+	bh=zKbUr5Cq8HntnmPxL4igRYtDgelq+EDCOgfB5nnT4TI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVDUR75qlEi0cXTh+BV8nyYZjdtYvM/myu8Yl02v1NHA3fcAc7kpzHq7cymOPYpExySL4msQvRWIKZzJNOzcGHq2eEvt54X01Q1XV+y4Y1FDqtpdTbHWCUt5ucJcG5x69q7qoXCwDUNYQ5+DjwO/6f3N1PrIskl8kqIEh9U9Qkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMpqE+hY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E191CC3277B;
-	Tue,  9 Jul 2024 11:24:40 +0000 (UTC)
+	 MIME-Version; b=Q+Sw5oxlB09GfQ321Bu4ZjW8mqZZBO/WwQ45hQwH7+hgPKxm8DWY6T/JoESB3Gg+qcmTfCkGa4BbzBdsjwjlbJJFTmdRpqe0ndMKB7Uc2SVX/6AAlZIQg/FG/CXyXly0HxR9ZIPy0mmFxe8WqCURwEeGn4+mT6gSNJfkC5ITIR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hg4RuTuw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D44FC3277B;
+	Tue,  9 Jul 2024 11:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524281;
-	bh=PUnMPZIvY5aVc8yrwG0SrJ7buAek+aHM0wGSI+pf5C4=;
+	s=korg; t=1720523625;
+	bh=zKbUr5Cq8HntnmPxL4igRYtDgelq+EDCOgfB5nnT4TI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pMpqE+hYeu6hQucclSMEMk/P1Lzwfm2OqHr253msWnXZOJOTx2eXwACiofoW//Npo
-	 f2RBKr1gZSINuSw5w8qcDD0Eb3xNXfHihpFcdXKp0Di5RnDd2wrltt4FzXnPAKu6sr
-	 0BQNFRb17xvjW1d4pDjOprlEVcS0XuOGWcq0LgG4=
+	b=Hg4RuTuw59seC5B0gb3kvbVc2J9vCVli1ZOe+O4+GeewQomFrAmeV+ou7cf6JUNAX
+	 wvZd8ozjZL0pFBGb51RV70XtcPo8pxwkBX59//QEgdvqYTHWR/2rfTzmAvI4N2gWXe
+	 8OwKI5Jc+FBasduHTFbikPcrwIv9M6IW2cvibT7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Schiller <ms@dev.tdt.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	linux-hardening@vger.kernel.org,
+	Justin Stitt <justinstitt@google.com>,
+	Phillip Potter <phil@philpotter.co.uk>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 101/197] gpiolib: of: fix lookup quirk for MIPS Lantiq
-Date: Tue,  9 Jul 2024 13:09:15 +0200
-Message-ID: <20240709110712.868401481@linuxfoundation.org>
+Subject: [PATCH 6.6 056/139] cdrom: rearrange last_media_change check to avoid unintentional overflow
+Date: Tue,  9 Jul 2024 13:09:16 +0200
+Message-ID: <20240709110700.336341903@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Justin Stitt <justinstitt@google.com>
 
-[ Upstream commit 3645ffaf2b334abaf5f53e5ca0f47465d91e69d2 ]
+[ Upstream commit efb905aeb44b0e99c0e6b07865b1885ae0471ebf ]
 
-As it turns out, there is a large number of out-of-tree DTSes (in
-OpenWrt project) that used to specify incorrect (active high) polarity
-for the Lantiq reset GPIO, so to keep compatibility while they are
-being updated a quirk for force the polarity low is needed. Luckily
-these old DTSes used nonstandard name for the property ("gpio-reset" vs
-"reset-gpios") so the quirk will not hurt if there are any new devices
-that need inverted polarity as they can specify the right polarity in
-their DTS when using the standard "reset-gpios" property.
+When running syzkaller with the newly reintroduced signed integer wrap
+sanitizer we encounter this splat:
 
-Additionally the condition to enable the transition from standard to
-non-standard reset GPIO property name was inverted and the replacement
-name for the property was not correct. Fix this as well.
+[  366.015950] UBSAN: signed-integer-overflow in ../drivers/cdrom/cdrom.c:2361:33
+[  366.021089] -9223372036854775808 - 346321 cannot be represented in type '__s64' (aka 'long long')
+[  366.025894] program syz-executor.4 is using a deprecated SCSI ioctl, please convert it to SG_IO
+[  366.027502] CPU: 5 PID: 28472 Comm: syz-executor.7 Not tainted 6.8.0-rc2-00035-gb3ef86b5a957 #1
+[  366.027512] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  366.027518] Call Trace:
+[  366.027523]  <TASK>
+[  366.027533]  dump_stack_lvl+0x93/0xd0
+[  366.027899]  handle_overflow+0x171/0x1b0
+[  366.038787] ata1.00: invalid multi_count 32 ignored
+[  366.043924]  cdrom_ioctl+0x2c3f/0x2d10
+[  366.063932]  ? __pm_runtime_resume+0xe6/0x130
+[  366.071923]  sr_block_ioctl+0x15d/0x1d0
+[  366.074624]  ? __pfx_sr_block_ioctl+0x10/0x10
+[  366.077642]  blkdev_ioctl+0x419/0x500
+[  366.080231]  ? __pfx_blkdev_ioctl+0x10/0x10
+...
 
-Fixes: fbbbcd177a27 ("gpiolib: of: add quirk for locating reset lines with legacy bindings")
-Fixes: 90c2d2eb7ab5 ("MIPS: pci: lantiq: switch to using gpiod API")
-Reported-by: Martin Schiller <ms@dev.tdt.de>
-Acked-by: Martin Schiller <ms@dev.tdt.de>
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/ZoLpqv1PN08xHioh@google.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Historically, the signed integer overflow sanitizer did not work in the
+kernel due to its interaction with `-fwrapv` but this has since been
+changed [1] in the newest version of Clang. It was re-enabled in the
+kernel with Commit 557f8c582a9ba8ab ("ubsan: Reintroduce signed overflow
+sanitizer").
+
+Let's rearrange the check to not perform any arithmetic, thus not
+tripping the sanitizer.
+
+Link: https://github.com/llvm/llvm-project/pull/82432 [1]
+Closes: https://github.com/KSPP/linux/issues/354
+Cc: linux-hardening@vger.kernel.org
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+Link: https://lore.kernel.org/lkml/20240507-b4-sio-ata1-v1-1-810ffac6080a@google.com
+Reviewed-by: Phillip Potter <phil@philpotter.co.uk>
+Link: https://lore.kernel.org/lkml/ZjqU0fbzHrlnad8D@equinox
+Signed-off-by: Phillip Potter <phil@philpotter.co.uk>
+Link: https://lore.kernel.org/r/20240507222520.1445-2-phil@philpotter.co.uk
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-of.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/cdrom/cdrom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-index cb0cefaec37e8..7db35cbde8e92 100644
---- a/drivers/gpio/gpiolib-of.c
-+++ b/drivers/gpio/gpiolib-of.c
-@@ -202,6 +202,16 @@ static void of_gpio_try_fixup_polarity(const struct device_node *np,
- 		 * helper, and be consistent with what other drivers do.
- 		 */
- 		{ "qi,lb60",		"rb-gpios",	true },
-+#endif
-+#if IS_ENABLED(CONFIG_PCI_LANTIQ)
-+		/*
-+		 * According to the PCI specification, the RST# pin is an
-+		 * active-low signal. However, most of the device trees that
-+		 * have been widely used for a long time incorrectly describe
-+		 * reset GPIO as active-high, and were also using wrong name
-+		 * for the property.
-+		 */
-+		{ "lantiq,pci-xway",	"gpio-reset",	false },
- #endif
- 	};
- 	unsigned int i;
-@@ -504,9 +514,9 @@ static struct gpio_desc *of_find_gpio_rename(struct device_node *np,
- 		{ "reset",	"reset-n-io",	"marvell,nfc-uart" },
- 		{ "reset",	"reset-n-io",	"mrvl,nfc-uart" },
- #endif
--#if !IS_ENABLED(CONFIG_PCI_LANTIQ)
-+#if IS_ENABLED(CONFIG_PCI_LANTIQ)
- 		/* MIPS Lantiq PCI */
--		{ "reset",	"gpios-reset",	"lantiq,pci-xway" },
-+		{ "reset",	"gpio-reset",	"lantiq,pci-xway" },
- #endif
+diff --git a/drivers/cdrom/cdrom.c b/drivers/cdrom/cdrom.c
+index cc28398059833..01f46caf1f88b 100644
+--- a/drivers/cdrom/cdrom.c
++++ b/drivers/cdrom/cdrom.c
+@@ -2358,7 +2358,7 @@ static int cdrom_ioctl_timed_media_change(struct cdrom_device_info *cdi,
+ 		return -EFAULT;
  
- 		/*
+ 	tmp_info.media_flags = 0;
+-	if (tmp_info.last_media_change - cdi->last_media_change_ms < 0)
++	if (cdi->last_media_change_ms > tmp_info.last_media_change)
+ 		tmp_info.media_flags |= MEDIA_CHANGED_FLAG;
+ 
+ 	tmp_info.last_media_change = cdi->last_media_change_ms;
 -- 
 2.43.0
 
