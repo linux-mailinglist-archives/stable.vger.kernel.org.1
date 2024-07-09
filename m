@@ -1,103 +1,141 @@
-Return-Path: <stable+bounces-58285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65CDD92B571
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 12:36:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EA3C92B610
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:02:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B1831F23A5C
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 10:36:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B5341F2342C
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D31215664C;
-	Tue,  9 Jul 2024 10:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91F715746B;
+	Tue,  9 Jul 2024 11:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RFEylIVe"
+	dkim=pass (1024-bit key) header.d=eh5.me header.i=@eh5.me header.b="hXXnOM5p"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.eh5.me (mail.eh5.me [45.76.111.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF4E2E62D
-	for <stable@vger.kernel.org>; Tue,  9 Jul 2024 10:36:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D531208B0;
+	Tue,  9 Jul 2024 11:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.76.111.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720521378; cv=none; b=aw4YTRHujSOY0akPoHWXq/TQJDKn6LyuKC86OOj0uvGGW/BRZoiPcZ60ZE9ri7tu8MDZ9vlYaZTxG0LZQlOGQe7xei2E2mjv2gzo4akqFJo2a9KCQfhGNn3nTzw8Gl0hpazpU7dpdlNYy995sKbRrue96Glajp+3sckEyBSYZ1U=
+	t=1720522912; cv=none; b=bxEx3xo29k9EMy6ob5yNWcbXBi+Bv2ufGNhNnhs26jrbXD+6787MZrnLHbx46Jy6kcmH59v1blhTfVzicPtqrFBRsXXf6pw5IBjW1l8wzMoYTpiubW/Z7KnWV7rWSinHFBvezHSwWk9V9Wa7ya5X0Rbq6uLJlEGlcQ5w5ngWO0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720521378; c=relaxed/simple;
-	bh=MTZgg7aeao1trU2Ck0VDmyYq+0Oebij38DC241KOgw4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JYQYmkzcWOan+urcMDBcRa1/D7BzrBPBHnyw/gBgqMKqj47IAZ4UxRslrOmYOelDFpreW8JO3B3S3sVs0j41mQf0leWnzeRphbFPXA2OrpH+6cGGKPXlLUm6wmG6ZZwwUVp6HiqWdh7nPwX/GNkDJNqBQCsmbnd7FJFzdjbwz5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RFEylIVe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E069C3277B;
-	Tue,  9 Jul 2024 10:36:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720521377;
-	bh=MTZgg7aeao1trU2Ck0VDmyYq+0Oebij38DC241KOgw4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RFEylIVehwM/zB1K31gk3en9QwE3sSrVfiv2FzmBBtvbos23IFhOW0SCXhEGDTF/L
-	 RtRkgL6nHG4kW+1OqkCRw2lnRhTsyUqiMlFEQhaU2yRClL2apgDk7fQY8FDt508d/m
-	 c5lcO4Zm6nsidY+iXsoDgp9BM8C+JOH08cK9iNN0=
-Date: Tue, 9 Jul 2024 12:36:14 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: stable@vger.kernel.org, akpm@linux-foundation.org, hdanton@sina.com,
-	jack@suse.cz, willy@infradead.org
-Subject: Re: [PATCH 4.19 5.4 5.10 5.15 6.1 6.6] nilfs2: fix incorrect inode
- allocation from reserved inodes
-Message-ID: <2024070908-fructose-ozone-34cf@gregkh>
-References: <20240709053318.4528-1-konishi.ryusuke@gmail.com>
+	s=arc-20240116; t=1720522912; c=relaxed/simple;
+	bh=8EmcdkkE0oYTAYdtdr5zNdvUUpmSvtRnsxWuk/O4hkk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Vb1amhtyFVdyItfGkc2oXKzjomOMCwcBqPnYvGoY4UhPdl2XL7RuZAK/Z5hJsAOXthKl43Nao1ws90FE3FumjzEfCfIZk4Px6K2ojRaFxLNGqf7D0DRjXpwVudr8OxJ/T1i12fSRZz0EV2dMTABGGJ0tCr+lEcKZ3kRA+TqHxw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eh5.me; spf=pass smtp.mailfrom=eh5.me; dkim=pass (1024-bit key) header.d=eh5.me header.i=@eh5.me header.b=hXXnOM5p; arc=none smtp.client-ip=45.76.111.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eh5.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eh5.me
+From: Huang-Huang Bao <i@eh5.me>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=eh5.me; s=dkim;
+	t=1720522497;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=f/I3Vjm8cEq2ZeTlVvfzwsec4AJR5wa4TlSZ79HvmRk=;
+	b=hXXnOM5pURRKMcaz1BuylPpxtLsSgiW29cfj5UI9EfWqUgfbHBWDipLEsXQxkHZajqgq/9
+	/z4O6xvH/jZiofPvAKDzi4j0wC1RJUypDGeIuo3XKhOH7aBM2SB5RLnfffkwTiQ7VA0i8q
+	N58KAUdO386ccj+s9wqtXiJNkAc72PA=
+To: Heiko Stuebner <heiko@sntech.de>,
+	Linus Walleij <linus.walleij@linaro.org>
+Cc: Richard Kojedzinszky <richard@kojedz.in>,
+	linux-gpio@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Huang-Huang Bao <i@eh5.me>,
+	stable@vger.kernel.org
+Subject: [PATCH] pinctrl: rockchip: correct RK3328 iomux width flag for GPIO2-B pins
+Date: Tue,  9 Jul 2024 18:54:28 +0800
+Message-ID: <20240709105428.1176375-1-i@eh5.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240709053318.4528-1-konishi.ryusuke@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 09, 2024 at 02:33:18PM +0900, Ryusuke Konishi wrote:
-> commit 93aef9eda1cea9e84ab2453fcceb8addad0e46f1 upstream.
-> 
-> If the bitmap block that manages the inode allocation status is corrupted,
-> nilfs_ifile_create_inode() may allocate a new inode from the reserved
-> inode area where it should not be allocated.
-> 
-> Previous fix commit d325dc6eb763 ("nilfs2: fix use-after-free bug of
-> struct nilfs_root"), fixed the problem that reserved inodes with inode
-> numbers less than NILFS_USER_INO (=11) were incorrectly reallocated due to
-> bitmap corruption, but since the start number of non-reserved inodes is
-> read from the super block and may change, in which case inode allocation
-> may occur from the extended reserved inode area.
-> 
-> If that happens, access to that inode will cause an IO error, causing the
-> file system to degrade to an error state.
-> 
-> Fix this potential issue by adding a wraparound option to the common
-> metadata object allocation routine and by modifying
-> nilfs_ifile_create_inode() to disable the option so that it only allocates
-> inodes with inode numbers greater than or equal to the inode number read
-> in "nilfs->ns_first_ino", regardless of the bitmap status of reserved
-> inodes.
-> 
-> Link: https://lkml.kernel.org/r/20240623051135.4180-4-konishi.ryusuke@gmail.com
-> Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-> Cc: Hillf Danton <hdanton@sina.com>
-> Cc: Jan Kara <jack@suse.cz>
-> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
-> Please apply this patch to the stable trees indicated by the subject
-> prefix instead of the patch that failed.
-> 
-> This patch is tailored to avoid conflicts with a series involving
-> extensive conversions and can be applied from v4.8 to v6.8.
-> 
-> Also, all the builds and tests I did on each stable tree passed.
+The base iomux offsets for each GPIO pin line are accumulatively
+calculated based off iomux width flag in rockchip_pinctrl_get_soc_data.
+If the iomux width flag is one of IOMUX_WIDTH_4BIT, IOMUX_WIDTH_3BIT or
+IOMUX_WIDTH_2BIT, the base offset for next pin line would increase by 8
+bytes, otherwise it would increase by 4 bytes.
 
-Now queued up, thanks.
+Despite most of GPIO2-B iomux have 2-bit data width, which can be fit
+into 4 bytes space with write mask, it actually take 8 bytes width for
+whole GPIO2-B line.
 
-greg k-h
+Commit e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328
+GPIO2-B pins") wrongly set iomux width flag to 0, causing all base
+iomux offset for line after GPIO2-B to be calculated wrong. Fix the
+iomux width flag to IOMUX_WIDTH_2BIT so the offset after GPIO2-B is
+correctly increased by 8, matching the actual width of GPIO2-B iomux.
+
+Fixes: e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328 GPIO2-B pins")
+Cc: stable@vger.kernel.org
+Reported-by: Richard Kojedzinszky <richard@kojedz.in>
+Closes: https://lore.kernel.org/linux-rockchip/4f29b743202397d60edfb3c725537415@kojedz.in/
+Tested-by: Richard Kojedzinszky <richard@kojedz.in>
+Signed-off-by: Huang-Huang Bao <i@eh5.me>
+---
+
+I have double checked the iomux offsets in debug message match iomux
+register definitions in "GRF Register Description" section in RK3328
+TRM[1].
+
+[1]: https://opensource.rock-chips.com/images/9/97/Rockchip_RK3328TRM_V1.1-Part1-20170321.pdf
+
+Kernel pinctrl debug message with dyndbg="file pinctrl-rockchip.c +p":
+  rockchip-pinctrl pinctrl: bank 0, iomux 0 has iom_offset 0x0 drv_offset 0x0
+  rockchip-pinctrl pinctrl: bank 0, iomux 1 has iom_offset 0x4 drv_offset 0x0
+  rockchip-pinctrl pinctrl: bank 0, iomux 2 has iom_offset 0x8 drv_offset 0x0
+  rockchip-pinctrl pinctrl: bank 0, iomux 3 has iom_offset 0xc drv_offset 0x0
+  rockchip-pinctrl pinctrl: bank 1, iomux 0 has iom_offset 0x10 drv_offset 0x0
+  rockchip-pinctrl pinctrl: bank 1, iomux 1 has iom_offset 0x14 drv_offset 0x0
+  rockchip-pinctrl pinctrl: bank 1, iomux 2 has iom_offset 0x18 drv_offset 0x0
+  rockchip-pinctrl pinctrl: bank 1, iomux 3 has iom_offset 0x1c drv_offset 0x0
+  rockchip-pinctrl pinctrl: bank 2, iomux 0 has iom_offset 0x20 drv_offset 0x0
+  rockchip-pinctrl pinctrl: bank 2, iomux 1 has iom_offset 0x24 drv_offset 0x0
+  rockchip-pinctrl pinctrl: bank 2, iomux 2 has iom_offset 0x2c drv_offset 0x0
+  rockchip-pinctrl pinctrl: bank 2, iomux 3 has iom_offset 0x34 drv_offset 0x0
+  rockchip-pinctrl pinctrl: bank 3, iomux 0 has iom_offset 0x38 drv_offset 0x0
+  rockchip-pinctrl pinctrl: bank 3, iomux 1 has iom_offset 0x40 drv_offset 0x0
+  rockchip-pinctrl pinctrl: bank 3, iomux 2 has iom_offset 0x48 drv_offset 0x0
+  rockchip-pinctrl pinctrl: bank 3, iomux 3 has iom_offset 0x4c drv_offset 0x0
+
+The "Closes" links to test report from original reporter with original
+issue contained, which was not delivered to any mailing list thus not
+available on the web.
+
+Added CC stable as the problematic e8448a6c817c fixed by this patch was
+recently merged to stable kernels.
+
+Sorry for the inconvenience caused,
+Huang-Huang
+
+ drivers/pinctrl/pinctrl-rockchip.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
+index 3f56991f5b89..f6da91941fbd 100644
+--- a/drivers/pinctrl/pinctrl-rockchip.c
++++ b/drivers/pinctrl/pinctrl-rockchip.c
+@@ -3813,7 +3813,7 @@ static struct rockchip_pin_bank rk3328_pin_banks[] = {
+ 	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", 0, 0, 0, 0),
+ 	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", 0, 0, 0, 0),
+ 	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", 0,
+-			     0,
++			     IOMUX_WIDTH_2BIT,
+ 			     IOMUX_WIDTH_3BIT,
+ 			     0),
+ 	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3",
+
+base-commit: 4376e966ecb78c520b0faf239d118ecfab42a119
+--
+2.45.2
 
