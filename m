@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-58514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C88DB92B76A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC23F92B674
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:13:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78A9E1F21088
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDE171C21B4B
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6701586C9;
-	Tue,  9 Jul 2024 11:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4881581EB;
+	Tue,  9 Jul 2024 11:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKaWp5gg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTUH/u6O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA06D156F57;
-	Tue,  9 Jul 2024 11:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE02157A72;
+	Tue,  9 Jul 2024 11:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524169; cv=none; b=dc6Z8TrxEQe1wlyvIUYF+F70iFV0RkjQUbrJC0Bop9acCWNGFs3hTSc64cMiZIpsjDnVzX/87eKYHP4GHpdSddxIFbD1qs4BM+Yr+l7STWpJwmq3zQaaYtgmT408l8hjhMELKma+uOragPWFTQAEGk+xOjsDKugoyHNu7bwD+OA=
+	t=1720523620; cv=none; b=OuRhR/ZN2m0IVjhraoqrAH+qiWazXFKdRW+sdhmR1Q/u1ubPRxh/gxpbccbVrLthnW35Ob4ecADYNXnceVCFEziyOUJ/XJGFy71/3EYouaMxzLxe4Rf3Tz+qTstoc9aekxmZDe4Wj42KOrxiOBRIxtCJ4rd2n9qve0dLhI8etHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524169; c=relaxed/simple;
-	bh=JJAuP4J9iaVc/jwhlrIlWLGeXmhCEP7BqdLjaeCySLw=;
+	s=arc-20240116; t=1720523620; c=relaxed/simple;
+	bh=ubDpJNJDlCKp66vZwKvhZl3l/UOq/E3GWl138kw8Xm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eAH0rTPoa/ysvexRJVIn5rTqo9wO3+NjnOyU37ryHhhJsBPdaR2lgFj6L6XlKcgniGo6W02PVTIhw5KxmVOOVK8dTaYmoHSSCLTyROgIg/w5H3JBw0ajmWYMSf7GT1EklRjYec8REbPcJxQejw7+wpeURmKK5VktC7xcUrkwZd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKaWp5gg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 345E6C3277B;
-	Tue,  9 Jul 2024 11:22:49 +0000 (UTC)
+	 MIME-Version; b=XOoz1LUPf2A6zjlqep43kyvmC/mbEgHEaowdKQSep0fJ9hYJeXSJbdC+0+dEhS2J3L50FBoDTZAwFIoOSdBTLtde0PlC0NFrxZo6HQLvn3AhRMC/2ewFbhoUYAnerZ9EgHgUXpoEmHmQAKdclHLIu/QB5Snc7NS2ONyXnTXwoc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTUH/u6O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6367AC3277B;
+	Tue,  9 Jul 2024 11:13:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524169;
-	bh=JJAuP4J9iaVc/jwhlrIlWLGeXmhCEP7BqdLjaeCySLw=;
+	s=korg; t=1720523619;
+	bh=ubDpJNJDlCKp66vZwKvhZl3l/UOq/E3GWl138kw8Xm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PKaWp5ggcIOJNzoTvQxGgN6zg5ccSyibd9pSFbZxGI71Jw7rFl0sqwBFnAKVNY9uc
-	 IBeEd7UXInW5ApVa7Q0y5/npbfvDwtf2rhMtKkB6uX9Er7EfDLFp32Dj/4nu1A7OXI
-	 27RM1y21G8xoiz44R4RAj1EeVP16Xt1+HAyRCrj0=
+	b=fTUH/u6O01wyGwRcx1Rsr20mfBm6aZRfGvqYOhwex4SwDoyDAVzTv1lwtw35olUcg
+	 UGHjPFKVY259Q3+UGoWgZIacxCujMg/61N94S9GIWco6HlIXhkYnN9npmBrp6Zou3c
+	 541gTRsUCt8YZ/vlLOuWYcJRyjhZCmfKMvWGs5kU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 092/197] net/mlx5e: Present succeeded IPsec SA bytes and packet
+Subject: [PATCH 6.6 046/139] selftests/net: fix uninitialized variables
 Date: Tue,  9 Jul 2024 13:09:06 +0200
-Message-ID: <20240709110712.525007696@linuxfoundation.org>
+Message-ID: <20240709110659.948165869@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: John Hubbard <jhubbard@nvidia.com>
 
-[ Upstream commit 2d9dac5559f8cc4318e6b0d3c5b71984f462620b ]
+[ Upstream commit eb709b5f6536636dfb87b85ded0b2af9bb6cd9e6 ]
 
-IPsec SA statistics presents successfully decrypted and encrypted
-packet and bytes, and not total handled by this SA. So update the
-calculation logic to take into account failures.
+When building with clang, via:
 
-Fixes: 6fb7f9408779 ("net/mlx5e: Connect mlx5 IPsec statistics with XFRM core")
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+    make LLVM=1 -C tools/testing/selftest
+
+...clang warns about three variables that are not initialized in all
+cases:
+
+1) The opt_ipproto_off variable is used uninitialized if "testname" is
+not "ip". Willem de Bruijn pointed out that this is an actual bug, and
+suggested the fix that I'm using here (thanks!).
+
+2) The addr_len is used uninitialized, but only in the assert case,
+   which bails out, so this is harmless.
+
+3) The family variable in add_listener() is only used uninitialized in
+   the error case (neither IPv4 nor IPv6 is specified), so it's also
+   harmless.
+
+Fix by initializing each variable.
+
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Acked-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20240506190204.28497-1-jhubbard@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/en_accel/ipsec.c       | 36 ++++++++++++-------
- 1 file changed, 23 insertions(+), 13 deletions(-)
+ tools/testing/selftests/net/gro.c                 | 3 +++
+ tools/testing/selftests/net/ip_local_port_range.c | 2 +-
+ tools/testing/selftests/net/mptcp/pm_nl_ctl.c     | 2 +-
+ 3 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-index c54fd01ea635a..2a10428d820ae 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-@@ -989,6 +989,10 @@ static void mlx5e_xfrm_update_stats(struct xfrm_state *x)
- 	struct mlx5e_ipsec_sa_entry *sa_entry = to_ipsec_sa_entry(x);
- 	struct mlx5e_ipsec_rule *ipsec_rule = &sa_entry->ipsec_rule;
- 	struct net *net = dev_net(x->xso.dev);
-+	u64 trailer_packets = 0, trailer_bytes = 0;
-+	u64 replay_packets = 0, replay_bytes = 0;
-+	u64 auth_packets = 0, auth_bytes = 0;
-+	u64 success_packets, success_bytes;
- 	u64 packets, bytes, lastuse;
+diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
+index 30024d0ed3739..b204df4f33322 100644
+--- a/tools/testing/selftests/net/gro.c
++++ b/tools/testing/selftests/net/gro.c
+@@ -113,6 +113,9 @@ static void setup_sock_filter(int fd)
+ 		next_off = offsetof(struct ipv6hdr, nexthdr);
+ 	ipproto_off = ETH_HLEN + next_off;
  
- 	lockdep_assert(lockdep_is_held(&x->lock) ||
-@@ -999,26 +1003,32 @@ static void mlx5e_xfrm_update_stats(struct xfrm_state *x)
- 		return;
- 
- 	if (sa_entry->attrs.dir == XFRM_DEV_OFFLOAD_IN) {
--		mlx5_fc_query_cached(ipsec_rule->auth.fc, &bytes, &packets, &lastuse);
--		x->stats.integrity_failed += packets;
--		XFRM_ADD_STATS(net, LINUX_MIB_XFRMINSTATEPROTOERROR, packets);
--
--		mlx5_fc_query_cached(ipsec_rule->trailer.fc, &bytes, &packets, &lastuse);
--		XFRM_ADD_STATS(net, LINUX_MIB_XFRMINHDRERROR, packets);
-+		mlx5_fc_query_cached(ipsec_rule->auth.fc, &auth_bytes,
-+				     &auth_packets, &lastuse);
-+		x->stats.integrity_failed += auth_packets;
-+		XFRM_ADD_STATS(net, LINUX_MIB_XFRMINSTATEPROTOERROR, auth_packets);
++	/* Overridden later if exthdrs are used: */
++	opt_ipproto_off = ipproto_off;
 +
-+		mlx5_fc_query_cached(ipsec_rule->trailer.fc, &trailer_bytes,
-+				     &trailer_packets, &lastuse);
-+		XFRM_ADD_STATS(net, LINUX_MIB_XFRMINHDRERROR, trailer_packets);
- 	}
- 
- 	if (x->xso.type != XFRM_DEV_OFFLOAD_PACKET)
- 		return;
- 
--	mlx5_fc_query_cached(ipsec_rule->fc, &bytes, &packets, &lastuse);
--	x->curlft.packets += packets;
--	x->curlft.bytes += bytes;
--
- 	if (sa_entry->attrs.dir == XFRM_DEV_OFFLOAD_IN) {
--		mlx5_fc_query_cached(ipsec_rule->replay.fc, &bytes, &packets, &lastuse);
--		x->stats.replay += packets;
--		XFRM_ADD_STATS(net, LINUX_MIB_XFRMINSTATESEQERROR, packets);
-+		mlx5_fc_query_cached(ipsec_rule->replay.fc, &replay_bytes,
-+				     &replay_packets, &lastuse);
-+		x->stats.replay += replay_packets;
-+		XFRM_ADD_STATS(net, LINUX_MIB_XFRMINSTATESEQERROR, replay_packets);
- 	}
-+
-+	mlx5_fc_query_cached(ipsec_rule->fc, &bytes, &packets, &lastuse);
-+	success_packets = packets - auth_packets - trailer_packets - replay_packets;
-+	x->curlft.packets += success_packets;
-+
-+	success_bytes = bytes - auth_bytes - trailer_bytes - replay_bytes;
-+	x->curlft.bytes += success_bytes;
- }
- 
- static int mlx5e_xfrm_validate_policy(struct mlx5_core_dev *mdev,
+ 	if (strcmp(testname, "ip") == 0) {
+ 		if (proto == PF_INET)
+ 			optlen = sizeof(struct ip_timestamp);
+diff --git a/tools/testing/selftests/net/ip_local_port_range.c b/tools/testing/selftests/net/ip_local_port_range.c
+index 75e3fdacdf735..2465ff5bb3a8e 100644
+--- a/tools/testing/selftests/net/ip_local_port_range.c
++++ b/tools/testing/selftests/net/ip_local_port_range.c
+@@ -343,7 +343,7 @@ TEST_F(ip_local_port_range, late_bind)
+ 		struct sockaddr_in v4;
+ 		struct sockaddr_in6 v6;
+ 	} addr;
+-	socklen_t addr_len;
++	socklen_t addr_len = 0;
+ 	const int one = 1;
+ 	int fd, err;
+ 	__u32 range;
+diff --git a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
+index 49369c4a5f261..763402dd17742 100644
+--- a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
++++ b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
+@@ -1239,7 +1239,7 @@ int add_listener(int argc, char *argv[])
+ 	struct sockaddr_storage addr;
+ 	struct sockaddr_in6 *a6;
+ 	struct sockaddr_in *a4;
+-	u_int16_t family;
++	u_int16_t family = AF_UNSPEC;
+ 	int enable = 1;
+ 	int sock;
+ 	int err;
 -- 
 2.43.0
 
