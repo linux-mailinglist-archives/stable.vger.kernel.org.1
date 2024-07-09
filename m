@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2E792B739
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:21:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A387892B649
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:12:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA7461C22802
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:21:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2895AB22645
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F441158D89;
-	Tue,  9 Jul 2024 11:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47D1158205;
+	Tue,  9 Jul 2024 11:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsUP4F7c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsyE07iO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC68158A36;
-	Tue,  9 Jul 2024 11:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A142155389;
+	Tue,  9 Jul 2024 11:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524043; cv=none; b=tAJd7FxsUQ5iFs9TPWIv7kWpj+3mvbeqrRqwXF0+/dnPRfA3URBEiXfgx5q4CNuv4FOeevqR1WgiFMpd3EOqa8azwE+5kaww5tooBebQX4+xVAAgeQR/Wo0GZCtxG33aUZKeeBS3eaSvfk1ITFAitYgM3NplP+8NY547Y475YyE=
+	t=1720523503; cv=none; b=Zf5ZDtlydZ9pW5p7ndn4c+arAzW2I9ViJqrRwwFwwBRbUbII5TRJgVixZ12iYflUOiz7jypLpku78faSUShBKYrV3/LPmDU1FtVXUv97G/eX5gtWa8wrhdS8sKraElvNW9Te9zPJzNdd+sBvakYcNn0VfQjA1SDPPuzf4C9lO9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524043; c=relaxed/simple;
-	bh=z5rcqCdo+PZqXPmgyePXuQBX92vNXnlQOK0OjN7sn+U=;
+	s=arc-20240116; t=1720523503; c=relaxed/simple;
+	bh=3n5AkLKhaTM5BpHQLepN2HojnhyrlZ/jExBcKRJ1hIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lYsYekcEP8mzdXv4QZM+JDbOj/Ul4FLzXHSd74eVKWCz2lYQvFvRtdisQ2TPDYdy0/al6jO/lSoW1GThyE0FLMzRfPZ2mBeXUlk5Uypl3aw15NdKIDmWQeCzLKij/QxLAGnT4QGkJ7ja8nnZT3FjnnkqvCfxt9dWpfKHAJQdclU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsUP4F7c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5877BC4AF0C;
-	Tue,  9 Jul 2024 11:20:43 +0000 (UTC)
+	 MIME-Version; b=PuLiLpJB1SE/UhQ3XmaFP6HElgC0d63pba4iiBdSByiwoHNlvwkiKs5qiiCUM/5eL3ycGSj6bkB4oob47+xhCvJtr1F10B0wduRq/9EvJyyapCcTVWw/ui0SaayVrnnHfqoF9LA5YxD1At5irRGDjB6l6lL3EY+FpkGbJ66eJn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsyE07iO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F01BC4AF0A;
+	Tue,  9 Jul 2024 11:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524043;
-	bh=z5rcqCdo+PZqXPmgyePXuQBX92vNXnlQOK0OjN7sn+U=;
+	s=korg; t=1720523503;
+	bh=3n5AkLKhaTM5BpHQLepN2HojnhyrlZ/jExBcKRJ1hIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SsUP4F7cIFeCBbOj6+yWNFsJZ5oeoJCS0TuuhRWt3hQRpcjt5byVLSnfy0KCkuIyh
-	 nRyQ/yCxHa4NKjg14rYUk1Kpi18s04rCNTXO2q9myHV/5X/oDoaMeO5BzE0dHEimeg
-	 8SQT4RkcOAjQDx8HNfKvSoXtVyZIYAGbBNFf/sog=
+	b=wsyE07iOnXi3LjkIPUofvOD3wncf4CskuBzB4RsIWJL/JNDrCnQ/XK5WifT8ZG7Xg
+	 TBV3/oCpvUncqdwlSldmFvifGjR7uq/2M2LvSX9VCB+22Cnn+6aPfWYm/owC8z++4N
+	 pl+INeGrFY4Un+veDHMs8Av1Iv35Ctj27rD9SYF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Ricardo Ribalda <ribalda@chromium.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 052/197] media: s2255: Use refcount_t instead of atomic_t for num_channels
+Subject: [PATCH 6.6 006/139] media: dvb: as102-fe: Fix as10x_register_addr packing
 Date: Tue,  9 Jul 2024 13:08:26 +0200
-Message-ID: <20240709110710.976965985@linuxfoundation.org>
+Message-ID: <20240709110658.397334600@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 6cff72f6bcee89228a662435b7c47e21a391c8d0 ]
+[ Upstream commit 309422d280748c74f57f471559980268ac27732a ]
 
-Use an API that resembles more the actual use of num_channels.
+This structure is embedded in multiple other structures that are packed,
+which conflicts with it being aligned.
 
-Found by cocci:
-drivers/media/usb/s2255/s2255drv.c:2362:5-24: WARNING: atomic_dec_and_test variation before object free at line 2363.
-drivers/media/usb/s2255/s2255drv.c:1557:5-24: WARNING: atomic_dec_and_test variation before object free at line 1558.
+drivers/media/usb/as102/as10x_cmd.h:379:30: warning: field reg_addr within 'struct as10x_dump_memory::(unnamed at drivers/media/usb/as102/as10x_cmd.h:373:2)' is less aligned than 'struct as10x_register_addr' and is usually due to 'struct as10x_dump_memory::(unnamed at drivers/media/usb/as102/as10x_cmd.h:373:2)' being packed, which can lead to unaligned accesses [-Wunaligned-access]
 
-Link: https://lore.kernel.org/linux-media/20240429-fix-cocci-v3-11-3c4865f5a4b0@chromium.org
+Mark it as being packed.
+
+Marking the inner struct as 'packed' does not change the layout, since the
+whole struct is already packed, it just silences the clang warning. See
+also this llvm discussion:
+
+https://github.com/llvm/llvm-project/issues/55520
+
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/s2255/s2255drv.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/media/dvb-frontends/as102_fe_types.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/s2255/s2255drv.c b/drivers/media/usb/s2255/s2255drv.c
-index 8e1de1e8bd127..a6e450181fd01 100644
---- a/drivers/media/usb/s2255/s2255drv.c
-+++ b/drivers/media/usb/s2255/s2255drv.c
-@@ -247,7 +247,7 @@ struct s2255_vc {
- struct s2255_dev {
- 	struct s2255_vc         vc[MAX_CHANNELS];
- 	struct v4l2_device      v4l2_dev;
--	atomic_t                num_channels;
-+	refcount_t		num_channels;
- 	int			frames;
- 	struct mutex		lock;	/* channels[].vdev.lock */
- 	struct mutex		cmdlock; /* protects cmdbuf */
-@@ -1550,11 +1550,11 @@ static void s2255_video_device_release(struct video_device *vdev)
- 		container_of(vdev, struct s2255_vc, vdev);
+diff --git a/drivers/media/dvb-frontends/as102_fe_types.h b/drivers/media/dvb-frontends/as102_fe_types.h
+index 297f9520ebf9d..8a4e392c88965 100644
+--- a/drivers/media/dvb-frontends/as102_fe_types.h
++++ b/drivers/media/dvb-frontends/as102_fe_types.h
+@@ -174,6 +174,6 @@ struct as10x_register_addr {
+ 	uint32_t addr;
+ 	/* register mode access */
+ 	uint8_t mode;
+-};
++} __packed;
  
- 	dprintk(dev, 4, "%s, chnls: %d\n", __func__,
--		atomic_read(&dev->num_channels));
-+		refcount_read(&dev->num_channels));
- 
- 	v4l2_ctrl_handler_free(&vc->hdl);
- 
--	if (atomic_dec_and_test(&dev->num_channels))
-+	if (refcount_dec_and_test(&dev->num_channels))
- 		s2255_destroy(dev);
- 	return;
- }
-@@ -1659,7 +1659,7 @@ static int s2255_probe_v4l(struct s2255_dev *dev)
- 				"failed to register video device!\n");
- 			break;
- 		}
--		atomic_inc(&dev->num_channels);
-+		refcount_inc(&dev->num_channels);
- 		v4l2_info(&dev->v4l2_dev, "V4L2 device registered as %s\n",
- 			  video_device_node_name(&vc->vdev));
- 
-@@ -1667,11 +1667,11 @@ static int s2255_probe_v4l(struct s2255_dev *dev)
- 	pr_info("Sensoray 2255 V4L driver Revision: %s\n",
- 		S2255_VERSION);
- 	/* if no channels registered, return error and probe will fail*/
--	if (atomic_read(&dev->num_channels) == 0) {
-+	if (refcount_read(&dev->num_channels) == 0) {
- 		v4l2_device_unregister(&dev->v4l2_dev);
- 		return ret;
- 	}
--	if (atomic_read(&dev->num_channels) != MAX_CHANNELS)
-+	if (refcount_read(&dev->num_channels) != MAX_CHANNELS)
- 		pr_warn("s2255: Not all channels available.\n");
- 	return 0;
- }
-@@ -2221,7 +2221,7 @@ static int s2255_probe(struct usb_interface *interface,
- 		goto errorFWDATA1;
- 	}
- 
--	atomic_set(&dev->num_channels, 0);
-+	refcount_set(&dev->num_channels, 0);
- 	dev->pid = id->idProduct;
- 	dev->fw_data = kzalloc(sizeof(struct s2255_fw), GFP_KERNEL);
- 	if (!dev->fw_data)
-@@ -2341,12 +2341,12 @@ static void s2255_disconnect(struct usb_interface *interface)
- {
- 	struct s2255_dev *dev = to_s2255_dev(usb_get_intfdata(interface));
- 	int i;
--	int channels = atomic_read(&dev->num_channels);
-+	int channels = refcount_read(&dev->num_channels);
- 	mutex_lock(&dev->lock);
- 	v4l2_device_disconnect(&dev->v4l2_dev);
- 	mutex_unlock(&dev->lock);
- 	/*see comments in the uvc_driver.c usb disconnect function */
--	atomic_inc(&dev->num_channels);
-+	refcount_inc(&dev->num_channels);
- 	/* unregister each video device. */
- 	for (i = 0; i < channels; i++)
- 		video_unregister_device(&dev->vc[i].vdev);
-@@ -2359,7 +2359,7 @@ static void s2255_disconnect(struct usb_interface *interface)
- 		dev->vc[i].vidstatus_ready = 1;
- 		wake_up(&dev->vc[i].wait_vidstatus);
- 	}
--	if (atomic_dec_and_test(&dev->num_channels))
-+	if (refcount_dec_and_test(&dev->num_channels))
- 		s2255_destroy(dev);
- 	dev_info(&interface->dev, "%s\n", __func__);
- }
+ #endif
 -- 
 2.43.0
 
