@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-58817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DA7F92C058
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ADAD92C05F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:36:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0834D28BA82
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:35:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 044E5283065
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4DC91C231B;
-	Tue,  9 Jul 2024 16:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5591C2DDA;
+	Tue,  9 Jul 2024 16:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NNnl8BDt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lj4LpZ8b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB9E1C2308;
-	Tue,  9 Jul 2024 16:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C811C2DD1;
+	Tue,  9 Jul 2024 16:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542178; cv=none; b=abeLnobr+O4pbHFkUw8x7ZdOif9gd8hIvJw+4ROr0/c9GmaWANEneBpWRl87T/5zJgtRW2uzvmz65rrGquopNXytPkOuvXTV7tsLz9gDGwspvbyT+nJk2IpE5PbcKu2w1R7tB9hH1Er6P+X3G3gfFxjPTnsIl/QO7kzzvj9aaww=
+	t=1720542181; cv=none; b=U83H5tBGZDVtZ6YA8MMXP3BfStbMaheg9fJj8tOJanmyCynjocIAxA0JHrOWeMr3gG1T55h03gJvNxp1Fdw6R9jI88K35Wf49WhIPd6KkWEk94A1Qodmy+P7/s342+MAUZjQiY4PDRDNr6DYx4NOBWnQ+L/tzhPbUR4LsmsHyKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542178; c=relaxed/simple;
-	bh=Zm95n2SGEqjmTMk4Bs/Y4+y12KbObHhx/cFrv7TCRBI=;
+	s=arc-20240116; t=1720542181; c=relaxed/simple;
+	bh=W+urGY6Uc73Q8g6crOaHhFEqg5yat9Zh7W0xQVmu1Xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NIWL78BjfndoVoRi1DPGDgPQviZhLmt/n9SaFahZ6IVd7n31Kpkqk8Gr87Eh9NafrrUwuUKPDUw2LL6iCCVfgcG/asrgkkODzf6Yi/i/t1gDemGP9AJTEFj57psBsGY3a1/IKMgU87uCCocKLMOEvBHg0tYS+nBcADMioaAjmR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NNnl8BDt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89448C3277B;
-	Tue,  9 Jul 2024 16:22:56 +0000 (UTC)
+	 MIME-Version; b=o4KI+MU3H7xHbHVOKCxBi6FIKHfWAf3Xk/gTVoOTeIqpIqTnSYBk+s+/d91CwihCp+3r/zvwLQtO3SuukiR4KWRw5VDOTfpnnbl/vZwRHHFc+vSuRqkpg8g4rQy033xWaxbxVj9jcYxu/IFCS9ChXLQhjPrEwMmtcpeVbl8cPds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lj4LpZ8b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1E9C3277B;
+	Tue,  9 Jul 2024 16:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542178;
-	bh=Zm95n2SGEqjmTMk4Bs/Y4+y12KbObHhx/cFrv7TCRBI=;
+	s=k20201202; t=1720542180;
+	bh=W+urGY6Uc73Q8g6crOaHhFEqg5yat9Zh7W0xQVmu1Xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NNnl8BDtZc5B+snuwAOmf4v4zzr0As6sfL+xhk5VEkjOpTlf5wedbRRnqcGhro1Rx
-	 P2B7E6lJUk1VZRZG/ZxofnZmt6Tfn6BMDzAra/KJFNCKGzChuKOtpaJp4y3vTTvzVO
-	 OMh4/WTY3qND0AINMmn+OWTv2sxOkIbiN7WdhHqrqZniIyXtR+7q1Tc2Rzm0LYzoZo
-	 z0nPHl71gPeG0QXMIiK8l4xn7d2pWFnKQv4GR17McroH5CLOkKNtxhCp/L5lb/A+u5
-	 lkQ8cL21yc+MnG/larMLYNFkNprim4fvfmvXfZM5MI+HbT6yx0NsEZz/jXIuwTHu4o
-	 hBNqA7pWMxyxg==
+	b=lj4LpZ8bMP7H4+KhshTSynjZjZlLOt6fSSGADNVwpSfr1EH+RchYF8dFMOSagIQly
+	 KRQrQWbVNmaXJiPjUi+CdE6ZEuXfO+iZROlAlaK6ITzRgThC1UfTMVp64ML+sfHxAe
+	 gnz/n/bLwcI0jDr5lEXDtzwqfBIS0rr96F/I7nyR2umXht9SgZpjdP8Bhg4YSN7/CQ
+	 btDaarHa0eqF7MUkcOKwr5ISz7a/fx3riimniIJ+MWTv37yZ0GePXJZEPodGeXH3CR
+	 ZFOxlf4Lp4Eepp5AbqXAJ6nmmtEyome1wX18eNzLPCEH/cnoExzKwfBQGQyHPpgH60
+	 ARtwTHx8xM2pg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Boyang Yu <yuboyang@dapustor.com>,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	Keith Busch <kbusch@kernel.org>,
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	sagi@grimberg.me,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 15/33] nvme: fix NVME_NS_DEAC may incorrectly identifying the disk as EXT_LBA.
-Date: Tue,  9 Jul 2024 12:21:41 -0400
-Message-ID: <20240709162224.31148-15-sashal@kernel.org>
+	gregkh@linuxfoundation.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 16/33] Input: ads7846 - use spi_device_id table
+Date: Tue,  9 Jul 2024 12:21:42 -0400
+Message-ID: <20240709162224.31148-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162224.31148-1-sashal@kernel.org>
 References: <20240709162224.31148-1-sashal@kernel.org>
@@ -67,36 +66,61 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.38
 Content-Transfer-Encoding: 8bit
 
-From: Boyang Yu <yuboyang@dapustor.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 9570a48847e3acfa1a741cef431c923325ddc637 ]
+[ Upstream commit 7c7b1be19b228b450c2945ec379d7fc6bfef9852 ]
 
-The value of NVME_NS_DEAC is 3,
-which means NVME_NS_METADATA_SUPPORTED | NVME_NS_EXT_LBAS. Provide a
-unique value for this feature flag.
+As the driver supports more devices over time the single MODULE_ALIAS
+is complete and raises several warnings:
+SPI driver ads7846 has no spi_device_id for ti,tsc2046
+SPI driver ads7846 has no spi_device_id for ti,ads7843
+SPI driver ads7846 has no spi_device_id for ti,ads7845
+SPI driver ads7846 has no spi_device_id for ti,ads7873
 
-Fixes 1b96f862eccc ("nvme: implement the DEAC bit for the Write Zeroes command")
-Signed-off-by: Boyang Yu <yuboyang@dapustor.com>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fix this by adding a spi_device_id table and removing the manual
+MODULE_ALIAS.
+
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20240619122703.2081476-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/nvme.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/touchscreen/ads7846.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
-index fd67240795e3a..21c24cd8b1e8a 100644
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -485,7 +485,7 @@ static inline bool nvme_ns_head_multipath(struct nvme_ns_head *head)
- enum nvme_ns_features {
- 	NVME_NS_EXT_LBAS = 1 << 0, /* support extended LBA format */
- 	NVME_NS_METADATA_SUPPORTED = 1 << 1, /* support getting generated md */
--	NVME_NS_DEAC,		/* DEAC bit in Write Zeores supported */
-+	NVME_NS_DEAC = 1 << 2,		/* DEAC bit in Write Zeores supported */
+diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
+index faea40dd66d01..a66375700a630 100644
+--- a/drivers/input/touchscreen/ads7846.c
++++ b/drivers/input/touchscreen/ads7846.c
+@@ -1114,6 +1114,16 @@ static const struct of_device_id ads7846_dt_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(of, ads7846_dt_ids);
+ 
++static const struct spi_device_id ads7846_spi_ids[] = {
++	{ "tsc2046", 7846 },
++	{ "ads7843", 7843 },
++	{ "ads7845", 7845 },
++	{ "ads7846", 7846 },
++	{ "ads7873", 7873 },
++	{ },
++};
++MODULE_DEVICE_TABLE(spi, ads7846_spi_ids);
++
+ static const struct ads7846_platform_data *ads7846_get_props(struct device *dev)
+ {
+ 	struct ads7846_platform_data *pdata;
+@@ -1392,10 +1402,10 @@ static struct spi_driver ads7846_driver = {
+ 	},
+ 	.probe		= ads7846_probe,
+ 	.remove		= ads7846_remove,
++	.id_table	= ads7846_spi_ids,
  };
  
- struct nvme_ns {
+ module_spi_driver(ads7846_driver);
+ 
+ MODULE_DESCRIPTION("ADS7846 TouchScreen Driver");
+ MODULE_LICENSE("GPL");
+-MODULE_ALIAS("spi:ads7846");
 -- 
 2.43.0
 
