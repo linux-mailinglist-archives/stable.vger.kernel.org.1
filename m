@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-58398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC91392B6CE
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0239192B7BC
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98A50282E3C
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABBF81F245B5
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB77C15886B;
-	Tue,  9 Jul 2024 11:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3250615749B;
+	Tue,  9 Jul 2024 11:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAIrCq4f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/30ylKK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7E4153812;
-	Tue,  9 Jul 2024 11:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2868156238;
+	Tue,  9 Jul 2024 11:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523813; cv=none; b=RI2c0vpPkW83u2fSj2S5hLa4TrBtxodqg9GmOUbCVagfhumY2Z0OVhP2JWEmcGoZ120MMTLwgjbJbYFCEYI6CLO/opluTIvw7oR+Ydswn2lEdwWSY4BpiW++Kopczo1QIeC+YHHtGBYiiqVEB2rZ4JCUtnKbyxihl5c0wWbXv4E=
+	t=1720524383; cv=none; b=cvLzFYg7f1uAEI5lMSlz1Win9/jo5FY2EpVOT0KBkti4pUc80EAu8yy6l8L0zHw+rsFiYh6U3irDCb9gUbTMLmyMguZCdkA2k4/PKHcyDUPSl8hdlgKWrWKO8zsSil1VaI7U8VQVgdkX94MuGr6sJd4Q/Du2ZTM//PdfqM7la9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523813; c=relaxed/simple;
-	bh=iWb9zfHmY5qQH9s+m/AdsKnxivCUUpZo8m+/DM3j1M4=;
+	s=arc-20240116; t=1720524383; c=relaxed/simple;
+	bh=Fy7sztzIZn+8eKZZoihvilL+DsXlE/JRezU194J3kmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ihXiNc+T1EH5t0T/6ZgVzt46DTE+91OXL9uyfMRKYhCVzvNz4jNAwiKwc+QQDUzEyflcpoF5uHqliYYXPyL7R5fnRpwWTncBpovf6xqKy7jUiuP8Mx/NjyMogxStuyt5OJsGdHRIkVXrGPxSDUVddiwBciN6y9yY+k55kVA8xBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAIrCq4f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2CDCC3277B;
-	Tue,  9 Jul 2024 11:16:52 +0000 (UTC)
+	 MIME-Version; b=TmSPeB55N6eDLGwHtUBoP29VdlXG03fAGWh5YKksxoKtVgDI/GciCAkgNq3m7ylDVX9oUkWZJpDN99h5gEPxXp4orCYC7N8ek5TPztMnSSNH0Bb7rojMrDtNfWsxpj1vcZWF6NO0f4LLWxGBMJd7YolM0bvUNH2brUvrQKxcEoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/30ylKK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DC1C4AF0B;
+	Tue,  9 Jul 2024 11:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523813;
-	bh=iWb9zfHmY5qQH9s+m/AdsKnxivCUUpZo8m+/DM3j1M4=;
+	s=korg; t=1720524382;
+	bh=Fy7sztzIZn+8eKZZoihvilL+DsXlE/JRezU194J3kmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AAIrCq4fJhV+wQBssy7Vp9g5I15Lmml0kPIPWllTWB5rQtfG0bN2NER4hbNTAHPZD
-	 0BAivAUDdBgUtigVnkOzsR+fon+GCkXmfXFcze2VicAALuL68OYAEjms4wGnYfv0Sj
-	 WFYOJeBwjmxbAlWKGZZfpeZLh+/wpU4PCcGfMFtk=
+	b=e/30ylKKxtCYZvGHtMwUcsGQ7mhNowbnx7QFUZqxSdRKHlliiMaipZBxducpZ0y6/
+	 gtHOLFOrz8WAsrPgZZUMXXyYXtCqmW0L1o8CbfwmV/i4qdM+mvjaXt48pKuIJNfuMz
+	 jvD/2V06ePMybfYfN+ZeCrJndEkR5PMB8VHnLcOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.6 087/139] cpu: Fix broken cmdline "nosmp" and "maxcpus=0"
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Hillf Danton <hdanton@sina.com>,
+	Jan Kara <jack@suse.cz>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 133/197] nilfs2: fix inode number range checks
 Date: Tue,  9 Jul 2024 13:09:47 +0200
-Message-ID: <20240709110701.537530900@linuxfoundation.org>
+Message-ID: <20240709110714.097003490@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 6ef8eb5125722c241fd60d7b0c872d5c2e5dd4ca upstream.
+commit e2fec219a36e0993642844be0f345513507031f4 upstream.
 
-After the rework of "Parallel CPU bringup", the cmdline "nosmp" and
-"maxcpus=0" parameters are not working anymore. These parameters set
-setup_max_cpus to zero and that's handed to bringup_nonboot_cpus().
+Patch series "nilfs2: fix potential issues related to reserved inodes".
 
-The code there does a decrement before checking for zero, which brings it
-into the negative space and brings up all CPUs.
+This series fixes one use-after-free issue reported by syzbot, caused by
+nilfs2's internal inode being exposed in the namespace on a corrupted
+filesystem, and a couple of flaws that cause problems if the starting
+number of non-reserved inodes written in the on-disk super block is
+intentionally (or corruptly) changed from its default value.
 
-Add a zero check at the beginning of the function to prevent this.
 
-[ tglx: Massaged change log ]
+This patch (of 3):
 
-Fixes: 18415f33e2ac4ab382 ("cpu/hotplug: Allow "parallel" bringup up to CPUHP_BP_KICK_AP_STATE")
-Fixes: 06c6796e0304234da6 ("cpu/hotplug: Fix off by one in cpuhp_bringup_mask()")
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240618081336.3996825-1-chenhuacai@loongson.cn
+In the current implementation of nilfs2, "nilfs->ns_first_ino", which
+gives the first non-reserved inode number, is read from the superblock,
+but its lower limit is not checked.
+
+As a result, if a number that overlaps with the inode number range of
+reserved inodes such as the root directory or metadata files is set in the
+super block parameter, the inode number test macros (NILFS_MDT_INODE and
+NILFS_VALID_INODE) will not function properly.
+
+In addition, these test macros use left bit-shift calculations using with
+the inode number as the shift count via the BIT macro, but the result of a
+shift calculation that exceeds the bit width of an integer is undefined in
+the C specification, so if "ns_first_ino" is set to a large value other
+than the default value NILFS_USER_INO (=11), the macros may potentially
+malfunction depending on the environment.
+
+Fix these issues by checking the lower bound of "nilfs->ns_first_ino" and
+by preventing bit shifts equal to or greater than the NILFS_USER_INO
+constant in the inode number test macros.
+
+Also, change the type of "ns_first_ino" from signed integer to unsigned
+integer to avoid the need for type casting in comparisons such as the
+lower bound check introduced this time.
+
+Link: https://lkml.kernel.org/r/20240623051135.4180-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20240623051135.4180-2-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cpu.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/nilfs2/nilfs.h     |    5 +++--
+ fs/nilfs2/the_nilfs.c |    6 ++++++
+ fs/nilfs2/the_nilfs.h |    2 +-
+ 3 files changed, 10 insertions(+), 3 deletions(-)
 
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -1907,6 +1907,9 @@ static inline bool cpuhp_bringup_cpus_pa
+--- a/fs/nilfs2/nilfs.h
++++ b/fs/nilfs2/nilfs.h
+@@ -116,9 +116,10 @@ enum {
+ #define NILFS_FIRST_INO(sb) (((struct the_nilfs *)sb->s_fs_info)->ns_first_ino)
  
- void __init bringup_nonboot_cpus(unsigned int setup_max_cpus)
- {
-+	if (!setup_max_cpus)
-+		return;
-+
- 	/* Try parallel bringup optimization if enabled */
- 	if (cpuhp_bringup_cpus_parallel(setup_max_cpus))
- 		return;
+ #define NILFS_MDT_INODE(sb, ino) \
+-	((ino) < NILFS_FIRST_INO(sb) && (NILFS_MDT_INO_BITS & BIT(ino)))
++	((ino) < NILFS_USER_INO && (NILFS_MDT_INO_BITS & BIT(ino)))
+ #define NILFS_VALID_INODE(sb, ino) \
+-	((ino) >= NILFS_FIRST_INO(sb) || (NILFS_SYS_INO_BITS & BIT(ino)))
++	((ino) >= NILFS_FIRST_INO(sb) ||				\
++	 ((ino) < NILFS_USER_INO && (NILFS_SYS_INO_BITS & BIT(ino))))
+ 
+ /**
+  * struct nilfs_transaction_info: context information for synchronization
+--- a/fs/nilfs2/the_nilfs.c
++++ b/fs/nilfs2/the_nilfs.c
+@@ -452,6 +452,12 @@ static int nilfs_store_disk_layout(struc
+ 	}
+ 
+ 	nilfs->ns_first_ino = le32_to_cpu(sbp->s_first_ino);
++	if (nilfs->ns_first_ino < NILFS_USER_INO) {
++		nilfs_err(nilfs->ns_sb,
++			  "too small lower limit for non-reserved inode numbers: %u",
++			  nilfs->ns_first_ino);
++		return -EINVAL;
++	}
+ 
+ 	nilfs->ns_blocks_per_segment = le32_to_cpu(sbp->s_blocks_per_segment);
+ 	if (nilfs->ns_blocks_per_segment < NILFS_SEG_MIN_BLOCKS) {
+--- a/fs/nilfs2/the_nilfs.h
++++ b/fs/nilfs2/the_nilfs.h
+@@ -182,7 +182,7 @@ struct the_nilfs {
+ 	unsigned long		ns_nrsvsegs;
+ 	unsigned long		ns_first_data_block;
+ 	int			ns_inode_size;
+-	int			ns_first_ino;
++	unsigned int		ns_first_ino;
+ 	u32			ns_crc_seed;
+ 
+ 	/* /sys/fs/<nilfs>/<device> */
 
 
 
