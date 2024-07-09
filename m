@@ -1,371 +1,248 @@
-Return-Path: <stable+bounces-58261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8B792AEC9
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 05:32:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB98692AF6E
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 07:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 403AE282430
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 03:32:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5ECAB21239
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 05:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AA442067;
-	Tue,  9 Jul 2024 03:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 814223B78D;
+	Tue,  9 Jul 2024 05:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=matoro.tk header.i=@matoro.tk header.b="XVm9ESgx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IFTjHksl"
 X-Original-To: stable@vger.kernel.org
-Received: from matoro.tk (matoro.tk [104.188.251.153])
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4762772A;
-	Tue,  9 Jul 2024 03:32:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.188.251.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF4763A
+	for <stable@vger.kernel.org>; Tue,  9 Jul 2024 05:33:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720495940; cv=none; b=ZoVNSkULgtki7QywSF+ga/EoHBbF46FskS65TqcsjjDoSN+LiEl/wo0uGYUkYdp8288mNYTjKnvXmDEWjWCh+E+D3c0s4PsVQuo53dkXq3OTwd0aqdN7COP1AAhUozQv+N5fAbvnYOpJLd4IxmcDHxNJY0k2gC8tpHgWABgQnZ8=
+	t=1720503208; cv=none; b=iie7HJPABBdr4ketmgEevmM6bltV+P3v6+B0T3SmaRDTPeiNwmHzPesVPQnHfq/YS7eumrkfz+ch2I+Kp76qvaEejxfBoLojInRmynyMzqcQ4JZMrQUaI09yq4AKVP6VMO6y2+NPGPeJ+FCisgC+RRpZ2RHGBfXx0Fuj59TczEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720495940; c=relaxed/simple;
-	bh=KBC0RQaWfsV2u9nkboyKvrAPuG21yvU7UNkDnfU1AKE=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=poMTloh7RMAfEje+SgZ7Qyy4P2XGgJR9/sa9GkbSTgW57ExHBK14uQ+OggCdOIz/i969pwCCxQVGEak7Y4jpHhvxPRz6KF9GvNGBmB/NtvLlMDOnB5p0XzrmcapHVJXDDCeqBkd5csbVmNbY4BVotm53U0XYqOrDXkbKH70249E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=matoro.tk; spf=pass smtp.mailfrom=matoro.tk; dkim=pass (4096-bit key) header.d=matoro.tk header.i=@matoro.tk header.b=XVm9ESgx; arc=none smtp.client-ip=104.188.251.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=matoro.tk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matoro.tk
-DKIM-Signature: a=rsa-sha256; bh=rx00TmCRleNaYNwU6VNaTFY0rZMBsUNLwYKIOGlxchU=;
- c=relaxed/relaxed; d=matoro.tk;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@matoro.tk; s=20240626; t=1720495009; v=1; x=1720927009;
- b=XVm9ESgxplkXKLhbJmny9221iGi6HOJqQ6Ybh5Zf7pjmsdL8727CrhLmuQm8Rn9f2VXgIKbc
- M23xXjySR6nsBuAyft4LMR+1qIj55Z78X3pmBhTV8R2ELTL7bWMiCBfCoVChWb9iQ+tyv7YPFNe
- xFGtcfSysHqjAAuA8eXEMrGjZjQu1ZiBqjonY9OwcHF9WgZHpKU8pJ4Ayl96kopStLzDYSK2IYk
- RHagsXWQwj/RhDnWR2wJdG7KJyXG6VGTbPsr4lwWCw9qH/74sBLjNOtos05wkuR30rk1777wwhE
- jJzFCvTStWHU1iIQNzcp1FGiBHm7LrqlvOfuuhlZvgJJMH5qMBbhaqAwsS/k/xPnN+vxQrqcCGW
- 2AcQ5rjztDiD8wRGCDv7l+EMEzcBGfhEOi5cXUfPtt7Qh1SvRJjapLZyZp3rLJCX22nDsOM7mgU
- Jg7IS9oKX14QgCR4hYHxMV24Wzvly38HUGfR+U/2sAbKhPd71KZx+jtsGujjCqic6+hhqKVsrKk
- QtbEGCquLaLHY03H1tEsidsgDZVWg/x8d/IXQfkoWQqAC40sb/tmUF8VXT0HlS8+PtF4Rx9LWld
- /4E0N7h1nVEptoFCgBHldj3HVqFB83RhitjSf646iN+Q20HxpYckFeKxOeTIc3xaojvQx0YAXj0
- LpFHPpQoTY4=
-Received: by matoro.tk (envelope-sender
- <matoro_mailinglist_kernel@matoro.tk>) with ESMTPS id 89b59a13; Mon, 08 Jul
- 2024 23:16:49 -0400
+	s=arc-20240116; t=1720503208; c=relaxed/simple;
+	bh=d4alURZNvV6R5cOqoWKs2soxsHFDee+0gNpbuhdbcc8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mMISkoAmNsGSQooxYxoiBf6QXGekOZcOwDJic4qp4RXMzkpCrIXt4Le0RPk2oBrf8+P7IE0dCbftdNk5KbDMATMYm/ZECckZ2Uycc6qxBTZQHTvvy72T0DE6OHd5P2o/1elW64J/zv6ZNt6pSZWgteGZJFYV+C2C2odvqD9xPLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IFTjHksl; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-72ed1fbc5d9so3117310a12.0
+        for <stable@vger.kernel.org>; Mon, 08 Jul 2024 22:33:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1720503203; x=1721108003; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=k3HbPA06WadswGRXtLttyGSVaS5iOxmiRrU+LFfHNuQ=;
+        b=IFTjHkslkYNmpY+xdcWEqggh6QsrY9i5EzkL59qrJRebHWb7qB7oyROu0bNlqig2RC
+         CoV+lnyFG/w1HWMZ5KNZ0S9cAQJFPCp3pxtBlEbetp8zVxXpbmqUL3uP3p+Ak9g4NDii
+         U+2zb1pjVN6qk/Th9zfGzeDzi350cE5AkIZw7tLIWefbU4PeUkA9cGujAF1CaPnAzRFL
+         rldviwn/9+Ir1BBKFc6PI4FsHO9hVQnFqSYSpxYwbYx0QTU8njBLeXLatD/GicWheA4E
+         2WDne2jt0ZXy56gIaHdrBVQTIgS/S0ALKXSfBCfdVZPvogqOg1caRYPnDBx5BAcodMIo
+         dlRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720503203; x=1721108003;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=k3HbPA06WadswGRXtLttyGSVaS5iOxmiRrU+LFfHNuQ=;
+        b=hujjrzuPQIbmo00wOGb4EmfOPriBIO1+o/zrXRb7p36LMKr9al2d3C8qnaGXpXy3wE
+         ADq5fbhHq0UAYfO+PKOkTvDfWmL0w1oleehjuR1IAfnnJ99Izpc3uPWGl69JO3YvcsPN
+         YlsRPZUwFmhS2p6S1JCwGg2SJknnDmq44qijtQwOXYY4Vi6lDyFAi2GuStsNDZa04iO8
+         S7L0iXldJf2JAZNQSjnbN8sVxKA6B0D/QB3OrtltaX1fhUC57ILZERT6fYcioTxVPlaO
+         herZz0z5aRUYx/OgBd/19RTlAHAYWienIj+2fNA9E2TnpJoZohuV3PULOTUF4GTvLAG3
+         RJjQ==
+X-Gm-Message-State: AOJu0YzCWyqf4wnRqmVDNMT1Lo775fo62t2gQyUUrYJ8zt6AbH/VL8IF
+	90l/xDY+wQqIsbHTXd7FgyponycfaK2N16Y2m4FHqkOReb0Y8YjArS9mKg==
+X-Google-Smtp-Source: AGHT+IHoyzLHPg0nqNPm32H93AOkQyVJ02VZpqGy2XqLQpYQNm4yUTgIQlxjhdCU1z8dSq5zVOhihQ==
+X-Received: by 2002:a05:6a20:4a1e:b0:1c2:8b78:880 with SMTP id adf61e73a8af0-1c2984c85e5mr1550436637.41.1720503203325;
+        Mon, 08 Jul 2024 22:33:23 -0700 (PDT)
+Received: from carrot.. (i222-151-34-139.s42.a014.ap.plala.or.jp. [222.151.34.139])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fbb6ad1217sm7363685ad.280.2024.07.08.22.33.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jul 2024 22:33:22 -0700 (PDT)
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: akpm@linux-foundation.org,
+	hdanton@sina.com,
+	jack@suse.cz,
+	willy@infradead.org
+Subject: [PATCH 4.19 5.4 5.10 5.15 6.1 6.6] nilfs2: fix incorrect inode allocation from reserved inodes
+Date: Tue,  9 Jul 2024 14:33:18 +0900
+Message-Id: <20240709053318.4528-1-konishi.ryusuke@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 08 Jul 2024 23:16:48 -0400
-From: matoro <matoro_mailinglist_kernel@matoro.tk>
-To: Vitaly Chikunov <vt@altlinux.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Hari Bathini
- <hbathini@linux.ibm.com>, ltp@lists.linux.it, stable@vger.kernel.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org
-Subject: Re: WARNING&Oops in v6.6.37 on ppc64lea - Trying to vfree() bad
- address (00000000453be747)
-In-Reply-To: <20240705203413.wbv2nw3747vjeibk@altlinux.org>
-References: <20240705203413.wbv2nw3747vjeibk@altlinux.org>
-Message-ID: <cf736c5e37489e7dc7ffd67b9de2ab47@matoro.tk>
-X-Sender: matoro_mailinglist_kernel@matoro.tk
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 2024-07-05 16:34, Vitaly Chikunov wrote:
-> Hi,
-> 
-> There is new WARNING and Oops on ppc64le in v6.6.37 when running LTP tests:
-> bpf_prog01, bpf_prog02, bpf_prog04, bpf_prog05, prctl04. Logs excerpt below. 
-> I
-> see there is 1 commit in v6.6.36..v6.6.37 with call to
-> bpf_jit_binary_pack_finalize, backported from 5 patch mainline patchset:
-> 
->   f99feda5684a powerpc/bpf: use bpf_jit_binary_pack_[alloc|finalize|free]
-> 
-> Log:
-> 
->  [    8.822079] LTP: starting bpf_prog01
->  [    8.841853] ------------[ cut here ]------------
->  [    8.841946] Trying to vfree() bad address (00000000453be747)
->  [    8.842024] WARNING: CPU: 6 PID: 689 at mm/vmalloc.c:2700 
-> remove_vm_area+0xb4/0xf0
->  [    8.842103] Modules linked in: virtio_rng rng_core virtio_net 
-> net_failover failover sd_mod ata_generic ata_piix libata scsi_mod 
-> scsi_common virtio_blk virtio_pci virtio_pci_legacy_dev 
-> virtio_pci_modern_dev 9pnet_virtio virtio_ring virtio 9p 9pnet netfs
->  [    8.842323] CPU: 6 PID: 689 Comm: bpf_prog01 Not tainted 
-> 6.6.37-un-def-alt1 #1
->  [    8.842396] Hardware name: IBM pSeries (emulated by qemu) POWER8 (raw) 
-> 0x4d0200 0xf000004 of:SLOF,git-3a259d hv:linux,kvm pSeries
->  [    8.842519] NIP:  c0000000004faf04 LR: c0000000004faf00 CTR: 
-> 0000000000000000
->  [    8.842598] REGS: c000000009b6f250 TRAP: 0700   Not tainted  
-> (6.6.37-un-def-alt1)
->  [    8.842669] MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 28002822  
-> XER: 00000000
->  [    8.842748] CFAR: c00000000015df94 IRQMASK: 0
->  [    8.842748] GPR00: 0000000000000000 c000000009b6f4f0 c000000001ac7f00 
-> 0000000000000000
->  [    8.842748] GPR04: 0000000000000000 0000000000000000 0000000000000000 
-> 0000000000000000
->  [    8.842748] GPR08: 0000000000000000 0000000000000000 0000000000000000 
-> 0000000000000000
->  [    8.842748] GPR12: 0000000000000000 c00000003fff7a00 0000000000000000 
-> 0000000000000000
->  [    8.842748] GPR16: 0000000000000012 0000000000000000 000000000000008c 
-> 0000000000000000
->  [    8.842748] GPR20: c008000000040a40 0000000000000002 c0000000022a7560 
-> c008000000040a4c
->  [    8.842748] GPR24: c000000005716480 0000000000000000 c000000002155698 
-> c0000000022a7680
->  [    8.842748] GPR28: c000000002155688 c008000000040a40 c008000000040a40 
-> c008000000040a40
->  [    8.843347] NIP [c0000000004faf04] remove_vm_area+0xb4/0xf0
->  [    8.843398] LR [c0000000004faf00] remove_vm_area+0xb0/0xf0
->  [    8.843448] Call Trace:
->  [    8.843484] [c000000009b6f4f0] [c0000000004faf00] 
-> remove_vm_area+0xb0/0xf0 (unreliable)
->  [    8.843559] [c000000009b6f560] [c0000000004fb360] vfree+0x60/0x2a0
->  [    8.843621] [c000000009b6f5e0] [c000000000269c6c] 
-> module_memfree+0x3c/0x60
->  [    8.843685] [c000000009b6f600] [c00000000038cf60] 
-> bpf_jit_free_exec+0x20/0x40
->  [    8.843759] [c000000009b6f620] [c00000000038f518] 
-> bpf_prog_pack_free+0x2f8/0x390
->  [    8.843832] [c000000009b6f6b0] [c00000000038f878] 
-> bpf_jit_binary_pack_finalize+0x98/0xd0
->  [    8.843906] [c000000009b6f6e0] [c000000000118240] 
-> bpf_int_jit_compile+0x2c0/0x710
->  [    8.843979] [c000000009b6f830] [c00000000038ef64] 
-> bpf_prog_select_runtime+0x154/0x1b0
->  [    8.844053] [c000000009b6f880] [c000000000398edc] 
-> bpf_prog_load+0x94c/0xe90
->  [    8.844114] [c000000009b6f990] [c00000000039c878] __sys_bpf+0x418/0x2970
->  [    8.844176] [c000000009b6fac0] [c00000000039f1a0] sys_bpf+0x30/0x50
->  [    8.844237] [c000000009b6fae0] [c000000000030230] 
-> system_call_exception+0x190/0x390
->  [    8.844312] [c000000009b6fe50] [c00000000000c7d4] 
-> system_call_common+0xf4/0x258
->  [    8.844386] --- interrupt: c00 at 0x7fffb0839ad4
->  [    8.844437] NIP:  00007fffb0839ad4 LR: 000000012a027fb4 CTR: 
-> 0000000000000000
->  [    8.844524] REGS: c000000009b6fe80 TRAP: 0c00   Not tainted  
-> (6.6.37-un-def-alt1)
->  [    8.844596] MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  
-> CR: 22002240  XER: 00000000
->  [    8.844690] IRQMASK: 0
->  [    8.844690] GPR00: 0000000000000169 00007fffd8534200 00007fffb0936d00 
-> 0000000000000005
->  [    8.844690] GPR04: 00007fffb06aff90 0000000000000070 000000012a0538a0 
-> 0000000000000001
->  [    8.844690] GPR08: 000000012a0801f4 0000000000000000 0000000000000000 
-> 0000000000000000
->  [    8.844690] GPR12: 0000000000000000 00007fffb09ea540 0000000000000000 
-> 0000000000000000
->  [    8.844690] GPR16: 0000000000000000 0000000000000000 0000000000000000 
-> 0000000000000000
->  [    8.844690] GPR20: 00007fffd85344b0 0000000000000000 0000000000000001 
-> 0000000000000000
->  [    8.844690] GPR24: 000000012a0801f4 00007fffb06ce000 0000000000000000 
-> 00000000000f4240
->  [    8.844690] GPR28: 00007fffb06aff90 00007fffb09e3550 0000000000000001 
-> 0000000000001118
->  [    8.845267] NIP [00007fffb0839ad4] 0x7fffb0839ad4
->  [    8.845315] LR [000000012a027fb4] 0x12a027fb4
->  [    8.845363] --- interrupt: c00
->  [    8.845399] Code: 38000000 38800000 39200000 4e800020 60000000 60000000 
-> 60420000 3c62ffa2 7fe4fb78 3863e698 4bc62f8d 60000000 <0fe00000> 38210070 
-> 3bc00000 e8010010
->  [    8.845550] ---[ end trace 0000000000000000 ]---
->  [    8.845603] ------------[ cut here ]------------
->  [    8.845651] Trying to vfree() nonexistent vm area (00000000453be747)
->  [    8.845714] WARNING: CPU: 6 PID: 689 at mm/vmalloc.c:2835 
-> vfree+0x1d8/0x2a0
->  [    8.845776] Modules linked in: virtio_rng rng_core virtio_net 
-> net_failover failover sd_mod ata_generic ata_piix libata scsi_mod 
-> scsi_common virtio_blk virtio_pci virtio_pci_legacy_dev 
-> virtio_pci_modern_dev 9pnet_virtio virtio_ring virtio 9p 9pnet netfs
->  [    8.845989] CPU: 6 PID: 689 Comm: bpf_prog01 Tainted: G        W         
->  6.6.37-un-def-alt1 #1
->  [    8.846072] Hardware name: IBM pSeries (emulated by qemu) POWER8 (raw) 
-> 0x4d0200 0xf000004 of:SLOF,git-3a259d hv:linux,kvm pSeries
->  [    8.846177] NIP:  c0000000004fb4d8 LR: c0000000004fb4d4 CTR: 
-> 0000000000000000
->  [    8.846248] REGS: c000000009b6f2c0 TRAP: 0700   Tainted: G        W      
->      (6.6.37-un-def-alt1)
->  [    8.846330] MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 28002222  
-> XER: 00000000
->  [    8.846408] CFAR: c00000000015df94 IRQMASK: 0
->  [    8.846408] GPR00: 0000000000000000 c000000009b6f560 c000000001ac7f00 
-> 0000000000000000
->  [    8.846408] GPR04: 0000000000000000 0000000000000000 0000000000000000 
-> 0000000000000000
->  [    8.846408] GPR08: 0000000000000000 0000000000000000 0000000000000000 
-> 0000000000000000
->  [    8.846408] GPR12: 0000000000000000 c00000003fff7a00 0000000000000000 
-> 0000000000000000
->  [    8.846408] GPR16: 0000000000000012 0000000000000000 000000000000008c 
-> 0000000000000000
->  [    8.846408] GPR20: c008000000040a40 0000000000000002 c0000000022a7560 
-> c008000000040a4c
->  [    8.846408] GPR24: c000000005716480 0000000000000000 c000000002155698 
-> c0000000022a7680
->  [    8.846408] GPR28: c000000002155688 0000000000000000 c008000000040a40 
-> 0000000000000000
->  [    8.851030] NIP [c0000000004fb4d8] vfree+0x1d8/0x2a0
->  [    8.851085] LR [c0000000004fb4d4] vfree+0x1d4/0x2a0
->  [    8.851135] Call Trace:
->  [    8.851160] [c000000009b6f560] [c0000000004fb4d4] vfree+0x1d4/0x2a0 
-> (unreliable)
->  [    8.851234] [c000000009b6f5e0] [c000000000269c6c] 
-> module_memfree+0x3c/0x60
->  [    8.851297] [c000000009b6f600] [c00000000038cf60] 
-> bpf_jit_free_exec+0x20/0x40
->  [    8.851371] [c000000009b6f620] [c00000000038f518] 
-> bpf_prog_pack_free+0x2f8/0x390
->  [    8.851445] [c000000009b6f6b0] [c00000000038f878] 
-> bpf_jit_binary_pack_finalize+0x98/0xd0
->  [    8.851529] [c000000009b6f6e0] [c000000000118240] 
-> bpf_int_jit_compile+0x2c0/0x710
->  [    8.851602] [c000000009b6f830] [c00000000038ef64] 
-> bpf_prog_select_runtime+0x154/0x1b0
->  [    8.851675] [c000000009b6f880] [c000000000398edc] 
-> bpf_prog_load+0x94c/0xe90
->  [    8.851737] [c000000009b6f990] [c00000000039c878] __sys_bpf+0x418/0x2970
->  [    8.851798] [c000000009b6fac0] [c00000000039f1a0] sys_bpf+0x30/0x50
->  [    8.851860] [c000000009b6fae0] [c000000000030230] 
-> system_call_exception+0x190/0x390
->  [    8.851934] [c000000009b6fe50] [c00000000000c7d4] 
-> system_call_common+0xf4/0x258
->  [    8.852007] --- interrupt: c00 at 0x7fffb0839ad4
->  [    8.852057] NIP:  00007fffb0839ad4 LR: 000000012a027fb4 CTR: 
-> 0000000000000000
->  [    8.852128] REGS: c000000009b6fe80 TRAP: 0c00   Tainted: G        W      
->      (6.6.37-un-def-alt1)
->  [    8.852212] MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  
-> CR: 22002240  XER: 00000000
->  [    8.852307] IRQMASK: 0
->  [    8.852307] GPR00: 0000000000000169 00007fffd8534200 00007fffb0936d00 
-> 0000000000000005
->  [    8.852307] GPR04: 00007fffb06aff90 0000000000000070 000000012a0538a0 
-> 0000000000000001
->  [    8.852307] GPR08: 000000012a0801f4 0000000000000000 0000000000000000 
-> 0000000000000000
->  [    8.852307] GPR12: 0000000000000000 00007fffb09ea540 0000000000000000 
-> 0000000000000000
->  [    8.852307] GPR16: 0000000000000000 0000000000000000 0000000000000000 
-> 0000000000000000
->  [    8.852307] GPR20: 00007fffd85344b0 0000000000000000 0000000000000001 
-> 0000000000000000
->  [    8.852307] GPR24: 000000012a0801f4 00007fffb06ce000 0000000000000000 
-> 00000000000f4240
->  [    8.852307] GPR28: 00007fffb06aff90 00007fffb09e3550 0000000000000001 
-> 0000000000001118
->  [    8.852889] NIP [00007fffb0839ad4] 0x7fffb0839ad4
->  [    8.852938] LR [000000012a027fb4] 0x12a027fb4
->  [    8.852986] --- interrupt: c00
->  [    8.853022] Code: 4e800020 60420000 3949ffff 4bffff0c 38210080 ebe1fff8 
-> 4bfffd68 3c62ffa2 7fc4f378 3863e6f0 4bc629b9 60000000 <0fe00000> eba10068 
-> 4bffff8c 2c080000
->  [    8.853164] ---[ end trace 0000000000000000 ]---
->  [    8.856619] kernel tried to execute exec-protected page 
-> (c008000000040a4c) - exploit attempt? (uid: 0)
->  [    8.856717] BUG: Unable to handle kernel instruction fetch
->  [    8.856763] Faulting instruction address: 0xc008000000040a4c
->  [    8.856825] Oops: Kernel access of bad area, sig: 11 [#1]
->  [    8.856875] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
->  [    8.856937] Modules linked in: virtio_rng rng_core virtio_net 
-> net_failover failover sd_mod ata_generic ata_piix libata scsi_mod 
-> scsi_common virtio_blk virtio_pci virtio_pci_legacy_dev 
-> virtio_pci_modern_dev 9pnet_virtio virtio_ring virtio 9p 9pnet netfs
->  [    8.857154] CPU: 6 PID: 689 Comm: bpf_prog01 Tainted: G        W         
->  6.6.37-un-def-alt1 #1
->  [    8.857236] Hardware name: IBM pSeries (emulated by qemu) POWER8 (raw) 
-> 0x4d0200 0xf000004 of:SLOF,git-3a259d hv:linux,kvm pSeries
->  [    8.857342] NIP:  c008000000040a4c LR: c000000000ed25d0 CTR: 
-> c008000000040a4c
->  [    8.857413] REGS: c000000009b6f6f0 TRAP: 0400   Tainted: G        W      
->      (6.6.37-un-def-alt1)
->  [    8.857510] MSR:  8000000010009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 28008286  
-> XER: 00000000
->  [    8.857588] CFAR: c000000000ed25cc IRQMASK: 0
->  [    8.857588] GPR00: c000000000ed25a8 c000000009b6f990 c000000001ac7f00 
-> c000000006130400
->  [    8.857588] GPR04: c008000000920048 0000000000000001 0000000000000000 
-> 0000000000000000
->  [    8.857588] GPR08: 0000000000000000 0000000000000000 0000000000000000 
-> 0000000000000000
->  [    8.857588] GPR12: c008000000040a4c c00000003fff7a00 0000000000000000 
-> 0000000000000000
->  [    8.857588] GPR16: 0000000000000000 0000000000000000 0000000000000000 
-> 0000000000000000
->  [    8.857588] GPR20: 7fffffffffffffff 0000000000000000 0000000000000001 
-> 0000000000000000
->  [    8.857588] GPR24: c000000006130400 c000000006510a00 c000000006510f00 
-> c0000000041a9000
->  [    8.857588] GPR28: 0000000000000001 c000000006130400 0000000000000000 
-> c008000000920000
->  [    8.858184] NIP [c008000000040a4c] bpf_prog_2fb4fda3a3499517+0x0/0x8c
->  [    8.858245] LR [c000000000ed25d0] sk_filter_trim_cap+0xc0/0x370
->  [    8.858308] Call Trace:
->  [    8.858333] [c000000009b6f990] [c000000000ed2574] 
-> sk_filter_trim_cap+0x64/0x370 (unreliable)
->  [    8.858421] [c000000009b6fa10] [c000000001068b64] 
-> unix_dgram_sendmsg+0x214/0xb10
->  [    8.858511] [c000000009b6fad0] [c000000000e4c59c] 
-> sock_write_iter+0x19c/0x1e0
->  [    8.858586] [c000000009b6fb80] [c0000000005b1b58] vfs_write+0x258/0x4e0
->  [    8.858648] [c000000009b6fc40] [c0000000005b21d4] ksys_write+0x114/0x170
->  [    8.858711] [c000000009b6fc90] [c000000000030230] 
-> system_call_exception+0x190/0x390
->  [    8.858785] [c000000009b6fe50] [c00000000000c7d4] 
-> system_call_common+0xf4/0x258
->  [    8.858859] --- interrupt: c00 at 0x7fffb082b884
->  [    8.858908] NIP:  00007fffb082b884 LR: 000000012a02ab70 CTR: 
-> 0000000000000000
->  [    8.858979] REGS: c000000009b6fe80 TRAP: 0c00   Tainted: G        W      
->      (6.6.37-un-def-alt1)
->  [    8.859060] MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  
-> CR: 28002281  XER: 00000000
->  [    8.859153] IRQMASK: 0
->  [    8.859153] GPR00: 0000000000000004 00007fffd85341f0 00007fffb0936d00 
-> 0000000000000005
->  [    8.859153] GPR04: 00007fffb068fffa 0000000000000006 0000000000000001 
-> 0000000000000005
->  [    8.859153] GPR08: 00007fffb068fffa 0000000000000000 0000000000000000 
-> 0000000000000000
->  [    8.859153] GPR12: 0000000000000000 00007fffb09ea540 0000000000000000 
-> 0000000000000000
->  [    8.859153] GPR16: 0000000000000000 0000000000000000 0000000000000000 
-> 0000000000000000
->  [    8.859153] GPR20: 00007fffd85344b0 0000000000000000 0000000000000001 
-> 0000000000000000
->  [    8.859153] GPR24: 000000012a053698 000000000000008b 0000000000000000 
-> 0000000000000001
->  [    8.859153] GPR28: 00007fffb068fffa 0000000000000005 0000000000000006 
-> 000000012a053698
->  [    8.859738] NIP [00007fffb082b884] 0x7fffb082b884
->  [    8.859786] LR [000000012a02ab70] 0x12a02ab70
->  [    8.859836] --- interrupt: c00
->  [    8.859872] Code: 7fe00008 7fe00008 7fe00008 7fe00008 7fe00008 7fe00008 
-> 7fe00008 7fe00008 7fe00008 7fe00008 7fe00008 7fe00008 <7fe00008> 7fe00008 
-> 7fe00008 7fe00008
->  [    8.860013] ---[ end trace 0000000000000000 ]---
->  [    8.863088] pstore: backend (nvram) writing error (-1)
->  [    8.863141]
->  [    8.863166] note: bpf_prog01[689] exited with irqs disabled
-> 
-> And so on. Temporary build/test log is at
-> https://git.altlinux.org/tasks/352218/build/100/ppc64le/log
-> 
-> Other stable/longterm branches or other architectures does not exhibit this.
-> 
-> Thanks,
+commit 93aef9eda1cea9e84ab2453fcceb8addad0e46f1 upstream.
 
-Hi all - this just took down a production server for me, on POWER9 bare 
-metal.  Not running tests, just booting normally, before services even came 
-up.  Had to perform manual restoration, reverting to 6.6.36 worked.  Also 
-running 64k kernel, unsure if it's better on 4k kernel.
+If the bitmap block that manages the inode allocation status is corrupted,
+nilfs_ifile_create_inode() may allocate a new inode from the reserved
+inode area where it should not be allocated.
 
-In case it's helpful, here's the log from my boot:  
-https://dpaste.org/Gyxxg/raw
+Previous fix commit d325dc6eb763 ("nilfs2: fix use-after-free bug of
+struct nilfs_root"), fixed the problem that reserved inodes with inode
+numbers less than NILFS_USER_INO (=11) were incorrectly reallocated due to
+bitmap corruption, but since the start number of non-reserved inodes is
+read from the super block and may change, in which case inode allocation
+may occur from the extended reserved inode area.
+
+If that happens, access to that inode will cause an IO error, causing the
+file system to degrade to an error state.
+
+Fix this potential issue by adding a wraparound option to the common
+metadata object allocation routine and by modifying
+nilfs_ifile_create_inode() to disable the option so that it only allocates
+inodes with inode numbers greater than or equal to the inode number read
+in "nilfs->ns_first_ino", regardless of the bitmap status of reserved
+inodes.
+
+Link: https://lkml.kernel.org/r/20240623051135.4180-4-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+Please apply this patch to the stable trees indicated by the subject
+prefix instead of the patch that failed.
+
+This patch is tailored to avoid conflicts with a series involving
+extensive conversions and can be applied from v4.8 to v6.8.
+
+Also, all the builds and tests I did on each stable tree passed.
+
+Thanks,
+Ryusuke Konishi
+
+ fs/nilfs2/alloc.c | 18 ++++++++++++++----
+ fs/nilfs2/alloc.h |  4 ++--
+ fs/nilfs2/dat.c   |  2 +-
+ fs/nilfs2/ifile.c |  7 ++-----
+ 4 files changed, 19 insertions(+), 12 deletions(-)
+
+diff --git a/fs/nilfs2/alloc.c b/fs/nilfs2/alloc.c
+index 7342de296ec3..25881bdd212b 100644
+--- a/fs/nilfs2/alloc.c
++++ b/fs/nilfs2/alloc.c
+@@ -377,11 +377,12 @@ void *nilfs_palloc_block_get_entry(const struct inode *inode, __u64 nr,
+  * @target: offset number of an entry in the group (start point)
+  * @bsize: size in bits
+  * @lock: spin lock protecting @bitmap
++ * @wrap: whether to wrap around
+  */
+ static int nilfs_palloc_find_available_slot(unsigned char *bitmap,
+ 					    unsigned long target,
+ 					    unsigned int bsize,
+-					    spinlock_t *lock)
++					    spinlock_t *lock, bool wrap)
+ {
+ 	int pos, end = bsize;
+ 
+@@ -397,6 +398,8 @@ static int nilfs_palloc_find_available_slot(unsigned char *bitmap,
+ 
+ 		end = target;
+ 	}
++	if (!wrap)
++		return -ENOSPC;
+ 
+ 	/* wrap around */
+ 	for (pos = 0; pos < end; pos++) {
+@@ -495,9 +498,10 @@ int nilfs_palloc_count_max_entries(struct inode *inode, u64 nused, u64 *nmaxp)
+  * nilfs_palloc_prepare_alloc_entry - prepare to allocate a persistent object
+  * @inode: inode of metadata file using this allocator
+  * @req: nilfs_palloc_req structure exchanged for the allocation
++ * @wrap: whether to wrap around
+  */
+ int nilfs_palloc_prepare_alloc_entry(struct inode *inode,
+-				     struct nilfs_palloc_req *req)
++				     struct nilfs_palloc_req *req, bool wrap)
+ {
+ 	struct buffer_head *desc_bh, *bitmap_bh;
+ 	struct nilfs_palloc_group_desc *desc;
+@@ -516,7 +520,7 @@ int nilfs_palloc_prepare_alloc_entry(struct inode *inode,
+ 	entries_per_group = nilfs_palloc_entries_per_group(inode);
+ 
+ 	for (i = 0; i < ngroups; i += n) {
+-		if (group >= ngroups) {
++		if (group >= ngroups && wrap) {
+ 			/* wrap around */
+ 			group = 0;
+ 			maxgroup = nilfs_palloc_group(inode, req->pr_entry_nr,
+@@ -541,7 +545,13 @@ int nilfs_palloc_prepare_alloc_entry(struct inode *inode,
+ 				bitmap = bitmap_kaddr + bh_offset(bitmap_bh);
+ 				pos = nilfs_palloc_find_available_slot(
+ 					bitmap, group_offset,
+-					entries_per_group, lock);
++					entries_per_group, lock, wrap);
++				/*
++				 * Since the search for a free slot in the
++				 * second and subsequent bitmap blocks always
++				 * starts from the beginning, the wrap flag
++				 * only has an effect on the first search.
++				 */
+ 				if (pos >= 0) {
+ 					/* found a free entry */
+ 					nilfs_palloc_group_desc_add_entries(
+diff --git a/fs/nilfs2/alloc.h b/fs/nilfs2/alloc.h
+index b667e869ac07..d825a9faca6d 100644
+--- a/fs/nilfs2/alloc.h
++++ b/fs/nilfs2/alloc.h
+@@ -50,8 +50,8 @@ struct nilfs_palloc_req {
+ 	struct buffer_head *pr_entry_bh;
+ };
+ 
+-int nilfs_palloc_prepare_alloc_entry(struct inode *,
+-				     struct nilfs_palloc_req *);
++int nilfs_palloc_prepare_alloc_entry(struct inode *inode,
++				     struct nilfs_palloc_req *req, bool wrap);
+ void nilfs_palloc_commit_alloc_entry(struct inode *,
+ 				     struct nilfs_palloc_req *);
+ void nilfs_palloc_abort_alloc_entry(struct inode *, struct nilfs_palloc_req *);
+diff --git a/fs/nilfs2/dat.c b/fs/nilfs2/dat.c
+index 9cf6ba58f585..351010828d88 100644
+--- a/fs/nilfs2/dat.c
++++ b/fs/nilfs2/dat.c
+@@ -75,7 +75,7 @@ int nilfs_dat_prepare_alloc(struct inode *dat, struct nilfs_palloc_req *req)
+ {
+ 	int ret;
+ 
+-	ret = nilfs_palloc_prepare_alloc_entry(dat, req);
++	ret = nilfs_palloc_prepare_alloc_entry(dat, req, true);
+ 	if (ret < 0)
+ 		return ret;
+ 
+diff --git a/fs/nilfs2/ifile.c b/fs/nilfs2/ifile.c
+index a8a4bc8490b4..ac10a62a41e9 100644
+--- a/fs/nilfs2/ifile.c
++++ b/fs/nilfs2/ifile.c
+@@ -55,13 +55,10 @@ int nilfs_ifile_create_inode(struct inode *ifile, ino_t *out_ino,
+ 	struct nilfs_palloc_req req;
+ 	int ret;
+ 
+-	req.pr_entry_nr = 0;  /*
+-			       * 0 says find free inode from beginning
+-			       * of a group. dull code!!
+-			       */
++	req.pr_entry_nr = NILFS_FIRST_INO(ifile->i_sb);
+ 	req.pr_entry_bh = NULL;
+ 
+-	ret = nilfs_palloc_prepare_alloc_entry(ifile, &req);
++	ret = nilfs_palloc_prepare_alloc_entry(ifile, &req, false);
+ 	if (!ret) {
+ 		ret = nilfs_palloc_get_entry_block(ifile, req.pr_entry_nr, 1,
+ 						   &req.pr_entry_bh);
+-- 
+2.43.5
+
 
