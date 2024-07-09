@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-58583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E6F292B7BA
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC91392B6CE
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A9722855DC
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98A50282E3C
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80FF4157485;
-	Tue,  9 Jul 2024 11:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB77C15886B;
+	Tue,  9 Jul 2024 11:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kt5sj6LV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAIrCq4f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF15146D53;
-	Tue,  9 Jul 2024 11:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7E4153812;
+	Tue,  9 Jul 2024 11:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524380; cv=none; b=SfZSsnIIrsb+CZGtRHeLoBbnaEchBjZYWAdDosu5Wr0U4gATFqGr7lv4zNP1FSS1nqZ0faHDsK1lunKh6t1mj0avboijObLr1e8JvfySuHS4ozDptYlGeTESrENpY1/pO3IqRoDgLATWKPR24V0pqOQrZ89fry7KpOUADJtrMGI=
+	t=1720523813; cv=none; b=RI2c0vpPkW83u2fSj2S5hLa4TrBtxodqg9GmOUbCVagfhumY2Z0OVhP2JWEmcGoZ120MMTLwgjbJbYFCEYI6CLO/opluTIvw7oR+Ydswn2lEdwWSY4BpiW++Kopczo1QIeC+YHHtGBYiiqVEB2rZ4JCUtnKbyxihl5c0wWbXv4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524380; c=relaxed/simple;
-	bh=pTJdx73KkUwXoroqcfk5ovFZYz5rtIn4ooCE5lmk+c0=;
+	s=arc-20240116; t=1720523813; c=relaxed/simple;
+	bh=iWb9zfHmY5qQH9s+m/AdsKnxivCUUpZo8m+/DM3j1M4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J9dKubLAGxcxEGQQ/SNZ3pCOQ2mkdTqQW5U1+PD9LZiSVGnv8+GmI9Q3MVrAx9YWo6KznQQ/AzTIbkR5DBMY4Zo1/DE7rEk60psfBZD0ZZ9FBTrItIS5X+NJfBvhzfPz86WkcJaJK2YZoANO7n5MlQzE/ZahHxFP4bn7wj0srfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kt5sj6LV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720C6C32786;
-	Tue,  9 Jul 2024 11:26:19 +0000 (UTC)
+	 MIME-Version; b=ihXiNc+T1EH5t0T/6ZgVzt46DTE+91OXL9uyfMRKYhCVzvNz4jNAwiKwc+QQDUzEyflcpoF5uHqliYYXPyL7R5fnRpwWTncBpovf6xqKy7jUiuP8Mx/NjyMogxStuyt5OJsGdHRIkVXrGPxSDUVddiwBciN6y9yY+k55kVA8xBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAIrCq4f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2CDCC3277B;
+	Tue,  9 Jul 2024 11:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524379;
-	bh=pTJdx73KkUwXoroqcfk5ovFZYz5rtIn4ooCE5lmk+c0=;
+	s=korg; t=1720523813;
+	bh=iWb9zfHmY5qQH9s+m/AdsKnxivCUUpZo8m+/DM3j1M4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kt5sj6LVh+H36zOZ0AXVAmkOqcNk0EVuOWU5hV9hutCp2/P6qWWfLnSFUeMa+q7U6
-	 YEuBm5KSfb2J/8R5NSm8WlpGjq09j14GgituRtsT4BOJnZxhNMFBoU2cS76zYxl8uU
-	 jVvi+aspVqZGThlHO9Y7EvBTP7EBUm+eLWxBqJN4=
+	b=AAIrCq4fJhV+wQBssy7Vp9g5I15Lmml0kPIPWllTWB5rQtfG0bN2NER4hbNTAHPZD
+	 0BAivAUDdBgUtigVnkOzsR+fon+GCkXmfXFcze2VicAALuL68OYAEjms4wGnYfv0Sj
+	 WFYOJeBwjmxbAlWKGZZfpeZLh+/wpU4PCcGfMFtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Neftin <sasha.neftin@intel.com>,
-	Naama Meir <naamax.meir@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.9 132/197] Revert "igc: fix a log entry using uninitialized netdev"
-Date: Tue,  9 Jul 2024 13:09:46 +0200
-Message-ID: <20240709110714.058686416@linuxfoundation.org>
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.6 087/139] cpu: Fix broken cmdline "nosmp" and "maxcpus=0"
+Date: Tue,  9 Jul 2024 13:09:47 +0200
+Message-ID: <20240709110701.537530900@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sasha Neftin <sasha.neftin@intel.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 8eef5c3cea65f248c99cd9dcb3f84c6509b78162 upstream.
+commit 6ef8eb5125722c241fd60d7b0c872d5c2e5dd4ca upstream.
 
-This reverts commit 86167183a17e03ec77198897975e9fdfbd53cb0b.
+After the rework of "Parallel CPU bringup", the cmdline "nosmp" and
+"maxcpus=0" parameters are not working anymore. These parameters set
+setup_max_cpus to zero and that's handed to bringup_nonboot_cpus().
 
-igc_ptp_init() needs to be called before igc_reset(), otherwise kernel
-crash could be observed. Following the corresponding discussion [1] and
-[2] revert this commit.
+The code there does a decrement before checking for zero, which brings it
+into the negative space and brings up all CPUs.
 
-Link: https://lore.kernel.org/all/8fb634f8-7330-4cf4-a8ce-485af9c0a61a@intel.com/ [1]
-Link: https://lore.kernel.org/all/87o78rmkhu.fsf@intel.com/ [2]
-Fixes: 86167183a17e ("igc: fix a log entry using uninitialized netdev")
-Signed-off-by: Sasha Neftin <sasha.neftin@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20240611162456.961631-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Add a zero check at the beginning of the function to prevent this.
+
+[ tglx: Massaged change log ]
+
+Fixes: 18415f33e2ac4ab382 ("cpu/hotplug: Allow "parallel" bringup up to CPUHP_BP_KICK_AP_STATE")
+Fixes: 06c6796e0304234da6 ("cpu/hotplug: Fix off by one in cpuhp_bringup_mask()")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240618081336.3996825-1-chenhuacai@loongson.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ kernel/cpu.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6932,6 +6932,8 @@ static int igc_probe(struct pci_dev *pde
- 	device_set_wakeup_enable(&adapter->pdev->dev,
- 				 adapter->flags & IGC_FLAG_WOL_SUPPORTED);
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -1907,6 +1907,9 @@ static inline bool cpuhp_bringup_cpus_pa
  
-+	igc_ptp_init(adapter);
+ void __init bringup_nonboot_cpus(unsigned int setup_max_cpus)
+ {
++	if (!setup_max_cpus)
++		return;
 +
- 	igc_tsn_clear_schedule(adapter);
- 
- 	/* reset the hardware with the new settings */
-@@ -6953,9 +6955,6 @@ static int igc_probe(struct pci_dev *pde
- 	/* Check if Media Autosense is enabled */
- 	adapter->ei = *ei;
- 
--	/* do hw tstamp init after resetting */
--	igc_ptp_init(adapter);
--
- 	/* print pcie link status and MAC address */
- 	pcie_print_link_status(pdev);
- 	netdev_info(netdev, "MAC: %pM\n", netdev->dev_addr);
+ 	/* Try parallel bringup optimization if enabled */
+ 	if (cpuhp_bringup_cpus_parallel(setup_max_cpus))
+ 		return;
 
 
 
