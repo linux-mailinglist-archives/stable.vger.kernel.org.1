@@ -1,216 +1,175 @@
-Return-Path: <stable+bounces-58720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4F1692B853
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:33:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE4B92B698
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:15:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFFCAB236DA
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:33:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F1C21F23A70
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634F7156C61;
-	Tue,  9 Jul 2024 11:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8EE9158211;
+	Tue,  9 Jul 2024 11:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9bNZVe/"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KjNeS0jE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220AF55E4C;
-	Tue,  9 Jul 2024 11:33:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839561586C3
+	for <stable@vger.kernel.org>; Tue,  9 Jul 2024 11:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524789; cv=none; b=CDTmfZeneLkPCE6u4M/GmDT5F+AZEtcXivVJSKt2BbiQP7ZCC0hUI8fEZYULEXp4/i5IbjW6LjHc3TctMWNP/0iTN1KXb7Ssq8FqQR3+ZeIW0tCetmGt4I9be/iD+7x7OW5UUl0py1lh7mN+nnsCX/ax67h72J6hfxWOJ58NAqs=
+	t=1720523712; cv=none; b=c2DNiSIzoEzBZeNlw2xoYxEqwVp4F6AZUtaf6FslFFWDtcdSvk/HiVuvJiueHwYt4IChh6ZkZ3q0dZbvZZhU5b6fZK82ZpsYl/pW6tL3jEilquypyGMjcX6lR+X1YfRSaEoO5qu64DGUJDmbin78y+vnD1IfgeXdORiWxl60ZWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524789; c=relaxed/simple;
-	bh=68V84yVTfmii6TLJY8XDU847/LX+x7W/+TgaCybPqOE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bi90dkU0ZAUa87oh6/3ibAm1EUVm8V1UcIwsZRYvyS8NI7dNgzLR+n/bqj1aKKzRFvivqs9EKVZz7s405vbORHcFGDGQnltDiFEK3b6Ene1iRD33uUa/ENr65X/wsXFioWXysXdRfTnhMMrkXACbO1zjXPGJktk55xJ1DjXSLQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9bNZVe/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B562C3277B;
-	Tue,  9 Jul 2024 11:33:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524789;
-	bh=68V84yVTfmii6TLJY8XDU847/LX+x7W/+TgaCybPqOE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o9bNZVe/W+lRR0/wOCPBIs7LbQaImLlMhyKWRkSx1R7DfJkPOJPcV2tNGWAEg2kWU
-	 3ffKCoC+Kgg1q1bADl9T+w2zSgVS83C7pvTkJpN7f+vpSvjLJ9f7OWWkLhl7O7Kien
-	 yT5VgNl7W31JZ7D+3xnv9WhhugzvXPXrkXDAc85I=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Hillf Danton <hdanton@sina.com>,
-	Jan Kara <jack@suse.cz>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 102/102] nilfs2: fix incorrect inode allocation from reserved inodes
-Date: Tue,  9 Jul 2024 13:11:05 +0200
-Message-ID: <20240709110655.331313844@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1720523712; c=relaxed/simple;
+	bh=yQ9NM+l1zVqq0j7T77l/b9HGHEwF0xiqRl64ejpWhBk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lH4Lk+zEZQk/27gqOGtw9KYTPb9BL+WkYpBN1oKfDYeNX9CyPEhtxMhxVK34o8PxDmUKoqYpEpTxOqZEZi9uKrP++cyDQYwXesOqeIiwbxSHOR9ENBuyZ9GRYn3E+7/rqNob8ovfPjh3YNzz3FtRxtCClCd2j5gILf4t7o2hG5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KjNeS0jE; arc=none smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-6512866fa87so43490307b3.2
+        for <stable@vger.kernel.org>; Tue, 09 Jul 2024 04:15:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1720523708; x=1721128508; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1xs0HKvjIXU9N0dl5ke31NoTuxcyqc28H/Jk8DSGVHw=;
+        b=KjNeS0jEhFg1AgPLy5il0ZcjuzYFPO+xHYlWzssXh9rWQhTbaswDUs8bEeLd5WVxFb
+         JxKyPED0Z1HRSWl4+MxU619nOteTstGGwO8H8VZHoeilUydHU6DAktmaiVnhiR4b68YN
+         WVQ5RFONPmMOkIeBCBPOi91M28eJVBai/4OvVbW9e4zgwE2PAD1y+axc0YFd1vyIJeg5
+         PcgcHgM8UNnQ/Q3cTKgObReaz+TR3iVDNcvLXMATTNwOu/Pu1GzkVJFWZOz32m99G0zq
+         E7RMhkmy8ekaFJeRgU2tI1pEeOPh7LxpByUnH78r/psPoGlN1a8oLB7AZ18HVmEhnnsY
+         3jag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720523708; x=1721128508;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1xs0HKvjIXU9N0dl5ke31NoTuxcyqc28H/Jk8DSGVHw=;
+        b=mTML5qjplhXeHyTS7PdW8v6Y5OEraIDSJTHyd+RMqTPb2ksp9m3gTr9HBGZdJdLj6w
+         I6tmntseWrCOdllcaaog/VJyZOm5f/yswQ/eW+WO3pXCgy7Kf6OnXbLE5VXdBtwvJ820
+         8uq1dPbSOxw0WaWOEnDpYndaSgf7+r2EZRvvBRIMoDuKHmlJVUgPdHv3M0gx9kAL7dij
+         vgndIGF93lk1S8t6G60XZy7x7zRLaQ8jT/C0HhMWqB+dEs9B3YerJvyuTCbYdjl3iD4X
+         y0wDKD2iRc1EDgoR6X13CMTO0NNVmXjA6ZWMF6I+mER79dO9wMlI8qC+zku3Oy5EAq+L
+         6RsA==
+X-Forwarded-Encrypted: i=1; AJvYcCX4pn/QX7RY6iHVVAD2aT/LWBGB4ruNtGAe8vU8IOTGJ60aQX4ThN0r4pf1vJIa2ro8yOdHKUgQjITlsGwRvI4Eax+bcP1Q
+X-Gm-Message-State: AOJu0YxmzlTUWD/8EC2VhKksC2PBvavYOWWg9L2KtC11KYl+2nGCTkgX
+	5F/hn/Mrh64DeOHZo+/YuWjAFkxjJK0p4lpz1BMuHr0ZUJBJFlpeDafsQgu3UzoUJCxh6Yvut1C
+	x0FVCW+BMd+5YEQbPuBF91M7lzPFkmmK3kk+j1w==
+X-Google-Smtp-Source: AGHT+IEe3nga3KVXtHrrwMw0LhHVXjdHyDPZ5uKUnuXkRHUYNX06lcrnyme+JwGrKLNVy4VLF2PrLdXqWcdfOSeg4IQ=
+X-Received: by 2002:a81:5b42:0:b0:64a:6eda:fc60 with SMTP id
+ 00721157ae682-658ee69ac4cmr26076237b3.4.1720523708479; Tue, 09 Jul 2024
+ 04:15:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240625-avoid_mxc_retention-v2-1-af9c2f549a5f@quicinc.com>
+In-Reply-To: <20240625-avoid_mxc_retention-v2-1-af9c2f549a5f@quicinc.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 9 Jul 2024 13:14:32 +0200
+Message-ID: <CAPDyKFpid-LEqqSXBHYRc6CKdHpmT+FnS3xrCTt7Z0RhcCSfCg@mail.gmail.com>
+Subject: Re: [PATCH v2] pmdomain: qcom: rpmhpd: Skip retention level for Power Domains
+To: Taniya Das <quic_tdas@quicinc.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, quic_jkona@quicinc.com, 
+	quic_imrashai@quicinc.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+On Tue, 25 Jun 2024 at 06:33, Taniya Das <quic_tdas@quicinc.com> wrote:
+>
+> In the cases where the power domain connected to logics is allowed to
+> transition from a level(L)-->power collapse(0)-->retention(1) or
+> vice versa retention(1)-->power collapse(0)-->level(L)  will cause the
+> logic to lose the configurations. The ARC does not support retention
+> to collapse transition on MxC rails.
+>
+> The targets from SM8450 onwards the PLL logics of clock controllers are
+> connected to MxC rails and the recommended configurations are carried
+> out during the clock controller probes. The MxC transition as mentioned
+> above should be skipped to ensure the PLL settings are intact across
+> clock controller power on & off.
+>
+> On older targets that do not split MX into MxA and MxC does not collapse
+> the logic and it is parked always at RETENTION, thus this issue is never
+> observed on those targets.
+>
+> Cc: stable@vger.kernel.org # v5.17
+> Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+> Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
 
-------------------
+Applied for fixes, thanks!
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-
-commit 93aef9eda1cea9e84ab2453fcceb8addad0e46f1 upstream.
-
-If the bitmap block that manages the inode allocation status is corrupted,
-nilfs_ifile_create_inode() may allocate a new inode from the reserved
-inode area where it should not be allocated.
-
-Previous fix commit d325dc6eb763 ("nilfs2: fix use-after-free bug of
-struct nilfs_root"), fixed the problem that reserved inodes with inode
-numbers less than NILFS_USER_INO (=11) were incorrectly reallocated due to
-bitmap corruption, but since the start number of non-reserved inodes is
-read from the super block and may change, in which case inode allocation
-may occur from the extended reserved inode area.
-
-If that happens, access to that inode will cause an IO error, causing the
-file system to degrade to an error state.
-
-Fix this potential issue by adding a wraparound option to the common
-metadata object allocation routine and by modifying
-nilfs_ifile_create_inode() to disable the option so that it only allocates
-inodes with inode numbers greater than or equal to the inode number read
-in "nilfs->ns_first_ino", regardless of the bitmap status of reserved
-inodes.
-
-Link: https://lkml.kernel.org/r/20240623051135.4180-4-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/nilfs2/alloc.c |   18 ++++++++++++++----
- fs/nilfs2/alloc.h |    4 ++--
- fs/nilfs2/dat.c   |    2 +-
- fs/nilfs2/ifile.c |    7 ++-----
- 4 files changed, 19 insertions(+), 12 deletions(-)
-
---- a/fs/nilfs2/alloc.c
-+++ b/fs/nilfs2/alloc.c
-@@ -377,11 +377,12 @@ void *nilfs_palloc_block_get_entry(const
-  * @target: offset number of an entry in the group (start point)
-  * @bsize: size in bits
-  * @lock: spin lock protecting @bitmap
-+ * @wrap: whether to wrap around
-  */
- static int nilfs_palloc_find_available_slot(unsigned char *bitmap,
- 					    unsigned long target,
- 					    unsigned int bsize,
--					    spinlock_t *lock)
-+					    spinlock_t *lock, bool wrap)
- {
- 	int pos, end = bsize;
- 
-@@ -397,6 +398,8 @@ static int nilfs_palloc_find_available_s
- 
- 		end = target;
- 	}
-+	if (!wrap)
-+		return -ENOSPC;
- 
- 	/* wrap around */
- 	for (pos = 0; pos < end; pos++) {
-@@ -495,9 +498,10 @@ int nilfs_palloc_count_max_entries(struc
-  * nilfs_palloc_prepare_alloc_entry - prepare to allocate a persistent object
-  * @inode: inode of metadata file using this allocator
-  * @req: nilfs_palloc_req structure exchanged for the allocation
-+ * @wrap: whether to wrap around
-  */
- int nilfs_palloc_prepare_alloc_entry(struct inode *inode,
--				     struct nilfs_palloc_req *req)
-+				     struct nilfs_palloc_req *req, bool wrap)
- {
- 	struct buffer_head *desc_bh, *bitmap_bh;
- 	struct nilfs_palloc_group_desc *desc;
-@@ -516,7 +520,7 @@ int nilfs_palloc_prepare_alloc_entry(str
- 	entries_per_group = nilfs_palloc_entries_per_group(inode);
- 
- 	for (i = 0; i < ngroups; i += n) {
--		if (group >= ngroups) {
-+		if (group >= ngroups && wrap) {
- 			/* wrap around */
- 			group = 0;
- 			maxgroup = nilfs_palloc_group(inode, req->pr_entry_nr,
-@@ -541,7 +545,13 @@ int nilfs_palloc_prepare_alloc_entry(str
- 				bitmap = bitmap_kaddr + bh_offset(bitmap_bh);
- 				pos = nilfs_palloc_find_available_slot(
- 					bitmap, group_offset,
--					entries_per_group, lock);
-+					entries_per_group, lock, wrap);
-+				/*
-+				 * Since the search for a free slot in the
-+				 * second and subsequent bitmap blocks always
-+				 * starts from the beginning, the wrap flag
-+				 * only has an effect on the first search.
-+				 */
- 				if (pos >= 0) {
- 					/* found a free entry */
- 					nilfs_palloc_group_desc_add_entries(
---- a/fs/nilfs2/alloc.h
-+++ b/fs/nilfs2/alloc.h
-@@ -50,8 +50,8 @@ struct nilfs_palloc_req {
- 	struct buffer_head *pr_entry_bh;
- };
- 
--int nilfs_palloc_prepare_alloc_entry(struct inode *,
--				     struct nilfs_palloc_req *);
-+int nilfs_palloc_prepare_alloc_entry(struct inode *inode,
-+				     struct nilfs_palloc_req *req, bool wrap);
- void nilfs_palloc_commit_alloc_entry(struct inode *,
- 				     struct nilfs_palloc_req *);
- void nilfs_palloc_abort_alloc_entry(struct inode *, struct nilfs_palloc_req *);
---- a/fs/nilfs2/dat.c
-+++ b/fs/nilfs2/dat.c
-@@ -75,7 +75,7 @@ int nilfs_dat_prepare_alloc(struct inode
- {
- 	int ret;
- 
--	ret = nilfs_palloc_prepare_alloc_entry(dat, req);
-+	ret = nilfs_palloc_prepare_alloc_entry(dat, req, true);
- 	if (ret < 0)
- 		return ret;
- 
---- a/fs/nilfs2/ifile.c
-+++ b/fs/nilfs2/ifile.c
-@@ -55,13 +55,10 @@ int nilfs_ifile_create_inode(struct inod
- 	struct nilfs_palloc_req req;
- 	int ret;
- 
--	req.pr_entry_nr = 0;  /*
--			       * 0 says find free inode from beginning
--			       * of a group. dull code!!
--			       */
-+	req.pr_entry_nr = NILFS_FIRST_INO(ifile->i_sb);
- 	req.pr_entry_bh = NULL;
- 
--	ret = nilfs_palloc_prepare_alloc_entry(ifile, &req);
-+	ret = nilfs_palloc_prepare_alloc_entry(ifile, &req, false);
- 	if (!ret) {
- 		ret = nilfs_palloc_get_entry_block(ifile, req.pr_entry_nr, 1,
- 						   &req.pr_entry_bh);
+Kind regards
+Uffe
 
 
+> ---
+> [Changes in v2]: Incorporate the comments in the commit text.
+> ---
+>  drivers/pmdomain/qcom/rpmhpd.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/drivers/pmdomain/qcom/rpmhpd.c b/drivers/pmdomain/qcom/rpmhpd.c
+> index de9121ef4216..d2cb4271a1ca 100644
+> --- a/drivers/pmdomain/qcom/rpmhpd.c
+> +++ b/drivers/pmdomain/qcom/rpmhpd.c
+> @@ -40,6 +40,7 @@
+>   * @addr:              Resource address as looped up using resource name from
+>   *                     cmd-db
+>   * @state_synced:      Indicator that sync_state has been invoked for the rpmhpd resource
+> + * @skip_retention_level: Indicate that retention level should not be used for the power domain
+>   */
+>  struct rpmhpd {
+>         struct device   *dev;
+> @@ -56,6 +57,7 @@ struct rpmhpd {
+>         const char      *res_name;
+>         u32             addr;
+>         bool            state_synced;
+> +       bool            skip_retention_level;
+>  };
+>
+>  struct rpmhpd_desc {
+> @@ -173,6 +175,7 @@ static struct rpmhpd mxc = {
+>         .pd = { .name = "mxc", },
+>         .peer = &mxc_ao,
+>         .res_name = "mxc.lvl",
+> +       .skip_retention_level = true,
+>  };
+>
+>  static struct rpmhpd mxc_ao = {
+> @@ -180,6 +183,7 @@ static struct rpmhpd mxc_ao = {
+>         .active_only = true,
+>         .peer = &mxc,
+>         .res_name = "mxc.lvl",
+> +       .skip_retention_level = true,
+>  };
+>
+>  static struct rpmhpd nsp = {
+> @@ -819,6 +823,9 @@ static int rpmhpd_update_level_mapping(struct rpmhpd *rpmhpd)
+>                 return -EINVAL;
+>
+>         for (i = 0; i < rpmhpd->level_count; i++) {
+> +               if (rpmhpd->skip_retention_level && buf[i] == RPMH_REGULATOR_LEVEL_RETENTION)
+> +                       continue;
+> +
+>                 rpmhpd->level[i] = buf[i];
+>
+>                 /* Remember the first corner with non-zero level */
+>
+> ---
+> base-commit: 62c97045b8f720c2eac807a5f38e26c9ed512371
+> change-id: 20240625-avoid_mxc_retention-b095a761d981
+>
+> Best regards,
+> --
+> Taniya Das <quic_tdas@quicinc.com>
+>
 
