@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-58626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C9B92B7E7
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:28:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDAB492B84A
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:32:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EEC91C2355B
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:28:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 996DD1F21C22
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6EE715749B;
-	Tue,  9 Jul 2024 11:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4042B152787;
+	Tue,  9 Jul 2024 11:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNLDzSt4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUlGbnLr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875FF27713;
-	Tue,  9 Jul 2024 11:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41E855E4C;
+	Tue,  9 Jul 2024 11:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524512; cv=none; b=O91PCJmDP6NR25zsv5NF8nbZU8xweYNu12QiBB6+9iu54O5nEgClCVeDm9vKWn4h34HAMXzy4xUKv4hTMGJrfB0V3ovoGicyU5rIQRDaJQ9NRyGHVDmZGht/gixOZdCyhjqbmg/WKs7PbQxBCBUNKRlcqDZMOTCw+8qmVyNz0M0=
+	t=1720524765; cv=none; b=l3//OolKOpDcPKlVv2htoyIGcNxwhb+xSU1dwiXEZbtcVPOmEnY3/qSdtJdlFo6AqJNYXtZwAUPlHu6qqok3ZwdRZMPHKKVp/SfeSMKDT96fOOu6jZ8DuURg7j4vEQc+/X9Qhv7a774Zs29GXvDcAzpBeXCxZSKUxGprAzygoMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524512; c=relaxed/simple;
-	bh=Q8VSV50a9t9lA6fUoBerVxBxPt8YydBRA6aNkvI7a7k=;
+	s=arc-20240116; t=1720524765; c=relaxed/simple;
+	bh=6ycvlKFKbO84CmJknbiuVbKTvtF0x4ISRsdRVI6P3Yk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ENL4baPLus9DlFrJJr1I3L0w4VnUH1KtMVIsIwF8blQ4P2WrNTOQD1H1op24LGNhZA6mpHyOwEJv0BV4as2O6kUwTXvA3u3IFoc/1fZtTA+LT7TTDduehP3DyuPF8idoFDMLMcJ+iYw8BN5xHPYaxIdyA91W9QuvbXxj0BAqXpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNLDzSt4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C19C3277B;
-	Tue,  9 Jul 2024 11:28:31 +0000 (UTC)
+	 MIME-Version; b=d6jsMmrLaITXV3e8D9Wybi1saAFb/zIAcrAa+kDRrvDAx/mSC0V5zFidBKy3HZ7pbQv0uOEvx54maL5tbvSfnSOokXh3EYKuAitWA14Wd/QeuYrMXI9zplRZFdFTSsJgSecVH3dpjJWfdiif+ThqUr0NOP7/hpnzCQg6tEOC2bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUlGbnLr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78113C3277B;
+	Tue,  9 Jul 2024 11:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524512;
-	bh=Q8VSV50a9t9lA6fUoBerVxBxPt8YydBRA6aNkvI7a7k=;
+	s=korg; t=1720524764;
+	bh=6ycvlKFKbO84CmJknbiuVbKTvtF0x4ISRsdRVI6P3Yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DNLDzSt44cawPqRxnEEcew+xA1x5mIfWZHP/vFqUwcnxZeokNJYaP10Q9NjWbQXuE
-	 mqlbe63+vf27qWYZHppbLOOWg+rFtPUr3xdNLH24z2AWDjVw89jQxElg6obcQhVZRw
-	 oyvC+Of1IXlRLuMV3iV/8heYzn2WIP+Vmg8lr2MY=
+	b=AUlGbnLrBvmrVl/i5dBJsaRqYOYOgDF2HTHQliDgOWfqZZ4+GX1IPSRxLqOYFBTZF
+	 3vE2t5xX7ZaLmFHKDPsnZZ/6Xhwt2gi2H3ZRM1oY0mpCyazWoHP7zOxaoSEf379H8H
+	 fYI7XgTMEmogWnFbO9TzUTtZzDNAdqcTvrjm+ow0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Miles Chen <miles.chen@mediatek.com>,
+	Mingming Su <mingming.su@mediatek.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 195/197] hwmon: (dell-smm) Add Dell G15 5511 to fan control whitelist
+Subject: [PATCH 6.1 086/102] clk: mediatek: clk-mtk: Register MFG notifier in mtk_clk_simple_probe()
 Date: Tue,  9 Jul 2024 13:10:49 +0200
-Message-ID: <20240709110716.486077660@linuxfoundation.org>
+Message-ID: <20240709110654.719717523@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit fa0bc8f297b29126b5ae983406e9bc76d48a9a8e ]
+[ Upstream commit fd9fe654f41c0271dbfe55d975c6d1bfa88820fb ]
 
-A user reported that he needs to disable BIOS fan control on his
-Dell G15 5511 in order to be able to control the fans.
+In preparation for commonizing topckgen probe on various MediaTek SoCs
+clock drivers, add the ability to register the MFG MUX notifier in
+mtk_clk_simple_probe() by passing a custom notifier register function
+pointer, as this function will be slightly different across different
+SoCs.
 
-Closes: https://github.com/Wer-Wolf/i8kutils/issues/5
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Acked-by: Pali Rohár <pali@kernel.org>
-Link: https://lore.kernel.org/r/20240522210809.294488-1-W_Armin@gmx.de
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Tested-by: Miles Chen <miles.chen@mediatek.com>
+Link: https://lore.kernel.org/r/20230120092053.182923-19-angelogioacchino.delregno@collabora.com
+Tested-by: Mingming Su <mingming.su@mediatek.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Stable-dep-of: 878e845d8db0 ("clk: mediatek: mt8183: Only enable runtime PM on mt8183-mfgcfg")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/dell-smm-hwmon.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/clk/mediatek/clk-mtk.c | 8 ++++++++
+ drivers/clk/mediatek/clk-mtk.h | 3 +++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
-index efcf78673e747..b6a995c852ab4 100644
---- a/drivers/hwmon/dell-smm-hwmon.c
-+++ b/drivers/hwmon/dell-smm-hwmon.c
-@@ -1530,6 +1530,14 @@ static const struct dmi_system_id i8k_whitelist_fan_control[] __initconst = {
- 		},
- 		.driver_data = (void *)&i8k_fan_control_data[I8K_FAN_30A3_31A3],
- 	},
-+	{
-+		.ident = "Dell G15 5511",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Dell G15 5511"),
-+		},
-+		.driver_data = (void *)&i8k_fan_control_data[I8K_FAN_30A3_31A3],
-+	},
- 	{ }
+diff --git a/drivers/clk/mediatek/clk-mtk.c b/drivers/clk/mediatek/clk-mtk.c
+index fa2c1b1c7dee4..42ae5c0d56467 100644
+--- a/drivers/clk/mediatek/clk-mtk.c
++++ b/drivers/clk/mediatek/clk-mtk.c
+@@ -529,6 +529,14 @@ int mtk_clk_simple_probe(struct platform_device *pdev)
+ 			goto unregister_composites;
+ 	}
+ 
++	if (mcd->clk_notifier_func) {
++		struct clk *mfg_mux = clk_data->hws[mcd->mfg_clk_idx]->clk;
++
++		r = mcd->clk_notifier_func(&pdev->dev, mfg_mux);
++		if (r)
++			goto unregister_clks;
++	}
++
+ 	r = of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
+ 	if (r)
+ 		goto unregister_clks;
+diff --git a/drivers/clk/mediatek/clk-mtk.h b/drivers/clk/mediatek/clk-mtk.h
+index 880b3d6d80119..361de8078df01 100644
+--- a/drivers/clk/mediatek/clk-mtk.h
++++ b/drivers/clk/mediatek/clk-mtk.h
+@@ -207,6 +207,9 @@ struct mtk_clk_desc {
+ 	const struct mtk_clk_rst_desc *rst_desc;
+ 	spinlock_t *clk_lock;
+ 	bool shared_io;
++
++	int (*clk_notifier_func)(struct device *dev, struct clk *clk);
++	unsigned int mfg_clk_idx;
  };
  
+ int mtk_clk_simple_probe(struct platform_device *pdev);
 -- 
 2.43.0
 
