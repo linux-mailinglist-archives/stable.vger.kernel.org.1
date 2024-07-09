@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-58798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B8892C01B
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:31:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B104E92C01F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:31:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 369151C2424A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:31:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E13931C24604
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC201B47A7;
-	Tue,  9 Jul 2024 16:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453DB1B47CA;
+	Tue,  9 Jul 2024 16:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wy76ojut"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A2pHGJYL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC4F1B3F3D;
-	Tue,  9 Jul 2024 16:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CD319EEAB;
+	Tue,  9 Jul 2024 16:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542088; cv=none; b=Y0NjlzUGfSuid5pqeT8h3sEB/VMbb22PHguhdKpq7cvq9b6PIhN+kKdMxC3EHtpQvQpW33K+I7qrh7govjvgdgqOmaKohk1IBo7XTo0QYrdG0sp9oFLxLhONra3CcldNOMqngl/yIw1BEDh0M20Y5fvqOFI8g9CEqt2kQFe+bWE=
+	t=1720542093; cv=none; b=KvQkngfzUKdT8b8WEQeU+/mU/gAzLH5NIpUen3MxUMPDesmwPcHNLVqGPdBpQc0/s/4RJgsFYJ4waD4U8aDRDGTmqhZe3UQpqOyebw3UoeXgJ7dELl20q8LRRSMxc7P/XwIf4UCAN1gRWaqm7S5e04gvHMveDjb57kUCkO5kOzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542088; c=relaxed/simple;
-	bh=fiiDAM/QxgHfwMHerXyYhOSUr1/+hLhF8DPS43KJCIo=;
+	s=arc-20240116; t=1720542093; c=relaxed/simple;
+	bh=v9rvoRUQHVGnHKtl1x+EcTFtm143JcGpOnUaUvgNJ3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=merml04PNY0MjbBopKVd+RCL62Oc9x1ZU/FwAWSPoIGitvRPPuCdFB0WBq1VEuMCIk/n5rpZtO4rQUx4Buk6UN9iznr9mh1UitdDep5sPjWXxrM9WaFJCHmO5drp6s24r9Oz+UExVReAu9iP9+LTaxW1HKLqmBL+ocOPYQaQnUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wy76ojut; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5BCEC32786;
-	Tue,  9 Jul 2024 16:21:26 +0000 (UTC)
+	 MIME-Version; b=mLCNwwB12flMW37yuYzRcIqiZhFXqmrux71g0sPf9ZB5+OVkaPBA+wcaTMh4UhFNZEbMeGXo4o/6J1T30t3zjVwU8ML4ZaJgL6H15mxGnNDmoyx+8n9FYyCyma2JawxWTdXGs8fZi9U9Q1x/UsceAbnbx1l4YEsmdNJG0+rxo7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A2pHGJYL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E16C3C32782;
+	Tue,  9 Jul 2024 16:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542087;
-	bh=fiiDAM/QxgHfwMHerXyYhOSUr1/+hLhF8DPS43KJCIo=;
+	s=k20201202; t=1720542092;
+	bh=v9rvoRUQHVGnHKtl1x+EcTFtm143JcGpOnUaUvgNJ3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wy76ojutXTr52iqGHDTlgVtlmGTct5yto+Z7WLMSkP1rZbFsX54beUHG3VPHmNhVm
-	 xJ1s2ncOWAYEg0swEOzIqN/gTLhkacFHmitcMP+H/oXDnzbEGVsZ+ZpIHI7SrtgNyR
-	 0gfVgQhlwKiXIGGYpHAURZfpaKXH3YF4/0dlUgIN0VF+BTDVbIX0z/ky17oGUx6/Ky
-	 i8xaQm3IJMog/Y+lUerujHI5Y4zIpufcd3DczL3acUSpjIkY/GbEjPlYAFFbsEr9td
-	 0bFwAvYl04iowiNj7Y01iqtOTjgRcQdi6uy59Pzuk7FLpHbiEKXn5Toa9bOqSCSBA4
-	 shh4OBxUJxMWg==
+	b=A2pHGJYLDv0hvHYKeXO1bRbwpvkbTSIAKodUdZjW/CDRvK/hMPoYmtTuDUM43Im7T
+	 Hwbt8GUDk+5NpCDwedNhEhI/2gMU2xdd1Crpw8UDHuv4MC+iPB2aC4fnIBOUt0mRX1
+	 0tjM/NX6ArJYETAunJ9E/javG4cO+rDzEyEfuYfHOsTygezP6QdBQsFKi5W0ge0yje
+	 VPlWKT5FnTAAzCKkXNXFjMKigHdS1ttg6VxjKuRY5wvcISrVqUO0XIZBEphurFaXTo
+	 n0FvrrFTBhAm6jVD32IKrh8cbcYI4DpgMfeNECLzRUw173Pox0nm95Jft8csiS8FjN
+	 +Z0UCIw7wcnZg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Adhemerval Zanella <adhemerval.zanella@linaro.org>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>,
-	lars@metafoo.de,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 36/40] ALSA: dmaengine_pcm: terminate dmaengine before synchronize
-Date: Tue,  9 Jul 2024 12:19:16 -0400
-Message-ID: <20240709162007.30160-36-sashal@kernel.org>
+	James.Bottomley@HansenPartnership.com,
+	geert@linux-m68k.org,
+	peterz@infradead.org,
+	tglx@linutronix.de,
+	kees@kernel.org,
+	sohil.mehta@intel.com,
+	casey@schaufler-ca.com,
+	mszeredi@redhat.com,
+	linux-parisc@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 37/40] parisc: use generic sys_fanotify_mark implementation
+Date: Tue,  9 Jul 2024 12:19:17 -0400
+Message-ID: <20240709162007.30160-37-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162007.30160-1-sashal@kernel.org>
 References: <20240709162007.30160-1-sashal@kernel.org>
@@ -68,64 +74,97 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.8
 Content-Transfer-Encoding: 8bit
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 6a7db25aad8ce6512b366d2ce1d0e60bac00a09d ]
+[ Upstream commit 403f17a330732a666ae793f3b15bc75bb5540524 ]
 
-When dmaengine supports pause function, in suspend state,
-dmaengine_pause() is called instead of dmaengine_terminate_async(),
+The sys_fanotify_mark() syscall on parisc uses the reverse word order
+for the two halves of the 64-bit argument compared to all syscalls on
+all 32-bit architectures. As far as I can tell, the problem is that
+the function arguments on parisc are sorted backwards (26, 25, 24, 23,
+...) compared to everyone else, so the calling conventions of using an
+even/odd register pair in native word order result in the lower word
+coming first in function arguments, matching the expected behavior
+on little-endian architectures. The system call conventions however
+ended up matching what the other 32-bit architectures do.
 
-In end of playback stream, the runtime->state will go to
-SNDRV_PCM_STATE_DRAINING, if system suspend & resume happen
-at this time, application will not resume playback stream, the
-stream will be closed directly, the dmaengine_terminate_async()
-will not be called before the dmaengine_synchronize(), which
-violates the call sequence for dmaengine_synchronize().
+A glibc cleanup in 2020 changed the userspace behavior in a way that
+handles all architectures consistently, but this inadvertently broke
+parisc32 by changing to the same method as everyone else.
 
-This behavior also happens for capture streams, but there is no
-SNDRV_PCM_STATE_DRAINING state for capture. So use
-dmaengine_tx_status() to check the DMA status if the status is
-DMA_PAUSED, then call dmaengine_terminate_async() to terminate
-dmaengine before dmaengine_synchronize().
+The change made it into glibc-2.35 and subsequently into debian 12
+(bookworm), which is the latest stable release. This means we
+need to choose between reverting the glibc change or changing the
+kernel to match it again, but either hange will leave some systems
+broken.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/1718851218-27803-1-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Pick the option that is more likely to help current and future
+users and change the kernel to match current glibc. This also
+means the behavior is now consistent across architectures, but
+it breaks running new kernels with old glibc builds before 2.35.
+
+Link: https://sourceware.org/git/?p=glibc.git;a=commitdiff;h=d150181d73d9
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/commit/arch/parisc/kernel/sys_parisc.c?h=57b1dfbd5b4a39d
+Cc: Adhemerval Zanella <adhemerval.zanella@linaro.org>
+Tested-by: Helge Deller <deller@gmx.de>
+Acked-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+I found this through code inspection, please double-check to make
+sure I got the bug and the fix right.
+
+The alternative is to fix this by reverting glibc back to the
+unusual behavior.
+
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/pcm_dmaengine.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/parisc/Kconfig                     | 1 +
+ arch/parisc/kernel/sys_parisc32.c       | 9 ---------
+ arch/parisc/kernel/syscalls/syscall.tbl | 2 +-
+ 3 files changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/sound/core/pcm_dmaengine.c b/sound/core/pcm_dmaengine.c
-index d142609570347..e299e8634751f 100644
---- a/sound/core/pcm_dmaengine.c
-+++ b/sound/core/pcm_dmaengine.c
-@@ -368,6 +368,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_sync_stop);
- int snd_dmaengine_pcm_close(struct snd_pcm_substream *substream)
- {
- 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
-+	struct dma_tx_state state;
-+	enum dma_status status;
-+
-+	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
-+	if (status == DMA_PAUSED)
-+		dmaengine_terminate_async(prtd->dma_chan);
- 
- 	dmaengine_synchronize(prtd->dma_chan);
- 	kfree(prtd);
-@@ -388,6 +394,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_close);
- int snd_dmaengine_pcm_close_release_chan(struct snd_pcm_substream *substream)
- {
- 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
-+	struct dma_tx_state state;
-+	enum dma_status status;
-+
-+	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
-+	if (status == DMA_PAUSED)
-+		dmaengine_terminate_async(prtd->dma_chan);
- 
- 	dmaengine_synchronize(prtd->dma_chan);
- 	dma_release_channel(prtd->dma_chan);
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index daafeb20f9937..dc9b902de8ea9 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -16,6 +16,7 @@ config PARISC
+ 	select ARCH_HAS_UBSAN
+ 	select ARCH_HAS_PTE_SPECIAL
+ 	select ARCH_NO_SG_CHAIN
++	select ARCH_SPLIT_ARG64 if !64BIT
+ 	select ARCH_SUPPORTS_HUGETLBFS if PA20
+ 	select ARCH_SUPPORTS_MEMORY_FAILURE
+ 	select ARCH_STACKWALK
+diff --git a/arch/parisc/kernel/sys_parisc32.c b/arch/parisc/kernel/sys_parisc32.c
+index 2a12a547b447b..826c8e51b5853 100644
+--- a/arch/parisc/kernel/sys_parisc32.c
++++ b/arch/parisc/kernel/sys_parisc32.c
+@@ -23,12 +23,3 @@ asmlinkage long sys32_unimplemented(int r26, int r25, int r24, int r23,
+     	current->comm, current->pid, r20);
+     return -ENOSYS;
+ }
+-
+-asmlinkage long sys32_fanotify_mark(compat_int_t fanotify_fd, compat_uint_t flags,
+-	compat_uint_t mask0, compat_uint_t mask1, compat_int_t dfd,
+-	const char  __user * pathname)
+-{
+-	return sys_fanotify_mark(fanotify_fd, flags,
+-			((__u64)mask1 << 32) | mask0,
+-			 dfd, pathname);
+-}
+diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
+index b236a84c4e127..5439ff05bdb2d 100644
+--- a/arch/parisc/kernel/syscalls/syscall.tbl
++++ b/arch/parisc/kernel/syscalls/syscall.tbl
+@@ -364,7 +364,7 @@
+ 320	common	accept4			sys_accept4
+ 321	common	prlimit64		sys_prlimit64
+ 322	common	fanotify_init		sys_fanotify_init
+-323	common	fanotify_mark		sys_fanotify_mark		sys32_fanotify_mark
++323	common	fanotify_mark		sys_fanotify_mark		compat_sys_fanotify_mark
+ 324	32	clock_adjtime		sys_clock_adjtime32
+ 324	64	clock_adjtime		sys_clock_adjtime
+ 325	common	name_to_handle_at	sys_name_to_handle_at
 -- 
 2.43.0
 
