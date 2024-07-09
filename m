@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD5792B6DC
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3087A92B7C8
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCA70B21C06
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 624101C23559
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37504157E61;
-	Tue,  9 Jul 2024 11:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB77156C73;
+	Tue,  9 Jul 2024 11:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHq0ezFe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SltF9VtV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E882E1586C1;
-	Tue,  9 Jul 2024 11:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864D127713;
+	Tue,  9 Jul 2024 11:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523854; cv=none; b=TOcGfDq4+QisZcj8xX/dKEX5sV3Wad80jmy2ogggRX6ZEtCNUWxiYgDX4TrHF+BZKEKRi1JY/n1CFbYlxy5EJnZYovQfeOd/ae/uS2BUnBvq3tHcFsgsnIHfl3a20JDr1VRYmodk/I7mGQdmO/GHHgBObNiIUuYYy35re3XyjhA=
+	t=1720524418; cv=none; b=rffTvhkUNoBgCibalPP183H+ldfScRsEJjTVHwNqmFjyFGTkP4p1soC+xrDywVFIaOWCq/qAjDTgl31IixyqvSt9q7jR3FG1pod6NV61MMbcVF9YQpP9VgDtyTuVt72rlsQJqNQUPUHTOJ25+eX02tgLWCkV0WOJLn+pERyivsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523854; c=relaxed/simple;
-	bh=en73XQC6rQU4DyOcTjaoCGj03i6vSCTpoHtix6Kd+CM=;
+	s=arc-20240116; t=1720524418; c=relaxed/simple;
+	bh=Jv1eG//8koTusrXg6vDKCu533q6BYiBJGNKzQL6UM/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ThM6eh9uOxES7LQN0eXlmpjoQdDQQDTyDuaUjIlXMmeF17gic/ovDLrtYUdHZg5V7f/PNQujJlBAZGJe6vCI9nVPTtPkioX4Q3SZ5M8l66X1YvXm+rGSAXwqVMwKjWdxELDF3zvpRUqCYd3ToHht5yJ1KqQcJ62UNRWaySFnNOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHq0ezFe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70690C3277B;
-	Tue,  9 Jul 2024 11:17:33 +0000 (UTC)
+	 MIME-Version; b=bDsBdl6aCFymBFv/Y3sLIKKQhSBqqSOkpbpX/sMYlzJ9q5IgXzLrpf8vYFOAieLPZfjwSlXx6LPRbeJw8UlxzgEeXqPHhAKhxiCjEQXPfg5d0LQvdtIZQQACx12NMiO/U/LMmp6yuJWPGaFP9s0OPTuAiPaFjkFkYBfEnjc9Eoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SltF9VtV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02BA6C32786;
+	Tue,  9 Jul 2024 11:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523853;
-	bh=en73XQC6rQU4DyOcTjaoCGj03i6vSCTpoHtix6Kd+CM=;
+	s=korg; t=1720524418;
+	bh=Jv1eG//8koTusrXg6vDKCu533q6BYiBJGNKzQL6UM/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OHq0ezFeyuC0G31b8iMwfOOwrYqBFj0Whw9aaoCsioYP8K51lwG8hzQtv6jL8Mz25
-	 KS8i5RujpMIijplMK+1biVuQzEa8SqzooK3tDkBqjt5apZ0k/FPjrS0WGSMj3eNMkk
-	 e2rxV5rO2daGlLvzzCkY11L2+hpWWQszdV+sMfeo=
+	b=SltF9VtVFD1o/I7FoMsncvu0vSFZFJRzksW1gxdu2kP2Gynur7I2QXYn4E9taFdaH
+	 GRFTc3vcxmwZxbAOGBOIp6Poz+NaLia4HEQ4FfKunSUSK+toEZ2tNgvINWucLJPuhK
+	 veR4WCDNujLEN2IC5PSxUNxCnEsAkuUI1J+ngbak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	hmtheboy154 <buingoc67@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Jian-Hong Pan <jhp@endlessos.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 130/139] platform/x86: touchscreen_dmi: Add info for GlobalSpace SolT IVW 11.6" tablet
+Subject: [PATCH 6.9 176/197] ALSA: hda/realtek: Enable headset mic of JP-IK LEAP W502 with ALC897
 Date: Tue,  9 Jul 2024 13:10:30 +0200
-Message-ID: <20240709110703.191542814@linuxfoundation.org>
+Message-ID: <20240709110715.757608868@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: hmtheboy154 <buingoc67@gmail.com>
+From: Jian-Hong Pan <jhp@endlessos.org>
 
-[ Upstream commit 7c8639aa41343fd7b3dbe09baf6b0791fcc407a1 ]
+[ Upstream commit 45e37f9ce28d248470bab4376df2687a215d1b22 ]
 
-This is a tablet created by GlobalSpace Technologies Limited
-which uses an Intel Atom x5-Z8300, 4GB of RAM & 64GB of storage.
+JP-IK LEAP W502 laptop's headset mic is not enabled until
+ALC897_FIXUP_HEADSET_MIC_PIN3 quirk is applied.
 
-Link: https://web.archive.org/web/20171102141952/http://globalspace.in/11.6-device.html
-Signed-off-by: hmtheboy154 <buingoc67@gmail.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240527091447.248849-2-hdegoede@redhat.com
+Here is the original pin node values:
+
+0x11 0x40000000
+0x12 0xb7a60130
+0x14 0x90170110
+0x15 0x411111f0
+0x16 0x411111f0
+0x17 0x411111f0
+0x18 0x411111f0
+0x19 0x411111f0
+0x1a 0x411111f0
+0x1b 0x03211020
+0x1c 0x411111f0
+0x1d 0x4026892d
+0x1e 0x411111f0
+0x1f 0x411111f0
+
+Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
+Link: https://lore.kernel.org/r/20240520055008.7083-2-jhp@endlessos.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/touchscreen_dmi.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ sound/pci/hda/patch_realtek.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
-index 630ed0515b1e9..bb1df9d03bbcd 100644
---- a/drivers/platform/x86/touchscreen_dmi.c
-+++ b/drivers/platform/x86/touchscreen_dmi.c
-@@ -902,6 +902,22 @@ static const struct ts_dmi_data schneider_sct101ctm_data = {
- 	.properties	= schneider_sct101ctm_props,
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 3a56434c86bd9..c0530d4aa3fc3 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -12029,6 +12029,7 @@ enum {
+ 	ALC897_FIXUP_LENOVO_HEADSET_MODE,
+ 	ALC897_FIXUP_HEADSET_MIC_PIN2,
+ 	ALC897_FIXUP_UNIS_H3C_X500S,
++	ALC897_FIXUP_HEADSET_MIC_PIN3,
  };
  
-+static const struct property_entry globalspace_solt_ivw116_props[] = {
-+	PROPERTY_ENTRY_U32("touchscreen-min-x", 7),
-+	PROPERTY_ENTRY_U32("touchscreen-min-y", 22),
-+	PROPERTY_ENTRY_U32("touchscreen-size-x", 1723),
-+	PROPERTY_ENTRY_U32("touchscreen-size-y", 1077),
-+	PROPERTY_ENTRY_STRING("firmware-name", "gsl1680-globalspace-solt-ivw116.fw"),
-+	PROPERTY_ENTRY_U32("silead,max-fingers", 10),
-+	PROPERTY_ENTRY_BOOL("silead,home-button"),
-+	{ }
-+};
-+
-+static const struct ts_dmi_data globalspace_solt_ivw116_data = {
-+	.acpi_name	= "MSSL1680:00",
-+	.properties	= globalspace_solt_ivw116_props,
-+};
-+
- static const struct property_entry techbite_arc_11_6_props[] = {
- 	PROPERTY_ENTRY_U32("touchscreen-min-x", 5),
- 	PROPERTY_ENTRY_U32("touchscreen-min-y", 7),
-@@ -1629,6 +1645,15 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "SCT101CTM"),
+ static const struct hda_fixup alc662_fixups[] = {
+@@ -12475,10 +12476,18 @@ static const struct hda_fixup alc662_fixups[] = {
+ 			{}
  		},
  	},
-+	{
-+		/* GlobalSpace SoLT IVW 11.6" */
-+		.driver_data = (void *)&globalspace_solt_ivw116_data,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Globalspace Tech Pvt Ltd"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "SolTIVW"),
-+			DMI_MATCH(DMI_PRODUCT_SKU, "PN20170413488"),
++	[ALC897_FIXUP_HEADSET_MIC_PIN3] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x19, 0x03a11050 }, /* use as headset mic */
++			{ }
 +		},
 +	},
- 	{
- 		/* Techbite Arc 11.6 */
- 		.driver_data = (void *)&techbite_arc_11_6_data,
+ };
+ 
+ static const struct snd_pci_quirk alc662_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1019, 0x9087, "ECS", ALC662_FIXUP_ASUS_MODE2),
++	SND_PCI_QUIRK(0x1019, 0x9859, "JP-IK LEAP W502", ALC897_FIXUP_HEADSET_MIC_PIN3),
+ 	SND_PCI_QUIRK(0x1025, 0x022f, "Acer Aspire One", ALC662_FIXUP_INV_DMIC),
+ 	SND_PCI_QUIRK(0x1025, 0x0241, "Packard Bell DOTS", ALC662_FIXUP_INV_DMIC),
+ 	SND_PCI_QUIRK(0x1025, 0x0308, "Acer Aspire 8942G", ALC662_FIXUP_ASPIRE),
 -- 
 2.43.0
 
