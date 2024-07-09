@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-58822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EC6492C06C
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:37:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6362492C070
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:37:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BABDF1F225FD
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:37:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 948961C2244E
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9F41C9EA0;
-	Tue,  9 Jul 2024 16:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A2451C9EB6;
+	Tue,  9 Jul 2024 16:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NOsCd8vE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NkM/hj0E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBE11A01CB;
-	Tue,  9 Jul 2024 16:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D821C9EA7;
+	Tue,  9 Jul 2024 16:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542192; cv=none; b=gXEbYiOnmN5WmnYlA8kmDK44Zsb4IkwlyTLoiMZGyfIMg04z7+wmugI6tcTgRIp+yI0Z7dg6WvVKerLN6p394lex55wblFS55IDCQmUBdPMT8LEaBwV41Jg6ve0aUt2IdpXzblnBQmV7wP8CqMAh8/gibFv91FEqa/uoXKklC5o=
+	t=1720542192; cv=none; b=DMolgmSLHO6xA1eRReV3nDkLtcBB1MU8v5X04lD8wLr8EQ4P+i29c6GobGtVx2JhQ3fLXX1CKkgPlKzBRcnuVeftj/8EELUp1L6I61IF75oVA1fWjQ/lTF17pHE9/8S6QY3X0EuKhqZgEWOFmXw5dpmg1NFdeZvQBUWgBvtzi7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1720542192; c=relaxed/simple;
-	bh=ibK/2xnq3vrRFAnUUMDPbKk+m+YGVPga+tbED3t8NpA=;
+	bh=dOzyPdvPbxOst7gUQklgQkrXZpmlbbqCdWR1tTUqjY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cO4DCeyhwotYTugEaz9Cak7NfmK/u86LgwEtHM0tNBneKYucsfgheeo99EabuBJ46XFJu187U/SrCl8BrKr0+VYE+6U0t70u7gF2yWFfeLlCRO8VbUZvGZCnnbxb8BKj8Jt/uJTKtiTQz+e+Ptv6+76yHedwHM4G6IOeIYDuG1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NOsCd8vE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C4EC3277B;
-	Tue,  9 Jul 2024 16:23:10 +0000 (UTC)
+	 MIME-Version; b=I1m02R7SJ3HtcGAesvLrVixUkc/eydPlnftdRSI2HD/+gj13al3lR3WZcjDSGL5UTdq9Gf9DzlCgHDXyx4OhOIwqBjRhU91GiBeX0Z3xHuwIFxMsdDwYfmdrdHrDIMG8FCLnIRbXp+V5CvMrbGGJgf+pbkDlR65DwodZmLAQ+j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NkM/hj0E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5600C32786;
+	Tue,  9 Jul 2024 16:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542191;
-	bh=ibK/2xnq3vrRFAnUUMDPbKk+m+YGVPga+tbED3t8NpA=;
+	s=k20201202; t=1720542192;
+	bh=dOzyPdvPbxOst7gUQklgQkrXZpmlbbqCdWR1tTUqjY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NOsCd8vE38nP3nHbqUxV3560s20wyESgJNkQzNKKSrOyZr9wQJry/t4uEp/FsDZrR
-	 /6EFBlNp67JdCWcRVcxM9Cii9KgiTc26VtkZfpLuscOyk196/fPULB6MZVh5nX2Kvt
-	 BlVZ7RLYhznQ02bDISQe9ivAY+vxwS1IKdUFJ9ZcpRPwyai3lDcOmibkd0WTDEB7aW
-	 pH7Qsy8/4wDpJtArNtO4YcdRSz73/iXJByHiBDedXY4bnFbwZ7UKxLTcCaKbDCMM4B
-	 ewXM89ASwmM9TF/xB/psFXYLoijk7vCQ43OUSergpQ9eegpcMG6hM+NseysmPZ3Vfb
-	 uiD1agJebGQng==
+	b=NkM/hj0EkFEAQ+Pnp0yMdbXdvayMsoTGLsKMvQGueh8hD/3pi0y5NaSLTPd9rT4IC
+	 TK2UAAIanXRmf0tvy60Cj6DLwRSH2J/WvqE9xo63KGd5/EF7obDcHxFpiajDOHZncr
+	 KuI6dwjItD9TVr6/njAhDbBt4B5VNm2CxwNdV12P2ftt87g54zdGPSyC4Uc3YVROWh
+	 7Mis3ELPpC4KINRGGHw71omt/OjrKaxJ3L1BwZ30ufWEHW/IbqviRZNW/iDZicCc6C
+	 Y07OS4FUFJwS8YRB1qh4h3S+TCLjIH3a0S/FZpCGyg59y+eT69/QNvPx8m6lseugbi
+	 JEF+y7ouufZMA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Heiko Carstens <hca@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+Cc: Chen Ni <nichen@iscas.ac.cn>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	gor@linux.ibm.com,
-	justinstitt@google.com,
-	linux-s390@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 20/33] s390/sclp: Fix sclp_init() cleanup on failure
-Date: Tue,  9 Jul 2024 12:21:46 -0400
-Message-ID: <20240709162224.31148-20-sashal@kernel.org>
+	ilpo.jarvinen@linux.intel.com,
+	vadimp@nvidia.com,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 21/33] platform/mellanox: nvsw-sn2201: Add check for platform_device_add_resources
+Date: Tue,  9 Jul 2024 12:21:47 -0400
+Message-ID: <20240709162224.31148-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162224.31148-1-sashal@kernel.org>
 References: <20240709162224.31148-1-sashal@kernel.org>
@@ -68,55 +67,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.38
 Content-Transfer-Encoding: 8bit
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 6434b33faaa063df500af355ee6c3942e0f8d982 ]
+[ Upstream commit d56fbfbaf592a115b2e11c1044829afba34069d2 ]
 
-If sclp_init() fails it only partially cleans up: if there are multiple
-failing calls to sclp_init() sclp_state_change_event will be added several
-times to sclp_reg_list, which results in the following warning:
+Add check for the return value of platform_device_add_resources() and
+return the error if it fails in order to catch the error.
 
-------------[ cut here ]------------
-list_add double add: new=000003ffe1598c10, prev=000003ffe1598bf0, next=000003ffe1598c10.
-WARNING: CPU: 0 PID: 1 at lib/list_debug.c:35 __list_add_valid_or_report+0xde/0xf8
-CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.10.0-rc3
-Krnl PSW : 0404c00180000000 000003ffe0d6076a (__list_add_valid_or_report+0xe2/0xf8)
-           R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
-...
-Call Trace:
- [<000003ffe0d6076a>] __list_add_valid_or_report+0xe2/0xf8
-([<000003ffe0d60766>] __list_add_valid_or_report+0xde/0xf8)
- [<000003ffe0a8d37e>] sclp_init+0x40e/0x450
- [<000003ffe00009f2>] do_one_initcall+0x42/0x1e0
- [<000003ffe15b77a6>] do_initcalls+0x126/0x150
- [<000003ffe15b7a0a>] kernel_init_freeable+0x1ba/0x1f8
- [<000003ffe0d6650e>] kernel_init+0x2e/0x180
- [<000003ffe000301c>] __ret_from_fork+0x3c/0x60
- [<000003ffe0d759ca>] ret_from_fork+0xa/0x30
-
-Fix this by removing sclp_state_change_event from sclp_reg_list when
-sclp_init() fails.
-
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20240605032745.2916183-1-nichen@iscas.ac.cn
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/mellanox/nvsw-sn2201.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/s390/char/sclp.c b/drivers/s390/char/sclp.c
-index 8f74db689a0c2..ba10f9b8fac72 100644
---- a/drivers/s390/char/sclp.c
-+++ b/drivers/s390/char/sclp.c
-@@ -1293,6 +1293,7 @@ sclp_init(void)
- fail_unregister_reboot_notifier:
- 	unregister_reboot_notifier(&sclp_reboot_notifier);
- fail_init_state_uninitialized:
-+	list_del(&sclp_state_change_event.list);
- 	sclp_init_state = sclp_init_state_uninitialized;
- 	free_page((unsigned long) sclp_read_sccb);
- 	free_page((unsigned long) sclp_init_sccb);
+diff --git a/drivers/platform/mellanox/nvsw-sn2201.c b/drivers/platform/mellanox/nvsw-sn2201.c
+index 75b699676ca6d..1a7c45aa41bbf 100644
+--- a/drivers/platform/mellanox/nvsw-sn2201.c
++++ b/drivers/platform/mellanox/nvsw-sn2201.c
+@@ -1198,6 +1198,7 @@ static int nvsw_sn2201_config_pre_init(struct nvsw_sn2201 *nvsw_sn2201)
+ static int nvsw_sn2201_probe(struct platform_device *pdev)
+ {
+ 	struct nvsw_sn2201 *nvsw_sn2201;
++	int ret;
+ 
+ 	nvsw_sn2201 = devm_kzalloc(&pdev->dev, sizeof(*nvsw_sn2201), GFP_KERNEL);
+ 	if (!nvsw_sn2201)
+@@ -1205,8 +1206,10 @@ static int nvsw_sn2201_probe(struct platform_device *pdev)
+ 
+ 	nvsw_sn2201->dev = &pdev->dev;
+ 	platform_set_drvdata(pdev, nvsw_sn2201);
+-	platform_device_add_resources(pdev, nvsw_sn2201_lpc_io_resources,
++	ret = platform_device_add_resources(pdev, nvsw_sn2201_lpc_io_resources,
+ 				      ARRAY_SIZE(nvsw_sn2201_lpc_io_resources));
++	if (ret)
++		return ret;
+ 
+ 	nvsw_sn2201->main_mux_deferred_nr = NVSW_SN2201_MAIN_MUX_DEFER_NR;
+ 	nvsw_sn2201->main_mux_devs = nvsw_sn2201_main_mux_brdinfo;
 -- 
 2.43.0
 
