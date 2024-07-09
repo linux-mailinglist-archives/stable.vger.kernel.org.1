@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-58869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875DE92C0F0
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:48:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3E2292C0F3
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:48:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 980171C22C32
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:48:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F067B1C20AEA
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4075618D4CD;
-	Tue,  9 Jul 2024 16:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B90B18EA6D;
+	Tue,  9 Jul 2024 16:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ctIWyDtd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ADPLz1bb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE6B18D4C8;
-	Tue,  9 Jul 2024 16:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB45918EA66;
+	Tue,  9 Jul 2024 16:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542336; cv=none; b=ME00a16amfCkns+Cf6K6Z3FX/yYU83p+HmVyBPsUkSzRHBjpszpYj+gmUJJsJsvuvZ/b8rHGQhdhvYidDKmTGfAZBHypEItpwuN3GrjZ6LLunD30C5WsksDgcf+MnDu+qHwRa5nrppNcZ3RG4fsXqv/3URO0jFi31UDpcSDeaAk=
+	t=1720542339; cv=none; b=afn0ey9DJ+LWLL0IoHDKJcHbi7c2FyA/RyxYE+sSSKiEpBR1K1+FPHbm2hGsgQz14CxpUXm5ScCG/Nidg4LsmDTwtU/2JnISlyncQ76Qq3pBsxHoeobRSdy7g9hFzoUJyOZDymdm/pflBWhH1sY1tsFits2KdMY+VuiyjCh5n+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542336; c=relaxed/simple;
-	bh=k9LrWFVxAszloHBi6WEwLha/Pfjh2z2Rh6fnIf+ZWCc=;
+	s=arc-20240116; t=1720542339; c=relaxed/simple;
+	bh=Uo8THIP+qahbvQHYwUyy1Reg3pWn4lucxMDpZD44Kvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L1LejM46HoyHdptGExtgCKE5qFhvsP+B5SnabzRCYehndWxg3ZjWbHpSTfTh27RRzoyHdZQ69tuU3cDZbYj6bc/KuOEG2cF9RP5LqJjGbcJKOzhembZsGC5u4HDuNhde8U8/3isFUWVKkLdemlMVpxiNlFvdT79kycUX3Pf5eZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ctIWyDtd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25411C32782;
-	Tue,  9 Jul 2024 16:25:34 +0000 (UTC)
+	 MIME-Version; b=BeDJ75dqnpQIP7YkcnGrA0kq/QZ0mxJTWasXShj76g+UUbhP+aUeJW0Iq8Rxj+KKuT0KCod4JbvptYvq3HAIPomC6Ea7j6M7I1B2JkBIQD6JTemLfEtTBWTr+LK2+NcUcHYBPA6YeP/FEVh1di8/hPG9HRBp5YZE0M41E/RZ4tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ADPLz1bb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E491C4AF07;
+	Tue,  9 Jul 2024 16:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542335;
-	bh=k9LrWFVxAszloHBi6WEwLha/Pfjh2z2Rh6fnIf+ZWCc=;
+	s=k20201202; t=1720542338;
+	bh=Uo8THIP+qahbvQHYwUyy1Reg3pWn4lucxMDpZD44Kvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ctIWyDtd9gP2lhbkJo/wJbHiTXlF99xjHPWL60GChl5A/pgYXnfW1zwxHm6f0tll4
-	 P1tvnIIznYi1ww+Iu8t3MVSBksC5PiZpIKFgCmTT13NCB2I07CaVV5SUhLjbRdsemV
-	 cUJPD+OwmuEhK17a6tuagQaUCtmFypsc9JWTVLNs25YSnyo088jwyRima6zIOtKeZg
-	 90HfOqrj8guZl3++uNd9ARyRD9yZ0qx8TjC0VnUR2+q7wpoHH9TkG5fxNU8Zc//eoq
-	 pZ1RmJSpsgQLdvvvjFQmDMqt4ndytaaqw7Z+9cCW5TiglINudLdchW0zAY1S7bfZfW
-	 UFFniOAcMcYcQ==
+	b=ADPLz1bbx3KHI58GZzH5k07ukegekNdOzYLGrVf61NoEVcTH55LgfrTu+SS1zj4Ll
+	 Jr4gIFYQ1IXepm/0uRuuKN4TzdeeD8MRvv3HJ2OITuR3F/OVMy9ZA94oxxPwbTAf/p
+	 Kjao7aNDctf3LoKN1TWekM8A/nC25+m4hCYqJU2agQuibB7Ch35YCnBtJJZAbCWLaZ
+	 xdoMdiyEvv9D14pMs5rAsvBVGQTcV5iEsILkYvDSKt4Qbl5vfdKSCgBaPSi3vHe2Lz
+	 uaAnL1rA68SCnCZayy1XRdv3kDxJAkG1TL3ao6NQQolWGZI5ihX2tSLH0RMzike/bw
+	 dmwGYM0be+yyw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Chen Ni <nichen@iscas.ac.cn>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+Cc: Heiko Carstens <hca@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mailhol.vincent@wanadoo.fr,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	extja@kvaser.com,
-	linux-can@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 07/17] can: kvaser_usb: fix return value for hif_usb_send_regout
-Date: Tue,  9 Jul 2024 12:24:51 -0400
-Message-ID: <20240709162517.32584-7-sashal@kernel.org>
+	gor@linux.ibm.com,
+	justinstitt@google.com,
+	linux-s390@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 08/17] s390/sclp: Fix sclp_init() cleanup on failure
+Date: Tue,  9 Jul 2024 12:24:52 -0400
+Message-ID: <20240709162517.32584-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162517.32584-1-sashal@kernel.org>
 References: <20240709162517.32584-1-sashal@kernel.org>
@@ -72,34 +68,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.162
 Content-Transfer-Encoding: 8bit
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 0d34d8163fd87978a6abd792e2d8ad849f4c3d57 ]
+[ Upstream commit 6434b33faaa063df500af355ee6c3942e0f8d982 ]
 
-As the potential failure of usb_submit_urb(), it should be better to
-return the err variable to catch the error.
+If sclp_init() fails it only partially cleans up: if there are multiple
+failing calls to sclp_init() sclp_state_change_event will be added several
+times to sclp_reg_list, which results in the following warning:
 
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Link: https://lore.kernel.org/all/20240521041020.1519416-1-nichen@iscas.ac.cn
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+------------[ cut here ]------------
+list_add double add: new=000003ffe1598c10, prev=000003ffe1598bf0, next=000003ffe1598c10.
+WARNING: CPU: 0 PID: 1 at lib/list_debug.c:35 __list_add_valid_or_report+0xde/0xf8
+CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.10.0-rc3
+Krnl PSW : 0404c00180000000 000003ffe0d6076a (__list_add_valid_or_report+0xe2/0xf8)
+           R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
+...
+Call Trace:
+ [<000003ffe0d6076a>] __list_add_valid_or_report+0xe2/0xf8
+([<000003ffe0d60766>] __list_add_valid_or_report+0xde/0xf8)
+ [<000003ffe0a8d37e>] sclp_init+0x40e/0x450
+ [<000003ffe00009f2>] do_one_initcall+0x42/0x1e0
+ [<000003ffe15b77a6>] do_initcalls+0x126/0x150
+ [<000003ffe15b7a0a>] kernel_init_freeable+0x1ba/0x1f8
+ [<000003ffe0d6650e>] kernel_init+0x2e/0x180
+ [<000003ffe000301c>] __ret_from_fork+0x3c/0x60
+ [<000003ffe0d759ca>] ret_from_fork+0xa/0x30
+
+Fix this by removing sclp_state_change_event from sclp_reg_list when
+sclp_init() fails.
+
+Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/s390/char/sclp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-index 09dbc51347d70..41594cac54966 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-@@ -292,7 +292,7 @@ int kvaser_usb_send_cmd_async(struct kvaser_usb_net_priv *priv, void *cmd,
- 	}
- 	usb_free_urb(urb);
- 
--	return 0;
-+	return err;
- }
- 
- int kvaser_usb_can_rx_over_error(struct net_device *netdev)
+diff --git a/drivers/s390/char/sclp.c b/drivers/s390/char/sclp.c
+index 2cf7fe131ecec..0830ea42e7c80 100644
+--- a/drivers/s390/char/sclp.c
++++ b/drivers/s390/char/sclp.c
+@@ -1292,6 +1292,7 @@ sclp_init(void)
+ fail_unregister_reboot_notifier:
+ 	unregister_reboot_notifier(&sclp_reboot_notifier);
+ fail_init_state_uninitialized:
++	list_del(&sclp_state_change_event.list);
+ 	sclp_init_state = sclp_init_state_uninitialized;
+ 	free_page((unsigned long) sclp_read_sccb);
+ 	free_page((unsigned long) sclp_init_sccb);
 -- 
 2.43.0
 
