@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-58343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B72392B67E
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:14:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA38792B7F6
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:29:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B80EE282C48
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:14:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 535C31F2150F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DDA61581E4;
-	Tue,  9 Jul 2024 11:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8964A1586C3;
+	Tue,  9 Jul 2024 11:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYGRyQ9d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n09CmkeY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0E3155389;
-	Tue,  9 Jul 2024 11:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CB315749F;
+	Tue,  9 Jul 2024 11:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523649; cv=none; b=GrfZVGREYIbBfuTwMYPsKQWhIqYzkCperWdu/FMDSJCtJJWyc5eH9MtBcwM+Pt6Eer2x4NUJyLzDCLeutNR+xyiWi7e/1U8Tak4yB5g8G0yhvdh41gtAEffrivBqq6rrrR7i2aZDNb7zYOaanFCSfNv2xUoppEzFfH057DX/G40=
+	t=1720524542; cv=none; b=AE0cuaBP5oStUfV2hZelATTifeW0f1+Z+0FvWck5FZCaJPQDJ4w+KcdkTmaa61clcmZjNG/oDM2isqrzV36OBO34wO2VZFolYGcAtQl880Q/Djn1jBRTodp2tYYetm4JjvtbOvF0Mi1g5+/WPen8518V0EMZk+ryowHA+j/V7yA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523649; c=relaxed/simple;
-	bh=RsoNwXtjvc6k83jcDswS3myWvCQGQ/vPlNtr+pH9PpY=;
+	s=arc-20240116; t=1720524542; c=relaxed/simple;
+	bh=+9PFez0zBIwXqNOXGp6d1xKG4hfzDoPo2+YCRSioQPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vE8Ixu4PNmfdaEmTQbHMpuV5M9MsDEjAMXn90tHSfCinkdwct5JUJXQcDyk7szCItlBaxMZnMhHG1k/LzlI1Yo7du5+yBIGTZgEZVrf33mff/Gt7LLp/vIxL+hvTKXlY48rcnFnLs4mFNIkFYNlKqCPtRPSrtLz2cWhdAtvvkO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYGRyQ9d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7BC9C3277B;
-	Tue,  9 Jul 2024 11:14:08 +0000 (UTC)
+	 MIME-Version; b=ZEmNkMj2G0okcqQrdiuIlnuvyPl7WOp+WfGfnNNXSu1iTWc7k0fcYZ9N5MoKTAzQVdFKkV9Dm2yVyz0OC6YxhjClAgOlqS5AePrl+ZSe23qmhA+ZXrZqEQ5AKlJQdweVw3Sf4pqhKstnFTiROzKJ66s17uhTRdd20dLzvIXHmuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n09CmkeY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E09C3277B;
+	Tue,  9 Jul 2024 11:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523649;
-	bh=RsoNwXtjvc6k83jcDswS3myWvCQGQ/vPlNtr+pH9PpY=;
+	s=korg; t=1720524541;
+	bh=+9PFez0zBIwXqNOXGp6d1xKG4hfzDoPo2+YCRSioQPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BYGRyQ9d6g9GS7AI9VG7NQ4/0T+Np64DykfkcyL+HqZXiOuC0sc7PI08MZ3Ve0MDC
-	 YA95HIn8ckTV6TkpL56kkG13RxbEvd5IQGJfJXSHYhtqbz5yWIxe2G2MoNpsl+yUgi
-	 ZcdZdfy0Eb8ERJLJsUet9x1e78/WEN5XcsQvbffw=
+	b=n09CmkeY77jfIGgkWAxHEDI9cLNDmTmXD2n1BQJzqLW+vhqS8dvtsXaEBwIA8b6hJ
+	 dlStpAUO+z3yuVJQBllBr2wy/1SMPw8DI9vWTP+jeEGP636e/OTWRLvIBp5aPOFktT
+	 SSLDGgMLcx4nwzAa6HSQ0cnM2WvOca6SXOfyG3TY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Mi <cmi@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 064/139] net/mlx5: E-switch, Create ingress ACL when needed
-Date: Tue,  9 Jul 2024 13:09:24 +0200
-Message-ID: <20240709110700.649799186@linuxfoundation.org>
+Subject: [PATCH 6.1 002/102] crypto: hisilicon/debugfs - Fix debugfs uninit process issue
+Date: Tue,  9 Jul 2024 13:09:25 +0200
+Message-ID: <20240709110651.453922745@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,124 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Mi <cmi@nvidia.com>
+From: Chenghai Huang <huangchenghai2@huawei.com>
 
-[ Upstream commit b20c2fb45470d0c7a603613c9cfa5d45720e17f2 ]
+[ Upstream commit 8be0913389718e8d27c4f1d4537b5e1b99ed7739 ]
 
-Currently, ingress acl is used for three features. It is created only
-when vport metadata match and prio tag are enabled. But active-backup
-lag mode also uses it. It is independent of vport metadata match and
-prio tag. And vport metadata match can be disabled using the
-following devlink command:
+During the zip probe process, the debugfs failure does not stop
+the probe. When debugfs initialization fails, jumping to the
+error branch will also release regs, in addition to its own
+rollback operation.
 
- # devlink dev param set pci/0000:08:00.0 name esw_port_metadata \
-	value false cmode runtime
+As a result, it may be released repeatedly during the regs
+uninit process. Therefore, the null check needs to be added to
+the regs uninit process.
 
-If ingress acl is not created, will hit panic when creating drop rule
-for active-backup lag mode. If always create it, there will be about
-5% performance degradation.
-
-Fix it by creating ingress acl when needed. If esw_port_metadata is
-true, ingress acl exists, then create drop rule using existing
-ingress acl. If esw_port_metadata is false, create ingress acl and
-then create drop rule.
-
-Fixes: 1749c4c51c16 ("net/mlx5: E-switch, add drop rule support to ingress ACL")
-Signed-off-by: Chris Mi <cmi@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/esw/acl/ingress_ofld.c | 37 +++++++++++++++----
- 1 file changed, 29 insertions(+), 8 deletions(-)
+ drivers/crypto/hisilicon/debugfs.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_ofld.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_ofld.c
-index 50d2ea3239798..a436ce895e45a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_ofld.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_ofld.c
-@@ -6,6 +6,9 @@
- #include "helper.h"
- #include "ofld.h"
- 
-+static int
-+acl_ingress_ofld_setup(struct mlx5_eswitch *esw, struct mlx5_vport *vport);
-+
- static bool
- esw_acl_ingress_prio_tag_enabled(struct mlx5_eswitch *esw,
- 				 const struct mlx5_vport *vport)
-@@ -123,18 +126,31 @@ static int esw_acl_ingress_src_port_drop_create(struct mlx5_eswitch *esw,
+diff --git a/drivers/crypto/hisilicon/debugfs.c b/drivers/crypto/hisilicon/debugfs.c
+index 13bec8b2d7237..a1d41ee39816b 100644
+--- a/drivers/crypto/hisilicon/debugfs.c
++++ b/drivers/crypto/hisilicon/debugfs.c
+@@ -744,8 +744,14 @@ static void dfx_regs_uninit(struct hisi_qm *qm,
  {
- 	struct mlx5_flow_act flow_act = {};
- 	struct mlx5_flow_handle *flow_rule;
-+	bool created = false;
- 	int err = 0;
+ 	int i;
  
-+	if (!vport->ingress.acl) {
-+		err = acl_ingress_ofld_setup(esw, vport);
-+		if (err)
-+			return err;
-+		created = true;
++	if (!dregs)
++		return;
++
+ 	/* Setting the pointer is NULL to prevent double free */
+ 	for (i = 0; i < reg_len; i++) {
++		if (!dregs[i].regs)
++			continue;
++
+ 		kfree(dregs[i].regs);
+ 		dregs[i].regs = NULL;
+ 	}
+@@ -795,14 +801,21 @@ static struct dfx_diff_registers *dfx_regs_init(struct hisi_qm *qm,
+ static int qm_diff_regs_init(struct hisi_qm *qm,
+ 		struct dfx_diff_registers *dregs, u32 reg_len)
+ {
++	int ret;
++
+ 	qm->debug.qm_diff_regs = dfx_regs_init(qm, qm_diff_regs, ARRAY_SIZE(qm_diff_regs));
+-	if (IS_ERR(qm->debug.qm_diff_regs))
+-		return PTR_ERR(qm->debug.qm_diff_regs);
++	if (IS_ERR(qm->debug.qm_diff_regs)) {
++		ret = PTR_ERR(qm->debug.qm_diff_regs);
++		qm->debug.qm_diff_regs = NULL;
++		return ret;
 +	}
-+
- 	flow_act.action = MLX5_FLOW_CONTEXT_ACTION_DROP;
- 	flow_act.fg = vport->ingress.offloads.drop_grp;
- 	flow_rule = mlx5_add_flow_rules(vport->ingress.acl, NULL, &flow_act, NULL, 0);
- 	if (IS_ERR(flow_rule)) {
- 		err = PTR_ERR(flow_rule);
--		goto out;
-+		goto err_out;
+ 
+ 	qm->debug.acc_diff_regs = dfx_regs_init(qm, dregs, reg_len);
+ 	if (IS_ERR(qm->debug.acc_diff_regs)) {
+ 		dfx_regs_uninit(qm, qm->debug.qm_diff_regs, ARRAY_SIZE(qm_diff_regs));
+-		return PTR_ERR(qm->debug.acc_diff_regs);
++		ret = PTR_ERR(qm->debug.acc_diff_regs);
++		qm->debug.acc_diff_regs = NULL;
++		return ret;
  	}
  
- 	vport->ingress.offloads.drop_rule = flow_rule;
--out:
-+
-+	return 0;
-+err_out:
-+	/* Only destroy ingress acl created in this function. */
-+	if (created)
-+		esw_acl_ingress_ofld_cleanup(esw, vport);
- 	return err;
- }
- 
-@@ -299,16 +315,12 @@ static void esw_acl_ingress_ofld_groups_destroy(struct mlx5_vport *vport)
- 	}
- }
- 
--int esw_acl_ingress_ofld_setup(struct mlx5_eswitch *esw,
--			       struct mlx5_vport *vport)
-+static int
-+acl_ingress_ofld_setup(struct mlx5_eswitch *esw, struct mlx5_vport *vport)
+ 	return 0;
+@@ -843,7 +856,9 @@ static int qm_last_regs_init(struct hisi_qm *qm)
+ static void qm_diff_regs_uninit(struct hisi_qm *qm, u32 reg_len)
  {
- 	int num_ftes = 0;
- 	int err;
- 
--	if (!mlx5_eswitch_vport_match_metadata_enabled(esw) &&
--	    !esw_acl_ingress_prio_tag_enabled(esw, vport))
--		return 0;
--
- 	esw_acl_ingress_allow_rule_destroy(vport);
- 
- 	if (mlx5_eswitch_vport_match_metadata_enabled(esw))
-@@ -347,6 +359,15 @@ int esw_acl_ingress_ofld_setup(struct mlx5_eswitch *esw,
- 	return err;
+ 	dfx_regs_uninit(qm, qm->debug.acc_diff_regs, reg_len);
++	qm->debug.acc_diff_regs = NULL;
+ 	dfx_regs_uninit(qm, qm->debug.qm_diff_regs, ARRAY_SIZE(qm_diff_regs));
++	qm->debug.qm_diff_regs = NULL;
  }
  
-+int esw_acl_ingress_ofld_setup(struct mlx5_eswitch *esw, struct mlx5_vport *vport)
-+{
-+	if (!mlx5_eswitch_vport_match_metadata_enabled(esw) &&
-+	    !esw_acl_ingress_prio_tag_enabled(esw, vport))
-+		return 0;
-+
-+	return acl_ingress_ofld_setup(esw, vport);
-+}
-+
- void esw_acl_ingress_ofld_cleanup(struct mlx5_eswitch *esw,
- 				  struct mlx5_vport *vport)
- {
+ /**
 -- 
 2.43.0
 
