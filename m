@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-58641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA37392B7FD
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:29:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0355B92B782
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64F09285BAF
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:29:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B284C283B19
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF29B158A07;
-	Tue,  9 Jul 2024 11:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08581586C7;
+	Tue,  9 Jul 2024 11:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+NyyJmw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9DV8rI3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B61815886B;
-	Tue,  9 Jul 2024 11:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE5213A25F;
+	Tue,  9 Jul 2024 11:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524556; cv=none; b=PXoXbyNRqDkKhTsynp0lvS5ibtsdhYinrsmVqACjsG8sszcMQN29Q8PwoB25qlXSM+ErMC7k0WXrNIg5a+ElsTCXFy1DmL2TRL+lk7aNMhBYkNp87cTyQAt7H+U0UfK1te9/2FbBwN3clj2j5NP119vcvU8f7hfq+XZivIh5dNA=
+	t=1720524237; cv=none; b=K+p+48dNtfTvip6Fu2h08BT5V1+1owdQwzcfTXuKVxk6EFqnfoORt7NBNlO65S23ZkPS4VFlFxf2ThwML2Ub5WDGgJdeUjksyWA7JiWR7NQCM1Gf/4Kis18FvqUdI2Uq6ccYVpgxAaumzRY4rOxdARFwqN4z50oocJCz3LidbwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524556; c=relaxed/simple;
-	bh=fM2tv+Xor7B+KAGosbiugOOjnK3hB56XJrK2JqGDKJI=;
+	s=arc-20240116; t=1720524237; c=relaxed/simple;
+	bh=fjMSAQ5ZSXKAlHYK1k7AfwQOhHEazQNx4Dt7Tn6Lu6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nuS7W8kHuQDbM2hIOlQGBgywSprZz7edEJz7yHEWEyRk1zapiXgHyIFkWuw0t7wFYdyA3+HQlEx08onrVAcpvhXu46E7jp4CC67ns+1FxniZOmapAbvnSlYjdiaIVVS2/ehW7s/rTZYfFdAYmmufMJOglIsDtAbiO7KNnVwCsIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+NyyJmw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20974C32786;
-	Tue,  9 Jul 2024 11:29:15 +0000 (UTC)
+	 MIME-Version; b=PM1ZNUVMs2bNv7pd8tN1uadgnLx7UTwbd4/4ZtszmIrXh5eRMBD2lL9A1MmIUQir27WXWsRM/Jvdw3y/Hq3QYi2dMq19of54qvn+tccKfmDSaYocRbU9S/CrX/yezUbo99bRoSJGD4hdfSYOV/0Vj+rGevqJxSAn+yRk42/3idQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9DV8rI3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD89C3277B;
+	Tue,  9 Jul 2024 11:23:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524556;
-	bh=fM2tv+Xor7B+KAGosbiugOOjnK3hB56XJrK2JqGDKJI=;
+	s=korg; t=1720524237;
+	bh=fjMSAQ5ZSXKAlHYK1k7AfwQOhHEazQNx4Dt7Tn6Lu6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g+NyyJmwThJXtntyimGBD+ZR85OtVrEgFFjfNHvWcMDvViqnCTvJxcBJ5GvUfrVue
-	 ivcv/O5hlfMKb4RN0zEJUybgykAUkbiPILZGcMnHxhum2SCZXCmDbdQoOXdeq5/ry/
-	 0mzphpb6+iuREEisvK701B+DYOhaYGzXiWmREsAg=
+	b=v9DV8rI3HMTLTbWZZs6CakF+bxRVf5UNecf4CfVue8PMtiWjiTJHhr2fUDjjr1T6t
+	 2vid7j6apehkgUiOzgUwWL5e+8c8kbE+++Ti4XC0V9UHPZ9SHnrH6WiSy9nJvb8rTo
+	 d6qf6BzFoKg4JHB74UJbyX/Bv8TpHqzq7uMb114M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Mark Zhang <markzhang@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/102] IB/core: Implement a limit on UMAD receive List
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+4fd66a69358fc15ae2ad@syzkaller.appspotmail.com
+Subject: [PATCH 6.9 116/197] netfilter: nf_tables: unconditionally flush pending work before notifier
 Date: Tue,  9 Jul 2024 13:09:30 +0200
-Message-ID: <20240709110651.644594031@linuxfoundation.org>
+Message-ID: <20240709110713.439944902@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Guralnik <michaelgur@nvidia.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit ca0b44e20a6f3032224599f02e7c8fb49525c894 ]
+[ Upstream commit 9f6958ba2e902f9820c594869bd710ba74b7c4c0 ]
 
-The existing behavior of ib_umad, which maintains received MAD
-packets in an unbounded list, poses a risk of uncontrolled growth.
-As user-space applications extract packets from this list, the rate
-of extraction may not match the rate of incoming packets, leading
-to potential list overflow.
+syzbot reports:
 
-To address this, we introduce a limit to the size of the list. After
-considering typical scenarios, such as OpenSM processing, which can
-handle approximately 100k packets per second, and the 1-second retry
-timeout for most packets, we set the list size limit to 200k. Packets
-received beyond this limit are dropped, assuming they are likely timed
-out by the time they are handled by user-space.
+KASAN: slab-uaf in nft_ctx_update include/net/netfilter/nf_tables.h:1831
+KASAN: slab-uaf in nft_commit_release net/netfilter/nf_tables_api.c:9530
+KASAN: slab-uaf int nf_tables_trans_destroy_work+0x152b/0x1750 net/netfilter/nf_tables_api.c:9597
+Read of size 2 at addr ffff88802b0051c4 by task kworker/1:1/45
+[..]
+Workqueue: events nf_tables_trans_destroy_work
+Call Trace:
+ nft_ctx_update include/net/netfilter/nf_tables.h:1831 [inline]
+ nft_commit_release net/netfilter/nf_tables_api.c:9530 [inline]
+ nf_tables_trans_destroy_work+0x152b/0x1750 net/netfilter/nf_tables_api.c:9597
 
-Notably, packets queued on the receive list due to reasons like
-timed-out sends are preserved even when the list is full.
+Problem is that the notifier does a conditional flush, but its possible
+that the table-to-be-removed is still referenced by transactions being
+processed by the worker, so we need to flush unconditionally.
 
-Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
-Reviewed-by: Mark Zhang <markzhang@nvidia.com>
-Link: https://lore.kernel.org/r/7197cb58a7d9e78399008f25036205ceab07fbd5.1713268818.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+We could make the flush_work depend on whether we found a table to delete
+in nf-next to avoid the flush for most cases.
+
+AFAICS this problem is only exposed in nf-next, with
+commit e169285f8c56 ("netfilter: nf_tables: do not store nft_ctx in transaction objects"),
+with this commit applied there is an unconditional fetch of
+table->family which is whats triggering the above splat.
+
+Fixes: 2c9f0293280e ("netfilter: nf_tables: flush pending destroy work before netlink notifier")
+Reported-and-tested-by: syzbot+4fd66a69358fc15ae2ad@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4fd66a69358fc15ae2ad
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/user_mad.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ net/netfilter/nf_tables_api.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/core/user_mad.c b/drivers/infiniband/core/user_mad.c
-index 5c284dfbe6923..66a0c5a73b832 100644
---- a/drivers/infiniband/core/user_mad.c
-+++ b/drivers/infiniband/core/user_mad.c
-@@ -63,6 +63,8 @@ MODULE_AUTHOR("Roland Dreier");
- MODULE_DESCRIPTION("InfiniBand userspace MAD packet access");
- MODULE_LICENSE("Dual BSD/GPL");
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index faa77b031d1f3..0f77ba3306c23 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -11479,8 +11479,7 @@ static int nft_rcv_nl_event(struct notifier_block *this, unsigned long event,
  
-+#define MAX_UMAD_RECV_LIST_SIZE 200000
-+
- enum {
- 	IB_UMAD_MAX_PORTS  = RDMA_MAX_PORTS,
- 	IB_UMAD_MAX_AGENTS = 32,
-@@ -113,6 +115,7 @@ struct ib_umad_file {
- 	struct mutex		mutex;
- 	struct ib_umad_port    *port;
- 	struct list_head	recv_list;
-+	atomic_t		recv_list_size;
- 	struct list_head	send_list;
- 	struct list_head	port_list;
- 	spinlock_t		send_lock;
-@@ -180,24 +183,28 @@ static struct ib_mad_agent *__get_agent(struct ib_umad_file *file, int id)
- 	return file->agents_dead ? NULL : file->agent[id];
- }
+ 	gc_seq = nft_gc_seq_begin(nft_net);
  
--static int queue_packet(struct ib_umad_file *file,
--			struct ib_mad_agent *agent,
--			struct ib_umad_packet *packet)
-+static int queue_packet(struct ib_umad_file *file, struct ib_mad_agent *agent,
-+			struct ib_umad_packet *packet, bool is_recv_mad)
- {
- 	int ret = 1;
- 
- 	mutex_lock(&file->mutex);
- 
-+	if (is_recv_mad &&
-+	    atomic_read(&file->recv_list_size) > MAX_UMAD_RECV_LIST_SIZE)
-+		goto unlock;
-+
- 	for (packet->mad.hdr.id = 0;
- 	     packet->mad.hdr.id < IB_UMAD_MAX_AGENTS;
- 	     packet->mad.hdr.id++)
- 		if (agent == __get_agent(file, packet->mad.hdr.id)) {
- 			list_add_tail(&packet->list, &file->recv_list);
-+			atomic_inc(&file->recv_list_size);
- 			wake_up_interruptible(&file->recv_wait);
- 			ret = 0;
- 			break;
- 		}
--
-+unlock:
- 	mutex_unlock(&file->mutex);
- 
- 	return ret;
-@@ -224,7 +231,7 @@ static void send_handler(struct ib_mad_agent *agent,
- 	if (send_wc->status == IB_WC_RESP_TIMEOUT_ERR) {
- 		packet->length = IB_MGMT_MAD_HDR;
- 		packet->mad.hdr.status = ETIMEDOUT;
--		if (!queue_packet(file, agent, packet))
-+		if (!queue_packet(file, agent, packet, false))
- 			return;
- 	}
- 	kfree(packet);
-@@ -284,7 +291,7 @@ static void recv_handler(struct ib_mad_agent *agent,
- 		rdma_destroy_ah_attr(&ah_attr);
- 	}
- 
--	if (queue_packet(file, agent, packet))
-+	if (queue_packet(file, agent, packet, true))
- 		goto err2;
- 	return;
- 
-@@ -409,6 +416,7 @@ static ssize_t ib_umad_read(struct file *filp, char __user *buf,
- 
- 	packet = list_entry(file->recv_list.next, struct ib_umad_packet, list);
- 	list_del(&packet->list);
-+	atomic_dec(&file->recv_list_size);
- 
- 	mutex_unlock(&file->mutex);
- 
-@@ -421,6 +429,7 @@ static ssize_t ib_umad_read(struct file *filp, char __user *buf,
- 		/* Requeue packet */
- 		mutex_lock(&file->mutex);
- 		list_add(&packet->list, &file->recv_list);
-+		atomic_inc(&file->recv_list_size);
- 		mutex_unlock(&file->mutex);
- 	} else {
- 		if (packet->recv_wc)
+-	if (!list_empty(&nf_tables_destroy_list))
+-		nf_tables_trans_destroy_flush_work();
++	nf_tables_trans_destroy_flush_work();
+ again:
+ 	list_for_each_entry(table, &nft_net->tables, list) {
+ 		if (nft_table_has_owner(table) &&
 -- 
 2.43.0
 
