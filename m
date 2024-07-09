@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-58334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA09592B675
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:13:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 506F692B796
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DF231F21C1F
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:13:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE0131F2428B
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE5F157A72;
-	Tue,  9 Jul 2024 11:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A9E158219;
+	Tue,  9 Jul 2024 11:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/9LwFp6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMpqE+hY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAB8155389;
-	Tue,  9 Jul 2024 11:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6761D13A25F;
+	Tue,  9 Jul 2024 11:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523622; cv=none; b=Iu9VEjRioKLaIsvzPmkbfcg8i7SJUs0gk68uceCBpPg58NKuHl2uf/MsZkOtGuXc7GUDYzSiUKW2Fc02yv5cBebNTcm4JN7+R9ifRvzwlUuZSOal2O2gv355VRvIhf/QX44xdQ5q8oLgbmZj15dKSgVKAGUgABVMjFIwUIY0bIU=
+	t=1720524281; cv=none; b=kWl0Af7Mcf6lFLrOX1y225tyX49yP7dqoJqJiO6QQLQiQbaylZJDanRIVK2GIwcLxQy0uj8KIXDtMq37PHS4DmKcqY7J44nSeDVk2iObZgVv+cNUB99J6JiNQem1DqTXiqrrZzjnMonqOukCl6/YgZXCu4kYEs4LGjKcS2mbJ08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523622; c=relaxed/simple;
-	bh=alg29UIv2mHmkPNDgTStbx428aqtM/oPlphXlMGnLx8=;
+	s=arc-20240116; t=1720524281; c=relaxed/simple;
+	bh=PUnMPZIvY5aVc8yrwG0SrJ7buAek+aHM0wGSI+pf5C4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SGJVOL6lPaGUqZuqODei/HFXcjTC8NdqYky9oTvJQjhJRa/Ica9zK63rYusAUr3PEB8WolIHHTLyTXpDP+/KU70iXdi26dQkh0dBBHU9BUnC1GGruBr8kEjhOiLNdEI6TfzLruwcIn0DNqRajLHn+ZU49U0/MHF1KjYkeh+tqAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/9LwFp6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450F9C3277B;
-	Tue,  9 Jul 2024 11:13:42 +0000 (UTC)
+	 MIME-Version; b=PVDUR75qlEi0cXTh+BV8nyYZjdtYvM/myu8Yl02v1NHA3fcAc7kpzHq7cymOPYpExySL4msQvRWIKZzJNOzcGHq2eEvt54X01Q1XV+y4Y1FDqtpdTbHWCUt5ucJcG5x69q7qoXCwDUNYQ5+DjwO/6f3N1PrIskl8kqIEh9U9Qkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMpqE+hY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E191CC3277B;
+	Tue,  9 Jul 2024 11:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523622;
-	bh=alg29UIv2mHmkPNDgTStbx428aqtM/oPlphXlMGnLx8=;
+	s=korg; t=1720524281;
+	bh=PUnMPZIvY5aVc8yrwG0SrJ7buAek+aHM0wGSI+pf5C4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H/9LwFp6V44UG2lMQqzC0Lk9XJ89SzNO9zhZL7Pk0iKwoq6SSzrI3Jt2bkazXCBF8
-	 tQxjTTddVVkp4GdIVw+OQsFzZpbT5BAzkP7jq0BFnKKENctHRlHs6A+HPn8hNzIC+R
-	 /g5ByzfR0gWF2yBsfl/jNpiNHVoHe5d9aQF0JBfQ=
+	b=pMpqE+hYeu6hQucclSMEMk/P1Lzwfm2OqHr253msWnXZOJOTx2eXwACiofoW//Npo
+	 f2RBKr1gZSINuSw5w8qcDD0Eb3xNXfHihpFcdXKp0Di5RnDd2wrltt4FzXnPAKu6sr
+	 0BQNFRb17xvjW1d4pDjOprlEVcS0XuOGWcq0LgG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Lu Yao <yaolu@kylinos.cn>,
-	David Sterba <dsterba@suse.com>,
+	Martin Schiller <ms@dev.tdt.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/139] btrfs: scrub: initialize ret in scrub_simple_mirror() to fix compilation warning
+Subject: [PATCH 6.9 101/197] gpiolib: of: fix lookup quirk for MIPS Lantiq
 Date: Tue,  9 Jul 2024 13:09:15 +0200
-Message-ID: <20240709110700.296416140@linuxfoundation.org>
+Message-ID: <20240709110712.868401481@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Yao <yaolu@kylinos.cn>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit b4e585fffc1cf877112ed231a91f089e85688c2a ]
+[ Upstream commit 3645ffaf2b334abaf5f53e5ca0f47465d91e69d2 ]
 
-The following error message is displayed:
-  ../fs/btrfs/scrub.c:2152:9: error: ‘ret’ may be used uninitialized
-  in this function [-Werror=maybe-uninitialized]"
+As it turns out, there is a large number of out-of-tree DTSes (in
+OpenWrt project) that used to specify incorrect (active high) polarity
+for the Lantiq reset GPIO, so to keep compatibility while they are
+being updated a quirk for force the polarity low is needed. Luckily
+these old DTSes used nonstandard name for the property ("gpio-reset" vs
+"reset-gpios") so the quirk will not hurt if there are any new devices
+that need inverted polarity as they can specify the right polarity in
+their DTS when using the standard "reset-gpios" property.
 
-Compiler version: gcc version: (Debian 10.2.1-6) 10.2.1 20210110
+Additionally the condition to enable the transition from standard to
+non-standard reset GPIO property name was inverted and the replacement
+name for the property was not correct. Fix this as well.
 
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Lu Yao <yaolu@kylinos.cn>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: fbbbcd177a27 ("gpiolib: of: add quirk for locating reset lines with legacy bindings")
+Fixes: 90c2d2eb7ab5 ("MIPS: pci: lantiq: switch to using gpiod API")
+Reported-by: Martin Schiller <ms@dev.tdt.de>
+Acked-by: Martin Schiller <ms@dev.tdt.de>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/ZoLpqv1PN08xHioh@google.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/scrub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpiolib-of.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-index 819973c37a148..a2d91d9f8a109 100644
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -2020,7 +2020,7 @@ static int scrub_simple_mirror(struct scrub_ctx *sctx,
- 	struct btrfs_fs_info *fs_info = sctx->fs_info;
- 	const u64 logical_end = logical_start + logical_length;
- 	u64 cur_logical = logical_start;
--	int ret;
-+	int ret = 0;
+diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
+index cb0cefaec37e8..7db35cbde8e92 100644
+--- a/drivers/gpio/gpiolib-of.c
++++ b/drivers/gpio/gpiolib-of.c
+@@ -202,6 +202,16 @@ static void of_gpio_try_fixup_polarity(const struct device_node *np,
+ 		 * helper, and be consistent with what other drivers do.
+ 		 */
+ 		{ "qi,lb60",		"rb-gpios",	true },
++#endif
++#if IS_ENABLED(CONFIG_PCI_LANTIQ)
++		/*
++		 * According to the PCI specification, the RST# pin is an
++		 * active-low signal. However, most of the device trees that
++		 * have been widely used for a long time incorrectly describe
++		 * reset GPIO as active-high, and were also using wrong name
++		 * for the property.
++		 */
++		{ "lantiq,pci-xway",	"gpio-reset",	false },
+ #endif
+ 	};
+ 	unsigned int i;
+@@ -504,9 +514,9 @@ static struct gpio_desc *of_find_gpio_rename(struct device_node *np,
+ 		{ "reset",	"reset-n-io",	"marvell,nfc-uart" },
+ 		{ "reset",	"reset-n-io",	"mrvl,nfc-uart" },
+ #endif
+-#if !IS_ENABLED(CONFIG_PCI_LANTIQ)
++#if IS_ENABLED(CONFIG_PCI_LANTIQ)
+ 		/* MIPS Lantiq PCI */
+-		{ "reset",	"gpios-reset",	"lantiq,pci-xway" },
++		{ "reset",	"gpio-reset",	"lantiq,pci-xway" },
+ #endif
  
- 	/* The range must be inside the bg */
- 	ASSERT(logical_start >= bg->start && logical_end <= bg->start + bg->length);
+ 		/*
 -- 
 2.43.0
 
