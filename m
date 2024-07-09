@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-58656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3772192B810
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1B3992B799
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FDE3B257B5
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E3961C2344F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A61D158861;
-	Tue,  9 Jul 2024 11:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6439014F138;
+	Tue,  9 Jul 2024 11:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UPezPdaK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YytkdmU8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC41E27713;
-	Tue,  9 Jul 2024 11:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FA913A25F;
+	Tue,  9 Jul 2024 11:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524600; cv=none; b=Y6C/Vbocd8Vaf5T2JOgW0ZgQTRvXC/Ml29kK8IHKWzm5YC766q7YvWiTk3xMH0wI/2svSYCZ55+rxNIorgFUhf1LHmS+NtA7adicgoy3IOt82qvW+Uv8TIkLFjyolZWCZybTMTu7trnrejBIwKaGXNZaPw5pSfQHbYMgC7OF2M0=
+	t=1720524296; cv=none; b=LsvyEsfCVaPrrO9WgVN8U1QnsXT+aNfQrntMTwxjVDA6zJii/TmT1W28fMHkwxthGPZW7WO7IuxGyHXRMmqpztZ4YRfah/2Tze7XFshf+rXwISL42N16GJKXCiFRb83hUuhz2JuL0+4Yb9pBMV+04+npE6ZPoTAAMh9cOcez+I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524600; c=relaxed/simple;
-	bh=Jfjd11geDnq97iEs6Mrtf3jspV1zpVbO//Cy4Zul2GU=;
+	s=arc-20240116; t=1720524296; c=relaxed/simple;
+	bh=9MnC+4RJOvA76dyt0dJDobwQ0hzTQzX/8dDYTkjfVWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gbUwFVskW+8QX9mXztzeNuftlbG2xYivSwEOAuPk9eHYz8rs8PXsHAaWWpCStovNLTpbVxfgCFz2IwaUENOHL2q98ZagKS2IWhBXJY1JqCN7LsC7SY3dFwKBWpCXDrJ1Zm+AuYW7cq08UizEshVa3VYcacs6jqguyKzO/q56dhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPezPdaK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C23C3277B;
-	Tue,  9 Jul 2024 11:30:00 +0000 (UTC)
+	 MIME-Version; b=oF86dsBDrcPtIxSsQm/Qec0peqRi5L4+wgUZmpk9ketSQ5vUd0zJGPfQshDWMJgY7CudGRtqyfunKlmG+O6jjPJv9oLJdOi4ZeNG5jvbsIvfDDuVxXaybyPhdUX4HfRnbdg67r0d7nvhTN52QE6nEy7lbFleD6V3FaOfIMiJ8JU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YytkdmU8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF1FC3277B;
+	Tue,  9 Jul 2024 11:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524600;
-	bh=Jfjd11geDnq97iEs6Mrtf3jspV1zpVbO//Cy4Zul2GU=;
+	s=korg; t=1720524296;
+	bh=9MnC+4RJOvA76dyt0dJDobwQ0hzTQzX/8dDYTkjfVWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UPezPdaKgR92ifMc+DnIkOwFVlqFU4nMIkS9vC0VXY8oKOU0GFbCNM0eVswU6QpJx
-	 UUvek/hsWMsbiQhn1mfVZUmxutQiBFtwznp9uMhySrGorMfH9+5PCHrnhdxMbweUM9
-	 UuQpktpx0L8bNuzZhDuIUQD4OoWaafp/SrYEY/Ik=
+	b=YytkdmU8rtVSYMwu4V6u0H3VTjkNvPpqhwO85erhMaGaHu/mNiui7QQYzXA85HTd7
+	 UCCtKgRtX0Rby/bLflGrJMJiylNicCHnqZgJC6yFKviaUUaZAplAFfrIPEM51ui1yF
+	 adn6HnLSbkvnCS1Pa/eHR9eJV5ycjLgwl5BqchMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erick Archer <erick.archer@outlook.com>,
-	Kees Cook <keescook@chromium.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Simon Horman <horms@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 020/102] Input: ff-core - prefer struct_size over open coded arithmetic
+Subject: [PATCH 6.9 129/197] bnxt_en: Fix the resource check condition for RSS contexts
 Date: Tue,  9 Jul 2024 13:09:43 +0200
-Message-ID: <20240709110652.156186018@linuxfoundation.org>
+Message-ID: <20240709110713.945360143@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +65,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erick Archer <erick.archer@outlook.com>
+From: Pavan Chebbi <pavan.chebbi@broadcom.com>
 
-[ Upstream commit a08b8f8557ad88ffdff8905e5da972afe52e3307 ]
+[ Upstream commit 5d350dc3429b3eb6f2b1b8ccb78ed4ec6c4d4a4f ]
 
-This is an effort to get rid of all multiplications from allocation
-functions in order to prevent integer overflows [1][2].
+While creating a new RSS context, bnxt_rfs_capable() currently
+makes a strict check to see if the required VNICs are already
+available.  If the current VNICs are not what is required,
+either too many or not enough, it will call the firmware to
+reserve the exact number required.
 
-As the "ff" variable is a pointer to "struct ff_device" and this
-structure ends in a flexible array:
+There is a bug in the firmware when the driver tries to
+relinquish some reserved VNICs and RSS contexts.  It will
+cause the default VNIC to lose its RSS configuration and
+cause receive packets to be placed incorrectly.
 
-struct ff_device {
-	[...]
-	struct file *effect_owners[] __counted_by(max_effects);
-};
+Workaround this problem by skipping the resource reduction.
+The driver will not reduce the VNIC and RSS context reservations
+when a context is deleted.  The resources will be available for
+use when new contexts are created later.
 
-the preferred way in the kernel is to use the struct_size() helper to
-do the arithmetic instead of the calculation "size + count * size" in
-the kzalloc() function.
+Potentially, this workaround can cause us to run out of VNIC
+and RSS contexts if there are a lot of VF functions creating
+and deleting RSS contexts.  In the future, we will conditionally
+disable this workaround when the firmware fix is available.
 
-The struct_size() helper returns SIZE_MAX on overflow. So, refactor
-the comparison to take advantage of this.
-
-This way, the code is more readable and safer.
-
-This code was detected with the help of Coccinelle, and audited and
-modified manually.
-
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments [1]
-Link: https://github.com/KSPP/linux/issues/160 [2]
-Signed-off-by: Erick Archer <erick.archer@outlook.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/AS8PR02MB72371E646714BAE2E51A6A378B152@AS8PR02MB7237.eurprd02.prod.outlook.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: 438ba39b25fe ("bnxt_en: Improve RSS context reservation infrastructure")
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/netdev/20240625010210.2002310-1-kuba@kernel.org/
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240703180112.78590-1-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/ff-core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/input/ff-core.c b/drivers/input/ff-core.c
-index 16231fe080b00..609a5f01761bd 100644
---- a/drivers/input/ff-core.c
-+++ b/drivers/input/ff-core.c
-@@ -9,8 +9,10 @@
- /* #define DEBUG */
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 0fab62a56f3b3..2b7936b3fb3ef 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -12436,7 +12436,11 @@ static bool bnxt_rfs_capable(struct bnxt *bp)
+ 	if (!BNXT_NEW_RM(bp))
+ 		return true;
  
- #include <linux/input.h>
-+#include <linux/limits.h>
- #include <linux/module.h>
- #include <linux/mutex.h>
-+#include <linux/overflow.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
+-	if (hwr.vnic == bp->hw_resc.resv_vnics &&
++	/* Do not reduce VNIC and RSS ctx reservations.  There is a FW
++	 * issue that will mess up the default VNIC if we reduce the
++	 * reservations.
++	 */
++	if (hwr.vnic <= bp->hw_resc.resv_vnics &&
+ 	    hwr.rss_ctx <= bp->hw_resc.resv_rsscos_ctxs)
+ 		return true;
  
-@@ -315,9 +317,8 @@ int input_ff_create(struct input_dev *dev, unsigned int max_effects)
- 		return -EINVAL;
- 	}
- 
--	ff_dev_size = sizeof(struct ff_device) +
--				max_effects * sizeof(struct file *);
--	if (ff_dev_size < max_effects) /* overflow */
-+	ff_dev_size = struct_size(ff, effect_owners, max_effects);
-+	if (ff_dev_size == SIZE_MAX) /* overflow */
- 		return -EINVAL;
- 
- 	ff = kzalloc(ff_dev_size, GFP_KERNEL);
 -- 
 2.43.0
 
