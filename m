@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-58383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FDCB92B6BE
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AF5992B80F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A06CBB252FB
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD21A1C20BBD
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973BA158A32;
-	Tue,  9 Jul 2024 11:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDAA01586C6;
+	Tue,  9 Jul 2024 11:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5GJ3ca8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeftsoYO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5671313A25F;
-	Tue,  9 Jul 2024 11:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB97B158872;
+	Tue,  9 Jul 2024 11:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523769; cv=none; b=WVkZKm7FgKd+IugEbTlj0aSEkeTDn0CEPrY6251gZq0eiN/I6nso5wEWzXemDbViN6mKxI9S6PO/Pa/MEWH33U1S2hKzM82EsT4SDQFaUFHSs4K9aMdBTx0hFZ8MwdFJTepZs9ONdwDgRfTnI2wM6zFt3FpXyBK3mBGtpTwlOKE=
+	t=1720524606; cv=none; b=B0au+GI5yjuwk5pVDrE+5MkhdjRZ5RUh6cfYuV5YVQXcPHlVYmk1MuFDqQUqeOLtUmiLhPnGrZgHxPLnq5X7H59Smw0SXnHIUUUOwzJhuWuBiqtZyEpZxA0N+fmB9Q9ZKKcc5CIOKclV6ZAXeQqqkSw1tLBWHTzwibQernu6Ess=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523769; c=relaxed/simple;
-	bh=N5jSwKJreAVsW6UlydfOWvHukgs/GmmQGXBBEtgT5Ww=;
+	s=arc-20240116; t=1720524606; c=relaxed/simple;
+	bh=5pK/tMVTcYSg84XVui0HoXD1gkCHb7FvcWh59nWHyJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dDwAgkAhreY1SsUuete6hluhNVdC0RgvrvREyFMg1bBx2Wq/QoOm8qyuQ32mA2xkCtRQnwP1Hlpg+3XqJrSoM/Kcuhw+xLae2J2sZA0aLJXhsnd2bkWAvz3Jl9Cyhma3Mmiz37vmTWosYWPXa6P8XlapMNqI4ob4pbkIbSpQKDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5GJ3ca8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFDF4C3277B;
-	Tue,  9 Jul 2024 11:16:08 +0000 (UTC)
+	 MIME-Version; b=AhrW+JsE211TcB3u3RpW0MaVy8fSxSXwr5TWrBpY8FdmEdRHQtTC7vg6aJxYkuQLH6ibN4AIthK7CnqPfxAHLkLikB1rNZR9v2v1iQWNYLxPjkGB/I6Qi990eYu0cVi6XsdiZwRYsmREIiMaNF4sgQ/sHsQc7HE5ZoY3TCSF+3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeftsoYO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C57C3277B;
+	Tue,  9 Jul 2024 11:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523769;
-	bh=N5jSwKJreAVsW6UlydfOWvHukgs/GmmQGXBBEtgT5Ww=;
+	s=korg; t=1720524606;
+	bh=5pK/tMVTcYSg84XVui0HoXD1gkCHb7FvcWh59nWHyJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q5GJ3ca8uVBgR9GnkNEP178vGWa1lT9QsN3Lwz4mWJ2IdH0ieaq8bEiwthlsWMIw7
-	 OJE2ry3weNCbP5XQHGXZC7UQzGKVIwck4Dve5UIt7BGX7wutMFFUS3ixYQHMn/s2wS
-	 IMF2e+vyde2W1PFfLUqEFXGgPetTZjWi7OG4bFWk=
+	b=xeftsoYOaNyd0elb0qRc5TzM83P1iBMiLOar4cQqZG5B/Lxb1efQPJq+h7UhTNdPD
+	 O+f/y7ih3Q94UB1fddYnZrWOJVJpK1kES8VNZ1wDKamYsS4DxyQMo8pYNyW4GkJZga
+	 cOEBg+78YVEnq96le337gIRhxWWgljTgvUty2c14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Lyude Paul <lyude@redhat.com>
-Subject: [PATCH 6.6 102/139] drm/nouveau: fix null pointer dereference in nouveau_connector_get_modes
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 039/102] s390: Mark psw in __load_psw_mask() as __unitialized
 Date: Tue,  9 Jul 2024 13:10:02 +0200
-Message-ID: <20240709110702.120385942@linuxfoundation.org>
+Message-ID: <20240709110652.895703661@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-commit 80bec6825b19d95ccdfd3393cf8ec15ff2a749b4 upstream.
+[ Upstream commit 7278a8fb8d032dfdc03d9b5d17e0bc451cdc1492 ]
 
-In nouveau_connector_get_modes(), the return value of drm_mode_duplicate()
-is assigned to mode, which will lead to a possible NULL pointer
-dereference on failure of drm_mode_duplicate(). Add a check to avoid npd.
+Without __unitialized, the following code is generated when
+INIT_STACK_ALL_ZERO is enabled:
 
-Cc: stable@vger.kernel.org
-Fixes: 6ee738610f41 ("drm/nouveau: Add DRM driver for NVIDIA GPUs")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240627074204.3023776-1-make24@iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+86: d7 0f f0 a0 f0 a0     xc      160(16,%r15), 160(%r15)
+8c: e3 40 f0 a0 00 24     stg     %r4, 160(%r15)
+92: c0 10 00 00 00 08     larl    %r1, 0xa2
+98: e3 10 f0 a8 00 24     stg     %r1, 168(%r15)
+9e: b2 b2 f0 a0           lpswe   160(%r15)
+
+The xc is not adding any security because psw is fully initialized
+with the following instructions. Add __unitialized to the psw
+definitiation to avoid the superfluous clearing of psw.
+
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_connector.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/s390/include/asm/processor.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/nouveau/nouveau_connector.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
-@@ -983,6 +983,9 @@ nouveau_connector_get_modes(struct drm_c
- 		struct drm_display_mode *mode;
+diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
+index c907f747d2a04..26861b09293f1 100644
+--- a/arch/s390/include/asm/processor.h
++++ b/arch/s390/include/asm/processor.h
+@@ -250,8 +250,8 @@ static inline void __load_psw(psw_t psw)
+  */
+ static __always_inline void __load_psw_mask(unsigned long mask)
+ {
++	psw_t psw __uninitialized;
+ 	unsigned long addr;
+-	psw_t psw;
  
- 		mode = drm_mode_duplicate(dev, nv_connector->native_mode);
-+		if (!mode)
-+			return 0;
-+
- 		drm_mode_probed_add(connector, mode);
- 		ret = 1;
- 	}
+ 	psw.mask = mask;
+ 
+-- 
+2.43.0
+
 
 
 
