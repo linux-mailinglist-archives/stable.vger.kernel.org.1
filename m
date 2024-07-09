@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-58413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD56792B6DE
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45D2692B830
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:31:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4986CB20CE3
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77F421C20C53
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08263158201;
-	Tue,  9 Jul 2024 11:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB6414E2C4;
+	Tue,  9 Jul 2024 11:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmZrZKEP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V680gYl1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA55355E4C;
-	Tue,  9 Jul 2024 11:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B75355E4C;
+	Tue,  9 Jul 2024 11:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523862; cv=none; b=uLg0eOm1q5CS0JUvb6gE/G6YiM7uRkoG/MSpvsz7N5lfcdGHCXctB6G5JwlGUwBbsD1wu+vtKQ/eCLj8n1h0dF7YHtNaUyFlrBQsVjyVYGUx4gIBdHIHrCWXoYHOygrwwhzWKr+EGRzxVcc94n0kO1ShacHZCfc9itYw2UcV1rM=
+	t=1720524691; cv=none; b=HZWn88qpp5g3QalD6HQ4+otbpz+DLn+bQF0JnL7WKp5th3jQVQe+iNrhQIoiaRBEScyjMBw1O4Y3oauUa5wpXwDngGn4lyYVofEhen141iEvi4tSPGnLy0jPSudzafT3yl5IP9TIVYg5Jme761uvEsOCSjjS5YqGtR4JIQlNQNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523862; c=relaxed/simple;
-	bh=QbeFhw/ODNT6G6Zq/Bsq37m2o8/yRq9AfWHHWReUPQk=;
+	s=arc-20240116; t=1720524691; c=relaxed/simple;
+	bh=/Z40NyeZ5Bujt6d5e314cYWAsrtXZerhzOlgnkoRhq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qhN41KhBNvQukzSQJNrvK3S5Na5uKuFCp4Aqxbo7Gan3JqHmi8PLalyagY7AEpyRycaN0byT6ywZlwWHIKhn3gBpRoqertdPofbDilg4uFWiKbosJAzQJavUrflaM/+LjyHuuO7rOvtpYu2yIHSwaHrOho1CjUdSonlfIALxnZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmZrZKEP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE85C3277B;
-	Tue,  9 Jul 2024 11:17:42 +0000 (UTC)
+	 MIME-Version; b=n3TnbbmQ/9Y49wwPxMTA9OljwLvbLGOmBOjyA+2AFO2g53fhsS5t2DHglIX7uGrDpk5Oa29HvNK3qwL1rZs7MKP4a+Gt+NNvLS+2pm/lp2Z8QHPqmmbwjN5UZ1WexPvv1enWXjvEDdQQQGEmvvZubZbt70rjX/S7yYuirMe+GYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V680gYl1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B249C3277B;
+	Tue,  9 Jul 2024 11:31:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523862;
-	bh=QbeFhw/ODNT6G6Zq/Bsq37m2o8/yRq9AfWHHWReUPQk=;
+	s=korg; t=1720524691;
+	bh=/Z40NyeZ5Bujt6d5e314cYWAsrtXZerhzOlgnkoRhq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmZrZKEPTboLkGMxSXWnj3Q/Xsz1AtzS8Npgs/FakhBAerftyDPOVIfp5D4ayRz5I
-	 31R2I0YYLE5ik/x05SMp3Iet/Xz8OW0I5lkqBFAGX3VtUsul3M/pb6Qp29QhXalJq1
-	 VKFyKB0d90AwZcQjPLDFXUibp9Sz2Ec7hGxyHB6U=
+	b=V680gYl1TtjQ3zgEXVISmFTryZkdrxOMGa2KWqN0720Tiwxn0S3kKtB/UBk3Neppq
+	 ia78gR5yumr6JZ0EyVhxh+3bgoXSrxwWoEPWNBvQuA4+C7O43hBGeURL/frjonILNn
+	 ve3LVIFf49zFBj2lHh+Jz4P35bqkYoAJ2nKOL8g4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Turin <alex@vastdata.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 132/139] nvmet: fix a possible leak when destroy a ctrl during qp establishment
+	Nathan Chancellor <nathan@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 069/102] scsi: mpi3mr: Use proper format specifier in mpi3mr_sas_port_add()
 Date: Tue,  9 Jul 2024 13:10:32 +0200
-Message-ID: <20240709110703.267986423@linuxfoundation.org>
+Message-ID: <20240709110654.066443379@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit c758b77d4a0a0ed3a1292b3fd7a2aeccd1a169a4 ]
+commit 9f365cb8bbd0162963d6852651d7c9e30adcb7b5 upstream.
 
-In nvmet_sq_destroy we capture sq->ctrl early and if it is non-NULL we
-know that a ctrl was allocated (in the admin connect request handler)
-and we need to release pending AERs, clear ctrl->sqs and sq->ctrl
-(for nvme-loop primarily), and drop the final reference on the ctrl.
+When building for a 32-bit platform such as ARM or i386, for which size_t
+is unsigned int, there is a warning due to using an unsigned long format
+specifier:
 
-However, a small window is possible where nvmet_sq_destroy starts (as
-a result of the client giving up and disconnecting) concurrently with
-the nvme admin connect cmd (which may be in an early stage). But *before*
-kill_and_confirm of sq->ref (i.e. the admin connect managed to get an sq
-live reference). In this case, sq->ctrl was allocated however after it was
-captured in a local variable in nvmet_sq_destroy.
-This prevented the final reference drop on the ctrl.
+  drivers/scsi/mpi3mr/mpi3mr_transport.c:1370:11: error: format specifies type 'unsigned long' but the argument has type 'unsigned int' [-Werror,-Wformat]
+   1369 |                         ioc_warn(mrioc, "skipping port %u, max allowed value is %lu\n",
+        |                                                                                 ~~~
+        |                                                                                 %u
+   1370 |                             i, sizeof(mr_sas_port->phy_mask) * 8);
+        |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Solve this by re-capturing the sq->ctrl after all inflight request has
-completed, where for sure sq->ctrl reference is final, and move forward
-based on that.
+Use the proper format specifier for size_t, %zu, to resolve the warning for
+all platforms.
 
-This issue was observed in an environment with many hosts connecting
-multiple ctrls simoutanuosly, creating a delay in allocating a ctrl
-leading up to this race window.
-
-Reported-by: Alex Turin <alex@vastdata.com>
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3668651def2c ("scsi: mpi3mr: Sanitise num_phys")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20240514-mpi3mr-fix-wformat-v1-1-f1ad49217e5e@kernel.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/core.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/scsi/mpi3mr/mpi3mr_transport.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
-index ce7e945cb4f7e..cfba3ec7add84 100644
---- a/drivers/nvme/target/core.c
-+++ b/drivers/nvme/target/core.c
-@@ -806,6 +806,15 @@ void nvmet_sq_destroy(struct nvmet_sq *sq)
- 	percpu_ref_exit(&sq->ref);
- 	nvmet_auth_sq_free(sq);
+--- a/drivers/scsi/mpi3mr/mpi3mr_transport.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_transport.c
+@@ -1366,7 +1366,7 @@ static struct mpi3mr_sas_port *mpi3mr_sa
+ 			continue;
  
-+	/*
-+	 * we must reference the ctrl again after waiting for inflight IO
-+	 * to complete. Because admin connect may have sneaked in after we
-+	 * store sq->ctrl locally, but before we killed the percpu_ref. the
-+	 * admin connect allocates and assigns sq->ctrl, which now needs a
-+	 * final ref put, as this ctrl is going away.
-+	 */
-+	ctrl = sq->ctrl;
-+
- 	if (ctrl) {
- 		/*
- 		 * The teardown flow may take some time, and the host may not
--- 
-2.43.0
-
+ 		if (i > sizeof(mr_sas_port->phy_mask) * 8) {
+-			ioc_warn(mrioc, "skipping port %u, max allowed value is %lu\n",
++			ioc_warn(mrioc, "skipping port %u, max allowed value is %zu\n",
+ 			    i, sizeof(mr_sas_port->phy_mask) * 8);
+ 			goto out_fail;
+ 		}
 
 
 
