@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-58376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58E7992B6B4
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:16:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A29EC92B80A
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 032A31F24204
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:16:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D46EB1C22398
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F64D158A01;
-	Tue,  9 Jul 2024 11:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A371586C0;
+	Tue,  9 Jul 2024 11:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPip65P2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PpWcpNVK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2D31586C0;
-	Tue,  9 Jul 2024 11:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127041586C3;
+	Tue,  9 Jul 2024 11:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523749; cv=none; b=WUP0OuwSy4kqXtHfJv7exBHdzEgCC9h7Hc37ElhRLEys3YwealmnGF/OOgaODsZ3AcI3dTDkHQTcZBDHYnQlpBhya1jiVcG2FtHayOkaRqpN6QIsvnss8SxnQf3AkWdsBJBMtZMMPJoZqQGWekrP7+DQC4YsUqkJcmEUtotABR4=
+	t=1720524589; cv=none; b=B1Edyjrt0ZPw+FK+toAv5bWngK2jnoJZmAtG2P45aWEDDyaXMHnrBwZjYzQjzwv4xPX4WCFYUvSidLHC5fLL7XKQMR8eyXli7r+oLKsBYibiDJjQXmlccFmwzHuyuVY8etOMvB+VCw0Ui/iWL/pVGBF0z2DpeiiFf14cY1PuH0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523749; c=relaxed/simple;
-	bh=IbZtROTB03+Iigjj7RctRnEsf5EVk5AnBr9Swq87KUw=;
+	s=arc-20240116; t=1720524589; c=relaxed/simple;
+	bh=BRy/Sqwe+5kQjm80cKdZKjqSDlZGP/naLJKgJLhmvgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TVHacrreZlb++66Ze0rRpjahWtmHWHquSZB7lHss912U9BESESqQlMNc8ynLqIHMagmL1IdAvTZrlTVRJJsLPfOcJZ9NKeHGmKNqYz6mjsvdpzc6FQG5ASggQkKdociLUKNUIXnRYdKmcw0v5ra/6kSnsH0b63EMIILqA1k6jd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPip65P2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613D5C32786;
-	Tue,  9 Jul 2024 11:15:48 +0000 (UTC)
+	 MIME-Version; b=u3doEoCxRCocS8bNV/ov5sQJfnvfktvQI12Y43Vig3qh/EL3w1BQ/d09gOPYmIGRIofBiWgEpkFXYs99u+iutuuajBX0BgpJrY/BAT/xNEHbJtmZLyNV3MhFHDo1tXgv3Vxy5yoD/HZkk8b9Miiu120BmAAluAvWyLsxb3uLnJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PpWcpNVK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5B3C3277B;
+	Tue,  9 Jul 2024 11:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523748;
-	bh=IbZtROTB03+Iigjj7RctRnEsf5EVk5AnBr9Swq87KUw=;
+	s=korg; t=1720524589;
+	bh=BRy/Sqwe+5kQjm80cKdZKjqSDlZGP/naLJKgJLhmvgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gPip65P2hrFBhFkXR+RDGpVpxjxa3QLtXEOt/AZy28XV92mHiDnp6eSjF7L4LIxKn
-	 XN6p4ZxzwXA5sHxLmlFPrrh0Mt4d9t3yTYS1kfuD86ChzyBayGUBEI9G27RBI8LCUP
-	 UqziCubLUElkzmWs5rAW2xt6lLsqMYk0SOvABDTM=
+	b=PpWcpNVK6qdqQDPmENmBMV86VJTX3QmN1otRuGIS/w8HorBt0hAMy4d971UaUNd5k
+	 QPlp0Gbl6wTY8Pjb0xyahfHw/lHKm5UoiWDwgvZ+wWfkvlwQWiINBbkjM4IG61yNoS
+	 zLhu8yS2L0uznSvPYE4c1KjUgsMIqK3NL0UbcpRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 096/139] scsi: mpi3mr: Use proper format specifier in mpi3mr_sas_port_add()
-Date: Tue,  9 Jul 2024 13:09:56 +0200
-Message-ID: <20240709110701.892099158@linuxfoundation.org>
+	"Jose E. Marchesi" <jose.marchesi@oracle.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 034/102] bpf: Avoid uninitialized value in BPF_CORE_READ_BITFIELD
+Date: Tue,  9 Jul 2024 13:09:57 +0200
+Message-ID: <20240709110652.699952430@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Jose E. Marchesi <jose.marchesi@oracle.com>
 
-commit 9f365cb8bbd0162963d6852651d7c9e30adcb7b5 upstream.
+[ Upstream commit 009367099eb61a4fc2af44d4eb06b6b4de7de6db ]
 
-When building for a 32-bit platform such as ARM or i386, for which size_t
-is unsigned int, there is a warning due to using an unsigned long format
-specifier:
+[Changes from V1:
+ - Use a default branch in the switch statement to initialize `val'.]
 
-  drivers/scsi/mpi3mr/mpi3mr_transport.c:1370:11: error: format specifies type 'unsigned long' but the argument has type 'unsigned int' [-Werror,-Wformat]
-   1369 |                         ioc_warn(mrioc, "skipping port %u, max allowed value is %lu\n",
-        |                                                                                 ~~~
-        |                                                                                 %u
-   1370 |                             i, sizeof(mr_sas_port->phy_mask) * 8);
-        |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+GCC warns that `val' may be used uninitialized in the
+BPF_CRE_READ_BITFIELD macro, defined in bpf_core_read.h as:
 
-Use the proper format specifier for size_t, %zu, to resolve the warning for
-all platforms.
+	[...]
+	unsigned long long val;						      \
+	[...]								      \
+	switch (__CORE_RELO(s, field, BYTE_SIZE)) {			      \
+	case 1: val = *(const unsigned char *)p; break;			      \
+	case 2: val = *(const unsigned short *)p; break;		      \
+	case 4: val = *(const unsigned int *)p; break;			      \
+	case 8: val = *(const unsigned long long *)p; break;		      \
+        }       							      \
+	[...]
+	val;								      \
+	}								      \
 
-Fixes: 3668651def2c ("scsi: mpi3mr: Sanitise num_phys")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20240514-mpi3mr-fix-wformat-v1-1-f1ad49217e5e@kernel.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch adds a default entry in the switch statement that sets
+`val' to zero in order to avoid the warning, and random values to be
+used in case __builtin_preserve_field_info returns unexpected values
+for BPF_FIELD_BYTE_SIZE.
+
+Tested in bpf-next master.
+No regressions.
+
+Signed-off-by: Jose E. Marchesi <jose.marchesi@oracle.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240508101313.16662-1-jose.marchesi@oracle.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_transport.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/lib/bpf/bpf_core_read.h | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/scsi/mpi3mr/mpi3mr_transport.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_transport.c
-@@ -1366,7 +1366,7 @@ static struct mpi3mr_sas_port *mpi3mr_sa
- 			continue;
- 
- 		if (i > sizeof(mr_sas_port->phy_mask) * 8) {
--			ioc_warn(mrioc, "skipping port %u, max allowed value is %lu\n",
-+			ioc_warn(mrioc, "skipping port %u, max allowed value is %zu\n",
- 			    i, sizeof(mr_sas_port->phy_mask) * 8);
- 			goto out_fail;
- 		}
+diff --git a/tools/lib/bpf/bpf_core_read.h b/tools/lib/bpf/bpf_core_read.h
+index 496e6a8ee0dc9..41740ae8aad73 100644
+--- a/tools/lib/bpf/bpf_core_read.h
++++ b/tools/lib/bpf/bpf_core_read.h
+@@ -102,6 +102,7 @@ enum bpf_enum_value_kind {
+ 	case 2: val = *(const unsigned short *)p; break;		      \
+ 	case 4: val = *(const unsigned int *)p; break;			      \
+ 	case 8: val = *(const unsigned long long *)p; break;		      \
++	default: val = 0; break;					      \
+ 	}								      \
+ 	val <<= __CORE_RELO(s, field, LSHIFT_U64);			      \
+ 	if (__CORE_RELO(s, field, SIGNED))				      \
+-- 
+2.43.0
+
 
 
 
