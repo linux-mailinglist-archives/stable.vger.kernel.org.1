@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB67A92B7E6
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:28:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81B4692B857
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76A5DB21EA2
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:28:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A29711C21E9C
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D140B157485;
-	Tue,  9 Jul 2024 11:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A396158A07;
+	Tue,  9 Jul 2024 11:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j71V6b0T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SCrnaVBk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D3627713;
-	Tue,  9 Jul 2024 11:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068CC15886D;
+	Tue,  9 Jul 2024 11:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524509; cv=none; b=BlMNSwpWrtjE7oZ8VpTOzjpwl2q9lOLtXTv/V08ZUl1xTIxua+AXLhxw32lhQu6YtwgKSrvCOyDKkn4gaJFsHBLK+IbwjZsgy80GLnBPna7V2I7QbIAulPxT1uQszI0zPF3Jz4U48axDsXSbFaK4EbbfXbdYf81VvHNYAYFp/Lk=
+	t=1720524795; cv=none; b=KCZS9IeI0hB8dR49iJV27tWMJmoPU4TUwkQfQ5747fHBcvS4Uv+gLk0bb2c/P8G5ZrbZtBuW3GeNTTpES+HKFOUdqkX/WAdKANBXolSMBzosx5kZ6fLFWCzUyblxQaH4KbVay5khGletJDL7lxo1E81XDkF6nmjm7HKcppR3tKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524509; c=relaxed/simple;
-	bh=q8fJ/ZND6o5ztUgvDzzTXW50C5jUzrCOTD8XhskQEKw=;
+	s=arc-20240116; t=1720524795; c=relaxed/simple;
+	bh=GhHNcpPoCUdNY361Lf1ipxcIeBsb0t9Ec4bFcAd8Mlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ztap9H3/oaZrbU+GTlghShueTjaEaZ2xwvIz1nMJI2Ntd33Dn/K1HdaNC+N+I1Su8b6/XOzEr2TaEiv/HoagN8W10ao5nBsunGt4boVqIZZvTJhbyYuC+7wi0xml9HYJ/pTAn/B1j8WuaI+DnR4A/jk0KM1T4NnsdKEzHkFigcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j71V6b0T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A07C3277B;
-	Tue,  9 Jul 2024 11:28:28 +0000 (UTC)
+	 MIME-Version; b=g3cc8va8f6lAAFcOrKCPKy2g/1kCCOFGpsruyUIg6gPy6C9tXnhTM1eeX0WmQ6jmGTSgxu9RxjIoRIxQbl9EiTyDQQrrRcX+VKcNORzrc1PZNlwhuWdKqbMb8jMxcDRmbKmz0Ov300tHtVOEVEvq+aUZsUz6q9mddQrPzgK55tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SCrnaVBk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D7ADC3277B;
+	Tue,  9 Jul 2024 11:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524509;
-	bh=q8fJ/ZND6o5ztUgvDzzTXW50C5jUzrCOTD8XhskQEKw=;
+	s=korg; t=1720524794;
+	bh=GhHNcpPoCUdNY361Lf1ipxcIeBsb0t9Ec4bFcAd8Mlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j71V6b0TgO7GnXv/mHT7wh2mJk0tmKulo4FoKTkciwO0LtwcMH1B8KnAHvdA4HGjL
-	 JHCEVmUbBuV5UBJtg0fFbNBmk39bSNIJbKIfBnDu3L/jW9a2MuSyBMkfsZPwAkqLJ+
-	 cbA5Xy/ktTFY2AhkXa5YXRTpf744EDtXLKwzUyYE=
+	b=SCrnaVBkebxuwF6Y4o5N8NKkYHXv70IURf5wPrt0lFRI46BQhV+5H05dcT1eqQi0o
+	 0wYx4fla+dhEuOjWC5z8Hgf2iurPtho8iNdhJ/o7VPG62/WzipnxappSmn53ugX9Ha
+	 8iLP5mPJtvtxrymJgvcLIfbx1UJaongTiTKFuxME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.9 197/197] libbpf: dont close(-1) in multi-uprobe feature detector
+	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 088/102] i2c: pnx: Fix potential deadlock warning from del_timer_sync() call in isr
 Date: Tue,  9 Jul 2024 13:10:51 +0200
-Message-ID: <20240709110716.562123892@linuxfoundation.org>
+Message-ID: <20240709110654.797090564@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
 
-commit 7d0b3953f6d832daec10a0d76e2d4db405768a8b upstream.
+[ Upstream commit f63b94be6942ba82c55343e196bd09b53227618e ]
 
-Guard close(link_fd) with extra link_fd >= 0 check to prevent close(-1).
+When del_timer_sync() is called in an interrupt context it throws a warning
+because of potential deadlock. The timer is used only to exit from
+wait_for_completion() after a timeout so replacing the call with
+wait_for_completion_timeout() allows to remove the problematic timer and
+its related functions altogether.
 
-Detected by Coverity static analysis.
-
-Fixes: 04d939a2ab22 ("libbpf: detect broken PID filtering logic for multi-uprobe")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20240529231212.768828-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 41561f28e76a ("i2c: New Philips PNX bus driver")
+Signed-off-by: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/features.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-pnx.c | 48 ++++++++----------------------------
+ 1 file changed, 10 insertions(+), 38 deletions(-)
 
---- a/tools/lib/bpf/features.c
-+++ b/tools/lib/bpf/features.c
-@@ -393,7 +393,8 @@ static int probe_uprobe_multi_link(int t
- 	err = -errno; /* close() can clobber errno */
+diff --git a/drivers/i2c/busses/i2c-pnx.c b/drivers/i2c/busses/i2c-pnx.c
+index 50f21cdbe90d3..d2c09b0fdf527 100644
+--- a/drivers/i2c/busses/i2c-pnx.c
++++ b/drivers/i2c/busses/i2c-pnx.c
+@@ -15,7 +15,6 @@
+ #include <linux/ioport.h>
+ #include <linux/delay.h>
+ #include <linux/i2c.h>
+-#include <linux/timer.h>
+ #include <linux/completion.h>
+ #include <linux/platform_device.h>
+ #include <linux/io.h>
+@@ -32,7 +31,6 @@ struct i2c_pnx_mif {
+ 	int			ret;		/* Return value */
+ 	int			mode;		/* Interface mode */
+ 	struct completion	complete;	/* I/O completion */
+-	struct timer_list	timer;		/* Timeout */
+ 	u8 *			buf;		/* Data buffer */
+ 	int			len;		/* Length of data buffer */
+ 	int			order;		/* RX Bytes to order via TX */
+@@ -117,24 +115,6 @@ static inline int wait_reset(struct i2c_pnx_algo_data *data)
+ 	return (timeout <= 0);
+ }
  
- 	if (link_fd >= 0 || err != -EBADF) {
--		close(link_fd);
-+		if (link_fd >= 0)
-+			close(link_fd);
- 		close(prog_fd);
- 		return 0;
+-static inline void i2c_pnx_arm_timer(struct i2c_pnx_algo_data *alg_data)
+-{
+-	struct timer_list *timer = &alg_data->mif.timer;
+-	unsigned long expires = msecs_to_jiffies(alg_data->timeout);
+-
+-	if (expires <= 1)
+-		expires = 2;
+-
+-	del_timer_sync(timer);
+-
+-	dev_dbg(&alg_data->adapter.dev, "Timer armed at %lu plus %lu jiffies.\n",
+-		jiffies, expires);
+-
+-	timer->expires = jiffies + expires;
+-
+-	add_timer(timer);
+-}
+-
+ /**
+  * i2c_pnx_start - start a device
+  * @slave_addr:		slave address
+@@ -259,8 +239,6 @@ static int i2c_pnx_master_xmit(struct i2c_pnx_algo_data *alg_data)
+ 				~(mcntrl_afie | mcntrl_naie | mcntrl_drmie),
+ 				  I2C_REG_CTL(alg_data));
+ 
+-			del_timer_sync(&alg_data->mif.timer);
+-
+ 			dev_dbg(&alg_data->adapter.dev,
+ 				"%s(): Waking up xfer routine.\n",
+ 				__func__);
+@@ -276,8 +254,6 @@ static int i2c_pnx_master_xmit(struct i2c_pnx_algo_data *alg_data)
+ 			~(mcntrl_afie | mcntrl_naie | mcntrl_drmie),
+ 			  I2C_REG_CTL(alg_data));
+ 
+-		/* Stop timer. */
+-		del_timer_sync(&alg_data->mif.timer);
+ 		dev_dbg(&alg_data->adapter.dev,
+ 			"%s(): Waking up xfer routine after zero-xfer.\n",
+ 			__func__);
+@@ -364,8 +340,6 @@ static int i2c_pnx_master_rcv(struct i2c_pnx_algo_data *alg_data)
+ 				 mcntrl_drmie | mcntrl_daie);
+ 			iowrite32(ctl, I2C_REG_CTL(alg_data));
+ 
+-			/* Kill timer. */
+-			del_timer_sync(&alg_data->mif.timer);
+ 			complete(&alg_data->mif.complete);
+ 		}
  	}
+@@ -400,8 +374,6 @@ static irqreturn_t i2c_pnx_interrupt(int irq, void *dev_id)
+ 			 mcntrl_drmie);
+ 		iowrite32(ctl, I2C_REG_CTL(alg_data));
+ 
+-		/* Stop timer, to prevent timeout. */
+-		del_timer_sync(&alg_data->mif.timer);
+ 		complete(&alg_data->mif.complete);
+ 	} else if (stat & mstatus_nai) {
+ 		/* Slave did not acknowledge, generate a STOP */
+@@ -419,8 +391,6 @@ static irqreturn_t i2c_pnx_interrupt(int irq, void *dev_id)
+ 		/* Our return value. */
+ 		alg_data->mif.ret = -EIO;
+ 
+-		/* Stop timer, to prevent timeout. */
+-		del_timer_sync(&alg_data->mif.timer);
+ 		complete(&alg_data->mif.complete);
+ 	} else {
+ 		/*
+@@ -453,9 +423,8 @@ static irqreturn_t i2c_pnx_interrupt(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static void i2c_pnx_timeout(struct timer_list *t)
++static void i2c_pnx_timeout(struct i2c_pnx_algo_data *alg_data)
+ {
+-	struct i2c_pnx_algo_data *alg_data = from_timer(alg_data, t, mif.timer);
+ 	u32 ctl;
+ 
+ 	dev_err(&alg_data->adapter.dev,
+@@ -472,7 +441,6 @@ static void i2c_pnx_timeout(struct timer_list *t)
+ 	iowrite32(ctl, I2C_REG_CTL(alg_data));
+ 	wait_reset(alg_data);
+ 	alg_data->mif.ret = -EIO;
+-	complete(&alg_data->mif.complete);
+ }
+ 
+ static inline void bus_reset_if_active(struct i2c_pnx_algo_data *alg_data)
+@@ -514,6 +482,7 @@ i2c_pnx_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
+ 	struct i2c_msg *pmsg;
+ 	int rc = 0, completed = 0, i;
+ 	struct i2c_pnx_algo_data *alg_data = adap->algo_data;
++	unsigned long time_left;
+ 	u32 stat;
+ 
+ 	dev_dbg(&alg_data->adapter.dev,
+@@ -548,7 +517,6 @@ i2c_pnx_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
+ 		dev_dbg(&alg_data->adapter.dev, "%s(): mode %d, %d bytes\n",
+ 			__func__, alg_data->mif.mode, alg_data->mif.len);
+ 
+-		i2c_pnx_arm_timer(alg_data);
+ 
+ 		/* initialize the completion var */
+ 		init_completion(&alg_data->mif.complete);
+@@ -564,7 +532,10 @@ i2c_pnx_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
+ 			break;
+ 
+ 		/* Wait for completion */
+-		wait_for_completion(&alg_data->mif.complete);
++		time_left = wait_for_completion_timeout(&alg_data->mif.complete,
++							alg_data->timeout);
++		if (time_left == 0)
++			i2c_pnx_timeout(alg_data);
+ 
+ 		if (!(rc = alg_data->mif.ret))
+ 			completed++;
+@@ -657,7 +628,10 @@ static int i2c_pnx_probe(struct platform_device *pdev)
+ 	alg_data->adapter.algo_data = alg_data;
+ 	alg_data->adapter.nr = pdev->id;
+ 
+-	alg_data->timeout = I2C_PNX_TIMEOUT_DEFAULT;
++	alg_data->timeout = msecs_to_jiffies(I2C_PNX_TIMEOUT_DEFAULT);
++	if (alg_data->timeout <= 1)
++		alg_data->timeout = 2;
++
+ #ifdef CONFIG_OF
+ 	alg_data->adapter.dev.of_node = of_node_get(pdev->dev.of_node);
+ 	if (pdev->dev.of_node) {
+@@ -677,8 +651,6 @@ static int i2c_pnx_probe(struct platform_device *pdev)
+ 	if (IS_ERR(alg_data->clk))
+ 		return PTR_ERR(alg_data->clk);
+ 
+-	timer_setup(&alg_data->mif.timer, i2c_pnx_timeout, 0);
+-
+ 	snprintf(alg_data->adapter.name, sizeof(alg_data->adapter.name),
+ 		 "%s", pdev->name);
+ 
+-- 
+2.43.0
+
 
 
 
