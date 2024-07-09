@@ -1,225 +1,369 @@
-Return-Path: <stable+bounces-58271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C1292B36A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:16:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F4592B36D
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:16:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB4F6B20C5C
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 09:16:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F3291C218A5
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 09:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B2B153BE4;
-	Tue,  9 Jul 2024 09:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9EE414E2EA;
+	Tue,  9 Jul 2024 09:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5CS9d8E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tX2V1Btl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CED81DA2F;
-	Tue,  9 Jul 2024 09:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865031DA2F;
+	Tue,  9 Jul 2024 09:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720516560; cv=none; b=o46AuTjU/Oh2+A7B8xHMywvUTEh6lIxPcf6buc8eA1b+UWAgk3i94jb7bL0SvHuviHiq+q4yg2LTkw58Zrf4jOiEjgELNURKxioXlXegFK9Z/24bGlZXv7W3c2qx5YvvtqaFcWr3Qb+OwM5Hf8lCEjW/tfA+wyNSXd0kPEC9KxM=
+	t=1720516596; cv=none; b=mKUVPH9YsfuUhz3MOM61X9+UJwtadeq95ZKvVQaGvpfobBajEeBPEDjyrL0IqGoD+j5amvqbhFKA95zJyESMyTUYo0kGHOd4Yla0fRfrK2tEvqTNXaQQToKVd1MCCIr/mqfP0htBpcdEDj8IoDH3qVz7oMUgN9NAHsUQIbgKxuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720516560; c=relaxed/simple;
-	bh=hK2QUQoSLsKZsz2jegmGiISGgACqpgV+13IffX5u+qA=;
+	s=arc-20240116; t=1720516596; c=relaxed/simple;
+	bh=aUP+qXAuynJQDoS0q7G3eV7ZGsXlIc43Eqbp5oVTtqM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hpmhwe9C7pKFype5pMQ3KhGNl+0+F0MqfREeyOD+KduE8idQ3v7UnEEBpGkJ/USUsh04/IenZrDxOqkXoPr6jB97EVzTP+1kG/SjO4XwoJMB6AqYUVIFhw/YflpcyOJ1qKZZrUZTlzAFBELz3L0fNJTaiN/L5CyzI8xVS1G/wk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5CS9d8E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E023C3277B;
-	Tue,  9 Jul 2024 09:15:59 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=eWbST6E6j3zfWFAQRMzVRTwRLurKH0MgtiX90H7P4ul06r5GziFyaXRJaVFdFLDqM8CQNmyc6xQpkaT6TfLICDg7EQweAwt6tdHAaZPWJ/e61qyY9ij4Z0CTr0KAABmkDqPziINloL/RgVndS/UVnUyCh9zG688vHEoz5DDHYxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tX2V1Btl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B761FC32786;
+	Tue,  9 Jul 2024 09:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720516560;
-	bh=hK2QUQoSLsKZsz2jegmGiISGgACqpgV+13IffX5u+qA=;
+	s=korg; t=1720516596;
+	bh=aUP+qXAuynJQDoS0q7G3eV7ZGsXlIc43Eqbp5oVTtqM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b5CS9d8EmjYuSh4Oeec2RjoRUGGvRd0pLtlX6LmRJt4hCd5HbYeEb7JcMhMOETUiL
-	 nJGOijZI7omuHyu+1Qf35faihpB0P+eHXoiC/u41ezJKQHr3qA2gW9sxBtTIXizM63
-	 z1FgzWNtkl38ekbRw1GjxAc4UY7Jz4/WW8/AIhfs=
-Date: Tue, 9 Jul 2024 11:15:57 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: LEROY Christophe <christophe.leroy2@cs-soprasteria.com>
-Cc: WangYuli <wangyuli@uniontech.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"sashal@kernel.org" <sashal@kernel.org>,
-	"ast@kernel.org" <ast@kernel.org>,
-	"keescook@chromium.org" <keescook@chromium.org>,
-	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
-	"catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-	"song@kernel.org" <song@kernel.org>,
-	"puranjay12@gmail.com" <puranjay12@gmail.com>,
-	"daniel@iogearbox.net" <daniel@iogearbox.net>,
-	"andrii@kernel.org" <andrii@kernel.org>,
-	"martin.lau@linux.dev" <martin.lau@linux.dev>,
-	"yonghong.song@linux.dev" <yonghong.song@linux.dev>,
-	"john.fastabend@gmail.com" <john.fastabend@gmail.com>,
-	"kpsingh@kernel.org" <kpsingh@kernel.org>,
-	"sdf@google.com" <sdf@google.com>,
-	"haoluo@google.com" <haoluo@google.com>,
-	"jolsa@kernel.org" <jolsa@kernel.org>,
-	"illusionist.neo@gmail.com" <illusionist.neo@gmail.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"chenhuacai@kernel.org" <chenhuacai@kernel.org>,
-	"kernel@xen0n.name" <kernel@xen0n.name>,
-	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
-	"johan.almbladh@anyfinetworks.com" <johan.almbladh@anyfinetworks.com>,
-	"paulburton@kernel.org" <paulburton@kernel.org>,
-	"tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
-	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-	"deller@gmx.de" <deller@gmx.de>,
-	"linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-	"iii@linux.ibm.com" <iii@linux.ibm.com>,
-	"hca@linux.ibm.com" <hca@linux.ibm.com>,
-	"gor@linux.ibm.com" <gor@linux.ibm.com>,
-	"agordeev@linux.ibm.com" <agordeev@linux.ibm.com>,
-	"borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
-	"svens@linux.ibm.com" <svens@linux.ibm.com>,
-	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"hawk@kernel.org" <hawk@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"dsahern@kernel.org" <dsahern@kernel.org>,
-	"tglx@linutronix.de" <tglx@linutronix.de>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"bp@alien8.de" <bp@alien8.de>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
-	"guanwentao@uniontech.com" <guanwentao@uniontech.com>,
-	"baimingcong@uniontech.com" <baimingcong@uniontech.com>
-Subject: Re: [PATCH] Revert "bpf: Take return from set_memory_rox() into
- account with bpf_jit_binary_lock_ro()" for linux-6.6.37
-Message-ID: <2024070908-glade-granny-1137@gregkh>
-References: <5A29E00D83AB84E3+20240706031101.637601-1-wangyuli@uniontech.com>
- <2024070631-unrivaled-fever-8548@gregkh>
- <B7E3B29557B78CB1+afadbaa6-987e-4db4-96b5-4e4d5465c37b@uniontech.com>
- <2024070815-udder-charging-7f75@gregkh>
- <a1dac525-4e6d-4d28-87ee-63723abbafad@cs-soprasteria.com>
+	b=tX2V1BtltY6u4HGsXpQ0KpoRqkQ3Sb0iyv8BH/nb8nQX1+9h4HIffs5Q+4hVXipwM
+	 Qp6b/E5EEi8Agw38HqpRDpNpY1rRvPpbGhez6KKgGG69ewVfnN9hswwRLdq1u2bkyB
+	 dt+rTSzFtk7+b52YLcWAPMyqocF1AKs2K13kwWw0=
+Date: Tue, 9 Jul 2024 11:16:33 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: matoro <matoro_mailinglist_kernel@matoro.tk>
+Cc: Vitaly Chikunov <vt@altlinux.org>,
+	Hari Bathini <hbathini@linux.ibm.com>, ltp@lists.linux.it,
+	stable@vger.kernel.org,
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org
+Subject: Re: WARNING&Oops in v6.6.37 on ppc64lea - Trying to vfree() bad
+ address (00000000453be747)
+Message-ID: <2024070904-cod-bobcat-a0d0@gregkh>
+References: <20240705203413.wbv2nw3747vjeibk@altlinux.org>
+ <cf736c5e37489e7dc7ffd67b9de2ab47@matoro.tk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a1dac525-4e6d-4d28-87ee-63723abbafad@cs-soprasteria.com>
+In-Reply-To: <cf736c5e37489e7dc7ffd67b9de2ab47@matoro.tk>
 
-On Mon, Jul 08, 2024 at 03:12:55PM +0000, LEROY Christophe wrote:
+On Mon, Jul 08, 2024 at 11:16:48PM -0400, matoro wrote:
+> On 2024-07-05 16:34, Vitaly Chikunov wrote:
+> > Hi,
+> > 
+> > There is new WARNING and Oops on ppc64le in v6.6.37 when running LTP tests:
+> > bpf_prog01, bpf_prog02, bpf_prog04, bpf_prog05, prctl04. Logs excerpt
+> > below. I
+> > see there is 1 commit in v6.6.36..v6.6.37 with call to
+> > bpf_jit_binary_pack_finalize, backported from 5 patch mainline patchset:
+> > 
+> >   f99feda5684a powerpc/bpf: use bpf_jit_binary_pack_[alloc|finalize|free]
+> > 
+> > Log:
+> > 
+> >  [    8.822079] LTP: starting bpf_prog01
+> >  [    8.841853] ------------[ cut here ]------------
+> >  [    8.841946] Trying to vfree() bad address (00000000453be747)
+> >  [    8.842024] WARNING: CPU: 6 PID: 689 at mm/vmalloc.c:2700
+> > remove_vm_area+0xb4/0xf0
+> >  [    8.842103] Modules linked in: virtio_rng rng_core virtio_net
+> > net_failover failover sd_mod ata_generic ata_piix libata scsi_mod
+> > scsi_common virtio_blk virtio_pci virtio_pci_legacy_dev
+> > virtio_pci_modern_dev 9pnet_virtio virtio_ring virtio 9p 9pnet netfs
+> >  [    8.842323] CPU: 6 PID: 689 Comm: bpf_prog01 Not tainted
+> > 6.6.37-un-def-alt1 #1
+> >  [    8.842396] Hardware name: IBM pSeries (emulated by qemu) POWER8
+> > (raw) 0x4d0200 0xf000004 of:SLOF,git-3a259d hv:linux,kvm pSeries
+> >  [    8.842519] NIP:  c0000000004faf04 LR: c0000000004faf00 CTR:
+> > 0000000000000000
+> >  [    8.842598] REGS: c000000009b6f250 TRAP: 0700   Not tainted
+> > (6.6.37-un-def-alt1)
+> >  [    8.842669] MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR:
+> > 28002822  XER: 00000000
+> >  [    8.842748] CFAR: c00000000015df94 IRQMASK: 0
+> >  [    8.842748] GPR00: 0000000000000000 c000000009b6f4f0
+> > c000000001ac7f00 0000000000000000
+> >  [    8.842748] GPR04: 0000000000000000 0000000000000000
+> > 0000000000000000 0000000000000000
+> >  [    8.842748] GPR08: 0000000000000000 0000000000000000
+> > 0000000000000000 0000000000000000
+> >  [    8.842748] GPR12: 0000000000000000 c00000003fff7a00
+> > 0000000000000000 0000000000000000
+> >  [    8.842748] GPR16: 0000000000000012 0000000000000000
+> > 000000000000008c 0000000000000000
+> >  [    8.842748] GPR20: c008000000040a40 0000000000000002
+> > c0000000022a7560 c008000000040a4c
+> >  [    8.842748] GPR24: c000000005716480 0000000000000000
+> > c000000002155698 c0000000022a7680
+> >  [    8.842748] GPR28: c000000002155688 c008000000040a40
+> > c008000000040a40 c008000000040a40
+> >  [    8.843347] NIP [c0000000004faf04] remove_vm_area+0xb4/0xf0
+> >  [    8.843398] LR [c0000000004faf00] remove_vm_area+0xb0/0xf0
+> >  [    8.843448] Call Trace:
+> >  [    8.843484] [c000000009b6f4f0] [c0000000004faf00]
+> > remove_vm_area+0xb0/0xf0 (unreliable)
+> >  [    8.843559] [c000000009b6f560] [c0000000004fb360] vfree+0x60/0x2a0
+> >  [    8.843621] [c000000009b6f5e0] [c000000000269c6c]
+> > module_memfree+0x3c/0x60
+> >  [    8.843685] [c000000009b6f600] [c00000000038cf60]
+> > bpf_jit_free_exec+0x20/0x40
+> >  [    8.843759] [c000000009b6f620] [c00000000038f518]
+> > bpf_prog_pack_free+0x2f8/0x390
+> >  [    8.843832] [c000000009b6f6b0] [c00000000038f878]
+> > bpf_jit_binary_pack_finalize+0x98/0xd0
+> >  [    8.843906] [c000000009b6f6e0] [c000000000118240]
+> > bpf_int_jit_compile+0x2c0/0x710
+> >  [    8.843979] [c000000009b6f830] [c00000000038ef64]
+> > bpf_prog_select_runtime+0x154/0x1b0
+> >  [    8.844053] [c000000009b6f880] [c000000000398edc]
+> > bpf_prog_load+0x94c/0xe90
+> >  [    8.844114] [c000000009b6f990] [c00000000039c878] __sys_bpf+0x418/0x2970
+> >  [    8.844176] [c000000009b6fac0] [c00000000039f1a0] sys_bpf+0x30/0x50
+> >  [    8.844237] [c000000009b6fae0] [c000000000030230]
+> > system_call_exception+0x190/0x390
+> >  [    8.844312] [c000000009b6fe50] [c00000000000c7d4]
+> > system_call_common+0xf4/0x258
+> >  [    8.844386] --- interrupt: c00 at 0x7fffb0839ad4
+> >  [    8.844437] NIP:  00007fffb0839ad4 LR: 000000012a027fb4 CTR:
+> > 0000000000000000
+> >  [    8.844524] REGS: c000000009b6fe80 TRAP: 0c00   Not tainted
+> > (6.6.37-un-def-alt1)
+> >  [    8.844596] MSR:  800000000280f033
+> > <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 22002240  XER: 00000000
+> >  [    8.844690] IRQMASK: 0
+> >  [    8.844690] GPR00: 0000000000000169 00007fffd8534200
+> > 00007fffb0936d00 0000000000000005
+> >  [    8.844690] GPR04: 00007fffb06aff90 0000000000000070
+> > 000000012a0538a0 0000000000000001
+> >  [    8.844690] GPR08: 000000012a0801f4 0000000000000000
+> > 0000000000000000 0000000000000000
+> >  [    8.844690] GPR12: 0000000000000000 00007fffb09ea540
+> > 0000000000000000 0000000000000000
+> >  [    8.844690] GPR16: 0000000000000000 0000000000000000
+> > 0000000000000000 0000000000000000
+> >  [    8.844690] GPR20: 00007fffd85344b0 0000000000000000
+> > 0000000000000001 0000000000000000
+> >  [    8.844690] GPR24: 000000012a0801f4 00007fffb06ce000
+> > 0000000000000000 00000000000f4240
+> >  [    8.844690] GPR28: 00007fffb06aff90 00007fffb09e3550
+> > 0000000000000001 0000000000001118
+> >  [    8.845267] NIP [00007fffb0839ad4] 0x7fffb0839ad4
+> >  [    8.845315] LR [000000012a027fb4] 0x12a027fb4
+> >  [    8.845363] --- interrupt: c00
+> >  [    8.845399] Code: 38000000 38800000 39200000 4e800020 60000000
+> > 60000000 60420000 3c62ffa2 7fe4fb78 3863e698 4bc62f8d 60000000
+> > <0fe00000> 38210070 3bc00000 e8010010
+> >  [    8.845550] ---[ end trace 0000000000000000 ]---
+> >  [    8.845603] ------------[ cut here ]------------
+> >  [    8.845651] Trying to vfree() nonexistent vm area (00000000453be747)
+> >  [    8.845714] WARNING: CPU: 6 PID: 689 at mm/vmalloc.c:2835
+> > vfree+0x1d8/0x2a0
+> >  [    8.845776] Modules linked in: virtio_rng rng_core virtio_net
+> > net_failover failover sd_mod ata_generic ata_piix libata scsi_mod
+> > scsi_common virtio_blk virtio_pci virtio_pci_legacy_dev
+> > virtio_pci_modern_dev 9pnet_virtio virtio_ring virtio 9p 9pnet netfs
+> >  [    8.845989] CPU: 6 PID: 689 Comm: bpf_prog01 Tainted: G        W
+> > 6.6.37-un-def-alt1 #1
+> >  [    8.846072] Hardware name: IBM pSeries (emulated by qemu) POWER8
+> > (raw) 0x4d0200 0xf000004 of:SLOF,git-3a259d hv:linux,kvm pSeries
+> >  [    8.846177] NIP:  c0000000004fb4d8 LR: c0000000004fb4d4 CTR:
+> > 0000000000000000
+> >  [    8.846248] REGS: c000000009b6f2c0 TRAP: 0700   Tainted: G        W
+> > (6.6.37-un-def-alt1)
+> >  [    8.846330] MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR:
+> > 28002222  XER: 00000000
+> >  [    8.846408] CFAR: c00000000015df94 IRQMASK: 0
+> >  [    8.846408] GPR00: 0000000000000000 c000000009b6f560
+> > c000000001ac7f00 0000000000000000
+> >  [    8.846408] GPR04: 0000000000000000 0000000000000000
+> > 0000000000000000 0000000000000000
+> >  [    8.846408] GPR08: 0000000000000000 0000000000000000
+> > 0000000000000000 0000000000000000
+> >  [    8.846408] GPR12: 0000000000000000 c00000003fff7a00
+> > 0000000000000000 0000000000000000
+> >  [    8.846408] GPR16: 0000000000000012 0000000000000000
+> > 000000000000008c 0000000000000000
+> >  [    8.846408] GPR20: c008000000040a40 0000000000000002
+> > c0000000022a7560 c008000000040a4c
+> >  [    8.846408] GPR24: c000000005716480 0000000000000000
+> > c000000002155698 c0000000022a7680
+> >  [    8.846408] GPR28: c000000002155688 0000000000000000
+> > c008000000040a40 0000000000000000
+> >  [    8.851030] NIP [c0000000004fb4d8] vfree+0x1d8/0x2a0
+> >  [    8.851085] LR [c0000000004fb4d4] vfree+0x1d4/0x2a0
+> >  [    8.851135] Call Trace:
+> >  [    8.851160] [c000000009b6f560] [c0000000004fb4d4] vfree+0x1d4/0x2a0
+> > (unreliable)
+> >  [    8.851234] [c000000009b6f5e0] [c000000000269c6c]
+> > module_memfree+0x3c/0x60
+> >  [    8.851297] [c000000009b6f600] [c00000000038cf60]
+> > bpf_jit_free_exec+0x20/0x40
+> >  [    8.851371] [c000000009b6f620] [c00000000038f518]
+> > bpf_prog_pack_free+0x2f8/0x390
+> >  [    8.851445] [c000000009b6f6b0] [c00000000038f878]
+> > bpf_jit_binary_pack_finalize+0x98/0xd0
+> >  [    8.851529] [c000000009b6f6e0] [c000000000118240]
+> > bpf_int_jit_compile+0x2c0/0x710
+> >  [    8.851602] [c000000009b6f830] [c00000000038ef64]
+> > bpf_prog_select_runtime+0x154/0x1b0
+> >  [    8.851675] [c000000009b6f880] [c000000000398edc]
+> > bpf_prog_load+0x94c/0xe90
+> >  [    8.851737] [c000000009b6f990] [c00000000039c878] __sys_bpf+0x418/0x2970
+> >  [    8.851798] [c000000009b6fac0] [c00000000039f1a0] sys_bpf+0x30/0x50
+> >  [    8.851860] [c000000009b6fae0] [c000000000030230]
+> > system_call_exception+0x190/0x390
+> >  [    8.851934] [c000000009b6fe50] [c00000000000c7d4]
+> > system_call_common+0xf4/0x258
+> >  [    8.852007] --- interrupt: c00 at 0x7fffb0839ad4
+> >  [    8.852057] NIP:  00007fffb0839ad4 LR: 000000012a027fb4 CTR:
+> > 0000000000000000
+> >  [    8.852128] REGS: c000000009b6fe80 TRAP: 0c00   Tainted: G        W
+> > (6.6.37-un-def-alt1)
+> >  [    8.852212] MSR:  800000000280f033
+> > <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 22002240  XER: 00000000
+> >  [    8.852307] IRQMASK: 0
+> >  [    8.852307] GPR00: 0000000000000169 00007fffd8534200
+> > 00007fffb0936d00 0000000000000005
+> >  [    8.852307] GPR04: 00007fffb06aff90 0000000000000070
+> > 000000012a0538a0 0000000000000001
+> >  [    8.852307] GPR08: 000000012a0801f4 0000000000000000
+> > 0000000000000000 0000000000000000
+> >  [    8.852307] GPR12: 0000000000000000 00007fffb09ea540
+> > 0000000000000000 0000000000000000
+> >  [    8.852307] GPR16: 0000000000000000 0000000000000000
+> > 0000000000000000 0000000000000000
+> >  [    8.852307] GPR20: 00007fffd85344b0 0000000000000000
+> > 0000000000000001 0000000000000000
+> >  [    8.852307] GPR24: 000000012a0801f4 00007fffb06ce000
+> > 0000000000000000 00000000000f4240
+> >  [    8.852307] GPR28: 00007fffb06aff90 00007fffb09e3550
+> > 0000000000000001 0000000000001118
+> >  [    8.852889] NIP [00007fffb0839ad4] 0x7fffb0839ad4
+> >  [    8.852938] LR [000000012a027fb4] 0x12a027fb4
+> >  [    8.852986] --- interrupt: c00
+> >  [    8.853022] Code: 4e800020 60420000 3949ffff 4bffff0c 38210080
+> > ebe1fff8 4bfffd68 3c62ffa2 7fc4f378 3863e6f0 4bc629b9 60000000
+> > <0fe00000> eba10068 4bffff8c 2c080000
+> >  [    8.853164] ---[ end trace 0000000000000000 ]---
+> >  [    8.856619] kernel tried to execute exec-protected page
+> > (c008000000040a4c) - exploit attempt? (uid: 0)
+> >  [    8.856717] BUG: Unable to handle kernel instruction fetch
+> >  [    8.856763] Faulting instruction address: 0xc008000000040a4c
+> >  [    8.856825] Oops: Kernel access of bad area, sig: 11 [#1]
+> >  [    8.856875] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+> >  [    8.856937] Modules linked in: virtio_rng rng_core virtio_net
+> > net_failover failover sd_mod ata_generic ata_piix libata scsi_mod
+> > scsi_common virtio_blk virtio_pci virtio_pci_legacy_dev
+> > virtio_pci_modern_dev 9pnet_virtio virtio_ring virtio 9p 9pnet netfs
+> >  [    8.857154] CPU: 6 PID: 689 Comm: bpf_prog01 Tainted: G        W
+> > 6.6.37-un-def-alt1 #1
+> >  [    8.857236] Hardware name: IBM pSeries (emulated by qemu) POWER8
+> > (raw) 0x4d0200 0xf000004 of:SLOF,git-3a259d hv:linux,kvm pSeries
+> >  [    8.857342] NIP:  c008000000040a4c LR: c000000000ed25d0 CTR:
+> > c008000000040a4c
+> >  [    8.857413] REGS: c000000009b6f6f0 TRAP: 0400   Tainted: G        W
+> > (6.6.37-un-def-alt1)
+> >  [    8.857510] MSR:  8000000010009033 <SF,EE,ME,IR,DR,RI,LE>  CR:
+> > 28008286  XER: 00000000
+> >  [    8.857588] CFAR: c000000000ed25cc IRQMASK: 0
+> >  [    8.857588] GPR00: c000000000ed25a8 c000000009b6f990
+> > c000000001ac7f00 c000000006130400
+> >  [    8.857588] GPR04: c008000000920048 0000000000000001
+> > 0000000000000000 0000000000000000
+> >  [    8.857588] GPR08: 0000000000000000 0000000000000000
+> > 0000000000000000 0000000000000000
+> >  [    8.857588] GPR12: c008000000040a4c c00000003fff7a00
+> > 0000000000000000 0000000000000000
+> >  [    8.857588] GPR16: 0000000000000000 0000000000000000
+> > 0000000000000000 0000000000000000
+> >  [    8.857588] GPR20: 7fffffffffffffff 0000000000000000
+> > 0000000000000001 0000000000000000
+> >  [    8.857588] GPR24: c000000006130400 c000000006510a00
+> > c000000006510f00 c0000000041a9000
+> >  [    8.857588] GPR28: 0000000000000001 c000000006130400
+> > 0000000000000000 c008000000920000
+> >  [    8.858184] NIP [c008000000040a4c] bpf_prog_2fb4fda3a3499517+0x0/0x8c
+> >  [    8.858245] LR [c000000000ed25d0] sk_filter_trim_cap+0xc0/0x370
+> >  [    8.858308] Call Trace:
+> >  [    8.858333] [c000000009b6f990] [c000000000ed2574]
+> > sk_filter_trim_cap+0x64/0x370 (unreliable)
+> >  [    8.858421] [c000000009b6fa10] [c000000001068b64]
+> > unix_dgram_sendmsg+0x214/0xb10
+> >  [    8.858511] [c000000009b6fad0] [c000000000e4c59c]
+> > sock_write_iter+0x19c/0x1e0
+> >  [    8.858586] [c000000009b6fb80] [c0000000005b1b58] vfs_write+0x258/0x4e0
+> >  [    8.858648] [c000000009b6fc40] [c0000000005b21d4] ksys_write+0x114/0x170
+> >  [    8.858711] [c000000009b6fc90] [c000000000030230]
+> > system_call_exception+0x190/0x390
+> >  [    8.858785] [c000000009b6fe50] [c00000000000c7d4]
+> > system_call_common+0xf4/0x258
+> >  [    8.858859] --- interrupt: c00 at 0x7fffb082b884
+> >  [    8.858908] NIP:  00007fffb082b884 LR: 000000012a02ab70 CTR:
+> > 0000000000000000
+> >  [    8.858979] REGS: c000000009b6fe80 TRAP: 0c00   Tainted: G        W
+> > (6.6.37-un-def-alt1)
+> >  [    8.859060] MSR:  800000000280f033
+> > <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 28002281  XER: 00000000
+> >  [    8.859153] IRQMASK: 0
+> >  [    8.859153] GPR00: 0000000000000004 00007fffd85341f0
+> > 00007fffb0936d00 0000000000000005
+> >  [    8.859153] GPR04: 00007fffb068fffa 0000000000000006
+> > 0000000000000001 0000000000000005
+> >  [    8.859153] GPR08: 00007fffb068fffa 0000000000000000
+> > 0000000000000000 0000000000000000
+> >  [    8.859153] GPR12: 0000000000000000 00007fffb09ea540
+> > 0000000000000000 0000000000000000
+> >  [    8.859153] GPR16: 0000000000000000 0000000000000000
+> > 0000000000000000 0000000000000000
+> >  [    8.859153] GPR20: 00007fffd85344b0 0000000000000000
+> > 0000000000000001 0000000000000000
+> >  [    8.859153] GPR24: 000000012a053698 000000000000008b
+> > 0000000000000000 0000000000000001
+> >  [    8.859153] GPR28: 00007fffb068fffa 0000000000000005
+> > 0000000000000006 000000012a053698
+> >  [    8.859738] NIP [00007fffb082b884] 0x7fffb082b884
+> >  [    8.859786] LR [000000012a02ab70] 0x12a02ab70
+> >  [    8.859836] --- interrupt: c00
+> >  [    8.859872] Code: 7fe00008 7fe00008 7fe00008 7fe00008 7fe00008
+> > 7fe00008 7fe00008 7fe00008 7fe00008 7fe00008 7fe00008 7fe00008
+> > <7fe00008> 7fe00008 7fe00008 7fe00008
+> >  [    8.860013] ---[ end trace 0000000000000000 ]---
+> >  [    8.863088] pstore: backend (nvram) writing error (-1)
+> >  [    8.863141]
+> >  [    8.863166] note: bpf_prog01[689] exited with irqs disabled
+> > 
+> > And so on. Temporary build/test log is at
+> > https://git.altlinux.org/tasks/352218/build/100/ppc64le/log
+> > 
+> > Other stable/longterm branches or other architectures does not exhibit this.
+> > 
+> > Thanks,
 > 
+> Hi all - this just took down a production server for me, on POWER9 bare
+> metal.  Not running tests, just booting normally, before services even came
+> up.  Had to perform manual restoration, reverting to 6.6.36 worked.  Also
+> running 64k kernel, unsure if it's better on 4k kernel.
 > 
-> Le 08/07/2024 à 14:36, Greg KH a écrit :
-> > On Sun, Jul 07, 2024 at 03:34:15PM +0800, WangYuli wrote:
-> >>
-> >> On 2024/7/6 17:30, Greg KH wrote:
-> >>> This makes it sound like you are reverting this because of a build
-> >>> error, which is not the case here, right?  Isn't this because of the
-> >>> powerpc issue reported here:
-> >>>     https://lore.kernel.org/r/20240705203413.wbv2nw3747vjeibk@altlinux.org
-> >>> ?
-> >>
-> >> No, it only occurs on ARM64 architecture. The reason is that before being
-> >> modified, the function
-> >>
-> >> bpf_jit_binary_lock_ro() in arch/arm64/net/bpf_jit_comp.c +1651
-> >>
-> >> was introduced with __must_check, which is defined as
-> >> __attribute__((__warn_unused_result__)).
-> >>
-> >>
-> >> However, at this point, calling bpf_jit_binary_lock_ro(header)
-> >> coincidentally results in an unused-result
-> >>
-> >> warning.
-> >
-> > Ok, thanks, but why is no one else seeing this in their testing?
-> 
-> Probably the configs used by robots do not activate BPF JIT ?
-> 
-> >
-> >>> If not, why not just backport the single missing arm64 commit,
-> >>
-> >> Upstream commit 1dad391daef1 ("bpf, arm64: use bpf_prog_pack for memory
-> >> management") is part of
-> >>
-> >> a larger change that involves multiple commits. It's not an isolated commit.
-> >>
-> >>
-> >> We could certainly backport all of them to solve this problem, buthas it's not
-> >> the simplest solution.
-> >
-> > reverting the change feels wrong in that you will still have the bug
-> > present that it was trying to solve, right?  If so, can you then provide
-> > a working version?
-> 
-> Indeed, by reverting the change you "punish" all architectures because
-> arm64 hasn't properly been backported, is it fair ?
-> 
-> In fact, when I implemented commit e60adf513275 ("bpf: Take return from
-> set_memory_rox() into account with bpf_jit_binary_lock_ro()"), we had
-> the following users for function bpf_jit_binary_lock_ro() :
-> 
-> $ git grep bpf_jit_binary_lock_ro e60adf513275~
-> e60adf513275~:arch/arm/net/bpf_jit_32.c:
-> bpf_jit_binary_lock_ro(header);
-> e60adf513275~:arch/loongarch/net/bpf_jit.c:
-> bpf_jit_binary_lock_ro(header);
-> e60adf513275~:arch/mips/net/bpf_jit_comp.c:
-> bpf_jit_binary_lock_ro(header);
-> e60adf513275~:arch/parisc/net/bpf_jit_core.c:
-> bpf_jit_binary_lock_ro(jit_data->header);
-> e60adf513275~:arch/s390/net/bpf_jit_comp.c:
-> bpf_jit_binary_lock_ro(header);
-> e60adf513275~:arch/sparc/net/bpf_jit_comp_64.c:
-> bpf_jit_binary_lock_ro(header);
-> e60adf513275~:arch/x86/net/bpf_jit_comp32.c:
-> bpf_jit_binary_lock_ro(header);
-> e60adf513275~:include/linux/filter.h:static inline void
-> bpf_jit_binary_lock_ro(struct bpf_binary_header *hdr)
-> 
-> But when commit 08f6c05feb1d ("bpf: Take return from set_memory_rox()
-> into account with bpf_jit_binary_lock_ro()") was applied, we had one
-> more user which is arm64:
-> 
-> $ git grep bpf_jit_binary_lock_ro 08f6c05feb1d~
-> 08f6c05feb1d~:arch/arm/net/bpf_jit_32.c:
-> bpf_jit_binary_lock_ro(header);
-> 08f6c05feb1d~:arch/arm64/net/bpf_jit_comp.c:
-> bpf_jit_binary_lock_ro(header);
-> 08f6c05feb1d~:arch/loongarch/net/bpf_jit.c:
-> bpf_jit_binary_lock_ro(header);
-> 08f6c05feb1d~:arch/mips/net/bpf_jit_comp.c:
-> bpf_jit_binary_lock_ro(header);
-> 08f6c05feb1d~:arch/parisc/net/bpf_jit_core.c:
-> bpf_jit_binary_lock_ro(jit_data->header);
-> 08f6c05feb1d~:arch/s390/net/bpf_jit_comp.c:
-> bpf_jit_binary_lock_ro(header);
-> 08f6c05feb1d~:arch/sparc/net/bpf_jit_comp_64.c:
-> bpf_jit_binary_lock_ro(header);
-> 08f6c05feb1d~:arch/x86/net/bpf_jit_comp32.c:
-> bpf_jit_binary_lock_ro(header);
-> 08f6c05feb1d~:include/linux/filter.h:static inline void
-> bpf_jit_binary_lock_ro(struct bpf_binary_header *hdr)
-> 
-> Therefore, commit 08f6c05feb1d should have included a backport for arm64.
-> 
-> So yes, I agree with Greg, the correct fix should be to backport to
-> ARM64 the changes done on other architectures in order to properly
-> handle return of set_memory_rox() in bpf_jit_binary_lock_ro().
+> In case it's helpful, here's the log from my boot:
+> https://dpaste.org/Gyxxg/raw
 
-Ok, but it looks like due to this series, the powerpc tree is crashing
-at the first bpf load, so something went wrong.  Let me go revert these
-4 patches for now, and then I will be glad to queue them up if you can
-provide a working series for all arches.
+Ok, this isn't good, something went wrong with my backports here.  Let
+me go revert them all and push out a new 6.6.y release right away.
 
-thanks,
+thanks for the report!
 
 greg k-h
 
