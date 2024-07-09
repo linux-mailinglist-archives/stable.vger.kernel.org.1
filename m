@@ -1,65 +1,76 @@
-Return-Path: <stable+bounces-58799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B104E92C01F
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:31:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 235E592C054
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:35:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E13931C24604
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:31:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E0A8B2C72D
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453DB1B47CA;
-	Tue,  9 Jul 2024 16:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B03F19E810;
+	Tue,  9 Jul 2024 16:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A2pHGJYL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oCGYxkw0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CD319EEAB;
-	Tue,  9 Jul 2024 16:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA05919DFA4;
+	Tue,  9 Jul 2024 16:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542093; cv=none; b=KvQkngfzUKdT8b8WEQeU+/mU/gAzLH5NIpUen3MxUMPDesmwPcHNLVqGPdBpQc0/s/4RJgsFYJ4waD4U8aDRDGTmqhZe3UQpqOyebw3UoeXgJ7dELl20q8LRRSMxc7P/XwIf4UCAN1gRWaqm7S5e04gvHMveDjb57kUCkO5kOzY=
+	t=1720542113; cv=none; b=E+d3v/iF7SEpIeE12aIFJMfh2edrGzRaIkyAwhsOI7TthELhJk13OsMlhB9keRCfMcxVUS7WNIXyzPdEqGb0B5y4lKDgS760o5Klw52u0feQuCATKcoSz+ncBryd6oA6PZ5Dgk/UhlOraAQGI9M+m77yJZ8Ol0RExe0+LJpE1sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542093; c=relaxed/simple;
-	bh=v9rvoRUQHVGnHKtl1x+EcTFtm143JcGpOnUaUvgNJ3s=;
+	s=arc-20240116; t=1720542113; c=relaxed/simple;
+	bh=PudzIrLLEe+juSZDGRLxrnpwV7MIcutbzRdXNGthclg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mLCNwwB12flMW37yuYzRcIqiZhFXqmrux71g0sPf9ZB5+OVkaPBA+wcaTMh4UhFNZEbMeGXo4o/6J1T30t3zjVwU8ML4ZaJgL6H15mxGnNDmoyx+8n9FYyCyma2JawxWTdXGs8fZi9U9Q1x/UsceAbnbx1l4YEsmdNJG0+rxo7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A2pHGJYL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E16C3C32782;
-	Tue,  9 Jul 2024 16:21:30 +0000 (UTC)
+	 MIME-Version; b=jDjFE3MypW8COMIm1DIhKPbX4v8Y+brGcNDSPaddwKCJO5m0SFqCFS/2r2sjUMU0KOXQr3o16RY2uy3FfZHvmj42Y9KgpCpqXJICKUQb9rSS9DODHKr978MbVuHyBuIlo2/wOpgFAgUthbMFtX/EH/QfnwmUduNeYEwFDCEt98g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oCGYxkw0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021BEC3277B;
+	Tue,  9 Jul 2024 16:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542092;
-	bh=v9rvoRUQHVGnHKtl1x+EcTFtm143JcGpOnUaUvgNJ3s=;
+	s=k20201202; t=1720542112;
+	bh=PudzIrLLEe+juSZDGRLxrnpwV7MIcutbzRdXNGthclg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A2pHGJYLDv0hvHYKeXO1bRbwpvkbTSIAKodUdZjW/CDRvK/hMPoYmtTuDUM43Im7T
-	 Hwbt8GUDk+5NpCDwedNhEhI/2gMU2xdd1Crpw8UDHuv4MC+iPB2aC4fnIBOUt0mRX1
-	 0tjM/NX6ArJYETAunJ9E/javG4cO+rDzEyEfuYfHOsTygezP6QdBQsFKi5W0ge0yje
-	 VPlWKT5FnTAAzCKkXNXFjMKigHdS1ttg6VxjKuRY5wvcISrVqUO0XIZBEphurFaXTo
-	 n0FvrrFTBhAm6jVD32IKrh8cbcYI4DpgMfeNECLzRUw173Pox0nm95Jft8csiS8FjN
-	 +Z0UCIw7wcnZg==
+	b=oCGYxkw0BobP1UZmstEqpjvDZvL8QrgtKwe1nas6v/WylMAoZzRG1CCPZEaNpAFrO
+	 U09YLCIdOpXSYn4V9C6orcR/gai8J+1xeU5Qemr78u1YJdeKULYsYyJ07FdNClsE9X
+	 WyBORjcx0uC4BCXvMBakYybsqi0A6jPNHK7Zj99NN1wtj5m4ulmpYr0YJQPW/YJWs4
+	 P8KUh8DA3RXbrrxyEHFAU4MLJGRGNYOrYKus6ddj7BPnr/R0Mi+9K0W2Vlb+OgFSo+
+	 c3u86rEg1afQtcFLNtRhoLXP1E8NLi6FzK5sOPGPAfLkq+Od6w99+KN52kvbh/wUDj
+	 NojJseJetAwAw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Adhemerval Zanella <adhemerval.zanella@linaro.org>,
-	Helge Deller <deller@gmx.de>,
+Cc: Li Ma <li.ma@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	geert@linux-m68k.org,
-	peterz@infradead.org,
-	tglx@linutronix.de,
-	kees@kernel.org,
-	sohil.mehta@intel.com,
-	casey@schaufler-ca.com,
-	mszeredi@redhat.com,
-	linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 37/40] parisc: use generic sys_fanotify_mark implementation
-Date: Tue,  9 Jul 2024 12:19:17 -0400
-Message-ID: <20240709162007.30160-37-sashal@kernel.org>
+	evan.quan@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	lijo.lazar@amd.com,
+	Jun.Ma2@amd.com,
+	kenneth.feng@amd.com,
+	mario.limonciello@amd.com,
+	Lang.Yu@amd.com,
+	le.ma@amd.com,
+	sunran001@208suo.com,
+	bokun.zhang@amd.com,
+	yifan1.zhang@amd.com,
+	Hawking.Zhang@amd.com,
+	kevinyang.wang@amd.com,
+	asad.kamal@amd.com,
+	Xiaojian.Du@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.9 38/40] drm/amd/swsmu: add MALL init support workaround for smu_v14_0_1
+Date: Tue,  9 Jul 2024 12:19:18 -0400
+Message-ID: <20240709162007.30160-38-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162007.30160-1-sashal@kernel.org>
 References: <20240709162007.30160-1-sashal@kernel.org>
@@ -74,97 +85,218 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.8
 Content-Transfer-Encoding: 8bit
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Li Ma <li.ma@amd.com>
 
-[ Upstream commit 403f17a330732a666ae793f3b15bc75bb5540524 ]
+[ Upstream commit c223376b3019a00a0241faea0bc8c966738d1cc5 ]
 
-The sys_fanotify_mark() syscall on parisc uses the reverse word order
-for the two halves of the 64-bit argument compared to all syscalls on
-all 32-bit architectures. As far as I can tell, the problem is that
-the function arguments on parisc are sorted backwards (26, 25, 24, 23,
-...) compared to everyone else, so the calling conventions of using an
-even/odd register pair in native word order result in the lower word
-coming first in function arguments, matching the expected behavior
-on little-endian architectures. The system call conventions however
-ended up matching what the other 32-bit architectures do.
+[Why]
+SMU firmware has not supported MALL PG.
 
-A glibc cleanup in 2020 changed the userspace behavior in a way that
-handles all architectures consistently, but this inadvertently broke
-parisc32 by changing to the same method as everyone else.
+[How]
+Disable MALL PG and make it always on until SMU firmware is ready.
 
-The change made it into glibc-2.35 and subsequently into debian 12
-(bookworm), which is the latest stable release. This means we
-need to choose between reverting the glibc change or changing the
-kernel to match it again, but either hange will leave some systems
-broken.
-
-Pick the option that is more likely to help current and future
-users and change the kernel to match current glibc. This also
-means the behavior is now consistent across architectures, but
-it breaks running new kernels with old glibc builds before 2.35.
-
-Link: https://sourceware.org/git/?p=glibc.git;a=commitdiff;h=d150181d73d9
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/commit/arch/parisc/kernel/sys_parisc.c?h=57b1dfbd5b4a39d
-Cc: Adhemerval Zanella <adhemerval.zanella@linaro.org>
-Tested-by: Helge Deller <deller@gmx.de>
-Acked-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-I found this through code inspection, please double-check to make
-sure I got the bug and the fix right.
-
-The alternative is to fix this by reverting glibc back to the
-unusual behavior.
-
+Signed-off-by: Li Ma <li.ma@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/Kconfig                     | 1 +
- arch/parisc/kernel/sys_parisc32.c       | 9 ---------
- arch/parisc/kernel/syscalls/syscall.tbl | 2 +-
- 3 files changed, 2 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c     | 13 ++++
+ drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h |  5 ++
+ .../pm/swsmu/inc/pmfw_if/smu_v14_0_0_ppsmc.h  |  4 +-
+ drivers/gpu/drm/amd/pm/swsmu/inc/smu_types.h  |  4 +-
+ .../drm/amd/pm/swsmu/smu14/smu_v14_0_0_ppt.c  | 73 +++++++++++++++++++
+ 5 files changed, 96 insertions(+), 3 deletions(-)
 
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index daafeb20f9937..dc9b902de8ea9 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -16,6 +16,7 @@ config PARISC
- 	select ARCH_HAS_UBSAN
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_NO_SG_CHAIN
-+	select ARCH_SPLIT_ARG64 if !64BIT
- 	select ARCH_SUPPORTS_HUGETLBFS if PA20
- 	select ARCH_SUPPORTS_MEMORY_FAILURE
- 	select ARCH_STACKWALK
-diff --git a/arch/parisc/kernel/sys_parisc32.c b/arch/parisc/kernel/sys_parisc32.c
-index 2a12a547b447b..826c8e51b5853 100644
---- a/arch/parisc/kernel/sys_parisc32.c
-+++ b/arch/parisc/kernel/sys_parisc32.c
-@@ -23,12 +23,3 @@ asmlinkage long sys32_unimplemented(int r26, int r25, int r24, int r23,
-     	current->comm, current->pid, r20);
-     return -ENOSYS;
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+index 65333141b1c1b..5a2247018229c 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -323,6 +323,18 @@ static int smu_dpm_set_umsch_mm_enable(struct smu_context *smu,
+ 	return ret;
  }
--
--asmlinkage long sys32_fanotify_mark(compat_int_t fanotify_fd, compat_uint_t flags,
--	compat_uint_t mask0, compat_uint_t mask1, compat_int_t dfd,
--	const char  __user * pathname)
--{
--	return sys_fanotify_mark(fanotify_fd, flags,
--			((__u64)mask1 << 32) | mask0,
--			 dfd, pathname);
--}
-diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
-index b236a84c4e127..5439ff05bdb2d 100644
---- a/arch/parisc/kernel/syscalls/syscall.tbl
-+++ b/arch/parisc/kernel/syscalls/syscall.tbl
-@@ -364,7 +364,7 @@
- 320	common	accept4			sys_accept4
- 321	common	prlimit64		sys_prlimit64
- 322	common	fanotify_init		sys_fanotify_init
--323	common	fanotify_mark		sys_fanotify_mark		sys32_fanotify_mark
-+323	common	fanotify_mark		sys_fanotify_mark		compat_sys_fanotify_mark
- 324	32	clock_adjtime		sys_clock_adjtime32
- 324	64	clock_adjtime		sys_clock_adjtime
- 325	common	name_to_handle_at	sys_name_to_handle_at
+ 
++static int smu_set_mall_enable(struct smu_context *smu)
++{
++	int ret = 0;
++
++	if (!smu->ppt_funcs->set_mall_enable)
++		return 0;
++
++	ret = smu->ppt_funcs->set_mall_enable(smu);
++
++	return ret;
++}
++
+ /**
+  * smu_dpm_set_power_gate - power gate/ungate the specific IP block
+  *
+@@ -1785,6 +1797,7 @@ static int smu_hw_init(void *handle)
+ 		smu_dpm_set_jpeg_enable(smu, true);
+ 		smu_dpm_set_vpe_enable(smu, true);
+ 		smu_dpm_set_umsch_mm_enable(smu, true);
++		smu_set_mall_enable(smu);
+ 		smu_set_gfx_cgpg(smu, true);
+ 	}
+ 
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
+index 1fa81575788c5..8667e8c9d7e7c 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
++++ b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
+@@ -1391,6 +1391,11 @@ struct pptable_funcs {
+ 	 */
+ 	int (*dpm_set_umsch_mm_enable)(struct smu_context *smu, bool enable);
+ 
++	/**
++	 * @set_mall_enable: Init MALL power gating control.
++	 */
++	int (*set_mall_enable)(struct smu_context *smu);
++
+ 	/**
+ 	 * @notify_rlc_state: Notify RLC power state to SMU.
+ 	 */
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/inc/pmfw_if/smu_v14_0_0_ppsmc.h b/drivers/gpu/drm/amd/pm/swsmu/inc/pmfw_if/smu_v14_0_0_ppsmc.h
+index c4dc5881d8df0..e7f5ef49049f9 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/inc/pmfw_if/smu_v14_0_0_ppsmc.h
++++ b/drivers/gpu/drm/amd/pm/swsmu/inc/pmfw_if/smu_v14_0_0_ppsmc.h
+@@ -106,8 +106,8 @@
+ #define PPSMC_MSG_DisableLSdma                  0x35 ///< Disable LSDMA
+ #define PPSMC_MSG_SetSoftMaxVpe                 0x36 ///<
+ #define PPSMC_MSG_SetSoftMinVpe                 0x37 ///<
+-#define PPSMC_MSG_AllocMALLCache                0x38 ///< Allocating MALL Cache
+-#define PPSMC_MSG_ReleaseMALLCache              0x39 ///< Releasing MALL Cache
++#define PPSMC_MSG_MALLPowerController           0x38 ///< Set MALL control
++#define PPSMC_MSG_MALLPowerState                0x39 ///< Enter/Exit MALL PG
+ #define PPSMC_Message_Count                     0x3A ///< Total number of PPSMC messages
+ /** @}*/
+ 
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/inc/smu_types.h b/drivers/gpu/drm/amd/pm/swsmu/inc/smu_types.h
+index af427cc7dbb84..4a7404856b960 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/inc/smu_types.h
++++ b/drivers/gpu/drm/amd/pm/swsmu/inc/smu_types.h
+@@ -272,7 +272,9 @@
+ 	__SMU_DUMMY_MAP(SetSoftMinVpe), \
+ 	__SMU_DUMMY_MAP(GetMetricsVersion), \
+ 	__SMU_DUMMY_MAP(EnableUCLKShadow), \
+-	__SMU_DUMMY_MAP(RmaDueToBadPageThreshold),
++	__SMU_DUMMY_MAP(RmaDueToBadPageThreshold), \
++	__SMU_DUMMY_MAP(MALLPowerController), \
++	__SMU_DUMMY_MAP(MALLPowerState),
+ 
+ #undef __SMU_DUMMY_MAP
+ #define __SMU_DUMMY_MAP(type)	SMU_MSG_##type
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_0_ppt.c
+index 63399c00cc28f..20f3861b5eeac 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_0_ppt.c
+@@ -52,6 +52,19 @@
+ #define mmMP1_SMN_C2PMSG_90			0x029a
+ #define mmMP1_SMN_C2PMSG_90_BASE_IDX		    0
+ 
++/* MALLPowerController message arguments (Defines for the Cache mode control) */
++#define SMU_MALL_PMFW_CONTROL 0
++#define SMU_MALL_DRIVER_CONTROL 1
++
++/*
++ * MALLPowerState message arguments
++ * (Defines for the Allocate/Release Cache mode if in driver mode)
++ */
++#define SMU_MALL_EXIT_PG 0
++#define SMU_MALL_ENTER_PG 1
++
++#define SMU_MALL_PG_CONFIG_DEFAULT SMU_MALL_PG_CONFIG_DRIVER_CONTROL_ALWAYS_ON
++
+ #define FEATURE_MASK(feature) (1ULL << feature)
+ #define SMC_DPM_FEATURE ( \
+ 	FEATURE_MASK(FEATURE_CCLK_DPM_BIT) | \
+@@ -66,6 +79,12 @@
+ 	FEATURE_MASK(FEATURE_GFX_DPM_BIT)	| \
+ 	FEATURE_MASK(FEATURE_VPE_DPM_BIT))
+ 
++enum smu_mall_pg_config {
++	SMU_MALL_PG_CONFIG_PMFW_CONTROL = 0,
++	SMU_MALL_PG_CONFIG_DRIVER_CONTROL_ALWAYS_ON = 1,
++	SMU_MALL_PG_CONFIG_DRIVER_CONTROL_ALWAYS_OFF = 2,
++};
++
+ static struct cmn2asic_msg_mapping smu_v14_0_0_message_map[SMU_MSG_MAX_COUNT] = {
+ 	MSG_MAP(TestMessage,                    PPSMC_MSG_TestMessage,				1),
+ 	MSG_MAP(GetSmuVersion,                  PPSMC_MSG_GetPmfwVersion,			1),
+@@ -113,6 +132,8 @@ static struct cmn2asic_msg_mapping smu_v14_0_0_message_map[SMU_MSG_MAX_COUNT] =
+ 	MSG_MAP(PowerDownUmsch,                 PPSMC_MSG_PowerDownUmsch,			1),
+ 	MSG_MAP(SetSoftMaxVpe,                  PPSMC_MSG_SetSoftMaxVpe,			1),
+ 	MSG_MAP(SetSoftMinVpe,                  PPSMC_MSG_SetSoftMinVpe,			1),
++	MSG_MAP(MALLPowerController,            PPSMC_MSG_MALLPowerController,		1),
++	MSG_MAP(MALLPowerState,                 PPSMC_MSG_MALLPowerState,			1),
+ };
+ 
+ static struct cmn2asic_mapping smu_v14_0_0_feature_mask_map[SMU_FEATURE_COUNT] = {
+@@ -1417,6 +1438,57 @@ static int smu_v14_0_common_get_dpm_table(struct smu_context *smu, struct dpm_cl
+ 	return 0;
+ }
+ 
++static int smu_v14_0_1_init_mall_power_gating(struct smu_context *smu, enum smu_mall_pg_config pg_config)
++{
++	struct amdgpu_device *adev = smu->adev;
++	int ret = 0;
++
++	if (pg_config == SMU_MALL_PG_CONFIG_PMFW_CONTROL) {
++		ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_MALLPowerController,
++								SMU_MALL_PMFW_CONTROL, NULL);
++		if (ret) {
++			dev_err(adev->dev, "Init MALL PMFW CONTROL Failure\n");
++			return ret;
++		}
++	} else {
++		ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_MALLPowerController,
++								SMU_MALL_DRIVER_CONTROL, NULL);
++		if (ret) {
++			dev_err(adev->dev, "Init MALL Driver CONTROL Failure\n");
++			return ret;
++		}
++
++		if (pg_config == SMU_MALL_PG_CONFIG_DRIVER_CONTROL_ALWAYS_ON) {
++			ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_MALLPowerState,
++									SMU_MALL_EXIT_PG, NULL);
++			if (ret) {
++				dev_err(adev->dev, "EXIT MALL PG Failure\n");
++				return ret;
++			}
++		} else if (pg_config == SMU_MALL_PG_CONFIG_DRIVER_CONTROL_ALWAYS_OFF) {
++			ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_MALLPowerState,
++									SMU_MALL_ENTER_PG, NULL);
++			if (ret) {
++				dev_err(adev->dev, "Enter MALL PG Failure\n");
++				return ret;
++			}
++		}
++	}
++
++	return ret;
++}
++
++static int smu_v14_0_common_set_mall_enable(struct smu_context *smu)
++{
++	enum smu_mall_pg_config pg_config = SMU_MALL_PG_CONFIG_DEFAULT;
++	int ret = 0;
++
++	if (amdgpu_ip_version(smu->adev, MP1_HWIP, 0) == IP_VERSION(14, 0, 1))
++		ret = smu_v14_0_1_init_mall_power_gating(smu, pg_config);
++
++	return ret;
++}
++
+ static const struct pptable_funcs smu_v14_0_0_ppt_funcs = {
+ 	.check_fw_status = smu_v14_0_check_fw_status,
+ 	.check_fw_version = smu_v14_0_check_fw_version,
+@@ -1448,6 +1520,7 @@ static const struct pptable_funcs smu_v14_0_0_ppt_funcs = {
+ 	.dpm_set_vpe_enable = smu_v14_0_0_set_vpe_enable,
+ 	.dpm_set_umsch_mm_enable = smu_v14_0_0_set_umsch_mm_enable,
+ 	.get_dpm_clock_table = smu_v14_0_common_get_dpm_table,
++	.set_mall_enable = smu_v14_0_common_set_mall_enable,
+ };
+ 
+ static void smu_v14_0_0_set_smu_mailbox_registers(struct smu_context *smu)
 -- 
 2.43.0
 
