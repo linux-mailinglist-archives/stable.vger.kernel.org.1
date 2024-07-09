@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-58544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEDEF92B78E
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E89192B68F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:15:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF9381C232AF
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E31D81F21C47
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:15:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307F7158A19;
-	Tue,  9 Jul 2024 11:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FB61586C0;
+	Tue,  9 Jul 2024 11:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Qg7Xusv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYAlZJrj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E421215749B;
-	Tue,  9 Jul 2024 11:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95357158219;
+	Tue,  9 Jul 2024 11:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524258; cv=none; b=Bp32ODX67JNsoaebU+LRWSxYptFmUo65vRL4F2eUjolH2zrnFkDzHOxoT8+w0g1kgjeZ5sVuJr6rN6LNNNJoFQKjlB2JhOB33gNKxZwUWGu/gBWL0TBpkUZY34KCNs2nteh5ytZ4lxC1z/BCEOavAcNuVIo8cKQfk2b6cpD9w+Q=
+	t=1720523698; cv=none; b=PRGaReF6tNDPOzF4vAc5BYIwN3nlqt37jZegcy7YkFmyljTmQGHCzrHe3UR2yqXUM3nXIZgxG5CHkIMYvPJ6W+QbnUCnpNHS40qyJ4xMaGj8rDunVmtGa4AjFdqIGFQz6fXrh01bZkUoSZZvM2RJhoLRNrmR8THWGGptwkj5keQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524258; c=relaxed/simple;
-	bh=41ypEUqHq0KxDkuzdX3mRNrmishe96wEyLfDfIMS4So=;
+	s=arc-20240116; t=1720523698; c=relaxed/simple;
+	bh=LEES/SnSAz0qgRQEHu+iDc4xPjHe9jja09yr0n8aqOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eizjiB3eFsHTmacFlzbgZm34voTtsL5zx385ixTWEnZcQbgqHKxOhMhZEltM9/uiqpiMXvpLmv5HcC6F4jPz3usSeOkgwvBxrBe7Civ/K9UtmAUFA41zLwRlkzQFxjpa5EsSKq1EYH7M2XxJUt/pzGyd8TwLCJcoc/fj64LjV3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Qg7Xusv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C1A5C32786;
-	Tue,  9 Jul 2024 11:24:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FjHwu84GmSfZfZD1/7f21B3NXewziwG69n0UfEY58JhPpo2Wwus8H5BCFQNHW9MrswvJo32T4YB0NiqWgSKUAsR+5bsnDy6HmtcSE+s/S7vcpiZRymFmKs7exiog6tCCrMHqXLFQAyt13j9FhwIctFvpA6nGoME6finyonCRtI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GYAlZJrj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46F8C3277B;
+	Tue,  9 Jul 2024 11:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524257;
-	bh=41ypEUqHq0KxDkuzdX3mRNrmishe96wEyLfDfIMS4So=;
+	s=korg; t=1720523698;
+	bh=LEES/SnSAz0qgRQEHu+iDc4xPjHe9jja09yr0n8aqOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Qg7Xusvv9LoEaLNoGdpRT90jkh6zIY99QsXNyAhJCwYhHbGWb0p255dF8WnpTcof
-	 DqNc2khkQI+xv/HG5XsIgQsMvgk+EXnbmGxA/WZkp2QxYYASwVKDi80VDP8FLRiMFO
-	 cRarHXsALthj9mesvKU6Wv04zCFmmtXkZinq1VYk=
+	b=GYAlZJrjFlcoRGhIW7O/LVYuTPFokh5JO5G3Ruxv/4entOb1nvbGCDQX+PUZPtK0W
+	 ucTHM9hM10xIK/eQm2E3ustvGLSJVfpIcqT2M8gh+ZC6ozw48helxUj2m52T4qqAdF
+	 f64hEH5U9HGpiWpzsBh047egrOc7EQ6ZZsZRJwec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	Xiaochun Lu <xiaochun.lu@bytedance.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mark Mentovai <mark@mentovai.com>,
+	Shiji Yang <yangshiji66@outlook.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	=?UTF-8?q?L=C3=B3r=C3=A1nd=20Horv=C3=A1th?= <lorand.horvath82@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 123/197] selftests: fix OOM in msg_zerocopy selftest
+Subject: [PATCH 6.6 077/139] gpio: mmio: do not calculate bgpio_bits via "ngpios"
 Date: Tue,  9 Jul 2024 13:09:37 +0200
-Message-ID: <20240709110713.714479766@linuxfoundation.org>
+Message-ID: <20240709110701.152640203@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +64,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Shiji Yang <yangshiji66@outlook.com>
 
-[ Upstream commit af2b7e5b741aaae9ffbba2c660def434e07aa241 ]
+[ Upstream commit f07798d7bb9c46d17d80103fb772fd2c75d47919 ]
 
-In selftests/net/msg_zerocopy.c, it has a while loop keeps calling sendmsg
-on a socket with MSG_ZEROCOPY flag, and it will recv the notifications
-until the socket is not writable. Typically, it will start the receiving
-process after around 30+ sendmsgs. However, as the introduction of commit
-dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale"), the sender is
-always writable and does not get any chance to run recv notifications.
-The selftest always exits with OUT_OF_MEMORY because the memory used by
-opt_skb exceeds the net.core.optmem_max. Meanwhile, it could be set to a
-different value to trigger OOM on older kernels too.
+bgpio_bits must be aligned with the data bus width. For example, on a
+32 bit big endian system and we only have 16 GPIOs. If we only assume
+bgpio_bits=16 we can never control the GPIO because the base address
+is the lowest address.
 
-Thus, we introduce "cfg_notification_limit" to force sender to receive
-notifications after some number of sendmsgs.
+low address                          high address
+-------------------------------------------------
+|   byte3   |   byte2   |   byte1   |   byte0   |
+-------------------------------------------------
+|    NaN    |    NaN    |  gpio8-15 |  gpio0-7  |
+-------------------------------------------------
 
-Fixes: 07b65c5b31ce ("test: add msg_zerocopy test")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Signed-off-by: Xiaochun Lu <xiaochun.lu@bytedance.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20240701225349.3395580-2-zijianzhang@bytedance.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 55b2395e4e92 ("gpio: mmio: handle "ngpios" properly in bgpio_init()")
+Fixes: https://github.com/openwrt/openwrt/issues/15739
+Reported-by: Mark Mentovai <mark@mentovai.com>
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Suggested-By: Mark Mentovai <mark@mentovai.com>
+Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
+Tested-by: Lóránd Horváth <lorand.horvath82@gmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/TYCP286MB089577B47D70F0AB25ABA6F5BCD52@TYCP286MB0895.JPNP286.PROD.OUTLOOK.COM
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/msg_zerocopy.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-mmio.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/msg_zerocopy.c b/tools/testing/selftests/net/msg_zerocopy.c
-index bdc03a2097e85..926556febc83c 100644
---- a/tools/testing/selftests/net/msg_zerocopy.c
-+++ b/tools/testing/selftests/net/msg_zerocopy.c
-@@ -85,6 +85,7 @@ static bool cfg_rx;
- static int  cfg_runtime_ms	= 4200;
- static int  cfg_verbose;
- static int  cfg_waittime_ms	= 500;
-+static int  cfg_notification_limit = 32;
- static bool cfg_zerocopy;
+diff --git a/drivers/gpio/gpio-mmio.c b/drivers/gpio/gpio-mmio.c
+index 74fdf0d87b2c8..c9f9f4e36c89b 100644
+--- a/drivers/gpio/gpio-mmio.c
++++ b/drivers/gpio/gpio-mmio.c
+@@ -622,8 +622,6 @@ int bgpio_init(struct gpio_chip *gc, struct device *dev,
+ 	ret = gpiochip_get_ngpios(gc, dev);
+ 	if (ret)
+ 		gc->ngpio = gc->bgpio_bits;
+-	else
+-		gc->bgpio_bits = roundup_pow_of_two(round_up(gc->ngpio, 8));
  
- static socklen_t cfg_alen;
-@@ -95,6 +96,7 @@ static char payload[IP_MAXPACKET];
- static long packets, bytes, completions, expected_completions;
- static int  zerocopied = -1;
- static uint32_t next_completion;
-+static uint32_t sends_since_notify;
- 
- static unsigned long gettimeofday_ms(void)
- {
-@@ -208,6 +210,7 @@ static bool do_sendmsg(int fd, struct msghdr *msg, bool do_zerocopy, int domain)
- 		error(1, errno, "send");
- 	if (cfg_verbose && ret != len)
- 		fprintf(stderr, "send: ret=%u != %u\n", ret, len);
-+	sends_since_notify++;
- 
- 	if (len) {
- 		packets++;
-@@ -460,6 +463,7 @@ static bool do_recv_completion(int fd, int domain)
- static void do_recv_completions(int fd, int domain)
- {
- 	while (do_recv_completion(fd, domain)) {}
-+	sends_since_notify = 0;
- }
- 
- /* Wait for all remaining completions on the errqueue */
-@@ -549,6 +553,9 @@ static void do_tx(int domain, int type, int protocol)
- 		else
- 			do_sendmsg(fd, &msg, cfg_zerocopy, domain);
- 
-+		if (cfg_zerocopy && sends_since_notify >= cfg_notification_limit)
-+			do_recv_completions(fd, domain);
-+
- 		while (!do_poll(fd, POLLOUT)) {
- 			if (cfg_zerocopy)
- 				do_recv_completions(fd, domain);
-@@ -708,7 +715,7 @@ static void parse_opts(int argc, char **argv)
- 
- 	cfg_payload_len = max_payload_len;
- 
--	while ((c = getopt(argc, argv, "46c:C:D:i:mp:rs:S:t:vz")) != -1) {
-+	while ((c = getopt(argc, argv, "46c:C:D:i:l:mp:rs:S:t:vz")) != -1) {
- 		switch (c) {
- 		case '4':
- 			if (cfg_family != PF_UNSPEC)
-@@ -736,6 +743,9 @@ static void parse_opts(int argc, char **argv)
- 			if (cfg_ifindex == 0)
- 				error(1, errno, "invalid iface: %s", optarg);
- 			break;
-+		case 'l':
-+			cfg_notification_limit = strtoul(optarg, NULL, 0);
-+			break;
- 		case 'm':
- 			cfg_cork_mixed = true;
- 			break;
+ 	ret = bgpio_setup_io(gc, dat, set, clr, flags);
+ 	if (ret)
 -- 
 2.43.0
 
