@@ -1,110 +1,142 @@
-Return-Path: <stable+bounces-58918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F0A392C1A0
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 19:04:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B4392C1A1
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 19:05:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD82728CE5D
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 17:04:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1F9C1F23746
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 17:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6601B29D9;
-	Tue,  9 Jul 2024 16:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0DBF1B3742;
+	Tue,  9 Jul 2024 16:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H1Beb+5z"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="R3lD7J3C"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE6C1B1518;
-	Tue,  9 Jul 2024 16:34:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC4D1A00E2;
+	Tue,  9 Jul 2024 16:35:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542897; cv=none; b=RDd292aOGdu6h1NgtFv3ln+HABhYps7GWnElqBlMD3NKkwVqh63/OPI8h2VaEJVMb6sa9sgXinNcYzpP0Xfu744UGGnJkivr02wrs97qjtilZM5Dxb40bl1gsxsee+m4rveI0ew5HBslxeed/pqBi2QftVfensx7rldaPJf6sSE=
+	t=1720542921; cv=none; b=IRteZWZom4GJpOOE8g8d2cvE5TsifCgnJLNK0y9gs16oZhvnfY1niKVZULeK3Q3N8jYVuDCXcd03S7w30UZxdvPfXRRtxY/5de+ztGa08q/EEm/cYWva3MSAoI5a2FGAOX1gMk2G4/Rw+AT1aaMEV2hAQbmKx/AF8k8qFgKE9D0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542897; c=relaxed/simple;
-	bh=rLoCW9UW+pVKvh/FxQb3TU3zxLD4iIDyq3ZdnBMYhWY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qTwmJQzym8dQVgi1xXDGhb5P1elUr4lDKMnP64Dv6eW9XRKwNlXEwcR1pFaCCuZo3NiOz4x4ZFNYZISZbFz+kK3Vs6hREjVYTV+T5ikvODLa/3SSgDn1zT8F0pFlG2tKCGmI/QIvxYjOOauOpeVwQOKDmXmoHIWOsrAG+hLB4d0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H1Beb+5z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1E6C3277B;
-	Tue,  9 Jul 2024 16:34:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542896;
-	bh=rLoCW9UW+pVKvh/FxQb3TU3zxLD4iIDyq3ZdnBMYhWY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H1Beb+5zJulO5KcNsoR5w/TT/pHoWE/LVijCO8LX7o+0tTAYqoBYPlY0RVM2xkS+i
-	 fgkyGVRet28bfLtMzviT7eoqQIuer/NLh/h/Ktbc7C/y5AxD7AgH/ABj0Ma9EOQR6d
-	 6iRbv8rzBY/ros6ne3f6JTDtlassE1/kjip28ldkE5vI66XgXAIGXscJv4jIbX/WXx
-	 xhBmWpOrdb8wxdxHcNEfNkLVhDt19iiEtPklyq2Ab1y5aFfkD5l64xC+/s0XEjcqWo
-	 uhv0qVAQYLnmur/fCaoro03x4JArgi3BBkdldDIO1mewSS1rtL/SkiiwqzhEaWJQa7
-	 HBllU07iXB99w==
-Date: Tue, 9 Jul 2024 17:34:51 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Amadeusz =?utf-8?B?U8WCYXdpxYRza2k=?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>, lgirdwood@gmail.com,
-	perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.9 10/40] ASoC: topology: Clean up route loading
-Message-ID: <844e0213-33ea-48b6-ad55-145c9dab584a@sirena.org.uk>
-References: <20240709162007.30160-1-sashal@kernel.org>
- <20240709162007.30160-10-sashal@kernel.org>
+	s=arc-20240116; t=1720542921; c=relaxed/simple;
+	bh=ap5HE843/KOrmGwHubHXvqWl9bGU+5uI3swe5SV3T2A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EwGSnwfdvsiUfbU+OKL5QOgfuIWYcPyvCkN7YRHaEDLq5eWyZCuRRZZKd0Lf2lRdlDAVDhxfnOH8b/3AEArxWD01BSSZDHzzfCT1sdDcKAOoW/q+2qZw7vqHRs5BrYMJtDOEItsUzG3ZGlnncYzxOT7LoYXVvkrexnvY6tMsIQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=R3lD7J3C; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1720542908; x=1721147708; i=w_armin@gmx.de;
+	bh=Zo22gEwXUQIKViObf1R8K7ujmazhPr/0Wifp99s+uaY=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=R3lD7J3CC8gqvRQZGIGnvouWiGZCXUDYJ3RP40EVw7Oq8bBdCBPmNvoqJJYWN4Ol
+	 pyXNotbEpNlOIGPE/jHK1PLCFi7z3ZqNSaxWFhq/xtC7RvHIrW43/1AYoKOaVAPT5
+	 saHprvUrFC2XYvl5S1dfSSaF6YC8fvDPrV1Qml4l/AJfFvy+4s4NUYm8twkb205IT
+	 4glJ7iNdvMHfLMPO+2UWlxDdXlTSU2f8s1u5pIhx0fRQpDsZ7OjnpCZaiwNzAB5Uy
+	 wOM5Or9PBHI8e+LfNErV97rygEaCXf89hKhCpCbM9blQznnccT55x7fmDHp3YU1Gy
+	 ifhEe+7Sj+Hkm/jPWA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MCsU6-1sZzER3byS-007A00; Tue, 09
+ Jul 2024 18:35:07 +0200
+Message-ID: <034787ad-ff0f-47da-8b8c-aef334734c17@gmx.de>
+Date: Tue, 9 Jul 2024 18:35:07 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="lQeTSMDVykzEXHWH"
-Content-Disposition: inline
-In-Reply-To: <20240709162007.30160-10-sashal@kernel.org>
-X-Cookie: Most of your faults are not your fault.
-
-
---lQeTSMDVykzEXHWH
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH AUTOSEL 5.10 10/14] platform/x86: lg-laptop: Change ACPI
+ device id
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: Agathe Boutmy <agathe@boutmy.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Hans de Goede <hdegoede@redhat.com>, matan@svgalib.org,
+ platform-driver-x86@vger.kernel.org
+References: <20240709162612.32988-1-sashal@kernel.org>
+ <20240709162612.32988-10-sashal@kernel.org>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <20240709162612.32988-10-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:7WUuJzmLiKulEv0xGxG+UMo17kvwW757xOoQpbZFsrV+JOcStov
+ ftakaWRJ1ZunCmUpafFEwkPam8Tdhj1ZvClNSWoRzLBcrrEKYEVY62H8aWXtMnmIl09UyBd
+ 7OrXVt4dajBCzflwTxFo3dIVHoqcYzvBRs1laiMX9kf4vXzLEiZ00TIp8yNZLCKYvlhxse9
+ 8sC9AIWAjCCoLYp2FitJw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:9apz0sTBGZU=;2IwWa0BhyxYOLi3h5mSTj9q1w90
+ 6GlkcqreGw3SIFEpOobM/SBFiLJeuAeKUjuB3UR1IOPty3RxknYQR429o5B3AvrhhdKTvSz5S
+ p0K3wj6QzzXj9ryrtx2R22tg5c+ZeJr1WO5VoXR04+UOBLNlSo6mElpcxo2WFVucen3588CXb
+ AvzgYXLQgh94cB6UUodTsRxZMJ5E9oNGDfk3/sdHygrKPa83fbEgKNzYGk98imMx7E3+1PTxk
+ DB85baA9mLQ62eFr7k5ZSwUeYbjdc6tSAtZEXL/mt/xP8PQ6eHFJv6vGCYgwi975hR+gI+7bJ
+ 1mL4Ji22FOBgtq8ieBFPStOB6IEqztWNQVX+9uyRIkDU5ik2eJF7zDP1XU6RA3oxcxhm7iS9Y
+ 7OTl/mYMU/HpCI8L6gUJZ+KUJIwDsSA9eRmw4XfDffmESVNugDxWVGeY453lJ2qjPeZHMCI1+
+ 2qt5yD1Ov/ibyMM+DF9EkZqsG4mXwLt7YpOM4/KfXov5ljNK16EA6L/mxMaPnQXAORwXLCWuD
+ 1MpPV2xN0Qj5kwHRYhHFtBSJPTM1ruAplZsV084cjTdh8Ki0uqYK5R0Hqs4MBxY0MGvxJiG3V
+ QmPBnMXLivYZTghgLAb2eT6u/s9E7jssdifxztr0OSExaunz+ML+bWIZZd5On6eZTRjW/uF8X
+ jsllcy+5t8MlWS5wxjJ+sJlVyI7HRu04U2i7ZFEcwBoy0AcVZ/5hejnFrTJ95NttvGndn/H/X
+ ut7mlNdwmJV4OmawD7olB9i8jANctDINzQ3OpUBaMBD2IQzIuxj/BUCS+YvH9mem5Rk3j5GCU
+ 0CkKKnewCUsyn7FZVRZpGyhiYmjcxeH79ihvpNxfROb9s=
 
-On Tue, Jul 09, 2024 at 12:18:50PM -0400, Sasha Levin wrote:
-> From: Amadeusz S=C5=82awi=C5=84ski <amadeuszx.slawinski@linux.intel.com>
->=20
-> [ Upstream commit e0e7bc2cbee93778c4ad7d9a792d425ffb5af6f7 ]
->=20
-> Instead of using very long macro name, assign it to shorter variable
-> and use it instead. While doing that, we can reduce multiple if checks
-> using this define to one.
->=20
-> Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-> Signed-off-by: Amadeusz S=C5=82awi=C5=84ski <amadeuszx.slawinski@linux.in=
-tel.com>
-> Link: https://lore.kernel.org/r/20240603102818.36165-5-amadeuszx.slawinsk=
-i@linux.intel.com
-> Signed-off-by: Mark Brown <broonie@kernel.org>
+Am 09.07.24 um 18:25 schrieb Sasha Levin:
+
+> From: Armin Wolf <W_Armin@gmx.de>
+>
+> [ Upstream commit 58a54f27a0dac81f7fd3514be01012635219a53c ]
+>
+> The LGEX0815 ACPI device id is used for handling hotkey events, but
+> this functionality is already handled by the wireless-hotkey driver.
+>
+> The LGEX0820 ACPI device id however is used to manage various
+> platform features using the WMAB/WMBB ACPI methods. Use this ACPI
+> device id to avoid blocking the wireless-hotkey driver from probing.
+
+Hi,
+
+this depends on other patches not in kernel 5.10, please do not use this
+patch for kernel 5.10.
+
+Thanks,
+Armin Wolf
+
+>
+> Tested-by: Agathe Boutmy <agathe@boutmy.com>
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+> Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+> Link: https://lore.kernel.org/r/20240606233540.9774-4-W_Armin@gmx.de
+> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
-
-This is clearly a code cleanup, there is nothing here that looks in the
-slightest bit like stable material.
-
---lQeTSMDVykzEXHWH
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmaNZqsACgkQJNaLcl1U
-h9Dcjgf+OdnqqoG1R0sjuvRbByGkWtJDgHlUn3LVA35rz7LUERl9vZEq308lw2I5
-MEIbo8aUZzmnrv5s0VeCzqij4t8eyv173ZjQdo4ce139D0m/Jictl63D7ayAtIsR
-DSqpAaWGAVkzAWqLZdxHYKr7NW1pANJNBQo2HNndMiK3MHTyIvlXPLmubq4kENqp
-Jcq0gA+17pNavPttp67tbvrzpm5EVARXmE314jgE7Tm1SEfuFeUYK972kYXJvh3R
-nm4NGTqGFkjP01Xx0+/GUdy69biiTrwfo3N2mvdMXcZnEHq1YN4ttAzVVt+aaUPQ
-CL1ncDEx7/RzrdviAZH7mZkcS5lYxA==
-=V+n/
------END PGP SIGNATURE-----
-
---lQeTSMDVykzEXHWH--
+>   drivers/platform/x86/lg-laptop.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/platform/x86/lg-laptop.c b/drivers/platform/x86/lg-=
+laptop.c
+> index 6b48e545775c0..e3cf567470c8b 100644
+> --- a/drivers/platform/x86/lg-laptop.c
+> +++ b/drivers/platform/x86/lg-laptop.c
+> @@ -647,7 +647,7 @@ static int acpi_remove(struct acpi_device *device)
+>   }
+>
+>   static const struct acpi_device_id device_ids[] =3D {
+> -	{"LGEX0815", 0},
+> +	{"LGEX0820", 0},
+>   	{"", 0}
+>   };
+>   MODULE_DEVICE_TABLE(acpi, device_ids);
 
