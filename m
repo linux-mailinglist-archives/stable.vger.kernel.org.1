@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-58318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 469EE92B664
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:12:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC42F92B75F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0086C2836DA
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:12:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDE401C2301B
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE7D157E61;
-	Tue,  9 Jul 2024 11:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6324215ADB2;
+	Tue,  9 Jul 2024 11:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMWf6SnE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x11CORfG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD6D155389;
-	Tue,  9 Jul 2024 11:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2240A15887F;
+	Tue,  9 Jul 2024 11:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523576; cv=none; b=IgnllyCCFYByzsLBI1rqTOjSc13P7XvsXlBOqoiRBZlvILbmzTuTwr7FLDwextMYIyjTjNyeRRij+AvOVZWtxNm9BnMMLQqOm/vO3OlZBfM55hHTHaokKkfd/aRjpl/o9GRXGPDITszKyfhtxNNYkVSHjop+Ww+au/stBvGNxSg=
+	t=1720524143; cv=none; b=guQquv2xB1ATcdtrR3Ie2FvGm85zk82rKP0l1krogLmseB+NqWEfXlCsUdU2S5olQq7cJ4UlUT+5YSw5tJ6+67wLafm6qOc7o7ubsdo8nwZ13HZYDtyAhDs25Ez9IyGJOyVhskrxnuvD58W88Iz5tUkc+xPebIa4EHZPHXwnN84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523576; c=relaxed/simple;
-	bh=UA7LRbCmBQwJv0nwL9LFG7KFT/9oxezAWFiP5LpMFtw=;
+	s=arc-20240116; t=1720524143; c=relaxed/simple;
+	bh=uLMAJ+2Kcg2bk0LxyQFEFhzLlyUDq1zmFmLYeZa8TjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RL9DNuyGDol2l7+SKC2PxdFxTcAIuxrgeJww4AHUT7oWO4yDZhBP0OcLd/jVTlltGFJqMvz6XRDKTBzKce7TvEOLIPJdRZhWacW1vWTTqKRIWg5hP74K6lu0gSCevZY2xzJIpEAHkl94i+yzZZ+Vl8+BThk4M27pMofW+UG36so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMWf6SnE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696BEC3277B;
-	Tue,  9 Jul 2024 11:12:55 +0000 (UTC)
+	 MIME-Version; b=dR61454F4OTvJmkZu6v+z4W4n5mONsh2MpWEJ2WafFGv9li2hhvROY6U2LPlEJMB5PmII+3+jS7Zj4Rg2mueaO/0oJfSy4iajswawTaYh0iAhg91HaJZDEJ1FSGsrOG+z4rbWzgtE8GeLIHcPcVkHuUZdjgrRA/ilP8xiXjOtRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x11CORfG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF4CC3277B;
+	Tue,  9 Jul 2024 11:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523575;
-	bh=UA7LRbCmBQwJv0nwL9LFG7KFT/9oxezAWFiP5LpMFtw=;
+	s=korg; t=1720524143;
+	bh=uLMAJ+2Kcg2bk0LxyQFEFhzLlyUDq1zmFmLYeZa8TjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PMWf6SnE8yLueXa4rEMwSBDXs4XGO9IKmtsi5uoEu8/RSTp46fMnGGzJ3VKaV4bOt
-	 SeM00wZFbLh9h8KhU+s3k0xRvxvS4i2YSVDoaJNysBP/mvKD6nBNbzN77x9HOZf0aI
-	 vHU1Eosux3dgxXfFbHgCc/6JPcVMSuEMwWoifq1c=
+	b=x11CORfGrwQkxrTt5ql5kiU/DWCMUFBSjEtgS8B+Op2klPcOQ29j0tlxTnUozWrjb
+	 7EeYNJ1HQkGCzMRjLr2gq+Mv8UHl6Iw+CAczkO7yZA4KZWlahaquJtg3IMuru2Wfe2
+	 YTmw8QwQ7TkxA/jJanG2xIFLHNe1Xo2gt4lzBO5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Li Zhang <zhanglikernel@gmail.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/139] media: dvb-frontends: tda10048: Fix integer overflow
+Subject: [PATCH 6.9 084/197] virtio-pci: Check if is_avq is NULL
 Date: Tue,  9 Jul 2024 13:08:58 +0200
-Message-ID: <20240709110659.637679705@linuxfoundation.org>
+Message-ID: <20240709110712.218178726@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Li Zhang <zhanglikernel@gmail.com>
 
-[ Upstream commit 1aa1329a67cc214c3b7bd2a14d1301a795760b07 ]
+[ Upstream commit c8fae27d141a32a1624d0d0d5419d94252824498 ]
 
-state->xtal_hz can be up to 16M, so it can overflow a 32 bit integer
-when multiplied by pll_mfactor.
+[bug]
+In the virtio_pci_common.c function vp_del_vqs, vp_dev->is_avq is involved
+to determine whether it is admin virtqueue, but this function vp_dev->is_avq
+ may be empty. For installations, virtio_pci_legacy does not assign a value
+ to vp_dev->is_avq.
 
-Create a new 64 bit variable to hold the calculations.
+[fix]
+Check whether it is vp_dev->is_avq before use.
 
-Link: https://lore.kernel.org/linux-media/20240429-fix-cocci-v3-25-3c4865f5a4b0@chromium.org
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+[test]
+Test with virsh Attach device
+Before this patch, the following command would crash the guest system
+
+After applying the patch, everything seems to be working fine.
+
+Signed-off-by: Li Zhang <zhanglikernel@gmail.com>
+Message-Id: <1710566754-3532-1-git-send-email-zhanglikernel@gmail.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/tda10048.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/virtio/virtio_pci_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/tda10048.c b/drivers/media/dvb-frontends/tda10048.c
-index 5d5e4e9e4422e..3e725cdcc66bd 100644
---- a/drivers/media/dvb-frontends/tda10048.c
-+++ b/drivers/media/dvb-frontends/tda10048.c
-@@ -410,6 +410,7 @@ static int tda10048_set_if(struct dvb_frontend *fe, u32 bw)
- 	struct tda10048_config *config = &state->config;
+diff --git a/drivers/virtio/virtio_pci_common.c b/drivers/virtio/virtio_pci_common.c
+index 584af7816532b..f6b0b00e4599f 100644
+--- a/drivers/virtio/virtio_pci_common.c
++++ b/drivers/virtio/virtio_pci_common.c
+@@ -236,7 +236,7 @@ void vp_del_vqs(struct virtio_device *vdev)
  	int i;
- 	u32 if_freq_khz;
-+	u64 sample_freq;
  
- 	dprintk(1, "%s(bw = %d)\n", __func__, bw);
+ 	list_for_each_entry_safe(vq, n, &vdev->vqs, list) {
+-		if (vp_dev->is_avq(vdev, vq->index))
++		if (vp_dev->is_avq && vp_dev->is_avq(vdev, vq->index))
+ 			continue;
  
-@@ -451,9 +452,11 @@ static int tda10048_set_if(struct dvb_frontend *fe, u32 bw)
- 	dprintk(1, "- pll_pfactor = %d\n", state->pll_pfactor);
- 
- 	/* Calculate the sample frequency */
--	state->sample_freq = state->xtal_hz * (state->pll_mfactor + 45);
--	state->sample_freq /= (state->pll_nfactor + 1);
--	state->sample_freq /= (state->pll_pfactor + 4);
-+	sample_freq = state->xtal_hz;
-+	sample_freq *= state->pll_mfactor + 45;
-+	do_div(sample_freq, state->pll_nfactor + 1);
-+	do_div(sample_freq, state->pll_pfactor + 4);
-+	state->sample_freq = sample_freq;
- 	dprintk(1, "- sample_freq = %d\n", state->sample_freq);
- 
- 	/* Update the I/F */
+ 		if (vp_dev->per_vq_vectors) {
 -- 
 2.43.0
 
