@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-58540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C99092B785
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6678A92B68B
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:14:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 707551C22C1D
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 898B81C220EC
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755FB157E61;
-	Tue,  9 Jul 2024 11:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E580158869;
+	Tue,  9 Jul 2024 11:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiMd5pfD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkWA5D9T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3444B27713;
-	Tue,  9 Jul 2024 11:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDD6158851;
+	Tue,  9 Jul 2024 11:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524246; cv=none; b=Z3z+ctHnYwbhJL/Bobj0aVshG5TQUDDJoxNmX79Gi13OwyI+bTUbkxn/YKklVmZSi5Uu2S2OiX/G/7bqMib4LI6mY8lm+xgIAVk75HkmTTfN1+NBzZqpxpMjsv6uyUBRluKver0vPOzqAgyuukNi7YI6p/3HUs0ArX2HCG/ARRQ=
+	t=1720523679; cv=none; b=Kp3Y+CQoeVgY9h7YK9+gKyfPMDkkaH7jZu1ql69deelAqxLVvPlrAL/lOpKGDZ83jPEPN5jl3w3ZAd3sQ0VSWYanPT9Y3FlDZaUpI7QJGFVLF/MO+8XTpxin5odMggrDWt/WRKYD5B5qSVZuVyUdgEf1d2MMdV/hyTWX2UmtXLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524246; c=relaxed/simple;
-	bh=Z98LmlHZ+qXgNrwJKoadstfI1b1HMubYRlZGYxQteXU=;
+	s=arc-20240116; t=1720523679; c=relaxed/simple;
+	bh=kJC/q//Ju8aqnQoXEPOYng5x48PJyM69bhxOu2Xz27c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=exDa/d0gGIdC5Q5BFYv20tzG/XDitVkfgKXMhgeNNmqsGGxeqGRVJ8MqhyhHhBKVcNDk9ttgoVSVTWfXsRyFiPLEZ435XPH89yV1N2VJU37Tx5DucB45a/1mV0O1f6Xf7YWb+sAsM7bsVfO/u23iaJi5TWEvm2b0XHK3OodJS4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiMd5pfD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A504FC3277B;
-	Tue,  9 Jul 2024 11:24:05 +0000 (UTC)
+	 MIME-Version; b=uN+Hnaou4OlJ9JSR028bWFI8xVg1fZl2r7YSHN1RI2XapZoCKhJmZv3deCkVyiaYcoq7DANImNrI9sG4SC5XyMz6+0YxkF7yhr19XoLxygs7+u/JRcSaHXuRnLLlCaVvA+DiFvXEvgumGaZ9+KP85U4OKSOX/DjjlaKcH1wA/xA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkWA5D9T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6ABC3277B;
+	Tue,  9 Jul 2024 11:14:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524246;
-	bh=Z98LmlHZ+qXgNrwJKoadstfI1b1HMubYRlZGYxQteXU=;
+	s=korg; t=1720523678;
+	bh=kJC/q//Ju8aqnQoXEPOYng5x48PJyM69bhxOu2Xz27c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HiMd5pfD6HsV9bxu/Bf2YmxvHm3SML3GJppxtm1LR0GAxLj0M9//bobK8z7SQq6Ec
-	 b6C/rPweojF/JEG93KAHrinsbGgz8OO7XHfXBhad01XwGJ4xstL0V9jn3Qgi8Wf6rw
-	 SZRgCFXUY4I8csinyQrDnnj4LmmvfPEnBh0kFFzw=
+	b=jkWA5D9TLKIITTi3U0q+ZqPZMO6faiaMAN60oHa9DrUk1GZ+Ds/Yn2MUbgaLatF46
+	 ny1uGYbf0sAGqFgcj+Eoak90Mvq4MVhPAYyLAF+9RJq02Dnh61RhoMiMblJQKSsQS0
+	 dcV5jC9JjgTZqZAlej/ikCX8rFPMQzMz9Q3S+2lg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Milena Olech <milena.olech@intel.com>,
-	Karol Kolacinski <karol.kolacinski@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.9 119/197] ice: Fix improper extts handling
+	Martin Schiller <ms@dev.tdt.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 073/139] gpiolib: of: fix lookup quirk for MIPS Lantiq
 Date: Tue,  9 Jul 2024 13:09:33 +0200
-Message-ID: <20240709110713.554287799@linuxfoundation.org>
+Message-ID: <20240709110700.997762079@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,279 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Milena Olech <milena.olech@intel.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit 00d3b4f54582d4e4a02cda5886bb336eeab268cc ]
+[ Upstream commit 3645ffaf2b334abaf5f53e5ca0f47465d91e69d2 ]
 
-Extts events are disabled and enabled by the application ts2phc.
-However, in case where the driver is removed when the application is
-running, a specific extts event remains enabled and can cause a kernel
-crash.
-As a side effect, when the driver is reloaded and application is started
-again, remaining extts event for the channel from a previous run will
-keep firing and the message "extts on unexpected channel" might be
-printed to the user.
+As it turns out, there is a large number of out-of-tree DTSes (in
+OpenWrt project) that used to specify incorrect (active high) polarity
+for the Lantiq reset GPIO, so to keep compatibility while they are
+being updated a quirk for force the polarity low is needed. Luckily
+these old DTSes used nonstandard name for the property ("gpio-reset" vs
+"reset-gpios") so the quirk will not hurt if there are any new devices
+that need inverted polarity as they can specify the right polarity in
+their DTS when using the standard "reset-gpios" property.
 
-To avoid that, extts events shall be disabled when PTP is released.
+Additionally the condition to enable the transition from standard to
+non-standard reset GPIO property name was inverted and the replacement
+name for the property was not correct. Fix this as well.
 
-Fixes: 172db5f91d5f ("ice: add support for auxiliary input/output pins")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Co-developed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Milena Olech <milena.olech@intel.com>
-Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20240702171459.2606611-2-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: fbbbcd177a27 ("gpiolib: of: add quirk for locating reset lines with legacy bindings")
+Fixes: 90c2d2eb7ab5 ("MIPS: pci: lantiq: switch to using gpiod API")
+Reported-by: Martin Schiller <ms@dev.tdt.de>
+Acked-by: Martin Schiller <ms@dev.tdt.de>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/ZoLpqv1PN08xHioh@google.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp.c | 105 ++++++++++++++++++-----
- drivers/net/ethernet/intel/ice/ice_ptp.h |   8 ++
- 2 files changed, 91 insertions(+), 22 deletions(-)
+ drivers/gpio/gpiolib-of.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index c11eba07283c6..ee741a1d13cf0 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -1603,27 +1603,24 @@ void ice_ptp_extts_event(struct ice_pf *pf)
- /**
-  * ice_ptp_cfg_extts - Configure EXTTS pin and channel
-  * @pf: Board private structure
-- * @ena: true to enable; false to disable
-  * @chan: GPIO channel (0-3)
-- * @gpio_pin: GPIO pin
-- * @extts_flags: request flags from the ptp_extts_request.flags
-+ * @config: desired EXTTS configuration.
-+ * @store: If set to true, the values will be stored
-+ *
-+ * Configure an external timestamp event on the requested channel.
-  */
--static int
--ice_ptp_cfg_extts(struct ice_pf *pf, bool ena, unsigned int chan, u32 gpio_pin,
--		  unsigned int extts_flags)
-+static void ice_ptp_cfg_extts(struct ice_pf *pf, unsigned int chan,
-+			      struct ice_extts_channel *config, bool store)
- {
- 	u32 func, aux_reg, gpio_reg, irq_reg;
- 	struct ice_hw *hw = &pf->hw;
- 	u8 tmr_idx;
+diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
+index d9525d95e818d..133d2a4c31a6d 100644
+--- a/drivers/gpio/gpiolib-of.c
++++ b/drivers/gpio/gpiolib-of.c
+@@ -192,6 +192,16 @@ static void of_gpio_try_fixup_polarity(const struct device_node *np,
+ 		 */
+ 		{ "himax,hx8357",	"gpios-reset",	false },
+ 		{ "himax,hx8369",	"gpios-reset",	false },
++#endif
++#if IS_ENABLED(CONFIG_PCI_LANTIQ)
++		/*
++		 * According to the PCI specification, the RST# pin is an
++		 * active-low signal. However, most of the device trees that
++		 * have been widely used for a long time incorrectly describe
++		 * reset GPIO as active-high, and were also using wrong name
++		 * for the property.
++		 */
++		{ "lantiq,pci-xway",	"gpio-reset",	false },
+ #endif
+ 	};
+ 	unsigned int i;
+@@ -491,9 +501,9 @@ static struct gpio_desc *of_find_gpio_rename(struct device_node *np,
+ 		{ "reset",	"reset-n-io",	"marvell,nfc-uart" },
+ 		{ "reset",	"reset-n-io",	"mrvl,nfc-uart" },
+ #endif
+-#if !IS_ENABLED(CONFIG_PCI_LANTIQ)
++#if IS_ENABLED(CONFIG_PCI_LANTIQ)
+ 		/* MIPS Lantiq PCI */
+-		{ "reset",	"gpios-reset",	"lantiq,pci-xway" },
++		{ "reset",	"gpio-reset",	"lantiq,pci-xway" },
+ #endif
  
--	if (chan > (unsigned int)pf->ptp.info.n_ext_ts)
--		return -EINVAL;
--
- 	tmr_idx = hw->func_caps.ts_func_info.tmr_index_owned;
- 
- 	irq_reg = rd32(hw, PFINT_OICR_ENA);
- 
--	if (ena) {
-+	if (config->ena) {
- 		/* Enable the interrupt */
- 		irq_reg |= PFINT_OICR_TSYN_EVNT_M;
- 		aux_reg = GLTSYN_AUX_IN_0_INT_ENA_M;
-@@ -1632,9 +1629,9 @@ ice_ptp_cfg_extts(struct ice_pf *pf, bool ena, unsigned int chan, u32 gpio_pin,
- #define GLTSYN_AUX_IN_0_EVNTLVL_FALLING_EDGE	BIT(1)
- 
- 		/* set event level to requested edge */
--		if (extts_flags & PTP_FALLING_EDGE)
-+		if (config->flags & PTP_FALLING_EDGE)
- 			aux_reg |= GLTSYN_AUX_IN_0_EVNTLVL_FALLING_EDGE;
--		if (extts_flags & PTP_RISING_EDGE)
-+		if (config->flags & PTP_RISING_EDGE)
- 			aux_reg |= GLTSYN_AUX_IN_0_EVNTLVL_RISING_EDGE;
- 
- 		/* Write GPIO CTL reg.
-@@ -1655,9 +1652,47 @@ ice_ptp_cfg_extts(struct ice_pf *pf, bool ena, unsigned int chan, u32 gpio_pin,
- 
- 	wr32(hw, PFINT_OICR_ENA, irq_reg);
- 	wr32(hw, GLTSYN_AUX_IN(chan, tmr_idx), aux_reg);
--	wr32(hw, GLGEN_GPIO_CTL(gpio_pin), gpio_reg);
-+	wr32(hw, GLGEN_GPIO_CTL(config->gpio_pin), gpio_reg);
- 
--	return 0;
-+	if (store)
-+		memcpy(&pf->ptp.extts_channels[chan], config, sizeof(*config));
-+}
-+
-+/**
-+ * ice_ptp_disable_all_extts - Disable all EXTTS channels
-+ * @pf: Board private structure
-+ */
-+static void ice_ptp_disable_all_extts(struct ice_pf *pf)
-+{
-+	struct ice_extts_channel extts_cfg = {};
-+	int i;
-+
-+	for (i = 0; i < pf->ptp.info.n_ext_ts; i++) {
-+		if (pf->ptp.extts_channels[i].ena) {
-+			extts_cfg.gpio_pin = pf->ptp.extts_channels[i].gpio_pin;
-+			extts_cfg.ena = false;
-+			ice_ptp_cfg_extts(pf, i, &extts_cfg, false);
-+		}
-+	}
-+
-+	synchronize_irq(pf->oicr_irq.virq);
-+}
-+
-+/**
-+ * ice_ptp_enable_all_extts - Enable all EXTTS channels
-+ * @pf: Board private structure
-+ *
-+ * Called during reset to restore user configuration.
-+ */
-+static void ice_ptp_enable_all_extts(struct ice_pf *pf)
-+{
-+	int i;
-+
-+	for (i = 0; i < pf->ptp.info.n_ext_ts; i++) {
-+		if (pf->ptp.extts_channels[i].ena)
-+			ice_ptp_cfg_extts(pf, i, &pf->ptp.extts_channels[i],
-+					  false);
-+	}
- }
- 
- /**
-@@ -1814,7 +1849,6 @@ ice_ptp_gpio_enable_e810(struct ptp_clock_info *info,
- 			 struct ptp_clock_request *rq, int on)
- {
- 	struct ice_pf *pf = ptp_info_to_pf(info);
--	struct ice_perout_channel clk_cfg = {0};
- 	bool sma_pres = false;
- 	unsigned int chan;
- 	u32 gpio_pin;
-@@ -1825,6 +1859,9 @@ ice_ptp_gpio_enable_e810(struct ptp_clock_info *info,
- 
- 	switch (rq->type) {
- 	case PTP_CLK_REQ_PEROUT:
-+	{
-+		struct ice_perout_channel clk_cfg = {};
-+
- 		chan = rq->perout.index;
- 		if (sma_pres) {
- 			if (chan == ice_pin_desc_e810t[SMA1].chan)
-@@ -1852,7 +1889,11 @@ ice_ptp_gpio_enable_e810(struct ptp_clock_info *info,
- 
- 		err = ice_ptp_cfg_clkout(pf, chan, &clk_cfg, true);
- 		break;
-+	}
- 	case PTP_CLK_REQ_EXTTS:
-+	{
-+		struct ice_extts_channel extts_cfg = {};
-+
- 		chan = rq->extts.index;
- 		if (sma_pres) {
- 			if (chan < ice_pin_desc_e810t[SMA2].chan)
-@@ -1868,9 +1909,13 @@ ice_ptp_gpio_enable_e810(struct ptp_clock_info *info,
- 			gpio_pin = chan;
- 		}
- 
--		err = ice_ptp_cfg_extts(pf, !!on, chan, gpio_pin,
--					rq->extts.flags);
--		break;
-+		extts_cfg.flags = rq->extts.flags;
-+		extts_cfg.gpio_pin = gpio_pin;
-+		extts_cfg.ena = !!on;
-+
-+		ice_ptp_cfg_extts(pf, chan, &extts_cfg, true);
-+		return 0;
-+	}
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -1888,21 +1933,31 @@ static int ice_ptp_gpio_enable_e823(struct ptp_clock_info *info,
- 				    struct ptp_clock_request *rq, int on)
- {
- 	struct ice_pf *pf = ptp_info_to_pf(info);
--	struct ice_perout_channel clk_cfg = {0};
- 	int err;
- 
- 	switch (rq->type) {
- 	case PTP_CLK_REQ_PPS:
-+	{
-+		struct ice_perout_channel clk_cfg = {};
-+
- 		clk_cfg.gpio_pin = PPS_PIN_INDEX;
- 		clk_cfg.period = NSEC_PER_SEC;
- 		clk_cfg.ena = !!on;
- 
- 		err = ice_ptp_cfg_clkout(pf, PPS_CLK_GEN_CHAN, &clk_cfg, true);
- 		break;
-+	}
- 	case PTP_CLK_REQ_EXTTS:
--		err = ice_ptp_cfg_extts(pf, !!on, rq->extts.index,
--					TIME_SYNC_PIN_INDEX, rq->extts.flags);
--		break;
-+	{
-+		struct ice_extts_channel extts_cfg = {};
-+
-+		extts_cfg.flags = rq->extts.flags;
-+		extts_cfg.gpio_pin = TIME_SYNC_PIN_INDEX;
-+		extts_cfg.ena = !!on;
-+
-+		ice_ptp_cfg_extts(pf, rq->extts.index, &extts_cfg, true);
-+		return 0;
-+	}
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -2745,6 +2800,10 @@ static int ice_ptp_rebuild_owner(struct ice_pf *pf)
- 		ice_ptp_restart_all_phy(pf);
- 	}
- 
-+	/* Re-enable all periodic outputs and external timestamp events */
-+	ice_ptp_enable_all_clkout(pf);
-+	ice_ptp_enable_all_extts(pf);
-+
- 	return 0;
- }
- 
-@@ -3300,6 +3359,8 @@ void ice_ptp_release(struct ice_pf *pf)
- 
- 	ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
- 
-+	ice_ptp_disable_all_extts(pf);
-+
- 	kthread_cancel_delayed_work_sync(&pf->ptp.work);
- 
- 	ice_ptp_port_phy_stop(&pf->ptp.port);
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.h b/drivers/net/ethernet/intel/ice/ice_ptp.h
-index 3af20025043a6..f1171cdd93c86 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.h
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.h
-@@ -33,6 +33,12 @@ struct ice_perout_channel {
- 	u64 start_time;
- };
- 
-+struct ice_extts_channel {
-+	bool ena;
-+	u32 gpio_pin;
-+	u32 flags;
-+};
-+
- /* The ice hardware captures Tx hardware timestamps in the PHY. The timestamp
-  * is stored in a buffer of registers. Depending on the specific hardware,
-  * this buffer might be shared across multiple PHY ports.
-@@ -226,6 +232,7 @@ enum ice_ptp_state {
-  * @ext_ts_irq: the external timestamp IRQ in use
-  * @kworker: kwork thread for handling periodic work
-  * @perout_channels: periodic output data
-+ * @extts_channels: channels for external timestamps
-  * @info: structure defining PTP hardware capabilities
-  * @clock: pointer to registered PTP clock device
-  * @tstamp_config: hardware timestamping configuration
-@@ -249,6 +256,7 @@ struct ice_ptp {
- 	u8 ext_ts_irq;
- 	struct kthread_worker *kworker;
- 	struct ice_perout_channel perout_channels[GLTSYN_TGT_H_IDX_MAX];
-+	struct ice_extts_channel extts_channels[GLTSYN_TGT_H_IDX_MAX];
- 	struct ptp_clock_info info;
- 	struct ptp_clock *clock;
- 	struct hwtstamp_config tstamp_config;
+ 		/*
 -- 
 2.43.0
 
