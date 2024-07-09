@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-58579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C272A92B7B7
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B17992B6CC
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E231285559
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 445092827EA
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB9D27713;
-	Tue,  9 Jul 2024 11:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4B11586D0;
+	Tue,  9 Jul 2024 11:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDIhfctY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFzW26t5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6F5157485;
-	Tue,  9 Jul 2024 11:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AB314EC4D;
+	Tue,  9 Jul 2024 11:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524368; cv=none; b=cHLq4RkcwzGROHlFAImoy80qaRVHremTaa7wtw/npBZI3F7ZwVKADGpPX0pHicpqE0sNpjXVVrogvtl+HgMbAh7Iu7ZabvSt5e63hS2hRmjq1fkBOWFZOMzA86aGwchvgfQwa2wohra2ycOieXcmDy8NEjoQomZ9Lp+EuORaXwQ=
+	t=1720523807; cv=none; b=sPkCRnEqWLLUACD3Jdv8T/6oOcs76skoB+ZeNpzoCFjvUwzoKg0MJc4GkiXZw/+RaFoR2IlJh9p8z5ygMx1iV3Eb/6W/fhLgAX25IR/+qUXqSFYWDA6mvoLIyjiHHwqBf0U1FK8i/Sr2MR7NSJKuqj6s6Kgrw9lGl8kOyK6ir4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524368; c=relaxed/simple;
-	bh=7eHsA5CpHdkn9B6Pc7CeyXB0Gyfz7ewh4hXu27g3HKM=;
+	s=arc-20240116; t=1720523807; c=relaxed/simple;
+	bh=QiKqo5ygEHcfPGpVp5zLKklf93kbXWNcn2DB/0sblnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jtRcjt4K/3VL5Uy6OGmhF6OXGVMHNYU+8RqkVWryNmLu+8pqUlDsTD2DQh4cIxnFSo4g0GWOgetnIiIX1OnH6Lvi27PPbrGtic3APQ4z6mYmekAv/fvAmd+eUMm5qpOajM/Pgl1W47cOuIgztujGV5xs43ENMdQ7n5/ieWLBq58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDIhfctY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B717C3277B;
-	Tue,  9 Jul 2024 11:26:07 +0000 (UTC)
+	 MIME-Version; b=R3lGr58ffwSQy/Qg2+rv+5JvUUAP3F6rK6q1DSz5uN1E1RMVHyCSQhGyJEtX99oj1Am6fmNgLbquxJJEfvIPMzzQkxOiInjoJG8z7kjDA+2u8mTGTDY885D7iHuWJp5XP4gnrCDHdamqnh4y3NI+gVVD9eLYUdpwm8O6BP7DMFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFzW26t5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7F9C3277B;
+	Tue,  9 Jul 2024 11:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524367;
-	bh=7eHsA5CpHdkn9B6Pc7CeyXB0Gyfz7ewh4hXu27g3HKM=;
+	s=korg; t=1720523807;
+	bh=QiKqo5ygEHcfPGpVp5zLKklf93kbXWNcn2DB/0sblnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yDIhfctYyRrtg7wE8tSvuwj1qomlj75ZKsvtvfhtXTIj6/C3rD0yorRjzpvai5Woi
-	 cjRCsNDu0tNJO8+aRHmbFiEDIejug6Gc3FXjaObR9/M17/zl5XsC1SfcPOaMQatTR+
-	 LANSdZQ4QRm8Isbalfgq+b/4NhE0hj4sCUeEPRnw=
+	b=YFzW26t5VBb+PCxIgj4SrgeQO3uNNFBlYurbpIblGz8IBKcXm+UFTMfsZt3i7xEqv
+	 NgmvG9KK3+/C8iLJJw0s5j0ZGMaDID49kcDP9C0b00bwmqLMgVHCi3slDCG6n+Rg7T
+	 USdnbAZbNmqbU4I0+t500QGiY6+XATyTTuIuD1IY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kemal <kmal@cock.li>,
-	Armin Wolf <W_Armin@gmx.de>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.9 131/197] platform/x86: toshiba_acpi: Fix quickstart quirk handling
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 085/139] mlxsw: core_linecards: Fix double memory deallocation in case of invalid INI file
 Date: Tue,  9 Jul 2024 13:09:45 +0200
-Message-ID: <20240709110714.021017877@linuxfoundation.org>
+Message-ID: <20240709110701.460380756@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,106 +63,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-commit e527a6127223b644e0a27b44f4b16e16eb6c7f0a upstream.
+[ Upstream commit 8ce34dccbe8fa7d2ef86f2d8e7db2a9b67cabfc3 ]
 
-The global hci_hotkey_quickstart quirk flag is tested in
-toshiba_acpi_enable_hotkeys() before the quirk flag is properly
-initialized based on SMBIOS data. This causes the quirk to be
-applied to all models, some of which behave erratically as a
-result.
+In case of invalid INI file mlxsw_linecard_types_init() deallocates memory
+but doesn't reset pointer to NULL and returns 0. In case of any error
+occurred after mlxsw_linecard_types_init() call, mlxsw_linecards_init()
+calls mlxsw_linecard_types_fini() which performs memory deallocation again.
 
-Fix this by initializing the global quirk flags during module
-initialization before registering the ACPI driver. This also
-allows us to mark toshiba_dmi_quirks[] as __initconst.
+Add pointer reset to NULL.
 
-Fixes: 23f1d8b47d12 ("platform/x86: toshiba_acpi: Add quirk for buttons on Z830")
-Reported-by: kemal <kmal@cock.li>
-Closes: https://lore.kernel.org/platform-driver-x86/R4CYFS.TWB8QUU2SHWI1@cock.li/
-Tested-by: kemal <kmal@cock.li>
-Cc: stable@vger.kernel.org
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20240701194539.348937-1-W_Armin@gmx.de
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: b217127e5e4e ("mlxsw: core_linecards: Add line card objects and implement provisioning")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Link: https://patch.msgid.link/20240703203251.8871-1-amishin@t-argos.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/toshiba_acpi.c |   31 ++++++++++++++++++-------------
- 1 file changed, 18 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/core_linecards.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/platform/x86/toshiba_acpi.c
-+++ b/drivers/platform/x86/toshiba_acpi.c
-@@ -3276,7 +3276,7 @@ static const char *find_hci_method(acpi_
-  */
- #define QUIRK_HCI_HOTKEY_QUICKSTART		BIT(1)
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c b/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
+index 025e0db983feb..b032d5a4b3b84 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
+@@ -1484,6 +1484,7 @@ static int mlxsw_linecard_types_init(struct mlxsw_core *mlxsw_core,
+ 	vfree(types_info->data);
+ err_data_alloc:
+ 	kfree(types_info);
++	linecards->types_info = NULL;
+ 	return err;
+ }
  
--static const struct dmi_system_id toshiba_dmi_quirks[] = {
-+static const struct dmi_system_id toshiba_dmi_quirks[] __initconst = {
- 	{
- 	 /* Toshiba Portégé R700 */
- 	 /* https://bugzilla.kernel.org/show_bug.cgi?id=21012 */
-@@ -3311,8 +3311,6 @@ static int toshiba_acpi_add(struct acpi_
- 	struct toshiba_acpi_dev *dev;
- 	const char *hci_method;
- 	u32 dummy;
--	const struct dmi_system_id *dmi_id;
--	long quirks = 0;
- 	int ret = 0;
- 
- 	if (toshiba_acpi)
-@@ -3465,16 +3463,6 @@ iio_error:
- 	}
- #endif
- 
--	dmi_id = dmi_first_match(toshiba_dmi_quirks);
--	if (dmi_id)
--		quirks = (long)dmi_id->driver_data;
--
--	if (turn_on_panel_on_resume == -1)
--		turn_on_panel_on_resume = !!(quirks & QUIRK_TURN_ON_PANEL_ON_RESUME);
--
--	if (hci_hotkey_quickstart == -1)
--		hci_hotkey_quickstart = !!(quirks & QUIRK_HCI_HOTKEY_QUICKSTART);
--
- 	toshiba_wwan_available(dev);
- 	if (dev->wwan_supported)
- 		toshiba_acpi_setup_wwan_rfkill(dev);
-@@ -3624,10 +3612,27 @@ static struct acpi_driver toshiba_acpi_d
- 	.drv.pm	= &toshiba_acpi_pm,
- };
- 
-+static void __init toshiba_dmi_init(void)
-+{
-+	const struct dmi_system_id *dmi_id;
-+	long quirks = 0;
-+
-+	dmi_id = dmi_first_match(toshiba_dmi_quirks);
-+	if (dmi_id)
-+		quirks = (long)dmi_id->driver_data;
-+
-+	if (turn_on_panel_on_resume == -1)
-+		turn_on_panel_on_resume = !!(quirks & QUIRK_TURN_ON_PANEL_ON_RESUME);
-+
-+	if (hci_hotkey_quickstart == -1)
-+		hci_hotkey_quickstart = !!(quirks & QUIRK_HCI_HOTKEY_QUICKSTART);
-+}
-+
- static int __init toshiba_acpi_init(void)
- {
- 	int ret;
- 
-+	toshiba_dmi_init();
- 	toshiba_proc_dir = proc_mkdir(PROC_TOSHIBA, acpi_root_dir);
- 	if (!toshiba_proc_dir) {
- 		pr_err("Unable to create proc dir " PROC_TOSHIBA "\n");
+-- 
+2.43.0
+
 
 
 
