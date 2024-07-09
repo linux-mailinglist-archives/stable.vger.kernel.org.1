@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-58763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CCCD92BF92
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:20:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE5192BF95
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:20:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1959A1F211E7
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:20:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05E78287C48
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A53B12C498;
-	Tue,  9 Jul 2024 16:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1016019DF6E;
+	Tue,  9 Jul 2024 16:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DvjEAu1G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YKC78k9Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2AD19E801;
-	Tue,  9 Jul 2024 16:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B521919DF63;
+	Tue,  9 Jul 2024 16:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542010; cv=none; b=LURwOqGF9lqveYiB+D47nC4EKgKRhkBDVH8r43SiI+2grGguGhdbFi6j+jc84yPSltw0pqFL4mdykUxN9UsPHAyz6GukcFQxYl/IvMSVlpisPggVEjG7t82SXkU4pytwJWIYKx1ASUWbmlD0G576KQyRyfvBw4vjvRjlQK2QraM=
+	t=1720542012; cv=none; b=MWC+ZmnF/6xGXPQdXt2RkxhSxX/s0q/2xtY/guyZOQtrXTMH+rmS9B+jGbMvzh33Lpm1IxdZKWsL2q34j553yXHI3By1TVyumYp0RpS1PsWLvbXD0d43vtu5uHgZIIxTOxyFBYD5sG7KqS+BevZLNMUAOKTnm9a7yJsKE8MD3NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542010; c=relaxed/simple;
-	bh=J8/MTkpWCv3WMsUd6UelnOrKxoMOixttjofPbmHSPVM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fvvWPYK0PIDljixf2KrXbxOs65FD3fNioEyIDzRTAw09zH4wpnPOolQp2MyZHJCo/4PgYzHR2WaXjf4GGEhzrh5cmYB+4KIa0jO1n3lEj6FLBY/sSA0hvRNTTeZ6VibTgieC/oiQ5TDL16y/7E54w/kPjh7412xaxlTsuIJ2P34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DvjEAu1G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B043BC3277B;
-	Tue,  9 Jul 2024 16:20:08 +0000 (UTC)
+	s=arc-20240116; t=1720542012; c=relaxed/simple;
+	bh=RLPBOy9bO4BWCJVE0yOsG/T3YzQ5OxEOb79y7bhWjVM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sAX+w7cQ+9AoWHKjVf/3Opiy5mB8xsuE8AA13qtL+ZP52tMVhVCfkMpdP/w3wL6NYoctUdjX1rgGNouoqJWIcn+q3FHyIKzm8abst79gzYAEiq47Kcqd7HeXQj0dNx70qGjiF6ltOjoRSJg1fGt9dtQUzJN8jFAx66gpR0gqMdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YKC78k9Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6106EC4AF0A;
+	Tue,  9 Jul 2024 16:20:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542009;
-	bh=J8/MTkpWCv3WMsUd6UelnOrKxoMOixttjofPbmHSPVM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=DvjEAu1GHLcYDGiKGyBcLSem/ZzrNTKHck4/frc9UlJG1PT09fUgW6esXzAj3W44D
-	 CoXZvloOVQ4fpHU/bj9Qtk2zM8zP3H7UApH6lrDaaOcJohX7oLwHhZqikbpBshhtdN
-	 uzJpPuPnGGW6BOk4q4mXGUcmRjktwjXjLTeN1f2RbIodlmkGki5TjJ5Qi8eNh+RUzv
-	 /dF0XMkvQOGNVj21eC4zQcCSPNJ+dbQtcU0JRWOFR116q+nEqO0L4j8Abg+DiFlIvM
-	 maZUiCppNmFjIrfmnpavoiP4oyOk/psggw9AVoqyjVQsmjUlY9DIHoVSgnJdJ0fDs/
-	 r2SL8oIKL7+DQ==
+	s=k20201202; t=1720542012;
+	bh=RLPBOy9bO4BWCJVE0yOsG/T3YzQ5OxEOb79y7bhWjVM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YKC78k9QedCp0cUPPO0DqyRrjZ56asgYHZcygRJoYVyCggqtTjWLK1HMI+fcsh+BZ
+	 Ks0iXuWJ384HX/5xNGgaBFC20Oz66SUFPBEIYlifG+P4FnGQzoW7VWkELJO2Prw48l
+	 OKVp6CJ2h4E1/DeejTwYvzi4kADdi58H7TR8d6vId8DJR9RJgnjN0vbdZZO7WJdOFM
+	 rliBI4w7jy7pFZCsYoW2osf14CbJYIDfE+bUIwwFtFCfmmmWY9jRrjP9W3BG8/xfxY
+	 vPvlc+g106Z50H6VzBFuN+tWkkdWx14FPkXaKBdVtHW8XDZtBv2paIqBMKbxBjmWrj
+	 Rsxl4Z1yr+ujw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tejun Heo <tj@kernel.org>,
-	Jan Engelhardt <jengelh@inai.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.9 01/40] workqueue: Refactor worker ID formatting and make wq_worker_comm() use full ID string
-Date: Tue,  9 Jul 2024 12:18:41 -0400
-Message-ID: <20240709162007.30160-1-sashal@kernel.org>
+Cc: Jonathan Denose <jdenose@google.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	jefferymiller@google.com,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 02/40] Input: elantech - fix touchpad state on resume for Lenovo N24
+Date: Tue,  9 Jul 2024 12:18:42 -0400
+Message-ID: <20240709162007.30160-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240709162007.30160-1-sashal@kernel.org>
+References: <20240709162007.30160-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,168 +66,77 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.8
 Content-Transfer-Encoding: 8bit
 
-From: Tejun Heo <tj@kernel.org>
+From: Jonathan Denose <jdenose@google.com>
 
-[ Upstream commit 2a1b02bcba78f8498ab00d6142e1238d85b01591 ]
+[ Upstream commit a69ce592cbe0417664bc5a075205aa75c2ec1273 ]
 
-Currently, worker ID formatting is open coded in create_worker(),
-init_rescuer() and worker_thread() (for %WORKER_DIE case). The formatted ID
-is saved into task->comm and wq_worker_comm() uses it as the base name to
-append extra information to when generating the name to be shown to
-userspace.
+The Lenovo N24 on resume becomes stuck in a state where it
+sends incorrect packets, causing elantech_packet_check_v4 to fail.
+The only way for the device to resume sending the correct packets is for
+it to be disabled and then re-enabled.
 
-However, TASK_COMM_LEN is only 16 leading to badly truncated names for
-rescuers. For example, the rescuer for the inet_frag_wq workqueue becomes:
+This change adds a dmi check to trigger this behavior on resume.
 
-  $ ps -ef | grep '[k]worker/R-inet'
-  root         483       2  0 Apr26 ?        00:00:00 [kworker/R-inet_]
-
-Even for non-rescue workers, it's easy to run over 15 characters on
-moderately large machines.
-
-Fit it by consolidating worker ID formatting into a new helper
-format_worker_id() and calling it from wq_worker_comm() to obtain the
-untruncated worker ID string.
-
-  $ ps -ef | grep '[k]worker/R-inet'
-  root          60       2  0 12:10 ?        00:00:00 [kworker/R-inet_frag_wq]
-
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reported-and-tested-by: Jan Engelhardt <jengelh@inai.de>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Jonathan Denose <jdenose@google.com>
+Link: https://lore.kernel.org/r/20240503155020.v2.1.Ifa0e25ebf968d8f307f58d678036944141ab17e6@changeid
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/workqueue.c | 51 ++++++++++++++++++++++++++++++----------------
- 1 file changed, 34 insertions(+), 17 deletions(-)
+ drivers/input/mouse/elantech.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index d2dbe099286b9..7634fc32ee05a 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -124,6 +124,7 @@ enum wq_internal_consts {
- 	HIGHPRI_NICE_LEVEL	= MIN_NICE,
- 
- 	WQ_NAME_LEN		= 32,
-+	WORKER_ID_LEN		= 10 + WQ_NAME_LEN, /* "kworker/R-" + WQ_NAME_LEN */
- };
- 
- /*
-@@ -2778,6 +2779,26 @@ static void worker_detach_from_pool(struct worker *worker)
- 		complete(detach_completion);
+diff --git a/drivers/input/mouse/elantech.c b/drivers/input/mouse/elantech.c
+index 4e38229404b4b..b4723ea395eb9 100644
+--- a/drivers/input/mouse/elantech.c
++++ b/drivers/input/mouse/elantech.c
+@@ -1476,16 +1476,47 @@ static void elantech_disconnect(struct psmouse *psmouse)
+ 	psmouse->private = NULL;
  }
  
-+static int format_worker_id(char *buf, size_t size, struct worker *worker,
-+			    struct worker_pool *pool)
-+{
-+	if (worker->rescue_wq)
-+		return scnprintf(buf, size, "kworker/R-%s",
-+				 worker->rescue_wq->name);
++/*
++ * Some hw_version 4 models fail to properly activate absolute mode on
++ * resume without going through disable/enable cycle.
++ */
++static const struct dmi_system_id elantech_needs_reenable[] = {
++#if defined(CONFIG_DMI) && defined(CONFIG_X86)
++	{
++		/* Lenovo N24 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "81AF"),
++		},
++	},
++#endif
++	{ }
++};
 +
-+	if (pool) {
-+		if (pool->cpu >= 0)
-+			return scnprintf(buf, size, "kworker/%d:%d%s",
-+					 pool->cpu, worker->id,
-+					 pool->attrs->nice < 0  ? "H" : "");
-+		else
-+			return scnprintf(buf, size, "kworker/u%d:%d",
-+					 pool->id, worker->id);
-+	} else {
-+		return scnprintf(buf, size, "kworker/dying");
+ /*
+  * Put the touchpad back into absolute mode when reconnecting
+  */
+ static int elantech_reconnect(struct psmouse *psmouse)
+ {
++	int err;
++
+ 	psmouse_reset(psmouse);
+ 
+ 	if (elantech_detect(psmouse, 0))
+ 		return -1;
+ 
++	if (dmi_check_system(elantech_needs_reenable)) {
++		err = ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_DISABLE);
++		if (err)
++			psmouse_warn(psmouse, "failed to deactivate mouse on %s: %d\n",
++				     psmouse->ps2dev.serio->phys, err);
++
++		err = ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_ENABLE);
++		if (err)
++			psmouse_warn(psmouse, "failed to reactivate mouse on %s: %d\n",
++				     psmouse->ps2dev.serio->phys, err);
 +	}
-+}
 +
- /**
-  * create_worker - create a new workqueue worker
-  * @pool: pool the new worker will belong to
-@@ -2794,7 +2815,6 @@ static struct worker *create_worker(struct worker_pool *pool)
- {
- 	struct worker *worker;
- 	int id;
--	char id_buf[23];
- 
- 	/* ID is needed to determine kthread name */
- 	id = ida_alloc(&pool->worker_ida, GFP_KERNEL);
-@@ -2813,17 +2833,14 @@ static struct worker *create_worker(struct worker_pool *pool)
- 	worker->id = id;
- 
- 	if (!(pool->flags & POOL_BH)) {
--		if (pool->cpu >= 0)
--			snprintf(id_buf, sizeof(id_buf), "%d:%d%s", pool->cpu, id,
--				 pool->attrs->nice < 0  ? "H" : "");
--		else
--			snprintf(id_buf, sizeof(id_buf), "u%d:%d", pool->id, id);
-+		char id_buf[WORKER_ID_LEN];
- 
-+		format_worker_id(id_buf, sizeof(id_buf), worker, pool);
- 		worker->task = kthread_create_on_node(worker_thread, worker,
--					pool->node, "kworker/%s", id_buf);
-+						      pool->node, "%s", id_buf);
- 		if (IS_ERR(worker->task)) {
- 			if (PTR_ERR(worker->task) == -EINTR) {
--				pr_err("workqueue: Interrupted when creating a worker thread \"kworker/%s\"\n",
-+				pr_err("workqueue: Interrupted when creating a worker thread \"%s\"\n",
- 				       id_buf);
- 			} else {
- 				pr_err_once("workqueue: Failed to create a worker thread: %pe",
-@@ -3386,7 +3403,6 @@ static int worker_thread(void *__worker)
- 		raw_spin_unlock_irq(&pool->lock);
- 		set_pf_worker(false);
- 
--		set_task_comm(worker->task, "kworker/dying");
- 		ida_free(&pool->worker_ida, worker->id);
- 		worker_detach_from_pool(worker);
- 		WARN_ON_ONCE(!list_empty(&worker->entry));
-@@ -5430,6 +5446,7 @@ static int wq_clamp_max_active(int max_active, unsigned int flags,
- static int init_rescuer(struct workqueue_struct *wq)
- {
- 	struct worker *rescuer;
-+	char id_buf[WORKER_ID_LEN];
- 	int ret;
- 
- 	if (!(wq->flags & WQ_MEM_RECLAIM))
-@@ -5443,7 +5460,9 @@ static int init_rescuer(struct workqueue_struct *wq)
- 	}
- 
- 	rescuer->rescue_wq = wq;
--	rescuer->task = kthread_create(rescuer_thread, rescuer, "kworker/R-%s", wq->name);
-+	format_worker_id(id_buf, sizeof(id_buf), rescuer, NULL);
-+
-+	rescuer->task = kthread_create(rescuer_thread, rescuer, "%s", id_buf);
- 	if (IS_ERR(rescuer->task)) {
- 		ret = PTR_ERR(rescuer->task);
- 		pr_err("workqueue: Failed to create a rescuer kthread for wq \"%s\": %pe",
-@@ -6272,19 +6291,15 @@ void show_freezable_workqueues(void)
- /* used to show worker information through /proc/PID/{comm,stat,status} */
- void wq_worker_comm(char *buf, size_t size, struct task_struct *task)
- {
--	int off;
--
--	/* always show the actual comm */
--	off = strscpy(buf, task->comm, size);
--	if (off < 0)
--		return;
--
- 	/* stabilize PF_WQ_WORKER and worker pool association */
- 	mutex_lock(&wq_pool_attach_mutex);
- 
- 	if (task->flags & PF_WQ_WORKER) {
- 		struct worker *worker = kthread_data(task);
- 		struct worker_pool *pool = worker->pool;
-+		int off;
-+
-+		off = format_worker_id(buf, size, worker, pool);
- 
- 		if (pool) {
- 			raw_spin_lock_irq(&pool->lock);
-@@ -6303,6 +6318,8 @@ void wq_worker_comm(char *buf, size_t size, struct task_struct *task)
- 			}
- 			raw_spin_unlock_irq(&pool->lock);
- 		}
-+	} else {
-+		strscpy(buf, task->comm, size);
- 	}
- 
- 	mutex_unlock(&wq_pool_attach_mutex);
+ 	if (elantech_set_absolute_mode(psmouse)) {
+ 		psmouse_err(psmouse,
+ 			    "failed to put touchpad back into absolute mode.\n");
 -- 
 2.43.0
 
