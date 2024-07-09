@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-58561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE77492B79F
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:25:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BFC692B6B3
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:16:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A50031F24363
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:25:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCE031F21DCB
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3541414EC4D;
-	Tue,  9 Jul 2024 11:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E90C158870;
+	Tue,  9 Jul 2024 11:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRTiSuyz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNwbF78X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86BC27713;
-	Tue,  9 Jul 2024 11:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E595158218;
+	Tue,  9 Jul 2024 11:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524310; cv=none; b=lGm6FzdigzSIWV8T7iSDWoyETTzihzY6SxsTPbSYKRr2Kjdlyz5D+n/mHoCXvGUts63g3MeZxgkC0IMQwr9GKJWr6gFsJv4Afbc4PQoKLs16DsE6qi9r6OsXNT6Fru0/ZZNX5ZG5iOa5q2Tnve3rYXWur+zWsJrnLKaAHbYBXOQ=
+	t=1720523746; cv=none; b=biZwDcANzmtDLX3auKgs5DotXBcFV46+kt0C2Ay+ROKThgS487iP0ntCV5s9la5oJZ6LAQJ1pO2AXbWxDG0jD5Yz/yQ4XFImSJw8oFG0l48hKXp0m3fhNKPS0fwl1onbKEN0sH45aPqIoGPFn192b2fpeQg0VlG35QpVnXyW5ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524310; c=relaxed/simple;
-	bh=xLmRY4zoHtKYbWpO2ueCLKveRLpV/nr32DoMr0W5pEM=;
+	s=arc-20240116; t=1720523746; c=relaxed/simple;
+	bh=dDxrD2hswP/r4OHR5YVnAAx1KRyKZQAc1fkpIZKgyOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MX43sk/iUVK+Yma4ojZ5Ki1hsF/tw8VK633L3aTa8WRqT6ICa6O9cTQy7/e5UCGDZ6h/UX6rUcr3vFJqBlvBwEvGdvWpB8FXMomawQLZJEX1xbD//grfWcGk4J0uxYTtEX7LYw7z5GXsiV4M6mrEaewJ4iPJb8nvDGKqGjMqsdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xRTiSuyz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669E1C3277B;
-	Tue,  9 Jul 2024 11:25:09 +0000 (UTC)
+	 MIME-Version; b=eEtSWDtMB8wnOStOBr3u7A18cDt8ilEMJ01k2rFYwLM4beQTCM/njLkA3ALkyV2xasxrp0QJEcTl3UqGqtZd4YKZWjhMSvjWHWQKRxvFCqyOtJRS1ZW7K+NRfqjoAaJVa4GpNidD3S4LvSoIj5NrKP+nIDE8pYIqtb9S1ph4jCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNwbF78X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82224C32786;
+	Tue,  9 Jul 2024 11:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524309;
-	bh=xLmRY4zoHtKYbWpO2ueCLKveRLpV/nr32DoMr0W5pEM=;
+	s=korg; t=1720523745;
+	bh=dDxrD2hswP/r4OHR5YVnAAx1KRyKZQAc1fkpIZKgyOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xRTiSuyzgbZzNSq2HIHvFgRAsQ7cnap6x+lsgkGqG6C0GrBCyMWRge9j1D+z2WZ4M
-	 8eh04KHiVbh2ykjQqhwJdbTQqJ7WViuLbvi0/zw4Iw0rrFHeCnDHiHiy23RJYSlr0E
-	 nzozXwsQkyVcoHJJXbHuuHm2duXgKzAiUcoK1xPY=
+	b=RNwbF78XDXM7nfGL5UJ9cEMDy2J9A6S4d4ddFZElZjbHE02X+Vg9zRQPLeKejcgI0
+	 tPKnL80hTmum6woeBud2NMJgwNc45bpEG6f1fSfaFdG9+rDOK43nojMry0PFufjSOB
+	 W73z0olnd18HUyYz9h8TeY9n3Y+4QqEkIGen2aWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Nathan Chancellor <nathan@kernel.org>,
 	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.9 141/197] f2fs: Add inline to f2fs_build_fault_attr() stub
+Subject: [PATCH 6.6 095/139] f2fs: Add inline to f2fs_build_fault_attr() stub
 Date: Tue,  9 Jul 2024 13:09:55 +0200
-Message-ID: <20240709110714.410809170@linuxfoundation.org>
+Message-ID: <20240709110701.854093492@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -93,7 +93,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/fs/f2fs/f2fs.h
 +++ b/fs/f2fs/f2fs.h
-@@ -4600,8 +4600,8 @@ static inline bool f2fs_need_verity(cons
+@@ -4596,8 +4596,8 @@ static inline bool f2fs_need_verity(cons
  extern int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
  							unsigned long type);
  #else
