@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-58516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A8D92B76D
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCDED92B68D
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:15:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCB90B2650E
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05FCC1C21F45
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7A715884E;
-	Tue,  9 Jul 2024 11:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5621581E4;
+	Tue,  9 Jul 2024 11:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToXCEDq5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F3q8ABoz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD2F156F57;
-	Tue,  9 Jul 2024 11:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4CF155389;
+	Tue,  9 Jul 2024 11:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524175; cv=none; b=dlILuuEoGTQT+pZ/Im8gJrLreejh0NZ/ivMVzbaF+E6wL6tqBzonIMpIhuoKHPuXqbVRdAh3nrV3+0Z+LSn56Bgr83i4KsRJ6XVCBQr6jytA6LSPdtyo36zxVzr8H6mBrc0aLHl+pMzuamXpcXdAEnvCyAgrHph9hGlN+lj3ALg=
+	t=1720523689; cv=none; b=C7siNIHzNS5v6CcwpEzwcF8cazUf0dGTh5KzHlrYwwF2OuQecZBPNWEeUHiRJmWGNig27U1Zqee4mQ+rRfnQtAUa5ovhEA+0l0zwP+e68EWnx3dZgyyTQGXSFDg0cSRl3yIk+ybdb+M761UlMwr6FqagQRf2jk5WcFwBxKYybcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524175; c=relaxed/simple;
-	bh=OcLlvNNGojX2tmsmlD86LbHPP/i0VJM4Mus4zKLVfmg=;
+	s=arc-20240116; t=1720523689; c=relaxed/simple;
+	bh=8WMCBkAuhYVKoxfvQsqp0VcWROA0oTxrKKA2JuBNa6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=heREJUKIsWWtzh+rQhPpN8OGQi+mPvQygSbbANWHPKZN1htkiHMnjM/K9JkarLgh/uHHhBC4/yCL8irSytEbDQuQ0VWUeci3j2K1q8YbJPcQ09PnYY4r9GxbZVTp2glvpAWTETh3KRxqYOcTutwB+gf9fyzFPRGKydeUcrVZkGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToXCEDq5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11097C3277B;
-	Tue,  9 Jul 2024 11:22:54 +0000 (UTC)
+	 MIME-Version; b=cAgv3Kf0IT7O+z/33gA6+hjaIbugY7jCUPeDlBNlE1keh/F8DarjLbu++antNCw7UMO5TUcvEv0nhU7OgTEaLpIJT7YIgiOLZktRYkYjdmgRseiQ5XXq3AmxmKAG5YHQX0Ld5UZ6OeSGhc9TqMqbltxTZdzK9u0PPZOX7SX26as=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F3q8ABoz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F1BC3277B;
+	Tue,  9 Jul 2024 11:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524175;
-	bh=OcLlvNNGojX2tmsmlD86LbHPP/i0VJM4Mus4zKLVfmg=;
+	s=korg; t=1720523689;
+	bh=8WMCBkAuhYVKoxfvQsqp0VcWROA0oTxrKKA2JuBNa6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ToXCEDq5Yh05kKRa7yIUKXiVfDgo5T7hprlsDMpL3IjdGIsDuwJIpiF/Vp1s60l6J
-	 GgFRKuGU3qAu8nM7zywhMOHzcz3KTKVAAkKdqp/JZNViOhwhyy/2NoEHpyi0n8AwYQ
-	 331JLAECh5yMWvhSOdqnoha4b3nd2Nn/zJGu2S9s=
+	b=F3q8ABozilI40uD30YWQ/iPvrDEMzKFP47elLmn1niFl7xH1nM/o9YKKFnAfLhlWp
+	 gBPT0ZIdbD6iX2A5gcbhBVDfSIGdcMTF2XhKv0+f8uPmubmtnqsqr60cApJ2aW/OlW
+	 wQtpp60OkzEKhQK5f5iqJVZPI0o/FGvSqldrm+nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	"Jose E. Marchesi" <jose.marchesi@oracle.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 094/197] Bluetooth: hci_event: Fix setting of unicast qos interval
+Subject: [PATCH 6.6 048/139] bpf: Avoid uninitialized value in BPF_CORE_READ_BITFIELD
 Date: Tue,  9 Jul 2024 13:09:08 +0200
-Message-ID: <20240709110712.602146550@linuxfoundation.org>
+Message-ID: <20240709110700.025822670@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,101 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Jose E. Marchesi <jose.marchesi@oracle.com>
 
-[ Upstream commit ac65ecccae802417ce42e857defacad60e4b8329 ]
+[ Upstream commit 009367099eb61a4fc2af44d4eb06b6b4de7de6db ]
 
-qos->ucast interval reffers to the SDU interval, and should not
-be set to the interval value reported by the LE CIS Established
-event since the latter reffers to the ISO interval. These two
-interval are not the same thing:
+[Changes from V1:
+ - Use a default branch in the switch statement to initialize `val'.]
 
-BLUETOOTH CORE SPECIFICATION Version 5.3 | Vol 6, Part G
+GCC warns that `val' may be used uninitialized in the
+BPF_CRE_READ_BITFIELD macro, defined in bpf_core_read.h as:
 
-Isochronous interval:
-The time between two consecutive BIS or CIS events (designated
-ISO_Interval in the Link Layer)
+	[...]
+	unsigned long long val;						      \
+	[...]								      \
+	switch (__CORE_RELO(s, field, BYTE_SIZE)) {			      \
+	case 1: val = *(const unsigned char *)p; break;			      \
+	case 2: val = *(const unsigned short *)p; break;		      \
+	case 4: val = *(const unsigned int *)p; break;			      \
+	case 8: val = *(const unsigned long long *)p; break;		      \
+        }       							      \
+	[...]
+	val;								      \
+	}								      \
 
-SDU interval:
-The nominal time between two consecutive SDUs that are sent or
-received by the upper layer.
+This patch adds a default entry in the switch statement that sets
+`val' to zero in order to avoid the warning, and random values to be
+used in case __builtin_preserve_field_info returns unexpected values
+for BPF_FIELD_BYTE_SIZE.
 
-So this instead uses the following formula from the spec to calculate
-the resulting SDU interface:
+Tested in bpf-next master.
+No regressions.
 
-BLUETOOTH CORE SPECIFICATION Version 5.4 | Vol 6, Part G
-page 3075:
-
-Transport_Latency_C_To_P = CIG_Sync_Delay + (FT_C_To_P) ×
-ISO_Interval + SDU_Interval_C_To_P
-Transport_Latency_P_To_C = CIG_Sync_Delay + (FT_P_To_C) ×
-ISO_Interval + SDU_Interval_P_To_C
-
-Link: https://github.com/bluez/bluez/issues/823
-Fixes: 2be22f1941d5 ("Bluetooth: hci_event: Fix parsing of CIS Established Event")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Jose E. Marchesi <jose.marchesi@oracle.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240508101313.16662-1-jose.marchesi@oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ tools/lib/bpf/bpf_core_read.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 1ed734a7fb313..0b3a76fcfedf5 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6661,6 +6661,7 @@ static void hci_le_cis_estabilished_evt(struct hci_dev *hdev, void *data,
- 	struct bt_iso_qos *qos;
- 	bool pending = false;
- 	u16 handle = __le16_to_cpu(ev->handle);
-+	u32 c_sdu_interval, p_sdu_interval;
- 
- 	bt_dev_dbg(hdev, "status 0x%2.2x", ev->status);
- 
-@@ -6685,12 +6686,25 @@ static void hci_le_cis_estabilished_evt(struct hci_dev *hdev, void *data,
- 
- 	pending = test_and_clear_bit(HCI_CONN_CREATE_CIS, &conn->flags);
- 
--	/* Convert ISO Interval (1.25 ms slots) to SDU Interval (us) */
--	qos->ucast.in.interval = le16_to_cpu(ev->interval) * 1250;
--	qos->ucast.out.interval = qos->ucast.in.interval;
-+	/* BLUETOOTH CORE SPECIFICATION Version 5.4 | Vol 6, Part G
-+	 * page 3075:
-+	 * Transport_Latency_C_To_P = CIG_Sync_Delay + (FT_C_To_P) ×
-+	 * ISO_Interval + SDU_Interval_C_To_P
-+	 * ...
-+	 * SDU_Interval = (CIG_Sync_Delay + (FT) x ISO_Interval) -
-+	 *					Transport_Latency
-+	 */
-+	c_sdu_interval = (get_unaligned_le24(ev->cig_sync_delay) +
-+			 (ev->c_ft * le16_to_cpu(ev->interval) * 1250)) -
-+			get_unaligned_le24(ev->c_latency);
-+	p_sdu_interval = (get_unaligned_le24(ev->cig_sync_delay) +
-+			 (ev->p_ft * le16_to_cpu(ev->interval) * 1250)) -
-+			get_unaligned_le24(ev->p_latency);
- 
- 	switch (conn->role) {
- 	case HCI_ROLE_SLAVE:
-+		qos->ucast.in.interval = c_sdu_interval;
-+		qos->ucast.out.interval = p_sdu_interval;
- 		/* Convert Transport Latency (us) to Latency (msec) */
- 		qos->ucast.in.latency =
- 			DIV_ROUND_CLOSEST(get_unaligned_le24(ev->c_latency),
-@@ -6704,6 +6718,8 @@ static void hci_le_cis_estabilished_evt(struct hci_dev *hdev, void *data,
- 		qos->ucast.out.phy = ev->p_phy;
- 		break;
- 	case HCI_ROLE_MASTER:
-+		qos->ucast.in.interval = p_sdu_interval;
-+		qos->ucast.out.interval = c_sdu_interval;
- 		/* Convert Transport Latency (us) to Latency (msec) */
- 		qos->ucast.out.latency =
- 			DIV_ROUND_CLOSEST(get_unaligned_le24(ev->c_latency),
+diff --git a/tools/lib/bpf/bpf_core_read.h b/tools/lib/bpf/bpf_core_read.h
+index 1ac57bb7ac55f..e2b9e8415c044 100644
+--- a/tools/lib/bpf/bpf_core_read.h
++++ b/tools/lib/bpf/bpf_core_read.h
+@@ -102,6 +102,7 @@ enum bpf_enum_value_kind {
+ 	case 2: val = *(const unsigned short *)p; break;		      \
+ 	case 4: val = *(const unsigned int *)p; break;			      \
+ 	case 8: val = *(const unsigned long long *)p; break;		      \
++	default: val = 0; break;					      \
+ 	}								      \
+ 	val <<= __CORE_RELO(s, field, LSHIFT_U64);			      \
+ 	if (__CORE_RELO(s, field, SIGNED))				      \
 -- 
 2.43.0
 
