@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18E2D92B774
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 155AF92B693
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:15:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AADB1C22BEE
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5F15281F52
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:15:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8AC155A25;
-	Tue,  9 Jul 2024 11:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630DE155A26;
+	Tue,  9 Jul 2024 11:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExV+B/wM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+MSWAqc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4A314E2F4;
-	Tue,  9 Jul 2024 11:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3EF158205;
+	Tue,  9 Jul 2024 11:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524199; cv=none; b=BXve0diYa1qRZbYfTIl9WSAM7u70uOleNinQ+4IojscBxpk1AXp3lhVN5bdXtsIf+myrSfU991R6yMhszHSTvk60BH40uG30U1HtduTFurAPgYbRfxrLARwlvf9AbSD9Ymmi49FL/l/z9HSbdGs11Y5u8KHKdkrVbMV6uIwi6WM=
+	t=1720523710; cv=none; b=H0EoO+MVflkevTSB+OHi97eYh+J5NDg/aINxCRqrIilo5mEaJ7RcI01w/LXp2Z2azaKRs/SEoqgOE0VvM6GiF6iifEQv1v05v0vOLIXV4bS0ACmKAvkd915cX/Lg3LIW/sLtPrGzJvjG0/hNZd3Aw6MORRElsbXI6O801Kb9bq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524199; c=relaxed/simple;
-	bh=oxiK5rpCxSQkfnGcnpdyjJRyGQ8NH/6SDwrGP0nc2Ms=;
+	s=arc-20240116; t=1720523710; c=relaxed/simple;
+	bh=T2oeH3RaLUWWC6Mw/o6Lb5OS9F1VUyRaEbLXbrp7j9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=no4nHLOKfvN9nxrlGWPFcKW8s9OVl2W4Ke7sYW8x7JJzA40QkDXdO3rQSnONyEy5dVxlACV2ePWEWBY3WOVb8phbu/dq62iQFqUU9f82enPxYDBVulKuPjYVNZPWCFu2CuCstNIyrVODUjiJWWZ8fnzydeb6vRFjsIOkZo8BAVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExV+B/wM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BB7C3277B;
-	Tue,  9 Jul 2024 11:23:18 +0000 (UTC)
+	 MIME-Version; b=SidkR1Dm7VkHkXlElq88pSzBK/6TtE3UboMJiGkdwvwBGSz2St9X2Im0v8qBphsgiUdGjDDBv2WwUrqqX8Fn3D2DORECTuzCxd51FTmH4Ou7iwNial/8/gkVkCEjgYOePlyPozq/tAP5Kb49mWv+aT9JM4GtgN+MJUUHnJc1hmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+MSWAqc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A328C4AF0A;
+	Tue,  9 Jul 2024 11:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524199;
-	bh=oxiK5rpCxSQkfnGcnpdyjJRyGQ8NH/6SDwrGP0nc2Ms=;
+	s=korg; t=1720523709;
+	bh=T2oeH3RaLUWWC6Mw/o6Lb5OS9F1VUyRaEbLXbrp7j9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ExV+B/wMww4Ff/2kYklmwy5WLNS3c5P0JsE+XhKGBweKqqTGdX3zdDEewNNFpQ/yv
-	 ylEUbuqQ1RpHJ9zJTSjK6ZO8w7xZpQI0dvPXFkdwAP0URw4UbzhiiSZlBmS1utCorH
-	 Y1PT6RBFeviR46BQsUIPd5qTepKm8EOKuJROF3bo=
+	b=c+MSWAqclY2PrkY5FZ46vy9ADBh6JjX3QE4wHf92LLNNG5OF+Nz5lbNA6/EVDL1qH
+	 5zUKFJf3szX8M4pA/uuvQCCZ5tJx27VUAMULVCyC7NNJEahhS0wlZnlYG2LZ9VJ6AX
+	 Vq7YAyRk8osDa3kMdAwRPBL9fknn9FLVa6+CuhME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iulia Tanasescu <iulia.tanasescu@nxp.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Michael Krummsdorf <michael.krummsdorf@tq-group.com>,
+	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 096/197] Bluetooth: ISO: Check socket flag instead of hcon
-Date: Tue,  9 Jul 2024 13:09:10 +0200
-Message-ID: <20240709110712.678393151@linuxfoundation.org>
+Subject: [PATCH 6.6 051/139] serial: imx: Raise TX trigger level to 8
+Date: Tue,  9 Jul 2024 13:09:11 +0200
+Message-ID: <20240709110700.141768734@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 
-[ Upstream commit 596b6f081336e77764ca35cfeab66d0fcdbe544e ]
+[ Upstream commit a3d8728ab079951741efa11360df43dbfacba7ab ]
 
-This fixes the following Smatch static checker warning:
+At the default TX trigger level of 2 in non-DMA mode (meaning that an
+interrupt is generated when less than 2 characters are left in the
+FIFO), we have observed frequent buffer underruns at 115200 Baud on an
+i.MX8M Nano. This can cause communication issues if the receiving side
+expects a continuous transfer.
 
-net/bluetooth/iso.c:1364 iso_sock_recvmsg()
-error: we previously assumed 'pi->conn->hcon' could be null (line 1359)
+Increasing the level to 8 makes the UART trigger an interrupt earlier,
+giving the kernel enough time to refill the FIFO, at the cost of
+triggering one interrupt per ~24 instead of ~30 bytes of transmitted
+data (as the i.MX UART has a 32 byte FIFO).
 
-net/bluetooth/iso.c
-1347 static int iso_sock_recvmsg(struct socket *sock, struct msghdr *msg,
-1348                             size_t len, int flags)
-1349 {
-1350         struct sock *sk = sock->sk;
-1351         struct iso_pinfo *pi = iso_pi(sk);
-1352
-1353         BT_DBG("sk %p", sk);
-1354
-1355         if (test_and_clear_bit(BT_SK_DEFER_SETUP,
-                                      &bt_sk(sk)->flags)) {
-1356                 lock_sock(sk);
-1357                 switch (sk->sk_state) {
-1358                 case BT_CONNECT2:
-1359                         if (pi->conn->hcon &&
-                                     ^^^^^^^^^^^^^^ If ->hcon is NULL
-
-1360                             test_bit(HCI_CONN_PA_SYNC,
-                                         &pi->conn->hcon->flags)) {
-1361                                 iso_conn_big_sync(sk);
-1362                                 sk->sk_state = BT_LISTEN;
-1363                         } else {
---> 1364                         iso_conn_defer_accept(pi->conn->hcon);
-                                                       ^^^^^^^^^^^^^^
-                                                       then we're toast
-
-1365                                 sk->sk_state = BT_CONFIG;
-1366                         }
-1367                         release_sock(sk);
-1368                         return 0;
-1369                 case BT_CONNECTED:
-1370                         if (test_bit(BT_SK_PA_SYNC,
-
-Fixes: fbdc4bc47268 ("Bluetooth: ISO: Use defer setup to separate PA sync and BIG sync")
-Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Michael Krummsdorf <michael.krummsdorf@tq-group.com>
+Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20240508133744.35858-1-matthias.schiffer@ew.tq-group.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/iso.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/tty/serial/imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 00c0d8413c638..dd33400c21822 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -1356,8 +1356,7 @@ static int iso_sock_recvmsg(struct socket *sock, struct msghdr *msg,
- 		lock_sock(sk);
- 		switch (sk->sk_state) {
- 		case BT_CONNECT2:
--			if (pi->conn->hcon &&
--			    test_bit(HCI_CONN_PA_SYNC, &pi->conn->hcon->flags)) {
-+			if (test_bit(BT_SK_PA_SYNC, &pi->flags)) {
- 				iso_conn_big_sync(sk);
- 				sk->sk_state = BT_LISTEN;
- 			} else {
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index 285e0e1144c4c..a5d0df2ba5c55 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -1320,7 +1320,7 @@ static void imx_uart_clear_rx_errors(struct imx_port *sport)
+ 
+ }
+ 
+-#define TXTL_DEFAULT 2 /* reset default */
++#define TXTL_DEFAULT 8
+ #define RXTL_DEFAULT 8 /* 8 characters or aging timer */
+ #define TXTL_DMA 8 /* DMA burst setting */
+ #define RXTL_DMA 9 /* DMA burst setting */
 -- 
 2.43.0
 
