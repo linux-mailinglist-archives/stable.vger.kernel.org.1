@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-58498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACEC692B758
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:22:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 374D992B65F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:12:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61CB01F24010
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:22:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5C6428378D
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CC9158A36;
-	Tue,  9 Jul 2024 11:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98557158202;
+	Tue,  9 Jul 2024 11:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BveV8H7t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gB7WfNlo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3427C158A1F;
-	Tue,  9 Jul 2024 11:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56DE8157A72;
+	Tue,  9 Jul 2024 11:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524122; cv=none; b=nduuNiaZWYjbpksb2PA8k3sSCROwh7Fwhw7RPaoWfjPBpo5MgJ9qTHTH3O3XQS6Uj23Bp2TAiHQGHwlHyRaNvdkEmqSsQXjPKLUJtza+vfc6l76Wh/bJUKLCQwFWh2jjZb0pXNJG4I959zMCc0HZ5ZhuWuQmGgNExkfk/QunxYo=
+	t=1720523558; cv=none; b=U0kCb8He10zfCgug5Ii9tjluDAbo9nqldEoTQ5TOdzvgvJpMP+YT4V6R4ZPCCfu/YfgNCgNPIeaFU/TkGloWW/BiR6c7OFw56+kYcvO96HWQvFs6/4Udh9rOiUsJ7QS9YaPZptrdSo7qE9G/CkO3b/RlNXTLUffCBykyumdkumc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524122; c=relaxed/simple;
-	bh=u4U8zQ4DX8W/i7HR7bVx4ZCmoPvPT1EJJOtUO7JR5lY=;
+	s=arc-20240116; t=1720523558; c=relaxed/simple;
+	bh=mUvJkvWxbFfT0KIlnGdVbqgtgTTdNcMERqOlyu6cEyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XHsJJ2ZiU3Dwwk6x79cMLCUxQR2TCQgU3gzYI0rrsyc214332JkhgAUEL/tabA4zNHoQpCukZArVRpvCeoIDpLnX4nP+SG2n0PLbgk77mmYPZkuKLJt9WeCyh+K2XNjKBJNOt1SkKgg+ycfcQiPgsJ4P3ZAYxCoJF6TP+onqj0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BveV8H7t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A0CC3277B;
-	Tue,  9 Jul 2024 11:22:01 +0000 (UTC)
+	 MIME-Version; b=q+oGxHI4PJxQ/pn6cceodfsvMifiSAT67DdkDUCbZ7lWeY3ld114JmWWJHM1cFAdl9fv8NgJGd7d9DyIvIEKnxi3pQxh3I8iOT8a7wG3E9vQC4ESCOzwr9cxHaluN+eBNH4iFRiscdpLurxG3PrFwpjs+blCeqOY0q78gDxMrYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gB7WfNlo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D25BEC3277B;
+	Tue,  9 Jul 2024 11:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524122;
-	bh=u4U8zQ4DX8W/i7HR7bVx4ZCmoPvPT1EJJOtUO7JR5lY=;
+	s=korg; t=1720523558;
+	bh=mUvJkvWxbFfT0KIlnGdVbqgtgTTdNcMERqOlyu6cEyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BveV8H7tnz3D9d+gjOdl0TtqOWnYpR2PJFQE7KChBi8oExW9g76UN8ynDm9/suYP3
-	 KukXdlhgQwy6PD1E/hW41nA4totP7XBjL1v5NEv2iQGsVKLKC9GT/xBaPwX9Gqi/Ak
-	 BLQV9833/WycXc1i9wgi+3UyBcZk1WIzpIR69sgs=
+	b=gB7WfNloC41fHoybT+oYT+3uiwLguWeAlwX5EQuh/IZ9RDybhFX2hGb+sXHV82ZLR
+	 ajN1ay4RdjT5poQs38LLphllrVydjMqA7mUuGO1YbFLGZ4cvH9ZcZD7NlAe8o2TChF
+	 NQFkU0cOYIXNAx+cxMJwMdF4dLdq1xdqF1p4+77M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-hardening@vger.kernel.org,
-	Justin Stitt <justinstitt@google.com>,
-	Phillip Potter <phil@philpotter.co.uk>,
-	Jens Axboe <axboe@kernel.dk>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 078/197] cdrom: rearrange last_media_change check to avoid unintentional overflow
+Subject: [PATCH 6.6 032/139] wifi: mt76: replace skb_put with skb_put_zero
 Date: Tue,  9 Jul 2024 13:08:52 +0200
-Message-ID: <20240709110711.987507268@linuxfoundation.org>
+Message-ID: <20240709110659.407119146@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Stitt <justinstitt@google.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit efb905aeb44b0e99c0e6b07865b1885ae0471ebf ]
+[ Upstream commit 7f819a2f4fbc510e088b49c79addcf1734503578 ]
 
-When running syzkaller with the newly reintroduced signed integer wrap
-sanitizer we encounter this splat:
+Avoid potentially reusing uninitialized data
 
-[  366.015950] UBSAN: signed-integer-overflow in ../drivers/cdrom/cdrom.c:2361:33
-[  366.021089] -9223372036854775808 - 346321 cannot be represented in type '__s64' (aka 'long long')
-[  366.025894] program syz-executor.4 is using a deprecated SCSI ioctl, please convert it to SG_IO
-[  366.027502] CPU: 5 PID: 28472 Comm: syz-executor.7 Not tainted 6.8.0-rc2-00035-gb3ef86b5a957 #1
-[  366.027512] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  366.027518] Call Trace:
-[  366.027523]  <TASK>
-[  366.027533]  dump_stack_lvl+0x93/0xd0
-[  366.027899]  handle_overflow+0x171/0x1b0
-[  366.038787] ata1.00: invalid multi_count 32 ignored
-[  366.043924]  cdrom_ioctl+0x2c3f/0x2d10
-[  366.063932]  ? __pm_runtime_resume+0xe6/0x130
-[  366.071923]  sr_block_ioctl+0x15d/0x1d0
-[  366.074624]  ? __pfx_sr_block_ioctl+0x10/0x10
-[  366.077642]  blkdev_ioctl+0x419/0x500
-[  366.080231]  ? __pfx_blkdev_ioctl+0x10/0x10
-...
-
-Historically, the signed integer overflow sanitizer did not work in the
-kernel due to its interaction with `-fwrapv` but this has since been
-changed [1] in the newest version of Clang. It was re-enabled in the
-kernel with Commit 557f8c582a9ba8ab ("ubsan: Reintroduce signed overflow
-sanitizer").
-
-Let's rearrange the check to not perform any arithmetic, thus not
-tripping the sanitizer.
-
-Link: https://github.com/llvm/llvm-project/pull/82432 [1]
-Closes: https://github.com/KSPP/linux/issues/354
-Cc: linux-hardening@vger.kernel.org
-Signed-off-by: Justin Stitt <justinstitt@google.com>
-Link: https://lore.kernel.org/lkml/20240507-b4-sio-ata1-v1-1-810ffac6080a@google.com
-Reviewed-by: Phillip Potter <phil@philpotter.co.uk>
-Link: https://lore.kernel.org/lkml/ZjqU0fbzHrlnad8D@equinox
-Signed-off-by: Phillip Potter <phil@philpotter.co.uk>
-Link: https://lore.kernel.org/r/20240507222520.1445-2-phil@philpotter.co.uk
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cdrom/cdrom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 10 +++++-----
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c      |  2 +-
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/cdrom/cdrom.c b/drivers/cdrom/cdrom.c
-index a5e07270e0d41..20c90ebb3a3f6 100644
---- a/drivers/cdrom/cdrom.c
-+++ b/drivers/cdrom/cdrom.c
-@@ -2358,7 +2358,7 @@ static int cdrom_ioctl_timed_media_change(struct cdrom_device_info *cdi,
- 		return -EFAULT;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index dc4fbab1e1b75..998cfd73764a9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -255,7 +255,7 @@ mt76_connac_mcu_add_nested_tlv(struct sk_buff *skb, int tag, int len,
+ 	};
+ 	u16 ntlv;
  
- 	tmp_info.media_flags = 0;
--	if (tmp_info.last_media_change - cdi->last_media_change_ms < 0)
-+	if (cdi->last_media_change_ms > tmp_info.last_media_change)
- 		tmp_info.media_flags |= MEDIA_CHANGED_FLAG;
+-	ptlv = skb_put(skb, len);
++	ptlv = skb_put_zero(skb, len);
+ 	memcpy(ptlv, &tlv, sizeof(tlv));
  
- 	tmp_info.last_media_change = cdi->last_media_change_ms;
+ 	ntlv = le16_to_cpu(ntlv_hdr->tlv_num);
+@@ -1654,7 +1654,7 @@ int mt76_connac_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 	set_bit(MT76_HW_SCANNING, &phy->state);
+ 	mvif->scan_seq_num = (mvif->scan_seq_num + 1) & 0x7f;
+ 
+-	req = (struct mt76_connac_hw_scan_req *)skb_put(skb, sizeof(*req));
++	req = (struct mt76_connac_hw_scan_req *)skb_put_zero(skb, sizeof(*req));
+ 
+ 	req->seq_num = mvif->scan_seq_num | mvif->band_idx << 7;
+ 	req->bss_idx = mvif->idx;
+@@ -1782,7 +1782,7 @@ int mt76_connac_mcu_sched_scan_req(struct mt76_phy *phy,
+ 
+ 	mvif->scan_seq_num = (mvif->scan_seq_num + 1) & 0x7f;
+ 
+-	req = (struct mt76_connac_sched_scan_req *)skb_put(skb, sizeof(*req));
++	req = (struct mt76_connac_sched_scan_req *)skb_put_zero(skb, sizeof(*req));
+ 	req->version = 1;
+ 	req->seq_num = mvif->scan_seq_num | mvif->band_idx << 7;
+ 
+@@ -2416,7 +2416,7 @@ int mt76_connac_mcu_update_gtk_rekey(struct ieee80211_hw *hw,
+ 		return -ENOMEM;
+ 
+ 	skb_put_data(skb, &hdr, sizeof(hdr));
+-	gtk_tlv = (struct mt76_connac_gtk_rekey_tlv *)skb_put(skb,
++	gtk_tlv = (struct mt76_connac_gtk_rekey_tlv *)skb_put_zero(skb,
+ 							 sizeof(*gtk_tlv));
+ 	gtk_tlv->tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_GTK_REKEY);
+ 	gtk_tlv->len = cpu_to_le16(sizeof(*gtk_tlv));
+@@ -2539,7 +2539,7 @@ mt76_connac_mcu_set_wow_pattern(struct mt76_dev *dev,
+ 		return -ENOMEM;
+ 
+ 	skb_put_data(skb, &hdr, sizeof(hdr));
+-	ptlv = (struct mt76_connac_wow_pattern_tlv *)skb_put(skb, sizeof(*ptlv));
++	ptlv = (struct mt76_connac_wow_pattern_tlv *)skb_put_zero(skb, sizeof(*ptlv));
+ 	ptlv->tag = cpu_to_le16(UNI_SUSPEND_WOW_PATTERN);
+ 	ptlv->len = cpu_to_le16(sizeof(*ptlv));
+ 	ptlv->data_len = pattern->pattern_len;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 5d8e985cd7d45..272e55ef8e2d2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -422,7 +422,7 @@ mt7915_mcu_add_nested_subtlv(struct sk_buff *skb, int sub_tag, int sub_len,
+ 		.len = cpu_to_le16(sub_len),
+ 	};
+ 
+-	ptlv = skb_put(skb, sub_len);
++	ptlv = skb_put_zero(skb, sub_len);
+ 	memcpy(ptlv, &tlv, sizeof(tlv));
+ 
+ 	le16_add_cpu(sub_ntlv, 1);
 -- 
 2.43.0
 
