@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-58784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A391592BFE4
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:27:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38BB792BFE8
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:28:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B42D1F2396D
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:27:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8B5F1F23758
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 874381AC42B;
-	Tue,  9 Jul 2024 16:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461451ACE65;
+	Tue,  9 Jul 2024 16:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qudDfgjV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ooNJP2cK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4321A1AC257;
-	Tue,  9 Jul 2024 16:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23B41AC45C;
+	Tue,  9 Jul 2024 16:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542059; cv=none; b=pFDea7ivSvdkhaJ3QNWErl9A73R9pq9AbE5iG8uWDpLdrErfSjBNXzr5tVIQ/v2yD3jY/GdpnCRBJ2x0jUp7ZIXxZoYM9RU3W62q0IYFfP86iXo0x61jZGeIaBPiMxH8PG/Zd8iyA4vR0X2JK+Ej21d4Oi5ZSPKPfQi46Za4ULM=
+	t=1720542061; cv=none; b=XY/DXp1sRjpkV7dM1qQ9HH9lMYFU+/m2xJ6P2oLp3dfB15XqVEdnSjRtYinrcwk2kM8H9xizo5oP56LxXpQV1Av30/CcxkNA6KZO4JCXjkV9L5Sl/eR9T7Jf6lSOdNJeNdpQp7nFEAgqKamVGCXt9kEEsJbgkqKh7EyRZqaM/40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542059; c=relaxed/simple;
-	bh=ltzp66YNsRQRGlipLvLRGkZPtJ0zdwbYYRgDT6ylc6c=;
+	s=arc-20240116; t=1720542061; c=relaxed/simple;
+	bh=1P3Npn3mh2RmgZy5z8jWNbyPq/9BixdfLRnEu8Vc2QA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=il+WeUMyE+8uv3v50YewC2o5iThOfQP+SnH+SCtrp3G2eXBvctv389sT4WuCUIonVBt7SDkJ8/+A5MZRV8SDxANv2FKv82mJbVUwSjTM3QsQROPvfr6yaUkmi39qHUNlryCeCuVH4LC7K6q2o85hSNh56sdMA3Fz4UtSkkfAPIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qudDfgjV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7DE0C4AF07;
-	Tue,  9 Jul 2024 16:20:57 +0000 (UTC)
+	 MIME-Version; b=stoXZdbnJzzorC88XNk9m7Bkb3jR+KdXrXQl04Q+LZHd3/NG2+vsDh3+k+GFsbRhqFc9khJnpmdjsT7tautAM7ynpPwlcKrDN0NAVmx5I8LOBXR/BB/M+7mxryPMk2qM+ci2I58WIZl3yrKPg5IIDRWMuR90xxghGQsYhGr2CdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ooNJP2cK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9969AC3277B;
+	Tue,  9 Jul 2024 16:20:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542059;
-	bh=ltzp66YNsRQRGlipLvLRGkZPtJ0zdwbYYRgDT6ylc6c=;
+	s=k20201202; t=1720542060;
+	bh=1P3Npn3mh2RmgZy5z8jWNbyPq/9BixdfLRnEu8Vc2QA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qudDfgjVVd9qF9Afav/lagqntuTGQGRCD7UaZE23pPP9IvOpERdMjSvpY6rZ9tqaV
-	 nZgiiriDO8lHpIKNpIb12F9tht0rNXFpDyWxVandgsjcsp4vnEfPAaWTXxRe4Vxh24
-	 tdY0nHSY+8d2nXwtBdTIg/1EDADnokj2L3KqDP0B8we5BD71WnmjMLf9niSYmyaGwV
-	 JluT/g2z+Pl3Zusa2CpNodnhTy37CGE0JXq0d0yMnOZnvk41g79uEjAOSOSGQb7410
-	 NDftpzrVzDM7T8rJCqsAv8skmF8tqN2PbVZHRJPPgWLpJWBsQB896fusFrNl5vdL95
-	 Hsrs87Ri1HOrA==
+	b=ooNJP2cKXLQCkMuaOh4ClcPUkv6xfVLC0QSdCayrA/ev9Oscwj/BPZ7eNGaXyYVBX
+	 IclpRd1CPp/4Mkdb4e+ErYgeduWBth3yRLPAGiyv20UyPQczFoapwfqOtHW8rf5pFR
+	 7UFhDnIIrYn1oNongetL0hcrvh/SGo2psp/3CC6q06wiAMgPYYdxbTzK3QOKzbVbm+
+	 f6usCDvcqjKMRb+klznIAp/tZmhLHlRfnbr/0aUAfzTxaDUTf5NxrUvEOlrr83yLqr
+	 CP9LtqsK8GjI7RQejyp4QZJDv6dUiY9Aj2FaTHCER5saIGrV1yV//9EhIL/Divfd8w
+	 SSegq855zZaGA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Ian Ray <ian.ray@gehealthcare.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	marcin.s.wojtas@gmail.com,
-	linux@armlinux.org.uk,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 22/40] net: mvpp2: fill-in dev_port attribute
-Date: Tue,  9 Jul 2024 12:19:02 -0400
-Message-ID: <20240709162007.30160-22-sashal@kernel.org>
+	linus.walleij@linaro.org,
+	brgl@bgdev.pl,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 23/40] gpio: pca953x: fix pca953x_irq_bus_sync_unlock race
+Date: Tue,  9 Jul 2024 12:19:03 -0400
+Message-ID: <20240709162007.30160-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162007.30160-1-sashal@kernel.org>
 References: <20240709162007.30160-1-sashal@kernel.org>
@@ -70,32 +67,54 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.8
 Content-Transfer-Encoding: 8bit
 
-From: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>
+From: Ian Ray <ian.ray@gehealthcare.com>
 
-[ Upstream commit 00418d5530ca1f42d8721fe0a3e73d1ae477c223 ]
+[ Upstream commit bfc6444b57dc7186b6acc964705d7516cbaf3904 ]
 
-Fill this in so user-space can identify multiple ports on the same CP
-unit.
+Ensure that `i2c_lock' is held when setting interrupt latch and mask in
+pca953x_irq_bus_sync_unlock() in order to avoid races.
 
-Signed-off-by: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The other (non-probe) call site pca953x_gpio_set_multiple() ensures the
+lock is held before calling pca953x_write_regs().
+
+The problem occurred when a request raced against irq_bus_sync_unlock()
+approximately once per thousand reboots on an i.MX8MP based system.
+
+ * Normal case
+
+   0-0022: write register AI|3a {03,02,00,00,01} Input latch P0
+   0-0022: write register AI|49 {fc,fd,ff,ff,fe} Interrupt mask P0
+   0-0022: write register AI|08 {ff,00,00,00,00} Output P3
+   0-0022: write register AI|12 {fc,00,00,00,00} Config P3
+
+ * Race case
+
+   0-0022: write register AI|08 {ff,00,00,00,00} Output P3
+   0-0022: write register AI|08 {03,02,00,00,01} *** Wrong register ***
+   0-0022: write register AI|12 {fc,00,00,00,00} Config P3
+   0-0022: write register AI|49 {fc,fd,ff,ff,fe} Interrupt mask P0
+
+Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
+Link: https://lore.kernel.org/r/20240620042915.2173-1-ian.ray@gehealthcare.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpio/gpio-pca953x.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index cebc79a710ec2..6340e5e61a7da 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -6906,6 +6906,7 @@ static int mvpp2_port_probe(struct platform_device *pdev,
- 	/* 9704 == 9728 - 20 and rounding to 8 */
- 	dev->max_mtu = MVPP2_BM_JUMBO_PKT_SIZE;
- 	device_set_node(&dev->dev, port_fwnode);
-+	dev->dev_port = port->id;
+diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
+index 00ffa168e4056..f2f40393e3695 100644
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -758,6 +758,8 @@ static void pca953x_irq_bus_sync_unlock(struct irq_data *d)
+ 	int level;
  
- 	port->pcs_gmac.ops = &mvpp2_phylink_gmac_pcs_ops;
- 	port->pcs_gmac.neg_mode = true;
+ 	if (chip->driver_data & PCA_PCAL) {
++		guard(mutex)(&chip->i2c_lock);
++
+ 		/* Enable latch on interrupt-enabled inputs */
+ 		pca953x_write_regs(chip, PCAL953X_IN_LATCH, chip->irq_mask);
+ 
 -- 
 2.43.0
 
