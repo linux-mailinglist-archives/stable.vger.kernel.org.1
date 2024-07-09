@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-58775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8892192BFED
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:28:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF3D92BFB9
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:24:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 478A6B2AF32
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:24:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A846D2848CD
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08A31A2547;
-	Tue,  9 Jul 2024 16:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0AE1A2542;
+	Tue,  9 Jul 2024 16:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pB3JQgcs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fbt1WR2I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C381A0B16;
-	Tue,  9 Jul 2024 16:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA191A01D1;
+	Tue,  9 Jul 2024 16:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542040; cv=none; b=cq8X9INDwkIijkEKELrCTJTnPLtRsR2A4dqjZgE7RXHkD7EALDPwzyM7aABsxELOmX0y9Fv1K10bCh5aBKjZqA6DdKKObVvYSA0nwqixhI7oxWz9CSf5DW2Va/ej+LRL9CQA9z35clB47mryRzXrknN2ovsY5HXX+9Syyr6gV1o=
+	t=1720542042; cv=none; b=OlXDAJMKnvxEZjJD8GHyYUiGYvakXeSmmvOXqccFI2u+7sjsSCbFti+eWCV726KlDgB6cvlU3/FvfaQcNY1lJbx43sHuSYQ51dvG6e8IZ1AmgFU+0cc4mb84I2HAcMcz44VtFYp/sBpmdBBVhH4LwmYXysF7ledjeN47g6fcuSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542040; c=relaxed/simple;
-	bh=0wuAbCv33awmJ0jI0ZgnUadRLfQ9tt0N9lUO6P/CRcs=;
+	s=arc-20240116; t=1720542042; c=relaxed/simple;
+	bh=El8iCeDfNXj82T/GEiSAVFqPl9EnHXRVzN8ETpCQwYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LLRzvJffzIw+/qx4NFUAnJQcMbawXzaLjWdlmHdrC0qALWscQSZ28uI8UXUW0wPeGj0Ubtc52tGklcJ11R6zeX8tWAz8ETPnlzAI+YEeJmYcoJAGzD5xglNKAgvSu3uSbJ32vaBcdbKk/8DovKKXr+24IDTziE5aY28vsT2Ty4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pB3JQgcs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA255C32782;
-	Tue,  9 Jul 2024 16:20:38 +0000 (UTC)
+	 MIME-Version; b=dMK682h2h4thoSi6eX8rVZWG8ndjHHRm8N5oMjQqVTDaIKi3df0JlAEPD2SAVLQGVYUeUPGRbScCUhKPYw389uGCtN8+YLF1XbrZzUU6OIpvgI3Kqw78ncjHiaU1SdBVon3lb9ZTGjnsC1pk5j/CCdiI90IW8U14RlmEtzEzTgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fbt1WR2I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A68C4AF0A;
+	Tue,  9 Jul 2024 16:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542040;
-	bh=0wuAbCv33awmJ0jI0ZgnUadRLfQ9tt0N9lUO6P/CRcs=;
+	s=k20201202; t=1720542042;
+	bh=El8iCeDfNXj82T/GEiSAVFqPl9EnHXRVzN8ETpCQwYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pB3JQgcs0Cy9Zb/LTJ/EwE9bKTKSuUFkoEizVLyWZ92LrCgC9zM+UF+zRz4cH8emS
-	 bpfqmMQN5/H9xwxT8/Z7KHaPAbsKAMZNryo6BPv5eg+/oq4OO+E2/fPvW+XX0OZ7Mp
-	 jxI6SaxIAh9GsY0FCbEm4sE8MCwILzDyryRoSVGtbfJpklx7uBlsIr36fjXxhSKDqd
-	 GbB46+0hD7Ia2TQfE7IWoBg5vj/u9i2DiwgSTjCioKEShOcU5ILxMF+TAqXS32wmXT
-	 SspMMza2LMbKw/H6NaC2MyJKXpnFHSusDWHpn9waDWFeDAJjq/2nfFwgbtuDE1tLEf
-	 EeWs9fRnCmslQ==
+	b=Fbt1WR2IbRazfYiB5isczZRxiPUOuWx6dDqlHxPgrF5OfSAlJLrREa0Kgk7pIbc5H
+	 AZG66PCjBTTtBu7eAZzQ6p82tdxT7Rc0Yhyw3cr3s3l0kNMnsvt19PRX9jEXuZeGm4
+	 yLcffx7oob6lPfuP9XBsYMDtS8X+CDhF6YKJUykTBM3C4wL5e5NUZSZ+5jaQJJ7QHo
+	 wxFw1kNXdbc+A6o85GSfqvoUW5V786YHmGL5Bv8xAIwaDNQQ7tuUr18o6+y2gyYimG
+	 GfWS7zikYXSbCz5GEclMkdOS5rDE2qHDKYVy8cADm5QSqLC9aEvA7yCYODVei7bmx1
+	 CpaKZS9LvWzlg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jai Luthra <j-luthra@ti.com>,
+Cc: Primoz Fiser <primoz.fiser@norik.com>,
 	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	jarkko.nikula@bitmer.com,
 	lgirdwood@gmail.com,
 	perex@perex.cz,
 	tiwai@suse.com,
 	alsa-devel@alsa-project.org,
+	linux-omap@vger.kernel.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 13/40] ASoC: ti: davinci-mcasp: Set min period size using FIFO config
-Date: Tue,  9 Jul 2024 12:18:53 -0400
-Message-ID: <20240709162007.30160-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.9 14/40] ASoC: ti: omap-hdmi: Fix too long driver name
+Date: Tue,  9 Jul 2024 12:18:54 -0400
+Message-ID: <20240709162007.30160-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162007.30160-1-sashal@kernel.org>
 References: <20240709162007.30160-1-sashal@kernel.org>
@@ -70,67 +72,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.8
 Content-Transfer-Encoding: 8bit
 
-From: Jai Luthra <j-luthra@ti.com>
+From: Primoz Fiser <primoz.fiser@norik.com>
 
-[ Upstream commit c5dcf8ab10606e76c1d8a0ec77f27d84a392e874 ]
+[ Upstream commit 524d3f126362b6033e92cbe107ae2158d7fbff94 ]
 
-The minimum period size was enforced to 64 as older devices integrating
-McASP with EDMA used an internal FIFO of 64 samples.
+Set driver name to "HDMI". This simplifies the code and gets rid of
+the following error messages:
 
-With UDMA based platforms this internal McASP FIFO is optional, as the
-DMA engine internally does some buffering which is already accounted for
-when registering the platform. So we should read the actual FIFO
-configuration (txnumevt/rxnumevt) instead of hardcoding frames.min to
-64.
+  ASoC: driver name too long 'HDMI 58040000.encoder' -> 'HDMI_58040000_e'
 
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
 Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Signed-off-by: Jai Luthra <j-luthra@ti.com>
-Link: https://lore.kernel.org/r/20240611-asoc_next-v3-2-fcfd84b12164@ti.com
+Link: https://lore.kernel.org/r/20240610125847.773394-1-primoz.fiser@norik.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/ti/davinci-mcasp.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ sound/soc/ti/omap-hdmi.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
-index 1e760c3155213..2b1ed91a736c9 100644
---- a/sound/soc/ti/davinci-mcasp.c
-+++ b/sound/soc/ti/davinci-mcasp.c
-@@ -1472,10 +1472,11 @@ static int davinci_mcasp_hw_rule_min_periodsize(
- {
- 	struct snd_interval *period_size = hw_param_interval(params,
- 						SNDRV_PCM_HW_PARAM_PERIOD_SIZE);
-+	u8 numevt = *((u8 *)rule->private);
- 	struct snd_interval frames;
+diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
+index 4513b527ab970..ad8925b6481ca 100644
+--- a/sound/soc/ti/omap-hdmi.c
++++ b/sound/soc/ti/omap-hdmi.c
+@@ -354,11 +354,7 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
+ 	if (!card)
+ 		return -ENOMEM;
  
- 	snd_interval_any(&frames);
--	frames.min = 64;
-+	frames.min = numevt;
- 	frames.integer = 1;
- 
- 	return snd_interval_refine(period_size, &frames);
-@@ -1490,6 +1491,7 @@ static int davinci_mcasp_startup(struct snd_pcm_substream *substream,
- 	u32 max_channels = 0;
- 	int i, dir, ret;
- 	int tdm_slots = mcasp->tdm_slots;
-+	u8 *numevt;
- 
- 	/* Do not allow more then one stream per direction */
- 	if (mcasp->substreams[substream->stream])
-@@ -1589,9 +1591,12 @@ static int davinci_mcasp_startup(struct snd_pcm_substream *substream,
- 			return ret;
- 	}
- 
-+	numevt = (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) ?
-+			 &mcasp->txnumevt :
-+			 &mcasp->rxnumevt;
- 	snd_pcm_hw_rule_add(substream->runtime, 0,
- 			    SNDRV_PCM_HW_PARAM_PERIOD_SIZE,
--			    davinci_mcasp_hw_rule_min_periodsize, NULL,
-+			    davinci_mcasp_hw_rule_min_periodsize, numevt,
- 			    SNDRV_PCM_HW_PARAM_PERIOD_SIZE, -1);
- 
- 	return 0;
+-	card->name = devm_kasprintf(dev, GFP_KERNEL,
+-				    "HDMI %s", dev_name(ad->dssdev));
+-	if (!card->name)
+-		return -ENOMEM;
+-
++	card->name = "HDMI";
+ 	card->owner = THIS_MODULE;
+ 	card->dai_link =
+ 		devm_kzalloc(dev, sizeof(*(card->dai_link)), GFP_KERNEL);
 -- 
 2.43.0
 
