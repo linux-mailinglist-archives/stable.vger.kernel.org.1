@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-58391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0AD92B6C8
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CAEA92B7B4
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26212B254C1
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD8A51C2355A
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131DD156F37;
-	Tue,  9 Jul 2024 11:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7085715886D;
+	Tue,  9 Jul 2024 11:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5WrfLuH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1k/Hk48"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D4314EC4D;
-	Tue,  9 Jul 2024 11:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307A6158201;
+	Tue,  9 Jul 2024 11:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523792; cv=none; b=a0Bf3vRETlO4rnrortCs/O15C8uG4qFRUc/IulRp5FGj5z4ffFS9tnES653MmMpXzhzyFqWQERweBGUvbT6jELxYofsrIxBhudBHMseXX4p+BinO641K5dXH157VAqh8Taie6woN9iCSfXz5SeesUfzV83FIh0N3yiq4d05EEaA=
+	t=1720524359; cv=none; b=ck5R2iOyG4C09D5J52qkFFSNTyjM9x/tMNRWYqx+/jHviPaz21Hd3lN10jAS/SyuSfOXbt6+Kz8GVmtLa8AY1Me7Z9RNDZeq7VNimngm6uFaFg0nr9GpYmFI5wbp7NqN7ZYrCONXq+CIb3Rf7sarwbIu0TN5XnAgWAT7u9UYWG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523792; c=relaxed/simple;
-	bh=rXd6DZJM5ywA81ioiXc/UoGLaA25F0AyBZT5cz+Ym8o=;
+	s=arc-20240116; t=1720524359; c=relaxed/simple;
+	bh=U+pkPwxcS7ZyeAYZzp2R4S4ESlF9P3715ZsUH+UmfIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sc7fCI9bdgMZ2NiLvwHioV86WYSsotlPLd4QCcMjLNb+7VMWToOjen9hrHUuBSfEFiP3D3J226KWEJjb/JkvLrGyn6qQWh0MeFWrZdsizGLn4MFEnFiqkgsyVKeH2odz4/K0HAX33PB+NcUkbCg/jyaZuTcVqxvUspp3U0oGiGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5WrfLuH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49EBBC3277B;
-	Tue,  9 Jul 2024 11:16:32 +0000 (UTC)
+	 MIME-Version; b=RcglgeJ4dKsUMa9STW+YxnLvFof5/t2GuGfyuyf7VAm8lzDY3nPeKKXOcELSzrX/r9g5/A/3xxqg/OTfQEw30VnmRWcaNY4cMKj1xjLzkiS2PxuNE2GvpPEjit4MTkgVbWQmkbRIAty5KU9sm9nEnDbGejSWbFU7flQepsYYZso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1k/Hk48; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A992FC32786;
+	Tue,  9 Jul 2024 11:25:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523792;
-	bh=rXd6DZJM5ywA81ioiXc/UoGLaA25F0AyBZT5cz+Ym8o=;
+	s=korg; t=1720524359;
+	bh=U+pkPwxcS7ZyeAYZzp2R4S4ESlF9P3715ZsUH+UmfIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T5WrfLuHJuGphrMzAIYHhd53c6H9D0bl1v5KMVYv7sdh/BbmzGjavrY6Zqigju54i
-	 zh69GSdFIgB4yjIsdeSEL+IhdjXJzNmOJktpeEGGczYt8BnreuzzqNdbZFkTthn43D
-	 LmqaZYldnh/cEFTDKhB6Q5Nvlqff55DAZTH4U460=
+	b=l1k/Hk48NcV5sw2tWs1mJuBLvWqyd3rrfelqtwzvmuEPehHCYzU5X+4jUKt3y7FVB
+	 4nG9wi2dIf8dAvoydh4JjvuqUoFb25bZ6pX5ZByCRitsZqza31tyYtu7VAPGZUhJAA
+	 OXdQQvXSCBhVdwktjABnzixBefuEmAElnQwiykMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.6 109/139] mtd: rawnand: Ensure ECC configuration is propagated to upper layers
+	"Robert J. Pafford" <pafford.9@buckeyemail.osu.edu>,
+	Frank Oltmanns <frank@oltmanns.dev>,
+	Chen-Yu Tsai <wens@csie.org>
+Subject: [PATCH 6.9 155/197] clk: sunxi-ng: common: Dont call hw_to_ccu_common on hw without common
 Date: Tue,  9 Jul 2024 13:10:09 +0200
-Message-ID: <20240709110702.389048387@linuxfoundation.org>
+Message-ID: <20240709110714.951673155@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Frank Oltmanns <frank@oltmanns.dev>
 
-commit 3a1b777eb9fb75d09c45ae5dd1d007eddcbebf1f upstream.
+commit ea977d742507e534d9fe4f4d74256f6b7f589338 upstream.
 
-Until recently the "upper layer" was MTD. But following incremental
-reworks to bring spi-nand support and more recently generic ECC support,
-there is now an intermediate "generic NAND" layer that also needs to get
-access to some values. When using "converted" ECC engines, like the
-software ones, these values are already propagated correctly. But
-otherwise when using good old raw NAND controller drivers, we need to
-manually set these values ourselves at the end of the "scan" operation,
-once these values have been negotiated.
+In order to set the rate range of a hw sunxi_ccu_probe calls
+hw_to_ccu_common() assuming all entries in desc->ccu_clks are contained
+in a ccu_common struct. This assumption is incorrect and, in
+consequence, causes invalid pointer de-references.
 
-Without this propagation, later (generic) checks like the one warning
-users that the ECC strength is not high enough might simply no longer
-work.
+Remove the faulty call. Instead, add one more loop that iterates over
+the ccu_clks and sets the rate range, if required.
 
-Fixes: 8c126720fe10 ("mtd: rawnand: Use the ECC framework nand_ecc_is_strong_enough() helper")
+Fixes: b914ec33b391 ("clk: sunxi-ng: common: Support minimum and maximum rate")
+Reported-by: Robert J. Pafford <pafford.9@buckeyemail.osu.edu>
+Closes: https://lore.kernel.org/lkml/DM6PR01MB58047C810DDD5D0AE397CADFF7C22@DM6PR01MB5804.prod.exchangelabs.com/
 Cc: stable@vger.kernel.org
-Reported-by: Sascha Hauer <s.hauer@pengutronix.de>
-Closes: https://lore.kernel.org/all/Zhe2JtvvN1M4Ompw@pengutronix.de/
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Tested-by: Sascha Hauer <s.hauer@pengutronix.de>
-Link: https://lore.kernel.org/linux-mtd/20240507085842.108844-1-miquel.raynal@bootlin.com
+Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
+Tested-by: Robert J. Pafford <pafford.9@buckeyemail.osu.edu>
+Link: https://lore.kernel.org/r/20240623-sunxi-ng_fix_common_probe-v1-1-7c97e32824a1@oltmanns.dev
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/nand_base.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/clk/sunxi-ng/ccu_common.c |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -6282,6 +6282,7 @@ static const struct nand_ops rawnand_ops
- static int nand_scan_tail(struct nand_chip *chip)
- {
- 	struct mtd_info *mtd = nand_to_mtd(chip);
-+	struct nand_device *base = &chip->base;
- 	struct nand_ecc_ctrl *ecc = &chip->ecc;
- 	int ret, i;
+--- a/drivers/clk/sunxi-ng/ccu_common.c
++++ b/drivers/clk/sunxi-ng/ccu_common.c
+@@ -132,7 +132,6 @@ static int sunxi_ccu_probe(struct sunxi_
  
-@@ -6426,9 +6427,13 @@ static int nand_scan_tail(struct nand_ch
- 	if (!ecc->write_oob_raw)
- 		ecc->write_oob_raw = ecc->write_oob;
+ 	for (i = 0; i < desc->hw_clks->num ; i++) {
+ 		struct clk_hw *hw = desc->hw_clks->hws[i];
+-		struct ccu_common *common = hw_to_ccu_common(hw);
+ 		const char *name;
  
--	/* propagate ecc info to mtd_info */
-+	/* Propagate ECC info to the generic NAND and MTD layers */
- 	mtd->ecc_strength = ecc->strength;
-+	if (!base->ecc.ctx.conf.strength)
-+		base->ecc.ctx.conf.strength = ecc->strength;
- 	mtd->ecc_step_size = ecc->size;
-+	if (!base->ecc.ctx.conf.step_size)
-+		base->ecc.ctx.conf.step_size = ecc->size;
+ 		if (!hw)
+@@ -147,14 +146,21 @@ static int sunxi_ccu_probe(struct sunxi_
+ 			pr_err("Couldn't register clock %d - %s\n", i, name);
+ 			goto err_clk_unreg;
+ 		}
++	}
++
++	for (i = 0; i < desc->num_ccu_clks; i++) {
++		struct ccu_common *cclk = desc->ccu_clks[i];
++
++		if (!cclk)
++			continue;
  
- 	/*
- 	 * Set the number of read / write steps for one page depending on ECC
-@@ -6436,6 +6441,8 @@ static int nand_scan_tail(struct nand_ch
- 	 */
- 	if (!ecc->steps)
- 		ecc->steps = mtd->writesize / ecc->size;
-+	if (!base->ecc.ctx.nsteps)
-+		base->ecc.ctx.nsteps = ecc->steps;
- 	if (ecc->steps * ecc->size != mtd->writesize) {
- 		WARN(1, "Invalid ECC parameters\n");
- 		ret = -EINVAL;
+-		if (common->max_rate)
+-			clk_hw_set_rate_range(hw, common->min_rate,
+-					      common->max_rate);
++		if (cclk->max_rate)
++			clk_hw_set_rate_range(&cclk->hw, cclk->min_rate,
++					      cclk->max_rate);
+ 		else
+-			WARN(common->min_rate,
++			WARN(cclk->min_rate,
+ 			     "No max_rate, ignoring min_rate of clock %d - %s\n",
+-			     i, name);
++			     i, clk_hw_get_name(&cclk->hw));
+ 	}
+ 
+ 	ret = of_clk_add_hw_provider(node, of_clk_hw_onecell_get,
 
 
 
