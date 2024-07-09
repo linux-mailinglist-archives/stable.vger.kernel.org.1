@@ -1,128 +1,107 @@
-Return-Path: <stable+bounces-58277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D62B92B3F2
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:34:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AD892B419
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:40:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58FFF281588
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 09:34:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90CB31C20A41
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 09:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E92155321;
-	Tue,  9 Jul 2024 09:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E5D155389;
+	Tue,  9 Jul 2024 09:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="he1zNqLl"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="G7F7WjWe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF4C154458;
-	Tue,  9 Jul 2024 09:34:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC35156653;
+	Tue,  9 Jul 2024 09:40:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720517682; cv=none; b=XXdo9nSbEQrT0X9OhxE2COhlJtkjuGoG7a2Ce1lGlgAYOoY38BIMKoOgNXcuKHnH+AnPWpwxY7mKwNy3dd3I6Z+C/k/tcAa5TjyA7h44LTXQ3DUdPACpd6KzAzpbMGtm8673YAM/IIiX1THpgd7A1IFnLp9sHaHt0aNk62sFUUI=
+	t=1720518009; cv=none; b=Jg77rEiCLt0uZfBMNg3sWC2L+0KoO4mWT7cmvPthHYqhOgx4M+WtY8iKoUEPIMXTjN4RYfIrtb3CDvtMyIXXsqb4c0X6F2CMk0/uM/9yS8p4kKK6e8bT+7btpYGLRxvzB9l5AKD2fW4edMGp/loVUOA5KdeW4RKCEA+I/r6kmvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720517682; c=relaxed/simple;
-	bh=P0Tg5HgvkrsbncakOIEEZ4alS4fkZKeRhddMQDXL43c=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:MIME-Version:
-	 Message-Id:Content-Type; b=u9wt6MXsEgGkpJzuvTMj7Az+hJUfOObspEMLgCSRM2wzLyU0XuxFob6M+etI7KjcnD06innm3VhcjAn3UekIeeuWOqbZmRl5yjY26/udYEhR/iqeY7jrYun30fZTKZWtZPqk66XSNCoJXePSNwW0OFyW7Ha2N+P+NCzxJMohFNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=he1zNqLl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F481C3277B;
-	Tue,  9 Jul 2024 09:34:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720517681;
-	bh=P0Tg5HgvkrsbncakOIEEZ4alS4fkZKeRhddMQDXL43c=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=he1zNqLljVoU8atGAg/yb/t+komzyYSyUY+npj0LJK4bw+LtwG11R0MmXeAwmqJVN
-	 Gq2dFw2iLKQw4byk3Jns1oIitgwh5VE3CeSemr9ul5IDq1N/fs8QPsVGGzHAXiL+gE
-	 3UZnQ54m426HhEP1xEhMFfkflU9qC3krY+KILGS0EzD5qvw5SHqPlXOIOr8/jV1Gru
-	 jYvW8eSkQPg/CJxlcbfxZBdTxpt89kvJ78Eed5vR6EsWNw7cxMdLNCnX4W53UCak3D
-	 rCRrUuoCATcNZqAmlzOexTCha0d8M49L3Rot3QU4UoktF/cV4sVw3liGPk+RE6qkGp
-	 QDJDM1x9covzQ==
-Date: Tue, 09 Jul 2024 15:02:13 +0530
-From: Naveen N Rao <naveen@kernel.org>
-Subject: Re: WARNING&Oops in v6.6.37 on ppc64lea - Trying to vfree() bad
- address (00000000453be747)
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, matoro
-	<matoro_mailinglist_kernel@matoro.tk>
-Cc: bpf@vger.kernel.org, Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev
-	<linuxppc-dev@lists.ozlabs.org>, ltp@lists.linux.it, stable@vger.kernel.org,
-	Vitaly Chikunov <vt@altlinux.org>
-References: <20240705203413.wbv2nw3747vjeibk@altlinux.org>
-	<cf736c5e37489e7dc7ffd67b9de2ab47@matoro.tk>
-	<2024070904-cod-bobcat-a0d0@gregkh>
-In-Reply-To: <2024070904-cod-bobcat-a0d0@gregkh>
+	s=arc-20240116; t=1720518009; c=relaxed/simple;
+	bh=gQ7kC5SGovZDvSADjUTJZ6Fcw7+9Z/764TPVWo8xpwg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=F/5HC1GEFgCxSYnEn1e8b1QNQDXPluWmtDbeL6OYmsaKX3ESNMgT4NQxt0sJnomZa1JIyi5A6Q9wrIik8IjxgRwKCLvKXyjZL0w8bLgxHA126rzD/yPVBnIVpXZlVE2H6SOKaluhKeilZ2LVF3f42yb0fXKAj60M9UAw0mwI9es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=G7F7WjWe; arc=none smtp.client-ip=115.124.30.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1720517997; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=ze6TTXQFJsy3uKftoLUHbYsxNvRLtcLf0BpbQzfmY4s=;
+	b=G7F7WjWeM2JlDOSSBA4fkD0Uu9Y6S0wJlfIfwnNJN3r12/Ii77EY65FR+ZIPDZ+cFbZUxHWYMVH5ZYlt7gaplZ9oFKp23MZ6qeQHtsS6GSOOFc/dK9Cq7JO0j/8J1lYqDoNswRv/HsdLPeI/kaC8B1PEd0VOGVOWels5APqlhqI=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037067109;MF=jiapeng.chong@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0WABZZFV_1720517989;
+Received: from localhost(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0WABZZFV_1720517989)
+          by smtp.aliyun-inc.com;
+          Tue, 09 Jul 2024 17:39:57 +0800
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+To: James.Bottomley@HansenPartnership.com
+Cc: martin.petersen@oracle.com,
+	linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	stable@vger.kernel.org,
+	Abaci Robot <abaci@linux.alibaba.com>
+Subject: [PATCH -next v3] scsi: sd: Fix an incorrect type in 'sd_spinup_disk()'
+Date: Tue,  9 Jul 2024 17:39:48 +0800
+Message-Id: <20240709093948.9617-1-jiapeng.chong@linux.alibaba.com>
+X-Mailer: git-send-email 2.20.1.7.g153144c
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: astroid/0.16.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1720516964.n61e0dnv80.naveen@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Greg Kroah-Hartman wrote:
-> On Mon, Jul 08, 2024 at 11:16:48PM -0400, matoro wrote:
->> On 2024-07-05 16:34, Vitaly Chikunov wrote:
->> > Hi,
->> >=20
->> > There is new WARNING and Oops on ppc64le in v6.6.37 when running LTP t=
-ests:
->> > bpf_prog01, bpf_prog02, bpf_prog04, bpf_prog05, prctl04. Logs excerpt
->> > below. I
->> > see there is 1 commit in v6.6.36..v6.6.37 with call to
->> > bpf_jit_binary_pack_finalize, backported from 5 patch mainline patchse=
-t:
->> >=20
->> >   f99feda5684a powerpc/bpf: use bpf_jit_binary_pack_[alloc|finalize|fr=
-ee]
->> >=20
+The return value from the call to scsi_execute_cmd() is int. In the
+'else if' branch of the function scsi_execute_cmd, it will return -EINVAL.
+But the type of "the_result" is "unsigned int", causing the error code to
+reverse. Modify the type of "the_result" to solve this problem.
 
-<snip>
+The code featuring the_result as the return value of the function
+scsi_execute_cmd is as follows:
 
->> >=20
->> > And so on. Temporary build/test log is at
->> > https://git.altlinux.org/tasks/352218/build/100/ppc64le/log
->> >=20
->> > Other stable/longterm branches or other architectures does not exhibit=
- this.
->> >=20
->> > Thanks,
->>=20
->> Hi all - this just took down a production server for me, on POWER9 bare
->> metal.  Not running tests, just booting normally, before services even c=
-ame
->> up.  Had to perform manual restoration, reverting to 6.6.36 worked.  Als=
-o
->> running 64k kernel, unsure if it's better on 4k kernel.
->>=20
->> In case it's helpful, here's the log from my boot:
->> https://dpaste.org/Gyxxg/raw
->=20
-> Ok, this isn't good, something went wrong with my backports here.  Let
-> me go revert them all and push out a new 6.6.y release right away.
+the_result = scsi_execute_cmd(sdkp->device, cmd, REQ_OP_DRV_IN, NULL, 0,
+			      SD_TIMEOUT, sdkp->max_retries, &exec_args);
+if (the_result > 0) {
+...
+}
 
-I think the problem is that the series adding support for bpf prog_pack=20
-was partially backported. In particular, the below patches are missing=20
-from stable v6.6:
-465cabc97b42 powerpc/code-patching: introduce patch_instructions()
-033ffaf0af1f powerpc/bpf: implement bpf_arch_text_invalidate for bpf_prog_p=
-ack
-6efc1675acb8 powerpc/bpf: implement bpf_arch_text_copy
+./drivers/scsi/sd.c:2333:6-16: WARNING: Unsigned expression compared
+with zero: the_result > 0.
 
-It should be sufficient to revert commit f99feda5684a (powerpc/bpf: use=20
-bpf_jit_binary_pack_[alloc|finalize|free]) to allow the above to apply=20
-cleanly, followed by cherry picking commit 90d862f370b6 (powerpc/bpf:=20
-use bpf_jit_binary_pack_[alloc|finalize|free]) from upstream.
+Fixes: c1acf38cd11e ("scsi: sd: Have midlayer retry sd_spinup_disk() errors")
+Cc: stable@vger.kernel.org
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=9463
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+---
+Changes in v3:
+  -Amend the commit message, Add "Fixes:" and "Cc: stable" tags.
 
-Alternately, commit f99feda5684a (powerpc/bpf: use=20
-bpf_jit_binary_pack_[alloc|finalize|free]) can be reverted.
+ drivers/scsi/sd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-- Naveen
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index 979795dad62b..ade8c6cca295 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -2396,7 +2396,7 @@ sd_spinup_disk(struct scsi_disk *sdkp)
+ 	static const u8 cmd[10] = { TEST_UNIT_READY };
+ 	unsigned long spintime_expire = 0;
+ 	int spintime, sense_valid = 0;
+-	unsigned int the_result;
++	int the_result;
+ 	struct scsi_sense_hdr sshdr;
+ 	struct scsi_failure failure_defs[] = {
+ 		/* Do not retry Medium Not Present */
+-- 
+2.20.1.7.g153144c
 
 
