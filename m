@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8CD792B82D
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:31:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 846D892B6D8
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E77E1F217CF
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B54221C20938
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20482156238;
-	Tue,  9 Jul 2024 11:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3853C156F37;
+	Tue,  9 Jul 2024 11:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1z+fPc+H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H269QxQg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46BA55E4C;
-	Tue,  9 Jul 2024 11:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E959155E4C;
+	Tue,  9 Jul 2024 11:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524682; cv=none; b=cjVrhs538DL7IIvvG1ddJ6yJ+Qwob48RGtXVQ7GiAUwtetnq+CZIHVOkTRKHPZTYrEHg3pI+kPtGSzOtk4/Xth8eP5JrdoI6MMmZrjULgtss8jHCWB9QENiEdQF37ReF5HetFViSTFlbnA2yWlly+15wsVrxyW6shCN2Oa/Ffxk=
+	t=1720523851; cv=none; b=pFdY/cCuQ+dtFq4UGKZPaDxwodQNxBb8C5vE+kSIyG/Q1+25LL4Zoxudh8/57dNxeWsmPAdQgDbZOpubCSl+pONbEKO8BqeEWvr6xINN2wKICllfJcbwQpg9DlwhWxUos+02yRPXBGSI1pVAVgytbaHHqfWraHnsC8QiDyTCYxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524682; c=relaxed/simple;
-	bh=2bkLzFPbmBeCssqP2K/YpULZtHIUaDVGolIJFCyRgDM=;
+	s=arc-20240116; t=1720523851; c=relaxed/simple;
+	bh=NfGh7hod9xay254dKwgt3kxc4/1BpGSdVBW5nJXXjdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h7r4RAF+VSB49qCZOKsSCgtGplZRR9HGg+U6o2DtkpzOAfBf+vvnjoulNjgeapIfP3HJ/Ni8kHKDkNQ/J5zerd9YomPLBv6h5wz4MAoqSxWQbDC6tumnifYR8PvUtJ07a8uQr+SqwIYcHKKX1fujwUtNWjZW5wgc40hZqzuZEFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1z+fPc+H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B9CFC3277B;
-	Tue,  9 Jul 2024 11:31:22 +0000 (UTC)
+	 MIME-Version; b=B4dAvw785h+Gw5irwSivCJnKV0+rF3cFkAx/lTlxa/ujYcBJDr8tSKgK4wPnKjYh8QAQ7sULY5CMNT2+T5SDBw4GeYq+XeUavdqe4MMLr6GiG1e5hr02JNsL0h1afCt1GJJ2c/nNS0kIuZZLX0wqz/89aAH+XoY+IRdnKwQ8GoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H269QxQg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7AFC32786;
+	Tue,  9 Jul 2024 11:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524682;
-	bh=2bkLzFPbmBeCssqP2K/YpULZtHIUaDVGolIJFCyRgDM=;
+	s=korg; t=1720523850;
+	bh=NfGh7hod9xay254dKwgt3kxc4/1BpGSdVBW5nJXXjdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1z+fPc+HvogwO5+QRhiBzrU7BMRQDqX3foufu1rNTEK89G5qwtUy8MfRxNw2zKDmB
-	 m4o5aSxEebC3pkpupaInmPAogbOpY+CZfPz66iWp2YhQuzHY7x0VSYjDGjKi0fzAjR
-	 LRCYbhZBmH0daeVFwhTOuTfnnc+IcKoRPrDOABng=
+	b=H269QxQgOssncMZlH4bzdPHCBbCDQhdnKwYiYqv0CkZv5RSyrflc6niug8iaMNPDw
+	 zfcAtvvM6cvYc007/jRFv2rM2OTWCrzZwlIpfThaVF0BYRQSOhGoRoj8PzersAlNJT
+	 iB8NDGcYubH039K2FBqgYmiy39ROJ2elig6iQjNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zach OKeefe <zokeefe@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 066/102] mm: avoid overflows in dirty throttling logic
+	Jim Wylder <jwylder@google.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 129/139] regmap-i2c: Subtract reg size from max_write
 Date: Tue,  9 Jul 2024 13:10:29 +0200
-Message-ID: <20240709110653.948689527@linuxfoundation.org>
+Message-ID: <20240709110703.153666807@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Jim Wylder <jwylder@google.com>
 
-commit 385d838df280eba6c8680f9777bfa0d0bfe7e8b2 upstream.
+[ Upstream commit 611b7eb19d0a305d4de00280e4a71a1b15c507fc ]
 
-The dirty throttling logic is interspersed with assumptions that dirty
-limits in PAGE_SIZE units fit into 32-bit (so that various multiplications
-fit into 64-bits).  If limits end up being larger, we will hit overflows,
-possible divisions by 0 etc.  Fix these problems by never allowing so
-large dirty limits as they have dubious practical value anyway.  For
-dirty_bytes / dirty_background_bytes interfaces we can just refuse to set
-so large limits.  For dirty_ratio / dirty_background_ratio it isn't so
-simple as the dirty limit is computed from the amount of available memory
-which can change due to memory hotplug etc.  So when converting dirty
-limits from ratios to numbers of pages, we just don't allow the result to
-exceed UINT_MAX.
+Currently, when an adapter defines a max_write_len quirk,
+the data will be chunked into data sizes equal to the
+max_write_len quirk value.  But the payload will be increased by
+the size of the register address before transmission.  The
+resulting value always ends up larger than the limit set
+by the quirk.
 
-This is root-only triggerable problem which occurs when the operator
-sets dirty limits to >16 TB.
+Avoid this error by setting regmap's max_write to the quirk's
+max_write_len minus the number of bytes for the register and
+padding.  This allows the chunking to work correctly for this
+limited case without impacting other use-cases.
 
-Link: https://lkml.kernel.org/r/20240621144246.11148-2-jack@suse.cz
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reported-by: Zach O'Keefe <zokeefe@google.com>
-Reviewed-By: Zach O'Keefe <zokeefe@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jim Wylder <jwylder@google.com>
+Link: https://msgid.link/r/20240523211437.2839942-1-jwylder@google.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page-writeback.c |   30 ++++++++++++++++++++++++++----
- 1 file changed, 26 insertions(+), 4 deletions(-)
+ drivers/base/regmap/regmap-i2c.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -414,13 +414,20 @@ static void domain_dirty_limits(struct d
- 	else
- 		bg_thresh = (bg_ratio * available_memory) / PAGE_SIZE;
+diff --git a/drivers/base/regmap/regmap-i2c.c b/drivers/base/regmap/regmap-i2c.c
+index 3ec611dc0c09f..a905e955bbfc7 100644
+--- a/drivers/base/regmap/regmap-i2c.c
++++ b/drivers/base/regmap/regmap-i2c.c
+@@ -350,7 +350,8 @@ static const struct regmap_bus *regmap_get_i2c_bus(struct i2c_client *i2c,
  
--	if (bg_thresh >= thresh)
--		bg_thresh = thresh / 2;
- 	tsk = current;
- 	if (rt_task(tsk)) {
- 		bg_thresh += bg_thresh / 4 + global_wb_domain.dirty_limit / 32;
- 		thresh += thresh / 4 + global_wb_domain.dirty_limit / 32;
- 	}
-+	/*
-+	 * Dirty throttling logic assumes the limits in page units fit into
-+	 * 32-bits. This gives 16TB dirty limits max which is hopefully enough.
-+	 */
-+	if (thresh > UINT_MAX)
-+		thresh = UINT_MAX;
-+	/* This makes sure bg_thresh is within 32-bits as well */
-+	if (bg_thresh >= thresh)
-+		bg_thresh = thresh / 2;
- 	dtc->thresh = thresh;
- 	dtc->bg_thresh = bg_thresh;
+ 		if (quirks->max_write_len &&
+ 		    (bus->max_raw_write == 0 || bus->max_raw_write > quirks->max_write_len))
+-			max_write = quirks->max_write_len;
++			max_write = quirks->max_write_len -
++				(config->reg_bits + config->pad_bits) / BITS_PER_BYTE;
  
-@@ -470,7 +477,11 @@ static unsigned long node_dirty_limit(st
- 	if (rt_task(tsk))
- 		dirty += dirty / 4;
- 
--	return dirty;
-+	/*
-+	 * Dirty throttling logic assumes the limits in page units fit into
-+	 * 32-bits. This gives 16TB dirty limits max which is hopefully enough.
-+	 */
-+	return min_t(unsigned long, dirty, UINT_MAX);
- }
- 
- /**
-@@ -507,10 +518,17 @@ static int dirty_background_bytes_handle
- 		void *buffer, size_t *lenp, loff_t *ppos)
- {
- 	int ret;
-+	unsigned long old_bytes = dirty_background_bytes;
- 
- 	ret = proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
--	if (ret == 0 && write)
-+	if (ret == 0 && write) {
-+		if (DIV_ROUND_UP(dirty_background_bytes, PAGE_SIZE) >
-+								UINT_MAX) {
-+			dirty_background_bytes = old_bytes;
-+			return -ERANGE;
-+		}
- 		dirty_background_ratio = 0;
-+	}
- 	return ret;
- }
- 
-@@ -536,6 +554,10 @@ static int dirty_bytes_handler(struct ct
- 
- 	ret = proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
- 	if (ret == 0 && write && vm_dirty_bytes != old_bytes) {
-+		if (DIV_ROUND_UP(vm_dirty_bytes, PAGE_SIZE) > UINT_MAX) {
-+			vm_dirty_bytes = old_bytes;
-+			return -ERANGE;
-+		}
- 		writeback_set_ratelimit();
- 		vm_dirty_ratio = 0;
- 	}
+ 		if (max_read || max_write) {
+ 			ret_bus = kmemdup(bus, sizeof(*bus), GFP_KERNEL);
+-- 
+2.43.0
+
 
 
 
