@@ -1,91 +1,92 @@
-Return-Path: <stable+bounces-58924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C0292C313
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 20:06:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9FC492C316
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 20:07:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5D7C1C225B8
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:06:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 847471F227E5
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:07:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C149617B037;
-	Tue,  9 Jul 2024 18:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5B817B044;
+	Tue,  9 Jul 2024 18:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g6ctD8A7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MOHjujHV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314F12BAE5;
-	Tue,  9 Jul 2024 18:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59F817B037;
+	Tue,  9 Jul 2024 18:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720548403; cv=none; b=NNPc+DtlhjQB9iRqnzt6SYu+/2kb2aFJbmso+5/0g8+ntqI4rTOfAhIelc4Tg4jr1WlZi1G1HfXn4T9vZCIfbmskoSi9ZRIIuZ7BWI1GPzDCn4goFbQMGj/svQCLhCwrIDlWC+HgD4erbTWKMIKhGajDP1Yl3uqRGmK+YTOGVvQ=
+	t=1720548423; cv=none; b=lWfMPmJKgguiJw+zX/OE/VkuAAJOxIv7WIfs9EHLHg0Az7vYRoW6gCEKWVIcyLSjoOyV1eIGKvDFXZKeP74jwwcfG26EVGUljxiPIWhke7MZmbZqvHhdYJEROEy2e9FD1gpdsDMKmvrLnWedAcV54LkM4N9rwPXmFsFQrxEwLms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720548403; c=relaxed/simple;
-	bh=0dlgE8JFdCWL2BmwbF8YZztEVIMQuDJGON3Rkj9ekuk=;
+	s=arc-20240116; t=1720548423; c=relaxed/simple;
+	bh=mgk7SHyvf9lK5WrJ5K20qNHaJDi/wOzPgiiLyGmhF3E=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sUhfimEoIuxORP84x8Ag+EZg34wfIWzvqnOhHryOtOzZ04JXL1dmIs29yRyMl56d03z6fhQoWxi1bEnOFfWY2yQsJu5SBcJbFFNgnSxLVryfBrlqDIEmnDjxnSVa0l/9bteyhsCi/xYR/b7nLTaVBVXEG91Iox+RSmQODNNjG3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g6ctD8A7; arc=none smtp.client-ip=209.85.160.43
+	 To:Cc:Content-Type; b=bEzrKxB9jOZpOS33ShP15xbStHoAOXzFEtdcXGAeFl2R+1eqTyUC8Z9tKtXsSJ4LO9oAo/YnXEzXtykG8Mzm79zAT3SauAWRCSjEJIM2ofPE1fT33i+oNVWVE+QWAXucC+yLSDiD/vesq4fpg3ptTPiR04ahWL1H6rgIqoy5HNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MOHjujHV; arc=none smtp.client-ip=209.85.210.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-25cba5eea69so2671288fac.2;
-        Tue, 09 Jul 2024 11:06:41 -0700 (PDT)
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7036e383089so1332913a34.2;
+        Tue, 09 Jul 2024 11:07:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720548401; x=1721153201; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720548421; x=1721153221; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WzBDhpjO1TzmBMf6LfzhCg/YH/Iw6PGOmuPK9+lkbGc=;
-        b=g6ctD8A7wWjVgLvdeNUeg7ag75ObwsUnH3n3xnog2vL+JDHktD2fm+zFNOkVJD4d+4
-         cNpjWYFWYfpyxF9A/4W68O251TbiJ2ozBTw0klBSAOwnWwEo1bxaB9eZoFCLl9NmooZA
-         HQOI3IIjkNfXpRprmeP4CbS3uSy2NiL0Lh0gAxlMRmvDYWs0Q11m2B/HMhoX8gCkIOA1
-         1P1OLhRaiqV+rVRmmW0UGeWxFIvjSESI/mBSjUBIdb9a+HLiZ9TrwLj/LMsT1pebqJLr
-         tDmHJR3SJ2mPCjP2pKIlPh5q2aW8hQkjamMWcir6c4Xovvx193D063CWIw7lgERPLpEY
-         ts4Q==
+        bh=EJAo1DXs8ooE0RW3APFpiuREqVJox962WsbSK7msjLw=;
+        b=MOHjujHVsdgBm7HDOr2zt0DydTVIURCoWVpt2srYMUAPPL8pAkr0e7lA3Ux77pc+57
+         fkdQe31Z+ikiviXXyMK1gtZCLwQEdGgU2jYdydY3DMCd5K5/zjXp27tFpFtuqzQMhoJj
+         WY5zDQPSj+i6REzGSN8ZQPvIULTh4YLK/I9ZSvnyBVYX5l/6fdY6oW9iS6Qf0Nwme3v1
+         swNVAxhuDp8/EvsH/OHwbADvzQ9LWenkDs7NHNBNr4Amc4qppHqsphUVT/a8zr3gpFMq
+         FyAj19w41jES4xESt8VQG8bVud1lrQjZz5T4D9UdklyInLLZpvorKQSCMh8DZGTh9Y5B
+         SKPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720548401; x=1721153201;
+        d=1e100.net; s=20230601; t=1720548421; x=1721153221;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WzBDhpjO1TzmBMf6LfzhCg/YH/Iw6PGOmuPK9+lkbGc=;
-        b=plJhldCBWyh2X4a0waWDLYq3ulIZRZFb/H0wjsRO9CGZs9tn45W3CC/WpR8ORVvWKr
-         f4sMOv5ni8JDjqxsrVk0sHg+5YaVJwiNQ5zRotNcuY2WwCx5NUrxKXLv/PihVZHbo64B
-         aWyBPQ34a1Yl78/jr82Rzm3EwjyUbEc13nhVxNNUhbsfhKt4yL5GX7sreRAi37TsZEUt
-         UyKAyHCnnuBwQ5NeE+bfPmws/Fvk00wnlAYARdZrHm2Fc2sXzaEZ6tu98XFDZHQpY8Gk
-         rGOtQe13r4JbAFq5DgJOGypnt3Q6JaJK7YlBW9lrp7ZAghUAU4ihw43zjEK8BnamlBPS
-         EmuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWAMxMdx6P6xT1UH5X20cf/n5q3J+14Y5lDMvYwEMC0D0fBWc9S4kyoZqUSa3m/lfKhOj6lY4t/a5MA2xhNBtyNCTXktW7hzvjLYb5d+PRhWCQu9XT7e2flpcjWYWT8O5mzmWpZ
-X-Gm-Message-State: AOJu0YyVfGSQ2kpmZwqSQHwEvKBpIndGvQpUsDpdSPrpMx+ndeXBeCwu
-	LSbukt6dofPUsL3BYD5b1SvI+Eda7VowOtWoXCrKItA4/FNXwkQ4OWVFAGDFqAkRuUgtm75pZJn
-	NlGDgXZ2zTBr4ocWCM3WFs8OLqaU=
-X-Google-Smtp-Source: AGHT+IEGUcQKJ9mnpyPVQXQ1pNx23mMBnkpqX5kngam5zoBvxP51NVErbJOzJhsbwWiQjadnpg0LnTkMyAlCadX5jSY=
-X-Received: by 2002:a05:6870:ec87:b0:254:ccac:134d with SMTP id
- 586e51a60fabf-25eae7575dcmr2838916fac.2.1720548401179; Tue, 09 Jul 2024
- 11:06:41 -0700 (PDT)
+        bh=EJAo1DXs8ooE0RW3APFpiuREqVJox962WsbSK7msjLw=;
+        b=qIiVWn0Yhwlkg+FdPi6C/VbQmYAoxmqS+V6Y1nXQwv//ontnDjKO2XJzezqjb1sAbn
+         TbXZzQZwTHxXMt0ZM2Kc7Lt+WNeeUtRZhH9shVd1e2TSROjONIi4AjkiDAJg1IKVmDYC
+         ZgXf299jMoGKJSvYS5KVbX1ePE/LfvBnIp7YD0IBy3ehlAEfJBludvcLv2JvVzqxNwTh
+         nyg3aHBKI4650U++F4Y25F2EMGkbkYw+9SgZ7h0teE/rHqzO9FXfNl/FT0TrgykrRPO+
+         Ucf8aNY5kGqdYeBoV2Ga+tyFErFh+pHCcgt0y36zBW2V48MaYgP5bDTZPQp12LjeMV8p
+         leIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU64zAKEVrFVjs+h5PqK1/0Vi4Q6z9V35UPMD0I4AP5D37y7lLdKl/Gve3xNBuMi7I100gVs4PwNVG0+3527/73j336V5SRhOIbDWY6IZ881afGvwFImI5zJ0PiNdn/GEHObHYL
+X-Gm-Message-State: AOJu0Yz4nckYPhJL1i0DHliCVIm+GuCun7PvpXU3Pj03xk6uN4ZH0ovT
+	dK25O2wRb5x6gUGyKxohXfsrco/DCpZzzIQJydqnv3636qN8puCczD/P6j45+3tdTSSt319hDYS
+	/5dR0Y4qcDxZRP6plgdegI8rUsKo=
+X-Google-Smtp-Source: AGHT+IEK/h7YRFNQ2S7300KC0byBo5gQdt7zCpjTXA4dfoiohxCrmTmLBf7UZXh0AakpB+NhqkARZiuhDFtcgob1/K0=
+X-Received: by 2002:a05:6870:c03:b0:25e:1a0f:522d with SMTP id
+ 586e51a60fabf-25eae8a49b7mr2821143fac.35.1720548420892; Tue, 09 Jul 2024
+ 11:07:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240709085916.3002467-1-make24@iscas.ac.cn>
-In-Reply-To: <20240709085916.3002467-1-make24@iscas.ac.cn>
+References: <20240709113311.37168-1-make24@iscas.ac.cn>
+In-Reply-To: <20240709113311.37168-1-make24@iscas.ac.cn>
 From: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Date: Tue, 9 Jul 2024 20:06:30 +0200
-Message-ID: <CAMeQTsa4eYwPW=ut4yheZD0od3Yc9hGc1W3N=Ns7BKuYugcunw@mail.gmail.com>
-Subject: Re: [PATCH v3] drm/gma500: fix null pointer dereference in cdv_intel_lvds_get_modes
+Date: Tue, 9 Jul 2024 20:06:49 +0200
+Message-ID: <CAMeQTsZojC24Hs_zy0UX0Zjq42zLH21yn_hZhkcSKbL5X1jiSA@mail.gmail.com>
+Subject: Re: [PATCH v4] drm/gma500: fix null pointer dereference in cdv_intel_lvds_get_modes
 To: Ma Ke <make24@iscas.ac.cn>
 Cc: maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, 
-	airlied@gmail.com, alan@linux.intel.com, akpm@linux-foundation.org, 
+	airlied@gmail.com, daniel@ffwll.ch, daniel.vetter@ffwll.ch, 
+	alan@linux.intel.com, airlied@redhat.com, akpm@linux-foundation.org, 
 	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 9, 2024 at 10:59=E2=80=AFAM Ma Ke <make24@iscas.ac.cn> wrote:
+On Tue, Jul 9, 2024 at 1:33=E2=80=AFPM Ma Ke <make24@iscas.ac.cn> wrote:
 >
 > In cdv_intel_lvds_get_modes(), the return value of drm_mode_duplicate()
 > is assigned to mode, which will lead to a NULL pointer dereference on
@@ -101,6 +102,9 @@ Pushed to drm-misc-fixes
 -Patrik
 
 > ---
+> Changes in v4:
+> - revised the recipient email list, apologize for the inadvertent mistake=
+.
 > Changes in v3:
 > - added the recipient's email address, due to the prolonged absence of a
 > response from the recipients.
