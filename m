@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-58603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88DB392B7CF
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2824B92B6E1
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:18:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43D3628554B
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDEC41F21DCB
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EB3146D53;
-	Tue,  9 Jul 2024 11:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65CB153812;
+	Tue,  9 Jul 2024 11:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+6pjWd8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dk12itdW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723F027713;
-	Tue,  9 Jul 2024 11:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6537855E4C;
+	Tue,  9 Jul 2024 11:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524439; cv=none; b=Lt/SwXQRsYbCU9yT7xSyyyqk0TJB9a1uMbRj/ry6cUSKbC4OpHqYI9gpdzeYLrgC7B5bMb9m6MVRaCSQO9vJf7mxzg37FnenVmbAOcPSyqE6cckoJYGwCrPSsvLw152tm8vJ0xqzTa7sRBo1PTL/z7e2znLUvPb5wj8IgrICqaM=
+	t=1720523874; cv=none; b=o6cWGi8JzLEGn77+nuzCM+qId7hndQGMoZKKRfhZIKX1MaScX+pXRu9gMU9iV70ePxpcLuSLA+DKw8/h69ExS9bT7OuQ/a68KkNOiM7NxE2kpTtHz3YKNyEPRS+en30dEmGvsaiMMyFsTczwYxdpa9VqCfrwAewj5tgKPoNHhrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524439; c=relaxed/simple;
-	bh=ia5D9z3P8eXsJCj5ENngACOuMTukVLxISSi1IyWF+TY=;
+	s=arc-20240116; t=1720523874; c=relaxed/simple;
+	bh=EptISql3UU9rfG7aeCAkTzUg00FD/JR8WPdyoDYFyv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Won8QPgQ+KvR52iwtETzFyo+20kdXFfzd92JxHXXwDZjPpZRuUC2AyrgAGCysEzI6pqwXochewo5sHJJoe2UkfGZDoJFUg6aIVUBh5/Zn3btbxZeJqpjddjj5IQSVuEvR1+itvlurSAkjlnMLQPQF9ahHBB5gOotb4ioxcj7J/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+6pjWd8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC560C3277B;
-	Tue,  9 Jul 2024 11:27:18 +0000 (UTC)
+	 MIME-Version; b=KGBbsVhaKn0VR4w6zAmfgl67m45YaAOnZs/7zmGIOXBHnmQuRtCV9X6yYIJ/bvpM2eKr8jRv0R/hQOivESVMBxfJjcy+oG0cxxUAyTfB1perPoaN5ss6dXcbSmresr9/elG+PV57VpcnxcIV9186m8dlJAcVVPlxJUEirYfTsPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dk12itdW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26F2C3277B;
+	Tue,  9 Jul 2024 11:17:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524439;
-	bh=ia5D9z3P8eXsJCj5ENngACOuMTukVLxISSi1IyWF+TY=;
+	s=korg; t=1720523874;
+	bh=EptISql3UU9rfG7aeCAkTzUg00FD/JR8WPdyoDYFyv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+6pjWd8seAseMeQ4qf8CFdisSAX1ylMbP0JA0ETDgiPeDJrXyuwWMrpgRjwtINjP
-	 PYg0YZTF02/zmuRGS8EjJMzPv3N6zv48myxvWVyKQQShUuaYftzjLqFgQAO24Ffxtp
-	 IFQnzfgUZxZoYyZZtUnMZNnYczCn4D5UMeKjYnTI=
+	b=Dk12itdWngio5zHHVMIxcEI+Ni/sWuyjy8M1COxi7MVXJFLao/x1VGmrxPfAKWAa5
+	 jYws0UEYlOfTCMoAgYYJhL4PcVk2VM+/a4dVSx2U+X7R5cLpOglHj9rL/j0ZFxyM/K
+	 yV8LPUee120k8SHWIQitEIeCr9xXL63/U0HiG4iI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petri Kaukasoina <petri.kaukasoina@tuni.fi>,
-	Christian Brauner <brauner@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 182/197] swap: yield device immediately
+Subject: [PATCH 6.6 136/139] ALSA: ump: Set default protocol when not given explicitly
 Date: Tue,  9 Jul 2024 13:10:36 +0200
-Message-ID: <20240709110715.986769067@linuxfoundation.org>
+Message-ID: <20240709110703.423731641@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 712182b67e831912f90259102ae334089e7bccd1 ]
+[ Upstream commit bc42ca002d5d211f9c57334b9b4c25ddb0b4ec35 ]
 
-Otherwise we can cause spurious EBUSY issues when trying to mount the
-rootfs later on.
+When an inquiry of the current protocol via UMP Stream Configuration
+message fails by some reason, we may leave the current protocol
+undefined, which may lead to unexpected behavior.  Better to assume a
+valid protocol found in the protocol capability bits instead.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218845
-Reported-by: Petri Kaukasoina <petri.kaukasoina@tuni.fi>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+For a device that doesn't support the UMP v1.2 feature, it won't reach
+to this code path, and USB MIDI GTB descriptor would be used for
+determining the protocol, instead.
+
+Link: https://lore.kernel.org/r/20240529164723.18309-2-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/power/swap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/ump.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/kernel/power/swap.c b/kernel/power/swap.c
-index 5bc04bfe2db1d..c6f24d17866d8 100644
---- a/kernel/power/swap.c
-+++ b/kernel/power/swap.c
-@@ -1600,7 +1600,7 @@ int swsusp_check(bool exclusive)
+diff --git a/sound/core/ump.c b/sound/core/ump.c
+index 3cd07c103d9ea..d68d3bda97e42 100644
+--- a/sound/core/ump.c
++++ b/sound/core/ump.c
+@@ -967,6 +967,14 @@ int snd_ump_parse_endpoint(struct snd_ump_endpoint *ump)
+ 	if (err < 0)
+ 		ump_dbg(ump, "Unable to get UMP EP stream config\n");
  
- put:
- 		if (error)
--			fput(hib_resume_bdev_file);
-+			bdev_fput(hib_resume_bdev_file);
- 		else
- 			pr_debug("Image signature found, resuming\n");
- 	} else {
++	/* If no protocol is set by some reason, assume the valid one */
++	if (!(ump->info.protocol & SNDRV_UMP_EP_INFO_PROTO_MIDI_MASK)) {
++		if (ump->info.protocol_caps & SNDRV_UMP_EP_INFO_PROTO_MIDI2)
++			ump->info.protocol |= SNDRV_UMP_EP_INFO_PROTO_MIDI2;
++		else if (ump->info.protocol_caps & SNDRV_UMP_EP_INFO_PROTO_MIDI1)
++			ump->info.protocol |= SNDRV_UMP_EP_INFO_PROTO_MIDI1;
++	}
++
+ 	/* Query and create blocks from Function Blocks */
+ 	for (blk = 0; blk < ump->info.num_blocks; blk++) {
+ 		err = create_block_from_fb_info(ump, blk);
 -- 
 2.43.0
 
