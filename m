@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-58666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E5C092B818
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8456092B7B5
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 404611C2188F
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E621285228
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5390152787;
-	Tue,  9 Jul 2024 11:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A78615821A;
+	Tue,  9 Jul 2024 11:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCeLea4H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pP/J+qgh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C0413E41D;
-	Tue,  9 Jul 2024 11:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E2B14E2F4;
+	Tue,  9 Jul 2024 11:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524630; cv=none; b=ETCaGuesrBjtBeFQ4YRKQZixLR7Y8OhNs60Nh0i45Va+IH0dS4rTkKGAwLkAetobM01L3p4G31eSWoCbSA8x79LRnc/i0P5hEupagFaP3R348SnQrzq0rCb1QpGmHBe4N53AeVOGvh7zdUy0mKB/gXK/yIA4Kwtq9VPT3H6yCa4=
+	t=1720524362; cv=none; b=Hk5ItxmR6h0sBjxNF7ijYIoNZ5G0OqgvwJoG7gF5RSQSNsPVssQ+h1Ca6U8XOPOam96B+OcoVHKdhCgY0JNd+/SABQ8NygZcgyF2i9rePZojlO8IOi13YORNjFEQJKcFNaAtYX6glL/LJrQ7qQbez6MY7x7dDBlmhTpliVFf7lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524630; c=relaxed/simple;
-	bh=BvrAb5TW2xodL2mvO+0Rkul0GK63OqkqJG7Tz1kH/p0=;
+	s=arc-20240116; t=1720524362; c=relaxed/simple;
+	bh=qt6f49ttRxXXRz2VAWKHQMzA9ovz1NJs6gZUOjvZuvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y/8lCGCOY2jXb6OyyZQrkIN0YvLZgYRdqJ3HOyyUiw/9rsfdkZX3wuXnZsbBWyNNY6atp0Rw7UVq7rOSRG/sbTtw+zZQwKJF/4AXOa5QNoLeL8oIpg06G3x2013umJqOCZ7Ws8UK2fgZANIO8bMRnM5LAeUx1C1wc3wfBmoN4N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCeLea4H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98467C3277B;
-	Tue,  9 Jul 2024 11:30:29 +0000 (UTC)
+	 MIME-Version; b=RJX4huRnP+1n4MgSUOSjtqU5fWSXAwCFRcsXfVJlKkAMPom7Bm8qjcSUQpdrY1EE7aJcbLmzKnFAMeAyiNlwZ2i+uZ3y+yA6P0/v4XlCPVm7aRKkQm+ZDTe1BAAksfODq7+bdgDjIUidpwslAZdNVPCrQ5n5iThpH5oS8tESqIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pP/J+qgh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A246FC3277B;
+	Tue,  9 Jul 2024 11:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524630;
-	bh=BvrAb5TW2xodL2mvO+0Rkul0GK63OqkqJG7Tz1kH/p0=;
+	s=korg; t=1720524362;
+	bh=qt6f49ttRxXXRz2VAWKHQMzA9ovz1NJs6gZUOjvZuvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bCeLea4H1FO7EWFbrsb2qUHK6l8v3sUI/Z1c4lqGjM+n3+vvtoK2wDFc1eRdfpvX2
-	 lUoPvezVQl8TBVAFQq371lbxF6BLaXkAMzVWFWWCtCyuhbocKyDwI2kUi9/4PKd+xd
-	 8DdPTKWEHtHDCYTjJd/utL7dAjPQUTuXyj1pNAVI=
+	b=pP/J+qghi3A3VvPegAG5p/xXauSHstdz9yF4g8gp+j/w2FIMiS7aW4mbFJ0tlbRII
+	 vrhjAVmO7cys63960N8w7C658ihxibDJ/rUNKjfwenM4lLKF2TqN9zEIMocf1M4iZ9
+	 awEEBE+nowEEZ5rkxVXIEon/FDBxIU+oil4d2elE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/102] net/mlx5e: Add mqprio_rl cleanup and free in mlx5e_priv_cleanup()
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Gautam Menghani <gautam@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.9 156/197] powerpc/pseries: Fix scv instruction crash with kexec
 Date: Tue,  9 Jul 2024 13:10:10 +0200
-Message-ID: <20240709110653.202961196@linuxfoundation.org>
+Message-ID: <20240709110714.989490022@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-[ Upstream commit 1da839eab6dbc26b95bfcd1ed1a4d1aaa5c144a3 ]
+commit 21a741eb75f80397e5f7d3739e24d7d75e619011 upstream.
 
-In the cited commit, mqprio_rl cleanup and free are mistakenly removed
-in mlx5e_priv_cleanup(), and it causes the leakage of host memory and
-firmware SCHEDULING_ELEMENT objects while changing eswitch mode. So,
-add them back.
+kexec on pseries disables AIL (reloc_on_exc), required for scv
+instruction support, before other CPUs have been shut down. This means
+they can execute scv instructions after AIL is disabled, which causes an
+interrupt at an unexpected entry location that crashes the kernel.
 
-Fixes: 0bb7228f7096 ("net/mlx5e: Fix mqprio_rl handling on devlink reload")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Change the kexec sequence to disable AIL after other CPUs have been
+brought down.
+
+As a refresher, the real-mode scv interrupt vector is 0x17000, and the
+fixed-location head code probably couldn't easily deal with implementing
+such high addresses so it was just decided not to support that interrupt
+at all.
+
+Fixes: 7fa95f9adaee ("powerpc/64s: system call support for scv/rfscv instructions")
+Cc: stable@vger.kernel.org # v5.9+
+Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Closes: https://lore.kernel.org/3b4b2943-49ad-4619-b195-bc416f1d1409@linux.ibm.com
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Tested-by: Gautam Menghani <gautam@linux.ibm.com>
+Tested-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Link: https://msgid.link/20240625134047.298759-1-npiggin@gmail.com
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/powerpc/kexec/core_64.c             |   11 +++++++++++
+ arch/powerpc/platforms/pseries/kexec.c   |    8 --------
+ arch/powerpc/platforms/pseries/pseries.h |    1 -
+ arch/powerpc/platforms/pseries/setup.c   |    1 -
+ 4 files changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 4c0eac83546de..385904502a6be 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -5584,6 +5584,11 @@ void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
- 		kfree(priv->htb_qos_sq_stats[i]);
- 	kvfree(priv->htb_qos_sq_stats);
+--- a/arch/powerpc/kexec/core_64.c
++++ b/arch/powerpc/kexec/core_64.c
+@@ -26,6 +26,7 @@
+ #include <asm/paca.h>
+ #include <asm/mmu.h>
+ #include <asm/sections.h>	/* _end */
++#include <asm/setup.h>
+ #include <asm/smp.h>
+ #include <asm/hw_breakpoint.h>
+ #include <asm/svm.h>
+@@ -315,6 +316,16 @@ void default_machine_kexec(struct kimage
+ 	if (!kdump_in_progress())
+ 		kexec_prepare_cpus();
  
-+	if (priv->mqprio_rl) {
-+		mlx5e_mqprio_rl_cleanup(priv->mqprio_rl);
-+		mlx5e_mqprio_rl_free(priv->mqprio_rl);
-+	}
++#ifdef CONFIG_PPC_PSERIES
++	/*
++	 * This must be done after other CPUs have shut down, otherwise they
++	 * could execute the 'scv' instruction, which is not supported with
++	 * reloc disabled (see configure_exceptions()).
++	 */
++	if (firmware_has_feature(FW_FEATURE_SET_MODE))
++		pseries_disable_reloc_on_exc();
++#endif
 +
- 	memset(priv, 0, sizeof(*priv));
- }
+ 	printk("kexec: Starting switchover sequence.\n");
  
--- 
-2.43.0
-
+ 	/* switch to a staticly allocated stack.  Based on irq stack code.
+--- a/arch/powerpc/platforms/pseries/kexec.c
++++ b/arch/powerpc/platforms/pseries/kexec.c
+@@ -61,11 +61,3 @@ void pseries_kexec_cpu_down(int crash_sh
+ 	} else
+ 		xics_kexec_teardown_cpu(secondary);
+ }
+-
+-void pseries_machine_kexec(struct kimage *image)
+-{
+-	if (firmware_has_feature(FW_FEATURE_SET_MODE))
+-		pseries_disable_reloc_on_exc();
+-
+-	default_machine_kexec(image);
+-}
+--- a/arch/powerpc/platforms/pseries/pseries.h
++++ b/arch/powerpc/platforms/pseries/pseries.h
+@@ -38,7 +38,6 @@ static inline void smp_init_pseries(void
+ #endif
+ 
+ extern void pseries_kexec_cpu_down(int crash_shutdown, int secondary);
+-void pseries_machine_kexec(struct kimage *image);
+ 
+ extern void pSeries_final_fixup(void);
+ 
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -1159,7 +1159,6 @@ define_machine(pseries) {
+ 	.machine_check_exception = pSeries_machine_check_exception,
+ 	.machine_check_log_err	= pSeries_machine_check_log_err,
+ #ifdef CONFIG_KEXEC_CORE
+-	.machine_kexec          = pseries_machine_kexec,
+ 	.kexec_cpu_down         = pseries_kexec_cpu_down,
+ #endif
+ #ifdef CONFIG_MEMORY_HOTPLUG
 
 
 
