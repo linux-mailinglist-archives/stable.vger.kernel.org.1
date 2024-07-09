@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-58396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B17992B6CC
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1AB192B821
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 445092827EA
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CC5A282179
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4B11586D0;
-	Tue,  9 Jul 2024 11:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2846158202;
+	Tue,  9 Jul 2024 11:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFzW26t5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RcjcgnWO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AB314EC4D;
-	Tue,  9 Jul 2024 11:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C2C154C07;
+	Tue,  9 Jul 2024 11:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523807; cv=none; b=sPkCRnEqWLLUACD3Jdv8T/6oOcs76skoB+ZeNpzoCFjvUwzoKg0MJc4GkiXZw/+RaFoR2IlJh9p8z5ygMx1iV3Eb/6W/fhLgAX25IR/+qUXqSFYWDA6mvoLIyjiHHwqBf0U1FK8i/Sr2MR7NSJKuqj6s6Kgrw9lGl8kOyK6ir4A=
+	t=1720524647; cv=none; b=M/Fa0xM1B3uS+uOUew+O0IFJ+xN5Y/gSG1hV7XN+k3nThjOrkmW/ukXFLDcBn04LRmkeqUmaHDA3s7fdyYEEDhf2cPCDhP4nkgunHq/WBthpHgETeBJMPNsz1GGuVloq+e2st7EU5OHUcGy1wa37i1r3qogPAyIVC6FvNwpPciE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523807; c=relaxed/simple;
-	bh=QiKqo5ygEHcfPGpVp5zLKklf93kbXWNcn2DB/0sblnY=;
+	s=arc-20240116; t=1720524647; c=relaxed/simple;
+	bh=XvUjI7XSikJLWGjkf76Bio8a2XIM72BJWj6bAaboJnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3lGr58ffwSQy/Qg2+rv+5JvUUAP3F6rK6q1DSz5uN1E1RMVHyCSQhGyJEtX99oj1Am6fmNgLbquxJJEfvIPMzzQkxOiInjoJG8z7kjDA+2u8mTGTDY885D7iHuWJp5XP4gnrCDHdamqnh4y3NI+gVVD9eLYUdpwm8O6BP7DMFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFzW26t5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7F9C3277B;
-	Tue,  9 Jul 2024 11:16:46 +0000 (UTC)
+	 MIME-Version; b=mcDW4H7ypGt4iulYkiXi8BV3T0UxbS5xWs1fgZpP8pgvMGpDXY26SgXKyaTiDTpvXmbmw9KKgR4Esn9uE15FXzO9VR8IYGQNVCHd9AEtnLZHLu08+PGKh4HcaFugfbDfrI8vq34MyXxuCLGVo20GBeOjHBBjHiJHfbSJx9kgTBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RcjcgnWO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3595BC3277B;
+	Tue,  9 Jul 2024 11:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523807;
-	bh=QiKqo5ygEHcfPGpVp5zLKklf93kbXWNcn2DB/0sblnY=;
+	s=korg; t=1720524647;
+	bh=XvUjI7XSikJLWGjkf76Bio8a2XIM72BJWj6bAaboJnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YFzW26t5VBb+PCxIgj4SrgeQO3uNNFBlYurbpIblGz8IBKcXm+UFTMfsZt3i7xEqv
-	 NgmvG9KK3+/C8iLJJw0s5j0ZGMaDID49kcDP9C0b00bwmqLMgVHCi3slDCG6n+Rg7T
-	 USdnbAZbNmqbU4I0+t500QGiY6+XATyTTuIuD1IY=
+	b=RcjcgnWOgCAbGjMckdZdFgqC0yTr1vnv3TC0NHy9mu1FlZrsYwRgeSfkvV1kMB26y
+	 n9T3kZFUAzIkUOpF82eAFoSuIcTzIvDja8ne1DbmbNu4TtVpWbj5ODR/dvhq+2VB2x
+	 l7g3rmAq6TwppgQSj1jUI03wKfFJi1Co0DKT/EaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/139] mlxsw: core_linecards: Fix double memory deallocation in case of invalid INI file
+Subject: [PATCH 6.1 022/102] wifi: mt76: replace skb_put with skb_put_zero
 Date: Tue,  9 Jul 2024 13:09:45 +0200
-Message-ID: <20240709110701.460380756@linuxfoundation.org>
+Message-ID: <20240709110652.232740476@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 8ce34dccbe8fa7d2ef86f2d8e7db2a9b67cabfc3 ]
+[ Upstream commit 7f819a2f4fbc510e088b49c79addcf1734503578 ]
 
-In case of invalid INI file mlxsw_linecard_types_init() deallocates memory
-but doesn't reset pointer to NULL and returns 0. In case of any error
-occurred after mlxsw_linecard_types_init() call, mlxsw_linecards_init()
-calls mlxsw_linecard_types_fini() which performs memory deallocation again.
+Avoid potentially reusing uninitialized data
 
-Add pointer reset to NULL.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: b217127e5e4e ("mlxsw: core_linecards: Add line card objects and implement provisioning")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Link: https://patch.msgid.link/20240703203251.8871-1-amishin@t-argos.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/core_linecards.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 10 +++++-----
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c      |  2 +-
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c b/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
-index 025e0db983feb..b032d5a4b3b84 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
-@@ -1484,6 +1484,7 @@ static int mlxsw_linecard_types_init(struct mlxsw_core *mlxsw_core,
- 	vfree(types_info->data);
- err_data_alloc:
- 	kfree(types_info);
-+	linecards->types_info = NULL;
- 	return err;
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index 546cbe21aab31..6b5bfdbec8b11 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -254,7 +254,7 @@ mt76_connac_mcu_add_nested_tlv(struct sk_buff *skb, int tag, int len,
+ 	};
+ 	u16 ntlv;
  
+-	ptlv = skb_put(skb, len);
++	ptlv = skb_put_zero(skb, len);
+ 	memcpy(ptlv, &tlv, sizeof(tlv));
+ 
+ 	ntlv = le16_to_cpu(ntlv_hdr->tlv_num);
+@@ -1532,7 +1532,7 @@ int mt76_connac_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 	set_bit(MT76_HW_SCANNING, &phy->state);
+ 	mvif->scan_seq_num = (mvif->scan_seq_num + 1) & 0x7f;
+ 
+-	req = (struct mt76_connac_hw_scan_req *)skb_put(skb, sizeof(*req));
++	req = (struct mt76_connac_hw_scan_req *)skb_put_zero(skb, sizeof(*req));
+ 
+ 	req->seq_num = mvif->scan_seq_num | mvif->band_idx << 7;
+ 	req->bss_idx = mvif->idx;
+@@ -1660,7 +1660,7 @@ int mt76_connac_mcu_sched_scan_req(struct mt76_phy *phy,
+ 
+ 	mvif->scan_seq_num = (mvif->scan_seq_num + 1) & 0x7f;
+ 
+-	req = (struct mt76_connac_sched_scan_req *)skb_put(skb, sizeof(*req));
++	req = (struct mt76_connac_sched_scan_req *)skb_put_zero(skb, sizeof(*req));
+ 	req->version = 1;
+ 	req->seq_num = mvif->scan_seq_num | mvif->band_idx << 7;
+ 
+@@ -2294,7 +2294,7 @@ int mt76_connac_mcu_update_gtk_rekey(struct ieee80211_hw *hw,
+ 		return -ENOMEM;
+ 
+ 	skb_put_data(skb, &hdr, sizeof(hdr));
+-	gtk_tlv = (struct mt76_connac_gtk_rekey_tlv *)skb_put(skb,
++	gtk_tlv = (struct mt76_connac_gtk_rekey_tlv *)skb_put_zero(skb,
+ 							 sizeof(*gtk_tlv));
+ 	gtk_tlv->tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_GTK_REKEY);
+ 	gtk_tlv->len = cpu_to_le16(sizeof(*gtk_tlv));
+@@ -2417,7 +2417,7 @@ mt76_connac_mcu_set_wow_pattern(struct mt76_dev *dev,
+ 		return -ENOMEM;
+ 
+ 	skb_put_data(skb, &hdr, sizeof(hdr));
+-	ptlv = (struct mt76_connac_wow_pattern_tlv *)skb_put(skb, sizeof(*ptlv));
++	ptlv = (struct mt76_connac_wow_pattern_tlv *)skb_put_zero(skb, sizeof(*ptlv));
+ 	ptlv->tag = cpu_to_le16(UNI_SUSPEND_WOW_PATTERN);
+ 	ptlv->len = cpu_to_le16(sizeof(*ptlv));
+ 	ptlv->data_len = pattern->pattern_len;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index b2ea539f697f7..65f07cc2acdd4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -395,7 +395,7 @@ mt7915_mcu_add_nested_subtlv(struct sk_buff *skb, int sub_tag, int sub_len,
+ 		.len = cpu_to_le16(sub_len),
+ 	};
+ 
+-	ptlv = skb_put(skb, sub_len);
++	ptlv = skb_put_zero(skb, sub_len);
+ 	memcpy(ptlv, &tlv, sizeof(tlv));
+ 
+ 	le16_add_cpu(sub_ntlv, 1);
 -- 
 2.43.0
 
