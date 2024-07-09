@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-58423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4F7992B6EE
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:18:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E061392B7D8
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 026751C21C87
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:18:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E0F01C23321
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA4C158202;
-	Tue,  9 Jul 2024 11:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 591F3156C73;
+	Tue,  9 Jul 2024 11:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FwDG+Vbv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gy7QZ2v9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC110158211;
-	Tue,  9 Jul 2024 11:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173FF27713;
+	Tue,  9 Jul 2024 11:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523892; cv=none; b=j5N1Y3TDxztZmeCSg4vvXE0YL1x1thkCfDWY9JiDI6r2Xco/kbc+GCe07D3rmZm1uz3yZXW0iFmH1vFaNrKAGMSCJGmyEaPi/L4zy9g15T1E8ts61rVTUbU9r2xXzrw+/n6HVGLC8xW7VbCdgCPvjLpBmdT1bFvfZ4Npeu4L8Lw=
+	t=1720524471; cv=none; b=TfnlNXARbcBVVDVphxWrktrsbyoFcr6GRAkiW7X/TU3O495KtOzDg5UuIBGjDjzDmvm3ONSMnjORkQQwThummbQOdmeqONp+K6j0i3FLn2kJIDG43/rmpid6NIjIzYCz40wCYYBIR2WpBuNy9wMMRLu6mO5JR2OcxlfVm1IGvjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523892; c=relaxed/simple;
-	bh=5sdCNjQZ/yz57SOjS5US0arQPnlsxS8mqRO1bRE9GC4=;
+	s=arc-20240116; t=1720524471; c=relaxed/simple;
+	bh=uBxQbphDlobqikN7cxKA7DoAu/FnbypC0kOhmaTo5EY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WuDkxh9YrMD1rQJKCqwLTdpQOLAIu/IFehSCbJZ9HHlG24I7ymJjqUkPQBtTSqjkyDHnQA1Zmb998nC+DH9/IjG4C7HphwruM6TwCfICRE2/WNhLyz3jnF0ocZNFYdqhqPV3BMJlkKMOhL8ohPesE9g+yvP7q4nZ5zHwN5nxzHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwDG+Vbv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60906C3277B;
-	Tue,  9 Jul 2024 11:18:11 +0000 (UTC)
+	 MIME-Version; b=XFG7s6PtzSAVwVRAI4mu4eqphokbrk6iu07dp6egCmNeCRKeXsLUfb4M4k9o2bebCpLBUWT7R+dQv+EhToiLY5p5qBEBAfYtQg+isXIYjpASkK4ZPlW8VuGc7yabvDVbLxQL5q/afhJOq34mPShj70XWNqkMUjwoCtT0imi3u+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gy7QZ2v9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88ABEC3277B;
+	Tue,  9 Jul 2024 11:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523891;
-	bh=5sdCNjQZ/yz57SOjS5US0arQPnlsxS8mqRO1bRE9GC4=;
+	s=korg; t=1720524470;
+	bh=uBxQbphDlobqikN7cxKA7DoAu/FnbypC0kOhmaTo5EY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FwDG+VbvsBirWCio1rlXJ9c9xO3veym99sl/Y5X83QdpazUm6ZC55scUtvYaDGnwJ
-	 tfqxxePqiZNCo41o4wPwGzRnQLHXjN9LaO9JtPKzYloWybpWODTWt9Q6PwtE7r7z8+
-	 s42z+riBNleXpFK7QM+z7/vXOXRTawi0WlzimbJU=
+	b=gy7QZ2v9QwurIkji3q7sYW4PHWEyPtx8GybkpTQsx+6vbbF/3ExYbn+YjGxkb29WE
+	 z1VfGeBs4KpPuY3EGVSCZ1rScC+eyoShvOPHaaumas2RZfA0+kI3UYxWVcEFzXRU/M
+	 RD0j4q//H7JgHPHufFLWUHdbEfrpDqiwimuFJREg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: [PATCH 6.6 117/139] media: dw2102: fix a potential buffer overflow
-Date: Tue,  9 Jul 2024 13:10:17 +0200
-Message-ID: <20240709110702.695156851@linuxfoundation.org>
+	Theodore Tso <tytso@mit.edu>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.9 164/197] fs: dont misleadingly warn during thaw operations
+Date: Tue,  9 Jul 2024 13:10:18 +0200
+Message-ID: <20240709110715.299865586@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 1c73d0b29d04bf4082e7beb6a508895e118ee30d upstream.
+commit 2ae4db5647d807efb6a87c09efaa6d1db9c905d7 upstream.
 
-As pointed by smatch:
-	 drivers/media/usb/dvb-usb/dw2102.c:802 su3000_i2c_transfer() error: __builtin_memcpy() '&state->data[4]' too small (64 vs 67)
+The block device may have been frozen before it was claimed by a
+filesystem. Concurrently another process might try to mount that
+frozen block device and has temporarily claimed the block device for
+that purpose causing a concurrent fs_bdev_thaw() to end up here. The
+mounter is already about to abort mounting because they still saw an
+elevanted bdev->bd_fsfreeze_count so get_bdev_super() will return
+NULL in that case.
 
-That seemss to be due to a wrong copy-and-paste.
+For example, P1 calls dm_suspend() which calls into bdev_freeze() before
+the block device has been claimed by the filesystem. This brings
+bdev->bd_fsfreeze_count to 1 and no call into fs_bdev_freeze() is
+required.
 
-Fixes: 0e148a522b84 ("media: dw2102: Don't translate i2c read into write")
+Now P2 tries to mount that frozen block device. It claims it and checks
+bdev->bd_fsfreeze_count. As it's elevated it aborts mounting.
 
-Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+In the meantime P3 called dm_resume(). P3 sees that the block device is
+already claimed by a filesystem and calls into fs_bdev_thaw().
+
+P3 takes a passive reference and realizes that the filesystem isn't
+ready yet. P3 puts itself to sleep to wait for the filesystem to become
+ready.
+
+P2 now puts the last active reference to the filesystem and marks it as
+dying. P3 gets woken, sees that the filesystem is dying and
+get_bdev_super() fails.
+
+Fixes: 49ef8832fb1a ("bdev: implement freeze and thaw holder operations")
+Cc: <stable@vger.kernel.org>
+Reported-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lore.kernel.org/r/20240611085210.GA1838544@mit.edu
+Link: https://lore.kernel.org/r/20240613-lackmantel-einsehen-90f0d727358d@brauner
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/dvb-usb/dw2102.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/super.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/media/usb/dvb-usb/dw2102.c
-+++ b/drivers/media/usb/dvb-usb/dw2102.c
-@@ -786,7 +786,7 @@ static int su3000_i2c_transfer(struct i2
+--- a/fs/super.c
++++ b/fs/super.c
+@@ -1501,8 +1501,17 @@ static int fs_bdev_thaw(struct block_dev
  
- 			if (msg[j].flags & I2C_M_RD) {
- 				/* single read */
--				if (1 + msg[j].len > sizeof(state->data)) {
-+				if (4 + msg[j].len > sizeof(state->data)) {
- 					warn("i2c rd: len=%d is too big!\n", msg[j].len);
- 					num = -EOPNOTSUPP;
- 					break;
+ 	lockdep_assert_held(&bdev->bd_fsfreeze_mutex);
+ 
++	/*
++	 * The block device may have been frozen before it was claimed by a
++	 * filesystem. Concurrently another process might try to mount that
++	 * frozen block device and has temporarily claimed the block device for
++	 * that purpose causing a concurrent fs_bdev_thaw() to end up here. The
++	 * mounter is already about to abort mounting because they still saw an
++	 * elevanted bdev->bd_fsfreeze_count so get_bdev_super() will return
++	 * NULL in that case.
++	 */
+ 	sb = get_bdev_super(bdev);
+-	if (WARN_ON_ONCE(!sb))
++	if (!sb)
+ 		return -EINVAL;
+ 
+ 	if (sb->s_op->thaw_super)
 
 
 
