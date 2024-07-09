@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-58310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF49592B65D
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:12:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D28992B755
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:22:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BF191C22311
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:12:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E20C1C22AF6
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6995155389;
-	Tue,  9 Jul 2024 11:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECB015884A;
+	Tue,  9 Jul 2024 11:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuXztWyV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+RmgqTE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741C0156F45;
-	Tue,  9 Jul 2024 11:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C23B14E2F4;
+	Tue,  9 Jul 2024 11:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523552; cv=none; b=k6DWH+MO/4UZd6bodXYzTNTaSsxYmJGUf5GeNXIx7WwXXbC7Rlx8tGHWSijm0GzThUiJ9P6rxS/Eubvq3cu7MLD3RZO6H8RNhXRL9UwB4P1Cjko3pUGZaIWUHGNSLAPUR2t5pQyqZfGEOhjCYpNQLlm3cyJz0YttFVj7P0+t4kc=
+	t=1720524119; cv=none; b=fMDUK82TVlvyYSxCa9W5aBzo67YVUHuPoJW2y2T39Exg0Njsw1I/GywjybfvAmaUOLYsyWb6E8FPNhNKRuzSVPF9ZyNlPOs9DG4A18M7zCNjm4BWa01QMYLRGcQrPuR/XQVcAqJ53cCRP9bn4b+osZH0xv4LeSjnbK/m83jbPFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523552; c=relaxed/simple;
-	bh=WrlZAf4i0bKN0ASVVUwoGv3K2ZAvUfCim3MUKsRfVkI=;
+	s=arc-20240116; t=1720524119; c=relaxed/simple;
+	bh=buCRAF6m2N1QPFpp2Ru7DyjJZ5QcvGHZI/p9kM3tE94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HhC29HMVCBz6UhseN4GTRNFffE1NsNcJtVdmHPA3okj3JnJPnYvg8SZLGWvrceLGDPTKznN9utqADIBUsoBTonMOZmGHzpmlyKUyXGfXPhmFIjmWVz4MscC5g/czOr6eQ8s0UrZH+OWXyXdAbQUH30prs92W5mgrpr20uU4+Bms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuXztWyV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAC0C3277B;
-	Tue,  9 Jul 2024 11:12:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MQbZvEe8zO/gNcacYJ4Mjuzik0uRVhICQuJnDuiUVFxCVX9EL4bBIu4wBT7mgwVKc/sp1s/X7cw2nrwNFRoYBt36VQRTXAbwyz5ScPy1Pb7DudcRKpZtWW+L1pqv0YrSLXHwv2a/hJIt1VL7PUa4cwPGt3DrXH3oDoPlOt3bjKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+RmgqTE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA247C3277B;
+	Tue,  9 Jul 2024 11:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523552;
-	bh=WrlZAf4i0bKN0ASVVUwoGv3K2ZAvUfCim3MUKsRfVkI=;
+	s=korg; t=1720524119;
+	bh=buCRAF6m2N1QPFpp2Ru7DyjJZ5QcvGHZI/p9kM3tE94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zuXztWyVk1ylCMR1ZiS4d0oqOh3D3pFbLSc6djWaSJPhneG988kzKsmIeM5f/dzE8
-	 2NLVJr3kmTK2Xrkwg+tzYq85xNoED/TQu39o99rlPrmGuN4G+skHN5MVoBLzkaf0BO
-	 WEcv/EbZo9X1ttkiMVg16dKEeVbFtTACm/kgWhxY=
+	b=L+RmgqTEiUkgOhpaiAgunnYvpS3H/Y2PJUY6IQaSPxeVlLeckT+Yt/C5/QDK9iLXD
+	 9O68CpfZYTplzFHVWFLSaIvHqcuzrbsJJnFu2rZYqGX5tD4OcNETwqHDZjwzVaA24Y
+	 GbWrltvBR4U3XQI3nEp2kZ9a+NuDRFowIqNblpzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Neronin <niklas.neronin@linux.intel.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Boris Burkov <boris@bur.io>,
+	Lu Yao <yaolu@kylinos.cn>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/139] usb: xhci: prevent potential failure in handle_tx_event() for Transfer events without TRB
+Subject: [PATCH 6.9 077/197] btrfs: scrub: initialize ret in scrub_simple_mirror() to fix compilation warning
 Date: Tue,  9 Jul 2024 13:08:51 +0200
-Message-ID: <20240709110659.367695631@linuxfoundation.org>
+Message-ID: <20240709110711.948826427@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Neronin <niklas.neronin@linux.intel.com>
+From: Lu Yao <yaolu@kylinos.cn>
 
-[ Upstream commit 66cb618bf0bb82859875b00eeffaf223557cb416 ]
+[ Upstream commit b4e585fffc1cf877112ed231a91f089e85688c2a ]
 
-Some transfer events don't always point to a TRB, and consequently don't
-have a endpoint ring. In these cases, function handle_tx_event() should
-not proceed, because if 'ep->skip' is set, the pointer to the endpoint
-ring is used.
+The following error message is displayed:
+  ../fs/btrfs/scrub.c:2152:9: error: ‘ret’ may be used uninitialized
+  in this function [-Werror=maybe-uninitialized]"
 
-To prevent a potential failure and make the code logical, return after
-checking the completion code for a Transfer event without TRBs.
+Compiler version: gcc version: (Debian 10.2.1-6) 10.2.1 20210110
 
-Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240429140245.3955523-11-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Lu Yao <yaolu@kylinos.cn>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/btrfs/scrub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 8dd85221cd927..592dabc785152 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2649,16 +2649,17 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 			else
- 				xhci_handle_halted_endpoint(xhci, ep, NULL,
- 							    EP_SOFT_RESET);
--			goto cleanup;
-+			break;
- 		case COMP_RING_UNDERRUN:
- 		case COMP_RING_OVERRUN:
- 		case COMP_STOPPED_LENGTH_INVALID:
--			goto cleanup;
-+			break;
- 		default:
- 			xhci_err(xhci, "ERROR Transfer event for unknown stream ring slot %u ep %u\n",
- 				 slot_id, ep_index);
- 			goto err_out;
- 		}
-+		return 0;
- 	}
+diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
+index 4b22cfe9a98cb..afd6932f5e895 100644
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -2100,7 +2100,7 @@ static int scrub_simple_mirror(struct scrub_ctx *sctx,
+ 	struct btrfs_fs_info *fs_info = sctx->fs_info;
+ 	const u64 logical_end = logical_start + logical_length;
+ 	u64 cur_logical = logical_start;
+-	int ret;
++	int ret = 0;
  
- 	/* Count current td numbers if ep->skip is set */
+ 	/* The range must be inside the bg */
+ 	ASSERT(logical_start >= bg->start && logical_end <= bg->start + bg->length);
 -- 
 2.43.0
 
