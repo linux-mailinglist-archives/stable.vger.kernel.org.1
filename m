@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-58349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 682D992B685
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:14:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F23892B781
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 987F61C22CF1
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:14:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFF951C21926
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3445F15821A;
-	Tue,  9 Jul 2024 11:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8552149C79;
+	Tue,  9 Jul 2024 11:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRy4PM8L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14+O+r4j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BA7158201;
-	Tue,  9 Jul 2024 11:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B9013A25F;
+	Tue,  9 Jul 2024 11:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523667; cv=none; b=cV/Tg4B6WLhQF9BMSgvlntN6An39MoVuqqq33iScGBTAyySv89iTBFeZJ2jVhyzAUIBwn5DHu5GHJenV0k+WHAeqmudqus5rQPYkziFqvbVJyWx0YytYAnywqX8rzPD/aPO9ty9Ya7/JPK+HDax1ho4XOPKjzvV7aDo308Auct4=
+	t=1720524234; cv=none; b=OynR0zBdqOhboPBZgSDyFNo2ti/yRndxhLnDZhRZBHjwXwcGcqX62h+6oRbXJhheLnQraCPv8A9+GLuoUSKYpth++r81ICh2bcGL5pSH6c/7NglzZ3sdXQog+a0N+iaTmBvuhnXClkJDczejvC0UJyHIyqBHKsurf+thHgVK/AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523667; c=relaxed/simple;
-	bh=kDPwb+4iMME2ajqJf2/hY4I6fQrlfcArf9CQpP6BGoM=;
+	s=arc-20240116; t=1720524234; c=relaxed/simple;
+	bh=XBTIliFTJQ8QUOERtWTrrxg9lE3MYYtFs8h8VBLvV2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHj8gV9da3zCqa6p74xMDz4H0WpuJnLBgCFdgj9MPr5CGjbi1MfOX6ICgor1gJdOsLJEjTyk8vW2f1z2oDfBYvVILAf470XDfeKXEW2aDi8v2iWhc/2xjOFi1be/Uwf9V+YXl8YTpH4ehupmhzp7OgTfxHOrlFdcaUDTpZv5/n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRy4PM8L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E12BC32786;
-	Tue,  9 Jul 2024 11:14:26 +0000 (UTC)
+	 MIME-Version; b=K/wYPk9oTY4SbCYHzE/1Wh7raFxapsdDaWSAs4eENMCX2Ol3fprh5XDiEi80TO98YgqNVU7LbObeQRkhdpmsZ44Sk61XhVPvrVY+b6tpjaHXh/ee1Zjykx5FcwrGELLqGrixi95d4Eo/4ifoDQ3hZs4p0aF+srGzsiiP/QbxlLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=14+O+r4j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC313C3277B;
+	Tue,  9 Jul 2024 11:23:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523666;
-	bh=kDPwb+4iMME2ajqJf2/hY4I6fQrlfcArf9CQpP6BGoM=;
+	s=korg; t=1720524234;
+	bh=XBTIliFTJQ8QUOERtWTrrxg9lE3MYYtFs8h8VBLvV2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cRy4PM8L935vyhcLIJWDjsJZhPDrgLTecM4hAS1+xG58k2aOBQlMZFWbj/A37eKvq
-	 fQHf6fmUChsF76uyA08U1geGdzKT+YWk4pPOwj8DdHTvOEQYjz1rIUJ6Q620U1bvkN
-	 B+2vqJSQPG+0PajFTTOPMeXEWiWEerqnhWPG20Hs=
+	b=14+O+r4jrCXAaNUjLpOQKhi3iiwmkyFvXDTcuaGmnVqLQA7lJWW/IXw9B8Nu/i//T
+	 L2biRjPkSWDBEppiuxgTQy5gO6ywuZrVOzGV1xoRUuX8UXiKsd4o37fp6TJNhAu4wK
+	 GlQRrdkFE0N+NKDxkFUzGsBGkeIa2jRRbeGZVSSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b2545b087a01a7319474@syzkaller.appspotmail.com,
-	Pavel Skripkin <paskripkin@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Song Shuai <songshuaishuai@tinylab.org>,
+	Ryo Takakura <takakura@valinux.co.jp>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/139] bluetooth/hci: disallow setting handle bigger than HCI_CONN_HANDLE_MAX
+Subject: [PATCH 6.9 115/197] riscv: kexec: Avoid deadlock in kexec crash path
 Date: Tue,  9 Jul 2024 13:09:29 +0200
-Message-ID: <20240709110700.844796762@linuxfoundation.org>
+Message-ID: <20240709110713.402590662@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Skripkin <paskripkin@gmail.com>
+From: Song Shuai <songshuaishuai@tinylab.org>
 
-[ Upstream commit 1cc18c2ab2e8c54c355ea7c0423a636e415a0c23 ]
+[ Upstream commit c562ba719df570c986caf0941fea2449150bcbc4 ]
 
-Syzbot hit warning in hci_conn_del() caused by freeing handle that was
-not allocated using ida allocator.
+If the kexec crash code is called in the interrupt context, the
+machine_kexec_mask_interrupts() function will trigger a deadlock while
+trying to acquire the irqdesc spinlock and then deactivate irqchip in
+irq_set_irqchip_state() function.
 
-This is caused by handle bigger than HCI_CONN_HANDLE_MAX passed by
-hci_le_big_sync_established_evt(), which makes code think it's unset
-connection.
+Unlike arm64, riscv only requires irq_eoi handler to complete EOI and
+keeping irq_set_irqchip_state() will only leave this possible deadlock
+without any use. So we simply remove it.
 
-Add same check for handle upper bound as in hci_conn_set_handle() to
-prevent warning.
-
-Link: https://syzkaller.appspot.com/bug?extid=b2545b087a01a7319474
-Reported-by: syzbot+b2545b087a01a7319474@syzkaller.appspotmail.com
-Fixes: 181a42edddf5 ("Bluetooth: Make handle of hci_conn be unique")
-Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Link: https://lore.kernel.org/linux-riscv/20231208111015.173237-1-songshuaishuai@tinylab.org/
+Fixes: b17d19a5314a ("riscv: kexec: Fixup irq controller broken in kexec crash path")
+Signed-off-by: Song Shuai <songshuaishuai@tinylab.org>
+Reviewed-by: Ryo Takakura <takakura@valinux.co.jp>
+Link: https://lore.kernel.org/r/20240626023316.539971-1-songshuaishuai@tinylab.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_conn.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ arch/riscv/kernel/machine_kexec.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 163b56a68bb04..9c670348fac42 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -935,8 +935,8 @@ static int hci_conn_hash_alloc_unset(struct hci_dev *hdev)
- 			       U16_MAX, GFP_ATOMIC);
- }
+diff --git a/arch/riscv/kernel/machine_kexec.c b/arch/riscv/kernel/machine_kexec.c
+index ed9cad20c039d..3c830a6f7ef46 100644
+--- a/arch/riscv/kernel/machine_kexec.c
++++ b/arch/riscv/kernel/machine_kexec.c
+@@ -121,20 +121,12 @@ static void machine_kexec_mask_interrupts(void)
  
--struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
--			      u8 role, u16 handle)
-+static struct hci_conn *__hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
-+				       u8 role, u16 handle)
- {
- 	struct hci_conn *conn;
+ 	for_each_irq_desc(i, desc) {
+ 		struct irq_chip *chip;
+-		int ret;
  
-@@ -1077,7 +1077,16 @@ struct hci_conn *hci_conn_add_unset(struct hci_dev *hdev, int type,
- 	if (unlikely(handle < 0))
- 		return ERR_PTR(-ECONNREFUSED);
+ 		chip = irq_desc_get_chip(desc);
+ 		if (!chip)
+ 			continue;
  
--	return hci_conn_add(hdev, type, dst, role, handle);
-+	return __hci_conn_add(hdev, type, dst, role, handle);
-+}
-+
-+struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
-+			      u8 role, u16 handle)
-+{
-+	if (handle > HCI_CONN_HANDLE_MAX)
-+		return ERR_PTR(-EINVAL);
-+
-+	return __hci_conn_add(hdev, type, dst, role, handle);
- }
+-		/*
+-		 * First try to remove the active state. If this
+-		 * fails, try to EOI the interrupt.
+-		 */
+-		ret = irq_set_irqchip_state(i, IRQCHIP_STATE_ACTIVE, false);
+-
+-		if (ret && irqd_irq_inprogress(&desc->irq_data) &&
+-		    chip->irq_eoi)
++		if (chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
+ 			chip->irq_eoi(&desc->irq_data);
  
- static void hci_conn_cleanup_child(struct hci_conn *conn, u8 reason)
+ 		if (chip->irq_mask)
 -- 
 2.43.0
 
