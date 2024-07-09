@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-58353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6678A92B68B
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:14:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45BFC92B7E9
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:28:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 898B81C220EC
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:14:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0029B281121
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E580158869;
-	Tue,  9 Jul 2024 11:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B7F15749F;
+	Tue,  9 Jul 2024 11:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkWA5D9T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwePIMM0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDD6158851;
-	Tue,  9 Jul 2024 11:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651D427713;
+	Tue,  9 Jul 2024 11:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523679; cv=none; b=Kp3Y+CQoeVgY9h7YK9+gKyfPMDkkaH7jZu1ql69deelAqxLVvPlrAL/lOpKGDZ83jPEPN5jl3w3ZAd3sQ0VSWYanPT9Y3FlDZaUpI7QJGFVLF/MO+8XTpxin5odMggrDWt/WRKYD5B5qSVZuVyUdgEf1d2MMdV/hyTWX2UmtXLM=
+	t=1720524518; cv=none; b=khKl17GmFjfSm2g8CjX6GMMO2WT9KuYw0PhgGRC793B4zKnYdtLkjOzaRYkllkEvwWiTILmVc2Q/3Fp1BOyThxYOPsR5Wuo5DghYrCx/Fefr7sR53ir5pXe0tOUpzhScom/VbdX039vbJnPRDk59T3kioKK4w40diUW7dfidWoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523679; c=relaxed/simple;
-	bh=kJC/q//Ju8aqnQoXEPOYng5x48PJyM69bhxOu2Xz27c=;
+	s=arc-20240116; t=1720524518; c=relaxed/simple;
+	bh=lNzoCmUsammZA44XtcNKb4Zv/5LAPeMoZ25ZzT4Mmpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uN+Hnaou4OlJ9JSR028bWFI8xVg1fZl2r7YSHN1RI2XapZoCKhJmZv3deCkVyiaYcoq7DANImNrI9sG4SC5XyMz6+0YxkF7yhr19XoLxygs7+u/JRcSaHXuRnLLlCaVvA+DiFvXEvgumGaZ9+KP85U4OKSOX/DjjlaKcH1wA/xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkWA5D9T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6ABC3277B;
-	Tue,  9 Jul 2024 11:14:37 +0000 (UTC)
+	 MIME-Version; b=VBVF1fmXWNJI3h14UGnJrQAr9wpTCns6ttd3C9NnoImSaABsgJn8ZDxaWwqrEDRl1pXRoRiEyDgmhXq0E0zGlyR9+nbQJkMCpQmUUqGBipHXImRbiRbKkCdGu5vgPRb6A/BvapPrI5p95axjo3xJO+FZDtErNUCF6cB3tG3+vpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PwePIMM0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA8FC3277B;
+	Tue,  9 Jul 2024 11:28:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523678;
-	bh=kJC/q//Ju8aqnQoXEPOYng5x48PJyM69bhxOu2Xz27c=;
+	s=korg; t=1720524518;
+	bh=lNzoCmUsammZA44XtcNKb4Zv/5LAPeMoZ25ZzT4Mmpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jkWA5D9TLKIITTi3U0q+ZqPZMO6faiaMAN60oHa9DrUk1GZ+Ds/Yn2MUbgaLatF46
-	 ny1uGYbf0sAGqFgcj+Eoak90Mvq4MVhPAYyLAF+9RJq02Dnh61RhoMiMblJQKSsQS0
-	 dcV5jC9JjgTZqZAlej/ikCX8rFPMQzMz9Q3S+2lg=
+	b=PwePIMM02gZUA3TmSIJK8F1L6K3e4G1oh/mEgnfkhaWyifPChKJBu4GpFKLIx8XoW
+	 C59qgIuldXw2/D5nHDVzwyMDBvBGWeu8LzocreBvgq8RzdUu75TxeI/ZyJ6EkykvQp
+	 tCgNfpJS2LubkSX9Bo5Qc02+VmnCKF7Xo9tZyFOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Schiller <ms@dev.tdt.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Hailey Mothershead <hailmo@amazon.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/139] gpiolib: of: fix lookup quirk for MIPS Lantiq
+Subject: [PATCH 6.1 010/102] crypto: aead,cipher - zeroize key buffer after use
 Date: Tue,  9 Jul 2024 13:09:33 +0200
-Message-ID: <20240709110700.997762079@linuxfoundation.org>
+Message-ID: <20240709110651.763596124@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Hailey Mothershead <hailmo@amazon.com>
 
-[ Upstream commit 3645ffaf2b334abaf5f53e5ca0f47465d91e69d2 ]
+[ Upstream commit 23e4099bdc3c8381992f9eb975c79196d6755210 ]
 
-As it turns out, there is a large number of out-of-tree DTSes (in
-OpenWrt project) that used to specify incorrect (active high) polarity
-for the Lantiq reset GPIO, so to keep compatibility while they are
-being updated a quirk for force the polarity low is needed. Luckily
-these old DTSes used nonstandard name for the property ("gpio-reset" vs
-"reset-gpios") so the quirk will not hurt if there are any new devices
-that need inverted polarity as they can specify the right polarity in
-their DTS when using the standard "reset-gpios" property.
+I.G 9.7.B for FIPS 140-3 specifies that variables temporarily holding
+cryptographic information should be zeroized once they are no longer
+needed. Accomplish this by using kfree_sensitive for buffers that
+previously held the private key.
 
-Additionally the condition to enable the transition from standard to
-non-standard reset GPIO property name was inverted and the replacement
-name for the property was not correct. Fix this as well.
-
-Fixes: fbbbcd177a27 ("gpiolib: of: add quirk for locating reset lines with legacy bindings")
-Fixes: 90c2d2eb7ab5 ("MIPS: pci: lantiq: switch to using gpiod API")
-Reported-by: Martin Schiller <ms@dev.tdt.de>
-Acked-by: Martin Schiller <ms@dev.tdt.de>
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/ZoLpqv1PN08xHioh@google.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Hailey Mothershead <hailmo@amazon.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-of.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ crypto/aead.c   | 3 +--
+ crypto/cipher.c | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-index d9525d95e818d..133d2a4c31a6d 100644
---- a/drivers/gpio/gpiolib-of.c
-+++ b/drivers/gpio/gpiolib-of.c
-@@ -192,6 +192,16 @@ static void of_gpio_try_fixup_polarity(const struct device_node *np,
- 		 */
- 		{ "himax,hx8357",	"gpios-reset",	false },
- 		{ "himax,hx8369",	"gpios-reset",	false },
-+#endif
-+#if IS_ENABLED(CONFIG_PCI_LANTIQ)
-+		/*
-+		 * According to the PCI specification, the RST# pin is an
-+		 * active-low signal. However, most of the device trees that
-+		 * have been widely used for a long time incorrectly describe
-+		 * reset GPIO as active-high, and were also using wrong name
-+		 * for the property.
-+		 */
-+		{ "lantiq,pci-xway",	"gpio-reset",	false },
- #endif
- 	};
- 	unsigned int i;
-@@ -491,9 +501,9 @@ static struct gpio_desc *of_find_gpio_rename(struct device_node *np,
- 		{ "reset",	"reset-n-io",	"marvell,nfc-uart" },
- 		{ "reset",	"reset-n-io",	"mrvl,nfc-uart" },
- #endif
--#if !IS_ENABLED(CONFIG_PCI_LANTIQ)
-+#if IS_ENABLED(CONFIG_PCI_LANTIQ)
- 		/* MIPS Lantiq PCI */
--		{ "reset",	"gpios-reset",	"lantiq,pci-xway" },
-+		{ "reset",	"gpio-reset",	"lantiq,pci-xway" },
- #endif
+diff --git a/crypto/aead.c b/crypto/aead.c
+index 16991095270d2..c4ece86c45bc4 100644
+--- a/crypto/aead.c
++++ b/crypto/aead.c
+@@ -35,8 +35,7 @@ static int setkey_unaligned(struct crypto_aead *tfm, const u8 *key,
+ 	alignbuffer = (u8 *)ALIGN((unsigned long)buffer, alignmask + 1);
+ 	memcpy(alignbuffer, key, keylen);
+ 	ret = crypto_aead_alg(tfm)->setkey(tfm, alignbuffer, keylen);
+-	memset(alignbuffer, 0, keylen);
+-	kfree(buffer);
++	kfree_sensitive(buffer);
+ 	return ret;
+ }
  
- 		/*
+diff --git a/crypto/cipher.c b/crypto/cipher.c
+index b47141ed4a9f3..395f0c2fbb9ff 100644
+--- a/crypto/cipher.c
++++ b/crypto/cipher.c
+@@ -34,8 +34,7 @@ static int setkey_unaligned(struct crypto_cipher *tfm, const u8 *key,
+ 	alignbuffer = (u8 *)ALIGN((unsigned long)buffer, alignmask + 1);
+ 	memcpy(alignbuffer, key, keylen);
+ 	ret = cia->cia_setkey(crypto_cipher_tfm(tfm), alignbuffer, keylen);
+-	memset(alignbuffer, 0, keylen);
+-	kfree(buffer);
++	kfree_sensitive(buffer);
+ 	return ret;
+ 
+ }
 -- 
 2.43.0
 
