@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-58373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 711EE92B6B1
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:16:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B596A92B806
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A56E284EE7
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:16:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E74FC1C219B3
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970DE158860;
-	Tue,  9 Jul 2024 11:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8D1158A25;
+	Tue,  9 Jul 2024 11:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tezVZWXC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SWiZMe6d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5628A158202;
-	Tue,  9 Jul 2024 11:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A685158A19;
+	Tue,  9 Jul 2024 11:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523740; cv=none; b=u44MlSEq/JgFlBt6V1QqLfQ59ItRLYkIYUPzUVs4MS9++OE8PmukJAnslC2hsno8usjNSdCAFTU3QcY15lUM4bJwgrkQNJInQoBx2J95Pj/sP4NOfsk5eWeZ+8LtOasQv2Pe8imn8Ke4Hs4ETz4I34B5ndDDjxtFhYK5ad6Tosc=
+	t=1720524577; cv=none; b=oAQQ+ThcFaXpuT7usBgbhNiaIvI9oiHB9/fV0K/HOM8lB4L80k9jTfE5566zX0s3XefLd6JbemsoFjkOQ3/AnbvQMv41rHz/IgjYc8rraCwI43Ohk0afuWJ8xlIu/2fdTSRpmT1ZGcecIRjYqH7TxUYhh+PDfRqRUYde1HJJWC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523740; c=relaxed/simple;
-	bh=GOuqQnorU6ZDkxNj1n8BdG/2+Ut/1NSMvcRoEK1ijB4=;
+	s=arc-20240116; t=1720524577; c=relaxed/simple;
+	bh=uS1kRYGqageOhj8MoZ54RT15CKFtzaoccrPfZ6G/nzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gu6+fetzuG14i//FZ39btuBc0JE+8dueouN9u0SgP/CI3PiTGUHFNsP4n6Qe0LSiU5Ytb4besXosulzQTe2YzTno2F/06esiakf+YClQN8w1OasJM8U4/bzFn7wS3iyuiKJuX4DURbTkhKDxbjGMLg0HsH95G72BMBgyDcMnM8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tezVZWXC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E6F7C3277B;
-	Tue,  9 Jul 2024 11:15:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OC/j3rZ5D5Afs0J9siSmj5jb8Xc52a9YIuRQ4jF6ZK0aT3nfj2uTRdEv3LLEjIDvXObxwgNtU3+hZBjqbcOit74qd3GegT231dJRSX++FBxJeE5zgVQaN5PVaoMvXCOkDviZ5ilySPkV3vJuqaATKGco+8a1uFi63Bz85CzagBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SWiZMe6d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83D4C3277B;
+	Tue,  9 Jul 2024 11:29:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523739;
-	bh=GOuqQnorU6ZDkxNj1n8BdG/2+Ut/1NSMvcRoEK1ijB4=;
+	s=korg; t=1720524577;
+	bh=uS1kRYGqageOhj8MoZ54RT15CKFtzaoccrPfZ6G/nzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tezVZWXCEEYskW6WC1fGFEvWzUBnWfrflVo7ck3jxcxoiCp40oP+gNa4Txd1W+wwQ
-	 jrL814FVBL8p974bv0DTDVDyaw3yX6wruj1vMoSjC4nrW4EJwJuQ4YspabJlvp9PfL
-	 XYcxHFzXN1xEnc8/c8oFIzWVoZYNBNRqt5z3R3JI=
+	b=SWiZMe6dG+qtPvmAobq4JoUYW8oUz9LxpevSBVRa8XiMDBxPANhmodotq5sCrOXFw
+	 91/DE/ELasNkf7p0EodB/arYgu8vIyX7H8OQUKdhZYf+rN9IN+MQmW/HN1MU6WOduB
+	 TUYb9zM7u1SkHXPbItkUZSER2Enl1QBa6dQkRfzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zach OKeefe <zokeefe@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 093/139] mm: avoid overflows in dirty throttling logic
+	Brendan Higgins <brendanhiggins@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Kees Cook <keescook@chromium.org>,
+	David Gow <davidgow@google.com>,
+	Rae Moar <rmoar@google.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 030/102] kunit: Fix timeout message
 Date: Tue,  9 Jul 2024 13:09:53 +0200
-Message-ID: <20240709110701.775559208@linuxfoundation.org>
+Message-ID: <20240709110652.542980721@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,110 +64,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Mickaël Salaün <mic@digikod.net>
 
-commit 385d838df280eba6c8680f9777bfa0d0bfe7e8b2 upstream.
+[ Upstream commit 53026ff63bb07c04a0e962a74723eb10ff6f9dc7 ]
 
-The dirty throttling logic is interspersed with assumptions that dirty
-limits in PAGE_SIZE units fit into 32-bit (so that various multiplications
-fit into 64-bits).  If limits end up being larger, we will hit overflows,
-possible divisions by 0 etc.  Fix these problems by never allowing so
-large dirty limits as they have dubious practical value anyway.  For
-dirty_bytes / dirty_background_bytes interfaces we can just refuse to set
-so large limits.  For dirty_ratio / dirty_background_ratio it isn't so
-simple as the dirty limit is computed from the amount of available memory
-which can change due to memory hotplug etc.  So when converting dirty
-limits from ratios to numbers of pages, we just don't allow the result to
-exceed UINT_MAX.
+The exit code is always checked, so let's properly handle the -ETIMEDOUT
+error code.
 
-This is root-only triggerable problem which occurs when the operator
-sets dirty limits to >16 TB.
-
-Link: https://lkml.kernel.org/r/20240621144246.11148-2-jack@suse.cz
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reported-by: Zach O'Keefe <zokeefe@google.com>
-Reviewed-By: Zach O'Keefe <zokeefe@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Brendan Higgins <brendanhiggins@google.com>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: Rae Moar <rmoar@google.com>
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Link: https://lore.kernel.org/r/20240408074625.65017-4-mic@digikod.net
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page-writeback.c |   30 ++++++++++++++++++++++++++----
- 1 file changed, 26 insertions(+), 4 deletions(-)
+ lib/kunit/try-catch.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -415,13 +415,20 @@ static void domain_dirty_limits(struct d
- 	else
- 		bg_thresh = (bg_ratio * available_memory) / PAGE_SIZE;
- 
--	if (bg_thresh >= thresh)
--		bg_thresh = thresh / 2;
- 	tsk = current;
- 	if (rt_task(tsk)) {
- 		bg_thresh += bg_thresh / 4 + global_wb_domain.dirty_limit / 32;
- 		thresh += thresh / 4 + global_wb_domain.dirty_limit / 32;
+diff --git a/lib/kunit/try-catch.c b/lib/kunit/try-catch.c
+index d9d1df28cc52e..9c9e4dcf06d96 100644
+--- a/lib/kunit/try-catch.c
++++ b/lib/kunit/try-catch.c
+@@ -78,7 +78,6 @@ void kunit_try_catch_run(struct kunit_try_catch *try_catch, void *context)
+ 	time_remaining = wait_for_completion_timeout(&try_completion,
+ 						     kunit_test_timeout());
+ 	if (time_remaining == 0) {
+-		kunit_err(test, "try timed out\n");
+ 		try_catch->try_result = -ETIMEDOUT;
+ 		kthread_stop(task_struct);
  	}
-+	/*
-+	 * Dirty throttling logic assumes the limits in page units fit into
-+	 * 32-bits. This gives 16TB dirty limits max which is hopefully enough.
-+	 */
-+	if (thresh > UINT_MAX)
-+		thresh = UINT_MAX;
-+	/* This makes sure bg_thresh is within 32-bits as well */
-+	if (bg_thresh >= thresh)
-+		bg_thresh = thresh / 2;
- 	dtc->thresh = thresh;
- 	dtc->bg_thresh = bg_thresh;
+@@ -93,6 +92,8 @@ void kunit_try_catch_run(struct kunit_try_catch *try_catch, void *context)
+ 		try_catch->try_result = 0;
+ 	else if (exit_code == -EINTR)
+ 		kunit_err(test, "wake_up_process() was never called\n");
++	else if (exit_code == -ETIMEDOUT)
++		kunit_err(test, "try timed out\n");
+ 	else if (exit_code)
+ 		kunit_err(test, "Unknown error: %d\n", exit_code);
  
-@@ -471,7 +478,11 @@ static unsigned long node_dirty_limit(st
- 	if (rt_task(tsk))
- 		dirty += dirty / 4;
- 
--	return dirty;
-+	/*
-+	 * Dirty throttling logic assumes the limits in page units fit into
-+	 * 32-bits. This gives 16TB dirty limits max which is hopefully enough.
-+	 */
-+	return min_t(unsigned long, dirty, UINT_MAX);
- }
- 
- /**
-@@ -508,10 +519,17 @@ static int dirty_background_bytes_handle
- 		void *buffer, size_t *lenp, loff_t *ppos)
- {
- 	int ret;
-+	unsigned long old_bytes = dirty_background_bytes;
- 
- 	ret = proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
--	if (ret == 0 && write)
-+	if (ret == 0 && write) {
-+		if (DIV_ROUND_UP(dirty_background_bytes, PAGE_SIZE) >
-+								UINT_MAX) {
-+			dirty_background_bytes = old_bytes;
-+			return -ERANGE;
-+		}
- 		dirty_background_ratio = 0;
-+	}
- 	return ret;
- }
- 
-@@ -537,6 +555,10 @@ static int dirty_bytes_handler(struct ct
- 
- 	ret = proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
- 	if (ret == 0 && write && vm_dirty_bytes != old_bytes) {
-+		if (DIV_ROUND_UP(vm_dirty_bytes, PAGE_SIZE) > UINT_MAX) {
-+			vm_dirty_bytes = old_bytes;
-+			return -ERANGE;
-+		}
- 		writeback_set_ratelimit();
- 		vm_dirty_ratio = 0;
- 	}
+-- 
+2.43.0
+
 
 
 
