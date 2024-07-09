@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D186892B80B
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 800FD92B6B8
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:16:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F5351C20BBD
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B5E92823AF
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:16:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43AE1158201;
-	Tue,  9 Jul 2024 11:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA12D158D7C;
+	Tue,  9 Jul 2024 11:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQSh6Ulf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RSOZ3+Hs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0253A27713;
-	Tue,  9 Jul 2024 11:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A924A15884A;
+	Tue,  9 Jul 2024 11:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524592; cv=none; b=d0RVdANIFp+kzYajdcEz4IM5V9qXAJRJG12SI4jlNfPC7skNwVjeAYBzfujxF7pXzwF+087fg0MB6Ldn3M00QhYY+vpqwOEHDDpd0u4MkKqQSEEh2JMu2eCABA/mK/MMsfE+h8q1djzgjDlTHmWOVaro0fzcBKe0Og8XP95JdVs=
+	t=1720523754; cv=none; b=nM5LKMZCRXqGNoc7YnpjRK5FrN1xiI3t/j6KGFe51XwBS3puf16pxyKf/RmPGB9wwmg0g7rmvdAs+7ukqS9M3T+Ou85JVXjcFQBtxb4uKTekLlXZzpCbu6ZVNfdKhN7R+ImEbrocszS6mqpK7vukxxA14tWjTJcowvPvn7dyY6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524592; c=relaxed/simple;
-	bh=MF3izCBxRj2KypKSPML9okDfke+c/Ed1QUb7gPdvGhw=;
+	s=arc-20240116; t=1720523754; c=relaxed/simple;
+	bh=Ty0QguX5PR6FEHMcWh3QbF34NcfFRWTF+xbmSOct/xU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mi4zK0dMUVO8qL7eV8wq4fWT9rvV1XRzQgFW+6Pdpw/KDpBfr5+ALltY15ixmX8Idcgj6fA+77kGJGeoSiUx82jm+Qf5zRpXHnmZcKvNDQUNauuqTSxBWuFRXEbl8TOum9lvXFlbuFXYc6yx3Eu+GJv7AeuaqO/0IHnIF3N9+Tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQSh6Ulf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A592C3277B;
-	Tue,  9 Jul 2024 11:29:51 +0000 (UTC)
+	 MIME-Version; b=J1Q89wQ1T6M5EB8Vi4SK1lTsZSjapc2wBYe7fMOgeWIt+ixaApHjCQcRGT3+X/kKFgQeTKL7Rv1jbk1lkkAHMmobFrI/2Vz8+YWdUDWpDKnqP3rHoyBFuiziEs/vrxcYoVS9zZjRa1C5t/v9QMyWhUum7ieuXsI5G6JOpli0f+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RSOZ3+Hs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E37C4AF0A;
+	Tue,  9 Jul 2024 11:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524591;
-	bh=MF3izCBxRj2KypKSPML9okDfke+c/Ed1QUb7gPdvGhw=;
+	s=korg; t=1720523754;
+	bh=Ty0QguX5PR6FEHMcWh3QbF34NcfFRWTF+xbmSOct/xU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vQSh6Ulfl8TbCStNTuiLEjhMS58Ls3l+4ZgOV1Quqw/kYsIwMRQvVBmR92iaBVBWq
-	 PTOpoiPedL9SCUeya3DZegTjFiXzS4FHSnSk+3prQpqgUH0sGCMB8VP67IqdGqfQ/E
-	 7vDBeYDPDn7HibeMFmMMyzNO9yJOVhtgcGnqGxZ4=
+	b=RSOZ3+HsxnGvYmT4u87rfaVuObgQPfbwJEacfPgk65rDuGRC1cuH99mghiB+o2TmI
+	 49bL7nrQYZzl+rFPsYhpdsZaSH98xqLsNKXHAqkfYmAgzJJlouYYIsk3WdOkHCcDQs
+	 LsV0YUtZmouFBajPmv4Y+8GLqwVgcMBrc8tDa++4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 035/102] f2fs: check validation of fault attrs in f2fs_build_fault_attr()
+	Wren Turkal <wt@penguintechs.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 098/139] Bluetooth: qca: Fix BT enable failure again for QCA6390 after warm reboot
 Date: Tue,  9 Jul 2024 13:09:58 +0200
-Message-ID: <20240709110652.739656674@linuxfoundation.org>
+Message-ID: <20240709110701.967228186@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,147 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 4ed886b187f47447ad559619c48c086f432d2b77 ]
+commit 88e72239ead9814b886db54fc4ee39ef3c2b8f26 upstream.
 
-- It missed to check validation of fault attrs in parse_options(),
-let's fix to add check condition in f2fs_build_fault_attr().
-- Use f2fs_build_fault_attr() in __sbi_store() to clean up code.
+Commit 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on closed
+serdev") will cause below regression issue:
 
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BT can't be enabled after below steps:
+cold boot -> enable BT -> disable BT -> warm reboot -> BT enable failure
+if property enable-gpios is not configured within DT|ACPI for QCA6390.
+
+The commit is to fix a use-after-free issue within qca_serdev_shutdown()
+by adding condition to avoid the serdev is flushed or wrote after closed
+but also introduces this regression issue regarding above steps since the
+VSC is not sent to reset controller during warm reboot.
+
+Fixed by sending the VSC to reset controller within qca_serdev_shutdown()
+once BT was ever enabled, and the use-after-free issue is also fixed by
+this change since the serdev is still opened before it is flushed or wrote.
+
+Verified by the reported machine Dell XPS 13 9310 laptop over below two
+kernel commits:
+commit e00fc2700a3f ("Bluetooth: btusb: Fix triggering coredump
+implementation for QCA") of bluetooth-next tree.
+commit b23d98d46d28 ("Bluetooth: btusb: Fix triggering coredump
+implementation for QCA") of linus mainline tree.
+
+Fixes: 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on closed serdev")
+Cc: stable@vger.kernel.org
+Reported-by: Wren Turkal <wt@penguintechs.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218726
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Tested-by: Wren Turkal <wt@penguintechs.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/f2fs.h  | 12 ++++++++----
- fs/f2fs/super.c | 27 ++++++++++++++++++++-------
- fs/f2fs/sysfs.c | 14 ++++++++++----
- 3 files changed, 38 insertions(+), 15 deletions(-)
+ drivers/bluetooth/hci_qca.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index b54d681c6457d..a1dc08f007dbe 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -68,7 +68,7 @@ enum {
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -2428,15 +2428,27 @@ static void qca_serdev_shutdown(struct d
+ 	struct qca_serdev *qcadev = serdev_device_get_drvdata(serdev);
+ 	struct hci_uart *hu = &qcadev->serdev_hu;
+ 	struct hci_dev *hdev = hu->hdev;
+-	struct qca_data *qca = hu->priv;
+ 	const u8 ibs_wake_cmd[] = { 0xFD };
+ 	const u8 edl_reset_soc_cmd[] = { 0x01, 0x00, 0xFC, 0x01, 0x05 };
  
- struct f2fs_fault_info {
- 	atomic_t inject_ops;
--	unsigned int inject_rate;
-+	int inject_rate;
- 	unsigned int inject_type;
- };
+ 	if (qcadev->btsoc_type == QCA_QCA6390) {
+-		if (test_bit(QCA_BT_OFF, &qca->flags) ||
+-		    !test_bit(HCI_RUNNING, &hdev->flags))
++		/* The purpose of sending the VSC is to reset SOC into a initial
++		 * state and the state will ensure next hdev->setup() success.
++		 * if HCI_QUIRK_NON_PERSISTENT_SETUP is set, it means that
++		 * hdev->setup() can do its job regardless of SoC state, so
++		 * don't need to send the VSC.
++		 * if HCI_SETUP is set, it means that hdev->setup() was never
++		 * invoked and the SOC is already in the initial state, so
++		 * don't also need to send the VSC.
++		 */
++		if (test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks) ||
++		    hci_dev_test_flag(hdev, HCI_SETUP))
+ 			return;
  
-@@ -4530,10 +4530,14 @@ static inline bool f2fs_need_verity(const struct inode *inode, pgoff_t idx)
- }
- 
- #ifdef CONFIG_F2FS_FAULT_INJECTION
--extern void f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned int rate,
--							unsigned int type);
-+extern int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
-+							unsigned long type);
- #else
--#define f2fs_build_fault_attr(sbi, rate, type)		do { } while (0)
-+static int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
-+							unsigned long type)
-+{
-+	return 0;
-+}
- #endif
- 
- static inline bool is_journalled_quota(struct f2fs_sb_info *sbi)
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index f496622921843..6bd8c231069ad 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -63,21 +63,31 @@ const char *f2fs_fault_name[FAULT_MAX] = {
- 	[FAULT_LOCK_OP]		= "lock_op",
- };
- 
--void f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned int rate,
--							unsigned int type)
-+int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
-+							unsigned long type)
- {
- 	struct f2fs_fault_info *ffi = &F2FS_OPTION(sbi).fault_info;
- 
- 	if (rate) {
-+		if (rate > INT_MAX)
-+			return -EINVAL;
- 		atomic_set(&ffi->inject_ops, 0);
--		ffi->inject_rate = rate;
-+		ffi->inject_rate = (int)rate;
- 	}
- 
--	if (type)
--		ffi->inject_type = type;
-+	if (type) {
-+		if (type >= BIT(FAULT_MAX))
-+			return -EINVAL;
-+		ffi->inject_type = (unsigned int)type;
-+	}
- 
- 	if (!rate && !type)
- 		memset(ffi, 0, sizeof(struct f2fs_fault_info));
-+	else
-+		f2fs_info(sbi,
-+			"build fault injection attr: rate: %lu, type: 0x%lx",
-+								rate, type);
-+	return 0;
- }
- #endif
- 
-@@ -916,14 +926,17 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
- 		case Opt_fault_injection:
- 			if (args->from && match_int(args, &arg))
- 				return -EINVAL;
--			f2fs_build_fault_attr(sbi, arg, F2FS_ALL_FAULT_TYPE);
-+			if (f2fs_build_fault_attr(sbi, arg,
-+					F2FS_ALL_FAULT_TYPE))
-+				return -EINVAL;
- 			set_opt(sbi, FAULT_INJECTION);
- 			break;
- 
- 		case Opt_fault_type:
- 			if (args->from && match_int(args, &arg))
- 				return -EINVAL;
--			f2fs_build_fault_attr(sbi, 0, arg);
-+			if (f2fs_build_fault_attr(sbi, 0, arg))
-+				return -EINVAL;
- 			set_opt(sbi, FAULT_INJECTION);
- 			break;
- #else
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index 751a108e612ff..06d5791afe90e 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -451,10 +451,16 @@ static ssize_t __sbi_store(struct f2fs_attr *a,
- 	if (ret < 0)
- 		return ret;
- #ifdef CONFIG_F2FS_FAULT_INJECTION
--	if (a->struct_type == FAULT_INFO_TYPE && t >= BIT(FAULT_MAX))
--		return -EINVAL;
--	if (a->struct_type == FAULT_INFO_RATE && t >= UINT_MAX)
--		return -EINVAL;
-+	if (a->struct_type == FAULT_INFO_TYPE) {
-+		if (f2fs_build_fault_attr(sbi, 0, t))
-+			return -EINVAL;
-+		return count;
-+	}
-+	if (a->struct_type == FAULT_INFO_RATE) {
-+		if (f2fs_build_fault_attr(sbi, t, 0))
-+			return -EINVAL;
-+		return count;
-+	}
- #endif
- 	if (a->struct_type == RESERVED_BLOCKS) {
- 		spin_lock(&sbi->stat_lock);
--- 
-2.43.0
-
++		/* The serdev must be in open state when conrol logic arrives
++		 * here, so also fix the use-after-free issue caused by that
++		 * the serdev is flushed or wrote after it is closed.
++		 */
+ 		serdev_device_write_flush(serdev);
+ 		ret = serdev_device_write_buf(serdev, ibs_wake_cmd,
+ 					      sizeof(ibs_wake_cmd));
 
 
 
