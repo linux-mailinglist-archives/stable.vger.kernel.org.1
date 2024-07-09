@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-58329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00DB92B66F
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:13:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E8D792B76C
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D34C1C21EE4
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:13:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D161F28374D
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE971581E3;
-	Tue,  9 Jul 2024 11:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F69158856;
+	Tue,  9 Jul 2024 11:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hD6OdmrQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qJySObbT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298DC155389;
-	Tue,  9 Jul 2024 11:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746EC15884A;
+	Tue,  9 Jul 2024 11:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523608; cv=none; b=K7Z08NGetTnU7lwppC7Gu6PlqpzUEw4zrP7JkRb3GN3f1307OB0q537/cl1F9a7jiqoA+f+Q2w8dYk0aqizuOn1HwN9l3O399pWwH6bclE3lUSUFBxz0/xBrRGoaQ9M9mc2u+AkOxiF2DrhoiW/j7nndmhKUt222J8C+GEg4Ks8=
+	t=1720524178; cv=none; b=Km2c+qDl73Xkh+jVwjaK7/nQUArLvH5XGo2ZCRVelaJ/lK8kszNr6QtnZoaRPZShNFAoVMO2kgSm812ADSmmGAk/FxIq6Gw6NNnOVX5ZVwFI2jrAAZmBUJVAUcwfW+6FaYwBv+x0IVvU8XdHIGDzxeiv7/YvMlhk+2/BaOm54j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523608; c=relaxed/simple;
-	bh=JaMH7pB4pPx/BA7MdwlTUz+oNvyJzsHlleNTmF6kom8=;
+	s=arc-20240116; t=1720524178; c=relaxed/simple;
+	bh=UtM16NeeFWvbbzecZYB1jEwqO4lo/A7Eh28aUwyBuo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ym1mmvG6k43BuVlNSG379S24xKeXcN5vLOOvbaCAmewMg37bSaQEK82Wx9ZcR92V20WHknKwkqdhZUcHub1F0j0ywllXQHCcThEkGp7i+hFSCaxN/VsFeKuB1FY42MWISSw1nE1TZp/ib9bi0VTF3Jd+o3If1tDltxcTndUVFMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hD6OdmrQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2145C32786;
-	Tue,  9 Jul 2024 11:13:27 +0000 (UTC)
+	 MIME-Version; b=NPcR8u9BWRw7DlMDMXAfCtFKUZi4B7aQr/rhXcEyUlVnvgaJ2HzN40bjF6jDd/C+qzPU4bRwbx5OMqemkIC2BZT4H2LJ0mdJ6olcgB25IOFIeEHrQJ5YHuVtV9dlceySgT/QK02KORUym32lhWGXzJ6S3CztI5uY+C30doJAqYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJySObbT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00EFC3277B;
+	Tue,  9 Jul 2024 11:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523608;
-	bh=JaMH7pB4pPx/BA7MdwlTUz+oNvyJzsHlleNTmF6kom8=;
+	s=korg; t=1720524178;
+	bh=UtM16NeeFWvbbzecZYB1jEwqO4lo/A7Eh28aUwyBuo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hD6OdmrQMieid6qNQXJlPdlvrvwFDSt5eR+EzbXtXJwdNAnsmRyWfd9uAqPOvt66l
-	 Kx8x7JGgIPxjOU5Ls56AxJgSdsrybTdkz6XoUZt/t1pt0OmuZ2VxPYeSF9VWHAsKWt
-	 znucIFCVfNHZNk/7LbKta89EYVpqrGM5zjEXevsk=
+	b=qJySObbTgNbaJxLmAOsilPMRhxH383MEksBFNfFNMblppIVhM5ytF34bZq/Culmnr
+	 2zHhUid49J3OjxkjQD5FmVmq/zsrAgwUXEmLje9lPuQIOwjIZJDcJ2YsICovzsIGMu
+	 mofg0ZQoLo9YWFjiaQI97tD+ALvZl9aTdBTYoANs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/139] drm/amdgpu: Initialize timestamp for some legacy SOCs
+Subject: [PATCH 6.9 065/197] selftests/net: fix uninitialized variables
 Date: Tue,  9 Jul 2024 13:08:39 +0200
-Message-ID: <20240709110658.905966127@linuxfoundation.org>
+Message-ID: <20240709110711.478255285@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: John Hubbard <jhubbard@nvidia.com>
 
-[ Upstream commit 2e55bcf3d742a4946d862b86e39e75a95cc6f1c0 ]
+[ Upstream commit eb709b5f6536636dfb87b85ded0b2af9bb6cd9e6 ]
 
-Initialize the interrupt timestamp for some legacy SOCs
-to fix the coverity issue "Uninitialized scalar variable"
+When building with clang, via:
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+    make LLVM=1 -C tools/testing/selftest
+
+...clang warns about three variables that are not initialized in all
+cases:
+
+1) The opt_ipproto_off variable is used uninitialized if "testname" is
+not "ip". Willem de Bruijn pointed out that this is an actual bug, and
+suggested the fix that I'm using here (thanks!).
+
+2) The addr_len is used uninitialized, but only in the assert case,
+   which bails out, so this is harmless.
+
+3) The family variable in add_listener() is only used uninitialized in
+   the error case (neither IPv4 nor IPv6 is specified), so it's also
+   harmless.
+
+Fix by initializing each variable.
+
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Acked-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20240506190204.28497-1-jhubbard@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/testing/selftests/net/gro.c                 | 3 +++
+ tools/testing/selftests/net/ip_local_port_range.c | 2 +-
+ tools/testing/selftests/net/mptcp/pm_nl_ctl.c     | 2 +-
+ 3 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c
-index fa6d0adcec206..5978edf7ea71e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c
-@@ -438,6 +438,14 @@ void amdgpu_irq_dispatch(struct amdgpu_device *adev,
+diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
+index 353e1e867fbb2..6038b96ecee88 100644
+--- a/tools/testing/selftests/net/gro.c
++++ b/tools/testing/selftests/net/gro.c
+@@ -119,6 +119,9 @@ static void setup_sock_filter(int fd)
+ 		next_off = offsetof(struct ipv6hdr, nexthdr);
+ 	ipproto_off = ETH_HLEN + next_off;
  
- 	entry.ih = ih;
- 	entry.iv_entry = (const uint32_t *)&ih->ring[ring_index];
++	/* Overridden later if exthdrs are used: */
++	opt_ipproto_off = ipproto_off;
 +
-+	/*
-+	 * timestamp is not supported on some legacy SOCs (cik, cz, iceland,
-+	 * si and tonga), so initialize timestamp and timestamp_src to 0
-+	 */
-+	entry.timestamp = 0;
-+	entry.timestamp_src = 0;
-+
- 	amdgpu_ih_decode_iv(adev, &entry);
- 
- 	trace_amdgpu_iv(ih - &adev->irq.ih, &entry);
+ 	if (strcmp(testname, "ip") == 0) {
+ 		if (proto == PF_INET)
+ 			optlen = sizeof(struct ip_timestamp);
+diff --git a/tools/testing/selftests/net/ip_local_port_range.c b/tools/testing/selftests/net/ip_local_port_range.c
+index 193b82745fd87..29451d2244b75 100644
+--- a/tools/testing/selftests/net/ip_local_port_range.c
++++ b/tools/testing/selftests/net/ip_local_port_range.c
+@@ -359,7 +359,7 @@ TEST_F(ip_local_port_range, late_bind)
+ 		struct sockaddr_in v4;
+ 		struct sockaddr_in6 v6;
+ 	} addr;
+-	socklen_t addr_len;
++	socklen_t addr_len = 0;
+ 	const int one = 1;
+ 	int fd, err;
+ 	__u32 range;
+diff --git a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
+index 7426a2cbd4a03..7ad5a59adff2b 100644
+--- a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
++++ b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
+@@ -1276,7 +1276,7 @@ int add_listener(int argc, char *argv[])
+ 	struct sockaddr_storage addr;
+ 	struct sockaddr_in6 *a6;
+ 	struct sockaddr_in *a4;
+-	u_int16_t family;
++	u_int16_t family = AF_UNSPEC;
+ 	int enable = 1;
+ 	int sock;
+ 	int err;
 -- 
 2.43.0
 
