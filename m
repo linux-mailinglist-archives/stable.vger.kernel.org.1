@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-58303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03FC492B653
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:12:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA8B92B772
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7845AB23222
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:12:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AACE1C22581
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6F11581E4;
-	Tue,  9 Jul 2024 11:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A55E158874;
+	Tue,  9 Jul 2024 11:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCY6O03T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arDgZDqP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383AD155389;
-	Tue,  9 Jul 2024 11:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BC6155A25;
+	Tue,  9 Jul 2024 11:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523532; cv=none; b=niPPDh9mtA97rRIlkkxw+E367Kv62ulHdPmSoFSWVoB6HHZpjcUy6dAFYj2tDCRBwB/XMGkS+EW8tkHN9Vp3iitxnyf1279XoPKslYc88gdLDwLaCrbHIllyAaTAZIetbvrugMMgJSig40ZS8DC/yW0qY2nb/JPE1dHCvd8rfE0=
+	t=1720524193; cv=none; b=dT94U8MZCOJtvI/LXyY/9cNMRYvvllRDeLAWLlMadQNpvn5M33fqeCe+yOebyIXEdzuVNaw3JDipqvHoaPFsxrDCkIAq7QUoCadIbbXi+yZzHIfAzJo+o+wF2anzwTuzBRSd/PieJtcbpXS2FjJHtIXzvXrJSsETi1A8Gm4wib4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523532; c=relaxed/simple;
-	bh=YTSQAcZNL0vlRgvFO1VFNmfN6RG7q512WPncganV/B4=;
+	s=arc-20240116; t=1720524193; c=relaxed/simple;
+	bh=IEiheSfi6u2yE3zNRL3Q0BQDdFj1yHw5HPmENJMrxTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V92rgUUle8YZJqbV5LYWe6lzMuuLHRjZWq+do3PwWEBGsXE7eak7UKjlmL/U9XbBSdMyY3XSc+X0MFWPPml8/gPFmMsYk34ZNIVbAxhGOSPOVXSf7EEsN1SoCvHQmJdbuf0g7c5It+thhNzsQbUdo1tDBlAuOmAWc5IR0WMYHho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCY6O03T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4CBC3277B;
-	Tue,  9 Jul 2024 11:12:11 +0000 (UTC)
+	 MIME-Version; b=CwBRwf2sEz7IS44ILiAAhaLiRRwZr9XIFAVxwjhrrFKRQGrZLdmyHkNpnzwR0Yhq9IBPYn0BUB0JAv4SFyTKGMVv8JQ+53pHgeXEVIvDSS0y5c9wzYlz0xEiwxF9flJP2PqSozKgOv3LPz1ezMvaPxjmpFz4HZhekBAgNG0KiJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arDgZDqP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFEEAC3277B;
+	Tue,  9 Jul 2024 11:23:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523531;
-	bh=YTSQAcZNL0vlRgvFO1VFNmfN6RG7q512WPncganV/B4=;
+	s=korg; t=1720524193;
+	bh=IEiheSfi6u2yE3zNRL3Q0BQDdFj1yHw5HPmENJMrxTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uCY6O03T4fuFecMlCii7R20ZTAmAtcns36klJNQXE6hiufcosJplTI7XTODa/lXjZ
-	 ZBfEJeLL3VwP/zk/Z4RYzUbED42e76GW/Ja34f9Wxjma3Yf1AtXxKcD0xEOoV5SLMd
-	 7XHTX0PAQ7NBWqY0uhBEPHxT/ugaOfeUHvQbTyQw=
+	b=arDgZDqPKQdkwMinhQjxqaHyTGrLqbQ7c/SeWGvSXBjCVrCgsgEZ1V3md4X574+1I
+	 bI+oMP2ffnJdSAVc1CgBic+1nyizapmpFopRLgHkucgYDafUjGf1dGg3KReZQ0Efp6
+	 6jDJz8LhRVk162MV4eGAv1jW0Lh6jmWcBm2mkIAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Michael Krummsdorf <michael.krummsdorf@tq-group.com>,
+	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/139] drm/amdgpu: fix uninitialized scalar variable warning
+Subject: [PATCH 6.9 070/197] serial: imx: Raise TX trigger level to 8
 Date: Tue,  9 Jul 2024 13:08:44 +0200
-Message-ID: <20240709110659.099263724@linuxfoundation.org>
+Message-ID: <20240709110711.672300087@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 
-[ Upstream commit 9a5f15d2a29d06ce5bd50919da7221cda92afb69 ]
+[ Upstream commit a3d8728ab079951741efa11360df43dbfacba7ab ]
 
-Clear warning that uses uninitialized value fw_size.
+At the default TX trigger level of 2 in non-DMA mode (meaning that an
+interrupt is generated when less than 2 characters are left in the
+FIFO), we have observed frequent buffer underruns at 115200 Baud on an
+i.MX8M Nano. This can cause communication issues if the receiving side
+expects a continuous transfer.
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Increasing the level to 8 makes the UART trigger an interrupt earlier,
+giving the kernel enough time to refill the FIFO, at the cost of
+triggering one interrupt per ~24 instead of ~30 bytes of transmitted
+data (as the i.MX UART has a 32 byte FIFO).
+
+Signed-off-by: Michael Krummsdorf <michael.krummsdorf@tq-group.com>
+Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20240508133744.35858-1-matthias.schiffer@ew.tq-group.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tty/serial/imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-index 053983e9f4aef..0ca51df46cc0d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-@@ -1184,7 +1184,8 @@ void amdgpu_gfx_cp_init_microcode(struct amdgpu_device *adev,
- 		fw_size = le32_to_cpu(cp_hdr_v2_0->data_size_bytes);
- 		break;
- 	default:
--		break;
-+		dev_err(adev->dev, "Invalid ucode id %u\n", ucode_id);
-+		return;
- 	}
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index 9552228d21614..f63cdd6794419 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -1314,7 +1314,7 @@ static void imx_uart_clear_rx_errors(struct imx_port *sport)
  
- 	if (adev->firmware.load_type == AMDGPU_FW_LOAD_PSP) {
+ }
+ 
+-#define TXTL_DEFAULT 2 /* reset default */
++#define TXTL_DEFAULT 8
+ #define RXTL_DEFAULT 8 /* 8 characters or aging timer */
+ #define TXTL_DMA 8 /* DMA burst setting */
+ #define RXTL_DMA 9 /* DMA burst setting */
 -- 
 2.43.0
 
