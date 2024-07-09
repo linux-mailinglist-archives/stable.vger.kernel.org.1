@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E44492B82F
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:31:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B844792B7C9
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85696B258D8
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D8DD1F2458D
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBEAA156C61;
-	Tue,  9 Jul 2024 11:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0483A157485;
+	Tue,  9 Jul 2024 11:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SF3Zx2aW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbtSBkhG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC33B55E4C;
-	Tue,  9 Jul 2024 11:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A1227713;
+	Tue,  9 Jul 2024 11:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524688; cv=none; b=furWu7WpEukGLW549uXafqorYG4XbyPDKFqROPMwSa5IEknMcusokJ0bx4SCClnfRO7eKOpPQZ76oQ2zs8TSwG2ceNHhpJbmXPGQwPDMhBuL4wY5tjnxE7WZEzDK6yeJ2w/pcrbHizQoxGdOsolyikYz629YK1yuz3uS+gH6VIw=
+	t=1720524421; cv=none; b=ni7O/XjOB0k71lXEuqkUdFbT5yY73yStaudhAPO6Y948j01583i9Zgd2htYRbeh1hX+DkfYA9jcSljZ5vLHfoJk5zfCL5sGpBrmNlWOMq7fLaRhpWTLKVwx6SaibLX5oalsoTzODVAeQmFHnC1fl6y6/yWoxQrc7ZDPt+9G5TjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524688; c=relaxed/simple;
-	bh=CK1Z9dFboG0U/GsGwB82KGPylkF2cqMUDFfg2//Iy2k=;
+	s=arc-20240116; t=1720524421; c=relaxed/simple;
+	bh=m/aCcnA8yR1AB0NBOx07JYCJp/M9kE1pC16BrGrEg8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GyvF4oMRxCI4PPcpnvpgakykxWPUuj7wf3I6JiMABz6/VfVFaVduLn2i/sAikhj9d4XCtVDdbaF/0efDMmNcVVAVBbsu9mvr7b2vWPuTrBj6GbfBbLd+YnWS9V2kHS3PJVORma170n/Ar64oQ8rQoDkSL58Z733x0FlelLWrSNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SF3Zx2aW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F54C3277B;
-	Tue,  9 Jul 2024 11:31:28 +0000 (UTC)
+	 MIME-Version; b=ZkFfsjmDKa+JEk0ZSgiV2elIeHo2MzFAnKfZ3PMvRZ1WNgtITQDsCoZNVKRw9GJX2XR0LxcBKzMGvodIFtSwKb4BMAY8jw7puRxTQbWweJYBzkOxMoMmsbvjxpEPGs8H6NJGLNjWwFt+ya7s2n2v7b/v+Xs5AVIui0juNcocuXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbtSBkhG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2164CC3277B;
+	Tue,  9 Jul 2024 11:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524688;
-	bh=CK1Z9dFboG0U/GsGwB82KGPylkF2cqMUDFfg2//Iy2k=;
+	s=korg; t=1720524421;
+	bh=m/aCcnA8yR1AB0NBOx07JYCJp/M9kE1pC16BrGrEg8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SF3Zx2aWblypo9Mrtglx3jJHdBGpBPsM/Iz60LC27SRAQ0bczbeGSKtNda6AdJwMW
-	 aRYrqHmkkhQ7gIajld+RWVvC+OoeI0Y2iM9G0ECocz9pvbeQ08CTPUMuXTmcic7gQZ
-	 c6MUx0louoefNfsX0f4hjsr8my2l3F1ANBJDjoE4=
+	b=XbtSBkhGqOqIZKN5S5fbMnSZna/DjG5T9pbiDuKEmsaFIx2J6YcK6BrtboxlJSt6z
+	 I1uFB6DIq4He4sgQlGvbAk6tu8omGnSiTZv7GmbWMs41I3g20GRMufiJCFxPcMSEOO
+	 u9LzBVf7/oQfW2HYr5KCHdheMH6E+aP/MywBtIXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.1 068/102] f2fs: Add inline to f2fs_build_fault_attr() stub
+	Mike Christie <michael.christie@oracle.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 177/197] vhost-scsi: Handle vhost_vq_work_queue failures for events
 Date: Tue,  9 Jul 2024 13:10:31 +0200
-Message-ID: <20240709110654.027294102@linuxfoundation.org>
+Message-ID: <20240709110715.795418015@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Mike Christie <michael.christie@oracle.com>
 
-commit 0d8968287a1cf7b03d07387dc871de3861b9f6b9 upstream.
+[ Upstream commit b1b2ce58ed23c5d56e0ab299a5271ac01f95b75c ]
 
-When building without CONFIG_F2FS_FAULT_INJECTION, there is a warning
-from each file that includes f2fs.h because the stub for
-f2fs_build_fault_attr() is missing inline:
+Currently, we can try to queue an event's work before the vhost_task is
+created. When this happens we just drop it in vhost_scsi_do_plug before
+even calling vhost_vq_work_queue. During a device shutdown we do the
+same thing after vhost_scsi_clear_endpoint has cleared the backends.
 
-  In file included from fs/f2fs/segment.c:21:
-  fs/f2fs/f2fs.h:4605:12: warning: 'f2fs_build_fault_attr' defined but not used [-Wunused-function]
-   4605 | static int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
-        |            ^~~~~~~~~~~~~~~~~~~~~
+In the next patches we will be able to kill the vhost_task before we
+have cleared the endpoint. In that case, vhost_vq_work_queue can fail
+and we will leak the event's memory. This has handle the failure by
+just freeing the event. This is safe to do, because
+vhost_vq_work_queue will only return failure for us when the vhost_task
+is killed and so userspace will not be able to handle events if we
+sent them.
 
-Add the missing inline to resolve all of the warnings for this
-configuration.
-
-Fixes: 4ed886b187f4 ("f2fs: check validation of fault attrs in f2fs_build_fault_attr()")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Message-Id: <20240316004707.45557-2-michael.christie@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/f2fs.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/vhost/scsi.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -4533,8 +4533,8 @@ static inline bool f2fs_need_verity(cons
- extern int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
- 							unsigned long type);
- #else
--static int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
--							unsigned long type)
-+static inline int f2fs_build_fault_attr(struct f2fs_sb_info *sbi,
-+					unsigned long rate, unsigned long type)
- {
- 	return 0;
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 282aac45c6909..f34f9895b8984 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -497,10 +497,8 @@ vhost_scsi_do_evt_work(struct vhost_scsi *vs, struct vhost_scsi_evt *evt)
+ 		vq_err(vq, "Faulted on vhost_scsi_send_event\n");
  }
+ 
+-static void vhost_scsi_evt_work(struct vhost_work *work)
++static void vhost_scsi_complete_events(struct vhost_scsi *vs, bool drop)
+ {
+-	struct vhost_scsi *vs = container_of(work, struct vhost_scsi,
+-					vs_event_work);
+ 	struct vhost_virtqueue *vq = &vs->vqs[VHOST_SCSI_VQ_EVT].vq;
+ 	struct vhost_scsi_evt *evt, *t;
+ 	struct llist_node *llnode;
+@@ -508,12 +506,20 @@ static void vhost_scsi_evt_work(struct vhost_work *work)
+ 	mutex_lock(&vq->mutex);
+ 	llnode = llist_del_all(&vs->vs_event_list);
+ 	llist_for_each_entry_safe(evt, t, llnode, list) {
+-		vhost_scsi_do_evt_work(vs, evt);
++		if (!drop)
++			vhost_scsi_do_evt_work(vs, evt);
+ 		vhost_scsi_free_evt(vs, evt);
+ 	}
+ 	mutex_unlock(&vq->mutex);
+ }
+ 
++static void vhost_scsi_evt_work(struct vhost_work *work)
++{
++	struct vhost_scsi *vs = container_of(work, struct vhost_scsi,
++					     vs_event_work);
++	vhost_scsi_complete_events(vs, false);
++}
++
+ static int vhost_scsi_copy_sgl_to_iov(struct vhost_scsi_cmd *cmd)
+ {
+ 	struct iov_iter *iter = &cmd->saved_iter;
+@@ -1509,7 +1515,8 @@ vhost_scsi_send_evt(struct vhost_scsi *vs, struct vhost_virtqueue *vq,
+ 	}
+ 
+ 	llist_add(&evt->list, &vs->vs_event_list);
+-	vhost_vq_work_queue(vq, &vs->vs_event_work);
++	if (!vhost_vq_work_queue(vq, &vs->vs_event_work))
++		vhost_scsi_complete_events(vs, true);
+ }
+ 
+ static void vhost_scsi_evt_handle_kick(struct vhost_work *work)
+-- 
+2.43.0
+
 
 
 
