@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-58408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0525E92B6D9
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E8792B82C
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:31:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93E7BB21A16
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFA581F217F6
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538AD158A09;
-	Tue,  9 Jul 2024 11:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C95155744;
+	Tue,  9 Jul 2024 11:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWL84fPC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOOyohIG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07198158A07;
-	Tue,  9 Jul 2024 11:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BB255E4C;
+	Tue,  9 Jul 2024 11:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523848; cv=none; b=Nh2M2iMP/sihXUVSaDybZXeljaGDD5n3oDtZPt77SOc22O75OELESpQIn7R/8ctblHjNHkC1TyUTYc5teGNlKnUGyy5jOVonwnuwvEQs0MTJRBEcQJF2jOksG10miCMXp7EvNP2rQ2RTBt7iTBViGo4i4pirvmVVygB7BC4tS40=
+	t=1720524680; cv=none; b=AvKOxkdWLEN6qvMjhREd31KfihOhxG0SWfG1FqSWlSQwx5UDPx1uDJbxAFiVV/3JGHD0nlgAstw+Q6fz4dSGeORXvszXLDA5ZwQc26ZkpxYqKJKoxZAVUZjo7WCFmccLzvTofwQUSuVrhyh4thij2sxxYTSEFcnDYy+u2Q0KWNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523848; c=relaxed/simple;
-	bh=Ypty6Y9OTeNnBxIm3pD/fA7rPpKTXleDNxb/KQA1B94=;
+	s=arc-20240116; t=1720524680; c=relaxed/simple;
+	bh=X23rKL2FDbx54La/EcfiIB/NMAsoDpj6IF5s5PrpZu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kMqZlqYGZfiLROHV72UUUAakkuGFt/MAysb2y0FatV+3m3HdsGZzQZ/w3jLqGzr0z4sbUe0KeTQoz37yDZf7ohFw9RxWZskW1YZj6Ub/EmktfbEF0oYx6ZNBSX/UXBsW4Y15P4AIiI0pepYykihyrd+EOtKlK6T/ftgfHGqET0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWL84fPC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825F3C3277B;
-	Tue,  9 Jul 2024 11:17:27 +0000 (UTC)
+	 MIME-Version; b=hk2LewaozRR/AgJ9h2LZnOx97HcVzZR2yDjucKVh0qnN0cSzk8RxyndP2Yt9D4XPzI0wZVaMkJNzbHe1EyMS8Um/T3xuAp5Q9yM1Vm5+1dzdQ6pJiaODmHJs6XaszNlDIAtwbmb+jcvhY5q0aVq7LHxl07af+alScI6VzBH1tig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOOyohIG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0CBC3277B;
+	Tue,  9 Jul 2024 11:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523847;
-	bh=Ypty6Y9OTeNnBxIm3pD/fA7rPpKTXleDNxb/KQA1B94=;
+	s=korg; t=1720524679;
+	bh=X23rKL2FDbx54La/EcfiIB/NMAsoDpj6IF5s5PrpZu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWL84fPCC0PSZXGap/oK7YZosVFqTnwNbgUwdRWVt/PubgyTjTWpuHRvYfpP8tBeg
-	 ce+4I8HzJuFwtEaRTzRuUpRouh0mPXfAf4IHTyi7bFjpUPh/86NoUH6RUV9tui9LAY
-	 2W2BXuvmugESCDiAL5JCPdkSKlXSJpKWf2RKKcgg=
+	b=eOOyohIGF56d9qyvp4OkiN9g3/QbRi9fQZB+gKpXV3pgaFJ1S12iRE4fOBx2gLqh6
+	 qpHEVZs9QHSveQ4whLT+KY/Q+NSxCHAeLQR4V4htnNw5jJar2FsPB6/a8Ew/URzmmR
+	 xKIKeVx1qf8vH1YaVfBmXgAn5mzO+S1AL2+WsSeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Kundan Kumar <kundan.kumar@samsung.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/139] nvme: adjust multiples of NVME_CTRL_PAGE_SIZE in offset
+	Jinliang Zheng <alexjlzheng@tencent.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Tycho Andersen <tandersen@netflix.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 065/102] mm: optimize the redundant loop of mm_update_owner_next()
 Date: Tue,  9 Jul 2024 13:10:28 +0200
-Message-ID: <20240709110703.115732440@linuxfoundation.org>
+Message-ID: <20240709110653.910214145@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +68,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kundan Kumar <kundan.kumar@samsung.com>
+From: Jinliang Zheng <alexjlzheng@tencent.com>
 
-[ Upstream commit 1bd293fcf3af84674e82ed022c049491f3768840 ]
+commit cf3f9a593dab87a032d2b6a6fb205e7f3de4f0a1 upstream.
 
-bio_vec start offset may be relatively large particularly when large
-folio gets added to the bio. A bigger offset will result in avoiding the
-single-segment mapping optimization and end up using expensive
-mempool_alloc further.
+When mm_update_owner_next() is racing with swapoff (try_to_unuse()) or
+/proc or ptrace or page migration (get_task_mm()), it is impossible to
+find an appropriate task_struct in the loop whose mm_struct is the same as
+the target mm_struct.
 
-Rather than using absolute value, adjust bv_offset by
-NVME_CTRL_PAGE_SIZE while checking if segment can be fitted into one/two
-PRP entries.
+If the above race condition is combined with the stress-ng-zombie and
+stress-ng-dup tests, such a long loop can easily cause a Hard Lockup in
+write_lock_irq() for tasklist_lock.
 
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Recognize this situation in advance and exit early.
+
+Link: https://lkml.kernel.org/r/20240620122123.3877432-1-alexjlzheng@tencent.com
+Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Tycho Andersen <tandersen@netflix.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/exit.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 8d5ed4cb35d96..710fd4d862520 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -778,7 +778,8 @@ static blk_status_t nvme_map_data(struct nvme_dev *dev, struct request *req,
- 		struct bio_vec bv = req_bvec(req);
- 
- 		if (!is_pci_p2pdma_page(bv.bv_page)) {
--			if (bv.bv_offset + bv.bv_len <= NVME_CTRL_PAGE_SIZE * 2)
-+			if ((bv.bv_offset & (NVME_CTRL_PAGE_SIZE - 1)) +
-+			     bv.bv_len <= NVME_CTRL_PAGE_SIZE * 2)
- 				return nvme_setup_prp_simple(dev, req,
- 							     &cmnd->rw, &bv);
- 
--- 
-2.43.0
-
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -481,6 +481,8 @@ retry:
+ 	 * Search through everything else, we should not get here often.
+ 	 */
+ 	for_each_process(g) {
++		if (atomic_read(&mm->mm_users) <= 1)
++			break;
+ 		if (g->flags & PF_KTHREAD)
+ 			continue;
+ 		for_each_thread(g, c) {
 
 
 
