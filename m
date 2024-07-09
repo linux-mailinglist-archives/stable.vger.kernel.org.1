@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-58670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E8892B81F
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A94EC92B7BB
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E881A1C21789
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22F0EB21476
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5016C158869;
-	Tue,  9 Jul 2024 11:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9E01586D3;
+	Tue,  9 Jul 2024 11:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SA2uuGm0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I28d3Cpn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EEBE1586F6;
-	Tue,  9 Jul 2024 11:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB601586C4;
+	Tue,  9 Jul 2024 11:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524642; cv=none; b=kyTHVPbgmdQhjiAJIBqfM2s1+LRclwKwv2vvoHqPPzQ6XAg8VWfa+b6OMWZyu1o+hp3yP87uWme2uAn8Awe6cYFSE6Js1w35lbVsnBgXrApyt00Et+k4Z8qBXhmczz7rjvhRdmk8ie+4YjD1M62ZEVAodL608lE2/H+CZxwdT8Q=
+	t=1720524374; cv=none; b=Pb2mxG4KYDfChjoZNcfGc9J3ZCtmgBYXxcuQKPspzQarrpHLGDt/o1pSM6JjWSRcusEBqs54qdPVKi51I49F7T7quLdYp/344xO8Ev56bjenVr9xC7V1sF0FKZixuLWzmI4fwWtOIRN70LBH9R/Hxz/2+Eh6ZQrIGDsZB3ocLIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524642; c=relaxed/simple;
-	bh=U0nARVahew7V4c0PWFoLVcNxP9aoPp5v+CK+W3CmDlA=;
+	s=arc-20240116; t=1720524374; c=relaxed/simple;
+	bh=BvFlT4HGthUvQS1D0OjTngLbJ87QmmGTS8zu/KbOhxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XenjhXSJIn78t1g1J5qXLMp5/APdS5Qq+OHYTBTN4+ICzWba+ECksomS5Q8ENfwdyAreCzsRhe8vxg2uzTjh4sJmAMQw5rRjHCuuCnE0m6mH0aRhXPIutm92pJCDeJKaqi1/H1omqm/WeBABM2hWKkrSJHCN5Oi6Nwa8z2sA0fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SA2uuGm0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C02C32786;
-	Tue,  9 Jul 2024 11:30:41 +0000 (UTC)
+	 MIME-Version; b=YUJpYb0TahQunwowF+xigEdIZj0hZ9+CsnEwL8Fao8TsxikYUUh6HceXwgEsFsxio7Iu0ceU6FyjLUOlW8hfDawRGml8qa1gqoRyPih9o8FkzsB43N8Np0uROoe/hjvCcBw35ITI0slByuEQ73qwvlfcgU6v7A7+62uetTsEKe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I28d3Cpn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78338C3277B;
+	Tue,  9 Jul 2024 11:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524641;
-	bh=U0nARVahew7V4c0PWFoLVcNxP9aoPp5v+CK+W3CmDlA=;
+	s=korg; t=1720524373;
+	bh=BvFlT4HGthUvQS1D0OjTngLbJ87QmmGTS8zu/KbOhxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SA2uuGm0E0gOlsmkiIrJ7/D4eBP3+XPa+M2VYrroSBUXBTOKpljGEkrmu6iMAuc9o
-	 6WB14zwbyDbMtvztgoVXFRLMU2ReEMEYG2XtMiGC4BkS1IU1VoYIlp+pZDV39E/ZTN
-	 JUETt8VV2vw2CxkSH2Ahw3HT4m9JEId0QSorY2nQ=
+	b=I28d3CpnFg9QRDmjxApMPXAM8JGO7E2i18J9Jp1WcylbJeoBWWLZJ9H1gH1r9PNKB
+	 KNSe7UTGfIQOBGEjPJIyttRpjakfbO/qa26evYQJcrWIJseT4uhbpuOxgHCHuBX563
+	 FWCTyIQ1BwU1cxIZcHPsBphu72tGvpwYVyrfPWwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dima Ruinskiy <dima.ruinskiy@intel.com>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 050/102] e1000e: Fix S0ix residency on corporate systems
+	stable@kernel.org,
+	Jann Horn <jannh@google.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.9 159/197] filelock: Remove locks reliably when fcntl/close race is detected
 Date: Tue,  9 Jul 2024 13:10:13 +0200
-Message-ID: <20240709110653.328425005@linuxfoundation.org>
+Message-ID: <20240709110715.108690884@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,216 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dima Ruinskiy <dima.ruinskiy@intel.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit c93a6f62cb1bd097aef2e4588648a420d175eee2 ]
+commit 3cad1bc010416c6dd780643476bc59ed742436b9 upstream.
 
-On vPro systems, the configuration of the I219-LM to achieve power
-gating and S0ix residency is split between the driver and the CSME FW.
-It was discovered that in some scenarios, where the network cable is
-connected and then disconnected, S0ix residency is not always reached.
-This was root-caused to a subset of I219-LM register writes that are not
-performed by the CSME FW. Therefore, the driver should perform these
-register writes on corporate setups, regardless of the CSME FW state.
+When fcntl_setlk() races with close(), it removes the created lock with
+do_lock_file_wait().
+However, LSMs can allow the first do_lock_file_wait() that created the lock
+while denying the second do_lock_file_wait() that tries to remove the lock.
+In theory (but AFAIK not in practice), posix_lock_file() could also fail to
+remove a lock due to GFP_KERNEL allocation failure (when splitting a range
+in the middle).
 
-This was discovered on Meteor Lake systems; however it is likely to
-appear on other platforms as well.
+After the bug has been triggered, use-after-free reads will occur in
+lock_get_status() when userspace reads /proc/locks. This can likely be used
+to read arbitrary kernel memory, but can't corrupt kernel memory.
+This only affects systems with SELinux / Smack / AppArmor / BPF-LSM in
+enforcing mode and only works from some security contexts.
 
-Fixes: cc23f4f0b6b9 ("e1000e: Add support for Meteor Lake")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218589
-Signed-off-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240628201754.2744221-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by calling locks_remove_posix() instead, which is designed to
+reliably get rid of POSIX locks associated with the given file and
+files_struct and is also used by filp_flush().
+
+Fixes: c293621bbf67 ("[PATCH] stale POSIX lock handling")
+Cc: stable@kernel.org
+Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2563
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20240702-fs-lock-recover-2-v1-1-edd456f63789@google.com
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/e1000e/netdev.c | 132 ++++++++++-----------
- 1 file changed, 66 insertions(+), 66 deletions(-)
+ fs/locks.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index db8e06157da29..cbd8357c61edc 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -6369,49 +6369,49 @@ static void e1000e_s0ix_entry_flow(struct e1000_adapter *adapter)
- 		mac_data |= E1000_EXTCNF_CTRL_GATE_PHY_CFG;
- 		ew32(EXTCNF_CTRL, mac_data);
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -2448,8 +2448,9 @@ int fcntl_setlk(unsigned int fd, struct
+ 	error = do_lock_file_wait(filp, cmd, file_lock);
  
--		/* Enable the Dynamic Power Gating in the MAC */
--		mac_data = er32(FEXTNVM7);
--		mac_data |= BIT(22);
--		ew32(FEXTNVM7, mac_data);
--
- 		/* Disable disconnected cable conditioning for Power Gating */
- 		mac_data = er32(DPGFR);
- 		mac_data |= BIT(2);
- 		ew32(DPGFR, mac_data);
- 
--		/* Don't wake from dynamic Power Gating with clock request */
--		mac_data = er32(FEXTNVM12);
--		mac_data |= BIT(12);
--		ew32(FEXTNVM12, mac_data);
--
--		/* Ungate PGCB clock */
--		mac_data = er32(FEXTNVM9);
--		mac_data &= ~BIT(28);
--		ew32(FEXTNVM9, mac_data);
--
--		/* Enable K1 off to enable mPHY Power Gating */
--		mac_data = er32(FEXTNVM6);
--		mac_data |= BIT(31);
--		ew32(FEXTNVM6, mac_data);
--
--		/* Enable mPHY power gating for any link and speed */
--		mac_data = er32(FEXTNVM8);
--		mac_data |= BIT(9);
--		ew32(FEXTNVM8, mac_data);
--
- 		/* Enable the Dynamic Clock Gating in the DMA and MAC */
- 		mac_data = er32(CTRL_EXT);
- 		mac_data |= E1000_CTRL_EXT_DMA_DYN_CLK_EN;
- 		ew32(CTRL_EXT, mac_data);
--
--		/* No MAC DPG gating SLP_S0 in modern standby
--		 * Switch the logic of the lanphypc to use PMC counter
--		 */
--		mac_data = er32(FEXTNVM5);
--		mac_data |= BIT(7);
--		ew32(FEXTNVM5, mac_data);
+ 	/*
+-	 * Attempt to detect a close/fcntl race and recover by releasing the
+-	 * lock that was just acquired. There is no need to do that when we're
++	 * Detect close/fcntl races and recover by zapping all POSIX locks
++	 * associated with this file and our files_struct, just like on
++	 * filp_flush(). There is no need to do that when we're
+ 	 * unlocking though, or for OFD locks.
+ 	 */
+ 	if (!error && file_lock->c.flc_type != F_UNLCK &&
+@@ -2464,9 +2465,7 @@ int fcntl_setlk(unsigned int fd, struct
+ 		f = files_lookup_fd_locked(files, fd);
+ 		spin_unlock(&files->file_lock);
+ 		if (f != filp) {
+-			file_lock->c.flc_type = F_UNLCK;
+-			error = do_lock_file_wait(filp, cmd, file_lock);
+-			WARN_ON_ONCE(error);
++			locks_remove_posix(filp, files);
+ 			error = -EBADF;
+ 		}
  	}
- 
-+	/* Enable the Dynamic Power Gating in the MAC */
-+	mac_data = er32(FEXTNVM7);
-+	mac_data |= BIT(22);
-+	ew32(FEXTNVM7, mac_data);
-+
-+	/* Don't wake from dynamic Power Gating with clock request */
-+	mac_data = er32(FEXTNVM12);
-+	mac_data |= BIT(12);
-+	ew32(FEXTNVM12, mac_data);
-+
-+	/* Ungate PGCB clock */
-+	mac_data = er32(FEXTNVM9);
-+	mac_data &= ~BIT(28);
-+	ew32(FEXTNVM9, mac_data);
-+
-+	/* Enable K1 off to enable mPHY Power Gating */
-+	mac_data = er32(FEXTNVM6);
-+	mac_data |= BIT(31);
-+	ew32(FEXTNVM6, mac_data);
-+
-+	/* Enable mPHY power gating for any link and speed */
-+	mac_data = er32(FEXTNVM8);
-+	mac_data |= BIT(9);
-+	ew32(FEXTNVM8, mac_data);
-+
-+	/* No MAC DPG gating SLP_S0 in modern standby
-+	 * Switch the logic of the lanphypc to use PMC counter
-+	 */
-+	mac_data = er32(FEXTNVM5);
-+	mac_data |= BIT(7);
-+	ew32(FEXTNVM5, mac_data);
-+
- 	/* Disable the time synchronization clock */
- 	mac_data = er32(FEXTNVM7);
- 	mac_data |= BIT(31);
-@@ -6503,33 +6503,6 @@ static void e1000e_s0ix_exit_flow(struct e1000_adapter *adapter)
- 	} else {
- 		/* Request driver unconfigure the device from S0ix */
- 
--		/* Disable the Dynamic Power Gating in the MAC */
--		mac_data = er32(FEXTNVM7);
--		mac_data &= 0xFFBFFFFF;
--		ew32(FEXTNVM7, mac_data);
--
--		/* Disable mPHY power gating for any link and speed */
--		mac_data = er32(FEXTNVM8);
--		mac_data &= ~BIT(9);
--		ew32(FEXTNVM8, mac_data);
--
--		/* Disable K1 off */
--		mac_data = er32(FEXTNVM6);
--		mac_data &= ~BIT(31);
--		ew32(FEXTNVM6, mac_data);
--
--		/* Disable Ungate PGCB clock */
--		mac_data = er32(FEXTNVM9);
--		mac_data |= BIT(28);
--		ew32(FEXTNVM9, mac_data);
--
--		/* Cancel not waking from dynamic
--		 * Power Gating with clock request
--		 */
--		mac_data = er32(FEXTNVM12);
--		mac_data &= ~BIT(12);
--		ew32(FEXTNVM12, mac_data);
--
- 		/* Cancel disable disconnected cable conditioning
- 		 * for Power Gating
- 		 */
-@@ -6542,13 +6515,6 @@ static void e1000e_s0ix_exit_flow(struct e1000_adapter *adapter)
- 		mac_data &= 0xFFF7FFFF;
- 		ew32(CTRL_EXT, mac_data);
- 
--		/* Revert the lanphypc logic to use the internal Gbe counter
--		 * and not the PMC counter
--		 */
--		mac_data = er32(FEXTNVM5);
--		mac_data &= 0xFFFFFF7F;
--		ew32(FEXTNVM5, mac_data);
--
- 		/* Enable the periodic inband message,
- 		 * Request PCIe clock in K1 page770_17[10:9] =01b
- 		 */
-@@ -6586,6 +6552,40 @@ static void e1000e_s0ix_exit_flow(struct e1000_adapter *adapter)
- 	mac_data &= ~BIT(31);
- 	mac_data |= BIT(0);
- 	ew32(FEXTNVM7, mac_data);
-+
-+	/* Disable the Dynamic Power Gating in the MAC */
-+	mac_data = er32(FEXTNVM7);
-+	mac_data &= 0xFFBFFFFF;
-+	ew32(FEXTNVM7, mac_data);
-+
-+	/* Disable mPHY power gating for any link and speed */
-+	mac_data = er32(FEXTNVM8);
-+	mac_data &= ~BIT(9);
-+	ew32(FEXTNVM8, mac_data);
-+
-+	/* Disable K1 off */
-+	mac_data = er32(FEXTNVM6);
-+	mac_data &= ~BIT(31);
-+	ew32(FEXTNVM6, mac_data);
-+
-+	/* Disable Ungate PGCB clock */
-+	mac_data = er32(FEXTNVM9);
-+	mac_data |= BIT(28);
-+	ew32(FEXTNVM9, mac_data);
-+
-+	/* Cancel not waking from dynamic
-+	 * Power Gating with clock request
-+	 */
-+	mac_data = er32(FEXTNVM12);
-+	mac_data &= ~BIT(12);
-+	ew32(FEXTNVM12, mac_data);
-+
-+	/* Revert the lanphypc logic to use the internal Gbe counter
-+	 * and not the PMC counter
-+	 */
-+	mac_data = er32(FEXTNVM5);
-+	mac_data &= 0xFFFFFF7F;
-+	ew32(FEXTNVM5, mac_data);
- }
- 
- static int e1000e_pm_freeze(struct device *dev)
--- 
-2.43.0
-
 
 
 
