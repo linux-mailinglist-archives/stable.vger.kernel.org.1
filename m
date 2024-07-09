@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2663192B79A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:25:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6F5292B678
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:13:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D0A9B251AA
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 801F31F21AA8
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8552415749F;
-	Tue,  9 Jul 2024 11:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD30F1581EB;
+	Tue,  9 Jul 2024 11:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N50Mdjb9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KoUMp1hk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4171114EC4D;
-	Tue,  9 Jul 2024 11:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5CE155389;
+	Tue,  9 Jul 2024 11:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524290; cv=none; b=OT+iT3lNqgALJgjFq7qTAZrD6E8rKBHAPNNDFrpWz2AQ2qz0gpCV/nVwydpMoAylFhSeoZlnodbHEI6He65LcX5v8O+6lQN7ocu5QdItPySfUGNSld0Wk8wT58PluXMjDr9JYi8wMrncgbx/RIaVQhBJZgKPEWKvjATdg/3a+0E=
+	t=1720523631; cv=none; b=HOU3RtUNNBIQAh8kSQmwEDsJPT2qwxvTfWxPBUDmFl0NvV5ETGccKQoCnqEl5hybBgI1mWfNpVQCH+g+u/w/pchjrRpQb/6TS+Vsq2J0zWFx2P51a5a+S3xvu9fkGdTFh2ChDrX9z1b4jxdf87M/QjaDQgJktV193fPIbClPATU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524290; c=relaxed/simple;
-	bh=+Ou/YOU3y8Oy4kikYYDIM+pkOVCxEuMF3KnnDt/U3jc=;
+	s=arc-20240116; t=1720523631; c=relaxed/simple;
+	bh=bJPqyNDI82zAUKkWv52W2Ji50GT9Opo5DHR6jdORV2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lxMrs0NP//4fGet9IPnTXza9aL7lJv1PvMJEPqyQwW0Qa9Rdqm09hJkixRxZnBuwABfInbl6yJpHc+VvnvVAYqB4D6+DenvEtPI43TC/H3VJ8jfpg4vWC87w1NfRu1wfpyUSF11iFXsgBlQLFkJInoqIhsWDFtnf9DBeWk0Hgow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N50Mdjb9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA35EC3277B;
-	Tue,  9 Jul 2024 11:24:49 +0000 (UTC)
+	 MIME-Version; b=ediyYjgZUDSmYpOO1ya+o3L7ZO6e0PB/fLZ0JiH6jRkSZypPEHsFkq+Geie/AoU/c6mPDUuayGW8snmsKxcbNyUysevSHUsHye8Y4NTUb3JYVZCgwatQhLkmEgLjg1jTTWJ9U8XeBLzJoOKL4jAezFO/HaeWj3Mcp4VtGkPYpDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KoUMp1hk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1C6C3277B;
+	Tue,  9 Jul 2024 11:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524290;
-	bh=+Ou/YOU3y8Oy4kikYYDIM+pkOVCxEuMF3KnnDt/U3jc=;
+	s=korg; t=1720523631;
+	bh=bJPqyNDI82zAUKkWv52W2Ji50GT9Opo5DHR6jdORV2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N50Mdjb9/z6J+8et5VCFzA26pErU6J5tKzYLRNJznCrvdGfr4fNQJP8t7p3+A8UJT
-	 ldCThTtgvLi3tYpMZM9ehJC20m8dIb7dN0WdueagMivt6rsay3v45iK8jL+h3vX9BA
-	 fzlxGefx58Az/z1M1POFMnzugLKHXtc57cMPBL0c=
+	b=KoUMp1hkP0SGdRAnIwYb8Al3VL/m6gGuueWo0icf+mEbphWkbkyy3VHFS/egK3Bd3
+	 l+q3QgEEEKXy6moKlZ5xXqlg+VSv6scOa8vLmovXiF24Vc2aK8bumb/eFCQ1eQGTni
+	 gYf7D08zygdGAzudZq8NEMbEbAPzz5/X8PuRqjxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 104/197] net: txgbe: remove separate irq request for MSI and INTx
+Subject: [PATCH 6.6 058/139] vhost: Use virtqueue mutex for swapping worker
 Date: Tue,  9 Jul 2024 13:09:18 +0200
-Message-ID: <20240709110712.983658781@linuxfoundation.org>
+Message-ID: <20240709110700.414459620@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,219 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit bd07a98178462e7a02ed2bf7dec90a00944c1da5 ]
+[ Upstream commit 34cf9ba5f00a222dddd9fc71de7c68fdaac7fb97 ]
 
-When using MSI or INTx interrupts, request_irq() for pdev->irq will
-conflict with request_threaded_irq() for txgbe->misc.irq, to cause
-system crash. So remove txgbe_request_irq() for MSI/INTx case, and
-rename txgbe_request_msix_irqs() since it only request for queue irqs.
+__vhost_vq_attach_worker uses the vhost_dev mutex to serialize the
+swapping of a virtqueue's worker. This was done for simplicity because
+we are already holding that mutex.
 
-Add wx->misc_irq_domain to determine whether the driver creates an IRQ
-domain and threaded request the IRQs.
+In the next patches where the worker can be killed while in use, we need
+finer grained locking because some drivers will hold the vhost_dev mutex
+while flushing. However in the SIGKILL handler in the next patches, we
+will need to be able to swap workers (set current one to NULL), kill
+queued works and stop new flushes while flushes are in progress.
 
-Fixes: aefd013624a1 ("net: txgbe: use irq_domain for interrupt controller")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+To prepare us, this has us use the virtqueue mutex for swapping workers
+instead of the vhost_dev one.
+
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Message-Id: <20240316004707.45557-7-michael.christie@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  1 +
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   |  5 +-
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |  1 +
- .../net/ethernet/wangxun/txgbe/txgbe_irq.c    | 80 ++-----------------
- .../net/ethernet/wangxun/txgbe/txgbe_irq.h    |  2 +-
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  2 +-
- 6 files changed, 15 insertions(+), 76 deletions(-)
+ drivers/vhost/vhost.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index c09a6f7445754..db640ea63f034 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -1959,6 +1959,7 @@ int wx_sw_init(struct wx *wx)
- 	}
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 88362c0afe452..67bd947cc556d 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -664,16 +664,22 @@ static void __vhost_vq_attach_worker(struct vhost_virtqueue *vq,
+ {
+ 	struct vhost_worker *old_worker;
  
- 	bitmap_zero(wx->state, WX_STATE_NBITS);
-+	wx->misc_irq_domain = false;
+-	old_worker = rcu_dereference_check(vq->worker,
+-					   lockdep_is_held(&vq->dev->mutex));
+-
+ 	mutex_lock(&worker->mutex);
+-	worker->attachment_cnt++;
+-	mutex_unlock(&worker->mutex);
++	mutex_lock(&vq->mutex);
++
++	old_worker = rcu_dereference_check(vq->worker,
++					   lockdep_is_held(&vq->mutex));
+ 	rcu_assign_pointer(vq->worker, worker);
++	worker->attachment_cnt++;
  
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index b62b191cc146a..bf02bd0f08407 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -1997,7 +1997,8 @@ void wx_free_irq(struct wx *wx)
- 	int vector;
- 
- 	if (!(pdev->msix_enabled)) {
--		free_irq(pdev->irq, wx);
-+		if (!wx->misc_irq_domain)
-+			free_irq(pdev->irq, wx);
+-	if (!old_worker)
++	if (!old_worker) {
++		mutex_unlock(&vq->mutex);
++		mutex_unlock(&worker->mutex);
  		return;
- 	}
- 
-@@ -2012,7 +2013,7 @@ void wx_free_irq(struct wx *wx)
- 		free_irq(entry->vector, q_vector);
- 	}
- 
--	if (wx->mac.type == wx_mac_em)
-+	if (!wx->misc_irq_domain)
- 		free_irq(wx->msix_entry->vector, wx);
- }
- EXPORT_SYMBOL(wx_free_irq);
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 5aaf7b1fa2db9..0df7f5712b6f7 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -1058,6 +1058,7 @@ struct wx {
- 	dma_addr_t isb_dma;
- 	u32 *isb_mem;
- 	u32 isb_tag[WX_ISB_MAX];
-+	bool misc_irq_domain;
- 
- #define WX_MAX_RETA_ENTRIES 128
- #define WX_RSS_INDIR_TBL_MAX 64
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-index b3e3605d1edb3..1490fd6ddbdf9 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-@@ -27,57 +27,19 @@ void txgbe_irq_enable(struct wx *wx, bool queues)
- }
- 
- /**
-- * txgbe_intr - msi/legacy mode Interrupt Handler
-- * @irq: interrupt number
-- * @data: pointer to a network interface device structure
-- **/
--static irqreturn_t txgbe_intr(int __always_unused irq, void *data)
--{
--	struct wx_q_vector *q_vector;
--	struct wx *wx  = data;
--	struct pci_dev *pdev;
--	u32 eicr;
--
--	q_vector = wx->q_vector[0];
--	pdev = wx->pdev;
--
--	eicr = wx_misc_isb(wx, WX_ISB_VEC0);
--	if (!eicr) {
--		/* shared interrupt alert!
--		 * the interrupt that we masked before the ICR read.
--		 */
--		if (netif_running(wx->netdev))
--			txgbe_irq_enable(wx, true);
--		return IRQ_NONE;        /* Not our interrupt */
--	}
--	wx->isb_mem[WX_ISB_VEC0] = 0;
--	if (!(pdev->msi_enabled))
--		wr32(wx, WX_PX_INTA, 1);
--
--	wx->isb_mem[WX_ISB_MISC] = 0;
--	/* would disable interrupts here but it is auto disabled */
--	napi_schedule_irqoff(&q_vector->napi);
--
--	/* re-enable link(maybe) and non-queue interrupts, no flush.
--	 * txgbe_poll will re-enable the queue interrupts
--	 */
--	if (netif_running(wx->netdev))
--		txgbe_irq_enable(wx, false);
--
--	return IRQ_HANDLED;
--}
--
--/**
-- * txgbe_request_msix_irqs - Initialize MSI-X interrupts
-+ * txgbe_request_queue_irqs - Initialize MSI-X queue interrupts
-  * @wx: board private structure
-  *
-- * Allocate MSI-X vectors and request interrupts from the kernel.
-+ * Allocate MSI-X queue vectors and request interrupts from the kernel.
-  **/
--static int txgbe_request_msix_irqs(struct wx *wx)
-+int txgbe_request_queue_irqs(struct wx *wx)
- {
- 	struct net_device *netdev = wx->netdev;
- 	int vector, err;
- 
-+	if (!wx->pdev->msix_enabled)
-+		return 0;
++	}
++	mutex_unlock(&vq->mutex);
++	mutex_unlock(&worker->mutex);
 +
- 	for (vector = 0; vector < wx->num_q_vectors; vector++) {
- 		struct wx_q_vector *q_vector = wx->q_vector[vector];
- 		struct msix_entry *entry = &wx->msix_q_entries[vector];
-@@ -110,34 +72,6 @@ static int txgbe_request_msix_irqs(struct wx *wx)
- 	return err;
- }
- 
--/**
-- * txgbe_request_irq - initialize interrupts
-- * @wx: board private structure
-- *
-- * Attempt to configure interrupts using the best available
-- * capabilities of the hardware and kernel.
-- **/
--int txgbe_request_irq(struct wx *wx)
--{
--	struct net_device *netdev = wx->netdev;
--	struct pci_dev *pdev = wx->pdev;
--	int err;
--
--	if (pdev->msix_enabled)
--		err = txgbe_request_msix_irqs(wx);
--	else if (pdev->msi_enabled)
--		err = request_irq(wx->pdev->irq, &txgbe_intr, 0,
--				  netdev->name, wx);
--	else
--		err = request_irq(wx->pdev->irq, &txgbe_intr, IRQF_SHARED,
--				  netdev->name, wx);
--
--	if (err)
--		wx_err(wx, "request_irq failed, Error %d\n", err);
--
--	return err;
--}
--
- static int txgbe_request_gpio_irq(struct txgbe *txgbe)
- {
- 	txgbe->gpio_irq = irq_find_mapping(txgbe->misc.domain, TXGBE_IRQ_GPIO);
-@@ -256,6 +190,8 @@ int txgbe_setup_misc_irq(struct txgbe *txgbe)
- 	if (err)
- 		goto free_gpio_irq;
- 
-+	wx->misc_irq_domain = true;
-+
- 	return 0;
- 
- free_gpio_irq:
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.h
-index b77945e7a0f26..e6285b94625ea 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.h
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.h
-@@ -2,6 +2,6 @@
- /* Copyright (c) 2015 - 2024 Beijing WangXun Technology Co., Ltd. */
- 
- void txgbe_irq_enable(struct wx *wx, bool queues);
--int txgbe_request_irq(struct wx *wx);
-+int txgbe_request_queue_irqs(struct wx *wx);
- void txgbe_free_misc_irq(struct txgbe *txgbe);
- int txgbe_setup_misc_irq(struct txgbe *txgbe);
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index 8c7a74981b907..76b5672c0a177 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -294,7 +294,7 @@ static int txgbe_open(struct net_device *netdev)
- 
- 	wx_configure(wx);
- 
--	err = txgbe_request_irq(wx);
-+	err = txgbe_request_queue_irqs(wx);
- 	if (err)
- 		goto err_free_isb;
- 
+ 	/*
+ 	 * Take the worker mutex to make sure we see the work queued from
+ 	 * device wide flushes which doesn't use RCU for execution.
 -- 
 2.43.0
 
