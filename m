@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-58701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2206392B840
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:32:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 606C292B6EF
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:18:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0258B22DE0
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:32:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77CF71C222DE
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2BFD156C61;
-	Tue,  9 Jul 2024 11:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A86D1586C4;
+	Tue,  9 Jul 2024 11:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4c9RGSB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IqSEeBC9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDF255E4C;
-	Tue,  9 Jul 2024 11:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D958E155A26;
+	Tue,  9 Jul 2024 11:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524732; cv=none; b=V4oAYrGe4xoV9dxP3fvwS0qY3aFPMzkgIq1RafKgDOddgi/yDNUAy08VFW7ZzE27D9/UoLSH2MCnho9sqbPx8nrEoq8AoWa4ytKZO5RZtxNR+WI3MgiKHqjeRT8XtOXDG3XPKM1WBRS5cTkO7R9yS3iV6/31thvceqwd3t0igT0=
+	t=1720523894; cv=none; b=MjcoOF5Du/X/T8rqJfxRkgC3HQt6hEk37fajbc2PQchjJwuHwzEvoLYmUhzZck7cGu1PoWf7hEhre4WgT73puJVctluetKJeqQNPZH4CHNetgy9J7ANG2mvVVcT0bqr1/qFtdkTHlDc83PJzQfOU23RAGwFeiZnSwRjdO6pfq40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524732; c=relaxed/simple;
-	bh=8dHdPGLsfraqqyUEMnoMyccIcZGAi0wA3GzDGhroP1s=;
+	s=arc-20240116; t=1720523894; c=relaxed/simple;
+	bh=JscuFbupbxMySFry+QwgNBMZDa+xlOIlncfagaLX1t8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mR5zvNWM3bC8RM5C+CCxTeOf7vpUDZh+RPxn74ByINf7QlLpV80MXwb8KkVXkhHtBHQBbFa8jU1s8XYhoxflcJ1CDSceDsNTfqmRMRAH7Fx2xfjVtEjU7tJn7FCVMr/V0UoAoW03T7sO96QXjWbv5WTFhn7x2ykhEDlaH1NR15o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4c9RGSB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3425AC4AF0A;
-	Tue,  9 Jul 2024 11:32:12 +0000 (UTC)
+	 MIME-Version; b=HHp9yEwjFhwGUiJjMzYq8SZmVLS9n9+Czfhr1vHlpdRuwNJyCMQUl1k+entfbFDBSnDpPO/0UMyLeefsuYkol3c5PKX5igCPqjCc4pQA5TbqQSxVMZnI7hYUl/RN60gHj/XvknA2ic4Gwo/3qNzUlXvLFjwtLVgmFT7ZGEkGKQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IqSEeBC9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D32CC3277B;
+	Tue,  9 Jul 2024 11:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524732;
-	bh=8dHdPGLsfraqqyUEMnoMyccIcZGAi0wA3GzDGhroP1s=;
+	s=korg; t=1720523894;
+	bh=JscuFbupbxMySFry+QwgNBMZDa+xlOIlncfagaLX1t8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l4c9RGSBsIgLINsoMhl/Qw+6dleNI67plS/6ngJztReuhH4V6pzSQI0zlg0u2QBoR
-	 y4764F6unG9zC/7X9Cfhh6LZrkloTESTUYrRvu5q5Mj78TmmjbEVBCKn+HHFOXldTO
-	 PoR3m5XyiUFxcZwHjyFspU6pmVAEC8mL5Cuh18GE=
+	b=IqSEeBC9tZDs+ds+6CkvqQYyQzqnQ15euWchHEuL1jdaMWSKBXeIHu0xnSGv/5+VT
+	 cE8LaNF3yO8CzN5oMuIfQj2IDqb2x2zautw66jsWWKjh5sPphdWmgjO9YWb/fz9+TH
+	 eVRdTRvSLAp2xmNTx3RLG2TGbxlYV4bVKiApQM58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+4fd66a69358fc15ae2ad@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 055/102] netfilter: nf_tables: unconditionally flush pending work before notifier
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 118/139] clk: qcom: gcc-sm6350: Fix gpll6* & gpll7 parents
 Date: Tue,  9 Jul 2024 13:10:18 +0200
-Message-ID: <20240709110653.523052314@linuxfoundation.org>
+Message-ID: <20240709110702.733502725@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit 9f6958ba2e902f9820c594869bd710ba74b7c4c0 ]
+[ Upstream commit 3414f41a13eb41db15c558fbc695466203dca4fa ]
 
-syzbot reports:
+Both gpll6 and gpll7 are parented to CXO at 19.2 MHz and not to GPLL0
+which runs at 600 MHz. Also gpll6_out_even should have the parent gpll6
+and not gpll0.
 
-KASAN: slab-uaf in nft_ctx_update include/net/netfilter/nf_tables.h:1831
-KASAN: slab-uaf in nft_commit_release net/netfilter/nf_tables_api.c:9530
-KASAN: slab-uaf int nf_tables_trans_destroy_work+0x152b/0x1750 net/netfilter/nf_tables_api.c:9597
-Read of size 2 at addr ffff88802b0051c4 by task kworker/1:1/45
-[..]
-Workqueue: events nf_tables_trans_destroy_work
-Call Trace:
- nft_ctx_update include/net/netfilter/nf_tables.h:1831 [inline]
- nft_commit_release net/netfilter/nf_tables_api.c:9530 [inline]
- nf_tables_trans_destroy_work+0x152b/0x1750 net/netfilter/nf_tables_api.c:9597
+Adjust the parents of these clocks to make Linux report the correct rate
+and not absurd numbers like gpll7 at ~25 GHz or gpll6 at 24 GHz.
 
-Problem is that the notifier does a conditional flush, but its possible
-that the table-to-be-removed is still referenced by transactions being
-processed by the worker, so we need to flush unconditionally.
+Corrected rates are the following:
 
-We could make the flush_work depend on whether we found a table to delete
-in nf-next to avoid the flush for most cases.
+  gpll7              807999902 Hz
+  gpll6              768000000 Hz
+     gpll6_out_even  384000000 Hz
+  gpll0              600000000 Hz
+     gpll0_out_odd   200000000 Hz
+     gpll0_out_even  300000000 Hz
 
-AFAICS this problem is only exposed in nf-next, with
-commit e169285f8c56 ("netfilter: nf_tables: do not store nft_ctx in transaction objects"),
-with this commit applied there is an unconditional fetch of
-table->family which is whats triggering the above splat.
+And because gpll6 is the parent of gcc_sdcc2_apps_clk_src (at 202 MHz)
+that clock also reports the correct rate now and avoids this warning:
 
-Fixes: 2c9f0293280e ("netfilter: nf_tables: flush pending destroy work before netlink notifier")
-Reported-and-tested-by: syzbot+4fd66a69358fc15ae2ad@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4fd66a69358fc15ae2ad
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+  [    5.984062] mmc0: Card appears overclocked; req 202000000 Hz, actual 6312499237 Hz
+
+Fixes: 131abae905df ("clk: qcom: Add SM6350 GCC driver")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Link: https://lore.kernel.org/r/20240508-sm6350-gpll-fix-v1-1-e4ea34284a6d@fairphone.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/clk/qcom/gcc-sm6350.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 97ea72d31bd35..d18b698139caf 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -10858,8 +10858,7 @@ static int nft_rcv_nl_event(struct notifier_block *this, unsigned long event,
- 
- 	gc_seq = nft_gc_seq_begin(nft_net);
- 
--	if (!list_empty(&nf_tables_destroy_list))
--		nf_tables_trans_destroy_flush_work();
-+	nf_tables_trans_destroy_flush_work();
- again:
- 	list_for_each_entry(table, &nft_net->tables, list) {
- 		if (nft_table_has_owner(table) &&
+diff --git a/drivers/clk/qcom/gcc-sm6350.c b/drivers/clk/qcom/gcc-sm6350.c
+index cf4a7b6e0b23a..0559a33faf00e 100644
+--- a/drivers/clk/qcom/gcc-sm6350.c
++++ b/drivers/clk/qcom/gcc-sm6350.c
+@@ -100,8 +100,8 @@ static struct clk_alpha_pll gpll6 = {
+ 		.enable_mask = BIT(6),
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gpll6",
+-			.parent_hws = (const struct clk_hw*[]){
+-				&gpll0.clkr.hw,
++			.parent_data = &(const struct clk_parent_data){
++				.fw_name = "bi_tcxo",
+ 			},
+ 			.num_parents = 1,
+ 			.ops = &clk_alpha_pll_fixed_fabia_ops,
+@@ -124,7 +124,7 @@ static struct clk_alpha_pll_postdiv gpll6_out_even = {
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "gpll6_out_even",
+ 		.parent_hws = (const struct clk_hw*[]){
+-			&gpll0.clkr.hw,
++			&gpll6.clkr.hw,
+ 		},
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_fabia_ops,
+@@ -139,8 +139,8 @@ static struct clk_alpha_pll gpll7 = {
+ 		.enable_mask = BIT(7),
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gpll7",
+-			.parent_hws = (const struct clk_hw*[]){
+-				&gpll0.clkr.hw,
++			.parent_data = &(const struct clk_parent_data){
++				.fw_name = "bi_tcxo",
+ 			},
+ 			.num_parents = 1,
+ 			.ops = &clk_alpha_pll_fixed_fabia_ops,
 -- 
 2.43.0
 
