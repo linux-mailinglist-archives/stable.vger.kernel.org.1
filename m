@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-58419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B2292B6E3
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:18:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF2892B7D1
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 842161C220BD
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:18:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8713285571
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 850CF156F2B;
-	Tue,  9 Jul 2024 11:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD0615749B;
+	Tue,  9 Jul 2024 11:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNxAoxTJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5mSwphu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431F41487F6;
-	Tue,  9 Jul 2024 11:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5981727713;
+	Tue,  9 Jul 2024 11:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523880; cv=none; b=HMIIzI9snaF4FFI9qp0YPeGSMmCErNkW3kmEt9DCd5MzHGw6UZh146WWpcApE7+s6/fdd9NnYROoSmtsRvE5AccM22Th4YEzwGhJj5NCy9SVSNiikEteUKgTisiZPfRRtSwMfOD19IQA2YUGG/VLTo14SLVsluNtSGphCNH+x6s=
+	t=1720524450; cv=none; b=vFLX4WMPu83VEiMxoksfg4Nqd7i+++Pelw47jOqK/7Yd4x7zG4O0Ij7E9AYqI+S3XnS3gIYMl3uBoClHdDAGwQelACdUh5F63rByBe31KJ0JoLPwqC024MYe6SEY7D248rqNNvz8GMigA15GF94opd5hhKpKe2HeR6o/gStnTpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523880; c=relaxed/simple;
-	bh=Y26g0gTR4HfeRwjUd3DIw9drW38ynKKIGVXHuq8jJEw=;
+	s=arc-20240116; t=1720524450; c=relaxed/simple;
+	bh=qP/MFKBq/bX2uM2iqJhNtGT83FE2Zf4jZW/+fmR50Ek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VSAZ7UTjv/06wG8RB3GJQoAz2eDzQtQbjwoXcW3MBwqwsPFLSaX8TggAOuREs8qqbFkfqtjeKyu3SEJ+m/xdzHn6f2NyWN7wjYM8P0EgbBQDlZNhjy2WuQpDbj1FNlWlSwhquTF/U0z3I9TNoCPYAFVQmiMC6d7uwkeCnXKpWIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNxAoxTJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4E4C3277B;
-	Tue,  9 Jul 2024 11:17:59 +0000 (UTC)
+	 MIME-Version; b=RsFcMgzirWJlKrSHuFiiqoADkTSSOJ0WRIUQbYkCKq1J7U2ThxhRMmKw83V9it2PxGkKROUiCy+MwPaHnI+jeeUrd1cW06x33wYIMU8HFQfvNGqHkAONReuz+C/ciz9LxEbdvylj55F8bPAg7b5Cm2OjCczCUcylyKnKDYZGLWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5mSwphu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3CABC3277B;
+	Tue,  9 Jul 2024 11:27:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523880;
-	bh=Y26g0gTR4HfeRwjUd3DIw9drW38ynKKIGVXHuq8jJEw=;
+	s=korg; t=1720524450;
+	bh=qP/MFKBq/bX2uM2iqJhNtGT83FE2Zf4jZW/+fmR50Ek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CNxAoxTJAjP+YkrhbnwS6l7TKxEQVCLylkt1iBwL9TtlrtHzHFp5Gau6vL+ED3S2g
-	 dpO2x0zP9yjkwTQ290uHLhtm5UwPfZbF5GwKCEqCyRLihp2eJBSqngDwIc4cTHeJSF
-	 anJSgeowPsQZMzH/PhhsV6mAq1o4J++hivypsXNc=
+	b=S5mSwphuwnYxw7zypaQW3WQBqttytU3nQcBgS88QnOAFghjCJyyYaJB0cbirtBncq
+	 5J2IHwETyZISvGFVrYQLWfQgkOwUi3cNdCmyilF3bU0TD4bLeE+VHdTtWFR+bebsVE
+	 7Fst7KjZghu8jDgxxZu9VZJVAWNTP/ihfiyNat4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 138/139] null_blk: Do not allow runt zone with zone capacity smaller then zone size
+Subject: [PATCH 6.9 184/197] libbpf: detect broken PID filtering logic for multi-uprobe
 Date: Tue,  9 Jul 2024 13:10:38 +0200
-Message-ID: <20240709110703.499329116@linuxfoundation.org>
+Message-ID: <20240709110716.063000598@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit b164316808ec5de391c3e7b0148ec937d32d280d ]
+[ Upstream commit 04d939a2ab229a3821f04fc81f7c027842f501f1 ]
 
-A zoned device with a smaller last zone together with a zone capacity
-smaller than the zone size does make any sense as that does not
-correspond to any possible setup for a real device:
-1) For ZNS and zoned UFS devices, all zones are always the same size.
-2) For SMR HDDs, all zones always have the same capacity.
-In other words, if we have a smaller last runt zone, then this zone
-capacity should always be equal to the zone size.
+Libbpf is automatically (and transparently to user) detecting
+multi-uprobe support in the kernel, and, if supported, uses
+multi-uprobes to improve USDT attachment speed.
 
-Add a check in null_init_zoned_dev() to prevent a configuration to have
-both a smaller zone size and a zone capacity smaller than the zone size.
+USDTs can be attached system-wide or for the specific process by PID. In
+the latter case, we rely on correct kernel logic of not triggering USDT
+for unrelated processes.
 
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240530054035.491497-2-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+As such, on older kernels that do support multi-uprobes, but still have
+broken PID filtering logic, we need to fall back to singular uprobes.
+
+Unfortunately, whether user is using PID filtering or not is known at
+the attachment time, which happens after relevant BPF programs were
+loaded into the kernel. Also unfortunately, we need to make a call
+whether to use multi-uprobes or singular uprobe for SEC("usdt") programs
+during BPF object load time, at which point we have no information about
+possible PID filtering.
+
+The distinction between single and multi-uprobes is small, but important
+for the kernel. Multi-uprobes get BPF_TRACE_UPROBE_MULTI attach type,
+and kernel internally substitiute different implementation of some of
+BPF helpers (e.g., bpf_get_attach_cookie()) depending on whether uprobe
+is multi or singular. So, multi-uprobes and singular uprobes cannot be
+intermixed.
+
+All the above implies that we have to make an early and conservative
+call about the use of multi-uprobes. And so this patch modifies libbpf's
+existing feature detector for multi-uprobe support to also check correct
+PID filtering. If PID filtering is not yet fixed, we fall back to
+singular uprobes for USDTs.
+
+This extension to feature detection is simple thanks to kernel's -EINVAL
+addition for pid < 0.
+
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20240521163401.3005045-4-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk/zoned.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tools/lib/bpf/features.c | 31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/null_blk/zoned.c b/drivers/block/null_blk/zoned.c
-index 36bd191998375..d057f7099e7f7 100644
---- a/drivers/block/null_blk/zoned.c
-+++ b/drivers/block/null_blk/zoned.c
-@@ -83,6 +83,17 @@ int null_init_zoned_dev(struct nullb_device *dev, struct request_queue *q)
- 		return -EINVAL;
- 	}
+diff --git a/tools/lib/bpf/features.c b/tools/lib/bpf/features.c
+index a336786a22a38..3df0125ed5fa7 100644
+--- a/tools/lib/bpf/features.c
++++ b/tools/lib/bpf/features.c
+@@ -392,11 +392,40 @@ static int probe_uprobe_multi_link(int token_fd)
+ 	link_fd = bpf_link_create(prog_fd, -1, BPF_TRACE_UPROBE_MULTI, &link_opts);
+ 	err = -errno; /* close() can clobber errno */
  
-+	/*
-+	 * If a smaller zone capacity was requested, do not allow a smaller last
-+	 * zone at the same time as such zone configuration does not correspond
-+	 * to any real zoned device.
-+	 */
-+	if (dev->zone_capacity != dev->zone_size &&
-+	    dev->size & (dev->zone_size - 1)) {
-+		pr_err("A smaller last zone is not allowed with zone capacity smaller than zone size.\n");
-+		return -EINVAL;
++	if (link_fd >= 0 || err != -EBADF) {
++		close(link_fd);
++		close(prog_fd);
++		return 0;
 +	}
 +
- 	zone_capacity_sects = mb_to_sects(dev->zone_capacity);
- 	dev_capacity_sects = mb_to_sects(dev->size);
- 	dev->zone_size_sects = mb_to_sects(dev->zone_size);
++	/* Initial multi-uprobe support in kernel didn't handle PID filtering
++	 * correctly (it was doing thread filtering, not process filtering).
++	 * So now we'll detect if PID filtering logic was fixed, and, if not,
++	 * we'll pretend multi-uprobes are not supported, if not.
++	 * Multi-uprobes are used in USDT attachment logic, and we need to be
++	 * conservative here, because multi-uprobe selection happens early at
++	 * load time, while the use of PID filtering is known late at
++	 * attachment time, at which point it's too late to undo multi-uprobe
++	 * selection.
++	 *
++	 * Creating uprobe with pid == -1 for (invalid) '/' binary will fail
++	 * early with -EINVAL on kernels with fixed PID filtering logic;
++	 * otherwise -ESRCH would be returned if passed correct binary path
++	 * (but we'll just get -BADF, of course).
++	 */
++	link_opts.uprobe_multi.pid = -1; /* invalid PID */
++	link_opts.uprobe_multi.path = "/"; /* invalid path */
++	link_opts.uprobe_multi.offsets = &offset;
++	link_opts.uprobe_multi.cnt = 1;
++
++	link_fd = bpf_link_create(prog_fd, -1, BPF_TRACE_UPROBE_MULTI, &link_opts);
++	err = -errno; /* close() can clobber errno */
++
+ 	if (link_fd >= 0)
+ 		close(link_fd);
+ 	close(prog_fd);
+ 
+-	return link_fd < 0 && err == -EBADF;
++	return link_fd < 0 && err == -EINVAL;
+ }
+ 
+ static int probe_kern_bpf_cookie(int token_fd)
 -- 
 2.43.0
 
