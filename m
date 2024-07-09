@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-58899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E34592C156
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:56:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05ABC92C159
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:57:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D9451F235FD
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:56:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 365E51C229EF
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7BE1B23AE;
-	Tue,  9 Jul 2024 16:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB94F1B23DC;
+	Tue,  9 Jul 2024 16:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CuG1yyHa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OjbM1lCx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56EB21B23A4;
-	Tue,  9 Jul 2024 16:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7766A1B23D1;
+	Tue,  9 Jul 2024 16:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542428; cv=none; b=Qz/dMs+O0Q8EQWsq5K4wbZlKuU5vLYnHjaigld6lyLHO+U6rL9nnLwjqw0LYpqgunlJTYZ2/09LzMOCavIHe7+v7E0J7yO8kgIdowsayDH9GQpmi0a2bZm+ebeBtt3WNclwTKwr2O8oL2r3z7a8/hko1c1Wy8gC5tkqBADcXJns=
+	t=1720542431; cv=none; b=FhM8hg3k4aejMO5eBciz6UQIEcN8/pQO6XL2CCJSq3xQH/cie04R7ns/4zwxqKFh5k7rEqPs+Xv6CYabHeZXRHhXGdMumExPC1Whp/4vUxZI3yQzGJ0Lc2o9fSF84EESmETups5hQNfNkoLTaWtyRZUPlMod9mIQU59adbFmS1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542428; c=relaxed/simple;
-	bh=PB2N1eX+pov5VJqR3NyzDSn32fREMRxdp5mlsLtGc3Y=;
+	s=arc-20240116; t=1720542431; c=relaxed/simple;
+	bh=boMMWFkcwwqtOkMNdobw81ZVF1ESrJHnVZYCzQPwPlA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tjwqLSg6V61PV5Qqp66kefJW1mD4MELSPxxz5+zNY2kRL5fZHU78KrszmsK9T827HZi8rffBXST3QAlheG9b+Dt7X1w+tXovIDHSd2bcmn3YQYITDxHsZB7LLRJg3sXQMEXncgQvTcLMrl4FK2aWCtmiuAw6OKHl7FIfLPfRBKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CuG1yyHa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4802BC32782;
-	Tue,  9 Jul 2024 16:27:07 +0000 (UTC)
+	 MIME-Version; b=prJIzKafqZ1IgHdx3l/P3dvHOej9Y2OZfsQoAAeay7mHdeOCFWp8sGQoBFWoyQ/uABziwv1VEC+jAQityc9ycSqVLkNs3a0fjF0mJzTg1pvLFcqZPAESqLmSpflgeUpYDzQVJlsxsPPEfnWSlWXTvDmrK34BDR5vb+RAVarcOIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OjbM1lCx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F7CC32782;
+	Tue,  9 Jul 2024 16:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542428;
-	bh=PB2N1eX+pov5VJqR3NyzDSn32fREMRxdp5mlsLtGc3Y=;
+	s=k20201202; t=1720542431;
+	bh=boMMWFkcwwqtOkMNdobw81ZVF1ESrJHnVZYCzQPwPlA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CuG1yyHaDUE1C/P164wpER1CzzJ988T6ipW29ldSEBrNpUqM+5gT126ei06td+4Oh
-	 8gHgaDG359SLgqvXYEap5fnD5AiGX8i53KR75hR8TKMiXY+U1RzwF7moBddtjPMOwR
-	 3h9tcTsrrabhKeVP9H/z7v15zFkXlms5R7aiFgBSMpGQiblXvkPdzTv0dI8elS+5XL
-	 CUfWGIEJl+5Dr5M2uitB5ojz1xIMMHK/0AHGSWTgP2S1tYWmjqqc6K1rej3GPCWd9/
-	 I4DwHM9gSbXAl5eD1HZ+3s0QH4/P17nDC055NHi+Sm2PtxERxHe1868dXnNYgmebro
-	 YuAcATDGV2sow==
+	b=OjbM1lCx7lhLO63HNby4YP5k1qH17Z8EnsaPE8QM/2TIxo44KK4jyDN29xd2LJWok
+	 vzMdd0VHrp5B22I0h/VmCfb5IFiz2k0eKOzcHfoPhG8vzbTKA+cQyfcnlRdCRbUwjr
+	 CIO3A5PvueJ6ch9VENG5FjpstBDdstz3rNCeh1HIA0Q65k5361/RfP8nU+hVZHHeL+
+	 GfDnhwztvFNaFTaCFb7CxXE0RbHntMT30t9nCMAGuNrVRScaOYsNH7rBwnLBUCawSH
+	 b6BclabteLdQllpgCMhUu5moKHT5e7TRq9hfFlstrZrNj0CJavfL/XmbCxdV6gOnsU
+	 LsvIUFubdDodg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ian Ray <ian.ray@gehealthcare.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+Cc: Heiko Carstens <hca@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linus.walleij@linaro.org,
-	brgl@bgdev.pl,
-	linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 06/11] gpio: pca953x: fix pca953x_irq_bus_sync_unlock race
-Date: Tue,  9 Jul 2024 12:26:39 -0400
-Message-ID: <20240709162654.33343-6-sashal@kernel.org>
+	gor@linux.ibm.com,
+	justinstitt@google.com,
+	kees@kernel.org,
+	linux-s390@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 07/11] s390/sclp: Fix sclp_init() cleanup on failure
+Date: Tue,  9 Jul 2024 12:26:40 -0400
+Message-ID: <20240709162654.33343-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162654.33343-1-sashal@kernel.org>
 References: <20240709162654.33343-1-sashal@kernel.org>
@@ -67,54 +69,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.279
 Content-Transfer-Encoding: 8bit
 
-From: Ian Ray <ian.ray@gehealthcare.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit bfc6444b57dc7186b6acc964705d7516cbaf3904 ]
+[ Upstream commit 6434b33faaa063df500af355ee6c3942e0f8d982 ]
 
-Ensure that `i2c_lock' is held when setting interrupt latch and mask in
-pca953x_irq_bus_sync_unlock() in order to avoid races.
+If sclp_init() fails it only partially cleans up: if there are multiple
+failing calls to sclp_init() sclp_state_change_event will be added several
+times to sclp_reg_list, which results in the following warning:
 
-The other (non-probe) call site pca953x_gpio_set_multiple() ensures the
-lock is held before calling pca953x_write_regs().
+------------[ cut here ]------------
+list_add double add: new=000003ffe1598c10, prev=000003ffe1598bf0, next=000003ffe1598c10.
+WARNING: CPU: 0 PID: 1 at lib/list_debug.c:35 __list_add_valid_or_report+0xde/0xf8
+CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.10.0-rc3
+Krnl PSW : 0404c00180000000 000003ffe0d6076a (__list_add_valid_or_report+0xe2/0xf8)
+           R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
+...
+Call Trace:
+ [<000003ffe0d6076a>] __list_add_valid_or_report+0xe2/0xf8
+([<000003ffe0d60766>] __list_add_valid_or_report+0xde/0xf8)
+ [<000003ffe0a8d37e>] sclp_init+0x40e/0x450
+ [<000003ffe00009f2>] do_one_initcall+0x42/0x1e0
+ [<000003ffe15b77a6>] do_initcalls+0x126/0x150
+ [<000003ffe15b7a0a>] kernel_init_freeable+0x1ba/0x1f8
+ [<000003ffe0d6650e>] kernel_init+0x2e/0x180
+ [<000003ffe000301c>] __ret_from_fork+0x3c/0x60
+ [<000003ffe0d759ca>] ret_from_fork+0xa/0x30
 
-The problem occurred when a request raced against irq_bus_sync_unlock()
-approximately once per thousand reboots on an i.MX8MP based system.
+Fix this by removing sclp_state_change_event from sclp_reg_list when
+sclp_init() fails.
 
- * Normal case
-
-   0-0022: write register AI|3a {03,02,00,00,01} Input latch P0
-   0-0022: write register AI|49 {fc,fd,ff,ff,fe} Interrupt mask P0
-   0-0022: write register AI|08 {ff,00,00,00,00} Output P3
-   0-0022: write register AI|12 {fc,00,00,00,00} Config P3
-
- * Race case
-
-   0-0022: write register AI|08 {ff,00,00,00,00} Output P3
-   0-0022: write register AI|08 {03,02,00,00,01} *** Wrong register ***
-   0-0022: write register AI|12 {fc,00,00,00,00} Config P3
-   0-0022: write register AI|49 {fc,fd,ff,ff,fe} Interrupt mask P0
-
-Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
-Link: https://lore.kernel.org/r/20240620042915.2173-1-ian.ray@gehealthcare.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-pca953x.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/s390/char/sclp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
-index c81d73d5e0159..d4c81373929af 100644
---- a/drivers/gpio/gpio-pca953x.c
-+++ b/drivers/gpio/gpio-pca953x.c
-@@ -696,6 +696,8 @@ static void pca953x_irq_bus_sync_unlock(struct irq_data *d)
- 	pca953x_read_regs(chip, chip->regs->direction, reg_direction);
- 
- 	if (chip->driver_data & PCA_PCAL) {
-+		guard(mutex)(&chip->i2c_lock);
-+
- 		/* Enable latch on interrupt-enabled inputs */
- 		pca953x_write_regs(chip, PCAL953X_IN_LATCH, chip->irq_mask);
- 
+diff --git a/drivers/s390/char/sclp.c b/drivers/s390/char/sclp.c
+index d2ab3f07c008c..8296e6bc229ee 100644
+--- a/drivers/s390/char/sclp.c
++++ b/drivers/s390/char/sclp.c
+@@ -1208,6 +1208,7 @@ sclp_init(void)
+ fail_unregister_reboot_notifier:
+ 	unregister_reboot_notifier(&sclp_reboot_notifier);
+ fail_init_state_uninitialized:
++	list_del(&sclp_state_change_event.list);
+ 	sclp_init_state = sclp_init_state_uninitialized;
+ 	free_page((unsigned long) sclp_read_sccb);
+ 	free_page((unsigned long) sclp_init_sccb);
 -- 
 2.43.0
 
