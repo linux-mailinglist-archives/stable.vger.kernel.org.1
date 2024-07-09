@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-58806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C6D992C032
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:33:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DF2D92C034
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CFC61C23A89
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:33:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FB8C1C23CC4
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D29E1BB6BF;
-	Tue,  9 Jul 2024 16:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714731BD03D;
+	Tue,  9 Jul 2024 16:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SitNMKF3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XWCBxWit"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3529919FA6D;
-	Tue,  9 Jul 2024 16:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDB11BC093;
+	Tue,  9 Jul 2024 16:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542155; cv=none; b=P8oHPMdY00n4z/ot3t0uINUwHuzU4WuUL1BpqvSC2HbJxyQorpdjA5MRlhwwWqOW4tQ25FOuR0LijKBM78EYlxLpmbdAlOWtzY9titejUwBNhwLVa9Lza265bkNjRrA5kUssh+XGRybG7XppRhxDpJXPVLu/pTK0SD/XclbOy7Q=
+	t=1720542157; cv=none; b=fWbflQNEgeMBJKZLhp6sNilCc5ilQpJPIyLlRFX8s+aoGHPAuT/urd1inLM8I7QFQHZ+6WMUK1cXjxtKhDOR54b9tAbKrJkIaXlnerj+bllg2fk2YTYG+SlNTbaPW0j/O10sfrehAqDxky3ZtEjTB6vWoZ/K2PAgvX2rh6XhA3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542155; c=relaxed/simple;
-	bh=XDZJnfoGw3m0A2na1fj+v5K1pEPU5MfbQx0yl6av+Vs=;
+	s=arc-20240116; t=1720542157; c=relaxed/simple;
+	bh=YeQU2BN8jliffaVTq/FnFtO+gHIOy2jO4x4ikDa3SII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iYJrXd+0WUCrZ3la6xwv1occ1TN4RlZumV/Fz5DSHZZadYDID2AIITGV1cbqDWwnoeG4iodmq9Ae9qGgq4UWFUFNBXpi/8qxUqUZFHhGfzew61IgXOX+9tRHg97Y1iQiQCDEanD2HZRmLXnPZ6emjIQGytuCknaaHmK9QbueOtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SitNMKF3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A08C4AF0B;
-	Tue,  9 Jul 2024 16:22:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GHdngGrQE3a6OsJusgS2BpvfZruPGDbhkH3B5AENANvaUZaZg8lVUWTZQnVgGnsC5qQb/bopBQEKWRbslhFyv+re4XFSbIRXxNBEgGH9BkSukLqHOwH+9QAz32YmBx/cwJF6gO59/O7WKWJtOI5vF1AM2S8PI+kIjEdccYlfVJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XWCBxWit; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53164C4AF07;
+	Tue,  9 Jul 2024 16:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542154;
-	bh=XDZJnfoGw3m0A2na1fj+v5K1pEPU5MfbQx0yl6av+Vs=;
+	s=k20201202; t=1720542157;
+	bh=YeQU2BN8jliffaVTq/FnFtO+gHIOy2jO4x4ikDa3SII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SitNMKF3pHUpDpqwZjMLuuMKyeTk69Tuxicf+E0uM8wYw6wkF5KwLgS2V9/BpwSsU
-	 RsgjzThoyV3fIg6lNklTvkilb7LUPzdjrAxKuv3ms4lHX2yJdHsbYgW301d/RBsgua
-	 h+j2MxrgUt+lwLfAMMw9Jx/b+keNAq/k/YhOlaWHWbXCNbSr8M5E8QS0iICsAioFpm
-	 5GEnDyQC4UhYcBisd9CdyGZ7b9Io0sOt8N9rsg2vi568vSYlDMXizAgSDiXCl43RcJ
-	 O/yHJLmWIsZLIlVdQLjp5DhQaWhuk2gbCh4dopgK7RU5VKkWXfd9S5KDAoywjlIsz3
-	 MQLHsKPlX7vuQ==
+	b=XWCBxWitlCnvwDtHXAT5Jnagtk31uwogaCWpbCZifl4uRg+VqZAJKa6tFJTv3PMUA
+	 0brhIK2tLvr/ThhI8uR9Ns8sh7vTi7FkrHzSg7Uv2QPlmw1+YGFS9y89V+lYiuL+Ag
+	 53fs5dJujXcY35qXRkG/EIxv6V5IphOH5lVhuEsQKE1DP/VedYwesaCc6aVU3uVFt6
+	 bZV+5aspJv+MoyjAvCB5u6gvJ2CSUVdf2huqtHb6yja9pEenNm/VBtZYxNA4G0Hibl
+	 nYS9whkR/YQhCZdgBkPyC8SHd6h1CdeV+r4yLIk6U6jFk9YLZN+KKBS66IPeb1joCW
+	 Bg/DTb7CsMM9A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Luke D. Jones" <luke@ljones.dev>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+Cc: =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Jason Montleon <jmontleo@redhat.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	carl.ng@hp.com,
-	maxwell.nguyen@hp.com,
-	appsforartists@google.com,
-	luca@z3ntu.xyz,
-	matt.git@fastmail.fm,
-	christophe.jaillet@wanadoo.fr,
-	matthias_berndt@gmx.de,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 04/33] Input: xpad - add support for ASUS ROG RAIKIRI PRO
-Date: Tue,  9 Jul 2024 12:21:30 -0400
-Message-ID: <20240709162224.31148-4-sashal@kernel.org>
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 05/33] ASoC: topology: Fix references to freed memory
+Date: Tue,  9 Jul 2024 12:21:31 -0400
+Message-ID: <20240709162224.31148-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162224.31148-1-sashal@kernel.org>
 References: <20240709162224.31148-1-sashal@kernel.org>
@@ -67,37 +65,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.38
 Content-Transfer-Encoding: 8bit
 
-From: "Luke D. Jones" <luke@ljones.dev>
+From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
 
-[ Upstream commit cee77149ebe9cd971ba238d87aa10e09bd98f1c9 ]
+[ Upstream commit 97ab304ecd95c0b1703ff8c8c3956dc6e2afe8e1 ]
 
-Add the VID/PID for ASUS ROG RAIKIRI PRO to the list of known devices.
+Most users after parsing a topology file, release memory used by it, so
+having pointer references directly into topology file contents is wrong.
+Use devm_kmemdup(), to allocate memory as needed.
 
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Link: https://lore.kernel.org/r/20240607223722.1170776-1-luke@ljones.dev
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reported-by: Jason Montleon <jmontleo@redhat.com>
+Link: https://github.com/thesofproject/avs-topology-xml/issues/22#issuecomment-2127892605
+Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20240603102818.36165-2-amadeuszx.slawinski@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/soc-topology.c | 27 ++++++++++++++++++++++-----
+ 1 file changed, 22 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index cd97a7a9f812d..daf2a46521f01 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -208,6 +208,7 @@ static const struct xpad_device {
- 	{ 0x0738, 0xf738, "Super SFIV FightStick TE S", 0, XTYPE_XBOX360 },
- 	{ 0x07ff, 0xffff, "Mad Catz GamePad", 0, XTYPE_XBOX360 },
- 	{ 0x0b05, 0x1a38, "ASUS ROG RAIKIRI", 0, XTYPE_XBOXONE },
-+	{ 0x0b05, 0x1abb, "ASUS ROG RAIKIRI PRO", 0, XTYPE_XBOXONE },
- 	{ 0x0c12, 0x0005, "Intec wireless", 0, XTYPE_XBOX },
- 	{ 0x0c12, 0x8801, "Nyko Xbox Controller", 0, XTYPE_XBOX },
- 	{ 0x0c12, 0x8802, "Zeroplus Xbox Controller", 0, XTYPE_XBOX },
+diff --git a/sound/soc/soc-topology.c b/sound/soc/soc-topology.c
+index 2362c282ec8b3..c63545b27d450 100644
+--- a/sound/soc/soc-topology.c
++++ b/sound/soc/soc-topology.c
+@@ -1060,15 +1060,32 @@ static int soc_tplg_dapm_graph_elems_load(struct soc_tplg *tplg,
+ 			break;
+ 		}
+ 
+-		route->source = elem->source;
+-		route->sink = elem->sink;
++		route->source = devm_kmemdup(tplg->dev, elem->source,
++					     min(strlen(elem->source),
++						 SNDRV_CTL_ELEM_ID_NAME_MAXLEN),
++					     GFP_KERNEL);
++		route->sink = devm_kmemdup(tplg->dev, elem->sink,
++					   min(strlen(elem->sink), SNDRV_CTL_ELEM_ID_NAME_MAXLEN),
++					   GFP_KERNEL);
++		if (!route->source || !route->sink) {
++			ret = -ENOMEM;
++			break;
++		}
+ 
+ 		/* set to NULL atm for tplg users */
+ 		route->connected = NULL;
+-		if (strnlen(elem->control, SNDRV_CTL_ELEM_ID_NAME_MAXLEN) == 0)
++		if (strnlen(elem->control, SNDRV_CTL_ELEM_ID_NAME_MAXLEN) == 0) {
+ 			route->control = NULL;
+-		else
+-			route->control = elem->control;
++		} else {
++			route->control = devm_kmemdup(tplg->dev, elem->control,
++						      min(strlen(elem->control),
++							  SNDRV_CTL_ELEM_ID_NAME_MAXLEN),
++						      GFP_KERNEL);
++			if (!route->control) {
++				ret = -ENOMEM;
++				break;
++			}
++		}
+ 
+ 		/* add route dobj to dobj_list */
+ 		route->dobj.type = SND_SOC_DOBJ_GRAPH;
 -- 
 2.43.0
 
