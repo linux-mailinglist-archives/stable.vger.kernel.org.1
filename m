@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-58367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3534692B6A8
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:16:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A062E92B769
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 989D7B24F23
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:16:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5677B1F21D20
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296F615A843;
-	Tue,  9 Jul 2024 11:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B91157A72;
+	Tue,  9 Jul 2024 11:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rX/B1VVE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L27Tt6q8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0F81598E3;
-	Tue,  9 Jul 2024 11:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D6213A25F;
+	Tue,  9 Jul 2024 11:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523721; cv=none; b=cv8hpQ9MM8PgOcuq3/+675ydtNOK5BmWkZEfbpea3Peooi+Yh3QWDht9G4+CwrwZMAUCnKzszKcB/6uMxHaVus6h0hBlOqMwpkacsfQFZAWMG/jiriVBPM5egUPwM+0dIlkQKQk1f241ox1EOt+7iCtYQTUzkpZZCe66HdXvPoE=
+	t=1720524167; cv=none; b=LH5px1w302QgXOgce+B2z5ItQCtnyIXD7s1CDx72MaCrvc+VSj/bzmLSjakJbb64lLeRGmYd4KF8HFQAxnm++1yFNWSU2dtZaujVhZDYqu2fZVh9aKfZKktKolJicC0A/+a1p/qbYBbC4Upqd8fSKAUTbNJKdiAbvyK2ibvGeXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523721; c=relaxed/simple;
-	bh=eEKFQZPM7PkUOkZOJVyZvvCatpVWsx3+KCfLCwOFkj0=;
+	s=arc-20240116; t=1720524167; c=relaxed/simple;
+	bh=4jl/bcrWTeVcReeBQpEGWGIXoFy4n2ggVUgItOiRy7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qq/WfvMBMLzKZTGz5CVlA06FID9tJHonK1K3zMcbtDQL7pszBpvZD2UE1+/adzlWAu+jpYeq0Qhzvgwn1joqAjpJ1A67PuS/YRnPOBE3EvmMCKVeUI2W0lR3x97te0fHV/lC2JuoNwXPAF7hkkNLeNE8yD4OCRpRlGnSdHg7Sjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rX/B1VVE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6167DC3277B;
-	Tue,  9 Jul 2024 11:15:21 +0000 (UTC)
+	 MIME-Version; b=geuX+gBjt0q5xhYWKA6EXxSgVTqdApB2/snBTt+v+lnYNnWwtO6Q1eZmzAj6g9D4sc93MA6r2zFi2qHNLFEsSbKA2lwC7Bwca8EpuMBF4tM0zwzMK3J+/IqgJvnO2x4ZyHocEIc+tJSjZFla+VdTk8SWmFT1s4JGXeDGBxB5n8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L27Tt6q8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4153DC3277B;
+	Tue,  9 Jul 2024 11:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523721;
-	bh=eEKFQZPM7PkUOkZOJVyZvvCatpVWsx3+KCfLCwOFkj0=;
+	s=korg; t=1720524166;
+	bh=4jl/bcrWTeVcReeBQpEGWGIXoFy4n2ggVUgItOiRy7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rX/B1VVE2n+EyDohCsxfhzDH5NZPnyG70uAjC2rr6D0dJLobdm25VWYRpLqGgNZcd
-	 FchgKsfEs9lpO/ZHEhlzeNJIIC3rUL6NbnEkYrMdCdauJDm6Nk9kTS9ohGEAuugKLV
-	 aq0krs92Mf630E3zYL34WgULRZ5q3k348fSSF+F8=
+	b=L27Tt6q8L7IwjXrPyebqBH5h1H2y+hX5Ew1UgjsG/RR6nFXACp67WO7USyQyOWcTK
+	 /Cn/Qeztm410IzG8czujYiSYZnqyWro1izWPgS8uyfc35jrBtwA6dglEDPFY2M8qlg
+	 g4sZJK4SRmRPFLwww7winQ+ATvJHRkI6fMigehCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Greg Kurz <groug@kaod.org>,
-	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/139] powerpc/xmon: Check cpu id in commands "c#", "dp#" and "dx#"
+Subject: [PATCH 6.9 091/197] net/mlx5e: Add mqprio_rl cleanup and free in mlx5e_priv_cleanup()
 Date: Tue,  9 Jul 2024 13:09:05 +0200
-Message-ID: <20240709110659.908836702@linuxfoundation.org>
+Message-ID: <20240709110712.486234156@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kurz <groug@kaod.org>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit 8873aab8646194a4446117bb617cc71bddda2dee ]
+[ Upstream commit 1da839eab6dbc26b95bfcd1ed1a4d1aaa5c144a3 ]
 
-All these commands end up peeking into the PACA using the user
-originated cpu id as an index. Check the cpu id is valid in order
-to prevent xmon to crash. Instead of printing an error, this follows
-the same behavior as the "lp s #" command : ignore the buggy cpu id
-parameter and fall back to the #-less version of the command.
+In the cited commit, mqprio_rl cleanup and free are mistakenly removed
+in mlx5e_priv_cleanup(), and it causes the leakage of host memory and
+firmware SCHEDULING_ELEMENT objects while changing eswitch mode. So,
+add them back.
 
-Signed-off-by: Greg Kurz <groug@kaod.org>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/161531347060.252863.10490063933688958044.stgit@bahia.lan
+Fixes: 0bb7228f7096 ("net/mlx5e: Fix mqprio_rl handling on devlink reload")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/xmon/xmon.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index b3b94cd377137..1d815405a3b4f 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -1352,7 +1352,7 @@ static int cpu_cmd(void)
- 	}
- 	termch = cpu;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 981a3e058840d..cab1770aa476c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -5732,6 +5732,11 @@ void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
+ 		kfree(priv->htb_qos_sq_stats[i]);
+ 	kvfree(priv->htb_qos_sq_stats);
  
--	if (!scanhex(&cpu)) {
-+	if (!scanhex(&cpu) || cpu >= num_possible_cpus()) {
- 		/* print cpus waiting or in xmon */
- 		printf("cpus stopped:");
- 		last_cpu = first_cpu = NR_CPUS;
-@@ -2774,7 +2774,7 @@ static void dump_pacas(void)
++	if (priv->mqprio_rl) {
++		mlx5e_mqprio_rl_cleanup(priv->mqprio_rl);
++		mlx5e_mqprio_rl_free(priv->mqprio_rl);
++	}
++
+ 	memset(priv, 0, sizeof(*priv));
+ }
  
- 	termch = c;	/* Put c back, it wasn't 'a' */
- 
--	if (scanhex(&num))
-+	if (scanhex(&num) && num < num_possible_cpus())
- 		dump_one_paca(num);
- 	else
- 		dump_one_paca(xmon_owner);
-@@ -2847,7 +2847,7 @@ static void dump_xives(void)
- 
- 	termch = c;	/* Put c back, it wasn't 'a' */
- 
--	if (scanhex(&num))
-+	if (scanhex(&num) && num < num_possible_cpus())
- 		dump_one_xive(num);
- 	else
- 		dump_one_xive(xmon_owner);
 -- 
 2.43.0
 
