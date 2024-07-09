@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-58354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D90092B68C
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:15:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BEDA92B786
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4768285AF3
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:14:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA0A61C22FBD
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22E1F1586F3;
-	Tue,  9 Jul 2024 11:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DAB7156F57;
+	Tue,  9 Jul 2024 11:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ods5VWy0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKWd/km6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CFB158211;
-	Tue,  9 Jul 2024 11:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD6D27713;
+	Tue,  9 Jul 2024 11:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523681; cv=none; b=aRs/LlXRWKSk3cgTP8D4nMdNANb2SISRGhwTK+AVutGLQaETAuuyWSlerv7uDf6vH76UrZS+z4R0agaBXUX5tq+slxdeHbUlTas4KmycU0xyvosd0bQ+3ha0gGTgLJLGN3WdWbjExSmPBB5+BUNdRDli5iDfJivN9QnZoadRCao=
+	t=1720524249; cv=none; b=PqNxHztJOhBLIXnawIk8eyDuVOndcsh865YT9C0Jh1K6dC4+8h7bbfP+d/eri1gfM1NTGadgMvY1EobGKeLPOKQnW9v/0kvhc453yvFLTtmYQc/2mWzvo+EBT11q1CaFpSW5JpvUQrZNwHwQV8+jUwDTWD7dJz3+HVyQ+4tejDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523681; c=relaxed/simple;
-	bh=sZD69hqf1v5MJyJ/SH6XClvkv+Z4AeLVrNKw6NS5A+o=;
+	s=arc-20240116; t=1720524249; c=relaxed/simple;
+	bh=260WXWoIPhdZ9eebVZMQ1/2tYckMgI0aY1mToNUDyos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IKo3naOQwkpaSg/hSYmqh4IRv6NPljMnuyB20M1LGJpC2RQwfjGBWCVr0Ui8H6YV4oYYKbToLPhTrmeb5Swf/oaPyzZpeyjnz0UoE1vODMjQMnrU+7K3FF8ojp5hklNDYSkD//9RZnz5nqkoEY4yfKsciBdPpzg+A/0ci9X3JcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ods5VWy0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15160C3277B;
-	Tue,  9 Jul 2024 11:14:40 +0000 (UTC)
+	 MIME-Version; b=S9ECDzWd516RPOtA5uWnF94xTkPUXc2lnIlHPR8gdT33etk+6UhXoW7t8YSnzl5RxcF6K0XvxK6RCsawnrt7BRjCt0M9XCRGwZRqK1hVWSKoSFoA/S4iYMagLMDAhlbisQP38taNjg9MPQvcdMcTkOShWASQ0QIQzzcuQcjTeCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKWd/km6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95052C3277B;
+	Tue,  9 Jul 2024 11:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523681;
-	bh=sZD69hqf1v5MJyJ/SH6XClvkv+Z4AeLVrNKw6NS5A+o=;
+	s=korg; t=1720524249;
+	bh=260WXWoIPhdZ9eebVZMQ1/2tYckMgI0aY1mToNUDyos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ods5VWy0bX7h8eFh1hI8P3X4J0ms7N9AAqi3Q0sE4oLstJk3em/GfKTmjMIa6z+qW
-	 ea9ajli+IHoFMnk/HEeylkWFeoE/LajIJDR4Ev3k94lh82wqLdwmXQyEG0tBYDZPpQ
-	 07P4Pkemgijy/jGdH3KKl+HIL3D3qgap0qVefLgU=
+	b=FKWd/km61tXAXkj7sdRdO0zXJLGi5F2cYlhDYc9ChmVMRgsX1SHvQc8LVvSlmfit6
+	 jKo7isR3dxpjeaUz5r11t7RxZ9ARyyqqarCw+obbMozlIy2FCa+i/fabGss+U0L152
+	 wGd+CPM6U41XlenTIrKGSkWGKWyVmAQDvHWVVOIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/139] net: allow skb_datagram_iter to be called from any context
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Karol Kolacinski <karol.kolacinski@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.9 120/197] ice: Dont process extts if PTP is disabled
 Date: Tue,  9 Jul 2024 13:09:34 +0200
-Message-ID: <20240709110701.036309731@linuxfoundation.org>
+Message-ID: <20240709110713.595291564@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +67,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-[ Upstream commit d2d30a376d9cc94c6fb730c58b3e5b7426ecb6de ]
+[ Upstream commit 996422e3230e41468f652d754fefd1bdbcd4604e ]
 
-We only use the mapping in a single context, so kmap_local is sufficient
-and cheaper. Make sure to use skb_frag_foreach_page as skb frags may
-contain compound pages and we need to map page by page.
+The ice_ptp_extts_event() function can race with ice_ptp_release() and
+result in a NULL pointer dereference which leads to a kernel panic.
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202406161539.b5ff7b20-oliver.sang@intel.com
-Fixes: 950fcaecd5cc ("datagram: consolidate datagram copy to iter helpers")
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Link: https://patch.msgid.link/20240626100008.831849-1-sagi@grimberg.me
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Panic occurs because the ice_ptp_extts_event() function calls
+ptp_clock_event() with a NULL pointer. The ice driver has already
+released the PTP clock by the time the interrupt for the next external
+timestamp event occurs.
+
+To fix this, modify the ice_ptp_extts_event() function to check the
+PTP state and bail early if PTP is not ready.
+
+Fixes: 172db5f91d5f ("ice: add support for auxiliary input/output pins")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20240702171459.2606611-3-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/datagram.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ptp.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/core/datagram.c b/net/core/datagram.c
-index 176eb58347461..e49aaf2d48b80 100644
---- a/net/core/datagram.c
-+++ b/net/core/datagram.c
-@@ -434,15 +434,22 @@ static int __skb_datagram_iter(const struct sk_buff *skb, int offset,
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+index ee741a1d13cf0..e983e56b342b7 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+@@ -1578,6 +1578,10 @@ void ice_ptp_extts_event(struct ice_pf *pf)
+ 	u8 chan, tmr_idx;
+ 	u32 hi, lo;
  
- 		end = start + skb_frag_size(frag);
- 		if ((copy = end - offset) > 0) {
--			struct page *page = skb_frag_page(frag);
--			u8 *vaddr = kmap(page);
-+			u32 p_off, p_len, copied;
-+			struct page *p;
-+			u8 *vaddr;
- 
- 			if (copy > len)
- 				copy = len;
--			n = INDIRECT_CALL_1(cb, simple_copy_to_iter,
--					vaddr + skb_frag_off(frag) + offset - start,
--					copy, data, to);
--			kunmap(page);
++	/* Don't process timestamp events if PTP is not ready */
++	if (pf->ptp.state != ICE_PTP_READY)
++		return;
 +
-+			skb_frag_foreach_page(frag,
-+					      skb_frag_off(frag) + offset - start,
-+					      copy, p, p_off, p_len, copied) {
-+				vaddr = kmap_local_page(p);
-+				n = INDIRECT_CALL_1(cb, simple_copy_to_iter,
-+					vaddr + p_off, p_len, data, to);
-+				kunmap_local(vaddr);
-+			}
-+
- 			offset += n;
- 			if (n != copy)
- 				goto short_copy;
+ 	tmr_idx = hw->func_caps.ts_func_info.tmr_index_owned;
+ 	/* Event time is captured by one of the two matched registers
+ 	 *      GLTSYN_EVNT_L: 32 LSB of sampled time event
 -- 
 2.43.0
 
