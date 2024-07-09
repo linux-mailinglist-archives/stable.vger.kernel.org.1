@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F342192B7E2
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:28:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F193E92B6D4
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A94961F22A68
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:28:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 820CFB233EA
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9F215749B;
-	Tue,  9 Jul 2024 11:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5DD915749B;
+	Tue,  9 Jul 2024 11:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AgZKxT7W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMPnNqxo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C260B27713;
-	Tue,  9 Jul 2024 11:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621F814EC4D;
+	Tue,  9 Jul 2024 11:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524497; cv=none; b=DErrGyZ1IEZP4eMU/JdlCXu2i3CWkTe+X8+kUV5XrAMjn5xo6AEkVLII9ZHDcfIIlPOnTOE6v4AXd69YTCIt4pWyr1fFixKEUNkYFOOIMf0GZuu9S217vrRbI4W/jHH7bEwJ+z7yylCjHEVUGNtPKyJ24hSDO05yGkGKLr7s520=
+	t=1720523828; cv=none; b=fB3arM3zc/N4nPPXnAxIv8qu7qeIgocUDHPW/wOYhvre5AFLr9mQrjWtVG2nz58ZOLIUbaWGs57TxsGi2ZTjzt2SV55LQL8i9S28Z1PKmdPF4xVE5uZT0Oc4dlGLkRQwoxymeGZ1zusEqSUJHxqouE8UpXgGmi4p3TWOtUwpZPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524497; c=relaxed/simple;
-	bh=YN8V5GQbAJ7kA8yY8LSv6ThzuVgDYogXvriX4d7OGU0=;
+	s=arc-20240116; t=1720523828; c=relaxed/simple;
+	bh=zwP+3cZ5wHQNOBvFhtIPALiZ7J6sL3vPzEYlf78QSGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L4ITtJ+z1A9K69gL/xYPWHB+Ma+Tj3Q+mcWemSY7yvDORxALUetrqo2Glkv12S1z9h7u5YcPJjQ7UJraxgITNCrgWbOmbVOP/1kkYGJPF3Arh096GLOt8NX0riy6ucJgP5x9SOzdaxM3DVEKKmnSOTdOFMaBJeRId2tJi2ilLAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AgZKxT7W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F30C3277B;
-	Tue,  9 Jul 2024 11:28:17 +0000 (UTC)
+	 MIME-Version; b=puFVkUHvjhKL/OPisBFwq7dt12kK4cWNbUPdBbmEHMIySDB4IzvjGQL0J3ghQbySZLHUAw0+SmHZa20tW/H4CFjBfvIOW4e+Pw+GWPbJq6ccoxx1Ruoo3bvroe5LSAYxd500dedb8Q/KVacFO+vjcTMDMRiK+J1LUBHfQHvc+7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMPnNqxo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC875C3277B;
+	Tue,  9 Jul 2024 11:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524497;
-	bh=YN8V5GQbAJ7kA8yY8LSv6ThzuVgDYogXvriX4d7OGU0=;
+	s=korg; t=1720523828;
+	bh=zwP+3cZ5wHQNOBvFhtIPALiZ7J6sL3vPzEYlf78QSGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AgZKxT7WO+6xmabCgs6TuKFaGB85hSlMl0Ia537hi0V7XHYf9LPk8WiNgUX77U9lr
-	 Xw1s+lB6jsuLysEDugs++C5It/LVrJ0DaQ0LLTMwInxEGtD5H9zEj1Rb5WuQQ4OA9f
-	 bZE0TEWcSjO5Qbfgo5wG+EOJOKvJY2SCXqQFyFAc=
+	b=DMPnNqxo+n/HFnHDTRAVUbX6ViY4kDjz6vxk3mz5TRiS5QTyBbZ85D/1ZrXyuVCaT
+	 rNPEU5Ds5jlY/VlZh8ib3WbSeRDXZn/guKN+7ixtdcPqWxrul5aHKZA48I1l5G9b2g
+	 ZHGVweRO4/G+TT1NIZcUNoc5O84rNStVjv5bsgoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.9 169/197] arm64: dts: rockchip: Fix the DCDC_REG2 minimum voltage on Quartz64 Model B
+	Jian-Hong Pan <jhp@endlessos.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 123/139] ALSA: hda/realtek: Enable headset mic of JP-IK LEAP W502 with ALC897
 Date: Tue,  9 Jul 2024 13:10:23 +0200
-Message-ID: <20240709110715.488534326@linuxfoundation.org>
+Message-ID: <20240709110702.925724640@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragan Simic <dsimic@manjaro.org>
+From: Jian-Hong Pan <jhp@endlessos.org>
 
-commit d201c92bff90f3d3d0b079fc955378c15c0483cc upstream.
+[ Upstream commit 45e37f9ce28d248470bab4376df2687a215d1b22 ]
 
-Correct the specified regulator-min-microvolt value for the buck DCDC_REG2
-regulator, which is part of the Rockchip RK809 PMIC, in the Pine64 Quartz64
-Model B board dts.  According to the RK809 datasheet, version 1.01, this
-regulator is capable of producing voltages as low as 0.5 V on its output,
-instead of going down to 0.9 V only, which is additionally confirmed by the
-regulator-min-microvolt values found in the board dts files for the other
-supported boards that use the same RK809 PMIC.
+JP-IK LEAP W502 laptop's headset mic is not enabled until
+ALC897_FIXUP_HEADSET_MIC_PIN3 quirk is applied.
 
-This allows the DVFS to clock the GPU on the Quartz64 Model B below 700 MHz,
-all the way down to 200 MHz, which saves some power and reduces the amount of
-generated heat a bit, improving the thermal headroom and possibly improving
-the bursty CPU and GPU performance on this board.
+Here is the original pin node values:
 
-This also eliminates the following warnings in the kernel log:
+0x11 0x40000000
+0x12 0xb7a60130
+0x14 0x90170110
+0x15 0x411111f0
+0x16 0x411111f0
+0x17 0x411111f0
+0x18 0x411111f0
+0x19 0x411111f0
+0x1a 0x411111f0
+0x1b 0x03211020
+0x1c 0x411111f0
+0x1d 0x4026892d
+0x1e 0x411111f0
+0x1f 0x411111f0
 
-  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
-  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (200000000)
-  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
-  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (300000000)
-  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
-  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (400000000)
-  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
-  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (600000000)
-
-Fixes: dcc8c66bef79 ("arm64: dts: rockchip: add Pine64 Quartz64-B device tree")
-Cc: stable@vger.kernel.org
-Reported-By: Diederik de Haas <didi.debian@cknow.org>
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
-Tested-by: Diederik de Haas <didi.debian@cknow.org>
-Link: https://lore.kernel.org/r/e70742ea2df432bf57b3f7de542d81ca22b0da2f.1716225483.git.dsimic@manjaro.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
+Link: https://lore.kernel.org/r/20240520055008.7083-2-jhp@endlessos.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3566-quartz64-b.dts |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/arch/arm64/boot/dts/rockchip/rk3566-quartz64-b.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-quartz64-b.dts
-@@ -289,7 +289,7 @@
- 				regulator-name = "vdd_gpu";
- 				regulator-always-on;
- 				regulator-boot-on;
--				regulator-min-microvolt = <900000>;
-+				regulator-min-microvolt = <500000>;
- 				regulator-max-microvolt = <1350000>;
- 				regulator-ramp-delay = <6001>;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index c9f07e6fde963..fed3f59d7bd69 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -11773,6 +11773,7 @@ enum {
+ 	ALC897_FIXUP_LENOVO_HEADSET_MODE,
+ 	ALC897_FIXUP_HEADSET_MIC_PIN2,
+ 	ALC897_FIXUP_UNIS_H3C_X500S,
++	ALC897_FIXUP_HEADSET_MIC_PIN3,
+ };
  
+ static const struct hda_fixup alc662_fixups[] = {
+@@ -12219,10 +12220,18 @@ static const struct hda_fixup alc662_fixups[] = {
+ 			{}
+ 		},
+ 	},
++	[ALC897_FIXUP_HEADSET_MIC_PIN3] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x19, 0x03a11050 }, /* use as headset mic */
++			{ }
++		},
++	},
+ };
+ 
+ static const struct snd_pci_quirk alc662_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1019, 0x9087, "ECS", ALC662_FIXUP_ASUS_MODE2),
++	SND_PCI_QUIRK(0x1019, 0x9859, "JP-IK LEAP W502", ALC897_FIXUP_HEADSET_MIC_PIN3),
+ 	SND_PCI_QUIRK(0x1025, 0x022f, "Acer Aspire One", ALC662_FIXUP_INV_DMIC),
+ 	SND_PCI_QUIRK(0x1025, 0x0241, "Packard Bell DOTS", ALC662_FIXUP_INV_DMIC),
+ 	SND_PCI_QUIRK(0x1025, 0x0308, "Acer Aspire 8942G", ALC662_FIXUP_ASPIRE),
+-- 
+2.43.0
+
 
 
 
