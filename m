@@ -1,691 +1,196 @@
-Return-Path: <stable+bounces-58281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 717DE92B455
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:48:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D79F692B487
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:57:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F17811F236E4
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 09:48:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 061E81C223DC
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 09:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399901553A7;
-	Tue,  9 Jul 2024 09:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8446712FF72;
+	Tue,  9 Jul 2024 09:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dAEXsPIe"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="WI3uKerU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16DE153824;
-	Tue,  9 Jul 2024 09:48:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647501553A7;
+	Tue,  9 Jul 2024 09:56:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720518516; cv=none; b=KDIwRVPuFRPsIknbixkAwnQZ5TY6QD9/RgnwqNWgFaj7kNC3crUGyelmazsHqKFJh9SsORCmqTvWklC0GxfnGc7I6VoKhAHXpj9FmPu0p/cNFodStdhZD6Kl80+6qJufYJgJRZauMO4wwXD4sJU1CpZNgIVWpZOHZciiriJ9PcY=
+	t=1720519017; cv=none; b=f5qdqwxbx/p2hRZ4gfrFfYa6abPWxC3M3EU/cEKQuIf/1qSyEAAHAQEI19+GesoNwkKciIVIFdkv33qcs80x3UJ/s5FT7VCBD1rC+pk7H8xHF2xzEd4BzvmlYWnBB40/WZ1QevaAUmC0SkyOTc264861bPZKQ4cimCT+10Gfssg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720518516; c=relaxed/simple;
-	bh=Y0MkGjCcjD2xqYRHdODvYVLnll5GK2fkbzNaChNwXFs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ir//7b4fT7tpmNR6KEmjdkY+BR2RuG67oBxFVGJPBolpqG2AT23wzS8Xr6WT4oTGAYD9vUMVUYfOk1apEZjKkrvVw6F9OW33NX3H+kkXyxAa1rMi2Pl3pqQlZMpkfQh1bKnm/PpwkY0hXaC9y5tAw8BEX/IJDb6Ewg8AWpMipm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dAEXsPIe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E05C3277B;
-	Tue,  9 Jul 2024 09:48:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720518515;
-	bh=Y0MkGjCcjD2xqYRHdODvYVLnll5GK2fkbzNaChNwXFs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dAEXsPIenkfRwp1hAOy+vGbwGOz3xfJB/BXp0CUoolDOC/b3GWvldREnStYJjPIqh
-	 8jgy/iBr6b0UAM8bBJU2VW1e2O6pKyENeMBkuWJTKkpz3hm7K2vf63h7gJH/OeMdLZ
-	 bMtM8eCfPJHXTlaB/oXH6ASdNcV/tvUbiirvZErU=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	torvalds@linux-foundation.org,
-	stable@vger.kernel.org
-Cc: lwn@lwn.net,
-	jslaby@suse.cz,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Linux 6.6.38
-Date: Tue,  9 Jul 2024 11:48:30 +0200
-Message-ID: <2024070944-fled-strum-88ab@gregkh>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2024070944-broiler-unworthy-3b1d@gregkh>
-References: <2024070944-broiler-unworthy-3b1d@gregkh>
+	s=arc-20240116; t=1720519017; c=relaxed/simple;
+	bh=AryC27Iplz1ssVBjEWUzknmertonuyW96fY+K4ppFs0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LIDvxGRwsonWPIbYAQdCfoVTKKuJvMXKY4n5/GMgxma+c+ctTpt9t3lslT6FB6J/hg+EZ5XPVYAuqH482RHDeM2UUxHANDeqSwaFquC4EkmbFIeluUrun/c4PxfqYxuPjDlTlcjukozghTa9i0H7L/E14DrR7KWmknOidZkAgWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=WI3uKerU; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=oOcvWdh89egIfpm66gTq/7OvE4snUwjTKuuUb76jk3c=; b=WI3uKerU0x4O7Gsyf2VsTxRuqN
+	kcTOoke5UWtf6FFmCRTI84u0slVP25Ds41D8Jm2lhULR6f98QrsZD2omXH669KL7JSVnw/a2331Jf
+	4ujle3odot4++n2oOOUdGXROSxMsd/1/Inq+W9hfeHzhUGRSxrbUNxMQrB4zZr8fBKodrFC2U3ngf
+	F5twmU0Y8U71keifCmqMZYVx7CUQBxSifIq5ljBx+lvnPEU/40B0XRpHfLdOkb54raiqLAyLi+miI
+	D2NNrdLB7oaUwI40fnlC1YbWM1W5eGuUpkW/178UCrHE+A57HEucODUuyab9NqY7MEcFwRi8b5noV
+	kHQ7dLTQ==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sR7aa-00000007lHE-26hK;
+	Tue, 09 Jul 2024 09:56:48 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id B5B793006B7; Tue,  9 Jul 2024 11:56:47 +0200 (CEST)
+Date: Tue, 9 Jul 2024 11:56:47 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: kan.liang@linux.intel.com
+Cc: mingo@kernel.org, acme@kernel.org, namhyung@kernel.org,
+	irogers@google.com, adrian.hunter@intel.com,
+	alexander.shishkin@linux.intel.com, linux-kernel@vger.kernel.org,
+	ak@linux.intel.com, eranian@google.com,
+	Ahmad Yasin <ahmad.yasin@intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 2/3] perf/x86/intel: Add a distinct name for Granite
+ Rapids
+Message-ID: <20240709095647.GH27299@noisy.programming.kicks-ass.net>
+References: <20240708193336.1192217-1-kan.liang@linux.intel.com>
+ <20240708193336.1192217-3-kan.liang@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240708193336.1192217-3-kan.liang@linux.intel.com>
 
-diff --git a/Makefile b/Makefile
-index 8a73b886156a..badff3368218 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- VERSION = 6
- PATCHLEVEL = 6
--SUBLEVEL = 37
-+SUBLEVEL = 38
- EXTRAVERSION =
- NAME = Hurr durr I'ma ninja sloth
- 
-diff --git a/arch/arm/net/bpf_jit_32.c b/arch/arm/net/bpf_jit_32.c
-index ac8e4d9bf954..6a1c9fca5260 100644
---- a/arch/arm/net/bpf_jit_32.c
-+++ b/arch/arm/net/bpf_jit_32.c
-@@ -1982,21 +1982,28 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- 	/* If building the body of the JITed code fails somehow,
- 	 * we fall back to the interpretation.
- 	 */
--	if (build_body(&ctx) < 0)
--		goto out_free;
-+	if (build_body(&ctx) < 0) {
-+		image_ptr = NULL;
-+		bpf_jit_binary_free(header);
-+		prog = orig_prog;
-+		goto out_imms;
-+	}
- 	build_epilogue(&ctx);
- 
- 	/* 3.) Extra pass to validate JITed Code */
--	if (validate_code(&ctx))
--		goto out_free;
-+	if (validate_code(&ctx)) {
-+		image_ptr = NULL;
-+		bpf_jit_binary_free(header);
-+		prog = orig_prog;
-+		goto out_imms;
-+	}
- 	flush_icache_range((u32)header, (u32)(ctx.target + ctx.idx));
- 
- 	if (bpf_jit_enable > 1)
- 		/* there are 2 passes here */
- 		bpf_jit_dump(prog->len, image_size, 2, ctx.target);
- 
--	if (bpf_jit_binary_lock_ro(header))
--		goto out_free;
-+	bpf_jit_binary_lock_ro(header);
- 	prog->bpf_func = (void *)ctx.target;
- 	prog->jited = 1;
- 	prog->jited_len = image_size;
-@@ -2013,11 +2020,5 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- 		bpf_jit_prog_release_other(prog, prog == orig_prog ?
- 					   tmp : orig_prog);
- 	return prog;
--
--out_free:
--	image_ptr = NULL;
--	bpf_jit_binary_free(header);
--	prog = orig_prog;
--	goto out_imms;
- }
- 
-diff --git a/arch/loongarch/net/bpf_jit.c b/arch/loongarch/net/bpf_jit.c
-index 13cd480385ca..9eb7753d117d 100644
---- a/arch/loongarch/net/bpf_jit.c
-+++ b/arch/loongarch/net/bpf_jit.c
-@@ -1206,19 +1206,16 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- 	flush_icache_range((unsigned long)header, (unsigned long)(ctx.image + ctx.idx));
- 
- 	if (!prog->is_func || extra_pass) {
--		int err;
--
- 		if (extra_pass && ctx.idx != jit_data->ctx.idx) {
- 			pr_err_once("multi-func JIT bug %d != %d\n",
- 				    ctx.idx, jit_data->ctx.idx);
--			goto out_free;
--		}
--		err = bpf_jit_binary_lock_ro(header);
--		if (err) {
--			pr_err_once("bpf_jit_binary_lock_ro() returned %d\n",
--				    err);
--			goto out_free;
-+			bpf_jit_binary_free(header);
-+			prog->bpf_func = NULL;
-+			prog->jited = 0;
-+			prog->jited_len = 0;
-+			goto out_offset;
- 		}
-+		bpf_jit_binary_lock_ro(header);
- 	} else {
- 		jit_data->ctx = ctx;
- 		jit_data->image = image_ptr;
-@@ -1249,13 +1246,6 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- 	out_offset = -1;
- 
- 	return prog;
--
--out_free:
--	bpf_jit_binary_free(header);
--	prog->bpf_func = NULL;
--	prog->jited = 0;
--	prog->jited_len = 0;
--	goto out_offset;
- }
- 
- /* Indicate the JIT backend supports mixing bpf2bpf and tailcalls. */
-diff --git a/arch/mips/net/bpf_jit_comp.c b/arch/mips/net/bpf_jit_comp.c
-index e355dfca4400..a40d926b6513 100644
---- a/arch/mips/net/bpf_jit_comp.c
-+++ b/arch/mips/net/bpf_jit_comp.c
-@@ -1012,8 +1012,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- 	bpf_prog_fill_jited_linfo(prog, &ctx.descriptors[1]);
- 
- 	/* Set as read-only exec and flush instruction cache */
--	if (bpf_jit_binary_lock_ro(header))
--		goto out_err;
-+	bpf_jit_binary_lock_ro(header);
- 	flush_icache_range((unsigned long)header,
- 			   (unsigned long)&ctx.target[ctx.jit_index]);
- 
-diff --git a/arch/parisc/net/bpf_jit_core.c b/arch/parisc/net/bpf_jit_core.c
-index 979f45d4d1fb..d6ee2fd45550 100644
---- a/arch/parisc/net/bpf_jit_core.c
-+++ b/arch/parisc/net/bpf_jit_core.c
-@@ -167,13 +167,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- 	bpf_flush_icache(jit_data->header, ctx->insns + ctx->ninsns);
- 
- 	if (!prog->is_func || extra_pass) {
--		if (bpf_jit_binary_lock_ro(jit_data->header)) {
--			bpf_jit_binary_free(jit_data->header);
--			prog->bpf_func = NULL;
--			prog->jited = 0;
--			prog->jited_len = 0;
--			goto out_offset;
--		}
-+		bpf_jit_binary_lock_ro(jit_data->header);
- 		prologue_len = ctx->epilogue_offset - ctx->body_len;
- 		for (i = 0; i < prog->len; i++)
- 			ctx->offset[i] += prologue_len;
-diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
-index cdea5dccaefe..72b7bb34fade 100644
---- a/arch/powerpc/net/bpf_jit.h
-+++ b/arch/powerpc/net/bpf_jit.h
-@@ -36,6 +36,9 @@
- 		EMIT(PPC_RAW_BRANCH(offset));				      \
- 	} while (0)
- 
-+/* bl (unconditional 'branch' with link) */
-+#define PPC_BL(dest)	EMIT(PPC_RAW_BL((dest) - (unsigned long)(image + ctx->idx)))
+On Mon, Jul 08, 2024 at 12:33:35PM -0700, kan.liang@linux.intel.com wrote:
+> From: Kan Liang <kan.liang@linux.intel.com>
+> 
+> Currently, the Sapphire Rapids and Granite Rapids share the same PMU
+> name, sapphire_rapids. Because from the kernel’s perspective, GNR is
+> similar to SPR. The only key difference is that they support different
+> extra MSRs. The code path and the PMU name are shared.
+> 
+> However, from end users' perspective, they are quite different. Besides
+> the extra MSRs, GNR has a newer PEBS format, supports Retire Latency,
+> supports new CPUID enumeration architecture, doesn't required the
+> load-latency AUX event, has additional TMA Level 1 Architectural Events,
+> etc. The differences can be enumerated by CPUID or the PERF_CAPABILITIES
+> MSR. They weren't reflected in the model-specific kernel setup.
+> But it is worth to have a distinct PMU name for GNR.
+> 
+> Fixes: a6742cb90b56 ("perf/x86/intel: Fix the FRONTEND encoding on GNR and MTL")
+> Suggested-by: Ahmad Yasin <ahmad.yasin@intel.com>
+> Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+> Cc: stable@vger.kernel.org
+> ---
+>  arch/x86/events/intel/core.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+> index b61367991a16..7a9f931a1f48 100644
+> --- a/arch/x86/events/intel/core.c
+> +++ b/arch/x86/events/intel/core.c
+> @@ -6943,12 +6943,17 @@ __init int intel_pmu_init(void)
+>  	case INTEL_EMERALDRAPIDS_X:
+>  		x86_pmu.flags |= PMU_FL_MEM_LOADS_AUX;
+>  		x86_pmu.extra_regs = intel_glc_extra_regs;
+> +		pr_cont("Sapphire Rapids events, ");
+> +		name = "sapphire_rapids";
+>  		fallthrough;
+>  	case INTEL_GRANITERAPIDS_X:
+>  	case INTEL_GRANITERAPIDS_D:
+>  		intel_pmu_init_glc(NULL);
+> -		if (!x86_pmu.extra_regs)
+> +		if (!x86_pmu.extra_regs) {
+>  			x86_pmu.extra_regs = intel_rwc_extra_regs;
+> +			pr_cont("Granite Rapids events, ");
+> +			name = "granite_rapids";
+> +		}
+>  		x86_pmu.pebs_ept = 1;
+>  		x86_pmu.hw_config = hsw_hw_config;
+>  		x86_pmu.get_event_constraints = glc_get_event_constraints;
+> @@ -6959,8 +6964,6 @@ __init int intel_pmu_init(void)
+>  		td_attr = glc_td_events_attrs;
+>  		tsx_attr = glc_tsx_events_attrs;
+>  		intel_pmu_pebs_data_source_skl(true);
+> -		pr_cont("Sapphire Rapids events, ");
+> -		name = "sapphire_rapids";
+>  		break;
+
+For some reason this didn't want to apply cleanly (something trivial),
+but since I had to edit it, my fingers slipped and I ended up with the
+below. That ok?
+
+---
+Subject: perf/x86/intel: Add a distinct name for Granite Rapids
+From: Kan Liang <kan.liang@linux.intel.com>
+Date: Mon, 8 Jul 2024 12:33:35 -0700
+
+From: Kan Liang <kan.liang@linux.intel.com>
+
+Currently, the Sapphire Rapids and Granite Rapids share the same PMU
+name, sapphire_rapids. Because from the kernel’s perspective, GNR is
+similar to SPR. The only key difference is that they support different
+extra MSRs. The code path and the PMU name are shared.
+
+However, from end users' perspective, they are quite different. Besides
+the extra MSRs, GNR has a newer PEBS format, supports Retire Latency,
+supports new CPUID enumeration architecture, doesn't required the
+load-latency AUX event, has additional TMA Level 1 Architectural Events,
+etc. The differences can be enumerated by CPUID or the PERF_CAPABILITIES
+MSR. They weren't reflected in the model-specific kernel setup.
+But it is worth to have a distinct PMU name for GNR.
+
+Fixes: a6742cb90b56 ("perf/x86/intel: Fix the FRONTEND encoding on GNR and MTL")
+Suggested-by: Ahmad Yasin <ahmad.yasin@intel.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20240708193336.1192217-3-kan.liang@linux.intel.com
+---
+ arch/x86/events/intel/core.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
+
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -6788,12 +6788,18 @@ __init int intel_pmu_init(void)
+ 	case INTEL_FAM6_EMERALDRAPIDS_X:
+ 		x86_pmu.flags |= PMU_FL_MEM_LOADS_AUX;
+ 		x86_pmu.extra_regs = intel_glc_extra_regs;
+-		fallthrough;
++		pr_cont("Sapphire Rapids events, ");
++		name = "sapphire_rapids";
++		goto glc_common;
 +
- /* "cond" here covers BO:BI fields. */
- #define PPC_BCC_SHORT(cond, dest)					      \
- 	do {								      \
-@@ -144,6 +147,12 @@ struct codegen_context {
- #define BPF_FIXUP_LEN	2 /* Two instructions => 8 bytes */
- #endif
- 
-+static inline void bpf_flush_icache(void *start, void *end)
-+{
-+	smp_wmb();	/* smp write barrier */
-+	flush_icache_range((unsigned long)start, (unsigned long)end);
-+}
+ 	case INTEL_FAM6_GRANITERAPIDS_X:
+ 	case INTEL_FAM6_GRANITERAPIDS_D:
++		x86_pmu.extra_regs = intel_rwc_extra_regs;
++		pr_cont("Granite Rapids events, ");
++		name = "granite_rapids";
 +
- static inline bool bpf_is_seen_register(struct codegen_context *ctx, int i)
- {
- 	return ctx->seen & (1 << (31 - i));
-@@ -160,17 +169,16 @@ static inline void bpf_clear_seen_register(struct codegen_context *ctx, int i)
- }
++	glc_common:
+ 		intel_pmu_init_glc(NULL);
+-		if (!x86_pmu.extra_regs)
+-			x86_pmu.extra_regs = intel_rwc_extra_regs;
+ 		x86_pmu.pebs_ept = 1;
+ 		x86_pmu.hw_config = hsw_hw_config;
+ 		x86_pmu.get_event_constraints = glc_get_event_constraints;
+@@ -6804,8 +6810,6 @@ __init int intel_pmu_init(void)
+ 		td_attr = glc_td_events_attrs;
+ 		tsx_attr = glc_tsx_events_attrs;
+ 		intel_pmu_pebs_data_source_skl(true);
+-		pr_cont("Sapphire Rapids events, ");
+-		name = "sapphire_rapids";
+ 		break;
  
- void bpf_jit_init_reg_mapping(struct codegen_context *ctx);
--int bpf_jit_emit_func_call_rel(u32 *image, u32 *fimage, struct codegen_context *ctx, u64 func);
--int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct codegen_context *ctx,
-+int bpf_jit_emit_func_call_rel(u32 *image, struct codegen_context *ctx, u64 func);
-+int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *ctx,
- 		       u32 *addrs, int pass, bool extra_pass);
- void bpf_jit_build_prologue(u32 *image, struct codegen_context *ctx);
- void bpf_jit_build_epilogue(u32 *image, struct codegen_context *ctx);
- void bpf_jit_realloc_regs(struct codegen_context *ctx);
- int bpf_jit_emit_exit_insn(u32 *image, struct codegen_context *ctx, int tmp_reg, long exit_addr);
- 
--int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, u32 *fimage, int pass,
--			  struct codegen_context *ctx, int insn_idx,
--			  int jmp_off, int dst_reg);
-+int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, int pass, struct codegen_context *ctx,
-+			  int insn_idx, int jmp_off, int dst_reg);
- 
- #endif
- 
-diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-index cee6a57b9d08..37043dfc1add 100644
---- a/arch/powerpc/net/bpf_jit_comp.c
-+++ b/arch/powerpc/net/bpf_jit_comp.c
-@@ -39,13 +39,10 @@ int bpf_jit_emit_exit_insn(u32 *image, struct codegen_context *ctx, int tmp_reg,
- 	return 0;
- }
- 
--struct powerpc_jit_data {
--	/* address of rw header */
--	struct bpf_binary_header *hdr;
--	/* address of ro final header */
--	struct bpf_binary_header *fhdr;
-+struct powerpc64_jit_data {
-+	struct bpf_binary_header *header;
- 	u32 *addrs;
--	u8 *fimage;
-+	u8 *image;
- 	u32 proglen;
- 	struct codegen_context ctx;
- };
-@@ -62,18 +59,15 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 	u8 *image = NULL;
- 	u32 *code_base;
- 	u32 *addrs;
--	struct powerpc_jit_data *jit_data;
-+	struct powerpc64_jit_data *jit_data;
- 	struct codegen_context cgctx;
- 	int pass;
- 	int flen;
--	struct bpf_binary_header *fhdr = NULL;
--	struct bpf_binary_header *hdr = NULL;
-+	struct bpf_binary_header *bpf_hdr;
- 	struct bpf_prog *org_fp = fp;
- 	struct bpf_prog *tmp_fp;
- 	bool bpf_blinded = false;
- 	bool extra_pass = false;
--	u8 *fimage = NULL;
--	u32 *fcode_base;
- 	u32 extable_len;
- 	u32 fixup_len;
- 
-@@ -103,16 +97,9 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 	addrs = jit_data->addrs;
- 	if (addrs) {
- 		cgctx = jit_data->ctx;
--		/*
--		 * JIT compiled to a writable location (image/code_base) first.
--		 * It is then moved to the readonly final location (fimage/fcode_base)
--		 * using instruction patching.
--		 */
--		fimage = jit_data->fimage;
--		fhdr = jit_data->fhdr;
-+		image = jit_data->image;
-+		bpf_hdr = jit_data->header;
- 		proglen = jit_data->proglen;
--		hdr = jit_data->hdr;
--		image = (void *)hdr + ((void *)fimage - (void *)fhdr);
- 		extra_pass = true;
- 		/* During extra pass, ensure index is reset before repopulating extable entries */
- 		cgctx.exentry_idx = 0;
-@@ -132,7 +119,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 	cgctx.stack_size = round_up(fp->aux->stack_depth, 16);
- 
- 	/* Scouting faux-generate pass 0 */
--	if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, false)) {
-+	if (bpf_jit_build_body(fp, 0, &cgctx, addrs, 0, false)) {
- 		/* We hit something illegal or unsupported. */
- 		fp = org_fp;
- 		goto out_addrs;
-@@ -147,7 +134,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 	 */
- 	if (cgctx.seen & SEEN_TAILCALL || !is_offset_in_branch_range((long)cgctx.idx * 4)) {
- 		cgctx.idx = 0;
--		if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, false)) {
-+		if (bpf_jit_build_body(fp, 0, &cgctx, addrs, 0, false)) {
- 			fp = org_fp;
- 			goto out_addrs;
- 		}
-@@ -169,19 +156,17 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 	proglen = cgctx.idx * 4;
- 	alloclen = proglen + FUNCTION_DESCR_SIZE + fixup_len + extable_len;
- 
--	fhdr = bpf_jit_binary_pack_alloc(alloclen, &fimage, 4, &hdr, &image,
--					      bpf_jit_fill_ill_insns);
--	if (!fhdr) {
-+	bpf_hdr = bpf_jit_binary_alloc(alloclen, &image, 4, bpf_jit_fill_ill_insns);
-+	if (!bpf_hdr) {
- 		fp = org_fp;
- 		goto out_addrs;
- 	}
- 
- 	if (extable_len)
--		fp->aux->extable = (void *)fimage + FUNCTION_DESCR_SIZE + proglen + fixup_len;
-+		fp->aux->extable = (void *)image + FUNCTION_DESCR_SIZE + proglen + fixup_len;
- 
- skip_init_ctx:
- 	code_base = (u32 *)(image + FUNCTION_DESCR_SIZE);
--	fcode_base = (u32 *)(fimage + FUNCTION_DESCR_SIZE);
- 
- 	/* Code generation passes 1-2 */
- 	for (pass = 1; pass < 3; pass++) {
-@@ -189,10 +174,8 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 		cgctx.idx = 0;
- 		cgctx.alt_exit_addr = 0;
- 		bpf_jit_build_prologue(code_base, &cgctx);
--		if (bpf_jit_build_body(fp, code_base, fcode_base, &cgctx, addrs, pass,
--				       extra_pass)) {
--			bpf_arch_text_copy(&fhdr->size, &hdr->size, sizeof(hdr->size));
--			bpf_jit_binary_pack_free(fhdr, hdr);
-+		if (bpf_jit_build_body(fp, code_base, &cgctx, addrs, pass, extra_pass)) {
-+			bpf_jit_binary_free(bpf_hdr);
- 			fp = org_fp;
- 			goto out_addrs;
- 		}
-@@ -212,19 +195,17 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 
- #ifdef CONFIG_PPC64_ELF_ABI_V1
- 	/* Function descriptor nastiness: Address + TOC */
--	((u64 *)image)[0] = (u64)fcode_base;
-+	((u64 *)image)[0] = (u64)code_base;
- 	((u64 *)image)[1] = local_paca->kernel_toc;
- #endif
- 
--	fp->bpf_func = (void *)fimage;
-+	fp->bpf_func = (void *)image;
- 	fp->jited = 1;
- 	fp->jited_len = proglen + FUNCTION_DESCR_SIZE;
- 
-+	bpf_flush_icache(bpf_hdr, (u8 *)bpf_hdr + bpf_hdr->size);
- 	if (!fp->is_func || extra_pass) {
--		if (bpf_jit_binary_pack_finalize(fp, fhdr, hdr)) {
--			fp = org_fp;
--			goto out_addrs;
--		}
-+		bpf_jit_binary_lock_ro(bpf_hdr);
- 		bpf_prog_fill_jited_linfo(fp, addrs);
- out_addrs:
- 		kfree(addrs);
-@@ -234,9 +215,8 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 		jit_data->addrs = addrs;
- 		jit_data->ctx = cgctx;
- 		jit_data->proglen = proglen;
--		jit_data->fimage = fimage;
--		jit_data->fhdr = fhdr;
--		jit_data->hdr = hdr;
-+		jit_data->image = image;
-+		jit_data->header = bpf_hdr;
- 	}
- 
- out:
-@@ -250,13 +230,12 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
-  * The caller should check for (BPF_MODE(code) == BPF_PROBE_MEM) before calling
-  * this function, as this only applies to BPF_PROBE_MEM, for now.
-  */
--int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, u32 *fimage, int pass,
--			  struct codegen_context *ctx, int insn_idx, int jmp_off,
--			  int dst_reg)
-+int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, int pass, struct codegen_context *ctx,
-+			  int insn_idx, int jmp_off, int dst_reg)
- {
- 	off_t offset;
- 	unsigned long pc;
--	struct exception_table_entry *ex, *ex_entry;
-+	struct exception_table_entry *ex;
- 	u32 *fixup;
- 
- 	/* Populate extable entries only in the last pass */
-@@ -267,16 +246,9 @@ int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, u32 *fimage, int pass
- 	    WARN_ON_ONCE(ctx->exentry_idx >= fp->aux->num_exentries))
- 		return -EINVAL;
- 
--	/*
--	 * Program is first written to image before copying to the
--	 * final location (fimage). Accordingly, update in the image first.
--	 * As all offsets used are relative, copying as is to the
--	 * final location should be alright.
--	 */
- 	pc = (unsigned long)&image[insn_idx];
--	ex = (void *)fp->aux->extable - (void *)fimage + (void *)image;
- 
--	fixup = (void *)ex -
-+	fixup = (void *)fp->aux->extable -
- 		(fp->aux->num_exentries * BPF_FIXUP_LEN * 4) +
- 		(ctx->exentry_idx * BPF_FIXUP_LEN * 4);
- 
-@@ -287,42 +259,18 @@ int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, u32 *fimage, int pass
- 	fixup[BPF_FIXUP_LEN - 1] =
- 		PPC_RAW_BRANCH((long)(pc + jmp_off) - (long)&fixup[BPF_FIXUP_LEN - 1]);
- 
--	ex_entry = &ex[ctx->exentry_idx];
-+	ex = &fp->aux->extable[ctx->exentry_idx];
- 
--	offset = pc - (long)&ex_entry->insn;
-+	offset = pc - (long)&ex->insn;
- 	if (WARN_ON_ONCE(offset >= 0 || offset < INT_MIN))
- 		return -ERANGE;
--	ex_entry->insn = offset;
-+	ex->insn = offset;
- 
--	offset = (long)fixup - (long)&ex_entry->fixup;
-+	offset = (long)fixup - (long)&ex->fixup;
- 	if (WARN_ON_ONCE(offset >= 0 || offset < INT_MIN))
- 		return -ERANGE;
--	ex_entry->fixup = offset;
-+	ex->fixup = offset;
- 
- 	ctx->exentry_idx++;
- 	return 0;
- }
--
--void bpf_jit_free(struct bpf_prog *fp)
--{
--	if (fp->jited) {
--		struct powerpc_jit_data *jit_data = fp->aux->jit_data;
--		struct bpf_binary_header *hdr;
--
--		/*
--		 * If we fail the final pass of JIT (from jit_subprogs),
--		 * the program may not be finalized yet. Call finalize here
--		 * before freeing it.
--		 */
--		if (jit_data) {
--			bpf_jit_binary_pack_finalize(fp, jit_data->fhdr, jit_data->hdr);
--			kvfree(jit_data->addrs);
--			kfree(jit_data);
--		}
--		hdr = bpf_jit_binary_pack_hdr(fp);
--		bpf_jit_binary_pack_free(hdr, NULL);
--		WARN_ON_ONCE(!bpf_prog_kallsyms_verify_off(fp));
--	}
--
--	bpf_prog_unlock_free(fp);
--}
-diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-index dd61aa4325d9..06f886850a93 100644
---- a/arch/powerpc/net/bpf_jit_comp32.c
-+++ b/arch/powerpc/net/bpf_jit_comp32.c
-@@ -200,13 +200,12 @@ void bpf_jit_build_epilogue(u32 *image, struct codegen_context *ctx)
- 	EMIT(PPC_RAW_BLR());
- }
- 
--/* Relative offset needs to be calculated based on final image location */
--int bpf_jit_emit_func_call_rel(u32 *image, u32 *fimage, struct codegen_context *ctx, u64 func)
-+int bpf_jit_emit_func_call_rel(u32 *image, struct codegen_context *ctx, u64 func)
- {
--	s32 rel = (s32)func - (s32)(fimage + ctx->idx);
-+	s32 rel = (s32)func - (s32)(image + ctx->idx);
- 
- 	if (image && rel < 0x2000000 && rel >= -0x2000000) {
--		EMIT(PPC_RAW_BL(rel));
-+		PPC_BL(func);
- 	} else {
- 		/* Load function address into r0 */
- 		EMIT(PPC_RAW_LIS(_R0, IMM_H(func)));
-@@ -279,7 +278,7 @@ static int bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 o
- }
- 
- /* Assemble the body code between the prologue & epilogue */
--int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct codegen_context *ctx,
-+int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *ctx,
- 		       u32 *addrs, int pass, bool extra_pass)
- {
- 	const struct bpf_insn *insn = fp->insnsi;
-@@ -1010,7 +1009,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 					jmp_off += 4;
- 				}
- 
--				ret = bpf_add_extable_entry(fp, image, fimage, pass, ctx, insn_idx,
-+				ret = bpf_add_extable_entry(fp, image, pass, ctx, insn_idx,
- 							    jmp_off, dst_reg);
- 				if (ret)
- 					return ret;
-@@ -1066,7 +1065,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 				EMIT(PPC_RAW_STW(bpf_to_ppc(BPF_REG_5), _R1, 12));
- 			}
- 
--			ret = bpf_jit_emit_func_call_rel(image, fimage, ctx, func_addr);
-+			ret = bpf_jit_emit_func_call_rel(image, ctx, func_addr);
- 			if (ret)
- 				return ret;
- 
-diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-index 884eef1b3973..2239ce5e8501 100644
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -240,7 +240,7 @@ static int bpf_jit_emit_func_call_hlp(u32 *image, struct codegen_context *ctx, u
- 	return 0;
- }
- 
--int bpf_jit_emit_func_call_rel(u32 *image, u32 *fimage, struct codegen_context *ctx, u64 func)
-+int bpf_jit_emit_func_call_rel(u32 *image, struct codegen_context *ctx, u64 func)
- {
- 	unsigned int i, ctx_idx = ctx->idx;
- 
-@@ -361,7 +361,7 @@ asm (
- );
- 
- /* Assemble the body code between the prologue & epilogue */
--int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct codegen_context *ctx,
-+int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *ctx,
- 		       u32 *addrs, int pass, bool extra_pass)
- {
- 	enum stf_barrier_type stf_barrier = stf_barrier_type_get();
-@@ -952,8 +952,8 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 				addrs[++i] = ctx->idx * 4;
- 
- 			if (BPF_MODE(code) == BPF_PROBE_MEM) {
--				ret = bpf_add_extable_entry(fp, image, fimage, pass, ctx,
--							    ctx->idx - 1, 4, dst_reg);
-+				ret = bpf_add_extable_entry(fp, image, pass, ctx, ctx->idx - 1,
-+							    4, dst_reg);
- 				if (ret)
- 					return ret;
- 			}
-@@ -1007,7 +1007,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 			if (func_addr_fixed)
- 				ret = bpf_jit_emit_func_call_hlp(image, ctx, func_addr);
- 			else
--				ret = bpf_jit_emit_func_call_rel(image, fimage, ctx, func_addr);
-+				ret = bpf_jit_emit_func_call_rel(image, ctx, func_addr);
- 
- 			if (ret)
- 				return ret;
-diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
-index 05746e22fe79..62ee557d4b49 100644
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -1973,11 +1973,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 		print_fn_code(jit.prg_buf, jit.size_prg);
- 	}
- 	if (!fp->is_func || extra_pass) {
--		if (bpf_jit_binary_lock_ro(header)) {
--			bpf_jit_binary_free(header);
--			fp = orig_fp;
--			goto free_addrs;
--		}
-+		bpf_jit_binary_lock_ro(header);
- 	} else {
- 		jit_data->header = header;
- 		jit_data->ctx = jit;
-diff --git a/arch/sparc/net/bpf_jit_comp_64.c b/arch/sparc/net/bpf_jit_comp_64.c
-index 73bf0aea8baf..fa0759bfe498 100644
---- a/arch/sparc/net/bpf_jit_comp_64.c
-+++ b/arch/sparc/net/bpf_jit_comp_64.c
-@@ -1602,11 +1602,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- 	bpf_flush_icache(header, (u8 *)header + header->size);
- 
- 	if (!prog->is_func || extra_pass) {
--		if (bpf_jit_binary_lock_ro(header)) {
--			bpf_jit_binary_free(header);
--			prog = orig_prog;
--			goto out_off;
--		}
-+		bpf_jit_binary_lock_ro(header);
- 	} else {
- 		jit_data->ctx = ctx;
- 		jit_data->image = image_ptr;
-diff --git a/arch/x86/net/bpf_jit_comp32.c b/arch/x86/net/bpf_jit_comp32.c
-index f2fc8c38629b..429a89c5468b 100644
---- a/arch/x86/net/bpf_jit_comp32.c
-+++ b/arch/x86/net/bpf_jit_comp32.c
-@@ -2600,7 +2600,8 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- 	if (bpf_jit_enable > 1)
- 		bpf_jit_dump(prog->len, proglen, pass + 1, image);
- 
--	if (image && !bpf_jit_binary_lock_ro(header)) {
-+	if (image) {
-+		bpf_jit_binary_lock_ro(header);
- 		prog->bpf_func = (void *)image;
- 		prog->jited = 1;
- 		prog->jited_len = proglen;
-diff --git a/include/linux/filter.h b/include/linux/filter.h
-index a74d97114a54..5090e940ba3e 100644
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -842,22 +842,20 @@ bpf_ctx_narrow_access_offset(u32 off, u32 size, u32 size_default)
- 
- #define bpf_classic_proglen(fprog) (fprog->len * sizeof(fprog->filter[0]))
- 
--static inline int __must_check bpf_prog_lock_ro(struct bpf_prog *fp)
-+static inline void bpf_prog_lock_ro(struct bpf_prog *fp)
- {
- #ifndef CONFIG_BPF_JIT_ALWAYS_ON
- 	if (!fp->jited) {
- 		set_vm_flush_reset_perms(fp);
--		return set_memory_ro((unsigned long)fp, fp->pages);
-+		set_memory_ro((unsigned long)fp, fp->pages);
- 	}
- #endif
--	return 0;
- }
- 
--static inline int __must_check
--bpf_jit_binary_lock_ro(struct bpf_binary_header *hdr)
-+static inline void bpf_jit_binary_lock_ro(struct bpf_binary_header *hdr)
- {
- 	set_vm_flush_reset_perms(hdr);
--	return set_memory_rox((unsigned long)hdr, hdr->size >> PAGE_SHIFT);
-+	set_memory_rox((unsigned long)hdr, hdr->size >> PAGE_SHIFT);
- }
- 
- int sk_filter_trim_cap(struct sock *sk, struct sk_buff *skb, unsigned int cap);
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 77a9b12e00af..4124805ad7ba 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -2375,9 +2375,7 @@ struct bpf_prog *bpf_prog_select_runtime(struct bpf_prog *fp, int *err)
- 	}
- 
- finalize:
--	*err = bpf_prog_lock_ro(fp);
--	if (*err)
--		return fp;
-+	bpf_prog_lock_ro(fp);
- 
- 	/* The tail call compatibility check can only be done at
- 	 * this late stage as we need to determine, if we deal
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index aa546355918c..171045b6956d 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -18625,13 +18625,9 @@ static int jit_subprogs(struct bpf_verifier_env *env)
- 	 * bpf_prog_load will add the kallsyms for the main program.
- 	 */
- 	for (i = 1; i < env->subprog_cnt; i++) {
--		err = bpf_prog_lock_ro(func[i]);
--		if (err)
--			goto out_free;
--	}
--
--	for (i = 1; i < env->subprog_cnt; i++)
-+		bpf_prog_lock_ro(func[i]);
- 		bpf_prog_kallsyms_add(func[i]);
-+	}
- 
- 	/* Last step: make now unused interpreter insns from main
- 	 * prog consistent for later dump requests, so they can
+ 	case INTEL_FAM6_ALDERLAKE:
 
