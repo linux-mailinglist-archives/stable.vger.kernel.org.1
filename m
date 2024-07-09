@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-58306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F8092B659
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:12:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45FFD92B753
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:22:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65BDE1C214DE
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:12:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5392B241AA
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CB5158A01;
-	Tue,  9 Jul 2024 11:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95CCE158856;
+	Tue,  9 Jul 2024 11:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+uTdZTT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ONJ0Q9Q4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CCE15821E;
-	Tue,  9 Jul 2024 11:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C717156238;
+	Tue,  9 Jul 2024 11:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523540; cv=none; b=VQ8yp25V4SgakNepPM7AlqfIuvJ8IaCNy6R69kRK/A93D7lyeNUjJzfHV/A/aAukR5rjOBul6+Etl1K4qXb5h5afUXM8zXrfVrGeiIpi9SZsTi7cw24bTVX1q8Z3zasPYvmonRrNH6kPaAFPweFP9MTJv7uGrhVuXnQTZ5jjjNk=
+	t=1720524110; cv=none; b=nId6tNq2bvsiQkDrHVIf2nxZXsonh1Z9XcWxgaRsiAbzjceeK+wOksqYF4EO8GmYu79tbhBIWkEIYGA1Uxe+/K2seIa4Lc7IiT5yvIS3Zm5ADJ73/9Oz7MyC25V1ba2lcd3v7SN+kDdWe22ts0jpcTf5KPhO/WWwc5UqmM9XjSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523540; c=relaxed/simple;
-	bh=lvF7/Cs4OieKK7oUunrKwHDgy4mK+p/cvppfYQrEfWw=;
+	s=arc-20240116; t=1720524110; c=relaxed/simple;
+	bh=jetjh8ZienpUbp7qV/o2j/FfL6lX+gBAUwg05jb+l8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A+Sg0yAqp0k2k5g9nKx9oa+0wqp1+X31YwALA/I0Hc2v0Yl7wd5FgoyTHNn+sJxR2uxxrh+XhWsBrxiVdNqcoWQ+PH/FTRtPegq1m8WWZ8PEqKfPRSxOuDi85LELO/vJdpAyEsW0e4KCOP16v/ih7Vngy4x3+VMSJikK0aReGgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+uTdZTT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 385B6C3277B;
-	Tue,  9 Jul 2024 11:12:20 +0000 (UTC)
+	 MIME-Version; b=g+NgzNywWHdNUgGda2VPLIPYjnBWj19Kpfw+/7NEsy1KyWj2+u561EPcSdd4qUQC+DUMmN2d+Rz7hGxpEfOPK4LG5nZQn0SUH7JRE67IjotKLW4RqxJiSgP/lWnvau04iYGGIhJVaTIqhjoAxNtk2dtNeYyx7P+8Oisha4BW4Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ONJ0Q9Q4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5937C3277B;
+	Tue,  9 Jul 2024 11:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523540;
-	bh=lvF7/Cs4OieKK7oUunrKwHDgy4mK+p/cvppfYQrEfWw=;
+	s=korg; t=1720524110;
+	bh=jetjh8ZienpUbp7qV/o2j/FfL6lX+gBAUwg05jb+l8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q+uTdZTTdOuEh+d9c1A0TzSt/M0imQHamZ20+NPXN6waEUA4wP/e8+gjoDeqOjtSn
-	 PzSfgjusQutfqrtws8hD1Om8PXyt09tsnoJ6WtQdoOVD5A51MGNkljMbLZNF7Bla0o
-	 35v9S9ik3o2qYYE3l+6ZnqE8wTuRbn96xo0gqVyk=
+	b=ONJ0Q9Q43pFHBQVhN8OxwNcAcLssxNFg0hDGYm6XIGsMzr32I46X8qRJtWkhvMDpR
+	 hJ+KDEMRkQeHGDW33t7nU7mj+tBFpfrIS6II902FawSdlOzkf5VXW+yzNaoMmWuaQp
+	 sRJbuS2JwtIbS1Dz5nAvISAgPTlqqlQbXCDx+Bro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Ingo Franzki <ifranzki@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/139] riscv: Apply SiFive CIP-1200 workaround to single-ASID sfence.vma
-Date: Tue,  9 Jul 2024 13:08:47 +0200
-Message-ID: <20240709110659.214129287@linuxfoundation.org>
+Subject: [PATCH 6.9 074/197] s390/pkey: Wipe sensitive data on failure
+Date: Tue,  9 Jul 2024 13:08:48 +0200
+Message-ID: <20240709110711.833681497@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,128 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Holger Dengler <dengler@linux.ibm.com>
 
-[ Upstream commit 20e03d702e00a3e0269a1d6f9549c2e370492054 ]
+[ Upstream commit 1d8c270de5eb74245d72325d285894a577a945d9 ]
 
-commit 3f1e782998cd ("riscv: add ASID-based tlbflushing methods") added
-calls to the sfence.vma instruction with rs2 != x0. These single-ASID
-instruction variants are also affected by SiFive errata CIP-1200.
+Wipe sensitive data from stack also if the copy_to_user() fails.
 
-Until now, the errata workaround was not needed for the single-ASID
-sfence.vma variants, because they were only used when the ASID allocator
-was enabled, and the affected SiFive platforms do not support multiple
-ASIDs. However, we are going to start using those sfence.vma variants
-regardless of ASID support, so now we need alternatives covering them.
-
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Link: https://lore.kernel.org/r/20240327045035.368512-8-samuel.holland@sifive.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Suggested-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
+Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/errata_list.h | 12 +++++++++++-
- arch/riscv/include/asm/tlbflush.h    | 19 ++++++++++++++++++-
- arch/riscv/mm/tlbflush.c             | 23 -----------------------
- 3 files changed, 29 insertions(+), 25 deletions(-)
+ drivers/s390/crypto/pkey_api.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/include/asm/errata_list.h b/arch/riscv/include/asm/errata_list.h
-index b55b434f00591..d3f3c237adad7 100644
---- a/arch/riscv/include/asm/errata_list.h
-+++ b/arch/riscv/include/asm/errata_list.h
-@@ -44,11 +44,21 @@ ALTERNATIVE(__stringify(RISCV_PTR do_page_fault),			\
- 	    CONFIG_ERRATA_SIFIVE_CIP_453)
- #else /* !__ASSEMBLY__ */
- 
--#define ALT_FLUSH_TLB_PAGE(x)						\
-+#define ALT_SFENCE_VMA_ASID(asid)					\
-+asm(ALTERNATIVE("sfence.vma x0, %0", "sfence.vma", SIFIVE_VENDOR_ID,	\
-+		ERRATA_SIFIVE_CIP_1200, CONFIG_ERRATA_SIFIVE_CIP_1200)	\
-+		: : "r" (asid) : "memory")
-+
-+#define ALT_SFENCE_VMA_ADDR(addr)					\
- asm(ALTERNATIVE("sfence.vma %0", "sfence.vma", SIFIVE_VENDOR_ID,	\
- 		ERRATA_SIFIVE_CIP_1200, CONFIG_ERRATA_SIFIVE_CIP_1200)	\
- 		: : "r" (addr) : "memory")
- 
-+#define ALT_SFENCE_VMA_ADDR_ASID(addr, asid)				\
-+asm(ALTERNATIVE("sfence.vma %0, %1", "sfence.vma", SIFIVE_VENDOR_ID,	\
-+		ERRATA_SIFIVE_CIP_1200, CONFIG_ERRATA_SIFIVE_CIP_1200)	\
-+		: : "r" (addr), "r" (asid) : "memory")
-+
- /*
-  * _val is marked as "will be overwritten", so need to set it to 0
-  * in the default case.
-diff --git a/arch/riscv/include/asm/tlbflush.h b/arch/riscv/include/asm/tlbflush.h
-index 51664ae4852e7..97711d5bd8ef9 100644
---- a/arch/riscv/include/asm/tlbflush.h
-+++ b/arch/riscv/include/asm/tlbflush.h
-@@ -22,10 +22,27 @@ static inline void local_flush_tlb_all(void)
- 	__asm__ __volatile__ ("sfence.vma" : : : "memory");
- }
- 
-+static inline void local_flush_tlb_all_asid(unsigned long asid)
-+{
-+	if (asid != FLUSH_TLB_NO_ASID)
-+		ALT_SFENCE_VMA_ASID(asid);
-+	else
-+		local_flush_tlb_all();
-+}
-+
- /* Flush one page from local TLB */
- static inline void local_flush_tlb_page(unsigned long addr)
- {
--	ALT_FLUSH_TLB_PAGE(__asm__ __volatile__ ("sfence.vma %0" : : "r" (addr) : "memory"));
-+	ALT_SFENCE_VMA_ADDR(addr);
-+}
-+
-+static inline void local_flush_tlb_page_asid(unsigned long addr,
-+					     unsigned long asid)
-+{
-+	if (asid != FLUSH_TLB_NO_ASID)
-+		ALT_SFENCE_VMA_ADDR_ASID(addr, asid);
-+	else
-+		local_flush_tlb_page(addr);
- }
- #else /* CONFIG_MMU */
- #define local_flush_tlb_all()			do { } while (0)
-diff --git a/arch/riscv/mm/tlbflush.c b/arch/riscv/mm/tlbflush.c
-index bdee5de918e06..324e8cd9b5022 100644
---- a/arch/riscv/mm/tlbflush.c
-+++ b/arch/riscv/mm/tlbflush.c
-@@ -6,29 +6,6 @@
- #include <asm/sbi.h>
- #include <asm/mmu_context.h>
- 
--static inline void local_flush_tlb_all_asid(unsigned long asid)
--{
--	if (asid != FLUSH_TLB_NO_ASID)
--		__asm__ __volatile__ ("sfence.vma x0, %0"
--				:
--				: "r" (asid)
--				: "memory");
--	else
--		local_flush_tlb_all();
--}
--
--static inline void local_flush_tlb_page_asid(unsigned long addr,
--		unsigned long asid)
--{
--	if (asid != FLUSH_TLB_NO_ASID)
--		__asm__ __volatile__ ("sfence.vma %0, %1"
--				:
--				: "r" (addr), "r" (asid)
--				: "memory");
--	else
--		local_flush_tlb_page(addr);
--}
--
- /*
-  * Flush entire TLB if number of entries to be flushed is greater
-  * than the threshold below.
+diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api.c
+index 933894065623e..179287157c2fe 100644
+--- a/drivers/s390/crypto/pkey_api.c
++++ b/drivers/s390/crypto/pkey_api.c
+@@ -1377,7 +1377,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
+ 		if (rc)
+ 			break;
+ 		if (copy_to_user(ucs, &kcs, sizeof(kcs)))
+-			return -EFAULT;
++			rc = -EFAULT;
+ 		memzero_explicit(&kcs, sizeof(kcs));
+ 		break;
+ 	}
+@@ -1412,7 +1412,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
+ 		if (rc)
+ 			break;
+ 		if (copy_to_user(ucp, &kcp, sizeof(kcp)))
+-			return -EFAULT;
++			rc = -EFAULT;
+ 		memzero_explicit(&kcp, sizeof(kcp));
+ 		break;
+ 	}
 -- 
 2.43.0
 
