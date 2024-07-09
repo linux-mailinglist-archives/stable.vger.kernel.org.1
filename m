@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-58509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E40C92B765
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C45A892B669
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:13:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C01BC1C22BEE
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53574B20A55
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ADC015B115;
-	Tue,  9 Jul 2024 11:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6EF71581E3;
+	Tue,  9 Jul 2024 11:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDpp6uVK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDRkcWCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54103158208;
-	Tue,  9 Jul 2024 11:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F71156F45;
+	Tue,  9 Jul 2024 11:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524155; cv=none; b=Hs9DSjNM/AEar2AYHoalHGtKdDvXM40ZJtagC/Ap9YmnVdeUWxO2w2qCWQxmyAPZYP49e3ZB+3MMD5qOgBKred1cndDQUTg2R3fOD7PAAwLmBEhFKcEcFM/5XPkKe5WdxMopBwcZ/vLbNPUIDpQc9n6yNsikotpEiODxh766o4I=
+	t=1720523590; cv=none; b=HP9pVHorAMJg51890yLQVMZjSIFcMPmwVaZVVTTZ9N3KbZ99mO3WP8K5Veyv5a2FSC6c9Db5ROVL5bfdCSSi+aELz07PAbe1ehcSflVn+bL0IXqI5fp8EfLUM1rWpmY7e3k9V7Sj1jAnQvHnMRy0G0/83QvVgnLuUHi9twqsMQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524155; c=relaxed/simple;
-	bh=TBnevPvt/pGRMxaTXgi+BOwYzytxAvgjZsY3UMWX5rc=;
+	s=arc-20240116; t=1720523590; c=relaxed/simple;
+	bh=b9/mjohbYADogJqcwRWFp9GwSanu+2GJI6o1QO+BzkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dCs2RadrHN02M8mA9cF23/edWBAVa7+c2rP9M2nf7kpjpJ+z/hEArLXENTWplolwBR4cKSjFJJdTesSD496h8/WOGP/7exzDz4937a4ZT/57RDogjyTuQCnR6Kg5K8HzI1qlBNSR4M75GgYPf3UZQRWP+88BDVUrjUZhzwRKl8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDpp6uVK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887D5C3277B;
-	Tue,  9 Jul 2024 11:22:34 +0000 (UTC)
+	 MIME-Version; b=JD0RT/495hD0bekU7KRMKvxLL0CnS9I3fQrRzp0grIbPaWl1yFEii+3NHMLfuRKhA+Yo15s1ThmJqtyj/TUxh9nRfFPry2npKTNbYhrZNL6ybQ1wEEPw/uZCjI9MUf1csvPOU+MLUdRF89+WP3nn2oW4UhA4puLTB94B0B8scko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDRkcWCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F00FC3277B;
+	Tue,  9 Jul 2024 11:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524154;
-	bh=TBnevPvt/pGRMxaTXgi+BOwYzytxAvgjZsY3UMWX5rc=;
+	s=korg; t=1720523590;
+	bh=b9/mjohbYADogJqcwRWFp9GwSanu+2GJI6o1QO+BzkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tDpp6uVKDzx/Ta0FOJGPHchTAPvqUU7+xhjf6mhyVbtcSB9gwm51ktY3QLu4gneRI
-	 wZ+2XzRk1DA/K+ZPjdFnMs7HGu2bhJaKLuRrNR8DTDFEYFy/HJJz2A9tpAMH2jRLXj
-	 GOeJP6AN1YufbVbZPnyPaZ8iU0LeLqxHMaQvSgcQ=
+	b=hDRkcWCc+Tk3Gc3jbhZnPYbf6/Xw4BS3wYY/2XuVuHDrJ5m6YqPPymp6GTamweGJ4
+	 1zDdGeiVGWP98HvNle4t5897F85oLub4M5FI5z3Ui8CAmAS1GMJ58XoMbT94ALqoU1
+	 jrButXodvt7OXt32+hqQTps2U/w4Y3OENCmCHF2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Mike Marshall <hubcap@omnibond.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 088/197] wifi: mac80211: fix BSS_CHANGED_UNSOL_BCAST_PROBE_RESP
+Subject: [PATCH 6.6 042/139] orangefs: fix out-of-bounds fsid access
 Date: Tue,  9 Jul 2024 13:09:02 +0200
-Message-ID: <20240709110712.370387629@linuxfoundation.org>
+Message-ID: <20240709110659.790240706@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Mike Marshall <hubcap@omnibond.com>
 
-[ Upstream commit 816c6bec09ed5b90a58a1e12d5a606c5b6e23f47 ]
+[ Upstream commit 53e4efa470d5fc6a96662d2d3322cfc925818517 ]
 
-Fix the definition of BSS_CHANGED_UNSOL_BCAST_PROBE_RESP so that
-not all higher bits get set, 1<<31 is a signed variable, so when
-we do
+Arnd Bergmann sent a patch to fsdevel, he says:
 
-  u64 changed = BSS_CHANGED_UNSOL_BCAST_PROBE_RESP;
+"orangefs_statfs() copies two consecutive fields of the superblock into
+the statfs structure, which triggers a warning from the string fortification
+helpers"
 
-we get sign expansion, so the value is 0xffff'ffff'8000'0000 and
-that's clearly not desired. Use BIT_ULL() to make it unsigned as
-well as the right type for the change flags.
+Jan Kara suggested an alternate way to do the patch to make it more readable.
 
-Fixes: 178e9d6adc43 ("wifi: mac80211: fix unsolicited broadcast probe config")
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240627104257.06174d291db2.Iba0d642916eb78a61f8ab2cc5ca9280783d9c1db@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+I ran both ideas through xfstests and both seem fine. This patch
+is based on Jan Kara's suggestion.
+
+Signed-off-by: Mike Marshall <hubcap@omnibond.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/mac80211.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/orangefs/super.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 2d7f87bc5324b..baaff7bc09119 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -395,7 +395,7 @@ enum ieee80211_bss_change {
- 	BSS_CHANGED_HE_OBSS_PD		= 1<<28,
- 	BSS_CHANGED_HE_BSS_COLOR	= 1<<29,
- 	BSS_CHANGED_FILS_DISCOVERY      = 1<<30,
--	BSS_CHANGED_UNSOL_BCAST_PROBE_RESP = 1<<31,
-+	BSS_CHANGED_UNSOL_BCAST_PROBE_RESP = BIT_ULL(31),
- 	BSS_CHANGED_MLD_VALID_LINKS	= BIT_ULL(33),
- 	BSS_CHANGED_MLD_TTLM		= BIT_ULL(34),
+diff --git a/fs/orangefs/super.c b/fs/orangefs/super.c
+index 4ca8ed410c3cf..24e028c119c1b 100644
+--- a/fs/orangefs/super.c
++++ b/fs/orangefs/super.c
+@@ -201,7 +201,8 @@ static int orangefs_statfs(struct dentry *dentry, struct kstatfs *buf)
+ 		     (long)new_op->downcall.resp.statfs.files_avail);
+ 
+ 	buf->f_type = sb->s_magic;
+-	memcpy(&buf->f_fsid, &ORANGEFS_SB(sb)->fs_id, sizeof(buf->f_fsid));
++	buf->f_fsid.val[0] = ORANGEFS_SB(sb)->fs_id;
++	buf->f_fsid.val[1] = ORANGEFS_SB(sb)->id;
+ 	buf->f_bsize = new_op->downcall.resp.statfs.block_size;
+ 	buf->f_namelen = ORANGEFS_NAME_MAX;
  
 -- 
 2.43.0
