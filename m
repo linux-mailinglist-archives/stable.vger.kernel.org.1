@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-58696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D35E92B83A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:32:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A08C592B7D3
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3F49B2292A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 492B81F24567
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A61155744;
-	Tue,  9 Jul 2024 11:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992CA156C73;
+	Tue,  9 Jul 2024 11:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCLpiQwz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8n5tzEj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D437255E4C;
-	Tue,  9 Jul 2024 11:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552B627713;
+	Tue,  9 Jul 2024 11:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524717; cv=none; b=Gy8RVUsY1V7QSVHrbxPcdrJ8SjqWPucMuX6EycPXo7Zid3CbpWEZUa9qmc1TAw1FK4W5EA0y3ZkiRxbE4BQCPwZnrnQznz+n9swpE1hbgTe8CEDxzweM1NdeOi0TQBP7uD25JPxKVKBpzyl2XxXGaAb1EagQ4rYYVj3T2wjW7p0=
+	t=1720524456; cv=none; b=EpWck2yuJEnEv8uZ4eHfgGDhDK8l54clFfF2x4NP46kponu2z7mIs96mepy+ROdyDIXmUPXhq5rTdtScb6uN2QhQRFONyB3UxrHJrHrRRWxhBr0GZCo/0ChdypIqOso+FQ9o1M3orzsusElNgRVrIt5P93G/fKFVqNZgCRALVoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524717; c=relaxed/simple;
-	bh=fBtAdzhR5atlCME4y0EvPVKnbCsJSFa3t8NzPWXfUyw=;
+	s=arc-20240116; t=1720524456; c=relaxed/simple;
+	bh=ISbmj4vplVf36fb/lRMl9Yt0qkxhhMLSm0afqc8pTuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hVDtE6xoani7dxF2P3l0rcsy+Mn/0Y507JJr32J1wbDX9ZPKtaZe5x0lih+lvEEyBEtlKTjhbfjxKWRzQ653Tph6PMDdWdy3FzrBLCYEuLYUlAUaboJ5dGOGOFxiDdx9J7VY31pwYjjg09toFXeO+WXPbcZljelVbDeTSjk9wx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCLpiQwz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57AACC3277B;
-	Tue,  9 Jul 2024 11:31:57 +0000 (UTC)
+	 MIME-Version; b=T/3n4i8knU5n6VKF20FVNY/ouOQ/we9HjM0Cxew1BXf36DcCCTqr7tVsx++5WltVLmoWzYHkLHZAQl60B+rGoaMVacS5E9qZDrn1qsjDUMcZSDwi/8mBKi0MFHE5mIrU8/uJmVXfxdHlRtMQ4MC8ljaK9hmPVdOqEDOGmH37vTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8n5tzEj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C07E5C3277B;
+	Tue,  9 Jul 2024 11:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524717;
-	bh=fBtAdzhR5atlCME4y0EvPVKnbCsJSFa3t8NzPWXfUyw=;
+	s=korg; t=1720524456;
+	bh=ISbmj4vplVf36fb/lRMl9Yt0qkxhhMLSm0afqc8pTuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NCLpiQwzfDPEy8SM/Kz8gG6Jegg9bcbIsUHxtQUB12GT5ITZLKjyFT+b7Ol1aotB+
-	 nfaaFf87xZUNvi04OOZSmBjxpIHJGHIgX9lVuadrhaiaiOy6kn2skP/0mMITe9aFPM
-	 sen6VuRcysK3eQijBbduDgVQSwFVqv3x3GSMsD5c=
+	b=d8n5tzEjB95ZfTR9ppvQj6kzcrSkaAldhynwONspQmYKaPWbsMvIfHstwOfpNShGG
+	 njIFg4j5HT4igXyGW5w44ODNRI0NKwGimbavRK36kqbpUJvvnFrc9WN1X3JSpc+PJ6
+	 b/wb2Nr/jqhYoD3d9iAIg8uTJO1eJljhxXdLklc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.1 077/102] powerpc/pseries: Fix scv instruction crash with kexec
+	hmtheboy154 <buingoc67@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 186/197] platform/x86: touchscreen_dmi: Add info for GlobalSpace SolT IVW 11.6" tablet
 Date: Tue,  9 Jul 2024 13:10:40 +0200
-Message-ID: <20240709110654.371905508@linuxfoundation.org>
+Message-ID: <20240709110716.139284678@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: hmtheboy154 <buingoc67@gmail.com>
 
-commit 21a741eb75f80397e5f7d3739e24d7d75e619011 upstream.
+[ Upstream commit 7c8639aa41343fd7b3dbe09baf6b0791fcc407a1 ]
 
-kexec on pseries disables AIL (reloc_on_exc), required for scv
-instruction support, before other CPUs have been shut down. This means
-they can execute scv instructions after AIL is disabled, which causes an
-interrupt at an unexpected entry location that crashes the kernel.
+This is a tablet created by GlobalSpace Technologies Limited
+which uses an Intel Atom x5-Z8300, 4GB of RAM & 64GB of storage.
 
-Change the kexec sequence to disable AIL after other CPUs have been
-brought down.
-
-As a refresher, the real-mode scv interrupt vector is 0x17000, and the
-fixed-location head code probably couldn't easily deal with implementing
-such high addresses so it was just decided not to support that interrupt
-at all.
-
-Fixes: 7fa95f9adaee ("powerpc/64s: system call support for scv/rfscv instructions")
-Cc: stable@vger.kernel.org # v5.9+
-Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Closes: https://lore.kernel.org/3b4b2943-49ad-4619-b195-bc416f1d1409@linux.ibm.com
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Tested-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Link: https://msgid.link/20240625134047.298759-1-npiggin@gmail.com
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://web.archive.org/web/20171102141952/http://globalspace.in/11.6-device.html
+Signed-off-by: hmtheboy154 <buingoc67@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240527091447.248849-2-hdegoede@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kexec/core_64.c             |   11 +++++++++++
- arch/powerpc/platforms/pseries/kexec.c   |    8 --------
- arch/powerpc/platforms/pseries/pseries.h |    1 -
- arch/powerpc/platforms/pseries/setup.c   |    1 -
- 4 files changed, 11 insertions(+), 10 deletions(-)
+ drivers/platform/x86/touchscreen_dmi.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
---- a/arch/powerpc/kexec/core_64.c
-+++ b/arch/powerpc/kexec/core_64.c
-@@ -26,6 +26,7 @@
- #include <asm/paca.h>
- #include <asm/mmu.h>
- #include <asm/sections.h>	/* _end */
-+#include <asm/setup.h>
- #include <asm/smp.h>
- #include <asm/hw_breakpoint.h>
- #include <asm/svm.h>
-@@ -316,6 +317,16 @@ void default_machine_kexec(struct kimage
- 	if (!kdump_in_progress())
- 		kexec_prepare_cpus();
+diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
+index c6a10ec2c83f6..88bd117f0bf56 100644
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -897,6 +897,22 @@ static const struct ts_dmi_data schneider_sct101ctm_data = {
+ 	.properties	= schneider_sct101ctm_props,
+ };
  
-+#ifdef CONFIG_PPC_PSERIES
-+	/*
-+	 * This must be done after other CPUs have shut down, otherwise they
-+	 * could execute the 'scv' instruction, which is not supported with
-+	 * reloc disabled (see configure_exceptions()).
-+	 */
-+	if (firmware_has_feature(FW_FEATURE_SET_MODE))
-+		pseries_disable_reloc_on_exc();
-+#endif
++static const struct property_entry globalspace_solt_ivw116_props[] = {
++	PROPERTY_ENTRY_U32("touchscreen-min-x", 7),
++	PROPERTY_ENTRY_U32("touchscreen-min-y", 22),
++	PROPERTY_ENTRY_U32("touchscreen-size-x", 1723),
++	PROPERTY_ENTRY_U32("touchscreen-size-y", 1077),
++	PROPERTY_ENTRY_STRING("firmware-name", "gsl1680-globalspace-solt-ivw116.fw"),
++	PROPERTY_ENTRY_U32("silead,max-fingers", 10),
++	PROPERTY_ENTRY_BOOL("silead,home-button"),
++	{ }
++};
 +
- 	printk("kexec: Starting switchover sequence.\n");
- 
- 	/* switch to a staticly allocated stack.  Based on irq stack code.
---- a/arch/powerpc/platforms/pseries/kexec.c
-+++ b/arch/powerpc/platforms/pseries/kexec.c
-@@ -61,11 +61,3 @@ void pseries_kexec_cpu_down(int crash_sh
- 	} else
- 		xics_kexec_teardown_cpu(secondary);
- }
--
--void pseries_machine_kexec(struct kimage *image)
--{
--	if (firmware_has_feature(FW_FEATURE_SET_MODE))
--		pseries_disable_reloc_on_exc();
--
--	default_machine_kexec(image);
--}
---- a/arch/powerpc/platforms/pseries/pseries.h
-+++ b/arch/powerpc/platforms/pseries/pseries.h
-@@ -38,7 +38,6 @@ static inline void smp_init_pseries(void
- #endif
- 
- extern void pseries_kexec_cpu_down(int crash_shutdown, int secondary);
--void pseries_machine_kexec(struct kimage *image);
- 
- extern void pSeries_final_fixup(void);
- 
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -1149,7 +1149,6 @@ define_machine(pseries) {
- 	.machine_check_exception = pSeries_machine_check_exception,
- 	.machine_check_log_err	= pSeries_machine_check_log_err,
- #ifdef CONFIG_KEXEC_CORE
--	.machine_kexec          = pseries_machine_kexec,
- 	.kexec_cpu_down         = pseries_kexec_cpu_down,
- #endif
- #ifdef CONFIG_MEMORY_HOTPLUG
++static const struct ts_dmi_data globalspace_solt_ivw116_data = {
++	.acpi_name	= "MSSL1680:00",
++	.properties	= globalspace_solt_ivw116_props,
++};
++
+ static const struct property_entry techbite_arc_11_6_props[] = {
+ 	PROPERTY_ENTRY_U32("touchscreen-min-x", 5),
+ 	PROPERTY_ENTRY_U32("touchscreen-min-y", 7),
+@@ -1624,6 +1640,15 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "SCT101CTM"),
+ 		},
+ 	},
++	{
++		/* GlobalSpace SoLT IVW 11.6" */
++		.driver_data = (void *)&globalspace_solt_ivw116_data,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Globalspace Tech Pvt Ltd"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "SolTIVW"),
++			DMI_MATCH(DMI_PRODUCT_SKU, "PN20170413488"),
++		},
++	},
+ 	{
+ 		/* Techbite Arc 11.6 */
+ 		.driver_data = (void *)&techbite_arc_11_6_data,
+-- 
+2.43.0
+
 
 
 
