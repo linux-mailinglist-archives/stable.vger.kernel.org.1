@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-58875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8707592C100
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5801692C104
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:50:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F8721F21B53
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:49:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02BCA1F22DE5
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51CC9190CD0;
-	Tue,  9 Jul 2024 16:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5004A192485;
+	Tue,  9 Jul 2024 16:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KVVJuvRh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dortutF+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A410190CC8;
-	Tue,  9 Jul 2024 16:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B55319246A;
+	Tue,  9 Jul 2024 16:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542346; cv=none; b=pEQXznMV4RimVVhCwNPvYpmbf0SsOOMPfCq5ByJLV/ZnOY5vAX9b405y+islk5/64bdJpAnZ7sG7O1g3UCIAbNvuhTEG6iFTCcxNiopDWX4sC0IMMSRHZTDzh3t73ngH42J/3hlVHa0tYPj48xeBXHWHSzD9EzAO+VK58WWPmPE=
+	t=1720542350; cv=none; b=ZjOdblrXtHwuNroMokf9BUDl37B7H9NByGV1R6Kfgfe5iDuO3ZJgIZkZHhc28/lB6OhFiDaYsPDvWqiktI9GdLDgy4uwU/GkHD1yWfon1YkPTH0viBF2WPbmgqa7KaVf/ZuRwRIf3mymMhzyBPs5HLlFrb9yM8Ay/QocgYVkuKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542346; c=relaxed/simple;
-	bh=dVR4wiWWfP/crERAXEJ8J5ukA3VTk1rly7IZiGApujE=;
+	s=arc-20240116; t=1720542350; c=relaxed/simple;
+	bh=Foidhvv4XYfPmUcoLA3EUHcuHeCfjQA7w9MHqUkz9Q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mhxeMm6nxfA2gkD+UN5tvsA3mcm/tJ92ML6pDP3Wf7dUGDQOLRfWJsoRQgesYT4CXXOlE8Y8MZbcdcZMYBkl2YU5pKilnStH6h/Gtt4/IkxufbmgUviUshznM5VH/5PXxrAQ0NK8obHMEmzkq60ttafsnSmwRZbIuGbGSEVFLno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KVVJuvRh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1BE7C3277B;
-	Tue,  9 Jul 2024 16:25:44 +0000 (UTC)
+	 MIME-Version; b=cZXFdvWnz5rGik7ncg4OWYWnKlKJMvKfODUlWPgkqPuNMi62GNDTPcP+sCJ85y7tcTVHXMFeejtDG3omEAMzs89eoYY/9Xxe80lvqEpIQaK7O/0CIruvK4W7xfm9AmRkxi9ru7+OW4qq6uYvGqtVmqmp7fc9fXOK5EemR7Nx5j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dortutF+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C12C3277B;
+	Tue,  9 Jul 2024 16:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542345;
-	bh=dVR4wiWWfP/crERAXEJ8J5ukA3VTk1rly7IZiGApujE=;
+	s=k20201202; t=1720542349;
+	bh=Foidhvv4XYfPmUcoLA3EUHcuHeCfjQA7w9MHqUkz9Q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KVVJuvRhtGIVzt4S1Ty844ngi9BhEUYyO3lR1QUn0nXiTxuS9bNQj3DF10WUPbNXv
-	 AjGzRBefI300sTTWjcC2yyWUQYVq+TFwmWhlyDBnFV2oea9FEtoDIkhs08VJNpA7zL
-	 gp8zCOAXfH8k1zMHgR31ci91MEzx6yZ19hsONiXQjR/kHXxmo7Zi8MME0Jve6Y7yPR
-	 BovO4CU3DLQ1ZtsByY1aBomnGfK9qPjanb1Kuk4OWu8fYGa8Rzu9x9DxtNPH9w4Hui
-	 pJxT+0xd9UUBNii+Jmd6VsBMiM824O8TIOtwTvi4Qtx7FVm8pWUX8Yy06xOSZlv+If
-	 1zsYMeVzQEy8Q==
+	b=dortutF+2d01EeLIHfL7ZhgCX+jFJw1BUxBIpA9vCBzq835xWbskoaYX6IHg/OMzL
+	 Id+O+DUw2hvMfYWby65FmHyYs9jJeiCfhu2pDb/oGec/lSKIo8uU0OuBfe4+cuVjj4
+	 UVJySnWmg71uiyhkaAMqNHQJzgw6f7IuWoKvlZ6B1C9KDRYKXyNLfwCtofoPPKMbtf
+	 mddD57PRcr7FbY+ihKopEtu7PDRCFMGXvuMsepwLxEETyY4EhN0UV3fIhVhxh6OnYH
+	 /SNRVw+rUYK1y5cKncLOvPY2VZ6TTmupCjOHnr0HCUJflN28QgobfQCzxqQupj4xwI
+	 fONT/ISDbh+jg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Filipe Manana <fdmanana@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+Cc: Aivaz Latypov <reichaivaz@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	clm@fb.com,
-	josef@toxicpanda.com,
-	linux-btrfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 13/17] btrfs: qgroup: fix quota root leak after quota disable failure
-Date: Tue,  9 Jul 2024 12:24:57 -0400
-Message-ID: <20240709162517.32584-13-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	kailang@realtek.com,
+	sbinding@opensource.cirrus.com,
+	shenghao-ding@ti.com,
+	simont@opensource.cirrus.com,
+	foss@athaariq.my.id,
+	rf@opensource.cirrus.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 14/17] ALSA: hda/relatek: Enable Mute LED on HP Laptop 15-gw0xxx
+Date: Tue,  9 Jul 2024 12:24:58 -0400
+Message-ID: <20240709162517.32584-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162517.32584-1-sashal@kernel.org>
 References: <20240709162517.32584-1-sashal@kernel.org>
@@ -69,57 +73,33 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.162
 Content-Transfer-Encoding: 8bit
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Aivaz Latypov <reichaivaz@gmail.com>
 
-[ Upstream commit a7e4c6a3031c74078dba7fa36239d0f4fe476c53 ]
+[ Upstream commit 1d091a98c399c17d0571fa1d91a7123a698446e4 ]
 
-If during the quota disable we fail when cleaning the quota tree or when
-deleting the root from the root tree, we jump to the 'out' label without
-ever dropping the reference on the quota root, resulting in a leak of the
-root since fs_info->quota_root is no longer pointing to the root (we have
-set it to NULL just before those steps).
+This HP Laptop uses ALC236 codec with COEF 0x07 controlling
+the mute LED. Enable existing quirk for this device.
 
-Fix this by always doing a btrfs_put_root() call under the 'out' label.
-This is a problem that exists since qgroups were first added in 2012 by
-commit bed92eae26cc ("Btrfs: qgroup implementation and prototypes"), but
-back then we missed a kfree on the quota root and free_extent_buffer()
-calls on its root and commit root nodes, since back then roots were not
-yet reference counted.
-
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Aivaz Latypov <reichaivaz@gmail.com>
+Link: https://patch.msgid.link/20240625081217.1049-1-reichaivaz@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index c50cabf69415f..1f5ab51e18dc4 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1196,7 +1196,7 @@ int btrfs_quota_enable(struct btrfs_fs_info *fs_info)
- 
- int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
- {
--	struct btrfs_root *quota_root;
-+	struct btrfs_root *quota_root = NULL;
- 	struct btrfs_trans_handle *trans = NULL;
- 	int ret = 0;
- 
-@@ -1290,9 +1290,9 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
- 	btrfs_free_tree_block(trans, btrfs_root_id(quota_root),
- 			      quota_root->node, 0, 1);
- 
--	btrfs_put_root(quota_root);
- 
- out:
-+	btrfs_put_root(quota_root);
- 	mutex_unlock(&fs_info->qgroup_ioctl_lock);
- 	if (ret && trans)
- 		btrfs_end_transaction(trans);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index c7529aa13f944..d31758cf2ad35 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9156,6 +9156,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8788, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87b7, "HP Laptop 14-fq0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87c8, "HP", ALC287_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x87d3, "HP Laptop 15-gw0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87e5, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87e7, "HP ProBook 450 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87f1, "HP ProBook 630 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
 -- 
 2.43.0
 
