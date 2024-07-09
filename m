@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-58439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C28592B700
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:19:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 674BC92B702
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:19:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CA761C219BF
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:19:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9952B1C21B97
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 701A015749F;
-	Tue,  9 Jul 2024 11:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B32156238;
+	Tue,  9 Jul 2024 11:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2B0GXKG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0065oTD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF0C13A25F;
-	Tue,  9 Jul 2024 11:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBABF155A26;
+	Tue,  9 Jul 2024 11:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523939; cv=none; b=C284E2pkj4M4wiG2gA8dd9GedkJbWV5l1GT95a2UVfdrgfuu/+zbhoO/ds3h8N1oeD3nXdB+RdaKx+FbuZlU+EvzJjiyihRV6VsXM6MZnYZUbGsFKmkvs4CH6Qzn1z76k1P1YmFo288wXHVc+qxx+BqZT0YcXgwVDO4COPKxI74=
+	t=1720523944; cv=none; b=dMmApoCVejTmfyyeIYDeDuBHuJAwxDi9uI3HkxG3VqYFTnT8GaOWwxRFsADmRymSc4X1n8ZAt4Uj6TtoDPkcbcqBO1++W8A0fWPXHOyEzpK0ZEdgUYFJmLCR0UYYgtznuvW+ynPOvMnHQy/Uus5IOdEfgoUxtr7OXXFctmLqRlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523939; c=relaxed/simple;
-	bh=OLqvBd+8jViJ8vPFjRf368YSxQjSm4V106YetB+eX9o=;
+	s=arc-20240116; t=1720523944; c=relaxed/simple;
+	bh=K5ALkmwy3ILMvY5WRAKM80CzVYqkN5LXWD3KnjBVEdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BGyAtD9jTFu7BZlKIGx2w1gA0Qwoe2EsOU7RKaunXPN2vI9e47swvVCdoGe4rEWijuFRQ84zmxbCmZwuueChM+6FO5W8gNoyl2YS2VOBZJtYl6JoHcCG/PFDCwgQQhwjQTMRzkK6luczBwzVHuIEZgHyR0uqzhnYY6R6BizJguA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2B0GXKG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6398FC3277B;
-	Tue,  9 Jul 2024 11:18:58 +0000 (UTC)
+	 MIME-Version; b=lbuBEwaRCiWlNW9dCIzrGKlu3eHF5pffgsK5LGl5WMcAsoHJS9CUQfnqGyJe77pckoOCLFTe0yEN9bzeMwXrGFlNLTGpLICIabpJMa3deO82I+bbceB8ui6yk8H/sm0EaLZyRFB9dERq1fr3x/f4d7qLS6RSo7t8qYxxIfMNDyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0065oTD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D04C3277B;
+	Tue,  9 Jul 2024 11:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523938;
-	bh=OLqvBd+8jViJ8vPFjRf368YSxQjSm4V106YetB+eX9o=;
+	s=korg; t=1720523944;
+	bh=K5ALkmwy3ILMvY5WRAKM80CzVYqkN5LXWD3KnjBVEdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K2B0GXKGKCMjGaDgSqY+Z/1jrypqT1z8tQXEqgVr7w7ibp4I4rlfxynqNj4SlgL09
-	 lfImo5QyReZDk5Wta4FqAI/M1rZTfylsHq2HuUjp0Bk4FSPbPoJzJmPz12VgY1CWpt
-	 78lXhsXHrnG55/rUPNqSxuyYTjG3t2X1SS4hQniM=
+	b=Q0065oTD0PlczsU4upNOY1X4urQdzPfeEsB6K7XuoGS/nqF/5LnuVbtP0imP0yjL6
+	 FNjNQkAsaTSOqPbYUpCEnBFObXXF9hxqfrmqD4s6hLGeszxg8/LA0TeZpY2i0iPxGr
+	 xre+U3KmL7jOPMYhGpudoVZiBJrpDG2PF9dDsDQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kui-Feng Lee <sinquersw@gmail.com>,
 	Eduard Zingerman <eddyz87@gmail.com>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 019/197] bpf: check bpf_dummy_struct_ops program params for test runs
-Date: Tue,  9 Jul 2024 13:07:53 +0200
-Message-ID: <20240709110709.659766014@linuxfoundation.org>
+Subject: [PATCH 6.9 020/197] selftests/bpf: dummy_st_ops should reject 0 for non-nullable params
+Date: Tue,  9 Jul 2024 13:07:54 +0200
+Message-ID: <20240709110709.698785532@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
 References: <20240709110708.903245467@linuxfoundation.org>
@@ -69,98 +68,64 @@ Content-Transfer-Encoding: 8bit
 
 From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 980ca8ceeae69ddf362870ea9183f389ae26324a ]
+[ Upstream commit 6a2d30d3c5bf9f088dcfd5f3746b04d84f2fab83 ]
 
-When doing BPF_PROG_TEST_RUN for bpf_dummy_struct_ops programs,
-reject execution when NULL is passed for non-nullable params.
-For programs with non-nullable params verifier assumes that
-such params are never NULL and thus might optimize out NULL checks.
+Check if BPF_PROG_TEST_RUN for bpf_dummy_struct_ops programs
+rejects execution if NULL is passed for non-nullable parameter.
 
-Suggested-by: Kui-Feng Lee <sinquersw@gmail.com>
 Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20240424012821.595216-5-eddyz87@gmail.com
+Link: https://lore.kernel.org/r/20240424012821.595216-6-eddyz87@gmail.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bpf/bpf_dummy_struct_ops.c | 51 +++++++++++++++++++++++++++++++++-
- 1 file changed, 50 insertions(+), 1 deletion(-)
+ .../selftests/bpf/prog_tests/dummy_st_ops.c   | 27 +++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/net/bpf/bpf_dummy_struct_ops.c b/net/bpf/bpf_dummy_struct_ops.c
-index fdbe30ad8db2f..7236349cf0598 100644
---- a/net/bpf/bpf_dummy_struct_ops.c
-+++ b/net/bpf/bpf_dummy_struct_ops.c
-@@ -79,6 +79,51 @@ static int dummy_ops_call_op(void *image, struct bpf_dummy_ops_test_args *args)
- 		    args->args[3], args->args[4]);
+diff --git a/tools/testing/selftests/bpf/prog_tests/dummy_st_ops.c b/tools/testing/selftests/bpf/prog_tests/dummy_st_ops.c
+index dd926c00f4146..d3d94596ab79c 100644
+--- a/tools/testing/selftests/bpf/prog_tests/dummy_st_ops.c
++++ b/tools/testing/selftests/bpf/prog_tests/dummy_st_ops.c
+@@ -147,6 +147,31 @@ static void test_dummy_sleepable(void)
+ 	dummy_st_ops_success__destroy(skel);
  }
  
-+static const struct bpf_ctx_arg_aux *find_ctx_arg_info(struct bpf_prog_aux *aux, int offset)
-+{
-+	int i;
-+
-+	for (i = 0; i < aux->ctx_arg_info_size; i++)
-+		if (aux->ctx_arg_info[i].offset == offset)
-+			return &aux->ctx_arg_info[i];
-+
-+	return NULL;
-+}
-+
-+/* There is only one check at the moment:
-+ * - zero should not be passed for pointer parameters not marked as nullable.
++/* dummy_st_ops.test_sleepable() parameter is not marked as nullable,
++ * thus bpf_prog_test_run_opts() below should be rejected as it tries
++ * to pass NULL for this parameter.
 + */
-+static int check_test_run_args(struct bpf_prog *prog, struct bpf_dummy_ops_test_args *args)
++static void test_dummy_sleepable_reject_null(void)
 +{
-+	const struct btf_type *func_proto = prog->aux->attach_func_proto;
++	__u64 args[1] = {0};
++	LIBBPF_OPTS(bpf_test_run_opts, attr,
++		.ctx_in = args,
++		.ctx_size_in = sizeof(args),
++	);
++	struct dummy_st_ops_success *skel;
++	int fd, err;
 +
-+	for (u32 arg_no = 0; arg_no < btf_type_vlen(func_proto) ; ++arg_no) {
-+		const struct btf_param *param = &btf_params(func_proto)[arg_no];
-+		const struct bpf_ctx_arg_aux *info;
-+		const struct btf_type *t;
-+		int offset;
++	skel = dummy_st_ops_success__open_and_load();
++	if (!ASSERT_OK_PTR(skel, "dummy_st_ops_load"))
++		return;
 +
-+		if (args->args[arg_no] != 0)
-+			continue;
++	fd = bpf_program__fd(skel->progs.test_sleepable);
++	err = bpf_prog_test_run_opts(fd, &attr);
++	ASSERT_EQ(err, -EINVAL, "test_run");
 +
-+		/* Program is validated already, so there is no need
-+		 * to check if t is NULL.
-+		 */
-+		t = btf_type_skip_modifiers(bpf_dummy_ops_btf, param->type, NULL);
-+		if (!btf_type_is_ptr(t))
-+			continue;
-+
-+		offset = btf_ctx_arg_offset(bpf_dummy_ops_btf, func_proto, arg_no);
-+		info = find_ctx_arg_info(prog->aux, offset);
-+		if (info && (info->reg_type & PTR_MAYBE_NULL))
-+			continue;
-+
-+		return -EINVAL;
-+	}
-+
-+	return 0;
++	dummy_st_ops_success__destroy(skel);
 +}
 +
- extern const struct bpf_link_ops bpf_struct_ops_link_lops;
+ void test_dummy_st_ops(void)
+ {
+ 	if (test__start_subtest("dummy_st_ops_attach"))
+@@ -159,6 +184,8 @@ void test_dummy_st_ops(void)
+ 		test_dummy_multiple_args();
+ 	if (test__start_subtest("dummy_sleepable"))
+ 		test_dummy_sleepable();
++	if (test__start_subtest("dummy_sleepable_reject_null"))
++		test_dummy_sleepable_reject_null();
  
- int bpf_struct_ops_test_run(struct bpf_prog *prog, const union bpf_attr *kattr,
-@@ -87,7 +132,7 @@ int bpf_struct_ops_test_run(struct bpf_prog *prog, const union bpf_attr *kattr,
- 	const struct bpf_struct_ops *st_ops = &bpf_bpf_dummy_ops;
- 	const struct btf_type *func_proto;
- 	struct bpf_dummy_ops_test_args *args;
--	struct bpf_tramp_links *tlinks;
-+	struct bpf_tramp_links *tlinks = NULL;
- 	struct bpf_tramp_link *link = NULL;
- 	void *image = NULL;
- 	unsigned int op_idx;
-@@ -109,6 +154,10 @@ int bpf_struct_ops_test_run(struct bpf_prog *prog, const union bpf_attr *kattr,
- 	if (IS_ERR(args))
- 		return PTR_ERR(args);
- 
-+	err = check_test_run_args(prog, args);
-+	if (err)
-+		goto out;
-+
- 	tlinks = kcalloc(BPF_TRAMP_MAX, sizeof(*tlinks), GFP_KERNEL);
- 	if (!tlinks) {
- 		err = -ENOMEM;
+ 	RUN_TESTS(dummy_st_ops_fail);
+ }
 -- 
 2.43.0
 
