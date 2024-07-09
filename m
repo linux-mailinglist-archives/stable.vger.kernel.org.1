@@ -1,153 +1,139 @@
-Return-Path: <stable+bounces-58904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE76C92C164
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:58:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B362B92C16A
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:58:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 984541F21FA6
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:58:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4DEC1C21BA3
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B081B5E8A;
-	Tue,  9 Jul 2024 16:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317AD19E2DC;
+	Tue,  9 Jul 2024 16:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OkLIMt4f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1koOL3P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE55F1B5E7E;
-	Tue,  9 Jul 2024 16:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCC819E2DB;
+	Tue,  9 Jul 2024 16:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542438; cv=none; b=gRoxhLglfq0f83/hYxjIowqR00QtLDvJZMo0JWKbjjt9J3hksPhHPjezsiL3FCh6pKFqGrDMlzvkTnsHe5sulgq9Ia4uIurzSKhBfG7K9rH2zgqj18zOb4DOocDYEdmB/i3c7Go7Fvh1bxVRWjMuObi6B4uzSQRigMDvO2pNwZ0=
+	t=1720542449; cv=none; b=b3SVhdtjTjCiyALDsufOEk8jS198bq50fvLPKNVMn+ECdEgBU1iWBKxpkcr232EhAsik8N+aOmpFKLPH5c689Py+T9grph0HknHgFV98ObMxwbYUysX3y/8ujJdm3U2KMH2VtQw/M5AIxFccIcr3UBUf4/leEUgCOIIy92Leylo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542438; c=relaxed/simple;
-	bh=ubr99aWEZL6jVuZ6xodjzKe9mabwAiU7cCtUr7X+h+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rspUQuo6FEgcDT+bBBwMdXUmrHOzhrRhyz5JuIkQDA/MYQMjQU34t4ONeYH4wWsKjuxWqILz35+jbkW586MJyE/ea1HhD96mZy5W9/hbSQTpuSDWWUqGXMzrNCorJz8H/UWdg9ONRVPck0YS8Q4baEjzSnSwaxqOkKxGWRq8wgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OkLIMt4f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA76C32786;
-	Tue,  9 Jul 2024 16:27:16 +0000 (UTC)
+	s=arc-20240116; t=1720542449; c=relaxed/simple;
+	bh=imYIFxwQm9Tpqt9qP5Rzt36q+eNgduHDNVlWjY4Y8B8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I8VNksO9tApXI+pISppPsKJ8IUaVIF7QbekbVCY++NfIqgKRxuXTKdTL1Or2D+cWQiSwYyOf4srt8+LWwKoHEcpR6n86jCIJHVxSKrtptTZS9lCViW3Wkm8511AgI92m3rGw3sQT6bJUQeA8v2gbF/FtovBeDnEes941cpADsMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1koOL3P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4DE6C3277B;
+	Tue,  9 Jul 2024 16:27:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542437;
-	bh=ubr99aWEZL6jVuZ6xodjzKe9mabwAiU7cCtUr7X+h+s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OkLIMt4fY2xy+q2oMxaW8+ifBtmx3UHG3wRDlvf0eyT/xP0kT+NdlZyyS5PIiaEdu
-	 dIV3mL9tVo44AXjqcEJxI+XareB3Mjrlw+8TFsTTVwRzb4RiFQnK7cdE7UIrcFQj4d
-	 u8pgJyuu6sYZeHEfAb47EADDrGf6zPFeYXCkLlmLUDHjVo24cvAYZZ3B4g4SaX46Z1
-	 3653UxTVEMH37YXyF2vB/Z6F/LeAwbCViXotkqM9JlU36KPhk1V7zj24JHUbZC8XRA
-	 hr3cqkJIFSR6iqgDAMKN5kbBVJqhv2lnqqBaZ1LnTzjEOFdYSguQ+PtrDm3JejBvPL
-	 4yazM8sBiWMNQ==
+	s=k20201202; t=1720542448;
+	bh=imYIFxwQm9Tpqt9qP5Rzt36q+eNgduHDNVlWjY4Y8B8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=h1koOL3PQE07powVZFfrkSE2LTR7D8Nwkd8oD9su6rRxDUKRBkT6n66EfHd+eG5c6
+	 GrFd7c3h/cdvQ9A+D79fIA8uYm3+pQjiLpkqxMqVQvA+owxmTd6VEVTRcw/Fis0TGC
+	 3U0sF6l6m7e/i1aJcRET6MT8EvvE9V5UDGH5Z48nlknpcLW2hQwrE3THb/2qB/RLKN
+	 WqQ7BcFUcupkOYaPm2YPsMLUXDkG9b4nqKH9UMFZL7N3NuAiCuoVH3LEE2amyOmMGz
+	 RNlS+zioUOl4ACEFodZPQVOyp1pUJpnh5qHBdOYPvwbZxMCiDfhAVA/JSJyUov1pM6
+	 XxzN8OVWuZ3YQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Daniele Palmas <dnlplm@gmail.com>,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Jonathan Denose <jdenose@google.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 11/11] net: usb: qmi_wwan: add Telit FN912 compositions
-Date: Tue,  9 Jul 2024 12:26:44 -0400
-Message-ID: <20240709162654.33343-11-sashal@kernel.org>
+	jefferymiller@google.com,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 1/7] Input: elantech - fix touchpad state on resume for Lenovo N24
+Date: Tue,  9 Jul 2024 12:27:12 -0400
+Message-ID: <20240709162726.33610-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240709162654.33343-1-sashal@kernel.org>
-References: <20240709162654.33343-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.279
+X-stable-base: Linux 4.19.317
 Content-Transfer-Encoding: 8bit
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Jonathan Denose <jdenose@google.com>
 
-[ Upstream commit 77453e2b015b5ced5b3f45364dd5a72dfc3bdecb ]
+[ Upstream commit a69ce592cbe0417664bc5a075205aa75c2ec1273 ]
 
-Add the following Telit FN912 compositions:
+The Lenovo N24 on resume becomes stuck in a state where it
+sends incorrect packets, causing elantech_packet_check_v4 to fail.
+The only way for the device to resume sending the correct packets is for
+it to be disabled and then re-enabled.
 
-0x3000: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=3000 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN912
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+This change adds a dmi check to trigger this behavior on resume.
 
-0x3001: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
-T:  Bus=03 Lev=01 Prnt=03 Port=07 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=3001 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN912
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Acked-by: Bjørn Mork <bjorn@mork.no>
-Link: https://patch.msgid.link/20240625102236.69539-1-dnlplm@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jonathan Denose <jdenose@google.com>
+Link: https://lore.kernel.org/r/20240503155020.v2.1.Ifa0e25ebf968d8f307f58d678036944141ab17e6@changeid
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/input/mouse/elantech.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 7cad9850e6f15..17aa52ed892b5 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1334,6 +1334,8 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1260, 2)},	/* Telit LE910Cx */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1261, 2)},	/* Telit LE910Cx */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1900, 1)},	/* Telit LN940 series */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x3000, 0)},	/* Telit FN912 series */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x3001, 0)},	/* Telit FN912 series */
- 	{QMI_FIXED_INTF(0x1c9e, 0x9801, 3)},	/* Telewell TW-3G HSPA+ */
- 	{QMI_FIXED_INTF(0x1c9e, 0x9803, 4)},	/* Telewell TW-3G HSPA+ */
- 	{QMI_FIXED_INTF(0x1c9e, 0x9b01, 3)},	/* XS Stick W100-2 from 4G Systems */
+diff --git a/drivers/input/mouse/elantech.c b/drivers/input/mouse/elantech.c
+index 6759cab82a723..6f747c59cd652 100644
+--- a/drivers/input/mouse/elantech.c
++++ b/drivers/input/mouse/elantech.c
+@@ -1527,16 +1527,47 @@ static void elantech_disconnect(struct psmouse *psmouse)
+ 	psmouse->private = NULL;
+ }
+ 
++/*
++ * Some hw_version 4 models fail to properly activate absolute mode on
++ * resume without going through disable/enable cycle.
++ */
++static const struct dmi_system_id elantech_needs_reenable[] = {
++#if defined(CONFIG_DMI) && defined(CONFIG_X86)
++	{
++		/* Lenovo N24 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "81AF"),
++		},
++	},
++#endif
++	{ }
++};
++
+ /*
+  * Put the touchpad back into absolute mode when reconnecting
+  */
+ static int elantech_reconnect(struct psmouse *psmouse)
+ {
++	int err;
++
+ 	psmouse_reset(psmouse);
+ 
+ 	if (elantech_detect(psmouse, 0))
+ 		return -1;
+ 
++	if (dmi_check_system(elantech_needs_reenable)) {
++		err = ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_DISABLE);
++		if (err)
++			psmouse_warn(psmouse, "failed to deactivate mouse on %s: %d\n",
++				     psmouse->ps2dev.serio->phys, err);
++
++		err = ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_ENABLE);
++		if (err)
++			psmouse_warn(psmouse, "failed to reactivate mouse on %s: %d\n",
++				     psmouse->ps2dev.serio->phys, err);
++	}
++
+ 	if (elantech_set_absolute_mode(psmouse)) {
+ 		psmouse_err(psmouse,
+ 			    "failed to put touchpad back into absolute mode.\n");
 -- 
 2.43.0
 
