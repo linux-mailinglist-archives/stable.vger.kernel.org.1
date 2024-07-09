@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-58587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC42092B7BF
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C25F292B826
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:31:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 688B1285227
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C7A41F2177F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFCA156238;
-	Tue,  9 Jul 2024 11:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C313157E61;
+	Tue,  9 Jul 2024 11:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g00PHKSL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlhF9SdO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD45027713;
-	Tue,  9 Jul 2024 11:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AED355E4C;
+	Tue,  9 Jul 2024 11:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524391; cv=none; b=QvOwJRMMvG0GQF6dZe8QPWkxn3YvpjLvtljZDfafHVYxarDlrW5Y/M/wossLpzgQQ7XZ8WhUSLI9jNzP6vzEL3EkUZJbkp8kLK6YFKlKPr2982/cOYG1fnO2GqKDUWUdXMIljNmBA1evqUg0zolmjzK2o6T1P1j8zSHH3WWojUU=
+	t=1720524662; cv=none; b=ns9VW4BtVpQDt7Oh4F+wDtbfImdM7AtwPxPS6WC0TvMbrY66x4KDZnIQqi1w1K6lsLlszIKB5BM3FUbh9lF9SfFZ7DSNN7ynVQ7otdeQBhIY5NI19RHGu82H59xwKTvIZFyUJoMe9z3eNAGNaqd8W28y2U2iN3nEnVTaRNa9AFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524391; c=relaxed/simple;
-	bh=rVQi0oPcmmBahZgZK8WOjPU0N5EVXDt0lozT3IohROI=;
+	s=arc-20240116; t=1720524662; c=relaxed/simple;
+	bh=bqs3qgnsnjwFCFnphByjipu/lgLSxy+JTC23wufxBDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ti5UX4f8yZY+htkL2v65X55Lq3XKQ8ZvyIw79jZjBMoqeAXGqnKAnPCpjJmqz5UUFGLkfBlduK2vbPq0iJ2GvSYJzy6ZO2VJ9jO0l/7Vj2aRV6JKvz0ptuoWuIeyvwSl/BYdO0LwwnX+G8PuKPmiRL95zN0bI3UdZBM9G4MX/hU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g00PHKSL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FCDC3277B;
-	Tue,  9 Jul 2024 11:26:31 +0000 (UTC)
+	 MIME-Version; b=gtaaA7y/Azi9Fuu5ELzRWP2gYNMlnhn1PEuv7tPS/EDC5zRNqRsUwcxML+8eYcGOjeKwKeAk4tBu2xg2vKAn3pk6kf0CmIubaWGv18iDkR5g3KlEIMjhkaBStcSWqoYFUTLzCz2fxXvm/ZW4rcFO92W3O0AR+PMu+UveS27DNpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlhF9SdO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65C2C3277B;
+	Tue,  9 Jul 2024 11:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524391;
-	bh=rVQi0oPcmmBahZgZK8WOjPU0N5EVXDt0lozT3IohROI=;
+	s=korg; t=1720524662;
+	bh=bqs3qgnsnjwFCFnphByjipu/lgLSxy+JTC23wufxBDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g00PHKSLHOn88D/ex8CITAi02Sq6+P9m/mH61e3sMn5paA1WStq6axHZkD0ZTwc6T
-	 L5GmSlOSy/SbiwB7VwB0p0vc9QszkVGqtAiOt781+QvCI+edEwMOiCkZxQ9IQYRr2q
-	 8kv0lRP+JXeOggp51ZWznmBnFGFqApLmRmSDnrqY=
+	b=WlhF9SdOBUXfduCBV/wKR7kMbEIPHrlQI9lBEhj8wImp+5xNt13MiDYrUsCyyVCbw
+	 34+1qcmXTG1DznltxwsrNWsL9v/WWGurTE8b4BPpsCofqK4kyjutf3yKUKTY44yA/q
+	 LHrWwacMI1zqdqFgsBnez+l8fshnJPuqasIFqxXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinliang Zheng <alexjlzheng@tencent.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Tycho Andersen <tandersen@netflix.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 136/197] mm: optimize the redundant loop of mm_update_owner_next()
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 027/102] i2c: i801: Annotate apanel_addr as __ro_after_init
 Date: Tue,  9 Jul 2024 13:09:50 +0200
-Message-ID: <20240709110714.212618047@linuxfoundation.org>
+Message-ID: <20240709110652.424996580@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,52 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinliang Zheng <alexjlzheng@tencent.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit cf3f9a593dab87a032d2b6a6fb205e7f3de4f0a1 upstream.
+[ Upstream commit 355b1513b1e97b6cef84b786c6480325dfd3753d ]
 
-When mm_update_owner_next() is racing with swapoff (try_to_unuse()) or
-/proc or ptrace or page migration (get_task_mm()), it is impossible to
-find an appropriate task_struct in the loop whose mm_struct is the same as
-the target mm_struct.
+Annotate this variable as __ro_after_init to protect it from being
+overwritten later.
 
-If the above race condition is combined with the stress-ng-zombie and
-stress-ng-dup tests, such a long loop can easily cause a Hard Lockup in
-write_lock_irq() for tasklist_lock.
-
-Recognize this situation in advance and exit early.
-
-Link: https://lkml.kernel.org/r/20240620122123.3877432-1-alexjlzheng@tencent.com
-Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Tycho Andersen <tandersen@netflix.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/exit.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/i2c/busses/i2c-i801.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -488,6 +488,8 @@ retry:
- 	 * Search through everything else, we should not get here often.
- 	 */
- 	for_each_process(g) {
-+		if (atomic_read(&mm->mm_users) <= 1)
-+			break;
- 		if (g->flags & PF_KTHREAD)
- 			continue;
- 		for_each_thread(g, c) {
+diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
+index 1c970842624ba..208c7741bc681 100644
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -1057,7 +1057,7 @@ static const struct pci_device_id i801_ids[] = {
+ MODULE_DEVICE_TABLE(pci, i801_ids);
+ 
+ #if defined CONFIG_X86 && defined CONFIG_DMI
+-static unsigned char apanel_addr;
++static unsigned char apanel_addr __ro_after_init;
+ 
+ /* Scan the system ROM for the signature "FJKEYINF" */
+ static __init const void __iomem *bios_signature(const void __iomem *bios)
+-- 
+2.43.0
+
 
 
 
