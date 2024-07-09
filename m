@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0966C92B6BC
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 949FF92B80D
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A1951C21BF3
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FC871F21713
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7FD2158875;
-	Tue,  9 Jul 2024 11:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BFFE15884F;
+	Tue,  9 Jul 2024 11:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOBxPJwj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eErUk1az"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7789813A25F;
-	Tue,  9 Jul 2024 11:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E045C27713;
+	Tue,  9 Jul 2024 11:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523763; cv=none; b=BlWhVu2hrC+ohu/PHyw6ex1IClKc/3kayrlgxnqszPADrs+utm5+u6zoDN4xjCTQZkf4ZmpgN4DRsGMrYYt9FB5EiJbvYOAFs3qVQbqbGXaar6oVdCYoy9LB8+v8gIldQpT/WJy3JZ3G9raVHNe9mu89J8l+QVGukPmdLLqclmY=
+	t=1720524598; cv=none; b=Ec7+FUsrcBICZTX8qT+w+vlNJwPa9F/Q2441WP3qth0dBS5bha+4tl3uZEAPwxGT7n28qOSArq70QUboV2afyKF5dSLQ+NPeYdAZXikGBUZ3ptLTsOYdilZplaZB7zgr27aMvuKZaza8OmuoL0UCBrNb+fzqcxzff6KWYplQWBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523763; c=relaxed/simple;
-	bh=UpT1Td2H1r3jMq7Z/He0rCz4U26usen8xS3bo0/qFTc=;
+	s=arc-20240116; t=1720524598; c=relaxed/simple;
+	bh=zl9POF/y+KnZMRlFcQdjGVilot7LTgqV541w5StbgTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cX2MiHHmcSzUI6inq8ynVXckvmBRN8bAmA3xC04Li/fRVz6OdbCw7CiwrjbSw/vJfd5FTcQ9O+cHmv6aM0WmrxmfAs62shvdpx/qUSDlf7MWNXNRQdJ3NO1bhLsjMptfKqLVhMkUF/NIdIJyFNzwIduxKDjcjS9WAU7sa3NB888=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOBxPJwj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF5F9C32786;
-	Tue,  9 Jul 2024 11:16:02 +0000 (UTC)
+	 MIME-Version; b=QEAxJwWyrAME9FLu/5odRH4VUUUPCEM8VDEfMlzh5KXqrywOh2g7eG5ieb5n1oq/z+ldvWFbzUbhGPfqPD6Mr4WgT6xmVsD3Uko6kKiYaRvonVgQZTzbjo8oWa6SWCnVs5eeSps8bQw53Sq0Qco/P0c9hVhk99lzkLqtUfrkbQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eErUk1az; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6985AC3277B;
+	Tue,  9 Jul 2024 11:29:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523763;
-	bh=UpT1Td2H1r3jMq7Z/He0rCz4U26usen8xS3bo0/qFTc=;
+	s=korg; t=1720524597;
+	bh=zl9POF/y+KnZMRlFcQdjGVilot7LTgqV541w5StbgTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KOBxPJwj62kjaKFLXA+IutpiMQ+DnX9MYarPhL22nVf98nsAkdAHfg8mOQNbb2biV
-	 kMPsmLxLqfv0NKFNm+9qzk8n8A7qW9be6pSAPtJfMGQLXj7xx+2yCib8N8IaWh5BiK
-	 SdpDtp6+XqjzhM++30C2hfftDR2YAc44Ujx68Nfs=
+	b=eErUk1azGG+OPkreD/OkZn9+u2w9t9taoLmbIXYzc1S66Ldndp+Qo25U+9F2rZz07
+	 KpUL9uNXyhEeDCZ4ZN67nhzi6e6wZKtGNRqvF+Req5W+301Qnkt8Wggtdntjzwirgh
+	 eI7FwnSCqn6aeoRP0G7kznTz7/5xjJSgk4cUKNpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 100/139] fsnotify: Do not generate events for O_PATH file descriptors
+	Michael Krummsdorf <michael.krummsdorf@tq-group.com>,
+	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 037/102] serial: imx: Raise TX trigger level to 8
 Date: Tue,  9 Jul 2024 13:10:00 +0200
-Message-ID: <20240709110702.043743375@linuxfoundation.org>
+Message-ID: <20240709110652.816142083@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 
-commit 702eb71fd6501b3566283f8c96d7ccc6ddd662e9 upstream.
+[ Upstream commit a3d8728ab079951741efa11360df43dbfacba7ab ]
 
-Currently we will not generate FS_OPEN events for O_PATH file
-descriptors but we will generate FS_CLOSE events for them. This is
-asymmetry is confusing. Arguably no fsnotify events should be generated
-for O_PATH file descriptors as they cannot be used to access or modify
-file content, they are just convenient handles to file objects like
-paths. So fix the asymmetry by stopping to generate FS_CLOSE for O_PATH
-file descriptors.
+At the default TX trigger level of 2 in non-DMA mode (meaning that an
+interrupt is generated when less than 2 characters are left in the
+FIFO), we have observed frequent buffer underruns at 115200 Baud on an
+i.MX8M Nano. This can cause communication issues if the receiving side
+expects a continuous transfer.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240617162303.1596-1-jack@suse.cz
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Increasing the level to 8 makes the UART trigger an interrupt earlier,
+giving the kernel enough time to refill the FIFO, at the cost of
+triggering one interrupt per ~24 instead of ~30 bytes of transmitted
+data (as the i.MX UART has a 32 byte FIFO).
+
+Signed-off-by: Michael Krummsdorf <michael.krummsdorf@tq-group.com>
+Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20240508133744.35858-1-matthias.schiffer@ew.tq-group.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/fsnotify.h |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/tty/serial/imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/fsnotify.h
-+++ b/include/linux/fsnotify.h
-@@ -93,7 +93,13 @@ static inline int fsnotify_file(struct f
- {
- 	const struct path *path;
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index 40e59e72d5e9e..5acbab0512b82 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -1303,7 +1303,7 @@ static void imx_uart_clear_rx_errors(struct imx_port *sport)
  
--	if (file->f_mode & FMODE_NONOTIFY)
-+	/*
-+	 * FMODE_NONOTIFY are fds generated by fanotify itself which should not
-+	 * generate new events. We also don't want to generate events for
-+	 * FMODE_PATH fds (involves open & close events) as they are just
-+	 * handle creation / destruction events and not "real" file events.
-+	 */
-+	if (file->f_mode & (FMODE_NONOTIFY | FMODE_PATH))
- 		return 0;
+ }
  
- 	/* Overlayfs internal files have fake f_path */
+-#define TXTL_DEFAULT 2 /* reset default */
++#define TXTL_DEFAULT 8
+ #define RXTL_DEFAULT 8 /* 8 characters or aging timer */
+ #define TXTL_DMA 8 /* DMA burst setting */
+ #define RXTL_DMA 9 /* DMA burst setting */
+-- 
+2.43.0
+
 
 
 
