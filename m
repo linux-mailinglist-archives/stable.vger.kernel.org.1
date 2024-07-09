@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-58512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8514492B768
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F00DB92B66F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:13:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AB3C1F21B8C
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D34C1C21EE4
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191D0158201;
-	Tue,  9 Jul 2024 11:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE971581E3;
+	Tue,  9 Jul 2024 11:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJ5LzkVc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hD6OdmrQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA44113A25F;
-	Tue,  9 Jul 2024 11:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298DC155389;
+	Tue,  9 Jul 2024 11:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524163; cv=none; b=uWkfZzcwDNiCO0NEujQnLz/TVGJPlL8KKzaYbAx7Ji51Q8ZR3S9rmAauSSKDi7rUXwhUrHfB5ygZxy6v+HHlLxwZB2C8QU6KRS43CAzrdtpCBKkwFeQ2qpbLhB8uart2twlVjBeq+0VCptlOLnktKq66dweJkhQZYIZ7x8ZeQig=
+	t=1720523608; cv=none; b=K7Z08NGetTnU7lwppC7Gu6PlqpzUEw4zrP7JkRb3GN3f1307OB0q537/cl1F9a7jiqoA+f+Q2w8dYk0aqizuOn1HwN9l3O399pWwH6bclE3lUSUFBxz0/xBrRGoaQ9M9mc2u+AkOxiF2DrhoiW/j7nndmhKUt222J8C+GEg4Ks8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524163; c=relaxed/simple;
-	bh=FeBCMPBAl6jnTtTJAyJ+t5iAtb2iMcLYPo9UPpibQ/o=;
+	s=arc-20240116; t=1720523608; c=relaxed/simple;
+	bh=JaMH7pB4pPx/BA7MdwlTUz+oNvyJzsHlleNTmF6kom8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FjRIFnWkAmNSjnIg26Ggmdk3cexZVq2z9k2Ak+7ysuBPLNyt9JvKkVFcL27OcpPe+1+CYS3l4J29MW4FKD/puBalEVXpcEE1hO9u3usPu1Pk4tEQyb9Pt+VVtTrErg1IliDMTrCNCnTkDL4b+/293s70/QJ8JqZETB6lPoYgKIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJ5LzkVc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 505B2C3277B;
-	Tue,  9 Jul 2024 11:22:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ym1mmvG6k43BuVlNSG379S24xKeXcN5vLOOvbaCAmewMg37bSaQEK82Wx9ZcR92V20WHknKwkqdhZUcHub1F0j0ywllXQHCcThEkGp7i+hFSCaxN/VsFeKuB1FY42MWISSw1nE1TZp/ib9bi0VTF3Jd+o3If1tDltxcTndUVFMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hD6OdmrQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2145C32786;
+	Tue,  9 Jul 2024 11:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524163;
-	bh=FeBCMPBAl6jnTtTJAyJ+t5iAtb2iMcLYPo9UPpibQ/o=;
+	s=korg; t=1720523608;
+	bh=JaMH7pB4pPx/BA7MdwlTUz+oNvyJzsHlleNTmF6kom8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJ5LzkVcolqWQKWWi38iCyOcTe0D/2A28N9TnyMVUtTxYRfbOouY1bsosHrW4VxD8
-	 6T7xygm2csAiJrfizrf+RPJJl6hHQTPK10L0A+pytEvOCgG7/y47zOYeSXkrhjfLtM
-	 NKw5Ud6h5DYDIu9qvXMBtV/3r0XSdV1iDiSyDiwM=
+	b=hD6OdmrQMieid6qNQXJlPdlvrvwFDSt5eR+EzbXtXJwdNAnsmRyWfd9uAqPOvt66l
+	 Kx8x7JGgIPxjOU5Ls56AxJgSdsrybTdkz6XoUZt/t1pt0OmuZ2VxPYeSF9VWHAsKWt
+	 znucIFCVfNHZNk/7LbKta89EYVpqrGM5zjEXevsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Greg Kurz <groug@kaod.org>,
-	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Ma Jun <Jun.Ma2@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 064/197] powerpc/xmon: Check cpu id in commands "c#", "dp#" and "dx#"
-Date: Tue,  9 Jul 2024 13:08:38 +0200
-Message-ID: <20240709110711.439884302@linuxfoundation.org>
+Subject: [PATCH 6.6 019/139] drm/amdgpu: Initialize timestamp for some legacy SOCs
+Date: Tue,  9 Jul 2024 13:08:39 +0200
+Message-ID: <20240709110658.905966127@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +64,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kurz <groug@kaod.org>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit 8873aab8646194a4446117bb617cc71bddda2dee ]
+[ Upstream commit 2e55bcf3d742a4946d862b86e39e75a95cc6f1c0 ]
 
-All these commands end up peeking into the PACA using the user
-originated cpu id as an index. Check the cpu id is valid in order
-to prevent xmon to crash. Instead of printing an error, this follows
-the same behavior as the "lp s #" command : ignore the buggy cpu id
-parameter and fall back to the #-less version of the command.
+Initialize the interrupt timestamp for some legacy SOCs
+to fix the coverity issue "Uninitialized scalar variable"
 
-Signed-off-by: Greg Kurz <groug@kaod.org>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/161531347060.252863.10490063933688958044.stgit@bahia.lan
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/xmon/xmon.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index d79d6633f3336..bd4813bad317e 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -1350,7 +1350,7 @@ static int cpu_cmd(void)
- 	}
- 	termch = cpu;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c
+index fa6d0adcec206..5978edf7ea71e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c
+@@ -438,6 +438,14 @@ void amdgpu_irq_dispatch(struct amdgpu_device *adev,
  
--	if (!scanhex(&cpu)) {
-+	if (!scanhex(&cpu) || cpu >= num_possible_cpus()) {
- 		/* print cpus waiting or in xmon */
- 		printf("cpus stopped:");
- 		last_cpu = first_cpu = NR_CPUS;
-@@ -2772,7 +2772,7 @@ static void dump_pacas(void)
+ 	entry.ih = ih;
+ 	entry.iv_entry = (const uint32_t *)&ih->ring[ring_index];
++
++	/*
++	 * timestamp is not supported on some legacy SOCs (cik, cz, iceland,
++	 * si and tonga), so initialize timestamp and timestamp_src to 0
++	 */
++	entry.timestamp = 0;
++	entry.timestamp_src = 0;
++
+ 	amdgpu_ih_decode_iv(adev, &entry);
  
- 	termch = c;	/* Put c back, it wasn't 'a' */
- 
--	if (scanhex(&num))
-+	if (scanhex(&num) && num < num_possible_cpus())
- 		dump_one_paca(num);
- 	else
- 		dump_one_paca(xmon_owner);
-@@ -2845,7 +2845,7 @@ static void dump_xives(void)
- 
- 	termch = c;	/* Put c back, it wasn't 'a' */
- 
--	if (scanhex(&num))
-+	if (scanhex(&num) && num < num_possible_cpus())
- 		dump_one_xive(num);
- 	else
- 		dump_one_xive(xmon_owner);
+ 	trace_amdgpu_iv(ih - &adev->irq.ih, &entry);
 -- 
 2.43.0
 
