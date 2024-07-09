@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-58635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE3692B7F5
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:29:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C391292B6B9
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C897C284C52
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:29:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EE782825F8
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:16:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5963C1586C9;
-	Tue,  9 Jul 2024 11:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3204B158D78;
+	Tue,  9 Jul 2024 11:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jqnzuogg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rWgt8SCJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179DD158201;
-	Tue,  9 Jul 2024 11:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E306C158875;
+	Tue,  9 Jul 2024 11:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524539; cv=none; b=fzJBF2+PERkPs1mMxI7kQGmGNeyPXJPa34O+QwIFfGyIuIjPbjmWCf9PtTbxk/tAXGYXHR84nhfHsNqnpyPxY/ARLmRNirq0bdfD1QdUxlo1avvbcZgwSwO/Hh17dFsA6okvHDHMsOnbHn2xISr4XMY0oFgNnfyIcnC0jCfG1Ug=
+	t=1720523758; cv=none; b=FOsHU8BSqaLOfJrkkqzVG45rxOsfjx1xiFo0Yix++1iZi6zqnsjRZepfTl+P0lyP0kd18tE3ETpPps+T7QgkTWXJyR3GzHirUvMTwD2oj3bpKhCBYm5XgyTn+SS/3HiSKZKN6U2FlsV8EqyDbTnCLC49+uVSB2+puQe8zEF18VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524539; c=relaxed/simple;
-	bh=EJiGuGyJ4aRzoiFhAqPKq2PO+cz1NQp7DFSY3BMTlBY=;
+	s=arc-20240116; t=1720523758; c=relaxed/simple;
+	bh=zYtDnhY2OzeEAceTkKGXJi39q1h6XpYDrzOicOkzF1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=entdhNsegpmGkNUxu3Kpc2/G14kSmFTbdbT9Q2R2lDdZA8Ja9BRT2sVnwlASluvdzYmEQ4fGYUcFYfANH4pWsGVdy7Yo70d/bLzRTy9O4ActOnJpv6vCnMvMED7uL9kf8esAyeipfixwiHLKOzCO3OwDgBdOzJ2Foi/nz4imkaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jqnzuogg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A18CC3277B;
-	Tue,  9 Jul 2024 11:28:58 +0000 (UTC)
+	 MIME-Version; b=H5V1AmM6m/0BoHbvjwND1amrc+JIgZEKkM8E8DlvPODYiuYh26Mb2ldJo0OYscVrnMNdqPnMWK1MYnmSTeE5gdNGWhQQxbxGXb4fbCdp8ELzduqIixjQyb8FRfyshT8Xm7e7hs9eY3wxBHlJUie/hSoLOnqpfFCxDeVO3EHyJgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rWgt8SCJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B5FFC3277B;
+	Tue,  9 Jul 2024 11:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524538;
-	bh=EJiGuGyJ4aRzoiFhAqPKq2PO+cz1NQp7DFSY3BMTlBY=;
+	s=korg; t=1720523757;
+	bh=zYtDnhY2OzeEAceTkKGXJi39q1h6XpYDrzOicOkzF1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jqnzuogg2WRX2ES9rgTTgDTsmw7at4fhufwIbt77TV11qyGlrPOfpf2rFOsj70ibR
-	 bLcPgGRKs5Iff8yXKokkUbwzJyHW4pvRaWWTk/2liiAnP0Ndlxa4U3HYD65c2Vv+IV
-	 BR22STg8s82IDtI+RzrUQteCEtzmLuerO6wArJA0=
+	b=rWgt8SCJzt4Q0OPOptE8yJYHCwmzFbvDr7NP3nAzRTVjiv3r16EjsmFrdlSmQKHZz
+	 dsKNjWHOG2fxvSAiWG5Mo/sHQe0q++3kml43k9mMN+wDJsB8rmB/dW9rWnLD1AAG8G
+	 9SSXRTzPHtUT0k/sGyxmYsf171EOegpOgpdqnkKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bunk <micha@freedict.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Yue Sun <samsun1006219@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jay Vosburgh <jay.vosburgh@canonical.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 017/102] media: dw2102: Dont translate i2c read into write
-Date: Tue,  9 Jul 2024 13:09:40 +0200
-Message-ID: <20240709110652.040462012@linuxfoundation.org>
+Subject: [PATCH 6.6 081/139] bonding: Fix out-of-bounds read in bond_option_arp_ip_targets_set()
+Date: Tue,  9 Jul 2024 13:09:41 +0200
+Message-ID: <20240709110701.306878512@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,199 +65,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bunk <micha@freedict.org>
+From: Sam Sun <samsun1006219@gmail.com>
 
-[ Upstream commit 0e148a522b8453115038193e19ec7bea71403e4a ]
+[ Upstream commit e271ff53807e8f2c628758290f0e499dbe51cb3d ]
 
-The code ignored the I2C_M_RD flag on I2C messages.  Instead it assumed
-an i2c transaction with a single message must be a write operation and a
-transaction with two messages would be a read operation.
+In function bond_option_arp_ip_targets_set(), if newval->string is an
+empty string, newval->string+1 will point to the byte after the
+string, causing an out-of-bound read.
 
-Though this works for the driver code, it leads to problems once the i2c
-device is exposed to code not knowing this convention.  For example,
-I did "insmod i2c-dev" and issued read requests from userspace, which
-were translated into write requests and destroyed the EEPROM of my
-device.
+BUG: KASAN: slab-out-of-bounds in strlen+0x7d/0xa0 lib/string.c:418
+Read of size 1 at addr ffff8881119c4781 by task syz-executor665/8107
+CPU: 1 PID: 8107 Comm: syz-executor665 Not tainted 6.7.0-rc7 #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xd9/0x150 lib/dump_stack.c:106
+ print_address_description mm/kasan/report.c:364 [inline]
+ print_report+0xc1/0x5e0 mm/kasan/report.c:475
+ kasan_report+0xbe/0xf0 mm/kasan/report.c:588
+ strlen+0x7d/0xa0 lib/string.c:418
+ __fortify_strlen include/linux/fortify-string.h:210 [inline]
+ in4_pton+0xa3/0x3f0 net/core/utils.c:130
+ bond_option_arp_ip_targets_set+0xc2/0x910
+drivers/net/bonding/bond_options.c:1201
+ __bond_opt_set+0x2a4/0x1030 drivers/net/bonding/bond_options.c:767
+ __bond_opt_set_notify+0x48/0x150 drivers/net/bonding/bond_options.c:792
+ bond_opt_tryset_rtnl+0xda/0x160 drivers/net/bonding/bond_options.c:817
+ bonding_sysfs_store_option+0xa1/0x120 drivers/net/bonding/bond_sysfs.c:156
+ dev_attr_store+0x54/0x80 drivers/base/core.c:2366
+ sysfs_kf_write+0x114/0x170 fs/sysfs/file.c:136
+ kernfs_fop_write_iter+0x337/0x500 fs/kernfs/file.c:334
+ call_write_iter include/linux/fs.h:2020 [inline]
+ new_sync_write fs/read_write.c:491 [inline]
+ vfs_write+0x96a/0xd80 fs/read_write.c:584
+ ksys_write+0x122/0x250 fs/read_write.c:637
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x40/0x110 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+---[ end trace ]---
 
-So, just check and respect the I2C_M_READ flag, which indicates a read
-when set on a message.  If it is absent, it is a write message.
+Fix it by adding a check of string length before using it.
 
-Incidentally, changing from the case statement to a while loop allows
-the code to lift the limitation to two i2c messages per transaction.
-
-There are 4 more *_i2c_transfer functions affected by the same behaviour
-and limitation that should be fixed in the same way.
-
-Link: https://lore.kernel.org/linux-media/20220116112238.74171-2-micha@freedict.org
-Signed-off-by: Michael Bunk <micha@freedict.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: f9de11a16594 ("bonding: add ip checks when store ip target")
+Signed-off-by: Yue Sun <samsun1006219@gmail.com>
+Signed-off-by: Simon Horman <horms@kernel.org>
+Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20240702-bond-oob-v6-1-2dfdba195c19@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb/dw2102.c | 120 ++++++++++++++++++-----------
- 1 file changed, 73 insertions(+), 47 deletions(-)
+ drivers/net/bonding/bond_options.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/usb/dvb-usb/dw2102.c b/drivers/media/usb/dvb-usb/dw2102.c
-index 356fc728d59a8..0da3e83389d7a 100644
---- a/drivers/media/usb/dvb-usb/dw2102.c
-+++ b/drivers/media/usb/dvb-usb/dw2102.c
-@@ -716,6 +716,7 @@ static int su3000_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- {
- 	struct dvb_usb_device *d = i2c_get_adapdata(adap);
- 	struct dw2102_state *state;
-+	int j;
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+index f3f27f0bd2a6c..00a662f8edd6b 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -1198,9 +1198,9 @@ static int bond_option_arp_ip_targets_set(struct bonding *bond,
+ 	__be32 target;
  
- 	if (!d)
- 		return -ENODEV;
-@@ -729,11 +730,11 @@ static int su3000_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 		return -EAGAIN;
- 	}
- 
--	switch (num) {
--	case 1:
--		switch (msg[0].addr) {
-+	j = 0;
-+	while (j < num) {
-+		switch (msg[j].addr) {
- 		case SU3000_STREAM_CTRL:
--			state->data[0] = msg[0].buf[0] + 0x36;
-+			state->data[0] = msg[j].buf[0] + 0x36;
- 			state->data[1] = 3;
- 			state->data[2] = 0;
- 			if (dvb_usb_generic_rw(d, state->data, 3,
-@@ -745,61 +746,86 @@ static int su3000_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 			if (dvb_usb_generic_rw(d, state->data, 1,
- 					state->data, 2, 0) < 0)
- 				err("i2c transfer failed.");
--			msg[0].buf[1] = state->data[0];
--			msg[0].buf[0] = state->data[1];
-+			msg[j].buf[1] = state->data[0];
-+			msg[j].buf[0] = state->data[1];
- 			break;
- 		default:
--			if (3 + msg[0].len > sizeof(state->data)) {
--				warn("i2c wr: len=%d is too big!\n",
--				     msg[0].len);
-+			/* if the current write msg is followed by a another
-+			 * read msg to/from the same address
-+			 */
-+			if ((j+1 < num) && (msg[j+1].flags & I2C_M_RD) &&
-+			    (msg[j].addr == msg[j+1].addr)) {
-+				/* join both i2c msgs to one usb read command */
-+				if (4 + msg[j].len > sizeof(state->data)) {
-+					warn("i2c combined wr/rd: write len=%d is too big!\n",
-+					    msg[j].len);
-+					num = -EOPNOTSUPP;
-+					break;
-+				}
-+				if (1 + msg[j+1].len > sizeof(state->data)) {
-+					warn("i2c combined wr/rd: read len=%d is too big!\n",
-+					    msg[j+1].len);
-+					num = -EOPNOTSUPP;
-+					break;
-+				}
-+
-+				state->data[0] = 0x09;
-+				state->data[1] = msg[j].len;
-+				state->data[2] = msg[j+1].len;
-+				state->data[3] = msg[j].addr;
-+				memcpy(&state->data[4], msg[j].buf, msg[j].len);
-+
-+				if (dvb_usb_generic_rw(d, state->data, msg[j].len + 4,
-+					state->data, msg[j+1].len + 1, 0) < 0)
-+					err("i2c transfer failed.");
-+
-+				memcpy(msg[j+1].buf, &state->data[1], msg[j+1].len);
-+				j++;
-+				break;
-+			}
-+
-+			if (msg[j].flags & I2C_M_RD) {
-+				/* single read */
-+				if (1 + msg[j].len > sizeof(state->data)) {
-+					warn("i2c rd: len=%d is too big!\n", msg[j].len);
-+					num = -EOPNOTSUPP;
-+					break;
-+				}
-+
-+				state->data[0] = 0x09;
-+				state->data[1] = 0;
-+				state->data[2] = msg[j].len;
-+				state->data[3] = msg[j].addr;
-+				memcpy(&state->data[4], msg[j].buf, msg[j].len);
-+
-+				if (dvb_usb_generic_rw(d, state->data, 4,
-+					state->data, msg[j].len + 1, 0) < 0)
-+					err("i2c transfer failed.");
-+
-+				memcpy(msg[j].buf, &state->data[1], msg[j].len);
-+				break;
-+			}
-+
-+			/* single write */
-+			if (3 + msg[j].len > sizeof(state->data)) {
-+				warn("i2c wr: len=%d is too big!\n", msg[j].len);
- 				num = -EOPNOTSUPP;
- 				break;
- 			}
- 
--			/* always i2c write*/
- 			state->data[0] = 0x08;
--			state->data[1] = msg[0].addr;
--			state->data[2] = msg[0].len;
-+			state->data[1] = msg[j].addr;
-+			state->data[2] = msg[j].len;
- 
--			memcpy(&state->data[3], msg[0].buf, msg[0].len);
-+			memcpy(&state->data[3], msg[j].buf, msg[j].len);
- 
--			if (dvb_usb_generic_rw(d, state->data, msg[0].len + 3,
-+			if (dvb_usb_generic_rw(d, state->data, msg[j].len + 3,
- 						state->data, 1, 0) < 0)
- 				err("i2c transfer failed.");
-+		} // switch
-+		j++;
- 
--		}
--		break;
--	case 2:
--		/* always i2c read */
--		if (4 + msg[0].len > sizeof(state->data)) {
--			warn("i2c rd: len=%d is too big!\n",
--			     msg[0].len);
--			num = -EOPNOTSUPP;
--			break;
--		}
--		if (1 + msg[1].len > sizeof(state->data)) {
--			warn("i2c rd: len=%d is too big!\n",
--			     msg[1].len);
--			num = -EOPNOTSUPP;
--			break;
--		}
--
--		state->data[0] = 0x09;
--		state->data[1] = msg[0].len;
--		state->data[2] = msg[1].len;
--		state->data[3] = msg[0].addr;
--		memcpy(&state->data[4], msg[0].buf, msg[0].len);
--
--		if (dvb_usb_generic_rw(d, state->data, msg[0].len + 4,
--					state->data, msg[1].len + 1, 0) < 0)
--			err("i2c transfer failed.");
--
--		memcpy(msg[1].buf, &state->data[1], msg[1].len);
--		break;
--	default:
--		warn("more than 2 i2c messages at a time is not handled yet.");
--		break;
--	}
-+	} // while
- 	mutex_unlock(&d->data_mutex);
- 	mutex_unlock(&d->i2c_mutex);
- 	return num;
+ 	if (newval->string) {
+-		if (!in4_pton(newval->string+1, -1, (u8 *)&target, -1, NULL)) {
+-			netdev_err(bond->dev, "invalid ARP target %pI4 specified\n",
+-				   &target);
++		if (strlen(newval->string) < 1 ||
++		    !in4_pton(newval->string + 1, -1, (u8 *)&target, -1, NULL)) {
++			netdev_err(bond->dev, "invalid ARP target specified\n");
+ 			return ret;
+ 		}
+ 		if (newval->string[0] == '+')
 -- 
 2.43.0
 
