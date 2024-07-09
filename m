@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-58594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0874692B7C6
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0525E92B6D9
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75601B21C63
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93E7BB21A16
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E72157485;
-	Tue,  9 Jul 2024 11:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538AD158A09;
+	Tue,  9 Jul 2024 11:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiT+8VS6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWL84fPC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DB127713;
-	Tue,  9 Jul 2024 11:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07198158A07;
+	Tue,  9 Jul 2024 11:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524412; cv=none; b=HcqnGLzYNJH8/JR+asvXoUgn0cDUu2oRY58BC9WY0dlHoD6zp+NxK44a4+qDwOEXVVpr/rtheXVxjYKK5agT3JWuQe4tXK4yT8vvBF1q1qb+vntRJFU9TVeYhO6klBD4CAV/lBgQ4jfKy+suNn74y067HPHlSQ11drAlSo++2L8=
+	t=1720523848; cv=none; b=Nh2M2iMP/sihXUVSaDybZXeljaGDD5n3oDtZPt77SOc22O75OELESpQIn7R/8ctblHjNHkC1TyUTYc5teGNlKnUGyy5jOVonwnuwvEQs0MTJRBEcQJF2jOksG10miCMXp7EvNP2rQ2RTBt7iTBViGo4i4pirvmVVygB7BC4tS40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524412; c=relaxed/simple;
-	bh=Qp+erhX8cMtfd2io5P1AUSHesz337EhuoCfXnxP597k=;
+	s=arc-20240116; t=1720523848; c=relaxed/simple;
+	bh=Ypty6Y9OTeNnBxIm3pD/fA7rPpKTXleDNxb/KQA1B94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IFq0qQkOKOI++XAkSMu7NwYtia68xmDUBOUs0MLrtncfzScFlgvvTm4nuYYrDNhCuXhV+YygK/axCidijRXSJbO6OOfEFeMYWupIcnMCXGRTpOeugcbeB1W2rJN08BLQQpvskzvAsFhmWD4CZ8cqeNky327dt69w9A6hj6ikQUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiT+8VS6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18259C3277B;
-	Tue,  9 Jul 2024 11:26:51 +0000 (UTC)
+	 MIME-Version; b=kMqZlqYGZfiLROHV72UUUAakkuGFt/MAysb2y0FatV+3m3HdsGZzQZ/w3jLqGzr0z4sbUe0KeTQoz37yDZf7ohFw9RxWZskW1YZj6Ub/EmktfbEF0oYx6ZNBSX/UXBsW4Y15P4AIiI0pepYykihyrd+EOtKlK6T/ftgfHGqET0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWL84fPC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825F3C3277B;
+	Tue,  9 Jul 2024 11:17:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524412;
-	bh=Qp+erhX8cMtfd2io5P1AUSHesz337EhuoCfXnxP597k=;
+	s=korg; t=1720523847;
+	bh=Ypty6Y9OTeNnBxIm3pD/fA7rPpKTXleDNxb/KQA1B94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tiT+8VS6hc8rHNL24OGqWaajNvys0qdAv2SEjqa+0sBUzWYwLt16Fj1NSTef8uxJx
-	 pwNMZgSYccp32uUQaiNajk65r5o2bSlMX5Q8HXlaPwS+Ye0s00p/cwdbm779fBrQGd
-	 pSf8qA4grtDujbFgDcMj4zrvzkzaz33oJ6cC5xII=
+	b=tWL84fPCC0PSZXGap/oK7YZosVFqTnwNbgUwdRWVt/PubgyTjTWpuHRvYfpP8tBeg
+	 ce+4I8HzJuFwtEaRTzRuUpRouh0mPXfAf4IHTyi7bFjpUPh/86NoUH6RUV9tui9LAY
+	 2W2BXuvmugESCDiAL5JCPdkSKlXSJpKWf2RKKcgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Kundan Kumar <kundan.kumar@samsung.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 174/197] fs/ntfs3: Mark volume as dirty if xattr is broken
+Subject: [PATCH 6.6 128/139] nvme: adjust multiples of NVME_CTRL_PAGE_SIZE in offset
 Date: Tue,  9 Jul 2024 13:10:28 +0200
-Message-ID: <20240709110715.681688765@linuxfoundation.org>
+Message-ID: <20240709110703.115732440@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Kundan Kumar <kundan.kumar@samsung.com>
 
-[ Upstream commit 24f6f5020b0b2c89c2cba5ec224547be95f753ee ]
+[ Upstream commit 1bd293fcf3af84674e82ed022c049491f3768840 ]
 
-Mark a volume as corrupted if the name length exceeds the space
-occupied by ea.
+bio_vec start offset may be relatively large particularly when large
+folio gets added to the bio. A bigger offset will result in avoiding the
+single-segment mapping optimization and end up using expensive
+mempool_alloc further.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Rather than using absolute value, adjust bv_offset by
+NVME_CTRL_PAGE_SIZE while checking if segment can be fitted into one/two
+PRP entries.
+
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/xattr.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/xattr.c b/fs/ntfs3/xattr.c
-index 53e7d1fa036aa..73785dece7a7f 100644
---- a/fs/ntfs3/xattr.c
-+++ b/fs/ntfs3/xattr.c
-@@ -219,8 +219,11 @@ static ssize_t ntfs_list_ea(struct ntfs_inode *ni, char *buffer,
- 		if (!ea->name_len)
- 			break;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 8d5ed4cb35d96..710fd4d862520 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -778,7 +778,8 @@ static blk_status_t nvme_map_data(struct nvme_dev *dev, struct request *req,
+ 		struct bio_vec bv = req_bvec(req);
  
--		if (ea->name_len > ea_size)
-+		if (ea->name_len > ea_size) {
-+			ntfs_set_state(ni->mi.sbi, NTFS_DIRTY_ERROR);
-+			err = -EINVAL; /* corrupted fs */
- 			break;
-+		}
+ 		if (!is_pci_p2pdma_page(bv.bv_page)) {
+-			if (bv.bv_offset + bv.bv_len <= NVME_CTRL_PAGE_SIZE * 2)
++			if ((bv.bv_offset & (NVME_CTRL_PAGE_SIZE - 1)) +
++			     bv.bv_len <= NVME_CTRL_PAGE_SIZE * 2)
+ 				return nvme_setup_prp_simple(dev, req,
+ 							     &cmnd->rw, &bv);
  
- 		if (buffer) {
- 			/* Check if we can use field ea->name */
 -- 
 2.43.0
 
