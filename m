@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-58721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 188B292B854
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:33:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4504492B7E5
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:28:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B68FA1F2269D
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:33:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7607C1C2357A
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC54157485;
-	Tue,  9 Jul 2024 11:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA764156C73;
+	Tue,  9 Jul 2024 11:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lU7lA5t4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8WYgsiA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8BE12CDB6;
-	Tue,  9 Jul 2024 11:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB5C27713;
+	Tue,  9 Jul 2024 11:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524792; cv=none; b=qij5lTGpfrtIzEGsLyfckrrtlBzxyRe9afZaJlgCU4EGaQvEfkZDT+s+xqfuriWm3dQO3C26uvwR0BWUnh0ePrYdpL/uhi5YMiYcvTeyar/BpY8OUV5tU+L9t95Fmadbl5aHa+Hp3MXfyb7jIaUoukjqnz/mR5RL1HnwJ5kTlcI=
+	t=1720524506; cv=none; b=D+MzHLlnrRFNu7gYZiz+d4eMyzCw3wWV90742VC/39jpPG6Z9jQCPDfl7OOHmp3Y7m2kloJa8/8dMbvz3HGGQBgOuTf9gDPWx2jNAgeNMbDudQ9aAZhLeRMUuQ1yuh1XCAAflW6epgPSYKGkvKIQG07yd2rfa+bumZ40IdOPUWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524792; c=relaxed/simple;
-	bh=3vbQml/qHuQxs+L/zU4umPLpXkoolgHQhNZfp/DzX7c=;
+	s=arc-20240116; t=1720524506; c=relaxed/simple;
+	bh=u2ijWq7ASD5+el7QgL7WH6AwR2Ha+DWslgZ45vpSiM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f32yjno2dOhV7dMsC+6S4RZG4d/d6ModiUchzOoUH8hDgyggkou3gFR2MBbWSV9XtfXL5Cnu1Rj3eeSqm5OlB1fgHhD0WB5c1Ja+zifavJzsThwqjsN4DrTQVmZWRiXqWqo8hLuVEw7WlM0VD8BZUlbqblFnyDPr6aQooWLHoKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lU7lA5t4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9677BC3277B;
-	Tue,  9 Jul 2024 11:33:11 +0000 (UTC)
+	 MIME-Version; b=UH0BkhYGvBSphsT9FNR9eU14CRd5LAT4f0CZNca9w4E6ELqfRkePv4P4d9t718qyJ+Gtbwq02GOzy1fmWJLkRWRlOAUVFQDKQabFUI/hY1pFPmTuD7rlJaoxnZBGggJHaKrWoELVOyMQZUG5nP9AKcH3adjBHuTQ51o2PdkYZzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8WYgsiA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB4FC3277B;
+	Tue,  9 Jul 2024 11:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524792;
-	bh=3vbQml/qHuQxs+L/zU4umPLpXkoolgHQhNZfp/DzX7c=;
+	s=korg; t=1720524506;
+	bh=u2ijWq7ASD5+el7QgL7WH6AwR2Ha+DWslgZ45vpSiM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lU7lA5t4zH0lN4U+R8R4nHAPHOuXVrer2XXO6Ka7XyPbAlQVhhgb98gSNADgs/Rkz
-	 TWYUsMoVDv0r45JWZZ87gUPcvNeqegAJGfx5IvhAG3FAKyPuK0V/s6FrgyI2OAS06m
-	 e6is3EkIJ3kn2FktO9IuT6rHWs6NQzBll6dmRHCY=
+	b=m8WYgsiAmjWTW1aJjS7G0B6Fa7ZBTb2/cCs/SU2G49ohrkWnObJXX+FO9NVOUckID
+	 HZ7fMLZtPm0rq3I6kcN9RizHwAu1qjHqmiBH/XWWl6eBRfQhZEw8cOBLqFHXJVQMDS
+	 7ukiOF/zQDpbNCMzsRwGV9D3Zd5d0X0V7Esl4b4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pin-yen Lin <treapking@chromium.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/102] clk: mediatek: mt8183: Only enable runtime PM on mt8183-mfgcfg
+Subject: [PATCH 6.9 196/197] null_blk: Do not allow runt zone with zone capacity smaller then zone size
 Date: Tue,  9 Jul 2024 13:10:50 +0200
-Message-ID: <20240709110654.757847507@linuxfoundation.org>
+Message-ID: <20240709110716.523560839@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pin-yen Lin <treapking@chromium.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 878e845d8db04df9ff3bbbaac09d335b24153704 ]
+[ Upstream commit b164316808ec5de391c3e7b0148ec937d32d280d ]
 
-Commit 2f7b1d8b5505 ("clk: mediatek: Do a runtime PM get on controllers
-during probe") enabled runtime PM for all mediatek clock controllers,
-but this introduced an issue on the resume path.
+A zoned device with a smaller last zone together with a zone capacity
+smaller than the zone size does make any sense as that does not
+correspond to any possible setup for a real device:
+1) For ZNS and zoned UFS devices, all zones are always the same size.
+2) For SMR HDDs, all zones always have the same capacity.
+In other words, if we have a smaller last runt zone, then this zone
+capacity should always be equal to the zone size.
 
-If a device resumes earlier than the clock controller and calls
-clk_prepare() when runtime PM is enabled on the controller, it will end
-up calling clk_pm_runtime_get(). But the subsequent
-pm_runtime_resume_and_get() call will fail because the runtime PM is
-temporarily disabled during suspend.
+Add a check in null_init_zoned_dev() to prevent a configuration to have
+both a smaller zone size and a zone capacity smaller than the zone size.
 
-To workaround this, introduce a need_runtime_pm flag and only enable it
-on mt8183-mfgcfg, which is the driver that observed deadlock previously.
-Hopefully mt8183-cfgcfg won't run into the issue at the resume stage
-because the GPU should have stopped rendering before the system calls
-suspend.
-
-Fixes: 2f7b1d8b5505 ("clk: mediatek: Do a runtime PM get on controllers during probe")
-Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-Link: https://lore.kernel.org/r/20240613120357.1043342-1-treapking@chromium.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240530054035.491497-2-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mt8183-mfgcfg.c |  1 +
- drivers/clk/mediatek/clk-mtk.c           | 24 ++++++++++++++----------
- drivers/clk/mediatek/clk-mtk.h           |  2 ++
- 3 files changed, 17 insertions(+), 10 deletions(-)
+ drivers/block/null_blk/zoned.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/clk/mediatek/clk-mt8183-mfgcfg.c b/drivers/clk/mediatek/clk-mt8183-mfgcfg.c
-index 730c9ae5ea124..50ccd59794464 100644
---- a/drivers/clk/mediatek/clk-mt8183-mfgcfg.c
-+++ b/drivers/clk/mediatek/clk-mt8183-mfgcfg.c
-@@ -29,6 +29,7 @@ static const struct mtk_gate mfg_clks[] = {
- static const struct mtk_clk_desc mfg_desc = {
- 	.clks = mfg_clks,
- 	.num_clks = ARRAY_SIZE(mfg_clks),
-+	.need_runtime_pm = true,
- };
- 
- static const struct of_device_id of_match_clk_mt8183_mfg[] = {
-diff --git a/drivers/clk/mediatek/clk-mtk.c b/drivers/clk/mediatek/clk-mtk.c
-index 42ae5c0d56467..9dbfc11d5c591 100644
---- a/drivers/clk/mediatek/clk-mtk.c
-+++ b/drivers/clk/mediatek/clk-mtk.c
-@@ -472,14 +472,16 @@ int mtk_clk_simple_probe(struct platform_device *pdev)
+diff --git a/drivers/block/null_blk/zoned.c b/drivers/block/null_blk/zoned.c
+index 27928deccc643..74d0418ddac78 100644
+--- a/drivers/block/null_blk/zoned.c
++++ b/drivers/block/null_blk/zoned.c
+@@ -84,6 +84,17 @@ int null_init_zoned_dev(struct nullb_device *dev,
+ 		return -EINVAL;
  	}
  
- 
--	devm_pm_runtime_enable(&pdev->dev);
--	/*
--	 * Do a pm_runtime_resume_and_get() to workaround a possible
--	 * deadlock between clk_register() and the genpd framework.
--	 */
--	r = pm_runtime_resume_and_get(&pdev->dev);
--	if (r)
--		return r;
-+	if (mcd->need_runtime_pm) {
-+		devm_pm_runtime_enable(&pdev->dev);
-+		/*
-+		 * Do a pm_runtime_resume_and_get() to workaround a possible
-+		 * deadlock between clk_register() and the genpd framework.
-+		 */
-+		r = pm_runtime_resume_and_get(&pdev->dev);
-+		if (r)
-+			return r;
++	/*
++	 * If a smaller zone capacity was requested, do not allow a smaller last
++	 * zone at the same time as such zone configuration does not correspond
++	 * to any real zoned device.
++	 */
++	if (dev->zone_capacity != dev->zone_size &&
++	    dev->size & (dev->zone_size - 1)) {
++		pr_err("A smaller last zone is not allowed with zone capacity smaller than zone size.\n");
++		return -EINVAL;
 +	}
- 
- 	/* Calculate how many clk_hw_onecell_data entries to allocate */
- 	num_clks = mcd->num_clks + mcd->num_composite_clks;
-@@ -550,7 +552,8 @@ int mtk_clk_simple_probe(struct platform_device *pdev)
- 			goto unregister_clks;
- 	}
- 
--	pm_runtime_put(&pdev->dev);
-+	if (mcd->need_runtime_pm)
-+		pm_runtime_put(&pdev->dev);
- 
- 	return r;
- 
-@@ -578,7 +581,8 @@ int mtk_clk_simple_probe(struct platform_device *pdev)
- 	if (mcd->shared_io && base)
- 		iounmap(base);
- 
--	pm_runtime_put(&pdev->dev);
-+	if (mcd->need_runtime_pm)
-+		pm_runtime_put(&pdev->dev);
- 	return r;
- }
- EXPORT_SYMBOL_GPL(mtk_clk_simple_probe);
-diff --git a/drivers/clk/mediatek/clk-mtk.h b/drivers/clk/mediatek/clk-mtk.h
-index 361de8078df01..65c24ab6c9470 100644
---- a/drivers/clk/mediatek/clk-mtk.h
-+++ b/drivers/clk/mediatek/clk-mtk.h
-@@ -210,6 +210,8 @@ struct mtk_clk_desc {
- 
- 	int (*clk_notifier_func)(struct device *dev, struct clk *clk);
- 	unsigned int mfg_clk_idx;
 +
-+	bool need_runtime_pm;
- };
- 
- int mtk_clk_simple_probe(struct platform_device *pdev);
+ 	zone_capacity_sects = mb_to_sects(dev->zone_capacity);
+ 	dev_capacity_sects = mb_to_sects(dev->size);
+ 	dev->zone_size_sects = mb_to_sects(dev->zone_size);
 -- 
 2.43.0
 
