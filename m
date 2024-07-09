@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-58706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85E2192B844
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:32:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE90B92B6F1
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:18:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41874280F85
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:32:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83393280E74
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:18:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99B5154C07;
-	Tue,  9 Jul 2024 11:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2FC315749F;
+	Tue,  9 Jul 2024 11:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LwtSdjm7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1TRuSYYD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767E655E4C;
-	Tue,  9 Jul 2024 11:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2573153812;
+	Tue,  9 Jul 2024 11:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524747; cv=none; b=IJ91li+agt8gAni3D5pXHyBBFmT7iTkEfaxGKFPkUpQfHsXYcX9OIWaHU0fRkRb8GVkYxIhIviAXPlEO0C2MmfaLOXkOPY0g39koavUKJKjdmFeTCNUUbzg81Q5usr82OXTjP9J9EYgEV7TkVZ7GtLzrMDLb8OlVCsYEa8Lz5KE=
+	t=1720523900; cv=none; b=B7hc0sYqrOnYULPHsS/DMls2nsDy3bGK9Nwmyl7hjuDF3Jxz9Jjdffe2ZQ+qyyperAGRnVWe4yhuRVudeqKfOOkAfmDpLaZJnSGvxX8thy2AkvwF1eMUPzhggjoYjY+em/mJqzxDLj7m+bvIZqZCt4KL1M7dj0ScyLxjrOHnIkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524747; c=relaxed/simple;
-	bh=iTZOW2Bx0TVGxfKCAE3HAr7Ti8C5M63U2gP1rUN5cdM=;
+	s=arc-20240116; t=1720523900; c=relaxed/simple;
+	bh=6AA0Kz0QI5Nj2i4/cuMpTP1AM3rNc18xjwjRChUgqNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EyA/dBnmt+oue7V4kP9b6cg/fBYGhlwm05GhyuVrOYYiUNgj7Di8wh2x1KUytT/DCMtqN2QP6RSFQkk3ByX8IIOTlmg5NNHyWsTArLrt8SpMaGhNA4TzZJDrCQCw1n/cbnSERN6E5uJTtSSZ4JvyDL2PMJ/Lb8g6gDikhQt6yvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LwtSdjm7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F034BC3277B;
-	Tue,  9 Jul 2024 11:32:26 +0000 (UTC)
+	 MIME-Version; b=V8lcmHJSf6Qum5keukBA7PtqtqSaa4/eFuMUDCiAOUEPTc1BcxDi/OCP6fMvlfD6x32+nrIJOd5Zn+KghJ8I2lwpESrB0M02I4ftCzcDWYUJWWqdtmmqpv5mtg6Hchv6KFAAZKkAKqZhpArrmImiCiQd/QjSSuajGP2I5DucJts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1TRuSYYD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD5DC3277B;
+	Tue,  9 Jul 2024 11:18:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524747;
-	bh=iTZOW2Bx0TVGxfKCAE3HAr7Ti8C5M63U2gP1rUN5cdM=;
+	s=korg; t=1720523900;
+	bh=6AA0Kz0QI5Nj2i4/cuMpTP1AM3rNc18xjwjRChUgqNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LwtSdjm7XNm/pLY0r8JFSRxZLLpXpuERcQ7N1t3UDNij+c/bxGtjlTkxQ0IbwnCC1
-	 5c3oXOM3Pwi2S0ws0VsebvyeUqNMbar7/xb5zuRPzYgbksFYxLfeOzZIs+iyZrddOl
-	 dLqT9QX0kRalLZqnV4gnOSjKO2SKkcJqzgCRzhuA=
+	b=1TRuSYYDd/bHzhtUfsNtt3pG5F6bmTgg4bEc8K5+t1ccrCQ3RMNr+bvKm/BWERIkA
+	 slxPdwOAi5fFwY/0DdfmzWSthiGY+xOz8TnWWH8d78XsiV4j+VvMhvUVEGIdB+OfSP
+	 4wEEHrJBMQRCeWqbQevPixtI5Ie9kdydrWM+hqe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	Xiaochun Lu <xiaochun.lu@bytedance.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pin-yen Lin <treapking@chromium.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 057/102] selftests: fix OOM in msg_zerocopy selftest
+Subject: [PATCH 6.6 120/139] clk: mediatek: mt8183: Only enable runtime PM on mt8183-mfgcfg
 Date: Tue,  9 Jul 2024 13:10:20 +0200
-Message-ID: <20240709110653.601146061@linuxfoundation.org>
+Message-ID: <20240709110702.811407014@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Pin-yen Lin <treapking@chromium.org>
 
-[ Upstream commit af2b7e5b741aaae9ffbba2c660def434e07aa241 ]
+[ Upstream commit 878e845d8db04df9ff3bbbaac09d335b24153704 ]
 
-In selftests/net/msg_zerocopy.c, it has a while loop keeps calling sendmsg
-on a socket with MSG_ZEROCOPY flag, and it will recv the notifications
-until the socket is not writable. Typically, it will start the receiving
-process after around 30+ sendmsgs. However, as the introduction of commit
-dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale"), the sender is
-always writable and does not get any chance to run recv notifications.
-The selftest always exits with OUT_OF_MEMORY because the memory used by
-opt_skb exceeds the net.core.optmem_max. Meanwhile, it could be set to a
-different value to trigger OOM on older kernels too.
+Commit 2f7b1d8b5505 ("clk: mediatek: Do a runtime PM get on controllers
+during probe") enabled runtime PM for all mediatek clock controllers,
+but this introduced an issue on the resume path.
 
-Thus, we introduce "cfg_notification_limit" to force sender to receive
-notifications after some number of sendmsgs.
+If a device resumes earlier than the clock controller and calls
+clk_prepare() when runtime PM is enabled on the controller, it will end
+up calling clk_pm_runtime_get(). But the subsequent
+pm_runtime_resume_and_get() call will fail because the runtime PM is
+temporarily disabled during suspend.
 
-Fixes: 07b65c5b31ce ("test: add msg_zerocopy test")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Signed-off-by: Xiaochun Lu <xiaochun.lu@bytedance.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20240701225349.3395580-2-zijianzhang@bytedance.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To workaround this, introduce a need_runtime_pm flag and only enable it
+on mt8183-mfgcfg, which is the driver that observed deadlock previously.
+Hopefully mt8183-cfgcfg won't run into the issue at the resume stage
+because the GPU should have stopped rendering before the system calls
+suspend.
+
+Fixes: 2f7b1d8b5505 ("clk: mediatek: Do a runtime PM get on controllers during probe")
+Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+Link: https://lore.kernel.org/r/20240613120357.1043342-1-treapking@chromium.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/msg_zerocopy.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/clk/mediatek/clk-mt8183-mfgcfg.c |  1 +
+ drivers/clk/mediatek/clk-mtk.c           | 24 ++++++++++++++----------
+ drivers/clk/mediatek/clk-mtk.h           |  2 ++
+ 3 files changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/tools/testing/selftests/net/msg_zerocopy.c b/tools/testing/selftests/net/msg_zerocopy.c
-index bdc03a2097e85..926556febc83c 100644
---- a/tools/testing/selftests/net/msg_zerocopy.c
-+++ b/tools/testing/selftests/net/msg_zerocopy.c
-@@ -85,6 +85,7 @@ static bool cfg_rx;
- static int  cfg_runtime_ms	= 4200;
- static int  cfg_verbose;
- static int  cfg_waittime_ms	= 500;
-+static int  cfg_notification_limit = 32;
- static bool cfg_zerocopy;
+diff --git a/drivers/clk/mediatek/clk-mt8183-mfgcfg.c b/drivers/clk/mediatek/clk-mt8183-mfgcfg.c
+index ba504e19d4203..62d876e150e11 100644
+--- a/drivers/clk/mediatek/clk-mt8183-mfgcfg.c
++++ b/drivers/clk/mediatek/clk-mt8183-mfgcfg.c
+@@ -29,6 +29,7 @@ static const struct mtk_gate mfg_clks[] = {
+ static const struct mtk_clk_desc mfg_desc = {
+ 	.clks = mfg_clks,
+ 	.num_clks = ARRAY_SIZE(mfg_clks),
++	.need_runtime_pm = true,
+ };
  
- static socklen_t cfg_alen;
-@@ -95,6 +96,7 @@ static char payload[IP_MAXPACKET];
- static long packets, bytes, completions, expected_completions;
- static int  zerocopied = -1;
- static uint32_t next_completion;
-+static uint32_t sends_since_notify;
+ static const struct of_device_id of_match_clk_mt8183_mfg[] = {
+diff --git a/drivers/clk/mediatek/clk-mtk.c b/drivers/clk/mediatek/clk-mtk.c
+index bd37ab4d1a9bb..ba1d1c495bc2b 100644
+--- a/drivers/clk/mediatek/clk-mtk.c
++++ b/drivers/clk/mediatek/clk-mtk.c
+@@ -496,14 +496,16 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
+ 	}
  
- static unsigned long gettimeofday_ms(void)
- {
-@@ -208,6 +210,7 @@ static bool do_sendmsg(int fd, struct msghdr *msg, bool do_zerocopy, int domain)
- 		error(1, errno, "send");
- 	if (cfg_verbose && ret != len)
- 		fprintf(stderr, "send: ret=%u != %u\n", ret, len);
-+	sends_since_notify++;
  
- 	if (len) {
- 		packets++;
-@@ -460,6 +463,7 @@ static bool do_recv_completion(int fd, int domain)
- static void do_recv_completions(int fd, int domain)
- {
- 	while (do_recv_completion(fd, domain)) {}
-+	sends_since_notify = 0;
+-	devm_pm_runtime_enable(&pdev->dev);
+-	/*
+-	 * Do a pm_runtime_resume_and_get() to workaround a possible
+-	 * deadlock between clk_register() and the genpd framework.
+-	 */
+-	r = pm_runtime_resume_and_get(&pdev->dev);
+-	if (r)
+-		return r;
++	if (mcd->need_runtime_pm) {
++		devm_pm_runtime_enable(&pdev->dev);
++		/*
++		 * Do a pm_runtime_resume_and_get() to workaround a possible
++		 * deadlock between clk_register() and the genpd framework.
++		 */
++		r = pm_runtime_resume_and_get(&pdev->dev);
++		if (r)
++			return r;
++	}
+ 
+ 	/* Calculate how many clk_hw_onecell_data entries to allocate */
+ 	num_clks = mcd->num_clks + mcd->num_composite_clks;
+@@ -585,7 +587,8 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
+ 			goto unregister_clks;
+ 	}
+ 
+-	pm_runtime_put(&pdev->dev);
++	if (mcd->need_runtime_pm)
++		pm_runtime_put(&pdev->dev);
+ 
+ 	return r;
+ 
+@@ -618,7 +621,8 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
+ 	if (mcd->shared_io && base)
+ 		iounmap(base);
+ 
+-	pm_runtime_put(&pdev->dev);
++	if (mcd->need_runtime_pm)
++		pm_runtime_put(&pdev->dev);
+ 	return r;
  }
  
- /* Wait for all remaining completions on the errqueue */
-@@ -549,6 +553,9 @@ static void do_tx(int domain, int type, int protocol)
- 		else
- 			do_sendmsg(fd, &msg, cfg_zerocopy, domain);
+diff --git a/drivers/clk/mediatek/clk-mtk.h b/drivers/clk/mediatek/clk-mtk.h
+index 22096501a60a7..c17fe1c2d732d 100644
+--- a/drivers/clk/mediatek/clk-mtk.h
++++ b/drivers/clk/mediatek/clk-mtk.h
+@@ -237,6 +237,8 @@ struct mtk_clk_desc {
  
-+		if (cfg_zerocopy && sends_since_notify >= cfg_notification_limit)
-+			do_recv_completions(fd, domain);
+ 	int (*clk_notifier_func)(struct device *dev, struct clk *clk);
+ 	unsigned int mfg_clk_idx;
 +
- 		while (!do_poll(fd, POLLOUT)) {
- 			if (cfg_zerocopy)
- 				do_recv_completions(fd, domain);
-@@ -708,7 +715,7 @@ static void parse_opts(int argc, char **argv)
++	bool need_runtime_pm;
+ };
  
- 	cfg_payload_len = max_payload_len;
- 
--	while ((c = getopt(argc, argv, "46c:C:D:i:mp:rs:S:t:vz")) != -1) {
-+	while ((c = getopt(argc, argv, "46c:C:D:i:l:mp:rs:S:t:vz")) != -1) {
- 		switch (c) {
- 		case '4':
- 			if (cfg_family != PF_UNSPEC)
-@@ -736,6 +743,9 @@ static void parse_opts(int argc, char **argv)
- 			if (cfg_ifindex == 0)
- 				error(1, errno, "invalid iface: %s", optarg);
- 			break;
-+		case 'l':
-+			cfg_notification_limit = strtoul(optarg, NULL, 0);
-+			break;
- 		case 'm':
- 			cfg_cork_mixed = true;
- 			break;
+ int mtk_clk_pdev_probe(struct platform_device *pdev);
 -- 
 2.43.0
 
