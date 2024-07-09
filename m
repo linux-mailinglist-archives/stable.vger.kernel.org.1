@@ -1,138 +1,155 @@
-Return-Path: <stable+bounces-58744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B7F92B9FA
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 14:52:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 299D392B9A7
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 14:37:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D317C284855
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 12:52:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B3971C2244C
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 12:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66FCE15A843;
-	Tue,  9 Jul 2024 12:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3822215958D;
+	Tue,  9 Jul 2024 12:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="a2eLobqo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gPwlCK5A"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C08314884D;
-	Tue,  9 Jul 2024 12:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1D315AD8B
+	for <stable@vger.kernel.org>; Tue,  9 Jul 2024 12:36:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720529539; cv=none; b=YVPDH1JLMy+lHLxUEyT052B3GMze8j3LYW1053Z94sgdcxSlCE/EXqaFvm5yuF7fq1+sThY5ge5pnEcLTQdIO+xGDYxPrYv4Kw8HmhNP0SJRNFLGIcyRipRO1MRzU9mHz/mj9YMNIz344M0Wo1piZrA+BdQPZfNEdxGfRphfWMM=
+	t=1720528615; cv=none; b=fR9uhec/YvN+TZ1ESNgWPa34b3m56/cPRCZV9Uzn6vGPz76ZHwMgq9PxQp+tfWyaV244J9M+BVQvVyrguwoYgdfbI1VhvHjYUyKPVAyx/p0scE+Mti+Nn4BiqTEdOOTULCko3cAB1TWb8KJVtPzDfcTkGnW4xgzYlkIs7HLatic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720529539; c=relaxed/simple;
-	bh=5lo7J4fe/FqE1ySjUzvuLvhZDS+aF4yRIOvbcSOPkbI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=TCesIvVO9ET34e+uLoloxaCHywDpF2BPR+V3OMlSN7d4fYdquaCYy4ABKv9cv70eU2IDlYoGeEST9qtOca6tHNsX8o2jK59tBOIcFzjzA+0Vu/PK/8Fk2B3h64LuRYnxZyjyPmRCpMHy9C/IQG310XFG/nauCyDuu0tZy7I38cU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=a2eLobqo; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1720529535;
-	bh=9EMrWwiwjkAmc8Lp2/P3hrtiQWOommhCyJibucD2H7Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=a2eLobqoSmFtoLTwgo4SDAaokj7GKB8kB6fADXGo3UFNB/amLpcva0vkvZpdRfvY/
-	 Y4dRSRBeM1MleK+nc/jiB8NnYpczuwPLbVlbWbfU7oZZZAC3bJftuXjOZeXQk9Sf25
-	 zm9GTqy+ILWfhJ5BnSdHAsJo+nQMmJSDT8ioFWBrEfghEiALeS2ThhjnpjyzEBQ2+s
-	 wUUhVzOiYPjjJERAljkAtpYWU3GqKekZ/GmqwNikKw1mcDHGriVUJA+o6fclFDwbZt
-	 NOxUK42xWbJMuGmfRMdh/M2FBCDWdX5VgFei+8qOb0isoYxSC4CIl+jS6LN/jZJmV5
-	 3C1yGyaZHU1AQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WJLVR26bFz4wnx;
-	Tue,  9 Jul 2024 22:52:15 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Naveen N Rao
- <naveen@kernel.org>
-Cc: matoro <matoro_mailinglist_kernel@matoro.tk>, bpf@vger.kernel.org, Hari
- Bathini <hbathini@linux.ibm.com>, linuxppc-dev
- <linuxppc-dev@lists.ozlabs.org>, ltp@lists.linux.it,
- stable@vger.kernel.org, Vitaly Chikunov <vt@altlinux.org>
-Subject: Re: WARNING&Oops in v6.6.37 on ppc64lea - Trying to vfree() bad
- address (00000000453be747)
-In-Reply-To: <87sewi68q4.fsf@mail.lhotse>
-References: <20240705203413.wbv2nw3747vjeibk@altlinux.org>
- <cf736c5e37489e7dc7ffd67b9de2ab47@matoro.tk>
- <2024070904-cod-bobcat-a0d0@gregkh>
- <1720516964.n61e0dnv80.naveen@kernel.org>
- <2024070958-plant-prozac-6a33@gregkh> <87sewi68q4.fsf@mail.lhotse>
-Date: Tue, 09 Jul 2024 22:52:14 +1000
-Message-ID: <87msmq683l.fsf@mail.lhotse>
+	s=arc-20240116; t=1720528615; c=relaxed/simple;
+	bh=QD16/W+gTAFQtTHcyhUoWKx3JHae4ORgoBXvLF+JsCs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=FyPiexARKR1LLakcTqmX2hBnbQT9EBC5PcNG6q/YB+5LY80dZqLK1CQVjJHT5+ZDpjdkEmxjIIWzFgDrZclZShDsYu6XnfiFx2nLrFc8XoHMAAjWLlAdy3JVCCYbk8NkjeZ5scmJBBgB0cLLCsET0p14q3zqHtpUnmOM3rRxFdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gPwlCK5A; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720528614; x=1752064614;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=QD16/W+gTAFQtTHcyhUoWKx3JHae4ORgoBXvLF+JsCs=;
+  b=gPwlCK5AkO64qV8K/2qya/X3pMFMKLenLy+/51cds5ctJS4Myk148Na8
+   1yPSEs5Pkx33YsCR/rB9Y6s6DDN196RG1QBvIaXyR0NwapPMxAA7c+JLn
+   D2EWdygIt4S9nVTm9x/agqToDhSgm44IHaUVyK+bBzK/5JWzfdTaPDPLs
+   igUSMAY+DX2lhxdAymyKmz/1Vle1Jm0PHa1L5/STtkyjUyVESPcvc+ZKE
+   efIGfPjkgmbgtq/BdwPKpIlfWLFp318mWv/1gKDu8WH8494zLf1XRDfPL
+   IRRZc5yWKAsH3jsxLU07uWobrG13MnrD58dLcp94dY76LpbVVzAhg1xkr
+   Q==;
+X-CSE-ConnectionGUID: IVty9rx7SnalVP/Me/G13g==
+X-CSE-MsgGUID: W15Iva4sRSSHzaxuQXc2og==
+X-IronPort-AV: E=McAfee;i="6700,10204,11127"; a="21547569"
+X-IronPort-AV: E=Sophos;i="6.09,195,1716274800"; 
+   d="scan'208";a="21547569"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2024 05:36:53 -0700
+X-CSE-ConnectionGUID: Zb6repQVQH639LokAwoWFA==
+X-CSE-MsgGUID: x8lnZKcNQbyrXb2xCwItww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,195,1716274800"; 
+   d="scan'208";a="78581940"
+Received: from nitin-super-server.iind.intel.com ([10.145.169.70])
+  by orviesa002.jf.intel.com with ESMTP; 09 Jul 2024 05:36:50 -0700
+From: Nitin Gote <nitin.r.gote@intel.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org,
+	andi.shyti@intel.com,
+	chris.p.wilson@linux.intel.com,
+	nirmoy.das@intel.com,
+	janusz.krzysztofik@linux.intel.com,
+	nitin.r.gote@intel.com,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/i915/gt: Do not consider preemption during execlists_dequeue for gen8
+Date: Tue,  9 Jul 2024 18:23:02 +0530
+Message-Id: <20240709125302.861319-1-nitin.r.gote@intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
->> On Tue, Jul 09, 2024 at 03:02:13PM +0530, Naveen N Rao wrote:
->>> Greg Kroah-Hartman wrote:
->>> > On Mon, Jul 08, 2024 at 11:16:48PM -0400, matoro wrote:
->>> > > On 2024-07-05 16:34, Vitaly Chikunov wrote:
->>> > > > Hi,
->>> > > > > There is new WARNING and Oops on ppc64le in v6.6.37 when running
->>> > > LTP tests:
->>> > > > bpf_prog01, bpf_prog02, bpf_prog04, bpf_prog05, prctl04. Logs excerpt
->>> > > > below. I
->>> > > > see there is 1 commit in v6.6.36..v6.6.37 with call to
->>> > > > bpf_jit_binary_pack_finalize, backported from 5 patch mainline patchset:
->>> > > > >   f99feda5684a powerpc/bpf: use
->>> > > bpf_jit_binary_pack_[alloc|finalize|free]
->>> > > >
->>> 
->>> <snip>
->>> 
->>> > > > > And so on. Temporary build/test log is at
->>> > > > https://git.altlinux.org/tasks/352218/build/100/ppc64le/log
->>> > > > > Other stable/longterm branches or other architectures does not
->>> > > exhibit this.
->>> > > > > Thanks,
->>> > > 
->>> > > Hi all - this just took down a production server for me, on POWER9 bare
->>> > > metal.  Not running tests, just booting normally, before services even came
->>> > > up.  Had to perform manual restoration, reverting to 6.6.36 worked.  Also
->>> > > running 64k kernel, unsure if it's better on 4k kernel.
->>> > > 
->>> > > In case it's helpful, here's the log from my boot:
->>> > > https://dpaste.org/Gyxxg/raw
->>> > 
->>> > Ok, this isn't good, something went wrong with my backports here.  Let
->>> > me go revert them all and push out a new 6.6.y release right away.
->>> 
->>> I think the problem is that the series adding support for bpf prog_pack was
->>> partially backported. In particular, the below patches are missing from
->>> stable v6.6:
->>> 465cabc97b42 powerpc/code-patching: introduce patch_instructions()
->>> 033ffaf0af1f powerpc/bpf: implement bpf_arch_text_invalidate for bpf_prog_pack
->>> 6efc1675acb8 powerpc/bpf: implement bpf_arch_text_copy
->>> 
->>> It should be sufficient to revert commit f99feda5684a (powerpc/bpf: use
->>> bpf_jit_binary_pack_[alloc|finalize|free]) to allow the above to apply
->>> cleanly, followed by cherry picking commit 90d862f370b6 (powerpc/bpf: use
->>> bpf_jit_binary_pack_[alloc|finalize|free]) from upstream.
->>> 
->>> Alternately, commit f99feda5684a (powerpc/bpf: use
->>> bpf_jit_binary_pack_[alloc|finalize|free]) can be reverted.
->>
->> I'm dropping them all now, if you want to submit a working series for
->> this, I'll be glad to queue them all up.
->
-> Thanks, revert is good for now.
->
-> With the revert there will be a build warning/error, only in stable,
-> which I think can be fixed with the diff below.
+We're seeing a GPU HANG issue on a CHV platform, which was caused by
+bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries for gen8").
 
-Oh I see you also reverted the commit that introduces that warning, so
-the build should be OK now.
+Gen8 platform has only timeslice and doesn't support a preemption mechanism
+as engines do not have a preemption timer and doesn't send an irq if the
+preemption timeout expires. So, add a fix to not consider preemption
+during dequeuing for gen8 platforms.
 
-cheers
+Also move can_preemt() above need_preempt() function to resolve implicit
+declaration of function ‘can_preempt' error and make can_preempt()
+function param as const to resolve error: passing argument 1 of
+‘can_preempt’ discards ‘const’ qualifier from the pointer target type.
+
+Fixes: bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries for gen8")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11396
+Suggested-by: Andi Shyti <andi.shyti@intel.com>
+Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+CC: <stable@vger.kernel.org> # v5.2+
+---
+ .../drm/i915/gt/intel_execlists_submission.c  | 24 ++++++++++++-------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
+index 21829439e686..30631cc690f2 100644
+--- a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
++++ b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
+@@ -294,11 +294,26 @@ static int virtual_prio(const struct intel_engine_execlists *el)
+ 	return rb ? rb_entry(rb, struct ve_node, rb)->prio : INT_MIN;
+ }
+ 
++static bool can_preempt(const struct intel_engine_cs *engine)
++{
++	if (GRAPHICS_VER(engine->i915) > 8)
++		return true;
++
++	if (IS_CHERRYVIEW(engine->i915) || IS_BROADWELL(engine->i915))
++		return false;
++
++	/* GPGPU on bdw requires extra w/a; not implemented */
++	return engine->class != RENDER_CLASS;
++}
++
+ static bool need_preempt(const struct intel_engine_cs *engine,
+ 			 const struct i915_request *rq)
+ {
+ 	int last_prio;
+ 
++	if ((GRAPHICS_VER(engine->i915) <= 8) && can_preempt(engine))
++		return false;
++
+ 	if (!intel_engine_has_semaphores(engine))
+ 		return false;
+ 
+@@ -3313,15 +3328,6 @@ static void remove_from_engine(struct i915_request *rq)
+ 	i915_request_notify_execute_cb_imm(rq);
+ }
+ 
+-static bool can_preempt(struct intel_engine_cs *engine)
+-{
+-	if (GRAPHICS_VER(engine->i915) > 8)
+-		return true;
+-
+-	/* GPGPU on bdw requires extra w/a; not implemented */
+-	return engine->class != RENDER_CLASS;
+-}
+-
+ static void kick_execlists(const struct i915_request *rq, int prio)
+ {
+ 	struct intel_engine_cs *engine = rq->engine;
+-- 
+2.25.1
+
 
