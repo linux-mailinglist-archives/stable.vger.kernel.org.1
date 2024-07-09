@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-58613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E678192B7D9
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05ED792B83F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:32:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2215285474
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5B46282FF4
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6AC158201;
-	Tue,  9 Jul 2024 11:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA6914E2C4;
+	Tue,  9 Jul 2024 11:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jMApgdrU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHl7MFV6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08923146D53;
-	Tue,  9 Jul 2024 11:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A924255E4C;
+	Tue,  9 Jul 2024 11:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524474; cv=none; b=GZqwCAqKnpdltbi6/+sC23ZOPrUXPorTjFW3jjRw0sgmbR/30cXP91mnBF/ZufDB082lREIls4OmucTTa6O5l1N6cxghWtfYoH/J/dn4Y7qj+n8kMQPstBPU28Q5of6orilQXgA4Z+cdu6UwrNGNai7luEzaUS2lIjc8cWjPEA0=
+	t=1720524735; cv=none; b=S27S7qsiRZROS7Kbjrvri/TwpIbVq3EdazbKkP8Bc32pwRPMphvz/RhuiW+mwNDJ1DCcIzO9Ya19yHJogxe5bKiFJHflpoNsPKpbTRS0pD5OtJh6C5DkbfrfS0dW1QW2WeExdNHgv/nO/q6vKsLMssOJlqZKHms+oyPb6baBe+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524474; c=relaxed/simple;
-	bh=TeK9n2py4Al6y+CFhyfg0EO26XP5KURFiLWNxVWKuRQ=;
+	s=arc-20240116; t=1720524735; c=relaxed/simple;
+	bh=9ZuRh5DH9vfelLA4IlsILD9KpbUvx/GdWXBJ7oOurRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQnVLUD64RHj2PH2I2xidZXGhnOlu5xMuKNoMrwBTA9ruMoxM3fjr1uTh3Av6ZcRYXCgdCiVlEP6gbF/DpC684OhqV7LkK3iaoNCnOcnwU1U/wtOdxwusWo4V8sJXxOvKib6yBmsM//SU/QYTJD2CnhRN+qlQNg6zXcORVH/nIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jMApgdrU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80AC7C3277B;
-	Tue,  9 Jul 2024 11:27:53 +0000 (UTC)
+	 MIME-Version; b=iT7MkWC/doRaAlL1HA2CqxOCZzzYMB0b4Y0IvIw5oj4FdJ3Ko5svL2PhANgKt5SAcVZpt6LJbjSq7eUe3vaDxt845qKqTLht2tM81rV75fk+OgRvgxkHghIdGtl8IvSUKwJjL7qlgRUihDzhxu0DfETbHr9Fi8fXy1za8JIB+lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHl7MFV6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB4DC3277B;
+	Tue,  9 Jul 2024 11:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524473;
-	bh=TeK9n2py4Al6y+CFhyfg0EO26XP5KURFiLWNxVWKuRQ=;
+	s=korg; t=1720524735;
+	bh=9ZuRh5DH9vfelLA4IlsILD9KpbUvx/GdWXBJ7oOurRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jMApgdrUMmxHoDUewRZ9t/dnjt7Wsa5T1IIqWZOIoAU9nkxvcnyOOgFaS0wwvsU3n
-	 cFMKZsmWdM9vgtb1Cia6e4E0eWFLAP+i8MNIymVvqamxmAaTNLCVVlw1WWOpLktGOg
-	 NW/tKewONC2TD+iOg7XNxOzhm7hmmrjT95MQBo2g=
+	b=aHl7MFV6Zu8V7rbXu8pyBHRGuDcRDXUQd337ul7w0Ff2zPXHkVIXbv/dYlF3N3qxy
+	 FT9tbfe0yK+Gr1oae6EoMy1pX0Hp2MwjeohpzYFIhsG5Ok9HdAZfcgSi8hvcT5BtXe
+	 t3OMKD/HLcTsKYQXpcR+lBqmFAsYRiZD7IQY3vwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+71bfed2b2bcea46c98f2@syzkaller.appspotmail.com
-Subject: [PATCH 6.9 191/197] nfc/nci: Add the inconsistency check between the input data length and count
+	Diederik de Haas <didi.debian@cknow.org>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.1 082/102] arm64: dts: rockchip: Fix the DCDC_REG2 minimum voltage on Quartz64 Model B
 Date: Tue,  9 Jul 2024 13:10:45 +0200
-Message-ID: <20240709110716.331114786@linuxfoundation.org>
+Message-ID: <20240709110654.566163279@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Dragan Simic <dsimic@manjaro.org>
 
-[ Upstream commit 068648aab72c9ba7b0597354ef4d81ffaac7b979 ]
+commit d201c92bff90f3d3d0b079fc955378c15c0483cc upstream.
 
-write$nci(r0, &(0x7f0000000740)=ANY=[@ANYBLOB="610501"], 0xf)
+Correct the specified regulator-min-microvolt value for the buck DCDC_REG2
+regulator, which is part of the Rockchip RK809 PMIC, in the Pine64 Quartz64
+Model B board dts.  According to the RK809 datasheet, version 1.01, this
+regulator is capable of producing voltages as low as 0.5 V on its output,
+instead of going down to 0.9 V only, which is additionally confirmed by the
+regulator-min-microvolt values found in the board dts files for the other
+supported boards that use the same RK809 PMIC.
 
-Syzbot constructed a write() call with a data length of 3 bytes but a count value
-of 15, which passed too little data to meet the basic requirements of the function
-nci_rf_intf_activated_ntf_packet().
+This allows the DVFS to clock the GPU on the Quartz64 Model B below 700 MHz,
+all the way down to 200 MHz, which saves some power and reduces the amount of
+generated heat a bit, improving the thermal headroom and possibly improving
+the bursty CPU and GPU performance on this board.
 
-Therefore, increasing the comparison between data length and count value to avoid
-problems caused by inconsistent data length and count.
+This also eliminates the following warnings in the kernel log:
 
-Reported-and-tested-by: syzbot+71bfed2b2bcea46c98f2@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
+  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (200000000)
+  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
+  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (300000000)
+  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
+  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (400000000)
+  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
+  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (600000000)
+
+Fixes: dcc8c66bef79 ("arm64: dts: rockchip: add Pine64 Quartz64-B device tree")
+Cc: stable@vger.kernel.org
+Reported-By: Diederik de Haas <didi.debian@cknow.org>
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Tested-by: Diederik de Haas <didi.debian@cknow.org>
+Link: https://lore.kernel.org/r/e70742ea2df432bf57b3f7de542d81ca22b0da2f.1716225483.git.dsimic@manjaro.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nfc/virtual_ncidev.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3566-quartz64-b.dts |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nfc/virtual_ncidev.c b/drivers/nfc/virtual_ncidev.c
-index 590b038e449e5..6b89d596ba9af 100644
---- a/drivers/nfc/virtual_ncidev.c
-+++ b/drivers/nfc/virtual_ncidev.c
-@@ -125,6 +125,10 @@ static ssize_t virtual_ncidev_write(struct file *file,
- 		kfree_skb(skb);
- 		return -EFAULT;
- 	}
-+	if (strnlen(skb->data, count) != count) {
-+		kfree_skb(skb);
-+		return -EINVAL;
-+	}
- 
- 	nci_recv_frame(vdev->ndev, skb);
- 	return count;
--- 
-2.43.0
-
+--- a/arch/arm64/boot/dts/rockchip/rk3566-quartz64-b.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3566-quartz64-b.dts
+@@ -290,7 +290,7 @@
+ 				regulator-name = "vdd_gpu";
+ 				regulator-always-on;
+ 				regulator-boot-on;
+-				regulator-min-microvolt = <900000>;
++				regulator-min-microvolt = <500000>;
+ 				regulator-max-microvolt = <1350000>;
+ 				regulator-init-microvolt = <900000>;
+ 				regulator-ramp-delay = <6001>;
 
 
 
