@@ -1,115 +1,108 @@
-Return-Path: <stable+bounces-58273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 158E292B395
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:21:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71ED092B3C8
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B47781F228CB
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 09:21:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16B83281E7C
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 09:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67C0E155337;
-	Tue,  9 Jul 2024 09:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E26157496;
+	Tue,  9 Jul 2024 09:25:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="m9aKwtBV"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mout.web.de (mout.web.de [212.227.15.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A3D1552FC;
-	Tue,  9 Jul 2024 09:20:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82154156875;
+	Tue,  9 Jul 2024 09:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720516837; cv=none; b=T42IF2oGVpT5wCjGrdXyg0PRjQlCFbQvVk0ixaYsgmjIfzCC5JuIU2ZvYV34lOIwmjneVwxNilP7tneO0QP+UzACvFPSpMfe5AeVXNd3A2fKg0wdMWTPCsHLm82qMp+pQ+2dYnjh7z2QBhiWUppQLgR+ywA/QbYKFS6kpm+eaQY=
+	t=1720517113; cv=none; b=XD9AP4x9herI8n6EShXMYWn7GjhqFAcHXn9MNyx8lHPhlavLf7Pxcsua4Xbniv+WiTG/PYUxXlwYUv3AgSbM9WZ3Iq4CQCn97ndKrHiE7nW3AIOsLSDy1PiMofesStxV30/JY6woJxZVUhsfoa9hWVx37oUWEyXiNdGchdLBVRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720516837; c=relaxed/simple;
-	bh=Gkur90fiYO/JPC/5MPkXfG8nVmHJVQGchFAyBoIJ0m8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=d3WSip3l8DsGG/DkorCG8k8L1mCBtUw9BDTqaq3Zl1/y/rTUJ/AFZu0GO8gPSO+cU2Si4fUI2G0oUEylpqBt960aZ/W3AZ/T2dyG8n2TaVDDHxBAdEF4BUYOyyVkAtCXkQr5QiwwMy+lNIYfzE37hm7UkfxB9LXOdxDk8GMb4OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-05 (Coremail) with SMTP id zQCowADX3+fNAI1moC5XAg--.38064S2;
-	Tue, 09 Jul 2024 17:20:22 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: patrik.r.jakobsson@gmail.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	daniel.vetter@ffwll.ch,
-	alan@linux.intel.com,
-	airlied@redhat.com,
-	akpm@linux-foundation.org
-Cc: dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] drm/gma500: fix null pointer dereference in psb_intel_lvds_get_modes
-Date: Tue,  9 Jul 2024 17:20:11 +0800
-Message-Id: <20240709092011.3204970-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1720517113; c=relaxed/simple;
+	bh=J+1hPuhHeGaLG8RaIcdJzDWKam0wGYfdcX5++xetsIw=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=phbIH04BDx4btOPZmmHpelQ0l3w+iSdrTu+XYliiqt525dq1iqbv1Ejj6nVSQjxjJl391TX9ReIG9rBQddeh+U430aQLppPFbMUFvfUqbsC59+7/NQJJLZSw+XZVW80TP1FZySX8Djp8e6b2z+fTqDQHFmrJAfxz9vh0g9rzntc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=m9aKwtBV; arc=none smtp.client-ip=212.227.15.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1720517076; x=1721121876; i=markus.elfring@web.de;
+	bh=J+1hPuhHeGaLG8RaIcdJzDWKam0wGYfdcX5++xetsIw=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=m9aKwtBV7fvwLToEAu7ZcEZ3OmazsV/Cg68MjuCA5alZ2CwHKKTpBlBbCEoyFL/q
+	 P3XhGTddnzFeRmGuWS14kmNgJ2Ot/VlKzmTB0CBEWfX958hHQM1g2P8z3mcsq6tLt
+	 6r6ilFb4L2tBdSweeoawb003zq6aw41idfMAKNX3ARvu6HTuYPoQLJUspYzJFjxOU
+	 XCkMVznAzZe6Cze7dHt8V7UnZlPtWdnC8oPfGDmkhqqSEX40Cr+mftrwsyRuq/8I8
+	 R4uNGy4MQvyyiJoaG99MtuW2F6Ev7g2XidjkHXN9TCj9lNy9u9Pbd/NRdKXrbqBni
+	 CA8z0PY6XPLx9AE5dQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.91.95]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1M5j5y-1sTtJ02ilO-00DY7f; Tue, 09
+ Jul 2024 11:24:36 +0200
+Message-ID: <43d7a27e-5b45-4d45-8ff7-8c10e128db88@web.de>
+Date: Tue, 9 Jul 2024 11:24:33 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowADX3+fNAI1moC5XAg--.38064S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Jw1xZFy7AF1xJFykXr45GFg_yoW8JrW5pF
-	W7Ga4YyF4rtFZFgF48CF18uFWUCa17J3WxKr18Wws3C3Z8trWUJry5Z343XrW7JFW3Jr4r
-	trnFyay3GFyUCr7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
-	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
-	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
-	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
-	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
-	nIWIevJa73UjIFyTuYvjfUFYFADUUUU
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+User-Agent: Mozilla Thunderbird
+To: make24@iscas.ac.cn, dri-devel@lists.freedesktop.org,
+ kernel-janitors@vger.kernel.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Alan Cox <alan@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>,
+ David Airlie <airlied@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>
+References: <20240709085916.3002467-1-make24@iscas.ac.cn>
+Subject: Re: [PATCH v3] drm/gma500: fix null pointer dereference in
+ cdv_intel_lvds_get_modes
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20240709085916.3002467-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:RSrk3mncGUb8pKlEo1cdNPJk9W1ixGdfqI+k3kTLx2Jl/K9fR1y
+ +P29RjkHCoyhpjabNt3iYTlwcqzKg95aJweUtEhupC2WZv0m9rEP/rxHPq4mhEraRxMUGBK
+ P3gT++6GYtR3Rt/8+a3gXPDikk9lNQ3WKuQuA2PdclIx2vntMZNE+OE9Tu/bjl+Mos0md/9
+ nI63PGF2oB4x2ze8LCJPg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:7+yOAalgqd0=;CmFfosr4UNWvErVMkE0pCcB8JBa
+ PFAjH7CW2L6+HTBs3Uxjgq5X4diF2BTMaQwOxWEhxU0HpdCUHL3UpaZ8cOvlEf+U7AklOWCRe
+ foCvYzh7OfA5XuVmL6qkLUHQVS1aNYwit6r76e8RdvvZWhOr9DIxI1qckEUtWIQtGkd7b693W
+ YO1DgLpbSroDo9+axdyDspX4nEv4BgidHRnZNERcs737lTf7fhrBDCMsei7jEZnAq77gKsDmj
+ sfee0g1DxU/KfFvxRlblXleJFCQ8cy2F4Eq6Zhr1JUCwh9fWtV8Ik9jvqtVkjoKuErpTRDGoV
+ 1VXxUqM46OysUcV87DC8OQPHWhm0ekRd0zYFSmyXWg6QRdgQIeePzg005DnMD7n/zE9mF6sD/
+ wehbzQCPUaOF7yiGHx2TL19GEo8Qa2Wg7pU4xU9XZtnkONxpxitiqsopqKhj8IDFEYkanpaCh
+ SpOzITw7zzghHw8iHMeyaMaQ88Y2nDZTbh0UVVFEfAHdsN0+pPxbjjIL7t0KSJQRX132myfCw
+ dSE/mO7Iq2/ojw89Vf1Hrv9rOO11fv38xvIha+yzqZdVTckkbqXvB9GsJXQdYC/f53F4heMJe
+ /Y/5nP8ztidnt5YEpsS4G75q4t3hU9YDVGxZgzMxaJ0Yy7bYTu6uNIXqe6nJnr2HPux7kXh76
+ bj+9PZiNf4ruGZ99XzJQR1mKoUblPLwDMlfU7AlU89c3uRCI9h5qDLZgbafyFaP5CbgVziDZE
+ XlQYGPJNt3cIvamcRU8begghx9N6Po9hKrpIkfGp/kTW6uTojvXTXu2mCUftXB1AM8kVHYhOD
+ Lei5YkwRnjIUEEYT20c3GX6Qf7gqC5TqmSieZBzGaIJJw=
 
-In psb_intel_lvds_get_modes(), the return value of drm_mode_duplicate() is
-assigned to mode, which will lead to a possible NULL pointer dereference
-on failure of drm_mode_duplicate(). Add a check to avoid npd.
+=E2=80=A6
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 
-Cc: stable@vger.kernel.org
-Fixes: 89c78134cc54 ("gma500: Add Poulsbo support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
-Changes in v3:
-- added the recipient's email address, due to the prolonged absence of a 
-response from the recipients.
-Changes in v2:
-- modified the patch according to suggestions;
-- added Fixes line;
-- added Cc stable.
----
- drivers/gpu/drm/gma500/psb_intel_lvds.c | 3 +++
- 1 file changed, 3 insertions(+)
+Are you going to adjust this information anyhow?
 
-diff --git a/drivers/gpu/drm/gma500/psb_intel_lvds.c b/drivers/gpu/drm/gma500/psb_intel_lvds.c
-index 8486de230ec9..8d1be94a443b 100644
---- a/drivers/gpu/drm/gma500/psb_intel_lvds.c
-+++ b/drivers/gpu/drm/gma500/psb_intel_lvds.c
-@@ -504,6 +504,9 @@ static int psb_intel_lvds_get_modes(struct drm_connector *connector)
- 	if (mode_dev->panel_fixed_mode != NULL) {
- 		struct drm_display_mode *mode =
- 		    drm_mode_duplicate(dev, mode_dev->panel_fixed_mode);
-+		if (!mode)
-+			return 0;
-+
- 		drm_mode_probed_add(connector, mode);
- 		return 1;
- 	}
--- 
-2.25.1
+The usage of mailing list addresses is probably undesirable for
+the Developer's Certificate of Origin, isn't it?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv6.10-rc7#n398
 
+Regards,
+Markus
 
