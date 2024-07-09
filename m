@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-58612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E061392B7D8
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2206392B840
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:32:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E0F01C23321
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0258B22DE0
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 591F3156C73;
-	Tue,  9 Jul 2024 11:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2BFD156C61;
+	Tue,  9 Jul 2024 11:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gy7QZ2v9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4c9RGSB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173FF27713;
-	Tue,  9 Jul 2024 11:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDF255E4C;
+	Tue,  9 Jul 2024 11:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524471; cv=none; b=TfnlNXARbcBVVDVphxWrktrsbyoFcr6GRAkiW7X/TU3O495KtOzDg5UuIBGjDjzDmvm3ONSMnjORkQQwThummbQOdmeqONp+K6j0i3FLn2kJIDG43/rmpid6NIjIzYCz40wCYYBIR2WpBuNy9wMMRLu6mO5JR2OcxlfVm1IGvjM=
+	t=1720524732; cv=none; b=V4oAYrGe4xoV9dxP3fvwS0qY3aFPMzkgIq1RafKgDOddgi/yDNUAy08VFW7ZzE27D9/UoLSH2MCnho9sqbPx8nrEoq8AoWa4ytKZO5RZtxNR+WI3MgiKHqjeRT8XtOXDG3XPKM1WBRS5cTkO7R9yS3iV6/31thvceqwd3t0igT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524471; c=relaxed/simple;
-	bh=uBxQbphDlobqikN7cxKA7DoAu/FnbypC0kOhmaTo5EY=;
+	s=arc-20240116; t=1720524732; c=relaxed/simple;
+	bh=8dHdPGLsfraqqyUEMnoMyccIcZGAi0wA3GzDGhroP1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XFG7s6PtzSAVwVRAI4mu4eqphokbrk6iu07dp6egCmNeCRKeXsLUfb4M4k9o2bebCpLBUWT7R+dQv+EhToiLY5p5qBEBAfYtQg+isXIYjpASkK4ZPlW8VuGc7yabvDVbLxQL5q/afhJOq34mPShj70XWNqkMUjwoCtT0imi3u+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gy7QZ2v9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88ABEC3277B;
-	Tue,  9 Jul 2024 11:27:50 +0000 (UTC)
+	 MIME-Version; b=mR5zvNWM3bC8RM5C+CCxTeOf7vpUDZh+RPxn74ByINf7QlLpV80MXwb8KkVXkhHtBHQBbFa8jU1s8XYhoxflcJ1CDSceDsNTfqmRMRAH7Fx2xfjVtEjU7tJn7FCVMr/V0UoAoW03T7sO96QXjWbv5WTFhn7x2ykhEDlaH1NR15o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4c9RGSB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3425AC4AF0A;
+	Tue,  9 Jul 2024 11:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524470;
-	bh=uBxQbphDlobqikN7cxKA7DoAu/FnbypC0kOhmaTo5EY=;
+	s=korg; t=1720524732;
+	bh=8dHdPGLsfraqqyUEMnoMyccIcZGAi0wA3GzDGhroP1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gy7QZ2v9QwurIkji3q7sYW4PHWEyPtx8GybkpTQsx+6vbbF/3ExYbn+YjGxkb29WE
-	 z1VfGeBs4KpPuY3EGVSCZ1rScC+eyoShvOPHaaumas2RZfA0+kI3UYxWVcEFzXRU/M
-	 RD0j4q//H7JgHPHufFLWUHdbEfrpDqiwimuFJREg=
+	b=l4c9RGSBsIgLINsoMhl/Qw+6dleNI67plS/6ngJztReuhH4V6pzSQI0zlg0u2QBoR
+	 y4764F6unG9zC/7X9Cfhh6LZrkloTESTUYrRvu5q5Mj78TmmjbEVBCKn+HHFOXldTO
+	 PoR3m5XyiUFxcZwHjyFspU6pmVAEC8mL5Cuh18GE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Theodore Tso <tytso@mit.edu>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.9 164/197] fs: dont misleadingly warn during thaw operations
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+4fd66a69358fc15ae2ad@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 055/102] netfilter: nf_tables: unconditionally flush pending work before notifier
 Date: Tue,  9 Jul 2024 13:10:18 +0200
-Message-ID: <20240709110715.299865586@linuxfoundation.org>
+Message-ID: <20240709110653.523052314@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Florian Westphal <fw@strlen.de>
 
-commit 2ae4db5647d807efb6a87c09efaa6d1db9c905d7 upstream.
+[ Upstream commit 9f6958ba2e902f9820c594869bd710ba74b7c4c0 ]
 
-The block device may have been frozen before it was claimed by a
-filesystem. Concurrently another process might try to mount that
-frozen block device and has temporarily claimed the block device for
-that purpose causing a concurrent fs_bdev_thaw() to end up here. The
-mounter is already about to abort mounting because they still saw an
-elevanted bdev->bd_fsfreeze_count so get_bdev_super() will return
-NULL in that case.
+syzbot reports:
 
-For example, P1 calls dm_suspend() which calls into bdev_freeze() before
-the block device has been claimed by the filesystem. This brings
-bdev->bd_fsfreeze_count to 1 and no call into fs_bdev_freeze() is
-required.
+KASAN: slab-uaf in nft_ctx_update include/net/netfilter/nf_tables.h:1831
+KASAN: slab-uaf in nft_commit_release net/netfilter/nf_tables_api.c:9530
+KASAN: slab-uaf int nf_tables_trans_destroy_work+0x152b/0x1750 net/netfilter/nf_tables_api.c:9597
+Read of size 2 at addr ffff88802b0051c4 by task kworker/1:1/45
+[..]
+Workqueue: events nf_tables_trans_destroy_work
+Call Trace:
+ nft_ctx_update include/net/netfilter/nf_tables.h:1831 [inline]
+ nft_commit_release net/netfilter/nf_tables_api.c:9530 [inline]
+ nf_tables_trans_destroy_work+0x152b/0x1750 net/netfilter/nf_tables_api.c:9597
 
-Now P2 tries to mount that frozen block device. It claims it and checks
-bdev->bd_fsfreeze_count. As it's elevated it aborts mounting.
+Problem is that the notifier does a conditional flush, but its possible
+that the table-to-be-removed is still referenced by transactions being
+processed by the worker, so we need to flush unconditionally.
 
-In the meantime P3 called dm_resume(). P3 sees that the block device is
-already claimed by a filesystem and calls into fs_bdev_thaw().
+We could make the flush_work depend on whether we found a table to delete
+in nf-next to avoid the flush for most cases.
 
-P3 takes a passive reference and realizes that the filesystem isn't
-ready yet. P3 puts itself to sleep to wait for the filesystem to become
-ready.
+AFAICS this problem is only exposed in nf-next, with
+commit e169285f8c56 ("netfilter: nf_tables: do not store nft_ctx in transaction objects"),
+with this commit applied there is an unconditional fetch of
+table->family which is whats triggering the above splat.
 
-P2 now puts the last active reference to the filesystem and marks it as
-dying. P3 gets woken, sees that the filesystem is dying and
-get_bdev_super() fails.
-
-Fixes: 49ef8832fb1a ("bdev: implement freeze and thaw holder operations")
-Cc: <stable@vger.kernel.org>
-Reported-by: Theodore Ts'o <tytso@mit.edu>
-Link: https://lore.kernel.org/r/20240611085210.GA1838544@mit.edu
-Link: https://lore.kernel.org/r/20240613-lackmantel-einsehen-90f0d727358d@brauner
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2c9f0293280e ("netfilter: nf_tables: flush pending destroy work before netlink notifier")
+Reported-and-tested-by: syzbot+4fd66a69358fc15ae2ad@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4fd66a69358fc15ae2ad
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/super.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/super.c
-+++ b/fs/super.c
-@@ -1501,8 +1501,17 @@ static int fs_bdev_thaw(struct block_dev
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 97ea72d31bd35..d18b698139caf 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -10858,8 +10858,7 @@ static int nft_rcv_nl_event(struct notifier_block *this, unsigned long event,
  
- 	lockdep_assert_held(&bdev->bd_fsfreeze_mutex);
+ 	gc_seq = nft_gc_seq_begin(nft_net);
  
-+	/*
-+	 * The block device may have been frozen before it was claimed by a
-+	 * filesystem. Concurrently another process might try to mount that
-+	 * frozen block device and has temporarily claimed the block device for
-+	 * that purpose causing a concurrent fs_bdev_thaw() to end up here. The
-+	 * mounter is already about to abort mounting because they still saw an
-+	 * elevanted bdev->bd_fsfreeze_count so get_bdev_super() will return
-+	 * NULL in that case.
-+	 */
- 	sb = get_bdev_super(bdev);
--	if (WARN_ON_ONCE(!sb))
-+	if (!sb)
- 		return -EINVAL;
- 
- 	if (sb->s_op->thaw_super)
+-	if (!list_empty(&nf_tables_destroy_list))
+-		nf_tables_trans_destroy_flush_work();
++	nf_tables_trans_destroy_flush_work();
+ again:
+ 	list_for_each_entry(table, &nft_net->tables, list) {
+ 		if (nft_table_has_owner(table) &&
+-- 
+2.43.0
+
 
 
 
