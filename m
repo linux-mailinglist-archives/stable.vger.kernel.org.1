@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-58530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1F4B92B77B
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83E9E92B7E8
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:28:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FA5D282319
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B8D81F21629
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D5C158A11;
-	Tue,  9 Jul 2024 11:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE2A156C73;
+	Tue,  9 Jul 2024 11:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PefptlMj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4RmDe6b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72F21586C7;
-	Tue,  9 Jul 2024 11:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AF027713;
+	Tue,  9 Jul 2024 11:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524216; cv=none; b=estW7LJE9BNa+CJUGbNOmMlt+aMJIl7YqXv900OvIFUJRbJ63w6hTwkzrAtU3bFv87RUTl8m8za86saqaxDfuOQWjcRyLji0NByymEcxSAqyghpkCVnYl6OFDujmHXAUnDoKU53aMg0WhBRAH1z2zhiumVAXyDFuMy8XZe3uVMM=
+	t=1720524515; cv=none; b=PbuqOsqtfj1MspGcSdfgWG0wQr3hrfaOGmFtj1TMZg+7jfimmrTIOopjRpdj9opPckjh8MMPHBpEKQexBvzKFfG6TglYyqYAWODKy6OKE22QNfdfswRWiUtnmPmAamuBHE1sUh+ByVj/U5Kl+lHmw9C+VDJ7OISc02Rbg3ocRbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524216; c=relaxed/simple;
-	bh=d7fLHmZWaRChp06HBNkntC8FM2Ps6Jhb0TVWzbdyPsE=;
+	s=arc-20240116; t=1720524515; c=relaxed/simple;
+	bh=aT8ibSYtE9uEjvqKKvcHZacKvwl4is4KXjFKBpjRuiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O4k8d2QZ7ucukEb9uWgnhbpIwqlYBktOrUMw6L/14Qop1/OEzXqeuJuHHlqlyfFv4ICr7eses8+DKqLo/93gLVJ2PfwZ0N9Tp04zN6WVdaJzuL8a4jLcP+2uT5kuRlBIq+wy7v7LpKIqvuC+G+9WS+em1dxl59lsrPil7TG1noQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PefptlMj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC83C3277B;
-	Tue,  9 Jul 2024 11:23:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YXCVG8jTU176wfi/5ZIzvXFq+s2Aakr4C/Ev3WLNYieJQolpefzEHBYFAwk1E7J0tFsOv5e6SuISih9XRGimv9ZFh3R0mW/szHDFSXMpJqYYdntUs5+Kn+oOFz3eLUj0FbD+j5ExMK3wMKWIkMn7it+QJUAc9sEoDaRdC1ZQD7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4RmDe6b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB10DC3277B;
+	Tue,  9 Jul 2024 11:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524216;
-	bh=d7fLHmZWaRChp06HBNkntC8FM2Ps6Jhb0TVWzbdyPsE=;
+	s=korg; t=1720524515;
+	bh=aT8ibSYtE9uEjvqKKvcHZacKvwl4is4KXjFKBpjRuiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PefptlMjbAfBPEUVtRtK6h5c+teQ1rX/bE7Z8dqftaL8DI/8EWtrz4HCFfBdI+UkW
-	 8LB8K7E/AZch1O7U7oLjZDQ/5AtGhZl6nZmbybDpxpIfey8xvMuh9BU5t67jS465QB
-	 DTkIpXpTgcYhkgvi7+c3D2JD51WoAU42Y+hTUlxc=
+	b=D4RmDe6bCYC8dErPJG7veLIqpyhCXlc6WTQAH3KMNrpVgDWGzOuYPBcBuNayo73RM
+	 G/nL4jjIQ40MFLqnkEThqvROWjONzMjO6HxJIDb1mN6ZiFWSOsWv6J9mgAK+xbxYwu
+	 dm9II8Nw7c9MYzaOQAM63tFWclKUueTqUCyhhuYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Huth <thuth@redhat.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	George Stark <gnstark@salutedevices.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 110/197] drm/fbdev-generic: Fix framebuffer on big endian devices
+Subject: [PATCH 6.1 001/102] locking/mutex: Introduce devm_mutex_init()
 Date: Tue,  9 Jul 2024 13:09:24 +0200
-Message-ID: <20240709110713.213943752@linuxfoundation.org>
+Message-ID: <20240709110651.413657715@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +64,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Huth <thuth@redhat.com>
+From: George Stark <gnstark@salutedevices.com>
 
-[ Upstream commit 740b8dad05bee39e1e3b926f05bb4a8274b8ba49 ]
+[ Upstream commit 4cd47222e435dec8e3787614924174f53fcfb5ae ]
 
-Starting with kernel 6.7, the framebuffer text console is not working
-anymore with the virtio-gpu device on s390x hosts. Such big endian fb
-devices are usinga different pixel ordering than little endian devices,
-e.g. DRM_FORMAT_BGRX8888 instead of DRM_FORMAT_XRGB8888.
+Using of devm API leads to a certain order of releasing resources.
+So all dependent resources which are not devm-wrapped should be deleted
+with respect to devm-release order. Mutex is one of such objects that
+often is bound to other resources and has no own devm wrapping.
+Since mutex_destroy() actually does nothing in non-debug builds
+frequently calling mutex_destroy() is just ignored which is safe for now
+but wrong formally and can lead to a problem if mutex_destroy() will be
+extended so introduce devm_mutex_init().
 
-This used to work fine as long as drm_client_buffer_addfb() was still
-calling drm_mode_addfb() which called drm_driver_legacy_fb_format()
-internally to get the right format. But drm_client_buffer_addfb() has
-recently been reworked to call drm_mode_addfb2() instead with the
-format value that has been passed to it as a parameter (see commit
-6ae2ff23aa43 ("drm/client: Convert drm_client_buffer_addfb() to drm_mode_addfb2()").
-
-That format parameter is determined in drm_fbdev_generic_helper_fb_probe()
-via the drm_mode_legacy_fb_format() function - which only generates
-formats suitable for little endian devices. So to fix this issue
-switch to drm_driver_legacy_fb_format() here instead to take the
-device endianness into consideration.
-
-Fixes: 6ae2ff23aa43 ("drm/client: Convert drm_client_buffer_addfb() to drm_mode_addfb2()")
-Closes: https://issues.redhat.com/browse/RHEL-45158
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240627173530.460615-1-thuth@redhat.com
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: George Stark <gnstark@salutedevices.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Marek Behún <kabel@kernel.org>
+Acked-by: Waiman Long <longman@redhat.com>
+Link: https://lore.kernel.org/r/20240411161032.609544-2-gnstark@salutedevices.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_fbdev_generic.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/mutex.h        | 27 +++++++++++++++++++++++++++
+ kernel/locking/mutex-debug.c | 12 ++++++++++++
+ 2 files changed, 39 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_fbdev_generic.c b/drivers/gpu/drm/drm_fbdev_generic.c
-index b4659cd6285ab..cbb7418b789f8 100644
---- a/drivers/gpu/drm/drm_fbdev_generic.c
-+++ b/drivers/gpu/drm/drm_fbdev_generic.c
-@@ -84,7 +84,8 @@ static int drm_fbdev_generic_helper_fb_probe(struct drm_fb_helper *fb_helper,
- 		    sizes->surface_width, sizes->surface_height,
- 		    sizes->surface_bpp);
+diff --git a/include/linux/mutex.h b/include/linux/mutex.h
+index a33aa9eb9fc3b..5b5630e58407a 100644
+--- a/include/linux/mutex.h
++++ b/include/linux/mutex.h
+@@ -21,6 +21,8 @@
+ #include <linux/debug_locks.h>
+ #include <linux/cleanup.h>
  
--	format = drm_mode_legacy_fb_format(sizes->surface_bpp, sizes->surface_depth);
-+	format = drm_driver_legacy_fb_format(dev, sizes->surface_bpp,
-+					     sizes->surface_depth);
- 	buffer = drm_client_framebuffer_create(client, sizes->surface_width,
- 					       sizes->surface_height, format);
- 	if (IS_ERR(buffer))
++struct device;
++
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ # define __DEP_MAP_MUTEX_INITIALIZER(lockname)			\
+ 		, .dep_map = {					\
+@@ -171,6 +173,31 @@ do {							\
+ } while (0)
+ #endif /* CONFIG_PREEMPT_RT */
+ 
++#ifdef CONFIG_DEBUG_MUTEXES
++
++int __devm_mutex_init(struct device *dev, struct mutex *lock);
++
++#else
++
++static inline int __devm_mutex_init(struct device *dev, struct mutex *lock)
++{
++	/*
++	 * When CONFIG_DEBUG_MUTEXES is off mutex_destroy() is just a nop so
++	 * no really need to register it in the devm subsystem.
++	 */
++	return 0;
++}
++
++#endif
++
++#define devm_mutex_init(dev, mutex)			\
++({							\
++	typeof(mutex) mutex_ = (mutex);			\
++							\
++	mutex_init(mutex_);				\
++	__devm_mutex_init(dev, mutex_);			\
++})
++
+ /*
+  * See kernel/locking/mutex.c for detailed documentation of these APIs.
+  * Also see Documentation/locking/mutex-design.rst.
+diff --git a/kernel/locking/mutex-debug.c b/kernel/locking/mutex-debug.c
+index bc8abb8549d20..6e6f6071cfa27 100644
+--- a/kernel/locking/mutex-debug.c
++++ b/kernel/locking/mutex-debug.c
+@@ -12,6 +12,7 @@
+  */
+ #include <linux/mutex.h>
+ #include <linux/delay.h>
++#include <linux/device.h>
+ #include <linux/export.h>
+ #include <linux/poison.h>
+ #include <linux/sched.h>
+@@ -89,6 +90,17 @@ void debug_mutex_init(struct mutex *lock, const char *name,
+ 	lock->magic = lock;
+ }
+ 
++static void devm_mutex_release(void *res)
++{
++	mutex_destroy(res);
++}
++
++int __devm_mutex_init(struct device *dev, struct mutex *lock)
++{
++	return devm_add_action_or_reset(dev, devm_mutex_release, lock);
++}
++EXPORT_SYMBOL_GPL(__devm_mutex_init);
++
+ /***
+  * mutex_destroy - mark a mutex unusable
+  * @lock: the mutex to be destroyed
 -- 
 2.43.0
 
