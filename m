@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-58371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BD0392B6AF
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:16:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E230892B804
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0EA72850AD
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:16:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D301283179
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310A3156F2B;
-	Tue,  9 Jul 2024 11:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F349E158D76;
+	Tue,  9 Jul 2024 11:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0oNEpku"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPFHaelb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E413A155A26;
-	Tue,  9 Jul 2024 11:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1261158876;
+	Tue,  9 Jul 2024 11:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523734; cv=none; b=DodhlQHnV6+r1UP4FoW0Zx/VmQiklX75va1//VWlIN04OxGep3uTG8/4uDMXu105g5cdi11sMVqYJrwGdAWH8GLzfRd9dh+zQnBt9Xka6a9Uxtf0F3trbWTTyq88Z+rBAPxr7LiFEi+ldiOPbDZYcD6ZuJ4L6+9kd/nTX/mxAko=
+	t=1720524571; cv=none; b=QMgkR9lWSudmWf3g/A56frvgeFYeJkhsKZMydHIRkZ+VSNXtHFsWSj+9ZGieyAo81xiERdg3P66xJTPH72zTL7IKOYAN0nYcphyfwTio+IT6nH/7PACsIlWNuJW3zsYnWEadHjOHRaRgJbcjdEIIUyFNtOPRF/Og07ZkuvXEaPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523734; c=relaxed/simple;
-	bh=5GTwNyO22b1l5cUx5eBXcixgjT/YzgHmQWuaLTsU0LU=;
+	s=arc-20240116; t=1720524571; c=relaxed/simple;
+	bh=uG3xYDbkAfr/X5yoWGy+vyJ5ITGNZ08C42/bcsw/fb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=frry2JtYnd+cUf083QEPDE8BXd2UDv/9YFVBv6VofNx5cnoFff8JIxTmJ9KIW/fRmgK5BPheoKD1tyuIm9+V80YX6TiLNsmH4Qa8E63EM0cZv8Z+rtxargf/K92+mYZ+r6dR2auF5+Lrf2jLDz1pVb6HkXZonE8mRmVS2jmM+ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0oNEpku; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA2AC3277B;
-	Tue,  9 Jul 2024 11:15:32 +0000 (UTC)
+	 MIME-Version; b=hrnUdXdMXO3hUZPtwztTevD94UefqBIY+OKbLUfJ9r0rJy0ieKnJ4XOERPtFMG5cfgZPw3NshZM8Ps6zci6fKlr3X36RS8oqSEXwoOiOXCINo65irSBpQVFHnITJsuMOjBzouL59Jywh6eiVW3q8PoQUf5Vkc+zoutub8hDEeeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPFHaelb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3409C4AF0A;
+	Tue,  9 Jul 2024 11:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523733;
-	bh=5GTwNyO22b1l5cUx5eBXcixgjT/YzgHmQWuaLTsU0LU=;
+	s=korg; t=1720524571;
+	bh=uG3xYDbkAfr/X5yoWGy+vyJ5ITGNZ08C42/bcsw/fb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c0oNEpkuj/eSGp2P1h1B52J9NBFzXouEkC8FLU00t/85FPd3AZlr1JHiqHsPHEiGb
-	 E2vKw2QpIyHY1HApX5zE4I9RKrOJoT2O2qPzVruE02vF3RqrpdcHnietPMN5HTp9KC
-	 fnAuisKKjYXRa9OzdIamiaCVWIVEWJVYrEtR5I4E=
+	b=lPFHaelbKRtho+5DmGJQkpj7BUcwjBjGnF51ys6ifdAfquYYQvpD9PbObm/5X0X2C
+	 5sC4FumV4TH7UaCaRzBU/lL3ARvHPBjwaX0vBN4QjNETnagKXlHnIjznIpFI7K4Q7c
+	 JUadkn73Rg7LPBx5fUjBsfgwNY0GsBbwD1nTqKyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+d79afb004be235636ee8@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
-	Hillf Danton <hdanton@sina.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 091/139] nilfs2: add missing check for inode numbers on directory entries
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 028/102] powerpc/64: Set _IO_BASE to POISON_POINTER_DELTA not 0 for CONFIG_PCI=n
 Date: Tue,  9 Jul 2024 13:09:51 +0200
-Message-ID: <20240709110701.698944450@linuxfoundation.org>
+Message-ID: <20240709110652.463396303@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit bb76c6c274683c8570ad788f79d4b875bde0e458 upstream.
+[ Upstream commit be140f1732b523947425aaafbe2e37b41b622d96 ]
 
-Syzbot reported that mounting and unmounting a specific pattern of
-corrupted nilfs2 filesystem images causes a use-after-free of metadata
-file inodes, which triggers a kernel bug in lru_add_fn().
+There is code that builds with calls to IO accessors even when
+CONFIG_PCI=n, but the actual calls are guarded by runtime checks.
 
-As Jan Kara pointed out, this is because the link count of a metadata file
-gets corrupted to 0, and nilfs_evict_inode(), which is called from iput(),
-tries to delete that inode (ifile inode in this case).
+If not those calls would be faulting, because the page at virtual
+address zero is (usually) not mapped into the kernel. As Arnd pointed
+out, it is possible a large port value could cause the address to be
+above mmap_min_addr which would then access userspace, which would be
+a bug.
 
-The inconsistency occurs because directories containing the inode numbers
-of these metadata files that should not be visible in the namespace are
-read without checking.
+To avoid any such issues, set _IO_BASE to POISON_POINTER_DELTA. That
+is a value chosen to point into unmapped space between the kernel and
+userspace, so any access will always fault.
 
-Fix this issue by treating the inode numbers of these internal files as
-errors in the sanity check helper when reading directory folios/pages.
+Note that on 32-bit POISON_POINTER_DELTA is 0, so the patch only has an
+effect on 64-bit.
 
-Also thanks to Hillf Danton and Matthew Wilcox for their initial mm-layer
-analysis.
-
-Link: https://lkml.kernel.org/r/20240623051135.4180-3-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+d79afb004be235636ee8@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d79afb004be235636ee8
-Reported-by: Jan Kara <jack@suse.cz>
-Closes: https://lkml.kernel.org/r/20240617075758.wewhukbrjod5fp5o@quack3
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240503075619.394467-2-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/dir.c   |    6 ++++++
- fs/nilfs2/nilfs.h |    5 +++++
- 2 files changed, 11 insertions(+)
+ arch/powerpc/include/asm/io.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -143,6 +143,9 @@ static bool nilfs_check_page(struct page
- 			goto Enamelen;
- 		if (((offs + rec_len - 1) ^ offs) & ~(chunk_size-1))
- 			goto Espan;
-+		if (unlikely(p->inode &&
-+			     NILFS_PRIVATE_INODE(le64_to_cpu(p->inode))))
-+			goto Einumber;
- 	}
- 	if (offs != limit)
- 		goto Eend;
-@@ -168,6 +171,9 @@ Enamelen:
- 	goto bad_entry;
- Espan:
- 	error = "directory entry across blocks";
-+	goto bad_entry;
-+Einumber:
-+	error = "disallowed inode number";
- bad_entry:
- 	nilfs_error(sb,
- 		    "bad entry in directory #%lu: %s - offset=%lu, inode=%lu, rec_len=%d, name_len=%d",
---- a/fs/nilfs2/nilfs.h
-+++ b/fs/nilfs2/nilfs.h
-@@ -121,6 +121,11 @@ enum {
- 	((ino) >= NILFS_FIRST_INO(sb) ||				\
- 	 ((ino) < NILFS_USER_INO && (NILFS_SYS_INO_BITS & BIT(ino))))
- 
-+#define NILFS_PRIVATE_INODE(ino) ({					\
-+	ino_t __ino = (ino);						\
-+	((__ino) < NILFS_USER_INO && (__ino) != NILFS_ROOT_INO &&	\
-+	 (__ino) != NILFS_SKETCH_INO); })
-+
- /**
-  * struct nilfs_transaction_info: context information for synchronization
-  * @ti_magic: Magic number
+diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
+index 0e1745e5125b0..6d3ce049babdf 100644
+--- a/arch/powerpc/include/asm/io.h
++++ b/arch/powerpc/include/asm/io.h
+@@ -42,7 +42,7 @@ extern struct pci_dev *isa_bridge_pcidev;
+  * define properly based on the platform
+  */
+ #ifndef CONFIG_PCI
+-#define _IO_BASE	0
++#define _IO_BASE	POISON_POINTER_DELTA
+ #define _ISA_MEM_BASE	0
+ #define PCI_DRAM_OFFSET 0
+ #elif defined(CONFIG_PPC32)
+-- 
+2.43.0
+
 
 
 
