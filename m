@@ -1,57 +1,72 @@
-Return-Path: <stable+bounces-58905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B362B92C16A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:58:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2F1892C16C
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:58:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4DEC1C21BA3
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:58:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0059E1C22DDC
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317AD19E2DC;
-	Tue,  9 Jul 2024 16:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF991ABC47;
+	Tue,  9 Jul 2024 16:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1koOL3P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o6wv7iro"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCC819E2DB;
-	Tue,  9 Jul 2024 16:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7812419E2DB;
+	Tue,  9 Jul 2024 16:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542449; cv=none; b=b3SVhdtjTjCiyALDsufOEk8jS198bq50fvLPKNVMn+ECdEgBU1iWBKxpkcr232EhAsik8N+aOmpFKLPH5c689Py+T9grph0HknHgFV98ObMxwbYUysX3y/8ujJdm3U2KMH2VtQw/M5AIxFccIcr3UBUf4/leEUgCOIIy92Leylo=
+	t=1720542452; cv=none; b=Qg5Ppv/bCr89jSmZ40s8ud6boZ3kesBq/EtJOKVdqGkXYjIJus+ISjKxBBtvPAAMWsnLiUJsVsYcuZNqouA3/2eGnoeyMClh3H9A3hqmpo5ftXzPOdJioa7Q/5s/L0/9DSRh8rEkH7DeZQy4wljGfvk87lHQQglf7/NESaUd+No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542449; c=relaxed/simple;
-	bh=imYIFxwQm9Tpqt9qP5Rzt36q+eNgduHDNVlWjY4Y8B8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I8VNksO9tApXI+pISppPsKJ8IUaVIF7QbekbVCY++NfIqgKRxuXTKdTL1Or2D+cWQiSwYyOf4srt8+LWwKoHEcpR6n86jCIJHVxSKrtptTZS9lCViW3Wkm8511AgI92m3rGw3sQT6bJUQeA8v2gbF/FtovBeDnEes941cpADsMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1koOL3P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4DE6C3277B;
-	Tue,  9 Jul 2024 16:27:27 +0000 (UTC)
+	s=arc-20240116; t=1720542452; c=relaxed/simple;
+	bh=Nc1Fleeq+6cx6iAkCtSWP/Lq0adPyPOSP/kCudaM82E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NkFfQDoiHodo8BLeINy6MHv4wjcDOcJ37+8TMVcootdOHAEqDpHJQa3xSShmOLUjLNNDxqBD2tWF6X/sKCYXYuIu+xlfzNO9jbPGPwbCtOfxn1w4ltZQw0PgHfC6tVeAYQHWnXJqvDGmsc39unTLoU0YBoHxltUbPMLMMb+y5WU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o6wv7iro; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DD73C3277B;
+	Tue,  9 Jul 2024 16:27:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542448;
-	bh=imYIFxwQm9Tpqt9qP5Rzt36q+eNgduHDNVlWjY4Y8B8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=h1koOL3PQE07powVZFfrkSE2LTR7D8Nwkd8oD9su6rRxDUKRBkT6n66EfHd+eG5c6
-	 GrFd7c3h/cdvQ9A+D79fIA8uYm3+pQjiLpkqxMqVQvA+owxmTd6VEVTRcw/Fis0TGC
-	 3U0sF6l6m7e/i1aJcRET6MT8EvvE9V5UDGH5Z48nlknpcLW2hQwrE3THb/2qB/RLKN
-	 WqQ7BcFUcupkOYaPm2YPsMLUXDkG9b4nqKH9UMFZL7N3NuAiCuoVH3LEE2amyOmMGz
-	 RNlS+zioUOl4ACEFodZPQVOyp1pUJpnh5qHBdOYPvwbZxMCiDfhAVA/JSJyUov1pM6
-	 XxzN8OVWuZ3YQ==
+	s=k20201202; t=1720542452;
+	bh=Nc1Fleeq+6cx6iAkCtSWP/Lq0adPyPOSP/kCudaM82E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=o6wv7irooYusV9nUhUwgqC0B/bH64rfZF2bygBIEq890AcKirYZXahWid2SEl6H2x
+	 ZNYznbrssz/kFq2NLpNoXdy6/QmmiTUmywyzq45vhy56tvYMN/y1bAh64tLUrdWDzT
+	 LD2a4BKyfRgavpxO3LjGxaZH3z4gYQgdgP+z+Hv4xiT6rFyrogH+XiesS0bw+R2aan
+	 T8Xo4+/f+XeCqSMmI7UoGoWh9GT7g64UmytUkYpKdcDdTqRP68+gOspHPW8oG7trzF
+	 ds+JB3/p824yjo1P6w2D7Enudf7c4NqfxgXmA7KoS6dzq+jFq4FJtx3sJrPx6SHkp/
+	 wIvj9Uz8/u7Vg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jonathan Denose <jdenose@google.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+Cc: Thomas GENTY <tomlohave@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jefferymiller@google.com,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 1/7] Input: elantech - fix touchpad state on resume for Lenovo N24
-Date: Tue,  9 Jul 2024 12:27:12 -0400
-Message-ID: <20240709162726.33610-1-sashal@kernel.org>
+	cezary.rojewski@intel.com,
+	liam.r.girdwood@linux.intel.com,
+	peter.ujfalusi@linux.intel.com,
+	yung-chuan.liao@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
+	kai.vehmanen@linux.intel.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	kuninori.morimoto.gx@renesas.com,
+	alban.boye@protonmail.com,
+	alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 2/7] bytcr_rt5640 : inverse jack detect for Archos 101 cesium
+Date: Tue,  9 Jul 2024 12:27:13 -0400
+Message-ID: <20240709162726.33610-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240709162726.33610-1-sashal@kernel.org>
+References: <20240709162726.33610-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,77 +78,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.317
 Content-Transfer-Encoding: 8bit
 
-From: Jonathan Denose <jdenose@google.com>
+From: Thomas GENTY <tomlohave@gmail.com>
 
-[ Upstream commit a69ce592cbe0417664bc5a075205aa75c2ec1273 ]
+[ Upstream commit e3209a1827646daaab744aa6a5767b1f57fb5385 ]
 
-The Lenovo N24 on resume becomes stuck in a state where it
-sends incorrect packets, causing elantech_packet_check_v4 to fail.
-The only way for the device to resume sending the correct packets is for
-it to be disabled and then re-enabled.
+When headphones are plugged in, they appear absent; when they are removed,
+they appear present.
+Add a specific entry in bytcr_rt5640 for this device
 
-This change adds a dmi check to trigger this behavior on resume.
-
-Signed-off-by: Jonathan Denose <jdenose@google.com>
-Link: https://lore.kernel.org/r/20240503155020.v2.1.Ifa0e25ebf968d8f307f58d678036944141ab17e6@changeid
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Thomas GENTY <tomlohave@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20240608170251.99936-1-tomlohave@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/mouse/elantech.c | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ sound/soc/intel/boards/bytcr_rt5640.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/input/mouse/elantech.c b/drivers/input/mouse/elantech.c
-index 6759cab82a723..6f747c59cd652 100644
---- a/drivers/input/mouse/elantech.c
-+++ b/drivers/input/mouse/elantech.c
-@@ -1527,16 +1527,47 @@ static void elantech_disconnect(struct psmouse *psmouse)
- 	psmouse->private = NULL;
- }
- 
-+/*
-+ * Some hw_version 4 models fail to properly activate absolute mode on
-+ * resume without going through disable/enable cycle.
-+ */
-+static const struct dmi_system_id elantech_needs_reenable[] = {
-+#if defined(CONFIG_DMI) && defined(CONFIG_X86)
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index 19f425eb4a40f..16e2ab2903754 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -474,6 +474,17 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF1 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
 +	{
-+		/* Lenovo N24 */
 +		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "81AF"),
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ARCHOS"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ARCHOS 101 CESIUM"),
 +		},
++		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
++					BYT_RT5640_JD_NOT_INV |
++					BYT_RT5640_DIFF_MIC |
++					BYT_RT5640_SSP0_AIF1 |
++					BYT_RT5640_MCLK_EN),
 +	},
-+#endif
-+	{ }
-+};
-+
- /*
-  * Put the touchpad back into absolute mode when reconnecting
-  */
- static int elantech_reconnect(struct psmouse *psmouse)
- {
-+	int err;
-+
- 	psmouse_reset(psmouse);
- 
- 	if (elantech_detect(psmouse, 0))
- 		return -1;
- 
-+	if (dmi_check_system(elantech_needs_reenable)) {
-+		err = ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_DISABLE);
-+		if (err)
-+			psmouse_warn(psmouse, "failed to deactivate mouse on %s: %d\n",
-+				     psmouse->ps2dev.serio->phys, err);
-+
-+		err = ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_ENABLE);
-+		if (err)
-+			psmouse_warn(psmouse, "failed to reactivate mouse on %s: %d\n",
-+				     psmouse->ps2dev.serio->phys, err);
-+	}
-+
- 	if (elantech_set_absolute_mode(psmouse)) {
- 		psmouse_err(psmouse,
- 			    "failed to put touchpad back into absolute mode.\n");
+ 	{
+ 		.matches = {
+ 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ARCHOS"),
 -- 
 2.43.0
 
