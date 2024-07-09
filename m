@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-58591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1C3B92B7C3
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6E692B6D3
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6878D1F24572
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 172C21C2174A
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD46156238;
-	Tue,  9 Jul 2024 11:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7261115534D;
+	Tue,  9 Jul 2024 11:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ufZjCz1U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2pqaDCU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9A627713;
-	Tue,  9 Jul 2024 11:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C4014EC4D;
+	Tue,  9 Jul 2024 11:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524403; cv=none; b=fmfXwsg1DxYevIuIoboHENWV1BscystTnQftFF6S4r7Mp5uuTgqzM8R6d3pNt32axTaiRx46FugbqelmAMKvjFem6sOaSQ3GI1HtasmuXEKu74Degs+xF9SCRAkJYILkPj6kFpa79exlL1XBdPbVVZjT37MI/10ULT26v8OPpJg=
+	t=1720523834; cv=none; b=RiuplumSsL4MPc9pDNMp6fBTDHRrW9PfocfYk+AOqaGfNrW4sMNnikqgMWiQNxtxxym4ExTaj3VQQKzJSaKgCJy8dVU4FPN6OoRmfp/h61k9a1Jl1u3wKV9vZXdxqA4c02unjzWrRmMYx49OdzSsFEMcFSoAxkOXJUUV2dSAgMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524403; c=relaxed/simple;
-	bh=FJADvsO/qheMq8ZV7tdyRTzXaZhkpR+hmEmir2LXwDY=;
+	s=arc-20240116; t=1720523834; c=relaxed/simple;
+	bh=uw8bkSAmonsu9uTYCKpzgaNnHn6iqy1jEdjdu+ti4WY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sRrxhOucT/gs97MsIvSh7940TIuIAYaZ9uLq3vyPR7y8ky/dtvA1Nus8LkhsM69fzznVvLda3EIC2wFKudKy8v5k+N7aeDuKFKcd8YndgA+GvfzXlfH2eD/vNdf2Y3/QKzYGm09yN/RW4OZ069DvxYGEQjAlzMHnfGdFq3OvgHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ufZjCz1U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12318C3277B;
-	Tue,  9 Jul 2024 11:26:42 +0000 (UTC)
+	 MIME-Version; b=lneAPMIwrLrPF/8hjolb+wPpiFNT7uMacIsLLc4QIA2QS5hEUUg5NFBM5wIaTU8KdAmXcyVNbuoR1YsnBWFXQ7muFAZ8J52UaMzg17iJWi8bk6dzayGuknlQFHpnuQe/KWCVwXuEw4B8IDXwLfZEd/HLhixGH8cDu3FdNIG+dJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2pqaDCU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA52C3277B;
+	Tue,  9 Jul 2024 11:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524403;
-	bh=FJADvsO/qheMq8ZV7tdyRTzXaZhkpR+hmEmir2LXwDY=;
+	s=korg; t=1720523834;
+	bh=uw8bkSAmonsu9uTYCKpzgaNnHn6iqy1jEdjdu+ti4WY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ufZjCz1UT5MfYOGFcXdgZRKBTtoYidgfvWY7jVyfzguzs6A3nRxrVZsU5fXwy80CQ
-	 96xmya10q9ReygC8PrPhqspk+VYrv1CKahoH8tKbRhwRr1rnLM/oltPPgbLwCf04Up
-	 2TcXCKNwQpPMpK0OnSgruFxEdodRRO/0bvQJ1O1A=
+	b=r2pqaDCUqKpvapZFo6Oz1Q/TKS1UIWpSc7SdRafGsXGXB2iZRw46EJ3Lv0u9R2eaK
+	 FjW4d1Eb9Nf0bzVeDbY44g7Rkmk4/E1kA5yVmhVYk5QUw4tx3GT7YRhHcoQaNYNNml
+	 XdlRy6dL5fSuzvdpD00o1dpKnb4lOSHOID70H/h0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 171/197] clk: qcom: clk-alpha-pll: set ALPHA_EN bit for Stromer Plus PLLs
+Subject: [PATCH 6.6 125/139] nvme-multipath: find NUMA path only for online numa-node
 Date: Tue,  9 Jul 2024 13:10:25 +0200
-Message-ID: <20240709110715.568561061@linuxfoundation.org>
+Message-ID: <20240709110703.002084059@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Nilay Shroff <nilay@linux.ibm.com>
 
-[ Upstream commit 5a33a64524e6381c399e5e42571d9363ffc0bed4 ]
+[ Upstream commit d3a043733f25d743f3aa617c7f82dbcb5ee2211a ]
 
-The clk_alpha_pll_stromer_plus_set_rate() function does not
-sets the ALPHA_EN bit in the USER_CTL register, so setting
-rates which requires using alpha mode works only if the bit
-gets set already prior calling the function.
+In current native multipath design when a shared namespace is created,
+we loop through each possible numa-node, calculate the NUMA distance of
+that node from each nvme controller and then cache the optimal IO path
+for future reference while sending IO. The issue with this design is that
+we may refer to the NUMA distance table for an offline node which may not
+be populated at the time and so we may inadvertently end up finding and
+caching a non-optimal path for IO. Then latter when the corresponding
+numa-node becomes online and hence the NUMA distance table entry for that
+node is created, ideally we should re-calculate the multipath node distance
+for the newly added node however that doesn't happen unless we rescan/reset
+the controller. So essentially, we may keep using non-optimal IO path for a
+node which is made online after namespace is created.
+This patch helps fix this issue ensuring that when a shared namespace is
+created, we calculate the multipath node distance for each online numa-node
+instead of each possible numa-node. Then latter when a node becomes online
+and we receive any IO on that newly added node, we would calculate the
+multipath node distance for newly added node but this time NUMA distance
+table would have been already populated for newly added node. Hence we
+would be able to correctly calculate the multipath node distance and choose
+the optimal path for the IO.
 
-Extend the function to set the ALPHA_EN bit in order to allow
-using fractional rates regardless whether the bit gets set
-previously or not.
-
-Fixes: 84da48921a97 ("clk: qcom: clk-alpha-pll: introduce stromer plus ops")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/r/20240508-stromer-plus-alpha-en-v1-1-6639ce01ca5b@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-alpha-pll.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/nvme/host/multipath.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
-index be18ff983d35c..003308a288968 100644
---- a/drivers/clk/qcom/clk-alpha-pll.c
-+++ b/drivers/clk/qcom/clk-alpha-pll.c
-@@ -2555,6 +2555,9 @@ static int clk_alpha_pll_stromer_plus_set_rate(struct clk_hw *hw,
- 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
- 					a >> ALPHA_BITWIDTH);
+diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
+index 3ac0cc22207dc..6515fa537ee53 100644
+--- a/drivers/nvme/host/multipath.c
++++ b/drivers/nvme/host/multipath.c
+@@ -594,7 +594,7 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
+ 		int node, srcu_idx;
  
-+	regmap_update_bits(pll->clkr.regmap, PLL_USER_CTL(pll),
-+			   PLL_ALPHA_EN, PLL_ALPHA_EN);
-+
- 	regmap_write(pll->clkr.regmap, PLL_MODE(pll), PLL_BYPASSNL);
- 
- 	/* Wait five micro seconds or more */
+ 		srcu_idx = srcu_read_lock(&head->srcu);
+-		for_each_node(node)
++		for_each_online_node(node)
+ 			__nvme_find_path(head, node);
+ 		srcu_read_unlock(&head->srcu, srcu_idx);
+ 	}
 -- 
 2.43.0
 
