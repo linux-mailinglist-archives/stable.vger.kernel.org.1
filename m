@@ -1,118 +1,132 @@
-Return-Path: <stable+bounces-58752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3750092BB90
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 15:39:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B029C92BBC0
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 15:48:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61C211C24103
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:39:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CACD283FF6
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1FC2B9D4;
-	Tue,  9 Jul 2024 13:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9EB0181B81;
+	Tue,  9 Jul 2024 13:48:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kSAQ4u4I"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E60D145325;
-	Tue,  9 Jul 2024 13:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62A617E901
+	for <stable@vger.kernel.org>; Tue,  9 Jul 2024 13:48:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720532303; cv=none; b=aN55/o7/yEm5wegqqUnU8tigezg4ysWgKXn2fbWJH2p/ecy9RY56YbpD36gjZA01HqULRFYo4AaALwRvhvWz6LjjZlkFoTkJLHUxdbCZM/qDKiApOKT7dFCzMe0efYlgVXHFq6Kru0RWmC4KrxUNpqACq0Dr+OuHmnSLeGQzmAk=
+	t=1720532914; cv=none; b=NVwrplZ05z6F2cdcE1mlP9vgZZn1vA37LfKdcC0VzpsUzp32GL3mv+5QR8+/6qohQo/rHQjBzswJgBbBYeNQswE9u06N9IQvc3Beb9NfDxY5uEALb+2YT2CALXAqt3igz/oro38lU9d7nSdxvgM+mcwr3MwHoVmzKXhRlxmjDaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720532303; c=relaxed/simple;
-	bh=+Npn2ARSeScntu6PPTnz0FNM0maOuRq69uO3r2huVj4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JqzsDAmMigYxJa5xDQowBzWw9xheDbgw7nwF0GfQfQ07Br/uUtmGKEfDcbTUaWbDNsLtYhDgD8wCKb2Nr1hmsMbXXAfNi9jWEiReCLkm+X21xdosZy0UxWUwltL1KBRC7W1CwLSjfuktt15pObmCelxZ6jJnBZvfUr9BWkLsEhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-05 (Coremail) with SMTP id zQCowAA3PeU5PY1mLFdhAg--.39231S2;
-	Tue, 09 Jul 2024 21:38:09 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: dinguyen@kernel.org,
-	bp@alien8.de,
-	tony.luck@intel.com,
-	james.morse@arm.com,
-	mchehab@kernel.org,
-	rric@kernel.org,
-	niravkumar.l.rabara@intel.com
-Cc: linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] EDAC/altera: Fix possible null pointer dereference
-Date: Tue,  9 Jul 2024 21:37:59 +0800
-Message-Id: <20240709133759.1012350-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1720532914; c=relaxed/simple;
+	bh=bL6t+kZFucDajd7H3MVoLbxP4QMw5AdDFCkBISCWBK4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hw2seAZkLbETx+83jcCYSwMzlbUwEl8rnpYNgI1C1zJSG3Rht2TtzpaNOwWjto5jWCHrNi0cSDSWcCTLEDIp6knp4dwT+Xls9dqGIIcYUg4q9ogGXwmgWnVw7n1cHS02/4+thek9+f6j58UIURFcgoT+TeRF/tDfxBBlF+t0NLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kSAQ4u4I; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-52ea3e499b1so4982093e87.3
+        for <stable@vger.kernel.org>; Tue, 09 Jul 2024 06:48:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1720532907; x=1721137707; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KhHYU7UmK4dnD7/sjmuMOOwDgcdEgKtZKNrTen8zuww=;
+        b=kSAQ4u4I1hdFNSV2+rDfN1CbuZVj+kBI4C2mPJajE2RDvnUVScSTSkws//dQN147q+
+         BLKTpJCd1MBIeQtaT0G2IK8LPnWknAGhdHcWKJEhq669p0XiF++t3zQZrS4Ijr73+hYf
+         Zp45v5Vn+NSyR9p/ww3Qp/uPCkq9368qlpky9AH1VyDNC+GFuahSyiRjZE0LIGLCDM75
+         DsuxxCl1TAiu10AU51nGR0s4d2l642I6f3S85IlQW+S3Ipctkp7YsSnc5/Aypjz1pd7u
+         cJBoZ1vvOQ77tzfjPoElojVmLDLRnH8/lSa5+ad8kUosE15uWEdKrab+OX7zK9QNIX3e
+         /pPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720532907; x=1721137707;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KhHYU7UmK4dnD7/sjmuMOOwDgcdEgKtZKNrTen8zuww=;
+        b=WHgXhYQdyGcXhtUxwc0MEPzVwfbtogvhOflth8smDhmaNk75yhiJnNEx7HEK3Pv/8A
+         wwqJRMDsrDCtw/SLnzbgXmuVvA2DjLU++fnF8Kw+EH0FGn+7jX/aKhrqWtw9o52OA0cF
+         KmZXPGKKMqW78uYlxMm0L7XpsichbxPFpTSwQTi5eEMPbQ8aaX55wWPQQiBijpJ7TXZG
+         /l2bgolb4IcrmpSRs/JNNyivscy8qDTdMVV/WuUO//PbjMk0MSQ3SLr/J1+VYAdHBDci
+         lzk5EIqhajYefpJpLh6KQNFlx756Rq7X1sMhUkZJ3FnkCtywA/RG7u71q9TmnH1s7d6/
+         vCCw==
+X-Forwarded-Encrypted: i=1; AJvYcCUA3QRFqDlV0J8jHQ3dpYXslkYvxsFAer8k/drV86OXFcKFTmwDqwR3KGBF2FnfIE/gwKXVro8l4BaZ6sRPWCVAGKhcHpw+
+X-Gm-Message-State: AOJu0Yz37Ih9NsckQqstLFfpAQOIYfw38lq4c/w+njP2k0xdR1spL/BE
+	aW8ach57e9KrC8Zef8lItkZxRINs5dl/AAYEeF04OJFuFnC5goN+hoqZf4IjA2M=
+X-Google-Smtp-Source: AGHT+IH+4DaePyXmIoNWLgjS79EsnJAzPqo0nKjSdovFNAcILKuskj9yBxxbOKOqicxdvrhvMII+KQ==
+X-Received: by 2002:a05:6512:2349:b0:52e:6d71:e8f1 with SMTP id 2adb3069b0e04-52eb99d20f1mr1872812e87.53.1720532905946;
+        Tue, 09 Jul 2024 06:48:25 -0700 (PDT)
+Received: from umbar.lan ([192.130.178.91])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52eb8e4959csm250297e87.82.2024.07.09.06.48.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jul 2024 06:48:25 -0700 (PDT)
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 0/2] drm/msm/dpu: two fixes targeting 6.11
+Date: Tue, 09 Jul 2024 16:48:21 +0300
+Message-Id: <20240709-dpu-fix-wb-v1-0-448348bfd4cb@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAA3PeU5PY1mLFdhAg--.39231S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7WF47GF13XF1kCr48Xr1DKFg_yoW8GFyrpF
-	47W34YyFyUKa48Gr4qvwn5XFy5Cwn3XayxWrWIya4Y93y3X345JryUZFWjya4jqrW8Cay3
-	tr45tw45Aay8JaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
-	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
-	VFxhVjvjDU0xZFpf9x0JUQZ23UUUUU=
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKU/jWYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDcwNL3ZSCUt20zArd8iRds+QUU/NU49QkQwsjJaCGgqJUoAzYsOjY2lo
+ A++nUC1wAAAA=
+To: Rob Clark <robdclark@gmail.com>, 
+ Abhinav Kumar <quic_abhinavk@quicinc.com>, Sean Paul <sean@poorly.run>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
+ Jordan Crouse <jordan@cosmicpenguin.net>, 
+ Chandan Uddaraju <chandanu@codeaurora.org>, 
+ Rajesh Yadav <ryadav@codeaurora.org>, 
+ Sravanthi Kollukuduru <skolluku@codeaurora.org>, 
+ Archit Taneja <architt@codeaurora.org>
+Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ Jeykumar Sankaran <jsanka@codeaurora.org>, stable@vger.kernel.org, 
+ Leonard Lausen <leonard@lausen.nl>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=853;
+ i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
+ bh=bL6t+kZFucDajd7H3MVoLbxP4QMw5AdDFCkBISCWBK4=;
+ b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBmjT+o18HQEGU/sh2XXVi9PeuAXwCOvz/3KnFsm
+ 9WZwmhMseaJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZo0/qAAKCRCLPIo+Aiko
+ 1ZpGCACE6gn9tmgMaVRmpBa4xTQljPegAbZFYn+ABYfIs31WEBWo/P9UqeL5ARG15SGCRyVcseT
+ RxgOeDmBPXxGP9LOov67wJGBAUEvKJB0Pq8IOyegyKoLn4b+7H4TWdlpa2UOGSphHy1ZvoyX712
+ MmV3f8r3HcL+p2HV6ZPJGfJW34MCMF7qVCDf3kcpWqSTPJZKW+kImOdbV90u7JaoKFX39eg8BbV
+ G2rDiW3BCyta8sfiSHe4kMlk3AGfOPvh+L598PeQlQ0SJ9FkULJin5ywg8bPqpEr3REZg0Fs7PB
+ Mz3sfn2D35c0aZgurVDkT2dQCqH2DaxaplNesO9HYYjA8y5t
+X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
+ fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
 
-In altr_s10_sdram_check_ecc_deps(), of_get_address() may return NULL which
-is later dereferenced. Fix this bug by adding NULL check.
+Leonard Lausen reported an issue with suspend/resume of the sc7180
+devices. Fix the WB atomic check, which caused the issue. Also make sure
+that DPU debugging logs are always directed to the drm_debug / DRIVER so
+that usual drm.debug masks work in an expected way.
 
-Cc: stable@vger.kernel.org
-Fixes: e1bca853dddc ("EDAC/altera: Add SDRAM ECC check for U-Boot")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 ---
- drivers/edac/altera_edac.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+Dmitry Baryshkov (2):
+      drm/msm/dpu1: don't choke on disabling the writeback connector
+      drm/msm/dpu: don't play tricks with debug macros
 
-diff --git a/drivers/edac/altera_edac.c b/drivers/edac/altera_edac.c
-index fe89f5c4837f..d6bf0eebeb41 100644
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -1086,6 +1086,7 @@ static int altr_s10_sdram_check_ecc_deps(struct altr_edac_device_dev *device)
- 	struct arm_smccc_res result;
- 	struct device_node *np;
- 	phys_addr_t sdram_addr;
-+	const __be32 *sdram_addrp;
- 	u32 read_reg;
- 	int ret;
- 
-@@ -1093,8 +1094,14 @@ static int altr_s10_sdram_check_ecc_deps(struct altr_edac_device_dev *device)
- 	if (!np)
- 		goto sdram_err;
- 
--	sdram_addr = of_translate_address(np, of_get_address(np, 0,
--							     NULL, NULL));
-+	sdram_addrp = of_get_address(np, 0, NULL, NULL);
-+	if (!sdram_addrp)
-+		return -EINVAL;
-+
-+	sdram_addr = of_translate_address(np, sdram_addrp);
-+	if (!sdram_addr)
-+		return -EINVAL;
-+
- 	of_node_put(np);
- 	sdram_ecc_addr = (unsigned long)sdram_addr + prv->ecc_en_ofst;
- 	arm_smccc_smc(INTEL_SIP_SMC_REG_READ, sdram_ecc_addr,
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h       | 14 ++------------
+ drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c | 14 +++++++-------
+ 2 files changed, 9 insertions(+), 19 deletions(-)
+---
+base-commit: 0b58e108042b0ed28a71cd7edf5175999955b233
+change-id: 20240709-dpu-fix-wb-6cd57e3eb182
+
+Best regards,
 -- 
-2.25.1
+Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
 
