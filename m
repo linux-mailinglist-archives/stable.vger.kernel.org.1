@@ -1,72 +1,138 @@
-Return-Path: <stable+bounces-58926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2398792C33D
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 20:22:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E912D92C360
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 20:41:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D377A28503A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:22:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1ECC91C227A9
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410D4180024;
-	Tue,  9 Jul 2024 18:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081A9180047;
+	Tue,  9 Jul 2024 18:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iLpZMgSd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KLU/oT9t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F118B17B020;
-	Tue,  9 Jul 2024 18:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F361B86D8;
+	Tue,  9 Jul 2024 18:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720549333; cv=none; b=gmOs4tGwRMhicQ4mqGKVtvx7e61JAIlwQ1C0ijaSHbAfqsoMw+D+UHWzXQvj7btDBeJOg/aa2W0p1VeK3M7LIF5KXk03/oqPnZhvQ1VqHmmyHa179pBRWmO3gWR51y657OC4uVzXHpxPieS4wMU+GksFCS1QDLZIrIAfW+9QSLQ=
+	t=1720550489; cv=none; b=RgK7GM1jsUKBfVlQsrvHNCFOV1yvsV00zMjASdlrMxL+/MODyauVphxeWQCH2vAL1T14N1nCTlcASTLGJzpBIkVK7IhMcAcorz3PIlF8yrN/sjoYs3R+05U+pwnCOIYoeDmdjVX0zJmGfORDibc1GVMwzcu2fPiewKM6iMaWGKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720549333; c=relaxed/simple;
-	bh=wM59GLV9xAXEl0zKRazQLCWwzgAPxvRC3pkgUZT2BrQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F5fxg00bEr5N2bL9db7pusOPqQr8YBBQ8hbxtC6F74c4yfoDy/wTrqbTe3lfzKSaXF2MbnNiRdGxFYO5lOwU4yfn9eltPiQT/M08QT9zxx7JvGKpk+C+iLmD3a/1tt5jg2tqRZhFSjXIDxl+Q860KbUYaFbpjYMRn3W7oGnUzgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iLpZMgSd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B8CC3277B;
-	Tue,  9 Jul 2024 18:22:12 +0000 (UTC)
+	s=arc-20240116; t=1720550489; c=relaxed/simple;
+	bh=8Ey1es78R1JXJmlxmcEvZ9ryqUGX/0PE4tOhxo3U4BI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=QQYBW/sDpCFyulJek5KJ5x/azvj8IDTs3PSIMj9Iv2f7YZQZOjnEeQZRPgjpsS0MVNw1BLBV1OZ9zVJ7+MSKvamjNW0zEVoAt/HNWSiiYm5Og4eh2ZzbZ/5+c999Wb6I+4MiwGaIo3K3ZVT83t+Uue4nads0IRw8kIMFkThaM2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KLU/oT9t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0F4C3277B;
+	Tue,  9 Jul 2024 18:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720549332;
-	bh=wM59GLV9xAXEl0zKRazQLCWwzgAPxvRC3pkgUZT2BrQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iLpZMgSdfhul7ttC0QnHJx5sFtuih3jt29Z6zJITYudJfpovZs5MNlpIRFr9lLIlV
-	 kq0+pk/l8x5rpT5wYRoJ0cZnNxdnwWZVdV5hEOmUC8aEE6T24cRzqgNnktlL6h+E7F
-	 oMVNd0WiIEn+PoOqzS6tWntpri1aZIuIlfA9f4BM8pon5MLKOFRK7ClDpN/KBjvPeF
-	 2GSJpjBCXFTrZ2h/f2GFtKXt0Xo3ITg1hdab6XJ5hjc6KeX5329SFDRQvEALGz/Kh1
-	 USCEpaG6H/YS9zu2yaOsnZebULrdxMm/OoR7I2OO6XMi+yxTW+96G7QRL8yPlC+kH/
-	 bgk4tcdK7iNcg==
-Date: Tue, 9 Jul 2024 11:22:11 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Ronald Wahl <rwahl@gmx.de>
-Cc: Ronald Wahl <ronald.wahl@raritan.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3] net: ks8851: Fix deadlock with the SPI chip variant
-Message-ID: <20240709112211.36119956@kernel.org>
-In-Reply-To: <20240706101337.854474-1-rwahl@gmx.de>
-References: <20240706101337.854474-1-rwahl@gmx.de>
+	s=k20201202; t=1720550489;
+	bh=8Ey1es78R1JXJmlxmcEvZ9ryqUGX/0PE4tOhxo3U4BI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KLU/oT9tAy7oXBsJpQQtFVRd1oTr2fUJiW+lZcGGLdZC4yj4a3oAUmzT/IZ0nYFdm
+	 aiHgb2JsjESujGlFsQ5TYOC0iwsvMq6YeEWJSDjPhflSYsogz/ZIMJ5BeWNC8tPXtQ
+	 PCHCU5CsArxcPZluEOEfyuM4pS+nNAEwUpHkDWOP9QLQkL6+yPDBpSyFu/5K97YM7W
+	 2TnD9+MfMPHsLaOQzk7RxJD+bVc/vR/ajw+4/ZfOYR6D6XmcJANFw0JMCCF/f4GadA
+	 RSBkO4nbMjAYBIGHRoIDeBqL1JVknNqOFba/JsTwOWuIU2yJtVMftYysjEUgs+De8x
+	 OdQjjqYghVFTw==
+From: SeongJae Park <sj@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org,
+	damon@lists.linux.dev
+Subject: Re: [PATCH 6.1 000/102] 6.1.98-rc1 review
+Date: Tue,  9 Jul 2024 11:41:24 -0700
+Message-Id: <20240709184124.702289-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sat,  6 Jul 2024 12:13:37 +0200 Ronald Wahl wrote:
-> From: Ronald Wahl <ronald.wahl@raritan.com>
+Hello,
+
+On Tue,  9 Jul 2024 13:09:23 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+
+> This is the start of the stable review cycle for the 6.1.98 release.
+> There are 102 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> When SMP is enabled and spinlocks are actually functional then there is
-> a deadlock with the 'statelock' spinlock between ks8851_start_xmit_spi
-> and ks8851_irq:
+> Responses should be made by Thu, 11 Jul 2024 11:06:25 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.98-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
 
-Applied, thanks!
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
+
+Tested-by: SeongJae Park <sj@kernel.org>
+
+[1] https://github.com/awslabs/damon-tests/tree/next/corr
+[2] b10d15fc3848 ("Linux 6.1.98-rc1")
+
+Thanks,
+SJ
+
+[...]
+
+---
+
+ok 1 selftests: damon: debugfs_attrs.sh
+ok 2 selftests: damon: debugfs_schemes.sh
+ok 3 selftests: damon: debugfs_target_ids.sh
+ok 4 selftests: damon: debugfs_empty_targets.sh
+ok 5 selftests: damon: debugfs_huge_count_read_write.sh
+ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
+ok 7 selftests: damon: sysfs.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_arm64.sh
+ok 12 selftests: damon-tests: build_m68k.sh
+ok 13 selftests: damon-tests: build_i386_idle_flag.sh
+ok 14 selftests: damon-tests: build_i386_highpte.sh
+ok 15 selftests: damon-tests: build_nomemcg.sh
+ [33m
+ [92mPASS [39m
 
