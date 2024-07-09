@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-58897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C31892C14C
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:56:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8529392C154
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:56:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB53D1F221F9
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:56:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A5E81F234E6
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E207A1ACA13;
-	Tue,  9 Jul 2024 16:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3441ACA3D;
+	Tue,  9 Jul 2024 16:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OFOX4fs6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eNXjNLgg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979C31ACA05;
-	Tue,  9 Jul 2024 16:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E1E1ACA05;
+	Tue,  9 Jul 2024 16:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542423; cv=none; b=QZoF5eqCkFHnVTJmD179Cnm9HH/REw6alN4kR3jofM5YxZEV5bQMyH4mFJXCqUmkyShLm2y7NHkzsmOVuqSXXzsoQZjTtnUYAOQZyU50UqDPC2uMGSV5u66jiYIR5+y1e562JRjEwgjpLpiiIvJQg7Eto9hMhR5Ypmk30cxh9PU=
+	t=1720542427; cv=none; b=eH19nCo42PwB8Fm/geY1dqbnYERrg3SGthhtdP04+5Ar3lai1Y4SGMmjjkNRXox3uq8/Cd79KFJtNHne6lvtQKh1kkzb1ajAnjEf4A47NNLnRX3mcvxf8hzqL2hQWvtYAhKp4fcpCzUwOEmLBIPyvYTNPD0+1UuPn65k6T0KF+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542423; c=relaxed/simple;
-	bh=lstzIYvPCZPCOyislBdQb7DoT8PCCt7CdK6+rbKdaiA=;
+	s=arc-20240116; t=1720542427; c=relaxed/simple;
+	bh=0VP+AH9neVUKwg4wvSYzQw+S15cNFQ0GW8YmXIa16Zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lIbY7qnSC2jLYNm5gR2kKUIjb9nbq2eTdXm58TZ+GXPvTNal/o8psXEF/SkkZw7tCWQTqMrZnzevvdL9UgZOMJEZAJvVlkvSZ+yH03HCVPd6AuoJtSd/wX2Dzg+T+ofESA9qhe8ApvU5vWhx7TVag9MjXVZRQe05/EWwzWkH1Ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OFOX4fs6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC48C32782;
-	Tue,  9 Jul 2024 16:27:02 +0000 (UTC)
+	 MIME-Version; b=BrXQUIUiD/2zRIVZ/MhrwPPysK0rcgmWGBCnEmNjNrXYvq4RlYiUGoS2ZqQhbTzJnXWhLEC/7hEpE3A285297d4N1rNt65uNSh0LRpZGNh5f+qqNrlcksK53BZtrUxDWug3bWARz884gNcjlTFV4wFXcAMT1oPGQjdt2Tp7bqyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eNXjNLgg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E3CC32782;
+	Tue,  9 Jul 2024 16:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542423;
-	bh=lstzIYvPCZPCOyislBdQb7DoT8PCCt7CdK6+rbKdaiA=;
+	s=k20201202; t=1720542426;
+	bh=0VP+AH9neVUKwg4wvSYzQw+S15cNFQ0GW8YmXIa16Zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OFOX4fs6To2JPZ6RX2pNnVSdnc65vOGn28sxDrQuzTm71pSXASf6We9wbDXeDY8D8
-	 qDooI1NVSLkPIU//efZ96ER8N8RJ5hENJZ1ff4VceNZK5SAuRCL8GizgT9JGZssLpT
-	 3lxMvmI08M+EP1ki04qSUSldtjembyrgL52FViji2uIpKaSdK1bDemw5sHBpeA+Dwm
-	 tVZOUGxM7//b019c/xaSBfYUFpzsUN6AvIsBqcIWkqD9a55ertwJk5gZG49hIHcaCF
-	 McU3pcc2j0frEhawcMgDKR9IioyYD6tmrXqoOxjLbbaUzMFiIWj4Col5vQPBM4EH9e
-	 rY6SeaWINWOCw==
+	b=eNXjNLgg9Q80GdJPlvF0Ft+bVmj9uFIqbvyrOFtQRSKjxvucF74Q3UABgjMsJbd//
+	 718J15MRd6hY7EsRvIGpB1B6z1A9bRnLFh7Dy1SyPcj0f5bvgKDkjAyV+Ngc6nVnXI
+	 dXh8L9qVq3/GaoE+YVmddA/200wz3cHS/+wBpYbDsdESBeGXClnsoqhcmAXS9BQJM8
+	 0Uu+BZmFEuTijf+sHdy65bUsICGqpdxbqwDzPjE2bSnZLZogE8AJDxTHhWnkmQ54m4
+	 m/5AYI7+5NibG43a80Cm0pkDhEMhstjsHxclrg9umce+N1rCCc6AmzlbFusSvBoZNH
+	 GCH3rN/2R6u8Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Primoz Fiser <primoz.fiser@norik.com>,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Chen Ni <nichen@iscas.ac.cn>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>,
-	jarkko.nikula@bitmer.com,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org,
-	linux-omap@vger.kernel.org,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 04/11] ASoC: ti: omap-hdmi: Fix too long driver name
-Date: Tue,  9 Jul 2024 12:26:37 -0400
-Message-ID: <20240709162654.33343-4-sashal@kernel.org>
+	mailhol.vincent@wanadoo.fr,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	extja@kvaser.com,
+	linux-can@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 05/11] can: kvaser_usb: fix return value for hif_usb_send_regout
+Date: Tue,  9 Jul 2024 12:26:38 -0400
+Message-ID: <20240709162654.33343-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162654.33343-1-sashal@kernel.org>
 References: <20240709162654.33343-1-sashal@kernel.org>
@@ -72,41 +72,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.279
 Content-Transfer-Encoding: 8bit
 
-From: Primoz Fiser <primoz.fiser@norik.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 524d3f126362b6033e92cbe107ae2158d7fbff94 ]
+[ Upstream commit 0d34d8163fd87978a6abd792e2d8ad849f4c3d57 ]
 
-Set driver name to "HDMI". This simplifies the code and gets rid of
-the following error messages:
+As the potential failure of usb_submit_urb(), it should be better to
+return the err variable to catch the error.
 
-  ASoC: driver name too long 'HDMI 58040000.encoder' -> 'HDMI_58040000_e'
-
-Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Link: https://lore.kernel.org/r/20240610125847.773394-1-primoz.fiser@norik.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://lore.kernel.org/all/20240521041020.1519416-1-nichen@iscas.ac.cn
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/ti/omap-hdmi.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
-index def2a0ce88863..e4f661c5349ef 100644
---- a/sound/soc/ti/omap-hdmi.c
-+++ b/sound/soc/ti/omap-hdmi.c
-@@ -353,11 +353,7 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
- 	if (!card)
- 		return -ENOMEM;
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+index 1f015b496a472..a26103727fc3e 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+@@ -265,7 +265,7 @@ int kvaser_usb_send_cmd_async(struct kvaser_usb_net_priv *priv, void *cmd,
+ 	}
+ 	usb_free_urb(urb);
  
--	card->name = devm_kasprintf(dev, GFP_KERNEL,
--				    "HDMI %s", dev_name(ad->dssdev));
--	if (!card->name)
--		return -ENOMEM;
--
-+	card->name = "HDMI";
- 	card->owner = THIS_MODULE;
- 	card->dai_link =
- 		devm_kzalloc(dev, sizeof(*(card->dai_link)), GFP_KERNEL);
+-	return 0;
++	return err;
+ }
+ 
+ int kvaser_usb_can_rx_over_error(struct net_device *netdev)
 -- 
 2.43.0
 
