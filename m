@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-58339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5D492B67A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:13:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C84AC92B777
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E1321C21A85
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:13:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 842942844C7
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70C0155389;
-	Tue,  9 Jul 2024 11:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A709158A25;
+	Tue,  9 Jul 2024 11:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClpkaueS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/0XBNO1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66523156F45;
-	Tue,  9 Jul 2024 11:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A30F158A19;
+	Tue,  9 Jul 2024 11:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523637; cv=none; b=mzoYCbQABwZKzGY3rSn9wh5x85LvIEhzF4YbCcMqSm/oYme06q8EJeT3tQaqJ43A54B43Xo3ZU9vkx80IUgKD0fauKyEpgGuFauzB0xw9RyNVGYrCCfiTA+3PmFGULfIGjuvQLIDOvlOfJSsUpNlBOzUhctCF1D77wiB/RgNTZ8=
+	t=1720524205; cv=none; b=lhojZQxVnOLTt8u1gEGTvDNLcKFUFdU4k7m329idMjZZZI4cyQZrcSRzswhcLogKkKwzb2Ges39QbcCz1YYXIK4NaZkkZCWN6xx+0DuA74Km3mgx6Z1U4ONgwn/+i49GLqhuYxkBKIM9fVnQRRCw/KUH8Pm/ua6m+tddqt1oSDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523637; c=relaxed/simple;
-	bh=vWesh5TkEFp091bU7WRrPj8oL63fB6UxStAO31hmEFo=;
+	s=arc-20240116; t=1720524205; c=relaxed/simple;
+	bh=TXYKLTsnpZ5xx5j45eLSMNAi3uket0Wv9EF+BxTtIEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ub3WLIBCOC1wnzaqwVJa4hsZDcPsZGpw0nlxOs0vflHS7Q3TN3lYH9r6OENqPzGCHdbp8EvrtqYazzYgFrbQ/GPfi3qqg5HxE389EOnbKbd/BJ6S1+WDhWx265c7/5DVzrb0lhduikb6bh4NDd7xy0RjtxDbACDaor+Qi/q7U00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClpkaueS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FE4C3277B;
-	Tue,  9 Jul 2024 11:13:56 +0000 (UTC)
+	 MIME-Version; b=D71hYXtfB9oyovH0bNU3gC7grP4t7CTjr/OSDjtpgvb5NJ427QieCRL4WShC/TROnwg5XrUPDxs7900pefr1mriuGqSLEZ7SabA9B1W1arkH+iRG3XqwmSH3EV4V0vzzk5hjkbwCc6c6AfAUVIWi5cRM6VV1iGCFdIy8ai7tGmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/0XBNO1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E690C3277B;
+	Tue,  9 Jul 2024 11:23:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523637;
-	bh=vWesh5TkEFp091bU7WRrPj8oL63fB6UxStAO31hmEFo=;
+	s=korg; t=1720524204;
+	bh=TXYKLTsnpZ5xx5j45eLSMNAi3uket0Wv9EF+BxTtIEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ClpkaueSx2EKjqhh0Sl3+DqrFkF+1CE/VYFQ0oHVhNjBci14AdQ4K/enGLr1e08CA
-	 bU3biDjvNXSeWv7r7V1/7eDZt/o1GbjnWR587k2bl757o3djeSTUnPTrSD5F6QOzeN
-	 rRQy9NqzENBtCxaSLzSg+4EsF+uKc43pTRYsvw/o=
+	b=i/0XBNO1TOQElUK8fDkCg9mqosFzvPTW5Umy6EpGJgSKevp8Z4YxkbyGoUxf2kGxq
+	 1EBH8U1sX0zQRQ447RpYzQCOLUMOXMnH8Ha4V9lse6hC6v1Qbza4Wd27W+q+R0+vu9
+	 qWceovY63NMG5RfOPHT+WDXkFVmFRh7+1NDEnI3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+98edc2df894917b3431f@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 060/139] vhost_task: Handle SIGKILL by flushing work and exiting
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 106/197] net: txgbe: free isb resources at the right time
 Date: Tue,  9 Jul 2024 13:09:20 +0200
-Message-ID: <20240709110700.490966339@linuxfoundation.org>
+Message-ID: <20240709110713.061160063@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,300 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit db5247d9bf5c6ade9fd70b4e4897441e0269b233 ]
+[ Upstream commit 935124dd5883b5de68dc5a94f582480a10643dc9 ]
 
-Instead of lingering until the device is closed, this has us handle
-SIGKILL by:
+When using MSI/INTx interrupt, the shared interrupts are still being
+handled in the device remove routine, before free IRQs. So isb memory
+is still read after it is freed. Thus move wx_free_isb_resources()
+from txgbe_close() to txgbe_remove(). And fix the improper isb free
+action in txgbe_open() error handling path.
 
-1. marking the worker as killed so we no longer try to use it with
-   new virtqueues and new flush operations.
-2. setting the virtqueue to worker mapping so no new works are queued.
-3. running all the exiting works.
-
-Suggested-by: Edward Adam Davis <eadavis@qq.com>
-Reported-and-tested-by: syzbot+98edc2df894917b3431f@syzkaller.appspotmail.com
-Message-Id: <tencent_546DA49414E876EEBECF2C78D26D242EE50A@qq.com>
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Message-Id: <20240316004707.45557-9-michael.christie@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: aefd013624a1 ("net: txgbe: use irq_domain for interrupt controller")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vhost.c            | 54 +++++++++++++++++++++++++++++---
- drivers/vhost/vhost.h            |  2 ++
- include/linux/sched/vhost_task.h |  3 +-
- kernel/vhost_task.c              | 53 ++++++++++++++++++++-----------
- 4 files changed, 88 insertions(+), 24 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c     | 4 +++-
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c   | 2 ++
+ drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 7 ++++---
+ 3 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 069c8a23bff9e..d0238bd741b08 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -285,7 +285,7 @@ static void __vhost_worker_flush(struct vhost_worker *worker)
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+index bf02bd0f08407..88e5e390770b5 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -2028,6 +2028,9 @@ int wx_setup_isb_resources(struct wx *wx)
  {
- 	struct vhost_flush_struct flush;
+ 	struct pci_dev *pdev = wx->pdev;
  
--	if (!worker->attachment_cnt)
-+	if (!worker->attachment_cnt || worker->killed)
- 		return;
++	if (wx->isb_mem)
++		return 0;
++
+ 	wx->isb_mem = dma_alloc_coherent(&pdev->dev,
+ 					 sizeof(u32) * 4,
+ 					 &wx->isb_dma,
+@@ -2387,7 +2390,6 @@ static void wx_free_all_tx_resources(struct wx *wx)
  
- 	init_completion(&flush.wait_event);
-@@ -400,7 +400,7 @@ static void vhost_vq_reset(struct vhost_dev *dev,
- 	__vhost_vq_meta_reset(vq);
+ void wx_free_resources(struct wx *wx)
+ {
+-	wx_free_isb_resources(wx);
+ 	wx_free_all_rx_resources(wx);
+ 	wx_free_all_tx_resources(wx);
  }
- 
--static bool vhost_worker(void *data)
-+static bool vhost_run_work_list(void *data)
- {
- 	struct vhost_worker *worker = data;
- 	struct vhost_work *work, *work_next;
-@@ -425,6 +425,40 @@ static bool vhost_worker(void *data)
- 	return !!node;
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+index e894e01d030d1..af30ca0312b81 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -387,6 +387,7 @@ static int ngbe_open(struct net_device *netdev)
+ err_free_irq:
+ 	wx_free_irq(wx);
+ err_free_resources:
++	wx_free_isb_resources(wx);
+ 	wx_free_resources(wx);
+ 	return err;
  }
+@@ -408,6 +409,7 @@ static int ngbe_close(struct net_device *netdev)
  
-+static void vhost_worker_killed(void *data)
-+{
-+	struct vhost_worker *worker = data;
-+	struct vhost_dev *dev = worker->dev;
-+	struct vhost_virtqueue *vq;
-+	int i, attach_cnt = 0;
-+
-+	mutex_lock(&worker->mutex);
-+	worker->killed = true;
-+
-+	for (i = 0; i < dev->nvqs; i++) {
-+		vq = dev->vqs[i];
-+
-+		mutex_lock(&vq->mutex);
-+		if (worker ==
-+		    rcu_dereference_check(vq->worker,
-+					  lockdep_is_held(&vq->mutex))) {
-+			rcu_assign_pointer(vq->worker, NULL);
-+			attach_cnt++;
-+		}
-+		mutex_unlock(&vq->mutex);
-+	}
-+
-+	worker->attachment_cnt -= attach_cnt;
-+	if (attach_cnt)
-+		synchronize_rcu();
-+	/*
-+	 * Finish vhost_worker_flush calls and any other works that snuck in
-+	 * before the synchronize_rcu.
-+	 */
-+	vhost_run_work_list(worker);
-+	mutex_unlock(&worker->mutex);
-+}
-+
- static void vhost_vq_free_iovecs(struct vhost_virtqueue *vq)
- {
- 	kfree(vq->indirect);
-@@ -639,9 +673,11 @@ static struct vhost_worker *vhost_worker_create(struct vhost_dev *dev)
- 	if (!worker)
- 		return NULL;
+ 	ngbe_down(wx);
+ 	wx_free_irq(wx);
++	wx_free_isb_resources(wx);
+ 	wx_free_resources(wx);
+ 	phylink_disconnect_phy(wx->phylink);
+ 	wx_control_hw(wx, false);
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index 76b5672c0a177..ca74d9422065a 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -296,7 +296,7 @@ static int txgbe_open(struct net_device *netdev)
  
-+	worker->dev = dev;
- 	snprintf(name, sizeof(name), "vhost-%d", current->pid);
+ 	err = txgbe_request_queue_irqs(wx);
+ 	if (err)
+-		goto err_free_isb;
++		goto err_free_resources;
  
--	vtsk = vhost_task_create(vhost_worker, worker, name);
-+	vtsk = vhost_task_create(vhost_run_work_list, vhost_worker_killed,
-+				 worker, name);
- 	if (!vtsk)
- 		goto free_worker;
+ 	/* Notify the stack of the actual queue counts. */
+ 	err = netif_set_real_num_tx_queues(netdev, wx->num_tx_queues);
+@@ -313,8 +313,8 @@ static int txgbe_open(struct net_device *netdev)
  
-@@ -673,6 +709,11 @@ static void __vhost_vq_attach_worker(struct vhost_virtqueue *vq,
- 	struct vhost_worker *old_worker;
+ err_free_irq:
+ 	wx_free_irq(wx);
+-err_free_isb:
+-	wx_free_isb_resources(wx);
++err_free_resources:
++	wx_free_resources(wx);
+ err_reset:
+ 	txgbe_reset(wx);
  
- 	mutex_lock(&worker->mutex);
-+	if (worker->killed) {
-+		mutex_unlock(&worker->mutex);
-+		return;
-+	}
-+
- 	mutex_lock(&vq->mutex);
+@@ -729,6 +729,7 @@ static void txgbe_remove(struct pci_dev *pdev)
  
- 	old_worker = rcu_dereference_check(vq->worker,
-@@ -693,6 +734,11 @@ static void __vhost_vq_attach_worker(struct vhost_virtqueue *vq,
- 	 * device wide flushes which doesn't use RCU for execution.
- 	 */
- 	mutex_lock(&old_worker->mutex);
-+	if (old_worker->killed) {
-+		mutex_unlock(&old_worker->mutex);
-+		return;
-+	}
-+
- 	/*
- 	 * We don't want to call synchronize_rcu for every vq during setup
- 	 * because it will slow down VM startup. If we haven't done
-@@ -770,7 +816,7 @@ static int vhost_free_worker(struct vhost_dev *dev,
- 		return -ENODEV;
+ 	txgbe_remove_phy(txgbe);
+ 	txgbe_free_misc_irq(txgbe);
++	wx_free_isb_resources(wx);
  
- 	mutex_lock(&worker->mutex);
--	if (worker->attachment_cnt) {
-+	if (worker->attachment_cnt || worker->killed) {
- 		mutex_unlock(&worker->mutex);
- 		return -EBUSY;
- 	}
-diff --git a/drivers/vhost/vhost.h b/drivers/vhost/vhost.h
-index f60d5f7bef944..8014d2b359503 100644
---- a/drivers/vhost/vhost.h
-+++ b/drivers/vhost/vhost.h
-@@ -28,12 +28,14 @@ struct vhost_work {
- 
- struct vhost_worker {
- 	struct vhost_task	*vtsk;
-+	struct vhost_dev	*dev;
- 	/* Used to serialize device wide flushing with worker swapping. */
- 	struct mutex		mutex;
- 	struct llist_head	work_list;
- 	u64			kcov_handle;
- 	u32			id;
- 	int			attachment_cnt;
-+	bool			killed;
- };
- 
- /* Poll a file (eventfd or socket) */
-diff --git a/include/linux/sched/vhost_task.h b/include/linux/sched/vhost_task.h
-index 837a23624a66a..3612de6ea1c5d 100644
---- a/include/linux/sched/vhost_task.h
-+++ b/include/linux/sched/vhost_task.h
-@@ -5,7 +5,8 @@
- 
- struct vhost_task;
- 
--struct vhost_task *vhost_task_create(bool (*fn)(void *), void *arg,
-+struct vhost_task *vhost_task_create(bool (*fn)(void *),
-+				     void (*handle_kill)(void *), void *arg,
- 				     const char *name);
- void vhost_task_start(struct vhost_task *vtsk);
- void vhost_task_stop(struct vhost_task *vtsk);
-diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
-index da35e5b7f0473..8800f5acc0071 100644
---- a/kernel/vhost_task.c
-+++ b/kernel/vhost_task.c
-@@ -10,38 +10,32 @@
- 
- enum vhost_task_flags {
- 	VHOST_TASK_FLAGS_STOP,
-+	VHOST_TASK_FLAGS_KILLED,
- };
- 
- struct vhost_task {
- 	bool (*fn)(void *data);
-+	void (*handle_sigkill)(void *data);
- 	void *data;
- 	struct completion exited;
- 	unsigned long flags;
- 	struct task_struct *task;
-+	/* serialize SIGKILL and vhost_task_stop calls */
-+	struct mutex exit_mutex;
- };
- 
- static int vhost_task_fn(void *data)
- {
- 	struct vhost_task *vtsk = data;
--	bool dead = false;
- 
- 	for (;;) {
- 		bool did_work;
- 
--		if (!dead && signal_pending(current)) {
-+		if (signal_pending(current)) {
- 			struct ksignal ksig;
--			/*
--			 * Calling get_signal will block in SIGSTOP,
--			 * or clear fatal_signal_pending, but remember
--			 * what was set.
--			 *
--			 * This thread won't actually exit until all
--			 * of the file descriptors are closed, and
--			 * the release function is called.
--			 */
--			dead = get_signal(&ksig);
--			if (dead)
--				clear_thread_flag(TIF_SIGPENDING);
-+
-+			if (get_signal(&ksig))
-+				break;
- 		}
- 
- 		/* mb paired w/ vhost_task_stop */
-@@ -57,7 +51,19 @@ static int vhost_task_fn(void *data)
- 			schedule();
- 	}
- 
-+	mutex_lock(&vtsk->exit_mutex);
-+	/*
-+	 * If a vhost_task_stop and SIGKILL race, we can ignore the SIGKILL.
-+	 * When the vhost layer has called vhost_task_stop it's already stopped
-+	 * new work and flushed.
-+	 */
-+	if (!test_bit(VHOST_TASK_FLAGS_STOP, &vtsk->flags)) {
-+		set_bit(VHOST_TASK_FLAGS_KILLED, &vtsk->flags);
-+		vtsk->handle_sigkill(vtsk->data);
-+	}
-+	mutex_unlock(&vtsk->exit_mutex);
- 	complete(&vtsk->exited);
-+
- 	do_exit(0);
- }
- 
-@@ -78,12 +84,17 @@ EXPORT_SYMBOL_GPL(vhost_task_wake);
-  * @vtsk: vhost_task to stop
-  *
-  * vhost_task_fn ensures the worker thread exits after
-- * VHOST_TASK_FLAGS_SOP becomes true.
-+ * VHOST_TASK_FLAGS_STOP becomes true.
-  */
- void vhost_task_stop(struct vhost_task *vtsk)
- {
--	set_bit(VHOST_TASK_FLAGS_STOP, &vtsk->flags);
--	vhost_task_wake(vtsk);
-+	mutex_lock(&vtsk->exit_mutex);
-+	if (!test_bit(VHOST_TASK_FLAGS_KILLED, &vtsk->flags)) {
-+		set_bit(VHOST_TASK_FLAGS_STOP, &vtsk->flags);
-+		vhost_task_wake(vtsk);
-+	}
-+	mutex_unlock(&vtsk->exit_mutex);
-+
- 	/*
- 	 * Make sure vhost_task_fn is no longer accessing the vhost_task before
- 	 * freeing it below.
-@@ -96,14 +107,16 @@ EXPORT_SYMBOL_GPL(vhost_task_stop);
- /**
-  * vhost_task_create - create a copy of a task to be used by the kernel
-  * @fn: vhost worker function
-- * @arg: data to be passed to fn
-+ * @handle_sigkill: vhost function to handle when we are killed
-+ * @arg: data to be passed to fn and handled_kill
-  * @name: the thread's name
-  *
-  * This returns a specialized task for use by the vhost layer or NULL on
-  * failure. The returned task is inactive, and the caller must fire it up
-  * through vhost_task_start().
-  */
--struct vhost_task *vhost_task_create(bool (*fn)(void *), void *arg,
-+struct vhost_task *vhost_task_create(bool (*fn)(void *),
-+				     void (*handle_sigkill)(void *), void *arg,
- 				     const char *name)
- {
- 	struct kernel_clone_args args = {
-@@ -122,8 +135,10 @@ struct vhost_task *vhost_task_create(bool (*fn)(void *), void *arg,
- 	if (!vtsk)
- 		return NULL;
- 	init_completion(&vtsk->exited);
-+	mutex_init(&vtsk->exit_mutex);
- 	vtsk->data = arg;
- 	vtsk->fn = fn;
-+	vtsk->handle_sigkill = handle_sigkill;
- 
- 	args.fn_arg = vtsk;
- 
+ 	pci_release_selected_regions(pdev,
+ 				     pci_select_bars(pdev, IORESOURCE_MEM));
 -- 
 2.43.0
 
