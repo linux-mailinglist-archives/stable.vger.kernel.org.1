@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-58699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD3B92B83D
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:32:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E262A92B7D6
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 356D41F21AD2
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:32:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FB181C2357B
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5CE1586C0;
-	Tue,  9 Jul 2024 11:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4BB156C73;
+	Tue,  9 Jul 2024 11:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNkCel3R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pH4n7ILx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D210755E4C;
-	Tue,  9 Jul 2024 11:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC1127713;
+	Tue,  9 Jul 2024 11:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524726; cv=none; b=WV58KdESCjdph4QS2QBBkdILhpfpEsL1VWptsXH5+wwsjOXItjMY2cR9a1mrQD8C7CFqQpilu1qIeV8WIUoRiYNvo3ZLOLwaeGsZxFldBFO4AyY6o9cbrq5qsXXBs2XfBaG7Hd+hAiFiO7aQ3p4n0RgFcJ0WsTA6tYuk03+7WgY=
+	t=1720524465; cv=none; b=WLnfYJHcf3JMKrh6uPtgL1Gez2Q8Wn6epdM1DjPl+AqRFUvAy4/ULb6Kt+GD7v/FQhlfKnfoyewhmynos6pFKDXb65vtUelbUKHEkeOdPkaX9SAngSypKmjEsTqWfO9RxlGgHYD+yYezb8Fgc3LXXgKf+NFa/JPk/TVh+i+ENSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524726; c=relaxed/simple;
-	bh=z1K0snIm+ziAbvWd1mV6gJJDEPx0FDrBKeDrY+Q/lJs=;
+	s=arc-20240116; t=1720524465; c=relaxed/simple;
+	bh=1guzRbirP0YfTdD3mWl16A+UZmCBerCw7h9/Eh3xmgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IjG2Z/pttIRRjC7ljBWcXYV+3izLF9473++vJt1Xp27AZEWxJQiqDuiLNJKLQWyYAvxvHSlgSEoMe2DJIFo6ibbd8dcxTE4W6qmcrCQaNukEAs1Y+txcsHXqn4tR/sTi4KCcXJQ1ysF2/YcW/WzQPC/R/2wawxBbiV3DNxFrKMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNkCel3R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B06C3277B;
-	Tue,  9 Jul 2024 11:32:06 +0000 (UTC)
+	 MIME-Version; b=lzTMeHaAZ6InTlgSeZVQfYfYYYe90WYAwK0DvAqgg4XXi1m9IyYEu22It1ix8qTanB4ejZMdUb6NLEo+oOEwNMnvzcz4TQhePYiXQuk9042EyC1hzrfPgk1WTwyJqiiLzkfbIeBR7GRRSwxMI/DIsBW0vZWrhODRVc38QbgY/Mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pH4n7ILx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1D5C3277B;
+	Tue,  9 Jul 2024 11:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524726;
-	bh=z1K0snIm+ziAbvWd1mV6gJJDEPx0FDrBKeDrY+Q/lJs=;
+	s=korg; t=1720524465;
+	bh=1guzRbirP0YfTdD3mWl16A+UZmCBerCw7h9/Eh3xmgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GNkCel3RzdedsNTfn0thCP9rcJixAOBz0Vm3kbWh0gYaof439vaiDfbC2PlP+4y9P
-	 MUMDgBuTBmcqKXHMqgtwIXg663JGKhU5g3IK1AxwhWTK2zmmcZSDTyKENPv3imgVTZ
-	 jLM2s8Hce6K2o57njL7UvCwk2OwAc3P6cpJD1QA4=
+	b=pH4n7ILxzntx3n7sEdgvEBKYiAUe3x52BssD8QmTLPKDyYrBCOwIpZkS8+7cM7tDN
+	 TZbC5Pg/oHJUxdVWZd1MEcoBpm291v8nCoZJkLPC51NepxGGvv3jCATHdLhQ11/3p/
+	 4CQpmXcuow8LlOI27zD5D12iHZ+t6aj1k0nujt/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 080/102] mtd: rawnand: rockchip: ensure NVDDR timings are rejected
+	Alex Turin <alex@vastdata.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 189/197] nvmet: fix a possible leak when destroy a ctrl during qp establishment
 Date: Tue,  9 Jul 2024 13:10:43 +0200
-Message-ID: <20240709110654.489623850@linuxfoundation.org>
+Message-ID: <20240709110716.255187933@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-commit b27d8946b5edd9827ee3c2f9ea1dd30022fb1ebe upstream.
+[ Upstream commit c758b77d4a0a0ed3a1292b3fd7a2aeccd1a169a4 ]
 
-.setup_interface first gets called with a "target" value of
-NAND_DATA_IFACE_CHECK_ONLY, in which case an error is expected
-if the controller driver does not support the timing mode (NVDDR).
+In nvmet_sq_destroy we capture sq->ctrl early and if it is non-NULL we
+know that a ctrl was allocated (in the admin connect request handler)
+and we need to release pending AERs, clear ctrl->sqs and sq->ctrl
+(for nvme-loop primarily), and drop the final reference on the ctrl.
 
-Fixes: a9ecc8c814e9 ("mtd: rawnand: Choose the best timings, NV-DDR included")
-Signed-off-by: Val Packett <val@packett.cool>
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240519031409.26464-1-val@packett.cool
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, a small window is possible where nvmet_sq_destroy starts (as
+a result of the client giving up and disconnecting) concurrently with
+the nvme admin connect cmd (which may be in an early stage). But *before*
+kill_and_confirm of sq->ref (i.e. the admin connect managed to get an sq
+live reference). In this case, sq->ctrl was allocated however after it was
+captured in a local variable in nvmet_sq_destroy.
+This prevented the final reference drop on the ctrl.
+
+Solve this by re-capturing the sq->ctrl after all inflight request has
+completed, where for sure sq->ctrl reference is final, and move forward
+based on that.
+
+This issue was observed in an environment with many hosts connecting
+multiple ctrls simoutanuosly, creating a delay in allocating a ctrl
+leading up to this race window.
+
+Reported-by: Alex Turin <alex@vastdata.com>
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/rockchip-nand-controller.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/nvme/target/core.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/mtd/nand/raw/rockchip-nand-controller.c
-+++ b/drivers/mtd/nand/raw/rockchip-nand-controller.c
-@@ -421,13 +421,13 @@ static int rk_nfc_setup_interface(struct
- 	u32 rate, tc2rw, trwpw, trw2c;
- 	u32 temp;
+diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
+index 2fde22323622e..06f0c587f3437 100644
+--- a/drivers/nvme/target/core.c
++++ b/drivers/nvme/target/core.c
+@@ -818,6 +818,15 @@ void nvmet_sq_destroy(struct nvmet_sq *sq)
+ 	percpu_ref_exit(&sq->ref);
+ 	nvmet_auth_sq_free(sq);
  
--	if (target < 0)
--		return 0;
--
- 	timings = nand_get_sdr_timings(conf);
- 	if (IS_ERR(timings))
- 		return -EOPNOTSUPP;
- 
-+	if (target < 0)
-+		return 0;
++	/*
++	 * we must reference the ctrl again after waiting for inflight IO
++	 * to complete. Because admin connect may have sneaked in after we
++	 * store sq->ctrl locally, but before we killed the percpu_ref. the
++	 * admin connect allocates and assigns sq->ctrl, which now needs a
++	 * final ref put, as this ctrl is going away.
++	 */
++	ctrl = sq->ctrl;
 +
- 	if (IS_ERR(nfc->nfc_clk))
- 		rate = clk_get_rate(nfc->ahb_clk);
- 	else
+ 	if (ctrl) {
+ 		/*
+ 		 * The teardown flow may take some time, and the host may not
+-- 
+2.43.0
+
 
 
 
