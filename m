@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-58847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE5B92C0B1
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:42:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 742D392C0B3
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B82481F21031
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:42:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A56911C22427
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413892139D7;
-	Tue,  9 Jul 2024 16:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88A121C177;
+	Tue,  9 Jul 2024 16:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YZ0k10z7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BzapsQQG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDED92139B2;
-	Tue,  9 Jul 2024 16:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55D721C171;
+	Tue,  9 Jul 2024 16:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542268; cv=none; b=FKBfPS9Mqy9s8c+29+/jUR5vKTPfvNUpWDLjtEGkY5lkey0pYBwf15izEEMoucDcgKytFW3eiDIeruLvSeh00Z1TVEF37ws+mMpHToWlu34YUPLcPCYTbMZoDQmoOEt7gMLCHLPKQREOjRvXNA9ITyPBy3974znKUJZPWU7a75w=
+	t=1720542269; cv=none; b=F+roOAcrMqZcvECi6hIV3TXwX1wrqOkFOeeP+sRzs1EKVy9oVZZunB1rOJ0ogpEEjAoqX5w2Z4FDBZLmcZwSJ+6zX8BXTpqWungJv9iGIIops9nrDUAhNZhYzdoS8wm8wf4PgGdnk+ao4QpBTmjb8COltIeW5tJd/5TJqOZ/Ars=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542268; c=relaxed/simple;
-	bh=rqQBo3mbDovOFPoF/8YNT6rE9vXlmpWf5sM6h/gqEFE=;
+	s=arc-20240116; t=1720542269; c=relaxed/simple;
+	bh=ad6y0JTKexjgukxVDwwsXe+6KKDdJC2SLtCwpJLlX6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XT+pW22co34XyFWfEK2DwxsPrj8fjAh2wnaNTuxhGKjh8+5wy27BYTCmUSyZA2AD5cfUK8RjUXHDvj/YreO/VLXLLI3BqSUh5YpLqVHR87bcHuIhbc+OMxDJ5cDtiKT3CETvEN0cECqLgLWL2AQFgdFkq0uc3vnbSBOv91LRQ8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YZ0k10z7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 770DDC32786;
-	Tue,  9 Jul 2024 16:24:26 +0000 (UTC)
+	 MIME-Version; b=TjLD6NhPabqqh9niTHSQwYCJhky3hkUdEF81ih8JEfzojc02jo4koEFqezPtB2QltfK79w//UWjyT7gFRfPLHWUTA9ZKtOimMibW1F2/78LQIyz2n5MOxOCExyfRtBmRZ+M0+hM6bNCeaEEOmQwGIFN1sif4/BNkeC2SZbxqTzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BzapsQQG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 574E5C32782;
+	Tue,  9 Jul 2024 16:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542267;
-	bh=rqQBo3mbDovOFPoF/8YNT6rE9vXlmpWf5sM6h/gqEFE=;
+	s=k20201202; t=1720542269;
+	bh=ad6y0JTKexjgukxVDwwsXe+6KKDdJC2SLtCwpJLlX6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZ0k10z7Va1YXdjPe6u+/a25TlhQaiLccEnj0bgqIqNEDSOpZxtmOsckVN9eRQoC5
-	 +ODgkD0lRyg6JoCs0JX43TIRvLw/AvjGA5NA9/HFxgoH8sy1Eiu9sKjKDDi6I692G9
-	 X2xQ2Ma8SxpIx0nU6HBSIaWP3+blD5Pj4LLw6W5LmcH3QwEBY55/2l3yrOBZJ5uFL4
-	 tCVglT+buVvbD504kTVAQUJt/kMvhpDqylbBRAiEyB2HPIPoDKqgMHol73/UuQk4Nw
-	 DobKnYIqM6dcnpcZan36vaIiFJkwe9j2zNKNliAMmoCyyUDyVS1Onwk5jFWaN+wub2
-	 6/DidVOYdtiuA==
+	b=BzapsQQG0AQof4ujscGMtwckCVw7041i00h/EYFkcwlxDPa2D/SXzYAEEFMkgmkZj
+	 dKMyDU/H+jlR/JK1VK+a7bs9Pl+WNqztvcxvnN/pCUrW1p0q6QQgC/gEQSF9s5n5NV
+	 rI8TfJa6owHWlMaqLTVjGBZSuZbdj59QMrt7kIG+C9dIok+dWV5BJiYwlUsyodKJPw
+	 5Zq96TyFjivZEn5y0fZT+ZN4NQFFG55mw81dvvJLUD/erS15U4c/TbKzz0/p/1Sn0C
+	 WGpVEV5iVwTUdNqsLZBu+ZdXDLF21FOXUn+2mWtXskjxO95+t1BCddCmCU1BOW0vQG
+	 Md0crwKladWXA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Chen Ni <nichen@iscas.ac.cn>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+Cc: Ian Ray <ian.ray@gehealthcare.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mailhol.vincent@wanadoo.fr,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	extja@kvaser.com,
-	linux-can@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 12/27] can: kvaser_usb: fix return value for hif_usb_send_regout
-Date: Tue,  9 Jul 2024 12:23:26 -0400
-Message-ID: <20240709162401.31946-12-sashal@kernel.org>
+	linus.walleij@linaro.org,
+	brgl@bgdev.pl,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 13/27] gpio: pca953x: fix pca953x_irq_bus_sync_unlock race
+Date: Tue,  9 Jul 2024 12:23:27 -0400
+Message-ID: <20240709162401.31946-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162401.31946-1-sashal@kernel.org>
 References: <20240709162401.31946-1-sashal@kernel.org>
@@ -72,34 +67,54 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.97
 Content-Transfer-Encoding: 8bit
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Ian Ray <ian.ray@gehealthcare.com>
 
-[ Upstream commit 0d34d8163fd87978a6abd792e2d8ad849f4c3d57 ]
+[ Upstream commit bfc6444b57dc7186b6acc964705d7516cbaf3904 ]
 
-As the potential failure of usb_submit_urb(), it should be better to
-return the err variable to catch the error.
+Ensure that `i2c_lock' is held when setting interrupt latch and mask in
+pca953x_irq_bus_sync_unlock() in order to avoid races.
 
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Link: https://lore.kernel.org/all/20240521041020.1519416-1-nichen@iscas.ac.cn
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+The other (non-probe) call site pca953x_gpio_set_multiple() ensures the
+lock is held before calling pca953x_write_regs().
+
+The problem occurred when a request raced against irq_bus_sync_unlock()
+approximately once per thousand reboots on an i.MX8MP based system.
+
+ * Normal case
+
+   0-0022: write register AI|3a {03,02,00,00,01} Input latch P0
+   0-0022: write register AI|49 {fc,fd,ff,ff,fe} Interrupt mask P0
+   0-0022: write register AI|08 {ff,00,00,00,00} Output P3
+   0-0022: write register AI|12 {fc,00,00,00,00} Config P3
+
+ * Race case
+
+   0-0022: write register AI|08 {ff,00,00,00,00} Output P3
+   0-0022: write register AI|08 {03,02,00,00,01} *** Wrong register ***
+   0-0022: write register AI|12 {fc,00,00,00,00} Config P3
+   0-0022: write register AI|49 {fc,fd,ff,ff,fe} Interrupt mask P0
+
+Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
+Link: https://lore.kernel.org/r/20240620042915.2173-1-ian.ray@gehealthcare.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-pca953x.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-index 3a2bfaad14065..6d50c94d40c37 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-@@ -291,7 +291,7 @@ int kvaser_usb_send_cmd_async(struct kvaser_usb_net_priv *priv, void *cmd,
- 	}
- 	usb_free_urb(urb);
+diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
+index bf21803a00363..9ce54bf2030d7 100644
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -768,6 +768,8 @@ static void pca953x_irq_bus_sync_unlock(struct irq_data *d)
+ 	int level;
  
--	return 0;
-+	return err;
- }
+ 	if (chip->driver_data & PCA_PCAL) {
++		guard(mutex)(&chip->i2c_lock);
++
+ 		/* Enable latch on interrupt-enabled inputs */
+ 		pca953x_write_regs(chip, PCAL953X_IN_LATCH, chip->irq_mask);
  
- int kvaser_usb_can_rx_over_error(struct net_device *netdev)
 -- 
 2.43.0
 
