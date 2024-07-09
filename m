@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-58478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5DD392B742
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:22:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E32C92B747
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:22:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEFD7281F26
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:22:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03FCA1F23B50
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2A415B14D;
-	Tue,  9 Jul 2024 11:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9CA15D5A1;
+	Tue,  9 Jul 2024 11:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxZtIxTm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iplsRiAs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBC515F308;
-	Tue,  9 Jul 2024 11:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D1015821A;
+	Tue,  9 Jul 2024 11:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524058; cv=none; b=dFwlVSledsqfSjf+pmEmkLKGpisPY4ca9OyELetvz+x8maXzvuhGV29mM+ScbsZBEtrbpyf6RVv0Zh9XBE1py3Uaf/G5zxHGNybGkszeFAGWodQpl95hIehXxcTnMnsFcvu3iO3iA8hzWAGrD2bsQXem/doJs8JB5wwMSeU48O0=
+	t=1720524073; cv=none; b=QPe9GpqzT9EAy0MCqm4DHWoG2R2SIenmoMO5HMHS72k4CawuHMsu9tyxVxaIAmnO4SX62WErIx3InnC122fZRpI9HyQazzhWqvYVxWSO1/zaeJ8iOoNOdgJVZ1nt0fHxgjElufuqjYo9ZDcVUl3YsPCsXMe/K9M+1aXo3aDS4k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524058; c=relaxed/simple;
-	bh=Uep2HgvJpboR+/2n+FoWW1zXrHojJ/mHcjCLTCDIriw=;
+	s=arc-20240116; t=1720524073; c=relaxed/simple;
+	bh=WFEJgfxnNTU27cOSHWmFIxjT/tJezfuQs+l7DQ2x1oE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WfYb5aY0o/fpy3HQwcwAFx8ih1ODRsLUys4bIb67s7DvQOexnME0V0s3f6XEKxsTx4Ssi7T+0YRzaREL8oX2ouCfSsPmRD8HEMe7UxkTsUMKtbYJ2yIluEMUbebFrnEHHYsKBZ0QPbpbiLx3L68sZll7MO8KvanJKb8K8LaL7XE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxZtIxTm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9176C32786;
-	Tue,  9 Jul 2024 11:20:57 +0000 (UTC)
+	 MIME-Version; b=kCOdozGBb07vN7hoWhg0fFvFbSdXV/Sus2J6+B3FB2BG074s2q7ZAYKQRYuF2Tbz1dN8m1K3j1VT8mRsiQP90dgmPVzS333Z+mQkvfk7Ar0iVoxFyrBLlXGAAwoRtU6rdyo3FR4rkqGmN50RGgJbIcDq/cvMTZHEeAORRP+FCqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iplsRiAs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 936A6C3277B;
+	Tue,  9 Jul 2024 11:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524058;
-	bh=Uep2HgvJpboR+/2n+FoWW1zXrHojJ/mHcjCLTCDIriw=;
+	s=korg; t=1720524073;
+	bh=WFEJgfxnNTU27cOSHWmFIxjT/tJezfuQs+l7DQ2x1oE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MxZtIxTmEJ8NqFR+TwLFak+spa4IEKyW21hMX8z59sIpzF0RXSOmc1jO++A1LCexr
-	 ifFQW2Y/ZO99I43hxXOy4u82PexcRRuzKcsQNOfKv39lLRwBhHmtnKNDwu47+rV9OQ
-	 kVBF7nyq4rMrsCksbkGBCAA6C8YQ7gCQGrhJH2zQ=
+	b=iplsRiAsWDSu5864CExLZnmLlimkTwmm0lhgBuNlmYZW+RA6XKiiTMxrIHQzFyHnH
+	 XrXoJK+KkqR9XYn4fk0xhmI0I7a6UGnPlC/kevSilDo6yeK1Jp75jhvyAoYv7pniIB
+	 miuUcG54xaDv9ZNInWZxHmG+TPce3sJj2K8yYKFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alex Hung <alex.hung@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 030/197] drm/amd/display: Check pipe offset before setting vblank
-Date: Tue,  9 Jul 2024 13:08:04 +0200
-Message-ID: <20240709110710.084038917@linuxfoundation.org>
+Subject: [PATCH 6.9 031/197] drm/amd/display: Skip finding free audio for unknown engine_id
+Date: Tue,  9 Jul 2024 13:08:05 +0200
+Message-ID: <20240709110710.122919527@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
 References: <20240709110708.903245467@linuxfoundation.org>
@@ -70,12 +70,16 @@ Content-Transfer-Encoding: 8bit
 
 From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 5396a70e8cf462ec5ccf2dc8de103c79de9489e6 ]
+[ Upstream commit 1357b2165d9ad94faa4c4a20d5e2ce29c2ff29c3 ]
 
-pipe_ctx has a size of MAX_PIPES so checking its index before accessing
-the array.
+[WHY]
+ENGINE_ID_UNKNOWN = -1 and can not be used as an array index. Plus, it
+also means it is uninitialized and does not need free audio.
 
-This fixes an OVERRUN issue reported by Coverity.
+[HOW]
+Skip and return NULL.
+
+This fixes 2 OVERRUN issues reported by Coverity.
 
 Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
 Acked-by: Wayne Lin <wayne.lin@amd.com>
@@ -83,28 +87,23 @@ Signed-off-by: Alex Hung <alex.hung@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/irq/dce110/irq_service_dce110.c    | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c b/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c
-index 1c0d89e675da5..bb576a9c5fdbd 100644
---- a/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c
-+++ b/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c
-@@ -211,8 +211,12 @@ bool dce110_vblank_set(struct irq_service *irq_service,
- 						   info->ext_id);
- 	uint8_t pipe_offset = dal_irq_src - IRQ_TYPE_VBLANK;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index ec4bf9432bdb1..37a8e530cc951 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -3117,6 +3117,9 @@ static struct audio *find_first_free_audio(
+ {
+ 	int i, available_audio_count;
  
--	struct timing_generator *tg =
--			dc->current_state->res_ctx.pipe_ctx[pipe_offset].stream_res.tg;
-+	struct timing_generator *tg;
++	if (id == ENGINE_ID_UNKNOWN)
++		return NULL;
 +
-+	if (pipe_offset >= MAX_PIPES)
-+		return false;
-+
-+	tg = dc->current_state->res_ctx.pipe_ctx[pipe_offset].stream_res.tg;
+ 	available_audio_count = pool->audio_count;
  
- 	if (enable) {
- 		if (!tg || !tg->funcs->arm_vert_intr(tg, 2)) {
+ 	for (i = 0; i < available_audio_count; i++) {
 -- 
 2.43.0
 
