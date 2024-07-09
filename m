@@ -1,161 +1,108 @@
-Return-Path: <stable+bounces-58754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEFB292BBC1
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 15:48:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC54592BBDA
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 15:51:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20C7A1F22C2C
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:48:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78A89282376
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60FC81822F5;
-	Tue,  9 Jul 2024 13:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A252618E74E;
+	Tue,  9 Jul 2024 13:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Zr76ttDD"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="WkltUh1i"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A4317F369
-	for <stable@vger.kernel.org>; Tue,  9 Jul 2024 13:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5033218E76F;
+	Tue,  9 Jul 2024 13:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720532915; cv=none; b=TmTibsGppLME4yEiCF/zKTyM0omh05eS6TN22uRHAwIgbBCIgERTluwEc331u0AQNuCRSy5NUp/EnYCPWMEZdBDu/1jcdSsMDVXO1FP/yZrxqY+Ws7+scxCAhJtmY45cucZ4mwtY+i20oz19LpsPgup4yD1NVOOfPnL9GSqQz5E=
+	t=1720532977; cv=none; b=Tt04o8b7UWF0G3AXlU0AW2PJZZyR0S4itcOKgPzuN154iOvdI/ad5oGB5N7U7dHUVn7ERQswRqvkVVV9CJAa+teZWOE4lvhx4g3fcHwDGnclt+Dx4CpVetmov9z5gZuzkD2tG1XpduqA9eWc6GgbpaH4gVXcjJ7Sm93GAWG6Pus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720532915; c=relaxed/simple;
-	bh=+E5EN258CmnPr6iL8KBqJO5+7w/22exHf4+Ix8HRjHU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=J7qnvgtww/m/9g0VqZzWuQfdyWMzOZ+rqjhrKuTMUE/rFEEYLxvJVoA0NFeB9Y+vvm1yQsIDgGBNlrM0QfZlk8lne7Nc+B3ocsCZSdu9TMbud328bA/KFRH79iiCf6l17DC9llGFdmSEPPf30bAlrmJigrpWw5ZjELLY9YEPXQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Zr76ttDD; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52ea952ce70so3337772e87.3
-        for <stable@vger.kernel.org>; Tue, 09 Jul 2024 06:48:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720532908; x=1721137708; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E3rqoSXZHGMGmxvjGDiiPCjvj8LcgIFTaqvOfNwnFjg=;
-        b=Zr76ttDDfeHuwdLf4kUX12C25hkYo9VmC+JC6hoIo0Hqb2dmWEIpIfLY3iv3xBOm7l
-         v63Ppl40wIVSI1KdPnH3+4skV8BKeXfiB5BHhwHAKbxeuaCN36xz/VIuaRc1AHt1Vgs2
-         AIAc1KjZQUVqLhC5mJ4ddxAz0CwwWjiYOYhyDTrXC3oXH381Q0h3rB7450cfjlzqm7E1
-         358zqRTstBUtCipgtzvDmhM5xwo117eVVBT9HFz0IS2vTE/6Dv1VqAyVvyvakzxu0QS6
-         vpiMJ3BQE7wIct+9R8R3Hi2vPqXykYRCw2ZmM+qz1DN1OUzS9Ym5/hPzVHSjCRul9pgu
-         aYuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720532908; x=1721137708;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E3rqoSXZHGMGmxvjGDiiPCjvj8LcgIFTaqvOfNwnFjg=;
-        b=eLQbO5ZHYbC/1+I+zTXf0wjhksPe7DjgiRyONMWxr3R85GrvOqmzMbDzzFrVd5p5Hd
-         x63wsELBn/yZtu+DefNr66eMwTmH0GR/tWTGFf5ioOquxPzPUU4OZASAJDv4A53MzSLd
-         EIirIHzjKCWhjSw5Kne1ezuBl2cwy8c6NODjwmw3xkx3RWx99hLYezcG7w7ijJ9Kmdwb
-         qL2iBgDReGu3D8aYxOld9N+zyO8qEe105xZYLLoT98kZ1tQrK3ZrMKgilcz8xcgQ9uT7
-         BoqsvCUCkIPQib4DHqpjHBJuxT4uvMG1rJrmR+RafUtkl7ZMsS7Tl122CZkU1cFlTEy3
-         2WaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXbsJ7lSRajnKg7U0RclwRlYr/vjzsbY5g4GfMThiDZjFlEWJkhVe89CIJlmQRe/CnwjqirYXRGIsfPEpTNVOqT92176YCG
-X-Gm-Message-State: AOJu0YwKcD14TVuhskUr/FPqA4D87eyEP8TEi0X/OI03JRNKi1D3cETa
-	VGCB/6QK/CyyQUe66bXAtjx9tFO9JVnyKI2PzeNAqeR+ZiLLLOl6O8Q8fbv6nMM=
-X-Google-Smtp-Source: AGHT+IEJOKC9CKr3gPG/ltR1Yag3QnJkvqhSLl98qea8/8qeL+x+wytN3L9Buqxyh3K51KaCWlt2Iw==
-X-Received: by 2002:a05:6512:ea5:b0:52c:dbe6:f5f9 with SMTP id 2adb3069b0e04-52eb9990e79mr1811035e87.12.1720532907990;
-        Tue, 09 Jul 2024 06:48:27 -0700 (PDT)
-Received: from umbar.lan ([192.130.178.91])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52eb8e4959csm250297e87.82.2024.07.09.06.48.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jul 2024 06:48:27 -0700 (PDT)
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Tue, 09 Jul 2024 16:48:22 +0300
-Subject: [PATCH 1/2] drm/msm/dpu1: don't choke on disabling the writeback
- connector
+	s=arc-20240116; t=1720532977; c=relaxed/simple;
+	bh=a015ZC5r03ehNw73sIJe/WiI2A13WN9tv5vZoYkZ0RU=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=rT+GtkKarEdc07u6yIeahtKKiIr1ktAhnAMoLqDRaMRKrfKVG9m3C/gjy+0ww/SaI39aTMUxb81eLXgNOPgJFfkl+iUCLkL758ZTddtMfZsp4G6wsG7QRVcei72o999FTqOPIegYypteT4478q9PfI8THu6UoWvd8TPKFJULki0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=WkltUh1i; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1720532947; x=1721137747; i=markus.elfring@web.de;
+	bh=a015ZC5r03ehNw73sIJe/WiI2A13WN9tv5vZoYkZ0RU=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=WkltUh1iEhfoZNCT8KIZzUNg0zksVJFjJ//b7xvaMKPZYWZzqaql+V44Zp7pOk5I
+	 2QZqvsbiNHMN9zmFympsFgqukqxmprSUZk2LSLxIJNzsZU9jWLefhYUyn9ppEUNTM
+	 nvJmckHQmcuwW13RKU7MUWzx7rdnzu7pdcjOGKxFXtCkHC3Zl8geeA9jqnQjawtpZ
+	 i4iCh67n2gH7f8kPpMXd3vbELVHT5EHgYgmqSXdullP+YqkB2uopSLdPi7Ekkqa03
+	 cux55NxZK0qaSInTsYavVTpxt57EAFMFB9cVdI8l+DZ2sNmPLKtZhOlyAgvavZj4R
+	 ykjxJpkJIoVN0ZwzLQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.91.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MOm0r-1skBlk0bNv-00Lgme; Tue, 09
+ Jul 2024 15:49:07 +0200
+Message-ID: <a10b0d71-2e1c-47d6-9c7a-4086035fc6ec@web.de>
+Date: Tue, 9 Jul 2024 15:48:57 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240709-dpu-fix-wb-v1-1-448348bfd4cb@linaro.org>
-References: <20240709-dpu-fix-wb-v1-0-448348bfd4cb@linaro.org>
-In-Reply-To: <20240709-dpu-fix-wb-v1-0-448348bfd4cb@linaro.org>
-To: Rob Clark <robdclark@gmail.com>, 
- Abhinav Kumar <quic_abhinavk@quicinc.com>, Sean Paul <sean@poorly.run>, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
- Jordan Crouse <jordan@cosmicpenguin.net>, 
- Chandan Uddaraju <chandanu@codeaurora.org>, 
- Rajesh Yadav <ryadav@codeaurora.org>, 
- Sravanthi Kollukuduru <skolluku@codeaurora.org>, 
- Archit Taneja <architt@codeaurora.org>
-Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- Jeykumar Sankaran <jsanka@codeaurora.org>, stable@vger.kernel.org, 
- Leonard Lausen <leonard@lausen.nl>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1664;
- i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
- bh=+E5EN258CmnPr6iL8KBqJO5+7w/22exHf4+Ix8HRjHU=;
- b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBmjT+ot0Pj4iBt23/EIWWepNxdc5knallwOTMKB
- koOGNPvKYCJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZo0/qAAKCRCLPIo+Aiko
- 1QKrCACjWqffsbS74ss5192ue6vxtSpLZimoCu02BjWnVbJm7yBYjEdISlCFKotHf0tVu/dW71C
- WhQy92Bej8KFlfXpBgnE/GvMqMDyQN7azFM/rcRWqJl/nKSbia/Fw5sKXHmNAQonGSBXEZWF0WP
- V7HsgrG016SbytVD0wPJiZaY/HfWxWsn8qZgpS1m4PRrNnPt0cM6JOF9WLaZLs27utpEm6yDD8X
- uPv2DI1F+EcsA+UQPo3hBTZnJv+GnghVf2SQqatQT64R/lPa+S+Uza7IbvvYpQcrrdf/rHB4dR7
- IJcfpheofCTjzvSWLvpf7s2AX5bmdzxZG2fv60b6kEFW0n+m
-X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
- fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
+User-Agent: Mozilla Thunderbird
+To: make24@iscas.ac.cn, linuxppc-dev@lists.ozlabs.org,
+ kernel-janitors@vger.kernel.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Christophe Lombard <clombard@linux.vnet.ibm.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Ian Munsie <imunsie@au1.ibm.com>, "Manoj N. Kumar" <manoj@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Wei Liu <wei.liu@kernel.org>
+References: <20240709131754.855144-1-make24@iscas.ac.cn>
+Subject: Re: [PATCH] cxl: Fix possible null pointer dereference in
+ read_handle()
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20240709131754.855144-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:wD8tpFNoCW581VFsOPGKJF66fFjx15l+bwepghLJM6uHTOaEEIV
+ S+CYjNw6rH2wZ4TwvNgnSQP8vBlD/7iuiRLjicS9hxBOLD8V1kU2vdnDrofiv4uP6k9Fh63
+ tqjoNqMkBduPCI8cZMTSYsHsjI2ttQfQTSuaquQ1HtekCs1jJFF+FNrDUy0EF/ZT3bBSY5l
+ XIyBXWpEoWS9T6Vfr42qw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:MqjwUJAwWmA=;d33iWjaAIjULA24pEscPLGP8YoJ
+ nnxs35QjcOFAwZUZOS/fchXGW2rVCJTqaBwzJC3otBl2Nku7qfiw0wV6Xvlf8W+rr2JpjG7oW
+ Ax0SjwWa5i85kIiemtwn+/qUrpNio9Wltl1QXbrFRSLOgFmTW+6m3RT25od+kA4JTuGJJrhE1
+ +V72jE+WfgmWe8buVOkeJQzlA6witivjXSsni+spk7rD9X2QkMB2uQe9oEyW4pT48zsAEkpLT
+ l+n7kL9Ju8MPN/aPKOaeD2naiXWuTVVbdJomjnS45Eyu+dT1hi1zyLwBO0+FeiP/uwGOe/v3W
+ WdnK72SAHW1OcK0pfs9EpWk/OBk6rUSXDzH9lG3ADFodCCmeRHNm6pxyAVdvtUz827ZOahdCd
+ T47sLWT3wNR19SCzdd6PrLkFWJQpmfgmBRkj16Zam7hl1JacP2KwMmFZKgz0FFvEVauFWB524
+ HMqyJobNi4lnigHkg7pJ+VZxtMpdAPI9i3gsivCR+VGYueYpbjQq2N1Gz3gWSkj6OUp+dkV9v
+ KOL6OHmzv2b/ntdMOaxRMo7DyqK+rvZku2hJgxYXpNlqsb86S3qfaeTpms4gnW7NpfFoFvEoB
+ pP1MAyVx1cegla6iWuJpFte1lg1SLidWLzXp8u7tfK1bpfk66Xohy9JZNjScdTsGERdqiG5KT
+ cbBUs/wiXNzkl9AbNVsJxDBF2sGWkEqxlstxPnpdxGZFKrZRE11RZ73T5vYSbzDFffSLHq5kQ
+ BZi2xY6kJksgnRBYPyzNtbDHWj6BdSWycz1xAFr6ShVATEdztfpHEhAkODEpsA+atYGhMG5Ol
+ ux7Myq0mUUuINiM7gvwKns6m8TXTYbqM4bfj1DdUbAxWY=
 
-In order to prevent any errors on connector being disabled, move the
-state->crtc check upfront. This should fix the issues during suspend
-when the writeback connector gets forcebly disabled.
+=E2=80=A6
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 
-Fixes: 71174f362d67 ("drm/msm/dpu: move writeback's atomic_check to dpu_writeback.c")
-Cc: stable@vger.kernel.org
-Reported-by: Leonard Lausen <leonard@lausen.nl>
-Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/57
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
----
- drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+Under which circumstances will this information be corrected anyhow?
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c
-index 16f144cbc0c9..5c172bcf3419 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c
-@@ -39,6 +39,13 @@ static int dpu_wb_conn_atomic_check(struct drm_connector *connector,
- 
- 	DPU_DEBUG("[atomic_check:%d]\n", connector->base.id);
- 
-+	crtc = conn_state->crtc;
-+	if (!crtc)
-+		return 0;
-+
-+	if (!conn_state->writeback_job || !conn_state->writeback_job->fb)
-+		return 0;
-+
- 	if (!conn_state || !conn_state->connector) {
- 		DPU_ERROR("invalid connector state\n");
- 		return -EINVAL;
-@@ -47,13 +54,6 @@ static int dpu_wb_conn_atomic_check(struct drm_connector *connector,
- 		return -EINVAL;
- 	}
- 
--	crtc = conn_state->crtc;
--	if (!crtc)
--		return 0;
--
--	if (!conn_state->writeback_job || !conn_state->writeback_job->fb)
--		return 0;
--
- 	crtc_state = drm_atomic_get_crtc_state(state, crtc);
- 	if (IS_ERR(crtc_state))
- 		return PTR_ERR(crtc_state);
+The usage of mailing list addresses is probably undesirable for
+the Developer's Certificate of Origin, isn't it?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv6.10-rc7#n398
 
--- 
-2.39.2
-
+Regards,
+Markus
 
