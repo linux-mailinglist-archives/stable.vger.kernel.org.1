@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-58679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E87092B828
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:31:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8736892B7C2
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0370D1F217F2
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32D5D1F24572
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84199156C61;
-	Tue,  9 Jul 2024 11:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC1F8157485;
+	Tue,  9 Jul 2024 11:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnziLl7f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXat8klv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38ADE12CDB6;
-	Tue,  9 Jul 2024 11:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CAC27713;
+	Tue,  9 Jul 2024 11:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524668; cv=none; b=evXmGSnwG63No0rWzYuSOOwgmfQ5jHcrrn09Zx6BIkSTS4xG5jMbeqQr/owfHWGT5losQAy9vvmsHQlYpD+EhREAsZyl9qyn24qXX9En+oiahudnPmBvd/vYxhsvCqcAjEC8Og9jvuhGk6svd2230doEywPfYFXOs3Ag5UYZWHs=
+	t=1720524400; cv=none; b=s0LOtXhnAUKscQSIjfZVQk/pgyx6IBwvKFqJjev8sADfHWplYKaRO5h1R9udh6pBRC0uv9vdlpBqzhMPP2caHsIJmM/Y8Z35sfjVWbedy8fFoQlwehgYRaLycoyW5s4SQi9nqHAf5dzwVIgTDvqDbqmZ8Dbmhyaww3n8LD16AUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524668; c=relaxed/simple;
-	bh=0XPMl1iZ3iEQ2KpLhvRmsA+uqCVcI5nbBoBGWic4BvE=;
+	s=arc-20240116; t=1720524400; c=relaxed/simple;
+	bh=e3MLiYlGVYUt1dEs/fjcjAxF9+/vDf+jTBL8rc9hwwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VAO53JwZwGXn8ML6BiYKUUfU5wIEf/JUMSF5b4YHZiyo3Yv2t3p75E5ZGs+L+W9vw3AmvyaYpBmf+JqvZyLRYYYHqoQ6VHU4xONmYmLhgPuKBfHNA+R2jDeqaqm1GANyOZbDHo5+ZOf+G899qQ1k9ZWmzxMeW10JFyqJe5AGNNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnziLl7f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4DE0C3277B;
-	Tue,  9 Jul 2024 11:31:07 +0000 (UTC)
+	 MIME-Version; b=SqIrbzFQbwTME5LDh9kSsVgGXPjP4V65XtXHSL9jTiTeJiFpb3iihFRFcGqUsOen13q/alLVdGxjr1WmxRI/EKx7cAxMRQIRin0nLCFfy9lq+lC/1TgL5pfCfbO1JwPfwk7txAApCvdzsQn7tB4QO4YAxmo1foVIXI4tRa1i1m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXat8klv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11F90C3277B;
+	Tue,  9 Jul 2024 11:26:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524668;
-	bh=0XPMl1iZ3iEQ2KpLhvRmsA+uqCVcI5nbBoBGWic4BvE=;
+	s=korg; t=1720524400;
+	bh=e3MLiYlGVYUt1dEs/fjcjAxF9+/vDf+jTBL8rc9hwwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HnziLl7fCtNFC+a70gSkNYayLEsuVqcqciUQUqnJMyxJnDXj54qZBZ/SyIn1FoHm/
-	 Ig5Qi0Yjf7JsPrSiS/3jwkHp0pVnsgQoxNnpUCbY8Ex9DqYT63Ie35Q97bErqfdNXH
-	 rd2GEF4Rga/bdlXiyCXpUoOBCjmQ+4wPnRSYuF9c=
+	b=XXat8klvET4Iod2PnLzDsmB+9hEt46W+P/jDIE3+6bIquGlNo3h6HjVrIAvKKJ1yT
+	 HSmP2imXNkLqJp51GCgRwFbmJWDU1sATHjSd50+vLRtgRGGu0qzusu8OFqfsc0reKb
+	 Avft2T1GfulOmvw6BSt1D/u3c5zhnEYOxZrgZjIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jozef Hopko <jozef.hopko@altana.com>,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Ajay Singh <ajay.kathat@microchip.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 053/102] wifi: wilc1000: fix ies_len type in connect path
+	Alexander Dahl <ada@thorsis.com>,
+	Steven Seeger <steven.seeger@flightsystems.net>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH 6.9 162/197] mtd: rawnand: Bypass a couple of sanity checks during NAND identification
 Date: Tue,  9 Jul 2024 13:10:16 +0200
-Message-ID: <20240709110653.445262864@linuxfoundation.org>
+Message-ID: <20240709110715.222768772@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,137 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jozef Hopko <jozef.hopko@altana.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 39ab8fff623053a50951b659e5f6b72343d7d78c ]
+commit 8754d9835683e8fab9a8305acdb38a3aeb9d20bd upstream.
 
-Commit 205c50306acf ("wifi: wilc1000: fix RCU usage in connect path")
-made sure that the IEs data was manipulated under the relevant RCU section.
-Unfortunately, while doing so, the commit brought a faulty implicit cast
-from int to u8 on the ies_len variable, making the parsing fail to be
-performed correctly if the IEs block is larger than 255 bytes. This failure
-can be observed with Access Points appending a lot of IEs TLVs in their
-beacon frames (reproduced with a Pixel phone acting as an Access Point,
-which brough 273 bytes of IE data in my testing environment).
+Early during NAND identification, mtd_info fields have not yet been
+initialized (namely, writesize and oobsize) and thus cannot be used for
+sanity checks yet. Of course if there is a misuse of
+nand_change_read_column_op() so early we won't be warned, but there is
+anyway no actual check to perform at this stage as we do not yet know
+the NAND geometry.
 
-Fix IEs parsing by removing this undesired implicit cast.
+So, if the fields are empty, especially mtd->writesize which is *always*
+set quite rapidly after identification, let's skip the sanity checks.
 
-Fixes: 205c50306acf ("wifi: wilc1000: fix RCU usage in connect path")
-Signed-off-by: Jozef Hopko <jozef.hopko@altana.com>
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Acked-by: Ajay Singh <ajay.kathat@microchip.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240701-wilc_fix_ies_data-v1-1-7486cbacf98a@bootlin.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+nand_change_read_column_op() is subject to be used early for ONFI/JEDEC
+identification in the very unlikely case of:
+- bitflips appearing in the parameter page,
+- the controller driver not supporting simple DATA_IN cycles.
+
+As nand_change_read_column_op() uses nand_fill_column_cycles() the logic
+explaind above also applies in this secondary helper.
+
+Fixes: c27842e7e11f ("mtd: rawnand: onfi: Adapt the parameter page read to constraint controllers")
+Fixes: daca31765e8b ("mtd: rawnand: jedec: Adapt the parameter page read to constraint controllers")
+Cc: stable@vger.kernel.org
+Reported-by: Alexander Dahl <ada@thorsis.com>
+Closes: https://lore.kernel.org/linux-mtd/20240306-shaky-bunion-d28b65ea97d7@thorsis.com/
+Reported-by: Steven Seeger <steven.seeger@flightsystems.net>
+Closes: https://lore.kernel.org/linux-mtd/DM6PR05MB4506554457CF95191A670BDEF7062@DM6PR05MB4506.namprd05.prod.outlook.com/
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Tested-by: Sascha Hauer <s.hauer@pengutronix.de>
+Link: https://lore.kernel.org/linux-mtd/20240516131320.579822-3-miquel.raynal@bootlin.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/microchip/wilc1000/hif.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/raw/nand_base.c |   57 +++++++++++++++++++++------------------
+ 1 file changed, 32 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/hif.c b/drivers/net/wireless/microchip/wilc1000/hif.c
-index 5eb02902e875a..13853fda3e047 100644
---- a/drivers/net/wireless/microchip/wilc1000/hif.c
-+++ b/drivers/net/wireless/microchip/wilc1000/hif.c
-@@ -379,7 +379,8 @@ void *wilc_parse_join_bss_param(struct cfg80211_bss *bss,
- 	struct ieee80211_p2p_noa_attr noa_attr;
- 	const struct cfg80211_bss_ies *ies;
- 	struct wilc_join_bss_param *param;
--	u8 rates_len = 0, ies_len;
-+	u8 rates_len = 0;
-+	int ies_len;
- 	int ret;
+--- a/drivers/mtd/nand/raw/nand_base.c
++++ b/drivers/mtd/nand/raw/nand_base.c
+@@ -1093,28 +1093,32 @@ static int nand_fill_column_cycles(struc
+ 				   unsigned int offset_in_page)
+ {
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
++	bool ident_stage = !mtd->writesize;
  
- 	param = kzalloc(sizeof(*param), GFP_KERNEL);
--- 
-2.43.0
-
+-	/* Make sure the offset is less than the actual page size. */
+-	if (offset_in_page > mtd->writesize + mtd->oobsize)
+-		return -EINVAL;
+-
+-	/*
+-	 * On small page NANDs, there's a dedicated command to access the OOB
+-	 * area, and the column address is relative to the start of the OOB
+-	 * area, not the start of the page. Asjust the address accordingly.
+-	 */
+-	if (mtd->writesize <= 512 && offset_in_page >= mtd->writesize)
+-		offset_in_page -= mtd->writesize;
+-
+-	/*
+-	 * The offset in page is expressed in bytes, if the NAND bus is 16-bit
+-	 * wide, then it must be divided by 2.
+-	 */
+-	if (chip->options & NAND_BUSWIDTH_16) {
+-		if (WARN_ON(offset_in_page % 2))
++	/* Bypass all checks during NAND identification */
++	if (likely(!ident_stage)) {
++		/* Make sure the offset is less than the actual page size. */
++		if (offset_in_page > mtd->writesize + mtd->oobsize)
+ 			return -EINVAL;
+ 
+-		offset_in_page /= 2;
++		/*
++		 * On small page NANDs, there's a dedicated command to access the OOB
++		 * area, and the column address is relative to the start of the OOB
++		 * area, not the start of the page. Asjust the address accordingly.
++		 */
++		if (mtd->writesize <= 512 && offset_in_page >= mtd->writesize)
++			offset_in_page -= mtd->writesize;
++
++		/*
++		 * The offset in page is expressed in bytes, if the NAND bus is 16-bit
++		 * wide, then it must be divided by 2.
++		 */
++		if (chip->options & NAND_BUSWIDTH_16) {
++			if (WARN_ON(offset_in_page % 2))
++				return -EINVAL;
++
++			offset_in_page /= 2;
++		}
+ 	}
+ 
+ 	addrs[0] = offset_in_page;
+@@ -1123,7 +1127,7 @@ static int nand_fill_column_cycles(struc
+ 	 * Small page NANDs use 1 cycle for the columns, while large page NANDs
+ 	 * need 2
+ 	 */
+-	if (mtd->writesize <= 512)
++	if (!ident_stage && mtd->writesize <= 512)
+ 		return 1;
+ 
+ 	addrs[1] = offset_in_page >> 8;
+@@ -1436,16 +1440,19 @@ int nand_change_read_column_op(struct na
+ 			       unsigned int len, bool force_8bit)
+ {
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
++	bool ident_stage = !mtd->writesize;
+ 
+ 	if (len && !buf)
+ 		return -EINVAL;
+ 
+-	if (offset_in_page + len > mtd->writesize + mtd->oobsize)
+-		return -EINVAL;
++	if (!ident_stage) {
++		if (offset_in_page + len > mtd->writesize + mtd->oobsize)
++			return -EINVAL;
+ 
+-	/* Small page NANDs do not support column change. */
+-	if (mtd->writesize <= 512)
+-		return -ENOTSUPP;
++		/* Small page NANDs do not support column change. */
++		if (mtd->writesize <= 512)
++			return -ENOTSUPP;
++	}
+ 
+ 	if (nand_has_exec_op(chip)) {
+ 		const struct nand_interface_config *conf =
 
 
 
