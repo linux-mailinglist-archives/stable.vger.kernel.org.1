@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-58678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AF9A92B827
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:31:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A5B92B793
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 062AD1F21D8B
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 171971F240D4
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857E3154C07;
-	Tue,  9 Jul 2024 11:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2EAE15884A;
+	Tue,  9 Jul 2024 11:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JyeCSOmr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQgRbzDJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4287955E4C;
-	Tue,  9 Jul 2024 11:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DED149C79;
+	Tue,  9 Jul 2024 11:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524665; cv=none; b=ZOLMQ7lvWVIlD0SUw4Ht2/UgxsFueRY059Dwtim698JjDxtdM03xwJ/10LoRXsqgVfE3psJd/02mRJquN6Q2CC4dtJH4/SV1XYCdfAxd5oQb/FICX95Ay3HJXTMU7FaLQrIO6b1oMkJuW3sLJWZK72E6ws7O++7rJVtuX6yamQY=
+	t=1720524272; cv=none; b=RDjjr0Iox90qo3XkHsgXcwTgqvagZDe+S8hvygwpmkiMWeD0YoNb5xu7fmDZCa028gWK2tunBqcQat+oG7Limt4zjfWKgQYDA+ztYyQaQLMjzIcxM6U9R3GsJXryQBZWLf4rssUJ9uJP1Bd+ueqvp2AjrGt0jKbqi9qD+Imn+S4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524665; c=relaxed/simple;
-	bh=MyyIRYSLPZPDGKwjnHK+OE+rqPVJ8uribqMdR0y/MaA=;
+	s=arc-20240116; t=1720524272; c=relaxed/simple;
+	bh=z92gxD4Aku8jMawbvea7JKWbDCYMk9i3zBly/lukeEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p0pcVXpvX1zMeFcwmxRX0Q/3Cl/DTHL28r6g9LpHmMc9Lwudd583fAf8JM7AYfqcuDLIgottPl6QJXIpPxGsWRC6lPI2uhmU2RE8nOQB6dvgC8P/t6iuJ2TZRr588vIly5Bo/y3TIAImszeT1r4J4B8eZQJEJYA2deKx1faLajs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JyeCSOmr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF5A9C3277B;
-	Tue,  9 Jul 2024 11:31:04 +0000 (UTC)
+	 MIME-Version; b=U01y/nN8wO3hai8sSDo1q9YN0tJkNVpwVKH6gHWo14IirinL0vTDHrffFQiCq4Tv6tcuOnhB0p/UVixGRFXsWPgWpMej8o2W/kgk2FOhQWshk5AjOcVZa7fM3MO4rOeTHik/asrqe60qt/NtNn/wl4lPocAP3h0w4cBdH4jhXNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQgRbzDJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8C5C3277B;
+	Tue,  9 Jul 2024 11:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524665;
-	bh=MyyIRYSLPZPDGKwjnHK+OE+rqPVJ8uribqMdR0y/MaA=;
+	s=korg; t=1720524272;
+	bh=z92gxD4Aku8jMawbvea7JKWbDCYMk9i3zBly/lukeEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JyeCSOmrDR5bviC66BqTr0TGXMaM4vWY3Ar2rxBmaqnZ3ttqE5vfS78GXm2Yr6FqQ
-	 oexPgrZE/tyZCKYU7w13BlnfOZJ0SLLPASonvXFRd1N+mT9mvgpty/oW/NPLifS5hm
-	 u5J5ljYKwfztLSrESmXBy7MO+tEgIH18Jl6qx+0E=
+	b=kQgRbzDJBfEiyEhZTSOXfVWI3hjqOE2xIDkuMGqFsuGbJMjZzgiZRvB2n8zJSb6VW
+	 HtPQ5kWLpogS7GxrTsD3e/gO1GZhX0mzyLIgoMpy0ziyJbuxv9EET2rsPWswQd242d
+	 LxV3wTKy/NnAprFHlAKWbvpYaGbWM0bZOGLZU+a8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erick Archer <erick.archer@outlook.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Kees Cook <keescook@chromium.org>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 018/102] sctp: prefer struct_size over open coded arithmetic
+Subject: [PATCH 6.9 127/197] inet_diag: Initialize pad field in struct inet_diag_req_v2
 Date: Tue,  9 Jul 2024 13:09:41 +0200
-Message-ID: <20240709110652.078349048@linuxfoundation.org>
+Message-ID: <20240709110713.869196032@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +64,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erick Archer <erick.archer@outlook.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit e5c5f3596de224422561d48eba6ece5210d967b3 ]
+[ Upstream commit 61cf1c739f08190a4cbf047b9fbb192a94d87e3f ]
 
-This is an effort to get rid of all multiplications from allocation
-functions in order to prevent integer overflows [1][2].
+KMSAN reported uninit-value access in raw_lookup() [1]. Diag for raw
+sockets uses the pad field in struct inet_diag_req_v2 for the
+underlying protocol. This field corresponds to the sdiag_raw_protocol
+field in struct inet_diag_req_raw.
 
-As the "ids" variable is a pointer to "struct sctp_assoc_ids" and this
-structure ends in a flexible array:
+inet_diag_get_exact_compat() converts inet_diag_req to
+inet_diag_req_v2, but leaves the pad field uninitialized. So the issue
+occurs when raw_lookup() accesses the sdiag_raw_protocol field.
 
-struct sctp_assoc_ids {
-	[...]
-	sctp_assoc_t	gaids_assoc_id[];
-};
+Fix this by initializing the pad field in
+inet_diag_get_exact_compat(). Also, do the same fix in
+inet_diag_dump_compat() to avoid the similar issue in the future.
 
-the preferred way in the kernel is to use the struct_size() helper to
-do the arithmetic instead of the calculation "size + size * count" in
-the kmalloc() function.
+[1]
+BUG: KMSAN: uninit-value in raw_lookup net/ipv4/raw_diag.c:49 [inline]
+BUG: KMSAN: uninit-value in raw_sock_get+0x657/0x800 net/ipv4/raw_diag.c:71
+ raw_lookup net/ipv4/raw_diag.c:49 [inline]
+ raw_sock_get+0x657/0x800 net/ipv4/raw_diag.c:71
+ raw_diag_dump_one+0xa1/0x660 net/ipv4/raw_diag.c:99
+ inet_diag_cmd_exact+0x7d9/0x980
+ inet_diag_get_exact_compat net/ipv4/inet_diag.c:1404 [inline]
+ inet_diag_rcv_msg_compat+0x469/0x530 net/ipv4/inet_diag.c:1426
+ sock_diag_rcv_msg+0x23d/0x740 net/core/sock_diag.c:282
+ netlink_rcv_skb+0x537/0x670 net/netlink/af_netlink.c:2564
+ sock_diag_rcv+0x35/0x40 net/core/sock_diag.c:297
+ netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
+ netlink_unicast+0xe74/0x1240 net/netlink/af_netlink.c:1361
+ netlink_sendmsg+0x10c6/0x1260 net/netlink/af_netlink.c:1905
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ __sock_sendmsg+0x332/0x3d0 net/socket.c:745
+ ____sys_sendmsg+0x7f0/0xb70 net/socket.c:2585
+ ___sys_sendmsg+0x271/0x3b0 net/socket.c:2639
+ __sys_sendmsg net/socket.c:2668 [inline]
+ __do_sys_sendmsg net/socket.c:2677 [inline]
+ __se_sys_sendmsg net/socket.c:2675 [inline]
+ __x64_sys_sendmsg+0x27e/0x4a0 net/socket.c:2675
+ x64_sys_call+0x135e/0x3ce0 arch/x86/include/generated/asm/syscalls_64.h:47
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xd9/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Also, refactor the code adding the "ids_size" variable to avoid sizing
-twice.
+Uninit was stored to memory at:
+ raw_sock_get+0x650/0x800 net/ipv4/raw_diag.c:71
+ raw_diag_dump_one+0xa1/0x660 net/ipv4/raw_diag.c:99
+ inet_diag_cmd_exact+0x7d9/0x980
+ inet_diag_get_exact_compat net/ipv4/inet_diag.c:1404 [inline]
+ inet_diag_rcv_msg_compat+0x469/0x530 net/ipv4/inet_diag.c:1426
+ sock_diag_rcv_msg+0x23d/0x740 net/core/sock_diag.c:282
+ netlink_rcv_skb+0x537/0x670 net/netlink/af_netlink.c:2564
+ sock_diag_rcv+0x35/0x40 net/core/sock_diag.c:297
+ netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
+ netlink_unicast+0xe74/0x1240 net/netlink/af_netlink.c:1361
+ netlink_sendmsg+0x10c6/0x1260 net/netlink/af_netlink.c:1905
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ __sock_sendmsg+0x332/0x3d0 net/socket.c:745
+ ____sys_sendmsg+0x7f0/0xb70 net/socket.c:2585
+ ___sys_sendmsg+0x271/0x3b0 net/socket.c:2639
+ __sys_sendmsg net/socket.c:2668 [inline]
+ __do_sys_sendmsg net/socket.c:2677 [inline]
+ __se_sys_sendmsg net/socket.c:2675 [inline]
+ __x64_sys_sendmsg+0x27e/0x4a0 net/socket.c:2675
+ x64_sys_call+0x135e/0x3ce0 arch/x86/include/generated/asm/syscalls_64.h:47
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xd9/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-This way, the code is more readable and safer.
+Local variable req.i created at:
+ inet_diag_get_exact_compat net/ipv4/inet_diag.c:1396 [inline]
+ inet_diag_rcv_msg_compat+0x2a6/0x530 net/ipv4/inet_diag.c:1426
+ sock_diag_rcv_msg+0x23d/0x740 net/core/sock_diag.c:282
 
-This code was detected with the help of Coccinelle, and audited and
-modified manually.
+CPU: 1 PID: 8888 Comm: syz-executor.6 Not tainted 6.10.0-rc4-00217-g35bb670d65fc #32
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
 
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments [1]
-Link: https://github.com/KSPP/linux/issues/160 [2]
-Signed-off-by: Erick Archer <erick.archer@outlook.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/PAXPR02MB724871DB78375AB06B5171C88B152@PAXPR02MB7248.eurprd02.prod.outlook.com
+Fixes: 432490f9d455 ("net: ip, diag -- Add diag interface for raw sockets")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20240703091649.111773-1-syoshida@redhat.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/socket.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/ipv4/inet_diag.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index 237a6b04adf6f..9689d2f2d91f9 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -7116,6 +7116,7 @@ static int sctp_getsockopt_assoc_ids(struct sock *sk, int len,
- 	struct sctp_sock *sp = sctp_sk(sk);
- 	struct sctp_association *asoc;
- 	struct sctp_assoc_ids *ids;
-+	size_t ids_size;
- 	u32 num = 0;
+diff --git a/net/ipv4/inet_diag.c b/net/ipv4/inet_diag.c
+index 7adace541fe29..9712cdb8087c2 100644
+--- a/net/ipv4/inet_diag.c
++++ b/net/ipv4/inet_diag.c
+@@ -1383,6 +1383,7 @@ static int inet_diag_dump_compat(struct sk_buff *skb,
+ 	req.sdiag_family = AF_UNSPEC; /* compatibility */
+ 	req.sdiag_protocol = inet_diag_type2proto(cb->nlh->nlmsg_type);
+ 	req.idiag_ext = rc->idiag_ext;
++	req.pad = 0;
+ 	req.idiag_states = rc->idiag_states;
+ 	req.id = rc->id;
  
- 	if (sctp_style(sk, TCP))
-@@ -7128,11 +7129,11 @@ static int sctp_getsockopt_assoc_ids(struct sock *sk, int len,
- 		num++;
- 	}
+@@ -1398,6 +1399,7 @@ static int inet_diag_get_exact_compat(struct sk_buff *in_skb,
+ 	req.sdiag_family = rc->idiag_family;
+ 	req.sdiag_protocol = inet_diag_type2proto(nlh->nlmsg_type);
+ 	req.idiag_ext = rc->idiag_ext;
++	req.pad = 0;
+ 	req.idiag_states = rc->idiag_states;
+ 	req.id = rc->id;
  
--	if (len < sizeof(struct sctp_assoc_ids) + sizeof(sctp_assoc_t) * num)
-+	ids_size = struct_size(ids, gaids_assoc_id, num);
-+	if (len < ids_size)
- 		return -EINVAL;
- 
--	len = sizeof(struct sctp_assoc_ids) + sizeof(sctp_assoc_t) * num;
--
-+	len = ids_size;
- 	ids = kmalloc(len, GFP_USER | __GFP_NOWARN);
- 	if (unlikely(!ids))
- 		return -ENOMEM;
 -- 
 2.43.0
 
