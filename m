@@ -1,111 +1,128 @@
-Return-Path: <stable+bounces-58276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0AF592B3D0
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:28:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D62B92B3F2
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:34:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD4A51C22610
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 09:28:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58FFF281588
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 09:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45FF81552E2;
-	Tue,  9 Jul 2024 09:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E92155321;
+	Tue,  9 Jul 2024 09:34:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="he1zNqLl"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE5B154C0F;
-	Tue,  9 Jul 2024 09:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF4C154458;
+	Tue,  9 Jul 2024 09:34:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720517236; cv=none; b=QKgapUYi2YDIyKDpnlu61iqENLqKvL7mVU8OIB6WtNk4CGRmz3uLdtOrFnO9uPdhlBD2ZdP+dNQDDBik2jN3ve6rOkU+C4Pdnb3R199D2wL1j9+0/AeeVNUBiMP9aeDfxwBTaekHl3oQiuR/WBAN/HoYY6kPymieJK/btuz90TM=
+	t=1720517682; cv=none; b=XXdo9nSbEQrT0X9OhxE2COhlJtkjuGoG7a2Ce1lGlgAYOoY38BIMKoOgNXcuKHnH+AnPWpwxY7mKwNy3dd3I6Z+C/k/tcAa5TjyA7h44LTXQ3DUdPACpd6KzAzpbMGtm8673YAM/IIiX1THpgd7A1IFnLp9sHaHt0aNk62sFUUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720517236; c=relaxed/simple;
-	bh=BvITnZGwrv0DcMi9+rbLEpK9pqpsSHIG6x1UYrJpaw0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=diUFHl8EC+RLqa7wX+OrBWKQcd33tcZxyEeAFPydrI07EFZEEvFbAfwtA6x15s5d/5nH+Zf5wGQnZns7PfSwERXZhqpUCQdjX3IjVztSkAJOHB8RfDpjHS48UcVpQulj72LQG8ve1NqWcZXk8XVAc2PZ6NRfXpagtqFGmeysnU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-05 (Coremail) with SMTP id zQCowADX3+dDAo1mG3VXAg--.38115S2;
-	Tue, 09 Jul 2024 17:26:34 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	daniel.vetter@ffwll.ch,
-	sam@ravnborg.org,
-	noralf@tronnes.org,
-	akpm@linux-foundation.org
-Cc: dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] drm/client: fix null pointer dereference in drm_client_modeset_probe
-Date: Tue,  9 Jul 2024 17:26:26 +0800
-Message-Id: <20240709092626.3253492-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1720517682; c=relaxed/simple;
+	bh=P0Tg5HgvkrsbncakOIEEZ4alS4fkZKeRhddMQDXL43c=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:MIME-Version:
+	 Message-Id:Content-Type; b=u9wt6MXsEgGkpJzuvTMj7Az+hJUfOObspEMLgCSRM2wzLyU0XuxFob6M+etI7KjcnD06innm3VhcjAn3UekIeeuWOqbZmRl5yjY26/udYEhR/iqeY7jrYun30fZTKZWtZPqk66XSNCoJXePSNwW0OFyW7Ha2N+P+NCzxJMohFNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=he1zNqLl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F481C3277B;
+	Tue,  9 Jul 2024 09:34:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720517681;
+	bh=P0Tg5HgvkrsbncakOIEEZ4alS4fkZKeRhddMQDXL43c=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=he1zNqLljVoU8atGAg/yb/t+komzyYSyUY+npj0LJK4bw+LtwG11R0MmXeAwmqJVN
+	 Gq2dFw2iLKQw4byk3Jns1oIitgwh5VE3CeSemr9ul5IDq1N/fs8QPsVGGzHAXiL+gE
+	 3UZnQ54m426HhEP1xEhMFfkflU9qC3krY+KILGS0EzD5qvw5SHqPlXOIOr8/jV1Gru
+	 jYvW8eSkQPg/CJxlcbfxZBdTxpt89kvJ78Eed5vR6EsWNw7cxMdLNCnX4W53UCak3D
+	 rCRrUuoCATcNZqAmlzOexTCha0d8M49L3Rot3QU4UoktF/cV4sVw3liGPk+RE6qkGp
+	 QDJDM1x9covzQ==
+Date: Tue, 09 Jul 2024 15:02:13 +0530
+From: Naveen N Rao <naveen@kernel.org>
+Subject: Re: WARNING&Oops in v6.6.37 on ppc64lea - Trying to vfree() bad
+ address (00000000453be747)
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, matoro
+	<matoro_mailinglist_kernel@matoro.tk>
+Cc: bpf@vger.kernel.org, Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev
+	<linuxppc-dev@lists.ozlabs.org>, ltp@lists.linux.it, stable@vger.kernel.org,
+	Vitaly Chikunov <vt@altlinux.org>
+References: <20240705203413.wbv2nw3747vjeibk@altlinux.org>
+	<cf736c5e37489e7dc7ffd67b9de2ab47@matoro.tk>
+	<2024070904-cod-bobcat-a0d0@gregkh>
+In-Reply-To: <2024070904-cod-bobcat-a0d0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowADX3+dDAo1mG3VXAg--.38115S2
-X-Coremail-Antispam: 1UD129KBjvJXoWrtr4DZw13CFy5urW7urW5trb_yoW8Jr18pr
-	43JF90yF4jvrZrKFs2va97CF17A3W3JF48G3W7Aan3u3Z0qry2vryYvr13WFy7Gry3JF1U
-	JrnIyFW2qF18CaUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
-	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
-	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
-	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
-	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
-	nIWIevJa73UjIFyTuYvjfUFYFADUUUU
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+User-Agent: astroid/0.16.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1720516964.n61e0dnv80.naveen@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-In drm_client_modeset_probe(), the return value of drm_mode_duplicate() is
-assigned to modeset->mode, which will lead to a possible NULL pointer
-dereference on failure of drm_mode_duplicate(). Add a check to avoid npd.
+Greg Kroah-Hartman wrote:
+> On Mon, Jul 08, 2024 at 11:16:48PM -0400, matoro wrote:
+>> On 2024-07-05 16:34, Vitaly Chikunov wrote:
+>> > Hi,
+>> >=20
+>> > There is new WARNING and Oops on ppc64le in v6.6.37 when running LTP t=
+ests:
+>> > bpf_prog01, bpf_prog02, bpf_prog04, bpf_prog05, prctl04. Logs excerpt
+>> > below. I
+>> > see there is 1 commit in v6.6.36..v6.6.37 with call to
+>> > bpf_jit_binary_pack_finalize, backported from 5 patch mainline patchse=
+t:
+>> >=20
+>> >   f99feda5684a powerpc/bpf: use bpf_jit_binary_pack_[alloc|finalize|fr=
+ee]
+>> >=20
 
-Cc: stable@vger.kernel.org
-Fixes: cf13909aee05 ("drm/fb-helper: Move out modeset config code")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
-Changes in v2:
-- added the recipient's email address, due to the prolonged absence of a 
-response from the recipients.
-- added Cc stable.
----
- drivers/gpu/drm/drm_client_modeset.c | 3 +++
- 1 file changed, 3 insertions(+)
+<snip>
 
-diff --git a/drivers/gpu/drm/drm_client_modeset.c b/drivers/gpu/drm/drm_client_modeset.c
-index 31af5cf37a09..cca37b225385 100644
---- a/drivers/gpu/drm/drm_client_modeset.c
-+++ b/drivers/gpu/drm/drm_client_modeset.c
-@@ -880,6 +880,9 @@ int drm_client_modeset_probe(struct drm_client_dev *client, unsigned int width,
- 
- 			kfree(modeset->mode);
- 			modeset->mode = drm_mode_duplicate(dev, mode);
-+			if (!modeset->mode)
-+				continue;
-+
- 			drm_connector_get(connector);
- 			modeset->connectors[modeset->num_connectors++] = connector;
- 			modeset->x = offset->x;
--- 
-2.25.1
+>> >=20
+>> > And so on. Temporary build/test log is at
+>> > https://git.altlinux.org/tasks/352218/build/100/ppc64le/log
+>> >=20
+>> > Other stable/longterm branches or other architectures does not exhibit=
+ this.
+>> >=20
+>> > Thanks,
+>>=20
+>> Hi all - this just took down a production server for me, on POWER9 bare
+>> metal.  Not running tests, just booting normally, before services even c=
+ame
+>> up.  Had to perform manual restoration, reverting to 6.6.36 worked.  Als=
+o
+>> running 64k kernel, unsure if it's better on 4k kernel.
+>>=20
+>> In case it's helpful, here's the log from my boot:
+>> https://dpaste.org/Gyxxg/raw
+>=20
+> Ok, this isn't good, something went wrong with my backports here.  Let
+> me go revert them all and push out a new 6.6.y release right away.
+
+I think the problem is that the series adding support for bpf prog_pack=20
+was partially backported. In particular, the below patches are missing=20
+from stable v6.6:
+465cabc97b42 powerpc/code-patching: introduce patch_instructions()
+033ffaf0af1f powerpc/bpf: implement bpf_arch_text_invalidate for bpf_prog_p=
+ack
+6efc1675acb8 powerpc/bpf: implement bpf_arch_text_copy
+
+It should be sufficient to revert commit f99feda5684a (powerpc/bpf: use=20
+bpf_jit_binary_pack_[alloc|finalize|free]) to allow the above to apply=20
+cleanly, followed by cherry picking commit 90d862f370b6 (powerpc/bpf:=20
+use bpf_jit_binary_pack_[alloc|finalize|free]) from upstream.
+
+Alternately, commit f99feda5684a (powerpc/bpf: use=20
+bpf_jit_binary_pack_[alloc|finalize|free]) can be reverted.
+
+
+- Naveen
 
 
