@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-58536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F23892B781
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4914A92B687
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:14:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFF951C21926
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 014822853EA
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8552149C79;
-	Tue,  9 Jul 2024 11:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A0915884F;
+	Tue,  9 Jul 2024 11:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14+O+r4j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1n0r2q6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B9013A25F;
-	Tue,  9 Jul 2024 11:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D571A158842;
+	Tue,  9 Jul 2024 11:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524234; cv=none; b=OynR0zBdqOhboPBZgSDyFNo2ti/yRndxhLnDZhRZBHjwXwcGcqX62h+6oRbXJhheLnQraCPv8A9+GLuoUSKYpth++r81ICh2bcGL5pSH6c/7NglzZ3sdXQog+a0N+iaTmBvuhnXClkJDczejvC0UJyHIyqBHKsurf+thHgVK/AU=
+	t=1720523669; cv=none; b=YfbE6tzXEOsEYBJaM3wt1KnJr/wm3pbw422WQchifMjkJ8gvwXtGQvmpBNZfUb1M/1WGMgC4rspgGqNmACMpCUXG0ACr5uCNIV47+VunBole/yISFnsOJlUfYDCZcvC1TBIi1AjkPtx2eXcMs0kul8wCKIs4A4LXCyk0pF0QSek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524234; c=relaxed/simple;
-	bh=XBTIliFTJQ8QUOERtWTrrxg9lE3MYYtFs8h8VBLvV2w=;
+	s=arc-20240116; t=1720523669; c=relaxed/simple;
+	bh=unH/cvfYQ4T4Z9fijJ4uNN+XG3tgC0DRQuWiFDvX8sM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/wYPk9oTY4SbCYHzE/1Wh7raFxapsdDaWSAs4eENMCX2Ol3fprh5XDiEi80TO98YgqNVU7LbObeQRkhdpmsZ44Sk61XhVPvrVY+b6tpjaHXh/ee1Zjykx5FcwrGELLqGrixi95d4Eo/4ifoDQ3hZs4p0aF+srGzsiiP/QbxlLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=14+O+r4j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC313C3277B;
-	Tue,  9 Jul 2024 11:23:53 +0000 (UTC)
+	 MIME-Version; b=Ew0CuKqhYTzoQUHE25QR6+G4cdtbyEJIx14uZ3KYrP8FE4r62HqZh9m5VNEv/rnTIpzDnj9ew51SiR26lO7c6bmkM4bjx32EUpVsakpZT6+CedQeoYZJ9vbYMgvHRotjB2PnWTaXa+ElieLpVsPf0Je5NVWa7zQkVUMCjb27HZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1n0r2q6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7FBC4AF0F;
+	Tue,  9 Jul 2024 11:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524234;
-	bh=XBTIliFTJQ8QUOERtWTrrxg9lE3MYYtFs8h8VBLvV2w=;
+	s=korg; t=1720523669;
+	bh=unH/cvfYQ4T4Z9fijJ4uNN+XG3tgC0DRQuWiFDvX8sM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=14+O+r4jrCXAaNUjLpOQKhi3iiwmkyFvXDTcuaGmnVqLQA7lJWW/IXw9B8Nu/i//T
-	 L2biRjPkSWDBEppiuxgTQy5gO6ywuZrVOzGV1xoRUuX8UXiKsd4o37fp6TJNhAu4wK
-	 GlQRrdkFE0N+NKDxkFUzGsBGkeIa2jRRbeGZVSSI=
+	b=u1n0r2q6J2hmSCwD/sJa6U/WOOmdX70RUfdIIi3YZxDjfqeYxk499B8qykhOIET3P
+	 OS7HMMf9KJMrTNyv/Hm/BqUv6T1cQqFMlMWICsGfaEujF3KZU8Egbn48REVrpkW2jo
+	 BMGFYg88rr2Ey1Ajq0ZIXacczZ5T7iCA9agzFOoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Song Shuai <songshuaishuai@tinylab.org>,
-	Ryo Takakura <takakura@valinux.co.jp>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 115/197] riscv: kexec: Avoid deadlock in kexec crash path
-Date: Tue,  9 Jul 2024 13:09:29 +0200
-Message-ID: <20240709110713.402590662@linuxfoundation.org>
+Subject: [PATCH 6.6 070/139] tcp_metrics: validate source addr length
+Date: Tue,  9 Jul 2024 13:09:30 +0200
+Message-ID: <20240709110700.883305354@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Shuai <songshuaishuai@tinylab.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit c562ba719df570c986caf0941fea2449150bcbc4 ]
+[ Upstream commit 66be40e622e177316ae81717aa30057ba9e61dff ]
 
-If the kexec crash code is called in the interrupt context, the
-machine_kexec_mask_interrupts() function will trigger a deadlock while
-trying to acquire the irqdesc spinlock and then deactivate irqchip in
-irq_set_irqchip_state() function.
+I don't see anything checking that TCP_METRICS_ATTR_SADDR_IPV4
+is at least 4 bytes long, and the policy doesn't have an entry
+for this attribute at all (neither does it for IPv6 but v6 is
+manually validated).
 
-Unlike arm64, riscv only requires irq_eoi handler to complete EOI and
-keeping irq_set_irqchip_state() will only leave this possible deadlock
-without any use. So we simply remove it.
-
-Link: https://lore.kernel.org/linux-riscv/20231208111015.173237-1-songshuaishuai@tinylab.org/
-Fixes: b17d19a5314a ("riscv: kexec: Fixup irq controller broken in kexec crash path")
-Signed-off-by: Song Shuai <songshuaishuai@tinylab.org>
-Reviewed-by: Ryo Takakura <takakura@valinux.co.jp>
-Link: https://lore.kernel.org/r/20240626023316.539971-1-songshuaishuai@tinylab.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Fixes: 3e7013ddf55a ("tcp: metrics: Allow selective get/del of tcp-metrics based on src IP")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/machine_kexec.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ net/ipv4/tcp_metrics.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/kernel/machine_kexec.c b/arch/riscv/kernel/machine_kexec.c
-index ed9cad20c039d..3c830a6f7ef46 100644
---- a/arch/riscv/kernel/machine_kexec.c
-+++ b/arch/riscv/kernel/machine_kexec.c
-@@ -121,20 +121,12 @@ static void machine_kexec_mask_interrupts(void)
- 
- 	for_each_irq_desc(i, desc) {
- 		struct irq_chip *chip;
--		int ret;
- 
- 		chip = irq_desc_get_chip(desc);
- 		if (!chip)
- 			continue;
- 
--		/*
--		 * First try to remove the active state. If this
--		 * fails, try to EOI the interrupt.
--		 */
--		ret = irq_set_irqchip_state(i, IRQCHIP_STATE_ACTIVE, false);
--
--		if (ret && irqd_irq_inprogress(&desc->irq_data) &&
--		    chip->irq_eoi)
-+		if (chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
- 			chip->irq_eoi(&desc->irq_data);
- 
- 		if (chip->irq_mask)
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index 7aca12c59c184..b71f94a5932ac 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -619,6 +619,7 @@ static const struct nla_policy tcp_metrics_nl_policy[TCP_METRICS_ATTR_MAX + 1] =
+ 	[TCP_METRICS_ATTR_ADDR_IPV4]	= { .type = NLA_U32, },
+ 	[TCP_METRICS_ATTR_ADDR_IPV6]	= { .type = NLA_BINARY,
+ 					    .len = sizeof(struct in6_addr), },
++	[TCP_METRICS_ATTR_SADDR_IPV4]	= { .type = NLA_U32, },
+ 	/* Following attributes are not received for GET/DEL,
+ 	 * we keep them for reference
+ 	 */
 -- 
 2.43.0
 
