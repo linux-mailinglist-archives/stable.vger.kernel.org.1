@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D4B292B663
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:12:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB08792B760
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD539283771
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:12:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C666B247E2
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60AEE1581EB;
-	Tue,  9 Jul 2024 11:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA1315ADBB;
+	Tue,  9 Jul 2024 11:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqwEzezc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgbMRfSi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E16D157A48;
-	Tue,  9 Jul 2024 11:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FEB15887F;
+	Tue,  9 Jul 2024 11:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523570; cv=none; b=cKM4hP6+LWykE5TO1yIqS/7PxvLBnZ8t0+fV3Iu1Aj89GM5DBeb+ZOZWm82s6VXS3SYEgrTE+8KMybEFQk8N7mXP1TlQFc7Vk72ZfFQs3v2qSRXnNtXWCwyYzZKMBhnjyid2DTEx9+VeC7fKOyc8pTGd2qg1UJzNC3xyjoD67Cw=
+	t=1720524137; cv=none; b=p7wwyDbFpQNH/sVOwc2rfqvd0hodFwp2VwYyB5hCLnKrDNtxoqLa4Q3D79CLG2M+WdOuuILLCIglhRmFCPBeYHHiqD+OIeSXW92rSrwVxPttfhWHF4DwVJ/7xWGZvv/5h86Q5C93/e+rkuA7wTjHBdiskrHXiVMSiv1gUjsm4R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523570; c=relaxed/simple;
-	bh=KMnNMP6Tvq5kGuy/wAGnXzg6WrzE1WLedY4I59ysf3k=;
+	s=arc-20240116; t=1720524137; c=relaxed/simple;
+	bh=4sN5wD21FOAKTWSGZa7df7/6lTyT81BjBvGnMQ0nVeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgxkQAIhmB7vih2Aq6HILNPqr8gWfv8Q0BClCr6RvnwR3NnxH4LTVZDvKnmsHtri+rAa4tnj677CH2IrEMonnAEqBlXp5leGe3hO8D1rqK/e5oMLjx6HbCi+ZAzJok/KJQvDmzCf8bsdw9bsP6VTeHuVff+joRT5TP6u1pdkou4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AqwEzezc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F81C4AF0A;
-	Tue,  9 Jul 2024 11:12:49 +0000 (UTC)
+	 MIME-Version; b=bW8lLjg8kpGqaTxyU2oS6T0NjnV64Uc0uLQ9/F8C8jNHxzHReoW7yb4HWAOgxmQeBc59JM4d8P82YvANcAmdGEgZPHfpOD6kot4Irr+khO1tc8cVB7OtcYBKDTM/pbcjiZw3lL6N0Z1w+ye3rxisLAMrCckgKQ4Vo2GZnFTa4Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgbMRfSi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2AA0C3277B;
+	Tue,  9 Jul 2024 11:22:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523570;
-	bh=KMnNMP6Tvq5kGuy/wAGnXzg6WrzE1WLedY4I59ysf3k=;
+	s=korg; t=1720524137;
+	bh=4sN5wD21FOAKTWSGZa7df7/6lTyT81BjBvGnMQ0nVeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AqwEzezczdGQzVfGRON1iS5WREvi2zaw7m346PmBchouoMARsbIgeJDiCfE3ULJau
-	 Uk1Z+V3bKsWVyCSq4yKsNtgBIvtA4LY4+ZYuBoyflvmJTMjVOUPFlz0/F3yJlpnsbQ
-	 Hq9ApdfJS/FLJlZyvWGgJ8Ka+F8OghHP6RRIXB/c=
+	b=vgbMRfSioueLEGu2VjYXeHUM/8Ei9T0Rqq9vqOAeOJc2gVZy+yzxnJWjHMzS6U2He
+	 iWryNlyTDttz/2EMw3nzNFs7gA1vBR8UWNBUX/dSNtd4VjMEe0aQDQnaTEOn4Icp+P
+	 UCYcwP2GA/u60DJ9LvvSOmpCG95ulhLQzJAI7Thk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/139] media: dvb-frontends: tda18271c2dd: Remove casting during div
+Subject: [PATCH 6.9 082/197] vhost: Release worker mutex during flushes
 Date: Tue,  9 Jul 2024 13:08:56 +0200
-Message-ID: <20240709110659.559099071@linuxfoundation.org>
+Message-ID: <20240709110712.141948436@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit e9a844632630e18ed0671a7e3467431bd719952e ]
+[ Upstream commit ba704ff4e142fd3cfaf3379dd3b3b946754e06e3 ]
 
-do_div() divides 64 bits by 32. We were adding a casting to the divider
-to 64 bits, for a number that fits perfectly in 32 bits. Remove it.
+In the next patches where the worker can be killed while in use, we
+need to be able to take the worker mutex and kill queued works for
+new IO and flushes, and set some new flags to prevent new
+__vhost_vq_attach_worker calls from swapping in/out killed workers.
 
-Found by cocci:
-drivers/media/dvb-frontends/tda18271c2dd.c:355:1-7: WARNING: do_div() does a 64-by-32 division, please consider using div64_u64 instead.
-drivers/media/dvb-frontends/tda18271c2dd.c:331:1-7: WARNING: do_div() does a 64-by-32 division, please consider using div64_u64 instead.
+If we are holding the worker mutex during a flush and the flush's work
+is still in the queue, the worker code that will handle the SIGKILL
+cleanup won't be able to take the mutex and perform it's cleanup. So
+this patch has us drop the worker mutex while waiting for the flush
+to complete.
 
-Link: https://lore.kernel.org/linux-media/20240429-fix-cocci-v3-8-3c4865f5a4b0@chromium.org
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Message-Id: <20240316004707.45557-8-michael.christie@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Stable-dep-of: db5247d9bf5c ("vhost_task: Handle SIGKILL by flushing work and exiting")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/tda18271c2dd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/vhost/vhost.c | 44 +++++++++++++++++++++++++++++--------------
+ 1 file changed, 30 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/tda18271c2dd.c b/drivers/media/dvb-frontends/tda18271c2dd.c
-index a348344879433..fd928787207ed 100644
---- a/drivers/media/dvb-frontends/tda18271c2dd.c
-+++ b/drivers/media/dvb-frontends/tda18271c2dd.c
-@@ -328,7 +328,7 @@ static int CalcMainPLL(struct tda_state *state, u32 freq)
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 113b6a42719b7..5580b24934015 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -276,21 +276,36 @@ void vhost_vq_flush(struct vhost_virtqueue *vq)
+ EXPORT_SYMBOL_GPL(vhost_vq_flush);
  
- 	OscFreq = (u64) freq * (u64) Div;
- 	OscFreq *= (u64) 16384;
--	do_div(OscFreq, (u64)16000000);
-+	do_div(OscFreq, 16000000);
- 	MainDiv = OscFreq;
+ /**
+- * vhost_worker_flush - flush a worker
++ * __vhost_worker_flush - flush a worker
+  * @worker: worker to flush
+  *
+- * This does not use RCU to protect the worker, so the device or worker
+- * mutex must be held.
++ * The worker's flush_mutex must be held.
+  */
+-static void vhost_worker_flush(struct vhost_worker *worker)
++static void __vhost_worker_flush(struct vhost_worker *worker)
+ {
+ 	struct vhost_flush_struct flush;
  
- 	state->m_Regs[MPD] = PostDiv & 0x77;
-@@ -352,7 +352,7 @@ static int CalcCalPLL(struct tda_state *state, u32 freq)
- 	OscFreq = (u64)freq * (u64)Div;
- 	/* CalDiv = u32( OscFreq * 16384 / 16000000 ); */
- 	OscFreq *= (u64)16384;
--	do_div(OscFreq, (u64)16000000);
-+	do_div(OscFreq, 16000000);
- 	CalDiv = OscFreq;
++	if (!worker->attachment_cnt)
++		return;
++
+ 	init_completion(&flush.wait_event);
+ 	vhost_work_init(&flush.work, vhost_flush_work);
  
- 	state->m_Regs[CPD] = PostDiv;
+ 	vhost_worker_queue(worker, &flush.work);
++	/*
++	 * Drop mutex in case our worker is killed and it needs to take the
++	 * mutex to force cleanup.
++	 */
++	mutex_unlock(&worker->mutex);
+ 	wait_for_completion(&flush.wait_event);
++	mutex_lock(&worker->mutex);
++}
++
++static void vhost_worker_flush(struct vhost_worker *worker)
++{
++	mutex_lock(&worker->mutex);
++	__vhost_worker_flush(worker);
++	mutex_unlock(&worker->mutex);
+ }
+ 
+ void vhost_dev_flush(struct vhost_dev *dev)
+@@ -298,15 +313,8 @@ void vhost_dev_flush(struct vhost_dev *dev)
+ 	struct vhost_worker *worker;
+ 	unsigned long i;
+ 
+-	xa_for_each(&dev->worker_xa, i, worker) {
+-		mutex_lock(&worker->mutex);
+-		if (!worker->attachment_cnt) {
+-			mutex_unlock(&worker->mutex);
+-			continue;
+-		}
++	xa_for_each(&dev->worker_xa, i, worker)
+ 		vhost_worker_flush(worker);
+-		mutex_unlock(&worker->mutex);
+-	}
+ }
+ EXPORT_SYMBOL_GPL(vhost_dev_flush);
+ 
+@@ -685,7 +693,6 @@ static void __vhost_vq_attach_worker(struct vhost_virtqueue *vq,
+ 	 * device wide flushes which doesn't use RCU for execution.
+ 	 */
+ 	mutex_lock(&old_worker->mutex);
+-	old_worker->attachment_cnt--;
+ 	/*
+ 	 * We don't want to call synchronize_rcu for every vq during setup
+ 	 * because it will slow down VM startup. If we haven't done
+@@ -696,6 +703,8 @@ static void __vhost_vq_attach_worker(struct vhost_virtqueue *vq,
+ 	mutex_lock(&vq->mutex);
+ 	if (!vhost_vq_get_backend(vq) && !vq->kick) {
+ 		mutex_unlock(&vq->mutex);
++
++		old_worker->attachment_cnt--;
+ 		mutex_unlock(&old_worker->mutex);
+ 		/*
+ 		 * vsock can queue anytime after VHOST_VSOCK_SET_GUEST_CID.
+@@ -711,7 +720,8 @@ static void __vhost_vq_attach_worker(struct vhost_virtqueue *vq,
+ 	/* Make sure new vq queue/flush/poll calls see the new worker */
+ 	synchronize_rcu();
+ 	/* Make sure whatever was queued gets run */
+-	vhost_worker_flush(old_worker);
++	__vhost_worker_flush(old_worker);
++	old_worker->attachment_cnt--;
+ 	mutex_unlock(&old_worker->mutex);
+ }
+ 
+@@ -764,6 +774,12 @@ static int vhost_free_worker(struct vhost_dev *dev,
+ 		mutex_unlock(&worker->mutex);
+ 		return -EBUSY;
+ 	}
++	/*
++	 * A flush might have raced and snuck in before attachment_cnt was set
++	 * to zero. Make sure flushes are flushed from the queue before
++	 * freeing.
++	 */
++	__vhost_worker_flush(worker);
+ 	mutex_unlock(&worker->mutex);
+ 
+ 	vhost_worker_destroy(dev, worker);
 -- 
 2.43.0
 
