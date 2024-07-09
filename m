@@ -1,69 +1,61 @@
-Return-Path: <stable+bounces-58895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4245E92C147
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:55:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E88F692C149
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:55:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72F431C22F73
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:55:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9949E1F22DC4
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59FD31AA37F;
-	Tue,  9 Jul 2024 16:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D85B1ABC26;
+	Tue,  9 Jul 2024 16:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EB2+WQ45"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fC8uFbpl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA861AA358;
-	Tue,  9 Jul 2024 16:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8EE1AB916;
+	Tue,  9 Jul 2024 16:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542420; cv=none; b=GKtEFQZq9VvIPsNQQp/cyIGoaB5dWU6I4ULxgovK+ZlXOfClTWZkJ772QXzJ0zCUGtZfwIKS3z1bVvbhvKDlz/bWFNn9XQJfix6aoy8/cPBmEv1g0U0Y+RCcn2+NLr0YmW5xbURikybuVtw/BtMo8rjRv6SmfNpGAT3uWlKuRys=
+	t=1720542421; cv=none; b=KSVidEwsRbSc1cCq3K6rSb5h0l3fu7dlaZDbCDpaTwuZD+6FtbL7VQgqi1BEmLxhYEk1dKxqqifrMfZ/uULRdHAnT0+oRdNW4kU/vjjqYzK70xvp0NtE1uICxr8NIgxVzhSmncgRGcCsC+grwICbRhyQuBzEFj87aYHpmeJZKA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542420; c=relaxed/simple;
-	bh=mP2+Pn/3K3evspy9XGb9JyHVN6ZUhaYHN7nE6Ykj3Ws=;
+	s=arc-20240116; t=1720542421; c=relaxed/simple;
+	bh=VhLqec+Jr1RbTVeMYOkFFWHRTsNFt9nrLYnGduqDWDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LCqPL0Ee1qjOUDkAVgrnCl+rzLXOfcVe/VcPinyWLb62XmeoRyyC6Frx1eEvRxiUYIU+lqdy508aYuXX/pkkCx8k9DObTqtOEUOWl1okm+Bd+kh9Y4nxqvPr1eVqu6fnGhkVd0Em+8ejOsTXmr9NnHrz5+yg3hTWhSmtu8lIxYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EB2+WQ45; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2243C3277B;
-	Tue,  9 Jul 2024 16:26:57 +0000 (UTC)
+	 MIME-Version; b=urg9nGjR+b7VHeiTQX/8TkIvlyK5rnJDDF74ZNqhCCnZWdKMrOU91VZgfPNPqikiZaBu8hF1hGM9qlxHfuRQ9mZObdBuVVfc3gQTNzOlsoD/rBC+CFt5TpGMP8aHYbKODtY2h/SYwyvnAmlPLSph+dteHVGhzTpbb8Tj09ljZzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fC8uFbpl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CFCC4AF07;
+	Tue,  9 Jul 2024 16:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542419;
-	bh=mP2+Pn/3K3evspy9XGb9JyHVN6ZUhaYHN7nE6Ykj3Ws=;
+	s=k20201202; t=1720542421;
+	bh=VhLqec+Jr1RbTVeMYOkFFWHRTsNFt9nrLYnGduqDWDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EB2+WQ45r/Kr4frTVvI1Lys9Ksh2aOonaN1op5xFLQmzI5/R6peZxS8Z88bL9Pe5i
-	 xjNZPpDiWB17oDK2uum1fDrHhOY20GtSYBfJiYalBTKqd1LOl44jpCCGYL8VbZS2u8
-	 u6x5Smp2a/UBPYSMeryc1EPnsym0ckSW3coOwSusSdtIU9XB/qzaUtxtdrWJPMPnyK
-	 C0DoLsTutp5e5mwjTR0yFSm0QTWmk4uULzcb6ClOxmE6w/OiTZ6MiGNl4PJJqFmlyH
-	 RmdFX/Uc4ereofJQhI9QQJN7oanmEjCsu1UlGs9aXcJPPmY/LnqZZP+3+F3EdsD0Ck
-	 2NJyV9dS0DzpA==
+	b=fC8uFbpl7nLJ6p668pHBgOxGkQcEWgtCp3beERjdC8Mfj56oRtPS3yYPd6F08S7qq
+	 2m2kJyCpVYYZizdn1cNIdUU05TXioGpThoHVhlg2jR6QTHK3y7YD0Hb0s/oPLcy4qO
+	 FC4Gvaf9ZUNeePlTzEijRRNq30BO83R8YxpHJMagsPnMiuX0u2YeCteoxgjDjKrmPw
+	 UosDrq2uvfYl75RnrG7+0HE2RAKcfIUE7C2Bbva8Had5kvUbUCViFTd4y42zVteiUp
+	 s7LnWxrdC1GlR8ozmXaZbs6Yh9dQSAStulQKWB8TWrwCpEQoH4yNvalmCPsgYBsV0U
+	 LuPoY3UHCLMAw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Thomas GENTY <tomlohave@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+Cc: Jai Luthra <j-luthra@ti.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	cezary.rojewski@intel.com,
-	liam.r.girdwood@linux.intel.com,
-	peter.ujfalusi@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	kai.vehmanen@linux.intel.com,
+	lgirdwood@gmail.com,
 	perex@perex.cz,
 	tiwai@suse.com,
-	kuninori.morimoto.gx@renesas.com,
-	alban.boye@protonmail.com,
 	alsa-devel@alsa-project.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 02/11] bytcr_rt5640 : inverse jack detect for Archos 101 cesium
-Date: Tue,  9 Jul 2024 12:26:35 -0400
-Message-ID: <20240709162654.33343-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 03/11] ASoC: ti: davinci-mcasp: Set min period size using FIFO config
+Date: Tue,  9 Jul 2024 12:26:36 -0400
+Message-ID: <20240709162654.33343-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162654.33343-1-sashal@kernel.org>
 References: <20240709162654.33343-1-sashal@kernel.org>
@@ -78,46 +70,67 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.279
 Content-Transfer-Encoding: 8bit
 
-From: Thomas GENTY <tomlohave@gmail.com>
+From: Jai Luthra <j-luthra@ti.com>
 
-[ Upstream commit e3209a1827646daaab744aa6a5767b1f57fb5385 ]
+[ Upstream commit c5dcf8ab10606e76c1d8a0ec77f27d84a392e874 ]
 
-When headphones are plugged in, they appear absent; when they are removed,
-they appear present.
-Add a specific entry in bytcr_rt5640 for this device
+The minimum period size was enforced to 64 as older devices integrating
+McASP with EDMA used an internal FIFO of 64 samples.
 
-Signed-off-by: Thomas GENTY <tomlohave@gmail.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20240608170251.99936-1-tomlohave@gmail.com
+With UDMA based platforms this internal McASP FIFO is optional, as the
+DMA engine internally does some buffering which is already accounted for
+when registering the platform. So we should read the actual FIFO
+configuration (txnumevt/rxnumevt) instead of hardcoding frames.min to
+64.
+
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Signed-off-by: Jai Luthra <j-luthra@ti.com>
+Link: https://lore.kernel.org/r/20240611-asoc_next-v3-2-fcfd84b12164@ti.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ sound/soc/ti/davinci-mcasp.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index c740dec00f83b..057ecfe2c8b5c 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -465,6 +465,17 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
- 					BYT_RT5640_SSP0_AIF1 |
- 					BYT_RT5640_MCLK_EN),
- 	},
-+	{
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ARCHOS"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ARCHOS 101 CESIUM"),
-+		},
-+		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
-+					BYT_RT5640_JD_NOT_INV |
-+					BYT_RT5640_DIFF_MIC |
-+					BYT_RT5640_SSP0_AIF1 |
-+					BYT_RT5640_MCLK_EN),
-+	},
- 	{
- 		.matches = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ARCHOS"),
+diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
+index 0541071f454bd..9a182e4c7d572 100644
+--- a/sound/soc/ti/davinci-mcasp.c
++++ b/sound/soc/ti/davinci-mcasp.c
+@@ -1419,10 +1419,11 @@ static int davinci_mcasp_hw_rule_min_periodsize(
+ {
+ 	struct snd_interval *period_size = hw_param_interval(params,
+ 						SNDRV_PCM_HW_PARAM_PERIOD_SIZE);
++	u8 numevt = *((u8 *)rule->private);
+ 	struct snd_interval frames;
+ 
+ 	snd_interval_any(&frames);
+-	frames.min = 64;
++	frames.min = numevt;
+ 	frames.integer = 1;
+ 
+ 	return snd_interval_refine(period_size, &frames);
+@@ -1437,6 +1438,7 @@ static int davinci_mcasp_startup(struct snd_pcm_substream *substream,
+ 	u32 max_channels = 0;
+ 	int i, dir, ret;
+ 	int tdm_slots = mcasp->tdm_slots;
++	u8 *numevt;
+ 
+ 	/* Do not allow more then one stream per direction */
+ 	if (mcasp->substreams[substream->stream])
+@@ -1536,9 +1538,12 @@ static int davinci_mcasp_startup(struct snd_pcm_substream *substream,
+ 			return ret;
+ 	}
+ 
++	numevt = (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) ?
++			 &mcasp->txnumevt :
++			 &mcasp->rxnumevt;
+ 	snd_pcm_hw_rule_add(substream->runtime, 0,
+ 			    SNDRV_PCM_HW_PARAM_PERIOD_SIZE,
+-			    davinci_mcasp_hw_rule_min_periodsize, NULL,
++			    davinci_mcasp_hw_rule_min_periodsize, numevt,
+ 			    SNDRV_PCM_HW_PARAM_PERIOD_SIZE, -1);
+ 
+ 	return 0;
 -- 
 2.43.0
 
