@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-58687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D2692B830
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:31:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2EA992B7CA
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77F421C20C53
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C529285510
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB6414E2C4;
-	Tue,  9 Jul 2024 11:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A87156C73;
+	Tue,  9 Jul 2024 11:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V680gYl1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mnytZIUF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B75355E4C;
-	Tue,  9 Jul 2024 11:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC15727713;
+	Tue,  9 Jul 2024 11:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524691; cv=none; b=HZWn88qpp5g3QalD6HQ4+otbpz+DLn+bQF0JnL7WKp5th3jQVQe+iNrhQIoiaRBEScyjMBw1O4Y3oauUa5wpXwDngGn4lyYVofEhen141iEvi4tSPGnLy0jPSudzafT3yl5IP9TIVYg5Jme761uvEsOCSjjS5YqGtR4JIQlNQNU=
+	t=1720524424; cv=none; b=MFY/qH0bmiemrxpb3q7b1Yi78VT832gxTd2y5Hwp2MAPHuMazzgKMwXZjbl+vAImY8n5hql1VrEUlslpkAGrke0tP+Q4xt3PUcGDVVvkcxtAs9Fq+F/HuYgSjp5lPy0MGYpjjJSNw7fkxvl5tvuFxeobH3OLr4pjcQP+5p8DQNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524691; c=relaxed/simple;
-	bh=/Z40NyeZ5Bujt6d5e314cYWAsrtXZerhzOlgnkoRhq4=;
+	s=arc-20240116; t=1720524424; c=relaxed/simple;
+	bh=76cICNvx0c7ZZfjTqiu09Tv/NpIHonpIa3qdIZJ9I7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n3TnbbmQ/9Y49wwPxMTA9OljwLvbLGOmBOjyA+2AFO2g53fhsS5t2DHglIX7uGrDpk5Oa29HvNK3qwL1rZs7MKP4a+Gt+NNvLS+2pm/lp2Z8QHPqmmbwjN5UZ1WexPvv1enWXjvEDdQQQGEmvvZubZbt70rjX/S7yYuirMe+GYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V680gYl1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B249C3277B;
-	Tue,  9 Jul 2024 11:31:30 +0000 (UTC)
+	 MIME-Version; b=Pq5hRI2tG6Y6mL7i3+8OdOC6mtLnfwpWfcP0uxoM7YPXMCBhnYYU28f5NVKiHwqnh3Et8/Ovp35wwSK4ZuaG2nOYzB3l9EFLdXbAflI9wa9SEJGFTcQ5/kynVczKuqPt28WR39JF7fhymPT4nqUn3LacEoIXLQwxtVLw+/bCKuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mnytZIUF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF63C3277B;
+	Tue,  9 Jul 2024 11:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524691;
-	bh=/Z40NyeZ5Bujt6d5e314cYWAsrtXZerhzOlgnkoRhq4=;
+	s=korg; t=1720524424;
+	bh=76cICNvx0c7ZZfjTqiu09Tv/NpIHonpIa3qdIZJ9I7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V680gYl1TtjQ3zgEXVISmFTryZkdrxOMGa2KWqN0720Tiwxn0S3kKtB/UBk3Neppq
-	 ia78gR5yumr6JZ0EyVhxh+3bgoXSrxwWoEPWNBvQuA4+C7O43hBGeURL/frjonILNn
-	 ve3LVIFf49zFBj2lHh+Jz4P35bqkYoAJ2nKOL8g4=
+	b=mnytZIUFITaYKs5hj+afvRYl8T621C9yH5IpZGm5+Tfn7R2VCZCB9CYH4AcG6pikF
+	 y1R4nA7doZ/kOvUO/8/Lo3cjynsn+VZ15G7AJSN+fOmDtc7Z7HsXMGDmqRO6lOvWG7
+	 GPjUUIJFiRLH0/8CXsaRKFDs7fNkM8ep/wbkgyo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 069/102] scsi: mpi3mr: Use proper format specifier in mpi3mr_sas_port_add()
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 178/197] nvme-multipath: find NUMA path only for online numa-node
 Date: Tue,  9 Jul 2024 13:10:32 +0200
-Message-ID: <20240709110654.066443379@linuxfoundation.org>
+Message-ID: <20240709110715.833520692@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Nilay Shroff <nilay@linux.ibm.com>
 
-commit 9f365cb8bbd0162963d6852651d7c9e30adcb7b5 upstream.
+[ Upstream commit d3a043733f25d743f3aa617c7f82dbcb5ee2211a ]
 
-When building for a 32-bit platform such as ARM or i386, for which size_t
-is unsigned int, there is a warning due to using an unsigned long format
-specifier:
+In current native multipath design when a shared namespace is created,
+we loop through each possible numa-node, calculate the NUMA distance of
+that node from each nvme controller and then cache the optimal IO path
+for future reference while sending IO. The issue with this design is that
+we may refer to the NUMA distance table for an offline node which may not
+be populated at the time and so we may inadvertently end up finding and
+caching a non-optimal path for IO. Then latter when the corresponding
+numa-node becomes online and hence the NUMA distance table entry for that
+node is created, ideally we should re-calculate the multipath node distance
+for the newly added node however that doesn't happen unless we rescan/reset
+the controller. So essentially, we may keep using non-optimal IO path for a
+node which is made online after namespace is created.
+This patch helps fix this issue ensuring that when a shared namespace is
+created, we calculate the multipath node distance for each online numa-node
+instead of each possible numa-node. Then latter when a node becomes online
+and we receive any IO on that newly added node, we would calculate the
+multipath node distance for newly added node but this time NUMA distance
+table would have been already populated for newly added node. Hence we
+would be able to correctly calculate the multipath node distance and choose
+the optimal path for the IO.
 
-  drivers/scsi/mpi3mr/mpi3mr_transport.c:1370:11: error: format specifies type 'unsigned long' but the argument has type 'unsigned int' [-Werror,-Wformat]
-   1369 |                         ioc_warn(mrioc, "skipping port %u, max allowed value is %lu\n",
-        |                                                                                 ~~~
-        |                                                                                 %u
-   1370 |                             i, sizeof(mr_sas_port->phy_mask) * 8);
-        |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Use the proper format specifier for size_t, %zu, to resolve the warning for
-all platforms.
-
-Fixes: 3668651def2c ("scsi: mpi3mr: Sanitise num_phys")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20240514-mpi3mr-fix-wformat-v1-1-f1ad49217e5e@kernel.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_transport.c |    2 +-
+ drivers/nvme/host/multipath.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/mpi3mr/mpi3mr_transport.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_transport.c
-@@ -1366,7 +1366,7 @@ static struct mpi3mr_sas_port *mpi3mr_sa
- 			continue;
+diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
+index a4e46eb20be63..1bee176fd850e 100644
+--- a/drivers/nvme/host/multipath.c
++++ b/drivers/nvme/host/multipath.c
+@@ -596,7 +596,7 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
+ 		int node, srcu_idx;
  
- 		if (i > sizeof(mr_sas_port->phy_mask) * 8) {
--			ioc_warn(mrioc, "skipping port %u, max allowed value is %lu\n",
-+			ioc_warn(mrioc, "skipping port %u, max allowed value is %zu\n",
- 			    i, sizeof(mr_sas_port->phy_mask) * 8);
- 			goto out_fail;
- 		}
+ 		srcu_idx = srcu_read_lock(&head->srcu);
+-		for_each_node(node)
++		for_each_online_node(node)
+ 			__nvme_find_path(head, node);
+ 		srcu_read_unlock(&head->srcu, srcu_idx);
+ 	}
+-- 
+2.43.0
+
 
 
 
