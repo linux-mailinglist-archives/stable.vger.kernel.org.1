@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-58388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0151292B6C5
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36DB192B815
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74D05B254A8
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E18601F21771
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470CF158851;
-	Tue,  9 Jul 2024 11:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F88214038F;
+	Tue,  9 Jul 2024 11:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Za2W+YP3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izx6u+/n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062E615884E;
-	Tue,  9 Jul 2024 11:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F29734545;
+	Tue,  9 Jul 2024 11:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523784; cv=none; b=SNZPDG1Ln7HsfYS87Ep6KSJzddQhPYqNF9U2DFdnQ/QPGnHXov9PnTXgsJMO0COMk0jAc2leqkEZHAnNltahY1CseKRX1ikJix8/bNbryuw3Y65m6GIop+IaBl2Uy+iBaJNX0VeIKe4Vpg+Lstv1BwqoDv1AYGZL2F1SS22CmK8=
+	t=1720524621; cv=none; b=cLlEINXBrPVPIZ9JVopUciFY1jiic8+pyYC60WD/mhUFR4l1YbJhkcz2/+iVFjYraoKOLqQ/bM2exPvbBYzOcKTsFaSpSVbpx8K8dViGvtRtWFWQU1/TKe7l4wcPfsO5/B7XSZQ68UI1bX6DVi4svUdmX7eT9O+jalTyFSXioHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523784; c=relaxed/simple;
-	bh=llCRE0DQaskomsa9CYbL2yy1S+UDqKHNPV8kSuSRRV8=;
+	s=arc-20240116; t=1720524621; c=relaxed/simple;
+	bh=rzaoArMU2mnaZThEJWN8ohs0FNxEYQimj3LneHBHF9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u/cKZakBSuQdsfrFHLBk456EdiGm69FSp6RgpKHC+z/i/g9V0M+C1hEm0GxAb0DgSXB1j6PnhtmUAfjpfC5hnXQQHiOpVYhJm2EmUKjts0qW2I6Kn/6uy8k4RdQueboH6tq2uIPWltYYLltXXp6XLY10Fx5e/OiiYnpHk71C/KQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Za2W+YP3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F92C3277B;
-	Tue,  9 Jul 2024 11:16:23 +0000 (UTC)
+	 MIME-Version; b=NaW4tDwnAJaoiRoOYAhxIQdvVVUIuvQWBUZZRgvSYA3IlCXJDck6g9xoQ2ay/jfFM5Mxde6EqGM0SELZwAeZ4LMcV8PPaVMo9jpyZPn9mKFXeWDxLVQYVTrmg5OJ6X9XK1VCPwj97HEPQF3xQlwRwDJFhrd+inqRgWb4CiTFanM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izx6u+/n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99ACC3277B;
+	Tue,  9 Jul 2024 11:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523783;
-	bh=llCRE0DQaskomsa9CYbL2yy1S+UDqKHNPV8kSuSRRV8=;
+	s=korg; t=1720524621;
+	bh=rzaoArMU2mnaZThEJWN8ohs0FNxEYQimj3LneHBHF9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Za2W+YP3YTEtoluhwxtZuP0LNzARpYUwtSfASTMRZw7sXfB6ENoqkqh6dfuELWuA3
-	 vw1te5mnNKi2trAZqOeRAA9R6extxc+lf4U++qXlVVpolcS84WhzZFNJ6L5BNqVALg
-	 SuMOGYR7gFS8gpfPJ14042jx32saL46LvVb0bNaE=
+	b=izx6u+/nBUcvjOomVUrVVvHQIUiU2YlsnTOEg6s47bDvQwF90k8iqFtXBBh7pRkBQ
+	 mn0bEMhTsVJjordOwjgV63JOSYIsxHsvHTzwStMQs44iRbPGGGp1TcoC4ZnUjDkrO/
+	 +KeWx4tb3qlphs+1SZJB3cPuAk6RN8xU9X8IUUsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.6 107/139] powerpc/pseries: Fix scv instruction crash with kexec
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 044/102] mac802154: fix time calculation in ieee802154_configure_durations()
 Date: Tue,  9 Jul 2024 13:10:07 +0200
-Message-ID: <20240709110702.309851727@linuxfoundation.org>
+Message-ID: <20240709110653.087504618@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit 21a741eb75f80397e5f7d3739e24d7d75e619011 upstream.
+[ Upstream commit 07aa33988ad92fef79056f5ec30b9a0e4364b616 ]
 
-kexec on pseries disables AIL (reloc_on_exc), required for scv
-instruction support, before other CPUs have been shut down. This means
-they can execute scv instructions after AIL is disabled, which causes an
-interrupt at an unexpected entry location that crashes the kernel.
+Since 'symbol_duration' of 'struct wpan_phy' is in nanoseconds but
+'lifs_period' and 'sifs_period' are both in microseconds, fix time
+calculation in 'ieee802154_configure_durations()' and use convenient
+'NSEC_PER_USEC' in 'ieee802154_setup_wpan_phy_pib()' as well.
+Compile tested only.
 
-Change the kexec sequence to disable AIL after other CPUs have been
-brought down.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-As a refresher, the real-mode scv interrupt vector is 0x17000, and the
-fixed-location head code probably couldn't easily deal with implementing
-such high addresses so it was just decided not to support that interrupt
-at all.
-
-Fixes: 7fa95f9adaee ("powerpc/64s: system call support for scv/rfscv instructions")
-Cc: stable@vger.kernel.org # v5.9+
-Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Closes: https://lore.kernel.org/3b4b2943-49ad-4619-b195-bc416f1d1409@linux.ibm.com
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Tested-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Link: https://msgid.link/20240625134047.298759-1-npiggin@gmail.com
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 781830c800dd ("net: mac802154: Set durations automatically")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Message-ID: <20240508114010.219527-1-dmantipov@yandex.ru>
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kexec/core_64.c             |   11 +++++++++++
- arch/powerpc/platforms/pseries/kexec.c   |    8 --------
- arch/powerpc/platforms/pseries/pseries.h |    1 -
- arch/powerpc/platforms/pseries/setup.c   |    1 -
- 4 files changed, 11 insertions(+), 10 deletions(-)
+ net/mac802154/main.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/arch/powerpc/kexec/core_64.c
-+++ b/arch/powerpc/kexec/core_64.c
-@@ -26,6 +26,7 @@
- #include <asm/paca.h>
- #include <asm/mmu.h>
- #include <asm/sections.h>	/* _end */
-+#include <asm/setup.h>
- #include <asm/smp.h>
- #include <asm/hw_breakpoint.h>
- #include <asm/svm.h>
-@@ -316,6 +317,16 @@ void default_machine_kexec(struct kimage
- 	if (!kdump_in_progress())
- 		kexec_prepare_cpus();
+diff --git a/net/mac802154/main.c b/net/mac802154/main.c
+index bd7bdb1219dd8..356e86c3c9b15 100644
+--- a/net/mac802154/main.c
++++ b/net/mac802154/main.c
+@@ -152,8 +152,10 @@ void ieee802154_configure_durations(struct wpan_phy *phy)
+ 	}
  
-+#ifdef CONFIG_PPC_PSERIES
-+	/*
-+	 * This must be done after other CPUs have shut down, otherwise they
-+	 * could execute the 'scv' instruction, which is not supported with
-+	 * reloc disabled (see configure_exceptions()).
-+	 */
-+	if (firmware_has_feature(FW_FEATURE_SET_MODE))
-+		pseries_disable_reloc_on_exc();
-+#endif
-+
- 	printk("kexec: Starting switchover sequence.\n");
- 
- 	/* switch to a staticly allocated stack.  Based on irq stack code.
---- a/arch/powerpc/platforms/pseries/kexec.c
-+++ b/arch/powerpc/platforms/pseries/kexec.c
-@@ -61,11 +61,3 @@ void pseries_kexec_cpu_down(int crash_sh
- 	} else
- 		xics_kexec_teardown_cpu(secondary);
+ 	phy->symbol_duration = duration;
+-	phy->lifs_period = (IEEE802154_LIFS_PERIOD * phy->symbol_duration) / NSEC_PER_SEC;
+-	phy->sifs_period = (IEEE802154_SIFS_PERIOD * phy->symbol_duration) / NSEC_PER_SEC;
++	phy->lifs_period =
++		(IEEE802154_LIFS_PERIOD * phy->symbol_duration) / NSEC_PER_USEC;
++	phy->sifs_period =
++		(IEEE802154_SIFS_PERIOD * phy->symbol_duration) / NSEC_PER_USEC;
  }
--
--void pseries_machine_kexec(struct kimage *image)
--{
--	if (firmware_has_feature(FW_FEATURE_SET_MODE))
--		pseries_disable_reloc_on_exc();
--
--	default_machine_kexec(image);
--}
---- a/arch/powerpc/platforms/pseries/pseries.h
-+++ b/arch/powerpc/platforms/pseries/pseries.h
-@@ -38,7 +38,6 @@ static inline void smp_init_pseries(void
- #endif
+ EXPORT_SYMBOL(ieee802154_configure_durations);
  
- extern void pseries_kexec_cpu_down(int crash_shutdown, int secondary);
--void pseries_machine_kexec(struct kimage *image);
+@@ -175,10 +177,10 @@ static void ieee802154_setup_wpan_phy_pib(struct wpan_phy *wpan_phy)
+ 	 * Should be done when all drivers sets this value.
+ 	 */
  
- extern void pSeries_final_fixup(void);
+-	wpan_phy->lifs_period =
+-		(IEEE802154_LIFS_PERIOD * wpan_phy->symbol_duration) / 1000;
+-	wpan_phy->sifs_period =
+-		(IEEE802154_SIFS_PERIOD * wpan_phy->symbol_duration) / 1000;
++	wpan_phy->lifs_period =	(IEEE802154_LIFS_PERIOD *
++				 wpan_phy->symbol_duration) / NSEC_PER_USEC;
++	wpan_phy->sifs_period =	(IEEE802154_SIFS_PERIOD *
++				 wpan_phy->symbol_duration) / NSEC_PER_USEC;
+ }
  
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -1153,7 +1153,6 @@ define_machine(pseries) {
- 	.machine_check_exception = pSeries_machine_check_exception,
- 	.machine_check_log_err	= pSeries_machine_check_log_err,
- #ifdef CONFIG_KEXEC_CORE
--	.machine_kexec          = pseries_machine_kexec,
- 	.kexec_cpu_down         = pseries_kexec_cpu_down,
- #endif
- #ifdef CONFIG_MEMORY_HOTPLUG
+ int ieee802154_register_hw(struct ieee802154_hw *hw)
+-- 
+2.43.0
+
 
 
 
