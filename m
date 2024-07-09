@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-58816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6352992C065
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:36:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DA7F92C058
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:35:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5072EB26EEB
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:35:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0834D28BA82
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B0F1C0DE9;
-	Tue,  9 Jul 2024 16:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4DC91C231B;
+	Tue,  9 Jul 2024 16:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iB5fiMkb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NNnl8BDt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A53819E7E9;
-	Tue,  9 Jul 2024 16:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB9E1C2308;
+	Tue,  9 Jul 2024 16:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542176; cv=none; b=SM6KZ8Ae3RWTSJz6Uw7h2ro0788GXG3oERpdcMpEpKPyQFZiXLxtwXch0x9UcXMyzcWPHzMR1GR6Ldpt+RkKuxUxLO1BD8n7yGuJ2AM2FDBpACGzSSpzINqnr1kmHcD/ZHtvEH2ShX1vFgl80j18ZNzIB5EJaKdMD4le6Ainbgo=
+	t=1720542178; cv=none; b=abeLnobr+O4pbHFkUw8x7ZdOif9gd8hIvJw+4ROr0/c9GmaWANEneBpWRl87T/5zJgtRW2uzvmz65rrGquopNXytPkOuvXTV7tsLz9gDGwspvbyT+nJk2IpE5PbcKu2w1R7tB9hH1Er6P+X3G3gfFxjPTnsIl/QO7kzzvj9aaww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542176; c=relaxed/simple;
-	bh=9izIOPJju607h2ZmSIDebDez2KM6tFbKwUWlxX9eyxI=;
+	s=arc-20240116; t=1720542178; c=relaxed/simple;
+	bh=Zm95n2SGEqjmTMk4Bs/Y4+y12KbObHhx/cFrv7TCRBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X+nVDzG7neetA7l88byLkhLIqECZdQRse3UW7E4YSC3EQstjiF+bFmb2WwnobEMQEfzONttYybq6RvDVggH/ejI6t0jliVVlXN2efSYP3cXTZ91QLxA/TvsbrQJninP1IJZPW9t7Cry337xH1pr+4cXAFMQ3t/BZ/PGKWrc2rao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iB5fiMkb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCDDAC32782;
-	Tue,  9 Jul 2024 16:22:54 +0000 (UTC)
+	 MIME-Version; b=NIWL78BjfndoVoRi1DPGDgPQviZhLmt/n9SaFahZ6IVd7n31Kpkqk8Gr87Eh9NafrrUwuUKPDUw2LL6iCCVfgcG/asrgkkODzf6Yi/i/t1gDemGP9AJTEFj57psBsGY3a1/IKMgU87uCCocKLMOEvBHg0tYS+nBcADMioaAjmR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NNnl8BDt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89448C3277B;
+	Tue,  9 Jul 2024 16:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542176;
-	bh=9izIOPJju607h2ZmSIDebDez2KM6tFbKwUWlxX9eyxI=;
+	s=k20201202; t=1720542178;
+	bh=Zm95n2SGEqjmTMk4Bs/Y4+y12KbObHhx/cFrv7TCRBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iB5fiMkboY+IMaBVwM8Fk/T98sVCCI7qbGFlw84hn5Vv7CVU86Dglz8sGZlmybm2C
-	 3gazILtorZF+Z9O3HIy4D/9Azgsp90JXo2h0PQl1vgs/jDJ7LBd8TunT37i5mpQTAg
-	 nuJ3kK4F2Lwe3THPpB06WFNf7cx+9qeIP4561L9rNis6o7rr89LAO6GVSENT2PNh4z
-	 d3Zo5jBSMs/Pg/fXsVpwjk/AXFzGKp337Z/jG9+CtGZaMS3quxu+yvpvDoq7ev/DeZ
-	 6NDEhcKDdKqdvY0goYsNXvxO1Go2+OiGQseKB3+ulbbVVGxG7jO9jphRKri7ACD1vE
-	 n1AIQwJ93VHfg==
+	b=NNnl8BDtZc5B+snuwAOmf4v4zzr0As6sfL+xhk5VEkjOpTlf5wedbRRnqcGhro1Rx
+	 P2B7E6lJUk1VZRZG/ZxofnZmt6Tfn6BMDzAra/KJFNCKGzChuKOtpaJp4y3vTTvzVO
+	 OMh4/WTY3qND0AINMmn+OWTv2sxOkIbiN7WdhHqrqZniIyXtR+7q1Tc2Rzm0LYzoZo
+	 z0nPHl71gPeG0QXMIiK8l4xn7d2pWFnKQv4GR17McroH5CLOkKNtxhCp/L5lb/A+u5
+	 lkQ8cL21yc+MnG/larMLYNFkNprim4fvfmvXfZM5MI+HbT6yx0NsEZz/jXIuwTHu4o
+	 hBNqA7pWMxyxg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Boyang Yu <yuboyang@dapustor.com>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 14/33] ASoC: topology: Fix route memory corruption
-Date: Tue,  9 Jul 2024 12:21:40 -0400
-Message-ID: <20240709162224.31148-14-sashal@kernel.org>
+	sagi@grimberg.me,
+	linux-nvme@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 15/33] nvme: fix NVME_NS_DEAC may incorrectly identifying the disk as EXT_LBA.
+Date: Tue,  9 Jul 2024 12:21:41 -0400
+Message-ID: <20240709162224.31148-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162224.31148-1-sashal@kernel.org>
 References: <20240709162224.31148-1-sashal@kernel.org>
@@ -65,61 +62,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.38
 Content-Transfer-Encoding: 8bit
 
-From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+From: Boyang Yu <yuboyang@dapustor.com>
 
-[ Upstream commit 0298f51652be47b79780833e0b63194e1231fa34 ]
+[ Upstream commit 9570a48847e3acfa1a741cef431c923325ddc637 ]
 
-It was reported that recent fix for memory corruption during topology
-load, causes corruption in other cases. Instead of being overeager with
-checking topology, assume that it is properly formatted and just
-duplicate strings.
+The value of NVME_NS_DEAC is 3,
+which means NVME_NS_METADATA_SUPPORTED | NVME_NS_EXT_LBAS. Provide a
+unique value for this feature flag.
 
-Reported-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Closes: https://lore.kernel.org/linux-sound/171812236450.201359.3019210915105428447.b4-ty@kernel.org/T/#m8c4bd5abf453960fde6f826c4b7f84881da63e9d
-Suggested-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20240613090126.841189-1-amadeuszx.slawinski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes 1b96f862eccc ("nvme: implement the DEAC bit for the Write Zeroes command")
+Signed-off-by: Boyang Yu <yuboyang@dapustor.com>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-topology.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/nvme/host/nvme.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-topology.c b/sound/soc/soc-topology.c
-index e7a2426dd7443..7e8fca0b06628 100644
---- a/sound/soc/soc-topology.c
-+++ b/sound/soc/soc-topology.c
-@@ -1052,21 +1052,15 @@ static int soc_tplg_dapm_graph_elems_load(struct soc_tplg *tplg,
- 			break;
- 		}
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index fd67240795e3a..21c24cd8b1e8a 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -485,7 +485,7 @@ static inline bool nvme_ns_head_multipath(struct nvme_ns_head *head)
+ enum nvme_ns_features {
+ 	NVME_NS_EXT_LBAS = 1 << 0, /* support extended LBA format */
+ 	NVME_NS_METADATA_SUPPORTED = 1 << 1, /* support getting generated md */
+-	NVME_NS_DEAC,		/* DEAC bit in Write Zeores supported */
++	NVME_NS_DEAC = 1 << 2,		/* DEAC bit in Write Zeores supported */
+ };
  
--		route->source = devm_kmemdup(tplg->dev, elem->source,
--					     min(strlen(elem->source), maxlen),
--					     GFP_KERNEL);
--		route->sink = devm_kmemdup(tplg->dev, elem->sink,
--					   min(strlen(elem->sink), maxlen),
--					   GFP_KERNEL);
-+		route->source = devm_kstrdup(tplg->dev, elem->source, GFP_KERNEL);
-+		route->sink = devm_kstrdup(tplg->dev, elem->sink, GFP_KERNEL);
- 		if (!route->source || !route->sink) {
- 			ret = -ENOMEM;
- 			break;
- 		}
- 
- 		if (strnlen(elem->control, maxlen) != 0) {
--			route->control = devm_kmemdup(tplg->dev, elem->control,
--						      min(strlen(elem->control), maxlen),
--						      GFP_KERNEL);
-+			route->control = devm_kstrdup(tplg->dev, elem->control, GFP_KERNEL);
- 			if (!route->control) {
- 				ret = -ENOMEM;
- 				break;
+ struct nvme_ns {
 -- 
 2.43.0
 
