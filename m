@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-58355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCDED92B68D
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:15:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F0AE92B692
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:15:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05FCC1C21F45
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:15:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEB64281035
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5621581E4;
-	Tue,  9 Jul 2024 11:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4578158205;
+	Tue,  9 Jul 2024 11:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F3q8ABoz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQj4bjp5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4CF155389;
-	Tue,  9 Jul 2024 11:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB11157E61;
+	Tue,  9 Jul 2024 11:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523689; cv=none; b=C7siNIHzNS5v6CcwpEzwcF8cazUf0dGTh5KzHlrYwwF2OuQecZBPNWEeUHiRJmWGNig27U1Zqee4mQ+rRfnQtAUa5ovhEA+0l0zwP+e68EWnx3dZgyyTQGXSFDg0cSRl3yIk+ybdb+M761UlMwr6FqagQRf2jk5WcFwBxKYybcQ=
+	t=1720523704; cv=none; b=YKD9pOBDzgtGs8wEgaX+K0W0MdH6hKdc0zYelK8UtPTWl1xP1jljox5lFkX1yeVIUzvV4zmj1+TdYZxiVzIR2naQowUBwyF5XeouUBQ+COLJOMRRNp6q4HO046fqNlQr3dIw/zwJgCV1Oh6JyIbodG94PPXNiRcOqTw97siIYxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523689; c=relaxed/simple;
-	bh=8WMCBkAuhYVKoxfvQsqp0VcWROA0oTxrKKA2JuBNa6M=;
+	s=arc-20240116; t=1720523704; c=relaxed/simple;
+	bh=SHRauwaCh/N/7WeCXoXSeVKOa21E5unZzVPwhC8ZUSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cAgv3Kf0IT7O+z/33gA6+hjaIbugY7jCUPeDlBNlE1keh/F8DarjLbu++antNCw7UMO5TUcvEv0nhU7OgTEaLpIJT7YIgiOLZktRYkYjdmgRseiQ5XXq3AmxmKAG5YHQX0Ld5UZ6OeSGhc9TqMqbltxTZdzK9u0PPZOX7SX26as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F3q8ABoz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F1BC3277B;
-	Tue,  9 Jul 2024 11:14:48 +0000 (UTC)
+	 MIME-Version; b=XeJW+YTgP/FUXttFwI8aU0Zd4h9FEMi4Hxe+0uA9AWU9WUaaGC2XdzJ2cMht4nXgqlFyozmwfL3pOiMnZvynRX1lW9G3pbWxUDH2drzve5/0EUeIligPxWP7TnddyqHIuVZQhxT0M9qw09oClLGvP2o8klPJpaDt/GQ5FwN29RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQj4bjp5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A424AC3277B;
+	Tue,  9 Jul 2024 11:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523689;
-	bh=8WMCBkAuhYVKoxfvQsqp0VcWROA0oTxrKKA2JuBNa6M=;
+	s=korg; t=1720523704;
+	bh=SHRauwaCh/N/7WeCXoXSeVKOa21E5unZzVPwhC8ZUSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F3q8ABozilI40uD30YWQ/iPvrDEMzKFP47elLmn1niFl7xH1nM/o9YKKFnAfLhlWp
-	 gBPT0ZIdbD6iX2A5gcbhBVDfSIGdcMTF2XhKv0+f8uPmubmtnqsqr60cApJ2aW/OlW
-	 wQtpp60OkzEKhQK5f5iqJVZPI0o/FGvSqldrm+nc=
+	b=qQj4bjp5j+BfrH5CAud1cYyC8Ax/1oesyDo+h0y341MfsSd3hqf42pt3gyISUCQdj
+	 RLPSLIqzDWBTJbXs6CH3s1q8aOWgbbr1tcPxhZ/7DG+GyCCFE7Z0Az0qKrXltxSqzx
+	 wglf2G8cG5Gwk+c23cjPvTudy6YntE7LwDgGv208=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jose E. Marchesi" <jose.marchesi@oracle.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/139] bpf: Avoid uninitialized value in BPF_CORE_READ_BITFIELD
-Date: Tue,  9 Jul 2024 13:09:08 +0200
-Message-ID: <20240709110700.025822670@linuxfoundation.org>
+Subject: [PATCH 6.6 049/139] f2fs: check validation of fault attrs in f2fs_build_fault_attr()
+Date: Tue,  9 Jul 2024 13:09:09 +0200
+Message-ID: <20240709110700.065037267@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
 References: <20240709110658.146853929@linuxfoundation.org>
@@ -66,57 +66,140 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jose E. Marchesi <jose.marchesi@oracle.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 009367099eb61a4fc2af44d4eb06b6b4de7de6db ]
+[ Upstream commit 4ed886b187f47447ad559619c48c086f432d2b77 ]
 
-[Changes from V1:
- - Use a default branch in the switch statement to initialize `val'.]
+- It missed to check validation of fault attrs in parse_options(),
+let's fix to add check condition in f2fs_build_fault_attr().
+- Use f2fs_build_fault_attr() in __sbi_store() to clean up code.
 
-GCC warns that `val' may be used uninitialized in the
-BPF_CRE_READ_BITFIELD macro, defined in bpf_core_read.h as:
-
-	[...]
-	unsigned long long val;						      \
-	[...]								      \
-	switch (__CORE_RELO(s, field, BYTE_SIZE)) {			      \
-	case 1: val = *(const unsigned char *)p; break;			      \
-	case 2: val = *(const unsigned short *)p; break;		      \
-	case 4: val = *(const unsigned int *)p; break;			      \
-	case 8: val = *(const unsigned long long *)p; break;		      \
-        }       							      \
-	[...]
-	val;								      \
-	}								      \
-
-This patch adds a default entry in the switch statement that sets
-`val' to zero in order to avoid the warning, and random values to be
-used in case __builtin_preserve_field_info returns unexpected values
-for BPF_FIELD_BYTE_SIZE.
-
-Tested in bpf-next master.
-No regressions.
-
-Signed-off-by: Jose E. Marchesi <jose.marchesi@oracle.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240508101313.16662-1-jose.marchesi@oracle.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/bpf_core_read.h | 1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/f2fs.h  | 12 ++++++++----
+ fs/f2fs/super.c | 27 ++++++++++++++++++++-------
+ fs/f2fs/sysfs.c | 14 ++++++++++----
+ 3 files changed, 38 insertions(+), 15 deletions(-)
 
-diff --git a/tools/lib/bpf/bpf_core_read.h b/tools/lib/bpf/bpf_core_read.h
-index 1ac57bb7ac55f..e2b9e8415c044 100644
---- a/tools/lib/bpf/bpf_core_read.h
-+++ b/tools/lib/bpf/bpf_core_read.h
-@@ -102,6 +102,7 @@ enum bpf_enum_value_kind {
- 	case 2: val = *(const unsigned short *)p; break;		      \
- 	case 4: val = *(const unsigned int *)p; break;			      \
- 	case 8: val = *(const unsigned long long *)p; break;		      \
-+	default: val = 0; break;					      \
- 	}								      \
- 	val <<= __CORE_RELO(s, field, LSHIFT_U64);			      \
- 	if (__CORE_RELO(s, field, SIGNED))				      \
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index f1fbfa7fb279e..5056af9e0581c 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -69,7 +69,7 @@ enum {
+ 
+ struct f2fs_fault_info {
+ 	atomic_t inject_ops;
+-	unsigned int inject_rate;
++	int inject_rate;
+ 	unsigned int inject_type;
+ };
+ 
+@@ -4593,10 +4593,14 @@ static inline bool f2fs_need_verity(const struct inode *inode, pgoff_t idx)
+ }
+ 
+ #ifdef CONFIG_F2FS_FAULT_INJECTION
+-extern void f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned int rate,
+-							unsigned int type);
++extern int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
++							unsigned long type);
+ #else
+-#define f2fs_build_fault_attr(sbi, rate, type)		do { } while (0)
++static int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
++							unsigned long type)
++{
++	return 0;
++}
+ #endif
+ 
+ static inline bool is_journalled_quota(struct f2fs_sb_info *sbi)
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index ce50d2253dd80..e022d8233c0a5 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -64,21 +64,31 @@ const char *f2fs_fault_name[FAULT_MAX] = {
+ 	[FAULT_BLKADDR]		= "invalid blkaddr",
+ };
+ 
+-void f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned int rate,
+-							unsigned int type)
++int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
++							unsigned long type)
+ {
+ 	struct f2fs_fault_info *ffi = &F2FS_OPTION(sbi).fault_info;
+ 
+ 	if (rate) {
++		if (rate > INT_MAX)
++			return -EINVAL;
+ 		atomic_set(&ffi->inject_ops, 0);
+-		ffi->inject_rate = rate;
++		ffi->inject_rate = (int)rate;
+ 	}
+ 
+-	if (type)
+-		ffi->inject_type = type;
++	if (type) {
++		if (type >= BIT(FAULT_MAX))
++			return -EINVAL;
++		ffi->inject_type = (unsigned int)type;
++	}
+ 
+ 	if (!rate && !type)
+ 		memset(ffi, 0, sizeof(struct f2fs_fault_info));
++	else
++		f2fs_info(sbi,
++			"build fault injection attr: rate: %lu, type: 0x%lx",
++								rate, type);
++	return 0;
+ }
+ #endif
+ 
+@@ -869,14 +879,17 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
+ 		case Opt_fault_injection:
+ 			if (args->from && match_int(args, &arg))
+ 				return -EINVAL;
+-			f2fs_build_fault_attr(sbi, arg, F2FS_ALL_FAULT_TYPE);
++			if (f2fs_build_fault_attr(sbi, arg,
++					F2FS_ALL_FAULT_TYPE))
++				return -EINVAL;
+ 			set_opt(sbi, FAULT_INJECTION);
+ 			break;
+ 
+ 		case Opt_fault_type:
+ 			if (args->from && match_int(args, &arg))
+ 				return -EINVAL;
+-			f2fs_build_fault_attr(sbi, 0, arg);
++			if (f2fs_build_fault_attr(sbi, 0, arg))
++				return -EINVAL;
+ 			set_opt(sbi, FAULT_INJECTION);
+ 			break;
+ #else
+diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
+index 6347a55020c6e..180feefc4a9ce 100644
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -457,10 +457,16 @@ static ssize_t __sbi_store(struct f2fs_attr *a,
+ 	if (ret < 0)
+ 		return ret;
+ #ifdef CONFIG_F2FS_FAULT_INJECTION
+-	if (a->struct_type == FAULT_INFO_TYPE && t >= BIT(FAULT_MAX))
+-		return -EINVAL;
+-	if (a->struct_type == FAULT_INFO_RATE && t >= UINT_MAX)
+-		return -EINVAL;
++	if (a->struct_type == FAULT_INFO_TYPE) {
++		if (f2fs_build_fault_attr(sbi, 0, t))
++			return -EINVAL;
++		return count;
++	}
++	if (a->struct_type == FAULT_INFO_RATE) {
++		if (f2fs_build_fault_attr(sbi, t, 0))
++			return -EINVAL;
++		return count;
++	}
+ #endif
+ 	if (a->struct_type == RESERVED_BLOCKS) {
+ 		spin_lock(&sbi->stat_lock);
 -- 
 2.43.0
 
