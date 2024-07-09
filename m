@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-58405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6E692B6D3
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8810292B7C4
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 172C21C2174A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 337971F244B2
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7261115534D;
-	Tue,  9 Jul 2024 11:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD59156C73;
+	Tue,  9 Jul 2024 11:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2pqaDCU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BUA63qw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C4014EC4D;
-	Tue,  9 Jul 2024 11:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF1527713;
+	Tue,  9 Jul 2024 11:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523834; cv=none; b=RiuplumSsL4MPc9pDNMp6fBTDHRrW9PfocfYk+AOqaGfNrW4sMNnikqgMWiQNxtxxym4ExTaj3VQQKzJSaKgCJy8dVU4FPN6OoRmfp/h61k9a1Jl1u3wKV9vZXdxqA4c02unjzWrRmMYx49OdzSsFEMcFSoAxkOXJUUV2dSAgMg=
+	t=1720524406; cv=none; b=WFtAdae2B/D4MSYS0T9hA6BtHzgbg5Ng2+ZL69IKIhmKnVCqUFywyA9KbeRqMtI9AF42dcAS6nWiy55VIJlueZZ8WfRhHWtxO1KAT81+lnJZoeTHpBVb2CeeX46WNf0tiWkt3xyKbIAL79W6GqgiYbie1Z5d5EJ6OJaEBylHPN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523834; c=relaxed/simple;
-	bh=uw8bkSAmonsu9uTYCKpzgaNnHn6iqy1jEdjdu+ti4WY=;
+	s=arc-20240116; t=1720524406; c=relaxed/simple;
+	bh=Y0NlZwA69R4Mnrn3yTAdXJ9/sHKK544sgjAF6SF8Q30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lneAPMIwrLrPF/8hjolb+wPpiFNT7uMacIsLLc4QIA2QS5hEUUg5NFBM5wIaTU8KdAmXcyVNbuoR1YsnBWFXQ7muFAZ8J52UaMzg17iJWi8bk6dzayGuknlQFHpnuQe/KWCVwXuEw4B8IDXwLfZEd/HLhixGH8cDu3FdNIG+dJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2pqaDCU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA52C3277B;
-	Tue,  9 Jul 2024 11:17:13 +0000 (UTC)
+	 MIME-Version; b=sXBTrKGPaBEHf+WTTVwRP/LGL4NhIjKXJK1pqKsVRoXuv/3G7KMaIu4StJ9xTaOohsHbVIt8NtfWby79TPPy+E+UD/XcSSnD50H/GVGaX7ZgTdpl34cLSLIYysJrxQdF94SA3ZxQQ1CxdFs9suZNcH4Mp+HPcf40RScidXWE7Nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BUA63qw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC1EC3277B;
+	Tue,  9 Jul 2024 11:26:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523834;
-	bh=uw8bkSAmonsu9uTYCKpzgaNnHn6iqy1jEdjdu+ti4WY=;
+	s=korg; t=1720524406;
+	bh=Y0NlZwA69R4Mnrn3yTAdXJ9/sHKK544sgjAF6SF8Q30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r2pqaDCUqKpvapZFo6Oz1Q/TKS1UIWpSc7SdRafGsXGXB2iZRw46EJ3Lv0u9R2eaK
-	 FjW4d1Eb9Nf0bzVeDbY44g7Rkmk4/E1kA5yVmhVYk5QUw4tx3GT7YRhHcoQaNYNNml
-	 XdlRy6dL5fSuzvdpD00o1dpKnb4lOSHOID70H/h0=
+	b=1BUA63qwm4gW5RyNULxkxBiNs098A0TYlOCei5MmUlAG3TjXzQUZg4PlB7VYtTHI6
+	 B8MYYKAdEcqkcx9H/6GpiBwwlgDy44PuTMM9s5XFAV4aTxHZqatJ4kcXiZ8SOkfnuK
+	 omwgxYT6MVjGs2i79W3XpyOKc9eg3vJX9EM2Jk9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Pin-yen Lin <treapking@chromium.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 125/139] nvme-multipath: find NUMA path only for online numa-node
-Date: Tue,  9 Jul 2024 13:10:25 +0200
-Message-ID: <20240709110703.002084059@linuxfoundation.org>
+Subject: [PATCH 6.9 172/197] clk: mediatek: mt8183: Only enable runtime PM on mt8183-mfgcfg
+Date: Tue,  9 Jul 2024 13:10:26 +0200
+Message-ID: <20240709110715.605987641@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilay Shroff <nilay@linux.ibm.com>
+From: Pin-yen Lin <treapking@chromium.org>
 
-[ Upstream commit d3a043733f25d743f3aa617c7f82dbcb5ee2211a ]
+[ Upstream commit 878e845d8db04df9ff3bbbaac09d335b24153704 ]
 
-In current native multipath design when a shared namespace is created,
-we loop through each possible numa-node, calculate the NUMA distance of
-that node from each nvme controller and then cache the optimal IO path
-for future reference while sending IO. The issue with this design is that
-we may refer to the NUMA distance table for an offline node which may not
-be populated at the time and so we may inadvertently end up finding and
-caching a non-optimal path for IO. Then latter when the corresponding
-numa-node becomes online and hence the NUMA distance table entry for that
-node is created, ideally we should re-calculate the multipath node distance
-for the newly added node however that doesn't happen unless we rescan/reset
-the controller. So essentially, we may keep using non-optimal IO path for a
-node which is made online after namespace is created.
-This patch helps fix this issue ensuring that when a shared namespace is
-created, we calculate the multipath node distance for each online numa-node
-instead of each possible numa-node. Then latter when a node becomes online
-and we receive any IO on that newly added node, we would calculate the
-multipath node distance for newly added node but this time NUMA distance
-table would have been already populated for newly added node. Hence we
-would be able to correctly calculate the multipath node distance and choose
-the optimal path for the IO.
+Commit 2f7b1d8b5505 ("clk: mediatek: Do a runtime PM get on controllers
+during probe") enabled runtime PM for all mediatek clock controllers,
+but this introduced an issue on the resume path.
 
-Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+If a device resumes earlier than the clock controller and calls
+clk_prepare() when runtime PM is enabled on the controller, it will end
+up calling clk_pm_runtime_get(). But the subsequent
+pm_runtime_resume_and_get() call will fail because the runtime PM is
+temporarily disabled during suspend.
+
+To workaround this, introduce a need_runtime_pm flag and only enable it
+on mt8183-mfgcfg, which is the driver that observed deadlock previously.
+Hopefully mt8183-cfgcfg won't run into the issue at the resume stage
+because the GPU should have stopped rendering before the system calls
+suspend.
+
+Fixes: 2f7b1d8b5505 ("clk: mediatek: Do a runtime PM get on controllers during probe")
+Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+Link: https://lore.kernel.org/r/20240613120357.1043342-1-treapking@chromium.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/multipath.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/mediatek/clk-mt8183-mfgcfg.c |  1 +
+ drivers/clk/mediatek/clk-mtk.c           | 24 ++++++++++++++----------
+ drivers/clk/mediatek/clk-mtk.h           |  2 ++
+ 3 files changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
-index 3ac0cc22207dc..6515fa537ee53 100644
---- a/drivers/nvme/host/multipath.c
-+++ b/drivers/nvme/host/multipath.c
-@@ -594,7 +594,7 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
- 		int node, srcu_idx;
+diff --git a/drivers/clk/mediatek/clk-mt8183-mfgcfg.c b/drivers/clk/mediatek/clk-mt8183-mfgcfg.c
+index ba504e19d4203..62d876e150e11 100644
+--- a/drivers/clk/mediatek/clk-mt8183-mfgcfg.c
++++ b/drivers/clk/mediatek/clk-mt8183-mfgcfg.c
+@@ -29,6 +29,7 @@ static const struct mtk_gate mfg_clks[] = {
+ static const struct mtk_clk_desc mfg_desc = {
+ 	.clks = mfg_clks,
+ 	.num_clks = ARRAY_SIZE(mfg_clks),
++	.need_runtime_pm = true,
+ };
  
- 		srcu_idx = srcu_read_lock(&head->srcu);
--		for_each_node(node)
-+		for_each_online_node(node)
- 			__nvme_find_path(head, node);
- 		srcu_read_unlock(&head->srcu, srcu_idx);
+ static const struct of_device_id of_match_clk_mt8183_mfg[] = {
+diff --git a/drivers/clk/mediatek/clk-mtk.c b/drivers/clk/mediatek/clk-mtk.c
+index bd37ab4d1a9bb..ba1d1c495bc2b 100644
+--- a/drivers/clk/mediatek/clk-mtk.c
++++ b/drivers/clk/mediatek/clk-mtk.c
+@@ -496,14 +496,16 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
  	}
+ 
+ 
+-	devm_pm_runtime_enable(&pdev->dev);
+-	/*
+-	 * Do a pm_runtime_resume_and_get() to workaround a possible
+-	 * deadlock between clk_register() and the genpd framework.
+-	 */
+-	r = pm_runtime_resume_and_get(&pdev->dev);
+-	if (r)
+-		return r;
++	if (mcd->need_runtime_pm) {
++		devm_pm_runtime_enable(&pdev->dev);
++		/*
++		 * Do a pm_runtime_resume_and_get() to workaround a possible
++		 * deadlock between clk_register() and the genpd framework.
++		 */
++		r = pm_runtime_resume_and_get(&pdev->dev);
++		if (r)
++			return r;
++	}
+ 
+ 	/* Calculate how many clk_hw_onecell_data entries to allocate */
+ 	num_clks = mcd->num_clks + mcd->num_composite_clks;
+@@ -585,7 +587,8 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
+ 			goto unregister_clks;
+ 	}
+ 
+-	pm_runtime_put(&pdev->dev);
++	if (mcd->need_runtime_pm)
++		pm_runtime_put(&pdev->dev);
+ 
+ 	return r;
+ 
+@@ -618,7 +621,8 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
+ 	if (mcd->shared_io && base)
+ 		iounmap(base);
+ 
+-	pm_runtime_put(&pdev->dev);
++	if (mcd->need_runtime_pm)
++		pm_runtime_put(&pdev->dev);
+ 	return r;
+ }
+ 
+diff --git a/drivers/clk/mediatek/clk-mtk.h b/drivers/clk/mediatek/clk-mtk.h
+index 22096501a60a7..c17fe1c2d732d 100644
+--- a/drivers/clk/mediatek/clk-mtk.h
++++ b/drivers/clk/mediatek/clk-mtk.h
+@@ -237,6 +237,8 @@ struct mtk_clk_desc {
+ 
+ 	int (*clk_notifier_func)(struct device *dev, struct clk *clk);
+ 	unsigned int mfg_clk_idx;
++
++	bool need_runtime_pm;
+ };
+ 
+ int mtk_clk_pdev_probe(struct platform_device *pdev);
 -- 
 2.43.0
 
