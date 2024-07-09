@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-58331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314AB92B672
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:13:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA64292B76F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCF55283872
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:13:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 644A1280F8B
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6851581E3;
-	Tue,  9 Jul 2024 11:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07BA15886A;
+	Tue,  9 Jul 2024 11:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="raholALk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPriVpEy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD4C155389;
-	Tue,  9 Jul 2024 11:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB9A15885E;
+	Tue,  9 Jul 2024 11:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523614; cv=none; b=jUAgau8TQ4pDroP9QcMt0PVAJUWYvJ7TRYJ+PSbKwaW4sMqXXvEVsaDvSUVLebFvc+8loMLDIDALC6Ca1RsBfdYFLZGksEiIVqMLxJ7pZi7uvSeH10G7WqT92mL0doJ/cOBjJSeOBa7URB0LvoifddkuVkZbNkbyhsHEaliBeHE=
+	t=1720524187; cv=none; b=BQWukZrpdERD6qjDnTHhCy918hUI1Mh5KI1TZNuVZc5UwZ1gluHKDvUVpzeED77SCxdOPnEVa7YaiWTmVlqT/QsndEDhRybeATRPQBS88bwRCD9bL8fci0wcxo+KqPksmeNau0yOibbdmAWmMN1WkVDHKpKvLfcMHIh7WG0S578=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523614; c=relaxed/simple;
-	bh=++IHXKe4ROUe0qVMEgHI4ef78U9HcphMF055PYomkjQ=;
+	s=arc-20240116; t=1720524187; c=relaxed/simple;
+	bh=9/K02CPb7CaRglUCVXTCkAoz9MmF/35+zu2wzucCq6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z/fhKBCozKWG4rPzZqEzpjHrxwZnNs6o1mXNuoQTYyqQZNlzcYcqIly82XTB2w+rBVRnrpipjFp24giNNjeB+8iPP8BzEs/mR0w8Wu/beTSgh+Ssb6lxNebSDFowrJa2Vm9g4XQJP2Wy6RZ3bVtnLHxHMAVyCUezXKTjb3jkfVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=raholALk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854C2C3277B;
-	Tue,  9 Jul 2024 11:13:33 +0000 (UTC)
+	 MIME-Version; b=M1oocZDHrojHw+sQ+DkPbX+18YghjPjfkLgbanDj+q3sW9OVnb3r8WkQYUpXrMnCk+38mf/buIedf71yQBGTwwR19HzjU4gj0p2yQdy/Rxf98YwMxlZHsE3wJb13Z4NpRJrpi03yB6izcXTcix8qTK86vlIDTdU/pruSXUELKoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPriVpEy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7767C3277B;
+	Tue,  9 Jul 2024 11:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523613;
-	bh=++IHXKe4ROUe0qVMEgHI4ef78U9HcphMF055PYomkjQ=;
+	s=korg; t=1720524187;
+	bh=9/K02CPb7CaRglUCVXTCkAoz9MmF/35+zu2wzucCq6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=raholALkBKCq7jhszwAPdconLRWhFM+B5ODgt2/ToxPORiTJvaMy1xovGZ/lzG/Wh
-	 zc9RhZmso6xkKsx/pmiXHXmsvV3dCLUkDbwJPZkLW23ei2LJiHyuu4Y38vo6Ncp4Ez
-	 qwT+Hq4gdViLrzCinRiwjBtW2orXeHJazBcRVyWc=
+	b=CPriVpEyvF1Lr0H5NqAT00Q9mvATQgeiSDje6U5BhAKZagINUz2uMB3eDgGi62tMi
+	 63At9T2Cw7eaCWhWAvaA6RWv4l0e96o4DqLzS9jb8lKpIPJd+jTeGibeCtdG6z78Di
+	 QXotiWXLhGiAnPLpNBk/lOZ759X4XQK34VTO2Kwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/139] drm/amd/display: Check pipe offset before setting vblank
-Date: Tue,  9 Jul 2024 13:08:41 +0200
-Message-ID: <20240709110658.983353719@linuxfoundation.org>
+Subject: [PATCH 6.9 068/197] f2fs: check validation of fault attrs in f2fs_build_fault_attr()
+Date: Tue,  9 Jul 2024 13:08:42 +0200
+Message-ID: <20240709110711.594211450@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 5396a70e8cf462ec5ccf2dc8de103c79de9489e6 ]
+[ Upstream commit 4ed886b187f47447ad559619c48c086f432d2b77 ]
 
-pipe_ctx has a size of MAX_PIPES so checking its index before accessing
-the array.
+- It missed to check validation of fault attrs in parse_options(),
+let's fix to add check condition in f2fs_build_fault_attr().
+- Use f2fs_build_fault_attr() in __sbi_store() to clean up code.
 
-This fixes an OVERRUN issue reported by Coverity.
-
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/irq/dce110/irq_service_dce110.c    | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/f2fs/f2fs.h  | 12 ++++++++----
+ fs/f2fs/super.c | 27 ++++++++++++++++++++-------
+ fs/f2fs/sysfs.c | 14 ++++++++++----
+ 3 files changed, 38 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c b/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c
-index 44649db5f3e32..5646b7788f02e 100644
---- a/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c
-+++ b/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c
-@@ -211,8 +211,12 @@ bool dce110_vblank_set(struct irq_service *irq_service,
- 						   info->ext_id);
- 	uint8_t pipe_offset = dal_irq_src - IRQ_TYPE_VBLANK;
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 07b3675ea1694..f5adb9942c4c4 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -72,7 +72,7 @@ enum {
  
--	struct timing_generator *tg =
--			dc->current_state->res_ctx.pipe_ctx[pipe_offset].stream_res.tg;
-+	struct timing_generator *tg;
-+
-+	if (pipe_offset >= MAX_PIPES)
-+		return false;
-+
-+	tg = dc->current_state->res_ctx.pipe_ctx[pipe_offset].stream_res.tg;
+ struct f2fs_fault_info {
+ 	atomic_t inject_ops;
+-	unsigned int inject_rate;
++	int inject_rate;
+ 	unsigned int inject_type;
+ };
  
- 	if (enable) {
- 		if (!tg || !tg->funcs->arm_vert_intr(tg, 2)) {
+@@ -4597,10 +4597,14 @@ static inline bool f2fs_need_verity(const struct inode *inode, pgoff_t idx)
+ }
+ 
+ #ifdef CONFIG_F2FS_FAULT_INJECTION
+-extern void f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned int rate,
+-							unsigned int type);
++extern int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
++							unsigned long type);
+ #else
+-#define f2fs_build_fault_attr(sbi, rate, type)		do { } while (0)
++static int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
++							unsigned long type)
++{
++	return 0;
++}
+ #endif
+ 
+ static inline bool is_journalled_quota(struct f2fs_sb_info *sbi)
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 2f75a7dfc311d..0c3ebe4d9026d 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -66,21 +66,31 @@ const char *f2fs_fault_name[FAULT_MAX] = {
+ 	[FAULT_NO_SEGMENT]		= "no free segment",
+ };
+ 
+-void f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned int rate,
+-							unsigned int type)
++int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
++							unsigned long type)
+ {
+ 	struct f2fs_fault_info *ffi = &F2FS_OPTION(sbi).fault_info;
+ 
+ 	if (rate) {
++		if (rate > INT_MAX)
++			return -EINVAL;
+ 		atomic_set(&ffi->inject_ops, 0);
+-		ffi->inject_rate = rate;
++		ffi->inject_rate = (int)rate;
+ 	}
+ 
+-	if (type)
+-		ffi->inject_type = type;
++	if (type) {
++		if (type >= BIT(FAULT_MAX))
++			return -EINVAL;
++		ffi->inject_type = (unsigned int)type;
++	}
+ 
+ 	if (!rate && !type)
+ 		memset(ffi, 0, sizeof(struct f2fs_fault_info));
++	else
++		f2fs_info(sbi,
++			"build fault injection attr: rate: %lu, type: 0x%lx",
++								rate, type);
++	return 0;
+ }
+ #endif
+ 
+@@ -886,14 +896,17 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
+ 		case Opt_fault_injection:
+ 			if (args->from && match_int(args, &arg))
+ 				return -EINVAL;
+-			f2fs_build_fault_attr(sbi, arg, F2FS_ALL_FAULT_TYPE);
++			if (f2fs_build_fault_attr(sbi, arg,
++					F2FS_ALL_FAULT_TYPE))
++				return -EINVAL;
+ 			set_opt(sbi, FAULT_INJECTION);
+ 			break;
+ 
+ 		case Opt_fault_type:
+ 			if (args->from && match_int(args, &arg))
+ 				return -EINVAL;
+-			f2fs_build_fault_attr(sbi, 0, arg);
++			if (f2fs_build_fault_attr(sbi, 0, arg))
++				return -EINVAL;
+ 			set_opt(sbi, FAULT_INJECTION);
+ 			break;
+ #else
+diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
+index a568ce96cf563..7aa3844e7a808 100644
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -484,10 +484,16 @@ static ssize_t __sbi_store(struct f2fs_attr *a,
+ 	if (ret < 0)
+ 		return ret;
+ #ifdef CONFIG_F2FS_FAULT_INJECTION
+-	if (a->struct_type == FAULT_INFO_TYPE && t >= BIT(FAULT_MAX))
+-		return -EINVAL;
+-	if (a->struct_type == FAULT_INFO_RATE && t >= UINT_MAX)
+-		return -EINVAL;
++	if (a->struct_type == FAULT_INFO_TYPE) {
++		if (f2fs_build_fault_attr(sbi, 0, t))
++			return -EINVAL;
++		return count;
++	}
++	if (a->struct_type == FAULT_INFO_RATE) {
++		if (f2fs_build_fault_attr(sbi, t, 0))
++			return -EINVAL;
++		return count;
++	}
+ #endif
+ 	if (a->struct_type == RESERVED_BLOCKS) {
+ 		spin_lock(&sbi->stat_lock);
 -- 
 2.43.0
 
