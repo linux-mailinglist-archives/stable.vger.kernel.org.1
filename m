@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-58402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98FE692B6D2
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9379C92B846
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:32:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5263028139A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20C481F21A41
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA691586C9;
-	Tue,  9 Jul 2024 11:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92300154C07;
+	Tue,  9 Jul 2024 11:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="giqlspo2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B1jgdxWF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784ED14EC4D;
-	Tue,  9 Jul 2024 11:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F37655E4C;
+	Tue,  9 Jul 2024 11:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523825; cv=none; b=B+5LqbO4aLiT/4pRyxyfoVUDJ/u1utqt/Jpp2dOYG1vwXz51xXsVWR7gpCUDoLAtxU5pkBStepu0eIAqBdYmkxMF8DyARPVFcNRmZJAUtzHx54vNz+e/LWmqrrI9Obj+8EiGHr1SCQcJR1FCZBHY7ebfQKo3msohCzZZo8xlO8k=
+	t=1720524753; cv=none; b=jSCzaP27SZIst8S/xWVoi2sQa6KitGjzICxSJVKm/7+kIgUxxobQP5TlxV5mYnKpl1whzbcy9iepnuLObi4Zcdw9zUMTEOdKgqSL1L+n+FXh383WiGsEc4xUUIeJcEwxIAMwfFCxSa+DPTTujjKzMltFkAM8ivb4xq6/wLXSY8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523825; c=relaxed/simple;
-	bh=Xg843TkaDa1FXTZXIIvx/Cyo/PtP/dze3aKun8tsjKo=;
+	s=arc-20240116; t=1720524753; c=relaxed/simple;
+	bh=yAqVPeZyvI3bo5mknbV48lcHo88ONj36sJjl8z/CR4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OC1FF9q+h00Z1wR0Uy/7l0kCtSMaHt9L8jslf8vL3mQgA1+zWcr3QNwHeNmWjrIufhcVG0DMi7WUNj4MqMEKBfk8yOMWnj+HvN6Lshw1ckSP1G/+xMAP3TnPcqVIJHGq3H55RoOcRcPumVeQXGGnc4Lg2mw9aZD+FNo5fqIJKNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=giqlspo2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F77C3277B;
-	Tue,  9 Jul 2024 11:17:04 +0000 (UTC)
+	 MIME-Version; b=pBZ1xD/wk+8Kg3ctPqKLkP99agBCSg4v8XSc3JNBhIoEbRJ7i3QmKhJYWhA9/LlSS43+9cPz9SifvkF9eo1CmMvbvqOPvcFan90RLKv/39y2ElAVs94spU8yVLDfQN/vikP87y9Mdf/JT1+qR2BGwz40wCEhjrGGU8Ygl8BhIFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B1jgdxWF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9924C32786;
+	Tue,  9 Jul 2024 11:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523825;
-	bh=Xg843TkaDa1FXTZXIIvx/Cyo/PtP/dze3aKun8tsjKo=;
+	s=korg; t=1720524753;
+	bh=yAqVPeZyvI3bo5mknbV48lcHo88ONj36sJjl8z/CR4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=giqlspo2pQbUSopT8RPvSHy7LfAMms3E0RqVhSsjctVMOvG762bYNesxXcYwZby9s
-	 JV1sDsahXM0EOTfDaYT2Nu21O8t6XcWu3UotQi9t4gM1jJdcpNxX/YUy3edix0bKJo
-	 rcr0u2cjEhcino/2C5x+zg/ex/DyLCeENELedn6E=
+	b=B1jgdxWFweJL9SHugT2OB3EGJj/L0WRdpvtJtr32x/3NaY0qJHljwKIPwfcRM/NLM
+	 1koYbuuw6Hqf/4zLhLyZqMSBqcvlx1YYksndpbDGSYyqpSa0yM5coxk96EvYd5u2hI
+	 Ll76dqI6wZdMAsdFNePWIaHswawUCSKD5G5Mcvq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 122/139] fs/ntfs3: Mark volume as dirty if xattr is broken
+Subject: [PATCH 6.1 059/102] inet_diag: Initialize pad field in struct inet_diag_req_v2
 Date: Tue,  9 Jul 2024 13:10:22 +0200
-Message-ID: <20240709110702.887539724@linuxfoundation.org>
+Message-ID: <20240709110653.678523614@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit 24f6f5020b0b2c89c2cba5ec224547be95f753ee ]
+[ Upstream commit 61cf1c739f08190a4cbf047b9fbb192a94d87e3f ]
 
-Mark a volume as corrupted if the name length exceeds the space
-occupied by ea.
+KMSAN reported uninit-value access in raw_lookup() [1]. Diag for raw
+sockets uses the pad field in struct inet_diag_req_v2 for the
+underlying protocol. This field corresponds to the sdiag_raw_protocol
+field in struct inet_diag_req_raw.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+inet_diag_get_exact_compat() converts inet_diag_req to
+inet_diag_req_v2, but leaves the pad field uninitialized. So the issue
+occurs when raw_lookup() accesses the sdiag_raw_protocol field.
+
+Fix this by initializing the pad field in
+inet_diag_get_exact_compat(). Also, do the same fix in
+inet_diag_dump_compat() to avoid the similar issue in the future.
+
+[1]
+BUG: KMSAN: uninit-value in raw_lookup net/ipv4/raw_diag.c:49 [inline]
+BUG: KMSAN: uninit-value in raw_sock_get+0x657/0x800 net/ipv4/raw_diag.c:71
+ raw_lookup net/ipv4/raw_diag.c:49 [inline]
+ raw_sock_get+0x657/0x800 net/ipv4/raw_diag.c:71
+ raw_diag_dump_one+0xa1/0x660 net/ipv4/raw_diag.c:99
+ inet_diag_cmd_exact+0x7d9/0x980
+ inet_diag_get_exact_compat net/ipv4/inet_diag.c:1404 [inline]
+ inet_diag_rcv_msg_compat+0x469/0x530 net/ipv4/inet_diag.c:1426
+ sock_diag_rcv_msg+0x23d/0x740 net/core/sock_diag.c:282
+ netlink_rcv_skb+0x537/0x670 net/netlink/af_netlink.c:2564
+ sock_diag_rcv+0x35/0x40 net/core/sock_diag.c:297
+ netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
+ netlink_unicast+0xe74/0x1240 net/netlink/af_netlink.c:1361
+ netlink_sendmsg+0x10c6/0x1260 net/netlink/af_netlink.c:1905
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ __sock_sendmsg+0x332/0x3d0 net/socket.c:745
+ ____sys_sendmsg+0x7f0/0xb70 net/socket.c:2585
+ ___sys_sendmsg+0x271/0x3b0 net/socket.c:2639
+ __sys_sendmsg net/socket.c:2668 [inline]
+ __do_sys_sendmsg net/socket.c:2677 [inline]
+ __se_sys_sendmsg net/socket.c:2675 [inline]
+ __x64_sys_sendmsg+0x27e/0x4a0 net/socket.c:2675
+ x64_sys_call+0x135e/0x3ce0 arch/x86/include/generated/asm/syscalls_64.h:47
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xd9/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Uninit was stored to memory at:
+ raw_sock_get+0x650/0x800 net/ipv4/raw_diag.c:71
+ raw_diag_dump_one+0xa1/0x660 net/ipv4/raw_diag.c:99
+ inet_diag_cmd_exact+0x7d9/0x980
+ inet_diag_get_exact_compat net/ipv4/inet_diag.c:1404 [inline]
+ inet_diag_rcv_msg_compat+0x469/0x530 net/ipv4/inet_diag.c:1426
+ sock_diag_rcv_msg+0x23d/0x740 net/core/sock_diag.c:282
+ netlink_rcv_skb+0x537/0x670 net/netlink/af_netlink.c:2564
+ sock_diag_rcv+0x35/0x40 net/core/sock_diag.c:297
+ netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
+ netlink_unicast+0xe74/0x1240 net/netlink/af_netlink.c:1361
+ netlink_sendmsg+0x10c6/0x1260 net/netlink/af_netlink.c:1905
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ __sock_sendmsg+0x332/0x3d0 net/socket.c:745
+ ____sys_sendmsg+0x7f0/0xb70 net/socket.c:2585
+ ___sys_sendmsg+0x271/0x3b0 net/socket.c:2639
+ __sys_sendmsg net/socket.c:2668 [inline]
+ __do_sys_sendmsg net/socket.c:2677 [inline]
+ __se_sys_sendmsg net/socket.c:2675 [inline]
+ __x64_sys_sendmsg+0x27e/0x4a0 net/socket.c:2675
+ x64_sys_call+0x135e/0x3ce0 arch/x86/include/generated/asm/syscalls_64.h:47
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xd9/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Local variable req.i created at:
+ inet_diag_get_exact_compat net/ipv4/inet_diag.c:1396 [inline]
+ inet_diag_rcv_msg_compat+0x2a6/0x530 net/ipv4/inet_diag.c:1426
+ sock_diag_rcv_msg+0x23d/0x740 net/core/sock_diag.c:282
+
+CPU: 1 PID: 8888 Comm: syz-executor.6 Not tainted 6.10.0-rc4-00217-g35bb670d65fc #32
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
+
+Fixes: 432490f9d455 ("net: ip, diag -- Add diag interface for raw sockets")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20240703091649.111773-1-syoshida@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/xattr.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/ipv4/inet_diag.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ntfs3/xattr.c b/fs/ntfs3/xattr.c
-index b50010494e6d0..72bceb8cd164b 100644
---- a/fs/ntfs3/xattr.c
-+++ b/fs/ntfs3/xattr.c
-@@ -219,8 +219,11 @@ static ssize_t ntfs_list_ea(struct ntfs_inode *ni, char *buffer,
- 		if (!ea->name_len)
- 			break;
+diff --git a/net/ipv4/inet_diag.c b/net/ipv4/inet_diag.c
+index 8f690a6e61baa..e4e1999d93f50 100644
+--- a/net/ipv4/inet_diag.c
++++ b/net/ipv4/inet_diag.c
+@@ -1281,6 +1281,7 @@ static int inet_diag_dump_compat(struct sk_buff *skb,
+ 	req.sdiag_family = AF_UNSPEC; /* compatibility */
+ 	req.sdiag_protocol = inet_diag_type2proto(cb->nlh->nlmsg_type);
+ 	req.idiag_ext = rc->idiag_ext;
++	req.pad = 0;
+ 	req.idiag_states = rc->idiag_states;
+ 	req.id = rc->id;
  
--		if (ea->name_len > ea_size)
-+		if (ea->name_len > ea_size) {
-+			ntfs_set_state(ni->mi.sbi, NTFS_DIRTY_ERROR);
-+			err = -EINVAL; /* corrupted fs */
- 			break;
-+		}
+@@ -1296,6 +1297,7 @@ static int inet_diag_get_exact_compat(struct sk_buff *in_skb,
+ 	req.sdiag_family = rc->idiag_family;
+ 	req.sdiag_protocol = inet_diag_type2proto(nlh->nlmsg_type);
+ 	req.idiag_ext = rc->idiag_ext;
++	req.pad = 0;
+ 	req.idiag_states = rc->idiag_states;
+ 	req.id = rc->id;
  
- 		if (buffer) {
- 			/* Check if we can use field ea->name */
 -- 
 2.43.0
 
