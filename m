@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-58344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E42192B67F
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:14:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 543D792B76B
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F94E1C21CFE
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:14:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA439B24AB0
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 729101581E3;
-	Tue,  9 Jul 2024 11:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DBB1586D3;
+	Tue,  9 Jul 2024 11:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2MS54TS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjzz4wz+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D15155389;
-	Tue,  9 Jul 2024 11:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4455156F57;
+	Tue,  9 Jul 2024 11:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523652; cv=none; b=H+3ibkESbqvadjeFYXkKJHCDJRbILI/Gvs/Q00qmYzH+KjbPIwbfBm74ZBiE9wRg7+Tl+SCQmwC6jBF+u0FKmCRYJnXR/oeDa6a9lPCS5FcNtdiHxQhr19lMB7Zsk2soNWpUGhA1EA+Dl3BreDULugtYvsjxcQWZlatk3S/V2Zo=
+	t=1720524172; cv=none; b=Xyd5I9/sy+FBQCs+lfVjBtzB4x5celqUWGCQoAHWCGRVXxDRZcTQPrVmqBOiO28DTBQrO5kDVWhanKHo3m/QaoyY86aukT6t245pKbwWYgFbQOd3KiGnLBXTR8GLZJ1O5+oGQzxf3ViLDFUT0HWFXHTewvqfdjAsGJnkKwGzpxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523652; c=relaxed/simple;
-	bh=3FYRQtGoX2MqqjZkfbavvJkg6NnpU68YRAdl9CTVqRI=;
+	s=arc-20240116; t=1720524172; c=relaxed/simple;
+	bh=hDSHZYBr3uUaKVHN4g+l1E6rbbmK+s/a0gJOPRYJQjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DsU0/Tq36OOmnC0SaLYD3s+tyK1MxqbANcEE0dueUkcrZvdexPgJRuo6Rdt7Dtt+cxf6gfjoZ2YA5YLpPsK7M9eoy0QwLg/nfjs/roxNQN+yIZQC38keLNxGHFM6VKItV6dBxX7V8SnPiImdNQEaOVtfs4cRaz36sEcdSWyMyHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2MS54TS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8467C3277B;
-	Tue,  9 Jul 2024 11:14:11 +0000 (UTC)
+	 MIME-Version; b=opcxnvbt3uSFUS9YAT+XeFLehb8O2cAE04eAXWhb4SBX7EMHByzoIhfInXFd64C5b+VbPY3RekjdF/5xCtYSmxXXO/XMSmmKaOYEVGwGt2rPqHuJ9yaXhfodHc41+lhUJcV/09N1xVKvXutAS9+Q9kiKx7NbUxk1GkHeW9fNOm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjzz4wz+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20000C3277B;
+	Tue,  9 Jul 2024 11:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523652;
-	bh=3FYRQtGoX2MqqjZkfbavvJkg6NnpU68YRAdl9CTVqRI=;
+	s=korg; t=1720524172;
+	bh=hDSHZYBr3uUaKVHN4g+l1E6rbbmK+s/a0gJOPRYJQjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2MS54TSy7Wns+4Fnmfl9UG05TI/52TmD0ZU5ZkdS/djMM3Ak8mzUORUO7h/dGTxg
-	 nzZ4LDMtBDX7eNKKuZGkxQGJjaE8Z8elMEdJIbuz+/vK/S648Of7FnD0fqOobE8hD+
-	 +8lmvc2xZ7wwf7agMKoZUc5ueKesDX9NOfG6W4G0=
+	b=cjzz4wz+Md5T5+3xPHtmiDLFoLtXliD6oVz+2XwB4ZYQ5XwquY0iNatKAYrKMBz05
+	 aZf0Vclxq1MKp5ThA5cD0CWyWyvBvEGDlJF3rIANsPZq4G4SsAnsC9y0jleV8LcN/m
+	 lpxHs1of9GuEZvIrtJJJMg1YDLmghrt0eRw8aY7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Corinna Vinschen <vinschen@redhat.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Naama Meir <naamax.meir@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/139] igc: fix a log entry using uninitialized netdev
+Subject: [PATCH 6.9 093/197] net/mlx5e: Approximate IPsec per-SA payload data bytes count
 Date: Tue,  9 Jul 2024 13:09:07 +0200
-Message-ID: <20240709110659.985919347@linuxfoundation.org>
+Message-ID: <20240709110712.564428603@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corinna Vinschen <vinschen@redhat.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 86167183a17e03ec77198897975e9fdfbd53cb0b ]
+[ Upstream commit e562f2d46d27576dd4108c1c4a67d501a5936e31 ]
 
-During successful probe, igc logs this:
+ConnectX devices lack ability to count payload data byte size which is
+needed for SA to return to libreswan for rekeying.
 
-[    5.133667] igc 0000:01:00.0 (unnamed net_device) (uninitialized): PHC added
-                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The reason is that igc_ptp_init() is called very early, even before
-register_netdev() has been called. So the netdev_info() call works
-on a partially uninitialized netdev.
+As a solution let's approximate that by decreasing headers size from
+total size counted by flow steering. The calculation doesn't take into
+account any other headers which can be in the packet (e.g. IP extensions).
 
-Fix this by calling igc_ptp_init() after register_netdev(), right
-after the media autosense check, just as in igb.  Add a comment,
-just as in igb.
-
-Now the log message is fine:
-
-[    5.200987] igc 0000:01:00.0 eth0: PHC added
-
-Signed-off-by: Corinna Vinschen <vinschen@redhat.com>
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 5a6cddb89b51 ("net/mlx5e: Update IPsec per SA packets/bytes count")
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ .../ethernet/mellanox/mlx5/core/en_accel/ipsec.c   | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index e83700ad7e622..5715fc6779117 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6908,8 +6908,6 @@ static int igc_probe(struct pci_dev *pdev,
- 	device_set_wakeup_enable(&adapter->pdev->dev,
- 				 adapter->flags & IGC_FLAG_WOL_SUPPORTED);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
+index 2a10428d820ae..3d274599015be 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
+@@ -994,6 +994,7 @@ static void mlx5e_xfrm_update_stats(struct xfrm_state *x)
+ 	u64 auth_packets = 0, auth_bytes = 0;
+ 	u64 success_packets, success_bytes;
+ 	u64 packets, bytes, lastuse;
++	size_t headers;
  
--	igc_ptp_init(adapter);
--
- 	igc_tsn_clear_schedule(adapter);
+ 	lockdep_assert(lockdep_is_held(&x->lock) ||
+ 		       lockdep_is_held(&dev_net(x->xso.real_dev)->xfrm.xfrm_cfg_mutex) ||
+@@ -1026,9 +1027,20 @@ static void mlx5e_xfrm_update_stats(struct xfrm_state *x)
+ 	mlx5_fc_query_cached(ipsec_rule->fc, &bytes, &packets, &lastuse);
+ 	success_packets = packets - auth_packets - trailer_packets - replay_packets;
+ 	x->curlft.packets += success_packets;
++	/* NIC counts all bytes passed through flow steering and doesn't have
++	 * an ability to count payload data size which is needed for SA.
++	 *
++	 * To overcome HW limitestion, let's approximate the payload size
++	 * by removing always available headers.
++	 */
++	headers = sizeof(struct ethhdr);
++	if (sa_entry->attrs.family == AF_INET)
++		headers += sizeof(struct iphdr);
++	else
++		headers += sizeof(struct ipv6hdr);
  
- 	/* reset the hardware with the new settings */
-@@ -6931,6 +6929,9 @@ static int igc_probe(struct pci_dev *pdev,
- 	/* Check if Media Autosense is enabled */
- 	adapter->ei = *ei;
+ 	success_bytes = bytes - auth_bytes - trailer_bytes - replay_bytes;
+-	x->curlft.bytes += success_bytes;
++	x->curlft.bytes += success_bytes - headers * success_packets;
+ }
  
-+	/* do hw tstamp init after resetting */
-+	igc_ptp_init(adapter);
-+
- 	/* print pcie link status and MAC address */
- 	pcie_print_link_status(pdev);
- 	netdev_info(netdev, "MAC: %pM\n", netdev->dev_addr);
+ static int mlx5e_xfrm_validate_policy(struct mlx5_core_dev *mdev,
 -- 
 2.43.0
 
