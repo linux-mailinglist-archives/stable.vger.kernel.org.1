@@ -1,101 +1,126 @@
-Return-Path: <stable+bounces-58941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52ADD92C4AD
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 22:39:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75CD792C549
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 23:24:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 836FB1C2216B
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 20:39:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A338B21E1D
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 21:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B771F185631;
-	Tue,  9 Jul 2024 20:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25178185625;
+	Tue,  9 Jul 2024 21:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="dG40KnSp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iMkTOxIZ"
 X-Original-To: stable@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8268518002F;
-	Tue,  9 Jul 2024 20:38:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE45153505;
+	Tue,  9 Jul 2024 21:24:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720557504; cv=none; b=HAXWhwzXQHdu1h+uIzSp5yUTlsvm88wh4G5Hg1h+IIweUK7DETzhmOSHS+XQdubXjoHujrQXPWkP1uuwqXyDbWvqKPe8Vq38FHCPK1dERiVORQig+rLdJirm1VuVihBqZZ6rH3J44CQOQ7oZrC9CnZyf6hWLemgnRRbBrnUlmi8=
+	t=1720560257; cv=none; b=KIXwiN00/2e1F/Ax/ad17C4gJmUYNECzkd2NGkwKknWIlo9nzTfchVrJhrN7SoMG/Qj4YJ/6X5iNF+7kaW918akQi9MSzydS6W1FaVO/LkH0G7rRnfrgmZKr08ZgYUI9AkUm4XUUrDJr+4lRgXwdqTg3bK7bQM3iqk/hr9x+7No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720557504; c=relaxed/simple;
-	bh=4LOKIwPkfG4qv/qDrlGxW3TsoLB+emhFXbvx4Ix4Zk0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rNDevLZDTxyCVlMBRc+WVet9mDFIz7dWoXC8Fs2qdFG7NyYi5PSmUZFbwFVKAVq21PIfuzIRiu6Lm/jLc4oguPniHFUpgt6J+P0i2ym/DNgCBUj+KsGlhrE0mGICBSE7kyUx62ANs57f5YYoi2hZvyYlUOHQshPzJXdIbiM+d3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=dG40KnSp; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1720557499;
-	bh=4LOKIwPkfG4qv/qDrlGxW3TsoLB+emhFXbvx4Ix4Zk0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=dG40KnSpTErTVkKTdq6BRp9NadeBRzRCaWTosI7Tk4miaSgMU5DWQ3YDJ8flzqxSq
-	 pecskGFgWhodamgFdTf/PyATSfiuvRtjLyFek+lNzebuporQFrIS394sOKiD5BLjHq
-	 TFUj94mQn0Gy57ANFUBOofRKbY+sLaToTC3pffeE=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Tue, 09 Jul 2024 22:37:24 +0200
-Subject: [PATCH v2 1/5] ACPI: sysfs: validate return type of _STR method
+	s=arc-20240116; t=1720560257; c=relaxed/simple;
+	bh=ackfSi8OiTLwz/d7tspezHbK2PcEiMUA3gVdLVR6r2U=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=N+Nh2CM5CI9rBaCYTwVLhAINP024KG+Z7hZZZ9cpHFw0yvBHcwx4u7MK2pxgT0Z6mWRUTVkE/FOBs9UL0Xh0a+sRDTPbQr/iw8EklpC9xsz+Aud3+3E0w4LhazJCzOj45DN17pzrMp2fBKozWgoPgYav67qqFAKwLmRVlVu0VSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iMkTOxIZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144E2C32786;
+	Tue,  9 Jul 2024 21:24:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720560257;
+	bh=ackfSi8OiTLwz/d7tspezHbK2PcEiMUA3gVdLVR6r2U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=iMkTOxIZilL8xjSe62Kc/G9GBGGWn/oPb6Hm1EXxAswCBkN2a78oho7OwaVv37ipU
+	 i5Wyimy/vuxTvQm4zBx7EzSB1oKUC+PaAA6uNtIUy1wsiSq5YbG53QFn2LFuPZItkd
+	 My99nIZRd5fGn5+urGIXFgg4rfrlyLUqYpJXk3MXldVSjcPpSgruPSVdUsnalweF0X
+	 VjDMgfzsLwKSYn+wgeDLr8hPBvF0Y6/vJ2jNKp0gQUFl52NpI3Ierk3abnrdJHlpJI
+	 Z3MRnXC7klqlUkTsOy7i+wcCBIqWmY2W/aokZ0gsyZHwfMVOGKZks+49t0CzIQ5zRF
+	 b30MlcNfLW25Q==
+Date: Tue, 9 Jul 2024 16:24:14 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, loongarch@lists.linux.dev,
+	linux-pci@vger.kernel.org, Jianmin Lv <lvjianmin@loongson.cn>,
+	Xuefeng Li <lixuefeng@loongson.cn>,
+	Huacai Chen <chenhuacai@gmail.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org,
+	Sheng Wu <wusheng@loongson.cn>
+Subject: Re: [PATCH] PCI: loongson: Add LS7A MSI enablement quirk
+Message-ID: <20240709212414.GA195866@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240709-acpi-sysfs-groups-v2-1-058ab0667fa8@weissschuh.net>
-References: <20240709-acpi-sysfs-groups-v2-0-058ab0667fa8@weissschuh.net>
-In-Reply-To: <20240709-acpi-sysfs-groups-v2-0-058ab0667fa8@weissschuh.net>
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
- Robert Moore <robert.moore@intel.com>, Lance Ortiz <lance.ortiz@hp.com>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- acpica-devel@lists.linux.dev, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1720557498; l=1077;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=4LOKIwPkfG4qv/qDrlGxW3TsoLB+emhFXbvx4Ix4Zk0=;
- b=LEZeIImkrMhJWNTWnePl193SC5ykHqSmHMH0lFF8V6YtbXAs2SlU4XQBY/in1QpVwIYrpSUF/
- OYbf6q9I5wgDzFFsRO4cyIZQSRalkUg/SuoRcoHipm/3rernkKkInU9
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240612065315.2048110-1-chenhuacai@loongson.cn>
 
-Only buffer objects are valid return values of _STR.
-If something else is returned description_show() will access invalid
-memory.
+On Wed, Jun 12, 2024 at 02:53:15PM +0800, Huacai Chen wrote:
+> LS7A chipset can be used as a downstream bridge which connected to a
+> high-level host bridge. In this case DEV_LS7A_PCIE_PORT5 is used as the
+> upward port. We should always enable MSI caps of this port, otherwise
+> downstream devices cannot use MSI.
 
-Fixes: d1efe3c324ea ("ACPI: Add new sysfs interface to export device description")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
- drivers/acpi/device_sysfs.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Can you clarify this topology a bit?  Since DEV_LS7A_PCIE_PORT5
+apparently has a class of PCI_CLASS_BRIDGE_HOST, I guess that in PCIe
+terms, it is basically a PCI host bridge (Root Complex, if you prefer)
+that is materialized as a PCI Endpoint?
 
-diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
-index 23373faa35ec..95a19e3569c8 100644
---- a/drivers/acpi/device_sysfs.c
-+++ b/drivers/acpi/device_sysfs.c
-@@ -540,8 +540,9 @@ int acpi_device_setup_files(struct acpi_device *dev)
- 	 * If device has _STR, 'description' file is created
- 	 */
- 	if (acpi_has_method(dev->handle, "_STR")) {
--		status = acpi_evaluate_object(dev->handle, "_STR",
--					NULL, &buffer);
-+		status = acpi_evaluate_object_typed(dev->handle, "_STR",
-+						    NULL, &buffer,
-+						    ACPI_TYPE_BUFFER);
- 		if (ACPI_FAILURE(status))
- 			buffer.pointer = NULL;
- 		dev->pnp.str_obj = buffer.pointer;
+I'm curious about what's going on here because the normal PCI MSI
+support should set PCI_MSI_FLAGS_ENABLE since it's completely
+specified by the spec, which says it controls whether *this function*
+can use MSI.
 
--- 
-2.45.2
+But in this case PCI_MSI_FLAGS_ENABLE seems to have non-architected
+behavior of controlling MSI from *other* devices below this host
+bridge?  That's a little bit weird too because MSI looks like DMA to
+any bridges upstream from the device that is using MSI, and the Bus
+Master Enable bit in those bridges controls whether they forward those
+MSI DMA accesses upstream.  And of course the PCI core should already
+make sure those bridges have Bus Master Enable set when downstream
+devices use MSI.
 
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Sheng Wu <wusheng@loongson.cn>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> ---
+>  drivers/pci/controller/pci-loongson.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/pci-loongson.c b/drivers/pci/controller/pci-loongson.c
+> index 8b34ccff073a..ffc581605834 100644
+> --- a/drivers/pci/controller/pci-loongson.c
+> +++ b/drivers/pci/controller/pci-loongson.c
+> @@ -163,6 +163,18 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON,
+>  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON,
+>  			DEV_LS7A_HDMI, loongson_pci_pin_quirk);
+>  
+> +static void loongson_pci_msi_quirk(struct pci_dev *dev)
+> +{
+> +	u16 val, class = dev->class >> 8;
+> +
+> +	if (class == PCI_CLASS_BRIDGE_HOST) {
+> +		pci_read_config_word(dev, dev->msi_cap + PCI_MSI_FLAGS, &val);
+> +		val |= PCI_MSI_FLAGS_ENABLE;
+> +		pci_write_config_word(dev, dev->msi_cap + PCI_MSI_FLAGS, val);
+> +	}
+> +}
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, DEV_LS7A_PCIE_PORT5, loongson_pci_msi_quirk);
+> +
+>  static struct loongson_pci *pci_bus_to_loongson_pci(struct pci_bus *bus)
+>  {
+>  	struct pci_config_window *cfg;
+> -- 
+> 2.43.0
+> 
 
