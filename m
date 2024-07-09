@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-58704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C68F92B842
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:32:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51C4392B7DC
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:28:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DD651C20D6C
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:32:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 831971C2357B
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12A7152787;
-	Tue,  9 Jul 2024 11:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A5814E2F4;
+	Tue,  9 Jul 2024 11:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lel4jKjg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGIW8Dxy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9107955E4C;
-	Tue,  9 Jul 2024 11:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6152627713;
+	Tue,  9 Jul 2024 11:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524741; cv=none; b=M0/qsvtlWR57YQiTkeZIrWQEMls/2+17M28qvlXp+2pxgHbv1p14Y5tNdmLWFu5Cqg6wFVEtZ8CsqhaVOKIKYV5NUZQQ9ZAiQ7AatWKAlDpSWPHUSHxeYuGXQwlKDBzolKAISvMUMsEbFKoiRcrZndzQc4hmmBqi9CMTcCmETII=
+	t=1720524483; cv=none; b=qIhGq1bzNU6RKrl/1oJmRkX2MxyJhMjVIUqsacc1quHwxz/ex1BolLHnpL95giWdGyCTjA2bjLe5d9/kZJhAZEZXQnuJBpaPdU9cvJiqxAmn52rmc1L2u8Xs6dqGxUYUf5FQeq1uatgMq2+C7wnUYyt1mylctLfV/2zJZq8a0dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524741; c=relaxed/simple;
-	bh=Dp/PosKa0kceIGBlKkkbNa1Ia3ZRceLfyPfc+UArsQo=;
+	s=arc-20240116; t=1720524483; c=relaxed/simple;
+	bh=huiE9Otl7kiGmnGs2/fieiVAI67bX8hzvS1TMxw71fA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KPeUBaCNZ8XoK/tRehIURr0o1nUvmrsH+3bVGp9EH6imsxIEsU1HdGweyvM/YMhKbWE6urjzbpVKiwNuKZzB03TvvaAdsCOIX0ZTXOEFMQFeSEeXbrVeNwMk7HmtlvsJvOhap078/ruCTOkAQIRkVAZFmWKuXkamDZ4MCgfAYbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lel4jKjg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B42AC3277B;
-	Tue,  9 Jul 2024 11:32:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QnsObBW4Ergd81JkVU7n5rVumMAoEgPZWqjZPinrvUGiHmVIKGYQ5s3hsXuvT5DKhf1GXRjklOSy+00jiUyF/DQ8cw8XMXPhd6wcL/OFHdDfpBesx4d+0KH2zQymYB1LlFy1pUvj56EH+yi/tsAjCCe4WFzbvYUcZAOARAv44vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGIW8Dxy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F30C3277B;
+	Tue,  9 Jul 2024 11:28:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524741;
-	bh=Dp/PosKa0kceIGBlKkkbNa1Ia3ZRceLfyPfc+UArsQo=;
+	s=korg; t=1720524482;
+	bh=huiE9Otl7kiGmnGs2/fieiVAI67bX8hzvS1TMxw71fA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lel4jKjg2ieWLpuVPVS+q7cCfvoJdJxM+84E7OOT1NVF1AwgnJW/tuS7frdLk+/8X
-	 m5xFRrRP5SiHPFGtyJKgmlC6yzjKQ0TNlJdykCUWMloeK/qmXhRjY22IHvOYNrU2R8
-	 vFvd5ouVMVnY3129PMOS4FdL/NX6vy5KDbizw3FA=
+	b=NGIW8DxySZZx5s87EWgBJEEGz6p/0V+NGya4y5683xgq7ALy1XViNq0gWBkEca0AF
+	 4Ksh8wFfzc5qHCtki1gm0bNRYyrgaThqpylpeB7do1oqLzlNwIh1w/5eYhFSli53yU
+	 T1uEwGKrIe9lYGjbKzFp2l2rwLYoFAXxvfbJg1e0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: [PATCH 6.1 084/102] media: dw2102: fix a potential buffer overflow
-Date: Tue,  9 Jul 2024 13:10:47 +0200
-Message-ID: <20240709110654.643054325@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 194/197] drm/amdgpu: silence UBSAN warning
+Date: Tue,  9 Jul 2024 13:10:48 +0200
+Message-ID: <20240709110716.448019163@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 1c73d0b29d04bf4082e7beb6a508895e118ee30d upstream.
+[ Upstream commit 05d9e24ddb15160164ba6e917a88c00907dc2434 ]
 
-As pointed by smatch:
-	 drivers/media/usb/dvb-usb/dw2102.c:802 su3000_i2c_transfer() error: __builtin_memcpy() '&state->data[4]' too small (64 vs 67)
+Convert a variable sized array from [1] to [].
 
-That seemss to be due to a wrong copy-and-paste.
-
-Fixes: 0e148a522b84 ("media: dw2102: Don't translate i2c read into write")
-
-Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb/dw2102.c |    2 +-
+ drivers/gpu/drm/amd/include/atomfirmware.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/usb/dvb-usb/dw2102.c
-+++ b/drivers/media/usb/dvb-usb/dw2102.c
-@@ -786,7 +786,7 @@ static int su3000_i2c_transfer(struct i2
+diff --git a/drivers/gpu/drm/amd/include/atomfirmware.h b/drivers/gpu/drm/amd/include/atomfirmware.h
+index a34f064df336b..09cbc3afd6d89 100644
+--- a/drivers/gpu/drm/amd/include/atomfirmware.h
++++ b/drivers/gpu/drm/amd/include/atomfirmware.h
+@@ -3583,7 +3583,7 @@ struct atom_gpio_voltage_object_v4
+    uint8_t  phase_delay_us;                      // phase delay in unit of micro second
+    uint8_t  reserved;   
+    uint32_t gpio_mask_val;                         // GPIO Mask value
+-   struct atom_voltage_gpio_map_lut voltage_gpio_lut[1];
++   struct atom_voltage_gpio_map_lut voltage_gpio_lut[] __counted_by(gpio_entry_num);
+ };
  
- 			if (msg[j].flags & I2C_M_RD) {
- 				/* single read */
--				if (1 + msg[j].len > sizeof(state->data)) {
-+				if (4 + msg[j].len > sizeof(state->data)) {
- 					warn("i2c rd: len=%d is too big!\n", msg[j].len);
- 					num = -EOPNOTSUPP;
- 					break;
+ struct  atom_svid2_voltage_object_v4
+-- 
+2.43.0
+
 
 
 
