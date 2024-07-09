@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-58294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A3C492B645
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:11:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D2E792B739
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:21:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 061AB283BE9
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:11:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA7461C22802
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 839A7157A48;
-	Tue,  9 Jul 2024 11:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F441158D89;
+	Tue,  9 Jul 2024 11:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azqYeqE6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsUP4F7c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8781586C4;
-	Tue,  9 Jul 2024 11:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC68158A36;
+	Tue,  9 Jul 2024 11:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523500; cv=none; b=TLswEZEv0uKWUgepAjWPnhTIU9QQmNEc/V5XTvYA7OujfVwpNg5F/lp8BLRe+Q/wD4rMrkodAb1MNPA/7sJc8QB5oTItnOS1mqcnqkcm3qPpGSNIdbU7uRgAQEwDhwS7ijUuIuIvkfnIotUnGolrToD+eLtN5S/cgqU2q4sLMLs=
+	t=1720524043; cv=none; b=tAJd7FxsUQ5iFs9TPWIv7kWpj+3mvbeqrRqwXF0+/dnPRfA3URBEiXfgx5q4CNuv4FOeevqR1WgiFMpd3EOqa8azwE+5kaww5tooBebQX4+xVAAgeQR/Wo0GZCtxG33aUZKeeBS3eaSvfk1ITFAitYgM3NplP+8NY547Y475YyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523500; c=relaxed/simple;
-	bh=1n44hClz/kTgxupMUtD2N6zurMw1ECAmqvSiP9oTBCo=;
+	s=arc-20240116; t=1720524043; c=relaxed/simple;
+	bh=z5rcqCdo+PZqXPmgyePXuQBX92vNXnlQOK0OjN7sn+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GgIkOdGSGrrMgwn0+0pyljUo7gKIQ8uzdvhYc6JZ2XVgaGaKydd4lKpryeFA3RxGS/2TmHSzemjsfBjcABCgm/3eZ6xTacpNJGzROsohCpTQ/kDCNgacfYu3hLvBzLp2cK6a9bQpAK6aqhooZuQ7Yp9Oh5scdgv/IiamuSXV5no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azqYeqE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A30C4AF0C;
-	Tue,  9 Jul 2024 11:11:39 +0000 (UTC)
+	 MIME-Version; b=lYsYekcEP8mzdXv4QZM+JDbOj/Ul4FLzXHSd74eVKWCz2lYQvFvRtdisQ2TPDYdy0/al6jO/lSoW1GThyE0FLMzRfPZ2mBeXUlk5Uypl3aw15NdKIDmWQeCzLKij/QxLAGnT4QGkJ7ja8nnZT3FjnnkqvCfxt9dWpfKHAJQdclU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsUP4F7c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5877BC4AF0C;
+	Tue,  9 Jul 2024 11:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523500;
-	bh=1n44hClz/kTgxupMUtD2N6zurMw1ECAmqvSiP9oTBCo=;
+	s=korg; t=1720524043;
+	bh=z5rcqCdo+PZqXPmgyePXuQBX92vNXnlQOK0OjN7sn+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=azqYeqE6KQroIQ73/ftqFUktAB6dZxgh7hBmTPDVzOCMZSa516vLIYXgPNJ3CTsjb
-	 PYxO8htd0iLXLL75a49cDDN3+xNzF0Knbkv4G3TcMMflTV7hiIIMA6N1/29E7xUZrK
-	 edYsNbGApHJXqmZZ4Oo12naXNBCipUYfTGkn2qMw=
+	b=SsUP4F7cIFeCBbOj6+yWNFsJZ5oeoJCS0TuuhRWt3hQRpcjt5byVLSnfy0KCkuIyh
+	 nRyQ/yCxHa4NKjg14rYUk1Kpi18s04rCNTXO2q9myHV/5X/oDoaMeO5BzE0dHEimeg
+	 8SQT4RkcOAjQDx8HNfKvSoXtVyZIYAGbBNFf/sog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Shirisha Ganta <shirisha@linux.ibm.com>,
-	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 005/139] powerpc: Avoid nmi_enter/nmi_exit in real mode interrupt.
-Date: Tue,  9 Jul 2024 13:08:25 +0200
-Message-ID: <20240709110658.358671508@linuxfoundation.org>
+Subject: [PATCH 6.9 052/197] media: s2255: Use refcount_t instead of atomic_t for num_channels
+Date: Tue,  9 Jul 2024 13:08:26 +0200
+Message-ID: <20240709110710.976965985@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,118 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 0db880fc865ffb522141ced4bfa66c12ab1fbb70 ]
+[ Upstream commit 6cff72f6bcee89228a662435b7c47e21a391c8d0 ]
 
-nmi_enter()/nmi_exit() touches per cpu variables which can lead to kernel
-crash when invoked during real mode interrupt handling (e.g. early HMI/MCE
-interrupt handler) if percpu allocation comes from vmalloc area.
+Use an API that resembles more the actual use of num_channels.
 
-Early HMI/MCE handlers are called through DEFINE_INTERRUPT_HANDLER_NMI()
-wrapper which invokes nmi_enter/nmi_exit calls. We don't see any issue when
-percpu allocation is from the embedded first chunk. However with
-CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there are chances where percpu
-allocation can come from the vmalloc area.
+Found by cocci:
+drivers/media/usb/s2255/s2255drv.c:2362:5-24: WARNING: atomic_dec_and_test variation before object free at line 2363.
+drivers/media/usb/s2255/s2255drv.c:1557:5-24: WARNING: atomic_dec_and_test variation before object free at line 1558.
 
-With kernel command line "percpu_alloc=page" we can force percpu allocation
-to come from vmalloc area and can see kernel crash in machine_check_early:
-
-[    1.215714] NIP [c000000000e49eb4] rcu_nmi_enter+0x24/0x110
-[    1.215717] LR [c0000000000461a0] machine_check_early+0xf0/0x2c0
-[    1.215719] --- interrupt: 200
-[    1.215720] [c000000fffd73180] [0000000000000000] 0x0 (unreliable)
-[    1.215722] [c000000fffd731b0] [0000000000000000] 0x0
-[    1.215724] [c000000fffd73210] [c000000000008364] machine_check_early_common+0x134/0x1f8
-
-Fix this by avoiding use of nmi_enter()/nmi_exit() in real mode if percpu
-first chunk is not embedded.
-
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Tested-by: Shirisha Ganta <shirisha@linux.ibm.com>
-Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240410043006.81577-1-mahesh@linux.ibm.com
+Link: https://lore.kernel.org/linux-media/20240429-fix-cocci-v3-11-3c4865f5a4b0@chromium.org
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/interrupt.h | 10 ++++++++++
- arch/powerpc/include/asm/percpu.h    | 10 ++++++++++
- arch/powerpc/kernel/setup_64.c       |  2 ++
- 3 files changed, 22 insertions(+)
+ drivers/media/usb/s2255/s2255drv.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index a4196ab1d0167..5f9d61b2159cc 100644
---- a/arch/powerpc/include/asm/interrupt.h
-+++ b/arch/powerpc/include/asm/interrupt.h
-@@ -336,6 +336,14 @@ static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct inte
- 	if (IS_ENABLED(CONFIG_KASAN))
- 		return;
+diff --git a/drivers/media/usb/s2255/s2255drv.c b/drivers/media/usb/s2255/s2255drv.c
+index 8e1de1e8bd127..a6e450181fd01 100644
+--- a/drivers/media/usb/s2255/s2255drv.c
++++ b/drivers/media/usb/s2255/s2255drv.c
+@@ -247,7 +247,7 @@ struct s2255_vc {
+ struct s2255_dev {
+ 	struct s2255_vc         vc[MAX_CHANNELS];
+ 	struct v4l2_device      v4l2_dev;
+-	atomic_t                num_channels;
++	refcount_t		num_channels;
+ 	int			frames;
+ 	struct mutex		lock;	/* channels[].vdev.lock */
+ 	struct mutex		cmdlock; /* protects cmdbuf */
+@@ -1550,11 +1550,11 @@ static void s2255_video_device_release(struct video_device *vdev)
+ 		container_of(vdev, struct s2255_vc, vdev);
  
-+	/*
-+	 * Likewise, do not use it in real mode if percpu first chunk is not
-+	 * embedded. With CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there
-+	 * are chances where percpu allocation can come from vmalloc area.
-+	 */
-+	if (percpu_first_chunk_is_paged)
-+		return;
-+
- 	/* Otherwise, it should be safe to call it */
- 	nmi_enter();
+ 	dprintk(dev, 4, "%s, chnls: %d\n", __func__,
+-		atomic_read(&dev->num_channels));
++		refcount_read(&dev->num_channels));
+ 
+ 	v4l2_ctrl_handler_free(&vc->hdl);
+ 
+-	if (atomic_dec_and_test(&dev->num_channels))
++	if (refcount_dec_and_test(&dev->num_channels))
+ 		s2255_destroy(dev);
+ 	return;
  }
-@@ -351,6 +359,8 @@ static inline void interrupt_nmi_exit_prepare(struct pt_regs *regs, struct inter
- 		// no nmi_exit for a pseries hash guest taking a real mode exception
- 	} else if (IS_ENABLED(CONFIG_KASAN)) {
- 		// no nmi_exit for KASAN in real mode
-+	} else if (percpu_first_chunk_is_paged) {
-+		// no nmi_exit if percpu first chunk is not embedded
- 	} else {
- 		nmi_exit();
+@@ -1659,7 +1659,7 @@ static int s2255_probe_v4l(struct s2255_dev *dev)
+ 				"failed to register video device!\n");
+ 			break;
+ 		}
+-		atomic_inc(&dev->num_channels);
++		refcount_inc(&dev->num_channels);
+ 		v4l2_info(&dev->v4l2_dev, "V4L2 device registered as %s\n",
+ 			  video_device_node_name(&vc->vdev));
+ 
+@@ -1667,11 +1667,11 @@ static int s2255_probe_v4l(struct s2255_dev *dev)
+ 	pr_info("Sensoray 2255 V4L driver Revision: %s\n",
+ 		S2255_VERSION);
+ 	/* if no channels registered, return error and probe will fail*/
+-	if (atomic_read(&dev->num_channels) == 0) {
++	if (refcount_read(&dev->num_channels) == 0) {
+ 		v4l2_device_unregister(&dev->v4l2_dev);
+ 		return ret;
  	}
-diff --git a/arch/powerpc/include/asm/percpu.h b/arch/powerpc/include/asm/percpu.h
-index 8e5b7d0b851c6..634970ce13c6b 100644
---- a/arch/powerpc/include/asm/percpu.h
-+++ b/arch/powerpc/include/asm/percpu.h
-@@ -15,6 +15,16 @@
- #endif /* CONFIG_SMP */
- #endif /* __powerpc64__ */
+-	if (atomic_read(&dev->num_channels) != MAX_CHANNELS)
++	if (refcount_read(&dev->num_channels) != MAX_CHANNELS)
+ 		pr_warn("s2255: Not all channels available.\n");
+ 	return 0;
+ }
+@@ -2221,7 +2221,7 @@ static int s2255_probe(struct usb_interface *interface,
+ 		goto errorFWDATA1;
+ 	}
  
-+#if defined(CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK) && defined(CONFIG_SMP)
-+#include <linux/jump_label.h>
-+DECLARE_STATIC_KEY_FALSE(__percpu_first_chunk_is_paged);
-+
-+#define percpu_first_chunk_is_paged	\
-+		(static_key_enabled(&__percpu_first_chunk_is_paged.key))
-+#else
-+#define percpu_first_chunk_is_paged	false
-+#endif /* CONFIG_PPC64 && CONFIG_SMP */
-+
- #include <asm-generic/percpu.h>
- 
- #include <asm/paca.h>
-diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-index 246201d0d879e..394f209536cee 100644
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -834,6 +834,7 @@ static __init int pcpu_cpu_to_node(int cpu)
- 
- unsigned long __per_cpu_offset[NR_CPUS] __read_mostly;
- EXPORT_SYMBOL(__per_cpu_offset);
-+DEFINE_STATIC_KEY_FALSE(__percpu_first_chunk_is_paged);
- 
- void __init setup_per_cpu_areas(void)
+-	atomic_set(&dev->num_channels, 0);
++	refcount_set(&dev->num_channels, 0);
+ 	dev->pid = id->idProduct;
+ 	dev->fw_data = kzalloc(sizeof(struct s2255_fw), GFP_KERNEL);
+ 	if (!dev->fw_data)
+@@ -2341,12 +2341,12 @@ static void s2255_disconnect(struct usb_interface *interface)
  {
-@@ -876,6 +877,7 @@ void __init setup_per_cpu_areas(void)
- 	if (rc < 0)
- 		panic("cannot initialize percpu area (err=%d)", rc);
- 
-+	static_key_enable(&__percpu_first_chunk_is_paged.key);
- 	delta = (unsigned long)pcpu_base_addr - (unsigned long)__per_cpu_start;
- 	for_each_possible_cpu(cpu) {
-                 __per_cpu_offset[cpu] = delta + pcpu_unit_offsets[cpu];
+ 	struct s2255_dev *dev = to_s2255_dev(usb_get_intfdata(interface));
+ 	int i;
+-	int channels = atomic_read(&dev->num_channels);
++	int channels = refcount_read(&dev->num_channels);
+ 	mutex_lock(&dev->lock);
+ 	v4l2_device_disconnect(&dev->v4l2_dev);
+ 	mutex_unlock(&dev->lock);
+ 	/*see comments in the uvc_driver.c usb disconnect function */
+-	atomic_inc(&dev->num_channels);
++	refcount_inc(&dev->num_channels);
+ 	/* unregister each video device. */
+ 	for (i = 0; i < channels; i++)
+ 		video_unregister_device(&dev->vc[i].vdev);
+@@ -2359,7 +2359,7 @@ static void s2255_disconnect(struct usb_interface *interface)
+ 		dev->vc[i].vidstatus_ready = 1;
+ 		wake_up(&dev->vc[i].wait_vidstatus);
+ 	}
+-	if (atomic_dec_and_test(&dev->num_channels))
++	if (refcount_dec_and_test(&dev->num_channels))
+ 		s2255_destroy(dev);
+ 	dev_info(&interface->dev, "%s\n", __func__);
+ }
 -- 
 2.43.0
 
