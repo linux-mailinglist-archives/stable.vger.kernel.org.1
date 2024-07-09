@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-58606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A1C792B7D2
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D35E92B83A
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:32:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 444232855DC
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3F49B2292A
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 934FE156238;
-	Tue,  9 Jul 2024 11:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A61155744;
+	Tue,  9 Jul 2024 11:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G8Jdv9k5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCLpiQwz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B1627713;
-	Tue,  9 Jul 2024 11:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D437255E4C;
+	Tue,  9 Jul 2024 11:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524453; cv=none; b=MORmtHu7gPaGZRilguUsmaAD0Zipg6VWOI7SneN66Di/2FbRg+2DCxyjxxthEGrJIvYmTtH90anaEWSP1G2rZFgUGMsMZFJse2z+QbEs802YQ0Y55Vx9klkAx0BOjLGhtjMCduZh7LZ+Xdw/77fohBKgM7J6zFZ87e03mcdjk7Y=
+	t=1720524717; cv=none; b=Gy8RVUsY1V7QSVHrbxPcdrJ8SjqWPucMuX6EycPXo7Zid3CbpWEZUa9qmc1TAw1FK4W5EA0y3ZkiRxbE4BQCPwZnrnQznz+n9swpE1hbgTe8CEDxzweM1NdeOi0TQBP7uD25JPxKVKBpzyl2XxXGaAb1EagQ4rYYVj3T2wjW7p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524453; c=relaxed/simple;
-	bh=8iVUYOd+7oeneKgFuIbu/QBxgGU78d3hbo1H8VITdbY=;
+	s=arc-20240116; t=1720524717; c=relaxed/simple;
+	bh=fBtAdzhR5atlCME4y0EvPVKnbCsJSFa3t8NzPWXfUyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uBs63mkM6miFhT+NH34VBm3PMBUWBH/rPbw+QzNQDgcgW//astLDvwbKA7zDdeAp2x9CdNg2fTOVY/4zyyHXwwDZM81xp4tngx3JcnDJsjdcAxyTevNijJzYezRCWuGtxHq03UpS0OJVxQRPeUzJqVg+RXy+VaBap7/IuEO+Xf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8Jdv9k5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD06AC3277B;
-	Tue,  9 Jul 2024 11:27:32 +0000 (UTC)
+	 MIME-Version; b=hVDtE6xoani7dxF2P3l0rcsy+Mn/0Y507JJr32J1wbDX9ZPKtaZe5x0lih+lvEEyBEtlKTjhbfjxKWRzQ653Tph6PMDdWdy3FzrBLCYEuLYUlAUaboJ5dGOGOFxiDdx9J7VY31pwYjjg09toFXeO+WXPbcZljelVbDeTSjk9wx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCLpiQwz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57AACC3277B;
+	Tue,  9 Jul 2024 11:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524453;
-	bh=8iVUYOd+7oeneKgFuIbu/QBxgGU78d3hbo1H8VITdbY=;
+	s=korg; t=1720524717;
+	bh=fBtAdzhR5atlCME4y0EvPVKnbCsJSFa3t8NzPWXfUyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G8Jdv9k5FZgpjDbRpSYUB6aZNb56Q9sscniNFcT51c3rEb4tUupnbPBr5TRVKabaY
-	 IDBlE34TtdRNsDNf+Tr320FboAjo5HlqEFwQCYA+LDA6R/QOUTVHgAueJYfXHfBJBW
-	 dYtBaTec5lj+iBGqYM/kJNPRAai4N/cCkPrD1wwI=
+	b=NCLpiQwzfDPEy8SM/Kz8gG6Jegg9bcbIsUHxtQUB12GT5ITZLKjyFT+b7Ol1aotB+
+	 nfaaFf87xZUNvi04OOZSmBjxpIHJGHIgX9lVuadrhaiaiOy6kn2skP/0mMITe9aFPM
+	 sen6VuRcysK3eQijBbduDgVQSwFVqv3x3GSMsD5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Wylder <jwylder@google.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 185/197] regmap-i2c: Subtract reg size from max_write
-Date: Tue,  9 Jul 2024 13:10:39 +0200
-Message-ID: <20240709110716.099996580@linuxfoundation.org>
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Gautam Menghani <gautam@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.1 077/102] powerpc/pseries: Fix scv instruction crash with kexec
+Date: Tue,  9 Jul 2024 13:10:40 +0200
+Message-ID: <20240709110654.371905508@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Wylder <jwylder@google.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-[ Upstream commit 611b7eb19d0a305d4de00280e4a71a1b15c507fc ]
+commit 21a741eb75f80397e5f7d3739e24d7d75e619011 upstream.
 
-Currently, when an adapter defines a max_write_len quirk,
-the data will be chunked into data sizes equal to the
-max_write_len quirk value.  But the payload will be increased by
-the size of the register address before transmission.  The
-resulting value always ends up larger than the limit set
-by the quirk.
+kexec on pseries disables AIL (reloc_on_exc), required for scv
+instruction support, before other CPUs have been shut down. This means
+they can execute scv instructions after AIL is disabled, which causes an
+interrupt at an unexpected entry location that crashes the kernel.
 
-Avoid this error by setting regmap's max_write to the quirk's
-max_write_len minus the number of bytes for the register and
-padding.  This allows the chunking to work correctly for this
-limited case without impacting other use-cases.
+Change the kexec sequence to disable AIL after other CPUs have been
+brought down.
 
-Signed-off-by: Jim Wylder <jwylder@google.com>
-Link: https://msgid.link/r/20240523211437.2839942-1-jwylder@google.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As a refresher, the real-mode scv interrupt vector is 0x17000, and the
+fixed-location head code probably couldn't easily deal with implementing
+such high addresses so it was just decided not to support that interrupt
+at all.
+
+Fixes: 7fa95f9adaee ("powerpc/64s: system call support for scv/rfscv instructions")
+Cc: stable@vger.kernel.org # v5.9+
+Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Closes: https://lore.kernel.org/3b4b2943-49ad-4619-b195-bc416f1d1409@linux.ibm.com
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Tested-by: Gautam Menghani <gautam@linux.ibm.com>
+Tested-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Link: https://msgid.link/20240625134047.298759-1-npiggin@gmail.com
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/regmap/regmap-i2c.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/kexec/core_64.c             |   11 +++++++++++
+ arch/powerpc/platforms/pseries/kexec.c   |    8 --------
+ arch/powerpc/platforms/pseries/pseries.h |    1 -
+ arch/powerpc/platforms/pseries/setup.c   |    1 -
+ 4 files changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/base/regmap/regmap-i2c.c b/drivers/base/regmap/regmap-i2c.c
-index 3ec611dc0c09f..a905e955bbfc7 100644
---- a/drivers/base/regmap/regmap-i2c.c
-+++ b/drivers/base/regmap/regmap-i2c.c
-@@ -350,7 +350,8 @@ static const struct regmap_bus *regmap_get_i2c_bus(struct i2c_client *i2c,
+--- a/arch/powerpc/kexec/core_64.c
++++ b/arch/powerpc/kexec/core_64.c
+@@ -26,6 +26,7 @@
+ #include <asm/paca.h>
+ #include <asm/mmu.h>
+ #include <asm/sections.h>	/* _end */
++#include <asm/setup.h>
+ #include <asm/smp.h>
+ #include <asm/hw_breakpoint.h>
+ #include <asm/svm.h>
+@@ -316,6 +317,16 @@ void default_machine_kexec(struct kimage
+ 	if (!kdump_in_progress())
+ 		kexec_prepare_cpus();
  
- 		if (quirks->max_write_len &&
- 		    (bus->max_raw_write == 0 || bus->max_raw_write > quirks->max_write_len))
--			max_write = quirks->max_write_len;
-+			max_write = quirks->max_write_len -
-+				(config->reg_bits + config->pad_bits) / BITS_PER_BYTE;
++#ifdef CONFIG_PPC_PSERIES
++	/*
++	 * This must be done after other CPUs have shut down, otherwise they
++	 * could execute the 'scv' instruction, which is not supported with
++	 * reloc disabled (see configure_exceptions()).
++	 */
++	if (firmware_has_feature(FW_FEATURE_SET_MODE))
++		pseries_disable_reloc_on_exc();
++#endif
++
+ 	printk("kexec: Starting switchover sequence.\n");
  
- 		if (max_read || max_write) {
- 			ret_bus = kmemdup(bus, sizeof(*bus), GFP_KERNEL);
--- 
-2.43.0
-
+ 	/* switch to a staticly allocated stack.  Based on irq stack code.
+--- a/arch/powerpc/platforms/pseries/kexec.c
++++ b/arch/powerpc/platforms/pseries/kexec.c
+@@ -61,11 +61,3 @@ void pseries_kexec_cpu_down(int crash_sh
+ 	} else
+ 		xics_kexec_teardown_cpu(secondary);
+ }
+-
+-void pseries_machine_kexec(struct kimage *image)
+-{
+-	if (firmware_has_feature(FW_FEATURE_SET_MODE))
+-		pseries_disable_reloc_on_exc();
+-
+-	default_machine_kexec(image);
+-}
+--- a/arch/powerpc/platforms/pseries/pseries.h
++++ b/arch/powerpc/platforms/pseries/pseries.h
+@@ -38,7 +38,6 @@ static inline void smp_init_pseries(void
+ #endif
+ 
+ extern void pseries_kexec_cpu_down(int crash_shutdown, int secondary);
+-void pseries_machine_kexec(struct kimage *image);
+ 
+ extern void pSeries_final_fixup(void);
+ 
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -1149,7 +1149,6 @@ define_machine(pseries) {
+ 	.machine_check_exception = pSeries_machine_check_exception,
+ 	.machine_check_log_err	= pSeries_machine_check_log_err,
+ #ifdef CONFIG_KEXEC_CORE
+-	.machine_kexec          = pseries_machine_kexec,
+ 	.kexec_cpu_down         = pseries_kexec_cpu_down,
+ #endif
+ #ifdef CONFIG_MEMORY_HOTPLUG
 
 
 
