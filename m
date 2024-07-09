@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-58632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C19E92B7ED
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:28:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEDEF92B78E
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46AE2282521
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:28:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF9381C232AF
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6B6157485;
-	Tue,  9 Jul 2024 11:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307F7158A19;
+	Tue,  9 Jul 2024 11:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GniwqUo0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Qg7Xusv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F23D27713;
-	Tue,  9 Jul 2024 11:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E421215749B;
+	Tue,  9 Jul 2024 11:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524530; cv=none; b=CUej05KFDWW9g6uKrwVnRQvpM+v0s3Uofepc8vRVZFFiISDwo4jaG61Gl68yWmqh+vRX62n8dZCwaD1hTJRxd6aQnKjfPTNenxmnFrI/qVC+nwNMwmjORVD1WJyfrZRFMLwzdlcDOJLx6gdgvJ9GowS/uLyLdgtRIs6LhVeA3aI=
+	t=1720524258; cv=none; b=Bp32ODX67JNsoaebU+LRWSxYptFmUo65vRL4F2eUjolH2zrnFkDzHOxoT8+w0g1kgjeZ5sVuJr6rN6LNNNJoFQKjlB2JhOB33gNKxZwUWGu/gBWL0TBpkUZY34KCNs2nteh5ytZ4lxC1z/BCEOavAcNuVIo8cKQfk2b6cpD9w+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524530; c=relaxed/simple;
-	bh=iLMgO2Ekka3C0lWIyrhqUYUkVVcolbONhYfjJRkA9hU=;
+	s=arc-20240116; t=1720524258; c=relaxed/simple;
+	bh=41ypEUqHq0KxDkuzdX3mRNrmishe96wEyLfDfIMS4So=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kz4m7ICQYiLSCh7LyinGAELJzKfPRDo8V3RkXOhsuv2IpPIZZWWOa75CJHidF95PJeZTfV1AxQ6+BN0uwwf9QepwocH3MI3dfwoZ2bUuP/tlogQSNT2M+t2fuaOjjt2xSqLZighJhp9AtKHT7vY7PGsYg2W/bxlxgOdjMqEERxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GniwqUo0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95307C3277B;
-	Tue,  9 Jul 2024 11:28:49 +0000 (UTC)
+	 MIME-Version; b=eizjiB3eFsHTmacFlzbgZm34voTtsL5zx385ixTWEnZcQbgqHKxOhMhZEltM9/uiqpiMXvpLmv5HcC6F4jPz3usSeOkgwvBxrBe7Civ/K9UtmAUFA41zLwRlkzQFxjpa5EsSKq1EYH7M2XxJUt/pzGyd8TwLCJcoc/fj64LjV3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Qg7Xusv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C1A5C32786;
+	Tue,  9 Jul 2024 11:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524530;
-	bh=iLMgO2Ekka3C0lWIyrhqUYUkVVcolbONhYfjJRkA9hU=;
+	s=korg; t=1720524257;
+	bh=41ypEUqHq0KxDkuzdX3mRNrmishe96wEyLfDfIMS4So=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GniwqUo0jS8A31aUi9DX2H8gqBKKC6jRAHraCthkXyF2270/UsaaYtoKWtbS356Zt
-	 l/yNx9I52WsRWfseQavhDloYbCXU+VKCBaMjxwINEmouh5UWeWyasobYSkAtko+tSr
-	 4MkZZKsAQXJ0fDB9sOowSC2Weos00uChI8MfoJ2Y=
+	b=1Qg7Xusvv9LoEaLNoGdpRT90jkh6zIY99QsXNyAhJCwYhHbGWb0p255dF8WnpTcof
+	 DqNc2khkQI+xv/HG5XsIgQsMvgk+EXnbmGxA/WZkp2QxYYASwVKDi80VDP8FLRiMFO
+	 cRarHXsALthj9mesvKU6Wv04zCFmmtXkZinq1VYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	Xiaochun Lu <xiaochun.lu@bytedance.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 014/102] drm/amd/display: Check pipe offset before setting vblank
+Subject: [PATCH 6.9 123/197] selftests: fix OOM in msg_zerocopy selftest
 Date: Tue,  9 Jul 2024 13:09:37 +0200
-Message-ID: <20240709110651.923065796@linuxfoundation.org>
+Message-ID: <20240709110713.714479766@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-[ Upstream commit 5396a70e8cf462ec5ccf2dc8de103c79de9489e6 ]
+[ Upstream commit af2b7e5b741aaae9ffbba2c660def434e07aa241 ]
 
-pipe_ctx has a size of MAX_PIPES so checking its index before accessing
-the array.
+In selftests/net/msg_zerocopy.c, it has a while loop keeps calling sendmsg
+on a socket with MSG_ZEROCOPY flag, and it will recv the notifications
+until the socket is not writable. Typically, it will start the receiving
+process after around 30+ sendmsgs. However, as the introduction of commit
+dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale"), the sender is
+always writable and does not get any chance to run recv notifications.
+The selftest always exits with OUT_OF_MEMORY because the memory used by
+opt_skb exceeds the net.core.optmem_max. Meanwhile, it could be set to a
+different value to trigger OOM on older kernels too.
 
-This fixes an OVERRUN issue reported by Coverity.
+Thus, we introduce "cfg_notification_limit" to force sender to receive
+notifications after some number of sendmsgs.
 
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 07b65c5b31ce ("test: add msg_zerocopy test")
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Signed-off-by: Xiaochun Lu <xiaochun.lu@bytedance.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20240701225349.3395580-2-zijianzhang@bytedance.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/irq/dce110/irq_service_dce110.c    | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/msg_zerocopy.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c b/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c
-index 44649db5f3e32..5646b7788f02e 100644
---- a/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c
-+++ b/drivers/gpu/drm/amd/display/dc/irq/dce110/irq_service_dce110.c
-@@ -211,8 +211,12 @@ bool dce110_vblank_set(struct irq_service *irq_service,
- 						   info->ext_id);
- 	uint8_t pipe_offset = dal_irq_src - IRQ_TYPE_VBLANK;
+diff --git a/tools/testing/selftests/net/msg_zerocopy.c b/tools/testing/selftests/net/msg_zerocopy.c
+index bdc03a2097e85..926556febc83c 100644
+--- a/tools/testing/selftests/net/msg_zerocopy.c
++++ b/tools/testing/selftests/net/msg_zerocopy.c
+@@ -85,6 +85,7 @@ static bool cfg_rx;
+ static int  cfg_runtime_ms	= 4200;
+ static int  cfg_verbose;
+ static int  cfg_waittime_ms	= 500;
++static int  cfg_notification_limit = 32;
+ static bool cfg_zerocopy;
  
--	struct timing_generator *tg =
--			dc->current_state->res_ctx.pipe_ctx[pipe_offset].stream_res.tg;
-+	struct timing_generator *tg;
-+
-+	if (pipe_offset >= MAX_PIPES)
-+		return false;
-+
-+	tg = dc->current_state->res_ctx.pipe_ctx[pipe_offset].stream_res.tg;
+ static socklen_t cfg_alen;
+@@ -95,6 +96,7 @@ static char payload[IP_MAXPACKET];
+ static long packets, bytes, completions, expected_completions;
+ static int  zerocopied = -1;
+ static uint32_t next_completion;
++static uint32_t sends_since_notify;
  
- 	if (enable) {
- 		if (!tg || !tg->funcs->arm_vert_intr(tg, 2)) {
+ static unsigned long gettimeofday_ms(void)
+ {
+@@ -208,6 +210,7 @@ static bool do_sendmsg(int fd, struct msghdr *msg, bool do_zerocopy, int domain)
+ 		error(1, errno, "send");
+ 	if (cfg_verbose && ret != len)
+ 		fprintf(stderr, "send: ret=%u != %u\n", ret, len);
++	sends_since_notify++;
+ 
+ 	if (len) {
+ 		packets++;
+@@ -460,6 +463,7 @@ static bool do_recv_completion(int fd, int domain)
+ static void do_recv_completions(int fd, int domain)
+ {
+ 	while (do_recv_completion(fd, domain)) {}
++	sends_since_notify = 0;
+ }
+ 
+ /* Wait for all remaining completions on the errqueue */
+@@ -549,6 +553,9 @@ static void do_tx(int domain, int type, int protocol)
+ 		else
+ 			do_sendmsg(fd, &msg, cfg_zerocopy, domain);
+ 
++		if (cfg_zerocopy && sends_since_notify >= cfg_notification_limit)
++			do_recv_completions(fd, domain);
++
+ 		while (!do_poll(fd, POLLOUT)) {
+ 			if (cfg_zerocopy)
+ 				do_recv_completions(fd, domain);
+@@ -708,7 +715,7 @@ static void parse_opts(int argc, char **argv)
+ 
+ 	cfg_payload_len = max_payload_len;
+ 
+-	while ((c = getopt(argc, argv, "46c:C:D:i:mp:rs:S:t:vz")) != -1) {
++	while ((c = getopt(argc, argv, "46c:C:D:i:l:mp:rs:S:t:vz")) != -1) {
+ 		switch (c) {
+ 		case '4':
+ 			if (cfg_family != PF_UNSPEC)
+@@ -736,6 +743,9 @@ static void parse_opts(int argc, char **argv)
+ 			if (cfg_ifindex == 0)
+ 				error(1, errno, "invalid iface: %s", optarg);
+ 			break;
++		case 'l':
++			cfg_notification_limit = strtoul(optarg, NULL, 0);
++			break;
+ 		case 'm':
+ 			cfg_cork_mixed = true;
+ 			break;
 -- 
 2.43.0
 
