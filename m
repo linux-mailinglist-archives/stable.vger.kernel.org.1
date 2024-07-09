@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-58288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA33692B634
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:11:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC45E92B734
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:21:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBB1A1C221F3
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:11:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7805F1F23E28
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28C215747F;
-	Tue,  9 Jul 2024 11:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F334158A32;
+	Tue,  9 Jul 2024 11:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ahnnk7MQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QtzYTiV5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5CD38382;
-	Tue,  9 Jul 2024 11:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED8115886A;
+	Tue,  9 Jul 2024 11:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523482; cv=none; b=V3nGhgB8YIgM+cTlzgdRsEAz+Oi+iSeY0mqBbZnzMZcgfTuvVypWQuyR4kHKHhLaLIALta7swByOBQAj9T5+RsDMFJlda7cguaqVHG8nH9EACMjVccsBmUm1BfVvqvyDza8oOUiTqQ8SqSv8YNI7/Up7klSMWM7LMgFxoJXMYSY=
+	t=1720524032; cv=none; b=KtGgzxI6tdhFJU0ED+LyDJYufV7vCLxmjPQFNcAXyc3kgGL1YgpdgryPXU+UToiOPY3x61TjeHkciEnt66g8YUQjVrnkvt3zsGEcGqAJZKxEP34TUV1s4CLg8GwMrvy/trjBJwL9QyKklLtfjLecgBz4aseHhxUuVn3BdSgIKa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523482; c=relaxed/simple;
-	bh=Mp2wgn1zSYqUfawu0YUC6/l65kM/AavNfXgfd0aN+7M=;
+	s=arc-20240116; t=1720524032; c=relaxed/simple;
+	bh=GdPL9nETBl3+SroSuHS7JxlFS9kJT8cT26IKZWjHOkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JKdDmI0XRVyMbfkxR9FpKv4Cz2IsDp5Kop0uW0tn/JMxO4/R0zzaSYcKzFg52l9DtSzQtT6kIiUa0eiIS82Q9ix1DANqRIDnJEeaZJ6I4d7OHLcvV0jB4jc2BupJq7VgrbOie7dZcLNjxYvPjPHp+Fciw9bkkPw7vrLFpSGjggo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ahnnk7MQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82044C3277B;
-	Tue,  9 Jul 2024 11:11:21 +0000 (UTC)
+	 MIME-Version; b=DoYhW5MyQmzBnoWkSMwVkMW7pu2KHH1amI2oBUtM0BHHZonovRGdteUplXUMPh+5hAb7FJhOu6Zmtq+YMKnF3CG+mWaOJgLCp0VvIRr46YQh/wTG+km3bYRYgPhMyNT19BylEfmjsIRLB/Ox5kQ3RhQ5JsRkd9h0WND976WZExw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QtzYTiV5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA373C32786;
+	Tue,  9 Jul 2024 11:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523482;
-	bh=Mp2wgn1zSYqUfawu0YUC6/l65kM/AavNfXgfd0aN+7M=;
+	s=korg; t=1720524032;
+	bh=GdPL9nETBl3+SroSuHS7JxlFS9kJT8cT26IKZWjHOkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ahnnk7MQ7eVM+XfKdYyMx9hQTsjYN+g3PaJrz8tWDkvfHCROwXcBFWfE5iM/NrtlE
-	 S5uyxsJeEHV91CAxPPPg5KNnBFdbcM3yXs1kvmq3dnE+bEgtH4WylSvyWhvqUM9f91
-	 JbwfzknWVo+JRK0TUpqrqr9IT97do6XyA9fdYsD4=
+	b=QtzYTiV56hhuo+TwtvpL9Fs2kAT66Y8f/JNm2Fdx7bSCLzc3/y8nQTKx0ijJdauEO
+	 82RDABzjY5KLk8H7DCkihv1deDhJxdbWCCPxLzzGcdvf4c/SlYPT4kXDioX+bx4HFq
+	 7v5h/kIe6LSzXN4jcuxkqICKIMCHcnGfyABlqcJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	George Stark <gnstark@salutedevices.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Lee Jones <lee@kernel.org>,
+	StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 001/139] locking/mutex: Introduce devm_mutex_init()
-Date: Tue,  9 Jul 2024 13:08:21 +0200
-Message-ID: <20240709110658.206061808@linuxfoundation.org>
+Subject: [PATCH 6.9 048/197] wifi: mt76: mt7996: add sanity checks for background radar trigger
+Date: Tue,  9 Jul 2024 13:08:22 +0200
+Message-ID: <20240709110710.822853697@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Stark <gnstark@salutedevices.com>
+From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
 
-[ Upstream commit 4cd47222e435dec8e3787614924174f53fcfb5ae ]
+[ Upstream commit ec55d8e7dfea92daff87f5c01689633f8c4e6a62 ]
 
-Using of devm API leads to a certain order of releasing resources.
-So all dependent resources which are not devm-wrapped should be deleted
-with respect to devm-release order. Mutex is one of such objects that
-often is bound to other resources and has no own devm wrapping.
-Since mutex_destroy() actually does nothing in non-debug builds
-frequently calling mutex_destroy() is just ignored which is safe for now
-but wrong formally and can lead to a problem if mutex_destroy() will be
-extended so introduce devm_mutex_init().
+Check if background radar is enabled or not before manually triggering it,
+and also add more checks in radar detected event.
 
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: George Stark <gnstark@salutedevices.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Marek Behún <kabel@kernel.org>
-Acked-by: Waiman Long <longman@redhat.com>
-Link: https://lore.kernel.org/r/20240411161032.609544-2-gnstark@salutedevices.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mutex.h        | 27 +++++++++++++++++++++++++++
- kernel/locking/mutex-debug.c | 12 ++++++++++++
- 2 files changed, 39 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c | 5 +++++
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c     | 5 ++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/mutex.h b/include/linux/mutex.h
-index a33aa9eb9fc3b..5b5630e58407a 100644
---- a/include/linux/mutex.h
-+++ b/include/linux/mutex.h
-@@ -21,6 +21,8 @@
- #include <linux/debug_locks.h>
- #include <linux/cleanup.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
+index 9bd953586b041..62c03d088925c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
+@@ -225,6 +225,11 @@ mt7996_radar_trigger(void *data, u64 val)
+ 	if (val > MT_RX_SEL2)
+ 		return -EINVAL;
  
-+struct device;
++	if (val == MT_RX_SEL2 && !dev->rdd2_phy) {
++		dev_err(dev->mt76.dev, "Background radar is not enabled\n");
++		return -EINVAL;
++	}
 +
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
- # define __DEP_MAP_MUTEX_INITIALIZER(lockname)			\
- 		, .dep_map = {					\
-@@ -171,6 +173,31 @@ do {							\
- } while (0)
- #endif /* CONFIG_PREEMPT_RT */
- 
-+#ifdef CONFIG_DEBUG_MUTEXES
-+
-+int __devm_mutex_init(struct device *dev, struct mutex *lock);
-+
-+#else
-+
-+static inline int __devm_mutex_init(struct device *dev, struct mutex *lock)
-+{
-+	/*
-+	 * When CONFIG_DEBUG_MUTEXES is off mutex_destroy() is just a nop so
-+	 * no really need to register it in the devm subsystem.
-+	 */
-+	return 0;
-+}
-+
-+#endif
-+
-+#define devm_mutex_init(dev, mutex)			\
-+({							\
-+	typeof(mutex) mutex_ = (mutex);			\
-+							\
-+	mutex_init(mutex_);				\
-+	__devm_mutex_init(dev, mutex_);			\
-+})
-+
- /*
-  * See kernel/locking/mutex.c for detailed documentation of these APIs.
-  * Also see Documentation/locking/mutex-design.rst.
-diff --git a/kernel/locking/mutex-debug.c b/kernel/locking/mutex-debug.c
-index bc8abb8549d20..6e6f6071cfa27 100644
---- a/kernel/locking/mutex-debug.c
-+++ b/kernel/locking/mutex-debug.c
-@@ -12,6 +12,7 @@
-  */
- #include <linux/mutex.h>
- #include <linux/delay.h>
-+#include <linux/device.h>
- #include <linux/export.h>
- #include <linux/poison.h>
- #include <linux/sched.h>
-@@ -89,6 +90,17 @@ void debug_mutex_init(struct mutex *lock, const char *name,
- 	lock->magic = lock;
+ 	return mt7996_mcu_rdd_cmd(dev, RDD_RADAR_EMULATE,
+ 				  val, 0, 0);
  }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index e86c05d0eecc9..bc3b2babb094d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -355,7 +355,10 @@ mt7996_mcu_rx_radar_detected(struct mt7996_dev *dev, struct sk_buff *skb)
+ 	if (r->band_idx >= ARRAY_SIZE(dev->mt76.phys))
+ 		return;
  
-+static void devm_mutex_release(void *res)
-+{
-+	mutex_destroy(res);
-+}
+-	if (dev->rdd2_phy && r->band_idx == MT_RX_SEL2)
++	if (r->band_idx == MT_RX_SEL2 && !dev->rdd2_phy)
++		return;
 +
-+int __devm_mutex_init(struct device *dev, struct mutex *lock)
-+{
-+	return devm_add_action_or_reset(dev, devm_mutex_release, lock);
-+}
-+EXPORT_SYMBOL_GPL(__devm_mutex_init);
-+
- /***
-  * mutex_destroy - mark a mutex unusable
-  * @lock: the mutex to be destroyed
++	if (r->band_idx == MT_RX_SEL2)
+ 		mphy = dev->rdd2_phy->mt76;
+ 	else
+ 		mphy = dev->mt76.phys[r->band_idx];
 -- 
 2.43.0
 
