@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-58440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A9792B703
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:19:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 262AE92B70F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:19:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6F09B25A2A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:19:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D63032837EE
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:19:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DF2156238;
-	Tue,  9 Jul 2024 11:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FEE158874;
+	Tue,  9 Jul 2024 11:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rW2FaRF3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZmCEWnL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D2213A25F;
-	Tue,  9 Jul 2024 11:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DD2158869;
+	Tue,  9 Jul 2024 11:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523941; cv=none; b=DKIorX0ggbWc1LQChyXxSo2kNThPYwDGugruwabNVzeWU5bRIZhFcRM0uq45HEznFzVWDC983HpqhR3wuXlSEnT3BU45kswZ44RT0d1lJewcOeUmnxm2cq9M3nJmjdllSryk2TavMsBfkWGIKO0ttMDvbm92pSMtxbsQQfpN28A=
+	t=1720523965; cv=none; b=B9C8ioCNs/0V8gN3Mg42pDkh0Xbc8ejtR3prgq3QIZPRWIhBpWo1fI7dd2HMmw7XgXnlhH/puE6SLxFg6Jn/xbuHFZPL1q4eleGjZjIjbGQMTaqqUBO7Fa+b5EOID236utAvPyzZkdqkpG5DyVvQELeFKy5wrz1xQ1ZVzH1Jh0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523941; c=relaxed/simple;
-	bh=JtiZDC0elF+ls3cuvfAtlgqamQjacyCcGzJdbHqiSz4=;
+	s=arc-20240116; t=1720523965; c=relaxed/simple;
+	bh=JqqY3WqzVZVhs3snOOwhiP5opXrFp2O0nOrOSpaSnQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XM6x+sC81F8QK2PWfWdLmWczqR8xJjjX7KccqjK9ULcc/pQbZHWUgfDSO4wbdabwvJD2EDum3UyhM0+isaP8S/wlVjvKOtNi0EVSbbBzmAWMNSnx5ovzsRaYtvmWozT0m6VsrGQuXKJYxvCva9lUSX7ojnyX+1l5GvUguOsyVio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rW2FaRF3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF16C32786;
-	Tue,  9 Jul 2024 11:19:01 +0000 (UTC)
+	 MIME-Version; b=EeMk7MggSPJQ9ZuJtQ8BYUH1ydrrFBgSc0RS7d/jwhLf1Zgg4UZomumGrWRo81kc6YbuBBqtEmZ40+i48vbXHR2Q0ctDDbbyQgZGSLBYrOb4ob+4U/OydaTO7ed0seAB0qaRavoDmRFA1TAW6JjmoDtb7fZ9LxDOSt/7oOdNF5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZmCEWnL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFEAEC32786;
+	Tue,  9 Jul 2024 11:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523941;
-	bh=JtiZDC0elF+ls3cuvfAtlgqamQjacyCcGzJdbHqiSz4=;
+	s=korg; t=1720523965;
+	bh=JqqY3WqzVZVhs3snOOwhiP5opXrFp2O0nOrOSpaSnQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rW2FaRF3wz4UuWtGi7H9pdOPy7YsEhYKjF7EUmSRDCJ+MWAI32MmnDcTyZ/8Sm+zj
-	 gAUqtYWewc9exC4fZ5g3ILoJiu1UW2krDXDFbZMHFjYonKja1K/z3TOIrZg38xX2X+
-	 r84GY1BlLmBxulDUVxKaYUjmBYEISo4Lx3fSPaiU=
+	b=mZmCEWnLWIIHszfRYn/sEXqLLLr1Kdvr+eIrYwlNCX58ViPJiXUjV7XzqSXBnXd7r
+	 iM05CezG4YHtU5gu5ps/Dd/ZrYjEW5Zc1u0PiW6bRyc8mVwZOYJnKSZxMxSMwejSWV
+	 JRAa1QRXVNxOfqx+dUIAyYHQ4oxTFS67QT7y8EFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	George Stark <gnstark@salutedevices.com>,
 	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Waiman Long <longman@redhat.com>,
 	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 002/197] locking/mutex: Introduce devm_mutex_init()
-Date: Tue,  9 Jul 2024 13:07:36 +0200
-Message-ID: <20240709110708.999748307@linuxfoundation.org>
+Subject: [PATCH 6.9 003/197] leds: mlxreg: Use devm_mutex_init() for mutex initialization
+Date: Tue,  9 Jul 2024 13:07:37 +0200
+Message-ID: <20240709110709.038309619@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
 References: <20240709110708.903245467@linuxfoundation.org>
@@ -64,7 +61,6 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.9-stable review patch.  If anyone has any objections, please let me know.
@@ -73,107 +69,66 @@ Content-Transfer-Encoding: 8bit
 
 From: George Stark <gnstark@salutedevices.com>
 
-[ Upstream commit 4cd47222e435dec8e3787614924174f53fcfb5ae ]
+[ Upstream commit efc347b9efee1c2b081f5281d33be4559fa50a16 ]
 
-Using of devm API leads to a certain order of releasing resources.
-So all dependent resources which are not devm-wrapped should be deleted
-with respect to devm-release order. Mutex is one of such objects that
-often is bound to other resources and has no own devm wrapping.
-Since mutex_destroy() actually does nothing in non-debug builds
-frequently calling mutex_destroy() is just ignored which is safe for now
-but wrong formally and can lead to a problem if mutex_destroy() will be
-extended so introduce devm_mutex_init().
+In this driver LEDs are registered using devm_led_classdev_register()
+so they are automatically unregistered after module's remove() is done.
+led_classdev_unregister() calls module's led_set_brightness() to turn off
+the LEDs and that callback uses mutex which was destroyed already
+in module's remove() so use devm API instead.
 
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: George Stark <gnstark@salutedevices.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Marek Behún <kabel@kernel.org>
-Acked-by: Waiman Long <longman@redhat.com>
-Link: https://lore.kernel.org/r/20240411161032.609544-2-gnstark@salutedevices.com
+Link: https://lore.kernel.org/r/20240411161032.609544-8-gnstark@salutedevices.com
 Signed-off-by: Lee Jones <lee@kernel.org>
-Stable-dep-of: efc347b9efee ("leds: mlxreg: Use devm_mutex_init() for mutex initialization")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mutex.h        | 27 +++++++++++++++++++++++++++
- kernel/locking/mutex-debug.c | 12 ++++++++++++
- 2 files changed, 39 insertions(+)
+ drivers/leds/leds-mlxreg.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/mutex.h b/include/linux/mutex.h
-index 67edc4ca2beeb..a561c629d89f0 100644
---- a/include/linux/mutex.h
-+++ b/include/linux/mutex.h
-@@ -22,6 +22,8 @@
- #include <linux/cleanup.h>
- #include <linux/mutex_types.h>
+diff --git a/drivers/leds/leds-mlxreg.c b/drivers/leds/leds-mlxreg.c
+index 5595788d98d20..1b70de72376cc 100644
+--- a/drivers/leds/leds-mlxreg.c
++++ b/drivers/leds/leds-mlxreg.c
+@@ -256,6 +256,7 @@ static int mlxreg_led_probe(struct platform_device *pdev)
+ {
+ 	struct mlxreg_core_platform_data *led_pdata;
+ 	struct mlxreg_led_priv_data *priv;
++	int err;
  
-+struct device;
-+
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
- # define __DEP_MAP_MUTEX_INITIALIZER(lockname)			\
- 		, .dep_map = {					\
-@@ -117,6 +119,31 @@ do {							\
- } while (0)
- #endif /* CONFIG_PREEMPT_RT */
+ 	led_pdata = dev_get_platdata(&pdev->dev);
+ 	if (!led_pdata) {
+@@ -267,26 +268,21 @@ static int mlxreg_led_probe(struct platform_device *pdev)
+ 	if (!priv)
+ 		return -ENOMEM;
  
-+#ifdef CONFIG_DEBUG_MUTEXES
+-	mutex_init(&priv->access_lock);
++	err = devm_mutex_init(&pdev->dev, &priv->access_lock);
++	if (err)
++		return err;
 +
-+int __devm_mutex_init(struct device *dev, struct mutex *lock);
-+
-+#else
-+
-+static inline int __devm_mutex_init(struct device *dev, struct mutex *lock)
-+{
-+	/*
-+	 * When CONFIG_DEBUG_MUTEXES is off mutex_destroy() is just a nop so
-+	 * no really need to register it in the devm subsystem.
-+	 */
-+	return 0;
-+}
-+
-+#endif
-+
-+#define devm_mutex_init(dev, mutex)			\
-+({							\
-+	typeof(mutex) mutex_ = (mutex);			\
-+							\
-+	mutex_init(mutex_);				\
-+	__devm_mutex_init(dev, mutex_);			\
-+})
-+
- /*
-  * See kernel/locking/mutex.c for detailed documentation of these APIs.
-  * Also see Documentation/locking/mutex-design.rst.
-diff --git a/kernel/locking/mutex-debug.c b/kernel/locking/mutex-debug.c
-index bc8abb8549d20..6e6f6071cfa27 100644
---- a/kernel/locking/mutex-debug.c
-+++ b/kernel/locking/mutex-debug.c
-@@ -12,6 +12,7 @@
-  */
- #include <linux/mutex.h>
- #include <linux/delay.h>
-+#include <linux/device.h>
- #include <linux/export.h>
- #include <linux/poison.h>
- #include <linux/sched.h>
-@@ -89,6 +90,17 @@ void debug_mutex_init(struct mutex *lock, const char *name,
- 	lock->magic = lock;
+ 	priv->pdev = pdev;
+ 	priv->pdata = led_pdata;
+ 
+ 	return mlxreg_led_config(priv);
  }
  
-+static void devm_mutex_release(void *res)
-+{
-+	mutex_destroy(res);
-+}
-+
-+int __devm_mutex_init(struct device *dev, struct mutex *lock)
-+{
-+	return devm_add_action_or_reset(dev, devm_mutex_release, lock);
-+}
-+EXPORT_SYMBOL_GPL(__devm_mutex_init);
-+
- /***
-  * mutex_destroy - mark a mutex unusable
-  * @lock: the mutex to be destroyed
+-static void mlxreg_led_remove(struct platform_device *pdev)
+-{
+-	struct mlxreg_led_priv_data *priv = dev_get_drvdata(&pdev->dev);
+-
+-	mutex_destroy(&priv->access_lock);
+-}
+-
+ static struct platform_driver mlxreg_led_driver = {
+ 	.driver = {
+ 	    .name = "leds-mlxreg",
+ 	},
+ 	.probe = mlxreg_led_probe,
+-	.remove_new = mlxreg_led_remove,
+ };
+ 
+ module_platform_driver(mlxreg_led_driver);
 -- 
 2.43.0
 
