@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-58568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21DE792B7A8
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:25:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A8D92B81A
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52DBB1C2346F
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:25:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DC561F216AE
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6631157E61;
-	Tue,  9 Jul 2024 11:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45EC81527B1;
+	Tue,  9 Jul 2024 11:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XtrxFj62"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3eFmMxE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740ED13A25F;
-	Tue,  9 Jul 2024 11:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0412E12CDB6;
+	Tue,  9 Jul 2024 11:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524330; cv=none; b=rx5uCyOq6xwt9xyJHWiQF/rw3YLpa8MpKMGeaavlZJexV/aE8+QG65sLZBQDDTJqhdc0Kj2MZXBp2wg/kZADv5Ui7XyRq4nZK0sZxnTx9dCoYiAOewNfAB9u9FP4T4JsM7VPO4jQX6aZavh9IQ77LMzgMeOPjAWfsokAvxCNp0E=
+	t=1720524633; cv=none; b=TiKpZgbdN1Ns8DSvY7Z0D6HINypWbQxGT97u+SsCePcUPA72nOGruoXs+M55PzU6H9TQbzoXQQoLkwfdZKqMeeyqn/jCis4aFwomOKeCgZrDUKwlPpXObRCsGk5IUnW+On2e2Nv5o7tDejlGE8yoYpkJgOO3LZByy1bjukBirwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524330; c=relaxed/simple;
-	bh=S4seHr6J3agTnUZKRn9TSkIXVl1kBmpIK0gbjFD9218=;
+	s=arc-20240116; t=1720524633; c=relaxed/simple;
+	bh=R2d6HXoFuV08rVaKRP3L1f7XAxjsgqoXrIdGvk3e9oU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LIw0RX52YMg9HbjGKK7NCaoQFmHLsA8s8mk5wu1jLwBp9EwOiS39YTeVtcMefjLFpPw9OmNaiKRAQxtXzKU3qFGr6pPblqGPw83umKQbDchMAzYF5j8gK1SMUIAt1F22vIeuzP4Oo0EBnirbQry+ww0Ap6je+Ha3jKlw2xXVWyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XtrxFj62; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE544C3277B;
-	Tue,  9 Jul 2024 11:25:29 +0000 (UTC)
+	 MIME-Version; b=XoLRlthOL3zvKqMHJGkzLtkbViZ7qsw7z2xxbjoqJMC5TGMrQ+hD5TR30xMN4rnszBcBQ/byA4Ks3W7hge0CCbvmeNwIyxX+uM9WZ/Kc8GKlhUO5W9fe+0nn6p5KatjeqctXGPDKS1rXfetofn0jTitx/GGalZWMMOkANU/8sU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3eFmMxE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B2DC3277B;
+	Tue,  9 Jul 2024 11:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524330;
-	bh=S4seHr6J3agTnUZKRn9TSkIXVl1kBmpIK0gbjFD9218=;
+	s=korg; t=1720524632;
+	bh=R2d6HXoFuV08rVaKRP3L1f7XAxjsgqoXrIdGvk3e9oU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XtrxFj620+5qAF6ShAeUkxM1hXI99Opubbj4+JcBZTOdyyK4Lx8VPZqcgnWnsPAie
-	 hNIXvU+uHkmIqSEZ2blXRAarZwEp5N/wzSOecEzyST9GFLlFPqUBqVzu0aO3fbSIyQ
-	 R55dKw2QMfgFSOgtWSxnMLCUtt1q/O5/MyP1qfrg=
+	b=d3eFmMxEjF041B7Mzg9qebY6Wev8yePuuUi76kCaA/Lsibi25uVXoCtIN/5wd/8qG
+	 /YEA8uA5vAwOkd7oiImGWMz5X3wrbfvS3SNTi+/nV80uM+CwDZHPifY6TLGOcc3teD
+	 8U9J1mLmOOBzYmfBuTEt6gYeketdejzuB44hFPRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Niklas Neronin <niklas.neronin@linux.intel.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 130/197] gpiolib: of: add polarity quirk for TSC2005
+Subject: [PATCH 6.1 021/102] usb: xhci: prevent potential failure in handle_tx_event() for Transfer events without TRB
 Date: Tue,  9 Jul 2024 13:09:44 +0200
-Message-ID: <20240709110713.983121360@linuxfoundation.org>
+Message-ID: <20240709110652.194662100@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Niklas Neronin <niklas.neronin@linux.intel.com>
 
-[ Upstream commit f8d76c2c313c56d5cb894a243dff4550f048278d ]
+[ Upstream commit 66cb618bf0bb82859875b00eeffaf223557cb416 ]
 
-DTS for Nokia N900 incorrectly specifies "active high" polarity for
-the reset line, while the chip documentation actually specifies it as
-"active low".  In the past the driver fudged gpiod API and inverted
-the logic internally, but it was changed in d0d89493bff8.
+Some transfer events don't always point to a TRB, and consequently don't
+have a endpoint ring. In these cases, function handle_tx_event() should
+not proceed, because if 'ep->skip' is set, the pointer to the endpoint
+ring is used.
 
-Fixes: d0d89493bff8 ("Input: tsc2004/5 - switch to using generic device properties")
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/ZoWXwYtwgJIxi-hD@google.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+To prevent a potential failure and make the code logical, return after
+checking the completion code for a Transfer event without TRBs.
+
+Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240429140245.3955523-11-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-of.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/usb/host/xhci-ring.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-index 7db35cbde8e92..5c4442200118a 100644
---- a/drivers/gpio/gpiolib-of.c
-+++ b/drivers/gpio/gpiolib-of.c
-@@ -212,6 +212,14 @@ static void of_gpio_try_fixup_polarity(const struct device_node *np,
- 		 * for the property.
- 		 */
- 		{ "lantiq,pci-xway",	"gpio-reset",	false },
-+#endif
-+#if IS_ENABLED(CONFIG_TOUCHSCREEN_TSC2005)
-+		/*
-+		 * DTS for Nokia N900 incorrectly specified "active high"
-+		 * polarity for the reset line, while the chip actually
-+		 * treats it as "active low".
-+		 */
-+		{ "ti,tsc2005",		"reset-gpios",	false },
- #endif
- 	};
- 	unsigned int i;
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 7549c430c4f01..be5b0ff2966fe 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -2631,16 +2631,17 @@ static int handle_tx_event(struct xhci_hcd *xhci,
+ 			else
+ 				xhci_handle_halted_endpoint(xhci, ep, 0, NULL,
+ 							    EP_SOFT_RESET);
+-			goto cleanup;
++			break;
+ 		case COMP_RING_UNDERRUN:
+ 		case COMP_RING_OVERRUN:
+ 		case COMP_STOPPED_LENGTH_INVALID:
+-			goto cleanup;
++			break;
+ 		default:
+ 			xhci_err(xhci, "ERROR Transfer event for unknown stream ring slot %u ep %u\n",
+ 				 slot_id, ep_index);
+ 			goto err_out;
+ 		}
++		return 0;
+ 	}
+ 
+ 	/* Count current td numbers if ep->skip is set */
 -- 
 2.43.0
 
