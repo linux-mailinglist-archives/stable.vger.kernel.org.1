@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-58582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74D6492B7B9
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4576C92B849
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:32:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2925B1F24591
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7CC8B231B9
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3410F156C73;
-	Tue,  9 Jul 2024 11:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2D9156C61;
+	Tue,  9 Jul 2024 11:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBM+zBVX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pl56t779"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC98146D53;
-	Tue,  9 Jul 2024 11:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C82E55E4C;
+	Tue,  9 Jul 2024 11:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524376; cv=none; b=rNtnA/gmMGaMb1du50YIEzVT3xcc1SWpiqWQpJEt5sr14s5EYfPPmqDkLutxsXbFFzRbPpn3ASMAw3vIiCt9NMgPi+3dEenTA+WjistclDlq9sqrYsq5bejnKNCKbnsAyZM0+6dKrkP66H6h3m7OFTxeDnS6h4EoC089h7k/FAQ=
+	t=1720524762; cv=none; b=j6SftUXL55RcnBWRmoAElcVFcS37rDNm4w4kSuQE/gcFzBFUEnJc8IJwabZZP7BqXnRn6k1La9RJHgfjFG7jgJ/Rpgrl0blHRkDXZc1OvEQUhRTdEmAV+DNZ54XeX5c2Ktv+Ci9WiROs2dCj+wtDXzmyHjBpZwAfjHOAbFFHWz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524376; c=relaxed/simple;
-	bh=su7Oyh25EwRcmBauXO2ZVh1h225Moso3vMk3pQVIBXE=;
+	s=arc-20240116; t=1720524762; c=relaxed/simple;
+	bh=ARKZ5eRwJFacGwL1mkblQ7tQN12WKCKRtMnEaf/UdBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JngR40MoPPm25r4CSrMNMZzaSlAvsBBPf41V2SsYyTmfKxfrDnR//UwGCpcZpTGB4giUCPscS63Hel+/8EbdAN77JtlghzOW26fG31TygORLPVGIF1QuH13FUcsNE0SeXkWyiWKlMqMPgywqFmjpuDLznEHwaXPLmjXaDlhEoXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBM+zBVX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F1EC3277B;
-	Tue,  9 Jul 2024 11:26:16 +0000 (UTC)
+	 MIME-Version; b=DDAhQfdpZ+a9r1vLqDNJ2HwOxK6DqArayKdkJcxH8AC9L6oQKawIHOWtMSyV0TuNCoKuaylkKPqr1nZF/tSU2GFmABZbP5AkhQ44omLajFsC+Ve9aVceUcsYFaH/FqGDQKUQZjgV+MEZCzsiRGIxhEHU1UQllM6//xG+xszvR8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pl56t779; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 885D3C3277B;
+	Tue,  9 Jul 2024 11:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524376;
-	bh=su7Oyh25EwRcmBauXO2ZVh1h225Moso3vMk3pQVIBXE=;
+	s=korg; t=1720524761;
+	bh=ARKZ5eRwJFacGwL1mkblQ7tQN12WKCKRtMnEaf/UdBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xBM+zBVXQ+ftBlp1kCw53twZHsxg0b1+uLGr6IffwyrCd4cQFRfY8+pb6Ng7QBPgO
-	 WFae2jUJ+2/TXbUz5hEF7TyrEzyieuinqCHc76jkDYONjr4ATmRdOmKJHwfs27oKM7
-	 MsHKMFS7fR3wN7or2LoxirTWPObDrZ/N/SrSHrYs=
+	b=pl56t779pIDQfmWaskqIZsV0O+OODei0URolw/MNnyommt5A7Dc7haJDN+zgLeSWt
+	 0RKLNq/4ldFOHJ2dI3FGqXCjPAfR3mEPSChSJ+mx95KLfZtplreHSrbnpEb8soK2FY
+	 gRED4uRHtY5F7k3Rb3AfiVmiDj//G4PkPQHYT2MU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.9 160/197] mtd: rawnand: Ensure ECC configuration is propagated to upper layers
-Date: Tue,  9 Jul 2024 13:10:14 +0200
-Message-ID: <20240709110715.146869149@linuxfoundation.org>
+	Jerry Dai <jerry.dai@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 052/102] net: ntb_netdev: Move ntb_netdev_rx_handler() to call netif_rx() from __netif_rx()
+Date: Tue,  9 Jul 2024 13:10:15 +0200
+Message-ID: <20240709110653.405265132@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Dave Jiang <dave.jiang@intel.com>
 
-commit 3a1b777eb9fb75d09c45ae5dd1d007eddcbebf1f upstream.
+[ Upstream commit e15a5d821e5192a3769d846079bc9aa380139baf ]
 
-Until recently the "upper layer" was MTD. But following incremental
-reworks to bring spi-nand support and more recently generic ECC support,
-there is now an intermediate "generic NAND" layer that also needs to get
-access to some values. When using "converted" ECC engines, like the
-software ones, these values are already propagated correctly. But
-otherwise when using good old raw NAND controller drivers, we need to
-manually set these values ourselves at the end of the "scan" operation,
-once these values have been negotiated.
+The following is emitted when using idxd (DSA) dmanegine as the data
+mover for ntb_transport that ntb_netdev uses.
 
-Without this propagation, later (generic) checks like the one warning
-users that the ECC strength is not high enough might simply no longer
-work.
+[74412.546922] BUG: using smp_processor_id() in preemptible [00000000] code: irq/52-idxd-por/14526
+[74412.556784] caller is netif_rx_internal+0x42/0x130
+[74412.562282] CPU: 6 PID: 14526 Comm: irq/52-idxd-por Not tainted 6.9.5 #5
+[74412.569870] Hardware name: Intel Corporation ArcherCity/ArcherCity, BIOS EGSDCRB1.E9I.1752.P05.2402080856 02/08/2024
+[74412.581699] Call Trace:
+[74412.584514]  <TASK>
+[74412.586933]  dump_stack_lvl+0x55/0x70
+[74412.591129]  check_preemption_disabled+0xc8/0xf0
+[74412.596374]  netif_rx_internal+0x42/0x130
+[74412.600957]  __netif_rx+0x20/0xd0
+[74412.604743]  ntb_netdev_rx_handler+0x66/0x150 [ntb_netdev]
+[74412.610985]  ntb_complete_rxc+0xed/0x140 [ntb_transport]
+[74412.617010]  ntb_rx_copy_callback+0x53/0x80 [ntb_transport]
+[74412.623332]  idxd_dma_complete_txd+0xe3/0x160 [idxd]
+[74412.628963]  idxd_wq_thread+0x1a6/0x2b0 [idxd]
+[74412.634046]  irq_thread_fn+0x21/0x60
+[74412.638134]  ? irq_thread+0xa8/0x290
+[74412.642218]  irq_thread+0x1a0/0x290
+[74412.646212]  ? __pfx_irq_thread_fn+0x10/0x10
+[74412.651071]  ? __pfx_irq_thread_dtor+0x10/0x10
+[74412.656117]  ? __pfx_irq_thread+0x10/0x10
+[74412.660686]  kthread+0x100/0x130
+[74412.664384]  ? __pfx_kthread+0x10/0x10
+[74412.668639]  ret_from_fork+0x31/0x50
+[74412.672716]  ? __pfx_kthread+0x10/0x10
+[74412.676978]  ret_from_fork_asm+0x1a/0x30
+[74412.681457]  </TASK>
 
-Fixes: 8c126720fe10 ("mtd: rawnand: Use the ECC framework nand_ecc_is_strong_enough() helper")
-Cc: stable@vger.kernel.org
-Reported-by: Sascha Hauer <s.hauer@pengutronix.de>
-Closes: https://lore.kernel.org/all/Zhe2JtvvN1M4Ompw@pengutronix.de/
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Tested-by: Sascha Hauer <s.hauer@pengutronix.de>
-Link: https://lore.kernel.org/linux-mtd/20240507085842.108844-1-miquel.raynal@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The cause is due to the idxd driver interrupt completion handler uses
+threaded interrupt and the threaded handler is not hard or soft interrupt
+context. However __netif_rx() can only be called from interrupt context.
+Change the call to netif_rx() in order to allow completion via normal
+context for dmaengine drivers that utilize threaded irq handling.
+
+While the following commit changed from netif_rx() to __netif_rx(),
+baebdf48c360 ("net: dev: Makes sure netif_rx() can be invoked in any context."),
+the change should've been a noop instead. However, the code precedes this
+fix should've been using netif_rx_ni() or netif_rx_any_context().
+
+Fixes: 548c237c0a99 ("net: Add support for NTB virtual ethernet device")
+Reported-by: Jerry Dai <jerry.dai@intel.com>
+Tested-by: Jerry Dai <jerry.dai@intel.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://patch.msgid.link/20240701181538.3799546-1-dave.jiang@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/nand_base.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ntb_netdev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -6301,6 +6301,7 @@ static const struct nand_ops rawnand_ops
- static int nand_scan_tail(struct nand_chip *chip)
- {
- 	struct mtd_info *mtd = nand_to_mtd(chip);
-+	struct nand_device *base = &chip->base;
- 	struct nand_ecc_ctrl *ecc = &chip->ecc;
- 	int ret, i;
+diff --git a/drivers/net/ntb_netdev.c b/drivers/net/ntb_netdev.c
+index 85dbe7f73e319..535dc5b2901fc 100644
+--- a/drivers/net/ntb_netdev.c
++++ b/drivers/net/ntb_netdev.c
+@@ -119,7 +119,7 @@ static void ntb_netdev_rx_handler(struct ntb_transport_qp *qp, void *qp_data,
+ 	skb->protocol = eth_type_trans(skb, ndev);
+ 	skb->ip_summed = CHECKSUM_NONE;
  
-@@ -6445,9 +6446,13 @@ static int nand_scan_tail(struct nand_ch
- 	if (!ecc->write_oob_raw)
- 		ecc->write_oob_raw = ecc->write_oob;
- 
--	/* propagate ecc info to mtd_info */
-+	/* Propagate ECC info to the generic NAND and MTD layers */
- 	mtd->ecc_strength = ecc->strength;
-+	if (!base->ecc.ctx.conf.strength)
-+		base->ecc.ctx.conf.strength = ecc->strength;
- 	mtd->ecc_step_size = ecc->size;
-+	if (!base->ecc.ctx.conf.step_size)
-+		base->ecc.ctx.conf.step_size = ecc->size;
- 
- 	/*
- 	 * Set the number of read / write steps for one page depending on ECC
-@@ -6455,6 +6460,8 @@ static int nand_scan_tail(struct nand_ch
- 	 */
- 	if (!ecc->steps)
- 		ecc->steps = mtd->writesize / ecc->size;
-+	if (!base->ecc.ctx.nsteps)
-+		base->ecc.ctx.nsteps = ecc->steps;
- 	if (ecc->steps * ecc->size != mtd->writesize) {
- 		WARN(1, "Invalid ECC parameters\n");
- 		ret = -EINVAL;
+-	if (__netif_rx(skb) == NET_RX_DROP) {
++	if (netif_rx(skb) == NET_RX_DROP) {
+ 		ndev->stats.rx_errors++;
+ 		ndev->stats.rx_dropped++;
+ 	} else {
+-- 
+2.43.0
+
 
 
 
