@@ -1,116 +1,95 @@
-Return-Path: <stable+bounces-58738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B625492B8FD
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 14:04:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1C992B900
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 14:05:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3610EB243BA
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 12:04:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B79311F21F92
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 12:05:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310811586C6;
-	Tue,  9 Jul 2024 12:04:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Dx2Sttrk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6403215749E;
+	Tue,  9 Jul 2024 12:05:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5159312DDAE
-	for <stable@vger.kernel.org>; Tue,  9 Jul 2024 12:04:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E837C156F45
+	for <stable@vger.kernel.org>; Tue,  9 Jul 2024 12:05:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720526684; cv=none; b=IGG99Ba4XhKo8mkYvmue/5o5k27vR0hDH11qjtu0TV3WonwAoZq7504WecQ80xWcFFc/T75OL1I38O3hsLHayiTy1BymvEor9OBGAw9Kx48S+3VTk5dBXdfVU+jO0YKcRHfMUERcCqxIdd5MRr9wbCizJPDeDvUMk8Sg0jj7G7w=
+	t=1720526737; cv=none; b=S6oMiaTrbZB6eZ+bHE/POhe6aL3c99U5dJSXDIids9MUCa99orMvkL8+Ikg+hurBoLI0uumZIb+ktyK5uF5DdZVFWG30w1W3UPh7KrVwH1eeEX9tmIO3v0hr9yNfgpHm8bOQbclnWSl4P3xDFqfdBAczS9k+OpJX9Yy3AdneIPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720526684; c=relaxed/simple;
-	bh=F4b/xXoVHmS9zHI00DVj29hueHrWrCB++xVJJiexFro=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F5PyTEkOcMK7XotGK5G2G3PaYq6ljefcjLCEnSLFhk8T6ABX1ecygHK0hOKRNvwi62zI6ROItTQ+G7tp+WR2T61/KibpYYAmL9xzg5O6Ffn+szx0U0a6Fr9YbpfTHRBz8ZO+iKPjBvUbSZtIOoCGCxvvOBkJlaNTIIIqg9AfK6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Dx2Sttrk; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1720526681;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NOxbh2TI9zDvIROekQ++sRRqY9mHp5Z2TlmWTZOvmsY=;
-	b=Dx2SttrkDrmaUn81KIM5F4sQVoEzOK3WTNhP+0C6z5tTq+LNQ+cQGPpNCaiVoCambZHwyu
-	ft8ydO8zVlCM6e4xz0o5/OYwn6lPTtddpBiMGjrAZTG7wi4P0DBO98ghxqUrpcwPyzY4k7
-	z+Erc1CCRUnyAfBgkNIvqhHpBf8bUO0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-561-U1u2o2TROMuuVJIECQiE9g-1; Tue,
- 09 Jul 2024 08:04:38 -0400
-X-MC-Unique: U1u2o2TROMuuVJIECQiE9g-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B6E641944D08;
-	Tue,  9 Jul 2024 12:04:36 +0000 (UTC)
-Received: from calimero.vinschen.de (unknown [10.39.192.86])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EFF6F3000181;
-	Tue,  9 Jul 2024 12:04:35 +0000 (UTC)
-Received: by calimero.vinschen.de (Postfix, from userid 500)
-	id D95B7A807CC; Tue,  9 Jul 2024 14:04:33 +0200 (CEST)
-Date: Tue, 9 Jul 2024 14:04:33 +0200
-From: Corinna Vinschen <vinschen@redhat.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-	Jesse Brandeburg <jesse.brandeburg@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>
-Subject: Re: Patch "igc: fix a log entry using uninitialized netdev" has been
- added to the 6.9-stable tree
-Message-ID: <Zo0nUY96HPBgkuOC@calimero.vinschen.de>
-References: <20240705192937.3519731-1-sashal@kernel.org>
- <ZouY6i1Oz77wGC77@calimero.vinschen.de>
- <2024070852-spoils-detached-2c2b@gregkh>
+	s=arc-20240116; t=1720526737; c=relaxed/simple;
+	bh=Gol8w1yhV97XRP+PaKdDO83SzQwcySabOgp273aJOMQ=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=ARAddXiuxil7PbckYlE55VtrhS3Prv4r+n+IwUz0qDJsJsU0Ukvz3N1HCbjK0DT/8pzRHEgajUqf7NyKcfB+EBZPFkGDtZQT1dJIvEGJEd01yF9dNDKzG1mV4ZV4IItjjH+BO/52riGXbweEwuISSmHNUTBwSYw249DGwu+Mr54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4WJKMj6Xk3zQl5D;
+	Tue,  9 Jul 2024 20:01:21 +0800 (CST)
+Received: from kwepemm600007.china.huawei.com (unknown [7.193.23.208])
+	by mail.maildlp.com (Postfix) with ESMTPS id AA959140258;
+	Tue,  9 Jul 2024 20:05:16 +0800 (CST)
+Received: from [10.174.185.179] (10.174.185.179) by
+ kwepemm600007.china.huawei.com (7.193.23.208) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 9 Jul 2024 20:05:15 +0800
+Subject: Re: [PATCH 6.1 009/102] irqchip/gic-v3-its: Remove BUG_ON in
+ its_vpe_irq_domain_alloc
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: <stable@vger.kernel.org>, <patches@lists.linux.dev>, Guanrui Huang
+	<guanrui.huang@linux.alibaba.com>, Thomas Gleixner <tglx@linutronix.de>, Marc
+ Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
+References: <20240709110651.353707001@linuxfoundation.org>
+ <20240709110651.723892970@linuxfoundation.org>
+From: Zenghui Yu <yuzenghui@huawei.com>
+Message-ID: <be1737a6-66e4-e009-9225-a5a0cfe87b24@huawei.com>
+Date: Tue, 9 Jul 2024 20:05:14 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2024070852-spoils-detached-2c2b@gregkh>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+In-Reply-To: <20240709110651.723892970@linuxfoundation.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemm600007.china.huawei.com (7.193.23.208)
 
-On Jul  8 13:50, Greg KH wrote:
-> On Mon, Jul 08, 2024 at 09:44:42AM +0200, Corinna Vinschen wrote:
-> > Hi Sasha,
-> > 
-> > my patch should not go into the stable branches.  Under certain
-> > circumstances it triggered kernel crashes.
-> > 
-> > Consequentially this patch has been reverted in the main
-> > development branch:
-> > 
-> >   8eef5c3cea65 Revert "igc: fix a log entry using uninitialized netdev"
-> > 
-> > So I suggest to remove my patch 86167183a17e from the stable branches or
-> > apply 8eef5c3cea65 as well.
+On 2024/7/9 19:09, Greg Kroah-Hartman wrote:
+> 6.1-stable review patch.  If anyone has any objections, please let me know.
 > 
-> I've queued that up as well now.
+> ------------------
+> 
+> From: Guanrui Huang <guanrui.huang@linux.alibaba.com>
+> 
+> [ Upstream commit 382d2ffe86efb1e2fa803d2cf17e5bfc34e574f3 ]
+> 
+> This BUG_ON() is useless, because the same effect will be obtained
+> by letting the code run its course and vm being dereferenced,
+> triggering an exception.
+> 
+> So just remove this check.
+> 
+> Signed-off-by: Guanrui Huang <guanrui.huang@linux.alibaba.com>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+> Acked-by: Marc Zyngier <maz@kernel.org>
+> Link: https://lore.kernel.org/r/20240418061053.96803-3-guanrui.huang@linux.alibaba.com
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-:+1:
+I don't think this should be backported to stable. It doesn't fix
+anything but only remove a useless BUG_ON().
 
 Thanks,
-Corinna
-
-
-> 
-> thanks,
-> 
-> greg k-h
-
-
+Zenghui
 
