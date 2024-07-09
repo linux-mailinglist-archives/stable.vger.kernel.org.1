@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-58417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2824B92B6E1
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:18:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9F0092B835
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:31:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDEC41F21DCB
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:18:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27C3D1C217FB
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65CB153812;
-	Tue,  9 Jul 2024 11:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6934C154C07;
+	Tue,  9 Jul 2024 11:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dk12itdW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwSB6oMd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6537855E4C;
-	Tue,  9 Jul 2024 11:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BA855E4C;
+	Tue,  9 Jul 2024 11:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523874; cv=none; b=o6cWGi8JzLEGn77+nuzCM+qId7hndQGMoZKKRfhZIKX1MaScX+pXRu9gMU9iV70ePxpcLuSLA+DKw8/h69ExS9bT7OuQ/a68KkNOiM7NxE2kpTtHz3YKNyEPRS+en30dEmGvsaiMMyFsTczwYxdpa9VqCfrwAewj5tgKPoNHhrY=
+	t=1720524706; cv=none; b=Wr6JnX3iEDrZFG1dccynJAi/OlanpREZp5St+AGZji5ZddFJKprH7HUVbdMNviWW2pmY35+F6MmVDK7moDgfPHT+rrkmeJHHthnndWNrP1Wz7Vrp6I8HUJh9IFkMPUPtETy3P/MPTEQ4FQWy110yauIgyhcl52Z+NJnV7Wm2nig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523874; c=relaxed/simple;
-	bh=EptISql3UU9rfG7aeCAkTzUg00FD/JR8WPdyoDYFyv8=;
+	s=arc-20240116; t=1720524706; c=relaxed/simple;
+	bh=o9moS7+D+SJuJ/thl5lA1u1Yn9uw5f3//DiQR+B7Mjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KGBbsVhaKn0VR4w6zAmfgl67m45YaAOnZs/7zmGIOXBHnmQuRtCV9X6yYIJ/bvpM2eKr8jRv0R/hQOivESVMBxfJjcy+oG0cxxUAyTfB1perPoaN5ss6dXcbSmresr9/elG+PV57VpcnxcIV9186m8dlJAcVVPlxJUEirYfTsPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dk12itdW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26F2C3277B;
-	Tue,  9 Jul 2024 11:17:53 +0000 (UTC)
+	 MIME-Version; b=MB5qVhhS0X+C6aMOehbeJtCnwWxq/o4j26k0SsfF4UO/251CuaeQoJKhm1bPzE/vCEEJpKVTFs92JMCISW9Lt2HnxquK6gtoOREySasN+92+6MOhAuiv/z2JnYsEFzv6oIIvTPVaZYQxYW/zQdQGSDxswNQopRDRu/30Q8mNCFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwSB6oMd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96866C32786;
+	Tue,  9 Jul 2024 11:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523874;
-	bh=EptISql3UU9rfG7aeCAkTzUg00FD/JR8WPdyoDYFyv8=;
+	s=korg; t=1720524706;
+	bh=o9moS7+D+SJuJ/thl5lA1u1Yn9uw5f3//DiQR+B7Mjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dk12itdWngio5zHHVMIxcEI+Ni/sWuyjy8M1COxi7MVXJFLao/x1VGmrxPfAKWAa5
-	 jYws0UEYlOfTCMoAgYYJhL4PcVk2VM+/a4dVSx2U+X7R5cLpOglHj9rL/j0ZFxyM/K
-	 yV8LPUee120k8SHWIQitEIeCr9xXL63/U0HiG4iI=
+	b=fwSB6oMdTs82T++UZ1qu+JYQ9tVK5Crj6DOlgI77WjiunIpDjWJVU++EDtcRen0Xz
+	 /Ca6+pwTg+LY9UarwUJuIWFfAd/p2oIzfQdG5B50TGGDDNrp2Lg2PB/zYbY2sTnRVY
+	 g8vC030gT7Oj1MpivGkomOB+Qkf0CWiKifaK/FkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 136/139] ALSA: ump: Set default protocol when not given explicitly
+	Jan Kara <jack@suse.cz>,
+	Zach OKeefe <zokeefe@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 073/102] Revert "mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again"
 Date: Tue,  9 Jul 2024 13:10:36 +0200
-Message-ID: <20240709110703.423731641@linuxfoundation.org>
+Message-ID: <20240709110654.217540740@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit bc42ca002d5d211f9c57334b9b4c25ddb0b4ec35 ]
+commit 30139c702048f1097342a31302cbd3d478f50c63 upstream.
 
-When an inquiry of the current protocol via UMP Stream Configuration
-message fails by some reason, we may leave the current protocol
-undefined, which may lead to unexpected behavior.  Better to assume a
-valid protocol found in the protocol capability bits instead.
+Patch series "mm: Avoid possible overflows in dirty throttling".
 
-For a device that doesn't support the UMP v1.2 feature, it won't reach
-to this code path, and USB MIDI GTB descriptor would be used for
-determining the protocol, instead.
+Dirty throttling logic assumes dirty limits in page units fit into
+32-bits.  This patch series makes sure this is true (see patch 2/2 for
+more details).
 
-Link: https://lore.kernel.org/r/20240529164723.18309-2-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+
+This patch (of 2):
+
+This reverts commit 9319b647902cbd5cc884ac08a8a6d54ce111fc78.
+
+The commit is broken in several ways.  Firstly, the removed (u64) cast
+from the multiplication will introduce a multiplication overflow on 32-bit
+archs if wb_thresh * bg_thresh >= 1<<32 (which is actually common - the
+default settings with 4GB of RAM will trigger this).  Secondly, the
+div64_u64() is unnecessarily expensive on 32-bit archs.  We have
+div64_ul() in case we want to be safe & cheap.  Thirdly, if dirty
+thresholds are larger than 1<<32 pages, then dirty balancing is going to
+blow up in many other spectacular ways anyway so trying to fix one
+possible overflow is just moot.
+
+Link: https://lkml.kernel.org/r/20240621144017.30993-1-jack@suse.cz
+Link: https://lkml.kernel.org/r/20240621144246.11148-1-jack@suse.cz
+Fixes: 9319b647902c ("mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-By: Zach O'Keefe <zokeefe@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/ump.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ mm/page-writeback.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/core/ump.c b/sound/core/ump.c
-index 3cd07c103d9ea..d68d3bda97e42 100644
---- a/sound/core/ump.c
-+++ b/sound/core/ump.c
-@@ -967,6 +967,14 @@ int snd_ump_parse_endpoint(struct snd_ump_endpoint *ump)
- 	if (err < 0)
- 		ump_dbg(ump, "Unable to get UMP EP stream config\n");
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -1548,7 +1548,7 @@ static inline void wb_dirty_limits(struc
+ 	 */
+ 	dtc->wb_thresh = __wb_calc_thresh(dtc);
+ 	dtc->wb_bg_thresh = dtc->thresh ?
+-		div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
++		div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
  
-+	/* If no protocol is set by some reason, assume the valid one */
-+	if (!(ump->info.protocol & SNDRV_UMP_EP_INFO_PROTO_MIDI_MASK)) {
-+		if (ump->info.protocol_caps & SNDRV_UMP_EP_INFO_PROTO_MIDI2)
-+			ump->info.protocol |= SNDRV_UMP_EP_INFO_PROTO_MIDI2;
-+		else if (ump->info.protocol_caps & SNDRV_UMP_EP_INFO_PROTO_MIDI1)
-+			ump->info.protocol |= SNDRV_UMP_EP_INFO_PROTO_MIDI1;
-+	}
-+
- 	/* Query and create blocks from Function Blocks */
- 	for (blk = 0; blk < ump->info.num_blocks; blk++) {
- 		err = create_block_from_fb_info(ump, blk);
--- 
-2.43.0
-
+ 	/*
+ 	 * In order to avoid the stacked BDI deadlock we need
 
 
 
