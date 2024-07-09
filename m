@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-58392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C098492B6C7
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E5C092B818
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E2B51F24202
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 404611C2188F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1EE5157E61;
-	Tue,  9 Jul 2024 11:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5390152787;
+	Tue,  9 Jul 2024 11:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBbKzGcg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCeLea4H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8C9156F2B;
-	Tue,  9 Jul 2024 11:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C0413E41D;
+	Tue,  9 Jul 2024 11:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523795; cv=none; b=Va8fNwJgNZIlI/5g079fYgPHrbmBMTGxaRChaa4IG4HnY7p8s2g0PB/K6eI9jur41gs9gKt/N/uNV+vnsn7IpwgGBBxIwmYZ7by0nz1LP6kaSJICP/Ya9AUhBV9HDuRzyM0bwITxm8L/QwnutwIEum4z/hzLknIR15+TMkaWhVE=
+	t=1720524630; cv=none; b=ETCaGuesrBjtBeFQ4YRKQZixLR7Y8OhNs60Nh0i45Va+IH0dS4rTkKGAwLkAetobM01L3p4G31eSWoCbSA8x79LRnc/i0P5hEupagFaP3R348SnQrzq0rCb1QpGmHBe4N53AeVOGvh7zdUy0mKB/gXK/yIA4Kwtq9VPT3H6yCa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523795; c=relaxed/simple;
-	bh=19Rd+ypZjkZPLB1YHFXOW4Kc0OuQYjG3qtIyOKoDyA8=;
+	s=arc-20240116; t=1720524630; c=relaxed/simple;
+	bh=BvrAb5TW2xodL2mvO+0Rkul0GK63OqkqJG7Tz1kH/p0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJDi3+M77gRL1uvjNLqdx40NuP9KrFNk8zgnWaivR2cPLmDEm62BW/jwkzNmfOSYE7WuEW4UE/wEwSINXLpijU5fEv4HqxdVqebtiyalEYZlE31F+IjJFFZDCG6t7J4ZyW5wRng8Dh7ejy3sG42woPGtqa3ndSbHRCK9XmiiIk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBbKzGcg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34688C3277B;
-	Tue,  9 Jul 2024 11:16:35 +0000 (UTC)
+	 MIME-Version; b=Y/8lCGCOY2jXb6OyyZQrkIN0YvLZgYRdqJ3HOyyUiw/9rsfdkZX3wuXnZsbBWyNNY6atp0Rw7UVq7rOSRG/sbTtw+zZQwKJF/4AXOa5QNoLeL8oIpg06G3x2013umJqOCZ7Ws8UK2fgZANIO8bMRnM5LAeUx1C1wc3wfBmoN4N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCeLea4H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98467C3277B;
+	Tue,  9 Jul 2024 11:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523795;
-	bh=19Rd+ypZjkZPLB1YHFXOW4Kc0OuQYjG3qtIyOKoDyA8=;
+	s=korg; t=1720524630;
+	bh=BvrAb5TW2xodL2mvO+0Rkul0GK63OqkqJG7Tz1kH/p0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GBbKzGcgTuXRJapJF2Fjj2RpKaXaUvTNhof5mOrzJGjlOvmB/pkbf8Rob4e7sUXxY
-	 Qd/Wu5BwMtZVuYX52MwzxnW8V9QIiwO4Nbqkx9+jG4pmFI7U0YO/I4x7xGBF6nOqs6
-	 3BA8Mh0E6yXTJX0s15LYfvtYNmAlMydRATOj25Us=
+	b=bCeLea4H1FO7EWFbrsb2qUHK6l8v3sUI/Z1c4lqGjM+n3+vvtoK2wDFc1eRdfpvX2
+	 lUoPvezVQl8TBVAFQq371lbxF6BLaXkAMzVWFWWCtCyuhbocKyDwI2kUi9/4PKd+xd
+	 8DdPTKWEHtHDCYTjJd/utL7dAjPQUTuXyj1pNAVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Dahl <ada@thorsis.com>,
-	Steven Seeger <steven.seeger@flightsystems.net>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.6 110/139] mtd: rawnand: Fix the nand_read_data_op() early check
+	Jianbo Liu <jianbol@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 047/102] net/mlx5e: Add mqprio_rl cleanup and free in mlx5e_priv_cleanup()
 Date: Tue,  9 Jul 2024 13:10:10 +0200
-Message-ID: <20240709110702.426430837@linuxfoundation.org>
+Message-ID: <20240709110653.202961196@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-commit 5da39530d19946f6241de84d1db69da2f5c61da7 upstream.
+[ Upstream commit 1da839eab6dbc26b95bfcd1ed1a4d1aaa5c144a3 ]
 
-The nand_read_data_op() operation, which only consists in DATA_IN
-cycles, is sadly not supported by all controllers despite being very
-basic. The core, for some time, supposed all drivers would support
-it. An improvement to this situation for supporting more constrained
-controller added a check to verify if the operation was supported before
-attempting it by running the function with the check_only boolean set
-first, and then possibly falling back to another (possibly slightly less
-optimized) alternative.
+In the cited commit, mqprio_rl cleanup and free are mistakenly removed
+in mlx5e_priv_cleanup(), and it causes the leakage of host memory and
+firmware SCHEDULING_ELEMENT objects while changing eswitch mode. So,
+add them back.
 
-An even newer addition moved that check very early and probe time, in
-order to perform the check only once. The content of the operation was
-not so important, as long as the controller driver would tell whether
-such operation on the NAND bus would be possible or not. In practice, no
-buffer was provided (no fake buffer or whatever) as it is anyway not
-relevant for the "check_only" condition. Unfortunately, early in the
-function, there is an if statement verifying that the input parameters
-are right for normal use, making the early check always unsuccessful.
-
-Fixes: 9f820fc0651c ("mtd: rawnand: Check the data only read pattern only once")
-Cc: stable@vger.kernel.org
-Reported-by: Alexander Dahl <ada@thorsis.com>
-Closes: https://lore.kernel.org/linux-mtd/20240306-shaky-bunion-d28b65ea97d7@thorsis.com/
-Reported-by: Steven Seeger <steven.seeger@flightsystems.net>
-Closes: https://lore.kernel.org/linux-mtd/DM6PR05MB4506554457CF95191A670BDEF7062@DM6PR05MB4506.namprd05.prod.outlook.com/
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Alexander Dahl <ada@thorsis.com>
-Link: https://lore.kernel.org/linux-mtd/20240516131320.579822-2-miquel.raynal@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0bb7228f7096 ("net/mlx5e: Fix mqprio_rl handling on devlink reload")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/nand_base.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -2154,7 +2154,7 @@ EXPORT_SYMBOL_GPL(nand_reset_op);
- int nand_read_data_op(struct nand_chip *chip, void *buf, unsigned int len,
- 		      bool force_8bit, bool check_only)
- {
--	if (!len || !buf)
-+	if (!len || (!check_only && !buf))
- 		return -EINVAL;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 4c0eac83546de..385904502a6be 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -5584,6 +5584,11 @@ void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
+ 		kfree(priv->htb_qos_sq_stats[i]);
+ 	kvfree(priv->htb_qos_sq_stats);
  
- 	if (nand_has_exec_op(chip)) {
++	if (priv->mqprio_rl) {
++		mlx5e_mqprio_rl_cleanup(priv->mqprio_rl);
++		mlx5e_mqprio_rl_free(priv->mqprio_rl);
++	}
++
+ 	memset(priv, 0, sizeof(*priv));
+ }
+ 
+-- 
+2.43.0
+
 
 
 
