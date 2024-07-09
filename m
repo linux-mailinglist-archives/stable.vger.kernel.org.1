@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-58534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3228292B77E
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E53192B7FC
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:29:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 624971C22C1C
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 338751F21B0F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4361581E4;
-	Tue,  9 Jul 2024 11:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43BAC15821A;
+	Tue,  9 Jul 2024 11:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PcAz7OBr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orkS4jqM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF39413A25F;
-	Tue,  9 Jul 2024 11:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BB8158A30;
+	Tue,  9 Jul 2024 11:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524228; cv=none; b=JGtva7Wbe3cTC0jrAbQBJDM2+EfkyzHNlJU0WSvTEcirabfumpuYGii2fMrOoNYEBNDuQldSvmfk83gvrBhTzDnRGEfIjLMHRAPNwwMIinElyFQm1pqi1KHwx3YKoaBrcYMIzHgh/lvJwaJB33vEdpV5lyXwAXDu9qw7ObCGWKg=
+	t=1720524554; cv=none; b=Ah7ka3Q+7MjVi+40auYmfktIK/nDtqNYnzAhb+7+n64WAAcmNqvmuZea7/Yuic/l/whPauxBqnqIcWm9HFENvMQ1wjMjEg1vEKL6rkElltM6IoOKmsrive4FHGKnL0lL0WoHV3u9+aUmtb4QTNMSiYNtOiYQqDQAdcbkMWtESAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524228; c=relaxed/simple;
-	bh=Hr1+WMGVNMT9wJRRTsHHU9NRUJXuoti6pZ74ty2jG7k=;
+	s=arc-20240116; t=1720524554; c=relaxed/simple;
+	bh=Jt9LubcBPiIPygBhUooiClsaJPBIuIKRZkTh6TjBrQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cReMrTjcODvsJi1E/ycMhG1KGeJ5JmrNYuq2i8HFd2gMsDKFnj2jqxml64Iwhm+Pf6cbpfdrbJ4FCsmv/aX79BnNj5nqPvUvbb5GcIrcQ19kFmZ92mYwqk8HTaxLCMko4kvSmojArpdHI/Yj/62mbCn+VkBFRBya4GcJEMLu7Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PcAz7OBr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3FDC3277B;
-	Tue,  9 Jul 2024 11:23:47 +0000 (UTC)
+	 MIME-Version; b=VjMwZGPdlf8tzzptyXX8uhiRJPj34K44PTbDrdKLBAUC5gkiP3yQifITdjXno6tYWPUWL6zwZ59/0oi2DWAsDgjggXjVPRXf19TxhbMyQ1WNfBA8pRLL4tTqKQuY02bR3UJYN1EX8wnkJoc0HWPcbNctzkuVAunvrdpw9ugoEYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orkS4jqM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 305AAC3277B;
+	Tue,  9 Jul 2024 11:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524228;
-	bh=Hr1+WMGVNMT9wJRRTsHHU9NRUJXuoti6pZ74ty2jG7k=;
+	s=korg; t=1720524553;
+	bh=Jt9LubcBPiIPygBhUooiClsaJPBIuIKRZkTh6TjBrQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PcAz7OBrOqlr536lqbd2yk4z+iN7HNvypzL+pca8vFgIhT0Rqs+E3sW4brf8HzenT
-	 cKRNphYYQqpi5t4tcD641HPX229g47OXafZ3em1whoxiGB63pfqKwA5Jh+3OyaiAQD
-	 GhqZXO1nMhchGrHg07MEpl0NY+BqPVoFzLu4+7E8=
+	b=orkS4jqMOo6rD5Y70rmEuNFcZaLQ5YBT7IrM/7u/31dPGZbCEmMqrmUZt/AZzoWVE
+	 O5Gt5O4FXwC2qk7FjD8HliznWV86lBFYVz6p6WiPNMEEq005wBWHnf6mb80L7WUM0K
+	 H/REMIRGtmUC0kE7fGa6hE+XWfSgH951cklJNquc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jozef Hopko <jozef.hopko@altana.com>,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Ajay Singh <ajay.kathat@microchip.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 114/197] wifi: wilc1000: fix ies_len type in connect path
-Date: Tue,  9 Jul 2024 13:09:28 +0200
-Message-ID: <20240709110713.365341540@linuxfoundation.org>
+Subject: [PATCH 6.1 006/102] media: dvb-usb: dib0700_devices: Add missing release_firmware()
+Date: Tue,  9 Jul 2024 13:09:29 +0200
+Message-ID: <20240709110651.606793613@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jozef Hopko <jozef.hopko@altana.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 39ab8fff623053a50951b659e5f6b72343d7d78c ]
+[ Upstream commit 4b267c23ee064bd24c6933df0588ad1b6e111145 ]
 
-Commit 205c50306acf ("wifi: wilc1000: fix RCU usage in connect path")
-made sure that the IEs data was manipulated under the relevant RCU section.
-Unfortunately, while doing so, the commit brought a faulty implicit cast
-from int to u8 on the ies_len variable, making the parsing fail to be
-performed correctly if the IEs block is larger than 255 bytes. This failure
-can be observed with Access Points appending a lot of IEs TLVs in their
-beacon frames (reproduced with a Pixel phone acting as an Access Point,
-which brough 273 bytes of IE data in my testing environment).
+Add missing release_firmware on the error paths.
 
-Fix IEs parsing by removing this undesired implicit cast.
+drivers/media/usb/dvb-usb/dib0700_devices.c:2415 stk9090m_frontend_attach() warn: 'state->frontend_firmware' from request_firmware() not released on lines: 2415.
+drivers/media/usb/dvb-usb/dib0700_devices.c:2497 nim9090md_frontend_attach() warn: 'state->frontend_firmware' from request_firmware() not released on lines: 2489,2497.
 
-Fixes: 205c50306acf ("wifi: wilc1000: fix RCU usage in connect path")
-Signed-off-by: Jozef Hopko <jozef.hopko@altana.com>
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Acked-by: Ajay Singh <ajay.kathat@microchip.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240701-wilc_fix_ies_data-v1-1-7486cbacf98a@bootlin.com
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/microchip/wilc1000/hif.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/usb/dvb-usb/dib0700_devices.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/hif.c b/drivers/net/wireless/microchip/wilc1000/hif.c
-index f1085ccb7eedc..7719e4f3e2a23 100644
---- a/drivers/net/wireless/microchip/wilc1000/hif.c
-+++ b/drivers/net/wireless/microchip/wilc1000/hif.c
-@@ -382,7 +382,8 @@ wilc_parse_join_bss_param(struct cfg80211_bss *bss,
- 	struct ieee80211_p2p_noa_attr noa_attr;
- 	const struct cfg80211_bss_ies *ies;
- 	struct wilc_join_bss_param *param;
--	u8 rates_len = 0, ies_len;
-+	u8 rates_len = 0;
-+	int ies_len;
- 	int ret;
+diff --git a/drivers/media/usb/dvb-usb/dib0700_devices.c b/drivers/media/usb/dvb-usb/dib0700_devices.c
+index 7f8bebfa3e8e9..3d14aba7a0dea 100644
+--- a/drivers/media/usb/dvb-usb/dib0700_devices.c
++++ b/drivers/media/usb/dvb-usb/dib0700_devices.c
+@@ -2419,7 +2419,12 @@ static int stk9090m_frontend_attach(struct dvb_usb_adapter *adap)
  
- 	param = kzalloc(sizeof(*param), GFP_KERNEL);
+ 	adap->fe_adap[0].fe = dvb_attach(dib9000_attach, &adap->dev->i2c_adap, 0x80, &stk9090m_config);
+ 
+-	return adap->fe_adap[0].fe == NULL ?  -ENODEV : 0;
++	if (!adap->fe_adap[0].fe) {
++		release_firmware(state->frontend_firmware);
++		return -ENODEV;
++	}
++
++	return 0;
+ }
+ 
+ static int dib9090_tuner_attach(struct dvb_usb_adapter *adap)
+@@ -2492,8 +2497,10 @@ static int nim9090md_frontend_attach(struct dvb_usb_adapter *adap)
+ 	dib9000_i2c_enumeration(&adap->dev->i2c_adap, 1, 0x20, 0x80);
+ 	adap->fe_adap[0].fe = dvb_attach(dib9000_attach, &adap->dev->i2c_adap, 0x80, &nim9090md_config[0]);
+ 
+-	if (adap->fe_adap[0].fe == NULL)
++	if (!adap->fe_adap[0].fe) {
++		release_firmware(state->frontend_firmware);
+ 		return -ENODEV;
++	}
+ 
+ 	i2c = dib9000_get_i2c_master(adap->fe_adap[0].fe, DIBX000_I2C_INTERFACE_GPIO_3_4, 0);
+ 	dib9000_i2c_enumeration(i2c, 1, 0x12, 0x82);
+@@ -2501,7 +2508,12 @@ static int nim9090md_frontend_attach(struct dvb_usb_adapter *adap)
+ 	fe_slave = dvb_attach(dib9000_attach, i2c, 0x82, &nim9090md_config[1]);
+ 	dib9000_set_slave_frontend(adap->fe_adap[0].fe, fe_slave);
+ 
+-	return fe_slave == NULL ?  -ENODEV : 0;
++	if (!fe_slave) {
++		release_firmware(state->frontend_firmware);
++		return -ENODEV;
++	}
++
++	return 0;
+ }
+ 
+ static int nim9090md_tuner_attach(struct dvb_usb_adapter *adap)
 -- 
 2.43.0
 
