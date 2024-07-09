@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-58783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E45592C04F
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:35:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A391592BFE4
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:27:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 954FEB22EE2
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:27:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B42D1F2396D
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:27:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D957B1ABCDE;
-	Tue,  9 Jul 2024 16:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 874381AC42B;
+	Tue,  9 Jul 2024 16:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nYZDtCNt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qudDfgjV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F891ABCD0;
-	Tue,  9 Jul 2024 16:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4321A1AC257;
+	Tue,  9 Jul 2024 16:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542057; cv=none; b=VJ8Ttw2SYGvOA7QLBmrOkaCrpwK4FC5Ihi/2Ni16XIjwq8B60RXTyg5XLxuUXl1ARG3mlKts5u9mrEmCRxJavWWMsXVs4wkw9/namiIuRXHzDSX5GP1AbYfG1kOZKE9f57BCzLqfU59bptSgHW8vLDSwzJ7nqdIt7mwkJz+RFhQ=
+	t=1720542059; cv=none; b=pFDea7ivSvdkhaJ3QNWErl9A73R9pq9AbE5iG8uWDpLdrErfSjBNXzr5tVIQ/v2yD3jY/GdpnCRBJ2x0jUp7ZIXxZoYM9RU3W62q0IYFfP86iXo0x61jZGeIaBPiMxH8PG/Zd8iyA4vR0X2JK+Ej21d4Oi5ZSPKPfQi46Za4ULM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542057; c=relaxed/simple;
-	bh=fk5F7PnfMsulDDYfiUSEEt6RSCFGW7ofRStQVDVNt1w=;
+	s=arc-20240116; t=1720542059; c=relaxed/simple;
+	bh=ltzp66YNsRQRGlipLvLRGkZPtJ0zdwbYYRgDT6ylc6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mv8hKq0LcScmwFGQ2uy4gVM9kZTR8OZGNPSLT/J0PGJL2n7bc9GOTFSuX0jV/dXZR7KCb/9jQQFHGd7t5yJvY8PvLJjc2SJa7S+35rFCCtqYvVXnvJ0XhZFhG/r6+U+Cmz6q+7paAj5riDsUNiDa39K62Dk5iKD/oK/hq4DKayg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nYZDtCNt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA99DC32782;
-	Tue,  9 Jul 2024 16:20:55 +0000 (UTC)
+	 MIME-Version; b=il+WeUMyE+8uv3v50YewC2o5iThOfQP+SnH+SCtrp3G2eXBvctv389sT4WuCUIonVBt7SDkJ8/+A5MZRV8SDxANv2FKv82mJbVUwSjTM3QsQROPvfr6yaUkmi39qHUNlryCeCuVH4LC7K6q2o85hSNh56sdMA3Fz4UtSkkfAPIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qudDfgjV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7DE0C4AF07;
+	Tue,  9 Jul 2024 16:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542057;
-	bh=fk5F7PnfMsulDDYfiUSEEt6RSCFGW7ofRStQVDVNt1w=;
+	s=k20201202; t=1720542059;
+	bh=ltzp66YNsRQRGlipLvLRGkZPtJ0zdwbYYRgDT6ylc6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nYZDtCNtyGHh+x89dXmdb3cp14fE01oWZrojKTQEMlu7xs+ZUClmVmp3mlOQc+d0j
-	 LF7RznILIzy20P55KSWGDiUFT8qof+OXDKck+/JtfHGhTXWWzV4dEQIOp/UB6E7uJc
-	 Zg90BwK+e1Mx+NFGit/Uz5/DrSBfOMNqV2CfS/RvIIJ42zg0bOXiXpyGtey12P+MVz
-	 fb4O8DIqpbqLhXoBzTqOGe+6Tiy4vjrksn8eOdXZf5U+XSJDjAKluOYCLuTefMuPNZ
-	 pL+zRxwYhXih1LiVYTUqTGNrc1luuczUtF3bVrXd5ebSfxAYpZRh0a3QbPpKiET+ma
-	 1w1nMKxqZPsFg==
+	b=qudDfgjVVd9qF9Afav/lagqntuTGQGRCD7UaZE23pPP9IvOpERdMjSvpY6rZ9tqaV
+	 nZgiiriDO8lHpIKNpIb12F9tht0rNXFpDyWxVandgsjcsp4vnEfPAaWTXxRe4Vxh24
+	 tdY0nHSY+8d2nXwtBdTIg/1EDADnokj2L3KqDP0B8we5BD71WnmjMLf9niSYmyaGwV
+	 JluT/g2z+Pl3Zusa2CpNodnhTy37CGE0JXq0d0yMnOZnvk41g79uEjAOSOSGQb7410
+	 NDftpzrVzDM7T8rJCqsAv8skmF8tqN2PbVZHRJPPgWLpJWBsQB896fusFrNl5vdL95
+	 Hsrs87Ri1HOrA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Chen Ni <nichen@iscas.ac.cn>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+Cc: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	mailhol.vincent@wanadoo.fr,
-	davem@davemloft.net,
+	marcin.s.wojtas@gmail.com,
+	linux@armlinux.org.uk,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	extja@kvaser.com,
-	linux-can@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 21/40] can: kvaser_usb: fix return value for hif_usb_send_regout
-Date: Tue,  9 Jul 2024 12:19:01 -0400
-Message-ID: <20240709162007.30160-21-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.9 22/40] net: mvpp2: fill-in dev_port attribute
+Date: Tue,  9 Jul 2024 12:19:02 -0400
+Message-ID: <20240709162007.30160-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162007.30160-1-sashal@kernel.org>
 References: <20240709162007.30160-1-sashal@kernel.org>
@@ -72,34 +70,32 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.8
 Content-Transfer-Encoding: 8bit
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>
 
-[ Upstream commit 0d34d8163fd87978a6abd792e2d8ad849f4c3d57 ]
+[ Upstream commit 00418d5530ca1f42d8721fe0a3e73d1ae477c223 ]
 
-As the potential failure of usb_submit_urb(), it should be better to
-return the err variable to catch the error.
+Fill this in so user-space can identify multiple ports on the same CP
+unit.
 
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Link: https://lore.kernel.org/all/20240521041020.1519416-1-nichen@iscas.ac.cn
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Aryan Srivastava <aryan.srivastava@alliedtelesis.co.nz>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-index 8faf8a462c055..7292c81fc0cdc 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-@@ -294,7 +294,7 @@ int kvaser_usb_send_cmd_async(struct kvaser_usb_net_priv *priv, void *cmd,
- 	}
- 	usb_free_urb(urb);
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index cebc79a710ec2..6340e5e61a7da 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -6906,6 +6906,7 @@ static int mvpp2_port_probe(struct platform_device *pdev,
+ 	/* 9704 == 9728 - 20 and rounding to 8 */
+ 	dev->max_mtu = MVPP2_BM_JUMBO_PKT_SIZE;
+ 	device_set_node(&dev->dev, port_fwnode);
++	dev->dev_port = port->id;
  
--	return 0;
-+	return err;
- }
- 
- int kvaser_usb_can_rx_over_error(struct net_device *netdev)
+ 	port->pcs_gmac.ops = &mvpp2_phylink_gmac_pcs_ops;
+ 	port->pcs_gmac.neg_mode = true;
 -- 
 2.43.0
 
