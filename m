@@ -1,63 +1,65 @@
-Return-Path: <stable+bounces-58776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF3D92BFB9
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:24:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07B6292C012
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A846D2848CD
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:24:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E6F1B2B551
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0AE1A2542;
-	Tue,  9 Jul 2024 16:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A161A2C37;
+	Tue,  9 Jul 2024 16:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fbt1WR2I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="om4DPKyZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA191A01D1;
-	Tue,  9 Jul 2024 16:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1E71A2C27;
+	Tue,  9 Jul 2024 16:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542042; cv=none; b=OlXDAJMKnvxEZjJD8GHyYUiGYvakXeSmmvOXqccFI2u+7sjsSCbFti+eWCV726KlDgB6cvlU3/FvfaQcNY1lJbx43sHuSYQ51dvG6e8IZ1AmgFU+0cc4mb84I2HAcMcz44VtFYp/sBpmdBBVhH4LwmYXysF7ledjeN47g6fcuSc=
+	t=1720542044; cv=none; b=JiOdV+nHq6d2YxW7W1nJqX/CwgacMYJcOAlrkVcuEJng7nziHIXvSsk9w6aFxwBupU4OW3ErF2CEnFsMv3m5Bhjtb+176sfUD1L7+zt6bhCvN6PMVqYSAU5buG7pRFdxs/bEmsCSnpX4bdw/1ikcpGs11iEnQFag0K9bHFLAPUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542042; c=relaxed/simple;
-	bh=El8iCeDfNXj82T/GEiSAVFqPl9EnHXRVzN8ETpCQwYU=;
+	s=arc-20240116; t=1720542044; c=relaxed/simple;
+	bh=+n8/vrOXVDBI5bEZRqWDXQIzeBUFPT4Rqrxc7p0dfrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dMK682h2h4thoSi6eX8rVZWG8ndjHHRm8N5oMjQqVTDaIKi3df0JlAEPD2SAVLQGVYUeUPGRbScCUhKPYw389uGCtN8+YLF1XbrZzUU6OIpvgI3Kqw78ncjHiaU1SdBVon3lb9ZTGjnsC1pk5j/CCdiI90IW8U14RlmEtzEzTgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fbt1WR2I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A68C4AF0A;
-	Tue,  9 Jul 2024 16:20:40 +0000 (UTC)
+	 MIME-Version; b=Kbbq4cP4kX935GSwxt3eXr1dHUmFsy1IUH91x59TtQjFOD/Y+m5Za7fU6CSqWoJ1WJGgGa3fikoEAIu0eKLkimDTb/FexqC952DJWsAushKFBVa1xofdhJ66nKeRIXipmOA2PRZuFtT3fd2sYgz5rguT/yWFLRS2/nDlQ4tZALQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=om4DPKyZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A534C4AF0F;
+	Tue,  9 Jul 2024 16:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542042;
-	bh=El8iCeDfNXj82T/GEiSAVFqPl9EnHXRVzN8ETpCQwYU=;
+	s=k20201202; t=1720542044;
+	bh=+n8/vrOXVDBI5bEZRqWDXQIzeBUFPT4Rqrxc7p0dfrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fbt1WR2IbRazfYiB5isczZRxiPUOuWx6dDqlHxPgrF5OfSAlJLrREa0Kgk7pIbc5H
-	 AZG66PCjBTTtBu7eAZzQ6p82tdxT7Rc0Yhyw3cr3s3l0kNMnsvt19PRX9jEXuZeGm4
-	 yLcffx7oob6lPfuP9XBsYMDtS8X+CDhF6YKJUykTBM3C4wL5e5NUZSZ+5jaQJJ7QHo
-	 wxFw1kNXdbc+A6o85GSfqvoUW5V786YHmGL5Bv8xAIwaDNQQ7tuUr18o6+y2gyYimG
-	 GfWS7zikYXSbCz5GEclMkdOS5rDE2qHDKYVy8cADm5QSqLC9aEvA7yCYODVei7bmx1
-	 CpaKZS9LvWzlg==
+	b=om4DPKyZDtJgD4hJV0Jq8aWWdA2nka27kRS4ztJl1Qbdx66st8rLflK+JIwdRxa3B
+	 Mve4E6JN53xgjPgSeVxgh+HDa0xFjQGEmCDYrh8yVGAUTCSAy9u81Nf+NZZ7PvuQmM
+	 FdCUe6+Yw2M1r7iBm9nmPtQ7COCuYdoJ6nIGOiHcCLN/018QiDBma2k1ihhto8qAku
+	 gOXPJfH+ZLdFkNgrAqqvSVavGoL41/6Jr8cRCLEU9ifq7jRWYaYcy0f1Qg2YhjME/J
+	 WvGV2cM/JnuBrz/sf2jieFuNmlQRlLWhO6z09d0yBIFo3wg1dsYNnfwFazW4HSMWdQ
+	 bLlYQrk8JdP9A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Primoz Fiser <primoz.fiser@norik.com>,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+Cc: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jarkko.nikula@bitmer.com,
 	lgirdwood@gmail.com,
+	yung-chuan.liao@linux.intel.com,
+	daniel.baluta@nxp.com,
 	perex@perex.cz,
 	tiwai@suse.com,
-	alsa-devel@alsa-project.org,
-	linux-omap@vger.kernel.org,
+	sound-open-firmware@alsa-project.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 14/40] ASoC: ti: omap-hdmi: Fix too long driver name
-Date: Tue,  9 Jul 2024 12:18:54 -0400
-Message-ID: <20240709162007.30160-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.9 15/40] ASoC: SOF: sof-audio: Skip unprepare for in-use widgets on error rollback
+Date: Tue,  9 Jul 2024 12:18:55 -0400
+Message-ID: <20240709162007.30160-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162007.30160-1-sashal@kernel.org>
 References: <20240709162007.30160-1-sashal@kernel.org>
@@ -72,41 +74,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.8
 Content-Transfer-Encoding: 8bit
 
-From: Primoz Fiser <primoz.fiser@norik.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 524d3f126362b6033e92cbe107ae2158d7fbff94 ]
+[ Upstream commit 6f2a43e3d14f6e31a3b041a1043195d02c54d615 ]
 
-Set driver name to "HDMI". This simplifies the code and gets rid of
-the following error messages:
+If the ipc_prepare() callback fails for a module instance, on error rewind
+we must skip the ipc_unprepare() call for ones that has positive use count.
 
-  ASoC: driver name too long 'HDMI 58040000.encoder' -> 'HDMI_58040000_e'
+The positive use count means that the module instance is in active use, it
+cannot be unprepared.
 
-Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Link: https://lore.kernel.org/r/20240610125847.773394-1-primoz.fiser@norik.com
+The issue affects capture direction paths with branches (single dai with
+multiple PCMs), the affected widgets are in the shared part of the paths.
+
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Link: https://lore.kernel.org/r/20240612121203.15468-1-peter.ujfalusi@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/ti/omap-hdmi.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ sound/soc/sof/sof-audio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
-index 4513b527ab970..ad8925b6481ca 100644
---- a/sound/soc/ti/omap-hdmi.c
-+++ b/sound/soc/ti/omap-hdmi.c
-@@ -354,11 +354,7 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
- 	if (!card)
- 		return -ENOMEM;
- 
--	card->name = devm_kasprintf(dev, GFP_KERNEL,
--				    "HDMI %s", dev_name(ad->dssdev));
--	if (!card->name)
--		return -ENOMEM;
--
-+	card->name = "HDMI";
- 	card->owner = THIS_MODULE;
- 	card->dai_link =
- 		devm_kzalloc(dev, sizeof(*(card->dai_link)), GFP_KERNEL);
+diff --git a/sound/soc/sof/sof-audio.c b/sound/soc/sof/sof-audio.c
+index e693dcb475e4d..d1a7d867f6a3a 100644
+--- a/sound/soc/sof/sof-audio.c
++++ b/sound/soc/sof/sof-audio.c
+@@ -485,7 +485,7 @@ sof_prepare_widgets_in_path(struct snd_sof_dev *sdev, struct snd_soc_dapm_widget
+ 			if (ret < 0) {
+ 				/* unprepare the source widget */
+ 				if (widget_ops[widget->id].ipc_unprepare &&
+-				    swidget && swidget->prepared) {
++				    swidget && swidget->prepared && swidget->use_count == 0) {
+ 					widget_ops[widget->id].ipc_unprepare(swidget);
+ 					swidget->prepared = false;
+ 				}
 -- 
 2.43.0
 
