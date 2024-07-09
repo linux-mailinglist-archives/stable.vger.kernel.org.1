@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-58578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C776292B7B6
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 760DA92B81B
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BC351F2458B
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A784E1C20C31
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646B7156238;
-	Tue,  9 Jul 2024 11:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A23C15098A;
+	Tue,  9 Jul 2024 11:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJ2NFIHH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eL2Iu1h0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2484A27713;
-	Tue,  9 Jul 2024 11:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD29F34545;
+	Tue,  9 Jul 2024 11:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524365; cv=none; b=ZFIcWTE1ouHM9fPNT7/bE0TIPoQzK0VEHvXId1T3Yeqft/sTRr6uJTv7f02wcKAAMDm+QDW8wOO3GCcSEhbfJ9clGL7nDbdtHQKu5Tn3p/bDH203aOHOf1J+wQULWN8KNq39jHjLQ8xdt87KZr2OluVZqFQ74pDu/P5WiZiYixo=
+	t=1720524636; cv=none; b=qgj8ebMxkZuPrEI3jId6anflfD9vcgh0jsbWaw+MVltVt3DTy56gLBR1s88p0OWk4pt5hcRhPblQUT1MuQbptLtjq3NoM65oK8Cm4+H7ZGowNHER07RAGGAs1bJSyNRXY7TpEMmxIIbveeIVbvgsmb06Oy54jPQRyPZIBbtqOw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524365; c=relaxed/simple;
-	bh=8JNg55OD6DQHQJx5lk0hdpvKqZbR1+Mz2lQBPHybNO8=;
+	s=arc-20240116; t=1720524636; c=relaxed/simple;
+	bh=MzI1MfJUWr+lyOE+NP1wi4J3A+P3/QBSC5IRFmpNr7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NAc3U8MVR04Sg2kVmiUJeDwBVeg48uYN7JfYr8uiTIa6lpdH7hfePtsKn2KjzPBLeVJEvEcnDnlfF2xI6zl+yZxoIasF+RQv+UJR5HJTRIAMid0+BCBI8V1RVmdm/F7c+CbdQHMl9j3kzEkjPfGGxDatvrYiQCsZ7bj3ms5+JDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJ2NFIHH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC0DC3277B;
-	Tue,  9 Jul 2024 11:26:04 +0000 (UTC)
+	 MIME-Version; b=fzaHiaOADhREf2K3Xf45WJfxgosJfL8zoJALgIHApGxUvgq0qSryP0Uyv+y5TfI0HIMp7cQIRu/jcRL4lus6hkRa0qQBEwKY5rdRIWpCdpbhDQz0nkCeY/Fxdn7VUoHPGZMjHSNi4uHeL9MJZI46j+7W9m8NwOK/PbzhwR9lrAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eL2Iu1h0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63695C3277B;
+	Tue,  9 Jul 2024 11:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524365;
-	bh=8JNg55OD6DQHQJx5lk0hdpvKqZbR1+Mz2lQBPHybNO8=;
+	s=korg; t=1720524635;
+	bh=MzI1MfJUWr+lyOE+NP1wi4J3A+P3/QBSC5IRFmpNr7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NJ2NFIHH8d/duIgJOqQoeVuhCJaL/NOrmSYt2N2vEAQtMflh9A9cQuROXtFgrmam9
-	 y/l8b9gtKSjF0laTQRy19+lq7uFE0JGqTEUhsR+wCiHwLWwetawAhmrRm0UFnNOlhd
-	 UqOVHa6L+sVxGDwFnOvIj7se/tdgPX1NsOp7CJiU=
+	b=eL2Iu1h0d6j9HH7W7IFjuNzPXLSTu7wHy0e5D7q7Y0/iHErMfNltaKuXpPYA3RKCQ
+	 h6Fy95nn+X1YqtNt8HB/5+oq8guZfcX6MPfoQO8/yYHia0Df/5WjFp5vGKAiD8yGQW
+	 EWznTviBodVLQGoAlCDDQtb+2fmmRuUmBKBpRFoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinglin Wen <jinglin.wen@shingroup.cn>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.9 157/197] powerpc/64s: Fix unnecessary copy to 0 when kernel is booted at address 0
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 048/102] tcp_metrics: validate source addr length
 Date: Tue,  9 Jul 2024 13:10:11 +0200
-Message-ID: <20240709110715.029539964@linuxfoundation.org>
+Message-ID: <20240709110653.242769971@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinglin Wen <jinglin.wen@shingroup.cn>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 13fc6c175924eaa953cf597ce28ffa4edc4554a6 upstream.
+[ Upstream commit 66be40e622e177316ae81717aa30057ba9e61dff ]
 
-According to the code logic, when the kernel is loaded at address 0, no
-copying operation should be performed, but it is currently being done.
+I don't see anything checking that TCP_METRICS_ATTR_SADDR_IPV4
+is at least 4 bytes long, and the policy doesn't have an entry
+for this attribute at all (neither does it for IPv6 but v6 is
+manually validated).
 
-This patch fixes the issue where the kernel code was incorrectly
-duplicated to address 0 when booting from address 0.
-
-Fixes: b270bebd34e3 ("powerpc/64s: Run at the kernel virtual address earlier in boot")
-Cc: stable@vger.kernel.org # v6.4+
-Signed-off-by: Jinglin Wen <jinglin.wen@shingroup.cn>
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240620024150.14857-1-jinglin.wen@shingroup.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Fixes: 3e7013ddf55a ("tcp: metrics: Allow selective get/del of tcp-metrics based on src IP")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/head_64.S |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/ipv4/tcp_metrics.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/powerpc/kernel/head_64.S
-+++ b/arch/powerpc/kernel/head_64.S
-@@ -647,8 +647,9 @@ __after_prom_start:
-  * Note: This process overwrites the OF exception vectors.
-  */
- 	LOAD_REG_IMMEDIATE(r3, PAGE_OFFSET)
--	mr.	r4,r26			/* In some cases the loader may  */
--	beq	9f			/* have already put us at zero */
-+	mr	r4,r26			/* Load the virtual source address into r4 */
-+	cmpld	r3,r4			/* Check if source == dest */
-+	beq	9f			/* If so skip the copy  */
- 	li	r6,0x100		/* Start offset, the first 0x100 */
- 					/* bytes were copied earlier.	 */
- 
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index a7364ff8b558d..a4e03a7a2c030 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -619,6 +619,7 @@ static const struct nla_policy tcp_metrics_nl_policy[TCP_METRICS_ATTR_MAX + 1] =
+ 	[TCP_METRICS_ATTR_ADDR_IPV4]	= { .type = NLA_U32, },
+ 	[TCP_METRICS_ATTR_ADDR_IPV6]	= { .type = NLA_BINARY,
+ 					    .len = sizeof(struct in6_addr), },
++	[TCP_METRICS_ATTR_SADDR_IPV4]	= { .type = NLA_U32, },
+ 	/* Following attributes are not received for GET/DEL,
+ 	 * we keep them for reference
+ 	 */
+-- 
+2.43.0
+
 
 
 
