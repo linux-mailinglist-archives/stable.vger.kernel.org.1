@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-58394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E182D92B6CA
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3772192B810
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CF5328102F
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FDE3B257B5
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB61C158858;
-	Tue,  9 Jul 2024 11:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A61D158861;
+	Tue,  9 Jul 2024 11:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PP6PpZwI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UPezPdaK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D2A158219;
-	Tue,  9 Jul 2024 11:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC41E27713;
+	Tue,  9 Jul 2024 11:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523801; cv=none; b=em0jpd69BE/bzf9IldUtU0Ztkz9XPOZW+T4Bxy1VUImPlTiucROJzuGusDaDLfwZjfmbne4ze8/sGY5CFMg//M+S201MLWC1EdngGNeYmqP23zsYFe0iD6HjqwZ4GlDyWsg9NRDBtsjyYRj+q+wwMl0ewQPKBFlLQ3MzPXn6v6E=
+	t=1720524600; cv=none; b=Y6C/Vbocd8Vaf5T2JOgW0ZgQTRvXC/Ml29kK8IHKWzm5YC766q7YvWiTk3xMH0wI/2svSYCZ55+rxNIorgFUhf1LHmS+NtA7adicgoy3IOt82qvW+Uv8TIkLFjyolZWCZybTMTu7trnrejBIwKaGXNZaPw5pSfQHbYMgC7OF2M0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523801; c=relaxed/simple;
-	bh=aBc9XbJL1xdNHQxFmpPNDzhzguDPGEdLaUdQDNkLUU4=;
+	s=arc-20240116; t=1720524600; c=relaxed/simple;
+	bh=Jfjd11geDnq97iEs6Mrtf3jspV1zpVbO//Cy4Zul2GU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YO+q+dNFoOK6juvd9S0TftuzQNRUsPMOKE3U7mtCv+NO9vwy+kKq/+syFZ229H1AgpzNunhemJqpc93+uEPtQCpczegiXsK9rrpqJVctPOde0BmewL7LuqpDx9BGhCmIVlHCEyM2zgMKEFkyECW3SgvzyLDl0c3N5I4Qe8E0E0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PP6PpZwI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E10AC3277B;
-	Tue,  9 Jul 2024 11:16:40 +0000 (UTC)
+	 MIME-Version; b=gbUwFVskW+8QX9mXztzeNuftlbG2xYivSwEOAuPk9eHYz8rs8PXsHAaWWpCStovNLTpbVxfgCFz2IwaUENOHL2q98ZagKS2IWhBXJY1JqCN7LsC7SY3dFwKBWpCXDrJ1Zm+AuYW7cq08UizEshVa3VYcacs6jqguyKzO/q56dhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPezPdaK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C23C3277B;
+	Tue,  9 Jul 2024 11:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523801;
-	bh=aBc9XbJL1xdNHQxFmpPNDzhzguDPGEdLaUdQDNkLUU4=;
+	s=korg; t=1720524600;
+	bh=Jfjd11geDnq97iEs6Mrtf3jspV1zpVbO//Cy4Zul2GU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PP6PpZwIFVaEkmewrqLs0ZNOkJSLg+KC8ryncjQ7r2FANRpmpouErPfQBMTwY3TEW
-	 PY706PRFRrmHuVgpUMSrhXENnt6mkRFXoWiWav/h3LVDE2n/GFPoyarnn6YLc4sgst
-	 TQ08X3ohzEaYzQsXFR5btrw1bkTCRKn4mK0XPxys=
+	b=UPezPdaKgR92ifMc+DnIkOwFVlqFU4nMIkS9vC0VXY8oKOU0GFbCNM0eVswU6QpJx
+	 UUvek/hsWMsbiQhn1mfVZUmxutQiBFtwznp9uMhySrGorMfH9+5PCHrnhdxMbweUM9
+	 UuQpktpx0L8bNuzZhDuIUQD4OoWaafp/SrYEY/Ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	Xiaochun Lu <xiaochun.lu@bytedance.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Erick Archer <erick.archer@outlook.com>,
+	Kees Cook <keescook@chromium.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/139] selftests: make order checking verbose in msg_zerocopy selftest
+Subject: [PATCH 6.1 020/102] Input: ff-core - prefer struct_size over open coded arithmetic
 Date: Tue,  9 Jul 2024 13:09:43 +0200
-Message-ID: <20240709110701.383616689@linuxfoundation.org>
+Message-ID: <20240709110652.156186018@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Erick Archer <erick.archer@outlook.com>
 
-[ Upstream commit 7d6d8f0c8b700c9493f2839abccb6d29028b4219 ]
+[ Upstream commit a08b8f8557ad88ffdff8905e5da972afe52e3307 ]
 
-We find that when lock debugging is on, notifications may not come in
-order. Thus, we have order checking outputs managed by cfg_verbose, to
-avoid too many outputs in this case.
+This is an effort to get rid of all multiplications from allocation
+functions in order to prevent integer overflows [1][2].
 
-Fixes: 07b65c5b31ce ("test: add msg_zerocopy test")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Signed-off-by: Xiaochun Lu <xiaochun.lu@bytedance.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20240701225349.3395580-3-zijianzhang@bytedance.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+As the "ff" variable is a pointer to "struct ff_device" and this
+structure ends in a flexible array:
+
+struct ff_device {
+	[...]
+	struct file *effect_owners[] __counted_by(max_effects);
+};
+
+the preferred way in the kernel is to use the struct_size() helper to
+do the arithmetic instead of the calculation "size + count * size" in
+the kzalloc() function.
+
+The struct_size() helper returns SIZE_MAX on overflow. So, refactor
+the comparison to take advantage of this.
+
+This way, the code is more readable and safer.
+
+This code was detected with the help of Coccinelle, and audited and
+modified manually.
+
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments [1]
+Link: https://github.com/KSPP/linux/issues/160 [2]
+Signed-off-by: Erick Archer <erick.archer@outlook.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/AS8PR02MB72371E646714BAE2E51A6A378B152@AS8PR02MB7237.eurprd02.prod.outlook.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/msg_zerocopy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/ff-core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/net/msg_zerocopy.c b/tools/testing/selftests/net/msg_zerocopy.c
-index 926556febc83c..7ea5fb28c93db 100644
---- a/tools/testing/selftests/net/msg_zerocopy.c
-+++ b/tools/testing/selftests/net/msg_zerocopy.c
-@@ -438,7 +438,7 @@ static bool do_recv_completion(int fd, int domain)
- 	/* Detect notification gaps. These should not happen often, if at all.
- 	 * Gaps can occur due to drops, reordering and retransmissions.
- 	 */
--	if (lo != next_completion)
-+	if (cfg_verbose && lo != next_completion)
- 		fprintf(stderr, "gap: %u..%u does not append to %u\n",
- 			lo, hi, next_completion);
- 	next_completion = hi + 1;
+diff --git a/drivers/input/ff-core.c b/drivers/input/ff-core.c
+index 16231fe080b00..609a5f01761bd 100644
+--- a/drivers/input/ff-core.c
++++ b/drivers/input/ff-core.c
+@@ -9,8 +9,10 @@
+ /* #define DEBUG */
+ 
+ #include <linux/input.h>
++#include <linux/limits.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
++#include <linux/overflow.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+ 
+@@ -315,9 +317,8 @@ int input_ff_create(struct input_dev *dev, unsigned int max_effects)
+ 		return -EINVAL;
+ 	}
+ 
+-	ff_dev_size = sizeof(struct ff_device) +
+-				max_effects * sizeof(struct file *);
+-	if (ff_dev_size < max_effects) /* overflow */
++	ff_dev_size = struct_size(ff, effect_owners, max_effects);
++	if (ff_dev_size == SIZE_MAX) /* overflow */
+ 		return -EINVAL;
+ 
+ 	ff = kzalloc(ff_dev_size, GFP_KERNEL);
 -- 
 2.43.0
 
