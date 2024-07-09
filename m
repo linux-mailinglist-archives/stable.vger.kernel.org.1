@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-58575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD5892B7B0
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:25:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E10A92B816
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52058284958
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:25:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FE91B257DE
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733231581E4;
-	Tue,  9 Jul 2024 11:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC4415098A;
+	Tue,  9 Jul 2024 11:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gBJHTNNc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+CDu9Lf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F3C15749F;
-	Tue,  9 Jul 2024 11:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D43D34545;
+	Tue,  9 Jul 2024 11:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524356; cv=none; b=reOzXFMQ7YO+9Wq7hdWrYv6fc6CBKXn+O8tRGchHGwuuo27XeBDtSwWBk+A4aQfG/zVFTQJNp2HCyDyvRXn0a8R8sgB7lw2iMltjpseLYrp4gatcWm7+PF4gzrbvisWY/5WiPfJlF/sh1vjpkksu6qtuDbgmiJzgyH5kO8bAFL0=
+	t=1720524624; cv=none; b=S6C5N/6J4F8/90Ajsr8tHazakh1ESzUDbQpNHyuzfWkIwTSI6Po0O8ZEwMryNq0X56IzMfU8isRhJb+9hpLogNrzsO7T8gb7uTWdwv0/+hGc+fzGqc2b83XKdj07GmJEqGQcWTqGRvwgpPKK3vrhFKgMb1iSaiS/FGhSo1k242Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524356; c=relaxed/simple;
-	bh=E01VzoxTCt45+lzolq2fjh7aupBfIt6p1uNSDCqaASg=;
+	s=arc-20240116; t=1720524624; c=relaxed/simple;
+	bh=3bt0g8QYWL26P2mWcM/DV7e2MJDy47MfkNtj50KtzFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ER4mBDyr1ry1+9v0pK6Ik5wg1XWvvUccabqef2yrf3rdK1Rh/A46YAQQVoyF8sXJlXNW83WLi6pfTgMU9t2eth5EapuWuqEp7FFAzYvd/VymqAYzuSay3lLc8gWWXb+OMkBOQnQZztKEwCoyyyGZ/H5VzUOAhVWaCUILnJCC0e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gBJHTNNc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE8E1C4AF0C;
-	Tue,  9 Jul 2024 11:25:55 +0000 (UTC)
+	 MIME-Version; b=VRyHiGDwiqVFRIGLA0Mw3abSuCo87ojDOsUEon4JYDbdN8aoNxFhhxsBBTaCxx4AmR3EIxlIzkodYARB6cmRUo6nx1WaFup8BTzlaoLUZdYGKHMRqiiIn2pJAgilbS/xC9iiJoBnrXX/j9w/BIyTqq/DOEZDzPfZkzUWOC3JA5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+CDu9Lf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65C3C32786;
+	Tue,  9 Jul 2024 11:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524356;
-	bh=E01VzoxTCt45+lzolq2fjh7aupBfIt6p1uNSDCqaASg=;
+	s=korg; t=1720524624;
+	bh=3bt0g8QYWL26P2mWcM/DV7e2MJDy47MfkNtj50KtzFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gBJHTNNc502q5UajfO64SvQH8oZNFBSBuMhKRtqIkkyj6veWGnWyMSrPmgtC9YoD9
-	 C60AfJSAlRxS3VmtxCmjCn5DGLVa1MI33aSGLylg8BRXPYBls7nNkbFBcy2KEMZtae
-	 UmHqEuE6E5fxziYP6v7SwovpAMIb8jhcexTZ4kXU=
+	b=U+CDu9Lfqm3LMyQzo236qV0mm6Fox81lCaocTB7TQ64LYuM9jNvahV3DWEUz53fWP
+	 KAhEI5jRwZoVBegvGuoIzooQG5fsTV+kKvg51YhsONUGBZ/v1UmW2VpF5WokreEyW/
+	 VmTF4MkR4jGzmC+wLz5ZTSbEt9i8qd6dJnYukGNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Md Sadre Alam <quic_mdalam@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.9 154/197] clk: qcom: gcc-ipq9574: Add BRANCH_HALT_VOTED flag
+	Neal Cardwell <ncardwell@google.com>,
+	Yuchung Cheng <ycheng@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 045/102] UPSTREAM: tcp: fix DSACK undo in fast recovery to call tcp_try_to_open()
 Date: Tue,  9 Jul 2024 13:10:08 +0200
-Message-ID: <20240709110714.913524780@linuxfoundation.org>
+Message-ID: <20240709110653.124614071@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Md Sadre Alam <quic_mdalam@quicinc.com>
+From: Neal Cardwell <ncardwell@google.com>
 
-commit 72ceafb587a56e26c905472418c7dc2033c294d3 upstream.
+[ Upstream commit a6458ab7fd4f427d4f6f54380453ad255b7fde83 ]
 
-The crypto_ahb and crypto_axi clks are hardware voteable.
-This means that the halt bit isn't reliable because some
-other voter in the system, e.g. TrustZone, could be keeping
-the clk enabled when the kernel turns it off from clk_disable().
-Make these clks use voting mode by changing the halt check to
-BRANCH_HALT_VOTED and toggle the voting bit in the voting register
-instead of directly controlling the branch by writing to the branch
-register. This fixes stuck clk warnings seen on ipq9574 and saves
-power by actually turning the clk off.
+In some production workloads we noticed that connections could
+sometimes close extremely prematurely with ETIMEDOUT after
+transmitting only 1 TLP and RTO retransmission (when we would normally
+expect roughly tcp_retries2 = TCP_RETR2 = 15 RTOs before a connection
+closes with ETIMEDOUT).
 
-Also changes the CRYPTO_AHB_CLK_ENA & CRYPTO_AXI_CLK_ENA
-offset to 0xb004 from 0x16014.
+>From tracing we determined that these workloads can suffer from a
+scenario where in fast recovery, after some retransmits, a DSACK undo
+can happen at a point where the scoreboard is totally clear (we have
+retrans_out == sacked_out == lost_out == 0). In such cases, calling
+tcp_try_keep_open() means that we do not execute any code path that
+clears tp->retrans_stamp to 0. That means that tp->retrans_stamp can
+remain erroneously set to the start time of the undone fast recovery,
+even after the fast recovery is undone. If minutes or hours elapse,
+and then a TLP/RTO/RTO sequence occurs, then the start_ts value in
+retransmits_timed_out() (which is from tp->retrans_stamp) will be
+erroneously ancient (left over from the fast recovery undone via
+DSACKs). Thus this ancient tp->retrans_stamp value can cause the
+connection to die very prematurely with ETIMEDOUT via
+tcp_write_err().
 
-Cc: stable@vger.kernel.org
-Fixes: f6b2bd9cb29a ("clk: qcom: gcc-ipq9574: Enable crypto clocks")
-Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
-Link: https://lore.kernel.org/r/20240509105405.1262369-1-quic_mdalam@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The fix: we change DSACK undo in fast recovery (TCP_CA_Recovery) to
+call tcp_try_to_open() instead of tcp_try_keep_open(). This ensures
+that if no retransmits are in flight at the time of DSACK undo in fast
+recovery then we properly zero retrans_stamp. Note that calling
+tcp_try_to_open() is more consistent with other loss recovery
+behavior, since normal fast recovery (CA_Recovery) and RTO recovery
+(CA_Loss) both normally end when tp->snd_una meets or exceeds
+tp->high_seq and then in tcp_fastretrans_alert() the "default" switch
+case executes tcp_try_to_open(). Also note that by inspection this
+change to call tcp_try_to_open() implies at least one other nice bug
+fix, where now an ECE-marked DSACK that causes an undo will properly
+invoke tcp_enter_cwr() rather than ignoring the ECE mark.
+
+Fixes: c7d9d6a185a7 ("tcp: undo on DSACK during recovery")
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Yuchung Cheng <ycheng@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-ipq9574.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/ipv4/tcp_input.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/clk/qcom/gcc-ipq9574.c
-+++ b/drivers/clk/qcom/gcc-ipq9574.c
-@@ -2140,9 +2140,10 @@ static struct clk_rcg2 pcnoc_bfdcd_clk_s
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 2146299016eda..317cb90d77102 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -3041,7 +3041,7 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
+ 			return;
  
- static struct clk_branch gcc_crypto_axi_clk = {
- 	.halt_reg = 0x16010,
-+	.halt_check = BRANCH_HALT_VOTED,
- 	.clkr = {
--		.enable_reg = 0x16010,
--		.enable_mask = BIT(0),
-+		.enable_reg = 0xb004,
-+		.enable_mask = BIT(15),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "gcc_crypto_axi_clk",
- 			.parent_hws = (const struct clk_hw *[]) {
-@@ -2156,9 +2157,10 @@ static struct clk_branch gcc_crypto_axi_
+ 		if (tcp_try_undo_dsack(sk))
+-			tcp_try_keep_open(sk);
++			tcp_try_to_open(sk, flag);
  
- static struct clk_branch gcc_crypto_ahb_clk = {
- 	.halt_reg = 0x16014,
-+	.halt_check = BRANCH_HALT_VOTED,
- 	.clkr = {
--		.enable_reg = 0x16014,
--		.enable_mask = BIT(0),
-+		.enable_reg = 0xb004,
-+		.enable_mask = BIT(16),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "gcc_crypto_ahb_clk",
- 			.parent_hws = (const struct clk_hw *[]) {
+ 		tcp_identify_packet_loss(sk, ack_flag);
+ 		if (icsk->icsk_ca_state != TCP_CA_Recovery) {
+-- 
+2.43.0
+
 
 
 
