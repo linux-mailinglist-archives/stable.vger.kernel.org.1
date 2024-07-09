@@ -1,60 +1,69 @@
-Return-Path: <stable+bounces-58772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DA1492C019
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:31:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF3B92BFAE
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:23:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7ADDB2A64E
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:22:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C81FA1F264EF
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6841A00FA;
-	Tue,  9 Jul 2024 16:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4354C1A073F;
+	Tue,  9 Jul 2024 16:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rgJx7xQ+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tnwq6Khq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D127D1A00F1;
-	Tue,  9 Jul 2024 16:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11531A01D1;
+	Tue,  9 Jul 2024 16:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542032; cv=none; b=oYIuy4Zo2lw3HHRf7otc3pISNdx4z7sS928uuQ20AHDijU2d5G83dfMIjOgZMxWQqsekItygWh0j8bYTGW151+w/0HKW0Tefp0Jh+elEOaPGYmYA3VW6aCICVsDgd7xxoGgdxe0LydyTI403ODLx3QKCxMC+2XAIr3kY21P3Gzw=
+	t=1720542037; cv=none; b=jl/nywi/VVx3qEJM1GqZ6jOO1K3cturJeSQ+aOJ1es4ZtTm9dtKRTn+IxWZ89wzdLcOXrEk4K6xNXbR2/YIiIJRfhPvUHpVR6cN5BiK7XGmqJYNsKjrFy8Juh6MX4/y0rnaCVV4IZbk+jJWxHBOIZqzh9WQpPpC8CBQLM18e8H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542032; c=relaxed/simple;
-	bh=V/ZRa9J/p3rqcdBHU99j6hDHjwssxO4dUcWX/EGiXLY=;
+	s=arc-20240116; t=1720542037; c=relaxed/simple;
+	bh=9xPoarv9U0RMmmwGjz2KH5mcE2cMmo3OmRe08XZCiqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mPJtUgJuW82QhMUiiE0QnlxggC4YT3+5INsXBZy4I+/PkRrwL9TXGqNXuDrsy0bAJ2tKw0rjYBRzjLAzKtxE+3Ns6g9oVRdscX041g5ArUWae65TMPMU8/+fGddKo1f7QG8clWvwJmHqD9VC0loNaPOSjzeeJ+x6QqWgjrBmp4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rgJx7xQ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957E7C32782;
-	Tue,  9 Jul 2024 16:20:31 +0000 (UTC)
+	 MIME-Version; b=i38ZQHeGjTUnTyQHStQ5vL7HnPkvYebMucyrHCwxOSZXV2vXsAcnS5InmZFc3aqmp3BOUx3ZkjCS1m3SKqKaXTRryTfzTiHAWJ7J0pPQk+U6PbbcWtqdiTmsmOrn/xV4HDXVbjUAXrsQJvabvc8Cwiakz26uG2EwTyggXkmr99w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tnwq6Khq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 539B8C32786;
+	Tue,  9 Jul 2024 16:20:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542032;
-	bh=V/ZRa9J/p3rqcdBHU99j6hDHjwssxO4dUcWX/EGiXLY=;
+	s=k20201202; t=1720542036;
+	bh=9xPoarv9U0RMmmwGjz2KH5mcE2cMmo3OmRe08XZCiqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rgJx7xQ+Gobhu9hTby8xjSv4mJa2DndVSbgSMvl2SJZsH1R5ja+O+WGOlFQ6cEU7k
-	 VLCgeOEJOGP+tnfh4kMnJZ/OwL6tUa7qkVoVreXQZDD1aH5hNqJcVFJN82QnY5Z0n/
-	 WIb0msyaa83yaCm7MLgn2SUuBGUoteh60JCdY7uEHOTRnvs+5P8J5eBZTay1k9lw1j
-	 QIzKPeDCzcY4bj/u5HHo3WBZWgsc4uFsJa6d12ET+n+TatdZYwWMS7XQkXsA/8n/QG
-	 7BApnhC1V6bN+NBtsl1DL+pwQyPqlN1MTAykNE3CcfHXLP3QQ3wjV6vEm2yuEgQOKp
-	 CFnVYUtW0LPhA==
+	b=Tnwq6KhqE1lels9ZIRLjFmP2A3enBPsQkzkb2I/6rnWx02TSeZm7/AO4ahOALwNgZ
+	 Ya7qzmWVXFn8ajZvtYl8PCplX2KmucRDeh+1mdyuiNH9M61UPD34mBV9El2s7Kbf4C
+	 WBy1CpoTAmAAz47fsG34ZiKL2i0Jm/H2mBON0ZEp6JXs1ZGtCSpS2nly2BDPMq0Lsl
+	 CJtJX8qdY2baRYVWD6Ow/5+5tQOm7LkqYwcUxoY54+1ue0lpYVfc4qJgdq/lLYWv11
+	 ZtkcH4FizPchU/TghrzEHFSbJqLC/Fi0amNwONc5ld9aXlQAJhSy1aFbJwlMNDthTG
+	 GvF9UmWAz+6uQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
+Cc: Thomas GENTY <tomlohave@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
+	cezary.rojewski@intel.com,
+	liam.r.girdwood@linux.intel.com,
+	peter.ujfalusi@linux.intel.com,
+	yung-chuan.liao@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
+	kai.vehmanen@linux.intel.com,
 	perex@perex.cz,
 	tiwai@suse.com,
+	kuninori.morimoto.gx@renesas.com,
+	alban.boye@protonmail.com,
+	alsa-devel@alsa-project.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 10/40] ASoC: topology: Clean up route loading
-Date: Tue,  9 Jul 2024 12:18:50 -0400
-Message-ID: <20240709162007.30160-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.9 11/40] bytcr_rt5640 : inverse jack detect for Archos 101 cesium
+Date: Tue,  9 Jul 2024 12:18:51 -0400
+Message-ID: <20240709162007.30160-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162007.30160-1-sashal@kernel.org>
 References: <20240709162007.30160-1-sashal@kernel.org>
@@ -64,87 +73,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.8
 Content-Transfer-Encoding: 8bit
 
-From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+From: Thomas GENTY <tomlohave@gmail.com>
 
-[ Upstream commit e0e7bc2cbee93778c4ad7d9a792d425ffb5af6f7 ]
+[ Upstream commit e3209a1827646daaab744aa6a5767b1f57fb5385 ]
 
-Instead of using very long macro name, assign it to shorter variable
-and use it instead. While doing that, we can reduce multiple if checks
-using this define to one.
+When headphones are plugged in, they appear absent; when they are removed,
+they appear present.
+Add a specific entry in bytcr_rt5640 for this device
 
-Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20240603102818.36165-5-amadeuszx.slawinski@linux.intel.com
+Signed-off-by: Thomas GENTY <tomlohave@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20240608170251.99936-1-tomlohave@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-topology.c | 26 ++++++++------------------
- 1 file changed, 8 insertions(+), 18 deletions(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/sound/soc/soc-topology.c b/sound/soc/soc-topology.c
-index ce22613bf9690..52752e0a5dc27 100644
---- a/sound/soc/soc-topology.c
-+++ b/sound/soc/soc-topology.c
-@@ -1021,6 +1021,7 @@ static int soc_tplg_dapm_graph_elems_load(struct soc_tplg *tplg,
- 	struct snd_soc_tplg_hdr *hdr)
- {
- 	struct snd_soc_dapm_context *dapm = &tplg->comp->dapm;
-+	const size_t maxlen = SNDRV_CTL_ELEM_ID_NAME_MAXLEN;
- 	struct snd_soc_tplg_dapm_graph_elem *elem;
- 	struct snd_soc_dapm_route *route;
- 	int count, i;
-@@ -1044,38 +1045,27 @@ static int soc_tplg_dapm_graph_elems_load(struct soc_tplg *tplg,
- 		tplg->pos += sizeof(struct snd_soc_tplg_dapm_graph_elem);
- 
- 		/* validate routes */
--		if (strnlen(elem->source, SNDRV_CTL_ELEM_ID_NAME_MAXLEN) ==
--			    SNDRV_CTL_ELEM_ID_NAME_MAXLEN) {
--			ret = -EINVAL;
--			break;
--		}
--		if (strnlen(elem->sink, SNDRV_CTL_ELEM_ID_NAME_MAXLEN) ==
--			    SNDRV_CTL_ELEM_ID_NAME_MAXLEN) {
--			ret = -EINVAL;
--			break;
--		}
--		if (strnlen(elem->control, SNDRV_CTL_ELEM_ID_NAME_MAXLEN) ==
--			    SNDRV_CTL_ELEM_ID_NAME_MAXLEN) {
-+		if ((strnlen(elem->source, maxlen) == maxlen) ||
-+		    (strnlen(elem->sink, maxlen) == maxlen) ||
-+		    (strnlen(elem->control, maxlen) == maxlen)) {
- 			ret = -EINVAL;
- 			break;
- 		}
- 
- 		route->source = devm_kmemdup(tplg->dev, elem->source,
--					     min(strlen(elem->source),
--						 SNDRV_CTL_ELEM_ID_NAME_MAXLEN),
-+					     min(strlen(elem->source), maxlen),
- 					     GFP_KERNEL);
- 		route->sink = devm_kmemdup(tplg->dev, elem->sink,
--					   min(strlen(elem->sink), SNDRV_CTL_ELEM_ID_NAME_MAXLEN),
-+					   min(strlen(elem->sink), maxlen),
- 					   GFP_KERNEL);
- 		if (!route->source || !route->sink) {
- 			ret = -ENOMEM;
- 			break;
- 		}
- 
--		if (strnlen(elem->control, SNDRV_CTL_ELEM_ID_NAME_MAXLEN) != 0) {
-+		if (strnlen(elem->control, maxlen) != 0) {
- 			route->control = devm_kmemdup(tplg->dev, elem->control,
--						      min(strlen(elem->control),
--							  SNDRV_CTL_ELEM_ID_NAME_MAXLEN),
-+						      min(strlen(elem->control), maxlen),
- 						      GFP_KERNEL);
- 			if (!route->control) {
- 				ret = -ENOMEM;
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index b41a1147f1c34..a64d1989e28a5 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -610,6 +610,17 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF1 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
++	{
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ARCHOS"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ARCHOS 101 CESIUM"),
++		},
++		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
++					BYT_RT5640_JD_NOT_INV |
++					BYT_RT5640_DIFF_MIC |
++					BYT_RT5640_SSP0_AIF1 |
++					BYT_RT5640_MCLK_EN),
++	},
+ 	{
+ 		.matches = {
+ 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ARCHOS"),
 -- 
 2.43.0
 
