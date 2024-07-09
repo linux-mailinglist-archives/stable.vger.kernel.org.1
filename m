@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1329B92B743
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2FF92B673
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:13:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4493E1C22BCF
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:22:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED8CE1C21B4F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A471B15B117;
-	Tue,  9 Jul 2024 11:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323B0157E9B;
+	Tue,  9 Jul 2024 11:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oINmC5wH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nd9oOhmb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B30158208;
-	Tue,  9 Jul 2024 11:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51E1155389;
+	Tue,  9 Jul 2024 11:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524061; cv=none; b=UB5eTa96mguQsCZViubdQJEYReBq/odH+3adR0h+c9+fXuOR1uqNUs02dM2uH1fdOGE19Z4HnBE33+yrA8xkzXctwbtyR2HQefC0pdRd/xfVGWLYd7Upq44tJI5SirXc7j8znyEGRvjG9WlrBccVz1oXarSXSjZMbwEq2pAiOBA=
+	t=1720523617; cv=none; b=eixHQOVK96UP2hOlQnV7hkTDcbILXNNdGgqMW7BCLcUytD2kEv9iVa67lq3SeoublpS4TrvAk4HGZ46LFzrVN305WtoI9223kLUYF5Q844VTQnGCfZBWhAWxSUnFuBlkrxHoaLkvQ1YPsjNeRnEoP9N9Tnk+8GcGxLaTICsTac4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524061; c=relaxed/simple;
-	bh=qktkhJj81jkaCbl3RLvjJvi3cBPs03JdWqFREF29uNw=;
+	s=arc-20240116; t=1720523617; c=relaxed/simple;
+	bh=D0QP0jDVYKQKBRRoMdmQ4qlnulyI4wnqs/9ctiGohjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tCEwV3tcF3+2LrDZH+rj1r3RVjGJpznNOOoQrJuYvIvJUABfNR1BizQ9o4sUs8n/pWxwlrWEoJuENBigZYrDjNoThGg/XrZx7Kblbg8w0b6KK11C02mAgnI4HcKZfokAZ1qrbrECNkjN2IAtOVxNbwgeVqrl50IEHdwFQjdRyVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oINmC5wH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC02C3277B;
-	Tue,  9 Jul 2024 11:21:00 +0000 (UTC)
+	 MIME-Version; b=h3kCCkOa6JnvhRJeLE2NJzFH/q/RQyQOrIPKGzYJiP9pREr6yDuGg+8aI/DL0OLL7jHrQe9ebOsEuLosU7OMA7lWoCLa32pw53SnxFpbl5GD+4+yMNWxz+WLxbkVw7vCbIy+tM8pNbT5B54I8DZGQLqxmy6zrdoHJEWfVNUUqrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nd9oOhmb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6C1C3277B;
+	Tue,  9 Jul 2024 11:13:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524061;
-	bh=qktkhJj81jkaCbl3RLvjJvi3cBPs03JdWqFREF29uNw=;
+	s=korg; t=1720523616;
+	bh=D0QP0jDVYKQKBRRoMdmQ4qlnulyI4wnqs/9ctiGohjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oINmC5wH7ygGpzwiOmvbVdLgiBuNcGyf6X1BXDY3YXBm4aEbuK+c5evuA1u1iJgND
-	 H+RnNEf2e9UAIMlPoLWbvSxwmkkE08yCbG2akyKqdGVl88nq7vLkAwRgnFzdqBtAml
-	 MNQTZHtFPxkVe3uD6RNjipnJr417bI7R9zMMU5i0=
+	b=Nd9oOhmbBcr3u5miiWG12SK6SFWmCIbSR0ZF2OxOKsn6wpT+2bxqeXRtkRYxkeGXw
+	 nmGv6MD5AZqyEidCa4Jt5JmhWBsEtxqn6F/qMevEdHz+V9a8qEkxn5QdNkoVpf/rH5
+	 pdNDInhbYbJW/Sv8uPgt9RUQjU8IlyZToz88qrso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Gray <bgray@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 057/197] powerpc/dexcr: Track the DEXCR per-process
-Date: Tue,  9 Jul 2024 13:08:31 +0200
-Message-ID: <20240709110711.171129088@linuxfoundation.org>
+Subject: [PATCH 6.6 012/139] selftests/bpf: do not pass NULL for non-nullable params in dummy_st_ops
+Date: Tue,  9 Jul 2024 13:08:32 +0200
+Message-ID: <20240709110658.628185407@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Gray <bgray@linux.ibm.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 75171f06c4507c3b6b5a69d793879fb20d108bb1 ]
+[ Upstream commit f612210d456a0b969a0adca91e68dbea0e0ea301 ]
 
-Add capability to make the DEXCR act as a per-process SPR.
+dummy_st_ops.test_2 and dummy_st_ops.test_sleepable do not have their
+'state' parameter marked as nullable. Update dummy_st_ops.c to avoid
+passing NULL for such parameters, as the next patch would allow kernel
+to enforce this restriction.
 
-We do not yet have an interface for changing the values per task. We
-also expect the kernel to use a single DEXCR value across all tasks
-while in privileged state, so there is no need to synchronize after
-changing it (the userspace aspects will synchronize upon returning to
-userspace).
-
-Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240417112325.728010-3-bgray@linux.ibm.com
-Stable-dep-of: bbd99922d0f4 ("powerpc/dexcr: Reset DEXCR value across exec")
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20240424012821.595216-4-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/processor.h     |  1 +
- arch/powerpc/kernel/process.c            | 10 ++++++++++
- arch/powerpc/kernel/ptrace/ptrace-view.c |  7 +------
- 3 files changed, 12 insertions(+), 6 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/dummy_st_ops.c    | 7 +++++--
+ tools/testing/selftests/bpf/progs/dummy_st_ops_success.c | 2 +-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
-index b2c51d337e60c..882e31296ea6b 100644
---- a/arch/powerpc/include/asm/processor.h
-+++ b/arch/powerpc/include/asm/processor.h
-@@ -260,6 +260,7 @@ struct thread_struct {
- 	unsigned long   sier2;
- 	unsigned long   sier3;
- 	unsigned long	hashkeyr;
-+	unsigned long	dexcr;
+diff --git a/tools/testing/selftests/bpf/prog_tests/dummy_st_ops.c b/tools/testing/selftests/bpf/prog_tests/dummy_st_ops.c
+index f43fcb13d2c46..dd926c00f4146 100644
+--- a/tools/testing/selftests/bpf/prog_tests/dummy_st_ops.c
++++ b/tools/testing/selftests/bpf/prog_tests/dummy_st_ops.c
+@@ -98,7 +98,8 @@ static void test_dummy_init_ptr_arg(void)
  
- #endif
- };
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 9452a54d356c9..d482c3fd81d7a 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1185,6 +1185,9 @@ static inline void save_sprs(struct thread_struct *t)
+ static void test_dummy_multiple_args(void)
+ {
+-	__u64 args[5] = {0, -100, 0x8a5f, 'c', 0x1234567887654321ULL};
++	struct bpf_dummy_ops_state st = { 7 };
++	__u64 args[5] = {(__u64)&st, -100, 0x8a5f, 'c', 0x1234567887654321ULL};
+ 	LIBBPF_OPTS(bpf_test_run_opts, attr,
+ 		.ctx_in = args,
+ 		.ctx_size_in = sizeof(args),
+@@ -115,6 +116,7 @@ static void test_dummy_multiple_args(void)
+ 	fd = bpf_program__fd(skel->progs.test_2);
+ 	err = bpf_prog_test_run_opts(fd, &attr);
+ 	ASSERT_OK(err, "test_run");
++	args[0] = 7;
+ 	for (i = 0; i < ARRAY_SIZE(args); i++) {
+ 		snprintf(name, sizeof(name), "arg %zu", i);
+ 		ASSERT_EQ(skel->bss->test_2_args[i], args[i], name);
+@@ -125,7 +127,8 @@ static void test_dummy_multiple_args(void)
  
- 	if (cpu_has_feature(CPU_FTR_DEXCR_NPHIE))
- 		t->hashkeyr = mfspr(SPRN_HASHKEYR);
-+
-+	if (cpu_has_feature(CPU_FTR_ARCH_31))
-+		t->dexcr = mfspr(SPRN_DEXCR);
- #endif
- }
- 
-@@ -1267,6 +1270,10 @@ static inline void restore_sprs(struct thread_struct *old_thread,
- 	if (cpu_has_feature(CPU_FTR_DEXCR_NPHIE) &&
- 	    old_thread->hashkeyr != new_thread->hashkeyr)
- 		mtspr(SPRN_HASHKEYR, new_thread->hashkeyr);
-+
-+	if (cpu_has_feature(CPU_FTR_ARCH_31) &&
-+	    old_thread->dexcr != new_thread->dexcr)
-+		mtspr(SPRN_DEXCR, new_thread->dexcr);
- #endif
- 
- }
-@@ -1878,6 +1885,9 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
- #ifdef CONFIG_PPC_BOOK3S_64
- 	if (cpu_has_feature(CPU_FTR_DEXCR_NPHIE))
- 		p->thread.hashkeyr = current->thread.hashkeyr;
-+
-+	if (cpu_has_feature(CPU_FTR_ARCH_31))
-+		p->thread.dexcr = mfspr(SPRN_DEXCR);
- #endif
- 	return 0;
- }
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-view.c b/arch/powerpc/kernel/ptrace/ptrace-view.c
-index 584cf5c3df509..c1819e0a66842 100644
---- a/arch/powerpc/kernel/ptrace/ptrace-view.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace-view.c
-@@ -469,12 +469,7 @@ static int dexcr_get(struct task_struct *target, const struct user_regset *regse
- 	if (!cpu_has_feature(CPU_FTR_ARCH_31))
- 		return -ENODEV;
- 
--	/*
--	 * The DEXCR is currently static across all CPUs, so we don't
--	 * store the target's value anywhere, but the static value
--	 * will also be correct.
--	 */
--	membuf_store(&to, (u64)lower_32_bits(DEXCR_INIT));
-+	membuf_store(&to, (u64)lower_32_bits(target->thread.dexcr));
- 
- 	/*
- 	 * Technically the HDEXCR is per-cpu, but a hypervisor can't reasonably
+ static void test_dummy_sleepable(void)
+ {
+-	__u64 args[1] = {0};
++	struct bpf_dummy_ops_state st;
++	__u64 args[1] = {(__u64)&st};
+ 	LIBBPF_OPTS(bpf_test_run_opts, attr,
+ 		.ctx_in = args,
+ 		.ctx_size_in = sizeof(args),
+diff --git a/tools/testing/selftests/bpf/progs/dummy_st_ops_success.c b/tools/testing/selftests/bpf/progs/dummy_st_ops_success.c
+index cc7b69b001aae..ec0c595d47af8 100644
+--- a/tools/testing/selftests/bpf/progs/dummy_st_ops_success.c
++++ b/tools/testing/selftests/bpf/progs/dummy_st_ops_success.c
+@@ -34,7 +34,7 @@ SEC("struct_ops/test_2")
+ int BPF_PROG(test_2, struct bpf_dummy_ops_state *state, int a1, unsigned short a2,
+ 	     char a3, unsigned long a4)
+ {
+-	test_2_args[0] = (unsigned long)state;
++	test_2_args[0] = state->val;
+ 	test_2_args[1] = a1;
+ 	test_2_args[2] = a2;
+ 	test_2_args[3] = a3;
 -- 
 2.43.0
 
