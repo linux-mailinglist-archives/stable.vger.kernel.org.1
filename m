@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-58362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155AF92B693
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:15:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 691F692B77F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5F15281F52
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:15:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B5C81C22BCF
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630DE155A26;
-	Tue,  9 Jul 2024 11:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B626B1586C0;
+	Tue,  9 Jul 2024 11:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+MSWAqc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrZWVhpY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3EF158205;
-	Tue,  9 Jul 2024 11:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B0713A25F;
+	Tue,  9 Jul 2024 11:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523710; cv=none; b=H0EoO+MVflkevTSB+OHi97eYh+J5NDg/aINxCRqrIilo5mEaJ7RcI01w/LXp2Z2azaKRs/SEoqgOE0VvM6GiF6iifEQv1v05v0vOLIXV4bS0ACmKAvkd915cX/Lg3LIW/sLtPrGzJvjG0/hNZd3Aw6MORRElsbXI6O801Kb9bq8=
+	t=1720524231; cv=none; b=Rd+DZb80uk1fnlwvdEtmm7VrGdSP06RIUSDKrQpJuGEnixFStC9RIBPa2LbaMNAJRLoDG7ZMJcAdeGf+ef+0TBdBMBh2VAHe5VP4DDD5ZvF6HhXyRK8DgmNj4SQsRxQUpHZpBdaCTlrNK+7gc1KhPUDa0FIomYT9VvNKl0FkkKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523710; c=relaxed/simple;
-	bh=T2oeH3RaLUWWC6Mw/o6Lb5OS9F1VUyRaEbLXbrp7j9E=;
+	s=arc-20240116; t=1720524231; c=relaxed/simple;
+	bh=WTbKCmPs+cAJTNF7xCH/8NTt5a5nxa/vTJpbKk4Hl6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SidkR1Dm7VkHkXlElq88pSzBK/6TtE3UboMJiGkdwvwBGSz2St9X2Im0v8qBphsgiUdGjDDBv2WwUrqqX8Fn3D2DORECTuzCxd51FTmH4Ou7iwNial/8/gkVkCEjgYOePlyPozq/tAP5Kb49mWv+aT9JM4GtgN+MJUUHnJc1hmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+MSWAqc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A328C4AF0A;
-	Tue,  9 Jul 2024 11:15:09 +0000 (UTC)
+	 MIME-Version; b=ClG0IPwCSV3/kXYUErRtFjKKnCXfd6jXvwoH9NmE2OeE+/4Pt9FaWb0sNncnb6u/ECTmPzqEDWtOmMdNYJ9XcBkDSSnZtCdoxouexhHb4KVUzlrFFChbyROfTShF9R5QfKnFkhHWvtYenVg6xwmEumKyC8jjVbQsml3yAv2wXQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrZWVhpY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31DDC3277B;
+	Tue,  9 Jul 2024 11:23:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523709;
-	bh=T2oeH3RaLUWWC6Mw/o6Lb5OS9F1VUyRaEbLXbrp7j9E=;
+	s=korg; t=1720524231;
+	bh=WTbKCmPs+cAJTNF7xCH/8NTt5a5nxa/vTJpbKk4Hl6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c+MSWAqclY2PrkY5FZ46vy9ADBh6JjX3QE4wHf92LLNNG5OF+Nz5lbNA6/EVDL1qH
-	 5zUKFJf3szX8M4pA/uuvQCCZ5tJx27VUAMULVCyC7NNJEahhS0wlZnlYG2LZ9VJ6AX
-	 Vq7YAyRk8osDa3kMdAwRPBL9fknn9FLVa6+CuhME=
+	b=RrZWVhpYOmFbAtMJxBCgENxdr5ltI2jbb4rKXK1ZQd23XPTQMbQL3SDIp5iTia7XV
+	 G8iLXpDlwdDHXrpiYM8Wb3AFdMJyHvGTtVmuXQAN139NOmPqqnzxdmfVDZsWR5gcpf
+	 eVjnqsDzzjdyd211g/pW4+eEtCy8LaP92tsM9l8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Krummsdorf <michael.krummsdorf@tq-group.com>,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+	syzbot+b2545b087a01a7319474@syzkaller.appspotmail.com,
+	Pavel Skripkin <paskripkin@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/139] serial: imx: Raise TX trigger level to 8
+Subject: [PATCH 6.9 097/197] bluetooth/hci: disallow setting handle bigger than HCI_CONN_HANDLE_MAX
 Date: Tue,  9 Jul 2024 13:09:11 +0200
-Message-ID: <20240709110700.141768734@linuxfoundation.org>
+Message-ID: <20240709110712.715650862@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+From: Pavel Skripkin <paskripkin@gmail.com>
 
-[ Upstream commit a3d8728ab079951741efa11360df43dbfacba7ab ]
+[ Upstream commit 1cc18c2ab2e8c54c355ea7c0423a636e415a0c23 ]
 
-At the default TX trigger level of 2 in non-DMA mode (meaning that an
-interrupt is generated when less than 2 characters are left in the
-FIFO), we have observed frequent buffer underruns at 115200 Baud on an
-i.MX8M Nano. This can cause communication issues if the receiving side
-expects a continuous transfer.
+Syzbot hit warning in hci_conn_del() caused by freeing handle that was
+not allocated using ida allocator.
 
-Increasing the level to 8 makes the UART trigger an interrupt earlier,
-giving the kernel enough time to refill the FIFO, at the cost of
-triggering one interrupt per ~24 instead of ~30 bytes of transmitted
-data (as the i.MX UART has a 32 byte FIFO).
+This is caused by handle bigger than HCI_CONN_HANDLE_MAX passed by
+hci_le_big_sync_established_evt(), which makes code think it's unset
+connection.
 
-Signed-off-by: Michael Krummsdorf <michael.krummsdorf@tq-group.com>
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Link: https://lore.kernel.org/r/20240508133744.35858-1-matthias.schiffer@ew.tq-group.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add same check for handle upper bound as in hci_conn_set_handle() to
+prevent warning.
+
+Link: https://syzkaller.appspot.com/bug?extid=b2545b087a01a7319474
+Reported-by: syzbot+b2545b087a01a7319474@syzkaller.appspotmail.com
+Fixes: 181a42edddf5 ("Bluetooth: Make handle of hci_conn be unique")
+Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_conn.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 285e0e1144c4c..a5d0df2ba5c55 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -1320,7 +1320,7 @@ static void imx_uart_clear_rx_errors(struct imx_port *sport)
- 
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 08ae30fd31551..baca48ce8d0c6 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -904,8 +904,8 @@ static int hci_conn_hash_alloc_unset(struct hci_dev *hdev)
+ 			       U16_MAX, GFP_ATOMIC);
  }
  
--#define TXTL_DEFAULT 2 /* reset default */
-+#define TXTL_DEFAULT 8
- #define RXTL_DEFAULT 8 /* 8 characters or aging timer */
- #define TXTL_DMA 8 /* DMA burst setting */
- #define RXTL_DMA 9 /* DMA burst setting */
+-struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
+-			      u8 role, u16 handle)
++static struct hci_conn *__hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
++				       u8 role, u16 handle)
+ {
+ 	struct hci_conn *conn;
+ 
+@@ -1046,7 +1046,16 @@ struct hci_conn *hci_conn_add_unset(struct hci_dev *hdev, int type,
+ 	if (unlikely(handle < 0))
+ 		return ERR_PTR(-ECONNREFUSED);
+ 
+-	return hci_conn_add(hdev, type, dst, role, handle);
++	return __hci_conn_add(hdev, type, dst, role, handle);
++}
++
++struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
++			      u8 role, u16 handle)
++{
++	if (handle > HCI_CONN_HANDLE_MAX)
++		return ERR_PTR(-EINVAL);
++
++	return __hci_conn_add(hdev, type, dst, role, handle);
+ }
+ 
+ static void hci_conn_cleanup_child(struct hci_conn *conn, u8 reason)
 -- 
 2.43.0
 
