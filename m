@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A519192B63F
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:11:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E5E392B737
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:21:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FF13B20D49
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:11:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0366F1F23A33
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25D01586CD;
-	Tue,  9 Jul 2024 11:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE0A158A34;
+	Tue,  9 Jul 2024 11:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JI3R19P1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lyQm60h3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBB91586C3;
-	Tue,  9 Jul 2024 11:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F055614EC4D;
+	Tue,  9 Jul 2024 11:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523497; cv=none; b=Oq/gsOO46EM1tHMH1gRfVsGB++G7s5/zvNtI8IhEebaigwcg4GU98e23SMUleBLSL2BTDsBb4Ad8TkcgbiYYlIyyxajv6A1YaQtHrT3bD7CASxLB52yA73plygtQnHjVuMTxTS9sJEU8aFqPuWWGlB3rUFQyYackFQ1LeER4g30=
+	t=1720524041; cv=none; b=OKTU0LiAcVdWY76FOehfXVcDMGa1Pm2gVLNxa6BS87fVSUSkenkIjWRF5MSIZ9O6FS41Hk8ibJjiQ/jmYLStsx/Btubc1otmQmt6WUu6jCSH4faI/pIKQ1b0Mo6njLhS0QRFCZblwucwNnLAn5YzF6bsU3MrApw4h5I1omYXpwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523497; c=relaxed/simple;
-	bh=KrW/jko8x2zpz3WoHaN1r/2sgvVjPt8pWZFKBHEgZ4U=;
+	s=arc-20240116; t=1720524041; c=relaxed/simple;
+	bh=xkjqiRBKFArgAAN8MITe47KLbWANXXeoD+0jxFoR3Oo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZhmV7W/AYvywUXFHMzgcub8WYEf3/xtyJRs04OMVCZVZL1mRdyScGwNvOKyG4717H49ZP0MkbJKSBVQx/Y7o8zqzCEbT9jhyCji9gjt2/ExMWrI0Dqu1gktdqSrwQxtXkg0OCe1nmOF8ytXrC9z75OGUBDw/cW2ZJspPg59YU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JI3R19P1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C216EC32786;
-	Tue,  9 Jul 2024 11:11:36 +0000 (UTC)
+	 MIME-Version; b=b/Xtr7z1IikF+tzUkrRU7Hj/AhZeMGHS8oeoiLp16FD4yxSECK/IesEo29nvsrTNUwNAP0qkTr88dLQt5Npgu5cAr08v5RTIYJjS+0LaFsU3mAGZNgkkfXMMxjiWTTM5ihAfhTDOQvVfLO/8UVJAr1Ev7TGgMsSfDkvMTFvqh40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lyQm60h3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755FEC3277B;
+	Tue,  9 Jul 2024 11:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523497;
-	bh=KrW/jko8x2zpz3WoHaN1r/2sgvVjPt8pWZFKBHEgZ4U=;
+	s=korg; t=1720524040;
+	bh=xkjqiRBKFArgAAN8MITe47KLbWANXXeoD+0jxFoR3Oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JI3R19P1AJQRkYTIIzNtG5oXdbTPEpesbJiOA/rN8K+sp5EwWI1YQbj5mFgFy30Jd
-	 PD4LW2M/+I9Lwy6k1BujnLw1wq36fCO9pjVefRzMtOrow2FxfdnOLH9N0w7WbVLtVI
-	 gIHj0JzDGUxMsp4k+QcM3KqV/C5edk0z+XyodzmA=
+	b=lyQm60h3/NlInvBK42xNT4Hjng3FViGJbAmqwp2rnIC04JdM3Cnm7SaTht/WMqqib
+	 InzfD5fwLrkJnOoNQo6QT5eO37FfJnmylMgPVnXugQkAnuxcvVaUWpkO4aBiJjdoTI
+	 bSTW2EJg00pecMJZMIBNhozbz/sDJG1NFdHmUEAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erico Nunes <nunes.erico@gmail.com>,
-	Qiang Yu <yuq825@gmail.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 004/139] drm/lima: fix shared irq handling on driver remove
-Date: Tue,  9 Jul 2024 13:08:24 +0200
-Message-ID: <20240709110658.320447134@linuxfoundation.org>
+Subject: [PATCH 6.9 051/197] media: dvb-frontends: tda18271c2dd: Remove casting during div
+Date: Tue,  9 Jul 2024 13:08:25 +0200
+Message-ID: <20240709110710.939357407@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erico Nunes <nunes.erico@gmail.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit a6683c690bbfd1f371510cb051e8fa49507f3f5e ]
+[ Upstream commit e9a844632630e18ed0671a7e3467431bd719952e ]
 
-lima uses a shared interrupt, so the interrupt handlers must be prepared
-to be called at any time. At driver removal time, the clocks are
-disabled early and the interrupts stay registered until the very end of
-the remove process due to the devm usage.
-This is potentially a bug as the interrupts access device registers
-which assumes clocks are enabled. A crash can be triggered by removing
-the driver in a kernel with CONFIG_DEBUG_SHIRQ enabled.
-This patch frees the interrupts at each lima device finishing callback
-so that the handlers are already unregistered by the time we fully
-disable clocks.
+do_div() divides 64 bits by 32. We were adding a casting to the divider
+to 64 bits, for a number that fits perfectly in 32 bits. Remove it.
 
-Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
-Signed-off-by: Qiang Yu <yuq825@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240401224329.1228468-2-nunes.erico@gmail.com
+Found by cocci:
+drivers/media/dvb-frontends/tda18271c2dd.c:355:1-7: WARNING: do_div() does a 64-by-32 division, please consider using div64_u64 instead.
+drivers/media/dvb-frontends/tda18271c2dd.c:331:1-7: WARNING: do_div() does a 64-by-32 division, please consider using div64_u64 instead.
+
+Link: https://lore.kernel.org/linux-media/20240429-fix-cocci-v3-8-3c4865f5a4b0@chromium.org
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/lima/lima_gp.c  | 2 ++
- drivers/gpu/drm/lima/lima_mmu.c | 5 +++++
- drivers/gpu/drm/lima/lima_pp.c  | 4 ++++
- 3 files changed, 11 insertions(+)
+ drivers/media/dvb-frontends/tda18271c2dd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/lima/lima_gp.c b/drivers/gpu/drm/lima/lima_gp.c
-index 6cf46b653e810..ca3842f719842 100644
---- a/drivers/gpu/drm/lima/lima_gp.c
-+++ b/drivers/gpu/drm/lima/lima_gp.c
-@@ -324,7 +324,9 @@ int lima_gp_init(struct lima_ip *ip)
+diff --git a/drivers/media/dvb-frontends/tda18271c2dd.c b/drivers/media/dvb-frontends/tda18271c2dd.c
+index a348344879433..fd928787207ed 100644
+--- a/drivers/media/dvb-frontends/tda18271c2dd.c
++++ b/drivers/media/dvb-frontends/tda18271c2dd.c
+@@ -328,7 +328,7 @@ static int CalcMainPLL(struct tda_state *state, u32 freq)
  
- void lima_gp_fini(struct lima_ip *ip)
- {
-+	struct lima_device *dev = ip->dev;
+ 	OscFreq = (u64) freq * (u64) Div;
+ 	OscFreq *= (u64) 16384;
+-	do_div(OscFreq, (u64)16000000);
++	do_div(OscFreq, 16000000);
+ 	MainDiv = OscFreq;
  
-+	devm_free_irq(dev->dev, ip->irq, ip);
- }
+ 	state->m_Regs[MPD] = PostDiv & 0x77;
+@@ -352,7 +352,7 @@ static int CalcCalPLL(struct tda_state *state, u32 freq)
+ 	OscFreq = (u64)freq * (u64)Div;
+ 	/* CalDiv = u32( OscFreq * 16384 / 16000000 ); */
+ 	OscFreq *= (u64)16384;
+-	do_div(OscFreq, (u64)16000000);
++	do_div(OscFreq, 16000000);
+ 	CalDiv = OscFreq;
  
- int lima_gp_pipe_init(struct lima_device *dev)
-diff --git a/drivers/gpu/drm/lima/lima_mmu.c b/drivers/gpu/drm/lima/lima_mmu.c
-index a1ae6c252dc2b..8ca7047adbaca 100644
---- a/drivers/gpu/drm/lima/lima_mmu.c
-+++ b/drivers/gpu/drm/lima/lima_mmu.c
-@@ -118,7 +118,12 @@ int lima_mmu_init(struct lima_ip *ip)
- 
- void lima_mmu_fini(struct lima_ip *ip)
- {
-+	struct lima_device *dev = ip->dev;
-+
-+	if (ip->id == lima_ip_ppmmu_bcast)
-+		return;
- 
-+	devm_free_irq(dev->dev, ip->irq, ip);
- }
- 
- void lima_mmu_flush_tlb(struct lima_ip *ip)
-diff --git a/drivers/gpu/drm/lima/lima_pp.c b/drivers/gpu/drm/lima/lima_pp.c
-index 54b208a4a768e..d34c9e8840f45 100644
---- a/drivers/gpu/drm/lima/lima_pp.c
-+++ b/drivers/gpu/drm/lima/lima_pp.c
-@@ -266,7 +266,9 @@ int lima_pp_init(struct lima_ip *ip)
- 
- void lima_pp_fini(struct lima_ip *ip)
- {
-+	struct lima_device *dev = ip->dev;
- 
-+	devm_free_irq(dev->dev, ip->irq, ip);
- }
- 
- int lima_pp_bcast_resume(struct lima_ip *ip)
-@@ -299,7 +301,9 @@ int lima_pp_bcast_init(struct lima_ip *ip)
- 
- void lima_pp_bcast_fini(struct lima_ip *ip)
- {
-+	struct lima_device *dev = ip->dev;
- 
-+	devm_free_irq(dev->dev, ip->irq, ip);
- }
- 
- static int lima_pp_task_validate(struct lima_sched_pipe *pipe,
+ 	state->m_Regs[CPD] = PostDiv;
 -- 
 2.43.0
 
