@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-58651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09F692B809
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58E7992B6B4
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:16:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A16A283C54
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 032A31F24204
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B7215821A;
-	Tue,  9 Jul 2024 11:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F64D158A01;
+	Tue,  9 Jul 2024 11:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AK82/yqq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPip65P2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B3E146D53;
-	Tue,  9 Jul 2024 11:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2D31586C0;
+	Tue,  9 Jul 2024 11:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524586; cv=none; b=CFNbpnlmTTwD6WHVW4IhGmTBbqWnccLWZ15B22zHS+eC6BqNkPOHwBs49TtgZ+is23QN7SKgKlhk4DMQxtZAtluaTJrTDxoRu4fPWrDZ191MZuyi6VT4sHJ0mxpzJpb4vkzdLv8qRnMKqJIT+gwlVLvBZo50LDZp26q+7Labn9A=
+	t=1720523749; cv=none; b=WUP0OuwSy4kqXtHfJv7exBHdzEgCC9h7Hc37ElhRLEys3YwealmnGF/OOgaODsZ3AcI3dTDkHQTcZBDHYnQlpBhya1jiVcG2FtHayOkaRqpN6QIsvnss8SxnQf3AkWdsBJBMtZMMPJoZqQGWekrP7+DQC4YsUqkJcmEUtotABR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524586; c=relaxed/simple;
-	bh=FzLStpewQBBtVPFtvNHL/2U7xuLql4Q74ac2tambPpo=;
+	s=arc-20240116; t=1720523749; c=relaxed/simple;
+	bh=IbZtROTB03+Iigjj7RctRnEsf5EVk5AnBr9Swq87KUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XlHm1pPirV6GxsIY3fXpvr4dnKpTBMwLJ3vSzDTd5a7/7Ih6wrDtmA+iMkQi5R+lgqrPRN2hdFqsdk/BmZ3FL7UV9AmtbhlZZh+ELq/BD7twcKFuvVM24+XdUZ8PMUet8idfV26wwJdpgunDnB5cQGNYjL5qnXaQ1OpdqR11Z9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AK82/yqq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981DCC3277B;
-	Tue,  9 Jul 2024 11:29:45 +0000 (UTC)
+	 MIME-Version; b=TVHacrreZlb++66Ze0rRpjahWtmHWHquSZB7lHss912U9BESESqQlMNc8ynLqIHMagmL1IdAvTZrlTVRJJsLPfOcJZ9NKeHGmKNqYz6mjsvdpzc6FQG5ASggQkKdociLUKNUIXnRYdKmcw0v5ra/6kSnsH0b63EMIILqA1k6jd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPip65P2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613D5C32786;
+	Tue,  9 Jul 2024 11:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524586;
-	bh=FzLStpewQBBtVPFtvNHL/2U7xuLql4Q74ac2tambPpo=;
+	s=korg; t=1720523748;
+	bh=IbZtROTB03+Iigjj7RctRnEsf5EVk5AnBr9Swq87KUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AK82/yqqwsBLmB54YT00aWqclygOTGi6xNRw8apdrrWYYYahetAOccq8t5nDM4S2C
-	 C21dzvR+idaI39oy6bi6eeRycVuv6yhwnI1kKIQG6pP6DwKfpoRMu1jj5+3nFxyq1G
-	 V+h6V8w1l81bJ4G9pz4YHpNIXq0jNElXcMwd3fVE=
+	b=gPip65P2hrFBhFkXR+RDGpVpxjxa3QLtXEOt/AZy28XV92mHiDnp6eSjF7L4LIxKn
+	 XN6p4ZxzwXA5sHxLmlFPrrh0Mt4d9t3yTYS1kfuD86ChzyBayGUBEI9G27RBI8LCUP
+	 UqziCubLUElkzmWs5rAW2xt6lLsqMYk0SOvABDTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Corinna Vinschen <vinschen@redhat.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Naama Meir <naamax.meir@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/102] igc: fix a log entry using uninitialized netdev
+	Nathan Chancellor <nathan@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 096/139] scsi: mpi3mr: Use proper format specifier in mpi3mr_sas_port_add()
 Date: Tue,  9 Jul 2024 13:09:56 +0200
-Message-ID: <20240709110652.659941168@linuxfoundation.org>
+Message-ID: <20240709110701.892099158@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corinna Vinschen <vinschen@redhat.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 86167183a17e03ec77198897975e9fdfbd53cb0b ]
+commit 9f365cb8bbd0162963d6852651d7c9e30adcb7b5 upstream.
 
-During successful probe, igc logs this:
+When building for a 32-bit platform such as ARM or i386, for which size_t
+is unsigned int, there is a warning due to using an unsigned long format
+specifier:
 
-[    5.133667] igc 0000:01:00.0 (unnamed net_device) (uninitialized): PHC added
-                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The reason is that igc_ptp_init() is called very early, even before
-register_netdev() has been called. So the netdev_info() call works
-on a partially uninitialized netdev.
+  drivers/scsi/mpi3mr/mpi3mr_transport.c:1370:11: error: format specifies type 'unsigned long' but the argument has type 'unsigned int' [-Werror,-Wformat]
+   1369 |                         ioc_warn(mrioc, "skipping port %u, max allowed value is %lu\n",
+        |                                                                                 ~~~
+        |                                                                                 %u
+   1370 |                             i, sizeof(mr_sas_port->phy_mask) * 8);
+        |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Fix this by calling igc_ptp_init() after register_netdev(), right
-after the media autosense check, just as in igb.  Add a comment,
-just as in igb.
+Use the proper format specifier for size_t, %zu, to resolve the warning for
+all platforms.
 
-Now the log message is fine:
-
-[    5.200987] igc 0000:01:00.0 eth0: PHC added
-
-Signed-off-by: Corinna Vinschen <vinschen@redhat.com>
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3668651def2c ("scsi: mpi3mr: Sanitise num_phys")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20240514-mpi3mr-fix-wformat-v1-1-f1ad49217e5e@kernel.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_transport.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index e052f49cc08d7..d8e9eef195c84 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6679,8 +6679,6 @@ static int igc_probe(struct pci_dev *pdev,
- 	device_set_wakeup_enable(&adapter->pdev->dev,
- 				 adapter->flags & IGC_FLAG_WOL_SUPPORTED);
+--- a/drivers/scsi/mpi3mr/mpi3mr_transport.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_transport.c
+@@ -1366,7 +1366,7 @@ static struct mpi3mr_sas_port *mpi3mr_sa
+ 			continue;
  
--	igc_ptp_init(adapter);
--
- 	igc_tsn_clear_schedule(adapter);
- 
- 	/* reset the hardware with the new settings */
-@@ -6702,6 +6700,9 @@ static int igc_probe(struct pci_dev *pdev,
- 	/* Check if Media Autosense is enabled */
- 	adapter->ei = *ei;
- 
-+	/* do hw tstamp init after resetting */
-+	igc_ptp_init(adapter);
-+
- 	/* print pcie link status and MAC address */
- 	pcie_print_link_status(pdev);
- 	netdev_info(netdev, "MAC: %pM\n", netdev->dev_addr);
--- 
-2.43.0
-
+ 		if (i > sizeof(mr_sas_port->phy_mask) * 8) {
+-			ioc_warn(mrioc, "skipping port %u, max allowed value is %lu\n",
++			ioc_warn(mrioc, "skipping port %u, max allowed value is %zu\n",
+ 			    i, sizeof(mr_sas_port->phy_mask) * 8);
+ 			goto out_fail;
+ 		}
 
 
 
