@@ -1,80 +1,111 @@
-Return-Path: <stable+bounces-58922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C71992C2B3
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 19:43:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0012D92C2FC
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 20:00:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 150351F26A0D
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 17:43:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0DEA284AD8
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:00:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAB417B04F;
-	Tue,  9 Jul 2024 17:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE7517B044;
+	Tue,  9 Jul 2024 17:59:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="asYNggQO"
 X-Original-To: stable@vger.kernel.org
-Received: from a3.inai.de (a3.inai.de [88.198.85.195])
+Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6793D157470;
-	Tue,  9 Jul 2024 17:43:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=88.198.85.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2E91B86EF;
+	Tue,  9 Jul 2024 17:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720546994; cv=none; b=ByW6gQ9BmEndxl1tGKOORT07gKx22r19mTypyFwAo6a90gx00CWRMvDdbLUWzVDNhVP/Q9h9osagOVrYJApltNa8VXQICiev7+AnLM6p8NIjQHC/Kkl4OQgUuMtR1wEqMc4fgkp0G/zbfKhcgrsg8iUyRd7VMCBUmDRiC7deFG8=
+	t=1720547998; cv=none; b=VryJccrXX2nICWKvGxC8R0PtNVIcdtw3lVuOUuORLlyeIf0O4OGAQWovc1w4c6Pu6cLB2ohdDU7bGcndtNK/f9Z+QPJpidUbG7BMtaBtC4FgWf7b/i0l3iP4RsdKcpvqw63k3LN0+FLol3zsu5xU63wqHAkIBsbb+6YQyyUlUjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720546994; c=relaxed/simple;
-	bh=sXS06RG7mRvH47DVMkm9hcVYched9n2sZ2yUgDnfv2M=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=aUgFNuSOJ7S9jckgFRO+qJgucuSKmjCey62/6cCc3HceYIKb85r4+Ka2SoeLOPsDDfjx+j/pIs4PcrNPIeKlND7lMwbsX77Yaz086CGvKFVxYgnCsybu7WiRnmZ8pK6pJdjwNbLzSrVHEB3m7CTzm4BWXfeBdoTn/RwQ8fLi8N4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inai.de; spf=pass smtp.mailfrom=inai.de; arc=none smtp.client-ip=88.198.85.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inai.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inai.de
-Received: by a3.inai.de (Postfix, from userid 25121)
-	id D9BE658725FF2; Tue,  9 Jul 2024 19:33:13 +0200 (CEST)
+	s=arc-20240116; t=1720547998; c=relaxed/simple;
+	bh=kzPOectY0Lhz4s3POHrD5myXWQ+NDvyXbUOrB4dMHDE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=drOI/0iTGMUDDb6WJKG/SncOF1RuqxKTED2kRanuGyM6oAj+P1Bt2zFZeOsEKQSj6Q77QODC/ncAwszKMjjPKOah7vsac5ccJ55VZyO2+bcAkajhk8pLp0gAnunkO3hlJR+x0a5IVkEM6KRkv/6KNjw86T+r3lgTlrjTVV2yaYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=asYNggQO; arc=none smtp.client-ip=199.89.1.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
 Received: from localhost (localhost [127.0.0.1])
-	by a3.inai.de (Postfix) with ESMTP id D72B760C6495C;
-	Tue,  9 Jul 2024 19:33:13 +0200 (CEST)
-Date: Tue, 9 Jul 2024 19:33:13 +0200 (CEST)
-From: Jan Engelhardt <jengelh@inai.de>
-To: Sasha Levin <sashal@kernel.org>
-cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-    Tejun Heo <tj@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH AUTOSEL 6.9 01/40] workqueue: Refactor worker ID formatting
- and make wq_worker_comm() use full ID string
-In-Reply-To: <20240709162007.30160-1-sashal@kernel.org>
-Message-ID: <pp021o2p-2025-7nor-7257-sons6q59rorp@vanv.qr>
-References: <20240709162007.30160-1-sashal@kernel.org>
-User-Agent: Alpine 2.26 (LSU 649 2022-06-02)
+	by 009.lax.mailroute.net (Postfix) with ESMTP id 4WJTKS0GV1zllBcn;
+	Tue,  9 Jul 2024 17:59:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1720547993; x=1723139994; bh=7s4OEXe8wodJEdOc9v/S5tUI
+	ZeURYyrHN4Qd5tto/uk=; b=asYNggQOdNHz4MQUeQF8xlTaRBIs1sJsPJ7cLiL7
+	2kRehbELd68/6PUmaB3hpxfEpwN51wnDoeImxz9JH5K5QxaSWJXXITJYHhLtFd3B
+	fS7VwGS1jUZXjPsnG8sC39pYAaZ0JV372Z3uL7/oxztTnTqV8FYhPSoNAlVLz62d
+	DQ65xoivAgKStdn6uRe75sEr4QvyL0gXYyXjMnoXTjstWh/QZhuZcXu482w4aPXo
+	PK+ZHY+blFqmMA8OPn6vEC8hoTB/IPipkSFNp4NrkKXg5lHg4ENf/rBmJqU6NuB8
+	XqGtE9zVN4ipNZE6u++OFYWYdDO+AMW3ivfmr0qnSOBsmw==
+X-Virus-Scanned: by MailRoute
+Received: from 009.lax.mailroute.net ([127.0.0.1])
+ by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id JjGMN8IDE_9w; Tue,  9 Jul 2024 17:59:53 +0000 (UTC)
+Received: from [100.96.154.26] (unknown [104.132.0.90])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4WJTKP0cYnzllCRp;
+	Tue,  9 Jul 2024 17:59:52 +0000 (UTC)
+Message-ID: <bd27804e-b7bc-4693-90ac-363591ac9467@acm.org>
+Date: Tue, 9 Jul 2024 10:59:52 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH -next v3] scsi: sd: Fix an incorrect type in
+ 'sd_spinup_disk()'
+To: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+ James.Bottomley@HansenPartnership.com
+Cc: martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Abaci Robot <abaci@linux.alibaba.com>
+References: <20240709093948.9617-1-jiapeng.chong@linux.alibaba.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20240709093948.9617-1-jiapeng.chong@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 7/9/24 2:39 AM, Jiapeng Chong wrote:
+> The return value from the call to scsi_execute_cmd() is int. In the
+              ^^^^^
+               type
 
-On Tuesday 2024-07-09 18:18, Sasha Levin wrote:
+> 'else if' branch of the function scsi_execute_cmd, it will return -EINVAL.
+> But the type of "the_result" is "unsigned int", causing the error code to
+> reverse. Modify the type of "the_result" to solve this problem.
+   ^^^^^^^
 
->From: Tejun Heo <tj@kernel.org>
->
->[ Upstream commit 2a1b02bcba78f8498ab00d6142e1238d85b01591 ]
->
->TASK_COMM_LEN is only 16 leading to badly truncated names for
->rescuers. For example, the rescuer for the inet_frag_wq workqueue becomes:
->
->  $ ps -ef | grep '[k]worker/R-inet'
->  root         483       2  0 Apr26 ?        00:00:00 [kworker/R-inet_]
+What is "reversing an error code"? Did you perhaps mean that the return
+value is changed from a negative integer to a positive integer?
 
-* very old Linux: process names are fixed to 16 bytes
-* Linux 6.something: we relaxed it for kthreads in principle, but
-  oopsie-daisie forgot one case so it's still 16 bytes for that one case
-* 2a1b02: now that one case also has length limit lifted
+> ./drivers/scsi/sd.c:2333:6-16: WARNING: Unsigned expression compared
+> with zero: the_result > 0.
 
-which for me makes this count as a feature rather than a bugfix,
-and I would not add it to -stable.
-There might even be a poor soul who tests for exact process names in one
-obscure shell script of his… would not want to break his setup when going
-6.9.8->6.9.9, only with 6.9.8->6.10.
+Doesn't this patch fix reading uninitialized data? If so, shouldn't that
+be mentioned in the patch description?
+
+> Fixes: c1acf38cd11e ("scsi: sd: Have midlayer retry sd_spinup_disk() errors")
+
+Hmm ... that seems incorrect to me. Commit c1acf38cd11e changed the
+indentation of "the_result > 0" expressions but did not introduce these.
+Is this perhaps the commit that introduced the "the_result > 0"
+expressions: ced202f7bd78 ("scsi: core: Stop using DRIVER_ERROR")?
+
+Thanks,
+
+Bart.
 
