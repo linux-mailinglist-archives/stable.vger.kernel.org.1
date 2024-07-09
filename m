@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-58909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0637492C172
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:59:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9862892C1BF
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 19:07:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6FB9284A1E
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:59:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54F19B23BA7
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D861AC246;
-	Tue,  9 Jul 2024 16:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E571B810C;
+	Tue,  9 Jul 2024 16:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t+UtlPof"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WRaXI9wR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13791B79FE;
-	Tue,  9 Jul 2024 16:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEDD1B8104;
+	Tue,  9 Jul 2024 16:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542460; cv=none; b=ORQGX4n39gbbsPtidXgFIThsTj7NO+Ei7Uk/2dsL2bOBLPqPzKMteNntYNxJbqKYfdQvXRlX9hs0gXuMBr4hTLuvllWKncwXPOhwZKvyqJnWPC+RWt0rNim1pKJ9/2NHoa0kbO3fBjd2zsyhn31oSQjZ7cRBmHdawDKTiygvdSc=
+	t=1720542462; cv=none; b=KR5irds9ck7WcJcPyvsvPI/RNYTqWgKvqIfoWOXzdKNg3eD6zsDdOj5HZOpIVC8Dk2KiAjq0VtvbDfjpV6VF44gCO6oUURBuCkAXJp3J8uws2xTEgqVgcDlesM9PPgUy6wlG1AHeTzNYN1FhrxeSIjZwUIzbQJsVdTrh1lSt31o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542460; c=relaxed/simple;
-	bh=p6QFn0Qv9jjcD4ZWqgmqNvDvAzjuLN+Ds4X9ap7k+Sw=;
+	s=arc-20240116; t=1720542462; c=relaxed/simple;
+	bh=tKfF+DC8whXe2yg5wIJE/luQThb+vEEUP67Qz8n7z14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GIIjLxrxl+SqwPKBIBnIWQYX75JDn47eTtJNlcQ1MxkuWv6zQV43CoB6LZHv5UOTWmxUnv/47XwFRKWQ5M/BGBpTtdgIY/oi4N8uu8kjOXl+kWRRRpsX/yTWQc4+ocW5+6P/hnSKIBBvsluvb9ie04l3iZ85Lc7vLQc41SljZwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t+UtlPof; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 213A2C32782;
-	Tue,  9 Jul 2024 16:27:39 +0000 (UTC)
+	 MIME-Version; b=Q4iKmsjw/jShWrW6XxvHzRjmZh3F0YQ+jBTUK2YFMtvyHlAbMtUXxvU7HrTb33HZwDGbuMFV6KSTD5Xo1yO7tq5bpimyJr0BwVBtANLr0585JyxcmQ6ONvTtIJs6eKv0CypXHE9wnw3tVNHq4YvVcSZIqN2YGcZSw8wDjltvgGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WRaXI9wR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0659C4AF0E;
+	Tue,  9 Jul 2024 16:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542460;
-	bh=p6QFn0Qv9jjcD4ZWqgmqNvDvAzjuLN+Ds4X9ap7k+Sw=;
+	s=k20201202; t=1720542461;
+	bh=tKfF+DC8whXe2yg5wIJE/luQThb+vEEUP67Qz8n7z14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+UtlPofEkk8l2K2pAEqG5ci42W7u5tIp24JZ+YVg0R71wfMh6L789mves0kolYSV
-	 iI5qRnrJd5rZnnqj6vNFUgxDSHSMD7V4aA6tnusbjgkDtWXDcDaDLFXPc8xGig5mFf
-	 k/17dOajhX5ckAsG9Jm24Fu7ivZgIjSLvs+ucS1pyBA0bjhyqrtETSFOAGoMwx9UC+
-	 NF0oqPtvBN/icXFuIMI+Lw0kDAYCulPGBk3psXsOuaa+z9px9TJ3T79JXrN1DcVc9k
-	 bmMqQu/fkRcqbm2D9rRHgTmQve0nZqeA6X7cetWIUFp5BeCG1DzgHkeADg4ZRVCzUl
-	 nVVNQfFjCp/+g==
+	b=WRaXI9wRQADUIKPBhqNe4Urjm+WJtrbHdiof783qI9QYIG4z8gd2pnN3KKrlJ+POK
+	 kaqfYkMKCnmgl5O1NoU5S7XdXnuYn3Ad7Dp+3H2fqCUb0ILF0N2o1sGz9w4SoFiSE8
+	 r3KNww8aakSGq90Lg1yPhZEQTsUIb0YooJEI8w3gBgFNoNpU+np1vNw1qNT6izWt4O
+	 mG/YdhJb6klqv1raA7seQh4z3IzAl9jQn4IBcpiKAlfSMeBpCY6TChlBMhbNOU09GT
+	 CgGWVt3mQ1RawfPjWaty+9COBtNQTHpkMljSegG7xBnQXaopExvBiIRHV+ZBwnZnsn
+	 8C290COHI4T2g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Heiko Carstens <hca@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	gor@linux.ibm.com,
-	kees@kernel.org,
-	justinstitt@google.com,
-	linux-s390@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 5/7] s390/sclp: Fix sclp_init() cleanup on failure
-Date: Tue,  9 Jul 2024 12:27:16 -0400
-Message-ID: <20240709162726.33610-5-sashal@kernel.org>
+	lars@metafoo.de,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 6/7] ALSA: dmaengine_pcm: terminate dmaengine before synchronize
+Date: Tue,  9 Jul 2024 12:27:17 -0400
+Message-ID: <20240709162726.33610-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162726.33610-1-sashal@kernel.org>
 References: <20240709162726.33610-1-sashal@kernel.org>
@@ -69,55 +68,64 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.317
 Content-Transfer-Encoding: 8bit
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 6434b33faaa063df500af355ee6c3942e0f8d982 ]
+[ Upstream commit 6a7db25aad8ce6512b366d2ce1d0e60bac00a09d ]
 
-If sclp_init() fails it only partially cleans up: if there are multiple
-failing calls to sclp_init() sclp_state_change_event will be added several
-times to sclp_reg_list, which results in the following warning:
+When dmaengine supports pause function, in suspend state,
+dmaengine_pause() is called instead of dmaengine_terminate_async(),
 
-------------[ cut here ]------------
-list_add double add: new=000003ffe1598c10, prev=000003ffe1598bf0, next=000003ffe1598c10.
-WARNING: CPU: 0 PID: 1 at lib/list_debug.c:35 __list_add_valid_or_report+0xde/0xf8
-CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.10.0-rc3
-Krnl PSW : 0404c00180000000 000003ffe0d6076a (__list_add_valid_or_report+0xe2/0xf8)
-           R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
-...
-Call Trace:
- [<000003ffe0d6076a>] __list_add_valid_or_report+0xe2/0xf8
-([<000003ffe0d60766>] __list_add_valid_or_report+0xde/0xf8)
- [<000003ffe0a8d37e>] sclp_init+0x40e/0x450
- [<000003ffe00009f2>] do_one_initcall+0x42/0x1e0
- [<000003ffe15b77a6>] do_initcalls+0x126/0x150
- [<000003ffe15b7a0a>] kernel_init_freeable+0x1ba/0x1f8
- [<000003ffe0d6650e>] kernel_init+0x2e/0x180
- [<000003ffe000301c>] __ret_from_fork+0x3c/0x60
- [<000003ffe0d759ca>] ret_from_fork+0xa/0x30
+In end of playback stream, the runtime->state will go to
+SNDRV_PCM_STATE_DRAINING, if system suspend & resume happen
+at this time, application will not resume playback stream, the
+stream will be closed directly, the dmaengine_terminate_async()
+will not be called before the dmaengine_synchronize(), which
+violates the call sequence for dmaengine_synchronize().
 
-Fix this by removing sclp_state_change_event from sclp_reg_list when
-sclp_init() fails.
+This behavior also happens for capture streams, but there is no
+SNDRV_PCM_STATE_DRAINING state for capture. So use
+dmaengine_tx_status() to check the DMA status if the status is
+DMA_PAUSED, then call dmaengine_terminate_async() to terminate
+dmaengine before dmaengine_synchronize().
 
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/1718851218-27803-1-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/core/pcm_dmaengine.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/s390/char/sclp.c b/drivers/s390/char/sclp.c
-index e9aa71cdfc44e..74df353d2244c 100644
---- a/drivers/s390/char/sclp.c
-+++ b/drivers/s390/char/sclp.c
-@@ -1206,6 +1206,7 @@ sclp_init(void)
- fail_unregister_reboot_notifier:
- 	unregister_reboot_notifier(&sclp_reboot_notifier);
- fail_init_state_uninitialized:
-+	list_del(&sclp_state_change_event.list);
- 	sclp_init_state = sclp_init_state_uninitialized;
- fail_unlock:
- 	spin_unlock_irqrestore(&sclp_lock, flags);
+diff --git a/sound/core/pcm_dmaengine.c b/sound/core/pcm_dmaengine.c
+index 6f6da1128edc2..80188d5c11187 100644
+--- a/sound/core/pcm_dmaengine.c
++++ b/sound/core/pcm_dmaengine.c
+@@ -354,6 +354,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_open_request_chan);
+ int snd_dmaengine_pcm_close(struct snd_pcm_substream *substream)
+ {
+ 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
++	struct dma_tx_state state;
++	enum dma_status status;
++
++	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
++	if (status == DMA_PAUSED)
++		dmaengine_terminate_async(prtd->dma_chan);
+ 
+ 	dmaengine_synchronize(prtd->dma_chan);
+ 	kfree(prtd);
+@@ -371,6 +377,12 @@ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_close);
+ int snd_dmaengine_pcm_close_release_chan(struct snd_pcm_substream *substream)
+ {
+ 	struct dmaengine_pcm_runtime_data *prtd = substream_to_prtd(substream);
++	struct dma_tx_state state;
++	enum dma_status status;
++
++	status = dmaengine_tx_status(prtd->dma_chan, prtd->cookie, &state);
++	if (status == DMA_PAUSED)
++		dmaengine_terminate_async(prtd->dma_chan);
+ 
+ 	dmaengine_synchronize(prtd->dma_chan);
+ 	dma_release_channel(prtd->dma_chan);
 -- 
 2.43.0
 
