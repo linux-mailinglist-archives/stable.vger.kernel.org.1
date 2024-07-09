@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A8D92B81A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:30:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C272A92B7B7
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DC561F216AE
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:30:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E231285559
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45EC81527B1;
-	Tue,  9 Jul 2024 11:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB9D27713;
+	Tue,  9 Jul 2024 11:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3eFmMxE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDIhfctY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0412E12CDB6;
-	Tue,  9 Jul 2024 11:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6F5157485;
+	Tue,  9 Jul 2024 11:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524633; cv=none; b=TiKpZgbdN1Ns8DSvY7Z0D6HINypWbQxGT97u+SsCePcUPA72nOGruoXs+M55PzU6H9TQbzoXQQoLkwfdZKqMeeyqn/jCis4aFwomOKeCgZrDUKwlPpXObRCsGk5IUnW+On2e2Nv5o7tDejlGE8yoYpkJgOO3LZByy1bjukBirwU=
+	t=1720524368; cv=none; b=cHLq4RkcwzGROHlFAImoy80qaRVHremTaa7wtw/npBZI3F7ZwVKADGpPX0pHicpqE0sNpjXVVrogvtl+HgMbAh7Iu7ZabvSt5e63hS2hRmjq1fkBOWFZOMzA86aGwchvgfQwa2wohra2ycOieXcmDy8NEjoQomZ9Lp+EuORaXwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524633; c=relaxed/simple;
-	bh=R2d6HXoFuV08rVaKRP3L1f7XAxjsgqoXrIdGvk3e9oU=;
+	s=arc-20240116; t=1720524368; c=relaxed/simple;
+	bh=7eHsA5CpHdkn9B6Pc7CeyXB0Gyfz7ewh4hXu27g3HKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XoLRlthOL3zvKqMHJGkzLtkbViZ7qsw7z2xxbjoqJMC5TGMrQ+hD5TR30xMN4rnszBcBQ/byA4Ks3W7hge0CCbvmeNwIyxX+uM9WZ/Kc8GKlhUO5W9fe+0nn6p5KatjeqctXGPDKS1rXfetofn0jTitx/GGalZWMMOkANU/8sU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3eFmMxE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B2DC3277B;
-	Tue,  9 Jul 2024 11:30:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jtRcjt4K/3VL5Uy6OGmhF6OXGVMHNYU+8RqkVWryNmLu+8pqUlDsTD2DQh4cIxnFSo4g0GWOgetnIiIX1OnH6Lvi27PPbrGtic3APQ4z6mYmekAv/fvAmd+eUMm5qpOajM/Pgl1W47cOuIgztujGV5xs43ENMdQ7n5/ieWLBq58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDIhfctY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B717C3277B;
+	Tue,  9 Jul 2024 11:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524632;
-	bh=R2d6HXoFuV08rVaKRP3L1f7XAxjsgqoXrIdGvk3e9oU=;
+	s=korg; t=1720524367;
+	bh=7eHsA5CpHdkn9B6Pc7CeyXB0Gyfz7ewh4hXu27g3HKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d3eFmMxEjF041B7Mzg9qebY6Wev8yePuuUi76kCaA/Lsibi25uVXoCtIN/5wd/8qG
-	 /YEA8uA5vAwOkd7oiImGWMz5X3wrbfvS3SNTi+/nV80uM+CwDZHPifY6TLGOcc3teD
-	 8U9J1mLmOOBzYmfBuTEt6gYeketdejzuB44hFPRc=
+	b=yDIhfctYyRrtg7wE8tSvuwj1qomlj75ZKsvtvfhtXTIj6/C3rD0yorRjzpvai5Woi
+	 cjRCsNDu0tNJO8+aRHmbFiEDIejug6Gc3FXjaObR9/M17/zl5XsC1SfcPOaMQatTR+
+	 LANSdZQ4QRm8Isbalfgq+b/4NhE0hj4sCUeEPRnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Neronin <niklas.neronin@linux.intel.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 021/102] usb: xhci: prevent potential failure in handle_tx_event() for Transfer events without TRB
-Date: Tue,  9 Jul 2024 13:09:44 +0200
-Message-ID: <20240709110652.194662100@linuxfoundation.org>
+	kemal <kmal@cock.li>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.9 131/197] platform/x86: toshiba_acpi: Fix quickstart quirk handling
+Date: Tue,  9 Jul 2024 13:09:45 +0200
+Message-ID: <20240709110714.021017877@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +60,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Neronin <niklas.neronin@linux.intel.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 66cb618bf0bb82859875b00eeffaf223557cb416 ]
+commit e527a6127223b644e0a27b44f4b16e16eb6c7f0a upstream.
 
-Some transfer events don't always point to a TRB, and consequently don't
-have a endpoint ring. In these cases, function handle_tx_event() should
-not proceed, because if 'ep->skip' is set, the pointer to the endpoint
-ring is used.
+The global hci_hotkey_quickstart quirk flag is tested in
+toshiba_acpi_enable_hotkeys() before the quirk flag is properly
+initialized based on SMBIOS data. This causes the quirk to be
+applied to all models, some of which behave erratically as a
+result.
 
-To prevent a potential failure and make the code logical, return after
-checking the completion code for a Transfer event without TRBs.
+Fix this by initializing the global quirk flags during module
+initialization before registering the ACPI driver. This also
+allows us to mark toshiba_dmi_quirks[] as __initconst.
 
-Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240429140245.3955523-11-mathias.nyman@linux.intel.com
+Fixes: 23f1d8b47d12 ("platform/x86: toshiba_acpi: Add quirk for buttons on Z830")
+Reported-by: kemal <kmal@cock.li>
+Closes: https://lore.kernel.org/platform-driver-x86/R4CYFS.TWB8QUU2SHWI1@cock.li/
+Tested-by: kemal <kmal@cock.li>
+Cc: stable@vger.kernel.org
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20240701194539.348937-1-W_Armin@gmx.de
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/platform/x86/toshiba_acpi.c |   31 ++++++++++++++++++-------------
+ 1 file changed, 18 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 7549c430c4f01..be5b0ff2966fe 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2631,16 +2631,17 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 			else
- 				xhci_handle_halted_endpoint(xhci, ep, 0, NULL,
- 							    EP_SOFT_RESET);
--			goto cleanup;
-+			break;
- 		case COMP_RING_UNDERRUN:
- 		case COMP_RING_OVERRUN:
- 		case COMP_STOPPED_LENGTH_INVALID:
--			goto cleanup;
-+			break;
- 		default:
- 			xhci_err(xhci, "ERROR Transfer event for unknown stream ring slot %u ep %u\n",
- 				 slot_id, ep_index);
- 			goto err_out;
- 		}
-+		return 0;
- 	}
+--- a/drivers/platform/x86/toshiba_acpi.c
++++ b/drivers/platform/x86/toshiba_acpi.c
+@@ -3276,7 +3276,7 @@ static const char *find_hci_method(acpi_
+  */
+ #define QUIRK_HCI_HOTKEY_QUICKSTART		BIT(1)
  
- 	/* Count current td numbers if ep->skip is set */
--- 
-2.43.0
-
+-static const struct dmi_system_id toshiba_dmi_quirks[] = {
++static const struct dmi_system_id toshiba_dmi_quirks[] __initconst = {
+ 	{
+ 	 /* Toshiba Portégé R700 */
+ 	 /* https://bugzilla.kernel.org/show_bug.cgi?id=21012 */
+@@ -3311,8 +3311,6 @@ static int toshiba_acpi_add(struct acpi_
+ 	struct toshiba_acpi_dev *dev;
+ 	const char *hci_method;
+ 	u32 dummy;
+-	const struct dmi_system_id *dmi_id;
+-	long quirks = 0;
+ 	int ret = 0;
+ 
+ 	if (toshiba_acpi)
+@@ -3465,16 +3463,6 @@ iio_error:
+ 	}
+ #endif
+ 
+-	dmi_id = dmi_first_match(toshiba_dmi_quirks);
+-	if (dmi_id)
+-		quirks = (long)dmi_id->driver_data;
+-
+-	if (turn_on_panel_on_resume == -1)
+-		turn_on_panel_on_resume = !!(quirks & QUIRK_TURN_ON_PANEL_ON_RESUME);
+-
+-	if (hci_hotkey_quickstart == -1)
+-		hci_hotkey_quickstart = !!(quirks & QUIRK_HCI_HOTKEY_QUICKSTART);
+-
+ 	toshiba_wwan_available(dev);
+ 	if (dev->wwan_supported)
+ 		toshiba_acpi_setup_wwan_rfkill(dev);
+@@ -3624,10 +3612,27 @@ static struct acpi_driver toshiba_acpi_d
+ 	.drv.pm	= &toshiba_acpi_pm,
+ };
+ 
++static void __init toshiba_dmi_init(void)
++{
++	const struct dmi_system_id *dmi_id;
++	long quirks = 0;
++
++	dmi_id = dmi_first_match(toshiba_dmi_quirks);
++	if (dmi_id)
++		quirks = (long)dmi_id->driver_data;
++
++	if (turn_on_panel_on_resume == -1)
++		turn_on_panel_on_resume = !!(quirks & QUIRK_TURN_ON_PANEL_ON_RESUME);
++
++	if (hci_hotkey_quickstart == -1)
++		hci_hotkey_quickstart = !!(quirks & QUIRK_HCI_HOTKEY_QUICKSTART);
++}
++
+ static int __init toshiba_acpi_init(void)
+ {
+ 	int ret;
+ 
++	toshiba_dmi_init();
+ 	toshiba_proc_dir = proc_mkdir(PROC_TOSHIBA, acpi_root_dir);
+ 	if (!toshiba_proc_dir) {
+ 		pr_err("Unable to create proc dir " PROC_TOSHIBA "\n");
 
 
 
