@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-58368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 451B792B6AC
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:16:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EE3692B7F5
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:29:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75B211C21A7E
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:16:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C897C284C52
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:29:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 020EE15B14D;
-	Tue,  9 Jul 2024 11:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5963C1586C9;
+	Tue,  9 Jul 2024 11:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGOCk2EX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jqnzuogg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59FC1591F0;
-	Tue,  9 Jul 2024 11:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179DD158201;
+	Tue,  9 Jul 2024 11:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523724; cv=none; b=mCE7wzr2Lru6gkvNJPtDJRUuI4np0Pl0ZQds3tFOJSlzNcgMj2ar97FNHHkPfo9Zr9zwx+4DlE2tYrnWEdI5s9YoxrH/VjE2IB3IXwCaTPuvcoHQ20UiayGGGBhPq/jbMHQIBSdMXtAd/7UbI2L85iT1LnRjX5hn+fk9xWAdBQM=
+	t=1720524539; cv=none; b=fzJBF2+PERkPs1mMxI7kQGmGNeyPXJPa34O+QwIFfGyIuIjPbjmWCf9PtTbxk/tAXGYXHR84nhfHsNqnpyPxY/ARLmRNirq0bdfD1QdUxlo1avvbcZgwSwO/Hh17dFsA6okvHDHMsOnbHn2xISr4XMY0oFgNnfyIcnC0jCfG1Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523724; c=relaxed/simple;
-	bh=gRnokdc0M0RpbPoNFqTGG2VSrrqDSs3PIZ+XMT65diI=;
+	s=arc-20240116; t=1720524539; c=relaxed/simple;
+	bh=EJiGuGyJ4aRzoiFhAqPKq2PO+cz1NQp7DFSY3BMTlBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SB9ndZxGy7i4dylFt1rSUtJo2v4lS7+BpnJBhpY00LltRaBhXLxxJJHACQL4Si8Wu6LHNELD2+aj5XVfBU0xPKYEb4xxg5CtJ++i/dFsxSSLycpy3atlsx/MLT1RVeFv9lA+FpwqjKa9K7yBWdAoZcr+nUhBG+iWhpGLiDFCzEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGOCk2EX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D323C4AF0A;
-	Tue,  9 Jul 2024 11:15:24 +0000 (UTC)
+	 MIME-Version; b=entdhNsegpmGkNUxu3Kpc2/G14kSmFTbdbT9Q2R2lDdZA8Ja9BRT2sVnwlASluvdzYmEQ4fGYUcFYfANH4pWsGVdy7Yo70d/bLzRTy9O4ActOnJpv6vCnMvMED7uL9kf8esAyeipfixwiHLKOzCO3OwDgBdOzJ2Foi/nz4imkaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jqnzuogg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A18CC3277B;
+	Tue,  9 Jul 2024 11:28:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523724;
-	bh=gRnokdc0M0RpbPoNFqTGG2VSrrqDSs3PIZ+XMT65diI=;
+	s=korg; t=1720524538;
+	bh=EJiGuGyJ4aRzoiFhAqPKq2PO+cz1NQp7DFSY3BMTlBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OGOCk2EX+N3+CuI2xCiqy5m0swLd2nB8mlutFrJ4MlFSFRjKQQaHomt11v7aqBkNA
-	 mP5Xh/0BqRgFJVK6dvm5i9js5tBzQbZ1fWi/iMgTzewImWye54mxN3KKaB08SB2OaF
-	 PFpzGrn6m6I3YSIuBuN1HBpw5d/zWPZfsNvM2Fn0=
+	b=jqnzuogg2WRX2ES9rgTTgDTsmw7at4fhufwIbt77TV11qyGlrPOfpf2rFOsj70ibR
+	 bLcPgGRKs5Iff8yXKokkUbwzJyHW4pvRaWWTk/2liiAnP0Ndlxa4U3HYD65c2Vv+IV
+	 BR22STg8s82IDtI+RzrUQteCEtzmLuerO6wArJA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+4fd66a69358fc15ae2ad@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 080/139] netfilter: nf_tables: unconditionally flush pending work before notifier
+	Michael Bunk <micha@freedict.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 017/102] media: dw2102: Dont translate i2c read into write
 Date: Tue,  9 Jul 2024 13:09:40 +0200
-Message-ID: <20240709110701.269070155@linuxfoundation.org>
+Message-ID: <20240709110652.040462012@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,199 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Michael Bunk <micha@freedict.org>
 
-[ Upstream commit 9f6958ba2e902f9820c594869bd710ba74b7c4c0 ]
+[ Upstream commit 0e148a522b8453115038193e19ec7bea71403e4a ]
 
-syzbot reports:
+The code ignored the I2C_M_RD flag on I2C messages.  Instead it assumed
+an i2c transaction with a single message must be a write operation and a
+transaction with two messages would be a read operation.
 
-KASAN: slab-uaf in nft_ctx_update include/net/netfilter/nf_tables.h:1831
-KASAN: slab-uaf in nft_commit_release net/netfilter/nf_tables_api.c:9530
-KASAN: slab-uaf int nf_tables_trans_destroy_work+0x152b/0x1750 net/netfilter/nf_tables_api.c:9597
-Read of size 2 at addr ffff88802b0051c4 by task kworker/1:1/45
-[..]
-Workqueue: events nf_tables_trans_destroy_work
-Call Trace:
- nft_ctx_update include/net/netfilter/nf_tables.h:1831 [inline]
- nft_commit_release net/netfilter/nf_tables_api.c:9530 [inline]
- nf_tables_trans_destroy_work+0x152b/0x1750 net/netfilter/nf_tables_api.c:9597
+Though this works for the driver code, it leads to problems once the i2c
+device is exposed to code not knowing this convention.  For example,
+I did "insmod i2c-dev" and issued read requests from userspace, which
+were translated into write requests and destroyed the EEPROM of my
+device.
 
-Problem is that the notifier does a conditional flush, but its possible
-that the table-to-be-removed is still referenced by transactions being
-processed by the worker, so we need to flush unconditionally.
+So, just check and respect the I2C_M_READ flag, which indicates a read
+when set on a message.  If it is absent, it is a write message.
 
-We could make the flush_work depend on whether we found a table to delete
-in nf-next to avoid the flush for most cases.
+Incidentally, changing from the case statement to a while loop allows
+the code to lift the limitation to two i2c messages per transaction.
 
-AFAICS this problem is only exposed in nf-next, with
-commit e169285f8c56 ("netfilter: nf_tables: do not store nft_ctx in transaction objects"),
-with this commit applied there is an unconditional fetch of
-table->family which is whats triggering the above splat.
+There are 4 more *_i2c_transfer functions affected by the same behaviour
+and limitation that should be fixed in the same way.
 
-Fixes: 2c9f0293280e ("netfilter: nf_tables: flush pending destroy work before netlink notifier")
-Reported-and-tested-by: syzbot+4fd66a69358fc15ae2ad@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4fd66a69358fc15ae2ad
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://lore.kernel.org/linux-media/20220116112238.74171-2-micha@freedict.org
+Signed-off-by: Michael Bunk <micha@freedict.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/usb/dvb-usb/dw2102.c | 120 ++++++++++++++++++-----------
+ 1 file changed, 73 insertions(+), 47 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 7547f7b869395..dd044a47c8723 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -11291,8 +11291,7 @@ static int nft_rcv_nl_event(struct notifier_block *this, unsigned long event,
+diff --git a/drivers/media/usb/dvb-usb/dw2102.c b/drivers/media/usb/dvb-usb/dw2102.c
+index 356fc728d59a8..0da3e83389d7a 100644
+--- a/drivers/media/usb/dvb-usb/dw2102.c
++++ b/drivers/media/usb/dvb-usb/dw2102.c
+@@ -716,6 +716,7 @@ static int su3000_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ {
+ 	struct dvb_usb_device *d = i2c_get_adapdata(adap);
+ 	struct dw2102_state *state;
++	int j;
  
- 	gc_seq = nft_gc_seq_begin(nft_net);
+ 	if (!d)
+ 		return -ENODEV;
+@@ -729,11 +730,11 @@ static int su3000_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 		return -EAGAIN;
+ 	}
  
--	if (!list_empty(&nf_tables_destroy_list))
--		nf_tables_trans_destroy_flush_work();
-+	nf_tables_trans_destroy_flush_work();
- again:
- 	list_for_each_entry(table, &nft_net->tables, list) {
- 		if (nft_table_has_owner(table) &&
+-	switch (num) {
+-	case 1:
+-		switch (msg[0].addr) {
++	j = 0;
++	while (j < num) {
++		switch (msg[j].addr) {
+ 		case SU3000_STREAM_CTRL:
+-			state->data[0] = msg[0].buf[0] + 0x36;
++			state->data[0] = msg[j].buf[0] + 0x36;
+ 			state->data[1] = 3;
+ 			state->data[2] = 0;
+ 			if (dvb_usb_generic_rw(d, state->data, 3,
+@@ -745,61 +746,86 @@ static int su3000_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 			if (dvb_usb_generic_rw(d, state->data, 1,
+ 					state->data, 2, 0) < 0)
+ 				err("i2c transfer failed.");
+-			msg[0].buf[1] = state->data[0];
+-			msg[0].buf[0] = state->data[1];
++			msg[j].buf[1] = state->data[0];
++			msg[j].buf[0] = state->data[1];
+ 			break;
+ 		default:
+-			if (3 + msg[0].len > sizeof(state->data)) {
+-				warn("i2c wr: len=%d is too big!\n",
+-				     msg[0].len);
++			/* if the current write msg is followed by a another
++			 * read msg to/from the same address
++			 */
++			if ((j+1 < num) && (msg[j+1].flags & I2C_M_RD) &&
++			    (msg[j].addr == msg[j+1].addr)) {
++				/* join both i2c msgs to one usb read command */
++				if (4 + msg[j].len > sizeof(state->data)) {
++					warn("i2c combined wr/rd: write len=%d is too big!\n",
++					    msg[j].len);
++					num = -EOPNOTSUPP;
++					break;
++				}
++				if (1 + msg[j+1].len > sizeof(state->data)) {
++					warn("i2c combined wr/rd: read len=%d is too big!\n",
++					    msg[j+1].len);
++					num = -EOPNOTSUPP;
++					break;
++				}
++
++				state->data[0] = 0x09;
++				state->data[1] = msg[j].len;
++				state->data[2] = msg[j+1].len;
++				state->data[3] = msg[j].addr;
++				memcpy(&state->data[4], msg[j].buf, msg[j].len);
++
++				if (dvb_usb_generic_rw(d, state->data, msg[j].len + 4,
++					state->data, msg[j+1].len + 1, 0) < 0)
++					err("i2c transfer failed.");
++
++				memcpy(msg[j+1].buf, &state->data[1], msg[j+1].len);
++				j++;
++				break;
++			}
++
++			if (msg[j].flags & I2C_M_RD) {
++				/* single read */
++				if (1 + msg[j].len > sizeof(state->data)) {
++					warn("i2c rd: len=%d is too big!\n", msg[j].len);
++					num = -EOPNOTSUPP;
++					break;
++				}
++
++				state->data[0] = 0x09;
++				state->data[1] = 0;
++				state->data[2] = msg[j].len;
++				state->data[3] = msg[j].addr;
++				memcpy(&state->data[4], msg[j].buf, msg[j].len);
++
++				if (dvb_usb_generic_rw(d, state->data, 4,
++					state->data, msg[j].len + 1, 0) < 0)
++					err("i2c transfer failed.");
++
++				memcpy(msg[j].buf, &state->data[1], msg[j].len);
++				break;
++			}
++
++			/* single write */
++			if (3 + msg[j].len > sizeof(state->data)) {
++				warn("i2c wr: len=%d is too big!\n", msg[j].len);
+ 				num = -EOPNOTSUPP;
+ 				break;
+ 			}
+ 
+-			/* always i2c write*/
+ 			state->data[0] = 0x08;
+-			state->data[1] = msg[0].addr;
+-			state->data[2] = msg[0].len;
++			state->data[1] = msg[j].addr;
++			state->data[2] = msg[j].len;
+ 
+-			memcpy(&state->data[3], msg[0].buf, msg[0].len);
++			memcpy(&state->data[3], msg[j].buf, msg[j].len);
+ 
+-			if (dvb_usb_generic_rw(d, state->data, msg[0].len + 3,
++			if (dvb_usb_generic_rw(d, state->data, msg[j].len + 3,
+ 						state->data, 1, 0) < 0)
+ 				err("i2c transfer failed.");
++		} // switch
++		j++;
+ 
+-		}
+-		break;
+-	case 2:
+-		/* always i2c read */
+-		if (4 + msg[0].len > sizeof(state->data)) {
+-			warn("i2c rd: len=%d is too big!\n",
+-			     msg[0].len);
+-			num = -EOPNOTSUPP;
+-			break;
+-		}
+-		if (1 + msg[1].len > sizeof(state->data)) {
+-			warn("i2c rd: len=%d is too big!\n",
+-			     msg[1].len);
+-			num = -EOPNOTSUPP;
+-			break;
+-		}
+-
+-		state->data[0] = 0x09;
+-		state->data[1] = msg[0].len;
+-		state->data[2] = msg[1].len;
+-		state->data[3] = msg[0].addr;
+-		memcpy(&state->data[4], msg[0].buf, msg[0].len);
+-
+-		if (dvb_usb_generic_rw(d, state->data, msg[0].len + 4,
+-					state->data, msg[1].len + 1, 0) < 0)
+-			err("i2c transfer failed.");
+-
+-		memcpy(msg[1].buf, &state->data[1], msg[1].len);
+-		break;
+-	default:
+-		warn("more than 2 i2c messages at a time is not handled yet.");
+-		break;
+-	}
++	} // while
+ 	mutex_unlock(&d->data_mutex);
+ 	mutex_unlock(&d->i2c_mutex);
+ 	return num;
 -- 
 2.43.0
 
