@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-58504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 254BE92B761
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A12A792B665
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B1B9B264BA
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D4A6B23959
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A3415AD96;
-	Tue,  9 Jul 2024 11:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E611581E4;
+	Tue,  9 Jul 2024 11:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jtFg9cg3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHCWbHJb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427A715887F;
-	Tue,  9 Jul 2024 11:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43EBC155389;
+	Tue,  9 Jul 2024 11:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524140; cv=none; b=TA9kiKW2Ku9DoPhyp3DFt7YzejYRGqKLPmLQc+iErrVyn9fc1s86KtA1nrd73zpUC9vgALLL4Gel5TBddDg92OtuyR1oBwCElda6VTG385juk8mxt6rCv9SNxoJda3ZVLD5UQ1lWHBAgMQYR75gHhnUfaM/HCC88z39hfCDghMQ=
+	t=1720523573; cv=none; b=ieIlxmnjshIr+gmUCqplHlCI/qw8wvl5oLU5iX6LNlupBVC2lYAHCq2IKNwtDgykO9Kat/+qAQaadaZMYoGXsTMRc3fVPhfa7O/rXL2Tj+sxESBqco8UqvTuaKe6fcdMVg2W3ofAN9ZsWoiqL5j4176NnO5pSHJkkNGYhQzdFyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524140; c=relaxed/simple;
-	bh=pqKzPmVaHPACEY9Ft1kttSLf6FlLM32yMjffFPglmiw=;
+	s=arc-20240116; t=1720523573; c=relaxed/simple;
+	bh=z9D1X/HwzSTcM1DlI+jcaFtKIeHDiPnKsCQi2ZRAri0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bez0Z+LB0eomwYSGevXrH/zKAedD+iE2lTgMmum+j/le7GZwXOXyVIyxRS86YQX5hrO3TUlPglD9xXlU7Qcpjyxd0gVOSXN5+OTj+AcXtDqU0e5ZXJYfSgcQBDv4soW34fujlQePQifqV/nsVDoptrtikFX5hWIVES9xP3AWpJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jtFg9cg3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97A8C3277B;
-	Tue,  9 Jul 2024 11:22:19 +0000 (UTC)
+	 MIME-Version; b=KhQQ2w9eDxQKL/CzNOo/ngevJbMJp/crlX90bWiSWF1TeYOkrEmrJ6QadzscKBi37ZF7bS3tOQnAF13aWMx3aJDs0oM8g0cQIu3rtDtxBJJaV+zC3nVXBNNMtJPefi4SDo2Kh+NbdmEQ/XxUEMv8dJ2CrzdMYoA+oQEl3JQOps0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHCWbHJb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C24C3277B;
+	Tue,  9 Jul 2024 11:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524140;
-	bh=pqKzPmVaHPACEY9Ft1kttSLf6FlLM32yMjffFPglmiw=;
+	s=korg; t=1720523572;
+	bh=z9D1X/HwzSTcM1DlI+jcaFtKIeHDiPnKsCQi2ZRAri0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jtFg9cg3ldyug3CQjQIxMvvFIO5gRZnEePKQ1r1bDseIxliIsTPgsvuZDyTCMDwKN
-	 GZzDyqTX3Sv6KdmC2k00ts5qLkF9CrlQjTSUs6Vd+/UeBdq2rJXRbaNIxxes+XH65c
-	 +5Fq1ideG7+tNzmns/pLuoRqv5lLuBw19MPQjAcI=
+	b=aHCWbHJb+TKAdNenHsmjXm8RhLpScaYhXuWVQiGPq7WYCoW93F2O1zgd9Vvuf7gq4
+	 eWZG3D45QAdHYMMU2wpCXQB7pPbG+2n1ShL+u5fn1oBfFqX/j7F5+wL6CEho7jKlUC
+	 CijmfT7niPGJ3P8147tf5COw1IMzgGN2xO5z4XOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+98edc2df894917b3431f@syzkaller.appspotmail.com
-Subject: [PATCH 6.9 083/197] vhost_task: Handle SIGKILL by flushing work and exiting
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 037/139] media: s2255: Use refcount_t instead of atomic_t for num_channels
 Date: Tue,  9 Jul 2024 13:08:57 +0200
-Message-ID: <20240709110712.179597685@linuxfoundation.org>
+Message-ID: <20240709110659.599194522@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,300 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit db5247d9bf5c6ade9fd70b4e4897441e0269b233 ]
+[ Upstream commit 6cff72f6bcee89228a662435b7c47e21a391c8d0 ]
 
-Instead of lingering until the device is closed, this has us handle
-SIGKILL by:
+Use an API that resembles more the actual use of num_channels.
 
-1. marking the worker as killed so we no longer try to use it with
-   new virtqueues and new flush operations.
-2. setting the virtqueue to worker mapping so no new works are queued.
-3. running all the exiting works.
+Found by cocci:
+drivers/media/usb/s2255/s2255drv.c:2362:5-24: WARNING: atomic_dec_and_test variation before object free at line 2363.
+drivers/media/usb/s2255/s2255drv.c:1557:5-24: WARNING: atomic_dec_and_test variation before object free at line 1558.
 
-Suggested-by: Edward Adam Davis <eadavis@qq.com>
-Reported-and-tested-by: syzbot+98edc2df894917b3431f@syzkaller.appspotmail.com
-Message-Id: <tencent_546DA49414E876EEBECF2C78D26D242EE50A@qq.com>
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Message-Id: <20240316004707.45557-9-michael.christie@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://lore.kernel.org/linux-media/20240429-fix-cocci-v3-11-3c4865f5a4b0@chromium.org
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vhost.c            | 54 +++++++++++++++++++++++++++++---
- drivers/vhost/vhost.h            |  2 ++
- include/linux/sched/vhost_task.h |  3 +-
- kernel/vhost_task.c              | 53 ++++++++++++++++++++-----------
- 4 files changed, 88 insertions(+), 24 deletions(-)
+ drivers/media/usb/s2255/s2255drv.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 5580b24934015..1740a5f1f35e7 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -285,7 +285,7 @@ static void __vhost_worker_flush(struct vhost_worker *worker)
- {
- 	struct vhost_flush_struct flush;
+diff --git a/drivers/media/usb/s2255/s2255drv.c b/drivers/media/usb/s2255/s2255drv.c
+index 3c2627712fe9d..6f78be3c42d6a 100644
+--- a/drivers/media/usb/s2255/s2255drv.c
++++ b/drivers/media/usb/s2255/s2255drv.c
+@@ -247,7 +247,7 @@ struct s2255_vc {
+ struct s2255_dev {
+ 	struct s2255_vc         vc[MAX_CHANNELS];
+ 	struct v4l2_device      v4l2_dev;
+-	atomic_t                num_channels;
++	refcount_t		num_channels;
+ 	int			frames;
+ 	struct mutex		lock;	/* channels[].vdev.lock */
+ 	struct mutex		cmdlock; /* protects cmdbuf */
+@@ -1550,11 +1550,11 @@ static void s2255_video_device_release(struct video_device *vdev)
+ 		container_of(vdev, struct s2255_vc, vdev);
  
--	if (!worker->attachment_cnt)
-+	if (!worker->attachment_cnt || worker->killed)
- 		return;
+ 	dprintk(dev, 4, "%s, chnls: %d\n", __func__,
+-		atomic_read(&dev->num_channels));
++		refcount_read(&dev->num_channels));
  
- 	init_completion(&flush.wait_event);
-@@ -400,7 +400,7 @@ static void vhost_vq_reset(struct vhost_dev *dev,
- 	__vhost_vq_meta_reset(vq);
+ 	v4l2_ctrl_handler_free(&vc->hdl);
+ 
+-	if (atomic_dec_and_test(&dev->num_channels))
++	if (refcount_dec_and_test(&dev->num_channels))
+ 		s2255_destroy(dev);
+ 	return;
  }
- 
--static bool vhost_worker(void *data)
-+static bool vhost_run_work_list(void *data)
- {
- 	struct vhost_worker *worker = data;
- 	struct vhost_work *work, *work_next;
-@@ -425,6 +425,40 @@ static bool vhost_worker(void *data)
- 	return !!node;
- }
- 
-+static void vhost_worker_killed(void *data)
-+{
-+	struct vhost_worker *worker = data;
-+	struct vhost_dev *dev = worker->dev;
-+	struct vhost_virtqueue *vq;
-+	int i, attach_cnt = 0;
-+
-+	mutex_lock(&worker->mutex);
-+	worker->killed = true;
-+
-+	for (i = 0; i < dev->nvqs; i++) {
-+		vq = dev->vqs[i];
-+
-+		mutex_lock(&vq->mutex);
-+		if (worker ==
-+		    rcu_dereference_check(vq->worker,
-+					  lockdep_is_held(&vq->mutex))) {
-+			rcu_assign_pointer(vq->worker, NULL);
-+			attach_cnt++;
-+		}
-+		mutex_unlock(&vq->mutex);
-+	}
-+
-+	worker->attachment_cnt -= attach_cnt;
-+	if (attach_cnt)
-+		synchronize_rcu();
-+	/*
-+	 * Finish vhost_worker_flush calls and any other works that snuck in
-+	 * before the synchronize_rcu.
-+	 */
-+	vhost_run_work_list(worker);
-+	mutex_unlock(&worker->mutex);
-+}
-+
- static void vhost_vq_free_iovecs(struct vhost_virtqueue *vq)
- {
- 	kfree(vq->indirect);
-@@ -639,9 +673,11 @@ static struct vhost_worker *vhost_worker_create(struct vhost_dev *dev)
- 	if (!worker)
- 		return NULL;
- 
-+	worker->dev = dev;
- 	snprintf(name, sizeof(name), "vhost-%d", current->pid);
- 
--	vtsk = vhost_task_create(vhost_worker, worker, name);
-+	vtsk = vhost_task_create(vhost_run_work_list, vhost_worker_killed,
-+				 worker, name);
- 	if (!vtsk)
- 		goto free_worker;
- 
-@@ -673,6 +709,11 @@ static void __vhost_vq_attach_worker(struct vhost_virtqueue *vq,
- 	struct vhost_worker *old_worker;
- 
- 	mutex_lock(&worker->mutex);
-+	if (worker->killed) {
-+		mutex_unlock(&worker->mutex);
-+		return;
-+	}
-+
- 	mutex_lock(&vq->mutex);
- 
- 	old_worker = rcu_dereference_check(vq->worker,
-@@ -693,6 +734,11 @@ static void __vhost_vq_attach_worker(struct vhost_virtqueue *vq,
- 	 * device wide flushes which doesn't use RCU for execution.
- 	 */
- 	mutex_lock(&old_worker->mutex);
-+	if (old_worker->killed) {
-+		mutex_unlock(&old_worker->mutex);
-+		return;
-+	}
-+
- 	/*
- 	 * We don't want to call synchronize_rcu for every vq during setup
- 	 * because it will slow down VM startup. If we haven't done
-@@ -770,7 +816,7 @@ static int vhost_free_worker(struct vhost_dev *dev,
- 		return -ENODEV;
- 
- 	mutex_lock(&worker->mutex);
--	if (worker->attachment_cnt) {
-+	if (worker->attachment_cnt || worker->killed) {
- 		mutex_unlock(&worker->mutex);
- 		return -EBUSY;
- 	}
-diff --git a/drivers/vhost/vhost.h b/drivers/vhost/vhost.h
-index 9e942fcda5c3f..dc94e6a7d3c22 100644
---- a/drivers/vhost/vhost.h
-+++ b/drivers/vhost/vhost.h
-@@ -28,12 +28,14 @@ struct vhost_work {
- 
- struct vhost_worker {
- 	struct vhost_task	*vtsk;
-+	struct vhost_dev	*dev;
- 	/* Used to serialize device wide flushing with worker swapping. */
- 	struct mutex		mutex;
- 	struct llist_head	work_list;
- 	u64			kcov_handle;
- 	u32			id;
- 	int			attachment_cnt;
-+	bool			killed;
- };
- 
- /* Poll a file (eventfd or socket) */
-diff --git a/include/linux/sched/vhost_task.h b/include/linux/sched/vhost_task.h
-index bc60243d43b36..25446c5d35081 100644
---- a/include/linux/sched/vhost_task.h
-+++ b/include/linux/sched/vhost_task.h
-@@ -4,7 +4,8 @@
- 
- struct vhost_task;
- 
--struct vhost_task *vhost_task_create(bool (*fn)(void *), void *arg,
-+struct vhost_task *vhost_task_create(bool (*fn)(void *),
-+				     void (*handle_kill)(void *), void *arg,
- 				     const char *name);
- void vhost_task_start(struct vhost_task *vtsk);
- void vhost_task_stop(struct vhost_task *vtsk);
-diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
-index da35e5b7f0473..8800f5acc0071 100644
---- a/kernel/vhost_task.c
-+++ b/kernel/vhost_task.c
-@@ -10,38 +10,32 @@
- 
- enum vhost_task_flags {
- 	VHOST_TASK_FLAGS_STOP,
-+	VHOST_TASK_FLAGS_KILLED,
- };
- 
- struct vhost_task {
- 	bool (*fn)(void *data);
-+	void (*handle_sigkill)(void *data);
- 	void *data;
- 	struct completion exited;
- 	unsigned long flags;
- 	struct task_struct *task;
-+	/* serialize SIGKILL and vhost_task_stop calls */
-+	struct mutex exit_mutex;
- };
- 
- static int vhost_task_fn(void *data)
- {
- 	struct vhost_task *vtsk = data;
--	bool dead = false;
- 
- 	for (;;) {
- 		bool did_work;
- 
--		if (!dead && signal_pending(current)) {
-+		if (signal_pending(current)) {
- 			struct ksignal ksig;
--			/*
--			 * Calling get_signal will block in SIGSTOP,
--			 * or clear fatal_signal_pending, but remember
--			 * what was set.
--			 *
--			 * This thread won't actually exit until all
--			 * of the file descriptors are closed, and
--			 * the release function is called.
--			 */
--			dead = get_signal(&ksig);
--			if (dead)
--				clear_thread_flag(TIF_SIGPENDING);
-+
-+			if (get_signal(&ksig))
-+				break;
+@@ -1659,7 +1659,7 @@ static int s2255_probe_v4l(struct s2255_dev *dev)
+ 				"failed to register video device!\n");
+ 			break;
  		}
+-		atomic_inc(&dev->num_channels);
++		refcount_inc(&dev->num_channels);
+ 		v4l2_info(&dev->v4l2_dev, "V4L2 device registered as %s\n",
+ 			  video_device_node_name(&vc->vdev));
  
- 		/* mb paired w/ vhost_task_stop */
-@@ -57,7 +51,19 @@ static int vhost_task_fn(void *data)
- 			schedule();
+@@ -1667,11 +1667,11 @@ static int s2255_probe_v4l(struct s2255_dev *dev)
+ 	pr_info("Sensoray 2255 V4L driver Revision: %s\n",
+ 		S2255_VERSION);
+ 	/* if no channels registered, return error and probe will fail*/
+-	if (atomic_read(&dev->num_channels) == 0) {
++	if (refcount_read(&dev->num_channels) == 0) {
+ 		v4l2_device_unregister(&dev->v4l2_dev);
+ 		return ret;
+ 	}
+-	if (atomic_read(&dev->num_channels) != MAX_CHANNELS)
++	if (refcount_read(&dev->num_channels) != MAX_CHANNELS)
+ 		pr_warn("s2255: Not all channels available.\n");
+ 	return 0;
+ }
+@@ -2220,7 +2220,7 @@ static int s2255_probe(struct usb_interface *interface,
+ 		goto errorFWDATA1;
  	}
  
-+	mutex_lock(&vtsk->exit_mutex);
-+	/*
-+	 * If a vhost_task_stop and SIGKILL race, we can ignore the SIGKILL.
-+	 * When the vhost layer has called vhost_task_stop it's already stopped
-+	 * new work and flushed.
-+	 */
-+	if (!test_bit(VHOST_TASK_FLAGS_STOP, &vtsk->flags)) {
-+		set_bit(VHOST_TASK_FLAGS_KILLED, &vtsk->flags);
-+		vtsk->handle_sigkill(vtsk->data);
-+	}
-+	mutex_unlock(&vtsk->exit_mutex);
- 	complete(&vtsk->exited);
-+
- 	do_exit(0);
+-	atomic_set(&dev->num_channels, 0);
++	refcount_set(&dev->num_channels, 0);
+ 	dev->pid = id->idProduct;
+ 	dev->fw_data = kzalloc(sizeof(struct s2255_fw), GFP_KERNEL);
+ 	if (!dev->fw_data)
+@@ -2340,12 +2340,12 @@ static void s2255_disconnect(struct usb_interface *interface)
+ {
+ 	struct s2255_dev *dev = to_s2255_dev(usb_get_intfdata(interface));
+ 	int i;
+-	int channels = atomic_read(&dev->num_channels);
++	int channels = refcount_read(&dev->num_channels);
+ 	mutex_lock(&dev->lock);
+ 	v4l2_device_disconnect(&dev->v4l2_dev);
+ 	mutex_unlock(&dev->lock);
+ 	/*see comments in the uvc_driver.c usb disconnect function */
+-	atomic_inc(&dev->num_channels);
++	refcount_inc(&dev->num_channels);
+ 	/* unregister each video device. */
+ 	for (i = 0; i < channels; i++)
+ 		video_unregister_device(&dev->vc[i].vdev);
+@@ -2358,7 +2358,7 @@ static void s2255_disconnect(struct usb_interface *interface)
+ 		dev->vc[i].vidstatus_ready = 1;
+ 		wake_up(&dev->vc[i].wait_vidstatus);
+ 	}
+-	if (atomic_dec_and_test(&dev->num_channels))
++	if (refcount_dec_and_test(&dev->num_channels))
+ 		s2255_destroy(dev);
+ 	dev_info(&interface->dev, "%s\n", __func__);
  }
- 
-@@ -78,12 +84,17 @@ EXPORT_SYMBOL_GPL(vhost_task_wake);
-  * @vtsk: vhost_task to stop
-  *
-  * vhost_task_fn ensures the worker thread exits after
-- * VHOST_TASK_FLAGS_SOP becomes true.
-+ * VHOST_TASK_FLAGS_STOP becomes true.
-  */
- void vhost_task_stop(struct vhost_task *vtsk)
- {
--	set_bit(VHOST_TASK_FLAGS_STOP, &vtsk->flags);
--	vhost_task_wake(vtsk);
-+	mutex_lock(&vtsk->exit_mutex);
-+	if (!test_bit(VHOST_TASK_FLAGS_KILLED, &vtsk->flags)) {
-+		set_bit(VHOST_TASK_FLAGS_STOP, &vtsk->flags);
-+		vhost_task_wake(vtsk);
-+	}
-+	mutex_unlock(&vtsk->exit_mutex);
-+
- 	/*
- 	 * Make sure vhost_task_fn is no longer accessing the vhost_task before
- 	 * freeing it below.
-@@ -96,14 +107,16 @@ EXPORT_SYMBOL_GPL(vhost_task_stop);
- /**
-  * vhost_task_create - create a copy of a task to be used by the kernel
-  * @fn: vhost worker function
-- * @arg: data to be passed to fn
-+ * @handle_sigkill: vhost function to handle when we are killed
-+ * @arg: data to be passed to fn and handled_kill
-  * @name: the thread's name
-  *
-  * This returns a specialized task for use by the vhost layer or NULL on
-  * failure. The returned task is inactive, and the caller must fire it up
-  * through vhost_task_start().
-  */
--struct vhost_task *vhost_task_create(bool (*fn)(void *), void *arg,
-+struct vhost_task *vhost_task_create(bool (*fn)(void *),
-+				     void (*handle_sigkill)(void *), void *arg,
- 				     const char *name)
- {
- 	struct kernel_clone_args args = {
-@@ -122,8 +135,10 @@ struct vhost_task *vhost_task_create(bool (*fn)(void *), void *arg,
- 	if (!vtsk)
- 		return NULL;
- 	init_completion(&vtsk->exited);
-+	mutex_init(&vtsk->exit_mutex);
- 	vtsk->data = arg;
- 	vtsk->fn = fn;
-+	vtsk->handle_sigkill = handle_sigkill;
- 
- 	args.fn_arg = vtsk;
- 
 -- 
 2.43.0
 
