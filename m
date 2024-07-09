@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B844792B7C9
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF6992B6DA
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D8DD1F2458D
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA9091F241C2
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0483A157485;
-	Tue,  9 Jul 2024 11:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29457156F2B;
+	Tue,  9 Jul 2024 11:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbtSBkhG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5CKhw3L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A1227713;
-	Tue,  9 Jul 2024 11:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACD855E4C;
+	Tue,  9 Jul 2024 11:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524421; cv=none; b=ni7O/XjOB0k71lXEuqkUdFbT5yY73yStaudhAPO6Y948j01583i9Zgd2htYRbeh1hX+DkfYA9jcSljZ5vLHfoJk5zfCL5sGpBrmNlWOMq7fLaRhpWTLKVwx6SaibLX5oalsoTzODVAeQmFHnC1fl6y6/yWoxQrc7ZDPt+9G5TjE=
+	t=1720523856; cv=none; b=eUGUVHOPlNlG9bJsAs/gWxRgTKcQHum2h59b0YIpbAdglH4odd206TJtWvJGYzZDLxMXwk2rKjSckEPf/tkyYLjy1nA/Aa9zw9+3kA7xV5LZR240/hcFrr2bcl7dPBJGXmwm8DYdZVZCCa0uwEx8OkOCyKXD2QfwP9e85JC119E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524421; c=relaxed/simple;
-	bh=m/aCcnA8yR1AB0NBOx07JYCJp/M9kE1pC16BrGrEg8g=;
+	s=arc-20240116; t=1720523856; c=relaxed/simple;
+	bh=03kUArBLKD8UzWESyydux9LCOq4qFIgQ81HLZLPvghU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZkFfsjmDKa+JEk0ZSgiV2elIeHo2MzFAnKfZ3PMvRZ1WNgtITQDsCoZNVKRw9GJX2XR0LxcBKzMGvodIFtSwKb4BMAY8jw7puRxTQbWweJYBzkOxMoMmsbvjxpEPGs8H6NJGLNjWwFt+ya7s2n2v7b/v+Xs5AVIui0juNcocuXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbtSBkhG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2164CC3277B;
-	Tue,  9 Jul 2024 11:27:00 +0000 (UTC)
+	 MIME-Version; b=fxMge8iS+DsHC4XgFYxIgNS9eV1INkuulghDovZUAQaL2foRbSvKZBjnNTBJkpkjE62XcAKmc3ysULA2qVwYw/xwHi9Lp+STMEBB+Fv12Eia3ZwOsTIgih1Rc/E5Myg8LuIBpH6AXnyq7g0v0mqTMmXt05bwPPvZ8CmNthpexmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5CKhw3L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 617EBC3277B;
+	Tue,  9 Jul 2024 11:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524421;
-	bh=m/aCcnA8yR1AB0NBOx07JYCJp/M9kE1pC16BrGrEg8g=;
+	s=korg; t=1720523856;
+	bh=03kUArBLKD8UzWESyydux9LCOq4qFIgQ81HLZLPvghU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XbtSBkhGqOqIZKN5S5fbMnSZna/DjG5T9pbiDuKEmsaFIx2J6YcK6BrtboxlJSt6z
-	 I1uFB6DIq4He4sgQlGvbAk6tu8omGnSiTZv7GmbWMs41I3g20GRMufiJCFxPcMSEOO
-	 u9LzBVf7/oQfW2HYr5KCHdheMH6E+aP/MywBtIXI=
+	b=r5CKhw3LB6BF1VhG1MqVt31+pcXe7UeAz+1DJZ0oVBVJbyV4BmZsb4uCvfLmk4NkF
+	 H8MBE7eyGL3kPzX+GRun4Gp2uLki91xU9A6QvMk9Et84nLioplTmb2cDCDw4al7wIl
+	 MXSMgCzMVlXLgADBTtcEnU+m2mwveJ91Bs8DY6vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Christie <michael.christie@oracle.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	hmtheboy154 <buingoc67@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 177/197] vhost-scsi: Handle vhost_vq_work_queue failures for events
+Subject: [PATCH 6.6 131/139] platform/x86: touchscreen_dmi: Add info for the EZpad 6s Pro
 Date: Tue,  9 Jul 2024 13:10:31 +0200
-Message-ID: <20240709110715.795418015@linuxfoundation.org>
+Message-ID: <20240709110703.229549109@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Christie <michael.christie@oracle.com>
+From: hmtheboy154 <buingoc67@gmail.com>
 
-[ Upstream commit b1b2ce58ed23c5d56e0ab299a5271ac01f95b75c ]
+[ Upstream commit 3050052613790e75b5e4a8536930426b0a8b0774 ]
 
-Currently, we can try to queue an event's work before the vhost_task is
-created. When this happens we just drop it in vhost_scsi_do_plug before
-even calling vhost_vq_work_queue. During a device shutdown we do the
-same thing after vhost_scsi_clear_endpoint has cleared the backends.
+The "EZpad 6s Pro" uses the same touchscreen as the "EZpad 6 Pro B",
+unlike the "Ezpad 6 Pro" which has its own touchscreen.
 
-In the next patches we will be able to kill the vhost_task before we
-have cleared the endpoint. In that case, vhost_vq_work_queue can fail
-and we will leak the event's memory. This has handle the failure by
-just freeing the event. This is safe to do, because
-vhost_vq_work_queue will only return failure for us when the vhost_task
-is killed and so userspace will not be able to handle events if we
-sent them.
-
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Message-Id: <20240316004707.45557-2-michael.christie@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: hmtheboy154 <buingoc67@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240527091447.248849-3-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/scsi.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/platform/x86/touchscreen_dmi.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 282aac45c6909..f34f9895b8984 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -497,10 +497,8 @@ vhost_scsi_do_evt_work(struct vhost_scsi *vs, struct vhost_scsi_evt *evt)
- 		vq_err(vq, "Faulted on vhost_scsi_send_event\n");
- }
- 
--static void vhost_scsi_evt_work(struct vhost_work *work)
-+static void vhost_scsi_complete_events(struct vhost_scsi *vs, bool drop)
- {
--	struct vhost_scsi *vs = container_of(work, struct vhost_scsi,
--					vs_event_work);
- 	struct vhost_virtqueue *vq = &vs->vqs[VHOST_SCSI_VQ_EVT].vq;
- 	struct vhost_scsi_evt *evt, *t;
- 	struct llist_node *llnode;
-@@ -508,12 +506,20 @@ static void vhost_scsi_evt_work(struct vhost_work *work)
- 	mutex_lock(&vq->mutex);
- 	llnode = llist_del_all(&vs->vs_event_list);
- 	llist_for_each_entry_safe(evt, t, llnode, list) {
--		vhost_scsi_do_evt_work(vs, evt);
-+		if (!drop)
-+			vhost_scsi_do_evt_work(vs, evt);
- 		vhost_scsi_free_evt(vs, evt);
- 	}
- 	mutex_unlock(&vq->mutex);
- }
- 
-+static void vhost_scsi_evt_work(struct vhost_work *work)
-+{
-+	struct vhost_scsi *vs = container_of(work, struct vhost_scsi,
-+					     vs_event_work);
-+	vhost_scsi_complete_events(vs, false);
-+}
-+
- static int vhost_scsi_copy_sgl_to_iov(struct vhost_scsi_cmd *cmd)
- {
- 	struct iov_iter *iter = &cmd->saved_iter;
-@@ -1509,7 +1515,8 @@ vhost_scsi_send_evt(struct vhost_scsi *vs, struct vhost_virtqueue *vq,
- 	}
- 
- 	llist_add(&evt->list, &vs->vs_event_list);
--	vhost_vq_work_queue(vq, &vs->vs_event_work);
-+	if (!vhost_vq_work_queue(vq, &vs->vs_event_work))
-+		vhost_scsi_complete_events(vs, true);
- }
- 
- static void vhost_scsi_evt_handle_kick(struct vhost_work *work)
+diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
+index bb1df9d03bbcd..06ebab520f271 100644
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -1406,6 +1406,17 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
+ 			DMI_MATCH(DMI_BIOS_DATE, "04/24/2018"),
+ 		},
+ 	},
++	{
++		/* Jumper EZpad 6s Pro */
++		.driver_data = (void *)&jumper_ezpad_6_pro_b_data,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Jumper"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Ezpad"),
++			/* Above matches are too generic, add bios match */
++			DMI_MATCH(DMI_BIOS_VERSION, "E.WSA116_8.E1.042.bin"),
++			DMI_MATCH(DMI_BIOS_DATE, "01/08/2020"),
++		},
++	},
+ 	{
+ 		/* Jumper EZpad 6 m4 */
+ 		.driver_data = (void *)&jumper_ezpad_6_m4_data,
 -- 
 2.43.0
 
