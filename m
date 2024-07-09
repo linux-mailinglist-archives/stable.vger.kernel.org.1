@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-58531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41BED92B77D
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3323292B680
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:14:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C258FB24A46
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBB991F21749
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:14:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D8201581FF;
-	Tue,  9 Jul 2024 11:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578F9158201;
+	Tue,  9 Jul 2024 11:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2knySe8D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUt5Ewsl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D1614EC4D;
-	Tue,  9 Jul 2024 11:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CA5155389;
+	Tue,  9 Jul 2024 11:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524219; cv=none; b=CO8bxQw1A8Wf+H4y7KYWtYBFa/VshEYYc5AW/WURJffBfibKCWVAijk5WUuV3A0t8V9oDt1sKiW61c11HMiZZOUHPnkv3hnhgiqL6inQs2PUpVMBpaGYPvMUm1cVrtuU3PIwwvO39K0fP37McsHhSYM4x0h/g7RC3hEILuI+/bs=
+	t=1720523655; cv=none; b=ixF3u7KLCib9ghBE7SIgtAyHXqf9KVcDjnaVO/MWkjWMk4bKUsGeY+Kntf/1E3b3/v500t5f/YP0rD1oW1bSYN7tMecrhLyNyX/YvXRnrnSBjK9u6KGSu4uPDsd+k+a1IMtFsK4Mu7J0mh69BouEUofDmlByfox3DUfB2Fb+2bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524219; c=relaxed/simple;
-	bh=fngHy74i6TQKnCDlQCF7hC+lh/AL5Tq79JIxxnBRFj0=;
+	s=arc-20240116; t=1720523655; c=relaxed/simple;
+	bh=PTURZPSJUxKmckwcIBB40wVfkY0GuIFKs9PuTpmRccM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SXEeWpjtcXMniObLUAw+JBkbrUztXCEbCbCuuLDi3QH1X5pf3XwG9pkoEuxKkCyisuQT9pnnI2nb/Kjr25mbwdO00dqlOXpunlqAU4GFS0Kk2M3ZjupY5NG/aNtfC4g0tvO4F3RCoBvOpBE1Hpx4IQRPQDam6X+bRAGlSBoqyG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2knySe8D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B243C3277B;
-	Tue,  9 Jul 2024 11:23:39 +0000 (UTC)
+	 MIME-Version; b=uJoDonkP1CDsAM+Z5fTisLhL1908dSafRgWbgOmGNFV1CSvxFh9owdwTGIiA5l6VAO1NGF845NQ0rvpejt3rIYMg7Zz0oHTxIgK3uZPmGQFSBHQ1aXpEuQC4SzikSLl/+EqvssdiQ+UN5LwL7XD3T96oDv9Trky9WWh7ujE0kpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUt5Ewsl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 959A8C3277B;
+	Tue,  9 Jul 2024 11:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524219;
-	bh=fngHy74i6TQKnCDlQCF7hC+lh/AL5Tq79JIxxnBRFj0=;
+	s=korg; t=1720523655;
+	bh=PTURZPSJUxKmckwcIBB40wVfkY0GuIFKs9PuTpmRccM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2knySe8DA/jTIsIGmxS2nGAGNmQ+6SkadMHqmKt5TrZUYZpfNMgPlLt1L4wPG0NzF
-	 EodOAIaJfbxVw0E96iS/IMkSJba+JiZqNPWjCzvXcZagEad/YuL+AxYcWka72PzzgS
-	 W0DNe/kLWGViRAOdC6oMjvWkZTYdvc7BH2qjUJk8=
+	b=ZUt5EwslSywu9S2buEpYDyhO8XtiB/niUwsBinfzukIKPf5tFjBFJrXshu3a/zjFr
+	 EF5frZWAvGuADY6PZgjDPZXto3jonRP16Eh6mUN5vP1nSxzsPMG3qGEsaIdddFBVy8
+	 Ssibk28pAw9WROytjujuxW7M0VhoWRxuYJMG03K0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Furong Xu <0x1207@gmail.com>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 111/197] net: stmmac: enable HW-accelerated VLAN stripping for gmac4 only
+Subject: [PATCH 6.6 065/139] net/mlx5e: Add mqprio_rl cleanup and free in mlx5e_priv_cleanup()
 Date: Tue,  9 Jul 2024 13:09:25 +0200
-Message-ID: <20240709110713.251653240@linuxfoundation.org>
+Message-ID: <20240709110700.689442650@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Furong Xu <0x1207@gmail.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit 8eb301bd7b0f45d36e663ecbe59b7c80b9863950 ]
+[ Upstream commit 1da839eab6dbc26b95bfcd1ed1a4d1aaa5c144a3 ]
 
-Commit 750011e239a5 ("net: stmmac: Add support for HW-accelerated VLAN
-stripping") enables MAC level VLAN tag stripping for all MAC cores, but
-leaves set_hw_vlan_mode() and rx_hw_vlan() un-implemented for both gmac
-and xgmac.
+In the cited commit, mqprio_rl cleanup and free are mistakenly removed
+in mlx5e_priv_cleanup(), and it causes the leakage of host memory and
+firmware SCHEDULING_ELEMENT objects while changing eswitch mode. So,
+add them back.
 
-On gmac and xgmac, ethtool reports rx-vlan-offload is on, both MAC and
-driver do nothing about VLAN packets actually, although VLAN works well.
-
-Driver level stripping should be used on gmac and xgmac for now.
-
-Fixes: 750011e239a5 ("net: stmmac: Add support for HW-accelerated VLAN stripping")
-Signed-off-by: Furong Xu <0x1207@gmail.com>
+Fixes: 0bb7228f7096 ("net/mlx5e: Fix mqprio_rl handling on devlink reload")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 7c6fb14b55550..39e8340446c71 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -7662,9 +7662,10 @@ int stmmac_dvr_probe(struct device *device,
- #ifdef STMMAC_VLAN_TAG_USED
- 	/* Both mac100 and gmac support receive VLAN tag detection */
- 	ndev->features |= NETIF_F_HW_VLAN_CTAG_RX | NETIF_F_HW_VLAN_STAG_RX;
--	ndev->hw_features |= NETIF_F_HW_VLAN_CTAG_RX;
--	priv->hw->hw_vlan_en = true;
--
-+	if (priv->plat->has_gmac4) {
-+		ndev->hw_features |= NETIF_F_HW_VLAN_CTAG_RX;
-+		priv->hw->hw_vlan_en = true;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index e87a776ea2bfd..a65c407aa60bd 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -5700,6 +5700,11 @@ void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
+ 		kfree(priv->htb_qos_sq_stats[i]);
+ 	kvfree(priv->htb_qos_sq_stats);
+ 
++	if (priv->mqprio_rl) {
++		mlx5e_mqprio_rl_cleanup(priv->mqprio_rl);
++		mlx5e_mqprio_rl_free(priv->mqprio_rl);
 +	}
- 	if (priv->dma_cap.vlhash) {
- 		ndev->features |= NETIF_F_HW_VLAN_CTAG_FILTER;
- 		ndev->features |= NETIF_F_HW_VLAN_STAG_FILTER;
++
+ 	memset(priv, 0, sizeof(*priv));
+ }
+ 
 -- 
 2.43.0
 
