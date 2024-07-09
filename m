@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86FD192B638
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:11:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 922A292B735
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:21:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 172421F23D7D
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:11:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3CCF1C22B52
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6226157E78;
-	Tue,  9 Jul 2024 11:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C749158874;
+	Tue,  9 Jul 2024 11:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SEG8X93C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FdIvYV4o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62EB638382;
-	Tue,  9 Jul 2024 11:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE3715886A;
+	Tue,  9 Jul 2024 11:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523494; cv=none; b=F+zXUponQmzsMlJcqjh9rk2kp7LvT4sbHwaNL4IlX/3OJTEp0Rg5UpbVphRUXu5v82GMW5nRe43bElPagT/7IYv1Iq6xgJ6UWkXKI/hryXtrFhI7MwvjW5wfd8CZjT+mB6GLzds5EJBbPyNxvfDEb6FWcVUTP3iZALNvKDZmqCg=
+	t=1720524035; cv=none; b=u4HKnsfPuqglGNmeFeqHAaUZrbhi9jr+kMohAZc8kO0ll1QIq26Ylua0CHMVoV7X8h0TSJ0QcGi5NIWlj5Cj0N+/9Ea5n581aTHmSDUasGF2+Udk0/txpJy9PE5sNXl4u7TgEInOv3ygHl7b4PwqqzEboClVN7Yy882FWrX8Muk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523494; c=relaxed/simple;
-	bh=szNkF71DO3VER4rsXK4AWP70rOl2WqIch7XmNjmSdWI=;
+	s=arc-20240116; t=1720524035; c=relaxed/simple;
+	bh=Pqrtx7cJ36F32RxIlvOSFzp1SKx4u22xoVAbV5h6LCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sMpGUeBYXqclxt56qi8pdhkdfzEk6XtO3m/LHoU54czQ64aadt3nA49TdYNBrCSspttWoa1L4WUWx71mHVjz69D6PT6yAv2u9uMP4D2iAEvCLFBmGtjqnYeOKx6Kmf/arZPBdcQ/HMKJ3za6rXg7lm2cp9KvIop6odAsp+nqBxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SEG8X93C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE86EC32786;
-	Tue,  9 Jul 2024 11:11:33 +0000 (UTC)
+	 MIME-Version; b=Syw7QRWDR15pkC7UppNfug2zuxaeWlXOjY2Hn2Aq0BDm2O6RRSuywxVWvCnsJt5NaR9xCH1gzxEpz+7V9UZGYa9k7S0niMKoi/XoZmh3foKvVRicpOb0p7NwYtaNI1BoZ2dMvwnotYRionWjzdl4qYfF1C8wqGcxBLf63N/+yDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FdIvYV4o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95863C3277B;
+	Tue,  9 Jul 2024 11:20:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523494;
-	bh=szNkF71DO3VER4rsXK4AWP70rOl2WqIch7XmNjmSdWI=;
+	s=korg; t=1720524035;
+	bh=Pqrtx7cJ36F32RxIlvOSFzp1SKx4u22xoVAbV5h6LCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SEG8X93CHfDEtsdHS5Zv/znZuG4fpjK7S38JG8u27SlHu1KOoyhcg5bPhrtA6iCvv
-	 FVuJS9Yuc3+PnIGrLckEF+ETpPdafCSrUH9bNw6i1rxP2GYaibQVy/pbB/fY120rxc
-	 Skj/XjXY1kzsMNUd31VUTECuTmefnrFa+8QvXl0o=
+	b=FdIvYV4ouhndiBdv8E0M7EkVzHvMIJMrz+eGs0K2ocDHUHWaCa1o2HpCaSryIs8J2
+	 L1b7BjZ+SeTCFo/Rda0JBeG6pwCtX4ZabWldi464XAB7eRkkWSHIHx+WPA6TWTJZdf
+	 fwzaMjoM2hN42S9DdcnegudHwQkGlVftl3MFnQnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Julien Panis <jpanis@baylibre.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 003/139] crypto: hisilicon/debugfs - Fix debugfs uninit process issue
+Subject: [PATCH 6.9 049/197] thermal/drivers/mediatek/lvts_thermal: Check NULL ptr on lvts_data
 Date: Tue,  9 Jul 2024 13:08:23 +0200
-Message-ID: <20240709110658.282351098@linuxfoundation.org>
+Message-ID: <20240709110710.861758056@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghai Huang <huangchenghai2@huawei.com>
+From: Julien Panis <jpanis@baylibre.com>
 
-[ Upstream commit 8be0913389718e8d27c4f1d4537b5e1b99ed7739 ]
+[ Upstream commit a1191a77351e25ddf091bb1a231cae12ee598b5d ]
 
-During the zip probe process, the debugfs failure does not stop
-the probe. When debugfs initialization fails, jumping to the
-error branch will also release regs, in addition to its own
-rollback operation.
+Verify that lvts_data is not NULL before using it.
 
-As a result, it may be released repeatedly during the regs
-uninit process. Therefore, the null check needs to be added to
-the regs uninit process.
-
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Julien Panis <jpanis@baylibre.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20240502-mtk-thermal-lvts-data-v1-1-65f1b0bfad37@baylibre.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/debugfs.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/thermal/mediatek/lvts_thermal.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/crypto/hisilicon/debugfs.c b/drivers/crypto/hisilicon/debugfs.c
-index 2cc1591949db7..bd205f1f2279e 100644
---- a/drivers/crypto/hisilicon/debugfs.c
-+++ b/drivers/crypto/hisilicon/debugfs.c
-@@ -794,8 +794,14 @@ static void dfx_regs_uninit(struct hisi_qm *qm,
- {
- 	int i;
+diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
+index 6b9422bd8795d..25f836c00e226 100644
+--- a/drivers/thermal/mediatek/lvts_thermal.c
++++ b/drivers/thermal/mediatek/lvts_thermal.c
+@@ -1250,6 +1250,8 @@ static int lvts_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
  
-+	if (!dregs)
-+		return;
-+
- 	/* Setting the pointer is NULL to prevent double free */
- 	for (i = 0; i < reg_len; i++) {
-+		if (!dregs[i].regs)
-+			continue;
-+
- 		kfree(dregs[i].regs);
- 		dregs[i].regs = NULL;
- 	}
-@@ -845,14 +851,21 @@ static struct dfx_diff_registers *dfx_regs_init(struct hisi_qm *qm,
- static int qm_diff_regs_init(struct hisi_qm *qm,
- 		struct dfx_diff_registers *dregs, u32 reg_len)
- {
-+	int ret;
-+
- 	qm->debug.qm_diff_regs = dfx_regs_init(qm, qm_diff_regs, ARRAY_SIZE(qm_diff_regs));
--	if (IS_ERR(qm->debug.qm_diff_regs))
--		return PTR_ERR(qm->debug.qm_diff_regs);
-+	if (IS_ERR(qm->debug.qm_diff_regs)) {
-+		ret = PTR_ERR(qm->debug.qm_diff_regs);
-+		qm->debug.qm_diff_regs = NULL;
-+		return ret;
-+	}
+ 	lvts_data = of_device_get_match_data(dev);
++	if (!lvts_data)
++		return -ENODEV;
  
- 	qm->debug.acc_diff_regs = dfx_regs_init(qm, dregs, reg_len);
- 	if (IS_ERR(qm->debug.acc_diff_regs)) {
- 		dfx_regs_uninit(qm, qm->debug.qm_diff_regs, ARRAY_SIZE(qm_diff_regs));
--		return PTR_ERR(qm->debug.acc_diff_regs);
-+		ret = PTR_ERR(qm->debug.acc_diff_regs);
-+		qm->debug.acc_diff_regs = NULL;
-+		return ret;
- 	}
- 
- 	return 0;
-@@ -893,7 +906,9 @@ static int qm_last_regs_init(struct hisi_qm *qm)
- static void qm_diff_regs_uninit(struct hisi_qm *qm, u32 reg_len)
- {
- 	dfx_regs_uninit(qm, qm->debug.acc_diff_regs, reg_len);
-+	qm->debug.acc_diff_regs = NULL;
- 	dfx_regs_uninit(qm, qm->debug.qm_diff_regs, ARRAY_SIZE(qm_diff_regs));
-+	qm->debug.qm_diff_regs = NULL;
- }
- 
- /**
+ 	lvts_td->clk = devm_clk_get_enabled(dev, NULL);
+ 	if (IS_ERR(lvts_td->clk))
 -- 
 2.43.0
 
