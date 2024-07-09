@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-58590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8736892B7C2
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 813C492B7CD
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32D5D1F24572
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D11E1F244F5
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC1F8157485;
-	Tue,  9 Jul 2024 11:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C3B157485;
+	Tue,  9 Jul 2024 11:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXat8klv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wyHkMNZ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CAC27713;
-	Tue,  9 Jul 2024 11:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8779827713;
+	Tue,  9 Jul 2024 11:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524400; cv=none; b=s0LOtXhnAUKscQSIjfZVQk/pgyx6IBwvKFqJjev8sADfHWplYKaRO5h1R9udh6pBRC0uv9vdlpBqzhMPP2caHsIJmM/Y8Z35sfjVWbedy8fFoQlwehgYRaLycoyW5s4SQi9nqHAf5dzwVIgTDvqDbqmZ8Dbmhyaww3n8LD16AUk=
+	t=1720524433; cv=none; b=MJWB/CAfvRQLHqVIs6jpbkAzTCfKEpJEGEilMX5+YLgW64wFjQ+LgWLpaNaE6pXsiRELzxgJhssCzvzNJhJ2kgMiEXvk5lm0ou1GVNqBY8gT0p6+L6Zf0R+tba3UTaqI58VoZYpgC8ptCmaX4kk9wkL427EJ5zdPqizOXV/EkAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524400; c=relaxed/simple;
-	bh=e3MLiYlGVYUt1dEs/fjcjAxF9+/vDf+jTBL8rc9hwwQ=;
+	s=arc-20240116; t=1720524433; c=relaxed/simple;
+	bh=ichJDMOej0X5RkzCGgrbbyxpOqRvMAEaxOWTxOTtqtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SqIrbzFQbwTME5LDh9kSsVgGXPjP4V65XtXHSL9jTiTeJiFpb3iihFRFcGqUsOen13q/alLVdGxjr1WmxRI/EKx7cAxMRQIRin0nLCFfy9lq+lC/1TgL5pfCfbO1JwPfwk7txAApCvdzsQn7tB4QO4YAxmo1foVIXI4tRa1i1m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXat8klv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11F90C3277B;
-	Tue,  9 Jul 2024 11:26:39 +0000 (UTC)
+	 MIME-Version; b=GzDoCUs7USpElsAZUjPnm4oyhlncDs3OydfcX7hwLO/i6+EIt5cJ5UCpjHqN2YBib7zOTetT1BkNUK7Ml5Ew1I1fj6zcpRFvIvGTWQNj7DNzH7RmZz30iZYCmKbzZGQzpLN2jAdc3b1LqdbuaBIzEKah/b7CLiPWomGXhbQ0W6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wyHkMNZ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE75C3277B;
+	Tue,  9 Jul 2024 11:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524400;
-	bh=e3MLiYlGVYUt1dEs/fjcjAxF9+/vDf+jTBL8rc9hwwQ=;
+	s=korg; t=1720524433;
+	bh=ichJDMOej0X5RkzCGgrbbyxpOqRvMAEaxOWTxOTtqtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XXat8klvET4Iod2PnLzDsmB+9hEt46W+P/jDIE3+6bIquGlNo3h6HjVrIAvKKJ1yT
-	 HSmP2imXNkLqJp51GCgRwFbmJWDU1sATHjSd50+vLRtgRGGu0qzusu8OFqfsc0reKb
-	 Avft2T1GfulOmvw6BSt1D/u3c5zhnEYOxZrgZjIY=
+	b=wyHkMNZ1z/sHt6iPlBg73r+finNmw9LNrFvuS4g4c1GTbcYH33lNl6KniA5XXl4zY
+	 jJeWnguDHpJFtdafneHBNepBwjuHM+X2/yQztBF1q6XBE/c3IekxySjnecclWvgZPH
+	 WRZKRqSEX5PhbeIQ6B5ke0OKYcDyeHu3YSoLfo5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Dahl <ada@thorsis.com>,
-	Steven Seeger <steven.seeger@flightsystems.net>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 6.9 162/197] mtd: rawnand: Bypass a couple of sanity checks during NAND identification
-Date: Tue,  9 Jul 2024 13:10:16 +0200
-Message-ID: <20240709110715.222768772@linuxfoundation.org>
+	Val Packett <val@packett.cool>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.9 163/197] mtd: rawnand: rockchip: ensure NVDDR timings are rejected
+Date: Tue,  9 Jul 2024 13:10:17 +0200
+Message-ID: <20240709110715.260855678@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
 References: <20240709110708.903245467@linuxfoundation.org>
@@ -67,131 +65,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Val Packett <val@packett.cool>
 
-commit 8754d9835683e8fab9a8305acdb38a3aeb9d20bd upstream.
+commit b27d8946b5edd9827ee3c2f9ea1dd30022fb1ebe upstream.
 
-Early during NAND identification, mtd_info fields have not yet been
-initialized (namely, writesize and oobsize) and thus cannot be used for
-sanity checks yet. Of course if there is a misuse of
-nand_change_read_column_op() so early we won't be warned, but there is
-anyway no actual check to perform at this stage as we do not yet know
-the NAND geometry.
+.setup_interface first gets called with a "target" value of
+NAND_DATA_IFACE_CHECK_ONLY, in which case an error is expected
+if the controller driver does not support the timing mode (NVDDR).
 
-So, if the fields are empty, especially mtd->writesize which is *always*
-set quite rapidly after identification, let's skip the sanity checks.
-
-nand_change_read_column_op() is subject to be used early for ONFI/JEDEC
-identification in the very unlikely case of:
-- bitflips appearing in the parameter page,
-- the controller driver not supporting simple DATA_IN cycles.
-
-As nand_change_read_column_op() uses nand_fill_column_cycles() the logic
-explaind above also applies in this secondary helper.
-
-Fixes: c27842e7e11f ("mtd: rawnand: onfi: Adapt the parameter page read to constraint controllers")
-Fixes: daca31765e8b ("mtd: rawnand: jedec: Adapt the parameter page read to constraint controllers")
+Fixes: a9ecc8c814e9 ("mtd: rawnand: Choose the best timings, NV-DDR included")
+Signed-off-by: Val Packett <val@packett.cool>
 Cc: stable@vger.kernel.org
-Reported-by: Alexander Dahl <ada@thorsis.com>
-Closes: https://lore.kernel.org/linux-mtd/20240306-shaky-bunion-d28b65ea97d7@thorsis.com/
-Reported-by: Steven Seeger <steven.seeger@flightsystems.net>
-Closes: https://lore.kernel.org/linux-mtd/DM6PR05MB4506554457CF95191A670BDEF7062@DM6PR05MB4506.namprd05.prod.outlook.com/
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Tested-by: Sascha Hauer <s.hauer@pengutronix.de>
-Link: https://lore.kernel.org/linux-mtd/20240516131320.579822-3-miquel.raynal@bootlin.com
+Link: https://lore.kernel.org/linux-mtd/20240519031409.26464-1-val@packett.cool
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/nand_base.c |   57 +++++++++++++++++++++------------------
- 1 file changed, 32 insertions(+), 25 deletions(-)
+ drivers/mtd/nand/raw/rockchip-nand-controller.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -1093,28 +1093,32 @@ static int nand_fill_column_cycles(struc
- 				   unsigned int offset_in_page)
- {
- 	struct mtd_info *mtd = nand_to_mtd(chip);
-+	bool ident_stage = !mtd->writesize;
+--- a/drivers/mtd/nand/raw/rockchip-nand-controller.c
++++ b/drivers/mtd/nand/raw/rockchip-nand-controller.c
+@@ -420,13 +420,13 @@ static int rk_nfc_setup_interface(struct
+ 	u32 rate, tc2rw, trwpw, trw2c;
+ 	u32 temp;
  
--	/* Make sure the offset is less than the actual page size. */
--	if (offset_in_page > mtd->writesize + mtd->oobsize)
--		return -EINVAL;
+-	if (target < 0)
+-		return 0;
 -
--	/*
--	 * On small page NANDs, there's a dedicated command to access the OOB
--	 * area, and the column address is relative to the start of the OOB
--	 * area, not the start of the page. Asjust the address accordingly.
--	 */
--	if (mtd->writesize <= 512 && offset_in_page >= mtd->writesize)
--		offset_in_page -= mtd->writesize;
--
--	/*
--	 * The offset in page is expressed in bytes, if the NAND bus is 16-bit
--	 * wide, then it must be divided by 2.
--	 */
--	if (chip->options & NAND_BUSWIDTH_16) {
--		if (WARN_ON(offset_in_page % 2))
-+	/* Bypass all checks during NAND identification */
-+	if (likely(!ident_stage)) {
-+		/* Make sure the offset is less than the actual page size. */
-+		if (offset_in_page > mtd->writesize + mtd->oobsize)
- 			return -EINVAL;
+ 	timings = nand_get_sdr_timings(conf);
+ 	if (IS_ERR(timings))
+ 		return -EOPNOTSUPP;
  
--		offset_in_page /= 2;
-+		/*
-+		 * On small page NANDs, there's a dedicated command to access the OOB
-+		 * area, and the column address is relative to the start of the OOB
-+		 * area, not the start of the page. Asjust the address accordingly.
-+		 */
-+		if (mtd->writesize <= 512 && offset_in_page >= mtd->writesize)
-+			offset_in_page -= mtd->writesize;
++	if (target < 0)
++		return 0;
 +
-+		/*
-+		 * The offset in page is expressed in bytes, if the NAND bus is 16-bit
-+		 * wide, then it must be divided by 2.
-+		 */
-+		if (chip->options & NAND_BUSWIDTH_16) {
-+			if (WARN_ON(offset_in_page % 2))
-+				return -EINVAL;
-+
-+			offset_in_page /= 2;
-+		}
- 	}
- 
- 	addrs[0] = offset_in_page;
-@@ -1123,7 +1127,7 @@ static int nand_fill_column_cycles(struc
- 	 * Small page NANDs use 1 cycle for the columns, while large page NANDs
- 	 * need 2
- 	 */
--	if (mtd->writesize <= 512)
-+	if (!ident_stage && mtd->writesize <= 512)
- 		return 1;
- 
- 	addrs[1] = offset_in_page >> 8;
-@@ -1436,16 +1440,19 @@ int nand_change_read_column_op(struct na
- 			       unsigned int len, bool force_8bit)
- {
- 	struct mtd_info *mtd = nand_to_mtd(chip);
-+	bool ident_stage = !mtd->writesize;
- 
- 	if (len && !buf)
- 		return -EINVAL;
- 
--	if (offset_in_page + len > mtd->writesize + mtd->oobsize)
--		return -EINVAL;
-+	if (!ident_stage) {
-+		if (offset_in_page + len > mtd->writesize + mtd->oobsize)
-+			return -EINVAL;
- 
--	/* Small page NANDs do not support column change. */
--	if (mtd->writesize <= 512)
--		return -ENOTSUPP;
-+		/* Small page NANDs do not support column change. */
-+		if (mtd->writesize <= 512)
-+			return -ENOTSUPP;
-+	}
- 
- 	if (nand_has_exec_op(chip)) {
- 		const struct nand_interface_config *conf =
+ 	if (IS_ERR(nfc->nfc_clk))
+ 		rate = clk_get_rate(nfc->ahb_clk);
+ 	else
 
 
 
