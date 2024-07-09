@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-58711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4576C92B849
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:32:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECFED92B6E8
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:18:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7CC8B231B9
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:32:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A5D71C21FB2
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2D9156C61;
-	Tue,  9 Jul 2024 11:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B28153812;
+	Tue,  9 Jul 2024 11:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pl56t779"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMh3hEoh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C82E55E4C;
-	Tue,  9 Jul 2024 11:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1168D1487F6;
+	Tue,  9 Jul 2024 11:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524762; cv=none; b=j6SftUXL55RcnBWRmoAElcVFcS37rDNm4w4kSuQE/gcFzBFUEnJc8IJwabZZP7BqXnRn6k1La9RJHgfjFG7jgJ/Rpgrl0blHRkDXZc1OvEQUhRTdEmAV+DNZ54XeX5c2Ktv+Ci9WiROs2dCj+wtDXzmyHjBpZwAfjHOAbFFHWz4=
+	t=1720523886; cv=none; b=QeaQOrKP+vQMivgH8WRze7F1AB/x3zooX9yRkASkzUj0KajDOqvTXkvWIfL7T/vGJQpxzQh6ExTrLq/Ez7HJLVD1xUiY6h8SG+KUn0UK5i1SVvNSaSdzTkUyHc2h8zC8Qfs0EF6++y2RF5o07TkIOCT6uwAs3V6jfbfx5eoF7Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524762; c=relaxed/simple;
-	bh=ARKZ5eRwJFacGwL1mkblQ7tQN12WKCKRtMnEaf/UdBU=;
+	s=arc-20240116; t=1720523886; c=relaxed/simple;
+	bh=P+1BJIlS3EtITmKUyD9kRYRbfl3L4Boqdn67qLIZoQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DDAhQfdpZ+a9r1vLqDNJ2HwOxK6DqArayKdkJcxH8AC9L6oQKawIHOWtMSyV0TuNCoKuaylkKPqr1nZF/tSU2GFmABZbP5AkhQ44omLajFsC+Ve9aVceUcsYFaH/FqGDQKUQZjgV+MEZCzsiRGIxhEHU1UQllM6//xG+xszvR8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pl56t779; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 885D3C3277B;
-	Tue,  9 Jul 2024 11:32:41 +0000 (UTC)
+	 MIME-Version; b=cA7OLsp4RMH9vA3YEKqAFtDFORenbGX8jhnNcZz+06vKaA0Ps+1h6auAurTjl1KwwqZQ4ImGf9CLr3CgtrF96CLqxD0ZmwTzrtzUJdeJKwhXK3jEyQtmQfkcCqsWPYBKaPG2HhK8DTeBg+hibshURRfh5aRQRZuUmH7STPt++W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMh3hEoh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE34C32786;
+	Tue,  9 Jul 2024 11:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524761;
-	bh=ARKZ5eRwJFacGwL1mkblQ7tQN12WKCKRtMnEaf/UdBU=;
+	s=korg; t=1720523885;
+	bh=P+1BJIlS3EtITmKUyD9kRYRbfl3L4Boqdn67qLIZoQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pl56t779pIDQfmWaskqIZsV0O+OODei0URolw/MNnyommt5A7Dc7haJDN+zgLeSWt
-	 0RKLNq/4ldFOHJ2dI3FGqXCjPAfR3mEPSChSJ+mx95KLfZtplreHSrbnpEb8soK2FY
-	 gRED4uRHtY5F7k3Rb3AfiVmiDj//G4PkPQHYT2MU=
+	b=CMh3hEohRHJAY/i+Ooc1MDd0g0tDaNxg/uff7J/bUfWEBRS6Pv08DHOEBvZAm965x
+	 WGcl7gBTDOGXf24Okg8Mwmp2vdXBZA78HZgaNJY0drDFTUrUhPCabgnL6GLCZHT5nX
+	 lXLCbOH+JRVv6T3E0zDntUU5gjAdHpbMRhv/i5AE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerry Dai <jerry.dai@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/102] net: ntb_netdev: Move ntb_netdev_rx_handler() to call netif_rx() from __netif_rx()
+	Diederik de Haas <didi.debian@cknow.org>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.6 115/139] arm64: dts: rockchip: Fix the DCDC_REG2 minimum voltage on Quartz64 Model B
 Date: Tue,  9 Jul 2024 13:10:15 +0200
-Message-ID: <20240709110653.405265132@linuxfoundation.org>
+Message-ID: <20240709110702.617079402@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Jiang <dave.jiang@intel.com>
+From: Dragan Simic <dsimic@manjaro.org>
 
-[ Upstream commit e15a5d821e5192a3769d846079bc9aa380139baf ]
+commit d201c92bff90f3d3d0b079fc955378c15c0483cc upstream.
 
-The following is emitted when using idxd (DSA) dmanegine as the data
-mover for ntb_transport that ntb_netdev uses.
+Correct the specified regulator-min-microvolt value for the buck DCDC_REG2
+regulator, which is part of the Rockchip RK809 PMIC, in the Pine64 Quartz64
+Model B board dts.  According to the RK809 datasheet, version 1.01, this
+regulator is capable of producing voltages as low as 0.5 V on its output,
+instead of going down to 0.9 V only, which is additionally confirmed by the
+regulator-min-microvolt values found in the board dts files for the other
+supported boards that use the same RK809 PMIC.
 
-[74412.546922] BUG: using smp_processor_id() in preemptible [00000000] code: irq/52-idxd-por/14526
-[74412.556784] caller is netif_rx_internal+0x42/0x130
-[74412.562282] CPU: 6 PID: 14526 Comm: irq/52-idxd-por Not tainted 6.9.5 #5
-[74412.569870] Hardware name: Intel Corporation ArcherCity/ArcherCity, BIOS EGSDCRB1.E9I.1752.P05.2402080856 02/08/2024
-[74412.581699] Call Trace:
-[74412.584514]  <TASK>
-[74412.586933]  dump_stack_lvl+0x55/0x70
-[74412.591129]  check_preemption_disabled+0xc8/0xf0
-[74412.596374]  netif_rx_internal+0x42/0x130
-[74412.600957]  __netif_rx+0x20/0xd0
-[74412.604743]  ntb_netdev_rx_handler+0x66/0x150 [ntb_netdev]
-[74412.610985]  ntb_complete_rxc+0xed/0x140 [ntb_transport]
-[74412.617010]  ntb_rx_copy_callback+0x53/0x80 [ntb_transport]
-[74412.623332]  idxd_dma_complete_txd+0xe3/0x160 [idxd]
-[74412.628963]  idxd_wq_thread+0x1a6/0x2b0 [idxd]
-[74412.634046]  irq_thread_fn+0x21/0x60
-[74412.638134]  ? irq_thread+0xa8/0x290
-[74412.642218]  irq_thread+0x1a0/0x290
-[74412.646212]  ? __pfx_irq_thread_fn+0x10/0x10
-[74412.651071]  ? __pfx_irq_thread_dtor+0x10/0x10
-[74412.656117]  ? __pfx_irq_thread+0x10/0x10
-[74412.660686]  kthread+0x100/0x130
-[74412.664384]  ? __pfx_kthread+0x10/0x10
-[74412.668639]  ret_from_fork+0x31/0x50
-[74412.672716]  ? __pfx_kthread+0x10/0x10
-[74412.676978]  ret_from_fork_asm+0x1a/0x30
-[74412.681457]  </TASK>
+This allows the DVFS to clock the GPU on the Quartz64 Model B below 700 MHz,
+all the way down to 200 MHz, which saves some power and reduces the amount of
+generated heat a bit, improving the thermal headroom and possibly improving
+the bursty CPU and GPU performance on this board.
 
-The cause is due to the idxd driver interrupt completion handler uses
-threaded interrupt and the threaded handler is not hard or soft interrupt
-context. However __netif_rx() can only be called from interrupt context.
-Change the call to netif_rx() in order to allow completion via normal
-context for dmaengine drivers that utilize threaded irq handling.
+This also eliminates the following warnings in the kernel log:
 
-While the following commit changed from netif_rx() to __netif_rx(),
-baebdf48c360 ("net: dev: Makes sure netif_rx() can be invoked in any context."),
-the change should've been a noop instead. However, the code precedes this
-fix should've been using netif_rx_ni() or netif_rx_any_context().
+  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
+  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (200000000)
+  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
+  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (300000000)
+  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
+  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (400000000)
+  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
+  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (600000000)
 
-Fixes: 548c237c0a99 ("net: Add support for NTB virtual ethernet device")
-Reported-by: Jerry Dai <jerry.dai@intel.com>
-Tested-by: Jerry Dai <jerry.dai@intel.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://patch.msgid.link/20240701181538.3799546-1-dave.jiang@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dcc8c66bef79 ("arm64: dts: rockchip: add Pine64 Quartz64-B device tree")
+Cc: stable@vger.kernel.org
+Reported-By: Diederik de Haas <didi.debian@cknow.org>
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Tested-by: Diederik de Haas <didi.debian@cknow.org>
+Link: https://lore.kernel.org/r/e70742ea2df432bf57b3f7de542d81ca22b0da2f.1716225483.git.dsimic@manjaro.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ntb_netdev.c | 2 +-
+ arch/arm64/boot/dts/rockchip/rk3566-quartz64-b.dts |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ntb_netdev.c b/drivers/net/ntb_netdev.c
-index 85dbe7f73e319..535dc5b2901fc 100644
---- a/drivers/net/ntb_netdev.c
-+++ b/drivers/net/ntb_netdev.c
-@@ -119,7 +119,7 @@ static void ntb_netdev_rx_handler(struct ntb_transport_qp *qp, void *qp_data,
- 	skb->protocol = eth_type_trans(skb, ndev);
- 	skb->ip_summed = CHECKSUM_NONE;
+--- a/arch/arm64/boot/dts/rockchip/rk3566-quartz64-b.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3566-quartz64-b.dts
+@@ -289,7 +289,7 @@
+ 				regulator-name = "vdd_gpu";
+ 				regulator-always-on;
+ 				regulator-boot-on;
+-				regulator-min-microvolt = <900000>;
++				regulator-min-microvolt = <500000>;
+ 				regulator-max-microvolt = <1350000>;
+ 				regulator-ramp-delay = <6001>;
  
--	if (__netif_rx(skb) == NET_RX_DROP) {
-+	if (netif_rx(skb) == NET_RX_DROP) {
- 		ndev->stats.rx_errors++;
- 		ndev->stats.rx_dropped++;
- 	} else {
--- 
-2.43.0
-
 
 
 
