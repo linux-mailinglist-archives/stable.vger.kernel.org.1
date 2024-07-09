@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-58312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374D992B65F
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:12:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D7D492B75B
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5C6428378D
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:12:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A4D3B2458B
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98557158202;
-	Tue,  9 Jul 2024 11:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA31D158D91;
+	Tue,  9 Jul 2024 11:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gB7WfNlo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjmRKIXX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56DE8157A72;
-	Tue,  9 Jul 2024 11:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8099158A30;
+	Tue,  9 Jul 2024 11:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523558; cv=none; b=U0kCb8He10zfCgug5Ii9tjluDAbo9nqldEoTQ5TOdzvgvJpMP+YT4V6R4ZPCCfu/YfgNCgNPIeaFU/TkGloWW/BiR6c7OFw56+kYcvO96HWQvFs6/4Udh9rOiUsJ7QS9YaPZptrdSo7qE9G/CkO3b/RlNXTLUffCBykyumdkumc=
+	t=1720524125; cv=none; b=pHGEmNVT89+8Q4DsFO82mU8WZMOfjhr88rjux1tAI2rluUUxUrDHd3z04YXIqUI4XCOzvGFR1iv3bh9RkWroZ/ZT9yKO1wGAAARy2o/KNyzxIPOdWbw9aMtXiUibV/DrTA1jCZ1zsADaJy0hmMP3Yuz72QlUdrKptWC6f5EcIZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523558; c=relaxed/simple;
-	bh=mUvJkvWxbFfT0KIlnGdVbqgtgTTdNcMERqOlyu6cEyU=;
+	s=arc-20240116; t=1720524125; c=relaxed/simple;
+	bh=A2/Nc4rRg+QUDA6nm0x/tD/yk3s4v2fcGiOIBJSJI+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q+oGxHI4PJxQ/pn6cceodfsvMifiSAT67DdkDUCbZ7lWeY3ld114JmWWJHM1cFAdl9fv8NgJGd7d9DyIvIEKnxi3pQxh3I8iOT8a7wG3E9vQC4ESCOzwr9cxHaluN+eBNH4iFRiscdpLurxG3PrFwpjs+blCeqOY0q78gDxMrYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gB7WfNlo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D25BEC3277B;
-	Tue,  9 Jul 2024 11:12:37 +0000 (UTC)
+	 MIME-Version; b=L8ypbHXTADsMn78EKk/mcMR3fn2Rt+9bGAqBXhnn3xo+B/HOdJG52mFtnfRctNv6MfMDVjrDhY389s55PtBmrEn6J3OrsRmb5i0tMeobbBtueKdTo7KI7mbbIJ0XvC6amm7pBzxBUGuePVV1qKnDq9R+yzK6xlN+XFcT1XUerKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjmRKIXX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D337C32786;
+	Tue,  9 Jul 2024 11:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523558;
-	bh=mUvJkvWxbFfT0KIlnGdVbqgtgTTdNcMERqOlyu6cEyU=;
+	s=korg; t=1720524125;
+	bh=A2/Nc4rRg+QUDA6nm0x/tD/yk3s4v2fcGiOIBJSJI+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gB7WfNloC41fHoybT+oYT+3uiwLguWeAlwX5EQuh/IZ9RDybhFX2hGb+sXHV82ZLR
-	 ajN1ay4RdjT5poQs38LLphllrVydjMqA7mUuGO1YbFLGZ4cvH9ZcZD7NlAe8o2TChF
-	 NQFkU0cOYIXNAx+cxMJwMdF4dLdq1xdqF1p4+77M=
+	b=kjmRKIXXhUCUlYTSiDkfhnxGyfRiIj92gw+MxKeTmFSR1iERp7czZDxmxJATiWFY+
+	 YZS57X7oJI/9ZGVCL0wo0g0e6D6vFaAQOb6taEmWATvrW6BDm5ku3q2foDswdQ+Tj6
+	 u0/7EV5ZQfzow40jXqw6lL9ftCXLwCY0TnLlJwE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/139] wifi: mt76: replace skb_put with skb_put_zero
-Date: Tue,  9 Jul 2024 13:08:52 +0200
-Message-ID: <20240709110659.407119146@linuxfoundation.org>
+Subject: [PATCH 6.9 079/197] tools/power turbostat: Remember global max_die_id
+Date: Tue,  9 Jul 2024 13:08:53 +0200
+Message-ID: <20240709110712.025995101@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Len Brown <len.brown@intel.com>
 
-[ Upstream commit 7f819a2f4fbc510e088b49c79addcf1734503578 ]
+[ Upstream commit cda203388687aa075db6f8996c3c4549fa518ea8 ]
 
-Avoid potentially reusing uninitialized data
+This is necessary to gracefully handle sparse die_id's.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+no functional change
+
+Signed-off-by: Len Brown <len.brown@intel.com>
+Stable-dep-of: 3559ea813ad3 ("tools/power turbostat: Avoid possible memory corruption due to sparse topology IDs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 10 +++++-----
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c      |  2 +-
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ tools/power/x86/turbostat/turbostat.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index dc4fbab1e1b75..998cfd73764a9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -255,7 +255,7 @@ mt76_connac_mcu_add_nested_tlv(struct sk_buff *skb, int tag, int len,
- 	};
- 	u16 ntlv;
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index 8071a3ef2a2e8..25417c3a47ab6 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -1415,6 +1415,7 @@ struct topo_params {
+ 	int allowed_cpus;
+ 	int allowed_cores;
+ 	int max_cpu_num;
++	int max_die_id;
+ 	int max_node_num;
+ 	int nodes_per_pkg;
+ 	int cores_per_node;
+@@ -6967,7 +6968,6 @@ void topology_probe(bool startup)
+ 	int i;
+ 	int max_core_id = 0;
+ 	int max_package_id = 0;
+-	int max_die_id = 0;
+ 	int max_siblings = 0;
  
--	ptlv = skb_put(skb, len);
-+	ptlv = skb_put_zero(skb, len);
- 	memcpy(ptlv, &tlv, sizeof(tlv));
+ 	/* Initialize num_cpus, max_cpu_num */
+@@ -7084,8 +7084,8 @@ void topology_probe(bool startup)
  
- 	ntlv = le16_to_cpu(ntlv_hdr->tlv_num);
-@@ -1654,7 +1654,7 @@ int mt76_connac_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
- 	set_bit(MT76_HW_SCANNING, &phy->state);
- 	mvif->scan_seq_num = (mvif->scan_seq_num + 1) & 0x7f;
+ 		/* get die information */
+ 		cpus[i].die_id = get_die_id(i);
+-		if (cpus[i].die_id > max_die_id)
+-			max_die_id = cpus[i].die_id;
++		if (cpus[i].die_id > topo.max_die_id)
++			topo.max_die_id = cpus[i].die_id;
  
--	req = (struct mt76_connac_hw_scan_req *)skb_put(skb, sizeof(*req));
-+	req = (struct mt76_connac_hw_scan_req *)skb_put_zero(skb, sizeof(*req));
+ 		/* get numa node information */
+ 		cpus[i].physical_node_id = get_physical_node_id(&cpus[i]);
+@@ -7111,9 +7111,9 @@ void topology_probe(bool startup)
+ 	if (!summary_only && topo.cores_per_node > 1)
+ 		BIC_PRESENT(BIC_Core);
  
- 	req->seq_num = mvif->scan_seq_num | mvif->band_idx << 7;
- 	req->bss_idx = mvif->idx;
-@@ -1782,7 +1782,7 @@ int mt76_connac_mcu_sched_scan_req(struct mt76_phy *phy,
+-	topo.num_die = max_die_id + 1;
++	topo.num_die = topo.max_die_id + 1;
+ 	if (debug > 1)
+-		fprintf(outf, "max_die_id %d, sizing for %d die\n", max_die_id, topo.num_die);
++		fprintf(outf, "max_die_id %d, sizing for %d die\n", topo.max_die_id, topo.num_die);
+ 	if (!summary_only && topo.num_die > 1)
+ 		BIC_PRESENT(BIC_Die);
  
- 	mvif->scan_seq_num = (mvif->scan_seq_num + 1) & 0x7f;
- 
--	req = (struct mt76_connac_sched_scan_req *)skb_put(skb, sizeof(*req));
-+	req = (struct mt76_connac_sched_scan_req *)skb_put_zero(skb, sizeof(*req));
- 	req->version = 1;
- 	req->seq_num = mvif->scan_seq_num | mvif->band_idx << 7;
- 
-@@ -2416,7 +2416,7 @@ int mt76_connac_mcu_update_gtk_rekey(struct ieee80211_hw *hw,
- 		return -ENOMEM;
- 
- 	skb_put_data(skb, &hdr, sizeof(hdr));
--	gtk_tlv = (struct mt76_connac_gtk_rekey_tlv *)skb_put(skb,
-+	gtk_tlv = (struct mt76_connac_gtk_rekey_tlv *)skb_put_zero(skb,
- 							 sizeof(*gtk_tlv));
- 	gtk_tlv->tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_GTK_REKEY);
- 	gtk_tlv->len = cpu_to_le16(sizeof(*gtk_tlv));
-@@ -2539,7 +2539,7 @@ mt76_connac_mcu_set_wow_pattern(struct mt76_dev *dev,
- 		return -ENOMEM;
- 
- 	skb_put_data(skb, &hdr, sizeof(hdr));
--	ptlv = (struct mt76_connac_wow_pattern_tlv *)skb_put(skb, sizeof(*ptlv));
-+	ptlv = (struct mt76_connac_wow_pattern_tlv *)skb_put_zero(skb, sizeof(*ptlv));
- 	ptlv->tag = cpu_to_le16(UNI_SUSPEND_WOW_PATTERN);
- 	ptlv->len = cpu_to_le16(sizeof(*ptlv));
- 	ptlv->data_len = pattern->pattern_len;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 5d8e985cd7d45..272e55ef8e2d2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -422,7 +422,7 @@ mt7915_mcu_add_nested_subtlv(struct sk_buff *skb, int sub_tag, int sub_len,
- 		.len = cpu_to_le16(sub_len),
- 	};
- 
--	ptlv = skb_put(skb, sub_len);
-+	ptlv = skb_put_zero(skb, sub_len);
- 	memcpy(ptlv, &tlv, sizeof(tlv));
- 
- 	le16_add_cpu(sub_ntlv, 1);
 -- 
 2.43.0
 
