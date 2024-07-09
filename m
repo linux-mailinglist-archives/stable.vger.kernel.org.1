@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-58395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F0E92B6CB
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21DE792B7A8
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:25:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 345401C21980
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52DBB1C2346F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C11FE158218;
-	Tue,  9 Jul 2024 11:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6631157E61;
+	Tue,  9 Jul 2024 11:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xK69yR54"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XtrxFj62"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4FC14EC4D;
-	Tue,  9 Jul 2024 11:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740ED13A25F;
+	Tue,  9 Jul 2024 11:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523804; cv=none; b=S5l1qIaV6UmhK1C3juJIEIXGHjmUD602rx9VyT/fazNJJof4Hm/IFXcyzmAmA84/b2673QoKsEYOa8sbRSS6kLu3eUEhKY5hMf1D6ZgVp3o/eEOiKFUF8o7T7ZfQCIYe8ebARpGNEXENM4UX4VDJBFxLBnz0ydFQhh++KPbmXM4=
+	t=1720524330; cv=none; b=rx5uCyOq6xwt9xyJHWiQF/rw3YLpa8MpKMGeaavlZJexV/aE8+QG65sLZBQDDTJqhdc0Kj2MZXBp2wg/kZADv5Ui7XyRq4nZK0sZxnTx9dCoYiAOewNfAB9u9FP4T4JsM7VPO4jQX6aZavh9IQ77LMzgMeOPjAWfsokAvxCNp0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523804; c=relaxed/simple;
-	bh=VMtr7MWY7BONL1ylac4aW4lBP5/QL4/sBimfFFDVXF4=;
+	s=arc-20240116; t=1720524330; c=relaxed/simple;
+	bh=S4seHr6J3agTnUZKRn9TSkIXVl1kBmpIK0gbjFD9218=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jyvA0pWFG1MYIdWImKnw1akGikEKwPeHGqY3+lwo8vxQNMSzJQA6FVQ/qGTy0LXE9X5dxJVIlaHeqCJce4wliW/Z+zM+uAciWyXpqKmeMiifiikd9aK/leDq8oHSq1dZ2qRL6eJAX2HXg1VT63UHQbtEf0ykdMjPY7Qe+Dh5pJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xK69yR54; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04418C3277B;
-	Tue,  9 Jul 2024 11:16:43 +0000 (UTC)
+	 MIME-Version; b=LIw0RX52YMg9HbjGKK7NCaoQFmHLsA8s8mk5wu1jLwBp9EwOiS39YTeVtcMefjLFpPw9OmNaiKRAQxtXzKU3qFGr6pPblqGPw83umKQbDchMAzYF5j8gK1SMUIAt1F22vIeuzP4Oo0EBnirbQry+ww0Ap6je+Ha3jKlw2xXVWyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XtrxFj62; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE544C3277B;
+	Tue,  9 Jul 2024 11:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523804;
-	bh=VMtr7MWY7BONL1ylac4aW4lBP5/QL4/sBimfFFDVXF4=;
+	s=korg; t=1720524330;
+	bh=S4seHr6J3agTnUZKRn9TSkIXVl1kBmpIK0gbjFD9218=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xK69yR54RtRKRhw6iSNLohPAwn9v0daCULyaF978Niu+AE0HtJxtRcyiuGDgJqYFi
-	 zKjNBHO2AzbyZaBzEZlLRJnGT40aF5wtXT2UZkMlxFruIswqtapt9qemGFGeFAHY6f
-	 yLHMSf73NIa0/GTnPFrPmaG5smBnnW2JYC/TH9T8=
+	b=XtrxFj620+5qAF6ShAeUkxM1hXI99Opubbj4+JcBZTOdyyK4Lx8VPZqcgnWnsPAie
+	 hNIXvU+uHkmIqSEZ2blXRAarZwEp5N/wzSOecEzyST9GFLlFPqUBqVzu0aO3fbSIyQ
+	 R55dKw2QMfgFSOgtWSxnMLCUtt1q/O5/MyP1qfrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/139] inet_diag: Initialize pad field in struct inet_diag_req_v2
+Subject: [PATCH 6.9 130/197] gpiolib: of: add polarity quirk for TSC2005
 Date: Tue,  9 Jul 2024 13:09:44 +0200
-Message-ID: <20240709110701.422595849@linuxfoundation.org>
+Message-ID: <20240709110713.983121360@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,119 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit 61cf1c739f08190a4cbf047b9fbb192a94d87e3f ]
+[ Upstream commit f8d76c2c313c56d5cb894a243dff4550f048278d ]
 
-KMSAN reported uninit-value access in raw_lookup() [1]. Diag for raw
-sockets uses the pad field in struct inet_diag_req_v2 for the
-underlying protocol. This field corresponds to the sdiag_raw_protocol
-field in struct inet_diag_req_raw.
+DTS for Nokia N900 incorrectly specifies "active high" polarity for
+the reset line, while the chip documentation actually specifies it as
+"active low".  In the past the driver fudged gpiod API and inverted
+the logic internally, but it was changed in d0d89493bff8.
 
-inet_diag_get_exact_compat() converts inet_diag_req to
-inet_diag_req_v2, but leaves the pad field uninitialized. So the issue
-occurs when raw_lookup() accesses the sdiag_raw_protocol field.
-
-Fix this by initializing the pad field in
-inet_diag_get_exact_compat(). Also, do the same fix in
-inet_diag_dump_compat() to avoid the similar issue in the future.
-
-[1]
-BUG: KMSAN: uninit-value in raw_lookup net/ipv4/raw_diag.c:49 [inline]
-BUG: KMSAN: uninit-value in raw_sock_get+0x657/0x800 net/ipv4/raw_diag.c:71
- raw_lookup net/ipv4/raw_diag.c:49 [inline]
- raw_sock_get+0x657/0x800 net/ipv4/raw_diag.c:71
- raw_diag_dump_one+0xa1/0x660 net/ipv4/raw_diag.c:99
- inet_diag_cmd_exact+0x7d9/0x980
- inet_diag_get_exact_compat net/ipv4/inet_diag.c:1404 [inline]
- inet_diag_rcv_msg_compat+0x469/0x530 net/ipv4/inet_diag.c:1426
- sock_diag_rcv_msg+0x23d/0x740 net/core/sock_diag.c:282
- netlink_rcv_skb+0x537/0x670 net/netlink/af_netlink.c:2564
- sock_diag_rcv+0x35/0x40 net/core/sock_diag.c:297
- netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
- netlink_unicast+0xe74/0x1240 net/netlink/af_netlink.c:1361
- netlink_sendmsg+0x10c6/0x1260 net/netlink/af_netlink.c:1905
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg+0x332/0x3d0 net/socket.c:745
- ____sys_sendmsg+0x7f0/0xb70 net/socket.c:2585
- ___sys_sendmsg+0x271/0x3b0 net/socket.c:2639
- __sys_sendmsg net/socket.c:2668 [inline]
- __do_sys_sendmsg net/socket.c:2677 [inline]
- __se_sys_sendmsg net/socket.c:2675 [inline]
- __x64_sys_sendmsg+0x27e/0x4a0 net/socket.c:2675
- x64_sys_call+0x135e/0x3ce0 arch/x86/include/generated/asm/syscalls_64.h:47
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xd9/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Uninit was stored to memory at:
- raw_sock_get+0x650/0x800 net/ipv4/raw_diag.c:71
- raw_diag_dump_one+0xa1/0x660 net/ipv4/raw_diag.c:99
- inet_diag_cmd_exact+0x7d9/0x980
- inet_diag_get_exact_compat net/ipv4/inet_diag.c:1404 [inline]
- inet_diag_rcv_msg_compat+0x469/0x530 net/ipv4/inet_diag.c:1426
- sock_diag_rcv_msg+0x23d/0x740 net/core/sock_diag.c:282
- netlink_rcv_skb+0x537/0x670 net/netlink/af_netlink.c:2564
- sock_diag_rcv+0x35/0x40 net/core/sock_diag.c:297
- netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
- netlink_unicast+0xe74/0x1240 net/netlink/af_netlink.c:1361
- netlink_sendmsg+0x10c6/0x1260 net/netlink/af_netlink.c:1905
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg+0x332/0x3d0 net/socket.c:745
- ____sys_sendmsg+0x7f0/0xb70 net/socket.c:2585
- ___sys_sendmsg+0x271/0x3b0 net/socket.c:2639
- __sys_sendmsg net/socket.c:2668 [inline]
- __do_sys_sendmsg net/socket.c:2677 [inline]
- __se_sys_sendmsg net/socket.c:2675 [inline]
- __x64_sys_sendmsg+0x27e/0x4a0 net/socket.c:2675
- x64_sys_call+0x135e/0x3ce0 arch/x86/include/generated/asm/syscalls_64.h:47
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xd9/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Local variable req.i created at:
- inet_diag_get_exact_compat net/ipv4/inet_diag.c:1396 [inline]
- inet_diag_rcv_msg_compat+0x2a6/0x530 net/ipv4/inet_diag.c:1426
- sock_diag_rcv_msg+0x23d/0x740 net/core/sock_diag.c:282
-
-CPU: 1 PID: 8888 Comm: syz-executor.6 Not tainted 6.10.0-rc4-00217-g35bb670d65fc #32
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
-
-Fixes: 432490f9d455 ("net: ip, diag -- Add diag interface for raw sockets")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240703091649.111773-1-syoshida@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: d0d89493bff8 ("Input: tsc2004/5 - switch to using generic device properties")
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/ZoWXwYtwgJIxi-hD@google.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inet_diag.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpio/gpiolib-of.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/ipv4/inet_diag.c b/net/ipv4/inet_diag.c
-index 132b10e23758b..87ecefea72398 100644
---- a/net/ipv4/inet_diag.c
-+++ b/net/ipv4/inet_diag.c
-@@ -1281,6 +1281,7 @@ static int inet_diag_dump_compat(struct sk_buff *skb,
- 	req.sdiag_family = AF_UNSPEC; /* compatibility */
- 	req.sdiag_protocol = inet_diag_type2proto(cb->nlh->nlmsg_type);
- 	req.idiag_ext = rc->idiag_ext;
-+	req.pad = 0;
- 	req.idiag_states = rc->idiag_states;
- 	req.id = rc->id;
- 
-@@ -1296,6 +1297,7 @@ static int inet_diag_get_exact_compat(struct sk_buff *in_skb,
- 	req.sdiag_family = rc->idiag_family;
- 	req.sdiag_protocol = inet_diag_type2proto(nlh->nlmsg_type);
- 	req.idiag_ext = rc->idiag_ext;
-+	req.pad = 0;
- 	req.idiag_states = rc->idiag_states;
- 	req.id = rc->id;
- 
+diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
+index 7db35cbde8e92..5c4442200118a 100644
+--- a/drivers/gpio/gpiolib-of.c
++++ b/drivers/gpio/gpiolib-of.c
+@@ -212,6 +212,14 @@ static void of_gpio_try_fixup_polarity(const struct device_node *np,
+ 		 * for the property.
+ 		 */
+ 		{ "lantiq,pci-xway",	"gpio-reset",	false },
++#endif
++#if IS_ENABLED(CONFIG_TOUCHSCREEN_TSC2005)
++		/*
++		 * DTS for Nokia N900 incorrectly specified "active high"
++		 * polarity for the reset line, while the chip actually
++		 * treats it as "active low".
++		 */
++		{ "ti,tsc2005",		"reset-gpios",	false },
+ #endif
+ 	};
+ 	unsigned int i;
 -- 
 2.43.0
 
