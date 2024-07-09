@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-58690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8657092B833
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:31:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F7992B6EE
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:18:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18064B22597
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 026751C21C87
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5D5155744;
-	Tue,  9 Jul 2024 11:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA4C158202;
+	Tue,  9 Jul 2024 11:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HwBil8kG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FwDG+Vbv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDCD55E4C;
-	Tue,  9 Jul 2024 11:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC110158211;
+	Tue,  9 Jul 2024 11:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524700; cv=none; b=DRqBxiWuQLUjCRnkcjOQW7MqJIwZJEkVGTq4mPqGGRPbWPMQyS0CQAL+TbTBFJkcHhVtVVDHBuBg+qELoc2Pm3lT65jkPC0aY7vNvvxUxm41wfGEAA7gGN7LuDYy2CSvG0Z7Mdfn70hU3MGK7vypRXp8rRUJiL3FlvooBzvvF5c=
+	t=1720523892; cv=none; b=j5N1Y3TDxztZmeCSg4vvXE0YL1x1thkCfDWY9JiDI6r2Xco/kbc+GCe07D3rmZm1uz3yZXW0iFmH1vFaNrKAGMSCJGmyEaPi/L4zy9g15T1E8ts61rVTUbU9r2xXzrw+/n6HVGLC8xW7VbCdgCPvjLpBmdT1bFvfZ4Npeu4L8Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524700; c=relaxed/simple;
-	bh=Ed61RWbFFOlZHlsdgZ6d96GcmAWerziNXGkPrYMTgyE=;
+	s=arc-20240116; t=1720523892; c=relaxed/simple;
+	bh=5sdCNjQZ/yz57SOjS5US0arQPnlsxS8mqRO1bRE9GC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pk0JaFs9K4lUIk/I8DTVWgmnn01B65Pu47fU4as/EWPMx2f4/9aic6byNhU+tCIltAXk6vIGEnr+7yGd2L2dhiIVniNLQyPJA94YHLbg0+1VNZMzwvqXuqxAJUoyhcxrRoZEbZp5DAmhHk7xjQLH4NyDJb1bga4n549dw1/JXdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HwBil8kG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C75AAC3277B;
-	Tue,  9 Jul 2024 11:31:39 +0000 (UTC)
+	 MIME-Version; b=WuDkxh9YrMD1rQJKCqwLTdpQOLAIu/IFehSCbJZ9HHlG24I7ymJjqUkPQBtTSqjkyDHnQA1Zmb998nC+DH9/IjG4C7HphwruM6TwCfICRE2/WNhLyz3jnF0ocZNFYdqhqPV3BMJlkKMOhL8ohPesE9g+yvP7q4nZ5zHwN5nxzHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwDG+Vbv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60906C3277B;
+	Tue,  9 Jul 2024 11:18:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524700;
-	bh=Ed61RWbFFOlZHlsdgZ6d96GcmAWerziNXGkPrYMTgyE=;
+	s=korg; t=1720523891;
+	bh=5sdCNjQZ/yz57SOjS5US0arQPnlsxS8mqRO1bRE9GC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HwBil8kGQE8EYb7t0ixaw5ku3xcYdX+qmzcRvR9G83YXktE34hXNb99/k2wc2gdOJ
-	 NR7R0GGMHaAb9vaB7svoQoJU4jsT3vL8PHefr7L3blpGHbEqEDG8Zxdnrqeq1XHRWQ
-	 /fTboejFqkhOWlP43XU20oPZoBXdSQTvjeu1zLP8=
+	b=FwDG+VbvsBirWCio1rlXJ9c9xO3veym99sl/Y5X83QdpazUm6ZC55scUtvYaDGnwJ
+	 tfqxxePqiZNCo41o4wPwGzRnQLHXjN9LaO9JtPKzYloWybpWODTWt9Q6PwtE7r7z8+
+	 s42z+riBNleXpFK7QM+z7/vXOXRTawi0WlzimbJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Song Shuai <songshuaishuai@tinylab.org>,
-	Ryo Takakura <takakura@valinux.co.jp>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/102] riscv: kexec: Avoid deadlock in kexec crash path
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: [PATCH 6.6 117/139] media: dw2102: fix a potential buffer overflow
 Date: Tue,  9 Jul 2024 13:10:17 +0200
-Message-ID: <20240709110653.483166460@linuxfoundation.org>
+Message-ID: <20240709110702.695156851@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Shuai <songshuaishuai@tinylab.org>
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-[ Upstream commit c562ba719df570c986caf0941fea2449150bcbc4 ]
+commit 1c73d0b29d04bf4082e7beb6a508895e118ee30d upstream.
 
-If the kexec crash code is called in the interrupt context, the
-machine_kexec_mask_interrupts() function will trigger a deadlock while
-trying to acquire the irqdesc spinlock and then deactivate irqchip in
-irq_set_irqchip_state() function.
+As pointed by smatch:
+	 drivers/media/usb/dvb-usb/dw2102.c:802 su3000_i2c_transfer() error: __builtin_memcpy() '&state->data[4]' too small (64 vs 67)
 
-Unlike arm64, riscv only requires irq_eoi handler to complete EOI and
-keeping irq_set_irqchip_state() will only leave this possible deadlock
-without any use. So we simply remove it.
+That seemss to be due to a wrong copy-and-paste.
 
-Link: https://lore.kernel.org/linux-riscv/20231208111015.173237-1-songshuaishuai@tinylab.org/
-Fixes: b17d19a5314a ("riscv: kexec: Fixup irq controller broken in kexec crash path")
-Signed-off-by: Song Shuai <songshuaishuai@tinylab.org>
-Reviewed-by: Ryo Takakura <takakura@valinux.co.jp>
-Link: https://lore.kernel.org/r/20240626023316.539971-1-songshuaishuai@tinylab.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0e148a522b84 ("media: dw2102: Don't translate i2c read into write")
+
+Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/machine_kexec.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ drivers/media/usb/dvb-usb/dw2102.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/machine_kexec.c b/arch/riscv/kernel/machine_kexec.c
-index 2d139b724bc84..ccb0c5d5c63c4 100644
---- a/arch/riscv/kernel/machine_kexec.c
-+++ b/arch/riscv/kernel/machine_kexec.c
-@@ -147,20 +147,12 @@ static void machine_kexec_mask_interrupts(void)
+--- a/drivers/media/usb/dvb-usb/dw2102.c
++++ b/drivers/media/usb/dvb-usb/dw2102.c
+@@ -786,7 +786,7 @@ static int su3000_i2c_transfer(struct i2
  
- 	for_each_irq_desc(i, desc) {
- 		struct irq_chip *chip;
--		int ret;
- 
- 		chip = irq_desc_get_chip(desc);
- 		if (!chip)
- 			continue;
- 
--		/*
--		 * First try to remove the active state. If this
--		 * fails, try to EOI the interrupt.
--		 */
--		ret = irq_set_irqchip_state(i, IRQCHIP_STATE_ACTIVE, false);
--
--		if (ret && irqd_irq_inprogress(&desc->irq_data) &&
--		    chip->irq_eoi)
-+		if (chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
- 			chip->irq_eoi(&desc->irq_data);
- 
- 		if (chip->irq_mask)
--- 
-2.43.0
-
+ 			if (msg[j].flags & I2C_M_RD) {
+ 				/* single read */
+-				if (1 + msg[j].len > sizeof(state->data)) {
++				if (4 + msg[j].len > sizeof(state->data)) {
+ 					warn("i2c rd: len=%d is too big!\n", msg[j].len);
+ 					num = -EOPNOTSUPP;
+ 					break;
 
 
 
