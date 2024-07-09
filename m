@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-58348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C3192B683
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:14:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3228292B77E
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D45CB1C21E57
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:14:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 624971C22C1C
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E0E1581E4;
-	Tue,  9 Jul 2024 11:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4361581E4;
+	Tue,  9 Jul 2024 11:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LAFi0vI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PcAz7OBr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F15155389;
-	Tue,  9 Jul 2024 11:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF39413A25F;
+	Tue,  9 Jul 2024 11:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523664; cv=none; b=PE3wb3kVfscL5iAld03ojunjZwvS3fJj4WShcKjF1fSAJAUtUITUgY9ff3oii/pyYqV9Pv3Xq2AcCoJSCwS9R4awfUY6ZpctjHLe03K2+TvoJhYtnhMC/qpoc/37VkgatQ7grFl38U0aR5cthDpZ5be/wXEu/RNBLqspO8QjC/4=
+	t=1720524228; cv=none; b=JGtva7Wbe3cTC0jrAbQBJDM2+EfkyzHNlJU0WSvTEcirabfumpuYGii2fMrOoNYEBNDuQldSvmfk83gvrBhTzDnRGEfIjLMHRAPNwwMIinElyFQm1pqi1KHwx3YKoaBrcYMIzHgh/lvJwaJB33vEdpV5lyXwAXDu9qw7ObCGWKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523664; c=relaxed/simple;
-	bh=pLrvoDP0D016b+ITP0kuDMmdE6f0ywLPhqBjZb/WO+k=;
+	s=arc-20240116; t=1720524228; c=relaxed/simple;
+	bh=Hr1+WMGVNMT9wJRRTsHHU9NRUJXuoti6pZ74ty2jG7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5TQyVm/mzU01mMueSmLWeXpAlYsF731Bsg5V76oUG5s1jbJ/Wj1h0AD0PxmrwUbF7gWty0VCoBkHz0MHcVFhyrW3L6YnrN5cJydoxC+dXr+PwHWIcFEG19zsgGjZSi5zGJdJsnopIVl+xVjRGw0XBp+rsR9+2DLFHHzeoTqQhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LAFi0vI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FBA7C3277B;
-	Tue,  9 Jul 2024 11:14:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cReMrTjcODvsJi1E/ycMhG1KGeJ5JmrNYuq2i8HFd2gMsDKFnj2jqxml64Iwhm+Pf6cbpfdrbJ4FCsmv/aX79BnNj5nqPvUvbb5GcIrcQ19kFmZ92mYwqk8HTaxLCMko4kvSmojArpdHI/Yj/62mbCn+VkBFRBya4GcJEMLu7Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PcAz7OBr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3FDC3277B;
+	Tue,  9 Jul 2024 11:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523663;
-	bh=pLrvoDP0D016b+ITP0kuDMmdE6f0ywLPhqBjZb/WO+k=;
+	s=korg; t=1720524228;
+	bh=Hr1+WMGVNMT9wJRRTsHHU9NRUJXuoti6pZ74ty2jG7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0LAFi0vIzQkH9ZVRvZQZZNJoAwRPG00w1kP4TMQxw+e2U+fdW7LTqoEdtxnsNm6Kx
-	 c3EgtioGx6Id2eVzZAnrlG4K4yp7QldG/l8QYlwhOjlqV6CNwW4U0ImrBF/KWCxRMh
-	 +rV27wViEabbH0fIzThPEMVmP0jJBFd55jcCeDv4=
+	b=PcAz7OBrOqlr536lqbd2yk4z+iN7HNvypzL+pca8vFgIhT0Rqs+E3sW4brf8HzenT
+	 cKRNphYYQqpi5t4tcD641HPX229g47OXafZ3em1whoxiGB63pfqKwA5Jh+3OyaiAQD
+	 GhqZXO1nMhchGrHg07MEpl0NY+BqPVoFzLu4+7E8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iulia Tanasescu <iulia.tanasescu@nxp.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Jozef Hopko <jozef.hopko@altana.com>,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	Ajay Singh <ajay.kathat@microchip.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/139] Bluetooth: ISO: Check socket flag instead of hcon
+Subject: [PATCH 6.9 114/197] wifi: wilc1000: fix ies_len type in connect path
 Date: Tue,  9 Jul 2024 13:09:28 +0200
-Message-ID: <20240709110700.806079150@linuxfoundation.org>
+Message-ID: <20240709110713.365341540@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+From: Jozef Hopko <jozef.hopko@altana.com>
 
-[ Upstream commit 596b6f081336e77764ca35cfeab66d0fcdbe544e ]
+[ Upstream commit 39ab8fff623053a50951b659e5f6b72343d7d78c ]
 
-This fixes the following Smatch static checker warning:
+Commit 205c50306acf ("wifi: wilc1000: fix RCU usage in connect path")
+made sure that the IEs data was manipulated under the relevant RCU section.
+Unfortunately, while doing so, the commit brought a faulty implicit cast
+from int to u8 on the ies_len variable, making the parsing fail to be
+performed correctly if the IEs block is larger than 255 bytes. This failure
+can be observed with Access Points appending a lot of IEs TLVs in their
+beacon frames (reproduced with a Pixel phone acting as an Access Point,
+which brough 273 bytes of IE data in my testing environment).
 
-net/bluetooth/iso.c:1364 iso_sock_recvmsg()
-error: we previously assumed 'pi->conn->hcon' could be null (line 1359)
+Fix IEs parsing by removing this undesired implicit cast.
 
-net/bluetooth/iso.c
-1347 static int iso_sock_recvmsg(struct socket *sock, struct msghdr *msg,
-1348                             size_t len, int flags)
-1349 {
-1350         struct sock *sk = sock->sk;
-1351         struct iso_pinfo *pi = iso_pi(sk);
-1352
-1353         BT_DBG("sk %p", sk);
-1354
-1355         if (test_and_clear_bit(BT_SK_DEFER_SETUP,
-                                      &bt_sk(sk)->flags)) {
-1356                 lock_sock(sk);
-1357                 switch (sk->sk_state) {
-1358                 case BT_CONNECT2:
-1359                         if (pi->conn->hcon &&
-                                     ^^^^^^^^^^^^^^ If ->hcon is NULL
-
-1360                             test_bit(HCI_CONN_PA_SYNC,
-                                         &pi->conn->hcon->flags)) {
-1361                                 iso_conn_big_sync(sk);
-1362                                 sk->sk_state = BT_LISTEN;
-1363                         } else {
---> 1364                         iso_conn_defer_accept(pi->conn->hcon);
-                                                       ^^^^^^^^^^^^^^
-                                                       then we're toast
-
-1365                                 sk->sk_state = BT_CONFIG;
-1366                         }
-1367                         release_sock(sk);
-1368                         return 0;
-1369                 case BT_CONNECTED:
-1370                         if (test_bit(BT_SK_PA_SYNC,
-
-Fixes: fbdc4bc47268 ("Bluetooth: ISO: Use defer setup to separate PA sync and BIG sync")
-Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 205c50306acf ("wifi: wilc1000: fix RCU usage in connect path")
+Signed-off-by: Jozef Hopko <jozef.hopko@altana.com>
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Acked-by: Ajay Singh <ajay.kathat@microchip.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240701-wilc_fix_ies_data-v1-1-7486cbacf98a@bootlin.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/iso.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/microchip/wilc1000/hif.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 05b9edb480f09..3ccba592f7349 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -1233,8 +1233,7 @@ static int iso_sock_recvmsg(struct socket *sock, struct msghdr *msg,
- 		lock_sock(sk);
- 		switch (sk->sk_state) {
- 		case BT_CONNECT2:
--			if (pi->conn->hcon &&
--			    test_bit(HCI_CONN_PA_SYNC, &pi->conn->hcon->flags)) {
-+			if (test_bit(BT_SK_PA_SYNC, &pi->flags)) {
- 				iso_conn_big_sync(sk);
- 				sk->sk_state = BT_LISTEN;
- 			} else {
+diff --git a/drivers/net/wireless/microchip/wilc1000/hif.c b/drivers/net/wireless/microchip/wilc1000/hif.c
+index f1085ccb7eedc..7719e4f3e2a23 100644
+--- a/drivers/net/wireless/microchip/wilc1000/hif.c
++++ b/drivers/net/wireless/microchip/wilc1000/hif.c
+@@ -382,7 +382,8 @@ wilc_parse_join_bss_param(struct cfg80211_bss *bss,
+ 	struct ieee80211_p2p_noa_attr noa_attr;
+ 	const struct cfg80211_bss_ies *ies;
+ 	struct wilc_join_bss_param *param;
+-	u8 rates_len = 0, ies_len;
++	u8 rates_len = 0;
++	int ies_len;
+ 	int ret;
+ 
+ 	param = kzalloc(sizeof(*param), GFP_KERNEL);
 -- 
 2.43.0
 
