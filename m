@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-58477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8BC992B741
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:22:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA5F792B635
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:11:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 893C31F22FFD
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:22:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94C34283B94
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C229A15B10D;
-	Tue,  9 Jul 2024 11:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE92D157E78;
+	Tue,  9 Jul 2024 11:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+RnCWkq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YO+XDBqh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F87A15ADB2;
-	Tue,  9 Jul 2024 11:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B09156F45;
+	Tue,  9 Jul 2024 11:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524055; cv=none; b=DbYdMPgDWSsYhJ5nMDrvm0uND+jKALwtmlR0iDj6WHtmLddxd/FqEXCBMeX4fi2774cwtAjps4SxWpX1X8+/xytIdCjp4ruevsh5BGIPKj4C0uK1rwQkLwtD1S38IFqJHZm65aG6isdtJCNOs9R1CXzHG2Uuj+vO6Rum3iwldAk=
+	t=1720523485; cv=none; b=QVnd1mKn37ZYj+gfoyL1HObplti6f0m08p1snyv5j21s+OQSyJFZuaTj6TbGDFP5m9SiVyevhI0p6xhkNtL6VsqXbmPF/PB2Fr2VJq0ycfhpoca0+jeX2jn0O0eO8I8dkqRkydnwbGummMW6OLro2gyWlmcTwVDbot0quPX36Sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524055; c=relaxed/simple;
-	bh=1HqkgwLxtkmrfDPj75OZ9WMzOJXWCoHGW5r/mc0fC8o=;
+	s=arc-20240116; t=1720523485; c=relaxed/simple;
+	bh=7Ys5frjz+GWz1YoPu4AS+8wAUUxAWIPY39k7ZasB3II=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dGtQa1fquDYs0aozaW7jh1ERL/Ri0iuXF7ENYnPEVGrktU834boaOk6Kb8YlKRygUNAC7uAjnAgFiB0DIMMSy5pxRO3gfgXjFSwA8OzXNNE6qs086ojosD8ks4GWlkKl82SNaA1fQ4rDMNbe0vcAVdHk/19/zIE6x3ZS0TCWh7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+RnCWkq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0514CC4AF0A;
-	Tue,  9 Jul 2024 11:20:54 +0000 (UTC)
+	 MIME-Version; b=i3hqQeMCTilomuvQ2hvf+1Pg4zxf4gZ+Gv3j+6PnUfokkNSyOYpek3XyqpaFbP48P93MHqjArtgVxzVOFEjMPp67sWh0Amspy5SUrV5U3gVpKk7fXVm+8nKZiqoCgvj9ArcARBNICZs/0z3tD152Ya4c02JeWRMNtGI1kFVKgf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YO+XDBqh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20B1C3277B;
+	Tue,  9 Jul 2024 11:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524055;
-	bh=1HqkgwLxtkmrfDPj75OZ9WMzOJXWCoHGW5r/mc0fC8o=;
+	s=korg; t=1720523485;
+	bh=7Ys5frjz+GWz1YoPu4AS+8wAUUxAWIPY39k7ZasB3II=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u+RnCWkqoSvH6hNYWGQUuOjpJ46s4B0wz/0FrKhBtgrCfgkQn0rxe7PNMI8tJ5mox
-	 uoS7W8/51wl0vUokg2M9mpi4sf/npXGGCkzwegoE3udmkcaqeO8wH7tXYtOr2ub8oP
-	 o5/pPKXNYlzKv7AqUFc+43Hf/v9WSJy914L2j+ng=
+	b=YO+XDBqhHkuVH9tN8oOHRiKnpmpZrd+j0plxBe75PXo+ZxO3Uh1LN3jnUCZi9kaJj
+	 PGNzwKC1zxWB/ufMDQ5hHCqC2hPVbvjO+nKRv1ufIWW2fdIE9nVOUbQzXHdn4QorPJ
+	 c5AYaF/r47J4MyblN7YNxHan/WhzDQ690nUzW5mk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenkai Lin <linwenkai6@hisilicon.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Guanrui Huang <guanrui.huang@linux.alibaba.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 056/197] crypto: hisilicon/sec2 - fix for register offset
+Subject: [PATCH 6.6 010/139] irqchip/gic-v3-its: Remove BUG_ON in its_vpe_irq_domain_alloc
 Date: Tue,  9 Jul 2024 13:08:30 +0200
-Message-ID: <20240709110711.131268724@linuxfoundation.org>
+Message-ID: <20240709110658.550649595@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenkai Lin <linwenkai6@hisilicon.com>
+From: Guanrui Huang <guanrui.huang@linux.alibaba.com>
 
-[ Upstream commit 6117af86365916e4202b5a709c155f7e6e5df810 ]
+[ Upstream commit 382d2ffe86efb1e2fa803d2cf17e5bfc34e574f3 ]
 
-The offset of SEC_CORE_ENABLE_BITMAP should be 0 instead of 32,
-it cause a kasan shift-out-bounds warning, fix it.
+This BUG_ON() is useless, because the same effect will be obtained
+by letting the code run its course and vm being dereferenced,
+triggering an exception.
 
-Signed-off-by: Wenkai Lin <linwenkai6@hisilicon.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+So just remove this check.
+
+Signed-off-by: Guanrui Huang <guanrui.huang@linux.alibaba.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240418061053.96803-3-guanrui.huang@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/sec2/sec_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-gic-v3-its.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/crypto/hisilicon/sec2/sec_main.c b/drivers/crypto/hisilicon/sec2/sec_main.c
-index c290d8937b19c..fabea0d650297 100644
---- a/drivers/crypto/hisilicon/sec2/sec_main.c
-+++ b/drivers/crypto/hisilicon/sec2/sec_main.c
-@@ -152,7 +152,7 @@ static const struct hisi_qm_cap_info sec_basic_info[] = {
- 	{SEC_CORE_TYPE_NUM_CAP, 0x313c, 16, GENMASK(3, 0), 0x1, 0x1, 0x1},
- 	{SEC_CORE_NUM_CAP, 0x313c, 8, GENMASK(7, 0), 0x4, 0x4, 0x4},
- 	{SEC_CORES_PER_CLUSTER_NUM_CAP, 0x313c, 0, GENMASK(7, 0), 0x4, 0x4, 0x4},
--	{SEC_CORE_ENABLE_BITMAP, 0x3140, 32, GENMASK(31, 0), 0x17F, 0x17F, 0xF},
-+	{SEC_CORE_ENABLE_BITMAP, 0x3140, 0, GENMASK(31, 0), 0x17F, 0x17F, 0xF},
- 	{SEC_DRV_ALG_BITMAP_LOW, 0x3144, 0, GENMASK(31, 0), 0x18050CB, 0x18050CB, 0x18670CF},
- 	{SEC_DRV_ALG_BITMAP_HIGH, 0x3148, 0, GENMASK(31, 0), 0x395C, 0x395C, 0x395C},
- 	{SEC_DEV_ALG_BITMAP_LOW, 0x314c, 0, GENMASK(31, 0), 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index c7d6e6987166f..350abbb36e04b 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -4501,8 +4501,6 @@ static int its_vpe_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
+ 	struct page *vprop_page;
+ 	int base, nr_ids, i, err = 0;
+ 
+-	BUG_ON(!vm);
+-
+ 	bitmap = its_lpi_alloc(roundup_pow_of_two(nr_irqs), &base, &nr_ids);
+ 	if (!bitmap)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
