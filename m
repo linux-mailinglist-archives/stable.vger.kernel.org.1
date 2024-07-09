@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-58588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3537D92B7C0
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD0392B6AF
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:16:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F638B24C59
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0EA72850AD
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2408157485;
-	Tue,  9 Jul 2024 11:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310A3156F2B;
+	Tue,  9 Jul 2024 11:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhjyKFxf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0oNEpku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13AB27713;
-	Tue,  9 Jul 2024 11:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E413A155A26;
+	Tue,  9 Jul 2024 11:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524394; cv=none; b=gr+u+RvpfbHKWpWvaAxjSVEBoLrlX8tOZXels9ivUAVrGDpKJ0OEVnQmQ0aRQjMZMg9Zbv9RRxOpnfK4kbSVXa1lbAqEmtXs+fjarx95cRGV/krArAUkxkVMdpqcPH5Z/lB0/fDkS+8NYPvh1alcvMjAQrWmVvvDARmcEwyqzFY=
+	t=1720523734; cv=none; b=DodhlQHnV6+r1UP4FoW0Zx/VmQiklX75va1//VWlIN04OxGep3uTG8/4uDMXu105g5cdi11sMVqYJrwGdAWH8GLzfRd9dh+zQnBt9Xka6a9Uxtf0F3trbWTTyq88Z+rBAPxr7LiFEi+ldiOPbDZYcD6ZuJ4L6+9kd/nTX/mxAko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524394; c=relaxed/simple;
-	bh=PnTfbLeN8KnA2FswOk7JaJKQqHpo8ybDFdpg2pzIk+A=;
+	s=arc-20240116; t=1720523734; c=relaxed/simple;
+	bh=5GTwNyO22b1l5cUx5eBXcixgjT/YzgHmQWuaLTsU0LU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mwnG6IUkqpbpA5+pSb3AYK1Yc9Wi3PS9Eh69WeceCTcfvRmATKv8BjUx/hC6LBOpbKBXM/0YdOuqV1r5+zUK3x9kJyZCHEv6RSMho5In4yri86384woa/feE165rjIkRXRGr6y8vHmz6fdSlk/LvYBtaba7aTydFCwMiorIvauA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WhjyKFxf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3624DC3277B;
-	Tue,  9 Jul 2024 11:26:34 +0000 (UTC)
+	 MIME-Version; b=frry2JtYnd+cUf083QEPDE8BXd2UDv/9YFVBv6VofNx5cnoFff8JIxTmJ9KIW/fRmgK5BPheoKD1tyuIm9+V80YX6TiLNsmH4Qa8E63EM0cZv8Z+rtxargf/K92+mYZ+r6dR2auF5+Lrf2jLDz1pVb6HkXZonE8mRmVS2jmM+ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0oNEpku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA2AC3277B;
+	Tue,  9 Jul 2024 11:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524394;
-	bh=PnTfbLeN8KnA2FswOk7JaJKQqHpo8ybDFdpg2pzIk+A=;
+	s=korg; t=1720523733;
+	bh=5GTwNyO22b1l5cUx5eBXcixgjT/YzgHmQWuaLTsU0LU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WhjyKFxfMAU0yJ0IEhgOeq3fzuGZhugJxqP4mkmgVOrNfNOCuUqIqISZoVcMczjXz
-	 WPBltJKE61B5LrQmu6lge5gC20nLNxKAsofFp0BaovvFJymkLbhRLdrJWyn2M18oSH
-	 j7QyjF2V/GASGVyC7Hg+yF+BIJs72lsHeIrTodP4=
+	b=c0oNEpkuj/eSGp2P1h1B52J9NBFzXouEkC8FLU00t/85FPd3AZlr1JHiqHsPHEiGb
+	 E2vKw2QpIyHY1HApX5zE4I9RKrOJoT2O2qPzVruE02vF3RqrpdcHnietPMN5HTp9KC
+	 fnAuisKKjYXRa9OzdIamiaCVWIVEWJVYrEtR5I4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+d79afb004be235636ee8@syzkaller.appspotmail.com,
 	Jan Kara <jack@suse.cz>,
-	Zach OKeefe <zokeefe@google.com>,
+	Hillf Danton <hdanton@sina.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 137/197] mm: avoid overflows in dirty throttling logic
+Subject: [PATCH 6.6 091/139] nilfs2: add missing check for inode numbers on directory entries
 Date: Tue,  9 Jul 2024 13:09:51 +0200
-Message-ID: <20240709110714.251702526@linuxfoundation.org>
+Message-ID: <20240709110701.698944450@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +65,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 385d838df280eba6c8680f9777bfa0d0bfe7e8b2 upstream.
+commit bb76c6c274683c8570ad788f79d4b875bde0e458 upstream.
 
-The dirty throttling logic is interspersed with assumptions that dirty
-limits in PAGE_SIZE units fit into 32-bit (so that various multiplications
-fit into 64-bits).  If limits end up being larger, we will hit overflows,
-possible divisions by 0 etc.  Fix these problems by never allowing so
-large dirty limits as they have dubious practical value anyway.  For
-dirty_bytes / dirty_background_bytes interfaces we can just refuse to set
-so large limits.  For dirty_ratio / dirty_background_ratio it isn't so
-simple as the dirty limit is computed from the amount of available memory
-which can change due to memory hotplug etc.  So when converting dirty
-limits from ratios to numbers of pages, we just don't allow the result to
-exceed UINT_MAX.
+Syzbot reported that mounting and unmounting a specific pattern of
+corrupted nilfs2 filesystem images causes a use-after-free of metadata
+file inodes, which triggers a kernel bug in lru_add_fn().
 
-This is root-only triggerable problem which occurs when the operator
-sets dirty limits to >16 TB.
+As Jan Kara pointed out, this is because the link count of a metadata file
+gets corrupted to 0, and nilfs_evict_inode(), which is called from iput(),
+tries to delete that inode (ifile inode in this case).
 
-Link: https://lkml.kernel.org/r/20240621144246.11148-2-jack@suse.cz
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reported-by: Zach O'Keefe <zokeefe@google.com>
-Reviewed-By: Zach O'Keefe <zokeefe@google.com>
+The inconsistency occurs because directories containing the inode numbers
+of these metadata files that should not be visible in the namespace are
+read without checking.
+
+Fix this issue by treating the inode numbers of these internal files as
+errors in the sanity check helper when reading directory folios/pages.
+
+Also thanks to Hillf Danton and Matthew Wilcox for their initial mm-layer
+analysis.
+
+Link: https://lkml.kernel.org/r/20240623051135.4180-3-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+d79afb004be235636ee8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d79afb004be235636ee8
+Reported-by: Jan Kara <jack@suse.cz>
+Closes: https://lkml.kernel.org/r/20240617075758.wewhukbrjod5fp5o@quack3
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page-writeback.c |   30 ++++++++++++++++++++++++++----
- 1 file changed, 26 insertions(+), 4 deletions(-)
+ fs/nilfs2/dir.c   |    6 ++++++
+ fs/nilfs2/nilfs.h |    5 +++++
+ 2 files changed, 11 insertions(+)
 
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -415,13 +415,20 @@ static void domain_dirty_limits(struct d
- 	else
- 		bg_thresh = (bg_ratio * available_memory) / PAGE_SIZE;
- 
--	if (bg_thresh >= thresh)
--		bg_thresh = thresh / 2;
- 	tsk = current;
- 	if (rt_task(tsk)) {
- 		bg_thresh += bg_thresh / 4 + global_wb_domain.dirty_limit / 32;
- 		thresh += thresh / 4 + global_wb_domain.dirty_limit / 32;
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -143,6 +143,9 @@ static bool nilfs_check_page(struct page
+ 			goto Enamelen;
+ 		if (((offs + rec_len - 1) ^ offs) & ~(chunk_size-1))
+ 			goto Espan;
++		if (unlikely(p->inode &&
++			     NILFS_PRIVATE_INODE(le64_to_cpu(p->inode))))
++			goto Einumber;
  	}
-+	/*
-+	 * Dirty throttling logic assumes the limits in page units fit into
-+	 * 32-bits. This gives 16TB dirty limits max which is hopefully enough.
-+	 */
-+	if (thresh > UINT_MAX)
-+		thresh = UINT_MAX;
-+	/* This makes sure bg_thresh is within 32-bits as well */
-+	if (bg_thresh >= thresh)
-+		bg_thresh = thresh / 2;
- 	dtc->thresh = thresh;
- 	dtc->bg_thresh = bg_thresh;
+ 	if (offs != limit)
+ 		goto Eend;
+@@ -168,6 +171,9 @@ Enamelen:
+ 	goto bad_entry;
+ Espan:
+ 	error = "directory entry across blocks";
++	goto bad_entry;
++Einumber:
++	error = "disallowed inode number";
+ bad_entry:
+ 	nilfs_error(sb,
+ 		    "bad entry in directory #%lu: %s - offset=%lu, inode=%lu, rec_len=%d, name_len=%d",
+--- a/fs/nilfs2/nilfs.h
++++ b/fs/nilfs2/nilfs.h
+@@ -121,6 +121,11 @@ enum {
+ 	((ino) >= NILFS_FIRST_INO(sb) ||				\
+ 	 ((ino) < NILFS_USER_INO && (NILFS_SYS_INO_BITS & BIT(ino))))
  
-@@ -471,7 +478,11 @@ static unsigned long node_dirty_limit(st
- 	if (rt_task(tsk))
- 		dirty += dirty / 4;
- 
--	return dirty;
-+	/*
-+	 * Dirty throttling logic assumes the limits in page units fit into
-+	 * 32-bits. This gives 16TB dirty limits max which is hopefully enough.
-+	 */
-+	return min_t(unsigned long, dirty, UINT_MAX);
- }
- 
++#define NILFS_PRIVATE_INODE(ino) ({					\
++	ino_t __ino = (ino);						\
++	((__ino) < NILFS_USER_INO && (__ino) != NILFS_ROOT_INO &&	\
++	 (__ino) != NILFS_SKETCH_INO); })
++
  /**
-@@ -508,10 +519,17 @@ static int dirty_background_bytes_handle
- 		void *buffer, size_t *lenp, loff_t *ppos)
- {
- 	int ret;
-+	unsigned long old_bytes = dirty_background_bytes;
- 
- 	ret = proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
--	if (ret == 0 && write)
-+	if (ret == 0 && write) {
-+		if (DIV_ROUND_UP(dirty_background_bytes, PAGE_SIZE) >
-+								UINT_MAX) {
-+			dirty_background_bytes = old_bytes;
-+			return -ERANGE;
-+		}
- 		dirty_background_ratio = 0;
-+	}
- 	return ret;
- }
- 
-@@ -537,6 +555,10 @@ static int dirty_bytes_handler(struct ct
- 
- 	ret = proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
- 	if (ret == 0 && write && vm_dirty_bytes != old_bytes) {
-+		if (DIV_ROUND_UP(vm_dirty_bytes, PAGE_SIZE) > UINT_MAX) {
-+			vm_dirty_bytes = old_bytes;
-+			return -ERANGE;
-+		}
- 		writeback_set_ratelimit();
- 		vm_dirty_ratio = 0;
- 	}
+  * struct nilfs_transaction_info: context information for synchronization
+  * @ti_magic: Magic number
 
 
 
