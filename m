@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F193E92B6D4
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCCBD92B7E3
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 820CFB233EA
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 720241F22B88
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5DD915749B;
-	Tue,  9 Jul 2024 11:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05AE7156C73;
+	Tue,  9 Jul 2024 11:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMPnNqxo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0ASm3pa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621F814EC4D;
-	Tue,  9 Jul 2024 11:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B751027713;
+	Tue,  9 Jul 2024 11:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523828; cv=none; b=fB3arM3zc/N4nPPXnAxIv8qu7qeIgocUDHPW/wOYhvre5AFLr9mQrjWtVG2nz58ZOLIUbaWGs57TxsGi2ZTjzt2SV55LQL8i9S28Z1PKmdPF4xVE5uZT0Oc4dlGLkRQwoxymeGZ1zusEqSUJHxqouE8UpXgGmi4p3TWOtUwpZPs=
+	t=1720524500; cv=none; b=SC3ZJn4rd4ELnSS1JGAAzJAD+sSYjln+aROBYwPFHkBLqEEIEnN7ohM4MEPmXnPGElSO5KbIAKpogJkAHZL7ce9IN4T89nGRG3N45ArAOPb06d4MtbmHcHWh7T95p52QsVN9U5TSEyfahmI8xQ/i1+zgEclBYxs9To4PVBm4z4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523828; c=relaxed/simple;
-	bh=zwP+3cZ5wHQNOBvFhtIPALiZ7J6sL3vPzEYlf78QSGI=;
+	s=arc-20240116; t=1720524500; c=relaxed/simple;
+	bh=i5ijGDugEBIE7eeswogQeplX3McKbm1WfK9FF+PcGdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=puFVkUHvjhKL/OPisBFwq7dt12kK4cWNbUPdBbmEHMIySDB4IzvjGQL0J3ghQbySZLHUAw0+SmHZa20tW/H4CFjBfvIOW4e+Pw+GWPbJq6ccoxx1Ruoo3bvroe5LSAYxd500dedb8Q/KVacFO+vjcTMDMRiK+J1LUBHfQHvc+7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMPnNqxo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC875C3277B;
-	Tue,  9 Jul 2024 11:17:07 +0000 (UTC)
+	 MIME-Version; b=AYNg8YXiOm/blyAy6o1BXAYFTOPFTtgY5zWqq8V/hPZCEXIaOTMd6+7P+6jmbcub/+BgvQHBzxhqYLa2suGA0DO2Yio18GE78UgZoI0BwmOoLDrZQWR6h5kq4Mk8MXHUQKPsVSN9kkUPdx2wOIGBz2Z5dlEbFKLi2WOTdDjkzvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0ASm3pa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 334B4C3277B;
+	Tue,  9 Jul 2024 11:28:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523828;
-	bh=zwP+3cZ5wHQNOBvFhtIPALiZ7J6sL3vPzEYlf78QSGI=;
+	s=korg; t=1720524500;
+	bh=i5ijGDugEBIE7eeswogQeplX3McKbm1WfK9FF+PcGdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DMPnNqxo+n/HFnHDTRAVUbX6ViY4kDjz6vxk3mz5TRiS5QTyBbZ85D/1ZrXyuVCaT
-	 rNPEU5Ds5jlY/VlZh8ib3WbSeRDXZn/guKN+7ixtdcPqWxrul5aHKZA48I1l5G9b2g
-	 ZHGVweRO4/G+TT1NIZcUNoc5O84rNStVjv5bsgoU=
+	b=C0ASm3pa4tU+YtNmfERIwlq3tBZ15PDWg6/PI3P9dEHFikwA8/Xs1dWUHdv2zeDXC
+	 KdloKfazuKApaFZMU3At80yctRxtYcCc9VoSmVx1yHEbee7hLtdIUxZ8eLp8JXrTLL
+	 YtkeQQ+D6KvpYeG3OKQq7QB4HSg64q7igLsrqdRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian-Hong Pan <jhp@endlessos.org>,
-	Takashi Iwai <tiwai@suse.de>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 123/139] ALSA: hda/realtek: Enable headset mic of JP-IK LEAP W502 with ALC897
-Date: Tue,  9 Jul 2024 13:10:23 +0200
-Message-ID: <20240709110702.925724640@linuxfoundation.org>
+Subject: [PATCH 6.9 170/197] clk: qcom: gcc-sm6350: Fix gpll6* & gpll7 parents
+Date: Tue,  9 Jul 2024 13:10:24 +0200
+Message-ID: <20240709110715.527634435@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian-Hong Pan <jhp@endlessos.org>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit 45e37f9ce28d248470bab4376df2687a215d1b22 ]
+[ Upstream commit 3414f41a13eb41db15c558fbc695466203dca4fa ]
 
-JP-IK LEAP W502 laptop's headset mic is not enabled until
-ALC897_FIXUP_HEADSET_MIC_PIN3 quirk is applied.
+Both gpll6 and gpll7 are parented to CXO at 19.2 MHz and not to GPLL0
+which runs at 600 MHz. Also gpll6_out_even should have the parent gpll6
+and not gpll0.
 
-Here is the original pin node values:
+Adjust the parents of these clocks to make Linux report the correct rate
+and not absurd numbers like gpll7 at ~25 GHz or gpll6 at 24 GHz.
 
-0x11 0x40000000
-0x12 0xb7a60130
-0x14 0x90170110
-0x15 0x411111f0
-0x16 0x411111f0
-0x17 0x411111f0
-0x18 0x411111f0
-0x19 0x411111f0
-0x1a 0x411111f0
-0x1b 0x03211020
-0x1c 0x411111f0
-0x1d 0x4026892d
-0x1e 0x411111f0
-0x1f 0x411111f0
+Corrected rates are the following:
 
-Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
-Link: https://lore.kernel.org/r/20240520055008.7083-2-jhp@endlessos.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+  gpll7              807999902 Hz
+  gpll6              768000000 Hz
+     gpll6_out_even  384000000 Hz
+  gpll0              600000000 Hz
+     gpll0_out_odd   200000000 Hz
+     gpll0_out_even  300000000 Hz
+
+And because gpll6 is the parent of gcc_sdcc2_apps_clk_src (at 202 MHz)
+that clock also reports the correct rate now and avoids this warning:
+
+  [    5.984062] mmc0: Card appears overclocked; req 202000000 Hz, actual 6312499237 Hz
+
+Fixes: 131abae905df ("clk: qcom: Add SM6350 GCC driver")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Link: https://lore.kernel.org/r/20240508-sm6350-gpll-fix-v1-1-e4ea34284a6d@fairphone.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/clk/qcom/gcc-sm6350.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index c9f07e6fde963..fed3f59d7bd69 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11773,6 +11773,7 @@ enum {
- 	ALC897_FIXUP_LENOVO_HEADSET_MODE,
- 	ALC897_FIXUP_HEADSET_MIC_PIN2,
- 	ALC897_FIXUP_UNIS_H3C_X500S,
-+	ALC897_FIXUP_HEADSET_MIC_PIN3,
- };
- 
- static const struct hda_fixup alc662_fixups[] = {
-@@ -12219,10 +12220,18 @@ static const struct hda_fixup alc662_fixups[] = {
- 			{}
+diff --git a/drivers/clk/qcom/gcc-sm6350.c b/drivers/clk/qcom/gcc-sm6350.c
+index cf4a7b6e0b23a..0559a33faf00e 100644
+--- a/drivers/clk/qcom/gcc-sm6350.c
++++ b/drivers/clk/qcom/gcc-sm6350.c
+@@ -100,8 +100,8 @@ static struct clk_alpha_pll gpll6 = {
+ 		.enable_mask = BIT(6),
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gpll6",
+-			.parent_hws = (const struct clk_hw*[]){
+-				&gpll0.clkr.hw,
++			.parent_data = &(const struct clk_parent_data){
++				.fw_name = "bi_tcxo",
+ 			},
+ 			.num_parents = 1,
+ 			.ops = &clk_alpha_pll_fixed_fabia_ops,
+@@ -124,7 +124,7 @@ static struct clk_alpha_pll_postdiv gpll6_out_even = {
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "gpll6_out_even",
+ 		.parent_hws = (const struct clk_hw*[]){
+-			&gpll0.clkr.hw,
++			&gpll6.clkr.hw,
  		},
- 	},
-+	[ALC897_FIXUP_HEADSET_MIC_PIN3] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x19, 0x03a11050 }, /* use as headset mic */
-+			{ }
-+		},
-+	},
- };
- 
- static const struct snd_pci_quirk alc662_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1019, 0x9087, "ECS", ALC662_FIXUP_ASUS_MODE2),
-+	SND_PCI_QUIRK(0x1019, 0x9859, "JP-IK LEAP W502", ALC897_FIXUP_HEADSET_MIC_PIN3),
- 	SND_PCI_QUIRK(0x1025, 0x022f, "Acer Aspire One", ALC662_FIXUP_INV_DMIC),
- 	SND_PCI_QUIRK(0x1025, 0x0241, "Packard Bell DOTS", ALC662_FIXUP_INV_DMIC),
- 	SND_PCI_QUIRK(0x1025, 0x0308, "Acer Aspire 8942G", ALC662_FIXUP_ASPIRE),
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_fabia_ops,
+@@ -139,8 +139,8 @@ static struct clk_alpha_pll gpll7 = {
+ 		.enable_mask = BIT(7),
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gpll7",
+-			.parent_hws = (const struct clk_hw*[]){
+-				&gpll0.clkr.hw,
++			.parent_data = &(const struct clk_parent_data){
++				.fw_name = "bi_tcxo",
+ 			},
+ 			.num_parents = 1,
+ 			.ops = &clk_alpha_pll_fixed_fabia_ops,
 -- 
 2.43.0
 
