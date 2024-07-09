@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-58637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28CCE92B7F8
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:29:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5A9392B681
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:14:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7912CB252AE
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:29:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A17CF283D62
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC8D15884A;
-	Tue,  9 Jul 2024 11:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545AA1581E3;
+	Tue,  9 Jul 2024 11:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJesASVN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSaImx16"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF02115749F;
-	Tue,  9 Jul 2024 11:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B10157A48;
+	Tue,  9 Jul 2024 11:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524545; cv=none; b=Qt8OkQqhjvIRfPLkbWwBkznp8FUjJtywxPPdqoIr68KOb0uU6h8PzDzw3zfAbzjQxgalAuZHYyajCXCWadP62EfvozdNM1igFlmmIv+sZ6hxBtsty+r0Nf4yqlpJ2DU35ymPj8yb9cUPzHRhdXsQnPSY8egpV1xRbpRH++Jo1NE=
+	t=1720523658; cv=none; b=Usr1qggBcNs5s+hZm255IyiM4vIs24UKEyaceUeBzedP7829qkKnbiXQ1/XXaY7qqhcNbloHLb6H1u5NIeYbCUD4OWBl8qndMAGltwkCBqu1r+0iucyOuyxnRw1PMp124FAhIFZ0jMU8Xz+OqDy6hzBMJiie0+GBl+IEnd1Sh58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524545; c=relaxed/simple;
-	bh=vfG47RRId4d1h7aQGzdGA8YJjKh+9qcaJd5l5k1KxkU=;
+	s=arc-20240116; t=1720523658; c=relaxed/simple;
+	bh=4VJhmpcFRIepwSRgJiLVsvh8GzSPYzzNkNMD9y16El8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CqNGb9wELhrTVOTG2S+cIofzYdppuU7T9H9JVcMC3THrzxgI9KrZTpF5Yl0oVajp6cbQAJHQk/fcTw5zjoLhALBOW3WyGaghKBbLCXisKhbcibJ7sReaO4P9UNxln9ey296b3+1UnleV3d+KmoZvxA5X1z+mb9hiG7lpR88EXyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJesASVN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64366C3277B;
-	Tue,  9 Jul 2024 11:29:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NjLedUyOZfzd/P+f+PJb/xRnT1OTay/gkc5GIbwmy8g9HeC2FHMJ0sqOQ6XReoIY1myWxRpbfuNraBEzYh3CDdfjydICo9GNnej3yn4kvgWuKsHADhRbYQBT/tdKGHBEOvP04/tZS6Yum4mBmNFe0xtwIr9B/ZXOIA4Hd3oche8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSaImx16; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E48CC3277B;
+	Tue,  9 Jul 2024 11:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524544;
-	bh=vfG47RRId4d1h7aQGzdGA8YJjKh+9qcaJd5l5k1KxkU=;
+	s=korg; t=1720523658;
+	bh=4VJhmpcFRIepwSRgJiLVsvh8GzSPYzzNkNMD9y16El8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kJesASVN7bFJNuw+n/WLc02G8h9hAM+D28h7/PznXp6hc6wogXYK6WwQOxHKeF8GQ
-	 8YASE+hiw0av8gjJDw8kO6IbT9c4UbskJ1A4wTz3IonAUh2SAFqZrCzyGjCMvdujxe
-	 4ccjYacrm2JW0JU0oIVA9jEgZtVZGDs+/zG845Vk=
+	b=gSaImx16YpoWhOknXNdFsD7F6J130U9wlTx2dBpDVHA5Wcd9VoUTg1zLWrtgCg6A9
+	 zu7OR+zMDBmuLzG5TBymkpsluxlYqhqnH24nM7bw+u1lFAsOw0zOs9vjxTs+qOcF0R
+	 XzQAVo/3eyHem1o+kF1g2rImpv9wSbzPFYUVNn4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erico Nunes <nunes.erico@gmail.com>,
-	Qiang Yu <yuq825@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 003/102] drm/lima: fix shared irq handling on driver remove
+Subject: [PATCH 6.6 066/139] Bluetooth: hci_event: Fix setting of unicast qos interval
 Date: Tue,  9 Jul 2024 13:09:26 +0200
-Message-ID: <20240709110651.492910585@linuxfoundation.org>
+Message-ID: <20240709110700.728161902@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,92 +59,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erico Nunes <nunes.erico@gmail.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit a6683c690bbfd1f371510cb051e8fa49507f3f5e ]
+[ Upstream commit ac65ecccae802417ce42e857defacad60e4b8329 ]
 
-lima uses a shared interrupt, so the interrupt handlers must be prepared
-to be called at any time. At driver removal time, the clocks are
-disabled early and the interrupts stay registered until the very end of
-the remove process due to the devm usage.
-This is potentially a bug as the interrupts access device registers
-which assumes clocks are enabled. A crash can be triggered by removing
-the driver in a kernel with CONFIG_DEBUG_SHIRQ enabled.
-This patch frees the interrupts at each lima device finishing callback
-so that the handlers are already unregistered by the time we fully
-disable clocks.
+qos->ucast interval reffers to the SDU interval, and should not
+be set to the interval value reported by the LE CIS Established
+event since the latter reffers to the ISO interval. These two
+interval are not the same thing:
 
-Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
-Signed-off-by: Qiang Yu <yuq825@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240401224329.1228468-2-nunes.erico@gmail.com
+BLUETOOTH CORE SPECIFICATION Version 5.3 | Vol 6, Part G
+
+Isochronous interval:
+The time between two consecutive BIS or CIS events (designated
+ISO_Interval in the Link Layer)
+
+SDU interval:
+The nominal time between two consecutive SDUs that are sent or
+received by the upper layer.
+
+So this instead uses the following formula from the spec to calculate
+the resulting SDU interface:
+
+BLUETOOTH CORE SPECIFICATION Version 5.4 | Vol 6, Part G
+page 3075:
+
+Transport_Latency_C_To_P = CIG_Sync_Delay + (FT_C_To_P) ×
+ISO_Interval + SDU_Interval_C_To_P
+Transport_Latency_P_To_C = CIG_Sync_Delay + (FT_P_To_C) ×
+ISO_Interval + SDU_Interval_P_To_C
+
+Link: https://github.com/bluez/bluez/issues/823
+Fixes: 2be22f1941d5 ("Bluetooth: hci_event: Fix parsing of CIS Established Event")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/lima/lima_gp.c  | 2 ++
- drivers/gpu/drm/lima/lima_mmu.c | 5 +++++
- drivers/gpu/drm/lima/lima_pp.c  | 4 ++++
- 3 files changed, 11 insertions(+)
+ net/bluetooth/hci_event.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/lima/lima_gp.c b/drivers/gpu/drm/lima/lima_gp.c
-index 6cf46b653e810..ca3842f719842 100644
---- a/drivers/gpu/drm/lima/lima_gp.c
-+++ b/drivers/gpu/drm/lima/lima_gp.c
-@@ -324,7 +324,9 @@ int lima_gp_init(struct lima_ip *ip)
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 6ce4f812503f4..ffb7d43597a2d 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6646,6 +6646,7 @@ static void hci_le_cis_estabilished_evt(struct hci_dev *hdev, void *data,
+ 	struct bt_iso_qos *qos;
+ 	bool pending = false;
+ 	u16 handle = __le16_to_cpu(ev->handle);
++	u32 c_sdu_interval, p_sdu_interval;
  
- void lima_gp_fini(struct lima_ip *ip)
- {
-+	struct lima_device *dev = ip->dev;
+ 	bt_dev_dbg(hdev, "status 0x%2.2x", ev->status);
  
-+	devm_free_irq(dev->dev, ip->irq, ip);
- }
+@@ -6670,12 +6671,25 @@ static void hci_le_cis_estabilished_evt(struct hci_dev *hdev, void *data,
  
- int lima_gp_pipe_init(struct lima_device *dev)
-diff --git a/drivers/gpu/drm/lima/lima_mmu.c b/drivers/gpu/drm/lima/lima_mmu.c
-index a1ae6c252dc2b..8ca7047adbaca 100644
---- a/drivers/gpu/drm/lima/lima_mmu.c
-+++ b/drivers/gpu/drm/lima/lima_mmu.c
-@@ -118,7 +118,12 @@ int lima_mmu_init(struct lima_ip *ip)
+ 	pending = test_and_clear_bit(HCI_CONN_CREATE_CIS, &conn->flags);
  
- void lima_mmu_fini(struct lima_ip *ip)
- {
-+	struct lima_device *dev = ip->dev;
-+
-+	if (ip->id == lima_ip_ppmmu_bcast)
-+		return;
+-	/* Convert ISO Interval (1.25 ms slots) to SDU Interval (us) */
+-	qos->ucast.in.interval = le16_to_cpu(ev->interval) * 1250;
+-	qos->ucast.out.interval = qos->ucast.in.interval;
++	/* BLUETOOTH CORE SPECIFICATION Version 5.4 | Vol 6, Part G
++	 * page 3075:
++	 * Transport_Latency_C_To_P = CIG_Sync_Delay + (FT_C_To_P) ×
++	 * ISO_Interval + SDU_Interval_C_To_P
++	 * ...
++	 * SDU_Interval = (CIG_Sync_Delay + (FT) x ISO_Interval) -
++	 *					Transport_Latency
++	 */
++	c_sdu_interval = (get_unaligned_le24(ev->cig_sync_delay) +
++			 (ev->c_ft * le16_to_cpu(ev->interval) * 1250)) -
++			get_unaligned_le24(ev->c_latency);
++	p_sdu_interval = (get_unaligned_le24(ev->cig_sync_delay) +
++			 (ev->p_ft * le16_to_cpu(ev->interval) * 1250)) -
++			get_unaligned_le24(ev->p_latency);
  
-+	devm_free_irq(dev->dev, ip->irq, ip);
- }
- 
- void lima_mmu_flush_tlb(struct lima_ip *ip)
-diff --git a/drivers/gpu/drm/lima/lima_pp.c b/drivers/gpu/drm/lima/lima_pp.c
-index 54b208a4a768e..d34c9e8840f45 100644
---- a/drivers/gpu/drm/lima/lima_pp.c
-+++ b/drivers/gpu/drm/lima/lima_pp.c
-@@ -266,7 +266,9 @@ int lima_pp_init(struct lima_ip *ip)
- 
- void lima_pp_fini(struct lima_ip *ip)
- {
-+	struct lima_device *dev = ip->dev;
- 
-+	devm_free_irq(dev->dev, ip->irq, ip);
- }
- 
- int lima_pp_bcast_resume(struct lima_ip *ip)
-@@ -299,7 +301,9 @@ int lima_pp_bcast_init(struct lima_ip *ip)
- 
- void lima_pp_bcast_fini(struct lima_ip *ip)
- {
-+	struct lima_device *dev = ip->dev;
- 
-+	devm_free_irq(dev->dev, ip->irq, ip);
- }
- 
- static int lima_pp_task_validate(struct lima_sched_pipe *pipe,
+ 	switch (conn->role) {
+ 	case HCI_ROLE_SLAVE:
++		qos->ucast.in.interval = c_sdu_interval;
++		qos->ucast.out.interval = p_sdu_interval;
+ 		/* Convert Transport Latency (us) to Latency (msec) */
+ 		qos->ucast.in.latency =
+ 			DIV_ROUND_CLOSEST(get_unaligned_le24(ev->c_latency),
+@@ -6689,6 +6703,8 @@ static void hci_le_cis_estabilished_evt(struct hci_dev *hdev, void *data,
+ 		qos->ucast.out.phy = ev->p_phy;
+ 		break;
+ 	case HCI_ROLE_MASTER:
++		qos->ucast.in.interval = p_sdu_interval;
++		qos->ucast.out.interval = c_sdu_interval;
+ 		/* Convert Transport Latency (us) to Latency (msec) */
+ 		qos->ucast.out.latency =
+ 			DIV_ROUND_CLOSEST(get_unaligned_le24(ev->c_latency),
 -- 
 2.43.0
 
