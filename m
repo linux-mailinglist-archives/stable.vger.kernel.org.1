@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-58535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691F692B77F
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D16692B790
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B5C81C22BCF
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14C8F284CC7
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B626B1586C0;
-	Tue,  9 Jul 2024 11:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D731586C7;
+	Tue,  9 Jul 2024 11:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrZWVhpY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOcYVjM1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B0713A25F;
-	Tue,  9 Jul 2024 11:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6744157E61;
+	Tue,  9 Jul 2024 11:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524231; cv=none; b=Rd+DZb80uk1fnlwvdEtmm7VrGdSP06RIUSDKrQpJuGEnixFStC9RIBPa2LbaMNAJRLoDG7ZMJcAdeGf+ef+0TBdBMBh2VAHe5VP4DDD5ZvF6HhXyRK8DgmNj4SQsRxQUpHZpBdaCTlrNK+7gc1KhPUDa0FIomYT9VvNKl0FkkKA=
+	t=1720524263; cv=none; b=rLiy6pwsE9c1/d/eZoowpID5O0M9lM9Y5P2yQs4sR/w4Jd1XMn/8k6Hvfj375bRcuhHPmna2u22poMktR6bUgjiCzSvYHPJp3DuIzFxhCP6Fzr6d0dOUUx5gIt9AWSrwhA5fCJT9B+dObO5MpOXbei5WHQWdghK2RdOoLCx1gys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524231; c=relaxed/simple;
-	bh=WTbKCmPs+cAJTNF7xCH/8NTt5a5nxa/vTJpbKk4Hl6M=;
+	s=arc-20240116; t=1720524263; c=relaxed/simple;
+	bh=Gq2rUioRrEycQHJrezxwHdaA1RzLh/TtiaWGssh+bR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ClG0IPwCSV3/kXYUErRtFjKKnCXfd6jXvwoH9NmE2OeE+/4Pt9FaWb0sNncnb6u/ECTmPzqEDWtOmMdNYJ9XcBkDSSnZtCdoxouexhHb4KVUzlrFFChbyROfTShF9R5QfKnFkhHWvtYenVg6xwmEumKyC8jjVbQsml3yAv2wXQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrZWVhpY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31DDC3277B;
-	Tue,  9 Jul 2024 11:23:50 +0000 (UTC)
+	 MIME-Version; b=lpd8LEmTghlUHP66ty6eN+IdE8raYUDHczyQ4PtUYEH5cBTpsJH5CqWapnQR6uihjN5ZHnYYwLmnjXwLM+XyuFxGPugGpJVLffiGHZSiAQJjWtsFQrDmTUIRK/scRYF2hB2d851WiQAWJ2QybSjfI4EzaTyyr427FkvKmgzS46I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOcYVjM1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA07C3277B;
+	Tue,  9 Jul 2024 11:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524231;
-	bh=WTbKCmPs+cAJTNF7xCH/8NTt5a5nxa/vTJpbKk4Hl6M=;
+	s=korg; t=1720524263;
+	bh=Gq2rUioRrEycQHJrezxwHdaA1RzLh/TtiaWGssh+bR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RrZWVhpYOmFbAtMJxBCgENxdr5ltI2jbb4rKXK1ZQd23XPTQMbQL3SDIp5iTia7XV
-	 G8iLXpDlwdDHXrpiYM8Wb3AFdMJyHvGTtVmuXQAN139NOmPqqnzxdmfVDZsWR5gcpf
-	 eVjnqsDzzjdyd211g/pW4+eEtCy8LaP92tsM9l8c=
+	b=sOcYVjM1FJ96V81jy0JSQnb7NbK6+cE7rm49hZNT2fZ5Ib1P33NyJ9LuklzKH9U9V
+	 zVifQpnQl0YJUN8DIPU05bLMuXWG+xj2CLBq26gJtG0UDTXssDsr28mWYCGNVAmR3P
+	 PxhNDwwZMYuzlpx7Vo7jPmm0Rmc7Gt1mb18j1Q0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b2545b087a01a7319474@syzkaller.appspotmail.com,
-	Pavel Skripkin <paskripkin@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 097/197] bluetooth/hci: disallow setting handle bigger than HCI_CONN_HANDLE_MAX
-Date: Tue,  9 Jul 2024 13:09:11 +0200
-Message-ID: <20240709110712.715650862@linuxfoundation.org>
+Subject: [PATCH 6.9 098/197] tcp_metrics: validate source addr length
+Date: Tue,  9 Jul 2024 13:09:12 +0200
+Message-ID: <20240709110712.753295321@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
 References: <20240709110708.903245467@linuxfoundation.org>
@@ -67,63 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pavel Skripkin <paskripkin@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 1cc18c2ab2e8c54c355ea7c0423a636e415a0c23 ]
+[ Upstream commit 66be40e622e177316ae81717aa30057ba9e61dff ]
 
-Syzbot hit warning in hci_conn_del() caused by freeing handle that was
-not allocated using ida allocator.
+I don't see anything checking that TCP_METRICS_ATTR_SADDR_IPV4
+is at least 4 bytes long, and the policy doesn't have an entry
+for this attribute at all (neither does it for IPv6 but v6 is
+manually validated).
 
-This is caused by handle bigger than HCI_CONN_HANDLE_MAX passed by
-hci_le_big_sync_established_evt(), which makes code think it's unset
-connection.
-
-Add same check for handle upper bound as in hci_conn_set_handle() to
-prevent warning.
-
-Link: https://syzkaller.appspot.com/bug?extid=b2545b087a01a7319474
-Reported-by: syzbot+b2545b087a01a7319474@syzkaller.appspotmail.com
-Fixes: 181a42edddf5 ("Bluetooth: Make handle of hci_conn be unique")
-Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Fixes: 3e7013ddf55a ("tcp: metrics: Allow selective get/del of tcp-metrics based on src IP")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_conn.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ net/ipv4/tcp_metrics.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 08ae30fd31551..baca48ce8d0c6 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -904,8 +904,8 @@ static int hci_conn_hash_alloc_unset(struct hci_dev *hdev)
- 			       U16_MAX, GFP_ATOMIC);
- }
- 
--struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
--			      u8 role, u16 handle)
-+static struct hci_conn *__hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
-+				       u8 role, u16 handle)
- {
- 	struct hci_conn *conn;
- 
-@@ -1046,7 +1046,16 @@ struct hci_conn *hci_conn_add_unset(struct hci_dev *hdev, int type,
- 	if (unlikely(handle < 0))
- 		return ERR_PTR(-ECONNREFUSED);
- 
--	return hci_conn_add(hdev, type, dst, role, handle);
-+	return __hci_conn_add(hdev, type, dst, role, handle);
-+}
-+
-+struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
-+			      u8 role, u16 handle)
-+{
-+	if (handle > HCI_CONN_HANDLE_MAX)
-+		return ERR_PTR(-EINVAL);
-+
-+	return __hci_conn_add(hdev, type, dst, role, handle);
- }
- 
- static void hci_conn_cleanup_child(struct hci_conn *conn, u8 reason)
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index c2a925538542b..e0883ba709b0b 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -619,6 +619,7 @@ static const struct nla_policy tcp_metrics_nl_policy[TCP_METRICS_ATTR_MAX + 1] =
+ 	[TCP_METRICS_ATTR_ADDR_IPV4]	= { .type = NLA_U32, },
+ 	[TCP_METRICS_ATTR_ADDR_IPV6]	= { .type = NLA_BINARY,
+ 					    .len = sizeof(struct in6_addr), },
++	[TCP_METRICS_ATTR_SADDR_IPV4]	= { .type = NLA_U32, },
+ 	/* Following attributes are not received for GET/DEL,
+ 	 * we keep them for reference
+ 	 */
 -- 
 2.43.0
 
