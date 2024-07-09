@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05ED792B83F
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:32:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BDBA92B7DA
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5B46282FF4
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:32:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB72028548D
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA6914E2C4;
-	Tue,  9 Jul 2024 11:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E54156238;
+	Tue,  9 Jul 2024 11:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHl7MFV6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jy1x4Zzv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A924255E4C;
-	Tue,  9 Jul 2024 11:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253B027713;
+	Tue,  9 Jul 2024 11:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524735; cv=none; b=S27S7qsiRZROS7Kbjrvri/TwpIbVq3EdazbKkP8Bc32pwRPMphvz/RhuiW+mwNDJ1DCcIzO9Ya19yHJogxe5bKiFJHflpoNsPKpbTRS0pD5OtJh6C5DkbfrfS0dW1QW2WeExdNHgv/nO/q6vKsLMssOJlqZKHms+oyPb6baBe+0=
+	t=1720524477; cv=none; b=COiodSoQXDLioKRJT7VaKyVjJtKsOOra7LkMBV1UvwCIqJNC2C+fI4cwbr2uiwjLYqfwljtcMn87oQ9aYCG+BtJ04JrGK+uZlZwAF7tklqh+3/iaCf9H7gntYuspjN5siUH+uzjU7WWykdvIXl9HNY8a+G7gEYJcZxPbOYKvxnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524735; c=relaxed/simple;
-	bh=9ZuRh5DH9vfelLA4IlsILD9KpbUvx/GdWXBJ7oOurRo=;
+	s=arc-20240116; t=1720524477; c=relaxed/simple;
+	bh=+xZZvUqhARBsybWCa2XLNC42oLHDn58NQEcvZ3UR5L4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iT7MkWC/doRaAlL1HA2CqxOCZzzYMB0b4Y0IvIw5oj4FdJ3Ko5svL2PhANgKt5SAcVZpt6LJbjSq7eUe3vaDxt845qKqTLht2tM81rV75fk+OgRvgxkHghIdGtl8IvSUKwJjL7qlgRUihDzhxu0DfETbHr9Fi8fXy1za8JIB+lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHl7MFV6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB4DC3277B;
-	Tue,  9 Jul 2024 11:32:14 +0000 (UTC)
+	 MIME-Version; b=ksl0sxVzjBWL1KKYwY3xnV2+t1OKnqXC/qqD5nvZ+hfUTI44XcZEMT0NFpT2ZZPW4CXHmc2PL9pawm4X7rhpybOUXmugcBPkdQZxfZ1bp2HtGXrQBc81H2WOv1kBlTV6RW1SrEpTQMCsdU762K2eXCdgq0SE+ehn6wAyYvzdZ78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jy1x4Zzv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8D1C3277B;
+	Tue,  9 Jul 2024 11:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524735;
-	bh=9ZuRh5DH9vfelLA4IlsILD9KpbUvx/GdWXBJ7oOurRo=;
+	s=korg; t=1720524477;
+	bh=+xZZvUqhARBsybWCa2XLNC42oLHDn58NQEcvZ3UR5L4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHl7MFV6Zu8V7rbXu8pyBHRGuDcRDXUQd337ul7w0Ff2zPXHkVIXbv/dYlF3N3qxy
-	 FT9tbfe0yK+Gr1oae6EoMy1pX0Hp2MwjeohpzYFIhsG5Ok9HdAZfcgSi8hvcT5BtXe
-	 t3OMKD/HLcTsKYQXpcR+lBqmFAsYRiZD7IQY3vwY=
+	b=Jy1x4Zzva/vQf4h+Q3Qy3+NJocCFZx9IS2F6yuNZbI/ySCa+v4ptC9rZZ7E3+4Piz
+	 xYcNvk087a+CFNLjvhxPggU/GWFrgI6PsYgh3+LisuXb1TkFZ1rOYlTDGH2yLLe1sO
+	 Ow6RkTuVHcmk7+uzMz2KxCGM8Z0umilPVgvFs2mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.1 082/102] arm64: dts: rockchip: Fix the DCDC_REG2 minimum voltage on Quartz64 Model B
-Date: Tue,  9 Jul 2024 13:10:45 +0200
-Message-ID: <20240709110654.566163279@linuxfoundation.org>
+	Witold Sadowski <wsadowski@marvell.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 192/197] spi: cadence: Ensure data lines set to low during dummy-cycle period
+Date: Tue,  9 Jul 2024 13:10:46 +0200
+Message-ID: <20240709110716.370553822@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragan Simic <dsimic@manjaro.org>
+From: Witold Sadowski <wsadowski@marvell.com>
 
-commit d201c92bff90f3d3d0b079fc955378c15c0483cc upstream.
+[ Upstream commit 4a69c1264ff41bc5bf7c03101ada0454fbf08868 ]
 
-Correct the specified regulator-min-microvolt value for the buck DCDC_REG2
-regulator, which is part of the Rockchip RK809 PMIC, in the Pine64 Quartz64
-Model B board dts.  According to the RK809 datasheet, version 1.01, this
-regulator is capable of producing voltages as low as 0.5 V on its output,
-instead of going down to 0.9 V only, which is additionally confirmed by the
-regulator-min-microvolt values found in the board dts files for the other
-supported boards that use the same RK809 PMIC.
+During dummy-cycles xSPI will switch GPIO into Hi-Z mode. In that dummy
+period voltage on data lines will slowly drop, what can cause
+unintentional modebyte transmission. Value send to SPI memory chip will
+depend on last address, and clock frequency.
+To prevent unforeseen consequences of that behaviour, force send
+single modebyte(0x00).
+Modebyte will be send only if number of dummy-cycles is not equal
+to 0. Code must also reduce dummycycle byte count by one - as one byte
+is send as modebyte.
 
-This allows the DVFS to clock the GPU on the Quartz64 Model B below 700 MHz,
-all the way down to 200 MHz, which saves some power and reduces the amount of
-generated heat a bit, improving the thermal headroom and possibly improving
-the bursty CPU and GPU performance on this board.
-
-This also eliminates the following warnings in the kernel log:
-
-  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
-  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (200000000)
-  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
-  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (300000000)
-  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
-  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (400000000)
-  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
-  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (600000000)
-
-Fixes: dcc8c66bef79 ("arm64: dts: rockchip: add Pine64 Quartz64-B device tree")
-Cc: stable@vger.kernel.org
-Reported-By: Diederik de Haas <didi.debian@cknow.org>
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
-Tested-by: Diederik de Haas <didi.debian@cknow.org>
-Link: https://lore.kernel.org/r/e70742ea2df432bf57b3f7de542d81ca22b0da2f.1716225483.git.dsimic@manjaro.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Witold Sadowski <wsadowski@marvell.com>
+Link: https://msgid.link/r/20240529074037.1345882-2-wsadowski@marvell.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3566-quartz64-b.dts |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-cadence-xspi.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3566-quartz64-b.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-quartz64-b.dts
-@@ -290,7 +290,7 @@
- 				regulator-name = "vdd_gpu";
- 				regulator-always-on;
- 				regulator-boot-on;
--				regulator-min-microvolt = <900000>;
-+				regulator-min-microvolt = <500000>;
- 				regulator-max-microvolt = <1350000>;
- 				regulator-init-microvolt = <900000>;
- 				regulator-ramp-delay = <6001>;
+diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
+index 8648b8eb080dc..cdce2e280f663 100644
+--- a/drivers/spi/spi-cadence-xspi.c
++++ b/drivers/spi/spi-cadence-xspi.c
+@@ -145,6 +145,9 @@
+ #define CDNS_XSPI_STIG_DONE_FLAG		BIT(0)
+ #define CDNS_XSPI_TRD_STATUS			0x0104
+ 
++#define MODE_NO_OF_BYTES			GENMASK(25, 24)
++#define MODEBYTES_COUNT			1
++
+ /* Helper macros for filling command registers */
+ #define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_1(op, data_phase) ( \
+ 	FIELD_PREP(CDNS_XSPI_CMD_INSTR_TYPE, (data_phase) ? \
+@@ -157,9 +160,10 @@
+ 	FIELD_PREP(CDNS_XSPI_CMD_P1_R2_ADDR3, ((op)->addr.val >> 24) & 0xFF) | \
+ 	FIELD_PREP(CDNS_XSPI_CMD_P1_R2_ADDR4, ((op)->addr.val >> 32) & 0xFF))
+ 
+-#define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op) ( \
++#define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op, modebytes) ( \
+ 	FIELD_PREP(CDNS_XSPI_CMD_P1_R3_ADDR5, ((op)->addr.val >> 40) & 0xFF) | \
+ 	FIELD_PREP(CDNS_XSPI_CMD_P1_R3_CMD, (op)->cmd.opcode) | \
++	FIELD_PREP(MODE_NO_OF_BYTES, modebytes) | \
+ 	FIELD_PREP(CDNS_XSPI_CMD_P1_R3_NUM_ADDR_BYTES, (op)->addr.nbytes))
+ 
+ #define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_4(op, chipsel) ( \
+@@ -173,12 +177,12 @@
+ #define CDNS_XSPI_CMD_FLD_DSEQ_CMD_2(op) \
+ 	FIELD_PREP(CDNS_XSPI_CMD_DSEQ_R2_DCNT_L, (op)->data.nbytes & 0xFFFF)
+ 
+-#define CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op) ( \
++#define CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op, dummybytes) ( \
+ 	FIELD_PREP(CDNS_XSPI_CMD_DSEQ_R3_DCNT_H, \
+ 		((op)->data.nbytes >> 16) & 0xffff) | \
+ 	FIELD_PREP(CDNS_XSPI_CMD_DSEQ_R3_NUM_OF_DUMMY, \
+ 		  (op)->dummy.buswidth != 0 ? \
+-		  (((op)->dummy.nbytes * 8) / (op)->dummy.buswidth) : \
++		  (((dummybytes) * 8) / (op)->dummy.buswidth) : \
+ 		  0))
+ 
+ #define CDNS_XSPI_CMD_FLD_DSEQ_CMD_4(op, chipsel) ( \
+@@ -351,6 +355,7 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
+ 	u32 cmd_regs[6];
+ 	u32 cmd_status;
+ 	int ret;
++	int dummybytes = op->dummy.nbytes;
+ 
+ 	ret = cdns_xspi_wait_for_controller_idle(cdns_xspi);
+ 	if (ret < 0)
+@@ -365,7 +370,12 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
+ 	memset(cmd_regs, 0, sizeof(cmd_regs));
+ 	cmd_regs[1] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_1(op, data_phase);
+ 	cmd_regs[2] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_2(op);
+-	cmd_regs[3] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op);
++	if (dummybytes != 0) {
++		cmd_regs[3] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op, 1);
++		dummybytes--;
++	} else {
++		cmd_regs[3] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op, 0);
++	}
+ 	cmd_regs[4] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_4(op,
+ 						       cdns_xspi->cur_cs);
+ 
+@@ -375,7 +385,7 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
+ 		cmd_regs[0] = CDNS_XSPI_STIG_DONE_FLAG;
+ 		cmd_regs[1] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_1(op);
+ 		cmd_regs[2] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_2(op);
+-		cmd_regs[3] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op);
++		cmd_regs[3] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op, dummybytes);
+ 		cmd_regs[4] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_4(op,
+ 							   cdns_xspi->cur_cs);
+ 
+-- 
+2.43.0
+
 
 
 
