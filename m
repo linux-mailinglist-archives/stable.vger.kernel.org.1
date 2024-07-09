@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-58528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BA2992B779
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1BF092B67D
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:14:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05DF8280DFC
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F88B1C22055
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4913015885E;
-	Tue,  9 Jul 2024 11:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808FB1581EB;
+	Tue,  9 Jul 2024 11:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Okvsq+Em"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObXNzqVe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08171158A33;
-	Tue,  9 Jul 2024 11:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA6A155389;
+	Tue,  9 Jul 2024 11:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524211; cv=none; b=KsKIxI+UbF5uc3eV99fJfhSrAj6N47DlkmTCpkoyJJ0NzEaa7KBUpCiRpAHxYJeWy9Z0A3B7MBSfcuuBrVzaz3LLvwp6K31S7Nl5U89x4kflL6RAJtzBKb00MNHrjs+qc0m3LPl3+D2Uhfri+EzdmZBJKtVk6UgedauVaiRTByg=
+	t=1720523646; cv=none; b=rR5F8HHEytUph8XTA1fycOyFg/Ank8YypJzI/P1Pv7xMN9o+qGAXSfRwEKwqWoqieDpbR+dIut+/NsZPJo0kTXNWcJWoMd+At+F5181n5KHENiWO+fKG8AV1CpsIXP/hDVCytliiDk973rPsBE5ayUNqZSjxu/OdPowwLcALzsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524211; c=relaxed/simple;
-	bh=XabdlViLYPHXsVENkTGJe3TnyNbkE0jmVbLCbtcQIlQ=;
+	s=arc-20240116; t=1720523646; c=relaxed/simple;
+	bh=q7WcrVNrR/r0Q4s7ZJUDpyjObahELfgmTWsqWL9bqz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QrtvcBhNm5iZ52/64AmPvs/EnL29l90tXQVt3nBNBK6KEgf08vh9rmuzupKFvUBz7zjcFFIWn9Fqf3K8YaytR+QgZNl7d9M8QnG7F3ksfMGgSA99d/VQSdGidbb1HUr9FRCx/X8aMvZjSXliqFhZ4wzgZXJHn47kCYyBDEh8KuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Okvsq+Em; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81938C3277B;
-	Tue,  9 Jul 2024 11:23:30 +0000 (UTC)
+	 MIME-Version; b=r00i7rjsZFm6wEgMupvHtst5xz/TMrslcJ1vWv4hstxcghDRkipV864cK1B7+E3BNxUZZBaA/wGHU9890VQLEGIFAhJ6JMpPdd2vdjD4u/5yBQ1FrwOEO5kEMzo0YXZloCZENL+qRHGGL4ZoYRxvrULqRhyDtawGnYzmUZdZo/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ObXNzqVe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8184C3277B;
+	Tue,  9 Jul 2024 11:14:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524210;
-	bh=XabdlViLYPHXsVENkTGJe3TnyNbkE0jmVbLCbtcQIlQ=;
+	s=korg; t=1720523646;
+	bh=q7WcrVNrR/r0Q4s7ZJUDpyjObahELfgmTWsqWL9bqz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Okvsq+Em91a6q6EsMmtp+5hnpsciIZOVtOWosUsUCrv+F0i7tuLCrvYtSgbqXk9VJ
-	 QispAMmgPE5RaQc62khnqbA1WYY3VxknwDLNSGgTlT87bkrWS+veuqYfbskeTnlJzG
-	 WRlKXd41gvoh3rVUM60P7Paiei30vCidoHiJyHyc=
+	b=ObXNzqVeVlAeijzh8ANm8U//xOUcXRtby0+gyCQ5kZ3l6uynRe213ZEdDzOgcsEDZ
+	 nSs7HNb+HFRrHFj9IPx7i1q6Ahkt/J9UWNPxIXTp7dCWPNGZ1lr81bQHf1TPrf9mX0
+	 7GbYHoLYS/2vL9nExUzJFvOq0qJuz30axzHKSeCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Yuchung Cheng <ycheng@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 108/197] net: phy: aquantia: add missing include guards
-Date: Tue,  9 Jul 2024 13:09:22 +0200
-Message-ID: <20240709110713.137631182@linuxfoundation.org>
+Subject: [PATCH 6.6 063/139] UPSTREAM: tcp: fix DSACK undo in fast recovery to call tcp_try_to_open()
+Date: Tue,  9 Jul 2024 13:09:23 +0200
+Message-ID: <20240709110700.611123705@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Neal Cardwell <ncardwell@google.com>
 
-[ Upstream commit 219343755eae6536d1fcb9184e6253ade4906aac ]
+[ Upstream commit a6458ab7fd4f427d4f6f54380453ad255b7fde83 ]
 
-The header is missing the include guards so add them.
+In some production workloads we noticed that connections could
+sometimes close extremely prematurely with ETIMEDOUT after
+transmitting only 1 TLP and RTO retransmission (when we would normally
+expect roughly tcp_retries2 = TCP_RETR2 = 15 RTOs before a connection
+closes with ETIMEDOUT).
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Fixes: fb470f70fea7 ("net: phy: aquantia: add hwmon support")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://patch.msgid.link/20240701080322.9569-1-brgl@bgdev.pl
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>From tracing we determined that these workloads can suffer from a
+scenario where in fast recovery, after some retransmits, a DSACK undo
+can happen at a point where the scoreboard is totally clear (we have
+retrans_out == sacked_out == lost_out == 0). In such cases, calling
+tcp_try_keep_open() means that we do not execute any code path that
+clears tp->retrans_stamp to 0. That means that tp->retrans_stamp can
+remain erroneously set to the start time of the undone fast recovery,
+even after the fast recovery is undone. If minutes or hours elapse,
+and then a TLP/RTO/RTO sequence occurs, then the start_ts value in
+retransmits_timed_out() (which is from tp->retrans_stamp) will be
+erroneously ancient (left over from the fast recovery undone via
+DSACKs). Thus this ancient tp->retrans_stamp value can cause the
+connection to die very prematurely with ETIMEDOUT via
+tcp_write_err().
+
+The fix: we change DSACK undo in fast recovery (TCP_CA_Recovery) to
+call tcp_try_to_open() instead of tcp_try_keep_open(). This ensures
+that if no retransmits are in flight at the time of DSACK undo in fast
+recovery then we properly zero retrans_stamp. Note that calling
+tcp_try_to_open() is more consistent with other loss recovery
+behavior, since normal fast recovery (CA_Recovery) and RTO recovery
+(CA_Loss) both normally end when tp->snd_una meets or exceeds
+tp->high_seq and then in tcp_fastretrans_alert() the "default" switch
+case executes tcp_try_to_open(). Also note that by inspection this
+change to call tcp_try_to_open() implies at least one other nice bug
+fix, where now an ECE-marked DSACK that causes an undo will properly
+invoke tcp_enter_cwr() rather than ignoring the ECE mark.
+
+Fixes: c7d9d6a185a7 ("tcp: undo on DSACK during recovery")
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Yuchung Cheng <ycheng@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/aquantia/aquantia.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/ipv4/tcp_input.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/aquantia/aquantia.h b/drivers/net/phy/aquantia/aquantia.h
-index 1c19ae74ad2b4..4830b25e6c7d3 100644
---- a/drivers/net/phy/aquantia/aquantia.h
-+++ b/drivers/net/phy/aquantia/aquantia.h
-@@ -6,6 +6,9 @@
-  * Author: Heiner Kallweit <hkallweit1@gmail.com>
-  */
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 6743b6bfbc9c5..2621c262f182a 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -3046,7 +3046,7 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
+ 			return;
  
-+#ifndef AQUANTIA_H
-+#define AQUANTIA_H
-+
- #include <linux/device.h>
- #include <linux/phy.h>
+ 		if (tcp_try_undo_dsack(sk))
+-			tcp_try_keep_open(sk);
++			tcp_try_to_open(sk, flag);
  
-@@ -120,3 +123,5 @@ static inline int aqr_hwmon_probe(struct phy_device *phydev) { return 0; }
- #endif
- 
- int aqr_firmware_load(struct phy_device *phydev);
-+
-+#endif /* AQUANTIA_H */
+ 		tcp_identify_packet_loss(sk, ack_flag);
+ 		if (icsk->icsk_ca_state != TCP_CA_Recovery) {
 -- 
 2.43.0
 
