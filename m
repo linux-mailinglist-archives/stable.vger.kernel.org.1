@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-58345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3323292B680
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:14:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3530192B77C
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBB991F21749
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:14:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF6AB1F22217
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578F9158201;
-	Tue,  9 Jul 2024 11:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE4A158208;
+	Tue,  9 Jul 2024 11:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUt5Ewsl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVqYVN+8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CA5155389;
-	Tue,  9 Jul 2024 11:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEDC13A25F;
+	Tue,  9 Jul 2024 11:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523655; cv=none; b=ixF3u7KLCib9ghBE7SIgtAyHXqf9KVcDjnaVO/MWkjWMk4bKUsGeY+Kntf/1E3b3/v500t5f/YP0rD1oW1bSYN7tMecrhLyNyX/YvXRnrnSBjK9u6KGSu4uPDsd+k+a1IMtFsK4Mu7J0mh69BouEUofDmlByfox3DUfB2Fb+2bw=
+	t=1720524222; cv=none; b=hFAITS/lm8D73O4/dUiqXQwKC51Tb9N/3qMVcYMjNPnzf8udS2JTiLrLEobNt2T4pumxaN7LLmkjHM6L11m12cLb/TtaLKv9qJM5VswRXuOGNgTca533Q1tD545/gEjYUZckGzPnoiH9q0mSIEW7uybqA9E9NXO6puWwuEGlFrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523655; c=relaxed/simple;
-	bh=PTURZPSJUxKmckwcIBB40wVfkY0GuIFKs9PuTpmRccM=;
+	s=arc-20240116; t=1720524222; c=relaxed/simple;
+	bh=rg1lSn5NSUpKyWk5dc8wa71xHbZ0HCyKe8FkFY7NGhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uJoDonkP1CDsAM+Z5fTisLhL1908dSafRgWbgOmGNFV1CSvxFh9owdwTGIiA5l6VAO1NGF845NQ0rvpejt3rIYMg7Zz0oHTxIgK3uZPmGQFSBHQ1aXpEuQC4SzikSLl/+EqvssdiQ+UN5LwL7XD3T96oDv9Trky9WWh7ujE0kpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUt5Ewsl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 959A8C3277B;
-	Tue,  9 Jul 2024 11:14:14 +0000 (UTC)
+	 MIME-Version; b=FKARU8vpPiTwmhV2LFgOZhphDRcsHjk254QXt6dgyGMRAKh85VuzvqxPpWEXnJXvfrp8vrftDFJ0/T7M4AVRAe0FPCxMu2Jt0N+Zal2H+z+M5ZP/bafjdjiqkVwRUNiMnWmWIX7av1BBtYGaQi1Mfsvd5QhORdUjsFYDZVlw5eI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVqYVN+8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32CAFC3277B;
+	Tue,  9 Jul 2024 11:23:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523655;
-	bh=PTURZPSJUxKmckwcIBB40wVfkY0GuIFKs9PuTpmRccM=;
+	s=korg; t=1720524222;
+	bh=rg1lSn5NSUpKyWk5dc8wa71xHbZ0HCyKe8FkFY7NGhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZUt5EwslSywu9S2buEpYDyhO8XtiB/niUwsBinfzukIKPf5tFjBFJrXshu3a/zjFr
-	 EF5frZWAvGuADY6PZgjDPZXto3jonRP16Eh6mUN5vP1nSxzsPMG3qGEsaIdddFBVy8
-	 Ssibk28pAw9WROytjujuxW7M0VhoWRxuYJMG03K0=
+	b=yVqYVN+8SvMGnmOxX/UOw6sp22m8QKDdEcLYftjY96E6TeEtMDncGxfdN63mVWv8Y
+	 N9znub14CZUsxAINCYb15VhYG/NLj6zZxNRzXNW1dTzZV0HrcasYLEXxHnG8kXR/2h
+	 FPkuUQt7uQLT2zofVAjK9NE26fKm+Z5YeWsHB6Yc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Eric Farman <farman@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/139] net/mlx5e: Add mqprio_rl cleanup and free in mlx5e_priv_cleanup()
-Date: Tue,  9 Jul 2024 13:09:25 +0200
-Message-ID: <20240709110700.689442650@linuxfoundation.org>
+Subject: [PATCH 6.9 112/197] s390/vfio_ccw: Fix target addresses of TIC CCWs
+Date: Tue,  9 Jul 2024 13:09:26 +0200
+Message-ID: <20240709110713.290446111@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Eric Farman <farman@linux.ibm.com>
 
-[ Upstream commit 1da839eab6dbc26b95bfcd1ed1a4d1aaa5c144a3 ]
+[ Upstream commit 2ae157ec497d93c639a60e730e21ec9c66fa9a6e ]
 
-In the cited commit, mqprio_rl cleanup and free are mistakenly removed
-in mlx5e_priv_cleanup(), and it causes the leakage of host memory and
-firmware SCHEDULING_ELEMENT objects while changing eswitch mode. So,
-add them back.
+The processing of a Transfer-In-Channel (TIC) CCW requires locating
+the target of the CCW in the channel program, and updating the
+address to reflect what will actually be sent to hardware.
 
-Fixes: 0bb7228f7096 ("net/mlx5e: Fix mqprio_rl handling on devlink reload")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+An error exists where the 64-bit virtual address is truncated to
+32-bits (variable "cda") when performing this math. Since s390
+addresses of that size are 31-bits, this leaves that additional
+bit enabled such that the resulting I/O triggers a channel
+program check. This shows up occasionally when booting a KVM
+guest from a passthrough DASD device:
+
+  ..snip...
+  Interrupt Response Block Data:
+  : 0x0000000000003990
+      Function Ctrl : [Start]
+      Activity Ctrl :
+      Status Ctrl : [Alert] [Primary] [Secondary] [Status-Pending]
+      Device Status :
+      Channel Status : [Program-Check]
+      cpa=: 0x00000000008d0018
+      prev_ccw=: 0x0000000000000000
+      this_ccw=: 0x0000000000000000
+  ...snip...
+  dasd-ipl: Failed to run IPL1 channel program
+
+The channel program address of "0x008d0018" in the IRB doesn't
+look wrong, but tracing the CCWs shows the offending bit enabled:
+
+  ccw=0x0000012e808d0000 cda=00a0b030
+  ccw=0x0000012e808d0008 cda=00a0b038
+  ccw=0x0000012e808d0010 cda=808d0008
+  ccw=0x0000012e808d0018 cda=00a0b040
+
+Fix the calculation of the TIC CCW's data address such that it points
+to a valid 31-bit address regardless of the input address.
+
+Fixes: bd36cfbbb9e1 ("s390/vfio_ccw_cp: use new address translation helpers")
+Signed-off-by: Eric Farman <farman@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240628163738.3643513-1-farman@linux.ibm.com
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/s390/cio/vfio_ccw_cp.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index e87a776ea2bfd..a65c407aa60bd 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -5700,6 +5700,11 @@ void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
- 		kfree(priv->htb_qos_sq_stats[i]);
- 	kvfree(priv->htb_qos_sq_stats);
+diff --git a/drivers/s390/cio/vfio_ccw_cp.c b/drivers/s390/cio/vfio_ccw_cp.c
+index 6e5c508b1e07c..5f6e102256276 100644
+--- a/drivers/s390/cio/vfio_ccw_cp.c
++++ b/drivers/s390/cio/vfio_ccw_cp.c
+@@ -490,13 +490,14 @@ static int ccwchain_fetch_tic(struct ccw1 *ccw,
+ 			      struct channel_program *cp)
+ {
+ 	struct ccwchain *iter;
+-	u32 cda, ccw_head;
++	u32 offset, ccw_head;
  
-+	if (priv->mqprio_rl) {
-+		mlx5e_mqprio_rl_cleanup(priv->mqprio_rl);
-+		mlx5e_mqprio_rl_free(priv->mqprio_rl);
-+	}
-+
- 	memset(priv, 0, sizeof(*priv));
- }
- 
+ 	list_for_each_entry(iter, &cp->ccwchain_list, next) {
+ 		ccw_head = iter->ch_iova;
+ 		if (is_cpa_within_range(ccw->cda, ccw_head, iter->ch_len)) {
+-			cda = (u64)iter->ch_ccw + dma32_to_u32(ccw->cda) - ccw_head;
+-			ccw->cda = u32_to_dma32(cda);
++			/* Calculate offset of TIC target */
++			offset = dma32_to_u32(ccw->cda) - ccw_head;
++			ccw->cda = virt_to_dma32((void *)iter->ch_ccw + offset);
+ 			return 0;
+ 		}
+ 	}
+@@ -914,7 +915,7 @@ void cp_update_scsw(struct channel_program *cp, union scsw *scsw)
+ 	 * in the ioctl directly. Path status changes etc.
+ 	 */
+ 	list_for_each_entry(chain, &cp->ccwchain_list, next) {
+-		ccw_head = (u32)(u64)chain->ch_ccw;
++		ccw_head = dma32_to_u32(virt_to_dma32(chain->ch_ccw));
+ 		/*
+ 		 * On successful execution, cpa points just beyond the end
+ 		 * of the chain.
 -- 
 2.43.0
 
