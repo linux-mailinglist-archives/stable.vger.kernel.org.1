@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-58549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A5B92B793
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A57A492B7C1
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 171971F240D4
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FF622854B4
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2EAE15884A;
-	Tue,  9 Jul 2024 11:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A7C156238;
+	Tue,  9 Jul 2024 11:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQgRbzDJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOIzaBnr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DED149C79;
-	Tue,  9 Jul 2024 11:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982AE27713;
+	Tue,  9 Jul 2024 11:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524272; cv=none; b=RDjjr0Iox90qo3XkHsgXcwTgqvagZDe+S8hvygwpmkiMWeD0YoNb5xu7fmDZCa028gWK2tunBqcQat+oG7Limt4zjfWKgQYDA+ztYyQaQLMjzIcxM6U9R3GsJXryQBZWLf4rssUJ9uJP1Bd+ueqvp2AjrGt0jKbqi9qD+Imn+S4=
+	t=1720524397; cv=none; b=OMkOifosU+StYgVXkpyda2YzqhoNBZnRGuMAA+2L7O+Pbhe/E5UAiGpGbBtH6YlvsVhq7TyBFkYDpxhvUsDTjuOM3+xBIysHcAtUvcSRQ5R2UE5QglndYsh4h41UmB3AJaicGXf2UoSHTynEoDwvWq4BALtlWlfH7SgjcF0TsKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524272; c=relaxed/simple;
-	bh=z92gxD4Aku8jMawbvea7JKWbDCYMk9i3zBly/lukeEY=;
+	s=arc-20240116; t=1720524397; c=relaxed/simple;
+	bh=u9Xfj/Ajk58n06i206iEB1LpaIm1VEeMirtaFV18L/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U01y/nN8wO3hai8sSDo1q9YN0tJkNVpwVKH6gHWo14IirinL0vTDHrffFQiCq4Tv6tcuOnhB0p/UVixGRFXsWPgWpMej8o2W/kgk2FOhQWshk5AjOcVZa7fM3MO4rOeTHik/asrqe60qt/NtNn/wl4lPocAP3h0w4cBdH4jhXNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQgRbzDJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8C5C3277B;
-	Tue,  9 Jul 2024 11:24:31 +0000 (UTC)
+	 MIME-Version; b=VkOM/uaBLl7iYoku1wT9DwNZiu1ZlYfLJoUr9gZNjYpa75Wp+admYt9/c5+5DZiDVHvg5FymUjjWPwLHg1RCm6F/o8M7TfGQZHEtUM7NTIe9nC6Ki681JSbvq0tWy1+H6OxKNZXwrg6aA0UG/mZgbRQ3QthoAx/4DmuePSeaFKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOIzaBnr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D36FC32786;
+	Tue,  9 Jul 2024 11:26:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524272;
-	bh=z92gxD4Aku8jMawbvea7JKWbDCYMk9i3zBly/lukeEY=;
+	s=korg; t=1720524397;
+	bh=u9Xfj/Ajk58n06i206iEB1LpaIm1VEeMirtaFV18L/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kQgRbzDJBfEiyEhZTSOXfVWI3hjqOE2xIDkuMGqFsuGbJMjZzgiZRvB2n8zJSb6VW
-	 HtPQ5kWLpogS7GxrTsD3e/gO1GZhX0mzyLIgoMpy0ziyJbuxv9EET2rsPWswQd242d
-	 LxV3wTKy/NnAprFHlAKWbvpYaGbWM0bZOGLZU+a8=
+	b=qOIzaBnrWTHbhCbpkqRK75RMd+RWOxfGAVjJ7nSRJFyPwcX8Z7+du0JB/CTr5QvH3
+	 5ipOxv61wehjFHFsXM98VhYD4wDXnjgQ36vSlmU4o5B1puDeRSl+MFpKTmxlhFjik7
+	 mcirLRl09b5gVotaco42NrNjTTRLFoG2hiMvZ9Jk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 127/197] inet_diag: Initialize pad field in struct inet_diag_req_v2
-Date: Tue,  9 Jul 2024 13:09:41 +0200
-Message-ID: <20240709110713.869196032@linuxfoundation.org>
+Subject: [PATCH 6.9 128/197] mlxsw: core_linecards: Fix double memory deallocation in case of invalid INI file
+Date: Tue,  9 Jul 2024 13:09:42 +0200
+Message-ID: <20240709110713.907207217@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
 References: <20240709110708.903245467@linuxfoundation.org>
@@ -68,114 +69,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 61cf1c739f08190a4cbf047b9fbb192a94d87e3f ]
+[ Upstream commit 8ce34dccbe8fa7d2ef86f2d8e7db2a9b67cabfc3 ]
 
-KMSAN reported uninit-value access in raw_lookup() [1]. Diag for raw
-sockets uses the pad field in struct inet_diag_req_v2 for the
-underlying protocol. This field corresponds to the sdiag_raw_protocol
-field in struct inet_diag_req_raw.
+In case of invalid INI file mlxsw_linecard_types_init() deallocates memory
+but doesn't reset pointer to NULL and returns 0. In case of any error
+occurred after mlxsw_linecard_types_init() call, mlxsw_linecards_init()
+calls mlxsw_linecard_types_fini() which performs memory deallocation again.
 
-inet_diag_get_exact_compat() converts inet_diag_req to
-inet_diag_req_v2, but leaves the pad field uninitialized. So the issue
-occurs when raw_lookup() accesses the sdiag_raw_protocol field.
+Add pointer reset to NULL.
 
-Fix this by initializing the pad field in
-inet_diag_get_exact_compat(). Also, do the same fix in
-inet_diag_dump_compat() to avoid the similar issue in the future.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-[1]
-BUG: KMSAN: uninit-value in raw_lookup net/ipv4/raw_diag.c:49 [inline]
-BUG: KMSAN: uninit-value in raw_sock_get+0x657/0x800 net/ipv4/raw_diag.c:71
- raw_lookup net/ipv4/raw_diag.c:49 [inline]
- raw_sock_get+0x657/0x800 net/ipv4/raw_diag.c:71
- raw_diag_dump_one+0xa1/0x660 net/ipv4/raw_diag.c:99
- inet_diag_cmd_exact+0x7d9/0x980
- inet_diag_get_exact_compat net/ipv4/inet_diag.c:1404 [inline]
- inet_diag_rcv_msg_compat+0x469/0x530 net/ipv4/inet_diag.c:1426
- sock_diag_rcv_msg+0x23d/0x740 net/core/sock_diag.c:282
- netlink_rcv_skb+0x537/0x670 net/netlink/af_netlink.c:2564
- sock_diag_rcv+0x35/0x40 net/core/sock_diag.c:297
- netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
- netlink_unicast+0xe74/0x1240 net/netlink/af_netlink.c:1361
- netlink_sendmsg+0x10c6/0x1260 net/netlink/af_netlink.c:1905
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg+0x332/0x3d0 net/socket.c:745
- ____sys_sendmsg+0x7f0/0xb70 net/socket.c:2585
- ___sys_sendmsg+0x271/0x3b0 net/socket.c:2639
- __sys_sendmsg net/socket.c:2668 [inline]
- __do_sys_sendmsg net/socket.c:2677 [inline]
- __se_sys_sendmsg net/socket.c:2675 [inline]
- __x64_sys_sendmsg+0x27e/0x4a0 net/socket.c:2675
- x64_sys_call+0x135e/0x3ce0 arch/x86/include/generated/asm/syscalls_64.h:47
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xd9/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Uninit was stored to memory at:
- raw_sock_get+0x650/0x800 net/ipv4/raw_diag.c:71
- raw_diag_dump_one+0xa1/0x660 net/ipv4/raw_diag.c:99
- inet_diag_cmd_exact+0x7d9/0x980
- inet_diag_get_exact_compat net/ipv4/inet_diag.c:1404 [inline]
- inet_diag_rcv_msg_compat+0x469/0x530 net/ipv4/inet_diag.c:1426
- sock_diag_rcv_msg+0x23d/0x740 net/core/sock_diag.c:282
- netlink_rcv_skb+0x537/0x670 net/netlink/af_netlink.c:2564
- sock_diag_rcv+0x35/0x40 net/core/sock_diag.c:297
- netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
- netlink_unicast+0xe74/0x1240 net/netlink/af_netlink.c:1361
- netlink_sendmsg+0x10c6/0x1260 net/netlink/af_netlink.c:1905
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg+0x332/0x3d0 net/socket.c:745
- ____sys_sendmsg+0x7f0/0xb70 net/socket.c:2585
- ___sys_sendmsg+0x271/0x3b0 net/socket.c:2639
- __sys_sendmsg net/socket.c:2668 [inline]
- __do_sys_sendmsg net/socket.c:2677 [inline]
- __se_sys_sendmsg net/socket.c:2675 [inline]
- __x64_sys_sendmsg+0x27e/0x4a0 net/socket.c:2675
- x64_sys_call+0x135e/0x3ce0 arch/x86/include/generated/asm/syscalls_64.h:47
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xd9/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Local variable req.i created at:
- inet_diag_get_exact_compat net/ipv4/inet_diag.c:1396 [inline]
- inet_diag_rcv_msg_compat+0x2a6/0x530 net/ipv4/inet_diag.c:1426
- sock_diag_rcv_msg+0x23d/0x740 net/core/sock_diag.c:282
-
-CPU: 1 PID: 8888 Comm: syz-executor.6 Not tainted 6.10.0-rc4-00217-g35bb670d65fc #32
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
-
-Fixes: 432490f9d455 ("net: ip, diag -- Add diag interface for raw sockets")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240703091649.111773-1-syoshida@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: b217127e5e4e ("mlxsw: core_linecards: Add line card objects and implement provisioning")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Link: https://patch.msgid.link/20240703203251.8871-1-amishin@t-argos.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inet_diag.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/mellanox/mlxsw/core_linecards.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/inet_diag.c b/net/ipv4/inet_diag.c
-index 7adace541fe29..9712cdb8087c2 100644
---- a/net/ipv4/inet_diag.c
-+++ b/net/ipv4/inet_diag.c
-@@ -1383,6 +1383,7 @@ static int inet_diag_dump_compat(struct sk_buff *skb,
- 	req.sdiag_family = AF_UNSPEC; /* compatibility */
- 	req.sdiag_protocol = inet_diag_type2proto(cb->nlh->nlmsg_type);
- 	req.idiag_ext = rc->idiag_ext;
-+	req.pad = 0;
- 	req.idiag_states = rc->idiag_states;
- 	req.id = rc->id;
- 
-@@ -1398,6 +1399,7 @@ static int inet_diag_get_exact_compat(struct sk_buff *in_skb,
- 	req.sdiag_family = rc->idiag_family;
- 	req.sdiag_protocol = inet_diag_type2proto(nlh->nlmsg_type);
- 	req.idiag_ext = rc->idiag_ext;
-+	req.pad = 0;
- 	req.idiag_states = rc->idiag_states;
- 	req.id = rc->id;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c b/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
+index 025e0db983feb..b032d5a4b3b84 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
+@@ -1484,6 +1484,7 @@ static int mlxsw_linecard_types_init(struct mlxsw_core *mlxsw_core,
+ 	vfree(types_info->data);
+ err_data_alloc:
+ 	kfree(types_info);
++	linecards->types_info = NULL;
+ 	return err;
+ }
  
 -- 
 2.43.0
