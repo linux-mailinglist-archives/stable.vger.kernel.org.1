@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-58680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D57D492B829
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:31:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C3B92B7C3
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:26:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1335A1C20A89
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6878D1F24572
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A2F152787;
-	Tue,  9 Jul 2024 11:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD46156238;
+	Tue,  9 Jul 2024 11:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwlxGHTO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ufZjCz1U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380CE55E4C;
-	Tue,  9 Jul 2024 11:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9A627713;
+	Tue,  9 Jul 2024 11:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524671; cv=none; b=NrVuNWk+yzmpV100u4QiPkEWX+EgxguthwFCVak8CEjAbjDZK9m1O/0fIjRAxh/JqXboyVb1PTwS5NhG++dHMbWJecnb4QWQNpERgsokLvi/KfuJWOcpXheJysMtt4zNADdRemKEZMtx9hpdEJAHeDGNck4AtlGpk2Un6dVC8wc=
+	t=1720524403; cv=none; b=fmfXwsg1DxYevIuIoboHENWV1BscystTnQftFF6S4r7Mp5uuTgqzM8R6d3pNt32axTaiRx46FugbqelmAMKvjFem6sOaSQ3GI1HtasmuXEKu74Degs+xF9SCRAkJYILkPj6kFpa79exlL1XBdPbVVZjT37MI/10ULT26v8OPpJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524671; c=relaxed/simple;
-	bh=EPkPRQQSgBxJfJ/lWNKd8bUcMnqd5Sc9Pw874H76MFo=;
+	s=arc-20240116; t=1720524403; c=relaxed/simple;
+	bh=FJADvsO/qheMq8ZV7tdyRTzXaZhkpR+hmEmir2LXwDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MYpDJw0wX0ZruYKdlTOVfzYvozKJRnum8a0FWQBJymLGhjBT57m0LdpmXsD7dLENoSWnfagGROvJ0FRVcQ/9VAKP6rZ98nIVehOyRkhiYr596aV5ynHTOiCUkoQjFWFiRT6tSyhxhQsiUCnpZloyPKrz6XgbI7gFTWgi4KTfsRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwlxGHTO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B07C3277B;
-	Tue,  9 Jul 2024 11:31:10 +0000 (UTC)
+	 MIME-Version; b=sRrxhOucT/gs97MsIvSh7940TIuIAYaZ9uLq3vyPR7y8ky/dtvA1Nus8LkhsM69fzznVvLda3EIC2wFKudKy8v5k+N7aeDuKFKcd8YndgA+GvfzXlfH2eD/vNdf2Y3/QKzYGm09yN/RW4OZ069DvxYGEQjAlzMHnfGdFq3OvgHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ufZjCz1U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12318C3277B;
+	Tue,  9 Jul 2024 11:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524671;
-	bh=EPkPRQQSgBxJfJ/lWNKd8bUcMnqd5Sc9Pw874H76MFo=;
+	s=korg; t=1720524403;
+	bh=FJADvsO/qheMq8ZV7tdyRTzXaZhkpR+hmEmir2LXwDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gwlxGHTOPFV6tlZp6dweTDrjVm+V1z36VlhGAp9TvEt9sse1tlTRbp0chqSPvrVOK
-	 zoRjYbH6rSVyOxen2yOSTdrNZWCZ9DlJWOH898B7R3rme0Xf96UyaciElLNFN8pFCy
-	 tz24A5hawVZCJO+GHO7BVGnofXCQmnYjyex6gdP0=
+	b=ufZjCz1UT5MfYOGFcXdgZRKBTtoYidgfvWY7jVyfzguzs6A3nRxrVZsU5fXwy80CQ
+	 96xmya10q9ReygC8PrPhqspk+VYrv1CKahoH8tKbRhwRr1rnLM/oltPPgbLwCf04Up
+	 2TcXCKNwQpPMpK0OnSgruFxEdodRRO/0bvQJ1O1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Neftin <sasha.neftin@intel.com>,
-	Naama Meir <naamax.meir@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 062/102] Revert "igc: fix a log entry using uninitialized netdev"
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 171/197] clk: qcom: clk-alpha-pll: set ALPHA_EN bit for Stromer Plus PLLs
 Date: Tue,  9 Jul 2024 13:10:25 +0200
-Message-ID: <20240709110653.794960775@linuxfoundation.org>
+Message-ID: <20240709110715.568561061@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sasha Neftin <sasha.neftin@intel.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit 8eef5c3cea65f248c99cd9dcb3f84c6509b78162 upstream.
+[ Upstream commit 5a33a64524e6381c399e5e42571d9363ffc0bed4 ]
 
-This reverts commit 86167183a17e03ec77198897975e9fdfbd53cb0b.
+The clk_alpha_pll_stromer_plus_set_rate() function does not
+sets the ALPHA_EN bit in the USER_CTL register, so setting
+rates which requires using alpha mode works only if the bit
+gets set already prior calling the function.
 
-igc_ptp_init() needs to be called before igc_reset(), otherwise kernel
-crash could be observed. Following the corresponding discussion [1] and
-[2] revert this commit.
+Extend the function to set the ALPHA_EN bit in order to allow
+using fractional rates regardless whether the bit gets set
+previously or not.
 
-Link: https://lore.kernel.org/all/8fb634f8-7330-4cf4-a8ce-485af9c0a61a@intel.com/ [1]
-Link: https://lore.kernel.org/all/87o78rmkhu.fsf@intel.com/ [2]
-Fixes: 86167183a17e ("igc: fix a log entry using uninitialized netdev")
-Signed-off-by: Sasha Neftin <sasha.neftin@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20240611162456.961631-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 84da48921a97 ("clk: qcom: clk-alpha-pll: introduce stromer plus ops")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/r/20240508-stromer-plus-alpha-en-v1-1-6639ce01ca5b@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/clk/qcom/clk-alpha-pll.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6679,6 +6679,8 @@ static int igc_probe(struct pci_dev *pde
- 	device_set_wakeup_enable(&adapter->pdev->dev,
- 				 adapter->flags & IGC_FLAG_WOL_SUPPORTED);
+diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
+index be18ff983d35c..003308a288968 100644
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -2555,6 +2555,9 @@ static int clk_alpha_pll_stromer_plus_set_rate(struct clk_hw *hw,
+ 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
+ 					a >> ALPHA_BITWIDTH);
  
-+	igc_ptp_init(adapter);
++	regmap_update_bits(pll->clkr.regmap, PLL_USER_CTL(pll),
++			   PLL_ALPHA_EN, PLL_ALPHA_EN);
 +
- 	igc_tsn_clear_schedule(adapter);
+ 	regmap_write(pll->clkr.regmap, PLL_MODE(pll), PLL_BYPASSNL);
  
- 	/* reset the hardware with the new settings */
-@@ -6700,9 +6702,6 @@ static int igc_probe(struct pci_dev *pde
- 	/* Check if Media Autosense is enabled */
- 	adapter->ei = *ei;
- 
--	/* do hw tstamp init after resetting */
--	igc_ptp_init(adapter);
--
- 	/* print pcie link status and MAC address */
- 	pcie_print_link_status(pdev);
- 	netdev_info(netdev, "MAC: %pM\n", netdev->dev_addr);
+ 	/* Wait five micro seconds or more */
+-- 
+2.43.0
+
 
 
 
