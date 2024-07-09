@@ -1,57 +1,74 @@
-Return-Path: <stable+bounces-58938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 060D592C443
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 22:01:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 087FC92C480
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 22:27:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35E951C22441
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 20:01:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FDFE1F234F9
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 20:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF90C180040;
-	Tue,  9 Jul 2024 20:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57AC6182A64;
+	Tue,  9 Jul 2024 20:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="edFkEmAE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jIX4fc1V"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9572213CF82;
-	Tue,  9 Jul 2024 20:01:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30C114F108
+	for <stable@vger.kernel.org>; Tue,  9 Jul 2024 20:27:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720555261; cv=none; b=oDp+7SYKaGA90SWvmJs4vB71HnDhwBVWFdDh+Rvhl/bVwQgGa/jaM5sTiYT1/B1F+rvHSyKSOTw1aoDvqELPJ1u0Ann7xjam5TKNBhCXGYRnz2BgGkP7+Tn3VjBxtnk/oJOjjPvU3mJkl+nXyoIC8Fyv45U6jnVei/EBEWgWo44=
+	t=1720556825; cv=none; b=kILqaWSgkcPyiGQuTEwvrtLkTRwvzNE3vRM4l8x6HbLo6vWW5el89TEaIxllIsNrQqDTDnb1AAsl6aflaYLIYf5hQETrELPlrlTH5JIZ7kMewYBCIVbNR5AyW8W1I6XswaX60/NPWRvPITul/cZY7/y41d5MQLryORFbhBAPDlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720555261; c=relaxed/simple;
-	bh=LobDdWxshv37vTxwEBQhAQKllebZbsocJq3rs9CXzgI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iHQLQ1U8zQoKBeY6B5poeSW8Ez0wbbiNZLzkiqfI7F6LCMzZTVzHQpSz6Iq30BvcLLZ/ggWoA+s4zOIu4vgSj5EFVp3rU0kdixO3y47Yrug0LqlZXISXi8w3k90ddPz0QnAM4tlsrNFWCi1ySpuS5VKhSWUgk9nPJZ1LvaRxRw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=edFkEmAE; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1131)
-	id 33CF620B7165; Tue,  9 Jul 2024 13:01:00 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 33CF620B7165
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1720555260;
-	bh=sdaJsz7B9EMQXguHZnzNSXO7wCkHbNCBIqyRwyEgZnc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=edFkEmAEF/h9mTngRoI/aXvmAu/w93H2guZHW+9zo7q+ABZiWVCHdXLxhfsR1WOrN
-	 S1HFl6P52c7OnY/nyzUDEy84vAZL+UCV/D8TzymkfjQAEya3FXmxkMJUz88LXPN7wx
-	 02+4FRNhwz0UvkhBNWBWUmrNGszW50/JJPGV/L9I=
-Date: Tue, 9 Jul 2024 13:01:00 -0700
-From: Kelsey Steele <kelseysteele@linux.microsoft.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.9 000/197] 6.9.9-rc1 review
-Message-ID: <20240709200100.GC28302@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20240709110708.903245467@linuxfoundation.org>
+	s=arc-20240116; t=1720556825; c=relaxed/simple;
+	bh=bP2xl15VQEjy5uCOrZgExPDFRtzdHIoMseZpre+wMuE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=gXqFp40y9eapame6brV24QuygtaJvKvgifee35OP52kVslEJRC4nJ+Ox6eWLyfJ/PzkitU4axHYv4k/QrN6EHwVUjEm1a95cK5ltHgi1vuMkHQlIZKPxwDOsGN3lSeopVyTzGGOnaUJ7j7AoUvOVGndP3G23ceoZvIHWRgPVhGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jIX4fc1V; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720556823; x=1752092823;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=bP2xl15VQEjy5uCOrZgExPDFRtzdHIoMseZpre+wMuE=;
+  b=jIX4fc1VhOFDehaMGYH0wfin8m/gE2SPNwbThZzSTJd/3IKdYgvTXjrd
+   ky4YrCDDFa2fnNxRIydvny0qaXrTqXKnx83amWZe2Bzv9tDoRs3DWdBqK
+   HSfbvWGmtlOIhn8gQfIt2TEOSuztR6tKbdyZOVn6k+WKDdnc4Pd3FeFIM
+   tw7OQTtMdZ4FC0Hyw9knXabDOq5fnw3H8Ahfzj2aKV3zJ7Qi1Yq423cNF
+   yu6VdSpkTkOTp5z8Zh0CYmKk43CLQxui85cVOOGOPbFnEfOheUgbFWpys
+   iseleDimeJ5hdSzwlv/spo3mgZO0kvdI4w/f09s4UMstfsehFTy+L6jHA
+   g==;
+X-CSE-ConnectionGUID: ANwPy3IuRrCV4kcr6ety2Q==
+X-CSE-MsgGUID: XLO/DguDTbiYAXrRS+zWCg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11128"; a="21610926"
+X-IronPort-AV: E=Sophos;i="6.09,196,1716274800"; 
+   d="scan'208";a="21610926"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2024 13:27:02 -0700
+X-CSE-ConnectionGUID: wrN5MLJyQwC1RBiuDVTehA==
+X-CSE-MsgGUID: E3c0BaU2RPqrJC3+/4n/dg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,195,1716274800"; 
+   d="scan'208";a="85507652"
+Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 09 Jul 2024 13:27:01 -0700
+Received: from kbuild by 68891e0c336b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sRHQR-000X4P-0U;
+	Tue, 09 Jul 2024 20:26:59 +0000
+Date: Wed, 10 Jul 2024 04:26:45 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jim Mattson <jmattson@google.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 5.10 RESEND] x86/retpoline: Move a NOENDBR annotation to
+ the SRSO dummy return thunk
+Message-ID: <Zo2dBeaurFmAn9XJ@6724a33121ae>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,23 +77,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+In-Reply-To: <20240709132058.227930-1-jmattson@google.com>
 
-On Tue, Jul 09, 2024 at 01:07:34PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.9.9 release.
-> There are 197 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 11 Jul 2024 11:06:25 +0000.
-> Anything received after that time might be too late.
-> 
-No regressions found on WSL (x86 and arm64).
+Hi,
 
-Built, booted, and reviewed dmesg.
+Thanks for your patch.
 
-Thank you. :)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Tested-by: Kelsey Steele <kelseysteele@linux.microsoft.com> 
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+
+Rule: The upstream commit ID must be specified with a separate line above the commit text.
+Subject: [PATCH 5.10 RESEND] x86/retpoline: Move a NOENDBR annotation to the SRSO dummy return thunk
+Link: https://lore.kernel.org/stable/20240709132058.227930-1-jmattson%40google.com
+
+Please ignore this mail if the patch is not relevant for upstream.
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
+
 
