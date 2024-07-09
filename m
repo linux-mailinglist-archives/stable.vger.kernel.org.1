@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-58541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BEDA92B786
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92BF392B7EB
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:28:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA0A61C22FBD
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EA6C1F2116F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DAB7156F57;
-	Tue,  9 Jul 2024 11:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B83515749B;
+	Tue,  9 Jul 2024 11:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKWd/km6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9yg5dba"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD6D27713;
-	Tue,  9 Jul 2024 11:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B45B27713;
+	Tue,  9 Jul 2024 11:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524249; cv=none; b=PqNxHztJOhBLIXnawIk8eyDuVOndcsh865YT9C0Jh1K6dC4+8h7bbfP+d/eri1gfM1NTGadgMvY1EobGKeLPOKQnW9v/0kvhc453yvFLTtmYQc/2mWzvo+EBT11q1CaFpSW5JpvUQrZNwHwQV8+jUwDTWD7dJz3+HVyQ+4tejDY=
+	t=1720524524; cv=none; b=BB/sjPFmHrwUoIIXCm0IIYnKml+mMXAGc8bQVVkLXbDUbNtdsA0lvloxFYemfm/lIh4kywiHyCbLd/9LLgtJXGc77Qnu3DUnj9n9R3OKxCC4mxVzPzmLnsEHYeqqvCD1xqv5YCDeHRcv00/NFL4Y2RvfdorfyU7g79SCS+EwDAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524249; c=relaxed/simple;
-	bh=260WXWoIPhdZ9eebVZMQ1/2tYckMgI0aY1mToNUDyos=;
+	s=arc-20240116; t=1720524524; c=relaxed/simple;
+	bh=AQyR/z6qOoMtcXu+bOq60n8KZ4C8Yq3CdFY9sKY+T8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S9ECDzWd516RPOtA5uWnF94xTkPUXc2lnIlHPR8gdT33etk+6UhXoW7t8YSnzl5RxcF6K0XvxK6RCsawnrt7BRjCt0M9XCRGwZRqK1hVWSKoSFoA/S4iYMagLMDAhlbisQP38taNjg9MPQvcdMcTkOShWASQ0QIQzzcuQcjTeCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKWd/km6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95052C3277B;
-	Tue,  9 Jul 2024 11:24:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SoVswR1HFNIu7MaoFbmK11dAhoxqM4+LK677TCJrY+BIK5m63rdw5UfsyhR84K9lFbzNo8kUXC/qZvsCEaRjvfyznuTkSiXx2fNezSarrRXEom9bCru/FhjLhRHew0RHAGsTfAWB6IGFpnfuxaeg8jiTtn/HV7mfZgJvj3QtIm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9yg5dba; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2122C32786;
+	Tue,  9 Jul 2024 11:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524249;
-	bh=260WXWoIPhdZ9eebVZMQ1/2tYckMgI0aY1mToNUDyos=;
+	s=korg; t=1720524524;
+	bh=AQyR/z6qOoMtcXu+bOq60n8KZ4C8Yq3CdFY9sKY+T8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FKWd/km61tXAXkj7sdRdO0zXJLGi5F2cYlhDYc9ChmVMRgsX1SHvQc8LVvSlmfit6
-	 jKo7isR3dxpjeaUz5r11t7RxZ9ARyyqqarCw+obbMozlIy2FCa+i/fabGss+U0L152
-	 wGd+CPM6U41XlenTIrKGSkWGKWyVmAQDvHWVVOIc=
+	b=l9yg5dba87n6UbvX1ideXt5N5QXEJrz4mTo8tggNGuz6/Payn2k+Lpz/8zWk66gEn
+	 ws4VI532SGm5gI0yzuv3e4EHiXhKZIqYvGnMZoWK0Axfs14Jd8W6jN41gxRVRFrJCY
+	 /DbcawbEVIEB0V3WfjTIRreUPNE2UyHNMAirQBwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Karol Kolacinski <karol.kolacinski@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.9 120/197] ice: Dont process extts if PTP is disabled
-Date: Tue,  9 Jul 2024 13:09:34 +0200
-Message-ID: <20240709110713.595291564@linuxfoundation.org>
+	Ma Jun <Jun.Ma2@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 012/102] drm/amdgpu: Initialize timestamp for some legacy SOCs
+Date: Tue,  9 Jul 2024 13:09:35 +0200
+Message-ID: <20240709110651.844051176@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit 996422e3230e41468f652d754fefd1bdbcd4604e ]
+[ Upstream commit 2e55bcf3d742a4946d862b86e39e75a95cc6f1c0 ]
 
-The ice_ptp_extts_event() function can race with ice_ptp_release() and
-result in a NULL pointer dereference which leads to a kernel panic.
+Initialize the interrupt timestamp for some legacy SOCs
+to fix the coverity issue "Uninitialized scalar variable"
 
-Panic occurs because the ice_ptp_extts_event() function calls
-ptp_clock_event() with a NULL pointer. The ice driver has already
-released the PTP clock by the time the interrupt for the next external
-timestamp event occurs.
-
-To fix this, modify the ice_ptp_extts_event() function to check the
-PTP state and bail early if PTP is not ready.
-
-Fixes: 172db5f91d5f ("ice: add support for auxiliary input/output pins")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20240702171459.2606611-3-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index ee741a1d13cf0..e983e56b342b7 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -1578,6 +1578,10 @@ void ice_ptp_extts_event(struct ice_pf *pf)
- 	u8 chan, tmr_idx;
- 	u32 hi, lo;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c
+index 9efbc0f7c6bdf..c3da333f09de4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c
+@@ -480,6 +480,14 @@ void amdgpu_irq_dispatch(struct amdgpu_device *adev,
  
-+	/* Don't process timestamp events if PTP is not ready */
-+	if (pf->ptp.state != ICE_PTP_READY)
-+		return;
+ 	entry.ih = ih;
+ 	entry.iv_entry = (const uint32_t *)&ih->ring[ring_index];
 +
- 	tmr_idx = hw->func_caps.ts_func_info.tmr_index_owned;
- 	/* Event time is captured by one of the two matched registers
- 	 *      GLTSYN_EVNT_L: 32 LSB of sampled time event
++	/*
++	 * timestamp is not supported on some legacy SOCs (cik, cz, iceland,
++	 * si and tonga), so initialize timestamp and timestamp_src to 0
++	 */
++	entry.timestamp = 0;
++	entry.timestamp_src = 0;
++
+ 	amdgpu_ih_decode_iv(adev, &entry);
+ 
+ 	trace_amdgpu_iv(ih - &adev->irq.ih, &entry);
 -- 
 2.43.0
 
