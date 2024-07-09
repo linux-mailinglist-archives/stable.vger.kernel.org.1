@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-58379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C391292B6B9
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF9A92B827
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:31:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EE782825F8
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:16:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 062AD1F21D8B
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3204B158D78;
-	Tue,  9 Jul 2024 11:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857E3154C07;
+	Tue,  9 Jul 2024 11:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rWgt8SCJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JyeCSOmr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E306C158875;
-	Tue,  9 Jul 2024 11:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4287955E4C;
+	Tue,  9 Jul 2024 11:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523758; cv=none; b=FOsHU8BSqaLOfJrkkqzVG45rxOsfjx1xiFo0Yix++1iZi6zqnsjRZepfTl+P0lyP0kd18tE3ETpPps+T7QgkTWXJyR3GzHirUvMTwD2oj3bpKhCBYm5XgyTn+SS/3HiSKZKN6U2FlsV8EqyDbTnCLC49+uVSB2+puQe8zEF18VU=
+	t=1720524665; cv=none; b=ZOLMQ7lvWVIlD0SUw4Ht2/UgxsFueRY059Dwtim698JjDxtdM03xwJ/10LoRXsqgVfE3psJd/02mRJquN6Q2CC4dtJH4/SV1XYCdfAxd5oQb/FICX95Ay3HJXTMU7FaLQrIO6b1oMkJuW3sLJWZK72E6ws7O++7rJVtuX6yamQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523758; c=relaxed/simple;
-	bh=zYtDnhY2OzeEAceTkKGXJi39q1h6XpYDrzOicOkzF1o=;
+	s=arc-20240116; t=1720524665; c=relaxed/simple;
+	bh=MyyIRYSLPZPDGKwjnHK+OE+rqPVJ8uribqMdR0y/MaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5V1AmM6m/0BoHbvjwND1amrc+JIgZEKkM8E8DlvPODYiuYh26Mb2ldJo0OYscVrnMNdqPnMWK1MYnmSTeE5gdNGWhQQxbxGXb4fbCdp8ELzduqIixjQyb8FRfyshT8Xm7e7hs9eY3wxBHlJUie/hSoLOnqpfFCxDeVO3EHyJgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rWgt8SCJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B5FFC3277B;
-	Tue,  9 Jul 2024 11:15:56 +0000 (UTC)
+	 MIME-Version; b=p0pcVXpvX1zMeFcwmxRX0Q/3Cl/DTHL28r6g9LpHmMc9Lwudd583fAf8JM7AYfqcuDLIgottPl6QJXIpPxGsWRC6lPI2uhmU2RE8nOQB6dvgC8P/t6iuJ2TZRr588vIly5Bo/y3TIAImszeT1r4J4B8eZQJEJYA2deKx1faLajs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JyeCSOmr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF5A9C3277B;
+	Tue,  9 Jul 2024 11:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523757;
-	bh=zYtDnhY2OzeEAceTkKGXJi39q1h6XpYDrzOicOkzF1o=;
+	s=korg; t=1720524665;
+	bh=MyyIRYSLPZPDGKwjnHK+OE+rqPVJ8uribqMdR0y/MaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rWgt8SCJzt4Q0OPOptE8yJYHCwmzFbvDr7NP3nAzRTVjiv3r16EjsmFrdlSmQKHZz
-	 dsKNjWHOG2fxvSAiWG5Mo/sHQe0q++3kml43k9mMN+wDJsB8rmB/dW9rWnLD1AAG8G
-	 9SSXRTzPHtUT0k/sGyxmYsf171EOegpOgpdqnkKs=
+	b=JyeCSOmrDR5bviC66BqTr0TGXMaM4vWY3Ar2rxBmaqnZ3ttqE5vfS78GXm2Yr6FqQ
+	 oexPgrZE/tyZCKYU7w13BlnfOZJ0SLLPASonvXFRd1N+mT9mvgpty/oW/NPLifS5hm
+	 u5J5ljYKwfztLSrESmXBy7MO+tEgIH18Jl6qx+0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Sun <samsun1006219@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jay Vosburgh <jay.vosburgh@canonical.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Erick Archer <erick.archer@outlook.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Kees Cook <keescook@chromium.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 081/139] bonding: Fix out-of-bounds read in bond_option_arp_ip_targets_set()
+Subject: [PATCH 6.1 018/102] sctp: prefer struct_size over open coded arithmetic
 Date: Tue,  9 Jul 2024 13:09:41 +0200
-Message-ID: <20240709110701.306878512@linuxfoundation.org>
+Message-ID: <20240709110652.078349048@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Sun <samsun1006219@gmail.com>
+From: Erick Archer <erick.archer@outlook.com>
 
-[ Upstream commit e271ff53807e8f2c628758290f0e499dbe51cb3d ]
+[ Upstream commit e5c5f3596de224422561d48eba6ece5210d967b3 ]
 
-In function bond_option_arp_ip_targets_set(), if newval->string is an
-empty string, newval->string+1 will point to the byte after the
-string, causing an out-of-bound read.
+This is an effort to get rid of all multiplications from allocation
+functions in order to prevent integer overflows [1][2].
 
-BUG: KASAN: slab-out-of-bounds in strlen+0x7d/0xa0 lib/string.c:418
-Read of size 1 at addr ffff8881119c4781 by task syz-executor665/8107
-CPU: 1 PID: 8107 Comm: syz-executor665 Not tainted 6.7.0-rc7 #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xd9/0x150 lib/dump_stack.c:106
- print_address_description mm/kasan/report.c:364 [inline]
- print_report+0xc1/0x5e0 mm/kasan/report.c:475
- kasan_report+0xbe/0xf0 mm/kasan/report.c:588
- strlen+0x7d/0xa0 lib/string.c:418
- __fortify_strlen include/linux/fortify-string.h:210 [inline]
- in4_pton+0xa3/0x3f0 net/core/utils.c:130
- bond_option_arp_ip_targets_set+0xc2/0x910
-drivers/net/bonding/bond_options.c:1201
- __bond_opt_set+0x2a4/0x1030 drivers/net/bonding/bond_options.c:767
- __bond_opt_set_notify+0x48/0x150 drivers/net/bonding/bond_options.c:792
- bond_opt_tryset_rtnl+0xda/0x160 drivers/net/bonding/bond_options.c:817
- bonding_sysfs_store_option+0xa1/0x120 drivers/net/bonding/bond_sysfs.c:156
- dev_attr_store+0x54/0x80 drivers/base/core.c:2366
- sysfs_kf_write+0x114/0x170 fs/sysfs/file.c:136
- kernfs_fop_write_iter+0x337/0x500 fs/kernfs/file.c:334
- call_write_iter include/linux/fs.h:2020 [inline]
- new_sync_write fs/read_write.c:491 [inline]
- vfs_write+0x96a/0xd80 fs/read_write.c:584
- ksys_write+0x122/0x250 fs/read_write.c:637
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x40/0x110 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
----[ end trace ]---
+As the "ids" variable is a pointer to "struct sctp_assoc_ids" and this
+structure ends in a flexible array:
 
-Fix it by adding a check of string length before using it.
+struct sctp_assoc_ids {
+	[...]
+	sctp_assoc_t	gaids_assoc_id[];
+};
 
-Fixes: f9de11a16594 ("bonding: add ip checks when store ip target")
-Signed-off-by: Yue Sun <samsun1006219@gmail.com>
-Signed-off-by: Simon Horman <horms@kernel.org>
-Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20240702-bond-oob-v6-1-2dfdba195c19@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+the preferred way in the kernel is to use the struct_size() helper to
+do the arithmetic instead of the calculation "size + size * count" in
+the kmalloc() function.
+
+Also, refactor the code adding the "ids_size" variable to avoid sizing
+twice.
+
+This way, the code is more readable and safer.
+
+This code was detected with the help of Coccinelle, and audited and
+modified manually.
+
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments [1]
+Link: https://github.com/KSPP/linux/issues/160 [2]
+Signed-off-by: Erick Archer <erick.archer@outlook.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/PAXPR02MB724871DB78375AB06B5171C88B152@PAXPR02MB7248.eurprd02.prod.outlook.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_options.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/sctp/socket.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index f3f27f0bd2a6c..00a662f8edd6b 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -1198,9 +1198,9 @@ static int bond_option_arp_ip_targets_set(struct bonding *bond,
- 	__be32 target;
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 237a6b04adf6f..9689d2f2d91f9 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -7116,6 +7116,7 @@ static int sctp_getsockopt_assoc_ids(struct sock *sk, int len,
+ 	struct sctp_sock *sp = sctp_sk(sk);
+ 	struct sctp_association *asoc;
+ 	struct sctp_assoc_ids *ids;
++	size_t ids_size;
+ 	u32 num = 0;
  
- 	if (newval->string) {
--		if (!in4_pton(newval->string+1, -1, (u8 *)&target, -1, NULL)) {
--			netdev_err(bond->dev, "invalid ARP target %pI4 specified\n",
--				   &target);
-+		if (strlen(newval->string) < 1 ||
-+		    !in4_pton(newval->string + 1, -1, (u8 *)&target, -1, NULL)) {
-+			netdev_err(bond->dev, "invalid ARP target specified\n");
- 			return ret;
- 		}
- 		if (newval->string[0] == '+')
+ 	if (sctp_style(sk, TCP))
+@@ -7128,11 +7129,11 @@ static int sctp_getsockopt_assoc_ids(struct sock *sk, int len,
+ 		num++;
+ 	}
+ 
+-	if (len < sizeof(struct sctp_assoc_ids) + sizeof(sctp_assoc_t) * num)
++	ids_size = struct_size(ids, gaids_assoc_id, num);
++	if (len < ids_size)
+ 		return -EINVAL;
+ 
+-	len = sizeof(struct sctp_assoc_ids) + sizeof(sctp_assoc_t) * num;
+-
++	len = ids_size;
+ 	ids = kmalloc(len, GFP_USER | __GFP_NOWARN);
+ 	if (unlikely(!ids))
+ 		return -ENOMEM;
 -- 
 2.43.0
 
