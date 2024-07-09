@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-58675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6790692B823
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:31:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A52D92B6CF
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:17:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13B431F223FB
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:31:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E97F81F24213
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B4E1586C4;
-	Tue,  9 Jul 2024 11:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96428158870;
+	Tue,  9 Jul 2024 11:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYe0J7bp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MvoLToOj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8418B156238;
-	Tue,  9 Jul 2024 11:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F5514EC4D;
+	Tue,  9 Jul 2024 11:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524656; cv=none; b=aJ/WiunOmQRv+w2DFD6xmOsUlZ5vQHGgndikHRc++b4pjTxiUcc0siKfjNuqH3UrPQcWdk+CloElWrh0fQVYZkG6+U9MjoKAWdIeWRVNHzQMXW51M3f5FA7sTy6oOuPSTzx3SHxwcUiGAToudknT0NMuQ+JGzWP8/ciORSuKXKY=
+	t=1720523816; cv=none; b=jFB8ebBPI9b6qGIeayeeNlWy9Ry8zdKtFhZ2IeuQFGwsoozC8X6jpadpf+MU2z0d+rluLNOU2kqOZHbBivypD2jcI0v5RrosESDNrZS7rOj2mwvwnnXjBnWTCg4Rj0I788wtUWFSGMG90B0mIWR56jVNX+rAhH+PWi75eOgQCKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524656; c=relaxed/simple;
-	bh=C4JP3cK3jo2IqtunvQIxaQ86KyaGvje/UgJrAihkKDY=;
+	s=arc-20240116; t=1720523816; c=relaxed/simple;
+	bh=jgBklmfswPS+iTvQUAjaDIutwJ7IKrrsZailLd6RWqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RoiiCGNwzRVqcIs5EAq9eBVul5jzqr3+jHNygp22w4K3pI/62FWLttGRMKKhUk1pDmU6nK0YuTW7yNOE3guzioYrq7nFCSlSKoOfLICC7REmB/eDKucriBe9HDp2Vop3nyUQDDRrJBfXZItOqQ+dZeJHsEMFpOkmZpiuwRZYJrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYe0J7bp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A9B7C3277B;
-	Tue,  9 Jul 2024 11:30:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jka6JKM4x5aooUl35J2uTNL/4d6pNuSjm4LmdL4d4QeM9OPVBiVEZSDHDZKFfxKPqaT7yz2A83mnq0BnTNi8owHdG2HviECOsv21Hodr29cVJv+XvkgF8qRf70dgOlPLjOZIMhEUW5kXwdw50oaI1ter88R80Ivj+vVYy1dngQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MvoLToOj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDDD5C3277B;
+	Tue,  9 Jul 2024 11:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524656;
-	bh=C4JP3cK3jo2IqtunvQIxaQ86KyaGvje/UgJrAihkKDY=;
+	s=korg; t=1720523816;
+	bh=jgBklmfswPS+iTvQUAjaDIutwJ7IKrrsZailLd6RWqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mYe0J7bprwQh5ER3RpeqNlAoPeKRQ9n3nMf/wJ0gYqEC+kMLHViPrIBKfGQFcr5Jv
-	 0pq+mIVuhR1P3bidd4gAKZN0AdaG5tVD9CMsWj63dnk5Sp4nMZ6ek+cuumEt7Hr4Bo
-	 MXvfyxUMS6hG2Mh2gx1IdMdTAGlHd01ReTTcfIUE=
+	b=MvoLToOjMbcwycmwKzsrrRPiYyIUq1xWl9uQf/Xj8RcW5ni+hdf5Vz1U9Bw3SuT2K
+	 JAvvLsJFhagjAEwlDsmEfNHTfcxFVV79gEVToSikZCb+MaLlNX3SOGUI7dKagsfM/g
+	 kTHrxSLcHikDfK27QQrxHe4qozdVUNqrsb18bPAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 025/102] media: s2255: Use refcount_t instead of atomic_t for num_channels
+	kemal <kmal@cock.li>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.6 088/139] platform/x86: toshiba_acpi: Fix quickstart quirk handling
 Date: Tue,  9 Jul 2024 13:09:48 +0200
-Message-ID: <20240709110652.348279663@linuxfoundation.org>
+Message-ID: <20240709110701.578157868@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,116 +60,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 6cff72f6bcee89228a662435b7c47e21a391c8d0 ]
+commit e527a6127223b644e0a27b44f4b16e16eb6c7f0a upstream.
 
-Use an API that resembles more the actual use of num_channels.
+The global hci_hotkey_quickstart quirk flag is tested in
+toshiba_acpi_enable_hotkeys() before the quirk flag is properly
+initialized based on SMBIOS data. This causes the quirk to be
+applied to all models, some of which behave erratically as a
+result.
 
-Found by cocci:
-drivers/media/usb/s2255/s2255drv.c:2362:5-24: WARNING: atomic_dec_and_test variation before object free at line 2363.
-drivers/media/usb/s2255/s2255drv.c:1557:5-24: WARNING: atomic_dec_and_test variation before object free at line 1558.
+Fix this by initializing the global quirk flags during module
+initialization before registering the ACPI driver. This also
+allows us to mark toshiba_dmi_quirks[] as __initconst.
 
-Link: https://lore.kernel.org/linux-media/20240429-fix-cocci-v3-11-3c4865f5a4b0@chromium.org
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 23f1d8b47d12 ("platform/x86: toshiba_acpi: Add quirk for buttons on Z830")
+Reported-by: kemal <kmal@cock.li>
+Closes: https://lore.kernel.org/platform-driver-x86/R4CYFS.TWB8QUU2SHWI1@cock.li/
+Tested-by: kemal <kmal@cock.li>
+Cc: stable@vger.kernel.org
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20240701194539.348937-1-W_Armin@gmx.de
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/s2255/s2255drv.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/platform/x86/toshiba_acpi.c |   31 ++++++++++++++++++-------------
+ 1 file changed, 18 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/media/usb/s2255/s2255drv.c b/drivers/media/usb/s2255/s2255drv.c
-index acf18e2251a52..6c9870541c53d 100644
---- a/drivers/media/usb/s2255/s2255drv.c
-+++ b/drivers/media/usb/s2255/s2255drv.c
-@@ -247,7 +247,7 @@ struct s2255_vc {
- struct s2255_dev {
- 	struct s2255_vc         vc[MAX_CHANNELS];
- 	struct v4l2_device      v4l2_dev;
--	atomic_t                num_channels;
-+	refcount_t		num_channels;
- 	int			frames;
- 	struct mutex		lock;	/* channels[].vdev.lock */
- 	struct mutex		cmdlock; /* protects cmdbuf */
-@@ -1550,11 +1550,11 @@ static void s2255_video_device_release(struct video_device *vdev)
- 		container_of(vdev, struct s2255_vc, vdev);
+--- a/drivers/platform/x86/toshiba_acpi.c
++++ b/drivers/platform/x86/toshiba_acpi.c
+@@ -3275,7 +3275,7 @@ static const char *find_hci_method(acpi_
+  */
+ #define QUIRK_HCI_HOTKEY_QUICKSTART		BIT(1)
  
- 	dprintk(dev, 4, "%s, chnls: %d\n", __func__,
--		atomic_read(&dev->num_channels));
-+		refcount_read(&dev->num_channels));
+-static const struct dmi_system_id toshiba_dmi_quirks[] = {
++static const struct dmi_system_id toshiba_dmi_quirks[] __initconst = {
+ 	{
+ 	 /* Toshiba Portégé R700 */
+ 	 /* https://bugzilla.kernel.org/show_bug.cgi?id=21012 */
+@@ -3310,8 +3310,6 @@ static int toshiba_acpi_add(struct acpi_
+ 	struct toshiba_acpi_dev *dev;
+ 	const char *hci_method;
+ 	u32 dummy;
+-	const struct dmi_system_id *dmi_id;
+-	long quirks = 0;
+ 	int ret = 0;
  
- 	v4l2_ctrl_handler_free(&vc->hdl);
- 
--	if (atomic_dec_and_test(&dev->num_channels))
-+	if (refcount_dec_and_test(&dev->num_channels))
- 		s2255_destroy(dev);
- 	return;
- }
-@@ -1659,7 +1659,7 @@ static int s2255_probe_v4l(struct s2255_dev *dev)
- 				"failed to register video device!\n");
- 			break;
- 		}
--		atomic_inc(&dev->num_channels);
-+		refcount_inc(&dev->num_channels);
- 		v4l2_info(&dev->v4l2_dev, "V4L2 device registered as %s\n",
- 			  video_device_node_name(&vc->vdev));
- 
-@@ -1667,11 +1667,11 @@ static int s2255_probe_v4l(struct s2255_dev *dev)
- 	pr_info("Sensoray 2255 V4L driver Revision: %s\n",
- 		S2255_VERSION);
- 	/* if no channels registered, return error and probe will fail*/
--	if (atomic_read(&dev->num_channels) == 0) {
-+	if (refcount_read(&dev->num_channels) == 0) {
- 		v4l2_device_unregister(&dev->v4l2_dev);
- 		return ret;
+ 	if (toshiba_acpi)
+@@ -3464,16 +3462,6 @@ iio_error:
  	}
--	if (atomic_read(&dev->num_channels) != MAX_CHANNELS)
-+	if (refcount_read(&dev->num_channels) != MAX_CHANNELS)
- 		pr_warn("s2255: Not all channels available.\n");
- 	return 0;
- }
-@@ -2220,7 +2220,7 @@ static int s2255_probe(struct usb_interface *interface,
- 		goto errorFWDATA1;
- 	}
+ #endif
  
--	atomic_set(&dev->num_channels, 0);
-+	refcount_set(&dev->num_channels, 0);
- 	dev->pid = id->idProduct;
- 	dev->fw_data = kzalloc(sizeof(struct s2255_fw), GFP_KERNEL);
- 	if (!dev->fw_data)
-@@ -2340,12 +2340,12 @@ static void s2255_disconnect(struct usb_interface *interface)
+-	dmi_id = dmi_first_match(toshiba_dmi_quirks);
+-	if (dmi_id)
+-		quirks = (long)dmi_id->driver_data;
+-
+-	if (turn_on_panel_on_resume == -1)
+-		turn_on_panel_on_resume = !!(quirks & QUIRK_TURN_ON_PANEL_ON_RESUME);
+-
+-	if (hci_hotkey_quickstart == -1)
+-		hci_hotkey_quickstart = !!(quirks & QUIRK_HCI_HOTKEY_QUICKSTART);
+-
+ 	toshiba_wwan_available(dev);
+ 	if (dev->wwan_supported)
+ 		toshiba_acpi_setup_wwan_rfkill(dev);
+@@ -3622,10 +3610,27 @@ static struct acpi_driver toshiba_acpi_d
+ 	.drv.pm	= &toshiba_acpi_pm,
+ };
+ 
++static void __init toshiba_dmi_init(void)
++{
++	const struct dmi_system_id *dmi_id;
++	long quirks = 0;
++
++	dmi_id = dmi_first_match(toshiba_dmi_quirks);
++	if (dmi_id)
++		quirks = (long)dmi_id->driver_data;
++
++	if (turn_on_panel_on_resume == -1)
++		turn_on_panel_on_resume = !!(quirks & QUIRK_TURN_ON_PANEL_ON_RESUME);
++
++	if (hci_hotkey_quickstart == -1)
++		hci_hotkey_quickstart = !!(quirks & QUIRK_HCI_HOTKEY_QUICKSTART);
++}
++
+ static int __init toshiba_acpi_init(void)
  {
- 	struct s2255_dev *dev = to_s2255_dev(usb_get_intfdata(interface));
- 	int i;
--	int channels = atomic_read(&dev->num_channels);
-+	int channels = refcount_read(&dev->num_channels);
- 	mutex_lock(&dev->lock);
- 	v4l2_device_disconnect(&dev->v4l2_dev);
- 	mutex_unlock(&dev->lock);
- 	/*see comments in the uvc_driver.c usb disconnect function */
--	atomic_inc(&dev->num_channels);
-+	refcount_inc(&dev->num_channels);
- 	/* unregister each video device. */
- 	for (i = 0; i < channels; i++)
- 		video_unregister_device(&dev->vc[i].vdev);
-@@ -2358,7 +2358,7 @@ static void s2255_disconnect(struct usb_interface *interface)
- 		dev->vc[i].vidstatus_ready = 1;
- 		wake_up(&dev->vc[i].wait_vidstatus);
- 	}
--	if (atomic_dec_and_test(&dev->num_channels))
-+	if (refcount_dec_and_test(&dev->num_channels))
- 		s2255_destroy(dev);
- 	dev_info(&interface->dev, "%s\n", __func__);
- }
--- 
-2.43.0
-
+ 	int ret;
+ 
++	toshiba_dmi_init();
+ 	toshiba_proc_dir = proc_mkdir(PROC_TOSHIBA, acpi_root_dir);
+ 	if (!toshiba_proc_dir) {
+ 		pr_err("Unable to create proc dir " PROC_TOSHIBA "\n");
 
 
 
