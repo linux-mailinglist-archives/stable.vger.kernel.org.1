@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-58500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 839DB92B759
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3CBF92B662
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:12:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4E5C1C22F78
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 317BB1C227C4
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:12:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D563F158D97;
-	Tue,  9 Jul 2024 11:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA64158205;
+	Tue,  9 Jul 2024 11:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFY6GMIB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFBItXrf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93465158A29;
-	Tue,  9 Jul 2024 11:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F41156F45;
+	Tue,  9 Jul 2024 11:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524128; cv=none; b=sYVjvGFL6rYJa3D6W8ppssbSgf7iy5T66JqLn+qO22S4Nvp5nU23n8oahVN6dWDxUW1NXv63nXjNp10BFnGr41kAb4DSKW5L0wrSjxXraJuF+//ACRAltNAM9VPR+3fgjQRA/2Dnr4HFTZggi1WmD1HD98T1IalybHZ2NSDc8Ik=
+	t=1720523567; cv=none; b=OZr48EyqhHK5HnyV2lLCs7jku7+MJaecbYdTRqiX1quy+D5SJIFNY09n6T1onO0XTo0qX9EhwXX+wkwe1pm2k2hYP0zuD8AC4xmtWDOJk/Pdj4RGC2/xsEzOW0lXUn6QPg5w76D6yZKUDOhu5Ao88BzkutK3b2dDTIRrHRD0etk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524128; c=relaxed/simple;
-	bh=zPsOZJ2aKSGb71pwbPwBT+HB8iueNflTrDUm18nQbrQ=;
+	s=arc-20240116; t=1720523567; c=relaxed/simple;
+	bh=uWkQFVG1R8PA+DPEZc9JFKyBGHNSBBSqYHaiTS2W+PY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rTaukVz/i29eKzn90SA9XzcSuQ+mEc7gcjptDs+q+48sac4ww4ne1sbiwyD6STRO4Nrpp6go8dGUjXAQVVfu6aMKWB9eKcDFPk95thP4pbdH6C6EikS0Zn0BSfiY4v1/1HXVlLE/3cG8pxPWiT0AD6FfsOglQqwN3geio/EIuZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFY6GMIB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B089C3277B;
-	Tue,  9 Jul 2024 11:22:07 +0000 (UTC)
+	 MIME-Version; b=pTwufQo32nB1b8Bb1iewltSUU8b12nqY+Jd5oSlcJBnBxdFa/mXJuOIF6stWCDO396y0vJ/fHJ5jRaMId8SrblXVUpr00AODssdi9zgverZf/PoL7nsi0v38Oh+ZPduqoprNMBTgKnsfNezruPLATRAyx080aA7ukS6PW6f4vAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFBItXrf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C1CC3277B;
+	Tue,  9 Jul 2024 11:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524128;
-	bh=zPsOZJ2aKSGb71pwbPwBT+HB8iueNflTrDUm18nQbrQ=;
+	s=korg; t=1720523567;
+	bh=uWkQFVG1R8PA+DPEZc9JFKyBGHNSBBSqYHaiTS2W+PY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GFY6GMIBj8qk+Lr2/j7PY+t6j4lT74SghEwZElBkFKDpdmcJyl/wVyo4s0yAwCKA8
-	 IhsKniwpNgA6Y/S6cY2uBM8GOvQbdn4svWDhvPpaH3m3x3kQCKX+EDei7XTzXszReN
-	 NpzdOYvXCYm1QVnAz6oyKTgJYuY10thXkfIcm0is=
+	b=GFBItXrf020PyTZnBga5jU2QzqBq2zibUSI2cLvj2oAFCfAO5sLj/sf6DkEkoWmEz
+	 mffQdsz8SedzEUB541/J7zqP0nadeD/9VLfKVUSST8g9xoHdkBsbI5dK8faWBvLVGl
+	 1J2U4JicKnjpcUnTXk73CWwd7l5k1V5uLGvOgem0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>,
-	Len Brown <len.brown@intel.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 080/197] tools/power turbostat: Avoid possible memory corruption due to sparse topology IDs
-Date: Tue,  9 Jul 2024 13:08:54 +0200
-Message-ID: <20240709110712.065083819@linuxfoundation.org>
+Subject: [PATCH 6.6 035/139] net: dsa: mv88e6xxx: Correct check for empty list
+Date: Tue,  9 Jul 2024 13:08:55 +0200
+Message-ID: <20240709110659.520398560@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+References: <20240709110658.146853929@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,137 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 3559ea813ad3a9627934325c68ad05b18008a077 ]
+[ Upstream commit 4c7f3950a9fd53a62b156c0fe7c3a2c43b0ba19b ]
 
-Save the highest core and package id when parsing topology to
-allocate enough memory when get_rapl_counters() is called with a core or
-a package id as a domain.
+Since commit a3c53be55c95 ("net: dsa: mv88e6xxx: Support multiple MDIO
+busses") mv88e6xxx_default_mdio_bus() has checked that the
+return value of list_first_entry() is non-NULL.
 
-Note that RAPL domains are per-package on Intel, but per-core on AMD.
-Thus, the RAPL code effectively runs in different modes on those two
-product lines.
+This appears to be intended to guard against the list chip->mdios being
+empty.  However, it is not the correct check as the implementation of
+list_first_entry is not designed to return NULL for empty lists.
 
-Signed-off-by: Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>
-Signed-off-by: Len Brown <len.brown@intel.com>
+Instead, use list_first_entry_or_null() which does return NULL if the
+list is empty.
+
+Flagged by Smatch.
+Compile tested only.
+
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240430-mv88e6xx-list_empty-v3-1-c35c69d88d2e@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 25417c3a47ab6..5d80d193e5bee 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -1022,6 +1022,7 @@ struct rapl_counter_info_t {
- 
- /* struct rapl_counter_info_t for each RAPL domain */
- struct rapl_counter_info_t *rapl_counter_info_perdomain;
-+unsigned int rapl_counter_info_perdomain_size;
- 
- #define RAPL_COUNTER_FLAG_USE_MSR_SUM (1u << 1)
- 
-@@ -1415,6 +1416,8 @@ struct topo_params {
- 	int allowed_cpus;
- 	int allowed_cores;
- 	int max_cpu_num;
-+	int max_core_id;
-+	int max_package_id;
- 	int max_die_id;
- 	int max_node_num;
- 	int nodes_per_pkg;
-@@ -3369,15 +3372,18 @@ void write_rapl_counter(struct rapl_counter *rc, struct rapl_counter_info_t *rci
- 	rc->scale = rci->scale[idx];
- }
- 
--int get_rapl_counters(int cpu, int domain, struct core_data *c, struct pkg_data *p)
-+int get_rapl_counters(int cpu, unsigned int domain, struct core_data *c, struct pkg_data *p)
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 9571e1b1e59ef..354d4af134562 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -131,8 +131,8 @@ struct mii_bus *mv88e6xxx_default_mdio_bus(struct mv88e6xxx_chip *chip)
  {
- 	unsigned long long perf_data[NUM_RAPL_COUNTERS + 1];
--	struct rapl_counter_info_t *rci = &rapl_counter_info_perdomain[domain];
-+	struct rapl_counter_info_t *rci;
+ 	struct mv88e6xxx_mdio_bus *mdio_bus;
  
- 	if (debug)
- 		fprintf(stderr, "%s: cpu%d domain%d\n", __func__, cpu, domain);
+-	mdio_bus = list_first_entry(&chip->mdios, struct mv88e6xxx_mdio_bus,
+-				    list);
++	mdio_bus = list_first_entry_or_null(&chip->mdios,
++					    struct mv88e6xxx_mdio_bus, list);
+ 	if (!mdio_bus)
+ 		return NULL;
  
- 	assert(rapl_counter_info_perdomain);
-+	assert(domain < rapl_counter_info_perdomain_size);
-+
-+	rci = &rapl_counter_info_perdomain[domain];
- 
- 	/*
- 	 * If we have any perf counters to read, read them all now, in bulk
-@@ -4181,7 +4187,7 @@ void free_fd_rapl_percpu(void)
- 	if (!rapl_counter_info_perdomain)
- 		return;
- 
--	const int num_domains = platform->has_per_core_rapl ? topo.num_cores : topo.num_packages;
-+	const int num_domains = rapl_counter_info_perdomain_size;
- 
- 	for (int domain_id = 0; domain_id < num_domains; ++domain_id) {
- 		if (rapl_counter_info_perdomain[domain_id].fd_perf != -1)
-@@ -4189,6 +4195,8 @@ void free_fd_rapl_percpu(void)
- 	}
- 
- 	free(rapl_counter_info_perdomain);
-+	rapl_counter_info_perdomain = NULL;
-+	rapl_counter_info_perdomain_size = 0;
- }
- 
- void free_all_buffers(void)
-@@ -6479,17 +6487,18 @@ void linux_perf_init(void)
- 
- void rapl_perf_init(void)
- {
--	const int num_domains = platform->has_per_core_rapl ? topo.num_cores : topo.num_packages;
-+	const unsigned int num_domains = (platform->has_per_core_rapl ? topo.max_core_id : topo.max_package_id) + 1;
- 	bool *domain_visited = calloc(num_domains, sizeof(bool));
- 
- 	rapl_counter_info_perdomain = calloc(num_domains, sizeof(*rapl_counter_info_perdomain));
- 	if (rapl_counter_info_perdomain == NULL)
- 		err(-1, "calloc rapl_counter_info_percpu");
-+	rapl_counter_info_perdomain_size = num_domains;
- 
- 	/*
- 	 * Initialize rapl_counter_info_percpu
- 	 */
--	for (int domain_id = 0; domain_id < num_domains; ++domain_id) {
-+	for (unsigned int domain_id = 0; domain_id < num_domains; ++domain_id) {
- 		struct rapl_counter_info_t *rci = &rapl_counter_info_perdomain[domain_id];
- 
- 		rci->fd_perf = -1;
-@@ -6509,7 +6518,7 @@ void rapl_perf_init(void)
- 		bool has_counter = 0;
- 		double scale;
- 		enum rapl_unit unit;
--		int next_domain;
-+		unsigned int next_domain;
- 
- 		memset(domain_visited, 0, num_domains * sizeof(*domain_visited));
- 
-@@ -6522,6 +6531,8 @@ void rapl_perf_init(void)
- 			next_domain =
- 			    platform->has_per_core_rapl ? cpus[cpu].physical_core_id : cpus[cpu].physical_package_id;
- 
-+			assert(next_domain < num_domains);
-+
- 			if (domain_visited[next_domain])
- 				continue;
- 
-@@ -7104,6 +7115,8 @@ void topology_probe(bool startup)
- 		if (cpus[i].thread_id == 0)
- 			topo.num_cores++;
- 	}
-+	topo.max_core_id = max_core_id;
-+	topo.max_package_id = max_package_id;
- 
- 	topo.cores_per_node = max_core_id + 1;
- 	if (debug > 1)
 -- 
 2.43.0
 
