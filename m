@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-58351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6743F92B689
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:14:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07E1D92B7FE
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:29:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC433B24160
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:14:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A734F1F21CBC
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:29:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F663158202;
-	Tue,  9 Jul 2024 11:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D42B11586C6;
+	Tue,  9 Jul 2024 11:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGk80Jhd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqDHzMK5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1514157A48;
-	Tue,  9 Jul 2024 11:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90630146D53;
+	Tue,  9 Jul 2024 11:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523672; cv=none; b=Psq6N1/feRPeSkC5MkShL9Ja7AbUJZAEjC9cRb8AETl6Sv82c0U60Aa2WBTIMZT9jjOw8wxQ7Kg2OLqlSaccyitE4ieV9OvoG23XVcbm8QUgymxXu8HITks4cqjk2yat4+qYqJ3mFgif+0aGTZb0LJGu4Palzx2MSdAoDPoj0Ko=
+	t=1720524559; cv=none; b=uOOBPS3ZKvBVZaKNTUty8gWZLCv3lEaP+lf9jcD9mIT1UqCjmmrVSFgjec6wp/p7CGPgQQLsh0ObTy4k6ft/0L+eJceevHIZpoGGm+C7/mpw2/SMWOiKym44LTPFe3bWTFEpTLFl3fTkkAA+BeIX4Pomy24aYew7BLgX1gDerOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523672; c=relaxed/simple;
-	bh=uKqvlnI9N5m6eeDQfKRVPn8Szok29KB/SPfvMujUxQA=;
+	s=arc-20240116; t=1720524559; c=relaxed/simple;
+	bh=yYEXu8DL8rBUjuCjRLFDmRIU4euHBwpsHPh+UAywH28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A7HeeI8GTjZdvV3RD7ds8GKIIJiIKfM61E8VvsEktMx2RmMGj564mK11V/GxpmbvP0k8Wty9jr1K+ZB5wlerPmwXnaraTOZTvcMrwMfTDTYycsOQ7TifzVV71+ZMRSxVG6sfx+9duzAcSQLEY5+IZgY6musgl+hDumlGQvkSYsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SGk80Jhd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F338C3277B;
-	Tue,  9 Jul 2024 11:14:32 +0000 (UTC)
+	 MIME-Version; b=HbZWeZS2WYSHgolzOXb98T8JTN1uC/d12A1HLjJ8AKsqj0hXiEmS7+aBghA32Ikw5JmeBe6pj+UF0/oZ0II8mWKGNhb/uNtKc2caDHceMFgxTOQpOle6Klc94d5KLZNNkKLAtl5LgBFIQZRc+B+5IAAgCcbGxbKksu3S/UxP4rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqDHzMK5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133ACC3277B;
+	Tue,  9 Jul 2024 11:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523672;
-	bh=uKqvlnI9N5m6eeDQfKRVPn8Szok29KB/SPfvMujUxQA=;
+	s=korg; t=1720524559;
+	bh=yYEXu8DL8rBUjuCjRLFDmRIU4euHBwpsHPh+UAywH28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SGk80Jhd+G7Qv+JBWtWw9+Xhl9//jj53tN++ErLyZpLn+qNM1wCJFSx8Zo7x3oSj+
-	 d1rAdzuRum745BCF7XkeUzR3cKejgczB2bo/Viyj+5PgNxwMDk0qquN3bIrzPo/1UO
-	 yU2reBYvS+sGbQhco9y1wUk0W8ELBBAb+6NWeTFM=
+	b=cqDHzMK5vJ0D1S1rVMHxwOk10OAAZhVzFE4tieAg2YKIOWa5CHnaeuqAOGIjjp17O
+	 +FCA6PRMZnZO5vf+fNhqgGR3R6Rjt1e8WOgMbaNQ9Z/emCoZ3N5Ej6GASm+cj/edJG
+	 qA+xmAZn22SRj9xlam8uRRgIsddCM3JZenLffCsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Hartmayer <mhartmay@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Guangwu Zhang <guazhang@redhat.com>,
+	Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	John Meneghini <jmeneghi@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 071/139] KVM: s390: fix LPSWEY handling
+Subject: [PATCH 6.1 008/102] scsi: qedf: Make qedf_execute_tmf() non-preemptible
 Date: Tue,  9 Jul 2024 13:09:31 +0200
-Message-ID: <20240709110700.921221161@linuxfoundation.org>
+Message-ID: <20240709110651.685391738@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,132 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
+From: John Meneghini <jmeneghi@redhat.com>
 
-[ Upstream commit 4c6abb7f7b349f00c0f7ed5045bf67759c012892 ]
+[ Upstream commit 0d8b637c9c5eeaa1a4e3dfb336f3ff918eb64fec ]
 
-in rare cases, e.g. for injecting a machine check we do intercept all
-load PSW instructions via ICTL_LPSW. With facility 193 a new variant
-LPSWEY was added. KVM needs to handle that as well.
+Stop calling smp_processor_id() from preemptible code in
+qedf_execute_tmf90.  This results in BUG_ON() when running an RT kernel.
 
-Fixes: a3efa8429266 ("KVM: s390: gen_facilities: allow facilities 165, 193, 194 and 196")
-Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Message-ID: <20240628163547.2314-1-borntraeger@linux.ibm.com>
+[ 659.343280] BUG: using smp_processor_id() in preemptible [00000000] code: sg_reset/3646
+[ 659.343282] caller is qedf_execute_tmf+0x8b/0x360 [qedf]
+
+Tested-by: Guangwu Zhang <guazhang@redhat.com>
+Cc: Saurav Kashyap <skashyap@marvell.com>
+Cc: Nilesh Javali <njavali@marvell.com>
+Signed-off-by: John Meneghini <jmeneghi@redhat.com>
+Link: https://lore.kernel.org/r/20240403150155.412954-1-jmeneghi@redhat.com
+Acked-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/kvm_host.h |  1 +
- arch/s390/kvm/kvm-s390.c         |  1 +
- arch/s390/kvm/kvm-s390.h         | 15 +++++++++++++++
- arch/s390/kvm/priv.c             | 32 ++++++++++++++++++++++++++++++++
- 4 files changed, 49 insertions(+)
+ drivers/scsi/qedf/qedf_io.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
-index 67a298b6cf6e9..b039881c277a7 100644
---- a/arch/s390/include/asm/kvm_host.h
-+++ b/arch/s390/include/asm/kvm_host.h
-@@ -427,6 +427,7 @@ struct kvm_vcpu_stat {
- 	u64 instruction_io_other;
- 	u64 instruction_lpsw;
- 	u64 instruction_lpswe;
-+	u64 instruction_lpswey;
- 	u64 instruction_pfmf;
- 	u64 instruction_ptff;
- 	u64 instruction_sck;
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 36f60c3dae292..348d030d2660c 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -132,6 +132,7 @@ const struct _kvm_stats_desc kvm_vcpu_stats_desc[] = {
- 	STATS_DESC_COUNTER(VCPU, instruction_io_other),
- 	STATS_DESC_COUNTER(VCPU, instruction_lpsw),
- 	STATS_DESC_COUNTER(VCPU, instruction_lpswe),
-+	STATS_DESC_COUNTER(VCPU, instruction_lpswey),
- 	STATS_DESC_COUNTER(VCPU, instruction_pfmf),
- 	STATS_DESC_COUNTER(VCPU, instruction_ptff),
- 	STATS_DESC_COUNTER(VCPU, instruction_sck),
-diff --git a/arch/s390/kvm/kvm-s390.h b/arch/s390/kvm/kvm-s390.h
-index a7ea80cfa445e..a8a6246835831 100644
---- a/arch/s390/kvm/kvm-s390.h
-+++ b/arch/s390/kvm/kvm-s390.h
-@@ -120,6 +120,21 @@ static inline u64 kvm_s390_get_base_disp_s(struct kvm_vcpu *vcpu, u8 *ar)
- 	return (base2 ? vcpu->run->s.regs.gprs[base2] : 0) + disp2;
- }
+diff --git a/drivers/scsi/qedf/qedf_io.c b/drivers/scsi/qedf/qedf_io.c
+index 10fe3383855c0..031e605b3f427 100644
+--- a/drivers/scsi/qedf/qedf_io.c
++++ b/drivers/scsi/qedf/qedf_io.c
+@@ -2331,9 +2331,6 @@ static int qedf_execute_tmf(struct qedf_rport *fcport, struct scsi_cmnd *sc_cmd,
+ 	io_req->fcport = fcport;
+ 	io_req->cmd_type = QEDF_TASK_MGMT_CMD;
  
-+static inline u64 kvm_s390_get_base_disp_siy(struct kvm_vcpu *vcpu, u8 *ar)
-+{
-+	u32 base1 = vcpu->arch.sie_block->ipb >> 28;
-+	s64 disp1;
-+
-+	/* The displacement is a 20bit _SIGNED_ value */
-+	disp1 = sign_extend64(((vcpu->arch.sie_block->ipb & 0x0fff0000) >> 16) +
-+			      ((vcpu->arch.sie_block->ipb & 0xff00) << 4), 19);
-+
-+	if (ar)
-+		*ar = base1;
-+
-+	return (base1 ? vcpu->run->s.regs.gprs[base1] : 0) + disp1;
-+}
-+
- static inline void kvm_s390_get_base_disp_sse(struct kvm_vcpu *vcpu,
- 					      u64 *address1, u64 *address2,
- 					      u8 *ar_b1, u8 *ar_b2)
-diff --git a/arch/s390/kvm/priv.c b/arch/s390/kvm/priv.c
-index dc4cfa8795c08..e5b220e686b09 100644
---- a/arch/s390/kvm/priv.c
-+++ b/arch/s390/kvm/priv.c
-@@ -793,6 +793,36 @@ static int handle_lpswe(struct kvm_vcpu *vcpu)
- 	return 0;
- }
+-	/* Record which cpu this request is associated with */
+-	io_req->cpu = smp_processor_id();
+-
+ 	/* Set TM flags */
+ 	io_req->io_req_flags = QEDF_READ;
+ 	io_req->data_xfer_len = 0;
+@@ -2355,6 +2352,9 @@ static int qedf_execute_tmf(struct qedf_rport *fcport, struct scsi_cmnd *sc_cmd,
  
-+static int handle_lpswey(struct kvm_vcpu *vcpu)
-+{
-+	psw_t new_psw;
-+	u64 addr;
-+	int rc;
-+	u8 ar;
+ 	spin_lock_irqsave(&fcport->rport_lock, flags);
+ 
++	/* Record which cpu this request is associated with */
++	io_req->cpu = smp_processor_id();
 +
-+	vcpu->stat.instruction_lpswey++;
-+
-+	if (!test_kvm_facility(vcpu->kvm, 193))
-+		return kvm_s390_inject_program_int(vcpu, PGM_OPERATION);
-+
-+	if (vcpu->arch.sie_block->gpsw.mask & PSW_MASK_PSTATE)
-+		return kvm_s390_inject_program_int(vcpu, PGM_PRIVILEGED_OP);
-+
-+	addr = kvm_s390_get_base_disp_siy(vcpu, &ar);
-+	if (addr & 7)
-+		return kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
-+
-+	rc = read_guest(vcpu, addr, ar, &new_psw, sizeof(new_psw));
-+	if (rc)
-+		return kvm_s390_inject_prog_cond(vcpu, rc);
-+
-+	vcpu->arch.sie_block->gpsw = new_psw;
-+	if (!is_valid_psw(&vcpu->arch.sie_block->gpsw))
-+		return kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
-+
-+	return 0;
-+}
-+
- static int handle_stidp(struct kvm_vcpu *vcpu)
- {
- 	u64 stidp_data = vcpu->kvm->arch.model.cpuid;
-@@ -1458,6 +1488,8 @@ int kvm_s390_handle_eb(struct kvm_vcpu *vcpu)
- 	case 0x61:
- 	case 0x62:
- 		return handle_ri(vcpu);
-+	case 0x71:
-+		return handle_lpswey(vcpu);
- 	default:
- 		return -EOPNOTSUPP;
- 	}
+ 	sqe_idx = qedf_get_sqe_idx(fcport);
+ 	sqe = &fcport->sq[sqe_idx];
+ 	memset(sqe, 0, sizeof(struct fcoe_wqe));
 -- 
 2.43.0
 
