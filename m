@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-58341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E416392B67C
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:14:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA2992B779
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21DB91C21DEC
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:14:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05DF8280DFC
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859131581E4;
-	Tue,  9 Jul 2024 11:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4913015885E;
+	Tue,  9 Jul 2024 11:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJlc8Fsp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Okvsq+Em"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4558B155389;
-	Tue,  9 Jul 2024 11:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08171158A33;
+	Tue,  9 Jul 2024 11:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523643; cv=none; b=jK75I1XnHvav9OQMJ7y5cJwrCrVrvnxn1fuZ4vBfvCsDwZv/X5cSeOxAtl7CRZDQT+mF2XalDgK+95y0pVNleCFokEU9nmJ5zte8s1fg6b6w2CPP84WybZRwWl+5V0V6wnp5idvcS7ZlfTa7bsRNnp7YGNNbSZv5LfUhv+2Qq28=
+	t=1720524211; cv=none; b=KsKIxI+UbF5uc3eV99fJfhSrAj6N47DlkmTCpkoyJJ0NzEaa7KBUpCiRpAHxYJeWy9Z0A3B7MBSfcuuBrVzaz3LLvwp6K31S7Nl5U89x4kflL6RAJtzBKb00MNHrjs+qc0m3LPl3+D2Uhfri+EzdmZBJKtVk6UgedauVaiRTByg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523643; c=relaxed/simple;
-	bh=RpnUPNKQzRW6npbyWhtGKLW4h/2DxLWwsJQoe4LxLrg=;
+	s=arc-20240116; t=1720524211; c=relaxed/simple;
+	bh=XabdlViLYPHXsVENkTGJe3TnyNbkE0jmVbLCbtcQIlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VzS40fOEoeoHcrfUTJGhpQdkywUJIdkssA5i/R1n45TIRCzJk2t3E+QAmOkvHsQEH6CTUPdkmf9taAplXKt8WP1pY7Lj1eTDO3RYredF2fHDvfRaP6NQ8S0wqrPB6Ob3w2bXJ8l4XnrGuToGm/AP7AbO9DxPio4xfxbyR892La4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJlc8Fsp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE503C3277B;
-	Tue,  9 Jul 2024 11:14:02 +0000 (UTC)
+	 MIME-Version; b=QrtvcBhNm5iZ52/64AmPvs/EnL29l90tXQVt3nBNBK6KEgf08vh9rmuzupKFvUBz7zjcFFIWn9Fqf3K8YaytR+QgZNl7d9M8QnG7F3ksfMGgSA99d/VQSdGidbb1HUr9FRCx/X8aMvZjSXliqFhZ4wzgZXJHn47kCYyBDEh8KuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Okvsq+Em; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81938C3277B;
+	Tue,  9 Jul 2024 11:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523643;
-	bh=RpnUPNKQzRW6npbyWhtGKLW4h/2DxLWwsJQoe4LxLrg=;
+	s=korg; t=1720524210;
+	bh=XabdlViLYPHXsVENkTGJe3TnyNbkE0jmVbLCbtcQIlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iJlc8FspQEwR9lBcEacJ6WCMNHPAPaVkNsop/omOy0GZexSu9VDUfu2eupV5jAYJI
-	 lnXuQSE+rHnAximvhM7Ls05TySMJ6BqQVp9ArWHEMaTVNPcWSJdbu9EItFactHTjMR
-	 n1595vaTq2lWeVFk86W1RlIl4LM798yA1I3DXCtM=
+	b=Okvsq+Em91a6q6EsMmtp+5hnpsciIZOVtOWosUsUCrv+F0i7tuLCrvYtSgbqXk9VJ
+	 QispAMmgPE5RaQc62khnqbA1WYY3VxknwDLNSGgTlT87bkrWS+veuqYfbskeTnlJzG
+	 WRlKXd41gvoh3rVUM60P7Paiei30vCidoHiJyHyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
 	Andrew Lunn <andrew@lunn.ch>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 062/139] net: phy: phy_device: Fix PHY LED blinking code comment
+Subject: [PATCH 6.9 108/197] net: phy: aquantia: add missing include guards
 Date: Tue,  9 Jul 2024 13:09:22 +0200
-Message-ID: <20240709110700.567216960@linuxfoundation.org>
+Message-ID: <20240709110713.137631182@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit d3dcb084c70727be4a2f61bd94796e66147cfa35 ]
+[ Upstream commit 219343755eae6536d1fcb9184e6253ade4906aac ]
 
-Fix copy-paste error in the code comment. The code refers to
-LED blinking configuration, not brightness configuration. It
-was likely copied from comment above this one which does
-refer to brightness configuration.
+The header is missing the include guards so add them.
 
-Fixes: 4e901018432e ("net: phy: phy_device: Call into the PHY driver to set LED blinking")
-Signed-off-by: Marek Vasut <marex@denx.de>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20240626030638.512069-1-marex@denx.de
+Fixes: fb470f70fea7 ("net: phy: aquantia: add hwmon support")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://patch.msgid.link/20240701080322.9569-1-brgl@bgdev.pl
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/phy.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/aquantia/aquantia.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 1351b802ffcff..5aa30ee998104 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -1099,7 +1099,7 @@ struct phy_driver {
- 				  u8 index, enum led_brightness value);
+diff --git a/drivers/net/phy/aquantia/aquantia.h b/drivers/net/phy/aquantia/aquantia.h
+index 1c19ae74ad2b4..4830b25e6c7d3 100644
+--- a/drivers/net/phy/aquantia/aquantia.h
++++ b/drivers/net/phy/aquantia/aquantia.h
+@@ -6,6 +6,9 @@
+  * Author: Heiner Kallweit <hkallweit1@gmail.com>
+  */
  
- 	/**
--	 * @led_blink_set: Set a PHY LED brightness.  Index indicates
-+	 * @led_blink_set: Set a PHY LED blinking.  Index indicates
- 	 * which of the PHYs led should be configured to blink. Delays
- 	 * are in milliseconds and if both are zero then a sensible
- 	 * default should be chosen.  The call should adjust the
++#ifndef AQUANTIA_H
++#define AQUANTIA_H
++
+ #include <linux/device.h>
+ #include <linux/phy.h>
+ 
+@@ -120,3 +123,5 @@ static inline int aqr_hwmon_probe(struct phy_device *phydev) { return 0; }
+ #endif
+ 
+ int aqr_firmware_load(struct phy_device *phydev);
++
++#endif /* AQUANTIA_H */
 -- 
 2.43.0
 
