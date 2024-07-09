@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-58609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07F2292B7D5
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDEED92B83C
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:32:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36D981C2357B
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78197282192
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D6215749F;
-	Tue,  9 Jul 2024 11:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC60154C07;
+	Tue,  9 Jul 2024 11:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOdbTAKC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUAej/F9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3721527713;
-	Tue,  9 Jul 2024 11:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85C314038F;
+	Tue,  9 Jul 2024 11:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524462; cv=none; b=LgQ+FSxFiNNPWMcqn7fD40g+pbLWUfSqmCgo/14krUBFz0YAeQJPrvZIVmxM+DfhoIz+B1nCi4ZaxqCvSQS4lNtl+EvzMs8mkFK6DWVWcZ2sOHiSb9brtFNQ19b/ru325V918h0+QrUF+Snp9q1MtZh0lU6ZpvREXE3k6gPGu74=
+	t=1720524724; cv=none; b=PZbBY6XEWQyqMR69UsoY4gr04rl9dFLYny6jknOIHcfKHM6nJWAnBmDUm18AB1QxG5LN3sa2hwbvtfAlCoOgBVP6/swi8LSHgHftad0IOCXQ/4PYIctwBgdIJSvbnFM2hGolwMO4wdBXguadbspASwuTtiS3Myvb/Yaztoik0ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524462; c=relaxed/simple;
-	bh=44Kmv6LCS4eyGNmAzc9xvVNYhV4tlgz71bLTFO5rSMY=;
+	s=arc-20240116; t=1720524724; c=relaxed/simple;
+	bh=j3dZrrkJCO8ZxAoU0zQRGeu7O67W/psbq6bkY7CKyUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aAHaWTgcQ2KlY0FUYh0vRMp1xJD+kW13Oub7TwVmNHwdW5OmkEdLqPmhxJ+2+ECZW2rrB2rwjsB5dsD9W1bSzQxtke42WT/cIhVSPfH3lYaRx0iLfe10z11mXNCvK6KGYg29GpXwpDDgN3XQ4XBfPGv1uZgQuqV1GQ/i7LtOP3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOdbTAKC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B22A0C3277B;
-	Tue,  9 Jul 2024 11:27:41 +0000 (UTC)
+	 MIME-Version; b=cqIBm0wKBbkLI9B0H9oTyhIsW17AP+hzR+i8TOsbbgl4o7SbzFYqRtE5SJxhlKFs2ADmfgOFz7e18rkb2XdtrbQp1Dx4GViUfQjzEiDP34KJbYKrDD5gI6E3NDYC7rWHU4/+AHc1DN0uVdNbWG+twpjkJcyTqoe/TTFOOmg3tic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUAej/F9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607CDC3277B;
+	Tue,  9 Jul 2024 11:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524462;
-	bh=44Kmv6LCS4eyGNmAzc9xvVNYhV4tlgz71bLTFO5rSMY=;
+	s=korg; t=1720524723;
+	bh=j3dZrrkJCO8ZxAoU0zQRGeu7O67W/psbq6bkY7CKyUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sOdbTAKCQA59CpvMppzudEqyBfVcGsrQPbmOulq/1Z6AiBAkC3ooY6sfPAew+S8pc
-	 fg6YwfjFO5BRcmj4wtq0YbFXmw3EWzKeQh1lv7w7Z1c7Yx9X8sKW9tfoht0A71elT0
-	 PhXBVujeYvCVI47frN5QCvDGRDNVoDzN4GfMVrBA=
+	b=ZUAej/F9lKq325GXYKPOVvSBAjUeVQbx57UHZMuDwnT26UM5RdBuLK40CHgHy13ob
+	 E3mP6A9Jz9kiwj8CRnww1ubcMdlD/n3Pl0m3701lu+DYbFcRe8V6SihL5kgJajEHsG
+	 TtuE3xom/x11xFO2TD+fGqrl5+xUfQbXQifjs9MQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	John Garry <john.g.garry@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 188/197] block: check for max_hw_sectors underflow
+	Alexander Dahl <ada@thorsis.com>,
+	Steven Seeger <steven.seeger@flightsystems.net>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH 6.1 079/102] mtd: rawnand: Bypass a couple of sanity checks during NAND identification
 Date: Tue,  9 Jul 2024 13:10:42 +0200
-Message-ID: <20240709110716.217458565@linuxfoundation.org>
+Message-ID: <20240709110654.450678821@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@kernel.org>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit e993db2d6e5207f1ae061c2ac554ab1f714c741d ]
+commit 8754d9835683e8fab9a8305acdb38a3aeb9d20bd upstream.
 
-The logical block size need to be smaller than the max_hw_sector
-setting, otherwise we can't even transfer a single LBA.
+Early during NAND identification, mtd_info fields have not yet been
+initialized (namely, writesize and oobsize) and thus cannot be used for
+sanity checks yet. Of course if there is a misuse of
+nand_change_read_column_op() so early we won't be warned, but there is
+anyway no actual check to perform at this stage as we do not yet know
+the NAND geometry.
 
-Signed-off-by: Hannes Reinecke <hare@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So, if the fields are empty, especially mtd->writesize which is *always*
+set quite rapidly after identification, let's skip the sanity checks.
+
+nand_change_read_column_op() is subject to be used early for ONFI/JEDEC
+identification in the very unlikely case of:
+- bitflips appearing in the parameter page,
+- the controller driver not supporting simple DATA_IN cycles.
+
+As nand_change_read_column_op() uses nand_fill_column_cycles() the logic
+explaind above also applies in this secondary helper.
+
+Fixes: c27842e7e11f ("mtd: rawnand: onfi: Adapt the parameter page read to constraint controllers")
+Fixes: daca31765e8b ("mtd: rawnand: jedec: Adapt the parameter page read to constraint controllers")
+Cc: stable@vger.kernel.org
+Reported-by: Alexander Dahl <ada@thorsis.com>
+Closes: https://lore.kernel.org/linux-mtd/20240306-shaky-bunion-d28b65ea97d7@thorsis.com/
+Reported-by: Steven Seeger <steven.seeger@flightsystems.net>
+Closes: https://lore.kernel.org/linux-mtd/DM6PR05MB4506554457CF95191A670BDEF7062@DM6PR05MB4506.namprd05.prod.outlook.com/
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Tested-by: Sascha Hauer <s.hauer@pengutronix.de>
+Link: https://lore.kernel.org/linux-mtd/20240516131320.579822-3-miquel.raynal@bootlin.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-settings.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/nand_base.c |   57 +++++++++++++++++++++------------------
+ 1 file changed, 32 insertions(+), 25 deletions(-)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index 15319b217bf3f..4bd7cbab4c241 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -104,6 +104,7 @@ static int blk_validate_zoned_limits(struct queue_limits *lim)
- static int blk_validate_limits(struct queue_limits *lim)
+--- a/drivers/mtd/nand/raw/nand_base.c
++++ b/drivers/mtd/nand/raw/nand_base.c
+@@ -1090,28 +1090,32 @@ static int nand_fill_column_cycles(struc
+ 				   unsigned int offset_in_page)
  {
- 	unsigned int max_hw_sectors;
-+	unsigned int logical_block_sectors;
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
++	bool ident_stage = !mtd->writesize;
  
- 	/*
- 	 * Unless otherwise specified, default to 512 byte logical blocks and a
-@@ -134,8 +135,11 @@ static int blk_validate_limits(struct queue_limits *lim)
- 		lim->max_hw_sectors = BLK_SAFE_MAX_SECTORS;
- 	if (WARN_ON_ONCE(lim->max_hw_sectors < PAGE_SECTORS))
- 		return -EINVAL;
-+	logical_block_sectors = lim->logical_block_size >> SECTOR_SHIFT;
-+	if (WARN_ON_ONCE(logical_block_sectors > lim->max_hw_sectors))
-+		return -EINVAL;
- 	lim->max_hw_sectors = round_down(lim->max_hw_sectors,
--			lim->logical_block_size >> SECTOR_SHIFT);
-+			logical_block_sectors);
+-	/* Make sure the offset is less than the actual page size. */
+-	if (offset_in_page > mtd->writesize + mtd->oobsize)
+-		return -EINVAL;
+-
+-	/*
+-	 * On small page NANDs, there's a dedicated command to access the OOB
+-	 * area, and the column address is relative to the start of the OOB
+-	 * area, not the start of the page. Asjust the address accordingly.
+-	 */
+-	if (mtd->writesize <= 512 && offset_in_page >= mtd->writesize)
+-		offset_in_page -= mtd->writesize;
+-
+-	/*
+-	 * The offset in page is expressed in bytes, if the NAND bus is 16-bit
+-	 * wide, then it must be divided by 2.
+-	 */
+-	if (chip->options & NAND_BUSWIDTH_16) {
+-		if (WARN_ON(offset_in_page % 2))
++	/* Bypass all checks during NAND identification */
++	if (likely(!ident_stage)) {
++		/* Make sure the offset is less than the actual page size. */
++		if (offset_in_page > mtd->writesize + mtd->oobsize)
+ 			return -EINVAL;
  
- 	/*
- 	 * The actual max_sectors value is a complex beast and also takes the
-@@ -153,7 +157,7 @@ static int blk_validate_limits(struct queue_limits *lim)
- 		lim->max_sectors = min(max_hw_sectors, BLK_DEF_MAX_SECTORS_CAP);
+-		offset_in_page /= 2;
++		/*
++		 * On small page NANDs, there's a dedicated command to access the OOB
++		 * area, and the column address is relative to the start of the OOB
++		 * area, not the start of the page. Asjust the address accordingly.
++		 */
++		if (mtd->writesize <= 512 && offset_in_page >= mtd->writesize)
++			offset_in_page -= mtd->writesize;
++
++		/*
++		 * The offset in page is expressed in bytes, if the NAND bus is 16-bit
++		 * wide, then it must be divided by 2.
++		 */
++		if (chip->options & NAND_BUSWIDTH_16) {
++			if (WARN_ON(offset_in_page % 2))
++				return -EINVAL;
++
++			offset_in_page /= 2;
++		}
  	}
- 	lim->max_sectors = round_down(lim->max_sectors,
--			lim->logical_block_size >> SECTOR_SHIFT);
-+			logical_block_sectors);
  
- 	/*
- 	 * Random default for the maximum number of segments.  Driver should not
--- 
-2.43.0
-
+ 	addrs[0] = offset_in_page;
+@@ -1120,7 +1124,7 @@ static int nand_fill_column_cycles(struc
+ 	 * Small page NANDs use 1 cycle for the columns, while large page NANDs
+ 	 * need 2
+ 	 */
+-	if (mtd->writesize <= 512)
++	if (!ident_stage && mtd->writesize <= 512)
+ 		return 1;
+ 
+ 	addrs[1] = offset_in_page >> 8;
+@@ -1316,16 +1320,19 @@ int nand_change_read_column_op(struct na
+ 			       unsigned int len, bool force_8bit)
+ {
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
++	bool ident_stage = !mtd->writesize;
+ 
+ 	if (len && !buf)
+ 		return -EINVAL;
+ 
+-	if (offset_in_page + len > mtd->writesize + mtd->oobsize)
+-		return -EINVAL;
++	if (!ident_stage) {
++		if (offset_in_page + len > mtd->writesize + mtd->oobsize)
++			return -EINVAL;
+ 
+-	/* Small page NANDs do not support column change. */
+-	if (mtd->writesize <= 512)
+-		return -ENOTSUPP;
++		/* Small page NANDs do not support column change. */
++		if (mtd->writesize <= 512)
++			return -ENOTSUPP;
++	}
+ 
+ 	if (nand_has_exec_op(chip)) {
+ 		const struct nand_interface_config *conf =
 
 
 
