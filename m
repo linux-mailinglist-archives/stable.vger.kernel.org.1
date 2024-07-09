@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-58870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3E2292C0F3
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:48:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB53B92C12A
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 18:53:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F067B1C20AEA
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:48:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A144B27019
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 16:48:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B90B18EA6D;
-	Tue,  9 Jul 2024 16:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D55218EA7C;
+	Tue,  9 Jul 2024 16:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ADPLz1bb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K1lCvI0U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB45918EA66;
-	Tue,  9 Jul 2024 16:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA5618EA75;
+	Tue,  9 Jul 2024 16:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542339; cv=none; b=afn0ey9DJ+LWLL0IoHDKJcHbi7c2FyA/RyxYE+sSSKiEpBR1K1+FPHbm2hGsgQz14CxpUXm5ScCG/Nidg4LsmDTwtU/2JnISlyncQ76Qq3pBsxHoeobRSdy7g9hFzoUJyOZDymdm/pflBWhH1sY1tsFits2KdMY+VuiyjCh5n+U=
+	t=1720542340; cv=none; b=pZ75+NLaes3D/uo5/FZ04pJ8wlEOqZrW2uQJNQDSDZcOV1vyqOTJSdunNivBC1DqpEQZB43H7FfllgWQCR4IX8P1jsZE09uTflYQqSp8Ufi+3c6HeZxifs0Hnl4F7FFyKbzkkn9Hd8rzc8alP01zgpQ2z73Otl2dl6N961BfeiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542339; c=relaxed/simple;
-	bh=Uo8THIP+qahbvQHYwUyy1Reg3pWn4lucxMDpZD44Kvg=;
+	s=arc-20240116; t=1720542340; c=relaxed/simple;
+	bh=LZZ17XDgV2Kao0BzvMIQ+DMGGJBWRkYanADGIMTYtrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BeDJ75dqnpQIP7YkcnGrA0kq/QZ0mxJTWasXShj76g+UUbhP+aUeJW0Iq8Rxj+KKuT0KCod4JbvptYvq3HAIPomC6Ea7j6M7I1B2JkBIQD6JTemLfEtTBWTr+LK2+NcUcHYBPA6YeP/FEVh1di8/hPG9HRBp5YZE0M41E/RZ4tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ADPLz1bb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E491C4AF07;
-	Tue,  9 Jul 2024 16:25:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OeeakTmflx4LaK4wRsRL9j5iIOtAhKOU7vWACx4gUom0xrhIZ+CjAtYZ4pO/tVJBUCUPilKgxRKnM5yr6OrjciNRC513jmxrmZvanij1q6w1yI3nFadRVdF/uvHa7TwvnPHI6ExHTr4+H9X62TES+oxGvBrCdr6FxNePVKIjbiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K1lCvI0U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3CB0C3277B;
+	Tue,  9 Jul 2024 16:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542338;
-	bh=Uo8THIP+qahbvQHYwUyy1Reg3pWn4lucxMDpZD44Kvg=;
+	s=k20201202; t=1720542339;
+	bh=LZZ17XDgV2Kao0BzvMIQ+DMGGJBWRkYanADGIMTYtrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ADPLz1bbx3KHI58GZzH5k07ukegekNdOzYLGrVf61NoEVcTH55LgfrTu+SS1zj4Ll
-	 Jr4gIFYQ1IXepm/0uRuuKN4TzdeeD8MRvv3HJ2OITuR3F/OVMy9ZA94oxxPwbTAf/p
-	 Kjao7aNDctf3LoKN1TWekM8A/nC25+m4hCYqJU2agQuibB7Ch35YCnBtJJZAbCWLaZ
-	 xdoMdiyEvv9D14pMs5rAsvBVGQTcV5iEsILkYvDSKt4Qbl5vfdKSCgBaPSi3vHe2Lz
-	 uaAnL1rA68SCnCZayy1XRdv3kDxJAkG1TL3ao6NQQolWGZI5ihX2tSLH0RMzike/bw
-	 dmwGYM0be+yyw==
+	b=K1lCvI0UXB3BHGINkZgJuY2WkO7V7IQRF3klZHgbbEKA1TvhT3AHILf38dNa2VWT3
+	 3+5PcmFmNv+9mBtRoC7M3CfPOIEFpqKtdGlkj1ZHRstLCLl4ujy9xSdhAA4ADKdN6x
+	 TOWmtz/XHrLmdxdP7WX8ofW0N6fd6KZ16k70XGrv2JVUTS9E0cgBVfMsN7U2gtD43s
+	 CKRu8fKIo+haL9UuXb/wGFT2XnzUOiFLwQLNZAe33bZEsm9/Iv9k593ICXGilnfIJP
+	 Yc/C3A9/SqiiuBhXTGsqw7SX9YW8pl2UFjogi5Q3iDR+zHGZhBs/DJph9Jr1Ci3lsG
+	 BB+Koi/tfykbw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Heiko Carstens <hca@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+Cc: Armin Wolf <W_Armin@gmx.de>,
+	Agathe Boutmy <agathe@boutmy.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	gor@linux.ibm.com,
-	justinstitt@google.com,
-	linux-s390@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 08/17] s390/sclp: Fix sclp_init() cleanup on failure
-Date: Tue,  9 Jul 2024 12:24:52 -0400
-Message-ID: <20240709162517.32584-8-sashal@kernel.org>
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 09/17] platform/x86: wireless-hotkey: Add support for LG Airplane Button
+Date: Tue,  9 Jul 2024 12:24:53 -0400
+Message-ID: <20240709162517.32584-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240709162517.32584-1-sashal@kernel.org>
 References: <20240709162517.32584-1-sashal@kernel.org>
@@ -63,60 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.162
 Content-Transfer-Encoding: 8bit
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 6434b33faaa063df500af355ee6c3942e0f8d982 ]
+[ Upstream commit 151e78a0b89ee6dec93382dbdf5b1ef83f9c4716 ]
 
-If sclp_init() fails it only partially cleans up: if there are multiple
-failing calls to sclp_init() sclp_state_change_event will be added several
-times to sclp_reg_list, which results in the following warning:
+The LGEX0815 ACPI device is used by the "LG Airplane Mode Button"
+Windows driver for handling rfkill requests. When the ACPI device
+receives an 0x80 ACPI notification, an rfkill event is to be
+send to userspace.
 
-------------[ cut here ]------------
-list_add double add: new=000003ffe1598c10, prev=000003ffe1598bf0, next=000003ffe1598c10.
-WARNING: CPU: 0 PID: 1 at lib/list_debug.c:35 __list_add_valid_or_report+0xde/0xf8
-CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.10.0-rc3
-Krnl PSW : 0404c00180000000 000003ffe0d6076a (__list_add_valid_or_report+0xe2/0xf8)
-           R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
-...
-Call Trace:
- [<000003ffe0d6076a>] __list_add_valid_or_report+0xe2/0xf8
-([<000003ffe0d60766>] __list_add_valid_or_report+0xde/0xf8)
- [<000003ffe0a8d37e>] sclp_init+0x40e/0x450
- [<000003ffe00009f2>] do_one_initcall+0x42/0x1e0
- [<000003ffe15b77a6>] do_initcalls+0x126/0x150
- [<000003ffe15b7a0a>] kernel_init_freeable+0x1ba/0x1f8
- [<000003ffe0d6650e>] kernel_init+0x2e/0x180
- [<000003ffe000301c>] __ret_from_fork+0x3c/0x60
- [<000003ffe0d759ca>] ret_from_fork+0xa/0x30
+Add support for the LGEX0815 ACPI device to the driver.
 
-Fix this by removing sclp_state_change_event from sclp_reg_list when
-sclp_init() fails.
-
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Tested-by: Agathe Boutmy <agathe@boutmy.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240606233540.9774-2-W_Armin@gmx.de
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/x86/wireless-hotkey.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/s390/char/sclp.c b/drivers/s390/char/sclp.c
-index 2cf7fe131ecec..0830ea42e7c80 100644
---- a/drivers/s390/char/sclp.c
-+++ b/drivers/s390/char/sclp.c
-@@ -1292,6 +1292,7 @@ sclp_init(void)
- fail_unregister_reboot_notifier:
- 	unregister_reboot_notifier(&sclp_reboot_notifier);
- fail_init_state_uninitialized:
-+	list_del(&sclp_state_change_event.list);
- 	sclp_init_state = sclp_init_state_uninitialized;
- 	free_page((unsigned long) sclp_read_sccb);
- 	free_page((unsigned long) sclp_init_sccb);
+diff --git a/drivers/platform/x86/wireless-hotkey.c b/drivers/platform/x86/wireless-hotkey.c
+index 11c60a2734468..61ae722643e5a 100644
+--- a/drivers/platform/x86/wireless-hotkey.c
++++ b/drivers/platform/x86/wireless-hotkey.c
+@@ -19,6 +19,7 @@ MODULE_AUTHOR("Alex Hung");
+ MODULE_ALIAS("acpi*:HPQ6001:*");
+ MODULE_ALIAS("acpi*:WSTADEF:*");
+ MODULE_ALIAS("acpi*:AMDI0051:*");
++MODULE_ALIAS("acpi*:LGEX0815:*");
+ 
+ static struct input_dev *wl_input_dev;
+ 
+@@ -26,6 +27,7 @@ static const struct acpi_device_id wl_ids[] = {
+ 	{"HPQ6001", 0},
+ 	{"WSTADEF", 0},
+ 	{"AMDI0051", 0},
++	{"LGEX0815", 0},
+ 	{"", 0},
+ };
+ 
 -- 
 2.43.0
 
