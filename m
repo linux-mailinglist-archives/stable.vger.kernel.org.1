@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-58301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D0292B650
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0718792B771
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:23:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCD8D1F23F5A
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:12:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8D761F21A59
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ADC81586C6;
-	Tue,  9 Jul 2024 11:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90310149C79;
+	Tue,  9 Jul 2024 11:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YrR4ZoCZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8le6l8r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C2F1586D0;
-	Tue,  9 Jul 2024 11:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F52158872;
+	Tue,  9 Jul 2024 11:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523526; cv=none; b=nhT/io0gwA6HhQUd5d8jP9+S8wCE6zp8VNPgFu54eVynFjr+R8iRAREYyZ151Lg8RkdPsn2lUDF+BiOGgv7mYGE4jYBI6rz4Pk5k7z9RXV91U1E62uIxUkIDa0ZN55JSZce3AR9X89IJJfge/KVCBcvv0rIxREhBN1w4uZNGDX8=
+	t=1720524190; cv=none; b=d9/gHdGHq0ExhgzLPpth3ZxRJ6gRxuvGqGFsTujC2BZ2Cq3EoJVogKtOuiKFjiMPVgggWLCi6YjBHdv2mXNvrxlyKMxv4J0csPIr3h2a3pEsYgBqvstJy8AxZuNy6pnnZW2SE/HHpA8TBghI9OO4RE3DoiFIfpzfdSvFUcoOUxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523526; c=relaxed/simple;
-	bh=CDuboVZXoYGYxlzQIcIN/w7qtoNKDkmxT/qi/2Ot5fw=;
+	s=arc-20240116; t=1720524190; c=relaxed/simple;
+	bh=ULrp4yKLmoBKep5NOLDz79kQln+ztT3hmuA/0fE9/x4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MCjlfOsgbKjN7f6hVGGOAk6ir7oIagGCXSMnCEIEzBONREnfu5tavofYLn7Efd1HZwP0XaNhaqh5GMH0hi6AvTfvfBw/tsoNdW7lTaJ/xzr7hZ7M9EUGSMeDya0dxO6h5H3bFd/xscNfV/lQ5mv59x48Vyn3A8+PDpeyL0K1PVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YrR4ZoCZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791DBC32786;
-	Tue,  9 Jul 2024 11:12:05 +0000 (UTC)
+	 MIME-Version; b=d0EFXsS18UdLwL7kbox05Om3i13/rE40Ua0DNZpcqc2W9Z1Q2sG70M6qZzUjrS7SJ+6CP/JF/PT+h4BISIMWu4hWT1X4uowDG36ujrebwTLl/+Kop8voUFnTHN86yN171j3AY+i2Unh/URK0O1bX/4axGhR4xNrzVPJRciFcbfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8le6l8r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B5BC3277B;
+	Tue,  9 Jul 2024 11:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720523525;
-	bh=CDuboVZXoYGYxlzQIcIN/w7qtoNKDkmxT/qi/2Ot5fw=;
+	s=korg; t=1720524190;
+	bh=ULrp4yKLmoBKep5NOLDz79kQln+ztT3hmuA/0fE9/x4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YrR4ZoCZ4GQw10ihM3bViT+Sf/B6AnKV8jXbicQZ62c5jzYenX6Qyp2z9FIuhaqP7
-	 QDcFdiNEiZQJXczHBTTyZTgOvhgUK58JkqOYNkyscXjFXcxfJdURFtptd6h5bCg9ha
-	 V/C/ChxY4gi8M2pHmJTLEE45oGON/Z4NnfGNGqik=
+	b=H8le6l8ryrtAbejvNA/4H1a6Cl3E+JO0Mpw5Y9ltwI9XBbSpFxmxS55ITsIxZ9q5z
+	 PcASpkLZ+z69EKe/mVMzEiskhNB2arxCkEbNqi2xBnaIx0thd7ER1i71fwISwSXiUi
+	 dbOLvLTXrA0/VogCudyIvcKf4+3xnd1IZksWYb2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Tomas Henzl <thenzl@redhat.com>,
+	Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/139] drm/amd/display: Skip finding free audio for unknown engine_id
-Date: Tue,  9 Jul 2024 13:08:42 +0200
-Message-ID: <20240709110659.021597064@linuxfoundation.org>
+Subject: [PATCH 6.9 069/197] scsi: mpi3mr: Sanitise num_phys
+Date: Tue,  9 Jul 2024 13:08:43 +0200
+Message-ID: <20240709110711.632333195@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Tomas Henzl <thenzl@redhat.com>
 
-[ Upstream commit 1357b2165d9ad94faa4c4a20d5e2ce29c2ff29c3 ]
+[ Upstream commit 3668651def2c1622904e58b0280ee93121f2b10b ]
 
-[WHY]
-ENGINE_ID_UNKNOWN = -1 and can not be used as an array index. Plus, it
-also means it is uninitialized and does not need free audio.
+Information is stored in mr_sas_port->phy_mask, values larger then size of
+this field shouldn't be allowed.
 
-[HOW]
-Skip and return NULL.
-
-This fixes 2 OVERRUN issues reported by Coverity.
-
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Tomas Henzl <thenzl@redhat.com>
+Link: https://lore.kernel.org/r/20240226151013.8653-1-thenzl@redhat.com
+Acked-by: Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/mpi3mr/mpi3mr_transport.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-index 8873acfe309c8..84923c5400d32 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -2385,6 +2385,9 @@ static struct audio *find_first_free_audio(
- {
- 	int i, available_audio_count;
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_transport.c b/drivers/scsi/mpi3mr/mpi3mr_transport.c
+index d32ad46318cb0..7ca9a7c2709cf 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_transport.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_transport.c
+@@ -1355,11 +1355,21 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
+ 	mpi3mr_sas_port_sanity_check(mrioc, mr_sas_node,
+ 	    mr_sas_port->remote_identify.sas_address, hba_port);
  
-+	if (id == ENGINE_ID_UNKNOWN)
-+		return NULL;
++	if (mr_sas_node->num_phys > sizeof(mr_sas_port->phy_mask) * 8)
++		ioc_info(mrioc, "max port count %u could be too high\n",
++		    mr_sas_node->num_phys);
 +
- 	available_audio_count = pool->audio_count;
- 
- 	for (i = 0; i < available_audio_count; i++) {
+ 	for (i = 0; i < mr_sas_node->num_phys; i++) {
+ 		if ((mr_sas_node->phy[i].remote_identify.sas_address !=
+ 		    mr_sas_port->remote_identify.sas_address) ||
+ 		    (mr_sas_node->phy[i].hba_port != hba_port))
+ 			continue;
++
++		if (i > sizeof(mr_sas_port->phy_mask) * 8) {
++			ioc_warn(mrioc, "skipping port %u, max allowed value is %lu\n",
++			    i, sizeof(mr_sas_port->phy_mask) * 8);
++			goto out_fail;
++		}
+ 		list_add_tail(&mr_sas_node->phy[i].port_siblings,
+ 		    &mr_sas_port->phy_list);
+ 		mr_sas_port->num_phys++;
 -- 
 2.43.0
 
