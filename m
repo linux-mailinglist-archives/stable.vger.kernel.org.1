@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-58697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D304092B83B
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:32:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87E5A92B7D4
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:27:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D1CB1F21A77
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:32:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24CD4B2147B
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:27:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11095156238;
-	Tue,  9 Jul 2024 11:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE344157485;
+	Tue,  9 Jul 2024 11:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deprFh3f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2y8iYr7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D6355E4C;
-	Tue,  9 Jul 2024 11:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D33727713;
+	Tue,  9 Jul 2024 11:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524720; cv=none; b=rm0SjDAmWP1tD3tt/kGZbWe43V/4jf95TTTPfmTaMxKZ9OwKuibNnM59Ppq4RwSovS9buS5EQISiMvH6vAqzJPAPZG3a//ihqj1XQvFMN8H3oiQY6KIpuAjdRNSCygLuapERlZJjZfDgMoK1WMz7D6Sj4GaR7PWB+bIjIbWl7KQ=
+	t=1720524459; cv=none; b=tUN3tJfCvgA0Wncnn/wEGNUTYhe4omqj2Pzmb90xT92+a9g1Bl2R/IkK0JYcseelAhTOtjHYqSLam4O2vIfCMectzYc8DJ3NYVME+1GSCjU+mRFzEOM5pucg+6lBhcwdaAsKyas25LIQFfz3KaMZoFEoNnGAidqsP6CvdYc0fAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524720; c=relaxed/simple;
-	bh=uCk3xmjniH/poIshEEvv1cQQSvykAjPCCA/XN6ZNrhY=;
+	s=arc-20240116; t=1720524459; c=relaxed/simple;
+	bh=qnxVVMORsyZx0Q/TZTWxqRJKRIR3/oOWigI1+vdNHB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YnMYqsC1HUlHnTqEGVD/6zGLr24D7/mQECdZGUjzCvk/CtwJvt2A04FAc1salw5jYx54k3SMvIzVxe7IzWuOwi52LNRSck5CCr6D2M9L8FChAuZNqGxWifQhyhbQx3mcSwhs2pNHy4e11WJAqJjUd8LeciEbukNd3qcKQa1F1HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deprFh3f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A69CC3277B;
-	Tue,  9 Jul 2024 11:32:00 +0000 (UTC)
+	 MIME-Version; b=sl1Zj5jEzOplJ5yEfyhPy4ZLbt87It3V2jCI1/29ex97T8vMZYP8xk1sIrhPD4VKhxg1g42CB7G4pJzS/PwaWfZuG8MX8IvkRwkkWv8YC6A9lHzN0cBkLcmvBrisXJ7GtAq5krqhnOwg+Vx7cfQtq4DjMez6o7qWVRAXjB/Kil0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2y8iYr7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE20AC3277B;
+	Tue,  9 Jul 2024 11:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524720;
-	bh=uCk3xmjniH/poIshEEvv1cQQSvykAjPCCA/XN6ZNrhY=;
+	s=korg; t=1720524459;
+	bh=qnxVVMORsyZx0Q/TZTWxqRJKRIR3/oOWigI1+vdNHB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=deprFh3fPiQfYX3YhFbwl4iysnUbGqcZdz4SU8/F/kgCdb6nNYL89QS19JvAz81hm
-	 CbvQH0JdzADnLuZ7oh3QO0WEnapQdMWMBdOpAL5uLCRtPXlWQ7AZGkBqf+f18b0L69
-	 Tcc19veqYq5gE5Hjy8dGwH7A8gdj0Ac49TSyOM2A=
+	b=c2y8iYr7nfDYvjwsdfSBa9PSqUGhJMEfOkljhCzSv3tA7r9Jmbi9eGW3mFjK4RgD7
+	 7f30S4j/vhFG5lk1mZnfss38UZ44gYYRD7KCFaETZ2fBhP3EJO/YEyIRk/Y35+fNgD
+	 4pKKADtswaKpuJ9Q/qov9NEMqTuXsrqU2NgvcykQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 078/102] mtd: rawnand: Ensure ECC configuration is propagated to upper layers
+	hmtheboy154 <buingoc67@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 187/197] platform/x86: touchscreen_dmi: Add info for the EZpad 6s Pro
 Date: Tue,  9 Jul 2024 13:10:41 +0200
-Message-ID: <20240709110654.412191358@linuxfoundation.org>
+Message-ID: <20240709110716.178209507@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-References: <20240709110651.353707001@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+References: <20240709110708.903245467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: hmtheboy154 <buingoc67@gmail.com>
 
-commit 3a1b777eb9fb75d09c45ae5dd1d007eddcbebf1f upstream.
+[ Upstream commit 3050052613790e75b5e4a8536930426b0a8b0774 ]
 
-Until recently the "upper layer" was MTD. But following incremental
-reworks to bring spi-nand support and more recently generic ECC support,
-there is now an intermediate "generic NAND" layer that also needs to get
-access to some values. When using "converted" ECC engines, like the
-software ones, these values are already propagated correctly. But
-otherwise when using good old raw NAND controller drivers, we need to
-manually set these values ourselves at the end of the "scan" operation,
-once these values have been negotiated.
+The "EZpad 6s Pro" uses the same touchscreen as the "EZpad 6 Pro B",
+unlike the "Ezpad 6 Pro" which has its own touchscreen.
 
-Without this propagation, later (generic) checks like the one warning
-users that the ECC strength is not high enough might simply no longer
-work.
-
-Fixes: 8c126720fe10 ("mtd: rawnand: Use the ECC framework nand_ecc_is_strong_enough() helper")
-Cc: stable@vger.kernel.org
-Reported-by: Sascha Hauer <s.hauer@pengutronix.de>
-Closes: https://lore.kernel.org/all/Zhe2JtvvN1M4Ompw@pengutronix.de/
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Tested-by: Sascha Hauer <s.hauer@pengutronix.de>
-Link: https://lore.kernel.org/linux-mtd/20240507085842.108844-1-miquel.raynal@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: hmtheboy154 <buingoc67@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240527091447.248849-3-hdegoede@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/nand_base.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/platform/x86/touchscreen_dmi.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -6062,6 +6062,7 @@ static const struct nand_ops rawnand_ops
- static int nand_scan_tail(struct nand_chip *chip)
- {
- 	struct mtd_info *mtd = nand_to_mtd(chip);
-+	struct nand_device *base = &chip->base;
- 	struct nand_ecc_ctrl *ecc = &chip->ecc;
- 	int ret, i;
- 
-@@ -6206,9 +6207,13 @@ static int nand_scan_tail(struct nand_ch
- 	if (!ecc->write_oob_raw)
- 		ecc->write_oob_raw = ecc->write_oob;
- 
--	/* propagate ecc info to mtd_info */
-+	/* Propagate ECC info to the generic NAND and MTD layers */
- 	mtd->ecc_strength = ecc->strength;
-+	if (!base->ecc.ctx.conf.strength)
-+		base->ecc.ctx.conf.strength = ecc->strength;
- 	mtd->ecc_step_size = ecc->size;
-+	if (!base->ecc.ctx.conf.step_size)
-+		base->ecc.ctx.conf.step_size = ecc->size;
- 
- 	/*
- 	 * Set the number of read / write steps for one page depending on ECC
-@@ -6216,6 +6221,8 @@ static int nand_scan_tail(struct nand_ch
- 	 */
- 	if (!ecc->steps)
- 		ecc->steps = mtd->writesize / ecc->size;
-+	if (!base->ecc.ctx.nsteps)
-+		base->ecc.ctx.nsteps = ecc->steps;
- 	if (ecc->steps * ecc->size != mtd->writesize) {
- 		WARN(1, "Invalid ECC parameters\n");
- 		ret = -EINVAL;
+diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
+index 88bd117f0bf56..89e1be0815b52 100644
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -1401,6 +1401,17 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
+ 			DMI_MATCH(DMI_BIOS_DATE, "04/24/2018"),
+ 		},
+ 	},
++	{
++		/* Jumper EZpad 6s Pro */
++		.driver_data = (void *)&jumper_ezpad_6_pro_b_data,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Jumper"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Ezpad"),
++			/* Above matches are too generic, add bios match */
++			DMI_MATCH(DMI_BIOS_VERSION, "E.WSA116_8.E1.042.bin"),
++			DMI_MATCH(DMI_BIOS_DATE, "01/08/2020"),
++		},
++	},
+ 	{
+ 		/* Jumper EZpad 6 m4 */
+ 		.driver_data = (void *)&jumper_ezpad_6_m4_data,
+-- 
+2.43.0
+
 
 
 
