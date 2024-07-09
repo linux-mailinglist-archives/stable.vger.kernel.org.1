@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-58545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6314692B78F
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:24:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8038192B7EE
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 13:28:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BAD71F241A2
-	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:24:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 358341F2150F
+	for <lists+stable@lfdr.de>; Tue,  9 Jul 2024 11:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0D81586C9;
-	Tue,  9 Jul 2024 11:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33E615821A;
+	Tue,  9 Jul 2024 11:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CAkZ09P9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujA0g9VK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F09155A25;
-	Tue,  9 Jul 2024 11:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DFD015749B;
+	Tue,  9 Jul 2024 11:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720524260; cv=none; b=Z6u5AFEhGcgZP72dGNGpRg7vI9lwYl43X6TWDiBDF35XN9z1N9snLVxquH8Z/AmasPFMityWKd1/uud+voln3nj1tUIlSmDr5pm70gctyAyY7eVWWkXXrGLhHxnIyzzdfUru12kXKJcAnDdEhVRdqldtmfyzQrKgIodzwynXcdw=
+	t=1720524533; cv=none; b=U/HyLz7vquKtVBjTBhzSYAKmOooMmDGmWmuwkszi65etQ4AneqsyoKwbiAReDB+efst/unrKU/xZHMXyo4qUTuifA/uoUUFtT+1qHmhqjkd4dRc2P8y3FPxU3gq17v4N/CXwanTjrvXrk1P0jJ3m6A9W1enELCIZxh0XiYHf0e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720524260; c=relaxed/simple;
-	bh=zJpVP8E5L3jCLhdy6tYzdskHgP8Ls4RugBVvPkC/XUE=;
+	s=arc-20240116; t=1720524533; c=relaxed/simple;
+	bh=kyOzykdjX/qUTl64Xn5t0ksSvRiSMPT+n0a1T55tEqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q1BINS2Uf/G1NZCH3F4ea74D8jLvEtWL1Lynph4uc1Fx2GBkoCkCZ4v2bCuPUIIEh/ZeYrdoxlKdpdLJTO65QHAxAXkXwkqKLHXwq8Y147wlZQ8Ad34HX8NYEX05kZTl4DJfMDxDFAhNV+Lfygg/xD/J0DrbWHmcz8IQqGlFqgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CAkZ09P9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C590C3277B;
-	Tue,  9 Jul 2024 11:24:20 +0000 (UTC)
+	 MIME-Version; b=NibkY3LLQzWnyviXn2uDgt8vvXRRIo4xQbhyA7ws5Ks9bICJisr8rDkNF78xtGWuqJu/47R1FS43eq3huNr+BXiZe9zoUxf9wFr/H2oKTTm4NE57gWhSDDgJEq7q3ulYlDlxsnDWmJ9IOOdgFHX1j1EUrD7Ge4hVry2fMp+7hL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujA0g9VK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91BE0C3277B;
+	Tue,  9 Jul 2024 11:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720524260;
-	bh=zJpVP8E5L3jCLhdy6tYzdskHgP8Ls4RugBVvPkC/XUE=;
+	s=korg; t=1720524533;
+	bh=kyOzykdjX/qUTl64Xn5t0ksSvRiSMPT+n0a1T55tEqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CAkZ09P90GrdFhpZXloRKWPj9RfZFJSn8LJhdo9AMhIpr3XPm4jz3nPDrFeqsmamV
-	 seTO5D5hog+Jyg3n8ZPhgHH3YzgMzXcB04zEEzPuYP/QkeK9a23oddI+3JIO9Y0geh
-	 KadJIxE+Uek8GzvIRsYLXwWCLVoE4BJiuDl5/fEA=
+	b=ujA0g9VKFk5pLW69pK7BExmq2xkIKEU5/SAQHBQSxzOih/5GI8FtnvR/F1G4v3s3W
+	 jDtVnv5q24ymi0yA5TlLa5fWSrRbFhDtavOp4J3AINiww1VDSvm5NZKbBiQLUdg7Fm
+	 9ngcmThy0R+omInzK3bbCNWbA4WD++jVqNl4+NbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	Xiaochun Lu <xiaochun.lu@bytedance.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 124/197] selftests: make order checking verbose in msg_zerocopy selftest
+Subject: [PATCH 6.1 015/102] drm/amd/display: Skip finding free audio for unknown engine_id
 Date: Tue,  9 Jul 2024 13:09:38 +0200
-Message-ID: <20240709110713.751709747@linuxfoundation.org>
+Message-ID: <20240709110651.962623132@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 7d6d8f0c8b700c9493f2839abccb6d29028b4219 ]
+[ Upstream commit 1357b2165d9ad94faa4c4a20d5e2ce29c2ff29c3 ]
 
-We find that when lock debugging is on, notifications may not come in
-order. Thus, we have order checking outputs managed by cfg_verbose, to
-avoid too many outputs in this case.
+[WHY]
+ENGINE_ID_UNKNOWN = -1 and can not be used as an array index. Plus, it
+also means it is uninitialized and does not need free audio.
 
-Fixes: 07b65c5b31ce ("test: add msg_zerocopy test")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Signed-off-by: Xiaochun Lu <xiaochun.lu@bytedance.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20240701225349.3395580-3-zijianzhang@bytedance.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[HOW]
+Skip and return NULL.
+
+This fixes 2 OVERRUN issues reported by Coverity.
+
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/msg_zerocopy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/net/msg_zerocopy.c b/tools/testing/selftests/net/msg_zerocopy.c
-index 926556febc83c..7ea5fb28c93db 100644
---- a/tools/testing/selftests/net/msg_zerocopy.c
-+++ b/tools/testing/selftests/net/msg_zerocopy.c
-@@ -438,7 +438,7 @@ static bool do_recv_completion(int fd, int domain)
- 	/* Detect notification gaps. These should not happen often, if at all.
- 	 * Gaps can occur due to drops, reordering and retransmissions.
- 	 */
--	if (lo != next_completion)
-+	if (cfg_verbose && lo != next_completion)
- 		fprintf(stderr, "gap: %u..%u does not append to %u\n",
- 			lo, hi, next_completion);
- 	next_completion = hi + 1;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index e2f80cd0ca8cb..83898e46bcadf 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -2146,6 +2146,9 @@ static struct audio *find_first_free_audio(
+ {
+ 	int i, available_audio_count;
+ 
++	if (id == ENGINE_ID_UNKNOWN)
++		return NULL;
++
+ 	available_audio_count = pool->audio_count;
+ 
+ 	for (i = 0; i < available_audio_count; i++) {
 -- 
 2.43.0
 
