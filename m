@@ -1,153 +1,131 @@
-Return-Path: <stable+bounces-59004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2337492D1CB
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 14:41:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E0492D21C
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 15:00:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDC002851AF
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 12:41:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52A1A1C22AF1
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 13:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF0A191F62;
-	Wed, 10 Jul 2024 12:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF35F192B62;
+	Wed, 10 Jul 2024 12:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XtJfZWEB"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="vYx7VkBq"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6441A19066D
-	for <stable@vger.kernel.org>; Wed, 10 Jul 2024 12:41:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7E5192B82
+	for <stable@vger.kernel.org>; Wed, 10 Jul 2024 12:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720615302; cv=none; b=M4aorzB/7R1AhLSJoCAPV8zalHNuQhGck5S9miId9b9w5ZXcFwLIb7GR8qabn+uksArupCurqaOLyr20PcfAto+QE4WsITQ060ETA+X2ByrSJkAdDg6s9avNR5WO9c9DUIsRHQGOVJ2OEk0dXhJAkIXGXLKEir2KnVWFvCpFEFk=
+	t=1720616386; cv=none; b=ALF42DryAIZ5myLCLokHzrCz01QNTSP+xjydgZoG7Md5pqng3bKCfmjkDXrq3/d+doICmKFyDvkYfqvitXa+AOqiCsXk7kNtiREhXF3agBW5ukoelfWvnclsQVJEY9P/f91IABR0Gh9nVmrcAV6QPhraQVwy0UlbhtCMN5dE3jU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720615302; c=relaxed/simple;
-	bh=2tqPNEFWygqfk1hUyRVA/mCWN5DE9KFHkML6WN8jaT8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HKWjvzOcWlUB+dRVhOsNqfrou3owjvIJng1DFF0S8DYv1QW14VNQWCMxYBARG4JOFgO+vjeioep5NvukZa6Bn8xFOIuXYaGTpu4pMeymI5I70OeBBtMzOadCSdxbY6yf7CP8dYyZaoTjkZO41dw+K9nkt0+YBIYAHXX7OetknWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XtJfZWEB; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720615302; x=1752151302;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=2tqPNEFWygqfk1hUyRVA/mCWN5DE9KFHkML6WN8jaT8=;
-  b=XtJfZWEBa0hulZe7MMCWs1pHO+JLFL+Ghqbgbi8K9d46L6FrNf4TrsD5
-   h/ICqTTmcKoPya0ltcRT6mn3p0KyIfwpwiy0eGFKcnRwMCX2Fm5OZp29d
-   3+bBGzJSwFxA+VEQSf6is7fZA2SluKJw+N/zoOvuE7Web7kUs/L3TLw8n
-   FN2lSAbQneF4LGQ7xTl76w0TilnSYEEZ8sSQhzSqcpdG/40w8h94/hynM
-   46jjpDlb2j1ekjRzfnV5JCfjruaViMuiV9ANfLw3EPMyd8LGyByAVdps5
-   jqSXWsQnXGA8+cfsMXccHj+lThye/75jTfqKM5ZzKAsPwIw+G4ypQJNS+
-   g==;
-X-CSE-ConnectionGUID: JtEEqp/MQaOK3GTQCp2pCg==
-X-CSE-MsgGUID: ED0sLJ5wR3+u3WKLyEw+7w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11128"; a="21696961"
-X-IronPort-AV: E=Sophos;i="6.09,197,1716274800"; 
-   d="scan'208";a="21696961"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2024 05:41:41 -0700
-X-CSE-ConnectionGUID: skW5B46gSz260u4JJIlRXA==
-X-CSE-MsgGUID: Gg4RpCqNQQ655HI8umNATA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,197,1716274800"; 
-   d="scan'208";a="48182937"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by fmviesa008.fm.intel.com with SMTP; 10 Jul 2024 05:41:38 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Wed, 10 Jul 2024 15:41:37 +0300
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: intel-gfx@lists.freedesktop.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] drm/i915: Fix readout degamma_lut mismatch on ilk/snb
-Date: Wed, 10 Jul 2024 15:41:37 +0300
-Message-ID: <20240710124137.16773-1-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.44.2
+	s=arc-20240116; t=1720616386; c=relaxed/simple;
+	bh=obHF9AJpMxnGLrY5noCk5gC/7nZIV0lagmg4KPXKWIs=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=VQ6Uw/uXcXHnZ5t8gi70A4mNgEzwBsTtyrp7HB8UZD/bv3QpexWgpReZ0BkYL03KvdcmZIsBe7INFLGTfxIrF9iz99iIDBYv3wi/2cvcmS8CWs95v7rbFfSadN7D2sD4GLr1nar7cpwr/xafp8sCKJ3hjTzUMY4iXUXabnpdKzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=vYx7VkBq; arc=none smtp.client-ip=35.89.44.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5004a.ext.cloudfilter.net ([10.0.29.221])
+	by cmsmtp with ESMTPS
+	id RLgjsb1sGSLKxRWv4sUGVk; Wed, 10 Jul 2024 12:59:38 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id RWv3scyrHB0eBRWv3s7yQy; Wed, 10 Jul 2024 12:59:37 +0000
+X-Authority-Analysis: v=2.4 cv=Z9gnH2RA c=1 sm=1 tr=0 ts=668e85b9
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=4kmOji7k6h8A:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ByEBJS4d3crkbAji8f8f5XgXAQWRnugm4hD1So0pZnw=; b=vYx7VkBqHnuay/hP/6O5hbOj3o
+	gz6vgQbbQQb06mzc0f6w6J4f6IjVl1y6bMecAOMTazScMUcLdR77eLHE57ung84uaGcwAoymT1/Qw
+	XcHxLnaPDgZPXOPlaaZVjbql0VPHaakjXDbN5N/04fa/7m9J2ltsZdrYAVd3hfyHVAYtjc9mmFou4
+	/jdFaItRVe0obhVVsH5Th1IIlZ2rCxTPSPdLwyi5pDH5lVpA1WXyTsceplJKa8IarsXCQsm0xiLqc
+	NG4AT2HYSWHHYn7isuly8gcRZCtXCjY/Ya4FRISBQgnngCq5RbMJcOj6yi0a86SzSGQP81yb+ZuNT
+	W1+AHdTw==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:47970 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1sRWv0-001cyG-1t;
+	Wed, 10 Jul 2024 06:59:34 -0600
+Subject: Re: [PATCH 6.9 000/197] 6.9.9-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240709110708.903245467@linuxfoundation.org>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <0edcfe59-908a-dc29-a34e-afa7923b25a7@w6rz.net>
+Date: Wed, 10 Jul 2024 05:59:32 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1sRWv0-001cyG-1t
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:47970
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfGLYO3PVxt4+tfetmazfzg8sUcMcLNSXBxKwavrKLmcOQJhhD1XPR629Zak7VzQF46/kUD1IPrXV1/47/Or5ergJJ4QArjb4bl+fI0a6nPnm+Sp0JFh3
+ 4oM3LfNw4fKiQMqKSSP01LMXGW6fWrc3SlhjHajgnO66dz43LZaItSNfJG8JE3co5EX/AwM/nClWRA==
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+On 7/9/24 4:07 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.9.9 release.
+> There are 197 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 11 Jul 2024 11:06:25 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.9-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-On ilk/snb the pipe may be configured to place the LUT before or
-after the CSC depending on various factors, but as there is only
-one LUT (no split mode like on IVB+) we only advertise a gamma_lut
-and no degamma_lut in the uapi to avoid confusing userspace.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-This can cause a problem during readout if the VBIOS/GOP enabled
-the LUT in the pre CSC configuration. The current code blindly
-assigns the results of the readout to the degamma_lut, which will
-cause a failure during the next atomic_check() as we aren't expecting
-anything to be in degamma_lut since it's not visible to userspace.
-
-Fix the problem by assigning whatever LUT we read out from the
-hardware into gamma_lut.
-
-Cc: stable@vger.kernel.org
-Fixes: d2559299d339 ("drm/i915: Make ilk_read_luts() capable of degamma readout")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11608
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
- .../drm/i915/display/intel_modeset_setup.c    | 31 ++++++++++++++++---
- 1 file changed, 26 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/gpu/drm/i915/display/intel_modeset_setup.c b/drivers/gpu/drm/i915/display/intel_modeset_setup.c
-index 7602cb30ebf1..e1213f3d93cc 100644
---- a/drivers/gpu/drm/i915/display/intel_modeset_setup.c
-+++ b/drivers/gpu/drm/i915/display/intel_modeset_setup.c
-@@ -326,6 +326,8 @@ static void intel_modeset_update_connector_atomic_state(struct drm_i915_private
- 
- static void intel_crtc_copy_hw_to_uapi_state(struct intel_crtc_state *crtc_state)
- {
-+	struct drm_i915_private *i915 = to_i915(crtc_state->uapi.crtc->dev);
-+
- 	if (intel_crtc_is_joiner_secondary(crtc_state))
- 		return;
- 
-@@ -337,11 +339,30 @@ static void intel_crtc_copy_hw_to_uapi_state(struct intel_crtc_state *crtc_state
- 	crtc_state->uapi.adjusted_mode = crtc_state->hw.adjusted_mode;
- 	crtc_state->uapi.scaling_filter = crtc_state->hw.scaling_filter;
- 
--	/* assume 1:1 mapping */
--	drm_property_replace_blob(&crtc_state->hw.degamma_lut,
--				  crtc_state->pre_csc_lut);
--	drm_property_replace_blob(&crtc_state->hw.gamma_lut,
--				  crtc_state->post_csc_lut);
-+	if (DISPLAY_INFO(i915)->color.degamma_lut_size) {
-+		/* assume 1:1 mapping */
-+		drm_property_replace_blob(&crtc_state->hw.degamma_lut,
-+					  crtc_state->pre_csc_lut);
-+		drm_property_replace_blob(&crtc_state->hw.gamma_lut,
-+					  crtc_state->post_csc_lut);
-+	} else {
-+		/*
-+		 * ilk/snb hw may be configured for either pre_csc_lut
-+		 * or post_csc_lut, but we don't advertise degamma_lut as
-+		 * being available in the uapi since there is only one
-+		 * hardware LUT. Always assign the result of the readout
-+		 * to gamma_lut as that is the only valid source of LUTs
-+		 * in the uapi.
-+		 */
-+		drm_WARN_ON(&i915->drm, crtc_state->post_csc_lut &&
-+			    crtc_state->pre_csc_lut);
-+
-+		drm_property_replace_blob(&crtc_state->hw.degamma_lut,
-+					  NULL);
-+		drm_property_replace_blob(&crtc_state->hw.gamma_lut,
-+					  crtc_state->post_csc_lut ?:
-+					  crtc_state->pre_csc_lut);
-+	}
- 
- 	drm_property_replace_blob(&crtc_state->uapi.degamma_lut,
- 				  crtc_state->hw.degamma_lut);
--- 
-2.44.2
+Tested-by: Ron Economos <re@w6rz.net>
 
 
