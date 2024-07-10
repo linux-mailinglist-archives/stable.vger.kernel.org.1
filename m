@@ -1,119 +1,280 @@
-Return-Path: <stable+bounces-59043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A2A492D9B3
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 22:09:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CBE592DB43
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 23:51:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E4321C210C5
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 20:09:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A3A61C212EF
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 21:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D38B195F2D;
-	Wed, 10 Jul 2024 20:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D136613C3C9;
+	Wed, 10 Jul 2024 21:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="lZnyBEOy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HyOXKoQO"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8B54F1E2;
-	Wed, 10 Jul 2024 20:09:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2B03AC0C;
+	Wed, 10 Jul 2024 21:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720642159; cv=none; b=O3wZdeWSyNDGC5n97eiX3JjITl26YfHCu1qUhcVknvQhw9CPg3EBJ+Zcsc/3YoEFhQxYumi/TdFBhSFRGQSa9ZKzrvQrmMTAI4U0A+tcll+tw7d6Q51KpzVa/rLd2wCAyXpBZ9Hz9be0HlTG/CWgk7GfO+8lpMkOnZh9CKeNrME=
+	t=1720648256; cv=none; b=ZS8MEEVKe6ZzSKYA30iOUGgmn/7H+JL9orC+ZirDzca1UDupyrWi/J0e/OhC2/iHo6vIwi03W1pKGUvHQUT84U7/0aUCH79nj/BUcgNy0kyTiGnCTNhC1g+waANpK9/IvALcLLWA/QcXkeEeNahg+gR0Vnyyf31mGhL+ql3xDcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720642159; c=relaxed/simple;
-	bh=nAq2UopC+lcHEXD0KwKR6HDnTvRTNu7sg5BZmooKNd4=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=b7/qleyqcT1TNjhjYbmKAZkirLuM4OFD9XqFfdn5tZG3PLaCMFxkSVuCo01glLAPeezTTCYRO9Xbjr4e8xOLPInvRRJhIPU4HA/vxxGOdo05hG3zvAmCCqYhJ0vvxEODVq/FZYt58INS7HrnU/qmqrrinrZ5ytbF1BD/aZ/6CkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=lZnyBEOy; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1720642149; x=1721246949; i=markus.elfring@web.de;
-	bh=rho+4554GMatJ4J6FFq/74f8fKeBu1vtC6simcrat64=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=lZnyBEOylSRk809Ia0nRj6Z4UOEm2+69GKJUsV28BelJpfAroe6EB9aG9iGeItoL
-	 qUkqtcCjUtfet5wQyWcREXNC4c28Up0ODFfT3WpklPVudUmhM3dhL6wtudDFZgBLg
-	 mqIA9EX4Mr2nw2/smMOZgkT+EI48cY+GjZAaG4TqULhMpog59YKeW433t8UKIe8Q1
-	 uepFe3ffpRtnnFS1c+DOdxK36BdayviYUCOB6RyFxLpsy0eKQcp65XLr4KZR3UyUr
-	 utWUyj2Unn6w+GVfVB9wuokCGSpKHIoHU6oksgWPeY8z8PgR8e5dv617OFNI6zVUv
-	 gwUipE3fEr1OzBj29g==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.82.95]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MKMA7-1sfaVW3Sf9-00KXWF; Wed, 10
- Jul 2024 22:09:09 +0200
-Message-ID: <8fd93c4e-3324-49b6-a77c-ea9986bc3033@web.de>
-Date: Wed, 10 Jul 2024 22:09:04 +0200
+	s=arc-20240116; t=1720648256; c=relaxed/simple;
+	bh=7AEMTmeXOOaIqvd4DiMGX4i5CTo3vLpW0bIbfdFRyK0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OatuJ1ffPdapNIXxI59OjqbxWtU6ULxvfOsrWOzGV/BdzZOEubIsgOzrFFVB2wheo7LWzPhoBrBVT9r3+MQeKu71Fy0HoRrMCJFwFBJyisfHpXK9poijpmCiIi3Rs7LpZgFYej17NroRtG2MQwXJztIuG7opFDrtI0Vi4GXO1iE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HyOXKoQO; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-36798e62aeeso82354f8f.1;
+        Wed, 10 Jul 2024 14:50:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1720648253; x=1721253053; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JeLU84OFusCIZ6nm+2Cz7jRYkdRS1DgJBvgZZI1L2Mw=;
+        b=HyOXKoQOPS+GgE/c6AdlmE/AUC9fB1q0R1/SxEZilhNnJcPR1vCNdsdj7CpAiF9kiJ
+         e5LAbipBt7isjr9uE28xlwc4Dm11h6cRTjQvf1G9iI5wLzFpvv8kwkl9ZKko/JZz+AvI
+         zQp10I8IUd+0s2d1QlZuM5c5sXaQ76J4MS53VBqANxK1pOKhpZeNZl8z0GMoepR6qF5W
+         ZfB71nD1Nlp1iSxhlO/PCxD4vN2T9xEtAst9oQCOK+FRRJywpC4AZ6cfeMczVvuD2Cpe
+         JiMZdcKbcyE8cgxajls5W9QO5ZOOHcNmFw9cEpx+HircTpMoFOZ20TCLf/sz4CFHomNl
+         flBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720648253; x=1721253053;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JeLU84OFusCIZ6nm+2Cz7jRYkdRS1DgJBvgZZI1L2Mw=;
+        b=QwvEbQigUEkPYsAanHdXW/3k96VwOeqs/EDzecP7XBKiDl0kQ/s2cRUNMtkdebjaFi
+         lQmwcKGvFNuQnbvoOpCpiSXmWNT2FfPHjGSQlSEFna8gmD2kcJXTUHPGmgYYJoUA4oX7
+         +QMkChCPT4iNnYh03Br5UmBW4BcvRcNmB5JmZ6FfxluwQfkZrfL/Q/+GP5P8s2rRF3yM
+         gCdJWwDH3Vi0maUzLaJcgVeA7a6p0BJ02kO9GeUmyGZl4U8qc9ejyUA4tPBmDHWq91XS
+         1wQNAd7TW8o8IF+flatqZLzfzMf3V3Kim9Jd21lOykM/dg4xO01ltTE4NiGiok5gzq+D
+         PeIA==
+X-Forwarded-Encrypted: i=1; AJvYcCVjAyKN1rqaIij6Fme/lmhXDSktZkMzwARXX1CKAqCcKiGNFKjfkPokW1dsYHM/0ksWxN7+i3GonfDTF2K8r1FCw0+1HQ6k
+X-Gm-Message-State: AOJu0YzZ+thWI1nVSLWJuTbBLrr4z0ojgr0iRTw0L3Xl+61noFbjCli3
+	MfxgwcVMRdvB3HCHm8y7Xn4a+Q0stbVOxUMREtRSHVENKK+17T8G
+X-Google-Smtp-Source: AGHT+IHs2K124hGmsNfrSgFSKepfKJjx6rwBz5PuQ4AO5O4uwv/m5OE/1tgbWlkvhpj+JI3EOqHMQA==
+X-Received: by 2002:a05:6000:c08:b0:367:4d9d:568b with SMTP id ffacd0b85a97d-367ceadc9eemr4069207f8f.68.1720648252855;
+        Wed, 10 Jul 2024 14:50:52 -0700 (PDT)
+Received: from [192.168.1.100] ([46.248.82.114])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-367cde7e095sm6180892f8f.23.2024.07.10.14.50.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Jul 2024 14:50:52 -0700 (PDT)
+Message-ID: <8551ef61-71fb-18f3-a8a8-6c7c3ed731e6@gmail.com>
+Date: Wed, 10 Jul 2024 23:50:50 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Vasiliy Kovalev <kovalev@altlinux.org>, linux-fsdevel@vger.kernel.org,
- lvc-patches@linuxtesting.org,
- syzbot+d98fd19acd08b36ff422@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- "Tigran A. Aivazian" <aivazian.tigran@gmail.com>, dutyrok@altlinux.org
-References: <20240710191118.40431-2-kovalev@altlinux.org>
-Subject: Re: [PATCH fs/bfs 1/2] bfs: fix null-ptr-deref in bfs_move_block
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240710191118.40431-2-kovalev@altlinux.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:l1ptvMTFbiN/O1FzRBNPX9iH0hmjL8/DegvoUVGQWj22U3u9OgC
- zVNYHpJHoaOhSeNt0HtfNDcG9ms+Rs/1q7bwVdqFnnkScQ5JvmqhTAqOOEaz1nHGHzRvSY7
- 7oIvuwQLmhxy7c+wZYFppgoIbt2tCrBa9/WW4nUoigTlAV7WigaEukE/FPAgysDuTcFh5+V
- lCmWYaugy+SO+QXSgo+DA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Oqzg30k6YCI=;ruKfetjCviKFaOH6HgG19JB8MFa
- 5NtFyOrkk5/L2+xG9M3+FHKl6vutPANxBNDn8uP5odhUsE8u9KxamvELKGB/eQ8fecb52pgNa
- 8nNN0RbjaTlxV/0z5o/SAViA/0ftjcLtDzgQKiqGApYYCCWIKnKgVC2Qj/pQZs4O/4x3UsFMm
- xsbvxvI3EJXXXItgDfgJmWygfwbELLtSVD/ZIDJsNbKIMXSRG7E7QE2+ROMQRbiJdf6UEKuz0
- 8XYw+zeivXXapthi20RHI0MRdU9d3zM3n0lSRjabuB8QhMlXHimttEUqyRW5Bl1+eXhaCThPF
- Kaw2LcboryJuRlNRdw+x9Lp9TAhZC2eXg5vCd17cZxsFT7yru2h+fxqha2SXuwxoHhvxI9O2W
- GEh3qQnb7rcw19v7GpcJAqUapAR0atDR04cQJhKr7TLK04r6DCS2xebHIcEKWoKMFhz43SeqJ
- L1yM9A3TeaUrPJ+1ClPW0iqMK++5g2YaeZsDgK9Dic6izhEqU4FPQuAwdvKVJRqQqdD90Ik7p
- udpmOV5xYZ8R30ntJxj6BEkADwb/CVHS3g2Wup3e2aLwB4L5RQgElpahYnoyDLvef+w8qhoiV
- sNvZXOvGd8cO8qpLk6PLB0n6REyIrGR2Diu44RVFffxbjuzmWiMX3kRQRvqWyKYTZblRrW6oP
- Nr7PYL/CX7KvyanL8JXsWqxdYFGdBaZXbhEaucrJWqCn4Sc9c/HLTrxUMnp5jyjU/Y4nKvoMj
- Lt56XWCo88LmtC5j57/Oi3EfFMvtYzHaeq4n1+Ifk6QYfFqhm19LIgzQ4cgfnBHH2HJWf4e0a
- eIg/t8cFPwQNJT+0r833a1MQ==
-
-> Add a check to ensure 'sb_getblk' did not return NULL before copying dat=
-a.
-
-Wording suggestion:
-                        that a sb_getblk() call
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v4] x86/entry_32: Use stack segment selector for VERW
+ operand
+Content-Language: en-US
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+ Robert Gill <rtgill82@gmail.com>, Jari Ruusu <jariruusu@protonmail.com>,
+ Brian Gerst <brgerst@gmail.com>,
+ "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>,
+ antonio.gomez.iglesias@linux.intel.com, daniel.sneddon@linux.intel.com,
+ stable@vger.kernel.org
+References: <20240710-fix-dosemu-vm86-v4-1-aa6464e1de6f@linux.intel.com>
+From: Uros Bizjak <ubizjak@gmail.com>
+In-Reply-To: <20240710-fix-dosemu-vm86-v4-1-aa6464e1de6f@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
-How do you think about to use a summary phrase like
-=E2=80=9CPrevent null pointer dereference in bfs_move_block()=E2=80=9D?
 
+On 10. 07. 24 21:06, Pawan Gupta wrote:
+> Robert Gill reported below #GP when dosemu software was executing vm86()
+> system call:
+> 
+>    general protection fault: 0000 [#1] PREEMPT SMP
+>    CPU: 4 PID: 4610 Comm: dosemu.bin Not tainted 6.6.21-gentoo-x86 #1
+>    Hardware name: Dell Inc. PowerEdge 1950/0H723K, BIOS 2.7.0 10/30/2010
+>    EIP: restore_all_switch_stack+0xbe/0xcf
+>    EAX: 00000000 EBX: 00000000 ECX: 00000000 EDX: 00000000
+>    ESI: 00000000 EDI: 00000000 EBP: 00000000 ESP: ff8affdc
+>    DS: 0000 ES: 0000 FS: 0000 GS: 0033 SS: 0068 EFLAGS: 00010046
+>    CR0: 80050033 CR2: 00c2101c CR3: 04b6d000 CR4: 000406d0
+>    Call Trace:
+>     show_regs+0x70/0x78
+>     die_addr+0x29/0x70
+>     exc_general_protection+0x13c/0x348
+>     exc_bounds+0x98/0x98
+>     handle_exception+0x14d/0x14d
+>     exc_bounds+0x98/0x98
+>     restore_all_switch_stack+0xbe/0xcf
+>     exc_bounds+0x98/0x98
+>     restore_all_switch_stack+0xbe/0xcf
+> 
+> This only happens when VERW based mitigations like MDS/RFDS are enabled.
+> This is because segment registers with an arbitrary user value can result
+> in #GP when executing VERW. Intel SDM vol. 2C documents the following
+> behavior for VERW instruction:
+> 
+>    #GP(0) - If a memory operand effective address is outside the CS, DS, ES,
+> 	   FS, or GS segment limit.
+> 
+> CLEAR_CPU_BUFFERS macro executes VERW instruction before returning to user
+> space. Replace CLEAR_CPU_BUFFERS with a safer version that uses %ss to
+> refer VERW operand mds_verw_sel. This ensures VERW will not #GP for an
+> arbitrary user %ds. Also, in NMI return path, move VERW to after
+> RESTORE_ALL_NMI that touches GPRs.
+> 
+> For clarity, below are the locations where the new CLEAR_CPU_BUFFERS_SAFE
+> version is being used:
+> 
+> * entry_INT80_32(), entry_SYSENTER_32() and interrupts (via
+>    handle_exception_return) do:
+> 
+> restore_all_switch_stack:
+>    [...]
+>     mov    %esi,%esi
+>     verw   %ss:0xc0fc92c0  <-------------
+>     iret
+> 
+> * Opportunistic SYSEXIT:
+> 
+>     [...]
+>     verw   %ss:0xc0fc92c0  <-------------
+>     btrl   $0x9,(%esp)
+>     popf
+>     pop    %eax
+>     sti
+>     sysexit
+> 
+> *  nmi_return and nmi_from_espfix:
+>     mov    %esi,%esi
+>     verw   %ss:0xc0fc92c0  <-------------
+>     jmp     .Lirq_return
+> 
+> Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
+> Cc: stable@vger.kernel.org # 5.10+
+> Reported-by: Robert Gill <rtgill82@gmail.com>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218707
+> Closes: https://lore.kernel.org/all/8c77ccfd-d561-45a1-8ed5-6b75212c7a58@leemhuis.info/
+> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Suggested-by: Brian Gerst <brgerst@gmail.com> # Use %ss
+> Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> ---
+> v4:
+> - Further simplify the patch by using %ss for all VERW calls in 32-bit mode (Brian).
+> - In NMI exit path move VERW after RESTORE_ALL_NMI that touches GPRs (Dave).
+> 
+> v3: https://lore.kernel.org/r/20240701-fix-dosemu-vm86-v3-1-b1969532c75a@linux.intel.com
+> - Simplify CLEAR_CPU_BUFFERS_SAFE by using %ss instead of %ds (Brian).
+> - Do verw before popf in SYSEXIT path (Jari).
+> 
+> v2: https://lore.kernel.org/r/20240627-fix-dosemu-vm86-v2-1-d5579f698e77@linux.intel.com
+> - Safe guard against any other system calls like vm86() that might change %ds (Dave).
+> 
+> v1: https://lore.kernel.org/r/20240426-fix-dosemu-vm86-v1-1-88c826a3f378@linux.intel.com
+> ---
+> 
+> ---
+>   arch/x86/entry/entry_32.S | 18 +++++++++++++++---
+>   1 file changed, 15 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
+> index d3a814efbff6..d54f6002e5a0 100644
+> --- a/arch/x86/entry/entry_32.S
+> +++ b/arch/x86/entry/entry_32.S
+> @@ -253,6 +253,16 @@
+>   .Lend_\@:
+>   .endm
+>   
+> +/*
+> + * Safer version of CLEAR_CPU_BUFFERS that uses %ss to reference VERW operand
+> + * mds_verw_sel. This ensures VERW will not #GP for an arbitrary user %ds.
+> + */
+> +.macro CLEAR_CPU_BUFFERS_SAFE
+> +	ALTERNATIVE "jmp .Lskip_verw\@", "", X86_FEATURE_CLEAR_CPU_BUF
+> +	verw	%ss:_ASM_RIP(mds_verw_sel)
+> +.Lskip_verw\@:
+> +.endm
 
-=E2=80=A6
-> +++ b/fs/bfs/file.c
-> @@ -35,16 +35,22 @@ static int bfs_move_block(unsigned long from, unsign=
-ed long to,
->  					struct super_block *sb)
->  {
->  	struct buffer_head *bh, *new;
-> +	int err;
+Why not simply:
 
-Can a statement (like the following) become more appropriate for such
-a function implementation?
+.macro CLEAR_CPU_BUFFERS_SAFE
+	ALTERNATIVE "", __stringify(verw %ss:_ASM_RIP(mds_verw_sel)), 
+X86_FEATURE_CLEAR_CPU_BUF
+.endm
 
-	int ret =3D 0;
+This is how CLEAR_CPU_BUFFERS .macro is defined in nospec-branch.h.
 
+Uros.
 
-Regards,
-Markus
+> +
+>   .macro RESTORE_INT_REGS
+>   	popl	%ebx
+>   	popl	%ecx
+> @@ -871,6 +881,8 @@ SYM_FUNC_START(entry_SYSENTER_32)
+>   
+>   	/* Now ready to switch the cr3 */
+>   	SWITCH_TO_USER_CR3 scratch_reg=%eax
+> +	/* Clobbers ZF */
+> +	CLEAR_CPU_BUFFERS_SAFE
+>   
+>   	/*
+>   	 * Restore all flags except IF. (We restore IF separately because
+> @@ -881,7 +893,6 @@ SYM_FUNC_START(entry_SYSENTER_32)
+>   	BUG_IF_WRONG_CR3 no_user_check=1
+>   	popfl
+>   	popl	%eax
+> -	CLEAR_CPU_BUFFERS
+>   
+>   	/*
+>   	 * Return back to the vDSO, which will pop ecx and edx.
+> @@ -951,7 +962,7 @@ restore_all_switch_stack:
+>   
+>   	/* Restore user state */
+>   	RESTORE_REGS pop=4			# skip orig_eax/error_code
+> -	CLEAR_CPU_BUFFERS
+> +	CLEAR_CPU_BUFFERS_SAFE
+>   .Lirq_return:
+>   	/*
+>   	 * ARCH_HAS_MEMBARRIER_SYNC_CORE rely on IRET core serialization
+> @@ -1144,7 +1155,6 @@ SYM_CODE_START(asm_exc_nmi)
+>   
+>   	/* Not on SYSENTER stack. */
+>   	call	exc_nmi
+> -	CLEAR_CPU_BUFFERS
+>   	jmp	.Lnmi_return
+>   
+>   .Lnmi_from_sysenter_stack:
+> @@ -1165,6 +1175,7 @@ SYM_CODE_START(asm_exc_nmi)
+>   
+>   	CHECK_AND_APPLY_ESPFIX
+>   	RESTORE_ALL_NMI cr3_reg=%edi pop=4
+> +	CLEAR_CPU_BUFFERS_SAFE
+>   	jmp	.Lirq_return
+>   
+>   #ifdef CONFIG_X86_ESPFIX32
+> @@ -1206,6 +1217,7 @@ SYM_CODE_START(asm_exc_nmi)
+>   	 *  1 - orig_ax
+>   	 */
+>   	lss	(1+5+6)*4(%esp), %esp			# back to espfix stack
+> +	CLEAR_CPU_BUFFERS_SAFE
+>   	jmp	.Lirq_return
+>   #endif
+>   SYM_CODE_END(asm_exc_nmi)
+> 
+> ---
+> base-commit: f2661062f16b2de5d7b6a5c42a9a5c96326b8454
+> change-id: 20240426-fix-dosemu-vm86-dd111a01737e
+> 
+> 
+> 
 
