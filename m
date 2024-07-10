@@ -1,254 +1,153 @@
-Return-Path: <stable+bounces-59003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA8892D1A1
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 14:31:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2337492D1CB
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 14:41:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D3991F2249B
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 12:31:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDC002851AF
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 12:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC5E1922CC;
-	Wed, 10 Jul 2024 12:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF0A191F62;
+	Wed, 10 Jul 2024 12:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FQTrE6Pm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XtJfZWEB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2101E488
-	for <stable@vger.kernel.org>; Wed, 10 Jul 2024 12:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6441A19066D
+	for <stable@vger.kernel.org>; Wed, 10 Jul 2024 12:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720614667; cv=none; b=cJkDTTegiWuiCV3KkXZjY1YuQ5KrDDwC4Jf9vyueWgX88EZtGvOYvT4GVQypVOhPz9KomxeU+Bp2XT8KY+FmLvgFMDqrsBt0BNzZ804otkuPr2R4N6Bi8xZ/HfTPkYHO8J/tmbeA3Re+MJLiuAKGUOaYJFMdM3G+xVXtGqXSUlk=
+	t=1720615302; cv=none; b=M4aorzB/7R1AhLSJoCAPV8zalHNuQhGck5S9miId9b9w5ZXcFwLIb7GR8qabn+uksArupCurqaOLyr20PcfAto+QE4WsITQ060ETA+X2ByrSJkAdDg6s9avNR5WO9c9DUIsRHQGOVJ2OEk0dXhJAkIXGXLKEir2KnVWFvCpFEFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720614667; c=relaxed/simple;
-	bh=j2CB1IYugxTa0rXRRo+PzEw6wqFVB3MyPRvpWsJp/qk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z0M/4oJ5yFuHEZVQH2xeGUDzooEYkuy9Cql24y3wdHdd2s4BYX7MiE4PyLQY+BFTC0X1I9dlnXW5pyBfMn6TJd7oByVUuK/Ge44fI/F+EdA+YpEaCdv/vKQHfTqL7JgAitScjPJi91kYyPyTiQdkVtPL74U18iCGiZTnRQ80gEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FQTrE6Pm; arc=none smtp.client-ip=209.85.221.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-4f30d197e5cso443654e0c.0
-        for <stable@vger.kernel.org>; Wed, 10 Jul 2024 05:31:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720614663; x=1721219463; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Yx5K/74FS6SU2gZ9vr31wzdS+iWH8sI+s/sfE4t8SU0=;
-        b=FQTrE6Pmweg6nmmlg/I41VX7IBYAC3KPtaGFcSHcF8kNS60AWTWVWjjucTONjXBHaN
-         S2uPOfVTCMYhUr0gV8+dQnA+hvdbo4bZsInlUipENYMz4d7ejOlvf4yQgVb1oOstkMK5
-         STa8baadFTUU7TdFSqe6ipZ7SFHlV9BCDKn4HLhc/XrBOFXM0sRuBox34aD0ZXqdHTYC
-         AKMyQImQ7NU0m+4/iPZIgCO/HyIrE9/v3zZg7gx0isLlNnR9xzijLhtqTU3ZrdWCT1XH
-         mCWMg8sg2z4Y/tsJRxfBkZMQcqtY7hMYVVkKymFfRP1T5QqZfHWfLN22BBbcxf4BIP8O
-         qvtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720614663; x=1721219463;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Yx5K/74FS6SU2gZ9vr31wzdS+iWH8sI+s/sfE4t8SU0=;
-        b=WzcrbTxRE+uJ6z5LxjPFkU8Wc0hBMdDowY5F+G36nDNt8gQFLzdBpgijRORxvYHBqc
-         f73niQzIyEa96lNSrcq2e8N5vTKkAOGQQPc5ahB29wDHwwZmbFUv3rHRMdBUxDSqIumH
-         aydko9puS9P8hchEpCCEPIJAUNgPwrcMCev1S29CUAq25nddxpgULD2SMu7zH5Dohn3T
-         f44MZSiD4rMMhYwn0p+CdhVeDS+u4tMpdCVa60XbauiHjI4E6O9qJ3g/mxZEKJg9Hczq
-         IScKAUddkzCUqHXSaqGdtVit9/A64JQmcAIMl+vGza0HcG1hSCfwj+dIzUBWMgLFyNnQ
-         lZdA==
-X-Gm-Message-State: AOJu0YwF3Jp8kGlxK7bKYe+IaEabIzU/YkSCHCIvkiwVG+XcNT3VUwf/
-	6eJVSkN6biG3L5nxgjzf5HTFMsQx/ver8ZDGEwRM1MAl/9GmBE9K9VboX3w94Y8Qw6YrdhpHuUI
-	V8pH6byD8bB5i247zsw2i8L9OZeDyDF6nmHnI3A==
-X-Google-Smtp-Source: AGHT+IEnrOL1Ef9b4qJMG/aI4rTGiGMeiNh1rANHAMpP1crKDydeBnuAVTvcgZZsLkksfqrE4YlJ5vw2AyweNG7013I=
-X-Received: by 2002:a05:6122:12bc:b0:4f2:ffa6:dbd5 with SMTP id
- 71dfb90a1353d-4f3a35c890emr2508024e0c.6.1720614663476; Wed, 10 Jul 2024
- 05:31:03 -0700 (PDT)
+	s=arc-20240116; t=1720615302; c=relaxed/simple;
+	bh=2tqPNEFWygqfk1hUyRVA/mCWN5DE9KFHkML6WN8jaT8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HKWjvzOcWlUB+dRVhOsNqfrou3owjvIJng1DFF0S8DYv1QW14VNQWCMxYBARG4JOFgO+vjeioep5NvukZa6Bn8xFOIuXYaGTpu4pMeymI5I70OeBBtMzOadCSdxbY6yf7CP8dYyZaoTjkZO41dw+K9nkt0+YBIYAHXX7OetknWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XtJfZWEB; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720615302; x=1752151302;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2tqPNEFWygqfk1hUyRVA/mCWN5DE9KFHkML6WN8jaT8=;
+  b=XtJfZWEBa0hulZe7MMCWs1pHO+JLFL+Ghqbgbi8K9d46L6FrNf4TrsD5
+   h/ICqTTmcKoPya0ltcRT6mn3p0KyIfwpwiy0eGFKcnRwMCX2Fm5OZp29d
+   3+bBGzJSwFxA+VEQSf6is7fZA2SluKJw+N/zoOvuE7Web7kUs/L3TLw8n
+   FN2lSAbQneF4LGQ7xTl76w0TilnSYEEZ8sSQhzSqcpdG/40w8h94/hynM
+   46jjpDlb2j1ekjRzfnV5JCfjruaViMuiV9ANfLw3EPMyd8LGyByAVdps5
+   jqSXWsQnXGA8+cfsMXccHj+lThye/75jTfqKM5ZzKAsPwIw+G4ypQJNS+
+   g==;
+X-CSE-ConnectionGUID: JtEEqp/MQaOK3GTQCp2pCg==
+X-CSE-MsgGUID: ED0sLJ5wR3+u3WKLyEw+7w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11128"; a="21696961"
+X-IronPort-AV: E=Sophos;i="6.09,197,1716274800"; 
+   d="scan'208";a="21696961"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2024 05:41:41 -0700
+X-CSE-ConnectionGUID: skW5B46gSz260u4JJIlRXA==
+X-CSE-MsgGUID: Gg4RpCqNQQ655HI8umNATA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,197,1716274800"; 
+   d="scan'208";a="48182937"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by fmviesa008.fm.intel.com with SMTP; 10 Jul 2024 05:41:38 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Wed, 10 Jul 2024 15:41:37 +0300
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] drm/i915: Fix readout degamma_lut mismatch on ilk/snb
+Date: Wed, 10 Jul 2024 15:41:37 +0300
+Message-ID: <20240710124137.16773-1-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.44.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240709110658.146853929@linuxfoundation.org>
-In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 10 Jul 2024 18:00:51 +0530
-Message-ID: <CA+G9fYvs8EmAaxoxzHuEhr73+ppK7=o95yxUkJRE4U7RUjvyEg@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/139] 6.6.39-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 9 Jul 2024 at 16:42, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.39 release.
-> There are 139 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 11 Jul 2024 11:06:25 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.39-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+On ilk/snb the pipe may be configured to place the LUT before or
+after the CSC depending on various factors, but as there is only
+one LUT (no split mode like on IVB+) we only advertise a gamma_lut
+and no degamma_lut in the uapi to avoid confusing userspace.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+This can cause a problem during readout if the VBIOS/GOP enabled
+the LUT in the pre CSC configuration. The current code blindly
+assigns the results of the readout to the degamma_lut, which will
+cause a failure during the next atomic_check() as we aren't expecting
+anything to be in degamma_lut since it's not visible to userspace.
 
-NOTES:
-1) The Powerpc build regressions reported and bisected [1]
-Email thread link,
- [1] https://lore.kernel.org/stable/CA+G9fYvcbdKN8B9t-ukO2aZCOwkjNme8+XhLcL=
--=3Dwcd+XXRP6g@mail.gmail.com/
+Fix the problem by assigning whatever LUT we read out from the
+hardware into gamma_lut.
 
-2) The new Build warnings noticed on arm64 [2]
-arch/arm64/net/bpf_jit_comp.c: In function 'bpf_int_jit_compile':
-arch/arm64/net/bpf_jit_comp.c:1651:17: warning: ignoring return value
-of 'bpf_jit_binary_lock_ro' declared with attribute
-'warn_unused_result' [-Wunused-result]
- 1651 |                 bpf_jit_binary_lock_ro(header);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Cc: stable@vger.kernel.org
+Fixes: d2559299d339 ("drm/i915: Make ilk_read_luts() capable of degamma readout")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11608
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ .../drm/i915/display/intel_modeset_setup.c    | 31 ++++++++++++++++---
+ 1 file changed, 26 insertions(+), 5 deletions(-)
 
-## Build
-* kernel: 6.6.37-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: ca32fab2f2f9ffc305606cc41fe02e41bce06dd6
-* git describe: v6.6.36-164-gca32fab2f2f9
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.3=
-6-164-gca32fab2f2f9
+diff --git a/drivers/gpu/drm/i915/display/intel_modeset_setup.c b/drivers/gpu/drm/i915/display/intel_modeset_setup.c
+index 7602cb30ebf1..e1213f3d93cc 100644
+--- a/drivers/gpu/drm/i915/display/intel_modeset_setup.c
++++ b/drivers/gpu/drm/i915/display/intel_modeset_setup.c
+@@ -326,6 +326,8 @@ static void intel_modeset_update_connector_atomic_state(struct drm_i915_private
+ 
+ static void intel_crtc_copy_hw_to_uapi_state(struct intel_crtc_state *crtc_state)
+ {
++	struct drm_i915_private *i915 = to_i915(crtc_state->uapi.crtc->dev);
++
+ 	if (intel_crtc_is_joiner_secondary(crtc_state))
+ 		return;
+ 
+@@ -337,11 +339,30 @@ static void intel_crtc_copy_hw_to_uapi_state(struct intel_crtc_state *crtc_state
+ 	crtc_state->uapi.adjusted_mode = crtc_state->hw.adjusted_mode;
+ 	crtc_state->uapi.scaling_filter = crtc_state->hw.scaling_filter;
+ 
+-	/* assume 1:1 mapping */
+-	drm_property_replace_blob(&crtc_state->hw.degamma_lut,
+-				  crtc_state->pre_csc_lut);
+-	drm_property_replace_blob(&crtc_state->hw.gamma_lut,
+-				  crtc_state->post_csc_lut);
++	if (DISPLAY_INFO(i915)->color.degamma_lut_size) {
++		/* assume 1:1 mapping */
++		drm_property_replace_blob(&crtc_state->hw.degamma_lut,
++					  crtc_state->pre_csc_lut);
++		drm_property_replace_blob(&crtc_state->hw.gamma_lut,
++					  crtc_state->post_csc_lut);
++	} else {
++		/*
++		 * ilk/snb hw may be configured for either pre_csc_lut
++		 * or post_csc_lut, but we don't advertise degamma_lut as
++		 * being available in the uapi since there is only one
++		 * hardware LUT. Always assign the result of the readout
++		 * to gamma_lut as that is the only valid source of LUTs
++		 * in the uapi.
++		 */
++		drm_WARN_ON(&i915->drm, crtc_state->post_csc_lut &&
++			    crtc_state->pre_csc_lut);
++
++		drm_property_replace_blob(&crtc_state->hw.degamma_lut,
++					  NULL);
++		drm_property_replace_blob(&crtc_state->hw.gamma_lut,
++					  crtc_state->post_csc_lut ?:
++					  crtc_state->pre_csc_lut);
++	}
+ 
+ 	drm_property_replace_blob(&crtc_state->uapi.degamma_lut,
+ 				  crtc_state->hw.degamma_lut);
+-- 
+2.44.2
 
-## Test Regressions (compared to v6.6.38-140-g3be0ca2a17a0)
-
-* powerpc, build
-  - clang-18-defconfig
-  - clang-nightly-defconfig
-  - gcc-13-defconfig
-  - gcc-8-defconfig
-
-
-## Metric Regressions (compared to v6.6.38-140-g3be0ca2a17a0)
-
-## Test Fixes (compared to v6.6.38-140-g3be0ca2a17a0)
-
-## Metric Fixes (compared to v6.6.38-140-g3be0ca2a17a0)
-
-## Test result summary
-total: 256613, pass: 222330, fail: 3270, skip: 30550, xfail: 463
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 127 total, 127 passed, 0 failed
-* arm64: 36 total, 36 passed, 0 failed
-* i386: 27 total, 27 passed, 0 failed
-* mips: 24 total, 24 passed, 0 failed
-* parisc: 3 total, 3 passed, 0 failed
-* powerpc: 34 total, 30 passed, 4 failed
-* riscv: 17 total, 17 passed, 0 failed
-* s390: 12 total, 12 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 31 total, 31 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-smoketest
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
