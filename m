@@ -1,156 +1,146 @@
-Return-Path: <stable+bounces-58982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE2292CE42
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 11:33:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E05192CE5B
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 11:40:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB2421F24961
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 09:33:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE8061F2285C
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 09:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64F118FC6D;
-	Wed, 10 Jul 2024 09:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF4818EFF9;
+	Wed, 10 Jul 2024 09:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="ZWPiFYHM"
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="YWPmk5Xo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3691E17BB31
-	for <stable@vger.kernel.org>; Wed, 10 Jul 2024 09:33:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07D513777F;
+	Wed, 10 Jul 2024 09:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720604006; cv=none; b=F+k6s/rA2Vsul1rKwHCJH7Z0nJa55gl8/IWDGqbNN6gSqcapzaYVQqeG3/6wPoL5uOd8d/dtg5S4x4JhGmEoD7MzO7Baavu0QxH+QMELGXITtpsB/1vigZMPf6dDEKgQsTO1soWF7wpaS03HoGEtX74YC2J5QiQm+Xh1EtVOqjk=
+	t=1720604409; cv=none; b=PltagvwqFJkOOzkyIU+dEzWs46JEIQVRrdUsvFKb2VDhQ7uxgZ78BlrAHdn7l5cI0QQcbcnWuO90bIJzObB2yNSVq5lTZoHFcDpSnDVQzUkGuMHBd+/zFhgR+ZWYeQz2D3cxFtatXiQzGPPzoQSaARPpOKXltk2gxGp+BHV2G/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720604006; c=relaxed/simple;
-	bh=3+9DMfYTCxGjnK/e+W8XKa3FLEaY8rQkVl7tyylyIMg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UaE4jURFHXzWrCP7JRbzokmzXyuxrIZxqiCEymCsPqjioiXpgvzE4Tu78l6/PgdqLoYVw2hdrpeRCPYFQFkTDxMK6VxWqEYLHVwr7OMNNlmspg7+3ib2xuC7Q+2YkTL1RIv5gzjneq4hG9guHC+ZWqKxS1McTQDkY71AGFlghvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=ZWPiFYHM; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4265d1b9e2aso4065555e9.2
-        for <stable@vger.kernel.org>; Wed, 10 Jul 2024 02:33:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1720604002; x=1721208802; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TzeNSBzyh7QLIzCzfuneqEVx7/nkOlCs6tKZ3S/B85c=;
-        b=ZWPiFYHMgh1dXUqQbdlPbEZ+gN7mwJCmBCMEmHaErmXwDXIHA3TLHpX3jqsFuHw4a2
-         9qSQCHNZcPJKHxFf5GJMHVQyg9mdrK7kPJzyZm3J81dEThDk/Nk4hlWNno6gcLX6x3rA
-         tSBEow6qYe99JrCVrC1Nhi9ylDywJGcCu3+s0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720604002; x=1721208802;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TzeNSBzyh7QLIzCzfuneqEVx7/nkOlCs6tKZ3S/B85c=;
-        b=DHmZ+Y29TVCE0X8Yu4Jk1Cc/5+Nt2NPQ9Ew0f1RQKRkSTmiflz15povNabNReob1iX
-         wlzTT/PDFnGcErLOEosRMXS/yESjZlUebjha08p/NALI01pPuEn6zNIf3ts2Nrc0jIVJ
-         M+p1499zIjyMVV7GWml3YtsZqyoyqJAnAVFxJ5FmCAAATqfYSgakjpkROFky7Xn/D8Kp
-         E0G3N5/cj3eIlGUPqgWWMDAcH6wGg7ICwZqLklr/W//PTw96kAR5N5TZc0DeP7IAV3bE
-         sfGaQ26lrqEGkawGF5M0YdlcTmEPTmrNp5evXTUytAl0E3lGetKdK//+Li8XiCr9y32Z
-         kaKA==
-X-Forwarded-Encrypted: i=1; AJvYcCXT+2DgMb4EvIsgbluTTYRbWxMvpfZGTzfjhOttOsgKaBXjGBsnA9nPishZpV7khA0jNz0A8IWik8MG2Y8CPYqDFI+hMtrD
-X-Gm-Message-State: AOJu0YxCbGDLsAWx82ghG/jEvNIa8K4QL6JkNUziEA5+pDf7yqMcjjIj
-	M7Aom6RKEyH6ntFzzJwDDi6CcfYgcbghwCgQtss8y9Lk21deAO5WXpKxZJ/sKDs=
-X-Google-Smtp-Source: AGHT+IFAxrCbKthPgF5yUWY01P3adBGwJNfKLQpHeukxHdQeDqaphx4o5novPlwU23HfZb9BgXrQug==
-X-Received: by 2002:a05:600c:3b86:b0:426:5dd5:f245 with SMTP id 5b1f17b1804b1-426708f1979mr35047955e9.2.1720604002571;
-        Wed, 10 Jul 2024 02:33:22 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4266f6f5a27sm73448935e9.23.2024.07.10.02.33.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jul 2024 02:33:22 -0700 (PDT)
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
-To: DRI Development <dri-devel@lists.freedesktop.org>,
-	LKML <linux-kernel@vger.kernel.org>
-Cc: Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	syzbot+6cebc1af246fe020a2f0@syzkaller.appspotmail.com,
-	Daniel Vetter <daniel.vetter@intel.com>,
-	stable@vger.kernel.org,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Brian Foster <bfoster@redhat.com>,
-	linux-bcachefs@vger.kernel.org,
-	Petr Mladek <pmladek@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH 2/2] bcachefs: only console_trylock in bch2_print_string_as_lines
-Date: Wed, 10 Jul 2024 11:31:17 +0200
-Message-ID: <20240710093120.732208-2-daniel.vetter@ffwll.ch>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240710093120.732208-1-daniel.vetter@ffwll.ch>
-References: <20240710093120.732208-1-daniel.vetter@ffwll.ch>
+	s=arc-20240116; t=1720604409; c=relaxed/simple;
+	bh=ADk7DMyhfJqTTK/oN85NO5U162LUwk/tX+zJTn4Y/Z4=;
+	h=Date:From:To:CC:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=PnTpHYpFBWZsaztpgN/ArRgsW91wP46ZjlUkSju0KKHuO5stf800GrwWerUW9A0jABmNAyWg4WjXU5BzEQUjoKl71suwJ+2XRWvWpmEpvkv0dWKSGXqIC9cznGC+OzJSX2LdQfFwxwokMPubmMEcZ0DtIc9trEr7wuWO2pu26iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=YWPmk5Xo; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46A8FMKk022710;
+	Wed, 10 Jul 2024 02:39:52 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:message-id:mime-version:subject:to; s=
+	pfpt0220; bh=ERuREC8x4VHnyKvbphf6LJ7Z2GFBuwanN+XTgY0f6v0=; b=YWP
+	mk5XoI91ZOtFPtKEfQDSWhCJXKLRDnhGFmWxEzG4PKv4iVJID6cy1g8ze49gvVaj
+	ilHMeFuNoPB7W87SgHr6ciUsrb25UFxytG4lqzpOlikm+EKnhL2JiJ5xBXzmXnmV
+	80CUNfeF2zG/6z4zixpBe1Gpq1HpYWkiTGRX3IWDsRIXoCZk8jcOQXz43DzDbsJs
+	CrsYvt4FEf+CqdT3NTf/R07VOziUKPRngHVZj5/kIRqiRwOdCxwErGQeTMC/mYEQ
+	q9zU8wAjuYfTiE/RPGk3lTyqsOyP72uMCYS1/vhvUWOcNu3bpN9YU/wgUBBG9BhG
+	dFvnhZQ/Fu/DjSfQ67w==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 409e062373-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Jul 2024 02:39:52 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Wed, 10 Jul 2024 02:39:19 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Wed, 10 Jul 2024 02:39:19 -0700
+Received: from test-OptiPlex-Tower-Plus-7010 (unknown [10.29.37.157])
+	by maili.marvell.com (Postfix) with SMTP id B6A7C3F708F;
+	Wed, 10 Jul 2024 02:39:16 -0700 (PDT)
+Date: Wed, 10 Jul 2024 15:09:15 +0530
+From: Hariprasad Kelam <hkelam@marvell.com>
+To: Ronald Wahl <rwahl@gmx.de>
+CC: Ronald Wahl <ronald.wahl@raritan.com>,
+        "David S. Miller"
+	<davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>,
+        <netdev@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] net: ks8851: Fix potential TX stall after interface
+ reopen
+Message-ID: <Zo5Ww+IQJzDbzH3Q@test-OptiPlex-Tower-Plus-7010>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+X-Proofpoint-ORIG-GUID: Tef5VLgdl--PZeMuTwaTL3YWzRPfgvQm
+X-Proofpoint-GUID: Tef5VLgdl--PZeMuTwaTL3YWzRPfgvQm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-10_06,2024-07-09_01,2024-05-17_01
 
-console_lock is the outermost subsystem lock for a lot of subsystems,
-which means get/put_user must nest within. Which means it cannot be
-acquired somewhere deeply nested in other locks, and most definitely
-not while holding fs locks potentially needed to resolve faults.
-
-console_trylock is the best we can do here.
-
-Including printk folks since even trylock feels realyl iffy here to
-me.
-
-Reported-by: syzbot+6cebc1af246fe020a2f0@syzkaller.appspotmail.com
-References: https://lore.kernel.org/dri-devel/00000000000026c1ff061cd0de12@google.com/
-Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-Fixes: a8f354284304 ("bcachefs: bch2_print_string_as_lines()")
-Cc: <stable@vger.kernel.org> # v6.7+
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Brian Foster <bfoster@redhat.com>
-Cc: linux-bcachefs@vger.kernel.org
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: John Ogness <john.ogness@linutronix.de>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
----
- fs/bcachefs/util.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/fs/bcachefs/util.c b/fs/bcachefs/util.c
-index de331dec2a99..02381c653603 100644
---- a/fs/bcachefs/util.c
-+++ b/fs/bcachefs/util.c
-@@ -255,13 +255,14 @@ void bch2_prt_u64_base2(struct printbuf *out, u64 v)
- void bch2_print_string_as_lines(const char *prefix, const char *lines)
- {
- 	const char *p;
-+	int locked;
- 
- 	if (!lines) {
- 		printk("%s (null)\n", prefix);
- 		return;
- 	}
- 
--	console_lock();
-+	locked = console_trylock();
- 	while (1) {
- 		p = strchrnul(lines, '\n');
- 		printk("%s%.*s\n", prefix, (int) (p - lines), lines);
-@@ -269,7 +270,8 @@ void bch2_print_string_as_lines(const char *prefix, const char *lines)
- 			break;
- 		lines = p + 1;
- 	}
--	console_unlock();
-+	if (locked)
-+		console_unlock();
- }
- 
- int bch2_save_backtrace(bch_stacktrace *stack, struct task_struct *task, unsigned skipnr,
--- 
-2.45.2
-
+On 2024-07-10 at 01:28:45, Ronald Wahl (rwahl@gmx.de) wrote:
+> From: Ronald Wahl <ronald.wahl@raritan.com>
+> 
+> The amount of TX space in the hardware buffer is tracked in the tx_space
+> variable. The initial value is currently only set during driver probing.
+> 
+> After closing the interface and reopening it the tx_space variable has
+> the last value it had before close. If it is smaller than the size of
+> the first send packet after reopeing the interface the queue will be
+> stopped. The queue is woken up after receiving a TX interrupt but this
+> will never happen since we did not send anything.
+> 
+> This commit moves the initialization of the tx_space variable to the
+> ks8851_net_open function right before starting the TX queue. Also query
+> the value from the hardware instead of using a hard coded value.
+> 
+> Only the SPI chip variant is affected by this issue because only this
+> driver variant actually depends on the tx_space variable in the xmit
+> function.
+> 
+> Fixes: 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX buffer overrun")
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Simon Horman <horms@kernel.org>
+> Cc: netdev@vger.kernel.org
+> Cc: stable@vger.kernel.org # 5.10+
+> Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+> ---
+>  drivers/net/ethernet/micrel/ks8851_common.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/ethernet/micrel/ks8851_common.c
+> index 6453c92f0fa7..03a554df6e7a 100644
+> --- a/drivers/net/ethernet/micrel/ks8851_common.c
+> +++ b/drivers/net/ethernet/micrel/ks8851_common.c
+> @@ -482,6 +482,7 @@ static int ks8851_net_open(struct net_device *dev)
+>  	ks8851_wrreg16(ks, KS_IER, ks->rc_ier);
+> 
+>  	ks->queued_len = 0;
+> +	ks->tx_space = ks8851_rdreg16(ks, KS_TXMIR);
+>  	netif_start_queue(ks->netdev);
+> 
+>  	netif_dbg(ks, ifup, ks->netdev, "network device up\n");
+> @@ -1101,7 +1102,6 @@ int ks8851_probe_common(struct net_device *netdev, struct device *dev,
+>  	int ret;
+> 
+>  	ks->netdev = netdev;
+> -	ks->tx_space = 6144;
+> 
+>  	ks->gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+>  	ret = PTR_ERR_OR_ZERO(ks->gpio);
+> --
+> 2.45.2
+> 
+>
+Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
 
