@@ -1,215 +1,198 @@
-Return-Path: <stable+bounces-58971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C81992CCA6
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 10:16:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 612ED92CD0F
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 10:35:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D17AAB21D19
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 08:16:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 177C4284E23
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 08:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04ACC84E14;
-	Wed, 10 Jul 2024 08:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12FCF80C15;
+	Wed, 10 Jul 2024 08:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="hcGI96pm"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lBuDx0NV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2051.outbound.protection.outlook.com [40.107.100.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D58984D0F;
-	Wed, 10 Jul 2024 08:15:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720599339; cv=none; b=bVBoNcVIgfCJgE3cy3ng8lDPuPrGe5MO9AM3Q1dNmAzErRYNsE0v9qIaUQHzIczVSNuIXQaR/MUE5P67H1AEGdlOVO6jOAk/d5IhCPf7xitQs90HGuHeICoFZpNnFSx/F10tTa3vkX4CqbAMQBfBGp5XQMe6pYcDxrDgbBEMvt0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720599339; c=relaxed/simple;
-	bh=XdXyR5tQq+aY/9Zj3nszauOHOFqQAtnCKqcowQQulG0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uwLCj99KjBN5fGCky1B+8eojjrhqlSBMVOLaGM79bHENzayoukh41FWX/3j+ICAUoSP6ux0puXcHjJlCH+QfZvdXXoYxDrj1rBPC9gfvlN+WHuftJzTxFhUpmim5uJhjObHexBh+1cvojCNTyWavahOtV+KGJCxzIjpta44NkAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=hcGI96pm; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2004940E0027;
-	Wed, 10 Jul 2024 08:15:34 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id OAQjWQu05pHz; Wed, 10 Jul 2024 08:15:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1720599323; bh=wwqvraycBFldrBQLx5UORin5Ztg1YnULrcBZets4RVQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hcGI96pmZtbjQLT6F7J1VsTnjsCRcVSX8+V0TrIbNi0OR/8PiHBQP5ctCzXLX7xre
-	 379nsZa4/5CDurxtwPMEwde3FU8tr3p9HRHTNDaEMaKaf8HKrQYUXCvi9sQaPynJbB
-	 8BM9zB1Q9ljtUPCPlFZgJfJZvO06jv3xq7COFWpYkDGfGwhBy/+xAJ5lVuo7bhExLG
-	 yWw0mfZDdfT2kzdB/e1rj4PnQnqSjr4MQfGFKKdBymdA8oRMMVuqUtqoWDfEUbDJrk
-	 I6hbY8flmrq/DACJDUuA7RW42cNoauTkYCAQULCVQWA6Me0quNGI9zAPT7P3g67AHE
-	 vWrqCBm9JCYl+0fEsT/GjcGAahkUIGOsB9ABBb6HBel9fDxcILdkGMqIzV6+iImjPa
-	 AuaPmh+1w4R5p7xf5mz/K6dgCpzKD/yEtNMYrFPMjwR0oZFtw6LpuLeIsl4xpCXT5r
-	 3GknMSxaYBpViRQTly+9Uk7zJ5vwc3tesEzP4dX4RNLZn6PUexqzh/IGtqK8Q+k45Z
-	 5tx0vwNOFjMYyNxfxrNO/dGDcPrxkWEbcihsRt5ej70kmHfLZXdsOoTcsV1N8Y12u7
-	 9IMDlqAJo510h/GvRxvJ4k9xqMTrNbdoylpq3nVqfX+hXgKPFcPrSD5Ti0c83ygvLW
-	 AhTKLmwxjE+mVooG35VjQex8=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D7A9840E019D;
-	Wed, 10 Jul 2024 08:15:08 +0000 (UTC)
-Date: Wed, 10 Jul 2024 10:15:01 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Dexuan Cui <decui@microsoft.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"open list:X86 TRUST DOMAIN EXTENSIONS (TDX)" <linux-coco@lists.linux.dev>,
-	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>,
-	Michael Kelley <mikelley@microsoft.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] x86/tdx: Support vmalloc() for tdx_enc_status_changed()
-Message-ID: <20240710081501.GAZo5DBW3nvdzp34AI@fat_crate.local>
-References: <20240708183946.3991-1-decui@microsoft.com>
- <20240708191703.GJZow7L9DBNZVBXE95@fat_crate.local>
- <SA1PR21MB1317816DFCE6EF38A92CF254BFDA2@SA1PR21MB1317.namprd21.prod.outlook.com>
- <20240709110656.GEZo0Z0EoI4xmHDx9b@fat_crate.local>
- <SA1PR21MB13173395ACC3C0FD6D62E36EBFA42@SA1PR21MB1317.namprd21.prod.outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB7882C60;
+	Wed, 10 Jul 2024 08:35:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720600503; cv=fail; b=R1OAoLHtOzjrPlm/e+oZqEa6HRzB2Dk/yAli3JNSzhJbR9jhDoA66U8vZdP8IigB28FxtMxh6vCElPLIVCUxbowktMaanqyMB6jEhuiPDLR8oG9aWz6KLvTvIZBdNGJaSDNg1rEuFMUZ4+zY/7Ct/Ft8pSxgiZKjxRnyTAkK6o0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720600503; c=relaxed/simple;
+	bh=scm/jL9LHcNoS/+DpH0wSSyNOpzDBY3wKBIFKEzs6XM=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=Ie35JSepZgd0bDhN6dwyfHBywbVGSUM0euAPLyMLnWDoHxhpYdlHpyPR5+s6lqNX9j0SeAGczMQuiePFhT+DSxYCq5kXmZFQeui/JeS5zpuyVi3G3D+4o4r5AZwQ3W7v002E/BsRIhRY8aaeM7KYQDiIs1ILZlpv+YVhHZjC7gE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lBuDx0NV; arc=fail smtp.client-ip=40.107.100.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iNm2Lin4E8YgyKIIh7kaGMRup4bB4k/yF/hovnSzCK5dpKGlttnn8MhqxapUhWITgM/DybF84xszriP3Jp1lAvsFU+EklygFajyZEX083ZKZIs6tWVuUVTlZgEl2eYHssxwBR5cIrUICnQ7mybCIdxHFTStrTOjRnn57IgsSCuP5IQUj4O4pEz2NC+habtLCJBu77uoQQpHtkOO4PbAgqG2QO1/mBPSyFIOndAr8fNmYzKcPrcZ+oivc3sYN87XAILvUnq7HHdOM18ID4I8F1I0Fmf6ji3EtC4A2qojNlhK0HWseIzJTQf8cACpKYPnCynjVJajiK9ZgHjHJFxz71Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=G7MKANKoZALLbRySBEm2PgP83oPDOOPqfxgj3WgST3g=;
+ b=TaXQRiuQN9ZfRGVc7mRFbssa0laqBZfN5ouKa0FumZ7S86IF/fAVDFnR2WWtn34TCS3KrJtowpZxjAiWpIg/bDTVeoGroi+Rn0Z8ENxsZfMD7CbPYQF76hJr7TkpV9PVAFEa22icKWlBySJD8tt/Eghm1qBpxK5Iu8HUSJKaZjfhrZ05O40CfU5lLbMS18MzTL2hw1Nx78J0dUwYzDJG9kxSZEXgnhPRcrDkwarw4N7jCwru/DTAx70fyMsT+c77M9KVzwshFkQlBLIsECPfj619jhFz7F04asPGo8DXkvl+oLjCS1xZeLuSbFcqpcYSJh6JYCfZq1RKC4HAsuWX2w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=G7MKANKoZALLbRySBEm2PgP83oPDOOPqfxgj3WgST3g=;
+ b=lBuDx0NVZ8y1eGOKB49qElvnUKHYt2BuIP5M8CnC8x5qR8vzZkSFHIkIqQDzn3aX3cR6SsKU61eTTLa527av7ZinnA4v5Yn0Kw+q7UOCEEWY/r+uWSSuFfi6vnYFTMVYNnuzDYt6aJSzAFONK1CZFvktBzm5tK2jwKcrODIdS5H4RrEfyvtDIKcnQu1J91D/j0WGA0I6uv4VNhmdJxVUD/YwdpYHwQhiSLfi/K8Q7ddSvx34HHaSBsNoaOQkhR89ySNLgpZs2EcwhcRbzmUFOUhgtL95q6l5UY9SVIyfVAGH1noh6Tg9fVj/0XaL1Fkq+XV9ab2b9TO1psn8yTv63Q==
+Received: from BL1PR13CA0110.namprd13.prod.outlook.com (2603:10b6:208:2b9::25)
+ by DM6PR12MB4433.namprd12.prod.outlook.com (2603:10b6:5:2a1::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.20; Wed, 10 Jul
+ 2024 08:34:58 +0000
+Received: from BL6PEPF0001AB4D.namprd04.prod.outlook.com
+ (2603:10b6:208:2b9:cafe::63) by BL1PR13CA0110.outlook.office365.com
+ (2603:10b6:208:2b9::25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.21 via Frontend
+ Transport; Wed, 10 Jul 2024 08:34:58 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BL6PEPF0001AB4D.mail.protection.outlook.com (10.167.242.71) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7762.17 via Frontend Transport; Wed, 10 Jul 2024 08:34:57 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 10 Jul
+ 2024 01:34:41 -0700
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 10 Jul
+ 2024 01:34:40 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
+ Transport; Wed, 10 Jul 2024 01:34:40 -0700
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
+	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 6.1 000/102] 6.1.98-rc1 review
+In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
+References: <20240709110651.353707001@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <SA1PR21MB13173395ACC3C0FD6D62E36EBFA42@SA1PR21MB1317.namprd21.prod.outlook.com>
+Message-ID: <d93abe00-a39d-4500-9cd2-c86927a801b1@rnnvmail204.nvidia.com>
+Date: Wed, 10 Jul 2024 01:34:40 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4D:EE_|DM6PR12MB4433:EE_
+X-MS-Office365-Filtering-Correlation-Id: 37d33322-d8aa-4e2b-fc5d-08dca0bb2ea4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|82310400026|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WmM1dCtQVjhlYTRHYjFxU0pIb2NYZGM0TGc3TFh3aDVKYUFMNWxEWHVicHRk?=
+ =?utf-8?B?ZXZrdkRKdEc0R29aSVNvRVowOWpkRFRxcjljTGNxdG9VdTZKcGpLdklhNnUx?=
+ =?utf-8?B?dFdVd1lQKzBZTTJvNll2MXZDbmxEZnhOQVpBdmV3YUVUMlFXVWx5Y2Q2NDQ2?=
+ =?utf-8?B?UlhCY1ZzUTZwdHRQSnBYbnlHWTEyN2lacGFrVW9odjBSOWsxWGhNeFJNc1Rj?=
+ =?utf-8?B?aXh3alNUeVRBcmRpQzlKa0poUEplVHYwU3RtWktGaW1YL08yTUFJOU9uNXFy?=
+ =?utf-8?B?OFFrRzJ1SWUzZVlnVnZxUko4dTF6RDdsNVpFUGE1cUV3YVg1ZEpGamVCb2Ni?=
+ =?utf-8?B?M3dqOE5meFpvNG5UbGFUR09HakRHVmc1bGpEWkc5U1pQMWF2R1QwOTRURzd3?=
+ =?utf-8?B?MWtPOW1TUVBwSUVsN2RFOXE2ZUFwbk9QK3BNRkxKKzVVNEpRcmJ4NWxJc1BP?=
+ =?utf-8?B?Q2dwZ280cnJ2dXNpcUJaWXBNNm16TWtKYmYrTUxyRHQ4UUhHdkJJQm15YzZ1?=
+ =?utf-8?B?QU9udytXTHJYVXRFUHVaT1QwbURLbmsyTGpHQmJCZVlEQXZ2RzArUVJqZkZ1?=
+ =?utf-8?B?Wk9taU9zOGdibmZqMFdacnhKUnZJbHQzZGlQcDBDOTNPaWFQMzN2NDluMEZl?=
+ =?utf-8?B?dzkwSEhEb3J6VkNsa3lBZG50VWhSVG4waXorWVVlMG9QMlFPTWRXMjh2YXVw?=
+ =?utf-8?B?U3h0ZmpBUlN0RnliMER2eTFodDVOTnRneFdZSU1HREtyNk1QQVA2dHd2NjBC?=
+ =?utf-8?B?L28xbGk3TlBZMmxHdjJBeERYcXp6SWF3Q29OU09YTi9OZS93bUdpQ25STnJN?=
+ =?utf-8?B?N0h3THZ4cVpBYzRFUTBjb1Y3ZkgzMk44S3dDdi83L2NycmdybVlDaDQ2UVla?=
+ =?utf-8?B?MzN4SEgzckpJdTMzdFJ3OThQYUFPSThGMGZJZi84WUZNMzdMaFpFakJYdkFI?=
+ =?utf-8?B?N1IzT1dyZ0FzUmJTZEluZHZic2YramlPY2RqQXBsU2QxcXhaZVI2R2N0b1R5?=
+ =?utf-8?B?WGEzTlBvWHI0YUcvZkdZVU1iS2pyNzRLK2JhREdWNGcyaTBaODR1c29xZmda?=
+ =?utf-8?B?cHJrWXNRdHQyVVFDMGxMVVVkcmdRZ2xqKzRCSE9ZYlVIK1gwRXB3ZjRLekZ5?=
+ =?utf-8?B?SGZPc3VDTE5GR04rMTJBRk1JQ0RpZWd1QkJsV3ZKVG9wZWlva0hYMVl1c0xp?=
+ =?utf-8?B?NUZiTE1KK0hwVnl3MzdObnkrKy8yMklzWVNYeHJSdnRCQkNDWmFlaUZJVWk1?=
+ =?utf-8?B?VWpueE9xYWZjakFwRDBhWmJ6VWk1dlNMSUsxVDQzMGNiYmtuVWZ4NEJUZllM?=
+ =?utf-8?B?V01nT0ZtQ0dVTEk2WXJKS3M1MFdMZE1WUlJmY1RCcHMxSE9nSmNIV1hhLzV2?=
+ =?utf-8?B?WnI1SHpOQytsKzJhQ0Q0QncxTEhOVUwxdjR3WFltMytNZGFQVHVGRWZzYTNU?=
+ =?utf-8?B?YXRsaDVHV1laK0VuSTJCZXR1UFA2K1lraG1SSnIrOENTTnhCUDlXanFzZGFG?=
+ =?utf-8?B?cUpIYUgrVVpjUWNSOFZicWhzZFZLdVVHaDRWam45UTdtU3JBeHhTekM3dGk2?=
+ =?utf-8?B?cGNueWpFd3dQR1FPQW4rZUZyRm4rY2hoWGJzeWlWNUd2dE1KOEh0NFVzRDFU?=
+ =?utf-8?B?bUlySjU3Mjc0QjFDY3pCeGtVcWpMS25CMWI0dG9MRDFVTnpySWovMkxFVzQv?=
+ =?utf-8?B?ZFNwVXdGVW8wRHZhMU10ZElwWjJJTWVRSjRwaG9SOG9GRVRHTENSaGhFYkVq?=
+ =?utf-8?B?S2hSVEdxTURSY2Q3R1hPcVFRRTk4Tnp3WHp2NkgxWDNsU1NUYVlJNGxYamQr?=
+ =?utf-8?B?S3JIRUhpOTNLYUdQZ1BaaTdFN2hRdWFLd2ptVThSdTJKNStwSVJpU1NxeVRI?=
+ =?utf-8?B?NGNUYXFmMzlLclo0SFFmYVJ0cVhPVDRiT2JYcGFqV0Y0OHh1NmM1U29YZGNZ?=
+ =?utf-8?Q?gvyRme6j/WPPwTTyYvYHcTu6MQbnfBfF?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2024 08:34:57.9629
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37d33322-d8aa-4e2b-fc5d-08dca0bb2ea4
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0001AB4D.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4433
 
-On Wed, Jul 10, 2024 at 07:48:14AM +0000, Dexuan Cui wrote:
-> It's ok to me it will be after -rc1. I just thought the patch would get more
-> testing if it could be on some branch (e.g., x86/tdx ?) in the tip.git tree, e.g.,
-> if the patch is on some tip.git branch, I suppose the linux-next tree would
-> merge the patch so the patch will get more testing automatically. 
+On Tue, 09 Jul 2024 13:09:23 +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.98 release.
+> There are 102 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 11 Jul 2024 11:06:25 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.98-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Yes, it will get more testing automatically but the period is important: if
-I rush it now, it goes to Linus next week and then any fallout it causes needs
-to be dealt with in mainline.
+All tests passing for Tegra ...
 
-If I queue it after -rc1, it'll be only in tip and linux-next for an
-additional 7 week cycle and I can always whack it if it breaks something. If
-it doesn't, I can send it mainline in the 6.12 merge window.
+Test results for stable-v6.1:
+    10 builds:	10 pass, 0 fail
+    26 boots:	26 pass, 0 fail
+    116 tests:	116 pass, 0 fail
 
-But we won't have to revert it mainline.
+Linux version:	6.1.98-rc1-gb10d15fc3848
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+                tegra20-ventana, tegra210-p2371-2180,
+                tegra210-p3450-0000, tegra30-cardhu-a04
 
-See the difference?
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-> I guess we have different options on whether "the patch has changed
-> substantially". My impression is that it hasn't.
-
-If you're calling the difference between what I reverted and what you're
-sending now unsubstantial:
-
---- /tmp/old	2024-07-10 10:03:20.016629439 +0200
-+++ /tmp/new	2024-07-10 10:02:23.696872729 +0200
- diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
--index c1cb90369915..abf3cd591afd 100644
-+index 078e2bac25531..8f471260924f7 100644
- --- a/arch/x86/coco/tdx/tdx.c
- +++ b/arch/x86/coco/tdx/tdx.c
--@@ -7,6 +7,7 @@
-- #include <linux/cpufeature.h>
-+@@ -8,6 +8,7 @@
-  #include <linux/export.h>
-  #include <linux/io.h>
-+ #include <linux/kexec.h>
- +#include <linux/mm.h>
-  #include <asm/coco.h>
-  #include <asm/tdx.h>
-  #include <asm/vmx.h>
--@@ -778,6 +779,19 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
-+@@ -782,6 +783,19 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
-  	return false;
-  }
-  
-@@ -53,7 +86,7 @@ index c1cb90369915..abf3cd591afd 100644
-  /*
-   * Inform the VMM of the guest's intent for this physical page: shared with
-   * the VMM or private to the guest.  The VMM is expected to change its mapping
--@@ -785,15 +799,22 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
-+@@ -789,15 +803,30 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
-   */
-  static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
-  {
-@@ -63,23 +96,34 @@ index c1cb90369915..abf3cd591afd 100644
- +	unsigned long end = start + numpages * PAGE_SIZE;
- +	unsigned long step = end - start;
- +	unsigned long addr;
-- 
---	if (!tdx_map_gpa(start, end, enc))
---		return false;
-++
- +	/* Step through page-by-page for vmalloc() mappings */
- +	if (is_vmalloc_addr((void *)vaddr))
- +		step = PAGE_SIZE;
-++
-++	for (addr = start; addr < end; addr += step) {
-++		phys_addr_t start_pa;
-++		phys_addr_t end_pa;
-++
-++		/* The check fails on vmalloc() mappings */
-++		if (virt_addr_valid(addr))
-++			start_pa = __pa(addr);
-++		else
-++			start_pa = slow_virt_to_phys((void *)addr);
-+ 
-+-	if (!tdx_map_gpa(start, end, enc))
-+-		return false;
-++		end_pa = start_pa + step;
-  
- -	/* shared->private conversion requires memory to be accepted before use */
- -	if (enc)
- -		return tdx_accept_memory(start, end);
--+	for (addr = start; addr < end; addr += step) {
--+		phys_addr_t start_pa = slow_virt_to_phys((void *)addr);
--+		phys_addr_t end_pa   = start_pa + step;
--+
- +		if (!tdx_enc_status_changed_phys(start_pa, end_pa, enc))
- +			return false;
- +	}
-  
-  	return true;
-  }
-
-especially for a patch which is already known to break things and where we're
-especially careful, then yes, we strongly disagree here.
-
-So yes, it will definitely not go in now.
-
-> I started to add people's tags since v4 and my impression is that since then
-> it's rebasing and minor changes.
-
-When version N introduces changes like above in what is already non-trivial
-code, you drop all tags. And if people want to review it again, then they
-should give you those R-by tags.
-
-Also, think about it: your patch broke a use case. How much are those R-by
-tags worth if the patch is broken? And why do you want to hold on to them so
-badly?
-
-If a patch needs to be reverted because it breaks a use case, all reviewed and
-acked tags should simply be removed too. It is that simple.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Jon
 
