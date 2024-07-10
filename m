@@ -1,284 +1,125 @@
-Return-Path: <stable+bounces-58999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 894FB92D109
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 13:52:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24A0C92D11A
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 13:55:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7C501C225E9
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 11:52:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5279F1C23070
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 11:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CDA9190497;
-	Wed, 10 Jul 2024 11:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1100B1922C0;
+	Wed, 10 Jul 2024 11:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="Y/t1V8bO"
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="JNBOyG+V"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25AA318FA39
-	for <stable@vger.kernel.org>; Wed, 10 Jul 2024 11:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E189190688;
+	Wed, 10 Jul 2024 11:55:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720612318; cv=none; b=VqMN5iKwW4FUtEmaLbZY6Q/l5uxZ+LIh61vwStNJB26jM1NDTiURC1zI5m6ECgQcmHEaTNMdxxNVRyHSzuezRq7RLubdg3Zx2dp80e8FMjO3CPy6emn2qpf+1+SQ2Fnpb0T8Tax6vb4MjyOZZWPzrO9mVS91HN00EQP3p1m0eZI=
+	t=1720612511; cv=none; b=SS317B7JNOP7r9J0LuyvfFm+Hb3xqxmD8KwkZ4ys1/cH6yrZmh4wCCGtKMgoY67FwaohzxMZyhNy1WoG7ADug0bLI2AFkviGjmXagpq3SA0zsKe/UOhZx8pagb80jjPAKvI3XWhQ9ndO95tp4DYXnsOMZ2bjhUdb74UgUz8iWR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720612318; c=relaxed/simple;
-	bh=8KX3eKQGhkO8h3tQN4lN4ES8C9Yj9tf/lJveYKFje98=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 References; b=d1JhST4Mf11mTUO34S7z7Sq0VosJWHhI3yLVRG/60E7Khzhhld+BjQjvDp41D18N/3YXao/N/NtfZrlS13bynh+Si2FNs4xEwTbA/Saa6eQTucUnbIeGysUokZiM2nDS/IOhooSK8dRKX6njaO7/fYp/wQVNMjsRjaD9OKrT5j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=Y/t1V8bO; arc=none smtp.client-ip=203.254.224.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas1p1.samsung.com (unknown [182.195.41.45])
-	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20240710115152epoutp0134a4d6d50f4deedc4deb5552a5133e47~g18hHnBYQ3228832288epoutp01W
-	for <stable@vger.kernel.org>; Wed, 10 Jul 2024 11:51:52 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20240710115152epoutp0134a4d6d50f4deedc4deb5552a5133e47~g18hHnBYQ3228832288epoutp01W
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1720612312;
-	bh=c5n/UByZUePQ6P5a5OPEpG605PoUTj8f9/67DLiQcfc=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=Y/t1V8bOOlI2gZ4T6GSKLTbTZ9XdJWKXK5i9GL5hohSqMude2XKo8YAl88dAPs5DD
-	 92izUCqqcRlCLY0cwUA1k1pwEyk8+xC4bO2+Uq8SRwwXDl6xhwnDgi+ptTZUZXz8xb
-	 pZVLDRjb59o1dQekRfGB7Hww/WosgtMM05MJmkdQ=
-Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
-	epcas1p2.samsung.com (KnoxPortal) with ESMTP id
-	20240710115152epcas1p2f6439636838d8e3f13dcc9fbdb311f07~g18gwGyQ70796007960epcas1p2b;
-	Wed, 10 Jul 2024 11:51:52 +0000 (GMT)
-Received: from epsmgec1p1.samsung.com (unknown [182.195.38.249]) by
-	epsnrtp4.localdomain (Postfix) with ESMTP id 4WJx6J0hmkz4x9Q1; Wed, 10 Jul
-	2024 11:51:52 +0000 (GMT)
-Received: from epcas1p3.samsung.com ( [182.195.41.47]) by
-	epsmgec1p1.samsung.com (Symantec Messaging Gateway) with SMTP id
-	DB.BB.08602.7D57E866; Wed, 10 Jul 2024 20:51:51 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-	epcas1p3.samsung.com (KnoxPortal) with ESMTPA id
-	20240710115151epcas1p3a7dbc6b3f69375d64d51f32f4ce3d9a4~g18froSvE0041400414epcas1p3Y;
-	Wed, 10 Jul 2024 11:51:51 +0000 (GMT)
-Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
-	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20240710115151epsmtrp217c92a633c913dbf67c72da4601e16eb~g18fqOByo0777407774epsmtrp2Y;
-	Wed, 10 Jul 2024 11:51:51 +0000 (GMT)
-X-AuditID: b6c32a33-40dff7000000219a-eb-668e75d75fef
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-	epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
-	4C.C7.18846.7D57E866; Wed, 10 Jul 2024 20:51:51 +0900 (KST)
-Received: from localhost.localdomain (unknown [10.253.98.34]) by
-	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20240710115151epsmtip2f2140da5c4bda4c870ef9f602e542a5b~g18fgX5fM1952319523epsmtip2j;
-	Wed, 10 Jul 2024 11:51:51 +0000 (GMT)
-From: Sunmin Jeong <s_min.jeong@samsung.com>
-To: jaegeuk@kernel.org, chao@kernel.org
-Cc: daehojeong@google.com, linux-f2fs-devel@lists.sourceforge.net, Sunmin
-	Jeong <s_min.jeong@samsung.com>, stable@vger.kernel.org, Sungjong Seo
-	<sj1557.seo@samsung.com>, Yeongjin Gil <youngjin.gil@samsung.com>
-Subject: [PATCH v3 2/2] f2fs: use meta inode for GC of COW file
-Date: Wed, 10 Jul 2024 20:51:43 +0900
-Message-Id: <20240710115143.61315-1-s_min.jeong@samsung.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1720612511; c=relaxed/simple;
+	bh=rg5ASVGRrj0CbRfB6zWhQi1ZSfmq2w18dOiDw1+SAk4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cxEU1ah8wmGPKMiueMsCeHKJNM+Ds4KTQ/0AKE3/uPN9LJV8sC0eWQ8lt5own8YQZpMFzBk5xl2fuf321cGINZVAmMgT/wmm4bExQIuB8yBGMbfeLZGSEqpzVqsBebaZhDRaBqFn+lMq3ex7dmzeo8GYmXQmK/g8FjZZkiaj1aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=JNBOyG+V; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 8010A1C0082; Wed, 10 Jul 2024 13:55:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1720612507;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C/o5re6zdBSaQzgNUxv5d+aQxD1Iy3QC/+L83tjX/gU=;
+	b=JNBOyG+VygboICYNcmYPUmRv1sazBKGzZwl8n3/258ZYUjQPd328AQhNmeg6epqRUApyVx
+	bA2e1qt8T9b3emMgqDdeG5OXe/MjemJkUr0WwbFTnXCMHpV+Vizq4BOGT1jN+WWspD2c6T
+	b2CwRF/jw4Jqj6vq31rcEWPVwa3mlzk=
+Date: Wed, 10 Jul 2024 13:55:07 +0200
+From: Pavel Machek <pavel@ucw.cz>
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	linux-input@vger.kernel.org, platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.1 23/29] Input: silead - Always support 10
+ fingers
+Message-ID: <Zo52mxIlrZmeeAzP@duo.ucw.cz>
+References: <20240618124018.3303162-1-sashal@kernel.org>
+ <20240618124018.3303162-23-sashal@kernel.org>
+ <Zo5bML7Q2ke/CsG/@duo.ucw.cz>
+ <3fece177-f6b4-41e4-a781-7c4c923ff7d9@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrBKsWRmVeSWpSXmKPExsWy7bCmvu710r40g1svTSxOTz3LZDG1fS+j
-	xZP1s5gtLi1yt1jQ+pvFYsu/I6wWCzY+YrSYsf8puwOHx4JNpR6bVnWyeexe8JnJo2/LKkaP
-	z5vkAlijsm0yUhNTUosUUvOS81My89JtlbyD453jTc0MDHUNLS3MlRTyEnNTbZVcfAJ03TJz
-	gC5RUihLzCkFCgUkFhcr6dvZFOWXlqQqZOQXl9gqpRak5BSYFegVJ+YWl+al6+WlllgZGhgY
-	mQIVJmRnHFx8kq3giG7F8ltX2RsYT6t2MXJwSAiYSDz4oNvFyMUhJLCDUWLj5FUsEM4nRomb
-	r3azwjmfX69k72LkBOv4sOALO0RiJ6PEutZHCFWHNs0Gq2IT0JF4OPU2C4gtIqAucWrSUrC5
-	zAJXGSXa9z0HSwgL2Etc3fMWrIFFQFViw5drrCA2r4CNxKlXjWwQ6+QlZl76zg4RF5Q4OfMJ
-	WC8zULx562xmkKESApfYJfq+n2GFaHCR6F/4ggXCFpZ4dXwL1N1SEp/f7YUaWixxdP4Gdojm
-	BkaJG19vQhXZSzS3NrOBgoZZQFNi/S59iGV8Eu++9rBCQoxXoqNNCKJaVaL70RJmCFtaYtmx
-	g1BTPICmfAFbJSQQKzHj/GmmCYxys5C8MAvJC7MQli1gZF7FKJZaUJybnppsWGAIj8rk/NxN
-	jOAkqGW8g/Hy/H96hxiZOBgPMUpwMCuJ8M6/0Z0mxJuSWFmVWpQfX1Sak1p8iNEUGKgTmaVE
-	k/OBaTivJN7QxNLAxMzIxMLY0thMSZz3zJWyVCGB9MSS1OzU1ILUIpg+Jg5OqQam9XMWzg2R
-	ZOEzPeF2lCtR2PlxJi+PxwWh3N2/HVcYS2a69uxRWvrB7cb/9N+1lw9eaZlrtmjD45IbfuGW
-	k799ZdHLz3l7wNSVU/j7vi1MZvMKDD9uZZq1rfH+/Ks8PzPWeUa6/VcRTmMTvPPrzHqevU7H
-	znwWrpc6U3Izu+C93HrvTRW1r63Fknw5b/JMeKP+2TSwOLkzSlFD/Fl8pe51t7eZ5h9+P/qv
-	e2dR+aMEbn2Vn77tQSlX+xSaFy2aPT/t8s8aE+aw4PoMkzkxU75fXX7x75T+qSzPeZff+W65
-	NF5CleW77qxtX2ZOD96W0nvL0ktoftqbe88U2me7LYzNU1CYzfjmf8wKy35Gs0IOJZbijERD
-	Leai4kQANs2HSgsEAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrLLMWRmVeSWpSXmKPExsWy7bCSvO710r40g3V7eC1OTz3LZDG1fS+j
-	xZP1s5gtLi1yt1jQ+pvFYsu/I6wWCzY+YrSYsf8puwOHx4JNpR6bVnWyeexe8JnJo2/LKkaP
-	z5vkAlijuGxSUnMyy1KL9O0SuDIOLj7JVnBEt2L5ravsDYynVbsYOTkkBEwkPiz4wt7FyMUh
-	JLCdUWLLu1ssXYwcQAlpiWN/iiBMYYnDh4shSj4wSqy+vZwZpJdNQEfi4dTbLCC2iICmxJHO
-	mWBzmAVuM0p8X9EOlhAWsJe4uuctO4jNIqAqseHLNVYQm1fARuLUq0Y2iCPkJWZe+s4OEReU
-	ODnzCVgvM1C8eets5gmMfLOQpGYhSS1gZFrFKJpaUJybnptcYKhXnJhbXJqXrpecn7uJERyi
-	WkE7GJet/6t3iJGJg/EQowQHs5II7/wb3WlCvCmJlVWpRfnxRaU5qcWHGKU5WJTEeZVzOlOE
-	BNITS1KzU1MLUotgskwcnFINTAY1bIwtXn/t3lnPv+638eAsk5c6ngxsDXsMd1xIK3vFtkE7
-	R0fh6fNqmQkh7mFZeaFrhW+c9mNcsspkh0D8nkv/391IN1tu26bpurJqZmvwp/qGOB4TsXff
-	Z79u5juzjOnWj6jUgqc5dTu/9UdHX9yrvCHn07nuI5/ZbshOm/84JWF/qgT7XjHnQ2nXOXef
-	muG69PubmRteHNirrr7+7RXWCatav+T+2vCmfpOqyX/Op98UO+9N1M0zfyZn23jf7axE5Rr9
-	2fzvtFwls4Uuv9rzXrKmuS320OWZuTNvfM3k5V7yneFnTsI/jZl+fmyeVp/5TyneW/CIbUpP
-	T9nhuO/Tqt+qF95ZXPXxKK/c0pVKLMUZiYZazEXFiQDElAokwAIAAA==
-X-CMS-MailID: 20240710115151epcas1p3a7dbc6b3f69375d64d51f32f4ce3d9a4
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 101P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20240710115151epcas1p3a7dbc6b3f69375d64d51f32f4ce3d9a4
-References: <CGME20240710115151epcas1p3a7dbc6b3f69375d64d51f32f4ce3d9a4@epcas1p3.samsung.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="107I8a1RkMZoKLQL"
+Content-Disposition: inline
+In-Reply-To: <3fece177-f6b4-41e4-a781-7c4c923ff7d9@redhat.com>
 
-In case of the COW file, new updates and GC writes are already
-separated to page caches of the atomic file and COW file. As some cases
-that use the meta inode for GC, there are some race issues between a
-foreground thread and GC thread.
 
-To handle them, we need to take care when to invalidate and wait
-writeback of GC pages in COW files as the case of using the meta inode.
-Also, a pointer from the COW inode to the original inode is required to
-check the state of original pages.
+--107I8a1RkMZoKLQL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-For the former, we can solve the problem by using the meta inode for GC
-of COW files. Then let's get a page from the original inode in
-move_data_block when GCing the COW file to avoid race condition.
+On Wed 2024-07-10 11:59:48, Hans de Goede wrote:
+> Hi Pavel,
+>=20
+> On 7/10/24 11:58 AM, Pavel Machek wrote:
+> > Hi!
+> >=20
+> >> From: Hans de Goede <hdegoede@redhat.com>
+> >>
+> >> [ Upstream commit 38a38f5a36da9820680d413972cb733349400532 ]
+> >>
+> >> When support for Silead touchscreens was orginal added some touchscree=
+ns
+> >> with older firmware versions only supported 5 fingers and this was made
+> >> the default requiring the setting of a "silead,max-fingers=3D10" uint32
+> >> device-property for all touchscreen models which do support 10 fingers.
+> >>
+> >> There are very few models with the old 5 finger fw, so in practice the
+> >> setting of the "silead,max-fingers=3D10" is boilerplate which needs to
+> >> be copy and pasted to every touchscreen config.
+> >>
+> >> Reporting that 10 fingers are supported on devices which only support
+> >> 5 fingers doesn't cause any problems for userspace in practice, since
+> >> at max 4 finger gestures are supported anyways. Drop the max_fingers
+> >> configuration and simply always assume 10 fingers.
+> >=20
+> > This does not fix a serious bug, should not be in stable.
+>=20
+> This patch is necessary for clean backporting of new DMI quirks added
+> to drivers/platform/x86/touchscreen_dmi.c, so IMHO it does make sense
+> as a stable series patch.
 
-Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
-Cc: stable@vger.kernel.org #v5.19+
-Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-Reviewed-by: Yeongjin Gil <youngjin.gil@samsung.com>
-Signed-off-by: Sunmin Jeong <s_min.jeong@samsung.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
----
-v3:
-- make the mapping variable to select a proper inode
-v2:
-- use union for cow inode to point to atomic inode
+That's likely not reason it ended up it autosel, but why
+not. "Stable-dep-of" tag would be nice in that case.
 
- fs/f2fs/data.c   |  2 +-
- fs/f2fs/f2fs.h   | 13 +++++++++++--
- fs/f2fs/file.c   |  3 +++
- fs/f2fs/gc.c     |  7 +++++--
- fs/f2fs/inline.c |  2 +-
- fs/f2fs/inode.c  |  3 ++-
- 6 files changed, 23 insertions(+), 7 deletions(-)
+Best regards,
+								Pavel
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index 9a213d03005d..f6b1782f965a 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -2606,7 +2606,7 @@ bool f2fs_should_update_outplace(struct inode *inode, struct f2fs_io_info *fio)
- 		return true;
- 	if (IS_NOQUOTA(inode))
- 		return true;
--	if (f2fs_is_atomic_file(inode))
-+	if (f2fs_used_in_atomic_write(inode))
- 		return true;
- 	/* rewrite low ratio compress data w/ OPU mode to avoid fragmentation */
- 	if (f2fs_compressed_file(inode) &&
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 796ae11c0fa3..4a8621e4a33a 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -843,7 +843,11 @@ struct f2fs_inode_info {
- 	struct task_struct *atomic_write_task;	/* store atomic write task */
- 	struct extent_tree *extent_tree[NR_EXTENT_CACHES];
- 					/* cached extent_tree entry */
--	struct inode *cow_inode;	/* copy-on-write inode for atomic write */
-+	union {
-+		struct inode *cow_inode;	/* copy-on-write inode for atomic write */
-+		struct inode *atomic_inode;
-+					/* point to atomic_inode, available only for cow_inode */
-+	};
- 
- 	/* avoid racing between foreground op and gc */
- 	struct f2fs_rwsem i_gc_rwsem[2];
-@@ -4263,9 +4267,14 @@ static inline bool f2fs_post_read_required(struct inode *inode)
- 		f2fs_compressed_file(inode);
- }
- 
-+static inline bool f2fs_used_in_atomic_write(struct inode *inode)
-+{
-+	return f2fs_is_atomic_file(inode) || f2fs_is_cow_file(inode);
-+}
-+
- static inline bool f2fs_meta_inode_gc_required(struct inode *inode)
- {
--	return f2fs_post_read_required(inode) || f2fs_is_atomic_file(inode);
-+	return f2fs_post_read_required(inode) || f2fs_used_in_atomic_write(inode);
- }
- 
- /*
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index e4a7cff00796..547e7ec32b1f 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -2183,6 +2183,9 @@ static int f2fs_ioc_start_atomic_write(struct file *filp, bool truncate)
- 
- 		set_inode_flag(fi->cow_inode, FI_COW_FILE);
- 		clear_inode_flag(fi->cow_inode, FI_INLINE_DATA);
-+
-+		/* Set the COW inode's atomic_inode to the atomic inode */
-+		F2FS_I(fi->cow_inode)->atomic_inode = inode;
- 	} else {
- 		/* Reuse the already created COW inode */
- 		ret = f2fs_do_truncate_blocks(fi->cow_inode, 0, true);
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index cb3006551ab5..724bbcb447d3 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -1171,7 +1171,8 @@ static bool is_alive(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
- static int ra_data_block(struct inode *inode, pgoff_t index)
- {
- 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
--	struct address_space *mapping = inode->i_mapping;
-+	struct address_space *mapping = f2fs_is_cow_file(inode) ?
-+				F2FS_I(inode)->atomic_inode->i_mapping : inode->i_mapping;
- 	struct dnode_of_data dn;
- 	struct page *page;
- 	struct f2fs_io_info fio = {
-@@ -1260,6 +1261,8 @@ static int ra_data_block(struct inode *inode, pgoff_t index)
- static int move_data_block(struct inode *inode, block_t bidx,
- 				int gc_type, unsigned int segno, int off)
- {
-+	struct address_space *mapping = f2fs_is_cow_file(inode) ?
-+				F2FS_I(inode)->atomic_inode->i_mapping : inode->i_mapping;
- 	struct f2fs_io_info fio = {
- 		.sbi = F2FS_I_SB(inode),
- 		.ino = inode->i_ino,
-@@ -1282,7 +1285,7 @@ static int move_data_block(struct inode *inode, block_t bidx,
- 				CURSEG_ALL_DATA_ATGC : CURSEG_COLD_DATA;
- 
- 	/* do not read out */
--	page = f2fs_grab_cache_page(inode->i_mapping, bidx, false);
-+	page = f2fs_grab_cache_page(mapping, bidx, false);
- 	if (!page)
- 		return -ENOMEM;
- 
-diff --git a/fs/f2fs/inline.c b/fs/f2fs/inline.c
-index 1fba5728be70..cca7d448e55c 100644
---- a/fs/f2fs/inline.c
-+++ b/fs/f2fs/inline.c
-@@ -16,7 +16,7 @@
- 
- static bool support_inline_data(struct inode *inode)
- {
--	if (f2fs_is_atomic_file(inode))
-+	if (f2fs_used_in_atomic_write(inode))
- 		return false;
- 	if (!S_ISREG(inode->i_mode) && !S_ISLNK(inode->i_mode))
- 		return false;
-diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-index 7a3e2458b2d9..18dea43e694b 100644
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -804,8 +804,9 @@ void f2fs_evict_inode(struct inode *inode)
- 
- 	f2fs_abort_atomic_write(inode, true);
- 
--	if (fi->cow_inode) {
-+	if (fi->cow_inode && f2fs_is_cow_file(fi->cow_inode)) {
- 		clear_inode_flag(fi->cow_inode, FI_COW_FILE);
-+		F2FS_I(fi->cow_inode)->atomic_inode = NULL;
- 		iput(fi->cow_inode);
- 		fi->cow_inode = NULL;
- 	}
--- 
-2.25.1
+--107I8a1RkMZoKLQL
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZo52mwAKCRAw5/Bqldv6
+8mHwAJ9crQzmyi9a6Ne43Y5DaOS3Pm8k0gCdHd55sQIf/XIWf5wSiZS2PsFxpZs=
+=reBZ
+-----END PGP SIGNATURE-----
+
+--107I8a1RkMZoKLQL--
 
