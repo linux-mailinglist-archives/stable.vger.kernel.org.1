@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-59048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60A6392DD1B
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 01:49:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D314B92DD1E
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 01:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C913284D2F
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 23:49:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EE1C28610C
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 23:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A55E158DA3;
-	Wed, 10 Jul 2024 23:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13C415886C;
+	Wed, 10 Jul 2024 23:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QJdZuh1q"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DWS4TtL2"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A94363A5;
-	Wed, 10 Jul 2024 23:46:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65FF156997;
+	Wed, 10 Jul 2024 23:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720655220; cv=none; b=qOUatTOrMvN6Dh3Qm0vONqtG0+mOqhz+TpIj9osBq1Phi5L2IJUtJDg0+YnoGFjdrfNeTyWbi1x3W7atZIEUns4Yhyq3qS8+wfAXpGuPXdYByQBufsMy5hBfU/0c2S6pNTZayMQsCVi9UxOXbNCL+FJgsQfyoebxoDL1SsMyp1E=
+	t=1720655324; cv=none; b=RwdcYrEsJerV5GYcv/SPmdcp9JmDp2/WbSUWH/0d+mk8rbQS2TVFyR6vGcJvttYEs/q/UCPmF2T7gUtOalRKn2XKUPSmZ823GwWi74jwjbxSn9lamP5I0xxFWa0lq3uvq5FlWV5aoBx0Kd6W6yDwKn3d4f54cM9Qn76PQ1ZLkko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720655220; c=relaxed/simple;
-	bh=QB8/3eOL68A8pTiMnSt7yeyEfnMWPcIv2g/lKtnx46A=;
+	s=arc-20240116; t=1720655324; c=relaxed/simple;
+	bh=yWzx2TsHnZ+PLHk0dmdvk2Z399kXYrvS0ZYOZ6bSS2A=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=rnx077ClfQ4v2JJixBnNOLNrr1xMZdNXuWbX6G/C+GnF0wmgyOt2AG17gB7ABl2WixjbUy4kSIm0VsI80BdydDr6umAqwPYwHxzjoGybfRlG9z5hX/4KlDa9kQgglkomf5+xGgeKjfGRfA2pmO7MFXdYVaepGiqE53fK7Lat2k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QJdZuh1q; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version:Content-Type; b=X/wWe1baFPqmWdJfaT2tCVjRvq1WP9TnxWtMwB0midpQuug1QO6lmUBMCLyfkcmW0hzLJiOxQq+YzPF7YsKqGD3LlSxqmvgs6jWAiKqxnurabd3qSQUa+M/9++rFO2oTPcGqp15bzJkUhdxZJgSAn1wGKxeJVqPW3RQv3/yQXa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DWS4TtL2; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720655220; x=1752191220;
+  t=1720655323; x=1752191323;
   h=from:to:cc:subject:in-reply-to:references:date:
    message-id:mime-version;
-  bh=QB8/3eOL68A8pTiMnSt7yeyEfnMWPcIv2g/lKtnx46A=;
-  b=QJdZuh1qIcj5O/3ttjsLfpWBds3TcnvgZNvVUOa2lvAjla1Zhp+NJxZ7
-   dXgWVi+/+a3OWnpI8lli5wi/6wgYC5ARUw4sgAy3+RAP9zDCKhYvRX98E
-   iNjoNANQ/YR4JtYBFduYBIZGFje2OiCHNpuShaL5vn9XSTqE12tH57Y8L
-   0kDpimalVdQJjtgEkPQIUOMSMB5c00AyCHMWNlKJswvLRpmeDJga16csp
-   TUv/aYtcJLe8ed2O3Aaznmix2tqY4KHoq0LZ96t/Q/ao1wxRU8oNiRnZK
-   oGgEU/Fk8Y8ef04XUe9FWpt5TSJpOrYcDz2M9dyP+KglVcOruJuMw5ROb
+  bh=yWzx2TsHnZ+PLHk0dmdvk2Z399kXYrvS0ZYOZ6bSS2A=;
+  b=DWS4TtL2eO4USGau5bNJW+lcHTj3CTB+bIsakOIANYWf+Q/5SFl35ScS
+   b4/2ppxj22+MFmaHOxvI43kaWEPmzj0NgY/2pViYa2y8kk1icG4VUeeO6
+   u4/QKX8kTqbbEBG/RGn8L9dAVlS1iYs40gbswFhmN9EOn2qtrPpdJW5Ka
+   Msk6eo1yFXJTnUiHfPey+x6nqCq3UT4j/v4ewg9Nrzw15lzzJie0AAUoo
+   7l759uo5NCZCtQvo9vgDpO2dqHeWZs4fOqih3MNI22U4ZXlYsyNJ4+qjp
+   OnliRgIHt1vQEcH1F1DHuEUUSfcCE5aOANnRmbf2xtY3LIunBxg/Jfm97
    A==;
-X-CSE-ConnectionGUID: A+ZWGag5Sb+cBFGgjjLSdw==
-X-CSE-MsgGUID: SL3XTy0dRaC7jh84dUju9A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11129"; a="18152049"
+X-CSE-ConnectionGUID: +iW67wmDRoaULgGUOwVkbg==
+X-CSE-MsgGUID: y1fhvaTbQ7m7r684sqBF5w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11129"; a="40527430"
 X-IronPort-AV: E=Sophos;i="6.09,198,1716274800"; 
-   d="scan'208";a="18152049"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2024 16:46:59 -0700
-X-CSE-ConnectionGUID: UTZflU3SSXC3Cwd1Y5qXtQ==
-X-CSE-MsgGUID: FyQKValqTn6wDncF77Auzw==
+   d="scan'208";a="40527430"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2024 16:48:42 -0700
+X-CSE-ConnectionGUID: pqwBzH28Rmumt/CFRUy/rg==
+X-CSE-MsgGUID: BURFX1PjQOGgOobF6ZA7XA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,198,1716274800"; 
-   d="scan'208";a="48345030"
+   d="scan'208";a="71596699"
 Received: from bmurrell-mobl.amr.corp.intel.com (HELO vcostago-mobl3) ([10.124.221.70])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2024 16:46:58 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2024 16:48:41 -0700
 From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 To: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>, "David S . Miller"
  <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
@@ -69,12 +69,13 @@ To: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>, "David S . Miller"
 Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org, Faizal Rahim
  <faizal.abdul.rahim@linux.intel.com>
-Subject: Re: [PATCH iwl-net v2 1/3] igc: Fix qbv_config_change_errors logics
-In-Reply-To: <20240707125318.3425097-2-faizal.abdul.rahim@linux.intel.com>
+Subject: Re: [PATCH iwl-net v2 3/3] igc: Fix qbv tx latency by setting
+ gtxoffset
+In-Reply-To: <20240707125318.3425097-4-faizal.abdul.rahim@linux.intel.com>
 References: <20240707125318.3425097-1-faizal.abdul.rahim@linux.intel.com>
- <20240707125318.3425097-2-faizal.abdul.rahim@linux.intel.com>
-Date: Wed, 10 Jul 2024 16:46:57 -0700
-Message-ID: <87ikxcu7wu.fsf@intel.com>
+ <20240707125318.3425097-4-faizal.abdul.rahim@linux.intel.com>
+Date: Wed, 10 Jul 2024 16:48:41 -0700
+Message-ID: <87a5iou7ty.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,52 +86,93 @@ Content-Type: text/plain
 
 Faizal Rahim <faizal.abdul.rahim@linux.intel.com> writes:
 
-> When user issues these cmds:
-> 1. Either a) or b)
->    a) mqprio with hardware offload disabled
->    b) taprio with txtime-assist feature enabled
-> 2. etf
-> 3. tc qdisc delete
-> 4. taprio with base time in the past
+> A large tx latency issue was discovered during testing when only QBV was
+> enabled. The issue occurs because gtxoffset was not set when QBV is
+> active, it was only set when launch time is active.
 >
-> At step 4, qbv_config_change_errors wrongly increased by 1.
+> The patch "igc: Correct the launchtime offset" only sets gtxoffset when
+> the launchtime_enable field is set by the user. Enabling launchtime_enable
+> ultimately sets the register IGC_TXQCTL_QUEUE_MODE_LAUNCHT (referred to as
+> LaunchT in the SW user manual).
 >
-> Excerpt from IEEE 802.1Q-2018 8.6.9.3.1:
-> "If AdminBaseTime specifies a time in the past, and the current schedule
-> is running, then: Increment ConfigChangeError counter"
+> Section 7.5.2.6 of the IGC i225/6 SW User Manual Rev 1.2.4 states:
+> "The latency between transmission scheduling (launch time) and the
+> time the packet is transmitted to the network is listed in Table 7-61."
 >
-> qbv_config_change_errors should only increase if base time is in the past
-> and no taprio is active. In user perspective, taprio was not active when
-> first triggered at step 4. However, i225/6 reuses qbv for etf, so qbv is
-> enabled with a dummy schedule at step 2 where it enters
-> igc_tsn_enable_offload() and qbv_count got incremented to 1. At step 4, it
-> enters igc_tsn_enable_offload() again, qbv_count is incremented to 2.
-> Because taprio is running, tc_setup_type is TC_SETUP_QDISC_ETF and
-> qbv_count > 1, qbv_config_change_errors value got incremented.
+> However, the patch misinterprets the phrase "launch time" in that section
+> by assuming it specifically refers to the LaunchT register, whereas it
+> actually denotes the generic term for when a packet is released from the
+> internal buffer to the MAC transmit logic.
 >
-> This issue happens due to reliance on qbv_count field where a non-zero
-> value indicates that taprio is running. But qbv_count increases
-> regardless if taprio is triggered by user or by other tsn feature. It does
-> not align with qbv_config_change_errors expectation where it is only
-> concerned with taprio triggered by user.
+> This launch time, as per that section, also implicitly refers to the QBV
+> gate open time, where a packet waits in the buffer for the QBV gate to
+> open. Therefore, latency applies whenever QBV is in use. TSN features such
+> as QBU and QAV reuse QBV, making the latency universal to TSN features.
 >
-> Fixing this by relocating the qbv_config_change_errors logic to
-> igc_save_qbv_schedule(), eliminating reliance on qbv_count and its
-> inaccuracies from i225/6's multiple uses of qbv feature for other TSN
-> features.
+> Discussed with i226 HW owner (Shalev, Avi) and we were in agreement that
+> the term "launch time" used in Section 7.5.2.6 is not clear and can be
+> easily misinterpreted. Avi will update this section to:
+> "When TQAVCTRL.TRANSMIT_MODE = TSN, the latency between transmission
+> scheduling and the time the packet is transmitted to the network is listed
+> in Table 7-61."
 >
-> The new function created: igc_tsn_is_taprio_activated_by_user() uses
-> taprio_offload_enable field to indicate that the current running taprio
-> was triggered by user, instead of triggered by non-qbv feature like etf.
+> Fix this issue by using igc_tsn_is_tx_mode_in_tsn() as a condition to
+> write to gtxoffset, aligning with the newly updated SW User Manual.
 >
-> Fixes: ae4fe4698300 ("igc: Add qbv_config_change_errors counter")
+> Tested:
+> 1. Enrol taprio on talker board
+>    base-time 0
+>    cycle-time 1000000
+>    flags 0x2
+>    index 0 cmd S gatemask 0x1 interval1
+>    index 0 cmd S gatemask 0x1 interval2
+>
+>    Note:
+>    interval1 = interval for a 64 bytes packet to go through
+>    interval2 = cycle-time - interval1
+>
+> 2. Take tcpdump on listener board
+>
+> 3. Use udp tai app on talker to send packets to listener
+>
+> 4. Check the timestamp on listener via wireshark
+>
+> Test Result:
+> 100 Mbps: 113 ~193 ns
+> 1000 Mbps: 52 ~ 84 ns
+> 2500 Mbps: 95 ~ 223 ns
+>
+> Note that the test result is similar to the patch "igc: Correct the
+> launchtime offset".
+>
+> Fixes: 790835fcc0cb ("igc: Correct the launchtime offset")
 > Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
 > Reviewed-by: Simon Horman <horms@kernel.org>
 > ---
 
-Looks good:
+Good catch.
 
 Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+
+>  drivers/net/ethernet/intel/igc/igc_tsn.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
+> index 9fafe275f30f..efe13a9350ca 100644
+> --- a/drivers/net/ethernet/intel/igc/igc_tsn.c
+> +++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
+> @@ -61,7 +61,7 @@ void igc_tsn_adjust_txtime_offset(struct igc_adapter *adapter)
+>  	struct igc_hw *hw = &adapter->hw;
+>  	u16 txoffset;
+>  
+> -	if (!is_any_launchtime(adapter))
+> +	if (!igc_tsn_is_tx_mode_in_tsn(adapter))
+>  		return;
+>  
+>  	switch (adapter->link_speed) {
+> -- 
+> 2.25.1
+>
 
 
 Cheers,
