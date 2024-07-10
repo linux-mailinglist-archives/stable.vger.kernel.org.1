@@ -1,128 +1,177 @@
-Return-Path: <stable+bounces-58961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE30B92C8A2
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 04:36:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B2C292C8E2
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 05:04:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF7881C214C8
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 02:36:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DB0D1C227DD
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 03:04:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E4C15E88;
-	Wed, 10 Jul 2024 02:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 570451B809;
+	Wed, 10 Jul 2024 03:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eAjW5BJP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lwsEFc0B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D2363A5;
-	Wed, 10 Jul 2024 02:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782FD282F1;
+	Wed, 10 Jul 2024 03:04:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720578985; cv=none; b=rn6ABhLsKBUFM7hYWJETezCb4Qd1UyKb6qf4GNaTvA04UzlU6xDM2ZEBe1havtfrKe/btPdcp0TM5d/miTcEi2JXZX/fl1pfP1YSEVCmz8HXm7RxAAewWkNqVouRCQKhaI1sX9PPY44kXflfPYsRFuUvvEjWSy1Zernxwz4ip9Q=
+	t=1720580681; cv=none; b=lJ5LGBcaCNtOeBOnvpG8i1hjxIQGtTg6C9YK03PWAQOcRmAIu6jtuo0S7u44Qr6KqlJWgh7ZCcoaqXNjDjt1nGs19g//BFyJwsitRslHAoCvIgwGomRk1qz3j6rLzEpCay2BVAw2cqX/riM2/tc3CqXMZ9qHmpAyp1lgrQ/yf/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720578985; c=relaxed/simple;
-	bh=tGu8rw5vWLBsyolu3kJFWqz4hqJW9K9KWwC9yucMDSY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H7X+MknLJOIxQwBtFypB0FJw2QQlYSVYdnZdEVWJf6NsmGV5AP1qe84+cI1n4FtIxAPSQiZeY3Ju8yOoxzdL2prvwArrc91UGaQNpBVQZjgWPmzM24saLGd3GnIXlV1QONHomPx8ef2W5Nb/CvZkR1xD+rj9nTPZ291KM020S3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eAjW5BJP; arc=none smtp.client-ip=209.85.216.44
+	s=arc-20240116; t=1720580681; c=relaxed/simple;
+	bh=AQz3Cv2NIz7LkfUyRe1/U1+XxUvl5V1K9MXenuYDXR8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VbYkSRxF3dvabE4anDmYKq15rQkcnljzM05nUlACZC1aTw7N7Mc/iAAxo6n5LO6gD16T8K+f1hpvh7NIzZAsY8n46n7d8sFBTiEpfydYCRGbPCGXlJ1ySjeJgAkyWDDIEu2dZbVGs1kUL/J8/HAzQVu3OHvAxL6yvVs6Ql6+qBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lwsEFc0B; arc=none smtp.client-ip=209.85.208.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2c9df3eb0edso2678585a91.3;
-        Tue, 09 Jul 2024 19:36:22 -0700 (PDT)
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-57ccd1111b0so4004359a12.3;
+        Tue, 09 Jul 2024 20:04:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720578982; x=1721183782; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E3eVF5jv0cXgwhtzNr2pMSO028nrJpif6y5JReYu+lA=;
-        b=eAjW5BJP+/x6tb04Qs78EzQXWSaA+ViZcaEQHjtFLkcdwS8abu48aIYY/4Fjh2kxxR
-         zCH8E29xGDV4CTPRPjEsLlJeRr64edYNjBM1tmBXuv8iXOUsE0Fuxk1piOtuX38c3v+l
-         wyHNjfGtudsJQ9oGGw529hSGF8X9nRfW4pxWGgOn6BcxvmJGUidARDMmWK8hIlU60tAz
-         N7MAYZURyXn6mF0L/XjbuepzdFDK5G4LuHxvrH6rilRRgietWd6zOGd3DE/2EF1iVNvS
-         Hzn88v8pl7MbLvNB+5UxSIndA9xObqIgCAFtiIXUmSINfgElt6lQaQWjsKeE1Uw2rNUA
-         O6Pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720578982; x=1721183782;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1720580678; x=1721185478; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=E3eVF5jv0cXgwhtzNr2pMSO028nrJpif6y5JReYu+lA=;
-        b=KsuYaTXXDXXO1fok7UveMfYqsSBKBB/d6QaHuWtiinQ9HihZOzPkjcQxvfL+nS5vzf
-         Mi7KyWFbzg7ZG76kcJIffPM9mQLxyjp4uYV6ogQAEg0XMk6/yvNmU9EBJm6w05pKiYUk
-         M1nKxXislOmkwisHDBkvUaX6LcZJ36oYBWtkVWDlfEGEpu3904MxG5ASAJiqqyA4BhC0
-         nbdj//PcZ3xCJAn6Q3UzzP7iG5pqStqCy6gaOdzYEsohLOb5rkY5OcIkwSO88aWWkon1
-         2tVfFddD90GFik8Zkp/Fu5Muf2lOqQ/eM/HP5ZUfzDw0D74HSYGB7/nSxFeib7voEmaT
-         IqAA==
-X-Forwarded-Encrypted: i=1; AJvYcCVInYfnrqFlrN2yFKQZcECG7vWfp3GEAfaBDA+FbORlo656wmJRjq41tcbfcEnojggEwEfxm1yYSN7N3hzCAqM/2jH2rkxebT6eWWcBQYnzPxjkz0AH2vko4sM5xGNwjfNctrKr
-X-Gm-Message-State: AOJu0YzwKMIAPRuXQz26AsL8WiVIG1jCAHZWNRov2MhsTLPyIixZ45Xk
-	oMZWLlPAXXY2WCgitNFEgWjdeRzGWDPYjlM3W6lXH6VeAMi3KQMP
-X-Google-Smtp-Source: AGHT+IF+Q+M86l7Qx4r0vqs78vkZcPhB/pCwYEDqZV+cSgfw6KiHKdWBc5piMJp6W/iMDhe00k4bHQ==
-X-Received: by 2002:a17:90a:c595:b0:2c9:7611:e15d with SMTP id 98e67ed59e1d1-2ca35c36578mr3641145a91.20.1720578981795;
-        Tue, 09 Jul 2024 19:36:21 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c99aa65074sm10744798a91.39.2024.07.09.19.36.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jul 2024 19:36:20 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id B791B184796BC; Wed, 10 Jul 2024 09:36:15 +0700 (WIB)
-Date: Wed, 10 Jul 2024 09:36:15 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.9 000/197] 6.9.9-rc1 review
-Message-ID: <Zo3zn6Jnb6YE4lmE@archie.me>
-References: <20240709110708.903245467@linuxfoundation.org>
+        bh=IiRh6FzC2PDiy7SQD4Z/jXEccHUb8k/3zJYxkqcVVSE=;
+        b=lwsEFc0BvtsCqDoX+NY6I93UDOSFlR7lV6BuU4SXTrCB0hu8+Hlyl8JxfVI4NF/rQC
+         OdqR4Ie8v9AdlZh1GKow0m1+uMDw9P2EmC/h+H9Hduq9aK/tyOvEvvMvUsobyxektG/y
+         sgCB0aVl1DH98guVAF1A/jELa88IVJK3hYOckl/tks3kTS8XjiBvrBVNNlF6qgL618FE
+         G9Gh8xVTli8ViCv2L/MLOpI5dMA1IJYAb7/JpZtnUEb9GnecViDdM/ys1qVo9yuJe0jp
+         RMTF3Rl6sxuiqtp9Z9t+mzCk3ZmXzBYCimrvcUaU2gO33cGBNQCPiiNpC0mMGpuPtorq
+         tZkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720580678; x=1721185478;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IiRh6FzC2PDiy7SQD4Z/jXEccHUb8k/3zJYxkqcVVSE=;
+        b=LD2vLGqdS0kJNraaPDVqheBDgoMJ9NOQsLygKDIrvXYgoTs6bCJc0Y0BpUYh3g7Qok
+         aar/Mc/BpQc1FLi6FZjSzhIEgwrXW4ZD4vzwgh0nQRk9r8mz6PsJx9pkrEqhWQ5J9xD8
+         e4eEvc6YoNTEBbKBNoZ7MKFkDklzjsEhM3lkylARwMPaUuWfeH+KI8X6JkvCZNGH/5WZ
+         lfsRaz09t2A5jpasErG5iA56rfFaQ3sQovaz3sxyAXrFDVAmYyUqSg+it7matDP2hZTv
+         p0Bk5UagkO5abMgvSsWMC0ZCzwKqZ0DPKqUa+ckpJ1w1bTcqRtKGFqRtIULbJ7nIf+u7
+         l8Nw==
+X-Forwarded-Encrypted: i=1; AJvYcCV+MwR2O6qVBNmGegtgDEAHYUjtlm04t8EwFO+kNIJ8SmO0QzAzQsnsWSyoEjhL1cTvdF49g5KNC+mjaXb4tAbOMxVNjHRztg1SQd/m4L1iB3hp/y6YxKr7ywEqKPgO7KN7
+X-Gm-Message-State: AOJu0YwC6nDYqwNhxKEdPwf4g/36Uk0JoAQG2ar/yH77dq6dPUksupaF
+	jihrLo/3W1kTbou8dsKKsjKw4XqRAHjXR82c0merZ5Fu4uS+XSh/dI7CxmeOMSyaG21fApzxvSC
+	e4IfT1Jp53NUkfnxmDtRunCPPiZo=
+X-Google-Smtp-Source: AGHT+IF862RAyNxSA5v3VYIjwsLWIcnaqFyQPzreBRTwDVIrswUJU+XfQifI+N27WlvTLi3Rpwz9+OQ3NvNuPGwp1Ks=
+X-Received: by 2002:a50:fb0b:0:b0:57d:42f6:63fe with SMTP id
+ 4fb4d7f45d1cf-594bb773f1bmr3432494a12.22.1720580677246; Tue, 09 Jul 2024
+ 20:04:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="zic0MhIYsiJHXIn+"
-Content-Disposition: inline
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-
-
---zic0MhIYsiJHXIn+
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+References: <20240612065315.2048110-1-chenhuacai@loongson.cn> <20240709212414.GA195866@bhelgaas>
+In-Reply-To: <20240709212414.GA195866@bhelgaas>
+From: Huacai Chen <chenhuacai@gmail.com>
+Date: Wed, 10 Jul 2024 11:04:24 +0800
+Message-ID: <CAAhV-H6=nOf_cSv7K3hS3jdXsGcWR7Go30EFyZeqxYNQKhtH8A@mail.gmail.com>
+Subject: Re: [PATCH] PCI: loongson: Add LS7A MSI enablement quirk
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+	Rob Herring <robh@kernel.org>, loongarch@lists.linux.dev, linux-pci@vger.kernel.org, 
+	Jianmin Lv <lvjianmin@loongson.cn>, Xuefeng Li <lixuefeng@loongson.cn>, 
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org, 
+	Sheng Wu <wusheng@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 09, 2024 at 01:07:34PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.9.9 release.
-> There are 197 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
+Hi, Bjorn,
 
-Successfully compiled and installed the kernel on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+On Wed, Jul 10, 2024 at 5:24=E2=80=AFAM Bjorn Helgaas <helgaas@kernel.org> =
+wrote:
+>
+> On Wed, Jun 12, 2024 at 02:53:15PM +0800, Huacai Chen wrote:
+> > LS7A chipset can be used as a downstream bridge which connected to a
+> > high-level host bridge. In this case DEV_LS7A_PCIE_PORT5 is used as the
+> > upward port. We should always enable MSI caps of this port, otherwise
+> > downstream devices cannot use MSI.
+>
+> Can you clarify this topology a bit?  Since DEV_LS7A_PCIE_PORT5
+> apparently has a class of PCI_CLASS_BRIDGE_HOST, I guess that in PCIe
+> terms, it is basically a PCI host bridge (Root Complex, if you prefer)
+> that is materialized as a PCI Endpoint?
+Now most of the existing LoongArch CPUs don't have an integrated PCIe
+RC, instead they have HyperTransport controllers. But the latest CPU
+(Loongson-3C6000) has an integrated PCIe RC and removed
+HyperTransport.
 
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+LS7A bridge can work together with both old (HT) CPUs and new (PCIe)
+CPUs. If it is connected to an old CPU, its upstream port is a HT
+port, and DEV_LS7A_PCIE_PORT5 works as a normal downstream PCIe port.
+If it is connected to a new CPU, DEV_LS7A_PCIE_PORT5 works as an
+upstream port (the class code becomes PCI_CLASS_BRIDGE_HOST) and the
+HT port is idle.
 
---=20
-An old man doll... just what I always wanted! - Clara
+>
+> I'm curious about what's going on here because the normal PCI MSI
+> support should set PCI_MSI_FLAGS_ENABLE since it's completely
+> specified by the spec, which says it controls whether *this function*
+> can use MSI.
+>
+> But in this case PCI_MSI_FLAGS_ENABLE seems to have non-architected
+> behavior of controlling MSI from *other* devices below this host
+> bridge?  That's a little bit weird too because MSI looks like DMA to
+> any bridges upstream from the device that is using MSI, and the Bus
+> Master Enable bit in those bridges controls whether they forward those
+> MSI DMA accesses upstream.  And of course the PCI core should already
+> make sure those bridges have Bus Master Enable set when downstream
+> devices use MSI.
+In my opinion this is a hardware bug, when DEV_LS7A_PCIE_PORT5 works
+as a host bridge, it should enable MSI automatically. But
+unfortunately hardware doesn't behave like this, so we need a quirk
+here.
 
---zic0MhIYsiJHXIn+
-Content-Type: application/pgp-signature; name="signature.asc"
+Huacai
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZo3zmgAKCRD2uYlJVVFO
-o+01AP4mIZ5kKbM9zklvAspFa6bsr7gp7U0T/+qaqHAhrD7v0gEAyp/AoqUHC3dT
-9wZ3pJAqsLYzVT61PWU1pEQRTKYwlgI=
-=4wD9
------END PGP SIGNATURE-----
-
---zic0MhIYsiJHXIn+--
+>
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Sheng Wu <wusheng@loongson.cn>
+> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > ---
+> >  drivers/pci/controller/pci-loongson.c | 12 ++++++++++++
+> >  1 file changed, 12 insertions(+)
+> >
+> > diff --git a/drivers/pci/controller/pci-loongson.c b/drivers/pci/contro=
+ller/pci-loongson.c
+> > index 8b34ccff073a..ffc581605834 100644
+> > --- a/drivers/pci/controller/pci-loongson.c
+> > +++ b/drivers/pci/controller/pci-loongson.c
+> > @@ -163,6 +163,18 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON,
+> >  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON,
+> >                       DEV_LS7A_HDMI, loongson_pci_pin_quirk);
+> >
+> > +static void loongson_pci_msi_quirk(struct pci_dev *dev)
+> > +{
+> > +     u16 val, class =3D dev->class >> 8;
+> > +
+> > +     if (class =3D=3D PCI_CLASS_BRIDGE_HOST) {
+> > +             pci_read_config_word(dev, dev->msi_cap + PCI_MSI_FLAGS, &=
+val);
+> > +             val |=3D PCI_MSI_FLAGS_ENABLE;
+> > +             pci_write_config_word(dev, dev->msi_cap + PCI_MSI_FLAGS, =
+val);
+> > +     }
+> > +}
+> > +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, DEV_LS7A_PCIE_PORT5, l=
+oongson_pci_msi_quirk);
+> > +
+> >  static struct loongson_pci *pci_bus_to_loongson_pci(struct pci_bus *bu=
+s)
+> >  {
+> >       struct pci_config_window *cfg;
+> > --
+> > 2.43.0
+> >
 
