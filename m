@@ -1,124 +1,110 @@
-Return-Path: <stable+bounces-58988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E722592CF2A
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 12:33:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A68092CF59
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 12:37:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61D45B281DB
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 10:33:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC66F1C22023
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 10:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 050751946C8;
-	Wed, 10 Jul 2024 10:25:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="MoKCsSlN";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ag2jSf4s"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DCA19006D;
+	Wed, 10 Jul 2024 10:34:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from flow7-smtp.messagingengine.com (flow7-smtp.messagingengine.com [103.168.172.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79DC190068;
-	Wed, 10 Jul 2024 10:25:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F600190067;
+	Wed, 10 Jul 2024 10:34:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720607102; cv=none; b=ItHXInvVZ9FFSI4q7Urjkz/EYWxo4AOLsHJrkZepzkF4DKMCd7552B/5Xi2Ue5po9iJvVkMk4Jqv2/LWE+INbUx9652Ld0X3pZmsSlspeL44bCV78Xed8ARfIZ6l7KfShblphTrDgsiWobQ3t05+4+hSc0ErVIwwNLvc+CanQlM=
+	t=1720607677; cv=none; b=UtRMxsfija5MmxT5M2ThJsOKAgEjpMp4IXsEwHbaSwMPR5kEoESOK68Itf1MbGvkxGlfIv93S7YMpyanpnBHK9Zqx38LkscRbRoOMMXF2S+Sklx+R0Q1euAb3ctz+mnfpwJWj+I4jweKnd5XKejlmmsxf8JTTsfirG4x9uVBRqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720607102; c=relaxed/simple;
-	bh=FC04BLdIs8tuiDfvf/c1ZzpMpSeOaRa/C5ZTu2v8tNw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sMZfBsM7AyZ9yXEd9zjroety0vBtDGqDI33UMr8+XU5x/2IbUwhGtA9eIa5DCiEe6AZJ+h8y2tqIGDj5eHvXJ+YxvnZ8rEE2p3eyNiDq2UzrqDOqKkRsL5Td4YhsCa/604IWOtgbQ1D+xZ8vuWaWyWKa/RfYcJdUV0I0n+sTStw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=MoKCsSlN; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ag2jSf4s; arc=none smtp.client-ip=103.168.172.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailflow.nyi.internal (Postfix) with ESMTP id BCD602004B2;
-	Wed, 10 Jul 2024 06:24:59 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Wed, 10 Jul 2024 06:24:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1720607099; x=1720614299; bh=VVZAdYDgdn
-	sfeF4pUTyu7FXWVOGM6tvVCvnnRo6O8PU=; b=MoKCsSlNBy6bgouajIyVgN/zhj
-	Er7/Rk9QqGPtZr/wVKqy44VGRa6XWubW2QuWxhsDYV4h0Z3WPhWkAmNTW4YvAXdf
-	BrGZBFhqVq8HJx1ld5AkVqGCYjiSewKpNW/3OBqJPA5Cd20v3vWVU+2+Lhp6aMg7
-	2eMaCLJtFGuVQvIOHqjx7ObNeIuLHPOwc6Km/27ctjP3DEJEcMISrDlrKRSqneb0
-	uUBiRxFIuKrOdoDWy0ECYxuvSF1jNCmBJXWPNKrQM30SJ7y5c7jLDDjV7QhCYmse
-	YT4qiCzCy+4R7CKjFIf1pzZd+e0jo3DXp66qz6+xVmlyLevuDgIoxJyiTYFg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1720607099; x=1720614299; bh=VVZAdYDgdnsfeF4pUTyu7FXWVOGM
-	6tvVCvnnRo6O8PU=; b=ag2jSf4sQ+V5anT5AGga62piqqrUy5vQAjmyDo75xrTz
-	Yxs0Oq/RKG9xLEJL0fQRszct7rYSaCbAAteXH/FQ+57huUJFbQ3IDaGpYeycTDTp
-	Wlg5RU5Ve9q+8ifuFbDNfqsjJOwIh4LiWWvsy9wGMCFREXiriucmzNoeR6un1mEW
-	+6ngYPUBMjTAbg1OB1g+zvNtog5AQVnx5d+sD5mZsz0XZO2xaSediZ5aJs7SgAci
-	zQ/MN3WXXaK4lhcb7V1IrRlhyXntWHx6tsMROhlDxCeBo0eBXbNCqssk/uE6rWzg
-	rw5xyNnyCnCGff9fNch2nTMO4eKLo/92biOxz7SqlQ==
-X-ME-Sender: <xms:emGOZhCzlwAQMgOIgSRZj_TKljUCaVaRn0Ep7wT4-xKAgvlyL1F9Tg>
-    <xme:emGOZvi5Lcbtxunsa--WqRb0XHSO5g9cv8cpDF5ZZLAerxVMHHSisT4JdhXSp_4Yt
-    bLivpSjT7upFQ>
-X-ME-Received: <xmr:emGOZslWje7kWkXLR-vBIkn4Uc39s9QXHQ04o_CACiq0zuNTW8QbaysCfkU-KKI1NNspPExXyWtwP0N0EJsM5zS6x459NZtrqzFzbA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrfedugddvkecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehgedvve
-    dvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhushht
-    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
-    drtghomh
-X-ME-Proxy: <xmx:emGOZrz1VSKtafnVU48h05mD3oRW2dWTfUYDWZZ3fJLhqv-PLInS7A>
-    <xmx:emGOZmRN9Ka7NH62KKB45QopZVxAox0ticbPIDcJBGco3OEhxw_WPg>
-    <xmx:emGOZuZnoyRUi504xvKURnDneeQUWCSzP54FNASIZ39EiuYB3WLmPA>
-    <xmx:emGOZnRykRfpY-YtacHi3j_hT7bSB81dyp6D6VryvQnMUqhs8sgoVA>
-    <xmx:e2GOZqoJ7wn4xbIhpqX5LKMGZweVNa2GpKq2oBtncNWlVDYwA4AK4hQy>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 10 Jul 2024 06:24:57 -0400 (EDT)
-Date: Wed, 10 Jul 2024 12:24:55 +0200
-From: Greg KH <greg@kroah.com>
-To: Pavel Machek <pavel@denx.de>
-Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>, johannes@sipsolutions.net,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 4.19] wifi: cfg80211: wext: add extra SIOCSIWSCAN
- data check
-Message-ID: <2024071033-geologic-emerald-f6a2@gregkh>
-References: <20240701001526.2921645-1-sashal@kernel.org>
- <Zo5cn37w8NjVyZdj@duo.ucw.cz>
+	s=arc-20240116; t=1720607677; c=relaxed/simple;
+	bh=5iVCEpSHOTR5t3oDkyI7Mh4X2c3tYcpmu3Xe7ap1nCQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eZvU8Dmn5PnNXIYMx7io4ptzHV9a0mNt2MP0MsrJr4LMcHjL3xAeLbls05RHlmxThrLF7z+YBkjjPFfRWTDQj1e1FwaAKhUWTQ/RPyPUt/q7QQvMAAFVsjd34RGNvKGTZEmSnZm68aWu+IFGFzDctLERhZNSVFMfNHT8KBfai2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-05 (Coremail) with SMTP id zQCowAD3_7eRY45mBMyMAg--.50608S2;
+	Wed, 10 Jul 2024 18:34:03 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: fbarrat@linux.ibm.com,
+	ajd@linux.ibm.com,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org,
+	clombard@linux.vnet.ibm.com,
+	imunsie@au1.ibm.com,
+	mpe@ellerman.id.au,
+	manoj@linux.vnet.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] cxl: Fix possible null pointer dereference in read_handle()
+Date: Wed, 10 Jul 2024 18:33:52 +0800
+Message-Id: <20240710103352.1890726-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zo5cn37w8NjVyZdj@duo.ucw.cz>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAD3_7eRY45mBMyMAg--.50608S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrKFWDGF18Kr1DAFy5Zw47Arb_yoWkurc_uF
+	47Xr1xW34jgr12kw1Y9r43Zrnav3ykuF95Zr4Sqay3K345AF1Yqr1SvrZYvwnrXr45ZFWD
+	Cw1qg3sa9w12gjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb3xFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
+	C2KfnxnUUI43ZEXa7VUbHa0DUUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On Wed, Jul 10, 2024 at 12:04:15PM +0200, Pavel Machek wrote:
-> Hi!
-> 
-> > [ Upstream commit 6ef09cdc5ba0f93826c09d810c141a8d103a80fc ]
-> > 
-> > In 'cfg80211_wext_siwscan()', add extra check whether number of
-> > channels passed via 'ioctl(sock, SIOCSIWSCAN, ...)' doesn't exceed
-> > IW_MAX_FREQUENCIES and reject invalid request with -EINVAL otherwise.
-> 
-> This results in very confusing code in 4.19 at least. It should goto
-> out for consistency, exploting kfree(NULL) to be nop. Ok, not sure we
-> care...
+In read_handle(), of_get_address() may return NULL which is later
+dereferenced. Fix this by adding NULL check.
 
-kfree(NULL) is always supposed to be a nop, we have relied on that for
-decades, that's not an issue anywhere.
+Cc: stable@vger.kernel.org
+Fixes: 14baf4d9c739 ("cxl: Add guest-specific code")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+Changes in v2:
+- The potential vulnerability was discovered as follows: based on our 
+customized static analysis tool, extract vulnerability features[1], and 
+then match similar vulnerability features in this function.
+- Reference link:
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=2d9adecc88ab678785b581ab021f039372c324cb
+---
+ drivers/misc/cxl/of.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-greg k-h
+diff --git a/drivers/misc/cxl/of.c b/drivers/misc/cxl/of.c
+index bcc005dff1c0..d8dbb3723951 100644
+--- a/drivers/misc/cxl/of.c
++++ b/drivers/misc/cxl/of.c
+@@ -58,7 +58,7 @@ static int read_handle(struct device_node *np, u64 *handle)
+ 
+ 	/* Get address and size of the node */
+ 	prop = of_get_address(np, 0, &size, NULL);
+-	if (size)
++	if (!prop || size)
+ 		return -EINVAL;
+ 
+ 	/* Helper to read a big number; size is in cells (not bytes) */
+-- 
+2.25.1
+
 
