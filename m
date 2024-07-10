@@ -1,282 +1,189 @@
-Return-Path: <stable+bounces-59026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D56F792D528
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 17:40:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEBA592D56E
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 17:56:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85A9F280FBD
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 15:40:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEFCB1C2153E
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 15:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504681946AE;
-	Wed, 10 Jul 2024 15:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3850194A5E;
+	Wed, 10 Jul 2024 15:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vhQKcZb3"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="ZTthLxzi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B1D191494
-	for <stable@vger.kernel.org>; Wed, 10 Jul 2024 15:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C6E193084
+	for <stable@vger.kernel.org>; Wed, 10 Jul 2024 15:56:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720626027; cv=none; b=TcdzvCEtsJjmfJG08U1adCJ/dYicWbC2C4OdYyLKxwOlUlrUxF4YkujXXV34Sq+LfccxfQjkJh5b7MJL4h3kAXUqQE4B9M6E1eBq7Jod0jI5H5URjv39/W32mOSNEujwT7ANtpWOZqyYm1VrgNL5he83kl5F97cjJc/x00768rQ=
+	t=1720626974; cv=none; b=n1iLC3mFCx1yTWzo40s1KPw1gCLKMYDL4WmzKPHBu8WtpBHqsNJ2ytIXXvdmr2t24NtaDctSPJ6Hw3NJZAZrhfheaLoQy8ixuOKu24PsRnXtEgN6ZWkHPr1+cmIonR0oQN4AFStv1uDbNLiHkAk1zcBq7636mtuKSQFodrEf0kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720626027; c=relaxed/simple;
-	bh=omsYmQS4hG6YsBHUkFIaSOzlEc+6+TrwpnKMHsG7kjs=;
+	s=arc-20240116; t=1720626974; c=relaxed/simple;
+	bh=B/nG4TR56/cwzYMHqCDCNFF2y43gf1Y4lESNrmlv6BY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ubs4Z3tae0OSDniKut6Zg87cc2HqzUK9/jmGJQh9J3jxz/NkW131/nMlBfHBSDihMZCVynvLyL/GEdXd+7f3JlwCx/hycomrDSo+AHgVMkIMBvN1sEfN7fgTznnkdciaoTtSdPB+9ScUsPA73i7zUGX69kvMwyTg3n07AdUSkWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vhQKcZb3; arc=none smtp.client-ip=209.85.221.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-4f2c8e99c0fso2343383e0c.1
-        for <stable@vger.kernel.org>; Wed, 10 Jul 2024 08:40:24 -0700 (PDT)
+	 To:Cc:Content-Type; b=ZAjq/TSh4trd+UdiYYPtDcuZ9Okv2TXhg45XC8Kortf5CN5Dvdm1n8Uq8ECiw4qsNNvtT3XN0cHhTrlXfGr5RWUTAnoxvO08co8ba/QAMbhcnf61MjjjIK2lczFAIxcFZ958mks/1b/3sbY2oT+6TJEN3izj6N8iSB70GhtjAlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=ZTthLxzi; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-58b447c513aso7934107a12.2
+        for <stable@vger.kernel.org>; Wed, 10 Jul 2024 08:56:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720626024; x=1721230824; darn=vger.kernel.org;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1720626971; x=1721231771; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=h4D3P6HH5i1NmF0CLERJUVLqTlBKOZEShSy+djf8MuU=;
-        b=vhQKcZb3whpHTLr0F9ct7j0sBE0ManzW5dPVXvS6OcT80JtpU9Kf3JQ3jCcdmtHQ8i
-         8O2sPNkBcGXx11DzXES0T9xQphhNWhGUBpBRZX4XUqdSLuofHm8HvXSMr3QZ6vJByM2+
-         f9jsgnEH6fcuxR2N578Rhl8PBU5aT+7VpJhIB+HajGgTPiAig/qSDy2ObJ1vgw1qC4iM
-         a9zmNHr+K1CWfHSzYckGp1GfqtBdtWUmJwXVmecGeOBjCLrz0EqpWNKpNGDMyqa02mnP
-         TlM9FHFYpCoPlaAzfhYMZlKXXMq436Tj0AI0JwmM5dRAyoCvUBUWT26dFTsgmCcuAYrR
-         4//Q==
+        bh=ISPkngAyeCTHdiiqdfhGRhrD7gcMn5QvhxpyUZ/8MrQ=;
+        b=ZTthLxziALFZ68HvrQ8nyU5KluBqycIZqUnWteKz1XM5wzs8yuAs9O7XOtW11aqeEK
+         k4yyftRCct9SCgCcDZFhGM0FpO/EhDiN/7SXgQ72x1LaY6hbCWFCDxFwk+dplsDWUIwZ
+         o++A4sX5zj1V3ornTDcfAF3vVlm5ArDZSQrCnwnAMJ4crq4lvHBeLAXQkH4f3W1PxAve
+         5GImhS8Ogx8oDjIH6s5Uo456PB3bJyq7u85JWCsjJ5vRnP85lqBdCRFqcc+ee/Kurv/V
+         TALLGuBd5q/BQooDt16UW9bd0gsF7UZ8VvP9NUuMsNzrp1IEZlFbjs2KuoKYRmLrPTtX
+         /FjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720626024; x=1721230824;
+        d=1e100.net; s=20230601; t=1720626971; x=1721231771;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=h4D3P6HH5i1NmF0CLERJUVLqTlBKOZEShSy+djf8MuU=;
-        b=hCbi9AFp+3ZZ0CQRfYqMUAl54lbapErul6/UgnOXsqougeWTbIDt+50NWZlMNLbZl3
-         n2C7QTA2tj3pKSf6twCi+XDta0q2BsDNqNrb9MHOsKHUe8bOkDhDufh/MM1MrHBzb4YV
-         aePJx/bgiT2h92QPGbXRdNnhac9vYe4kIMbTSZpuWGgwudq5iZG3+bP9ybj5yYgyXC3p
-         Dd8JwB76b3uuFZoRwuL4knMMgpNS71kZS/f8lY+mbfNg8IzmJoJVzLCPY9MEHVJX9gF9
-         ul0Jd25WIasBclVlrpRQmGrLckfxWECmH2Rzo8gGDqJL4UgUcP7xXruFPIPTGgDzL8Rl
-         aI0w==
-X-Gm-Message-State: AOJu0YzGjqXUaOkNRHj7BV8abbjWbVQBLRa5DuZCXFQ5S7Z9EHxv2kwo
-	9VpH00rAzuBW9Hd8PiysnwyoO9zjSJKCTzHxUXakAnz1XW2uUSFR9yoFBeWrEX4+IENtrcq6bHE
-	/yjMw+lKNeNE7z/DFIQQ8GS9+SAiela72w7pnSg==
-X-Google-Smtp-Source: AGHT+IFcz+poOzmDVoRNcSrqYhk1+y+wQ2Oo1g150vyTo2Ei2HItWpnr+yvlW9NI0uR3LPGWCGrwTMDdo7z5n/JlGjA=
-X-Received: by 2002:a05:6122:a03:b0:4ed:682:7496 with SMTP id
- 71dfb90a1353d-4f33f31b0a0mr7123315e0c.12.1720626023634; Wed, 10 Jul 2024
- 08:40:23 -0700 (PDT)
+        bh=ISPkngAyeCTHdiiqdfhGRhrD7gcMn5QvhxpyUZ/8MrQ=;
+        b=eZbmNBK6V4eXHyb+rTebIRONJtOnUxePPr+LV3fhuIDg2fip0J56ix3+sUGhbCm7k+
+         +dA8cutTKRKyj6jtRMXh1G7AhBpbHy2zy0vHrMJn2OZMIO86BSstnvkRr9SuWrdyXIFZ
+         f3wrhoHcf+xG6AB860gUoZTCiGAQ1VGJxIMwdHW6FPI9RGODJAetHdPviYzM0idGRT2Y
+         zlVrTneqMkUjqpGo65Vnn5bK+RXrRzulE+PQMJDyWLtm1gdV28BRrK0kych4p3R2UaKw
+         r8ivwSbampIRYnHCXyxXmaECPuMIqRh9/V7kFhYK++hXIEA7Up99ulFYDqBZ8XWTmOB/
+         jD9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUYx0rwWhCsPOsnW6Y5ySpHRhaIRlgYk2dqcgpPVg1+5U+qXwqxxF/S+P6JhONQm4WDOiqz2z97Wz1v83c0HAfn7Tzulhv0
+X-Gm-Message-State: AOJu0Yz4sVUp5+3rS1Z+8VWcV+LULcnHgyNYr+Nh1narpaPIQ4LbWs4X
+	nm3lN602Vi4nTJ0eSW2zCcfIJBug5XqP0DrTrnNUdOzC8qwWU0RERLaBuK87sOUvtmYIbhbW1Ge
+	PXilAn9Ra62R1N09ezFxE90P1xULD1SvkNZFWhA==
+X-Google-Smtp-Source: AGHT+IHs4uU/4yOkk+bzRj18biX0XTt2Rbdp+dHRjb7JtDRHUJObhcKGm+ZUnkDr1LXg3IpCyRDMKsne4rSn0QUuPgI=
+X-Received: by 2002:a17:906:e950:b0:a77:e1c2:3ab with SMTP id
+ a640c23a62f3a-a780b884b52mr389055966b.50.1720626971164; Wed, 10 Jul 2024
+ 08:56:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240709110651.353707001@linuxfoundation.org>
-In-Reply-To: <20240709110651.353707001@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 10 Jul 2024 21:10:11 +0530
-Message-ID: <CA+G9fYtK_CCvQ01LdANMViMpAGfY-fyh7vFwiOq7XzQw889jHQ@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/102] 6.1.98-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
+References: <20240625005001.37901-1-jesse@rivosinc.com> <20240625005001.37901-4-jesse@rivosinc.com>
+In-Reply-To: <20240625005001.37901-4-jesse@rivosinc.com>
+From: Evan Green <evan@rivosinc.com>
+Date: Wed, 10 Jul 2024 08:55:35 -0700
+Message-ID: <CALs-HsvE9PzTrhVO0umh3KaJuLQLdk-h8sYKBg7XA4a-MXAmOg@mail.gmail.com>
+Subject: Re: [PATCH v3 3/8] RISC-V: Check scalar unaligned access on all CPUs
+To: Jesse Taube <jesse@rivosinc.com>
+Cc: linux-riscv@lists.infradead.org, Jonathan Corbet <corbet@lwn.net>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>, 
+	Andrew Jones <ajones@ventanamicro.com>, Charlie Jenkins <charlie@rivosinc.com>, 
+	Xiao Wang <xiao.w.wang@intel.com>, Andy Chiu <andy.chiu@sifive.com>, 
+	Eric Biggers <ebiggers@google.com>, Greentime Hu <greentime.hu@sifive.com>, 
+	=?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>, 
+	Heiko Stuebner <heiko@sntech.de>, Costa Shulyupin <costa.shul@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
+	Anup Patel <apatel@ventanamicro.com>, Zong Li <zong.li@sifive.com>, 
+	Sami Tolvanen <samitolvanen@google.com>, Ben Dooks <ben.dooks@codethink.co.uk>, 
+	Alexandre Ghiti <alexghiti@rivosinc.com>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+	Erick Archer <erick.archer@gmx.com>, Joel Granados <j.granados@samsung.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 9 Jul 2024 at 16:59, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Mon, Jun 24, 2024 at 5:51=E2=80=AFPM Jesse Taube <jesse@rivosinc.com> wr=
+ote:
 >
-> This is the start of the stable review cycle for the 6.1.98 release.
-> There are 102 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> Originally, the check_unaligned_access_emulated_all_cpus function
+> only checked the boot hart. This fixes the function to check all
+> harts.
 >
-> Responses should be made by Thu, 11 Jul 2024 11:06:25 +0000.
-> Anything received after that time might be too late.
+> Fixes: 71c54b3d169d ("riscv: report misaligned accesses emulation to hwpr=
+obe")
+> Signed-off-by: Jesse Taube <jesse@rivosinc.com>
+> Cc: stable@vger.kernel.org
+> ---
+> V1 -> V2:
+>  - New patch
+> V2 -> V3:
+>  - Split patch
+> ---
+>  arch/riscv/kernel/traps_misaligned.c | 23 ++++++-----------------
+>  1 file changed, 6 insertions(+), 17 deletions(-)
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.98-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
+> diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/tra=
+ps_misaligned.c
+> index b62d5a2f4541..8fadbe00dd62 100644
+> --- a/arch/riscv/kernel/traps_misaligned.c
+> +++ b/arch/riscv/kernel/traps_misaligned.c
+> @@ -526,31 +526,17 @@ int handle_misaligned_store(struct pt_regs *regs)
+>         return 0;
+>  }
 >
-> thanks,
+> -static bool check_unaligned_access_emulated(int cpu)
+> +static void check_unaligned_access_emulated(struct work_struct *unused)
+>  {
+> +       int cpu =3D smp_processor_id();
+>         long *mas_ptr =3D per_cpu_ptr(&misaligned_access_speed, cpu);
+>         unsigned long tmp_var, tmp_val;
+> -       bool misaligned_emu_detected;
 >
-> greg k-h
+>         *mas_ptr =3D RISCV_HWPROBE_MISALIGNED_UNKNOWN;
+>
+>         __asm__ __volatile__ (
+>                 "       "REG_L" %[tmp], 1(%[ptr])\n"
+>                 : [tmp] "=3Dr" (tmp_val) : [ptr] "r" (&tmp_var) : "memory=
+");
+> -
+> -       misaligned_emu_detected =3D (*mas_ptr =3D=3D RISCV_HWPROBE_MISALI=
+GNED_EMULATED);
+> -       /*
+> -        * If unaligned_ctl is already set, this means that we detected t=
+hat all
+> -        * CPUS uses emulated misaligned access at boot time. If that cha=
+nged
+> -        * when hotplugging the new cpu, this is something we don't handl=
+e.
+> -        */
+> -       if (unlikely(unaligned_ctl && !misaligned_emu_detected)) {
+> -               pr_crit("CPU misaligned accesses non homogeneous (expecte=
+d all emulated)\n");
+> -               while (true)
+> -                       cpu_relax();
+> -       }
+
+This chunk was meant to detect and refuse to run on a system where a
+heterogeneous CPU is hotplugged into a previously homogenous system.
+The commit message doesn't mention this change, how come you
+deleted it?
 
 
-Results from Linaro=E2=80=99s test farm.
-We have two major regressions.
-
-1)
-As I have reported on 6.9.9-rc1 same kernel BUG and panic noticed [1]
-while running kunit tests on all test environments [1] seen on 6.1.98-rc1.
-
-BUG: KASAN: null-ptr-deref in _raw_spin_lock_irq+0xb0/0x17c
-
- [1] https://lore.kernel.org/stable/CA+G9fYsqkB4=3DpVZyELyj3YqUc9jXFfgNULsP=
-k9t8q-+P1w_G6A@mail.gmail.com/
-
-2)
-S390 build failed due to following build errors on 6.1 and 6.6.
-Build error:
-----
-arch/s390/include/asm/processor.h:253:11: error: expected ';' at end
-of declaration
-  253 |         psw_t psw __uninitialized;
-      |                  ^
-      |                  ;
- [2] https://storage.tuxsuite.com/public/linaro/lkft/builds/2j0YAKrnHmvjt4f=
-KPfYoEmSKWlG/
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build
-* kernel: 6.1.98-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: b10d15fc384867cd42b1e770181e6cfb116cb970
-* git describe: v6.1.97-103-gb10d15fc3848
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.9=
-7-103-gb10d15fc3848
-
-## Test Regressions (compared to v6.1.96-129-g54f35067ea4e)
-
-* qemu-arm64, boot
-  - clang-nightly-defconfig-kunit
-  - gcc-13-defconfig-kunit
-  - gcc-13-lkftconfig-kunit
-  - gcc-8-defconfig-kunit
-
-* qemu-arm64, log-parser-test
-  - check-kernel-kasan
-  - check-kernel-kfence
-  - check-kernel-oops
-  - check-kernel-panic
-
-* s390, build
-  - clang-18-allnoconfig
-  - clang-18-defconfig
-  - clang-18-tinyconfig
-  - clang-nightly-allnoconfig
-  - clang-nightly-defconfig
-  - clang-nightly-tinyconfig
-  - gcc-13-allnoconfig
-  - gcc-13-defconfig
-  - gcc-13-tinyconfig
-  - gcc-8-allnoconfig
-  - gcc-8-defconfig-fe40093d
-  - gcc-8-tinyconfig
-
-
-## Metric Regressions (compared to v6.1.96-129-g54f35067ea4e)
-
-## Test Fixes (compared to v6.1.96-129-g54f35067ea4e)
-
-## Metric Fixes (compared to v6.1.96-129-g54f35067ea4e)
-
-## Test result summary
-total: 229438, pass: 197119, fail: 2855, skip: 29094, xfail: 370
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 133 total, 133 passed, 0 failed
-* arm64: 36 total, 36 passed, 0 failed
-* i386: 27 total, 27 passed, 0 failed
-* mips: 24 total, 24 passed, 0 failed
-* parisc: 3 total, 3 passed, 0 failed
-* powerpc: 34 total, 34 passed, 0 failed
-* riscv: 9 total, 9 passed, 0 failed
-* s390: 12 total, 0 passed, 12 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 31 total, 31 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-smoketest
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
+> -
+> -       return misaligned_emu_detected;
+>  }
+>
+>  bool check_unaligned_access_emulated_all_cpus(void)
+> @@ -562,8 +548,11 @@ bool check_unaligned_access_emulated_all_cpus(void)
+>          * accesses emulated since tasks requesting such control can run =
+on any
+>          * CPU.
+>          */
+> +       schedule_on_each_cpu(check_unaligned_access_emulated);
+> +
+>         for_each_online_cpu(cpu)
+> -               if (!check_unaligned_access_emulated(cpu))
+> +               if (per_cpu(misaligned_access_speed, cpu)
+> +                   !=3D RISCV_HWPROBE_MISALIGNED_EMULATED)
+>                         return false;
+>
+>         unaligned_ctl =3D true;
+> --
+> 2.45.2
+>
 
