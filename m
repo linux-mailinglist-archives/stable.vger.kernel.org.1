@@ -1,127 +1,140 @@
-Return-Path: <stable+bounces-59028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2823192D6B6
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 18:41:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3AE992D6D4
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 18:48:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C80891F2136B
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 16:41:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 892851F24AB9
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 16:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A04194C85;
-	Wed, 10 Jul 2024 16:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12FB5195381;
+	Wed, 10 Jul 2024 16:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="SaOAZbhH"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="aoChw0ft"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42323193445
-	for <stable@vger.kernel.org>; Wed, 10 Jul 2024 16:39:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995D7190472;
+	Wed, 10 Jul 2024 16:48:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720629578; cv=none; b=NBPF97oOhTJHvkaN0b/ZnIulWTJ13A91sPMAShPumHEUa4S9kRSNUp/IiGsgJy6Bth/oA2Wr4QxkI6gFYxtA1EwX3/3JNh1gK10e4Gyq9KyQgqM/ujE+xQMi4HwyD9kjF0ZLDbR1MrX335to7ppQQSFkUjgqLWhcDQU9Xsbq7Ng=
+	t=1720630102; cv=none; b=dEONWQP5nhcQFUW3K9C3cD0fkykYGc3IkpxyC1PZ5pHlL9P1zDMetnTUIWrlUd2I6w34BgK3O3DsvQzznQx691uTIqz0oz5Ew1PAElZVPcgZzJrPaQySRa1v7mPo5gJov/p7APbQQoYbVC4MW+/KdtBRTxCwkzaHITSCa3BztMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720629578; c=relaxed/simple;
-	bh=3npt7ipPLSXp3U9uG7+NE/wVSm2F6WUpizJ6ODZpOes=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=huzt8CksolMyzThsszclIM7meOZMFT+O1FNsnshkPNN2s8E845iEIDriNcCUWPDllY469Qr7v1EC3lKc1qG8TyLACVO5V1g6hqKkWnn/o7ofi2tRXcF2xo9SCA6a8rt3JJT9Qt36qDOQrkKOyGbAvOp39Kz03RwBs/YsZKYipuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=SaOAZbhH; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=VyOGG0qBiEBBcnMdvG8fEUcGJthJSAwtuDEMgOAUAAo=; b=SaOAZbhHLzAgovpUwk5aPKvioZ
-	x1glWArBPnRG7HMZjkdvRG3+XgH4RLzfwcHV7aBdpzRj5pTcdJ3nEGeMPpGyFy/EBso/wR49M6lAM
-	5T9Y0/bzTJx/zCnvW6n6lKnpEojSKNr3tbl2ZHUggJ6EWEPIVzU+AMiPyBDn3eWtmORr9HNZl+zF0
-	GDOPvkVgdxrPO4/JjYlh3kEnUVLGm+zIHpU8xXtyU+Lpbx0mygn+rNGas3RgBgZ0Ix3jQKyoASwHC
-	zpQuNjH4Mp4tDlZ0/YLrg9d/heNzgPuyvT2XfXfVJVJ4yV7nH399QUN9oioVOhxF0Ebjmg7N8f9Ah
-	EOFz6jcg==;
-Received: from [187.36.213.55] (helo=[192.168.1.212])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1sRaLh-00DKi5-U4; Wed, 10 Jul 2024 18:39:22 +0200
-Message-ID: <84d22fb2-c9e9-4354-90a2-675c0b42cb60@igalia.com>
-Date: Wed, 10 Jul 2024 13:39:14 -0300
+	s=arc-20240116; t=1720630102; c=relaxed/simple;
+	bh=VCCzzH/NSQUKQm99wAA3ow4vbwKbj/C8OQUJaCCRmVo=;
+	h=Date:To:From:Subject:Message-Id; b=tIdZVCVAAUAkF45p+UmQ7uJi2iT2/fq6PIqMheTOJTCJTo5UbOGnTt3oUOHOIScaIsiWw10hio9chYzq1gGrjv5KMK/95RNVDFM5ahhdT7p/F9+sYW7eZ7nO34Z0hoqRyfQ0vKsCUgPW+f4EvTNrRscBQW2nHz1psmL6liYxXis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=aoChw0ft; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DEAC32781;
+	Wed, 10 Jul 2024 16:48:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1720630102;
+	bh=VCCzzH/NSQUKQm99wAA3ow4vbwKbj/C8OQUJaCCRmVo=;
+	h=Date:To:From:Subject:From;
+	b=aoChw0ftDuLweQfMJ0G1Bs92qjxNIo47yUjjc/pcon6yfWcvHmMNDrFBuEO4Cz9a1
+	 xS8cc1zAu6sIHWqKlyFn3jaPSutYfqXEwa8hTHLgqXftuNGzVbtmGTp0x+YJLAi7Mq
+	 ZZcuJeVt07YM5Ai17Y7J+jfM9ZSa2eeg+ALXYuQQ=
+Date: Wed, 10 Jul 2024 09:48:21 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,fengwei.yin@intel.com,apopple@nvidia.com,rtummala@nvidia.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-fix-old-young-bit-handling-in-the-faulting-path.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240710164822.13DEAC32781@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/12] drm/v3d: Prevent out of bounds access in
- performance query extensions
-To: Tvrtko Ursulin <tursulin@igalia.com>, dri-devel@lists.freedesktop.org
-Cc: kernel-dev@igalia.com, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
- Iago Toral Quiroga <itoral@igalia.com>, stable@vger.kernel.org
-References: <20240710134130.17292-1-tursulin@igalia.com>
- <20240710134130.17292-2-tursulin@igalia.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-Autocrypt: addr=mcanal@igalia.com; keydata=
- xjMEZIsaeRYJKwYBBAHaRw8BAQdAGU6aY8oojw61KS5rGGMrlcilFqR6p6ID45IZ6ovX0h3N
- H01haXJhIENhbmFsIDxtY2FuYWxAaWdhbGlhLmNvbT7CjwQTFggANxYhBDMCqFtIvFKVRJZQ
- hDSPnHLaGFVuBQJkixp5BQkFo5qAAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQNI+cctoYVW5u
- GAEAwpaC5rI3wD8zqETKwGVoXd6+AbmGfZuVD40xepy7z/8BAM5w95/oyPsHUqOsg/xUTlNp
- rlbhA+WWoaOXA3XgR+wCzjgEZIsaeRIKKwYBBAGXVQEFAQEHQGoOK0jgh0IorMAacx6WUUWb
- s3RLiJYWUU6iNrk5wWUbAwEIB8J+BBgWCAAmFiEEMwKoW0i8UpVEllCENI+cctoYVW4FAmSL
- GnkFCQWjmoACGwwACgkQNI+cctoYVW6cqwD/Q9R98msvkhgRvi18fzUPFDwwogn+F+gQJJ6o
- pwpgFkAA/R2zOfla3IT6G3SBoV5ucdpdCpnIXFpQLbmfHK7dXsAC
-In-Reply-To: <20240710134130.17292-2-tursulin@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 7/10/24 10:41, Tvrtko Ursulin wrote:
-> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> 
-> Check that the number of perfmons userspace is passing in the copy and
-> reset extensions is not greater than the internal kernel storage where
-> the ids will be copied into.
-> 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
+The patch titled
+     Subject: mm: fix old/young bit handling in the faulting path
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-fix-old-young-bit-handling-in-the-faulting-path.patch
 
-Best Regards,
-- Maíra
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-fix-old-young-bit-handling-in-the-faulting-path.patch
 
-> Fixes: bae7cb5d6800 ("drm/v3d: Create a CPU job extension for the reset performance query job"
-> Cc: Maíra Canal <mcanal@igalia.com>
-> Cc: Iago Toral Quiroga <itoral@igalia.com>
-> Cc: <stable@vger.kernel.org> # v6.8+
-> ---
->   drivers/gpu/drm/v3d/v3d_submit.c | 6 ++++++
->   1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
-> index 88f63d526b22..263fefc1d04f 100644
-> --- a/drivers/gpu/drm/v3d/v3d_submit.c
-> +++ b/drivers/gpu/drm/v3d/v3d_submit.c
-> @@ -637,6 +637,9 @@ v3d_get_cpu_reset_performance_params(struct drm_file *file_priv,
->   	if (copy_from_user(&reset, ext, sizeof(reset)))
->   		return -EFAULT;
->   
-> +	if (reset.nperfmons > V3D_MAX_PERFMONS)
-> +		return -EINVAL;
-> +
->   	job->job_type = V3D_CPU_JOB_TYPE_RESET_PERFORMANCE_QUERY;
->   
->   	job->performance_query.queries = kvmalloc_array(reset.count,
-> @@ -708,6 +711,9 @@ v3d_get_cpu_copy_performance_query_params(struct drm_file *file_priv,
->   	if (copy.pad)
->   		return -EINVAL;
->   
-> +	if (copy.nperfmons > V3D_MAX_PERFMONS)
-> +		return -EINVAL;
-> +
->   	job->job_type = V3D_CPU_JOB_TYPE_COPY_PERFORMANCE_QUERY;
->   
->   	job->performance_query.queries = kvmalloc_array(copy.count,
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Ram Tummala <rtummala@nvidia.com>
+Subject: mm: fix old/young bit handling in the faulting path
+Date: Tue, 9 Jul 2024 18:45:39 -0700
+
+Commit 3bd786f76de2 ("mm: convert do_set_pte() to set_pte_range()")
+replaced do_set_pte() with set_pte_range() and that introduced a
+regression in the following faulting path of non-anonymous vmas which
+caused the PTE for the faulting address to be marked as old instead of
+young.
+
+handle_pte_fault()
+  do_pte_missing()
+    do_fault()
+      do_read_fault() || do_cow_fault() || do_shared_fault()
+        finish_fault()
+          set_pte_range()
+
+The polarity of prefault calculation is incorrect.  This leads to prefault
+being incorrectly set for the faulting address.  The following check will
+incorrectly mark the PTE old rather than young.  On some architectures
+this will cause a double fault to mark it young when the access is
+retried.
+
+    if (prefault && arch_wants_old_prefaulted_pte())
+        entry = pte_mkold(entry);
+
+On a subsequent fault on the same address, the faulting path will see a
+non NULL vmf->pte and instead of reaching the do_pte_missing() path, PTE
+will then be correctly marked young in handle_pte_fault() itself.
+
+Due to this bug, performance degradation in the fault handling path will
+be observed due to unnecessary double faulting.
+
+Link: https://lkml.kernel.org/r/20240710014539.746200-1-rtummala@nvidia.com
+Fixes: 3bd786f76de2 ("mm: convert do_set_pte() to set_pte_range()")
+Signed-off-by: Ram Tummala <rtummala@nvidia.com>
+Reviewed-by: Yin Fengwei <fengwei.yin@intel.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Yin Fengwei <fengwei.yin@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memory.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/memory.c~mm-fix-old-young-bit-handling-in-the-faulting-path
++++ a/mm/memory.c
+@@ -4681,7 +4681,7 @@ void set_pte_range(struct vm_fault *vmf,
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	bool write = vmf->flags & FAULT_FLAG_WRITE;
+-	bool prefault = in_range(vmf->address, addr, nr * PAGE_SIZE);
++	bool prefault = !in_range(vmf->address, addr, nr * PAGE_SIZE);
+ 	pte_t entry;
+ 
+ 	flush_icache_pages(vma, page, nr);
+_
+
+Patches currently in -mm which might be from rtummala@nvidia.com are
+
+mm-fix-old-young-bit-handling-in-the-faulting-path.patch
+
 
