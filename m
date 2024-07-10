@@ -1,60 +1,53 @@
-Return-Path: <stable+bounces-59000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A0C92D11A
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 13:55:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60D6392D146
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 14:06:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5279F1C23070
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 11:55:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C3D0282DC7
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 12:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1100B1922C0;
-	Wed, 10 Jul 2024 11:55:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="JNBOyG+V"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7705A18FDBE;
+	Wed, 10 Jul 2024 12:06:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E189190688;
-	Wed, 10 Jul 2024 11:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5708684A35;
+	Wed, 10 Jul 2024 12:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720612511; cv=none; b=SS317B7JNOP7r9J0LuyvfFm+Hb3xqxmD8KwkZ4ys1/cH6yrZmh4wCCGtKMgoY67FwaohzxMZyhNy1WoG7ADug0bLI2AFkviGjmXagpq3SA0zsKe/UOhZx8pagb80jjPAKvI3XWhQ9ndO95tp4DYXnsOMZ2bjhUdb74UgUz8iWR4=
+	t=1720613164; cv=none; b=nUAJOjs1ed2LeFVfzNXXaSKMyGNEln1RcsBmjMNhYqQT3JiySYcaKtWL2Uzmu9qwqL4Uj99Rqel5gXuQggNnbl9T5OjIyDORk4icKjSZYbZ13bBT8juIdn3cmtKaBertmZuGgfPfAGtl9w0G65Xlm2q6y/MDO48MvJSUxMRIW6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720612511; c=relaxed/simple;
-	bh=rg5ASVGRrj0CbRfB6zWhQi1ZSfmq2w18dOiDw1+SAk4=;
+	s=arc-20240116; t=1720613164; c=relaxed/simple;
+	bh=ZPI86qgor8IoI1RvOaruiWMTbPTasSePoe9+lZgw+Nw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cxEU1ah8wmGPKMiueMsCeHKJNM+Ds4KTQ/0AKE3/uPN9LJV8sC0eWQ8lt5own8YQZpMFzBk5xl2fuf321cGINZVAmMgT/wmm4bExQIuB8yBGMbfeLZGSEqpzVqsBebaZhDRaBqFn+lMq3ex7dmzeo8GYmXQmK/g8FjZZkiaj1aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=JNBOyG+V; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+	 Content-Type:Content-Disposition:In-Reply-To; b=Iu0jYGJFWegr7SFqDB2BtcuY8IDoVGQPEb9/Yi3mlaVGX223kfeoIBxCmX2FvS+fas9gXXF048RCJ5Zk3j5CvTbYwRgWpuAta554pwsfEizvF2k3RCp6YG6nchEnRF3tw10csrYD8sQoUQDlVvr2uJ9PAcfzV9+uGJY3sBshkbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 8010A1C0082; Wed, 10 Jul 2024 13:55:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1720612507;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=C/o5re6zdBSaQzgNUxv5d+aQxD1Iy3QC/+L83tjX/gU=;
-	b=JNBOyG+VygboICYNcmYPUmRv1sazBKGzZwl8n3/258ZYUjQPd328AQhNmeg6epqRUApyVx
-	bA2e1qt8T9b3emMgqDdeG5OXe/MjemJkUr0WwbFTnXCMHpV+Vizq4BOGT1jN+WWspD2c6T
-	b2CwRF/jw4Jqj6vq31rcEWPVwa3mlzk=
-Date: Wed, 10 Jul 2024 13:55:07 +0200
-From: Pavel Machek <pavel@ucw.cz>
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	linux-input@vger.kernel.org, platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.1 23/29] Input: silead - Always support 10
- fingers
-Message-ID: <Zo52mxIlrZmeeAzP@duo.ucw.cz>
-References: <20240618124018.3303162-1-sashal@kernel.org>
- <20240618124018.3303162-23-sashal@kernel.org>
- <Zo5bML7Q2ke/CsG/@duo.ucw.cz>
- <3fece177-f6b4-41e4-a781-7c4c923ff7d9@redhat.com>
+	id 83E171C0082; Wed, 10 Jul 2024 14:06:00 +0200 (CEST)
+Date: Wed, 10 Jul 2024 14:06:00 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg KH <greg@kroah.com>
+Cc: Pavel Machek <pavel@denx.de>, Sasha Levin <sashal@kernel.org>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>, johannes@sipsolutions.net,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 4.19] wifi: cfg80211: wext: add extra SIOCSIWSCAN
+ data check
+Message-ID: <Zo55KEC5MmfeXJxq@duo.ucw.cz>
+References: <20240701001526.2921645-1-sashal@kernel.org>
+ <Zo5cn37w8NjVyZdj@duo.ucw.cz>
+ <2024071033-geologic-emerald-f6a2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,64 +55,50 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="107I8a1RkMZoKLQL"
+	protocol="application/pgp-signature"; boundary="h8B8MqXnRZWc0TjU"
 Content-Disposition: inline
-In-Reply-To: <3fece177-f6b4-41e4-a781-7c4c923ff7d9@redhat.com>
+In-Reply-To: <2024071033-geologic-emerald-f6a2@gregkh>
 
 
---107I8a1RkMZoKLQL
+--h8B8MqXnRZWc0TjU
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed 2024-07-10 11:59:48, Hans de Goede wrote:
-> Hi Pavel,
->=20
-> On 7/10/24 11:58 AM, Pavel Machek wrote:
+On Wed 2024-07-10 12:24:55, Greg KH wrote:
+> On Wed, Jul 10, 2024 at 12:04:15PM +0200, Pavel Machek wrote:
 > > Hi!
 > >=20
-> >> From: Hans de Goede <hdegoede@redhat.com>
-> >>
-> >> [ Upstream commit 38a38f5a36da9820680d413972cb733349400532 ]
-> >>
-> >> When support for Silead touchscreens was orginal added some touchscree=
-ns
-> >> with older firmware versions only supported 5 fingers and this was made
-> >> the default requiring the setting of a "silead,max-fingers=3D10" uint32
-> >> device-property for all touchscreen models which do support 10 fingers.
-> >>
-> >> There are very few models with the old 5 finger fw, so in practice the
-> >> setting of the "silead,max-fingers=3D10" is boilerplate which needs to
-> >> be copy and pasted to every touchscreen config.
-> >>
-> >> Reporting that 10 fingers are supported on devices which only support
-> >> 5 fingers doesn't cause any problems for userspace in practice, since
-> >> at max 4 finger gestures are supported anyways. Drop the max_fingers
-> >> configuration and simply always assume 10 fingers.
+> > > [ Upstream commit 6ef09cdc5ba0f93826c09d810c141a8d103a80fc ]
+> > >=20
+> > > In 'cfg80211_wext_siwscan()', add extra check whether number of
+> > > channels passed via 'ioctl(sock, SIOCSIWSCAN, ...)' doesn't exceed
+> > > IW_MAX_FREQUENCIES and reject invalid request with -EINVAL otherwise.
 > >=20
-> > This does not fix a serious bug, should not be in stable.
+> > This results in very confusing code in 4.19 at least. It should goto
+> > out for consistency, exploting kfree(NULL) to be nop. Ok, not sure we
+> > care...
 >=20
-> This patch is necessary for clean backporting of new DMI quirks added
-> to drivers/platform/x86/touchscreen_dmi.c, so IMHO it does make sense
-> as a stable series patch.
+> kfree(NULL) is always supposed to be a nop, we have relied on that for
+> decades, that's not an issue anywhere.
 
-That's likely not reason it ended up it autosel, but why
-not. "Stable-dep-of" tag would be nice in that case.
+Take a look at the code, especially after this patch is applied.
 
-Best regards,
+BR,
 								Pavel
 --=20
-People of Russia, stop Putin before his war on Ukraine escalates.
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---107I8a1RkMZoKLQL
+--h8B8MqXnRZWc0TjU
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZo52mwAKCRAw5/Bqldv6
-8mHwAJ9crQzmyi9a6Ne43Y5DaOS3Pm8k0gCdHd55sQIf/XIWf5wSiZS2PsFxpZs=
-=reBZ
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZo55KAAKCRAw5/Bqldv6
+8ljuAJ0enT/gmiGamREzJrliRAs8myr33gCfcXJEf1bnxtJt4X1QMBTe5uP4n90=
+=aepH
 -----END PGP SIGNATURE-----
 
---107I8a1RkMZoKLQL--
+--h8B8MqXnRZWc0TjU--
 
