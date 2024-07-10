@@ -1,198 +1,312 @@
-Return-Path: <stable+bounces-58974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3838092CD17
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 10:35:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83AFA92CD5F
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 10:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E88C284734
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 08:35:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F38112873B2
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 08:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B0A12EBD3;
-	Wed, 10 Jul 2024 08:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC185130ADA;
+	Wed, 10 Jul 2024 08:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DBTLulpk"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="Gw7t0zHP"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2066.outbound.protection.outlook.com [40.107.212.66])
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E3112CDA5;
-	Wed, 10 Jul 2024 08:35:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720600524; cv=fail; b=p4BVwbxtUZQ+piRpmj3W/Gvt32sj71sAdkKIeDf9gVMsKNKsdrXXC23PRxBS/GiE4j6mVkuXOXSUIOZ8K+7Ot6jN9z4D7WRq1oi9JSgNRH9AU/hLDcQjVX9aGjFNVQvbzZg0Hl3ZpBr1t1DN9yQcKU+zdYif52xdmPnZTWeTbpU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720600524; c=relaxed/simple;
-	bh=S1+BDfWca66bHKzo1PotOkqtkKdRZl9tRuxi3BonPCU=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID:Date; b=jbSZEAqSzL27ewzRawtRr+OCJvJJ+0fCQsmnvxeSjiUL4It8GhEJCIMphx7341wPIW5nyp0ZSOByNDH/0fyFzhg7njlka2CPwlzzvuDmYbUeymWk04jCgrJbF9PBf3TpBC6zBmJyHXLbo6sK1dKk6ghlGVbzqq9VBt2ICNOb1ds=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DBTLulpk; arc=fail smtp.client-ip=40.107.212.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kDJgPBlfYc6grFX2QOmLxYrDp7jxX0/hsos3XSBfpFP450kWPezGbjpvora870AHBppfRS2cf1ujNmh7OjDAKn+ji8ubsSReK3RxgsgDIlSuJEqjLIYt8R7c3m30BgYaSac8b6CtPi02nbf4Mxqof5h/t+O9MoSwBtD9YsZSL+4h2EC+rUzNqo693C/MyYpPXlXg4LoFsfWY7QUqXM/ZICMsGTP8DT4iw2QUyrj/cA6UP4sSI4BKJTBHb3Epha0+vvgekw0VYmQV6NWVVZ5pn7MpnCTFXVo/Z84r3YI9tMtmbLDhaN6pkgg1wb8rAS2UQCxpfvOijabjySCwgsIpiA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+Usu0glu3nUhayY7b1gdRNW5AEkFYvybLm8x3N2YyJU=;
- b=IObdnGGY06A2ph5PFayotlm8vzWvDDhNVTEsQ0HrxtIAQIqXQeTFBzBP6QG9QKsdRkuaGCVKqfhtVFkJxxwaNNxUPbpGTMJwwmX8G03BLHXD6Kq6NX9bjGPEhiJ9TI4slf0kEigCNl5xMuqJkpKg8OderBVr4HmAzqt5jsMFNlNPIlpatY+Lei+uJVF9283zB2FAq0FRWbxQsMfU69anHPtvN3fq78WsoYXr85W/zwqxWYjE7XYFIa2NH6PJEi6tvJZxYVX/7wtezP1nSp7Lr+zVhZWPlvmfe8mYzS6E5BZmCDMXg+JanwevJF6vRkE2Hs+KTniHM2msuGFVCAOUSQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+Usu0glu3nUhayY7b1gdRNW5AEkFYvybLm8x3N2YyJU=;
- b=DBTLulpk5fMw7pLg49i3Uq2zbBq3jkgiJdjWdNgjfH3xGnQCf0pmE/zaDs0zZssGR9Z0yuXe2ivhBasTokwLVxTwMgiARMmMVvL9zPrAH6uTvFCbXwdzeDi380c85UIltebT+4SkLEiTY/KqV+o0FwSDSRbgE2scWPzQc36VNLkHIQ5LUWaorkMa4HDDxjs8ad2sOwLjIB/ZWFb2qmZjo3su35KpvUasSFCqhhNGTiJi/hbAfmhqLGG6N/kg3W9QPIzG0NG2/5UiioCEEnAJnTDhp8/u9oHBbSGpXY75RnTQeJ3ZPfV6yPbzLAwGKZYDMdiLwAba+jo0A/7cKHkdXQ==
-Received: from BLAPR05CA0010.namprd05.prod.outlook.com (2603:10b6:208:36e::19)
- by SJ0PR12MB8090.namprd12.prod.outlook.com (2603:10b6:a03:4ea::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7741.35; Wed, 10 Jul
- 2024 08:35:19 +0000
-Received: from BL6PEPF0001AB4A.namprd04.prod.outlook.com
- (2603:10b6:208:36e:cafe::56) by BLAPR05CA0010.outlook.office365.com
- (2603:10b6:208:36e::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.20 via Frontend
- Transport; Wed, 10 Jul 2024 08:35:18 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BL6PEPF0001AB4A.mail.protection.outlook.com (10.167.242.68) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7762.17 via Frontend Transport; Wed, 10 Jul 2024 08:35:18 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 10 Jul
- 2024 01:34:59 -0700
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 10 Jul
- 2024 01:34:59 -0700
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
- Transport; Wed, 10 Jul 2024 01:34:58 -0700
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
-	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.9 000/197] 6.9.9-rc1 review
-In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
-References: <20240709110708.903245467@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7E5131E4B
+	for <stable@vger.kernel.org>; Wed, 10 Jul 2024 08:44:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720601084; cv=none; b=X6BfL7Kizg+HXRl6yfiGdc7TeqESM86Gf94ZqG8yfamrKI6QhwSmLQweZYDcWZAzlNofbyY+A25hpOO2aFtoFXi5FtTIz+e9+wItZmTf0RlsiZXCMGegEIwFom2B6YKgm3SsZtb1veSwWDzyzU2QZQLngpa91R32OfXq9aG9Y40=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720601084; c=relaxed/simple;
+	bh=5VaInRAvaYsUv4W+jTFlkJWn5X9SN5IUXhyRvb1PBsQ=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
+	 Content-Type:References; b=opZi/UZIogcMjXuqETdh64/pt3Wn2cVTSCs6a/EtjICqXyvaEVZpPgXgPMxIbiVPv5gktl9d4TWhaN/gViYSGvsdG62YxXxG+gQpbMHTmNaMYCbHtAC/U8ovK61eOjy+qq4jL9nnwuGGDYm/1teAyDPJqJQ/rcPtOsj5f4tGM10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=Gw7t0zHP; arc=none smtp.client-ip=203.254.224.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas1p4.samsung.com (unknown [182.195.41.48])
+	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20240710084439epoutp027236bd33b28104341dcf80ce30e35010~gzZDimfVn1991319913epoutp02r
+	for <stable@vger.kernel.org>; Wed, 10 Jul 2024 08:44:39 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20240710084439epoutp027236bd33b28104341dcf80ce30e35010~gzZDimfVn1991319913epoutp02r
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1720601079;
+	bh=300J3i2LRoaSO1J17KrPlVOzydQ/v8F3HJQzxQOIX/8=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
+	b=Gw7t0zHPbLVN6i7hHt849d6yZPsw3tnrOe585x6fyPclCp0fSyM32nDdiESDUd8y9
+	 y3WLHWeszPhIaDlzKmxBH9gqbsqelg9DVH+1tu1hl8qdS2JxHjnW8ohdkf+jP4oulo
+	 ioW/TS4n4eqp1wBTItJchcLDMpVf9TR5c7/ms8Z8=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+	epcas1p2.samsung.com (KnoxPortal) with ESMTP id
+	20240710084439epcas1p2b44acf9359ddaec2e5a61031c1b5965a~gzZDOpxqa1447814478epcas1p2H;
+	Wed, 10 Jul 2024 08:44:39 +0000 (GMT)
+Received: from epsmges1p3.samsung.com (unknown [182.195.38.241]) by
+	epsnrtp4.localdomain (Postfix) with ESMTP id 4WJryH0c2xz4x9Px; Wed, 10 Jul
+	2024 08:44:39 +0000 (GMT)
+Received: from epcas1p1.samsung.com ( [182.195.41.45]) by
+	epsmges1p3.samsung.com (Symantec Messaging Gateway) with SMTP id
+	09.C6.09622.6F94E866; Wed, 10 Jul 2024 17:44:38 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+	epcas1p3.samsung.com (KnoxPortal) with ESMTPA id
+	20240710084438epcas1p3789e521c4b2117a1bc81476597fcf28c~gzZCiF8Pe2616826168epcas1p3b;
+	Wed, 10 Jul 2024 08:44:38 +0000 (GMT)
+Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
+	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20240710084438epsmtrp1d77a59f47a924cf46678bb2fb65774e2~gzZChZqET2687326873epsmtrp1E;
+	Wed, 10 Jul 2024 08:44:38 +0000 (GMT)
+X-AuditID: b6c32a37-e17ff70000002596-36-668e49f6d11b
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+	epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
+	D6.D6.18846.6F94E866; Wed, 10 Jul 2024 17:44:38 +0900 (KST)
+Received: from sminjeong05 (unknown [10.253.99.183]) by epsmtip1.samsung.com
+	(KnoxPortal) with ESMTPA id
+	20240710084438epsmtip1de2db796a522b1f952a08dc4fd22b006~gzZCS4MyS2278022780epsmtip1n;
+	Wed, 10 Jul 2024 08:44:38 +0000 (GMT)
+From: "Sunmin Jeong" <s_min.jeong@samsung.com>
+To: "'Jaegeuk Kim'" <jaegeuk@kernel.org>
+Cc: <chao@kernel.org>, <daehojeong@google.com>,
+	<linux-f2fs-devel@lists.sourceforge.net>, <stable@vger.kernel.org>,
+	"'Sungjong Seo'" <sj1557.seo@samsung.com>, "'Yeongjin Gil'"
+	<youngjin.gil@samsung.com>
+In-Reply-To: <Zo2UcW4AtAp2WTOy@google.com>
+Subject: RE: [PATCH v2 2/2] f2fs: use meta inode for GC of COW file
+Date: Wed, 10 Jul 2024 17:44:38 +0900
+Message-ID: <000001dad2a5$6601ed10$3205c730$@samsung.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <543f6bf5-1190-41bb-81f7-d5fc7c8f343a@rnnvmail204.nvidia.com>
-Date: Wed, 10 Jul 2024 01:34:58 -0700
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4A:EE_|SJ0PR12MB8090:EE_
-X-MS-Office365-Filtering-Correlation-Id: 142b03bb-63b8-407d-d70a-08dca0bb3acf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|7416014|376014|36860700013|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NVNEN2MxY3BjNHpQRXc2cGE4T1BydzBYRk84Z2xBTmRSZVNuZ2hEMlJIeGIw?=
- =?utf-8?B?Y2loeUFCUWc3MGNkT3JpRzhzbjJLbGRzQ2FUdkZLVmFocTZtTzRqZkcxc0VF?=
- =?utf-8?B?anJ6OXgxMnNwSUp0emVBanlxWm1NZlhyQ1VlM1kzdGhZWkdwNDdycldOWkVG?=
- =?utf-8?B?QThWL0RHSW40V09ZUnQ2VmJIL3l1b3hrVmZxR0RyMFY0ZmN1clgzUS9PWTNi?=
- =?utf-8?B?c1JaWlA3OU45ZnNHTmpydHMycWZSL3dGUzRoZjJTU28wVGtFZkd6UmZwS3B6?=
- =?utf-8?B?VzNrYXJHdGU3aUNtNFBhTHVNZGdFV0VGYnlqUHVLUUZwVWk4TTA1aHNNd2Z4?=
- =?utf-8?B?ZzRRQlN4VEdLZUdqMHJuSVJYcEZTbUVjdGlQTEJFeU45OUo0S0doZTFEeS81?=
- =?utf-8?B?ZWU5RncrMm84WWYvTkRIRzRHS1R4aW1aZ2VBRzZFTm9wNlI4YkdPTy92LzlN?=
- =?utf-8?B?OXNlcGNHeVVsdmk2QzBGZ2JqUG1WYW85WGtqMUMwUVpmbG5pRlBNZEdiL1RP?=
- =?utf-8?B?N0U1U2E4WXNld1BJVFc4VDFhK3ZPNzh2Qnh6YWhPZ3pMWm1wSzlaUjZOREJ1?=
- =?utf-8?B?ejNZbHZuaEFuK0NSZ3E3UWZpMW9sclZFT0c5ZU1GTldraDkzQ0I3aU01RFNO?=
- =?utf-8?B?M0tFV014U25GUzdDUkhKTHVLdnhvYmc1cUY4eTdxZXBBVStmMVF0Wk4yRlRv?=
- =?utf-8?B?YTJPVEFiaStRa0g4VnpiUUJYMDZRL0tMT0JGd2JRUWZENG1jc3E3c3dDQk5i?=
- =?utf-8?B?TFZndWpUZUw5bHo2RWZMMzh4YXVERk9ZbXpEMFBrVE9ZbEVkQjQ5cWR3RkhG?=
- =?utf-8?B?QVpEN2N6Wis4NVpxd3lFNC9yck5ma29uOENIVjZiTDU4SXA3VUFSNjVTWUlR?=
- =?utf-8?B?YUR6OUgraTVRY3MvWHhoeFlEcXU4RlE5LytUbG9VM05aTWNhc3ZGU25WYmlx?=
- =?utf-8?B?SS9weFNCR1Qvd2tDTHhJNUtBcm5EVEcrVml3MzB5enNDQWtnRitDMUtyVVVv?=
- =?utf-8?B?ajZPTmMrc1Y1RXBobDlVcDRHbFhrbVpyR1NpWXNaZ0RreEIzSGk4MkU0dEcr?=
- =?utf-8?B?aTlFVjlUNW1YN0dYcU9TWkQyTi9RZ0tJbXc3Z3JDbTV6UFY0NzBWZmVPaUZH?=
- =?utf-8?B?SEU3K3NPMFQwT3o3YUZDY21Wc1hoeS9Td1RKUVUzVWRXYXJJcDViZVd0VGpp?=
- =?utf-8?B?aUhQbWpqNFp0aVRFdWp5eU9oMzhwMlpBOW0vV0tCTWNUUGMyUG5iV0t1QlhW?=
- =?utf-8?B?VGd3V0VEVnd5TjhRcDQ4VGpRNnRqaEJoMnFObVZMMjFpN1ZUaUowcTJDOFYw?=
- =?utf-8?B?M0lKVHhtNzhXeEVrWTRGcC8vN285ZktXRTMyZGVHTVNOckVPdys1b1BIK2dZ?=
- =?utf-8?B?TTR5aUlKa1FLUzZ1UmFFRWdBMlNqNlhBWTVVd2hQSEZVOVNrZ21YeHNvemNu?=
- =?utf-8?B?T3NoNFN3R2pKYmZiOFhKYll3eVN4YmVGY1dNSWQvNkc5SVR4Q3RsMU1tcnRl?=
- =?utf-8?B?L0NqZDk1alY1alhZOTd5SnNYZFd2c2hsU1F6eks2NkZ0V0d6WUphS0hsTnlv?=
- =?utf-8?B?NzBBcXVOZ3gwY0tjUWFLNHF5TTRxMmYwNXBka2dHSldENHA2ZkY0S3JOdWpW?=
- =?utf-8?B?OFpzWHVqeU1NTDFSUXhxR0t4ZjRJVGczVnFxNWJlbUdJQVRPMDA4Z1kxeXNZ?=
- =?utf-8?B?T3huYVk0N2VDR1VWWkZxVzJTM2hVK250R1VNSGlSYVhmcDJyYndPTnNnZGk0?=
- =?utf-8?B?YVBIUHZiK1VaK3ExQ1pmRStFaDRwVXgxQ3BFMCtZWjBvVnA5b1hXSlVYVXhm?=
- =?utf-8?B?QVdLRi9TMVZvUngxZlE4bE1DK29ibFJSOTN5aXRhdVFHWnhkcTU2RTV0MHFn?=
- =?utf-8?B?NXMrbjhQdWhBbmZxL2tLdlIrOW14YzBSTjhjN1NDT3ZrVHpMWG1UZ0RDUHIr?=
- =?utf-8?Q?wKc7SUKpe17II8jzqN/KAIg8/6uan7Ox?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2024 08:35:18.3920
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 142b03bb-63b8-407d-d70a-08dca0bb3acf
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB4A.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB8090
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQGzAHw+UV4cXzdqA3OLHGSK6gvL0wGgKy9PAqmsPk+yHLkNcA==
+Content-Language: ko
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprGJsWRmVeSWpSXmKPExsWy7bCmru43z740g/u/rC1OTz3LZDG1fS+j
+	xZP1s5gtLi1yt9jy7wirxYKNjxgtZux/yu7A7rFgU6nHplWdbB67F3xm8ujbsorR4/MmuQDW
+	qGybjNTElNQihdS85PyUzLx0WyXv4HjneFMzA0NdQ0sLcyWFvMTcVFslF58AXbfMHKAjlBTK
+	EnNKgUIBicXFSvp2NkX5pSWpChn5xSW2SqkFKTkFZgV6xYm5xaV56Xp5qSVWhgYGRqZAhQnZ
+	GScnf2Mp+Kpf8XCzUwNjs3oXIyeHhICJxOljE1m6GLk4hAR2MEq8OzsXyvnEKLHldAcrnNOz
+	6QkzTMuf4/fYIBI7GSU29q9lhHBeMkr8+3mPFaSKTUBPYvrqf2AdIgIaEndmHQErYha4wChx
+	/cMeFpAEp4CWxMI999lBbGEBZ4ln2xvAmlkEVCWuv7jIBmLzClhKvO7dyQ5hC0qcnPkErJdZ
+	QF5i+9s5UCcpSPx8uowVYpmTRNff+UwQNSISszvbmEEWSwhM5ZBovreQHaLBRWLVz3tQzcIS
+	r45vgYpLSbzsb4OyiyWOzt/ADtHcwChx4+tNqIS9RHNrM9B1HEAbNCXW79KHWMYn8e5rDytI
+	WEKAV6KjTQiiWlWi+9ESqFXSEsuOHWSHKPGQePnTYgKj4iwkn81C8tksJB/MQti1gJFlFaNY
+	akFxbnpqsWGBMTy2k/NzNzGCE6iW+Q7GaW8/6B1iZOJgPMQowcGsJMI7/0Z3mhBvSmJlVWpR
+	fnxRaU5q8SFGU2BYT2SWEk3OB6bwvJJ4QxNLAxMzIxMLY0tjMyVx3jNXylKFBNITS1KzU1ML
+	Uotg+pg4OKUamC4y/4p7FMOcOzM7tXfxJOenNe4885y+C6ie9TjXGesxbXLlo3D+njOTg2oE
+	D3SdmDd7h+xEq/WHM87tPFxuERvV+WSVcHyCwp8rWu+kD3Vf6n7rV2e+rNjuts5v9uaV/sns
+	afPV9jHcmJNhZ5Gbe1Tg1Z/CGGWVYquDOwqeLFsZNeGY/v3uo4VP42KYfc22v3bJZuY91S21
+	cfsWNzZGG4uHb1UWZs6Zov/bten8M0OFHadOcS55KuOTcH7H0dy1pxpq+8983xu3efKHCU/k
+	bfo0n07ec5tlw7yPZ+/Wr9L9Isaqyh33z8k+yrWxUH5yrPZkiW1/Tzfa2D/24JthXfbhffu6
+	XTcVXuzdoTK3a50SS3FGoqEWc1FxIgCA5IQhKQQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrFLMWRmVeSWpSXmKPExsWy7bCSnO43z740g68/VSxOTz3LZDG1fS+j
+	xZP1s5gtLi1yt9jy7wirxYKNjxgtZux/yu7A7rFgU6nHplWdbB67F3xm8ujbsorR4/MmuQDW
+	KC6blNSczLLUIn27BK6Mk5O/sRR81a94uNmpgbFZvYuRk0NCwETiz/F7bF2MXBxCAtsZJRau
+	bGXqYuQASkhLHPtTBGEKSxw+XAxR8pxR4s/F6SwgvWwCehLTV/9jBrFFBDQk7sw6wghSxCxw
+	hVFixtp2doiOtYwSv9v+M4JUcQpoSSzcc58dxBYWcJZ4tr2BFcRmEVCVuP7iIhuIzStgKfG6
+	dyc7hC0ocXLmExaQK5iBtrVtBBvDLCAvsf3tHGaIBxQkfj5dxgpxhJNE19/5TBA1IhKzO9uY
+	JzAKz0IyaRbCpFlIJs1C0rGAkWUVo2hqQXFuem5ygaFecWJucWleul5yfu4mRnD0aAXtYFy2
+	/q/eIUYmDsZDjBIczEoivPNvdKcJ8aYkVlalFuXHF5XmpBYfYpTmYFES51XO6UwREkhPLEnN
+	Tk0tSC2CyTJxcEo1MNXd/cKaIOOyQDJQ2LHRe49Zyv7dh84+l2f5uq5l/eUSxZKjC5ZkL3z8
+	qLFqRuQmzbVWZza/1pS5qBT91OPa7eO8nZvVhbV6jQ8rt80sNlwpfcrr970HRRzlPbH+/EoR
+	aVoBHyY9uvPmhoHW7iKbP/+m6JRe7ZZftjMjjeGipcembvmfm+btqV7x0v3wLuZmA6mVj0+Y
+	vVZav/6dU5xM143pVr2xqzJbTytvZ/R6MkH5TfmFo59P/Fsrl7xQ3cvTSmt+2d1coUe2F3PN
+	tz1NrXGSZN3pe9/ekl37s+SVmNmvI5Qlmve/OWZ5fnFX0QNvtrlqLxWeKs5M+e9alf2PrchX
+	hSnx5UnmGosS+Yf/fiuxFGckGmoxFxUnAgCP9O7YDQMAAA==
+X-CMS-MailID: 20240710084438epcas1p3789e521c4b2117a1bc81476597fcf28c
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20240705082511epcas1p24b7b63d5e714a25213dbe07affa52f69
+References: <CGME20240705082511epcas1p24b7b63d5e714a25213dbe07affa52f69@epcas1p2.samsung.com>
+	<20240705082503.805358-1-s_min.jeong@samsung.com>
+	<Zo2UcW4AtAp2WTOy@google.com>
 
-On Tue, 09 Jul 2024 13:07:34 +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.9.9 release.
-> There are 197 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 11 Jul 2024 11:06:25 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.9-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+>On 07/05, Sunmin Jeong wrote:
+>> In case of the COW file, new updates and GC writes are already
+>> separated to page caches of the atomic file and COW file. As some
+>> cases that use the meta inode for GC, there are some race issues
+>> between a foreground thread and GC thread.
+>>
+>> To handle them, we need to take care when to invalidate and wait
+>> writeback of GC pages in COW files as the case of using the meta inode.
+>> Also, a pointer from the COW inode to the original inode is required
+>> to check the state of original pages.
+>>
+>> For the former, we can solve the problem by using the meta inode for
+>> GC of COW files. Then let's get a page from the original inode in
+>> move_data_block when GCing the COW file to avoid race condition.
+>>
+>> Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
+>> Cc: stable@vger.kernel.org #v5.19+
+>> Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+>> Reviewed-by: Yeongjin Gil <youngjin.gil@samsung.com>
+>> Signed-off-by: Sunmin Jeong <s_min.jeong@samsung.com>
+>> ---
+>> v2:
+>> - use union for cow inode to point to atomic inode
+>>  fs/f2fs/data.c   |  2 +-
+>>  fs/f2fs/f2fs.h   | 13 +++++++++++--
+>>  fs/f2fs/file.c   |  3 +++
+>>  fs/f2fs/gc.c     | 12 ++++++++++--
+>>  fs/f2fs/inline.c |  2 +-
+>>  fs/f2fs/inode.c  |  3 ++-
+>>  6 files changed, 28 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c index
+>> 9a213d03005d..f6b1782f965a 100644
+>> --- a/fs/f2fs/data.c
+>> +++ b/fs/f2fs/data.c
+>> @@ -2606,7 +2606,7 @@ bool f2fs_should_update_outplace(struct inode
+>*inode, struct f2fs_io_info *fio)
+>>  		return true;
+>>  	if (IS_NOQUOTA(inode))
+>>  		return true;
+>> -	if (f2fs_is_atomic_file(inode))
+>> +	if (f2fs_used_in_atomic_write(inode))
+>>  		return true;
+>>  	/* rewrite low ratio compress data w/ OPU mode to avoid
+>fragmentation */
+>>  	if (f2fs_compressed_file(inode) &&
+>> diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h index
+>> 796ae11c0fa3..4a8621e4a33a 100644
+>> --- a/fs/f2fs/f2fs.h
+>> +++ b/fs/f2fs/f2fs.h
+>> @@ -843,7 +843,11 @@ struct f2fs_inode_info {
+>>  	struct task_struct *atomic_write_task;	/* store atomic write task
+>*/
+>>  	struct extent_tree *extent_tree[NR_EXTENT_CACHES];
+>>  					/* cached extent_tree entry */
+>> -	struct inode *cow_inode;	/* copy-on-write inode for atomic
+write
+>*/
+>> +	union {
+>> +		struct inode *cow_inode;	/* copy-on-write inode for
+atomic
+>write */
+>> +		struct inode *atomic_inode;
+>> +					/* point to atomic_inode, available
+only
+>for cow_inode */
+>> +	};
+>>
+>>  	/* avoid racing between foreground op and gc */
+>>  	struct f2fs_rwsem i_gc_rwsem[2];
+>> @@ -4263,9 +4267,14 @@ static inline bool f2fs_post_read_required(struct
+>inode *inode)
+>>  		f2fs_compressed_file(inode);
+>>  }
+>>
+>> +static inline bool f2fs_used_in_atomic_write(struct inode *inode) {
+>> +	return f2fs_is_atomic_file(inode) || f2fs_is_cow_file(inode); }
+>> +
+>>  static inline bool f2fs_meta_inode_gc_required(struct inode *inode)
+>> {
+>> -	return f2fs_post_read_required(inode) || f2fs_is_atomic_file(inode);
+>> +	return f2fs_post_read_required(inode) ||
+>> +f2fs_used_in_atomic_write(inode);
+>>  }
+>>
+>>  /*
+>> diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c index
+>> e4a7cff00796..547e7ec32b1f 100644
+>> --- a/fs/f2fs/file.c
+>> +++ b/fs/f2fs/file.c
+>> @@ -2183,6 +2183,9 @@ static int f2fs_ioc_start_atomic_write(struct
+>> file *filp, bool truncate)
+>>
+>>  		set_inode_flag(fi->cow_inode, FI_COW_FILE);
+>>  		clear_inode_flag(fi->cow_inode, FI_INLINE_DATA);
+>> +
+>> +		/* Set the COW inode's atomic_inode to the atomic inode */
+>> +		F2FS_I(fi->cow_inode)->atomic_inode = inode;
+>>  	} else {
+>>  		/* Reuse the already created COW inode */
+>>  		ret = f2fs_do_truncate_blocks(fi->cow_inode, 0, true); diff
+-
+>-git
+>> a/fs/f2fs/gc.c b/fs/f2fs/gc.c index cb3006551ab5..61913fcefd9e 100644
+>> --- a/fs/f2fs/gc.c
+>> +++ b/fs/f2fs/gc.c
+>> @@ -1186,7 +1186,11 @@ static int ra_data_block(struct inode *inode,
+>pgoff_t index)
+>>  	};
+>>  	int err;
+>
+>How about giving the right mapping like this?
+Thanks for your opinion. I'll send the patch v3.
 
-All tests passing for Tegra ...
+>
+>	mapping = f2fs_is_cow_file() ?
+>		F2FS_I(inode)->actomic_inode->i_mapping : inode->i_mapping;
+>	page = f2fs_grab_cache_page(mapping, index, true);
+>
+>>
+>> -	page = f2fs_grab_cache_page(mapping, index, true);
+>> +	if (f2fs_is_cow_file(inode))
+>> +		page = f2fs_grab_cache_page(F2FS_I(inode)->atomic_inode-
+>>i_mapping,
+>> +						index, true);
+>> +	else
+>> +		page = f2fs_grab_cache_page(mapping, index, true);
+>>  	if (!page)
+>>  		return -ENOMEM;
+>>
+>> @@ -1282,7 +1286,11 @@ static int move_data_block(struct inode *inode,
+>block_t bidx,
+>>  				CURSEG_ALL_DATA_ATGC : CURSEG_COLD_DATA;
+>>
+>>  	/* do not read out */
+>
+>ditto?
+>
+>> -	page = f2fs_grab_cache_page(inode->i_mapping, bidx, false);
+>> +	if (f2fs_is_cow_file(inode))
+>> +		page = f2fs_grab_cache_page(F2FS_I(inode)->atomic_inode-
+>>i_mapping,
+>> +						bidx, false);
+>> +	else
+>> +		page = f2fs_grab_cache_page(inode->i_mapping, bidx, false);
+>>  	if (!page)
+>>  		return -ENOMEM;
+>>
+>> diff --git a/fs/f2fs/inline.c b/fs/f2fs/inline.c index
+>> 1fba5728be70..cca7d448e55c 100644
+>> --- a/fs/f2fs/inline.c
+>> +++ b/fs/f2fs/inline.c
+>> @@ -16,7 +16,7 @@
+>>
+>>  static bool support_inline_data(struct inode *inode)  {
+>> -	if (f2fs_is_atomic_file(inode))
+>> +	if (f2fs_used_in_atomic_write(inode))
+>>  		return false;
+>>  	if (!S_ISREG(inode->i_mode) && !S_ISLNK(inode->i_mode))
+>>  		return false;
+>> diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c index
+>> 7a3e2458b2d9..18dea43e694b 100644
+>> --- a/fs/f2fs/inode.c
+>> +++ b/fs/f2fs/inode.c
+>> @@ -804,8 +804,9 @@ void f2fs_evict_inode(struct inode *inode)
+>>
+>>  	f2fs_abort_atomic_write(inode, true);
+>>
+>> -	if (fi->cow_inode) {
+>> +	if (fi->cow_inode && f2fs_is_cow_file(fi->cow_inode)) {
+>>  		clear_inode_flag(fi->cow_inode, FI_COW_FILE);
+>> +		F2FS_I(fi->cow_inode)->atomic_inode = NULL;
+>>  		iput(fi->cow_inode);
+>>  		fi->cow_inode = NULL;
+>>  	}
+>> --
+>> 2.25.1
 
-Test results for stable-v6.9:
-    10 builds:	10 pass, 0 fail
-    26 boots:	26 pass, 0 fail
-    111 tests:	111 pass, 0 fail
-
-Linux version:	6.9.9-rc1-g6ced42af8b2d
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-                tegra20-ventana, tegra210-p2371-2180,
-                tegra210-p3450-0000, tegra30-cardhu-a04
-
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-
-Jon
 
