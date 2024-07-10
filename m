@@ -1,114 +1,156 @@
-Return-Path: <stable+bounces-58981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA2F92CE30
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 11:29:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE2292CE42
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 11:33:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CE621F241CF
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 09:29:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB2421F24961
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 09:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16DE18FA0A;
-	Wed, 10 Jul 2024 09:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64F118FC6D;
+	Wed, 10 Jul 2024 09:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="b19vBv3x"
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="ZWPiFYHM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4460B84A28;
-	Wed, 10 Jul 2024 09:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3691E17BB31
+	for <stable@vger.kernel.org>; Wed, 10 Jul 2024 09:33:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720603778; cv=none; b=CXfiubb3zTLQ8yzPsT4S0OUPj5qmUW8Fufq5OBGIX1MbqZj5ysxFmVvZaga6pRbwwyS4lKPISzMH2rr945dO4r8n09cK0wOrhX7FFZb3zg27hSY8k745ve2oPzRxNts6RECiGPMX6QLxKwWTopuHH/l8oVBBcHKXylX8/nfwZ3Y=
+	t=1720604006; cv=none; b=F+k6s/rA2Vsul1rKwHCJH7Z0nJa55gl8/IWDGqbNN6gSqcapzaYVQqeG3/6wPoL5uOd8d/dtg5S4x4JhGmEoD7MzO7Baavu0QxH+QMELGXITtpsB/1vigZMPf6dDEKgQsTO1soWF7wpaS03HoGEtX74YC2J5QiQm+Xh1EtVOqjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720603778; c=relaxed/simple;
-	bh=qrk8NXyiTW0nBxvzS9xj4sUy4pCeUTbEIIlK+lDgQWw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=khpJTDWrjK9jc+/OQYSuOu0xGAZuCoLEJGE+dNCvCHReFcNr7gwO1QeuT87noBEVshye9vYmCfsa+VzvWAlce9HoAbnIZ07vFhI626g24JUkMq/v7rd/im8f/YTSgdUERmoYSua/B49UyShg2Evqsf7Aedy5zWslNd6tfkxfL4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=b19vBv3x; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 24C5D40E019C;
-	Wed, 10 Jul 2024 09:29:35 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id tNn6bnHpsR2I; Wed, 10 Jul 2024 09:29:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1720603771; bh=B5ftZJIE3FPYjKompJae1w7F5CeyPFIf+KZ7NWfDTrc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b19vBv3xz/d1WcEHMfng1K+26ZNzgkioWOvew28E0Ch91cW4MZJb0iTDS0ceE2Vi9
-	 WpsXb15D0PS6Eu+3ZmYdFuipLIXhgMXqBTCoSt8cREmkjZ39K+RQPS0c/K6bNJEkXM
-	 0Yg1uwOVDl2fjJ2ElI7dyhBQ2tDPzOZ1vgVoaKnVQfyDvVGosQ1sPcZat1JDaabh/s
-	 fL8hU6yvP0C2bHZu7zGNzVFs3fZpewi5CbqW60lfl4bdANg61BUxAnvbVtRIYWjbVR
-	 6qq1n5n84/GqFhkZQ0TeiwToaNL7h2DBckIMr56sTAnlf1IWY1EzQ8jINRzz/PrWK0
-	 F2VNapYf7OzrdSxK2cmKdMuMyt1Q7M/ePD5IS31OSceXLu1bDVVeHSKLLiUf6Ac5VY
-	 X4ExU9hznYW9S2To+GCXA+oRdjBLPg3SPAiICx+PvyZvRG38yZ44JbmcuTydtm9dzP
-	 GvI5cE8e3M+Ky4P8cTHurqNIuT5zeDOFjKIsaWyfKBERsogKQb6MVgDpB3cr5IVxIA
-	 uEn0qmXDtESVH+eMOM90SS+xzfLsSlejbDiA0CNTji7jna4b7l+WOaHJRM9EYvbfKk
-	 TPhIyKPxL5Cz3UpXnO2EpsECTUr4+P8qJGWOEG+fGDzw9pN0m8+WnMEPgCAxZdKyIi
-	 wOvXqfRWdGZFrOvtk9h1LEMk=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id ADBB140E0027;
-	Wed, 10 Jul 2024 09:29:17 +0000 (UTC)
-Date: Wed, 10 Jul 2024 11:29:12 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Dexuan Cui <decui@microsoft.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"open list:X86 TRUST DOMAIN EXTENSIONS (TDX)" <linux-coco@lists.linux.dev>,
-	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>,
-	Michael Kelley <mikelley@microsoft.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] x86/tdx: Support vmalloc() for tdx_enc_status_changed()
-Message-ID: <20240710092912.GCZo5UaD-JZeuMpIwK@fat_crate.local>
-References: <20240708183946.3991-1-decui@microsoft.com>
- <20240708191703.GJZow7L9DBNZVBXE95@fat_crate.local>
- <SA1PR21MB1317816DFCE6EF38A92CF254BFDA2@SA1PR21MB1317.namprd21.prod.outlook.com>
- <20240709110656.GEZo0Z0EoI4xmHDx9b@fat_crate.local>
- <SA1PR21MB13173395ACC3C0FD6D62E36EBFA42@SA1PR21MB1317.namprd21.prod.outlook.com>
- <20240710081501.GAZo5DBW3nvdzp34AI@fat_crate.local>
- <SA1PR21MB1317C5633D8F537A73A1CE17BFA42@SA1PR21MB1317.namprd21.prod.outlook.com>
+	s=arc-20240116; t=1720604006; c=relaxed/simple;
+	bh=3+9DMfYTCxGjnK/e+W8XKa3FLEaY8rQkVl7tyylyIMg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UaE4jURFHXzWrCP7JRbzokmzXyuxrIZxqiCEymCsPqjioiXpgvzE4Tu78l6/PgdqLoYVw2hdrpeRCPYFQFkTDxMK6VxWqEYLHVwr7OMNNlmspg7+3ib2xuC7Q+2YkTL1RIv5gzjneq4hG9guHC+ZWqKxS1McTQDkY71AGFlghvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=ZWPiFYHM; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4265d1b9e2aso4065555e9.2
+        for <stable@vger.kernel.org>; Wed, 10 Jul 2024 02:33:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1720604002; x=1721208802; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TzeNSBzyh7QLIzCzfuneqEVx7/nkOlCs6tKZ3S/B85c=;
+        b=ZWPiFYHMgh1dXUqQbdlPbEZ+gN7mwJCmBCMEmHaErmXwDXIHA3TLHpX3jqsFuHw4a2
+         9qSQCHNZcPJKHxFf5GJMHVQyg9mdrK7kPJzyZm3J81dEThDk/Nk4hlWNno6gcLX6x3rA
+         tSBEow6qYe99JrCVrC1Nhi9ylDywJGcCu3+s0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720604002; x=1721208802;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TzeNSBzyh7QLIzCzfuneqEVx7/nkOlCs6tKZ3S/B85c=;
+        b=DHmZ+Y29TVCE0X8Yu4Jk1Cc/5+Nt2NPQ9Ew0f1RQKRkSTmiflz15povNabNReob1iX
+         wlzTT/PDFnGcErLOEosRMXS/yESjZlUebjha08p/NALI01pPuEn6zNIf3ts2Nrc0jIVJ
+         M+p1499zIjyMVV7GWml3YtsZqyoyqJAnAVFxJ5FmCAAATqfYSgakjpkROFky7Xn/D8Kp
+         E0G3N5/cj3eIlGUPqgWWMDAcH6wGg7ICwZqLklr/W//PTw96kAR5N5TZc0DeP7IAV3bE
+         sfGaQ26lrqEGkawGF5M0YdlcTmEPTmrNp5evXTUytAl0E3lGetKdK//+Li8XiCr9y32Z
+         kaKA==
+X-Forwarded-Encrypted: i=1; AJvYcCXT+2DgMb4EvIsgbluTTYRbWxMvpfZGTzfjhOttOsgKaBXjGBsnA9nPishZpV7khA0jNz0A8IWik8MG2Y8CPYqDFI+hMtrD
+X-Gm-Message-State: AOJu0YxCbGDLsAWx82ghG/jEvNIa8K4QL6JkNUziEA5+pDf7yqMcjjIj
+	M7Aom6RKEyH6ntFzzJwDDi6CcfYgcbghwCgQtss8y9Lk21deAO5WXpKxZJ/sKDs=
+X-Google-Smtp-Source: AGHT+IFAxrCbKthPgF5yUWY01P3adBGwJNfKLQpHeukxHdQeDqaphx4o5novPlwU23HfZb9BgXrQug==
+X-Received: by 2002:a05:600c:3b86:b0:426:5dd5:f245 with SMTP id 5b1f17b1804b1-426708f1979mr35047955e9.2.1720604002571;
+        Wed, 10 Jul 2024 02:33:22 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4266f6f5a27sm73448935e9.23.2024.07.10.02.33.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jul 2024 02:33:22 -0700 (PDT)
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
+To: DRI Development <dri-devel@lists.freedesktop.org>,
+	LKML <linux-kernel@vger.kernel.org>
+Cc: Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	syzbot+6cebc1af246fe020a2f0@syzkaller.appspotmail.com,
+	Daniel Vetter <daniel.vetter@intel.com>,
+	stable@vger.kernel.org,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Brian Foster <bfoster@redhat.com>,
+	linux-bcachefs@vger.kernel.org,
+	Petr Mladek <pmladek@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: [PATCH 2/2] bcachefs: only console_trylock in bch2_print_string_as_lines
+Date: Wed, 10 Jul 2024 11:31:17 +0200
+Message-ID: <20240710093120.732208-2-daniel.vetter@ffwll.ch>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240710093120.732208-1-daniel.vetter@ffwll.ch>
+References: <20240710093120.732208-1-daniel.vetter@ffwll.ch>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <SA1PR21MB1317C5633D8F537A73A1CE17BFA42@SA1PR21MB1317.namprd21.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 10, 2024 at 09:20:46AM +0000, Dexuan Cui wrote:
-> I didn't expect that 'diff' could generate so many lines of changes :-)
+console_lock is the outermost subsystem lock for a lot of subsystems,
+which means get/put_user must nest within. Which means it cannot be
+acquired somewhere deeply nested in other locks, and most definitely
+not while holding fs locks potentially needed to resolve faults.
 
-It is not about the number of changed lines - it is about *what* gets changed.
+console_trylock is the best we can do here.
 
-A single character change can invalidate the tags of a patch and a huge
-diffstat solely cleaning up whitespace will not, even though we prefer if
-those get done in a separate patch to ease review.
+Including printk folks since even trylock feels realyl iffy here to
+me.
 
-I'm sure you can think of examples.
+Reported-by: syzbot+6cebc1af246fe020a2f0@syzkaller.appspotmail.com
+References: https://lore.kernel.org/dri-devel/00000000000026c1ff061cd0de12@google.com/
+Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+Fixes: a8f354284304 ("bcachefs: bch2_print_string_as_lines()")
+Cc: <stable@vger.kernel.org> # v6.7+
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Brian Foster <bfoster@redhat.com>
+Cc: linux-bcachefs@vger.kernel.org
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: John Ogness <john.ogness@linutronix.de>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+---
+ fs/bcachefs/util.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
+diff --git a/fs/bcachefs/util.c b/fs/bcachefs/util.c
+index de331dec2a99..02381c653603 100644
+--- a/fs/bcachefs/util.c
++++ b/fs/bcachefs/util.c
+@@ -255,13 +255,14 @@ void bch2_prt_u64_base2(struct printbuf *out, u64 v)
+ void bch2_print_string_as_lines(const char *prefix, const char *lines)
+ {
+ 	const char *p;
++	int locked;
+ 
+ 	if (!lines) {
+ 		printk("%s (null)\n", prefix);
+ 		return;
+ 	}
+ 
+-	console_lock();
++	locked = console_trylock();
+ 	while (1) {
+ 		p = strchrnul(lines, '\n');
+ 		printk("%s%.*s\n", prefix, (int) (p - lines), lines);
+@@ -269,7 +270,8 @@ void bch2_print_string_as_lines(const char *prefix, const char *lines)
+ 			break;
+ 		lines = p + 1;
+ 	}
+-	console_unlock();
++	if (locked)
++		console_unlock();
+ }
+ 
+ int bch2_save_backtrace(bch_stacktrace *stack, struct task_struct *task, unsigned skipnr,
 -- 
-Regards/Gruss,
-    Boris.
+2.45.2
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
