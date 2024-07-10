@@ -1,86 +1,94 @@
-Return-Path: <stable+bounces-58991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D87C392D008
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 13:03:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 303D992D05F
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 13:16:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CAF6B287F7
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 11:00:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43034B2724C
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 11:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43CDF18FC74;
-	Wed, 10 Jul 2024 10:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374AB18FC8D;
+	Wed, 10 Jul 2024 11:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vs7EktCw"
+	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="WQgnylkd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52A318FC68;
-	Wed, 10 Jul 2024 10:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2255B3C39;
+	Wed, 10 Jul 2024 11:10:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720609196; cv=none; b=QsklPa5oAu1r9xDKmkRDdjmseQq0rV7Ij5aFUIb7/P+Hcn7AwbUdxie2ZWNsSXLdpqhmFvqcDPHU0vUE0IWa+OZCPOx2bjcdr0Mp+51QkWU6+G00a/pgHjskfUYfqR8jVp0IVeSqk/7F/RnCMFHgX7tQpgDVKRLHB5XLcOrGXW0=
+	t=1720609847; cv=none; b=gQBggB6LXLCjw8pX6Lf6H1pX35BHnADKaonNytdfc4Hm+uokvgLb9FfAfgFfj52xIKOlZtF3JvoSUXIMqqEs4lbRta3eUO3wMvnuL2D8J6DHq8zuC7RUljORDV1pymNaAboecDMOLMmY6UqovghT6dZHJ+IRCQdZ77LAqVV2XSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720609196; c=relaxed/simple;
-	bh=tMlH2OXPei8W8GzXahYFQG62CK2hv/8deu1RpFRVkQg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AGUZlRItUIzIQ6PEZ2W6VgNN1zDQ1EnWRhKSI2/KA50Q3KO2YEdhKZLDof+TOSto2Xs24z1QH9G8n3ZoSU+EXoX3yCFhMe6IhMsCNB95UQToQ/bpQGkLcSIjIj3F0QB3cvtFaXCJJBVH+bo8xltHkV3X8b0vgoT9pSHSY2QugPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vs7EktCw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2B7C32781;
-	Wed, 10 Jul 2024 10:59:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720609195;
-	bh=tMlH2OXPei8W8GzXahYFQG62CK2hv/8deu1RpFRVkQg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vs7EktCw5xixb1VI8uPyOFQ5RZ5h9SwZLocBQYn4biVvtXivY7g9JLO47g2yilUR7
-	 uPkjdKXUJOWoDjQUSi5JHf2z3662Hgaeutmb89CXo5Cs/iTYjHymDz1e5RFeJIQ2jN
-	 FgG0BoZegT2J09e2QEQfoTtJQA/w/BjFUvzeEt2s=
-Date: Wed, 10 Jul 2024 12:59:52 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: fbarrat@linux.ibm.com, ajd@linux.ibm.com, arnd@arndb.de,
-	clombard@linux.vnet.ibm.com, imunsie@au1.ibm.com,
-	mpe@ellerman.id.au, manoj@linux.vnet.ibm.com,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] cxl: Fix possible null pointer dereference in
- read_handle()
-Message-ID: <2024071052-squad-glorify-0830@gregkh>
-References: <20240710103352.1890726-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1720609847; c=relaxed/simple;
+	bh=Pk9Dp0mnPPUcm8CNk/XoO5KLyYdGd5hWQYCuxbtJ3lE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kis8wGZQ4bb4kF50Iqrf9tfXVVzweDk5ojmnlgjPlGCYTMg8BaMwf1fm55pefCDURgQe7xy8Q77Vmz7czkSqFgFu1EbD8og0gguYlF61E5YQCJ/jNIb/1oAxVk8iTn5Y+ncpT2dc2HG5rHhelfc657UWCtcYC+p5ndmWCQToylg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=WQgnylkd; arc=none smtp.client-ip=213.190.28.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
+	s=dkim_2024-02-03; t=1720609300;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+IvsDJVaB6RzaetSPmfHiiJoDXFHI0vEjBVyq9YM0Fw=;
+	b=WQgnylkdpBykFP3Vu+wunVlwaR3KuYTDExX8bdWe+tPCFHBR52BphPvxDB8ggig4oLiWVv
+	KG0IbfFpZY3ONaBQ==
+Message-ID: <580c5ba0-1c23-4d83-9e5c-e0c1679ff5ed@hardfalcon.net>
+Date: Wed, 10 Jul 2024 13:01:38 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240710103352.1890726-1-make24@iscas.ac.cn>
+Subject: Re: [PATCH 6.9 000/197] 6.9.9-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240709110708.903245467@linuxfoundation.org>
+Content-Language: en-US
+From: Pascal Ernster <git@hardfalcon.net>
+In-Reply-To: <20240709110708.903245467@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 10, 2024 at 06:33:52PM +0800, Ma Ke wrote:
-> In read_handle(), of_get_address() may return NULL which is later
-> dereferenced. Fix this by adding NULL check.
+[2024-07-09 13:07] Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.9.9 release.
+> There are 197 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 14baf4d9c739 ("cxl: Add guest-specific code")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
-> Changes in v2:
-> - The potential vulnerability was discovered as follows: based on our 
-> customized static analysis tool, extract vulnerability features[1], and 
-> then match similar vulnerability features in this function.
+> Responses should be made by Thu, 11 Jul 2024 11:06:25 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.9-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-You need to follow the rules outlined in
-Documentation/process/researcher-guidelines.rst when doing stuff like
-this.  Otherwise all of your patches will have to be rejected.
 
-Please fix up the changelog text of all of the patches you have
-submitted recently to follow those rules.
+Hi, 6.9.9-rc1 compiled and is running fine on various x86_64 bare metal 
+and virtual machines of mine (Haswell, Skylake, Kaby Lake, Coffee Lake).
 
-thanks,
+Tested-by: Pascal Ernster <git@hardfalcon.net>
 
-greg k-h
+
+Regard
+Pascal
 
