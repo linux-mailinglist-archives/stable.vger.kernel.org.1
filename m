@@ -1,166 +1,131 @@
-Return-Path: <stable+bounces-59006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F29592D22F
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 15:03:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 217F392D231
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 15:04:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 706D61C21C08
-	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 13:03:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5C78B21617
+	for <lists+stable@lfdr.de>; Wed, 10 Jul 2024 13:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA895192463;
-	Wed, 10 Jul 2024 13:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61AD19149B;
+	Wed, 10 Jul 2024 13:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="dAWPH7SA"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="siMegNKZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta034.useast.a.cloudfilter.net (omta034.useast.a.cloudfilter.net [44.202.169.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0266A191497
-	for <stable@vger.kernel.org>; Wed, 10 Jul 2024 13:03:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6AF218FDDB
+	for <stable@vger.kernel.org>; Wed, 10 Jul 2024 13:03:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720616622; cv=none; b=nKXb0X99tPoHBi3QkhbUnTMW+SJlntLQA//ICnOflTLW62iceq26SYEOe+qbKIp2qHE0vaL+8VcD/BXgnmeEz+98ma8HJfuOYfhkEH1mzAHVrWf4PTvuL8BTCe12LHuyvLHaP6/eMmFiSPwFotwEQWY6D49xKKeVvSQsOjt/B2A=
+	t=1720616630; cv=none; b=Bk4nHbVe+LsAvjdrWY6LpJO5tjWQlnTbKVclUteEmq09a4/IltrYDDaLMu9JsVpyk4u6Upeiyzu1Paze4s2ZGI6hSRyG9PMTjwXP8XUUoDIYYjhOS28kpj9MS2M8a9jyozwpLrHZViO1W3gIh9PaBlpd98oUgazIsnTUiSOmw/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720616622; c=relaxed/simple;
-	bh=u4xe50Y/QnZQ4d7+yhyKPuJj8WeSEb6DPqcYwez31JA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKGYd9glgNdiE8aeP/AX3bnFm08LoVOx8CveQ2fNKajLWXA9SqYl7IN64m4FkKNSZpapwd3v7oxp9AchzpY6qyAi7C+m42YZtKAFqIBQRGDeuY48Ei8hIBsmU0dXQ0hVKR6VrkjwQ/xd8RwGl6eJrg6FDQbbA3LTQ9mOhex4mxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=dAWPH7SA; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42673554402so2445705e9.1
-        for <stable@vger.kernel.org>; Wed, 10 Jul 2024 06:03:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1720616619; x=1721221419; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GWYvLutVvpNPgBageJj8H8A/uQDi1vyHTGEzq9IVLnI=;
-        b=dAWPH7SA9zj7+TlYREoMYWujdKZJsCadj6LW8Ulhws8E5LHkPLB6zJYwiY7UmQvleL
-         wZ9SLP+G6uGlqQ244smnTgavyPaqnZ3vIyx+ovUTOPatznENuUBpKPtC9ckfK3XEyKhf
-         cNfoewKFykklA6rnV14cYHjO+1OhByX9EEhkc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720616619; x=1721221419;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GWYvLutVvpNPgBageJj8H8A/uQDi1vyHTGEzq9IVLnI=;
-        b=hjGbhOL8fBQV9nsuHA+A6FYrIANSFp69ZGKoszAA02JRdbi2eMcos1c+NsHgy/Uwpl
-         /2Ob1U0VcwbObfmJCNgIQzFg/IMDqy1EhefS8po/+kA81Ay3eLSeZr+FdnN7FMBTDeTo
-         CBRBI+rN5pZ94cbdqzW2od3BYiLeZ8ableb557ENtgPwP3dfioOrk1ZwOE9PLlhRiu+Z
-         2ZX80sIcHXS6QFr07vgfh/fm3j4SI6c+cV3LDJhUz3Ld9lBSDKAssuffAeC0qTCIK56m
-         gaeIw21+yEwt6oIVPow+p9VePUJ0xGhun2tZcGxeorzDh6UjbKkhu/DuU/DyBzDp7yoh
-         7MVA==
-X-Forwarded-Encrypted: i=1; AJvYcCXhtBaXiT5rLllRbYHSADaVrqdBUv15vtKZ94Cg6y/DJdWaksX8YGPsXoo1xtt+0F4uBr8BSswv4BAxJppU/7LA7ppE8OS4
-X-Gm-Message-State: AOJu0Yy3mKr1sAGTSse15c9g04lQnxyYnMO0+2Ujh6NoCzK7k7tWcE17
-	Sngr3N1h9OqPyytt/zm283nWe72KiVaJVaLmIUgj2F3tW+28qMlPoN4addx5cL8=
-X-Google-Smtp-Source: AGHT+IGMcjQoU+OYezjQTf52YHxfgUBSeAFV3/pCB994d1Y1agNCF9MxANmKp2bdSG8HgXlodZdyZQ==
-X-Received: by 2002:a05:6000:4029:b0:35f:2f97:e890 with SMTP id ffacd0b85a97d-367ce5de46cmr3793723f8f.0.1720616619170;
-        Wed, 10 Jul 2024 06:03:39 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-367cdfa07dasm5249869f8f.87.2024.07.10.06.03.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jul 2024 06:03:38 -0700 (PDT)
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
-To: DRI Development <dri-devel@lists.freedesktop.org>,
-	LKML <linux-kernel@vger.kernel.org>
-Cc: Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	syzbot+6cebc1af246fe020a2f0@syzkaller.appspotmail.com,
-	Daniel Vetter <daniel.vetter@intel.com>,
-	stable@vger.kernel.org,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Brian Foster <bfoster@redhat.com>,
-	linux-bcachefs@vger.kernel.org,
-	Petr Mladek <pmladek@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH] bcachefs: no console_lock in bch2_print_string_as_lines
-Date: Wed, 10 Jul 2024 15:03:35 +0200
-Message-ID: <20240710130335.765885-1-daniel.vetter@ffwll.ch>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240710093120.732208-2-daniel.vetter@ffwll.ch>
-References: <20240710093120.732208-2-daniel.vetter@ffwll.ch>
+	s=arc-20240116; t=1720616630; c=relaxed/simple;
+	bh=PZA48+8vXR+9UlqbJr0yjffRRLrdgo1HeLb2jM00s2U=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=Vur1j7T+O+jpRR6n9HaT5qzl3IwFk0CBRF6EWNYDpc9hBBuWUCcUi/7MMmIMJhd0GdDe58XKs770PIAAxa20MAoGXA2lNNhi56YA0vy6qqA0uvm7lwWNwLI1En71b1mfBeyaFHZpxzhQqXhMiMzag0ejqQcnPXjWfbvuYy+kZ3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=siMegNKZ; arc=none smtp.client-ip=44.202.169.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5003a.ext.cloudfilter.net ([10.0.29.159])
+	by cmsmtp with ESMTPS
+	id RUqqs3VYFxs4FRWz0sXG89; Wed, 10 Jul 2024 13:03:42 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id RWyzsPCqUKjfORWyzslkDA; Wed, 10 Jul 2024 13:03:42 +0000
+X-Authority-Analysis: v=2.4 cv=BqJWwpX5 c=1 sm=1 tr=0 ts=668e86ae
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=4kmOji7k6h8A:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=4bCEF7jR7U9Qu850axJuuIEXdRf+kVAmTZ1zPo7TJuA=; b=siMegNKZWM1urBQAzc7tbfcgK6
+	INXktWbzEs7ODj5D4ZIN7JinNi2fLFf+1YX+P0VfIr1coF07RvD6EY79boMFEkoOmPgjjtQKvmXWK
+	T7tfJhtpXcAhhp9s3ErdMPWac566prE6oVRm27ETOtmVWpz8degugfSXrmIeI54BgiD+AUtjP01RE
+	2pkhWKCioPU7VWHJVDwFUDLj/MMovztfcuYp6WUWTEpECTXVN8zUUSQfee4W25IoM0jECkvYRvLz2
+	3aOqDJWURYPo+NG1UJ1MGCXZ/Myzi4Sbg6i+t3euP4YI3gskqrGpRYZIL7dENxeUP/ZHBJm0nKRzD
+	xIKsDGSA==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:47982 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1sRWyx-001fQc-0A;
+	Wed, 10 Jul 2024 07:03:39 -0600
+Subject: Re: [PATCH 6.6 000/139] 6.6.39-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240709110658.146853929@linuxfoundation.org>
+In-Reply-To: <20240709110658.146853929@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <985a10fa-26d0-22d7-aa58-686f7e5b8427@w6rz.net>
+Date: Wed, 10 Jul 2024 06:03:36 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1sRWyx-001fQc-0A
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:47982
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfIWfOHFXB3yI6slIQu1peoZVSz8LQYOzbUfytjM/H2jqEGGnvDO65aSgh7myrutcMimY17scQBMy1dMAo8EYXvFJZYF9B8k0BXnrwPCGHk1aXJ65JD/r
+ B+ZYn/o5NNmGl4vSbSyzwgzl8ZnJwcKuFvFBVgMMv9jLQ2Hc5Bfy83pjpKPdtf24yXhFZj9alrVhtg==
 
-console_lock is the outermost subsystem lock for a lot of subsystems,
-which means get/put_user must nest within. Which means it cannot be
-acquired somewhere deeply nested in other locks, and most definitely
-not while holding fs locks potentially needed to resolve faults.
+On 7/9/24 4:08 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.39 release.
+> There are 139 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 11 Jul 2024 11:06:25 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.39-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-console_trylock is the best we can do here. But John pointed out on a
-previous version that this is futile:
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-"Using the console lock here at all is wrong. The console lock does not
-prevent other CPUs from calling printk() and inserting lines in between.
-
-"There is no way to guarantee a contiguous ringbuffer block using
-multiple printk() calls.
-
-"The console_lock usage should be removed."
-
-https://lore.kernel.org/lkml/87frsh33xp.fsf@jogness.linutronix.de/
-
-Do that.
-
-Reported-by: syzbot+6cebc1af246fe020a2f0@syzkaller.appspotmail.com
-References: https://lore.kernel.org/dri-devel/00000000000026c1ff061cd0de12@google.com/
-Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-Fixes: a8f354284304 ("bcachefs: bch2_print_string_as_lines()")
-Cc: <stable@vger.kernel.org> # v6.7+
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Brian Foster <bfoster@redhat.com>
-Cc: linux-bcachefs@vger.kernel.org
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: John Ogness <john.ogness@linutronix.de>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
---
-v2: Dont trylock, drop console_lock entirely
----
- fs/bcachefs/util.c | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/fs/bcachefs/util.c b/fs/bcachefs/util.c
-index de331dec2a99..dc891563d502 100644
---- a/fs/bcachefs/util.c
-+++ b/fs/bcachefs/util.c
-@@ -8,7 +8,6 @@
- 
- #include <linux/bio.h>
- #include <linux/blkdev.h>
--#include <linux/console.h>
- #include <linux/ctype.h>
- #include <linux/debugfs.h>
- #include <linux/freezer.h>
-@@ -261,7 +260,6 @@ void bch2_print_string_as_lines(const char *prefix, const char *lines)
- 		return;
- 	}
- 
--	console_lock();
- 	while (1) {
- 		p = strchrnul(lines, '\n');
- 		printk("%s%.*s\n", prefix, (int) (p - lines), lines);
-@@ -269,7 +267,6 @@ void bch2_print_string_as_lines(const char *prefix, const char *lines)
- 			break;
- 		lines = p + 1;
- 	}
--	console_unlock();
- }
- 
- int bch2_save_backtrace(bch_stacktrace *stack, struct task_struct *task, unsigned skipnr,
--- 
-2.45.2
+Tested-by: Ron Economos <re@w6rz.net>
 
 
