@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-59152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 041B292EF0B
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2A492EF0C
 	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 20:43:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E6141F230B3
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3AAC283D6D
 	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 18:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D48416E870;
-	Thu, 11 Jul 2024 18:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD07916E876;
+	Thu, 11 Jul 2024 18:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LWnr5ypL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bPt4ANk4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43EDF54657
-	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 18:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412EB38398
+	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 18:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720723429; cv=none; b=kt7IwVXuCurrhYc8GY9WLLAwfrK99ye3v/lv/eBDxSxhhi66IWQESFNBk4zxR1pfkbyEjyn/UtbEYJPsYaiSzL4C+JDTt9lktiPnmPLretQC7hAkYqXZCuRA0kPUvEVhRmilfxMHVHXzy225kfzt9guTRqhbgKrQKN7GbTlRLjI=
+	t=1720723431; cv=none; b=nTJAYOoA7wAAV7Uu58fOxmfxZCu8/LAkOYMOM3D/3eoBML+OyNLx4tFWPjyKT4k3v39DjLvqRRmRR2YW6xzAdTpauuecaHvNAk4kd6PCL4MvpeLkllFW3IlzCHMAjpLqpdohR+SS0AdGmFWEOcVPFh0Y+a5OyHH422dJm36ZOZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720723429; c=relaxed/simple;
-	bh=R8Z75GW7lo6Mp9Ojr9DCx/WFnQGYV43Jfcsk1XNhQ5E=;
+	s=arc-20240116; t=1720723431; c=relaxed/simple;
+	bh=UA4mniQdFmXSfDtO7btIqECMHWbIBNAimwGK6JSMGPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C+XITCjjIo3si1k8Mi1uwLdesgPpwro05bvZADtSbEm3JdO5/hdIreSoY560Lynzn8ZWSl++muxZB6Cyd5puS+E5THp4s/E0a2PBZbqszGQ8371ms4kUSpoPXd/jevYwdd4pAkm+tiBs+3oe0fdn6r+Kg31BhxWgKyfbkpG5vHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LWnr5ypL; arc=none smtp.client-ip=209.85.128.54
+	 MIME-Version; b=OhH0JquBG9ZAYvYWpTtfQzFlKUDtb7zCBzudcjPDrkPIhsc9xGBTg5Uy3520+gUejN4bD3oW1yWo1z/HogiwfIJICaPyuAZ3jCcPankYg0wzm7sDD5tQG5/eWA+9vA4nldHWFQvIM8E55gkG1z/LgxaoGDk0CHNTY7rqLEIkyFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bPt4ANk4; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4279c924ca7so3525875e9.2
-        for <stable@vger.kernel.org>; Thu, 11 Jul 2024 11:43:46 -0700 (PDT)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-42662d80138so7418785e9.1
+        for <stable@vger.kernel.org>; Thu, 11 Jul 2024 11:43:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720723425; x=1721328225; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720723427; x=1721328227; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0m2uBM+U8AS77LVPTYKoNgs2HaswD2QQPGG4Lpi8Vq0=;
-        b=LWnr5ypLHzQCcHoYSeFXj30fNb3JVOyxBTURLmDHINtGgfZUdCnbSb0MRolePr0V3f
-         BbDDqDtUlpcMZkF+iXphxyCLAlxkYsgLvmhvCh3GP0ud6AGaZYbP54Spgnc/O5G8OxOi
-         MP9O5wPeGid4EKmg5i0TGNza9D2Yar+9jSFdrfoV49KLkaBgO+2xd/XGqWz/3jHRNEs2
-         fC58XJFKXwpsuhi8Om2higW7HXExaEafbmnx+46Bjow26FvwAbyqjk1dpfh2lGF8blup
-         dFcifBI1xOLBoKHz0lCR7/oH9oMjMsX0wy1egLRE0/mJOZciJCRJyyZpUBMzF73kb+q9
-         6BhQ==
+        bh=qSRQv9kK5BM4l9bADR/LZxF6wo0nZb1+KIiOXFMIB/c=;
+        b=bPt4ANk4kVE5Eobn+d51AqRWI9tt06WOpNBzSva+uYuMMp1G6mQpNbFQvFdhyEhycp
+         jAgsWtQvi6pY4GloMDVILRU7Bz2kgMfDCAkEvBZW1JALy+h/0z9ySygx48+Hmx0QU0F2
+         zVTb8OkWtod1xwwvuc16sWTXljFmtx3rK57RALPLpxbq82YIR2O2uTbQd4umgm9v/y1C
+         XBVpF3fB9ZRzHUoSwsKk3n69PE73G2FuKwWt/ea3jo9ZAZ29ZpPobVW1EmMpwz9zRMqf
+         yT5IKMzQONcl1zr52l1812iL2iFOdgG3nTdcn7fsmVoDECNJfb3wOAVrl5z5y3TXDwX5
+         v3Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720723425; x=1721328225;
+        d=1e100.net; s=20230601; t=1720723427; x=1721328227;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0m2uBM+U8AS77LVPTYKoNgs2HaswD2QQPGG4Lpi8Vq0=;
-        b=PMRLL0eK2GkoPvS5TWkeb2YYs6ijP6j8fORMd/oBmbOwKd0RIo1CiAU4cJO1ZHaRZB
-         9A9dHhUu039aHQbcq1NdMr1fbxz94YkiSclV2RhhRMAOy4N8wPufYZwvoIgbLLsehUUQ
-         wZfppZDvwnoaVckhPyPrqNzEbbpelg547KluYlzkq+P+oR/X20QRwwgUVvos7/TmfLPZ
-         F5DSf0MYFf/+V6ySYVA4KzdkNFg3a6pHqfcggT56/bUmp5X77+sRMw5cqEOsr9wQ6GJP
-         Z0BRf1scmU989ZdtkLJJnrhCmcF30gII04IaYo8OuFms4SUD+OBYxBqJm3fjHJcbGqKZ
-         wmCg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJUnvXSdA372nLk6yTYZ3gOm8/lXYS0y7s/OrV5x6U0y/p8+V/uv4Ku0fAp+w6ATm46V5PvU6CpXPFp/hfXtCziAFj6/Sv
-X-Gm-Message-State: AOJu0Yw54KsiED23J1kEn8AzmVmahh1az5ZWSrNEoeUbo8Skr5PtPe3o
-	ppQCcX+oUEhCOboXolO9Fk+fxgPw+Hf+5CXO4w+DpVfPLSFcFjDw
-X-Google-Smtp-Source: AGHT+IExYWEOegnzyQec1JKJfO4Uc+E4WAuVwBoSKr/1izxLEK4PFQfwGcMORSMN/l6c9XQlf4lUsg==
-X-Received: by 2002:a05:600c:6d4:b0:426:6b85:bafb with SMTP id 5b1f17b1804b1-426707db6e7mr51812125e9.20.1720723425161;
-        Thu, 11 Jul 2024 11:43:45 -0700 (PDT)
+        bh=qSRQv9kK5BM4l9bADR/LZxF6wo0nZb1+KIiOXFMIB/c=;
+        b=TaY0AX99TQ+KriXFujWqP+duKOmV9vdMbVhmN2wsuDzTTH9CRdh/lnP2SqmB8g6L8a
+         VLnfEBF0z3rDf5iVfZF6etJx+qyRXgOy3jwiroY2w9yGBUyy16X0pxdjJLdiSOlyXe0U
+         5vxs5meJruxg6C/QAs8R9c97bp2XCVjuvun4HDOLyN+vbxnMOufy5/gofByXiXxSpSZj
+         YDapdHYw+yscY52CBm/mXEyvPM30xB49OtfKRQwz4HleJnGNmdkI/Bp/7djtcjo/5kYq
+         hfFpeuV49nk1etf5ClAgRNBwStrZzzNV5YSnRu0gXGnFui9EIRvVq+G87oKm70RILVGU
+         R3Fw==
+X-Forwarded-Encrypted: i=1; AJvYcCUEQtg3q7gZlgPPINO2sQWINIGzfROZ8uGrzdPMhxt7Mwov5PLa3x6qBIYXLNwWp+ylMuKKlDLfB+BJPw7vfewAlKjyzQ29
+X-Gm-Message-State: AOJu0Yz+wdy/hHK0B9sB+jnBH+8Z59b1f9Fwf+B9oSRPeDZqwCQA2J9i
+	ckL66iwWzHwTdhYQ6SkeTKo2XdSqqGMTLvCEIyj2BdH3u/FbnonW
+X-Google-Smtp-Source: AGHT+IEmIUgAEUwbTaGPJG5tPqbkrRvYzkmPWzjfk3klSK8vUAqMj6tSKUTmiNAvw2sUZrX7Yy1SIw==
+X-Received: by 2002:a05:600c:1d9e:b0:426:61ef:ec36 with SMTP id 5b1f17b1804b1-42670197e61mr75891695e9.0.1720723427423;
+        Thu, 11 Jul 2024 11:43:47 -0700 (PDT)
 Received: from localhost (algrothendieck.nos-oignons.net. [80.67.172.162])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42725eca905sm104911255e9.11.2024.07.11.11.43.44
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-426725597bdsm68122245e9.0.2024.07.11.11.43.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jul 2024 11:43:44 -0700 (PDT)
+        Thu, 11 Jul 2024 11:43:47 -0700 (PDT)
 From: Maxim Mikityanskiy <maxtram95@gmail.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
@@ -77,9 +77,9 @@ Cc: Eduard Zingerman <eddyz87@gmail.com>,
 	John Fastabend <john.fastabend@gmail.com>,
 	stable@vger.kernel.org,
 	Maxim Mikityanskiy <maxim@isovalent.com>
-Subject: [PATCH stable 5.15] bpf: Allow reads from uninit stack
-Date: Thu, 11 Jul 2024 21:43:22 +0300
-Message-ID: <20240711184323.2355017-2-maxtram95@gmail.com>
+Subject: [PATCH stable 6.1] bpf: Allow reads from uninit stack
+Date: Thu, 11 Jul 2024 21:43:23 +0300
+Message-ID: <20240711184323.2355017-3-maxtram95@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240711184323.2355017-1-maxtram95@gmail.com>
 References: <20240711184323.2355017-1-maxtram95@gmail.com>
@@ -266,20 +266,20 @@ range info"), that affects Cilium built with LLVM 18.
 
  kernel/bpf/verifier.c                         |  11 +-
  .../selftests/bpf/progs/test_global_func10.c  |   9 +-
- tools/testing/selftests/bpf/verifier/calls.c  |  13 +-
- .../bpf/verifier/helper_access_var_len.c      | 104 ++++++---
+ tools/testing/selftests/bpf/verifier/calls.c  |  13 ++-
+ .../bpf/verifier/helper_access_var_len.c      | 104 ++++++++++++------
  .../testing/selftests/bpf/verifier/int_ptr.c  |   9 +-
- .../selftests/bpf/verifier/search_pruning.c   |  13 +-
- tools/testing/selftests/bpf/verifier/sock.c   |  27 ---
- .../selftests/bpf/verifier/spill_fill.c       | 211 ++++++++++++++++++
- .../testing/selftests/bpf/verifier/var_off.c  |  52 -----
- 9 files changed, 316 insertions(+), 133 deletions(-)
+ .../selftests/bpf/verifier/search_pruning.c   |  13 ++-
+ tools/testing/selftests/bpf/verifier/sock.c   |  27 -----
+ .../selftests/bpf/verifier/spill_fill.c       |   7 +-
+ .../testing/selftests/bpf/verifier/var_off.c  |  52 ---------
+ 9 files changed, 109 insertions(+), 136 deletions(-)
 
 diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index b9f63c4b8598..88b38db5f626 100644
+index 56a5c8beb553..8973d3c9597c 100644
 --- a/kernel/bpf/verifier.c
 +++ b/kernel/bpf/verifier.c
-@@ -3159,6 +3159,8 @@ static int check_stack_read_fixed_off(struct bpf_verifier_env *env,
+@@ -3599,6 +3599,8 @@ static int check_stack_read_fixed_off(struct bpf_verifier_env *env,
  						continue;
  					if (type == STACK_MISC)
  						continue;
@@ -288,7 +288,7 @@ index b9f63c4b8598..88b38db5f626 100644
  					verbose(env, "invalid read from stack off %d+%d size %d\n",
  						off, i, size);
  					return -EACCES;
-@@ -3196,6 +3198,8 @@ static int check_stack_read_fixed_off(struct bpf_verifier_env *env,
+@@ -3636,6 +3638,8 @@ static int check_stack_read_fixed_off(struct bpf_verifier_env *env,
  				continue;
  			if (type == STACK_ZERO)
  				continue;
@@ -297,7 +297,7 @@ index b9f63c4b8598..88b38db5f626 100644
  			verbose(env, "invalid read from stack off %d+%d size %d\n",
  				off, i, size);
  			return -EACCES;
-@@ -4782,7 +4786,8 @@ static int check_stack_range_initialized(
+@@ -5426,7 +5430,8 @@ static int check_stack_range_initialized(
  		stype = &state->stack[spi].slot_type[slot % BPF_REG_SIZE];
  		if (*stype == STACK_MISC)
  			goto mark;
@@ -307,7 +307,7 @@ index b9f63c4b8598..88b38db5f626 100644
  			if (clobber) {
  				/* helper can write anything into the stack */
  				*stype = STACK_MISC;
-@@ -10625,6 +10630,10 @@ static bool stacksafe(struct bpf_verifier_env *env, struct bpf_func_state *old,
+@@ -11967,6 +11972,10 @@ static bool stacksafe(struct bpf_verifier_env *env, struct bpf_func_state *old,
  		if (old->stack[spi].slot_type[i % BPF_REG_SIZE] == STACK_INVALID)
  			continue;
  
@@ -349,10 +349,10 @@ index 97b7031d0e22..d361eba167f6 100644
  	const struct Small small = {.x = skb->len };
  
 diff --git a/tools/testing/selftests/bpf/verifier/calls.c b/tools/testing/selftests/bpf/verifier/calls.c
-index 2e701e7f6968..5d1e01d54a82 100644
+index e1a937277b54..a201d2871bfb 100644
 --- a/tools/testing/selftests/bpf/verifier/calls.c
 +++ b/tools/testing/selftests/bpf/verifier/calls.c
-@@ -1967,19 +1967,22 @@
+@@ -2221,19 +2221,22 @@
  	 * that fp-8 stack slot was unused in the fall-through
  	 * branch and will accept the program incorrectly
  	 */
@@ -381,7 +381,7 @@ index 2e701e7f6968..5d1e01d54a82 100644
  {
  	"calls: ctx read at start of subprog",
 diff --git a/tools/testing/selftests/bpf/verifier/helper_access_var_len.c b/tools/testing/selftests/bpf/verifier/helper_access_var_len.c
-index 0ab7f1dfc97a..0e24aa11c457 100644
+index a6c869a7319c..9c4885885aba 100644
 --- a/tools/testing/selftests/bpf/verifier/helper_access_var_len.c
 +++ b/tools/testing/selftests/bpf/verifier/helper_access_var_len.c
 @@ -29,19 +29,30 @@
@@ -547,7 +547,7 @@ index 070893fb2900..02d9e004260b 100644
  {
  	"ARG_PTR_TO_LONG misaligned",
 diff --git a/tools/testing/selftests/bpf/verifier/search_pruning.c b/tools/testing/selftests/bpf/verifier/search_pruning.c
-index 7e36078f8f48..949cbe460248 100644
+index d63fd8991b03..745d6b5842fd 100644
 --- a/tools/testing/selftests/bpf/verifier/search_pruning.c
 +++ b/tools/testing/selftests/bpf/verifier/search_pruning.c
 @@ -128,9 +128,10 @@
@@ -563,8 +563,8 @@ index 7e36078f8f48..949cbe460248 100644
 +	.result = ACCEPT,
  },
  {
- 	"allocated_stack",
-@@ -187,6 +188,8 @@
+ 	"precision tracking for u32 spill/fill",
+@@ -258,6 +259,8 @@
  	BPF_EXIT_INSN(),
  	},
  	.flags = BPF_F_TEST_STATE_FREQ,
@@ -576,7 +576,7 @@ index 7e36078f8f48..949cbe460248 100644
 +	.result = ACCEPT,
  },
 diff --git a/tools/testing/selftests/bpf/verifier/sock.c b/tools/testing/selftests/bpf/verifier/sock.c
-index 8c224eac93df..59d976d22867 100644
+index d11d0b28be41..108dd3ee1edd 100644
 --- a/tools/testing/selftests/bpf/verifier/sock.c
 +++ b/tools/testing/selftests/bpf/verifier/sock.c
 @@ -530,33 +530,6 @@
@@ -614,226 +614,25 @@ index 8c224eac93df..59d976d22867 100644
  	"bpf_map_lookup_elem(smap, &key)",
  	.insns = {
 diff --git a/tools/testing/selftests/bpf/verifier/spill_fill.c b/tools/testing/selftests/bpf/verifier/spill_fill.c
-index 0b943897aaf6..1e76841b7bfa 100644
+index e23f07175e1b..53286a7b49aa 100644
 --- a/tools/testing/selftests/bpf/verifier/spill_fill.c
 +++ b/tools/testing/selftests/bpf/verifier/spill_fill.c
-@@ -104,3 +104,214 @@
- 	.result = ACCEPT,
- 	.retval = POINTER_VALUE,
- },
-+{
-+	"Spill and refill a u32 const scalar.  Offset to skb->data",
-+	.insns = {
-+	BPF_LDX_MEM(BPF_W, BPF_REG_2, BPF_REG_1,
-+		    offsetof(struct __sk_buff, data)),
-+	BPF_LDX_MEM(BPF_W, BPF_REG_3, BPF_REG_1,
-+		    offsetof(struct __sk_buff, data_end)),
-+	/* r4 = 20 */
-+	BPF_MOV32_IMM(BPF_REG_4, 20),
-+	/* *(u32 *)(r10 -8) = r4 */
-+	BPF_STX_MEM(BPF_W, BPF_REG_10, BPF_REG_4, -8),
-+	/* r4 = *(u32 *)(r10 -8) */
-+	BPF_LDX_MEM(BPF_W, BPF_REG_4, BPF_REG_10, -8),
-+	/* r0 = r2 */
-+	BPF_MOV64_REG(BPF_REG_0, BPF_REG_2),
-+	/* r0 += r4 R0=pkt R2=pkt R3=pkt_end R4=20 */
-+	BPF_ALU64_REG(BPF_ADD, BPF_REG_0, BPF_REG_4),
-+	/* if (r0 > r3) R0=pkt,off=20 R2=pkt R3=pkt_end R4=20 */
-+	BPF_JMP_REG(BPF_JGT, BPF_REG_0, BPF_REG_3, 1),
-+	/* r0 = *(u32 *)r2 R0=pkt,off=20,r=20 R2=pkt,r=20 R3=pkt_end R4=20 */
-+	BPF_LDX_MEM(BPF_W, BPF_REG_0, BPF_REG_2, 0),
-+	BPF_MOV64_IMM(BPF_REG_0, 0),
-+	BPF_EXIT_INSN(),
-+	},
-+	.result = ACCEPT,
-+	.prog_type = BPF_PROG_TYPE_SCHED_CLS,
-+},
-+{
-+	"Spill a u32 const, refill from another half of the uninit u32 from the stack",
-+	.insns = {
-+	/* r4 = 20 */
-+	BPF_MOV32_IMM(BPF_REG_4, 20),
-+	/* *(u32 *)(r10 -8) = r4 */
-+	BPF_STX_MEM(BPF_W, BPF_REG_10, BPF_REG_4, -8),
-+	/* r4 = *(u32 *)(r10 -4) fp-8=????rrrr*/
-+	BPF_LDX_MEM(BPF_W, BPF_REG_4, BPF_REG_10, -4),
-+	BPF_MOV64_IMM(BPF_REG_0, 0),
-+	BPF_EXIT_INSN(),
-+	},
+@@ -171,9 +171,10 @@
+ 	BPF_MOV64_IMM(BPF_REG_0, 0),
+ 	BPF_EXIT_INSN(),
+ 	},
+-	.result = REJECT,
+-	.errstr = "invalid read from stack off -4+0 size 4",
+-	.prog_type = BPF_PROG_TYPE_SCHED_CLS,
 +	.result_unpriv = REJECT,
 +	.errstr_unpriv = "invalid read from stack off -4+0 size 4",
 +	/* in privileged mode reads from uninitialized stack locations are permitted */
 +	.result = ACCEPT,
-+},
-+{
-+	"Spill a u32 const scalar.  Refill as u16.  Offset to skb->data",
-+	.insns = {
-+	BPF_LDX_MEM(BPF_W, BPF_REG_2, BPF_REG_1,
-+		    offsetof(struct __sk_buff, data)),
-+	BPF_LDX_MEM(BPF_W, BPF_REG_3, BPF_REG_1,
-+		    offsetof(struct __sk_buff, data_end)),
-+	/* r4 = 20 */
-+	BPF_MOV32_IMM(BPF_REG_4, 20),
-+	/* *(u32 *)(r10 -8) = r4 */
-+	BPF_STX_MEM(BPF_W, BPF_REG_10, BPF_REG_4, -8),
-+	/* r4 = *(u16 *)(r10 -8) */
-+	BPF_LDX_MEM(BPF_H, BPF_REG_4, BPF_REG_10, -8),
-+	/* r0 = r2 */
-+	BPF_MOV64_REG(BPF_REG_0, BPF_REG_2),
-+	/* r0 += r4 R0=pkt R2=pkt R3=pkt_end R4=umax=65535 */
-+	BPF_ALU64_REG(BPF_ADD, BPF_REG_0, BPF_REG_4),
-+	/* if (r0 > r3) R0=pkt,umax=65535 R2=pkt R3=pkt_end R4=umax=65535 */
-+	BPF_JMP_REG(BPF_JGT, BPF_REG_0, BPF_REG_3, 1),
-+	/* r0 = *(u32 *)r2 R0=pkt,umax=65535 R2=pkt R3=pkt_end R4=20 */
-+	BPF_LDX_MEM(BPF_W, BPF_REG_0, BPF_REG_2, 0),
-+	BPF_MOV64_IMM(BPF_REG_0, 0),
-+	BPF_EXIT_INSN(),
-+	},
-+	.result = REJECT,
-+	.errstr = "invalid access to packet",
-+	.prog_type = BPF_PROG_TYPE_SCHED_CLS,
-+},
-+{
-+	"Spill u32 const scalars.  Refill as u64.  Offset to skb->data",
-+	.insns = {
-+	BPF_LDX_MEM(BPF_W, BPF_REG_2, BPF_REG_1,
-+		    offsetof(struct __sk_buff, data)),
-+	BPF_LDX_MEM(BPF_W, BPF_REG_3, BPF_REG_1,
-+		    offsetof(struct __sk_buff, data_end)),
-+	/* r6 = 0 */
-+	BPF_MOV32_IMM(BPF_REG_6, 0),
-+	/* r7 = 20 */
-+	BPF_MOV32_IMM(BPF_REG_7, 20),
-+	/* *(u32 *)(r10 -4) = r6 */
-+	BPF_STX_MEM(BPF_W, BPF_REG_10, BPF_REG_6, -4),
-+	/* *(u32 *)(r10 -8) = r7 */
-+	BPF_STX_MEM(BPF_W, BPF_REG_10, BPF_REG_7, -8),
-+	/* r4 = *(u64 *)(r10 -8) */
-+	BPF_LDX_MEM(BPF_H, BPF_REG_4, BPF_REG_10, -8),
-+	/* r0 = r2 */
-+	BPF_MOV64_REG(BPF_REG_0, BPF_REG_2),
-+	/* r0 += r4 R0=pkt R2=pkt R3=pkt_end R4=umax=65535 */
-+	BPF_ALU64_REG(BPF_ADD, BPF_REG_0, BPF_REG_4),
-+	/* if (r0 > r3) R0=pkt,umax=65535 R2=pkt R3=pkt_end R4=umax=65535 */
-+	BPF_JMP_REG(BPF_JGT, BPF_REG_0, BPF_REG_3, 1),
-+	/* r0 = *(u32 *)r2 R0=pkt,umax=65535 R2=pkt R3=pkt_end R4=20 */
-+	BPF_LDX_MEM(BPF_W, BPF_REG_0, BPF_REG_2, 0),
-+	BPF_MOV64_IMM(BPF_REG_0, 0),
-+	BPF_EXIT_INSN(),
-+	},
-+	.result = REJECT,
-+	.errstr = "invalid access to packet",
-+	.prog_type = BPF_PROG_TYPE_SCHED_CLS,
-+},
-+{
-+	"Spill a u32 const scalar.  Refill as u16 from fp-6.  Offset to skb->data",
-+	.insns = {
-+	BPF_LDX_MEM(BPF_W, BPF_REG_2, BPF_REG_1,
-+		    offsetof(struct __sk_buff, data)),
-+	BPF_LDX_MEM(BPF_W, BPF_REG_3, BPF_REG_1,
-+		    offsetof(struct __sk_buff, data_end)),
-+	/* r4 = 20 */
-+	BPF_MOV32_IMM(BPF_REG_4, 20),
-+	/* *(u32 *)(r10 -8) = r4 */
-+	BPF_STX_MEM(BPF_W, BPF_REG_10, BPF_REG_4, -8),
-+	/* r4 = *(u16 *)(r10 -6) */
-+	BPF_LDX_MEM(BPF_H, BPF_REG_4, BPF_REG_10, -6),
-+	/* r0 = r2 */
-+	BPF_MOV64_REG(BPF_REG_0, BPF_REG_2),
-+	/* r0 += r4 R0=pkt R2=pkt R3=pkt_end R4=umax=65535 */
-+	BPF_ALU64_REG(BPF_ADD, BPF_REG_0, BPF_REG_4),
-+	/* if (r0 > r3) R0=pkt,umax=65535 R2=pkt R3=pkt_end R4=umax=65535 */
-+	BPF_JMP_REG(BPF_JGT, BPF_REG_0, BPF_REG_3, 1),
-+	/* r0 = *(u32 *)r2 R0=pkt,umax=65535 R2=pkt R3=pkt_end R4=20 */
-+	BPF_LDX_MEM(BPF_W, BPF_REG_0, BPF_REG_2, 0),
-+	BPF_MOV64_IMM(BPF_REG_0, 0),
-+	BPF_EXIT_INSN(),
-+	},
-+	.result = REJECT,
-+	.errstr = "invalid access to packet",
-+	.prog_type = BPF_PROG_TYPE_SCHED_CLS,
-+},
-+{
-+	"Spill and refill a u32 const scalar at non 8byte aligned stack addr.  Offset to skb->data",
-+	.insns = {
-+	BPF_LDX_MEM(BPF_W, BPF_REG_2, BPF_REG_1,
-+		    offsetof(struct __sk_buff, data)),
-+	BPF_LDX_MEM(BPF_W, BPF_REG_3, BPF_REG_1,
-+		    offsetof(struct __sk_buff, data_end)),
-+	/* r4 = 20 */
-+	BPF_MOV32_IMM(BPF_REG_4, 20),
-+	/* *(u32 *)(r10 -8) = r4 */
-+	BPF_STX_MEM(BPF_W, BPF_REG_10, BPF_REG_4, -8),
-+	/* *(u32 *)(r10 -4) = r4 */
-+	BPF_STX_MEM(BPF_W, BPF_REG_10, BPF_REG_4, -4),
-+	/* r4 = *(u32 *)(r10 -4),  */
-+	BPF_LDX_MEM(BPF_W, BPF_REG_4, BPF_REG_10, -4),
-+	/* r0 = r2 */
-+	BPF_MOV64_REG(BPF_REG_0, BPF_REG_2),
-+	/* r0 += r4 R0=pkt R2=pkt R3=pkt_end R4=umax=U32_MAX */
-+	BPF_ALU64_REG(BPF_ADD, BPF_REG_0, BPF_REG_4),
-+	/* if (r0 > r3) R0=pkt,umax=U32_MAX R2=pkt R3=pkt_end R4= */
-+	BPF_JMP_REG(BPF_JGT, BPF_REG_0, BPF_REG_3, 1),
-+	/* r0 = *(u32 *)r2 R0=pkt,umax=U32_MAX R2=pkt R3=pkt_end R4= */
-+	BPF_LDX_MEM(BPF_W, BPF_REG_0, BPF_REG_2, 0),
-+	BPF_MOV64_IMM(BPF_REG_0, 0),
-+	BPF_EXIT_INSN(),
-+	},
-+	.result = REJECT,
-+	.errstr = "invalid access to packet",
-+	.prog_type = BPF_PROG_TYPE_SCHED_CLS,
-+},
-+{
-+	"Spill and refill a umax=40 bounded scalar.  Offset to skb->data",
-+	.insns = {
-+	BPF_LDX_MEM(BPF_W, BPF_REG_2, BPF_REG_1,
-+		    offsetof(struct __sk_buff, data)),
-+	BPF_LDX_MEM(BPF_W, BPF_REG_3, BPF_REG_1,
-+		    offsetof(struct __sk_buff, data_end)),
-+	BPF_LDX_MEM(BPF_DW, BPF_REG_4, BPF_REG_1,
-+		    offsetof(struct __sk_buff, tstamp)),
-+	BPF_JMP_IMM(BPF_JLE, BPF_REG_4, 40, 2),
-+	BPF_MOV64_IMM(BPF_REG_0, 0),
-+	BPF_EXIT_INSN(),
-+	/* *(u32 *)(r10 -8) = r4 R4=umax=40 */
-+	BPF_STX_MEM(BPF_W, BPF_REG_10, BPF_REG_4, -8),
-+	/* r4 = (*u32 *)(r10 - 8) */
-+	BPF_LDX_MEM(BPF_W, BPF_REG_4, BPF_REG_10, -8),
-+	/* r2 += r4 R2=pkt R4=umax=40 */
-+	BPF_ALU64_REG(BPF_ADD, BPF_REG_2, BPF_REG_4),
-+	/* r0 = r2 R2=pkt,umax=40 R4=umax=40 */
-+	BPF_MOV64_REG(BPF_REG_0, BPF_REG_2),
-+	/* r2 += 20 R0=pkt,umax=40 R2=pkt,umax=40 */
-+	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, 20),
-+	/* if (r2 > r3) R0=pkt,umax=40 R2=pkt,off=20,umax=40 */
-+	BPF_JMP_REG(BPF_JGT, BPF_REG_2, BPF_REG_3, 1),
-+	/* r0 = *(u32 *)r0 R0=pkt,r=20,umax=40 R2=pkt,off=20,r=20,umax=40 */
-+	BPF_LDX_MEM(BPF_W, BPF_REG_0, BPF_REG_0, 0),
-+	BPF_MOV64_IMM(BPF_REG_0, 0),
-+	BPF_EXIT_INSN(),
-+	},
-+	.result = ACCEPT,
-+	.prog_type = BPF_PROG_TYPE_SCHED_CLS,
-+},
-+{
-+	"Spill a u32 scalar at fp-4 and then at fp-8",
-+	.insns = {
-+	/* r4 = 4321 */
-+	BPF_MOV32_IMM(BPF_REG_4, 4321),
-+	/* *(u32 *)(r10 -4) = r4 */
-+	BPF_STX_MEM(BPF_W, BPF_REG_10, BPF_REG_4, -4),
-+	/* *(u32 *)(r10 -8) = r4 */
-+	BPF_STX_MEM(BPF_W, BPF_REG_10, BPF_REG_4, -8),
-+	/* r4 = *(u64 *)(r10 -8) */
-+	BPF_LDX_MEM(BPF_DW, BPF_REG_4, BPF_REG_10, -8),
-+	BPF_MOV64_IMM(BPF_REG_0, 0),
-+	BPF_EXIT_INSN(),
-+	},
-+	.result = ACCEPT,
-+	.prog_type = BPF_PROG_TYPE_SCHED_CLS,
-+},
+ },
+ {
+ 	"Spill a u32 const scalar.  Refill as u16.  Offset to skb->data",
 diff --git a/tools/testing/selftests/bpf/verifier/var_off.c b/tools/testing/selftests/bpf/verifier/var_off.c
-index eab1f7f56e2f..dc92a29f0d74 100644
+index d37f512fad16..b183e26c03f1 100644
 --- a/tools/testing/selftests/bpf/verifier/var_off.c
 +++ b/tools/testing/selftests/bpf/verifier/var_off.c
 @@ -212,31 +212,6 @@
