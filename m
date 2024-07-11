@@ -1,70 +1,72 @@
-Return-Path: <stable+bounces-59151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B360692EF0A
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 20:43:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 041B292EF0B
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 20:43:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 153481F22FFB
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 18:43:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E6141F230B3
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 18:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5743916DEC8;
-	Thu, 11 Jul 2024 18:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D48416E870;
+	Thu, 11 Jul 2024 18:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OL8Z+8ws"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LWnr5ypL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F74C38398
-	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 18:43:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43EDF54657
+	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 18:43:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720723428; cv=none; b=VkaCTbLc+oUUj4VncxsYqhS1VoefdI8pBmLqPzmDTX1H4GijG12x3orGefmZ5Oh4/BjQwFD0uhk0xTiL0+rt3Ehdk0xjoLDL4ZKfm5KcodBPoBWJzFmajQMGaEpBjELzBv0KDUH6kCjdph0186htc5NB/6+rL6crY9DsW0RxDqI=
+	t=1720723429; cv=none; b=kt7IwVXuCurrhYc8GY9WLLAwfrK99ye3v/lv/eBDxSxhhi66IWQESFNBk4zxR1pfkbyEjyn/UtbEYJPsYaiSzL4C+JDTt9lktiPnmPLretQC7hAkYqXZCuRA0kPUvEVhRmilfxMHVHXzy225kfzt9guTRqhbgKrQKN7GbTlRLjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720723428; c=relaxed/simple;
-	bh=d8y88nX5Ivi8GGCFx19syRGkTnMMwSUOV3IZ3BjdPf0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ksPT1PhkJSZKL8ufEYndEzB8Z0YHjoHe9pa/mgFbZQ72t0ZCCNfNNuGgttri9Eu1FycwmEdvxLQFIGa50eIy84bLhU8jhlgPshbb5Hl3d44DdnYf6lJ4OyM9gg4ykJDfBMXoDnmtrjpzH/1p8k9zM0BL3k4Xuxtqb/0u2UTIHts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OL8Z+8ws; arc=none smtp.client-ip=209.85.167.45
+	s=arc-20240116; t=1720723429; c=relaxed/simple;
+	bh=R8Z75GW7lo6Mp9Ojr9DCx/WFnQGYV43Jfcsk1XNhQ5E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=C+XITCjjIo3si1k8Mi1uwLdesgPpwro05bvZADtSbEm3JdO5/hdIreSoY560Lynzn8ZWSl++muxZB6Cyd5puS+E5THp4s/E0a2PBZbqszGQ8371ms4kUSpoPXd/jevYwdd4pAkm+tiBs+3oe0fdn6r+Kg31BhxWgKyfbkpG5vHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LWnr5ypL; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-52ea8320d48so958901e87.1
-        for <stable@vger.kernel.org>; Thu, 11 Jul 2024 11:43:45 -0700 (PDT)
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4279c924ca7so3525875e9.2
+        for <stable@vger.kernel.org>; Thu, 11 Jul 2024 11:43:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720723423; x=1721328223; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3zhClhvpPNqATRYbpd+ioAAzMsjmnnU/sxkMD4kSrFY=;
-        b=OL8Z+8wseL2AR9jmpG/5LRzIlbilBQ7hvydBbzbB9bYLP3gaTRF7+SExsbFxI2N44c
-         0wEMB4+nIE32Gz0Ay6Ye5oRUNIXVtCyPWkfyaLeafW/9TdlH4fTik5UPE553DfyVVFsM
-         6jHJGRivmsG3qyM1mXhTHa57MOIPiHOdVwHyxtBHsDzYT39PCiq5GgJI8MS8M+KjUqpQ
-         Mr1xBzwWOOTHq/XKqhyhuV43sgZWVRqqidxFCUvoxZq4MwUa2b7eMj/C4Gog8sr4JQhv
-         rF3cEcKxffb1F8PA44ArujrfJLRA9QtGSIEQGEjFmO86hyGUSUUUGIY7/01MZqqw2E01
-         A/aw==
+        d=gmail.com; s=20230601; t=1720723425; x=1721328225; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0m2uBM+U8AS77LVPTYKoNgs2HaswD2QQPGG4Lpi8Vq0=;
+        b=LWnr5ypLHzQCcHoYSeFXj30fNb3JVOyxBTURLmDHINtGgfZUdCnbSb0MRolePr0V3f
+         BbDDqDtUlpcMZkF+iXphxyCLAlxkYsgLvmhvCh3GP0ud6AGaZYbP54Spgnc/O5G8OxOi
+         MP9O5wPeGid4EKmg5i0TGNza9D2Yar+9jSFdrfoV49KLkaBgO+2xd/XGqWz/3jHRNEs2
+         fC58XJFKXwpsuhi8Om2higW7HXExaEafbmnx+46Bjow26FvwAbyqjk1dpfh2lGF8blup
+         dFcifBI1xOLBoKHz0lCR7/oH9oMjMsX0wy1egLRE0/mJOZciJCRJyyZpUBMzF73kb+q9
+         6BhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720723423; x=1721328223;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3zhClhvpPNqATRYbpd+ioAAzMsjmnnU/sxkMD4kSrFY=;
-        b=fuQsu+XIM2xlB9REGexihV5KoWaQJTNd7XiYAs/9pkQlJl11l7mYmm0ckrHGSiStqY
-         /NZhNakXFtmo6etTtryltpHPyLGz9Ep2I50e/7EXMhq1CzX7ilnaJt4IelqEs1anXdk9
-         rNuDqoU+rcq/8E+no6pN3iuZJY4H7PLUfa+h/4zZLmq9cW9ler/pSz38bpSE6XRqKNcW
-         a32nN1DX9+QS21ZdQejyXy8f4DQumgWm0E7cVCAhVIjsOpPnzGDKCtlAUjzxo149KcKY
-         O0oCf1Ex6rlEbVQ2BFBW3UFaqzKPzA9sYo6/FYedIig/M39GxFBeThWcRoci04O0doS5
-         FBkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXkiDECM03FvKN0FM5buCk2d02XglncwVJQXI9wipLQukbaAJB8NWCLUCBnBH8vCJ2Ypgc6mkn3mKMg2MF3fydtQV6jzR4n
-X-Gm-Message-State: AOJu0YzCWnGP+t2VMOqK+zMI61EsyvkvH3sYREz9Q8x/iuA9KkpTQNbf
-	+8RN8ExT1vFgpPdVrTQzRXtX1ckgipUUdif63eHVJ+o8XNP/mFcHUogMoX0hdw8=
-X-Google-Smtp-Source: AGHT+IHbMJlYu8v+88MiMSLDVisiFNvHk7UjUJGHGFr5mCi+Op3ZfC971tKUgWHZ0npBDesnbus+mw==
-X-Received: by 2002:a05:6512:4013:b0:52c:dc06:d4ad with SMTP id 2adb3069b0e04-52ecb7ea46fmr122543e87.6.1720723422969;
-        Thu, 11 Jul 2024 11:43:42 -0700 (PDT)
-Received: from localhost ([171.25.193.79])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52eb9061be5sm1020841e87.123.2024.07.11.11.43.41
+        d=1e100.net; s=20230601; t=1720723425; x=1721328225;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0m2uBM+U8AS77LVPTYKoNgs2HaswD2QQPGG4Lpi8Vq0=;
+        b=PMRLL0eK2GkoPvS5TWkeb2YYs6ijP6j8fORMd/oBmbOwKd0RIo1CiAU4cJO1ZHaRZB
+         9A9dHhUu039aHQbcq1NdMr1fbxz94YkiSclV2RhhRMAOy4N8wPufYZwvoIgbLLsehUUQ
+         wZfppZDvwnoaVckhPyPrqNzEbbpelg547KluYlzkq+P+oR/X20QRwwgUVvos7/TmfLPZ
+         F5DSf0MYFf/+V6ySYVA4KzdkNFg3a6pHqfcggT56/bUmp5X77+sRMw5cqEOsr9wQ6GJP
+         Z0BRf1scmU989ZdtkLJJnrhCmcF30gII04IaYo8OuFms4SUD+OBYxBqJm3fjHJcbGqKZ
+         wmCg==
+X-Forwarded-Encrypted: i=1; AJvYcCXJUnvXSdA372nLk6yTYZ3gOm8/lXYS0y7s/OrV5x6U0y/p8+V/uv4Ku0fAp+w6ATm46V5PvU6CpXPFp/hfXtCziAFj6/Sv
+X-Gm-Message-State: AOJu0Yw54KsiED23J1kEn8AzmVmahh1az5ZWSrNEoeUbo8Skr5PtPe3o
+	ppQCcX+oUEhCOboXolO9Fk+fxgPw+Hf+5CXO4w+DpVfPLSFcFjDw
+X-Google-Smtp-Source: AGHT+IExYWEOegnzyQec1JKJfO4Uc+E4WAuVwBoSKr/1izxLEK4PFQfwGcMORSMN/l6c9XQlf4lUsg==
+X-Received: by 2002:a05:600c:6d4:b0:426:6b85:bafb with SMTP id 5b1f17b1804b1-426707db6e7mr51812125e9.20.1720723425161;
+        Thu, 11 Jul 2024 11:43:45 -0700 (PDT)
+Received: from localhost (algrothendieck.nos-oignons.net. [80.67.172.162])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42725eca905sm104911255e9.11.2024.07.11.11.43.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jul 2024 11:43:42 -0700 (PDT)
+        Thu, 11 Jul 2024 11:43:44 -0700 (PDT)
 From: Maxim Mikityanskiy <maxtram95@gmail.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
@@ -75,10 +77,12 @@ Cc: Eduard Zingerman <eddyz87@gmail.com>,
 	John Fastabend <john.fastabend@gmail.com>,
 	stable@vger.kernel.org,
 	Maxim Mikityanskiy <maxim@isovalent.com>
-Subject: [PATCH stable 5.10] bpf: Allow reads from uninit stack
-Date: Thu, 11 Jul 2024 21:43:21 +0300
-Message-ID: <20240711184323.2355017-1-maxtram95@gmail.com>
+Subject: [PATCH stable 5.15] bpf: Allow reads from uninit stack
+Date: Thu, 11 Jul 2024 21:43:22 +0300
+Message-ID: <20240711184323.2355017-2-maxtram95@gmail.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240711184323.2355017-1-maxtram95@gmail.com>
+References: <20240711184323.2355017-1-maxtram95@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -261,7 +265,7 @@ Backporting to address the complexity regression introduced by commit
 range info"), that affects Cilium built with LLVM 18.
 
  kernel/bpf/verifier.c                         |  11 +-
- .../selftests/bpf/progs/test_global_func10.c  |  31 +++
+ .../selftests/bpf/progs/test_global_func10.c  |   9 +-
  tools/testing/selftests/bpf/verifier/calls.c  |  13 +-
  .../bpf/verifier/helper_access_var_len.c      | 104 ++++++---
  .../testing/selftests/bpf/verifier/int_ptr.c  |   9 +-
@@ -269,14 +273,13 @@ range info"), that affects Cilium built with LLVM 18.
  tools/testing/selftests/bpf/verifier/sock.c   |  27 ---
  .../selftests/bpf/verifier/spill_fill.c       | 211 ++++++++++++++++++
  .../testing/selftests/bpf/verifier/var_off.c  |  52 -----
- 9 files changed, 342 insertions(+), 129 deletions(-)
- create mode 100644 tools/testing/selftests/bpf/progs/test_global_func10.c
+ 9 files changed, 316 insertions(+), 133 deletions(-)
 
 diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index ad115ccc2fe0..60db311480d0 100644
+index b9f63c4b8598..88b38db5f626 100644
 --- a/kernel/bpf/verifier.c
 +++ b/kernel/bpf/verifier.c
-@@ -2807,6 +2807,8 @@ static int check_stack_read_fixed_off(struct bpf_verifier_env *env,
+@@ -3159,6 +3159,8 @@ static int check_stack_read_fixed_off(struct bpf_verifier_env *env,
  						continue;
  					if (type == STACK_MISC)
  						continue;
@@ -285,7 +288,7 @@ index ad115ccc2fe0..60db311480d0 100644
  					verbose(env, "invalid read from stack off %d+%d size %d\n",
  						off, i, size);
  					return -EACCES;
-@@ -2844,6 +2846,8 @@ static int check_stack_read_fixed_off(struct bpf_verifier_env *env,
+@@ -3196,6 +3198,8 @@ static int check_stack_read_fixed_off(struct bpf_verifier_env *env,
  				continue;
  			if (type == STACK_ZERO)
  				continue;
@@ -294,7 +297,7 @@ index ad115ccc2fe0..60db311480d0 100644
  			verbose(env, "invalid read from stack off %d+%d size %d\n",
  				off, i, size);
  			return -EACCES;
-@@ -4300,7 +4304,8 @@ static int check_stack_range_initialized(
+@@ -4782,7 +4786,8 @@ static int check_stack_range_initialized(
  		stype = &state->stack[spi].slot_type[slot % BPF_REG_SIZE];
  		if (*stype == STACK_MISC)
  			goto mark;
@@ -304,7 +307,7 @@ index ad115ccc2fe0..60db311480d0 100644
  			if (clobber) {
  				/* helper can write anything into the stack */
  				*stype = STACK_MISC;
-@@ -9492,6 +9497,10 @@ static bool stacksafe(struct bpf_verifier_env *env, struct bpf_func_state *old,
+@@ -10625,6 +10630,10 @@ static bool stacksafe(struct bpf_verifier_env *env, struct bpf_func_state *old,
  		if (old->stack[spi].slot_type[i % BPF_REG_SIZE] == STACK_INVALID)
  			continue;
  
@@ -316,47 +319,40 @@ index ad115ccc2fe0..60db311480d0 100644
  		 * and these slots were used
  		 */
 diff --git a/tools/testing/selftests/bpf/progs/test_global_func10.c b/tools/testing/selftests/bpf/progs/test_global_func10.c
-new file mode 100644
-index 000000000000..8fba3f3649e2
---- /dev/null
+index 97b7031d0e22..d361eba167f6 100644
+--- a/tools/testing/selftests/bpf/progs/test_global_func10.c
 +++ b/tools/testing/selftests/bpf/progs/test_global_func10.c
-@@ -0,0 +1,31 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <stddef.h>
-+#include <linux/bpf.h>
-+#include <bpf/bpf_helpers.h>
-+#include "bpf_misc.h"
-+
-+struct Small {
+@@ -4,12 +4,12 @@
+ #include <bpf/bpf_helpers.h>
+ 
+ struct Small {
+-	int x;
 +	long x;
-+};
-+
-+struct Big {
+ };
+ 
+ struct Big {
+-	int x;
+-	int y;
 +	long x;
 +	long y;
-+};
-+
-+__noinline int foo(const struct Big *big)
-+{
-+	if (!big)
-+		return 0;
-+
-+	return bpf_get_prandom_u32() < big->y;
-+}
-+
-+SEC("cgroup_skb/ingress")
+ };
+ 
+ __noinline int foo(const struct Big *big)
+@@ -21,7 +21,8 @@ __noinline int foo(const struct Big *big)
+ }
+ 
+ SEC("cgroup_skb/ingress")
+-int test_cls(struct __sk_buff *skb)
 +__failure __msg("invalid indirect access to stack")
 +int global_func10(struct __sk_buff *skb)
-+{
-+	const struct Small small = {.x = skb->len };
-+
-+	return foo((struct Big *)&small) ? 1 : 0;
-+}
+ {
+ 	const struct Small small = {.x = skb->len };
+ 
 diff --git a/tools/testing/selftests/bpf/verifier/calls.c b/tools/testing/selftests/bpf/verifier/calls.c
-index eb888c8479c3..4b0628cd2d03 100644
+index 2e701e7f6968..5d1e01d54a82 100644
 --- a/tools/testing/selftests/bpf/verifier/calls.c
 +++ b/tools/testing/selftests/bpf/verifier/calls.c
-@@ -1948,19 +1948,22 @@
+@@ -1967,19 +1967,22 @@
  	 * that fp-8 stack slot was unused in the fall-through
  	 * branch and will accept the program incorrectly
  	 */
