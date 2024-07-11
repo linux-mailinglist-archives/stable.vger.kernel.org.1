@@ -1,185 +1,215 @@
-Return-Path: <stable+bounces-59165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F081992F0C8
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 23:14:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC9192F101
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 23:20:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 710F21F229FA
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 21:14:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93444B230AE
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 21:20:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0215119EEC6;
-	Thu, 11 Jul 2024 21:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF35519EED7;
+	Thu, 11 Jul 2024 21:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cakBVmqj"
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="eUfDszE7"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F3F51004;
-	Thu, 11 Jul 2024 21:14:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F561A00F1
+	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 21:18:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720732462; cv=none; b=f3bVLfjctUrD15fLd2j5XHYRe/S6WpRJ++Qs2rLVV0EorKEJFmepMw3QAtLjnFS34Znx0PsyMIykRsqgHLTAkyfqC513QXgaDxPz9BILd+MQYrW2D4gWJRpRWCNdqtUzWRVAdGVb9cFS5CwD6OjRE3YhtcONGhpdR7kWVjcDo3s=
+	t=1720732727; cv=none; b=EW7O7z9W7opFVQ+0oNzaOulJypY8AXLXyVIdlLeTcxjqGKPAUKF2TICXCCCOHCR7EYuWgFHEpkOxAAnkR707p/wdP2CdRT0TjdW8TIKIKZnysIDeFWISPpR47EuwuMEqGjPxJieyOyfkvfG6tuGnInqAki5S29wf5P4sWdvpX1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720732462; c=relaxed/simple;
-	bh=W2hf6xC3VFwwfj1PmmS3ARCLCbbL+jcjKAxdaPfr4jo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aImR3xFa8+2sZqZvmK6LJt3U4w/Ln9HVySNw4YuldINnHJ+zMsWYCWmNALw3PcKPPvUlGKIMDj0eqDq78FVJWtlD9xD3iavix0gpQeh0wZaQ5chGs354HCUDYAcqtjXZe6t+3sGVvKaASNxunUGLCbXX7snDbHmHPfvA1B37H/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cakBVmqj; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720732461; x=1752268461;
-  h=date:from:to:cc:subject:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=W2hf6xC3VFwwfj1PmmS3ARCLCbbL+jcjKAxdaPfr4jo=;
-  b=cakBVmqj1+pOmAKPoAUapNI4LuM5uIsDwZ4r5MhI5rSRwbnTV6ApfAx7
-   qk0bk8xTEr3SCWd1dGdLg4XrAUTkibQZCfisulwyE00X3n+rH4RyONgAX
-   jyFszv/USYJJxHrFbCHkJZboJPEuOqHDW9/2/0igdEytoaX7D6CXOwh37
-   Fsqe54Imb+7F3r5z/hdWanBGTG5GSvLq7AZZKEc1s1FMc5z54PfmVIt+7
-   irRvaDw7mNxsaLPp6rARQaayJdQtY4wdXHkREvMpHCHoLBZVszKWO0qto
-   XhWN+dZcdbIiGDilVzasBfh8NLcpMoVv3PtimstYQKYyXyWbHaJrkN5r1
-   Q==;
-X-CSE-ConnectionGUID: 3HVoAmlCROmItBYwpOkzEQ==
-X-CSE-MsgGUID: 8LFzu2QmTGydyFu5zEKpIw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11130"; a="29300097"
-X-IronPort-AV: E=Sophos;i="6.09,201,1716274800"; 
-   d="scan'208";a="29300097"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2024 14:14:20 -0700
-X-CSE-ConnectionGUID: nbw7fb/RRtild7EulLGtBA==
-X-CSE-MsgGUID: gZ3v31NMRtybnAkf//dHHw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,201,1716274800"; 
-   d="scan'208";a="53627003"
-Received: from hsuanchi-mobl1.amr.corp.intel.com (HELO peluse-desk5) ([10.213.173.245])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2024 14:14:20 -0700
-Date: Thu, 11 Jul 2024 14:14:18 -0700
-From: Paul E Luse <paul.e.luse@linux.intel.com>
-To: Mateusz =?UTF-8?B?Sm/FhGN6eWs=?= <mat.jonczyk@o2.pl>
-Cc: linux-raid@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Song Liu <song@kernel.org>, Yu Kuai
- <yukuai3@huawei.com>, Xiao Ni <xni@redhat.com>, Mariusz Tkaczyk
- <mariusz.tkaczyk@linux.intel.com>
-Subject: Re: [PATCH] md/raid1: set max_sectors during early return from
- choose_slow_rdev()
-Message-ID: <20240711141418.196c8b04@peluse-desk5>
-In-Reply-To: <20240711202316.10775-1-mat.jonczyk@o2.pl>
-References: <349e4894-b6ea-6bc4-b040-4a816b6960ab@huaweicloud.com>
-	<20240711202316.10775-1-mat.jonczyk@o2.pl>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; aarch64-redhat-linux-gnu)
+	s=arc-20240116; t=1720732727; c=relaxed/simple;
+	bh=sV9UkDpgdJI5nO8J8h6KzE9TPuuDtH2Js+kWDGsoqiA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T5I05AZN3jPP8HX/qark2ETO9bgAvHKZ0JjbE35bFjMDmaEYXnp1Bb9Oq6Z0qfLvkWD4FXMaRXWewHK68vPrdELcyy+bVDldv2wfdM7TLEisoFwhX98rF25coTUSM5Kfx2NtnlqA9lcZLLThjbBDd829ejCz3YnaKFQYjhmxn1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=eUfDszE7; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2ca867b23bfso1047301a91.2
+        for <stable@vger.kernel.org>; Thu, 11 Jul 2024 14:18:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1720732725; x=1721337525; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j9e6a5/Mi00lPqSFUCY2ruWznGIW0bflPYVcqQ/6g94=;
+        b=eUfDszE7mKIwJdKcaH6UXmDUtf0R5l2Wq256el79N3S2PUfleL+kGfaAYUtS87pDM0
+         twaCAk5ExyXrk3XYlZ2qZxIVKaTXBmvb6eVRtCU7GIio6OkZZCRVpsDvk/tSXFiCED2j
+         Kl9V93XdnF4qYODBnFDNEr97DY7fhhFCzQKo7cY4ZmSSXuASr2MjZUKWxaJDJ0W08HJg
+         SqFQk8szEOd85KIYKR2D4NvCppbtSvam9I6WMIXiKaXJIHkolp8lvNWykbIXPZAVhO9Q
+         nDimd6JvjdyXHgnUMnmG87kylm+PKjPUVj5pxOtjNX2cFJe+M4sY3UNlhpKqxLba/bsq
+         NXRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720732725; x=1721337525;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=j9e6a5/Mi00lPqSFUCY2ruWznGIW0bflPYVcqQ/6g94=;
+        b=BvPY2lXHlGIPfwIbcFtm6agJQiX4u4Ob4ie1IJehvYbBB3l3cm4MzVekPWRqfy2qm1
+         GQyPvysZl0j8xRmIFh0T8fGP4NOySnjuK7k1kcsu73ZVKYQ+IcS6bj0376exTvXf6O10
+         hVAe3hCoGsNs34ZgCk029NnbTlhFtCLeDaqCHxMHUxavPssSeM2PqYfHrUZX7o9bRx22
+         yWkZ62dCRhdNO4yxHcj/090pVJ+KNNqQlR+PyWhQSuAiUqzZmiB36U1GlBN8FBPN1aYi
+         +XIVSKGT/NcmPhkiQ8bvwnziUZuAUIdltK9KI6R9d5BULKgSwDTjxz75odbg1Ka/CGan
+         ZxUw==
+X-Forwarded-Encrypted: i=1; AJvYcCXr9K7Rnwn66ugWQeMd86FMH/zrmBQ6CZTirwio1hxVFeQkDg+8q8rkvtr6Qm7XuE9QyUSXBSXMIZ4olCjnziCcnu5CwHh9
+X-Gm-Message-State: AOJu0YzA8QFzlC6s9Ccj2FYTc20OxxBl7tahp9ijxG5QkAe1xda/barU
+	vAZM9tujDOrwK9/IQxRaukPi4Lg4eryCOU/f/ABOQUnOSCG5owYbJ01UooVWerp7e+Tyq+mw2BC
+	hmNEfoOTkvCK+8KZDawzxnqu3V8lvdfnjI355ocgawjcT3pRc02uNHvVT
+X-Google-Smtp-Source: AGHT+IGiV5enzDmTVIOm2s/WT/YwkVXtCf2KBIl6kclbmBVx+zOZ2q3ti8a3fIkoikgcfxRFEME+6X63EW0yPUphrO8=
+X-Received: by 2002:a17:90b:1049:b0:2c9:8d58:1d31 with SMTP id
+ 98e67ed59e1d1-2ca35bdc26emr7540332a91.1.1720732725432; Thu, 11 Jul 2024
+ 14:18:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20240709110658.146853929@linuxfoundation.org> <20240709110659.948165869@linuxfoundation.org>
+ <8B1717DB-8C4A-47EE-B28C-170B630C4639@cloudflare.com> <dfe78e1b-eaf9-41e6-8513-59efc02633fd@nvidia.com>
+In-Reply-To: <dfe78e1b-eaf9-41e6-8513-59efc02633fd@nvidia.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
+Date: Thu, 11 Jul 2024 22:18:34 +0100
+Message-ID: <CALrw=nHVvVNA5M7=jAspdcOnmDFz=zL6axC6vv6j=t1HbsaO9Q@mail.gmail.com>
+Subject: Re: [PATCH 6.6 046/139] selftests/net: fix uninitialized variables
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	patches@lists.linux.dev, Willem de Bruijn <willemb@google.com>, 
+	Mat Martineau <martineau@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>, 
+	kernel-team@cloudflare.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 11 Jul 2024 22:23:16 +0200
-Mateusz Jo=C5=84czyk <mat.jonczyk@o2.pl> wrote:
+On Thu, Jul 11, 2024 at 8:16=E2=80=AFPM John Hubbard <jhubbard@nvidia.com> =
+wrote:
+>
+>
+> On 7/11/24 8:31 AM, Ignat Korchagin wrote:
+> > Hi,
+> >> On 9 Jul 2024, at 12:09, Greg Kroah-Hartman <gregkh@linuxfoundation.or=
+g> wrote:
+> >>
+> >> 6.6-stable review patch.  If anyone has any objections, please let me =
+know.
+> >>
+> >> ------------------
+> >>
+> >> From: John Hubbard <jhubbard@nvidia.com>
+> >>
+> >> [ Upstream commit eb709b5f6536636dfb87b85ded0b2af9bb6cd9e6 ]
+> >>
+> >> When building with clang, via:
+> >>
+> >>     make LLVM=3D1 -C tools/testing/selftest
+> >>
+> >> ...clang warns about three variables that are not initialized in all
+> >> cases:
+> >>
+> >> 1) The opt_ipproto_off variable is used uninitialized if "testname" is
+> >> not "ip". Willem de Bruijn pointed out that this is an actual bug, and
+> >> suggested the fix that I'm using here (thanks!).
+> >>
+> >> 2) The addr_len is used uninitialized, but only in the assert case,
+> >>    which bails out, so this is harmless.
+> >>
+> >> 3) The family variable in add_listener() is only used uninitialized in
+> >>    the error case (neither IPv4 nor IPv6 is specified), so it's also
+> >>    harmless.
+> >>
+> >> Fix by initializing each variable.
+> >>
+> >> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+> >> Reviewed-by: Willem de Bruijn <willemb@google.com>
+> >> Acked-by: Mat Martineau <martineau@kernel.org>
+> >> Link: https://lore.kernel.org/r/20240506190204.28497-1-jhubbard@nvidia=
+.com
+> >> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> >> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> >> ---
+> >> tools/testing/selftests/net/gro.c                 | 3 +++
+> >> tools/testing/selftests/net/ip_local_port_range.c | 2 +-
+> >> tools/testing/selftests/net/mptcp/pm_nl_ctl.c     | 2 +-
+> >> 3 files changed, 5 insertions(+), 2 deletions(-)
+> >>
+> >> diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftes=
+ts/net/gro.c
+> >> index 30024d0ed3739..b204df4f33322 100644
+> >> --- a/tools/testing/selftests/net/gro.c
+> >> +++ b/tools/testing/selftests/net/gro.c
+> >> @@ -113,6 +113,9 @@ static void setup_sock_filter(int fd)
+> >> next_off =3D offsetof(struct ipv6hdr, nexthdr);
+> >> ipproto_off =3D ETH_HLEN + next_off;
+> >>
+> >> + /* Overridden later if exthdrs are used: */
+> >> + opt_ipproto_off =3D ipproto_off;
+> >> +
+> >
+> > This breaks selftest compilation on 6.6, because opt_ipproto_off is not
+> > defined in the first place in 6.6
+>
+> Let's just drop this patch for 6.6, then. Thanks for noticing and analyzi=
+ng,
+> Ignat!
 
-> Linux 6.9+ is unable to start a degraded RAID1 array with one drive,
-> when that drive has a write-mostly flag set. During such an attempt,
-> the following assertion in bio_split() is hit:
->=20
+We noticed on 6.6 because we run some selftests for this stable branch, but
+by the looks of it the patch needs
+4e321d590cec ("selftests/net: fix GRO coalesce test and add ext header
+coalesce tests")
+so it will be broken for every stable release below 6.8
 
-Nice catch and good patch :)  Kwai?
+Ignat
 
--Paul
-
-> 	BUG_ON(sectors <=3D 0);
->=20
-> Call Trace:
-> 	? bio_split+0x96/0xb0
-> 	? exc_invalid_op+0x53/0x70
-> 	? bio_split+0x96/0xb0
-> 	? asm_exc_invalid_op+0x1b/0x20
-> 	? bio_split+0x96/0xb0
-> 	? raid1_read_request+0x890/0xd20
-> 	? __call_rcu_common.constprop.0+0x97/0x260
-> 	raid1_make_request+0x81/0xce0
-> 	? __get_random_u32_below+0x17/0x70
-> 	? new_slab+0x2b3/0x580
-> 	md_handle_request+0x77/0x210
-> 	md_submit_bio+0x62/0xa0
-> 	__submit_bio+0x17b/0x230
-> 	submit_bio_noacct_nocheck+0x18e/0x3c0
-> 	submit_bio_noacct+0x244/0x670
->=20
-> After investigation, it turned out that choose_slow_rdev() does not
-> set the value of max_sectors in some cases and because of it,
-> raid1_read_request calls bio_split with sectors =3D=3D 0.
->=20
-> Fix it by filling in this variable.
->=20
-> This bug was introduced in
-> commit dfa8ecd167c1 ("md/raid1: factor out choose_slow_rdev() from
-> read_balance()") but apparently hidden until
-> commit 0091c5a269ec ("md/raid1: factor out helpers to choose the best
-> rdev from read_balance()") shortly thereafter.
->=20
-> Cc: stable@vger.kernel.org # 6.9.x+
-> Signed-off-by: Mateusz Jo=C5=84czyk <mat.jonczyk@o2.pl>
-> Fixes: dfa8ecd167c1 ("md/raid1: factor out choose_slow_rdev() from
-> read_balance()") Cc: Song Liu <song@kernel.org>
-> Cc: Yu Kuai <yukuai3@huawei.com>
-> Cc: Paul Luse <paul.e.luse@linux.intel.com>
-> Cc: Xiao Ni <xni@redhat.com>
-> Cc: Mariusz Tkaczyk <mariusz.tkaczyk@linux.intel.com>
-> Link:
-> https://lore.kernel.org/linux-raid/20240706143038.7253-1-mat.jonczyk@o2.p=
-l/
->=20
+>
+> thanks,
 > --
->=20
-> Tested on both Linux 6.10 and 6.9.8.
->=20
-> Inside a VM, mdadm testsuite for RAID1 on 6.10 did not find any
-> problems: ./test --dev=3Dloop --no-error --raidtype=3Draid1
-> (on 6.9.8 there was one failure, caused by external bitmap support not
-> compiled in).
->=20
-> Notes:
-> - I was reliably getting deadlocks when adding / removing devices
->   on such an array - while the array was loaded with fsstress with 20
->   concurrent processes. When the array was idle or loaded with
-> fsstress with 8 processes, no such deadlocks happened in my tests.
->   This occurred also on unpatched Linux 6.8.0 though, but not on
->   6.1.97-rc1, so this is likely an independent regression (to be
->   investigated).
-> - I was also getting deadlocks when adding / removing the bitmap on
-> the array in similar conditions - this happened on Linux 6.1.97-rc1
->   also though. fsstress with 8 concurrent processes did cause it only
->   once during many tests.
-> - in my testing, there was once a problem with hot adding an
->   internal bitmap to the array:
-> 	mdadm: Cannot add bitmap while array is resyncing or
-> reshaping etc. mdadm: failed to set internal bitmap.
->   even though no such reshaping was happening according to
-> /proc/mdstat. This seems unrelated, though.
-> ---
->  drivers/md/raid1.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-> index 7b8a71ca66dd..82f70a4ce6ed 100644
-> --- a/drivers/md/raid1.c
-> +++ b/drivers/md/raid1.c
-> @@ -680,6 +680,7 @@ static int choose_slow_rdev(struct r1conf *conf,
-> struct r1bio *r1_bio, len =3D r1_bio->sectors;
->  		read_len =3D raid1_check_read_range(rdev, this_sector,
-> &len); if (read_len =3D=3D r1_bio->sectors) {
-> +			*max_sectors =3D read_len;
->  			update_read_sectors(conf, disk, this_sector,
-> read_len); return disk;
->  		}
->=20
-> base-commit: 256abd8e550ce977b728be79a74e1729438b4948
-
+> John Hubbard
+> NVIDIA
+>
+>
+> >
+> >> if (strcmp(testname, "ip") =3D=3D 0) {
+> >> if (proto =3D=3D PF_INET)
+> >> optlen =3D sizeof(struct ip_timestamp);
+> >> diff --git a/tools/testing/selftests/net/ip_local_port_range.c b/tools=
+/testing/selftests/net/ip_local_port_range.c
+> >> index 75e3fdacdf735..2465ff5bb3a8e 100644
+> >> --- a/tools/testing/selftests/net/ip_local_port_range.c
+> >> +++ b/tools/testing/selftests/net/ip_local_port_range.c
+> >> @@ -343,7 +343,7 @@ TEST_F(ip_local_port_range, late_bind)
+> >> struct sockaddr_in v4;
+> >> struct sockaddr_in6 v6;
+> >> } addr;
+> >> - socklen_t addr_len;
+> >> + socklen_t addr_len =3D 0;
+> >> const int one =3D 1;
+> >> int fd, err;
+> >> __u32 range;
+> >> diff --git a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c b/tools/tes=
+ting/selftests/net/mptcp/pm_nl_ctl.c
+> >> index 49369c4a5f261..763402dd17742 100644
+> >> --- a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
+> >> +++ b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
+> >> @@ -1239,7 +1239,7 @@ int add_listener(int argc, char *argv[])
+> >> struct sockaddr_storage addr;
+> >> struct sockaddr_in6 *a6;
+> >> struct sockaddr_in *a4;
+> >> - u_int16_t family;
+> >> + u_int16_t family =3D AF_UNSPEC;
+> >> int enable =3D 1;
+> >> int sock;
+> >> int err;
+> >> --
+> >> 2.43.0
+> >>
+> >
+> > Ignat
+> >
+>
+>
 
