@@ -1,166 +1,199 @@
-Return-Path: <stable+bounces-59163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDDAE92F04D
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 22:30:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F06BA92F046
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 22:25:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 715641F2310E
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 20:30:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45F0FB22A21
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 20:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A792D19E82B;
-	Thu, 11 Jul 2024 20:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D1419EEAC;
+	Thu, 11 Jul 2024 20:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="phnp6ar0"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="kZIcqYJ7"
 X-Original-To: stable@vger.kernel.org
-Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018E913D626
-	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 20:30:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7943419E82A
+	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 20:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720729811; cv=none; b=EgNF+xevOi2MVUGDjb79CKjd0cUm6nCYsnjx+CzuNY6/UeqDcceg0MErPdlHXkYoUbni3OMk8q9NVaUkyzr1ossV4HHqW8C23I/ecMAN55Bsa1LUM3Hxd+5pLzfs64WuhMKE3fcBaNig9etGdQDYA/CiZjmzByHOmsRL9qSKngE=
+	t=1720729522; cv=none; b=P+cipSQ74VIU+1uFpCHVxfZftUS3/oXh8O1+D512YizgOH3Z2v7rzvB1ap7BZFbEPVIpY80iY5fOuisDCF5EFrNW+3sLnr+IaC9WC7CNlZSNRQlmAUCy59RP72ZMctgXS7AMMAr4yiBLvr+DT4GTbYpa4AvsvwnkLTkk2CLYMLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720729811; c=relaxed/simple;
-	bh=Q8J4u+TRue0SPONN75ke4O5RBuo7YiRTdfcxYd743y0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YppXT1VcHOLulcIbSK9AkSLFXbWYcv8cnYM5Bc72BigwXVtKCtzhMP92GWB0xEMd1fWBbZgtsRkP5JgWkpCiaqxs/e5wRkj/SeQwRmebZoebY1i6OMAHJdnizZVbq7oGdoz8hC3xYT/zXLOoTIVOSs24W4wfXfE8asgDuMBEw78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b=phnp6ar0; arc=none smtp.client-ip=193.222.135.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
-Received: (wp-smtpd smtp.tlen.pl 38260 invoked from network); 11 Jul 2024 22:23:25 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
-          t=1720729406; bh=N6X9s7DMvS4stOXC63Qh/ErDHC3LOgu0EjpBk7+EkOE=;
-          h=From:To:Cc:Subject;
-          b=phnp6ar0kMcwf1akCDf+9+zLCRr/I1uB3sshilQ/BMeuDTajBw+bw2If7k09R6kv8
-           JGGxCQncjJiftKxWL0qs4bAczezOZcTsUB51wvvguP0tU1x9rUlVk6x0Q8nAUXA+Ay
-           gQwRCYVp8gmPVd6GgXbPhGPWkmjAH4zaZOi3mKAk=
-Received: from aafe223.neoplus.adsl.tpnet.pl (HELO localhost.localdomain) (mat.jonczyk@o2.pl@[83.4.134.223])
-          (envelope-sender <mat.jonczyk@o2.pl>)
-          by smtp.tlen.pl (WP-SMTPD) with SMTP
-          for <linux-raid@vger.kernel.org>; 11 Jul 2024 22:23:25 +0200
-From: =?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
-To: linux-raid@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: =?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
-	stable@vger.kernel.org,
-	Song Liu <song@kernel.org>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Paul Luse <paul.e.luse@linux.intel.com>,
-	Xiao Ni <xni@redhat.com>,
-	Mariusz Tkaczyk <mariusz.tkaczyk@linux.intel.com>
-Subject: [PATCH] md/raid1: set max_sectors during early return from choose_slow_rdev()
-Date: Thu, 11 Jul 2024 22:23:16 +0200
-Message-Id: <20240711202316.10775-1-mat.jonczyk@o2.pl>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <349e4894-b6ea-6bc4-b040-4a816b6960ab@huaweicloud.com>
-References: <349e4894-b6ea-6bc4-b040-4a816b6960ab@huaweicloud.com>
+	s=arc-20240116; t=1720729522; c=relaxed/simple;
+	bh=8bclKTm0mQjAtWAC6LCIUWGn+6C2ewID31E27vLw+5I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LvRnYRob5YRltYs213CQxspRf3geEFOi00r435iaBZG9ZglXklw2ijYl22usib438/2qjJHdDcoeFruhnoQpfzIxhegbyh1dbJ69NXusjDt3Ef8tFvVuFH29Q8yAR6f+z9QcGHN8aqP/q8olwYcXW6x/oYQCclHEG6SvfaG/tmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=kZIcqYJ7; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-765590154b4so871206a12.0
+        for <stable@vger.kernel.org>; Thu, 11 Jul 2024 13:25:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1720729520; x=1721334320; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iMO3QJaNwKPEg2fkW9ocZ2ZzNc4qbi0eB4IVGf7OvXg=;
+        b=kZIcqYJ7b/9cyKAWeBRIyVZIhogyPJn8VDyodMfD2HELSbV08Tu+Q7tbPuSFGUrhzc
+         rz8pduoj3KReGbpNaAHHy5tJ12s3N5lZsGOk1tTxoYSHx6WBgi5VQYGubna81BPclV1E
+         gOxIMmJe6QVt2RTnpYY+fPHo/t7TvhZOm3iJ6iuLWLuqKygFYhIltmJcGTDugrIzR3e0
+         UoZ+ciLmDuTpLhAo7bArPSAlC6AIX0RF4PzdrMnSE5qkXJXupAntI0qeHY4PF1VSee18
+         mcVA4qPU6ovg8yY/4PThpcBdig3Nc1IedfTaBScqOfy2tDqoopdABkO1PXHB/A8kvoG6
+         xOrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720729520; x=1721334320;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iMO3QJaNwKPEg2fkW9ocZ2ZzNc4qbi0eB4IVGf7OvXg=;
+        b=xHYa52+xE+sKbNhWUeskocSlY2uKiKrbXO5T5dhd/JfYlAARnuaRPlIAHlpXNBQJt2
+         KXiufTVi0j8Dv5qO1dVsEjVlGWz86IOBfNDKdHcxeHWtC5bXj2wDB0YmykFhwQb0f70+
+         po16prLFmhrq8iq6+6MuZMq8itu18AnsMdFZhOYhEorl7FzzTku1qaW+OzFDHJvFMYp/
+         3bGmmBfbxAuAK2fMubRrt+IRMJFxJi6byMOh3jqrx7ydj1TUypewpFPAiCaIZW5tAXtX
+         IbEqqkeeEPUfpiMIKM+fW/mwH66GGGl/ze7z0JgNPzwVWN4gtH/w4nw4kVvUss3QbF6X
+         Wy3g==
+X-Forwarded-Encrypted: i=1; AJvYcCWwTvIQ1zQMjzAbbn+PRrtWqHLJ3r8CgTeKSi7kIEsg3ACm3KrwLtcgsI+DHiIWEIMXej2sj/PpXYpZtyUyYGYE5Ru/aZwW
+X-Gm-Message-State: AOJu0Yy08CXJAiXciDeL8u0zmgyiXSdfr0JDx3XavnXYJypKcYjtHqcu
+	iS9gaqUoSrqWvnxXmJ5fXe2XaAfpsfdF9y3oF2fX1EZ7kDEeCEa4DHgJlq9aZ8g=
+X-Google-Smtp-Source: AGHT+IGd8D3/XoSU3Ju/bMAEpeWWMsStCF3C8xFRAptThUUyXilcXDIM/pIU++epptacQ5dkqr485g==
+X-Received: by 2002:a05:6a21:1690:b0:1c0:e322:e8c5 with SMTP id adf61e73a8af0-1c29821b544mr9879373637.26.1720729519712;
+        Thu, 11 Jul 2024 13:25:19 -0700 (PDT)
+Received: from [10.4.10.38] (pool-108-26-179-17.bstnma.fios.verizon.net. [108.26.179.17])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fbb6ad3460sm54408745ad.295.2024.07.11.13.25.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Jul 2024 13:25:19 -0700 (PDT)
+Message-ID: <ed410b0f-0062-4fbb-97e0-86fd492fb5ca@rivosinc.com>
+Date: Thu, 11 Jul 2024 16:25:01 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/8] RISC-V: Check scalar unaligned access on all CPUs
+To: Evan Green <evan@rivosinc.com>
+Cc: linux-riscv@lists.infradead.org, Jonathan Corbet <corbet@lwn.net>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?=
+ <cleger@rivosinc.com>, Andrew Jones <ajones@ventanamicro.com>,
+ Charlie Jenkins <charlie@rivosinc.com>, Xiao Wang <xiao.w.wang@intel.com>,
+ Andy Chiu <andy.chiu@sifive.com>, Eric Biggers <ebiggers@google.com>,
+ Greentime Hu <greentime.hu@sifive.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@rivosinc.com>, Heiko Stuebner <heiko@sntech.de>,
+ Costa Shulyupin <costa.shul@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>,
+ Anup Patel <apatel@ventanamicro.com>, Zong Li <zong.li@sifive.com>,
+ Sami Tolvanen <samitolvanen@google.com>,
+ Ben Dooks <ben.dooks@codethink.co.uk>,
+ Alexandre Ghiti <alexghiti@rivosinc.com>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Erick Archer <erick.archer@gmx.com>, Joel Granados <j.granados@samsung.com>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, stable@vger.kernel.org
+References: <20240625005001.37901-1-jesse@rivosinc.com>
+ <20240625005001.37901-4-jesse@rivosinc.com>
+ <CALs-HsvE9PzTrhVO0umh3KaJuLQLdk-h8sYKBg7XA4a-MXAmOg@mail.gmail.com>
+Content-Language: en-US
+From: Jesse Taube <jesse@rivosinc.com>
+In-Reply-To: <CALs-HsvE9PzTrhVO0umh3KaJuLQLdk-h8sYKBg7XA4a-MXAmOg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-WP-MailID: 845761608838002fc020863bb3b1a580
-X-WP-AV: skaner antywirusowy Poczty o2
-X-WP-SPAM: NO 0000000 [MSPU]                               
 
-Linux 6.9+ is unable to start a degraded RAID1 array with one drive,
-when that drive has a write-mostly flag set. During such an attempt,
-the following assertion in bio_split() is hit:
 
-	BUG_ON(sectors <= 0);
 
-Call Trace:
-	? bio_split+0x96/0xb0
-	? exc_invalid_op+0x53/0x70
-	? bio_split+0x96/0xb0
-	? asm_exc_invalid_op+0x1b/0x20
-	? bio_split+0x96/0xb0
-	? raid1_read_request+0x890/0xd20
-	? __call_rcu_common.constprop.0+0x97/0x260
-	raid1_make_request+0x81/0xce0
-	? __get_random_u32_below+0x17/0x70
-	? new_slab+0x2b3/0x580
-	md_handle_request+0x77/0x210
-	md_submit_bio+0x62/0xa0
-	__submit_bio+0x17b/0x230
-	submit_bio_noacct_nocheck+0x18e/0x3c0
-	submit_bio_noacct+0x244/0x670
+On 7/10/24 11:55, Evan Green wrote:
+> On Mon, Jun 24, 2024 at 5:51 PM Jesse Taube <jesse@rivosinc.com> wrote:
+>>
+>> Originally, the check_unaligned_access_emulated_all_cpus function
+>> only checked the boot hart. This fixes the function to check all
+>> harts.
+>>
+>> Fixes: 71c54b3d169d ("riscv: report misaligned accesses emulation to hwprobe")
+>> Signed-off-by: Jesse Taube <jesse@rivosinc.com>
+>> Cc: stable@vger.kernel.org
+>> ---
+>> V1 -> V2:
+>>   - New patch
+>> V2 -> V3:
+>>   - Split patch
+>> ---
+>>   arch/riscv/kernel/traps_misaligned.c | 23 ++++++-----------------
+>>   1 file changed, 6 insertions(+), 17 deletions(-)
+>>
+>> diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
+>> index b62d5a2f4541..8fadbe00dd62 100644
+>> --- a/arch/riscv/kernel/traps_misaligned.c
+>> +++ b/arch/riscv/kernel/traps_misaligned.c
+>> @@ -526,31 +526,17 @@ int handle_misaligned_store(struct pt_regs *regs)
+>>          return 0;
+>>   }
+>>
+>> -static bool check_unaligned_access_emulated(int cpu)
+>> +static void check_unaligned_access_emulated(struct work_struct *unused)
+>>   {
+>> +       int cpu = smp_processor_id();
+>>          long *mas_ptr = per_cpu_ptr(&misaligned_access_speed, cpu);
+>>          unsigned long tmp_var, tmp_val;
+>> -       bool misaligned_emu_detected;
+>>
+>>          *mas_ptr = RISCV_HWPROBE_MISALIGNED_UNKNOWN;
+>>
+>>          __asm__ __volatile__ (
+>>                  "       "REG_L" %[tmp], 1(%[ptr])\n"
+>>                  : [tmp] "=r" (tmp_val) : [ptr] "r" (&tmp_var) : "memory");
+>> -
+>> -       misaligned_emu_detected = (*mas_ptr == RISCV_HWPROBE_MISALIGNED_EMULATED);
+>> -       /*
+>> -        * If unaligned_ctl is already set, this means that we detected that all
+>> -        * CPUS uses emulated misaligned access at boot time. If that changed
+>> -        * when hotplugging the new cpu, this is something we don't handle.
+>> -        */
+>> -       if (unlikely(unaligned_ctl && !misaligned_emu_detected)) {
+>> -               pr_crit("CPU misaligned accesses non homogeneous (expected all emulated)\n");
+>> -               while (true)
+>> -                       cpu_relax();
+>> -       }
+> 
+> This chunk was meant to detect and refuse to run on a system where a
+> heterogeneous CPU is hotplugged into a previously homogenous system.
+> The commit message doesn't mention this change, how come you
+> deleted it?
 
-After investigation, it turned out that choose_slow_rdev() does not set
-the value of max_sectors in some cases and because of it,
-raid1_read_request calls bio_split with sectors == 0.
+Sorry for the long wait.
+I do not remember why I removed this.
+Your right it shouldn't be removed, I added it back.
 
-Fix it by filling in this variable.
-
-This bug was introduced in
-commit dfa8ecd167c1 ("md/raid1: factor out choose_slow_rdev() from read_balance()")
-but apparently hidden until
-commit 0091c5a269ec ("md/raid1: factor out helpers to choose the best rdev from read_balance()")
-shortly thereafter.
-
-Cc: stable@vger.kernel.org # 6.9.x+
-Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Fixes: dfa8ecd167c1 ("md/raid1: factor out choose_slow_rdev() from read_balance()")
-Cc: Song Liu <song@kernel.org>
-Cc: Yu Kuai <yukuai3@huawei.com>
-Cc: Paul Luse <paul.e.luse@linux.intel.com>
-Cc: Xiao Ni <xni@redhat.com>
-Cc: Mariusz Tkaczyk <mariusz.tkaczyk@linux.intel.com>
-Link: https://lore.kernel.org/linux-raid/20240706143038.7253-1-mat.jonczyk@o2.pl/
-
---
-
-Tested on both Linux 6.10 and 6.9.8.
-
-Inside a VM, mdadm testsuite for RAID1 on 6.10 did not find any problems:
-	./test --dev=loop --no-error --raidtype=raid1
-(on 6.9.8 there was one failure, caused by external bitmap support not
-compiled in).
-
-Notes:
-- I was reliably getting deadlocks when adding / removing devices
-  on such an array - while the array was loaded with fsstress with 20
-  concurrent processes. When the array was idle or loaded with fsstress
-  with 8 processes, no such deadlocks happened in my tests.
-  This occurred also on unpatched Linux 6.8.0 though, but not on
-  6.1.97-rc1, so this is likely an independent regression (to be
-  investigated).
-- I was also getting deadlocks when adding / removing the bitmap on the
-  array in similar conditions - this happened on Linux 6.1.97-rc1
-  also though. fsstress with 8 concurrent processes did cause it only
-  once during many tests.
-- in my testing, there was once a problem with hot adding an
-  internal bitmap to the array:
-	mdadm: Cannot add bitmap while array is resyncing or reshaping etc.
-	mdadm: failed to set internal bitmap.
-  even though no such reshaping was happening according to /proc/mdstat.
-  This seems unrelated, though.
----
- drivers/md/raid1.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index 7b8a71ca66dd..82f70a4ce6ed 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -680,6 +680,7 @@ static int choose_slow_rdev(struct r1conf *conf, struct r1bio *r1_bio,
- 		len = r1_bio->sectors;
- 		read_len = raid1_check_read_range(rdev, this_sector, &len);
- 		if (read_len == r1_bio->sectors) {
-+			*max_sectors = read_len;
- 			update_read_sectors(conf, disk, this_sector, read_len);
- 			return disk;
- 		}
-
-base-commit: 256abd8e550ce977b728be79a74e1729438b4948
--- 
-2.25.1
-
+Thanks,
+Jesse Taube
+> 
+> 
+>> -
+>> -       return misaligned_emu_detected;
+>>   }
+>>
+>>   bool check_unaligned_access_emulated_all_cpus(void)
+>> @@ -562,8 +548,11 @@ bool check_unaligned_access_emulated_all_cpus(void)
+>>           * accesses emulated since tasks requesting such control can run on any
+>>           * CPU.
+>>           */
+>> +       schedule_on_each_cpu(check_unaligned_access_emulated);
+>> +
+>>          for_each_online_cpu(cpu)
+>> -               if (!check_unaligned_access_emulated(cpu))
+>> +               if (per_cpu(misaligned_access_speed, cpu)
+>> +                   != RISCV_HWPROBE_MISALIGNED_EMULATED)
+>>                          return false;
+>>
+>>          unaligned_ctl = true;
+>> --
+>> 2.45.2
+>>
 
