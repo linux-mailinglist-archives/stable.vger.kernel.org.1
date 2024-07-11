@@ -1,189 +1,147 @@
-Return-Path: <stable+bounces-59133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D73DE92EB69
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 17:16:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 371ED92EB9F
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 17:26:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C18D285154
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 15:16:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BB581C22B86
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 15:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F7F16B392;
-	Thu, 11 Jul 2024 15:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5FCB16C687;
+	Thu, 11 Jul 2024 15:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yHhHCPYC";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8i3hr4Jg"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Dm8Srm4/"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9AE723CE;
-	Thu, 11 Jul 2024 15:16:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1545616B74B
+	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 15:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720710969; cv=none; b=As2O+Nfk7qTfNdVHeY5UlwzpL2J61uYxLPVmQotoSYWfta3neirTMSCAy8K9U5Kfu1DWmhYcxoqIKtQGX90rt0aFe3Dn2MX9VB4HqqWBJXzpUXy/GjsPxnwiEfHYaJq3kvWH9wk09QpQPhQ5vuLxySpAxV8zbCpUn6VzZJPAU6w=
+	t=1720711596; cv=none; b=hCTUXKKrtsKmpnIoD/DhMMBuXATWJCmNzPPQXxvYgQlMTKUOwlvlujbElxhbdTWcG85/vhNY/5BNLn9OEajXPejMmY6mQogk7WOAZBJAtBNltfK4BObZLsIQr3iuAXnj2YmEqYsfkK7xCHdgWc5CSOfcQyMSADtdCaIbHfjCPtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720710969; c=relaxed/simple;
-	bh=BfBSUOPqmi3LuNAPGcdlMxJ0qVCvioaU4Xh7gZ+xN8g=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=LlWj1mr+xXeU/RN571PqAFMen13kOXxc/q5fUVs73WKzjtxKgGt6YHxtoj6yIBcPSK4Ks2c4FLVe1S4EOzBH9ifO9NXfcpdeIclqGiQf5skQtEHQwXrsUNtGr2g85t78bHJryEZvgDGR1iQz+Lh1RHEeLUTuiSzVOpl2L2GjPjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yHhHCPYC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8i3hr4Jg; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 11 Jul 2024 15:16:04 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1720710966;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZaNplFVYapEUI3M23Goml2uSiimpfDyZ8+AUduFpyrg=;
-	b=yHhHCPYC4gwQjyuVSCQRtrjDg5Hd02lksfjDmuzfTL1lpxhgikuu5I7Il/hM5dRSC8FyXD
-	eTBTIc2uzAtReJefdy3ub7KRFQbjvPD5jSsfZMvUbelDgKwvKuXMdK+ivZXraKthEsJei4
-	6m5T+EYvmJlxLRq4P+ZIkceF4E00euRqFHpCiLoFz62bRvXtq/XAo2AOyPW2C/UkVVvV4v
-	OZPEGDP57HkdHwm2feXLn9msb+32+lLkxdDanVq3VwsqnL6amcgh16ud4Rk86ogVro33Bb
-	XpGLbOx+RggrkQIgAqCtZfZCo9lJkeLremaD8fi3T+pujvDZd3dMQnMiuIlQLg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1720710966;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZaNplFVYapEUI3M23Goml2uSiimpfDyZ8+AUduFpyrg=;
-	b=8i3hr4Jg1DdZ7YXyDIctxZ1R1rQwOZTqQw1MgPK86/7GnF293Eol5iPb1t/e/Y8ciUmYzi
-	wS1HVy4uKFX+mfCg==
-From: "tip-bot2 for Shenwei Wang" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqchip/imx-irqsteer: Handle runtime power management
- correctly
-Cc: Shenwei Wang <shenwei.wang@nxp.com>, Thomas Gleixner <tglx@linutronix.de>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- maz@kernel.org
-In-Reply-To: <20240703163250.47887-1-shenwei.wang@nxp.com>
-References: <20240703163250.47887-1-shenwei.wang@nxp.com>
+	s=arc-20240116; t=1720711596; c=relaxed/simple;
+	bh=Z2UifNQfHSWQactTbUxwngct7Jif7447IF3QEfZiqWY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HoqvDrBe2CdfBJBm6v9PXAZe5vPNjivfBe4oXlkiG3gMj1rPSK5z0tnK1vIB/JGWLDrjQocheEooCYlMyNdPeySc8EAZdiDA+qYVieo+gQkWTelD0l6jrTJWwzNgQDZz3qMcRnBemyUDRRIUPhenQlZlTUQd1CmQNWic0hL4eVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Dm8Srm4/; arc=none smtp.client-ip=209.85.219.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-e057c25dd34so915015276.2
+        for <stable@vger.kernel.org>; Thu, 11 Jul 2024 08:26:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1720711594; x=1721316394; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z2UifNQfHSWQactTbUxwngct7Jif7447IF3QEfZiqWY=;
+        b=Dm8Srm4/3k2UEj5Pe02DINegUCr/eEMDoyOSMG572SioW6VYEAA61+e4tg7qSzJ8T9
+         3WosFTFlDbR7kcJpU9fWeQkF1fp0ZLmES/wvMHwlJ/1qMvcD9Rj9kl5/AvLCRr4HGrRG
+         PKAH9K+Gl0eOJRtCu5LqaBUDhTZQrE1JvU0CwV5gR9igIt4+PHxXjRhHH2SGYHmeXC/z
+         7ZlXe6ryKVE7KMWV8BjpOg7EdvyGFVIRl7L45yFW1in2aTvJYDmcpQr8Bxpf1pUUOGgj
+         yRvBruI118fAdQXPMKcmpJD657fFU66S30CGsHjHZrY/LOIDLoKP2tsLK4P5IRgUyMyV
+         1Ljw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720711594; x=1721316394;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Z2UifNQfHSWQactTbUxwngct7Jif7447IF3QEfZiqWY=;
+        b=Vlp86QimkWlKZvShK88glqYNWMuKwTd7k5SbKqubVcNZ6UD9qTAOFw6MLw1DW8PCko
+         zOPCZ6lw9+NU9ls59ojCr4mVDQJPrvF3GNN7x2RXgGr1GS96rDUp3NZFjcBd1yfqZXyD
+         VNQelEj54LEvQAtRerj7OOHR7w7L18PI+NfW+qUG2JgVeSxtywGhz9G+pvXMNLz4oygr
+         J+sInj/oq3glz6hUUYkYQHmJ2c/rspgGP+zfk6GR/SjhTiPzEzV32h0AEeaqvvFOcEjj
+         wVYqELR2FsjFnwyNq1mbzGHsMYIkXtQXPYAWvEfdEmaBljjvPn8MuBlA1EwQNvxa43RG
+         3hxg==
+X-Forwarded-Encrypted: i=1; AJvYcCVfk20pnOOOyeUM68Zk1nDSs1jkv91sQhYi496Awpd2fjO+hAOSpkwoeTey/mVQhrbS0abu/BBmidzLk3n+k7x28vFyPK6l
+X-Gm-Message-State: AOJu0YymjLq1RBYEvgGRl+Jz403THNy0UhGmrSUTUvT42p80Lx+BsfDB
+	VkoTxW/MV9dS+zq1rwHjKkww1qXmL/6fVnwo7ou34YYG7lBYQ3HOt8VpCEXThRTO27d8lE6rEO5
+	U7SSSX2wfUVapH/MLN2QNZzvMSY/bQa01gU6WpA==
+X-Google-Smtp-Source: AGHT+IHRSvRxtciU4D9HXYrANT6oCsSmGR5hfnzw9CYJVDrCkRv/UkJgcHyyeRSNtmZhuOvpcZVYT0H141BgwBp64+o=
+X-Received: by 2002:a25:d852:0:b0:dfb:61e:3ee0 with SMTP id
+ 3f1490d57ef6-e041b034870mr9885394276.10.1720711593970; Thu, 11 Jul 2024
+ 08:26:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172071096497.2215.13516438615600678880.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <20240618155013.323322-1-ulf.hansson@linaro.org>
+ <20240625105425.pkociumt4biv4j36@vireshk-i7> <CAPDyKFpLfBjozpcOzKp4jngkYenqSdpmejvCK37XvE1-WbBY2g@mail.gmail.com>
+ <20240701114748.hodf6pngk7opx373@vireshk-i7> <20240702051526.hyqhvmxnywofsjp2@vireshk-i7>
+ <CAPDyKFoA9O5a6xZ+948QOzYqsRjk_0jJaSxeYRwx=76YsLHzXQ@mail.gmail.com>
+ <20240711031356.rl2j6fqxrykmqfoy@vireshk-i7> <CAPDyKFocjOt+JyzcAqOfCnmTxBMZmPjMerSh6RZ-hSMajRhzEA@mail.gmail.com>
+ <CAPDyKFoWgX=r1QtrcpEF-Y4BkiOtVnz4jaztL9zggo-=uiKsUg@mail.gmail.com> <20240711131637.opzrayksfadimgq4@vireshk-i7>
+In-Reply-To: <20240711131637.opzrayksfadimgq4@vireshk-i7>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Thu, 11 Jul 2024 17:25:57 +0200
+Message-ID: <CAPDyKFqczrJzHApBOYRSg=MXzzd1_nSgQQ3QwKYLWzgZ+XY32A@mail.gmail.com>
+Subject: Re: [PATCH] OPP: Fix support for required OPPs for multiple PM domains
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Nikunj Kela <nkela@quicinc.com>, Prasad Sodagudi <psodagud@quicinc.com>, linux-pm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-tegra@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-The following commit has been merged into the irq/core branch of tip:
+On Thu, 11 Jul 2024 at 15:16, Viresh Kumar <viresh.kumar@linaro.org> wrote:
+>
+> On 11-07-24, 13:05, Ulf Hansson wrote:
+> > On Thu, 11 Jul 2024 at 12:31, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> > >
+> > > On Thu, 11 Jul 2024 at 05:13, Viresh Kumar <viresh.kumar@linaro.org> wrote:
+> > > >
+> > > > On 10-07-24, 15:51, Ulf Hansson wrote:
+> > > > > I think this should work, but in this case we seem to need a similar
+> > > > > thing for dev_pm_opp_set_rate().
+> > > >
+> > > > We don't go to that path for genpd's I recall. Do we ? For genpd's,
+> > > > since there is no freq, we always call _set_opp().
+> > >
+> > > You are right! Although, maybe it's still preferred to do it in
+> > > _set_opp() as it looks like the code would be more consistent? No?
+>
+> Since the function already accepted a flag, it was very easier to just reuse it
+> without.
+>
+> > No matter how we do this, we end up enforcing OPPs for genpds.
+> >
+> > It means that we may be requesting the same performance-level that we
+> > have already requested for the device. Of course genpd manages this,
+> > but it just seems a bit in-efficient to mee. Or maybe this isn't a big
+> > deal as consumer drivers should end up doing this anyway?
+>
+> Normally I won't expect a consumer driver to do this check and so was the
+> opp core handling that. But for genpd's we need to make this inefficient to not
+> miss a vote.
+>
+> The problem is at another level though. Normally for any other device, like CPU,
+> there is one vote for the entire range of devices supported by the OPP table.
+> For example all CPUs of a cluster will share an OPP table (and they do dvfs
+> together), and you call set_opp() for any of the CPU, we will go and change the
+> OPP. There is no per-device vote.
+>
+> This whole design is broken in case of genpd, since you are expecting a separate
+> vote per device. Ideally, each device should have had its own copy of the OPP
+> table, but it is messy in case of genpd and to make it all work nicely, we may
+> have to choose this inefficient way of doing it :(
 
-Commit-ID:     cd0406fab8d4a16ec4f617c0a4b405bf70543b5b
-Gitweb:        https://git.kernel.org/tip/cd0406fab8d4a16ec4f617c0a4b405bf70543b5b
-Author:        Shenwei Wang <shenwei.wang@nxp.com>
-AuthorDate:    Wed, 03 Jul 2024 11:32:50 -05:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 11 Jul 2024 17:06:02 +02:00
+Right, I get your point.
 
-irqchip/imx-irqsteer: Handle runtime power management correctly
+Although, it seems to me that just limiting required-opps to
+performance-levels, could avoid us from having to enforce the OPPs for
+genpd. In other words, doing something along the lines of $subject
+patch should work fine.
 
-The power domain is automatically activated from clk_prepare(). However, on
-certain platforms like i.MX8QM and i.MX8QXP, the power-on handling invokes
-sleeping functions, which triggers the 'scheduling while atomic' bug in the
-context switch path during device probing:
+In fact, it looks to me that the required-opps handling for the
+*single* PM domain case, is already limited to solely
+performance-levels (opp-level), as there are no required_devs being
+assigned for it. Or did I get that wrong?
 
- BUG: scheduling while atomic: kworker/u13:1/48/0x00000002
- Call trace:
-  __schedule_bug+0x54/0x6c
-  __schedule+0x7f0/0xa94
-  schedule+0x5c/0xc4
-  schedule_preempt_disabled+0x24/0x40
-  __mutex_lock.constprop.0+0x2c0/0x540
-  __mutex_lock_slowpath+0x14/0x20
-  mutex_lock+0x48/0x54
-  clk_prepare_lock+0x44/0xa0
-  clk_prepare+0x20/0x44
-  imx_irqsteer_resume+0x28/0xe0
-  pm_generic_runtime_resume+0x2c/0x44
-  __genpd_runtime_resume+0x30/0x80
-  genpd_runtime_resume+0xc8/0x2c0
-  __rpm_callback+0x48/0x1d8
-  rpm_callback+0x6c/0x78
-  rpm_resume+0x490/0x6b4
-  __pm_runtime_resume+0x50/0x94
-  irq_chip_pm_get+0x2c/0xa0
-  __irq_do_set_handler+0x178/0x24c
-  irq_set_chained_handler_and_data+0x60/0xa4
-  mxc_gpio_probe+0x160/0x4b0
-
-Cure this by implementing the irq_bus_lock/sync_unlock() interrupt chip
-callbacks and handle power management in them as they are invoked from
-non-atomic context.
-
-[ tglx: Rewrote change log, added Fixes tag ]
-
-Fixes: 0136afa08967 ("irqchip: Add driver for imx-irqsteer controller")
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240703163250.47887-1-shenwei.wang@nxp.com
----
- drivers/irqchip/irq-imx-irqsteer.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
-index 20cf7a9..75a0e98 100644
---- a/drivers/irqchip/irq-imx-irqsteer.c
-+++ b/drivers/irqchip/irq-imx-irqsteer.c
-@@ -36,6 +36,7 @@ struct irqsteer_data {
- 	int			channel;
- 	struct irq_domain	*domain;
- 	u32			*saved_reg;
-+	struct device		*dev;
- };
- 
- static int imx_irqsteer_get_reg_index(struct irqsteer_data *data,
-@@ -72,10 +73,26 @@ static void imx_irqsteer_irq_mask(struct irq_data *d)
- 	raw_spin_unlock_irqrestore(&data->lock, flags);
- }
- 
-+static void imx_irqsteer_irq_bus_lock(struct irq_data *d)
-+{
-+	struct irqsteer_data *data = d->chip_data;
-+
-+	pm_runtime_get_sync(data->dev);
-+}
-+
-+static void imx_irqsteer_irq_bus_sync_unlock(struct irq_data *d)
-+{
-+	struct irqsteer_data *data = d->chip_data;
-+
-+	pm_runtime_put_autosuspend(data->dev);
-+}
-+
- static const struct irq_chip imx_irqsteer_irq_chip = {
--	.name		= "irqsteer",
--	.irq_mask	= imx_irqsteer_irq_mask,
--	.irq_unmask	= imx_irqsteer_irq_unmask,
-+	.name			= "irqsteer",
-+	.irq_mask		= imx_irqsteer_irq_mask,
-+	.irq_unmask		= imx_irqsteer_irq_unmask,
-+	.irq_bus_lock		= imx_irqsteer_irq_bus_lock,
-+	.irq_bus_sync_unlock	= imx_irqsteer_irq_bus_sync_unlock,
- };
- 
- static int imx_irqsteer_irq_map(struct irq_domain *h, unsigned int irq,
-@@ -150,6 +167,7 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
- 	if (!data)
- 		return -ENOMEM;
- 
-+	data->dev = &pdev->dev;
- 	data->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(data->regs)) {
- 		dev_err(&pdev->dev, "failed to initialize reg\n");
+Kind regards
+Uffe
 
