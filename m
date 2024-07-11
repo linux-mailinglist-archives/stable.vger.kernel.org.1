@@ -1,237 +1,263 @@
-Return-Path: <stable+bounces-59146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A44C692EE6C
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 20:10:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A410B92EE7B
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 20:11:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23E8B1F22C55
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 18:10:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 248A51F22FC2
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 18:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A94816F8E5;
-	Thu, 11 Jul 2024 18:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F45716DED2;
+	Thu, 11 Jul 2024 18:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="Kcv5hf2X"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TQBFiKs7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3076E16F85D
-	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 18:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720721180; cv=none; b=R3i33ZB/BJ54SklEZlnvL3A9aC/LP5+hKH/dWK9EmL+MYhau82reMPdlLlCwp6wqwB26JDIPMf2+jtM501zEc3qIjsWlFfxUYskV2YZED3eqFnSTtG4gwc11TQzhKlK7usDCgw+d5wwnYPgd345hAJqwkcD5ki3pdnuDYg0UjB0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720721180; c=relaxed/simple;
-	bh=gFG7bWWKXvaRsOu0x+oSTssCyfH2PUKSwfOd/c3z4As=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YILR6neU/wU9ZghWF0wvlOP/7KG1HtLEjdtH3ChHoo/meOXXT4P5YHM1tHOT1AmDHp7Z0sFAvVujqMeowP5KqK42YLgAUcG1oahgyPXAXB1msvliUtWochxe7iE/sx0OR2UWYdtfVLIS0I2LMpSUbCp6E3cztuO17uFsBmtAMoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=Kcv5hf2X; arc=none smtp.client-ip=209.85.128.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raspberrypi.com
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-643efaf0786so11300917b3.1
-        for <stable@vger.kernel.org>; Thu, 11 Jul 2024 11:06:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=raspberrypi.com; s=google; t=1720721177; x=1721325977; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=lXKEOscG0VMMrtZere3+7d0XI5uCYwTcT+IzK28hY6E=;
-        b=Kcv5hf2XNEUPeQhoS/brUVI8+CO+lbl8SrU+z1dQqqJN9YhAlfR51aCDMZwdSKHnbh
-         4KuwH+yjhcorCAslbqSKHlY6Ru7/tHao6ztVsGZu/Ws6bIVyMGG0kGY8OKPYg08YCtcH
-         LZqSne/N4mzvoVQj6CYNVOcJVhNyBAKlbl/xv3MtZy8aRWW68Ud4ZDOddYozOIn4Edju
-         1IsQ06YYX/A/FdIOY0Z2HQvEugy5YOVuSgHUt8z3yl44lopguDrCI3detqwkRadIkt+w
-         fjHFEBgKbbkSsEfpiTRqrQijUMtzRyzXa2BMS3FSgGrPY/KQhOfUk0+4qGzstVuu8mtS
-         VHAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720721177; x=1721325977;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lXKEOscG0VMMrtZere3+7d0XI5uCYwTcT+IzK28hY6E=;
-        b=WGavyC0dDHHAOyyIQmUMgfVY6OAkCLDkt7NVPBHzajBIKTaNZhK9G2P5+qmY7bDVuY
-         fPE6VvBLMjm6FLmDhsJxDPrJ5a5nOI4+hwAejjrxtGcboBocGT0pYa5OdMLXows0ryEI
-         hi5faSgt1AMn7s/Wb5g8fRTe6iHFYuhHX2cJ3N5pVAQh++r6QR+uJVSIhy5zb8fZMtdC
-         fHkViwiVSpa8atw1g120ylE4qY64ZTo3eDs873lVN49PJKs1pCfomMgDyXOKBIbRXR8f
-         geAbuHANzTodI9pLnDZaWJxXE+0o8I5d3FugOGomSO8hWu7GZi/1D5anaaPUs607acJN
-         EVQw==
-X-Forwarded-Encrypted: i=1; AJvYcCX7hiAlsikNkG4aEvaUtpwhJ/KhYdq4EL1KR63pY5e9bAQnYi/l5wovRPfCx+g6Q81KpiQBFpCQx1lNKgdc5nFajuinIHj8
-X-Gm-Message-State: AOJu0YypC3sBg0hzDReDUVEfEqrGA7vUgijtjl4FfWoTOscoikIaMeon
-	gOXqu136rDqzY+fSbiaOQLH/zeuaBbOcgRY5xMakTsATP0TZuZ3bgfdnW8SmmtWgsxNV0trrIG/
-	9iQFxxUbqK/Y1amVyI+odVVeDTmvWkiV6PkA4ymvESYOupNpXZ7M=
-X-Google-Smtp-Source: AGHT+IH33Is+IrdBeix0CoCErKBf5qaiFmD2OHGWO9zmXp9sy2jVTULmnXu3TuSgmYQoSvGvVvSHRcW/E5pEohIaEhY=
-X-Received: by 2002:a0d:f942:0:b0:647:7782:421a with SMTP id
- 00721157ae682-658f0dc5e12mr96986787b3.45.1720721177082; Thu, 11 Jul 2024
- 11:06:17 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8581516D9A7
+	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 18:09:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720721371; cv=fail; b=OBNw5PAmiJsJRzVDcoXVY/BACrutzPzYSLu66+Yq5/JebqnM2g7aZQgaOksVbEqZtfZgI20jr6aq4aURkrohKWe1doAQUYSvspQ8acDqTC8ljh57adzHzSyC1MlfSrxrV3BsKOVvZbZwPgREnPW62old4SeOtta2i6gI3nXrELI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720721371; c=relaxed/simple;
+	bh=mF6IVmFmntlJIM8cr61HypkMQdd7oVUhDlW1nigk7OU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=tol8SO70LBNrDEepfKRgBSHL+CVL0ZjVTsWhlvv5pSa/D7alYaDDWJwDGyrcAlh1A+YAhmNvmlXkidQYbICBXFm4StKwT8cTgOv9UDb7Du9pyWs9e8TwES8VnMCGT3NPfkrOgZXIWpXPXQLrlrNMtU9zZJhfTIJrrlxpaytZ4uM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TQBFiKs7; arc=fail smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720721369; x=1752257369;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=mF6IVmFmntlJIM8cr61HypkMQdd7oVUhDlW1nigk7OU=;
+  b=TQBFiKs7zM2/qfDv8WPcijaU7cH4PWyUGahsdpdx8P5QIF6Vw1Mx46+d
+   R13hPizFaEyeF4BIJHQv2q6Yk5jbCHZHo57IYZBDBEIj+ioy3dcxlRdjT
+   91DLv+8CoeXtWzS6KRcdig3Kz4vyQnkzyaOCN5cCdeMDIvTkKv/Nk669+
+   ZwGCvCNUpkOfDP0mJn1GJcCsOn0MfXxK/pFZTnxBdrJ5QIweKgWvy8RnH
+   AsvYTeeN71XnPER6j7qcafSA4ygvy53zcR2XLf+1xk9FAK7Z22PJmCpiF
+   OvBVO4NIvhjlb+6wMr8Zy2A10mdVfvm1WfuIJDht+8xEtRq/RNSb5XgY0
+   A==;
+X-CSE-ConnectionGUID: Q38APhCLQkW9R5IolQLRog==
+X-CSE-MsgGUID: zK4lqGKXSWeGjiIe9uPujQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11130"; a="18331611"
+X-IronPort-AV: E=Sophos;i="6.09,200,1716274800"; 
+   d="scan'208";a="18331611"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2024 11:09:29 -0700
+X-CSE-ConnectionGUID: taBjW28tRjKrqpUkutdIcg==
+X-CSE-MsgGUID: VlAKAUoKRXOuyB+kA43owg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,200,1716274800"; 
+   d="scan'208";a="48740855"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orviesa009.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 11 Jul 2024 11:09:28 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 11 Jul 2024 11:09:27 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 11 Jul 2024 11:09:27 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Thu, 11 Jul 2024 11:09:27 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.42) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 11 Jul 2024 11:09:27 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Z+wo4h0YaD9ZZVDl1CIwSEuSdW251q2qVCtUFEAdktaDQoW7h1JbnFGIzySXClqHBD8sKCFqcZtiuEGDjTdDxGSpzCayHaOAp0MSXlCmxVqEGZAx+oqXZ0LgUZD41Zbxscnn2jbMHS4usqTn/SRQFO5xMdippYU7AlkRwhsPANG3yup5Iw3hJcEdTXLSAkVtbmhtj1vwYIIJ7l97go9Ok7bpEHi0TcMxx1/JwSGGXszIoC3xORkxz6snS7RKowk2pyGJsAG4TGGnBkXyFCMDs9HDCbjdhrZh2FdK1NPA1onKZ6Ebl9y87OSIvdQkcM19jBr8PC/yJ5oQiJya38pUAA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lpRC2D4MbiJpGVdtf6TMB6qImrDAYKGx51CAUVMzyGs=;
+ b=OLi0KcPlP9TFxms3mKIZyICTgXdOftFQ+qwlm9yaX6RPkKnB9unAMsu+iA93Usr9774kvRuvbFe25eoL2PzGylINr5/43MSwK0SQGFv84px1ju4wODdbo+9paUFsVyVfewPVuZTOyS3S8kKhb1jUilwmVFk+SLmcOb3DjXWcnYmEEqe8D7hIfNY1eh10U84zp3+Uo4y6qNsthRFfXRaGjtg3bgd8/usdwn4i0z1rrvh0sgQCQ+iteLFEnU5H8Xg38taTjo0YxdWFVGAPrQspjcT2y+iWlkOpwfS3rir82XO23qkWx87S94e7VzIR/66ifwODOo95TRc6j4AYDlQB3Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM6PR11MB2859.namprd11.prod.outlook.com (2603:10b6:5:c9::14) by
+ CO1PR11MB4817.namprd11.prod.outlook.com (2603:10b6:303:98::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7741.35; Thu, 11 Jul 2024 18:09:25 +0000
+Received: from DM6PR11MB2859.namprd11.prod.outlook.com
+ ([fe80::4063:4fec:bf76:f095]) by DM6PR11MB2859.namprd11.prod.outlook.com
+ ([fe80::4063:4fec:bf76:f095%3]) with mapi id 15.20.7762.016; Thu, 11 Jul 2024
+ 18:09:25 +0000
+Date: Thu, 11 Jul 2024 14:09:15 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
+CC: "Gote, Nitin R" <nitin.r.gote@intel.com>, "Wilson, Chris P"
+	<chris.p.wilson@intel.com>, "tursulin@ursulin.net" <tursulin@ursulin.net>,
+	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, "Shyti,
+ Andi" <andi.shyti@intel.com>, "Das, Nirmoy" <nirmoy.das@intel.com>,
+	"janusz.krzysztofik@linux.intel.com" <janusz.krzysztofik@linux.intel.com>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH v3] drm/i915/gt: Do not consider preemption during
+ execlists_dequeue for gen8
+Message-ID: <ZpAfyzKlqlMrd4nj@intel.com>
+References: <20240711163208.1355736-1-nitin.r.gote@intel.com>
+ <CH0PR11MB54443CBE8B4A052419FFFD1BE5A52@CH0PR11MB5444.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CH0PR11MB54443CBE8B4A052419FFFD1BE5A52@CH0PR11MB5444.namprd11.prod.outlook.com>
+X-ClientProxiedBy: BY5PR03CA0024.namprd03.prod.outlook.com
+ (2603:10b6:a03:1e0::34) To DM6PR11MB2859.namprd11.prod.outlook.com
+ (2603:10b6:5:c9::14)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240711-linux-next-ov5675-v2-1-d0ea6ac2e6e9@linaro.org>
-In-Reply-To: <20240711-linux-next-ov5675-v2-1-d0ea6ac2e6e9@linaro.org>
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Date: Thu, 11 Jul 2024 19:05:59 +0100
-Message-ID: <CAPY8ntBvJFDtUKxQkzmnitCH5+uAijswwHmyvc0O=SKGpUSbjg@mail.gmail.com>
-Subject: Re: [PATCH v2] media: ov5675: Fix power on/off delay timings
-To: "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Quentin Schulz <quentin.schulz@theobroma-systems.com>, 
-	Jacopo Mondi <jacopo@jmondi.org>, Johan Hovold <johan@kernel.org>, 
-	Kieran Bingham <kieran.bingham@ideasonboard.com>, linux-media@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR11MB2859:EE_|CO1PR11MB4817:EE_
+X-MS-Office365-Filtering-Correlation-Id: ac44acf4-ad8b-4d47-b866-08dca1d4987a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?mdnAfp4gJuwh7s+A/h1NXCR87Rl3pqbAIkDS+G2KPdgiaU3UcMqCm27dCkXI?=
+ =?us-ascii?Q?i5U/VGwg7hgpJxB1HnQxpw8tbUssFI0F09AA0rBsrCGAp2jIOCObCesoQrLR?=
+ =?us-ascii?Q?Qe6nd2kfIirokGOAhoiu9bgkYSAPn2f0vvfMMyA1IQytKuMNYReMo+7Zieuz?=
+ =?us-ascii?Q?9dazPOBveU/nswznk9kHh6GsU1gBcCrO3sjVNjHsvatgctnXNnNDZjXiadr9?=
+ =?us-ascii?Q?Byn89QcEjQd+9WeJgIWo8YWOs7LW54uR8IRQvB9MpCJOh9ropgPN2nqX0csP?=
+ =?us-ascii?Q?McQSoTquhtX6TPjosrsnvDiq84IA6gHNIyrU4yvchn3XZxFciSCX7FWul5zb?=
+ =?us-ascii?Q?zkqXG456o0g3PI85j59kVSTHgX7DPhZdB4sa/KOgkwPY79Grp8mKICyjFKJO?=
+ =?us-ascii?Q?ffcVt30KBelAQ45zwTjJydCkEe2XtjWiVAHaO1v9YDNMGGT4UHRMbMD6Piy9?=
+ =?us-ascii?Q?e8OE+o0fsbmQGKyIaM5ww/nvxca+IshRrhWNbbCf5+VmmwAKNdUzNlkO1QaK?=
+ =?us-ascii?Q?4Udie5xg/bezNsMjTTn0qOdmFITgbBPd+Rjes6UszXqoZjim2O0pIXkAj9s1?=
+ =?us-ascii?Q?2CVbJYABGfwvKXvAXalU0AVSL050C8iCOzo1H1spVjoXqc2Tc1mvUT3jn1Ql?=
+ =?us-ascii?Q?P62SsLyb8YYvi5nzrzqQKKNJT7wqbFyudC+k1htctqo8bVLRPtu2e1avakep?=
+ =?us-ascii?Q?1t1Vdn9WxOp3lIEt3zbMQfNnl6t7avFpfjPvLNPA9nC3ThvExTnd6FnJ8Xxz?=
+ =?us-ascii?Q?KXb+Zt1AxH377SAPH09pcw2iOh7c3JuCSG1b78aFPB5B18k+rz6LIMPaMsks?=
+ =?us-ascii?Q?/WgQ2ovi0fjpLmxtXeo6f5C/nv/QY93a/vJy7j3PhwuO4BLw8JrChaF68Mt1?=
+ =?us-ascii?Q?Sk1b24ROGo3sEAKy/qW9Fzb7D+FCiqQA4ZIoGJzlyQ/r/6RRaJNhFU4gyGfl?=
+ =?us-ascii?Q?3Dv9HbBASBNmvIXC6T1YA/GA0rPmtJuQcR6/zK216PiEbNpZBDxJCZNCZkG0?=
+ =?us-ascii?Q?MOle6vbqNzdZH/eCjtomw/YcxAAhjF2fP/yjsCTiqufVFyVTuaAWpPcCMbaN?=
+ =?us-ascii?Q?hHPGt3/uqIGy3jTDPJB1r6J0jb0ffD+RRwhWVwJJ3Iie5h/YvNJL5N6n49UX?=
+ =?us-ascii?Q?XC9IGXLeQ64RvtM7l+Twt1lfuF1OTv2hDDkTJLM1ePW3dz6hCKm6a8cSWnTy?=
+ =?us-ascii?Q?0RLnvvzXGoew4/Y3261mq/H5yWs+rWtPEYUSuR4dx0aMS/pf4n+1aeYFUBXn?=
+ =?us-ascii?Q?hIfQAhxPgXXgERTfs1mO3xQTRMHWY7jGS1XbK3BY0+fypvoJZoUkC+tWswGH?=
+ =?us-ascii?Q?9fg=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB2859.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?w6iDuislfNj4v4yx//ceulg6+sKhI1mp2bX8qV5a+ezHP3ynRSu9DXSqLqsf?=
+ =?us-ascii?Q?btZiw/SUfmZ2+FRaRnRISrfHzb4M1bQ19OvxqhMSSaIwiWE/SdNB79TJ3FHY?=
+ =?us-ascii?Q?dt+U21aHfmsTUOo+y6vOKm8PcFHWgOnDNXnArmSthQRBEc5brDAmFU9gQF5k?=
+ =?us-ascii?Q?J9HSb61AyBxw81ZBgIJBwkd8B7ShF1Kf2P91VAMrkkm+iZuN7GitJ4CXPfCF?=
+ =?us-ascii?Q?5x4wCDDwgwUaciINuF8ilEiJNYYDaKV0EVLoquzmFehcpA+dZVx2QA/nBIfh?=
+ =?us-ascii?Q?ZBGj+Zj5xqANrRrPM+aEn2gmMBEufpXM8c+039ELy5reGGjCY8yn3+pJU/LX?=
+ =?us-ascii?Q?nFe7qsY1sfr4EYwZ9pZg/yQSg2MzJ1FJxPwf4Yy6FnNLqrpH8mfg58BjfWwR?=
+ =?us-ascii?Q?WkBUqai5KIduF6gmxVdLWE3r2n4sr6gfe33af76rqYxLHvmMFog+enr9So9I?=
+ =?us-ascii?Q?47Hdzn9QoCc0cjQwwdtyYe4CwhtjbhU/0PfCD7X+505TWvj5r0kbXL7tFZzm?=
+ =?us-ascii?Q?IUwefND2v9SA/3DhUhInxjtjHRzzeZ8OW8HdoozhUrC4JknTaIgLBYigi6qE?=
+ =?us-ascii?Q?u6iCJfXsUolZS9X5qjP/AtjPpDuJ5cv7J1WDFL2OcyP/psvHYSv/4Sysrvez?=
+ =?us-ascii?Q?Z6xiS5hcc+fEhituBB6nudAMWOT2iHKNn6u+I4BYUPecJJfd+0CK10PZfRkL?=
+ =?us-ascii?Q?d571i4RY/fOY8gyMtOhQainrVBLvN2zo9Pk3aeTTvuWHqCChnKs45m/AWUDl?=
+ =?us-ascii?Q?pBfKSaZelo1wg8YO98aahlYnwt5SVP/E8OGMXcO3hr+EOobx4uiYrTiFlQgI?=
+ =?us-ascii?Q?+KhwfYWVMI8eUxpUiBMCo74/hFMfLnozyz8puuHQwWdIb9HH6CWHD8KyfW5t?=
+ =?us-ascii?Q?lsi+8z0IwUaMW+dKxxpiySiPrXn33kL3dFDXeFq8mA2up7gpAhUyeC7FLEcg?=
+ =?us-ascii?Q?p2hnPpSOpurzidwFjIc2elFd4/aLxMnHRleZoPMKHr7HH7yX0F7MIVwPmpCh?=
+ =?us-ascii?Q?cFq5kVIiteD/jmLtUnRZsqRKv/885j6qflLV/4dh+LiR97HFPx1FEhb66i/z?=
+ =?us-ascii?Q?anIpuykQxM31uOujxX70ZHt+LwB9it7zwKX/OD5P7d0VAMoNE6/p/AjPAse1?=
+ =?us-ascii?Q?x620dvPFmtV5VM6NAhj2GU1iuF4mXzsL4vpjFtnLdT4S8DYGxnfKKmnsrpjM?=
+ =?us-ascii?Q?QomC9uCBj8+QWabHOcS/2iFKSfSnj6MXBxBi+f8ZZMOf3UaF+iBoNf7bqrvv?=
+ =?us-ascii?Q?YzG/oJRqHhgSfGdJ5rCpnDKeF9Y6ufAlcqMRzdKZ44BGt5j0areN/p1RX3Fi?=
+ =?us-ascii?Q?UpmIpg3r0QgBcQRYGR0GQutffXUV5h9PN2wKAyMduuGAAxdU/INm/IfLQnqS?=
+ =?us-ascii?Q?/tal15W19qxyNo2KJkWgCXrzh/thv4a0kivfSAXhsiChZKnb6NfJs1/wy8on?=
+ =?us-ascii?Q?8jDA4dRBDar+pNnOnN5YBxMg36Xyjgu1s6V/ZX7gmVF+5gafPn5om3/sNcAa?=
+ =?us-ascii?Q?Y8C1Opg9Y3bWeD8OWiXQdGIIiBq7rnq/lJVBQpWiMIw8JKRXb69G6JbRGlwj?=
+ =?us-ascii?Q?uB6scEL5DjvXBTzne8TZvb/NeU0cVTTXQIkoi13zVLmML95C5cWzXypuPxIA?=
+ =?us-ascii?Q?LQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac44acf4-ad8b-4d47-b866-08dca1d4987a
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB2859.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2024 18:09:24.9838
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8IFqnDxQtthwinLcoiM8PwbGPHR66yHiKUwGQIQzmvQ0G+8XXk8elJExseg23gD6DviGptSujITrqqrZ7QppeQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4817
+X-OriginatorOrg: intel.com
 
-Hi Bryan
+On Thu, Jul 11, 2024 at 04:28:53PM +0000, Cavitt, Jonathan wrote:
+> -----Original Message-----
+> From: Intel-gfx <intel-gfx-bounces@lists.freedesktop.org> On Behalf Of Nitin Gote
+> Sent: Thursday, July 11, 2024 9:32 AM
+> To: Wilson, Chris P <chris.p.wilson@intel.com>; tursulin@ursulin.net; intel-gfx@lists.freedesktop.org
+> Cc: dri-devel@lists.freedesktop.org; Shyti, Andi <andi.shyti@intel.com>; Das, Nirmoy <nirmoy.das@intel.com>; janusz.krzysztofik@linux.intel.com; Gote, Nitin R <nitin.r.gote@intel.com>; Chris Wilson <chris.p.wilson@linux.intel.com>; stable@vger.kernel.org
+> Subject: [PATCH v3] drm/i915/gt: Do not consider preemption during execlists_dequeue for gen8
+> > 
+> > We're seeing a GPU HANG issue on a CHV platform, which was caused by
+> > bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries for gen8").
+> > 
+> > Gen8 platform has only timeslice and doesn't support a preemption mechanism
+> > as engines do not have a preemption timer and doesn't send an irq if the
+> > preemption timeout expires.
+> 
+> That seems to mean the original can_preempt function was inaccurately built,
+> so fixing it here makes the most sense to me, especially if it's causing problems.
+> 
+> Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> -Jonathan Cavitt
+> 
+> > So, add a fix to not consider preemption
+> > during dequeuing for gen8 platforms.
+> > 
+> > v2: Simplify can_preempt() function (Tvrtko Ursulin)
+> > 
+> > v3:
+> >  - Inside need_preempt(), condition of can_preempt() is not required
+> >    as simplified can_preempt() is enough. (Chris Wilson)
+> > 
+> > Fixes: bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries for gen8")
 
-On Thu, 11 Jul 2024 at 15:38, Bryan O'Donoghue
-<bryan.odonoghue@linaro.org> wrote:
->
-> The ov5675 specification says that the gap between XSHUTDN deassert and the
-> first I2C transaction should be a minimum of 8192 XVCLK cycles.
->
-> Right now we use a usleep_rage() that gives a sleep time of between about
-> 430 and 860 microseconds.
->
-> On the Lenovo X13s we have observed that in about 1/20 cases the current
-> timing is too tight and we start transacting before the ov5675's reset
-> cycle completes, leading to I2C bus transaction failures.
->
-> The reset racing is sometimes triggered at initial chip probe but, more
-> usually on a subsequent power-off/power-on cycle e.g.
->
-> [   71.451662] ov5675 24-0010: failed to write reg 0x0103. error = -5
-> [   71.451686] ov5675 24-0010: failed to set plls
->
-> The current quiescence period we have is too tight. Instead of expressing
-> the post reset delay in terms of the current XVCLK this patch converts the
-> power-on and power-off delays to the maximum theoretical delay @ 6 MHz with
-> an additional buffer.
->
-> 1.365 milliseconds on the power-on path is 1.5 milliseconds with grace.
-> 853 microseconds on the power-off path is 900 microseconds with grace.
+Something strange in here...
 
-I think you've got the decimal point in the wrong place for power off.
+This patch is not using directly or indirectly (I915_ENGINE_HAS_PREEMPTION) the
+can_preempt()...
 
-The comment you've removed in the power off path says
-/* 512 xvclk cycles after the last SCCB transation or MIPI frame end */
-
-512 clocks at 6MHz I make 85.3usecs.
-
-I'm happy to be corrected if I've blundered on my maths though.
-
-  Dave
-
->
-> Fixes: 49d9ad719e89 ("media: ov5675: add device-tree support and support runtime PM")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> ---
-> v2:
-> - Drop patch to read and act on reported XVCLK
-> - Use worst-case timings + a reasonable grace period in-lieu of previous
->   xvclk calculations on power-on and power-off.
-> - Link to v1: https://lore.kernel.org/r/20240711-linux-next-ov5675-v1-0-69e9b6c62c16@linaro.org
->
-> v1:
-> One long running saga for me on the Lenovo X13s is the occasional failure
-> to either probe or subsequently bring-up the ov5675 main RGB sensor on the
-> laptop.
->
-> Initially I suspected the PMIC for this part as the PMIC is using a new
-> interface on an I2C bus instead of an SPMI bus. In particular I thought
-> perhaps the I2C write to PMIC had completed but the regulator output hadn't
-> become stable from the perspective of the SoC. This however doesn't appear
-> to be the case - I can introduce a delay of milliseconds on the PMIC path
-> without resolving the sensor reset problem.
->
-> Secondly I thought about reset pin polarity or drive-strength but, again
-> playing about with both didn't yield decent results.
->
-> I also played with the duration of reset to no avail.
->
-> The error manifested as an I2C write timeout to the sensor which indicated
-> that the chip likely hadn't come out reset. An intermittent fault appearing
-> in perhaps 1/10 or 1/20 reset cycles.
->
-> Looking at the expression of the reset we see that there is a minimum time
-> expressed in XVCLK cycles between reset completion and first I2C
-> transaction to the sensor. The specification calls out the minimum delay @
-> 8192 XVCLK cycles and the ov5675 driver meets that timing almost exactly.
->
-> A little too exactly - testing finally showed that we were too racy with
-> respect to the minimum quiescence between reset completion and first
-> command to the chip.
->
-> Fixing this error I choose to base the fix again on the number of clocks
-> but to also support any clock rate the chip could support by moving away
-> from a define to reading and using the XVCLK.
->
-> True enough only 19.2 MHz is currently supported but for the hypothetical
-> case where some other frequency is supported in the future, I wanted the
-> fix introduced in this series to still hold.
->
-> Hence this series:
->
-> 1. Allows for any clock rate to be used in the valid range for the reset.
-> 2. Elongates the post-reset period based on clock cycles which can now
-> vary.
->
-> Patch #2 can still be backported to stable irrespective of patch #1.
-> ---
->  drivers/media/i2c/ov5675.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/media/i2c/ov5675.c b/drivers/media/i2c/ov5675.c
-> index 3641911bc73f..547d6fab816a 100644
-> --- a/drivers/media/i2c/ov5675.c
-> +++ b/drivers/media/i2c/ov5675.c
-> @@ -972,12 +972,10 @@ static int ov5675_set_stream(struct v4l2_subdev *sd, int enable)
->
->  static int ov5675_power_off(struct device *dev)
->  {
-> -       /* 512 xvclk cycles after the last SCCB transation or MIPI frame end */
-> -       u32 delay_us = DIV_ROUND_UP(512, OV5675_XVCLK_19_2 / 1000 / 1000);
->         struct v4l2_subdev *sd = dev_get_drvdata(dev);
->         struct ov5675 *ov5675 = to_ov5675(sd);
->
-> -       usleep_range(delay_us, delay_us * 2);
-> +       usleep_range(900, 1000);
->
->         clk_disable_unprepare(ov5675->xvclk);
->         gpiod_set_value_cansleep(ov5675->reset_gpio, 1);
-> @@ -988,7 +986,6 @@ static int ov5675_power_off(struct device *dev)
->
->  static int ov5675_power_on(struct device *dev)
->  {
-> -       u32 delay_us = DIV_ROUND_UP(8192, OV5675_XVCLK_19_2 / 1000 / 1000);
->         struct v4l2_subdev *sd = dev_get_drvdata(dev);
->         struct ov5675 *ov5675 = to_ov5675(sd);
->         int ret;
-> @@ -1014,8 +1011,11 @@ static int ov5675_power_on(struct device *dev)
->
->         gpiod_set_value_cansleep(ov5675->reset_gpio, 0);
->
-> -       /* 8192 xvclk cycles prior to the first SCCB transation */
-> -       usleep_range(delay_us, delay_us * 2);
-> +       /* Worst case quiesence gap is 1.365 milliseconds @ 6MHz XVCLK
-> +        * Add an additional threshold grace period to ensure reset
-> +        * completion before initiating our first I2C transaction.
-> +        */
-> +       usleep_range(1500, 1600);
->
->         return 0;
->  }
->
-> ---
-> base-commit: 523b23f0bee3014a7a752c9bb9f5c54f0eddae88
-> change-id: 20240710-linux-next-ov5675-60b0e83c73f1
->
-> Best regards,
-> --
-> Bryan O'Donoghue <bryan.odonoghue@linaro.org>
->
->
+> > Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11396
+> > Suggested-by: Andi Shyti <andi.shyti@intel.com>
+> > Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+> > Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+> > CC: <stable@vger.kernel.org> # v5.2+
+> > ---
+> >  drivers/gpu/drm/i915/gt/intel_execlists_submission.c | 6 +-----
+> >  1 file changed, 1 insertion(+), 5 deletions(-)
+> > 
+> > diff --git a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
+> > index 21829439e686..72090f52fb85 100644
+> > --- a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
+> > +++ b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
+> > @@ -3315,11 +3315,7 @@ static void remove_from_engine(struct i915_request *rq)
+> >  
+> >  static bool can_preempt(struct intel_engine_cs *engine)
+> >  {
+> > -	if (GRAPHICS_VER(engine->i915) > 8)
+> > -		return true;
+> > -
+> > -	/* GPGPU on bdw requires extra w/a; not implemented */
+> > -	return engine->class != RENDER_CLASS;
+> > +	return GRAPHICS_VER(engine->i915) > 8;
+> >  }
+> >  
+> >  static void kick_execlists(const struct i915_request *rq, int prio)
+> > -- 
+> > 2.25.1
+> > 
+> > 
 
