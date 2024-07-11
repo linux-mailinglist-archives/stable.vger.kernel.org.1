@@ -1,150 +1,113 @@
-Return-Path: <stable+bounces-59104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F78C92E53E
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 12:57:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BBFC92E561
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 13:06:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AABB28194E
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 10:57:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39C53B22ACD
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 11:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75228158D7B;
-	Thu, 11 Jul 2024 10:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA7F15958E;
+	Thu, 11 Jul 2024 11:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=frank.scheiner@web.de header.b="ckjYxlHu"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NXE8x6CS"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D2129CF0;
-	Thu, 11 Jul 2024 10:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0123158DA7
+	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 11:05:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720695445; cv=none; b=fq9IUgUnmtEm0BuqFY5oqwJcBX0h3MdBLqKLGiSxF7QukzSSDFGuEtr8Jc2XaggdnIt+JGh495sGYGxMg8DJ3tjmv35nOZ8mI0wC5tT1fMCJ1iDpFmEccVUTXJFYyD67nVwyTVKlcMMVeNTgDN3YxwnSMM/brRH91kJaCuFGo1Y=
+	t=1720695956; cv=none; b=bqfyQEVq2VG+BhkfaciqEIPW0srUawDkbKE1tXumyMSffXC3oSbeW38VVEBGqpUvyItrUrh6g3gLXHmTSU96o0XfwEgIw3yYo8mL+R/kdHepfrFw2MAL5fvT1pyTzIwI1TAh0PFJTv9dPc7eWFizC4pbK8V4GY55+xkBYwUQJCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720695445; c=relaxed/simple;
-	bh=+gEUZWwJxf6UBZ5/l0igGZen8dsW6JJDK458gV3RP5M=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=PXudvb9MeAFdcyPB/Hv/mtcEaRVdtQBEg4Rp8Vp5UpWH9oZsol8Sfx760tEOO6Rjow/w2fJoQfctY22JbYRBh/VGGhtJYcB0EWiYTueZuoRLpRxmBZibM7SHeitUUE9QvraeSsko66DHG7ua/caRpZEkZtytEA1ooCB5E+Gld2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=frank.scheiner@web.de header.b=ckjYxlHu; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1720695406; x=1721300206; i=frank.scheiner@web.de;
-	bh=VzEYr0o+A2uEVOWKMUMa1+D6NeJfJnWMktoA/muX5PI=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=ckjYxlHuK95a9bJSJlwrZb+sDXGGtZeQthPhTDvoK5rSpGcU3H72pzL6qZfj6CxH
-	 b3wZv39M7bcNyGzKSRnqGil0GAr5QNGHyqmHUQMvKk7ry/LN1e5wSes3d+pTusnrg
-	 qsTvDp0EPIIweeAt+F1q0Tc3iI6KBX4X1y2/N3Yn4F2So3KwZXPeGPAi/A/QETqh6
-	 fPPtRJmMelXHQF8m3YF3wrKZS7pC7P/eEg626UoS4HozAuziQTjsydrljn1eNpqv4
-	 +NxcBdv5s4TLlI8qOdknfv0EXc0r6wqExdHS2EihhygLiHhiqiBl8HLNi45Vnm7xM
-	 4MY9DtE1V+mMr62UUA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.30] ([87.155.230.91]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N79RI-1sK2OQ1fI4-013Kgf; Thu, 11
- Jul 2024 12:56:46 +0200
-Message-ID: <76458f11-0ca4-4d3b-a9bc-916399f76b54@web.de>
-Date: Thu, 11 Jul 2024 12:56:44 +0200
+	s=arc-20240116; t=1720695956; c=relaxed/simple;
+	bh=j9NiAkcYaZRamBP4qRY3h61EYjWuLcJWwXFrgkmMxhc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OrFU5+QGYBm7o2uMxNm3zQ7DhQP1uNj3p3nAT/FJxIZeBizIg3QhmLuvCxLcv+SfbCtccGLPvVIT393E9rEWBTCz0tcoJvYiYFsEQap9RRzRJTgxoh4OznkwTE3u+xZM5Pca9K651iyY70g1IADrMyocR5VtJgs++F57O9IRVds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NXE8x6CS; arc=none smtp.client-ip=209.85.219.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e03a8955ae3so719690276.1
+        for <stable@vger.kernel.org>; Thu, 11 Jul 2024 04:05:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1720695954; x=1721300754; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=j9NiAkcYaZRamBP4qRY3h61EYjWuLcJWwXFrgkmMxhc=;
+        b=NXE8x6CSZHTwPIXNdvJkrHhs8T62DP6eLaxflpb2uynoki2fmz1eG6hrL4Z/9154dA
+         N8ZjkNF5bKl1P6kaI3+IcqplAx6Ex29DO8niwk3wlkxzdJXCqVNiv6cB1NeevofpRdgf
+         6r/nY+/kG3FRJBrP8qdD4zdMQyBtD4t65Mplv3e/VdDCi5VM+rGCT79eBLNRHqOnBZNE
+         mRrxkZCGayDBn5OFMVvldLeULdINXibXHVAx9W4z2NNnOxQDoVS9Ctt65ngK2otlYwCd
+         YWFVM++Y8J76S0WbjV2NaWN4ikKsc1OS9XE/4XoG6lw8davOMshR82DpoNa4jOxcfiHb
+         vrCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720695954; x=1721300754;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=j9NiAkcYaZRamBP4qRY3h61EYjWuLcJWwXFrgkmMxhc=;
+        b=i3+rEVxbQvj9YEe3KUyxb7mcPsoPnBvMjlPpmt+KhHYXa6G0NDOQLZ2WSek/6baBHE
+         sX2YPE6hyvb4JOG6ifJZncOActfgGfoADgDZ0m5gOe1NNoIfJ3HSdLVKlzd9ldy+DLDV
+         dlHmlkUzy7E5EzKqob8AwNIBPzP5z6zGhWCGilSZNWIYc7Au6s7cesfdEsqJyTrZU1Nc
+         ZVPir/uCG2BYuIOlJXb49iemHjuOK/C69dBPCb2+zYSUYtjVJtIWW/blLa8WzER2Xuuv
+         ZxrLaMXi0oNGNnlP7+6IsiOGoicIeZ2vGkCEKTtnXhviL/677AN5HAQ717xCU46z81ho
+         ueNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXcj2sHaOwmWNwFz/nNGWycY72HSjYu27Ae2CI5DLK1MhUWuSmVF1bMl8zppwj8iiAGxpnxg0Se+Wiy7jlJatxW7XjCR18i
+X-Gm-Message-State: AOJu0Yz+UEJUbbKMlyZo3YHH5wddoQuxY6M+wgkOBjhox8YscVInM1CT
+	PdwbGf74qtWBMimu7EHrIHWJ7k1ESHWJvGWp6Vydv4CIL8pH0OdwXwauc1yMUEPdIxoQ8RR8fkW
+	3YuJR5Z9ajBveQ58u0ViWpxYKDzYc/TeGvmK/Vg==
+X-Google-Smtp-Source: AGHT+IFr78C3FB3Wiso6ZeI7SPSIkZqE37WM3KiUtBxtkNcdoByPdi/4+jEHifoR7ryqA6byJNjbDwvYVpZ0laFSM0U=
+X-Received: by 2002:a25:d809:0:b0:e03:af3d:d4d6 with SMTP id
+ 3f1490d57ef6-e041b20c6b3mr9365953276.42.1720695953858; Thu, 11 Jul 2024
+ 04:05:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: gregkh@linuxfoundation.org, stable@vger.kernel.org
-Cc: akpm@linux-foundation.org, allen.lkml@gmail.com, broonie@kernel.org,
- conor@kernel.org, f.fainelli@gmail.com, jonathanh@nvidia.com,
- linux-kernel@vger.kernel.org, linux@roeck-us.net,
- lkft-triage@lists.linaro.org, patches@kernelci.org, patches@lists.linux.dev,
- pavel@denx.de, rwarsow@gmx.de, shuah@kernel.org, srw@sladewatkins.net,
- sudipm.mukherjee@gmail.com, torvalds@linux-foundation.org,
- =?UTF-8?B?VG9tw6HFoSBHbG96YXI=?= <tglozar@gmail.com>
-References: <20240704094505.095988824@linuxfoundation.org>
-Subject: Re: [PATCH 5.10 000/284] 5.10.221-rc2 review
-Content-Language: en-US
-From: Frank Scheiner <frank.scheiner@web.de>
-In-Reply-To: <20240704094505.095988824@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Fbq7Hjr7X2/6ACoXjJUp9J9n84tJ5yO9w0OJ9P0SzPkif0/w2pg
- SRSj9DIyr2EryV/M2d1Ae+pOzl4zTHF5nWDyTWn9onLoMODiT4ahfxd1DHHRoPG+2TB166v
- v9FsJI40B7uY6QnSy+mW5KKfFNaLvHSpmS5plv6cnO3PaYFj/xsOtM067Ma3GTkuihRTAc3
- 5NRm/k7qElvIyPrIppfFQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:KYa8x5bIf0s=;GYogy+6iurgHSxK2th2isUgduVZ
- FAaCvByYxSNBykzRUrGPx4t9f5f+yFqnDIKQIwO8MB8JXasA9GqULx5HbZeCUS8L95epaH7wv
- aTE5EP+iA+eGqcm87RnswHMABe3OrDsQ4lM0T+GtvAvqfsnfw2nGFavFf/b3T303X0XEaMyu9
- p3RVypLzS5r27m2lzAZwx4hWPOxOCPsoPcsa+5/wFDXpWOT+KHMiftaSLlwwFntP3aWXZWSUE
- cBrjqyo3VE7cANXh0tXpPtz4qkgLBFOSnMlkuvfoX+G5sc910TcF2iALcNBNpoy9fKq9SqPox
- /y0n7C6jADCg1Qvh82H6XC1QxeEy6+cVAERRS8gYeuT/1iHlNjzeNKgbROnei3SRAGn/xlSQ9
- PrMID4WNREW1UPa64oIkML0zhEEBUlwTLxv97gcLOUlzxT9BfKAzOfrLd9dl/LotqRNNYeBY9
- w280NeicdQJT7HuxFO1OUF9HUb0X4ghsMoArO4ORtoJTigxV/pCKRG7IVA/irbR4WrY6+ozgQ
- 81DkKUgg9XWeCHlUJEuJjgvkjFg+HrEQblJgGjC0Z+QpcGTBLcVHUX+50/vvR2dA/MDiIyCgJ
- rzcvsXqMPvQFvRKOsSyFUKeZzU0l39HGx56F74djSp+wowB7xondNEa/zOz7kIkmI+yDrCA96
- R9FMV0aBn06tq1v5k1SJ91Z33/kynwyAWzgcVOxv8EcYd4AC3yMEYEgqtAOjBbC5LT0j376R1
- zUq9h6mEOkveJ0GNtCHM9EfqkYtN/+7799VO20z3BF+H8tBfjZlY75Y1WJHC53aTicKa5tBVs
- GYX2W6gm3gvqSXTi74bkT2McsCfyVwwaYe7Ug7iPMOr4s=
+References: <20240618155013.323322-1-ulf.hansson@linaro.org>
+ <20240625105425.pkociumt4biv4j36@vireshk-i7> <CAPDyKFpLfBjozpcOzKp4jngkYenqSdpmejvCK37XvE1-WbBY2g@mail.gmail.com>
+ <20240701114748.hodf6pngk7opx373@vireshk-i7> <20240702051526.hyqhvmxnywofsjp2@vireshk-i7>
+ <CAPDyKFoA9O5a6xZ+948QOzYqsRjk_0jJaSxeYRwx=76YsLHzXQ@mail.gmail.com>
+ <20240711031356.rl2j6fqxrykmqfoy@vireshk-i7> <CAPDyKFocjOt+JyzcAqOfCnmTxBMZmPjMerSh6RZ-hSMajRhzEA@mail.gmail.com>
+In-Reply-To: <CAPDyKFocjOt+JyzcAqOfCnmTxBMZmPjMerSh6RZ-hSMajRhzEA@mail.gmail.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Thu, 11 Jul 2024 13:05:17 +0200
+Message-ID: <CAPDyKFoWgX=r1QtrcpEF-Y4BkiOtVnz4jaztL9zggo-=uiKsUg@mail.gmail.com>
+Subject: Re: [PATCH] OPP: Fix support for required OPPs for multiple PM domains
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Nikunj Kela <nkela@quicinc.com>, Prasad Sodagudi <psodagud@quicinc.com>, linux-pm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-tegra@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Dear Greg, dear Sasha,
+On Thu, 11 Jul 2024 at 12:31, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+>
+> On Thu, 11 Jul 2024 at 05:13, Viresh Kumar <viresh.kumar@linaro.org> wrote:
+> >
+> > On 10-07-24, 15:51, Ulf Hansson wrote:
+> > > I think this should work, but in this case we seem to need a similar
+> > > thing for dev_pm_opp_set_rate().
+> >
+> > We don't go to that path for genpd's I recall. Do we ? For genpd's,
+> > since there is no freq, we always call _set_opp().
+>
+> You are right! Although, maybe it's still preferred to do it in
+> _set_opp() as it looks like the code would be more consistent? No?
 
-I noticed a build failure for linux-5.10.y for ia64 ([1]) (sorry,
-actually since 5.10.221-rc1, but I didn't notice that build failure
-before yesterday :-/ and as the review window for 5.10.222-rc1 is not
-yet open, I thought I send it now as response to the last review window
-announcement for 5.10.221-rc2):
+No matter how we do this, we end up enforcing OPPs for genpds.
 
-https://github.com/linux-ia64/linux-stable-rc/actions/runs/9771252437/job/=
-26974019958#step:8:3524:
-```
-[...]
-CC [M]  drivers/pps/pps.o
-drivers/firmware/efi/memmap.c:16:10: fatal error: asm/efi.h: No such
-file or directory
-    16 | #include <asm/efi.h>
-       |          ^~~~~~~~~~~
-compilation terminated.
-[...]
-```
+It means that we may be requesting the same performance-level that we
+have already requested for the device. Of course genpd manages this,
+but it just seems a bit in-efficient to mee. Or maybe this isn't a big
+deal as consumer drivers should end up doing this anyway?
 
-[1]:
-https://github.com/linux-ia64/linux-stable-rc/actions/runs/9771252437#summ=
-ary-26974019958
-
-This is related to the recent addition of this change set:
-
-efi: memmap: Move manipulation routines into x86 arch tree
-
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git=
-/commit/?h=3Dlinux-5.10.y&id=3D31e0721aeabde29371f624f56ce2f403508527a5
-
-...to linux-5.10.y. For ia64 this change set on its own seems incomplete
-as it requires a header not available for ia64 w/o additional changes.
-
-Adding:
-
-efi: ia64: move IA64-only declarations to new asm/efi.h header
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/=
-?id=3D8ff059b8531f3b98e14f0461859fc7cdd95823e4
-
-...or from here (according to GitHub this is in linux-stable(-rc)
-starting with linux-5.12.y):
-
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?i=
-d=3D8ff059b8531f3b98e14f0461859fc7cdd95823e4
-
-fixes it for me with 5.10.222-rc1, see for example [2].
-
-[2]:
-https://github.com/linux-ia64/linux-stable-rc/actions/runs/9871144965#summ=
-ary-27258970494
-
-Cheers,
-Frank
+Kind regards
+Uffe
 
