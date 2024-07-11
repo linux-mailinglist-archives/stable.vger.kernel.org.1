@@ -1,707 +1,286 @@
-Return-Path: <stable+bounces-59153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF2A492EF0C
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 20:43:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C6592EF7A
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 21:16:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3AAC283D6D
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 18:43:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B1431C22775
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 19:16:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD07916E876;
-	Thu, 11 Jul 2024 18:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B41F16E88D;
+	Thu, 11 Jul 2024 19:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bPt4ANk4"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jnyk+hd+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2045.outbound.protection.outlook.com [40.107.92.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412EB38398
-	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 18:43:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720723431; cv=none; b=nTJAYOoA7wAAV7Uu58fOxmfxZCu8/LAkOYMOM3D/3eoBML+OyNLx4tFWPjyKT4k3v39DjLvqRRmRR2YW6xzAdTpauuecaHvNAk4kd6PCL4MvpeLkllFW3IlzCHMAjpLqpdohR+SS0AdGmFWEOcVPFh0Y+a5OyHH422dJm36ZOZA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720723431; c=relaxed/simple;
-	bh=UA4mniQdFmXSfDtO7btIqECMHWbIBNAimwGK6JSMGPQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OhH0JquBG9ZAYvYWpTtfQzFlKUDtb7zCBzudcjPDrkPIhsc9xGBTg5Uy3520+gUejN4bD3oW1yWo1z/HogiwfIJICaPyuAZ3jCcPankYg0wzm7sDD5tQG5/eWA+9vA4nldHWFQvIM8E55gkG1z/LgxaoGDk0CHNTY7rqLEIkyFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bPt4ANk4; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-42662d80138so7418785e9.1
-        for <stable@vger.kernel.org>; Thu, 11 Jul 2024 11:43:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720723427; x=1721328227; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qSRQv9kK5BM4l9bADR/LZxF6wo0nZb1+KIiOXFMIB/c=;
-        b=bPt4ANk4kVE5Eobn+d51AqRWI9tt06WOpNBzSva+uYuMMp1G6mQpNbFQvFdhyEhycp
-         jAgsWtQvi6pY4GloMDVILRU7Bz2kgMfDCAkEvBZW1JALy+h/0z9ySygx48+Hmx0QU0F2
-         zVTb8OkWtod1xwwvuc16sWTXljFmtx3rK57RALPLpxbq82YIR2O2uTbQd4umgm9v/y1C
-         XBVpF3fB9ZRzHUoSwsKk3n69PE73G2FuKwWt/ea3jo9ZAZ29ZpPobVW1EmMpwz9zRMqf
-         yT5IKMzQONcl1zr52l1812iL2iFOdgG3nTdcn7fsmVoDECNJfb3wOAVrl5z5y3TXDwX5
-         v3Sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720723427; x=1721328227;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qSRQv9kK5BM4l9bADR/LZxF6wo0nZb1+KIiOXFMIB/c=;
-        b=TaY0AX99TQ+KriXFujWqP+duKOmV9vdMbVhmN2wsuDzTTH9CRdh/lnP2SqmB8g6L8a
-         VLnfEBF0z3rDf5iVfZF6etJx+qyRXgOy3jwiroY2w9yGBUyy16X0pxdjJLdiSOlyXe0U
-         5vxs5meJruxg6C/QAs8R9c97bp2XCVjuvun4HDOLyN+vbxnMOufy5/gofByXiXxSpSZj
-         YDapdHYw+yscY52CBm/mXEyvPM30xB49OtfKRQwz4HleJnGNmdkI/Bp/7djtcjo/5kYq
-         hfFpeuV49nk1etf5ClAgRNBwStrZzzNV5YSnRu0gXGnFui9EIRvVq+G87oKm70RILVGU
-         R3Fw==
-X-Forwarded-Encrypted: i=1; AJvYcCUEQtg3q7gZlgPPINO2sQWINIGzfROZ8uGrzdPMhxt7Mwov5PLa3x6qBIYXLNwWp+ylMuKKlDLfB+BJPw7vfewAlKjyzQ29
-X-Gm-Message-State: AOJu0Yz+wdy/hHK0B9sB+jnBH+8Z59b1f9Fwf+B9oSRPeDZqwCQA2J9i
-	ckL66iwWzHwTdhYQ6SkeTKo2XdSqqGMTLvCEIyj2BdH3u/FbnonW
-X-Google-Smtp-Source: AGHT+IEmIUgAEUwbTaGPJG5tPqbkrRvYzkmPWzjfk3klSK8vUAqMj6tSKUTmiNAvw2sUZrX7Yy1SIw==
-X-Received: by 2002:a05:600c:1d9e:b0:426:61ef:ec36 with SMTP id 5b1f17b1804b1-42670197e61mr75891695e9.0.1720723427423;
-        Thu, 11 Jul 2024 11:43:47 -0700 (PDT)
-Received: from localhost (algrothendieck.nos-oignons.net. [80.67.172.162])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-426725597bdsm68122245e9.0.2024.07.11.11.43.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jul 2024 11:43:47 -0700 (PDT)
-From: Maxim Mikityanskiy <maxtram95@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Cc: Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	stable@vger.kernel.org,
-	Maxim Mikityanskiy <maxim@isovalent.com>
-Subject: [PATCH stable 6.1] bpf: Allow reads from uninit stack
-Date: Thu, 11 Jul 2024 21:43:23 +0300
-Message-ID: <20240711184323.2355017-3-maxtram95@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240711184323.2355017-1-maxtram95@gmail.com>
-References: <20240711184323.2355017-1-maxtram95@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DC016CD39
+	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 19:16:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720725400; cv=fail; b=Q/Ci4ZsFAOhP7wZINAKdfA7T7SzBI82uoKPrTFYMVKkePwnAX8UkgjtrK5dQ2Y8C7RSx+bmVKFEVBbTMy8yO22Wcpp7gpZeyulMkNdNU1KPLa2PsdfCioUTvW//ICpdLn8zl1BeqA0FSaQamvVDwlYedfW+j1Jm+fdnfP1F1UxQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720725400; c=relaxed/simple;
+	bh=ASCAdsOaUxrnNlvROhxOO7zoEpWx/GPzjiAj1cW9ICU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Mf87vusfzMrVAHHiDi7ZtbvzQ7yYHvEOLm1TQKebdhAeCgUc3UjYRr4Vm4cL/vdy+sCXd962LCk5ohllOGGw9b+P7Q04K2r2EEUPpE50QlW7D03dFCezFMYwh0MBGPr9ymGxhTljksU+5qHqjBf0QwKV4lGR/pOmQlnw5SOOFcI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jnyk+hd+; arc=fail smtp.client-ip=40.107.92.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=A1LVOPBqlmshCUgZvcnJGwZjvNmY0BreNrHWsgamc/zF1St5GfGGvpJMgStWOC/rWozGc8mAtjOxF3Kt5jOsoa0zDH6+mXlwTHC4WAQIo2Ej90eS90Cl4B48ZgFsU4NUiJuA4KGhR8jT7CeZPJNoYu6Ai9waD6WHgJ43NIUGhVoIV+Ruj4t3jvbvTRTMmZ27iB5Mcyc0wbluAwbmpi1tyMXN+/0SUl7eHihoZNNmkXMG+v3RYQw82qAa4ewdW4h1ahbq6a1prrGzZ0QaRwxsGHG82wc3GuNR0BnrrKl6dfboxYzo2IzkBdu37IZn9RNiJpeO38r7NHg/YoeAJYq9IQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=P9miaHnPE/4PjlC8PnXrFuvygIzhgMtr9KEHnuk3vsI=;
+ b=GmDl/KmxyTv5sFOW7LJ6pXoBcHt1poOdbbthDmptWTzH4RpRjZrmvRI0K+n8J8fYIvI5PIyRAZxbpGLzpe/eaVCL7vyw68zUudhiftcg0xnxjornXvMtOwGg4L9CyhRjkcGjWn+dBh+TtrnZhnt+b1rN4W5jKGqehmyz0dQs6gy0Pne71P5DSVtqHZJk/YLf2yv6xchSmCvM8oVMondlx3dWPtloTDPuB+6+jhoWacaleCHvLuHXsjsRLrJNgZQED/0FeQ3i4iIyWZVwU6+o+hjI2k9kAJsRs+BEvxOlhV1Glq7wYzG0n0sq4mcELPBBbQgGtHpkkkyND4IKjBJwpw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=P9miaHnPE/4PjlC8PnXrFuvygIzhgMtr9KEHnuk3vsI=;
+ b=jnyk+hd+yifpFlu4cTG1joNK0pjTCYoGGEyNJ7Im5+oMDAM/5qIOk/qrKOdGpNBUVtGMY02IDff5dRBmedvWMTKrwCXO/3hWjLz0U5xgwAvn7UsVN5ky0OBMPjxHaKHIlptzVaG+T3O8EazWH8Kess5s07/2m7ZJshQkhqi9gy2IKVD1MePVmJDhozs0U0GKtHwKiLC7IKbjrLz3ryTFs7EojWU2rGqXKktDNK0M0diuH8oLmaSnFngTCh7ne/Adq5/5gYrpfB20R8u8giGFDrOfxZSxYvsznjmUPTraRejhWrC8X5Pl0adoKOh0QjswbzCrh6eMGsgCPYwPTnqckA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BY5PR12MB4130.namprd12.prod.outlook.com (2603:10b6:a03:20b::16)
+ by MN0PR12MB5884.namprd12.prod.outlook.com (2603:10b6:208:37c::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7741.36; Thu, 11 Jul
+ 2024 19:16:27 +0000
+Received: from BY5PR12MB4130.namprd12.prod.outlook.com
+ ([fe80::2cf4:5198:354a:cd07]) by BY5PR12MB4130.namprd12.prod.outlook.com
+ ([fe80::2cf4:5198:354a:cd07%2]) with mapi id 15.20.7762.016; Thu, 11 Jul 2024
+ 19:16:27 +0000
+Message-ID: <dfe78e1b-eaf9-41e6-8513-59efc02633fd@nvidia.com>
+Date: Thu, 11 Jul 2024 12:15:34 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 046/139] selftests/net: fix uninitialized variables
+To: Ignat Korchagin <ignat@cloudflare.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+ Willem de Bruijn <willemb@google.com>, Mat Martineau <martineau@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>,
+ kernel-team@cloudflare.com
+References: <20240709110658.146853929@linuxfoundation.org>
+ <20240709110659.948165869@linuxfoundation.org>
+ <8B1717DB-8C4A-47EE-B28C-170B630C4639@cloudflare.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <8B1717DB-8C4A-47EE-B28C-170B630C4639@cloudflare.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0030.namprd03.prod.outlook.com
+ (2603:10b6:a03:33a::35) To BY5PR12MB4130.namprd12.prod.outlook.com
+ (2603:10b6:a03:20b::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR12MB4130:EE_|MN0PR12MB5884:EE_
+X-MS-Office365-Filtering-Correlation-Id: 54fcee99-5068-4139-6ad4-08dca1ddf694
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?K1BrS1c2bmxtaFlybnVCWUp4TGpZR2tZZFU3NjVBN1FlWWhIWk4wUmNidk51?=
+ =?utf-8?B?c0Q4dWcvRFVUMDZCWUFYTVdvZWRJV2kveXN0ai9VeUE3d1ZsM24zTVZJRngw?=
+ =?utf-8?B?TjZScnRZa2MxTzR5dVN6VGdySWpOUjFHNnlCdTdoVG9aSEJhZjQ5T1R3bmM5?=
+ =?utf-8?B?ZjRoeGJCWkljVWpUb0d3MVh4TEhSNjVWSFhPY1JQNmJXUzh5YmRYSk94OWRu?=
+ =?utf-8?B?WnNxQXVCWkF1dUI3aGYvdUZrdFdwdWx5RGpnZzZzVEZ6UzZvcTN0MVVwWGFl?=
+ =?utf-8?B?eld6Z3paRVlYQVVSUG1DaVBzNnQrclhsUnhnTSt2VUFuUC9pdTJFclFlY1Vy?=
+ =?utf-8?B?dkQ4cWIrMXh0S0QvWUhZSzdMQWhEb0RMcG00cDVOTXhFb240aTlrbHhLTWQw?=
+ =?utf-8?B?cUxwVlp1blhRS014ZTdockJ0TjhxS0lDMnQ4YW5sWjJkN2w5OGJpMmNNdmx4?=
+ =?utf-8?B?Z01zU0hibnhtM0hITUc0K1ZMdEhMR0NNM1djZml2SkppS1Z5aSs4QWlNY21H?=
+ =?utf-8?B?Vm9nM3pNNXM1cy9FNXlKS3JyazEvdjN1YnhPK0luL2VVSU1zUmFYUlRPY0Ni?=
+ =?utf-8?B?QzBkOTRZenVUanRBODBlK09tZDVXSHNMUFg3eC9Nb3QrZ0xRSGlHWUJOSmY1?=
+ =?utf-8?B?dDFCTklnc05OMC84dS95OGtta0FiS1lLTTZHc2MvSkNNWmRvUlhyRlZ4SDRN?=
+ =?utf-8?B?OERqVy85VFhockZYVUNwd3had1MxRnJmQkZyaFhlTlZTaTl4OE01QlViUWFB?=
+ =?utf-8?B?TEh6cGo0d2ZFZXc0Z3NLNmxjNUNuTytid2cxakQzcGRpOHQxdzZ5bjlHNnow?=
+ =?utf-8?B?NnNXcENLM3M3VXNQZ0VwSmZqdWQxUlJkd3hEWk16YlNnZnNvRW42T3MzQ1k4?=
+ =?utf-8?B?d29RUHl0aTN3V1R1V1BUa3J0c1dPT1VWUlk4VWlyWUp6bVlmRW95blpVVm5h?=
+ =?utf-8?B?ZTIyVFhrSm5PcU9lK2lSK1Y4dCtEMEVGT3V1K01nSnJ2Z2NqTEVVdW1YWVFO?=
+ =?utf-8?B?UGVDdEtSVnBqRllNSzRHZWdwVTZUalQwODN6bXptZm8vWTlaRXBkamttYVIz?=
+ =?utf-8?B?SnMrS2xXTEN3MDZCZk9IMEFwNUNPS3VsSjJCdlVjdTkzdzV1akE2bzRZQ0ti?=
+ =?utf-8?B?SnZWdDNjSms0RUhiNjZkdFJJUnc5enVxRnY2cnJCa1hoRVIwNjhydHUzbG04?=
+ =?utf-8?B?aGwzaFd3emVSN1pZeS9ORXhTL3poVlI0dzlpNjFiR3J0RjdXMWR6Nng2N1Rq?=
+ =?utf-8?B?Qlk0dllabWF0OFJyTTRtTCt1ZGY4MmZRbDNtZENrYWhHZG43blhtazBwYnFm?=
+ =?utf-8?B?YmhKQ2EraGUxcnk1VmZiYjF0bjIxdHFpM29SbjdpakJUaC8vZlkyMm9qaU5H?=
+ =?utf-8?B?cGNsSmQ4d0xYcTloRlh6akZLZkpSVU15amk3dk5CWWY2NzhaclNtVWtMZ2Rl?=
+ =?utf-8?B?eU8wWVR2WEhrWlhJbFV4UGdPSlMxL1pnWWZjRmFPcWlKZUJvbE5LSVRtbWtI?=
+ =?utf-8?B?ZkdkTnlzR3kyaDVHaFBHRCt4V0h2cmhsNzkrY2pPa1hMYlNkSnNRRnlpSzUx?=
+ =?utf-8?B?OGRuOFZHWjlhWHFQNy9UNVo1R2tobmNCRDUrdDljcnJKRDArQzk2SjZqcFlE?=
+ =?utf-8?B?a1VyaDVQRSs3M2ZyS3lSMndoeW1aZ25VK3FHeThqTHozRnBwdWY1MlMxbURN?=
+ =?utf-8?B?cW5OWS9NaE1XTUNDRUhBTEYxNW4xcjExaTFJd1VrbEVybnVtTHJ1MFFJMGJG?=
+ =?utf-8?B?WEFxRWgxcUIvWW9reSs1NkF5UXpZNU5MUUppWm5HVzNkL3ZHSHNaRFFvd3hR?=
+ =?utf-8?Q?hp4MEtkq/oNX1pZ0Ij8wbGpyB16o0bNoWRKIk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4130.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cnluNUE3Tk8weVhqeGdyWXBiMWlHT2ZHU2Mrbjl5SXp3UkRkQ1M4QmtaSGZO?=
+ =?utf-8?B?T0FJUnpYa1o0UHdZRm1xbTE5ek91ZnVBVGpOSm5ScE8xK2lmV2xnQ3BKZG1a?=
+ =?utf-8?B?QXhPcVRpUUE3emtDUWYrQ3p5bXJNT2hwR09zNnZtYysxazRqZGZnL084NXhM?=
+ =?utf-8?B?UEwycElYQ2xUY2VHMTEzUjFrZjFUVENEdTBYMVlUYmVoSWcwWTJ6SWxhOHBW?=
+ =?utf-8?B?Mk9DajRRcERFbncrK21NTWNUUktHcnFucTdDUHNlUEhCTXYzdjlBSTR5N3ll?=
+ =?utf-8?B?dlZpZDZ0cDhQK0ZINTNYenJ6KzlYdFRjSWpoZVUvSDcvRFp6ZUNFWkNaUmsw?=
+ =?utf-8?B?aUZKUFlKMEgwWGRJaHBRVnp5Umt2aWtsckJMSk4zTU5JQjZzRFcwSUdURHgy?=
+ =?utf-8?B?T2xqYkdzaWtIbGVFZnlwbFFiV2RWdm01ZEdaQjNaeDlRZlVsZktjd0VCaWlB?=
+ =?utf-8?B?NThOUEp5OExNUnlQUXRPRFlNaGN5RG5Hc1dibE55d0VNYklibXdod0FoRWVX?=
+ =?utf-8?B?K2ZkSGZ5dUIzMEpEY2ZSYjNiWjlXcUlxZnpyM1h0NDhsVXVDQVQ1TVh1b2E1?=
+ =?utf-8?B?OEMrU2JiRVBQd29qcXlBbG93V2dQZXp1MmlLcUlYTTlLWnRCK3dES2RjT2tC?=
+ =?utf-8?B?bkNQYWpZbUFGUTNKTDdqNjEvZDNONG42ZVdKWVowS2pZWENweEZYRkJzaVly?=
+ =?utf-8?B?QTdaOFNIdzl0eWZaNFR0aDVhVmNPNWlxUStuY2FPdkpIVlhWcjhHMDFEbUdD?=
+ =?utf-8?B?N1J5bXdpQ1pVK2FsT3VCK3p2QUxjNXRzSTRuTG9Pb2tPcm5KN200ZmU3dWZm?=
+ =?utf-8?B?M3ljTmdtOTRYb01OUHdXaTU2NnkrYkRVNDZON0JPRGs4MmJtTzY2aVp4TklV?=
+ =?utf-8?B?cXdkQTVhQ1ljSlZtQkpyd1NjUml2bFg1eUttODJSZmNoNFpycW91Z3pzV25M?=
+ =?utf-8?B?amFvV3lFQVlPcDZ0YUNwRnoxby9nS0dYZjQyaC9YWjVROG1ncERyeFZSV0x3?=
+ =?utf-8?B?VWxtaHRNT2o3eDhzVkt6SGo4NHV1UzZxajE5aVFmS3VHZDZ4aEt6cFgrOENI?=
+ =?utf-8?B?YUR4dDdVeVMzWUI0Q2Z2R0pjTEJKTnlJVHBiU01yOTU0dmR5MHhYeUw5Qnhu?=
+ =?utf-8?B?M0FNV1dSaElIT2wzOS9MLzIzdjhNaGIzUzBIc2ROcUhISCswTUhrMExrWFY5?=
+ =?utf-8?B?MnJXZWQ5VzBYbklwZXRFTlQyZmdPcU5Na25MejRGY09LZzk4bTR2WmRqTmM2?=
+ =?utf-8?B?QzFDVFRXZWJRMEZvYkdtU0poTzJUWDlHa0VJZ1RHZlVzNkM5SFBHcXZseW1F?=
+ =?utf-8?B?cGIveXJ4YzRkQjJjNkNIRXMrbVBiMnRnS1FiZ1Y3bGx0b0N1bStVUWx1MkR1?=
+ =?utf-8?B?TnhENGJJSy9sbkprUFNKZEVxMHh4WGdqbGhBcWdRRjRXK2FrZ05yQjdTV1gv?=
+ =?utf-8?B?ZDRPdE1BZldWbjNVYU01bFAwTnBUSGp2a2JaZHNvM1lhemxDWFZKTEF0WDJE?=
+ =?utf-8?B?WUwyVDlCUGZZRnBCbWFWaXVjdlkxaHRneXF3Mlc2MXFmZVIyTzRIMUVMNndO?=
+ =?utf-8?B?UlZ2cU9uNXZsM1BzTlhzZWpkSEx3MHVtTlQ3dHhIcG1jQXhVcENUVXVTYnNo?=
+ =?utf-8?B?REErQTgzU0tjVS9IU1FHalZsNkE3YjUwKzIrZ2toZ2RrZFk0SkhrZWhmT1hC?=
+ =?utf-8?B?TWlXSDdIaUhDNlBZbld0QXhyM0FEZWI2bWdEY2cwSzRmeS8za205MVZ4K0JB?=
+ =?utf-8?B?OTEzZ1VoQWxJK0ZSczhxbnh5cGhTTGphOTdOVFV2ZnAvT0p6YVNacnY5UGFO?=
+ =?utf-8?B?d1prREdudG9iL1Vidjd5ZE4wRW9Rb01ZMmVwZjh5TEtIVXJQbG9UdW05Tll0?=
+ =?utf-8?B?QlNqMlljM0dXV1pzRi9reGw2bmd5VXFtdlJBUmh1em9RRjlmem5wK0ZMVFp4?=
+ =?utf-8?B?K0M3cnZtL0RHT2p5MFExa0wzMnpGRi9nTTBRK2ZDZ0MrQU1tVitYclBrUjJN?=
+ =?utf-8?B?SC81V1RBd0FJU2xjOGZmdkY2QmxGVGxTbVpLVkFKTkFBRHpEWCtlOWZOVnFX?=
+ =?utf-8?B?SkYxSnpxOXFUS2NlVFpxb01FN20yUmJ6NzJEWDAwWVVydlh6bDBEQ1AxSFRh?=
+ =?utf-8?B?WkkwekY5OExPT1J5RFRhektSc1NNYzc2VERVeSsvcjhiUUhhaFNKa1ROUFBh?=
+ =?utf-8?B?UWc9PQ==?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 54fcee99-5068-4139-6ad4-08dca1ddf694
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB4130.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2024 19:16:27.7295
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ERnIEQ+Pdr2nf1inYikw/jvBN2gK/847XY4weD9dxyp5sgDrNd+bkqkIqehtqdcUWn7Ap00UHpaMW42XLeebrg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5884
 
-From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 6715df8d5d24655b9fd368e904028112b54c7de1 ]
+On 7/11/24 8:31 AM, Ignat Korchagin wrote:
+> Hi,
+>> On 9 Jul 2024, at 12:09, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>>
+>> 6.6-stable review patch.  If anyone has any objections, please let me know.
+>>
+>> ------------------
+>>
+>> From: John Hubbard <jhubbard@nvidia.com>
+>>
+>> [ Upstream commit eb709b5f6536636dfb87b85ded0b2af9bb6cd9e6 ]
+>>
+>> When building with clang, via:
+>>
+>>     make LLVM=1 -C tools/testing/selftest
+>>
+>> ...clang warns about three variables that are not initialized in all
+>> cases:
+>>
+>> 1) The opt_ipproto_off variable is used uninitialized if "testname" is
+>> not "ip". Willem de Bruijn pointed out that this is an actual bug, and
+>> suggested the fix that I'm using here (thanks!).
+>>
+>> 2) The addr_len is used uninitialized, but only in the assert case,
+>>    which bails out, so this is harmless.
+>>
+>> 3) The family variable in add_listener() is only used uninitialized in
+>>    the error case (neither IPv4 nor IPv6 is specified), so it's also
+>>    harmless.
+>>
+>> Fix by initializing each variable.
+>>
+>> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+>> Reviewed-by: Willem de Bruijn <willemb@google.com>
+>> Acked-by: Mat Martineau <martineau@kernel.org>
+>> Link: https://lore.kernel.org/r/20240506190204.28497-1-jhubbard@nvidia.com
+>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> ---
+>> tools/testing/selftests/net/gro.c                 | 3 +++
+>> tools/testing/selftests/net/ip_local_port_range.c | 2 +-
+>> tools/testing/selftests/net/mptcp/pm_nl_ctl.c     | 2 +-
+>> 3 files changed, 5 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
+>> index 30024d0ed3739..b204df4f33322 100644
+>> --- a/tools/testing/selftests/net/gro.c
+>> +++ b/tools/testing/selftests/net/gro.c
+>> @@ -113,6 +113,9 @@ static void setup_sock_filter(int fd)
+>> next_off = offsetof(struct ipv6hdr, nexthdr);
+>> ipproto_off = ETH_HLEN + next_off;
+>>
+>> + /* Overridden later if exthdrs are used: */
+>> + opt_ipproto_off = ipproto_off;
+>> +
+> 
+> This breaks selftest compilation on 6.6, because opt_ipproto_off is not
+> defined in the first place in 6.6
 
-This commits updates the following functions to allow reads from
-uninitialized stack locations when env->allow_uninit_stack option is
-enabled:
-- check_stack_read_fixed_off()
-- check_stack_range_initialized(), called from:
-  - check_stack_read_var_off()
-  - check_helper_mem_access()
+Let's just drop this patch for 6.6, then. Thanks for noticing and analyzing,
+Ignat!
 
-Such change allows to relax logic in stacksafe() to treat STACK_MISC
-and STACK_INVALID in a same way and make the following stack slot
-configurations equivalent:
 
-  |  Cached state    |  Current state   |
-  |   stack slot     |   stack slot     |
-  |------------------+------------------|
-  | STACK_INVALID or | STACK_INVALID or |
-  | STACK_MISC       | STACK_SPILL   or |
-  |                  | STACK_MISC    or |
-  |                  | STACK_ZERO    or |
-  |                  | STACK_DYNPTR     |
-
-This leads to significant verification speed gains (see below).
-
-The idea was suggested by Andrii Nakryiko [1] and initial patch was
-created by Alexei Starovoitov [2].
-
-Currently the env->allow_uninit_stack is allowed for programs loaded
-by users with CAP_PERFMON or CAP_SYS_ADMIN capabilities.
-
-A number of test cases from verifier/*.c were expecting uninitialized
-stack access to be an error. These test cases were updated to execute
-in unprivileged mode (thus preserving the tests).
-
-The test progs/test_global_func10.c expected "invalid indirect read
-from stack" error message because of the access to uninitialized
-memory region. This error is no longer possible in privileged mode.
-The test is updated to provoke an error "invalid indirect access to
-stack" because of access to invalid stack address (such error is not
-verified by progs/test_global_func*.c series of tests).
-
-The following tests had to be removed because these can't be made
-unprivileged:
-- verifier/sock.c:
-  - "sk_storage_get(map, skb->sk, &stack_value, 1): partially init
-  stack_value"
-  BPF_PROG_TYPE_SCHED_CLS programs are not executed in unprivileged mode.
-- verifier/var_off.c:
-  - "indirect variable-offset stack access, max_off+size > max_initialized"
-  - "indirect variable-offset stack access, uninitialized"
-  These tests verify that access to uninitialized stack values is
-  detected when stack offset is not a constant. However, variable
-  stack access is prohibited in unprivileged mode, thus these tests
-  are no longer valid.
-
- * * *
-
-Here is veristat log comparing this patch with current master on a
-set of selftest binaries listed in tools/testing/selftests/bpf/veristat.cfg
-and cilium BPF binaries (see [3]):
-
-$ ./veristat -e file,prog,states -C -f 'states_pct<-30' master.log current.log
-File                        Program                     States (A)  States (B)  States    (DIFF)
---------------------------  --------------------------  ----------  ----------  ----------------
-bpf_host.o                  tail_handle_ipv6_from_host         349         244    -105 (-30.09%)
-bpf_host.o                  tail_handle_nat_fwd_ipv4          1320         895    -425 (-32.20%)
-bpf_lxc.o                   tail_handle_nat_fwd_ipv4          1320         895    -425 (-32.20%)
-bpf_sock.o                  cil_sock4_connect                   70          48     -22 (-31.43%)
-bpf_sock.o                  cil_sock4_sendmsg                   68          46     -22 (-32.35%)
-bpf_xdp.o                   tail_handle_nat_fwd_ipv4          1554         803    -751 (-48.33%)
-bpf_xdp.o                   tail_lb_ipv4                      6457        2473   -3984 (-61.70%)
-bpf_xdp.o                   tail_lb_ipv6                      7249        3908   -3341 (-46.09%)
-pyperf600_bpf_loop.bpf.o    on_event                           287         145    -142 (-49.48%)
-strobemeta.bpf.o            on_event                         15915        4772  -11143 (-70.02%)
-strobemeta_nounroll2.bpf.o  on_event                         17087        3820  -13267 (-77.64%)
-xdp_synproxy_kern.bpf.o     syncookie_tc                     21271        6635  -14636 (-68.81%)
-xdp_synproxy_kern.bpf.o     syncookie_xdp                    23122        6024  -17098 (-73.95%)
---------------------------  --------------------------  ----------  ----------  ----------------
-
-Note: I limited selection by states_pct<-30%.
-
-Inspection of differences in pyperf600_bpf_loop behavior shows that
-the following patch for the test removes almost all differences:
-
-    - a/tools/testing/selftests/bpf/progs/pyperf.h
-    + b/tools/testing/selftests/bpf/progs/pyperf.h
-    @ -266,8 +266,8 @ int __on_event(struct bpf_raw_tracepoint_args *ctx)
-            }
-
-            if (event->pthread_match || !pidData->use_tls) {
-    -               void* frame_ptr;
-    -               FrameData frame;
-    +               void* frame_ptr = 0;
-    +               FrameData frame = {};
-                    Symbol sym = {};
-                    int cur_cpu = bpf_get_smp_processor_id();
-
-W/o this patch the difference comes from the following pattern
-(for different variables):
-
-    static bool get_frame_data(... FrameData *frame ...)
-    {
-        ...
-        bpf_probe_read_user(&frame->f_code, ...);
-        if (!frame->f_code)
-            return false;
-        ...
-        bpf_probe_read_user(&frame->co_name, ...);
-        if (frame->co_name)
-            ...;
-    }
-
-    int __on_event(struct bpf_raw_tracepoint_args *ctx)
-    {
-        FrameData frame;
-        ...
-        get_frame_data(... &frame ...) // indirectly via a bpf_loop & callback
-        ...
-    }
-
-    SEC("raw_tracepoint/kfree_skb")
-    int on_event(struct bpf_raw_tracepoint_args* ctx)
-    {
-        ...
-        ret |= __on_event(ctx);
-        ret |= __on_event(ctx);
-        ...
-    }
-
-With regards to value `frame->co_name` the following is important:
-- Because of the conditional `if (!frame->f_code)` each call to
-  __on_event() produces two states, one with `frame->co_name` marked
-  as STACK_MISC, another with it as is (and marked STACK_INVALID on a
-  first call).
-- The call to bpf_probe_read_user() does not mark stack slots
-  corresponding to `&frame->co_name` as REG_LIVE_WRITTEN but it marks
-  these slots as BPF_MISC, this happens because of the following loop
-  in the check_helper_call():
-
-	for (i = 0; i < meta.access_size; i++) {
-		err = check_mem_access(env, insn_idx, meta.regno, i, BPF_B,
-				       BPF_WRITE, -1, false);
-		if (err)
-			return err;
-	}
-
-  Note the size of the write, it is a one byte write for each byte
-  touched by a helper. The BPF_B write does not lead to write marks
-  for the target stack slot.
-- Which means that w/o this patch when second __on_event() call is
-  verified `if (frame->co_name)` will propagate read marks first to a
-  stack slot with STACK_MISC marks and second to a stack slot with
-  STACK_INVALID marks and these states would be considered different.
-
-[1] https://lore.kernel.org/bpf/CAEf4BzY3e+ZuC6HUa8dCiUovQRg2SzEk7M-dSkqNZyn=xEmnPA@mail.gmail.com/
-[2] https://lore.kernel.org/bpf/CAADnVQKs2i1iuZ5SUGuJtxWVfGYR9kDgYKhq3rNV+kBLQCu7rA@mail.gmail.com/
-[3] git@github.com:anakryiko/cilium.git
-
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Co-developed-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20230219200427.606541-2-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Maxim Mikityanskiy <maxim@isovalent.com>
----
-Backporting to address the complexity regression introduced by commit
-71f656a50176 ("bpf: Fix to preserve reg parent/live fields when copying
-range info"), that affects Cilium built with LLVM 18.
-
- kernel/bpf/verifier.c                         |  11 +-
- .../selftests/bpf/progs/test_global_func10.c  |   9 +-
- tools/testing/selftests/bpf/verifier/calls.c  |  13 ++-
- .../bpf/verifier/helper_access_var_len.c      | 104 ++++++++++++------
- .../testing/selftests/bpf/verifier/int_ptr.c  |   9 +-
- .../selftests/bpf/verifier/search_pruning.c   |  13 ++-
- tools/testing/selftests/bpf/verifier/sock.c   |  27 -----
- .../selftests/bpf/verifier/spill_fill.c       |   7 +-
- .../testing/selftests/bpf/verifier/var_off.c  |  52 ---------
- 9 files changed, 109 insertions(+), 136 deletions(-)
-
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 56a5c8beb553..8973d3c9597c 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -3599,6 +3599,8 @@ static int check_stack_read_fixed_off(struct bpf_verifier_env *env,
- 						continue;
- 					if (type == STACK_MISC)
- 						continue;
-+					if (type == STACK_INVALID && env->allow_uninit_stack)
-+						continue;
- 					verbose(env, "invalid read from stack off %d+%d size %d\n",
- 						off, i, size);
- 					return -EACCES;
-@@ -3636,6 +3638,8 @@ static int check_stack_read_fixed_off(struct bpf_verifier_env *env,
- 				continue;
- 			if (type == STACK_ZERO)
- 				continue;
-+			if (type == STACK_INVALID && env->allow_uninit_stack)
-+				continue;
- 			verbose(env, "invalid read from stack off %d+%d size %d\n",
- 				off, i, size);
- 			return -EACCES;
-@@ -5426,7 +5430,8 @@ static int check_stack_range_initialized(
- 		stype = &state->stack[spi].slot_type[slot % BPF_REG_SIZE];
- 		if (*stype == STACK_MISC)
- 			goto mark;
--		if (*stype == STACK_ZERO) {
-+		if ((*stype == STACK_ZERO) ||
-+		    (*stype == STACK_INVALID && env->allow_uninit_stack)) {
- 			if (clobber) {
- 				/* helper can write anything into the stack */
- 				*stype = STACK_MISC;
-@@ -11967,6 +11972,10 @@ static bool stacksafe(struct bpf_verifier_env *env, struct bpf_func_state *old,
- 		if (old->stack[spi].slot_type[i % BPF_REG_SIZE] == STACK_INVALID)
- 			continue;
- 
-+		if (env->allow_uninit_stack &&
-+		    old->stack[spi].slot_type[i % BPF_REG_SIZE] == STACK_MISC)
-+			continue;
-+
- 		/* explored stack has more populated slots than current stack
- 		 * and these slots were used
- 		 */
-diff --git a/tools/testing/selftests/bpf/progs/test_global_func10.c b/tools/testing/selftests/bpf/progs/test_global_func10.c
-index 97b7031d0e22..d361eba167f6 100644
---- a/tools/testing/selftests/bpf/progs/test_global_func10.c
-+++ b/tools/testing/selftests/bpf/progs/test_global_func10.c
-@@ -4,12 +4,12 @@
- #include <bpf/bpf_helpers.h>
- 
- struct Small {
--	int x;
-+	long x;
- };
- 
- struct Big {
--	int x;
--	int y;
-+	long x;
-+	long y;
- };
- 
- __noinline int foo(const struct Big *big)
-@@ -21,7 +21,8 @@ __noinline int foo(const struct Big *big)
- }
- 
- SEC("cgroup_skb/ingress")
--int test_cls(struct __sk_buff *skb)
-+__failure __msg("invalid indirect access to stack")
-+int global_func10(struct __sk_buff *skb)
- {
- 	const struct Small small = {.x = skb->len };
- 
-diff --git a/tools/testing/selftests/bpf/verifier/calls.c b/tools/testing/selftests/bpf/verifier/calls.c
-index e1a937277b54..a201d2871bfb 100644
---- a/tools/testing/selftests/bpf/verifier/calls.c
-+++ b/tools/testing/selftests/bpf/verifier/calls.c
-@@ -2221,19 +2221,22 @@
- 	 * that fp-8 stack slot was unused in the fall-through
- 	 * branch and will accept the program incorrectly
- 	 */
--	BPF_JMP_IMM(BPF_JGT, BPF_REG_1, 2, 2),
-+	BPF_EMIT_CALL(BPF_FUNC_get_prandom_u32),
-+	BPF_JMP_IMM(BPF_JGT, BPF_REG_0, 2, 2),
- 	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
- 	BPF_JMP_IMM(BPF_JA, 0, 0, 0),
- 	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
- 	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -8),
- 	BPF_LD_MAP_FD(BPF_REG_1, 0),
- 	BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0, BPF_FUNC_map_lookup_elem),
-+	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.fixup_map_hash_48b = { 6 },
--	.errstr = "invalid indirect read from stack R2 off -8+0 size 8",
--	.result = REJECT,
--	.prog_type = BPF_PROG_TYPE_XDP,
-+	.fixup_map_hash_48b = { 7 },
-+	.errstr_unpriv = "invalid indirect read from stack R2 off -8+0 size 8",
-+	.result_unpriv = REJECT,
-+	/* in privileged mode reads from uninitialized stack locations are permitted */
-+	.result = ACCEPT,
- },
- {
- 	"calls: ctx read at start of subprog",
-diff --git a/tools/testing/selftests/bpf/verifier/helper_access_var_len.c b/tools/testing/selftests/bpf/verifier/helper_access_var_len.c
-index a6c869a7319c..9c4885885aba 100644
---- a/tools/testing/selftests/bpf/verifier/helper_access_var_len.c
-+++ b/tools/testing/selftests/bpf/verifier/helper_access_var_len.c
-@@ -29,19 +29,30 @@
- {
- 	"helper access to variable memory: stack, bitwise AND, zero included",
- 	.insns = {
--	BPF_LDX_MEM(BPF_DW, BPF_REG_2, BPF_REG_1, 8),
--	BPF_MOV64_REG(BPF_REG_1, BPF_REG_10),
--	BPF_ALU64_IMM(BPF_ADD, BPF_REG_1, -64),
--	BPF_STX_MEM(BPF_DW, BPF_REG_1, BPF_REG_2, -128),
--	BPF_LDX_MEM(BPF_DW, BPF_REG_2, BPF_REG_1, -128),
--	BPF_ALU64_IMM(BPF_AND, BPF_REG_2, 64),
--	BPF_MOV64_IMM(BPF_REG_3, 0),
--	BPF_EMIT_CALL(BPF_FUNC_probe_read_kernel),
-+	/* set max stack size */
-+	BPF_ST_MEM(BPF_DW, BPF_REG_10, -128, 0),
-+	/* set r3 to a random value */
-+	BPF_EMIT_CALL(BPF_FUNC_get_prandom_u32),
-+	BPF_MOV64_REG(BPF_REG_3, BPF_REG_0),
-+	/* use bitwise AND to limit r3 range to [0, 64] */
-+	BPF_ALU64_IMM(BPF_AND, BPF_REG_3, 64),
-+	BPF_LD_MAP_FD(BPF_REG_1, 0),
-+	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
-+	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -64),
-+	BPF_MOV64_IMM(BPF_REG_4, 0),
-+	/* Call bpf_ringbuf_output(), it is one of a few helper functions with
-+	 * ARG_CONST_SIZE_OR_ZERO parameter allowed in unpriv mode.
-+	 * For unpriv this should signal an error, because memory at &fp[-64] is
-+	 * not initialized.
-+	 */
-+	BPF_EMIT_CALL(BPF_FUNC_ringbuf_output),
- 	BPF_EXIT_INSN(),
- 	},
--	.errstr = "invalid indirect read from stack R1 off -64+0 size 64",
--	.result = REJECT,
--	.prog_type = BPF_PROG_TYPE_TRACEPOINT,
-+	.fixup_map_ringbuf = { 4 },
-+	.errstr_unpriv = "invalid indirect read from stack R2 off -64+0 size 64",
-+	.result_unpriv = REJECT,
-+	/* in privileged mode reads from uninitialized stack locations are permitted */
-+	.result = ACCEPT,
- },
- {
- 	"helper access to variable memory: stack, bitwise AND + JMP, wrong max",
-@@ -183,20 +194,31 @@
- {
- 	"helper access to variable memory: stack, JMP, no min check",
- 	.insns = {
--	BPF_LDX_MEM(BPF_DW, BPF_REG_2, BPF_REG_1, 8),
--	BPF_MOV64_REG(BPF_REG_1, BPF_REG_10),
--	BPF_ALU64_IMM(BPF_ADD, BPF_REG_1, -64),
--	BPF_STX_MEM(BPF_DW, BPF_REG_1, BPF_REG_2, -128),
--	BPF_LDX_MEM(BPF_DW, BPF_REG_2, BPF_REG_1, -128),
--	BPF_JMP_IMM(BPF_JGT, BPF_REG_2, 64, 3),
--	BPF_MOV64_IMM(BPF_REG_3, 0),
--	BPF_EMIT_CALL(BPF_FUNC_probe_read_kernel),
-+	/* set max stack size */
-+	BPF_ST_MEM(BPF_DW, BPF_REG_10, -128, 0),
-+	/* set r3 to a random value */
-+	BPF_EMIT_CALL(BPF_FUNC_get_prandom_u32),
-+	BPF_MOV64_REG(BPF_REG_3, BPF_REG_0),
-+	/* use JMP to limit r3 range to [0, 64] */
-+	BPF_JMP_IMM(BPF_JGT, BPF_REG_3, 64, 6),
-+	BPF_LD_MAP_FD(BPF_REG_1, 0),
-+	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
-+	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -64),
-+	BPF_MOV64_IMM(BPF_REG_4, 0),
-+	/* Call bpf_ringbuf_output(), it is one of a few helper functions with
-+	 * ARG_CONST_SIZE_OR_ZERO parameter allowed in unpriv mode.
-+	 * For unpriv this should signal an error, because memory at &fp[-64] is
-+	 * not initialized.
-+	 */
-+	BPF_EMIT_CALL(BPF_FUNC_ringbuf_output),
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.errstr = "invalid indirect read from stack R1 off -64+0 size 64",
--	.result = REJECT,
--	.prog_type = BPF_PROG_TYPE_TRACEPOINT,
-+	.fixup_map_ringbuf = { 4 },
-+	.errstr_unpriv = "invalid indirect read from stack R2 off -64+0 size 64",
-+	.result_unpriv = REJECT,
-+	/* in privileged mode reads from uninitialized stack locations are permitted */
-+	.result = ACCEPT,
- },
- {
- 	"helper access to variable memory: stack, JMP (signed), no min check",
-@@ -564,29 +586,41 @@
- {
- 	"helper access to variable memory: 8 bytes leak",
- 	.insns = {
--	BPF_LDX_MEM(BPF_DW, BPF_REG_2, BPF_REG_1, 8),
--	BPF_MOV64_REG(BPF_REG_1, BPF_REG_10),
--	BPF_ALU64_IMM(BPF_ADD, BPF_REG_1, -64),
-+	/* set max stack size */
-+	BPF_ST_MEM(BPF_DW, BPF_REG_10, -128, 0),
-+	/* set r3 to a random value */
-+	BPF_EMIT_CALL(BPF_FUNC_get_prandom_u32),
-+	BPF_MOV64_REG(BPF_REG_3, BPF_REG_0),
-+	BPF_LD_MAP_FD(BPF_REG_1, 0),
-+	BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
-+	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, -64),
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -64),
- 	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -56),
- 	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -48),
- 	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -40),
-+	/* Note: fp[-32] left uninitialized */
- 	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -24),
- 	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -16),
- 	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_0, -8),
--	BPF_STX_MEM(BPF_DW, BPF_REG_10, BPF_REG_2, -128),
--	BPF_LDX_MEM(BPF_DW, BPF_REG_2, BPF_REG_10, -128),
--	BPF_ALU64_IMM(BPF_AND, BPF_REG_2, 63),
--	BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, 1),
--	BPF_MOV64_IMM(BPF_REG_3, 0),
--	BPF_EMIT_CALL(BPF_FUNC_probe_read_kernel),
--	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_10, -16),
-+	/* Limit r3 range to [1, 64] */
-+	BPF_ALU64_IMM(BPF_AND, BPF_REG_3, 63),
-+	BPF_ALU64_IMM(BPF_ADD, BPF_REG_3, 1),
-+	BPF_MOV64_IMM(BPF_REG_4, 0),
-+	/* Call bpf_ringbuf_output(), it is one of a few helper functions with
-+	 * ARG_CONST_SIZE_OR_ZERO parameter allowed in unpriv mode.
-+	 * For unpriv this should signal an error, because memory region [1, 64]
-+	 * at &fp[-64] is not fully initialized.
-+	 */
-+	BPF_EMIT_CALL(BPF_FUNC_ringbuf_output),
-+	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.errstr = "invalid indirect read from stack R1 off -64+32 size 64",
--	.result = REJECT,
--	.prog_type = BPF_PROG_TYPE_TRACEPOINT,
-+	.fixup_map_ringbuf = { 3 },
-+	.errstr_unpriv = "invalid indirect read from stack R2 off -64+32 size 64",
-+	.result_unpriv = REJECT,
-+	/* in privileged mode reads from uninitialized stack locations are permitted */
-+	.result = ACCEPT,
- },
- {
- 	"helper access to variable memory: 8 bytes no leak (init memory)",
-diff --git a/tools/testing/selftests/bpf/verifier/int_ptr.c b/tools/testing/selftests/bpf/verifier/int_ptr.c
-index 070893fb2900..02d9e004260b 100644
---- a/tools/testing/selftests/bpf/verifier/int_ptr.c
-+++ b/tools/testing/selftests/bpf/verifier/int_ptr.c
-@@ -54,12 +54,13 @@
- 		/* bpf_strtoul() */
- 		BPF_EMIT_CALL(BPF_FUNC_strtoul),
- 
--		BPF_MOV64_IMM(BPF_REG_0, 1),
-+		BPF_MOV64_IMM(BPF_REG_0, 0),
- 		BPF_EXIT_INSN(),
- 	},
--	.result = REJECT,
--	.prog_type = BPF_PROG_TYPE_CGROUP_SYSCTL,
--	.errstr = "invalid indirect read from stack R4 off -16+4 size 8",
-+	.result_unpriv = REJECT,
-+	.errstr_unpriv = "invalid indirect read from stack R4 off -16+4 size 8",
-+	/* in privileged mode reads from uninitialized stack locations are permitted */
-+	.result = ACCEPT,
- },
- {
- 	"ARG_PTR_TO_LONG misaligned",
-diff --git a/tools/testing/selftests/bpf/verifier/search_pruning.c b/tools/testing/selftests/bpf/verifier/search_pruning.c
-index d63fd8991b03..745d6b5842fd 100644
---- a/tools/testing/selftests/bpf/verifier/search_pruning.c
-+++ b/tools/testing/selftests/bpf/verifier/search_pruning.c
-@@ -128,9 +128,10 @@
- 		BPF_EXIT_INSN(),
- 	},
- 	.fixup_map_hash_8b = { 3 },
--	.errstr = "invalid read from stack off -16+0 size 8",
--	.result = REJECT,
--	.prog_type = BPF_PROG_TYPE_TRACEPOINT,
-+	.errstr_unpriv = "invalid read from stack off -16+0 size 8",
-+	.result_unpriv = REJECT,
-+	/* in privileged mode reads from uninitialized stack locations are permitted */
-+	.result = ACCEPT,
- },
- {
- 	"precision tracking for u32 spill/fill",
-@@ -258,6 +259,8 @@
- 	BPF_EXIT_INSN(),
- 	},
- 	.flags = BPF_F_TEST_STATE_FREQ,
--	.errstr = "invalid read from stack off -8+1 size 8",
--	.result = REJECT,
-+	.errstr_unpriv = "invalid read from stack off -8+1 size 8",
-+	.result_unpriv = REJECT,
-+	/* in privileged mode reads from uninitialized stack locations are permitted */
-+	.result = ACCEPT,
- },
-diff --git a/tools/testing/selftests/bpf/verifier/sock.c b/tools/testing/selftests/bpf/verifier/sock.c
-index d11d0b28be41..108dd3ee1edd 100644
---- a/tools/testing/selftests/bpf/verifier/sock.c
-+++ b/tools/testing/selftests/bpf/verifier/sock.c
-@@ -530,33 +530,6 @@
- 	.prog_type = BPF_PROG_TYPE_SCHED_CLS,
- 	.result = ACCEPT,
- },
--{
--	"sk_storage_get(map, skb->sk, &stack_value, 1): partially init stack_value",
--	.insns = {
--	BPF_MOV64_IMM(BPF_REG_2, 0),
--	BPF_STX_MEM(BPF_W, BPF_REG_10, BPF_REG_2, -8),
--	BPF_LDX_MEM(BPF_DW, BPF_REG_1, BPF_REG_1, offsetof(struct __sk_buff, sk)),
--	BPF_JMP_IMM(BPF_JNE, BPF_REG_1, 0, 2),
--	BPF_MOV64_IMM(BPF_REG_0, 0),
--	BPF_EXIT_INSN(),
--	BPF_EMIT_CALL(BPF_FUNC_sk_fullsock),
--	BPF_JMP_IMM(BPF_JNE, BPF_REG_0, 0, 2),
--	BPF_MOV64_IMM(BPF_REG_0, 0),
--	BPF_EXIT_INSN(),
--	BPF_MOV64_IMM(BPF_REG_4, 1),
--	BPF_MOV64_REG(BPF_REG_3, BPF_REG_10),
--	BPF_ALU64_IMM(BPF_ADD, BPF_REG_3, -8),
--	BPF_MOV64_REG(BPF_REG_2, BPF_REG_0),
--	BPF_LD_MAP_FD(BPF_REG_1, 0),
--	BPF_EMIT_CALL(BPF_FUNC_sk_storage_get),
--	BPF_MOV64_IMM(BPF_REG_0, 0),
--	BPF_EXIT_INSN(),
--	},
--	.fixup_sk_storage_map = { 14 },
--	.prog_type = BPF_PROG_TYPE_SCHED_CLS,
--	.result = REJECT,
--	.errstr = "invalid indirect read from stack",
--},
- {
- 	"bpf_map_lookup_elem(smap, &key)",
- 	.insns = {
-diff --git a/tools/testing/selftests/bpf/verifier/spill_fill.c b/tools/testing/selftests/bpf/verifier/spill_fill.c
-index e23f07175e1b..53286a7b49aa 100644
---- a/tools/testing/selftests/bpf/verifier/spill_fill.c
-+++ b/tools/testing/selftests/bpf/verifier/spill_fill.c
-@@ -171,9 +171,10 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 0),
- 	BPF_EXIT_INSN(),
- 	},
--	.result = REJECT,
--	.errstr = "invalid read from stack off -4+0 size 4",
--	.prog_type = BPF_PROG_TYPE_SCHED_CLS,
-+	.result_unpriv = REJECT,
-+	.errstr_unpriv = "invalid read from stack off -4+0 size 4",
-+	/* in privileged mode reads from uninitialized stack locations are permitted */
-+	.result = ACCEPT,
- },
- {
- 	"Spill a u32 const scalar.  Refill as u16.  Offset to skb->data",
-diff --git a/tools/testing/selftests/bpf/verifier/var_off.c b/tools/testing/selftests/bpf/verifier/var_off.c
-index d37f512fad16..b183e26c03f1 100644
---- a/tools/testing/selftests/bpf/verifier/var_off.c
-+++ b/tools/testing/selftests/bpf/verifier/var_off.c
-@@ -212,31 +212,6 @@
- 	.result = REJECT,
- 	.prog_type = BPF_PROG_TYPE_LWT_IN,
- },
--{
--	"indirect variable-offset stack access, max_off+size > max_initialized",
--	.insns = {
--	/* Fill only the second from top 8 bytes of the stack. */
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -16, 0),
--	/* Get an unknown value. */
--	BPF_LDX_MEM(BPF_W, BPF_REG_2, BPF_REG_1, 0),
--	/* Make it small and 4-byte aligned. */
--	BPF_ALU64_IMM(BPF_AND, BPF_REG_2, 4),
--	BPF_ALU64_IMM(BPF_SUB, BPF_REG_2, 16),
--	/* Add it to fp.  We now have either fp-12 or fp-16, but we don't know
--	 * which. fp-12 size 8 is partially uninitialized stack.
--	 */
--	BPF_ALU64_REG(BPF_ADD, BPF_REG_2, BPF_REG_10),
--	/* Dereference it indirectly. */
--	BPF_LD_MAP_FD(BPF_REG_1, 0),
--	BPF_EMIT_CALL(BPF_FUNC_map_lookup_elem),
--	BPF_MOV64_IMM(BPF_REG_0, 0),
--	BPF_EXIT_INSN(),
--	},
--	.fixup_map_hash_8b = { 5 },
--	.errstr = "invalid indirect read from stack R2 var_off",
--	.result = REJECT,
--	.prog_type = BPF_PROG_TYPE_LWT_IN,
--},
- {
- 	"indirect variable-offset stack access, min_off < min_initialized",
- 	.insns = {
-@@ -289,33 +264,6 @@
- 	.result = ACCEPT,
- 	.prog_type = BPF_PROG_TYPE_CGROUP_SKB,
- },
--{
--	"indirect variable-offset stack access, uninitialized",
--	.insns = {
--	BPF_MOV64_IMM(BPF_REG_2, 6),
--	BPF_MOV64_IMM(BPF_REG_3, 28),
--	/* Fill the top 16 bytes of the stack. */
--	BPF_ST_MEM(BPF_W, BPF_REG_10, -16, 0),
--	BPF_ST_MEM(BPF_DW, BPF_REG_10, -8, 0),
--	/* Get an unknown value. */
--	BPF_LDX_MEM(BPF_W, BPF_REG_4, BPF_REG_1, 0),
--	/* Make it small and 4-byte aligned. */
--	BPF_ALU64_IMM(BPF_AND, BPF_REG_4, 4),
--	BPF_ALU64_IMM(BPF_SUB, BPF_REG_4, 16),
--	/* Add it to fp.  We now have either fp-12 or fp-16, we don't know
--	 * which, but either way it points to initialized stack.
--	 */
--	BPF_ALU64_REG(BPF_ADD, BPF_REG_4, BPF_REG_10),
--	BPF_MOV64_IMM(BPF_REG_5, 8),
--	/* Dereference it indirectly. */
--	BPF_EMIT_CALL(BPF_FUNC_getsockopt),
--	BPF_MOV64_IMM(BPF_REG_0, 0),
--	BPF_EXIT_INSN(),
--	},
--	.errstr = "invalid indirect read from stack R4 var_off",
--	.result = REJECT,
--	.prog_type = BPF_PROG_TYPE_SOCK_OPS,
--},
- {
- 	"indirect variable-offset stack access, ok",
- 	.insns = {
+thanks,
 -- 
-2.45.2
+John Hubbard
+NVIDIA
+
+
+> 
+>> if (strcmp(testname, "ip") == 0) {
+>> if (proto == PF_INET)
+>> optlen = sizeof(struct ip_timestamp);
+>> diff --git a/tools/testing/selftests/net/ip_local_port_range.c b/tools/testing/selftests/net/ip_local_port_range.c
+>> index 75e3fdacdf735..2465ff5bb3a8e 100644
+>> --- a/tools/testing/selftests/net/ip_local_port_range.c
+>> +++ b/tools/testing/selftests/net/ip_local_port_range.c
+>> @@ -343,7 +343,7 @@ TEST_F(ip_local_port_range, late_bind)
+>> struct sockaddr_in v4;
+>> struct sockaddr_in6 v6;
+>> } addr;
+>> - socklen_t addr_len;
+>> + socklen_t addr_len = 0;
+>> const int one = 1;
+>> int fd, err;
+>> __u32 range;
+>> diff --git a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
+>> index 49369c4a5f261..763402dd17742 100644
+>> --- a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
+>> +++ b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
+>> @@ -1239,7 +1239,7 @@ int add_listener(int argc, char *argv[])
+>> struct sockaddr_storage addr;
+>> struct sockaddr_in6 *a6;
+>> struct sockaddr_in *a4;
+>> - u_int16_t family;
+>> + u_int16_t family = AF_UNSPEC;
+>> int enable = 1;
+>> int sock;
+>> int err;
+>> -- 
+>> 2.43.0
+>>
+> 
+> Ignat
+> 
+
 
 
