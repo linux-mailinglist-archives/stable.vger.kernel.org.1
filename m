@@ -1,226 +1,189 @@
-Return-Path: <stable+bounces-59132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAE3B92EAEA
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 16:38:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D73DE92EB69
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 17:16:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92286282F1D
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 14:38:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C18D285154
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 15:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842781684A6;
-	Thu, 11 Jul 2024 14:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F7F16B392;
+	Thu, 11 Jul 2024 15:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JzLAs8FZ"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yHhHCPYC";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8i3hr4Jg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB0E161911
-	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 14:38:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9AE723CE;
+	Thu, 11 Jul 2024 15:16:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720708695; cv=none; b=YJ0sA9jfKCe6eji2sY8ZwxxqmYUsQfuob0FHY7+uzc2yBb7dmFySxdETSSygB9HEjmyhv89m8FAexNrtljZDguGi/1RcM+m2RJMYymk4uOtdsr8UPCiod65IDkIdf2ddjnvV0hAy2o+a/huSuCyJIIE30L7CoXPhZXsbXoxPzVM=
+	t=1720710969; cv=none; b=As2O+Nfk7qTfNdVHeY5UlwzpL2J61uYxLPVmQotoSYWfta3neirTMSCAy8K9U5Kfu1DWmhYcxoqIKtQGX90rt0aFe3Dn2MX9VB4HqqWBJXzpUXy/GjsPxnwiEfHYaJq3kvWH9wk09QpQPhQ5vuLxySpAxV8zbCpUn6VzZJPAU6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720708695; c=relaxed/simple;
-	bh=+cdTiP9dj8e8SJZXEgF4LtTRbK33298paImQMDs+2bg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tVi6GUDvx263U9+nz++x//EJWUHU8IRFow8uRnoOoG/ODDPfbpsncquUY2A0d39twMizykIEUzwlAA8QJ1mjGYX88Kp14IdFjhrtmrLZDrPQA3kkYd5NXRbG26rtvGaqW2dAfQowyT6T2r/ou8+YymdMdZTGjCEyqViuRdlQwO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JzLAs8FZ; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4266dc7591fso7055505e9.0
-        for <stable@vger.kernel.org>; Thu, 11 Jul 2024 07:38:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720708692; x=1721313492; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=p/2rQG6qusYOLdxsnhVJWh4v91MMJIJgP837QrDDHJw=;
-        b=JzLAs8FZ7xKcpH/1wtDndzz4x6NMdZrF24ClTaJ8mvWLBomiG5fwjH+eG5k2hPxQVA
-         FIvOFT7cAmCwsRga0p2x5/KjLHdc8iz7VGY9ZmskaDlUGx4RqngUXq25uAnVWTPXBbJb
-         WH+WvpF5QLOW61gG0+rCDmq6Vl1kbab/pBI+kuTCAdybmPbHlCSOtLLErKdMyT04msvu
-         ZT7jhZO8wjJ49Lvb5mvxRlRhp5hMdwp0G/l1zOiCTklP0pwAyTk+opB6XkIt0iemLyv1
-         eO5tyVdGRCPSO5IiQC791SgTeskqiCriPq75XnmnVCnv4PiFBHvuMPumcrRyaHY4ORvP
-         hALw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720708692; x=1721313492;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=p/2rQG6qusYOLdxsnhVJWh4v91MMJIJgP837QrDDHJw=;
-        b=tfB12Wq6z84wSQqBZv8Bd/4Ar8zUsbuGTBGkT0jVFE+jsepaYxKXJtBfqmVAjroQPb
-         zzkGFdbDrzU8F7LUYKVWeZIYuKIXmRXD3sgxlWfAIRVU8ahVw/h1kfElUTc0A+9cBAIQ
-         efqlIlRP3BjZkwSs3jKPO7maznoNQ1vqmcME5WyIq40lhjcAdLp4fWBuN3xTpvf1qwIC
-         AxXuZu3aakq/Q6+S3GIKOqrLrDTzI+4eEchXYhyqL5AWFhgsusiZkbxROd2aB039gtlc
-         wnnBUZC4l325JeO+p6Bil430Zm8hdPi0tGRN69S7qwtjV3FSg505ylJXwtZhF5T8ehBQ
-         D84A==
-X-Forwarded-Encrypted: i=1; AJvYcCVZMa34wbQEoxLiMlXqnc70Y4RYjOMFXY9yCw/xZJRJIUhb7Hwzj6M7D/RIflHOnXwjiD/8tTD4ZrkgU/zUjoOGugWXMDe3
-X-Gm-Message-State: AOJu0Yzu/WKhE+De/HnW/58T+75ROMRoj+JINO8EpkqYUFf3TycosR07
-	VEFhhs+wRayo9FVvmv4r8z0TBplOfZjF3SbWVWUrnrVJi3UZCAV1iS8eOqBLl3Q=
-X-Google-Smtp-Source: AGHT+IF/y967rQpaUTsEREkfcgiae6YzTKeupAxZjzOFwtIOuVn9rQDGqFXfgMTOw6/tS3NrmM6HCg==
-X-Received: by 2002:a05:600c:48a2:b0:426:5471:12e2 with SMTP id 5b1f17b1804b1-426705cf0f1mr63758805e9.4.1720708691703;
-        Thu, 11 Jul 2024 07:38:11 -0700 (PDT)
-Received: from [127.0.1.1] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4266f6f1ff9sm121535355e9.18.2024.07.11.07.38.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jul 2024 07:38:11 -0700 (PDT)
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Date: Thu, 11 Jul 2024 15:38:10 +0100
-Subject: [PATCH v2] media: ov5675: Fix power on/off delay timings
+	s=arc-20240116; t=1720710969; c=relaxed/simple;
+	bh=BfBSUOPqmi3LuNAPGcdlMxJ0qVCvioaU4Xh7gZ+xN8g=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=LlWj1mr+xXeU/RN571PqAFMen13kOXxc/q5fUVs73WKzjtxKgGt6YHxtoj6yIBcPSK4Ks2c4FLVe1S4EOzBH9ifO9NXfcpdeIclqGiQf5skQtEHQwXrsUNtGr2g85t78bHJryEZvgDGR1iQz+Lh1RHEeLUTuiSzVOpl2L2GjPjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yHhHCPYC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8i3hr4Jg; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 11 Jul 2024 15:16:04 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1720710966;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZaNplFVYapEUI3M23Goml2uSiimpfDyZ8+AUduFpyrg=;
+	b=yHhHCPYC4gwQjyuVSCQRtrjDg5Hd02lksfjDmuzfTL1lpxhgikuu5I7Il/hM5dRSC8FyXD
+	eTBTIc2uzAtReJefdy3ub7KRFQbjvPD5jSsfZMvUbelDgKwvKuXMdK+ivZXraKthEsJei4
+	6m5T+EYvmJlxLRq4P+ZIkceF4E00euRqFHpCiLoFz62bRvXtq/XAo2AOyPW2C/UkVVvV4v
+	OZPEGDP57HkdHwm2feXLn9msb+32+lLkxdDanVq3VwsqnL6amcgh16ud4Rk86ogVro33Bb
+	XpGLbOx+RggrkQIgAqCtZfZCo9lJkeLremaD8fi3T+pujvDZd3dMQnMiuIlQLg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1720710966;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZaNplFVYapEUI3M23Goml2uSiimpfDyZ8+AUduFpyrg=;
+	b=8i3hr4Jg1DdZ7YXyDIctxZ1R1rQwOZTqQw1MgPK86/7GnF293Eol5iPb1t/e/Y8ciUmYzi
+	wS1HVy4uKFX+mfCg==
+From: "tip-bot2 for Shenwei Wang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/core] irqchip/imx-irqsteer: Handle runtime power management
+ correctly
+Cc: Shenwei Wang <shenwei.wang@nxp.com>, Thomas Gleixner <tglx@linutronix.de>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ maz@kernel.org
+In-Reply-To: <20240703163250.47887-1-shenwei.wang@nxp.com>
+References: <20240703163250.47887-1-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Message-ID: <172071096497.2215.13516438615600678880.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240711-linux-next-ov5675-v2-1-d0ea6ac2e6e9@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAFHuj2YC/22NwQ6CMBBEf4Xs2TVtkSKe/A/DAeoCm5jWtNjUk
- P67lcSbxzeZebNBIM8U4FJt4ClyYGcLqEMFZhnsTMj3wqCEOolWCnywfSW0lFZ0sdFtg1qMgs6
- 1aetJQtk9PU2cduetL7xwWJ1/7xdRftOfTf6xRYkCdUfdqI1WRupr6QzeHZ2foc85fwC89Q9zs
- wAAAA==
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Quentin Schulz <quentin.schulz@theobroma-systems.com>, 
- Jacopo Mondi <jacopo@jmondi.org>
-Cc: Johan Hovold <johan@kernel.org>, 
- Kieran Bingham <kieran.bingham@ideasonboard.com>, 
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-X-Mailer: b4 0.15-dev-13183
 
-The ov5675 specification says that the gap between XSHUTDN deassert and the
-first I2C transaction should be a minimum of 8192 XVCLK cycles.
+The following commit has been merged into the irq/core branch of tip:
 
-Right now we use a usleep_rage() that gives a sleep time of between about
-430 and 860 microseconds.
+Commit-ID:     cd0406fab8d4a16ec4f617c0a4b405bf70543b5b
+Gitweb:        https://git.kernel.org/tip/cd0406fab8d4a16ec4f617c0a4b405bf70543b5b
+Author:        Shenwei Wang <shenwei.wang@nxp.com>
+AuthorDate:    Wed, 03 Jul 2024 11:32:50 -05:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 11 Jul 2024 17:06:02 +02:00
 
-On the Lenovo X13s we have observed that in about 1/20 cases the current
-timing is too tight and we start transacting before the ov5675's reset
-cycle completes, leading to I2C bus transaction failures.
+irqchip/imx-irqsteer: Handle runtime power management correctly
 
-The reset racing is sometimes triggered at initial chip probe but, more
-usually on a subsequent power-off/power-on cycle e.g.
+The power domain is automatically activated from clk_prepare(). However, on
+certain platforms like i.MX8QM and i.MX8QXP, the power-on handling invokes
+sleeping functions, which triggers the 'scheduling while atomic' bug in the
+context switch path during device probing:
 
-[   71.451662] ov5675 24-0010: failed to write reg 0x0103. error = -5
-[   71.451686] ov5675 24-0010: failed to set plls
+ BUG: scheduling while atomic: kworker/u13:1/48/0x00000002
+ Call trace:
+  __schedule_bug+0x54/0x6c
+  __schedule+0x7f0/0xa94
+  schedule+0x5c/0xc4
+  schedule_preempt_disabled+0x24/0x40
+  __mutex_lock.constprop.0+0x2c0/0x540
+  __mutex_lock_slowpath+0x14/0x20
+  mutex_lock+0x48/0x54
+  clk_prepare_lock+0x44/0xa0
+  clk_prepare+0x20/0x44
+  imx_irqsteer_resume+0x28/0xe0
+  pm_generic_runtime_resume+0x2c/0x44
+  __genpd_runtime_resume+0x30/0x80
+  genpd_runtime_resume+0xc8/0x2c0
+  __rpm_callback+0x48/0x1d8
+  rpm_callback+0x6c/0x78
+  rpm_resume+0x490/0x6b4
+  __pm_runtime_resume+0x50/0x94
+  irq_chip_pm_get+0x2c/0xa0
+  __irq_do_set_handler+0x178/0x24c
+  irq_set_chained_handler_and_data+0x60/0xa4
+  mxc_gpio_probe+0x160/0x4b0
 
-The current quiescence period we have is too tight. Instead of expressing
-the post reset delay in terms of the current XVCLK this patch converts the
-power-on and power-off delays to the maximum theoretical delay @ 6 MHz with
-an additional buffer.
+Cure this by implementing the irq_bus_lock/sync_unlock() interrupt chip
+callbacks and handle power management in them as they are invoked from
+non-atomic context.
 
-1.365 milliseconds on the power-on path is 1.5 milliseconds with grace.
-853 microseconds on the power-off path is 900 microseconds with grace.
+[ tglx: Rewrote change log, added Fixes tag ]
 
-Fixes: 49d9ad719e89 ("media: ov5675: add device-tree support and support runtime PM")
+Fixes: 0136afa08967 ("irqchip: Add driver for imx-irqsteer controller")
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Link: https://lore.kernel.org/r/20240703163250.47887-1-shenwei.wang@nxp.com
 ---
-v2:
-- Drop patch to read and act on reported XVCLK
-- Use worst-case timings + a reasonable grace period in-lieu of previous
-  xvclk calculations on power-on and power-off.
-- Link to v1: https://lore.kernel.org/r/20240711-linux-next-ov5675-v1-0-69e9b6c62c16@linaro.org
+ drivers/irqchip/irq-imx-irqsteer.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
-v1:
-One long running saga for me on the Lenovo X13s is the occasional failure
-to either probe or subsequently bring-up the ov5675 main RGB sensor on the
-laptop.
-
-Initially I suspected the PMIC for this part as the PMIC is using a new
-interface on an I2C bus instead of an SPMI bus. In particular I thought
-perhaps the I2C write to PMIC had completed but the regulator output hadn't
-become stable from the perspective of the SoC. This however doesn't appear
-to be the case - I can introduce a delay of milliseconds on the PMIC path
-without resolving the sensor reset problem.
-
-Secondly I thought about reset pin polarity or drive-strength but, again
-playing about with both didn't yield decent results.
-
-I also played with the duration of reset to no avail.
-
-The error manifested as an I2C write timeout to the sensor which indicated
-that the chip likely hadn't come out reset. An intermittent fault appearing
-in perhaps 1/10 or 1/20 reset cycles.
-
-Looking at the expression of the reset we see that there is a minimum time
-expressed in XVCLK cycles between reset completion and first I2C
-transaction to the sensor. The specification calls out the minimum delay @
-8192 XVCLK cycles and the ov5675 driver meets that timing almost exactly.
-
-A little too exactly - testing finally showed that we were too racy with
-respect to the minimum quiescence between reset completion and first
-command to the chip.
-
-Fixing this error I choose to base the fix again on the number of clocks
-but to also support any clock rate the chip could support by moving away
-from a define to reading and using the XVCLK.
-
-True enough only 19.2 MHz is currently supported but for the hypothetical
-case where some other frequency is supported in the future, I wanted the
-fix introduced in this series to still hold.
-
-Hence this series:
-
-1. Allows for any clock rate to be used in the valid range for the reset.
-2. Elongates the post-reset period based on clock cycles which can now
-vary.
-
-Patch #2 can still be backported to stable irrespective of patch #1.
----
- drivers/media/i2c/ov5675.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/media/i2c/ov5675.c b/drivers/media/i2c/ov5675.c
-index 3641911bc73f..547d6fab816a 100644
---- a/drivers/media/i2c/ov5675.c
-+++ b/drivers/media/i2c/ov5675.c
-@@ -972,12 +972,10 @@ static int ov5675_set_stream(struct v4l2_subdev *sd, int enable)
+diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
+index 20cf7a9..75a0e98 100644
+--- a/drivers/irqchip/irq-imx-irqsteer.c
++++ b/drivers/irqchip/irq-imx-irqsteer.c
+@@ -36,6 +36,7 @@ struct irqsteer_data {
+ 	int			channel;
+ 	struct irq_domain	*domain;
+ 	u32			*saved_reg;
++	struct device		*dev;
+ };
  
- static int ov5675_power_off(struct device *dev)
- {
--	/* 512 xvclk cycles after the last SCCB transation or MIPI frame end */
--	u32 delay_us = DIV_ROUND_UP(512, OV5675_XVCLK_19_2 / 1000 / 1000);
- 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
- 	struct ov5675 *ov5675 = to_ov5675(sd);
- 
--	usleep_range(delay_us, delay_us * 2);
-+	usleep_range(900, 1000);
- 
- 	clk_disable_unprepare(ov5675->xvclk);
- 	gpiod_set_value_cansleep(ov5675->reset_gpio, 1);
-@@ -988,7 +986,6 @@ static int ov5675_power_off(struct device *dev)
- 
- static int ov5675_power_on(struct device *dev)
- {
--	u32 delay_us = DIV_ROUND_UP(8192, OV5675_XVCLK_19_2 / 1000 / 1000);
- 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
- 	struct ov5675 *ov5675 = to_ov5675(sd);
- 	int ret;
-@@ -1014,8 +1011,11 @@ static int ov5675_power_on(struct device *dev)
- 
- 	gpiod_set_value_cansleep(ov5675->reset_gpio, 0);
- 
--	/* 8192 xvclk cycles prior to the first SCCB transation */
--	usleep_range(delay_us, delay_us * 2);
-+	/* Worst case quiesence gap is 1.365 milliseconds @ 6MHz XVCLK
-+	 * Add an additional threshold grace period to ensure reset
-+	 * completion before initiating our first I2C transaction.
-+	 */
-+	usleep_range(1500, 1600);
- 
- 	return 0;
+ static int imx_irqsteer_get_reg_index(struct irqsteer_data *data,
+@@ -72,10 +73,26 @@ static void imx_irqsteer_irq_mask(struct irq_data *d)
+ 	raw_spin_unlock_irqrestore(&data->lock, flags);
  }
-
----
-base-commit: 523b23f0bee3014a7a752c9bb9f5c54f0eddae88
-change-id: 20240710-linux-next-ov5675-60b0e83c73f1
-
-Best regards,
--- 
-Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-
+ 
++static void imx_irqsteer_irq_bus_lock(struct irq_data *d)
++{
++	struct irqsteer_data *data = d->chip_data;
++
++	pm_runtime_get_sync(data->dev);
++}
++
++static void imx_irqsteer_irq_bus_sync_unlock(struct irq_data *d)
++{
++	struct irqsteer_data *data = d->chip_data;
++
++	pm_runtime_put_autosuspend(data->dev);
++}
++
+ static const struct irq_chip imx_irqsteer_irq_chip = {
+-	.name		= "irqsteer",
+-	.irq_mask	= imx_irqsteer_irq_mask,
+-	.irq_unmask	= imx_irqsteer_irq_unmask,
++	.name			= "irqsteer",
++	.irq_mask		= imx_irqsteer_irq_mask,
++	.irq_unmask		= imx_irqsteer_irq_unmask,
++	.irq_bus_lock		= imx_irqsteer_irq_bus_lock,
++	.irq_bus_sync_unlock	= imx_irqsteer_irq_bus_sync_unlock,
+ };
+ 
+ static int imx_irqsteer_irq_map(struct irq_domain *h, unsigned int irq,
+@@ -150,6 +167,7 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
+ 	if (!data)
+ 		return -ENOMEM;
+ 
++	data->dev = &pdev->dev;
+ 	data->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(data->regs)) {
+ 		dev_err(&pdev->dev, "failed to initialize reg\n");
 
