@@ -1,145 +1,185 @@
-Return-Path: <stable+bounces-59164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3464492F097
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 23:02:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F081992F0C8
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 23:14:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A553BB212D4
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 21:02:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 710F21F229FA
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 21:14:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 839A519E7FB;
-	Thu, 11 Jul 2024 21:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0215119EEC6;
+	Thu, 11 Jul 2024 21:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="KNmmhxVA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cakBVmqj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D0F1509BC;
-	Thu, 11 Jul 2024 21:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F3F51004;
+	Thu, 11 Jul 2024 21:14:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720731716; cv=none; b=OYcLOilXqRV21cU7T6AqIGqCfB6r1gC/4yjxRGr/xBjb86b2OhHW1VIsJVXiF9MOMGc5h6410T4bmGYsvU3v36YI/bwV//wMsyiYY5dNHrN/5Gs4Ue2gCIc8a5TYkTu64tXLPYf8GC6/mT2Kq5uS8We/221y01KSEzkWwcYcN4Q=
+	t=1720732462; cv=none; b=f3bVLfjctUrD15fLd2j5XHYRe/S6WpRJ++Qs2rLVV0EorKEJFmepMw3QAtLjnFS34Znx0PsyMIykRsqgHLTAkyfqC513QXgaDxPz9BILd+MQYrW2D4gWJRpRWCNdqtUzWRVAdGVb9cFS5CwD6OjRE3YhtcONGhpdR7kWVjcDo3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720731716; c=relaxed/simple;
-	bh=CH9kwbqKZOaytKVKB101X7KuoptUaxaYENlsZcICc7I=;
-	h=Date:To:From:Subject:Message-Id; b=G04To83emuX4FdgUkSIeO73cUbWCUAtXfBaPm2tOWSgNu1kNsuIDjgRaCK71qMKu2JEdLe/uNfEiLoxqDHvKQypTwS8djbiSBGjrjWb77J0XoahyRGYLlKTddsu8uMGEBe3olxygXm61iquONbT+/2zvpmBNFLpf8cfUHfxmiCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=KNmmhxVA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C291C116B1;
-	Thu, 11 Jul 2024 21:01:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1720731715;
-	bh=CH9kwbqKZOaytKVKB101X7KuoptUaxaYENlsZcICc7I=;
-	h=Date:To:From:Subject:From;
-	b=KNmmhxVAVFMJGZoPPZQO2dUTADVS+StSpDKmYBKs8EtxLIPDcZTg36FCgyw9OkvE/
-	 9rzaoKuKCCb4Xvcl7ESc8HzTqWg9TuxZnEHz3gMdmUqXiNaQ06QMbzyteV2dM+owV2
-	 eOq8nID1bgARY1tbGW4W7TQn/y4+kiTc7+yS+Cag=
-Date: Thu, 11 Jul 2024 14:01:54 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,peterz@infradead.org,arjan@linux.intel.com,tglx@linutronix.de,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + watchdog-perf-properly-initialize-the-turbo-mode-timestamp-and-rearm-counter.patch added to mm-nonmm-unstable branch
-Message-Id: <20240711210155.6C291C116B1@smtp.kernel.org>
+	s=arc-20240116; t=1720732462; c=relaxed/simple;
+	bh=W2hf6xC3VFwwfj1PmmS3ARCLCbbL+jcjKAxdaPfr4jo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aImR3xFa8+2sZqZvmK6LJt3U4w/Ln9HVySNw4YuldINnHJ+zMsWYCWmNALw3PcKPPvUlGKIMDj0eqDq78FVJWtlD9xD3iavix0gpQeh0wZaQ5chGs354HCUDYAcqtjXZe6t+3sGVvKaASNxunUGLCbXX7snDbHmHPfvA1B37H/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cakBVmqj; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720732461; x=1752268461;
+  h=date:from:to:cc:subject:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=W2hf6xC3VFwwfj1PmmS3ARCLCbbL+jcjKAxdaPfr4jo=;
+  b=cakBVmqj1+pOmAKPoAUapNI4LuM5uIsDwZ4r5MhI5rSRwbnTV6ApfAx7
+   qk0bk8xTEr3SCWd1dGdLg4XrAUTkibQZCfisulwyE00X3n+rH4RyONgAX
+   jyFszv/USYJJxHrFbCHkJZboJPEuOqHDW9/2/0igdEytoaX7D6CXOwh37
+   Fsqe54Imb+7F3r5z/hdWanBGTG5GSvLq7AZZKEc1s1FMc5z54PfmVIt+7
+   irRvaDw7mNxsaLPp6rARQaayJdQtY4wdXHkREvMpHCHoLBZVszKWO0qto
+   XhWN+dZcdbIiGDilVzasBfh8NLcpMoVv3PtimstYQKYyXyWbHaJrkN5r1
+   Q==;
+X-CSE-ConnectionGUID: 3HVoAmlCROmItBYwpOkzEQ==
+X-CSE-MsgGUID: 8LFzu2QmTGydyFu5zEKpIw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11130"; a="29300097"
+X-IronPort-AV: E=Sophos;i="6.09,201,1716274800"; 
+   d="scan'208";a="29300097"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2024 14:14:20 -0700
+X-CSE-ConnectionGUID: nbw7fb/RRtild7EulLGtBA==
+X-CSE-MsgGUID: gZ3v31NMRtybnAkf//dHHw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,201,1716274800"; 
+   d="scan'208";a="53627003"
+Received: from hsuanchi-mobl1.amr.corp.intel.com (HELO peluse-desk5) ([10.213.173.245])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2024 14:14:20 -0700
+Date: Thu, 11 Jul 2024 14:14:18 -0700
+From: Paul E Luse <paul.e.luse@linux.intel.com>
+To: Mateusz =?UTF-8?B?Sm/FhGN6eWs=?= <mat.jonczyk@o2.pl>
+Cc: linux-raid@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Song Liu <song@kernel.org>, Yu Kuai
+ <yukuai3@huawei.com>, Xiao Ni <xni@redhat.com>, Mariusz Tkaczyk
+ <mariusz.tkaczyk@linux.intel.com>
+Subject: Re: [PATCH] md/raid1: set max_sectors during early return from
+ choose_slow_rdev()
+Message-ID: <20240711141418.196c8b04@peluse-desk5>
+In-Reply-To: <20240711202316.10775-1-mat.jonczyk@o2.pl>
+References: <349e4894-b6ea-6bc4-b040-4a816b6960ab@huaweicloud.com>
+	<20240711202316.10775-1-mat.jonczyk@o2.pl>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; aarch64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, 11 Jul 2024 22:23:16 +0200
+Mateusz Jo=C5=84czyk <mat.jonczyk@o2.pl> wrote:
 
-The patch titled
-     Subject: watchdog/perf: Properly initialize the turbo mode timestamp and rearm counter
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     watchdog-perf-properly-initialize-the-turbo-mode-timestamp-and-rearm-counter.patch
+> Linux 6.9+ is unable to start a degraded RAID1 array with one drive,
+> when that drive has a write-mostly flag set. During such an attempt,
+> the following assertion in bio_split() is hit:
+>=20
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/watchdog-perf-properly-initialize-the-turbo-mode-timestamp-and-rearm-counter.patch
+Nice catch and good patch :)  Kwai?
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+-Paul
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Thomas Gleixner <tglx@linutronix.de>
-Subject: watchdog/perf: Properly initialize the turbo mode timestamp and rearm counter
-Date: Thu, 11 Jul 2024 22:25:21 +0200
-
-For systems on which the performance counter can expire early due to turbo
-modes the watchdog handler has a safety net in place which validates that
-since the last watchdog event there has at least 4/5th of the watchdog
-period elapsed.
-
-This works reliably only after the first watchdog event because the per
-CPU variable which holds the timestamp of the last event is never
-initialized.
-
-So a first spurious event will validate against a timestamp of 0 which
-results in a delta which is likely to be way over the 4/5 threshold of the
-period.  As this might happen before the first watchdog hrtimer event
-increments the watchdog counter, this can lead to false positives.
-
-Fix this by initializing the timestamp before enabling the hardware event.
-Reset the rearm counter as well, as that might be non zero after the
-watchdog was disabled and reenabled.
-
-Link: https://lkml.kernel.org/r/87frsfu15a.ffs@tglx
-Fixes: 7edaeb6841df ("kernel/watchdog: Prevent false positives with turbo modes")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Arjan van de Ven <arjan@linux.intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- kernel/watchdog_perf.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
-
---- a/kernel/watchdog_perf.c~watchdog-perf-properly-initialize-the-turbo-mode-timestamp-and-rearm-counter
-+++ a/kernel/watchdog_perf.c
-@@ -75,11 +75,15 @@ static bool watchdog_check_timestamp(voi
- 	__this_cpu_write(last_timestamp, now);
- 	return true;
- }
--#else
--static inline bool watchdog_check_timestamp(void)
-+
-+static void watchdog_init_timestamp(void)
- {
--	return true;
-+	__this_cpu_write(nmi_rearmed, 0);
-+	__this_cpu_write(last_timestamp, ktime_get_mono_fast_ns());
- }
-+#else
-+static inline bool watchdog_check_timestamp(void) { return true; }
-+static inline void watchdog_init_timestamp(void) { }
- #endif
- 
- static struct perf_event_attr wd_hw_attr = {
-@@ -161,6 +165,7 @@ void watchdog_hardlockup_enable(unsigned
- 	if (!atomic_fetch_inc(&watchdog_cpus))
- 		pr_info("Enabled. Permanently consumes one hw-PMU counter.\n");
- 
-+	watchdog_init_timestamp();
- 	perf_event_enable(this_cpu_read(watchdog_ev));
- }
- 
-_
-
-Patches currently in -mm which might be from tglx@linutronix.de are
-
-watchdog-perf-properly-initialize-the-turbo-mode-timestamp-and-rearm-counter.patch
+> 	BUG_ON(sectors <=3D 0);
+>=20
+> Call Trace:
+> 	? bio_split+0x96/0xb0
+> 	? exc_invalid_op+0x53/0x70
+> 	? bio_split+0x96/0xb0
+> 	? asm_exc_invalid_op+0x1b/0x20
+> 	? bio_split+0x96/0xb0
+> 	? raid1_read_request+0x890/0xd20
+> 	? __call_rcu_common.constprop.0+0x97/0x260
+> 	raid1_make_request+0x81/0xce0
+> 	? __get_random_u32_below+0x17/0x70
+> 	? new_slab+0x2b3/0x580
+> 	md_handle_request+0x77/0x210
+> 	md_submit_bio+0x62/0xa0
+> 	__submit_bio+0x17b/0x230
+> 	submit_bio_noacct_nocheck+0x18e/0x3c0
+> 	submit_bio_noacct+0x244/0x670
+>=20
+> After investigation, it turned out that choose_slow_rdev() does not
+> set the value of max_sectors in some cases and because of it,
+> raid1_read_request calls bio_split with sectors =3D=3D 0.
+>=20
+> Fix it by filling in this variable.
+>=20
+> This bug was introduced in
+> commit dfa8ecd167c1 ("md/raid1: factor out choose_slow_rdev() from
+> read_balance()") but apparently hidden until
+> commit 0091c5a269ec ("md/raid1: factor out helpers to choose the best
+> rdev from read_balance()") shortly thereafter.
+>=20
+> Cc: stable@vger.kernel.org # 6.9.x+
+> Signed-off-by: Mateusz Jo=C5=84czyk <mat.jonczyk@o2.pl>
+> Fixes: dfa8ecd167c1 ("md/raid1: factor out choose_slow_rdev() from
+> read_balance()") Cc: Song Liu <song@kernel.org>
+> Cc: Yu Kuai <yukuai3@huawei.com>
+> Cc: Paul Luse <paul.e.luse@linux.intel.com>
+> Cc: Xiao Ni <xni@redhat.com>
+> Cc: Mariusz Tkaczyk <mariusz.tkaczyk@linux.intel.com>
+> Link:
+> https://lore.kernel.org/linux-raid/20240706143038.7253-1-mat.jonczyk@o2.p=
+l/
+>=20
+> --
+>=20
+> Tested on both Linux 6.10 and 6.9.8.
+>=20
+> Inside a VM, mdadm testsuite for RAID1 on 6.10 did not find any
+> problems: ./test --dev=3Dloop --no-error --raidtype=3Draid1
+> (on 6.9.8 there was one failure, caused by external bitmap support not
+> compiled in).
+>=20
+> Notes:
+> - I was reliably getting deadlocks when adding / removing devices
+>   on such an array - while the array was loaded with fsstress with 20
+>   concurrent processes. When the array was idle or loaded with
+> fsstress with 8 processes, no such deadlocks happened in my tests.
+>   This occurred also on unpatched Linux 6.8.0 though, but not on
+>   6.1.97-rc1, so this is likely an independent regression (to be
+>   investigated).
+> - I was also getting deadlocks when adding / removing the bitmap on
+> the array in similar conditions - this happened on Linux 6.1.97-rc1
+>   also though. fsstress with 8 concurrent processes did cause it only
+>   once during many tests.
+> - in my testing, there was once a problem with hot adding an
+>   internal bitmap to the array:
+> 	mdadm: Cannot add bitmap while array is resyncing or
+> reshaping etc. mdadm: failed to set internal bitmap.
+>   even though no such reshaping was happening according to
+> /proc/mdstat. This seems unrelated, though.
+> ---
+>  drivers/md/raid1.c | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+> index 7b8a71ca66dd..82f70a4ce6ed 100644
+> --- a/drivers/md/raid1.c
+> +++ b/drivers/md/raid1.c
+> @@ -680,6 +680,7 @@ static int choose_slow_rdev(struct r1conf *conf,
+> struct r1bio *r1_bio, len =3D r1_bio->sectors;
+>  		read_len =3D raid1_check_read_range(rdev, this_sector,
+> &len); if (read_len =3D=3D r1_bio->sectors) {
+> +			*max_sectors =3D read_len;
+>  			update_read_sectors(conf, disk, this_sector,
+> read_len); return disk;
+>  		}
+>=20
+> base-commit: 256abd8e550ce977b728be79a74e1729438b4948
 
 
