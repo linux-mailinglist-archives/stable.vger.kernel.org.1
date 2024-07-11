@@ -1,119 +1,145 @@
-Return-Path: <stable+bounces-59128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E098192E9F6
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 15:54:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C8E992EB8D
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 17:21:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54D99B213C0
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 13:53:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02383284FB8
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 15:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4DA1607A7;
-	Thu, 11 Jul 2024 13:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8AB412FB1B;
+	Thu, 11 Jul 2024 15:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="KDsLyApK"
+	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="VHAOMFo+"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from smtp87.ord1d.emailsrvr.com (smtp87.ord1d.emailsrvr.com [184.106.54.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0E515FCEB
-	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 13:53:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B035A23CE
+	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 15:21:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=184.106.54.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720706031; cv=none; b=FqtQ4euFr5xxRcka0lcL4URsJ+u6mjRKI0qpEYWmCsBIHJ09mXsHBciLgOSK2juZt9O+LeRm73GP8GcmfwU6E/Zqnl3u5KY9yYbUgV9uno49+v3Dh8uiTvNtr7R9Bo+cjL6jEh19XjgBvuNxivxA1s1pTGBvqaH5zmp8HtaL4jQ=
+	t=1720711308; cv=none; b=Nl+5IQ2Q5XvlSdVsRo7h4kLgu7UEeiegQICbOC1JGJAjJc/dHDjn3xYb2ekl2S6jAdNpW6qIc2asdK8JbwiUzoYbVnni9ywGIHI5fuM8VLad87EZ7PTNsArg/Nx0U1u08x4Z9Ar7XdgRnDsZykYA936lnoW2g+vVo8Ux/OStvI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720706031; c=relaxed/simple;
-	bh=AXitqBAmsnymxE9JIF6hQTX/sICBAD1fwliLjhE6Z7Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bxJ9fpCXE6nLIIMHRLSfHdS3dC0ZAIwgTWfy4VXcey7pvzbRSfS5YAsB5nfoOlXIv+wRzXVB6pmLG0QHxciALIdRSxU4A8+DL1hgLwAd9Q5ypXFH952xoJi5yWb+gKPMDnynOAEiO/BCaSgxpnmhJorhiDB2PXb3a4d5qIyPxoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=KDsLyApK; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=UWRR8NcVl471Zj1Z+bvpeF3g2ixP4/oX5ENOHO5aO7s=; b=KDsLyApKuJat/UpIwfOCtFCg3K
-	5SO9xMH4D789J1zvVk1XgpcZQ74X/xLFsMhrgg/V4Qi11gXw4aQ/xxvPhY9DuML+NMq6X8/9iyYmq
-	V3RUGj7iKZizXxA2FpJrz2/CKoJIb6yNKj/JnmwzY4lYtoo7Ce/jniJUCXWVtu2XE7CNdnBq5EVE0
-	N5c0GH7bmgl3aHl47VjGtEOrMhm8YMWjc0GxkpiKFNx0ruBTCuGLpx8zTRNseSB9V45JkKq68Junz
-	qoIrhP5y13aaYewAuz6T276mMO4qrT43iLDJ6fmaXzf6K5VfP3/tUqfboFqNUSp4NuSu/+flJxcxl
-	G+aEt60Q==;
-Received: from [84.69.19.168] (helo=localhost)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1sRuEz-00DifC-N5; Thu, 11 Jul 2024 15:53:45 +0200
-From: Tvrtko Ursulin <tursulin@igalia.com>
-To: dri-devel@lists.freedesktop.org
-Cc: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	kernel-dev@igalia.com,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 05/11] drm/v3d: Validate passed in drm syncobj handles in the performance extension
-Date: Thu, 11 Jul 2024 14:53:34 +0100
-Message-ID: <20240711135340.84617-6-tursulin@igalia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240711135340.84617-1-tursulin@igalia.com>
-References: <20240711135340.84617-1-tursulin@igalia.com>
+	s=arc-20240116; t=1720711308; c=relaxed/simple;
+	bh=OeRk1i3qXAV0YYxYZJgE3KI4JCMawZqmzQ8mGpGAIpM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sM/zgvAFlaHsNnB21xSaRAKcUn6TyhhivZ/qYMDsNnuFgaufK0o3qt0CiP3g7yAiDOHC83bAmKJXiJRDL+B92rhWZBL/c+jmIVokqJd4Aa6ZKy8ijv6EkRZSwapSWYY8AZdaR500pxaBaTUNC3lb6L0HNp8Z/vce99JYC1kL/w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=VHAOMFo+; arc=none smtp.client-ip=184.106.54.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+	s=20221208-6x11dpa4; t=1720706703;
+	bh=OeRk1i3qXAV0YYxYZJgE3KI4JCMawZqmzQ8mGpGAIpM=;
+	h=Date:Subject:To:From:From;
+	b=VHAOMFo+dHgN6BbZY1sDnkVD+85dRNaqQ+aKOxMAw3kI2HS4hXYvumPf5gAw3u72Y
+	 Z6KpJGvU2rVBa7yhiSSBj5VKean9IhYrDM+kr/0ZTFfccgb7aUQvCWESutT763ClbF
+	 Q/dZt7vOjAlfLp28gW20f5chwz2UHB3q92EKoKzQ=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp11.relay.ord1d.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 83E6760182;
+	Thu, 11 Jul 2024 10:05:02 -0400 (EDT)
+Message-ID: <2b0e8a6c-f89e-4d71-a816-9da46ea695eb@mev.co.uk>
+Date: Thu, 11 Jul 2024 15:05:01 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND PATCH] rtc: ds1343: Force SPI chip select to be active
+ high
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: linux-rtc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
+ Mark Brown <broonie@kernel.org>
+References: <20240710175246.3560207-1-abbotti@mev.co.uk>
+ <20240710184053c34201f0@mail.local>
+Content-Language: en-GB
+From: Ian Abbott <abbotti@mev.co.uk>
+Organization: MEV Ltd.
+In-Reply-To: <20240710184053c34201f0@mail.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Classification-ID: daa3b8eb-56e6-455d-9215-420ec447232e-1-1
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Greetings,
 
-If userspace provides an unknown or invalid handle anywhere in the handle
-array the rest of the driver will not handle that well.
+On 10/07/2024 19:40, Alexandre Belloni wrote:
+> Hello,
+> 
+> On 10/07/2024 18:52:07+0100, Ian Abbott wrote:
+>> Commit 3b52093dc917 ("rtc: ds1343: Do not hardcode SPI mode flags")
+>> bit-flips (^=) the existing SPI_CS_HIGH setting in the SPI mode during
+>> device probe.  This will set it to the wrong value if the spi-cs-high
+>> property has been set in the devicetree node.  Just force it to be set
+>> active high and get rid of some commentary that attempted to explain why
+>> flipping the bit was the correct choice.
+>>
+>> Fixes: 3b52093dc917 ("rtc: ds1343: Do not hardcode SPI mode flags")
+>> Cc: <stable@vger.kernel.org> # 5.6+
+>> Cc: Linus Walleij <linus.walleij@linaro.org>
+>> Cc: Mark Brown <broonie@kernel.org>
+>> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+>> ---
+>>   drivers/rtc/rtc-ds1343.c | 9 +++------
+>>   1 file changed, 3 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/drivers/rtc/rtc-ds1343.c b/drivers/rtc/rtc-ds1343.c
+>> index ed5a6ba89a3e..484b5756b55c 100644
+>> --- a/drivers/rtc/rtc-ds1343.c
+>> +++ b/drivers/rtc/rtc-ds1343.c
+>> @@ -361,13 +361,10 @@ static int ds1343_probe(struct spi_device *spi)
+>>   	if (!priv)
+>>   		return -ENOMEM;
+>>   
+>> -	/* RTC DS1347 works in spi mode 3 and
+>> -	 * its chip select is active high. Active high should be defined as
+>> -	 * "inverse polarity" as GPIO-based chip selects can be logically
+>> -	 * active high but inverted by the GPIO library.
+>> +	/*
+>> +	 * RTC DS1347 works in spi mode 3 and its chip select is active high.
+>>   	 */
+>> -	spi->mode |= SPI_MODE_3;
+>> -	spi->mode ^= SPI_CS_HIGH;
+>> +	spi->mode |= SPI_MODE_3 | SPI_CS_HIGH;
+> 
+> Linus being the gpio maintainer and Mark being the SPI maintainer, I'm
+> pretty sure this was correct at the time.
 
-Fix it by checking handle was looked up successfully or otherwise fail the
-extension by jumping into the existing unwind.
+I'm not convinced.  What value of `spi->mode & SPI_CS_HIGH` do you think 
+the device should end up using?  (I think it should end up using 
+`SPI_CS_HIGH`, which was the case before commit 3b52093dc917, because 
+the RTC chip requires active high CS.)  What do you think the value of 
+`spi->mode & SPI_CS_HIGH` will be *before* the `^=` operation? (For 
+devicetree, that depends on the `spi-cs-high` property.)
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Fixes: bae7cb5d6800 ("drm/v3d: Create a CPU job extension for the reset performance query job")
-Cc: Maíra Canal <mcanal@igalia.com>
-Cc: Iago Toral Quiroga <itoral@igalia.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
----
- drivers/gpu/drm/v3d/v3d_submit.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+I think the devicetree node for the RTC device ought to be setting 
+`spi-cs-high` but cannot do so at the moment because the driver clobbers it.
 
-diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
-index 9a3e32075ebe..4cdfabbf4964 100644
---- a/drivers/gpu/drm/v3d/v3d_submit.c
-+++ b/drivers/gpu/drm/v3d/v3d_submit.c
-@@ -710,6 +710,10 @@ v3d_get_cpu_reset_performance_params(struct drm_file *file_priv,
- 		}
- 
- 		job->performance_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
-+		if (!job->performance_query.queries[i].syncobj) {
-+			err = -ENOENT;
-+			goto error;
-+		}
- 	}
- 	job->performance_query.count = reset.count;
- 	job->performance_query.nperfmons = reset.nperfmons;
-@@ -790,6 +794,10 @@ v3d_get_cpu_copy_performance_query_params(struct drm_file *file_priv,
- 		}
- 
- 		job->performance_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
-+		if (!job->performance_query.queries[i].syncobj) {
-+			err = -ENOENT;
-+			goto error;
-+		}
- 	}
- 	job->performance_query.count = copy.count;
- 	job->performance_query.nperfmons = copy.nperfmons;
+> Are you sure you are not missing an active high/low flag on a gpio
+> definition?
+
+The CS might be internal to the SPI controller, not using a GPIO line 
+(`cs-gpios` property).  SPI peripheral device drivers shouldn't care if 
+CS is using GPIO or not.
+
+> 
+>>   	spi->bits_per_word = 8;
+>>   	res = spi_setup(spi);
+>>   	if (res)
+>> -- 
+>> 2.43.0
+>>
+> 
+
 -- 
-2.44.0
+-=( Ian Abbott <abbotti@mev.co.uk> || MEV Ltd. is a company  )=-
+-=( registered in England & Wales.  Regd. number: 02862268.  )=-
+-=( Regd. addr.: S11 & 12 Building 67, Europa Business Park, )=-
+-=( Bird Hall Lane, STOCKPORT, SK3 0XA, UK. || www.mev.co.uk )=-
 
 
