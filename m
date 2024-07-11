@@ -1,105 +1,159 @@
-Return-Path: <stable+bounces-59060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34FB92DFD4
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 08:00:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1610492E03F
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 08:39:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BB37281CB0
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 06:00:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91376283311
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 06:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6763878C67;
-	Thu, 11 Jul 2024 06:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335CB12C54A;
+	Thu, 11 Jul 2024 06:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="onZ0lg4L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="czn1ovPu"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC7F20E3;
-	Thu, 11 Jul 2024 06:00:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1AC8249A;
+	Thu, 11 Jul 2024 06:39:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720677651; cv=none; b=FLZU2wSoKW6a+OMN6qEsc16miloDxVtQAv1IxKs528aWx6nSh2Q1bxoR2f3yraBfrSbBSfTDAJtM0WtrLa5Q1ZpQF3qW22gikgXVB5COll4ou+6A5G6I3x4/ib/DvKN098Lcknomr36IftcgLX/d5+YpG33+d4AI3EQnGf+T/NI=
+	t=1720679959; cv=none; b=RmBWlSkdrFsHygi756Uz3tpj0V+fpETq9tBsd6AnVO01r1M96KaGSlNrvNww78GSMuIOr1s1vnGhuGwm4CMgxN69HNv+QzvJ6ckWRZgHE42iJfvvUSJhJrWuFp1boy3/5TOcerhFLXWUMBlwb/njfMqqmhY/Cnq5Rgmro0Aoy4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720677651; c=relaxed/simple;
-	bh=15yJgavZmfHOIomQLcsyf8HlH0B8GycDnNaojP2vIFw=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=cO1ZbQljcHxnlnZw7alTc2dI6HOHXpPU3UkglMgMatua1hTVqmCh9NYm1m7uwDRn61cuJdEKwQms1jer2ich1iIIPKl4m5s5XdJ5CblDvMEm5YoKHGbypfKYDZCoW7VLmtOspZPqvo7WFZEgrxUhv22EiDWAMP/cBel8bEV/+qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=onZ0lg4L; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1720677636; x=1721282436; i=markus.elfring@web.de;
-	bh=c5z5eE89ZdgKIAIW2hKoAi6mxSiJBE0HAuchu+r3jpE=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:Subject:To:
-	 Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=onZ0lg4LU/P7TTOlP2WIBvLsLNPG+qhcOwQWg78btNLs2wt71SxLJSDBEdqjPMWt
-	 6lqzetMVvdlpbBCsyYQmROJNNRkNkekp489199Vh3e7XyI9SoPFqKNfk2t/NGuGp2
-	 DXm8NgI3bQQxvpj9juGLR2RkWHdxhiBFm5ImhnxQ3dtRLJbsoEJPRVuteFPQuEaVF
-	 nm8EwvxjGk6LKcIwBxSZ0MOiuewCqIVta5u8pxdyS1Uju1iw5pc39cnm5NyvdbFVh
-	 ywDfhXdc6M98noslQEE72n5gaYNR+dOSCkrP5kvOlRsyXqZ2SHc1DcnWsnrg3MmG+
-	 7D2RI/mW/ItEXe4X2w==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.89.95]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MxHYA-1sCRu02gwq-00x2l5; Thu, 11
- Jul 2024 08:00:36 +0200
-Message-ID: <eb0374b3-d040-4263-96c8-d0dce88432d6@web.de>
-Date: Thu, 11 Jul 2024 08:00:15 +0200
+	s=arc-20240116; t=1720679959; c=relaxed/simple;
+	bh=YYuzY+tLhiCKB0JfC01of+ILfufjHR1RA3FDo//2JiY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YrC7Q+xA2zRJLRYJKkTW2idnrNgxZXlKudwT85/KgcBjXGH8LtzzNPXLM9nz7FnZYm1QJSVZuhsZjo47yhSZGsljkFUkoSiy6SQV9OGtFUj4U/dKWUhMi+y7oLvKyVjX+tiMyHmwVzXZH/lVmpCt6BUJIkRvBKJnHf6cCiSxk0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=czn1ovPu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92263C4AF0F;
+	Thu, 11 Jul 2024 06:39:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720679958;
+	bh=YYuzY+tLhiCKB0JfC01of+ILfufjHR1RA3FDo//2JiY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=czn1ovPuwZRPwkEMEGJNLqZvmdEJkCTC8Q03rhl6F5FW2JhUQHz63FjvRcr0ezkOr
+	 bqISEZUFVnEVqmqnzxptnWxsXZyHc9JWJwMwnC+H12l41zNckcvZ5kDjCacyL8ovPs
+	 s0E4oDvTj/5aRzMR2WwGI/DTrWNTh8tpeLvPUXEG7REvEZv6hyX27xhDhSz1kFoTmt
+	 exJ1UpnnHMgR25/a+abQ4AOiijAjOmldne29PLalhniHo0rLQLtlzvlqyeOXhF+s7f
+	 Srg9BVyAUxsaXdcfzeVDnE0age9uTF1q2tfzRl/5MlOoBy8Gvs7ql+kT1hK4tTDlOJ
+	 1htJA36xFjXAw==
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a77c9c5d68bso68738966b.2;
+        Wed, 10 Jul 2024 23:39:18 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUILdRMWBRq4WvReZrV4mXuT7aqOKRRhSYZrN5ZUCWAwFzEFtdN6avzDfVjpfCz1TJ5lVdx9DxEEUQFUfMdIZCKK49WIBYP9mx4CwidPNosZkaJTMW67ci8zU4BTD0ebbj4cU97CxqooOm2HaiacD5gqV/0XZNRdFp5efxqWvzEnl0=
+X-Gm-Message-State: AOJu0Yw1yb3mODtWqCkx5Iy0SxLdThN9OJDjjoWf+aD7KMs8DpMDuj0a
+	SdBCus15IIIYOyojaG6DT7hmdDU96NfWflyhA08sP+JwSJaqeFYneG+kKJEWlYxDZGz9gVoAc7V
+	mKEYG0jAFUmJ1UHHH9H122OpYOYw=
+X-Google-Smtp-Source: AGHT+IEdES9ra8lhHWoM6RznNhYmve7qzUYd0yRVQr+T7mh+ANEEX2mvwgKpXCmmQQzLCaxjyKbu0vIgnqH3wKUV+64=
+X-Received: by 2002:a17:907:da7:b0:a77:eb34:3b4b with SMTP id
+ a640c23a62f3a-a780b68a989mr646569166b.11.1720679957126; Wed, 10 Jul 2024
+ 23:39:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Markus Elfring <Markus.Elfring@web.de>
-Subject: Re: [fs/bfs 1/2] bfs: fix null-ptr-deref in bfs_move_block
-To: =?UTF-8?B?0JLQsNGB0LjQu9C40Lkg0JrQvtCy0LDQu9C10LI=?=
- <kovalevvv@basealt.ru>, linux-fsdevel@vger.kernel.org,
- lvc-patches@linuxtesting.org,
- syzbot+d98fd19acd08b36ff422@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- "Tigran A. Aivazian" <aivazian.tigran@gmail.com>, dutyrok@altlinux.org
-References: <20240710191118.40431-2-kovalev@altlinux.org>
- <8fd93c4e-3324-49b6-a77c-ea9986bc3033@web.de>
- <cd942b65-b6d7-0e0f-be4d-c3b950ee008f@basealt.ru>
-Content-Language: en-GB
-In-Reply-To: <cd942b65-b6d7-0e0f-be4d-c3b950ee008f@basealt.ru>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:86ZKGI08fjNtBWXHY9MnuWMqn3PBSvK2+nPyLSxvjz7M9h1fSDI
- lqLtoPG/Hx7oyVpjV20sdIdX+ejpKssu3fPi69yn1P9fW+P5JPlpi4/0vutt+u3s8+95324
- NMXBNsXa7we7bDoAjKtOKq4idAobG4YjKjL5Vo1l/+KCd0WXmfhNgZq+DmlM1zKCWgMbq53
- stj82fY+93Lgp4jQXEAJA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:POb5WFD1nyk=;cgbCI0MOffS3c4AuoLKqyh9y493
- 3TX7eB0IgQmMXJdTH3o8PjBXI1Yg0ASIN7LeyoaYXlGtyuG6dLSLoCHzZM19AJCUqUnFKYcbL
- S5t1AH/+UtyFelSxU+5f3Mo9/xa0gjC2Ms8DUeSizaaQYoJsdzKbZ0q/WZowTZePAMf0yVO0M
- OPGOYGcup2kDbNfQEZadB6uQGqIb6VjOnDvE9+vcJFocFJHGIzNek28A+wEQ0LSKSkVG6W0F1
- EMm9HvGAgPYvpt7Muam67osu9vXMPqF08LNU3xCJSE5Yg327Hw/RZeLRs8rKp5HXbFV48lsof
- tOsqMsxOchMAtbEuL9J0y8IhgRbugHT/1+h5hSU3kGClaTnJmACw/cOnuG+Mtgd4IwQOwoPAv
- P7oZJXqOvyr0sbdTeKdoo4byuEg9pt6LfpFauYCYLtZWf79W5MU2JLZdfEOtazeHCFZ88tjLS
- Jmk7760Wxy2RsKJRHYELcnojIPtTmRFThKtx9QpCQzbU1f536Uy0YscspnaKXC20wm9js9u3+
- qUNy1X0rqSRnyTSrLYwidLI9pgV3AnLw2aIjPqIqt45s2HUVoqWuz8na297mlzzrgWW1wSyMO
- uXNSni+RbRjL6WRpOTqIA58YZXKfN7PsM+4xPsUixSrx2f07BMic4qA2TSjb6N+J3+oqTGdDy
- k1QKtpVkEZOTP/opnlRk5BbSIcvUp5WU4/Ib4qjIw2zIz6A+OrpDHJCmX1C6idSCSd9HdSGn5
- Zy2yeo7w75hNiiYZLAfeGvHL2V/idQ4hx2iicJbqZGHhjqd5nrqibgARnJ64Xvl3ZztTekhkF
- 5B9IFOLhyNYsvrBYnWLRunBA==
+References: <20240710-bug11-v2-1-e7bc61f32e5d@gmail.com>
+In-Reply-To: <20240710-bug11-v2-1-e7bc61f32e5d@gmail.com>
+From: Filipe Manana <fdmanana@kernel.org>
+Date: Thu, 11 Jul 2024 07:38:40 +0100
+X-Gmail-Original-Message-ID: <CAL3q7H6NisGBRqccRv3CiTDMJS0M7ZnvSrEDDHSOUn2TaWBBDw@mail.gmail.com>
+Message-ID: <CAL3q7H6NisGBRqccRv3CiTDMJS0M7ZnvSrEDDHSOUn2TaWBBDw@mail.gmail.com>
+Subject: Re: [PATCH v2] btrfs: Fix slab-use-after-free Read in add_ra_bio_pages
+To: Pei Li <peili.dev@gmail.com>
+Cc: Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>, 
+	Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, skhan@linuxfoundation.org, 
+	syzkaller-bugs@googlegroups.com, 
+	linux-kernel-mentees@lists.linuxfoundation.org, 
+	syzbot+853d80cba98ce1157ae6@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Add a check to ensure that a sb_getblk() call did not return NULL before copying data.
+On Thu, Jul 11, 2024 at 5:29=E2=80=AFAM Pei Li <peili.dev@gmail.com> wrote:
+>
+> We are accessing the start and len field in em after it is free'd.
+>
+> This patch moves the line accessing the free'd values in em before
+> they were free'd so we won't access free'd memory.
+>
+> Reported-by: syzbot+853d80cba98ce1157ae6@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D853d80cba98ce1157ae6
+> Signed-off-by: Pei Li <peili.dev@gmail.com>
+> ---
+> Syzbot reported the following error:
+> BUG: KASAN: slab-use-after-free in add_ra_bio_pages.constprop.0.isra.0+0x=
+f03/0xfb0 fs/btrfs/compression.c:529
+>
+> This is because we are reading the values from em right after freeing it
+> before through free_extent_map(em).
+>
+> This patch moves the line accessing the free'd values in em before
+> they were free'd so we won't access free'd memory.
+>
+> Fixes: 6a4049102055 ("btrfs: subpage: make add_ra_bio_pages() compatible"=
+)
 
-How do you think about another refinement for such a change description?
+This type of useful information should be in the changelog, not after the -=
+--
 
-   Detect a failed sb_getblk() call (before copying data)
-   so that null pointer dereferences should not happen any more.
+And btw, this was already fixed last week and it's in for-next:
 
+https://github.com/btrfs/linux/commit/aaa2c8b3f54e7b4f31616fd03bb302cc17ccc=
+f39
+https://lore.kernel.org/linux-btrfs/20240704171031.GX21023@twin.jikos.cz/T/=
+#m9a92a5d980230323ec351a24adf9a3738cfbbc40
 
-Regards,
-Markus
+Thanks.
 
+> ---
+> Changes in v2:
+> - Adapt Qu's suggestion to move the read-after-free line before freeing
+> - Cc stable kernel
+> - Link to v1: https://lore.kernel.org/r/20240710-bug11-v1-1-aa02297fbbc9@=
+gmail.com
+> ---
+>  fs/btrfs/compression.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/fs/btrfs/compression.c b/fs/btrfs/compression.c
+> index 6441e47d8a5e..f271df10ef1c 100644
+> --- a/fs/btrfs/compression.c
+> +++ b/fs/btrfs/compression.c
+> @@ -514,6 +514,8 @@ static noinline int add_ra_bio_pages(struct inode *in=
+ode,
+>                         put_page(page);
+>                         break;
+>                 }
+> +               add_size =3D min(em->start + em->len, page_end + 1) - cur=
+;
+> +
+>                 free_extent_map(em);
+>
+>                 if (page->index =3D=3D end_index) {
+> @@ -526,7 +528,6 @@ static noinline int add_ra_bio_pages(struct inode *in=
+ode,
+>                         }
+>                 }
+>
+> -               add_size =3D min(em->start + em->len, page_end + 1) - cur=
+;
+>                 ret =3D bio_add_page(orig_bio, page, add_size, offset_in_=
+page(cur));
+>                 if (ret !=3D add_size) {
+>                         unlock_extent(tree, cur, page_end, NULL);
+>
+> ---
+> base-commit: 563a50672d8a86ec4b114a4a2f44d6e7ff855f5b
+> change-id: 20240710-bug11-a8ac18afb724
+>
+> Best regards,
+> --
+> Pei Li <peili.dev@gmail.com>
+>
+>
 
