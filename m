@@ -1,100 +1,132 @@
-Return-Path: <stable+bounces-59140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B929F92EC66
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 18:12:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0E3D92EC6E
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 18:16:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B739B221B1
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 16:12:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 554471F233FF
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 16:16:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB57616C87C;
-	Thu, 11 Jul 2024 16:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906ED16C68C;
+	Thu, 11 Jul 2024 16:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IKgJRwIh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DhMXRI0u"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8320016B392;
-	Thu, 11 Jul 2024 16:12:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C98155CB8;
+	Thu, 11 Jul 2024 16:15:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720714334; cv=none; b=NiXdK7i/PK859xpOyP1EhwFU9AnbZWZanKTVuVGIfRyYG793rNIKe/BqIxVP157T3R5VCWbQ7y4jjQH+zwbc+riqyhqgVTBzt+4Us3+LIuPH+a9aTQRI4caObKyXxCAIZHXx1ynDyG3ngl+RDXo6VRpFCDpSYJZhP0mfm2HFH+s=
+	t=1720714554; cv=none; b=NYNr9Hs6ws0DpWIbCMsd1bj3VTKqqKZ7A2pHOARGEWGA5aBU8/YSqXJFmMEXm+MU5wwWkAfDNHXbowt8eWj6OmQ5DYn/RhuUCtYM7+xru3m7rNLiLuYimkp7OQd/v1+609gYVH2Hs5l2aZgW1tC4hsGbWQeGX+RP32V+hRG+yKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720714334; c=relaxed/simple;
-	bh=vDhm4iKUhB3g5WYPqXvLPS4hLGM8VplEQMGAsbyCkEw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fCmifenK9Bq7AfX6OKTkNtB9TSR8StxkTYtBDO/+vZiWpNgv+K8kpIxBOURXo3+kC7MCYx4EJthfJKNNAGvoe5Os5dlRT3yIJPDdHKwYlbiiKNCI4m4mz8dn/dIXCCLlKGb1RG4FMfedpxrs9QEFSnsH0iJ7Rar+ITgbWW3vq8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IKgJRwIh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BBA9C116B1;
-	Thu, 11 Jul 2024 16:12:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720714334;
-	bh=vDhm4iKUhB3g5WYPqXvLPS4hLGM8VplEQMGAsbyCkEw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IKgJRwIhs1DxJsnIDW1XFs/XqXJ85ch+U8aMK0q0GD0pOVZ1B8BkefqWY8YLItxbY
-	 UO0jpyURbrtaWDa0QlbCtHUdF6YDcvlOHWkXxTUi+SB0G9bKYO3vNoBeo/G5SZtUC4
-	 lzu7rHIScDEgYeYH0V4+HA6xKfHOK5QfmSX785nNfw2YcSZht7+4II+9e7A/k8X4GF
-	 +QSDHFFZ4HL+0TAI/4U35OBuje9l2Hl8wJo7EWqvF5w7xi5yZ1UUhcig+ShxQg8tax
-	 d0oYNtiVeV0JSOYOHb+Yjum6mHCNEE067XEOc+aCyo/x9jPNXaA9MHKXU3NlFXOXkb
-	 mtGZ8misgBGnw==
-Date: Thu, 11 Jul 2024 17:12:08 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Ian Abbott <abbotti@mev.co.uk>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	linux-rtc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [RESEND PATCH] rtc: ds1343: Force SPI chip select to be active
- high
-Message-ID: <37049fbe-6a7f-49df-a093-2f4f7351592e@sirena.org.uk>
-References: <20240710175246.3560207-1-abbotti@mev.co.uk>
- <20240710184053c34201f0@mail.local>
- <2b0e8a6c-f89e-4d71-a816-9da46ea695eb@mev.co.uk>
- <bd7c0eb9-bcb6-42e3-8be6-3d07452e3fd5@sirena.org.uk>
- <6f122282-1675-497f-bc2f-0bbfba6640aa@mev.co.uk>
+	s=arc-20240116; t=1720714554; c=relaxed/simple;
+	bh=nu4E+KG9xuPTzxWlnYTkEQF4+5J5OTZxHGatiEDscYA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FzbWmtJs3/+VQWOYjJ2+glZMTF1pp/lfm95odM2bN5DQnpY9uRLJvJpRyIqG+6T6WrpOvcVdNK1WNkXIkv1yPOGXghkQcnQjseFLoX9pv5GIZ7zWQXjeL5QcHJjHRUO6Rpa5AUEjrUEoXd+LLMUQBX+slO8ML+Nnj9euCDxFg9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DhMXRI0u; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720714552; x=1752250552;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=nu4E+KG9xuPTzxWlnYTkEQF4+5J5OTZxHGatiEDscYA=;
+  b=DhMXRI0u1LRtD6MsfSwQSBtRv2Ui830u1omWKtfNbqUcZQJY/lY3RUwt
+   z0LeU22jg5unc8bhG3kaii2t7lJZ1fVnq5/Ni1BeZEvVMjFcRm1ZlgNDF
+   OrFAASAnIKhdzDO4s1JLm6O00sahncFQs8shQ4AYH6MRRSxt+MN6LURZh
+   VvxYGTPD2oLtc6aM/5RsR8XE1dmr/z0sYg7aNVazlsgz0JnSoxe3U4ShZ
+   lxW5DMv/VS0cWSZZAstqvU2/MiKx9bSbkkn6lpSj2oiXnV4VKRzX5ifSh
+   UpvB3/21yk/JxeyOpSEPva4O2x1nUQsPjb7NmbkQqDSeOs/DV//hzU0Fx
+   g==;
+X-CSE-ConnectionGUID: rps1EfeuTripT+iN6Kg5mg==
+X-CSE-MsgGUID: 0+dMQ5nSQvOmgzTB6cie5g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11130"; a="18256354"
+X-IronPort-AV: E=Sophos;i="6.09,200,1716274800"; 
+   d="scan'208";a="18256354"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2024 09:15:50 -0700
+X-CSE-ConnectionGUID: jY/+j+1lTM+b/+U45mdZ6Q==
+X-CSE-MsgGUID: SXO4woDFR5i9HztP026IJg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,200,1716274800"; 
+   d="scan'208";a="53559170"
+Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
+  by orviesa005.jf.intel.com with ESMTP; 11 Jul 2024 09:15:49 -0700
+From: kan.liang@linux.intel.com
+To: peterz@infradead.org,
+	mingo@kernel.org,
+	acme@kernel.org,
+	namhyung@kernel.org,
+	irogers@google.com,
+	adrian.hunter@intel.com,
+	alexander.shishkin@linux.intel.com,
+	linux-kernel@vger.kernel.org
+Cc: Kan Liang <kan.liang@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] perf/x86/intel: Fix ARCH_PERFMON_NUM_COUNTER_LEAF
+Date: Thu, 11 Jul 2024 09:16:36 -0700
+Message-Id: <20240711161636.1428705-1-kan.liang@linux.intel.com>
+X-Mailer: git-send-email 2.38.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="XjwW/yTPZkLPBfeP"
-Content-Disposition: inline
-In-Reply-To: <6f122282-1675-497f-bc2f-0bbfba6640aa@mev.co.uk>
-X-Cookie: Individualists unite!
+Content-Transfer-Encoding: 8bit
 
+From: Kan Liang <kan.liang@linux.intel.com>
 
---XjwW/yTPZkLPBfeP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The EAX of the CPUID Leaf 023H enumerates the mask of valid sub-leaves.
+To tell the availability of the sub-leaf 1 (enumerate the counter mask),
+perf should check the bit 1 (0x2) of EAS, rather than bit 0 (0x1).
 
-On Thu, Jul 11, 2024 at 04:29:07PM +0100, Ian Abbott wrote:
+The error is not user-visible on bare metal. Because the sub-leaf 0 and
+the sub-leaf 1 are always available. However, it may bring issues in a
+virtualization environment when a VMM only enumerates the sub-leaf 0.
 
-> Regarding `spi-cs-high` in the device tree, what about the compatibility
-> table for `spi-cs-high` and `cs-gpio` active level in
-> "Documentation/devicetree/bindings/spi/spi-controller.yaml"?
+Fixes: eb467aaac21e ("perf/x86/intel: Support Architectural PerfMon Extension leaf")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: stable@vger.kernel.org
+---
+ arch/x86/events/intel/core.c      | 4 ++--
+ arch/x86/include/asm/perf_event.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-Specifying spi-cs-high should be equivalent to setting the mode in the
-driver, it's just a redundant way of saying the same thing.
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index cd8f2db6cdf6..3fb81f7b618c 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -4842,8 +4842,8 @@ static void update_pmu_cap(struct x86_hybrid_pmu *pmu)
+ 	if (ebx & ARCH_PERFMON_EXT_EQ)
+ 		pmu->config_mask |= ARCH_PERFMON_EVENTSEL_EQ;
+ 
+-	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF_BIT) {
+-		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF,
++	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF) {
++		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF_BIT,
+ 			    &eax, &ebx, &ecx, &edx);
+ 		pmu->cntr_mask64 = eax;
+ 		pmu->fixed_cntr_mask64 = ebx;
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index 91b73571412f..41ace8431e01 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -190,7 +190,7 @@ union cpuid10_edx {
+ #define ARCH_PERFMON_EXT_UMASK2			0x1
+ #define ARCH_PERFMON_EXT_EQ			0x2
+ #define ARCH_PERFMON_NUM_COUNTER_LEAF_BIT	0x1
+-#define ARCH_PERFMON_NUM_COUNTER_LEAF		0x1
++#define ARCH_PERFMON_NUM_COUNTER_LEAF		BIT(ARCH_PERFMON_NUM_COUNTER_LEAF_BIT)
+ 
+ /*
+  * Intel Architectural LBR CPUID detection/enumeration details:
+-- 
+2.38.1
 
---XjwW/yTPZkLPBfeP
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmaQBFcACgkQJNaLcl1U
-h9CGJAf/c51MoOBzHFY//zUxIpeTgnJGKUmKPEYKHU7ChwWW4lT+r591AY0ZXH26
-la0QF+IJVfDu0DnedCc9v/6+nBZMRrbuZOTLsYsr00+81/zlJc0Hccc1j0zmm7HH
-lQd8+HzTtPJ58wbVgI/hAebpa16+bUTEJOu+Q3HLl4/XZs3IdHrO3ZJJFcrFadNN
-EvL0HxIH5RgDlV9cPyFv0w+qADJv3L+tT6pxfhwjjlebEuVCfAPARGGeBD79gMtj
-bloPG5AFKhwjv7eurs++K3XsaO4D3f+ztW5e+cJt3YbomXZWhWkm5PCMtik+W8O+
-dolfsWp/5CA2O5/8V6moGqF2RWgoWA==
-=0+8q
------END PGP SIGNATURE-----
-
---XjwW/yTPZkLPBfeP--
 
