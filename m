@@ -1,151 +1,204 @@
-Return-Path: <stable+bounces-59057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 655E592DF39
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 06:55:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C9692DF9E
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 07:30:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F2DC1C21CBF
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 04:55:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E51E828405D
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 05:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5276E29CF0;
-	Thu, 11 Jul 2024 04:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313A87BAE5;
+	Thu, 11 Jul 2024 05:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OQKr+dHT"
+	dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b="OprD4Ovo"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC117441E
-	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 04:55:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AACA7829C;
+	Thu, 11 Jul 2024 05:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720673751; cv=none; b=NL986XTGFi1T8yxEnS7+NaMXvtQsc8x7wso1xTKVHQ3SfxvzFewXJ+FcH2nRok4zJ/1Aul4opkaggLN6POOudhF41GCSxMZY0Y1HsIfSvEHDp+gip1DhIER7acC4LpqLMn0JxoO0vi0Gv5CgBlvQPlkf/HiePXQskCf6Dq8DXXM=
+	t=1720675797; cv=none; b=XzZJTzlNQcidYh5RsA7wSnLTAsWTwkmxClKWc3zABsYei9U1/ru6jHmEyAeWxmd4ZD+sMaQVJxir9MtKlAf8NMrtuFfGfQCep5bYtImyx/hv/WKwy0O4p1JoK1INz2IDtSv5oO5ek7OmagPGwISaC5cK8CPnSdPEZIiKjpzYgBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720673751; c=relaxed/simple;
-	bh=/0lBTOC+XozR7hq6QbSIgtUpJiqj6LHeBDiAh2GLgD0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=rplne31U22xS3eM7MjzoPXa5dJq+FvIaQks4/HsK8ESFJpdl0/9fc3HuorfC/93zVZpCSIO4DAyXZu9zaMB4DhoHRwQdBZCZfBIDdf7Na2tBuzEuv45TOqxXZexORc4XjRm+45dd7ZdV96g3/LTG3Xqxl5RIfwwoyyPDhSSptD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OQKr+dHT; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720673749; x=1752209749;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=/0lBTOC+XozR7hq6QbSIgtUpJiqj6LHeBDiAh2GLgD0=;
-  b=OQKr+dHTfT24cuQFUNyfyFeWajiSFofdYCSMQ8mUDq22pmbAhnp5/OdW
-   2O52m/H5BgY5DsKH4m1itNlZcs1sBYxam4Yr2MTExRaTWmNMLCkoaPn1c
-   E40D8kMpfeaBDoSkxPrXmdmU5Jb6GdIkAN6CawPdqITRIv2Lu5k9QjXAN
-   3SMS7gF/9oCab9ExYEc3MVi1nP/TBWh8DYeYLS8sJf5PUJtXfaSbifLER
-   6DYzcXMTv+iqEid5mjR7pDKEkTVVjFJ1+An9Bmn19gDGux8xGBdUjr9Bn
-   /9ga4ARCNX3zjJ6D/vQb16abgxlR1LRuxNo0EJMm3VqUuOg02gKdjgaUF
-   A==;
-X-CSE-ConnectionGUID: GPDEBPcpRl2CFxhkjE5eAg==
-X-CSE-MsgGUID: 2ZmtYiJMR0qWXkEDB8OOyA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11129"; a="28625534"
-X-IronPort-AV: E=Sophos;i="6.09,199,1716274800"; 
-   d="scan'208";a="28625534"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2024 21:55:48 -0700
-X-CSE-ConnectionGUID: vKSWl+xFSHKTRdYCfOKMQA==
-X-CSE-MsgGUID: vu2h8A4LQm6iYQb0PopQwg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,199,1716274800"; 
-   d="scan'208";a="48331962"
-Received: from nitin-super-server.iind.intel.com ([10.145.169.70])
-  by fmviesa007.fm.intel.com with ESMTP; 10 Jul 2024 21:55:45 -0700
-From: Nitin Gote <nitin.r.gote@intel.com>
-To: tursulin@ursulin.net,
-	intel-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org,
-	andi.shyti@intel.com,
-	chris.p.wilson@linux.intel.com,
-	nirmoy.das@intel.com,
-	janusz.krzysztofik@linux.intel.com,
-	nitin.r.gote@intel.com,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/i915/gt: Do not consider preemption during execlists_dequeue for gen8
-Date: Thu, 11 Jul 2024 10:42:15 +0530
-Message-Id: <20240711051215.1143127-1-nitin.r.gote@intel.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1720675797; c=relaxed/simple;
+	bh=tVi+AdVtLCoo0xLNKhOl4i2hgIaH2Q3fdb81B0+VlsQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=L9BAO1DOVoy4Ll2l+3LVv/M+M7vbDMNYvR+54+LF18YcrzTP2IS/NlYquywZNuOoCnHnI9I8wxD0FdLYOdCV3l2dz3vhQZPOM2H+4glsYnjcPxb5ALwJ1SiQyYFrnGp6eVzvArPnhD/RioXbDTrbEQAX7bHvMh6mWl7LQuF+1fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com; spf=pass smtp.mailfrom=gmx.com; dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b=OprD4Ovo; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
+	s=s31663417; t=1720675785; x=1721280585; i=quwenruo.btrfs@gmx.com;
+	bh=+RR1hUYr3X9lDdEoYTmfRGxXIBBbKKDuAWup2kRpIkA=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=OprD4OvohLpOFHYrjUCh7WLJmnMy4OInb2IgqUpSl+SzJdnc/48jWuw3LIdLInjI
+	 eFnE7M6/k0ddA39b8Pbwxe2YypuGG7kbvSLGKwY0Z2PyTsiuTwuL5t3UrqsH2Lqig
+	 CXeGZBiNauyKH6YOBsUmgfv6autPgnm1vPDtrPfA5zhWnJiKF2HlKydFHEdqI7zq0
+	 eWf3j+vahV0rWLZgl+gbyM2pPTT2Iq28pET3oFlj4ePGulHxt3Wa39ROd7PulfbB3
+	 YtTISwg0K6fADcZEscG18mavkqcBR+hM2wjygkcWoi3lZDNZXzcdVA1zubMnl9jtD
+	 kZJ3uldjVNnPhbUd5A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [172.16.0.191] ([159.196.52.54]) by mail.gmx.net (mrgmx004
+ [212.227.17.184]) with ESMTPSA (Nemesis) id 1MhlGk-1rx8SP0Ft2-00mlSF; Thu, 11
+ Jul 2024 07:29:45 +0200
+Message-ID: <edcd0036-5782-4c29-9f5e-b7610ea9eb4e@gmx.com>
+Date: Thu, 11 Jul 2024 14:59:39 +0930
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] btrfs: Fix slab-use-after-free Read in
+ add_ra_bio_pages
+To: Pei Li <peili.dev@gmail.com>, Chris Mason <clm@fb.com>,
+ Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
+ Qu Wenruo <wqu@suse.com>
+Cc: linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, skhan@linuxfoundation.org,
+ syzkaller-bugs@googlegroups.com,
+ linux-kernel-mentees@lists.linuxfoundation.org,
+ syzbot+853d80cba98ce1157ae6@syzkaller.appspotmail.com
+References: <20240710-bug11-v2-1-e7bc61f32e5d@gmail.com>
+Content-Language: en-US
+From: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
+ xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
+ 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
+ 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
+ 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
+ gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
+ AAHNIlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT7CwJQEEwEIAD4CGwMFCwkI
+ BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCY00iVQUJDToH
+ pgAKCRDCPZHzoSX+qNKACACkjDLzCvcFuDlgqCiS4ajHAo6twGra3uGgY2klo3S4JespWifr
+ BLPPak74oOShqNZ8yWzB1Bkz1u93Ifx3c3H0r2vLWrImoP5eQdymVqMWmDAq+sV1Koyt8gXQ
+ XPD2jQCrfR9nUuV1F3Z4Lgo+6I5LjuXBVEayFdz/VYK63+YLEAlSowCF72Lkz06TmaI0XMyj
+ jgRNGM2MRgfxbprCcsgUypaDfmhY2nrhIzPUICURfp9t/65+/PLlV4nYs+DtSwPyNjkPX72+
+ LdyIdY+BqS8cZbPG5spCyJIlZonADojLDYQq4QnufARU51zyVjzTXMg5gAttDZwTH+8LbNI4
+ mm2YzsBNBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
+ CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
+ /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
+ GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
+ q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
+ ABEBAAHCwHwEGAEIACYCGwwWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCY00ibgUJDToHvwAK
+ CRDCPZHzoSX+qK6vB/9yyZlsS+ijtsvwYDjGA2WhVhN07Xa5SBBvGCAycyGGzSMkOJcOtUUf
+ tD+ADyrLbLuVSfRN1ke738UojphwkSFj4t9scG5A+U8GgOZtrlYOsY2+cG3R5vjoXUgXMP37
+ INfWh0KbJodf0G48xouesn08cbfUdlphSMXujCA8y5TcNyRuNv2q5Nizl8sKhUZzh4BascoK
+ DChBuznBsucCTAGrwPgG4/ul6HnWE8DipMKvkV9ob1xJS2W4WJRPp6QdVrBWJ9cCdtpR6GbL
+ iQi22uZXoSPv/0oUrGU+U5X4IvdnvT+8viPzszL5wXswJZfqfy8tmHM85yjObVdIG6AlnrrD
+In-Reply-To: <20240710-bug11-v2-1-e7bc61f32e5d@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Ox+U2OEvYY4rVIdz47iUwojWUYdvqQIDD2B1PU937XY42mwDTyW
+ Q9tiqbtT3EfE9DKOvcKxzDZDhxJ9UXuVjvMIleGlbQIqPkqXoZZ5FRh1OBV+NY5x+qwuV0h
+ SGQS7J9kUYi34AwRL+zWloCk+ivUIvou8dFNrQnzirKJWxxPnokEw5BVF70ZvyEmExPP2Xg
+ 9QccyLEAk44uZdt7YUEzQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:w4iUgBVpG5M=;o49mxWNPbOyzJaXhBCeFaWdsVcG
+ o4R84zsczPUv/aWyMPoOlJsAmCQJsithZ4XVUasgVUGLm7kCZthtaofSYjqripn4YGG6Jqq5/
+ 1zRTdxxvihkbufcXLY37DyrXEF4LaN7o/Jav9LdsIyHewSHNqUNFzXNhGSgpBJDucvgydxErl
+ uTwTIl17lDqfBce1yH8CPF3Mxvbc/u0RBlY7BXYD5f+spCUEk46tgRudzBH6siEe9qWeMp7ik
+ eod+5l/HkiuVPiIS0H2zEcpgcr6nrR5dAxHSiW5uUJNvi9A3+ETyk+UqvuhnSzrmvEOm07XWw
+ yIVOlvc+wMZ3xYoVRxJBylpzaYCb23hl0rrKB05vNMbiOV9/AfrrrHIT8MrsKnHeF3YOsR71S
+ gIrOZsiNA0AJi0Ef+zlJZB6X62OAGAHTsPfCquaAaF31OVbjtR/irsa+yXehrKcjlFoHBwQOh
+ skRDiTP0t63jicAOcfHdewVcXvMI9OPqyzmY3yF+uJBnpdEwZxHKxDYy1oqN81hHQFe8tKGOw
+ i+f4Q8+DnUlpl/5IvxbtACNxlALWAgtahBegSxAped73hdOuilw7bEX3C6YnNd+inK6rQYdXK
+ ecc63czZyPIx+QPzG7XikyA6URatxrTh75QLfApASgGivj35QjByw3PWGLmJyNRGOWcOtJrSP
+ QGbYH/J4BuH6I1iywHVajjC8G9l+HXl1pO83tyJUtGVCnAK9sAeekuBzSqLPWbLo38ezX2diI
+ yTUeaFtIGfJ459hyVUqZQhpvYVEtM6g4YprFdWe/9rcQsXsTdBqMkaDe4WypSu/ypiRTwjCul
+ 8Tak27/d2aHvjj25uMfo7u7mNa6ZjyPoT7WwnsolUU654=
 
-We're seeing a GPU HANG issue on a CHV platform, which was caused by
-bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries for gen8").
 
-Gen8 platform has only timeslice and doesn't support a preemption mechanism
-as engines do not have a preemption timer and doesn't send an irq if the
-preemption timeout expires. So, add a fix to not consider preemption
-during dequeuing for gen8 platforms.
 
-Also move can_preemt() above need_preempt() function to resolve implicit
-declaration of function ‘can_preempt' error and make can_preempt()
-function param as const to resolve error: passing argument 1 of
-‘can_preempt’ discards ‘const’ qualifier from the pointer target type.
+=E5=9C=A8 2024/7/11 13:59, Pei Li =E5=86=99=E9=81=93:
+> We are accessing the start and len field in em after it is free'd.
+>
+> This patch moves the line accessing the free'd values in em before
+> they were free'd so we won't access free'd memory.
+>
+> Reported-by: syzbot+853d80cba98ce1157ae6@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D853d80cba98ce1157ae6
+> Signed-off-by: Pei Li <peili.dev@gmail.com>
+> ---
+> Syzbot reported the following error:
+> BUG: KASAN: slab-use-after-free in add_ra_bio_pages.constprop.0.isra.0+0=
+xf03/0xfb0 fs/btrfs/compression.c:529
+>
+> This is because we are reading the values from em right after freeing it
+> before through free_extent_map(em).
+>
+> This patch moves the line accessing the free'd values in em before
+> they were free'd so we won't access free'd memory.
+>
+> Fixes: 6a4049102055 ("btrfs: subpage: make add_ra_bio_pages() compatible=
+")
 
-v2: Simplify can_preemt() function (Tvrtko Ursulin)
+This fixes tag, along with the syzbot report, should be in the main
+commit message, not after the "---" line, which would be discarded when
+applying.
 
-Fixes: bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries for gen8")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11396
-Suggested-by: Andi Shyti <andi.shyti@intel.com>
-Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-CC: <stable@vger.kernel.org> # v5.2+
----
- .../drm/i915/gt/intel_execlists_submission.c    | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+> ---
+> Changes in v2:
+> - Adapt Qu's suggestion to move the read-after-free line before freeing
+> - Cc stable kernel
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-index 21829439e686..59885d7721e4 100644
---- a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-+++ b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-@@ -294,11 +294,19 @@ static int virtual_prio(const struct intel_engine_execlists *el)
- 	return rb ? rb_entry(rb, struct ve_node, rb)->prio : INT_MIN;
- }
- 
-+static bool can_preempt(const struct intel_engine_cs *engine)
-+{
-+	return GRAPHICS_VER(engine->i915) > 8;
-+}
-+
- static bool need_preempt(const struct intel_engine_cs *engine,
- 			 const struct i915_request *rq)
- {
- 	int last_prio;
- 
-+	if (!can_preempt(engine))
-+		return false;
-+
- 	if (!intel_engine_has_semaphores(engine))
- 		return false;
- 
-@@ -3313,15 +3321,6 @@ static void remove_from_engine(struct i915_request *rq)
- 	i915_request_notify_execute_cb_imm(rq);
- }
- 
--static bool can_preempt(struct intel_engine_cs *engine)
--{
--	if (GRAPHICS_VER(engine->i915) > 8)
--		return true;
--
--	/* GPGPU on bdw requires extra w/a; not implemented */
--	return engine->class != RENDER_CLASS;
--}
--
- static void kick_execlists(const struct i915_request *rq, int prio)
- {
- 	struct intel_engine_cs *engine = rq->engine;
--- 
-2.25.1
+It's not just Ccing to the stable list, but with a version tag.
 
+For all the proper tags usage, you can check this commit, it has all the
+correct tags.
+
+b2a616676839 ("btrfs: fix rw device counting in __btrfs_free_extra_devids"=
+)
+
+Otherwise the code looks good to me.
+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+
+Thanks,
+Qu
+
+> - Link to v1: https://lore.kernel.org/r/20240710-bug11-v1-1-aa02297fbbc9=
+@gmail.com
+> ---
+>   fs/btrfs/compression.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/fs/btrfs/compression.c b/fs/btrfs/compression.c
+> index 6441e47d8a5e..f271df10ef1c 100644
+> --- a/fs/btrfs/compression.c
+> +++ b/fs/btrfs/compression.c
+> @@ -514,6 +514,8 @@ static noinline int add_ra_bio_pages(struct inode *i=
+node,
+>   			put_page(page);
+>   			break;
+>   		}
+> +		add_size =3D min(em->start + em->len, page_end + 1) - cur;
+> +
+>   		free_extent_map(em);
+>
+>   		if (page->index =3D=3D end_index) {
+> @@ -526,7 +528,6 @@ static noinline int add_ra_bio_pages(struct inode *i=
+node,
+>   			}
+>   		}
+>
+> -		add_size =3D min(em->start + em->len, page_end + 1) - cur;
+>   		ret =3D bio_add_page(orig_bio, page, add_size, offset_in_page(cur));
+>   		if (ret !=3D add_size) {
+>   			unlock_extent(tree, cur, page_end, NULL);
+>
+> ---
+> base-commit: 563a50672d8a86ec4b114a4a2f44d6e7ff855f5b
+> change-id: 20240710-bug11-a8ac18afb724
+>
+> Best regards,
 
