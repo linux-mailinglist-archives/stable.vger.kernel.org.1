@@ -1,173 +1,155 @@
-Return-Path: <stable+bounces-59092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4637C92E416
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 12:03:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD40C92E454
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 12:20:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 575D4B21859
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 10:03:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 833821F22446
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 10:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55AA0158A3D;
-	Thu, 11 Jul 2024 10:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E8E158A29;
+	Thu, 11 Jul 2024 10:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b="J37gNT+g"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ut13nFWH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5EC157E93
-	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 10:02:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFFA1581E1
+	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 10:20:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720692177; cv=none; b=geE5zjjH3w9mba7HoLeO8VH0yCukl1dIxyhGRwSnztZrPxRVwFWr0saC5rJ+SY0yWOze9tDPdVDwqDu+gjOVDmWi3oPBrCSlUNlrtcr8uUdBN1hii0wrKx9Uko4DSSnI/VvvjzmhYZ2Kj9p4BKWtUbEzrGaIR9aHkjZ5CR2AFBY=
+	t=1720693205; cv=none; b=itqE59rhqswXb8QAfGoG9YT2GissSSFqhO3fL4XE5WKX264+aMAdJjH43J1uyjQ53sdSUf/mUpe1sJw5KDDOdsi5S84XE3JgJvcn+KFd4Jv+QEp86dN8GvBTZu/io+CXGmoRhOOLokIXT5KaaTy54ZL+9FMW1R68oPIkN0zm9Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720692177; c=relaxed/simple;
-	bh=6iMIKUwfaoFpnyORoBBxjZOn8Pe3XbHMRh9GzyD1Qn0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hR644YcNlWTpvaIe3c39yNt0ShOTkK00rNEigHLbZlokD3TqPmbEa7/hWxBLnB3YjVlApw7rUgiyaTjYhZ61YwlD2TRN5yb+RwL6a212ht2vgPbfjQ+XNbLIVzs2WzFZGkATno6sFpASMw4COGA5Nb6uTcEPkcouJWTMKrRhLE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ursulin.net; spf=none smtp.mailfrom=ursulin.net; dkim=pass (2048-bit key) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b=J37gNT+g; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ursulin.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ursulin.net
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-426636ef8c9so4329435e9.2
-        for <stable@vger.kernel.org>; Thu, 11 Jul 2024 03:02:54 -0700 (PDT)
+	s=arc-20240116; t=1720693205; c=relaxed/simple;
+	bh=Te0Lw1oxuPXepV/5h7IQuALOgj6ZhURsQxOt9/IHXPc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=iX5rz8nf2NAL1qQeGAQXRGv0nkjPu8yfnh5qx3GCSgcy1Jsdr5A52UbP4DLaOvWJg2FTrKbMOQ5cwBwEFGbwFk7P2wVtBhTLBQCl/Vn2Mm8rmGV1Jr+Ko8sT8ZYcxUPN0csIEF7zx91LlgMEQhn6hlmLGYuTF9c92Badc1Q04Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ut13nFWH; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4272738eb9eso4973765e9.3
+        for <stable@vger.kernel.org>; Thu, 11 Jul 2024 03:20:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1720692173; x=1721296973; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=boL5i9jzaSfhn+e79C+qpFuft543zvabd4ejo3BmRUY=;
-        b=J37gNT+ghgefCOGEvaxy8MP7va4f4wwpY3PDBH1M1gGFG2a7E9zM9ZGpbCU4bqodBa
-         JvcEELsjpk2QNZy/1KG+voFLpZjzerpYHvhWy7tSZioptvRN4ASQfwauRySbg5TOLmwU
-         SN5bS9z3N+8A8A0DAxMrZM7CynRb6ZRAA65KPWDL7oAipoaG3oBTzoVOnErPSE+Q2fwD
-         1fl4QCHoUGsrWbIVpkrp6sitxcef/qQJEC1OS7ySY7051fy0CfEZGZFOnLRJGowUwha6
-         mTPEnSuGBIK5DvcF9F6dyeDXgHSVPn/A9DRxt6juiloRMPqdg4RKN/qppVTzPrL3BxUI
-         /TkA==
+        d=linaro.org; s=google; t=1720693201; x=1721298001; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NpEPOR+4bYifIxXAHWhUoDP3ysZA8Zm0c8+Ht0LO1TA=;
+        b=ut13nFWHV2SFSwyKg8eMtIyLnzLTRCi947pSOL7+KHsC5u2iDwVmceEU/6JlRjuJDe
+         7BY5tGwCaMt8xF4Q3jkblU/PGGIplgIMi6tQ8GoB9f4eb+L3aUc1Ohx+LvgTfaJeo0OQ
+         owuJ4zVqr/RUbYqoCpgnWL4Qf+OOHnVfnh1j4ZpNuUcSfPTqLfohIYsMwCunWl1BmG9P
+         PuNCHOpi8JHYFC6I0gwtLHX06L53lZgIrVZg3jDpQjLaihUuP5vwYy8w4sJ8u8ECqJB3
+         o0G5jOnxryXXYzY5iQvstsKlkUFCJAuQoullZpLhnn61XhJ4cRj9/q/UydjaV9yF7mXq
+         cLuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720692173; x=1721296973;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=boL5i9jzaSfhn+e79C+qpFuft543zvabd4ejo3BmRUY=;
-        b=NpzWaxWObciLF6hAYxOI6nHAfdzllQ52FVh26fMcEnyhzfN3SEXGczgF0utCPGKgU8
-         psp3BJmUtc0MQlFTWnFG8D3aEs/r7uxrUQSI/lIwsNCUxN+hQnQUx7k96wqKEMr7+PD3
-         uK5ZEmCZXHV3dflvowwyE+PodewYq/X2w0sfQRtEpbK0Nz0AbZthsm0FvSzZcdXHhH8H
-         VpWWUcypF16d1RZw8wdXnog1uTJ3LKkGO3rsavMEi4/2v6zi/Mo1HZRnE7TuBoeYg0AO
-         GVS8VzBGPKeLKSq7Jh2efdSKJj9wmilZN0QLbiOa0tEUM1ojrzmxKr1UOZWHVwj+hPCb
-         IEEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUZYHWpieTqrjAVPjHMNDCnwOwckYuapYK0ra+CU2NqtK+bt+IOfr+BE6FbSeF/fzKNbLi8JCpS5kdHd91Gjh6+UwJ94Xzf
-X-Gm-Message-State: AOJu0YwoDyZ0E8rQjazy7VUQRY/K2/LeUi2EsT/fZngaivZlQOZX0Xh4
-	YSGHGQW1S6021TNPyhVc+iZ5AB2nMlhoCyN6Rxps+GOw8UPOv5ktFud7IlqLEiY=
-X-Google-Smtp-Source: AGHT+IG5OcW90S+EQ49B/6sG+OFx8XqDMkqaKPG9VOzfnAyynEgdVQ3iZF/lUSXhhCqiXx6+cRr6Mg==
-X-Received: by 2002:a5d:47a9:0:b0:367:8f84:ee1d with SMTP id ffacd0b85a97d-367cea4622cmr7264113f8f.8.1720692173512;
-        Thu, 11 Jul 2024 03:02:53 -0700 (PDT)
-Received: from [192.168.0.101] ([84.69.19.168])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-367cdfa0650sm7360031f8f.69.2024.07.11.03.02.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Jul 2024 03:02:53 -0700 (PDT)
-Message-ID: <89dd0130-562a-4025-968d-d758a26399ec@ursulin.net>
-Date: Thu, 11 Jul 2024 11:02:52 +0100
+        d=1e100.net; s=20230601; t=1720693201; x=1721298001;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NpEPOR+4bYifIxXAHWhUoDP3ysZA8Zm0c8+Ht0LO1TA=;
+        b=W/UviVAduWpmkaJSjNK5Hog0UKHsWb8fLnc2vr7hG6KnakueR+MNWGJJtbAsQokGgn
+         H9QNhcX2pvbfWG7Zq1YA4O6w39P2PNpBEwUjhCn/9mSUErER0oiMQJhgyhKcALH4CGop
+         8+I2nbbq1qwuhbuqbBJtmqreEnUX8K1yiSLA4W/JGYbuzCPqPYAsFTQXzpTSBP6L/Lbw
+         ZT8k8TUd0gp6soWcKRodYosuTGX0xi5VdHwx6Rz1Qpiu8wadEuCkPHePYbWTBMZntuc9
+         uWRRHcI/IgSYgyZtZ7bDfqYhaQIR5xxhkeKbEZ9/uUVAVfHyvXigSWqzo5FalYsxpiSw
+         Aj8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW5AQ1l0pBMaTyWkcRUFmpVv6sNXBE1VNG3uUeq7X/jBvVV10Nto1zd2c5hlD7CA8zF2RP48QpOGfgMlM+T1ISQqWXQkrZ+
+X-Gm-Message-State: AOJu0YyxRnH1bkpvuSTcm4tqMyHuNja2DTrV77P0dIksuFnNKIt08EFb
+	Y/MVRAMqQHRAtGfp9Y+ZihoDy5faGQGic7jwAJGUJ2fDcH2pZkDqh8d8e6FIhHJjTT1JlmCpUdd
+	J4es=
+X-Google-Smtp-Source: AGHT+IHhAvNQpxxxtu0l2TiI7e2EheLMZqNQ9j5p+6ozwhs2ZYLmXamkgwEmDJBnpLYODpEJcUMVEQ==
+X-Received: by 2002:a7b:cd1a:0:b0:426:4f47:6037 with SMTP id 5b1f17b1804b1-426707d7914mr50144105e9.19.1720693201030;
+        Thu, 11 Jul 2024 03:20:01 -0700 (PDT)
+Received: from [127.0.1.1] ([176.61.106.227])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4266e861339sm125270025e9.12.2024.07.11.03.20.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Jul 2024 03:20:00 -0700 (PDT)
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Subject: [PATCH 0/2] media: ov5675: Fixup ov5675 reset failures
+Date: Thu, 11 Jul 2024 11:20:00 +0100
+Message-Id: <20240711-linux-next-ov5675-v1-0-69e9b6c62c16@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/i915/gt: Do not consider preemption during
- execlists_dequeue for gen8
-To: Nitin Gote <nitin.r.gote@intel.com>, intel-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org, andi.shyti@intel.com,
- chris.p.wilson@linux.intel.com, nirmoy.das@intel.com,
- janusz.krzysztofik@linux.intel.com, stable@vger.kernel.org
-References: <20240711051215.1143127-1-nitin.r.gote@intel.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tursulin@ursulin.net>
-In-Reply-To: <20240711051215.1143127-1-nitin.r.gote@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANCxj2YC/x3MSwqAMAwA0atI1gZStVa8irjwEzUgVVqVgvTuF
+ pdvMfOCZyfsoc1ecPyIl8MmqDyDaRvsyihzMhRUVGQU4S72Dmg5XHg8ujYaaxqJm3Iy5aIgdaf
+ jRcL/7PoYP2HfoWBjAAAA
+To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Quentin Schulz <quentin.schulz@theobroma-systems.com>, 
+ Jacopo Mondi <jacopo@jmondi.org>
+Cc: Johan Hovold <johan@kernel.org>, 
+ Kieran Bingham <kieran.bingham@ideasonboard.com>, 
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-13183
 
+One long running saga for me on the Lenovo X13s is the occasional failure
+to either probe or subsequently bring-up the ov5675 main RGB sensor on the
+laptop.
 
-On 11/07/2024 06:12, Nitin Gote wrote:
-> We're seeing a GPU HANG issue on a CHV platform, which was caused by
-> bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries for gen8").
-> 
-> Gen8 platform has only timeslice and doesn't support a preemption mechanism
-> as engines do not have a preemption timer and doesn't send an irq if the
-> preemption timeout expires. So, add a fix to not consider preemption
-> during dequeuing for gen8 platforms.
-> 
-> Also move can_preemt() above need_preempt() function to resolve implicit
-> declaration of function ‘can_preempt' error and make can_preempt()
-> function param as const to resolve error: passing argument 1 of
-> ‘can_preempt’ discards ‘const’ qualifier from the pointer target type.
-> 
-> v2: Simplify can_preemt() function (Tvrtko Ursulin)
+Initially I suspected the PMIC for this part as the PMIC is using a new
+interface on an I2C bus instead of an SPMI bus. In particular I thought
+perhaps the I2C write to PMIC had completed but the regulator output hadn't
+become stable from the perspective of the SoC. This however doesn't appear
+to be the case - I can introduce a delay of milliseconds on the PMIC path
+without resolving the sensor reset problem.
 
-Yeah sorry for that yesterday when I thought gen8 emit bb was dead code, 
-somehow I thought there was a gen9 emit_bb flavour. Looks like I 
-confused it with something else.
+Secondly I thought about reset pin polarity or drive-strength but, again
+playing about with both didn't yield decent results.
 
-> 
-> Fixes: bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries for gen8")
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11396
-> Suggested-by: Andi Shyti <andi.shyti@intel.com>
-> Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
-> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-> CC: <stable@vger.kernel.org> # v5.2+
-> ---
->   .../drm/i915/gt/intel_execlists_submission.c    | 17 ++++++++---------
->   1 file changed, 8 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-> index 21829439e686..59885d7721e4 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-> +++ b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-> @@ -294,11 +294,19 @@ static int virtual_prio(const struct intel_engine_execlists *el)
->   	return rb ? rb_entry(rb, struct ve_node, rb)->prio : INT_MIN;
->   }
->   
-> +static bool can_preempt(const struct intel_engine_cs *engine)
-> +{
-> +	return GRAPHICS_VER(engine->i915) > 8;
-> +}
-> +
->   static bool need_preempt(const struct intel_engine_cs *engine,
->   			 const struct i915_request *rq)
->   {
->   	int last_prio;
->   
-> +	if (!can_preempt(engine))
-> +		return false;
-> +
->   	if (!intel_engine_has_semaphores(engine))
+I also played with the duration of reset to no avail.
 
-Patch looks clean now. Hmmm one new observation is whether the "has 
-semaphores" check is now redundant? Looks preemption depends on 
-semaphore support in logical_ring_default_vfuncs().
+The error manifested as an I2C write timeout to the sensor which indicated
+that the chip likely hadn't come out reset. An intermittent fault appearing
+in perhaps 1/10 or 1/20 reset cycles.
 
-Regards,
+Looking at the expression of the reset we see that there is a minimum time
+expressed in XVCLK cycles between reset completion and first I2C
+transaction to the sensor. The specification calls out the minimum delay @
+8192 XVCLK cycles and the ov5675 driver meets that timing almost exactly.
 
-Tvrtko
+A little too exactly - testing finally showed that we were too racy with
+respect to the minimum quiescence between reset completion and first
+command to the chip.
 
->   		return false;
->   
-> @@ -3313,15 +3321,6 @@ static void remove_from_engine(struct i915_request *rq)
->   	i915_request_notify_execute_cb_imm(rq);
->   }
->   
-> -static bool can_preempt(struct intel_engine_cs *engine)
-> -{
-> -	if (GRAPHICS_VER(engine->i915) > 8)
-> -		return true;
-> -
-> -	/* GPGPU on bdw requires extra w/a; not implemented */
-> -	return engine->class != RENDER_CLASS;
-> -}
-> -
->   static void kick_execlists(const struct i915_request *rq, int prio)
->   {
->   	struct intel_engine_cs *engine = rq->engine;
+Fixing this error I choose to base the fix again on the number of clocks
+but to also support any clock rate the chip could support by moving away
+from a define to reading and using the XVCLK.
+
+True enough only 19.2 MHz is currently supported but for the hypothetical
+case where some other frequency is supported in the future, I wanted the
+fix introduced in this series to still hold.
+
+Hence this series:
+
+1. Allows for any clock rate to be used in the valid range for the reset.
+2. Elongates the post-reset period based on clock cycles which can now
+vary.
+
+Patch #2 can still be backported to stable irrespective of patch #1.
+
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+---
+Bryan O'Donoghue (2):
+      media: ov5675: Derive delay cycles from the clock rate reported
+      media: ov5675: Elongate reset to first transaction minimum gap
+
+ drivers/media/i2c/ov5675.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
+---
+base-commit: 523b23f0bee3014a7a752c9bb9f5c54f0eddae88
+change-id: 20240710-linux-next-ov5675-60b0e83c73f1
+
+Best regards,
+-- 
+Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+
 
