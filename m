@@ -1,52 +1,74 @@
-Return-Path: <stable+bounces-59091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A647492E3BA
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 11:49:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4637C92E416
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 12:03:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50E471F22F69
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 09:49:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 575D4B21859
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 10:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3383915218A;
-	Thu, 11 Jul 2024 09:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55AA0158A3D;
+	Thu, 11 Jul 2024 10:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="wJ8YO72S"
+	dkim=pass (2048-bit key) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b="J37gNT+g"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9D17EEE7;
-	Thu, 11 Jul 2024 09:49:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5EC157E93
+	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 10:02:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720691359; cv=none; b=ijjWvT6Lrotu3tSHxSUUaZj8E3i2h7ZyRHgFE4gVWqeLxctp9HX7v8BUovbthZBcIOGFj1R3o/XGJ5CcJHW2DwoiiicsAk24bjwJZCf8seXgPcmeFA5uqeD+D5MogGTKrlSRgyV8nqS+HFb3cMKzg2jbCbMCM2XjrOS2x5zPTxM=
+	t=1720692177; cv=none; b=geE5zjjH3w9mba7HoLeO8VH0yCukl1dIxyhGRwSnztZrPxRVwFWr0saC5rJ+SY0yWOze9tDPdVDwqDu+gjOVDmWi3oPBrCSlUNlrtcr8uUdBN1hii0wrKx9Uko4DSSnI/VvvjzmhYZ2Kj9p4BKWtUbEzrGaIR9aHkjZ5CR2AFBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720691359; c=relaxed/simple;
-	bh=sYG5usZsNSnkOdgvDMVaBnhwUqfaAUQMHiYYhFQMdxA=;
+	s=arc-20240116; t=1720692177; c=relaxed/simple;
+	bh=6iMIKUwfaoFpnyORoBBxjZOn8Pe3XbHMRh9GzyD1Qn0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HukFDanVN7IdN6DyBD7G3wTpOAyP0eW0NemqbHUSwyPHfTC5tgczcO2oFvFfY8ZW+QF96Mw0c1DdjHv2ItDQ8tUpa6lVkBDC/RvbFT/j8breEB2bv+2jgm3xkWc9KYuNL7bPTMD4Xdvhp+E3dtd+K5M9cpkP6/CBjJxKEoGcYG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=wJ8YO72S; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=fbpbQLUloPKBX1PeXfC9DHyVOS0hmylV5zJFAZRG1jE=;
-	t=1720691356; x=1721123356; b=wJ8YO72Syd/bn5JYrOJi+DWp4l52Kzw8jgrjHEzha4XDEWR
-	rAO2p/LWl5QfxbeOj5BBbChC4AT73/QHZqbazQiQllmzpk/Jrm0tfz3xG8zx+CeMaMVrOR51YRi11
-	NJXQWRojmb0nsH+/g2jKjqvgb7q7yhphNXYvVaTrmIMSzpjEv5U/uJOoBI4WxwTRKi55DYxofkeqr
-	7jfKseGFSjCcoLsYND8ZedHNgD+Ou0zkxVhbzH6udlXA9nhn9bvyo/35gVhXC3Fit+xfPNpn2Q/rz
-	A04sGBFX4wMnQ+tGbzozMhsU9NPt2bbGnHcjm99+FIgXt+DczEviJt6dAsUMPqbg==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sRqQL-0000jZ-13; Thu, 11 Jul 2024 11:49:13 +0200
-Message-ID: <7c8d1ec1-7913-45ff-b7e2-ea58d2f04857@leemhuis.info>
-Date: Thu, 11 Jul 2024 11:49:10 +0200
+	 In-Reply-To:Content-Type; b=hR644YcNlWTpvaIe3c39yNt0ShOTkK00rNEigHLbZlokD3TqPmbEa7/hWxBLnB3YjVlApw7rUgiyaTjYhZ61YwlD2TRN5yb+RwL6a212ht2vgPbfjQ+XNbLIVzs2WzFZGkATno6sFpASMw4COGA5Nb6uTcEPkcouJWTMKrRhLE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ursulin.net; spf=none smtp.mailfrom=ursulin.net; dkim=pass (2048-bit key) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b=J37gNT+g; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ursulin.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ursulin.net
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-426636ef8c9so4329435e9.2
+        for <stable@vger.kernel.org>; Thu, 11 Jul 2024 03:02:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1720692173; x=1721296973; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=boL5i9jzaSfhn+e79C+qpFuft543zvabd4ejo3BmRUY=;
+        b=J37gNT+ghgefCOGEvaxy8MP7va4f4wwpY3PDBH1M1gGFG2a7E9zM9ZGpbCU4bqodBa
+         JvcEELsjpk2QNZy/1KG+voFLpZjzerpYHvhWy7tSZioptvRN4ASQfwauRySbg5TOLmwU
+         SN5bS9z3N+8A8A0DAxMrZM7CynRb6ZRAA65KPWDL7oAipoaG3oBTzoVOnErPSE+Q2fwD
+         1fl4QCHoUGsrWbIVpkrp6sitxcef/qQJEC1OS7ySY7051fy0CfEZGZFOnLRJGowUwha6
+         mTPEnSuGBIK5DvcF9F6dyeDXgHSVPn/A9DRxt6juiloRMPqdg4RKN/qppVTzPrL3BxUI
+         /TkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720692173; x=1721296973;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=boL5i9jzaSfhn+e79C+qpFuft543zvabd4ejo3BmRUY=;
+        b=NpzWaxWObciLF6hAYxOI6nHAfdzllQ52FVh26fMcEnyhzfN3SEXGczgF0utCPGKgU8
+         psp3BJmUtc0MQlFTWnFG8D3aEs/r7uxrUQSI/lIwsNCUxN+hQnQUx7k96wqKEMr7+PD3
+         uK5ZEmCZXHV3dflvowwyE+PodewYq/X2w0sfQRtEpbK0Nz0AbZthsm0FvSzZcdXHhH8H
+         VpWWUcypF16d1RZw8wdXnog1uTJ3LKkGO3rsavMEi4/2v6zi/Mo1HZRnE7TuBoeYg0AO
+         GVS8VzBGPKeLKSq7Jh2efdSKJj9wmilZN0QLbiOa0tEUM1ojrzmxKr1UOZWHVwj+hPCb
+         IEEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUZYHWpieTqrjAVPjHMNDCnwOwckYuapYK0ra+CU2NqtK+bt+IOfr+BE6FbSeF/fzKNbLi8JCpS5kdHd91Gjh6+UwJ94Xzf
+X-Gm-Message-State: AOJu0YwoDyZ0E8rQjazy7VUQRY/K2/LeUi2EsT/fZngaivZlQOZX0Xh4
+	YSGHGQW1S6021TNPyhVc+iZ5AB2nMlhoCyN6Rxps+GOw8UPOv5ktFud7IlqLEiY=
+X-Google-Smtp-Source: AGHT+IG5OcW90S+EQ49B/6sG+OFx8XqDMkqaKPG9VOzfnAyynEgdVQ3iZF/lUSXhhCqiXx6+cRr6Mg==
+X-Received: by 2002:a5d:47a9:0:b0:367:8f84:ee1d with SMTP id ffacd0b85a97d-367cea4622cmr7264113f8f.8.1720692173512;
+        Thu, 11 Jul 2024 03:02:53 -0700 (PDT)
+Received: from [192.168.0.101] ([84.69.19.168])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-367cdfa0650sm7360031f8f.69.2024.07.11.03.02.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Jul 2024 03:02:53 -0700 (PDT)
+Message-ID: <89dd0130-562a-4025-968d-d758a26399ec@ursulin.net>
+Date: Thu, 11 Jul 2024 11:02:52 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,70 +76,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION][BISECTED][STABLE] Commit 60e3318e3e900 in
- stable/linux-6.1.y breaks cifs client failover to another server in DFS
- namespace
-To: Christian Heusel <christian@heusel.eu>,
- Andrew Paniakin <apanyaki@amazon.com>
-Cc: pc@cjr.nz, stfrench@microsoft.com, sashal@kernel.org, pc@manguebit.com,
- regressions@lists.linux.dev, stable@vger.kernel.org,
- linux-cifs@vger.kernel.org, abuehaze@amazon.com, simbarb@amazon.com,
- benh@amazon.com, gregkh@linuxfoundation.org
-References: <ZnMkNzmitQdP9OIC@3c06303d853a.ant.amazon.com>
- <Znmz-Pzi4UrZxlR0@3c06303d853a.ant.amazon.com>
- <210b1da5-6b22-4dd9-a25f-8b24ba4723d4@heusel.eu>
- <ZnyRlEUqgZ_m_pu-@3c06303d853a>
- <a58625e7-8245-4963-b589-ad69621cb48a@heusel.eu>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <a58625e7-8245-4963-b589-ad69621cb48a@heusel.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1720691356;ee6cc0fc;
-X-HE-SMSGID: 1sRqQL-0000jZ-13
+Subject: Re: [PATCH] drm/i915/gt: Do not consider preemption during
+ execlists_dequeue for gen8
+To: Nitin Gote <nitin.r.gote@intel.com>, intel-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org, andi.shyti@intel.com,
+ chris.p.wilson@linux.intel.com, nirmoy.das@intel.com,
+ janusz.krzysztofik@linux.intel.com, stable@vger.kernel.org
+References: <20240711051215.1143127-1-nitin.r.gote@intel.com>
+Content-Language: en-GB
+From: Tvrtko Ursulin <tursulin@ursulin.net>
+In-Reply-To: <20240711051215.1143127-1-nitin.r.gote@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 27.06.24 22:16, Christian Heusel wrote:
-> On 24/06/26 03:09PM, Andrew Paniakin wrote:
->> On 25/06/2024, Christian Heusel wrote:
->>> On 24/06/24 10:59AM, Andrew Paniakin wrote:
->>>> On 19/06/2024, Andrew Paniakin wrote:
->>>>> Commit 60e3318e3e900 ("cifs: use fs_context for automounts") was
->>>>> released in v6.1.54 and broke the failover when one of the servers
->>>>> inside DFS becomes unavailable.
->>>> Friendly reminder, did anyone had a chance to look into this report?
->>>
->>> If I understand the report correctly the regression is specific for the
->>> current 6.1.y stable series, so also not much the CIFS devs themselves
->>> can do. Maybe the stable team missed the report with the plethora of
->>> mail that they get.. I'll change the subject to make this more prominent
->>> for them.
->>>
->>> I think a good next step would be to bisect to the commit that fixed the
->>> relevant issue somewhere between v6.1.54..v6.2-rc1 so the stable team
->>> knows what needs backporting .. You can do that somewhat like so[0]:
->>
->> Bisection showed that 7ad54b98fc1f ("cifs: use origin fullpath for
->> automounts") is a first good commit. Applying it on top of 6.1.94 fixed
->> the reported problem. It also passed Amazon Linux kernel regression
->> tests when applied on top of our latest kernel 6.1. Since the code in
->> 6.1.92 is a bit different I updated the original patch:
+
+On 11/07/2024 06:12, Nitin Gote wrote:
+> We're seeing a GPU HANG issue on a CHV platform, which was caused by
+> bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries for gen8").
 > 
-> I think it might make sense to send the backported version of the patch
-> for inclusion to the stable tree directly (see "Option 3" [here][0]).
+> Gen8 platform has only timeslice and doesn't support a preemption mechanism
+> as engines do not have a preemption timer and doesn't send an irq if the
+> preemption timeout expires. So, add a fix to not consider preemption
+> during dequeuing for gen8 platforms.
 > 
-> [0]: https://www.kernel.org/doc/html/next/process/stable-kernel-rules.html#option-3
+> Also move can_preemt() above need_preempt() function to resolve implicit
+> declaration of function ‘can_preempt' error and make can_preempt()
+> function param as const to resolve error: passing argument 1 of
+> ‘can_preempt’ discards ‘const’ qualifier from the pointer target type.
+> 
+> v2: Simplify can_preemt() function (Tvrtko Ursulin)
 
-Hmmm, unless I'm missing something it seems nobody did so. Andrew, could
-you take care of that to get this properly fixed to prevent others from
-running into the same problem?
+Yeah sorry for that yesterday when I thought gen8 emit bb was dead code, 
+somehow I thought there was a gen9 emit_bb flavour. Looks like I 
+confused it with something else.
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+> 
+> Fixes: bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries for gen8")
+> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11396
+> Suggested-by: Andi Shyti <andi.shyti@intel.com>
+> Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+> CC: <stable@vger.kernel.org> # v5.2+
+> ---
+>   .../drm/i915/gt/intel_execlists_submission.c    | 17 ++++++++---------
+>   1 file changed, 8 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
+> index 21829439e686..59885d7721e4 100644
+> --- a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
+> +++ b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
+> @@ -294,11 +294,19 @@ static int virtual_prio(const struct intel_engine_execlists *el)
+>   	return rb ? rb_entry(rb, struct ve_node, rb)->prio : INT_MIN;
+>   }
+>   
+> +static bool can_preempt(const struct intel_engine_cs *engine)
+> +{
+> +	return GRAPHICS_VER(engine->i915) > 8;
+> +}
+> +
+>   static bool need_preempt(const struct intel_engine_cs *engine,
+>   			 const struct i915_request *rq)
+>   {
+>   	int last_prio;
+>   
+> +	if (!can_preempt(engine))
+> +		return false;
+> +
+>   	if (!intel_engine_has_semaphores(engine))
 
-#regzbot poke
+Patch looks clean now. Hmmm one new observation is whether the "has 
+semaphores" check is now redundant? Looks preemption depends on 
+semaphore support in logical_ring_default_vfuncs().
+
+Regards,
+
+Tvrtko
+
+>   		return false;
+>   
+> @@ -3313,15 +3321,6 @@ static void remove_from_engine(struct i915_request *rq)
+>   	i915_request_notify_execute_cb_imm(rq);
+>   }
+>   
+> -static bool can_preempt(struct intel_engine_cs *engine)
+> -{
+> -	if (GRAPHICS_VER(engine->i915) > 8)
+> -		return true;
+> -
+> -	/* GPGPU on bdw requires extra w/a; not implemented */
+> -	return engine->class != RENDER_CLASS;
+> -}
+> -
+>   static void kick_execlists(const struct i915_request *rq, int prio)
+>   {
+>   	struct intel_engine_cs *engine = rq->engine;
 
