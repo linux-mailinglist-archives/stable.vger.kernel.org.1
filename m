@@ -1,117 +1,123 @@
-Return-Path: <stable+bounces-59090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6247292E3AB
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 11:43:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A647492E3BA
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 11:49:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94A571C20F60
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 09:43:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50E471F22F69
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 09:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849D115279E;
-	Thu, 11 Jul 2024 09:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3383915218A;
+	Thu, 11 Jul 2024 09:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRYW2FAp"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="wJ8YO72S"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F47C1509AE;
-	Thu, 11 Jul 2024 09:43:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9D17EEE7;
+	Thu, 11 Jul 2024 09:49:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720691001; cv=none; b=SnTzbor7ky3FpafugWpuJv9yM0MhUbBUfNfufe0SPpw7KsZm7aTqRVOPWzgzY/qfdIMiJVmfyb6WgVGVcMnFE22Fkvs+oE9jY0J7TnhFFLLRdMgo7UAkxKPcpbWnLS++vsX4n/QdDFsGXC+YtuOAzHMzcxoTs/LNsKUyDalPHIE=
+	t=1720691359; cv=none; b=ijjWvT6Lrotu3tSHxSUUaZj8E3i2h7ZyRHgFE4gVWqeLxctp9HX7v8BUovbthZBcIOGFj1R3o/XGJ5CcJHW2DwoiiicsAk24bjwJZCf8seXgPcmeFA5uqeD+D5MogGTKrlSRgyV8nqS+HFb3cMKzg2jbCbMCM2XjrOS2x5zPTxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720691001; c=relaxed/simple;
-	bh=eTZtUeszEe80uT0VU1k93cNr/HrAEFeUvPjwJ1/8QzI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ASf7uV76pMSLtu1pR6UDffW8s+y0v5HhpSWXTkdM8VOayzVDLlLOx39tU+C10BNCypa3eAYrR4Sg0zMcyfU+xmJXuO1B8BdOBYGLEHCX6/WeqyniUIwAqvhH2SAUoB3qv3YAzwJdyEwIA3OeACaIPBojdBQIpH2Q82v9SUy1ZZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRYW2FAp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B3F7C116B1;
-	Thu, 11 Jul 2024 09:43:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720691000;
-	bh=eTZtUeszEe80uT0VU1k93cNr/HrAEFeUvPjwJ1/8QzI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JRYW2FApIWdBMR28JnGXGzMI9VuDUkeOomwa4YNlPSDi7uPSywMWiT2/5KyyR6EW3
-	 e4n+dtan5lpLLI6F2BdsEn3fBJzM7+MAbLa6k40XGv+rf7jZjorm9PzzQmsMy8JNeQ
-	 O0ISjn4mpjwqrOSD/EytWu8g7cVbg9M6mZkXTUEg=
-Date: Thu, 11 Jul 2024 11:43:18 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.1 000/102] 6.1.98-rc1 review
-Message-ID: <2024071153-implicit-creole-a40b@gregkh>
-References: <20240709110651.353707001@linuxfoundation.org>
- <CA+G9fYtK_CCvQ01LdANMViMpAGfY-fyh7vFwiOq7XzQw889jHQ@mail.gmail.com>
+	s=arc-20240116; t=1720691359; c=relaxed/simple;
+	bh=sYG5usZsNSnkOdgvDMVaBnhwUqfaAUQMHiYYhFQMdxA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HukFDanVN7IdN6DyBD7G3wTpOAyP0eW0NemqbHUSwyPHfTC5tgczcO2oFvFfY8ZW+QF96Mw0c1DdjHv2ItDQ8tUpa6lVkBDC/RvbFT/j8breEB2bv+2jgm3xkWc9KYuNL7bPTMD4Xdvhp+E3dtd+K5M9cpkP6/CBjJxKEoGcYG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=wJ8YO72S; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=fbpbQLUloPKBX1PeXfC9DHyVOS0hmylV5zJFAZRG1jE=;
+	t=1720691356; x=1721123356; b=wJ8YO72Syd/bn5JYrOJi+DWp4l52Kzw8jgrjHEzha4XDEWR
+	rAO2p/LWl5QfxbeOj5BBbChC4AT73/QHZqbazQiQllmzpk/Jrm0tfz3xG8zx+CeMaMVrOR51YRi11
+	NJXQWRojmb0nsH+/g2jKjqvgb7q7yhphNXYvVaTrmIMSzpjEv5U/uJOoBI4WxwTRKi55DYxofkeqr
+	7jfKseGFSjCcoLsYND8ZedHNgD+Ou0zkxVhbzH6udlXA9nhn9bvyo/35gVhXC3Fit+xfPNpn2Q/rz
+	A04sGBFX4wMnQ+tGbzozMhsU9NPt2bbGnHcjm99+FIgXt+DczEviJt6dAsUMPqbg==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1sRqQL-0000jZ-13; Thu, 11 Jul 2024 11:49:13 +0200
+Message-ID: <7c8d1ec1-7913-45ff-b7e2-ea58d2f04857@leemhuis.info>
+Date: Thu, 11 Jul 2024 11:49:10 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+G9fYtK_CCvQ01LdANMViMpAGfY-fyh7vFwiOq7XzQw889jHQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION][BISECTED][STABLE] Commit 60e3318e3e900 in
+ stable/linux-6.1.y breaks cifs client failover to another server in DFS
+ namespace
+To: Christian Heusel <christian@heusel.eu>,
+ Andrew Paniakin <apanyaki@amazon.com>
+Cc: pc@cjr.nz, stfrench@microsoft.com, sashal@kernel.org, pc@manguebit.com,
+ regressions@lists.linux.dev, stable@vger.kernel.org,
+ linux-cifs@vger.kernel.org, abuehaze@amazon.com, simbarb@amazon.com,
+ benh@amazon.com, gregkh@linuxfoundation.org
+References: <ZnMkNzmitQdP9OIC@3c06303d853a.ant.amazon.com>
+ <Znmz-Pzi4UrZxlR0@3c06303d853a.ant.amazon.com>
+ <210b1da5-6b22-4dd9-a25f-8b24ba4723d4@heusel.eu>
+ <ZnyRlEUqgZ_m_pu-@3c06303d853a>
+ <a58625e7-8245-4963-b589-ad69621cb48a@heusel.eu>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <a58625e7-8245-4963-b589-ad69621cb48a@heusel.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1720691356;ee6cc0fc;
+X-HE-SMSGID: 1sRqQL-0000jZ-13
 
-On Wed, Jul 10, 2024 at 09:10:11PM +0530, Naresh Kamboju wrote:
-> On Tue, 9 Jul 2024 at 16:59, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 6.1.98 release.
-> > There are 102 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Thu, 11 Jul 2024 11:06:25 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.98-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
+On 27.06.24 22:16, Christian Heusel wrote:
+> On 24/06/26 03:09PM, Andrew Paniakin wrote:
+>> On 25/06/2024, Christian Heusel wrote:
+>>> On 24/06/24 10:59AM, Andrew Paniakin wrote:
+>>>> On 19/06/2024, Andrew Paniakin wrote:
+>>>>> Commit 60e3318e3e900 ("cifs: use fs_context for automounts") was
+>>>>> released in v6.1.54 and broke the failover when one of the servers
+>>>>> inside DFS becomes unavailable.
+>>>> Friendly reminder, did anyone had a chance to look into this report?
+>>>
+>>> If I understand the report correctly the regression is specific for the
+>>> current 6.1.y stable series, so also not much the CIFS devs themselves
+>>> can do. Maybe the stable team missed the report with the plethora of
+>>> mail that they get.. I'll change the subject to make this more prominent
+>>> for them.
+>>>
+>>> I think a good next step would be to bisect to the commit that fixed the
+>>> relevant issue somewhere between v6.1.54..v6.2-rc1 so the stable team
+>>> knows what needs backporting .. You can do that somewhat like so[0]:
+>>
+>> Bisection showed that 7ad54b98fc1f ("cifs: use origin fullpath for
+>> automounts") is a first good commit. Applying it on top of 6.1.94 fixed
+>> the reported problem. It also passed Amazon Linux kernel regression
+>> tests when applied on top of our latest kernel 6.1. Since the code in
+>> 6.1.92 is a bit different I updated the original patch:
 > 
+> I think it might make sense to send the backported version of the patch
+> for inclusion to the stable tree directly (see "Option 3" [here][0]).
 > 
-> Results from Linaro’s test farm.
-> We have two major regressions.
-> 
-> 1)
-> As I have reported on 6.9.9-rc1 same kernel BUG and panic noticed [1]
-> while running kunit tests on all test environments [1] seen on 6.1.98-rc1.
-> 
-> BUG: KASAN: null-ptr-deref in _raw_spin_lock_irq+0xb0/0x17c
-> 
->  [1] https://lore.kernel.org/stable/CA+G9fYsqkB4=pVZyELyj3YqUc9jXFfgNULsPk9t8q-+P1w_G6A@mail.gmail.com/
-> 
-> 2)
-> S390 build failed due to following build errors on 6.1 and 6.6.
-> Build error:
-> ----
-> arch/s390/include/asm/processor.h:253:11: error: expected ';' at end
-> of declaration
->   253 |         psw_t psw __uninitialized;
->       |                  ^
->       |                  ;
->  [2] https://storage.tuxsuite.com/public/linaro/lkft/builds/2j0YAKrnHmvjt4fKPfYoEmSKWlG/
+> [0]: https://www.kernel.org/doc/html/next/process/stable-kernel-rules.html#option-3
 
-Thanks, I'll go drop this from 6.6 and older queues now, seems that
-__unitialized doesn't work on older kernels just yet.
+Hmmm, unless I'm missing something it seems nobody did so. Andrew, could
+you take care of that to get this properly fixed to prevent others from
+running into the same problem?
 
-thanks,
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
-greg k-h
+#regzbot poke
 
