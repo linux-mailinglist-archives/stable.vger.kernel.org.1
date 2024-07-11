@@ -1,198 +1,193 @@
-Return-Path: <stable+bounces-59170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6629192F21E
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 00:38:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 877C392F2C7
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 01:48:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8984B1C2243E
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 22:38:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF043B23313
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 23:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CAD61A00FE;
-	Thu, 11 Jul 2024 22:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C6BB15217E;
+	Thu, 11 Jul 2024 23:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="H1NG4aKj"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LTxytwAe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2059.outbound.protection.outlook.com [40.107.94.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF4516A382
-	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 22:38:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720737527; cv=none; b=uTrrdr//tCxa8e3T+wdum39Far44WnpifcQ5d1rAsMS2E5QF9leMB5q/LHjlDejAKRFjL21sqi8bk9nd1leG0cnml2hT2WXE5JrYAUI5q1Cd2PlYWY6iS5Szw4u2BDJIxjB15RV6SG9xEb/jW9CEbnV1w2ByICP2qI1OkR9lKOA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720737527; c=relaxed/simple;
-	bh=xrDCFC6/AGsAPx7fMgyIJyU4N8WTEyE5/DUMMxmCOI4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EH+d5atnat9GuRluOHtOj3wek3xxqimxKjIyKLn34rHG64XCxUOwQwsZ7MZnpQhYHhmjJ4+SznGbed+xe6iUL2SlYpjvi7owxSeZDV+BDw6vFuwIs55wdqD+nGp+OMRp1y3Q7KEVNUJbkriTTcjIBKFwa9CTLYNTuqoMO9iu7hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=H1NG4aKj; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-70b4267ccfcso1288088b3a.3
-        for <stable@vger.kernel.org>; Thu, 11 Jul 2024 15:38:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1720737524; x=1721342324; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pbNZF2S4J9drmyHueEsFFLhlbRMEBvhBMv4NoxbSMK8=;
-        b=H1NG4aKjYll0gU8HnijOEFBq743zLm9VJoA7UL/EKT3SZhLugdCJiUkMyD+79SywWq
-         GC6yn2nmiL4n5LmoRY7MzeFkCPgXRewdvplP3OGUuAUC9PBKlNIiTdkx73O+tVPF4Dq3
-         pXBOPMqD82iDeiGy/7mrPU7S2GGQUsyqU7aohq7tGlFliooyMCAJA8AOMcAwqJiFhXXy
-         voJbUI2yOAFBi4gHEpTQx/8AesdpEUItoYMmgyF3b+8fOv+UpfaNYOIGG/je5nc1R9pG
-         t+0EXVcpUdKcO/iJxdQKM0zbAXbEKDJfXiLTRhVSGEZ6mAFjEaLpiSaxAc9sI7wHMBp7
-         rYvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720737524; x=1721342324;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pbNZF2S4J9drmyHueEsFFLhlbRMEBvhBMv4NoxbSMK8=;
-        b=IJXF8Jw4efx4n9nnIVbseT725jjRVD6omOpzqYE6CiGdH0jHaq2Hg+NfVWG3q/CPh1
-         FyJWgO+srMjYUVP18o8HWwsEEo60Vx81Vt0JiEEtJnzis+jo2/7c00Dpwx65soMAqhXm
-         Fd7N2I7PI+1ocB/OyHC7sWS3z78QRALPshF5mYf/aexSE65bKs945BXjH3jYcfkyd/cV
-         yvJfbYRq3gfhsIBW/dvDsQlEo7sPgT6Lx5/h78e8YIjWasM87sovBvUTGKmv9I78/k8G
-         ZKqpTIx2zUk7JVb32cAOBgsXstTOsh/96JD7gLthaWnGqUevy+cAkC5XT8iQ1FH4h8rg
-         Sj+w==
-X-Forwarded-Encrypted: i=1; AJvYcCVSywIaqYZQZBpOCsOt2TxbyjFD8Bgod+WCqjkVIVCHnxKmC2rkFiaTvCltcT7vT4JIO3KXxI+3vsSQBG+JBYh774yjnQIT
-X-Gm-Message-State: AOJu0Yy5e8+SFxNvMPIdAOvMCfMSxhlQ75+V4+dbp0PdVPUOzrFs0D34
-	mP4rGhBuiZk7kfwZat3dCVMTrKfJBtmycYRekubNSAAic9YZ8YwUSYRwJcoHcXg=
-X-Google-Smtp-Source: AGHT+IHnc8Zv8sfbsAY4oLFXAWbmahrHaGEf23uvgOftBM0iIylqo5S8ACJ9AZUHYcZTecSZvb2vOA==
-X-Received: by 2002:a05:6a00:3d08:b0:706:5dab:83c4 with SMTP id d2e1a72fcca58-70b43576a80mr9974899b3a.14.1720737523703;
-        Thu, 11 Jul 2024 15:38:43 -0700 (PDT)
-Received: from ghost ([50.145.13.30])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b439b8594sm6197736b3a.192.2024.07.11.15.38.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jul 2024 15:38:43 -0700 (PDT)
-Date: Thu, 11 Jul 2024 15:38:40 -0700
-From: Charlie Jenkins <charlie@rivosinc.com>
-To: Jesse Taube <jesse@rivosinc.com>
-Cc: linux-riscv@lists.infradead.org, Jonathan Corbet <corbet@lwn.net>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	=?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <cleger@rivosinc.com>,
-	Evan Green <evan@rivosinc.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Xiao Wang <xiao.w.wang@intel.com>, Andy Chiu <andy.chiu@sifive.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Greentime Hu <greentime.hu@sifive.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Costa Shulyupin <costa.shul@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, Anup Patel <apatel@ventanamicro.com>,
-	Zong Li <zong.li@sifive.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Ben Dooks <ben.dooks@codethink.co.uk>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Erick Archer <erick.archer@gmx.com>,
-	Joel Granados <j.granados@samsung.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4 3/7] RISC-V: Check scalar unaligned access on all CPUs
-Message-ID: <ZpBe8ECHxJ9QXVB2@ghost>
-References: <20240711215846.834365-1-jesse@rivosinc.com>
- <20240711215846.834365-4-jesse@rivosinc.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89CE14D2AC
+	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 23:47:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720741679; cv=fail; b=jKZTj3iMu8x4oORmK3+PvXchaC5lxCX3FWLl+xMVdvSk2N6tIOTtVW7035QQSnYH9XVKrIRdc9vxLrs5/jZWx8JomGRQkkgSPPx9oK0JSH1m+9+luLan277AMchOSdzKbPzC8A5WsNS/4dnYHYYp4oaPCDbGON5xZMlrt+//Yl4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720741679; c=relaxed/simple;
+	bh=XBK5MnKHEtdSByi978CdcsbimPLSRikR8K9V3JJexxs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Z7ABQvQrKJqMyY7WCkWniWj/fXbQRtONzNIA6D83BgleZ0jl2AMfezOdkCoVWbDo/RTRyLMVw+mkSreWJCLXJLP9NvZ/CUzj+D7XY0T01lSqka4NoqDRlmZ/F3uzYYQ7axwcDi/PnhlPq2+Uh2f+sDdgLVuSyYPMWm7zaDHLMKw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LTxytwAe; arc=fail smtp.client-ip=40.107.94.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ktgp0WVDwTZC0t4O5qoGwoK+WoQaEVgpJelZmHEZ6PTgGdbbnDNUg3mrPmWN2dlAm727mCQNzpCE+EhUZT+D3YPMzKt9fwZuKhI3G2erTPZ9abB+2s9e2rMu3mZChkzJlAisTUimTwtlGWm59D8DMresjEHt48yf0StE/+toyt/JTfte5ZZo4bF0g0w9hdM+mh3etC9agsr0soX5iWCQ8fHSHzV5rHyeffjdpjyFDNhl5zaBuEijcBRayje7TA7imoU8SEGQ4mssBzuFDof7HaGGTFTQlNbv0iGOlwbIOrXmCC3DBI9QBcnk4niKlZZttrusgml3kA9a+dbUjXxGuw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vwIlSoDzzkkK96soS51e/CHf6a4uUheBftcmsjmr2A0=;
+ b=NojjH0rGHMbPshQPiGe4vcV5G2kuACFRRilCBnjf8FzPc2MTWBw8tMx9tbRvkjTH7xSJr+JcgXXjZNPKAiuOClHImwMM3AR8TGUKRcYW5hKUmAcqeiM1j/2/8L0aiEDVZ9iZxBTH+Fp2bN87llDI95dEndSbchv5nNX8Wg+0I/sTcpooH0FE6hZEbgvInUrv0CRck/3p6D+97YkJ9rW2SbRs37m45JTNtlngJ9ZzwibZbrUVi/Z410GxSH/aqZAzy6Lttg78VjDeRzmnIGc6B6hWSIh7EYxdEYI+5S2fvbTC7NYe2tBZxkRf4pLDY4FHI4B4Q9vI6mB1pnGLInDo/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=cloudflare.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vwIlSoDzzkkK96soS51e/CHf6a4uUheBftcmsjmr2A0=;
+ b=LTxytwAelamjIhFVO1LHyjuntwXv+cq0TylOT31L2SI7G1EliHRGxSHiWG7dxSdcC+TOzRa/BIEaMoSGffd3R/1WVQDlMGWmlibt7BqIRXV1Hq+DfbnD4nBpwnrqUSwSnIGA8V6S8vF8xFg5DOV+I4k6PXpv3IJeNHsZw0//np4n2M93T5dK2pFu+YxA+9HhNgidquIc5HFu/X3aYBlaGpPvKPwS/yh7Lij3z7wEsXrKRV11Q3K1T2+YV3Qq85PqDFXyAudu05IyjQrT24QFVW3CzzNIQBcBh7r4AOpx54dKNM+1tW58IBZSnEqbLT+Uw0o7Sa3JR6ynrgzIla9Ebg==
+Received: from MN2PR05CA0049.namprd05.prod.outlook.com (2603:10b6:208:236::18)
+ by MW4PR12MB6922.namprd12.prod.outlook.com (2603:10b6:303:207::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.22; Thu, 11 Jul
+ 2024 23:47:54 +0000
+Received: from BL02EPF0001A0FB.namprd03.prod.outlook.com
+ (2603:10b6:208:236:cafe::f6) by MN2PR05CA0049.outlook.office365.com
+ (2603:10b6:208:236::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.23 via Frontend
+ Transport; Thu, 11 Jul 2024 23:47:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BL02EPF0001A0FB.mail.protection.outlook.com (10.167.242.102) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7762.17 via Frontend Transport; Thu, 11 Jul 2024 23:47:54 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 11 Jul
+ 2024 16:47:33 -0700
+Received: from [10.110.48.28] (10.126.230.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 11 Jul
+ 2024 16:47:32 -0700
+Message-ID: <e56645ca-bce2-45ee-9b5a-d398a881da49@nvidia.com>
+Date: Thu, 11 Jul 2024 16:47:31 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240711215846.834365-4-jesse@rivosinc.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 046/139] selftests/net: fix uninitialized variables
+To: Ignat Korchagin <ignat@cloudflare.com>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>,
+	<patches@lists.linux.dev>, Willem de Bruijn <willemb@google.com>, "Mat
+ Martineau" <martineau@kernel.org>, Jakub Kicinski <kuba@kernel.org>, "Sasha
+ Levin" <sashal@kernel.org>, <kernel-team@cloudflare.com>
+References: <20240709110658.146853929@linuxfoundation.org>
+ <20240709110659.948165869@linuxfoundation.org>
+ <8B1717DB-8C4A-47EE-B28C-170B630C4639@cloudflare.com>
+ <dfe78e1b-eaf9-41e6-8513-59efc02633fd@nvidia.com>
+ <CALrw=nHVvVNA5M7=jAspdcOnmDFz=zL6axC6vv6j=t1HbsaO9Q@mail.gmail.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <CALrw=nHVvVNA5M7=jAspdcOnmDFz=zL6axC6vv6j=t1HbsaO9Q@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FB:EE_|MW4PR12MB6922:EE_
+X-MS-Office365-Filtering-Correlation-Id: aea08232-dc12-4033-bf05-08dca203e23f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?YmRyYU1ZNnp1NmNCb2RlQk1wQ2krN0EvdEhoZ3BiMng1d01MdXFpTUpjcFpx?=
+ =?utf-8?B?eUtuZTBlaXRaZ21MSHZpaThVTzQ0QlQ3ZHR6a2JLcjRmeVYvOU9TWGRxYU5h?=
+ =?utf-8?B?ZnNtZ1B3SnhqVERzL0J6MkpaUGFYdENmWjY4eHlzRXQ2dUo1RGw4TGkzSG5O?=
+ =?utf-8?B?Mys1bWRwelhqb3RGazEwbFJiNjNWbW9WSmxTQUVMeHZwTHRmODZ6ekVLTThr?=
+ =?utf-8?B?UDFObUc2Y05qdlhEd2xKZDN4Y0FZcHpKOHFqR1dtejhRbldUQm5GTkxBeDU3?=
+ =?utf-8?B?NHFidjRNaUwrUjVvMi84NEFBVGNqd1JpQURYMWV6cS9Ya25BUEFKbVRDVEdJ?=
+ =?utf-8?B?Zlc1Smpudm5qdjN0bm1FRGVSTkZaRk9XVVBBaXFUK243cG51eGFaNng5alVI?=
+ =?utf-8?B?aVNpdEp5cXNMeGFQd01jbkZWeDQ3c2NzY29qRlpVTnU0SDJWYmpxR3NvSVN6?=
+ =?utf-8?B?V1M5Zzdmc2hiMFVpMVR5UHhlaHo2UVlOWWdLandGaUMwMFFlTTE5SU1XMkgv?=
+ =?utf-8?B?dlBOeHFLQ3VZTExVc1hqSkpia3BzV2hlSlZZTGZtb2pSYTNjOGN3R1VpWS9K?=
+ =?utf-8?B?eHMvcTgyc1hYenBTSXA3dmJnS0tKMG9FT1ZieHNFbVJvcTJSK1djOVdVWkkx?=
+ =?utf-8?B?QW5BcjB6S1N1TVNpZFhQSHJYemxsT25tQU9LUmJBanQ0clR1VHNHaGRhSTUz?=
+ =?utf-8?B?WFUyODY2MTJqL0pTamwxeEgvN0hoYXc1bEttdjA3VHdRUWdVZVFCOWxsODRB?=
+ =?utf-8?B?WGxIejF5SDlpckE5NHpjcWNxOGMxV2ZicFhJbUN6a1JFU1ExWlRlc0l1UEh6?=
+ =?utf-8?B?a2NRTCtaTHB0dnZpLzJPMHBma2FqSEpCTllQYnJxcWxKblRkUnk2WmhOcUZ0?=
+ =?utf-8?B?TmJZSExGY3V4WG1pUWMwQnZCYkZGaGZwYTRhUjdGdVk3cC96dGUrQk5xb2Vl?=
+ =?utf-8?B?SENQc0ljelo1VXdmVUh4K1h4TXZ0MS9GSXIxSXFZMWpEdDNBR040QjFibXRo?=
+ =?utf-8?B?V29WQytSd1ZNZkFNOHBuQVVkVWZmTWN1QUNsQ1g1V0pSWXNneU4yWGNvOU5l?=
+ =?utf-8?B?eWtNUlBUTWNaQ0trc0lKeTN0WWFvYnJ6ZDljWTVYcjduZjdsWCtTak5aTkVk?=
+ =?utf-8?B?SUYvYjQvczdCWm5NWmV2MEpkaG0rK0lDdmNRTXRQL3JDQWRZU2p2OXJxbUJn?=
+ =?utf-8?B?ME9oMnRZVUFCYnlzT2s3WERtTGM2MDFGV1dWUkZqcm9USVRrTi9MWU5QcWpI?=
+ =?utf-8?B?RmZPVmgxbWlpd0g5TStOMjNERHFta3loTFQ4VEdheGxYQ3gvV3BscytXV1F6?=
+ =?utf-8?B?cHErOXVsYlhzTjdXaFp3aldrUkFBUTVYUVNxcHlNeEd6OEszcSt5dDZHS2dR?=
+ =?utf-8?B?K3J1TklSdnFhZldxQjFMTTdtWWJmc0JQSHVSTWhTcjFrL0o5Qm5TT3Z4MmJR?=
+ =?utf-8?B?dENhejdCRDNQSzRHUWhWVU5yaFFidVVZK2lBYjI3WWFSU2NlVkhnR25hS3hZ?=
+ =?utf-8?B?cWZlRVkxTzRDb2lydXFaTmVnTDhPTXJnVzZVbzBtRU5LU2srUmNiNnc3NGJK?=
+ =?utf-8?B?NWRYeXFGLzhxMkg2UE9HczhZVHdnSUFJN29GOXpVWGlhcHQ1NXdINzNqU2Qz?=
+ =?utf-8?B?UlcxYmhBc05TRUQ5cXpzMkhkdm9SbjZoaDNWM2JoRU54aUEyNG9JVXNZS2pw?=
+ =?utf-8?B?eVNYbG1IaDFBcXYwOFJHcVNWWXFGV0pXN1FvOEV3YUZ2a0M2Y25KR2dQdEFK?=
+ =?utf-8?B?UFB6dnExeS9XUzVCbTRuaGFUNWg5TGJQTTFCYVlwVG1ybkZLcVRkVElNbHM0?=
+ =?utf-8?B?K0p5WjV1eWFuSk1IeWZHMnpTb0c1YlhheFFBb2IyejgxM096aTdFanZZaURH?=
+ =?utf-8?B?WEpkRzZqaFRTZlJ6M0pKaEtWMHA0SkhGaXM3OTVWc0k0SHJyVUdyZkw0WktG?=
+ =?utf-8?Q?z2lcl+blLYW6gu0698X4/QJ5iaM9YC2P?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2024 23:47:54.2322
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: aea08232-dc12-4033-bf05-08dca203e23f
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0001A0FB.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6922
 
-On Thu, Jul 11, 2024 at 05:58:42PM -0400, Jesse Taube wrote:
-> Originally, the check_unaligned_access_emulated_all_cpus function
-> only checked the boot hart. This fixes the function to check all
-> harts.
+On 7/11/24 2:18 PM, Ignat Korchagin wrote:
+> On Thu, Jul 11, 2024 at 8:16 PM John Hubbard <jhubbard@nvidia.com> wrote:
+>> On 7/11/24 8:31 AM, Ignat Korchagin wrote:
+>>>> On 9 Jul 2024, at 12:09, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>>>>
+>>>> 6.6-stable review patch.  If anyone has any objections, please let me know.
+>>>>
+...
+>>> This breaks selftest compilation on 6.6, because opt_ipproto_off is not
+>>> defined in the first place in 6.6
+>>
+>> Let's just drop this patch for 6.6, then. Thanks for noticing and analyzing,
+>> Ignat!
 > 
-> Fixes: 71c54b3d169d ("riscv: report misaligned accesses emulation to hwprobe")
-> Signed-off-by: Jesse Taube <jesse@rivosinc.com>
-> Cc: stable@vger.kernel.org
-> ---
-> V1 -> V2:
->  - New patch
-> V2 -> V3:
->  - Split patch
-> V3 -> V4:
->  - Re-add check for a system where a heterogeneous
->     CPU is hotplugged into a previously homogenous
->     system.
-> ---
->  arch/riscv/kernel/traps_misaligned.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+> We noticed on 6.6 because we run some selftests for this stable branch, but
+> by the looks of it the patch needs
+> 4e321d590cec ("selftests/net: fix GRO coalesce test and add ext header
+> coalesce tests")
+> so it will be broken for every stable release below 6.8
 > 
-> diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
-> index b62d5a2f4541..1a1bb41472ea 100644
-> --- a/arch/riscv/kernel/traps_misaligned.c
-> +++ b/arch/riscv/kernel/traps_misaligned.c
-> @@ -526,11 +526,11 @@ int handle_misaligned_store(struct pt_regs *regs)
->  	return 0;
->  }
->  
-> -static bool check_unaligned_access_emulated(int cpu)
-> +static void check_unaligned_access_emulated(struct work_struct *unused)
-
-Small change, can you give this a different name like "work" and instead
-give it the attribute "__always_unused" like:
-
-struct work_struct *work __always_unused
-
-Otherwise,
-
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-
->  {
-> +	int cpu = smp_processor_id();
->  	long *mas_ptr = per_cpu_ptr(&misaligned_access_speed, cpu);
->  	unsigned long tmp_var, tmp_val;
-> -	bool misaligned_emu_detected;
->  
->  	*mas_ptr = RISCV_HWPROBE_MISALIGNED_UNKNOWN;
->  
-> @@ -538,19 +538,16 @@ static bool check_unaligned_access_emulated(int cpu)
->  		"       "REG_L" %[tmp], 1(%[ptr])\n"
->  		: [tmp] "=r" (tmp_val) : [ptr] "r" (&tmp_var) : "memory");
->  
-> -	misaligned_emu_detected = (*mas_ptr == RISCV_HWPROBE_MISALIGNED_EMULATED);
->  	/*
->  	 * If unaligned_ctl is already set, this means that we detected that all
->  	 * CPUS uses emulated misaligned access at boot time. If that changed
->  	 * when hotplugging the new cpu, this is something we don't handle.
->  	 */
-> -	if (unlikely(unaligned_ctl && !misaligned_emu_detected)) {
-> +	if (unlikely(unaligned_ctl && (*mas_ptr != RISCV_HWPROBE_MISALIGNED_EMULATED))) {
->  		pr_crit("CPU misaligned accesses non homogeneous (expected all emulated)\n");
->  		while (true)
->  			cpu_relax();
->  	}
-> -
-> -	return misaligned_emu_detected;
->  }
->  
->  bool check_unaligned_access_emulated_all_cpus(void)
-> @@ -562,8 +559,11 @@ bool check_unaligned_access_emulated_all_cpus(void)
->  	 * accesses emulated since tasks requesting such control can run on any
->  	 * CPU.
->  	 */
-> +	schedule_on_each_cpu(check_unaligned_access_emulated);
-> +
->  	for_each_online_cpu(cpu)
-> -		if (!check_unaligned_access_emulated(cpu))
-> +		if (per_cpu(misaligned_access_speed, cpu)
-> +		    != RISCV_HWPROBE_MISALIGNED_EMULATED)
->  			return false;
->  
->  	unaligned_ctl = true;
-> -- 
-> 2.45.2
+> Ignat
 > 
+
+Oh right, I see that these are already applied to -stable, so we'll need fixes
+for each. I'll put that together, then.
+
+
+thanks,
+-- 
+John Hubbard
+NVIDIA
+
 
