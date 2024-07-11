@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-59127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AAB892E9EF
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 15:53:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E098192E9F6
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 15:54:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CB721C23090
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 13:53:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54D99B213C0
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 13:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6168C1607A1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4DA1607A7;
 	Thu, 11 Jul 2024 13:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="Ve7+wKxi"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="KDsLyApK"
 X-Original-To: stable@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE3015FA9E
-	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 13:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0E515FCEB
+	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 13:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720706031; cv=none; b=ldkjpnxcx4s4fTT0rIb0asY7t+LdGoD13adolDufSxJukwcpfU9QIhR9KsL8vqNnbr1x3ZkpHJ1D6+Lec3owOkQfeqZ1FiBGVDkMi0lV5pk5snbFzhOOUBFA4ND74F1Cf9I88R2RR4zSsxQvARZgjTB0wbww5StIum4IM1edeQE=
+	t=1720706031; cv=none; b=FqtQ4euFr5xxRcka0lcL4URsJ+u6mjRKI0qpEYWmCsBIHJ09mXsHBciLgOSK2juZt9O+LeRm73GP8GcmfwU6E/Zqnl3u5KY9yYbUgV9uno49+v3Dh8uiTvNtr7R9Bo+cjL6jEh19XjgBvuNxivxA1s1pTGBvqaH5zmp8HtaL4jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1720706031; c=relaxed/simple;
-	bh=UFOJm2kZG+MP6iK7WxQgilklthhHM+Cc1CakeqnrS4w=;
+	bh=AXitqBAmsnymxE9JIF6hQTX/sICBAD1fwliLjhE6Z7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ntHuq9cj/t++iqfDhcOQJ4c31LFWRFU13V30ed4RtHJVmUk2p87iPW0lye6jKUzdSK5CDVwV5Fy/NDi2BL/zZzsgsIe4Srg3VseK6QhRsJIN8H29jwv67sB4oJ8lmzpxmrQNGpYSCS7UK+ueIQtMSiF9sa3JwJ38MeNo2MKrK5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=Ve7+wKxi; arc=none smtp.client-ip=178.60.130.6
+	 MIME-Version:Content-Type; b=bxJ9fpCXE6nLIIMHRLSfHdS3dC0ZAIwgTWfy4VXcey7pvzbRSfS5YAsB5nfoOlXIv+wRzXVB6pmLG0QHxciALIdRSxU4A8+DL1hgLwAd9Q5ypXFH952xoJi5yWb+gKPMDnynOAEiO/BCaSgxpnmhJorhiDB2PXb3a4d5qIyPxoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=KDsLyApK; arc=none smtp.client-ip=178.60.130.6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
@@ -37,16 +37,16 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=mDmaElbIe6i75roQg6iinEJsMlogtcLjpouaERM3uek=; b=Ve7+wKxi5EX8vjwkcqs9Ln9dqa
-	0UV+oAEyPyXZTOr9zIL+A4xEbZhNgUQ3WlZyamEDMckE0nGL4FQ86ws6Jl45B9r11X+MTxDbvh1P0
-	Kq4PFcenZk9+5KMCOXOiR60pnOWAHJI6zKzp/NuxvNO/BzwzSVtKx2zb0d/hRqGONOLmhgzYNaxv2
-	0hGaZnBpNFD/WF7rUlEG0CMUBTiOHJzMGaCK8OxD6jzsEkb6VH4HY8XT/qpMA52KA8wmc+nTUsO1+
-	G6ptqYcK8yGHJFMs+Z3u4roE9vNZ+vTrKqnZmugBRIVF+KgOYRki1gXCd+bXRGhU0drUnzIqGe2Kj
-	qdsB8UYg==;
+	bh=UWRR8NcVl471Zj1Z+bvpeF3g2ixP4/oX5ENOHO5aO7s=; b=KDsLyApKuJat/UpIwfOCtFCg3K
+	5SO9xMH4D789J1zvVk1XgpcZQ74X/xLFsMhrgg/V4Qi11gXw4aQ/xxvPhY9DuML+NMq6X8/9iyYmq
+	V3RUGj7iKZizXxA2FpJrz2/CKoJIb6yNKj/JnmwzY4lYtoo7Ce/jniJUCXWVtu2XE7CNdnBq5EVE0
+	N5c0GH7bmgl3aHl47VjGtEOrMhm8YMWjc0GxkpiKFNx0ruBTCuGLpx8zTRNseSB9V45JkKq68Junz
+	qoIrhP5y13aaYewAuz6T276mMO4qrT43iLDJ6fmaXzf6K5VfP3/tUqfboFqNUSp4NuSu/+flJxcxl
+	G+aEt60Q==;
 Received: from [84.69.19.168] (helo=localhost)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1sRuEz-00Dif5-1e; Thu, 11 Jul 2024 15:53:45 +0200
+	id 1sRuEz-00DifC-N5; Thu, 11 Jul 2024 15:53:45 +0200
 From: Tvrtko Ursulin <tursulin@igalia.com>
 To: dri-devel@lists.freedesktop.org
 Cc: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
@@ -54,9 +54,9 @@ Cc: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
 	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
 	Iago Toral Quiroga <itoral@igalia.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 04/11] drm/v3d: Validate passed in drm syncobj handles in the timestamp extension
-Date: Thu, 11 Jul 2024 14:53:33 +0100
-Message-ID: <20240711135340.84617-5-tursulin@igalia.com>
+Subject: [PATCH 05/11] drm/v3d: Validate passed in drm syncobj handles in the performance extension
+Date: Thu, 11 Jul 2024 14:53:34 +0100
+Message-ID: <20240711135340.84617-6-tursulin@igalia.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240711135340.84617-1-tursulin@igalia.com>
 References: <20240711135340.84617-1-tursulin@igalia.com>
@@ -78,52 +78,41 @@ Fix it by checking handle was looked up successfully or otherwise fail the
 extension by jumping into the existing unwind.
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Fixes: 9ba0ff3e083f ("drm/v3d: Create a CPU job extension for the timestamp query job")
+Fixes: bae7cb5d6800 ("drm/v3d: Create a CPU job extension for the reset performance query job")
 Cc: Maíra Canal <mcanal@igalia.com>
 Cc: Iago Toral Quiroga <itoral@igalia.com>
 Cc: <stable@vger.kernel.org> # v6.8+
 Reviewed-by: Maíra Canal <mcanal@igalia.com>
 ---
- drivers/gpu/drm/v3d/v3d_submit.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/gpu/drm/v3d/v3d_submit.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
-index 50be4e8a7512..9a3e32075ebe 100644
+index 9a3e32075ebe..4cdfabbf4964 100644
 --- a/drivers/gpu/drm/v3d/v3d_submit.c
 +++ b/drivers/gpu/drm/v3d/v3d_submit.c
-@@ -498,6 +498,10 @@ v3d_get_cpu_timestamp_query_params(struct drm_file *file_priv,
+@@ -710,6 +710,10 @@ v3d_get_cpu_reset_performance_params(struct drm_file *file_priv,
  		}
  
- 		job->timestamp_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
-+		if (!job->timestamp_query.queries[i].syncobj) {
+ 		job->performance_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
++		if (!job->performance_query.queries[i].syncobj) {
 +			err = -ENOENT;
 +			goto error;
 +		}
  	}
- 	job->timestamp_query.count = timestamp.count;
- 
-@@ -552,6 +556,10 @@ v3d_get_cpu_reset_timestamp_params(struct drm_file *file_priv,
+ 	job->performance_query.count = reset.count;
+ 	job->performance_query.nperfmons = reset.nperfmons;
+@@ -790,6 +794,10 @@ v3d_get_cpu_copy_performance_query_params(struct drm_file *file_priv,
  		}
  
- 		job->timestamp_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
-+		if (!job->timestamp_query.queries[i].syncobj) {
+ 		job->performance_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
++		if (!job->performance_query.queries[i].syncobj) {
 +			err = -ENOENT;
 +			goto error;
 +		}
  	}
- 	job->timestamp_query.count = reset.count;
- 
-@@ -616,6 +624,10 @@ v3d_get_cpu_copy_query_results_params(struct drm_file *file_priv,
- 		}
- 
- 		job->timestamp_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
-+		if (!job->timestamp_query.queries[i].syncobj) {
-+			err = -ENOENT;
-+			goto error;
-+		}
- 	}
- 	job->timestamp_query.count = copy.count;
- 
+ 	job->performance_query.count = copy.count;
+ 	job->performance_query.nperfmons = copy.nperfmons;
 -- 
 2.44.0
 
