@@ -1,126 +1,195 @@
-Return-Path: <stable+bounces-59138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62B8C92EC3A
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 18:04:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AF9392EC48
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 18:07:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 192441F22781
-	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 16:04:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B01931F24A54
+	for <lists+stable@lfdr.de>; Thu, 11 Jul 2024 16:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD2316C6B7;
-	Thu, 11 Jul 2024 16:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DD015957E;
+	Thu, 11 Jul 2024 16:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YTrhPskK"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="M9arS0BK";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ma7Ss06n"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3F616B392
-	for <stable@vger.kernel.org>; Thu, 11 Jul 2024 16:04:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AD916C69E;
+	Thu, 11 Jul 2024 16:07:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720713854; cv=none; b=YrH8/hs4Czbbnto+K6UYfuoExgJJg5uq0CDNnPpWeuQYT3r1Pg9z5qVKgskmN9+OkcDcoIQQdfU17K77E7eUn++Exa5T5FP/BZzsNZnF1c4/P6tm9KqYETVw5NyYUUv+epan4jnJD1yDpthCfNyoHIEag+g2z1WtvonfyNZ6YLU=
+	t=1720714022; cv=none; b=tQedCMh0EhOfum9aA8uYCRLZM20q+oovbC7PIX1Oa++EFZxSzoRGbNkx85Uqw/bHeHb1iKan/n+QrU03spaDWhWp9ij0N16PHtdyGmPwzjppUIYgS8kkUUSUI+cAe8Z4dbNrdeZZBNqyPh9dmPB5l3yDcO4qo9mNhHfB9XEE8Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720713854; c=relaxed/simple;
-	bh=UlomuCi2jufaKAgRER7mFTLXjMfqKIuCEo1u/GmUxXc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HCW3EUOOJrtaWLjc/dAzdRfasrphUG0KgBRIHfSD3evG4S3oKWuBoKyolZ4lSNnJJI3YW2cyL0NU1U29umFXpT9ylQncIJV3cVjTYFP0zCafpDzIhMKxC0E0mC1Vr9a9hHn74rqEhN08USCeSsN0AdGWuKjrPnL+VhfMsC6bLfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YTrhPskK; arc=none smtp.client-ip=209.85.160.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-25957dfd971so534655fac.0
-        for <stable@vger.kernel.org>; Thu, 11 Jul 2024 09:04:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720713852; x=1721318652; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=jJRhE3D3xf0203P+ET/Sk8dDphxVA1D2zZsW0yadFHg=;
-        b=YTrhPskKSSzbEcmULdSbVD7301IETT7/a2O7cpB4J+LEu75veXBb3eR9Wyir1nlfLk
-         XC3SPDhsTXl2zxX1cdAhdfex6J5CmJcB0vSv2Y309yIYLeuV5ozUmmTt5yKLQgMr9HdN
-         r7xkQg9u4UIlbuQzIuh6yrH3sB1arBzd2rSBCe4bHmLPeb8x/3egyF+nwnUGY5bP2seA
-         PhrUmyOdGgMc9F6OnUiGH+Xpq0m3YdLhx6Gz4VRQnNt0L9JSZCGcWMiklKiBKHagpTxZ
-         z2hkoon+BVh3sYPAwhwzGVhQgnPrxGrhC88pHKtS2+iQ4wLofH6unjXmS5ea6cXpyHoc
-         op5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720713852; x=1721318652;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jJRhE3D3xf0203P+ET/Sk8dDphxVA1D2zZsW0yadFHg=;
-        b=msyhkqT0DgXSsbqbF98cVdoY/8NExTKEYwf4oujyYORxxrzlS7BxEdLDne9/y8LHOm
-         giKYL4opWTv2Y172zmldwFdLTWP9nSPZQQ3ab7ePKWaSjL7r3xrEl58J1/5Cd52IDAaw
-         ptlqqwi677vmLqocyN2hTRfxgg5wBq2gm8V/MDM/7agohuFGljDDx7yJzWrWON2YXgSv
-         U+3s5bPJrONSBrDNjI1NDYiwz33RXVHk36znQfsLrjg0go4TumOuuAh/vodUCkAGzjNW
-         HQQdynZpFN5LdYe4UrCnAijho8uCBh8lZr657F2uN/DQK5Fwu36XuhdZFPGQkpDehf1M
-         y77w==
-X-Forwarded-Encrypted: i=1; AJvYcCXW4Q7t6Nsv4iP4xiNXLw4RIAQziBoofPxr5nTQvSueRG/dRtAKs5qWkB+M+FRyVpxFsDcMdN6wrDRG9dMtQHIBctOIaLyI
-X-Gm-Message-State: AOJu0Yxwq3+i8vBgZDztr9oQYjf0PNzUUis8E42Naf1wQTjwY94q/mOr
-	09jBYKpRsxLMJ5NOuNO010C8o7BQxZQzS3DalZlxPMCrn3wzxNCIINXjar2BlH8WCh79Z8AzkRc
-	4ZQ3giYddnZ/a2EEjEfhkA/CtjNxr6+TnVV81MQ==
-X-Google-Smtp-Source: AGHT+IHuIlKldLtTOQoLFnrewN3z8O8n69aqt+rXEcv+GsAIFjWQw6LCkcziQCx6eaN3xVdkr1up+9hn6/jeaKsoh+A=
-X-Received: by 2002:a05:6870:9727:b0:25e:1817:e4ac with SMTP id
- 586e51a60fabf-25eaec16f18mr7346929fac.42.1720713852312; Thu, 11 Jul 2024
- 09:04:12 -0700 (PDT)
+	s=arc-20240116; t=1720714022; c=relaxed/simple;
+	bh=k/cUo7dH3Eo5j9NZX+3QsVBiaKAvS7c6muMxFDyM3Kg=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=S3SV0sNZylSSvk0jBRVayEj6uBe8QwYEQASCs11HoS+vnOSzhH3KrHabAMMAmrZ88j5v1Oalu6jG4miEb5cQA8WQwJc5rXGGG8CuawFoJUKMUm0R7DU6QqrMQMi8o9oxiM7CA7VVsxCav7i4hrBl4YhWjniWD+ftfNkgiTfkLTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=M9arS0BK; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ma7Ss06n; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 11 Jul 2024 16:06:58 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1720714018;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oAGDyZyfCkgG40wlqg0n4WYmBPMmUk6LdRnbM3J6A/8=;
+	b=M9arS0BKaHSrRdkGVOZ3J83FGdUF6uRtNGeR0m63EijHfCrN6H6POGpfjZkhgNccsr/Zyu
+	FEAdqTWoJgNh05/FXzhuuyGxHedIwdVL4Hq8brKYY5/w2KiEG1tkIwgssP41agRx5HJBHt
+	HyiYgfB9E5RQg8K+QITKDTJ3eh+3qu+1dIzJcDKL+tu/HHeNQ2EV++hUnwGzYCXpOyyzJj
+	Vc13kufI9uWnAC5DRvI7A3W70GlbRc1opIhtHROkKS8z1nQiQdfL96or6M8JMGNMFgt8n3
+	wYTvT+Dr0jvAvpv72SsuG+voXPBiC5fgJ162prvh2x9jcuXVR8ovDZIUuvQ2Lg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1720714018;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oAGDyZyfCkgG40wlqg0n4WYmBPMmUk6LdRnbM3J6A/8=;
+	b=Ma7Ss06nNOtx3RWA9rtSsrTSEtzY2zqrKOTLRUF+/47LQbQmukotb6ihaEb9hwcotINnf/
+	rQE3gLK9HymECqAA==
+From: "tip-bot2 for Yu Liao" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/core] tick/broadcast: Make takeover of broadcast hrtimer
+ reliable
+Cc: Yu Liao <liaoyu15@huawei.com>, Thomas Gleixner <tglx@linutronix.de>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240711124843.64167-1-liaoyu15@huawei.com>
+References: <20240711124843.64167-1-liaoyu15@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240711081838.47256-1-bastien.curutchet@bootlin.com> <20240711081838.47256-2-bastien.curutchet@bootlin.com>
-In-Reply-To: <20240711081838.47256-2-bastien.curutchet@bootlin.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 11 Jul 2024 18:03:36 +0200
-Message-ID: <CAPDyKFqzR4VJUHW5EHf7-vzZ=TNPDAngFYQfksduqgcx1qEAkg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mmc: davinci_mmc: Prevent transmitted data size from
- exceeding sgm's length
-To: Bastien Curutchet <bastien.curutchet@bootlin.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, linux-mmc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	Herve Codina <herve.codina@bootlin.com>, 
-	Christopher Cordahi <christophercordahi@nanometrics.ca>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <172071401838.2215.15659302983448251280.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, 11 Jul 2024 at 10:18, Bastien Curutchet
-<bastien.curutchet@bootlin.com> wrote:
->
-> No check is done on the size of the data to be transmiited. This causes
-> a kernel panic when this size exceeds the sg_miter's length.
->
-> Limit the number of transmitted bytes to sgm->length.
->
-> Cc: stable@vger.kernel.org
-> Fixes: ed01d210fd91 ("mmc: davinci_mmc: Use sg_miter for PIO")
-> Signed-off-by: Bastien Curutchet <bastien.curutchet@bootlin.com>
+The following commit has been merged into the timers/core branch of tip:
 
-Applied for fixes, thanks!
+Commit-ID:     f7d43dd206e7e18c182f200e67a8db8c209907fa
+Gitweb:        https://git.kernel.org/tip/f7d43dd206e7e18c182f200e67a8db8c209907fa
+Author:        Yu Liao <liaoyu15@huawei.com>
+AuthorDate:    Thu, 11 Jul 2024 20:48:43 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 11 Jul 2024 18:00:24 +02:00
 
-Kind regards
-Uffe
+tick/broadcast: Make takeover of broadcast hrtimer reliable
 
+Running the LTP hotplug stress test on a aarch64 machine results in
+rcu_sched stall warnings when the broadcast hrtimer was owned by the
+un-plugged CPU. The issue is the following:
 
-> ---
->  drivers/mmc/host/davinci_mmc.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/mmc/host/davinci_mmc.c b/drivers/mmc/host/davinci_mmc.c
-> index d7427894e0bc..c302eb380e42 100644
-> --- a/drivers/mmc/host/davinci_mmc.c
-> +++ b/drivers/mmc/host/davinci_mmc.c
-> @@ -224,6 +224,9 @@ static void davinci_fifo_data_trans(struct mmc_davinci_host *host,
->         }
->         p = sgm->addr;
->
-> +       if (n > sgm->length)
-> +               n = sgm->length;
-> +
->         /* NOTE:  we never transfer more than rw_threshold bytes
->          * to/from the fifo here; there's no I/O overlap.
->          * This also assumes that access width( i.e. ACCWD) is 4 bytes
-> --
-> 2.45.0
->
+CPU1 (owns the broadcast hrtimer)	CPU2
+
+				tick_broadcast_enter()
+				  // shutdown local timer device
+				  broadcast_shutdown_local()
+				...
+				tick_broadcast_exit()
+				  clockevents_switch_state(dev, CLOCK_EVT_STATE_ONESHOT)
+				  // timer device is not programmed
+				  cpumask_set_cpu(cpu, tick_broadcast_force_mask)
+
+				initiates offlining of CPU1
+take_cpu_down()
+/*
+ * CPU1 shuts down and does not
+ * send broadcast IPI anymore
+ */
+				takedown_cpu()
+				  hotplug_cpu__broadcast_tick_pull()
+				    // move broadcast hrtimer to this CPU
+				    clockevents_program_event()
+				      bc_set_next()
+					hrtimer_start()
+					/*
+					 * timer device is not programmed
+					 * because only the first expiring
+					 * timer will trigger clockevent
+					 * device reprogramming
+					 */
+
+What happens is that CPU2 exits broadcast mode with force bit set, then the
+local timer device is not reprogrammed and CPU2 expects to receive the
+expired event by the broadcast IPI. But this does not happen because CPU1
+is offlined by CPU2. CPU switches the clockevent device to ONESHOT state,
+but does not reprogram the device.
+
+The subsequent reprogramming of the hrtimer broadcast device does not
+program the clockevent device of CPU2 either because the pending expiry
+time is already in the past and the CPU expects the event to be delivered.
+As a consequence all CPUs which wait for a broadcast event to be delivered
+are stuck forever.
+
+Fix this issue by reprogramming the local timer device if the broadcast
+force bit of the CPU is set so that the broadcast hrtimer is delivered.
+
+[ tglx: Massage comment and change log. Add Fixes tag ]
+
+Fixes: 989dcb645ca7 ("tick: Handle broadcast wakeup of multiple cpus")
+Signed-off-by: Yu Liao <liaoyu15@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240711124843.64167-1-liaoyu15@huawei.com
+---
+ kernel/time/tick-broadcast.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/kernel/time/tick-broadcast.c b/kernel/time/tick-broadcast.c
+index 771d1e0..b484309 100644
+--- a/kernel/time/tick-broadcast.c
++++ b/kernel/time/tick-broadcast.c
+@@ -1141,6 +1141,7 @@ void tick_broadcast_switch_to_oneshot(void)
+ #ifdef CONFIG_HOTPLUG_CPU
+ void hotplug_cpu__broadcast_tick_pull(int deadcpu)
+ {
++	struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
+ 	struct clock_event_device *bc;
+ 	unsigned long flags;
+ 
+@@ -1148,6 +1149,28 @@ void hotplug_cpu__broadcast_tick_pull(int deadcpu)
+ 	bc = tick_broadcast_device.evtdev;
+ 
+ 	if (bc && broadcast_needs_cpu(bc, deadcpu)) {
++		/*
++		 * If the broadcast force bit of the current CPU is set,
++		 * then the current CPU has not yet reprogrammed the local
++		 * timer device to avoid a ping-pong race. See
++		 * ___tick_broadcast_oneshot_control().
++		 *
++		 * If the broadcast device is hrtimer based then
++		 * programming the broadcast event below does not have any
++		 * effect because the local clockevent device is not
++		 * running and not programmed because the broadcast event
++		 * is not earlier than the pending event of the local clock
++		 * event device. As a consequence all CPUs waiting for a
++		 * broadcast event are stuck forever.
++		 *
++		 * Detect this condition and reprogram the cpu local timer
++		 * device to avoid the starvation.
++		 */
++		if (tick_check_broadcast_expired()) {
++			cpumask_clear_cpu(smp_processor_id(), tick_broadcast_force_mask);
++			tick_program_event(td->evtdev->next_event, 1);
++		}
++
+ 		/* This moves the broadcast assignment to this CPU: */
+ 		clockevents_program_event(bc, bc->next_event, 1);
+ 	}
 
