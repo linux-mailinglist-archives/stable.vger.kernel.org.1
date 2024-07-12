@@ -1,110 +1,143 @@
-Return-Path: <stable+bounces-59213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56A3B930217
-	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 00:19:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36DD893023B
+	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 00:47:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF45CB22812
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 22:19:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFF3F1F22F16
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 22:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B99312DD95;
-	Fri, 12 Jul 2024 22:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1AAA77A1E;
+	Fri, 12 Jul 2024 22:47:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MrdPFDm6"
 X-Original-To: stable@vger.kernel.org
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A59151C21;
-	Fri, 12 Jul 2024 22:19:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFFB73501;
+	Fri, 12 Jul 2024 22:47:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720822757; cv=none; b=fIwHvVOliUqQ2ELR0WHnSwIkgNK195/4jQt+K0IGntNpWNNNWCn7I5HXsFSEyVYy/x0TFgY9rlsAFXGkqJ+rkNGxpsXc4PU9PK6MR+pMZLFJepjCH6QArype858NsnoZJb+Y1mVnHPbZPA6NgDKkdWWtaTyYnl3HjMAJ2NvPn+4=
+	t=1720824464; cv=none; b=d6VfzEb0ptszyu963Mg+EB1pS7RTEh1pHl+Y+Vo0wDaBNTU12qXTcLZGgQ5QDEWhOcITxLDWS6uzN8JuwabNjRIhNan1qEfJzFc5/LHD0SgLrZV81ao9b3zCBk4UCdaAF2/cEUo+RT++n4xfap5oQYf4xNR8xcP6xgM5HmyFk6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720822757; c=relaxed/simple;
-	bh=h717j1pPM+dmnuB78dJ34+L723yB4wJVzBpp75WAGus=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pgQerEZJmynf2MWIP15RnpKntuUhhFVberwF6LXhN1x2gQqNxL7YgWuRxndp/Ef+aIGUrVBebMhOmq/TOqACCAD9IrzNpe1in2P1XdVNfJu3NfT6fuJGFufgeXl9l2Znai4yM/wdQsNsax2/ZjCBIin00ZlKAB5VGObAwSP2rSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
-Received: from fsav313.sakura.ne.jp (fsav313.sakura.ne.jp [153.120.85.144])
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 46CMIgf6064247;
-	Sat, 13 Jul 2024 07:18:42 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav313.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav313.sakura.ne.jp);
- Sat, 13 Jul 2024 07:18:42 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav313.sakura.ne.jp)
-Received: from [192.168.1.6] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-	(authenticated bits=0)
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 46CMIf83064242
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-	Sat, 13 Jul 2024 07:18:42 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <dfcb0456-dd75-4b9f-9cc8-f0658cd9ce29@I-love.SAKURA.ne.jp>
-Date: Sat, 13 Jul 2024 07:18:41 +0900
+	s=arc-20240116; t=1720824464; c=relaxed/simple;
+	bh=gRiU7/EA212cMOIQDo8UkzabmqYFQWqDAGTwQzizaK8=;
+	h=Date:To:From:Subject:Message-Id; b=mq+pGmlyAs6fZq94qv6yUsxabkyFg/Wi97UeFU9EToj6Z7t+HMt0YNJjw8Zz8rfvVOy6IoYPRxaiD9fokBKw5C1RmE+b9hXC3NHEjwww/gNAB3hqh6hl8FFQB7IspRc13FQumBB6iHObqEXEK7nRcIxFobZJ0TLinHWbg5B3baQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=MrdPFDm6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01FF7C32782;
+	Fri, 12 Jul 2024 22:47:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1720824464;
+	bh=gRiU7/EA212cMOIQDo8UkzabmqYFQWqDAGTwQzizaK8=;
+	h=Date:To:From:Subject:From;
+	b=MrdPFDm6KMDv1vtDtqMdZVGF4mo62x/vftOQ7FpHuwPRhGowOEGLGCCUpu2H3vkV6
+	 VokYNjgqMcyao1nMCpuR8eiGwGL6TF1o1OnkYiHEU0Jn067V7RZfHF1VrftmNFmAI4
+	 JMzSJtiyQGKlY5UuMIwgYVnNKXCgKtStYjEJiHu4=
+Date: Fri, 12 Jul 2024 15:47:43 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shy828301@gmail.com,ioworker0@gmail.com,david@redhat.com,corbet@lwn.net,baolin.wang@linux.alibaba.com,baohua@kernel.org,ryan.roberts@arm.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [folded-merged] mm-fix-khugepaged-activation-policy-v3.patch removed from -mm tree
+Message-Id: <20240712224744.01FF7C32782@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] driver core: Fix uevent_show() vs driver detach race
-To: Dan Williams <dan.j.williams@intel.com>, gregkh@linuxfoundation.org
-Cc: syzbot+4762dd74e32532cda5ff@syzkaller.appspotmail.com,
-        stable@vger.kernel.org, Ashish Sangwan <a.sangwan@samsung.com>,
-        Namjae Jeon <namjae.jeon@samsung.com>,
-        Dirk Behme <dirk.behme@de.bosch.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-cxl@vger.kernel.org
-References: <172081332794.577428.9738802016494057132.stgit@dwillia2-xfh.jf.intel.com>
-Content-Language: en-US
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-In-Reply-To: <172081332794.577428.9738802016494057132.stgit@dwillia2-xfh.jf.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 2024/07/13 4:42, Dan Williams wrote:
-> @@ -2668,8 +2670,12 @@ static int dev_uevent(const struct kobject *kobj, struct kobj_uevent_env *env)
->  	if (dev->type && dev->type->name)
->  		add_uevent_var(env, "DEVTYPE=%s", dev->type->name);
->  
-> -	if (dev->driver)
-> -		add_uevent_var(env, "DRIVER=%s", dev->driver->name);
-> +	/* Synchronize with module_remove_driver() */
-> +	rcu_read_lock();
-> +	driver = READ_ONCE(dev->driver);
-> +	if (driver)
-> +		add_uevent_var(env, "DRIVER=%s", driver->name);
-> +	rcu_read_unlock();
->  
 
-Given that read of dev->driver is protected using RCU,
+The quilt patch titled
+     Subject: mm-fix-khugepaged-activation-policy-v3
+has been removed from the -mm tree.  Its filename was
+     mm-fix-khugepaged-activation-policy-v3.patch
 
-> @@ -97,6 +98,9 @@ void module_remove_driver(struct device_driver *drv)
->  	if (!drv)
->  		return;
->  
+This patch was dropped because it was folded into mm-fix-khugepaged-activation-policy.patch
 
-where is
+------------------------------------------------------
+From: Ryan Roberts <ryan.roberts@arm.com>
+Subject: mm-fix-khugepaged-activation-policy-v3
+Date: Fri, 5 Jul 2024 11:28:48 +0100
 
-	dev->driver = NULL;
+- Make hugepage_pmd_enabled() out-of-line static in khugepaged.c (per Andrew)
+- Refactor hugepage_pmd_enabled() for better readability (per Andrew)
 
-performed prior to
+Link: https://lkml.kernel.org/r/20240705102849.2479686-1-ryan.roberts@arm.com
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Fixes: 3485b88390b0 ("mm: thp: introduce multi-size THP sysfs interface")
+Closes: https://lore.kernel.org/linux-mm/7a0bbe69-1e3d-4263-b206-da007791a5c4@redhat.com/
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Lance Yang <ioworker0@gmail.com>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-> +	/* Synchronize with dev_uevent() */
-> +	synchronize_rcu();
-> +
+ include/linux/huge_mm.h |   13 -------------
+ mm/khugepaged.c         |   20 ++++++++++++++++++++
+ 2 files changed, 20 insertions(+), 13 deletions(-)
 
-this synchronize_rcu(), in order to make sure that
-READ_ONCE(dev->driver) in dev_uevent() observes NULL?
+--- a/include/linux/huge_mm.h~mm-fix-khugepaged-activation-policy-v3
++++ a/include/linux/huge_mm.h
+@@ -128,19 +128,6 @@ static inline bool hugepage_global_alway
+ 			(1<<TRANSPARENT_HUGEPAGE_FLAG);
+ }
+ 
+-static inline bool hugepage_pmd_enabled(void)
+-{
+-	/*
+-	 * We cover both the anon and the file-backed case here; file-backed
+-	 * hugepages, when configured in, are determined by the global control.
+-	 * Anon pmd-sized hugepages are determined by the pmd-size control.
+-	 */
+-	return (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && hugepage_global_enabled()) ||
+-	       test_bit(PMD_ORDER, &huge_anon_orders_always) ||
+-	       test_bit(PMD_ORDER, &huge_anon_orders_madvise) ||
+-	       (test_bit(PMD_ORDER, &huge_anon_orders_inherit) && hugepage_global_enabled());
+-}
+-
+ static inline int highest_order(unsigned long orders)
+ {
+ 	return fls_long(orders) - 1;
+--- a/mm/khugepaged.c~mm-fix-khugepaged-activation-policy-v3
++++ a/mm/khugepaged.c
+@@ -413,6 +413,26 @@ static inline int hpage_collapse_test_ex
+ 	       test_bit(MMF_DISABLE_THP, &mm->flags);
+ }
+ 
++static bool hugepage_pmd_enabled(void)
++{
++	/*
++	 * We cover both the anon and the file-backed case here; file-backed
++	 * hugepages, when configured in, are determined by the global control.
++	 * Anon pmd-sized hugepages are determined by the pmd-size control.
++	 */
++	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
++	    hugepage_global_enabled())
++		return true;
++	if (test_bit(PMD_ORDER, &huge_anon_orders_always))
++		return true;
++	if (test_bit(PMD_ORDER, &huge_anon_orders_madvise))
++		return true;
++	if (test_bit(PMD_ORDER, &huge_anon_orders_inherit) &&
++	    hugepage_global_enabled())
++		return true;
++	return false;
++}
++
+ void __khugepaged_enter(struct mm_struct *mm)
+ {
+ 	struct khugepaged_mm_slot *mm_slot;
+_
 
->  	sysfs_remove_link(&drv->p->kobj, "module");
->  
->  	if (drv->owner)
-> 
+Patches currently in -mm which might be from ryan.roberts@arm.com are
+
+mm-fix-khugepaged-activation-policy.patch
+mm-shmem-rename-mthp-shmem-counters.patch
 
 
