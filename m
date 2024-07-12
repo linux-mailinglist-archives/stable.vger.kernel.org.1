@@ -1,93 +1,69 @@
-Return-Path: <stable+bounces-59176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC53492F372
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 03:30:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 381D192F4AE
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 06:40:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18115B20F78
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 01:30:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9CD1B21399
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 04:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACBA52C95;
-	Fri, 12 Jul 2024 01:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA8815E96;
+	Fri, 12 Jul 2024 04:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="UFepnNHQ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IhDMb8lh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C27C20E6
-	for <stable@vger.kernel.org>; Fri, 12 Jul 2024 01:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F29F1401B
+	for <stable@vger.kernel.org>; Fri, 12 Jul 2024 04:40:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720747837; cv=none; b=OHOh013O+iYRLlmhH5VZhdcOhqUQtWY1RiZShcvLJb/DnJKVOpx0CAibaHVGApjYOY0vNyclJKJmTSDAtnU2fOfj9kudwFgVFZIr0f4ju2V3IA42hdoNA+OWG+bj4+Mg6pXpwU579F0IlP+oXgNaEuheEXgwk/XATeQUubVLLTo=
+	t=1720759244; cv=none; b=RCMqUdg2Vkp7s/kBO8+LLuAyyNG1L1I2V+dsrZINjNks6KomhMh1hkxvomF0DIXjPCWyVH7wQ1iN6Tgs+bvEM7gOvMPnorEhh+OERAMnabSSyHpCJ/j/oGxBXkKVVdkLRENmzMFjZcAPRvO0ovtquY44qToPFBSZcxg2BdJfp0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720747837; c=relaxed/simple;
-	bh=NlCD2N/GTA25z+Lv3QJ4ioPnzGqSDCz42FqtGeEExpw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fWEeIRS1Hm61ikR3zkZSX864663MFIk0OUNwW2y/reaYT/qIjlfvoAxtkTNU6YWeemgP2hscuRTAgKTKAQUuQI/lgAI/24cPCkBlN3Tvj8UoAXgauTCzO7LlEdIdCIIr8Fxhj7FvREksj+jJb5OWbsTG7HAo96Ytbb4t/Do5nm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=UFepnNHQ; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	s=arc-20240116; t=1720759244; c=relaxed/simple;
+	bh=myd6qqZHtPERESyI/LBQO0jljEE3yI5d+GqOjZPy03s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g9atLk4ubqnygqJ+5FnZzKxuXzAEpbMM7Ou5/r3lF/sEYxpmX+OBiPPGkSROIndSKOMm+aKZSqr4llRmB2bP6hlS+AE/cCurRrIMeFjeM2pr85r/a8rpOyraMuBEQ3zRA4WUe6AGEys/SCCH2ZYZc2CtQ9U665hyJPEcQkU+4qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IhDMb8lh; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1720759241;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=c/fIAAm4engsYe1vxstOXFdy7qlJOMOzCDDhYdd8rr8=;
+	b=IhDMb8lhq0d62XZmvBfaUVW1xqlXYPz5cuE0+HI7PzZhSImT3aMEv1WbU1STFua7lOOv0I
+	ecynBfJwYGAbWTtVSPLRCLpGnch32HRa2fRsPREz7/C5ssyKxLg8oxJaSaX6cccHmhuu72
+	EZeu+DlbPKmpfFcAO3vtqfSNdcobD6w=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-604-9QHWUMkyNkarQlL1F_yfgA-1; Fri,
+ 12 Jul 2024 00:40:32 -0400
+X-MC-Unique: 9QHWUMkyNkarQlL1F_yfgA-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 71A163F671
-	for <stable@vger.kernel.org>; Fri, 12 Jul 2024 01:30:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1720747833;
-	bh=KlZHJQ1gZb5CHVxW02hQaRdYCM2wgPQ+hnanLrc4+9g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
-	b=UFepnNHQfPcmZ4JWHsvAMkvkvWkM1pcjtRP/xDtHksN1Tjjosq+QS23y4cNaRFGUn
-	 mtMbhVcFpWvpKH5VViP5GJ9NomzHgoh7tRI4N23GZMUWGNNBOb1chf8PEIOucZQ2Lu
-	 bKE/j6rPVQ2E7uwNtyym1aw+I7PDRTL7ARbmEf5ynmRhiWToN74PVuG+WWhFXkN5kf
-	 KtbfV90eDAVRf/Lk/10SDnd3IphveI6elPx5SLbY323kjI4azw/1DJnTHZBb8C/80c
-	 0J4FYzdaHfFlsQ14/bM179SzWB3HWvE94PcJL80tjMzmfRZ/16pCViV7lRQ2Mpic+F
-	 vAot5HdKEIWWg==
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-70af603db29so1253564b3a.3
-        for <stable@vger.kernel.org>; Thu, 11 Jul 2024 18:30:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720747831; x=1721352631;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KlZHJQ1gZb5CHVxW02hQaRdYCM2wgPQ+hnanLrc4+9g=;
-        b=RIFfZC8GjR7ibyRd1+sa5WBN1SnqWGrwih5ufH37m+QR7DKCnxPLHsDFm3iIdMQIFC
-         wSRXpzZcRwIGnn9GJYPfFch7gHFDsdM/6ARgNFmuZn3EYuXC2HRl4RegGqylYdW2hNOz
-         ZIv0ghCBxc8rC0BIST8XQ/PfGtz0dI6YKiDHU/5qLFvXB1xvrIazEU0Go+qz2uecvlcL
-         E3xldCXt+GLBkWwLKDDSDsxfMh6VspZ+GKvT7aOmSM6mZfNIyxRPmiZ1yXPKbPc7//VG
-         cmeOJnQJ89vyRB7c+CVjNwSJeY7lSbhX+K3TkMnEr6xmi9Xl2V2RVZHppdEKrgAyIcWT
-         lh1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVQ2Vi5Mzrf6ZaDYKp9MwMflEO9Lz6z/4KlH6C3jxMHT+IBeGaGE5b9ySXLp/T20NkRCwJwmLGtRo2BWURVnzqnKDi/yqWD
-X-Gm-Message-State: AOJu0YzQ4JgSF0BweS9J5ZjXhN+r9o/byGjMyQfUSC2B/YowYCYM+v6u
-	S3oyJP844QJxS1c9WkHEI5TM3xAUJ049dXPQSzr1hb9PptZOYT0YvXytFjYXQ1CInZkpe4+PKBu
-	NJ9Wldmi0nkIhu1MlF+8K4HLJ6F6lbNp2VqTq9SxZXo5ktugHPC05ZuoR1hGMSe4SvLSrmg==
-X-Received: by 2002:a05:6a00:1142:b0:706:5cd9:655d with SMTP id d2e1a72fcca58-70b435f0138mr12853714b3a.22.1720747831460;
-        Thu, 11 Jul 2024 18:30:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH/ixhoVzGPJtCBK2hGPZAloXzsTCLG5S6o+60wt8uR9BFh6w0LpLnsU1SfNGIGVF6cQHuZGg==
-X-Received: by 2002:a05:6a00:1142:b0:706:5cd9:655d with SMTP id d2e1a72fcca58-70b435f0138mr12853691b3a.22.1720747830989;
-        Thu, 11 Jul 2024 18:30:30 -0700 (PDT)
-Received: from chengendu.. (2001-b011-381c-1f42-c48a-cb4d-0ee1-65a8.dynamic-ip6.hinet.net. [2001:b011:381c:1f42:c48a:cb4d:ee1:65a8])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b4398e086sm6317024b3a.164.2024.07.11.18.30.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jul 2024 18:30:30 -0700 (PDT)
-From: Chengen Du <chengen.du@canonical.com>
-To: willemdebruijn.kernel@gmail.com
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	kaber@trash.net,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chengen Du <chengen.du@canonical.com>,
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 541AD19560AA;
+	Fri, 12 Jul 2024 04:40:31 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.72.116.134])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4425A19560AE;
+	Fri, 12 Jul 2024 04:40:26 +0000 (UTC)
+From: xiubli@redhat.com
+To: ceph-devel@vger.kernel.org,
+	idryomov@gmail.com
+Cc: vshankar@redhat.com,
+	mchangir@redhat.com,
+	Xiubo Li <xiubli@redhat.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v9] af_packet: Handle outgoing VLAN packets without hardware offloading
-Date: Fri, 12 Jul 2024 09:29:56 +0800
-Message-ID: <20240712012956.10408-1-chengen.du@canonical.com>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH v2] ceph: force sending a cap update msg back to MDS for revoke op
+Date: Fri, 12 Jul 2024 12:40:19 +0800
+Message-ID: <20240712044019.1043533-1-xiubli@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,170 +71,153 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-The issue initially stems from libpcap. The ethertype will be overwritten
-as the VLAN TPID if the network interface lacks hardware VLAN offloading.
-In the outbound packet path, if hardware VLAN offloading is unavailable,
-the VLAN tag is inserted into the payload but then cleared from the sk_buff
-struct. Consequently, this can lead to a false negative when checking for
-the presence of a VLAN tag, causing the packet sniffing outcome to lack
-VLAN tag information (i.e., TCI-TPID). As a result, the packet capturing
-tool may be unable to parse packets as expected.
+From: Xiubo Li <xiubli@redhat.com>
 
-The TCI-TPID is missing because the prb_fill_vlan_info() function does not
-modify the tp_vlan_tci/tp_vlan_tpid values, as the information is in the
-payload and not in the sk_buff struct. The skb_vlan_tag_present() function
-only checks vlan_all in the sk_buff struct. In cooked mode, the L2 header
-is stripped, preventing the packet capturing tool from determining the
-correct TCI-TPID value. Additionally, the protocol in SLL is incorrect,
-which means the packet capturing tool cannot parse the L3 header correctly.
+If a client sends out a cap update dropping caps with the prior 'seq'
+just before an incoming cap revoke request, then the client may drop
+the revoke because it believes it's already released the requested
+capabilities.
 
-Link: https://github.com/the-tcpdump-group/libpcap/issues/1105
-Link: https://lore.kernel.org/netdev/20240520070348.26725-1-chengen.du@canonical.com/T/#u
-Fixes: 393e52e33c6c ("packet: deliver VLAN TCI to userspace")
+This causes the MDS to wait indefinitely for the client to respond
+to the revoke. It's therefore always a good idea to ack the cap
+revoke request with the bumped up 'seq'.
+
+Currently if the cap->issued equals to the newcaps the check_caps()
+will do nothing, we should force flush the caps.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Chengen Du <chengen.du@canonical.com>
+Link: https://tracker.ceph.com/issues/61782
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
 ---
- net/packet/af_packet.c | 86 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 84 insertions(+), 2 deletions(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index ea3ebc160e25..84e8884a77e3 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -538,6 +538,61 @@ static void *packet_current_frame(struct packet_sock *po,
- 	return packet_lookup_frame(po, rb, rb->head, status);
- }
- 
-+static u16 vlan_get_tci(struct sk_buff *skb, struct net_device *dev)
-+{
-+	struct vlan_hdr vhdr, *vh;
-+	u8 *skb_orig_data = skb->data;
-+	int skb_orig_len = skb->len;
-+	unsigned int header_len;
-+
-+	if (!dev)
-+		return 0;
-+
-+	/* In the SOCK_DGRAM scenario, skb data starts at the network
-+	 * protocol, which is after the VLAN headers. The outer VLAN
-+	 * header is at the hard_header_len offset in non-variable
-+	 * length link layer headers. If it's a VLAN device, the
-+	 * min_header_len should be used to exclude the VLAN header
-+	 * size.
-+	 */
-+	if (dev->min_header_len == dev->hard_header_len)
-+		header_len = dev->hard_header_len;
-+	else if (is_vlan_dev(dev))
-+		header_len = dev->min_header_len;
-+	else
-+		return 0;
-+
-+	skb_push(skb, skb->data - skb_mac_header(skb));
-+	vh = skb_header_pointer(skb, header_len, sizeof(vhdr), &vhdr);
-+	if (skb_orig_data != skb->data) {
-+		skb->data = skb_orig_data;
-+		skb->len = skb_orig_len;
-+	}
-+	if (unlikely(!vh))
-+		return 0;
-+
-+	return ntohs(vh->h_vlan_TCI);
-+}
-+
-+static __be16 vlan_get_protocol_dgram(struct sk_buff *skb)
-+{
-+	__be16 proto = skb->protocol;
-+
-+	if (unlikely(eth_type_vlan(proto))) {
-+		u8 *skb_orig_data = skb->data;
-+		int skb_orig_len = skb->len;
-+
-+		skb_push(skb, skb->data - skb_mac_header(skb));
-+		proto = __vlan_get_protocol(skb, proto, NULL);
-+		if (skb_orig_data != skb->data) {
-+			skb->data = skb_orig_data;
-+			skb->len = skb_orig_len;
-+		}
-+	}
-+
-+	return proto;
-+}
-+
- static void prb_del_retire_blk_timer(struct tpacket_kbdq_core *pkc)
+V2:
+- Improved the patch to force send the cap update only when no caps
+being used.
+
+ fs/ceph/caps.c  | 33 ++++++++++++++++++++++-----------
+ fs/ceph/super.h |  7 ++++---
+ 2 files changed, 26 insertions(+), 14 deletions(-)
+
+diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
+index 24c31f795938..b5473085a47b 100644
+--- a/fs/ceph/caps.c
++++ b/fs/ceph/caps.c
+@@ -2024,6 +2024,8 @@ bool __ceph_should_report_size(struct ceph_inode_info *ci)
+  *  CHECK_CAPS_AUTHONLY - we should only check the auth cap
+  *  CHECK_CAPS_FLUSH - we should flush any dirty caps immediately, without
+  *    further delay.
++ *  CHECK_CAPS_FLUSH_FORCE - we should flush any caps immediately, without
++ *    further delay.
+  */
+ void ceph_check_caps(struct ceph_inode_info *ci, int flags)
  {
- 	del_timer_sync(&pkc->retire_blk_timer);
-@@ -1007,10 +1062,16 @@ static void prb_clear_rxhash(struct tpacket_kbdq_core *pkc,
- static void prb_fill_vlan_info(struct tpacket_kbdq_core *pkc,
- 			struct tpacket3_hdr *ppd)
- {
-+	struct packet_sock *po = container_of(pkc, struct packet_sock, rx_ring.prb_bdqc);
-+
- 	if (skb_vlan_tag_present(pkc->skb)) {
- 		ppd->hv1.tp_vlan_tci = skb_vlan_tag_get(pkc->skb);
- 		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->vlan_proto);
- 		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
-+	} else if (unlikely(po->sk.sk_type == SOCK_DGRAM && eth_type_vlan(pkc->skb->protocol))) {
-+		ppd->hv1.tp_vlan_tci = vlan_get_tci(pkc->skb, pkc->skb->dev);
-+		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->protocol);
-+		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
- 	} else {
- 		ppd->hv1.tp_vlan_tci = 0;
- 		ppd->hv1.tp_vlan_tpid = 0;
-@@ -2428,6 +2489,10 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
- 			h.h2->tp_vlan_tci = skb_vlan_tag_get(skb);
- 			h.h2->tp_vlan_tpid = ntohs(skb->vlan_proto);
- 			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
-+		} else if (unlikely(sk->sk_type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
-+			h.h2->tp_vlan_tci = vlan_get_tci(skb, skb->dev);
-+			h.h2->tp_vlan_tpid = ntohs(skb->protocol);
-+			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
- 		} else {
- 			h.h2->tp_vlan_tci = 0;
- 			h.h2->tp_vlan_tpid = 0;
-@@ -2457,7 +2522,8 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
- 	sll->sll_halen = dev_parse_header(skb, sll->sll_addr);
- 	sll->sll_family = AF_PACKET;
- 	sll->sll_hatype = dev->type;
--	sll->sll_protocol = skb->protocol;
-+	sll->sll_protocol = (sk->sk_type == SOCK_DGRAM) ?
-+		vlan_get_protocol_dgram(skb) : skb->protocol;
- 	sll->sll_pkttype = skb->pkt_type;
- 	if (unlikely(packet_sock_flag(po, PACKET_SOCK_ORIGDEV)))
- 		sll->sll_ifindex = orig_dev->ifindex;
-@@ -3482,7 +3548,8 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 		/* Original length was stored in sockaddr_ll fields */
- 		origlen = PACKET_SKB_CB(skb)->sa.origlen;
- 		sll->sll_family = AF_PACKET;
--		sll->sll_protocol = skb->protocol;
-+		sll->sll_protocol = (sock->type == SOCK_DGRAM) ?
-+			vlan_get_protocol_dgram(skb) : skb->protocol;
+@@ -2105,7 +2107,7 @@ void ceph_check_caps(struct ceph_inode_info *ci, int flags)
  	}
  
- 	sock_recv_cmsgs(msg, sk, skb);
-@@ -3539,6 +3606,21 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 			aux.tp_vlan_tci = skb_vlan_tag_get(skb);
- 			aux.tp_vlan_tpid = ntohs(skb->vlan_proto);
- 			aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
-+		} else if (unlikely(sock->type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
-+			struct sockaddr_ll *sll = &PACKET_SKB_CB(skb)->sa.ll;
-+			struct net_device *dev;
+ 	doutc(cl, "%p %llx.%llx file_want %s used %s dirty %s "
+-	      "flushing %s issued %s revoking %s retain %s %s%s%s\n",
++	      "flushing %s issued %s revoking %s retain %s %s%s%s%s\n",
+ 	     inode, ceph_vinop(inode), ceph_cap_string(file_wanted),
+ 	     ceph_cap_string(used), ceph_cap_string(ci->i_dirty_caps),
+ 	     ceph_cap_string(ci->i_flushing_caps),
+@@ -2113,7 +2115,8 @@ void ceph_check_caps(struct ceph_inode_info *ci, int flags)
+ 	     ceph_cap_string(retain),
+ 	     (flags & CHECK_CAPS_AUTHONLY) ? " AUTHONLY" : "",
+ 	     (flags & CHECK_CAPS_FLUSH) ? " FLUSH" : "",
+-	     (flags & CHECK_CAPS_NOINVAL) ? " NOINVAL" : "");
++	     (flags & CHECK_CAPS_NOINVAL) ? " NOINVAL" : "",
++	     (flags & CHECK_CAPS_FLUSH_FORCE) ? " FLUSH_FORCE" : "");
+ 
+ 	/*
+ 	 * If we no longer need to hold onto old our caps, and we may
+@@ -2223,6 +2226,9 @@ void ceph_check_caps(struct ceph_inode_info *ci, int flags)
+ 				goto ack;
+ 		}
+ 
++		if (flags & CHECK_CAPS_FLUSH_FORCE)
++			goto ack;
 +
-+			rcu_read_lock();
-+			dev = dev_get_by_index_rcu(sock_net(sk), sll->sll_ifindex);
-+			if (dev) {
-+				aux.tp_vlan_tci = vlan_get_tci(skb, dev);
-+				aux.tp_vlan_tpid = ntohs(skb->protocol);
-+				aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
-+			} else {
-+				aux.tp_vlan_tci = 0;
-+				aux.tp_vlan_tpid = 0;
-+			}
-+			rcu_read_unlock();
- 		} else {
- 			aux.tp_vlan_tci = 0;
- 			aux.tp_vlan_tpid = 0;
+ 		/* things we might delay */
+ 		if ((cap->issued & ~retain) == 0)
+ 			continue;     /* nope, all good */
+@@ -3518,6 +3524,8 @@ static void handle_cap_grant(struct inode *inode,
+ 	bool queue_invalidate = false;
+ 	bool deleted_inode = false;
+ 	bool fill_inline = false;
++	bool revoke_wait = false;
++	int flags = 0;
+ 
+ 	/*
+ 	 * If there is at least one crypto block then we'll trust
+@@ -3713,16 +3721,18 @@ static void handle_cap_grant(struct inode *inode,
+ 		      ceph_cap_string(cap->issued), ceph_cap_string(newcaps),
+ 		      ceph_cap_string(revoking));
+ 		if (S_ISREG(inode->i_mode) &&
+-		    (revoking & used & CEPH_CAP_FILE_BUFFER))
++		    (revoking & used & CEPH_CAP_FILE_BUFFER)) {
+ 			writeback = true;  /* initiate writeback; will delay ack */
+-		else if (queue_invalidate &&
++			revoke_wait = true;
++		} else if (queue_invalidate &&
+ 			 revoking == CEPH_CAP_FILE_CACHE &&
+-			 (newcaps & CEPH_CAP_FILE_LAZYIO) == 0)
+-			; /* do nothing yet, invalidation will be queued */
+-		else if (cap == ci->i_auth_cap)
++			 (newcaps & CEPH_CAP_FILE_LAZYIO) == 0) {
++			revoke_wait = true; /* do nothing yet, invalidation will be queued */
++		} else if (cap == ci->i_auth_cap) {
+ 			check_caps = 1; /* check auth cap only */
+-		else
++		} else {
+ 			check_caps = 2; /* check all caps */
++		}
+ 		/* If there is new caps, try to wake up the waiters */
+ 		if (~cap->issued & newcaps)
+ 			wake = true;
+@@ -3749,8 +3759,9 @@ static void handle_cap_grant(struct inode *inode,
+ 	BUG_ON(cap->issued & ~cap->implemented);
+ 
+ 	/* don't let check_caps skip sending a response to MDS for revoke msgs */
+-	if (le32_to_cpu(grant->op) == CEPH_CAP_OP_REVOKE) {
++	if (!revoke_wait && le32_to_cpu(grant->op) == CEPH_CAP_OP_REVOKE) {
+ 		cap->mds_wanted = 0;
++		flags |= CHECK_CAPS_FLUSH_FORCE;
+ 		if (cap == ci->i_auth_cap)
+ 			check_caps = 1; /* check auth cap only */
+ 		else
+@@ -3806,9 +3817,9 @@ static void handle_cap_grant(struct inode *inode,
+ 
+ 	mutex_unlock(&session->s_mutex);
+ 	if (check_caps == 1)
+-		ceph_check_caps(ci, CHECK_CAPS_AUTHONLY | CHECK_CAPS_NOINVAL);
++		ceph_check_caps(ci, flags | CHECK_CAPS_AUTHONLY | CHECK_CAPS_NOINVAL);
+ 	else if (check_caps == 2)
+-		ceph_check_caps(ci, CHECK_CAPS_NOINVAL);
++		ceph_check_caps(ci, flags | CHECK_CAPS_NOINVAL);
+ }
+ 
+ /*
+diff --git a/fs/ceph/super.h b/fs/ceph/super.h
+index b0b368ed3018..831e8ec4d5da 100644
+--- a/fs/ceph/super.h
++++ b/fs/ceph/super.h
+@@ -200,9 +200,10 @@ struct ceph_cap {
+ 	struct list_head caps_item;
+ };
+ 
+-#define CHECK_CAPS_AUTHONLY   1  /* only check auth cap */
+-#define CHECK_CAPS_FLUSH      2  /* flush any dirty caps */
+-#define CHECK_CAPS_NOINVAL    4  /* don't invalidate pagecache */
++#define CHECK_CAPS_AUTHONLY     1  /* only check auth cap */
++#define CHECK_CAPS_FLUSH        2  /* flush any dirty caps */
++#define CHECK_CAPS_NOINVAL      4  /* don't invalidate pagecache */
++#define CHECK_CAPS_FLUSH_FORCE  8  /* force flush any caps */
+ 
+ struct ceph_cap_flush {
+ 	u64 tid;
 -- 
-2.43.0
+2.45.1
 
 
