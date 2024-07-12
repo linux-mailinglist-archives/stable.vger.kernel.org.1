@@ -1,58 +1,83 @@
-Return-Path: <stable+bounces-59193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF2692FB79
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 15:32:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E2192FB94
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 15:39:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85BBA1F218E7
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 13:32:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B4B21F224AD
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 13:39:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF3616F289;
-	Fri, 12 Jul 2024 13:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FFE170826;
+	Fri, 12 Jul 2024 13:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ttl//4lg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C8G7Ckra"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83ECEEAC7;
-	Fri, 12 Jul 2024 13:32:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CCA14F9D0
+	for <stable@vger.kernel.org>; Fri, 12 Jul 2024 13:39:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720791160; cv=none; b=rLm1cbFf6GrBJi414sKt0gJ161/HSH6uhMgMz+ARC9ZSX/W+SGM15peahtUgoItmnz4FLRrvzJIJjOWzl0ZhOH+2dEbftTfss3QkOlXyb/YNs0iJAU8ENLWAp9XpBQ7C2fv1eb6+4g7m45bR7E9dwjH6XrBsYEfWtoZ8uSt0baE=
+	t=1720791587; cv=none; b=FyqpY/0sjSiy/Zsnx+7vlP0inXO+WcACA7uzdbCSEjWwbcSdAmRpQe4acSHn4lP5Yd76LzoGYeRaDHaY1AsBuwkJ0HXUY0T10cMvY31QRgBQFTBjQw0OklDcxw8O/f+JOW7wdGMGzcEEr3u+nsD+GtkLho3C+nhXqWUpscSQPQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720791160; c=relaxed/simple;
-	bh=IKBrzGC73MnXcUEDdfFMiJvHDd3uSvUh+ioavB0SEP4=;
+	s=arc-20240116; t=1720791587; c=relaxed/simple;
+	bh=K3JBCCsidiDsLCQv0D4erX3z+IiavHg3lRrtCpUooUc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YJnAvHbPK0SVTM+OUY1p/JhzgedwKmShfn+xv7HJb8yJz87cd0lflMDpqvo3aw7iaphbnujLRH/AY9dOdND6LR0Gh3gTeXxG/1R9LhvIr5XQ244C8ErGUDyl5Te4AeMcirC1++4ffJgwfeMKbAILP8AgcoKNtMNw3x1orDkYYSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ttl//4lg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB1CC32782;
-	Fri, 12 Jul 2024 13:32:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720791160;
-	bh=IKBrzGC73MnXcUEDdfFMiJvHDd3uSvUh+ioavB0SEP4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ttl//4lgujTwp0lvVga4ytCW7tFrduw+bW1vdP3BsNLSCcTP6qvKLWO/ZMeRITwCk
-	 X/pgPU0R/jG42oqMv3OXzGxKzxM5V++2GaMnJJdvl29XyVIHvmOPuEA5r0kZHLWKWM
-	 pr94S4M1RtK6BmmRWs6ax/t5SKD1BZZxXNOYk1Y8=
-Date: Fri, 12 Jul 2024 15:32:37 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Frank Scheiner <frank.scheiner@web.de>
-Cc: stable@vger.kernel.org, akpm@linux-foundation.org, allen.lkml@gmail.com,
-	broonie@kernel.org, conor@kernel.org, f.fainelli@gmail.com,
-	jonathanh@nvidia.com, linux-kernel@vger.kernel.org,
-	linux@roeck-us.net, lkft-triage@lists.linaro.org,
-	patches@kernelci.org, patches@lists.linux.dev, pavel@denx.de,
-	rwarsow@gmx.de, shuah@kernel.org, srw@sladewatkins.net,
-	sudipm.mukherjee@gmail.com, torvalds@linux-foundation.org,
-	=?utf-8?B?VG9tw6HFoQ==?= Glozar <tglozar@gmail.com>
-Subject: Re: [PATCH 5.10 000/284] 5.10.221-rc2 review
-Message-ID: <2024071237-hypnotize-lethargic-98f2@gregkh>
-References: <20240704094505.095988824@linuxfoundation.org>
- <76458f11-0ca4-4d3b-a9bc-916399f76b54@web.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=RNIOvVC/8Kp2Wgi7oZ531RH5dVXCameeWuz0aQbS+bpXgxztQlLGKOySQM0a8A3JAjD9dTUiwo68N3LBfM+BaWO1EX3fDDfjqvAMst9imblbEFFdZ77zPGkCqmf3IfT3XMUjUbSWRQofxw5aO00tICE9NN77oEPMNJyDu6fgUs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C8G7Ckra; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720791585; x=1752327585;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=K3JBCCsidiDsLCQv0D4erX3z+IiavHg3lRrtCpUooUc=;
+  b=C8G7Ckra7wQnSX0xPp8yAtyaiXspVpH6f1qHeQztRbE30NJmczzuIRUG
+   bjKJ6YSWc8fmBIrvLnON65wlbPC6VZ+Wx8nz0h6i5q0yQ9OgfjLdcin8D
+   BGVCpR1dKja6GpIH275Oe+g6ZQSaRWuMrGqsUefpE35ZBid6QuSrWm1nj
+   3Ss8Rjni36MsurD9/ZbjIUlhI1RagGz2JGZSjdeFNzZlmDxf3pP886871
+   dGxSbjKXBaWejGgl7/OFZN1spHs9Xi3irhWwJ9Q35tR15j9fZcmuzwRnC
+   XSyp8CiECQlUhKy1AmcKX4us9oAKGk26SGjuStoP/+3IYYpL/mo/CSt0L
+   w==;
+X-CSE-ConnectionGUID: 6dMlazx5Spq0eXNFIuvyag==
+X-CSE-MsgGUID: iXI+BWpeT+y6sHFk5eI3kw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11131"; a="40759243"
+X-IronPort-AV: E=Sophos;i="6.09,202,1716274800"; 
+   d="scan'208";a="40759243"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2024 06:39:45 -0700
+X-CSE-ConnectionGUID: qkBL5bQ5R5GQRii+E3d5MA==
+X-CSE-MsgGUID: FVTRpR0pTK2eRlGt3LzFdQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,202,1716274800"; 
+   d="scan'208";a="53210815"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO intel.com) ([10.245.246.61])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2024 06:39:41 -0700
+Date: Fri, 12 Jul 2024 15:39:39 +0200
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: "Gote, Nitin R" <nitin.r.gote@intel.com>
+Cc: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>,
+	"Cavitt, Jonathan" <jonathan.cavitt@intel.com>,
+	"Wilson, Chris P" <chris.p.wilson@intel.com>,
+	"tursulin@ursulin.net" <tursulin@ursulin.net>,
+	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"Das, Nirmoy" <nirmoy.das@intel.com>,
+	"janusz.krzysztofik@linux.intel.com" <janusz.krzysztofik@linux.intel.com>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v3] drm/i915/gt: Do not consider preemption during
+ execlists_dequeue for gen8
+Message-ID: <ZpEyGzBVM2ZaXcWM@ashyti-mobl2.lan>
+References: <20240711163208.1355736-1-nitin.r.gote@intel.com>
+ <CH0PR11MB54443CBE8B4A052419FFFD1BE5A52@CH0PR11MB5444.namprd11.prod.outlook.com>
+ <ZpAfyzKlqlMrd4nj@intel.com>
+ <SJ0PR11MB586743B1AF7DABD0F131E906D0A62@SJ0PR11MB5867.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,63 +86,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <76458f11-0ca4-4d3b-a9bc-916399f76b54@web.de>
+In-Reply-To: <SJ0PR11MB586743B1AF7DABD0F131E906D0A62@SJ0PR11MB5867.namprd11.prod.outlook.com>
 
-On Thu, Jul 11, 2024 at 12:56:44PM +0200, Frank Scheiner wrote:
-> Dear Greg, dear Sasha,
-> 
-> I noticed a build failure for linux-5.10.y for ia64 ([1]) (sorry,
-> actually since 5.10.221-rc1, but I didn't notice that build failure
-> before yesterday :-/ and as the review window for 5.10.222-rc1 is not
-> yet open, I thought I send it now as response to the last review window
-> announcement for 5.10.221-rc2):
-> 
-> https://github.com/linux-ia64/linux-stable-rc/actions/runs/9771252437/job/26974019958#step:8:3524:
-> ```
-> [...]
-> CC [M]  drivers/pps/pps.o
-> drivers/firmware/efi/memmap.c:16:10: fatal error: asm/efi.h: No such
-> file or directory
->    16 | #include <asm/efi.h>
->       |          ^~~~~~~~~~~
-> compilation terminated.
-> [...]
-> ```
-> 
-> [1]:
-> https://github.com/linux-ia64/linux-stable-rc/actions/runs/9771252437#summary-26974019958
-> 
-> This is related to the recent addition of this change set:
-> 
-> efi: memmap: Move manipulation routines into x86 arch tree
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?h=linux-5.10.y&id=31e0721aeabde29371f624f56ce2f403508527a5
-> 
-> ...to linux-5.10.y. For ia64 this change set on its own seems incomplete
-> as it requires a header not available for ia64 w/o additional changes.
-> 
-> Adding:
-> 
-> efi: ia64: move IA64-only declarations to new asm/efi.h header
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=8ff059b8531f3b98e14f0461859fc7cdd95823e4
-> 
-> ...or from here (according to GitHub this is in linux-stable(-rc)
-> starting with linux-5.12.y):
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=8ff059b8531f3b98e14f0461859fc7cdd95823e4
-> 
-> fixes it for me with 5.10.222-rc1, see for example [2].
-> 
-> [2]:
-> https://github.com/linux-ia64/linux-stable-rc/actions/runs/9871144965#summary-27258970494
+Hi Nitin,
 
-I'm confused, which commit should we add, or should we just revert what
-we have now?
+> > > > We're seeing a GPU HANG issue on a CHV platform, which was caused by
+> > > > bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries
+> > for gen8").
+> > > >
+> > > > Gen8 platform has only timeslice and doesn't support a preemption
+> > > > mechanism as engines do not have a preemption timer and doesn't send
+> > > > an irq if the preemption timeout expires.
+> > >
+> > > That seems to mean the original can_preempt function was inaccurately
+> > > built, so fixing it here makes the most sense to me, especially if it's causing
+> > problems.
+> > >
+> > > Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com> -Jonathan
+> > > Cavitt
+> > >
+> > > > So, add a fix to not consider preemption during dequeuing for gen8
+> > > > platforms.
+> > > >
+> > > > v2: Simplify can_preempt() function (Tvrtko Ursulin)
+> > > >
+> > > > v3:
+> > > >  - Inside need_preempt(), condition of can_preempt() is not required
+> > > >    as simplified can_preempt() is enough. (Chris Wilson)
+> > > >
+> > > > Fixes: bac24f59f454 ("drm/i915/execlists: Enable coarse preemption
+> > > > boundaries for gen8")
+> > 
+> > Something strange in here...
+> > 
+> > This patch is not using directly or indirectly (I915_ENGINE_HAS_PREEMPTION)
+> > the can_preempt()...
+> >
+> 
+> Thank you Rodrigo for the review comment. Seems like you are right.
+> Fixes: bac24f59f454 is misleading as it's not using can_preempt(). 
+> The bug could be from the commit bac24f59f454 as mentioned in the issue
+> But this change fixes the original implementation of can_preempt()  in below commit.
+> Fixes: 751f82b353a6 ("drm/i915/gt: Only disable preemption on gen8 render engines").
+> 
+> I will update the Fixes in the commit description and will send in v4.
 
-And I thought that ia64 was dead?
+no need to resend it, I will update it before pushing.
 
-thanks,
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
 
-greg k-h
+I think the first mention in the commit log is correct, though,
+as that's the reason where the issue was generated.
+
+Thanks,
+Andi
+
+> > > > Closes:
+> > > > https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11396
+> > > > Suggested-by: Andi Shyti <andi.shyti@intel.com>
+> > > > Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+> > > > Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+> > > > CC: <stable@vger.kernel.org> # v5.2+
+> > > > ---
+> > > >  drivers/gpu/drm/i915/gt/intel_execlists_submission.c | 6 +-----
+> > > >  1 file changed, 1 insertion(+), 5 deletions(-)
+> > > >
+> > > > diff --git a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
+> > > > b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
+> > > > index 21829439e686..72090f52fb85 100644
+> > > > --- a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
+> > > > +++ b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
+> > > > @@ -3315,11 +3315,7 @@ static void remove_from_engine(struct
+> > > > i915_request *rq)
+> > > >
+> > > >  static bool can_preempt(struct intel_engine_cs *engine)  {
+> > > > -	if (GRAPHICS_VER(engine->i915) > 8)
+> > > > -		return true;
+> > > > -
+> > > > -	/* GPGPU on bdw requires extra w/a; not implemented */
+> > > > -	return engine->class != RENDER_CLASS;
+> > > > +	return GRAPHICS_VER(engine->i915) > 8;
+> > > >  }
+> > > >
+> > > >  static void kick_execlists(const struct i915_request *rq, int prio)
+> > > > --
+> > > > 2.25.1
+> > > >
+> > > >
 
