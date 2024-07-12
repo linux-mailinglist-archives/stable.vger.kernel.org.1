@@ -1,101 +1,229 @@
-Return-Path: <stable+bounces-59183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85EFD92F85B
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 11:51:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D8C92F88A
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 11:57:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F033283828
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 09:51:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 920BD1C21A99
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 09:57:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3A51428E5;
-	Fri, 12 Jul 2024 09:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D002114A4C8;
+	Fri, 12 Jul 2024 09:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M1GUTuj5"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="XHI3vHKq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013012.outbound.protection.outlook.com [52.101.67.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEE217BB6;
-	Fri, 12 Jul 2024 09:51:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720777876; cv=none; b=UDo2IblYqhAkFaPPvhBME2J9bKpRXO8GsJL9SJXQgEX7b9F3Qn1ibZGxo7NzEbx0F1QHF7gIKSV53cAdUmOetCUaVuBocp6NAtdC5EZUjxO+y/gvvl5X3l2TSY88/NbKyCDofXM2WrZP++66Yhw08sov5NADG3qhJhQRYI60iWY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720777876; c=relaxed/simple;
-	bh=mcbo1O40NYoYZdrWPya8nyvr022z8GlP9Ixplradfzw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eSU3+IFWhBbnPWXrqfHx0kQ5U77xJWawk4gF5ID8H1ATq/Qqo+XE8aEKWImwWWnYl1MoNB6oN7Ni6AUxPCs0dVm9pW61IcO0y16MrD3h+7jLIKXnGQ0juSDQW8aIcL9ShWagW9j2HCTYnSvSOFYX7LUa/12VG4+n7qU/4jjs7Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M1GUTuj5; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-58e76294858so5154033a12.0;
-        Fri, 12 Jul 2024 02:51:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720777873; x=1721382673; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=mcbo1O40NYoYZdrWPya8nyvr022z8GlP9Ixplradfzw=;
-        b=M1GUTuj5exHPyH7gkhAT8yM1inJVeIBPZamA0zowy9IoYwALwIOeZA0yGDb0Nfg7Cs
-         SQ/c2vE06n44r6TIfet6GiriM7jILDOGpTs5NdChlGrF2dbC7TwVQPh/xPKPC93yeRDj
-         hXaT1xOvVGVtWR3rY6AuHs4Ystb3X8RSVH8Cnf42NUfeps7c9nc+NWkXUwv8b2H3u1GM
-         eu4/AQst3EZJKW6XXmCOxVAtAyma24PB47JIhbkeYXdUOGZqxofOIfqPuLUEovRNZ+WZ
-         922kbznQDiciji/dZHvrN+XOW1K0NpX9VJs3RLFiUEpb2KJgA4zqccMcaJiGN5u2n/rt
-         g29w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720777873; x=1721382673;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mcbo1O40NYoYZdrWPya8nyvr022z8GlP9Ixplradfzw=;
-        b=Ybedk/9lhQSMUfojkwKyaPkiGLDU5lJo8ek8nI9fn+Lfakf0Y3Yp1Odlj8I9yXxQRl
-         zW74wtlK1dtvP7yY4TDue5+gVm6u6xwt5PLzKdM9G3+dn07Q/rHhMQWOdg9hlp8o4PyU
-         gkClQ1RGdURGoXT4CVVzRytkDQ7iQZm00VvhQvqKtUvrNWjA5Q9GWSyAT8M7VedJ9jjq
-         3t+9AT2XDKQqA3qLTrFwBW/P3aF1l5o2EWGKBSFInCnLxpkLTsd6Mqta3Mw0jLgUdvAF
-         7ojnIviX8A9qGjUOIGt5ML0NAqoqS1xS8sc4QNaCv3XZ8tqsF/FJxYbqxjGnfw89k5RR
-         ZwGw==
-X-Forwarded-Encrypted: i=1; AJvYcCXApmyIbpoqGnLcWwGEhkELvh7gZbmxEsSFPdH3YBu0TeHZ3bexoF0z1KsHCBjsPSSTRx2idUP+CB/NABfKFEgIijRTm6mWsDNBDKeWjUOSDGb7GoDDJiGuvZaApw5Z66bYNw==
-X-Gm-Message-State: AOJu0YwqpLBp+wXlBrURUryPT/NDvHimV7Szs5k8TVR2giGDBfXPutJO
-	mUB4Oex1UMFiYpCM1UMCPAonqP4N4PD8Ubf1H5OAqo+vRIWF1Si5
-X-Google-Smtp-Source: AGHT+IFanRBXAqJNBbDeVq14+irw0WN8X0FhrLWxA/HrfYnU4ajfi98RHQ9BMdUCyn7WZEvJyjUfCA==
-X-Received: by 2002:a17:906:528f:b0:a77:ce4c:8c9c with SMTP id a640c23a62f3a-a799cc4ed03mr152434066b.8.1720777873034;
-        Fri, 12 Jul 2024 02:51:13 -0700 (PDT)
-Received: from [10.176.235.56] ([137.201.254.41])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a780a6e157bsm330649866b.80.2024.07.12.02.51.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jul 2024 02:51:12 -0700 (PDT)
-Message-ID: <cf08dd694b3478e53bf07a4d916424de10f7e1ab.camel@gmail.com>
-Subject: Re: [PATCH v1] ufs: core: fix deadlock when rtc update
-From: Bean Huo <huobean@gmail.com>
-To: peter.wang@mediatek.com, linux-scsi@vger.kernel.org, 
-	martin.petersen@oracle.com, avri.altman@wdc.com, alim.akhtar@samsung.com, 
-	jejb@linux.ibm.com
-Cc: wsd_upstream@mediatek.com, linux-mediatek@lists.infradead.org, 
- chun-hung.wu@mediatek.com, alice.chao@mediatek.com, cc.chou@mediatek.com, 
- chaotian.jing@mediatek.com, jiajie.hao@mediatek.com,
- powen.kao@mediatek.com,  qilin.tan@mediatek.com, lin.gui@mediatek.com,
- tun-yu.yu@mediatek.com,  eddie.huang@mediatek.com, naomi.chu@mediatek.com,
- chu.stanley@gmail.com,  beanhuo@micron.com, stable@vger.kernel.org
-Date: Fri, 12 Jul 2024 11:51:10 +0200
-In-Reply-To: <20240712094355.21572-1-peter.wang@mediatek.com>
-References: <20240712094355.21572-1-peter.wang@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DBA1459E3;
+	Fri, 12 Jul 2024 09:57:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720778238; cv=fail; b=s7Mbmmd2QNH7EccRRaW9StMccJVZo8VMk1XFY5oc81iRYiEdCAKZAcFcQ3Me/cNWAVzQF2XL07c7VexK32b6nPcnENHynwIwwDOWboxvDUOmLpo3VDaW0xueoXXPt3y8aJwQYbKkNXnlFE/yXY3ZiAwgU4eTIKp0eQy+JiMtBN4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720778238; c=relaxed/simple;
+	bh=9sWJZq9FSn7EcDzjV2CRldU2SOJqSzUnVP+IvcEBfvI=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=nX4t7sIpa3H+wkjAS+r+E5xNRf5LhrA8YmrdtuwUi4bdCffPFTjUdJtsGobyX11Pldcaz3h2lCVXkAfpKIRkczDs3AI8uHUmnTVXCoXtuiMchgmKAqrpxOPSkrJD9zMBKlaQZhQHJpTmgEUhLFopF/MoYAGW0Nm7yldr8OUcljg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=XHI3vHKq; arc=fail smtp.client-ip=52.101.67.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jwm4XMe5WiZ7xl4FV5oWdNFSEHIOEzrg3mZC9RQxXq6hYcPcVxXbZFzGJBeqTweCo9QCOJkke/eYQa+F5+0TajvNwAafClVirzdxVOVTYyxuugUmxF+n7Bnglk6SeEMkb0OAtsUKEs/+MBKPos5DUtGBpoLdToc+K65CbMaAM1uGr3kuHji3+QPpdejKZloV5iCApPzev5WPPecAlXHcVJLMaVC7qy9T3VXyegezQzsth22Fs2dD3CCYUpDyleyPfr/yaQr8szGvE3B8BwoAEEa5a4Vnr0XtNrvH30UoEYRfj3qQ8GXFFpFju6PY+4yGApkGbuUMhdsAdUuHLSMPyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=D/bIWHweZseYmKh11oTyydP08zCUd2gjebeBMQ6AUW8=;
+ b=CoFJUlfo5fjuvem1lDcLgz0sq6c4Cpy9euYlAXFqCobx/uiatFE6dJMdPQlMZNWFdUQ+VdSadvVLV2M3ecOygw+nf4fIVGgZogv7G9Psn7QzRCBHxZZeSnlXgpkErbjCvaMy3ab9/vB2HLl2NGHOQyRkZGtXhPa9kpvxe3cICBWJ8USYQsEfB2M53NRDtBbNnTxs0A3j1p2588vxsVk5yiwP+8+08ES8i0KsCInvF3UooOBIj4IQ+9/HNFW1N0HXJJVGe5dn8zhR+h9QiwsNuhYjhKJatcLson3oY4lF8/EHjWsj+Xy1OsRhccUlZoduZEObscTM0aVhW9fwrUBc3g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=D/bIWHweZseYmKh11oTyydP08zCUd2gjebeBMQ6AUW8=;
+ b=XHI3vHKq6W9Zsr7TT8GaCAtjwSSF+8JWO7ukjswd1sZAfhc8TGM+AYuLLp/ngkvcn1RIklreITCB8gKShSuq0ZU48EkwGTaRuiDn7YDqu+FDFOxQQi0il/8UgyEUH7z1Y8V4sG3Uphwgq6FQYL2bpoRHcKW30StCaN9/sh+QGCU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB7PR04MB4555.eurprd04.prod.outlook.com (2603:10a6:5:33::26) by
+ AM9PR04MB8340.eurprd04.prod.outlook.com (2603:10a6:20b:3e0::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.22; Fri, 12 Jul
+ 2024 09:57:13 +0000
+Received: from DB7PR04MB4555.eurprd04.prod.outlook.com
+ ([fe80::86ff:def:c14a:a72a]) by DB7PR04MB4555.eurprd04.prod.outlook.com
+ ([fe80::86ff:def:c14a:a72a%4]) with mapi id 15.20.7741.017; Fri, 12 Jul 2024
+ 09:57:12 +0000
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Rob Herring <robh@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] soc: fsl: qbman: delete bogus device tree fixup in qbman_init_private_mem()
+Date: Fri, 12 Jul 2024 12:56:57 +0300
+Message-Id: <20240712095658.577186-1-vladimir.oltean@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: VI1P195CA0050.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:802:5a::39) To DB7PR04MB4555.eurprd04.prod.outlook.com
+ (2603:10a6:5:33::26)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB7PR04MB4555:EE_|AM9PR04MB8340:EE_
+X-MS-Office365-Filtering-Correlation-Id: 081dc07b-45e5-46c9-80d6-08dca25900be
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|1800799024|366016|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?isW492uIfzAXF4VpacXsTEy07KafXD2E+9qFZ8eytrzCQEPQ+jQy8b/jRioZ?=
+ =?us-ascii?Q?7pzowf/7EDpFyOJ6WxCF8bWCfZ5Q0ji4kf5YeL2okzOLOL7yvYA7vuDjUAk2?=
+ =?us-ascii?Q?jRPeLBi4pVI1qOS3MTtc7L0eK0uMbby21S7UUdeSOvpTE3WVrEXITeZolbEq?=
+ =?us-ascii?Q?M8WOk2biDfBdX5dUUlk9QK4x0Raju/XXQvd+O9/BdspQKPdi35l1s8FZcLfH?=
+ =?us-ascii?Q?Fh40uVD8HXnVXf7W73/wOOJixmTbcA1XulB4nNsBo0woW71aiom3akO6Uw63?=
+ =?us-ascii?Q?eMIZHhBsG+zPvV+NoZFuTNRYEfCYXY7fIKHBrACST5SaN8nlZ00VZYExDfSv?=
+ =?us-ascii?Q?Nd1Lxer8luNKrD52vxRcIZH2ygvEKT0MbLOU37OitLMTDzKQ2uHTMHi5VD6l?=
+ =?us-ascii?Q?wL5epDswQ9jo04bJc7pE+6MPtaiV5HT6/qOecBeV4KwJk6/ppi3PrPtUzyYI?=
+ =?us-ascii?Q?jFLCiW6HAll+6yyAdS3VSYY133+2E7OAuPohh3860dpQaCztTuTrDPzEL2IT?=
+ =?us-ascii?Q?fDyQgvFOSZb0w5kO3JeAUTu6Tx4WUF7gUabxMOFXHft8MN0I6COK7pb+d/uY?=
+ =?us-ascii?Q?YqBrgRR+hyoxLdRdC79l6eb6+ZVZ6naR9vdQcvcPk3VLHpK2aW52LOQmozwz?=
+ =?us-ascii?Q?rqKYav++PA1BgdPTjnwjKC1KpSYeuIHO3PyXl0Sh7Ua0UrDuOXuONuqEYaPL?=
+ =?us-ascii?Q?CcG2RMHTvNJT2WX7hUshVOu5arIPyHJf0+sWYL6DklsE4GDCX8dlLmmjtxZD?=
+ =?us-ascii?Q?Dnwn3EXkgicrY+lQ2E/kumAw8mh2BDAqX2Nu/ssdCsaBLh44f/nCQeLgLvFj?=
+ =?us-ascii?Q?iFZCiTmkwDPPS9lXFrW3l6Iw+gnIOWvzYC0FdiBIdqi7qt91LTy4AXs1vWvE?=
+ =?us-ascii?Q?ULoCbjnjTuV3d907mrCjTt6ZpZcYuXupJFCYLYIjgwAzfyED9OX5cX0NGzOl?=
+ =?us-ascii?Q?nBCX8ljOpqz2YInsGUYNVIPFx6qQE7kB9gTi8401EkQFs8Xc7bhIjL2t/9/y?=
+ =?us-ascii?Q?u60fiAuVZoPjFyYec5fazvH+waRuoSFf/ACWXOFEZzjB0H7hPy3nuYi3cXxz?=
+ =?us-ascii?Q?cRtz5TkaTvxKryQ2AHGrOO8tEUWAnTMtxNXba7aLWzivy8yanvygkGMuMK3c?=
+ =?us-ascii?Q?CvP6hwOPQy78RMhRh2bFXhkWP6HtkPx7x1sMBNKLo4ty9akrxxIC9lh5wyrg?=
+ =?us-ascii?Q?1ujZxrDjrhCNcQpQCSdcXG2xZXOtQMFR89LNmX5f2JNd93qYgUqODGcA4TcS?=
+ =?us-ascii?Q?6I0EErfTlTxllNzATtvct63TRLdw/zh6IrzFTQCx3U4J5AKoITSyTqOHXYTJ?=
+ =?us-ascii?Q?tERGxrax35UIjaHRJkpACNlaarHWwJbGYBI3ykhD7yvm4k6/RjtGr2Qz6t1E?=
+ =?us-ascii?Q?AA0JKuS0Ne/1jL/nJIURRP0X9ntpoaP2eUByTkwZdt5bYJqTVQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4555.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(366016)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?J2BNNdDdDV/a5w+b0JDHFpfsj3Ss/AL56lQaUB0HJqOiiKIjgwjnthGKuEDR?=
+ =?us-ascii?Q?BKFJRvIG+eBiBd4GY+twjQd5VLSLjn0IGdsf8GST+tF2QiqUmClANIH27jdQ?=
+ =?us-ascii?Q?QhMxe8hZJTK4vnEVDNpECcArTJSE9YbM5h/zsIzOkf4nnJGGo317aPbw6o2Y?=
+ =?us-ascii?Q?cT4bhTUUF6FMZSKayhLDmBS8k4RkoyJqXEenRNl+Z6LyKpwO0HECVvq6EXK7?=
+ =?us-ascii?Q?PIYpcPfQwyGFVteD47kmrPB+nddOJtRrorKEruPUYvVhhoaVe/arQ7GSYOJd?=
+ =?us-ascii?Q?Ozs+Tp7olubVnF/+9JNfGTpPCIp09nufpNrGZIOnTtYUtU7rUSf+2m0YzK5y?=
+ =?us-ascii?Q?ly1Nl44DbSGfDPUOCyol0907vg7/lJU2qycPVuS0yCWJfVUL+fVdoqJl4hv0?=
+ =?us-ascii?Q?6AU53PZkqngZbj7M8MtQatKgI9ScWNTwG8evlfVHzXuAz4f5sPvszoSHs4EN?=
+ =?us-ascii?Q?7W2SzwTmAhHg2wfXPqqY3GNInW6gpEEfV/2fFte/Nw7/q/tZPV0PocXm5R9J?=
+ =?us-ascii?Q?dawJycQWW1OHMkehN30/vS4cG2dm/OjIdbryT0sci2V78z/ZhJGM4ng+wZjj?=
+ =?us-ascii?Q?efRLsSjbBbTnwY5tTbdQgkaspmlgKbySlpMujvDb3+RhZ07CQud44R5pqHcq?=
+ =?us-ascii?Q?AlisoEJMhkFxnvGBt6Jcm5SElzKtj7uRmC7QpmPC2z4O4/kyYuzthr+VOdTP?=
+ =?us-ascii?Q?sbUazY2Ifz3ySkgryr1rOXs2a5LvY/uOSTD3CGE+iFMVap46F+8BEVIYc91E?=
+ =?us-ascii?Q?l5vsbxGoQdVTMvUnuyKu5fkolOVmydcGTj9HgeEjBW7KZHiOlPC5ibplqkFY?=
+ =?us-ascii?Q?9jq90Xje/7TVBmUJxDds0kPm2N4E7Koe7QGScoG7mRCD/UZP5BxcQ9AunWjy?=
+ =?us-ascii?Q?waIYaIL6FJzkZu68hUsqGvHwRoT4BMaPeiiESi2COoesZldrgF1UHEVSxBqI?=
+ =?us-ascii?Q?38sjJe/bx0zcHqnMiE7pKPFsTtSZ3CMx43bk82JHnVpMZudxHq+UltAu+gGv?=
+ =?us-ascii?Q?GHQy7jQyGj6O6TZajd+ryhVDZcfgr/TmegUoXqxgbuIOcFAQcQGKTULVfkov?=
+ =?us-ascii?Q?nV8x8LeJ9c/lKNOmNt8Z6H199c543iHWfasHorn5MUF59CoW1uMKSEK9Of5v?=
+ =?us-ascii?Q?2KYi03ziHcfLaKd1EzZGxK+N2/B/8+tG+RTOVwaNXmceZ5Mczriw8YcECSz+?=
+ =?us-ascii?Q?u6f60co4uqE01PaFgT7068RPTyyeqxobrX+BtpvBxkea8oK043gL4G7wwa4C?=
+ =?us-ascii?Q?1bpHHVqgNYxBAm4n7GZWC2s6BwNdKJlZtCWf7XsceIMGddE9osvst61wzokr?=
+ =?us-ascii?Q?uUtiLg4rT8qPvYWnlqNLCtvwk9Zad+robx3VkSsP5cJrKx/OztI5VeQMQj0H?=
+ =?us-ascii?Q?e26AgoXZT0Ms+2HC+omrrBkyNtZAgw3Rbb23GagZdYR5a/+5N40ogd+8SQhm?=
+ =?us-ascii?Q?jlI2b2dAjpggEcMiGbYHBaskWA03YTPXN9I2tiQx9fr7CoNoFI+K/sQNdtyi?=
+ =?us-ascii?Q?5xTvg9I1Z6FNW0IJvS/2C09G2D6gKiBKH33gkxJG1ORCMK3Z74yrNAJVnq3N?=
+ =?us-ascii?Q?/Zo8t6tTvzwu4r2qF0DWDprfpmQorUwFzCH4j/F3+mL11EB8ZqZRWS0zrAD9?=
+ =?us-ascii?Q?HA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 081dc07b-45e5-46c9-80d6-08dca25900be
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB4555.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2024 09:57:12.9473
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eJq0T69ZqtLe8AhrvWEcYezkZvgKOpfEgaNEo2tBd69fNox5ZwTYlAY/uuIn94FoZGY+bP3eMXSFq4pWzs7tkg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8340
 
-On Fri, 2024-07-12 at 17:43 +0800, peter.wang@mediatek.com wrote:
-> From: Peter Wang <peter.wang@mediatek.com>
->=20
-> Three have deadlock when runtime suspend wait flush rtc work,
-> and rtc work call ufshcd_rpm_put_sync to wait runtime resume.
-Reviewed-by: Bean Huo <beanhuo@micron.com>
+This is effectively a revert of commit 6ea4c0fe4570 ("soc/fsl/qbman:
+Update device tree with reserved memory").
+
+What that commit intended to do: Fix up the device tree that is passed
+to a subsequent kexec-loaded kernel, so that the reserved-memory nodes
+have the same base addresses as the currently running kernel.
+
+What that commit actually does: Fix up the running device tree, which
+has no effect whatsoever upon the device tree passed to the next kernel.
+
+I would have refrained from making this kind of non-bugfix change in
+stable kernels, but qbman_init_private_mem() grossly misrepresents
+what this function does, and for an actual upcoming bug fix, it needs to
+be refactored. There is no place for the bogus code afterwards, so it
+needs to go as part of that, sadly.
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+---
+ drivers/soc/fsl/qbman/dpaa_sys.c | 31 -------------------------------
+ 1 file changed, 31 deletions(-)
+
+diff --git a/drivers/soc/fsl/qbman/dpaa_sys.c b/drivers/soc/fsl/qbman/dpaa_sys.c
+index e1d7b79cc450..b1cee145cbd7 100644
+--- a/drivers/soc/fsl/qbman/dpaa_sys.c
++++ b/drivers/soc/fsl/qbman/dpaa_sys.c
+@@ -39,8 +39,6 @@ int qbman_init_private_mem(struct device *dev, int idx, const char *compat,
+ {
+ 	struct device_node *mem_node;
+ 	struct reserved_mem *rmem;
+-	int err;
+-	__be32 *res_array;
+ 
+ 	mem_node = of_parse_phandle(dev->of_node, "memory-region", idx);
+ 	if (!mem_node) {
+@@ -60,34 +58,5 @@ int qbman_init_private_mem(struct device *dev, int idx, const char *compat,
+ 	*addr = rmem->base;
+ 	*size = rmem->size;
+ 
+-	/*
+-	 * Check if the reg property exists - if not insert the node
+-	 * so upon kexec() the same memory region address will be preserved.
+-	 * This is needed because QBMan HW does not allow the base address/
+-	 * size to be modified once set.
+-	 */
+-	if (!of_property_present(mem_node, "reg")) {
+-		struct property *prop;
+-
+-		prop = devm_kzalloc(dev, sizeof(*prop), GFP_KERNEL);
+-		if (!prop)
+-			return -ENOMEM;
+-		prop->value = res_array = devm_kzalloc(dev, sizeof(__be32) * 4,
+-						       GFP_KERNEL);
+-		if (!prop->value)
+-			return -ENOMEM;
+-		res_array[0] = cpu_to_be32(upper_32_bits(*addr));
+-		res_array[1] = cpu_to_be32(lower_32_bits(*addr));
+-		res_array[2] = cpu_to_be32(upper_32_bits(*size));
+-		res_array[3] = cpu_to_be32(lower_32_bits(*size));
+-		prop->length = sizeof(__be32) * 4;
+-		prop->name = devm_kstrdup(dev, "reg", GFP_KERNEL);
+-		if (!prop->name)
+-			return -ENOMEM;
+-		err = of_add_property(mem_node, prop);
+-		if (err)
+-			return err;
+-	}
+-
+ 	return 0;
+ }
+-- 
+2.34.1
+
 
