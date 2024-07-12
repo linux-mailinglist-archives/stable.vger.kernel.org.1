@@ -1,215 +1,149 @@
-Return-Path: <stable+bounces-59181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50E5F92F7CE
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 11:20:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF8692F828
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 11:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A52BB20E89
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 09:20:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50AC11C21FAA
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 09:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24710140E50;
-	Fri, 12 Jul 2024 09:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF8C14D282;
+	Fri, 12 Jul 2024 09:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="QVl3ekrY"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="biECPPSv"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BB11422B4;
-	Fri, 12 Jul 2024 09:20:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10085143C51;
+	Fri, 12 Jul 2024 09:44:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720776011; cv=none; b=rBh/lJ3yJFApm/A79KdSmWdq70u1KBqdzJN/Vmaib0YJHYpUkFjagk/pbSGPkdPDUFfvmfDLbypbDs32jg6rP1qQ3CRt+vuNPJMf5cDzIRgiUU16dPxVhjf5/jrp1FWBfEsHNwbxlLx1JkDDtsc2d79yI/e91O7xmBHqS9BSScw=
+	t=1720777447; cv=none; b=iLQVZzl1AqJRLGiXY3KyPWl6HM6LevJVaKzIlmvyqd0F/7w/Tr3sq02qOv95PjPYFlcE72ah4hGXGqzwJgG9rtCxSi6FNS37gfnOlDyLuXZdSd0VsTbIpLgXlQ60UkHJpyD8pF91TCxgB3UfpbzePUAPxDsqDW109QsxNrcoPKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720776011; c=relaxed/simple;
-	bh=JFV3wuE42s862gFMz1W1mKhz2VN8ZG4mVI/AHJKGWFI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jd+ltJR5x8DN+5JJqXeDqE701J5NqWex5XPpOC9vksh4l0+lJWwQFN+CDRWHe6YuB2cYlQXgxHvUo2EiyotWJFPcda6StxQxxwMBSRxkQu8XtDdZZoAbTiqKpKrNHMpKK6R9eDz/ZK9vG6KMVZNTl1dD9E//aIBX3Pb9TaPhqLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=QVl3ekrY; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=CV+7c2KCoiFZRjgIBxG8BPV9ZzjPkMf+tPSeCNTaUYY=; b=QVl3ekrYNZ1CuEcNgpGSUVyyy1
-	z7rXUCBm+Y7yVtn4dEZ2OtNNiZDMaWe8LShWXyksLVQJYcbI0DGvdRZTOwHUSg2s3aBG+LM+Zh/db
-	yqQ9Ze4dSG6yM4A/KijzF4sj/nFzVVLjRMSaXKk5OEAYvkRzlTvjMZ5CG3kXpxImtUEiBvTsAcLPq
-	rjtFbWVWGURSYkJUeQ2QtopkFYfzAE5JAiVhuWC/FiyMiEWA/HlXd7wQnYZyeusMpUlsEz8jYnbow
-	JboWDKr5vGJAPtE+YtHQBXihXc4dvBMJWSovzPHtI7FFTlmIAlZAC4rb7qbthIYMphKJmwvnFgnOw
-	HGY0tVsA==;
-Received: from [84.69.19.168] (helo=[192.168.0.101])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1sSCRM-00EDWr-OU; Fri, 12 Jul 2024 11:19:44 +0200
-Message-ID: <916e4781-54b5-417a-be22-499739e4d818@igalia.com>
-Date: Fri, 12 Jul 2024 10:19:43 +0100
+	s=arc-20240116; t=1720777447; c=relaxed/simple;
+	bh=vEHsvkEOlH6trNHoJ82qwsj9EeFm1Hi00lgr+mjwRnY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TlNVNDG2QawVvVl3ewAvdxoIv/G8/b6+2/F+xHZtTJ6yTZfaqo/LtYhpYflJj5RoA37JwnRYAmHi2BI9saZTqaH/JPFLwI6R0UnPvCpE+CHHQjsDFp7uYnuuB/RlLyW42kqLYp2hRxov4fVeW4B5Zwsf0SoSx61xDFp4WVlbYZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=biECPPSv; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 43739b1c403311efb5b96b43b535fdb4-20240712
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=MyCBn5S/+LNlF19z+lz6uWnF1OmIIW8AgbMQY0sxCtA=;
+	b=biECPPSvytG0cyp2232u2e9tFopg/mM8drw1gRo6q8pDc1r5yuxI5bBgPZ1Mw63pMyeb6yfds8qfW7IVpaKJ5cvaybG0L/1fyhOl0SxgkAvQcn+dqo4oMbvLg7t/xYP6Ik4IlCqwCrKEbksJzdJp+hP2eTteYpORMb96Tj8Td9I=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.40,REQID:fa22de19-0682-4175-8602-4b5393714e89,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:ba885a6,CLOUDID:cc7544d5-0d68-4615-a20f-01d7bd41f0bb,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: 43739b1c403311efb5b96b43b535fdb4-20240712
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw01.mediatek.com
+	(envelope-from <peter.wang@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1251841223; Fri, 12 Jul 2024 17:43:59 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Fri, 12 Jul 2024 02:43:58 -0700
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Fri, 12 Jul 2024 17:43:58 +0800
+From: <peter.wang@mediatek.com>
+To: <linux-scsi@vger.kernel.org>, <martin.petersen@oracle.com>,
+	<avri.altman@wdc.com>, <alim.akhtar@samsung.com>, <jejb@linux.ibm.com>
+CC: <wsd_upstream@mediatek.com>, <linux-mediatek@lists.infradead.org>,
+	<peter.wang@mediatek.com>, <chun-hung.wu@mediatek.com>,
+	<alice.chao@mediatek.com>, <cc.chou@mediatek.com>,
+	<chaotian.jing@mediatek.com>, <jiajie.hao@mediatek.com>,
+	<powen.kao@mediatek.com>, <qilin.tan@mediatek.com>, <lin.gui@mediatek.com>,
+	<tun-yu.yu@mediatek.com>, <eddie.huang@mediatek.com>,
+	<naomi.chu@mediatek.com>, <chu.stanley@gmail.com>, <beanhuo@micron.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH v1] ufs: core: fix deadlock when rtc update
+Date: Fri, 12 Jul 2024 17:43:55 +0800
+Message-ID: <20240712094355.21572-1-peter.wang@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm/numa_balancing: Teach mpol_to_str about the
- balancing mode
-To: "Huang, Ying" <ying.huang@intel.com>, Tvrtko Ursulin
- <tursulin@igalia.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-dev@igalia.com,
- Mel Gorman <mgorman@suse.de>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Rik van Riel <riel@surriel.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Dave Hansen <dave.hansen@intel.com>, Andi Kleen <ak@linux.intel.com>,
- Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>,
- stable@vger.kernel.org
-References: <20240708075632.95857-1-tursulin@igalia.com>
- <87ttgzaxzi.fsf@yhuang6-desk2.ccr.corp.intel.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-In-Reply-To: <87ttgzaxzi.fsf@yhuang6-desk2.ccr.corp.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-MTK: N
 
+From: Peter Wang <peter.wang@mediatek.com>
 
-On 09/07/2024 07:19, Huang, Ying wrote:
-> Tvrtko Ursulin <tursulin@igalia.com> writes:
-> 
->> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->>
->> Since balancing mode was added in
->> bda420b98505 ("numa balancing: migrate on fault among multiple bound nodes"),
->> it was possible to set this mode but it wouldn't be shown in
->> /proc/<pid>/numa_maps since there was no support for it in the
->> mpol_to_str() helper.
->>
->> Furthermore, because the balancing mode sets the MPOL_F_MORON flag, it
->> would be displayed as 'default' due a workaround introduced a few years
->> earlier in
->> 8790c71a18e5 ("mm/mempolicy.c: fix mempolicy printing in numa_maps").
->>
->> To tidy this up we implement two changes:
->>
->> Replace the MPOL_F_MORON check by pointer comparison against the
->> preferred_node_policy array. By doing this we generalise the current
->> special casing and replace the incorrect 'default' with the correct
->> 'bind' for the mode.
->>
->> Secondly, we add a string representation and corresponding handling for
->> the MPOL_F_NUMA_BALANCING flag.
->>
->> With the two changes together we start showing the balancing flag when it
->> is set and therefore complete the fix.
->>
->> Representation format chosen is to separate multiple flags with vertical
->> bars, following what existed long time ago in kernel 2.6.25. But as
->> between then and now there wasn't a way to display multiple flags, this
->> patch does not change the format in practice.
->>
->> Some /proc/<pid>/numa_maps output examples:
->>
->>   555559580000 bind=balancing:0-1,3 file=...
->>   555585800000 bind=balancing|static:0,2 file=...
->>   555635240000 prefer=relative:0 file=
->>
->> v2:
->>   * Fully fix by introducing MPOL_F_KERNEL.
->>
->> v3:
->>   * Abandoned the MPOL_F_KERNEL approach in favour of pointer comparisons.
->>   * Removed lookup generalisation for easier backporting.
->>   * Replaced commas as separator with vertical bars.
->>   * Added a few more words about the string format in the commit message.
->>
->> v4:
->>   * Use is_power_of_2.
->>   * Use ARRAY_SIZE and update recommended buffer size for two flags.
->>
->> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->> Fixes: bda420b98505 ("numa balancing: migrate on fault among multiple bound nodes")
->> References: 8790c71a18e5 ("mm/mempolicy.c: fix mempolicy printing in numa_maps")
->> Cc: Huang Ying <ying.huang@intel.com>
->> Cc: Mel Gorman <mgorman@suse.de>
->> Cc: Peter Zijlstra <peterz@infradead.org>
->> Cc: Ingo Molnar <mingo@redhat.com>
->> Cc: Rik van Riel <riel@surriel.com>
->> Cc: Johannes Weiner <hannes@cmpxchg.org>
->> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
->> Cc: Dave Hansen <dave.hansen@intel.com>
->> Cc: Andi Kleen <ak@linux.intel.com>
->> Cc: Michal Hocko <mhocko@suse.com>
->> Cc: David Rientjes <rientjes@google.com>
->> Cc: <stable@vger.kernel.org> # v5.12+
-> 
-> LGTM, Thanks!
-> 
-> Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
+Three have deadlock when runtime suspend wait flush rtc work,
+and rtc work call ufshcd_rpm_put_sync to wait runtime resume.
 
-Thank you!
+Here is deadlock backtrace
+kworker/0:1     D 4892.876354 10 10971 4859 0x4208060 0x8 10 0 120 670730152367
+ptr            f0ffff80c2e40000 0 1 0x00000001 0x000000ff 0x000000ff 0x000000ff
+<ffffffee5e71ddb0> __switch_to+0x1a8/0x2d4
+<ffffffee5e71e604> __schedule+0x684/0xa98
+<ffffffee5e71ea60> schedule+0x48/0xc8
+<ffffffee5e725f78> schedule_timeout+0x48/0x170
+<ffffffee5e71fb74> do_wait_for_common+0x108/0x1b0
+<ffffffee5e71efe0> wait_for_completion+0x44/0x60
+<ffffffee5d6de968> __flush_work+0x39c/0x424
+<ffffffee5d6decc0> __cancel_work_sync+0xd8/0x208
+<ffffffee5d6dee2c> cancel_delayed_work_sync+0x14/0x28
+<ffffffee5e2551b8> __ufshcd_wl_suspend+0x19c/0x480
+<ffffffee5e255fb8> ufshcd_wl_runtime_suspend+0x3c/0x1d4
+<ffffffee5dffd80c> scsi_runtime_suspend+0x78/0xc8
+<ffffffee5df93580> __rpm_callback+0x94/0x3e0
+<ffffffee5df90b0c> rpm_suspend+0x2d4/0x65c
+<ffffffee5df91448> __pm_runtime_suspend+0x80/0x114
+<ffffffee5dffd95c> scsi_runtime_idle+0x38/0x6c
+<ffffffee5df912f4> rpm_idle+0x264/0x338
+<ffffffee5df90f14> __pm_runtime_idle+0x80/0x110
+<ffffffee5e24ce44> ufshcd_rtc_work+0x128/0x1e4
+<ffffffee5d6e3a40> process_one_work+0x26c/0x650
+<ffffffee5d6e65c8> worker_thread+0x260/0x3d8
+<ffffffee5d6edec8> kthread+0x110/0x134
+<ffffffee5d616b18> ret_from_fork+0x10/0x20
 
-Andrew, this appears safe to pick up now as a replacement for the 
-identically named patch you previously picked up but then had to back 
-out from the queue.
+Fixes: 6bf999e0eb41 ("scsi: ufs: core: Add UFS RTC support")
+Cc: <stable@vger.kernel.org> 6.6.x
 
-Thanks!
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+---
+ drivers/ufs/core/ufshcd.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-Tvrtko
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 46433ecf0c4d..bfcf2d468b5e 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -8188,8 +8188,15 @@ static void ufshcd_rtc_work(struct work_struct *work)
+ 
+ 	hba = container_of(to_delayed_work(work), struct ufs_hba, ufs_rtc_update_work);
+ 
+-	 /* Update RTC only when there are no requests in progress and UFSHCI is operational */
+-	if (!ufshcd_is_ufs_dev_busy(hba) && hba->ufshcd_state == UFSHCD_STATE_OPERATIONAL)
++	 /*
++	  * Update RTC only when
++	  * 1. there are no requests in progress
++	  * 2. UFSHCI is operational
++	  * 3. pm operation is not in progress
++	  */
++	if (!ufshcd_is_ufs_dev_busy(hba) &&
++	    hba->ufshcd_state == UFSHCD_STATE_OPERATIONAL &&
++	    !hba->pm_op_in_progress)
+ 		ufshcd_update_rtc(hba);
+ 
+ 	if (ufshcd_is_ufs_dev_active(hba) && hba->dev_info.rtc_update_period)
+-- 
+2.18.0
 
->> ---
->>   mm/mempolicy.c | 18 ++++++++++++++----
->>   1 file changed, 14 insertions(+), 4 deletions(-)
->>
->> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
->> index aec756ae5637..a1bf9aa15c33 100644
->> --- a/mm/mempolicy.c
->> +++ b/mm/mempolicy.c
->> @@ -3293,8 +3293,9 @@ int mpol_parse_str(char *str, struct mempolicy **mpol)
->>    * @pol:  pointer to mempolicy to be formatted
->>    *
->>    * Convert @pol into a string.  If @buffer is too short, truncate the string.
->> - * Recommend a @maxlen of at least 32 for the longest mode, "interleave", the
->> - * longest flag, "relative", and to display at least a few node ids.
->> + * Recommend a @maxlen of at least 51 for the longest mode, "weighted
->> + * interleave", plus the longest flag flags, "relative|balancing", and to
->> + * display at least a few node ids.
->>    */
->>   void mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol)
->>   {
->> @@ -3303,7 +3304,10 @@ void mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol)
->>   	unsigned short mode = MPOL_DEFAULT;
->>   	unsigned short flags = 0;
->>   
->> -	if (pol && pol != &default_policy && !(pol->flags & MPOL_F_MORON)) {
->> +	if (pol &&
->> +	    pol != &default_policy &&
->> +	    !(pol >= &preferred_node_policy[0] &&
->> +	      pol <= &preferred_node_policy[ARRAY_SIZE(preferred_node_policy) - 1])) {
->>   		mode = pol->mode;
->>   		flags = pol->flags;
->>   	}
->> @@ -3331,12 +3335,18 @@ void mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol)
->>   		p += snprintf(p, buffer + maxlen - p, "=");
->>   
->>   		/*
->> -		 * Currently, the only defined flags are mutually exclusive
->> +		 * Static and relative are mutually exclusive.
->>   		 */
->>   		if (flags & MPOL_F_STATIC_NODES)
->>   			p += snprintf(p, buffer + maxlen - p, "static");
->>   		else if (flags & MPOL_F_RELATIVE_NODES)
->>   			p += snprintf(p, buffer + maxlen - p, "relative");
->> +
->> +		if (flags & MPOL_F_NUMA_BALANCING) {
->> +			if (!is_power_of_2(flags & MPOL_MODE_FLAGS))
->> +				p += snprintf(p, buffer + maxlen - p, "|");
->> +			p += snprintf(p, buffer + maxlen - p, "balancing");
->> +		}
->>   	}
->>   
->>   	if (!nodes_empty(nodes))
 
