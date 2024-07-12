@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-59216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E692930241
-	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 00:55:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 706B8930242
+	for <lists+stable@lfdr.de>; Sat, 13 Jul 2024 00:55:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6C081F23060
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 22:55:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB4CFB21D1E
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 22:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6208412FB16;
-	Fri, 12 Jul 2024 22:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5E712FB2F;
+	Fri, 12 Jul 2024 22:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="1HFKG3MX"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0IVN/GEQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDA9127E0F;
-	Fri, 12 Jul 2024 22:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F08A12EBF5;
+	Fri, 12 Jul 2024 22:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720824903; cv=none; b=c+0anuQ0c1M2IwJ3F9KiorjXGIyhlM7d45CCdMjqESogrZdbL0Je1ol2l3AHGVgg1/5fFrhoT4quYyFMGV/lNkShj4X+vhYiVybNqvoJl/9GdIvlE5ZajqdTd2J4e76LvbNV9QGkyV+Lvpuh00HNCtgFKObcA7WPQR5bMqbL63Q=
+	t=1720824906; cv=none; b=oYhKwlGZZmkfUfAHWF7qOQ8qaVKk84urLaS9sy2Sozu5erLL8AEIWlqUFrwtXII0m2T7aOQAd+xgWrPsdDVi4m4wunGLuQiGlwBj9tvPyrkH07Uv+Rdo0ceeBqE4BMjQZGjQFUpKlyJol0jkzutQ/zDeYFUjYhvWIqp59YIuquo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720824903; c=relaxed/simple;
-	bh=me+RpU4IpmNm71LAW4xsAqTyote1EVLX6VMCszl10vg=;
-	h=Date:To:From:Subject:Message-Id; b=BBgN27nqtduER6Z7Kww7nWHF3UP/ysUXDDkv8g5US3arLJw0qDGtqj+EJSPbPkDTL8TB/l9rNoZHidRN0SC1VnUpGMZM44/NyhP8kW8cxdPTBaUOprGTqzZfPU9sRCeDQKKmsjoBK30FtrrkNIlVW9hgkFQgtCYagVEKMP/5uqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=1HFKG3MX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0772C32782;
-	Fri, 12 Jul 2024 22:55:02 +0000 (UTC)
+	s=arc-20240116; t=1720824906; c=relaxed/simple;
+	bh=ddnqm1fNdbisfqkstyc54ARb4yvftvzyKMc2ty0dgvA=;
+	h=Date:To:From:Subject:Message-Id; b=N1aAvcUkp/n7qcGPCI2OYXW2dMYsV7TsBAUKV3y1/bM3dkyKMwfUY/A0HeF7u8rDlqA28ePa/gfB/8fKEGI9lDspX/7KCC79BQRmQjs6uAXAfEnXnt+TNHT6xhahsxcRCcr08bLIw8NiJdkR9/X9GE3p9CpRjx8Sg3a0HYaIv+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=0IVN/GEQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C2CC32782;
+	Fri, 12 Jul 2024 22:55:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1720824903;
-	bh=me+RpU4IpmNm71LAW4xsAqTyote1EVLX6VMCszl10vg=;
+	s=korg; t=1720824905;
+	bh=ddnqm1fNdbisfqkstyc54ARb4yvftvzyKMc2ty0dgvA=;
 	h=Date:To:From:Subject:From;
-	b=1HFKG3MXoXvqWuSBOKy1SqI9rDGe9sQdYlio11Z43M8XICzFQAgQyu3IxOsSFbrdg
-	 5v2nE+0F5hyY+ycDVmHPeZj9WIo5s3zTQq2NkeMZiCdbYCftpZtZ8+wv2YdauarRTV
-	 byjpi2FSzSstUeT7+HXC6EJ7G48ovGaXZsp1MaR8=
-Date: Fri, 12 Jul 2024 15:55:02 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,ying.huang@intel.com,stable@vger.kernel.org,shy828301@gmail.com,hughd@google.com,david@redhat.com,baolin.wang@linux.alibaba.com,peterx@redhat.com,akpm@linux-foundation.org
+	b=0IVN/GEQx8HbYH9ayAgqzaxxmKd0XwaLlHAxifyfwGepqYL8qod/AoKOxyhEUG4cc
+	 CUFjfltEsdnXlfufDArJI7pz0yPGE3bks397/mCdk9YjRwq7zGSYt4eTtfLojht7W1
+	 3wCdRoZVgeObaBQIw/z9h5SAHXexytWiVdtBB0/0=
+Date: Fri, 12 Jul 2024 15:55:05 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,willy@infradead.org,stable@vger.kernel.org,ioworker0@gmail.com,hughd@google.com,david@redhat.com,da.gomez@samsung.com,corbet@lwn.net,baolin.wang@linux.alibaba.com,baohua@kernel.org,ryan.roberts@arm.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-migrate-putback-split-folios-when-numa-hint-migration-fails.patch removed from -mm tree
-Message-Id: <20240712225502.E0772C32782@smtp.kernel.org>
+Subject: [merged mm-stable] mm-shmem-rename-mthp-shmem-counters.patch removed from -mm tree
+Message-Id: <20240712225505.D7C2CC32782@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,79 +50,190 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/migrate: putback split folios when numa hint migration fails
+     Subject: mm: shmem: rename mTHP shmem counters
 has been removed from the -mm tree.  Its filename was
-     mm-migrate-putback-split-folios-when-numa-hint-migration-fails.patch
+     mm-shmem-rename-mthp-shmem-counters.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Peter Xu <peterx@redhat.com>
-Subject: mm/migrate: putback split folios when numa hint migration fails
-Date: Mon, 8 Jul 2024 17:55:37 -0400
+From: Ryan Roberts <ryan.roberts@arm.com>
+Subject: mm: shmem: rename mTHP shmem counters
+Date: Wed, 10 Jul 2024 10:55:01 +0100
 
-This issue is not from any report yet, but by code observation only.
+The legacy PMD-sized THP counters at /proc/vmstat include thp_file_alloc,
+thp_file_fallback and thp_file_fallback_charge, which rather confusingly
+refer to shmem THP and do not include any other types of file pages.  This
+is inconsistent since in most other places in the kernel, THP counters are
+explicitly separated for anon, shmem and file flavours.  However, we are
+stuck with it since it constitutes a user ABI.
 
-This is yet another fix besides Hugh's patch [1] but on relevant code
-path, where eager split of folio can happen if the folio is already on
-deferred list during a folio migration.
+Recently, commit 66f44583f9b6 ("mm: shmem: add mTHP counters for anonymous
+shmem") added equivalent mTHP stats for shmem, keeping the same "file_"
+prefix in the names.  But in future, we may want to add extra stats to
+cover actual file pages, at which point, it would all become very
+confusing.
 
-Here the issue is NUMA path (migrate_misplaced_folio()) may start to
-encounter such folio split now even with MR_NUMA_MISPLACED hint applied. 
-Then when migrate_pages() didn't migrate all the folios, it's possible the
-split small folios be put onto the list instead of the original folio. 
-Then putting back only the head page won't be enough.
+So let's take the opportunity to rename these new counters "shmem_" before
+the change makes it upstream and the ABI becomes immutable.  While we are
+at it, let's improve the documentation for the legacy counters to make it
+clear that they count shmem pages only.
 
-Fix it by putting back all the folios on the list.
-
-[1] https://lore.kernel.org/all/46c948b4-4dd8-6e03-4c7b-ce4e81cfa536@google.com/
-
-[akpm@linux-foundation.org: remove now unused local `nr_pages']
-Link: https://lkml.kernel.org/r/20240708215537.2630610-1-peterx@redhat.com
-Fixes: 7262f208ca68 ("mm/migrate: split source folio if it is on deferred split list")
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+Link: https://lkml.kernel.org/r/20240710095503.3193901-1-ryan.roberts@arm.com
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Yang Shi <shy828301@gmail.com>
+Reviewed-by: Lance Yang <ioworker0@gmail.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Daniel Gomez <da.gomez@samsung.com>
 Cc: Hugh Dickins <hughd@google.com>
-Cc: Huang Ying <ying.huang@intel.com>
-Cc: David Hildenbrand <david@redhat.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/migrate.c |   11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ Documentation/admin-guide/mm/transhuge.rst |   29 ++++++++++---------
+ include/linux/huge_mm.h                    |    6 +--
+ mm/huge_memory.c                           |   12 +++----
+ mm/shmem.c                                 |    8 ++---
+ 4 files changed, 29 insertions(+), 26 deletions(-)
 
---- a/mm/migrate.c~mm-migrate-putback-split-folios-when-numa-hint-migration-fails
-+++ a/mm/migrate.c
-@@ -2621,20 +2621,13 @@ int migrate_misplaced_folio(struct folio
- 	int nr_remaining;
- 	unsigned int nr_succeeded;
- 	LIST_HEAD(migratepages);
--	int nr_pages = folio_nr_pages(folio);
+--- a/Documentation/admin-guide/mm/transhuge.rst~mm-shmem-rename-mthp-shmem-counters
++++ a/Documentation/admin-guide/mm/transhuge.rst
+@@ -412,20 +412,23 @@ thp_collapse_alloc_failed
+ 	the allocation.
  
- 	list_add(&folio->lru, &migratepages);
- 	nr_remaining = migrate_pages(&migratepages, alloc_misplaced_dst_folio,
- 				     NULL, node, MIGRATE_ASYNC,
- 				     MR_NUMA_MISPLACED, &nr_succeeded);
--	if (nr_remaining) {
--		if (!list_empty(&migratepages)) {
--			list_del(&folio->lru);
--			node_stat_mod_folio(folio, NR_ISOLATED_ANON +
--					folio_is_file_lru(folio), -nr_pages);
--			folio_putback_lru(folio);
--		}
--	}
-+	if (nr_remaining && !list_empty(&migratepages))
-+		putback_movable_pages(&migratepages);
- 	if (nr_succeeded) {
- 		count_vm_numa_events(NUMA_PAGE_MIGRATE, nr_succeeded);
- 		if (!node_is_toptier(folio_nid(folio)) && node_is_toptier(node))
+ thp_file_alloc
+-	is incremented every time a file huge page is successfully
+-	allocated.
++	is incremented every time a shmem huge page is successfully
++	allocated (Note that despite being named after "file", the counter
++	measures only shmem).
+ 
+ thp_file_fallback
+-	is incremented if a file huge page is attempted to be allocated
+-	but fails and instead falls back to using small pages.
++	is incremented if a shmem huge page is attempted to be allocated
++	but fails and instead falls back to using small pages. (Note that
++	despite being named after "file", the counter measures only shmem).
+ 
+ thp_file_fallback_charge
+-	is incremented if a file huge page cannot be charged and instead
++	is incremented if a shmem huge page cannot be charged and instead
+ 	falls back to using small pages even though the allocation was
+-	successful.
++	successful. (Note that despite being named after "file", the
++	counter measures only shmem).
+ 
+ thp_file_mapped
+-	is incremented every time a file huge page is mapped into
++	is incremented every time a file or shmem huge page is mapped into
+ 	user address space.
+ 
+ thp_split_page
+@@ -496,16 +499,16 @@ swpout_fallback
+ 	Usually because failed to allocate some continuous swap space
+ 	for the huge page.
+ 
+-file_alloc
+-	is incremented every time a file huge page is successfully
++shmem_alloc
++	is incremented every time a shmem huge page is successfully
+ 	allocated.
+ 
+-file_fallback
+-	is incremented if a file huge page is attempted to be allocated
++shmem_fallback
++	is incremented if a shmem huge page is attempted to be allocated
+ 	but fails and instead falls back to using small pages.
+ 
+-file_fallback_charge
+-	is incremented if a file huge page cannot be charged and instead
++shmem_fallback_charge
++	is incremented if a shmem huge page cannot be charged and instead
+ 	falls back to using small pages even though the allocation was
+ 	successful.
+ 
+--- a/include/linux/huge_mm.h~mm-shmem-rename-mthp-shmem-counters
++++ a/include/linux/huge_mm.h
+@@ -269,9 +269,9 @@ enum mthp_stat_item {
+ 	MTHP_STAT_ANON_FAULT_FALLBACK_CHARGE,
+ 	MTHP_STAT_SWPOUT,
+ 	MTHP_STAT_SWPOUT_FALLBACK,
+-	MTHP_STAT_FILE_ALLOC,
+-	MTHP_STAT_FILE_FALLBACK,
+-	MTHP_STAT_FILE_FALLBACK_CHARGE,
++	MTHP_STAT_SHMEM_ALLOC,
++	MTHP_STAT_SHMEM_FALLBACK,
++	MTHP_STAT_SHMEM_FALLBACK_CHARGE,
+ 	MTHP_STAT_SPLIT,
+ 	MTHP_STAT_SPLIT_FAILED,
+ 	MTHP_STAT_SPLIT_DEFERRED,
+--- a/mm/huge_memory.c~mm-shmem-rename-mthp-shmem-counters
++++ a/mm/huge_memory.c
+@@ -568,9 +568,9 @@ DEFINE_MTHP_STAT_ATTR(anon_fault_fallbac
+ DEFINE_MTHP_STAT_ATTR(anon_fault_fallback_charge, MTHP_STAT_ANON_FAULT_FALLBACK_CHARGE);
+ DEFINE_MTHP_STAT_ATTR(swpout, MTHP_STAT_SWPOUT);
+ DEFINE_MTHP_STAT_ATTR(swpout_fallback, MTHP_STAT_SWPOUT_FALLBACK);
+-DEFINE_MTHP_STAT_ATTR(file_alloc, MTHP_STAT_FILE_ALLOC);
+-DEFINE_MTHP_STAT_ATTR(file_fallback, MTHP_STAT_FILE_FALLBACK);
+-DEFINE_MTHP_STAT_ATTR(file_fallback_charge, MTHP_STAT_FILE_FALLBACK_CHARGE);
++DEFINE_MTHP_STAT_ATTR(shmem_alloc, MTHP_STAT_SHMEM_ALLOC);
++DEFINE_MTHP_STAT_ATTR(shmem_fallback, MTHP_STAT_SHMEM_FALLBACK);
++DEFINE_MTHP_STAT_ATTR(shmem_fallback_charge, MTHP_STAT_SHMEM_FALLBACK_CHARGE);
+ DEFINE_MTHP_STAT_ATTR(split, MTHP_STAT_SPLIT);
+ DEFINE_MTHP_STAT_ATTR(split_failed, MTHP_STAT_SPLIT_FAILED);
+ DEFINE_MTHP_STAT_ATTR(split_deferred, MTHP_STAT_SPLIT_DEFERRED);
+@@ -581,9 +581,9 @@ static struct attribute *stats_attrs[] =
+ 	&anon_fault_fallback_charge_attr.attr,
+ 	&swpout_attr.attr,
+ 	&swpout_fallback_attr.attr,
+-	&file_alloc_attr.attr,
+-	&file_fallback_attr.attr,
+-	&file_fallback_charge_attr.attr,
++	&shmem_alloc_attr.attr,
++	&shmem_fallback_attr.attr,
++	&shmem_fallback_charge_attr.attr,
+ 	&split_attr.attr,
+ 	&split_failed_attr.attr,
+ 	&split_deferred_attr.attr,
+--- a/mm/shmem.c~mm-shmem-rename-mthp-shmem-counters
++++ a/mm/shmem.c
+@@ -1777,7 +1777,7 @@ static struct folio *shmem_alloc_and_add
+ 			if (pages == HPAGE_PMD_NR)
+ 				count_vm_event(THP_FILE_FALLBACK);
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-			count_mthp_stat(order, MTHP_STAT_FILE_FALLBACK);
++			count_mthp_stat(order, MTHP_STAT_SHMEM_FALLBACK);
+ #endif
+ 			order = next_order(&suitable_orders, order);
+ 		}
+@@ -1804,8 +1804,8 @@ allocated:
+ 				count_vm_event(THP_FILE_FALLBACK_CHARGE);
+ 			}
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-			count_mthp_stat(folio_order(folio), MTHP_STAT_FILE_FALLBACK);
+-			count_mthp_stat(folio_order(folio), MTHP_STAT_FILE_FALLBACK_CHARGE);
++			count_mthp_stat(folio_order(folio), MTHP_STAT_SHMEM_FALLBACK);
++			count_mthp_stat(folio_order(folio), MTHP_STAT_SHMEM_FALLBACK_CHARGE);
+ #endif
+ 		}
+ 		goto unlock;
+@@ -2181,7 +2181,7 @@ repeat:
+ 			if (folio_test_pmd_mappable(folio))
+ 				count_vm_event(THP_FILE_ALLOC);
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-			count_mthp_stat(folio_order(folio), MTHP_STAT_FILE_ALLOC);
++			count_mthp_stat(folio_order(folio), MTHP_STAT_SHMEM_ALLOC);
+ #endif
+ 			goto alloced;
+ 		}
 _
 
-Patches currently in -mm which might be from peterx@redhat.com are
+Patches currently in -mm which might be from ryan.roberts@arm.com are
 
 
 
