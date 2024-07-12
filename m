@@ -1,197 +1,275 @@
-Return-Path: <stable+bounces-59201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-59202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14BA592FE07
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 17:59:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB9E92FE25
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 18:05:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8ABA11F24097
-	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 15:59:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98F67B23025
+	for <lists+stable@lfdr.de>; Fri, 12 Jul 2024 16:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5AB81741F1;
-	Fri, 12 Jul 2024 15:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C31176AA0;
+	Fri, 12 Jul 2024 16:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="Q5BU/txJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I425MlnX"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2116.outbound.protection.outlook.com [40.107.237.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0361176232;
-	Fri, 12 Jul 2024 15:59:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.116
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720799962; cv=fail; b=CntZcPwvWYKpknflNlYU5adaNMS3NCHuOEhqMkqJkBQgtNXBsxQN3DUmrl1i8xcSzFTg/kC/PQDtYkl6x3TMf7P/szw2PkI4bgeU0RGYfV7/7v2y26M0DiS7aUSjvEz8/utA1lpottHB21YiGt1qAoFiXlAomZiEXDhhksD3Kkc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720799962; c=relaxed/simple;
-	bh=KfkWm2sHJYxiKCck6h/NmiL9hMiXtI2UoZI9Gr1i+1w=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=ClN69gOgaaq1/gO06bcajbVJISbvpfQ+WqoZ60ZqM+iU4JVEJD/O2WxyeDRh4lLKwsOwKoZvxbTkNo58V+S0842rhPlIXRTY9NXzTvSQtgGRFo0ZVLWYutbt4A9VkZdEW6kwMe5z+YSm4k8NQ5QZMoSIkp7/pgsyPsLaoXAsA10=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=Q5BU/txJ; arc=fail smtp.client-ip=40.107.237.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pqpJ+KnlghOLt99Rw7fvCBXS34cJ/nY8HKXX8QBUymIQ04wYc1banI+XuFMjIVPdp0DEoeXKtCJTBY21adoujoEP4AJXTXoRkarIKrdj8Nw2y1GuVINWmRXLCZACLhTxDfYA+T1rlvMrrHoEGsUisxPdAXd62WBKfKvASrkN8g+oHG7m15xiDrJZqDtHgnlFJLb8Qm2tjT9rYNWpN7vwccGc8xE8Y3S8Z+kTqnaZzddwf1GTy1Fr2Qxc2BjtCARqYPICJs/cOnhrHt2S64Hw0SskSowplL67kMS19RWwBp+ACDJPw9v/WMX/hCPcVN4VlAsxpKY5Ec7qKecEtg6YIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=m6xTkbfCKHtPsLO9wNV8wJbADLLHwaAOm6JsLtOK1q0=;
- b=AHVBkIs0nzEt2b0pkGqNq1eq1Hx0dSsGyl1vj5rEquE56othST6T7prOkkERsvzbVBg2LiSTYl/lv/3RwZtvjnej8uGLLaWHK5zP62G5A41dii7FuV+htkvAcD73yX7NH+UQJ6cFU2iV5FXEzEU+UOTVmN4/3OVmjPl8ludJtF2t2gkspb9DRBw6lKqFVZ7V6Eb9tYc64q7DWDVOnpVsYodkb58ZATb4jHWbXO7A2NR6KzJuo6pik2Kfc/DlaxgJ0AZXzH2Ik8/5ftpMDimzL9tcrVtJ/d3bv5ktczlBCGPlhn7f42UmL266dechX/eWI2BzLt1dgXMopc3DYM0OIQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=os.amperecomputing.com; dkim=pass
- header.d=os.amperecomputing.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89EB176240;
+	Fri, 12 Jul 2024 16:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720800280; cv=none; b=g1qmVXzXYe0n1XxHh4Fb7rlMM/RCTCja7c3OSEv/Dq1OvXxoWYb/BKHVNYh5+kPEm3YRFMzJDfaGqZ2ipnCTLHT63aR4zZWPVuODvmUJckwEvPO5XGEAXBaYZDIp9zQsDZE4qgzr1pLh/lQt7PGAA5I8jbYcWiHvNcKIGU5irrY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720800280; c=relaxed/simple;
+	bh=ngivLCWE81B27y1GSYx8ldBDIwTbs3kiiSoJyDE+qyQ=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=QbXI7T65I/aKCihaQTVIpBZEpZ8z2JqtUKwI8ZBFGLdAQqBpnFmXu05uH3q+RNK0PV5GR1TPSL2YwGXD1gDJizEof8dk3w7puGVkGc2pL+ZfgLVYN28+5VfXCyRKEUzlx7RDpRPgs1QCihF+QeNs9Nzwq/bfCI5m7MEcMHgry+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I425MlnX; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-6b5daf5ea91so12105126d6.1;
+        Fri, 12 Jul 2024 09:04:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=os.amperecomputing.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=m6xTkbfCKHtPsLO9wNV8wJbADLLHwaAOm6JsLtOK1q0=;
- b=Q5BU/txJFxToyFu9tyH+Mw3Azg4McnsAr4abSrtiW+RdCQuuA6liZ+1W75queLpqxeWHzEB32PjO+5O5OmNqsa1JF1cl6ykoNAxWD4BHnBZlUFhC2sL1jIXpi5NxNtwQ7k+Cu6OyBpooMYhpGQCvT/K81EsUV9sA7SpYYTp/X9c=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
-Received: from MN2PR01MB5471.prod.exchangelabs.com (2603:10b6:208:11b::13) by
- PH0PR01MB8070.prod.exchangelabs.com (2603:10b6:510:295::15) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7741.35; Fri, 12 Jul 2024 15:59:12 +0000
-Received: from MN2PR01MB5471.prod.exchangelabs.com
- ([fe80::dba1:7502:f7ff:3f80]) by MN2PR01MB5471.prod.exchangelabs.com
- ([fe80::dba1:7502:f7ff:3f80%7]) with mapi id 15.20.7762.020; Fri, 12 Jul 2024
- 15:59:12 +0000
-From: Yang Shi <yang@os.amperecomputing.com>
-To: corsac@debian.org,
-	willy@infradead.org,
-	jirislaby@kernel.org,
-	surenb@google.com,
-	riel@surriel.com,
-	cl@linux.com,
-	carnil@debian.org,
-	ben@decadent.org.uk,
-	akpm@linux-foundation.org
-Cc: yang@os.amperecomputing.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] mm: huge_memory: use !CONFIG_64BIT to relax huge page alignment on 32 bit machines
-Date: Fri, 12 Jul 2024 08:58:55 -0700
-Message-ID: <20240712155855.1130330-1-yang@os.amperecomputing.com>
-X-Mailer: git-send-email 2.41.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: CH0PR03CA0313.namprd03.prod.outlook.com
- (2603:10b6:610:118::34) To MN2PR01MB5471.prod.exchangelabs.com
- (2603:10b6:208:11b::13)
+        d=gmail.com; s=20230601; t=1720800277; x=1721405077; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/h/+q58+aCVjVtZZ4CChDL1/LkloSpcxSAa3+pfndK4=;
+        b=I425MlnXO4WvqqcMMR5NkTIm/u2LSgBp78ad1tRCWxNUHMYFZeHdP2DNObd1Kubwp4
+         HO4ojcW6Xyi7QclMCLtKkuhG3cNik9Kg3t3nx8hB3E5EThGsTpn7f6e06dEKXpfF6tSW
+         zYV0au8j88Q/vltP4Wyaf4J8Ms3PomWLLIAamIJTMfnAA0KcSE0FjqCwXKn4kIU71Jf8
+         fCkjkC4IH6ea7l2zRvroxenWTXLswpy8LA+rIMUz3YXwr5HphSxo2GTasX9f8fijPYmy
+         PgQNuhiOlaOCDtyHgAdu2i+kY07k9avL3pWslxGFU0GJ7p/NPr1YTraAp3iGPxwFZcgP
+         BA9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720800277; x=1721405077;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/h/+q58+aCVjVtZZ4CChDL1/LkloSpcxSAa3+pfndK4=;
+        b=DRHgs5Pne3dYkLd2/i1DeABuwNgpP1LVZF24BiG6lHSdWhKN5GD3cZ8Go9o1BibmAr
+         /9HBTW395drGWVEObhrdVX05r/N30obnjagkeMCpyy1dTXAZ448ZXvClavnwSWIlOPXh
+         2ZaTLB0tDA9GbaLp5zCZN6UoscftLchypxm7Tx8KH2uKmj7j4TRa8CnUOXIL++rwXUMt
+         RkR1EQWE3lFtFHEWzyctAKpqQ4iRPacoJQk4n8DSwqTMVIsDzCIyEi1P0zqiKK7f+Pea
+         3/5JAuRlPT/EM0jf6j/gztzaqRlfjImeQ13FX6Ii8cCvIegE9fP4oUoiRN58wuo0icNs
+         xywg==
+X-Forwarded-Encrypted: i=1; AJvYcCXMqdjibqdZEysMhoARjCTjmJoQjiApTcWVuMAHKxnJhwsq3G/NQKBJbHu8oUUIDzL2Gd1gR9iiSajAYEVKsZC6vOz36juGO+NX/2Fn4EvEQ5DDzjir0D5+xkvzxIr0fKrSICD0LZn8EUBzly61pednCtfUtMJ8s06c18vv
+X-Gm-Message-State: AOJu0Yx+rQb2auVD6CQ7CR/LLhLoJbc/WZifmQNzkoSnsUQGnj+ou3Vh
+	C1KL+yr5U49lERg1UXqPqS7DWgmMWhJQYtiBOpO11EOA8wtY4/7C
+X-Google-Smtp-Source: AGHT+IE3kAbbk52TIf5qNKA7SJsLMhEkEONymK4QKI6w/YFQFGNsXdyyVTVZ2oa5pOndhcqDWbk6mQ==
+X-Received: by 2002:ad4:5764:0:b0:6b5:49c9:ed4f with SMTP id 6a1803df08f44-6b61bf1b917mr135306446d6.34.1720800277201;
+        Fri, 12 Jul 2024 09:04:37 -0700 (PDT)
+Received: from localhost (240.157.150.34.bc.googleusercontent.com. [34.150.157.240])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b61ba8c9f1sm36369736d6.123.2024.07.12.09.04.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Jul 2024 09:04:36 -0700 (PDT)
+Date: Fri, 12 Jul 2024 12:04:36 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Chengen Du <chengen.du@canonical.com>, 
+ willemdebruijn.kernel@gmail.com
+Cc: davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ kaber@trash.net, 
+ netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Chengen Du <chengen.du@canonical.com>, 
+ stable@vger.kernel.org
+Message-ID: <66915414758be_24ac88294cd@willemb.c.googlers.com.notmuch>
+In-Reply-To: <20240712012956.10408-1-chengen.du@canonical.com>
+References: <20240712012956.10408-1-chengen.du@canonical.com>
+Subject: Re: [PATCH v9] af_packet: Handle outgoing VLAN packets without
+ hardware offloading
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR01MB5471:EE_|PH0PR01MB8070:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6cad084f-0dca-4ea0-3413-08dca28b921b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|366016|7416014|376014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?qOMWv5Buihvnv4kf+N7KGVlnZVRBx5syrjXJJ57trN1ieRsKnG10hC68xvRh?=
- =?us-ascii?Q?Kx04b7oXUXoLwydCh8f40qQzZpkV4AR7KvsusdkvJiVJp7YC3sEOVxrIXwuO?=
- =?us-ascii?Q?b40DX2R7PYYAYz7vVCnU5aIEuuhHMPuW0AhNLr6s+N/VDWMI7As9kCI/UjrN?=
- =?us-ascii?Q?L7+XjWKlsv5IhbQmoI+47JPah8yYJITWa5QzG45n1jSzcplPP3o0kpxlugKd?=
- =?us-ascii?Q?jBYydbS2HamVlikL20h5x4rnThU6mk9A1TPHGdFHtMp51B45BL4tV2wSHPR1?=
- =?us-ascii?Q?ya/dBKbHm2689Zf7KbUh0IcLSXyVuy9zNofL4T78u74iv61jlbmbSeu9Puku?=
- =?us-ascii?Q?tGytWj+omfZLyA2psBX4Su5PsoVSsckOhkoYKf8jrzKgbP7uPQU3z3IjxhrM?=
- =?us-ascii?Q?5mQbZ1uAmsC3bE4J7xokA/jSCAaG17GZtzmyE4njMlTzsukmdPBZI0wpwFvz?=
- =?us-ascii?Q?hjUJ86LgaBFGflmXXOQJjWjcwKr8OJY390bI0BnE6wyBKcvotuRq83Kfijxs?=
- =?us-ascii?Q?seCIMaeJ0LDo2UvEGSjcDqdVI765vxcLrKtthk5zYlFkNpGF2u4EGTOdnWNq?=
- =?us-ascii?Q?CL3lZZt+gqpHh+iJxNKp2o2G6XikC67TgriJBorLcQw+F8M+Uc+XSPhe26oM?=
- =?us-ascii?Q?ejuJz97Cv++p2/SbLF2ArC53VcW3uSQjn/94eQeuaU1r7pcbrB1aApOyEPVK?=
- =?us-ascii?Q?QfGwFYT8qYvP6OjWn1yLe0kYTaT08bHLOaDmRp7fKCU5PXzg1CqmHbzrl+me?=
- =?us-ascii?Q?LcaBAPWYTZBuU1rOqSfXKgdQYX6J68j4K2pSHgsH/v/DWhN4kPpKGxytFUQd?=
- =?us-ascii?Q?RXQP8Yyflbr3+faAE7EPms7syUeyAeix2q1+7ZNdwZTTE48mypGb84U8jYA7?=
- =?us-ascii?Q?/ala6nbtKErPDUG4vRWHLQZBKAWJ9BVkx3RFBJORK71yjKk76Vt3GZFwBsNb?=
- =?us-ascii?Q?zW/hZdpeY9Zy3AjUzsU2ak6avUmZfylmMY5ARwOyAhi1UNv03Uy9KNtLdW0t?=
- =?us-ascii?Q?gKq2rMUypZAXGfJ90U0POod/ywgLDI6D2t4a3fLo56GgALjxkQZvLdHBa9qF?=
- =?us-ascii?Q?IksHxs70guE/zKhzEkk28bakMhPpSE/bZe6T3Lwlo8Sd9oTPU8y+mX0tMCio?=
- =?us-ascii?Q?BuxOE0F3V5l7lHLzb50PIegTAfLmbFzFB2nJfFWpyF4exEUIQ+fMkMGR1g3H?=
- =?us-ascii?Q?er0mSlnp+kQAb0cv6yDE/nMZdhPHE3rrIK/O3vnJehgdbI0+OGw1C6KzQpQH?=
- =?us-ascii?Q?7XneyrHbixrcxRlSfDOLAYktcBLfSpxGS368ea9EgikqmP2hyX3nZfelAFVB?=
- =?us-ascii?Q?TpAkk4dPu7XHqLtuHd23cZbkWh2yvzGnckoColtHNBDepwaR69VB7T2zeBxS?=
- =?us-ascii?Q?OOfQHhE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR01MB5471.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(7416014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?U4DlLOuWwDbuxw+Le71Xiio+SO2z1160fPtX1zqrYHaKwr076dQ1BaNRAfs9?=
- =?us-ascii?Q?qGCp5AHxgvfZm+i69i4g5M0ASFDXCOQoDaSPS8CB/0ElYWc7yEKll1VpL/kp?=
- =?us-ascii?Q?5QSJcp/YZgkXWFKRKSXpzkEZCGH0u9Lp2pq3jfo8ssgW2afSNuWSknkySbfH?=
- =?us-ascii?Q?lrQz6q9yATjF/D61MW+miQYSMO2y7cmhi+TcGGjWB0kPhUV1MJ59bs1BF/jF?=
- =?us-ascii?Q?cZrCngCMr2YOyTCVNIQXCmSd4/11y7g0VXXk7CydqkXWH98ZY7JC8VXUwArw?=
- =?us-ascii?Q?vMEY4Z6tsYC5InI9GTkzzDgjDnHQwRLCBG65pQSZLMCLSV9BkwZTvm2R6F+v?=
- =?us-ascii?Q?A3KsRsUz2PYQ7dKkQrogFXdVRiU9zHyh5+LEEtrqOACucfaZkjhV2K8k6uNF?=
- =?us-ascii?Q?nE3l58IVYptWgtNgVv6rfACwrkYrF1SHeapNEo6SvwrzFGBBrE7l4pzvYxr2?=
- =?us-ascii?Q?H9pQ8jWa/Vq0BSPWnj0a/cl4fWyEV92cpYmr1yEq2kC/ecSmV1YOLbZlGdMY?=
- =?us-ascii?Q?yW0CWvZ1Cxmg4xqC8fGygwxkvlECkpxszWwU71aGXAzKLAiahJNcag75azCU?=
- =?us-ascii?Q?AQZ40J3BLjN1OSLNcts/czId3iAYMO96Mi0mtElhDBWUKmZHsgJajsBJVqMf?=
- =?us-ascii?Q?COjrYrZUPnWwJ3VnGP9aMpw81gVFsmh1yQ0aUwWiCsAdYSrJXbqAwqsWzsJ8?=
- =?us-ascii?Q?cZ7Gotl1uGbQYwyz3iGe7reSuF6y/jo02MPYXmxH60nublhg2vjeKO7SllZT?=
- =?us-ascii?Q?dJvm6ycqihpttC66m4OAWL/uWnuKHLH+yHpikYvSqNVs5wenmxYBlj/jKepF?=
- =?us-ascii?Q?r+Avx2g4pUMEXjLayJyQdu/ISYoEpv58SnshlE3eB2s7gd1dPSrzL9lt46hl?=
- =?us-ascii?Q?gRnFEKwKWQa0X7qH4HjGCH5ZY45UqESDx30Zq5XJrdBznph5ppirNvmljmTb?=
- =?us-ascii?Q?AulDYF9BOLWbz3oNQh7i0xdOPkA55ggTWX7X0FTx3O1ypoXyTutW3o0Ib0uU?=
- =?us-ascii?Q?OkSVuU6355dCibQPmHodXonGs4COfmIzU8XRR1aj3zT5v4xvFzP0a2eUURdb?=
- =?us-ascii?Q?gQYsKPJosll5O8gaYf3wRaHgbDr9NV6qrCiNjlEsAWAswSEFx7IOpwQ7lJNR?=
- =?us-ascii?Q?yWQ9dJxlFFR1dDCb6T3ydSrOQx51rSpoT+5xLtAcwKQTjnskDSXWkgj/e0xk?=
- =?us-ascii?Q?DOf3FAG8WlbLIh5S/BmbVWRWUDUIwwKyS+xkDSxp25tUTK0k/9Wp2BPcnpt7?=
- =?us-ascii?Q?La8xWssNiou5hJwaSyFTiBjqlOPpGvQSOXVBDKpLBc5PkQm4uuXbRKcCoPdB?=
- =?us-ascii?Q?i3/x+d3kiiaZS6pv2tLwYq0BUe058HQRPSrUP0AfbXAGj7du+vC8cGz9TRaV?=
- =?us-ascii?Q?+Qo5NlWXQuk8xhu28/FhwmGGrzLCLkNVn8qyLqpJHw7Ydbj5JRszM5272t/n?=
- =?us-ascii?Q?nVYrZW9o7s/RWYIt3WT9KrUCWvDyCzdNyBH8rLpLCcx1+jeo4+hT0+fG0cZI?=
- =?us-ascii?Q?MhKJAa7FoePsEgAkMsKyx7Q2v3KR1WbrphMzEpXmOvTBo8L3D1dm+1aktFlz?=
- =?us-ascii?Q?CBFjRflUg1pFGponPqfo8OrrtlZbW261L+z6h2P1tt8+nh4zxWspT4JNaouM?=
- =?us-ascii?Q?7mEQ5aSn06k7ZDqJUklytK8=3D?=
-X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6cad084f-0dca-4ea0-3413-08dca28b921b
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR01MB5471.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2024 15:59:12.4443
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4RMN5p0BTSd93bsOosD15ba3QU+zoN7WlgSADaPQReCV1r/U813IBZ8K4/MPKOL7sA+ASADPp0fCwtUxvPV+wZmmCFLWc9DtqgsqCHkgvS0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR01MB8070
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Yves-Alexis Perez reported commit 4ef9ad19e176 ("mm: huge_memory: don't
-force huge page alignment on 32 bit") didn't work for x86_32 [1].  It is
-because x86_32 uses CONFIG_X86_32 instead of CONFIG_32BIT.
+Chengen Du wrote:
+> The issue initially stems from libpcap. The ethertype will be overwritten
+> as the VLAN TPID if the network interface lacks hardware VLAN offloading.
+> In the outbound packet path, if hardware VLAN offloading is unavailable,
+> the VLAN tag is inserted into the payload but then cleared from the sk_buff
+> struct. Consequently, this can lead to a false negative when checking for
+> the presence of a VLAN tag, causing the packet sniffing outcome to lack
+> VLAN tag information (i.e., TCI-TPID). As a result, the packet capturing
+> tool may be unable to parse packets as expected.
+> 
+> The TCI-TPID is missing because the prb_fill_vlan_info() function does not
+> modify the tp_vlan_tci/tp_vlan_tpid values, as the information is in the
+> payload and not in the sk_buff struct. The skb_vlan_tag_present() function
+> only checks vlan_all in the sk_buff struct. In cooked mode, the L2 header
+> is stripped, preventing the packet capturing tool from determining the
+> correct TCI-TPID value. Additionally, the protocol in SLL is incorrect,
+> which means the packet capturing tool cannot parse the L3 header correctly.
+> 
+> Link: https://github.com/the-tcpdump-group/libpcap/issues/1105
+> Link: https://lore.kernel.org/netdev/20240520070348.26725-1-chengen.du@canonical.com/T/#u
+> Fixes: 393e52e33c6c ("packet: deliver VLAN TCI to userspace")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chengen Du <chengen.du@canonical.com>
 
-!CONFIG_64BIT should cover all 32 bit machines.
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 
-[1] https://lore.kernel.org/linux-mm/CAHbLzkr1LwH3pcTgM+aGQ31ip2bKqiqEQ8=FQB+t2c3dhNKNHA@mail.gmail.com/
+For next time, please remember to mention the tree: [PATCH net v9].
+And give a changelog: Changes v8->v9: no changes, rebased resubmit.
 
-Fixes: 4ef9ad19e176 ("mm: huge_memory: don't force huge page alignment on 32 bit")
-Reported-by: Yves-Alexis Perez <corsac@debian.org>
-Tested-By: Yves-Alexis Perez <corsac@debian.org>
-Cc: <stable@vger.kernel.org>    [6.8+]
-Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
----
- mm/huge_memory.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> ---
+>  net/packet/af_packet.c | 86 +++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 84 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+> index ea3ebc160e25..84e8884a77e3 100644
+> --- a/net/packet/af_packet.c
+> +++ b/net/packet/af_packet.c
+> @@ -538,6 +538,61 @@ static void *packet_current_frame(struct packet_sock *po,
+>  	return packet_lookup_frame(po, rb, rb->head, status);
+>  }
+>  
+> +static u16 vlan_get_tci(struct sk_buff *skb, struct net_device *dev)
+> +{
+> +	struct vlan_hdr vhdr, *vh;
+> +	u8 *skb_orig_data = skb->data;
+> +	int skb_orig_len = skb->len;
+> +	unsigned int header_len;
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 2120f7478e55..64f00aedf9af 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -857,7 +857,7 @@ static unsigned long __thp_get_unmapped_area(struct file *filp,
- 	loff_t off_align = round_up(off, size);
- 	unsigned long len_pad, ret, off_sub;
- 
--	if (IS_ENABLED(CONFIG_32BIT) || in_compat_syscall())
-+	if (!IS_ENABLED(CONFIG_64BIT) || in_compat_syscall())
- 		return 0;
- 
- 	if (off_end <= off_align || (off_end - off_align) < size)
--- 
-2.41.0
+nit: reverse christmas tree violation
+
+> +
+> +	if (!dev)
+> +		return 0;
+> +
+> +	/* In the SOCK_DGRAM scenario, skb data starts at the network
+> +	 * protocol, which is after the VLAN headers. The outer VLAN
+> +	 * header is at the hard_header_len offset in non-variable
+> +	 * length link layer headers. If it's a VLAN device, the
+> +	 * min_header_len should be used to exclude the VLAN header
+> +	 * size.
+> +	 */
+> +	if (dev->min_header_len == dev->hard_header_len)
+> +		header_len = dev->hard_header_len;
+> +	else if (is_vlan_dev(dev))
+> +		header_len = dev->min_header_len;
+> +	else
+> +		return 0;
+> +
+> +	skb_push(skb, skb->data - skb_mac_header(skb));
+> +	vh = skb_header_pointer(skb, header_len, sizeof(vhdr), &vhdr);
+> +	if (skb_orig_data != skb->data) {
+> +		skb->data = skb_orig_data;
+> +		skb->len = skb_orig_len;
+> +	}
+> +	if (unlikely(!vh))
+> +		return 0;
+> +
+> +	return ntohs(vh->h_vlan_TCI);
+> +}
+> +
+> +static __be16 vlan_get_protocol_dgram(struct sk_buff *skb)
+> +{
+> +	__be16 proto = skb->protocol;
+> +
+> +	if (unlikely(eth_type_vlan(proto))) {
+> +		u8 *skb_orig_data = skb->data;
+> +		int skb_orig_len = skb->len;
+> +
+> +		skb_push(skb, skb->data - skb_mac_header(skb));
+> +		proto = __vlan_get_protocol(skb, proto, NULL);
+> +		if (skb_orig_data != skb->data) {
+> +			skb->data = skb_orig_data;
+> +			skb->len = skb_orig_len;
+> +		}
+> +	}
+> +
+> +	return proto;
+> +}
+> +
+>  static void prb_del_retire_blk_timer(struct tpacket_kbdq_core *pkc)
+>  {
+>  	del_timer_sync(&pkc->retire_blk_timer);
+> @@ -1007,10 +1062,16 @@ static void prb_clear_rxhash(struct tpacket_kbdq_core *pkc,
+>  static void prb_fill_vlan_info(struct tpacket_kbdq_core *pkc,
+>  			struct tpacket3_hdr *ppd)
+>  {
+> +	struct packet_sock *po = container_of(pkc, struct packet_sock, rx_ring.prb_bdqc);
+> +
+>  	if (skb_vlan_tag_present(pkc->skb)) {
+>  		ppd->hv1.tp_vlan_tci = skb_vlan_tag_get(pkc->skb);
+>  		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->vlan_proto);
+>  		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+> +	} else if (unlikely(po->sk.sk_type == SOCK_DGRAM && eth_type_vlan(pkc->skb->protocol))) {
+> +		ppd->hv1.tp_vlan_tci = vlan_get_tci(pkc->skb, pkc->skb->dev);
+> +		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->protocol);
+> +		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+>  	} else {
+>  		ppd->hv1.tp_vlan_tci = 0;
+>  		ppd->hv1.tp_vlan_tpid = 0;
+> @@ -2428,6 +2489,10 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+>  			h.h2->tp_vlan_tci = skb_vlan_tag_get(skb);
+>  			h.h2->tp_vlan_tpid = ntohs(skb->vlan_proto);
+>  			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+> +		} else if (unlikely(sk->sk_type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
+> +			h.h2->tp_vlan_tci = vlan_get_tci(skb, skb->dev);
+> +			h.h2->tp_vlan_tpid = ntohs(skb->protocol);
+> +			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+>  		} else {
+>  			h.h2->tp_vlan_tci = 0;
+>  			h.h2->tp_vlan_tpid = 0;
+> @@ -2457,7 +2522,8 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+>  	sll->sll_halen = dev_parse_header(skb, sll->sll_addr);
+>  	sll->sll_family = AF_PACKET;
+>  	sll->sll_hatype = dev->type;
+> -	sll->sll_protocol = skb->protocol;
+> +	sll->sll_protocol = (sk->sk_type == SOCK_DGRAM) ?
+> +		vlan_get_protocol_dgram(skb) : skb->protocol;
+>  	sll->sll_pkttype = skb->pkt_type;
+>  	if (unlikely(packet_sock_flag(po, PACKET_SOCK_ORIGDEV)))
+>  		sll->sll_ifindex = orig_dev->ifindex;
+> @@ -3482,7 +3548,8 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+>  		/* Original length was stored in sockaddr_ll fields */
+>  		origlen = PACKET_SKB_CB(skb)->sa.origlen;
+>  		sll->sll_family = AF_PACKET;
+> -		sll->sll_protocol = skb->protocol;
+> +		sll->sll_protocol = (sock->type == SOCK_DGRAM) ?
+> +			vlan_get_protocol_dgram(skb) : skb->protocol;
+>  	}
+>  
+>  	sock_recv_cmsgs(msg, sk, skb);
+> @@ -3539,6 +3606,21 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+>  			aux.tp_vlan_tci = skb_vlan_tag_get(skb);
+>  			aux.tp_vlan_tpid = ntohs(skb->vlan_proto);
+>  			aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+> +		} else if (unlikely(sock->type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
+> +			struct sockaddr_ll *sll = &PACKET_SKB_CB(skb)->sa.ll;
+> +			struct net_device *dev;
+> +
+> +			rcu_read_lock();
+> +			dev = dev_get_by_index_rcu(sock_net(sk), sll->sll_ifindex);
+> +			if (dev) {
+> +				aux.tp_vlan_tci = vlan_get_tci(skb, dev);
+> +				aux.tp_vlan_tpid = ntohs(skb->protocol);
+> +				aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+> +			} else {
+> +				aux.tp_vlan_tci = 0;
+> +				aux.tp_vlan_tpid = 0;
+> +			}
+> +			rcu_read_unlock();
+>  		} else {
+>  			aux.tp_vlan_tci = 0;
+>  			aux.tp_vlan_tpid = 0;
+> -- 
+> 2.43.0
+> 
+
 
 
